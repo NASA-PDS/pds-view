@@ -27,8 +27,8 @@
       <p>The Security service provides the authentication and authorization functions for the PDS 2010 system. The intent of this service is to control access to interfaces and services that require authentication and authorization (e.g., Monitor, Report, Registry interfaces, etc.).
       </p>
 
-	  <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
-	  </p>
+      <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
+      </p>
     </section>
   </body>
 </document>
