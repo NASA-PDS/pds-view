@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	         xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+	         jxb:version="2.0">
+
+<xsd:element name="location" type="xsd:string"/>
+<xsd:element name="filePattern" type="xsd:string"/>
+<xsd:element name="xPath" type="xsd:string"/>
+
+<xsd:attribute name="objectType" type="xsd:string"/>
+
+<xsd:element name="rootDirectories" type="RootDirectory"/>
+<xsd:complexType name="RootDirectory">
+   <xsd:sequence>
+      <xsd:element ref="location" maxOccurs="unbounded"/>
+      <xsd:element ref="filePattern" minOccurs="0" maxOccurs="unbounded"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+<xsd:element name="inventoryFiles" type="InventoryFile"/>
+<xsd:complexType name="InventoryFile">
+   <xsd:sequence>
+      <xsd:element ref="location" maxOccurs="unbounded"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+<xsd:element name="metadata" type="Metadata"/>
+<xsd:complexType name="Metadata">
+	 <xsd:sequence>
+      <xsd:element ref="xPath" maxOccurs="unbounded"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+<xsd:element name="candidateProduct" type="CandidateProduct"/>
+<xsd:complexType name="CandidateProduct">
+   <xsd:sequence>
+      <xsd:element ref="metadata"/>
+   </xsd:sequence>
+   <xsd:attribute ref="objectType" use="required"/>
+</xsd:complexType>
+
+<xsd:element name="policy" type="Policy"/>
+<xsd:complexType name="Policy">
+   <xsd:sequence>
+      <xsd:element ref="rootDirectories" minOccurs="0"/>
+      <xsd:element ref="inventoryFiles" minOccurs="0"/>
+      <xsd:element ref="candidateProduct" maxOccurs="unbounded"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+</xsd:schema>

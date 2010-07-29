@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<policy>
+    <candidateProduct objectType="Context_Collection">
+        <metadata>
+            <xPath>//alternate_title</xPath>
+            <xPath>//alternate_id</xPath>
+            <xPath>//last_modification_date_time</xPath>
+            <xPath>//is_primary_collection</xPath>
+        </metadata>
+    </candidateProduct>
+    <candidateProduct objectType="Context_Bundle">
+        <metadata>
+            <xPath>//alternate_title</xPath>
+            <xPath>//alternate_id</xPath>
+            <xPath>//last_modification_date_time</xPath>
+            <xPath>//is_primary_collection</xPath>
+        </metadata>
+    </candidateProduct>    
+</policy>

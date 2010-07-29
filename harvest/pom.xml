@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- 
+  Copyright 2010, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology 
+  Transfer at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations 
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+  is subject to U.S. export control laws and regulations, the recipient has 
+  the responsibility to obtain export licenses or other export authority as 
+  may be required before exporting such information to foreign countries or 
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>gov.nasa.pds</groupId>
+    <artifactId>2010</artifactId>
+    <version>0.0.0</version>
+  </parent>
+
+  <groupId>gov.nasa.pds</groupId>
+  <artifactId>harvest</artifactId>
+  <version>0.1.0-dev</version>
+  <packaging>jar</packaging>
+
+  <name>Harvest Tool</name>
+  <description>
+    The Harvest Tool provides functionality for capturing and registering product metadata. The tool will run locally at the Discipline Node to crawl the local data repository in order to discover products and register associated metadata with the Registry (Inventory) Service.
+  </description>
+  <url>http://pds-cm.jpl.nasa.gov/2010/harvest/</url>
+
+  <!-- These properties support PDF generation with Maven 1. -->
+  <properties>
+    <xdoc-artifactId>${artifactId}</xdoc-artifactId>
+    <xdoc-version>${version}</xdoc-version>
+  </properties>
+
+  <developers>
+    <developer>
+      <name>Sean Hardman</name>
+      <id>shardman</id>
+      <email>Sean.Hardman@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Development Lead</role>
+      </roles>
+    </developer>   
+    <developer>
+      <name>Michael Cayanan</name>
+      <id>mcayanan</id>
+      <email>Michael.Cayanan@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <contributors>
+    <contributor>
+      <name>Steve Hughes</name>
+      <email>John.S.Hughes@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>System Engineering Lead</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Ron Joyner</name>
+      <email>Ronald.Joyner@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>System Engineer</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Chris Mattmann</name>
+      <email>Chris.Mattmann@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>OODT Consultant</role>
+      </roles>
+    </contributor>
+  </contributors>
+
+  <build>
+    <resources>
+      <resource>
+        <filtering>true</filtering>
+        <targetPath>gov/nasa/pds/harvest</targetPath>
+        <directory>src/main/resources/conf</directory>
+        <includes>
+          <include>harvest.properties</include>
+        </includes>
+      </resource>
+      <resource>
+        <filtering>true</filtering>
+        <targetPath>gov/nasa/pds/harvest/policy</targetPath>
+        <directory>src/main/resources/policy</directory>
+        <includes>
+          <include>harvest-policy.xsd</include>
+        </includes>
+      </resource>     
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>gov.nasa.pds.harvest.HarvestLauncher</mainClass>
+              <addClasspath>true</addClasspath>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>maven-buildnumber-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>validate</phase>        
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
+          <items>
+            <item>timestamp</item>
+          </items>
+          <doCheck>false</doCheck>
+          <doUpdate>false</doUpdate>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/main/assembly/harvest.xml</descriptor>
+          </descriptors>
+        </configuration>
+        <executions>
+          <execution>
+            <id>bin-release</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>   
+    </plugins>
+  </build>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>tlc</id>
+      <name>TLC Repository</name>
+      <url>http://commons.ucalgary.ca/pub/m2</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>maven2-repository.dev.java.net</id>
+      <name>Java.net Repository for Maven</name>
+      <url>http://download.java.net/maven/2</url>
+      <layout>default</layout>
+    </pluginRepository>
+    <pluginRepository>
+      <id>maven-repository.dev.java.net</id>
+      <name>Java.net Maven 1 Repository (legacy)</name>
+      <url>http://download.java.net/maven/1</url>
+      <layout>legacy</layout>
+    </pluginRepository>    
+  </pluginRepositories>
+
+  <repositories>
+    <repository>
+      <id>pds-repo</id>
+      <name>PDS Repository</name>
+      <layout>default</layout>
+      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>maven2-repository.dev.java.net</id>
+      <name>Java.net Maven 2 Repository</name>
+      <url>http://download.java.net/maven/2</url>
+      <layout>default</layout>
+    </repository>
+    <repository>
+      <id>maven-repository.dev.java.net</id>
+      <name>Java.net Maven 1 Repository (legacy)</name>
+      <url>http://download.java.net/maven/1</url>
+      <layout>legacy</layout>
+    </repository>    
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>commons-cli</groupId>
+      <artifactId>commons-cli</artifactId>
+      <version>1.2</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>1.4</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.4</version>
+      <scope>compile</scope>
+    </dependency>    
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.2</version>
+      <scope>compile</scope>      
+    </dependency>
+    <dependency>
+      <groupId>javax.xml.stream</groupId>
+      <artifactId>stax-api</artifactId>
+      <version>1.0-2</version>
+      <scope>compile</scope>      
+    </dependency>
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>2.2</version>
+      <scope>compile</scope>      
+    </dependency>
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-xjc</artifactId>
+      <version>2.2</version>
+      <scope>compile</scope>      
+    </dependency>   
+    <dependency>
+      <groupId>javax.activation</groupId>
+      <artifactId>activation</artifactId>
+      <version>1.1</version>
+      <scope>compile</scope>      
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-client</artifactId>
+      <version>1.2</version>
+      <scope>compile</scope>      
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey.contribs</groupId>
+      <artifactId>jersey-apache-client</artifactId>
+      <version>1.2</version>
+    </dependency>   
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-core</artifactId>
+      <version>1.2</version>
+      <scope>compile</scope>      
+    </dependency>    
+    <dependency>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>jsr311-api</artifactId>
+      <version>1.1.1</version>
+      <scope>compile</scope>      
+    </dependency> 
+    <dependency>
+      <groupId>gov.nasa.pds.registry</groupId>
+      <artifactId>registry-service</artifactId>
+      <version>0.3-dev</version>
+      <scope>compile</scope>      
+    </dependency>
+    <dependency>
+      <groupId>gov.nasa.jpl.oodt</groupId>
+      <artifactId>cas-crawler</artifactId>
+      <version>2.3.0-dev</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>gov.nasa.jpl.oodt</groupId>
+      <artifactId>cas-commons</artifactId>
+      <version>1.1.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>gov.nasa.jpl.oodt</groupId>
+      <artifactId>cas-filemgr</artifactId>
+      <version>1.8.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>gov.nasa.jpl.oodt</groupId>
+      <artifactId>cas-metadata</artifactId>
+      <version>1.6.1</version>
+      <scope>compile</scope>
+    </dependency>              
+  </dependencies>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>changes-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>dependencies</report>
+              <report>project-team</report>
+              <report>summary</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
