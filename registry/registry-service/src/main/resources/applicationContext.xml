@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright 2009-2010, by the California Institute of Technology.
+	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+	Any commercial use must be negotiated with the Office of Technology 
+	Transfer at the California Institute of Technology.
+	
+	This software is subject to U. S. export control laws and regulations 
+	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+	is subject to U.S. export control laws and regulations, the recipient has 
+	the responsibility to obtain export licenses or other export authority as 
+	may be required before exporting such information to foreign countries or 
+	providing access to foreign nationals.
+	
+	$Id$
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+			">
+	<!-- Database properties -->
+	<context:property-placeholder location="classpath:db.properties"/>
+			
+	<context:annotation-config />
+	
+	<context:component-scan
+		base-package="gov.nasa.pds.registry,gov.nasa.pds.registry.model,gov.nasa.pds.registry.resource,gov.nasa.pds.registry.service" />
+
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+	
+	<bean id="versioner" class="gov.nasa.pds.registry.model.naming.DefaultVersioner"/>
+	
+	<bean id="idGenerator" class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
+	    p:home="http://localhost/registry"/>
+	
+	<bean id="statusInfo" class="gov.nasa.pds.registry.model.StatusInfo"
+		p:status="OK"/>
+	
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		p:driverClassName="${javax.persistence.jdbc.driver}" p:url="${javax.persistence.jdbc.url}" p:username="${javax.persistence.jdbc.user}"
+		p:password="${javax.persistence.jdbc.password}" />
+		
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+       p:entityManagerFactory-ref="entityManagerFactory"/>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		p:dataSource-ref="dataSource" 
+		p:jpaVendorAdapter-ref="jpaAdapter"
+		p:persistenceUnitName="registryPU"
+		p:loadTimeWeaver-ref="loadTimeWeaver">
+		<property name="jpaProperties">
+			<util:map>
+				<entry key="hibernate.dialect" value="${hibernate.dialect}"/>
+				<entry key="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}"/>
+			</util:map>
+		</property>
+	</bean>
+	
+	
+	<util:map id="jpaProperties">
+		<entry key="hibernate.dialect" value="${hibernate.dialect}"/>
+		<entry key="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}"/>
+	</util:map>
+	
+	<bean id="jpaAdapter"
+		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+		p:database="${jpa.database}" 
+		p:showSql="${jpa.showSql}" />
+	
+	<bean id="loadTimeWeaver" class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
+
+</beans>

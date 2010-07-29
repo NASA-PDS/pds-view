@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<product xmlns="http://registry.pds.nasa.gov" 
+    lid="1234" 
+    userVersion="2.0" 
+    name="Product 1234 v2" 
+    objectType="person" 
+    description="This is a new version test product 1234 v3" >
+    <slot name="first-name">
+        <value>John</value>
+    </slot>
+    <slot name="last-name">
+        <value>Doe</value>
+    </slot>
+    <slot name="phone">
+        <value>(818)123-4567</value>
+        <value>(818)765-4321</value>
+    </slot>
+</product>
