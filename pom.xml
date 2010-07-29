@@ -28,7 +28,7 @@
   <version>0.0.0</version>
   <packaging>pom</packaging>
 
-  <name>Planetary Data System</name>
+  <name>PDS 2010</name>
   <description>
     This project provides documentation for the PDS 2010 effort and contains the PDS 2010 parent Project Object Model (POM).
   </description>
