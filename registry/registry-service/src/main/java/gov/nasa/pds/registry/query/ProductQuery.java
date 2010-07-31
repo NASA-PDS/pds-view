@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class ProductQuery extends RegistryQuery<ObjectFilter> {
 	private ProductQuery() {
-		this.filter = new ProductQuery.Builder().build().getFilter();
+		this.filter = null;
 	}
 	
 	public static class Builder extends AbstractBuilder {

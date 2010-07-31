@@ -24,8 +24,8 @@ import gov.nasa.pds.registry.model.Product;
 import gov.nasa.pds.registry.model.StatusInfo;
 import gov.nasa.pds.registry.model.naming.IdentifierGenerator;
 import gov.nasa.pds.registry.model.naming.Versioner;
+import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ProductQuery;
-import gov.nasa.pds.registry.query.RegistryQuery;
 
 import java.util.Collections;
 import java.util.List;
@@ -211,8 +211,8 @@ public class RegistryService {
 		return null;
 	}
 
-	public PagedResponse getAssociations() {
-		return null;
+	public PagedResponse getAssociations(AssociationQuery query, Integer start, Integer rows) {
+		return metadataStore.getAssociations(query, start, rows);
 	}
 
 	public Association publishAssociation(String user, Association association) {
@@ -234,33 +234,6 @@ public class RegistryService {
 		event.setHome(idGenerator.getHome());
 		metadataStore.saveAuditableEvent(event);
 		return association;
-	}
-
-	public PagedResponse getSourceAssociations(String lid, String version) {
-		return null;
-	}
-
-	public PagedResponse getSourceNamedAssociations(String lid, String version,
-			String relationship) {
-		return null;
-	}
-
-	public PagedResponse getTargetAssociations(String lid, String version) {
-		return null;
-	}
-
-	public PagedResponse getTargetNamedAssociations(String lid, String version,
-			String relationship) {
-		return null;
-	}
-
-	public PagedResponse getAssociations(String lid, String version) {
-		return null;
-	}
-
-	public PagedResponse getNamedAssociations(String lid, String version,
-			String relationship) {
-		return null;
 	}
 
 	public Association getAssocation(String guid) {

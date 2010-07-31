@@ -20,10 +20,11 @@ import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.Product;
 import gov.nasa.pds.registry.model.Slot;
+import gov.nasa.pds.registry.query.AssociationFilter;
+import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ObjectFilter;
 import gov.nasa.pds.registry.query.ProductQuery;
 import gov.nasa.pds.registry.query.QueryOperator;
-import gov.nasa.pds.registry.query.RegistryQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,37 +119,44 @@ public class MetadataStoreJPA implements MetadataStore {
 		CriteriaQuery<Product> cq = cb.createQuery(Product.class);
 		Root<Product> productEntity = cq.from(Product.class);
 		ObjectFilter filter = query.getFilter();
-        List<Predicate> predicates = new ArrayList<Predicate>();
+		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (filter.getGuid() != null) {
-			predicates.add(cb.like(productEntity.get("guid").as(String.class), filter.getGuid().replace('*', '%')));
+			predicates.add(cb.like(productEntity.get("guid").as(String.class),
+					filter.getGuid().replace('*', '%')));
 		}
 		if (filter.getLid() != null) {
-			predicates.add(cb.like(productEntity.get("lid").as(String.class), filter.getLid().replace('*', '%')));
+			predicates.add(cb.like(productEntity.get("lid").as(String.class),
+					filter.getLid().replace('*', '%')));
 		}
 		if (filter.getName() != null) {
-			predicates.add(cb.like(productEntity.get("name").as(String.class), filter.getName().replace('*', '%')));
+			predicates.add(cb.like(productEntity.get("name").as(String.class),
+					filter.getName().replace('*', '%')));
 		}
 		if (filter.getObjectType() != null) {
-			predicates.add(cb.like(productEntity.get("objectType").as(String.class), filter.getObjectType().replace('*', '%')));
+			predicates.add(cb.like(productEntity.get("objectType").as(
+					String.class), filter.getObjectType().replace('*', '%')));
 		}
 		if (filter.getStatus() != null) {
-			predicates.add(cb.equal(productEntity.get("status"), filter.getStatus()));
+			predicates.add(cb.equal(productEntity.get("status"), filter
+					.getStatus()));
 		}
 		if (filter.getUserVersion() != null) {
-			predicates.add(cb.like(productEntity.get("userVersion").as(String.class), filter.getUserVersion().replace('*', '%')));
+			predicates.add(cb.like(productEntity.get("userVersion").as(
+					String.class), filter.getUserVersion().replace('*', '%')));
 		}
 		if (filter.getVersion() != null) {
-			predicates.add(cb.like(productEntity.get("version").as(String.class), filter.getVersion().replace('*', '%')));
+			predicates.add(cb.like(productEntity.get("version")
+					.as(String.class), filter.getVersion().replace('*', '%')));
 		}
 		if (predicates.size() != 0) {
 			Predicate[] p = new Predicate[predicates.size()];
 			if (query.getOperator() == QueryOperator.AND) {
-		        cq.where(cb.and(predicates.toArray(p)));
+				cq.where(cb.and(predicates.toArray(p)));
 			} else {
 				cq.where(cb.or(predicates.toArray(p)));
 			}
 		}
-		
+
 		List<Order> orders = new ArrayList<Order>();
 		if (query.getSort().size() > 0) {
 			for (String sort : query.getSort()) {
@@ -164,8 +172,89 @@ public class MetadataStoreJPA implements MetadataStore {
 		}
 		cq.orderBy(orders);
 		TypedQuery<Product> dbQuery = entityManager.createQuery(cq);
-		PagedResponse response = new PagedResponse(start, (long) dbQuery.getResultList().size());
-		response.setResults(dbQuery.setFirstResult(start - 1).setMaxResults(rows).getResultList());
+		PagedResponse response = new PagedResponse(start, (long) dbQuery
+				.getResultList().size());
+		response.setResults(dbQuery.setFirstResult(start - 1).setMaxResults(
+				rows).getResultList());
+		return response;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gov.nasa.pds.registry.service.MetadataStore#getAssociations(gov.nasa.
+	 * pds.registry.query.AssociationQuery, java.lang.Integer,
+	 * java.lang.Integer)
+	 */
+	public PagedResponse getAssociations(AssociationQuery query, Integer start,
+			Integer rows) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Association> cq = cb.createQuery(Association.class);
+		Root<Association> associationEntity = cq.from(Association.class);
+		AssociationFilter filter = query.getFilter();
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		if (filter.getTargetLid() != null) {
+			predicates.add(cb.like(associationEntity.get("targetLid").as(
+					String.class), filter.getTargetLid().replace('*', '%')));
+		}
+		if (filter.getTargetVersion() != null) {
+			predicates
+					.add(cb.like(associationEntity.get("targetVersion").as(
+							String.class), filter.getTargetVersion().replace(
+							'*', '%')));
+		}
+		if (filter.getTargetHome() != null) {
+			predicates.add(cb.like(associationEntity.get("targetHome").as(
+					String.class), filter.getTargetHome().replace('*', '%')));
+		}
+		if (filter.getSourceLid() != null) {
+			predicates.add(cb.like(associationEntity.get("sourceLid").as(
+					String.class), filter.getSourceLid().replace('*', '%')));
+		}
+		if (filter.getSourceVersion() != null) {
+			predicates
+					.add(cb.like(associationEntity.get("sourceVersion").as(
+							String.class), filter.getSourceVersion().replace(
+							'*', '%')));
+		}
+		if (filter.getSourceHome() != null) {
+			predicates.add(cb.like(associationEntity.get("sourceHome").as(
+					String.class), filter.getSourceHome().replace('*', '%')));
+		}
+		if (filter.getAssociationType() != null) {
+			predicates.add(cb.like(associationEntity.get("associationType").as(
+					String.class), filter.getAssociationType()
+					.replace('*', '%')));
+		}
+		if (predicates.size() != 0) {
+			Predicate[] p = new Predicate[predicates.size()];
+			if (query.getOperator() == QueryOperator.AND) {
+				cq.where(cb.and(predicates.toArray(p)));
+			} else {
+				cq.where(cb.or(predicates.toArray(p)));
+			}
+		}
+
+		List<Order> orders = new ArrayList<Order>();
+		if (query.getSort().size() > 0) {
+			for (String sort : query.getSort()) {
+				String[] s = sort.split(" ");
+				if (s.length == 1 || s[1].equalsIgnoreCase("ASC")) {
+					orders.add(cb.asc(associationEntity.get(s[0])));
+				} else {
+					orders.add(cb.desc(associationEntity.get(s[0])));
+				}
+			}
+		} else {
+			orders.add(cb.asc(associationEntity.get("guid")));
+		}
+		cq.orderBy(orders);
+		TypedQuery<Association> dbQuery = entityManager.createQuery(cq);
+		PagedResponse response = new PagedResponse(start, (long) dbQuery
+				.getResultList().size());
+		response.setResults(dbQuery.setFirstResult(start - 1).setMaxResults(
+				rows).getResultList());
 		return response;
 	}
 

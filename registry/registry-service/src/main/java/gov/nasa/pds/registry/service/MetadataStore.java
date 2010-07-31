@@ -19,6 +19,7 @@ import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.Product;
+import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ProductQuery;
 
 import java.util.List;
@@ -52,4 +53,6 @@ public interface MetadataStore {
 	public Association updateAssociation(Association association);
 
 	public Association getAssociation(String guid);
+	
+	public PagedResponse getAssociations(AssociationQuery query, Integer start, Integer rows);
 }

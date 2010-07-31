@@ -26,6 +26,8 @@ import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.Product;
 import gov.nasa.pds.registry.model.RegistryObject;
+import gov.nasa.pds.registry.query.AssociationFilter;
+import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ObjectFilter;
 import gov.nasa.pds.registry.query.ProductQuery;
 
@@ -173,6 +175,54 @@ public class RegistryClient {
 	    params.add("queryOp", query.getOperator().toString());
 	    
 	    WebResource.Builder builder = registryResource.path("products").queryParams(params).getRequestBuilder();
+		if (token != null) {
+			builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
+					+ "\"");
+		}
+	    
+		return builder.accept(mediaType).get(ClientResponse.class);
+	}
+	
+	public ClientResponse getAssociations(AssociationQuery query, Integer start, Integer rows) {
+		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+		if (start != null) {
+			params.add("start", start.toString());
+		}
+	    if (rows != null) {
+			params.add("rows", rows.toString());
+	    }
+	    
+	    AssociationFilter filter = query.getFilter();
+	    if (filter.getTargetLid() != null) {
+	    	params.add("targetLid", filter.getTargetLid());
+	    }
+	    if (filter.getTargetVersion() != null) {
+	    	params.add("targetVersion", filter.getTargetVersion());
+	    }
+	    if (filter.getTargetHome() != null) {
+	    	params.add("targetHome", filter.getTargetHome());
+	    }
+	    if (filter.getSourceLid() != null) {
+	    	params.add("sourceLid", filter.getSourceLid());
+	    }
+	    if (filter.getSourceVersion() != null) {
+	    	params.add("sourceVersion", filter.getSourceVersion());
+	    }
+	    if (filter.getSourceHome() != null) {
+	    	params.add("sourceHome", filter.getSourceHome());
+	    }
+	    if (filter.getAssociationType() != null) {
+	    	params.add("associationType", filter.getAssociationType());
+	    }
+	    
+	    List<String> sort = query.getSort();
+	    for (String s : sort) {
+	    	params.add("sort", s);
+	    }
+	    
+	    params.add("queryOp", query.getOperator().toString());
+	    
+	    WebResource.Builder builder = registryResource.path("associations").queryParams(params).getRequestBuilder();
 		if (token != null) {
 			builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
 					+ "\"");

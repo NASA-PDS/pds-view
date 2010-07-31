@@ -65,6 +65,12 @@ public class AssociationFilter extends ObjectFilter {
 			return this;
 		}
 		
+		public Builder targetHome(String targetHome) {
+			this.checkBuilt();
+			this.filter.targetHome = targetHome;
+			return this;
+		}
+		
 		public Builder associationType(String associationType) {
 			this.checkBuilt();
 			this.filter.associationType = associationType;

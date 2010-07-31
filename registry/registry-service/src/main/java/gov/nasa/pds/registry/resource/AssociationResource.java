@@ -17,17 +17,23 @@ package gov.nasa.pds.registry.resource;
 
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.PagedResponse;
+import gov.nasa.pds.registry.query.AssociationFilter;
+import gov.nasa.pds.registry.query.AssociationQuery;
+import gov.nasa.pds.registry.query.QueryOperator;
 import gov.nasa.pds.registry.service.RegistryService;
 import gov.nasa.pds.registry.util.Examples;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
@@ -61,8 +67,32 @@ public class AssociationResource {
 	 */
 	@GET
 	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public PagedResponse getAssociations() {
-		return registryService.getAssociations();
+	public Response getAssociations(
+			@QueryParam("start") @DefaultValue("1") Integer start,
+			@QueryParam("rows") @DefaultValue("20") Integer rows,
+			@QueryParam("targetLid") String targetLid,
+			@QueryParam("targetVersion") String targetVersion,
+			@QueryParam("targetHome") String targetHome,
+			@QueryParam("sourceLid") String sourceLid,
+			@QueryParam("sourceVersion") String sourceVersion,
+			@QueryParam("sourceHome") String sourceHome,
+			@QueryParam("associationType") String associationType,
+			@QueryParam("queryOp") @DefaultValue("AND") QueryOperator operator,
+			@QueryParam("sort") List<String> sort) {
+		AssociationFilter filter = new AssociationFilter.Builder().targetLid(
+				targetLid).targetVersion(targetVersion).targetHome(targetHome)
+				.sourceLid(sourceLid).sourceVersion(sourceVersion).sourceHome(
+						sourceHome).associationType(associationType)
+				.associationType(associationType).build();
+		AssociationQuery.Builder queryBuilder = new AssociationQuery.Builder().filter(filter).operator(operator);
+		if (sort != null) {
+			queryBuilder.sort(sort);
+		}
+		
+		PagedResponse pr = registryService.getAssociations(queryBuilder.build(),
+				start, rows);
+		Response.ResponseBuilder builder = Response.ok(pr);
+		return builder.build();
 	}
 
 	/**
@@ -93,131 +123,6 @@ public class AssociationResource {
 				.build();
 	}
 
-	/**
-	 * Retrieves all associations where the identified artifact is the source of
-	 * the relationship.
-	 * 
-	 * @param lid
-	 *            local identifier of the source artifact
-	 * @param version
-	 *            of the given local identifier
-	 * @return all source associations managed by the registry for the given
-	 *         artifact
-	 */
-	@GET
-	@Path("source/{lid}/{version}")
-	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public PagedResponse getSourceAssociations(@PathParam("lid") String lid,
-			@PathParam("version") String version) {
-		return registryService.getSourceAssociations(lid, version);
-	}
-
-	/**
-	 * Retrieves all named associations where the identified artifact is the
-	 * source of the relationship.
-	 * 
-	 * @param lid
-	 *            local identifier of the source artifact
-	 * @param version
-	 *            of the given local identifier
-	 * @param associationType
-	 *            that exists between the source and target
-	 * @return all named source associations managed by the registry for the
-	 *         given artifact
-	 */
-	@GET
-	@Path("source/{lid}/{version}/{assocationType}")
-	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public PagedResponse getSourceNamedAssociations(
-			@PathParam("lid") String lid, @PathParam("version") String version,
-			@PathParam("associationType") String associationType) {
-		return registryService.getSourceNamedAssociations(lid, version,
-				associationType);
-	}
-
-	/**
-	 * Retrieves all associations where the identified artifact is the target of
-	 * the relationship.
-	 * 
-	 * @param lid
-	 *            local identifier of the source artifact
-	 * @param version
-	 *            of the given local identifier
-	 * @return all target associations managed by the registry for the given
-	 *         artifact
-	 */
-	@GET
-	@Path("target/{lid}/{version}")
-	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public PagedResponse getTargetAssociations(@PathParam("lid") String lid,
-			@PathParam("version") String version) {
-		return registryService.getTargetAssociations(lid, version);
-	}
-
-	/**
-	 * Retrieves all named associations where the identified artifact is the
-	 * target of the relationship.
-	 * 
-	 * @param lid
-	 *            local identifier of the source artifact
-	 * @param version
-	 *            of the given local identifier
-	 * @param associationType
-	 *            that exists between the source and target
-	 * @return all named target associations managed by the registry for the
-	 *         given artifact
-	 */
-	@GET
-	@Path("target/{lid}/{version}/{associationType}")
-	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public PagedResponse getTargetNamedAssociations(
-			@PathParam("lid") String lid, @PathParam("version") String version,
-			@PathParam("associationType") String associationType) {
-		return registryService.getTargetNamedAssociations(lid, version,
-				associationType);
-	}
-
-	/**
-	 * Retrieves all associations where the identified artifact is part of
-	 * irregardless if it is the source or target.
-	 * 
-	 * @param lid
-	 *            local identifier of the source artifact
-	 * @param version
-	 *            of the given local identifier
-	 * @return all associations managed by the registry for the given artifact
-	 */
-	@GET
-	@Path("all/{lid}/{version}")
-	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public PagedResponse getAllAssociations(@PathParam("lid") String lid,
-			@PathParam("version") String version) {
-		return registryService.getAssociations(lid, version);
-	}
-
-	/**
-	 * Retrieves all named associations where the identified artifact is part of
-	 * irregardless if it is the source or target.
-	 * 
-	 * @param lid
-	 *            local identifier of the source artifact
-	 * @param version
-	 *            of the given local identifier
-	 * @param associationType
-	 *            that exists between the source and target
-	 * @return all named associations managed by the registry for the given
-	 *         artifact
-	 */
-	@GET
-	@Path("all/{lid}/{version}/{associationType}")
-	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public PagedResponse getAllNamedAssociations(@PathParam("lid") String lid,
-			@PathParam("version") String version,
-			@PathParam("associationType") String associationType) {
-		return registryService.getNamedAssociations(lid, version,
-				associationType);
-	}
-
 	protected static URI getAssociationUri(Association association,
 			UriInfo uriInfo) {
 		return uriInfo.getBaseUriBuilder().clone().path(RegistryResource.class)
@@ -236,14 +141,6 @@ public class AssociationResource {
 	public Association getAssociation(@PathParam("guid") String guid) {
 		Association association = (Association) registryService
 				.getAssocation(guid);
-		System.out.println("guid: " + association.getGuid());
-		System.out.println("sourceLid: " + association.getSourceLid());
-		System.out.println("sourceVersion: " + association.getSourceVersion());
-		System.out.println("targetLid: " + association.getTargetLid());
-		System.out.println("targetVersion: " + association.getTargetVersion());
-		System.out.println("associationType: "
-				+ association.getAssociationType());
-		System.out.println("Class: " + association.getClass().getSimpleName());
 		return association;
 	}
 }

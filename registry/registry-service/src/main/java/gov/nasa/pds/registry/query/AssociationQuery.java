@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class AssociationQuery extends RegistryQuery<AssociationFilter> {
 	private AssociationQuery() {
-		this.filter = new AssociationQuery.Builder().build().getFilter();
+		this.filter = null;
 	}
 	
 	public static class Builder extends AbstractBuilder {

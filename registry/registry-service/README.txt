@@ -76,6 +76,22 @@ queryOp - Supports whether the other the filters are AND/OR together. The defaul
 start - Where to start in the results set. Defaults to 1 if not specified.
 rows - How many results to retrieve. Defaults to 20 if not specified.
 
+Association Querying
+================
+The http://localhost:8080/registry-service/registry/associations accepts the following parameters:
+
+targetLid - Supports filtering on the lid of the target registry object. **
+targetVersion - Supports filtering on the userVersion of the target registry object. **
+targetHome - Supports filtering on the home of the target registry object. **
+sourceLid - Supports filtering on the lid of the source registry object. **
+sourceVersion - Supports filtering on the userVersion of the source registry object. **
+sourceHome - Supports filtering on the home of the source registry object. **
+associationType - Supports filtering on the type of association between the source and target registry object. **
+sort - Supports sorting on all of the above parameters. Supports optional ASC or DESC. If not specified the default is "guid ASC".
+queryOp - Supports whether the other the filters are AND/OR together. The default is to AND them together.
+start - Where to start in the results set. Defaults to 1 if not specified.
+rows - How many results to retrieve. Defaults to 20 if not specified.
+
 ** Denotes support for wildcard matches using '*' in the string provided. For instance guid=urn:uuid:* will match all guid's starting with 'urn:uuid:'
  
 
