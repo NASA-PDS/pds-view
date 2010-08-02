@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<policy>
+	<rootDirectories>
+	   <location>C:\pds4\geosciences\mars_analog_data</location>
+		 <filePattern>*.xml</filePattern>
+	</rootDirectories>
+	<candidateProduct objectType="character_table">
+	   <metadata>
+	   		<xPath>//Product_Identification_Area/title</xPath>
+	   	  <xPath>//Product_Identification_Area/creation_date_time</xPath>
+	   	  <xPath>//Subject_Area/full_name</xPath>
+	   	  <xPath>//Subject_Area/instrument_name</xPath>
+	   	  <xPath>//Subject_Area/observing_system_name</xPath>
+	   	  <xPath>//Table_Character/local_identifier</xPath>
+	   	  <xPath>//Table_Character/fields</xPath>
+	   	  <xPath>//Table_Character/records</xPath>
+	   </metadata>
+	</candidateProduct>	
+</policy>

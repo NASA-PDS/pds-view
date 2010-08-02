@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<policy>
+	<inventoryFiles>
+     <location>C:\pds4\context_insthost\context_collection_instrument_host_beta_20100723.xml</location>
+     <location>C:\pds4\context_instrument\context_collection_instrument_beta_20100723.xml</location>
+     <location>C:\pds4\context_investigation\context_collection_investigation_beta_20100723.xml</location>
+     <location>C:\pds4\context_node\context_collection_node_beta_20100723.xml</location>
+     <location>C:\pds4\context_personnel\context_collection_personnel_beta_20100723.xml</location>
+     <location>C:\pds4\context_resource\context_collection_resource_beta_20100723.xml</location>
+     <location>C:\pds4\context_target\context_collection_target_beta_20100723.xml</location>
+	</inventoryFiles>
+	<candidateProduct objectType="Product_Node">
+	   <metadata>
+	   	  <xPath>//Product_Identification_Area/alternate_title</xPath>
+	   	  <xPath>//Product_Identification_Area/last_modification_date_time</xPath>
+	   </metadata>
+	</candidateProduct>
+	<candidateProduct objectType="Product_Investigation">
+	   <metadata>
+	   	  <xPath>//alternate_title</xPath>
+	   	  <xPath>//last_modification_date_time</xPath>
+	   	  <xPath>//Subject_Area/investigation_name</xPath>
+	   </metadata>
+	</candidateProduct>
+	<candidateProduct objectType="Product_Instrument_Host">
+		 <metadata>
+		    <xPath>//alternate_title</xPath>
+		    <xPath>//last_modification_date_time</xPath>
+		    <xPath>//Subject_Area/instrument_host_name</xPath>
+		 </metadata>
+	</candidateProduct>
+  <candidateProduct objectType="Product_Target">
+     <metadata>
+   	    <xPath>//alternate_title</xPath>
+        <xPath>//last_modification_date_time</xPath>
+        <xPath>//identifier</xPath>
+        <xPath>//Subject_Area/target_name</xPath>
+     </metadata>
+  </candidateProduct>
+  <candidateProduct objectType="Product_PDS_Affiliate">
+  	 <metadata>
+  	    <xPath>//telephone_number</xPath>
+  	    <xPath>//alternate_telephone_number</xPath>
+  	    <xPath>//fax_number</xPath>
+  	    <xPath>//institution_name</xPath>
+  	    <xPath>//node_name</xPath>
+  	    <xPath>//postal_address</xPath>
+  	    <xPath>//electronic_mail_address</xPath>
+  	    <xPath>//affiliation_type</xPath>
+  	    <xPath>//role</xPath>
+  	 </metadata>
+  </candidateProduct>
+  <candidateProduct objectType="Product_PDS_Guest">
+  	 <metadata>
+  	    <xPath>//affiliation_type</xPath>
+  	    <xPath>//registration_date</xPath>
+  	    <xPath>//sort_name</xPath>
+  	 </metadata>
+  </candidateProduct>
+  <candidateProduct objectType="Product_Instrument">
+     <metadata>
+	   	  <xPath>//Product_Identification_Area/alternate_title</xPath>
+	   	  <xPath>//Product_Identification_Area/last_modification_date_time</xPath>
+	   	  <xPath>//Subject_Area/instrument_name</xPath>
+     </metadata>
+  </candidateProduct>
+  <candidateProduct objectType="Product_Resource">
+     <metadata>
+	   	  <xPath>//Product_Identification_Area/alternate_title</xPath>
+	   	  <xPath>//Product_Identification_Area/last_modification_date_time</xPath>
+     </metadata>
+  </candidateProduct>
+</policy>
