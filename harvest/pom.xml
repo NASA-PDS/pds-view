@@ -106,7 +106,15 @@
         <includes>
           <include>harvest-policy.xsd</include>
         </includes>
-      </resource>     
+      </resource> 
+      <resource>
+        <filtering>true</filtering>
+        <targetPath>gov/nasa/pds/harvest</targetPath>
+        <directory>src/main/resources/policy</directory>
+        <includes>
+          <include>global-policy.xml</include>
+        </includes>
+      </resource>          
     </resources>
     <plugins>
       <plugin>
