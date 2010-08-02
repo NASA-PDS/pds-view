@@ -22,16 +22,21 @@ mvn site
 
 cd harvest
 maven pdf
+rm velocity.log
 
 cd ../registry/registry-core
 maven pdf
+rm velocity.log
 cd ../registry-service
 maven pdf
+rm velocity.log
 cd ../registry-ui
 maven pdf
+rm velocity.log
 
 cd ../../security
 maven pdf
+rm velocity.log
 
 cd ..
 mvn site:deploy

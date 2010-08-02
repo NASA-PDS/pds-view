@@ -22,10 +22,13 @@ mvn site
 
 cd registry-core
 maven pdf
+rm velocity.log
 cd ../registry-service
 maven pdf
+rm velocity.log
 cd ../registry-ui
 maven pdf
+rm velocity.log
 
 cd ..
 mvn site:deploy
