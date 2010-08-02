@@ -32,7 +32,7 @@
   <description>
     The Registry provides functionality for tracking, auditing, locating, and maintaining artifacts within the system. These artifacts can range from data files and label files, schemas, dictionary definitions for objects and elements, services, etc.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/registry/</url>
+  <url>http://pds-cm.jpl.nasa.gov/2010/registry/</url>
 
   <modules>
     <module>registry-core</module>
@@ -51,19 +51,19 @@
       </roles>
     </developer>   
     <developer>
-      <name>Michael Cayanan</name>
-      <id>mcayanan</id>
-      <email>Michael.Cayanan@jpl.nasa.gov</email>
+      <name>Paul Ramirez</name>
+      <id>pramirez</id>
+      <email>Paul.Ramirez@jpl.nasa.gov</email>
       <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
         <role>Developer</role>
       </roles>
     </developer>
     <developer>
-      <name>Joshua Ganderson</name>
-      <id>jagander</id>
-      <email>Joshua.Ganderson@nasa.gov</email>
-      <organization>NASA Ames Research Center</organization>
+      <name>Michael Cayanan</name>
+      <id>mcayanan</id>
+      <email>Michael.Cayanan@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
         <role>Developer</role>
       </roles>
@@ -78,10 +78,10 @@
       </roles>
     </developer>
     <developer>
-      <name>Paul Ramirez</name>
-      <id>pramirez</id>
-      <email>Paul.Ramirez@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
+      <name>Joshua Ganderson</name>
+      <id>jagander</id>
+      <email>Joshua.Ganderson@nasa.gov</email>
+      <organization>NASA Ames Research Center</organization>
       <roles>
         <role>Developer</role>
       </roles>

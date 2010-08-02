@@ -32,7 +32,7 @@
   <description>
     The Registry Core is a software library for accessing the Registry Service.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/registry/registry-core/</url>
+  <url>http://pds-cm.jpl.nasa.gov/2010/registry/registry-core/</url>
 
   <!-- These properties support PDF generation with Maven 1. -->
   <properties>
