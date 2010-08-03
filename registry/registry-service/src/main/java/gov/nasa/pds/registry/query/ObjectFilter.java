@@ -38,6 +38,7 @@ public class ObjectFilter {
 	private GregorianCalendar eventEnd;
 	
 	protected ObjectFilter() {
+		super();
 	}
 	
 	public static class Builder extends AbstractBuilder {

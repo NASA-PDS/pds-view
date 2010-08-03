@@ -120,34 +120,39 @@ public class MetadataStoreJPA implements MetadataStore {
 		Root<Product> productEntity = cq.from(Product.class);
 		ObjectFilter filter = query.getFilter();
 		List<Predicate> predicates = new ArrayList<Predicate>();
-		if (filter.getGuid() != null) {
-			predicates.add(cb.like(productEntity.get("guid").as(String.class),
-					filter.getGuid().replace('*', '%')));
+		if (filter != null) {
+			if (filter.getGuid() != null) {
+				predicates.add(cb.like(productEntity.get("guid").as(
+						String.class), filter.getGuid().replace('*', '%')));
+			}
+			if (filter.getLid() != null) {
+				predicates.add(cb.like(productEntity.get("lid")
+						.as(String.class), filter.getLid().replace('*', '%')));
+			}
+			if (filter.getName() != null) {
+				predicates.add(cb.like(productEntity.get("name").as(
+						String.class), filter.getName().replace('*', '%')));
+			}
+			if (filter.getObjectType() != null) {
+				predicates.add(cb
+						.like(productEntity.get("objectType").as(String.class),
+								filter.getObjectType().replace('*', '%')));
+			}
+			if (filter.getStatus() != null) {
+				predicates.add(cb.equal(productEntity.get("status"), filter
+						.getStatus()));
+			}
+			if (filter.getUserVersion() != null) {
+				predicates.add(cb.like(productEntity.get("userVersion").as(
+						String.class), filter.getUserVersion()
+						.replace('*', '%')));
+			}
+			if (filter.getVersion() != null) {
+				predicates.add(cb.like(productEntity.get("version").as(
+						String.class), filter.getVersion().replace('*', '%')));
+			}
 		}
-		if (filter.getLid() != null) {
-			predicates.add(cb.like(productEntity.get("lid").as(String.class),
-					filter.getLid().replace('*', '%')));
-		}
-		if (filter.getName() != null) {
-			predicates.add(cb.like(productEntity.get("name").as(String.class),
-					filter.getName().replace('*', '%')));
-		}
-		if (filter.getObjectType() != null) {
-			predicates.add(cb.like(productEntity.get("objectType").as(
-					String.class), filter.getObjectType().replace('*', '%')));
-		}
-		if (filter.getStatus() != null) {
-			predicates.add(cb.equal(productEntity.get("status"), filter
-					.getStatus()));
-		}
-		if (filter.getUserVersion() != null) {
-			predicates.add(cb.like(productEntity.get("userVersion").as(
-					String.class), filter.getUserVersion().replace('*', '%')));
-		}
-		if (filter.getVersion() != null) {
-			predicates.add(cb.like(productEntity.get("version")
-					.as(String.class), filter.getVersion().replace('*', '%')));
-		}
+
 		if (predicates.size() != 0) {
 			Predicate[] p = new Predicate[predicates.size()];
 			if (query.getOperator() == QueryOperator.AND) {
@@ -194,38 +199,46 @@ public class MetadataStoreJPA implements MetadataStore {
 		Root<Association> associationEntity = cq.from(Association.class);
 		AssociationFilter filter = query.getFilter();
 		List<Predicate> predicates = new ArrayList<Predicate>();
-		if (filter.getTargetLid() != null) {
-			predicates.add(cb.like(associationEntity.get("targetLid").as(
-					String.class), filter.getTargetLid().replace('*', '%')));
-		}
-		if (filter.getTargetVersion() != null) {
-			predicates
-					.add(cb.like(associationEntity.get("targetVersion").as(
-							String.class), filter.getTargetVersion().replace(
-							'*', '%')));
-		}
-		if (filter.getTargetHome() != null) {
-			predicates.add(cb.like(associationEntity.get("targetHome").as(
-					String.class), filter.getTargetHome().replace('*', '%')));
-		}
-		if (filter.getSourceLid() != null) {
-			predicates.add(cb.like(associationEntity.get("sourceLid").as(
-					String.class), filter.getSourceLid().replace('*', '%')));
-		}
-		if (filter.getSourceVersion() != null) {
-			predicates
-					.add(cb.like(associationEntity.get("sourceVersion").as(
-							String.class), filter.getSourceVersion().replace(
-							'*', '%')));
-		}
-		if (filter.getSourceHome() != null) {
-			predicates.add(cb.like(associationEntity.get("sourceHome").as(
-					String.class), filter.getSourceHome().replace('*', '%')));
-		}
-		if (filter.getAssociationType() != null) {
-			predicates.add(cb.like(associationEntity.get("associationType").as(
-					String.class), filter.getAssociationType()
-					.replace('*', '%')));
+		if (filter != null) {
+			if (filter.getTargetLid() != null) {
+				predicates
+						.add(cb.like(associationEntity.get("targetLid").as(
+								String.class), filter.getTargetLid().replace(
+								'*', '%')));
+			}
+			if (filter.getTargetVersion() != null) {
+				predicates.add(cb.like(associationEntity.get("targetVersion")
+						.as(String.class), filter.getTargetVersion().replace(
+						'*', '%')));
+			}
+			if (filter.getTargetHome() != null) {
+				predicates.add(cb
+						.like(associationEntity.get("targetHome").as(
+								String.class), filter.getTargetHome().replace(
+								'*', '%')));
+			}
+			if (filter.getSourceLid() != null) {
+				predicates
+						.add(cb.like(associationEntity.get("sourceLid").as(
+								String.class), filter.getSourceLid().replace(
+								'*', '%')));
+			}
+			if (filter.getSourceVersion() != null) {
+				predicates.add(cb.like(associationEntity.get("sourceVersion")
+						.as(String.class), filter.getSourceVersion().replace(
+						'*', '%')));
+			}
+			if (filter.getSourceHome() != null) {
+				predicates.add(cb
+						.like(associationEntity.get("sourceHome").as(
+								String.class), filter.getSourceHome().replace(
+								'*', '%')));
+			}
+			if (filter.getAssociationType() != null) {
+				predicates.add(cb.like(associationEntity.get("associationType")
+						.as(String.class), filter.getAssociationType().replace(
+						'*', '%')));
+			}
 		}
 		if (predicates.size() != 0) {
 			Predicate[] p = new Predicate[predicates.size()];

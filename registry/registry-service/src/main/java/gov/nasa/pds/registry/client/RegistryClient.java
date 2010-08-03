@@ -145,26 +145,28 @@ public class RegistryClient {
 	    }
 	    
 	    ObjectFilter filter = query.getFilter();
-	    if (filter.getGuid() != null) {
-	    	params.add("guid", filter.getGuid());
-	    }
-	    if (filter.getLid() != null) {
-	    	params.add("lid", filter.getLid());
-	    }
-	    if (filter.getName() != null) {
-	    	params.add("name", filter.getName());
-	    }
-	    if (filter.getObjectType() != null) {
-	    	params.add("objectType", filter.getObjectType());
-	    }
-	    if (filter.getStatus() != null) {
-	    	params.add("status", filter.getStatus().toString());
-	    }
-	    if (filter.getUserVersion() != null) {
-	    	params.add("userVersion", filter.getUserVersion());
-	    }
-	    if (filter.getVersion() != null) {
-	    	params.add("version", filter.getVersion());
+	    if (filter != null) {
+		    if (filter.getGuid() != null) {
+		    	params.add("guid", filter.getGuid());
+		    }
+		    if (filter.getLid() != null) {
+		    	params.add("lid", filter.getLid());
+		    }
+		    if (filter.getName() != null) {
+		    	params.add("name", filter.getName());
+		    }
+		    if (filter.getObjectType() != null) {
+		    	params.add("objectType", filter.getObjectType());
+		    }
+		    if (filter.getStatus() != null) {
+		    	params.add("status", filter.getStatus().toString());
+		    }
+		    if (filter.getUserVersion() != null) {
+		    	params.add("userVersion", filter.getUserVersion());
+		    }
+		    if (filter.getVersion() != null) {
+		    	params.add("version", filter.getVersion());
+		    }
 	    }
 	    
 	    List<String> sort = query.getSort();
@@ -193,26 +195,28 @@ public class RegistryClient {
 	    }
 	    
 	    AssociationFilter filter = query.getFilter();
-	    if (filter.getTargetLid() != null) {
-	    	params.add("targetLid", filter.getTargetLid());
-	    }
-	    if (filter.getTargetVersion() != null) {
-	    	params.add("targetVersion", filter.getTargetVersion());
-	    }
-	    if (filter.getTargetHome() != null) {
-	    	params.add("targetHome", filter.getTargetHome());
-	    }
-	    if (filter.getSourceLid() != null) {
-	    	params.add("sourceLid", filter.getSourceLid());
-	    }
-	    if (filter.getSourceVersion() != null) {
-	    	params.add("sourceVersion", filter.getSourceVersion());
-	    }
-	    if (filter.getSourceHome() != null) {
-	    	params.add("sourceHome", filter.getSourceHome());
-	    }
-	    if (filter.getAssociationType() != null) {
-	    	params.add("associationType", filter.getAssociationType());
+	    if (filter != null) {
+		    if (filter.getTargetLid() != null) {
+		    	params.add("targetLid", filter.getTargetLid());
+		    }
+		    if (filter.getTargetVersion() != null) {
+		    	params.add("targetVersion", filter.getTargetVersion());
+		    }
+		    if (filter.getTargetHome() != null) {
+		    	params.add("targetHome", filter.getTargetHome());
+		    }
+		    if (filter.getSourceLid() != null) {
+		    	params.add("sourceLid", filter.getSourceLid());
+		    }
+		    if (filter.getSourceVersion() != null) {
+		    	params.add("sourceVersion", filter.getSourceVersion());
+		    }
+		    if (filter.getSourceHome() != null) {
+		    	params.add("sourceHome", filter.getSourceHome());
+		    }
+		    if (filter.getAssociationType() != null) {
+		    	params.add("associationType", filter.getAssociationType());
+		    }
 	    }
 	    
 	    List<String> sort = query.getSort();
