@@ -59,7 +59,7 @@
 				<configuration>
 					<localWorkers>1</localWorkers>
 					<warSourceDirectory>${basedir}/war</warSourceDirectory>
-					<!-- <logLevel>ALL</logLevel> -->
+					<logLevel>WARN</logLevel>
 					<!-- use style OBF for prod -->
 					<style>OBFUSCATED</style>
 					<gwtVersion>${gwt-version}</gwtVersion>
@@ -71,7 +71,7 @@
 					<execution>
 						<goals>
 							<goal>compile</goal>
-							<goal>generateAsync</goal>
+							<!-- <goal>generateAsync</goal> -->
 						</goals>
 					</execution>
 				</executions>
