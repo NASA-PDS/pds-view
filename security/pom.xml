@@ -24,7 +24,7 @@
     <version>0.0.0</version>
   </parent>
 
-  <groupId>gov.nasa.pds</groupId>
+  <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>security</artifactId>
   <version>0.1.0-dev</version>
   <packaging>pom</packaging>

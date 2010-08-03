@@ -18,12 +18,12 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>gov.nasa.pds</groupId>
+    <groupId>gov.nasa.pds.2010</groupId>
     <artifactId>registry</artifactId>
     <version>0.0.0</version>
   </parent>
 
-  <groupId>gov.nasa.pds.registry</groupId>
+  <groupId>gov.nasa.pds.2010.registry</groupId>
   <artifactId>registry-core</artifactId>
   <version>0.1.0-dev</version>
   <packaging>jar</packaging>
