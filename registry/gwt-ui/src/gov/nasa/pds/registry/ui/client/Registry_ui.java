@@ -366,10 +366,19 @@ public class Registry_ui implements EntryPoint {
 		final ListBox objectsInput = new ListBox(false);
 		objectsInput.setName("objectType");
 		objectsInput.addItem("Any Object Type", "-1");
-		objectsInput.addItem("Target");
-		objectsInput.addItem("Guest");
+		objectsInput.addItem("Product_Node");
+		objectsInput.addItem("Product_Investigation");
+		objectsInput.addItem("Product_Instrument_Host");
+		objectsInput.addItem("Product_Target");
+		objectsInput.addItem("Product_PDS_Affiliate");
+		objectsInput.addItem("Product_PDS_Guest");
+		objectsInput.addItem("Product_Instrument");
+		objectsInput.addItem("Product_Resource");
+		objectsInput.addItem("TABLE");
+		objectsInput.addItem("character_table");
 		InputContainer objectsInputWrap = new InputContainer("Object Type",
 				objectsInput);
+
 		inputTable.add(objectsInputWrap);
 
 		// create dropdown input for status type
