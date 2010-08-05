@@ -55,4 +55,6 @@ public interface MetadataStore {
 	public Association getAssociation(String guid);
 	
 	public PagedResponse getAssociations(AssociationQuery query, Integer start, Integer rows);
+	
+	public PagedResponse getAssociations(String lid, String userVersion, Integer start, Integer rows);
 }

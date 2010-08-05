@@ -185,6 +185,24 @@ public class RegistryClient {
 		return builder.accept(mediaType).get(ClientResponse.class);
 	}
 	
+	public ClientResponse getAssociations(String lid, String userVersion, Integer start, Integer rows) {
+		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+		if (start != null) {
+			params.add("start", start.toString());
+		}
+	    if (rows != null) {
+			params.add("rows", rows.toString());
+	    }
+	    
+	    WebResource.Builder builder = registryResource.path("associations").path(lid).path(userVersion).queryParams(params).getRequestBuilder();
+		if (token != null) {
+			builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
+					+ "\"");
+		}
+	    
+		return builder.accept(mediaType).get(ClientResponse.class);
+	}
+	
 	public ClientResponse getAssociations(AssociationQuery query, Integer start, Integer rows) {
 		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
 		if (start != null) {

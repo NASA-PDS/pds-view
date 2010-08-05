@@ -105,13 +105,6 @@ public class MetadataStoreJPA implements MetadataStore {
 				.getResultList();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * gov.nasa.pds.registry.service.MetadataStore#getProducts(gov.nasa.pds.
-	 * registry.query.RegistryQuery, java.lang.Integer, java.lang.Integer)
-	 */
 	@Transactional(readOnly = true)
 	public PagedResponse getProducts(ProductQuery query, Integer start,
 			Integer rows) {
@@ -184,14 +177,31 @@ public class MetadataStoreJPA implements MetadataStore {
 		return response;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * gov.nasa.pds.registry.service.MetadataStore#getAssociations(gov.nasa.
-	 * pds.registry.query.AssociationQuery, java.lang.Integer,
-	 * java.lang.Integer)
-	 */
+	@Transactional(readOnly = true)
+	public PagedResponse getAssociations(String lid, String userVersion,
+			Integer start, Integer rows) {
+
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Association> cq = cb.createQuery(Association.class);
+		Root<Association> associationEntity = cq.from(Association.class);
+		cq.where(cb.or(cb.and(
+				cb.equal(associationEntity.get("targetLid"), lid), cb.equal(
+						associationEntity.get("targetVersion"), userVersion)),
+				cb.and(cb.equal(associationEntity.get("sourceLid"), lid), cb
+						.equal(associationEntity.get("sourceVersion"),
+								userVersion))));
+		List<Order> orders = new ArrayList<Order>();
+		orders.add(cb.asc(associationEntity.get("guid")));
+		cq.orderBy(orders);
+		TypedQuery<Association> dbQuery = entityManager.createQuery(cq);
+		PagedResponse response = new PagedResponse(start, (long) dbQuery
+				.getResultList().size());
+		response.setResults(dbQuery.setFirstResult(start - 1).setMaxResults(
+				rows).getResultList());
+		return response;
+	}
+
+	@Transactional(readOnly = true)
 	public PagedResponse getAssociations(AssociationQuery query, Integer start,
 			Integer rows) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();

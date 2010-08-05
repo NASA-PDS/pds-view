@@ -59,11 +59,9 @@ public class AssociationResource {
 	}
 
 	/**
-	 * Retrieves all associations managed by the registry. This needs to be
-	 * switched over to a paged response as it is likely to grow to a large set
-	 * of associations.
+	 * Retrieves all associations managed by the registry given a set of filters. 
 	 * 
-	 * @return all associations in the registry
+	 * @return all matching associations in the registry
 	 */
 	@GET
 	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
@@ -91,6 +89,19 @@ public class AssociationResource {
 		
 		PagedResponse pr = registryService.getAssociations(queryBuilder.build(),
 				start, rows);
+		Response.ResponseBuilder builder = Response.ok(pr);
+		return builder.build();
+	}
+	
+	@GET
+	@Path("{lid}/{userVersion}")
+	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public Response getAssociations(
+			@QueryParam("start") @DefaultValue("1") Integer start,
+			@QueryParam("rows") @DefaultValue("20") Integer rows,
+			@PathParam("lid") String lid,
+			@PathParam("userVersion") String userVersion) {
+		PagedResponse pr = registryService.getAssociations(lid, userVersion, start, rows);
 		Response.ResponseBuilder builder = Response.ok(pr);
 		return builder.build();
 	}

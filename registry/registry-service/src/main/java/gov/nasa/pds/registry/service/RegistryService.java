@@ -214,6 +214,10 @@ public class RegistryService {
 	public PagedResponse getAssociations(AssociationQuery query, Integer start, Integer rows) {
 		return metadataStore.getAssociations(query, start, rows);
 	}
+	
+	public PagedResponse getAssociations(String lid, String userVersion, Integer start, Integer rows) {
+		return metadataStore.getAssociations(lid, userVersion, start, rows);
+	}
 
 	public Association publishAssociation(String user, Association association) {
 		association.setGuid(idGenerator.getGuid());
