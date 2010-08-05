@@ -10,6 +10,7 @@
 
 	<target name="update-endpoint">
 		<echo>Writing endpoint location as ${endpoint.location}, use -Dendpoint.location=... to overwrite.</echo>
+		<mkdir dir="${target.dir}/registry-ui/WEB-INF/classes/"/>
 		<propertyfile file="${target.dir}/registry-ui/WEB-INF/classes/application.properties">
 			<entry key="endpoint.location" operation="=" value="${endpoint.location}" />
 		</propertyfile>
