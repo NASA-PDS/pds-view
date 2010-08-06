@@ -36,6 +36,9 @@
       <action dev="mcayanan" type="add">
          Added the capability to launch the tool with a shell script or batch file.
       </action>
+      <action dev="mcayanan" type="update">
+         Updated to search for associations that are in the "class" format.
+      </action>
     </release>
   </body>
 </document>
