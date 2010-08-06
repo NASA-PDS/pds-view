@@ -9,6 +9,10 @@ will use Derby as its database and create a directory named RegistryDB. In addit
 derby will create a log file named "derby.log" that will contain all the SQL statements 
 sent to derby if the system property "-Dderby.language.logStatementText=true" is set.
 
+If you are going to start the registry service from maven using "mvn tomcat:run" you 
+may want to up the intial and max java heap size. This can be done by setting the MAVEN_OPTS
+environment variable. For instance in a bash shell one would run "export MAVEN_OPTS="-Xms128m -Xmx256m".
+
 The file src/main/resources/applicationContext.xml contains most of the configuration for
 the registry and its database (or at least pointers to it). Here you will find a reference
 to db.properties which are the Derby settings. This can be changed to mysql.properties to 
