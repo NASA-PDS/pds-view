@@ -57,7 +57,7 @@
         </p>
         
         <source>
-% Harvest &lt;command-line arguments&gt;
+% Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </source>
 
         <p>Additional methods for setting up a UNIX-based environment can be found in the <a href="index-unix.html">UNIX Setup Options</a> section. If viewing this document in PDF form, see the appendix for details.
@@ -79,7 +79,7 @@ C:\&gt; set PATH = %PATH%;C:\\${xdoc-artifactId}-${xdoc-version}\bin
         </p>
         
         <source>
-C:\&gt; Harvest &lt;command-line arguments&gt;
+C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </source>
 
         <p>Additional methods for setting up a Windows environment can be found in the <a href="index-win.html">Windows Setup Options</a> section. If viewing this document in PDF form, see the appendix for details.
@@ -97,26 +97,71 @@ C:\&gt; Harvest &lt;command-line arguments&gt;
 
         <table>
           <tr><th>Command-Line Option</th><th>Description</th></tr>
-          <tr><td>TBD</td><td>TBD</td></tr>
+          <tr><td>-u, --username</td><td>Specify a username for authentication with the PDS Security Service.</td></tr>
+          <tr><td>-p, --password</td><td>Specify a password associated with the username.</td></tr>
+          <tr><td>-l, --log-file</td><td>Specify a log file name. Default is standard out.</td></tr>
+          <tr><td>-V, --version</td><td>Display the release number and copyright information.</td></tr>
+          <tr><td>-h, --help</td><td>Display Harvest usage.</td></tr>
         </table>
       </subsection>
 
       <subsection name="Execute Harvest Tool">
         <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script. Alternate methods for executing the tool can be found in the <a href="#Tool_Setup">Tool Setup</a> section.
         </p>
+        
+        <p>The Harvest Tool operates with a policy file to register product metadata. Details on how to create this policy file can be found in the <a href="#Harvest Policy File">Harvest Policy File</a> section.
+        </p>
 
-        <p>The following command demonstrates TBD:
+        <p>The following command demonstrates how to run the Harvest Tool against a policy file, <i>policy.xml</i>, using a valid username, <i>pds</i>, and password, <i>mypwd</i>, with the output going to standard out:
         </p>
         
         <source>
-% Harvest ...
+% Harvest policy.xml -u pds -p mypwd
         </source>
+        
+        <p>The following command demonstrates how to run the Harvest Tool with the output going to a log file, <i>log.txt</i> instead of standard out:
+        </p>
+        
+        <source>
+% Harvest policy.xml -u pds -p mypwd -l log.txt
+        </source>   
+      </subsection>
+      
+      <subsection name="Harvest Policy File">
+        <p>The Harvest policy file is an XML file that the tool uses to find products and register its metadata.
+        </p>
+        
+        <p>The following is the schema for the policy file:    
       </subsection>
     </section>
 
     <section name="Report Format">
       <p>This section describes the contents of the Harvest Tool report.
       </p>
+      
+      <p>At this time, the Harvest Tool only outputs a series of log messages. The log will report the success or failure of a discovered product attempting to be registered. Additionally, any syntactical errors in a discovered product are reported.
+      </p>
+      
+      <p>A log consists of a severity level, file name, and a message. The following is an example of some of the log messages that can be expected from the Harvest Tool:
+      </p>
+      
+      <source>
+INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] \
+Succesfully registered product: http://pdsops2.jpl.nasa.gov/registry-service/registry/products/URN:NASA:PDS:instrument_host.24COL/v1.0
+INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] \
+Successfully registered association: http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:93b8209a-0710-4cf5-b310-7ed181d67841
+INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] \
+Successfully registered association: http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:78acc8bc-3f3a-4da2-a13c-f1ee368906a3
+INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] \
+Successfully registered association: http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:b818b505-06a6-4508-bdc1-9d2f63a5344e
+INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] \
+Successfully registered association: http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:ec4fd498-e0d1-4257-8565-506c167119b3
+WARNING:   [C:\pds4\phoenix_data\pds4_phxase_0002\DATA\PHXCOMPACT.xml] Product already exists in the registry: URN:NASA:PDS:PHX-ASE:DATA-REDUCED::V1.0
+WARNING:   [C:\pds4\phoenix_data\pds4_phxase_0002\DATA\PHXPROFILES.xml] Product already exists in the registry: URN:NASA:PDS:PHX-ASE:DATA-REDUCED::V1.0
+WARNING:   [C:\pds4\phoenix_data\pds4_phxase_0001\DATA\IMU_A_EDR_M.xml] Product already exists in the registry: URN:NASA:PDS:PHX-ASE:DATA-RAW::V1.0
+SEVERE:   [C:\pds4\context_target\aaaProduct_files_20100722t\target_IO_PLASMA_TORUS.xml] \
+line 262: The reference to entity "TRAUGE1995" must end with the ';' delimiter.
+      </source>
     </section>
   </body>
 </document>

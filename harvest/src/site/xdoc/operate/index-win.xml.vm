@@ -34,7 +34,8 @@
 
         <source>
 C:\&gt; java -Djava.ext.dirs=c:\\${xdoc-artifactId}-${xdoc-version}\lib \
-gov.nasa.pds.harvest.HarvestLauncher &lt;command-line arguments&gt;
+gov.nasa.pds.harvest.HarvestLauncher  -Dpds.registry="&lt;Registry URL&gt;" \
+-Dpds.security="&lt;Security URL&gt;" &lt;policy file&gt; &lt;command-line arguments&gt;
         </source>
       </subsection>
 
@@ -43,7 +44,9 @@ gov.nasa.pds.harvest.HarvestLauncher &lt;command-line arguments&gt;
         </p>
 
         <source>
-C:\&gt; java -jar c:\\${xdoc-artifactId}-${xdoc-version}\lib\\${xdoc-artifactId}-${xdoc-version}.jar &lt;command-line arguments&gt;
+C:\&gt; java -jar c:\\${xdoc-artifactId}-${xdoc-version}\lib\\${xdoc-artifactId}-${xdoc-version}.jar \
+-Dpds.registry="&lt;Registry URL&gt;" -Dpds.security="&lt;Security URL&gt;" \
+&lt;policy file&gt; &lt;command-line arguments&gt;
         </source>
       </subsection>
 
