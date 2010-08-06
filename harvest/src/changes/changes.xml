@@ -24,6 +24,18 @@
 
   <body>
     <release version="0.1.0-dev" date="TBD" description="TBD">
+      <action dev="mcayanan" type="add">
+         Added the capability to pass in an XML-based, policy file to the tool to find products and what metadata to register.
+      </action>
+      <action dev="mcayanan" type="add">
+         Added the capability to register a PDS Inventory File first before crawling the file for products.
+      </action>
+      <action dev="mcayanan" type="add">
+         Added the capability to output log messages.
+      </action>
+      <action dev="mcayanan" type="add">
+         Added the capability to launch the tool with a shell script or batch file.
+      </action>
     </release>
   </body>
 </document>
