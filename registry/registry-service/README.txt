@@ -9,6 +9,10 @@ will use Derby as its database and create a directory named RegistryDB. In addit
 derby will create a log file named "derby.log" that will contain all the SQL statements 
 sent to derby if the system property "-Dderby.language.logStatementText=true" is set.
 
+If you would like to change the port the registry service will start up on in embedded mode 
+use set the "maven.tomcat.port" on the command line. For instance, to start up on port 8000 
+instead of 8080 run "mvn -Dmaven.tomcat.port=8000 tomcat:run" from the command line.
+
 If you are going to start the registry service from maven using "mvn tomcat:run" you 
 may want to up the intial and max java heap size. This can be done by setting the MAVEN_OPTS
 environment variable. For instance in a bash shell one would run "export MAVEN_OPTS="-Xms128m -Xmx256m".
