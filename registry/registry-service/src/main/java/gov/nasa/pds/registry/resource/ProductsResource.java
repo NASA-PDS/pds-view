@@ -108,7 +108,8 @@ public class ProductsResource {
 	public Response getProducts(
 			@QueryParam("start") @DefaultValue("1") Integer start,
 			@QueryParam("rows") @DefaultValue("20") Integer rows,
-			@QueryParam("guid") String guid, @QueryParam("name") String name,
+			@QueryParam("guid") String guid, 
+			@QueryParam("name") String name,
 			@QueryParam("lid") String lid,
 			@QueryParam("version") String version,
 			@QueryParam("userVersion") String userVersion,
@@ -118,7 +119,7 @@ public class ProductsResource {
 			@QueryParam("eventType") EventType eventType,
 			@QueryParam("queryOp") @DefaultValue("AND") QueryOperator operator,
 			@QueryParam("sort") List<String> sort) {
-		ObjectFilter filter = new ObjectFilter.Builder().guid(guid).lid(lid)
+		ObjectFilter filter = new ObjectFilter.Builder().guid(guid).name(name).lid(lid)
 				.version(version).userVersion(userVersion).objectType(
 						objectType).submitter(submitter).status(status)
 				.eventType(eventType).build();
