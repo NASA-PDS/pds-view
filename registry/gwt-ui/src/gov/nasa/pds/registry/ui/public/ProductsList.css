@@ -76,6 +76,9 @@ body {
   cursor: hand;
   cursor: pointer;
 }
+
+.recordCount { padding: 10px 0px 0px 5px; font-weight: bold; }
+
 .detailBox { padding: 10px; }
 .detailLabel { font-weight: bold; text-align: right; padding: 3px 10px 5px 10px; vertical-align: top;}
 .detailValue { padding: 3px 10px 5px 0px; vertical-align: top; }

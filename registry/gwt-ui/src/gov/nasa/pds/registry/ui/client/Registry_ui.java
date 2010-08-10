@@ -29,6 +29,8 @@ import com.google.gwt.gen2.table.client.TableDefinition;
 import com.google.gwt.gen2.table.client.AbstractScrollTable.SortPolicy;
 import com.google.gwt.gen2.table.client.SelectionGrid.SelectionPolicy;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
+import com.google.gwt.gen2.table.event.client.PageCountChangeEvent;
+import com.google.gwt.gen2.table.event.client.PageCountChangeHandler;
 import com.google.gwt.gen2.table.event.client.RowCountChangeEvent;
 import com.google.gwt.gen2.table.event.client.RowCountChangeHandler;
 import com.google.gwt.gen2.table.event.client.RowSelectionEvent;
@@ -115,6 +117,8 @@ public class Registry_ui implements EntryPoint {
 	protected Button closeButton;
 
 	protected Button associationCloseButton;
+
+	protected HTML recordCountContainer = new HTML("");
 
 	/**
 	 * The {@link CachedTableModel} around the main table model.
@@ -274,6 +278,7 @@ public class Registry_ui implements EntryPoint {
 		this.layout.insertRow(0);
 		// paging options
 		this.layout.insertRow(0);
+		// record count
 
 		// add style name to scroll table container
 		this.layout.getCellFormatter().addStyleName(1, 0, "scrollTableWrapper");
@@ -287,6 +292,9 @@ public class Registry_ui implements EntryPoint {
 		// add title to scroll table
 		this.scrollPanel.add(new HTML(
 				"<div class=\"title\">Product Registry</div>"));
+
+		// add record count container
+		this.layout.setWidget(3, 0, this.recordCountContainer);
 	}
 
 	/**
@@ -801,6 +809,27 @@ public class Registry_ui implements EntryPoint {
 		// add detail popup handler to rows
 		this.pagingScrollTable.getDataTable().addRowSelectionHandler(handler);
 
+		// add handler to update found element count
+		this.pagingScrollTable
+				.addPageCountChangeHandler(new PageCountChangeHandler() {
+
+					@Override
+					public void onPageCountChange(PageCountChangeEvent event) {
+						int count = get().pagingScrollTable.getTableModel()
+								.getRowCount();
+
+						// display count in page
+						// TODO: do number formatting and message formatting and
+						// externalize
+						get().recordCountContainer
+								.setHTML("<div class=\"recordCount\">Num Records: "
+										+ count + "</div>");
+
+					}
+				}
+
+				);
+
 		// set selection policy
 		SelectionGrid grid = get().getDataTable();
 		grid.setSelectionPolicy(SelectionPolicy.ONE_ROW);
@@ -985,7 +1014,7 @@ public class Registry_ui implements EntryPoint {
 		PagingOptions pagingOptions = new PagingOptions(getPagingScrollTable());
 
 		// add the paging widget to the last row of the layout
-		this.layout.setWidget(3, 0, pagingOptions);
+		this.layout.setWidget(2, 0, pagingOptions);
 	}
 
 	/**
