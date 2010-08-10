@@ -16,6 +16,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("products")
 public interface ProductsService extends RemoteService {
+
 	SerializableResponse<ViewProduct> requestRows(Request request,
 			Map<String, String> filters);
+
 }

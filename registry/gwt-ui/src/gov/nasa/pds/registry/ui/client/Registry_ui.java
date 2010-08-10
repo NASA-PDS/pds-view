@@ -1,6 +1,7 @@
 package gov.nasa.pds.registry.ui.client;
 
 import gov.nasa.pds.registry.ui.shared.InputContainer;
+import gov.nasa.pds.registry.ui.shared.ViewAssociation;
 import gov.nasa.pds.registry.ui.shared.ViewProduct;
 import gov.nasa.pds.registry.ui.shared.ViewSlot;
 
@@ -27,6 +28,7 @@ import com.google.gwt.gen2.table.client.SelectionGrid;
 import com.google.gwt.gen2.table.client.TableDefinition;
 import com.google.gwt.gen2.table.client.AbstractScrollTable.SortPolicy;
 import com.google.gwt.gen2.table.client.SelectionGrid.SelectionPolicy;
+import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
 import com.google.gwt.gen2.table.event.client.RowCountChangeEvent;
 import com.google.gwt.gen2.table.event.client.RowCountChangeHandler;
 import com.google.gwt.gen2.table.event.client.RowSelectionEvent;
@@ -34,10 +36,12 @@ import com.google.gwt.gen2.table.event.client.RowSelectionHandler;
 import com.google.gwt.gen2.table.event.client.TableEvent.Row;
 import com.google.gwt.gen2.table.override.client.FlexTable;
 import com.google.gwt.gen2.table.override.client.FlexTable.FlexCellFormatter;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
@@ -83,17 +87,52 @@ public class Registry_ui implements EntryPoint {
 	/**
 	 * The dialog box that displays product details.
 	 */
-	protected final DialogBox dialogBox = new DialogBox();
+	protected final DialogBox productDetailsBox = new DialogBox();
+
+	protected final DialogBox associationDetailsBox = new DialogBox();
+
+	protected RowSelectionHandler associationClickHander;
+
+	protected ScrollTable associationScrollTable;
+
+	protected List<ViewAssociation> tempAssociations;
 
 	/**
 	 * A panel used for layout within the dialogBox
 	 */
 	protected final VerticalPanel dialogVPanel = new VerticalPanel();
 
+	protected final VerticalPanel associationVPanel = new VerticalPanel();
+
+	protected final HTML associationPlaceholder = new HTML(
+			"Loading associations...");
+
 	/**
 	 * The close button used by the dialogBox to close the dialog.
 	 */
 	protected Button closeButton;
+
+	protected Button associationCloseButton;
+
+	/**
+	 * The {@link CachedTableModel} around the main table model.
+	 */
+	private CachedTableModel<ViewProduct> cachedTableModel = null;
+
+	/**
+	 * The {@link PagingScrollTable}.
+	 */
+	protected PagingScrollTable<ViewProduct> pagingScrollTable = null;
+
+	/**
+	 * The {@link ProductTableModel}.
+	 */
+	private ProductTableModel tableModel = null;
+
+	/**
+	 * The {@link DefaultTableDefinition}.
+	 */
+	private DefaultTableDefinition<ViewProduct> tableDefinition = null;
 
 	/**
 	 * @return the data table. This is the underlying grid for displaying data,
@@ -130,26 +169,6 @@ public class Registry_ui implements EntryPoint {
 	}
 
 	/**
-	 * The {@link CachedTableModel} around the main table model.
-	 */
-	private CachedTableModel<ViewProduct> cachedTableModel = null;
-
-	/**
-	 * The {@link PagingScrollTable}.
-	 */
-	protected PagingScrollTable<ViewProduct> pagingScrollTable = null;
-
-	/**
-	 * The {@link ProductTableModel}.
-	 */
-	private ProductTableModel tableModel = null;
-
-	/**
-	 * The {@link DefaultTableDefinition}.
-	 */
-	private DefaultTableDefinition<ViewProduct> tableDefinition = null;
-
-	/**
 	 * @return the cached table model
 	 */
 	public CachedTableModel<ViewProduct> getCachedTableModel() {
@@ -177,13 +196,16 @@ public class Registry_ui implements EntryPoint {
 		return this.tableModel;
 	}
 
-	/*
-	 * public void insertDataRow(int beforeRow) {
-	 * getCachedTableModel().insertRow(beforeRow); }
-	 */
-
 	protected FlexTable getLayout() {
 		return this.layout;
+	}
+
+	protected List<ViewAssociation> getTempAssociations() {
+		return this.tempAssociations;
+	}
+
+	protected void setTempAssociations(List<ViewAssociation> tempAssociations) {
+		this.tempAssociations = tempAssociations;
 	}
 
 	/**
@@ -197,14 +219,19 @@ public class Registry_ui implements EntryPoint {
 		// Initialize and add the main layout to the page
 		this.initLayout();
 
-		// Initialize detail popup
-		this.initDetailPopup();
+		// Initialize product detail popup
+		this.initProductDetailPopup();
+
+		// Initialize association detail popup
+		this.initAssociationDetailPopup();
 
 		// initialize filter and search options
 		this.initFilterOptions();
 
 		// initialize scroll table
 		this.initTable();
+
+		this.initAssociationTable();
 
 		// initialize paging widget
 		this.initPaging();
@@ -259,13 +286,20 @@ public class Registry_ui implements EntryPoint {
 	 * Note that there are a variety of display options and behaviors available
 	 * to this box. Only a portion of them are currently being leveraged.
 	 */
-	private void initDetailPopup() {
+	private void initProductDetailPopup() {
 
 		// set title
-		this.dialogBox.setText("Product Details");
+		this.productDetailsBox.setText("Product Details");
 
 		// make hide and show be animated
-		this.dialogBox.setAnimationEnabled(true);
+		this.productDetailsBox.setAnimationEnabled(true);
+
+		// add label for associations
+		this.dialogVPanel.add(new HTML("<div class=\"\">Associations</div>"));
+
+		// TODO: be nice to add association box here but needs return values
+		// during initalization, another way around?
+		this.dialogVPanel.add(this.associationPlaceholder);
 
 		// create a close button
 		this.closeButton = new Button("Close");
@@ -280,7 +314,7 @@ public class Registry_ui implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				// hide the detail box
-				get().dialogBox.hide();
+				get().productDetailsBox.hide();
 			}
 		};
 
@@ -295,8 +329,15 @@ public class Registry_ui implements EntryPoint {
 				// clear selection and allow row to be clicked again
 				get().getPagingScrollTable().getDataTable().deselectAllRows();
 
+				// replace associations with placeholder for next load
+				get().dialogVPanel.remove(2);
+				get().dialogVPanel.insert(get().associationPlaceholder, 2);
+
 				// remove data from popup
 				get().dialogVPanel.remove(0);
+
+				// remove data from table
+				get().associationScrollTable.getDataTable().clear();
 			}
 
 		};
@@ -304,24 +345,91 @@ public class Registry_ui implements EntryPoint {
 		// add the handler to the button
 		this.closeButton.addClickHandler(closButtonHandler);
 
+		// add a vertical panel as master layout panel to the dialog box
+		// contents
+		this.productDetailsBox.setWidget(this.dialogVPanel);
+
+		// set a style name associated with the dialog so that it can be styled
+		// through external css
+		this.productDetailsBox.addStyleName("detailBox");
+
+		// enable hiding the dialog when clicking outside of its constraints
+		this.productDetailsBox.setAutoHideEnabled(true);
+
+		// add the close handler that de-selects the row that was used to
+		// trigger
+		// the "show" of the dialog
+		this.productDetailsBox.addCloseHandler(dialogCloseHandler);
+	}
+
+	/**
+	 * Initialize the popup that will display association details.
+	 * 
+	 * Note that there are a variety of display options and behaviors available
+	 * to this box. Only a portion of them are currently being leveraged.
+	 */
+	private void initAssociationDetailPopup() {
+
+		// set title
+		this.associationDetailsBox.setText("Product Details");
+
+		// make hide and show be animated
+		this.associationDetailsBox.setAnimationEnabled(true);
+
+		// create a close button
+		this.associationCloseButton = new Button("Close");
+
+		// add the close button to the panel
+		this.associationVPanel.add(this.associationCloseButton);
+
+		// create a handler for the click of the close button to hide the detail
+		// box
+		ClickHandler closButtonHandler = new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// hide the detail box
+				get().associationDetailsBox.hide();
+			}
+		};
+
+		// create a handler for the detail box hide that de-selects the row that
+		// was selected when the dialog box was shown. This is separate from the
+		// close handler as there is a click-outside test that also triggers a
+		// hide of the dialog box
+		CloseHandler<PopupPanel> dialogCloseHandler = new CloseHandler<PopupPanel>() {
+
+			@Override
+			public void onClose(CloseEvent<PopupPanel> event) {
+				get().associationScrollTable.getDataTable().deselectAllRows();
+
+				// remove data from popup
+				get().associationVPanel.remove(0);
+			}
+
+		};
+
+		// add the handler to the button
+		this.associationCloseButton.addClickHandler(closButtonHandler);
+
 		// We can set the id of a widget by accessing its Element
 		// this.closeButton.getElement().setId("closeButton");
 
 		// add a vertical panel as master layout panel to the dialog box
 		// contents
-		this.dialogBox.setWidget(this.dialogVPanel);
+		this.associationDetailsBox.setWidget(this.associationVPanel);
 
 		// set a style name associated with the dialog so that it can be styled
 		// through external css
-		this.dialogBox.addStyleName("detailBox");
+		this.associationDetailsBox.addStyleName("detailBox");
 
 		// enable hiding the dialog when clicking outside of its constraints
-		this.dialogBox.setAutoHideEnabled(true);
+		this.associationDetailsBox.setAutoHideEnabled(true);
 
 		// add the close handler that de-selects the row that was used to
 		// trigger
 		// the "show" of the dialog
-		this.dialogBox.addCloseHandler(dialogCloseHandler);
+		this.associationDetailsBox.addCloseHandler(dialogCloseHandler);
 	}
 
 	/**
@@ -608,13 +716,72 @@ public class Registry_ui implements EntryPoint {
 							"detailValue");
 				}
 
-				// add new data as first element in vertical stack, which should
-				// be the close button since last data table was removed
 				get().dialogVPanel.insert(detailTable, 0);
 
 				// display, center and focus popup
-				get().dialogBox.center();
+				get().productDetailsBox.center();
 				get().closeButton.setFocus(true);
+
+				// do async on getting associations
+				get()
+						.getTableModel()
+						.getAssociations(
+								product.getLid(),
+								product.getUserVersion(),
+								new AsyncCallback<SerializableResponse<ViewAssociation>>() {
+
+									public void onFailure(Throwable caught) {
+
+										System.out.println("RPC Failure");
+									}
+
+									public void onSuccess(
+											SerializableResponse<ViewAssociation> result) {
+										System.out
+												.println("success called on getting associations");
+										// get results
+										SerializableProductResponse<ViewAssociation> spr = (SerializableProductResponse<ViewAssociation>) result;
+
+										// cast values to ViewProducts to get
+										// extended
+										// data
+										List<ViewAssociation> associations = (List<ViewAssociation>) spr
+												.getValues();
+										get().setTempAssociations(associations);
+
+										// TODO: factor this out
+										// TODO: make a loading element
+										// TODO: deal with situation where more
+										// than the requested amount are found
+
+										FixedWidthGrid grid = get().associationScrollTable
+												.getDataTable();
+										grid.resize(associations.size(), 3);
+
+										// add elements to the table
+										for (int i = 0; i < associations.size(); i++) {
+											final ViewAssociation association = associations
+													.get(i);
+											grid.setText(i, 0, association
+													.getSourceLid());
+											grid.setText(i, 1, association
+													.getAssociationType());
+											grid.setText(i, 2, association
+													.getTargetLid());
+										}
+
+										// remove placeholder
+										get().dialogVPanel.remove(2);
+
+										// add table
+										get().dialogVPanel
+												.insert(
+														get().associationScrollTable,
+														2);
+
+									}
+								});
+
 			}
 
 		};
@@ -633,6 +800,169 @@ public class Registry_ui implements EntryPoint {
 		final FlexCellFormatter formatter = this.layout.getFlexCellFormatter();
 		formatter.setWidth(1, 1, "100%");
 		formatter.setVerticalAlignment(1, 1, HasVerticalAlignment.ALIGN_TOP);
+	}
+
+	private void initAssociationTable() {
+		// Get the components of the ScrollTable
+		FixedWidthFlexTable headerTable = new FixedWidthFlexTable();
+		FlexCellFormatter formatter = headerTable.getFlexCellFormatter();
+
+		headerTable.setHTML(0, 0, "Source LID");
+		formatter.setHorizontalAlignment(0, 0,
+				HasHorizontalAlignment.ALIGN_CENTER);
+		headerTable.setHTML(0, 1, "Association Type");
+		formatter.setHorizontalAlignment(0, 1,
+				HasHorizontalAlignment.ALIGN_CENTER);
+		headerTable.setHTML(0, 2, "Target LID");
+		formatter.setHorizontalAlignment(0, 2,
+				HasHorizontalAlignment.ALIGN_CENTER);
+
+		FixedWidthGrid dataTable = new FixedWidthGrid();
+
+		// Set some options in the data table
+		dataTable.setSelectionPolicy(SelectionGrid.SelectionPolicy.ONE_ROW);
+
+		// Combine the components into a ScrollTable
+		this.associationScrollTable = new ScrollTable(dataTable, headerTable);
+
+		// set display properties
+		this.associationScrollTable.setHeight("150px");
+		this.associationScrollTable.setWidth("100%");
+		this.associationScrollTable.setCellPadding(0);
+		this.associationScrollTable.setCellSpacing(0);
+
+		// Set some options in the scroll table
+		this.associationScrollTable
+				.setResizePolicy(ScrollTable.ResizePolicy.FILL_WIDTH);
+
+		this.associationScrollTable.getDataTable().addRowSelectionHandler(
+				new RowSelectionHandler() {
+
+					@Override
+					public void onRowSelection(RowSelectionEvent event) {
+						// get selected rows
+						Set<Row> selected = event.getSelectedRows();
+						if (selected.size() == 0) {
+							// TODO: out is for debugging purposes, fix for
+							// erroneously fired events is pending
+							System.out
+									.println("Row selection event fired but no selected rows found.");
+							return;
+						}
+
+						// since only one row can be selected, just get the
+						// first one
+						int rowIndex = selected.iterator().next().getRowIndex();
+
+						// get the product instance associated with that row
+						ViewAssociation association = get()
+								.getTempAssociations().get(rowIndex);
+
+						// create grid for data, there are 8 fixed fields and
+						// fields for
+						// each slot
+						Grid detailTable = new Grid(16, 2);
+
+						// set each field label and the values
+
+						int row = 0;
+
+						// name
+						detailTable.setText(row, 0, "Association Type");
+						detailTable.setText(row, 1, association
+								.getAssociationType());
+						row++;
+
+						detailTable.setText(row, 0, "Description");
+						detailTable.setText(row, 1, association
+								.getDescription());
+						row++;
+
+						detailTable.setText(row, 0, "Logical ID");
+						detailTable.setText(row, 1, association.getLid());
+						row++;
+
+						detailTable.setText(row, 0, "Name");
+						detailTable.setText(row, 1, association.getName());
+						row++;
+
+						detailTable.setText(row, 0, "Object Type");
+						detailTable
+								.setText(row, 1, association.getObjectType());
+						row++;
+
+						detailTable.setText(row, 0, "Source GUID");
+						detailTable
+								.setText(row, 1, association.getSourceGuid());
+						row++;
+
+						detailTable.setText(row, 0, "Source Home");
+						detailTable
+								.setText(row, 1, association.getSourceHome());
+						row++;
+
+						detailTable.setText(row, 0, "Source Logical ID");
+						detailTable.setText(row, 1, association.getSourceLid());
+						row++;
+
+						detailTable.setText(row, 0, "Source Version");
+						detailTable.setText(row, 1, association
+								.getSourceVersion());
+						row++;
+
+						detailTable.setText(row, 0, "Status");
+						detailTable.setText(row, 1, association.getStatus());
+						row++;
+
+						detailTable.setText(row, 0, "Target GUID");
+						detailTable
+								.setText(row, 1, association.getTargetGuid());
+						row++;
+
+						detailTable.setText(row, 0, "Target Home");
+						detailTable
+								.setText(row, 1, association.getTargetHome());
+						row++;
+
+						detailTable.setText(row, 0, "Target Logical ID");
+						detailTable.setText(row, 1, association.getTargetLid());
+						row++;
+
+						detailTable.setText(row, 0, "Target Version");
+						detailTable.setText(row, 1, association
+								.getTargetVersion());
+						row++;
+
+						detailTable.setText(row, 0, "User Version");
+						detailTable.setText(row, 1, association
+								.getUserVersion());
+						row++;
+
+						detailTable.setText(row, 0, "Version");
+						detailTable.setText(row, 1, association.getVersion());
+						row++;
+
+						// add styles to cells
+						for (int i = 0; i < detailTable.getRowCount(); i++) {
+							detailTable.getCellFormatter().setStyleName(i, 0,
+									"detailLabel");
+							detailTable.getCellFormatter().setStyleName(i, 1,
+									"detailValue");
+						}
+
+						// add new data as first element in vertical stack,
+						// which should
+						// be the close button since last data table was removed
+						get().associationVPanel.insert(detailTable, 0);
+
+						// display, center and focus popup
+						get().associationDetailsBox.center();
+						get().associationCloseButton.setFocus(true);
+
+					}
+
+				});
+
 	}
 
 	/**

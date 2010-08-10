@@ -11,6 +11,11 @@
 
 	<!-- servlets -->
 	<servlet>
+		<servlet-name>associationServlet</servlet-name>
+		<servlet-class>gov.nasa.pds.registry.ui.server.AssociationServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet>
 		<servlet-name>productsServlet</servlet-name>
 		<servlet-class>gov.nasa.pds.registry.ui.server.ProductsServiceImpl</servlet-class>
 	</servlet>
@@ -31,6 +36,11 @@
 		<url-pattern>/registry_ui/logging</url-pattern>
 	</servlet-mapping>
 
+	<servlet-mapping>
+		<servlet-name>associationServlet</servlet-name>
+		<url-pattern>/registry_ui/associations</url-pattern>
+	</servlet-mapping>
+	
 	<servlet-mapping>
 		<servlet-name>productsServlet</servlet-name>
 		<url-pattern>/registry_ui/products</url-pattern>

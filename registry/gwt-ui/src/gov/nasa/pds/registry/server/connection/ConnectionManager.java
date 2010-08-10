@@ -1,12 +1,15 @@
 package gov.nasa.pds.registry.server.connection;
 
 import gov.nasa.pds.registry.client.RegistryClient;
+import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.Slot;
+import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ProductQuery;
 import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.ui.shared.StatusInformation;
+import gov.nasa.pds.registry.ui.shared.ViewAssociation;
 import gov.nasa.pds.registry.ui.shared.ViewProduct;
 import gov.nasa.pds.registry.ui.shared.ViewProducts;
 import gov.nasa.pds.registry.ui.shared.ViewSlot;
@@ -123,34 +126,41 @@ public class ConnectionManager {
 			pagedResp = client.getProducts(start, numResults).getEntity(
 					PagedResponse.class);
 		}
-		ViewProducts viewProducts = new ViewProducts();
-		viewProducts.setStart(pagedResp.getStart());
-		viewProducts.setSize(pagedResp.getNumFound());
-		List<RegistryObject> products = pagedResp.getResults();
-		for (RegistryObject product : products) {
-			ViewProduct vProduct = new ViewProduct();
-			viewProducts.add(vProduct);
-			vProduct.setGuid(product.getGuid());
-			vProduct.setHome(product.getHome());
-			vProduct.setLid(product.getLid());
-			vProduct.setObjectType(product.getObjectType());
-			vProduct.setStatus(product.getStatus().toString());
-			vProduct.setName(product.getName());
-			vProduct.setUserVersion(product.getUserVersion());
-			vProduct.setVersion(product.getVersion());
 
-			List<ViewSlot> vslots = new ArrayList<ViewSlot>();
-			vProduct.setSlots(vslots);
-			Set<Slot> slots = product.getSlots();
-			for (Slot slot : slots) {
-				ViewSlot vslot = new ViewSlot();
-				vslots.add(vslot);
-				vslot.setId(String.valueOf(slot.getId()));
-				vslot.setName(slot.getName());
-				vslot.setValues(slot.getValues());
-			}
-		}
+		// convert response to view products
+		ViewProducts viewProducts = respToViewProducts(pagedResp);
+
 		return viewProducts;
+	}
+
+	public static List<ViewAssociation> getAssociations(
+			final AssociationQuery query) {
+		return getAssociations(query, null, null);
+
+	}
+
+	public static List<ViewAssociation> getAssociations(
+			final AssociationQuery query, Integer start, Integer numResults) {
+		RegistryClient client = getRegistry();
+
+		PagedResponse pagedResp = client.getAssociations(query, start,
+				numResults).getEntity(PagedResponse.class);
+
+		List<ViewAssociation> viewAssociations = respToViewAssociation(pagedResp);
+
+		return viewAssociations;
+	}
+
+	public static List<ViewAssociation> getAssociations(String lid,
+			String userVersion, Integer start, Integer numResults) {
+		RegistryClient client = getRegistry();
+
+		PagedResponse pagedResp = client.getAssociations(lid, userVersion,
+				start, numResults).getEntity(PagedResponse.class);
+
+		List<ViewAssociation> viewAssociations = respToViewAssociation(pagedResp);
+
+		return viewAssociations;
 	}
 
 	// TODO: determine the response format, returns errors for duplicate id for
@@ -229,5 +239,67 @@ public class ConnectionManager {
 		}
 
 		return props;
+	}
+
+	private static ViewProducts respToViewProducts(final PagedResponse pagedResp) {
+		ViewProducts viewProducts = new ViewProducts();
+		viewProducts.setStart(pagedResp.getStart());
+		viewProducts.setSize(pagedResp.getNumFound());
+		List<RegistryObject> products = pagedResp.getResults();
+		for (RegistryObject product : products) {
+			ViewProduct vProduct = new ViewProduct();
+			viewProducts.add(vProduct);
+			vProduct.setGuid(product.getGuid());
+			vProduct.setHome(product.getHome());
+			vProduct.setLid(product.getLid());
+			vProduct.setObjectType(product.getObjectType());
+			vProduct.setStatus(product.getStatus().toString());
+			vProduct.setName(product.getName());
+			vProduct.setUserVersion(product.getUserVersion());
+			vProduct.setVersion(product.getVersion());
+
+			List<ViewSlot> vslots = new ArrayList<ViewSlot>();
+			vProduct.setSlots(vslots);
+			Set<Slot> slots = product.getSlots();
+			if (slots != null) {
+				for (Slot slot : slots) {
+					ViewSlot vslot = new ViewSlot();
+					vslots.add(vslot);
+					vslot.setId(String.valueOf(slot.getId()));
+					vslot.setName(slot.getName());
+					vslot.setValues(slot.getValues());
+				}
+			}
+		}
+		return viewProducts;
+	}
+
+	private static List<ViewAssociation> respToViewAssociation(
+			final PagedResponse pagedResp) {
+		List<ViewAssociation> viewAssociations = new ArrayList<ViewAssociation>();
+		List<RegistryObject> associations = pagedResp.getResults();
+		for (RegistryObject ro : associations) {
+			Association association = (Association) ro;
+			ViewAssociation vAssociation = new ViewAssociation();
+			viewAssociations.add(vAssociation);
+			vAssociation.setAssociationType(association.getAssociationType());
+			vAssociation.setSourceGuid(association.getSourceGuid());
+			vAssociation.setSourceHome(association.getSourceHome());
+			vAssociation.setSourceLid(association.getSourceLid());
+			vAssociation.setSourceVersion(association.getSourceVersion());
+			vAssociation.setTargetGuid(association.getTargetGuid());
+			vAssociation.setTargetHome(association.getTargetHome());
+			vAssociation.setTargetLid(association.getTargetLid());
+			vAssociation.setTargetVersion(association.getTargetVersion());
+
+			vAssociation.setLid(association.getLid());
+			vAssociation.setObjectType(association.getObjectType());
+			vAssociation.setStatus(association.getStatus().toString());
+			vAssociation.setName(association.getName());
+			vAssociation.setUserVersion(association.getUserVersion());
+			vAssociation.setVersion(association.getVersion());
+
+		}
+		return viewAssociations;
 	}
 }

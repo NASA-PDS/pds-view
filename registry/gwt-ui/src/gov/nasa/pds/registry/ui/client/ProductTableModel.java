@@ -1,5 +1,6 @@
 package gov.nasa.pds.registry.ui.client;
 
+import gov.nasa.pds.registry.ui.shared.ViewAssociation;
 import gov.nasa.pds.registry.ui.shared.ViewProduct;
 import gov.nasa.pds.registry.ui.shared.ViewProducts;
 
@@ -11,7 +12,6 @@ import com.google.gwt.gen2.table.client.MutableTableModel;
 import com.google.gwt.gen2.table.client.TableModelHelper.Request;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 /**
  * Table model for products. Determines the behaviors for retrieving data to
@@ -25,6 +25,12 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 	 * The RPC service used to generate data.
 	 */
 	private ProductsServiceAsync dataService = null;
+
+	/**
+	 * The RPC service used to generate association data. Required separate from
+	 * other service due to difference in endpoint url.
+	 */
+	private AssociationServiceAsync associationService = null;
 
 	/**
 	 * A store of filter params as they are not supported in the request object
@@ -80,15 +86,6 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 
 			// create a new instance of the class
 			this.dataService = GWT.create(ProductsService.class);
-
-			// cast as a target
-			ServiceDefTarget endpoint = (ServiceDefTarget) this.dataService;
-
-			// set the REST base url
-			String moduleRelativeURL = GWT.getModuleBaseURL() + "products"; //$NON-NLS-1$
-
-			// set the REST base url on the endpoint
-			endpoint.setServiceEntryPoint(moduleRelativeURL);
 		}
 
 		// create a reference to this so it may be accessed in the anonymous
@@ -119,6 +116,23 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 						callback.onRowsReady(request, result);
 					}
 				});
+	}
+
+	public void getAssociations(
+			final String lid,
+			final String userVersion,
+			final AsyncCallback<SerializableResponse<ViewAssociation>> asyncCallback) {
+
+		// if the data service is null, instantiate it
+		if (this.associationService == null) {
+
+			// create a new instance of the class
+			this.associationService = GWT.create(AssociationService.class);
+		}
+
+		// Send RPC request for data, including previously set filters
+		this.associationService
+				.getAssociations(lid, userVersion, asyncCallback);
 	}
 
 	// Default behaviors for common table access, add functionality as necessary

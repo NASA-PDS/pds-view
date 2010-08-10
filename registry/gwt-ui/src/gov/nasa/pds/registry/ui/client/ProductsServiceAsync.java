@@ -14,6 +14,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author jagander
  */
 public interface ProductsServiceAsync {
+
 	void requestRows(Request request, Map<String, String> filters,
 			AsyncCallback<SerializableResponse<ViewProduct>> callback);
+
 }

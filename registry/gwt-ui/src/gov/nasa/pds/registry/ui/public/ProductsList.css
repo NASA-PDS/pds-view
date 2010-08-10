@@ -79,6 +79,9 @@ body {
 .detailLabel { font-weight: bold; text-align: right; padding: 3px 10px 5px 10px; vertical-align: top;}
 .detailValue { padding: 3px 10px 5px 0px; vertical-align: top; }
 
+.label { font-weight: bold; }
+.contents { }
+
 .inputContainer { padding: 0px 10px 10px 0px; vertical-align: bottom; }
 .inputLabel { font-weight: bold; }
 
