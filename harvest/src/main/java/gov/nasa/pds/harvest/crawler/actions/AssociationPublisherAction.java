@@ -101,12 +101,18 @@ public class AssociationPublisherAction extends CrawlerAction {
 				if(re.hasVersion()) {
 					association.setTargetVersion(re.getVersion());
 				} else {
-					Product target = registryClient.getLatestProduct(re.getLogicalID()).getEntity(Product.class);
-					if(target != null) {
+					ClientResponse response = registryClient.getLatestProduct(re.getLogicalID());
+					if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
+						Product target = response.getEntity(Product.class);
 						association.setTargetVersion(target.getUserVersion());
-					} else {
+						log.log(new ToolsLogRecord(Level.INFO,
+								"Found association in registry: \"" + re.getLogicalID() + 
+								".\" Target version will be set to latest registered: " + target.getUserVersion(),
+								product));
+					}
+					else {
 						log.log(new ToolsLogRecord(Level.WARNING,
-								"Association missing a target version. Target product not found: " + re.getLogicalID(),
+								"Version ID could not be found in the label or registry for association to \"" + re.getLogicalID() + ".\"",
 								product));
 					}
 				}
