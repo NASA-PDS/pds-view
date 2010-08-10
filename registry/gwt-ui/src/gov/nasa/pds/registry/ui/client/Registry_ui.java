@@ -84,6 +84,8 @@ public class Registry_ui implements EntryPoint {
 	 */
 	private FlexTable layout = new FlexTable();
 
+	private VerticalPanel scrollPanel = new VerticalPanel();
+
 	/**
 	 * The dialog box that displays product details.
 	 */
@@ -265,18 +267,25 @@ public class Registry_ui implements EntryPoint {
 		RootPanel.get("productsContainer").add(this.layout);
 
 		// add enough rows for all of the required widgets
-		// label
-		this.layout.insertRow(0);
+
 		// filter options
 		this.layout.insertRow(0);
-		// scroll table
+		// scroll table wrapper
 		this.layout.insertRow(0);
 		// paging options
 		this.layout.insertRow(0);
 
+		// add style name to scroll table container
+		this.layout.getCellFormatter().addStyleName(1, 0, "scrollTableWrapper");
+
 		// add table label
 		// NOTE: this is actually not part of the table, it just renders above
-		this.layout.setWidget(1, 0, new HTML(
+
+		// add the scroll panel
+		this.layout.setWidget(1, 0, this.scrollPanel);
+
+		// add title to scroll table
+		this.scrollPanel.add(new HTML(
 				"<div class=\"title\">Product Registry</div>"));
 	}
 
@@ -295,7 +304,9 @@ public class Registry_ui implements EntryPoint {
 		this.productDetailsBox.setAnimationEnabled(true);
 
 		// add label for associations
-		this.dialogVPanel.add(new HTML("<div class=\"\">Associations</div>"));
+		this.dialogVPanel
+				.add(new HTML(
+						"<div class=\"title\" style=\"margin-top: 10px;\">Associations</div>"));
 
 		// TODO: be nice to add association box here but needs return values
 		// during initalization, another way around?
@@ -303,6 +314,7 @@ public class Registry_ui implements EntryPoint {
 
 		// create a close button
 		this.closeButton = new Button("Close");
+		this.closeButton.setStyleName("button");
 
 		// add the close button to the panel
 		this.dialogVPanel.add(this.closeButton);
@@ -794,7 +806,8 @@ public class Registry_ui implements EntryPoint {
 		grid.setSelectionPolicy(SelectionPolicy.ONE_ROW);
 
 		// Add the scroll table to the layout
-		this.layout.setWidget(2, 0, this.pagingScrollTable);
+		this.scrollPanel.add(this.pagingScrollTable);
+		this.scrollPanel.setWidth("100%");
 
 		// add a formatter
 		final FlexCellFormatter formatter = this.layout.getFlexCellFormatter();
