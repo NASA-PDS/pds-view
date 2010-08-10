@@ -6,7 +6,6 @@
 	</rootDirectories>
 	<candidateProduct objectType="character_table">
 	   <metadata>
-	   		<xPath>//Product_Identification_Area/title</xPath>
 	   	  <xPath>//Product_Identification_Area/creation_date_time</xPath>
 	   	  <xPath>//Subject_Area/full_name</xPath>
 	   	  <xPath>//Subject_Area/instrument_name</xPath>
