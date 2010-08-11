@@ -128,37 +128,32 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
       </subsection>
       
       <subsection name="Harvest Policy File">
-        <p>The Harvest policy file is an XML file that the tool uses to find products and register its metadata.
+        <p>The Harvest policy file is an XML file that the tool uses to find products and register its metadata. The following is the schema for the policy file:
         </p>
-        
-        <p>The following is the schema for the policy file:    
       </subsection>
     </section>
 
     <section name="Report Format">
-      <p>This section describes the contents of the Harvest Tool report.
-      </p>
-      
-      <p>At this time, the Harvest Tool only outputs a series of log messages. The log will report the success or failure of a discovered product attempting to be registered. Additionally, any syntactical errors in a discovered product are reported.
-      </p>
-      
-      <p>A log consists of a severity level, file name, and a message. The following is an example of some of the log messages that can be expected from the Harvest Tool:
+      <p>This section describes the contents of the Harvest Tool report. At this time, the Harvest Tool only outputs a series of log messages. The log will report the success or failure of a discovered product attempting to be registered. Additionally, any syntactical errors in a discovered product are reported. A log consists of a severity level, file name, and a message. The following is an example of some of the log messages that can be expected from the Harvest Tool:
       </p>
       
       <source>
-INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] \
-Succesfully registered product: http://pdsops2.jpl.nasa.gov/registry-service/registry/products/URN:NASA:PDS:instrument_host.24COL/v1.0
-INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] \
-Successfully registered association: http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:93b8209a-0710-4cf5-b310-7ed181d67841
-INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] \
-Successfully registered association: http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:78acc8bc-3f3a-4da2-a13c-f1ee368906a3
-INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] \
-Successfully registered association: http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:b818b505-06a6-4508-bdc1-9d2f63a5344e
-INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] \
-Successfully registered association: http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:ec4fd498-e0d1-4257-8565-506c167119b3
-WARNING:   [C:\pds4\phoenix_data\pds4_phxase_0002\DATA\PHXCOMPACT.xml] Product already exists in the registry: URN:NASA:PDS:PHX-ASE:DATA-REDUCED::V1.0
-WARNING:   [C:\pds4\phoenix_data\pds4_phxase_0002\DATA\PHXPROFILES.xml] Product already exists in the registry: URN:NASA:PDS:PHX-ASE:DATA-REDUCED::V1.0
-WARNING:   [C:\pds4\phoenix_data\pds4_phxase_0001\DATA\IMU_A_EDR_M.xml] Product already exists in the registry: URN:NASA:PDS:PHX-ASE:DATA-RAW::V1.0
+INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] Succesfully registered product: \
+http://pdsops2.jpl.nasa.gov/registry-service/registry/products/URN:NASA:PDS:instrument_host.24COL/v1.0
+INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] Successfully registered association: \
+http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:93b8209a-0710-4cf5-b310-7ed181d67841
+INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] Successfully registered association: \
+http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:78acc8bc-3f3a-4da2-a13c-f1ee368906a3
+INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] Successfully registered association: \
+http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:b818b505-06a6-4508-bdc1-9d2f63a5344e
+INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] Successfully registered association: \
+http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:ec4fd498-e0d1-4257-8565-506c167119b3
+WARNING:   [C:\pds4\phoenix_data\pds4_phxase_0002\DATA\PHXCOMPACT.xml] \
+Product already exists in the registry: URN:NASA:PDS:PHX-ASE:DATA-REDUCED::V1.0
+WARNING:   [C:\pds4\phoenix_data\pds4_phxase_0002\DATA\PHXPROFILES.xml] \
+Product already exists in the registry: URN:NASA:PDS:PHX-ASE:DATA-REDUCED::V1.0
+WARNING:   [C:\pds4\phoenix_data\pds4_phxase_0001\DATA\IMU_A_EDR_M.xml] \
+Product already exists in the registry: URN:NASA:PDS:PHX-ASE:DATA-RAW::V1.0
 SEVERE:   [C:\pds4\context_target\aaaProduct_files_20100722t\target_IO_PLASMA_TORUS.xml] \
 line 262: The reference to entity "TRAUGE1995" must end with the ';' delimiter.
       </source>
