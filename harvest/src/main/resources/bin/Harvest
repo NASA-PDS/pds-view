@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright 2009, by the California Institute of Technology.
+# Copyright 2010, by the California Institute of Technology.
 # ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 # Any commercial use must be negotiated with the Office of Technology Transfer
 # at the California Institute of Technology.
@@ -16,7 +16,7 @@
 
 # Bourne Shell script that allows easy execution of the Harvest Tool
 # without the need to set the CLASSPATH or having to type in that long java
-# command (java gov.nasa.pds.citool.CITool ...)
+# command (java gov.nasa.pds.harvest.HarvestLauncher ...)
 
 # Expects the Harvest jar file to be in the ../lib directory.
 
