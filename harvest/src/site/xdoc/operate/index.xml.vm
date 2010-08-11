@@ -30,6 +30,7 @@
 
       <ul>
         <li><a href="#Tool_Setup">Tool Setup</a></li>
+        <li><a href="#Additional_Tool_Setup">Additional Tool Setup</a></li>
         <li><a href="#Tool_Execution">Tool Execution</a></li>
         <li><a href="#Report_Format">Report Format</a></li>
       </ul>
@@ -87,6 +88,59 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
       </subsection>
     </section>
 
+    <section name="Additional Tool Setup">
+      <p>This section details how to re-configure the Harvest Tool to interface with another instance of the PDS Registry Service. This would be in cases where a user wants to test the registration of data products on a local instance of the Registry first before registering the products on the operational release of the PDS Registry. Users that wish to not do this can skip this section.
+      </p>
+      
+      <p>The Harvest Tool points to the PDS Registry and Security Service through the following Java System Properties:
+      </p>
+      
+      <table>
+        <tr><th>System Property Name</th><th>Description</th></tr>
+        <tr><td>pds.registry</td><td>Specify the URL to the PDS Registry Service. This property is required.</td></tr>
+        <tr><td>pds.security</td><td>Speicfy the URL to the PDS Security Service. If the PDS Registry being pointed to is not secured (i.e. a local instance), then this property can be omitted.</td></tr>
+      </table>
+      
+      <p>By default, the Harvest shell script and batch file point to the operational releases of the PDS Registry and Security Services. The sections below detail how to modify these scripts to point to another instance of these services.
+      </p>
+      
+      <subsection name="UNIX-Based Users">
+        <p>Open the <i>Harvest</i> shell script and go to the last line in the file. It should look like the following:       
+        </p>
+        
+        <source>
+          java -Dpds.registry="http://pdsops2.jpl.nasa.gov/registry-service" \
+          -Dpds.security="http://pdsops.jpl.nasa.gov/openam/identity" \
+          -jar ${HARVEST_JAR} "$@"
+        </source>
+        
+        <p>Replace the URL values of <i>pds.registry</i> and/or <i>pds.security</i> with URLs to the desired instance of the PDS Registry and/or Security. For example, making the following change to the script will have Harvest pointing to a non-secured, local instance of the PDS Registry on port 8080:
+        </p>
+        
+        <source>
+          java -Dpds.registry="http://localhost:8080/registry-service" -jar ${HARVEST_JAR} "$@"          
+        </source>      
+      </subsection>
+      
+      <subsection name="Windows-Based Users">
+        <p>Open the <i>Harvest</i> batch and go to the last line in the file. It should look like the following:       
+        </p>
+        
+        <source>
+          java -Dpds.registry="http://pdsops2.jpl.nasa.gov/registry-service" \
+          -Dpds.security="http://pdsops.jpl.nasa.gov/openam/identity" \
+          -jar "%HARVEST_JAR%" %*
+        </source>
+        
+        <p>Replace the URL values of <i>pds.registry</i> and/or <i>pds.security</i> with URLs to the desired instance of the PDS Registry and/or Security. For example, making the following change to the batch file will have Harvest pointing to a non-secured, local instance of the PDS Registry on port 8080:
+        </p>
+        
+        <source>
+          java -Dpds.registry="http://localhost:8080/registry-service" -jar "%HARVEST_JAR%" %*          
+        </source>      
+      </subsection>        
+    </section>
+
     <section name="Tool Execution">
       <p>Harvest Tool can be executed in various ways. This section describes how to run the tool, as well as its behaviors and caveats.
       </p>
@@ -126,11 +180,99 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
 % Harvest policy.xml -u pds -p mypwd -l log.txt
         </source>   
       </subsection>
-      
+
       <subsection name="Harvest Policy File">
-        <p>The Harvest policy file is an XML file that the tool uses to find products and register its metadata. The following is the schema for the policy file:
+        <p>The Harvest policy file is an XML file that the tool uses to find products and register its metadata. The schema for the policy file can be found in the <a href="index-policy-schema.html">Harvest Policy Schema</a> section. If viewing this document in PDF form, see the appendix for details.
         </p>
+        
+        <p>The following is an example of a policy file:
+        </p>
+        
+        <source>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;policy&gt;
+   &lt;rootDirectories&gt;
+      &lt;location&gt;C:\pds4\context_target\product_files&lt;/location&gt;
+      &lt;filePattern&gt;*.xml&lt;/filePattern&gt;
+   &lt;/rootDirectories&gt;
+   &lt;inventoryFiles&gt;
+      &lt;location&gt;C:\pds4\insthost\collection_instrument_host.xml&lt;/location&gt;
+   &lt;/inventoryFiles&gt;
+   &lt;candidateProduct objectType="Product_Instrument_Host"&gt;
+      &lt;metadata&gt;
+         &lt;xPath&gt;//alternate_title&lt;/xPath&gt;
+         &lt;xPath&gt;//last_modification_date_time&lt;/xPath&gt;
+         &lt;xPath&gt;//Subject_Area/instrument_host_name&lt;/xPath&gt;
+      &lt;/metadata&gt;
+   &lt;/candidateProduct&gt;
+   &lt;candidateProduct objectType="Product_Target"&gt;
+      &lt;metadata&gt;
+         &lt;xPath&gt;//alternate_title&lt;/xPath&gt;
+         &lt;xPath&gt;//last_modification_date_time&lt;/xPath&gt;
+         &lt;xPath&gt;//identifier&lt;/xPath&gt;
+         &lt;xPath&gt;//Subject_Area/target_name&lt;/xPath&gt;
+      &lt;/metadata&gt;
+   &lt;/candidateProduct&gt;
+&lt;/policy&gt;
+        </source>
+        
+        <p>The policy file is made up of 4 complex type elements: <i>rootDirectories</i>, <i>inventoryFiles</i>, <i>candidateProduct</i>, <i>metadata</i>.
+        </p>
+        
+        <b><i>rootDirectories</i></b>
+        
+        <p>Specify this element to tell the Harvest Tool where to crawl for data products. The following table describes the elements that are allowed:
+        </p>
+        
+        <table>
+          <tr><th>Element Name</th><th>Description</th></tr>
+          <tr><td>location</td><td>Specify a directory path.</td></tr>
+          <tr><td>filePattern</td><td>Specify a file pattern to look for specific files. If omitted, the default is to get all files within a directory.</td></tr>
+        </table>
+        
+        <b><i>inventoryFiles</i></b>
+        
+        <p>Specify this element to tell the Harvest Tool to crawl a PDS Inventory File. The following table describes the elements that are allowed:
+        </p>
+        
+        <table>
+          <tr><th>Element Name</th><th>Description</th></tr>
+          <tr><td>location</td><td>Specify a location to the PDS inventory file.</td></tr>
+        </table>
+        
+        <b><i>candidateProduct</i></b>
+        
+        <p>Specify this element to tell the Harvest Tool what product types to register and what metadata to extract from a data product. It requires an attribute called <i>objectType</i> that tells the Harvest Tool what product types to register. The only element allowed is the <i>metadata</i> complex type element, which is described below.
+        </p>
+        
+        <b><i>metadata</i></b>
+        
+        <p>Specify this element to tell the Harvest Tool what metadata to register. The following table describes the elements that are allowed:
+        </p>
+        
+        <table>
+          <tr><th>Element Name</th><th>Description</th></tr>
+          <tr><td>xPath</td><td>Specify an XPath expression to extract metadata.</td></tr>
+        </table>
+        
+        <p>XPath is a query language that uses path expressions to select nodes in an XML document. These path expressions look very much like expressions in a traditional computer file system. In its simplest form, prepending a <i>//</i> before a name will find the element no matter where it is in the XML file.
+        </p>
+        
+        <p>The following XPath expression will find the <i>last_modification_date_time</i> element no matter where it is in the file:
+        </p>
+        
+        <source>
+//last_modification_date_time
+        </source>
+        
+        <p>The following XPath expression will find all <i>target_name</i> elements that are children of <i>Subject_Area</i>:
+        </p>
+        
+        <source>
+//Subject_Area/target_name       
+        </source>     
       </subsection>
+ 
     </section>
 
     <section name="Report Format">
