@@ -295,7 +295,7 @@
     <dependency>
       <groupId>gov.nasa.pds.registry</groupId>
       <artifactId>registry-service</artifactId>
-      <version>0.3-dev</version>
+      <version>0.4.0-dev</version>
       <scope>compile</scope>      
     </dependency>
     <dependency>
