@@ -75,6 +75,10 @@ or
           <p>This document directory contains a local web site with the Harvest Tool Guide, javadoc, unit test results and other configuration management related information. Just point your favorite browser to the <i>index.html</i> file in this directory.
           </p>
         </li>
+        <li><b>examples/</b><br/>
+          <p>This directory contains examples of the policy file used for specifying how the Harvest Tool discovers products and extracts metadata for registration.
+          </p>
+        </li>
         <li><b>lib/</b><br/>
           <p>This directory contains the dependent jar files for the tool along with the executable jar file (${xdoc-artifactId}-${xdoc-version}.jar) containing the Harvest Tool software.
           </p>

@@ -49,6 +49,11 @@
       <directory>target/site</directory>
       <outputDirectory>doc</outputDirectory>
     </fileSet>
+    <fileSet>
+      <directory>src/main/resources/policy/examples</directory>
+      <outputDirectory>examples</outputDirectory>
+      <fileMode>644</fileMode>
+    </fileSet>
   </fileSets>
 
   <files>
