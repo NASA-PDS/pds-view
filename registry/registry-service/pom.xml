@@ -624,9 +624,7 @@
         <reportSets>
           <reportSet>
             <reports>
-              <!-- Causes a java heap space error. 
               <report>dependencies</report>
-              -->
               <report>summary</report>
             </reports>
           </reportSet>
