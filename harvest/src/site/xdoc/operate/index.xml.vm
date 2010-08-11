@@ -109,16 +109,17 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </p>
         
         <source>
-          java -Dpds.registry="http://pdsops2.jpl.nasa.gov/registry-service" \
-          -Dpds.security="http://pdsops.jpl.nasa.gov/openam/identity" \
-          -jar ${HARVEST_JAR} "$@"
+% java \
+-Dpds.registry="http://pdsops2.jpl.nasa.gov/registry-service" \
+-Dpds.security="http://pdsops.jpl.nasa.gov/openam/identity" \
+-jar ${HARVEST_JAR} "$@"
         </source>
         
         <p>Replace the URL values of <i>pds.registry</i> and/or <i>pds.security</i> with URLs to the desired instance of the PDS Registry and/or Security. For example, making the following change to the script will have Harvest pointing to a non-secured, local instance of the PDS Registry on port 8080:
         </p>
         
         <source>
-          java -Dpds.registry="http://localhost:8080/registry-service" -jar ${HARVEST_JAR} "$@"          
+% java -Dpds.registry="http://localhost:8080/registry-service" -jar ${HARVEST_JAR} "$@"          
         </source>      
       </subsection>
       
@@ -127,16 +128,17 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </p>
         
         <source>
-          java -Dpds.registry="http://pdsops2.jpl.nasa.gov/registry-service" \
-          -Dpds.security="http://pdsops.jpl.nasa.gov/openam/identity" \
-          -jar "%HARVEST_JAR%" %*
+% java \
+-Dpds.registry="http://pdsops2.jpl.nasa.gov/registry-service" \
+-Dpds.security="http://pdsops.jpl.nasa.gov/openam/identity" \
+-jar "%HARVEST_JAR%" %*
         </source>
         
         <p>Replace the URL values of <i>pds.registry</i> and/or <i>pds.security</i> with URLs to the desired instance of the PDS Registry and/or Security. For example, making the following change to the batch file will have Harvest pointing to a non-secured, local instance of the PDS Registry on port 8080:
         </p>
         
         <source>
-          java -Dpds.registry="http://localhost:8080/registry-service" -jar "%HARVEST_JAR%" %*          
+% java -Dpds.registry="http://localhost:8080/registry-service" -jar "%HARVEST_JAR%" %*          
         </source>      
       </subsection>        
     </section>
@@ -170,14 +172,14 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </p>
         
         <source>
-% Harvest policy.xml -u pds -p mypwd
+% Harvest policy.xml -u {username} -p {password}
         </source>
         
         <p>The following command demonstrates how to run the Harvest Tool with the output going to a log file, <i>log.txt</i> instead of standard out:
         </p>
         
         <source>
-% Harvest policy.xml -u pds -p mypwd -l log.txt
+% Harvest policy.xml -u {username} -p {password} -l log.txt
         </source>   
       </subsection>
 
@@ -230,7 +232,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
           <tr><td>filePattern</td><td>Specify a file pattern to look for specific files. If omitted, the default is to get all files within a directory.</td></tr>
         </table>
         
-        <b><i>inventoryFiles</i></b>
+        <p><b><i>inventoryFiles</i></b></p>
         
         <p>Specify this element to tell the Harvest Tool to crawl a PDS Inventory File. The following table describes the elements that are allowed:
         </p>
@@ -240,7 +242,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
           <tr><td>location</td><td>Specify a location to the PDS inventory file.</td></tr>
         </table>
         
-        <b><i>candidateProduct</i></b>
+        <p><b><i>candidateProduct</i></b></p>
         
         <p>Specify this element to tell the Harvest Tool what product types to register and what metadata to extract from a data product. It requires an attribute called <i>objectType</i> that tells the Harvest Tool what product types to register. The only element allowed is the <i>metadata</i> complex type element, which is described below.
         </p>

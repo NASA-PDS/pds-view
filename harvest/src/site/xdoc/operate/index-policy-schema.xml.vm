@@ -25,7 +25,7 @@
   
   <body>
     <section name="Harvest Policy Schema">
-      <p>This section describes the schema for the Harvest policy file.
+      <p>The XML schema file for validating policy files follows:
       </p>
       
       <source>

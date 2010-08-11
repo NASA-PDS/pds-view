@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <policy>
-	<rootDirectories>
-	   <location>C:\pds4\phoenix_data_2</location>
-		 <filePattern>*.xml</filePattern>
-	</rootDirectories>
-	<candidateProduct objectType="TABLE">
-	   <metadata>
-	   	  <xPath>//Product_Identification_Area/Subject_Area/product_id</xPath>
-	   	  <xPath>//Product_Identification_Area/Subject_Area/instrument_name</xPath>
-	   	  <xPath>//Product_Identification_Area/Subject_Area/investigation_name</xPath>
-	   	  <xPath>//Subject_Area/observing_system_name</xPath>
-	   	  <xPath>//Subject_Area/target_name</xPath>
-	   	  <xPath>//Table_Character/local_identifier</xPath>
-	   	  <xPath>//Table_Character/fields</xPath>
-	   	  <xPath>//Table_Character/records</xPath>
-	   </metadata>
-	</candidateProduct>
+  <rootDirectories>
+     <location>C:\pds4\phoenix_data_2</location>
+     <filePattern>*.xml</filePattern>
+  </rootDirectories>
+  <candidateProduct objectType="TABLE">
+     <metadata>
+        <xPath>//Product_Identification_Area/Subject_Area/product_id</xPath>
+        <xPath>//Product_Identification_Area/Subject_Area/instrument_name</xPath>
+        <xPath>//Product_Identification_Area/Subject_Area/investigation_name</xPath>
+        <xPath>//Subject_Area/observing_system_name</xPath>
+        <xPath>//Subject_Area/target_name</xPath>
+        <xPath>//Table_Character/local_identifier</xPath>
+        <xPath>//Table_Character/fields</xPath>
+        <xPath>//Table_Character/records</xPath>
+     </metadata>
+  </candidateProduct>
 </policy>
