@@ -282,7 +282,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
       </p>
       
       <source>
-INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] Succesfully registered product: \
+INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] Successfully registered product: \
 http://pdsops2.jpl.nasa.gov/registry-service/registry/products/URN:NASA:PDS:instrument_host.24COL/v1.0
 INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] Successfully registered association: \
 http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:93b8209a-0710-4cf5-b310-7ed181d67841
