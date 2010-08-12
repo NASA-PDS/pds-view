@@ -20,6 +20,24 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping> 
     
+    <filter>
+        <filter-name>Jersey Spring</filter-name>
+        <filter-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</filter-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.MediaTypeMappings</param-name>
+            <param-value>xml : application/xml, json : application/json</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
+            <param-value>/(docs)/.*</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>Jersey Spring</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    <!--
     <servlet>
         <servlet-name>Jersey Spring Web Application</servlet-name>
         <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
@@ -33,4 +51,5 @@
         <servlet-name>Jersey Spring Web Application</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
+    -->
 </web-app>

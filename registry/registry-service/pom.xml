@@ -54,6 +54,9 @@
 
   <build>
     <testSourceDirectory>src/test</testSourceDirectory>
+    <filters>
+      <filter>${project.basedir}/src/main/conf/default.properties</filter>
+    </filters>
     <plugins>
       <!--
       <plugin>
@@ -61,6 +64,31 @@
         <artifactId>maven-glassfish-plugin</artifactId>
       </plugin>
       -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <webResources>
+            <resource>
+              <directory>${project.build.directory}</directory>
+              <targetPath>docs</targetPath>
+              <filtering>true</filtering>
+              <includes>
+                <include>*.html</include>
+              </includes>
+            </resource>
+            <resource>
+              <directory>${project.build.directory}/generated-schema</directory>
+              <targetPath>docs</targetPath>
+              <filtering>true</filtering>
+              <includes>
+                <include>*.xsd</include>
+              </includes>
+            </resource>
+          </webResources>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>com.sun.tools.jxc.maven2</groupId>
         <artifactId>maven-jaxb-schemagen-plugin</artifactId>
@@ -359,14 +387,15 @@
                 </configuration>
               </execution>
               <execution>
-                <id>exec-xsltproc: target/application.html</id>
+                <id>exec-xsltproc: target/index.html</id>
                 <goals>
                   <goal>exec</goal>
                 </goals>
-                <phase>package</phase>
+                <phase>compile</phase>
+                <!--<phase>package</phase>-->
                 <configuration>
                   <executable>xsltproc</executable>
-                  <commandlineArgs>-o target/application.html src/main/doc/wadl_documentation-2008-12.xsl target/classes/application.wadl</commandlineArgs>
+                  <commandlineArgs>-o target/index.html src/main/doc/wadl_documentation-2008-12.xsl target/classes/application.wadl</commandlineArgs>
                 </configuration>
               </execution>
             </executions>
