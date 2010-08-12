@@ -322,7 +322,6 @@ public class Registry_ui implements EntryPoint {
 
 		// create a close button
 		this.closeButton = new Button("Close");
-		this.closeButton.setStyleName("button");
 
 		// add the close button to the panel
 		this.dialogVPanel.add(this.closeButton);
@@ -391,7 +390,7 @@ public class Registry_ui implements EntryPoint {
 	private void initAssociationDetailPopup() {
 
 		// set title
-		this.associationDetailsBox.setText("Product Details");
+		this.associationDetailsBox.setText("Association Details");
 
 		// make hide and show be animated
 		this.associationDetailsBox.setAnimationEnabled(true);
