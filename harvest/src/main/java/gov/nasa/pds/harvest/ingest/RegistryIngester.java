@@ -88,7 +88,7 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
 		}
 		if(response.getStatus() == ClientResponse.Status.CREATED.getStatusCode()) {
 			log.log(new ToolsLogRecord(Level.INFO, 
-					"Succesfully registered product: " + response.getLocation(), 
+					"Successfully registered product: " + response.getLocation(), 
 					prodFile));
 			return response.getLocation().toString();
 		}
