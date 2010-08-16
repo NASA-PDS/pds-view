@@ -23,7 +23,25 @@
   </properties>
 
   <body>
-    <release version="0.1.0-dev" date="TBD" description="TBD">
+    <release version="0.1.0-dev" date="TBD" description="This release of the Registry User Interface is a component of the integrated release 0.1.0 of the PDS 2010 System.">
+      <action dev="jagander" type="add">
+        Provide the capability to access a target Registry Service via the REST-based interface.
+      </action>
+      <action dev="jagander" type="add">
+        Provide the capability to browse products contained in the registry.
+      </action>
+      <action dev="jagander" type="add">
+        Provide the capability to browse associations contained in the registry.
+      </action>
+      <action dev="jagander" type="add">
+        Provide the capability to filter result content based on the attributes contained in the registry for a product (e.g., Name, LID, etc.).
+      </action>
+      <action dev="jagander" type="add">
+        Provide the capability to sort result content based on the attributes contained in the registry for a product.
+      </action>
+      <action dev="shardman" type="add">
+        Provide the initial documentation covering the installation and operation of the software.
+      </action>
     </release>
   </body>
 </document>

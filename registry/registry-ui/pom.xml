@@ -15,8 +15,8 @@
   $Id$
 -->
 
-<project>
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
     <artifactId>registry</artifactId>
@@ -34,14 +34,104 @@
   </description>
   <url>http://pds-cm.jpl.nasa.gov/2010/registry/registry-ui/</url>
 
-  <!-- These properties support PDF generation with Maven 1. -->
   <properties>
+    <junit-version>4.8.1</junit-version>
+    <gwt-version>2.0.0</gwt-version>
+    <jersey-version>1.1.5.1</jersey-version>
+    <!-- These properties support PDF generation with Maven 1. -->
     <xdoc-artifactId>${artifactId}</xdoc-artifactId>
     <xdoc-version>${version}</xdoc-version>
   </properties>
 
+  <developers>
+    <developer>
+      <name>Sean Hardman</name>
+      <id>shardman</id>
+      <email>Sean.Hardman@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Development Lead</role>
+      </roles>
+    </developer>   
+    <developer>
+      <name>Joshua Ganderson</name>
+      <id>jagander</id>
+      <email>Joshua.Ganderson@nasa.gov</email>
+      <organization>NASA Ames Research Center</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <contributors>
+    <contributor>
+      <name>Paul Ramirez</name>
+      <email>Paul.Ramirez@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </contributor>
+  </contributors>
+
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.4</version>
+        <executions>
+          <execution>
+            <phase>prepare-package</phase>
+            <configuration>
+              <tasks>
+                <ant antfile="build.xml" target="update-endpoint" />
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <version>1.2</version>
+        <configuration>
+          <localWorkers>1</localWorkers>
+          <!--
+          <warSourceDirectory>${basedir}/war</warSourceDirectory>
+          -->
+          <logLevel>WARN</logLevel>
+          <!-- use style OBF for prod -->
+          <style>OBFUSCATED</style>
+          <gwtVersion>${gwt-version}</gwtVersion>
+          <disableCastChecking>true</disableCastChecking>
+          <inplace>true</inplace>
+          <soyc>false</soyc>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <!-- <goal>generateAsync</goal> -->
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -60,6 +150,17 @@
           </execution>
         </executions>
       </plugin>   
+      <!-- 
+        Configuration for deploying to a local Tomcat server. Provide the 
+        username and password for the Manager interface in your settings.xml.
+      -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>tomcat-maven-plugin</artifactId>
+        <configuration>
+          <server>tomcat-local</server>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
@@ -78,7 +179,98 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <id>gwt-maven</id>
+      <url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
+    </repository>
+    <repository>
+      <id>gwt-incubator</id>
+      <url>http://repo2.maven.org/maven2/</url>
+    </repository>
+    <repository>
+      <id>JBoss Repo</id>
+      <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+    </repository>
+    <repository>
+      <id>JBoss Repo 2</id>
+      <url>http://repository.jboss.com/maven2/</url>
+    </repository>
+    <repository>
+      <id>maven2-repository.dev.java.net</id>
+      <name>Java.net Maven 2 Repository</name>
+      <url>http://download.java.net/maven/2</url>
+      <layout>default</layout>
+    </repository>
+    <repository>
+      <id>maven-repository.dev.java.net</id>
+      <name>Java.net Maven 1 Repository (legacy)</name>
+      <url>http://download.java.net/maven/1</url>
+      <layout>legacy</layout>
+    </repository>
   </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>gwt-maven-plugins</id>
+      <url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>maven2-repository.dev.java.net</id>
+      <name>Java.net Repository for Maven</name>
+      <url>http://download.java.net/maven/2</url>
+      <layout>default</layout>
+    </pluginRepository>
+    <pluginRepository>
+      <id>maven-repository.dev.java.net</id>
+      <name>Java.net Maven 1 Repository (legacy)</name>
+      <url>http://download.java.net/maven/1</url>
+      <layout>legacy</layout>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>gov.nasa.pds.registry</groupId>
+      <artifactId>registry-service</artifactId>
+      <version>0.4.0-dev</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-server</artifactId>
+      <version>${jersey-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-client</artifactId>
+      <version>${jersey-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit-version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-servlet</artifactId>
+      <version>${gwt-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <version>${gwt-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-incubator</artifactId>
+      <version>2.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>properties-maven-plugin</artifactId>
+      <version>1.0-alpha-2</version>
+    </dependency>
+  </dependencies>
 
   <reporting>
     <plugins>
@@ -103,7 +295,10 @@
         <reportSets>
           <reportSet>
             <reports>
+              <!-- Throws an error.
               <report>dependencies</report>
+              -->
+              <report>project-team</report>
               <report>summary</report>
             </reports>
           </reportSet>

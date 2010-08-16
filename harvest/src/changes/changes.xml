@@ -23,9 +23,12 @@
   </properties>
 
   <body>
-    <release version="0.1.0-dev" date="TBD" description="TBD">
+    <release version="0.1.0-dev" date="TBD" description="This release of the Harvest Tool is a component of the integrated release 0.1.0 of the PDS 2010 System.">
       <action dev="mcayanan" type="add">
          Added the capability to pass in an XML-based, policy file to the tool to find products and what metadata to register.
+      </action>
+      <action dev="mcayanan" type="add">
+         Added the capability to register data products with a target Registry Service.
       </action>
       <action dev="mcayanan" type="add">
          Added the capability to register a PDS Inventory File first before crawling the file for products.
@@ -36,8 +39,11 @@
       <action dev="mcayanan" type="add">
          Added the capability to launch the tool with a shell script or batch file.
       </action>
-      <action dev="mcayanan" type="update">
-         Updated to search for associations that are in the "class" format.
+      <action dev="mcayanan" type="add">
+         Added the capability to register associations that are in the "class" format.
+      </action>
+      <action dev="shardman, mcayanan" type="add">
+        Provide the initial documentation covering the design, installation and operation of the software.
       </action>
     </release>
   </body>

@@ -30,7 +30,7 @@
   <fileSets>
     <fileSet>
       <directory>target</directory>
-      <outputDirectory>lib</outputDirectory>
+      <outputDirectory>/</outputDirectory>
       <includes>
         <include>*.war</include>
       </includes>

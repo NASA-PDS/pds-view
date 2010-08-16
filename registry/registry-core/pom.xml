@@ -104,6 +104,7 @@
           <reportSet>
             <reports>
               <report>dependencies</report>
+              <report>project-team</report>
               <report>summary</report>
             </reports>
           </reportSet>

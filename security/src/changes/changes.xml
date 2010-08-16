@@ -23,7 +23,22 @@
   </properties>
 
   <body>
-    <release version="0.1.0-dev" date="TBD" description="TBD">
+    <release version="0.1.0-dev" date="TBD" description="This release of the Security Service is a component of the integrated release 0.1.0 of the PDS 2010 System.">
+      <action dev="hyunlee" type="add">
+        Provide the initial integration of the open source OpenAM product for satisfying the Security Service requirements.
+      </action>
+      <action dev="hyunlee" type="add">
+        Provide the initial configuration to utilize a separately installed OpenDS directory server.
+      </action>
+      <action dev="hyunlee" type="add">
+        Populated the directory server with the initial dump of PDS users from the PDS catalog.
+      </action>
+      <action dev="hyunlee" type="add">
+        Provide the capability to secure specific URLs for the Registry Service via its host Apache Tomcat server.
+      </action>
+      <action dev="shardman, hyunlee" type="add">
+        Provide the initial documentation covering the design, installation and operation of the software.
+      </action>
     </release>
   </body>
 </document>

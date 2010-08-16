@@ -23,13 +23,13 @@
   </properties>
 
   <body>
-    <release version="0.4.0-dev" date="TBD" description="TBD">
+    <release version="0.4.0-dev" date="TBD" description="This release of the Registry Service is a component of the integrated release 0.1.0 of the PDS 2010 System.">
     </release>
 
-    <release version="0.3-dev" date="2010-07-26" description="TBD">
+    <release version="0.3-dev" date="2010-07-26" description="This release of the Registry Service supports integration with the Registry User Interface developed at Ames.">
     </release>
 
-    <release version="0.2-dev-RC" date="2010-07-06" description="TBD">
+    <release version="0.2-dev-RC" date="2010-07-06" description="This release of the Registry Service supports integration with the Registry User Interface developed at Ames.">
     </release>
   </body>
 </document>

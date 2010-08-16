@@ -14,7 +14,16 @@ following commands:
 
 % mvn site
 % maven pdf
-% mvn package
+% mvn package -Dservice.endpoint={URL} -DskipTests=true
 
 The project still relies on Maven 1 functionality to generate the PDF form 
-of the documentation.
+of the documentation. Replace the {URL} placeholder with URL for the 
+Registry Service. It should end with ".../registry-service/".
+
+For ease of deployment to an Apache Tomcat Server, use the 
+"mvn tomcat:deploy" command. The tomcat-maven-plugin is configured in the 
+pom.xml to deploy to the "tomcat-local" server. The username and password 
+for the manager interface of this server should be specified in your local 
+".m2/settings.xml" file. See Using Maven document at 
+http://pds-cm.jpl.nasa.gov/maven2/ for more details. Use the 
+"mvn tomcat:undeploy" command to reverse the deployment.

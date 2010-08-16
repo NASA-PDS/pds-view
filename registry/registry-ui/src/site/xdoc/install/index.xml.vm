@@ -31,6 +31,7 @@
       <ul>
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
+        <li><a href="#Configuring_Service_Endpoint">Configuring Service Endpoint</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
       </ul>
     </section>
@@ -77,6 +78,18 @@ or
           </p>
         </li>
       </ul>
+    </section>
+
+    <section name="Configuring Service Endpoint">
+      <p>The Registry User Interface software is configured at build time to access a specific Registry Service endpoint. If this configuration requires modification, the WAR file will need to be unpacked and the <i>./WEB-INF/classes/application.properties</i> file modified. The file contents are as follows:
+      </p>
+
+      <source>
+service.endpoint=http\://{host}\:{port}/registry-service/
+      </source>
+
+      <p>Modify the values contained in the {} according to the desired Registry Service endpoint, save the file and repack the WAR file.
+      </p>
     </section>
 
     <section name="Deploying the Application">
