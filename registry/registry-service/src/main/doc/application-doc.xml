@@ -12,7 +12,7 @@
         is not yet completed and many error conditions have not yet been mapped to HTTP error codes.</p>
         <ol>
          <li>Publishing a new product<br/><br/>
-         curl -X POST -H "Content-type:application/xml" -v -d @new_product.xml ${registry.endpoint}registry/products<br/><br/>
+             curl -X POST -H "Content-type:application/xml" -v -d @new_product.xml ${registry.endpoint}registry/products<br/><br/>
          Contents of new_product.xml are:
          <pre>
          <![CDATA[
@@ -37,14 +37,14 @@
 ]]>
          </pre>The output you would see from cURL:<pre>
 <![CDATA[
-* About to connect() to localhost port 8080 (#0)
+* About to connect() to ${registry.host} port ${registry.port} (#0)
 *   Trying ::1... Connection refused
 *   Trying fe80::1... Connection refused
 *   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 8080 (#0)
-> POST /registry-service/registry/products HTTP/1.1
+* Connected to ${registry.host} (127.0.0.1) port ${registry.port} (#0)
+> POST ${registry.context}/registry/products HTTP/1.1
 > User-Agent: curl/7.16.3 (powerpc-apple-darwin9.0) libcurl/7.16.3 OpenSSL/0.9.7l zlib/1.2.3
-> Host: localhost:8080
+> Host: ${registry.host}:${registry.port}
 > Accept: */*
 > Content-type:application/xml
 > Content-Length: 598
@@ -56,7 +56,7 @@
 < Content-Length: 0
 < Date: Wed, 14 Apr 2010 20:33:32 GMT
 < 
-* Connection #0 to host localhost left intact
+* Connection #0 to host ${registry.host} left intact
 * Closing connection #0
 ]]>
          </pre>

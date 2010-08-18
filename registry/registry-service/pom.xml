@@ -50,25 +50,36 @@
     <commons-logging.version>1.0.4</commons-logging.version>
     <log4j.version>1.2.15</log4j.version>
     <derby.version>10.6.1.0</derby.version>
+    <env>default</env>
+    <registry.endpoint>${registry.protocol}://${registry.host}:${registry.port}${registry.context}/</registry.endpoint>
   </properties>
 
   <build>
     <testSourceDirectory>src/test</testSourceDirectory>
     <filters>
-      <filter>${project.basedir}/src/main/conf/default.properties</filter>
+      <filter>src/main/filters/${env}.properties</filter>
     </filters>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
     <plugins>
-      <!--
-      <plugin>
-        <groupId>org.glassfish</groupId>
-        <artifactId>maven-glassfish-plugin</artifactId>
-      </plugin>
-      -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.0.2</version>
+        <version>2.1-beta-1</version>
         <configuration>
+          <!-- If we wanted different filters for the war we could put them here
+          <filters>
+            <filter>src/main/filters/${env}.properties</filter>
+          </filters>
+          -->
+          <nonFilteredFileExtensions>
+            <!-- default value contains jpg,jpeg,gif,bmp,png -->
+            <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+          </nonFilteredFileExtensions>
           <webResources>
             <resource>
               <directory>${project.build.directory}</directory>

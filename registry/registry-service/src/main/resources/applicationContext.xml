@@ -44,7 +44,7 @@
 	<bean id="versioner" class="gov.nasa.pds.registry.model.naming.DefaultVersioner"/>
 	
 	<bean id="idGenerator" class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
-	    p:home="http://localhost/registry"/>
+	    p:home="${registry.home}"/>
 	
 	<bean id="statusInfo" class="gov.nasa.pds.registry.model.StatusInfo"
 		p:status="OK"/>
