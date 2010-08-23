@@ -18,14 +18,40 @@
 
 <document>
   <properties>
-    <title>Release Description 1.0.0</title>
+    <title>Release Description 0.1.0</title>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
-    <section name="Release Description 1.0.0">
+    <section name="Release Description 0.1.0">
+      <p>This first release of the PDS 2010 System is intended as a prototype release in support of the demonstration at the Management Council Face-to-Face meeting in August 2010. The following sections can be found in this document:
+      </p>
+
+      <ul>
+        <li><a href="#System_Requirements">System Requirements</a></li>
+        <li><a href="#InstallationOperation">Installation/Operation</a></li>
+      </ul>
+    </section>
+
+    <section name="System Requirements">
       <p>TBD
       </p>
     </section>
+
+    <section name="Installation/Operation">
+      <p>TBD
+      </p>
+
+      <subsection name="Integration and Test Environment">
+        <p>TBD
+        </p>
+      </subsection>
+
+      <subsection name="Operations Environment">
+        <p>TBD
+        </p>
+      </subsection>
+    </section>
+
   </body>
 </document>
