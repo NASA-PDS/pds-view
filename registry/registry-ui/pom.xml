@@ -253,7 +253,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>gov.nasa.pds.registry.2010</groupId>
+      <groupId>gov.nasa.pds.2010.registry</groupId>
       <artifactId>registry-service</artifactId>
       <version>0.4.0</version>
     </dependency>
