@@ -13,8 +13,8 @@
 #
 # $Id$
 
-# This script traverses the module directories to build and deploy
-# the associated sites to the repository.
+# This script traverses the module directories to build and create JAR 
+# files for the associated sites.
 
 cd ..
 mvn clean
@@ -34,4 +34,4 @@ cd ../../security
 maven pdf
 
 cd ..
-mvn site:deploy
+mvn site:jar
