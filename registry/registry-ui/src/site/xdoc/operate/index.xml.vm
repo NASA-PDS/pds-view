@@ -28,7 +28,10 @@
       <p>The Registry User Interface software is a web application for interfacing with the Registry Service. The main screen of the application is as follows:
       </p>
 
-      <center><img src="../images/registry_ui_main_screen.jpg"/></center>
+      <center>
+        <a href="../images/registry_ui_main_screen.jpg" target="_blank"><img alt="Registry UI Screen Shot" src="../images/registry_ui_main_screen_scale.jpg" border="1" /></a><br/>
+        Click on the image for a larger version.
+      </center>
     </section>
   </body>
 </document>
