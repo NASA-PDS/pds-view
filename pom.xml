@@ -209,20 +209,49 @@
 
   <reporting>
     <plugins>
+      <!-- Project Information inherited by project modules. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <inherited>false</inherited>
+        <inherited>true</inherited>
         <reportSets>
           <reportSet>
             <reports>
+              <report>dependencies</report>
               <report>issue-tracking</report>
+              <report>license</report>
               <report>mailing-list</report>
               <report>project-team</report>
               <report>summary</report>
             </reports>
           </reportSet>
         </reportSets>
+      </plugin>
+      <!-- Project Reports inherited by the project modules. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <inherited>true</inherited>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>changes-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <inherited>true</inherited>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <inherited>true</inherited>
+        <configuration>
+          <findbugsXmlOutput>true</findbugsXmlOutput>
+        </configuration>
       </plugin>
     </plugins>
   </reporting>

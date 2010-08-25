@@ -26,6 +26,8 @@
     <name>Registry&nbsp;&nbsp;</name>
   </bannerRight>
 
+  <version position="none"/>
+
   <body>
     <links>
       <item name="Registry" href="http://pds-cm.jpl.nasa.gov/2010/registry/index.html" />

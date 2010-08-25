@@ -25,6 +25,8 @@
     <name>PDS 2010&nbsp;&nbsp;</name>
   </bannerRight>
 
+  <version position="none"/>
+
   <body>
     <links>
       <item name="PDS 2010" href="http://pds-cm.jpl.nasa.gov/2010/" />

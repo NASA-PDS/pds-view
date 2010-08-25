@@ -35,6 +35,14 @@
   </description>
   <url>http://pds-cm.jpl.nasa.gov/2010/harvest/</url>
 
+  <licenses>
+    <license>
+      <name>California Institute of Technology</name>
+      <url>file:///${basedir}/LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <!-- These properties support PDF generation with Maven 1. -->
   <properties>
     <xdoc-artifactId>${artifactId}</xdoc-artifactId>
@@ -339,35 +347,13 @@
     </dependency>              
   </dependencies>
 
+  <!-- Project Information and Reports inherited from parent. -->
   <reporting>
+    <!-- Project Reports not inherited from parent. -->
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changes-plugin</artifactId>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>changes-report</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>dependencies</report>
-              <report>project-team</report>
-              <report>summary</report>
-            </reports>
-          </reportSet>
-        </reportSets>
       </plugin>
     </plugins>
   </reporting>
