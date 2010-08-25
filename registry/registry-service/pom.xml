@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010.registry</groupId>
   <artifactId>registry-service</artifactId>
-  <version>0.4.0-dev</version>
+  <version>0.4.0</version>
   <packaging>war</packaging>
 
   <name>Registry Service</name>
@@ -34,6 +34,14 @@
     The Registry Service provides functionality for tracking, auditing, locating, and maintaining artifacts within the system. The service provides a REST-based interface for interacting with the service.
   </description>
   <url>http://pds-cm.jpl.nasa.gov/2010/registry/registry-service/</url>
+
+  <licenses>
+    <license>
+      <name>California Institute of Technology</name>
+      <url>file:///${basedir}/LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <properties>
     <!-- These properties support PDF generation with Maven 1. -->

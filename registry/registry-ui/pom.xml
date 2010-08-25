@@ -25,7 +25,7 @@
 
   <groupId>gov.nasa.pds.2010.registry</groupId>
   <artifactId>registry-ui</artifactId>
-  <version>0.1.0-dev</version>
+  <version>0.1.0</version>
   <packaging>war</packaging>
 
   <name>Registry User Interface</name>
@@ -33,6 +33,14 @@
     The Registry User Interface software serves as the web-based interface for the Registry Service.
   </description>
   <url>http://pds-cm.jpl.nasa.gov/2010/registry/registry-ui/</url>
+
+  <licenses>
+    <license>
+      <name>California Institute of Technology</name>
+      <url>file:///${basedir}/LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <properties>
     <junit-version>4.8.1</junit-version>
@@ -245,9 +253,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>gov.nasa.pds.registry</groupId>
+      <groupId>gov.nasa.pds.registry.2010</groupId>
       <artifactId>registry-service</artifactId>
-      <version>0.4.0-dev</version>
+      <version>0.4.0</version>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey</groupId>

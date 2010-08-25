@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>harvest</artifactId>
-  <version>0.1.0-dev</version>
+  <version>0.1.0</version>
   <packaging>jar</packaging>
 
   <name>Harvest Tool</name>
@@ -316,9 +316,9 @@
       <scope>compile</scope>      
     </dependency> 
     <dependency>
-      <groupId>gov.nasa.pds.registry</groupId>
+      <groupId>gov.nasa.pds.registry.2010</groupId>
       <artifactId>registry-service</artifactId>
-      <version>0.4.0-dev</version>
+      <version>0.4.0</version>
       <scope>compile</scope>      
     </dependency>
     <dependency>

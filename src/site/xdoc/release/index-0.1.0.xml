@@ -34,24 +34,30 @@
     </section>
 
     <section name="System Requirements">
-      <p>TBD
+      <p>This section details the system requirements for installing and operating the software. The software contained in this release was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically developed under Sun Java version 1.6 and has only been tested with this version. Specific system requirements for each component in this release can be found in their respective Installation documents.
       </p>
     </section>
 
     <section name="Installation/Operation">
-      <p>TBD
+      <p>This section details the installation and operation of the software in this release. This release is intended for deployment in the Engineering Node Operations environment. Details regarding the release for each of these components, including installation of the packages and operation of the associated software, can be found in the following program set release documents:
       </p>
 
-      <subsection name="Integration and Test Environment">
-        <p>TBD
-        </p>
-      </subsection>
+      <ul>
+        <li><a href="../harvest/index.html">Harvest - 0.1.0</a></li>
+        <li><a href="../registry/index.html">Registry</a></li>
+        <ul>
+          <li><a href="../registry/registry-service/index.html">Registry Service - 0.4.0</a></li>
+          <li><a href="../registry/registry-ui/index.html">Registry User Interface - 0.1.0</a></li>
+        </ul>
+        <li><a href="../security/index.html">Security - 0.1.0</a></li>
+      </ul>
 
-      <subsection name="Operations Environment">
-        <p>TBD
-        </p>
-      </subsection>
+      <p>The following diagram details where the major components of this release should be installed in the Operations environment and gives a very high-level view of the interfaces between the components and system resources:
+      </p>
+
+      <center>
+        <a href="../images/ops-deploy-0.1.0.jpg" target="_blank"><img alt="Operations Deployment" src="../images/ops-deploy-0.1.0-scale.jpg" border="1" /></a>
+      </center>
     </section>
-
   </body>
 </document>

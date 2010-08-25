@@ -25,7 +25,7 @@
 
   <body>
     <section name="Operation">
-      <p>TBD
+      <p>The Registry Service software is a web application for tracking, auditing, locating, and maintaining artifacts within the system. The service provides a REST-based interface accessible via HTTP for interacting with the service. Each PDS Node may have their own installation of the Registry Service with its own service endpoint. The service endpoint for the operational instance at the Engineering Node is <a href="http://pdsops2.jpl.nasa.gov/registry-service/registry/" target="_blank">http://pdsops2.jpl.nasa.gov/registry-service/registry/</a>. Details on the REST-based interface can be found in the <a href="../api/index.html">API</a> section. If viewing this document in PDF form, see the online version at <a href="http://pdsops2.jpl.nasa.gov/registry-service/docs/" target="_blank">http://pdsops2.jpl.nasa.gov/registry-service/docs/</a>.
       </p>
     </section>
   </body>

@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>security</artifactId>
-  <version>0.1.0-dev</version>
+  <version>0.1.0</version>
   <packaging>pom</packaging>
 
   <name>Security Service</name>
@@ -34,6 +34,14 @@
     The Security service provides the authentication and authorization functions for the PDS 2010 system. The intent of this service is to control access to interfaces and services that require authentication and authorization (e.g., Monitor, Report, Registry interfaces, etc.).
   </description>
   <url>http://pds-cm.jpl.nasa.gov/2010/security/</url>
+
+  <licenses>
+    <license>
+      <name>California Institute of Technology</name>
+      <url>file:///${basedir}/LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <!-- These properties support PDF generation with Maven 1. -->
   <properties>

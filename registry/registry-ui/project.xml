@@ -19,12 +19,12 @@
 <project>
   <id>registry-ui</id>
   <name>Registry User Interface</name>
-  <currentVersion>0.1.0-dev</currentVersion>
+  <currentVersion>0.1.0</currentVersion>
 
   <organization>
     <name>NASA Jet Propulsion Laboratory, California Institute of Technology</name>
   </organization>
-  <inceptionYear>2005</inceptionYear>
+  <inceptionYear>2010</inceptionYear>
 
   <dependencies>
     <dependency>
