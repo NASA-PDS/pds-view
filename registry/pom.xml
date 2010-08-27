@@ -35,7 +35,7 @@
   <url>http://pds-cm.jpl.nasa.gov/2010/registry/</url>
 
   <modules>
-    <!--<module>registry-core</module>-->
+    <module>registry-core</module>
     <module>registry-service</module>
     <module>registry-ui</module>
   </modules>

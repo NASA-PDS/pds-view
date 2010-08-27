@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="0.2.0" date="TBD" description="TBD">
+    </release>
+
     <release version="0.1.0" date="2010-08-25" description="This release of the Harvest Tool is a component of the integrated release 0.1.0 of the PDS 2010 System.">
       <action dev="mcayanan" type="add">
          Added the capability to pass in an XML-based, policy file to the tool to find products and what metadata to register.
