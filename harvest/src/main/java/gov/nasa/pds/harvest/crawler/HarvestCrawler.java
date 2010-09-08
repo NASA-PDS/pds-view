@@ -106,7 +106,7 @@ public class HarvestCrawler extends ProductCrawler {
 			log.log(new ToolsLogRecord(Level.SEVERE, 
 					"Error while gathering metadata: " + m.getMessage(),
 					product));
-			return new Metadata();
+			return null;
 		}
 	}
 	@Override

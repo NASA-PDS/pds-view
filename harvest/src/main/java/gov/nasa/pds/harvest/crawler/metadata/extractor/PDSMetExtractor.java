@@ -81,16 +81,24 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
 			}
 		}
 		List<ReferenceEntry> refEntries = new ArrayList<ReferenceEntry>();
+		String name = "";
+		String value = "";
 		for(int i=0; i < references.getLength(); i++) {
 			try {
 				NodeList children = xmlExtractor.getNodesFromItem("*", references.item(i));
 				ReferenceEntry re = new ReferenceEntry();
 				for(int j=0; j < children.getLength(); j++) {
-					String name = children.item(j).getNodeName();
-					String value = children.item(j).getTextContent();
+					name = children.item(j).getNodeName();
+					value = children.item(j).getTextContent();
 					if(name.equals("lidvid_reference")) {
-						re.setLogicalID(value.split("::")[0]);
-						re.setVersion(value.split("::")[1]);
+						try {
+							re.setLogicalID(value.split("::")[0]);
+							re.setVersion(value.split("::")[1]);
+						} catch (ArrayIndexOutOfBoundsException ae) {
+							throw new MetExtractionException(
+								"Expected a LID-VID reference, but found this: "
+								+ value);
+						}
 					} else if(name.equals("lid_reference")) {
 						re.setLogicalID(value);
 					} else if(name.equals("reference_association_type")) {
@@ -100,8 +108,8 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
 					}
 				}
 				refEntries.add(re);
-			} catch (XPathExpressionException x) {
-				throw new MetExtractionException(x.getMessage());
+			} catch (Exception e) {
+				throw new MetExtractionException(e.getMessage());
 			}
 		}
 		metadata.addMetadata(REFERENCES, refEntries);
