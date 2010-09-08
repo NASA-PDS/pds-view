@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- 
+  Copyright 2010, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology 
+  Transfer at the California Institute of Technology.
+
+  This software may be subject to U.S. export control laws. By accepting 
+  this software, the user agrees to comply with all applicable U.S. export 
+  laws and regulations. User has the responsibility to obtain export licenses, 
+  or other export authority as may be required before exporting such 
+  information to foreign countries or providing access to foreign persons.
+
+  $Id$
+-->
+
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>gov.nasa.pds</groupId>
+    <artifactId>2010</artifactId>
+    <version>0.0.0</version>
+  </parent>
+
+  <groupId>gov.nasa.pds.2010</groupId>
+  <artifactId>tools</artifactId>
+  <version>0.0.0</version>
+  <packaging>pom</packaging>
+
+  <name>Preparation Tools</name>
+  <description>
+    The Preparation Tools provide functionality for preparing data for ingestion into PDS. This includes product label design, generation, transformation and validation as well as package formation. This project consists of a suite of tools and a core library allowing existing Node processes and procedures to be utilized in the ingestion process.
+  </description>
+  <url>http://pds-cm.jpl.nasa.gov/2010/tools/</url>
+
+  <modules>
+    <module>core</module>
+    <module>validate</module>
+  </modules>
+
+  <developers>
+    <developer>
+      <name>Sean Hardman</name>
+      <id>shardman</id>
+      <email>Sean.Hardman@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Development Lead</role>
+      </roles>
+    </developer>   
+    <developer>
+      <name>Paul Ramirez</name>
+      <id>pramirez</id>
+      <email>Paul.Ramirez@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Michael Cayanan</name>
+      <id>mcayanan</id>
+      <email>Michael.Cayanan@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <contributors>
+    <contributor>
+      <name>Steve Hughes</name>
+      <email>John.S.Hughes@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>System Engineering Lead</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Ron Joyner</name>
+      <email>Ronald.Joyner@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>System Engineer</role>
+      </roles>
+    </contributor>
+  </contributors>
+
+  <repositories>
+    <repository>
+      <id>pds-repo</id>
+      <name>PDS Repository</name>
+      <layout>default</layout>
+      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <!-- Project Information and Reports inherited from parent. -->
+  <reporting/>
+</project>
