@@ -20,26 +20,26 @@ import java.net.URL;
 /**
  * @author pramirez
  * @version $Revision$
- * 
+ *
  */
 public class Utility {
-       
-	/**
-	 * Convert a string to a URL.
-	 * @param s The string to convert
-	 * @return A URL of the input string
-	 */
-	public static URL toURL(String s) throws MalformedURLException {
-		URL url = null;		
-		try {
-			url = new URL(s);
-		} catch (MalformedURLException ex) {
-			url = new File(s).toURI().toURL();
-		}
-		return url;
-	}
-	
-	public static String toWellFormedURI(String s) {
-		return s.replaceAll(" ", "%20");
-	}
+
+    /**
+     * Convert a string to a URL.
+     * @param s The string to convert
+     * @return A URL of the input string
+     */
+    public static URL toURL(String s) throws MalformedURLException {
+        URL url = null;
+        try {
+            url = new URL(s);
+        } catch (MalformedURLException ex) {
+            url = new File(s).toURI().toURL();
+        }
+        return url;
+    }
+
+    public static String toWellFormedURI(String s) {
+        return s.replaceAll(" ", "%20");
+    }
 }

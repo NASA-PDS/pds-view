@@ -14,9 +14,9 @@
 package gov.nasa.pds.harvest.security;
 
 public class SecurityClientException extends Exception {
-	private static final long serialVersionUID = 5283181268553039818L;
+    private static final long serialVersionUID = 5283181268553039818L;
 
-	public SecurityClientException(String message) {
-		super(message);
-	}
+    public SecurityClientException(String message) {
+        super(message);
+    }
 }

@@ -26,63 +26,63 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 public class HttpUtils {
-	public static ClientResponse post(URI uri, Object requestEntity, MediaType contentType) {
-		return post(uri, requestEntity, new ArrayList<NameValuePair>(), contentType, null);
-	}
-	
-	public static ClientResponse post(URI uri, NameValuePair parameter, MediaType contentType) {
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(parameter);
-		
-		return post(uri, params, contentType);
-	}
-	
-	public static ClientResponse post(URI uri, List<NameValuePair> parameters, MediaType contentType) {
-		return post(uri, null, parameters, contentType, null);
-	}	
-	
-	public static ClientResponse post(URI uri, Object requestEntity, MediaType contentType, String token) {
-		return post(uri, requestEntity, new ArrayList<NameValuePair>(), contentType, token);
-	}
-	
-	public static ClientResponse post(URI uri, List<NameValuePair> parameters, MediaType contentType, String token) {
-		return post(uri, null, parameters, contentType, token);
-	}
-	
-	public static ClientResponse post(URI uri, Object requestEntity, List<NameValuePair> parameters, MediaType contentType, String token) {
-		WebResource resource = Client.create().resource(uri);
-		for(NameValuePair param : parameters) {
-			resource = resource.queryParam(param.getName(), param.getValue());
-		}
-		WebResource.Builder builder = resource.getRequestBuilder();
-		if(token != null) {
-			builder = builder.header("Cookie", createCookie(token));
-		}
-		if(contentType != null)
-			builder = builder.type(contentType);
-		if(requestEntity != null) {
-			builder = builder.entity(requestEntity);
-		}
-		return builder.post(ClientResponse.class);
-	}
-	
-	public static ClientResponse get(URI uri, MediaType contentType) {	
-		return get(uri, contentType, null);
-	}	
-		
-	public static ClientResponse get(URI uri, MediaType contentType, String token) {
-		WebResource resource = Client.create().resource(uri);
-		WebResource.Builder builder = resource.getRequestBuilder();
-		if(token != null) {
-			builder = builder.header("Cookie", createCookie(token));
-		}
-		if(contentType != null)
-			builder = builder.type(contentType);
-		
-		return builder.get(ClientResponse.class);
-	}
-	
-	public static String createCookie(String token) {
-		return "iPlanetDirectoryPro=\"" + token + "\"";
-	}
+    public static ClientResponse post(URI uri, Object requestEntity, MediaType contentType) {
+        return post(uri, requestEntity, new ArrayList<NameValuePair>(), contentType, null);
+    }
+
+    public static ClientResponse post(URI uri, NameValuePair parameter, MediaType contentType) {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(parameter);
+
+        return post(uri, params, contentType);
+    }
+
+    public static ClientResponse post(URI uri, List<NameValuePair> parameters, MediaType contentType) {
+        return post(uri, null, parameters, contentType, null);
+    }
+
+    public static ClientResponse post(URI uri, Object requestEntity, MediaType contentType, String token) {
+        return post(uri, requestEntity, new ArrayList<NameValuePair>(), contentType, token);
+    }
+
+    public static ClientResponse post(URI uri, List<NameValuePair> parameters, MediaType contentType, String token) {
+        return post(uri, null, parameters, contentType, token);
+    }
+
+    public static ClientResponse post(URI uri, Object requestEntity, List<NameValuePair> parameters, MediaType contentType, String token) {
+        WebResource resource = Client.create().resource(uri);
+        for(NameValuePair param : parameters) {
+            resource = resource.queryParam(param.getName(), param.getValue());
+        }
+        WebResource.Builder builder = resource.getRequestBuilder();
+        if(token != null) {
+            builder = builder.header("Cookie", createCookie(token));
+        }
+        if(contentType != null)
+            builder = builder.type(contentType);
+        if(requestEntity != null) {
+            builder = builder.entity(requestEntity);
+        }
+        return builder.post(ClientResponse.class);
+    }
+
+    public static ClientResponse get(URI uri, MediaType contentType) {
+        return get(uri, contentType, null);
+    }
+
+    public static ClientResponse get(URI uri, MediaType contentType, String token) {
+        WebResource resource = Client.create().resource(uri);
+        WebResource.Builder builder = resource.getRequestBuilder();
+        if(token != null) {
+            builder = builder.header("Cookie", createCookie(token));
+        }
+        if(contentType != null)
+            builder = builder.type(contentType);
+
+        return builder.get(ClientResponse.class);
+    }
+
+    public static String createCookie(String token) {
+        return "iPlanetDirectoryPro=\"" + token + "\"";
+    }
 }

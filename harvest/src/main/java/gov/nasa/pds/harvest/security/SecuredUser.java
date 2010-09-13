@@ -14,19 +14,19 @@
 package gov.nasa.pds.harvest.security;
 
 public class SecuredUser {
-	private String name;
-	private String token;
-	
-	public SecuredUser(String name, String token) {
-		this.name = name;
-		this.token = token;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public String getToken() {
-		return token;
-	}
+    private String name;
+    private String token;
+
+    public SecuredUser(String name, String token) {
+        this.name = name;
+        this.token = token;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getToken() {
+        return token;
+    }
 }

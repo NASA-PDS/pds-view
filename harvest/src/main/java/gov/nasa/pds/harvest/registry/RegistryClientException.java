@@ -23,7 +23,7 @@ package gov.nasa.pds.harvest.registry;
 public class RegistryClientException extends Exception {
   private static final long serialVersionUID = 4134078866650777281L;
 
-	public RegistryClientException(String message) {
-		super(message);
-	}
+    public RegistryClientException(String message) {
+        super(message);
+    }
 }

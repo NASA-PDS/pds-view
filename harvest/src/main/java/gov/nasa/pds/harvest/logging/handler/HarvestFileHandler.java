@@ -22,58 +22,58 @@ import java.util.logging.Level;
 
 /**
  * Class to setup a file handler for the tools logging capability.
- * 
+ *
  * @author mcayanan
  *
  */
 public class HarvestFileHandler extends FileHandler {
-	
-	/**
-	 * Constructor that does not append to a file and automatically
-	 * sets the log level to 'ALL'.
-	 * 
-	 * @param file A file name to store the logging messages. If the file 
-	 * exists, it will overwrite the existing contents.
-	 * @param formatter Formatter to be used to format the log messages.
-	 * 
-	 * @throws SecurityException
-	 * @throws IOException
-	 */
-	public HarvestFileHandler(String file, Formatter formatter) throws SecurityException, IOException {
-		this(file, false, Level.ALL, formatter);
-	}
-	
-	/**
-	 * Constructor that does not append to a file.
-	 * 
-	 * @param file A file name to store the logging messages.
-	 * @param level Sets the logging level.
-	 * @param formatter Formatter to be used to format the log messages.
-	 * 
-	 * @throws SecurityException
-	 * @throws IOException
-	 */
-	public HarvestFileHandler(String file, Level level, Formatter formatter) throws SecurityException, IOException {
-		this(file, false, level, formatter);
-	}
-	
-	/**
-	 * Constructor.
-	 * 
-	 * @param file A file name to store the logging messages.
-	 * @param append A flag to tell the handler to append to the file or
-	 * to overwrite the existing contents.
-	 * @param level Sets the logging level.
-	 * @param formatter Formatter to be used to format the log messages.
-	 * 
-	 * @throws SecurityException
-	 * @throws IOException
-	 */
-	public HarvestFileHandler(String file, boolean append, Level level, Formatter formatter) throws SecurityException, IOException {
-		super(file, append);
-		setLevel(level);
-		setFormatter(formatter);
-		setFilter(new ToolsLogFilter());
-	}
+
+    /**
+     * Constructor that does not append to a file and automatically
+     * sets the log level to 'ALL'.
+     *
+     * @param file A file name to store the logging messages. If the file
+     * exists, it will overwrite the existing contents.
+     * @param formatter Formatter to be used to format the log messages.
+     *
+     * @throws SecurityException
+     * @throws IOException
+     */
+    public HarvestFileHandler(String file, Formatter formatter) throws SecurityException, IOException {
+        this(file, false, Level.ALL, formatter);
+    }
+
+    /**
+     * Constructor that does not append to a file.
+     *
+     * @param file A file name to store the logging messages.
+     * @param level Sets the logging level.
+     * @param formatter Formatter to be used to format the log messages.
+     *
+     * @throws SecurityException
+     * @throws IOException
+     */
+    public HarvestFileHandler(String file, Level level, Formatter formatter) throws SecurityException, IOException {
+        this(file, false, level, formatter);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param file A file name to store the logging messages.
+     * @param append A flag to tell the handler to append to the file or
+     * to overwrite the existing contents.
+     * @param level Sets the logging level.
+     * @param formatter Formatter to be used to format the log messages.
+     *
+     * @throws SecurityException
+     * @throws IOException
+     */
+    public HarvestFileHandler(String file, boolean append, Level level, Formatter formatter) throws SecurityException, IOException {
+        super(file, append);
+        setLevel(level);
+        setFormatter(formatter);
+        setFilter(new ToolsLogFilter());
+    }
 
 }

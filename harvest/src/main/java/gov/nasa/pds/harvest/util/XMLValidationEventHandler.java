@@ -22,21 +22,21 @@ import javax.xml.bind.ValidationEvent;
 import javax.xml.bind.ValidationEventHandler;
 
 public class XMLValidationEventHandler implements ValidationEventHandler {
-	private static Logger log = Logger.getLogger(XMLValidationEventHandler.class.getName());
-	
-	public boolean handleEvent(ValidationEvent event) {
-		Level level = null;
-		if(event.getSeverity() == ValidationEvent.ERROR || 
-		   event.getSeverity() == ValidationEvent.FATAL_ERROR) {
-			level = Level.SEVERE;
-		} else if(event.getSeverity() == ValidationEvent.WARNING) {
-			level = Level.WARNING;
-		}
-		log.log(new ToolsLogRecord(level, event.getMessage(), 
-				event.getLocator().getURL().toString(), 
-				event.getLocator().getLineNumber()));
-			
-		return false;
-	}
-	
+    private static Logger log = Logger.getLogger(XMLValidationEventHandler.class.getName());
+
+    public boolean handleEvent(ValidationEvent event) {
+        Level level = null;
+        if(event.getSeverity() == ValidationEvent.ERROR ||
+           event.getSeverity() == ValidationEvent.FATAL_ERROR) {
+            level = Level.SEVERE;
+        } else if(event.getSeverity() == ValidationEvent.WARNING) {
+            level = Level.WARNING;
+        }
+        log.log(new ToolsLogRecord(level, event.getMessage(),
+                event.getLocator().getURL().toString(),
+                event.getLocator().getLineNumber()));
+
+        return false;
+    }
+
 }
