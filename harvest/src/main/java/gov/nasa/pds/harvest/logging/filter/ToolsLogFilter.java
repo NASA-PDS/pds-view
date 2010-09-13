@@ -17,14 +17,14 @@ import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 
 public class ToolsLogFilter implements Filter {
-	
-	@Override
-	public boolean isLoggable(LogRecord record) {
-		String casCrawlerName = "gov.nasa.jpl.oodt.cas.crawl";
-		if((record.getLoggerName() != null) && record.getLoggerName().contains(casCrawlerName)) 
-			return false;
-		else
-			return true;
-	}
+
+    @Override
+    public boolean isLoggable(LogRecord record) {
+        String casCrawlerName = "gov.nasa.jpl.oodt.cas.crawl";
+        if((record.getLoggerName() != null) && record.getLoggerName().contains(casCrawlerName))
+            return false;
+        else
+            return true;
+    }
 
 }

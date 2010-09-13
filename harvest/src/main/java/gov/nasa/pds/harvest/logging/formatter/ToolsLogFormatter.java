@@ -19,24 +19,24 @@ import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
 public class ToolsLogFormatter extends Formatter {
-	private static String lineFeed = System.getProperty("line.separator", "\n");
-	
-	public String format(LogRecord record) {
-		ToolsLogRecord tlr = (ToolsLogRecord) record;
-		StringBuffer message = new StringBuffer();
-		
-		message.append(tlr.getLevel().getName());
-		message.append(":   ");
+    private static String lineFeed = System.getProperty("line.separator", "\n");
 
-		if(tlr.getFilename() != null) {
-			message.append("[" + tlr.getFilename() + "] ");
-		}
-		if(tlr.getLine() != -1) {
-			message.append("line " + tlr.getLine() + ": ");
-		}
-		message.append(tlr.getMessage());
-		message.append(lineFeed);
-		
-		return message.toString();
-	}
+    public String format(LogRecord record) {
+        ToolsLogRecord tlr = (ToolsLogRecord) record;
+        StringBuffer message = new StringBuffer();
+
+        message.append(tlr.getLevel().getName());
+        message.append(":   ");
+
+        if(tlr.getFilename() != null) {
+            message.append("[" + tlr.getFilename() + "] ");
+        }
+        if(tlr.getLine() != -1) {
+            message.append("line " + tlr.getLine() + ": ");
+        }
+        message.append(tlr.getMessage());
+        message.append(lineFeed);
+
+        return message.toString();
+    }
 }

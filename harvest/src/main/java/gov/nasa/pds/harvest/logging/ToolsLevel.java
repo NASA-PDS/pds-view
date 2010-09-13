@@ -16,12 +16,12 @@ package gov.nasa.pds.harvest.logging;
 import java.util.logging.Level;
 
 public class ToolsLevel extends Level {
-	public static final Level SKIP = new ToolsLevel("SKIP", Level.SEVERE.intValue() + 4);
+    public static final Level SKIP = new ToolsLevel("SKIP", Level.SEVERE.intValue() + 4);
     public static final Level FAIL = new ToolsLevel("FAIL", Level.SEVERE.intValue() + 3);
     public static final Level PASS = new ToolsLevel("PASS", Level.SEVERE.intValue() + 2);
     public static final Level SUCCESS = new ToolsLevel("SUCCESS", Level.SEVERE.intValue() + 1);
-    
+
     protected ToolsLevel(String name, int value) {
         super(name, value);
-    }    
+    }
 }
