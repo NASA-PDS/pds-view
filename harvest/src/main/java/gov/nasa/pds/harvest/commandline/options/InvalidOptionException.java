@@ -14,10 +14,10 @@
 package gov.nasa.pds.harvest.commandline.options;
 
 public class InvalidOptionException extends Exception {
-	private static final long serialVersionUID = -5439038812448365813L;
+    private static final long serialVersionUID = -5439038812448365813L;
 
-	public InvalidOptionException(String msg) {
-		super(msg);
-	}
+    public InvalidOptionException(String msg) {
+        super(msg);
+    }
 
 }

@@ -48,194 +48,194 @@ import org.apache.commons.cli.ParseException;
 
 /**
  * Wrapper class of the Harvest tool that handles the command-line processing
- * 
+ *
  * @author mcayanan
  *
  */
 public class HarvestLauncher implements HarvestFlags {
-	private Options options;
-	private final String PROPERTYFILE = "harvest.properties";
-	private final String PROPERTYTOOLNAME = "harvest.name";
-	private final String PROPERTYVERSION = "harvest.version";
-	private final String PROPERTYDATE = "harvest.date";
-	private final String PROPERTYCOPYRIGHT = "harvest.copyright";	
-	
-	private File policy;
-	private InputStream globalPolicy;
-	private String password;
-	private String username;
-	private String registryURL;
-	private String securityURL;
-	private String logFile;
-	
-	public HarvestLauncher() {
-		policy = null;
-		password = null;
-		username = null;
-		registryURL = null;
-		securityURL = null;
-		logFile = null;
+    private Options options;
+    private final String PROPERTYFILE = "harvest.properties";
+    private final String PROPERTYTOOLNAME = "harvest.name";
+    private final String PROPERTYVERSION = "harvest.version";
+    private final String PROPERTYDATE = "harvest.date";
+    private final String PROPERTYCOPYRIGHT = "harvest.copyright";
 
-		options = buildOptions();
-		globalPolicy = this.getClass().getResourceAsStream("global-policy.xml");	
-	}
+    private File policy;
+    private InputStream globalPolicy;
+    private String password;
+    private String username;
+    private String registryURL;
+    private String securityURL;
+    private String logFile;
 
-	private Options buildOptions() {
-		ToolsOption to = null;
-		Options options = new Options();
-		
-		options.addOption(new ToolsOption(HELP[SHORT], HELP[LONG], WHATIS_HELP));
-		options.addOption(new ToolsOption(VERSION[SHORT], VERSION[LONG], WHATIS_VERSION));
-		
-		to = new ToolsOption(PASSWORD[SHORT], PASSWORD[LONG], WHATIS_PASSWORD);
-		to.hasArg(PASSWORD[ARGNAME], String.class);
-		options.addOption(to);
-		
+    public HarvestLauncher() {
+        policy = null;
+        password = null;
+        username = null;
+        registryURL = null;
+        securityURL = null;
+        logFile = null;
+
+        options = buildOptions();
+        globalPolicy = this.getClass().getResourceAsStream("global-policy.xml");
+    }
+
+    private Options buildOptions() {
+        ToolsOption to = null;
+        Options options = new Options();
+
+        options.addOption(new ToolsOption(HELP[SHORT], HELP[LONG], WHATIS_HELP));
+        options.addOption(new ToolsOption(VERSION[SHORT], VERSION[LONG], WHATIS_VERSION));
+
+        to = new ToolsOption(PASSWORD[SHORT], PASSWORD[LONG], WHATIS_PASSWORD);
+        to.hasArg(PASSWORD[ARGNAME], String.class);
+        options.addOption(to);
+
         to = new ToolsOption(USERNAME[SHORT], USERNAME[LONG], WHATIS_USERNAME);
         to.hasArg(USERNAME[ARGNAME], String.class);
         options.addOption(to);
-        
+
         to = new ToolsOption(LOG[SHORT], LOG[LONG], WHATIS_LOG);
         to.hasArg(LOG[ARGNAME], String.class);
         options.addOption(to);
-        
-        return options;
-	}	
-	
-	public CommandLine parse(String[] args) throws ParseException, InvalidOptionException {
-		CommandLineParser parser = new GnuParser();		
-		return parser.parse(options, args);
-	}	
-	
-	public void query(CommandLine line) throws Exception {
-		registryURL = System.getProperty("pds.registry");
-		securityURL = System.getProperty("pds.security");
-		if(registryURL == null) {
-			System.err.println("\'pds.registry\' java property is not set.");
-			System.exit(1);
-		}		
-		List<Option> processedOptions = Arrays.asList(line.getOptions());
-		for(Option o : processedOptions) {
-			if(o.getOpt().equals(HELP[SHORT])) {
-				displayHelp();
-				System.exit(0);
-			}
-			else if(o.getOpt().equals(VERSION[SHORT])) {
-				displayVersion();
-				System.exit(0);
-			}
-			else if(o.getOpt().equals(PASSWORD[SHORT]))
-				password = o.getValue();
-			else if(o.getOpt().equals(USERNAME[SHORT]))
-				username = o.getValue();
-			else if(o.getOpt().equals(LOG[SHORT]))
-				logFile = o.getValue();
-		}
-		if(line.getArgList().size() != 0) {
-			policy = new File(line.getArgList().get(0).toString());
-			if(!policy.exists()) {
-				throw new InvalidOptionException("Policy file does not exist: " + policy);
-			}
-		}
-		else
-			throw new InvalidOptionException("Policy file not found on the command-line.");
-		
-		if((securityURL != null) && (username == null || password == null)) {
-			throw new InvalidOptionException("Username and/or password must be specified.");
-		}
-		setLogger();
-	}	
-	
-	private void setLogger() throws Exception {
-		Logger logger = Logger.getLogger("");
-		logger.setLevel(Level.ALL);
-		Handler []handler = logger.getHandlers();
-		for(int i=0; i<logger.getHandlers().length; i++)
-			logger.removeHandler(handler[i]);
-		
-		if(logFile != null) {
-			logger.addHandler(new HarvestFileHandler(logFile, Level.INFO, new ToolsLogFormatter()));
-		}
-		else {
-			logger.addHandler(new HarvestStreamHandler(System.out, Level.INFO, new ToolsLogFormatter()));
-		}
-	}
-	
-	public void displayVersion() throws IOException {
-		URL propertyFile = this.getClass().getResource(PROPERTYFILE);
-		Properties p  = new Properties();
-		InputStream in = null;
-		try {
-			in = propertyFile.openStream();
-			p.load(in);
-		} finally {
-			in.close();
-		}
-		System.err.println("\n" + p.get(PROPERTYTOOLNAME));
-		System.err.println(p.get(PROPERTYVERSION));
-		System.err.println("Release Date: " + p.get(PROPERTYDATE));
-		System.err.println(p.get(PROPERTYCOPYRIGHT) + "\n");
-	}
 
-	public void displayHelp() {
-		HelpFormatter formatter = new HelpFormatter();
-		formatter.printHelp(80, "Harvest <policy file> <options>", null, options, null);		
-	}	
-	
-	private void closeHandlers() {
-		Logger logger = Logger.getLogger("");
-		Handler []handlers = logger.getHandlers();
-		for(int i = 0; i < logger.getHandlers().length; i++) 
-			handlers[i].close();
-	}
-	
-	public static void main(String []args) {
-		if(args.length == 0) {
-			System.out.println("\nType 'Harvest -h' for usage");
-			System.exit(0);
-		}
-		Harvester harvester = null;
-		SecurityClient securityClient = null;
-		SecuredUser securedUser = null;
-		try {
-			HarvestLauncher launcher = new HarvestLauncher();
-			CommandLine commandline = launcher.parse(args);
-			launcher.query(commandline);
-			Policy policy = PolicyReader.unmarshall(launcher.policy);
-			Policy globalPolicy = PolicyReader.unmarshall(launcher.globalPolicy);
-			policy.add(globalPolicy);
-			if(launcher.securityURL == null) {
-				harvester = new Harvester(launcher.registryURL, policy.getCandidateProduct());
-			} else {
-				securityClient = new SecurityClient(launcher.securityURL);
-				securedUser = new SecuredUser(launcher.username, 
-						securityClient.authenticate(launcher.username, launcher.password));
-				harvester = new Harvester(launcher.registryURL, policy.getCandidateProduct(), securedUser);
-			}
-			for(String inventoryFile : policy.getInventoryFiles().getLocation()) {
-				harvester.harvestInventory(new File(inventoryFile));
-			}
-			for(String directory : policy.getRootDirectories().getLocation()) {	
-				harvester.harvest(new File(directory), policy.getRootDirectories().getFilePattern());
-			}			
-			launcher.closeHandlers();
-		} catch(JAXBException je) {
-			//Don't do anything
-		} catch (ParseException pEx) {
-			System.err.println("Command-line parse failure: " + pEx.getMessage());
-			System.exit(1);
-		} catch (Exception ex) {
-			System.err.println(ex.getMessage());
-			System.exit(1);
-		} finally {
-			if(securedUser != null) {
-				try {
-					securityClient.logout(securedUser.getToken());
-				} catch (SecurityClientException se) {
-					System.err.println(se.getMessage());
-					System.exit(1);					
-				}
-			}				
-		}
-	}
+        return options;
+    }
+
+    public CommandLine parse(String[] args) throws ParseException, InvalidOptionException {
+        CommandLineParser parser = new GnuParser();
+        return parser.parse(options, args);
+    }
+
+    public void query(CommandLine line) throws Exception {
+        registryURL = System.getProperty("pds.registry");
+        securityURL = System.getProperty("pds.security");
+        if(registryURL == null) {
+            System.err.println("\'pds.registry\' java property is not set.");
+            System.exit(1);
+        }
+        List<Option> processedOptions = Arrays.asList(line.getOptions());
+        for(Option o : processedOptions) {
+            if(o.getOpt().equals(HELP[SHORT])) {
+                displayHelp();
+                System.exit(0);
+            }
+            else if(o.getOpt().equals(VERSION[SHORT])) {
+                displayVersion();
+                System.exit(0);
+            }
+            else if(o.getOpt().equals(PASSWORD[SHORT]))
+                password = o.getValue();
+            else if(o.getOpt().equals(USERNAME[SHORT]))
+                username = o.getValue();
+            else if(o.getOpt().equals(LOG[SHORT]))
+                logFile = o.getValue();
+        }
+        if(line.getArgList().size() != 0) {
+            policy = new File(line.getArgList().get(0).toString());
+            if(!policy.exists()) {
+                throw new InvalidOptionException("Policy file does not exist: " + policy);
+            }
+        }
+        else
+            throw new InvalidOptionException("Policy file not found on the command-line.");
+
+        if((securityURL != null) && (username == null || password == null)) {
+            throw new InvalidOptionException("Username and/or password must be specified.");
+        }
+        setLogger();
+    }
+
+    private void setLogger() throws Exception {
+        Logger logger = Logger.getLogger("");
+        logger.setLevel(Level.ALL);
+        Handler []handler = logger.getHandlers();
+        for(int i=0; i<logger.getHandlers().length; i++)
+            logger.removeHandler(handler[i]);
+
+        if(logFile != null) {
+            logger.addHandler(new HarvestFileHandler(logFile, Level.INFO, new ToolsLogFormatter()));
+        }
+        else {
+            logger.addHandler(new HarvestStreamHandler(System.out, Level.INFO, new ToolsLogFormatter()));
+        }
+    }
+
+    public void displayVersion() throws IOException {
+        URL propertyFile = this.getClass().getResource(PROPERTYFILE);
+        Properties p  = new Properties();
+        InputStream in = null;
+        try {
+            in = propertyFile.openStream();
+            p.load(in);
+        } finally {
+            in.close();
+        }
+        System.err.println("\n" + p.get(PROPERTYTOOLNAME));
+        System.err.println(p.get(PROPERTYVERSION));
+        System.err.println("Release Date: " + p.get(PROPERTYDATE));
+        System.err.println(p.get(PROPERTYCOPYRIGHT) + "\n");
+    }
+
+    public void displayHelp() {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp(80, "Harvest <policy file> <options>", null, options, null);
+    }
+
+    private void closeHandlers() {
+        Logger logger = Logger.getLogger("");
+        Handler []handlers = logger.getHandlers();
+        for(int i = 0; i < logger.getHandlers().length; i++)
+            handlers[i].close();
+    }
+
+    public static void main(String []args) {
+        if(args.length == 0) {
+            System.out.println("\nType 'Harvest -h' for usage");
+            System.exit(0);
+        }
+        Harvester harvester = null;
+        SecurityClient securityClient = null;
+        SecuredUser securedUser = null;
+        try {
+            HarvestLauncher launcher = new HarvestLauncher();
+            CommandLine commandline = launcher.parse(args);
+            launcher.query(commandline);
+            Policy policy = PolicyReader.unmarshall(launcher.policy);
+            Policy globalPolicy = PolicyReader.unmarshall(launcher.globalPolicy);
+            policy.add(globalPolicy);
+            if(launcher.securityURL == null) {
+                harvester = new Harvester(launcher.registryURL, policy.getCandidateProduct());
+            } else {
+                securityClient = new SecurityClient(launcher.securityURL);
+                securedUser = new SecuredUser(launcher.username,
+                        securityClient.authenticate(launcher.username, launcher.password));
+                harvester = new Harvester(launcher.registryURL, policy.getCandidateProduct(), securedUser);
+            }
+            for(String inventoryFile : policy.getInventoryFiles().getLocation()) {
+                harvester.harvestInventory(new File(inventoryFile));
+            }
+            for(String directory : policy.getRootDirectories().getLocation()) {
+                harvester.harvest(new File(directory), policy.getRootDirectories().getFilePattern());
+            }
+            launcher.closeHandlers();
+        } catch(JAXBException je) {
+            //Don't do anything
+        } catch (ParseException pEx) {
+            System.err.println("Command-line parse failure: " + pEx.getMessage());
+            System.exit(1);
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            System.exit(1);
+        } finally {
+            if(securedUser != null) {
+                try {
+                    securityClient.logout(securedUser.getToken());
+                } catch (SecurityClientException se) {
+                    System.err.println(se.getMessage());
+                    System.exit(1);
+                }
+            }
+        }
+    }
 }
