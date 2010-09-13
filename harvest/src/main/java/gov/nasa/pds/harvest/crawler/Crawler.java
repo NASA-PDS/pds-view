@@ -14,8 +14,8 @@
 package gov.nasa.pds.harvest.crawler;
 
 public interface Crawler<T> {
-	
-	public FileList<T> crawl(T directory);
-	
-	public FileList<T> crawl(T directory, boolean getSubDirectories);
+
+    public FileList<T> crawl(T directory);
+
+    public FileList<T> crawl(T directory, boolean getSubDirectories);
 }
