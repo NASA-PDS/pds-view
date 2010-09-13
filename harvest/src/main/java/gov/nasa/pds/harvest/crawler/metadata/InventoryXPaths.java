@@ -15,12 +15,12 @@ package gov.nasa.pds.harvest.crawler.metadata;
 
 /**
  * XPaths to find various values in a PDS Inventory File.
- * 
+ *
  * @author mcayanan
  *
  */
 public interface InventoryXPaths {
-	public final static String CHECKSUM = "checksum";	
-	public final static String INVENTORY_ENTRY = "//Standard_Product_Member_Entry";
-	public final static String FILENAME = "directory_path_name";	
+    public final static String CHECKSUM = "checksum";
+    public final static String INVENTORY_ENTRY = "//Standard_Product_Member_Entry";
+    public final static String FILENAME = "directory_path_name";
 }

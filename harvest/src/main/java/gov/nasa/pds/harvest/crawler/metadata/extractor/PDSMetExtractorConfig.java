@@ -20,28 +20,28 @@ import gov.nasa.jpl.oodt.cas.metadata.MetExtractorConfig;
 import gov.nasa.pds.harvest.policy.CandidateProduct;
 
 public class PDSMetExtractorConfig implements MetExtractorConfig {
-	private List<CandidateProduct> products;
-	
-	public PDSMetExtractorConfig(List<CandidateProduct> products) {
-		this.products = new ArrayList<CandidateProduct>();
-		this.products.addAll(products);
-	}
-	
-	public List<String> getMetXPaths(String objectType) {
-		for(CandidateProduct cp : this.products) {
-			if(cp.getObjectType().equalsIgnoreCase(objectType)) {
-				return cp.getMetadata().getXPath();
-			}
-		}
-		return null;
-	}
-	
-	public boolean hasObjectType(String objectType) {
-		for(CandidateProduct cp : this.products) {
-			if(cp.getObjectType().equalsIgnoreCase(objectType)) {
-				return true;
-			}
-		}
-		return false;		
-	}
+    private List<CandidateProduct> products;
+
+    public PDSMetExtractorConfig(List<CandidateProduct> products) {
+        this.products = new ArrayList<CandidateProduct>();
+        this.products.addAll(products);
+    }
+
+    public List<String> getMetXPaths(String objectType) {
+        for(CandidateProduct cp : this.products) {
+            if(cp.getObjectType().equalsIgnoreCase(objectType)) {
+                return cp.getMetadata().getXPath();
+            }
+        }
+        return null;
+    }
+
+    public boolean hasObjectType(String objectType) {
+        for(CandidateProduct cp : this.products) {
+            if(cp.getObjectType().equalsIgnoreCase(objectType)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

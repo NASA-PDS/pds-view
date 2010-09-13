@@ -36,90 +36,90 @@ import gov.nasa.pds.registry.model.Product;
 /**
  * Class to publish associations to the PDS Registry Service upon
  * successful ingestion of the product.
- * 
+ *
  * @author mcayanan
  *
  */
 public class AssociationPublisherAction extends CrawlerAction {
-	private static Logger log = Logger.getLogger(AssociationPublisherAction.class.getName());	
-	private RegistryClient registryClient;
-	private String user;
-	private final String ID = "AssociationPublisherAction";
-	private final String DESCRIPTION = "Registers the product's associations.";
-	
-	public AssociationPublisherAction(String registryUrl) {
-		this(registryUrl, null, null);
-	}
-	
-	public AssociationPublisherAction(String registryUrl, String user, String token) {
-		super();
-		if(user != null) {
-			this.user = user;
-			this.registryClient = new RegistryClient(registryUrl, token);
-		} else {
-			this.registryClient = new RegistryClient(registryUrl);
-		}
-		
-		String []phases = {CrawlerActionPhases.POST_INGEST_SUCCESS};
-		setPhases(Arrays.asList(phases));
-		setId(ID);
-		setDescription(DESCRIPTION);		
-	}
-	
-	@Override
-	public boolean performAction(File product, Metadata productMetadata)
-			throws CrawlerActionException {
-		boolean passFlag = true;
-		
-		List<Association> associations = createAssociations(product, productMetadata);
-		for(Association association : associations) {
-			ClientResponse response = registryClient.publishAssociation(user, association);
-			if(response.getStatus() == ClientResponse.Status.CREATED.getStatusCode()) {
-	            log.log(new ToolsLogRecord(Level.INFO, 
-	            		"Successfully registered association: " + response.getLocation(), product));
-			} else {
-				String lidvid = association.getTargetLid() + "::" + association.getTargetVersion();
-				log.log(new ToolsLogRecord(Level.WARNING, 
-						"Problem registering association " + lidvid + ". HTTP error code: " + response.getStatus(),
-						product));
-				passFlag = false;
-			}
-		}
-		return passFlag;
-	}
-	
-	private List<Association> createAssociations(File product, Metadata metadata) {
-		List<Association> associations = new ArrayList<Association>();
-		if(metadata.containsKey(PDSCoreMetKeys.REFERENCES)) {
-			for(ReferenceEntry re : (List<ReferenceEntry>) metadata.getAllMetadata(PDSCoreMetKeys.REFERENCES)) {
-				Association association = new Association();
-				association.setSourceLid(metadata.getMetadata(PDSCoreMetKeys.LOGICAL_ID));
-				association.setSourceVersion(metadata.getMetadata(PDSCoreMetKeys.PRODUCT_VERSION));
-				association.setAssociationType(re.getAssociationType());
-				association.setObjectType(re.getObjectType());
-				association.setTargetLid(re.getLogicalID());
-				if(re.hasVersion()) {
-					association.setTargetVersion(re.getVersion());
-				} else {
-					ClientResponse response = registryClient.getLatestProduct(re.getLogicalID());
-					if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
-						Product target = response.getEntity(Product.class);
-						association.setTargetVersion(target.getUserVersion());
-						log.log(new ToolsLogRecord(Level.INFO,
-								"Found association in registry: \"" + re.getLogicalID() + 
-								".\" Target version will be set to latest registered: " + target.getUserVersion(),
-								product));
-					}
-					else {
-						log.log(new ToolsLogRecord(Level.WARNING,
-								"Version ID could not be found in the label or registry for association to \"" + re.getLogicalID() + ".\"",
-								product));
-					}
-				}
-				associations.add(association);
-			}
-		}
-		return associations;
-	}	
+    private static Logger log = Logger.getLogger(AssociationPublisherAction.class.getName());
+    private RegistryClient registryClient;
+    private String user;
+    private final String ID = "AssociationPublisherAction";
+    private final String DESCRIPTION = "Registers the product's associations.";
+
+    public AssociationPublisherAction(String registryUrl) {
+        this(registryUrl, null, null);
+    }
+
+    public AssociationPublisherAction(String registryUrl, String user, String token) {
+        super();
+        if(user != null) {
+            this.user = user;
+            this.registryClient = new RegistryClient(registryUrl, token);
+        } else {
+            this.registryClient = new RegistryClient(registryUrl);
+        }
+
+        String []phases = {CrawlerActionPhases.POST_INGEST_SUCCESS};
+        setPhases(Arrays.asList(phases));
+        setId(ID);
+        setDescription(DESCRIPTION);
+    }
+
+    @Override
+    public boolean performAction(File product, Metadata productMetadata)
+            throws CrawlerActionException {
+        boolean passFlag = true;
+
+        List<Association> associations = createAssociations(product, productMetadata);
+        for(Association association : associations) {
+            ClientResponse response = registryClient.publishAssociation(user, association);
+            if(response.getStatus() == ClientResponse.Status.CREATED.getStatusCode()) {
+                log.log(new ToolsLogRecord(Level.INFO,
+                        "Successfully registered association: " + response.getLocation(), product));
+            } else {
+                String lidvid = association.getTargetLid() + "::" + association.getTargetVersion();
+                log.log(new ToolsLogRecord(Level.WARNING,
+                        "Problem registering association " + lidvid + ". HTTP error code: " + response.getStatus(),
+                        product));
+                passFlag = false;
+            }
+        }
+        return passFlag;
+    }
+
+    private List<Association> createAssociations(File product, Metadata metadata) {
+        List<Association> associations = new ArrayList<Association>();
+        if(metadata.containsKey(PDSCoreMetKeys.REFERENCES)) {
+            for(ReferenceEntry re : (List<ReferenceEntry>) metadata.getAllMetadata(PDSCoreMetKeys.REFERENCES)) {
+                Association association = new Association();
+                association.setSourceLid(metadata.getMetadata(PDSCoreMetKeys.LOGICAL_ID));
+                association.setSourceVersion(metadata.getMetadata(PDSCoreMetKeys.PRODUCT_VERSION));
+                association.setAssociationType(re.getAssociationType());
+                association.setObjectType(re.getObjectType());
+                association.setTargetLid(re.getLogicalID());
+                if(re.hasVersion()) {
+                    association.setTargetVersion(re.getVersion());
+                } else {
+                    ClientResponse response = registryClient.getLatestProduct(re.getLogicalID());
+                    if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
+                        Product target = response.getEntity(Product.class);
+                        association.setTargetVersion(target.getUserVersion());
+                        log.log(new ToolsLogRecord(Level.INFO,
+                                "Found association in registry: \"" + re.getLogicalID() +
+                                ".\" Target version will be set to latest registered: " + target.getUserVersion(),
+                                product));
+                    }
+                    else {
+                        log.log(new ToolsLogRecord(Level.WARNING,
+                                "Version ID could not be found in the label or registry for association to \"" + re.getLogicalID() + ".\"",
+                                product));
+                    }
+                }
+                associations.add(association);
+            }
+        }
+        return associations;
+    }
 
 }

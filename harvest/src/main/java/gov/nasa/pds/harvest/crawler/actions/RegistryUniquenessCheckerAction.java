@@ -30,47 +30,47 @@ import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 /**
  * A class to check whether a product's logical identifier (lid) and
  * version ID (vid) have already been registered
- * 
+ *
  * @author mcayanan
  *
  */
 public class RegistryUniquenessCheckerAction extends CrawlerAction {
-	private static Logger log = Logger.getLogger(RegistryUniquenessCheckerAction.class.getName());
-	private RegistryIngester ingester;
-	private String registryUrl;
-	private final String ID = "RegistryUniquenessChecker";
-	private final String DESCRIPTION = "Checks if a product with the same LID and VID " +
-			"exists in the registry.";
-	
-	public RegistryUniquenessCheckerAction(String registryUrl, RegistryIngester ingester) {
-		super();
-		this.ingester = ingester;
-		this.registryUrl = registryUrl;
-		
-		String []phases = {CrawlerActionPhases.PRE_INGEST};
-		setPhases(Arrays.asList(phases));
-		setId(ID);
-		setDescription(DESCRIPTION);
-	}
+    private static Logger log = Logger.getLogger(RegistryUniquenessCheckerAction.class.getName());
+    private RegistryIngester ingester;
+    private String registryUrl;
+    private final String ID = "RegistryUniquenessChecker";
+    private final String DESCRIPTION = "Checks if a product with the same LID and VID " +
+            "exists in the registry.";
 
-	@Override
-	public boolean performAction(File product, Metadata productMetadata)
-			throws CrawlerActionException {
-		String lid = productMetadata.getMetadata(PDSCoreMetKeys.LOGICAL_ID);
-		String vid = productMetadata.getMetadata(PDSCoreMetKeys.PRODUCT_VERSION);
-		String lidvid = lid + "::" + vid;
-		try {
-			boolean result;
-			result = this.ingester.hasProduct(new URL(this.registryUrl), lid, vid);
-			if(result == true) {
-				log.log(new ToolsLogRecord(Level.WARNING, "Product already exists in the registry: " + lidvid, product));
-				return false;
-			}
-			else
-				return true;
-		} catch (Exception e) {
-			log.log(new ToolsLogRecord(Level.SEVERE, e.getMessage(), product));            
-			throw new CrawlerActionException(e.getMessage());	
-		}
-	}
+    public RegistryUniquenessCheckerAction(String registryUrl, RegistryIngester ingester) {
+        super();
+        this.ingester = ingester;
+        this.registryUrl = registryUrl;
+
+        String []phases = {CrawlerActionPhases.PRE_INGEST};
+        setPhases(Arrays.asList(phases));
+        setId(ID);
+        setDescription(DESCRIPTION);
+    }
+
+    @Override
+    public boolean performAction(File product, Metadata productMetadata)
+            throws CrawlerActionException {
+        String lid = productMetadata.getMetadata(PDSCoreMetKeys.LOGICAL_ID);
+        String vid = productMetadata.getMetadata(PDSCoreMetKeys.PRODUCT_VERSION);
+        String lidvid = lid + "::" + vid;
+        try {
+            boolean result;
+            result = this.ingester.hasProduct(new URL(this.registryUrl), lid, vid);
+            if(result == true) {
+                log.log(new ToolsLogRecord(Level.WARNING, "Product already exists in the registry: " + lidvid, product));
+                return false;
+            }
+            else
+                return true;
+        } catch (Exception e) {
+            log.log(new ToolsLogRecord(Level.SEVERE, e.getMessage(), product));
+            throw new CrawlerActionException(e.getMessage());
+        }
+    }
 }
