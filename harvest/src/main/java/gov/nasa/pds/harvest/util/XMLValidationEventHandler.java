@@ -13,6 +13,7 @@
 // $Id$
 package gov.nasa.pds.harvest.util;
 
+import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 
 import java.util.logging.Level;
@@ -28,9 +29,9 @@ public class XMLValidationEventHandler implements ValidationEventHandler {
         Level level = null;
         if(event.getSeverity() == ValidationEvent.ERROR ||
            event.getSeverity() == ValidationEvent.FATAL_ERROR) {
-            level = Level.SEVERE;
+            level = ToolsLevel.SEVERE;
         } else if(event.getSeverity() == ValidationEvent.WARNING) {
-            level = Level.WARNING;
+            level = ToolsLevel.WARNING;
         }
         log.log(new ToolsLogRecord(level, event.getMessage(),
                 event.getLocator().getURL().toString(),

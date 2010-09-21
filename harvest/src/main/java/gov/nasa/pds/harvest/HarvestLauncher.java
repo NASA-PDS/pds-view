@@ -16,7 +16,10 @@ package gov.nasa.pds.harvest;
 import gov.nasa.pds.harvest.commandline.options.HarvestFlags;
 import gov.nasa.pds.harvest.commandline.options.InvalidOptionException;
 import gov.nasa.pds.harvest.commandline.options.ToolsOption;
-import gov.nasa.pds.harvest.logging.formatter.ToolsLogFormatter;
+import gov.nasa.pds.harvest.crawler.HarvestCrawler;
+import gov.nasa.pds.harvest.logging.ToolsLevel;
+import gov.nasa.pds.harvest.logging.ToolsLogRecord;
+import gov.nasa.pds.harvest.logging.formatter.HarvestFormatter;
 import gov.nasa.pds.harvest.logging.handler.HarvestFileHandler;
 import gov.nasa.pds.harvest.logging.handler.HarvestStreamHandler;
 import gov.nasa.pds.harvest.policy.Policy;
@@ -29,7 +32,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Handler;
@@ -53,6 +59,7 @@ import org.apache.commons.cli.ParseException;
  *
  */
 public class HarvestLauncher implements HarvestFlags {
+    private static Logger log = Logger.getLogger(HarvestCrawler.class.getName());
     private Options options;
     private final String PROPERTYFILE = "harvest.properties";
     private final String PROPERTYTOOLNAME = "harvest.name";
@@ -144,6 +151,30 @@ public class HarvestLauncher implements HarvestFlags {
             throw new InvalidOptionException("Username and/or password must be specified.");
         }
         setLogger();
+        logHeader();
+    }
+
+    private void logHeader() throws IOException {
+        Properties p = new Properties();
+        InputStream in = null;
+        try {
+           in = this.getClass().getResource(PROPERTYFILE).openStream();
+           p.load(in);
+        } finally {
+            in.close();
+        }
+        SimpleDateFormat df = new SimpleDateFormat(
+                "EEE, MMM dd yyyy 'at' hh:mm:ss a");
+        Date date = Calendar.getInstance().getTime();
+
+        log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+                "PDS Harvest Tool Log\n"));
+        log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+                "Version             " + p.getProperty(PROPERTYVERSION)));
+        log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+                "Time                " + df.format(date)));
+        log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+                "Registry Location   " + registryURL.toString() + "\n"));
     }
 
     private void setLogger() throws Exception {
@@ -154,10 +185,12 @@ public class HarvestLauncher implements HarvestFlags {
             logger.removeHandler(handler[i]);
 
         if(logFile != null) {
-            logger.addHandler(new HarvestFileHandler(logFile, Level.INFO, new ToolsLogFormatter()));
+            logger.addHandler(new HarvestFileHandler(logFile,
+                    Level.INFO, new HarvestFormatter()));
         }
         else {
-            logger.addHandler(new HarvestStreamHandler(System.out, Level.INFO, new ToolsLogFormatter()));
+            logger.addHandler(new HarvestStreamHandler(System.out,
+                    Level.INFO, new HarvestFormatter()));
         }
     }
 
@@ -202,27 +235,35 @@ public class HarvestLauncher implements HarvestFlags {
             CommandLine commandline = launcher.parse(args);
             launcher.query(commandline);
             Policy policy = PolicyReader.unmarshall(launcher.policy);
-            Policy globalPolicy = PolicyReader.unmarshall(launcher.globalPolicy);
+            Policy globalPolicy = PolicyReader.unmarshall(
+                    launcher.globalPolicy);
             policy.add(globalPolicy);
             if(launcher.securityURL == null) {
-                harvester = new Harvester(launcher.registryURL, policy.getCandidateProduct());
+                harvester = new Harvester(launcher.registryURL,
+                        policy.getCandidateProduct());
             } else {
                 securityClient = new SecurityClient(launcher.securityURL);
                 securedUser = new SecuredUser(launcher.username,
-                        securityClient.authenticate(launcher.username, launcher.password));
-                harvester = new Harvester(launcher.registryURL, policy.getCandidateProduct(), securedUser);
+                        securityClient.authenticate(
+                                launcher.username, launcher.password));
+                harvester = new Harvester(launcher.registryURL,
+                        policy.getCandidateProduct(), securedUser);
             }
-            for(String inventoryFile : policy.getInventoryFiles().getLocation()) {
+            for(String inventoryFile :
+                policy.getInventoryFiles().getLocation()) {
                 harvester.harvestInventory(new File(inventoryFile));
             }
-            for(String directory : policy.getRootDirectories().getLocation()) {
-                harvester.harvest(new File(directory), policy.getRootDirectories().getFilePattern());
+            for(String directory :
+                policy.getRootDirectories().getLocation()) {
+                harvester.harvest(new File(directory),
+                        policy.getRootDirectories().getFilePattern());
             }
             launcher.closeHandlers();
         } catch(JAXBException je) {
             //Don't do anything
         } catch (ParseException pEx) {
-            System.err.println("Command-line parse failure: " + pEx.getMessage());
+            System.err.println("Command-line parse failure: "
+                    + pEx.getMessage());
             System.exit(1);
         } catch (Exception ex) {
             System.err.println(ex.getMessage());

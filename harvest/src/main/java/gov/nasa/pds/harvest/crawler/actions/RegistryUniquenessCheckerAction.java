@@ -25,6 +25,7 @@ import gov.nasa.jpl.oodt.cas.crawl.structs.exceptions.CrawlerActionException;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.pds.harvest.crawler.metadata.PDSCoreMetKeys;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
+import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 
 /**
@@ -69,7 +70,7 @@ public class RegistryUniquenessCheckerAction extends CrawlerAction {
             else
                 return true;
         } catch (Exception e) {
-            log.log(new ToolsLogRecord(Level.SEVERE, e.getMessage(), product));
+            log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage(), product));
             throw new CrawlerActionException(e.getMessage());
         }
     }
