@@ -13,14 +13,16 @@
 // $Id$
 package gov.nasa.pds.harvest.util;
 
+import gov.nasa.pds.harvest.policy.Namespace;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.XMLConstants;
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -29,13 +31,16 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.XPathFactoryConfigurationException;
+
+import net.sf.saxon.xpath.XPathEvaluator;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -43,29 +48,45 @@ import org.xml.sax.SAXException;
 */
 public class XMLExtractor {
     private DocumentBuilder builder = null;
-    private Document xml = null;
-    private XPath xpath = null;
+    private DOMSource xml = null;
+    private XPathEvaluator xpath = null;
 
-    public XMLExtractor() throws ParserConfigurationException {
-        xpath = XPathFactory.newInstance().newXPath();
-        builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+    public XMLExtractor()
+    throws ParserConfigurationException, XPathFactoryConfigurationException {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        builder = dbf.newDocumentBuilder();
         builder.setErrorHandler(new XMLErrorHandler());
+        xpath = new XPathEvaluator();
     }
 
-    public XMLExtractor(File src) throws ParserConfigurationException, SAXException, IOException {
+    public XMLExtractor(File src)
+    throws ParserConfigurationException, XPathFactoryConfigurationException,
+    SAXException, IOException {
         this();
-        xml = builder.parse(new FileInputStream(src));
+        Node doc = builder.parse(new InputSource(src.toURI().toString()));
+        xml = new DOMSource(doc);
     }
 
-    public XMLExtractor(String src) throws ParserConfigurationException, SAXException, IOException {
+    public XMLExtractor(String src)
+    throws ParserConfigurationException, SAXException, IOException,
+    XPathFactoryConfigurationException {
         this(new File(src));
+    }
+
+    public void setDefaultNamespace(String uri) {
+        xpath.getStaticContext().setDefaultElementNamespace(uri);
+    }
+
+    public void setNamespaceContext(NamespaceContext context) {
+        xpath.getStaticContext().setNamespaceContext(context);
     }
 
     public void validate(String schema) throws SAXException, IOException {
         SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema s = factory.newSchema(new StreamSource(new File(schema)));
         Validator validator = s.newValidator();
-        validator.validate(new DOMSource(xml));
+        validator.validate(xml);
     }
 
     public String getValueFromDoc(String expression)  throws XPathExpressionException {
@@ -101,7 +122,8 @@ public class XMLExtractor {
     }
 
     public Node getDocNode() {
-        return this.xml.getDocumentElement();
+        Document doc = (Document) this.xml.getNode();
+        return doc.getDocumentElement();
     }
 
     public NodeList getNodesFromDoc(String expression) throws XPathExpressionException {
@@ -120,5 +142,47 @@ public class XMLExtractor {
             val = aNode.getTextContent();
         }
         return val;
+    }
+
+    public static void main(String[] args) {
+        Namespace ns = new Namespace();
+        ns.setPrefix("pds");
+        ns.setUri("http://pds.nasa.gov/schema/pds4/pds");
+        List<Namespace> nSpaces = new ArrayList<Namespace>();
+        nSpaces.add(ns);
+        try {
+            XMLExtractor xe = new XMLExtractor(args[0]);
+            xe.setDefaultNamespace("http://pds.nasa.gov/schema/pds4/pds");
+            xe.setNamespaceContext(new PDSNamespaceContext(nSpaces));
+            System.out.println("ROOT: " + xe.getDocNode().getNodeName());
+            String value = "";
+            String[] expressions = {
+                    "//Product_Identification_Area/logical_identifier",
+                    "//pds:Product_Identification_Area/pds:logical_identifier",
+                    "//pds:Product_Identification_Area/logical_identifier",
+                    "//*[substring(name(),string-length(name()) - string-length('Identification_Area') + 1) = 'Identification_Area']/logical_identifier",
+                    "//pds:*[substring(name(),string-length(name()) - string-length('Identification_Area') + 1) = 'Identification_Area']/pds:logical_identifier"
+                    };
+            for(int i=0; i < expressions.length; i++) {
+                value = xe.getValueFromDoc(expressions[i]);
+                System.out.println("EXPRESSION: " + expressions[i]);
+                System.out.println("VALUE: " + value + "\n");
+            }
+        } catch (ParserConfigurationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SAXException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (XPathExpressionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (XPathFactoryConfigurationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

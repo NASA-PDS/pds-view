@@ -13,6 +13,8 @@
 // $Id$
 package gov.nasa.pds.harvest.context;
 
+import gov.nasa.pds.harvest.policy.Namespace;
+import gov.nasa.pds.harvest.util.PDSNamespaceContext;
 import gov.nasa.pds.harvest.util.XMLExtractor;
 
 import java.io.BufferedReader;
@@ -37,11 +39,15 @@ public class InventoryTableReader implements InventoryReader {
     private int checksumFieldLocation;
     private BufferedReader reader;
 
-    public InventoryTableReader(File label) throws InventoryReaderException {
+    public InventoryTableReader(File label, PDSNamespaceContext context)
+    throws InventoryReaderException {
         filenameFieldLocation = 0;
         checksumFieldLocation = 0;
+
         try {
             XMLExtractor extractor = new XMLExtractor(label);
+            extractor.setDefaultNamespace(context.getDefaultNamepsace());
+            extractor.setNamespaceContext(context);
             File dataFile = new File(extractor.getValueFromDoc(DATA_FILE));
             if(!dataFile.isAbsolute())
                 dataFile = new File(label.getParent(), dataFile.toString());
@@ -62,8 +68,9 @@ public class InventoryTableReader implements InventoryReader {
         }
     }
 
-    public InventoryTableReader(String label) throws InventoryReaderException {
-        this(new File(label));
+    public InventoryTableReader(String label, PDSNamespaceContext context)
+    throws InventoryReaderException {
+        this(new File(label), context);
     }
 
     public InventoryEntry getNext() throws InventoryReaderException {
@@ -88,7 +95,11 @@ public class InventoryTableReader implements InventoryReader {
 
     public static void main(String args[]) {
         try {
-            InventoryTableReader reader = new InventoryTableReader(args[0]);
+            Namespace ns = new Namespace();
+            ns.setPrefix("pds");
+            ns.setUri("http://pds.nasa.gov/schema/pds4/pds");
+            PDSNamespaceContext context = new PDSNamespaceContext(ns, ns.getUri());
+            InventoryTableReader reader = new InventoryTableReader(args[0], context);
 
             for(InventoryEntry entry = reader.getNext(); entry != null;) {
                 System.out.println("Member Entry: " + entry.getFile());

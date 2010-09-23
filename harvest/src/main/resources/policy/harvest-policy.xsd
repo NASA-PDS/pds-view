@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	         xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
-	         jxb:version="2.0">
+            xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+            jxb:version="2.0">
 
 <xsd:element name="location" type="xsd:string"/>
 <xsd:element name="filePattern" type="xsd:string"/>
 <xsd:element name="xPath" type="xsd:string"/>
 
 <xsd:attribute name="objectType" type="xsd:string"/>
+<xsd:attribute name="prefix" type="xsd:string"/>
+<xsd:attribute name="uri" type="xsd:string"/>
+<xsd:attribute name="default" type="xsd:boolean" default="false"/>
 
 <xsd:element name="rootDirectories" type="RootDirectory"/>
 <xsd:complexType name="RootDirectory">
@@ -24,19 +27,27 @@
    </xsd:sequence>
 </xsd:complexType>
 
-<xsd:element name="metadata" type="Metadata"/>
-<xsd:complexType name="Metadata">
-	 <xsd:sequence>
-      <xsd:element ref="xPath" maxOccurs="unbounded"/>
-   </xsd:sequence>
+<xsd:element name="namespace" type="Namespace"/>
+<xsd:complexType name="Namespace">
+   <xsd:attribute ref="prefix" use="required"/>
+   <xsd:attribute ref="uri" use="required"/>
+   <xsd:attribute ref="default"/>
 </xsd:complexType>
 
-<xsd:element name="candidateProduct" type="CandidateProduct"/>
-<xsd:complexType name="CandidateProduct">
+<xsd:element name="productMetadata" type="ProductMetadata"/>
+<xsd:complexType name="ProductMetadata">
    <xsd:sequence>
-      <xsd:element ref="metadata"/>
+      <xsd:element ref="xPath" maxOccurs="unbounded"/>
    </xsd:sequence>
    <xsd:attribute ref="objectType" use="required"/>
+</xsd:complexType>
+
+<xsd:element name="candidates" type="Candidate"/>
+<xsd:complexType name="Candidate">
+   <xsd:sequence>
+      <xsd:element ref="namespace" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element ref="productMetadata" maxOccurs="unbounded"/>
+   </xsd:sequence>
 </xsd:complexType>
 
 <xsd:element name="policy" type="Policy"/>
@@ -44,7 +55,7 @@
    <xsd:sequence>
       <xsd:element ref="rootDirectories" minOccurs="0"/>
       <xsd:element ref="inventoryFiles" minOccurs="0"/>
-      <xsd:element ref="candidateProduct" maxOccurs="unbounded"/>
+      <xsd:element ref="candidates"/>
    </xsd:sequence>
 </xsd:complexType>
 

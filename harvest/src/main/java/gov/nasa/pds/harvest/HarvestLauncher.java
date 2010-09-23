@@ -75,6 +75,10 @@ public class HarvestLauncher implements HarvestFlags {
     private String securityURL;
     private String logFile;
 
+    /**
+     * Default constructor
+     *
+     */
     public HarvestLauncher() {
         policy = null;
         password = null;
@@ -87,6 +91,11 @@ public class HarvestLauncher implements HarvestFlags {
         globalPolicy = this.getClass().getResourceAsStream("global-policy.xml");
     }
 
+    /**
+     * Builds the command-line options for the Harvest Tool
+     *
+     * @return an Options class
+     */
     private Options buildOptions() {
         ToolsOption to = null;
         Options options = new Options();
@@ -109,11 +118,29 @@ public class HarvestLauncher implements HarvestFlags {
         return options;
     }
 
-    public CommandLine parse(String[] args) throws ParseException, InvalidOptionException {
+    /**
+     * A method to parse the command-line arguments
+     *
+     * @param args The command-line arguments
+     * @return A class representation of the command-line arguments
+     *
+     * @throws ParseException
+     * @throws InvalidOptionException
+     */
+    public CommandLine parse(String[] args)
+    throws ParseException, InvalidOptionException {
         CommandLineParser parser = new GnuParser();
         return parser.parse(options, args);
     }
 
+    /**
+     * Examines the command-line arguments passed into the Harvest Tool
+     * and takes the appropriate action based on what flags were set.
+     *
+     * @param line A class representation of the command-line arguments.
+     *
+     * @throws Exception
+     */
     public void query(CommandLine line) throws Exception {
         registryURL = System.getProperty("pds.registry");
         securityURL = System.getProperty("pds.security");
@@ -141,19 +168,28 @@ public class HarvestLauncher implements HarvestFlags {
         if(line.getArgList().size() != 0) {
             policy = new File(line.getArgList().get(0).toString());
             if(!policy.exists()) {
-                throw new InvalidOptionException("Policy file does not exist: " + policy);
+                throw new InvalidOptionException(
+                        "Policy file does not exist: " + policy);
             }
         }
-        else
-            throw new InvalidOptionException("Policy file not found on the command-line.");
+        else {
+            throw new InvalidOptionException(
+                    "Policy file not found on the command-line.");
+        }
 
         if((securityURL != null) && (username == null || password == null)) {
-            throw new InvalidOptionException("Username and/or password must be specified.");
+            throw new InvalidOptionException(
+                    "Username and/or password must be specified.");
         }
         setLogger();
         logHeader();
     }
 
+    /**
+     * Logs header information for the log output.
+     *
+     * @throws IOException
+     */
     private void logHeader() throws IOException {
         Properties p = new Properties();
         InputStream in = null;
@@ -177,6 +213,11 @@ public class HarvestLauncher implements HarvestFlags {
                 "Registry Location   " + registryURL.toString() + "\n"));
     }
 
+    /**
+     * Sets the appropriate handlers for the logging.
+     *
+     * @throws Exception
+     */
     private void setLogger() throws Exception {
         Logger logger = Logger.getLogger("");
         logger.setLevel(Level.ALL);
@@ -194,6 +235,11 @@ public class HarvestLauncher implements HarvestFlags {
         }
     }
 
+    /**
+     * Displays the current version and disclaimer notice.
+     *
+     * @throws IOException
+     */
     public void displayVersion() throws IOException {
         URL propertyFile = this.getClass().getResource(PROPERTYFILE);
         Properties p  = new Properties();
@@ -210,11 +256,20 @@ public class HarvestLauncher implements HarvestFlags {
         System.err.println(p.get(PROPERTYCOPYRIGHT) + "\n");
     }
 
+    /**
+     * Displays tool usage.
+     *
+     */
     public void displayHelp() {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp(80, "Harvest <policy file> <options>", null, options, null);
+        formatter.printHelp(80, "Harvest <policy file> <options>",
+                null, options, null);
     }
 
+    /**
+     * Closes the handlers for the logger
+     *
+     */
     private void closeHandlers() {
         Logger logger = Logger.getLogger("");
         Handler []handlers = logger.getHandlers();
@@ -240,14 +295,14 @@ public class HarvestLauncher implements HarvestFlags {
             policy.add(globalPolicy);
             if(launcher.securityURL == null) {
                 harvester = new Harvester(launcher.registryURL,
-                        policy.getCandidateProduct());
+                        policy.getCandidates());
             } else {
                 securityClient = new SecurityClient(launcher.securityURL);
                 securedUser = new SecuredUser(launcher.username,
                         securityClient.authenticate(
                                 launcher.username, launcher.password));
                 harvester = new Harvester(launcher.registryURL,
-                        policy.getCandidateProduct(), securedUser);
+                        policy.getCandidates(), securedUser);
             }
             for(String inventoryFile :
                 policy.getInventoryFiles().getLocation()) {

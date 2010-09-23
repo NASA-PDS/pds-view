@@ -42,23 +42,43 @@ public class Harvester {
     private HarvestCrawler crawler;
     private List<String> objectTypes;
 
-    public Harvester(String registryURL, List<CandidateProduct> candidateProducts)
-                              throws MalformedURLException {
-        this(registryURL, candidateProducts, null);
+    /**
+     * Constructor
+     *
+     * @param registryURL The registry location.
+     * @param candidates Class containing the products to look for and what
+     * metadata to extract.
+     *
+     * @throws MalformedURLException
+     */
+    public Harvester(String registryURL, Candidate candidates)
+    throws MalformedURLException {
+        this(registryURL, candidates, null);
     }
 
-    public Harvester(String registryURL, List<CandidateProduct> candidateProducts,
+    /**
+     *
+     *
+     * @param registryURL The registry location.
+     * @param candidates Class containing the products to look for and what
+     * metadata to extract.
+     * @param user If security is enabled in the registry, this parameter
+     * authenticates the user running the tool.
+     *
+     * @throws MalformedURLException
+     */
+    public Harvester(String registryURL, Candidate candidates,
             SecuredUser user) throws MalformedURLException {
-        crawler = new HarvestCrawler();
-        crawler.setMetExtractorConfig(new PDSMetExtractorConfig(candidateProducts));
+        crawler = new HarvestCrawler(new PDSMetExtractorConfig(candidates));
         objectTypes = new ArrayList<String>();
-        for(CandidateProduct p : candidateProducts) {
+        for(ProductMetadata p : candidates.getProductMetadata()) {
             objectTypes.add(p.getObjectType());
         }
         crawler.setRegistryUrl(registryURL);
         if(user != null) {
             this.securedUser = user;
-            crawler.setIngester(new RegistryIngester(user.getName(), user.getToken()));
+            crawler.setIngester(
+                    new RegistryIngester(user.getName(), user.getToken()));
         }
         else {
             this.securedUser = null;
@@ -67,29 +87,56 @@ public class Harvester {
         crawler.setActionRepo(createCrawlerActions());
     }
 
+    /**
+     * Creates the different crawler actions to take while traversing
+     * through a directory.
+     *
+     * @return A class containing the crawler actions.
+     */
     private CrawlerActionRepo createCrawlerActions() {
         CrawlerActionRepo repo = new CrawlerActionRepo();
         List<CrawlerAction> actions = new ArrayList<CrawlerAction>();
-        actions.add(new RegistryUniquenessCheckerAction(crawler.getRegistryUrl(),
-                crawler.getRegistryIngester()));
+        actions.add(new RegistryUniquenessCheckerAction(
+                crawler.getRegistryUrl(), crawler.getRegistryIngester()));
         actions.add(new ValidObjectTypeCheckerAction(objectTypes));
-        actions.add(new LogMissingReqMetadataAction(crawler.getRequiredMetadata()));
+        actions.add(new LogMissingReqMetadataAction(
+                crawler.getRequiredMetadata()));
         if(securedUser != null) {
-            actions.add(new AssociationPublisherAction(crawler.getRegistryUrl(),
-                    securedUser.getName(), securedUser.getToken()));
+            actions.add(new AssociationPublisherAction(
+                    crawler.getRegistryUrl(), securedUser.getName(),
+                    securedUser.getToken()));
         }
         else {
-            actions.add(new AssociationPublisherAction(crawler.getRegistryUrl()));
+            actions.add(
+                    new AssociationPublisherAction(crawler.getRegistryUrl()));
         }
         repo.loadActions(actions);
         return repo;
     }
 
+    /**
+     * Harvests the products in the given directory.
+     *
+     * @param directory A starting directory.
+     * @param filePatterns Specify file patterns to search for while crawling
+     * the directories.
+     */
     public void harvest(File directory, List<String> filePatterns) {
         crawler.crawl(directory, filePatterns);
     }
 
-    public void harvestInventory(File inventory) throws InventoryReaderException {
+    /**
+     * Harvests the products given in the PDS4 Inventory file.
+     * This method will first register the given Inventory file,
+     * then proceed to crawl the file for references to PDS4
+     * data products.
+     *
+     * @param inventory a PDS4 Inventory file
+     *
+     * @throws InventoryReaderException
+     */
+    public void harvestInventory(File inventory)
+    throws InventoryReaderException {
         crawler.crawlInventory(inventory);
     }
 }

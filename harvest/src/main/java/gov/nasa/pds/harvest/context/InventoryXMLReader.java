@@ -13,6 +13,7 @@
 // $Id$
 package gov.nasa.pds.harvest.context;
 
+import gov.nasa.pds.harvest.util.PDSNamespaceContext;
 import gov.nasa.pds.harvest.util.XMLExtractor;
 
 import java.io.File;
@@ -30,20 +31,25 @@ import org.w3c.dom.NodeList;
  *
  */
 public class InventoryXMLReader implements InventoryReader {
-    public static final String MEMBER_ENTRY = "//Standard_Product_Member_Entry";
+    public static final String MEMBER_ENTRY =
+        "//Standard_Product_Member_Entry";
     private String parentDirectory;
     private int index;
     private XMLExtractor extractor;
     private NodeList memberEntries;
 
-    public InventoryXMLReader(File file) throws InventoryReaderException {
+    public InventoryXMLReader(File file, PDSNamespaceContext context)
+    throws InventoryReaderException {
         index = 0;
         parentDirectory = file.getParent();
         try {
             extractor = new XMLExtractor(file);
+            extractor.setDefaultNamespace(context.getDefaultNamepsace());
+            extractor.setNamespaceContext(context);
             memberEntries = extractor.getNodesFromDoc(MEMBER_ENTRY);
         } catch (Exception e) {
-            throw new InventoryReaderException("Error reading inventory file: " + e.getMessage());
+            throw new InventoryReaderException(
+                    "Error reading inventory file: " + e.getMessage());
         }
     }
 
@@ -55,7 +61,8 @@ public class InventoryXMLReader implements InventoryReader {
         File file = null;
         String checksum = null;
         try {
-            file = new File(extractor.getValueFromItem("directory_path_name", entry));
+            file = new File(extractor.getValueFromItem(
+                    "directory_path_name", entry));
             checksum = extractor.getValueFromItem("md5_checksum", entry);
         } catch (XPathExpressionException x) {
             throw new InventoryReaderException(x.getMessage());

@@ -16,7 +16,7 @@ package gov.nasa.pds.harvest.crawler.metadata;
 import java.util.HashMap;
 
 /**
- * A mapping of metadata to an XPath.
+ * A mapping of metadata to XPath 2.0 expressions.
  *
  * @author mcayanan
  *
@@ -25,10 +25,10 @@ public class CoreXPaths implements PDSCoreMetKeys {
     public static final HashMap<String,String> map = new HashMap<String,String>();
 
     static {
-        map.put(LOGICAL_ID, "//*[substring(name(),string-length(name()) - string-length('Identification_Area') + 1) = 'Identification_Area']/logical_identifier");
-        map.put(PRODUCT_VERSION, "//*[substring(name(),string-length(name()) - string-length('Identification_Area') + 1) = 'Identification_Area']/version_id");
-        map.put(OBJECT_TYPE, "//*[substring(name(),string-length(name()) - string-length('Identification_Area') + 1) = 'Identification_Area']/object_type");
-        map.put(TITLE, "//*[substring(name(),string-length(name()) - string-length('Identification_Area') + 1) = 'Identification_Area']/title");
-        map.put(REFERENCES, "//*[substring(name(),string-length(name()) - string-length('Member_Entry') + 1) = 'Member_Entry'] | //*[substring(name(),string-length(name()) - string-length('Reference_Entry') + 1) = 'Reference_Entry']");
+        map.put(LOGICAL_ID, "//*[ends-with(name(),'Identification_Area')]/logical_identifier");
+        map.put(PRODUCT_VERSION, "//*[ends-with(name(),'Identification_Area')]/version_id");
+        map.put(OBJECT_TYPE, "//*[ends-with(name(),'Identification_Area')]/object_type");
+        map.put(TITLE, "//*[ends-with(name(),'Identification_Area')]/title");
+        map.put(REFERENCES, "//*[ends-with(name(),'Member_Entry')] | //*[ends-with(name(),'Reference_Area')]/*[ends-with(name(),'Reference_Entry')]");
     }
 }

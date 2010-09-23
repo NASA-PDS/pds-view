@@ -52,9 +52,15 @@ public class HarvestCrawler extends ProductCrawler {
     private PDSMetExtractorConfig metExtractorConfig;
     private XMLExtractor xmlExtractor;
 
-    public HarvestCrawler() {
+    /**
+     * Constructor
+     * 
+     * @param extractorConfig A configuration class that tells the crawler
+     * what data product types to look for and what metadata to extract.
+     */
+    public HarvestCrawler(PDSMetExtractorConfig extractorConfig) {
         this.xmlExtractor = null;
-        this.metExtractorConfig = null;
+        this.metExtractorConfig = extractorConfig;
         String[] reqMetadata = {PDSCoreMetKeys.PRODUCT_VERSION,
                                 PDSCoreMetKeys.LOGICAL_ID,
                                 PDSCoreMetKeys.OBJECT_TYPE};
@@ -62,22 +68,40 @@ public class HarvestCrawler extends ProductCrawler {
         FILE_FILTER = new WildcardOSFilter("*");
     }
 
-    public void setMetExtractorConfig(PDSMetExtractorConfig extractorConfig) {
-        this.metExtractorConfig = extractorConfig;
-    }
-
+    /**
+     * Sets the registry location.
+     * 
+     * @param url A url of the registry location.
+     * @throws MalformedURLException
+     */
     public void setRegistryUrl(String url) throws MalformedURLException {
         setFilemgrUrl(url);
     }
 
+    /**
+     * Gets the registry location.
+     * 
+     * @return A url of the registry location.
+     */
     public String getRegistryUrl() {
         return getFilemgrUrl();
     }
 
+    /**
+     * Gets the registry ingester.
+     * 
+     * @return A registry ingester object.
+     */
     public RegistryIngester getRegistryIngester() {
         return (RegistryIngester) getIngester();
     }
 
+    /**
+     * Crawls a directory.
+     * 
+     * @param dir
+     * @param fileFilters
+     */
     public void crawl(File dir, List<String> fileFilters) {
         if((fileFilters != null) && !(fileFilters.isEmpty())) {
             FILE_FILTER = new WildcardOSFilter(fileFilters);
@@ -90,6 +114,11 @@ public class HarvestCrawler extends ProductCrawler {
         boolean isTable = false;
         try {
             XMLExtractor extractor = new XMLExtractor(inventoryFile);
+            extractor.setDefaultNamespace(
+                    metExtractorConfig.getNamespaceContext().
+                    getDefaultNamepsace());
+            extractor.setNamespaceContext(
+                    metExtractorConfig.getNamespaceContext());
             if(extractor.getValueFromDoc("//Inventory") != null) {
                 isTable = true;
             }
@@ -98,10 +127,12 @@ public class HarvestCrawler extends ProductCrawler {
         }
         InventoryReader reader = null;
         if(isTable) {
-            reader = new InventoryTableReader(inventoryFile);
+            reader = new InventoryTableReader(inventoryFile,
+                    metExtractorConfig.getNamespaceContext());
         }
         else {
-            reader = new InventoryXMLReader(inventoryFile);
+            reader = new InventoryXMLReader(inventoryFile,
+                    metExtractorConfig.getNamespaceContext());
         }
         for(InventoryEntry entry = reader.getNext(); entry != null;) {
             handleFile(entry.getFile());
@@ -117,7 +148,8 @@ public class HarvestCrawler extends ProductCrawler {
 
     @Override
     protected Metadata getMetadataForProduct(File product) {
-        PDSMetExtractor metExtractor = new PDSMetExtractor(metExtractorConfig);
+        PDSMetExtractor metExtractor =
+            new PDSMetExtractor(metExtractorConfig);
         try {
             return metExtractor.extractMetadata(product);
         } catch (MetExtractionException m) {
@@ -130,10 +162,16 @@ public class HarvestCrawler extends ProductCrawler {
     @Override
     protected boolean passesPreconditions(File product) {
         String validTags[] = {"Product", "Context"};
-        log.log(new ToolsLogRecord(ToolsLevel.INFO, "Begin processing.", product));
+        log.log(new ToolsLogRecord(ToolsLevel.INFO,
+                "Begin processing.", product));
         boolean passFlag = true;
         try {
             xmlExtractor = new XMLExtractor(product);
+            xmlExtractor.setDefaultNamespace(
+                    metExtractorConfig.getNamespaceContext().
+                    getDefaultNamepsace());
+            xmlExtractor.setNamespaceContext(
+                    metExtractorConfig.getNamespaceContext());
         } catch(SAXException se) {
             SAXParseException spe = (SAXParseException) se.getException();
             log.log(new ToolsLogRecord(ToolsLevel.SEVERE, spe.getMessage(),
@@ -150,7 +188,7 @@ public class HarvestCrawler extends ProductCrawler {
             return false;
         }
         else  {
-            String root = xmlExtractor.getDocNode().getNodeName();
+            String root = xmlExtractor.getDocNode().getLocalName();
             for(String tag : Arrays.asList(validTags)) {
                 if(root.startsWith(tag)) {
                     log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
@@ -158,7 +196,8 @@ public class HarvestCrawler extends ProductCrawler {
                     return true;
                 }
             }
-            log.log(new ToolsLogRecord(ToolsLevel.SKIP, "File is not a product label",
+            log.log(new ToolsLogRecord(ToolsLevel.SKIP,
+                    "File is not a product label",
                     product));
             return false;
         }

@@ -31,16 +31,17 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for InventoryFile complex type.
+ * <p>Java class for Candidate complex type.
  *
  * <p>The following schema fragment specifies the expected content contained within this class.
  *
  * <pre>
- * &lt;complexType name="InventoryFile">
+ * &lt;complexType name="Candidate">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{}location" maxOccurs="unbounded"/>
+ *         &lt;element ref="{}namespace" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element ref="{}productMetadata" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -50,41 +51,72 @@ import javax.xml.bind.annotation.XmlType;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "InventoryFile", propOrder = {
-    "location"
+@XmlType(name = "Candidate", propOrder = {
+    "namespace",
+    "productMetadata"
 })
-public class InventoryFile {
+public class Candidate {
 
+    protected List<Namespace> namespace;
     @XmlElement(required = true)
-    protected List<String> location;
+    protected List<ProductMetadata> productMetadata;
 
     /**
-     * Gets the value of the location property.
+     * Gets the value of the namespace property.
      *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the location property.
+     * This is why there is not a <CODE>set</CODE> method for the namespace property.
      *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getLocation().add(newItem);
+     *    getNamespace().add(newItem);
      * </pre>
      *
      *
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link String }
+     * {@link Namespace }
      *
      *
      */
-    public List<String> getLocation() {
-        if (location == null) {
-            location = new ArrayList<String>();
+    public List<Namespace> getNamespace() {
+        if (namespace == null) {
+            namespace = new ArrayList<Namespace>();
         }
-        return this.location;
+        return this.namespace;
+    }
+
+    /**
+     * Gets the value of the productMetadata property.
+     *
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the productMetadata property.
+     *
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getProductMetadata().add(newItem);
+     * </pre>
+     *
+     *
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link ProductMetadata }
+     *
+     *
+     */
+    public List<ProductMetadata> getProductMetadata() {
+        if (productMetadata == null) {
+            productMetadata = new ArrayList<ProductMetadata>();
+        }
+        return this.productMetadata;
     }
 
 }
