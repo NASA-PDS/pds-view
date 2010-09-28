@@ -54,7 +54,7 @@ public class HarvestCrawler extends ProductCrawler {
 
     /**
      * Constructor
-     * 
+     *
      * @param extractorConfig A configuration class that tells the crawler
      * what data product types to look for and what metadata to extract.
      */
@@ -70,7 +70,7 @@ public class HarvestCrawler extends ProductCrawler {
 
     /**
      * Sets the registry location.
-     * 
+     *
      * @param url A url of the registry location.
      * @throws MalformedURLException
      */
@@ -80,7 +80,7 @@ public class HarvestCrawler extends ProductCrawler {
 
     /**
      * Gets the registry location.
-     * 
+     *
      * @return A url of the registry location.
      */
     public String getRegistryUrl() {
@@ -89,7 +89,7 @@ public class HarvestCrawler extends ProductCrawler {
 
     /**
      * Gets the registry ingester.
-     * 
+     *
      * @return A registry ingester object.
      */
     public RegistryIngester getRegistryIngester() {
@@ -98,9 +98,10 @@ public class HarvestCrawler extends ProductCrawler {
 
     /**
      * Crawls a directory.
-     * 
-     * @param dir
-     * @param fileFilters
+     *
+     * @param dir A directory
+     * @param fileFilters A list of filters to allow the crawler
+     * to touch only specific files.
      */
     public void crawl(File dir, List<String> fileFilters) {
         if((fileFilters != null) && !(fileFilters.isEmpty())) {
@@ -109,7 +110,17 @@ public class HarvestCrawler extends ProductCrawler {
         crawl(dir);
     }
 
-    public void crawlInventory(File inventoryFile) throws InventoryReaderException {
+    /**
+     * Crawl a PDS Inventory file. Method will register the inventory file
+     * first before attempting to register the product files it is pointing
+     * to in the file.
+     *
+     * @param inventoryFile The PDS Inventory file.
+     *
+     * @throws InventoryReaderException
+     */
+    public void crawlInventory(File inventoryFile)
+    throws InventoryReaderException {
         handleFile(inventoryFile);
         boolean isTable = false;
         try {
@@ -119,8 +130,14 @@ public class HarvestCrawler extends ProductCrawler {
                     getDefaultNamepsace());
             extractor.setNamespaceContext(
                     metExtractorConfig.getNamespaceContext());
-            if(extractor.getValueFromDoc("//Inventory") != null) {
+            if(!"".equals(extractor.getValueFromDoc("//Inventory"))) {
                 isTable = true;
+            }
+            String isPrimary = extractor.getValueFromDoc(
+                    "//*[ends-with(name(), 'Identification_Area')]" +
+                    "/is_primary_collection");
+            if((!"".equals(isPrimary)) && (!Boolean.parseBoolean(isPrimary))) {
+                return;
             }
         } catch (Exception e) {
             throw new InventoryReaderException(e.getMessage());
@@ -146,6 +163,14 @@ public class HarvestCrawler extends ProductCrawler {
         //to the metadata. Not needed at the moment
     }
 
+    /**
+     * Extracts metadata from the given product.
+     *
+     * @param product A PDS file.
+     *
+     * @return A Metadata object, which holds metadata from the product.
+     *
+     */
     @Override
     protected Metadata getMetadataForProduct(File product) {
         PDSMetExtractor metExtractor =
@@ -159,6 +184,14 @@ public class HarvestCrawler extends ProductCrawler {
             return null;
         }
     }
+    /**
+     * Determines whether the supplied file passes the necessary
+     * pre-conditions for the file to be registered.
+     *
+     * @param product A file.
+     *
+     * @return true if the file passes.
+     */
     @Override
     protected boolean passesPreconditions(File product) {
         String validTags[] = {"Product", "Context"};
