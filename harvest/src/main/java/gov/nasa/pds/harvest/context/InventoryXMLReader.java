@@ -32,12 +32,22 @@ import org.w3c.dom.NodeList;
  */
 public class InventoryXMLReader implements InventoryReader {
     public static final String MEMBER_ENTRY =
-        "//Standard_Product_Member_Entry";
+                      "//*[ends-with(name(),'Member_Entry')]";
     private String parentDirectory;
     private int index;
     private XMLExtractor extractor;
     private NodeList memberEntries;
 
+    /**
+     * Constructor
+     *
+     * @param file A PDS Inventory file
+     * @param context A PDSNamespaceContext object, which allows this
+     * method to handle namespaces while extracting metadata from the
+     * Inventory file.
+     *
+     * @throws InventoryReaderException
+     */
     public InventoryXMLReader(File file, PDSNamespaceContext context)
     throws InventoryReaderException {
         index = 0;
@@ -53,8 +63,16 @@ public class InventoryXMLReader implements InventoryReader {
         }
     }
 
+    /**
+     * Gets the next product file reference in the PDS Inventory file.
+     *
+     * @return A class representation of the next product file reference
+     * in the PDS inventory file. If the end-of-file has been reached,
+     * a null value will be returned.
+     *
+     */
     public InventoryEntry getNext() throws InventoryReaderException {
-        if(index < memberEntries.getLength())
+        if(index >= memberEntries.getLength())
             return null;
 
         Node entry = memberEntries.item(index++);

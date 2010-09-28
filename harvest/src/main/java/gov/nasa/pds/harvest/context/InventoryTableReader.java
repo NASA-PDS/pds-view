@@ -32,13 +32,23 @@ import org.w3c.dom.NodeList;
  *
  */
 public class InventoryTableReader implements InventoryReader {
-    public static String INVENTORY_FIELDS = "//*[starts-with(name(),'Table') = 'Table']" +
-    		"/*[substring(name(),string-length(name()) - string-length('Field') + 1) = 'Field']";
+    public static String INVENTORY_FIELDS = "//*[starts-with(name(),'Table')]" +
+    		"/*[substring(name(),'Field')]";
     public static String DATA_FILE = "//File_Area/File/file_name";
     private int filenameFieldLocation;
     private int checksumFieldLocation;
     private BufferedReader reader;
 
+    /**
+     * Constructor
+     *
+     * @param file A PDS Inventory file
+     * @param context A PDSNamespaceContext object, which allows this
+     * method to handle namespaces while extracting metadata from the
+     * Inventory file.
+     *
+     * @throws InventoryReaderException
+     */
     public InventoryTableReader(File label, PDSNamespaceContext context)
     throws InventoryReaderException {
         filenameFieldLocation = 0;
@@ -68,11 +78,29 @@ public class InventoryTableReader implements InventoryReader {
         }
     }
 
+    /**
+     * Constructor
+     *
+     * @param file A PDS Inventory file
+     * @param context A PDSNamespaceContext object, which allows this
+     * method to handle namespaces while extracting metadata from the
+     * Inventory file.
+     *
+     * @throws InventoryReaderException
+     */
     public InventoryTableReader(String label, PDSNamespaceContext context)
     throws InventoryReaderException {
         this(new File(label), context);
     }
 
+    /**
+     * Gets the next product file reference in the PDS Inventory file.
+     *
+     * @return A class representation of the next product file reference
+     * in the PDS inventory file. If the end-of-file has been reached,
+     * a null value will be returned.
+     *
+     */
     public InventoryEntry getNext() throws InventoryReaderException {
         String line = "";
         try {
