@@ -49,18 +49,18 @@ public class InventoryTableReader implements InventoryReader {
      *
      * @throws InventoryReaderException
      */
-    public InventoryTableReader(File label, PDSNamespaceContext context)
+    public InventoryTableReader(File file, PDSNamespaceContext context)
     throws InventoryReaderException {
         filenameFieldLocation = 0;
         checksumFieldLocation = 0;
 
         try {
-            XMLExtractor extractor = new XMLExtractor(label);
+            XMLExtractor extractor = new XMLExtractor(file);
             extractor.setDefaultNamespace(context.getDefaultNamepsace());
             extractor.setNamespaceContext(context);
             File dataFile = new File(extractor.getValueFromDoc(DATA_FILE));
             if(!dataFile.isAbsolute())
-                dataFile = new File(label.getParent(), dataFile.toString());
+                dataFile = new File(file.getParent(), dataFile.toString());
             reader = new BufferedReader(new FileReader(dataFile));
             NodeList fields = extractor.getNodesFromDoc(INVENTORY_FIELDS);
             for(int i=0; (i < fields.getLength()) && (fields != null); i++) {
@@ -88,9 +88,9 @@ public class InventoryTableReader implements InventoryReader {
      *
      * @throws InventoryReaderException
      */
-    public InventoryTableReader(String label, PDSNamespaceContext context)
+    public InventoryTableReader(String file, PDSNamespaceContext context)
     throws InventoryReaderException {
-        this(new File(label), context);
+        this(new File(file), context);
     }
 
     /**

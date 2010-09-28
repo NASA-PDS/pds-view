@@ -24,7 +24,9 @@ public interface InventoryReader {
     /**
      * Get the next file reference in the Inventory file.
      *
-     * @return
+     * @return An object representation of the next file reference in
+     * the Inventory file.
+     *
      * @throws InventoryReaderException
      */
     public InventoryEntry getNext() throws InventoryReaderException;

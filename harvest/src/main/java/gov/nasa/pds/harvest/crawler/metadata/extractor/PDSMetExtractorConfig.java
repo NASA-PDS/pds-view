@@ -46,8 +46,9 @@ public class PDSMetExtractorConfig implements MetExtractorConfig {
     /**
      * Gets XPath expressions for an object type
      *
-     * @param objectType
-     * @return
+     * @param objectType The PDS object type.
+     *
+     * @return A list of XPath expressions based on the given object type.
      */
     public List<String> getMetXPaths(String objectType) {
         for(ProductMetadata p : this.candidates.getProductMetadata()) {
@@ -81,6 +82,7 @@ public class PDSMetExtractorConfig implements MetExtractorConfig {
      * Determines whether an object type exists in the configuration class.
      *
      * @param objectType The object type to search.
+     *
      * @return true if the supplied object type was found.
      */
     public boolean hasObjectType(String objectType) {
