@@ -21,6 +21,7 @@ import gov.nasa.pds.harvest.context.InventoryReader;
 import gov.nasa.pds.harvest.context.InventoryReaderException;
 import gov.nasa.pds.harvest.context.InventoryTableReader;
 import gov.nasa.pds.harvest.context.InventoryXMLReader;
+import gov.nasa.pds.harvest.crawler.metadata.CoreXPaths;
 import gov.nasa.pds.harvest.crawler.metadata.PDSCoreMetKeys;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractor;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractorConfig;
@@ -34,7 +35,10 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -221,18 +225,25 @@ public class HarvestCrawler extends ProductCrawler {
             return false;
         }
         else  {
-            String root = xmlExtractor.getDocNode().getLocalName();
-            for(String tag : Arrays.asList(validTags)) {
-                if(root.startsWith(tag)) {
+            try {
+                String objectType = xmlExtractor.getValueFromDoc(
+                        CoreXPaths.map.get(PDSCoreMetKeys.OBJECT_TYPE));
+                if(metExtractorConfig.hasObjectType(objectType)) {
                     log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
                             Status.DISCOVERY, product));
                     return true;
+                } else {
+                    log.log(new ToolsLogRecord(ToolsLevel.SKIP,
+                            "\'" + objectType + "\' is not an object type" +
+                            " found in the policy file.", product));
+                    return false;
                 }
+            } catch (XPathExpressionException e) {
+                log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+                        "Problem getting 'object_type': " + e.getMessage(),
+                        product));
+                return false;
             }
-            log.log(new ToolsLogRecord(ToolsLevel.SKIP,
-                    "File is not a product label",
-                    product));
-            return false;
         }
     }
 }

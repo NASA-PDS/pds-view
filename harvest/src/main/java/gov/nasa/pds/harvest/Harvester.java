@@ -98,7 +98,6 @@ public class Harvester {
         List<CrawlerAction> actions = new ArrayList<CrawlerAction>();
         actions.add(new RegistryUniquenessCheckerAction(
                 crawler.getRegistryUrl(), crawler.getRegistryIngester()));
-        actions.add(new ValidObjectTypeCheckerAction(objectTypes));
         actions.add(new LogMissingReqMetadataAction(
                 crawler.getRequiredMetadata()));
         if(securedUser != null) {
