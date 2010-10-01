@@ -228,22 +228,29 @@ public class HarvestCrawler extends ProductCrawler {
             try {
                 String objectType = xmlExtractor.getValueFromDoc(
                         CoreXPaths.map.get(PDSCoreMetKeys.OBJECT_TYPE));
-                if(metExtractorConfig.hasObjectType(objectType)) {
+                if("".equals(objectType)) {
+                    log.log(new ToolsLogRecord(ToolsLevel.SKIP,
+                            "No object_type element found.", product));
+                    passFlag = false;
+                } else if(metExtractorConfig.hasObjectType(objectType)) {
                     log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
                             Status.DISCOVERY, product));
-                    return true;
+                    passFlag = true;
                 } else {
                     log.log(new ToolsLogRecord(ToolsLevel.SKIP,
                             "\'" + objectType + "\' is not an object type" +
                             " found in the policy file.", product));
-                    return false;
+                    passFlag = false;
                 }
             } catch (XPathExpressionException e) {
                 log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
                         "Problem getting 'object_type': " + e.getMessage(),
                         product));
+                log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
+                        Status.BADFILE, product));
                 return false;
             }
         }
+        return passFlag;
     }
 }
