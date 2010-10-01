@@ -117,7 +117,7 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
                         references.item(i));
                 ReferenceEntry re = new ReferenceEntry();
                 for(int j=0; j < children.getLength(); j++) {
-                    name = children.item(j).getNodeName();
+                    name = children.item(j).getLocalName();
                     value = children.item(j).getTextContent();
                     if(name.equals("lidvid_reference")) {
                         try {
