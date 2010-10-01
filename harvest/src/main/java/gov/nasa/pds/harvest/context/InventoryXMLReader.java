@@ -13,6 +13,7 @@
 // $Id$
 package gov.nasa.pds.harvest.context;
 
+import gov.nasa.pds.harvest.policy.Namespace;
 import gov.nasa.pds.harvest.util.PDSNamespaceContext;
 import gov.nasa.pds.harvest.util.XMLExtractor;
 
@@ -20,6 +21,7 @@ import java.io.File;
 
 import javax.xml.xpath.XPathExpressionException;
 
+import org.apache.commons.io.FilenameUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -79,8 +81,10 @@ public class InventoryXMLReader implements InventoryReader {
         File file = null;
         String checksum = null;
         try {
-            file = new File(extractor.getValueFromItem(
-                    "directory_path_name", entry));
+            file = new File(
+                    FilenameUtils.separatorsToSystem(
+                    extractor.getValueFromItem("directory_path_name", entry))
+                    );
             checksum = extractor.getValueFromItem("md5_checksum", entry);
         } catch (XPathExpressionException x) {
             throw new InventoryReaderException(x.getMessage());
@@ -89,5 +93,23 @@ public class InventoryXMLReader implements InventoryReader {
             file = new File(parentDirectory, file.toString());
         }
         return new InventoryEntry(file, checksum);
+    }
+
+    public static void main(String args[]) {
+        try {
+            Namespace ns = new Namespace();
+            ns.setPrefix("pds");
+            ns.setUri("http://pds.nasa.gov/schema/pds4/pds");
+            PDSNamespaceContext context = new PDSNamespaceContext(ns, ns.getUri());
+            InventoryTableReader reader = new InventoryTableReader(args[0], context);
+
+            for(InventoryEntry entry = reader.getNext(); entry != null;) {
+                System.out.println("Member Entry: " + entry.getFile());
+                entry = reader.getNext();
+            }
+
+        } catch (InventoryReaderException e) {
+            e.printStackTrace();
+        }
     }
 }

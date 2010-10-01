@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.apache.commons.io.FilenameUtils;
 import org.w3c.dom.NodeList;
 
 /**
@@ -32,12 +33,13 @@ import org.w3c.dom.NodeList;
  *
  */
 public class InventoryTableReader implements InventoryReader {
-    public static String INVENTORY_FIELDS = "//*[starts-with(name(),'Table')]" +
-    		"/*[substring(name(),'Field')]";
+    public static String INVENTORY_FIELDS = "//*[starts-with(" +
+    		"name(),'Table_Record')]/*[starts-with(name(),'Table_Field')]";
     public static String DATA_FILE = "//File_Area/File/file_name";
     private int filenameFieldLocation;
     private int checksumFieldLocation;
     private BufferedReader reader;
+    private String parentDirectory;
 
     /**
      * Constructor
@@ -53,14 +55,16 @@ public class InventoryTableReader implements InventoryReader {
     throws InventoryReaderException {
         filenameFieldLocation = 0;
         checksumFieldLocation = 0;
-
+        parentDirectory = file.getParent();
         try {
             XMLExtractor extractor = new XMLExtractor(file);
             extractor.setDefaultNamespace(context.getDefaultNamepsace());
             extractor.setNamespaceContext(context);
-            File dataFile = new File(extractor.getValueFromDoc(DATA_FILE));
-            if(!dataFile.isAbsolute())
+            File dataFile = new File(FilenameUtils.separatorsToSystem(
+                    extractor.getValueFromDoc(DATA_FILE)));
+            if(!dataFile.isAbsolute()) {
                 dataFile = new File(file.getParent(), dataFile.toString());
+            }
             reader = new BufferedReader(new FileReader(dataFile));
             NodeList fields = extractor.getNodesFromDoc(INVENTORY_FIELDS);
             for(int i=0; (i < fields.getLength()) && (fields != null); i++) {
@@ -110,15 +114,20 @@ public class InventoryTableReader implements InventoryReader {
         } catch (IOException i) {
             throw new InventoryReaderException(i.getMessage());
         }
-        String file = "";
+        File file = null;
         String checksum = "";
         String tokens[] = line.split(",");
-        if(filenameFieldLocation != 0)
-            file = tokens[filenameFieldLocation-1];
+        if(filenameFieldLocation != 0) {
+            file = new File(FilenameUtils.separatorsToSystem(
+                    tokens[filenameFieldLocation-1]));
+            if(!file.isAbsolute()) {
+                file = new File(parentDirectory, file.toString());
+            }
+        }
         if(checksumFieldLocation != 0)
             checksum = tokens[checksumFieldLocation-1];
 
-        return new InventoryEntry(new File(file), checksum);
+        return new InventoryEntry(file, checksum);
     }
 
     public static void main(String args[]) {
