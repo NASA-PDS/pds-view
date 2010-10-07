@@ -23,16 +23,47 @@
   </properties>
 
   <body>
-    <release version="0.5.0" date="TBD" description="TBD">
+
+    <release version="0.5.0" date="TBD" description="TBD"> </release>
+
+    <release version="0.4.0" date="2010-08-25"
+      description="This release of the Registry Service is a component of the integrated release 0.1.0 of the PDS 2010 System.">
+      <action dev="pramirez" type="add">Registry Client API support of filtering on products and
+        associations.</action>
+      <action dev="pramirez" type="add">Registry client support of ssoToken set for interaction with
+        service.</action>
+      <action dev="pramirez" type="add">Filtering for associations within the registry. Same
+        restrictions that apply to the product filtering.</action>
     </release>
 
-    <release version="0.4.0" date="2010-08-25" description="This release of the Registry Service is a component of the integrated release 0.1.0 of the PDS 2010 System.">
+    <release version="0.3-dev" date="2010-07-26"
+      description="This release of the Registry Service supports integration with the Registry User Interface developed at Ames.">
+      <action dev="pramirez" type="add">Added basic registry client API to support interface
+        development. This is a Java API that abstracts away the URL mappings and serves back Java
+        objects.</action>
+      <action dev="pramirez" type="add">Filtering for registered products. This supports the basic
+        retrive a set of products given some criteria. Is not a full blown search api as that will
+        be dealt with by the Search service.</action>
+      <action dev="pramirez" type="add">Documentation integration and updates for service interface.
+        Provides examples and is generated as part of the build.</action>
     </release>
 
-    <release version="0.3-dev" date="2010-07-26" description="This release of the Registry Service supports integration with the Registry User Interface developed at Ames.">
-    </release>
-
-    <release version="0.2-dev-RC" date="2010-07-06" description="This release of the Registry Service supports integration with the Registry User Interface developed at Ames.">
+    <release version="0.2-dev-RC" date="2010-07-06"
+      description="This release of the Registry Service supports integration with the Registry User Interface developed at Ames.">
+      <action dev="pramirez" type="add">Support for registration of Products. </action>
+      <action dev="pramirez" type="add">Support for registration of Associations. </action>
+      <action dev="pramirez" type="add">Allow changing of registry object status. </action>
+      <action dev="pramirez" type="add">Support for auditable events. This allows us to track the
+        changes made to registry objects. </action>
+      <action dev="pramirez" type="add">Added support for persistence to Derby DB for registry back
+        end. This was done using the Java Persistence library. </action>
+      <action dev="pramirez" type="add">Spring integration to support injection of components that
+        make up the system. This allows for extensibility by placing how the system is put together
+        in configuration rather than code.</action>
+      <action dev="pramirez" type="add">Pluggable identifier generation.</action>
+      <action dev="pramirez" type="add">Pluggable version generation.</action>
+      <action dev="pramirez" type="add">Support for basic navigation through URLs to registry
+        objects.</action>
     </release>
   </body>
 </document>
