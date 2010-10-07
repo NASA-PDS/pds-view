@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
+<!--
   Copyright 2010, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
-  Any commercial use must be negotiated with the Office of Technology 
+  Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
 
-  This software is subject to U. S. export control laws and regulations 
-  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
-  is subject to U.S. export control laws and regulations, the recipient has 
-  the responsibility to obtain export licenses or other export authority as 
-  may be required before exporting such information to foreign countries or 
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
   providing access to foreign nationals.
 
   $Id$
@@ -22,23 +22,26 @@
     <author email="Michael.Cayanan@jpl.nasa.gov">Michael Cayanan</author>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
-  
+
   <body>
     <section name="Harvest Policy Schema">
       <p>The XML schema file for validating policy files follows:
       </p>
-      
+
       <source>
 &lt;?xml version="1.0" encoding="UTF-8" ?&gt;
 &lt;xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	         xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
-	         jxb:version="2.0"&gt;
+            xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+            jxb:version="2.0"&gt;
 
 &lt;xsd:element name="location" type="xsd:string"/&gt;
 &lt;xsd:element name="filePattern" type="xsd:string"/&gt;
 &lt;xsd:element name="xPath" type="xsd:string"/&gt;
 
 &lt;xsd:attribute name="objectType" type="xsd:string"/&gt;
+&lt;xsd:attribute name="prefix" type="xsd:string"/&gt;
+&lt;xsd:attribute name="uri" type="xsd:string"/&gt;
+&lt;xsd:attribute name="default" type="xsd:boolean" default="false"/&gt;
 
 &lt;xsd:element name="rootDirectories" type="RootDirectory"/&gt;
 &lt;xsd:complexType name="RootDirectory"&gt;
@@ -55,19 +58,27 @@
    &lt;/xsd:sequence&gt;
 &lt;/xsd:complexType&gt;
 
-&lt;xsd:element name="metadata" type="Metadata"/&gt;
-&lt;xsd:complexType name="Metadata"&gt;
-	 &lt;xsd:sequence&gt;
-      &lt;xsd:element ref="xPath" maxOccurs="unbounded"/&gt;
-   &lt;/xsd:sequence&gt;
+&lt;xsd:element name="namespace" type="Namespace"/&gt;
+&lt;xsd:complexType name="Namespace"&gt;
+   &lt;xsd:attribute ref="prefix" use="required"/&gt;
+   &lt;xsd:attribute ref="uri" use="required"/&gt;
+   &lt;xsd:attribute ref="default"/&gt;
 &lt;/xsd:complexType&gt;
 
-&lt;xsd:element name="candidateProduct" type="CandidateProduct"/&gt;
-&lt;xsd:complexType name="CandidateProduct"&gt;
+&lt;xsd:element name="productMetadata" type="ProductMetadata"/&gt;
+&lt;xsd:complexType name="ProductMetadata"&gt;
    &lt;xsd:sequence&gt;
-      &lt;xsd:element ref="metadata"/&gt;
+      &lt;xsd:element ref="xPath" maxOccurs="unbounded"/&gt;
    &lt;/xsd:sequence&gt;
    &lt;xsd:attribute ref="objectType" use="required"/&gt;
+&lt;/xsd:complexType&gt;
+
+&lt;xsd:element name="candidates" type="Candidate"/&gt;
+&lt;xsd:complexType name="Candidate"&gt;
+   &lt;xsd:sequence&gt;
+      &lt;xsd:element ref="namespace" minOccurs="0" maxOccurs="unbounded"/&gt;
+      &lt;xsd:element ref="productMetadata" maxOccurs="unbounded"/&gt;
+   &lt;/xsd:sequence&gt;
 &lt;/xsd:complexType&gt;
 
 &lt;xsd:element name="policy" type="Policy"/&gt;
@@ -75,7 +86,7 @@
    &lt;xsd:sequence&gt;
       &lt;xsd:element ref="rootDirectories" minOccurs="0"/&gt;
       &lt;xsd:element ref="inventoryFiles" minOccurs="0"/&gt;
-      &lt;xsd:element ref="candidateProduct" maxOccurs="unbounded"/&gt;
+      &lt;xsd:element ref="candidates"/&gt;
    &lt;/xsd:sequence&gt;
 &lt;/xsd:complexType&gt;
 

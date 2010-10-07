@@ -34,7 +34,7 @@
         <li><a href="#Tool_Execution">Tool Execution</a></li>
         <li><a href="#Report_Format">Report Format</a></li>
       </ul>
-    
+
       <p>Note: The command-line examples in this section have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution.
       </p>
     </section>
@@ -46,17 +46,17 @@
       <subsection name="UNIX-Based Setup">
         <p>This section details the environment setup for UNIX-based machines. The preferred method is to specify the shell script, <i>Harvest</i>, on the command-line. Setting the <i>PATH</i> environment variable to the location of the script, enables the shell script to be executed from any location on the user's machine.
         </p>
-        
-        <p>The following command demonstrates how to set the <i>PATH</i> environment variable, by appending to its current setting: 
+
+        <p>The following command demonstrates how to set the <i>PATH</i> environment variable, by appending to its current setting:
         </p>
-        
+
         <source>
 % setenv PATH ${PATH}:$HOME/${xdoc-artifactId}-${xdoc-version}/bin
-        </source>        
-        
+        </source>
+
         <p>The tool can now be executed via the shell script as demonstrated in the following example:
         </p>
-        
+
         <source>
 % Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </source>
@@ -68,17 +68,17 @@
       <subsection name="Windows Setup">
         <p>This section details the environment setup for Windows machines. The preferred method is to specify the batch file, <i>Harvest.bat</i>, on the command-line. Setting the <i>PATH</i> environment variable to the location of the file, enables the batch file to be executed from any location on the user's machine.
         </p>
-        
+
         <p>The following command demonstrates how to set the <i>PATH</i> environment variable, by appending to its current setting:
         </p>
-        
+
         <source>
 C:\&gt; set PATH = %PATH%;C:\\${xdoc-artifactId}-${xdoc-version}\bin
-        </source>       
-        
+        </source>
+
         <p>The tool can now be executed via the batch file as demonstrated in the following example:
         </p>
-        
+
         <source>
 C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </source>
@@ -91,62 +91,62 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
     <section name="Additional Tool Setup">
       <p>This section details how to re-configure the Harvest Tool to interface with another instance of the PDS Registry Service. This would be in cases where a user wants to test the registration of data products on a local instance of the Registry first before registering the products on the operational release of the PDS Registry. Users that wish to not do this can skip this section.
       </p>
-      
+
       <p>The Harvest Tool points to the PDS Registry and Security Service through the following Java System Properties:
       </p>
-      
+
       <table>
         <tr><th>System Property Name</th><th>Description</th></tr>
         <tr><td>pds.registry</td><td>Specify the URL to the PDS Registry Service. This property is required.</td></tr>
         <tr><td>pds.security</td><td>Speicfy the URL to the PDS Security Service. If the PDS Registry being pointed to is not secured (i.e. a local instance), then this property can be omitted.</td></tr>
       </table>
-      
+
       <p>By default, the Harvest shell script and batch file point to the operational releases of the PDS Registry and Security Services. The sections below detail how to modify these scripts to point to another instance of these services.
       </p>
-      
+
       <subsection name="UNIX-Based Users">
-        <p>Open the <i>Harvest</i> shell script and go to the last line in the file. It should look like the following:       
+        <p>Open the <i>Harvest</i> shell script and go to the last line in the file. It should look like the following:
         </p>
-        
+
         <source>
 % java \
 -Dpds.registry="http://pdsops2.jpl.nasa.gov/registry-service" \
 -Dpds.security="http://pdsops.jpl.nasa.gov/openam/identity" \
 -jar ${HARVEST_JAR} "$@"
         </source>
-        
+
         <p>Replace the URL values of <i>pds.registry</i> and/or <i>pds.security</i> with URLs to the desired instance of the PDS Registry and/or Security. For example, making the following change to the script will have Harvest pointing to a non-secured, local instance of the PDS Registry on port 8080:
         </p>
-        
+
         <source>
-% java -Dpds.registry="http://localhost:8080/registry-service" -jar ${HARVEST_JAR} "$@"          
-        </source>      
+% java -Dpds.registry="http://localhost:8080/registry-service" -jar ${HARVEST_JAR} "$@"
+        </source>
       </subsection>
-      
+
       <subsection name="Windows-Based Users">
-        <p>Open the <i>Harvest</i> batch and go to the last line in the file. It should look like the following:       
+        <p>Open the <i>Harvest</i> batch and go to the last line in the file. It should look like the following:
         </p>
-        
+
         <source>
 % java \
 -Dpds.registry="http://pdsops2.jpl.nasa.gov/registry-service" \
 -Dpds.security="http://pdsops.jpl.nasa.gov/openam/identity" \
 -jar "%HARVEST_JAR%" %*
         </source>
-        
+
         <p>Replace the URL values of <i>pds.registry</i> and/or <i>pds.security</i> with URLs to the desired instance of the PDS Registry and/or Security. For example, making the following change to the batch file will have Harvest pointing to a non-secured, local instance of the PDS Registry on port 8080:
         </p>
-        
+
         <source>
-% java -Dpds.registry="http://localhost:8080/registry-service" -jar "%HARVEST_JAR%" %*          
-        </source>      
-      </subsection>        
+% java -Dpds.registry="http://localhost:8080/registry-service" -jar "%HARVEST_JAR%" %*
+        </source>
+      </subsection>
     </section>
 
     <section name="Tool Execution">
       <p>Harvest Tool can be executed in various ways. This section describes how to run the tool, as well as its behaviors and caveats.
       </p>
-      
+
       <subsection name="Command-Line Options">
         <p>The following table describes the command-line options available:
         </p>
@@ -164,142 +164,247 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
       <subsection name="Execute Harvest Tool">
         <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script. Alternate methods for executing the tool can be found in the <a href="#Tool_Setup">Tool Setup</a> section.
         </p>
-        
+
         <p>The Harvest Tool operates with a policy file to register product metadata. Details on how to create this policy file can be found in the <a href="#Harvest Policy File">Harvest Policy File</a> section.
         </p>
 
         <p>The following command demonstrates how to run the Harvest Tool against a policy file, <i>policy.xml</i>, using a valid username, <i>pds</i>, and password, <i>mypwd</i>, with the output going to standard out:
         </p>
-        
+
         <source>
 % Harvest policy.xml -u {username} -p {password}
         </source>
-        
+
         <p>The following command demonstrates how to run the Harvest Tool with the output going to a log file, <i>log.txt</i> instead of standard out:
         </p>
-        
+
         <source>
 % Harvest policy.xml -u {username} -p {password} -l log.txt
-        </source>   
+        </source>
       </subsection>
 
       <subsection name="Harvest Policy File">
         <p>The Harvest policy file is an XML file that the tool uses to find products and register its metadata. The schema for the policy file can be found in the <a href="index-policy-schema.html">Harvest Policy Schema</a> section. If viewing this document in PDF form, see the appendix for details.
         </p>
-        
+
         <p>The following is an example of a policy file:
         </p>
-        
+
         <source>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;policy&gt;
    &lt;rootDirectories&gt;
-      &lt;location&gt;C:\pds4\context_target\product_files&lt;/location&gt;
+      &lt;location&gt;/home/user/pds4/geo/product_files&lt;/location&gt;
       &lt;filePattern&gt;*.xml&lt;/filePattern&gt;
    &lt;/rootDirectories&gt;
    &lt;inventoryFiles&gt;
-      &lt;location&gt;C:\pds4\insthost\collection_instrument_host.xml&lt;/location&gt;
+      &lt;location&gt;/home/pds4/insthost/collection_instrument_host.xml&lt;/location&gt;
    &lt;/inventoryFiles&gt;
-   &lt;candidateProduct objectType="Product_Instrument_Host"&gt;
-      &lt;metadata&gt;
+   &lt;candidates&gt;
+      &lt;namespace prefix="geo" uri="http://pds.nasa.gov/schema/pds4/geo"/&gt;
+      &lt;productMetadata objectType="character_table"&gt;
+         &lt;xPath&gt;//geo:Product_Identification_Area/geo:creation_date_time&lt;/xPath&gt;
+         &lt;xPath&gt;//geo:Subject_Area/geo:instrument_name&lt;/xPath&gt;
+         &lt;xPath&gt;//Subject_Area/observing_system_name&lt;/xPath&gt;
+      &lt;/productMetadata&gt;
+      &lt;productMetadata objectType="Product_Target"&gt;
          &lt;xPath&gt;//alternate_title&lt;/xPath&gt;
-         &lt;xPath&gt;//last_modification_date_time&lt;/xPath&gt;
-         &lt;xPath&gt;//Subject_Area/instrument_host_name&lt;/xPath&gt;
-      &lt;/metadata&gt;
-   &lt;/candidateProduct&gt;
-   &lt;candidateProduct objectType="Product_Target"&gt;
-      &lt;metadata&gt;
-         &lt;xPath&gt;//alternate_title&lt;/xPath&gt;
-         &lt;xPath&gt;//last_modification_date_time&lt;/xPath&gt;
+         &lt;xPath&gt;//creation_date_time&lt;/xPath&gt;
          &lt;xPath&gt;//identifier&lt;/xPath&gt;
          &lt;xPath&gt;//Subject_Area/target_name&lt;/xPath&gt;
-      &lt;/metadata&gt;
-   &lt;/candidateProduct&gt;
+      &lt;/productMetadata&gt;
+   &lt;/candidates&gt;
 &lt;/policy&gt;
         </source>
-        
-        <p>The policy file is made up of 4 complex type elements: <i>rootDirectories</i>, <i>inventoryFiles</i>, <i>candidateProduct</i>, <i>metadata</i>.
+
+        <p>The policy file is made up of 4 complex type elements: <i>rootDirectories</i>, <i>inventoryFiles</i>, <i>candidates</i>, and <i>productMetadata</i>.
         </p>
-        
+
         <b><i>rootDirectories</i></b>
-        
+
         <p>Specify this element to tell the Harvest Tool where to crawl for data products. The following table describes the elements that are allowed:
         </p>
-        
+
         <table>
           <tr><th>Element Name</th><th>Description</th></tr>
           <tr><td>location</td><td>Specify a directory path.</td></tr>
           <tr><td>filePattern</td><td>Specify a file pattern to look for specific files. If omitted, the default is to get all files within a directory.</td></tr>
         </table>
         
-        <p><b><i>inventoryFiles</i></b></p>
-        
-        <p>Specify this element to tell the Harvest Tool to crawl a PDS Inventory File. The following table describes the elements that are allowed:
+        <p>In the example above, the Harvest tool will crawl the directory location, <i>/home/user/pds4/geo/product_files</i>, looking for files that have a <i>.xml</i> file extension. The default is to touch all files in the directory if the <i>filePattern</i> element is omitted from the policy file.
         </p>
-        
+
+        <p><b><i>inventoryFiles</i></b></p>
+
+        <p>Specify this element to tell the Harvest Tool to register and crawl a PDS Inventory File. The following table describes the elements that are allowed:
+        </p>
+
         <table>
           <tr><th>Element Name</th><th>Description</th></tr>
           <tr><td>location</td><td>Specify a location to the PDS inventory file.</td></tr>
         </table>
-        
-        <p><b><i>candidateProduct</i></b></p>
-        
-        <p>Specify this element to tell the Harvest Tool what product types to register and what metadata to extract from a data product. It requires an attribute called <i>objectType</i> that tells the Harvest Tool what product types to register. The only element allowed is the <i>metadata</i> complex type element, which is described below.
+
+        <p>If the Inventory file is a primary collection, then the tool will proceed to crawl the file for products to register. If not, only the collection itself and its associations are registered.
         </p>
         
-        <b><i>metadata</i></b>
+        <p>The example above tells the Harvest Tool to register and crawl (if its a primary collection), the Inventory file named <i>/home/user/pds4/insthost/collection_instrument_host.xml</i>.
+        </p>
+
+        <p><b><i>candidates</i></b></p>
+
+        <p>Specify this element to tell the Harvest Tool what product types to register and what metadata to extract from a data product. This is a required element in the policy file. The following table describes the elements that are allowed:
+        </p>
+
+        <table>
+          <tr><th>Element Name</th><th>Description</th></tr>
+          <tr><td>namespace</td><td>Specify if the products to be registered contain a namespace other than the default pds namespace.</td></tr>
+          <tr><td>productMetadata</td><td>Specify to tell the tool what object types and what metadata to register.</td></tr>
+        </table>
         
-        <p>Specify this element to tell the Harvest Tool what metadata to register. The following table describes the elements that are allowed:
+        <p>Defining namespaces is necessary because the tool uses it when it extracts metadata from the products. In the example above, a namespace with the prefix <i>geo</i> and uri <i>http://pds.nasa.gov/schema/pds4/geo</i> has been defined. By default, the Harvest Tool defines the default namespace to be the pds namespace, <i>http://pds.nasa.gov/schema/pds4/pds</i>. To override this default, specify the <i>default</i> attribute in the namespace element and give it a value of <i>true</i>. The following makes the <i>geo</i> namespace the default namespace:
         </p>
         
+        <source>
+&lt;candidates&gt;
+   &lt;namespace prefix="geo" uri="http://pds.nasa.gov/schema/pds4/geo" default="true"/&gt;
+   ...
+        </source>
+        
+        <b><i>productMetadata</i></b>
+
+        <p>Specify this element to tell the Harvest Tool what metadata to register. It requires an attribute called <i>objectType</i> that tells the Harvest Tool what product types to register. The following table describes the elements that are allowed:
+        </p>
+
         <table>
           <tr><th>Element Name</th><th>Description</th></tr>
           <tr><td>xPath</td><td>Specify an XPath expression to extract metadata.</td></tr>
         </table>
         
-        <p>XPath is a query language that uses path expressions to select nodes in an XML document. These path expressions look very much like expressions in a traditional computer file system. In its simplest form, prepending a <i>//</i> before a name will find the element no matter where it is in the XML file.
+        <p>In the example above, the policy file tells the Harvest Tool to look for and register the <i>character_table</i> and <i>Product_Target</i> object types.
         </p>
-        
-        <p>The following XPath expression will find the <i>last_modification_date_time</i> element no matter where it is in the file:
+
+        <p>Also in the example is a set of <i>xPath</i> elements found under each <i>productMetadata</i> element. This defines what metadata to extract from the different products. XPath is a query language that uses path expressions to select nodes in an XML document. These path expressions look very much like expressions in a traditional computer file system. In its simplest form, prepending a <i>//</i> before a name will find the element no matter where it is in the XML file.
         </p>
-        
+
+        <p>The following XPath expression will find the <i>creation_date_time</i> element within the default namespace, no matter where this element is located in the file:
+        </p>
+
         <source>
-//last_modification_date_time
+//creation_date_time
         </source>
         
-        <p>The following XPath expression will find all <i>target_name</i> elements that are children of <i>Subject_Area</i>:
+        <p>The following XPath expression will find the <i>creation_date_time</i> element within the geo namespace, no matter where this element is located in the file:
         </p>
         
         <source>
-//Subject_Area/target_name       
-        </source>     
+//geo:creation_date_time
+        </source>
+
+
+        <p>The following XPath expression will find all <i>target_name</i> elements that are children of <i>Subject_Area</i> within the default namespace:
+        </p>
+
+        <source>
+//Subject_Area/target_name
+        </source>
       </subsection>
- 
+      
+      <p>For a more detailed explanation on XPath, go to your favorite search engine and type <i>XPath tutorial</i>. 
+      </p>
+
     </section>
 
     <section name="Report Format">
       <p>This section describes the contents of the Harvest Tool report. At this time, the Harvest Tool only outputs a series of log messages. The log will report the success or failure of a discovered product attempting to be registered. Additionally, any syntactical errors in a discovered product are reported. A log consists of a severity level, file name, and a message. The following is an example of some of the log messages that can be expected from the Harvest Tool:
       </p>
-      
+
       <source>
-INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] Successfully registered product: \
-http://pdsops2.jpl.nasa.gov/registry-service/registry/products/URN:NASA:PDS:instrument_host.24COL/v1.0
-INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] Successfully registered association: \
-http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:93b8209a-0710-4cf5-b310-7ed181d67841
-INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] Successfully registered association: \
-http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:78acc8bc-3f3a-4da2-a13c-f1ee368906a3
-INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] Successfully registered association: \
-http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:b818b505-06a6-4508-bdc1-9d2f63a5344e
-INFO:   [C:\pds4\context_insthost\aaaProduct_files_20100714a\host_24COL.xml] Successfully registered association: \
-http://pdsops2.jpl.nasa.gov/registry-service/registry/associations/urn:uuid:ec4fd498-e0d1-4257-8565-506c167119b3
-WARNING:   [C:\pds4\phoenix_data\pds4_phxase_0002\DATA\PHXCOMPACT.xml] \
-Product already exists in the registry: URN:NASA:PDS:PHX-ASE:DATA-REDUCED::V1.0
-WARNING:   [C:\pds4\phoenix_data\pds4_phxase_0002\DATA\PHXPROFILES.xml] \
-Product already exists in the registry: URN:NASA:PDS:PHX-ASE:DATA-REDUCED::V1.0
-WARNING:   [C:\pds4\phoenix_data\pds4_phxase_0001\DATA\IMU_A_EDR_M.xml] \
-Product already exists in the registry: URN:NASA:PDS:PHX-ASE:DATA-RAW::V1.0
-SEVERE:   [C:\pds4\context_target\aaaProduct_files_20100722t\target_IO_PLASMA_TORUS.xml] \
-line 262: The reference to entity "TRAUGE1995" must end with the ';' delimiter.
+PDS Harvest Tool Log
+
+Version             Version 0.2.0-dev
+Time                Wed, Sep 29 2010 at 02:02:27 PM
+Registry Location   http://localhost:8080/registry-service
+
+INFO:   [C:\pds4\geo\BUGLAB_Archive_Bundle.xml] Begin processing.
+SKIP:   [C:\pds4\geo\BUGLAB_Archive_Bundle.xml] 'archive bundle' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\schema\BUGLAB_Archive_Bundle.xml] Begin processing.
+SKIP:   [C:\pds4\geo\schema\BUGLAB_Archive_Bundle.xml] 'XML_Schema' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\schema\BUGLAB_Collection.xml] Begin processing.
+SKIP:   [C:\pds4\geo\schema\BUGLAB_Collection.xml] 'XML_Schema' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\schema\BUGLAB_Schema_Collection.xml] Begin processing.
+SKIP:   [C:\pds4\geo\schema\BUGLAB_Schema_Collection.xml] 'collection' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\schema\BUG_BDRF_product.xml] Begin processing.
+SKIP:   [C:\pds4\geo\schema\BUG_BDRF_product.xml] 'XML_Schema' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\schema\BUG_Document_Set.xml] Begin processing.
+SKIP:   [C:\pds4\geo\schema\BUG_Document_Set.xml] 'XML_Schema' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\schema\Data_Dict_2010-04-22f.xml] Begin processing.
+SKIP:   [C:\pds4\geo\schema\Data_Dict_2010-04-22f.xml] 'XML_Schema' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\schema\Data_Dict_commpds3_2010-04-22f.xml] Begin processing.
+SKIP:   [C:\pds4\geo\schema\Data_Dict_commpds3_2010-04-22f.xml] 'XML_Schema' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\schema\Data_Types_2010-04-22f.xml] Begin processing.
+SKIP:   [C:\pds4\geo\schema\Data_Types_2010-04-22f.xml] 'XML_Schema' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\schema\Product_XML_Schema.xml] Begin processing.
+SKIP:   [C:\pds4\geo\schema\Product_XML_Schema.xml] 'XML_Schema' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\mars_analog_data\aref_235_450.xml] Begin processing.
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_450.xml] Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_450::1.0
+INFO:   [C:\pds4\geo\mars_analog_data\aref_235_480.xml] Begin processing.
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_480.xml] Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_480::1.0
+INFO:   [C:\pds4\geo\mars_analog_data\aref_235_530.xml] Begin processing.
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_530.xml] Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_530::1.0
+INFO:   [C:\pds4\geo\mars_analog_data\aref_235_600.xml] Begin processing.
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_600.xml] Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_600::1.0
+INFO:   [C:\pds4\geo\mars_analog_data\aref_235_670.xml] Begin processing.
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_670.xml] Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_670::1.0
+INFO:   [C:\pds4\geo\mars_analog_data\aref_235_750.xml] Begin processing.
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_750.xml] Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_750::1.0
+INFO:   [C:\pds4\geo\mars_analog_data\aref_235_800.xml] Begin processing.
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_800.xml] Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_800::1.0
+INFO:   [C:\pds4\geo\mars_analog_data\aref_235_860.xml] Begin processing.
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_860.xml] Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_860::1.0
+INFO:   [C:\pds4\geo\mars_analog_data\aref_235_900.xml] Begin processing.
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_900.xml] Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_900::1.0
+INFO:   [C:\pds4\geo\mars_analog_data\aref_235_930.xml] Begin processing.
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_930.xml] Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_930::1.0
+INFO:   [C:\pds4\geo\mars_analog_data\aref_235_990.xml] Begin processing.
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_990.xml] Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_990::1.0
+INFO:   [C:\pds4\geo\mars_analog_data\MAS_Data_Collection.xml] Begin processing.
+SKIP:   [C:\pds4\geo\mars_analog_data\MAS_Data_Collection.xml] 'collection' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\geometry\BUGLAB_Geometry_Collection.xml] Begin processing.
+SKIP:   [C:\pds4\geo\geometry\BUGLAB_Geometry_Collection.xml] 'collection' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\geometry\geominfo.xml] Begin processing.
+SKIP:   [C:\pds4\geo\geometry\geominfo.xml] 'document_set' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\context\BUGLAB_Context_Collection.xml] Begin processing.
+SKIP:   [C:\pds4\geo\context\BUGLAB_Context_Collection.xml] 'collection' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\context\bug_instrument.xml] Begin processing.
+SKIP:   [C:\pds4\geo\context\bug_instrument.xml] 'document_set' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\context\bug_laboratory.xml] Begin processing.
+SKIP:   [C:\pds4\geo\context\bug_laboratory.xml] 'document_set' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\context\bug_mars_data_set.xml] Begin processing.
+SKIP:   [C:\pds4\geo\context\bug_mars_data_set.xml] 'document_set' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\about\aareadme.xml] Begin processing.
+SKIP:   [C:\pds4\geo\about\aareadme.xml] 'document_set' is not an object type found in the policy file.
+INFO:   [C:\pds4\geo\about\BUGLAB_About_Collection.xml] Begin processing.
+SKIP:   [C:\pds4\geo\about\BUGLAB_About_Collection.xml] 'collection' is not an object type found in the policy file.
+
+Summary:
+
+11 of 30 files are candidate products, 19 skipped
+11 of 11 candidate products registered.
+0 of 0 associations registered.
+
+
+End of Log
       </source>
     </section>
   </body>
