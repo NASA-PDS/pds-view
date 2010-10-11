@@ -304,14 +304,15 @@ public class HarvestLauncher implements HarvestFlags {
                 harvester = new Harvester(launcher.registryURL,
                         policy.getCandidates(), securedUser);
             }
-            for(String inventoryFile :
-                policy.getInventoryFiles().getLocation()) {
-                harvester.harvestInventory(new File(inventoryFile));
+            for(String bundle : policy.getBundles().getFile()) {
+                harvester.harvestBundle(new File(bundle));
             }
-            for(String directory :
-                policy.getRootDirectories().getLocation()) {
-                harvester.harvest(new File(directory),
-                        policy.getRootDirectories().getFilePattern());
+            for(String collection : policy.getCollections().getFile()) {
+                harvester.harvestCollection(new File(collection));
+            }
+            for(String path : policy.getDirectories().getPath()) {
+                harvester.harvest(new File(path),
+                        policy.getDirectories().getFilePattern());
             }
             launcher.closeHandlers();
         } catch(JAXBException je) {

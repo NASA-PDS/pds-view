@@ -35,7 +35,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.xpath.XPathExpressionException;
@@ -115,20 +114,20 @@ public class HarvestCrawler extends ProductCrawler {
     }
 
     /**
-     * Crawl a PDS Inventory file. Method will register the inventory file
+     * Crawl a PDS4 collection file. Method will register the collection
      * first before attempting to register the product files it is pointing
-     * to in the file.
+     * to.
      *
-     * @param inventoryFile The PDS Inventory file.
+     * @param collection The PDS4 Collection file.
      *
      * @throws InventoryReaderException
      */
-    public void crawlInventory(File inventoryFile)
+    public void crawlCollection(File collection)
     throws InventoryReaderException {
-        handleFile(inventoryFile);
+        handleFile(collection);
         boolean isTable = false;
         try {
-            XMLExtractor extractor = new XMLExtractor(inventoryFile);
+            XMLExtractor extractor = new XMLExtractor(collection);
             extractor.setDefaultNamespace(
                     metExtractorConfig.getNamespaceContext().
                     getDefaultNamepsace());
@@ -148,15 +147,33 @@ public class HarvestCrawler extends ProductCrawler {
         }
         InventoryReader reader = null;
         if(isTable) {
-            reader = new InventoryTableReader(inventoryFile,
+            reader = new InventoryTableReader(collection,
                     metExtractorConfig.getNamespaceContext());
         }
         else {
-            reader = new InventoryXMLReader(inventoryFile,
+            reader = new InventoryXMLReader(collection,
                     metExtractorConfig.getNamespaceContext());
         }
         for(InventoryEntry entry = reader.getNext(); entry != null;) {
             handleFile(entry.getFile());
+            entry = reader.getNext();
+        }
+    }
+
+    /**
+     * Crawl a PDS4 bundle file. The bundle will be registered first, then
+     * the method will proceed to crawling the collection file it points to.
+     *
+     * @param bundle The PDS4 bundle file.
+     *
+     * @throws InventoryReaderException
+     */
+    public void crawlBundle(File bundle) throws InventoryReaderException {
+        handleFile(bundle);
+        InventoryReader reader = new InventoryXMLReader(bundle,
+                metExtractorConfig.getNamespaceContext());
+        for(InventoryEntry entry = reader.getNext(); entry != null;) {
+            crawlCollection(entry.getFile());
             entry = reader.getNext();
         }
     }

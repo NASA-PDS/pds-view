@@ -20,7 +20,6 @@ import gov.nasa.pds.harvest.crawler.HarvestCrawler;
 import gov.nasa.pds.harvest.crawler.actions.AssociationPublisherAction;
 import gov.nasa.pds.harvest.crawler.actions.LogMissingReqMetadataAction;
 import gov.nasa.pds.harvest.crawler.actions.RegistryUniquenessCheckerAction;
-import gov.nasa.pds.harvest.crawler.actions.ValidObjectTypeCheckerAction;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractorConfig;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.policy.*;
@@ -130,12 +129,27 @@ public class Harvester {
      * then proceed to crawl the file for references to PDS4
      * data products.
      *
-     * @param inventory a PDS4 Inventory file
+     * @param bundle a PDS4 bundle file
      *
      * @throws InventoryReaderException
      */
-    public void harvestInventory(File inventory)
+    public void harvestBundle(File bundle) throws InventoryReaderException {
+        crawler.crawlBundle(bundle);
+    }
+
+    /**
+     * Harvests the products given in the PDS4 Inventory file.
+     * This method will first register the given Inventory file,
+     * then proceed to crawl the file for references to PDS4
+     * data products.
+     *
+     * @param collection a PDS4 collection file
+     *
+     * @throws InventoryReaderException
+     *
+     */
+    public void harvestCollection(File collection)
     throws InventoryReaderException {
-        crawler.crawlInventory(inventory);
+        crawler.crawlCollection(collection);
     }
 }

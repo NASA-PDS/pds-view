@@ -3,7 +3,8 @@
             xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
             jxb:version="2.0">
 
-<xsd:element name="location" type="xsd:string"/>
+<xsd:element name="path" type="xsd:string"/>
+<xsd:element name="file" type="xsd:string"/>
 <xsd:element name="filePattern" type="xsd:string"/>
 <xsd:element name="xPath" type="xsd:string"/>
 
@@ -12,18 +13,25 @@
 <xsd:attribute name="uri" type="xsd:string"/>
 <xsd:attribute name="default" type="xsd:boolean" default="false"/>
 
-<xsd:element name="rootDirectories" type="RootDirectory"/>
-<xsd:complexType name="RootDirectory">
+<xsd:element name="directories" type="Directory"/>
+<xsd:complexType name="Directory">
    <xsd:sequence>
-      <xsd:element ref="location" maxOccurs="unbounded"/>
+      <xsd:element ref="path" maxOccurs="unbounded"/>
       <xsd:element ref="filePattern" minOccurs="0" maxOccurs="unbounded"/>
    </xsd:sequence>
 </xsd:complexType>
 
-<xsd:element name="inventoryFiles" type="InventoryFile"/>
-<xsd:complexType name="InventoryFile">
+<xsd:element name="bundles" type="Bundle"/>
+<xsd:complexType name="Bundle">
    <xsd:sequence>
-      <xsd:element ref="location" maxOccurs="unbounded"/>
+      <xsd:element ref="file" maxOccurs="unbounded"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+<xsd:element name="collections" type="Collection"/>
+<xsd:complexType name="Collection">
+   <xsd:sequence>
+      <xsd:element ref="file" maxOccurs="unbounded"/>
    </xsd:sequence>
 </xsd:complexType>
 
@@ -53,8 +61,9 @@
 <xsd:element name="policy" type="Policy"/>
 <xsd:complexType name="Policy">
    <xsd:sequence>
-      <xsd:element ref="rootDirectories" minOccurs="0"/>
-      <xsd:element ref="inventoryFiles" minOccurs="0"/>
+      <xsd:element ref="bundles" minOccurs="0"/>
+      <xsd:element ref="collections" minOccurs="0"/>
+      <xsd:element ref="directories" minOccurs="0"/>
       <xsd:element ref="candidates"/>
    </xsd:sequence>
 </xsd:complexType>

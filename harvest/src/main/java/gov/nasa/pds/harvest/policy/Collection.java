@@ -26,24 +26,22 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for ProductMetadata complex type.
+ * <p>Java class for Collection complex type.
  *
  * <p>The following schema fragment specifies the expected content contained within this class.
  *
  * <pre>
- * &lt;complexType name="ProductMetadata">
+ * &lt;complexType name="Collection">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{}xPath" maxOccurs="unbounded"/>
+ *         &lt;element ref="{}file" maxOccurs="unbounded"/>
  *       &lt;/sequence>
- *       &lt;attribute ref="{}objectType use="required""/>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -52,29 +50,27 @@ import javax.xml.bind.annotation.XmlType;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ProductMetadata", propOrder = {
-    "xPath"
+@XmlType(name = "Collection", propOrder = {
+    "file"
 })
-public class ProductMetadata {
+public class Collection {
 
     @XmlElement(required = true)
-    protected List<String> xPath;
-    @XmlAttribute(required = true)
-    protected String objectType;
+    protected List<String> file;
 
     /**
-     * Gets the value of the xPath property.
+     * Gets the value of the file property.
      *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the xPath property.
+     * This is why there is not a <CODE>set</CODE> method for the file property.
      *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getXPath().add(newItem);
+     *    getFile().add(newItem);
      * </pre>
      *
      *
@@ -84,35 +80,11 @@ public class ProductMetadata {
      *
      *
      */
-    public List<String> getXPath() {
-        if (xPath == null) {
-            xPath = new ArrayList<String>();
+    public List<String> getFile() {
+        if (file == null) {
+            file = new ArrayList<String>();
         }
-        return this.xPath;
-    }
-
-    /**
-     * Gets the value of the objectType property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public String getObjectType() {
-        return objectType;
-    }
-
-    /**
-     * Sets the value of the objectType property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setObjectType(String value) {
-        this.objectType = value;
+        return this.file;
     }
 
 }

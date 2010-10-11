@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <policy>
-  <rootDirectories>
-     <location>C:\pds4\phoenix_data_2</location>
+  <directories>
+     <path>C:\pds4\phoenix_data_2</path>
      <filePattern>*.xml</filePattern>
-  </rootDirectories>
+  </directories>
   <candidates>
      <productMetadata objectType="TABLE">
         <xPath>//Product_Identification_Area/Subject_Area/product_id</xPath>
