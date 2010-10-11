@@ -40,6 +40,11 @@
     <module>security</module>
   </modules>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
+
   <developers>
     <developer>
       <name>Sean Hardman</name>
@@ -56,15 +61,6 @@
       <id>mcayanan</id>
       <email>Michael.Cayanan@jpl.nasa.gov</email>
       <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Joshua Ganderson</name>
-      <id>jagander</id>
-      <email>Joshua.Ganderson@nasa.gov</email>
-      <organization>NASA Ames Research Center</organization>
       <roles>
         <role>Developer</role>
       </roles>
@@ -104,6 +100,15 @@
       <roles>
         <role>Developer</role>
         <role>System Design Working Group Member</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Joshua Ganderson</name>
+      <id>jagander</id>
+      <email>Joshua.Ganderson@nasa.gov</email>
+      <organization>NASA Ames Research Center</organization>
+      <roles>
+        <role>Former Developer</role>
       </roles>
     </developer>
   </developers>
