@@ -37,6 +37,7 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+
 /**
  * This class delegates all functions involving an product. This is defined as a
  * sub-resource to the registry resource merely to partition off the operations
@@ -84,7 +85,6 @@ public class ProductResource {
 	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response getProduct() {
 		Product product = registryService.getProduct(lid, userVersion);
-		System.out.println("Class: " + product.getClass().getSimpleName());
 		Response.ResponseBuilder builder = Response.ok(product);
 		ProductResource.addPreviousProductLink(builder, uriInfo,
 				registryService, product);
@@ -129,10 +129,11 @@ public class ProductResource {
 	 * Removes an product from the registry
 	 */
 	@DELETE
-	public void deleteProduct() {
-		registryService.deleteProduct(lid, userVersion);
+	public Response deleteProduct() {
 		// TODO figure out what to do if there was a problem deleting the
 		// product
+		registryService.deleteProduct("Unknown", lid, userVersion);
+		return Response.ok().build();
 	}
 
 	/**
