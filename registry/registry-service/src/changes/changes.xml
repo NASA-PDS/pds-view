@@ -28,6 +28,8 @@
       <action dev="pramirez" type="fix">Convert from using userVersion to using versionId for
         externally tracked versions. Switch to versionName instead of version to align with
         model.</action>
+      <action dev="pramirez" type="add">Ability to delete products.</action>
+      <action dev="pramirez" typs="add">Ability to delete associations.</action>
     </release>
 
     <release version="0.4.0" date="2010-08-25"

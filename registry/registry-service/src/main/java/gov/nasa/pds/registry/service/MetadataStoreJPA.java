@@ -356,4 +356,15 @@ public class MetadataStoreJPA implements MetadataStore {
 		return association;
 	}
 
+  /* (non-Javadoc)
+   * @see gov.nasa.pds.registry.service.MetadataStore#deleteAssociation(java.lang.String)
+   */
+  @Override
+  @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+  public void deleteAssociation(String guid) {
+    Association association = this.getAssociation(guid);
+    entityManager.remove(association);
+    entityManager.flush();
+  }
+
 }

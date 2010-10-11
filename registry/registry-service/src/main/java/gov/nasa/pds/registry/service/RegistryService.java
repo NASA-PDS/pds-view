@@ -210,6 +210,8 @@ public class RegistryService {
 			metadataStore.deleteProduct(lid, versionId);
 			AuditableEvent event = new AuditableEvent(EventType.DELETED,
 					product.getGuid(), user);
+	    event.setGuid(idGenerator.getGuid());
+	    event.setHome(idGenerator.getHome());
 			metadataStore.saveAuditableEvent(event);
 		}
 	}
@@ -251,5 +253,17 @@ public class RegistryService {
 
 	public Association getAssocation(String guid) {
 		return metadataStore.getAssociation(guid);
+	}
+	
+	public void deleteAssociation(String user, String guid) {
+	  Association association = metadataStore.getAssociation(guid);
+	  if (association != null) {
+	    metadataStore.deleteAssociation(guid);
+      AuditableEvent event = new AuditableEvent(EventType.DELETED,
+          association.getGuid(), user);
+      event.setGuid(idGenerator.getGuid());
+      event.setHome(idGenerator.getHome());
+      metadataStore.saveAuditableEvent(event);
+	  }
 	}
 }
