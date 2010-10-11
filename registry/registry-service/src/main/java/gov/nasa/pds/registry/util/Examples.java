@@ -62,7 +62,7 @@ public class Examples {
 		REQUEST_PRODUCT.setDescription("Default Description");
 		REQUEST_PRODUCT.setHome("http://pdsbeta.jpl.nasa.gov/registry-service");
 		REQUEST_PRODUCT.setLid("1234");
-		REQUEST_PRODUCT.setVersion("1.0");
+		REQUEST_PRODUCT.setVersionName("1.0");
 		REQUEST_PRODUCT.setObjectType("person");
 		REQUEST_PRODUCT.setSlots(RESPONSE_SLOTS);
 	}
@@ -74,8 +74,8 @@ public class Examples {
 		RESPONSE_PRODUCT
 				.setHome("http://pdsbeta.jpl.nasa.gov/registry-service");
 		RESPONSE_PRODUCT.setLid("1234");
-		RESPONSE_PRODUCT.setVersion("1.0");
-		RESPONSE_PRODUCT.setUserVersion("1.0");
+		RESPONSE_PRODUCT.setVersionName("1.0");
+		RESPONSE_PRODUCT.setVersionId("1.0");
 		RESPONSE_PRODUCT.setStatus(ObjectStatus.SUBMITTED);
 		RESPONSE_PRODUCT.setObjectType("person");
 		RESPONSE_PRODUCT.setSlots(RESPONSE_SLOTS);
@@ -88,8 +88,8 @@ public class Examples {
 		RESPONSE_PRODUCT_UPDATED
 				.setHome("http://pdsbeta.jpl.nasa.gov/registry-service");
 		RESPONSE_PRODUCT_UPDATED.setLid("1234");
-		RESPONSE_PRODUCT_UPDATED.setVersion("1.0");
-		RESPONSE_PRODUCT_UPDATED.setUserVersion("1.1");
+		RESPONSE_PRODUCT_UPDATED.setVersionName("1.0");
+		RESPONSE_PRODUCT_UPDATED.setVersionId("1.1");
 		RESPONSE_PRODUCT_UPDATED.setStatus(ObjectStatus.SUBMITTED);
 		RESPONSE_PRODUCT_UPDATED.setObjectType("person");
 		RESPONSE_PRODUCT_UPDATED.setSlots(RESPONSE_SLOTS);
@@ -102,8 +102,8 @@ public class Examples {
 		RESPONSE_PRODUCT_APPROVED
 				.setHome("http://pdsbeta.jpl.nasa.gov/registry-service");
 		RESPONSE_PRODUCT_APPROVED.setLid("1234");
-		RESPONSE_PRODUCT_APPROVED.setUserVersion("1.1");
-		RESPONSE_PRODUCT_APPROVED.setVersion("1.0");
+		RESPONSE_PRODUCT_APPROVED.setVersionId("1.1");
+		RESPONSE_PRODUCT_APPROVED.setVersionName("1.0");
 		RESPONSE_PRODUCT_APPROVED.setStatus(ObjectStatus.APPROVED);
 		RESPONSE_PRODUCT_APPROVED.setObjectType("person");
 		RESPONSE_PRODUCT_APPROVED.setSlots(RESPONSE_SLOTS);
@@ -116,8 +116,8 @@ public class Examples {
 		RESPONSE_PRODUCT_DEPRECATED
 				.setHome("http://pdsbeta.jpl.nasa.gov/registry-service");
 		RESPONSE_PRODUCT_DEPRECATED.setLid("1234");
-		RESPONSE_PRODUCT_DEPRECATED.setUserVersion("1.1");
-		RESPONSE_PRODUCT_DEPRECATED.setVersion("1.0");
+		RESPONSE_PRODUCT_DEPRECATED.setVersionId("1.1");
+		RESPONSE_PRODUCT_DEPRECATED.setVersionName("1.0");
 		RESPONSE_PRODUCT_DEPRECATED.setStatus(ObjectStatus.DEPRECATED);
 		RESPONSE_PRODUCT_DEPRECATED.setObjectType("person");
 		RESPONSE_PRODUCT_DEPRECATED.setSlots(RESPONSE_SLOTS);
@@ -146,8 +146,8 @@ public class Examples {
 		REQUEST_PRODUCT_VERSIONED
 				.setHome("http://pdsbeta.jpl.nasa.gov/registry-service");
 		REQUEST_PRODUCT_VERSIONED.setLid("1234");
-		REQUEST_PRODUCT_VERSIONED.setVersion("2.0");
-		REQUEST_PRODUCT_VERSIONED.setUserVersion("1.0");
+		REQUEST_PRODUCT_VERSIONED.setVersionName("2.0");
+		REQUEST_PRODUCT_VERSIONED.setVersionId("1.0");
 		REQUEST_PRODUCT_VERSIONED.setStatus(ObjectStatus.SUBMITTED);
 		REQUEST_PRODUCT_VERSIONED.setObjectType("person");
 		REQUEST_PRODUCT_VERSIONED.setSlots(RESPONSE_SLOTS);
@@ -160,8 +160,8 @@ public class Examples {
 		RESPONSE_PRODUCT_VERSIONED
 				.setHome("http://pdsbeta.jpl.nasa.gov/registry-service");
 		RESPONSE_PRODUCT_VERSIONED.setLid("1234");
-		RESPONSE_PRODUCT_VERSIONED.setVersion("2.0");
-		RESPONSE_PRODUCT_VERSIONED.setUserVersion("1.1");
+		RESPONSE_PRODUCT_VERSIONED.setVersionName("2.0");
+		RESPONSE_PRODUCT_VERSIONED.setVersionId("1.1");
 		RESPONSE_PRODUCT_VERSIONED.setStatus(ObjectStatus.SUBMITTED);
 		RESPONSE_PRODUCT_VERSIONED.setObjectType("person");
 		RESPONSE_PRODUCT_VERSIONED.setSlots(RESPONSE_SLOTS);
@@ -190,11 +190,11 @@ public class Examples {
 		REQUEST_ASSOCIATION.setSourceLid("1234");
 		REQUEST_ASSOCIATION
 				.setSourceHome("http://pdsbeta.jpl.nasa.gov/registry-service");
-		REQUEST_ASSOCIATION.setSourceVersion("1.0");
+		REQUEST_ASSOCIATION.setSourceVersionId("1.0");
 		REQUEST_ASSOCIATION.setTargetLid("1234");
 		REQUEST_ASSOCIATION
 				.setTargetHome("http://pdsbeta.jpl.nasa.gov/registry-service");
-		REQUEST_ASSOCIATION.setTargetVersion("3.0");
+		REQUEST_ASSOCIATION.setTargetVersionId("3.0");
 		REQUEST_ASSOCIATION.setStatus(ObjectStatus.SUBMITTED);
 	}
 

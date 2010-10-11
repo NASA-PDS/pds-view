@@ -54,11 +54,11 @@ public class RegistryObject extends Identifiable {
 
 	// Version provided by registry
 	@XmlAttribute
-	private String version;
+	private String versionName;
 
 	// Version provided by user
 	@XmlAttribute
-	private String userVersion;
+	private String versionId;
 
 	/**
 	 * Meant for JAXB only
@@ -93,8 +93,8 @@ public class RegistryObject extends Identifiable {
 		this.objectType = object.getObjectType();
 		this.status = object.getStatus();
 		this.description = object.getDescription();
-		this.version = object.getVersion();
-		this.userVersion = object.getUserVersion();
+		this.versionName = object.getVersionName();
+		this.versionId = object.getVersionId();
 	}
 
 	/**
@@ -173,33 +173,33 @@ public class RegistryObject extends Identifiable {
 	}
 
 	/**
-	 * @return the version
+	 * @return the internally tracked version
 	 */
-	public String getVersion() {
-		return version;
+	public String getVersionName() {
+		return versionName;
 	}
 
 	/**
-	 * @param version
-	 *            the version to set
+	 * @param versionName
+	 *            the version to set for the registry tracked version
 	 */
-	public void setVersion(String version) {
-		this.version = version;
+	public void setVersionName(String versionName) {
+		this.versionName = versionName;
 	}
 
 	/**
-	 * @return the userVersion
+	 * @return the versionId
 	 */
-	public String getUserVersion() {
-		return userVersion;
+	public String getVersionId() {
+		return versionId;
 	}
 
 	/**
-	 * @param userVersion
-	 *            the userVersion to set
+	 * @param versionId
+	 *            the externally tracked version managed by the user
 	 */
-	public void setUserVersion(String userVersion) {
-		this.userVersion = userVersion;
+	public void setVersionId(String versionId) {
+		this.versionId = versionId;
 	}
 
 	@Override
@@ -214,8 +214,8 @@ public class RegistryObject extends Identifiable {
 				+ ((objectType == null) ? 0 : objectType.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result
-				+ ((userVersion == null) ? 0 : userVersion.hashCode());
-		result = prime * result + ((version == null) ? 0 : version.hashCode());
+				+ ((versionId == null) ? 0 : versionId.hashCode());
+		result = prime * result + ((versionName == null) ? 0 : versionName.hashCode());
 		return result;
 	}
 
@@ -253,15 +253,15 @@ public class RegistryObject extends Identifiable {
 				return false;
 		} else if (!status.equals(other.status))
 			return false;
-		if (userVersion == null) {
-			if (other.userVersion != null)
+		if (versionId == null) {
+			if (other.versionId != null)
 				return false;
-		} else if (!userVersion.equals(other.userVersion))
+		} else if (!versionId.equals(other.versionId))
 			return false;
-		if (version == null) {
-			if (other.version != null)
+		if (versionName == null) {
+			if (other.versionName != null)
 				return false;
-		} else if (!version.equals(other.version))
+		} else if (!versionName.equals(other.versionName))
 			return false;
 		return true;
 	}

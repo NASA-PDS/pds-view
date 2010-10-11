@@ -75,8 +75,8 @@ The http://localhost:8080/registry-service/registry/products end point has been 
 guid - Supports filtering on the global unique id. **
 name - Supports filtering on the name. **
 lid - Supports filtering on the logical identifier. **
-version - Supports filtering on the registry version. **
-userVersion - Supports filtering on the user version. **
+versionName - Supports filtering on the registry version. **
+versionId - Supports filtering on the user version. **
 objectType - Supports filtering on the type of registry object type. Associations are not available through this interface. **
 status - Supports filtering on the registry object status that maps to the gov.nasa.pds.registry.model.ObjectStatus enum
 sort - Supports sorting on all of the above parameters. Supports optional ASC or DESC. If not specified the default is "guid ASC".
@@ -89,10 +89,10 @@ Association Querying
 The http://localhost:8080/registry-service/registry/associations accepts the following parameters:
 
 targetLid - Supports filtering on the lid of the target registry object. **
-targetVersion - Supports filtering on the userVersion of the target registry object. **
+targetVersionId - Supports filtering on the userVersion of the target registry object. **
 targetHome - Supports filtering on the home of the target registry object. **
 sourceLid - Supports filtering on the lid of the source registry object. **
-sourceVersion - Supports filtering on the userVersion of the source registry object. **
+sourceVersionId - Supports filtering on the userVersion of the source registry object. **
 sourceHome - Supports filtering on the home of the source registry object. **
 associationType - Supports filtering on the type of association between the source and target registry object. **
 sort - Supports sorting on all of the above parameters. Supports optional ASC or DESC. If not specified the default is "guid ASC".

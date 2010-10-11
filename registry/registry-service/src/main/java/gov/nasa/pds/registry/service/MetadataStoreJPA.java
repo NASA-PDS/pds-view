@@ -58,22 +58,22 @@ public class MetadataStoreJPA implements MetadataStore {
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void deleteProduct(String lid, String userVersion) {
-		Product product = this.getProduct(lid, userVersion);
+	public void deleteProduct(String lid, String versionId) {
+		Product product = this.getProduct(lid, versionId);
 		entityManager.remove(product);
 		entityManager.flush();
 	}
 
 	// TODO: Update to return null when product is not found or an exception.
 	@Transactional(readOnly = true)
-	public Product getProduct(String lid, String userVersion) {
+	public Product getProduct(String lid, String versionId) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Product> cq = cb.createQuery(Product.class);
 		Root<Product> productEntity = cq.from(Product.class);
 		Path<String> lidAttr = productEntity.get("lid");
-		Path<String> userVersionAttr = productEntity.get("userVersion");
-		cq.where(cb.and(cb.equal(lidAttr, lid), cb.equal(userVersionAttr,
-				userVersion)));
+		Path<String> versionIdAttr = productEntity.get("versionId");
+		cq.where(cb.and(cb.equal(lidAttr, lid), cb.equal(versionIdAttr,
+				versionId)));
 		TypedQuery<Product> query = entityManager.createQuery(cq);
 		Product product = query.getSingleResult();
 		return product;
@@ -135,14 +135,14 @@ public class MetadataStoreJPA implements MetadataStore {
 				predicates.add(cb.equal(productEntity.get("status"), filter
 						.getStatus()));
 			}
-			if (filter.getUserVersion() != null) {
-				predicates.add(cb.like(productEntity.get("userVersion").as(
-						String.class), filter.getUserVersion()
+			if (filter.getVersionId() != null) {
+				predicates.add(cb.like(productEntity.get("versionId").as(
+						String.class), filter.getVersionId()
 						.replace('*', '%')));
 			}
-			if (filter.getVersion() != null) {
-				predicates.add(cb.like(productEntity.get("version").as(
-						String.class), filter.getVersion().replace('*', '%')));
+			if (filter.getVersionName() != null) {
+				predicates.add(cb.like(productEntity.get("versionName").as(
+						String.class), filter.getVersionName().replace('*', '%')));
 			}
 		}
 
@@ -178,7 +178,7 @@ public class MetadataStoreJPA implements MetadataStore {
 	}
 
 	@Transactional(readOnly = true)
-	public PagedResponse getAssociations(String lid, String userVersion,
+	public PagedResponse getAssociations(String lid, String versionId,
 			Integer start, Integer rows) {
 
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -186,10 +186,10 @@ public class MetadataStoreJPA implements MetadataStore {
 		Root<Association> associationEntity = cq.from(Association.class);
 		cq.where(cb.or(cb.and(
 				cb.equal(associationEntity.get("targetLid"), lid), cb.equal(
-						associationEntity.get("targetVersion"), userVersion)),
+						associationEntity.get("targetVersionId"), versionId)),
 				cb.and(cb.equal(associationEntity.get("sourceLid"), lid), cb
-						.equal(associationEntity.get("sourceVersion"),
-								userVersion))));
+						.equal(associationEntity.get("sourceVersionId"),
+								versionId))));
 		List<Order> orders = new ArrayList<Order>();
 		orders.add(cb.asc(associationEntity.get("guid")));
 		cq.orderBy(orders);
@@ -216,9 +216,9 @@ public class MetadataStoreJPA implements MetadataStore {
 								String.class), filter.getTargetLid().replace(
 								'*', '%')));
 			}
-			if (filter.getTargetVersion() != null) {
-				predicates.add(cb.like(associationEntity.get("targetVersion")
-						.as(String.class), filter.getTargetVersion().replace(
+			if (filter.getTargetVersionId() != null) {
+				predicates.add(cb.like(associationEntity.get("targetVersionId")
+						.as(String.class), filter.getTargetVersionId().replace(
 						'*', '%')));
 			}
 			if (filter.getTargetHome() != null) {
@@ -233,9 +233,9 @@ public class MetadataStoreJPA implements MetadataStore {
 								String.class), filter.getSourceLid().replace(
 								'*', '%')));
 			}
-			if (filter.getSourceVersion() != null) {
-				predicates.add(cb.like(associationEntity.get("sourceVersion")
-						.as(String.class), filter.getSourceVersion().replace(
+			if (filter.getSourceVersionId() != null) {
+				predicates.add(cb.like(associationEntity.get("sourceVersionId")
+						.as(String.class), filter.getSourceVersionId().replace(
 						'*', '%')));
 			}
 			if (filter.getSourceHome() != null) {
@@ -308,7 +308,7 @@ public class MetadataStoreJPA implements MetadataStore {
 	}
 
 	@Transactional(readOnly = true)
-	public boolean hasProduct(String lid, String userVersion) {
+	public boolean hasProduct(String lid, String versionId) {
 		return false;
 	}
 

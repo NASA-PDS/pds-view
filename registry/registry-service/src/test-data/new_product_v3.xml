@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <product xmlns="http://registry.pds.nasa.gov" 
     lid="1234" 
-    userVersion="3.0" 
+    versionId="3.0" 
     name="Product 1234 v3" 
     objectType="person" 
     description="This is a new version test product 1234 v1" >

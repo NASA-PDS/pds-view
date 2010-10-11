@@ -24,8 +24,8 @@ public class DefaultVersioner implements Versioner {
 
 	private Comparator<RegistryObject> comparator = new Comparator<RegistryObject>() {
 		public int compare(RegistryObject o1, RegistryObject o2) {
-			String[] version1 = o1.getVersion().split("\\.");
-			String[] version2 = o2.getVersion().split("\\.");
+			String[] version1 = o1.getVersionName().split("\\.");
+			String[] version2 = o2.getVersionName().split("\\.");
 			int majorVersion1 = Integer.parseInt(version1[0]);
 			int majorVersion2 = Integer.parseInt(version2[0]);
 

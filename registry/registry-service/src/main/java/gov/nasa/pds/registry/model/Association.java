@@ -58,7 +58,7 @@ public class Association extends RegistryObject {
 	 * local identifier this maps to one artifact in a registry.
 	 */
 	@XmlAttribute
-	private String sourceVersion;
+	private String sourceVersionId;
 
 	/**
 	 * URI of the registry that the source registry object originates from.
@@ -83,7 +83,7 @@ public class Association extends RegistryObject {
 	 * target local identifier this maps to one artifact in a registry.
 	 */
 	@XmlAttribute
-	private String targetVersion;
+	private String targetVersionId;
 
 	/**
 	 * URI of the registry that the target registry object originates from.
@@ -99,8 +99,8 @@ public class Association extends RegistryObject {
 
 	public Association() {
 		this.setObjectType(Association.class.getSimpleName());
-		this.setVersion(null);
-		this.setUserVersion(null);
+		this.setVersionName(null);
+		this.setVersionId(null);
 	}
 
 	/**
@@ -121,16 +121,16 @@ public class Association extends RegistryObject {
 	/**
 	 * @return the version of the source artifact
 	 */
-	public String getSourceVersion() {
-		return sourceVersion;
+	public String getSourceVersionId() {
+		return sourceVersionId;
 	}
 
 	/**
 	 * @param sourceVersion
 	 *            the version of the source's local identifier
 	 */
-	public void setSourceVersion(String sourceVersion) {
-		this.sourceVersion = sourceVersion;
+	public void setSourceVersionId(String sourceVersionId) {
+		this.sourceVersionId = sourceVersionId;
 	}
 
 	/**
@@ -151,16 +151,16 @@ public class Association extends RegistryObject {
 	/**
 	 * @return the version of the target artifact
 	 */
-	public String getTargetVersion() {
-		return targetVersion;
+	public String getTargetVersionId() {
+		return targetVersionId;
 	}
 
 	/**
-	 * @param targetVersion
+	 * @param targetVersionId
 	 *            the version of the target's local identifier
 	 */
-	public void setTargetVersion(String targetVersion) {
-		this.targetVersion = targetVersion;
+	public void setTargetVersionId(String targetVersionId) {
+		this.targetVersionId = targetVersionId;
 	}
 
 	/**
@@ -224,7 +224,7 @@ public class Association extends RegistryObject {
 		result = prime * result
 				+ ((sourceLid == null) ? 0 : sourceLid.hashCode());
 		result = prime * result
-				+ ((sourceVersion == null) ? 0 : sourceVersion.hashCode());
+				+ ((sourceVersionId == null) ? 0 : sourceVersionId.hashCode());
 		result = prime * result
 				+ ((targetGuid == null) ? 0 : targetGuid.hashCode());
 		result = prime * result
@@ -232,7 +232,7 @@ public class Association extends RegistryObject {
 		result = prime * result
 				+ ((targetLid == null) ? 0 : targetLid.hashCode());
 		result = prime * result
-				+ ((targetVersion == null) ? 0 : targetVersion.hashCode());
+				+ ((targetVersionId == null) ? 0 : targetVersionId.hashCode());
 		return result;
 	}
 
@@ -265,10 +265,10 @@ public class Association extends RegistryObject {
 				return false;
 		} else if (!sourceLid.equals(other.sourceLid))
 			return false;
-		if (sourceVersion == null) {
-			if (other.sourceVersion != null)
+		if (sourceVersionId == null) {
+			if (other.sourceVersionId != null)
 				return false;
-		} else if (!sourceVersion.equals(other.sourceVersion))
+		} else if (!sourceVersionId.equals(other.sourceVersionId))
 			return false;
 		if (targetGuid == null) {
 			if (other.targetGuid != null)
@@ -285,10 +285,10 @@ public class Association extends RegistryObject {
 				return false;
 		} else if (!targetLid.equals(other.targetLid))
 			return false;
-		if (targetVersion == null) {
-			if (other.targetVersion != null)
+		if (targetVersionId == null) {
+			if (other.targetVersionId != null)
 				return false;
-		} else if (!targetVersion.equals(other.targetVersion))
+		} else if (!targetVersionId.equals(other.targetVersionId))
 			return false;
 		return true;
 	}

@@ -24,7 +24,11 @@
 
   <body>
 
-    <release version="0.5.0" date="TBD" description="TBD"> </release>
+    <release version="0.5.0" date="TBD" description="TBD">
+      <action dev="pramirez" type="fix">Convert from using userVersion to using versionId for
+        externally tracked versions. Switch to versionName instead of version to align with
+        model.</action>
+    </release>
 
     <release version="0.4.0" date="2010-08-25"
       description="This release of the Registry Service is a component of the integrated release 0.1.0 of the PDS 2010 System.">

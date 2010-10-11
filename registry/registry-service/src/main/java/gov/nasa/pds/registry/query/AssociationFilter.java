@@ -17,10 +17,10 @@ package gov.nasa.pds.registry.query;
 
 public class AssociationFilter extends ObjectFilter {
 	private String sourceLid;
-	private String sourceVersion;
+	private String sourceVersionId;
 	private String sourceHome;
 	private String targetLid;
-	private String targetVersion;
+	private String targetVersionId;
 	private String targetHome;
 	private String associationType;
 	
@@ -41,9 +41,9 @@ public class AssociationFilter extends ObjectFilter {
 			return this;
 		}
 		
-		public Builder sourceVersion(String sourceVersion) {
+		public Builder sourceVersionId(String sourceVersionId) {
 			this.checkBuilt();
-			this.filter.sourceVersion = sourceVersion;
+			this.filter.sourceVersionId = sourceVersionId;
 			return this;
 		}
 		
@@ -59,9 +59,9 @@ public class AssociationFilter extends ObjectFilter {
 			return this;
 		}
 		
-		public Builder targetVersion(String targetVersion) {
+		public Builder targetVersionId(String targetVersionId) {
 			this.checkBuilt();
-			this.filter.targetVersion = targetVersion;
+			this.filter.targetVersionId = targetVersionId;
 			return this;
 		}
 		
@@ -88,8 +88,8 @@ public class AssociationFilter extends ObjectFilter {
 		return sourceLid;
 	}
 
-	public String getSourceVersion() {
-		return sourceVersion;
+	public String getSourceVersionId() {
+		return sourceVersionId;
 	}
 
 	public String getSourceHome() {
@@ -100,8 +100,8 @@ public class AssociationFilter extends ObjectFilter {
 		return targetLid;
 	}
 
-	public String getTargetVersion() {
-		return targetVersion;
+	public String getTargetVersionId() {
+		return targetVersionId;
 	}
 
 	public String getTargetHome() {

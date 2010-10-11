@@ -57,16 +57,16 @@ public class ProductResource {
 	String lid;
 
 	@Context
-	String userVersion;
+	String versionId;
 
 	@Context
 	RegistryService registryService;
 
 	public ProductResource(UriInfo uriInfo, Request request,
-			RegistryService registryService, String lid, String userVersion) {
+			RegistryService registryService, String lid, String versionId) {
 		this.uriInfo = uriInfo;
 		this.request = request;
-		this.userVersion = userVersion;
+		this.versionId = versionId;
 		this.lid = lid;
 		this.registryService = registryService;
 	}
@@ -84,7 +84,7 @@ public class ProductResource {
 	@GET
 	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response getProduct() {
-		Product product = registryService.getProduct(lid, userVersion);
+		Product product = registryService.getProduct(lid, versionId);
 		Response.ResponseBuilder builder = Response.ok(product);
 		ProductResource.addPreviousProductLink(builder, uriInfo,
 				registryService, product);
@@ -132,7 +132,7 @@ public class ProductResource {
 	public Response deleteProduct() {
 		// TODO figure out what to do if there was a problem deleting the
 		// product
-		registryService.deleteProduct("Unknown", lid, userVersion);
+		registryService.deleteProduct("Unknown", lid, versionId);
 		return Response.ok().build();
 	}
 
@@ -152,7 +152,7 @@ public class ProductResource {
 	@POST
 	@Path("{status}")
 	public Product changeStatus(@PathParam("status") ObjectAction action) {
-		return registryService.changeStatus(lid, userVersion, action
+		return registryService.changeStatus(lid, versionId, action
 				.getObjectStatus());
 	}
 
@@ -160,12 +160,12 @@ public class ProductResource {
 			Response.ResponseBuilder builder, UriInfo uriInfo,
 			RegistryService registryService, Product product) {
 		Product previous = registryService.getPreviousProduct(product.getLid(),
-				product.getUserVersion());
+				product.getVersionId());
 		if (previous != null) {
 			String previousUri = uriInfo.getBaseUriBuilder().clone().path(
 					RegistryResource.class).path(RegistryResource.class,
 					"getProductResource").path(previous.getLid()).path(
-					previous.getUserVersion()).build().toString();
+					previous.getVersionId()).build().toString();
 			builder.header("Link", new Link(previousUri, "previous", null));
 		}
 	}
@@ -173,12 +173,12 @@ public class ProductResource {
 	protected static void addNextProductLink(Response.ResponseBuilder builder,
 			UriInfo uriInfo, RegistryService registryService, Product product) {
 		Product next = registryService.getNextProduct(product.getLid(), product
-				.getUserVersion());
+				.getVersionId());
 		if (next != null) {
 			String nextUri = uriInfo.getBaseUriBuilder().clone().path(
 					RegistryResource.class).path(RegistryResource.class,
 					"getProductResource").path(next.getLid()).path(
-					next.getUserVersion()).build().toString();
+					next.getVersionId()).build().toString();
 			builder.header("Link", new Link(nextUri, "next", null));
 		}
 	}
@@ -191,7 +191,7 @@ public class ProductResource {
 			String earliestUri = uriInfo.getBaseUriBuilder().clone().path(
 					RegistryResource.class).path(RegistryResource.class,
 					"getProductResource").path(earliest.getLid()).path(
-					earliest.getUserVersion()).path("earliest").build()
+					earliest.getVersionId()).path("earliest").build()
 					.toString();
 			builder.header("Link", new Link(earliestUri, "earliest", null));
 		}
@@ -205,7 +205,7 @@ public class ProductResource {
 			String latestUri = uriInfo.getBaseUriBuilder().clone().path(
 					RegistryResource.class).path(RegistryResource.class,
 					"getProductResource").path(latest.getLid()).path(
-					latest.getUserVersion()).build().toString();
+					latest.getVersionId()).build().toString();
 			builder.header("Link", new Link(latestUri, "latest", null));
 		}
 	}
@@ -215,7 +215,7 @@ public class ProductResource {
 		String deprecateUri = uriInfo.getBaseUriBuilder().clone().path(
 				RegistryResource.class).path(RegistryResource.class,
 				"getProductResource").path(product.getLid()).path(
-				product.getUserVersion()).path("deprecate").build().toString();
+				product.getVersionId()).path("deprecate").build().toString();
 		builder.header("Link", new Link(deprecateUri, "deprecate", null));
 	}
 
@@ -224,14 +224,14 @@ public class ProductResource {
 		String approveUri = uriInfo.getBaseUriBuilder().clone().path(
 				RegistryResource.class).path(RegistryResource.class,
 				"getProductResource").path(product.getLid()).path(
-				product.getUserVersion()).path("approve").build().toString();
+				product.getVersionId()).path("approve").build().toString();
 		builder.header("Link", new Link(approveUri, "approve", null));
 	}
 
 	protected static URI getProductUri(Product product, UriInfo uriInfo) {
 		return uriInfo.getBaseUriBuilder().clone().path(RegistryResource.class)
 				.path(RegistryResource.class, "getProductResource").path(
-						product.getLid()).path(product.getUserVersion())
+						product.getLid()).path(product.getVersionId())
 				.build();
 	}
 }

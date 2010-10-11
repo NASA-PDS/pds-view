@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <association xmlns="http://registry.pds.nasa.gov"
     sourceLid="1234"
-    sourceVersion="1.0"
+    sourceVersionId="1.0"
     targetLid="1234"
-    targetVersion="3.0"
+    targetVersionId="3.0"
     associationType="associatedTo"/>

@@ -101,12 +101,12 @@ public class RegistryService {
 		// userVersion
 		// TODO: Make this throw some exception instead
 		if (metadataStore
-				.hasProduct(product.getLid(), product.getUserVersion())) {
+				.hasProduct(product.getLid(), product.getVersionId())) {
 			return null;
 		}
 		product.setGuid(idGenerator.getGuid());
 		product.setHome(idGenerator.getHome());
-		product.setVersion(versioner.getInitialVersion());
+		product.setVersionName(versioner.getInitialVersion());
 		product.setStatus(ObjectStatus.SUBMITTED);
 		metadataStore.saveProduct(product);
 		AuditableEvent event = new AuditableEvent(EventType.CREATED, product
@@ -122,8 +122,8 @@ public class RegistryService {
 		Product referencedProduct = this.getLatestProduct(lid);
 		product.setGuid(idGenerator.getGuid());
 		product.setHome(idGenerator.getHome());
-		product.setVersion(versioner.getNextVersion(referencedProduct
-				.getVersion(), major));
+		product.setVersionName(versioner.getNextVersion(referencedProduct
+				.getVersionName(), major));
 		product.setStatus(referencedProduct.getStatus());
 		metadataStore.saveProduct(product);
 		AuditableEvent event = new AuditableEvent(EventType.VERSIONED,
@@ -154,12 +154,12 @@ public class RegistryService {
 
 	// TODO: Make this method throw an exception if the lid or version is not
 	// found
-	public Product getNextProduct(String lid, String userVersion) {
+	public Product getNextProduct(String lid, String versionId) {
 		List<Product> products = metadataStore.getProductVersions(lid);
 		Collections.sort(products, versioner.getComparator());
 		for (int i = 0; i < products.size(); i++) {
 			Product product = products.get(i);
-			if (userVersion.equals(product.getUserVersion())) {
+			if (versionId.equals(product.getVersionId())) {
 				if (i < products.size() - 1) {
 					return products.get(i + 1);
 				} else {
@@ -172,12 +172,12 @@ public class RegistryService {
 
 	// TODO: Make this method throw an exception if the lid or version is not
 	// found
-	public Product getPreviousProduct(String lid, String userVersion) {
+	public Product getPreviousProduct(String lid, String versionId) {
 		List<Product> products = metadataStore.getProductVersions(lid);
 		Collections.sort(products, versioner.getComparator());
 		for (int i = 0; i < products.size(); i++) {
 			Product product = products.get(i);
-			if (userVersion.equals(product.getUserVersion())) {
+			if (versionId.equals(product.getVersionId())) {
 				if (i > 0) {
 					return products.get(i - 1);
 				} else {
@@ -192,22 +192,22 @@ public class RegistryService {
 		return metadataStore.getProductVersions(lid);
 	}
 
-	public Product getProduct(String lid, String userVersion) {
-		return metadataStore.getProduct(lid, userVersion);
+	public Product getProduct(String lid, String versionId) {
+		return metadataStore.getProduct(lid, versionId);
 	}
 
-	public Product changeStatus(String lid, String userVersion,
+	public Product changeStatus(String lid, String versionId,
 			ObjectStatus status) {
-		Product product = metadataStore.getProduct(lid, userVersion);
+		Product product = metadataStore.getProduct(lid, versionId);
 		product.setStatus(status);
 		metadataStore.updateProduct(product);
 		return product;
 	}
 
-	public void deleteProduct(String user, String lid, String userVersion) {
-		Product product = metadataStore.getProduct(lid, userVersion);
+	public void deleteProduct(String user, String lid, String versionId) {
+		Product product = metadataStore.getProduct(lid, versionId);
 		if (product != null) {
-			metadataStore.deleteProduct(lid, userVersion);
+			metadataStore.deleteProduct(lid, versionId);
 			AuditableEvent event = new AuditableEvent(EventType.DELETED,
 					product.getGuid(), user);
 			metadataStore.saveAuditableEvent(event);
@@ -223,9 +223,9 @@ public class RegistryService {
 		return metadataStore.getAssociations(query, start, rows);
 	}
 
-	public PagedResponse getAssociations(String lid, String userVersion,
+	public PagedResponse getAssociations(String lid, String versionId,
 			Integer start, Integer rows) {
-		return metadataStore.getAssociations(lid, userVersion, start, rows);
+		return metadataStore.getAssociations(lid, versionId, start, rows);
 	}
 
 	public Association publishAssociation(String user, Association association) {
@@ -238,7 +238,7 @@ public class RegistryService {
 			association.setTargetHome(idGenerator.getHome());
 		}
 		association.setLid(association.getGuid());
-		association.setVersion(versioner.getInitialVersion());
+		association.setVersionName(versioner.getInitialVersion());
 		association.setStatus(ObjectStatus.SUBMITTED);
 		metadataStore.saveAssociation(association);
 		AuditableEvent event = new AuditableEvent(EventType.CREATED,

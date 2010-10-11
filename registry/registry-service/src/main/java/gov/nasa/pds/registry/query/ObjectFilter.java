@@ -28,8 +28,8 @@ public class ObjectFilter {
 	private String guid;
 	private String name;
 	private String lid;
-	private String version;
-	private String userVersion;
+	private String versionName;
+	private String versionId;
 	private String objectType;
 	private String submitter;
 	private ObjectStatus status;
@@ -66,15 +66,15 @@ public class ObjectFilter {
 			return this;
 		}
 		
-		public Builder version(String version) {
+		public Builder versionName(String versionName) {
 			this.checkBuilt();
-			this.filter.version = version;
+			this.filter.versionName = versionName;
 			return this;
 		}
 		
-		public Builder userVersion(String userVersion) {
+		public Builder versionId(String versionId) {
 			this.checkBuilt();
-			this.filter.userVersion = userVersion;
+			this.filter.versionId = versionId;
 			return this;
 		}
 		
@@ -134,12 +134,12 @@ public class ObjectFilter {
 		return lid;
 	}
 
-	public String getVersion() {
-		return version;
+	public String getVersionName() {
+		return versionName;
 	}
 
-	public String getUserVersion() {
-		return userVersion;
+	public String getVersionId() {
+		return versionId;
 	}
 
 	public String getObjectType() {

@@ -161,11 +161,11 @@ public class RegistryClient {
 		    if (filter.getStatus() != null) {
 		    	params.add("status", filter.getStatus().toString());
 		    }
-		    if (filter.getUserVersion() != null) {
-		    	params.add("userVersion", filter.getUserVersion());
+		    if (filter.getVersionId() != null) {
+		    	params.add("versionId", filter.getVersionId());
 		    }
-		    if (filter.getVersion() != null) {
-		    	params.add("version", filter.getVersion());
+		    if (filter.getVersionName() != null) {
+		    	params.add("versionName", filter.getVersionName());
 		    }
 	    }
 	    
@@ -217,8 +217,8 @@ public class RegistryClient {
 		    if (filter.getTargetLid() != null) {
 		    	params.add("targetLid", filter.getTargetLid());
 		    }
-		    if (filter.getTargetVersion() != null) {
-		    	params.add("targetVersion", filter.getTargetVersion());
+		    if (filter.getTargetVersionId() != null) {
+		    	params.add("targetVersionId", filter.getTargetVersionId());
 		    }
 		    if (filter.getTargetHome() != null) {
 		    	params.add("targetHome", filter.getTargetHome());
@@ -226,8 +226,8 @@ public class RegistryClient {
 		    if (filter.getSourceLid() != null) {
 		    	params.add("sourceLid", filter.getSourceLid());
 		    }
-		    if (filter.getSourceVersion() != null) {
-		    	params.add("sourceVersion", filter.getSourceVersion());
+		    if (filter.getSourceVersionId() != null) {
+		    	params.add("sourceVersionId", filter.getSourceVersionId());
 		    }
 		    if (filter.getSourceHome() != null) {
 		    	params.add("sourceHome", filter.getSourceHome());
@@ -270,12 +270,12 @@ public class RegistryClient {
 			System.out.println("Latest Product");
 			System.out.println("Product " + product.getGuid());
 			if (args.length > 2) {
-				ObjectFilter filter = new ObjectFilter.Builder().lid(args[1]).userVersion(args[2]).build();
+				ObjectFilter filter = new ObjectFilter.Builder().lid(args[1]).versionId(args[2]).build();
 				ProductQuery query = new ProductQuery.Builder().filter(filter).build();
 				response = client.getProducts(query, null, null).getEntity(PagedResponse.class);
 				for (RegistryObject object : response.getResults()) {
 					System.out.println(object.getClass().getSimpleName() + " "
-							+ object.getGuid() + " " + object.getLid() + " " + object.getUserVersion());
+							+ object.getGuid() + " " + object.getLid() + " " + object.getVersionId());
 				}
 			}
 		}

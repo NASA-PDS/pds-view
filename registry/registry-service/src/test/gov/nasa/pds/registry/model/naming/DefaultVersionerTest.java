@@ -48,40 +48,40 @@ public class DefaultVersionerTest {
 		List<RegistryObject> objects = new ArrayList<RegistryObject>();
 		RegistryObject ro1 = new RegistryObject("1", "testRegistry", "1",
 				"test 1.0", RegistryObject.class.getName());
-		ro1.setVersion("1.0");
+		ro1.setVersionName("1.0");
 		objects.add(0, ro1);
 		RegistryObject ro2 = new RegistryObject("2", "testRegistry", "1",
 				"test 1.2", RegistryObject.class.getName());
-		ro2.setVersion("1.2");
+		ro2.setVersionName("1.2");
 		objects.add(0, ro2);
 		RegistryObject ro3 = new RegistryObject("3", "testRegistry", "1",
 				"test 2.0", RegistryObject.class.getName());
-		ro3.setVersion("2.0");
+		ro3.setVersionName("2.0");
 		objects.add(0, ro3);
 		RegistryObject ro4 = new RegistryObject("4", "testRegistry", "1",
 				"test 1.1", RegistryObject.class.getName());
-		ro4.setVersion("1.1");
+		ro4.setVersionName("1.1");
 		objects.add(0, ro4);
 		RegistryObject ro5 = new RegistryObject("5", "testRegistry", "1",
 				"test 2.1", RegistryObject.class.getName());
-		ro5.setVersion("2.1");
+		ro5.setVersionName("2.1");
 		objects.add(0, ro5);
 		RegistryObject ro6 = new RegistryObject("6", "testRegistry", "1",
 				"test 3.0", RegistryObject.class.getName());
-		ro6.setVersion("3.0");
+		ro6.setVersionName("3.0");
 		objects.add(0, ro6);
 		RegistryObject ro7 = new RegistryObject("7", "testRegistry", "1",
 				"test 3.0", RegistryObject.class.getName());
-		ro7.setVersion("3.0");
+		ro7.setVersionName("3.0");
 		objects.add(0, ro6);
 		Collections.sort(objects, comparator);
-		assertThat(objects.get(0).getVersion(), is("1.0"));
-		assertThat(objects.get(1).getVersion(), is("1.1"));
-		assertThat(objects.get(2).getVersion(), is("1.2"));
-		assertThat(objects.get(3).getVersion(), is("2.0"));
-		assertThat(objects.get(4).getVersion(), is("2.1"));
-		assertThat(objects.get(5).getVersion(), is("3.0"));
-		assertThat(objects.get(6).getVersion(), is("3.0"));
+		assertThat(objects.get(0).getVersionName(), is("1.0"));
+		assertThat(objects.get(1).getVersionName(), is("1.1"));
+		assertThat(objects.get(2).getVersionName(), is("1.2"));
+		assertThat(objects.get(3).getVersionName(), is("2.0"));
+		assertThat(objects.get(4).getVersionName(), is("2.1"));
+		assertThat(objects.get(5).getVersionName(), is("3.0"));
+		assertThat(objects.get(6).getVersionName(), is("3.0"));
 	}
 
 	@Test

@@ -8,7 +8,7 @@
         should already be installed. The following is a set of examples to run against the registry. You will have to change the registry 
         base URL to match the service you wish to talk to. For beta the base URL is ${registry.endpoint}.</p>
         
-        <p>When running these examples please change the lid and version to something other than those used in the examples. Implementation 
+        <p>When running these examples please change the lid and version id to something other than those used in the examples. Implementation 
         is not yet completed and many error conditions have not yet been mapped to HTTP error codes.</p>
         <ol>
          <li>Publishing a new product<br/><br/>
@@ -19,7 +19,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <product xmlns="http://registry.pds.nasa.gov" 
     lid="1234" 
-    userVersion="1.0" 
+    versionId="1.0" 
     name="Product 1234 v1" 
     objectType="person" 
     description="This is a new version test product 1234 v1" >
@@ -72,7 +72,7 @@
 {"description":"This is a new version test product 5678 v1",
 "name":"Product 5678 v1",
 "objectType":"person",
-"userVersion":"1.0",
+"versionId":"1.0",
 "lid":"5678",
 "slot":[{"name":"last-name","value":["Doe"]},
         {"name":"phone","value":["(818)123-4567","(818)765-4321"]},
@@ -88,11 +88,11 @@
          <p>curl -X GET -H "Accept:application/xml" -v ${registry.endpoint}registry/products/1234/earliest</p></li>
          <li><p>Retrieve all revisions of the product with lid 1234. URL will work in a browser too.</p>
          <p>curl -X GET -H "Accept:application/xml" -v ${registry.endpoint}registry/products/1234/all</p></li>
-         <li><p>Retrieve the registry entry for product 1234 with version 2.0. URL will work in a browser.</p>
+         <li><p>Retrieve the registry entry for product 1234 with version id 2.0. URL will work in a browser.</p>
          <p>curl -X GET -H "Accept:application/xml" -v ${registry.endpoint}registry/products/1234/2.0</p></li>
-         <li><p>Retrieve the JSON representation of the registry entry for product 1234 with version 2.0. Can not be used in the browser as there is no way to set the HTTP Accept header directly. See next example for a URL to retrieve JSON via a browser.</p>
+         <li><p>Retrieve the JSON representation of the registry entry for product 1234 with version id 2.0. Can not be used in the browser as there is no way to set the HTTP Accept header directly. See next example for a URL to retrieve JSON via a browser.</p>
          <p>curl -X GET -H "Accept:application/json" -v ${registry.endpoint}registry/products/1234/2.0</p></li>
-         <li><p>Retrieve the JSON representation of the registry entry for product 1234 with version 2.0 encoding of the return type is done with a suffix in the URL. This will work in a browser.</p>
+         <li><p>Retrieve the JSON representation of the registry entry for product 1234 with version id 3.0, encoding of the return type is done with a suffix in the URL. This will work in a browser.</p>
          <p>curl -X GET -v ${registry.endpoint}registry/products/1234/3.0.json</p></li>
          <li><p>Approve an product</p>
          <p>curl -X POST -H "Content-type:application/xml" -v ${registry.endpoint}registry/products/1234/1.0/APPROVE</p></li>

@@ -62,33 +62,6 @@ public class ProductsResource {
   }
 
   /**
-
-   * 
-   * @param start
-   *          the index at which to start the result list from
-   * @param rows
-   *          how many results to return
-   * @param guid
-   *          
-   * @param lid
-   *          
-   * @param version
-   *          
-   * @param userVersion
-   *          
-   * @param objectType
-   *          
-   * @param status
-   *          
-   * @param queryOp
-   *          
-   * @param sort
-   *          
-   * 
-   * @return 
-   */
-
-  /**
    * 
    * Allows access to all the products managed by this repository. This list of
    * products is based on the latest received product's logical identifier
@@ -108,8 +81,8 @@ public class ProductsResource {
    * @param guid filter to apply on the global unique id, supports wildcard (*)
    * @param name filter to apply to name, support wildcard (*)
    * @param lid filter to apply to logical id, supports wildcard (*)
-   * @param version filter to apply to registry object version, supports wildcard (*)
-   * @param userVersion filter to apply on the user version, supports wildcard (*)
+   * @param versionName filter to apply to registry object version, supports wildcard (*)
+   * @param versionId filter to apply on the user version, supports wildcard (*)
    * @param objectType filter to apply on the user defined registry object types,supports
    *          wildcard (*)
    * @param submitter CURRENTLY UNSUPPORTED
@@ -129,8 +102,8 @@ public class ProductsResource {
       @QueryParam("start") @DefaultValue("1") Integer start,
       @QueryParam("rows") @DefaultValue("20") Integer rows,
       @QueryParam("guid") String guid, @QueryParam("name") String name,
-      @QueryParam("lid") String lid, @QueryParam("version") String version,
-      @QueryParam("userVersion") String userVersion,
+      @QueryParam("lid") String lid, @QueryParam("versionName") String versionName,
+      @QueryParam("versionId") String versionId,
       @QueryParam("objectType") String objectType,
       @QueryParam("submitter") String submitter,
       @QueryParam("status") ObjectStatus status,
@@ -138,7 +111,7 @@ public class ProductsResource {
       @QueryParam("queryOp") @DefaultValue("AND") QueryOperator operator,
       @QueryParam("sort") List<String> sort) {
     ObjectFilter filter = new ObjectFilter.Builder().guid(guid).name(name).lid(
-        lid).version(version).userVersion(userVersion).objectType(objectType)
+        lid).versionName(versionName).versionId(versionId).objectType(objectType)
         .submitter(submitter).status(status).eventType(eventType).build();
     ProductQuery.Builder queryBuilder = new ProductQuery.Builder().filter(
         filter).operator(operator);
@@ -300,17 +273,17 @@ public class ProductsResource {
   }
 
   /**
-   * @param version
+   * @param versionId
    *          of the product's local identifier
    * @param lid
    *          local identifier which identifies a unique set of products
    * @return the resource that manages an Product in the registry
    */
-  @Path("{lid}/{version}")
+  @Path("{lid}/{versionId}")
   public ProductResource getProductResource(@PathParam("lid") String lid,
-      @PathParam("version") String userVersion) {
+      @PathParam("versionId") String versionId) {
     return new ProductResource(uriInfo, request, registryService, lid,
-        userVersion);
+        versionId);
   }
 
 }

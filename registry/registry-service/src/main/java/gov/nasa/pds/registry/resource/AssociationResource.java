@@ -69,17 +69,17 @@ public class AssociationResource {
 			@QueryParam("start") @DefaultValue("1") Integer start,
 			@QueryParam("rows") @DefaultValue("20") Integer rows,
 			@QueryParam("targetLid") String targetLid,
-			@QueryParam("targetVersion") String targetVersion,
+			@QueryParam("targetVersionId") String targetVersionId,
 			@QueryParam("targetHome") String targetHome,
 			@QueryParam("sourceLid") String sourceLid,
-			@QueryParam("sourceVersion") String sourceVersion,
+			@QueryParam("sourceVersionId") String sourceVersionId,
 			@QueryParam("sourceHome") String sourceHome,
 			@QueryParam("associationType") String associationType,
 			@QueryParam("queryOp") @DefaultValue("AND") QueryOperator operator,
 			@QueryParam("sort") List<String> sort) {
 		AssociationFilter filter = new AssociationFilter.Builder().targetLid(
-				targetLid).targetVersion(targetVersion).targetHome(targetHome)
-				.sourceLid(sourceLid).sourceVersion(sourceVersion).sourceHome(
+				targetLid).targetVersionId(targetVersionId).targetHome(targetHome)
+				.sourceLid(sourceLid).sourceVersionId(sourceVersionId).sourceHome(
 						sourceHome).associationType(associationType)
 				.associationType(associationType).build();
 		AssociationQuery.Builder queryBuilder = new AssociationQuery.Builder().filter(filter).operator(operator);
@@ -93,6 +93,14 @@ public class AssociationResource {
 		return builder.build();
 	}
 	
+	/**
+	 * 
+	 * @param start
+	 * @param rows
+	 * @param lid
+	 * @param userVersion
+	 * @return
+	 */
 	@GET
 	@Path("{lid}/{userVersion}")
 	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
