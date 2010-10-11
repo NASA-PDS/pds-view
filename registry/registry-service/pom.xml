@@ -60,6 +60,8 @@
     <derby.version>10.6.1.0</derby.version>
     <env>default</env>
     <registry.endpoint>${registry.protocol}://${registry.host}:${registry.port}${registry.context}/</registry.endpoint>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
   <build>
