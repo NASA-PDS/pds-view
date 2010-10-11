@@ -415,7 +415,7 @@
                                                 <xsl:when test="preceding-sibling::wadl:param[@style='query']">&amp;</xsl:when>
                                                 <xsl:otherwise>?</xsl:otherwise>
                                             </xsl:choose>
-                                            <xsl:value-of select="@name"/>
+                                            <xsl:value-of select="@name"/><xsl:text>=</xsl:text>
                                         </xsl:when>
                                         <xsl:otherwise>
                                             <span class="optional">
@@ -423,7 +423,7 @@
                                                     <xsl:when test="preceding-sibling::wadl:param[@style='query']">&amp;</xsl:when>
                                                     <xsl:otherwise>?</xsl:otherwise>
                                                 </xsl:choose>
-                                                <xsl:value-of select="@name"/>
+                                                <xsl:value-of select="@name"/><xsl:text>=</xsl:text>
                                             </span>
                                         </xsl:otherwise>
                                     </xsl:choose>
@@ -434,11 +434,11 @@
                     </h3>
                     <xsl:apply-templates select="wadl:doc"/>
                     <xsl:apply-templates select="." mode="param-group">
-                        <xsl:with-param name="prefix">resource-wide</xsl:with-param>
+                        <xsl:with-param name="prefix">Resource-wide</xsl:with-param>
                         <xsl:with-param name="style">template</xsl:with-param>
                     </xsl:apply-templates>
                     <xsl:apply-templates select="." mode="param-group">                        
-                        <xsl:with-param name="prefix">resource-wide</xsl:with-param>
+                        <xsl:with-param name="prefix">Resource-wide</xsl:with-param>
                         <xsl:with-param name="style">matrix</xsl:with-param>
                     </xsl:apply-templates>                    
                     <h6>Methods</h6>
@@ -465,15 +465,15 @@
 
     <xsl:template match="wadl:request">
         <xsl:apply-templates select="." mode="param-group">
-            <xsl:with-param name="prefix">request</xsl:with-param>
+            <xsl:with-param name="prefix">Request</xsl:with-param>
             <xsl:with-param name="style">query</xsl:with-param>
         </xsl:apply-templates>
         <xsl:apply-templates select="." mode="param-group">
-            <xsl:with-param name="prefix">request</xsl:with-param>
+            <xsl:with-param name="prefix">Request</xsl:with-param>
             <xsl:with-param name="style">header</xsl:with-param>
         </xsl:apply-templates> 
         <xsl:if test="wadl:representation">
-            <p><em>acceptable request representations:</em></p>
+            <p><em>Acceptable request representations:</em></p>
             <ul>
                 <xsl:apply-templates select="wadl:representation"/>
             </ul>
@@ -482,11 +482,11 @@
 
     <xsl:template match="wadl:response">
         <xsl:apply-templates select="." mode="param-group">
-            <xsl:with-param name="prefix">response</xsl:with-param>
+            <xsl:with-param name="prefix">Response</xsl:with-param>
             <xsl:with-param name="style">header</xsl:with-param>
         </xsl:apply-templates> 
         <xsl:if test="wadl:representation">
-            <p><em>available response representations:</em></p>
+            <p><em>Available response representations:</em></p>
             <ul>
                 <xsl:apply-templates select="wadl:representation"/>
             </ul>
