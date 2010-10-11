@@ -193,13 +193,16 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         <source>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;policy&gt;
-   &lt;rootDirectories&gt;
-      &lt;location&gt;/home/user/pds4/geo/product_files&lt;/location&gt;
+   &lt;bundles&gt;
+      &lt;file&gt;/home/pds4/context-bundle/bundle.xml&lt;/file&gt;
+   &lt;/bundles&gt;
+   &lt;collections&gt;
+      &lt;file&gt;/home/pds4/insthost/collection_instrument_host.xml&lt;/file&gt;
+   &lt;/collections&gt;
+   &lt;directories&gt;
+      &lt;path&gt;/home/user/pds4/geo/product_files&lt;/path&gt;
       &lt;filePattern&gt;*.xml&lt;/filePattern&gt;
-   &lt;/rootDirectories&gt;
-   &lt;inventoryFiles&gt;
-      &lt;location&gt;/home/pds4/insthost/collection_instrument_host.xml&lt;/location&gt;
-   &lt;/inventoryFiles&gt;
+   &lt;/directories&gt;
    &lt;candidates&gt;
       &lt;namespace prefix="geo" uri="http://pds.nasa.gov/schema/pds4/geo"/&gt;
       &lt;productMetadata objectType="character_table"&gt;
@@ -217,37 +220,50 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
 &lt;/policy&gt;
         </source>
 
-        <p>The policy file is made up of 4 complex type elements: <i>rootDirectories</i>, <i>inventoryFiles</i>, <i>candidates</i>, and <i>productMetadata</i>.
+        <p>The policy file is made up of 6 complex type elements: <i>bundles</i>, <i>collections</i>, <i>directories</i>, <i>candidates</i>, and <i>productMetadata</i>.
+        </p>
+        
+        <b><i>bundles</i></b>
+        
+        <p>Specify this element to tell the Harvest Tool to register and crawl a bundle file. The following table describes the elements that are allowed:
+        </p>
+        
+        <table>
+          <tr><th>Element Name</th><th>Description</th></tr>
+          <tr><td>file</td><td>Specify a bundle file. Specify this element tag more than once to point to multiple bundle files.</td></tr>
+        </table>
+        
+        <p>In the example above, the Harvest Tool will register the bundle file named <i>/home/pds4/context-bundle/bundle.xml</i>. It will then crawl the bundle file, looking for collection files to register and process.
+        </p>
+        
+        <b><i>collections</i></b>
+        
+        <p>Specify this element to tell the Harvest Tool to register and crawl a collection file. Crawling only occurs when the collection file is a primary collection. This is indicated by a value of <i>true</i> in the <i>is_primary_collection</i> element tag within the collection. 
+        </p>
+        
+        <p>The following table describes the elements that are allowed: 
+        </p>
+        
+        <table>
+          <tr><th>Element Name</th><th>Description</th></tr>
+          <tr><td>file</td><td>Specify a collection file. Specify this element tag more than once to point to multiple collection files.</td></tr>
+        </table>
+        
+        <p>In the example above, the Harvest Tool will register the collection file named <i>/home/pds4/insthost/collection_instrument_host.xml</i>. It will then crawl the file, looking for products to register if it is a primary collection.
         </p>
 
-        <b><i>rootDirectories</i></b>
+        <b><i>directories</i></b>
 
         <p>Specify this element to tell the Harvest Tool where to crawl for data products. The following table describes the elements that are allowed:
         </p>
 
         <table>
           <tr><th>Element Name</th><th>Description</th></tr>
-          <tr><td>location</td><td>Specify a directory path.</td></tr>
+          <tr><td>path</td><td>Specify a directory path to start crawling. Specify this element tag more than once to point to multiple directories to crawl.</td></tr>
           <tr><td>filePattern</td><td>Specify a file pattern to look for specific files. If omitted, the default is to get all files within a directory.</td></tr>
         </table>
         
         <p>In the example above, the Harvest tool will crawl the directory location, <i>/home/user/pds4/geo/product_files</i>, looking for files that have a <i>.xml</i> file extension. The default is to touch all files in the directory if the <i>filePattern</i> element is omitted from the policy file.
-        </p>
-
-        <p><b><i>inventoryFiles</i></b></p>
-
-        <p>Specify this element to tell the Harvest Tool to register and crawl a PDS Inventory File. The following table describes the elements that are allowed:
-        </p>
-
-        <table>
-          <tr><th>Element Name</th><th>Description</th></tr>
-          <tr><td>location</td><td>Specify a location to the PDS inventory file.</td></tr>
-        </table>
-
-        <p>If the Inventory file is a primary collection, then the tool will proceed to crawl the file for products to register. If not, only the collection itself and its associations are registered.
-        </p>
-        
-        <p>The example above tells the Harvest Tool to register and crawl (if its a primary collection), the Inventory file named <i>/home/user/pds4/insthost/collection_instrument_host.xml</i>.
         </p>
 
         <p><b><i>candidates</i></b></p>
@@ -257,7 +273,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
 
         <table>
           <tr><th>Element Name</th><th>Description</th></tr>
-          <tr><td>namespace</td><td>Specify if the products to be registered contain a namespace other than the default pds namespace.</td></tr>
+          <tr><td>namespace</td><td>Specify if the products to be registered contain metadata that are in a namespace other than the default pds namespace.</td></tr>
           <tr><td>productMetadata</td><td>Specify to tell the tool what object types and what metadata to register.</td></tr>
         </table>
         

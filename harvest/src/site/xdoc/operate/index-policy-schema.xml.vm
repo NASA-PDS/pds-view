@@ -34,7 +34,8 @@
             xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
             jxb:version="2.0"&gt;
 
-&lt;xsd:element name="location" type="xsd:string"/&gt;
+&lt;xsd:element name="path" type="xsd:string"/&gt;
+&lt;xsd:element name="file" type="xsd:string"/&gt;
 &lt;xsd:element name="filePattern" type="xsd:string"/&gt;
 &lt;xsd:element name="xPath" type="xsd:string"/&gt;
 
@@ -43,18 +44,25 @@
 &lt;xsd:attribute name="uri" type="xsd:string"/&gt;
 &lt;xsd:attribute name="default" type="xsd:boolean" default="false"/&gt;
 
-&lt;xsd:element name="rootDirectories" type="RootDirectory"/&gt;
-&lt;xsd:complexType name="RootDirectory"&gt;
+&lt;xsd:element name="directories" type="Directory"/&gt;
+&lt;xsd:complexType name="Directory"&gt;
    &lt;xsd:sequence&gt;
-      &lt;xsd:element ref="location" maxOccurs="unbounded"/&gt;
+      &lt;xsd:element ref="path" maxOccurs="unbounded"/&gt;
       &lt;xsd:element ref="filePattern" minOccurs="0" maxOccurs="unbounded"/&gt;
    &lt;/xsd:sequence&gt;
 &lt;/xsd:complexType&gt;
 
-&lt;xsd:element name="inventoryFiles" type="InventoryFile"/&gt;
-&lt;xsd:complexType name="InventoryFile"&gt;
+&lt;xsd:element name="bundles" type="Bundle"/&gt;
+&lt;xsd:complexType name="Bundle"&gt;
    &lt;xsd:sequence&gt;
-      &lt;xsd:element ref="location" maxOccurs="unbounded"/&gt;
+      &lt;xsd:element ref="file" maxOccurs="unbounded"/&gt;
+   &lt;/xsd:sequence&gt;
+&lt;/xsd:complexType&gt;
+
+&lt;xsd:element name="collections" type="Collection"/&gt;
+&lt;xsd:complexType name="Collection"&gt;
+   &lt;xsd:sequence&gt;
+      &lt;xsd:element ref="file" maxOccurs="unbounded"/&gt;
    &lt;/xsd:sequence&gt;
 &lt;/xsd:complexType&gt;
 
@@ -84,8 +92,9 @@
 &lt;xsd:element name="policy" type="Policy"/&gt;
 &lt;xsd:complexType name="Policy"&gt;
    &lt;xsd:sequence&gt;
-      &lt;xsd:element ref="rootDirectories" minOccurs="0"/&gt;
-      &lt;xsd:element ref="inventoryFiles" minOccurs="0"/&gt;
+      &lt;xsd:element ref="bundles" minOccurs="0"/&gt;
+      &lt;xsd:element ref="collections" minOccurs="0"/&gt;
+      &lt;xsd:element ref="directories" minOccurs="0"/&gt;
       &lt;xsd:element ref="candidates"/&gt;
    &lt;/xsd:sequence&gt;
 &lt;/xsd:complexType&gt;
