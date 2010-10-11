@@ -95,9 +95,9 @@
          <li><p>Retrieve the JSON representation of the registry entry for product 1234 with version id 3.0, encoding of the return type is done with a suffix in the URL. This will work in a browser.</p>
          <p>curl -X GET -v ${registry.endpoint}registry/products/1234/3.0.json</p></li>
          <li><p>Approve an product</p>
-         <p>curl -X POST -H "Content-type:application/xml" -v ${registry.endpoint}registry/products/1234/1.0/APPROVE</p></li>
+         <p>curl -X POST -H "Content-type:application/xml" -v ${registry.endpoint}registry/products/1234/1.0/approve</p></li>
          <li><p>Deprecate an product</p>
-         <p>curl -X POST -H "Content-type:application/xml" -v ${registry.endpoint}registry/products/1234/1.0/DEPRECATE</p></li>
+         <p>curl -X POST -H "Content-type:application/xml" -v ${registry.endpoint}registry/products/1234/1.0/deprecate</p></li>
          <li><p>Example of a ping to the server for some status information.</p>
          <p>curl -X GET -H "Accept:application/json" -v ${registry.endpoint}registry/status</p></li>
         </ol>

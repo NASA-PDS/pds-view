@@ -96,9 +96,9 @@ public class ProductResource {
 				product);
 		// TODO: Should be adding an approve and deprecate link based upon
 		// if the user has permission
-		if (ObjectStatus.SUBMITTED.equals(product.getStatus())) {
+		if (ObjectStatus.Submitted.equals(product.getStatus())) {
 			ProductResource.addApproveProductLink(builder, uriInfo, product);
-		} else if (ObjectStatus.APPROVED.equals(product.getStatus())) {
+		} else if (ObjectStatus.Approved.equals(product.getStatus())) {
 			ProductResource.addDeprecateProductLink(builder, uriInfo, product);
 		}
 		return builder.build();

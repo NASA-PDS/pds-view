@@ -107,7 +107,7 @@ public class RegistryService {
 		product.setGuid(idGenerator.getGuid());
 		product.setHome(idGenerator.getHome());
 		product.setVersionName(versioner.getInitialVersion());
-		product.setStatus(ObjectStatus.SUBMITTED);
+		product.setStatus(ObjectStatus.Submitted);
 		metadataStore.saveProduct(product);
 		AuditableEvent event = new AuditableEvent(EventType.CREATED, product
 				.getGuid(), user);
@@ -241,7 +241,7 @@ public class RegistryService {
 		}
 		association.setLid(association.getGuid());
 		association.setVersionName(versioner.getInitialVersion());
-		association.setStatus(ObjectStatus.SUBMITTED);
+		association.setStatus(ObjectStatus.Submitted);
 		metadataStore.saveAssociation(association);
 		AuditableEvent event = new AuditableEvent(EventType.CREATED,
 				association.getGuid(), user);

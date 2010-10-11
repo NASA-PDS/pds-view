@@ -21,16 +21,5 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "")
 @XmlEnum
 public enum ObjectStatus {
-	SUBMITTED("Submitted"), APPROVED("Approved"), DEPRECATED("Deprecated"), WITHDRAWN(
-			"Withdrawn");
-
-	private final String displayName;
-
-	ObjectStatus(String displayName) {
-		this.displayName = displayName;
-	}
-
-	public String getDisplayName() {
-		return this.displayName;
-	}
+	Submitted, Approved, Deprecated, Withdrawn;
 }

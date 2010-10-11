@@ -25,8 +25,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "")
 @XmlEnum
 public enum ObjectAction {
-	APPROVE(ObjectStatus.APPROVED), DEPRECATE(ObjectStatus.DEPRECATED), UNDEPRECATE(
-			ObjectStatus.APPROVED), WITHDRAW(ObjectStatus.WITHDRAWN);
+	approve(ObjectStatus.Approved), deprecate(ObjectStatus.Deprecated), undeprecate(
+			ObjectStatus.Approved), withdraw(ObjectStatus.Withdrawn);
 
 	private final ObjectStatus status;
 
