@@ -86,8 +86,9 @@ public class RegistryService {
 	public PagedResponse getProducts(ProductQuery query) {
 		return this.getProducts(query, 1, 20);
 	}
-	
-	public PagedResponse getProducts(ProductQuery query, Integer start, Integer rows) {
+
+	public PagedResponse getProducts(ProductQuery query, Integer start,
+			Integer rows) {
 		return metadataStore.getProducts(query, start, rows);
 	}
 
@@ -203,19 +204,27 @@ public class RegistryService {
 		return product;
 	}
 
-	// Same as withdraw?
-	public void deleteProduct(String lid, String userVersion) {
+	public void deleteProduct(String user, String lid, String userVersion) {
+		Product product = metadataStore.getProduct(lid, userVersion);
+		if (product != null) {
+			metadataStore.deleteProduct(lid, userVersion);
+			AuditableEvent event = new AuditableEvent(EventType.DELETED,
+					product.getGuid(), user);
+			metadataStore.saveAuditableEvent(event);
+		}
 	}
 
 	public Product updateProduct(Product product) {
 		return null;
 	}
 
-	public PagedResponse getAssociations(AssociationQuery query, Integer start, Integer rows) {
+	public PagedResponse getAssociations(AssociationQuery query, Integer start,
+			Integer rows) {
 		return metadataStore.getAssociations(query, start, rows);
 	}
-	
-	public PagedResponse getAssociations(String lid, String userVersion, Integer start, Integer rows) {
+
+	public PagedResponse getAssociations(String lid, String userVersion,
+			Integer start, Integer rows) {
 		return metadataStore.getAssociations(lid, userVersion, start, rows);
 	}
 
