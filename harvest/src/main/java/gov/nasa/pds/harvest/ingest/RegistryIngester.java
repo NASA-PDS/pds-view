@@ -134,7 +134,7 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
             if(key.equals(LOGICAL_ID)) {
                 product.setLid(metadata.getMetadata(LOGICAL_ID));
             } else if(key.equals(PRODUCT_VERSION)) {
-                product.setUserVersion(metadata.getMetadata(PRODUCT_VERSION));
+                product.setVersionId(metadata.getMetadata(PRODUCT_VERSION));
             } else if(key.equals(OBJECT_TYPE)) {
                 product.setObjectType(metadata.getMetadata(OBJECT_TYPE));
             } else if(key.equals(TITLE)) {

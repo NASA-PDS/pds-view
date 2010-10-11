@@ -104,9 +104,9 @@ public class RegistryClient {
     public ClientResponse publishProduct(Product product) throws RegistryClientException, URISyntaxException {
         URI uri = productsURI;
 
-        if(hasProduct(product.getLid(), product.getUserVersion())) {
+        if(hasProduct(product.getLid(), product.getVersionId())) {
             throw new RegistryClientException("Product and version already exists: " +
-                    Utility.toWellFormedURI(uri.toString() + "/" + product.getLid() + "/" + product.getUserVersion()));
+                    Utility.toWellFormedURI(uri.toString() + "/" + product.getLid() + "/" + product.getVersionId()));
         }
         else if(hasProduct(product.getLid())) {
             uri = new URI(Utility.toWellFormedURI(uri.toString() + "/" + product.getLid()));

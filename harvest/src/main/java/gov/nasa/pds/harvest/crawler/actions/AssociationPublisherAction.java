@@ -76,13 +76,13 @@ public class AssociationPublisherAction extends CrawlerAction implements PDSCore
             ClientResponse response = registryClient.publishAssociation(user, association);
             if(response.getStatus() == ClientResponse.Status.CREATED.getStatusCode()) {
                 String lidvid = association.getTargetLid();
-                if(association.getTargetVersion() != null) {
-                        lidvid += "::" + association.getTargetVersion();
+                if(association.getTargetVersionId() != null) {
+                        lidvid += "::" + association.getTargetVersionId();
                 }
                 log.log(new ToolsLogRecord(ToolsLevel.INGEST_ASSOC_SUCCESS,
                         "Successfully registered association to " + lidvid, product));
             } else {
-                String lidvid = association.getTargetLid() + "::" + association.getTargetVersion();
+                String lidvid = association.getTargetLid() + "::" + association.getTargetVersionId();
                 log.log(new ToolsLogRecord(ToolsLevel.INGEST_ASSOC_FAIL,
                         "Problem registering association to " + lidvid
                         + ". HTTP error code: " + response.getStatus(),
@@ -99,21 +99,21 @@ public class AssociationPublisherAction extends CrawlerAction implements PDSCore
             for(ReferenceEntry re : (List<ReferenceEntry>) metadata.getAllMetadata(REFERENCES)) {
                 Association association = new Association();
                 association.setSourceLid(metadata.getMetadata(LOGICAL_ID));
-                association.setSourceVersion(metadata.getMetadata(PRODUCT_VERSION));
+                association.setSourceVersionId(metadata.getMetadata(PRODUCT_VERSION));
                 association.setAssociationType(re.getAssociationType());
                 association.setObjectType(re.getObjectType());
                 association.setTargetLid(re.getLogicalID());
                 if(re.hasVersion()) {
-                    association.setTargetVersion(re.getVersion());
+                    association.setTargetVersionId(re.getVersion());
                 } else {
                     ClientResponse response = registryClient.getLatestProduct(re.getLogicalID());
                     if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
                         Product target = response.getEntity(Product.class);
-                        association.setTargetVersion(target.getUserVersion());
+                        association.setTargetVersionId(target.getVersionId());
                         log.log(new ToolsLogRecord(ToolsLevel.INFO,
                                 "Found association in registry: " + re.getLogicalID() +
                                 ". Target version will be set to latest registered: "
-                                + target.getUserVersion(), product));
+                                + target.getVersionId(), product));
                     }
                     else {
                         log.log(new ToolsLogRecord(ToolsLevel.WARNING,
