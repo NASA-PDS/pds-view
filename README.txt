@@ -15,4 +15,4 @@ Using the "--non-recursive" option will by typical for most commands
 executed against this project so that they are not applied against the 
 child projects or modules. The site can be deployed as follows: 
 
-% mvn site-deploy --non-resursive
+% mvn site-deploy --non-recursive
