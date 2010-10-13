@@ -171,6 +171,7 @@
           <show>public</show>
           <useStandardDocletOptions>false</useStandardDocletOptions>
           <subpackages>gov.nasa.pds.registry.resource</subpackages>
+          <subpackages>gov.nasa.pds.registry.util</subpackages>
           <doclet>com.sun.jersey.wadl.resourcedoc.ResourceDoclet</doclet>
           <docletArtifacts>
             <docletArtifact>
