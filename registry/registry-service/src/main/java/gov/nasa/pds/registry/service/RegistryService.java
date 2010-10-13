@@ -21,12 +21,14 @@ import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.ObjectStatus;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.Product;
+import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.StatusInfo;
 import gov.nasa.pds.registry.model.naming.IdentifierGenerator;
 import gov.nasa.pds.registry.model.naming.Versioner;
 import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ProductQuery;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -77,9 +79,8 @@ public class RegistryService {
 	}
 
 	public PagedResponse getProducts(Integer start, Integer rows) {
-		PagedResponse page = new PagedResponse(start, metadataStore
-				.getNumProducts());
-		page.setResults(metadataStore.getProducts(start, rows));
+		PagedResponse page = new PagedResponse(start, metadataStore.getNumRegistryObjects(Product.class));
+		page.setResults(metadataStore.getRegistryObjects(start, rows, Product.class));
 		return page;
 	}
 
@@ -96,28 +97,7 @@ public class RegistryService {
 		return this.statusInfo;
 	}
 
-	public Product publishProduct(String user, Product product) {
-		// Check to see if there is an existing product with the same lid and
-		// userVersion
-		// TODO: Make this throw some exception instead
-		if (metadataStore
-				.hasProduct(product.getLid(), product.getVersionId())) {
-			return null;
-		}
-		product.setGuid(idGenerator.getGuid());
-		product.setHome(idGenerator.getHome());
-		product.setVersionName(versioner.getInitialVersion());
-		product.setStatus(ObjectStatus.Submitted);
-		metadataStore.saveProduct(product);
-		AuditableEvent event = new AuditableEvent(EventType.CREATED, product
-				.getGuid(), user);
-		event.setGuid(idGenerator.getGuid());
-		event.setHome(idGenerator.getHome());
-		metadataStore.saveAuditableEvent(event);
-		return product;
-	}
-
-	public Product versionProduct(String user, String lid, Product product,
+	public String versionProduct(String user, String lid, Product product,
 			boolean major) {
 		Product referencedProduct = this.getLatestProduct(lid);
 		product.setGuid(idGenerator.getGuid());
@@ -125,29 +105,31 @@ public class RegistryService {
 		product.setVersionName(versioner.getNextVersion(referencedProduct
 				.getVersionName(), major));
 		product.setStatus(referencedProduct.getStatus());
-		metadataStore.saveProduct(product);
+		metadataStore.saveRegistryObject(product);
 		AuditableEvent event = new AuditableEvent(EventType.VERSIONED,
 				referencedProduct.getGuid(), user);
 		event.setGuid(idGenerator.getGuid());
 		event.setHome(idGenerator.getHome());
-		metadataStore.saveAuditableEvent(event);
-		return metadataStore.getProduct(product.getGuid());
+		metadataStore.saveRegistryObject(event);
+		return product.getGuid();
 	}
 
+  //TODO: Make this throw an exception if the lid does not exist
 	public Product getLatestProduct(String lid) {
-		List<Product> products = metadataStore.getProductVersions(lid);
+		List<RegistryObject> products = metadataStore.getRegistryObjectVersions(lid, Product.class);
 		Collections.sort(products, versioner.getComparator());
 		if (products.size() > 0) {
-			return products.get(products.size() - 1);
+			return (Product) products.get(products.size() - 1);
 		}
 		return null;
 	}
 
+	//TODO: Make this throw an exception if the lid does not exist
 	public Product getEarliestProduct(String lid) {
-		List<Product> products = metadataStore.getProductVersions(lid);
+    List<RegistryObject> products = metadataStore.getRegistryObjectVersions(lid, Product.class);
 		Collections.sort(products, versioner.getComparator());
 		if (products.size() > 0) {
-			return products.get(0);
+			return (Product) products.get(0);
 		}
 		return null;
 	}
@@ -155,13 +137,13 @@ public class RegistryService {
 	// TODO: Make this method throw an exception if the lid or version is not
 	// found
 	public Product getNextProduct(String lid, String versionId) {
-		List<Product> products = metadataStore.getProductVersions(lid);
+    List<RegistryObject> products = metadataStore.getRegistryObjectVersions(lid, Product.class);
 		Collections.sort(products, versioner.getComparator());
 		for (int i = 0; i < products.size(); i++) {
-			Product product = products.get(i);
+			Product product = (Product) products.get(i);
 			if (versionId.equals(product.getVersionId())) {
 				if (i < products.size() - 1) {
-					return products.get(i + 1);
+					return (Product) products.get(i + 1);
 				} else {
 					return null;
 				}
@@ -173,13 +155,13 @@ public class RegistryService {
 	// TODO: Make this method throw an exception if the lid or version is not
 	// found
 	public Product getPreviousProduct(String lid, String versionId) {
-		List<Product> products = metadataStore.getProductVersions(lid);
+    List<RegistryObject> products = metadataStore.getRegistryObjectVersions(lid, Product.class);
 		Collections.sort(products, versioner.getComparator());
 		for (int i = 0; i < products.size(); i++) {
-			Product product = products.get(i);
+			Product product = (Product) products.get(i);
 			if (versionId.equals(product.getVersionId())) {
 				if (i > 0) {
-					return products.get(i - 1);
+					return (Product) products.get(i - 1);
 				} else {
 					return null;
 				}
@@ -188,31 +170,34 @@ public class RegistryService {
 		return null;
 	}
 
-	public List<Product> getProductVersions(String lid) {
-		return metadataStore.getProductVersions(lid);
+	@SuppressWarnings("unchecked")
+  public List<Product> getProductVersions(String lid) {
+		ArrayList products = new ArrayList<Product>();
+		products.addAll(metadataStore.getRegistryObjectVersions(lid, Product.class));
+		return products;
 	}
 
 	public Product getProduct(String lid, String versionId) {
-		return metadataStore.getProduct(lid, versionId);
+		return (Product) metadataStore.getRegistryObject(lid, versionId, Product.class);
 	}
 
 	public Product changeStatus(String lid, String versionId,
 			ObjectStatus status) {
-		Product product = metadataStore.getProduct(lid, versionId);
+		Product product = (Product) metadataStore.getRegistryObject(lid, versionId, Product.class);
 		product.setStatus(status);
-		metadataStore.updateProduct(product);
+		metadataStore.updateRegistryObject(product);
 		return product;
 	}
 
 	public void deleteProduct(String user, String lid, String versionId) {
-		Product product = metadataStore.getProduct(lid, versionId);
+		Product product = (Product) metadataStore.getRegistryObject(lid, versionId, Product.class);
 		if (product != null) {
-			metadataStore.deleteProduct(lid, versionId);
+			metadataStore.deleteRegistryObject(product.getGuid(), Product.class);
 			AuditableEvent event = new AuditableEvent(EventType.DELETED,
 					product.getGuid(), user);
 	    event.setGuid(idGenerator.getGuid());
 	    event.setHome(idGenerator.getHome());
-			metadataStore.saveAuditableEvent(event);
+			metadataStore.saveRegistryObject(event);
 		}
 	}
 
@@ -230,7 +215,28 @@ public class RegistryService {
 		return metadataStore.getAssociations(lid, versionId, start, rows);
 	}
 
-	public Association publishAssociation(String user, Association association) {
+  public String publishProduct(String user, Product product) {
+    // Check to see if there is an existing product with the same lid and
+    // versionId
+    // TODO: Make this throw some exception instead
+    if (metadataStore
+        .hasRegistryObject(product.getLid(), product.getVersionId(), Product.class)) {
+      return null;
+    }
+    product.setGuid(idGenerator.getGuid());
+    product.setHome(idGenerator.getHome());
+    product.setVersionName(versioner.getInitialVersion());
+    product.setStatus(ObjectStatus.Submitted);
+    metadataStore.saveRegistryObject(product);
+    AuditableEvent event = new AuditableEvent(EventType.CREATED, product
+        .getGuid(), user);
+    event.setGuid(idGenerator.getGuid());
+    event.setHome(idGenerator.getHome());
+    metadataStore.saveRegistryObject(event);
+    return product.getGuid();
+  }
+  
+	public String publishAssociation(String user, Association association) {
 		association.setGuid(idGenerator.getGuid());
 		association.setHome(idGenerator.getHome());
 		if (association.getSourceHome() == null) {
@@ -242,28 +248,37 @@ public class RegistryService {
 		association.setLid(association.getGuid());
 		association.setVersionName(versioner.getInitialVersion());
 		association.setStatus(ObjectStatus.Submitted);
-		metadataStore.saveAssociation(association);
+		metadataStore.saveRegistryObject(association);
 		AuditableEvent event = new AuditableEvent(EventType.CREATED,
 				association.getGuid(), user);
 		event.setGuid(idGenerator.getGuid());
 		event.setHome(idGenerator.getHome());
-		metadataStore.saveAuditableEvent(event);
-		return association;
-	}
-
-	public Association getAssocation(String guid) {
-		return metadataStore.getAssociation(guid);
+    metadataStore.saveRegistryObject(event);
+		return association.getGuid();
 	}
 	
 	public void deleteAssociation(String user, String guid) {
-	  Association association = metadataStore.getAssociation(guid);
+	  Association association = (Association) metadataStore.getRegistryObject(guid, Association.class);
 	  if (association != null) {
-	    metadataStore.deleteAssociation(guid);
+	    metadataStore.deleteRegistryObject(guid, Association.class);
       AuditableEvent event = new AuditableEvent(EventType.DELETED,
           association.getGuid(), user);
       event.setGuid(idGenerator.getGuid());
       event.setHome(idGenerator.getHome());
-      metadataStore.saveAuditableEvent(event);
+      metadataStore.saveRegistryObject(event);
 	  }
+	}
+
+  public Association getAssocation(String guid) {
+    return (Association) this.getRegistryObject(guid, Association.class);
+  }
+
+  
+  public Product getProduct(String guid) {
+    return (Product) this.getRegistryObject(guid, Product.class);
+  }
+  
+	private RegistryObject getRegistryObject(String guid, Class<? extends RegistryObject> objectClass) {
+	  return metadataStore.getRegistryObject(guid, objectClass);
 	}
 }

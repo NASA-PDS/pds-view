@@ -18,6 +18,7 @@ package gov.nasa.pds.registry.model;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
@@ -32,108 +33,108 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Identifiable implements Serializable {
 
-	private static final long serialVersionUID = -1707014666352827997L;
+  private static final long serialVersionUID = -1707014666352827997L;
 
-	@Id
-	@XmlAttribute
-	private String guid;
+  @Id
+  @XmlAttribute
+  private String guid;
 
-	@XmlAttribute
-	private String home;
+  @XmlAttribute
+  private String home;
 
-	@OneToMany
-	@XmlElementRef
-	private Set<Slot> slots;
+  @OneToMany(cascade = CascadeType.ALL)
+  @XmlElementRef
+  private Set<Slot> slots;
 
-	public Identifiable() {
-	}
+  public Identifiable() {
+  }
 
-	public Identifiable(String guid, String home, Set<Slot> slots) {
-		this.guid = guid;
-		this.home = home;
-		// this.slots = slots;
-	}
+  public Identifiable(String guid, String home, Set<Slot> slots) {
+    this.guid = guid;
+    this.home = home;
+    // this.slots = slots;
+  }
 
-	/**
-	 * @return the guid
-	 */
-	public String getGuid() {
-		return guid;
-	}
+  /**
+   * @return the guid
+   */
+  public String getGuid() {
+    return guid;
+  }
 
-	/**
-	 * @return the home
-	 */
-	public String getHome() {
-		return home;
-	}
+  /**
+   * @return the home
+   */
+  public String getHome() {
+    return home;
+  }
 
-	/**
-	 * @param guid
-	 *            the global unique identifier to set
-	 */
-	public void setGuid(String guid) {
-		this.guid = guid;
-	}
+  /**
+   * @param guid
+   *          the global unique identifier to set
+   */
+  public void setGuid(String guid) {
+    this.guid = guid;
+  }
 
-	/**
-	 * @param home
-	 *            the home to set
-	 */
-	public void setHome(String home) {
-		this.home = home;
-	}
+  /**
+   * @param home
+   *          the home to set
+   */
+  public void setHome(String home) {
+    this.home = home;
+  }
 
-	/**
-	 * @return the slots
-	 */
-	public Set<Slot> getSlots() {
-		return slots;
-	}
+  /**
+   * @return the slots
+   */
+  public Set<Slot> getSlots() {
+    return slots;
+  }
 
-	/**
-	 * @param slots
-	 *            the slots to set
-	 */
-	public void setSlots(Set<Slot> slots) {
-		this.slots = slots;
-	}
+  /**
+   * @param slots
+   *          the slots to set
+   */
+  public void setSlots(Set<Slot> slots) {
+    this.slots = slots;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((guid == null) ? 0 : guid.hashCode());
-		result = prime * result + ((home == null) ? 0 : home.hashCode());
-		result = prime * result + ((slots == null) ? 0 : slots.hashCode());
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((guid == null) ? 0 : guid.hashCode());
+    result = prime * result + ((home == null) ? 0 : home.hashCode());
+    result = prime * result + ((slots == null) ? 0 : slots.hashCode());
+    return result;
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Identifiable other = (Identifiable) obj;
-		if (guid == null) {
-			if (other.guid != null)
-				return false;
-		} else if (!guid.equals(other.guid))
-			return false;
-		if (home == null) {
-			if (other.home != null)
-				return false;
-		} else if (!home.equals(other.home))
-			return false;
-		if (slots == null) {
-			if (other.slots != null)
-				return false;
-		} else if (!slots.equals(other.slots))
-			return false;
-		return true;
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Identifiable other = (Identifiable) obj;
+    if (guid == null) {
+      if (other.guid != null)
+        return false;
+    } else if (!guid.equals(other.guid))
+      return false;
+    if (home == null) {
+      if (other.home != null)
+        return false;
+    } else if (!home.equals(other.home))
+      return false;
+    if (slots == null) {
+      if (other.slots != null)
+        return false;
+    } else if (!slots.equals(other.slots))
+      return false;
+    return true;
+  }
 
 }

@@ -135,10 +135,10 @@ public class AssociationResource {
 	@Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response publishAssociation(Association association) {
 		// TODO: Change to add user
-		Association created = registryService.publishAssociation("Unkown",
+		String guid = registryService.publishAssociation("Unkown",
 				association);
 		return Response.created(
-				AssociationResource.getAssociationUri(created, uriInfo))
+				AssociationResource.getAssociationUri(registryService.getAssocation(guid), uriInfo))
 				.build();
 	}
 

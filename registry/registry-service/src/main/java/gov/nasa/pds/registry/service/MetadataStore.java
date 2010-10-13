@@ -15,10 +15,8 @@
 
 package gov.nasa.pds.registry.service;
 
-import gov.nasa.pds.registry.model.Association;
-import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.PagedResponse;
-import gov.nasa.pds.registry.model.Product;
+import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ProductQuery;
 
@@ -26,37 +24,39 @@ import java.util.List;
 
 public interface MetadataStore {
 
-	public void saveProduct(Product product);
+  public PagedResponse getProducts(ProductQuery query, Integer start,
+      Integer rows);
 
-	public Product getProduct(String lid, String userVersion);
+  public PagedResponse getAssociations(AssociationQuery query, Integer start,
+      Integer rows);
 
-	public Product updateProduct(Product product);
+  public PagedResponse getAssociations(String lid, String versionId,
+      Integer start, Integer rows);
 
-	public void deleteProduct(String lid, String userVersion);
+  public RegistryObject getRegistryObject(String guid,
+      Class<? extends RegistryObject> objectClass);
 
-	public List<Product> getProducts(Integer start, Integer rows);
+  public RegistryObject getRegistryObject(String lid, String versionId,
+      Class<? extends RegistryObject> objectClass);
 
-	public PagedResponse getProducts(ProductQuery query, Integer start, Integer rows);
+  public void saveRegistryObject(RegistryObject registryObject);
 
-	public List<Product> getProductVersions(String lid);
+  public long getNumRegistryObjects(Class<? extends RegistryObject> objectClass);
 
-	public long getNumProducts();
+  public void deleteRegistryObject(String guid,
+      Class<? extends RegistryObject> objectClass);
 
-	public boolean hasProduct(String lid, String userVersion);
+  public void updateRegistryObject(RegistryObject registryObject);
 
-	public Product getProduct(String guid);
+  public List<RegistryObject> getRegistryObjectVersions(String lid,
+      Class<? extends RegistryObject> objectClass);
 
-	public void saveAuditableEvent(AuditableEvent event);
+  public List<RegistryObject> getRegistryObjects(Integer start, Integer rows,
+      Class<? extends RegistryObject> objectClass);
 
-	public void saveAssociation(Association association);
+  public boolean hasRegistryObject(String lid, String versionId,
+      Class<? extends RegistryObject> objectClass);
 
-	public Association updateAssociation(Association association);
-
-	public Association getAssociation(String guid);
-	
-	public void deleteAssociation(String guid);
-	
-	public PagedResponse getAssociations(AssociationQuery query, Integer start, Integer rows);
-	
-	public PagedResponse getAssociations(String lid, String userVersion, Integer start, Integer rows);
+  public boolean hasRegistryObject(String guid,
+      Class<? extends RegistryObject> objectClass);
 }

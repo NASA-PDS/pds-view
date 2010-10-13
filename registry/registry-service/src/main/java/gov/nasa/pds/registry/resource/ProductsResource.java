@@ -75,23 +75,35 @@ public class ProductsResource {
    * @response.param {@name Link} {@style header} {@type
    *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI to
    *                 the next and previous pages.}
-   *                 
-   * @param start the index at which to start the result list from
-   * @param rows how many results to return
-   * @param guid filter to apply on the global unique id, supports wildcard (*)
-   * @param name filter to apply to name, support wildcard (*)
-   * @param lid filter to apply to logical id, supports wildcard (*)
-   * @param versionName filter to apply to registry object version, supports wildcard (*)
-   * @param versionId filter to apply on the user version, supports wildcard (*)
-   * @param objectType filter to apply on the user defined registry object types,supports
+   * 
+   * @param start
+   *          the index at which to start the result list from
+   * @param rows
+   *          how many results to return
+   * @param guid
+   *          filter to apply on the global unique id, supports wildcard (*)
+   * @param name
+   *          filter to apply to name, support wildcard (*)
+   * @param lid
+   *          filter to apply to logical id, supports wildcard (*)
+   * @param versionName
+   *          filter to apply to registry object version, supports wildcard (*)
+   * @param versionId
+   *          filter to apply on the user version, supports wildcard (*)
+   * @param objectType
+   *          filter to apply on the user defined registry object types,supports
    *          wildcard (*)
-   * @param submitter CURRENTLY UNSUPPORTED
-   * @param status filter to apply on the object status, maps to {@link ObjectStatus}
-   *          enum 
-   * @param eventType CURRENTLY UNSUPPORTED
-   * @param operator to apply to filters, valid values are AND or OR. Defaults
-   *          to AND.
-   * @param sort defines what parameters to sort on. The format is
+   * @param submitter
+   *          CURRENTLY UNSUPPORTED
+   * @param status
+   *          filter to apply on the object status, maps to {@link ObjectStatus}
+   *          enum
+   * @param eventType
+   *          CURRENTLY UNSUPPORTED
+   * @param operator
+   *          to apply to filters, valid values are AND or OR. Defaults to AND.
+   * @param sort
+   *          defines what parameters to sort on. The format is
    *          "parameter order" the order is optional. The default is "guid ASC"
    *          and if unspecified the ordering is ASC.
    * @return subset of managed products
@@ -102,7 +114,8 @@ public class ProductsResource {
       @QueryParam("start") @DefaultValue("1") Integer start,
       @QueryParam("rows") @DefaultValue("20") Integer rows,
       @QueryParam("guid") String guid, @QueryParam("name") String name,
-      @QueryParam("lid") String lid, @QueryParam("versionName") String versionName,
+      @QueryParam("lid") String lid,
+      @QueryParam("versionName") String versionName,
       @QueryParam("versionId") String versionId,
       @QueryParam("objectType") String objectType,
       @QueryParam("submitter") String submitter,
@@ -111,8 +124,9 @@ public class ProductsResource {
       @QueryParam("queryOp") @DefaultValue("AND") QueryOperator operator,
       @QueryParam("sort") List<String> sort) {
     ObjectFilter filter = new ObjectFilter.Builder().guid(guid).name(name).lid(
-        lid).versionName(versionName).versionId(versionId).objectType(objectType)
-        .submitter(submitter).status(status).eventType(eventType).build();
+        lid).versionName(versionName).versionId(versionId).objectType(
+        objectType).submitter(submitter).status(status).eventType(eventType)
+        .build();
     ProductQuery.Builder queryBuilder = new ProductQuery.Builder().filter(
         filter).operator(operator);
     if (sort != null) {
@@ -164,9 +178,9 @@ public class ProductsResource {
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response publishProduct(Product product) {
     // TODO: Change to set user
-    Product created = registryService.publishProduct("Unknown", product);
-    return Response.created(ProductResource.getProductUri(created, uriInfo))
-        .build();
+    String guid = registryService.publishProduct("Unknown", product);
+    return Response.created(ProductResource.getProductUri(registryService.getProduct(guid), uriInfo))
+        .entity(guid).build();
   }
 
   /**
@@ -198,9 +212,9 @@ public class ProductsResource {
     // TODO Check to make sure the path lid matches that of the product
     // provided
     // TODO Change to set user
-    Product created = registryService.versionProduct("Unknown", lid, product,
+    String guid = registryService.versionProduct("Unknown", lid, product,
         major);
-    return Response.created(ProductResource.getProductUri(created, uriInfo))
+    return Response.created(ProductResource.getProductUri(registryService.getProduct(guid), uriInfo))
         .build();
   }
 

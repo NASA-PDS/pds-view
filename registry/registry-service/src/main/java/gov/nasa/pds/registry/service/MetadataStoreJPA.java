@@ -16,10 +16,9 @@
 package gov.nasa.pds.registry.service;
 
 import gov.nasa.pds.registry.model.Association;
-import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.Product;
-import gov.nasa.pds.registry.model.Slot;
+import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ObjectFilter;
@@ -57,54 +56,11 @@ public class MetadataStoreJPA implements MetadataStore {
 		return entityManager;
 	}
 
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void deleteProduct(String lid, String versionId) {
-		Product product = this.getProduct(lid, versionId);
-		entityManager.remove(product);
-		entityManager.flush();
-	}
-
-	// TODO: Update to return null when product is not found or an exception.
-	@Transactional(readOnly = true)
-	public Product getProduct(String lid, String versionId) {
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Product> cq = cb.createQuery(Product.class);
-		Root<Product> productEntity = cq.from(Product.class);
-		Path<String> lidAttr = productEntity.get("lid");
-		Path<String> versionIdAttr = productEntity.get("versionId");
-		cq.where(cb.and(cb.equal(lidAttr, lid), cb.equal(versionIdAttr,
-				versionId)));
-		TypedQuery<Product> query = entityManager.createQuery(cq);
-		Product product = query.getSingleResult();
-		return product;
-	}
-
-	// TODO: Update to return empty list when product is not found or an
-	// exception.
-	@Transactional(readOnly = true)
-	public List<Product> getProductVersions(String lid) {
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Product> cq = cb.createQuery(Product.class);
-		Root<Product> productEntity = cq.from(Product.class);
-		Path<String> lidAttr = productEntity.get("lid");
-		cq.where(cb.equal(lidAttr, lid));
-		TypedQuery<Product> query = entityManager.createQuery(cq);
-		return query.getResultList();
-	}
-
-	// TODO: Update to return empty list when outside boundaries or an
-	// exception.
-	@Transactional(readOnly = true)
-	public List<Product> getProducts(Integer start, Integer rows) {
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Product> cq = cb.createQuery(Product.class);
-		cq.from(Product.class);
-		TypedQuery<Product> query = entityManager.createQuery(cq);
-		// Database is 0 indexed not 1
-		return query.setFirstResult(start - 1).setMaxResults(rows)
-				.getResultList();
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see gov.nasa.pds.registry.service.MetadataStore#getProducts(gov.nasa.pds.registry.query.ProductQuery, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
 	@Transactional(readOnly = true)
 	public PagedResponse getProducts(ProductQuery query, Integer start,
 			Integer rows) {
@@ -177,10 +133,14 @@ public class MetadataStoreJPA implements MetadataStore {
 		return response;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see gov.nasa.pds.registry.service.MetadataStore#getAssociations(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
 	@Transactional(readOnly = true)
 	public PagedResponse getAssociations(String lid, String versionId,
 			Integer start, Integer rows) {
-
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Association> cq = cb.createQuery(Association.class);
 		Root<Association> associationEntity = cq.from(Association.class);
@@ -201,6 +161,11 @@ public class MetadataStoreJPA implements MetadataStore {
 		return response;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see gov.nasa.pds.registry.service.MetadataStore#getAssociations(gov.nasa.pds.registry.query.AssociationQuery, java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
 	@Transactional(readOnly = true)
 	public PagedResponse getAssociations(AssociationQuery query, Integer start,
 			Integer rows) {
@@ -281,89 +246,149 @@ public class MetadataStoreJPA implements MetadataStore {
 		return response;
 	}
 
-	@Transactional(readOnly = true)
-	public long getNumProducts() {
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-		Root<Product> productEntity = cq.from(Product.class);
-		cq.select(cb.count(productEntity));
-		return entityManager.createQuery(cq).getSingleResult().longValue();
-	}
-
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void saveProduct(Product product) {
-		entityManager.persist(product);
-		for (Slot slot : product.getSlots()) {
-			entityManager.persist(slot);
-		}
-		entityManager.flush();
-	}
-
-	// TODO: Update to return null when product is not found or an exception.
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public Product updateProduct(Product product) {
-		entityManager.merge(product);
-		entityManager.flush();
-		return getProduct(product.getGuid());
-	}
-
-	@Transactional(readOnly = true)
-	public boolean hasProduct(String lid, String versionId) {
-		return false;
-	}
-
-	// TODO: Update to return null when product is not found or an exception.
-	@Transactional(readOnly = true)
-	public Product getProduct(String guid) {
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Product> cq = cb.createQuery(Product.class);
-		Root<Product> productEntity = cq.from(Product.class);
-		Path<String> guidAttr = productEntity.get("guid");
-		cq.where(cb.equal(guidAttr, guid));
-		TypedQuery<Product> query = entityManager.createQuery(cq);
-		return query.getSingleResult();
-	}
-
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void saveAuditableEvent(AuditableEvent event) {
-		entityManager.persist(event);
-		entityManager.flush();
-	}
-
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void saveAssociation(Association association) {
-		entityManager.persist(association);
-		entityManager.flush();
-	}
-
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public Association updateAssociation(Association association) {
-		entityManager.merge(association);
-		entityManager.flush();
-		return getAssociation(association.getGuid());
-	}
-
-	// TODO: Update to return null when product is not found or an exception.
-	@Transactional(readOnly = true)
-	public Association getAssociation(String guid) {
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Association> cq = cb.createQuery(Association.class);
-		Root<Association> associationEntity = cq.from(Association.class);
-		Path<String> guidAttr = associationEntity.get("guid");
-		cq.where(cb.equal(guidAttr, guid));
-		TypedQuery<Association> query = entityManager.createQuery(cq);
-		Association association = query.getSingleResult();
-		return association;
-	}
 
   /* (non-Javadoc)
-   * @see gov.nasa.pds.registry.service.MetadataStore#deleteAssociation(java.lang.String)
+   * @see gov.nasa.pds.registry.service.MetadataStore#getRegistyObject(java.lang.String, java.lang.Class)
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public RegistryObject getRegistryObject(String guid,
+      Class<? extends RegistryObject> objectClass) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<?> cq = cb.createQuery(objectClass);
+    Root<?> entity = cq.from(objectClass);
+    Path<String> guidAttr = entity.get("guid");
+    cq.where(cb.equal(guidAttr, guid));
+    TypedQuery<?> query = entityManager.createQuery(cq);
+    return (RegistryObject) query.getSingleResult();
+  }
+
+  /* (non-Javadoc)
+   * @see gov.nasa.pds.registry.service.MetadataStore#saveRegistryObject(gov.nasa.pds.registry.model.RegistryObject)
    */
   @Override
   @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-  public void deleteAssociation(String guid) {
-    Association association = this.getAssociation(guid);
-    entityManager.remove(association);
+  public void saveRegistryObject(RegistryObject registryObject) {
+    entityManager.persist(registryObject);
+    entityManager.flush();
+  }
+
+  /* (non-Javadoc)
+   * @see gov.nasa.pds.registry.service.MetadataStore#deleteRegistryObject(java.lang.String, java.lang.Class)
+   */
+  @Override
+  @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+  public void deleteRegistryObject(String guid,
+      Class<? extends RegistryObject> objectClass) {
+    RegistryObject registryObject = this.getRegistryObject(guid, objectClass);
+    entityManager.remove(registryObject);
+    entityManager.flush();
+  }
+
+  /* (non-Javadoc)
+   * @see gov.nasa.pds.registry.service.MetadataStore#getNumRegistryObjects(java.lang.Class)
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public long getNumRegistryObjects(Class<? extends RegistryObject> objectClass) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+    Root<?> entity = cq.from(objectClass);
+    cq.select(cb.count(entity));
+    return entityManager.createQuery(cq).getSingleResult().longValue();
+  }
+
+  /* (non-Javadoc)
+   * @see gov.nasa.pds.registry.service.MetadataStore#getRegistryObject(java.lang.String, java.lang.String, java.lang.Class)
+   */
+  @Override
+  public RegistryObject getRegistryObject(String lid, String versionId,
+      Class<? extends RegistryObject> objectClass) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<?> cq = cb.createQuery(objectClass);
+    Root<?> entity = cq.from(objectClass);
+    Path<String> lidAttr = entity.get("lid");
+    Path<String> versionIdAttr = entity.get("versionId");
+    cq.where(cb.and(cb.equal(lidAttr, lid), cb.equal(versionIdAttr,
+        versionId)));
+    TypedQuery<?> query = entityManager.createQuery(cq);
+    return (RegistryObject) query.getSingleResult();
+  }
+
+  /* (non-Javadoc)
+   * @see gov.nasa.pds.registry.service.MetadataStore#getRegistryObjectVersions(java.lang.String, java.lang.Class)
+   */
+  @SuppressWarnings("unchecked")
+  @Override
+  @Transactional(readOnly = true)
+  public List<RegistryObject> getRegistryObjectVersions(String lid,
+      Class<? extends RegistryObject> objectClass) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<?> cq = cb.createQuery(objectClass);
+    Root<?> entity = cq.from(objectClass);
+    Path<String> lidAttr = entity.get("lid");
+    cq.where(cb.equal(lidAttr, lid));
+    TypedQuery<?> query = entityManager.createQuery(cq);
+    return (List<RegistryObject>) query.getResultList();
+  }
+
+  /* (non-Javadoc)
+   * @see gov.nasa.pds.registry.service.MetadataStore#getRegistryObjects(java.lang.Integer, java.lang.Integer)
+   */
+  @SuppressWarnings("unchecked")
+  @Override
+  @Transactional(readOnly = true)
+  public List<RegistryObject> getRegistryObjects(Integer start, Integer rows, Class<? extends RegistryObject> objectClass) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<?> cq = cb.createQuery(objectClass);
+    cq.from(objectClass);
+    TypedQuery<?> query = entityManager.createQuery(cq);
+    // Database is 0 indexed not 1
+    return (List<RegistryObject>) query.setFirstResult(start - 1).setMaxResults(rows)
+        .getResultList();
+  }
+
+  /* (non-Javadoc)
+   * @see gov.nasa.pds.registry.service.MetadataStore#hasRegistryObject(java.lang.String, java.lang.String, java.lang.Class)
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public boolean hasRegistryObject(String lid, String versionId,
+      Class<? extends RegistryObject> objectClass) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<?> cq = cb.createQuery(objectClass);
+    Root<?> entity = cq.from(objectClass);
+    Path<String> lidAttr = entity.get("lid");
+    Path<String> versionIdAttr = entity.get("versionId");
+    cq.where(cb.and(cb.equal(lidAttr, lid), cb.equal(versionIdAttr,
+        versionId)));
+    TypedQuery<?> query = entityManager.createQuery(cq);
+    return !query.getResultList().isEmpty();
+  }
+
+  /* (non-Javadoc)
+   * @see gov.nasa.pds.registry.service.MetadataStore#hasRegistryObject(java.lang.String, java.lang.Class)
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public boolean hasRegistryObject(String guid,
+      Class<? extends RegistryObject> objectClass) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<?> cq = cb.createQuery(objectClass);
+    Root<?> entity = cq.from(objectClass);
+    Path<String> guidAttr = entity.get("guid");
+    cq.where(cb.equal(guidAttr, guid));
+    TypedQuery<?> query = entityManager.createQuery(cq);
+    return !query.getResultList().isEmpty();
+  }
+
+  /* (non-Javadoc)
+   * @see gov.nasa.pds.registry.service.MetadataStore#updateRegistryObject(gov.nasa.pds.registry.model.RegistryObject)
+   */
+  @Override
+  @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+  public void updateRegistryObject(RegistryObject registryObject) {
+    entityManager.merge(registryObject);
     entityManager.flush();
   }
 
