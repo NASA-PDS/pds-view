@@ -25,6 +25,8 @@
   <body>
 
     <release version="0.5.0" date="TBD" description="TBD">
+      <action dev="pramirez" type="update">Added a default sort order on slots so they come back in
+        a fixed order on repeated requests. The default order now is their generated id.</action>
       <action dev="pramirez" type="fix">Slot values that were extremely large would truncate. Now
         they map to @Lob with a length of max integer. If this causes a performance issue the size
         should be cut down to something smaller.</action>
