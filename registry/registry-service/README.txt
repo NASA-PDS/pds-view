@@ -13,6 +13,9 @@ If you would like to change the port the registry service will start up on in em
 use set the "maven.tomcat.port" on the command line. For instance, to start up on port 8000 
 instead of 8080 run "mvn -Dmaven.tomcat.port=8000 tomcat:run" from the command line.
 
+If you would like to set the detination of the registry database when using derby set the 
+following "mvn -Dderby.system.home=/path/to/registrydb/home tomcat:run"
+
 If you are going to start the registry service from maven using "mvn tomcat:run" you 
 may want to up the intial and max java heap size. This can be done by setting the MAVEN_OPTS
 environment variable. For instance in a bash shell one would run "export MAVEN_OPTS="-Xms128m -Xmx256m".
@@ -27,6 +30,11 @@ B. Deployable War
 If one wishes the registry can be deployed as a war file onto an external app server. To 
 generate the war file simply type "mvn compile war:war", this will generate the war file in the 
 target directory.
+
+If deploying to Tomcat and using Derby as a back end you may want to permanently set the home 
+directory of the database by adding the following to CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home". 
+The CATALINA_OPTS environment variable is used in Tomcat's startup scripts. If this is not set
+the Derby Registry Database home will be set to wherever you start Tomcat from. 
 
 C. Jar 
 
