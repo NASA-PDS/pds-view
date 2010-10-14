@@ -25,6 +25,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -50,7 +51,8 @@ public class Slot implements Serializable {
 
 	@ElementCollection
 	@CollectionTable(name = "Slot_Values", joinColumns = @JoinColumn(name = "slot_id"))
-	@Column(name = "value")
+	@Column(name = "value", length=Integer.MAX_VALUE - 1)
+	@Lob
 	@XmlElement(name = "value", namespace = "http://registry.pds.nasa.gov")
 	private List<String> values;
 

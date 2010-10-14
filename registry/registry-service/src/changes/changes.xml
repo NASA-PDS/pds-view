@@ -25,6 +25,9 @@
   <body>
 
     <release version="0.5.0" date="TBD" description="TBD">
+      <action dev="pramirez" type="fix">Slot values that were extremely large would truncate. Now
+        they map to @Lob with a length of max integer. If this causes a performance issue the size
+        should be cut down to something smaller.</action>
       <action dev="pramirez" type="update">Updated persistence layer to be more flexible and require
         less change as we add new types of RegistryObject's. For example, instead of having
         saveProduct and saveAssociation there is now a unified saveRegistryObject</action>
