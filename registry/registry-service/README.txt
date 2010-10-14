@@ -32,9 +32,10 @@ generate the war file simply type "mvn compile war:war", this will generate the 
 target directory.
 
 If deploying to Tomcat and using Derby as a back end you may want to permanently set the home 
-directory of the database by adding the following to CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home". 
-The CATALINA_OPTS environment variable is used in Tomcat's startup scripts. If this is not set
-the Derby Registry Database home will be set to wherever you start Tomcat from. 
+directory of the database by adding the following to the CATALINA_OPTS environment variable
+"-Dderby.system.home=/path/to/registrydb/home". The CATALINA_OPTS environment variable is used in 
+Tomcat's startup scripts. If this is not set the Derby Registry Database home will be set to wherever
+you start Tomcat from. 
 
 C. Jar 
 
@@ -72,9 +73,10 @@ curl -X GET -H "Accept:application/xml" -v http://localhost:8080/registry-servic
 curl -X GET -H "Accept:application/xml" -v http://localhost:8080/registry-service/registry/products/1234/all
 curl -X GET -H "Accept:application/xml" -v http://localhost:8080/registry-service/registry/products/1234/3.0
 curl -X GET -H "Accept:application/json" -v http://localhost:8080/registry-service/registry/products/1234/3.0
-curl -X POST -H "Content-type:application/xml" -v http://localhost:8080/registry-service/registry/products/1234/1.0/APPROVE
+curl -X POST -H "Content-type:application/xml" -v http://localhost:8080/registry-service/registry/products/1234/1.0/Approve
 curl -X GET -v http://localhost:8080/registry-service/registry/products/1234/3.0.json
 curl -X GET -H "Accept:application/json" -v http://localhost:8080/registry-service/registry/status
+curl -X DELETE -v http://localhost:8080/registry-service/registry/1234/1.0
 
 Product Querying
 ================
