@@ -19,7 +19,7 @@ import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.ObjectStatus;
-import gov.nasa.pds.registry.model.PagedResponse;
+import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.Product;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.StatusInfo;
@@ -78,17 +78,17 @@ public class RegistryService {
 		return this.idGenerator;
 	}
 
-	public PagedResponse getProducts(Integer start, Integer rows) {
-		PagedResponse page = new PagedResponse(start, metadataStore.getNumRegistryObjects(Product.class));
+	public RegistryResponse getProducts(Integer start, Integer rows) {
+		RegistryResponse page = new RegistryResponse(start, metadataStore.getNumRegistryObjects(Product.class));
 		page.setResults(metadataStore.getRegistryObjects(start, rows, Product.class));
 		return page;
 	}
 
-	public PagedResponse getProducts(ProductQuery query) {
+	public RegistryResponse getProducts(ProductQuery query) {
 		return this.getProducts(query, 1, 20);
 	}
 
-	public PagedResponse getProducts(ProductQuery query, Integer start,
+	public RegistryResponse getProducts(ProductQuery query, Integer start,
 			Integer rows) {
 		return metadataStore.getProducts(query, start, rows);
 	}
@@ -106,7 +106,7 @@ public class RegistryService {
 				.getVersionName(), major));
 		product.setStatus(referencedProduct.getStatus());
 		metadataStore.saveRegistryObject(product);
-		AuditableEvent event = new AuditableEvent(EventType.VERSIONED,
+		AuditableEvent event = new AuditableEvent(EventType.Versioned,
 				referencedProduct.getGuid(), user);
 		event.setGuid(idGenerator.getGuid());
 		event.setHome(idGenerator.getHome());
@@ -193,7 +193,7 @@ public class RegistryService {
 		Product product = (Product) metadataStore.getRegistryObject(lid, versionId, Product.class);
 		if (product != null) {
 			metadataStore.deleteRegistryObject(product.getGuid(), Product.class);
-			AuditableEvent event = new AuditableEvent(EventType.DELETED,
+			AuditableEvent event = new AuditableEvent(EventType.Deleted,
 					product.getGuid(), user);
 	    event.setGuid(idGenerator.getGuid());
 	    event.setHome(idGenerator.getHome());
@@ -205,12 +205,12 @@ public class RegistryService {
 		return null;
 	}
 
-	public PagedResponse getAssociations(AssociationQuery query, Integer start,
+	public RegistryResponse getAssociations(AssociationQuery query, Integer start,
 			Integer rows) {
 		return metadataStore.getAssociations(query, start, rows);
 	}
 
-	public PagedResponse getAssociations(String lid, String versionId,
+	public RegistryResponse getAssociations(String lid, String versionId,
 			Integer start, Integer rows) {
 		return metadataStore.getAssociations(lid, versionId, start, rows);
 	}
@@ -228,7 +228,7 @@ public class RegistryService {
     product.setVersionName(versioner.getInitialVersion());
     product.setStatus(ObjectStatus.Submitted);
     metadataStore.saveRegistryObject(product);
-    AuditableEvent event = new AuditableEvent(EventType.CREATED, product
+    AuditableEvent event = new AuditableEvent(EventType.Created, product
         .getGuid(), user);
     event.setGuid(idGenerator.getGuid());
     event.setHome(idGenerator.getHome());
@@ -249,7 +249,7 @@ public class RegistryService {
 		association.setVersionName(versioner.getInitialVersion());
 		association.setStatus(ObjectStatus.Submitted);
 		metadataStore.saveRegistryObject(association);
-		AuditableEvent event = new AuditableEvent(EventType.CREATED,
+		AuditableEvent event = new AuditableEvent(EventType.Created,
 				association.getGuid(), user);
 		event.setGuid(idGenerator.getGuid());
 		event.setHome(idGenerator.getHome());
@@ -261,7 +261,7 @@ public class RegistryService {
 	  Association association = (Association) metadataStore.getRegistryObject(guid, Association.class);
 	  if (association != null) {
 	    metadataStore.deleteRegistryObject(guid, Association.class);
-      AuditableEvent event = new AuditableEvent(EventType.DELETED,
+      AuditableEvent event = new AuditableEvent(EventType.Deleted,
           association.getGuid(), user);
       event.setGuid(idGenerator.getGuid());
       event.setHome(idGenerator.getHome());

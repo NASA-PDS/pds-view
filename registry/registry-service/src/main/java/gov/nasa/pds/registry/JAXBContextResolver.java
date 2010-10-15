@@ -16,9 +16,8 @@
 package gov.nasa.pds.registry;
 
 import gov.nasa.pds.registry.model.Association;
-import gov.nasa.pds.registry.model.PagedResponse;
+import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.Product;
-import gov.nasa.pds.registry.model.Products;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.StatusInfo;
 
@@ -39,23 +38,22 @@ import org.springframework.stereotype.Component;
 @Component
 public final class JAXBContextResolver implements ContextResolver<JAXBContext> {
 
-	private final JAXBContext context;
+  private final JAXBContext context;
 
-	@SuppressWarnings("unchecked")
-	private final Set<Class> types;
+  @SuppressWarnings("unchecked")
+  private final Set<Class> types;
 
-	@SuppressWarnings("unchecked")
-	private final Class[] cTypes = { Association.class, Product.class,
-			Products.class, PagedResponse.class, RegistryObject.class,
-			StatusInfo.class };
+  @SuppressWarnings("unchecked")
+  private final Class[] cTypes = { Association.class, Product.class,
+      RegistryResponse.class, RegistryObject.class, StatusInfo.class };
 
-	@SuppressWarnings("unchecked")
-	public JAXBContextResolver() throws Exception {
-		this.types = new HashSet(Arrays.asList(cTypes));
-		this.context = JAXBContext.newInstance(cTypes);
-	}
+  @SuppressWarnings("unchecked")
+  public JAXBContextResolver() throws Exception {
+    this.types = new HashSet(Arrays.asList(cTypes));
+    this.context = JAXBContext.newInstance(cTypes);
+  }
 
-	public JAXBContext getContext(Class<?> objectType) {
-		return (types.contains(objectType)) ? context : null;
-	}
+  public JAXBContext getContext(Class<?> objectType) {
+    return (types.contains(objectType)) ? context : null;
+  }
 }

@@ -23,7 +23,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import gov.nasa.pds.registry.JAXBContextResolver;
 import gov.nasa.pds.registry.JSONContextResolver;
 import gov.nasa.pds.registry.model.Association;
-import gov.nasa.pds.registry.model.PagedResponse;
+import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.Product;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationFilter;
@@ -255,8 +255,8 @@ public class RegistryClient {
 
 	public static void main(String[] args) throws Exception {
 		RegistryClient client = new RegistryClient(args[0]);
-		PagedResponse response = client.getProducts(null, null).getEntity(
-				PagedResponse.class);
+		RegistryResponse response = client.getProducts(null, null).getEntity(
+				RegistryResponse.class);
 		System.out.println("Total results: " + response.getNumFound());
 		System.out.println("Number displayed: " + response.getResults().size());
 		for (RegistryObject object : response.getResults()) {
@@ -272,7 +272,7 @@ public class RegistryClient {
 			if (args.length > 2) {
 				ObjectFilter filter = new ObjectFilter.Builder().lid(args[1]).versionId(args[2]).build();
 				ProductQuery query = new ProductQuery.Builder().filter(filter).build();
-				response = client.getProducts(query, null, null).getEntity(PagedResponse.class);
+				response = client.getProducts(query, null, null).getEntity(RegistryResponse.class);
 				for (RegistryObject object : response.getResults()) {
 					System.out.println(object.getClass().getSimpleName() + " "
 							+ object.getGuid() + " " + object.getLid() + " " + object.getVersionId());

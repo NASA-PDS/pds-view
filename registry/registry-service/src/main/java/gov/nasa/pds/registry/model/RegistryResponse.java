@@ -26,10 +26,10 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name = "pagedResponse", namespace = "http://registry.pds.nasa.gov")
+@XmlRootElement(name = "response", namespace = "http://registry.pds.nasa.gov")
 @XmlType(name = "")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PagedResponse {
+public class RegistryResponse {
 
 	// Where in the set of results to start
 	@XmlAttribute
@@ -41,17 +41,21 @@ public class PagedResponse {
 
 	@XmlElementWrapper(name = "results", namespace = "http://registry.pds.nasa.gov")
 	@XmlElementRef
-	private List<RegistryObject> results;
+	private List<? extends RegistryObject> results;
 
-	public PagedResponse() {
+	public RegistryResponse() {
 		this(null, null, null);
 	}
 
-	public PagedResponse(Integer start, Long numFound) {
+	public RegistryResponse(Integer start, Long numFound) {
 		this(start, numFound, new ArrayList<RegistryObject>());
 	}
+  
+  public RegistryResponse(List<? extends RegistryObject> results) {
+    this(null, null, results);
+  }
 	
-	public PagedResponse(Integer start, Long numFound, List<RegistryObject> results) {
+	public RegistryResponse(Integer start, Long numFound, List<? extends RegistryObject> results) {
 		this.start = start;
 		this.numFound = numFound;
 		this.results = results;
@@ -73,7 +77,7 @@ public class PagedResponse {
 		this.numFound = numFound;
 	}
 
-	public List<RegistryObject> getResults() {
+	public List<? extends RegistryObject> getResults() {
 		return this.results;
 	}
 

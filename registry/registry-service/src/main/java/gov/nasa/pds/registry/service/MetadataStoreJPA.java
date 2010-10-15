@@ -16,7 +16,7 @@
 package gov.nasa.pds.registry.service;
 
 import gov.nasa.pds.registry.model.Association;
-import gov.nasa.pds.registry.model.PagedResponse;
+import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.Product;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationFilter;
@@ -62,7 +62,7 @@ public class MetadataStoreJPA implements MetadataStore {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public PagedResponse getProducts(ProductQuery query, Integer start,
+	public RegistryResponse getProducts(ProductQuery query, Integer start,
 			Integer rows) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Product> cq = cb.createQuery(Product.class);
@@ -126,7 +126,7 @@ public class MetadataStoreJPA implements MetadataStore {
 		}
 		cq.orderBy(orders);
 		TypedQuery<Product> dbQuery = entityManager.createQuery(cq);
-		PagedResponse response = new PagedResponse(start, (long) dbQuery
+		RegistryResponse response = new RegistryResponse(start, (long) dbQuery
 				.getResultList().size());
 		response.setResults(dbQuery.setFirstResult(start - 1).setMaxResults(
 				rows).getResultList());
@@ -139,7 +139,7 @@ public class MetadataStoreJPA implements MetadataStore {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public PagedResponse getAssociations(String lid, String versionId,
+	public RegistryResponse getAssociations(String lid, String versionId,
 			Integer start, Integer rows) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Association> cq = cb.createQuery(Association.class);
@@ -154,7 +154,7 @@ public class MetadataStoreJPA implements MetadataStore {
 		orders.add(cb.asc(associationEntity.get("guid")));
 		cq.orderBy(orders);
 		TypedQuery<Association> dbQuery = entityManager.createQuery(cq);
-		PagedResponse response = new PagedResponse(start, (long) dbQuery
+		RegistryResponse response = new RegistryResponse(start, (long) dbQuery
 				.getResultList().size());
 		response.setResults(dbQuery.setFirstResult(start - 1).setMaxResults(
 				rows).getResultList());
@@ -167,7 +167,7 @@ public class MetadataStoreJPA implements MetadataStore {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public PagedResponse getAssociations(AssociationQuery query, Integer start,
+	public RegistryResponse getAssociations(AssociationQuery query, Integer start,
 			Integer rows) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Association> cq = cb.createQuery(Association.class);
@@ -239,7 +239,7 @@ public class MetadataStoreJPA implements MetadataStore {
 		}
 		cq.orderBy(orders);
 		TypedQuery<Association> dbQuery = entityManager.createQuery(cq);
-		PagedResponse response = new PagedResponse(start, (long) dbQuery
+		RegistryResponse response = new RegistryResponse(start, (long) dbQuery
 				.getResultList().size());
 		response.setResults(dbQuery.setFirstResult(start - 1).setMaxResults(
 				rows).getResultList());

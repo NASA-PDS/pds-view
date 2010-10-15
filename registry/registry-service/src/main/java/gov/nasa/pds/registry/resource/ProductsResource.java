@@ -20,9 +20,8 @@ import java.util.List;
 import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.ObjectStatus;
-import gov.nasa.pds.registry.model.PagedResponse;
+import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.Product;
-import gov.nasa.pds.registry.model.Products;
 import gov.nasa.pds.registry.query.ObjectFilter;
 import gov.nasa.pds.registry.query.ProductQuery;
 import gov.nasa.pds.registry.query.QueryOperator;
@@ -62,7 +61,6 @@ public class ProductsResource {
   }
 
   /**
-   * 
    * Allows access to all the products managed by this repository. This list of
    * products is based on the latest received product's logical identifier
    * (lid). The header will contain pointers to next and previous when
@@ -132,14 +130,14 @@ public class ProductsResource {
     if (sort != null) {
       queryBuilder.sort(sort);
     }
-    PagedResponse pr = registryService.getProducts(queryBuilder.build(), start,
+    RegistryResponse rr = registryService.getProducts(queryBuilder.build(), start,
         rows);
-    Response.ResponseBuilder builder = Response.ok(pr);
+    Response.ResponseBuilder builder = Response.ok(rr);
     UriBuilder absolute = uriInfo.getAbsolutePathBuilder();
     absolute.queryParam("start", "{start}");
     absolute.queryParam("rows", "{rows}");
     // Add in next link
-    if (start - 1 + rows < pr.getNumFound()) {
+    if (start - 1 + rows < rr.getNumFound()) {
       int next = start + rows;
       String nextUri = absolute.clone().build(next, rows).toString();
       builder.header("Link", new Link(nextUri, "next", null));
@@ -232,8 +230,8 @@ public class ProductsResource {
    */
   @GET
   @Path("{lid}/all")
-  public Products getProductVersions(@PathParam("lid") String lid) {
-    return new Products(registryService.getProductVersions(lid));
+  public RegistryResponse getProductVersions(@PathParam("lid") String lid) {
+    return new RegistryResponse(registryService.getProductVersions(lid));
   }
 
   /**

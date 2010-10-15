@@ -15,7 +15,7 @@
 
 package gov.nasa.pds.registry.service;
 
-import gov.nasa.pds.registry.model.PagedResponse;
+import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ProductQuery;
@@ -24,13 +24,13 @@ import java.util.List;
 
 public interface MetadataStore {
 
-  public PagedResponse getProducts(ProductQuery query, Integer start,
+  public RegistryResponse getProducts(ProductQuery query, Integer start,
       Integer rows);
 
-  public PagedResponse getAssociations(AssociationQuery query, Integer start,
+  public RegistryResponse getAssociations(AssociationQuery query, Integer start,
       Integer rows);
 
-  public PagedResponse getAssociations(String lid, String versionId,
+  public RegistryResponse getAssociations(String lid, String versionId,
       Integer start, Integer rows);
 
   public RegistryObject getRegistryObject(String guid,

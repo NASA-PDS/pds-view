@@ -18,9 +18,8 @@ package gov.nasa.pds.registry.util;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.ObjectStatus;
-import gov.nasa.pds.registry.model.PagedResponse;
+import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.Product;
-import gov.nasa.pds.registry.model.Products;
 import gov.nasa.pds.registry.model.RegistryStatus;
 import gov.nasa.pds.registry.model.Slot;
 import gov.nasa.pds.registry.model.StatusInfo;
@@ -129,14 +128,14 @@ public class Examples {
 		RESPONSE_STATUS.setServerStarted(new GregorianCalendar());
 	}
 
-	public final static Products RESPONSE_REGISTRY_OBJECT_REVISIONS = new Products();
+	public final static RegistryResponse RESPONSE_REGISTRY_OBJECT_REVISIONS = new RegistryResponse();
 	static {
 		List<Product> ros = new ArrayList<Product>();
 		ros.add(RESPONSE_PRODUCT);
 		ros.add(RESPONSE_PRODUCT_UPDATED);
 		ros.add(RESPONSE_PRODUCT_APPROVED);
 		ros.add(RESPONSE_PRODUCT_DEPRECATED);
-		RESPONSE_REGISTRY_OBJECT_REVISIONS.setProducts(ros);
+		RESPONSE_REGISTRY_OBJECT_REVISIONS.setResults(ros);
 	}
 
 	public final static Product REQUEST_PRODUCT_VERSIONED = new Product();
@@ -167,15 +166,15 @@ public class Examples {
 		RESPONSE_PRODUCT_VERSIONED.setSlots(RESPONSE_SLOTS);
 	}
 
-	public final static Products RESPONSE_PRODUCT_VERSIONS = new Products();
+	public final static RegistryResponse RESPONSE_PRODUCT_VERSIONS = new RegistryResponse();
 	static {
 		List<Product> ros = new ArrayList<Product>();
 		ros.add(RESPONSE_PRODUCT);
 		ros.add(RESPONSE_PRODUCT_VERSIONED);
-		RESPONSE_PRODUCT_VERSIONS.setProducts(ros);
+		RESPONSE_PRODUCT_VERSIONS.setResults(ros);
 	}
 
-	public final static PagedResponse RESPONSE_PAGED = new PagedResponse(1, 1L);
+	public final static RegistryResponse RESPONSE_PAGED = new RegistryResponse(1, 1L);
 	static {
 		List<Product> results = new ArrayList<Product>();
 		results.add(RESPONSE_PRODUCT);
