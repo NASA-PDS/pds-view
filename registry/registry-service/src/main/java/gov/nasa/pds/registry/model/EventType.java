@@ -27,17 +27,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "")
 @XmlEnum
 public enum EventType {
-	CREATED("Created"), APPROVED("Approved"), DELETED("Deleted"), UPDATED(
-			"Updated"), DEPRECATED("Deprecated"), VERSIONED("Versioned"), WITHDRAWN(
-			"Withdrawn");
+	Created, Approved, Deleted, Updated, Deprecated, Versioned;
 
-	private String displayName;
-
-	EventType(String displayName) {
-		this.displayName = displayName;
-	}
-
-	public String getDisplayName() {
-		return displayName;
-	}
 }
