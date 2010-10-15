@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @MappedSuperclass
-@XmlRootElement(name = "regisryObject", namespace = "http://registry.pds.nasa.gov")
+@XmlRootElement(name = "registryObject", namespace = "http://registry.pds.nasa.gov")
 @XmlType(name = "registryObjectType", namespace = "http://registry.pds.nasa.gov")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RegistryObject extends Identifiable {
