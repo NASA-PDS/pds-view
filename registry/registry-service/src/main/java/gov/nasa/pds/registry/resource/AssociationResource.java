@@ -16,7 +16,7 @@
 package gov.nasa.pds.registry.resource;
 
 import gov.nasa.pds.registry.model.Association;
-import gov.nasa.pds.registry.model.PagedResponse;
+import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.QueryOperator;
@@ -42,124 +42,152 @@ import javax.ws.rs.core.UriInfo;
 
 public class AssociationResource {
 
-	@Context
-	UriInfo uriInfo;
+  @Context
+  UriInfo uriInfo;
 
-	@Context
-	Request request;
+  @Context
+  Request request;
 
-	@Context
-	RegistryService registryService;
+  @Context
+  RegistryService registryService;
 
-	public AssociationResource(UriInfo uriInfo, Request request,
-			RegistryService registryService) {
-		this.uriInfo = uriInfo;
-		this.request = request;
-		this.registryService = registryService;
-	}
+  public AssociationResource(UriInfo uriInfo, Request request,
+      RegistryService registryService) {
+    this.uriInfo = uriInfo;
+    this.request = request;
+    this.registryService = registryService;
+  }
 
-	/**
-	 * Retrieves all associations managed by the registry given a set of filters. 
-	 * 
-	 * @return all matching associations in the registry
-	 */
-	@GET
-	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response getAssociations(
-			@QueryParam("start") @DefaultValue("1") Integer start,
-			@QueryParam("rows") @DefaultValue("20") Integer rows,
-			@QueryParam("targetLid") String targetLid,
-			@QueryParam("targetVersionId") String targetVersionId,
-			@QueryParam("targetHome") String targetHome,
-			@QueryParam("sourceLid") String sourceLid,
-			@QueryParam("sourceVersionId") String sourceVersionId,
-			@QueryParam("sourceHome") String sourceHome,
-			@QueryParam("associationType") String associationType,
-			@QueryParam("queryOp") @DefaultValue("AND") QueryOperator operator,
-			@QueryParam("sort") List<String> sort) {
-		AssociationFilter filter = new AssociationFilter.Builder().targetLid(
-				targetLid).targetVersionId(targetVersionId).targetHome(targetHome)
-				.sourceLid(sourceLid).sourceVersionId(sourceVersionId).sourceHome(
-						sourceHome).associationType(associationType)
-				.associationType(associationType).build();
-		AssociationQuery.Builder queryBuilder = new AssociationQuery.Builder().filter(filter).operator(operator);
-		if (sort != null) {
-			queryBuilder.sort(sort);
-		}
-		
-		PagedResponse pr = registryService.getAssociations(queryBuilder.build(),
-				start, rows);
-		Response.ResponseBuilder builder = Response.ok(pr);
-		return builder.build();
-	}
-	
-	/**
-	 * 
-	 * @param start
-	 * @param rows
-	 * @param lid
-	 * @param userVersion
-	 * @return
-	 */
-	@GET
-	@Path("{lid}/{userVersion}")
-	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response getAssociations(
-			@QueryParam("start") @DefaultValue("1") Integer start,
-			@QueryParam("rows") @DefaultValue("20") Integer rows,
-			@PathParam("lid") String lid,
-			@PathParam("userVersion") String userVersion) {
-		PagedResponse pr = registryService.getAssociations(lid, userVersion, start, rows);
-		Response.ResponseBuilder builder = Response.ok(pr);
-		return builder.build();
-	}
+  /**
+   * Retrieves all associations managed by the registry given a set of filters.
+   * 
+   * @param start
+   *          the index at which to start the result list from
+   * @param rows
+   *          how many results to return
+   * @param targetLid
+   *          filter on the logical identifier of the target in the association
+   *          supports wildcard (*)
+   * @param targetVersionId
+   *          filter on the version id of the target in the association supports
+   *          wildcard (*)
+   * @param targetHome
+   *          filter on the URI of the home of the target in the association
+   *          supports wildcard (*)
+   * @param sourcetLid
+   *          filter on the logical identifier of the source in the association
+   *          supports wildcard (*)
+   * @param sourceVersionId
+   *          filter on the version id of the source in the association supports
+   *          wildcard (*)
+   * @param sourceHome
+   *          filter on the URI of the home of the source in the association
+   *          supports wildcard (*)
+   * @param associationType
+   *          filter on the type of association supports wildcard (*)
+   * @param operator
+   *          to apply to filters, valid values are AND or OR. Defaults to AND.
+   * @param sort
+   *          defines what parameters to sort on. The format is
+   *          "parameter order" the order is optional. The default is "guid ASC"
+   *          and if unspecified the ordering is ASC.
+   * @return all matching associations in the registry
+   */
+  @GET
+  @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  public Response getAssociations(
+      @QueryParam("start") @DefaultValue("1") Integer start,
+      @QueryParam("rows") @DefaultValue("20") Integer rows,
+      @QueryParam("targetLid") String targetLid,
+      @QueryParam("targetVersionId") String targetVersionId,
+      @QueryParam("targetHome") String targetHome,
+      @QueryParam("sourceLid") String sourceLid,
+      @QueryParam("sourceVersionId") String sourceVersionId,
+      @QueryParam("sourceHome") String sourceHome,
+      @QueryParam("associationType") String associationType,
+      @QueryParam("queryOp") @DefaultValue("AND") QueryOperator operator,
+      @QueryParam("sort") List<String> sort) {
+    AssociationFilter filter = new AssociationFilter.Builder().targetLid(
+        targetLid).targetVersionId(targetVersionId).targetHome(targetHome)
+        .sourceLid(sourceLid).sourceVersionId(sourceVersionId).sourceHome(
+            sourceHome).associationType(associationType).associationType(
+            associationType).build();
+    AssociationQuery.Builder queryBuilder = new AssociationQuery.Builder()
+        .filter(filter).operator(operator);
+    if (sort != null) {
+      queryBuilder.sort(sort);
+    }
 
-	/**
-	 * Publishes an association to the registry. Publishing includes validation,
-	 * assigning an internal version, validating the submission, and
-	 * notification.
-	 * 
-	 * @request.representation.qname {http://registry.pds.nasa.gov}association
-	 * @request.representation.mediaType application/xml
-	 * @request.representation.example {@link Examples#REQUEST_ASSOCIATION}
-	 * @response.param {@name Location} {@style header} {@type
-	 *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI
-	 *                 where the created item is accessible.}
-	 * 
-	 * @param product
-	 *            to update to
-	 * @return returns an HTTP response that indicates an error or the location
-	 *         of the created product
-	 */
-	@POST
-	@Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response publishAssociation(Association association) {
-		// TODO: Change to add user
-		String guid = registryService.publishAssociation("Unkown",
-				association);
-		return Response.created(
-				AssociationResource.getAssociationUri(registryService.getAssocation(guid), uriInfo))
-				.build();
-	}
+    RegistryResponse pr = registryService.getAssociations(queryBuilder.build(),
+        start, rows);
+    Response.ResponseBuilder builder = Response.ok(pr);
+    return builder.build();
+  }
 
-	protected static URI getAssociationUri(Association association,
-			UriInfo uriInfo) {
-		return uriInfo.getBaseUriBuilder().clone().path(RegistryResource.class)
-				.path(RegistryResource.class, "getAssociationResource").path(
-						association.getGuid()).build();
-	}
+  /**
+   * 
+   * @param start
+   * @param rows
+   * @param lid
+   * @param userVersion
+   * @return
+   */
+  @GET
+  @Path("{lid}/{userVersion}")
+  @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  public Response getAssociations(
+      @QueryParam("start") @DefaultValue("1") Integer start,
+      @QueryParam("rows") @DefaultValue("20") Integer rows,
+      @PathParam("lid") String lid, @PathParam("userVersion") String userVersion) {
+    RegistryResponse rr = registryService.getAssociations(lid, userVersion, start,
+        rows);
+    Response.ResponseBuilder builder = Response.ok(rr);
+    return builder.build();
+  }
 
-	/**
-	 * Retrieves an association with the given global identifier.
-	 * 
-	 * @retun the association
-	 */
-	@GET
-	@Path("{guid}")
-	@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Association getAssociation(@PathParam("guid") String guid) {
-		Association association = (Association) registryService
-				.getAssocation(guid);
-		return association;
-	}
+  /**
+   * Publishes an association to the registry. Publishing includes validation,
+   * assigning an internal version, validating the submission, and notification.
+   * 
+   * @request.representation.qname {http://registry.pds.nasa.gov}association
+   * @request.representation.mediaType application/xml
+   * @request.representation.example {@link Examples#REQUEST_ASSOCIATION}
+   * @response.param {@name Location} {@style header} {@type
+   *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI
+   *                 where the created item is accessible.}
+   * 
+   * @param product
+   *          to update to
+   * @return returns an HTTP response that indicates an error or the location of
+   *         the created product
+   */
+  @POST
+  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  public Response publishAssociation(Association association) {
+    // TODO: Change to add user
+    String guid = registryService.publishAssociation("Unkown", association);
+    return Response.created(
+        AssociationResource.getAssociationUri(registryService
+            .getAssocation(guid), uriInfo)).build();
+  }
+
+  protected static URI getAssociationUri(Association association,
+      UriInfo uriInfo) {
+    return uriInfo.getBaseUriBuilder().clone().path(RegistryResource.class)
+        .path(RegistryResource.class, "getAssociationResource").path(
+            association.getGuid()).build();
+  }
+
+  /**
+   * Retrieves an association with the given global identifier.
+   * 
+   * @retun the association
+   */
+  @GET
+  @Path("{guid}")
+  @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  public Association getAssociation(@PathParam("guid") String guid) {
+    Association association = (Association) registryService.getAssocation(guid);
+    return association;
+  }
 }
