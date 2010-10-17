@@ -66,8 +66,7 @@ public class ProductsResource {
    * (lid). The header will contain pointers to next and previous when
    * applicable.
    * 
-   * @response.representation.200.qname 
-   *                                    {http://registry.pds.nasa.gov}pagedResponse
+   * @response.representation.200.qname {http://registry.pds.nasa.gov}response
    * @response.representation.200.mediaType application/xml
    * @response.representation.200.example {@link Examples#RESPONSE_PAGED}
    * @response.param {@name Link} {@style header} {@type
@@ -130,8 +129,8 @@ public class ProductsResource {
     if (sort != null) {
       queryBuilder.sort(sort);
     }
-    RegistryResponse rr = registryService.getProducts(queryBuilder.build(), start,
-        rows);
+    RegistryResponse rr = registryService.getProducts(queryBuilder.build(),
+        start, rows);
     Response.ResponseBuilder builder = Response.ok(rr);
     UriBuilder absolute = uriInfo.getAbsolutePathBuilder();
     absolute.queryParam("start", "{start}");
@@ -170,15 +169,17 @@ public class ProductsResource {
    * @param product
    *          to update to
    * @return returns an HTTP response that indicates an error or the location of
-   *         the created product
+   *         the created product and its guid
    */
   @POST
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response publishProduct(Product product) {
     // TODO: Change to set user
-    String guid = registryService.publishProduct("Unknown", product);
-    return Response.created(ProductResource.getProductUri(registryService.getProduct(guid), uriInfo))
-        .entity(guid).build();
+    String guid = registryService.publishRegistryObject("Unknown", product);
+    return Response.created(
+        ProductResource
+            .getProductUri(registryService.getProduct(guid), uriInfo)).entity(
+        guid).build();
   }
 
   /**
@@ -200,7 +201,7 @@ public class ProductsResource {
    * @param major
    *          if true indicates a major revision otherwise considered minor
    * @return returns an HTTP response that indicates an error or the location of
-   *         the created product
+   *         the versioned product and its guid
    */
   @POST
   @Path("{lid}")
@@ -210,17 +211,19 @@ public class ProductsResource {
     // TODO Check to make sure the path lid matches that of the product
     // provided
     // TODO Change to set user
-    String guid = registryService.versionProduct("Unknown", lid, product,
-        major);
-    return Response.created(ProductResource.getProductUri(registryService.getProduct(guid), uriInfo))
-        .build();
+    String guid = registryService
+        .versionProduct("Unknown", lid, product, major);
+    return Response.created(
+        ProductResource
+            .getProductUri(registryService.getProduct(guid), uriInfo)).entity(
+        guid).build();
   }
 
   /**
    * Retrieves the collection of products that share the same local identifier.
    * This method supports finding all versions of an product.
    * 
-   * @response.representation.200.qname {http://registry.pds.nasa.gov}products
+   * @response.representation.200.qname {http://registry.pds.nasa.gov}response
    * @response.representation.200.mediaType application/xml
    * @response.representation.200.example {@link Examples#RESPONSE_PRODUCT_VERSIONS}
    * 
@@ -230,6 +233,7 @@ public class ProductsResource {
    */
   @GET
   @Path("{lid}/all")
+  @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public RegistryResponse getProductVersions(@PathParam("lid") String lid) {
     return new RegistryResponse(registryService.getProductVersions(lid));
   }

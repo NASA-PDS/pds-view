@@ -15,6 +15,8 @@
 
 package gov.nasa.pds.registry.service;
 
+import gov.nasa.pds.registry.model.AuditableEvent;
+import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationQuery;
@@ -32,6 +34,10 @@ public interface MetadataStore {
 
   public RegistryResponse getAssociations(String lid, String versionId,
       Integer start, Integer rows);
+  
+  public List<AuditableEvent> getAuditableEvents(String affectedObject);
+  
+  public List<ClassificationNode> getClassificationNodes(String scheme);
 
   public RegistryObject getRegistryObject(String guid,
       Class<? extends RegistryObject> objectClass);

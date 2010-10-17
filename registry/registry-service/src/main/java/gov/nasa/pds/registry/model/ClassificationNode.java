@@ -59,6 +59,12 @@ public class ClassificationNode extends RegistryObject {
   @XmlAttribute
   private String path;
 
+  public ClassificationNode() {
+    this.setObjectType(ClassificationNode.class.getSimpleName());
+    this.setVersionName(null);
+    this.setVersionId(null);
+  }
+  
   public String getParent() {
     return parent;
   }

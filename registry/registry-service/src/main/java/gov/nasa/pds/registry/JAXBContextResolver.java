@@ -16,9 +16,16 @@
 package gov.nasa.pds.registry;
 
 import gov.nasa.pds.registry.model.Association;
+import gov.nasa.pds.registry.model.AuditableEvent;
+import gov.nasa.pds.registry.model.Classification;
+import gov.nasa.pds.registry.model.ClassificationNode;
+import gov.nasa.pds.registry.model.ClassificationScheme;
 import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.Product;
 import gov.nasa.pds.registry.model.RegistryObject;
+import gov.nasa.pds.registry.model.Service;
+import gov.nasa.pds.registry.model.ServiceBinding;
+import gov.nasa.pds.registry.model.SpecificationLink;
 import gov.nasa.pds.registry.model.StatusInfo;
 
 import java.util.Arrays;
@@ -45,7 +52,10 @@ public final class JAXBContextResolver implements ContextResolver<JAXBContext> {
 
   @SuppressWarnings("unchecked")
   private final Class[] cTypes = { Association.class, Product.class,
-      RegistryResponse.class, RegistryObject.class, StatusInfo.class };
+      AuditableEvent.class, Classification.class, ClassificationNode.class,
+      ClassificationScheme.class, Service.class, ServiceBinding.class,
+      SpecificationLink.class, RegistryResponse.class, RegistryObject.class,
+      StatusInfo.class };
 
   @SuppressWarnings("unchecked")
   public JAXBContextResolver() throws Exception {

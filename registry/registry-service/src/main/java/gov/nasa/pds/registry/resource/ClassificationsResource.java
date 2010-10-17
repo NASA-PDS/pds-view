@@ -13,13 +13,34 @@
 //	$Id$
 //
 
-package gov.nasa.pds.registry.model;
+package gov.nasa.pds.registry.resource;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlType;
+import gov.nasa.pds.registry.service.RegistryService;
 
-@XmlType(name = "")
-@XmlEnum
-public enum ObjectStatus {
-	Submitted, Approved, Deprecated;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Request;
+import javax.ws.rs.core.UriInfo;
+
+/**
+ * @author pramirez
+ *
+ */
+public class ClassificationsResource {
+
+  @Context
+  UriInfo uriInfo;
+
+  @Context
+  Request request;
+
+  @Context
+  RegistryService registryService;
+
+  public ClassificationsResource(UriInfo uriInfo, Request request,
+      RegistryService registryService) {
+    this.uriInfo = uriInfo;
+    this.request = request;
+    this.registryService = registryService;
+  }
+
 }

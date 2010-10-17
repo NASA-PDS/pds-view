@@ -22,96 +22,165 @@ import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @Entity
-@XmlType(name = "auditableEvent", namespace = "http://registry.pds.nasa.gov")
+@XmlRootElement(name = "auditableEvent", namespace = "http://registry.pds.nasa.gov")
+@XmlType(name = "")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AuditableEvent extends RegistryObject {
 
-	private static final long serialVersionUID = -1091556687686639668L;
+  private static final long serialVersionUID = -1091556687686639668L;
 
-	@XmlAttribute
-	private EventType eventType;
+  @XmlAttribute
+  private EventType eventType;
 
-	@XmlAttribute
-	private String registryObject;
+  @XmlAttribute
+  private String affectedObject;
 
-	@XmlAttribute
-	private GregorianCalendar timestamp;
+  @XmlAttribute
+  private String requestId;
 
-	@XmlAttribute
-	@Column(name = "userid")
-	private String user;
+  @XmlAttribute
+  private GregorianCalendar timestamp;
 
-	public AuditableEvent() {
-	}
+  @XmlAttribute
+  @Column(name = "userid")
+  private String user;
 
-	public AuditableEvent(EventType eventType, String registryObject,
-			String user) {
-		this.eventType = eventType;
-		this.registryObject = registryObject;
-		this.user = user;
-		this.timestamp = new GregorianCalendar();
-	}
+  public AuditableEvent() {
+  }
 
-	/**
-	 * @return the eventType
-	 */
-	public EventType getEventType() {
-		return eventType;
-	}
+  public AuditableEvent(EventType eventType, String affectedObject, String user) {
+    this.eventType = eventType;
+    this.affectedObject = affectedObject;
+    this.user = user;
+    this.timestamp = new GregorianCalendar();
+  }
 
-	/**
-	 * @param eventType
-	 *            the eventType to set
-	 */
-	public void setEventType(EventType eventType) {
-		this.eventType = eventType;
-	}
+  /**
+   * @return the eventType
+   */
+  public EventType getEventType() {
+    return eventType;
+  }
 
-	/**
-	 * @return the guid of the registry object this event is associated with
-	 */
-	public String getRegistryObject() {
-		return registryObject;
-	}
+  /**
+   * @param eventType
+   *          the eventType to set
+   */
+  public void setEventType(EventType eventType) {
+    this.eventType = eventType;
+  }
 
-	/**
-	 * @param registryObject
-	 *            the guid of the registry object this event is associated with
-	 */
-	public void setRegistryObject(String registryObject) {
-		this.registryObject = registryObject;
-	}
+  /**
+   * @return the guid of the registry object this event is associated with
+   */
+  public String getAffectedObject() {
+    return affectedObject;
+  }
 
-	/**
-	 * @return the timestamp when the event occurred
-	 */
-	public GregorianCalendar getTimestamp() {
-		return timestamp;
-	}
+  /**
+   * @param affectedObject
+   *          the guid of the registry object this event is associated with
+   */
+  public void setAffectedObject(String affectedObject) {
+    this.affectedObject = affectedObject;
+  }
 
-	/**
-	 * @param timestamp
-	 *            the timestamp to when event occured
-	 */
-	public void setTimestamp(GregorianCalendar timestamp) {
-		this.timestamp = timestamp;
-	}
+  /**
+   * @return the timestamp when the event occurred
+   */
+  public GregorianCalendar getTimestamp() {
+    return timestamp;
+  }
 
-	/**
-	 * @return identifier that maps to a user
-	 */
-	public String getUser() {
-		return user;
-	}
+  /**
+   * @param timestamp
+   *          the timestamp to when event occured
+   */
+  public void setTimestamp(GregorianCalendar timestamp) {
+    this.timestamp = timestamp;
+  }
 
-	/**
-	 * @param user
-	 *            an unique user id to set
-	 */
-	public void setUser(String user) {
-		this.user = user;
-	}
+  /**
+   * @return identifier that maps to a user
+   */
+  public String getUser() {
+    return user;
+  }
+
+  /**
+   * @param user
+   *          an unique user id to set
+   */
+  public void setUser(String user) {
+    this.user = user;
+  }
+
+  /**
+   * @return identifies the request made to cause this event
+   */
+  public String getRequestId() {
+    return requestId;
+  }
+
+  /**
+   * @param requestId
+   *          unique id for request that generated this event
+   */
+  public void setRequestId(String requestId) {
+    this.requestId = requestId;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result
+        + ((affectedObject == null) ? 0 : affectedObject.hashCode());
+    result = prime * result + ((eventType == null) ? 0 : eventType.hashCode());
+    result = prime * result + ((requestId == null) ? 0 : requestId.hashCode());
+    result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
+    result = prime * result + ((user == null) ? 0 : user.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (!super.equals(obj))
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    AuditableEvent other = (AuditableEvent) obj;
+    if (affectedObject == null) {
+      if (other.affectedObject != null)
+        return false;
+    } else if (!affectedObject.equals(other.affectedObject))
+      return false;
+    if (eventType == null) {
+      if (other.eventType != null)
+        return false;
+    } else if (!eventType.equals(other.eventType))
+      return false;
+    if (requestId == null) {
+      if (other.requestId != null)
+        return false;
+    } else if (!requestId.equals(other.requestId))
+      return false;
+    if (timestamp == null) {
+      if (other.timestamp != null)
+        return false;
+    } else if (!timestamp.equals(other.timestamp))
+      return false;
+    if (user == null) {
+      if (other.user != null)
+        return false;
+    } else if (!user.equals(other.user))
+      return false;
+    return true;
+  }
 }

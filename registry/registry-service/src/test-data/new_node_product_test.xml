@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classificationNode xmlns="http://registry.pds.nasa.gov" 
+    name="Test Node" 
+    description="This is the classification node for test which has a parent of product."
+    parent="urn:registry:ObjectTypeScheme:Product"
+    code="Test"/>

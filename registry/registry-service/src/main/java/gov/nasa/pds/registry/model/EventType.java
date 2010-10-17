@@ -27,6 +27,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "")
 @XmlEnum
 public enum EventType {
-	Created, Approved, Deleted, Updated, Deprecated, Versioned;
+	Created, Approved, Deleted, Updated, Deprecated, Versioned, Undeprecated;
 
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<service xmlns="http://registry.pds.nasa.gov" 
+    name="PDS Service" 
+    description="This is a service to test adding a service description to the registry">
+    <serviceBinding name="PDS Main Site" 
+                    description="This is the PDS main web site" 
+                    accessURI="http://pds.jpl.nasa.gov">
+        <specificationLink name="HTTP Specification Link" 
+            description="This is a link to the HTTP specification."
+            specificationObject="urn:uuid:HTTPSpecificationDocument">
+            <usageDescription>Use a browser to access the PDS site. The acceptable browsers are listed in the usage parameters.</usageDescription>
+            <usageParameter>Firefox</usageParameter>
+            <usageParameter>Safari</usageParameter>
+            <usageParameter>Internet Explorer</usageParameter>
+            <usageParameter>Chrome</usageParameter>
+        </specificationLink>
+    </serviceBinding>
+</service>

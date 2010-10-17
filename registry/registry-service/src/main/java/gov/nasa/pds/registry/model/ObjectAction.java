@@ -25,16 +25,22 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "")
 @XmlEnum
 public enum ObjectAction {
-	approve(ObjectStatus.Approved), deprecate(ObjectStatus.Deprecated), undeprecate(
-			ObjectStatus.Submitted);
+	approve(ObjectStatus.Approved, EventType.Approved), deprecate(ObjectStatus.Deprecated, EventType.Deprecated), undeprecate(
+			ObjectStatus.Submitted, EventType.Undeprecated);
 
 	private final ObjectStatus status;
+	private final EventType type;
 
-	ObjectAction(ObjectStatus status) {
+	private ObjectAction(ObjectStatus status, EventType type) {
 		this.status = status;
+		this.type = type;
 	}
 
 	public ObjectStatus getObjectStatus() {
 		return this.status;
+	}
+	
+	public EventType getEventType() {
+	  return this.type;
 	}
 }

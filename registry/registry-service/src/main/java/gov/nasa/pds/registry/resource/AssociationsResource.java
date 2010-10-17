@@ -40,7 +40,7 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-public class AssociationResource {
+public class AssociationsResource {
 
   @Context
   UriInfo uriInfo;
@@ -51,7 +51,7 @@ public class AssociationResource {
   @Context
   RegistryService registryService;
 
-  public AssociationResource(UriInfo uriInfo, Request request,
+  public AssociationsResource(UriInfo uriInfo, Request request,
       RegistryService registryService) {
     this.uriInfo = uriInfo;
     this.request = request;
@@ -129,17 +129,17 @@ public class AssociationResource {
    * @param start
    * @param rows
    * @param lid
-   * @param userVersion
+   * @param versionId
    * @return
    */
   @GET
-  @Path("{lid}/{userVersion}")
+  @Path("{lid}/{versionId}")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response getAssociations(
       @QueryParam("start") @DefaultValue("1") Integer start,
       @QueryParam("rows") @DefaultValue("20") Integer rows,
-      @PathParam("lid") String lid, @PathParam("userVersion") String userVersion) {
-    RegistryResponse rr = registryService.getAssociations(lid, userVersion, start,
+      @PathParam("lid") String lid, @PathParam("versionId") String versionId) {
+    RegistryResponse rr = registryService.getAssociations(lid, versionId, start,
         rows);
     Response.ResponseBuilder builder = Response.ok(rr);
     return builder.build();
@@ -159,22 +159,22 @@ public class AssociationResource {
    * @param product
    *          to update to
    * @return returns an HTTP response that indicates an error or the location of
-   *         the created product
+   *         the created association and its guid
    */
   @POST
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response publishAssociation(Association association) {
     // TODO: Change to add user
-    String guid = registryService.publishAssociation("Unkown", association);
+    String guid = registryService.publishRegistryObject("Unkown", association);
     return Response.created(
-        AssociationResource.getAssociationUri(registryService
-            .getAssocation(guid), uriInfo)).build();
+        AssociationsResource.getAssociationUri(registryService
+            .getAssocation(guid), uriInfo)).entity(guid).build();
   }
 
   protected static URI getAssociationUri(Association association,
       UriInfo uriInfo) {
     return uriInfo.getBaseUriBuilder().clone().path(RegistryResource.class)
-        .path(RegistryResource.class, "getAssociationResource").path(
+        .path(RegistryResource.class, "getAssociationsResource").path(
             association.getGuid()).build();
   }
 
@@ -187,7 +187,7 @@ public class AssociationResource {
   @Path("{guid}")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Association getAssociation(@PathParam("guid") String guid) {
-    Association association = (Association) registryService.getAssocation(guid);
+    Association association = registryService.getAssocation(guid);
     return association;
   }
 }

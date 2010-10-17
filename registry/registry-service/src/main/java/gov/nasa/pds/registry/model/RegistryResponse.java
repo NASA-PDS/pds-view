@@ -48,7 +48,7 @@ public class RegistryResponse {
 	}
 
 	public RegistryResponse(Integer start, Long numFound) {
-		this(start, numFound, new ArrayList<RegistryObject>());
+		this(start, numFound, null);
 	}
   
   public RegistryResponse(List<? extends RegistryObject> results) {

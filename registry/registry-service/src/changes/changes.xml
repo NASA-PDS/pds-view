@@ -25,11 +25,17 @@
   <body>
 
     <release version="0.5.0" date="TBD" description="TBD">
+      <action dev="pramirez" type="add">Ability to deal with Services. This required the addition of
+        Service Bindings and Specification Links as well.</action>
+      <action dev="pramirez" type="add">Ability to deal with Classifications. This required the
+        addition of Classification Schemes and Nodes as well.</action>
+      <action dev="pramirez" type="add">Interface to retrieve Auditable Events.</action>
+      <action dev="pramirez" type="update">Refactored any list response to simply be a
+        RegistryResponse instead of a PagedResponse.</action>
       <action dev="pramirez" type="update">Added a default sort order on slots so they come back in
         a fixed order on repeated requests. The default order now is their generated id.</action>
       <action dev="pramirez" type="fix">Slot values that were extremely large would truncate. Now
-        they map to @Lob with a length of max integer. If this causes a performance issue the size
-        should be cut down to something smaller.</action>
+        they map to @Lob with a length of max integer.</action>
       <action dev="pramirez" type="update">Updated persistence layer to be more flexible and require
         less change as we add new types of RegistryObject's. For example, instead of having
         saveProduct and saveAssociation there is now a unified saveRegistryObject</action>
