@@ -17,6 +17,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.xml.xpath.XPathExpressionException;
 
@@ -29,6 +30,8 @@ import gov.nasa.jpl.oodt.cas.metadata.exceptions.MetExtractionException;
 import gov.nasa.pds.harvest.context.ReferenceEntry;
 import gov.nasa.pds.harvest.crawler.metadata.CoreXPaths;
 import gov.nasa.pds.harvest.crawler.metadata.PDSCoreMetKeys;
+import gov.nasa.pds.harvest.logging.ToolsLevel;
+import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.harvest.util.XMLExtractor;
 
 /**
@@ -38,6 +41,7 @@ import gov.nasa.pds.harvest.util.XMLExtractor;
  *
  */
 public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
+    private static Logger log = Logger.getLogger(PDSMetExtractor.class.getName());
     private PDSMetExtractorConfig config;
 
     /**
@@ -92,6 +96,9 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
             metadata.addMetadata(TITLE, title);
         if(!"".equals(objectType))
             metadata.addMetadata(OBJECT_TYPE, objectType);
+        if(references.getLength() == 0) {
+            log.log(new ToolsLogRecord(ToolsLevel.INFO, "No associations found.", product));
+        }
         if((!"".equals(objectType)) && (config.hasObjectType(objectType))) {
             List<String> metXPaths = new ArrayList<String>();
             metXPaths.addAll(config.getMetXPaths(objectType));
