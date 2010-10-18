@@ -27,7 +27,7 @@ public class CoreXPaths implements PDSCoreMetKeys {
     static {
         map.put(LOGICAL_ID, "//*[ends-with(name(),'Identification_Area')]/logical_identifier");
         map.put(PRODUCT_VERSION, "//*[ends-with(name(),'Identification_Area')]/version_id");
-        map.put(OBJECT_TYPE, "//*[ends-with(name(),'Identification_Area')]/object_type");
+        map.put(OBJECT_TYPE, "//*[ends-with(name(),'Identification_Area')]/product_class");
         map.put(TITLE, "//*[ends-with(name(),'Identification_Area')]/title");
         map.put(REFERENCES, "//*[ends-with(name(),'Member_Entry')] | //*[ends-with(name(),'Reference_Area')]/*[ends-with(name(),'Reference_Entry')]");
     }
