@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<policy>
+	<directories>
+	   <path>C:\pds4\test</path>
+	   <filePattern>*.xml</filePattern>
+	</directories>
+	<candidates>
+	   <productMetadata objectType="Product_Element_Definition">
+	   	  <xPath>//Identification_Area/alternate_title</xPath>
+	   	  <xPath>//Identification_Area/alternate_id</xPath>
+	   	  <xPath>//Identification_Area/last_modification_date_time</xPath>
+	   	  <xPath>//Element_Definition/identifier</xPath>
+	   	  <xPath>//Element_Definition/class_name</xPath>
+	   	  <xPath>//Element_Definition/registered_by</xPath>
+	   	  <xPath>//Element_Definition/submitter_id</xPath>
+	   	  <xPath>//Element_Definition/Terminological_Entry/designation</xPath>
+	   	  <xPath>//Element_Definition/Terminological_Entry/definition</xPath>
+	   	  <xPath>//Value_Domain/data_type</xPath>
+	   	  <xPath>//Value_Domain/minimum_characters</xPath>
+	   	  <xPath>//Value_Domain/maximum_characters</xPath>
+	   </productMetadata>
+   </candidates>
+</policy>
