@@ -110,6 +110,9 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
 
             log.log(new ToolsLogRecord(ToolsLevel.INGEST_SUCCESS,
                     "Succesfully registered product: " + lidvid, prodFile));
+            log.log(new ToolsLogRecord(ToolsLevel.INFO,
+                    "Product has the following guid: " +
+                    response.getEntity(String.class), prodFile));
             return response.getLocation().toString();
         }
         else {
