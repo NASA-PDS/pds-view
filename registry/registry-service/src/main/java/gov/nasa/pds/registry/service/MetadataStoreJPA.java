@@ -171,38 +171,44 @@ public class MetadataStoreJPA implements MetadataStore {
    * gov.nasa.pds.registry.service.MetadataStore#getAuditableEvents(java.lang
    * .String)
    */
+  @SuppressWarnings("unchecked")
   @Override
   @Transactional(readOnly = true)
   public List<AuditableEvent> getAuditableEvents(String affectedObject) {
-    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-    CriteriaQuery<AuditableEvent> cq = cb.createQuery(AuditableEvent.class);
-    Root<AuditableEvent> eventEntity = cq.from(AuditableEvent.class);
-    cq.where(cb.equal(eventEntity.get("affectedObject"), affectedObject));
-    List<Order> orders = new ArrayList<Order>();
-    orders.add(cb.asc(eventEntity.get("guid")));
-    cq.orderBy(orders);
-    TypedQuery<AuditableEvent> dbQuery = entityManager.createQuery(cq);
+    // Because hibernate did not allow MEMBER OF queries against
+    // ElementCollections went with a string based query. If the bug in the
+    // hibernate api gets fixed this should be converted to use the Criteria API
+    // (see http://opensource.atlassian.com/projects/hibernate/browse/HHH-869)
+    TypedQuery<AuditableEvent> dbQuery = (TypedQuery<AuditableEvent>) entityManager
+        .createQuery(
+            "from AuditableEvent e join e.affectedObjects a where a =:affected")
+        .setParameter("affected", affectedObject);
     return dbQuery.getResultList();
   }
 
-
-  /* (non-Javadoc)
-   * @see gov.nasa.pds.registry.service.MetadataStore#getClassificationNodes(java.lang.String)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nasa.pds.registry.service.MetadataStore#getClassificationNodes(java
+   * .lang.String)
    */
   @Override
   @Transactional(readOnly = true)
   public List<ClassificationNode> getClassificationNodes(String scheme) {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-    CriteriaQuery<ClassificationNode> cq = cb.createQuery(ClassificationNode.class);
+    CriteriaQuery<ClassificationNode> cq = cb
+        .createQuery(ClassificationNode.class);
     Root<ClassificationNode> nodeEntity = cq.from(ClassificationNode.class);
-    cq.where(cb.like(nodeEntity.get("path").as(String.class), "/" + scheme + "/%"));
+    cq.where(cb.like(nodeEntity.get("path").as(String.class), "/" + scheme
+        + "/%"));
     List<Order> orders = new ArrayList<Order>();
     orders.add(cb.asc(nodeEntity.get("guid")));
     cq.orderBy(orders);
     TypedQuery<ClassificationNode> dbQuery = entityManager.createQuery(cq);
     return dbQuery.getResultList();
   }
-  
+
   /*
    * (non-Javadoc)
    * 

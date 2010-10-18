@@ -35,6 +35,7 @@ import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ProductQuery;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -115,14 +116,14 @@ public class RegistryService {
         .getVersionName(), major));
     product.setStatus(referencedProduct.getStatus());
     metadataStore.saveRegistryObject(product);
-    AuditableEvent createEvent = new AuditableEvent(EventType.Created, product
-        .getGuid(), user);
+    AuditableEvent createEvent = new AuditableEvent(EventType.Created, Arrays
+        .asList(product.getGuid()), user);
     createEvent.setGuid(idGenerator.getGuid());
     createEvent.setHome(idGenerator.getHome());
     this.validate(product);
     metadataStore.saveRegistryObject(createEvent);
-    AuditableEvent event = new AuditableEvent(EventType.Versioned,
-        referencedProduct.getGuid(), user);
+    AuditableEvent event = new AuditableEvent(EventType.Versioned, Arrays
+        .asList(referencedProduct.getGuid()), user);
     event.setGuid(idGenerator.getGuid());
     event.setHome(idGenerator.getHome());
     metadataStore.saveRegistryObject(event);
@@ -214,8 +215,8 @@ public class RegistryService {
         Product.class);
     product.setStatus(action.getObjectStatus());
     metadataStore.updateRegistryObject(product);
-    AuditableEvent event = new AuditableEvent(action.getEventType(), product
-        .getGuid(), user);
+    AuditableEvent event = new AuditableEvent(action.getEventType(), Arrays
+        .asList(product.getGuid()), user);
     event.setGuid(idGenerator.getGuid());
     event.setHome(idGenerator.getHome());
     metadataStore.saveRegistryObject(event);
@@ -271,29 +272,22 @@ public class RegistryService {
 
   private void createAuditableEvents(String user,
       RegistryObject registryObject, EventType eventType) {
-    AuditableEvent event = new AuditableEvent(eventType, registryObject
-        .getGuid(), user);
-    event.setGuid(idGenerator.getGuid());
-    event.setHome(idGenerator.getHome());
-    metadataStore.saveRegistryObject(event);
-    // If this is a service we have nested registrations we must record
+    List<String> affectedObjects = new ArrayList<String>();
+    affectedObjects.add(registryObject.getGuid());
+    // If this is a service we have other affected objects
     if (registryObject instanceof Service) {
       Service service = (Service) registryObject;
       for (ServiceBinding binding : service.getServiceBindings()) {
-        AuditableEvent bindingEvent = new AuditableEvent(eventType, binding
-            .getGuid(), user);
-        bindingEvent.setGuid(idGenerator.getGuid());
-        bindingEvent.setHome(idGenerator.getHome());
-        metadataStore.saveRegistryObject(bindingEvent);
+        affectedObjects.add(binding.getGuid());
         for (SpecificationLink link : binding.getSpecificationLinks()) {
-          AuditableEvent linkEvent = new AuditableEvent(eventType, link
-              .getGuid(), user);
-          linkEvent.setGuid(idGenerator.getGuid());
-          linkEvent.setHome(idGenerator.getHome());
-          metadataStore.saveRegistryObject(linkEvent);
+          affectedObjects.add(link.getGuid());
         }
       }
     }
+    AuditableEvent event = new AuditableEvent(eventType, affectedObjects, user);
+    event.setGuid(idGenerator.getGuid());
+    event.setHome(idGenerator.getHome());
+    metadataStore.saveRegistryObject(event);
   }
 
   private void validate(RegistryObject registryObject) {

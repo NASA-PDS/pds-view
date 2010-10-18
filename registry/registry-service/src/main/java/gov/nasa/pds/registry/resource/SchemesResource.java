@@ -66,19 +66,19 @@ public class SchemesResource {
   }
 
   @GET
-  @Path("{guid}")
+  @Path("{schemeGuid}")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public ClassificationScheme getClassificationScheme(
-      @PathParam("guid") String guid) {
-    return (ClassificationScheme) registryService.getRegistryObject(guid,
+      @PathParam("schemeGuid") String schemeGuid) {
+    return (ClassificationScheme) registryService.getRegistryObject(schemeGuid,
         ClassificationScheme.class);
   }
   
   @DELETE
-  @Path("{guid}")
+  @Path("{schemeGuid}")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Response deleteClassificationScheme(@PathParam("guid") String guid) {
-    registryService.deleteRegistryObject("Unknown", guid, ClassificationScheme.class);
+  public Response deleteClassificationScheme(@PathParam("schemeGuid") String schemeGuid) {
+    registryService.deleteRegistryObject("Unknown", schemeGuid, ClassificationScheme.class);
     return Response.ok().build();
   }
 

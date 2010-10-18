@@ -16,12 +16,17 @@
 package gov.nasa.pds.registry.model;
 
 import java.util.GregorianCalendar;
+import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -36,8 +41,11 @@ public class AuditableEvent extends RegistryObject {
   @XmlAttribute
   private EventType eventType;
 
-  @XmlAttribute
-  private String affectedObject;
+  @ElementCollection
+  @CollectionTable(name = "Affected_Objects", joinColumns = @JoinColumn(name = "event_id"))
+  @Column(name = "affected_object")
+  @XmlElement(name = "affectedObject", namespace = "http://registry.pds.nasa.gov")
+  private List<String> affectedObjects;
 
   @XmlAttribute
   private String requestId;
@@ -52,9 +60,9 @@ public class AuditableEvent extends RegistryObject {
   public AuditableEvent() {
   }
 
-  public AuditableEvent(EventType eventType, String affectedObject, String user) {
+  public AuditableEvent(EventType eventType, List<String> affectedObjects, String user) {
     this.eventType = eventType;
-    this.affectedObject = affectedObject;
+    this.affectedObjects = affectedObjects;
     this.user = user;
     this.timestamp = new GregorianCalendar();
   }
@@ -77,16 +85,16 @@ public class AuditableEvent extends RegistryObject {
   /**
    * @return the guid of the registry object this event is associated with
    */
-  public String getAffectedObject() {
-    return affectedObject;
+  public List<String> getAffectedObjects() {
+    return affectedObjects;
   }
 
   /**
-   * @param affectedObject
+   * @param affectedObjects
    *          the guid of the registry object this event is associated with
    */
-  public void setAffectedObject(String affectedObject) {
-    this.affectedObject = affectedObject;
+  public void setAffectedObjects(List<String> affectedObjects) {
+    this.affectedObjects = affectedObjects;
   }
 
   /**
@@ -139,7 +147,7 @@ public class AuditableEvent extends RegistryObject {
     final int prime = 31;
     int result = super.hashCode();
     result = prime * result
-        + ((affectedObject == null) ? 0 : affectedObject.hashCode());
+        + ((affectedObjects == null) ? 0 : affectedObjects.hashCode());
     result = prime * result + ((eventType == null) ? 0 : eventType.hashCode());
     result = prime * result + ((requestId == null) ? 0 : requestId.hashCode());
     result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
@@ -156,10 +164,10 @@ public class AuditableEvent extends RegistryObject {
     if (getClass() != obj.getClass())
       return false;
     AuditableEvent other = (AuditableEvent) obj;
-    if (affectedObject == null) {
-      if (other.affectedObject != null)
+    if (affectedObjects == null) {
+      if (other.affectedObjects != null)
         return false;
-    } else if (!affectedObject.equals(other.affectedObject))
+    } else if (!affectedObjects.equals(other.affectedObjects))
       return false;
     if (eventType == null) {
       if (other.eventType != null)
@@ -183,4 +191,5 @@ public class AuditableEvent extends RegistryObject {
       return false;
     return true;
   }
+
 }
