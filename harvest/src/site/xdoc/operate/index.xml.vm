@@ -220,35 +220,35 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
 &lt;/policy&gt;
         </source>
 
-        <p>The policy file is made up of 6 complex type elements: <i>bundles</i>, <i>collections</i>, <i>directories</i>, <i>candidates</i>, and <i>productMetadata</i>.
+        <p>The policy file is made up of the following complex type elements: <i>bundles</i>, <i>collections</i>, <i>directories</i>, <i>candidates</i>, and <i>productMetadata</i>.
         </p>
-        
+
         <b><i>bundles</i></b>
-        
+
         <p>Specify this element to tell the Harvest Tool to register and crawl a bundle file. The following table describes the elements that are allowed:
         </p>
-        
+
         <table>
           <tr><th>Element Name</th><th>Description</th></tr>
           <tr><td>file</td><td>Specify a bundle file. Specify this element tag more than once to point to multiple bundle files.</td></tr>
         </table>
-        
+
         <p>In the example above, the Harvest Tool will register the bundle file named <i>/home/pds4/context-bundle/bundle.xml</i>. It will then crawl the bundle file, looking for collection files to register and process.
         </p>
-        
+
         <b><i>collections</i></b>
-        
-        <p>Specify this element to tell the Harvest Tool to register and crawl a collection file. Crawling only occurs when the collection file is a primary collection. This is indicated by a value of <i>true</i> in the <i>is_primary_collection</i> element tag within the collection. 
+
+        <p>Specify this element to tell the Harvest Tool to register and crawl a collection file. Crawling only occurs when the collection file is a primary collection. This is indicated by a value of <i>true</i> in the <i>is_primary_collection</i> element tag within the collection.
         </p>
-        
-        <p>The following table describes the elements that are allowed: 
+
+        <p>The following table describes the elements that are allowed:
         </p>
-        
+
         <table>
           <tr><th>Element Name</th><th>Description</th></tr>
           <tr><td>file</td><td>Specify a collection file. Specify this element tag more than once to point to multiple collection files.</td></tr>
         </table>
-        
+
         <p>In the example above, the Harvest Tool will register the collection file named <i>/home/pds4/insthost/collection_instrument_host.xml</i>. It will then crawl the file, looking for products to register if it is a primary collection.
         </p>
 
@@ -262,7 +262,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
           <tr><td>path</td><td>Specify a directory path to start crawling. Specify this element tag more than once to point to multiple directories to crawl.</td></tr>
           <tr><td>filePattern</td><td>Specify a file pattern to look for specific files. If omitted, the default is to get all files within a directory.</td></tr>
         </table>
-        
+
         <p>In the example above, the Harvest tool will crawl the directory location, <i>/home/user/pds4/geo/product_files</i>, looking for files that have a <i>.xml</i> file extension. The default is to touch all files in the directory if the <i>filePattern</i> element is omitted from the policy file.
         </p>
 
@@ -273,19 +273,22 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
 
         <table>
           <tr><th>Element Name</th><th>Description</th></tr>
-          <tr><td>namespace</td><td>Specify if the products to be registered contain metadata that are in a namespace other than the default pds namespace.</td></tr>
+          <tr><td>namespace</td><td>Specify to allow the Harvest Tool to extract metadata that is in a namespace other than the default PDS namespace.</td></tr>
           <tr><td>productMetadata</td><td>Specify to tell the tool what object types and what metadata to register.</td></tr>
         </table>
-        
-        <p>Defining namespaces is necessary because the tool uses it when it extracts metadata from the products. In the example above, a namespace with the prefix <i>geo</i> and uri <i>http://pds.nasa.gov/schema/pds4/geo</i> has been defined. By default, the Harvest Tool defines the default namespace to be the pds namespace, <i>http://pds.nasa.gov/schema/pds4/pds</i>. To override this default, specify the <i>default</i> attribute in the namespace element and give it a value of <i>true</i>. The following makes the <i>geo</i> namespace the default namespace:
+
+        <p>By default, the Harvest Tool defines the default namespace to be the PDS namespace, <i>http://pds.nasa.gov/schema/pds4/pds</i>. To override this default, specify the <i>default</i> attribute in the namespace element and give it a value of <i>true</i>. The following makes the <i>geo</i> namespace the default namespace:
         </p>
         
         <source>
-&lt;candidates&gt;
-   &lt;namespace prefix="geo" uri="http://pds.nasa.gov/schema/pds4/geo" default="true"/&gt;
-   ...
+          &lt;candidates&gt;
+          &lt;namespace prefix="geo" uri="http://pds.nasa.gov/schema/pds4/geo" default="true"/&gt;
+          ...
         </source>
-        
+
+        <p>Namespaces need to be defined in the Harvest policy file only if the metadata to be extracted exists in a namespace other than the PDS namespace. In the example above, a namespace with the prefix <i>geo</i> and uri <i>http://pds.nasa.gov/schema/pds4/geo</i> has been defined. This means that any xPath expressions defined in the policy file will be able to use the <i>geo</i> prefix to be able to extract metadata that are within the geo namespace. xPaths will be explained in greater detail in the <i>productMetadata</i> section.
+        </p>
+
         <b><i>productMetadata</i></b>
 
         <p>Specify this element to tell the Harvest Tool what metadata to register. It requires an attribute called <i>objectType</i> that tells the Harvest Tool what product types to register. The following table describes the elements that are allowed:
@@ -295,7 +298,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
           <tr><th>Element Name</th><th>Description</th></tr>
           <tr><td>xPath</td><td>Specify an XPath expression to extract metadata.</td></tr>
         </table>
-        
+
         <p>In the example above, the policy file tells the Harvest Tool to look for and register the <i>character_table</i> and <i>Product_Target</i> object types.
         </p>
 
@@ -308,10 +311,10 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         <source>
 //creation_date_time
         </source>
-        
+
         <p>The following XPath expression will find the <i>creation_date_time</i> element within the geo namespace, no matter where this element is located in the file:
         </p>
-        
+
         <source>
 //geo:creation_date_time
         </source>
@@ -324,8 +327,8 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
 //Subject_Area/target_name
         </source>
       </subsection>
-      
-      <p>For a more detailed explanation on XPath, go to your favorite search engine and type <i>XPath tutorial</i>. 
+
+      <p>For a more detailed explanation on XPath, go to your favorite search engine and type <i>XPath tutorial</i>.
       </p>
 
     </section>
