@@ -103,7 +103,13 @@ public class RegistryService {
   }
 
   public StatusInfo getStatus() {
-    return this.statusInfo;
+    StatusInfo status = new StatusInfo(this.statusInfo);
+    status.setAssociations(metadataStore.getNumRegistryObjects(Association.class));
+    status.setProducts(metadataStore.getNumRegistryObjects(Product.class));
+    status.setServices(metadataStore.getNumRegistryObjects(Service.class));
+    status.setClassificationNodes(metadataStore.getNumRegistryObjects(ClassificationNode.class));
+    status.setClassificationSchemes(metadataStore.getNumRegistryObjects(ClassificationScheme.class));
+    return status;
   }
 
   public String versionProduct(String user, String lid, Product product,
