@@ -25,10 +25,10 @@ public class CoreXPaths implements PDSCoreMetKeys {
     public static final HashMap<String,String> map = new HashMap<String,String>();
 
     static {
-        map.put(LOGICAL_ID, "//*[ends-with(name(),'Identification_Area')]/logical_identifier");
-        map.put(PRODUCT_VERSION, "//*[ends-with(name(),'Identification_Area')]/version_id");
-        map.put(OBJECT_TYPE, "//*[ends-with(name(),'Identification_Area')]/product_class");
-        map.put(TITLE, "//*[ends-with(name(),'Identification_Area')]/title");
+        map.put(LOGICAL_ID, "//*[ends-with(name(),'Identification_Area')]/" + LOGICAL_ID);
+        map.put(PRODUCT_VERSION, "//*[ends-with(name(),'Identification_Area')]/" + PRODUCT_VERSION);
+        map.put(OBJECT_TYPE, "//*[ends-with(name(),'Identification_Area')]/" + OBJECT_TYPE);
+        map.put(TITLE, "//*[ends-with(name(),'Identification_Area')]/" + TITLE);
         map.put(REFERENCES, "//*[ends-with(name(),'Member_Entry')] | //*[ends-with(name(),'Reference_Area')]/*[ends-with(name(),'Reference_Entry')]");
     }
 }

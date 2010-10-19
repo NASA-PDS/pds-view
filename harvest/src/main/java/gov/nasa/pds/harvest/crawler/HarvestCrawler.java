@@ -50,7 +50,7 @@ import org.xml.sax.SAXParseException;
  * @author mcayanan
  *
  */
-public class HarvestCrawler extends ProductCrawler {
+public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
     private static Logger log = Logger.getLogger(HarvestCrawler.class.getName());
     private PDSMetExtractorConfig metExtractorConfig;
     private XMLExtractor xmlExtractor;
@@ -64,9 +64,9 @@ public class HarvestCrawler extends ProductCrawler {
     public HarvestCrawler(PDSMetExtractorConfig extractorConfig) {
         this.xmlExtractor = null;
         this.metExtractorConfig = extractorConfig;
-        String[] reqMetadata = {PDSCoreMetKeys.PRODUCT_VERSION,
-                                PDSCoreMetKeys.LOGICAL_ID,
-                                PDSCoreMetKeys.OBJECT_TYPE};
+        String[] reqMetadata = {PRODUCT_VERSION,
+                                LOGICAL_ID,
+                                OBJECT_TYPE};
         setRequiredMetadata(Arrays.asList(reqMetadata));
         FILE_FILTER = new WildcardOSFilter("*");
     }
@@ -244,10 +244,10 @@ public class HarvestCrawler extends ProductCrawler {
         else  {
             try {
                 String objectType = xmlExtractor.getValueFromDoc(
-                        CoreXPaths.map.get(PDSCoreMetKeys.OBJECT_TYPE));
+                        CoreXPaths.map.get(OBJECT_TYPE));
                 if("".equals(objectType)) {
                     log.log(new ToolsLogRecord(ToolsLevel.SKIP,
-                            "No object_type element found.", product));
+                           "No " + OBJECT_TYPE + " element found.", product));
                     passFlag = false;
                 } else if(metExtractorConfig.hasObjectType(objectType)) {
                     log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
@@ -261,8 +261,8 @@ public class HarvestCrawler extends ProductCrawler {
                 }
             } catch (XPathExpressionException e) {
                 log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
-                        "Problem getting 'object_type': " + e.getMessage(),
-                        product));
+                        "Problem getting '" + OBJECT_TYPE + "': "
+                        + e.getMessage(), product));
                 log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
                         Status.BADFILE, product));
                 return false;

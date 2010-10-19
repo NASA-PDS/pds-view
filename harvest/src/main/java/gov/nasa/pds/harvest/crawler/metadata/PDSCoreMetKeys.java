@@ -24,7 +24,7 @@ public interface PDSCoreMetKeys {
 
     public static final String PRODUCT_VERSION = "version_id";
 
-    public static final String OBJECT_TYPE = "object_type";
+    public static final String OBJECT_TYPE = "product_class";
 
     public static final String REFERENCES = "references";
 
