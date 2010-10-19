@@ -21,24 +21,5 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "")
 @XmlEnum
 public enum RegistryStatus {
-	OK("OK"), FAIL("FAIL");
-
-	private String value;
-
-	RegistryStatus(String value) {
-		this.value = value;
-	}
-
-	public String getValue() {
-		return this.value;
-	}
-
-	public static RegistryStatus fromValue(String value) {
-		for (RegistryStatus current : RegistryStatus.values()) {
-			if (current.value.equals(value)) {
-				return current;
-			}
-		}
-		throw new IllegalArgumentException(value.toString());
-	}
+	OK, FAIL;
 }

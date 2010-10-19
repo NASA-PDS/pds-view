@@ -36,13 +36,28 @@ public abstract class Identifiable implements Serializable {
 
   private static final long serialVersionUID = -1707014666352827997L;
 
+  /**
+   * Each Identifiable instance MUST have a globally unique identifier which is
+   * used to refer to that object.
+   */
   @Id
   @XmlAttribute
   private String guid;
 
+  /**
+   * An Identifiable instance MAY have a home attribute. The home attribute, if
+   * present, MUST contain the base URL to the home registry for the
+   * RegistryObject instance. The home URL MUST be specified for instances of
+   * the Registry class that is defined later in this specification.
+   */
   @XmlAttribute
   private String home;
 
+  /**
+   * An Identifiable instance MAY have a Set of zero or more Slot instances that
+   * are composed within the Identifiable instance. These Slot instances serve
+   * as extensible attributes that MAY be defined for the Identifiable instance.
+   */
   @OneToMany(cascade = CascadeType.ALL)
   @XmlElementRef
   @OrderBy

@@ -48,6 +48,9 @@ public class Slot implements Serializable {
 
 	@XmlAttribute
 	private String name;
+	
+	@XmlAttribute
+	private String slotType;
 
 	@ElementCollection
 	@CollectionTable(name = "Slot_Values", joinColumns = @JoinColumn(name = "slot_id"))
@@ -67,53 +70,77 @@ public class Slot implements Serializable {
 		this.values = values;
 	}
 
-	public String getName() {
-		return this.name;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public List<String> getValues() {
-		return this.values;
-	}
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public long getId() {
-		return id;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((values == null) ? 0 : values.hashCode());
-		return result;
-	}
+  public String getSlotType() {
+    return slotType;
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Slot other = (Slot) obj;
-		if (id != other.id)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (values == null) {
-			if (other.values != null)
-				return false;
-		} else if (!values.equals(other.values))
-			return false;
-		return true;
-	}
+  public void setSlotType(String slotType) {
+    this.slotType = slotType;
+  }
+
+  public List<String> getValues() {
+    return values;
+  }
+
+  public void setValues(List<String> values) {
+    this.values = values;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (int) (id ^ (id >>> 32));
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    result = prime * result + ((slotType == null) ? 0 : slotType.hashCode());
+    result = prime * result + ((values == null) ? 0 : values.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Slot other = (Slot) obj;
+    if (id != other.id)
+      return false;
+    if (name == null) {
+      if (other.name != null)
+        return false;
+    } else if (!name.equals(other.name))
+      return false;
+    if (slotType == null) {
+      if (other.slotType != null)
+        return false;
+    } else if (!slotType.equals(other.slotType))
+      return false;
+    if (values == null) {
+      if (other.values != null)
+        return false;
+    } else if (!values.equals(other.values))
+      return false;
+    return true;
+  }
+
+	
 }

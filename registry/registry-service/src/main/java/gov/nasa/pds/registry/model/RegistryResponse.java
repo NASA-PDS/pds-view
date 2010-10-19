@@ -26,62 +26,69 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * A class to wrap list responses from the registry with.
+ * 
+ * @author pramirez
+ * 
+ */
 @XmlRootElement(name = "response", namespace = "http://registry.pds.nasa.gov")
 @XmlType(name = "")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RegistryResponse {
 
-	// Where in the set of results to start
-	@XmlAttribute
-	private Integer start;
+  // Where in the set of results to start
+  @XmlAttribute
+  private Integer start;
 
-	// How many items were found
-	@XmlAttribute
-	private Long numFound;
+  // How many items were found
+  @XmlAttribute
+  private Long numFound;
 
-	@XmlElementWrapper(name = "results", namespace = "http://registry.pds.nasa.gov")
-	@XmlElementRef
-	private List<? extends RegistryObject> results;
+  @XmlElementWrapper(name = "results", namespace = "http://registry.pds.nasa.gov")
+  @XmlElementRef
+  private List<? extends RegistryObject> results;
 
-	public RegistryResponse() {
-		this(null, null, null);
-	}
+  public RegistryResponse() {
+    this(null, null, null);
+  }
 
-	public RegistryResponse(Integer start, Long numFound) {
-		this(start, numFound, null);
-	}
-  
+  public RegistryResponse(Integer start, Long numFound) {
+    this(start, numFound, null);
+  }
+
   public RegistryResponse(List<? extends RegistryObject> results) {
     this(null, null, results);
   }
-	
-	public RegistryResponse(Integer start, Long numFound, List<? extends RegistryObject> results) {
-		this.start = start;
-		this.numFound = numFound;
-		this.results = results;
-	}
 
-	public Integer getStart() {
-		return start;
-	}
+  public RegistryResponse(Integer start, Long numFound,
+      List<? extends RegistryObject> results) {
+    this.start = start;
+    this.numFound = numFound;
+    this.results = results;
+  }
 
-	public void setStart(Integer start) {
-		this.start = start;
-	}
+  public Integer getStart() {
+    return start;
+  }
 
-	public Long getNumFound() {
-		return numFound;
-	}
+  public void setStart(Integer start) {
+    this.start = start;
+  }
 
-	public void setNumFound(Long numFound) {
-		this.numFound = numFound;
-	}
+  public Long getNumFound() {
+    return numFound;
+  }
 
-	public List<? extends RegistryObject> getResults() {
-		return this.results;
-	}
+  public void setNumFound(Long numFound) {
+    this.numFound = numFound;
+  }
 
-	public void setResults(List<? extends RegistryObject> results) {
-		this.results = new ArrayList<RegistryObject>(results);
-	}
+  public List<? extends RegistryObject> getResults() {
+    return this.results;
+  }
+
+  public void setResults(List<? extends RegistryObject> results) {
+    this.results = new ArrayList<RegistryObject>(results);
+  }
 }
