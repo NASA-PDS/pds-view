@@ -24,6 +24,14 @@ import gov.nasa.pds.registry.query.ProductQuery;
 
 import java.util.List;
 
+/**
+ * This interface provides the methods required by the {@link RegistryService}
+ * in order for it to operate. This is the extension point one would implement
+ * when providing a different back end storage.
+ * 
+ * @author pramirez
+ * 
+ */
 public interface MetadataStore {
 
   /**
