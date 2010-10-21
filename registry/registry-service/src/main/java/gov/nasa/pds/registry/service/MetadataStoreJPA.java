@@ -44,6 +44,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * This is a database implementation using Java's persistence library. Any
+ * database that supports JPA can be used in conjunction with this
+ * implementation of a {@link MetadataStore}. To use a different type of
+ * database one would need to update the persistence unit provided via
+ * configuration and injected with Spring.
+ * 
+ * @author pramirez
+ * 
+ */
 @Repository(value = "metadataStore")
 public class MetadataStoreJPA implements MetadataStore {
 
