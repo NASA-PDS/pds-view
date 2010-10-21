@@ -53,13 +53,14 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 /**
- * Wrapper class of the Harvest tool that handles the command-line processing
+ * Wrapper class of the Harvest tool that handles the command-line processing.
  *
  * @author mcayanan
  *
  */
 public class HarvestLauncher implements HarvestFlags {
-    private static Logger log = Logger.getLogger(HarvestCrawler.class.getName());
+    private static Logger log = Logger.getLogger(
+            HarvestCrawler.class.getName());
     private Options options;
     private final String PROPERTYFILE = "harvest.properties";
     private final String PROPERTYTOOLNAME = "harvest.name";
@@ -76,7 +77,7 @@ public class HarvestLauncher implements HarvestFlags {
     private String logFile;
 
     /**
-     * Default constructor
+     * Default constructor.
      *
      */
     public HarvestLauncher() {
@@ -88,11 +89,12 @@ public class HarvestLauncher implements HarvestFlags {
         logFile = null;
 
         options = buildOptions();
-        globalPolicy = this.getClass().getResourceAsStream("global-policy.xml");
+        globalPolicy = this.getClass().getResourceAsStream(
+                "global-policy.xml");
     }
 
     /**
-     * Builds the command-line options for the Harvest Tool
+     * Builds the command-line options for the Harvest Tool.
      *
      * @return an Options class
      */
@@ -100,10 +102,13 @@ public class HarvestLauncher implements HarvestFlags {
         ToolsOption to = null;
         Options options = new Options();
 
-        options.addOption(new ToolsOption(HELP[SHORT], HELP[LONG], WHATIS_HELP));
-        options.addOption(new ToolsOption(VERSION[SHORT], VERSION[LONG], WHATIS_VERSION));
+        options.addOption(new ToolsOption(
+                HELP[SHORT], HELP[LONG], WHATIS_HELP));
+        options.addOption(new ToolsOption(
+                VERSION[SHORT], VERSION[LONG], WHATIS_VERSION));
 
-        to = new ToolsOption(PASSWORD[SHORT], PASSWORD[LONG], WHATIS_PASSWORD);
+        to = new ToolsOption(
+                PASSWORD[SHORT], PASSWORD[LONG], WHATIS_PASSWORD);
         to.hasArg(PASSWORD[ARGNAME], String.class);
         options.addOption(to);
 

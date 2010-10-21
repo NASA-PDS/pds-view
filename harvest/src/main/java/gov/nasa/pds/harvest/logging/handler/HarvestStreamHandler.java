@@ -45,7 +45,8 @@ public class HarvestStreamHandler extends StreamHandler {
      * be logged by this handler.
      * @param formatter Formatter to be used to format the log messages.
      */
-    public HarvestStreamHandler(OutputStream out, Level level, Formatter formatter) {
+    public HarvestStreamHandler(OutputStream out, Level level,
+            Formatter formatter) {
         super(out, formatter);
         setLevel(level);
         setFilter(new ToolsLogFilter());

@@ -23,7 +23,8 @@ import javax.xml.bind.ValidationEvent;
 import javax.xml.bind.ValidationEventHandler;
 
 public class XMLValidationEventHandler implements ValidationEventHandler {
-    private static Logger log = Logger.getLogger(XMLValidationEventHandler.class.getName());
+    private static Logger log = Logger.getLogger(
+            XMLValidationEventHandler.class.getName());
 
     public boolean handleEvent(ValidationEvent event) {
         Level level = null;

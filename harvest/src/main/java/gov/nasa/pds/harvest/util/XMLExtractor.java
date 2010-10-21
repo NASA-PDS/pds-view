@@ -83,35 +83,43 @@ public class XMLExtractor {
     }
 
     public void validate(String schema) throws SAXException, IOException {
-        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        SchemaFactory factory = SchemaFactory.newInstance(
+                XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema s = factory.newSchema(new StreamSource(new File(schema)));
         Validator validator = s.newValidator();
         validator.validate(xml);
     }
 
-    public String getValueFromDoc(String expression)  throws XPathExpressionException {
+    public String getValueFromDoc(String expression)
+    throws XPathExpressionException {
         return this.getValueFromItem(expression, xml);
     }
 
-    public String getValueFromItem(String expression, Object item) throws XPathExpressionException {
+    public String getValueFromItem(String expression, Object item)
+    throws XPathExpressionException {
         return xpath.evaluate(expression, item);
     }
 
-    public Node getNodeFromDoc(String expression) throws XPathExpressionException {
+    public Node getNodeFromDoc(String expression)
+    throws XPathExpressionException {
         return this.getNodeFromItem(expression, xml);
     }
 
-    public Node getNodeFromItem(String expression, Object item)  throws XPathExpressionException {
+    public Node getNodeFromItem(String expression, Object item)
+    throws XPathExpressionException {
         return (Node) xpath.evaluate(expression, item, XPathConstants.NODE);
     }
 
-    public List<String> getValuesFromDoc(String expression) throws XPathExpressionException {
+    public List<String> getValuesFromDoc(String expression)
+    throws XPathExpressionException {
         return this.getValuesFromItem(expression, xml);
     }
 
-    public List<String> getValuesFromItem(String expression, Object item) throws XPathExpressionException {
+    public List<String> getValuesFromItem(String expression, Object item)
+    throws XPathExpressionException {
         List<String> vals = new ArrayList<String>();
-        NodeList nList = (NodeList) xpath.evaluate(expression, item,  XPathConstants.NODESET);
+        NodeList nList = (NodeList) xpath.evaluate(expression, item,
+                XPathConstants.NODESET);
         if (nList != null) {
             for (int i = 0, sz = nList.getLength(); i < sz; i++) {
                 Node aNode = nList.item(i);
@@ -126,18 +134,24 @@ public class XMLExtractor {
         return doc.getDocumentElement();
     }
 
-    public NodeList getNodesFromDoc(String expression) throws XPathExpressionException {
+    public NodeList getNodesFromDoc(String expression)
+    throws XPathExpressionException {
         return this.getNodesFromItem(expression, xml);
     }
 
-    public NodeList getNodesFromItem(String expression, Object item) throws XPathExpressionException {
-        return (NodeList) xpath.evaluate(expression, item, XPathConstants.NODESET);
+    public NodeList getNodesFromItem(String expression, Object item)
+    throws XPathExpressionException {
+        return (NodeList) xpath.evaluate(
+                expression, item, XPathConstants.NODESET);
     }
 
-    public String getValue(String expression, String xmlStr) throws XPathExpressionException, SAXException, IOException {
+    public String getValue(String expression, String xmlStr)
+    throws XPathExpressionException, SAXException, IOException {
         String val = null;
-        Document doc = builder.parse(new ByteArrayInputStream(xmlStr.getBytes()));
-        Node aNode = (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);
+        Document doc = builder.parse(new ByteArrayInputStream(
+                xmlStr.getBytes()));
+        Node aNode = (Node) xpath.evaluate(expression, doc,
+                XPathConstants.NODE);
         if (aNode != null) {
             val = aNode.getTextContent();
         }
@@ -157,11 +171,13 @@ public class XMLExtractor {
             System.out.println("ROOT: " + xe.getDocNode().getNodeName());
             String value = "";
             String[] expressions = {
-                    "//Product_Identification_Area/logical_identifier",
-                    "//pds:Product_Identification_Area/pds:logical_identifier",
-                    "//pds:Product_Identification_Area/logical_identifier",
-                    "//*[substring(name(),string-length(name()) - string-length('Identification_Area') + 1) = 'Identification_Area']/logical_identifier",
-                    "//pds:*[substring(name(),string-length(name()) - string-length('Identification_Area') + 1) = 'Identification_Area']/pds:logical_identifier"
+                   "//Product_Identification_Area/logical_identifier",
+                   "//pds:Product_Identification_Area/pds:logical_identifier",
+                   "//pds:Product_Identification_Area/logical_identifier",
+                   "//*[ends-with(name(),'Identification_Area')]/"
+                   + "logical_identifier",
+                   "//pds:*[ends-with(name(), 'Identification_Area')]/"
+                   + "pds:logical_identifier"
                     };
             for(int i=0; i < expressions.length; i++) {
                 value = xe.getValueFromDoc(expressions[i]);

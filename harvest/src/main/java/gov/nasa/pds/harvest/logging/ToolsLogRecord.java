@@ -37,7 +37,8 @@ public class ToolsLogRecord extends LogRecord {
         this(level, message, filename.toString(), -1);
     }
 
-    public ToolsLogRecord(Level level, String message, String filename, int line) {
+    public ToolsLogRecord(Level level, String message, String filename,
+            int line) {
         super(level, message);
         this.filename = filename;
         this.line = line;

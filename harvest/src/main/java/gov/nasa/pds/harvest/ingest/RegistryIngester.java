@@ -44,7 +44,8 @@ import gov.nasa.pds.registry.model.Slot;
  *
  */
 public class RegistryIngester implements Ingester, PDSCoreMetKeys {
-    private static Logger log = Logger.getLogger(RegistryIngester.class.getName());
+    private static Logger log = Logger.getLogger(
+            RegistryIngester.class.getName());
     private String token;
     private String user;
 
@@ -58,7 +59,8 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
     }
 
     public boolean isRunning(URL registry) {
-        RegistryClient client = new RegistryClient(registry.toString(), token);
+        RegistryClient client = new RegistryClient(registry.toString(),
+                token);
         ClientResponse response = client.getStatus();
         if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
             return true;
@@ -67,13 +69,16 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
         }
     }
 
-    public boolean hasProduct(URL registry, File prodFile) throws CatalogException {
+    public boolean hasProduct(URL registry, File prodFile)
+    throws CatalogException {
         // No use for this method for now
         return false;
     }
 
-    public boolean hasProduct(URL registry, String productID) throws CatalogException {
-        RegistryClient client = new RegistryClient(registry.toString(), token);
+    public boolean hasProduct(URL registry, String productID)
+    throws CatalogException {
+        RegistryClient client = new RegistryClient(registry.toString(),
+                token);
         ClientResponse response = client.getLatestProduct(productID);
         if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
             return true;
@@ -82,9 +87,12 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
         }
     }
 
-    public boolean hasProduct(URL registry, String productID, String productVersion) throws CatalogException {
-        RegistryClient client = new RegistryClient(registry.toString(), token);
-        ClientResponse response = client.getProduct(productID, productVersion);
+    public boolean hasProduct(URL registry, String productID,
+            String productVersion) throws CatalogException {
+        RegistryClient client = new RegistryClient(registry.toString(),
+                token);
+        ClientResponse response = client.getProduct(productID,
+                productVersion);
         if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
             return true;
         } else {
@@ -92,19 +100,25 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
         }
     }
 
-    public String ingest(URL registry, File prodFile, Metadata met) throws IngestException {
-        RegistryClient client = new RegistryClient(registry.toString(), token);
+    public String ingest(URL registry, File prodFile, Metadata met)
+    throws IngestException {
+        RegistryClient client = new RegistryClient(registry.toString(),
+                token);
         Product product = createProduct(met);
         ClientResponse response = null;
         try {
-            if(hasProduct(registry, product.getLid()))
-                response = client.versionProduct(user, product, product.getLid());
-            else
+            if(hasProduct(registry, product.getLid())) {
+                response = client.versionProduct(user, product,
+                        product.getLid());
+            }
+            else {
                 response = client.publishProduct(user, product);
+            }
         } catch(CatalogException c) {
             throw new IngestException(c.getMessage());
         }
-        if(response.getStatus() == ClientResponse.Status.CREATED.getStatusCode()) {
+        if(response.getStatus() ==
+            ClientResponse.Status.CREATED.getStatusCode()) {
             String lidvid = met.getMetadata(LOGICAL_ID) + "::" +
                             met.getMetadata(PRODUCT_VERSION);
 
@@ -117,7 +131,8 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
         }
         else {
             log.log(new ToolsLogRecord(ToolsLevel.INGEST_FAIL,
-                    "POST request returned HTTP code: " + response.getStatus(),
+                    "POST request returned HTTP code: "
+                    + response.getStatus(),
                     prodFile));
             throw new IngestException("POST request returned HTTP code: "
                     + response.getStatus());
@@ -157,13 +172,14 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
         return product;
     }
 
-    public String ingest(URL fmUrl, File prodFile, MetExtractor extractor, File metConfFile)
-            throws IngestException {
+    public String ingest(URL fmUrl, File prodFile, MetExtractor extractor,
+            File metConfFile) throws IngestException {
         //No need for this method at this time
         return null;
     }
 
-    public void ingest(URL fmUrl, List<String> prodFiles, MetExtractor extractor, File metConfFile)
+    public void ingest(URL fmUrl, List<String> prodFiles,
+            MetExtractor extractor, File metConfFile)
             throws IngestException {
         //No need for this method at this time
     }

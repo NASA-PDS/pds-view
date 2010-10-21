@@ -34,7 +34,8 @@ import gov.nasa.pds.harvest.logging.ToolsLogRecord;
  *
  */
 public class LogMissingReqMetadataAction extends CrawlerAction {
-    private static Logger log = Logger.getLogger(LogMissingReqMetadataAction.class.getName());
+    private static Logger log = Logger.getLogger(
+            LogMissingReqMetadataAction.class.getName());
     private List<String> reqMetadata;
     private final String ID = "LogMissingReqMetadataAction";
     private final String DESCRIPTION = "Report missing required metadata.";

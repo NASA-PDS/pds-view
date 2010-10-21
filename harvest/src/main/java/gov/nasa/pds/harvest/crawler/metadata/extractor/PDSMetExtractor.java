@@ -41,7 +41,8 @@ import gov.nasa.pds.harvest.util.XMLExtractor;
  *
  */
 public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
-    private static Logger log = Logger.getLogger(PDSMetExtractor.class.getName());
+    private static Logger log = Logger.getLogger(
+            PDSMetExtractor.class.getName());
     private PDSMetExtractorConfig config;
 
     /**
@@ -61,7 +62,8 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
      * @return a class representation of the extracted metadata
      *
      */
-    public Metadata extractMetadata(File product) throws MetExtractionException {
+    public Metadata extractMetadata(File product)
+    throws MetExtractionException {
         XMLExtractor xmlExtractor = null;
         Metadata metadata = new Metadata();
         String objectType = "";
@@ -76,14 +78,19 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
                     config.getNamespaceContext().getDefaultNamepsace());
             xmlExtractor.setNamespaceContext(config.getNamespaceContext());
         } catch (Exception e) {
-            throw new MetExtractionException("Parse failure: " + e.getMessage());
+            throw new MetExtractionException("Parse failure: "
+                    + e.getMessage());
         }
         try {
-            objectType = xmlExtractor.getValueFromDoc(CoreXPaths.map.get(OBJECT_TYPE));
-            logicalID = xmlExtractor.getValueFromDoc(CoreXPaths.map.get(LOGICAL_ID));
-            version = xmlExtractor.getValueFromDoc(CoreXPaths.map.get(PRODUCT_VERSION));
+            objectType = xmlExtractor.getValueFromDoc(
+                    CoreXPaths.map.get(OBJECT_TYPE));
+            logicalID = xmlExtractor.getValueFromDoc(
+                    CoreXPaths.map.get(LOGICAL_ID));
+            version = xmlExtractor.getValueFromDoc(
+                    CoreXPaths.map.get(PRODUCT_VERSION));
             title = xmlExtractor.getValueFromDoc(CoreXPaths.map.get(TITLE));
-            references = xmlExtractor.getNodesFromDoc(CoreXPaths.map.get(REFERENCES));
+            references = xmlExtractor.getNodesFromDoc(
+                    CoreXPaths.map.get(REFERENCES));
         } catch (XPathExpressionException x) {
             //TODO: getMessage() doesn't always return a message
             throw new MetExtractionException(x.getMessage());
@@ -97,7 +104,8 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
         if(!"".equals(objectType))
             metadata.addMetadata(OBJECT_TYPE, objectType);
         if(references.getLength() == 0) {
-            log.log(new ToolsLogRecord(ToolsLevel.INFO, "No associations found.", product));
+            log.log(new ToolsLogRecord(ToolsLevel.INFO,
+                    "No associations found.", product));
         }
         if((!"".equals(objectType)) && (config.hasObjectType(objectType))) {
             List<String> metXPaths = new ArrayList<String>();
@@ -132,8 +140,8 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
                             re.setVersion(value.split("::")[1]);
                         } catch (ArrayIndexOutOfBoundsException ae) {
                             throw new MetExtractionException(
-                               "Expected a LID-VID reference, but found this: "
-                               + value);
+                              "Expected a LID-VID reference, but found this: "
+                              + value);
                         }
                     } else if(name.equals("lid_reference")) {
                         re.setLogicalID(value);

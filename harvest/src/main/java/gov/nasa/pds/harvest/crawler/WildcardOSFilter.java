@@ -40,10 +40,9 @@ public class WildcardOSFilter extends AbstractFileFilter {
     private List<String> wildcards = null;
 
     /**
-     * Constructor for a single wildcard
+     * Constructor for a single wildcard.
      *
      * @param wc a single filter to set
-     * @throws NullPointerException if the pattern is null
      */
     public WildcardOSFilter(String wc) {
         if(wc == null) {
@@ -55,7 +54,7 @@ public class WildcardOSFilter extends AbstractFileFilter {
     }
 
     /**
-     * Returns list of filters that were set
+     * Returns list of filters that were set.
      * @return a list of filters
      */
     public List<String> getWildcards() {
@@ -63,7 +62,7 @@ public class WildcardOSFilter extends AbstractFileFilter {
     }
 
     /**
-     * Constructor for a list of wildcards
+     * Constructor for a list of wildcards.
      *
      * @param wc a list of filters to set
      * @throws NullPointerException if the pattern list is null
@@ -107,7 +106,8 @@ public class WildcardOSFilter extends AbstractFileFilter {
      *
      * @param dir the directory to check
      * @param name the file name within the directory to check
-     * @return true if the filename matches one of the wildcards, false otherwise
+     * @return true if the filename matches one of the wildcards, false
+     *  otherwise
      * @throws NullPointerException if the file is null
      */
     @Override

@@ -28,7 +28,8 @@ import java.util.logging.LogRecord;
  *
  */
 public class HarvestFormatter extends Formatter {
-    private static String lineFeed = System.getProperty("line.separator", "\n");
+    private static String lineFeed =
+        System.getProperty("line.separator", "\n");
     private static String doubleLineFeed = lineFeed + lineFeed;
 
     private int productsRegistered;
@@ -66,13 +67,17 @@ public class HarvestFormatter extends Formatter {
                 ++badFiles;
             }
             return "";
-        } else if(tlr.getLevel().intValue() == ToolsLevel.INGEST_SUCCESS.intValue()) {
+        } else if(tlr.getLevel().intValue() ==
+            ToolsLevel.INGEST_SUCCESS.intValue()) {
             ++productsRegistered;
-        } else if(tlr.getLevel().intValue() == ToolsLevel.INGEST_ASSOC_SUCCESS.intValue()) {
+        } else if(tlr.getLevel().intValue() ==
+            ToolsLevel.INGEST_ASSOC_SUCCESS.intValue()) {
            ++associationsRegistered;
-        } else if(tlr.getLevel().intValue() == ToolsLevel.INGEST_FAIL.intValue()) {
+        } else if(tlr.getLevel().intValue() ==
+            ToolsLevel.INGEST_FAIL.intValue()) {
             ++productsNotRegistered;
-        } else if(tlr.getLevel().intValue() == ToolsLevel.INGEST_ASSOC_FAIL.intValue()) {
+        } else if(tlr.getLevel().intValue() ==
+            ToolsLevel.INGEST_ASSOC_FAIL.intValue()) {
             ++associationsFailed;
         } else if(tlr.getLevel().intValue() == ToolsLevel.SKIP.intValue()) {
             ++filesSkipped;
@@ -103,9 +108,13 @@ public class HarvestFormatter extends Formatter {
     private void processSummary() {
         int totalFiles = discoveredProducts + badFiles + filesSkipped;
         int totalAssociations = associationsRegistered + associationsFailed;
-        summary.append(discoveredProducts + " of " + totalFiles + " files are candidate products, " + filesSkipped + " skipped" + lineFeed);
-        summary.append(productsRegistered + " of " + discoveredProducts + " candidate products registered." + lineFeed);
-        summary.append(associationsRegistered + " of " + totalAssociations + " associations registered." + lineFeed);
+        summary.append(discoveredProducts + " of " + totalFiles
+                + " files are candidate products, " + filesSkipped
+                + " skipped" + lineFeed);
+        summary.append(productsRegistered + " of " + discoveredProducts
+                + " candidate products registered." + lineFeed);
+        summary.append(associationsRegistered + " of " + totalAssociations
+                + " associations registered." + lineFeed);
     }
 
     public String getTail(Handler handler) {

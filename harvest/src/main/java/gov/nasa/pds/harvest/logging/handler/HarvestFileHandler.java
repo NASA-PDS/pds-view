@@ -39,7 +39,8 @@ public class HarvestFileHandler extends FileHandler {
      * @throws SecurityException
      * @throws IOException
      */
-    public HarvestFileHandler(String file, Formatter formatter) throws SecurityException, IOException {
+    public HarvestFileHandler(String file, Formatter formatter)
+    throws SecurityException, IOException {
         this(file, false, Level.ALL, formatter);
     }
 
@@ -53,7 +54,8 @@ public class HarvestFileHandler extends FileHandler {
      * @throws SecurityException
      * @throws IOException
      */
-    public HarvestFileHandler(String file, Level level, Formatter formatter) throws SecurityException, IOException {
+    public HarvestFileHandler(String file, Level level, Formatter formatter)
+    throws SecurityException, IOException {
         this(file, false, level, formatter);
     }
 
@@ -69,7 +71,8 @@ public class HarvestFileHandler extends FileHandler {
      * @throws SecurityException
      * @throws IOException
      */
-    public HarvestFileHandler(String file, boolean append, Level level, Formatter formatter) throws SecurityException, IOException {
+    public HarvestFileHandler(String file, boolean append, Level level,
+            Formatter formatter) throws SecurityException, IOException {
         super(file, append);
         setLevel(level);
         setFormatter(formatter);

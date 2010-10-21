@@ -41,7 +41,7 @@ public class InventoryXMLReader implements InventoryReader {
     private NodeList memberEntries;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param file A PDS Inventory file
      * @param context A PDSNamespaceContext object, which allows this
@@ -100,8 +100,10 @@ public class InventoryXMLReader implements InventoryReader {
             Namespace ns = new Namespace();
             ns.setPrefix("pds");
             ns.setUri("http://pds.nasa.gov/schema/pds4/pds");
-            PDSNamespaceContext context = new PDSNamespaceContext(ns, ns.getUri());
-            InventoryTableReader reader = new InventoryTableReader(args[0], context);
+            PDSNamespaceContext context =
+                new PDSNamespaceContext(ns, ns.getUri());
+            InventoryTableReader reader =
+                new InventoryTableReader(args[0], context);
 
             for(InventoryEntry entry = reader.getNext(); entry != null;) {
                 System.out.println("Member Entry: " + entry.getFile());

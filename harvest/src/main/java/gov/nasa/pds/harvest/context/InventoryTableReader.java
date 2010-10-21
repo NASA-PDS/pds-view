@@ -33,8 +33,8 @@ import org.w3c.dom.NodeList;
  *
  */
 public class InventoryTableReader implements InventoryReader {
-    public static String INVENTORY_FIELDS = "//*[starts-with(" +
-    		"name(),'Table_Record')]/*[starts-with(name(),'Table_Field')]";
+    public static String INVENTORY_FIELDS = "//*[starts-with("
+        + "name(),'Table_Record')]/*[starts-with(name(),'Table_Field')]";
     public static String DATA_FILE = "//File_Area/File/file_name";
     private int filenameFieldLocation;
     private int checksumFieldLocation;
@@ -42,7 +42,7 @@ public class InventoryTableReader implements InventoryReader {
     private String parentDirectory;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param file A PDS Inventory file
      * @param context A PDSNamespaceContext object, which allows this
@@ -68,13 +68,16 @@ public class InventoryTableReader implements InventoryReader {
             reader = new BufferedReader(new FileReader(dataFile));
             NodeList fields = extractor.getNodesFromDoc(INVENTORY_FIELDS);
             for(int i=0; (i < fields.getLength()) && (fields != null); i++) {
-                String fieldName = extractor.getValueFromItem("field_name", fields.item(i));
+                String fieldName = extractor.getValueFromItem("field_name",
+                        fields.item(i));
                 if("directory_path_name".equals(fieldName)) {
                     filenameFieldLocation = Integer.parseInt(
-                            extractor.getValueFromItem("field_number", fields.item(i)));
+                            extractor.getValueFromItem(
+                                    "field_number", fields.item(i)));
                 } else if("md5_checksum".equals(fieldName)) {
                     checksumFieldLocation = Integer.parseInt(
-                            extractor.getValueFromItem("field_number", fields.item(i)));
+                            extractor.getValueFromItem(
+                                    "field_number", fields.item(i)));
                 }
             }
         } catch (Exception e) {
@@ -135,8 +138,10 @@ public class InventoryTableReader implements InventoryReader {
             Namespace ns = new Namespace();
             ns.setPrefix("pds");
             ns.setUri("http://pds.nasa.gov/schema/pds4/pds");
-            PDSNamespaceContext context = new PDSNamespaceContext(ns, ns.getUri());
-            InventoryTableReader reader = new InventoryTableReader(args[0], context);
+            PDSNamespaceContext context =
+                new PDSNamespaceContext(ns, ns.getUri());
+            InventoryTableReader reader =
+                new InventoryTableReader(args[0], context);
 
             for(InventoryEntry entry = reader.getNext(); entry != null;) {
                 System.out.println("Member Entry: " + entry.getFile());

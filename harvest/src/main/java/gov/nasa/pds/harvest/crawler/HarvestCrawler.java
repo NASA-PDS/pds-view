@@ -51,7 +51,8 @@ import org.xml.sax.SAXParseException;
  *
  */
 public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
-    private static Logger log = Logger.getLogger(HarvestCrawler.class.getName());
+    private static Logger log = Logger.getLogger(
+            HarvestCrawler.class.getName());
     private PDSMetExtractorConfig metExtractorConfig;
     private XMLExtractor xmlExtractor;
 

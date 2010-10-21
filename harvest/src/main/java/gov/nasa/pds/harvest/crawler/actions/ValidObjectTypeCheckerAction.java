@@ -15,10 +15,11 @@ import gov.nasa.pds.harvest.crawler.metadata.PDSCoreMetKeys;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 
 public class ValidObjectTypeCheckerAction extends CrawlerAction {
-    private static Logger log = Logger.getLogger(RegistryUniquenessCheckerAction.class.getName());
+    private static Logger log = Logger.getLogger(
+            RegistryUniquenessCheckerAction.class.getName());
     private final String ID = "ValidObjectTypeCheckerAction";
-    private final String DESCRIPTION = "Checks if the object type is part of " +
-            "the list of valid object types.";
+    private final String DESCRIPTION = "Checks if the object type is part of "
+        + "the list of valid object types.";
     private List<String> objectTypes;
 
     public ValidObjectTypeCheckerAction(List<String> objectTypes) {
@@ -41,8 +42,8 @@ public class ValidObjectTypeCheckerAction extends CrawlerAction {
             }
         }
         log.log(new ToolsLogRecord(Level.WARNING,
-                "\'" + type + "\' is not an object type found in the policy file.",
-                product));
+                "\'" + type + "\' is not an object type found in the policy "
+                + "file.", product));
         return false;
     }
 

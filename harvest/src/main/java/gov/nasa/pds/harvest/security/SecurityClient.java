@@ -46,8 +46,8 @@ public class SecurityClient {
     public boolean isTokenValid(String token) throws SecurityClientException {
         MultivaluedMap<String, String> params = new MultivaluedMapImpl();
         params.add("tokenid", token);
-        ClientResponse response = securityResource.path(IS_TOKEN_VALID).queryParams(
-                params).accept(mediaType).post(ClientResponse.class);
+        ClientResponse response = securityResource.path(IS_TOKEN_VALID).
+          queryParams(params).accept(mediaType).post(ClientResponse.class);
 
         if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
             String booleanValue = response.getEntity(String.class);
@@ -55,36 +55,38 @@ public class SecurityClient {
             return Boolean.parseBoolean(booleanValue);
         } else {
             throw new SecurityClientException(
-                    "Security service token validation request failed. HTTP Status Code received: "
-                    + response.getStatus());
+                    "Security service token validation request failed. "
+                    + "HTTP Status Code received: " + response.getStatus());
         }
     }
 
-    public String authenticate(String username, String password) throws SecurityClientException {
+    public String authenticate(String username, String password)
+    throws SecurityClientException {
         MultivaluedMap<String, String> params = new MultivaluedMapImpl();
         params.add("username", username);
         params.add("password", password);
-        ClientResponse response = securityResource.path(AUTHENTICATE).queryParams(
-                params).accept(mediaType).post(ClientResponse.class);
+        ClientResponse response = securityResource.path(AUTHENTICATE).
+          queryParams(params).accept(mediaType).post(ClientResponse.class);
         if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
             String token = response.getEntity(String.class);
             token = token.split("=", 2)[1].trim();
             return token;
         } else {
             throw new SecurityClientException(
-                    "Security service token ID request failure. HTTP Status Code received: "
-                    + response.getStatus());
+                    "Security service token ID request failure. "
+                    + "HTTP Status Code received: " + response.getStatus());
         }
     }
 
     public void logout(String token) throws SecurityClientException {
         ClientResponse response = securityResource.path(LOGOUT).queryParam(
-                "subjectid", token).accept(mediaType).post(ClientResponse.class);
+                "subjectid", token).accept(mediaType).
+                post(ClientResponse.class);
 
         if(response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
             throw new SecurityClientException(
-                    "Security service logout request failure. HTTP Status Code received: "
-                    + response.getStatus());
+                    "Security service logout request failure. HTTP Status Code "
+                    + "received: " + response.getStatus());
         }
     }
 }

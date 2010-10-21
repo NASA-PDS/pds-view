@@ -14,9 +14,9 @@
 package gov.nasa.pds.harvest.context;
 
 public class InventoryReaderException extends Exception {
-	private static final long serialVersionUID = 4687976349704354553L;
+   private static final long serialVersionUID = 4687976349704354553L;
 
-	public InventoryReaderException(String message) {
-		super(message);
-	}
+   public InventoryReaderException(String message) {
+       super(message);
+   }
 }

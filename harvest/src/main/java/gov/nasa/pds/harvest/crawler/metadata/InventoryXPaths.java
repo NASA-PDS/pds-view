@@ -20,7 +20,8 @@ package gov.nasa.pds.harvest.crawler.metadata;
  *
  */
 public interface InventoryXPaths {
-    public final static String CHECKSUM = "checksum";
-    public final static String INVENTORY_ENTRY = "//Standard_Product_Member_Entry";
-    public final static String FILENAME = "directory_path_name";
+    public static final String CHECKSUM = "checksum";
+    public static final String INVENTORY_ENTRY =
+        "//Standard_Product_Member_Entry";
+    public static final String FILENAME = "directory_path_name";
 }

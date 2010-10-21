@@ -24,7 +24,7 @@ import gov.nasa.pds.harvest.util.PDSNamespaceContext;
 
 /**
  * Configuration class for extracting metadata from
- * PDS4 data products
+ * PDS4 data products.
  *
  * @author mcayanan
  *
@@ -33,7 +33,7 @@ public class PDSMetExtractorConfig implements MetExtractorConfig {
     private Candidate candidates;
 
     /**
-     * Default contstructor
+     * Default contstructor.
      *
      * @param candidates A class that contains what product types
      * to extract and which metadata fields to get from those
@@ -44,7 +44,7 @@ public class PDSMetExtractorConfig implements MetExtractorConfig {
     }
 
     /**
-     * Gets XPath expressions for an object type
+     * Gets XPath expressions for an object type.
      *
      * @param objectType The PDS object type.
      *

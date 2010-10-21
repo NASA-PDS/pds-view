@@ -20,21 +20,25 @@ package gov.nasa.pds.harvest.commandline.options;
  *
  */
 public interface HarvestFlags {
-    public final static int SHORT = 0;
-    public final static int LONG = 1;
-    public final static int ARGNAME = 2;
+    public static final int SHORT = 0;
+    public static final int LONG = 1;
+    public static final int ARGNAME = 2;
 
-    public final static String HELP[] = {"h", "help"};
-    public final static String LOG[] = {"l", "log-file", "file name"};
-    public final static String PASSWORD[] = {"p", "password", "pwd"};
-    public final static String REPORT[] = {"r", "report", "file name"};
-    public final static String USERNAME[] = {"u", "username", "name"};
-    public final static String VERSION[] = {"V", "version"};
+    public static final String HELP[] = {"h", "help"};
+    public static final String LOG[] = {"l", "log-file", "file name"};
+    public static final String PASSWORD[] = {"p", "password", "pwd"};
+    public static final String REPORT[] = {"r", "report", "file name"};
+    public static final String USERNAME[] = {"u", "username", "name"};
+    public static final String VERSION[] = {"V", "version"};
 
-    public final static String WHATIS_HELP = "Display usage.";
-    public final static String WHATIS_LOG = "Specify a log file name. Default is standard out.";
-    public final static String WHATIS_PASSWORD = "Specify the password associated with the username";
-    public final static String WHATIS_REPORT = "Specify the report file name. Default is standard out.";
-    public final static String WHATIS_USERNAME = "Specify a username to login to the PDS security service";
-    public final static String WHATIS_VERSION = "Display application version.";
+    public static final String WHATIS_HELP = "Display usage.";
+    public static final String WHATIS_LOG = "Specify a log file name. "
+        + "Default is standard out.";
+    public static final String WHATIS_PASSWORD = "Specify the password"
+        + " associated with the username";
+    public static final String WHATIS_REPORT = "Specify the report file name."
+        + " Default is standard out.";
+    public static final String WHATIS_USERNAME = "Specify a username to login"
+        + " to the PDS security service";
+    public static final String WHATIS_VERSION = "Display application version.";
 }

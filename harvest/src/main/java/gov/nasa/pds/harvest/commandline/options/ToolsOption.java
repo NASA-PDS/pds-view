@@ -16,8 +16,8 @@ package gov.nasa.pds.harvest.commandline.options;
 import org.apache.commons.cli.Option;
 
 /**
- * Class that extends Apache's Option class. Provides a simpler interface to build command-line
- * option flags.
+ * Class that extends Apache's Option class. Provides a simpler interface to
+ * build command-line option flags.
  *
  *
  * @author mcayanan
@@ -53,7 +53,8 @@ public class ToolsOption extends Option {
      *
      * @param name Sets the display name of the argument value.
      * @param type Sets the data type allowed for this argument.
-     * @param isOptional Set to 'true' if the argument is optional, 'false' otherwise.
+     * @param isOptional Set to 'true' if the argument is optional,
+     * 'false' otherwise.
      */
     public void hasArg(String name, Object type, boolean isOptional) {
         char nullChar = '\0';
@@ -100,7 +101,8 @@ public class ToolsOption extends Option {
      * @param isOptional Set to 'true' if an argument is optional,
      * 'false' otherwise.
      */
-    public void hasArgs(String name, Object type, char separator, boolean isOptional) {
+    public void hasArgs(String name, Object type, char separator,
+            boolean isOptional) {
         hasArgs(Option.UNLIMITED_VALUES, name, type, separator, isOptional);
     }
 
@@ -115,7 +117,8 @@ public class ToolsOption extends Option {
      * @param isOptional Set to 'true' if an argument is optional, 'false'
      * otherwise.
      */
-    public void hasArgs(int numArgs, String name, Object type, char separator, boolean isOptional) {
+    public void hasArgs(int numArgs, String name, Object type, char separator,
+            boolean isOptional) {
         setArgs(numArgs);
         setArgName(name);
         setType(type);

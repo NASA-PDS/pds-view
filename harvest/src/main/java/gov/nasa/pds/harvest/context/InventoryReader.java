@@ -14,7 +14,7 @@
 package gov.nasa.pds.harvest.context;
 
 /**
- * Interface for reading a PDS Inventory File
+ * Interface for reading a PDS Inventory File.
  *
  * @author mcayanan
  *

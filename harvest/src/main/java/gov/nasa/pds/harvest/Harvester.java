@@ -22,7 +22,8 @@ import gov.nasa.pds.harvest.crawler.actions.LogMissingReqMetadataAction;
 import gov.nasa.pds.harvest.crawler.actions.RegistryUniquenessCheckerAction;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractorConfig;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
-import gov.nasa.pds.harvest.policy.*;
+import gov.nasa.pds.harvest.policy.Candidate;
+import gov.nasa.pds.harvest.policy.ProductMetadata;
 import gov.nasa.pds.harvest.security.SecuredUser;
 
 import java.io.File;
@@ -42,7 +43,7 @@ public class Harvester {
     private List<String> objectTypes;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param registryURL The registry location.
      * @param candidates Class containing the products to look for and what
@@ -56,7 +57,7 @@ public class Harvester {
     }
 
     /**
-     *
+     * Constructor.
      *
      * @param registryURL The registry location.
      * @param candidates Class containing the products to look for and what
