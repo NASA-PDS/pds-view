@@ -1,5 +1,5 @@
-The Tools project contains the web site that serves as the entry point 
-for the tool components. It also includes the POM that should be 
+The Preparation Tools project contains the web site that serves as the entry 
+point for the tool components. It also includes the POM that should be 
 inherited by all of the tool projects. The site should be online at 
 http://pds-cm.jpl.nasa.gov/2010/tools/. If it is not accessible, you can 
 execute the "mvn site:run" command and view the documentation locally at 
