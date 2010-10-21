@@ -38,7 +38,7 @@ import gov.nasa.pds.registry.model.Product;
 import gov.nasa.pds.registry.model.Slot;
 
 /**
- * Class that supports ingestion of PDS4 products into the PDS registry
+ * Class that supports ingestion of PDS4 products into the PDS registry.
  *
  * @author mcayanan
  *
@@ -49,15 +49,33 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
     private String token;
     private String user;
 
+    /**
+     * Default constructor.
+     *
+     */
     public RegistryIngester() {
         this(null, null);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param user An authorized user.
+     * @param token The security token that allows the authorized user to
+     * ingest products into the registry.
+     */
     public RegistryIngester(String user, String token) {
         this.token = token;
         this.user = user;
     }
 
+    /**
+     * Determines whether the registry service is currently running.
+     *
+     * @param registry The URL of the registry.
+     *
+     * @return 'true' if the registry is up.
+     */
     public boolean isRunning(URL registry) {
         RegistryClient client = new RegistryClient(registry.toString(),
                 token);
@@ -69,12 +87,24 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
         }
     }
 
+    /**
+     * Method not used at this time.
+     *
+     */
     public boolean hasProduct(URL registry, File prodFile)
     throws CatalogException {
         // No use for this method for now
         return false;
     }
 
+    /**
+     * Determines whether a product is already in the registry.
+     *
+     * @param registry The URL to the registry service.
+     * @param productID The PDS4 logical identifier.
+     *
+     * @return 'true' if the logical identifier was found in the registry.
+     */
     public boolean hasProduct(URL registry, String productID)
     throws CatalogException {
         RegistryClient client = new RegistryClient(registry.toString(),
@@ -87,6 +117,18 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
         }
     }
 
+    /**
+     * Determines whether a version of a product is already in the registry.
+     *
+     * @param registry The URL to the registry service.
+     * @param productID The PDS4 logical identifier.
+     * @param productVersion The version of the product.
+     *
+     * @return 'true' if the logical identifier and version was found in the
+     * registry.
+     *
+     * @throws CatalogException
+     */
     public boolean hasProduct(URL registry, String productID,
             String productVersion) throws CatalogException {
         RegistryClient client = new RegistryClient(registry.toString(),
@@ -100,6 +142,16 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
         }
     }
 
+    /**
+     * Ingests the product into the registry.
+     *
+     * @param registry The URL to the registry service.
+     * @param prodFile The PDS4 product file.
+     * @param met The metadata to register.
+     *
+     * @return The URL of the registered product.
+     * @throws IngestException
+     */
     public String ingest(URL registry, File prodFile, Metadata met)
     throws IngestException {
         RegistryClient client = new RegistryClient(registry.toString(),
@@ -172,12 +224,20 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
         return product;
     }
 
+    /**
+     * Method not implemented at this time.
+     *
+     */
     public String ingest(URL fmUrl, File prodFile, MetExtractor extractor,
             File metConfFile) throws IngestException {
         //No need for this method at this time
         return null;
     }
 
+    /**
+     * Method not implemented at this time.
+     *
+     */
     public void ingest(URL fmUrl, List<String> prodFiles,
             MetExtractor extractor, File metConfFile)
             throws IngestException {
