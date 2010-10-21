@@ -26,43 +26,189 @@ import java.util.List;
 
 public interface MetadataStore {
 
+  /**
+   * Retrieves products from back end store that match the query and are within
+   * the requested result list range
+   * 
+   * @param query
+   *          to filter against products
+   * @param start
+   *          index within the results to start at. This index is one based
+   * @param rows
+   *          number of results to get
+   * @return list of products
+   */
   public RegistryResponse getProducts(ProductQuery query, Integer start,
       Integer rows);
 
-  public RegistryResponse getAssociations(AssociationQuery query, Integer start,
-      Integer rows);
+  /**
+   * Retrieves associations from the back end store that match the query and are
+   * within the requested results list range
+   * 
+   * @param query
+   *          to filter against associations.
+   * @param start
+   *          index within the results to start at. This index is one based
+   * @param rows
+   *          number of results to get
+   * @return list of associations
+   */
+  public RegistryResponse getAssociations(AssociationQuery query,
+      Integer start, Integer rows);
 
+  /**
+   * Retrieves associations that have the lid and version id where they appear
+   * as either the source or target.
+   * 
+   * @param lid
+   *          logical identifier to match
+   * @param versionId
+   *          user provided version to match. This is different from the
+   *          internally tracked registry version.
+   * @param start
+   *          index within the results to start at. This index is one based.
+   * @param rows
+   *          number of results to get
+   * @return list of associations
+   */
   public RegistryResponse getAssociations(String lid, String versionId,
       Integer start, Integer rows);
-  
+
+  /**
+   * Retrieves the list of events that the given affected object was referenced
+   * in
+   * 
+   * @param affectedObject
+   *          guid of a registry object
+   * @return list of events
+   */
   public List<AuditableEvent> getAuditableEvents(String affectedObject);
-  
+
+  /**
+   * Retrieves the list of classification nodes which fall under a given
+   * classification scheme
+   * 
+   * @param scheme
+   *          guid of the scheme
+   * @return list of classification nodes
+   */
   public List<ClassificationNode> getClassificationNodes(String scheme);
 
+  /**
+   * Returns the registry object with a given guid and of the given type
+   * 
+   * @param guid
+   *          of requested registry object
+   * @param objectClass
+   *          type of object. For instance, a {@link Product},
+   *          {@link ClassificationNode}, {@link Service}, etc. Anything that
+   *          extends from a {@link RegistryObject}
+   * @return
+   */
   public RegistryObject getRegistryObject(String guid,
       Class<? extends RegistryObject> objectClass);
 
+  /**
+   * Retrieves a registry object that is identified by its logical identifier
+   * and user supplied version.
+   * 
+   * @param lid
+   *          logical identifier of registry object.
+   * @param versionId
+   *          version of registry object.
+   * @param objectClass
+   *          type of registry object.
+   * @return The identfied registry object of the requested type.
+   */
   public RegistryObject getRegistryObject(String lid, String versionId,
       Class<? extends RegistryObject> objectClass);
 
+  /**
+   * Stores a registry object into the back end.
+   * 
+   * @param registryObject
+   *          to store
+   */
   public void saveRegistryObject(RegistryObject registryObject);
 
+  /**
+   * Gets the count of registry objects managed in the backed of a given type.
+   * 
+   * @param objectClass
+   *          type of object to look up
+   * @return count of objects
+   */
   public long getNumRegistryObjects(Class<? extends RegistryObject> objectClass);
 
+  /**
+   * Removes a registry object from the back end store.
+   * 
+   * @param guid
+   *          of object to remove
+   * @param objectClass
+   *          type of object to remove
+   */
   public void deleteRegistryObject(String guid,
       Class<? extends RegistryObject> objectClass);
 
+  /**
+   * Updates a registry object that shares the guid of the given object
+   * 
+   * @param registryObject
+   *          to update too
+   */
   public void updateRegistryObject(RegistryObject registryObject);
 
+  /**
+   * Returns all versions of a registry object that share a logical identifier
+   * 
+   * @param lid
+   *          logical identifier of objects to look up
+   * @param objectClass
+   *          type of registry object
+   * @return list of matching registry objects
+   */
   public List<RegistryObject> getRegistryObjectVersions(String lid,
       Class<? extends RegistryObject> objectClass);
 
+  /**
+   * This method allows paging through registry objects of a given type.
+   * 
+   * @param start
+   *          index within the results to start at. This index is one based
+   * @param rows
+   *          number of results to get
+   * @param objectClass
+   *          type of object to get
+   * @return list of registry objects that share the type requested
+   */
   public List<RegistryObject> getRegistryObjects(Integer start, Integer rows,
       Class<? extends RegistryObject> objectClass);
 
+  /**
+   * Test to see if a registry object exists with a logical identifier, version,
+   * and type requested.
+   * 
+   * @param lid
+   *          logical id of object
+   * @param versionId
+   *          user provided version
+   * @param objectClass
+   *          type of registry object
+   * @return flag indicating existance of registry object
+   */
   public boolean hasRegistryObject(String lid, String versionId,
       Class<? extends RegistryObject> objectClass);
 
+  /**
+   * Test to see if a registry object exists with a guid and type requested.
+   * 
+   * @param guid
+   *          globally unique identifier of object
+   * @param objectClass
+   *          type of registry object
+   * @return flag indicating existance of registry object
+   */
   public boolean hasRegistryObject(String guid,
       Class<? extends RegistryObject> objectClass);
 }
