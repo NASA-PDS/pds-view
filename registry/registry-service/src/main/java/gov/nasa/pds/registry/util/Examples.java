@@ -34,8 +34,7 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Class to hold some sample model objects for WADL generation and skeleton
- * implementations
+ * Class to hold some sample model objects for WADL generation.
  * 
  * @author pramirez
  * 
@@ -168,10 +167,10 @@ public class Examples {
 
 	public final static RegistryResponse RESPONSE_PRODUCT_VERSIONS = new RegistryResponse();
 	static {
-		List<Product> ros = new ArrayList<Product>();
-		ros.add(RESPONSE_PRODUCT);
-		ros.add(RESPONSE_PRODUCT_VERSIONED);
-		RESPONSE_PRODUCT_VERSIONS.setResults(ros);
+		List<Product> vers = new ArrayList<Product>();
+		vers.add(RESPONSE_PRODUCT);
+		vers.add(RESPONSE_PRODUCT_VERSIONED);
+		RESPONSE_PRODUCT_VERSIONS.setResults(vers);
 	}
 
 	public final static RegistryResponse RESPONSE_PAGED = new RegistryResponse(1, 1L);
@@ -196,5 +195,28 @@ public class Examples {
 		REQUEST_ASSOCIATION.setTargetVersionId("3.0");
 		REQUEST_ASSOCIATION.setStatus(ObjectStatus.Submitted);
 	}
+	
+	public final static Association RESPONSE_ASSOCIATION = new Association();
+	static {
+    RESPONSE_ASSOCIATION.setGuid(UUID.randomUUID().toString());
+    RESPONSE_ASSOCIATION
+        .setHome("http://pdsbeta.jpl.nasa.gov/registry-service");
+    RESPONSE_ASSOCIATION.setSourceLid("1234");
+    RESPONSE_ASSOCIATION
+        .setSourceHome("http://pdsbeta.jpl.nasa.gov/registry-service");
+    RESPONSE_ASSOCIATION.setSourceVersionId("1.0");
+    RESPONSE_ASSOCIATION.setTargetLid("1234");
+    RESPONSE_ASSOCIATION
+        .setTargetHome("http://pdsbeta.jpl.nasa.gov/registry-service");
+    RESPONSE_ASSOCIATION.setTargetVersionId("3.0");
+    RESPONSE_ASSOCIATION.setStatus(ObjectStatus.Submitted);
+	}
 
+	public final static RegistryResponse RESPONSE_ASSOCIATION_QUERY = new RegistryResponse();
+	static {
+	  List<Association> results = new ArrayList<Association>();
+	  results.add(REQUEST_ASSOCIATION);
+	  results.add(RESPONSE_ASSOCIATION);
+	  RESPONSE_ASSOCIATION_QUERY.setResults(results);
+	}
 }

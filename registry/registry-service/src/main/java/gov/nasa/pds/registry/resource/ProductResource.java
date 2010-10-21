@@ -107,22 +107,16 @@ public class ProductResource {
 	/**
 	 * Updates an existing product with the given local identifier and version.
 	 * 
-	 * @response.representation.200.qname {http://registry.pds.nasa.gov}product
-	 * @response.representation.200.mediaType application/xml
-	 * @response.representation.200.example {@link Examples#RESPONSE_PRODUCT_UPDATED}
-	 * 
 	 * @param product
 	 *            to update to
-	 * @return returns an HTTP response that indicates an error or the updated
-	 *         product
+	 * @return returns an HTTP response that indicates an error or ok
 	 */
 	@POST
 	@Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response updateProduct(Product product) {
 		// TODO handle error condition mapping
-		Response.ResponseBuilder builder = Response.ok(registryService
-				.updateProduct(product));
-		return builder.build();
+	  registryService.updateRegistryObject("Unknown", product);
+		return Response.ok().build();
 	}
 
 	/**

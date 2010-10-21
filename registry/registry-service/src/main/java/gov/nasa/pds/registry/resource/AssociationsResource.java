@@ -27,6 +27,7 @@ import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -60,6 +61,10 @@ public class AssociationsResource {
 
   /**
    * Retrieves all associations managed by the registry given a set of filters.
+   * 
+   * @response.representation.200.qname {http://registry.pds.nasa.gov}response
+   * @response.representation.200.mediaType application/xml
+   * @response.representation.200.example {@link Examples#RESPONSE_ASSOCIATION_QUERY}
    * 
    * @param start
    *          the index at which to start the result list from
@@ -125,12 +130,21 @@ public class AssociationsResource {
   }
 
   /**
+   * Retrieves the associations related with a given product in the registry
+   * regardless if the product is the source or target in the relationship.
    * 
+   * @response.representation.200.qname {http://registry.pds.nasa.gov}response
+   * @response.representation.200.mediaType application/xml
+   * @response.representation.200.example {@link Examples#RESPONSE_ASSOCIATION_QUERY}
    * @param start
+   *          the index at which to start the result list from
    * @param rows
+   *          how many results to return
    * @param lid
+   *          of the product
    * @param versionId
-   * @return
+   *          of the product
+   * @return List of associations
    */
   @GET
   @Path("{lid}/{versionId}")
@@ -139,8 +153,8 @@ public class AssociationsResource {
       @QueryParam("start") @DefaultValue("1") Integer start,
       @QueryParam("rows") @DefaultValue("20") Integer rows,
       @PathParam("lid") String lid, @PathParam("versionId") String versionId) {
-    RegistryResponse rr = registryService.getAssociations(lid, versionId, start,
-        rows);
+    RegistryResponse rr = registryService.getAssociations(lid, versionId,
+        start, rows);
     Response.ResponseBuilder builder = Response.ok(rr);
     return builder.build();
   }
@@ -156,8 +170,8 @@ public class AssociationsResource {
    *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI
    *                 where the created item is accessible.}
    * 
-   * @param product
-   *          to update to
+   * @param association
+   *          to publish
    * @return returns an HTTP response that indicates an error or the location of
    *         the created association and its guid
    */
@@ -180,7 +194,9 @@ public class AssociationsResource {
 
   /**
    * Retrieves an association with the given global identifier.
-   * 
+   * @response.representation.200.qname {http://registry.pds.nasa.gov}response
+   * @response.representation.200.mediaType application/xml
+   * @response.representation.200.example {@link Examples#RESPONSE_ASSOCIATION}
    * @retun the association
    */
   @GET
@@ -190,4 +206,19 @@ public class AssociationsResource {
     Association association = registryService.getAssocation(guid);
     return association;
   }
+
+  /**
+   * Deletes the association with the given guid
+   * 
+   * @param guid
+   *          of association
+   * @return Response indicating whether the operation succeeded or had an error
+   */
+  @DELETE
+  @Path("{guid}")
+  public Response deleteAssociation(@PathParam("guid") String guid) {
+    registryService.deleteRegistryObject("Unknown", guid, Association.class);
+    return Response.ok().build();
+  }
+
 }
