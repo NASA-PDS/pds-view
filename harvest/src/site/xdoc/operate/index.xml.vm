@@ -279,7 +279,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
 
         <p>By default, the Harvest Tool defines the default namespace to be the PDS namespace, <i>http://pds.nasa.gov/schema/pds4/pds</i>. To override this default, specify the <i>default</i> attribute in the namespace element and give it a value of <i>true</i>. The following makes the <i>geo</i> namespace the default namespace:
         </p>
-        
+
         <source>
           &lt;candidates&gt;
           &lt;namespace prefix="geo" uri="http://pds.nasa.gov/schema/pds4/geo" default="true"/&gt;
@@ -326,10 +326,17 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         <source>
 //Subject_Area/target_name
         </source>
-      </subsection>
 
-      <p>For a more detailed explanation on XPath, go to your favorite search engine and type <i>XPath tutorial</i>.
-      </p>
+        <p>The following XPath expression will find all <i>target_name</i> elements that are children of <i>Subject_Area</i> and that have a value of <i>MARS</i>:
+        </p>
+
+        <source>
+//Subject_Area/target_name[text()="MARS"]
+        </source>
+
+        <p>For a more detailed explanation on XPath, go to your favorite search engine and type <i>XPath tutorial</i>.
+        </p>
+      </subsection>
 
     </section>
 
