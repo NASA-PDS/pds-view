@@ -39,6 +39,7 @@
     <module>registry</module>
     <module>report</module>
     <module>security</module>
+    <module>tools</module>
   </modules>
 
   <properties>
