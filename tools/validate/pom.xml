@@ -30,7 +30,7 @@
 
   <name>Validate Tool</name>
   <description>
-    The Validate Tool project contains software for validating PDS4 products.
+    The Validate Tool project contains software for validating PDS4 product labels and product data.
   </description>
   <url>http://pds-cm.jpl.nasa.gov/2010/tools/validate/</url>
 

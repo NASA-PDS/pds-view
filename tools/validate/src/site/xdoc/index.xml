@@ -24,7 +24,7 @@
 
   <body>
     <section name="About Validate Tool">
-      <p>The Validate Tool project contains software for validating PDS4 products.
+      <p>The Validate Tool project contains software for validating PDS4 product labels and product data. The associated specific schema for the product label specifies syntactic and semantic constraints. The product label itself specifies the constraints for the data.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
