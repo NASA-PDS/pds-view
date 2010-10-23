@@ -18,13 +18,12 @@
 <document>
   <properties>
     <title>About Security Service</title>
-    <author email="Hyun.Lee@jpl.nasa.gov">Hyun Lee</author>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
     <section name="About Security Service">
-      <p>The Security service provides the authentication and authorization functions for the PDS 2010 system. The intent of this service is to control access to interfaces and services that require authentication and authorization (e.g., Monitor, Report, Registry interfaces, etc.).
+      <p>The Security Service provides the authentication and authorization functions for the PDS 2010 system. The intent of this service is to control access to interfaces and services that require authentication and authorization (e.g., Monitor, Report, Registry interfaces, etc.). The functionality for this service is satisfied by the open source software package <a href="http://forgerock.com/openam.html" target="_blank">OpenAM</a>. OpenAM is the follow-on effort by <a href="http://forgerock.com/" target="_blank">ForgeRock</a> of the formerly named OpenSSO effort, which was initiated by Sun Microsystems.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.

@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2010, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Installation</title>
+    <author email="Hyun.Lee@jpl.nasa.gov">Hyun Lee</author>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Installation">
+      <p>This section describes how to install the <a href="http://forgerock.com/openam.html" target="_blank">OpenAM</a> software package and its associated software packages. These packages serve as the Security Service for the PDS 2010 system. The following topics can be found in this section:
+      </p>
+
+      <ul>
+        <li><a href="#System_Requirements">System Requirements</a></li>
+        <li><a href="#Software_Installation">Software Installation</a></li>
+        <li><a href="#Configuration">Configuration</a></li>
+      </ul>
+
+      <p>Note that much of the documentation and examples for OpenAM still make reference to OpenSSO (the former name of the package under Sun Microsystems).
+      </p>
+    </section>
+
+    <section name="System Requirements">
+      <p>The software that makes up this project consists of open source packages that are available for download and installation. The packages and their release versions are as follows:
+      </p>
+
+      <ul>
+        <li>OpenAM Release 9</li>
+        <li>OpenDS 2.2.0</li>
+        <li>J2EE Policy Agent 3.0 for Apache Tomcat</li>
+      </ul>
+
+      <p>The above software packages require the following software to be installed in the target environment:
+      </p>
+
+      <ul>
+        <li>Sun Java Standard Edition (J2SE) 1.6.X</li>
+        <li>Apache Tomcat 6.0.20</li>
+      </ul>
+    </section>
+
+    <section name="Software Installation">
+      <p>The standard installation of the Security Service involves at least two machines. The first machine hosts the OpenAM and OpenDS software. The second machine hosts a service that requires access control (e.g., Registry Service). This machine is where the J2EE Policy Agent will be installed and configured. Perform steps 1 through 3 on the first machine and steps 4 and 5 on the second machine.
+      </p>
+
+      <subsection name="1. Install Directory Server">
+        <p>Although the installation of OpenAM includes an installation of a directory server (<a href="http://www.opends.org/" target="_blank">OpenDS</a>, within the application server), we are choosing to install one separately so that it is accessible from other applications that require a standard LDAP interface.
+        </p>
+
+        <ul>
+          <li>Download the package from <a href="http://www.opends.org/promoted-builds/2.2.0/" target="_blank">http://www.opends.org/promoted-builds/2.2.0/</a>. There are a couple of options to choose from including the QuickSetup Installer or just downloading the ZIP package.</li>
+          <li>Install the package so that it operates on the standard LDAP port 389. The ZIP package provides installation documentation. Additional documentation is available at <a href="https://docs.opends.org/2.2/page/InstallingTheDs" target="_blank">https://docs.opends.org/2.2/page/InstallingTheDs</a>.</li>
+          <li>Startup the server.</li>
+        </ul>
+      </subsection>
+
+      <subsection name="2. Install Application Server">
+        <p>Although other application servers are supported (e.g., GlassFish), <a href="http://tomcat.apache.org/" target="_blank">Apache Tomcat</a> is the preferred application server.
+        </p>
+
+        <ul>
+          <li>Download the appropriate binary package for your platform from <a href="http://tomcat.apache.org/download-60.cgi" target="_blank">http://tomcat.apache.org/download-60.cgi</a>.</li>
+          <li>Install the package so that it operates on port 80. Documentation can be found in the binary distributions and at <a href="http://tomcat.apache.org/tomcat-6.0-doc/" target="_blank">http://tomcat.apache.org/tomcat-6.0-doc/</a>.<br/>
+            <p>Modify the <i>$CATALINA_HOME/bin/catalina.sh</i> file as follows:
+            </p>
+            <source>
+CATALINA_OPTS="-Xms256m -Xmx1024m"
+JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
+            </source>
+          </li>
+          <li>Startup the server.</li>
+        </ul>
+      </subsection>
+
+      <subsection name="3. Install OpenAM">
+        <p>The <a href="http://forgerock.com/openam.html" target="_blank">OpenAM</a> software is packaged as a Web Archive (WAR) file and ready for deployment to an application server.
+        </p>
+
+        <ul>
+          <li>Download the package from <a href="http://forgerock.com/downloads.html" target="_blank">http://forgerock.com/downloads.html</a>.</li>
+          <li>Deploy the downloaded WAR file to the application server. The application should be accessible from <i>/openam</i>.</li>
+        </ul>
+      </subsection>
+
+      <subsection name="4. Install Service Requiring Access Control">
+        <p>On the second machine, either install or verify installation of the service (e.g., Registry Service) requiring access control on that machine's application server.
+        </p>
+      </subsection>
+
+      <subsection name="5. Install J2EE Policy Agent">
+        <p>The J2EE Policy Agent software is specific to the application server where it will be installed.
+        </p>
+
+        <ul>
+          <li>Shutdown the application server.</li>
+          <li>Download the J2EE Policy Agent for your application server from <a href="http://forgerock.com/downloads.html" target="_blank">http://forgerock.com/downloads.html</a>.</li>
+          <li>Install the J2EE Policy Agent. Documentation (specific to Apache Tomcat 6.0.X) can be found at <a href="http://dlc.sun.com/pdf/820-7251/820-7251.pdf" target="_blank">http://dlc.sun.com/pdf/820-7251/820-7251.pdf</a>. See the <a href="index-pa.html">Policy Agent Installation</a> section for an example installation. If viewing this document in PDF form, see the appendix for details.</li>
+          <li>Startup the application server.</li>
+        </ul>
+      </subsection>
+    </section>
+
+    <section name="Configuration">
+      <p>This section details the software and policy configuration of the OpenAM and the J2EE Policy Agent software.
+      </p>
+
+      <subsection name="Software Configuration">
+        <p>Start the configuration by opening your favorite browser (e.g., Firefox, Safari, etc.) and go to the following URL (http://[host[:port]]/openam/), where the <i>host</i> and <i>port</i> (if other than port 80) values correspond with the application server installation from step 2 above. You should see the following screen in your browser window:
+        </p>
+
+        <center>
+          <a href="../images/step0.jpg" target="_blank"><img alt="Configuration Options" src="../images/step0-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
+
+        <p>Select the <i>Create New Configuration</i> link on the screen above. You should see the following screen in your browser window:
+        </p>
+
+        <center>
+          <a href="../images/step1.jpg" target="_blank"><img alt="Step 1: General" src="../images/step1-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
+
+        <p>Enter a new password for the <i>amAdmin</i> account and then select the <i>Next</i> button. You should see the following screen in your browser window:
+        </p>
+
+        <center>
+          <a href="../images/step2.jpg" target="_blank"><img alt="Step 2: Server Settings" src="../images/step2-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
+
+        <p>Enter the <i>Server URL</i> and <i>Cookie Domain</i> (e.g., nasa.gov) then select the <i>Next</i> button. You should see the following screen in your browser window:
+        </p>
+
+        <center>
+          <a href="../images/step3.jpg" target="_blank"><img alt="Step 3: Configuration Data Store Settings" src="../images/step3-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
+
+        <p>Modify the <i>Root Suffix</i> with the information from the OpenDS installation (e.g., dc=pdsops,dc=jpl,dc=nasa,dc=gov) then select the <i>Next</i> button. You should see the following screen in your browser window:
+        </p>
+
+        <center>
+          <a href="../images/step4.jpg" target="_blank"><img alt="Step 4: User Data Store Settings" src="../images/step4-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
+
+        <p>Select the <i>OpenDS</i> radio button, enter the <i>Directory Name</i> (e.g., pdsops.jpl.nasa.gov), <i>Port</i> (389), <i>Root Suffix</i> (e.g., dc=pdsops,dc=jpl,dc=nasa,dc=gov), <i>Login ID</i> (cn=Directory Manager) and <i>Password</i> for the OpenDS installation then select the <i>Next</i> button. You should see the following screen in your browser window:
+        </p>
+
+        <center>
+          <a href="../images/step5.jpg" target="_blank"><img alt="Step 5: Site Configuration" src="../images/step5-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
+
+        <p>Select the <i>No</i> radio button then select the <i>Next</i> button. You should see the following screen in your browser window:
+        </p>
+
+        <center>
+          <a href="../images/step6.jpg" target="_blank"><img alt="Step 6: Default Policy Agent User" src="../images/step6-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
+
+        <p>Enter a new <i>Password</i> for the Policy Agent then select the <i>Next</i> button. You should see the following screen in your browser window:
+        </p>
+
+        <center>
+          <a href="../images/step7.jpg" target="_blank"><img alt="Configurator Summary Details" src="../images/step7-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
+
+        <p>Assuming the information is correct, select the <i>Create Configuration</i> button. If no error messages are displayed you should see the following screen in your browser window indicating successful completion:
+        </p>
+
+        <center>
+          <a href="../images/step8.jpg" target="_blank"><img alt="Configuration Complete" src="../images/step8-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
+      </subsection>
+
+      <subsection name="Policy Configuration">
+        <p>With the software configuration complete it is now time to configure the policy. Select the <i>Proceed to Login</i> link from the screen above. You should see the following screen in your browser window:
+        </p>
+
+        <center>
+          <a href="../images/step9.jpg" target="_blank"><img alt="OpenAM Login" src="../images/step9-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
+
+        <p>Enter the <i>User Name</i> (amAdmin) and <i>Password</i> then select the <i>Login</i> button.
+        </p>
+
+        <subsection name="Create a User">
+          <p>Perform the following steps to create a user:
+          </p>
+
+          <ul>
+            <li>Select the <i>Access Control</i> tab.</li>
+            <li>Select <i>/(Top Level Realm)</i>.</li>
+            <li>Select the <i>Subjects</i> tab.</li>
+            <li>Select the <i>New</i> button from the <i>User</i> section.</li>
+          </ul>
+
+          <p>You should see the following screen in your browser window:
+          </p>
+
+          <center>
+            <a href="../images/new_user.jpg" target="_blank"><img alt="New User" src="../images/new_user-scale.jpg" border="1" /></a><br/>
+            If viewing this document in online form, click the image for a larger version.
+          </center>
+
+          <p>Enter the information for a test user (e.g., pdsadmin) then select the <i>OK</i> button.
+          </p>
+        </subsection>
+
+        <subsection name="Create a Policy">
+          <p>Perform the following steps to create a policy:
+          </p>
+
+          <ul>
+            <li>Select the <i>Access Control</i> tab.</li>
+            <li>Select <i>/(Top Level Realm)</i>.</li>
+            <li>Select the <i>Policies</i> tab.</li>
+            <li>Select the <i>New Policy</i> button.</li>
+            <li>Enter a name (e.g., registry_policy).</li>
+            <li>Select the <i>New</i> button from the <i>Rules</i> section.</li>
+          </ul>
+
+          <p>You should see the following screen in your browser window:
+          </p>
+
+          <center>
+            <a href="../images/policy1.jpg" target="_blank"><img alt="Step 1 of 2: Select Service Type for the Rule" src="../images/policy1-scale.jpg" border="1" /></a><br/>
+            If viewing this document in online form, click the image for a larger version.
+          </center>
+
+          <p>Continue with the following steps to create a policy:
+          </p>
+
+          <ul>
+            <li>Select the <i>URL Policy Agent (with resource name)</i> radio button.</li>
+            <li>Select the <i>Next</i> button.</li>
+          </ul>
+
+          <p>You should see the following screen for entering a rule in your browser window:
+          </p>
+
+          <center>
+            <a href="../images/policy2.jpg" target="_blank"><img alt="Edit Rule" src="../images/policy2-scale.jpg" border="1" /></a><br/>
+            If viewing this document in online form, click the image for a larger version.
+          </center>
+
+          <ul>
+            <li>Enter a <i>Name</i> (e.g., registry_rule1).</li>
+            <li>Enter a <i>Resource Name</i> (e.g., http://pdsops2.jpl.nasa.gov:80/registry-service/registry/*).</li>
+            <li>Select the <i>GET</i> and <i>POST</i> check boxes.</li>
+            <li>Select the <i>Finish</i> button.</li>
+          </ul>
+
+          <p>Enter a second rule as detailed in the following screen:
+          </p>
+
+          <center>
+            <a href="../images/policy3.jpg" target="_blank"><img alt="Step 2 of 2: New Rule" src="../images/policy3-scale.jpg" border="1" /></a><br/>
+            If viewing this document in online form, click the image for a larger version.
+          </center>
+
+          <ul>
+            <li>Enter a <i>Name</i> (e.g., registry_rule2).</li>
+            <li>Enter a <i>Resource Name</i> (e.g., http://pdsops2.jpl.nasa.gov:80/registry-service/registry/*?action=POST*).</li>
+            <li>Select the <i>GET</i> and <i>POST</i> check boxes.</li>
+            <li>Select the <i>Finish</i> button.</li>
+          </ul>
+
+          <p>Enter a third rule as detailed in the following screen:
+          </p>
+
+          <center>
+            <a href="../images/policy4.jpg" target="_blank"><img alt="Step 2 of 2: New Rule" src="../images/policy4-scale.jpg" border="1" /></a><br/>
+            If viewing this document in online form, click the image for a larger version.
+          </center>
+
+          <ul>
+            <li>Enter a <i>Name</i> (e.g., registry_rule3).</li>
+            <li>Enter a <i>Resource Name</i> (e.g., http://pdsops2.jpl.nasa.gov:80/registry-service/registry/*/*?*).</li>
+            <li>Select the <i>GET</i> and <i>POST</i> check boxes.</li>
+            <li>Select the <i>Finish</i> button.</li>
+          </ul>
+
+          <p>Once the rules are defined, the subject must be defined. Select the <i>New</i> button from the <i>Subjects</i> section. You should see the following screen in your browser window:
+          </p>
+
+          <center>
+            <a href="../images/policy5.jpg" target="_blank"><img alt="Step 1 of 2: Select Subject Type" src="../images/policy5-scale.jpg" border="1" /></a><br/>
+            If viewing this document in online form, click the image for a larger version.
+          </center>
+
+          <ul>
+            <li>Select the <i>Authenticated Users</i> radio button.</li>
+            <li>Select the <i>Next</i> button.</li>
+          </ul>
+
+          <p>You should see the following screen in your browser window:
+          </p>
+
+          <center>
+            <a href="../images/policy6.jpg" target="_blank"><img alt="Step 2 of 2: New Subject - Authenticated Users" src="../images/policy6-scale.jpg" border="1" /></a><br/>
+            If viewing this document in online form, click the image for a larger version.
+          </center>
+
+          <ul>
+            <li>Select the <i>Finish</i> button.</li>
+            <li>Select the <i>Save</i> button on the subsequent screen.</li>
+          </ul>
+
+          <p>You should see the following screen in your browser window:
+          </p>
+
+          <center>
+            <a href="../images/policy7.jpg" target="_blank"><img alt="New Policy" src="../images/policy7-scale.jpg" border="1" /></a><br/>
+            If viewing this document in online form, click the image for a larger version.
+          </center>
+
+          <p>Select the <i>OK</i> button and you should see the following screen in your browser window:
+          </p>
+
+          <center>
+            <a href="../images/policy8.jpg" target="_blank"><img alt="(Top Level Realm) - Policies" src="../images/policy8-scale.jpg" border="1" /></a><br/>
+            If viewing this document in online form, click the image for a larger version.
+          </center>
+        </subsection>
+
+        <subsection name="Configure a Policy Agent">
+          <p>Perform the following steps to configure a policy agent:
+          </p>
+
+          <ul>
+            <li>Select the <i>Access Control</i> tab.</li>
+            <li>Select <i>/(Top Level Realm)</i>.</li>
+            <li>Select the <i>Agent</i> tab.</li>
+            <li>Select the <i>J2EE</i> tab.</li>
+            <li>Select <i>New</i> on the <i>Agent</i> section.</li>
+          </ul>
+
+          <p>You should see the following screen in your browser window:
+          </p>
+
+          <center>
+            <a href="../images/agent1.jpg" target="_blank"><img alt="New Agent" src="../images/agent1-scale.jpg" border="1" /></a><br/>
+            If viewing this document in online form, click the image for a larger version.
+          </center>
+
+          <ul>
+            <li>Enter a <i>Name</i> (same as a profile name when you install a policy agent e.g., Tomcat6AgentProfile).</li>
+            <li>Enter a new <i>Password</i> (same password that is in $HOME/tomcat6agentpw when you install a policy agent)</li>
+            <li>Enter a <i>Server URL</i> (e.g., http://pdsops.jpl.nasa.gov:80/openam). Note that the port number should be specified, otherwise it is defaulted to port 80.</li>
+            <li>Enter the <i>Agent URL</i> with the target service URL (e.g., http://pdsops2.jpl.nasa.gov:80/registry-service/registry).</li>
+            <li>Select the <i>Create</i> button.</li>
+          </ul>
+
+          <p>You should see the following screen in your browser window:
+          </p>
+
+          <center>
+            <a href="../images/agent2.jpg" target="_blank"><img alt="J2EE" src="../images/agent2-scale.jpg" border="1" /></a><br/>
+            If viewing this document in online form, click the image for a larger version.
+          </center>
+        </subsection>
+
+        <subsection name="Configure Not Enforced URI Processing">
+          <p>Perform the following steps to configure "Not Enforced URI Processing":
+          </p>
+
+          <ul>
+            <li>Select the <i>Access Control</i> tab.</li>
+            <li>Select <i>/(Top Level Realm)</i>.</li>
+            <li>Select the <i>Agent</i> tab.</li>
+            <li>Select the <i>J2EE</i> tab.</li>
+            <li>Select the <i>Tomcat6AgentProfile</i> tab.</li>
+            <li>Select the <i>Application</i> tab.</li>
+            <li>Select the <i>Not Enforced URI Processing</i> link.</li>
+          </ul>
+
+          <p>You should see the following screen in your browser window:
+          </p>
+
+          <center>
+            <a href="../images/not_enforced_uri.jpg" target="_blank"><img alt="Not Enforced URI Processing" src="../images/not_enforced_uri-scale.jpg" border="1" /></a><br/>
+            If viewing this document in online form, click the image for a larger version.
+          </center>
+
+          <p>Enter each of the following values in the <i>New Value</i> text box and select the <i>Add</i> button:
+          </p>
+
+          <ul>
+            <li>/registry-service/registry/status</li>
+            <li>/registry-service/registry/products</li>
+            <li>/registry-service/registry/products/*</li>
+            <li>/registry-service/registry/associations/*</li>
+            <li>/registry-service/registry/*?start=*</li>
+            <li>/registry-service/registry/*?start=*&amp;rows=*</li>
+            <li>/registry-service/registry/*?action=GET*</li>
+            <li>/registry-service/registry/*/*?action=GET*</li>
+            <li>/registry-service/registry/*/*?start=*</li>
+            <li>/registry-service/registry/*/*?start=*&amp;rows=*</li>
+          </ul>
+        </subsection>
+      </subsection>
+    </section>
+  </body>
+</document>
