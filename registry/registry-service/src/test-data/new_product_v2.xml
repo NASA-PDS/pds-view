@@ -3,7 +3,7 @@
     lid="1234" 
     versionId="2.0" 
     name="Product 1234 v2" 
-    objectType="person" 
+    objectType="Product" 
     description="This is a new version test product 1234 v3" >
     <slot name="first-name">
         <value>John</value>

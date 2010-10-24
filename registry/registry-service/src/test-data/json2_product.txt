@@ -1,1 +1,1 @@
-{"description":"This is a new version test product 9876 v1","name":"Product 9876 v1","objectType":"person","versionId":"1.0","lid":"9876","slot":[{"name":"last-name","value":["Jobs"]},{"name":"phone","value":["(818)123-4567","(818)765-4321"]},{"name":"first-name","value":["Steve"]}]}
+{"description":"This is a new version test product 9876 v1","name":"Product 9876 v1","objectType":"Product","versionId":"1.0","lid":"9876","slot":[{"name":"last-name","value":["Jobs"]},{"name":"phone","value":["(818)123-4567","(818)765-4321"]},{"name":"first-name","value":["Steve"]}]}
