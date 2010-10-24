@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classificationNode xmlns="http://registry.pds.nasa.gov" 
+    guid="urn:nasa:pds:profile:regrep:ObjectType:Collection_Miscellaneous"
+    lid="urn:nasa:pds:profile:regrep:ObjectType:Collection_Miscellaneous"
+    name="Collection Miscellaneous" 
+    description="A Miscellaneous collection is a product that has a table of references to one or more products that are not otherwise classified."
+    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    code="Collection_Miscellaneous"/>

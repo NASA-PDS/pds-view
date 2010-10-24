@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classificationNode xmlns="http://registry.pds.nasa.gov" 
+    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Zipped"
+    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Zipped"
+    name="Product Zipped" 
+    description="The Product_Zipped  is a product with references to other products. The referenced products and all associated products and files are packaged into a single ZIP file."
+    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    code="Product_Zipped"/>

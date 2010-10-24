@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classificationNode xmlns="http://registry.pds.nasa.gov" 
+    guid="urn:nasa:pds:profile:regrep:ObjectType:Collection_SPICE"
+    lid="urn:nasa:pds:profile:regrep:ObjectType:Collection_SPICE"
+    name="Collection SPICE" 
+    description="A SPICE collection  is a product that has a table of references to one or more SPICE products."
+    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    code="Collection_SPICE"/>

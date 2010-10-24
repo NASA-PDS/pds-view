@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classificationNode xmlns="http://registry.pds.nasa.gov" 
+    guid="urn:registry:ObjectType:RegistryObject:SpecificationLink"
+    name="Specification Link" 
+    description="This is the classification node for specification link. This represents a core registry object."
+    parent="urn:registry:ObjectType"
+    code="SpecificationLink"/>

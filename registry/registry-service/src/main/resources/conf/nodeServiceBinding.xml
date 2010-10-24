@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classificationNode xmlns="http://registry.pds.nasa.gov" 
+    guid="urn:registry:ObjectType:RegistryObject:ServiceBinding"
+    name="Service Binding" 
+    description="This is the classification node for service binding. This represents a core registry object."
+    parent="urn:registry:ObjectType"
+    code="ServiceBinding"/>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classificationNode xmlns="http://registry.pds.nasa.gov" 
+    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_SPICE_Kernel_Binary"
+    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_SPICE_Kernel_Binary"
+    name="Product SPICE Kernel Binary" 
+    description="The Product SPICE Kernel Text class defines a binary SPICE product."
+    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    code="Product_SPICE_Kernel_Binary"/>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classificationNode xmlns="http://registry.pds.nasa.gov" 
+    guid="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    name="Product" 
+    description="This is the classification node for product. This represents a core registry object. In ebXML terms this maps to an ExtrinsicObject"
+    parent="urn:registry:ObjectType"
+    code="Product"/>

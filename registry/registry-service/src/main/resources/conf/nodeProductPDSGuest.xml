@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classificationNode xmlns="http://registry.pds.nasa.gov" 
+    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_PDS_Guest"
+    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_PDS_Guest"
+    name="Product PDS Guest" 
+    description="A PDS Guest product is an information object that describes a person in the role of guest user of the PDS."
+    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    code="Product_PDS_Guest"/>

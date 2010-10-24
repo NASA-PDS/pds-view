@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classificationNode xmlns="http://registry.pds.nasa.gov" 
+    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Update"
+    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Update"
+    name="Product Update" 
+    description="The Product Update class defines a product consisting of update information and optional references to other products."
+    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    code="Product_Update"/>

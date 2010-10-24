@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classificationNode xmlns="http://registry.pds.nasa.gov" 
+    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Generic"
+    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Generic"
+    name="Product Generic" 
+    description="The Product Generic class defines a template for all data products."
+    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    code="Product_Generic"/>
