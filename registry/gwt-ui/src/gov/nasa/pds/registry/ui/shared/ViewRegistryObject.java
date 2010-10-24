@@ -42,16 +42,16 @@ public class ViewRegistryObject implements IsSerializable {
 	/**
 	 * Version provided by registry
 	 * 
-	 * @see gov.nasa.pds.registry.model.RegistryObject#getVersion()
+	 * @see gov.nasa.pds.registry.model.RegistryObject#getVersionName()
 	 */
-	private String version;
+	private String versionName;
 
 	/**
 	 * Version provided by user
 	 * 
-	 * @see gov.nasa.pds.registry.model.RegistryObject#getUserVersion()
+	 * @see gov.nasa.pds.registry.model.RegistryObject#getVersionId()
 	 */
-	private String userVersion;
+	private String versionId;
 
 	public String getLid() {
 		return this.lid;
@@ -93,19 +93,19 @@ public class ViewRegistryObject implements IsSerializable {
 		this.description = description;
 	}
 
-	public String getVersion() {
-		return this.version;
+	public String getVersionName() {
+		return this.versionName;
 	}
 
-	public void setVersion(String version) {
-		this.version = version;
+	public void setVersionName(String versionName) {
+		this.versionName = versionName;
 	}
 
-	public String getUserVersion() {
-		return this.userVersion;
+	public String getVersionId() {
+		return this.versionId;
 	}
 
-	public void setUserVersion(String userVersion) {
-		this.userVersion = userVersion;
+	public void setVersionId(String versionId) {
+		this.versionId = versionId;
 	}
 }

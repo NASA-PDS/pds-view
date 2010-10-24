@@ -31,7 +31,7 @@ public class ViewAssociation extends ViewRegistryObject implements
 	 * Version of the source artifact. When used in conjunction with the source
 	 * local identifier this maps to one artifact in a registry.
 	 */
-	private String sourceVersion;
+	private String sourceVersionId;
 
 	/**
 	 * URI of the registry that the source registry object originates from.
@@ -52,7 +52,7 @@ public class ViewAssociation extends ViewRegistryObject implements
 	 * Version of the target artifact. When used in in conjunction with the
 	 * target local identifier this maps to one artifact in a registry.
 	 */
-	private String targetVersion;
+	private String targetVersionId;
 
 	/**
 	 * URI of the registry that the target registry object originates from.
@@ -80,12 +80,12 @@ public class ViewAssociation extends ViewRegistryObject implements
 		this.sourceLid = sourceLid;
 	}
 
-	public String getSourceVersion() {
-		return this.sourceVersion;
+	public String getSourceVersionId() {
+		return this.sourceVersionId;
 	}
 
-	public void setSourceVersion(String sourceVersion) {
-		this.sourceVersion = sourceVersion;
+	public void setSourceVersionId(String sourceVersionId) {
+		this.sourceVersionId = sourceVersionId;
 	}
 
 	public String getSourceHome() {
@@ -112,12 +112,12 @@ public class ViewAssociation extends ViewRegistryObject implements
 		this.targetLid = targetLid;
 	}
 
-	public String getTargetVersion() {
-		return this.targetVersion;
+	public String getTargetVersionId() {
+		return this.targetVersionId;
 	}
 
-	public void setTargetVersion(String targetVersion) {
-		this.targetVersion = targetVersion;
+	public void setTargetVersionId(String targetVersionId) {
+		this.targetVersionId = targetVersionId;
 	}
 
 	public String getTargetHome() {

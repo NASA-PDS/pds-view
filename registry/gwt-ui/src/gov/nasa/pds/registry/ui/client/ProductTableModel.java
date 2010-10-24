@@ -120,7 +120,7 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 
 	public void getAssociations(
 			final String lid,
-			final String userVersion,
+			final String versionId,
 			final AsyncCallback<SerializableResponse<ViewAssociation>> asyncCallback) {
 
 		// if the data service is null, instantiate it
@@ -132,7 +132,7 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 
 		// Send RPC request for data, including previously set filters
 		this.associationService
-				.getAssociations(lid, userVersion, asyncCallback);
+				.getAssociations(lid, versionId, asyncCallback);
 	}
 
 	// Default behaviors for common table access, add functionality as necessary

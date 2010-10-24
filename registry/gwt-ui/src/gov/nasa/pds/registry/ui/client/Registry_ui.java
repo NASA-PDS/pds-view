@@ -493,16 +493,47 @@ public class Registry_ui implements EntryPoint {
 		final ListBox objectsInput = new ListBox(false);
 		objectsInput.setName("objectType");
 		objectsInput.addItem("Any Object Type", "-1");
-		objectsInput.addItem("Product_Node");
-		objectsInput.addItem("Product_Investigation");
-		objectsInput.addItem("Product_Instrument_Host");
-		objectsInput.addItem("Product_Target");
-		objectsInput.addItem("Product_PDS_Affiliate");
-		objectsInput.addItem("Product_PDS_Guest");
-		objectsInput.addItem("Product_Instrument");
-		objectsInput.addItem("Product_Resource");
-		objectsInput.addItem("TABLE");
-		objectsInput.addItem("character_table");
+		objectsInput.addItem("Collection_Browse");
+    objectsInput.addItem("Collection_Calibration");
+    objectsInput.addItem("Collection_Context");
+    objectsInput.addItem("Collection_Data");
+    objectsInput.addItem("Collection_Document");
+    objectsInput.addItem("Collection_Generic");
+    objectsInput.addItem("Collection_Geometry");
+    objectsInput.addItem("Collection_Miscellaneous");
+    objectsInput.addItem("Collection_Secondary");
+    objectsInput.addItem("Collection_SPICE");
+    objectsInput.addItem("Collection_XML_Schema");
+    objectsInput.addItem("Delivery_Manifest");
+    objectsInput.addItem("Product_Browse");
+    objectsInput.addItem("Product_Bundle");
+    objectsInput.addItem("Product_Document");
+    objectsInput.addItem("Product_Element_Definition");
+    objectsInput.addItem("Product_Generic");
+    objectsInput.addItem("Product_Image_3D");
+    objectsInput.addItem("Product_Image_Grayscale");
+    objectsInput.addItem("Product_Instrument");
+    objectsInput.addItem("Product_Instrument_Host");
+    objectsInput.addItem("Product_Investigation");
+    objectsInput.addItem("Product_Mission");
+    objectsInput.addItem("Product_Node");
+    objectsInput.addItem("Product_PDS_Affiliate");
+    objectsInput.addItem("Product_PDS_Guest");
+    objectsInput.addItem("Product_Resource");
+    objectsInput.addItem("Product_Spectrum_3D");
+    objectsInput.addItem("Product_SPICE_Kernel_Binary");
+    objectsInput.addItem("Product_SPICE_Kernel_Text");
+    objectsInput.addItem("Product_Stream_Delimited");
+    objectsInput.addItem("Product_Table_Binary");
+    objectsInput.addItem("Product_Table_Binary_Grouped");
+    objectsInput.addItem("Product_Table_Character");
+    objectsInput.addItem("Product_Table_Character_Grouped");
+    objectsInput.addItem("Product_Target");
+    objectsInput.addItem("Product_Text_File");
+    objectsInput.addItem("Product_Thumbnail");
+    objectsInput.addItem("Product_Update");
+    objectsInput.addItem("Product_XML_Schema");
+    objectsInput.addItem("Product_Zipped");
 		InputContainer objectsInputWrap = new InputContainer("Object Type",
 				objectsInput);
 
@@ -517,7 +548,6 @@ public class Registry_ui implements EntryPoint {
 		statusInput.addItem("SUBMITTED");
 		statusInput.addItem("APPROVED");
 		statusInput.addItem("DEPRECATED");
-		statusInput.addItem("WITHDRAWN");
 		InputContainer statusInputWrap = new InputContainer("Status",
 				statusInput);
 		inputTable.add(statusInputWrap);
@@ -696,12 +726,12 @@ public class Registry_ui implements EntryPoint {
 				detailTable.setText(2, 1, product.getStatus());
 
 				// version
-				detailTable.setText(3, 0, "Version");
-				detailTable.setText(3, 1, product.getVersion());
+				detailTable.setText(3, 0, "Version Name");
+				detailTable.setText(3, 1, product.getVersionName());
 
 				// user version
-				detailTable.setText(4, 0, "User Version");
-				detailTable.setText(4, 1, product.getUserVersion());
+				detailTable.setText(4, 0, "Version Id");
+				detailTable.setText(4, 1, product.getVersionId());
 
 				// guid
 				detailTable.setText(5, 0, "GUID");
@@ -746,7 +776,7 @@ public class Registry_ui implements EntryPoint {
 						.getTableModel()
 						.getAssociations(
 								product.getLid(),
-								product.getUserVersion(),
+								product.getVersionId(),
 								new AsyncCallback<SerializableResponse<ViewAssociation>>() {
 
 									public void onFailure(Throwable caught) {
@@ -948,7 +978,7 @@ public class Registry_ui implements EntryPoint {
 
 						detailTable.setText(row, 0, "Source Version");
 						detailTable.setText(row, 1, association
-								.getSourceVersion());
+								.getSourceVersionId());
 						row++;
 
 						detailTable.setText(row, 0, "Status");
@@ -971,16 +1001,16 @@ public class Registry_ui implements EntryPoint {
 
 						detailTable.setText(row, 0, "Target Version");
 						detailTable.setText(row, 1, association
-								.getTargetVersion());
+								.getTargetVersionId());
 						row++;
 
-						detailTable.setText(row, 0, "User Version");
+						detailTable.setText(row, 0, "Version Id");
 						detailTable.setText(row, 1, association
-								.getUserVersion());
+								.getVersionId());
 						row++;
 
-						detailTable.setText(row, 0, "Version");
-						detailTable.setText(row, 1, association.getVersion());
+						detailTable.setText(row, 0, "Version Name");
+						detailTable.setText(row, 1, association.getVersionName());
 						row++;
 
 						// add styles to cells
@@ -1035,7 +1065,7 @@ public class Registry_ui implements EntryPoint {
 		String[] rowColors = new String[] { "#FFFFCC", "#FFFFFF" };
 		this.tableDefinition
 				.setRowRenderer(new DefaultRowRenderer<ViewProduct>(rowColors));
-		// Name, LID, userVersion, ObjectType, Status
+		// Name, LID, versionId, ObjectType, Status
 
 		// product name
 		{
@@ -1071,13 +1101,13 @@ public class Registry_ui implements EntryPoint {
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
 
-		// User Version
+		// Version Id
 		{
 			ProductColumnDefinition<String> columnDef = new ProductColumnDefinition<String>(
-					"User Version") {
+					"Version Id") {
 				@Override
 				public String getCellValue(ViewProduct rowValue) {
-					return rowValue.getUserVersion();
+					return rowValue.getVersionId();
 				}
 
 			};
