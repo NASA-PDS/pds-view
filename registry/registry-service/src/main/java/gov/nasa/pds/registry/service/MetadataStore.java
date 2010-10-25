@@ -101,6 +101,14 @@ public interface MetadataStore {
    * @return list of classification nodes
    */
   public List<ClassificationNode> getClassificationNodes(String scheme);
+  
+  /**
+   * Checks to see if a code exists within a classification scheme
+   * @param scheme guid of the scheme
+   * @param code to check for in scheme
+   * @return flag to indicate existence
+   */
+  public boolean hasClassificationNode(String scheme, String code);
 
   /**
    * Returns the registry object with a given guid and of the given type

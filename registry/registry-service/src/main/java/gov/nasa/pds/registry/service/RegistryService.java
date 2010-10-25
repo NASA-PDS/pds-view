@@ -15,6 +15,8 @@
 
 package gov.nasa.pds.registry.service;
 
+import gov.nasa.pds.registry.exception.ExceptionType;
+import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.ClassificationNode;
@@ -70,6 +72,13 @@ public class RegistryService {
   @Autowired
   @Qualifier("statusInfo")
   StatusInfo statusInfo;
+
+  private static List<String> CORE_OBJECT_TYPES = Arrays.asList("Association",
+      "AuditableEvent", "Classification", "ClassificationNode",
+      "ClassificationScheme", "Product", "Service", "ServiceBinding",
+      "SpecificationLink");
+
+  private static String OBJECT_TYPE_SCHEME = "urn:registry:ObjectType";
 
   /**
    * Set where to store all the metadata for registry objects. Typically this
@@ -210,9 +219,10 @@ public class RegistryService {
    * @param major
    *          flag to indicate whether this is a minor or major version
    * @return the guid of the versioned product
+   * @throws RegistryServiceException
    */
   public String versionProduct(String user, String lid, Product product,
-      boolean major) {
+      boolean major) throws RegistryServiceException {
     Product referencedProduct = this.getLatestProduct(lid);
     product.setGuid(idGenerator.getGuid());
     product.setHome(idGenerator.getHome());
@@ -502,15 +512,10 @@ public class RegistryService {
    * @param registryObject
    *          to publish
    * @return guid of the published object
+   * @throws RegistryServiceException
    */
-  public String publishRegistryObject(String user, RegistryObject registryObject) {
-    // Check to see if there is an existing product with the same lid and
-    // versionId
-    // TODO: Make this throw some exception instead
-    if (metadataStore.hasRegistryObject(registryObject.getLid(), registryObject
-        .getVersionId(), registryObject.getClass())) {
-      return null;
-    }
+  public String publishRegistryObject(String user, RegistryObject registryObject)
+      throws RegistryServiceException {
     if (registryObject.getGuid() == null) {
       registryObject.setGuid(idGenerator.getGuid());
     }
@@ -551,7 +556,25 @@ public class RegistryService {
     metadataStore.saveRegistryObject(event);
   }
 
-  private void validate(RegistryObject registryObject) {
+  private void validate(RegistryObject registryObject)
+      throws RegistryServiceException {
+    // Check to see if object already exists
+    if (metadataStore.hasRegistryObject(registryObject.getLid(), registryObject
+        .getVersionId(), registryObject.getClass())) {
+      throw new RegistryServiceException("Registry object with logical id "
+          + registryObject.getLid() + " and version id "
+          + registryObject.getVersionId() + " already exists.",
+          ExceptionType.EXISTING_OBJECT);
+    }
+    // Check object type
+    if (!metadataStore.hasClassificationNode(OBJECT_TYPE_SCHEME, registryObject
+        .getObjectType())
+        && !CORE_OBJECT_TYPES.contains(registryObject.getObjectType())) {
+      throw new RegistryServiceException("Not a valid object type \""
+          + registryObject.getObjectType() + "\"",
+          ExceptionType.INVALID_REQUEST);
+    }
+    // Run type specific validation
     if (registryObject instanceof Product) {
       this.validateProduct((Product) registryObject);
     } else if (registryObject instanceof Association) {
@@ -686,10 +709,26 @@ public class RegistryService {
     return (Association) this.getRegistryObject(guid, Association.class);
   }
 
+  /**
+   * Retrieves a {@link Product} from the registry
+   * 
+   * @param guid
+   *          globally unique identifier of the registry object
+   * @return matching product
+   */
   public Product getProduct(String guid) {
     return (Product) this.getRegistryObject(guid, Product.class);
   }
 
+  /**
+   * Retrieves a registry object of the requested type
+   * 
+   * @param guid
+   *          globally unique identifier of the object
+   * @param objectClass
+   *          type of the registry object
+   * @return matching registry object
+   */
   public RegistryObject getRegistryObject(String guid,
       Class<? extends RegistryObject> objectClass) {
     return metadataStore.getRegistryObject(guid, objectClass);

@@ -483,4 +483,24 @@ public class MetadataStoreJPA implements MetadataStore {
     entityManager.flush();
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nasa.pds.registry.service.MetadataStore#hasClassificationNode(java.
+   * lang.String, java.lang.String)
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public boolean hasClassificationNode(String scheme, String code) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<ClassificationNode> cq = cb
+        .createQuery(ClassificationNode.class);
+    Root<ClassificationNode> nodeEntity = cq.from(ClassificationNode.class);
+    cq.where(cb.and(cb.like(nodeEntity.get("path").as(String.class), "/"
+        + scheme + "/%"), cb.equal(nodeEntity.get("code"), code)));
+    TypedQuery<ClassificationNode> dbQuery = entityManager.createQuery(cq);
+    return !dbQuery.getResultList().isEmpty();
+  }
+
 }
