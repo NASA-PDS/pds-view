@@ -48,6 +48,12 @@ To generate the documentation for the registry service type "mvn package". The r
 this command will be target/application.html which can be viewed in any browser and will 
 give a basic description of the end points.
 
+Loading Configuration Data
+==========================
+Once deployed one should go into the bin directory and run the load_registry script to load the registry
+with the data that is required for normal operations. If the registry service is not deployed at 
+http://localhost:8080/registry-service then the script will need to be updated to point to the hosted 
+location of the service.
 
 Eclipse
 =======
@@ -95,7 +101,7 @@ start - Where to start in the results set. Defaults to 1 if not specified.
 rows - How many results to retrieve. Defaults to 20 if not specified.
 
 Association Querying
-================
+====================
 The http://localhost:8080/registry-service/registry/associations accepts the following parameters:
 
 targetLid - Supports filtering on the lid of the target registry object. **
