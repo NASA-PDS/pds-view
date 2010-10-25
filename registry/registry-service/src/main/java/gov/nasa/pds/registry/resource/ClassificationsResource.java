@@ -22,8 +22,11 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
 /**
+ * This is the resource for managing Classifications. Currently there are no
+ * operations associated with this Resource.
+ * 
  * @author pramirez
- *
+ * 
  */
 public class ClassificationsResource {
 

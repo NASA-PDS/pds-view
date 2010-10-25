@@ -21,6 +21,7 @@ import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.ObjectStatus;
 
 /**
+ * This class identifies all the attributes one would filter on for any type of {@link RegistryObject}. This is used to build up a query from classes that extend {@link RegistryQuery}
  * @author pramirez
  *
  */

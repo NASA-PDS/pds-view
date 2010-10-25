@@ -15,6 +15,7 @@
 
 package gov.nasa.pds.registry.resource;
 
+import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.query.AssociationFilter;
@@ -35,12 +36,19 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+/**
+ * This is the resource responsible for managing Associations
+ * 
+ * @author pramirez
+ * 
+ */
 public class AssociationsResource {
 
   @Context
@@ -179,10 +187,16 @@ public class AssociationsResource {
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response publishAssociation(Association association) {
     // TODO: Change to add user
-    String guid = registryService.publishRegistryObject("Unkown", association);
-    return Response.created(
-        AssociationsResource.getAssociationUri(registryService
-            .getAssocation(guid), uriInfo)).entity(guid).build();
+    try {
+      String guid = registryService
+          .publishRegistryObject("Unkown", association);
+      return Response.created(
+          AssociationsResource.getAssociationUri(registryService
+              .getAssocation(guid), uriInfo)).entity(guid).build();
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
 
   protected static URI getAssociationUri(Association association,
@@ -194,10 +208,11 @@ public class AssociationsResource {
 
   /**
    * Retrieves an association with the given global identifier.
+   * 
    * @response.representation.200.qname {http://registry.pds.nasa.gov}response
    * @response.representation.200.mediaType application/xml
    * @response.representation.200.example {@link Examples#RESPONSE_ASSOCIATION}
-   * @retun the association
+   * @return the association
    */
   @GET
   @Path("{guid}")

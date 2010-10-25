@@ -73,6 +73,10 @@
       <resource>
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
+        <excludes>
+          <exclude>**conf/*</exclude>
+          <exclude>**bin/*</exclude>
+        </excludes>
       </resource>
     </resources>
     <plugins>
@@ -596,7 +600,7 @@
       <version>${jersey-version}</version>
     </dependency>
     <dependency>
-      <groupId>woodstox</groupId>
+      <groupId>org.codehaus.woodstox</groupId>
       <artifactId>wstx-asl</artifactId>
       <version>${woodstox-version}</version>
     </dependency>

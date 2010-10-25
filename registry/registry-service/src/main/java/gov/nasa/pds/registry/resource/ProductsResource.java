@@ -17,6 +17,7 @@ package gov.nasa.pds.registry.resource;
 
 import java.util.List;
 
+import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.ObjectStatus;
@@ -36,6 +37,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
@@ -43,6 +45,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+/**
+ * This resource is responsible for managing collections of Products.
+ * 
+ * @author pramirez
+ * 
+ */
 @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 public class ProductsResource {
   @Context
@@ -175,11 +183,15 @@ public class ProductsResource {
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response publishProduct(Product product) {
     // TODO: Change to set user
-    String guid = registryService.publishRegistryObject("Unknown", product);
-    return Response.created(
-        ProductResource
-            .getProductUri(registryService.getProduct(guid), uriInfo)).entity(
-        guid).build();
+    try {
+      String guid = registryService.publishRegistryObject("Unknown", product);
+      return Response.created(
+          ProductResource.getProductUri(registryService.getProduct(guid),
+              uriInfo)).entity(guid).build();
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
 
   /**
@@ -211,12 +223,16 @@ public class ProductsResource {
     // TODO Check to make sure the path lid matches that of the product
     // provided
     // TODO Change to set user
-    String guid = registryService
-        .versionProduct("Unknown", lid, product, major);
-    return Response.created(
-        ProductResource
-            .getProductUri(registryService.getProduct(guid), uriInfo)).entity(
-        guid).build();
+    try {
+      String guid = registryService.versionProduct("Unknown", lid, product,
+          major);
+      return Response.created(
+          ProductResource.getProductUri(registryService.getProduct(guid),
+              uriInfo)).entity(guid).build();
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
 
   /**

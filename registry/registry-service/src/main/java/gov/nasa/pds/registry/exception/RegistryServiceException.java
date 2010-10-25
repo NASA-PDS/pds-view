@@ -43,4 +43,10 @@ public class RegistryServiceException extends Exception {
   public Object[] getArguments() {
     return this.arguments;
   }
+  
+  @Override
+  public String getMessage() {
+    //TODO fix to generate message from resource bundle
+    return messageKey;
+  }
 }

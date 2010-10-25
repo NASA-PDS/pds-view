@@ -17,8 +17,10 @@ package gov.nasa.pds.registry.resource;
 
 import java.net.URI;
 
+import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Service;
 import gov.nasa.pds.registry.service.RegistryService;
+import gov.nasa.pds.registry.util.Examples;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -27,6 +29,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
@@ -34,8 +37,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 /**
+ * This resource is responsible for managing Service descriptions.
+ * 
  * @author pramirez
- *
+ * 
  */
 public class ServicesResource {
 
@@ -55,32 +60,67 @@ public class ServicesResource {
     this.registryService = registryService;
   }
 
+  /**
+   * Publishes a service to the registry.
+   * 
+   * @request.representation.qname {http://registry.pds.nasa.gov}service
+   * @request.representation.mediaType application/xml
+   * @request.representation.example {@link Examples#SERVICE}
+   * @response.param {@name Location} {@style header} {@type
+   *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI
+   *                 where the created item is accessible.}
+   * @param service
+   *          to publish
+   * @return a HTTP response that indicates an error or the location of the
+   *         created association and its guid
+   */
   @POST
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response publishService(Service service) {
-    String guid = registryService.publishRegistryObject("Unknown", service);
-    return Response.created(
-        ServicesResource.getServiceUri((Service) registryService
-            .getRegistryObject(guid, service.getClass()), uriInfo)).entity(guid)
-        .build();
+    try {
+      String guid = registryService.publishRegistryObject("Unknown", service);
+      return Response.created(
+          ServicesResource.getServiceUri((Service) registryService
+              .getRegistryObject(guid, service.getClass()), uriInfo)).entity(
+          guid).build();
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
-  
+
+  /**
+   * Retrieves the service with the given identifier.
+   * 
+   * @response.representation.200.qname {http://registry.pds.nasa.gov}service
+   * @response.representation.200.mediaType application/xml
+   * @response.representation.200.example {@link Examples#SERVICE}
+   * 
+   * @param guid
+   *          globally unique identifier of service
+   * @return the matching service
+   */
   @GET
   @Path("{guid}")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Service getService(
-      @PathParam("guid") String guid) {
-    return (Service) registryService.getRegistryObject(guid,
-        Service.class);
+  public Service getService(@PathParam("guid") String guid) {
+    return (Service) registryService.getRegistryObject(guid, Service.class);
   }
-  
+
+  /**
+   * Deletes the service from the registry.
+   * 
+   * @param guid
+   *          globally unique identifier of service
+   * @return Response indicating whether the operation succeeded or an error
+   */
   @DELETE
   @Path("{guid}")
   public Response deleteService(@PathParam("guid") String guid) {
     registryService.deleteRegistryObject("Unknown", guid, Service.class);
     return Response.ok().build();
   }
-  
+
   protected static URI getServiceUri(Service service, UriInfo uriInfo) {
     return uriInfo.getBaseUriBuilder().clone().path(RegistryResource.class)
         .path(RegistryResource.class, "getServicesResource").path(

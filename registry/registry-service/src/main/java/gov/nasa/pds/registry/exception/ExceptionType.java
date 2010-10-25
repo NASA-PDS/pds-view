@@ -22,7 +22,7 @@ import javax.ws.rs.core.Response;
  * 
  */
 public enum ExceptionType {
-  OBJECT_NOT_FOUND(Response.Status.NOT_FOUND), INVALID_REQUEST(Response.Status.BAD_REQUEST);
+  OBJECT_NOT_FOUND(Response.Status.NOT_FOUND), INVALID_REQUEST(Response.Status.BAD_REQUEST), EXISTING_OBJECT(Response.Status.CONFLICT);
 
   private Response.Status status;
 

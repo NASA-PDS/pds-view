@@ -17,6 +17,7 @@ package gov.nasa.pds.registry.resource;
 
 import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.service.RegistryService;
+import gov.nasa.pds.registry.util.Examples;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -28,6 +29,8 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
 /**
+ * This is the resource responsible for managing Auditable Events.
+ * 
  * @author pramirez
  * 
  */
@@ -51,6 +54,10 @@ public class EventsResource {
 
   /**
    * Retrieve all AuditableEvents found for a given registry object.
+   * 
+   * @response.representation.200.qname {http://registry.pds.nasa.gov}response
+   * @response.representation.200.mediaType application/xml
+   * @response.representation.200.example {@link Examples#RESPONSE_AUDITABLE_EVENTS}
    * 
    * @param affectedObject
    *          guid for object
