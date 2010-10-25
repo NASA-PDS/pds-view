@@ -208,221 +208,217 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
         <p>Enter the <i>User Name</i> (amAdmin) and <i>Password</i> then select the <i>Login</i> button.
         </p>
 
-        <subsection name="Create a User">
-          <p>Perform the following steps to create a user:
-          </p>
+        <p><b><i>Create a User</i></b></p>
+        <p>Perform the following steps to create a user:
+        </p>
 
-          <ul>
-            <li>Select the <i>Access Control</i> tab.</li>
-            <li>Select <i>/(Top Level Realm)</i>.</li>
-            <li>Select the <i>Subjects</i> tab.</li>
-            <li>Select the <i>New</i> button from the <i>User</i> section.</li>
-          </ul>
+        <ul>
+          <li>Select the <i>Access Control</i> tab.</li>
+          <li>Select <i>/(Top Level Realm)</i>.</li>
+          <li>Select the <i>Subjects</i> tab.</li>
+          <li>Select the <i>New</i> button from the <i>User</i> section.</li>
+        </ul>
 
-          <p>You should see the following screen in your browser window:
-          </p>
+        <p>You should see the following screen in your browser window:
+        </p>
 
-          <center>
-            <a href="../images/new_user.jpg" target="_blank"><img alt="New User" src="../images/new_user-scale.jpg" border="1" /></a><br/>
-            If viewing this document in online form, click the image for a larger version.
-          </center>
+        <center>
+          <a href="../images/new_user.jpg" target="_blank"><img alt="New User" src="../images/new_user-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
 
-          <p>Enter the information for a test user (e.g., pdsadmin) then select the <i>OK</i> button.
-          </p>
-        </subsection>
+        <p>Enter the information for a test user (e.g., pdsadmin) then select the <i>OK</i> button.
+        </p>
 
-        <subsection name="Create a Policy">
-          <p>Perform the following steps to create a policy:
-          </p>
+        <p><b><i>Create a Policy</i></b></p>
+        <p>Perform the following steps to create a policy:
+        </p>
 
-          <ul>
-            <li>Select the <i>Access Control</i> tab.</li>
-            <li>Select <i>/(Top Level Realm)</i>.</li>
-            <li>Select the <i>Policies</i> tab.</li>
-            <li>Select the <i>New Policy</i> button.</li>
-            <li>Enter a name (e.g., registry_policy).</li>
-            <li>Select the <i>New</i> button from the <i>Rules</i> section.</li>
-          </ul>
+        <ul>
+          <li>Select the <i>Access Control</i> tab.</li>
+          <li>Select <i>/(Top Level Realm)</i>.</li>
+          <li>Select the <i>Policies</i> tab.</li>
+          <li>Select the <i>New Policy</i> button.</li>
+          <li>Enter a name (e.g., registry_policy).</li>
+          <li>Select the <i>New</i> button from the <i>Rules</i> section.</li>
+        </ul>
 
-          <p>You should see the following screen in your browser window:
-          </p>
+        <p>You should see the following screen in your browser window:
+        </p>
 
-          <center>
-            <a href="../images/policy1.jpg" target="_blank"><img alt="Step 1 of 2: Select Service Type for the Rule" src="../images/policy1-scale.jpg" border="1" /></a><br/>
-            If viewing this document in online form, click the image for a larger version.
-          </center>
+        <center>
+          <a href="../images/policy1.jpg" target="_blank"><img alt="Step 1 of 2: Select Service Type for the Rule" src="../images/policy1-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
 
-          <p>Continue with the following steps to create a policy:
-          </p>
+        <p>Continue with the following steps to create a policy:
+        </p>
 
-          <ul>
-            <li>Select the <i>URL Policy Agent (with resource name)</i> radio button.</li>
-            <li>Select the <i>Next</i> button.</li>
-          </ul>
+        <ul>
+          <li>Select the <i>URL Policy Agent (with resource name)</i> radio button.</li>
+          <li>Select the <i>Next</i> button.</li>
+        </ul>
 
-          <p>You should see the following screen for entering a rule in your browser window:
-          </p>
+        <p>You should see the following screen for entering a rule in your browser window:
+        </p>
 
-          <center>
-            <a href="../images/policy2.jpg" target="_blank"><img alt="Edit Rule" src="../images/policy2-scale.jpg" border="1" /></a><br/>
-            If viewing this document in online form, click the image for a larger version.
-          </center>
+        <center>
+          <a href="../images/policy2.jpg" target="_blank"><img alt="Edit Rule" src="../images/policy2-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
 
-          <ul>
-            <li>Enter a <i>Name</i> (e.g., registry_rule1).</li>
-            <li>Enter a <i>Resource Name</i> (e.g., http://pdsops2.jpl.nasa.gov:80/registry-service/registry/*).</li>
-            <li>Select the <i>GET</i> and <i>POST</i> check boxes.</li>
-            <li>Select the <i>Finish</i> button.</li>
-          </ul>
+        <ul>
+          <li>Enter a <i>Name</i> (e.g., registry_rule1).</li>
+          <li>Enter a <i>Resource Name</i> (e.g., http://pdsops2.jpl.nasa.gov:80/registry-service/registry/*).</li>
+          <li>Select the <i>GET</i> and <i>POST</i> check boxes.</li>
+          <li>Select the <i>Finish</i> button.</li>
+        </ul>
 
-          <p>Enter a second rule as detailed in the following screen:
-          </p>
+        <p>Enter a second rule as detailed in the following screen:
+        </p>
 
-          <center>
-            <a href="../images/policy3.jpg" target="_blank"><img alt="Step 2 of 2: New Rule" src="../images/policy3-scale.jpg" border="1" /></a><br/>
-            If viewing this document in online form, click the image for a larger version.
-          </center>
+        <center>
+          <a href="../images/policy3.jpg" target="_blank"><img alt="Step 2 of 2: New Rule" src="../images/policy3-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
 
-          <ul>
-            <li>Enter a <i>Name</i> (e.g., registry_rule2).</li>
-            <li>Enter a <i>Resource Name</i> (e.g., http://pdsops2.jpl.nasa.gov:80/registry-service/registry/*?action=POST*).</li>
-            <li>Select the <i>GET</i> and <i>POST</i> check boxes.</li>
-            <li>Select the <i>Finish</i> button.</li>
-          </ul>
+        <ul>
+          <li>Enter a <i>Name</i> (e.g., registry_rule2).</li>
+          <li>Enter a <i>Resource Name</i> (e.g., http://pdsops2.jpl.nasa.gov:80/registry-service/registry/*?action=POST*).</li>
+          <li>Select the <i>GET</i> and <i>POST</i> check boxes.</li>
+          <li>Select the <i>Finish</i> button.</li>
+        </ul>
 
-          <p>Enter a third rule as detailed in the following screen:
-          </p>
+        <p>Enter a third rule as detailed in the following screen:
+        </p>
 
-          <center>
-            <a href="../images/policy4.jpg" target="_blank"><img alt="Step 2 of 2: New Rule" src="../images/policy4-scale.jpg" border="1" /></a><br/>
-            If viewing this document in online form, click the image for a larger version.
-          </center>
+        <center>
+          <a href="../images/policy4.jpg" target="_blank"><img alt="Step 2 of 2: New Rule" src="../images/policy4-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
 
-          <ul>
-            <li>Enter a <i>Name</i> (e.g., registry_rule3).</li>
-            <li>Enter a <i>Resource Name</i> (e.g., http://pdsops2.jpl.nasa.gov:80/registry-service/registry/*/*?*).</li>
-            <li>Select the <i>GET</i> and <i>POST</i> check boxes.</li>
-            <li>Select the <i>Finish</i> button.</li>
-          </ul>
+        <ul>
+          <li>Enter a <i>Name</i> (e.g., registry_rule3).</li>
+          <li>Enter a <i>Resource Name</i> (e.g., http://pdsops2.jpl.nasa.gov:80/registry-service/registry/*/*?*).</li>
+          <li>Select the <i>GET</i> and <i>POST</i> check boxes.</li>
+          <li>Select the <i>Finish</i> button.</li>
+        </ul>
 
-          <p>Once the rules are defined, the subject must be defined. Select the <i>New</i> button from the <i>Subjects</i> section. You should see the following screen in your browser window:
-          </p>
+        <p>Once the rules are defined, the subject must be defined. Select the <i>New</i> button from the <i>Subjects</i> section. You should see the following screen in your browser window:
+        </p>
 
-          <center>
-            <a href="../images/policy5.jpg" target="_blank"><img alt="Step 1 of 2: Select Subject Type" src="../images/policy5-scale.jpg" border="1" /></a><br/>
-            If viewing this document in online form, click the image for a larger version.
-          </center>
+        <center>
+          <a href="../images/policy5.jpg" target="_blank"><img alt="Step 1 of 2: Select Subject Type" src="../images/policy5-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
 
-          <ul>
-            <li>Select the <i>Authenticated Users</i> radio button.</li>
-            <li>Select the <i>Next</i> button.</li>
-          </ul>
+        <ul>
+          <li>Select the <i>Authenticated Users</i> radio button.</li>
+          <li>Select the <i>Next</i> button.</li>
+        </ul>
 
-          <p>You should see the following screen in your browser window:
-          </p>
+        <p>You should see the following screen in your browser window:
+        </p>
 
-          <center>
-            <a href="../images/policy6.jpg" target="_blank"><img alt="Step 2 of 2: New Subject - Authenticated Users" src="../images/policy6-scale.jpg" border="1" /></a><br/>
-            If viewing this document in online form, click the image for a larger version.
-          </center>
+        <center>
+          <a href="../images/policy6.jpg" target="_blank"><img alt="Step 2 of 2: New Subject - Authenticated Users" src="../images/policy6-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
 
-          <ul>
-            <li>Select the <i>Finish</i> button.</li>
-            <li>Select the <i>Save</i> button on the subsequent screen.</li>
-          </ul>
+        <ul>
+          <li>Select the <i>Finish</i> button.</li>
+          <li>Select the <i>Save</i> button on the subsequent screen.</li>
+        </ul>
 
-          <p>You should see the following screen in your browser window:
-          </p>
+        <p>You should see the following screen in your browser window:
+        </p>
 
-          <center>
-            <a href="../images/policy7.jpg" target="_blank"><img alt="New Policy" src="../images/policy7-scale.jpg" border="1" /></a><br/>
-            If viewing this document in online form, click the image for a larger version.
-          </center>
+        <center>
+          <a href="../images/policy7.jpg" target="_blank"><img alt="New Policy" src="../images/policy7-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
 
-          <p>Select the <i>OK</i> button and you should see the following screen in your browser window:
-          </p>
+        <p>Select the <i>OK</i> button and you should see the following screen in your browser window:
+        </p>
 
-          <center>
-            <a href="../images/policy8.jpg" target="_blank"><img alt="(Top Level Realm) - Policies" src="../images/policy8-scale.jpg" border="1" /></a><br/>
-            If viewing this document in online form, click the image for a larger version.
-          </center>
-        </subsection>
+        <center>
+          <a href="../images/policy8.jpg" target="_blank"><img alt="(Top Level Realm) - Policies" src="../images/policy8-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
 
-        <subsection name="Configure a Policy Agent">
-          <p>Perform the following steps to configure a policy agent:
-          </p>
+        <p><b><i>Configure a Policy Agent</i></b></p>
+        <p>Perform the following steps to configure a policy agent:
+        </p>
 
-          <ul>
-            <li>Select the <i>Access Control</i> tab.</li>
-            <li>Select <i>/(Top Level Realm)</i>.</li>
-            <li>Select the <i>Agent</i> tab.</li>
-            <li>Select the <i>J2EE</i> tab.</li>
-            <li>Select <i>New</i> on the <i>Agent</i> section.</li>
-          </ul>
+        <ul>
+          <li>Select the <i>Access Control</i> tab.</li>
+          <li>Select <i>/(Top Level Realm)</i>.</li>
+          <li>Select the <i>Agent</i> tab.</li>
+          <li>Select the <i>J2EE</i> tab.</li>
+          <li>Select <i>New</i> on the <i>Agent</i> section.</li>
+        </ul>
 
-          <p>You should see the following screen in your browser window:
-          </p>
+        <p>You should see the following screen in your browser window:
+        </p>
 
-          <center>
-            <a href="../images/agent1.jpg" target="_blank"><img alt="New Agent" src="../images/agent1-scale.jpg" border="1" /></a><br/>
-            If viewing this document in online form, click the image for a larger version.
-          </center>
+        <center>
+          <a href="../images/agent1.jpg" target="_blank"><img alt="New Agent" src="../images/agent1-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
 
-          <ul>
-            <li>Enter a <i>Name</i> (same as a profile name when you install a policy agent e.g., Tomcat6AgentProfile).</li>
-            <li>Enter a new <i>Password</i> (same password that is in $HOME/tomcat6agentpw when you install a policy agent)</li>
-            <li>Enter a <i>Server URL</i> (e.g., http://pdsops.jpl.nasa.gov:80/openam). Note that the port number should be specified, otherwise it is defaulted to port 80.</li>
-            <li>Enter the <i>Agent URL</i> with the target service URL (e.g., http://pdsops2.jpl.nasa.gov:80/registry-service/registry).</li>
-            <li>Select the <i>Create</i> button.</li>
-          </ul>
+        <ul>
+          <li>Enter a <i>Name</i> (same as a profile name when you install a policy agent e.g., Tomcat6AgentProfile).</li>
+          <li>Enter a new <i>Password</i> (same password that is in $HOME/tomcat6agentpw when you install a policy agent)</li>
+          <li>Enter a <i>Server URL</i> (e.g., http://pdsops.jpl.nasa.gov:80/openam). Note that the port number should be specified, otherwise it is defaulted to port 80.</li>
+          <li>Enter the <i>Agent URL</i> with the target service URL (e.g., http://pdsops2.jpl.nasa.gov:80/registry-service/registry).</li>
+          <li>Select the <i>Create</i> button.</li>
+        </ul>
 
-          <p>You should see the following screen in your browser window:
-          </p>
+        <p>You should see the following screen in your browser window:
+        </p>
 
-          <center>
-            <a href="../images/agent2.jpg" target="_blank"><img alt="J2EE" src="../images/agent2-scale.jpg" border="1" /></a><br/>
-            If viewing this document in online form, click the image for a larger version.
-          </center>
-        </subsection>
+        <center>
+          <a href="../images/agent2.jpg" target="_blank"><img alt="J2EE" src="../images/agent2-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
 
-        <subsection name="Configure Not Enforced URI Processing">
-          <p>Perform the following steps to configure "Not Enforced URI Processing":
-          </p>
+        <p><b><i>Configure Not Enforced URI Processing</i></b></p>
+        <p>Perform the following steps to configure "Not Enforced URI Processing":
+        </p>
 
-          <ul>
-            <li>Select the <i>Access Control</i> tab.</li>
-            <li>Select <i>/(Top Level Realm)</i>.</li>
-            <li>Select the <i>Agent</i> tab.</li>
-            <li>Select the <i>J2EE</i> tab.</li>
-            <li>Select the <i>Tomcat6AgentProfile</i> tab.</li>
-            <li>Select the <i>Application</i> tab.</li>
-            <li>Select the <i>Not Enforced URI Processing</i> link.</li>
-          </ul>
+        <ul>
+          <li>Select the <i>Access Control</i> tab.</li>
+          <li>Select <i>/(Top Level Realm)</i>.</li>
+          <li>Select the <i>Agent</i> tab.</li>
+          <li>Select the <i>J2EE</i> tab.</li>
+          <li>Select the <i>Tomcat6AgentProfile</i> tab.</li>
+          <li>Select the <i>Application</i> tab.</li>
+          <li>Select the <i>Not Enforced URI Processing</i> link.</li>
+        </ul>
 
-          <p>You should see the following screen in your browser window:
-          </p>
+        <p>You should see the following screen in your browser window:
+        </p>
 
-          <center>
-            <a href="../images/not_enforced_uri.jpg" target="_blank"><img alt="Not Enforced URI Processing" src="../images/not_enforced_uri-scale.jpg" border="1" /></a><br/>
-            If viewing this document in online form, click the image for a larger version.
-          </center>
+        <center>
+          <a href="../images/not_enforced_uri.jpg" target="_blank"><img alt="Not Enforced URI Processing" src="../images/not_enforced_uri-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
 
-          <p>Enter each of the following values in the <i>New Value</i> text box and select the <i>Add</i> button:
-          </p>
+        <p>Enter each of the following values in the <i>New Value</i> text box and select the <i>Add</i> button:
+        </p>
 
-          <ul>
-            <li>/registry-service/registry/status</li>
-            <li>/registry-service/registry/products</li>
-            <li>/registry-service/registry/products/*</li>
-            <li>/registry-service/registry/associations/*</li>
-            <li>/registry-service/registry/*?start=*</li>
-            <li>/registry-service/registry/*?start=*&amp;rows=*</li>
-            <li>/registry-service/registry/*?action=GET*</li>
-            <li>/registry-service/registry/*/*?action=GET*</li>
-            <li>/registry-service/registry/*/*?start=*</li>
-            <li>/registry-service/registry/*/*?start=*&amp;rows=*</li>
-          </ul>
-        </subsection>
+        <ul>
+          <li>/registry-service/registry/status</li>
+          <li>/registry-service/registry/products</li>
+          <li>/registry-service/registry/products/*</li>
+          <li>/registry-service/registry/associations/*</li>
+          <li>/registry-service/registry/*?start=*</li>
+          <li>/registry-service/registry/*?start=*&amp;rows=*</li>
+          <li>/registry-service/registry/*?action=GET*</li>
+          <li>/registry-service/registry/*/*?action=GET*</li>
+          <li>/registry-service/registry/*/*?start=*</li>
+          <li>/registry-service/registry/*/*?start=*&amp;rows=*</li>
+        </ul>
       </subsection>
     </section>
   </body>

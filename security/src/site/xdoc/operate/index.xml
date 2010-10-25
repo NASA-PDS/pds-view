@@ -43,12 +43,15 @@ http://pdsops.jpl.nasa.gov/openam/identity/authenticate
 token.id=AQIC5wM2LY4SfcyFAElnVTJ4ywAONCJRVy74LMgzFYbRmdI=@AAJTSQACMDE=#
       </source>
 
-      <p>This cookie can then be passed as follows in a POST request:
+      <p>This cookie can then be passed as follows in a <i>POST</i> request:
       </p>
 
       <source>
 % curl -X POST ... --cookie 'iPlanetDirectoryPro="&lt;token.id&gt;"'
       </source>
+
+      <p>The example above also applies to a <i>DELETE</i> request.
+      </p>
     </section>
   </body>
 </document>
