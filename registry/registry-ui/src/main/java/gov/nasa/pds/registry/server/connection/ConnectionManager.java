@@ -2,7 +2,7 @@ package gov.nasa.pds.registry.server.connection;
 
 import gov.nasa.pds.registry.client.RegistryClient;
 import gov.nasa.pds.registry.model.Association;
-import gov.nasa.pds.registry.model.PagedResponse;
+import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.Slot;
 import gov.nasa.pds.registry.query.AssociationQuery;
@@ -118,13 +118,13 @@ public class ConnectionManager {
 
 		RegistryClient client = getRegistry();
 
-		PagedResponse pagedResp = null;
+		RegistryResponse pagedResp = null;
 		if (query != null) {
 			pagedResp = client.getProducts(query, start, numResults).getEntity(
-					PagedResponse.class);
+					RegistryResponse.class);
 		} else {
 			pagedResp = client.getProducts(start, numResults).getEntity(
-					PagedResponse.class);
+					RegistryResponse.class);
 		}
 
 		// convert response to view products
@@ -143,8 +143,8 @@ public class ConnectionManager {
 			final AssociationQuery query, Integer start, Integer numResults) {
 		RegistryClient client = getRegistry();
 
-		PagedResponse pagedResp = client.getAssociations(query, start,
-				numResults).getEntity(PagedResponse.class);
+		RegistryResponse pagedResp = client.getAssociations(query, start,
+				numResults).getEntity(RegistryResponse.class);
 
 		List<ViewAssociation> viewAssociations = respToViewAssociation(pagedResp);
 
@@ -155,8 +155,8 @@ public class ConnectionManager {
 			String userVersion, Integer start, Integer numResults) {
 		RegistryClient client = getRegistry();
 
-		PagedResponse pagedResp = client.getAssociations(lid, userVersion,
-				start, numResults).getEntity(PagedResponse.class);
+		RegistryResponse pagedResp = client.getAssociations(lid, userVersion,
+				start, numResults).getEntity(RegistryResponse.class);
 
 		List<ViewAssociation> viewAssociations = respToViewAssociation(pagedResp);
 
@@ -241,11 +241,11 @@ public class ConnectionManager {
 		return props;
 	}
 
-	private static ViewProducts respToViewProducts(final PagedResponse pagedResp) {
+	private static ViewProducts respToViewProducts(final RegistryResponse pagedResp) {
 		ViewProducts viewProducts = new ViewProducts();
 		viewProducts.setStart(pagedResp.getStart());
 		viewProducts.setSize(pagedResp.getNumFound());
-		List<RegistryObject> products = pagedResp.getResults();
+		List<RegistryObject> products = (List<RegistryObject>)pagedResp.getResults();
 		for (RegistryObject product : products) {
 			ViewProduct vProduct = new ViewProduct();
 			viewProducts.add(vProduct);
@@ -255,8 +255,8 @@ public class ConnectionManager {
 			vProduct.setObjectType(product.getObjectType());
 			vProduct.setStatus(product.getStatus().toString());
 			vProduct.setName(product.getName());
-			vProduct.setUserVersion(product.getUserVersion());
-			vProduct.setVersion(product.getVersion());
+			vProduct.setVersionId(product.getVersionId());
+			vProduct.setVersionName(product.getVersionName());
 
 			List<ViewSlot> vslots = new ArrayList<ViewSlot>();
 			vProduct.setSlots(vslots);
@@ -275,9 +275,9 @@ public class ConnectionManager {
 	}
 
 	private static List<ViewAssociation> respToViewAssociation(
-			final PagedResponse pagedResp) {
+			final RegistryResponse pagedResp) {
 		List<ViewAssociation> viewAssociations = new ArrayList<ViewAssociation>();
-		List<RegistryObject> associations = pagedResp.getResults();
+		List<RegistryObject> associations = (List<RegistryObject>)pagedResp.getResults();
 		for (RegistryObject ro : associations) {
 			Association association = (Association) ro;
 			ViewAssociation vAssociation = new ViewAssociation();
@@ -286,18 +286,18 @@ public class ConnectionManager {
 			vAssociation.setSourceGuid(association.getSourceGuid());
 			vAssociation.setSourceHome(association.getSourceHome());
 			vAssociation.setSourceLid(association.getSourceLid());
-			vAssociation.setSourceVersion(association.getSourceVersion());
+			vAssociation.setSourceVersionId(association.getSourceVersionId());
 			vAssociation.setTargetGuid(association.getTargetGuid());
 			vAssociation.setTargetHome(association.getTargetHome());
 			vAssociation.setTargetLid(association.getTargetLid());
-			vAssociation.setTargetVersion(association.getTargetVersion());
+			vAssociation.setTargetVersionId(association.getTargetVersionId());
 
 			vAssociation.setLid(association.getLid());
 			vAssociation.setObjectType(association.getObjectType());
 			vAssociation.setStatus(association.getStatus().toString());
 			vAssociation.setName(association.getName());
-			vAssociation.setUserVersion(association.getUserVersion());
-			vAssociation.setVersion(association.getVersion());
+			vAssociation.setVersionId(association.getVersionId());
+			vAssociation.setVersionName(association.getVersionName());
 
 		}
 		return viewAssociations;

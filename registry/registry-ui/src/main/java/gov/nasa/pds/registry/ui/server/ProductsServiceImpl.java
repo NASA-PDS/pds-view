@@ -122,12 +122,12 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 				filterBuilder.submitter(filters.get("submitter"));
 			}
 
-			if (filters.containsKey("userVersion")) {
-				filterBuilder.userVersion(filters.get("userVersion"));
+			if (filters.containsKey("versionId")) {
+				filterBuilder.versionId(filters.get("versionId"));
 			}
 
-			if (filters.containsKey("version")) {
-				filterBuilder.version(filters.get("version"));
+			if (filters.containsKey("versionName")) {
+				filterBuilder.versionName(filters.get("versionName"));
 			}
 			// TODO: support events
 			// filterBuilder.eventEnd(arg0)
@@ -172,7 +172,7 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 		case 1:
 			return "lid";
 		case 2:
-			return "userVersion";
+			return "versionId";
 		case 3:
 			return "objectType";
 		case 4:
