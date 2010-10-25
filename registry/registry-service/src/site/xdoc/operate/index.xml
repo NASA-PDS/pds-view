@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2010, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Operation</title>
+    <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Operation">
+      <p>This section describes how to operate the Registry Service software. The following topics can be found in this section:
+      </p>
+
+      <ul>
+        <li><a href="#Service_Interface">Service Interface</a></li>
+        <li><a href="#Publish_Content">Publish Content</a></li>
+        <li><a href="#Retrieve_Content">Retrieve Content</a></li>
+        <li><a href="#Manage_Content">Manage Content</a></li>
+        <li><a href="#Delete_Content">Delete Content</a></li>
+        <li><a href="#Ping_Service">Ping Service</a></li>
+        <li><a href="#Controlled_Access">Controlled Access</a></li>
+      </ul>
+
+    </section>
+
+    <section name="Service Interface">
+      <p>The Registry Service provides a REST-based interface accessible via HTTP for interacting with the service. Details on the REST-based interface can be found in the <a href="../api/index.html">API</a> section. If viewing this document in PDF form, the API section is not available. The API documentation is available from any deployed instance of the Registry Service by accessing <i>/registry-service/docs/</i> from the host application server. Because the REST-based interface operates over HTTP, there are several options for interacting with the Registry Service:
+      </p>
+
+      <ul>
+        <li>Registry User Interface<br/>
+          <p>The <a href="../registry-ui/">registry-ui</a> component offers a Graphical User Interface (GUI) for interacting with the service.
+          </p>
+        </li>
+        <li>Web Browser<br/>
+          <p>Any standard web browser (e.g., Firefox, Safari, Internet Explorer, etc.) will allow interaction with the query and retrieval interfaces of the service.
+          </p>
+        </li>
+        <li>cURL<br/>
+          <p>The <a href="http://curl.haxx.se/" target="_blank">cURL</a> utility offers the most flexible means for interacting with the service. The utility comes installed on most UNIX-based platforms and is available for download for the Windows platform. The examples in the sections that follow utilize <i>cURL</i> to interact with the service.
+          </p>
+        </li>
+      </ul>
+
+      <p>The Registry Service also allows messaging (acceptance of and return of content descriptions) in the form of XML or JavaScript Object Notation (JSON). More on this in the examples below. Each PDS Node may have their own installation of the Registry Service with its own service endpoint. Because of this, the examples below use <i>http://localhost:8080</i> as the generic endpoint for the service.
+      </p>
+    </section>
+
+    <section name="Publish Content">
+      <p>The Registry Service supports a wide range of content (i.e, artifacts) for registration with the service. In ebXML terms, artifacts are referred to as Registry Objects. The following subsections provide examples for each of the supported Registry Object types.
+      </p>
+
+      <subsection name="Products">
+        <p>In PDS terms, a product can be a data product, document, element definition, mission description, schema, etc. The following is an example of a product description in XML form:
+        </p>
+
+        <source>
+&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;product xmlns="http://registry.pds.nasa.gov" 
+  lid="1234" 
+  versionId="1.0" 
+  name="Product 1234 v1" 
+  objectType="Product" 
+  description="This is a new version test product 1234 v1" &gt;
+  &lt;slot name="first-name"&gt;
+    &lt;value&gt;John&lt;/value&gt;
+  &lt;/slot&gt;
+  &lt;slot name="last-name"&gt;
+    &lt;value&gt;Doe&lt;/value&gt;
+  &lt;/slot&gt;
+  &lt;slot name="phone"&gt;
+    &lt;value&gt;(818)123-4567&lt;/value&gt;
+    &lt;value&gt;(818)765-4321&lt;/value&gt;
+  &lt;/slot&gt;
+&lt;/product&gt;
+        </source>
+
+        <p>The product description above is contained in the <i>new_product.xml</i> file, which can be found in the <i>/examples</i> directory of the software distribution package. The following command registers this product with the service:
+        </p>
+
+        <source>
+% curl -X POST -H "Content-type:application/xml" -v -d @new_product.xml \
+http://localhost:8080/registry-service/registry/products
+        </source>
+
+        <p>A successful registration with the above command would produce the following output to standard out: 
+        </p>
+
+        <source>
+* About to connect() to localhost port 8080 (#0)
+*   Trying ::1... Connection refused
+*   Trying fe80::1... Connection refused
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+&gt; POST registry-service/registry/products HTTP/1.1
+&gt; User-Agent: curl/7.16.3 (powerpc-apple-darwin9.0) ...
+&gt; Host: localhost:8080
+&gt; Accept: */*
+&gt; Content-type:application/xml
+&gt; Content-Length: 598
+&gt; 
+&lt; HTTP/1.1 201 Created
+&lt; Server: Apache-Coyote/1.1
+&lt; Location: http://localhost:8080/registry-service/registry/products/1234/1.0
+&lt; Content-Type: application/xml
+&lt; Content-Length: 0
+&lt; Date: Wed, 14 Apr 2010 20:33:32 GMT
+&lt; 
+* Connection #0 to host localhost left intact
+* Closing connection #0
+        </source>
+
+        <p>By inspecting the HTTP Response Location Header one can see the URL to the registered product. This header is a standard way for exchanging information about a newly created resource using HTTP. The following example details how to publish a new version of the above product to the service:
+        </p>
+
+        <source>
+% curl -X POST -H "Content-type:application/xml" -v -d @new_product_v2.xml \
+http://localhost:8080/registry-service/registry/products/1234
+        </source>
+
+        <p>The value of <i>1234</i> in the example above represents the logical identifier of the original published product, which must be specified in order for the service to recognize it as a new version. The following is an example of a product description in JSON form:
+        </p>
+
+        <source>
+{"description":"This is a new version test product 5678 v1",
+ "name":"Product 5678 v1",
+ "objectType":"Product",
+ "versionId":"1.0",
+ "lid":"5678",
+ "slot":[{"name":"last-name","value":["Doe"]},
+         {"name":"phone","value":["(818)123-4567","(818)765-4321"]},
+         {"name":"first-name","value":["Jane"]}]}
+        </source>
+
+        <p>The product description above is contained in the <i>json_product.txt</i> file. The following command registers this product with the service:
+        </p>
+
+        <source>
+% curl -X POST -H "Content-type:application/json" -v -d @json_product.txt \
+http://localhost:8080/registry-service/registry/products
+        </source>
+      </subsection>
+
+      <subsection name="Associations">
+        <p>In PDS terms, an association is a relationship between two registered artifacts. The following is an example of an association description in XML form:
+        </p>
+
+        <source>
+&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;association xmlns="http://registry.pds.nasa.gov"
+  sourceLid="1234"
+  sourceVersionId="1.0"
+  targetLid="1234"
+  targetVersionId="3.0"
+  associationType="associatedTo"/&gt;
+        </source>
+
+        <p>The association description above is contained in the <i>new_association.xml</i> file. The following command registers this association with the service:
+        </p>
+
+        <source>
+% curl -X POST -H "Content-type:application/xml" -v -d @new_association.xml \
+http://localhost:8080/registry-service/registry/associations
+        </source>
+      </subsection>
+
+      <subsection name="Services">
+        <p>In PDS terms, a service is an electronic resource available within the system. A service can be as simple as a web site or as intricate as the Registry Service that is described in this documentation. The following is an example of a service description in XML form:
+        </p>
+
+        <source>
+&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+&lt;service xmlns="http://registry.pds.nasa.gov" 
+  name="PDS Service" 
+  description="This is a service to test adding a service description to the registry"&gt;
+  &lt;serviceBinding
+    name="PDS Main Site" 
+    description="This is the PDS main web site" 
+    accessURI="http://pds.jpl.nasa.gov"&gt;
+    &lt;specificationLink 
+      name="HTTP Specification Link" 
+      description="This is a link to the HTTP specification."
+      specificationObject="urn:uuid:HTTPSpecificationDocument"&gt;
+        &lt;usageDescription&gt;
+          Use a browser to access the PDS site. The acceptable browsers are 
+          listed in the usage parameters.
+        &lt;/usageDescription&gt;
+        &lt;usageParameter&gt;Firefox&lt;/usageParameter&gt;
+        &lt;usageParameter&gt;Safari&lt;/usageParameter&gt;
+        &lt;usageParameter&gt;Internet Explorer&lt;/usageParameter&gt;
+        &lt;usageParameter&gt;Chrome&lt;/usageParameter&gt;
+    &lt;/specificationLink&gt;
+  &lt;/serviceBinding&gt;
+&lt;/service&gt;
+        </source>
+
+        <p>The service description above is contained in the <i>new_service.xml</i> file. The following command registers this service with the service:
+        </p>
+
+        <source>
+% curl -X POST -H "Content-type:application/xml" -v -d @new_service.xml \
+http://localhost:8080/registry-service/registry/services
+        </source>
+      </subsection>
+    </section>
+
+    <section name="Retrieve Content">
+      <p>Although the Registry Service does not offer an advanced query interface, it does offer interfaces for discovering and retrieving artifact descriptions. The URLs shown in the examples below will work in a web browser.
+      </p>
+
+      <subsection name="Products">
+        <p>The following command retrieves a paged list of registered products from the service:
+        </p>
+
+        <source>
+% curl -X GET -H "Accept:application/xml" -v \
+http://localhost:8080/registry-service/registry/products
+        </source>
+
+        <p>The interface above accepts a number of parameters for filtering the return results. See the <a href="../api/index.html">API</a> section for a detailed list of the parameters. The following command retrieves the latest product with logical identifier <i>1234</i> from the service:
+        </p>
+
+        <source>
+% curl -X GET -H "Accept:application/xml" -v \
+http://localhost:8080/registry-service/registry/products/1234
+        </source>
+
+        <p>In order to retrieve the earliest product with logical identifier <i>1234</i>, append <i>/earliest</i> to the URL in the above example. In order to retrieve all products with logical identifier <i>1234</i>, append <i>/all</i> to the URL in the above example. In order to retrieve a specific product with logical identifier <i>1234</i>, append the version identifier (e.g., <i>/1.0</i>) to the URL in the above example. The following command retrieves the specific product with logical identifier <i>1234</i> and version identifier <i>1.0</i>, but in JSON form:
+        </p>
+
+        <source>
+% curl -X GET -H "Accept:application/json" -v \
+http://localhost:8080/registry-service/registry/products/1234/1.0
+        </source>
+
+        <p>The above example will not work in a browser because it is not possible to set the HTTP Accept Header via a browser, but the following command will work in a browser by encoding the return type with a suffix in the URL:
+        </p>
+
+        <source>
+% curl -X GET -v \
+http://localhost:8080/registry-service/registry/products/1234/1.0.json
+        </source>
+      </subsection>
+
+      <subsection name="Associations">
+        <p>The following command retrieves a paged list of registered associations from the service:
+        </p>
+
+        <source>
+% curl -X GET -H "Accept:application/xml" -v \
+http://localhost:8080/registry-service/registry/associations
+        </source>
+
+        <p>The interface above accepts a number of parameters for filtering the return results. See the <a href="../api/index.html">API</a> section for a detailed list of the parameters.
+        </p>
+      </subsection>
+    </section>
+
+    <section name="Manage Content">
+      <p>When products are successfully registered with the service they are given a status of <i>Submitted</i>. The status for a specific product can be modified with the following command:
+      </p>
+
+      <source>
+% curl -X POST -H "Content-type:application/xml" -v \
+http://localhost:8080/registry-service/registry/products/1234/1.0/&lt;action&gt;
+      </source>
+
+      <p>Valid values for &lt;action&gt; include <i>approve</i>, <i>deprecate</i> and <i>undeprecate</i>. The following diagram details the relationship of the status state with the above actions.
+      </p>
+
+      <img alt="Status State" src="../images/status-state.jpg" border="1" />
+    </section>
+
+    <section name="Delete Content">
+      <p>The following command deletes the specific product with logical identifier <i>1234</i> and version identifier <i>1.0</i> from the service:
+      </p>
+
+      <source>
+% curl -X DELETE -v \
+http://localhost:8080/registry-service/registry/products/1234/1.0
+      </source>
+
+      <p>The following two examples delete an association and a service, respectively, by specifying their global unique identifier:
+      </p>
+
+      <source>
+% curl -X DELETE -v \
+http://localhost:8080/registry-service/registry/associations/&lt;guid&gt;
+
+% curl -X DELETE -v \
+http://localhost:8080/registry-service/registry/services/&lt;guid&gt;
+      </source>
+    </section>
+
+    <section name="Ping Service">
+      <p>The following command details the status of the service along with registered counts by Registry Object type:
+      </p>
+
+      <source>
+% curl -X GET -H "Content-type:application/xml" -v \
+http://localhost:8080/registry-service/registry/status
+      </source>
+    </section>
+
+    <section name="Controlled Access">
+      <p>A given instance of the Registry Service may be configured to control access to specific URLs utilizing the software of the Security Service. If this is the case, the <i>curl</i> application can be used to obtain an authentication cookie as follows:
+      </p>
+
+      <source>
+% curl -d "&amp;username=&lt;username&gt;&amp;password=&lt;password&gt;" \
+http://localhost:8080/openam/identity/authenticate
+
+token.id=AQIC5wM2LY4SfcyFAElnVTJ4ywAONCJRVy74LMgzFYbRmdI=@AAJTSQACMDE=#
+      </source>
+
+      <p>The Security Service will likely be hosted on a different machine than the Registry Service. The cookie returned by the above command can then be passed as follows in a <i>POST</i> request:
+      </p>
+
+      <source>
+% curl -X POST ... --cookie 'iPlanetDirectoryPro="&lt;token.id&gt;"'
+      </source>
+
+      <p>The example above also applies to a <i>DELETE</i> request.
+      </p>
+    </section>
+  </body>
+</document>

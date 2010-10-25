@@ -32,6 +32,7 @@
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+        <li><a href="#Configuration">Configuration</a></li>
       </ul>
     </section>
 
@@ -72,6 +73,14 @@ or
           <p>This is the Web ARchive (WAR) file containing the Registry Service software including all dependent JAR files.
           </p>
         </li>
+        <li><b>bin/</b><br/>
+          <p>This directory contains the batch and shell scripts for registering the supported object types.
+          </p>
+        </li>
+        <li><b>conf/</b><br/>
+          <p>This directory contains the policy files identifying the supported object types.
+          </p>
+        </li>
         <li><b>doc/</b><br/>
           <p>This document directory contains a local web site with the Registry Service Guide, javadoc, unit test results and other configuration management related information. Just point your favorite browser to the <i>index.html</i> file in this directory.
           </p>
@@ -81,6 +90,29 @@ or
 
     <section name="Deploying the Application">
       <p>The Registry Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation the WAR file should be renamed from <i>${xdoc-artifactId}-${xdoc-version}.war</i> to <i>${xdoc-artifactId}.war</i>. A WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation.
+      </p>
+
+      <p>If deploying to an Apache Tomcat server and using Derby as the backend database, you may want to permanently set the home directory of the database by adding the following to the <i>CATALINA_OPTS</i> environment variable:
+      </p>
+
+      <source>
+CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
+      </source>
+
+      <p>The <i>CATALINA_OPTS</i> environment variable is loaded from the Apache Tomcat startup scripts. If this value is not set, the Derby database home will default to the current working directory where the Apache Tomcat server was launched.
+      </p>
+    </section>
+
+    <section name="Configuration">
+      <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of objects types corresponds with the type of products that a given instance of the Registry Service will support. Execute the <i>load_registry</i> script from the <i>bin</i> directory in order to registry the full set of object types:
+      </p>
+
+      <source>
+% cd ${xdoc-artifactId}-${xdoc-version}/bin
+% load_registry
+      </source>
+
+      <p>The <i>load_registry</i> script defaults to a Registry Service end point of <i>http://localhost:8080/registry-service</i>. If necessary, modify the script so that it corresponds with the target installation.
       </p>
     </section>
   </body>
