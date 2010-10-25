@@ -976,7 +976,7 @@ public class Registry_ui implements EntryPoint {
 						detailTable.setText(row, 1, association.getSourceLid());
 						row++;
 
-						detailTable.setText(row, 0, "Source Version");
+						detailTable.setText(row, 0, "Source Version ID");
 						detailTable.setText(row, 1, association
 								.getSourceVersionId());
 						row++;
@@ -999,7 +999,7 @@ public class Registry_ui implements EntryPoint {
 						detailTable.setText(row, 1, association.getTargetLid());
 						row++;
 
-						detailTable.setText(row, 0, "Target Version");
+						detailTable.setText(row, 0, "Target Version ID");
 						detailTable.setText(row, 1, association
 								.getTargetVersionId());
 						row++;
@@ -1101,10 +1101,10 @@ public class Registry_ui implements EntryPoint {
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
 
-		// Version Id
+		// Version ID
 		{
 			ProductColumnDefinition<String> columnDef = new ProductColumnDefinition<String>(
-					"Version Id") {
+					"Version ID") {
 				@Override
 				public String getCellValue(ViewProduct rowValue) {
 					return rowValue.getVersionId();
