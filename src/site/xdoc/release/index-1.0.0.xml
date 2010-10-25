@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2010, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology 
+  Transfer at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Release Description 1.0.0</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Release Description 1.0.0">
+      <p>This release of the PDS 2010 System represents Build I and is intended as a prototype release in support of the assessment of the PDS4 standards. The following sections can be found in this document:
+      </p>
+
+      <ul>
+        <li><a href="#System_Requirements">System Requirements</a></li>
+        <li><a href="#InstallationOperation">Installation/Operation</a></li>
+      </ul>
+    </section>
+
+    <section name="System Requirements">
+      <p>This section details the system requirements for installing and operating the software. The software contained in this release was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically developed under Sun Java version 1.6 and has only been tested with this version. Specific system requirements for each component in this release can be found in their respective Installation documents.
+      </p>
+    </section>
+
+    <section name="Installation/Operation">
+      <p>This section details the installation and operation of the software in this release. This release is intended for deployment in the Engineering Node Operations environment. Details regarding the release for each of these components, including installation of the packages and operation of the associated software, can be found in the following program set release documents:
+      </p>
+
+      <ul>
+        <li><a href="../harvest/index.html">Harvest - 0.2.0</a></li>
+        <li><a href="../registry/index.html">Registry</a></li>
+        <ul>
+          <li><a href="../registry/registry-service/index.html">Registry Service - 0.5.0</a></li>
+          <li><a href="../registry/registry-ui/index.html">Registry User Interface - 0.2.0</a></li>
+        </ul>
+        <li><a href="../report/index.html">Report - 0.1.0</a></li>
+        <li><a href="../security/index.html">Security - 0.2.0</a></li>
+        <li><a href="../tools/index.html">Preparation - 0.1.0</a></li>
+      </ul>
+
+      <p>The following diagram details where the major components of this release should be installed in the Operations environment and gives a very high-level view of the interfaces between the components and system resources:
+      </p>
+
+      <center>
+        <a href="../images/ops-deploy-1.0.0.jpg" target="_blank"><img alt="Operations Deployment" src="../images/ops-deploy-1.0.0-scale.jpg" border="1" /></a><br/>
+        If viewing this document in online form, click the image for a larger version.
+      </center>
+
+      <p>The service endpoint for the operational instance of the Registry Service at the Engineering Node is <a href="http://pdsops2.jpl.nasa.gov/registry-service/registry/" target="_blank">http://pdsops2.jpl.nasa.gov/registry-service/registry/</a>.
+      </p>
+    </section>
+  </body>
+</document>
