@@ -58,7 +58,7 @@
     </section>
 
     <section name="Software Installation">
-      <p>The standard installation of the Security Service involves at least two machines. The first machine hosts the OpenAM and OpenDS software. The second machine hosts a service that requires access control (e.g., Registry Service). This machine is where the J2EE Policy Agent will be installed and configured. Perform steps 1 through 3 on the first machine and steps 4 and 5 on the second machine.
+      <p>The standard installation of the Security Service involves at least two machines. The first machine hosts the OpenAM and OpenDS software. The second machine hosts a service that requires access control (e.g., Registry Service). This machine is where the J2EE Policy Agent will be installed and configured. Perform steps 1 through 3 on the first machine and steps 4 and 5 on the second machine. Once the installation of the software is complete, follow the instructions in the <a href="#Configuration">Configuration</a> section to configure the software.
       </p>
 
       <subsection name="1. Install Directory Server">
