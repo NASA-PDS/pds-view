@@ -8,12 +8,11 @@ the software should be online at http://pds-cm.jpl.nasa.gov/2010/security/.
 If it is not accessible, you can execute the "mvn site:run" command and 
 view the documentation locally at http://localhost:8080.
 
-In order to create a complete package for distribution, execute the 
-following commands: 
+In order to create the site and deploy it, execute the following commands: 
 
 % mvn site
 % maven pdf
-% mvn package
+% mvn site:deploy
 
 The project still relies on Maven 1 functionality to generate the PDF form 
 of the documentation.
