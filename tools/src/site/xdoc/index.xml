@@ -17,13 +17,13 @@
 
 <document>
   <properties>
-    <title>About Tools</title>
+    <title>About Preparation Tools</title>
     <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
-    <section name="About Tools">
+    <section name="About Preparation Tools">
       <p>The Preparation Tools provide functionality for preparing data for ingestion into PDS. This includes product label design, generation, transformation and validation as well as package formation. This project consists of a suite of tools and a core library allowing existing Node processes and procedures to be utilized in the ingestion process.
       </p>
     </section>
