@@ -42,6 +42,9 @@
 
       <p>Since the tool was developed using Sun's Java, the target Java Application Server should support Sun's Java Runtime Environment (JRE). The application was tested using Apache's Tomcat version 5.5.X, which is the preferred Java Application Server for deployment. The software can be obtained from the <a href="http://tomcat.apache.org/" target="_blank"> Apache Tomcat</a> web site. Other Java Application Servers should be compatible.
       </p>
+
+      <p>Although it is generally a useful tool for interacting with the Registry Service, the <a href="http://curl.haxx.se/" target="_blank">cURL</a> command-line application is required by the <i>load_registry</i> script for populating the service with the supported object types. See the <a href="#Configuration">Configuration</a> section for more information.
+      </p>
     </section>
 
     <section name="Unpacking the Package">
@@ -104,7 +107,7 @@ CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
     </section>
 
     <section name="Configuration">
-      <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of objects types corresponds with the type of products that a given instance of the Registry Service will support. Execute the <i>load_registry</i> script from the <i>bin</i> directory in order to registry the full set of object types:
+      <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of objects types corresponds with the types of products that a given instance of the Registry Service will support. Execute the <i>load_registry</i> script from the <i>bin</i> directory in order to registry the full set of object types:
       </p>
 
       <source>

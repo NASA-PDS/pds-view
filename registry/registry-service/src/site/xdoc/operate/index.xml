@@ -30,10 +30,10 @@
 
       <ul>
         <li><a href="#Service_Interface">Service Interface</a></li>
-        <li><a href="#Publish_Content">Publish Content</a></li>
-        <li><a href="#Retrieve_Content">Retrieve Content</a></li>
-        <li><a href="#Manage_Content">Manage Content</a></li>
-        <li><a href="#Delete_Content">Delete Content</a></li>
+        <li><a href="#Publish_Artifacts">Publish Artifacts</a></li>
+        <li><a href="#Query_Artifacts">Query Artifacts</a></li>
+        <li><a href="#Update_Status">Update Status</a></li>
+        <li><a href="#Delete_Artifacts">Delete Artifacts</a></li>
         <li><a href="#Ping_Service">Ping Service</a></li>
         <li><a href="#Controlled_Access">Controlled Access</a></li>
       </ul>
@@ -46,7 +46,7 @@
 
       <ul>
         <li>Registry User Interface<br/>
-          <p>The <a href="../registry-ui/">registry-ui</a> component offers a Graphical User Interface (GUI) for interacting with the service.
+          <p>The <a href="../../registry-ui/">registry-ui</a> component offers a Graphical User Interface (GUI) for interacting with the service.
           </p>
         </li>
         <li>Web Browser<br/>
@@ -63,8 +63,8 @@
       </p>
     </section>
 
-    <section name="Publish Content">
-      <p>The Registry Service supports a wide range of content (i.e, artifacts) for registration with the service. In ebXML terms, artifacts are referred to as Registry Objects. The following subsections provide examples for each of the supported Registry Object types.
+    <section name="Publish Artifacts">
+      <p>The Registry Service supports a wide range of artifacts for registration with the service. In ebXML terms, artifacts are referred to as Registry Objects. The following subsections provide examples for each of the supported Registry Object types.
       </p>
 
       <subsection name="Products">
@@ -125,9 +125,10 @@ http://localhost:8080/registry-service/registry/products
 &lt; 
 * Connection #0 to host localhost left intact
 * Closing connection #0
+urn:uuid:53451c5e-1809-4799-8dd8-060672f3e0e1
         </source>
 
-        <p>By inspecting the HTTP Response Location Header one can see the URL to the registered product. This header is a standard way for exchanging information about a newly created resource using HTTP. The following example details how to publish a new version of the above product to the service:
+        <p>By inspecting the HTTP Response Location Header one can see the URL to the registered product. This header is a standard way for exchanging information about a newly created resource using HTTP. The last line of the response is the global unique identifier that the service assigned to the registered product. The following example details how to publish a new version of the above product to the service:
         </p>
 
         <source>
@@ -219,9 +220,14 @@ http://localhost:8080/registry-service/registry/associations
 http://localhost:8080/registry-service/registry/services
         </source>
       </subsection>
+
+      <subsection name="Schemes and Nodes">
+        <p>In order for the above artifacts to be accepted for registration by the service, the service must be preloaded with the list of supported object types. This procedure is detailed in the <a href="../install/index.html#Configuration">Configuration</a> portion of the Installation section. For more information on scheme and node registration see the <a href="index-sn.html">Scheme and Node Registration</a> section of the documentation. If viewing this document in PDF form, see the appendix for details.
+        </p>
+      </subsection>
     </section>
 
-    <section name="Retrieve Content">
+    <section name="Query Artifacts">
       <p>Although the Registry Service does not offer an advanced query interface, it does offer interfaces for discovering and retrieving artifact descriptions. The URLs shown in the examples below will work in a web browser.
       </p>
 
@@ -242,7 +248,7 @@ http://localhost:8080/registry-service/registry/products
 http://localhost:8080/registry-service/registry/products/1234
         </source>
 
-        <p>In order to retrieve the earliest product with logical identifier <i>1234</i>, append <i>/earliest</i> to the URL in the above example. In order to retrieve all products with logical identifier <i>1234</i>, append <i>/all</i> to the URL in the above example. In order to retrieve a specific product with logical identifier <i>1234</i>, append the version identifier (e.g., <i>/1.0</i>) to the URL in the above example. The following command retrieves the specific product with logical identifier <i>1234</i> and version identifier <i>1.0</i>, but in JSON form:
+        <p>In order to retrieve the earliest product with logical identifier <i>1234</i>, append <i>/earliest</i> to the URL in the example above. In order to retrieve all products with logical identifier <i>1234</i>, append <i>/all</i> to the URL in the example above. In order to retrieve a specific product with logical identifier <i>1234</i>, append the version identifier (e.g., <i>/1.0</i>) to the URL in the example above. The following command retrieves the specific product with logical identifier <i>1234</i> and version identifier <i>1.0</i>, but in JSON form:
         </p>
 
         <source>
@@ -250,7 +256,7 @@ http://localhost:8080/registry-service/registry/products/1234
 http://localhost:8080/registry-service/registry/products/1234/1.0
         </source>
 
-        <p>The above example will not work in a browser because it is not possible to set the HTTP Accept Header via a browser, but the following command will work in a browser by encoding the return type with a suffix in the URL:
+        <p>The example above will not work in a browser because it is not possible to set the HTTP Accept Header via a browser, but the following command will work in a browser by encoding the return type with a suffix in the URL:
         </p>
 
         <source>
@@ -268,12 +274,53 @@ http://localhost:8080/registry-service/registry/products/1234/1.0.json
 http://localhost:8080/registry-service/registry/associations
         </source>
 
-        <p>The interface above accepts a number of parameters for filtering the return results. See the <a href="../api/index.html">API</a> section for a detailed list of the parameters.
+        <p>The interface above accepts a number of parameters for filtering the return results. See the <a href="../api/index.html">API</a> section for a detailed list of the parameters. In order to retrieve a specific association, append the global unique identifier (/&lt;guid&gt;) for that association to the URL in the example above.
         </p>
+      </subsection>
+
+      <subsection name="Services">
+        <p>The service does not yet support a general query of registered services but a specific service can be retrieved by specifying its global unique identifier as follows:
+        </p>
+
+        <source>
+% curl -X GET -H "Accept:application/xml" -v \
+http://localhost:8080/registry-service/registry/services/&lt;guid&gt;
+        </source>
+      </subsection>
+
+      <subsection name="Schemes and Nodes">
+        <p>The service does not yet support a general query of registered schemes but a specific scheme can be retrieved by specifying its global unique identifier as follows:
+        </p>
+
+        <source>
+% curl -X GET -H "Accept:application/xml" -v \
+http://localhost:8080/registry-service/registry/schemes/&lt;guid&gt;
+        </source>
+
+        <p>In order to retrieve the only supported scheme (at this time), replace &lt;guid&gt; in the example above with <i>urn:registry:ObjectType</i>. The following command retrieves the list of nodes associated with the <i>urn:registry:ObjectType</i> scheme:
+        </p>
+
+        <source>
+% curl -X GET -H "Accept:application/xml" -v \
+http://localhost:8080/registry-service/registry/schemes/urn:registry:ObjectType/nodes
+        </source>
+
+        <p>In order to retrieve a specific node, append the global unique identifier (/&lt;guid&gt;) for that node to the URL in the example above.
+        </p>
+      </subsection>
+
+      <subsection name="Events">
+        <p>The service tracks auditable events for each registered artifact including submission, approval, deprecation, etc. The service does not yet support a general query of these events but the associated events for a specific artifact can be retrieved by specifying the artifact's global unique identifier as follows:
+        </p>
+
+        <source>
+% curl -X GET -H "Accept:application/xml" -v \
+http://localhost:8080/registry-service/registry/events/&lt;guid&gt;
+        </source>
       </subsection>
     </section>
 
-    <section name="Manage Content">
+    <section name="Update Status">
       <p>When products are successfully registered with the service they are given a status of <i>Submitted</i>. The status for a specific product can be modified with the following command:
       </p>
 
@@ -288,7 +335,7 @@ http://localhost:8080/registry-service/registry/products/1234/1.0/&lt;action&gt;
       <img alt="Status State" src="../images/status-state.jpg" border="1" />
     </section>
 
-    <section name="Delete Content">
+    <section name="Delete Artifacts">
       <p>The following command deletes the specific product with logical identifier <i>1234</i> and version identifier <i>1.0</i> from the service:
       </p>
 

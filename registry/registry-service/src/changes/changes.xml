@@ -23,29 +23,38 @@
   </properties>
 
   <body>
-
-    <release version="0.5.0" date="TBD" description="TBD">
-      <action dev="pramirez" type="update">Updated registry status information to include counts on
-        the number of managed items</action>
+    <release version="0.5.0" date="2010-10-30" description="This release of the Registry Service is a component of the integrated release 1.0.0 of the PDS 2010 System.">
       <action dev="pramirez" type="add">Ability to deal with Services. This required the addition of
         Service Bindings and Specification Links as well.</action>
       <action dev="pramirez" type="add">Ability to deal with Classifications. This required the
         addition of Classification Schemes and Nodes as well.</action>
       <action dev="pramirez" type="add">Interface to retrieve Auditable Events.</action>
+      <action dev="pramirez" type="add">Ability to deal with Services. This required the addition of
+        Service Bindings and Specification Links as well.</action>
+      <action dev="pramirez" type="add">Ability to deal with Classifications. This required the
+        addition of Classification Schemes and Nodes as well.</action>
+      <action dev="pramirez" type="add">Interface to retrieve Auditable Events.</action>
+      <action dev="pramirez" type="add">Ability to deal with Services. This required the addition of
+        Service Bindings and Specification Links as well.</action>
+      <action dev="pramirez" type="add">Ability to deal with Classifications. This required the
+        addition of Classification Schemes and Nodes as well.</action>
+      <action dev="pramirez" type="add">Interface to retrieve Auditable Events.</action>
+      <action dev="pramirez" type="add">Ability to delete products.</action>
+      <action dev="pramirez" type="add">Ability to delete associations.</action>
+      <action dev="pramirez" type="update">Updated registry status information to include counts on
+        the number of managed items</action>
       <action dev="pramirez" type="update">Refactored any list response to simply be a
         RegistryResponse instead of a PagedResponse.</action>
       <action dev="pramirez" type="update">Added a default sort order on slots so they come back in
         a fixed order on repeated requests. The default order now is their generated id.</action>
-      <action dev="pramirez" type="fix">Slot values that were extremely large would truncate. Now
-        they map to @Lob with a length of max integer.</action>
       <action dev="pramirez" type="update">Updated persistence layer to be more flexible and require
         less change as we add new types of RegistryObject's. For example, instead of having
         saveProduct and saveAssociation there is now a unified saveRegistryObject</action>
+      <action dev="pramirez" type="fix">Slot values that were extremely large would truncate. Now
+        they map to @Lob with a length of max integer.</action>
       <action dev="pramirez" type="fix">Convert from using userVersion to using versionId for
         externally tracked versions. Switch to versionName instead of version to align with
         model.</action>
-      <action dev="pramirez" type="add">Ability to delete products.</action>
-      <action dev="pramirez" type="add">Ability to delete associations.</action>
     </release>
 
     <release version="0.4.0" date="2010-08-25"

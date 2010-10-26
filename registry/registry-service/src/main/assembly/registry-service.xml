@@ -36,17 +36,21 @@
       </includes>
     </fileSet>
     <fileSet>
-      <directory>target/site</directory>
-      <outputDirectory>doc</outputDirectory>
+      <directory>src/main/resources/bin</directory>
+      <outputDirectory>bin</outputDirectory>
+      <fileMode>755</fileMode>
     </fileSet>
     <fileSet>
       <directory>src/main/resources/conf</directory>
       <outputDirectory>conf</outputDirectory>
     </fileSet>
     <fileSet>
-      <directory>src/main/resources/bin</directory>
-      <outputDirectory>bin</outputDirectory>
-      <fileMode>755</fileMode>
+      <directory>target/site</directory>
+      <outputDirectory>doc</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>src/test-data</directory>
+      <outputDirectory>examples</outputDirectory>
     </fileSet>
   </fileSets>
 
