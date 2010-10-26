@@ -35,7 +35,7 @@
   <url>http://pds-cm.jpl.nasa.gov/2010/registry/</url>
 
   <modules>
-    <module>registry-core</module>
+    <!-- <module>registry-core</module> -->
     <module>registry-service</module>
     <module>registry-ui</module>
   </modules>
@@ -83,7 +83,7 @@
       <email>Joshua.Ganderson@nasa.gov</email>
       <organization>NASA Ames Research Center</organization>
       <roles>
-        <role>Developer</role>
+        <role>Former Developer</role>
       </roles>
     </developer>
   </developers>
