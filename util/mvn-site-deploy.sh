@@ -33,5 +33,12 @@ maven pdf
 cd ../../security
 maven pdf
 
-cd ..
+cd ../tools/core
+maven pdf
+cd ../design
+maven pdf
+cd ../validate
+maven pdf
+
+cd ../..
 mvn site:deploy

@@ -11,8 +11,31 @@ with the following command:
 
 % mvn deploy --non-recursive
 
-Using the "--non-recursive" option will by typical for most commands 
+Using the "--non-recursive" option will be typical for most commands 
 executed against this project so that they are not applied against the 
 child projects or modules. The site can be deployed as follows: 
 
 % mvn site-deploy --non-recursive
+
+By default, the site is built using the CM skin. In order to build the site 
+with the EN skin, modify the following block in the src/site/site.xml 
+file: 
+
+  <skin>
+    <groupId>gov.nasa.pds</groupId>
+    <artifactId>cm-skin</artifactId>
+    <version>0.0.0</version>
+  </skin>
+
+The project includes a couple of scripts to aide in the process of building 
+and deploying this site and the module sites recursively. In order to deploy 
+the sites to the CM site, execute the following:
+
+% cd util
+% ./mvn-site-deploy.sh
+
+In order to build JAR files of the sites for manual deployment to the EN 
+site, execute the following:
+
+% cd util
+% ./mvn-site-jar.sh
