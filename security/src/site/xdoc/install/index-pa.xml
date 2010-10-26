@@ -143,9 +143,11 @@ SUMMARY OF AGENT INSTALLATION
 -----------------------------
 Agent instance name: Agent_001
 Agent Bootstrap file location:
-/apps/j2ee_agents/tomcat_v6_agent/Agent_001/config/OpenSSOAgentBootstrap.properties
+/apps/j2ee_agents/tomcat_v6_agent/Agent_001/config \
+/OpenSSOAgentBootstrap.properties
 Agent Configuration file location
-/apps/j2ee_agents/tomcat_v6_agent/Agent_001/config/OpenSSOAgentConfiguration.properties
+/apps/j2ee_agents/tomcat_v6_agent/Agent_001/config \
+/OpenSSOAgentConfiguration.properties
 Agent Audit directory location:
 /apps/j2ee_agents/tomcat_v6_agent/Agent_001/logs/audit
 Agent Debug directory location:

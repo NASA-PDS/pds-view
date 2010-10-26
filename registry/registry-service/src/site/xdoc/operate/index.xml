@@ -374,7 +374,7 @@ http://localhost:8080/registry-service/registry/status
 % curl -d "&amp;username=&lt;username&gt;&amp;password=&lt;password&gt;" \
 http://localhost:8080/openam/identity/authenticate
 
-token.id=AQIC5wM2LY4SfcyFAElnVTJ4ywAONCJRVy74LMgzFYbRmdI=@AAJTSQACMDE=#
+token.id=AQIC5wM2LY4SfcyFAElnVTJ4ywAONCJRVy74LMgzFYbRmdI=@AAJ...
       </source>
 
       <p>The Security Service will likely be hosted on a different machine than the Registry Service. The cookie returned by the above command can then be passed as follows in a <i>POST</i> request:
