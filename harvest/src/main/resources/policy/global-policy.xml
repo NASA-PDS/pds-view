@@ -2,13 +2,13 @@
 <policy>
    <candidates>
      <namespace prefix="pds" uri="http://pds.nasa.gov/schema/pds4/pds" default="true"/>
-     <productMetadata objectType="Context_Collection">
+     <productMetadata objectType="Collection_Context">
         <xPath>//alternate_title</xPath>
         <xPath>//alternate_id</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
      </productMetadata>
-     <productMetadata objectType="Context_Bundle">
+     <productMetadata objectType="Bundle_Context">
         <xPath>//alternate_title</xPath>
         <xPath>//alternate_id</xPath>
         <xPath>//last_modification_date_time</xPath>
