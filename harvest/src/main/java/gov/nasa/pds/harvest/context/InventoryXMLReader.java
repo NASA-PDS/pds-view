@@ -32,8 +32,8 @@ import org.w3c.dom.NodeList;
  * @author mcayanan
  *
  */
-public class InventoryXMLReader implements InventoryReader {
-    public static final String MEMBER_ENTRY =
+public class InventoryXMLReader implements InventoryReader, InventoryKeys {
+    private static final String MEMBER_ENTRY =
                       "//*[ends-with(name(),'Member_Entry')]";
     private String parentDirectory;
     private int index;
@@ -83,9 +83,9 @@ public class InventoryXMLReader implements InventoryReader {
         try {
             file = new File(
                     FilenameUtils.separatorsToSystem(
-                    extractor.getValueFromItem("directory_path_name", entry))
+                    extractor.getValueFromItem(FILE_SPEC, entry))
                     );
-            checksum = extractor.getValueFromItem("md5_checksum", entry);
+            checksum = extractor.getValueFromItem(CHECKSUM, entry);
         } catch (XPathExpressionException x) {
             throw new InventoryReaderException(x.getMessage());
         }

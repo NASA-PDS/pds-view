@@ -22,21 +22,21 @@ import java.util.HashMap;
  *
  */
 public class CoreXPaths implements PDSCoreMetKeys {
+    private final static String IDENTIFICATION_AREA_XPATH =
+        "//*[starts-with(name(),'Identification_Area')]";
+
     public static final HashMap<String,String> map =
         new HashMap<String,String>();
 
     static {
-        map.put(LOGICAL_ID, "//*[ends-with(name(),'Identification_Area')]/"
-                + LOGICAL_ID);
-        map.put(PRODUCT_VERSION,
-                "//*[ends-with(name(),'Identification_Area')]/"
+        map.put(LOGICAL_ID, IDENTIFICATION_AREA_XPATH + "/" + LOGICAL_ID);
+        map.put(PRODUCT_VERSION, IDENTIFICATION_AREA_XPATH + "/"
                 + PRODUCT_VERSION);
-        map.put(OBJECT_TYPE, "//*[ends-with(name(),'Identification_Area')]/"
+        map.put(OBJECT_TYPE, IDENTIFICATION_AREA_XPATH + "/"
                 + OBJECT_TYPE);
-        map.put(TITLE, "//*[ends-with(name(),'Identification_Area')]/"
-                + TITLE);
+        map.put(TITLE, IDENTIFICATION_AREA_XPATH + "/" + TITLE);
         map.put(REFERENCES, "//*[ends-with(name(),'Member_Entry')] | "
-                + "//*[ends-with(name(),'Reference_Area')]/"
-                + "*[ends-with(name(),'Reference_Entry')]");
+                + "//*[ends-with(name(),'Reference_Entry')] | "
+                + "//Reference_Entry_Generic");
     }
 }

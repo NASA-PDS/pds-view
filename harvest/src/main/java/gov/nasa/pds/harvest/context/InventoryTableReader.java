@@ -32,7 +32,7 @@ import org.w3c.dom.NodeList;
  * @author mcayanan
  *
  */
-public class InventoryTableReader implements InventoryReader {
+public class InventoryTableReader implements InventoryReader, InventoryKeys {
     public static String INVENTORY_FIELDS = "//*[starts-with("
         + "name(),'Table_Record')]/*[starts-with(name(),'Table_Field')]";
     public static String DATA_FILE = "//File_Area/File/file_name";
@@ -70,11 +70,11 @@ public class InventoryTableReader implements InventoryReader {
             for(int i=0; (i < fields.getLength()) && (fields != null); i++) {
                 String fieldName = extractor.getValueFromItem("field_name",
                         fields.item(i));
-                if("directory_path_name".equals(fieldName)) {
+                if(FILE_SPEC.equals(fieldName)) {
                     filenameFieldLocation = Integer.parseInt(
                             extractor.getValueFromItem(
                                     "field_number", fields.item(i)));
-                } else if("md5_checksum".equals(fieldName)) {
+                } else if(CHECKSUM.equals(fieldName)) {
                     checksumFieldLocation = Integer.parseInt(
                             extractor.getValueFromItem(
                                     "field_number", fields.item(i)));
@@ -122,13 +122,13 @@ public class InventoryTableReader implements InventoryReader {
         String tokens[] = line.split(",");
         if(filenameFieldLocation != 0) {
             file = new File(FilenameUtils.separatorsToSystem(
-                    tokens[filenameFieldLocation-1]));
+                    tokens[filenameFieldLocation-1].trim()));
             if(!file.isAbsolute()) {
                 file = new File(parentDirectory, file.toString());
             }
         }
         if(checksumFieldLocation != 0)
-            checksum = tokens[checksumFieldLocation-1];
+            checksum = tokens[checksumFieldLocation-1].trim();
 
         return new InventoryEntry(file, checksum);
     }

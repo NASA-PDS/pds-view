@@ -53,6 +53,8 @@ import org.xml.sax.SAXParseException;
 public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
     private static Logger log = Logger.getLogger(
             HarvestCrawler.class.getName());
+    private static final String IS_PRIMARY_XPATH =
+      "//*[starts-with(name(), 'Identification_Area')]/is_primary_collection";
     private PDSMetExtractorConfig metExtractorConfig;
     private XMLExtractor xmlExtractor;
 
@@ -126,7 +128,6 @@ public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
     public void crawlCollection(File collection)
     throws InventoryReaderException {
         handleFile(collection);
-        boolean isTable = false;
         try {
             XMLExtractor extractor = new XMLExtractor(collection);
             extractor.setDefaultNamespace(
@@ -134,27 +135,15 @@ public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
                     getDefaultNamepsace());
             extractor.setNamespaceContext(
                     metExtractorConfig.getNamespaceContext());
-            if(!"".equals(extractor.getValueFromDoc("//Inventory"))) {
-                isTable = true;
-            }
-            String isPrimary = extractor.getValueFromDoc(
-                    "//*[ends-with(name(), 'Identification_Area')]" +
-                    "/is_primary_collection");
+            String isPrimary = extractor.getValueFromDoc(IS_PRIMARY_XPATH);
             if((!"".equals(isPrimary)) && (!Boolean.parseBoolean(isPrimary))) {
                 return;
             }
         } catch (Exception e) {
             throw new InventoryReaderException(e.getMessage());
         }
-        InventoryReader reader = null;
-        if(isTable) {
-            reader = new InventoryTableReader(collection,
+        InventoryReader reader = new InventoryTableReader(collection,
                     metExtractorConfig.getNamespaceContext());
-        }
-        else {
-            reader = new InventoryXMLReader(collection,
-                    metExtractorConfig.getNamespaceContext());
-        }
         for(InventoryEntry entry = reader.getNext(); entry != null;) {
             handleFile(entry.getFile());
             entry = reader.getNext();
@@ -216,9 +205,8 @@ public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
      */
     @Override
     protected boolean passesPreconditions(File product) {
-        String validTags[] = {"Product", "Context"};
-        log.log(new ToolsLogRecord(ToolsLevel.INFO,
-                "Begin processing.", product));
+        log.log(new ToolsLogRecord(ToolsLevel.INFO, "Begin processing.",
+                product));
         boolean passFlag = true;
         try {
             xmlExtractor = new XMLExtractor(product);
