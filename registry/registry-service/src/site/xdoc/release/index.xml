@@ -34,7 +34,10 @@
       </p>
 
       <ul>
-        <li>TBD</li>
+        <li>Added support for registering Service and Classification objects.</li>
+        <li>Added support for deleting Products and Associations.</li>
+        <li>Added an interface for retrieving Auditable Events.</li>
+        <li>Updated the status message to include counts of registered objects.</li>
       </ul>
 
       <p>The liens for this release are as follows:
@@ -42,8 +45,9 @@
 
       <ul>
         <li>Exception handling at this stage of development is minimal. Many error conditions have not yet been mapped to HTTP error codes.</li>
-        <li>Query support is case sensitive.</li>
+        <li>Query support is case sensitive and not fully implemented for each object type.</li>
         <li>Not all aspects of JSON support have been implemented.</li>
+        <li>The Federation and Registry objects have not been addressed yet.</li>
       </ul>
     </section>
 
