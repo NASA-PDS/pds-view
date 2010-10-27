@@ -115,7 +115,7 @@ CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
 % load_registry
       </source>
 
-      <p>The <i>load_registry</i> script defaults to a Registry Service end point of <i>http://localhost:8080/registry-service</i>. If necessary, modify the script so that it corresponds with the target installation.
+      <p>The <i>load_registry</i> script defaults to a Registry Service end point of <i>http://localhost:8080/registry-service</i>. If necessary, modify the script so that it corresponds with the target installation. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface.
       </p>
     </section>
   </body>
