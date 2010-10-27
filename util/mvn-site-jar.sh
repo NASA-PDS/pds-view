@@ -23,9 +23,11 @@ mvn site
 cd harvest
 maven pdf
 
-cd ../registry/registry-core
-maven pdf
-cd ../registry-service
+#cd ../registry/registry-core
+#maven pdf
+#cd ../registry-service
+
+cd ../registry/registry-service
 maven pdf
 cd ../registry-ui
 maven pdf
