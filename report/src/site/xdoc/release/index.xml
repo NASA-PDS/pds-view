@@ -34,14 +34,15 @@
       </p>
 
       <ul>
-        <li>TBD</li>
+        <li>Purchased and installed the Sawmill software package.</li>
       </ul>
 
       <p>The liens for this release are as follows:
       </p>
 
       <ul>
-        <li>TBD</li>
+        <li>Need to develop a procedure and software for retrieving metric logs from the Nodes.</li>
+        <li>Need to configure SawMill for the various profiles necessary to support PDS reporting.</li>
       </ul>
     </section>
   </body>
