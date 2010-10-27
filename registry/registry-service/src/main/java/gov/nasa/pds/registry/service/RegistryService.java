@@ -230,12 +230,12 @@ public class RegistryService {
     product.setVersionName(versioner.getNextVersion(referencedProduct
         .getVersionName(), major));
     product.setStatus(referencedProduct.getStatus());
+    this.validate(product);
     metadataStore.saveRegistryObject(product);
     AuditableEvent createEvent = new AuditableEvent(EventType.Created, Arrays
         .asList(product.getGuid()), user);
     createEvent.setGuid(idGenerator.getGuid());
     createEvent.setHome(idGenerator.getHome());
-    this.validate(product);
     metadataStore.saveRegistryObject(createEvent);
     AuditableEvent event = new AuditableEvent(EventType.Versioned, Arrays
         .asList(referencedProduct.getGuid()), user);
