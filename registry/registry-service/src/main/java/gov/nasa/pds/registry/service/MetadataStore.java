@@ -101,11 +101,14 @@ public interface MetadataStore {
    * @return list of classification nodes
    */
   public List<ClassificationNode> getClassificationNodes(String scheme);
-  
+
   /**
    * Checks to see if a code exists within a classification scheme
-   * @param scheme guid of the scheme
-   * @param code to check for in scheme
+   * 
+   * @param scheme
+   *          guid of the scheme
+   * @param code
+   *          to check for in scheme
    * @return flag to indicate existence
    */
   public boolean hasClassificationNode(String scheme, String code);
@@ -211,7 +214,7 @@ public interface MetadataStore {
    *          user provided version
    * @param objectClass
    *          type of registry object
-   * @return flag indicating existance of registry object
+   * @return flag indicating existence of registry object
    */
   public boolean hasRegistryObject(String lid, String versionId,
       Class<? extends RegistryObject> objectClass);
@@ -223,8 +226,22 @@ public interface MetadataStore {
    *          globally unique identifier of object
    * @param objectClass
    *          type of registry object
-   * @return flag indicating existance of registry object
+   * @return flag indicating existence of registry object
    */
   public boolean hasRegistryObject(String guid,
       Class<? extends RegistryObject> objectClass);
+
+  /**
+   * Test to see if there are any versions of the registry object with the
+   * logical id and type requested
+   * 
+   * @param lid
+   *          logical id of object
+   * @param objectClass
+   *          type of registry object
+   * @return flag indicating existence of registry object
+   */
+  public boolean hasRegistryObjectVersions(String lid,
+      Class<? extends RegistryObject> objectClass);
+
 }

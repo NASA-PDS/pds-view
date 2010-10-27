@@ -453,6 +453,26 @@ public class MetadataStoreJPA implements MetadataStore {
    * (non-Javadoc)
    * 
    * @see
+   * gov.nasa.pds.registry.service.MetadataStore#hasRegistryObjectVersions(java
+   * .lang.String, java.lang.Class)
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public boolean hasRegistryObjectVersions(String lid,
+      Class<? extends RegistryObject> objectClass) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<?> cq = cb.createQuery(objectClass);
+    Root<?> entity = cq.from(objectClass);
+    Path<String> lidAttr = entity.get("lid");
+    cq.where(cb.equal(lidAttr, lid));
+    TypedQuery<?> query = entityManager.createQuery(cq);
+    return !query.getResultList().isEmpty();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
    * gov.nasa.pds.registry.service.MetadataStore#hasRegistryObject(java.lang
    * .String, java.lang.Class)
    */

@@ -529,6 +529,13 @@ public class RegistryService {
     if (registryObject.getVersionId() == null) {
       registryObject.setVersionId(registryObject.getVersionName());
     }
+    // Check to see if object with same lid already exists
+    if (metadataStore.hasRegistryObjectVersions(registryObject.getLid(),
+        registryObject.getClass())) {
+      throw new RegistryServiceException("Registry object with logical id "
+          + registryObject.getLid() + registryObject.getVersionId()
+          + " already exists.", ExceptionType.EXISTING_OBJECT);
+    }
     registryObject.setStatus(ObjectStatus.Submitted);
     this.validate(registryObject);
     metadataStore.saveRegistryObject(registryObject);
