@@ -50,27 +50,30 @@ public class LabelValidator {
     this.configurations.put(SCHEMA_CHECK, true);
   }
 
-  public void validate(ExceptionContainer container, File label)
+  public void validate(ExceptionContainer container, File labelFile)
       throws SAXException, IOException {
     if (performsSchemaValidation()) {
       initDefaultSchema();
     }
-    this.validate(container, label, DEFAULT_SCHEMA);
+    this.validate(container, labelFile, DEFAULT_SCHEMA);
   }
-  
-  public void validate(ExceptionContainer container, File label, List<File> schemaFiles) throws SAXException, IOException {
+
+  public void validate(ExceptionContainer container, File labelFile,
+      List<File> schemaFiles) throws SAXException, IOException {
     List<StreamSource> schemas = new ArrayList<StreamSource>();
     for (File schema : schemaFiles) {
       schemas.add(new StreamSource(schema));
     }
-    SchemaFactory factory  = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+    SchemaFactory factory = SchemaFactory
+        .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
     Schema schema = factory.newSchema((Source[]) schemas.toArray());
-    this.validate(container, label, schema);
+    this.validate(container, labelFile, schema);
   }
-  
-  public void validate(ExceptionContainer container, File label, Schema schema) throws SAXException, IOException {
+
+  public void validate(ExceptionContainer container, File labelFile,
+      Schema schema) throws SAXException, IOException {
     Validator validator = schema.newValidator();
-    Source source = new StreamSource(label);
+    Source source = new StreamSource(labelFile);
     validator.setErrorHandler(new LabelErrorHandler(container));
     validator.validate(source);
   }
@@ -79,10 +82,12 @@ public class LabelValidator {
     if (DEFAULT_SCHEMA == null) {
       List<StreamSource> schemas = new ArrayList<StreamSource>();
       for (String schema : VersionInfo.getSchemas()) {
-        schemas.add(new StreamSource(LabelValidator.class.getResourceAsStream("/schemas/" + schema), schema));
+        schemas.add(new StreamSource(LabelValidator.class
+            .getResourceAsStream("/schemas/" + schema), schema));
       }
-      SchemaFactory factory  = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        DEFAULT_SCHEMA = factory.newSchema((Source[]) schemas.toArray());
+      SchemaFactory factory = SchemaFactory
+          .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+      DEFAULT_SCHEMA = factory.newSchema((Source[]) schemas.toArray());
     }
   }
 
