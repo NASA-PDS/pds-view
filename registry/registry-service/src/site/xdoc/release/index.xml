@@ -48,6 +48,7 @@
         <li>Query support is case sensitive and not fully implemented for each object type.</li>
         <li>Not all aspects of JSON support have been implemented.</li>
         <li>The Federation and Registry objects have not been addressed yet.</li>
+        <li>Need to generate a log file that conforms to the Report Service format.</li>
       </ul>
     </section>
 
