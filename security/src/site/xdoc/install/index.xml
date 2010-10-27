@@ -195,9 +195,18 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
           If viewing this document in online form, click the image for a larger version.
         </center>
       </subsection>
+      
+      <subsection name="Directory Server Configuration">
+        <p>With the software configuration is complete it is time to add groups and users to the directory server. Execute the commands as follows.</p>
+        <ul>
+          <li><i>% $OPEN_DS/bin/ldapmodify -p 389 -h pdsops.jpl.nasa.gov -D "cn=Directory Manager" -w &lt;password&gt; -c -a -f pdspers_schema.ldif</i></li>
+          <li><i>% $OPEN_DS/bin/ldapmodify -p 389 -h pdsops.jpl.nasa.gov -D "cn=Directory Manager" -w &lt;password&gt; -c -a -f pds_groups.ldif</i></li>
+          <li><i>% $OPEN_DS/bin/ldapmodify -p 389 -h pdsops.jpl.nasa.gov -D "cn=Directory Manager" -w &lt;password&gt; -c -a -f pdsops_pers.ldif</i></li>
+        </ul>
+      </subsection>
 
       <subsection name="Policy Configuration">
-        <p>With the software configuration complete it is now time to configure the policy. Select the <i>Proceed to Login</i> link from the screen above. You should see the following screen in your browser window:
+        <p>With the software configuration and the directory server configuration complete it is now time to configure the policy. Select the <i>Proceed to Login</i> link from the screen above. You should see the following screen in your browser window:
         </p>
 
         <center>
@@ -270,7 +279,7 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
         <ul>
           <li>Enter a <i>Name</i> (e.g., registry_rule1).</li>
           <li>Enter a <i>Resource Name</i> (e.g., http://pdsops2.jpl.nasa.gov:80/registry-service/registry/*).</li>
-          <li>Select the <i>GET</i> and <i>POST</i> check boxes.</li>
+          <li>Select the <i>DELETE</i>, <i>GET</i> and <i>POST</i> check boxes.</li>
           <li>Select the <i>Finish</i> button.</li>
         </ul>
 
@@ -284,23 +293,8 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
 
         <ul>
           <li>Enter a <i>Name</i> (e.g., registry_rule2).</li>
-          <li>Enter a <i>Resource Name</i> (e.g., http://pdsops2.jpl.nasa.gov:80/registry-service/registry/*?action=POST*).</li>
-          <li>Select the <i>GET</i> and <i>POST</i> check boxes.</li>
-          <li>Select the <i>Finish</i> button.</li>
-        </ul>
-
-        <p>Enter a third rule as detailed in the following screen:
-        </p>
-
-        <center>
-          <a href="../images/policy4.jpg" target="_blank"><img alt="Step 2 of 2: New Rule" src="../images/policy4-scale.jpg" border="1" /></a><br/>
-          If viewing this document in online form, click the image for a larger version.
-        </center>
-
-        <ul>
-          <li>Enter a <i>Name</i> (e.g., registry_rule3).</li>
-          <li>Enter a <i>Resource Name</i> (e.g., http://pdsops2.jpl.nasa.gov:80/registry-service/registry/*/*?*).</li>
-          <li>Select the <i>GET</i> and <i>POST</i> check boxes.</li>
+          <li>Enter a <i>Resource Name</i> (e.g., http://pdsops2.jpl.nasa.gov:80/registry-ui/*).</li>
+          <li>Select the <i>GET</i> check box.</li>
           <li>Select the <i>Finish</i> button.</li>
         </ul>
 
@@ -308,12 +302,12 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
         </p>
 
         <center>
-          <a href="../images/policy5.jpg" target="_blank"><img alt="Step 1 of 2: Select Subject Type" src="../images/policy5-scale.jpg" border="1" /></a><br/>
+          <a href="../images/policy4.jpg" target="_blank"><img alt="Step 1 of 2: Select Subject Type" src="../images/policy4-scale.jpg" border="1" /></a><br/>
           If viewing this document in online form, click the image for a larger version.
         </center>
 
         <ul>
-          <li>Select the <i>Authenticated Users</i> radio button.</li>
+          <li>Select the <i>OpenSSO Identity Subject</i> radio button.</li>
           <li>Select the <i>Next</i> button.</li>
         </ul>
 
@@ -321,10 +315,23 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
         </p>
 
         <center>
-          <a href="../images/policy6.jpg" target="_blank"><img alt="Step 2 of 2: New Subject - Authenticated Users" src="../images/policy6-scale.jpg" border="1" /></a><br/>
+          <a href="../images/policy5.jpg" target="_blank"><img alt="Step 2 of 2: New Subject - OpenSSO Identity Subject" src="../images/policy5-scale.jpg" border="1" /></a><br/>
           If viewing this document in online form, click the image for a larger version.
         </center>
+		
+		<ul>
+		  <li>Enter a <i>Name</i> (e.g., PDS_Affiliate group).</li>
+		  <li>Choose <i>Group</i> from the <i>Filter</i> list.</li>
+		  <li>Enter a group name to search on the <i>*</i> text box (e.g., *PDS_Affiliate).</li>
+		  <li>Select the <i>Search</i> button.  Then, you will see the group name in the <i>Available</i> list box.</li>
+		  <li>Select the group name from the <i>Available</i> list box.</li>
+		  <li>Select the <i>Add ></i> button.</li>
+		</ul>
 
+		<center>
+		  <a href="../images/policy6.jpg" target="_blank"><img alt="Step 2 of 2: New Subject - OpenSSO Identity Subject" src="../images/policy6-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+		</center>
         <ul>
           <li>Select the <i>Finish</i> button.</li>
           <li>Select the <i>Save</i> button on the subsequent screen.</li>
@@ -352,7 +359,7 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
 
         <ul>
           <li>Select the <i>Access Control</i> tab.</li>
-          <li>Select <i>/(Top Level Realm)</i>.</li>
+          <li>Select <i>/(Top Level Realm)</i> realm.</li>
           <li>Select the <i>Agent</i> tab.</li>
           <li>Select the <i>J2EE</i> tab.</li>
           <li>Select <i>New</i> on the <i>Agent</i> section.</li>
@@ -386,15 +393,15 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
         <p>Perform the following steps to configure "Not Enforced URI Processing":
         </p>
 
-        <ul>
-          <li>Select the <i>Access Control</i> tab.</li>
-          <li>Select <i>/(Top Level Realm)</i>.</li>
-          <li>Select the <i>Agent</i> tab.</li>
-          <li>Select the <i>J2EE</i> tab.</li>
-          <li>Select the <i>Tomcat6AgentProfile</i> tab.</li>
-          <li>Select the <i>Application</i> tab.</li>
-          <li>Select the <i>Not Enforced URI Processing</i> link.</li>
-        </ul>
+          <ul>
+            <li>Select the <i>Access Control</i> tab.</li>
+            <li>Select <i>/(Top Level Realm)</i> realm.</li>
+            <li>Select the <i>Agent</i> tab.</li>
+            <li>Select the <i>J2EE</i> tab.</li>
+            <li>Select the <i>Tomcat6AgentProfile</i> link.</li>
+            <li>Select the <i>Application</i> tab.</li>
+            <li>Select the <i>Not Enforced URI Processing</i> link.</li>
+          </ul>
 
         <p>You should see the following screen in your browser window:
         </p>
@@ -408,17 +415,13 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
         </p>
 
         <ul>
-          <li>/registry-service/registry/status</li>
-          <li>/registry-service/registry/products</li>
-          <li>/registry-service/registry/products/*</li>
-          <li>/registry-service/registry/associations/*</li>
-          <li>/registry-service/registry/*?start=*</li>
-          <li>/registry-service/registry/*?start=*&amp;rows=*</li>
-          <li>/registry-service/registry/*?action=GET*</li>
-          <li>/registry-service/registry/*/*?action=GET*</li>
-          <li>/registry-service/registry/*/*?start=*</li>
-          <li>/registry-service/registry/*/*?start=*&amp;rows=*</li>
+          <li>/registry-ui/</li>
+          <li>/registry-service/registry/events/*</li>
+          <li>/registry-service/registry/schmes/*</li>
+          <li>/registry-service/registry/services/*</li>
         </ul>
+        
+        <p>Select the <i>Enabled</i> check box from the <i>Invert Not Enfored URIs.</i></p>
       </subsection>
     </section>
   </body>
