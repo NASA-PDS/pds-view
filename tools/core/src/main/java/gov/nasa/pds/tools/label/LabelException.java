@@ -23,12 +23,16 @@ public class LabelException extends Exception {
   private static final long serialVersionUID = 6046402124396835033L;
   private ExceptionType exceptionType;
   private String messageKey;
+  private String publicId;
+  private String systemId;
   private Integer lineNumber;
   private Integer columnNumber;
   
-  public LabelException(ExceptionType exceptionType, String messageKey, Integer lineNumber, Integer columnNumber) {
+  public LabelException(ExceptionType exceptionType, String messageKey, String publicId, String systemId, Integer lineNumber, Integer columnNumber) {
     this.exceptionType = exceptionType;
     this.messageKey = messageKey;
+    this.publicId = publicId;
+    this.systemId = systemId;
     this.lineNumber = lineNumber;
     this.columnNumber = columnNumber;
   }
@@ -39,6 +43,14 @@ public class LabelException extends Exception {
   
   public String getMessage() {
     return this.messageKey;
+  }
+  
+  public String getPublicId() {
+    return this.publicId;
+  }
+  
+  public String getSystemId() {
+    return this.systemId;
   }
   
   public Integer getLineNumber() {

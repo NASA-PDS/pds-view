@@ -38,7 +38,8 @@ public class LabelErrorHandler implements ErrorHandler {
   @Override
   public void error(SAXParseException exception) throws SAXException {
     exceptions.addException(new LabelException(ExceptionType.ERROR, exception
-        .getMessage(), exception.getLineNumber(), exception.getColumnNumber()));
+        .getMessage(), exception.getPublicId(), exception.getSystemId(),
+        exception.getLineNumber(), exception.getColumnNumber()));
   }
 
   /*
@@ -49,7 +50,8 @@ public class LabelErrorHandler implements ErrorHandler {
   @Override
   public void fatalError(SAXParseException exception) throws SAXException {
     exceptions.addException(new LabelException(ExceptionType.FATAL, exception
-        .getMessage(), exception.getLineNumber(), exception.getColumnNumber()));
+        .getMessage(), exception.getPublicId(), exception.getSystemId(),
+        exception.getLineNumber(), exception.getColumnNumber()));
   }
 
   /*
@@ -60,7 +62,8 @@ public class LabelErrorHandler implements ErrorHandler {
   @Override
   public void warning(SAXParseException exception) throws SAXException {
     exceptions.addException(new LabelException(ExceptionType.WARNING, exception
-        .getMessage(), exception.getLineNumber(), exception.getColumnNumber()));
+        .getMessage(), exception.getPublicId(), exception.getSystemId(),
+        exception.getLineNumber(), exception.getColumnNumber()));
   }
 
 }
