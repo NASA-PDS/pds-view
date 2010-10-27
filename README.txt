@@ -27,6 +27,9 @@ file:
     <version>0.0.0</version>
   </skin>
 
+In addition, the Findbugs and Checkstyle reports should be commented out in 
+the pom.xml file since we don't want the rest of PDS to see these reports.
+
 The project includes a couple of scripts to aide in the process of building 
 and deploying this site and the module sites recursively. In order to deploy 
 the sites to the CM site, execute the following:
