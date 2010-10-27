@@ -24,7 +24,7 @@
 
   <body>
     <section name="Release Description 1.0.0">
-      <p>This release of the PDS 2010 System represents Build I and is intended as a prototype release in support of the assessment of the PDS4 standards. The following sections can be found in this document:
+      <p>This release of the PDS 2010 System represents Build 1 and is intended as a prototype release in support of the assessment of the PDS4 standards. The following sections can be found in this document:
       </p>
 
       <ul>
@@ -39,19 +39,22 @@
     </section>
 
     <section name="Installation/Operation">
-      <p>This section details the installation and operation of the software in this release. This release is intended for deployment in the Engineering Node Operations environment. Details regarding the release for each of these components, including installation of the packages and operation of the associated software, can be found in the following program set release documents:
+      <p>This section details the installation and operation of the software in this release. This release is intended for deployment in the Engineering Node Operations environment. Details regarding the release for each of these components, including installation of the packages and operation of the associated software, can be found in the documentation for each component. This release is comprised of the following components:
       </p>
 
       <ul>
-        <li><a href="../harvest/index.html">Harvest - 0.2.0</a></li>
-        <li><a href="../registry/index.html">Registry</a></li>
+        <li>Harvest - 0.2.0</li>
+        <li>Preparation</li>
         <ul>
-          <li><a href="../registry/registry-service/index.html">Registry Service - 0.5.0</a></li>
-          <li><a href="../registry/registry-ui/index.html">Registry User Interface - 0.2.0</a></li>
+          <li>Validate Tool - 0.1.0</li>
         </ul>
-        <li><a href="../report/index.html">Report - 0.1.0</a></li>
-        <li><a href="../security/index.html">Security - 0.2.0</a></li>
-        <li><a href="../tools/index.html">Preparation - 0.1.0</a></li>
+        <li>Registry</li>
+        <ul>
+          <li>Registry Service - 0.5.0</li>
+          <li>Registry User Interface - 0.2.0</li>
+        </ul>
+        <li>Report - 0.1.0</li>
+        <li>Security - 0.2.0</li>
       </ul>
 
       <p>The following diagram details where the major components of this release should be installed in the Operations environment and gives a very high-level view of the interfaces between the components and system resources:

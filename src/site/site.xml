@@ -41,7 +41,8 @@
     <menu name="Documentation">
       <item name="About PDS 2010" href="index.html"/>
       <item name="System Architecture (pdf)" href="docs/pds2010_system_arch_spec.pdf"/>
-      <item name="Release Description" href="release/index.html"/>
+      <item name="System Requirements (pdf)" href="docs/pds2010_system_reqs.pdf"/>
+      <item name="Releases" href="release/index.html"/>
     </menu>
 
     <menu name="Components">
