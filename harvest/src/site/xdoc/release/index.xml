@@ -34,14 +34,19 @@
       </p>
 
       <ul>
-        <li>TBD</li>
+        <li>Added support for namespaces within product labels.</li>
+        <li>Added support to register Bundle products including the Collection products that they reference.</li>
+        <li>Updated to support the latest changes to the PDS4 model.</li>
+        <li>Updated to support table-formatted Collection products.</li>
+        <li>Updated the log contents to include summary information and product GUIDs.</li>
       </ul>
 
       <p>The liens for this release are as follows:
       </p>
 
       <ul>
-        <li>TBD</li>
+        <li>Needs to support validation of products prior to registration.</li>
+        <li>Does not yet support recognition of products that have already been registered versus newly discovered products. This is required to function in a true crawler scenario.</li>
       </ul>
     </section>
 
