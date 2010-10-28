@@ -55,7 +55,7 @@
         <ol>
           <li>Go to <a href="http://www.sawmill.net/downloads.html">http://www.sawmill.net/downloads.html</a>.</li>
           <li>Select the <i>Proceed</i> button (the form fields are optional).</li>
-          <li>Select the desired version from the drop-down box, and select the <i>Proceed</i> button (“production (x.x.x)” preferred).</li>
+          <li>Select the desired version from the drop-down box, and select the <i>Proceed</i> button ("production (x.x.x)" preferred).</li>
           <li>Select the appropriate operating system for the host machine, and select the <i>Proceed</i> button.</li>
           <li>Select the appropriate hardware for the host machine, and select the <i>Proceed</i> button.</li>
           <li>The download will begin automatically.</li>
@@ -73,18 +73,19 @@
           <li>Configure Apache Tomcat to support CGI binary executables.</li>
           <ul>
             <li>a. Remove XML comments surrounding the <i>CGIServlet</i> and CGI servlet-mapping configuration in $CATALINA_HOME/conf/web.xml.</li>
-            <li>b. Add the following XML to the <i>CGIServletM</i> block in <i>$CATALINA_HOME/conf/web.xml</i> to support CGI as a binary executable:</li>
+            <li>b. Add the following XML to the <i>CGIServlet</i> block in <i>$CATALINA_HOME/conf/web.xml</i> to support CGI as a binary executable:</li>
             <source>
 &lt;init-param&gt;
   &lt;param-name&gt;executable&lt;/param-name&gt;
   &lt;param-value&gt;&lt;/param-value&gt;
 &lt;/init-param&gt;
             </source>
-            <li>c. Set attribute privileged=”true” for Context element in $CATALINA_HOME/conf/context.xml.</li>
+            <li>c. Set attribute privileged="true" for Context element in $CATALINA_HOME/conf/context.xml.</li>
             <li>d. Create a <i>cgi-bin</i> directory, if one does not already exist:</li>
             <source>
-% mkdir $CATALINA_HOME/webapps/ROOT/WEB-INF/cgi-bin
+% mkdir $CATALINA_HOME/webapps/ROOT/WEB-INF/cgi
             </source>
+	    The <i>cgi-bin</i> directory name, should match the &lt;servlet-name&gt; specified in the <i>CGIServlet</i> block, mentioned in steps 2a and 2b (default is <i>cgi</i>).
           </ul>
           <li>Navigate to the directory where the Sawmill compressed package was copied, and enter the following command from the command line:
             <source>
@@ -98,6 +99,7 @@
 % cp (installation-directory)/sawmill (cgi-bin)/sawmill.cgi
 % cp -r (installation-directory)/LogAnalysisInfo (cgi-bin)
           </source>
+	  Make sure you copy the whole directory (LogAnalysisInfo), not its contents (LogAnalysisInfo/)
           <li>Open a web browser, and navigate to the URL <i>http://(yourserver)/cgi-bin/sawmill.cgi</i> .</li>
           <li>Enter <i>License Key</i> when prompted.</li>
           <li>Proceed through the steps to create an admin username and password.</li>
