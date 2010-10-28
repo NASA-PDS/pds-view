@@ -17,10 +17,11 @@ commands:
 
 % mvn site
 % maven pdf
-% mvn package
+% mvn package -Denv=default
 
 The project still relies on Maven 1 functionality to generate the PDF form 
-of the documentation.
+of the documentation. The "env" property is used to set the registry service 
+endpoint for the documentation. Valid values are default, dev and ops.
 
 
 Installation
