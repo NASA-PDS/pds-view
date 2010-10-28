@@ -21,22 +21,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.XMLConstants;
-import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.xml.sax.SAXException;
 
+/**
+ * Abstract class to validate a PDS4 product label.
+ *
+ * @author mcayanan
+ *
+ */
 public abstract class Validator {
     protected Report report;
     protected Schema schema;
 
+    /**
+     * Constructor.
+     *
+     * @param report A Report object to output the results of the validation
+     *  run.
+     */
     public Validator(Report report) {
         this.report = report;
         this.schema = null;
     }
 
+    /**
+     * Sets the schemas to use during validation. By default, the validation
+     * comes pre-loaded with schemas to use. This method would only be used
+     * in cases where the user wishes to use their own set of schemas for
+     * validation.
+     *
+     * @param schemaFiles A list of schema files.
+     *
+     * @throws SAXException If a schema is malformed.
+     */
     public void setSchema(List<File> schemaFiles) throws SAXException {
         List<StreamSource> schemas = new ArrayList<StreamSource>();
         for (File schema : schemaFiles) {
@@ -44,8 +65,18 @@ public abstract class Validator {
         }
         SchemaFactory factory = SchemaFactory
           .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        this.schema = factory.newSchema((Source[]) schemas.toArray());
+        this.schema = factory.newSchema(schemas.toArray(new StreamSource[0]));
     }
 
-    public abstract void validate(File file) throws SAXException, IOException;
+    public void setSchema(Schema schema) {
+        this.schema = schema;
+    }
+
+    /**
+     * Validate a PDS product.
+     *
+     * @param file A PDS product file.
+     *
+     */
+    public abstract void validate(File file);
 }

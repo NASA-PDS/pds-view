@@ -13,6 +13,13 @@
 // $Id$
 package gov.nasa.pds.validate.commandline.options;
 
+/**
+ * An interface that contains the valid property keys for the Validate Tool
+ * configuration file.
+ *
+ * @author mcayanan
+ *
+ */
 public interface ConfigKeys {
     public static final String REGEXPKEY = "validate.regexp";
     public static final String REPORTKEY = "validate.report";

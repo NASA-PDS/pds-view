@@ -17,44 +17,68 @@ import gov.nasa.pds.validate.util.XMLExtractor;
 
 import java.io.File;
 
-
-public class Target implements TargetType {
+/**
+ * Class representation of a target in the Validate Tool.
+ *
+ * @author mcayanan
+ *
+ */
+public class Target {
     private final static String PRODUCT_TYPE_XPATH =
         "//*[ends-with(name(),'Identification_Area')]/product_class";
 
     private String file;
-    private String type;
+    private TargetType type;
 
+    /**
+     * Constructor.
+     *
+     * @param file A file.
+     */
     public Target(File file) {
         this(file.toString());
     }
 
+    /**
+     * Constructor.
+     *
+     * @param file A file.
+     */
     public Target(String file) {
         this.file = file;
+        this.type = TargetType.FILE;
         if(new File(file).isDirectory()) {
-            type = DIRECTORY;
+            type = TargetType.DIRECTORY;
         } else {
             try {
                 XMLExtractor extractor = new XMLExtractor(file);
                 String type = extractor.getValueFromDoc(PRODUCT_TYPE_XPATH);
-                if(BUNDLE.equals(type)) {
-                    type = BUNDLE;
-                } else if(COLLECTION.equals(type)) {
-                    type = COLLECTION;
-                } else {
-                    type = FILE;
+                if(TargetType.BUNDLE.getName().equals(type)) {
+                    this.type = TargetType.BUNDLE;
+                } else if(TargetType.COLLECTION.getName().equals(type)) {
+                    this.type = TargetType.COLLECTION;
                 }
             } catch (Exception e) {
-                type = FILE;
+                //Don't do anything yet
             }
         }
     }
 
-    public String getFile() {
+    /**
+     * Gets the name of the file.
+     *
+     * @return the file name.
+     */
+    public String getFilename() {
         return file;
     }
 
-    public String getType() {
+    /**
+     * Returns the target type.
+     *
+     * @return A target type.
+     */
+    public TargetType getType() {
         return type;
     }
 }

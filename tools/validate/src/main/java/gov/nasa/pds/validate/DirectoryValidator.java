@@ -23,26 +23,54 @@ import java.util.List;
 
 import org.xml.sax.SAXException;
 
+/**
+ * Class that validates a directory containing PDS products.
+ *
+ * @author mcayanan
+ *
+ */
 public class DirectoryValidator extends Validator {
     private boolean recurse;
     private List<String> fileFilters;
 
-    public DirectoryValidator(Report report)
-    throws SAXException {
+    /**
+     * Constructor.
+     *
+     * @param report A Report object to output the results.
+     *
+     */
+    public DirectoryValidator(Report report) {
         super(report);
         recurse = true;
         fileFilters = new ArrayList<String>();
     }
 
+    /**
+     * Sets the recursion flag. By default, it is set to 'true'.
+     *
+     * @param value A boolean value.
+     */
     public void setRecurse(boolean value) {
         recurse = value;
     }
 
+    /**
+     * Sets the file filter.
+     *
+     * @param filters A list of file patterns to look for while
+     * traversing a directory.
+     */
     public void setFileFilters(List<String> filters) {
         fileFilters = filters;
     }
 
-    public void validate(File directory) throws SAXException, IOException {
+    /**
+     * Perform validation on a directory.
+     *
+     * @param directory A directory path to start traversing.
+     *
+     */
+    public void validate(File directory) {
         DirectoryCrawler crawler = new DirectoryCrawler();
         List<File> targets = crawler.crawl(directory, recurse, fileFilters);
         for(File target : targets) {
@@ -50,6 +78,9 @@ public class DirectoryValidator extends Validator {
                 validate(target);
             } else {
                 FileValidator fv = new FileValidator(report);
+                if(schema != null) {
+                    fv.setSchema(schema);
+                }
                 fv.validate(target);
             }
         }

@@ -44,8 +44,8 @@ public class FullReport extends Report {
   protected void printRecordMessages(PrintWriter writer, Status status,
       URI sourceUri, List<LabelException> problems) {
     Map<URI, List<LabelException>> externalProblems = new HashMap<URI, List<LabelException>>();
-    writer.println();
-    writer.print("  ");
+      writer.println();
+//    writer.print("  ");
 //    writer.print(status.getName());
 //    writer.print(": ");
 //    writer.println(sourceUri.toString());
@@ -69,7 +69,7 @@ public class FullReport extends Report {
     }
     writer.print(severity);
     writer.print("  ");
-    writer.print("[" + problem.getSystemId() + "] ");
+    writer.print("[" + problem.getSystemId() + "]   ");
     if (problem.getLineNumber() != null) {
       writer.print("line ");
       writer.print(problem.getLineNumber().toString());

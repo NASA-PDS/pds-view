@@ -258,16 +258,18 @@ public abstract class Report {
     int totalValidated = this.getNumPassed() + this.getNumFailed();
     printFooter(writer);
     writer.println();
+/*
     writer.println("Summary:");
     writer.println();
     writer.println("  " + totalValidated + " of " + totalFiles
             + " validated");
-/*
+
     writer.println("  " + totalValidated + " of " + totalFiles + " validated, "
         + this.getNumSkipped() + " skipped");
-*/
+
     writer.println("  " + this.getNumPassed() + " of " + totalValidated
         + " passed");
+*/
     writer.println();
     writer.println("End of Report");
     this.writer.flush();

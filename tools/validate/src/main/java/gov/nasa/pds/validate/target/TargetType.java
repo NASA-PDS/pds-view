@@ -13,9 +13,23 @@
 // $Id$
 package gov.nasa.pds.validate.target;
 
-public interface TargetType {
-    public final static String BUNDLE = "Context_Bundle";
-    public final static String COLLECTION = "Context_Collection";
-    public final static String DIRECTORY = "directory";
-    public final static String FILE = "file";
+public enum TargetType {
+    BUNDLE(0,"Context_Bundle"), COLLECTION(1,"Context_Collection"),
+    DIRECTORY(2,"Directory"), FILE(3,"File");
+
+    private final int value;
+    private final String name;
+
+    private TargetType(final int value, final String name) {
+        this.value = value;
+        this.name = name;
+    }
+
+    public int getValue() {
+      return this.value;
+    }
+
+    public String getName() {
+      return this.name;
+    }
 }

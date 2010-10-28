@@ -54,7 +54,14 @@ import org.apache.log4j.PatternLayout;
 import org.apache.log4j.Priority;
 import org.xml.sax.SAXException;
 
-public class ValidateLauncher implements Flags, ConfigKeys, TargetType {
+/**
+ * Wrapper class for the Validate Tool. Class handles command-line parsing and
+ * querying, in addition to reporting setup.
+ *
+ * @author mcayanan
+ *
+ */
+public class ValidateLauncher implements Flags, ConfigKeys {
     private final String PROPERTYFILE = "validate.properties";
     private final String PROPERTYTOOLNAME = "validate.name";
     private final String PROPERTYVERSION = "validate.version";
@@ -63,7 +70,7 @@ public class ValidateLauncher implements Flags, ConfigKeys, TargetType {
 
     private List<Target> targets;
     private List<String> regExps;
-    private List<String> schemas;
+    private List<File> schemas;
     private File reportFile;
     private boolean traverse;
     private Level severity;
@@ -71,10 +78,14 @@ public class ValidateLauncher implements Flags, ConfigKeys, TargetType {
     private Options options;
     private Report report;
 
+    /**
+     * Constructor.
+     *
+     */
     public ValidateLauncher() {
         targets = new ArrayList<Target>();
         regExps = new ArrayList<String>();
-        schemas = new ArrayList<String>();
+        schemas = new ArrayList<File>();
         reportFile = null;
         traverse = true;
         severity = Level.WARNING;
@@ -83,6 +94,11 @@ public class ValidateLauncher implements Flags, ConfigKeys, TargetType {
         report = new FullReport();
     }
 
+    /**
+     * Builds the command-line option flags.
+     *
+     * @return A class representation of the command-line option flags.
+     */
     private Options buildOptions() {
         ToolsOption to = null;
         Options options = new Options();
@@ -116,6 +132,11 @@ public class ValidateLauncher implements Flags, ConfigKeys, TargetType {
         options.addOption(to);
 
         // Option to specify the severity level and above
+        to = new ToolsOption(CONFIG[SHORT], CONFIG[LONG], WHATIS_CONFIG);
+        to.hasArg(VERBOSE[ARGNAME], String.class);
+        options.addOption(to);
+
+        // Option to specify the severity level and above
         to = new ToolsOption(VERBOSE[SHORT], VERBOSE[LONG], WHATIS_VERBOSE);
         to.hasArg(VERBOSE[ARGNAME], short.class);
         options.addOption(to);
@@ -124,7 +145,7 @@ public class ValidateLauncher implements Flags, ConfigKeys, TargetType {
     }
 
     /**
-     * A method to parse the command-line arguments
+     * Parse the command-line arguments
      *
      * @param args The command-line arguments
      * @return A class representation of the command-line arguments
@@ -157,6 +178,14 @@ public class ValidateLauncher implements Flags, ConfigKeys, TargetType {
             } else if(VERSION[SHORT].equals(o.getOpt())) {
                 displayVersion();
                 System.exit(0);
+            } else if(CONFIG[SHORT].equals(o.getOpt())) {
+                File c = new File(o.getValue());
+                if(c.exists()) {
+                    query(c);
+                } else {
+                    throw new Exception("Configuration file does not exist: "
+                            + c);
+                }
             } else if(REPORT[SHORT].equals(o.getOpt())) {
                 setReport(new File(o.getValue()));
             } else if(LOCAL[SHORT].equals(o.getOpt())) {
@@ -178,9 +207,18 @@ public class ValidateLauncher implements Flags, ConfigKeys, TargetType {
                 setRegExps((List<String>) o.getValuesList());
             }
         }
-        setTargets(targetList);
+        if(!targetList.isEmpty()) {
+            setTargets(targetList);
+        }
     }
 
+    /**
+     * Query the configuration file.
+     *
+     * @param configuration A configuration file.
+     *
+     * @throws ConfigurationException
+     */
     public void query(File configuration) throws ConfigurationException {
         try {
             Configuration config = null;
@@ -231,8 +269,12 @@ public class ValidateLauncher implements Flags, ConfigKeys, TargetType {
     }
 
     private void setSchemas(List<String> schemas) {
-        this.schemas = schemas;
-        while(this.schemas.remove(""));
+        while(schemas.remove(""));
+        List<File> list = new ArrayList<File>();
+        for(String s : schemas) {
+             list.add(new File(s));
+         }
+        this.schemas = list;
     }
 
     private void setReport(File report) {
@@ -312,7 +354,7 @@ public class ValidateLauncher implements Flags, ConfigKeys, TargetType {
         Date date = Calendar.getInstance().getTime();
         List<String> files = new ArrayList<String>();
         for(Target t : targets) {
-            files.add(t.getFile());
+            files.add(t.getFilename());
         }
         report.addConfiguration("   Version                  " + version);
         report.addConfiguration("   Time                     "
@@ -333,10 +375,15 @@ public class ValidateLauncher implements Flags, ConfigKeys, TargetType {
         report.printHeader();
     }
 
-    private void doValidation() throws SAXException, IOException {
+    /**
+     * Performs validation.
+     *
+     * @throws SAXException
+     */
+    private void doValidation() throws SAXException {
         Validator validator = new FileValidator(report);
         for(Target t : targets) {
-            if(DIRECTORY.equals(t.getType())) {
+            if(TargetType.DIRECTORY.equals(t.getType())) {
                 DirectoryValidator dv = new DirectoryValidator(report);
                 dv.setFileFilters(regExps);
                 dv.setRecurse(traverse);
@@ -347,7 +394,10 @@ public class ValidateLauncher implements Flags, ConfigKeys, TargetType {
             } else if(BUNDLE.equals(t.getType())) {
                 validator = new BundleValidator(report);
             }*/
-            validator.validate(new File(t.getFile()));
+            if(!schemas.isEmpty()) {
+                validator.setSchema(schemas);
+            }
+            validator.validate(new File(t.getFilename()));
         }
     }
 
@@ -356,6 +406,10 @@ public class ValidateLauncher implements Flags, ConfigKeys, TargetType {
     }
 
     public static void main(String[] args) {
+        if (args.length == 0) {
+            System.out.println("\nType 'Validate -h' for usage");
+            System.exit(0);
+        }
         ConsoleAppender ca = new ConsoleAppender(new PatternLayout("%-5p %m%n"));
         ca.setThreshold(Priority.FATAL);
         BasicConfigurator.configure(ca);
@@ -366,15 +420,8 @@ public class ValidateLauncher implements Flags, ConfigKeys, TargetType {
             launcher.setupReport();
             launcher.doValidation();
             launcher.printReportFooter();
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (InvalidOptionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+           System.out.println(e.getMessage());
         }
     }
 }

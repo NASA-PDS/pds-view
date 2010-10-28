@@ -14,28 +14,50 @@
 package gov.nasa.pds.validate;
 
 import gov.nasa.pds.tools.label.ExceptionContainer;
+import gov.nasa.pds.tools.label.ExceptionType;
+import gov.nasa.pds.tools.label.LabelException;
 import gov.nasa.pds.tools.label.LabelValidator;
 import gov.nasa.pds.validate.report.Report;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.xml.sax.SAXException;
-
+/**
+ * Class that validates a single file.
+ *
+ * @author mcayanan
+ *
+ */
 public class FileValidator extends Validator{
+    /**
+     * Constructor.
+     *
+     * @param report A Report object to output the results.
+     */
     public FileValidator(Report report) {
         super(report);
     }
 
-    public void validate(File file)
-    throws SAXException, IOException {
+    /**
+     * Validate a PDS product file.
+     *
+     * @param file A PDS product file.
+     *
+     */
+    public void validate(File file) {
         LabelValidator lv = new LabelValidator();
         ExceptionContainer exceptionContainer = new ExceptionContainer();
-        if(schema != null) {
-            lv.validate(exceptionContainer, file, schema);
-        } else {
-            lv.validate(exceptionContainer, file);
+        try {
+            if(schema != null) {
+                lv.validate(exceptionContainer, file, schema);
+            } else {
+                lv.validate(exceptionContainer, file);
+            }
+            report.record(file.toURI(), exceptionContainer.getExceptions());
+        } catch(Exception e) {
+            LabelException le = new LabelException(ExceptionType.FATAL,
+                    e.getMessage(), file.toString(), file.toString(),
+                    null, null);
+            report.record(file.toURI(), le);
         }
-        report.record(file.toURI(), exceptionContainer.getExceptions());
     }
 }

@@ -24,14 +24,14 @@ public interface Flags {
     public static final int LONG = 1;
     public static final int ARGNAME = 2;
 
-
-    public static final String HELP[] = {"h", "help"};
+    public static final String CONFIG[] = {"c", "config", "file"};
     public static final String REGEXP[] = {"e", "regexp", "patterns"};
+    public static final String HELP[] = {"h", "help"};
     public static final String REPORT[] = {"r", "report-file", "file name"};
     public static final String TARGET[] = {"t", "target",
-        "files,dirs,bundles,collections"};
+        "files,dirs"};
     public static final String VERBOSE[] = {"v", "verbose", "1|2|3"};
-    public static final String SCHEMA[] = {"x", "xsd"};
+    public static final String SCHEMA[] = {"x", "xsd", "schema file"};
 
     public static final String LOCAL[] = {"L", "local"};
     public static final String VERSION[] = {"V", "version"};
@@ -65,4 +65,7 @@ public interface Flags {
 
     public static final String WHATIS_VERSION = "Display application "
         + "version.";
+
+    public static final String WHATIS_CONFIG = "Specify a configuration "
+        + "file to set the tool behavior.";
 }

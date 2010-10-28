@@ -13,8 +13,6 @@
 // $Id$
 package gov.nasa.pds.validate.crawler;
 
-import gov.nasa.pds.validate.target.Target;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 
 /**
- * Class that extends the CAS-Crawler to crawl a directory
+ * Class that crawls a given directory.
  *
  * @author mcayanan
  *
@@ -35,12 +33,27 @@ public class DirectoryCrawler  {
     private IOFileFilter fileFilter;
     private FileFilter directoryFilter;
 
+    /**
+     * Constructor.
+     *
+     */
     public DirectoryCrawler() {
         fileFilter = new WildcardOSFilter("*");
         directoryFilter = FileFilterUtils.directoryFileFilter();
 
     }
 
+    /**
+     * Crawl a given directory.
+     *
+     * @param directory A directory to crawl.
+     * @param getSubDirectories Set to 'false' to ignore sub-directories.
+     * @param fileFilters Specify file patterns to search for while crawling
+     * a directory.
+     *
+     * @return A list of files and sub-directories (if found and if
+     * getSubDirectories flag is 'true').
+     */
     public List<File> crawl(File directory, boolean getSubDirectories,
             List<String> fileFilters) {
         List<File> results = new ArrayList<File>();
