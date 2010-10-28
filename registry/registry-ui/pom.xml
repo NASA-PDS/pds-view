@@ -62,26 +62,23 @@
       </roles>
     </developer>   
     <developer>
-      <name>Joshua Ganderson</name>
-      <id>jagander</id>
-      <email>Joshua.Ganderson@nasa.gov</email>
-      <organization>NASA Ames Research Center</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-  </developers>
-
-  <contributors>
-    <contributor>
       <name>Paul Ramirez</name>
       <email>Paul.Ramirez@jpl.nasa.gov</email>
       <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
         <role>Developer</role>
       </roles>
-    </contributor>
-  </contributors>
+    </developer>
+    <developer>
+      <name>Joshua Ganderson</name>
+      <id>jagander</id>
+      <email>Joshua.Ganderson@nasa.gov</email>
+      <organization>NASA Ames Research Center</organization>
+      <roles>
+        <role>Former Developer</role>
+      </roles>
+    </developer>
+  </developers>
 
   <build>
     <plugins>
