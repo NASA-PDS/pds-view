@@ -18,14 +18,30 @@
 
 <document>
   <properties>
-    <title>Installation</title>
+    <title>Operation</title>
     <author email="Jordan.Padams@jpl.nasa.gov">Jordan Padams</author>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
-    <section name="Installation">
-      <p>TBD
+    <section name="Operation">
+      <p>The Sawmill software offers a web-based interface for configuring and generating reports with the software. The login screen is as follows:
+      </p>
+
+      <center>
+        <a href="../images/sawmill-login.jpg" target="_blank"><img alt="Sawmill Login Screen" src="../images/sawmill-login-scale.jpg" border="1" /></a><br/>
+        If viewing this document in online form, click the image for a larger version.
+      </center>
+
+      <p>Once the user is successfully authenticated, the are presented with the main screen as follows:
+      </p>
+
+      <center>
+        <a href="../images/sawmill-main.jpg" target="_blank"><img alt="Sawmill Main Screen" src="../images/sawmill-main-scale.jpg" border="1" /></a><br/>
+        If viewing this document in online form, click the image for a larger version.
+      </center>
+
+      <p>More details to come regarding how to configure and generate reports.
       </p>
     </section>
   </body>
