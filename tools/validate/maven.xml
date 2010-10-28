@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
+<!--
   Copyright 2010, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
@@ -24,12 +24,18 @@
   </postGoal>
 
   <goal name="pdf-setup">
-    <velocity:merge name="${maven.build.dir}/pdf/install/index.xml" 
-                    basedir="${basedir}/src/site/xdoc/install" 
+    <velocity:merge name="${maven.build.dir}/pdf/install/index.xml"
+                    basedir="${basedir}/src/site/xdoc/install"
                     template="index.xml.vm"/>
-    <velocity:merge name="${maven.build.dir}/pdf/operate/index.xml" 
-                    basedir="${basedir}/src/site/xdoc/operate" 
+    <velocity:merge name="${maven.build.dir}/pdf/operate/index.xml"
+                    basedir="${basedir}/src/site/xdoc/operate"
                     template="index.xml.vm"/>
+    <velocity:merge name="${maven.build.dir}/pdf/operate/index-unix.xml"
+                    basedir="${basedir}/src/site/xdoc/operate"
+                    template="index-unix.xml.vm"/>
+    <velocity:merge name="${maven.build.dir}/pdf/operate/index-win.xml"
+                    basedir="${basedir}/src/site/xdoc/operate"
+                    template="index-win.xml.vm"/>
   </goal>
 </project>
 

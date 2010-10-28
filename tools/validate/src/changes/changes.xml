@@ -24,6 +24,21 @@
 
   <body>
     <release version="0.1.0" date="2010-10-29" description="This release of the Registry Service is a component of the integrated release 1.0.0 of the PDS 2010 System.">
+      <action dev="mcayanan" type="add">
+        Add capability to validate a file or directory.
+      </action>
+      <action dev="mcayanan" type="add">
+        Add capability to validate against a user-specified schema instead of the internal, default schemas used by the tool.
+      </action>
+      <action dev="mcayanan" type="add">
+        Add capability to disable directory recursion.
+      </action>
+      <action dev="mcayanan" type="add">
+        Add capability to optionally set the tool behaviors through a configuration file.
+      </action>
+      <action dev="mcayanan" type="add">
+        Add capability to specify file filters to search for specific files in a target directory.
+      </action>
     </release>
   </body>
 </document>
