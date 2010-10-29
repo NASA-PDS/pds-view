@@ -28,7 +28,7 @@
         Enabled HTTP PUT and DELETE actions in OpenAM Policy definitions for Web URLs.
       </action>
       <action dev="hyunlee" type="update">
-        Restricted the access only to the memebers of the affiliate group.
+        Restricted the access only to the members of the affiliate group.
       </action>
     </release>
 

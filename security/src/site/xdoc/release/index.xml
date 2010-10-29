@@ -34,14 +34,16 @@
       </p>
 
       <ul>
-        <li>TBD</li>
+        <li>Added support for controlling access to HTTP PUT and DELETE methods.</li>
+        <li>Added support for controlling access based on group membership.</li>
       </ul>
 
       <p>The liens for this release are as follows:
       </p>
 
       <ul>
-        <li>TBD</li>
+        <li>Need to resolve an issue defining policy for multiple HTTP methods on the same URL.</li>
+        <li>Need to clean up the user list and define a procedure for synching this list with the personnel entries in the Registry Service.</li>
       </ul>
     </section>
 
