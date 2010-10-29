@@ -40,6 +40,6 @@ for %%i in ("%LIB_DIR%"\validate-*.jar) do set VALIDATE_JAR=%%i
 :: The special variable '%*' allows the arguments
 :: to be passed into the executable.
 
-java -Xms512m -jar "%VALIDATE_JAR%" %*
+java -Xss128m -jar "%VALIDATE_JAR%" %*
 
 :END
