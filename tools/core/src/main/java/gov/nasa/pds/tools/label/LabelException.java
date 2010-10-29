@@ -60,4 +60,8 @@ public class LabelException extends Exception {
   public Integer getColumnNumber() {
     return this.columnNumber;
   }
+  
+  public String getSource() {
+    return this.systemId;
+  }
 }

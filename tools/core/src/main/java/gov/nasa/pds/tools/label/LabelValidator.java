@@ -177,7 +177,7 @@ public class LabelValidator {
     System.out.println("Internal Mode: " + validator.isInternalMode());
     for (LabelException exception : container.getExceptions()) {
       System.out.println(exception.getExceptionType() + " "
-          + exception.getLineNumber() + " " + exception.getSystemId() + ": "
+          + exception.getLineNumber() + " " + exception.getSource() + ": "
           + exception.getMessage());
     }
     System.out.println("Exiting Main!");
