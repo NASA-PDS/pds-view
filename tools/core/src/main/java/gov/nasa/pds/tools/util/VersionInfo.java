@@ -57,7 +57,7 @@ public class VersionInfo {
 
   public final static String EXTENDED_TYPES = "Extended_Types";
 
-  public final static String SCHEMAS_DIR_PROP = "core.schemas.dir";
+  public final static String SCHEMA_DIR_PROP = "core.schema.dir";
 
   private final static Properties props = new Properties();
   private final static File schemaDir;
@@ -66,7 +66,7 @@ public class VersionInfo {
   static {
     try {
       props.load(VersionInfo.class.getResourceAsStream("/core.properties"));
-      String schemaDirString = System.getProperty(SCHEMAS_DIR_PROP);
+      String schemaDirString = System.getProperty(SCHEMA_DIR_PROP);
       internalMode = (schemaDirString == null) ? true : false;
       if (!internalMode) {
         schemaDir = new File(schemaDirString);
@@ -178,9 +178,6 @@ public class VersionInfo {
 
   public static String[] getResourceListing(String path)
       throws URISyntaxException, IOException {
-    if (!path.endsWith("/")) {
-      path += "/";
-    }
     URL dirURL = VersionInfo.class.getClassLoader().getResource(path);
     if (dirURL != null && dirURL.getProtocol().equals("file")) {
       /* A file path: easy enough */
@@ -194,6 +191,10 @@ public class VersionInfo {
        */
       String me = VersionInfo.class.getName().replace(".", "/") + ".class";
       dirURL = VersionInfo.class.getClassLoader().getResource(me);
+    }
+    
+    if (!path.endsWith("/")) {
+      path += "/";
     }
 
     if (dirURL.getProtocol().equals("jar")) {
