@@ -43,7 +43,7 @@ import gov.nasa.pds.harvest.util.XMLExtractor;
 public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
     private static Logger log = Logger.getLogger(
             PDSMetExtractor.class.getName());
-    private PDSMetExtractorConfig config;
+    protected PDSMetExtractorConfig config;
 
     /**
      * Default constructor

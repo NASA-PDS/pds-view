@@ -33,9 +33,17 @@ import org.w3c.dom.NodeList;
  *
  */
 public class InventoryTableReader implements InventoryReader, InventoryKeys {
-    public static String INVENTORY_FIELDS = "//*[starts-with("
-        + "name(),'Table_Record')]/*[starts-with(name(),'Table_Field')]";
-    public static String DATA_FILE = "//File_Area/File/file_name";
+    public static String FILE_SPEC_FIELD_NUM_XPATH = "//*[starts-with("
+        + "name(),'Table_Record')]/"
+        + "Table_Field_File_Specification_Name/field_number";
+
+    public static String LIDVID_FIELD_NUM_XPATH =
+        "//Table_Record_Inventory_LIDVID/Table_Field_LIDVID/field_number | "
+        + "//Table_Record_Inventory_LID/Table_Field_LID/field_number";
+
+    public static String DATA_FILE_XPATH = "//File_Area/File/file_name";
+
+    private int lidvidFieldLocation;
     private int filenameFieldLocation;
     private int checksumFieldLocation;
     private BufferedReader reader;
@@ -55,31 +63,22 @@ public class InventoryTableReader implements InventoryReader, InventoryKeys {
     throws InventoryReaderException {
         filenameFieldLocation = 0;
         checksumFieldLocation = 0;
+        lidvidFieldLocation = 0;
         parentDirectory = file.getParent();
         try {
             XMLExtractor extractor = new XMLExtractor(file);
             extractor.setDefaultNamespace(context.getDefaultNamepsace());
             extractor.setNamespaceContext(context);
             File dataFile = new File(FilenameUtils.separatorsToSystem(
-                    extractor.getValueFromDoc(DATA_FILE)));
+                    extractor.getValueFromDoc(DATA_FILE_XPATH)));
             if(!dataFile.isAbsolute()) {
                 dataFile = new File(file.getParent(), dataFile.toString());
             }
             reader = new BufferedReader(new FileReader(dataFile));
-            NodeList fields = extractor.getNodesFromDoc(INVENTORY_FIELDS);
-            for(int i=0; (i < fields.getLength()) && (fields != null); i++) {
-                String fieldName = extractor.getValueFromItem("field_name",
-                        fields.item(i));
-                if(FILE_SPEC.equals(fieldName)) {
-                    filenameFieldLocation = Integer.parseInt(
-                            extractor.getValueFromItem(
-                                    "field_number", fields.item(i)));
-                } else if(CHECKSUM.equals(fieldName)) {
-                    checksumFieldLocation = Integer.parseInt(
-                            extractor.getValueFromItem(
-                                    "field_number", fields.item(i)));
-                }
-            }
+            filenameFieldLocation = Integer.parseInt(
+                    extractor.getValueFromDoc(FILE_SPEC_FIELD_NUM_XPATH));
+            lidvidFieldLocation = Integer.parseInt(
+                    extractor.getValueFromDoc(LIDVID_FIELD_NUM_XPATH));
         } catch (Exception e) {
             throw new InventoryReaderException(e.getMessage());
         }
@@ -118,7 +117,7 @@ public class InventoryTableReader implements InventoryReader, InventoryKeys {
             throw new InventoryReaderException(i.getMessage());
         }
         File file = null;
-        String checksum = "";
+        String lidvid = "";
         String tokens[] = line.split(",");
         if(filenameFieldLocation != 0) {
             file = new File(FilenameUtils.separatorsToSystem(
@@ -127,10 +126,10 @@ public class InventoryTableReader implements InventoryReader, InventoryKeys {
                 file = new File(parentDirectory, file.toString());
             }
         }
-        if(checksumFieldLocation != 0)
-            checksum = tokens[checksumFieldLocation-1].trim();
+        if(lidvidFieldLocation != 0)
+            lidvid = tokens[lidvidFieldLocation-1].trim();
 
-        return new InventoryEntry(file, checksum);
+        return new InventoryEntry(file, null, lidvid);
     }
 
     public static void main(String args[]) {

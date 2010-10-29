@@ -23,6 +23,7 @@ import gov.nasa.pds.harvest.context.InventoryTableReader;
 import gov.nasa.pds.harvest.context.InventoryXMLReader;
 import gov.nasa.pds.harvest.crawler.metadata.CoreXPaths;
 import gov.nasa.pds.harvest.crawler.metadata.PDSCoreMetKeys;
+import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSCollectionMetExtractor;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractor;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractorConfig;
 import gov.nasa.pds.harvest.crawler.status.Status;
@@ -58,6 +59,8 @@ public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
     private PDSMetExtractorConfig metExtractorConfig;
     private XMLExtractor xmlExtractor;
 
+    private String objectType;
+
     /**
      * Constructor
      *
@@ -66,6 +69,7 @@ public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
      */
     public HarvestCrawler(PDSMetExtractorConfig extractorConfig) {
         this.xmlExtractor = null;
+        this.objectType = "";
         this.metExtractorConfig = extractorConfig;
         String[] reqMetadata = {PRODUCT_VERSION,
                                 LOGICAL_ID,
@@ -184,8 +188,12 @@ public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
      */
     @Override
     protected Metadata getMetadataForProduct(File product) {
-        PDSMetExtractor metExtractor =
-            new PDSMetExtractor(metExtractorConfig);
+        PDSMetExtractor metExtractor = null;
+        if(objectType.equals("Collection_Context")) {
+            metExtractor = new PDSCollectionMetExtractor(metExtractorConfig);
+        } else {
+            metExtractor = new PDSMetExtractor(metExtractorConfig);
+        }
         try {
             return metExtractor.extractMetadata(product);
         } catch (MetExtractionException m) {
@@ -208,6 +216,7 @@ public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
         log.log(new ToolsLogRecord(ToolsLevel.INFO, "Begin processing.",
                 product));
         boolean passFlag = true;
+        objectType = "";
         try {
             xmlExtractor = new XMLExtractor(product);
             xmlExtractor.setDefaultNamespace(
@@ -232,7 +241,7 @@ public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
         }
         else  {
             try {
-                String objectType = xmlExtractor.getValueFromDoc(
+                objectType = xmlExtractor.getValueFromDoc(
                         CoreXPaths.map.get(OBJECT_TYPE));
                 if("".equals(objectType)) {
                     log.log(new ToolsLogRecord(ToolsLevel.SKIP,

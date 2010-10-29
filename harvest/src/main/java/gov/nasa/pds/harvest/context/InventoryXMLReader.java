@@ -80,19 +80,21 @@ public class InventoryXMLReader implements InventoryReader, InventoryKeys {
         Node entry = memberEntries.item(index++);
         File file = null;
         String checksum = null;
+        String lidvid = null;
         try {
             file = new File(
                     FilenameUtils.separatorsToSystem(
                     extractor.getValueFromItem(FILE_SPEC, entry))
                     );
             checksum = extractor.getValueFromItem(CHECKSUM, entry);
+            lidvid = extractor.getValueFromItem(IDENTITY_REFERENCE, entry);
         } catch (XPathExpressionException x) {
             throw new InventoryReaderException(x.getMessage());
         }
         if(!file.isAbsolute()) {
             file = new File(parentDirectory, file.toString());
         }
-        return new InventoryEntry(file, checksum);
+        return new InventoryEntry(file, checksum, lidvid);
     }
 
     public static void main(String args[]) {
