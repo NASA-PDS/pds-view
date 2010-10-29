@@ -108,14 +108,14 @@ C:\&gt; Validate &lt;targets&gt; &lt;command-line arguments&gt;
         </p>
 
         <source>
-java -Xss512m -jar ${VALIDATE_JAR} "$@"
+java -Xss256m -jar ${VALIDATE_JAR} "$@"
         </source>
 
         <p>Add the <i>core.schema.dir</i> Java system property using the <i>-D</i> Java flag option and set it to the location of the schemas. For example, making the following change to the launch script allows the Validate Tool to load core schemas from a directory named <i>/home/pds/schemas</i>:
         </p>
 
         <source>
-java -Dcore.schema.dir="/home/pds/schemas" -Xss512m -jar ${VALIDATE_JAR} "$@"
+java -Dcore.schema.dir="/home/pds/schemas" -Xss256m -jar ${VALIDATE_JAR} "$@"
         </source>
       </subsection>
 
