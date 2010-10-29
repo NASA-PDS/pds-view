@@ -108,6 +108,9 @@ CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
 
       <p>The <i>CATALINA_OPTS</i> environment variable is loaded from the Apache Tomcat startup scripts. If this value is not set, the Derby database home will default to the current working directory where the Apache Tomcat server was launched.
       </p>
+
+      <p>Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping_Service">Ping Service</a> portion of the Operation section.
+      </p>
     </section>
 
     <section name="Configuration">
