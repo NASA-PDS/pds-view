@@ -72,9 +72,16 @@ Registry Database home will be set to wherever you start Tomcat from.
 
 C. Jar 
 
-To create the jar to use as a dependency within other projects simply run 
+To create the JAR to use as a dependency within other projects simply run 
 "mvn compile jar:jar". This will create the target/registry-service.jar which 
-can be used to integrate with other libraries.
+can be used to integrate with other libraries. Perform the following command 
+to deploy the JAR file to the Maven repository:
+
+mvn deploy:deploy-file -DgroupId=gov.nasa.pds.2010.registry \
+-DartifactId=registry-service -Dversion=X.X.X -Dpackaging=jar \
+-Dfile=target/registry-service-X.X.X.jar -DpomFile=pom.xml \
+-Drepository=pds-repo \
+-Durl=sftp://starcell.jpl.nasa.gov/usr/local/svn/apache2/htdocs/maven2
 
 Eclipse
 =======
