@@ -37,6 +37,9 @@
          Updated the Harvest tool to support table-formatted collection files.
       </action>
       <action dev="mcayanan" type="update">
+         Updated the Harvest tool to register associations when processing a table-formatted collection file.
+      </action>
+      <action dev="mcayanan" type="update">
          Updated the Harvest policy file to be able to specify namespaces and bundle files. Tag names in general were also updated. See the user guide for the latest and greatest description of the policy file.
       </action>
       <action dev="mcayanan" type="update">
