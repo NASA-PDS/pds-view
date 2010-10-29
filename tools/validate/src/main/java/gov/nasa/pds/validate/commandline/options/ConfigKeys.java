@@ -27,5 +27,5 @@ public interface ConfigKeys {
     public static final String VERBOSEKEY = "validate.verbose";
     public static final String SCHEMAKEY = "validate.schema";
     public static final String CATALOGKEY = "validate.catalog";
-    public static final String RECURSEKEY = "validate.recurse";
+    public static final String LOCALKEY = "validate.local";
 }

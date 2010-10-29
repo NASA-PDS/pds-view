@@ -252,8 +252,12 @@ public class ValidateLauncher implements Flags, ConfigKeys {
                 list = Utility.removeQuotes(list);
                 setSchemas(list);
             }
-            if(config.containsKey(RECURSEKEY)) {
-                setTraverse(config.getBoolean(RECURSEKEY));
+            if(config.containsKey(LOCALKEY)) {
+                if(config.getBoolean(LOCALKEY) == true) {
+                    setTraverse(false);
+                } else {
+                    setTraverse(true);
+                }
             }
         } catch(Exception e) {
             throw new ConfigurationException(e.getMessage());
@@ -361,7 +365,8 @@ public class ValidateLauncher implements Flags, ConfigKeys {
                 + df.format(date));
         report.addConfiguration("   Core Schemas             "
                 + VersionInfo.getSchemas());
-
+        report.addConfiguration("   Model Version            "
+                + VersionInfo.getModelVersion());
         report.addParameter("   Target(s)                "
                     + files);
         if(!schemas.isEmpty()) {
