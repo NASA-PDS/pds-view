@@ -31,7 +31,7 @@ if [ ! -f ${LIB_DIR}/validate-*.jar ]; then
     exit 1
 fi
 
-VALIDATE_JAR=`ls ${LIB_DIR}/vtool-*.jar`
+VALIDATE_JAR=`ls ${LIB_DIR}/validate-*.jar`
 
 # Executes Validate Tool via the executable jar file
 # Arguments are passed in to the tool via '$@'
