@@ -178,6 +178,9 @@ public class VersionInfo {
 
   public static String[] getResourceListing(String path)
       throws URISyntaxException, IOException {
+    if (!path.endsWith("/")) {
+      path += "/";
+    }
     URL dirURL = VersionInfo.class.getClassLoader().getResource(path);
     if (dirURL != null && dirURL.getProtocol().equals("file")) {
       /* A file path: easy enough */
@@ -204,7 +207,7 @@ public class VersionInfo {
       while (entries.hasMoreElements()) {
         String name = entries.nextElement().getName();
         if (name.startsWith(path)) { // filter according to the path
-          String entry = name.substring(path.length() + 1);
+          String entry = name.substring(path.length());
           if (entry.length() != 0 && !"".equals(entry.trim())) {
             int checkSubdir = entry.indexOf("/");
             if (checkSubdir >= 0) {
