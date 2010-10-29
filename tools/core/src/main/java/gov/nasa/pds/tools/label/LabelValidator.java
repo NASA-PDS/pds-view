@@ -32,7 +32,6 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 
 import net.sf.saxon.xpath.XPathEvaluator;
@@ -51,10 +50,15 @@ public class LabelValidator {
   private Map<String, Boolean> configurations = new HashMap<String, Boolean>();
   private Map<String, Map<String, Schema>> schemas = new HashMap<String, Map<String, Schema>>();
   private String modelVersion;
+  private final static Boolean internalMode;
 
   public static final String SCHEMA_CHECK = "gov.nasa.pds.tools.label.SchemaCheck";
 
   private static final String PDS_DEFAULT_NAMESPACE = "http://pds.nasa.gov/schema/pds4/pds";
+
+  static {
+    internalMode = VersionInfo.isInternalMode();
+  }
 
   public LabelValidator() {
     this.configurations.put(SCHEMA_CHECK, true);
@@ -72,6 +76,9 @@ public class LabelValidator {
     if (schema == null) {
       SchemaFactory factory = SchemaFactory
           .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+      if (internalMode) {
+        factory.setResourceResolver(new ModelResourceResolver(modelVersion));
+      }
       schema = factory.newSchema(this.getSchemaSources(modelVersion,
           productClass).toArray(new StreamSource[0]));
       modelMap.put(productClass, schema);
@@ -82,26 +89,28 @@ public class LabelValidator {
   private List<StreamSource> getSchemaSources(String modelVersion,
       String productClass) {
     List<StreamSource> sources = new ArrayList<StreamSource>();
-    // Add in base types
-    sources.add(new StreamSource(LabelValidator.class.getResourceAsStream("/"
-        + VersionInfo.SCHEMA_DIR + "/" + modelVersion + "/"
-        + VersionInfo.BASE_TYPES + "_" + modelVersion + ".xsd"),
-        VersionInfo.BASE_TYPES + "_" + modelVersion + ".xsd"));
-    // Add in extended types
-    sources.add(new StreamSource(LabelValidator.class.getResourceAsStream("/"
-        + VersionInfo.SCHEMA_DIR + "/" + modelVersion + "/"
-        + VersionInfo.EXTENDED_TYPES + "_" + modelVersion + ".xsd"),
-        VersionInfo.EXTENDED_TYPES + "_" + modelVersion + ".xsd"));
-    // Add in product schema
-    sources.add(new StreamSource(LabelValidator.class.getResourceAsStream("/"
-        + VersionInfo.SCHEMA_DIR + "/" + modelVersion + "/" + productClass
-        + "_" + modelVersion + ".xsd"), productClass + "_" + modelVersion
-        + ".xsd"));
+    // Load product schema
+    StreamSource productSource;
+    if (internalMode) {
+      productSource = new StreamSource(LabelValidator.class
+          .getResourceAsStream(VersionInfo.getSchemaReference(modelVersion,
+              productClass)), VersionInfo.getSchemaName(modelVersion,
+          productClass));
+    } else {
+      productSource = new StreamSource(new File(VersionInfo.getSchemaReference(
+          modelVersion, productClass)));
+    }
+    sources.add(productSource);
     return sources;
   }
 
-  private String getProductClass(Document labelDocument)
-      throws XPathExpressionException {
+  private String getProductClass(File labelFile)
+      throws XPathExpressionException, ParserConfigurationException,
+      SAXException, IOException {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setNamespaceAware(true);
+    DocumentBuilder parser = dbf.newDocumentBuilder();
+    Document labelDocument = parser.parse(labelFile);
     XPathEvaluator xpath = new XPathEvaluator();
     xpath.getStaticContext().setDefaultElementNamespace(PDS_DEFAULT_NAMESPACE);
     return xpath.evaluate("//product_class/text()", labelDocument);
@@ -110,31 +119,24 @@ public class LabelValidator {
   public void validate(ExceptionContainer container, File labelFile)
       throws SAXException, IOException, ParserConfigurationException,
       XPathExpressionException {
-    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-    dbf.setNamespaceAware(true);
-    DocumentBuilder parser = dbf.newDocumentBuilder();
-    Document labelDocument = parser.parse(labelFile);
-    String productClass = this.getProductClass(labelDocument);
+    String productClass = this.getProductClass(labelFile);
+    if (productClass == null || "".equals(productClass.trim())) {
+      container.addException(new LabelException(ExceptionType.ERROR,
+          "Could not find product class for label.", null, labelFile
+              .getAbsolutePath(), -1, -1));
+      return;
+    }
     Schema schema = this.getSchema(modelVersion, productClass);
-    this.validate(container, labelDocument, schema);
+    this.validate(container, labelFile, schema);
   }
 
   public void validate(ExceptionContainer container, File labelFile,
       Schema schema) throws SAXException, IOException,
       ParserConfigurationException {
-    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-    dbf.setNamespaceAware(true);
-    DocumentBuilder parser = dbf.newDocumentBuilder();
-    Document labelDocument = parser.parse(labelFile);
-    this.validate(container, labelDocument, schema);
-  }
-
-  public void validate(ExceptionContainer container, Document labelDocument,
-      Schema schema) throws SAXException, IOException {
     if (performsSchemaValidation()) {
       Validator validator = schema.newValidator();
       validator.setErrorHandler(new LabelErrorHandler(container));
-      validator.validate(new DOMSource(labelDocument));
+      validator.validate(new StreamSource(labelFile));
     }
   }
 
@@ -163,12 +165,19 @@ public class LabelValidator {
     this.configurations.put(key, value);
   }
 
+  public Boolean isInternalMode() {
+    return internalMode;
+  }
+
   public static void main(String[] args) throws Exception {
     LabelValidator validator = new LabelValidator();
     ExceptionContainer container = new ExceptionContainer();
     validator.validate(container, new File(args[0]));
+    System.out.println("Model Version: " + validator.getModelVersion());
+    System.out.println("Internal Mode: " + validator.isInternalMode());
     for (LabelException exception : container.getExceptions()) {
-      System.out.println(exception.getExceptionType() + ": "
+      System.out.println(exception.getExceptionType() + " "
+          + exception.getLineNumber() + " " + exception.getSystemId() + ": "
           + exception.getMessage());
     }
     System.out.println("Exiting Main!");

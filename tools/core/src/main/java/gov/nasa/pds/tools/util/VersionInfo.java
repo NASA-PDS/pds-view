@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -51,16 +52,35 @@ public class VersionInfo {
   public final static String MODEL_VERSION = "model.version";
 
   public final static String SCHEMA_DIR = "schema";
-  
+
   public final static String BASE_TYPES = "Base_Types";
-  
+
   public final static String EXTENDED_TYPES = "Extended_Types";
 
+  public final static String SCHEMAS_DIR_PROP = "core.schemas.dir";
+
   private final static Properties props = new Properties();
+  private final static File schemaDir;
+  private final static Boolean internalMode;
 
   static {
     try {
       props.load(VersionInfo.class.getResourceAsStream("/core.properties"));
+      String schemaDirString = System.getProperty(SCHEMAS_DIR_PROP);
+      internalMode = (schemaDirString == null) ? true : false;
+      if (!internalMode) {
+        schemaDir = new File(schemaDirString);
+        if (!schemaDir.exists()) {
+          throw new RuntimeException("Schema directory does not exist: "
+              + schemaDirString);
+        }
+        if (!schemaDir.isDirectory()) {
+          throw new RuntimeException("Schema directory is not a directory: "
+              + schemaDirString);
+        }
+      } else {
+        schemaDir = null;
+      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -91,17 +111,56 @@ public class VersionInfo {
   }
 
   public static List<String> getSchemas() {
-    return Arrays.asList(getSafeResourceListing(SCHEMA_DIR + "/"
-        + getModelVersion()));
+    if (internalMode) {
+      return Arrays.asList(getSafeResourceListing(SCHEMA_DIR + "/"
+          + getModelVersion()));
+    } else {
+      return getDirectoryListingNames(new File(schemaDir, getModelVersion()));
+    }
+  }
+
+  public static List<String> getDirectoryListingNames(File directory) {
+    List<String> names = new ArrayList<String>();
+    for (File file : getDirectoryListing(directory)) {
+      names.add(file.getName());
+    }
+    return names;
+  }
+
+  public static File[] getDirectoryListing(File directory) {
+    return directory.listFiles();
   }
 
   public static List<String> getSchemas(String modelVersion) {
-    return Arrays
-        .asList(getSafeResourceListing(SCHEMA_DIR + "/" + modelVersion));
+    if (internalMode) {
+      return Arrays.asList(getSafeResourceListing(SCHEMA_DIR + "/"
+          + modelVersion));
+    } else {
+      return getDirectoryListingNames(new File(schemaDir, modelVersion));
+    }
   }
-  
+
+  public static String getSchemaReference(String modelVersion,
+      String productClass) {
+    if (internalMode) {
+      return "/" + SCHEMA_DIR + "/" + modelVersion + "/"
+          + getSchemaName(modelVersion, productClass);
+    } else {
+      return new File(new File(schemaDir, modelVersion), getSchemaName(
+          modelVersion, productClass)).getAbsolutePath();
+    }
+  }
+
+  public static String getSchemaName(String modelVersion, String productClass) {
+    return productClass + "_" + modelVersion + ".xsd";
+  }
+
   public static List<String> getSupportedModels() {
-    return Arrays.asList(getSafeResourceListing(SCHEMA_DIR));
+    if (internalMode) {
+      return Arrays.asList(getSafeResourceListing(SCHEMA_DIR));
+    } else {
+      return getDirectoryListingNames(schemaDir);
+    }
   }
 
   private static String[] getSafeResourceListing(String path) {
@@ -161,10 +220,15 @@ public class VersionInfo {
         + dirURL);
   }
 
+  public static Boolean isInternalMode() {
+    return internalMode;
+  }
+
   public static void main(String[] args) throws Exception {
+    System.out.println(VersionInfo.isInternalMode());
     System.out.println(VersionInfo.getSchemas());
-    System.out.println(VersionInfo.getSchemas(VersionInfo.getModelVersion()));
     System.out.println(VersionInfo.getSupportedModels());
+    System.out.println(VersionInfo.getSchemaReference(args[0], args[1]));
   }
 
 }
