@@ -204,13 +204,15 @@ public class VersionInfo {
       while (entries.hasMoreElements()) {
         String name = entries.nextElement().getName();
         if (name.startsWith(path)) { // filter according to the path
-          String entry = name.substring(path.length());
-          int checkSubdir = entry.indexOf("/");
-          if (checkSubdir >= 0) {
-            // if it is a subdirectory, we just return the directory name
-            entry = entry.substring(0, checkSubdir);
+          String entry = name.substring(path.length() + 1);
+          if (entry.length() != 0 && !"".equals(entry.trim())) {
+            int checkSubdir = entry.indexOf("/");
+            if (checkSubdir >= 0) {
+              // if it is a subdirectory, we just return the directory name
+              entry = entry.substring(0, checkSubdir);
+            }
+            result.add(entry);
           }
-          result.add(entry);
         }
       }
       return result.toArray(new String[result.size()]);
