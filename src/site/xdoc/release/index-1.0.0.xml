@@ -28,9 +28,53 @@
       </p>
 
       <ul>
+        <li><a href="#Reference_Documents">Reference Documents</a></li>
+        <li><a href="#Capabilities">Capabilities</a></li>
+        <li><a href="#Liens">Liens</a></li>
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#InstallationOperation">Installation/Operation</a></li>
       </ul>
+    </section>
+
+    <section name="Reference Documents">
+      <p>This section details the controlling and applicable documents referenced for this release. The controlling documents are as follows:
+      </p>
+
+      <ul>
+        <li>Planetary Data System (PDS) Level 1, 2 and 3 Requirements, March 26, 2010.</li>
+        <li>Planetary Data System (PDS) 2010 Project Plan, February 2010.</li>
+        <li>Planetary Data System (PDS) 2010 System Architecture Specification, Version 1.1, May 5, 2010.</li>
+        <li>Planetary Data System (PDS) 2010 Operations Concept, February 2010.</li>
+        <li>Planetary Data System (PDS) General System Software Requirements Document (SRD), Version 0.1, September 27, 2010.</li>
+        <li>Planetary Data System (PDS) Harvest Tool Software Requirements and Design Document (SRD/SDD), Version 0.4, September 28, 2010.</li>
+        <li>Planetary Data System (PDS) Preparation Tools Software Requirements and Design Document (SRD/SDD), Version 0.1, October 6, 2010.</li>
+        <li>Planetary Data System (PDS) Registry Service Software Requirements and Design Document (SRD/SDD), Version 0.6, September 28, 2010.</li>
+        <li>Planetary Data System (PDS) Report Service Software Requirements and Design Document (SRD/SDD), Version 0.7, September 28, 2010.</li>
+        <li>Planetary Data System (PDS) Security Service Software Requirements and Design Document (SRD/SDD), Version 0.6, September 28, 2010.</li>
+      </ul>
+
+      <p>The applicable documents are as follows:
+      </p>
+
+      <ul>
+        <li>NASA Planetary Data System (PDS) 2010 System Build I Test Plan</li>
+      </ul>
+    </section>
+
+    <section name="Capabilities">
+      <p>This section details the new, modified and corrected capabilities that comprise this release. They are summarized here for a system-level view. A more detailed list of capabilities can be found in the release notes and change logs for each component. Since this is essentially the first release, all of the capabilities are considered new. They are as follows:
+      </p>
+
+      <ul>
+        <li>Support for registration of products (e.g., bundles, collections, datas, documents, etc.), associations and services.</li>
+        <li>Support for query and retrieval of products and associations. Services can also be retrieved.</li>
+        <li>
+      </ul>
+    </section>
+
+    <section name="Liens">
+      <p>This section details the liens against the capabilities that have yet to be implemented or are partially implemented. In lieu of listing the liens by requirement they have been summarized.
+      </p>
     </section>
 
     <section name="System Requirements">
@@ -43,18 +87,18 @@
       </p>
 
       <ul>
-        <li>Harvest - 0.2.0</li>
-        <li>Preparation</li>
+        <li>Harvest Tool - Release 0.2.0</li>
+        <li>Preparation Tools</li>
         <ul>
-          <li>Validate Tool - 0.1.0</li>
+          <li>Validate Tool - Release 0.1.0</li>
         </ul>
         <li>Registry</li>
         <ul>
           <li>Registry Service - 0.5.0</li>
           <li>Registry User Interface - 0.2.0</li>
         </ul>
-        <li>Report - 0.1.0</li>
-        <li>Security - 0.2.0</li>
+        <li>Report Service - 0.1.0</li>
+        <li>Security Service - 0.2.0</li>
       </ul>
 
       <p>The following diagram details where the major components of this release should be installed in the Operations environment and gives a very high-level view of the interfaces between the components and system resources:

@@ -36,13 +36,13 @@
     <menu name="Software Documentation">
       <item name="About Report Service" href="index.html"/>
       <item name="Release Notes" href="release/index.html"/>
-      <item name="Design (pdf)" href="docs/pds2010_report_design.pdf"/>
       <item name="Installation" href="install/index.html"/>
       <item name="Operation" href="operate/index.html"/>
     </menu>
 
     <menu name="Download">
       <item name="Report Service Guide (pdf)" href="${project.artifactId}-${project.version}.pdf"/>
+      <item name="Report Service Design (pdf)" href="docs/pds2010_report_design.pdf"/>
     </menu>
 
     <menu ref="reports"/>
