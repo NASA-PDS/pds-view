@@ -352,25 +352,35 @@ Time                Wed, Sep 29 2010 at 02:02:27 PM
 Registry Location   http://localhost:8080/registry-service
 
 INFO:   [C:\pds4\geo\BUGLAB_Archive_Bundle.xml] Begin processing.
-SKIP:   [C:\pds4\geo\BUGLAB_Archive_Bundle.xml] 'archive bundle' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\BUGLAB_Archive_Bundle.xml] 'archive bundle' is not 
+an object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\BUGLAB_Archive_Bundle.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\BUGLAB_Archive_Bundle.xml] 'XML_Schema' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\schema\BUGLAB_Archive_Bundle.xml] 'XML_Schema' is not 
+an object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\BUGLAB_Collection.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\BUGLAB_Collection.xml] 'XML_Schema' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\schema\BUGLAB_Collection.xml] 'XML_Schema' is not an 
+object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\BUGLAB_Schema_Collection.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\BUGLAB_Schema_Collection.xml] 'collection' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\schema\BUGLAB_Schema_Collection.xml] 'collection' is 
+not an object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\BUG_BDRF_product.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\BUG_BDRF_product.xml] 'XML_Schema' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\schema\BUG_BDRF_product.xml] 'XML_Schema' is not an 
+object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\BUG_Document_Set.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\BUG_Document_Set.xml] 'XML_Schema' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\schema\BUG_Document_Set.xml] 'XML_Schema' is not an 
+object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\Data_Dict_2010-04-22f.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\Data_Dict_2010-04-22f.xml] 'XML_Schema' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\schema\Data_Dict_2010-04-22f.xml] 'XML_Schema' is not 
+an object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\Data_Dict_commpds3_2010-04-22f.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\Data_Dict_commpds3_2010-04-22f.xml] 'XML_Schema' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\schema\Data_Dict_commpds3_2010-04-22f.xml] 'XML_Schema' 
+is not an object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\Data_Types_2010-04-22f.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\Data_Types_2010-04-22f.xml] 'XML_Schema' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\schema\Data_Types_2010-04-22f.xml] 'XML_Schema' is not an 
+object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\Product_XML_Schema.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\Product_XML_Schema.xml] 'XML_Schema' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\schema\Product_XML_Schema.xml] 'XML_Schema' is not an 
+object type found in the policy file.
 INFO:   [C:\pds4\geo\mars_analog_data\aref_235_450.xml] Begin processing.
 SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_450.xml] Succesfully registered product: \
 URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_450::1.0
@@ -405,30 +415,38 @@ INFO:   [C:\pds4\geo\mars_analog_data\aref_235_990.xml] Begin processing.
 SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_990.xml] Succesfully registered product: \
 URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_990::1.0
 INFO:   [C:\pds4\geo\mars_analog_data\MAS_Data_Collection.xml] Begin processing.
-SKIP:   [C:\pds4\geo\mars_analog_data\MAS_Data_Collection.xml] 'collection' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\mars_analog_data\MAS_Data_Collection.xml] 'collection' is not 
+an object type found in the policy file.
 INFO:   [C:\pds4\geo\geometry\BUGLAB_Geometry_Collection.xml] Begin processing.
-SKIP:   [C:\pds4\geo\geometry\BUGLAB_Geometry_Collection.xml] 'collection' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\geometry\BUGLAB_Geometry_Collection.xml] 'collection' is not 
+an object type found in the policy file.
 INFO:   [C:\pds4\geo\geometry\geominfo.xml] Begin processing.
-SKIP:   [C:\pds4\geo\geometry\geominfo.xml] 'document_set' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\geometry\geominfo.xml] 'document_set' is not an object type 
+found in the policy file.
 INFO:   [C:\pds4\geo\context\BUGLAB_Context_Collection.xml] Begin processing.
-SKIP:   [C:\pds4\geo\context\BUGLAB_Context_Collection.xml] 'collection' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\context\BUGLAB_Context_Collection.xml] 'collection' is not an 
+object type found in the policy file.
 INFO:   [C:\pds4\geo\context\bug_instrument.xml] Begin processing.
-SKIP:   [C:\pds4\geo\context\bug_instrument.xml] 'document_set' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\context\bug_instrument.xml] 'document_set' is not an object 
+type found in the policy file.
 INFO:   [C:\pds4\geo\context\bug_laboratory.xml] Begin processing.
-SKIP:   [C:\pds4\geo\context\bug_laboratory.xml] 'document_set' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\context\bug_laboratory.xml] 'document_set' is not an object 
+type found in the policy file.
 INFO:   [C:\pds4\geo\context\bug_mars_data_set.xml] Begin processing.
-SKIP:   [C:\pds4\geo\context\bug_mars_data_set.xml] 'document_set' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\context\bug_mars_data_set.xml] 'document_set' is not an object 
+type found in the policy file.
 INFO:   [C:\pds4\geo\about\aareadme.xml] Begin processing.
-SKIP:   [C:\pds4\geo\about\aareadme.xml] 'document_set' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\about\aareadme.xml] 'document_set' is not an object type found 
+in the policy file.
 INFO:   [C:\pds4\geo\about\BUGLAB_About_Collection.xml] Begin processing.
-SKIP:   [C:\pds4\geo\about\BUGLAB_About_Collection.xml] 'collection' is not an object type found in the policy file.
+SKIP:   [C:\pds4\geo\about\BUGLAB_About_Collection.xml] 'collection' is not an object 
+type found in the policy file.
 
 Summary:
 
 11 of 30 files are candidate products, 19 skipped
 11 of 11 candidate products registered.
 0 of 0 associations registered.
-
 
 End of Log
       </source>
