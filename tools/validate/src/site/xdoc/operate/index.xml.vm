@@ -126,7 +126,7 @@ C:\&gt; Validate &lt;targets&gt; &lt;command-line arguments&gt;
         </p>
         
         <source>
-[node:~] Validate product.xml
+% Validate product.xml
         </source>
         
         <p><b><i>Validating a Target Directory</i></b></p>
@@ -135,7 +135,7 @@ C:\&gt; Validate &lt;targets&gt; &lt;command-line arguments&gt;
         </p>
         
         <source>
-[node:~] Validate /home/pds/collection
+% Validate /home/pds/collection
         </source>
       
         <p><b><i>Validating Against User-Specified Schemas</i></b></p>
@@ -144,14 +144,14 @@ C:\&gt; Validate &lt;targets&gt; &lt;command-line arguments&gt;
         </p>
         
         <source>
-[node:~] Validate proudct.xml -x product.xsd
+% Validate proudct.xml -x product.xsd
         </source>
         
         <p>The following command demonstrates the validation of a set of target files against a set of user-specified schemas:
         </p>
         
         <source>
-[node:~] Validate producta.xml, productb.xml -x producta.xsd, productb.xsd
+% Validate producta.xml, productb.xml -x producta.xsd, productb.xsd
         </source>
         
         <p><b><i>Validating Specific Files in a Target Directory</i></b></p>
@@ -160,7 +160,7 @@ C:\&gt; Validate &lt;targets&gt; &lt;command-line arguments&gt;
         </p>
         
         <source>
-[node:~] Validate /home/pds/collection -e "*.xml"
+% Validate /home/pds/collection -e "*.xml"
         </source>
         
         <p>Note: File patterns should be surrounded in quotes to avoid having the system shell mistakingly interpreting them. In addition, pattern matching is case-insensitve in Windows, but case-sensitive for other systems.
@@ -172,7 +172,7 @@ C:\&gt; Validate &lt;targets&gt; &lt;command-line arguments&gt;
         </p>
         
         <source>
-[node:~] Validate /home/pds/collection -L
+% Validate /home/pds/collection -L
         </source>
         
         <p><b><i>Changing Tool Behaviors With The Configuration File</i></b></p>
@@ -184,7 +184,7 @@ C:\&gt; Validate &lt;targets&gt; &lt;command-line arguments&gt;
         </p>
         
         <source>
-[node:~] Validate -c config.txt
+% Validate -c config.txt
         </source>
       </subsection>
       
@@ -195,19 +195,19 @@ C:\&gt; Validate &lt;targets&gt; &lt;command-line arguments&gt;
         <p>To specify targets implicitly, it is best to specify them first on the command-line before any other command-line option flags. The following command demonstrates the validation of an implicitly defined, single target product label:
         </p>
         <source>
-[node:~] Validate product.xml
+% Validate product.xml
         </source>
         
         <p>The following command demonstrates the validation of implicitly defined, multiple targets:
         </p>
         <source>
-[node:~] Validate product.xml, /home/pds/collection
+% Validate product.xml, /home/pds/collection
         </source>
         
         <p><b>Implicit targets should not be specified after option flags that allow multiple arguments (see example below). Unexpected results can occur.</b>
         </p>
         <source>
-[node:~] Validate -x product.xsd product.xml
+% Validate -x product.xsd product.xml
         </source>
         
         <p>In this example, the Validate Tool will inadvertently treat the implicit target, <i>product.xml</i>, as a schema file.
@@ -220,7 +220,7 @@ C:\&gt; Validate &lt;targets&gt; &lt;command-line arguments&gt;
         </p> 
         
         <source>
-[node:~] Validate producta.xml, productb.xml -t productc.xml, /home/pds/collection
+% Validate producta.xml, productb.xml -t productc.xml, /home/pds/collection
         </source>
         
         <p>In this example, <i>producta.xml</i> and <i>productb.xml</i> will get validated first, then <i>productc.xml</i> and the product labels in <i>/home/pds/collection</i> will get validated next.
@@ -249,7 +249,7 @@ C:\&gt; Validate &lt;targets&gt; &lt;command-line arguments&gt;
         <p>The following table contains valid keywords that can be specified in the configuration file:</p>
         
         <table>
-          <tr><th>KEYWORD</th><th>ASSOCIATED FLAG</th><th>valid value(s)</th></tr>
+          <tr><th>Property Keyword</th><th>Associated Command-Line Option</th><th>Valid Value(s)</th></tr>
           <tr><td>validate.target</td><td>-t</td><td>Specify files and directories.</td></tr>
           <tr><td>validate.schema</td><td>-x</td><td>Specify schema files to use against validation instead of the schemas that come with the tool.</td></tr>
           <tr><td>validate.report</td><td>-r</td><td>Specify the report file name. (do not specify keyword if wanting to write to standard out).</td></tr>
@@ -299,10 +299,8 @@ vtool.regexp = "*.xml", "Mars*"
 # This is a Validate configuration file with multiple values
 # that span across multiple lines
           
-validate.target = product.xml, \
-        ./collection
-validate.regexp = "*.xml", \
-          "Mars*"
+validate.target = product.xml, ./collection
+validate.regexp = "*.xml", "Mars*"
         </source>
         
         <p>As previously mentioned, any flag options set on the command-line will overwrite settings set in the configuration file. The following example demonstrates how to override a setting in the configuration file.
@@ -318,7 +316,7 @@ validate.regexp = "*.xml"
         <p>This configuration allows the tool to validate files with a <i>.xml</i> extension in the <i>collection</i> directory. To change the behavior to validate all files instead of just files ending in <i>.xml</i>, then specify the <i>regexp</i> flag option on the command-line to overwrite the <i>validate.regexp</i> property:
         </p>
         <source>
-[node:~] Validate -c config.txt -e "*"
+% Validate -c config.txt -e "*"
         </source>
       </subsection>     
       
@@ -330,28 +328,39 @@ validate.regexp = "*.xml"
 PDS Validate Tool Report
           
 Configuration:
-  Version                  0.1.0-dev
+  Version                  0.1.0
   Time                     Thu, Oct 28 2010 at 10:05:03 AM
   Core Schemas             [a.xsd, b.xsd, c.xsd]
           
 Parameters:
   Target(s)                [C:\pds4]
-  User-Specified Schemas   [C:\pds4\element-definitions\schemas\Product_Data_Element_Definition_2010-04-22B.xsd]
+  User-Specified Schemas   [C:\pds4\element-definitions\schemas\ \
+                           Product_Data_Element_Definition_2010-04-22B.xsd]
   Severity Level           Warnings
   Recurse Directories      true
           
 Validation Details:
           
-  ERROR  [file:/C:/pds4/coordinate_system_positive_azimuth_direction_0111c.xml]   line 8, 66: cvc-elt.5.2.2.2.2: \
-  The value 'Product_Element_Definition' of element 'product_class' does not match the {value constraint} value 'Product_Data_Element_Definition'.
-  ERROR  [file:/C:/pds4/coordinate_system_positive_azimuth_direction_0111c.xml]   line 24, 34: cvc-complex-type.2.4.a: \
-  Invalid content was found starting with element 'Reference_Entry_Generic'. One of '{"http://pds.nasa.gov/schema/pds4/pds":data_reference, \
-  "http://pds.nasa.gov/schema/pds4/pds":Bibliographic_Reference, "http://pds.nasa.gov/schema/pds4/pds":Observing_System}' is expected.
-  ERROR  [file:/C:/pds4/coordinate_system_positive_azimuth_direction_0111c.xml]   line 29, 25: cvc-complex-type.2.4.a: \
-  Invalid content was found starting with element 'Element_Definition'. One of '{"http://pds.nasa.gov/schema/pds4/pds":File_Area}' is expected.
+  ERROR  [file:/C:/pds4/coordinate_system_positive_azimuth_direction_0111c.xml] \
+  line 8, 66: cvc-elt.5.2.2.2.2: The value 'Product_Element_Definition' of \
+  element 'product_class' does not match the {value constraint} value \
+  'Product_Data_Element_Definition'.
+  ERROR  [file:/C:/pds4/coordinate_system_positive_azimuth_direction_0111c.xml] \
+  line 24, 34: cvc-complex-type.2.4.a: Invalid content was found starting with \
+  element 'Reference_Entry_Generic'. One of \
+  '{"http://pds.nasa.gov/schema/pds4/pds":data_reference, \
+  "http://pds.nasa.gov/schema/pds4/pds":Bibliographic_Reference, \
+  "http://pds.nasa.gov/schema/pds4/pds":Observing_System}' is expected.
+  ERROR  [file:/C:/pds4/coordinate_system_positive_azimuth_direction_0111c.xml] \
+  line 29, 25: cvc-complex-type.2.4.a: Invalid content was found starting with \
+  element 'Element_Definition'. One of \
+  '{"http://pds.nasa.gov/schema/pds4/pds":File_Area}' is expected.
           
-  ERROR  [file:/C:/pds4/test/0001_NASA_PDS_1_img_Az_el_coordinate_system_reference_coordinate_system_name_0111c.xml]   line 5, 26: cvc-complex-type.2.4.a: \
-  Invalid content was found starting with element 'Identification_Area'. One of '{"http://pds.nasa.gov/schema/pds4/pds":Product_Identification_Area}' is expected.
+  ERROR  [file:/C:/pds4/test/ \
+  0001_NASA_PDS_1_img_Az_el_coordinate_system_reference_coordinate_system_name_0111c.xml] \
+  line 5, 26: cvc-complex-type.2.4.a: Invalid content was found starting with \
+  element 'Identification_Area'. One of \
+  '{"http://pds.nasa.gov/schema/pds4/pds":Product_Identification_Area}' is expected.
           
           
 End of Report          
