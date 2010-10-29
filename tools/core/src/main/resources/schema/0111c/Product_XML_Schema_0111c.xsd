@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!-- PDS4 XML/Schema for Product_Image_Grayscale_0.1.1.1.c  Fri Oct 29 06:29:36 PDT 2010 -->
+  <!-- PDS4 XML/Schema for Product_XML_Schema_0.1.1.1.c  Fri Oct 29 06:29:36 PDT 2010 -->
   <!-- Generated from the PDS4 Information Model V0.1.1.1.c -->
   <!-- *** This PDS4 product schema is a preliminary deliverable. *** -->
   <!-- *** It is being made available for review and testing. *** -->
@@ -19,19 +19,17 @@
   <!-- <xsd:import namespace="http://pds.nasa.gov/schema/pds4/anyNS"
     schemaLocation="Any_Described_Data_Object_0111c.xsd"/> -->
 
-  <xsd:complexType name="Product_Image_Grayscale_Type">
+  <xsd:complexType name="Product_XML_Schema_Type">
     <xsd:sequence>
       <xsd:annotation>
         <xsd:documentation>
-          The Product Image Grayscale class defines a product consisting of at least one grayscale image and other associated data objects and metadata.
+          The Product XML Schema consists of a single text file in XML Schema encoding.
         </xsd:documentation>
       </xsd:annotation>
       <xsd:element name="Identification_Area_Product" type="pds:Identification_Area_Product_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area_Product -->
-      <xsd:element name="Cross_Reference_Area_Product" type="pds:Cross_Reference_Area_Product_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Cross_Reference_Area_Product -->
-      <xsd:element name="Observation_Area" type="pds:Observation_Area_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Observation_Area -->
+      <xsd:element name="Cross_Reference_Area_Product" type="pds:Cross_Reference_Area_Product_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Cross_Reference_Area_Product -->
       <xsd:element name="File_Area" type="pds:File_Area_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:File_Area -->
-      <xsd:element name="Data_Area_Image_Grayscale" type="pds:Data_Area_Image_Grayscale_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Area_Image_Grayscale -->
-      <xsd:element name="Data_Area_Alternate" type="pds:Data_Area_Alternate_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Area_Alternate -->
+      <xsd:element name="Data_Area_XML_Schema" type="pds:Data_Area_XML_Schema_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Area_XML_Schema -->
     </xsd:sequence>
   </xsd:complexType>
 
@@ -44,7 +42,7 @@
       </xsd:annotation>
       <xsd:element name="logical_identifier" type="pds:logical_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:logical_identifier -->
       <xsd:element name="version_id" type="pds:version_id_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:version_id -->
-      <xsd:element name="product_class" type="pds:product_class_Type" fixed="Product_Image_Grayscale" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:product_class -->
+      <xsd:element name="product_class" type="pds:product_class_Type" fixed="Product_XML_Schema" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:product_class -->
       <xsd:element name="title" type="pds:title_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:title -->
       <xsd:element name="alternate_title" type="pds:alternate_title_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:alternate_title -->
       <xsd:element name="alternate_id" type="pds:alternate_id_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:alternate_id -->
@@ -166,49 +164,6 @@
     </xsd:sequence>
   </xsd:complexType>
 
-  <xsd:complexType name="Observation_Area_Type">
-    <xsd:sequence>
-      <xsd:annotation>
-        <xsd:documentation>
-          The observation area consists of attributes in the role of providing information about the circumstances under which the data were collected.
-        </xsd:documentation>
-      </xsd:annotation>
-      <xsd:element name="comment" type="pds:comment_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Observation_Area:comment -->
-      <xsd:element name="spacecraft_clock_start_count" type="pds:spacecraft_clock_start_count_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Observation_Area:spacecraft_clock_start_count -->
-      <xsd:element name="spacecraft_clock_stop_count" type="pds:spacecraft_clock_stop_count_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Observation_Area:spacecraft_clock_stop_count -->
-      <xsd:element name="start_date_time" type="pds:start_date_time_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Observation_Area:start_date_time -->
-      <xsd:element name="stop_date_time" type="pds:stop_date_time_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Observation_Area:stop_date_time -->
-      <xsd:element name="Mission_Area" type="pds:Mission_Area_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Mission_Area -->
-      <xsd:element name="Node_Area" type="pds:Node_Area_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Node_Area -->
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="Mission_Area_Type">
-    <xsd:sequence>
-      <xsd:annotation>
-        <xsd:documentation>
-          The mission area allow the insertion of mission specific metadata.
-        </xsd:documentation>
-      </xsd:annotation>
-      <!-- When creating a specific XML schema, remove the 'xsd:any' element. You may insert any described nondigital object, one or more times. -->
-      <xsd:any minOccurs="0"/>
-      <!-- <xsd:element name="Any_NonDigital_Object" type="pds:Any_NonDigital_Object_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element> -->
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="Node_Area_Type">
-    <xsd:sequence>
-      <xsd:annotation>
-        <xsd:documentation>
-          The node area allow the insertion of node specific metadata.
-        </xsd:documentation>
-      </xsd:annotation>
-      <!-- When creating a specific XML schema, remove the 'xsd:any' element. You may insert any described nondigital object, one or more times. -->
-      <xsd:any minOccurs="0"/>
-      <!-- <xsd:element name="Any_NonDigital_Object" type="pds:Any_NonDigital_Object_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element> -->
-    </xsd:sequence>
-  </xsd:complexType>
-
   <xsd:complexType name="File_Area_Type">
     <xsd:sequence>
       <xsd:annotation>
@@ -238,37 +193,30 @@
     </xsd:sequence>
   </xsd:complexType>
 
-  <xsd:complexType name="Data_Area_Image_Grayscale_Type">
+  <xsd:complexType name="Data_Area_XML_Schema_Type">
     <xsd:sequence>
       <xsd:annotation>
         <xsd:documentation>
-          The Image Grayscale Data Area requires at least one image grayscale digital object.
+          The XML Schema Data Area requires one stream text data object description named XML Schema.
         </xsd:documentation>
       </xsd:annotation>
-      <xsd:element name="Image_Grayscale" type="pds:Image_Grayscale_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Image_Grayscale -->
+      <xsd:element name="XML_Schema" type="pds:XML_Schema_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:XML_Schema -->
     </xsd:sequence>
   </xsd:complexType>
 
-  <xsd:complexType name="Image_Grayscale_Type">
+  <xsd:complexType name="XML_Schema_Type">
     <xsd:sequence>
       <xsd:annotation>
         <xsd:documentation>
-          The Image Grayscale class is an extension of array_base and defines a  two dimensional grayscale image.
+          The XML Schema class defines a text stream file containing XML Schema.
         </xsd:documentation>
       </xsd:annotation>
       <xsd:element name="local_identifier" type="pds:local_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:local_identifier -->
       <xsd:element name="comment" type="pds:comment_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:comment -->
-      <xsd:element name="axes" type="pds:Array_2D_axes_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_2D:axes -->
-      <xsd:element name="axis_order" type="pds:Image_Grayscale_axis_order_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Image_Grayscale:axis_order -->
-      <xsd:element name="encoding_type" type="pds:Array_Base_encoding_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_Base:encoding_type -->
+      <xsd:element name="encoding_type" type="pds:XML_Schema_encoding_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:XML_Schema:encoding_type -->
+      <xsd:element name="external_standard_id" type="pds:XML_Schema_external_standard_id_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:XML_Schema:external_standard_id -->
       <xsd:element name="Data_Location" type="pds:Data_Location_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Location -->
-      <xsd:element name="Object_Statistics" type="pds:Object_Statistics_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics -->
-      <xsd:element name="Special_Constants" type="pds:Special_Constants_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants -->
-      <xsd:element name="Array_Axis" type="pds:Array_Axis_Type" minOccurs="2" maxOccurs="2"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_Axis -->
-      <xsd:element name="Array_Element" type="pds:Array_Element_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_Element -->
-      <xsd:element name="Image_2D_Display" type="pds:Image_2D_Display_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Image_2D_Display -->
     </xsd:sequence>
-    <xsd:attribute name="base_class" type="xsd:string" fixed="Array_Base"> </xsd:attribute>
   </xsd:complexType>
 
   <xsd:complexType name="Data_Location_Type">
@@ -283,110 +231,10 @@
     </xsd:sequence>
   </xsd:complexType>
 
-  <xsd:complexType name="Object_Statistics_Type">
-    <xsd:sequence>
-      <xsd:annotation>
-        <xsd:documentation>
-          The Object Statistics class provides a set of values that provide metrics about the object.
-        </xsd:documentation>
-      </xsd:annotation>
-      <xsd:element name="local_identifier" type="pds:local_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TNDO_Supplemental:local_identifier -->
-      <xsd:element name="description" type="pds:description_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TNDO_Supplemental:description -->
-      <xsd:element name="maximum" type="pds:maximum_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics:maximum -->
-      <xsd:element name="md5_checksum" type="pds:md5_checksum_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics:md5_checksum -->
-      <xsd:element name="mean" type="pds:mean_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics:mean -->
-      <xsd:element name="median" type="pds:median_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics:median -->
-      <xsd:element name="minimum" type="pds:minimum_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics:minimum -->
-      <xsd:element name="sample_bit_mask" type="pds:sample_bit_mask_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics:sample_bit_mask -->
-      <xsd:element name="standard_deviation" type="pds:standard_deviation_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics:standard_deviation -->
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="Special_Constants_Type">
-    <xsd:sequence>
-      <xsd:annotation>
-        <xsd:documentation>
-          The Special Constants class provides a set of values used to indicate special cases that occur in the data.
-        </xsd:documentation>
-      </xsd:annotation>
-      <xsd:element name="error_constant" type="pds:error_constant_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants:error_constant -->
-      <xsd:element name="invalid_constant" type="pds:invalid_constant_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants:invalid_constant -->
-      <xsd:element name="missing_constant" type="pds:missing_constant_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants:missing_constant -->
-      <xsd:element name="not_applicable_constant" type="pds:not_applicable_constant_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants:not_applicable_constant -->
-      <xsd:element name="saturated_constant" type="pds:saturated_constant_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants:saturated_constant -->
-      <xsd:element name="unknown_constant" type="pds:unknown_constant_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants:unknown_constant -->
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="Array_Axis_Type">
-    <xsd:sequence>
-      <xsd:annotation>
-        <xsd:documentation>
-          The Array Axis class is used as a component of the array class and defines an axis of the array.
-        </xsd:documentation>
-      </xsd:annotation>
-      <xsd:element name="elements" type="pds:elements_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_Axis:elements -->
-      <xsd:element name="name" type="pds:name_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_Axis:name -->
-      <xsd:element name="sequence_number" type="pds:sequence_number_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_Axis:sequence_number -->
-      <xsd:element name="unit" type="pds:unit_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_Axis:unit -->
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="Array_Element_Type">
-    <xsd:sequence>
-      <xsd:annotation>
-        <xsd:documentation>
-          The Array Element class is used as a component of the array class and defines an element of the array.
-        </xsd:documentation>
-      </xsd:annotation>
-      <xsd:element name="data_type" type="pds:data_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_Element:data_type -->
-      <xsd:element name="scaling_factor" type="pds:scaling_factor_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_Element:scaling_factor -->
-      <xsd:element name="unit" type="pds:unit_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_Element:unit -->
-      <xsd:element name="value_offset" type="pds:value_offset_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_Element:value_offset -->
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="Image_2D_Display_Type">
-    <xsd:sequence>
-      <xsd:annotation>
-        <xsd:documentation>
-          The Image_2D_Display class provides attributes to enable the display of a 2D image.
-        </xsd:documentation>
-      </xsd:annotation>
-      <xsd:element name="first_line" type="pds:first_line_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Image_2D_Display:first_line -->
-      <xsd:element name="first_line_sample" type="pds:first_line_sample_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Image_2D_Display:first_line_sample -->
-      <xsd:element name="line_display_direction" type="pds:line_display_direction_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Image_2D_Display:line_display_direction -->
-      <xsd:element name="sample_display_direction" type="pds:sample_display_direction_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Image_2D_Display:sample_display_direction -->
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="Data_Area_Alternate_Type">
-    <xsd:sequence>
-      <xsd:annotation>
-        <xsd:documentation>
-          The Data Area Alternate allows the inclusion of any Data Object Description.
-        </xsd:documentation>
-      </xsd:annotation>
-      <!-- When creating a specific XML schema, remove the 'xsd:any' element. You may insert any described data object, one or more times. -->
-      <xsd:any minOccurs="0"/>
-      <!-- <xsd:element name="Any_Data_Object" type="pds:Any_Data_Object_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element> -->
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="Tagged_Digital_Object_Type">
-    <xsd:sequence>
-      <xsd:annotation>
-        <xsd:documentation>
-          The Tagged Digital Object class is an abstract class for the digital class hierarchy. A tagged object is an information object.
-        </xsd:documentation>
-      </xsd:annotation>
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:element name="Product_Image_Grayscale" type="pds:Product_Image_Grayscale_Type">
+  <xsd:element name="Product_XML_Schema" type="pds:Product_XML_Schema_Type">
     <xsd:annotation>
       <xsd:documentation>
-        The Product_Image_Grayscale XML Schema
+        The Product_XML_Schema XML Schema
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!-- PDS4 XML/Schema for Product_Element_Definition_0.1.1.1.c  Fri Oct 29 06:29:36 PDT 2010 -->
+  <!-- Generated from the PDS4 Information Model V0.1.1.1.c -->
+  <!-- *** This PDS4 product schema is a preliminary deliverable. *** -->
+  <!-- *** It is being made available for review and testing. *** -->
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://pds.nasa.gov/schema/pds4/pds"
+    xmlns:pds="http://pds.nasa.gov/schema/pds4/pds"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    version="1.1.1">
+ 
+    <xsd:include schemaLocation="Extended_Types_0111c.xsd">
+      <xsd:annotation>
+        <xsd:documentation>PDS (common) Data Dictionary</xsd:documentation>
+      </xsd:annotation>
+    </xsd:include>
+ 
+  <!-- <xsd:import namespace="http://pds.nasa.gov/schema/pds4/anyNS"
+    schemaLocation="Any_Described_Data_Object_0111c.xsd"/> -->
+
+  <xsd:complexType name="Product_Element_Definition_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Product Element Definition provides an attribute definition in XML encoding.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="Identification_Area" type="pds:Identification_Area_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area -->
+      <xsd:element name="Cross_Reference_Area" type="pds:Cross_Reference_Area_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Cross_Reference_Area -->
+      <xsd:element name="Element_Definition" type="pds:Element_Definition_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Element_Definition -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Identification_Area_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The identification area consists of attributes involved in the role of identifying and naming an object.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="logical_identifier" type="pds:logical_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:logical_identifier -->
+      <xsd:element name="version_id" type="pds:version_id_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:version_id -->
+      <xsd:element name="product_class" type="pds:product_class_Type" fixed="Product_Element_Definition" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:product_class -->
+      <xsd:element name="title" type="pds:title_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:title -->
+      <xsd:element name="alternate_title" type="pds:alternate_title_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:alternate_title -->
+      <xsd:element name="alternate_id" type="pds:alternate_id_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:alternate_id -->
+      <xsd:element name="last_modification_date_time" type="pds:last_modification_date_time_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:last_modification_date_time -->
+      <xsd:element name="product_subclass" type="pds:product_subclass_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:product_subclass -->
+      <xsd:element name="Subject_Area" type="pds:Subject_Area_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Subject_Area_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Subject Area provides one or more topics associated with the identifiable using keywords, key phrases, or classification codes.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="target_name" type="pds:target_name_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:target_name -->
+      <xsd:element name="instrument_name" type="pds:instrument_name_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:instrument_name -->
+      <xsd:element name="instrument_host_name" type="pds:instrument_host_name_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:instrument_host_name -->
+      <xsd:element name="full_name" type="pds:full_name_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:full_name -->
+      <xsd:element name="investigation_name" type="pds:investigation_name_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:investigation_name -->
+      <xsd:element name="observing_system_name" type="pds:observing_system_name_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:observing_system_name -->
+      <xsd:element name="Name_Resolution" type="pds:Name_Resolution_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Name_Resolution_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Name_Resolution class provides both primary and alternate names of an object.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="class_name" type="pds:class_name_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution:class_name -->
+      <xsd:element name="lidvid_reference" type="pds:lidvid_reference_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution:lidvid_reference -->
+      <xsd:element name="name" type="pds:name_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution:name -->
+      <xsd:element name="primary_name" type="pds:primary_name_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution:primary_name -->
+      <xsd:element name="role" type="pds:role_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution:role -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Cross_Reference_Area_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The cross reference area provides references for associated products.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="Bibliographic_Reference" type="pds:Bibliographic_Reference_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference -->
+      <xsd:element name="Reference_Entry_Generic" type="pds:Reference_Entry_Generic_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Reference_Entry_Generic -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Bibliographic_Reference_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Bibliographic Reference  class provides references to documents that are not regisered with the PDS.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="local_identifier" type="pds:local_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TNDO_Supplemental:local_identifier -->
+      <xsd:element name="description" type="pds:description_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TNDO_Supplemental:description -->
+      <xsd:element name="doi" type="pds:doi_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:doi -->
+      <xsd:element name="reference_text" type="pds:reference_text_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:reference_text -->
+      <xsd:element name="url" type="pds:url_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:url -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Reference_Entry_Generic_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Reference Entry Generic class provides a reference and type information about the reference. The reference is to a product.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="lid_reference" type="pds:lid_reference_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Reference_Entry_Generic:lid_reference -->
+      <xsd:element name="lidvid_reference" type="pds:lidvid_reference_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Reference_Entry_Generic:lidvid_reference -->
+      <xsd:element name="reference_association_type" type="pds:reference_association_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Reference_Entry_Generic:reference_association_type -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Element_Definition_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Element_Definition class defines an attribute in the data dictioonary.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="local_identifier" type="pds:local_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TNDO_Supplemental:local_identifier -->
+      <xsd:element name="description" type="pds:description_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TNDO_Supplemental:description -->
+      <xsd:element name="identifier" type="pds:identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Element_Definition:identifier -->
+      <xsd:element name="version_id" type="pds:version_id_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Element_Definition:version_id -->
+      <xsd:element name="title" type="pds:title_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Element_Definition:title -->
+      <xsd:element name="is_enumerated_flag" type="pds:is_enumerated_flag_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Element_Definition:is_enumerated_flag -->
+      <xsd:element name="class_name" type="pds:class_name_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Element_Definition:class_name -->
+      <xsd:element name="registration_authority_id" type="pds:registration_authority_id_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Element_Definition:registration_authority_id -->
+      <xsd:element name="steward_id" type="pds:steward_id_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Element_Definition:steward_id -->
+      <xsd:element name="name_space_id" type="pds:name_space_id_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Element_Definition:name_space_id -->
+      <xsd:element name="registered_by" type="pds:registered_by_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Element_Definition:registered_by -->
+      <xsd:element name="submitter_id" type="pds:submitter_id_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Element_Definition:submitter_id -->
+      <xsd:element name="data_element_concept" type="pds:data_element_concept_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Element_Definition:data_element_concept -->
+      <xsd:element name="Terminological_Entry" type="pds:Terminological_Entry_Type" minOccurs="1" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Terminological_Entry -->
+      <xsd:element name="Value_Domain" type="pds:Value_Domain_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Value_Domain -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Terminological_Entry_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The terminological_entry class provides the name (designation) and definition of the attribute in a specified natural language.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="designation" type="pds:designation_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Terminological_Entry:designation -->
+      <xsd:element name="definition" type="pds:definition_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Terminological_Entry:definition -->
+      <xsd:element name="language" type="pds:language_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Terminological_Entry:language -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Value_Domain_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The value_domain class defines the permissible values allowed. These may be enumerated or non-enumerated values.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="data_type" type="pds:data_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Value_Domain:data_type -->
+      <xsd:element name="formation_rule" type="pds:formation_rule_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Value_Domain:formation_rule -->
+      <xsd:element name="minimum_characters" type="pds:minimum_characters_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Value_Domain:minimum_characters -->
+      <xsd:element name="maximum_characters" type="pds:maximum_characters_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Value_Domain:maximum_characters -->
+      <xsd:element name="minimum_value" type="pds:minimum_value_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Value_Domain:minimum_value -->
+      <xsd:element name="maximum_value" type="pds:maximum_value_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Value_Domain:maximum_value -->
+      <xsd:element name="pattern" type="pds:pattern_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Value_Domain:pattern -->
+      <xsd:element name="unit_of_measure_name" type="pds:unit_of_measure_name_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Value_Domain:unit_of_measure_name -->
+      <xsd:element name="Permissible_Value" type="pds:Permissible_Value_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Permissible_Value -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Permissible_Value_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The permissible_value class lists the permissible values allowed and optionally their meanings.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="value" type="pds:value_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Permissible_Value:value -->
+      <xsd:element name="value_meaning" type="pds:value_meaning_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Permissible_Value:value_meaning -->
+      <xsd:element name="begin_date" type="pds:begin_date_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Permissible_Value:begin_date -->
+      <xsd:element name="end_date" type="pds:end_date_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Permissible_Value:end_date -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="Product_Element_Definition" type="pds:Product_Element_Definition_Type">
+    <xsd:annotation>
+      <xsd:documentation>
+        The Product_Element_Definition XML Schema
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:schema>

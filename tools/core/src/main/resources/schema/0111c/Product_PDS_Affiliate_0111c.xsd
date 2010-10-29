@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!-- PDS4 XML/Schema for Product_PDS_Affiliate_0.1.1.1.c  Fri Oct 29 06:29:36 PDT 2010 -->
+  <!-- Generated from the PDS4 Information Model V0.1.1.1.c -->
+  <!-- *** This PDS4 product schema is a preliminary deliverable. *** -->
+  <!-- *** It is being made available for review and testing. *** -->
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://pds.nasa.gov/schema/pds4/pds"
+    xmlns:pds="http://pds.nasa.gov/schema/pds4/pds"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    version="1.1.1">
+ 
+    <xsd:include schemaLocation="Extended_Types_0111c.xsd">
+      <xsd:annotation>
+        <xsd:documentation>PDS (common) Data Dictionary</xsd:documentation>
+      </xsd:annotation>
+    </xsd:include>
+ 
+  <!-- <xsd:import namespace="http://pds.nasa.gov/schema/pds4/anyNS"
+    schemaLocation="Any_Described_Data_Object_0111c.xsd"/> -->
+
+  <xsd:complexType name="Product_PDS_Affiliate_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          A PDS Affiliate product is an information object that describes a person in the role of an affiliate of the PDS.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="Identification_Area" type="pds:Identification_Area_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area -->
+      <xsd:element name="Cross_Reference_Area_Context" type="pds:Cross_Reference_Area_Context_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Cross_Reference_Area_Context -->
+      <xsd:element name="PDS_Affiliate" type="pds:PDS_Affiliate_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:PDS_Affiliate -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Identification_Area_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The identification area consists of attributes involved in the role of identifying and naming an object.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="logical_identifier" type="pds:logical_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:logical_identifier -->
+      <xsd:element name="version_id" type="pds:version_id_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:version_id -->
+      <xsd:element name="product_class" type="pds:product_class_Type" fixed="Product_PDS_Affiliate" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:product_class -->
+      <xsd:element name="title" type="pds:title_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:title -->
+      <xsd:element name="alternate_title" type="pds:alternate_title_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:alternate_title -->
+      <xsd:element name="alternate_id" type="pds:alternate_id_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:alternate_id -->
+      <xsd:element name="last_modification_date_time" type="pds:last_modification_date_time_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:last_modification_date_time -->
+      <xsd:element name="product_subclass" type="pds:product_subclass_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:product_subclass -->
+      <xsd:element name="Subject_Area" type="pds:Subject_Area_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Subject_Area_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Subject Area provides one or more topics associated with the identifiable using keywords, key phrases, or classification codes.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="target_name" type="pds:target_name_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:target_name -->
+      <xsd:element name="instrument_name" type="pds:instrument_name_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:instrument_name -->
+      <xsd:element name="instrument_host_name" type="pds:instrument_host_name_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:instrument_host_name -->
+      <xsd:element name="full_name" type="pds:full_name_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:full_name -->
+      <xsd:element name="investigation_name" type="pds:investigation_name_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:investigation_name -->
+      <xsd:element name="observing_system_name" type="pds:observing_system_name_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:observing_system_name -->
+      <xsd:element name="Name_Resolution" type="pds:Name_Resolution_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Name_Resolution_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Name_Resolution class provides both primary and alternate names of an object.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="class_name" type="pds:class_name_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution:class_name -->
+      <xsd:element name="lidvid_reference" type="pds:lidvid_reference_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution:lidvid_reference -->
+      <xsd:element name="name" type="pds:name_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution:name -->
+      <xsd:element name="primary_name" type="pds:primary_name_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution:primary_name -->
+      <xsd:element name="role" type="pds:role_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution:role -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Cross_Reference_Area_Context_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The context cross reference area provides references for registered products associated with this product. These associated products describe things such as missions, targets, and instruments.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="Bibliographic_Reference" type="pds:Bibliographic_Reference_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference -->
+      <xsd:element name="Context_Reference_Entry" type="pds:Context_Reference_Entry_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Context_Reference_Entry -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Bibliographic_Reference_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Bibliographic Reference  class provides references to documents that are not regisered with the PDS.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="local_identifier" type="pds:local_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TNDO_Supplemental:local_identifier -->
+      <xsd:element name="description" type="pds:description_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TNDO_Supplemental:description -->
+      <xsd:element name="doi" type="pds:doi_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:doi -->
+      <xsd:element name="reference_text" type="pds:reference_text_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:reference_text -->
+      <xsd:element name="url" type="pds:url_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:url -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Context_Reference_Entry_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Context Reference Entry class implements associations between context products. For example, an instrument is associated with an instriument_host which in turn is associated with an investigation.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="lid_reference" type="pds:lid_reference_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Reference_Entry_Generic:lid_reference -->
+      <xsd:element name="lidvid_reference" type="pds:lidvid_reference_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Reference_Entry_Generic:lidvid_reference -->
+      <xsd:element name="reference_association_type" type="pds:Context_Reference_Entry_reference_association_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Context_Reference_Entry:reference_association_type -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="PDS_Affiliate_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The PDS Affiliate class provides a description of a person who has an association with the planetary science community and has access to PDS resources not normally allowed to the general public.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="description" type="pds:description_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TNDO_Context:description -->
+      <xsd:element name="node_name" type="pds:node_name_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:PDS_Affiliate:node_name -->
+      <xsd:element name="affiliation_type" type="pds:affiliation_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:Personnel:affiliation_type -->
+      <xsd:element name="alternate_telephone_number" type="pds:alternate_telephone_number_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:PDS_Affiliate:alternate_telephone_number -->
+      <xsd:element name="electronic_mail_address" type="pds:electronic_mail_address_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:PDS_Affiliate:electronic_mail_address -->
+      <xsd:element name="institution_name" type="pds:institution_name_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:PDS_Affiliate:institution_name -->
+      <xsd:element name="postal_address_text" type="pds:postal_address_text_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:PDS_Affiliate:postal_address_text -->
+      <xsd:element name="registration_date" type="pds:registration_date_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:Personnel:registration_date -->
+      <xsd:element name="sort_name" type="pds:sort_name_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:Personnel:sort_name -->
+      <xsd:element name="telephone_number" type="pds:telephone_number_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:PDS_Affiliate:telephone_number -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="Product_PDS_Affiliate" type="pds:Product_PDS_Affiliate_Type">
+    <xsd:annotation>
+      <xsd:documentation>
+        The Product_PDS_Affiliate XML Schema
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:schema>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!-- PDS4 XML/Schema for Table_Binary_0.1.1.1.c  Fri Oct 29 06:29:36 PDT 2010 -->
+  <!-- Generated from the PDS4 Information Model V0.1.1.1.c -->
+  <!-- *** This PDS4 product schema is a preliminary deliverable. *** -->
+  <!-- *** It is being made available for review and testing. *** -->
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://pds.nasa.gov/schema/pds4/pds"
+    xmlns:pds="http://pds.nasa.gov/schema/pds4/pds"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    version="1.1.1">
+ 
+    <xsd:include schemaLocation="Extended_Types_0111c.xsd">
+      <xsd:annotation>
+        <xsd:documentation>PDS (common) Data Dictionary</xsd:documentation>
+      </xsd:annotation>
+    </xsd:include>
+ 
+  <!-- <xsd:import namespace="http://pds.nasa.gov/schema/pds4/anyNS"
+    schemaLocation="Any_Described_Data_Object_0111c.xsd"/> -->
+
+  <xsd:complexType name="Table_Binary_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Table Binary class is an extension of table base and defines a simple binary table.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="local_identifier" type="pds:local_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:local_identifier -->
+      <xsd:element name="comment" type="pds:comment_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:comment -->
+      <xsd:element name="encoding_type" type="pds:Table_Base_Binary_encoding_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Base_Binary:encoding_type -->
+      <xsd:element name="fields" type="pds:fields_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Base:fields -->
+      <xsd:element name="record_bytes" type="pds:record_bytes_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Base:record_bytes -->
+      <xsd:element name="records" type="pds:records_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Base:records -->
+      <xsd:element name="Data_Location" type="pds:Data_Location_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Location -->
+      <xsd:element name="Table_Record_Binary" type="pds:Table_Record_Binary_Type" minOccurs="1" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Record_Binary -->
+    </xsd:sequence>
+    <xsd:attribute name="base_class" type="xsd:string" fixed="Table_Base"> </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:complexType name="Data_Location_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Data Location class provides the location of a digital object.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="file_local_identifier" type="pds:file_local_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Location:file_local_identifier -->
+      <xsd:element name="offset" type="pds:offset_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Location:offset -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Table_Record_Binary_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Table Record Binary class is a component of the table class and defines a record of the table. This extension defines a binary record.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="Table_Binary_Field" type="pds:Table_Binary_Field_Type" minOccurs="1" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Binary_Field -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Table_Binary_Field_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Table Binary Field class is a component of the table record class and defines a field of the record. This extension defines a binary field.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="field_name" type="pds:field_name_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field:field_name -->
+      <xsd:element name="field_number" type="pds:field_number_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field:field_number -->
+      <xsd:element name="field_data_type" type="pds:Table_Binary_Field_field_data_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Binary_Field:field_data_type -->
+      <xsd:element name="field_location" type="pds:field_location_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field:field_location -->
+      <xsd:element name="field_length" type="pds:field_length_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field:field_length -->
+      <xsd:element name="field_format" type="pds:Table_Field_Extended_field_format_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_format -->
+      <xsd:element name="minimum_scaled_value" type="pds:minimum_scaled_value_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:minimum_scaled_value -->
+      <xsd:element name="maximum_scaled_value" type="pds:maximum_scaled_value_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:maximum_scaled_value -->
+      <xsd:element name="field_min_logical" type="pds:field_min_logical_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_min_logical -->
+      <xsd:element name="field_max_logical" type="pds:field_max_logical_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_max_logical -->
+      <xsd:element name="field_scaling_factor" type="pds:field_scaling_factor_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_scaling_factor -->
+      <xsd:element name="field_value_offset" type="pds:field_value_offset_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_value_offset -->
+      <xsd:element name="field_unit" type="pds:field_unit_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_unit -->
+      <xsd:element name="field_description" type="pds:field_description_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field:field_description -->
+      <xsd:element name="Object_Statistics" type="pds:Object_Statistics_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics -->
+      <xsd:element name="Special_Constants" type="pds:Special_Constants_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Object_Statistics_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Object Statistics class provides a set of values that provide metrics about the object.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="local_identifier" type="pds:local_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TNDO_Supplemental:local_identifier -->
+      <xsd:element name="description" type="pds:description_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TNDO_Supplemental:description -->
+      <xsd:element name="maximum" type="pds:maximum_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics:maximum -->
+      <xsd:element name="md5_checksum" type="pds:md5_checksum_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics:md5_checksum -->
+      <xsd:element name="mean" type="pds:mean_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics:mean -->
+      <xsd:element name="median" type="pds:median_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics:median -->
+      <xsd:element name="minimum" type="pds:minimum_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics:minimum -->
+      <xsd:element name="sample_bit_mask" type="pds:sample_bit_mask_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics:sample_bit_mask -->
+      <xsd:element name="standard_deviation" type="pds:standard_deviation_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics:standard_deviation -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Special_Constants_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Special Constants class provides a set of values used to indicate special cases that occur in the data.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="error_constant" type="pds:error_constant_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants:error_constant -->
+      <xsd:element name="invalid_constant" type="pds:invalid_constant_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants:invalid_constant -->
+      <xsd:element name="missing_constant" type="pds:missing_constant_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants:missing_constant -->
+      <xsd:element name="not_applicable_constant" type="pds:not_applicable_constant_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants:not_applicable_constant -->
+      <xsd:element name="saturated_constant" type="pds:saturated_constant_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants:saturated_constant -->
+      <xsd:element name="unknown_constant" type="pds:unknown_constant_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants:unknown_constant -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="Table_Binary" type="pds:Table_Binary_Type">
+    <xsd:annotation>
+      <xsd:documentation>
+        The Table_Binary XML Schema
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:schema>

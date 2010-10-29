@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!-- PDS4 XML/Schema for Product_Image_Grayscale_0.1.1.1.c  Fri Oct 29 06:29:36 PDT 2010 -->
+  <!-- PDS4 XML/Schema for Product_Generic_0.1.1.1.c  Fri Oct 29 06:29:36 PDT 2010 -->
   <!-- Generated from the PDS4 Information Model V0.1.1.1.c -->
   <!-- *** This PDS4 product schema is a preliminary deliverable. *** -->
   <!-- *** It is being made available for review and testing. *** -->
@@ -19,19 +19,19 @@
   <!-- <xsd:import namespace="http://pds.nasa.gov/schema/pds4/anyNS"
     schemaLocation="Any_Described_Data_Object_0111c.xsd"/> -->
 
-  <xsd:complexType name="Product_Image_Grayscale_Type">
+  <xsd:complexType name="Product_Generic_Type">
     <xsd:sequence>
       <xsd:annotation>
         <xsd:documentation>
-          The Product Image Grayscale class defines a product consisting of at least one grayscale image and other associated data objects and metadata.
+          The Product Generic class defines a template for all data products.
         </xsd:documentation>
       </xsd:annotation>
       <xsd:element name="Identification_Area_Product" type="pds:Identification_Area_Product_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area_Product -->
       <xsd:element name="Cross_Reference_Area_Product" type="pds:Cross_Reference_Area_Product_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Cross_Reference_Area_Product -->
       <xsd:element name="Observation_Area" type="pds:Observation_Area_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Observation_Area -->
       <xsd:element name="File_Area" type="pds:File_Area_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:File_Area -->
-      <xsd:element name="Data_Area_Image_Grayscale" type="pds:Data_Area_Image_Grayscale_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Area_Image_Grayscale -->
       <xsd:element name="Data_Area_Alternate" type="pds:Data_Area_Alternate_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Area_Alternate -->
+      <xsd:element name="Data_Area_Generic" type="pds:Data_Area_Generic_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Area_Generic -->
     </xsd:sequence>
   </xsd:complexType>
 
@@ -44,7 +44,7 @@
       </xsd:annotation>
       <xsd:element name="logical_identifier" type="pds:logical_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:logical_identifier -->
       <xsd:element name="version_id" type="pds:version_id_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:version_id -->
-      <xsd:element name="product_class" type="pds:product_class_Type" fixed="Product_Image_Grayscale" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:product_class -->
+      <xsd:element name="product_class" type="pds:product_class_Type" fixed="Product_Generic" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:product_class -->
       <xsd:element name="title" type="pds:title_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:title -->
       <xsd:element name="alternate_title" type="pds:alternate_title_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:alternate_title -->
       <xsd:element name="alternate_id" type="pds:alternate_id_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:alternate_id -->
@@ -238,14 +238,43 @@
     </xsd:sequence>
   </xsd:complexType>
 
-  <xsd:complexType name="Data_Area_Image_Grayscale_Type">
+  <xsd:complexType name="Data_Area_Alternate_Type">
     <xsd:sequence>
       <xsd:annotation>
         <xsd:documentation>
-          The Image Grayscale Data Area requires at least one image grayscale digital object.
+          The Data Area Alternate allows the inclusion of any Data Object Description.
         </xsd:documentation>
       </xsd:annotation>
-      <xsd:element name="Image_Grayscale" type="pds:Image_Grayscale_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Image_Grayscale -->
+      <!-- When creating a specific XML schema, remove the 'xsd:any' element. You may insert any described data object, one or more times. -->
+      <xsd:any minOccurs="0"/>
+      <!-- <xsd:element name="Any_Data_Object" type="pds:Any_Data_Object_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element> -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Tagged_Digital_Object_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Tagged Digital Object class is an abstract class for the digital class hierarchy. A tagged object is an information object.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Data_Area_Generic_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The  Data Area Generic requires at least one digital object.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="Image_Grayscale" type="pds:Image_Grayscale_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Image_Grayscale -->
+      <xsd:element name="SPICE_Kernel_Binary" type="pds:SPICE_Kernel_Binary_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:SPICE_Kernel_Binary -->
+      <xsd:element name="SPICE_Kernel_Text" type="pds:SPICE_Kernel_Text_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:SPICE_Kernel_Text -->
+      <xsd:element name="Spectrum_3D" type="pds:Spectrum_3D_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Spectrum_3D -->
+      <xsd:element name="Stream_Delimited" type="pds:Stream_Delimited_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited -->
+      <xsd:element name="Table_Binary" type="pds:Table_Binary_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Binary -->
+      <xsd:element name="Table_Character" type="pds:Table_Character_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Character -->
     </xsd:sequence>
   </xsd:complexType>
 
@@ -360,33 +389,254 @@
     </xsd:sequence>
   </xsd:complexType>
 
-  <xsd:complexType name="Data_Area_Alternate_Type">
+  <xsd:complexType name="SPICE_Kernel_Binary_Type">
     <xsd:sequence>
       <xsd:annotation>
         <xsd:documentation>
-          The Data Area Alternate allows the inclusion of any Data Object Description.
+          The SPICE Kernel class describes a SPICE file.
         </xsd:documentation>
       </xsd:annotation>
-      <!-- When creating a specific XML schema, remove the 'xsd:any' element. You may insert any described data object, one or more times. -->
-      <xsd:any minOccurs="0"/>
-      <!-- <xsd:element name="Any_Data_Object" type="pds:Any_Data_Object_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element> -->
+      <xsd:element name="local_identifier" type="pds:local_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:local_identifier -->
+      <xsd:element name="comment" type="pds:comment_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:comment -->
+      <xsd:element name="encoding_type" type="pds:Encoded_Byte_Stream_encoding_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Encoded_Byte_Stream:encoding_type -->
+      <xsd:element name="external_standard_id" type="pds:SPICE_Kernel_Binary_external_standard_id_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:SPICE_Kernel_Binary:external_standard_id -->
+      <xsd:element name="kernel_type" type="pds:kernel_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:SPICE_Kernel_Binary:kernel_type -->
+      <xsd:element name="Data_Location" type="pds:Data_Location_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Location -->
     </xsd:sequence>
   </xsd:complexType>
 
-  <xsd:complexType name="Tagged_Digital_Object_Type">
+  <xsd:complexType name="SPICE_Kernel_Text_Type">
     <xsd:sequence>
       <xsd:annotation>
         <xsd:documentation>
-          The Tagged Digital Object class is an abstract class for the digital class hierarchy. A tagged object is an information object.
+          The SPICE Kernel class describes a SPICE file.
         </xsd:documentation>
       </xsd:annotation>
+      <xsd:element name="local_identifier" type="pds:local_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:local_identifier -->
+      <xsd:element name="comment" type="pds:comment_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:comment -->
+      <xsd:element name="encoding_type" type="pds:SPICE_Kernel_Text_encoding_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:SPICE_Kernel_Text:encoding_type -->
+      <xsd:element name="external_standard_id" type="pds:external_standard_id_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Parsable_Byte_Stream:external_standard_id -->
+      <xsd:element name="kernel_type" type="pds:kernel_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:SPICE_Kernel_Text:kernel_type -->
+      <xsd:element name="Data_Location" type="pds:Data_Location_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Location -->
     </xsd:sequence>
   </xsd:complexType>
 
-  <xsd:element name="Product_Image_Grayscale" type="pds:Product_Image_Grayscale_Type">
+  <xsd:complexType name="Spectrum_3D_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Spectrum 3D class is an extension of array_base and defines a  three dimensional spectrum.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="local_identifier" type="pds:local_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:local_identifier -->
+      <xsd:element name="comment" type="pds:comment_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:comment -->
+      <xsd:element name="axes" type="pds:Array_3D_axes_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_3D:axes -->
+      <xsd:element name="axis_order" type="pds:axis_order_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_Base:axis_order -->
+      <xsd:element name="encoding_type" type="pds:Array_Base_encoding_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_Base:encoding_type -->
+      <xsd:element name="Data_Location" type="pds:Data_Location_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Location -->
+      <xsd:element name="Array_Axis" type="pds:Array_Axis_Type" minOccurs="3" maxOccurs="3"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_Axis -->
+      <xsd:element name="Array_Element" type="pds:Array_Element_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Array_Element -->
+    </xsd:sequence>
+    <xsd:attribute name="base_class" type="xsd:string" fixed="Array_Base"> </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:complexType name="Stream_Delimited_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Stream Delimited class defines a simple spreadsheet.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="local_identifier" type="pds:local_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:local_identifier -->
+      <xsd:element name="comment" type="pds:comment_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:comment -->
+      <xsd:element name="encoding_type" type="pds:Stream_Delimited_encoding_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited:encoding_type -->
+      <xsd:element name="external_standard_id" type="pds:Stream_Delimited_external_standard_id_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited:external_standard_id -->
+      <xsd:element name="field_delimiter" type="pds:field_delimiter_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited:field_delimiter -->
+      <xsd:element name="fields" type="pds:fields_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited:fields -->
+      <xsd:element name="maximum_record_length" type="pds:maximum_record_length_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited:maximum_record_length -->
+      <xsd:element name="record_delimiter" type="pds:record_delimiter_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited:record_delimiter -->
+      <xsd:element name="records" type="pds:records_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited:records -->
+      <xsd:element name="Data_Location" type="pds:Data_Location_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Location -->
+      <xsd:element name="Stream_Delimited_Record" type="pds:Stream_Delimited_Record_Type" minOccurs="1" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Record -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Stream_Delimited_Record_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Stream Delimited Record class is a component of the stream delimited (spreadsheet) class and defines a record of the spreadsheet.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="Stream_Delimited_Grouped_Sequence" type="pds:Stream_Delimited_Grouped_Sequence_Type" minOccurs="1" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Grouped_Sequence -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Stream_Delimited_Grouped_Sequence_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Stream Delimited Grouped Sequence class is a component of the grouped stream delimited  (spreadsheet)  class. It defines a set of fields.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="repetitions" type="pds:repetitions_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Grouped_Sequence:repetitions -->
+      <xsd:element name="Stream_Delimited_Field_Sequence" type="pds:Stream_Delimited_Field_Sequence_Type" minOccurs="1" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Field_Sequence -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Stream_Delimited_Field_Sequence_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Stream Delimited Field Sequence class is a component of the grouped stream delimited  (spreadsheet) class. It defines a set of fields or a nested set of fields.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="Stream_Delimited_Field" type="pds:Stream_Delimited_Field_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Field -->
+      <xsd:element name="Stream_Delimited_Grouped_Sequence" type="pds:Stream_Delimited_Grouped_Sequence_Type" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Grouped_Sequence -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Stream_Delimited_Field_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Stream Delimited Field class is a component of the stream delimited  (spreadsheet) record class and defines a field of the record.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="field_name" type="pds:field_name_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Field:field_name -->
+      <xsd:element name="field_number" type="pds:field_number_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Field:field_number -->
+      <xsd:element name="field_data_type" type="pds:field_data_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Field:field_data_type -->
+      <xsd:element name="field_format" type="pds:field_format_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Field:field_format -->
+      <xsd:element name="minimum_scaled_value" type="pds:minimum_scaled_value_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Field:minimum_scaled_value -->
+      <xsd:element name="maximum_scaled_value" type="pds:maximum_scaled_value_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Field:maximum_scaled_value -->
+      <xsd:element name="field_min_logical" type="pds:field_min_logical_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Field:field_min_logical -->
+      <xsd:element name="field_max_logical" type="pds:field_max_logical_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Field:field_max_logical -->
+      <xsd:element name="field_scaling_factor" type="pds:field_scaling_factor_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Field:field_scaling_factor -->
+      <xsd:element name="field_value_offset" type="pds:field_value_offset_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Field:field_value_offset -->
+      <xsd:element name="field_unit" type="pds:field_unit_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Field:field_unit -->
+      <xsd:element name="field_description" type="pds:field_description_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Field:field_description -->
+      <xsd:element name="field_bytes" type="pds:field_bytes_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Stream_Delimited_Field:field_bytes -->
+      <xsd:element name="Object_Statistics" type="pds:Object_Statistics_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics -->
+      <xsd:element name="Special_Constants" type="pds:Special_Constants_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Table_Binary_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Table Binary class is an extension of table base and defines a simple binary table.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="local_identifier" type="pds:local_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:local_identifier -->
+      <xsd:element name="comment" type="pds:comment_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:comment -->
+      <xsd:element name="encoding_type" type="pds:Table_Base_Binary_encoding_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Base_Binary:encoding_type -->
+      <xsd:element name="fields" type="pds:fields_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Base:fields -->
+      <xsd:element name="record_bytes" type="pds:record_bytes_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Base:record_bytes -->
+      <xsd:element name="records" type="pds:records_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Base:records -->
+      <xsd:element name="Data_Location" type="pds:Data_Location_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Location -->
+      <xsd:element name="Table_Record_Binary" type="pds:Table_Record_Binary_Type" minOccurs="1" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Record_Binary -->
+    </xsd:sequence>
+    <xsd:attribute name="base_class" type="xsd:string" fixed="Table_Base"> </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:complexType name="Table_Record_Binary_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Table Record Binary class is a component of the table class and defines a record of the table. This extension defines a binary record.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="Table_Binary_Field" type="pds:Table_Binary_Field_Type" minOccurs="1" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Binary_Field -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Table_Binary_Field_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Table Binary Field class is a component of the table record class and defines a field of the record. This extension defines a binary field.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="field_name" type="pds:field_name_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field:field_name -->
+      <xsd:element name="field_number" type="pds:field_number_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field:field_number -->
+      <xsd:element name="field_data_type" type="pds:Table_Binary_Field_field_data_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Binary_Field:field_data_type -->
+      <xsd:element name="field_location" type="pds:field_location_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field:field_location -->
+      <xsd:element name="field_length" type="pds:field_length_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field:field_length -->
+      <xsd:element name="field_format" type="pds:Table_Field_Extended_field_format_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_format -->
+      <xsd:element name="minimum_scaled_value" type="pds:minimum_scaled_value_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:minimum_scaled_value -->
+      <xsd:element name="maximum_scaled_value" type="pds:maximum_scaled_value_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:maximum_scaled_value -->
+      <xsd:element name="field_min_logical" type="pds:field_min_logical_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_min_logical -->
+      <xsd:element name="field_max_logical" type="pds:field_max_logical_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_max_logical -->
+      <xsd:element name="field_scaling_factor" type="pds:field_scaling_factor_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_scaling_factor -->
+      <xsd:element name="field_value_offset" type="pds:field_value_offset_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_value_offset -->
+      <xsd:element name="field_unit" type="pds:field_unit_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_unit -->
+      <xsd:element name="field_description" type="pds:field_description_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field:field_description -->
+      <xsd:element name="Object_Statistics" type="pds:Object_Statistics_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics -->
+      <xsd:element name="Special_Constants" type="pds:Special_Constants_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Table_Character_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Table Character class is an extension of table base and defines a simple character table.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="local_identifier" type="pds:local_identifier_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:local_identifier -->
+      <xsd:element name="comment" type="pds:comment_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TDO_Structures:comment -->
+      <xsd:element name="encoding_type" type="pds:Table_Base_Character_encoding_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Base_Character:encoding_type -->
+      <xsd:element name="fields" type="pds:fields_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Base:fields -->
+      <xsd:element name="record_bytes" type="pds:record_bytes_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Base:record_bytes -->
+      <xsd:element name="records" type="pds:records_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Base:records -->
+      <xsd:element name="Data_Location" type="pds:Data_Location_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Location -->
+      <xsd:element name="Table_Record_Character" type="pds:Table_Record_Character_Type" minOccurs="1" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Record_Character -->
+    </xsd:sequence>
+    <xsd:attribute name="base_class" type="xsd:string" fixed="Table_Base"> </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:complexType name="Table_Record_Character_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Table Record Character class is a component of the table class and defines a record of the table. This extension defines a character record.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="Table_Character_Field" type="pds:Table_Character_Field_Type" minOccurs="1" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Character_Field -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Table_Character_Field_Type">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Table Character Field class is a component of the table record class and defines a field of the record. This extension defines a character field.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="field_name" type="pds:field_name_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field:field_name -->
+      <xsd:element name="field_number" type="pds:field_number_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field:field_number -->
+      <xsd:element name="field_data_type" type="pds:Table_Character_Field_field_data_type_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Character_Field:field_data_type -->
+      <xsd:element name="field_location" type="pds:Table_Character_Field_field_location_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Character_Field:field_location -->
+      <xsd:element name="field_length" type="pds:field_length_Type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field:field_length -->
+      <xsd:element name="field_format" type="pds:Table_Field_Extended_field_format_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_format -->
+      <xsd:element name="minimum_scaled_value" type="pds:minimum_scaled_value_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:minimum_scaled_value -->
+      <xsd:element name="maximum_scaled_value" type="pds:maximum_scaled_value_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:maximum_scaled_value -->
+      <xsd:element name="field_min_logical" type="pds:field_min_logical_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_min_logical -->
+      <xsd:element name="field_max_logical" type="pds:field_max_logical_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_max_logical -->
+      <xsd:element name="field_scaling_factor" type="pds:field_scaling_factor_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_scaling_factor -->
+      <xsd:element name="field_value_offset" type="pds:field_value_offset_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_value_offset -->
+      <xsd:element name="field_unit" type="pds:field_unit_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field_Extended:field_unit -->
+      <xsd:element name="field_description" type="pds:field_description_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Table_Field:field_description -->
+      <xsd:element name="Object_Statistics" type="pds:Object_Statistics_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Object_Statistics -->
+      <xsd:element name="Special_Constants" type="pds:Special_Constants_Type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Special_Constants -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="Product_Generic" type="pds:Product_Generic_Type">
     <xsd:annotation>
       <xsd:documentation>
-        The Product_Image_Grayscale XML Schema
+        The Product_Generic XML Schema
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
