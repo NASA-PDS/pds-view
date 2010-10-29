@@ -184,7 +184,7 @@ C:\&gt; Validate &lt;targets&gt; &lt;command-line arguments&gt;
         </p>
         
         <source>
-          [node:~] Validate -c config.txt
+[node:~] Validate -c config.txt
         </source>
       </subsection>
       
