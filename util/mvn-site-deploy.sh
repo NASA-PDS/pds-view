@@ -32,7 +32,10 @@ maven pdf
 cd ../registry-ui
 maven pdf
 
-cd ../../security
+cd ../../report
+maven pdf
+
+cd ../security
 maven pdf
 
 cd ../tools/core
