@@ -50,14 +50,14 @@
         </p>
         
         <source>
-          % setenv PATH ${PATH}:$HOME/${xdoc-artifactId}-${xdoc-version}/bin
+% setenv PATH ${PATH}:$HOME/${xdoc-artifactId}-${xdoc-version}/bin
         </source>
         
         <p>The tool can now be executed via the shell script as demonstrated in the following example:
         </p>
         
         <source>
-          % Validate &lt;targets&gt; &lt;command-line arguments&gt;
+% Validate &lt;targets&gt; &lt;command-line arguments&gt;
         </source>
         
         <p>Additional methods for setting up a UNIX-based environment can be found in the <a href="index-unix.html">UNIX Setup Options</a> section. If viewing this document in PDF form, see the appendix for details.
@@ -72,14 +72,14 @@
         </p>
         
         <source>
-          C:\&gt; set PATH = %PATH%;C:\\${xdoc-artifactId}-${xdoc-version}\bin
+C:\&gt; set PATH = %PATH%;C:\\${xdoc-artifactId}-${xdoc-version}\bin
         </source>
         
         <p>The tool can now be executed via the batch file as demonstrated in the following example:
         </p>
         
         <source>
-          C:\&gt; Validate &lt;targets&gt; &lt;command-line arguments&gt;
+C:\&gt; Validate &lt;targets&gt; &lt;command-line arguments&gt;
         </source>
         
         <p>Additional methods for setting up a Windows environment can be found in the <a href="index-win.html">Windows Setup Options</a> section. If viewing this document in PDF form, see the appendix for details.
