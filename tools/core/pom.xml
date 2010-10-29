@@ -27,7 +27,7 @@
 
   <groupId>gov.nasa.pds.2010.tools</groupId>
   <artifactId>core</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.0-dev</version>
   <packaging>jar</packaging>
 
   <name>Core Library</name>
@@ -87,7 +87,16 @@
       </plugin>   
     </plugins>
   </build>
-
+  
+  <dependencies>
+    <dependency>
+      <groupId>saxon</groupId>
+      <artifactId>saxon</artifactId>
+      <version>9.2</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+  
   <repositories>
     <repository>
       <id>pds-repo</id>
