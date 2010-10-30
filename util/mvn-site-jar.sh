@@ -38,7 +38,7 @@ maven pdf
 cd ../security
 maven pdf
 
-cd ../tools/core
+cd ../preparation/core
 maven pdf
 cd ../design
 maven pdf
