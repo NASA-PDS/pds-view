@@ -194,6 +194,12 @@
           <target>1.6</target>
         </configuration>
       </plugin>
+      <plugin>
+        <inherited>true</inherited>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>2.1</version>
+      </plugin>
     </plugins>
   </build>
 
