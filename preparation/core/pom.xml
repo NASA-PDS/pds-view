@@ -21,20 +21,20 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
-    <artifactId>tools</artifactId>
+    <artifactId>preparation</artifactId>
     <version>0.0.0</version>
   </parent>
 
-  <groupId>gov.nasa.pds.2010.tools</groupId>
+  <groupId>gov.nasa.pds.2010.preparation</groupId>
   <artifactId>core</artifactId>
-  <version>0.1.0-dev</version>
+  <version>0.1.0</version>
   <packaging>jar</packaging>
 
   <name>Core Library</name>
   <description>
     The Core Library contains a software library with functionality for product label design, generation, transformation and validation as well as package formation.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/tools/core/</url>
+  <url>http://pds-cm.jpl.nasa.gov/2010/preparation/core/</url>
 
   <licenses>
     <license>

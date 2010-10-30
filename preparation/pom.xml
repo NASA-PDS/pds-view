@@ -24,7 +24,7 @@
   </parent>
 
   <groupId>gov.nasa.pds.2010</groupId>
-  <artifactId>tools</artifactId>
+  <artifactId>preparation</artifactId>
   <version>0.0.0</version>
   <packaging>pom</packaging>
 
@@ -32,7 +32,7 @@
   <description>
     The Preparation Tools provide functionality for preparing data for ingestion into PDS. This includes product label design, generation, transformation and validation as well as package formation. This project consists of a suite of tools and a core library allowing existing Node processes and procedures to be utilized in the ingestion process.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/tools/</url>
+  <url>http://pds-cm.jpl.nasa.gov/2010/preparation/</url>
 
   <modules>
     <module>core</module>
