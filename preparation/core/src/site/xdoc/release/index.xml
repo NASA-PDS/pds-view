@@ -34,14 +34,15 @@
       </p>
 
       <ul>
-        <li>TBD</li>
+        <li>Support for validating a product label or set of product labels against a specified XML Schema. </li>
+        <li>Support for validating against a set of packaged schemas, including determination of the appropriate schema based on the type of product label.</li>
       </ul>
 
       <p>The liens for this release are as follows:
       </p>
 
       <ul>
-        <li>TBD</li>
+        <li>Certain scenarios cause a validation run to produce a stack overflow error.</li>
       </ul>
     </section>
   </body>
