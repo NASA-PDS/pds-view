@@ -94,7 +94,6 @@
         <li>Need to add support for validation of products to the Harvest Tool.</li>
         <li>Need to expand the Registry User Interface to support browsing of objects beyond products and associations. Also need to add support for updating status and single product registration.</li>
         <li>Need to correct the issue with defining policy for multiple HTTP methods on the same URL for the Security Service.</li>
-        <li>Need to correct the stack overflow issue in the Core Library, which shows up in the Validate Tool.</li>
       </ul>
     </section>
 
