@@ -18,14 +18,13 @@ child projects or modules. The site can be deployed as follows:
 % mvn site-deploy --non-recursive
 
 By default, the site is built using the CM skin. In order to build the site 
-with the EN skin, modify the following block in the src/site/site.xml 
-file: 
+with the EN skin, modify the following block in the pom.xml file: 
 
-  <skin>
+  <parent>
     <groupId>gov.nasa.pds</groupId>
-    <artifactId>cm-skin</artifactId>
+    <artifactId>pds-en</artifactId>
     <version>0.0.0</version>
-  </skin>
+  </parent>
 
 In addition, the Findbugs and Checkstyle reports should be commented out in 
 the pom.xml file since we don't want the rest of PDS to see these reports.
