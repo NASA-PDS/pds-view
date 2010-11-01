@@ -25,7 +25,253 @@
 
   <body>
     <section name="Operation">
-      <p>TBD
+      <p>This section describes how to use the recommended Design Tool software packages to produce specific PDS product label schemas, which can then be used to generate product labels. In PDS4, product label schemas must conform to the <a href="http://www.w3.org/standards/techs/xmlschema" target="_blank">XML Schema</a> standard. The following diagram details the product label schema lifecycle:
+      </p>
+
+      <center>
+        <img alt="Schema Lifecycle" src="../images/pds2010_schema_design.jpg" border="1" />
+      </center>
+
+      <p>As depicted in the diagram above, generic product schemas are derived from the information model. These schemas can be used as templates for defining new products via specific schemas. The steps detailed in this section for producing a specific product label schema follow the steps (pretty closely) defined in section <i>6.0 - PDS4 Product Label Schema</i> of the Data Providers' Handbook. In this section the steps have been boiled down to the following:
+      </p>
+
+      <ul>
+        <li><a href="#Select_Generic_Schema">Select Generic Schema</a></li>
+        <li><a href="#Copy_Schema">Copy Schema</a></li>
+        <li><a href="#Tailor_Schema">Tailor Schema</a></li>
+        <li><a href="#Create_Sample_Label">Create Sample Label</a></li>
+      </ul>
+    </section>
+
+    <section name="Select Generic Schema">
+      <p>The first step is to select a generic product schema from the repository. The repository is located at <a href="http://pds.nasa.gov/schema/pds4/generic/common/" target="_blank">http://pds.nasa.gov/schema/pds4/generic/common/</a>. Generic schemas are available for several products (e.g., Grayscale Image, Character Table, etc.). Select the appropriate schema that corresponds with the data product to be described. In addition, download any ancillary schemas (e.g., base types, extended types, etc.) are are included in the selected generic schema. For this example, the following schemas should be downloaded:
+      </p>
+
+      <ul>
+        <li><a href="http://pds.nasa.gov/schema/pds4/generic/common/Product_Table_Character_0111c.xsd" target="_blank">Product_Generic_0111c.xsd</a></li>
+        <li><a href="http://pds.nasa.gov/schema/pds4/generic/common/Extended_Types_0111c.xsd" target="_blank">Extended_Types_0111c.xsd</a></li>
+        <li><a href="http://pds.nasa.gov/schema/pds4/generic/common/Base_Types_0111c.xsd" target="_blank">Base_Types_0111c.xsd</a></li>
+      </ul>
+    </section>
+
+    <section name="Copy Schema">
+      <p>The next step is to make a copy of the generic schema so that it can be tailored into a specific schema. This can be accomplished via the operating system (e.g., cp …) or via your XML Editor of choice. For this example, the <i>Product_Table_Character_0111c.xsd</i> is renamed to <i>My_Product_Table_Character_0111c.xsd</i>. 
+      </p>
+    </section>
+
+    <section name="Tailor Schema">
+      <p>The next step involves tailoring the newly named specific schema. Options for tailoring include:
+      </p>
+
+      <ul>
+        <li>Add data object definition(s) from building block schemas.</li>
+        <li>Restrict valid values and optional references where appropriate.</li>
+        <ul>
+          <li>Restrict a value set for appropriate keywords.</li>
+          <li>Restrict a value range for appropriate keywords.</li>
+          <li>Removing optional references (e.g. Object_Statistics_Type). Additional examples can be found in the Data Providers' Handbook.</li>
+        </ul>
+        <li>Incorporate Node or Mission-specific content, which can be accomplished by referencing Node or Mission-specific schemas.</li>
+      </ul>
+
+      <p>Launch your XML Editor of choice. If using Eclipse, you should first change to the XML perspective:
+      </p>
+
+      <table border="0">
+        <tr>
+          <td align="center" bgcolor="#ffffff">Eclipse Change Perspective - Menu</td>
+          <td align="center" bgcolor="#ffffff">Eclipse Change Perspective - Selection</td>
+        </tr>
+        <tr>
+          <td align="center" bgcolor="#ffffff"><a href="../images/eclipse-change-perspective1.jpg" target="_blank"><img alt="Eclipse Change Perspective - Menu" src="../images/eclipse-change-perspective1-scale.jpg" border="1" /></a></td>
+          <td align="center" bgcolor="#ffffff"><a href="../images/eclipse-change-perspective2.jpg" target="_blank"><img alt="Eclipse Change Perspective - Selection" src="../images/eclipse-change-perspective2-scale.jpg" border="1" /></a></td>
+        </tr>
+        <tr>
+          <td align="center" bgcolor="#ffffff" colspan="2">If viewing this document in online form, click the images for a larger version.</td>
+        </tr>
+      </table>
+
+      <p>Select the <i>Other...</i> menu item and then <i>XML</i> from the resulting list to enter the XML perspective.
+      </p>
+
+      <subsection name="Create Project">
+        <p>Create a new project for managing the specific schema tailoring. In Eclipse, navigate to the <i>File</i> menu, select the <i>New</i> menu item followed by the <i>Project...</i> menu item as follows:
+        </p>
+
+        <table border="0">
+          <tr>
+            <td align="center" bgcolor="#ffffff">Eclipse Create Project - Menu</td>
+            <td align="center" bgcolor="#ffffff">Eclipse Create Project - Selection</td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#ffffff"><a href="../images/eclipse-create-project1.jpg" target="_blank"><img alt="Eclipse Create Project - Menu" src="../images/eclipse-create-project1-scale.jpg" border="1" /></a></td>
+            <td align="center" bgcolor="#ffffff"><a href="../images/eclipse-create-project2.jpg" target="_blank"><img alt="Eclipse Create Project - Selection" src="../images/eclipse-create-project2-scale.jpg" border="1" /></a></td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#ffffff" colspan="2">If viewing this document in online form, click the images for a larger version.</td>
+          </tr>
+        </table>
+
+        <p>Select the <i>Project</i> item from the list on the <i>New Project</i> popup window and then select the <i>Next</i> button. Enter a name for the project and select the <i>Finish</i> button to create the project.
+        </p>
+
+        <p>Although Eclipse prompts the user for a project name, Oxygen defaults to <i>newProject</i>. In Oxygen, the project can be named later using the <i>Save As</i> feature. In Oxygen, navigate to the <i>Project</i> menu, select the <i>New Project</i> menu item as follows:
+        </p>
+
+        <table border="0">
+          <tr>
+            <td align="center" bgcolor="#ffffff">Oxygen Create Project - Menu</td>
+            <td align="center" bgcolor="#ffffff">Oxygen Create Project - Result</td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#ffffff"><a href="../images/oxygen-create-project1.jpg" target="_blank"><img alt="Oxygen Create Project - Menu" src="../images/oxygen-create-project1-scale.jpg" border="1" /></a></td>
+            <td align="center" bgcolor="#ffffff"><a href="../images/oxygen-create-project2.jpg" target="_blank"><img alt="Oxygen Create Project - Result" src="../images/oxygen-create-project2-scale.jpg" border="1" /></a></td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#ffffff" colspan="2">If viewing this document in online form, click the images for a larger version.</td>
+          </tr>
+        </table>
+      </subsection>
+
+      <subsection name="Load Schemas">
+        <p>Load the schema files into the project. In both applications, the user can drag-and-drop the files into the project list. The alternative in Eclipse, is to right-click the project name from the project list and select the <i>Import…</i> menu item as follows:
+        </p>
+
+        <table border="0">
+          <tr>
+            <td align="center" bgcolor="#ffffff">Eclipse Load Schemas - Menu</td>
+            <td align="center" bgcolor="#ffffff">Eclipse Load Schemas - Type Selection</td>
+            <td align="center" bgcolor="#ffffff">Eclipse Load Schemas - File Selection</td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#ffffff"><a href="../images/eclipse-load-schemas1.jpg" target="_blank"><img alt="Eclipse Load Schemas - Menu" src="../images/eclipse-load-schemas1-scale.jpg" border="1" /></a></td>
+            <td align="center" bgcolor="#ffffff"><a href="../images/eclipse-load-schemas2.jpg" target="_blank"><img alt="Eclipse Load Schemas - Type Selection" src="../images/eclipse-load-schemas2-scale.jpg" border="1" /></a></td>
+            <td align="center" bgcolor="#ffffff"><a href="../images/eclipse-load-schemas3.jpg" target="_blank"><img alt="Eclipse Load Schemas - File Selection" src="../images/eclipse-load-schemas3-scale.jpg" border="1" /></a></td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#ffffff" colspan="3">If viewing this document in online form, click the images for a larger version.</td>
+          </tr>
+        </table>
+
+        <p>Select the <i>File System</i> item from the list in the <i>Import</i> popup window and then select the <i>Next</i> button. Specify the target schemas for import and then select the <i>Finish</i> button to import the schemas into the project.
+        </p>
+
+        <p>In Oxygen, right-click the project name from the project list and select the <i>Add Files</i> menu item as follows:
+        </p>
+
+        <table border="0">
+          <tr>
+            <td align="center" bgcolor="#ffffff">Oxygen Load Schemas - Menu</td>
+            <td align="center" bgcolor="#ffffff">Oxygen Load Schemas - File Selection</td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#ffffff"><a href="../images/oxygen-load-schemas1.jpg" target="_blank"><img alt="Oxygen Load Schemas - Menu" src="../images/oxygen-load-schemas1-scale.jpg" border="1" /></a></td>
+            <td align="center" bgcolor="#ffffff"><a href="../images/oxygen-load-schemas2.jpg" target="_blank"><img alt="Oxygen Load Schemas - File Selection" src="../images/oxygen-load-schemas2-scale.jpg" border="1" /></a></td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#ffffff" colspan="2">If viewing this document in online form, click the images for a larger version.</td>
+          </tr>
+        </table>
+
+        <p>Specify the target schemas, one by one, for import and then select the <i>Open</i> button to import each schema into the project.
+        </p>
+      </subsection>
+
+      <subsection name="Modify Schema">
+        <p>Open the <i>My_Product_Table_Character_0111c.xsd</i> schema file by double-clicking the file name from the project file list or navigating to the <i>File</i> menu and selecting the <i>Open...</i> menu item. In Eclipse, change from <i>Design</i> view to <i>Source</i> view. In Oxygen, change from <i>Schema</i> view to <i>Text</i> view.
+        </p>
+
+        <p>Now that the file is open, the first modification is to change the name within the schema to correspond with the file name change. Find instances of <i>Product_Table_Character</i> and replace them with <i>My_Product_Table_Character</i>. In Eclipse, navigate to the <i>Edit</i> menu and select the <i>Find/Replace...</i> menu item. In Oxygen, navigate to the <i>Find</i> menu and select the <i>Find/Replace...</i> menu item.
+        </p>
+
+        <p>This is where the assorted modifications listed at the beginning of this section can be made. 
+        </p>
+      </subsection>
+
+      <subsection name="Validate Schema">
+        <p>Although both applications notify the user real-time when the active schema file is not valid, the schema can be validated using the XML Editor’s validate feature. Example errors could include typos or non-XML conformant entries or missing element definitions. In order to initiate validation, right-click the file name from the project file list and select the <i>Validate</i>  or <i>Validate Selection</i> menu item in Eclipse and Oxygen, respectively. In Eclipse, the pulldown menu and resulting window are as follows:
+        </p>
+
+        <table border="0">
+          <tr>
+            <td align="center" bgcolor="#ffffff">Eclipse Validate Schema - Menu</td>
+            <td align="center" bgcolor="#ffffff">Eclipse Validate Schema - Result</td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#ffffff"><a href="../images/eclipse-validate-schema1.jpg" target="_blank"><img alt="Eclipse Validate Schema - Menu" src="../images/eclipse-validate-schema1-scale.jpg" border="1" /></a></td>
+            <td align="center" bgcolor="#ffffff"><a href="../images/eclipse-validate-schema2.jpg" target="_blank"><img alt="Eclipse Validate Schema - Result" src="../images/eclipse-validate-schema2-scale.jpg" border="1" /></a></td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#ffffff" colspan="2">If viewing this document in online form, click the images for a larger version.</td>
+          </tr>
+        </table>
+
+        <p>In Oxygen, the pulldown menu and resulting window are as follows:
+        </p>
+
+        <table border="0">
+          <tr>
+            <td align="center" bgcolor="#ffffff">Oxygen Validate Schema - Menu</td>
+            <td align="center" bgcolor="#ffffff">Oxygen Validate Schema - Result</td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#ffffff"><a href="../images/oxygen-validate-schema1.jpg" target="_blank"><img alt="Oxygen Validate Schema - Menu" src="../images/oxygen-validate-schema1-scale.jpg" border="1" /></a></td>
+            <td align="center" bgcolor="#ffffff"><a href="../images/oxygen-validate-schema2.jpg" target="_blank"><img alt="Oxygen Validate Schema - Result" src="../images/oxygen-validate-schema2-scale.jpg" border="1" /></a></td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#ffffff" colspan="2">If viewing this document in online form, click the images for a larger version.</td>
+          </tr>
+        </table>
+      </subsection>
+
+      <p>After a few or many iterations of modifying the specific schema, save the completed specific schema.
+      </p>
+    </section>
+
+    <section name="Create Sample Label">
+      <p>Create a sample label in XML from the tailored specific schema. In Eclipse, right-click the file name from the project list and select the <i>Generate->XML File …</i> menu item as follows:
+      </p>
+
+      <table border="0">
+        <tr>
+          <td align="center" bgcolor="#ffffff">Eclipse Create Label - Menu</td>
+          <td align="center" bgcolor="#ffffff">Eclipse Create Label - Option Selection</td>
+        </tr>
+        <tr>
+          <td align="center" bgcolor="#ffffff"><a href="../images/eclipse-create-label1.jpg" target="_blank"><img alt="Eclipse Create Label - Menu" src="../images/eclipse-create-label1-scale.jpg" border="1" /></a></td>
+          <td align="center" bgcolor="#ffffff"><a href="../images/eclipse-create-label2.jpg" target="_blank"><img alt="Eclipse Create Label - Option Selection" src="../images/eclipse-create-label2-scale.jpg" border="1" /></a></td>
+        </tr>
+        <tr>
+          <td align="center" bgcolor="#ffffff" colspan="2">If viewing this document in online form, click the images for a larger version.</td>
+        </tr>
+      </table>
+
+      <p>Select the <i>Create optional attributes</i> and <i>Create optional elements</i> check boxes on the <i>New XML File</i> popup window. In addition, edit the namespace entry and blank out the prefix for the namespace. Select the <i>OK</i> button in the <i>New Namespace Information</i> popup window and then select the <i>Finish</i> button on the <i>New XML File</i> popup window to generate the sample label.
+      </p>
+
+      <p>In Oxygen, right-click the file name from the project list and select the <i>Generate Sample XML Files…</i> menu item as follows:
+      </p>
+
+      <table border="0">
+        <tr>
+          <td align="center" bgcolor="#ffffff">Oxygen Create Label - Menu</td>
+          <td align="center" bgcolor="#ffffff">Oxygen Create Label - Option Selection</td>
+          <td align="center" bgcolor="#ffffff">Oxygen Create Label - More Options</td>
+        </tr>
+        <tr>
+          <td align="center" bgcolor="#ffffff"><a href="../images/oxygen-create-label1.jpg" target="_blank"><img alt="Oxygen Create Label - Menu" src="../images/oxygen-create-label1-scale.jpg" border="1" /></a></td>
+          <td align="center" bgcolor="#ffffff"><a href="../images/oxygen-create-label2.jpg" target="_blank"><img alt="Oxygen Create Label - Option Selection" src="../images/oxygen-create-label2-scale.jpg" border="1" /></a></td>
+          <td align="center" bgcolor="#ffffff"><a href="../images/oxygen-create-label3.jpg" target="_blank"><img alt="Oxygen Create Label - More Options" src="../images/oxygen-create-label3-scale.jpg" border="1" /></a></td>
+        </tr>
+        <tr>
+          <td align="center" bgcolor="#ffffff" colspan="3">If viewing this document in online form, click the images for a larger version.</td>
+        </tr>
+      </table>
+
+      <p>Select the <i>OPTIONS</i> tab on the <i>Generate Sample XML Files</i> popup window and then select the <i>Generate optional elements</i> and <i>Generate optional attributes</i> check boxes. Select the <i>OK</i> button to generate the sample label.
+      </p>
+
+      <p>The generated XML sample label is conformant with the <i>My_Product_Table_Character_0111c.xsd</i> schema.
       </p>
     </section>
   </body>
