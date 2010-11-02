@@ -18,7 +18,11 @@
 
 cd ..
 mvn clean
+
+# Build each site (recursive).
 mvn site
+
+# Go back through the modules and create the PDFs.
 
 cd harvest
 maven pdf
@@ -46,4 +50,6 @@ cd ../validate
 maven pdf
 
 cd ../..
+
+# Create a JAR of each site (recursive) including the generated PDFs.
 mvn site:jar

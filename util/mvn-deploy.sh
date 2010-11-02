@@ -13,43 +13,43 @@
 #
 # $Id$
 
-# This script traverses the module directories to build and deploy
-# the associated sites for the CM web site.
+# This script traverses the module directories deploy the artifacts 
+# to the Maven repository.
 
 cd ..
 mvn clean
 
-# Build each site (recursive).
+# Traverse the modules and selectively deploy artifacts.
+
+mvn deploy --non-recursive
+
+cd preparation
+mvn deploy --non-recursive
+cd core
 mvn site
-
-# Go back through the modules and create the PDFs.
-
-cd harvest
 maven pdf
+mvn deploy
+cd ../validate
+mvn site
+maven pdf
+mvn deploy
 
 #cd ../registry/registry-core
 #maven pdf
 #cd ../registry-service
 
-cd ../registry/registry-service
+cd ../../registry
+mvn deploy --non-recursive
+cd registry-service
+mvn site
 maven pdf
+mvn deploy
 cd ../registry-ui
+mvn site
 maven pdf
+mvn deploy
 
-cd ../../report
+cd ../../harvest
+mvn site
 maven pdf
-
-cd ../security
-maven pdf
-
-cd ../preparation/core
-maven pdf
-cd ../design
-maven pdf
-cd ../validate
-maven pdf
-
-cd ../..
-
-# Deploy each site (recursive) including the generated PDFs.
-mvn site:deploy
+mvn deploy
