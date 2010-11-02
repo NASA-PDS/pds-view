@@ -62,9 +62,11 @@ public class VersionInfo {
   private final static Properties props = new Properties();
   private final static File schemaDir;
   private final static Boolean internalMode;
+  private final static String xmlParserVersion;
 
   static {
     try {
+      xmlParserVersion = org.apache.xerces.impl.Version.getVersion();
       props.load(VersionInfo.class.getResourceAsStream("/core.properties"));
       String schemaDirString = System.getProperty(SCHEMA_DIR_PROP);
       internalMode = (schemaDirString == null) ? true : false;
@@ -88,6 +90,10 @@ public class VersionInfo {
 
   public static String getXMLVersion() {
     return props.getProperty(XML_VERSION);
+  }
+  
+  public static String getXMLParserVersion() {
+    return xmlParserVersion;
   }
 
   public static String getLibraryVersion() {

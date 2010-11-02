@@ -135,9 +135,21 @@ public class LabelValidator {
       ParserConfigurationException {
     if (performsSchemaValidation()) {
       Validator validator = schema.newValidator();
-      validator.setErrorHandler(new LabelErrorHandler(container));
+      if (container != null) {
+        validator.setErrorHandler(new LabelErrorHandler(container));
+      }
       validator.validate(new StreamSource(labelFile));
     }
+  }
+
+  public void validate(File labelFile, Schema schema) throws SAXException,
+      IOException, ParserConfigurationException {
+    validate(null, labelFile, schema);
+  }
+
+  public void validate(File labelFile) throws XPathExpressionException,
+      SAXException, IOException, ParserConfigurationException {
+    validate(null, labelFile);
   }
 
   public String getModelVersion() {
@@ -171,14 +183,14 @@ public class LabelValidator {
 
   public static void main(String[] args) throws Exception {
     LabelValidator validator = new LabelValidator();
+    System.out.println("Parser Version: " + VersionInfo.getXMLParserVersion());
+    System.out.println("Model Version: " + validator.getModelVersion());
     ExceptionContainer container = new ExceptionContainer();
     validator.validate(container, new File(args[0]));
-    System.out.println("Model Version: " + validator.getModelVersion());
-    System.out.println("Internal Mode: " + validator.isInternalMode());
     for (LabelException exception : container.getExceptions()) {
-      System.out.println(exception.getExceptionType() + " "
-          + exception.getLineNumber() + " " + exception.getSource() + ": "
-          + exception.getMessage());
+      System.out.println(exception.getExceptionType() + " ["
+          + exception.getLineNumber() + ":" + exception.getColumnNumber()
+          + "] " + exception.getSource() + ": " + exception.getMessage());
     }
     System.out.println("Exiting Main!");
   }
