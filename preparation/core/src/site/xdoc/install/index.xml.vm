@@ -75,6 +75,10 @@ or
           <p>This directory contains the dependent jar files for the software along with the jar file (${xdoc-artifactId}-${xdoc-version}.jar) containing the Core Library software.
           </p>
         </li>
+        <li><b>schema/</b><br/>
+          <p>This directory contains the latest version of the XML Schema documents as of the release of this tool.
+          </p>
+        </li>
       </ul>
     </section>
   </body>
