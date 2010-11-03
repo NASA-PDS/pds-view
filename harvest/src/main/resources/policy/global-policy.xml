@@ -2,13 +2,73 @@
 <policy>
    <candidates>
      <namespace prefix="pds" uri="http://pds.nasa.gov/schema/pds4/pds" default="true"/>
+     <productMetadata objectType="Collection_Browse">
+        <xPath>//alternate_title</xPath>
+        <xPath>//alternate_id</xPath>
+        <xPath>//last_modification_date_time</xPath>
+        <xPath>//is_primary_collection</xPath>
+     </productMetadata>
+     <productMetadata objectType="Collection_Calibration">
+        <xPath>//alternate_title</xPath>
+        <xPath>//alternate_id</xPath>
+        <xPath>//last_modification_date_time</xPath>
+        <xPath>//is_primary_collection</xPath>
+     </productMetadata>    
      <productMetadata objectType="Collection_Context">
         <xPath>//alternate_title</xPath>
         <xPath>//alternate_id</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
      </productMetadata>
-     <productMetadata objectType="Bundle_Context">
+     <productMetadata objectType="Collection_Data">
+        <xPath>//alternate_title</xPath>
+        <xPath>//alternate_id</xPath>
+        <xPath>//last_modification_date_time</xPath>
+        <xPath>//is_primary_collection</xPath>
+     </productMetadata>
+     <productMetadata objectType="Collection_Document">
+        <xPath>//alternate_title</xPath>
+        <xPath>//alternate_id</xPath>
+        <xPath>//last_modification_date_time</xPath>
+        <xPath>//is_primary_collection</xPath>
+     </productMetadata>
+     <productMetadata objectType="Collection_Generic">
+        <xPath>//alternate_title</xPath>
+        <xPath>//alternate_id</xPath>
+        <xPath>//last_modification_date_time</xPath>
+        <xPath>//is_primary_collection</xPath>
+     </productMetadata>
+     <productMetadata objectType="Collection_Geometry">
+        <xPath>//alternate_title</xPath>
+        <xPath>//alternate_id</xPath>
+        <xPath>//last_modification_date_time</xPath>
+        <xPath>//is_primary_collection</xPath>
+     </productMetadata>
+     <productMetadata objectType="Collection_Miscellaneous">
+        <xPath>//alternate_title</xPath>
+        <xPath>//alternate_id</xPath>
+        <xPath>//last_modification_date_time</xPath>
+        <xPath>//is_primary_collection</xPath>
+     </productMetadata>
+     <productMetadata objectType="Collection_Secondary">
+        <xPath>//alternate_title</xPath>
+        <xPath>//alternate_id</xPath>
+        <xPath>//last_modification_date_time</xPath>
+        <xPath>//is_primary_collection</xPath>
+     </productMetadata>
+     <productMetadata objectType="Collection_SPICE">
+        <xPath>//alternate_title</xPath>
+        <xPath>//alternate_id</xPath>
+        <xPath>//last_modification_date_time</xPath>
+        <xPath>//is_primary_collection</xPath>
+     </productMetadata>
+     <productMetadata objectType="Collection_XML_Schema">
+        <xPath>//alternate_title</xPath>
+        <xPath>//alternate_id</xPath>
+        <xPath>//last_modification_date_time</xPath>
+        <xPath>//is_primary_collection</xPath>
+     </productMetadata>     
+     <productMetadata objectType="Product_Bundle">
         <xPath>//alternate_title</xPath>
         <xPath>//alternate_id</xPath>
         <xPath>//last_modification_date_time</xPath>
