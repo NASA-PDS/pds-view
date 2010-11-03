@@ -72,20 +72,47 @@
           <li>Log onto the host machine with root privileges.</li>
           <li>Configure Apache Tomcat to support CGI binary executables.</li>
           <ul>
-            <li>a. Remove XML comments surrounding the <i>CGIServlet</i> and CGI servlet-mapping configuration in $CATALINA_HOME/conf/web.xml.</li>
-            <li>b. Add the following XML to the <i>CGIServlet</i> block in <i>$CATALINA_HOME/conf/web.xml</i> to support CGI as a binary executable:</li>
+            <li>a. Add the following XML blocks to Servlet Definition and Servlet Mappings sections of <i>$CATALINA_HOME/conf/web.xml</i>:</li>
+	    <br /><i>Note</i>: These XML blocks are already included in the default Tomcat web.xml and only need to be uncommented. If so, be sure to add the <i>executable</i> parameter in the Servlet Definition):
             <source>
-&lt;init-param&gt;
-  &lt;param-name&gt;executable&lt;/param-name&gt;
-  &lt;param-value&gt;&lt;/param-value&gt;
-&lt;/init-param&gt;
+&lt;!-- ================== Built In Servlet Definitions ==================== --&gt;
+&lt;servlet&gt;
+  &lt;servlet-name&gt;cgi&lt;/servlet-name&gt;
+  &lt;servlet-class&gt;org.apache.catalina.servlets.CGIServlet&lt;/servlet-class&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;debug&lt;/param-name&gt;
+    &lt;param-value&gt;0&lt;/param-value&gt;
+  &lt;/init-param&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;cgiPathPrefix&lt;/param-name&gt;
+    &lt;param-value&gt;WEB-INF/cgi&lt;/param-value&gt;
+  &lt;/init-param&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;executable&lt;/param-name&gt;
+    &lt;param-value&gt;&lt;/param-value&gt;
+  &lt;/init-param&gt;
+  &lt;load-on-startup&gt;5&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+
+&lt;!-- ================ Built In Servlet Mappings ========================= --&gt;
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;cgi&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/cgi-bin/*&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
             </source>
-            <li>c. Set attribute privileged="true" for Context element in $CATALINA_HOME/conf/context.xml.</li>
-            <li>d. Create a <i>cgi-bin</i> directory, if one does not already exist:</li>
+            <li>b. Set attribute privileged="true" for the Context element in <i>$CATALINA_HOME/conf/context.xml</i>.</li>
+	    <source>
+&lt;Context privileged="true"&gt;
+  .
+  .
+  .
+&lt;/Context&gt;
+	    </source>
+            <li>c. Create a <i>cgi</i> directory, if one does not already exist:</li>
             <source>
 % mkdir $CATALINA_HOME/webapps/ROOT/WEB-INF/cgi
             </source>
-	    The <i>cgi-bin</i> directory name, should match the &lt;servlet-name&gt; specified in the <i>CGIServlet</i> block, mentioned in steps 2a and 2b (default is <i>cgi</i>).
+	    Note that the directory name, <i>cgi</i>, matches the &lt;servlet-name&gt; specified in the Servlet Definition from step 2a.
           </ul>
           <li>Navigate to the directory where the Sawmill compressed package was copied, and enter the following command from the command line:
             <source>
@@ -94,7 +121,7 @@
             <p>A directory called <i>sawmill</i> is created containing the Sawmill executable file (sawmill) and a few other files.
             </p>
           </li>
-          <li>Copy the executable and <i>LogAnalysisInfo</i> directory to the <i>cgi-bin</i> created in step 2d.</li>
+          <li>Copy the executable and <i>LogAnalysisInfo</i> directory to the <i>cgi</i> directory created in step 2c.</li>
           <source>
 % cp (installation-directory)/sawmill (cgi-bin)/sawmill.cgi
 % cp -r (installation-directory)/LogAnalysisInfo (cgi-bin)
