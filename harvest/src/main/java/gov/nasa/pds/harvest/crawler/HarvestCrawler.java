@@ -189,7 +189,7 @@ public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
     @Override
     protected Metadata getMetadataForProduct(File product) {
         PDSMetExtractor metExtractor = null;
-        if(objectType.equals("Collection_Context")) {
+        if(objectType.startsWith("Collection")) {
             metExtractor = new PDSCollectionMetExtractor(metExtractorConfig);
         } else {
             metExtractor = new PDSMetExtractor(metExtractorConfig);
