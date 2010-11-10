@@ -29,25 +29,36 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  *
  */
 public class SecurityClient {
-    public final static String AUTHENTICATE = "authenticate";
-    public final static String IS_TOKEN_VALID = "isTokenValid";
-    public final static String LOGOUT = "logout";
+    private final static String AUTHENTICATE = "authenticate";
+    private final static String IS_TOKEN_VALID = "isTokenValid";
+    private final static String LOGOUT = "logout";
     private WebResource securityResource;
     private String mediaType;
 
     /**
      * Constructor
+     *
+     * @param baseURL The security service url.
      */
     public SecurityClient(String baseURL) {
         ClientConfig clientConfig = new DefaultClientConfig();
         securityResource = Client.create(clientConfig).resource(baseURL);
     }
 
+    /**
+     * Determine if the given token is valid.
+     *
+     * @param token The security token.
+     * @return 'true' if the token is valid.
+     *
+     * @throws SecurityClientException If an error occurred while interacting
+     * with the security service.
+     */
     public boolean isTokenValid(String token) throws SecurityClientException {
         MultivaluedMap<String, String> params = new MultivaluedMapImpl();
         params.add("tokenid", token);
-        ClientResponse response = securityResource.path(IS_TOKEN_VALID).
-          queryParams(params).accept(mediaType).post(ClientResponse.class);
+        ClientResponse response = securityResource.path(IS_TOKEN_VALID)
+        .queryParams(params).accept(mediaType).post(ClientResponse.class);
 
         if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
             String booleanValue = response.getEntity(String.class);
@@ -55,18 +66,30 @@ public class SecurityClient {
             return Boolean.parseBoolean(booleanValue);
         } else {
             throw new SecurityClientException(
-                    "Security service token validation request failed. "
-                    + "HTTP Status Code received: " + response.getStatus());
+            "Security service token validation request failed. "
+                    + "HTTP Status Code received: "
+                    + response.getStatus());
         }
     }
 
+    /**
+     * Get a security token.
+     *
+     * @param username The username.
+     * @param password The password.
+     *
+     * @return A security token.
+     *
+     * @throws SecurityClientException If an error occurred while interacting
+     * with the security service.
+     */
     public String authenticate(String username, String password)
     throws SecurityClientException {
         MultivaluedMap<String, String> params = new MultivaluedMapImpl();
         params.add("username", username);
         params.add("password", password);
-        ClientResponse response = securityResource.path(AUTHENTICATE).
-          queryParams(params).accept(mediaType).post(ClientResponse.class);
+        ClientResponse response = securityResource.path(AUTHENTICATE)
+        .queryParams(params).accept(mediaType).post(ClientResponse.class);
         if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
             String token = response.getEntity(String.class);
             token = token.split("=", 2)[1].trim();
@@ -78,15 +101,23 @@ public class SecurityClient {
         }
     }
 
+    /**
+     * Logout the authenticated user.
+     *
+     * @param token The security token.
+     *
+     * @throws SecurityClientException If an error occurred while interacting
+     * with the security service.
+     */
     public void logout(String token) throws SecurityClientException {
-        ClientResponse response = securityResource.path(LOGOUT).queryParam(
-                "subjectid", token).accept(mediaType).
-                post(ClientResponse.class);
+        ClientResponse response = securityResource.path(LOGOUT)
+        .queryParam("subjectid", token).accept(mediaType).post(
+                ClientResponse.class);
 
         if(response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
             throw new SecurityClientException(
-                    "Security service logout request failure. HTTP Status Code "
-                    + "received: " + response.getStatus());
+                    "Security service logout request failure. "
+                    + "HTTP Status Code received: " + response.getStatus());
         }
     }
 }

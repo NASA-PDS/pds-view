@@ -34,23 +34,29 @@ public class PolicyReader {
     public final static String POLICY_PACKAGE = "gov.nasa.pds.harvest.policy";
     public final static String POLICY_SCHEMA = "harvest-policy.xsd";
 
-    public static Policy unmarshall(InputStream policyXML) throws SAXParseException, JAXBException, SAXException {
+    public static Policy unmarshall(InputStream policyXML)
+    throws SAXParseException, JAXBException, SAXException {
         return unmarshall(new StreamSource(policyXML));
     }
 
-    public static Policy unmarshall(File policyXML) throws SAXParseException, JAXBException, SAXException {
+    public static Policy unmarshall(File policyXML)
+    throws SAXParseException, JAXBException, SAXException {
         return unmarshall(new StreamSource(policyXML));
     }
 
-    public static Policy unmarshall(StreamSource policyXML) throws JAXBException, SAXException, SAXParseException {
+    public static Policy unmarshall(StreamSource policyXML)
+    throws JAXBException, SAXException, SAXParseException {
         JAXBContext jc = JAXBContext.newInstance(POLICY_PACKAGE);
         Unmarshaller um = jc.createUnmarshaller();
-        SchemaFactory sf = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        SchemaFactory sf = SchemaFactory.newInstance(
+                javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema schema = null;
         try {
-            schema = sf.newSchema(PolicyReader.class.getResource(POLICY_SCHEMA));
-        } catch(SAXException se) {
-            throw new SAXException("Problems parsing harvest policy schema: " + se.getMessage());
+            schema = sf.newSchema(
+                    PolicyReader.class.getResource(POLICY_SCHEMA));
+        } catch (SAXException se) {
+            throw new SAXException("Problems parsing harvest policy schema: "
+                    + se.getMessage());
         }
         um.setSchema(schema);
         um.setEventHandler(new XMLValidationEventHandler());

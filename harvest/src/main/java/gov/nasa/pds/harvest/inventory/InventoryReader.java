@@ -11,12 +11,23 @@
 // providing access to foreign nationals.
 //
 // $Id$
-package gov.nasa.pds.harvest.context;
+package gov.nasa.pds.harvest.inventory;
 
-public class InventoryReaderException extends Exception {
-   private static final long serialVersionUID = 4687976349704354553L;
+/**
+ * Interface for reading a PDS Inventory File.
+ *
+ * @author mcayanan
+ *
+ */
+public interface InventoryReader {
 
-   public InventoryReaderException(String message) {
-       super(message);
-   }
+    /**
+     * Get the next file reference in the Inventory file.
+     *
+     * @return An object representation of the next file reference in
+     * the Inventory file.
+     *
+     * @throws InventoryReaderException
+     */
+    public abstract InventoryEntry getNext() throws InventoryReaderException;
 }

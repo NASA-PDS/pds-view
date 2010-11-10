@@ -54,8 +54,8 @@ public class LogMissingReqMetadataAction extends CrawlerAction {
     public boolean performAction(File product, Metadata productMetadata)
             throws CrawlerActionException {
         boolean passFlag = true;
-        for(String key : reqMetadata) {
-            if(!productMetadata.containsKey(key)) {
+        for (String key : reqMetadata) {
+            if (!productMetadata.containsKey(key)) {
                 log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
                         "Missing required metadata: " + key,
                         product));

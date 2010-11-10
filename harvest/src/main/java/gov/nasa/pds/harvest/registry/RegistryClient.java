@@ -13,15 +13,13 @@
 // $Id$
 package gov.nasa.pds.harvest.registry;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import javax.ws.rs.core.MediaType;
+
+import org.apache.commons.httpclient.NameValuePair;
 
 import com.sun.jersey.api.client.ClientResponse;
 
 import gov.nasa.pds.harvest.util.HttpUtils;
-import gov.nasa.pds.harvest.util.Utility;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.Product;
 
@@ -32,106 +30,86 @@ import gov.nasa.pds.registry.model.Product;
  *
  */
 public class RegistryClient {
-    private URI baseURI;
-    private URI statusURI;
-    private URI productsURI;
-    private URI registryURI;
-    private URI associationsURI;
+    private String baseURI;
+    private String productsURI;
+    private String registryURI;
+    private String associationsURI;
     private boolean enableSecurity;
     private String token;
 
-    public RegistryClient(String baseURI) throws URISyntaxException {
+    public RegistryClient(String baseURI) {
         this(baseURI, null);
     }
 
-    public RegistryClient(String baseURI, String token)
-    throws URISyntaxException {
-        this.baseURI = new URI(baseURI);
-        this.registryURI = new URI(this.baseURI.toString() + "/registry");
+    public RegistryClient(String baseURI, String token) {
+        this.baseURI = baseURI;
+        this.registryURI = this.baseURI.toString() + "/registry";
         this.token = token;
         if(this.token != null)
             enableSecurity = true;
         else
             enableSecurity = false;
-        this.statusURI = new URI(this.registryURI.toString() + "/status");
-        this.productsURI = new URI(this.registryURI.toString() + "/products");
-        this.associationsURI = new URI(this.baseURI + "/" + "associations");
+        this.productsURI = this.registryURI.toString() + "/products";
+        this.associationsURI = this.registryURI.toString() + "/" + "associations";
     }
 
-    public boolean isRunning() {
-        ClientResponse response = null;
-        if(enableSecurity) {
-            response = HttpUtils.get(statusURI, MediaType.TEXT_PLAIN_TYPE,
-                    token);
-        } else {
-            response = HttpUtils.get(statusURI, MediaType.TEXT_PLAIN_TYPE);
-        }
-        if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean hasProduct(String logicalID) throws URISyntaxException {
-        URI uri = new URI(Utility.toWellFormedURI(productsURI.toString()
-                + "/" + logicalID));
+    public ClientResponse getLatestProduct(String lid) {
+        String uri = productsURI + "/" + lid;
         ClientResponse response = null;
         if(enableSecurity) {
             response = HttpUtils.get(uri, MediaType.TEXT_PLAIN_TYPE, token);
         } else {
             response = HttpUtils.get(uri, MediaType.TEXT_PLAIN_TYPE);
         }
-        if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
-            return true;
-        } else {
-            return false;
-        }
+        return response;
     }
 
-    public boolean hasProduct(String logicalID, String version)
-    throws URISyntaxException {
-        URI uri = new URI(Utility.toWellFormedURI(productsURI.toString()
-                + "/" + logicalID + "/" + version));
+    public ClientResponse getProduct(String logicalID, String version) {
+        String uri = productsURI + "/" + logicalID + "/" + version;
         ClientResponse response = null;
         if(enableSecurity) {
             response = HttpUtils.get(uri, MediaType.TEXT_PLAIN_TYPE, token);
         } else {
             response = HttpUtils.get(uri, MediaType.TEXT_PLAIN_TYPE);
         }
-        if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
-            return true;
-        } else {
-            return false;
-        }
+        return response;
     }
 
-    public ClientResponse publishProduct(Product product)
-    throws RegistryClientException, URISyntaxException {
-        URI uri = productsURI;
+    public ClientResponse versionProduct(String user, Product product, String lid) {
+        return this.versionProduct(user, product, lid, true);
+      }
 
-        if(hasProduct(product.getLid(), product.getVersionId())) {
-            throw new RegistryClientException(
-                    "Product and version already exists: " +
-                    Utility.toWellFormedURI(uri.toString() + "/"
-                            + product.getLid() + "/" + product.getVersionId()));
-        }
-        else if(hasProduct(product.getLid())) {
-            uri = new URI(Utility.toWellFormedURI(uri.toString() + "/"
-                    + product.getLid()));
-        }
+    public ClientResponse versionProduct(String user, Product product,
+            String lid, Boolean major) {
+        String uri = productsURI + "/" + lid;
+        NameValuePair param = new NameValuePair();
+        param.setName("major");
+        param.setValue(major.toString());
         ClientResponse response = null;
         if(enableSecurity) {
-            response = HttpUtils.post(uri, product,
+            response = HttpUtils.post(uri, product, param,
                     MediaType.APPLICATION_XML_TYPE, token);
         } else {
-            response = HttpUtils.post(uri, product,
+            response = HttpUtils.post(uri, product, param,
                     MediaType.APPLICATION_XML_TYPE);
         }
         return response;
     }
 
-    public ClientResponse publishAssociation(Association association) {
+    public ClientResponse publishProduct(String user, Product product) {
+        ClientResponse response = null;
+        if(enableSecurity) {
+            response = HttpUtils.post(productsURI, product,
+                    MediaType.APPLICATION_XML_TYPE, token);
+        } else {
+            response = HttpUtils.post(productsURI, product,
+                    MediaType.APPLICATION_XML_TYPE);
+        }
+        return response;
+    }
+
+    public ClientResponse publishAssociation(String user,
+            Association association) {
         ClientResponse response = null;
         if(enableSecurity) {
             response = HttpUtils.post(this.associationsURI, association,
@@ -141,17 +119,5 @@ public class RegistryClient {
                     MediaType.APPLICATION_XML_TYPE);
         }
         return response;
-    }
-
-    public URI getBaseURI() {
-        return baseURI;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

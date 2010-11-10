@@ -13,14 +13,13 @@
 // $Id$
 package gov.nasa.pds.harvest.crawler.metadata.extractor;
 
-import java.util.Iterator;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import gov.nasa.jpl.oodt.cas.metadata.MetExtractorConfig;
 import gov.nasa.pds.harvest.policy.Candidate;
-import gov.nasa.pds.harvest.policy.Namespace;
 import gov.nasa.pds.harvest.policy.ProductMetadata;
-import gov.nasa.pds.harvest.util.PDSNamespaceContext;
 
 /**
  * Configuration class for extracting metadata from
@@ -30,6 +29,7 @@ import gov.nasa.pds.harvest.util.PDSNamespaceContext;
  *
  */
 public class PDSMetExtractorConfig implements MetExtractorConfig {
+    /** Candidate products. */
     private Candidate candidates;
 
     /**
@@ -38,8 +38,12 @@ public class PDSMetExtractorConfig implements MetExtractorConfig {
      * @param candidates A class that contains what product types
      * to extract and which metadata fields to get from those
      * product types.
+     *
+     * @throws ParserConfigurationException If there was an error
+     * setting up the default XML Extractor.
      */
-    public PDSMetExtractorConfig(Candidate candidates) {
+    public PDSMetExtractorConfig(Candidate candidates)
+    throws ParserConfigurationException {
         this.candidates = candidates;
     }
 
@@ -51,31 +55,12 @@ public class PDSMetExtractorConfig implements MetExtractorConfig {
      * @return A list of XPath expressions based on the given object type.
      */
     public List<String> getMetXPaths(String objectType) {
-        for(ProductMetadata p : this.candidates.getProductMetadata()) {
-            if(p.getObjectType().equalsIgnoreCase(objectType)) {
+        for (ProductMetadata p : this.candidates.getProductMetadata()) {
+            if (p.getObjectType().equalsIgnoreCase(objectType)) {
                 return p.getXPath();
             }
         }
         return null;
-    }
-
-    /**
-     * Gets a NamespaceContext for use with resolving namespaces
-     * in an XML document.
-     *
-     * @return a PDSNamespaceContext object
-     */
-    public PDSNamespaceContext getNamespaceContext() {
-        String defaultNamespace = null;
-        for(Iterator<Namespace> i = this.candidates.getNamespace().iterator();
-            i.hasNext() && (defaultNamespace == null);) {
-            Namespace n = i.next();
-            if(n.isDefault()) {
-                defaultNamespace = n.getUri();
-            }
-        }
-        return new PDSNamespaceContext(
-                this.candidates.getNamespace(), defaultNamespace);
     }
 
     /**
@@ -86,8 +71,8 @@ public class PDSMetExtractorConfig implements MetExtractorConfig {
      * @return true if the supplied object type was found.
      */
     public boolean hasObjectType(String objectType) {
-        for(ProductMetadata p : this.candidates.getProductMetadata()) {
-            if(p.getObjectType().equalsIgnoreCase(objectType)) {
+        for (ProductMetadata p : this.candidates.getProductMetadata()) {
+            if (p.getObjectType().equalsIgnoreCase(objectType)) {
                 return true;
             }
         }

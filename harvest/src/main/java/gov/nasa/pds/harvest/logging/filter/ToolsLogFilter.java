@@ -21,10 +21,11 @@ public class ToolsLogFilter implements Filter {
     @Override
     public boolean isLoggable(LogRecord record) {
         String casCrawlerName = "gov.nasa.jpl.oodt.cas.crawl";
-        if((record.getLoggerName() != null) && record.getLoggerName().contains(casCrawlerName))
+        if((record.getLoggerName() != null)
+                && record.getLoggerName().contains(casCrawlerName)) {
             return false;
-        else
+        } else {
             return true;
+        }
     }
-
 }

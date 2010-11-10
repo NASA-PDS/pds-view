@@ -15,7 +15,6 @@ package gov.nasa.pds.harvest.util;
 
 import gov.nasa.pds.harvest.policy.Namespace;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -25,58 +24,74 @@ import javax.xml.namespace.NamespaceContext;
 
 /**
  * Class that provides support for handling namespaces in PDS4
- * data products
+ * data products.
  *
  * @author mcayanan
  *
  */
 public class PDSNamespaceContext implements NamespaceContext {
     private Map<String, String> namespaces;
-    private String defaultNamespace;
 
-    public PDSNamespaceContext(Namespace namespace) {
-        this(namespace, null);
-    }
-
-    public PDSNamespaceContext(Namespace namespace,
-            String defaultNamespace) {
-        List<Namespace> list = new ArrayList<Namespace>();
-        list.add(namespace);
-        new PDSNamespaceContext(list, defaultNamespace);
-    }
-
-    public PDSNamespaceContext(List<Namespace> namespaces) {
-        this(namespaces, null);
-    }
-
-    public PDSNamespaceContext(List<Namespace> namespaces,
-            String defaultNamespace) {
+    /**
+     * Constructor.
+     *
+     */
+    public PDSNamespaceContext() {
         this.namespaces = new HashMap<String, String>();
-        for(Namespace ns : namespaces) {
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param namespaces A list of namespaces to support.
+     */
+    public PDSNamespaceContext(List<Namespace> namespaces) {
+        this();
+        for (Namespace ns : namespaces) {
             this.namespaces.put(ns.getPrefix(), ns.getUri());
         }
-        this.defaultNamespace = defaultNamespace;
     }
 
-    public String getDefaultNamepsace() {
-        return defaultNamespace;
+    /**
+     * Adds a namespace.
+     *
+     * @param namespace A namespace to support.
+     */
+    public void addNamespace(Namespace namespace) {
+        this.namespaces.put(namespace.getPrefix(), namespace.getUri());
     }
 
+    /**
+     * Gets the namespace URI.
+     *
+     * @param prefix The prefix
+     *
+     * @return The URI to the given prefix. Returns the PDS namespace URI
+     * if the given prefix is empty or null.
+     */
     @Override
     public String getNamespaceURI(String prefix) {
-        if(prefix == null || "".equals(prefix)) {
+        if (prefix == null || "".equals(prefix)) {
             return namespaces.get("pds");
         } else {
             return namespaces.get(prefix);
         }
     }
 
+    /**
+     * Method not needed
+     *
+     */
     @Override
     public String getPrefix(String arg0) {
         // Method not necessary
         return null;
     }
 
+    /**
+     * Method not needed
+     *
+     */
     @Override
     public Iterator getPrefixes(String arg0) {
         // Method not necessary

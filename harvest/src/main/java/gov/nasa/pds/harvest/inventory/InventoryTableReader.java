@@ -11,10 +11,9 @@
 // providing access to foreign nationals.
 //
 // $Id$
-package gov.nasa.pds.harvest.context;
+package gov.nasa.pds.harvest.inventory;
 
-import gov.nasa.pds.harvest.policy.Namespace;
-import gov.nasa.pds.harvest.util.PDSNamespaceContext;
+import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.util.XMLExtractor;
 
 import java.io.BufferedReader;
@@ -22,8 +21,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.io.FilenameUtils;
-import org.w3c.dom.NodeList;
 
 /**
  * Class that supports reading of a table-version of the PDS
@@ -32,71 +32,70 @@ import org.w3c.dom.NodeList;
  * @author mcayanan
  *
  */
-public class InventoryTableReader implements InventoryReader, InventoryKeys {
-    public static String FILE_SPEC_FIELD_NUM_XPATH = "//*[starts-with("
-        + "name(),'Table_Record')]/"
-        + "Table_Field_File_Specification_Name/field_number";
-
-    public static String LIDVID_FIELD_NUM_XPATH =
-        "//Table_Record_Inventory_LIDVID/Table_Field_LIDVID/field_number | "
-        + "//Table_Record_Inventory_LID/Table_Field_LID/field_number";
-
-    public static String DATA_FILE_XPATH = "//File_Area/File/file_name";
-
+public class InventoryTableReader implements InventoryReader {
+    /** The field number of the LID-VID. */
     private int lidvidFieldLocation;
+
+    /** The field number of the file reference. */
     private int filenameFieldLocation;
+
+    /** The field number of the checksum. */
     private int checksumFieldLocation;
+
+    /** Reads the external data file of the Inventory file. */
     private BufferedReader reader;
+
+    /** The directory path of the inventory file. */
     private String parentDirectory;
 
     /**
      * Constructor.
      *
-     * @param file A PDS Inventory file
-     * @param context A PDSNamespaceContext object, which allows this
-     * method to handle namespaces while extracting metadata from the
-     * Inventory file.
+     * @param file A PDS Inventory file.
+     * @param xmlExtractor An XMLExtractor object to extract metdata.
      *
-     * @throws InventoryReaderException
+     * @throws InventoryReaderException If an error occurred while reading
+     * the Inventory file.
      */
-    public InventoryTableReader(File file, PDSNamespaceContext context)
+    public InventoryTableReader(File file)
     throws InventoryReaderException {
         filenameFieldLocation = 0;
         checksumFieldLocation = 0;
         lidvidFieldLocation = 0;
         parentDirectory = file.getParent();
+        XMLExtractor extractor = new XMLExtractor();
         try {
-            XMLExtractor extractor = new XMLExtractor(file);
-            extractor.setDefaultNamespace(context.getDefaultNamepsace());
-            extractor.setNamespaceContext(context);
+            extractor.parse(file);
             File dataFile = new File(FilenameUtils.separatorsToSystem(
-                    extractor.getValueFromDoc(DATA_FILE_XPATH)));
-            if(!dataFile.isAbsolute()) {
+                    extractor.getValueFromDoc(
+                            Constants.DATA_FILE_XPATH)));
+            if (!dataFile.isAbsolute()) {
                 dataFile = new File(file.getParent(), dataFile.toString());
             }
             reader = new BufferedReader(new FileReader(dataFile));
             filenameFieldLocation = Integer.parseInt(
-                    extractor.getValueFromDoc(FILE_SPEC_FIELD_NUM_XPATH));
+                    extractor.getValueFromDoc(
+                            Constants.FILE_SPEC_FIELD_NUM_XPATH));
             lidvidFieldLocation = Integer.parseInt(
-                    extractor.getValueFromDoc(LIDVID_FIELD_NUM_XPATH));
+                    extractor.getValueFromDoc(
+                            Constants.LIDVID_FIELD_NUM_XPATH));
         } catch (Exception e) {
             throw new InventoryReaderException(e.getMessage());
         }
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param file A PDS Inventory file
-     * @param context A PDSNamespaceContext object, which allows this
-     * method to handle namespaces while extracting metadata from the
-     * Inventory file.
+     * @param xmlExtractor An XMLExtractor object to extract metdata.
      *
-     * @throws InventoryReaderException
+     * @throws InventoryReaderException If an error occurred while reading
+     * the Inventory file.
      */
-    public InventoryTableReader(String file, PDSNamespaceContext context)
+    public InventoryTableReader(String file)
     throws InventoryReaderException {
-        this(new File(file), context);
+        this(new File(file));
     }
 
     /**
@@ -106,49 +105,34 @@ public class InventoryTableReader implements InventoryReader, InventoryKeys {
      * in the PDS inventory file. If the end-of-file has been reached,
      * a null value will be returned.
      *
+     * @throws InventoryReaderException If an error occurred while reading
+     * the Inventory file.
+     *
      */
     public InventoryEntry getNext() throws InventoryReaderException {
         String line = "";
         try {
             line = reader.readLine();
-            if(line == null || line.equals(""))
+            if (line == null || line.equals("")) {
+                reader.close();
                 return null;
+            }
         } catch (IOException i) {
             throw new InventoryReaderException(i.getMessage());
         }
         File file = null;
         String lidvid = "";
         String tokens[] = line.split(",");
-        if(filenameFieldLocation != 0) {
+        if (filenameFieldLocation != 0) {
             file = new File(FilenameUtils.separatorsToSystem(
                     tokens[filenameFieldLocation-1].trim()));
-            if(!file.isAbsolute()) {
+            if (!file.isAbsolute()) {
                 file = new File(parentDirectory, file.toString());
             }
         }
-        if(lidvidFieldLocation != 0)
+        if (lidvidFieldLocation != 0) {
             lidvid = tokens[lidvidFieldLocation-1].trim();
-
-        return new InventoryEntry(file, null, lidvid);
-    }
-
-    public static void main(String args[]) {
-        try {
-            Namespace ns = new Namespace();
-            ns.setPrefix("pds");
-            ns.setUri("http://pds.nasa.gov/schema/pds4/pds");
-            PDSNamespaceContext context =
-                new PDSNamespaceContext(ns, ns.getUri());
-            InventoryTableReader reader =
-                new InventoryTableReader(args[0], context);
-
-            for(InventoryEntry entry = reader.getNext(); entry != null;) {
-                System.out.println("Member Entry: " + entry.getFile());
-                entry = reader.getNext();
-            }
-
-        } catch (InventoryReaderException e) {
-            e.printStackTrace();
         }
+        return new InventoryEntry(file, null, lidvid);
     }
 }

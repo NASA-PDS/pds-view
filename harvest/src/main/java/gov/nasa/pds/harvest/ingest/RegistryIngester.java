@@ -30,7 +30,7 @@ import gov.nasa.jpl.oodt.cas.filemgr.structs.exceptions.CatalogException;
 import gov.nasa.jpl.oodt.cas.filemgr.structs.exceptions.IngestException;
 import gov.nasa.jpl.oodt.cas.metadata.MetExtractor;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
-import gov.nasa.pds.harvest.crawler.metadata.PDSCoreMetKeys;
+import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.registry.client.RegistryClient;
@@ -43,10 +43,15 @@ import gov.nasa.pds.registry.model.Slot;
  * @author mcayanan
  *
  */
-public class RegistryIngester implements Ingester, PDSCoreMetKeys {
+public class RegistryIngester implements Ingester {
+    /** Logger object. */
     private static Logger log = Logger.getLogger(
             RegistryIngester.class.getName());
+
+    /** A security token. */
     private String token;
+
+    /** Username of the authorized user. */
     private String user;
 
     /**
@@ -70,24 +75,6 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
     }
 
     /**
-     * Determines whether the registry service is currently running.
-     *
-     * @param registry The URL of the registry.
-     *
-     * @return 'true' if the registry is up.
-     */
-    public boolean isRunning(URL registry) {
-        RegistryClient client = new RegistryClient(registry.toString(),
-                token);
-        ClientResponse response = client.getStatus();
-        if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Method not used at this time.
      *
      */
@@ -104,13 +91,17 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
      * @param productID The PDS4 logical identifier.
      *
      * @return 'true' if the logical identifier was found in the registry.
+     *
+     * @throws CatalogException If an error occurred while talking to the
+     * ingester.
      */
     public boolean hasProduct(URL registry, String productID)
     throws CatalogException {
         RegistryClient client = new RegistryClient(registry.toString(),
                 token);
         ClientResponse response = client.getLatestProduct(productID);
-        if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
+        if (response.getStatus()
+                == ClientResponse.Status.OK.getStatusCode()) {
             return true;
         } else {
             return false;
@@ -127,7 +118,8 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
      * @return 'true' if the logical identifier and version was found in the
      * registry.
      *
-     * @throws CatalogException
+     * @throws CatalogException If an error occurred while talking to the
+     * ingester.
      */
     public boolean hasProduct(URL registry, String productID,
             String productVersion) throws CatalogException {
@@ -135,7 +127,8 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
                 token);
         ClientResponse response = client.getProduct(productID,
                 productVersion);
-        if(response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
+        if (response.getStatus()
+                == ClientResponse.Status.OK.getStatusCode()) {
             return true;
         } else {
             return false;
@@ -150,7 +143,8 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
      * @param met The metadata to register.
      *
      * @return The URL of the registered product.
-     * @throws IngestException
+     * @throws IngestException If an error occurred while ingesting the
+     * product.
      */
     public String ingest(URL registry, File prodFile, Metadata met)
     throws IngestException {
@@ -159,20 +153,20 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
         Product product = createProduct(met);
         ClientResponse response = null;
         try {
-            if(hasProduct(registry, product.getLid())) {
+            if (hasProduct(registry, product.getLid())) {
                 response = client.versionProduct(user, product,
                         product.getLid());
             }
             else {
                 response = client.publishProduct(user, product);
             }
-        } catch(CatalogException c) {
+        } catch (CatalogException c) {
             throw new IngestException(c.getMessage());
         }
-        if(response.getStatus() ==
-            ClientResponse.Status.CREATED.getStatusCode()) {
-            String lidvid = met.getMetadata(LOGICAL_ID) + "::" +
-                            met.getMetadata(PRODUCT_VERSION);
+        if (response.getStatus()
+                == ClientResponse.Status.CREATED.getStatusCode()) {
+            String lidvid = met.getMetadata(Constants.LOGICAL_ID) + "::"
+            + met.getMetadata(Constants.PRODUCT_VERSION);
 
             log.log(new ToolsLogRecord(ToolsLevel.INGEST_SUCCESS,
                     "Succesfully registered product: " + lidvid, prodFile));
@@ -191,27 +185,36 @@ public class RegistryIngester implements Ingester, PDSCoreMetKeys {
         }
     }
 
+    /**
+     * Create the Product object.
+     *
+     * @param metadata A class representation of the metdata.
+     *
+     * @return A Product object.
+     */
     private Product createProduct(Metadata metadata) {
         Product product = new Product();
         Set<Slot> slots = new HashSet<Slot>();
         Set metSet = metadata.getHashtable().entrySet();
-        for(Iterator i = metSet.iterator(); i.hasNext();) {
+        for (Iterator i = metSet.iterator(); i.hasNext();) {
             Map.Entry entry = (Map.Entry) i.next();
             String key = entry.getKey().toString();
-            if(key.equals(REFERENCES)) {
+            if (key.equals(Constants.REFERENCES)) {
                 continue;
             }
-            if(key.equals(LOGICAL_ID)) {
-                product.setLid(metadata.getMetadata(LOGICAL_ID));
-            } else if(key.equals(PRODUCT_VERSION)) {
-                product.setVersionId(metadata.getMetadata(PRODUCT_VERSION));
-            } else if(key.equals(OBJECT_TYPE)) {
-                product.setObjectType(metadata.getMetadata(OBJECT_TYPE));
-            } else if(key.equals(TITLE)) {
-                product.setName(metadata.getMetadata(TITLE));
+            if (key.equals(Constants.LOGICAL_ID)) {
+                product.setLid(metadata.getMetadata(Constants.LOGICAL_ID));
+            } else if (key.equals(Constants.PRODUCT_VERSION)) {
+                product.setVersionId(metadata.getMetadata(
+                        Constants.PRODUCT_VERSION));
+            } else if (key.equals(Constants.OBJECT_TYPE)) {
+                product.setObjectType(metadata.getMetadata(
+                        Constants.OBJECT_TYPE));
+            } else if (key.equals(Constants.TITLE)) {
+                product.setName(metadata.getMetadata(Constants.TITLE));
             } else {
                 List<String> values = new ArrayList<String>();
-                if(metadata.isMultiValued(key)) {
+                if (metadata.isMultiValued(key)) {
                     values.addAll(metadata.getAllMetadata(key));
                 } else {
                     values.add(metadata.getMetadata(key));

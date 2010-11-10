@@ -28,8 +28,8 @@ public class XMLValidationEventHandler implements ValidationEventHandler {
 
     public boolean handleEvent(ValidationEvent event) {
         Level level = null;
-        if(event.getSeverity() == ValidationEvent.ERROR ||
-           event.getSeverity() == ValidationEvent.FATAL_ERROR) {
+        if(event.getSeverity() == ValidationEvent.ERROR
+                || event.getSeverity() == ValidationEvent.FATAL_ERROR) {
             level = ToolsLevel.SEVERE;
         } else if(event.getSeverity() == ValidationEvent.WARNING) {
             level = ToolsLevel.WARNING;

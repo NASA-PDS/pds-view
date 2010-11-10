@@ -25,8 +25,8 @@ import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerAction;
 import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerActionPhases;
 import gov.nasa.jpl.oodt.cas.crawl.structs.exceptions.CrawlerActionException;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
-import gov.nasa.pds.harvest.context.ReferenceEntry;
-import gov.nasa.pds.harvest.crawler.metadata.PDSCoreMetKeys;
+import gov.nasa.pds.harvest.constants.Constants;
+import gov.nasa.pds.harvest.inventory.ReferenceEntry;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.registry.client.RegistryClient;
@@ -40,24 +40,44 @@ import gov.nasa.pds.registry.model.Product;
  * @author mcayanan
  *
  */
-public class AssociationPublisherAction extends CrawlerAction
-implements PDSCoreMetKeys {
+public class AssociationPublisherAction extends CrawlerAction {
+    /** Logger object. */
     private static Logger log = Logger.getLogger(
             AssociationPublisherAction.class.getName());
+
+    /** The registry client. */
     private RegistryClient registryClient;
+
+    /** The usernname of the authorized user. */
     private String user;
+
+    /** The ID of the crawler action. */
     private final String ID = "AssociationPublisherAction";
+
+    /** A description of the crawler action. */
     private final String DESCRIPTION =
         "Registers the product's associations.";
 
+    /**
+     * Constructor.
+     *
+     * @param registryUrl The URL to the registry service.
+     */
     public AssociationPublisherAction(String registryUrl) {
         this(registryUrl, null, null);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param registryUrl The URL to the registry service.
+     * @param user Name of the user authorized to publish the associations.
+     * @param token A security token associated with the user.
+     */
     public AssociationPublisherAction(String registryUrl, String user,
             String token) {
         super();
-        if(user != null) {
+        if (user != null) {
             this.user = user;
             this.registryClient = new RegistryClient(registryUrl, token);
         } else {
@@ -70,6 +90,17 @@ implements PDSCoreMetKeys {
         setDescription(DESCRIPTION);
     }
 
+    /**
+     * Publish the association.
+     *
+     * @param product The file containing the associations.
+     * @param productMetadata The metadata associated with the given product.
+     *
+     * @return 'true' if the associations were registered successfully.
+     *
+     * @throws CrawlerActionException If an error occured while performing
+     * this action.
+     */
     @Override
     public boolean performAction(File product, Metadata productMetadata)
             throws CrawlerActionException {
@@ -77,13 +108,13 @@ implements PDSCoreMetKeys {
 
         List<Association> associations = createAssociations(
                 product, productMetadata);
-        for(Association association : associations) {
+        for (Association association : associations) {
             ClientResponse response = registryClient.publishAssociation(
                     user, association);
-            if(response.getStatus() ==
-                ClientResponse.Status.CREATED.getStatusCode()) {
+            if (response.getStatus()
+                    == ClientResponse.Status.CREATED.getStatusCode()) {
                 String lidvid = association.getTargetLid();
-                if(association.getTargetVersionId() != null) {
+                if (association.getTargetVersionId() != null) {
                         lidvid += "::" + association.getTargetVersionId();
                 }
                 log.log(new ToolsLogRecord(ToolsLevel.INGEST_ASSOC_SUCCESS,
@@ -102,26 +133,35 @@ implements PDSCoreMetKeys {
         return passFlag;
     }
 
+    /**
+     * Creates associations.
+     *
+     * @param product The file containing the associations.
+     * @param metadata The metadata associated with the given product.
+     *
+     * @return A list containing the associations for the given product.
+     */
     private List<Association> createAssociations(File product,
             Metadata metadata) {
         List<Association> associations = new ArrayList<Association>();
-        if(metadata.containsKey(REFERENCES)) {
-            for(ReferenceEntry re :
-                (List<ReferenceEntry>) metadata.getAllMetadata(REFERENCES)) {
+        if (metadata.containsKey(Constants.REFERENCES)) {
+            for (ReferenceEntry re : (List<ReferenceEntry>)
+                    metadata.getAllMetadata(Constants.REFERENCES)) {
                 Association association = new Association();
-                association.setSourceLid(metadata.getMetadata(LOGICAL_ID));
+                association.setSourceLid(metadata.getMetadata(
+                        Constants.LOGICAL_ID));
                 association.setSourceVersionId(
-                        metadata.getMetadata(PRODUCT_VERSION));
+                        metadata.getMetadata(Constants.PRODUCT_VERSION));
                 association.setAssociationType(re.getAssociationType());
                 association.setObjectType(re.getObjectType());
                 association.setTargetLid(re.getLogicalID());
-                if(re.hasVersion()) {
+                if (re.hasVersion()) {
                     association.setTargetVersionId(re.getVersion());
                 } else {
                     ClientResponse response = registryClient.getLatestProduct(
                             re.getLogicalID());
-                    if(response.getStatus() ==
-                        ClientResponse.Status.OK.getStatusCode()) {
+                    if (response.getStatus()
+                            == ClientResponse.Status.OK.getStatusCode()) {
                         Product target = response.getEntity(Product.class);
                         association.setTargetVersionId(target.getVersionId());
                         log.log(new ToolsLogRecord(ToolsLevel.INFO,
@@ -130,8 +170,7 @@ implements PDSCoreMetKeys {
                                 + "be set to latest registered: "
                                 + target.getVersionId(),
                                 product));
-                    }
-                    else {
+                    } else {
                         log.log(new ToolsLogRecord(ToolsLevel.WARNING,
                                 "No version found in label or registry for"
                                 + " association to " + re.getLogicalID()
@@ -143,5 +182,4 @@ implements PDSCoreMetKeys {
         }
         return associations;
     }
-
 }

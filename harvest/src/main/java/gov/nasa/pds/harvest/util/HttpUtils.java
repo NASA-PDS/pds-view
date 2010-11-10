@@ -13,7 +13,6 @@
 // $Id$
 package gov.nasa.pds.harvest.util;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +25,13 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 public class HttpUtils {
-    public static ClientResponse post(URI uri, Object requestEntity,
+    public static ClientResponse post(String uri, Object requestEntity,
             MediaType contentType) {
         return post(uri, requestEntity, new ArrayList<NameValuePair>(),
                 contentType, null);
     }
 
-    public static ClientResponse post(URI uri, NameValuePair parameter,
+    public static ClientResponse post(String uri, NameValuePair parameter,
             MediaType contentType) {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(parameter);
@@ -40,23 +39,41 @@ public class HttpUtils {
         return post(uri, params, contentType);
     }
 
-    public static ClientResponse post(URI uri, List<NameValuePair> parameters,
+    public static ClientResponse post(String uri, List<NameValuePair> parameters,
             MediaType contentType) {
         return post(uri, null, parameters, contentType, null);
     }
 
-    public static ClientResponse post(URI uri, Object requestEntity,
+    public static ClientResponse post(String uri, Object requestEntity,
             MediaType contentType, String token) {
         return post(uri, requestEntity, new ArrayList<NameValuePair>(),
                 contentType, token);
     }
 
-    public static ClientResponse post(URI uri, List<NameValuePair> parameters,
+    public static ClientResponse post(String uri, List<NameValuePair> parameters,
             MediaType contentType, String token) {
         return post(uri, null, parameters, contentType, token);
     }
 
-    public static ClientResponse post(URI uri, Object requestEntity,
+    public static ClientResponse post(String uri, Object requestEntity,
+            NameValuePair parameter, MediaType contentType) {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(parameter);
+
+        return post(uri, requestEntity, params, contentType, null);
+    }
+
+
+    public static ClientResponse post(String uri, Object requestEntity,
+            NameValuePair parameter, MediaType contentType,
+            String token) {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(parameter);
+
+        return post(uri, requestEntity, params, contentType, token);
+    }
+
+    public static ClientResponse post(String uri, Object requestEntity,
             List<NameValuePair> parameters, MediaType contentType,
             String token) {
         WebResource resource = Client.create().resource(uri);
@@ -75,11 +92,11 @@ public class HttpUtils {
         return builder.post(ClientResponse.class);
     }
 
-    public static ClientResponse get(URI uri, MediaType contentType) {
+    public static ClientResponse get(String uri, MediaType contentType) {
         return get(uri, contentType, null);
     }
 
-    public static ClientResponse get(URI uri, MediaType contentType,
+    public static ClientResponse get(String uri, MediaType contentType,
             String token) {
         WebResource resource = Client.create().resource(uri);
         WebResource.Builder builder = resource.getRequestBuilder();

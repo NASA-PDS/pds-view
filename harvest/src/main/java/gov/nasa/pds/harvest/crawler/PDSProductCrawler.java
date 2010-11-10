@@ -14,15 +14,13 @@
 package gov.nasa.pds.harvest.crawler;
 
 import gov.nasa.jpl.oodt.cas.crawl.ProductCrawler;
+import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerAction;
+import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerActionRepo;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.jpl.oodt.cas.metadata.exceptions.MetExtractionException;
-import gov.nasa.pds.harvest.context.InventoryEntry;
-import gov.nasa.pds.harvest.context.InventoryReader;
-import gov.nasa.pds.harvest.context.InventoryReaderException;
-import gov.nasa.pds.harvest.context.InventoryTableReader;
-import gov.nasa.pds.harvest.context.InventoryXMLReader;
-import gov.nasa.pds.harvest.crawler.metadata.CoreXPaths;
-import gov.nasa.pds.harvest.crawler.metadata.PDSCoreMetKeys;
+import gov.nasa.pds.harvest.constants.Constants;
+import gov.nasa.pds.harvest.crawler.actions.LogMissingReqMetadataAction;
+import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSBundleMetExtractor;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSCollectionMetExtractor;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractor;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractorConfig;
@@ -34,6 +32,7 @@ import gov.nasa.pds.harvest.util.XMLExtractor;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -51,31 +50,49 @@ import org.xml.sax.SAXParseException;
  * @author mcayanan
  *
  */
-public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
+public class PDSProductCrawler extends ProductCrawler {
+    /** Logger object. */
     private static Logger log = Logger.getLogger(
-            HarvestCrawler.class.getName());
-    private static final String IS_PRIMARY_XPATH =
-      "//*[starts-with(name(), 'Identification_Area')]/is_primary_collection";
-    private PDSMetExtractorConfig metExtractorConfig;
-    private XMLExtractor xmlExtractor;
+            PDSProductCrawler.class.getName());
 
+    /** Holds the configuration to extract metadata. */
+    private PDSMetExtractorConfig metExtractorConfig;
+
+    /** A list of crawler actions to perform while crawling. */
+    private List<CrawlerAction> crawlerActions;
+
+    /** Holds the product type of the file being processed. */
     private String objectType;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param extractorConfig A configuration class that tells the crawler
      * what data product types to look for and what metadata to extract.
      */
-    public HarvestCrawler(PDSMetExtractorConfig extractorConfig) {
-        this.xmlExtractor = null;
+    public PDSProductCrawler(PDSMetExtractorConfig extractorConfig) {
         this.objectType = "";
         this.metExtractorConfig = extractorConfig;
-        String[] reqMetadata = {PRODUCT_VERSION,
-                                LOGICAL_ID,
-                                OBJECT_TYPE};
+        this.crawlerActions = new ArrayList<CrawlerAction>();
+
+        String[] reqMetadata = {
+                Constants.PRODUCT_VERSION,
+                Constants.LOGICAL_ID,
+                Constants.OBJECT_TYPE
+                };
         setRequiredMetadata(Arrays.asList(reqMetadata));
         FILE_FILTER = new WildcardOSFilter("*");
+        crawlerActions.add(new LogMissingReqMetadataAction(
+                getRequiredMetadata()));
+    }
+
+    /**
+     * Get the MetExtractor configuration object.
+     *
+     * @return The PDSMetExtractorConfig object.
+     */
+    public PDSMetExtractorConfig getMetExtractorConfig() {
+        return metExtractorConfig;
     }
 
     /**
@@ -107,75 +124,65 @@ public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
     }
 
     /**
-     * Crawls a directory.
+     * Sets the file filter.
      *
-     * @param dir A directory
-     * @param fileFilters A list of filters to allow the crawler
-     * to touch only specific files.
+     * @param filters A list of file filters.
      */
-    public void crawl(File dir, List<String> fileFilters) {
-        if((fileFilters != null) && !(fileFilters.isEmpty())) {
-            FILE_FILTER = new WildcardOSFilter(fileFilters);
-        }
-        crawl(dir);
+    public void setFileFilter(List<String> filters) {
+        FILE_FILTER = new WildcardOSFilter(filters);
     }
 
     /**
-     * Crawl a PDS4 collection file. Method will register the collection
-     * first before attempting to register the product files it is pointing
-     * to.
+     * Method not implemented at the moment.
      *
-     * @param collection The PDS4 Collection file.
-     *
-     * @throws InventoryReaderException
+     * @param product The product file.
+     * @param productMetadata The metadata associated with the product.
      */
-    public void crawlCollection(File collection)
-    throws InventoryReaderException {
-        handleFile(collection);
-        try {
-            XMLExtractor extractor = new XMLExtractor(collection);
-            extractor.setDefaultNamespace(
-                    metExtractorConfig.getNamespaceContext().
-                    getDefaultNamepsace());
-            extractor.setNamespaceContext(
-                    metExtractorConfig.getNamespaceContext());
-            String isPrimary = extractor.getValueFromDoc(IS_PRIMARY_XPATH);
-            if((!"".equals(isPrimary)) && (!Boolean.parseBoolean(isPrimary))) {
-                return;
-            }
-        } catch (Exception e) {
-            throw new InventoryReaderException(e.getMessage());
-        }
-        InventoryReader reader = new InventoryTableReader(collection,
-                    metExtractorConfig.getNamespaceContext());
-        for(InventoryEntry entry = reader.getNext(); entry != null;) {
-            handleFile(entry.getFile());
-            entry = reader.getNext();
-        }
-    }
-
-    /**
-     * Crawl a PDS4 bundle file. The bundle will be registered first, then
-     * the method will proceed to crawling the collection file it points to.
-     *
-     * @param bundle The PDS4 bundle file.
-     *
-     * @throws InventoryReaderException
-     */
-    public void crawlBundle(File bundle) throws InventoryReaderException {
-        handleFile(bundle);
-        InventoryReader reader = new InventoryXMLReader(bundle,
-                metExtractorConfig.getNamespaceContext());
-        for(InventoryEntry entry = reader.getNext(); entry != null;) {
-            crawlCollection(entry.getFile());
-            entry = reader.getNext();
-        }
-    }
-
     @Override
     protected void addKnownMetadata(File product, Metadata productMetadata) {
         //The parent class adds FILENAME, FILE_LOCATION, and PRODUCT_NAME
         //to the metadata. Not needed at the moment
+    }
+
+    /**
+     * Crawls the given directory.
+     *
+     * @param dir The directory to crawl.
+     */
+    public void crawl(File dir) {
+        //Load crawlerActions first before crawling
+        CrawlerActionRepo repo = new CrawlerActionRepo();
+        repo.loadActions(crawlerActions);
+        setActionRepo(repo);
+        super.crawl(dir);
+    }
+
+    /**
+     * Adds a crawler action.
+     *
+     * @param action A crawler action.
+     */
+    public void addAction(CrawlerAction action) {
+        this.crawlerActions.add(action);
+    }
+
+    /**
+     * Adds a list of crawler actions.
+     *
+     * @param actions A list of crawler actions.
+     */
+    public void addActions(List<CrawlerAction> actions) {
+        this.crawlerActions.addAll(actions);
+    }
+
+    /**
+     * Gets a list of crawler actions defined for the crawler.
+     *
+     * @return A list of crawler actions that will be performed
+     * during crawling.
+     */
+    public List<CrawlerAction> getActions() {
+        return crawlerActions;
     }
 
     /**
@@ -189,7 +196,9 @@ public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
     @Override
     protected Metadata getMetadataForProduct(File product) {
         PDSMetExtractor metExtractor = null;
-        if(objectType.startsWith("Collection")) {
+        if (objectType.contains(Constants.BUNDLE)) {
+            metExtractor = new PDSBundleMetExtractor(metExtractorConfig);
+        } else if (objectType.contains(Constants.COLLECTION)) {
             metExtractor = new PDSCollectionMetExtractor(metExtractorConfig);
         } else {
             metExtractor = new PDSMetExtractor(metExtractorConfig);
@@ -217,37 +226,34 @@ public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
                 product));
         boolean passFlag = true;
         objectType = "";
+        XMLExtractor extractor = new XMLExtractor();
         try {
-            xmlExtractor = new XMLExtractor(product);
-            xmlExtractor.setDefaultNamespace(
-                    metExtractorConfig.getNamespaceContext().
-                    getDefaultNamepsace());
-            xmlExtractor.setNamespaceContext(
-                    metExtractorConfig.getNamespaceContext());
-        } catch(SAXException se) {
+            extractor.parse(product);
+        } catch (SAXException se) {
             SAXParseException spe = (SAXParseException) se.getException();
             log.log(new ToolsLogRecord(ToolsLevel.SEVERE, spe.getMessage(),
                     product.toString(), spe.getLineNumber()));
             passFlag = false;
         } catch (Exception e) {
+            e.printStackTrace();
             log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
                     "Parse failure: " + e.getMessage(), product));
             passFlag = false;
         }
-        if(passFlag == false) {
+        if (passFlag == false) {
             log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
                     Status.BADFILE, product));
             return false;
-        }
-        else  {
+        } else  {
             try {
-                objectType = xmlExtractor.getValueFromDoc(
-                        CoreXPaths.map.get(OBJECT_TYPE));
-                if("".equals(objectType)) {
+                objectType = extractor.getValueFromDoc(
+                        Constants.coreXpathsMap.get(Constants.OBJECT_TYPE));
+                if ("".equals(objectType)) {
                     log.log(new ToolsLogRecord(ToolsLevel.SKIP,
-                           "No " + OBJECT_TYPE + " element found.", product));
+                           "No " + Constants.OBJECT_TYPE + " element found.",
+                           product));
                     passFlag = false;
-                } else if(metExtractorConfig.hasObjectType(objectType)) {
+                } else if (metExtractorConfig.hasObjectType(objectType)) {
                     log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
                             Status.DISCOVERY, product));
                     passFlag = true;
@@ -259,7 +265,7 @@ public class HarvestCrawler extends ProductCrawler implements PDSCoreMetKeys {
                 }
             } catch (XPathExpressionException e) {
                 log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
-                        "Problem getting '" + OBJECT_TYPE + "': "
+                        "Problem getting '" + Constants.OBJECT_TYPE + "': "
                         + e.getMessage(), product));
                 log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
                         Status.BADFILE, product));

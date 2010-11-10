@@ -23,7 +23,7 @@ import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerAction;
 import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerActionPhases;
 import gov.nasa.jpl.oodt.cas.crawl.structs.exceptions.CrawlerActionException;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
-import gov.nasa.pds.harvest.crawler.metadata.PDSCoreMetKeys;
+import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
@@ -45,6 +45,12 @@ public class RegistryUniquenessCheckerAction extends CrawlerAction {
         "Checks if a product with the same LID and VID exists in the "
         + "registry.";
 
+    /**
+     * Constructor.
+     *
+     * @param registryUrl The URL to the registry service.
+     * @param ingester The Registry Ingester.
+     */
     public RegistryUniquenessCheckerAction(String registryUrl,
             RegistryIngester ingester) {
         super();
@@ -57,26 +63,35 @@ public class RegistryUniquenessCheckerAction extends CrawlerAction {
         setDescription(DESCRIPTION);
     }
 
+    /**
+     * Action that checks to see if a product was already registerd.
+     *
+     * @param product The product file.
+     * @param productMetadata The metadata associatied with the given product.
+     *
+     * @return 'false' if the product was already registered.
+     */
     @Override
     public boolean performAction(File product, Metadata productMetadata)
             throws CrawlerActionException {
-        String lid = productMetadata.getMetadata(PDSCoreMetKeys.LOGICAL_ID);
+        String lid = productMetadata.getMetadata(Constants.LOGICAL_ID);
         String vid = productMetadata.getMetadata(
-                PDSCoreMetKeys.PRODUCT_VERSION);
+                Constants.PRODUCT_VERSION);
         String lidvid = lid + "::" + vid;
         try {
             boolean result;
             result = this.ingester.hasProduct(new URL(this.registryUrl), lid,
                     vid);
-            if(result == true) {
+            if (result == true) {
                 log.log(new ToolsLogRecord(Level.WARNING,
                         "Product already exists in the registry: "
                         + lidvid, product));
                 return false;
-            }
-            else
+            } else {
                 return true;
+            }
         } catch (Exception e) {
+            e.printStackTrace();
             log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage(),
                     product));
             throw new CrawlerActionException(e.getMessage());

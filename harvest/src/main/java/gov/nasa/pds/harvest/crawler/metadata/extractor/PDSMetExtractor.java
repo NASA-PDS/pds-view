@@ -21,15 +21,15 @@ import java.util.logging.Logger;
 
 import javax.xml.xpath.XPathExpressionException;
 
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import gov.nasa.jpl.oodt.cas.metadata.MetExtractor;
 import gov.nasa.jpl.oodt.cas.metadata.MetExtractorConfig;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.jpl.oodt.cas.metadata.exceptions.MetExtractionException;
-import gov.nasa.pds.harvest.context.ReferenceEntry;
-import gov.nasa.pds.harvest.crawler.metadata.CoreXPaths;
-import gov.nasa.pds.harvest.crawler.metadata.PDSCoreMetKeys;
+import gov.nasa.pds.harvest.constants.Constants;
+import gov.nasa.pds.harvest.inventory.ReferenceEntry;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.harvest.util.XMLExtractor;
@@ -40,15 +40,18 @@ import gov.nasa.pds.harvest.util.XMLExtractor;
  * @author mcayanan
  *
  */
-public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
+public class PDSMetExtractor implements MetExtractor {
+    /** Logger object. */
     private static Logger log = Logger.getLogger(
             PDSMetExtractor.class.getName());
+
+    /** A metadata extraction configuration. */
     protected PDSMetExtractorConfig config;
 
     /**
-     * Default constructor
+     * Default constructor.
      *
-     * @param config A configuration class that contains what metadata
+     * @param config The configuration that contains what metadata
      * and what object types to extract.
      */
     public PDSMetExtractor(PDSMetExtractorConfig config) {
@@ -61,61 +64,65 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
      * @param product A PDS4 xml file
      * @return a class representation of the extracted metadata
      *
+     * @throws MetExtractionException If an error occured while performing
+     * metadata extraction.
+     *
      */
     public Metadata extractMetadata(File product)
     throws MetExtractionException {
-        XMLExtractor xmlExtractor = null;
         Metadata metadata = new Metadata();
         String objectType = "";
         String logicalID = "";
         String version = "";
         String title = "";
         NodeList references = null;
-
+        XMLExtractor extractor = new XMLExtractor();
         try {
-            xmlExtractor = new XMLExtractor(product);
-            xmlExtractor.setDefaultNamespace(
-                    config.getNamespaceContext().getDefaultNamepsace());
-            xmlExtractor.setNamespaceContext(config.getNamespaceContext());
+            extractor.parse(product);
         } catch (Exception e) {
             throw new MetExtractionException("Parse failure: "
                     + e.getMessage());
         }
         try {
-            objectType = xmlExtractor.getValueFromDoc(
-                    CoreXPaths.map.get(OBJECT_TYPE));
-            logicalID = xmlExtractor.getValueFromDoc(
-                    CoreXPaths.map.get(LOGICAL_ID));
-            version = xmlExtractor.getValueFromDoc(
-                    CoreXPaths.map.get(PRODUCT_VERSION));
-            title = xmlExtractor.getValueFromDoc(CoreXPaths.map.get(TITLE));
-            references = xmlExtractor.getNodesFromDoc(
-                    CoreXPaths.map.get(REFERENCES));
+            objectType = extractor.getValueFromDoc(
+                    Constants.coreXpathsMap.get(Constants.OBJECT_TYPE));
+            logicalID = extractor.getValueFromDoc(
+                    Constants.coreXpathsMap.get(Constants.LOGICAL_ID));
+            version = extractor.getValueFromDoc(
+                    Constants.coreXpathsMap.get(Constants.PRODUCT_VERSION));
+            title = extractor.getValueFromDoc(
+                    Constants.coreXpathsMap.get(Constants.TITLE));
+            references = extractor.getNodesFromDoc(
+                    Constants.coreXpathsMap.get(Constants.REFERENCES));
         } catch (XPathExpressionException x) {
             //TODO: getMessage() doesn't always return a message
             throw new MetExtractionException(x.getMessage());
         }
-        if(!"".equals(logicalID))
-            metadata.addMetadata(LOGICAL_ID, logicalID);
-        if(!"".equals(version))
-            metadata.addMetadata(PRODUCT_VERSION, version);
-        if(!"".equals(title))
-            metadata.addMetadata(TITLE, title);
-        if(!"".equals(objectType))
-            metadata.addMetadata(OBJECT_TYPE, objectType);
-        if(references.getLength() == 0) {
+        if (!"".equals(logicalID)) {
+            metadata.addMetadata(Constants.LOGICAL_ID, logicalID);
+        }
+        if (!"".equals(version)) {
+            metadata.addMetadata(Constants.PRODUCT_VERSION, version);
+        }
+        if (!"".equals(title)) {
+            metadata.addMetadata(Constants.TITLE, title);
+        }
+        if (!"".equals(objectType)) {
+            metadata.addMetadata(Constants.OBJECT_TYPE, objectType);
+        }
+        if (references.getLength() == 0) {
             log.log(new ToolsLogRecord(ToolsLevel.INFO,
                     "No associations found.", product));
         }
-        if((!"".equals(objectType)) && (config.hasObjectType(objectType))) {
+        if ((!"".equals(objectType)) && (config.hasObjectType(objectType))) {
             List<String> metXPaths = new ArrayList<String>();
             metXPaths.addAll(config.getMetXPaths(objectType));
-            for(String xpath : metXPaths) {
+            for (String xpath : metXPaths) {
                 try {
-                    NodeList list = xmlExtractor.getNodesFromDoc(xpath);
-                    for(int i=0; i < list.getLength(); i++) {
+                    NodeList list = extractor.getNodesFromDoc(xpath);
+                    for (int i = 0; i < list.getLength(); i++) {
                         metadata.addMetadata(list.item(i).getNodeName(),
-                                xmlExtractor.getValuesFromDoc(xpath));
+                                extractor.getValuesFromDoc(xpath));
                     }
                 } catch (XPathExpressionException xe) {
                     throw new MetExtractionException("Bad XPath Expression: "
@@ -126,15 +133,15 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
         List<ReferenceEntry> refEntries = new ArrayList<ReferenceEntry>();
         String name = "";
         String value = "";
-        for(int i=0; i < references.getLength(); i++) {
+        for (int i = 0; i < references.getLength(); i++) {
             try {
-                NodeList children = xmlExtractor.getNodesFromItem("*",
+                NodeList children = extractor.getNodesFromItem("*",
                         references.item(i));
                 ReferenceEntry re = new ReferenceEntry();
-                for(int j=0; j < children.getLength(); j++) {
+                for (int j = 0; j < children.getLength(); j++) {
                     name = children.item(j).getLocalName();
                     value = children.item(j).getTextContent();
-                    if(name.equals("lidvid_reference")) {
+                    if (name.equals("lidvid_reference")) {
                         try {
                             re.setLogicalID(value.split("::")[0]);
                             re.setVersion(value.split("::")[1]);
@@ -143,11 +150,11 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
                               "Expected a LID-VID reference, but found this: "
                               + value);
                         }
-                    } else if(name.equals("lid_reference")) {
+                    } else if (name.equals("lid_reference")) {
                         re.setLogicalID(value);
-                    } else if(name.equals("reference_association_type")) {
+                    } else if (name.equals("reference_association_type")) {
                         re.setAssociationType(value);
-                    } else if(name.equals("referenced_object_type")) {
+                    } else if (name.equals("referenced_object_type")) {
                         re.setObjectType(value);
                     }
                 }
@@ -156,16 +163,16 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
                 throw new MetExtractionException(e.getMessage());
             }
         }
-        metadata.addMetadata(REFERENCES, refEntries);
+        metadata.addMetadata(Constants.REFERENCES, refEntries);
 
         return metadata;
     }
 
     /**
-     * Extract the metadata
+     * Extract the metadata.
      *
-     * @param product A PDS4 xml file
-     * @return a class representation of the extracted metadata
+     * @param product A PDS4 xml file.
+     * @return a class representation of the extracted metadata.
      *
      */
     public Metadata extractMetadata(String product)
@@ -174,10 +181,10 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
     }
 
     /**
-     * Extract the metadata
+     * Extract the metadata.
      *
-     * @param product A PDS4 xml file
-     * @return a class representation of the extracted metadata
+     * @param product A PDS4 xml file.
+     * @return a class representation of the extracted metadata.
      *
      */
     public Metadata extractMetadata(URL product)
@@ -186,7 +193,7 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
     }
 
     /**
-     * No need to be implemented
+     * No need to be implemented.
      *
      */
     public Metadata extractMetadata(File product, File configFile)
@@ -196,7 +203,7 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
     }
 
     /**
-     * No need to be implemented
+     * No need to be implemented.
      *
      */
     public Metadata extractMetadata(File product, String configFile)
@@ -206,7 +213,7 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
     }
 
     /**
-     * No need to be implemented
+     * No need to be implemented.
      *
      */
     public Metadata extractMetadata(File product, MetExtractorConfig config)
@@ -216,7 +223,7 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
     }
 
     /**
-     * No need to be implemented
+     * No need to be implemented.
      *
      */
     public Metadata extractMetadata(URL product, MetExtractorConfig config)
@@ -226,7 +233,7 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
     }
 
     /**
-     * No need to be implemented
+     * No need to be implemented.
      *
      */
     public void setConfigFile(File configFile)
@@ -235,7 +242,7 @@ public class PDSMetExtractor implements MetExtractor, PDSCoreMetKeys {
     }
 
     /**
-     * No need to be implemented
+     * No need to be implemented.
      *
      */
     public void setConfigFile(String configFile)

@@ -37,7 +37,8 @@ import org.apache.commons.io.filefilter.AbstractFileFilter;
 
 public class WildcardOSFilter extends AbstractFileFilter {
 
-    private List<String> wildcards = null;
+    /** Holds the list of filters. */
+    private List<String> wildcards;
 
     /**
      * Constructor for a single wildcard.
@@ -45,7 +46,7 @@ public class WildcardOSFilter extends AbstractFileFilter {
      * @param wc a single filter to set
      */
     public WildcardOSFilter(String wc) {
-        if(wc == null) {
+        if (wc == null) {
             throw new NullPointerException();
         }
 
@@ -65,10 +66,10 @@ public class WildcardOSFilter extends AbstractFileFilter {
      * Constructor for a list of wildcards.
      *
      * @param wc a list of filters to set
-     * @throws NullPointerException if the pattern list is null
+     * @throws NullPointerException if the pattern list is null.
      */
     public WildcardOSFilter(List<String> wc) {
-        if(wc == null) {
+        if (wc == null) {
             throw new NullPointerException();
         }
 
@@ -80,19 +81,22 @@ public class WildcardOSFilter extends AbstractFileFilter {
      * Checks to see if the filename matches one of the wildcards. Matching is
      * case-insensitive for Windows and case-sensitive for Unix.
      *
-     * @param file the file to check
-     * @return true if the filename matches one of the wildcards
-     * @throws NullPointerException if the file is null
+     * @param file the file to check.
+     * @return true if the filename matches one of the wildcards.
+     *
+     * @throws NullPointerException if the file is null.
      */
 
     @Override
   public boolean accept(File file) {
 
-        if(file == null)
+        if (file == null) {
             throw new NullPointerException("No file specified");
+        }
 
-        for(Iterator<String> i = wildcards.iterator(); i.hasNext(); ) {
-            if(FilenameUtils.wildcardMatchOnSystem(file.getName(), i.next())) {
+        for (Iterator<String> i = wildcards.iterator(); i.hasNext();) {
+            if (FilenameUtils.wildcardMatchOnSystem(
+                    file.getName(), i.next())) {
                 return true;
             }
         }

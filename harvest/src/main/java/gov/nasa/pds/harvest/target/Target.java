@@ -11,27 +11,45 @@
 // providing access to foreign nationals.
 //
 // $Id$
-package gov.nasa.pds.harvest.commandline.options;
+package gov.nasa.pds.harvest.target;
 
 /**
- * Exception class that is called upon errors found during command-line
- * option processing.
- *
+ * Class representation of a target. Can either be a directory, collection,
+ * or bundle.
  *
  * @author mcayanan
  *
  */
-public class InvalidOptionException extends Exception {
-    /** Generated serial ID */
-    private static final long serialVersionUID = -5439038812448365813L;
+public class Target {
+    private String file;
+    private Type type;
 
     /**
      * Constructor.
      *
-     * @param msg An exception message.
+     * @param file A file.
+     * @param type The target type.
      */
-    public InvalidOptionException(String msg) {
-        super(msg);
+    public Target(String file, Type type) {
+        this.file = file;
+        this.type = type;
     }
 
+    /**
+     * Gets the name of the file.
+     *
+     * @return the file name.
+     */
+    public String getFilename() {
+        return file;
+    }
+
+    /**
+     * Returns the target type.
+     *
+     * @return A target type.
+     */
+    public Type getType() {
+        return type;
+    }
 }

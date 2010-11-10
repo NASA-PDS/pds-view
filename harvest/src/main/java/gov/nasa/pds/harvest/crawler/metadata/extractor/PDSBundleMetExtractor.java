@@ -16,9 +16,6 @@ package gov.nasa.pds.harvest.crawler.metadata.extractor;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.jpl.oodt.cas.metadata.exceptions.MetExtractionException;
 import gov.nasa.pds.harvest.constants.Constants;
-import gov.nasa.pds.harvest.inventory.InventoryEntry;
-import gov.nasa.pds.harvest.inventory.InventoryReaderException;
-import gov.nasa.pds.harvest.inventory.InventoryTableReader;
 import gov.nasa.pds.harvest.inventory.ReferenceEntry;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
@@ -35,31 +32,27 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Class to extract metadata from a PDS Collection file.
+ * Class that extracts metadata from a PDS Bundle file.
  *
  * @author mcayanan
  *
  */
-public class PDSCollectionMetExtractor extends PDSMetExtractor {
+public class PDSBundleMetExtractor extends PDSMetExtractor {
     /** Logger object. */
     private static Logger log = Logger.getLogger(
-            PDSCollectionMetExtractor.class.getName());
-
-    /** XPath to get the associaton type. */
-    public static final String ASSOCIATION_TYPE_XPATH = "//*[starts-with("
-        + "name(),'Inventory')]/reference_association_type";
+            PDSBundleMetExtractor.class.getName());
 
     /**
      * Constructor.
      *
-     * @param config The configuration for the metadata extraction.
+     * @param config A configuration to do metadata extraction.
      */
-    public PDSCollectionMetExtractor(PDSMetExtractorConfig config) {
+    public PDSBundleMetExtractor(PDSMetExtractorConfig config) {
         super(config);
     }
 
     /**
-     * Extract the metadata
+     * Extract the metadata.
      *
      * @param product A PDS4 collection file
      * @return a class representation of the extracted metadata
@@ -72,8 +65,9 @@ public class PDSCollectionMetExtractor extends PDSMetExtractor {
         String logicalID = "";
         String version = "";
         String title = "";
-        String associationType = "";
+        NodeList references = null;
         XMLExtractor extractor = new XMLExtractor();
+
         try {
             extractor.parse(product);
         } catch (Exception e) {
@@ -89,8 +83,8 @@ public class PDSCollectionMetExtractor extends PDSMetExtractor {
                     Constants.coreXpathsMap.get(Constants.PRODUCT_VERSION));
             title = extractor.getValueFromDoc(
                     Constants.coreXpathsMap.get(Constants.TITLE));
-            associationType =
-                extractor.getValueFromDoc(ASSOCIATION_TYPE_XPATH);
+            references = extractor.getNodesFromDoc(
+                    Constants.coreXpathsMap.get(Constants.REFERENCES));
         } catch (XPathExpressionException x) {
             //TODO: getMessage() doesn't always return a message
             throw new MetExtractionException(x.getMessage());
@@ -106,6 +100,10 @@ public class PDSCollectionMetExtractor extends PDSMetExtractor {
         }
         if (!"".equals(objectType)) {
             metadata.addMetadata(Constants.OBJECT_TYPE, objectType);
+        }
+        if (references.getLength() == 0) {
+            log.log(new ToolsLogRecord(ToolsLevel.INFO,
+                    "No associations found.", product));
         }
         if (!"".equals(objectType)) {
             String xpath = "";
@@ -125,31 +123,39 @@ public class PDSCollectionMetExtractor extends PDSMetExtractor {
             }
         }
         List<ReferenceEntry> refEntries = new ArrayList<ReferenceEntry>();
-        try {
-            InventoryTableReader reader = new InventoryTableReader(product);
-            for (InventoryEntry entry = reader.getNext(); entry != null;) {
+        String name = "";
+        String value = "";
+        for (int i = 0; i < references.getLength(); i++) {
+            try {
+                NodeList children = extractor.getNodesFromItem("*",
+                        references.item(i));
                 ReferenceEntry re = new ReferenceEntry();
-                String identifier = entry.getLidvid();
-                //Check for a LID or LIDVID
-                if (identifier.indexOf("::") != -1) {
-                    re.setLogicalID(identifier.split("::")[0]);
-                    re.setVersion(identifier.split("::")[1]);
-                } else {
-                    re.setLogicalID(identifier);
+                for (int j = 0; j < children.getLength(); j++) {
+                    name = children.item(j).getLocalName();
+                    value = children.item(j).getTextContent();
+                    if (name.equals("lidvid_reference")) {
+                        try {
+                            re.setLogicalID(value.split("::")[0]);
+                            re.setVersion(value.split("::")[1]);
+                        } catch (ArrayIndexOutOfBoundsException ae) {
+                            throw new MetExtractionException(
+                              "Expected a LID-VID reference, but found this: "
+                              + value);
+                        }
+                    } else if (name.equals("lid_reference")) {
+                        re.setLogicalID(value);
+                    } else if (name.equals("reference_association_type")) {
+                        re.setAssociationType(value);
+                    } else if (name.equals("referenced_object_type")) {
+                        re.setObjectType(value);
+                    }
                 }
-                re.setAssociationType(associationType);
                 refEntries.add(re);
-                entry = reader.getNext();
-             }
-        } catch (InventoryReaderException ire) {
-            throw new MetExtractionException(ire.getMessage());
+            } catch (Exception e) {
+                throw new MetExtractionException(e.getMessage());
+            }
         }
-        if (refEntries.size() == 0) {
-            log.log(new ToolsLogRecord(ToolsLevel.INFO,
-                    "No associations found.", product));
-        } else {
-            metadata.addMetadata(Constants.REFERENCES, refEntries);
-        }
+        metadata.addMetadata(Constants.REFERENCES, refEntries);
 
         return metadata;
     }

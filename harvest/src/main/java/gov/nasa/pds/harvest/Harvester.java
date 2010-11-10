@@ -14,22 +14,24 @@
 package gov.nasa.pds.harvest;
 
 import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerAction;
-import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerActionRepo;
-import gov.nasa.pds.harvest.context.InventoryReaderException;
-import gov.nasa.pds.harvest.crawler.HarvestCrawler;
+import gov.nasa.pds.harvest.crawler.BundleCrawler;
+import gov.nasa.pds.harvest.crawler.CollectionCrawler;
+import gov.nasa.pds.harvest.crawler.PDSProductCrawler;
 import gov.nasa.pds.harvest.crawler.actions.AssociationPublisherAction;
-import gov.nasa.pds.harvest.crawler.actions.LogMissingReqMetadataAction;
 import gov.nasa.pds.harvest.crawler.actions.RegistryUniquenessCheckerAction;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractorConfig;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.policy.Candidate;
-import gov.nasa.pds.harvest.policy.ProductMetadata;
 import gov.nasa.pds.harvest.security.SecuredUser;
+import gov.nasa.pds.harvest.target.Target;
+import gov.nasa.pds.harvest.target.Type;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Front end class to the Harvest tool.
@@ -38,119 +40,108 @@ import java.util.List;
  *
  */
 public class Harvester {
+    /** An authorized user. */
     private SecuredUser securedUser;
-    private HarvestCrawler crawler;
-    private List<String> objectTypes;
+
+    /** URL of the registry service. */
+    private String registryUrl;
+
+    /** Product candidates defined in the policy file. */
+    private Candidate candidates;
+
+    /** An ingester for the PDS Registry Service. */
+    private RegistryIngester ingester;
 
     /**
      * Constructor.
      *
-     * @param registryURL The registry location.
+     * @param registryUrl The registry location.
      * @param candidates Class containing the products to look for and what
      * metadata to extract.
      *
-     * @throws MalformedURLException
      */
-    public Harvester(String registryURL, Candidate candidates)
-    throws MalformedURLException {
-        this(registryURL, candidates, null);
+    public Harvester(String registryUrl, Candidate candidates) {
+        this.registryUrl = registryUrl;
+        this.candidates = candidates;
+        this.securedUser = null;
+        this.registryUrl = registryUrl;
+        this.ingester = new RegistryIngester();
     }
 
     /**
-     * Constructor.
+     * Sets the security for the Harvest tool.
      *
-     * @param registryURL The registry location.
-     * @param candidates Class containing the products to look for and what
-     * metadata to extract.
-     * @param user If security is enabled in the registry, this parameter
-     * authenticates the user running the tool.
-     *
-     * @throws MalformedURLException
+     * @param user An authorized user.
      */
-    public Harvester(String registryURL, Candidate candidates,
-            SecuredUser user) throws MalformedURLException {
-        crawler = new HarvestCrawler(new PDSMetExtractorConfig(candidates));
-        objectTypes = new ArrayList<String>();
-        for(ProductMetadata p : candidates.getProductMetadata()) {
-            objectTypes.add(p.getObjectType());
-        }
-        crawler.setRegistryUrl(registryURL);
-        if(user != null) {
-            this.securedUser = user;
-            crawler.setIngester(
-                    new RegistryIngester(user.getName(), user.getToken()));
-        }
-        else {
-            this.securedUser = null;
-            crawler.setIngester(new RegistryIngester());
-        }
-        crawler.setActionRepo(createCrawlerActions());
+    public void setSecuredUser(SecuredUser user) {
+        this.securedUser = user;
+        this.ingester = new RegistryIngester(user.getName(), user.getToken());
     }
 
     /**
-     * Creates the different crawler actions to take while traversing
-     * through a directory.
+     * Get the default crawler actions.
      *
-     * @return A class containing the crawler actions.
+     * @return A list of default crawler actions.
      */
-    private CrawlerActionRepo createCrawlerActions() {
-        CrawlerActionRepo repo = new CrawlerActionRepo();
-        List<CrawlerAction> actions = new ArrayList<CrawlerAction>();
-        actions.add(new RegistryUniquenessCheckerAction(
-                crawler.getRegistryUrl(), crawler.getRegistryIngester()));
-        actions.add(new LogMissingReqMetadataAction(
-                crawler.getRequiredMetadata()));
-        if(securedUser != null) {
-            actions.add(new AssociationPublisherAction(
-                    crawler.getRegistryUrl(), securedUser.getName(),
-                    securedUser.getToken()));
+    private List<CrawlerAction> getDefaultCrawlerActions() {
+        List<CrawlerAction> ca = new ArrayList<CrawlerAction>();
+        ca.add(new RegistryUniquenessCheckerAction(registryUrl,
+                this.ingester));
+        if (securedUser != null) {
+            ca.add(new AssociationPublisherAction(registryUrl,
+                    securedUser.getName(), securedUser.getToken()));
+        } else {
+            ca.add(new AssociationPublisherAction(registryUrl));
         }
-        else {
-            actions.add(
-                    new AssociationPublisherAction(crawler.getRegistryUrl()));
+        return ca;
+    }
+
+    /**
+     * Harvests the products in the given target.
+     *
+     * @param target A target file (directory, collection, or bundle).
+     *
+     * @throws ParserConfigurationException If an error occurred during
+     * metadata extraction.
+     * @throws MalformedURLException If an error occurred while setting
+     * the registry URL to the crawler.
+     */
+    public void harvest(Target target) throws MalformedURLException,
+    ParserConfigurationException {
+        harvest(target, new ArrayList<String>());
+    }
+
+    /**
+     * Harvests the products in the given file..
+     *
+     * @param target A target file (directory, collection, or bundle).
+     * @param fileFilters Specify a list of file filters to search for
+     * specific files in a target directory.
+     *
+     * @throws ParserConfigurationException If an error occurred during
+     * metadata extraction.
+     * @throws MalformedURLException If an error occurred while setting
+     * the registry URL to the crawler.
+     *
+     */
+    public void harvest(Target target, List<String> fileFilters)
+    throws ParserConfigurationException, MalformedURLException {
+        PDSProductCrawler crawler = null;
+        PDSMetExtractorConfig config = new PDSMetExtractorConfig(candidates);
+        if (Type.COLLECTION.equals(target.getType())) {
+            crawler = new CollectionCrawler(config);
+        } else if (Type.BUNDLE.equals(target.getType())) {
+            crawler = new BundleCrawler(config);
+        } else {
+            //Default is to assume a directory.
+            crawler = new PDSProductCrawler(config);
+            if (!fileFilters.isEmpty()) {
+                crawler.setFileFilter(fileFilters);
+            }
         }
-        repo.loadActions(actions);
-        return repo;
-    }
-
-    /**
-     * Harvests the products in the given directory.
-     *
-     * @param directory A starting directory.
-     * @param filePatterns Specify file patterns to search for while crawling
-     * the directories.
-     */
-    public void harvest(File directory, List<String> filePatterns) {
-        crawler.crawl(directory, filePatterns);
-    }
-
-    /**
-     * Harvests the products given in the PDS4 Inventory file.
-     * This method will first register the given Inventory file,
-     * then proceed to crawl the file for references to PDS4
-     * data products.
-     *
-     * @param bundle a PDS4 bundle file
-     *
-     * @throws InventoryReaderException
-     */
-    public void harvestBundle(File bundle) throws InventoryReaderException {
-        crawler.crawlBundle(bundle);
-    }
-
-    /**
-     * Harvests the products given in the PDS4 Inventory file.
-     * This method will first register the given Inventory file,
-     * then proceed to crawl the file for references to PDS4
-     * data products.
-     *
-     * @param collection a PDS4 collection file
-     *
-     * @throws InventoryReaderException
-     *
-     */
-    public void harvestCollection(File collection)
-    throws InventoryReaderException {
-        crawler.crawlCollection(collection);
+        crawler.setRegistryUrl(registryUrl);
+        crawler.setIngester(ingester);
+        crawler.addActions(getDefaultCrawlerActions());
+        crawler.crawl(new File(target.getFilename()));
     }
 }

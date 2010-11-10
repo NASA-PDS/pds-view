@@ -28,8 +28,7 @@ import java.util.logging.LogRecord;
  *
  */
 public class HarvestFormatter extends Formatter {
-    private static String lineFeed =
-        System.getProperty("line.separator", "\n");
+    private static String lineFeed = System.getProperty("line.separator", "\n");
     private static String doubleLineFeed = lineFeed + lineFeed;
 
     private int productsRegistered;
@@ -56,61 +55,64 @@ public class HarvestFormatter extends Formatter {
         summary = new StringBuffer("Summary:" + doubleLineFeed);
     }
 
-
     public String format(LogRecord record) {
-        ToolsLogRecord tlr = (ToolsLogRecord) record;
+        if (record instanceof ToolsLogRecord) {
+            ToolsLogRecord tlr = (ToolsLogRecord) record;
 
-        if(tlr.getLevel().intValue() == ToolsLevel.NOTIFICATION.intValue()) {
-            if(tlr.getMessage().equals(Status.DISCOVERY)) {
-                ++discoveredProducts;
-            } else if(tlr.getMessage().equals(Status.BADFILE)) {
-                ++badFiles;
+            if (tlr.getLevel().intValue() == ToolsLevel.NOTIFICATION.intValue()) {
+                if (tlr.getMessage().equals(Status.DISCOVERY)) {
+                    ++discoveredProducts;
+                } else if (tlr.getMessage().equals(Status.BADFILE)) {
+                    ++badFiles;
+                }
+                return "";
+            } else if (tlr.getLevel().intValue() == ToolsLevel.INGEST_SUCCESS
+                    .intValue()) {
+                ++productsRegistered;
+            } else if (tlr.getLevel().intValue() == ToolsLevel.INGEST_ASSOC_SUCCESS
+                    .intValue()) {
+                ++associationsRegistered;
+            } else if (tlr.getLevel().intValue() == ToolsLevel.INGEST_FAIL
+                    .intValue()) {
+                ++productsNotRegistered;
+            } else if (tlr.getLevel().intValue() == ToolsLevel.INGEST_ASSOC_FAIL
+                    .intValue()) {
+                ++associationsFailed;
+            } else if (tlr.getLevel().intValue() == ToolsLevel.SKIP.intValue()) {
+                ++filesSkipped;
             }
-            return "";
-        } else if(tlr.getLevel().intValue() ==
-            ToolsLevel.INGEST_SUCCESS.intValue()) {
-            ++productsRegistered;
-        } else if(tlr.getLevel().intValue() ==
-            ToolsLevel.INGEST_ASSOC_SUCCESS.intValue()) {
-           ++associationsRegistered;
-        } else if(tlr.getLevel().intValue() ==
-            ToolsLevel.INGEST_FAIL.intValue()) {
-            ++productsNotRegistered;
-        } else if(tlr.getLevel().intValue() ==
-            ToolsLevel.INGEST_ASSOC_FAIL.intValue()) {
-            ++associationsFailed;
-        } else if(tlr.getLevel().intValue() == ToolsLevel.SKIP.intValue()) {
-            ++filesSkipped;
-        }
+            StringBuffer message = new StringBuffer();
 
-        StringBuffer message = new StringBuffer();
-
-        if(tlr.getLevel().intValue() != ToolsLevel.CONFIGURATION.intValue()) {
-            if(tlr.getLevel().intValue() == ToolsLevel.SEVERE.intValue()) {
-                message.append("ERROR");
-            } else {
-                message.append(tlr.getLevel().getName());
+            if (tlr.getLevel().intValue() != ToolsLevel.CONFIGURATION
+                    .intValue()) {
+                if (tlr.getLevel().intValue() == ToolsLevel.SEVERE.intValue()) {
+                    message.append("ERROR");
+                } else {
+                    message.append(tlr.getLevel().getName());
+                }
+                message.append(":   ");
             }
-            message.append(":   ");
-        }
-        if(tlr.getFilename() != null) {
-            message.append("[" + tlr.getFilename() + "] ");
-        }
-        if(tlr.getLine() != -1) {
-            message.append("line " + tlr.getLine() + ": ");
-        }
-        message.append(tlr.getMessage());
-        message.append(lineFeed);
+            if (tlr.getFilename() != null) {
+                message.append("[" + tlr.getFilename() + "] ");
+            }
+            if (tlr.getLine() != -1) {
+                message.append("line " + tlr.getLine() + ": ");
+            }
+            message.append(tlr.getMessage());
+            message.append(lineFeed);
 
-        return message.toString();
+            return message.toString();
+        } else {
+            return "******* " + record.getMessage() + " ************" + lineFeed;
+        }
     }
 
     private void processSummary() {
         int totalFiles = discoveredProducts + badFiles + filesSkipped;
         int totalAssociations = associationsRegistered + associationsFailed;
         summary.append(discoveredProducts + " of " + totalFiles
-                + " files are candidate products, " + filesSkipped
-                + " skipped" + lineFeed);
+                + " files are candidate products, " + filesSkipped + " skipped"
+                + lineFeed);
         summary.append(productsRegistered + " of " + discoveredProducts
                 + " candidate products registered." + lineFeed);
         summary.append(associationsRegistered + " of " + totalAssociations
