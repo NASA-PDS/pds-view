@@ -44,7 +44,6 @@ public class CollectionCrawler extends PDSProductCrawler {
      */
     public void crawl(File collection) {
         //Load actions first before crawling
-        //Load crawlerActions first before crawling
         CrawlerActionRepo repo = new CrawlerActionRepo();
         repo.loadActions(getActions());
         setActionRepo(repo);
@@ -64,7 +63,6 @@ public class CollectionCrawler extends PDSProductCrawler {
                 entry = reader.getNext();
             }
         } catch (Exception e) {
-            e.printStackTrace();
             log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage(),
                     collection));
         }

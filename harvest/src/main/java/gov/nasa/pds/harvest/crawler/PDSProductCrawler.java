@@ -235,7 +235,6 @@ public class PDSProductCrawler extends ProductCrawler {
                     product.toString(), spe.getLineNumber()));
             passFlag = false;
         } catch (Exception e) {
-            e.printStackTrace();
             log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
                     "Parse failure: " + e.getMessage(), product));
             passFlag = false;

@@ -62,7 +62,6 @@ public class InventoryXMLReader implements InventoryReader {
             memberEntries = extractor.getNodesFromDoc(
                     Constants.coreXpathsMap.get(Constants.REFERENCES));
         } catch (Exception e) {
-            e.printStackTrace();
             throw new InventoryReaderException(
                     "Error reading inventory file: " + e.getMessage());
         }

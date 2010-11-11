@@ -54,7 +54,6 @@ public class BundleCrawler extends CollectionCrawler {
                 entry = reader.getNext();
             }
         } catch (InventoryReaderException e) {
-            e.printStackTrace();
             log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage(),
                     bundle));
         }

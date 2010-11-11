@@ -91,7 +91,6 @@ public class RegistryUniquenessCheckerAction extends CrawlerAction {
                 return true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
             log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage(),
                     product));
             throw new CrawlerActionException(e.getMessage());
