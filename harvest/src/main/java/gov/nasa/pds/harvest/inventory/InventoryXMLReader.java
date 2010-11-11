@@ -48,7 +48,6 @@ public class InventoryXMLReader implements InventoryReader {
      * Constructor.
      *
      * @param file A PDS Inventory file
-     * @param xmlExtractor An XMLExtractor object to extract metdata.
      *
      * @throws InventoryReaderException If an error occurred while reading
      * the Inventory file.
