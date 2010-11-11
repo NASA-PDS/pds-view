@@ -7,6 +7,7 @@
 <xsd:element name="file" type="xsd:string"/>
 <xsd:element name="filePattern" type="xsd:string"/>
 <xsd:element name="xPath" type="xsd:string"/>
+<xsd:element name="enabled" type="xsd:boolean"/>
 
 <xsd:attribute name="objectType" type="xsd:string"/>
 <xsd:attribute name="prefix" type="xsd:string"/>
@@ -58,12 +59,20 @@
    </xsd:sequence>
 </xsd:complexType>
 
+<xsd:element name="validation" type="Validation"/>
+<xsd:complexType name="Validation">
+   <xsd:sequence>
+      <xsd:element ref="enabled" minOccurs="0"/>
+   </xsd:sequence>
+</xsd:complexType>
+
 <xsd:element name="policy" type="Policy"/>
 <xsd:complexType name="Policy">
    <xsd:sequence>
       <xsd:element ref="bundles" minOccurs="0"/>
       <xsd:element ref="collections" minOccurs="0"/>
       <xsd:element ref="directories" minOccurs="0"/>
+      <xsd:element ref="validation" minOccurs="0"/>
       <xsd:element ref="candidates"/>
    </xsd:sequence>
 </xsd:complexType>

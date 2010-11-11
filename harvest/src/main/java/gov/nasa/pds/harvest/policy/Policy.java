@@ -44,6 +44,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element ref="{}bundles" minOccurs="0"/>
  *         &lt;element ref="{}collections" minOccurs="0"/>
  *         &lt;element ref="{}directories" minOccurs="0"/>
+ *         &lt;element ref="{}validation" minOccurs="0"/>
  *         &lt;element ref="{}candidates"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -58,6 +59,7 @@ import javax.xml.bind.annotation.XmlType;
     "bundles",
     "collections",
     "directories",
+    "validation",
     "candidates"
 })
 public class Policy {
@@ -65,6 +67,7 @@ public class Policy {
     protected Bundle bundles;
     protected Collection collections;
     protected Directory directories;
+    protected Validation validation;
     @XmlElement(required = true)
     protected Candidate candidates;
 
@@ -72,6 +75,7 @@ public class Policy {
         directories = new Directory();
         bundles = new Bundle();
         collections = new Collection();
+        validation = new Validation();
     }
 
     /**
@@ -169,6 +173,30 @@ public class Policy {
      */
     public void setDirectories(Directory value) {
         this.directories = value;
+    }
+
+    /**
+     * Gets the value of the validation property.
+     *
+     * @return
+     *     possible object is
+     *     {@link Validation }
+     *
+     */
+    public Validation getValidation() {
+        return validation;
+    }
+
+    /**
+     * Sets the value of the validation property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link Validation }
+     *
+     */
+    public void setValidation(Validation value) {
+        this.validation = value;
     }
 
     /**

@@ -19,6 +19,7 @@ import gov.nasa.pds.harvest.crawler.CollectionCrawler;
 import gov.nasa.pds.harvest.crawler.PDSProductCrawler;
 import gov.nasa.pds.harvest.crawler.actions.AssociationPublisherAction;
 import gov.nasa.pds.harvest.crawler.actions.RegistryUniquenessCheckerAction;
+import gov.nasa.pds.harvest.crawler.actions.ValidateProductAction;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractorConfig;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.policy.Candidate;
@@ -52,6 +53,9 @@ public class Harvester {
     /** An ingester for the PDS Registry Service. */
     private RegistryIngester ingester;
 
+    /** Flag to enable/disable validation */
+    private boolean doValidation;
+
     /**
      * Constructor.
      *
@@ -66,6 +70,7 @@ public class Harvester {
         this.securedUser = null;
         this.registryUrl = registryUrl;
         this.ingester = new RegistryIngester();
+        this.doValidation = true;
     }
 
     /**
@@ -76,6 +81,16 @@ public class Harvester {
     public void setSecuredUser(SecuredUser user) {
         this.securedUser = user;
         this.ingester = new RegistryIngester(user.getName(), user.getToken());
+    }
+
+    /**
+     * Set the flag to perform validation while crawling. Set to true
+     * by default.
+     *
+     * @param value A boolean value.
+     */
+    public void setDoValidation(boolean value) {
+        this.doValidation = value;
     }
 
     /**
@@ -92,6 +107,9 @@ public class Harvester {
                     securedUser.getName(), securedUser.getToken()));
         } else {
             ca.add(new AssociationPublisherAction(registryUrl));
+        }
+        if (doValidation) {
+            ca.add(new ValidateProductAction());
         }
         return ca;
     }

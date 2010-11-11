@@ -70,6 +70,11 @@ public class ObjectFactory {
     private static final QName _Candidates_QNAME =
         new QName("", "candidates");
 
+    private static final QName _Validation_QNAME =
+        new QName("", "validation");
+
+    private final static QName _Enabled_QNAME = new QName("", "enabled");
+
     /**
      * Create a new ObjectFactory that can be used to create new instances
      * of schema derived classes for package: gov.nasa.pds.harvest.policy
@@ -132,6 +137,32 @@ public class ObjectFactory {
      */
     public Collection createCollection() {
         return new Collection();
+    }
+
+    /**
+     * Create an instance of {@link Validation }
+     *
+     */
+    public Validation createValidation() {
+        return new Validation();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Boolean }{@code >}}
+     *
+     */
+    @XmlElementDecl(namespace = "", name = "enabled")
+    public JAXBElement<Boolean> createEnabled(Boolean value) {
+        return new JAXBElement<Boolean>(_Enabled_QNAME, Boolean.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Validation }{@code >}}
+     *
+     */
+    @XmlElementDecl(namespace = "", name = "validation")
+    public JAXBElement<Validation> createValidation(Validation value) {
+        return new JAXBElement<Validation>(_Validation_QNAME, Validation.class, null, value);
     }
 
     /**

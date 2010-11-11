@@ -30,16 +30,14 @@ import gov.nasa.pds.harvest.target.Target;
 import gov.nasa.pds.harvest.target.Type;
 import gov.nasa.pds.harvest.util.PDSNamespaceContext;
 import gov.nasa.pds.harvest.util.ToolInfo;
+import gov.nasa.pds.harvest.util.Utility;
 import gov.nasa.pds.harvest.util.XMLExtractor;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Handler;
@@ -174,16 +172,12 @@ public class HarvestLauncher {
      *
      */
     private void logHeader() {
-        SimpleDateFormat df = new SimpleDateFormat(
-                "EEE, MMM dd yyyy 'at' hh:mm:ss a");
-        Date date = Calendar.getInstance().getTime();
-
         log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
                 "PDS Harvest Tool Log\n"));
         log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
                 "Version             " + ToolInfo.getVersion()));
         log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
-                "Time                " + df.format(date)));
+                "Time                " + Utility.getDateTime()));
         log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
                 "Registry Location   " + registryURL.toString() + "\n"));
     }
@@ -248,35 +242,50 @@ public class HarvestLauncher {
      * Perform harvesting of the target files.
      *
      * @param policy Class representation of the policy file.
-     * @param user A secured user, authorized to do the registration of
-     * products.
+     * @param securityUrl Url of the Security Service. Can be null
+     * if the Registry Service instance is not tied to Security.
      *
      * @throws ParserConfigurationException If an error occurred during
      * metadata extraction.
-     *
      * @throws MalformedURLException If the URL to the registry service
      * is invalid.
+     * @throws SecurityClientException If there was an error while
+     * interfacing with the Security Service.
      */
-    private void doHarvesting(final Policy policy, final SecuredUser user)
-    throws MalformedURLException, ParserConfigurationException {
+    private void doHarvesting(final Policy policy, final String securityUrl)
+    throws MalformedURLException, ParserConfigurationException,
+    SecurityClientException {
+        SecurityClient securityClient = null;
+        String token = null;
+
         Harvester harvester = new Harvester(registryURL,
                 policy.getCandidates());
         List<String> fileFilters = policy.getDirectories().getFilePattern();
-        if (user != null) {
-            harvester.setSecuredUser(user);
+        setupExtractor(policy.getCandidates().getNamespace());
+        if (securityUrl != null) {
+            securityClient = new SecurityClient(securityURL);
+            token = securityClient.authenticate(username, password);
+            harvester.setSecuredUser(new SecuredUser(username, token));
         }
-        for (String bundle : policy.getBundles().getFile()) {
-            harvester.harvest(new Target(bundle, Type.BUNDLE));
-        }
-        for (String collection : policy.getCollections().getFile()) {
-            harvester.harvest(new Target(collection, Type.COLLECTION));
-        }
-        for (String path : policy.getDirectories().getPath()) {
-            if (!fileFilters.isEmpty()) {
-                harvester.harvest(new Target(path, Type.DIRECTORY),
+        harvester.setDoValidation(policy.getValidation().isEnabled());
+        try {
+            for (String bundle : policy.getBundles().getFile()) {
+                harvester.harvest(new Target(bundle, Type.BUNDLE));
+            }
+            for (String collection : policy.getCollections().getFile()) {
+                harvester.harvest(new Target(collection, Type.COLLECTION));
+            }
+            for (String path : policy.getDirectories().getPath()) {
+                if (!fileFilters.isEmpty()) {
+                    harvester.harvest(new Target(path, Type.DIRECTORY),
                         fileFilters);
-            } else {
-                harvester.harvest(new Target(path, Type.DIRECTORY));
+                } else {
+                    harvester.harvest(new Target(path, Type.DIRECTORY));
+                }
+            }
+        } finally {
+            if (securityUrl != null) {
+                securityClient.logout(token);
             }
         }
     }
@@ -314,8 +323,6 @@ public class HarvestLauncher {
             System.out.println("\nType 'Harvest -h' for usage");
             System.exit(0);
         }
-        SecurityClient securityClient = null;
-        SecuredUser securedUser = null;
         try {
             HarvestLauncher launcher = new HarvestLauncher();
             CommandLine commandline = launcher.parse(args);
@@ -324,35 +331,18 @@ public class HarvestLauncher {
             Policy globalPolicy = PolicyReader.unmarshall(
                     launcher.globalPolicy);
             policy.add(globalPolicy);
-            launcher.setupExtractor(policy.getCandidates().getNamespace());
-            if (launcher.securityURL != null) {
-                securityClient = new SecurityClient(launcher.securityURL);
-                String token = securityClient.authenticate(launcher.username,
-                        launcher.password);
-                securedUser = new SecuredUser(launcher.username, token);
-            }
-            launcher.doHarvesting(policy, securedUser);
+            launcher.doHarvesting(policy, launcher.securityURL);
             launcher.closeHandlers();
         } catch (JAXBException je) {
             //Don't do anything
-            je.printStackTrace();
         } catch (ParseException pEx) {
             System.err.println("Command-line parse failure: "
                     + pEx.getMessage());
             System.exit(1);
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
-            ex.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
             System.exit(1);
-        } finally {
-            if (securedUser != null) {
-                try {
-                    securityClient.logout(securedUser.getToken());
-                } catch (SecurityClientException se) {
-                    System.err.println(se.getMessage());
-                    System.exit(1);
-                }
-            }
         }
     }
 }

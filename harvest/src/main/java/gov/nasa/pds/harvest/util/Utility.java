@@ -16,16 +16,19 @@ package gov.nasa.pds.harvest.util;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
- * @author pramirez
- * @version $Revision$
+ * Utility class.
  *
  */
 public class Utility {
 
     /**
      * Convert a string to a URL.
+     *
      * @param s The string to convert
      * @return A URL of the input string
      */
@@ -39,7 +42,26 @@ public class Utility {
         return url;
     }
 
+    /**
+     * Convert a string to a URI.
+     *
+     * @param s The string to convert.
+     *
+     * @return A well-formed URI.
+     */
     public static String toWellFormedURI(String s) {
         return s.replaceAll(" ", "%20");
+    }
+
+    /**
+     * Get the current date time.
+     *
+     * @return A date time.
+     */
+    public static String getDateTime() {
+        SimpleDateFormat df = new SimpleDateFormat(
+        "EEE, MMM dd yyyy 'at' hh:mm:ss a");
+        Date date = Calendar.getInstance().getTime();
+        return df.format(date);
     }
 }
