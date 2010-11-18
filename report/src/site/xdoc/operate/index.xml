@@ -92,6 +92,7 @@
 	  A few things to note about the above XML:
 	  <ul>
 	    <li>Be sure to check if this Valve is enabled elsewhere in the Host block.  If so, it will now produce a second set of access logs.</li>
+	    <li>The value for <i>directory</i> is the absolute or relative pathname of a directory in which log files created by this valve will be placed.</li>
 	    <li>Verify the prefix values are different so they do not overwrite each other.</li>
 	    <li>See the <a href="http://tomcat.apache.org/tomcat-6.0-doc/config/valve.html#Access_Log_Valve">Tomcat Configuration</a> to set other configuration attributes including path, file name suffix, etc.</li>
 	  </ul>
