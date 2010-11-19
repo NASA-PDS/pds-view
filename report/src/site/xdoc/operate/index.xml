@@ -44,80 +44,82 @@
       <p>More details to come regarding how to configure and generate reports.
       </p>
     </section>
+
     <section name="Generate Logs">
       <p>This section details the log format we will use for the Report Service, and how to setup your Apache or Tomcat web servers to produce the logs.</p>
 
       <subsection name="Log Format">
-	<p>The log format we will be using is the Apache NCSA Combined Format, with the format string as follows:</p>
-	<source>
+        <p>The log format we will be using is the Apache NCSA Combined Format, with the format string as follows:</p>
+        <source>
 %h %l %u %t \&quot;%r\&quot; %&gt;s %b \&quot;%{Referer}i\&quot; \&quot;{User-agent}i\&quot;
-	</source>
-	<p>Where each value is as follows (a &quot;hyphen&quot; in the output indicates that the requested peice of information is not available):</p>
-	<ul>
-	  <li>%h - The IP address of the client which made the request to the server.</li>
-	  <li>%l - The RFC 1413 identity of the client.</li>
-	  <li>%u - The userid of the person requesting the document as determined by HTTP authentication.</li>
-	  <li>%t - The time that the request was received [day/month/year:hour:minute:second zone]</li>
-	  <li>%r - The request line from the client is given in double quotes, including, in order, the method used by the client, the requested resource, and the protocol used.</li>
-	  <li>%&gt;s - The status code that the server sends back to the client.</li>
-	  <li>%b - The size of the object returned to the client, not including the response headers.</li>
-	  <li>%{Referer}i - The &quot;Referer&quot; HTTP request header that gives the site that the client reports having been referred from.</li>
-	  <li>%{User-agent}i - The User-Agent HTTP request header that is the identifying information that the client browser reports about itself.</li>
-	</ul>
-	<p>We are using this log format because it is a commonly used format that provide more useful metrics by allowing Sawmill to ignore extraneous log entries (i.e. bots, web crawlers, worms).</p>
+        </source>
+        <p>Where each value is as follows (a &quot;hyphen&quot; in the output indicates that the requested piece of information is not available):</p>
+        <ul>
+          <li>%h - The IP address of the client which made the request to the server.</li>
+          <li>%l - The RFC 1413 identity of the client.</li>
+          <li>%u - The userid of the person requesting the document as determined by HTTP authentication.</li>
+          <li>%t - The time that the request was received [day/month/year:hour:minute:second zone]</li>
+          <li>%r - The request line from the client is given in double quotes, including, in order, the method used by the client, the requested resource, and the protocol used.</li>
+          <li>%&gt;s - The status code that the server sends back to the client.</li>
+          <li>%b - The size of the object returned to the client, not including the response headers.</li>
+          <li>%{Referer}i - The &quot;Referer&quot; HTTP request header that gives the site that the client reports having been referred from.</li>
+          <li>%{User-agent}i - The User-Agent HTTP request header that is the identifying information that the client browser reports about itself.</li>
+        </ul>
+        <p>We are using this log format because it is a commonly used format that provides more useful metrics that allow Sawmill to ignore extraneous log entries (e.g., bots, web crawlers, worms).</p>
       </subsection>
 
       <subsection name="Setup Tomcat">
-	<p>Tomcat produces access logs that record all requests processed by the web container.  The following are the steps needed to configure the server to create the Combined Format logs:</p>
-	<ol>
-	  <li>Log into the machine hosting the web server you would like to gather metrics from.</li>
-	  <li>Open <i>$CATALINA_HOME/conf/server.xml</i> for editting.</li>
-	  <li>Find the &quot;Host&quot; XML node.  It should resemble the following:
-	    <source>
+        <p>Tomcat produces access logs that record all requests processed by the web container.  The following are the steps needed to configure the server to create the Combined Format logs:</p>
+        <ol>
+          <li>Log into the machine hosting the web server you would like to gather metrics from.</li>
+          <li>Open <i>$CATALINA_HOME/conf/server.xml</i> for editting.</li>
+          <li>Find the &quot;Host&quot; XML node.  It should resemble the following:
+            <source>
 &lt;Host name=&quot;localhost&quot;  appBase=&quot;webapps&quot;
       unpackWARs=&quot;true&quot; autoDeploy=&quot;true&quot;
       xmlValidation=&quot;false&quot; xmlNamespaceAware=&quot;false&quot;&gt;
-   .
-   .
-   .
+      .
+      .
+      .
 &lt;/Host&gt;
-	    </source>
-	  </li>
-	  <li>Within this block, add the following XML to enable the access logs:
-	    <source>
+            </source>
+          </li>
+          <li>Within this block, add the following XML to enable the access logs:
+            <source>
 &lt;Valve className=&quot;org.apache.catalina.valves.AccessLogValve&quot; directory=&quot;logs&quot;  
-       prefix=&quot;localhost_access_log.&quot; suffix=&quot;.txt&quot; pattern=&quot;combined&quot; resolveHosts=&quot;false&quot;/&gt;
-	    </source>
-	  </li>
-	  A few things to note about the above XML:
-	  <ul>
-	    <li>Be sure to check if this Valve is enabled elsewhere in the Host block.  If so, it will now produce a second set of access logs.</li>
-	    <li>The value for <i>directory</i> is the absolute or relative pathname of a directory in which log files created by this valve will be placed.</li>
-	    <li>Verify the prefix values are different so they do not overwrite each other.</li>
-	    <li>See the <a href="http://tomcat.apache.org/tomcat-6.0-doc/config/valve.html#Access_Log_Valve">Tomcat Configuration</a> to set other configuration attributes including path, file name suffix, etc.</li>
-	  </ul>
-	  <li>Restart Tomcat.</li>
-	</ol>
+       prefix=&quot;localhost_access_log.&quot; suffix=&quot;.txt&quot; pattern=&quot;combined&quot;
+       resolveHosts=&quot;false&quot;/&gt;
+            </source>
+          </li>
+          A few things to note about the above XML:
+          <ul>
+            <li>Be sure to check if this Valve is enabled elsewhere in the Host block.  If so, it will now produce a second set of access logs.</li>
+            <li>The value for <i>directory</i> is the absolute or relative pathname of a directory in which log files created by this valve will be placed.</li>
+            <li>Verify the prefix values are different so they do not overwrite each other.</li>
+            <li>See the <a href="http://tomcat.apache.org/tomcat-6.0-doc/config/valve.html#Access_Log_Valve">Tomcat Configuration</a> to set other configuration attributes including path, file name suffix, etc.</li>
+          </ul>
+          <li>Restart Tomcat.</li>
+        </ol>
       </subsection>
 
       <subsection name="Setup Apache">
-	<p>Apache produces access logs that record all requests processed by the server.  The following are the steps needed to configure the server to create the Combined Format logs:</p>
-	<ol>
-	  <li>Log into the machine hosting the server you would like to gather metrics from.</li>
-	  <li>Open <i>$APACHE_HOME/conf/httpd.conf</i> for editting.</li>
-	  <li>Find the section of the file where LogFormats are declared (if exists) and add the following:</li>
-	    <source>
+        <p>Apache produces access logs that record all requests processed by the server.  The following are the steps needed to configure the server to create the Combined Format logs:</p>
+        <ol>
+          <li>Log into the machine hosting the server you would like to gather metrics from.</li>
+          <li>Open <i>$APACHE_HOME/conf/httpd.conf</i> for editing.</li>
+          <li>Find the section of the file where LogFormats are declared (if exists) and add the following:</li>
+            <source>
 LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&gt;s %b \&quot;%{Referer}i\&quot; \&quot;%{User-agent}i\&quot;&quot; combined
 CustomLog &quot;|$APACHE_HOME/bin/rotatelogs $LOG_DIR/access_log.%Y-%m-%d.txt 86400&quot; combined
-	    </source>
-	    A few things to note about the above configuration:
-	  <ul>
-	    <li>Be sure to check if these values are already set elsewhere in httpd.conf.</li>
-	    <li>$APACHE_HOME is the home directory for the Apache server.</li>
-	    <li>$LOG_DIR is the directory where you would like to place the log files.</li>
-	    <li>The <i>CustomLog</i> section above denotes using the Apache rotatelogs script that rotates the logs daily instead of creating one large access_log file.</li>
-	  </ul>
-	</ol>
+            </source>
+            A few things to note about the above configuration:
+          <ul>
+            <li>Be sure to check if these values are already set elsewhere in <i>httpd.conf</i>.</li>
+            <li>$APACHE_HOME is the home directory for the Apache server.</li>
+            <li>$LOG_DIR is the directory where you would like to place the log files.</li>
+            <li>The <i>CustomLog</i> section above denotes using the Apache <i>rotatelogs</i> script that rotates the logs daily instead of creating one large access_log file.</li>
+          </ul>
+        </ol>
       </subsection>
     </section>
   </body>
