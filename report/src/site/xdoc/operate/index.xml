@@ -24,7 +24,7 @@
   </properties>
 
   <body>
-    <section name="Operation">
+  	<section name="Operation">
       <p>The Sawmill software offers a web-based interface for configuring and generating reports with the software. The login screen is as follows:
       </p>
 
@@ -54,17 +54,17 @@
 %h %l %u %t \&quot;%r\&quot; %&gt;s %b \&quot;%{Referer}i\&quot; \&quot;{User-agent}i\&quot;
         </source>
         <p>Where each value is as follows (a &quot;hyphen&quot; in the output indicates that the requested piece of information is not available):</p>
-        <ul>
-          <li>%h - The IP address of the client which made the request to the server.</li>
-          <li>%l - The RFC 1413 identity of the client.</li>
-          <li>%u - The userid of the person requesting the document as determined by HTTP authentication.</li>
-          <li>%t - The time that the request was received [day/month/year:hour:minute:second zone]</li>
-          <li>%r - The request line from the client is given in double quotes, including, in order, the method used by the client, the requested resource, and the protocol used.</li>
-          <li>%&gt;s - The status code that the server sends back to the client.</li>
-          <li>%b - The size of the object returned to the client, not including the response headers.</li>
-          <li>%{Referer}i - The &quot;Referer&quot; HTTP request header that gives the site that the client reports having been referred from.</li>
-          <li>%{User-agent}i - The User-Agent HTTP request header that is the identifying information that the client browser reports about itself.</li>
-        </ul>
+        <table>
+       	  <tr><td width="125px">%h</td><td>The IP address of the client which made the request to the server.</td></tr>
+          <tr><td>%l</td><td>The RFC 1413 identity of the client.</td></tr>
+          <tr><td>%u</td><td>The userid of the person requesting the document as determined by HTTP authentication.</td></tr>
+          <tr><td>%t</td><td>The time that the request was received [day/month/year:hour:minute:second zone]</td></tr>
+          <tr><td>%r</td><td>The request line from the client is given in double quotes, including, in order, the method used by the client, the requested resource, and the protocol used.</td></tr>
+          <tr><td>%&gt;s</td><td>The status code that the server sends back to the client.</td></tr>
+          <tr><td>%b</td><td>The size of the object returned to the client, not including the response headers.</td></tr>
+          <tr><td>%{Referer}i</td><td>The &quot;Referer&quot; HTTP request header that gives the site that the client reports having been referred from.</td></tr>
+          <tr><td>%{User-agent}i</td><td>The User-Agent HTTP request header that is the identifying information that the client browser reports about itself.</td></tr>
+        </table>
         <p>We are using this log format because it is a commonly used format that provides more useful metrics that allow Sawmill to ignore extraneous log entries (e.g., bots, web crawlers, worms).</p>
       </subsection>
 
