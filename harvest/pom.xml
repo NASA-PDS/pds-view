@@ -140,7 +140,7 @@
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
-        <artifactId>maven-buildnumber-plugin</artifactId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
         <executions>
           <execution>
             <phase>validate</phase>
@@ -194,31 +194,11 @@
     </plugins>
   </build>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>tlc</id>
-      <name>TLC Repository</name>
-      <url>http://commons.ucalgary.ca/pub/m2</url>
-    </pluginRepository>
-    <pluginRepository>
-      <id>maven2-repository.dev.java.net</id>
-      <name>Java.net Repository for Maven</name>
-      <url>http://download.java.net/maven/2</url>
-      <layout>default</layout>
-    </pluginRepository>
-    <pluginRepository>
-      <id>maven-repository.dev.java.net</id>
-      <name>Java.net Maven 1 Repository (legacy)</name>
-      <url>http://download.java.net/maven/1</url>
-      <layout>legacy</layout>
-    </pluginRepository>
-  </pluginRepositories>
-
   <repositories>
+    <!-- Hosts the PDS and OODT artifacts. -->
     <repository>
       <id>pds-repo</id>
-      <name>PDS Repository</name>
-      <layout>default</layout>
+      <name>PDS Maven Repository</name>
       <url>http://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
@@ -229,21 +209,17 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    <!-- Hosts the Hibernate artifacts. -->
     <repository>
-      <id>JBoss Repo</id>
+      <id>jboss-repo</id>
+      <name>JBoss.org Maven Repository</name>
       <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
     </repository>
+    <!-- Hosts the Jersey artifacts. -->
     <repository>
-      <id>maven2-repository.dev.java.net</id>
-      <name>Java.net Maven 2 Repository</name>
+      <id>java.net-repo</id>
+      <name>Java.net Maven Repository</name>
       <url>http://download.java.net/maven/2</url>
-      <layout>default</layout>
-    </repository>
-    <repository>
-      <id>maven-repository.dev.java.net</id>
-      <name>Java.net Maven 1 Repository (legacy)</name>
-      <url>http://download.java.net/maven/1</url>
-      <layout>legacy</layout>
     </repository>
   </repositories>
 
