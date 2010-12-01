@@ -295,6 +295,13 @@
                     <include>index.html</include>
                   </includes>
                 </resource>
+                <resource>
+                  <directory>${project.build.directory}/generated-schema</directory>
+                  <filtering>false</filtering>
+                  <includes>
+                    <include>registry-service.xsd</include>
+                  </includes>
+                </resource>
               </resources>
               <filters>
                 <filter>src/main/filters/${env}.properties</filter>
