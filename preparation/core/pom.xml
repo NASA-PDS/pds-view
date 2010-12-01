@@ -88,6 +88,35 @@
     </plugins>
   </build>
 
+  <repositories>
+    <!-- Hosts the PDS and OODT artifacts. -->
+    <repository>
+      <id>pds-repo</id>
+      <name>PDS Maven Repository</name>
+      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <!--
+      Hosts the Xerces artifacts.
+      They should eventually show up in the Maven central repository.
+    -->
+    <repository>
+      <id>shibboleth-repo</id>
+      <name>Shibboleth</name>
+      <url>http://shibboleth.internet2.edu/downloads/maven2</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>saxon</groupId>
@@ -109,37 +138,6 @@
       <scope>compile</scope>
     </dependency>
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>pds-repo</id>
-      <name>PDS Repository</name>
-      <layout>default</layout>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-        <checksumPolicy>warn</checksumPolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <!--
-      This is for the xerces stuff.
-      It should eventually show up in the central repository.
-    -->
-    <repository>
-      <id>shibboleth.internet2.edu</id>
-      <name>Shibboleth</name>
-      <layout>default</layout>
-      <url>http://shibboleth.internet2.edu/downloads/maven2</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-
-  </repositories>
 
   <!-- Project Information and Reports inherited from parent. -->
   <reporting>

@@ -60,8 +60,6 @@
     <derby.version>10.6.1.0</derby.version>
     <env>default</env>
     <registry.endpoint>${registry.protocol}://${registry.host}:${registry.port}${registry.context}/</registry.endpoint>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
   <build>
@@ -488,6 +486,44 @@
     </profile>
   </profiles>
 
+  <repositories>
+    <!-- Hosts the PDS and OODT artifacts. -->
+    <repository>
+      <id>pds-repo</id>
+      <name>PDS Maven Repository</name>
+      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <!-- Hosts the Hibernate artifacts. -->
+    <repository>
+      <id>jboss-repo</id>
+      <name>JBoss.org Maven Repository</name>
+      <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+    </repository>
+    <!-- Hosts the Jersey artifacts. -->
+    <repository>
+      <id>java.net-repo</id>
+      <name>Java.net Maven Repository</name>
+      <url>http://download.java.net/maven/2</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <!-- Hosts the JAXB plugin. -->
+    <pluginRepository>
+      <id>java.net-repo</id>
+      <name>Java.net Maven Repository</name>
+      <url>http://download.java.net/maven/2</url>
+    </pluginRepository>
+  </pluginRepositories>
+
   <dependencies>
     <dependency>
       <groupId>org.hibernate.java-persistence</groupId>
@@ -501,7 +537,6 @@
     </dependency>
 
     <!-- SPRING START -->
-
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
@@ -552,11 +587,9 @@
       <artifactId>spring-test</artifactId>
       <version>${spring.version}</version>
     </dependency>
-
     <!-- SPRING END -->
 
     <!-- JPA START -->
-
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
@@ -567,21 +600,18 @@
       <artifactId>slf4j-jdk14</artifactId>
       <version>1.5.8</version>
     </dependency>
-    
     <!-- Derby -->
     <dependency>
       <groupId>org.apache.derby</groupId>
       <artifactId>derby</artifactId>
       <version>${derby.version}</version>
     </dependency>
-
     <!-- MySQL -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>5.1.6</version>
     </dependency>
-    
     <!-- JPA END -->
 
     <dependency>
@@ -656,62 +686,6 @@
       </exclusions>
     </dependency>
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>pds-repo</id>
-      <name>PDS Repository</name>
-      <layout>default</layout>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-        <checksumPolicy>warn</checksumPolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <!-- 
-    <repository>
-      <id>glassfish-maven2-repository.dev.java.net</id>
-      <name>Java.net Maven 2 Repository for GlassFish</name>
-      <url>http://download.java.net/maven/glassfish</url>
-      <layout>default</layout>
-    </repository>
-    -->
-    <repository>
-      <id>JBoss Repo</id>
-      <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
-    </repository>
-    <repository>
-      <id>maven2-repository.dev.java.net</id>
-      <name>Java.net Maven 2 Repository</name>
-      <url>http://download.java.net/maven/2</url>
-      <layout>default</layout>
-    </repository>
-    <repository>
-      <id>maven-repository.dev.java.net</id>
-      <name>Java.net Maven 1 Repository (legacy)</name>
-      <url>http://download.java.net/maven/1</url>
-      <layout>legacy</layout>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>maven2-repository.dev.java.net</id>
-      <name>Java.net Repository for Maven</name>
-      <url>http://download.java.net/maven/2</url>
-      <layout>default</layout>
-    </pluginRepository>
-    <pluginRepository>
-      <id>maven-repository.dev.java.net</id>
-      <name>Java.net Maven 1 Repository (legacy)</name>
-      <url>http://download.java.net/maven/1</url>
-      <layout>legacy</layout>
-    </pluginRepository>
-  </pluginRepositories>
 
   <!-- Project Information and Reports inherited from parent. -->
   <reporting>

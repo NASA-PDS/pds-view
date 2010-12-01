@@ -128,10 +128,10 @@
   </build>
 
   <repositories>
+    <!-- Hosts the PDS and OODT artifacts. -->
     <repository>
       <id>pds-repo</id>
-      <name>PDS Repository</name>
-      <layout>default</layout>
+      <name>PDS Maven Repository</name>
       <url>http://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
