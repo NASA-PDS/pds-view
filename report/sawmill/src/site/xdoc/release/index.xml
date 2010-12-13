@@ -16,13 +16,34 @@
   $Id$
 -->
 
-<project>
+<document>
+  <properties>
+    <title>Release Notes</title>
+    <author email="Jordan.Padams@jpl.nasa.gov">Jordan Padams</author>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
   <body>
-    <menu name="Report Service Guide">
-      <item name="Overview" href="index.html"/>
-      <item name="Release Notes" href="release/index.html"/>
-      <item name="Installation" href="install/index.html"/>
-      <item name="Operation" href="operate/index.html"/>
-    </menu>
+    <section name="Release Notes">
+      <p>TBD
+      </p>
+    </section>
+
+    <section name="Release 0.1.0">
+      <p>TBD
+      </p>
+
+      <ul>
+        <li>Purchased and installed the Sawmill software package.</li>
+      </ul>
+
+      <p>The liens for this release are as follows:
+      </p>
+
+      <ul>
+        <li>TBD</li>
+      </ul>
+    </section>
   </body>
-</project>
+</document>
+
