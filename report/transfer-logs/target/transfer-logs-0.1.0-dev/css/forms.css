@@ -1,0 +1,355 @@
+/*
+	forms.css
+	This style sheet is similar to base, it is used in all dynamic
+	pages which contain form elements
+
+*/
+
+select {
+	font-size: 1.0em;
+}
+
+h3.action-info {
+	margin: 21px;
+	color: #969696;
+}
+
+select.small {
+	padding: 0;
+	margin: 0;
+}
+
+/*
+	form-cover
+*/
+
+div.form-cover {
+	padding: 0;
+	margin: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	/*background-image: url(../picts/transparent_white.gif); -- Defined in css_style_map.cfg -- */
+	background-repeat: repeat;
+	opacity: .6;
+	filter: alpha(opacity=60);
+	z-index: 10;
+	display: none;
+}
+
+iframe.form-cover {
+	position: absolute;
+	padding: 0;
+	margin: 0;
+	top: 0;
+	left: 0;
+	width: 40px;
+	height: 40px;
+	border: none;
+	background-color: white;
+	/*z-index: 10; z-index IS SET BY JAVASCRIPT! */
+	display: none;
+}
+
+/*
+	form error indication
+*/
+
+div.form-error {
+	margin-top: 2px;
+	margin-bottom: 4px;
+	background-color: White;
+	border: 1px dotted #FF0033;
+	/*border-top-color: White;*/
+	color: Red;
+	padding: 3px 7px;
+	white-space: normal;
+	display: none;
+}
+
+
+/*
+ 	background server call error
+*/
+
+div.background-server-call-alert {
+	padding: 20px;
+	border: 2px solid Red;
+	background-color: White;
+	position: absolute;
+	top: 60px;
+	left: 60px;
+	z-index: 2000;
+}
+
+div.background-server-call-alert a:link,
+div.background-server-call-alert a:visited,
+div.background-server-call-alert a:hover {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+
+/*
+	drop-down-10 (link style, used for More Options menu in Config
+*/
+
+ul.drop-down-10 {
+	border: 1px solid #9F9F9F;
+	background-color: White;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	display: none;
+	z-index: 50;
+}
+
+ul.drop-down-10 li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid #ECECFF;
+}
+
+ul.drop-down-10 a:link,
+ul.drop-down-10 a:visited,
+ul.drop-down-10 a:hover {
+	/*color: Black;*/
+	text-decoration: none;
+	padding: 5px 24px 6px 7px;
+	display: block;
+	
+}
+
+ul.drop-down-10 a:hover {
+	background-color: #F2F2F2;
+}
+
+ul.drop-down-10 a.disabled:link,
+ul.drop-down-10 a.disabled:visited,
+ul.drop-down-10 a.disabled:hover {
+	color: #D4D4D4;
+	cursor: default;
+	background-color: White;
+}
+
+/*
+	drop-down-20
+*/
+
+ul.drop-down-20 {
+	border: 1px solid #B8B8B8;
+	border-bottom-width: 0;
+	background-color: white;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	display: none;
+}
+
+ul.drop-down-20 li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.drop-down-20 a:link,
+ul.drop-down-20 a:visited,
+ul.drop-down-20 a:hover {
+	color: Black;
+	text-decoration: none;
+	padding: 3px 14px 3px 7px;
+	background-color: White;
+	display: block;
+	border-bottom: 1px solid #B8B8B8;
+}
+
+ul.drop-down-20 a:hover {
+	background-color: #F2F2F2;
+}
+
+/*
+ 	links and command links
+	Used for command links with images or without images.
+*/
+
+a.command-link-50 {
+	padding: 0 5px;
+}
+
+a.command-link-50:hover {
+	/*background-color: #F5F5F5;*/
+}
+
+a.command-link-50-disabled:link,
+a.command-link-50-disabled:visited,
+a.command-link-50-disabled:hover {
+	padding: 0 5px;
+	color: #D4D4D4;
+	background-color: transparent;
+	cursor: default;
+}
+
+
+
+/*
+ 	buttons
+*/
+
+
+
+/*
+	btn-50 (button and links)
+*/
+
+
+
+/*
+	btn-50 button
+*/
+
+button.btn-50,
+button.btn-50-hover {
+	/*border: none;
+	background-color: #CCDCF9;*/
+	padding: 0; /* padding is defined in js when button is initialized*/
+	margin: 0 7px;
+}
+
+button.btn-50-hover {
+	/*background-color: #E3ECFC;*/
+}
+
+
+/*
+	btn-20 (report toolbar buttons with images)
+*/
+
+a.btn-20:link,
+a.btn-20:visited,
+a.btn-20:hover,
+a.btn-20-disabled:link,
+a.btn-20-disabled:visited,
+a.btn-20-disabled:hover {
+	padding: 6px 10px;
+	border-right: 1px solid #EAEAEA;
+	display: block;
+	float: left;
+	text-decoration: none;
+	color: Black;
+}
+
+a.btn-20-disabled:link,
+a.btn-20-disabled:visited,
+a.btn-20-disabled:hover {
+	/*padding: 0 5px;*/
+	color: #D4D4D4;
+	/*background-color: transparent;*/
+	cursor: default;
+}
+
+a.btn-20:hover {
+	background-color: #F7F7EF;
+}
+
+
+
+/*
+	btn-30 (unpressed/pressed buttons, i.e. Start Date, etc. in date picker)
+*/
+
+a.btn-30:link,
+a.btn-30:visited,
+a.btn-30:hover,
+a.btn-30-pressed:link,
+a.btn-30-pressed:visited,
+a.btn-30-pressed:hover {
+	padding: 6px 10px;
+	margin-right: 7px;
+	display: block;
+	float: left;
+	text-decoration: none;
+	color: Black;
+	border: 1px solid #f3f2eb;
+}
+
+a.btn-30-pressed:link,
+a.btn-30-pressed:visited,
+a.btn-30-pressed:hover {
+	border: 1px solid White;
+	border-left-color: #c8c7b8;
+	border-top-color: #c8c7b8;
+	cursor: default;
+}
+
+a.btn-30:hover {
+	background-color: #F7F7EF;
+}
+
+
+/*
+	Warning messages (i.e. Scheduler if no SMTP serever)
+*/
+
+div.info-20 {
+	position: absolute;
+	top: 60px;
+	right: 24px;
+	width: 300px;
+	padding: 7px;
+	background-color: White;
+	border: 3px solid #88a7ce;
+	display: none;
+}
+
+
+/*
+	Email address control (Used in scheduler and reports)
+*/
+
+div.email-address-grid {
+	/*width: 440px; is defined by javascript*/
+	height: 60px;
+	overflow: auto;
+	background-color: White;
+	border: 1px solid #555555;
+}
+
+table.email-address-grid th,
+table.email-address-grid td {
+	border-bottom: 1px solid #b1ccf8;
+	padding: 1px 0;
+	/*background-color: yellow;*/
+}
+
+table.email-address-grid th.last,
+table.email-address-grid td.last {
+	border-bottom: none;
+}
+
+table.email-address-grid th {
+	text-align: left;
+	width: 2%;
+}
+
+table.email-address-grid td {
+	width: 98%;
+}
+
+table.email-address-grid select {
+	margin-right: 4px;
+	font-size: 0.8em;
+	border-width: 0;
+	border-color: white;
+	
+}
+
+table.email-address-grid input {
+	width: 98%;
+	margin-left: 4px;
+	border-width: 0;
+	border-color: White;
+	/*background-color: yellow;*/
+}

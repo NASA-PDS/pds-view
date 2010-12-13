@@ -1,0 +1,371 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.72em;
+	background-color: White;
+	color: Black;
+}
+
+body, div, table, form, input, img, ul, li {
+	padding: 0;
+	margin: 0;
+}
+
+td {
+	white-space: nowrap;
+}
+
+p {
+	font-size:  1.0em;
+}
+
+h1, h2, h3, h4, h5, p {
+	padding: 0;
+	margin: 0.5em 0;
+}
+
+h1 {
+	font-size: 1.6em;
+}
+
+h2 {
+	font-size: 1.4em;
+}
+
+h3 {
+	font-size: 1.3em;
+}
+
+h4 {
+	font-size: 1.2em;
+}
+
+h5 {
+	font-size: 1.1em;
+}
+
+img {
+	border: none;
+}
+
+hr {
+	border: 0;
+	height: 1px;
+	color: #CCC3D1;
+	background-color: #CCC3D1;
+}
+
+.right {
+	text-align: right;
+}
+
+pre {
+	/*use pixel font-size for pre due discrepances when using relative size!*/
+	font-size: 12px;
+	white-space: normal;
+}
+
+a:link,
+a:visited,
+a:hover {
+	color: #0000CD;
+}
+
+a.no-underline:link,
+a.no-underline:visited,
+a.no-underline:hover {
+	text-decoration: none;
+}
+
+/*
+	active page link (used to reload a page, link style only upon hover)
+*/
+
+a.active-page:link,
+a.active-page:visited,
+a.active-page:hover {
+	color: black;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a.active-page:hover {
+	color: #0000CD;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+
+/* Standard command links with 16x16 px images */
+
+a.link-50:link,
+a.link-50:visited,
+a.link-50:hover {
+	text-decoration: none;
+}
+
+a.link-50:link img,
+a.link-50:visited img,
+a.link-50:hover img {
+	vertical-align: middle;
+	text-decoration: none;
+	margin-bottom: 1px; /* Fixes vertical alignment*/
+	margin-right: 2px;
+}
+
+a.link-50:link span,
+a.link-50:visited span,
+a.link-50:hover span {
+	text-decoration: underline;
+}
+
+a.link-bold-red:link,
+a.link-bold-red:visited,
+a.link-bold-red:hover {
+	font-weight: bold;
+	color: red;
+	text-decoration: underline;
+}
+
+div.clearance {
+	clear: both;
+	font-size: 1px;
+	line-height: 1px;
+}
+
+/*
+	product-bar (main header bar on top of page)
+*/
+
+div.product-bar-bg { /* This div includes the nav bar! */
+	
+	/* Vertical background gradient */
+	background: #d2dbe5; /* No-gradient support fallback */
+	background: -moz-linear-gradient(top, #d2dbe5, #e9edf2);
+	background: -webkit-gradient(linear, left top, left bottom, from(#d2dbe5), to(#e9edf2));
+	filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#d2dbe5', EndColorStr='#e9edf2', GradientType=0);
+	
+	border-bottom: 1px solid #d2dbe5;
+}
+	
+table.product-bar {
+	width: 100%;
+}
+
+table.product-bar td {
+	padding: 5px;
+	vertical-align: middle;
+	text-align: left;
+}
+
+table.product-bar td.product-bar-right {
+	text-align: right;
+	color: #C6C6C6;
+}
+
+table.product-bar span.version {
+	padding-right: 14px;
+	color: #6498cd;
+}
+
+td.product-bar-right span.profile-label {
+	padding: 2px 5px;
+	color: Black;
+}
+
+td.product-bar-right a:link,
+td.product-bar-right a:visited,
+td.product-bar-right a:hover {
+	color: #0002BD;
+	text-decoration: underline;
+	padding: 2px 5px;
+}
+
+/*a:link span.product-bar-username,
+a:visited span.product-bar-username,
+a:hover span.product-bar-username {
+	text-decoration: none;
+	font-weight: normal;
+}
+*/
+td.product-bar-right a:hover {
+	background-color: #FAF9F3;
+}
+
+div.product-bar-about {
+	position: absolute;
+	right: 0;
+	top: 27px;
+	background-color: white;
+	border: 1px solid #6a6a6a;
+	padding: 7px 10px;
+	display: none;
+}
+
+div.product-bar-about p { /*copyright text*/
+	font-size: 0.94em;
+}
+
+
+/*
+	temporary text logo
+*/
+
+td.temp-logo {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color: #787878;
+	font-size: 1.2em;
+	font-weight: bold;
+	font-style: italic;
+}
+
+/*
+	copyright
+*/
+
+p.copyright {
+	margin: 16px 24px;
+	font-size: 0.9em;
+	color: #656565;
+}
+
+/*
+	panel-50 (required in base.css because panel-50 is used in error reporting)
+*/
+
+table.panel-50-left-right-grid td {
+	/* Used if buttons are on top right side */
+	padding: 0;
+	vertical-align: top;
+	text-align: left;
+}
+
+table.panel-50-left-right-grid td.buttons-box {
+	/* Used if buttons are on top right side */
+	text-align: center;
+	padding: 18px 18px 0 0;
+}
+
+div.panel-50 {
+	/*border: solid 1px Red;*/
+	position: absolute;
+	display: none;
+	z-index: 20;
+}
+
+div.panel-50-header {
+	/*background-color: Lime;*/
+	background-color: transparent;
+	/*	background-image: url(../picts/panel/panel_50_top_left.gif); -- Defined in css_style_map.cfg -- */
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+
+div.panel-50-header-frame {
+	/*background-color: Lime;*/
+	/*border: 1px solid Red;*/
+	text-align: right;
+	margin-left: 10px;
+	padding: 5px 0 3px 0;
+	/*	background-image: url(../picts/panel/panel_50_top_right.gif);  -- Defined in css_style_map.cfg -- */
+	background-position: top right;
+	background-repeat: no-repeat;
+	vertical-align: bottom;
+}
+
+div.panel-50-header-frame img {
+	margin-right: 5px;
+	/*background-color: Yellow;*/
+}
+
+div.panel-50-header-title {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 1.2em;
+	line-height: 1em;
+	font-weight: bold;
+	text-align: left;
+	color: White;
+	background-color: transparent;
+	float: left;
+}
+
+div.panel-50-header-bottom {
+	background-color: #f3f2eb;
+	font-size: 1px;
+	/*height: 1px;* Don't specify the height because IE would expand the width to 100% */
+	line-height: 1px;
+	border-width: 0 3px;
+	border-color: #59609b;
+	border-style: solid;
+}
+
+
+div.panel-50-body { /* Note, the body has 0px margin so that we can add tab-lines, etc.! */
+	background-color: #f3f2eb;
+	border-width: 0 2px;
+	border-color: #59609b;
+	border-style: solid;
+}
+
+div.panel-50-form,
+div.panel-50-form-center,
+div.panel-50-form-right {
+	padding: 10px 14px;
+}
+
+div.panel-50-form-center {
+	text-align: center;
+}
+
+div.panel-50-form-right {
+	text-align: right;
+}
+
+div.panel-50-form th,
+div.panel-50-form td {
+	/*Note, we give minimal top padding, this is useful for example fields above a row*/
+	padding: 3px 4px 6px 4px;
+	vertical-align: baseline; /* We use baseline so that we are aligned when displaying error indication divs */
+	/*background-color: yellow;*/
+	border: none;
+}
+
+div.panel-50-form th {
+	text-align: right;
+	font-weight: normal;
+}
+
+div.panel-50-form th.field-sample,
+div.panel-50-form td.field-sample {
+	padding-bottom: 0;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 0.9em;
+	color: #646464;
+}
+
+div.panel-50-footer {
+	background-color: transparent;
+	/*	background-image: url(../picts/panel/panel_50_bottom_left.gif); -- Defined in css_style_map.cfg -- */
+	background-position: bottom left;
+	background-repeat: no-repeat;
+}
+
+div.panel-50-footer-offset {
+	background-color: transparent;
+	margin-left: 10px;
+	font-size: 5px;
+	line-height: 5px;
+	/*	background-image: url(../picts/panel/panel_50_bottom_right.gif); -- Defined in css_style_map.cfg -- */
+	background-position: bottom right;
+	background-repeat: no-repeat;
+}
+
+div.panel-50-separator-line {
+	padding: 0;
+	margin: 0;
+	border-top: 1px solid #c8c7c7;
+	background-color: White;
+	font-size: 1px;
+	line-height: 1px;
+	/* height: 1px; Don't apply height or IE will expand to maximum width! */
+}
+
