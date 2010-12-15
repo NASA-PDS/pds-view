@@ -304,7 +304,9 @@ public class HarvestLauncher {
                 defaultNamespaceUri = n.getUri();
             }
         }
-        if (!defaultNamespaceUri.isEmpty()) {
+        // isEmpty() is a java 1.6 method
+        if (!defaultNamespaceUri.equals("")) {
+//        if (!defaultNamespaceUri.isEmpty()) {
             XMLExtractor.setDefaultNamespace(defaultNamespaceUri);
         }
         if (!namespaces.isEmpty()) {
