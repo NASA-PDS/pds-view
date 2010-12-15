@@ -298,7 +298,7 @@ public class HarvestLauncher {
         String defaultNamespaceUri = "";
 
         for (Iterator<Namespace> i = namespaces.iterator();
-        i.hasNext() && (defaultNamespaceUri.isEmpty());) {
+        i.hasNext() && (!defaultNamespaceUri.equals(""));) {
             Namespace n = i.next();
             if (n.isDefault()) {
                 defaultNamespaceUri = n.getUri();
