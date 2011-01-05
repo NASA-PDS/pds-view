@@ -1,4 +1,4 @@
-The Registry UI as the user interface for the PDS Registry Service. 
+The Registry UI is the user interface for the PDS Registry Service. 
 The software is packaged in a WAR file.
 
 The software can be compiled with the "mvn compile" command but in order 
