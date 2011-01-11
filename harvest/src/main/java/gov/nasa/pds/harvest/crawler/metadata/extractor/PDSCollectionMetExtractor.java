@@ -31,6 +31,8 @@ import java.util.logging.Logger;
 
 import javax.xml.xpath.XPathExpressionException;
 
+import net.sf.saxon.tinytree.TinyElementImpl;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -73,7 +75,7 @@ public class PDSCollectionMetExtractor extends PDSMetExtractor {
         String version = "";
         String title = "";
         String associationType = "";
-        XMLExtractor extractor = new XMLExtractor();
+        List<TinyElementImpl> references = null;
         try {
             extractor.parse(product);
         } catch (Exception e) {
@@ -91,7 +93,9 @@ public class PDSCollectionMetExtractor extends PDSMetExtractor {
                     Constants.coreXpathsMap.get(Constants.TITLE));
             associationType =
                 extractor.getValueFromDoc(ASSOCIATION_TYPE_XPATH);
-        } catch (XPathExpressionException x) {
+            references = extractor.getNodesFromDoc(
+                Constants.coreXpathsMap.get(Constants.REFERENCES));
+        } catch (Exception x) {
             //TODO: getMessage() doesn't always return a message
             throw new MetExtractionException(x.getMessage());
         }
@@ -107,50 +111,62 @@ public class PDSCollectionMetExtractor extends PDSMetExtractor {
         if (!"".equals(objectType)) {
             metadata.addMetadata(Constants.OBJECT_TYPE, objectType);
         }
+        if (references.size() == 0) {
+          log.log(new ToolsLogRecord(ToolsLevel.INFO,
+                  "No associations found.", product));
+        }
         if (!"".equals(objectType)) {
             String xpath = "";
             try {
                 xpath = Constants.IDENTIFICATION_AREA_XPATH + "/*";
-                NodeList list = extractor.getNodesFromDoc(xpath);
-                for (int i = 0; i < list.getLength(); i++) {
-                    Node node = list.item(i);
-                    if (!metadata.containsKey(node.getLocalName())) {
-                        metadata.addMetadata(node.getNodeName(),
-                            node.getTextContent());
+                List<TinyElementImpl> list = extractor.getNodesFromDoc(xpath);
+                for (int i = 0; i < list.size(); i++) {
+                    TinyElementImpl node = list.get(i);
+                    if (!metadata.containsKey(node.getLocalPart())) {
+                        metadata.addMetadata(node.getDisplayName(),
+                            node.getStringValue());
                     }
                 }
-            } catch (XPathExpressionException xe) {
+            } catch (Exception xe) {
                 throw new MetExtractionException("Bad XPath Expression: "
                         + xpath);
             }
         }
         List<ReferenceEntry> refEntries = new ArrayList<ReferenceEntry>();
         try {
+            refEntries.addAll(getReferences(references, product));
+        } catch (Exception e) {
+            throw new MetExtractionException(e.getMessage());
+        }
+        try {
             InventoryTableReader reader = new InventoryTableReader(product);
             for (InventoryEntry entry = reader.getNext(); entry != null;) {
                 ReferenceEntry re = new ReferenceEntry();
+                re.setLineNumber(reader.getLineNumber());
+                re.setFile(reader.getDataFile());
                 String identifier = entry.getLidvid();
-                //Check for a LID or LIDVID
-                if (identifier.indexOf("::") != -1) {
-                    re.setLogicalID(identifier.split("::")[0]);
-                    re.setVersion(identifier.split("::")[1]);
-                } else {
-                    re.setLogicalID(identifier);
+                if (!identifier.equals("")) {
+                  //Check for a LID or LIDVID
+                  if (identifier.indexOf("::") != -1) {
+                      re.setLogicalID(identifier.split("::")[0]);
+                      re.setVersion(identifier.split("::")[1]);
+                  } else {
+                      re.setLogicalID(identifier);
+                  }
                 }
                 re.setAssociationType(associationType);
                 refEntries.add(re);
                 entry = reader.getNext();
              }
+            if (refEntries.size() == 0) {
+                log.log(new ToolsLogRecord(ToolsLevel.INFO,
+                      "No associations found.", reader.getDataFile()));
+            } else {
+                metadata.addMetadata(Constants.REFERENCES, refEntries);
+            }
         } catch (InventoryReaderException ire) {
             throw new MetExtractionException(ire.getMessage());
         }
-        if (refEntries.size() == 0) {
-            log.log(new ToolsLogRecord(ToolsLevel.INFO,
-                    "No associations found.", product));
-        } else {
-            metadata.addMetadata(Constants.REFERENCES, refEntries);
-        }
-
         return metadata;
     }
 }

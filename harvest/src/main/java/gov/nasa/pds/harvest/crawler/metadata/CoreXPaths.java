@@ -35,8 +35,7 @@ public class CoreXPaths implements PDSCoreMetKeys {
         map.put(OBJECT_TYPE, IDENTIFICATION_AREA_XPATH + "/"
                 + OBJECT_TYPE);
         map.put(TITLE, IDENTIFICATION_AREA_XPATH + "/" + TITLE);
-        map.put(REFERENCES, "//*[ends-with(name(),'Member_Entry')] | "
-                + "//*[ends-with(name(),'Reference_Entry')] | "
+        map.put(REFERENCES, "//*[ends-with(name(),'Reference_Entry')] | "
                 + "//Reference_Entry_Generic");
     }
 }

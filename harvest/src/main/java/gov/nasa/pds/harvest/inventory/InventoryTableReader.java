@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.LineNumberReader;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -43,10 +44,13 @@ public class InventoryTableReader implements InventoryReader {
     private int checksumFieldLocation;
 
     /** Reads the external data file of the Inventory file. */
-    private BufferedReader reader;
+    private LineNumberReader reader;
 
     /** The directory path of the inventory file. */
     private String parentDirectory;
+
+    /** The data file being read. */
+    private File dataFile;
 
     /**
      * Constructor.
@@ -61,17 +65,18 @@ public class InventoryTableReader implements InventoryReader {
         filenameFieldLocation = 0;
         checksumFieldLocation = 0;
         lidvidFieldLocation = 0;
+        dataFile = null;
         parentDirectory = file.getParent();
         XMLExtractor extractor = new XMLExtractor();
         try {
             extractor.parse(file);
-            File dataFile = new File(FilenameUtils.separatorsToSystem(
+            dataFile = new File(FilenameUtils.separatorsToSystem(
                     extractor.getValueFromDoc(
                             Constants.DATA_FILE_XPATH)));
             if (!dataFile.isAbsolute()) {
                 dataFile = new File(file.getParent(), dataFile.toString());
             }
-            reader = new BufferedReader(new FileReader(dataFile));
+            reader = new LineNumberReader(new FileReader(dataFile));
             filenameFieldLocation = Integer.parseInt(
                     extractor.getValueFromDoc(
                             Constants.FILE_SPEC_FIELD_NUM_XPATH));
@@ -94,6 +99,24 @@ public class InventoryTableReader implements InventoryReader {
     public InventoryTableReader(String file)
     throws InventoryReaderException {
         this(new File(file));
+    }
+
+    /**
+     * Gets the data file that is being read.
+     *
+     * @return the data file.
+     */
+    public File getDataFile() {
+        return dataFile;
+    }
+
+    /**
+     * Gets the line number that was just read.
+     *
+     * @return the line number.
+     */
+    public int getLineNumber() {
+        return reader.getLineNumber();
     }
 
     /**

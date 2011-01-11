@@ -19,17 +19,12 @@ import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.inventory.ReferenceEntry;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
-import gov.nasa.pds.harvest.util.XMLExtractor;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.xml.xpath.XPathExpressionException;
-
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import net.sf.saxon.tinytree.TinyElementImpl;
 
 /**
  * Class that extracts metadata from a PDS Bundle file.
@@ -65,9 +60,7 @@ public class PDSBundleMetExtractor extends PDSMetExtractor {
         String logicalID = "";
         String version = "";
         String title = "";
-        NodeList references = null;
-        XMLExtractor extractor = new XMLExtractor();
-
+        List<TinyElementImpl> references = null;
         try {
             extractor.parse(product);
         } catch (Exception e) {
@@ -85,7 +78,7 @@ public class PDSBundleMetExtractor extends PDSMetExtractor {
                     Constants.coreXpathsMap.get(Constants.TITLE));
             references = extractor.getNodesFromDoc(
                     Constants.coreXpathsMap.get(Constants.REFERENCES));
-        } catch (XPathExpressionException x) {
+        } catch (Exception x) {
             //TODO: getMessage() doesn't always return a message
             throw new MetExtractionException(x.getMessage());
         }
@@ -101,7 +94,7 @@ public class PDSBundleMetExtractor extends PDSMetExtractor {
         if (!"".equals(objectType)) {
             metadata.addMetadata(Constants.OBJECT_TYPE, objectType);
         }
-        if (references.getLength() == 0) {
+        if (references.size() == 0) {
             log.log(new ToolsLogRecord(ToolsLevel.INFO,
                     "No associations found.", product));
         }
@@ -109,54 +102,26 @@ public class PDSBundleMetExtractor extends PDSMetExtractor {
             String xpath = "";
             try {
                 xpath = Constants.IDENTIFICATION_AREA_XPATH + "/*";
-                NodeList list = extractor.getNodesFromDoc(xpath);
-                for (int i = 0; i < list.getLength(); i++) {
-                    Node node = list.item(i);
-                    if (!metadata.containsKey(node.getLocalName())) {
-                        metadata.addMetadata(node.getNodeName(),
-                            node.getTextContent());
+                List<TinyElementImpl> list = extractor.getNodesFromDoc(xpath);
+                for (int i = 0; i < list.size(); i++) {
+                    TinyElementImpl node = list.get(i);
+                    if (!metadata.containsKey(node.getLocalPart())) {
+                        metadata.addMetadata(node.getDisplayName(),
+                            node.getStringValue());
                     }
                 }
-            } catch (XPathExpressionException xe) {
+            } catch (Exception xe) {
                 throw new MetExtractionException("Bad XPath Expression: "
                         + xpath);
             }
         }
-        List<ReferenceEntry> refEntries = new ArrayList<ReferenceEntry>();
-        String name = "";
-        String value = "";
-        for (int i = 0; i < references.getLength(); i++) {
-            try {
-                NodeList children = extractor.getNodesFromItem("*",
-                        references.item(i));
-                ReferenceEntry re = new ReferenceEntry();
-                for (int j = 0; j < children.getLength(); j++) {
-                    name = children.item(j).getLocalName();
-                    value = children.item(j).getTextContent();
-                    if (name.equals("lidvid_reference")) {
-                        try {
-                            re.setLogicalID(value.split("::")[0]);
-                            re.setVersion(value.split("::")[1]);
-                        } catch (ArrayIndexOutOfBoundsException ae) {
-                            throw new MetExtractionException(
-                              "Expected a LID-VID reference, but found this: "
-                              + value);
-                        }
-                    } else if (name.equals("lid_reference")) {
-                        re.setLogicalID(value);
-                    } else if (name.equals("reference_association_type")) {
-                        re.setAssociationType(value);
-                    } else if (name.equals("referenced_object_type")) {
-                        re.setObjectType(value);
-                    }
-                }
-                refEntries.add(re);
-            } catch (Exception e) {
-                throw new MetExtractionException(e.getMessage());
-            }
+        try {
+            List<ReferenceEntry> refEntries = getReferences(references,
+              product);
+            metadata.addMetadata(Constants.REFERENCES, refEntries);
+        } catch (Exception e) {
+            throw new MetExtractionException(e.getMessage());
         }
-        metadata.addMetadata(Constants.REFERENCES, refEntries);
-
         return metadata;
     }
 }

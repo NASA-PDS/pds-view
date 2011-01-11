@@ -13,6 +13,8 @@
 // $Id$
 package gov.nasa.pds.harvest.inventory;
 
+import java.io.File;
+
 /**
  * Class that holds metadata of an association.
  *
@@ -35,6 +37,12 @@ public class ReferenceEntry {
     /** Flag to indicate whether the association has a LID-VID reference. */
     private boolean hasVersion;
 
+    /** The file associated with this entry */
+    private File file;
+
+    /** The location of this association in the file */
+    private int lineNumber;
+
     /**
      * Constructor.
      *
@@ -44,6 +52,8 @@ public class ReferenceEntry {
         version = null;
         associationType = null;
         objectType = null;
+        lineNumber = -1;
+        file = null;
 
         hasVersion = false;
     }
@@ -130,5 +140,41 @@ public class ReferenceEntry {
      */
     public void setObjectType(String type) {
         objectType = type;
+    }
+
+    /**
+     * Sets the file associated with the reference entry.
+     *
+     * @param file The file.
+     */
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    /**
+     * Gets the file.
+     *
+     * @return The file.
+     */
+    public File getFile() {
+        return file;
+    }
+
+    /**
+     * Sets the line number associated with the reference entry.
+     *
+     * @param num A line number.
+     */
+    public void setLineNumber(int num) {
+        lineNumber = num;
+    }
+
+    /**
+     * Gets the line number.
+     *
+     * @return The line number.
+     */
+    public int getLineNumber() {
+        return lineNumber;
     }
 }

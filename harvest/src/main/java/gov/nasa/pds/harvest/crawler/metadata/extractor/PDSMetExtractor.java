@@ -21,6 +21,9 @@ import java.util.logging.Logger;
 
 import javax.xml.xpath.XPathExpressionException;
 
+import net.sf.saxon.instruct.LocationMap;
+import net.sf.saxon.tinytree.TinyElementImpl;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -48,6 +51,9 @@ public class PDSMetExtractor implements MetExtractor {
     /** A metadata extraction configuration. */
     protected PDSMetExtractorConfig config;
 
+    /** An XMLExtractor to get the metadata. */
+    protected XMLExtractor extractor;
+
     /**
      * Default constructor.
      *
@@ -56,6 +62,7 @@ public class PDSMetExtractor implements MetExtractor {
      */
     public PDSMetExtractor(PDSMetExtractorConfig config) {
         this.config = config;
+        extractor = new XMLExtractor();
     }
 
     /**
@@ -75,8 +82,7 @@ public class PDSMetExtractor implements MetExtractor {
         String logicalID = "";
         String version = "";
         String title = "";
-        NodeList references = null;
-        XMLExtractor extractor = new XMLExtractor();
+        List<TinyElementImpl> references = null;
         try {
             extractor.parse(product);
         } catch (Exception e) {
@@ -94,7 +100,7 @@ public class PDSMetExtractor implements MetExtractor {
                     Constants.coreXpathsMap.get(Constants.TITLE));
             references = extractor.getNodesFromDoc(
                     Constants.coreXpathsMap.get(Constants.REFERENCES));
-        } catch (XPathExpressionException x) {
+        } catch (Exception x) {
             //TODO: getMessage() doesn't always return a message
             throw new MetExtractionException(x.getMessage());
         }
@@ -110,7 +116,7 @@ public class PDSMetExtractor implements MetExtractor {
         if (!"".equals(objectType)) {
             metadata.addMetadata(Constants.OBJECT_TYPE, objectType);
         }
-        if (references.getLength() == 0) {
+        if (references.size() == 0) {
             log.log(new ToolsLogRecord(ToolsLevel.INFO,
                     "No associations found.", product));
         }
@@ -119,53 +125,77 @@ public class PDSMetExtractor implements MetExtractor {
             metXPaths.addAll(config.getMetXPaths(objectType));
             for (String xpath : metXPaths) {
                 try {
-                    NodeList list = extractor.getNodesFromDoc(xpath);
-                    for (int i = 0; i < list.getLength(); i++) {
-                        metadata.addMetadata(list.item(i).getNodeName(),
+                    List<TinyElementImpl> list =
+                        extractor.getNodesFromDoc(xpath);
+                    for (int i = 0; i < list.size(); i++) {
+                        metadata.addMetadata(list.get(i).getDisplayName(),
                                 extractor.getValuesFromDoc(xpath));
                     }
-                } catch (XPathExpressionException xe) {
+                } catch (Exception xe) {
                     throw new MetExtractionException("Bad XPath Expression: "
                             + xpath);
                 }
             }
         }
+        try {
+            List<ReferenceEntry> refEntries = getReferences(references,
+                product);
+            metadata.addMetadata(Constants.REFERENCES, refEntries);
+        } catch (Exception e) {
+            throw new MetExtractionException(e.getMessage());
+        }
+        return metadata;
+    }
+
+    /**
+     * Extracts the metadata found in an association entry.
+     *
+     * @param references A list of association entries.
+     * @param product The product.
+     *
+     * @return A list of ReferenceEntry objects, which holds the association
+     * metadata.
+     *
+     * @throws XPathExpressionException If there was an invalid XPath
+     * expression.
+     * @throws MetExtractionException
+     */
+    protected List<ReferenceEntry> getReferences(
+        List<TinyElementImpl> references, File product)
+    throws XPathExpressionException, MetExtractionException {
         List<ReferenceEntry> refEntries = new ArrayList<ReferenceEntry>();
         String name = "";
         String value = "";
-        for (int i = 0; i < references.getLength(); i++) {
-            try {
-                NodeList children = extractor.getNodesFromItem("*",
-                        references.item(i));
-                ReferenceEntry re = new ReferenceEntry();
-                for (int j = 0; j < children.getLength(); j++) {
-                    name = children.item(j).getLocalName();
-                    value = children.item(j).getTextContent();
-                    if (name.equals("lidvid_reference")) {
-                        try {
-                            re.setLogicalID(value.split("::")[0]);
-                            re.setVersion(value.split("::")[1]);
-                        } catch (ArrayIndexOutOfBoundsException ae) {
-                            throw new MetExtractionException(
-                              "Expected a LID-VID reference, but found this: "
-                              + value);
-                        }
-                    } else if (name.equals("lid_reference")) {
-                        re.setLogicalID(value);
-                    } else if (name.equals("reference_association_type")) {
-                        re.setAssociationType(value);
-                    } else if (name.equals("referenced_object_type")) {
-                        re.setObjectType(value);
+        for (TinyElementImpl reference : references) {
+            List<TinyElementImpl> children = extractor.getNodesFromItem("*",
+                reference);
+            ReferenceEntry re = new ReferenceEntry();
+            re.setFile(product);
+            for (TinyElementImpl child : children) {
+                re.setLineNumber(child.getLineNumber());
+                name = child.getLocalPart();
+                value = child.getStringValue();
+                if (name.equals("lidvid_reference")) {
+                    try {
+                        re.setLogicalID(value.split("::")[0]);
+                        re.setVersion(value.split("::")[1]);
+                    } catch (ArrayIndexOutOfBoundsException ae) {
+                      log.log(new ToolsLogRecord(ToolsLevel.SEVERE, "Expected "
+                          + "a LID-VID reference, but found this: " + value,
+                          product.toString(),
+                          child.getLineNumber()));
                     }
-                }
-                refEntries.add(re);
-            } catch (Exception e) {
-                throw new MetExtractionException(e.getMessage());
+               } else if (name.equals("lid_reference")) {
+                   re.setLogicalID(value);
+               } else if (name.equals("reference_association_type")) {
+                   re.setAssociationType(value);
+               } else if (name.equals("referenced_object_type")) {
+                   re.setObjectType(value);
+               }
             }
+            refEntries.add(re);
         }
-        metadata.addMetadata(Constants.REFERENCES, refEntries);
-
-        return metadata;
+        return refEntries;
     }
 
     /**

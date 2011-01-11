@@ -17,8 +17,11 @@ import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.util.XMLExtractor;
 
 import java.io.File;
+import java.util.List;
 
 import javax.xml.xpath.XPathExpressionException;
+
+import net.sf.saxon.tinytree.TinyElementImpl;
 
 import org.apache.commons.io.FilenameUtils;
 import org.w3c.dom.Node;
@@ -39,7 +42,7 @@ public class InventoryXMLReader implements InventoryReader {
     private int index;
 
     /** A list of nodes containing the inventory entries. */
-    private NodeList memberEntries;
+    private List<TinyElementImpl> memberEntries;
 
     /** The XML Extractor */
     private XMLExtractor extractor;
@@ -79,11 +82,11 @@ public class InventoryXMLReader implements InventoryReader {
      *
      */
     public InventoryEntry getNext() throws InventoryReaderException {
-        if(index >= memberEntries.getLength()) {
+        if(index >= memberEntries.size()) {
             return null;
         }
 
-        Node entry = memberEntries.item(index++);
+        TinyElementImpl entry = memberEntries.get(index++);
         File file = null;
         String checksum = null;
         String lidvid = null;

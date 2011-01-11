@@ -16,32 +16,28 @@ package gov.nasa.pds.harvest.util;
 import gov.nasa.pds.harvest.constants.Constants;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
+import net.sf.saxon.Configuration;
+import net.sf.saxon.event.ParseOptions;
+import net.sf.saxon.om.DocumentInfo;
+import net.sf.saxon.tinytree.TinyElementImpl;
+import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.xpath.XPathEvaluator;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import org.xml.sax.InputSource;
 
 /**
  * Class to extract data from an XML file.
 */
 public class XMLExtractor {
     /** The DOM source. */
-    private DOMSource xml = null;
+    private DocumentInfo xml = null;
 
     /** The XPath evaluator object. */
     private XPathEvaluator xpath = null;
@@ -70,24 +66,16 @@ public class XMLExtractor {
      *
      * @param src An XML file.
      *
-     * @throws SAXException If the given file had errors.
-     * @throws IOException If the given file could not be read.
-     * @throws ParserConfigurationException If an error occurred while parsing.
+     * @throws XPathException If an error occurred while parsing the XML file.
      */
-    public void parse(File src) throws SAXException, IOException,
-    ParserConfigurationException {
-        FileInputStream stream = null;
-        try {
-            stream = new FileInputStream(src);
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            dbf.setNamespaceAware(true);
-            DocumentBuilder builder = dbf.newDocumentBuilder();
-            builder.setErrorHandler(new XMLErrorHandler());
-            Node doc = builder.parse(stream);
-            xml = new DOMSource(doc);
-        } finally {
-            stream.close();
-        }
+    public void parse(File src) throws XPathException {
+      String uri = src.toURI().toString();
+      Configuration configuration = xpath.getConfiguration();
+      configuration.setLineNumbering(true);
+      ParseOptions options = new ParseOptions();
+      options.setErrorListener(new XMLErrorListener());
+      xml = configuration.buildDocument(new SAXSource(new InputSource(uri)),
+          options);
     }
 
     /**
@@ -95,12 +83,9 @@ public class XMLExtractor {
      *
      * @param src An XML file.
      *
-     * @throws SAXException If the given file had errors.
-     * @throws IOException If the given file could not be read.
-     * @throws ParserConfigurationException If an error occurred while parsing.
+     * @throws XPathException If an error occurred while parsing the XML file.
      */
-    public void parse(String src) throws SAXException, IOException,
-    ParserConfigurationException {
+    public void parse(String src) throws XPathException {
         parse(new File(src));
     }
 
@@ -133,10 +118,11 @@ public class XMLExtractor {
      * @return The resulting value or null if nothing was found.
      *
      * @throws XPathExpressionException If the given expression was malformed.
+     * @throws XPathException
      */
     public String getValueFromDoc(String expression)
-    throws XPathExpressionException {
-        return getValueFromItem(expression, xml);
+    throws XPathExpressionException, XPathException {
+        return getValueFromItem(expression, xpath.setSource(xml));
     }
 
     /**
@@ -164,7 +150,7 @@ public class XMLExtractor {
      *
      * @throws XPathExpressionException If the given expression was malformed.
      */
-    public Node getNodeFromDoc(String expression)
+    public TinyElementImpl getNodeFromDoc(String expression)
     throws XPathExpressionException {
         return getNodeFromItem(expression, xml);
     }
@@ -180,9 +166,10 @@ public class XMLExtractor {
      *
      * @throws XPathExpressionException If the given expression was malformed.
      */
-    public Node getNodeFromItem(String expression, Object item)
+    public TinyElementImpl getNodeFromItem(String expression, Object item)
     throws XPathExpressionException {
-        return (Node) xpath.evaluate(expression, item, XPathConstants.NODE);
+        return (TinyElementImpl) xpath.evaluate(expression, item,
+            XPathConstants.NODE);
     }
 
     /**
@@ -213,12 +200,12 @@ public class XMLExtractor {
     public List<String> getValuesFromItem(String expression, Object item)
     throws XPathExpressionException {
         List<String> vals = new ArrayList<String>();
-        NodeList nList = (NodeList) xpath.evaluate(expression, item,
-                XPathConstants.NODESET);
+        List<TinyElementImpl> nList = (List<TinyElementImpl>) xpath.evaluate(
+            expression, item, XPathConstants.NODESET);
         if (nList != null) {
-            for (int i = 0, sz = nList.getLength(); i < sz; i++) {
-                Node aNode = nList.item(i);
-                vals.add(aNode.getTextContent());
+            for (int i = 0, sz = nList.size(); i < sz; i++) {
+                TinyElementImpl aNode = nList.get(i);
+                vals.add(aNode.getStringValue());
             }
         }
         return vals;
@@ -228,10 +215,10 @@ public class XMLExtractor {
      * Gets the document node of the XML document.
      *
      * @return The Document Node.
+     * @throws XPathException
      */
-    public Node getDocNode() {
-        Document doc = (Document) xml.getNode();
-        return doc.getDocumentElement();
+    public DocumentInfo getDocNode() throws XPathException {
+        return xpath.setSource(xml).getDocumentRoot();
     }
 
     /**
@@ -243,7 +230,7 @@ public class XMLExtractor {
      *
      * @throws XPathExpressionException If the given expression was malformed.
      */
-    public NodeList getNodesFromDoc(String expression)
+    public List<TinyElementImpl> getNodesFromDoc(String expression)
     throws XPathExpressionException {
         return getNodesFromItem(expression, xml);
     }
@@ -259,9 +246,9 @@ public class XMLExtractor {
      *
      * @throws XPathExpressionException If the given expression was malformed.
      */
-    public NodeList getNodesFromItem(String expression, Object item)
+    public List<TinyElementImpl> getNodesFromItem(String expression, Object item)
     throws XPathExpressionException {
-        return (NodeList) xpath.evaluate(
+        return (List<TinyElementImpl>) xpath.evaluate(
                 expression, item, XPathConstants.NODESET);
     }
 }

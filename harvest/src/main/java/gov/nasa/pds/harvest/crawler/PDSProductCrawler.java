@@ -19,6 +19,7 @@ import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerActionRepo;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.jpl.oodt.cas.metadata.exceptions.MetExtractionException;
 import gov.nasa.pds.harvest.constants.Constants;
+import gov.nasa.pds.harvest.crawler.actions.AssociationCheckerAction;
 import gov.nasa.pds.harvest.crawler.actions.LogMissingReqMetadataAction;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSBundleMetExtractor;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSCollectionMetExtractor;
@@ -38,6 +39,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.xml.xpath.XPathExpressionException;
+
+import net.sf.saxon.trans.XPathException;
 
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -84,6 +87,7 @@ public class PDSProductCrawler extends ProductCrawler {
         FILE_FILTER = new WildcardOSFilter("*");
         crawlerActions.add(new LogMissingReqMetadataAction(
                 getRequiredMetadata()));
+        crawlerActions.add(new AssociationCheckerAction());
     }
 
     /**
@@ -229,8 +233,8 @@ public class PDSProductCrawler extends ProductCrawler {
         XMLExtractor extractor = new XMLExtractor();
         try {
             extractor.parse(product);
-        } catch (SAXException se) {
-            SAXParseException spe = (SAXParseException) se.getException();
+        } catch (XPathException xe) {
+            SAXParseException spe = (SAXParseException) xe.getException();
             log.log(new ToolsLogRecord(ToolsLevel.SEVERE, spe.getMessage(),
                     product.toString(), spe.getLineNumber()));
             passFlag = false;
@@ -262,7 +266,8 @@ public class PDSProductCrawler extends ProductCrawler {
                             " found in the policy file.", product));
                     passFlag = false;
                 }
-            } catch (XPathExpressionException e) {
+            } catch (Exception e) {
+              e.printStackTrace();
                 log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
                         "Problem getting '" + Constants.OBJECT_TYPE + "': "
                         + e.getMessage(), product));
