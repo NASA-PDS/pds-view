@@ -113,6 +113,6 @@ public class ValidateProductAction extends CrawlerAction {
             level = Level.INFO;
         }
         log.log(new ToolsLogRecord(level, exception.getMessage(),
-                exception.getSource()));
+                exception.getSource(), exception.getLineNumber()));
     }
 }
