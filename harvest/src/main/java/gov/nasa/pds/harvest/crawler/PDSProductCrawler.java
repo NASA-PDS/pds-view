@@ -234,14 +234,16 @@ public class PDSProductCrawler extends ProductCrawler {
         try {
             extractor.parse(product);
         } catch (XPathException xe) {
-            SAXParseException spe = (SAXParseException) xe.getException();
-            log.log(new ToolsLogRecord(ToolsLevel.SEVERE, spe.getMessage(),
-                    product.toString(), spe.getLineNumber()));
-            passFlag = false;
-        } catch (Exception e) {
-            log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
-                    "Parse failure: " + e.getMessage(), product));
-            passFlag = false;
+            if (xe.getException() instanceof SAXParseException) {
+                SAXParseException spe = (SAXParseException) xe.getException();
+                log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+                    spe.getMessage(), product.toString(),
+                    spe.getLineNumber()));
+            } else {
+                log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+                    "Parse failure: " + xe.getMessage(), product));
+           }
+           passFlag = false;
         }
         if (passFlag == false) {
             log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
