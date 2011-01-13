@@ -93,14 +93,6 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-		<configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
 	<configuration>
           <archive>
@@ -191,6 +183,11 @@
     	<groupId>com.google.code.gson</groupId>
     	<artifactId>gson</artifactId>
     	<version>1.6</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.jcraft</groupId>
+    	<artifactId>jsch</artifactId>
+    	<version>0.1.42</version>
     </dependency>
   </dependencies>
 
