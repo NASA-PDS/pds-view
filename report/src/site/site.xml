@@ -45,6 +45,8 @@
       <item name="Report Service Design (pdf)" href="docs/pds2010_report_design.pdf"/>
     </menu>
 
+    <menu ref="modules"/>
+
     <menu ref="reports"/>
   </body>
 </project>
