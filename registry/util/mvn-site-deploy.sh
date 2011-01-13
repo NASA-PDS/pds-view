@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2010, by the California Institute of Technology. 
+# Copyright 2010-2011, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -22,13 +22,10 @@ mvn site
 
 cd registry-core
 maven pdf
-rm velocity.log
 cd ../registry-service
 maven pdf
-rm velocity.log
 cd ../registry-ui
 maven pdf
-rm velocity.log
 
 cd ..
 mvn site:deploy
