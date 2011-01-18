@@ -98,7 +98,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
       <table>
         <tr><th>System Property Name</th><th>Description</th></tr>
         <tr><td>pds.registry</td><td>Specify the URL to the PDS Registry Service. This property is required.</td></tr>
-        <tr><td>pds.security</td><td>Speicfy the URL to the PDS Security Service. If the PDS Registry being pointed to is not secured (i.e. a local instance), then this property can be omitted.</td></tr>
+        <tr><td>pds.security</td><td>Specify the URL to the PDS Security Service. If the PDS Registry being pointed to is not secured (i.e. a local instance), then this property can be omitted.</td></tr>
       </table>
 
       <p>By default, the Harvest shell script and batch file point to the operational releases of the PDS Registry and Security Services. The sections below detail how to modify these scripts to point to another instance of these services.
