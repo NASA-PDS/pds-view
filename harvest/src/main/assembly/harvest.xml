@@ -43,7 +43,6 @@
         <include>Harvest.bat</include>
       </includes>
       <fileMode>755</fileMode>
-      <lineEnding>unix</lineEnding>
     </fileSet>
     <fileSet>
       <directory>target/site</directory>
