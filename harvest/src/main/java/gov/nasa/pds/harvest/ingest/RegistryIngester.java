@@ -169,7 +169,7 @@ public class RegistryIngester implements Ingester {
             + met.getMetadata(Constants.PRODUCT_VERSION);
 
             log.log(new ToolsLogRecord(ToolsLevel.INGEST_SUCCESS,
-                    "Succesfully registered product: " + lidvid, prodFile));
+                    "Successfully registered product: " + lidvid, prodFile));
             log.log(new ToolsLogRecord(ToolsLevel.INFO,
                     "Product has the following guid: " +
                     response.getEntity(String.class), prodFile));
