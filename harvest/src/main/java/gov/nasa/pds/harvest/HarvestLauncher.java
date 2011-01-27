@@ -86,6 +86,15 @@ public class HarvestLauncher {
     /** A log file name. */
     private String logFile;
 
+    /** The wait interval in seconds in between crawls if running
+     *  the tool in continuous mode. */
+    private int waitInterval;
+
+    /** The port number to use for the daemon if running the tool
+     *  in continuous mode.
+     */
+    private int daemonPort;
+
     /**
      * Default constructor.
      *
@@ -97,6 +106,8 @@ public class HarvestLauncher {
         registryURL = null;
         securityURL = null;
         logFile = null;
+        waitInterval = -1;
+        daemonPort = -1;
 
         globalPolicy = this.getClass().getResourceAsStream(
                 "global-policy.xml");
@@ -146,6 +157,18 @@ public class HarvestLauncher {
                 username = o.getValue();
             } else if (o.getOpt().equals(Flag.LOG.getShortName())) {
                 logFile = o.getValue();
+            } else if (o.getOpt().equals(Flag.PORT.getShortName())) {
+                try {
+                    daemonPort = Integer.parseInt(o.getValue());
+                } catch (NumberFormatException n) {
+                    throw new Exception(n.getMessage());
+                }
+            } else if (o.getOpt().equals(Flag.WAIT.getShortName())) {
+                try {
+                    waitInterval = Integer.parseInt(o.getValue());
+                } catch (NumberFormatException n) {
+                    throw new Exception(n.getMessage());
+                }
             }
         }
         if (line.getArgList().size() != 0) {
@@ -268,6 +291,12 @@ public class HarvestLauncher {
             harvester.setSecuredUser(new SecuredUser(username, token));
         }
         harvester.setDoValidation(policy.getValidation().isEnabled());
+        if (daemonPort != -1) {
+            harvester.setDaemonPort(daemonPort);
+        }
+        if (waitInterval != -1) {
+            harvester.setWaitInterval(waitInterval);
+        }
         try {
             for (String bundle : policy.getBundles().getFile()) {
                 harvester.harvest(new Target(bundle, Type.BUNDLE));
@@ -343,7 +372,6 @@ public class HarvestLauncher {
             System.exit(1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            e.printStackTrace();
             System.exit(1);
         }
     }

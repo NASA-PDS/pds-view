@@ -20,6 +20,7 @@ import gov.nasa.pds.harvest.crawler.PDSProductCrawler;
 import gov.nasa.pds.harvest.crawler.actions.AssociationPublisherAction;
 import gov.nasa.pds.harvest.crawler.actions.RegistryUniquenessCheckerAction;
 import gov.nasa.pds.harvest.crawler.actions.ValidateProductAction;
+import gov.nasa.pds.harvest.crawler.daemon.HarvestDaemon;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractorConfig;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.policy.Candidate;
@@ -56,6 +57,16 @@ public class Harvester {
     /** Flag to enable/disable validation */
     private boolean doValidation;
 
+    /** The port number to use for the daemon if running Harvest in continuous
+     *  mode.
+     */
+    private int daemonPort;
+
+    /** The wait interval in seconds in between crawls when running Harvest in
+     *  continuous mode.
+     */
+    private int waitInterval;
+
     /**
      * Constructor.
      *
@@ -71,6 +82,8 @@ public class Harvester {
         this.registryUrl = registryUrl;
         this.ingester = new RegistryIngester();
         this.doValidation = true;
+        this.daemonPort = -1;
+        this.waitInterval = -1;
     }
 
     /**
@@ -91,6 +104,24 @@ public class Harvester {
      */
     public void setDoValidation(boolean value) {
         this.doValidation = value;
+    }
+
+    /**
+     * Sets the daemon port.
+     *
+     * @param port The port number to use.
+     */
+    public void setDaemonPort(int port) {
+        this.daemonPort = port;
+    }
+
+    /**
+     * Sets the wait interval in seconds in between crawls.
+     *
+     * @param interval The wait interval in seconds.
+     */
+    public void setWaitInterval(int interval) {
+        this.waitInterval = interval;
     }
 
     /**
@@ -160,6 +191,11 @@ public class Harvester {
         crawler.setRegistryUrl(registryUrl);
         crawler.setIngester(ingester);
         crawler.addActions(getDefaultCrawlerActions());
-        crawler.crawl(new File(target.getFilename()));
+        if (daemonPort != -1 && waitInterval != -1) {
+            crawler.setProductPath(target.getFilename());
+            new HarvestDaemon(waitInterval, crawler, daemonPort).startCrawling();
+        } else {
+            crawler.crawl(new File(target.getFilename()));
+        }
     }
 }

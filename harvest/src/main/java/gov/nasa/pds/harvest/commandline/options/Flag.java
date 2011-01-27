@@ -37,6 +37,16 @@ public enum Flag {
     USERNAME("u", "username", "name", String.class,
             "Specify a username to login to the PDS security service."),
 
+    /** Flag for the daemon port number to be used if running the tool
+     *  continuously.
+     */
+    PORT("P", "port", "number", int.class, "Specify a port number to use "
+        + "if running the tool in continous mode."),
+
+    /** Flag to specify the wait time in between crawls. */
+    WAIT("w", "wait", "seconds", int.class, "Specify the wait time in "
+        + "seconds in between crawls if running in continuous mode."),
+
     /** Flag to display the version. */
     VERSION("V", "version", "Display application version.");
 
@@ -172,6 +182,8 @@ public enum Flag {
         options.addOption(new ToolsOption(PASSWORD));
         options.addOption(new ToolsOption(USERNAME));
         options.addOption(new ToolsOption(LOG));
+        options.addOption(new ToolsOption(PORT));
+        options.addOption(new ToolsOption(WAIT));
     }
 
     /**

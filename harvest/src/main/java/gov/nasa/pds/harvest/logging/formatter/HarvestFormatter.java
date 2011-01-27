@@ -38,6 +38,7 @@ public class HarvestFormatter extends Formatter {
     private int badFiles;
     private int associationsRegistered;
     private int associationsFailed;
+    private int associationsSkipped;
 
     private StringBuffer config;
     private StringBuffer summary;
@@ -50,6 +51,7 @@ public class HarvestFormatter extends Formatter {
         badFiles = 0;
         associationsRegistered = 0;
         associationsFailed = 0;
+        associationsSkipped = 0;
 
         config = new StringBuffer("PDS Harvest Tool Log" + doubleLineFeed);
         summary = new StringBuffer("Summary:" + doubleLineFeed);
@@ -58,14 +60,16 @@ public class HarvestFormatter extends Formatter {
     public String format(LogRecord record) {
         if (record instanceof ToolsLogRecord) {
             ToolsLogRecord tlr = (ToolsLogRecord) record;
-
             if (tlr.getLevel().intValue() == ToolsLevel.NOTIFICATION.intValue()) {
                 if (tlr.getMessage().equals(Status.DISCOVERY)) {
                     ++discoveredProducts;
+                    return "";
                 } else if (tlr.getMessage().equals(Status.BADFILE)) {
                     ++badFiles;
+                    return "";
+                } else {
+                    return tlr.getMessage() + lineFeed;
                 }
-                return "";
             } else if (tlr.getLevel().intValue() == ToolsLevel.INGEST_SUCCESS
                     .intValue()) {
                 ++productsRegistered;
@@ -80,6 +84,9 @@ public class HarvestFormatter extends Formatter {
                 ++associationsFailed;
             } else if (tlr.getLevel().intValue() == ToolsLevel.SKIP.intValue()) {
                 ++filesSkipped;
+            } else if (tlr.getLevel().intValue()
+                == ToolsLevel.INGEST_ASSOC_SKIP.intValue()) {
+                ++associationsSkipped;
             }
             StringBuffer message = new StringBuffer();
 
@@ -116,7 +123,8 @@ public class HarvestFormatter extends Formatter {
         summary.append(productsRegistered + " of " + discoveredProducts
                 + " candidate products registered." + lineFeed);
         summary.append(associationsRegistered + " of " + totalAssociations
-                + " associations registered." + lineFeed);
+                + " associations registered, " + associationsSkipped
+                + " skipped" + lineFeed);
     }
 
     public String getTail(Handler handler) {

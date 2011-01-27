@@ -20,11 +20,13 @@ import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.jpl.oodt.cas.metadata.exceptions.MetExtractionException;
 import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.crawler.actions.AssociationCheckerAction;
+import gov.nasa.pds.harvest.crawler.actions.AssociationPublisherAction;
 import gov.nasa.pds.harvest.crawler.actions.LogMissingReqMetadataAction;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSBundleMetExtractor;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSCollectionMetExtractor;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractor;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractorConfig;
+import gov.nasa.pds.harvest.crawler.stats.AssociationStats;
 import gov.nasa.pds.harvest.crawler.status.Status;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
@@ -35,14 +37,13 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
-
-import javax.xml.xpath.XPathExpressionException;
 
 import net.sf.saxon.trans.XPathException;
 
-import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -67,6 +68,16 @@ public class PDSProductCrawler extends ProductCrawler {
     /** Holds the product type of the file being processed. */
     private String objectType;
 
+    private boolean inContinuousMode;
+
+    private Map<File, Long> touchedFiles;
+
+    private int numDiscoveredProducts;
+
+    private int numBadFiles;
+
+    private int numFilesSkipped;
+
     /**
      * Constructor.
      *
@@ -77,6 +88,11 @@ public class PDSProductCrawler extends ProductCrawler {
         this.objectType = "";
         this.metExtractorConfig = extractorConfig;
         this.crawlerActions = new ArrayList<CrawlerAction>();
+        inContinuousMode = false;
+        touchedFiles = new HashMap<File, Long>();
+        numDiscoveredProducts = 0;
+        numBadFiles = 0;
+        numFilesSkipped = 0;
 
         String[] reqMetadata = {
                 Constants.PRODUCT_VERSION,
@@ -97,6 +113,28 @@ public class PDSProductCrawler extends ProductCrawler {
      */
     public PDSMetExtractorConfig getMetExtractorConfig() {
         return metExtractorConfig;
+    }
+
+    public void setInContinuousMode(boolean value) {
+        inContinuousMode = value;
+    }
+
+    public int getNumDiscoveredProducts() {
+        return numDiscoveredProducts;
+    }
+
+    public int getNumBadFiles() {
+        return numBadFiles;
+    }
+
+    public int getNumFilesSkipped() {
+        return numFilesSkipped;
+    }
+
+    public void clearCrawlStats() {
+        numDiscoveredProducts = 0;
+        numBadFiles = 0;
+        numFilesSkipped = 0;
     }
 
     /**
@@ -216,6 +254,7 @@ public class PDSProductCrawler extends ProductCrawler {
             return null;
         }
     }
+
     /**
      * Determines whether the supplied file passes the necessary
      * pre-conditions for the file to be registered.
@@ -226,6 +265,18 @@ public class PDSProductCrawler extends ProductCrawler {
      */
     @Override
     protected boolean passesPreconditions(File product) {
+        if (inContinuousMode) {
+            if (touchedFiles.containsKey(product)) {
+                long lastModified = touchedFiles.get(product);
+                if (product.lastModified() == lastModified) {
+                    return false;
+                } else {
+                    touchedFiles.put(product, product.lastModified());
+                }
+            } else {
+                touchedFiles.put(product, product.lastModified());
+            }
+        }
         log.log(new ToolsLogRecord(ToolsLevel.INFO, "Begin processing.",
                 product));
         boolean passFlag = true;
@@ -243,11 +294,13 @@ public class PDSProductCrawler extends ProductCrawler {
                 log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
                     "Parse failure: " + xe.getMessage(), product));
            }
+           ++numBadFiles;
            passFlag = false;
         }
         if (passFlag == false) {
             log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
                     Status.BADFILE, product));
+            ++numBadFiles;
             return false;
         } else  {
             try {
@@ -257,24 +310,27 @@ public class PDSProductCrawler extends ProductCrawler {
                     log.log(new ToolsLogRecord(ToolsLevel.SKIP,
                            "No " + Constants.OBJECT_TYPE + " element found.",
                            product));
+                    ++numFilesSkipped;
                     passFlag = false;
                 } else if (metExtractorConfig.hasObjectType(objectType)) {
                     log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
                             Status.DISCOVERY, product));
+                    ++numDiscoveredProducts;
                     passFlag = true;
                 } else {
                     log.log(new ToolsLogRecord(ToolsLevel.SKIP,
                             "\'" + objectType + "\' is not an object type" +
                             " found in the policy file.", product));
+                    ++numFilesSkipped;
                     passFlag = false;
                 }
             } catch (Exception e) {
-              e.printStackTrace();
                 log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
                         "Problem getting '" + Constants.OBJECT_TYPE + "': "
                         + e.getMessage(), product));
                 log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
                         Status.BADFILE, product));
+                ++numBadFiles;
                 return false;
             }
         }

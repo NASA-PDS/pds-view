@@ -26,12 +26,16 @@ import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerActionPhases;
 import gov.nasa.jpl.oodt.cas.crawl.structs.exceptions.CrawlerActionException;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.pds.harvest.constants.Constants;
+import gov.nasa.pds.harvest.crawler.stats.AssociationStats;
 import gov.nasa.pds.harvest.inventory.ReferenceEntry;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.registry.client.RegistryClient;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.Product;
+import gov.nasa.pds.registry.model.RegistryResponse;
+import gov.nasa.pds.registry.query.AssociationFilter;
+import gov.nasa.pds.registry.query.AssociationQuery;
 
 /**
  * Class to publish associations to the PDS Registry Service upon
@@ -57,6 +61,8 @@ public class AssociationPublisherAction extends CrawlerAction {
     /** A description of the crawler action. */
     private final String DESCRIPTION =
         "Registers the product's associations.";
+
+    private AssociationStats stats;
 
     /**
      * Constructor.
@@ -88,6 +94,15 @@ public class AssociationPublisherAction extends CrawlerAction {
         setPhases(Arrays.asList(phases));
         setId(ID);
         setDescription(DESCRIPTION);
+        stats = new AssociationStats();
+    }
+
+    /**
+     *
+     * @return the association statistics.
+     */
+    public AssociationStats getAssociationStats() {
+        return stats;
     }
 
     /**
@@ -105,32 +120,82 @@ public class AssociationPublisherAction extends CrawlerAction {
     public boolean performAction(File product, Metadata productMetadata)
             throws CrawlerActionException {
         boolean passFlag = true;
+        int numRegistered = 0;
+        int numNotRegistered = 0;
+        int numSkipped = 0;
 
         List<Association> associations = createAssociations(
                 product, productMetadata);
         for (Association association : associations) {
-            ClientResponse response = registryClient.publishAssociation(
+            String lidvid = association.getTargetLid();
+            if (association.getTargetVersionId() != null) {
+                lidvid += "::" + association.getTargetVersionId();
+            }
+            if (!hasAssociation(association)) {
+                ClientResponse response = registryClient.publishAssociation(
                     user, association);
-            if (response.getStatus()
+                if (response.getStatus()
                     == ClientResponse.Status.CREATED.getStatusCode()) {
-                String lidvid = association.getTargetLid();
-                if (association.getTargetVersionId() != null) {
-                        lidvid += "::" + association.getTargetVersionId();
-                }
-                log.log(new ToolsLogRecord(ToolsLevel.INGEST_ASSOC_SUCCESS,
+                    log.log(new ToolsLogRecord(
+                        ToolsLevel.INGEST_ASSOC_SUCCESS,
                         "Successfully registered association to " + lidvid,
                         product));
-            } else {
-                String lidvid = association.getTargetLid() + "::"
-                   + association.getTargetVersionId();
-                log.log(new ToolsLogRecord(ToolsLevel.INGEST_ASSOC_FAIL,
+                    ++numRegistered;
+                } else {
+                  log.log(new ToolsLogRecord(ToolsLevel.INGEST_ASSOC_FAIL,
                         "Problem registering association to " + lidvid
                         + ". HTTP error code: " + response.getStatus(),
                         product));
-                passFlag = false;
+                  ++numNotRegistered;
+                  passFlag = false;
+                }
+            } else {
+                log.log(new ToolsLogRecord(ToolsLevel.INGEST_ASSOC_SKIP,
+                    "Association to " + lidvid + ", with \'"
+                    + association.getAssociationType()
+                    + "\' association type, already exists in the "
+                    + "registry.", product));
+                ++numSkipped;
             }
         }
+        stats.addNumRegistered(numRegistered);
+        stats.addNumNotRegistered(numNotRegistered);
+        stats.addNumSkipped(numSkipped);
         return passFlag;
+    }
+
+    /**
+     * Determines if an association already exists in the registry.
+     *
+     * @param association The association.
+     *
+     * @return true if the association exists.
+     */
+    private boolean hasAssociation(Association association) {
+        AssociationFilter.Builder fBuilder = new AssociationFilter.Builder();
+        fBuilder.sourceLid(association.getSourceLid());
+        fBuilder.sourceVersionId(association.getSourceVersionId());
+        fBuilder.targetLid(association.getTargetLid());
+        fBuilder.targetVersionId(association.getTargetVersionId());
+        fBuilder.associationType(association.getAssociationType());
+
+        AssociationQuery.Builder qBuilder = new AssociationQuery.Builder();
+        qBuilder.filter(fBuilder.build());
+
+        ClientResponse response = registryClient.getAssociations(
+            qBuilder.build(), 1, 10);
+        if (response.getStatus()
+            == ClientResponse.Status.OK.getStatusCode()) {
+            RegistryResponse registryResponse = response.getEntity(
+                RegistryResponse.class);
+            if (registryResponse.getNumFound() == 0) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -174,7 +239,9 @@ public class AssociationPublisherAction extends CrawlerAction {
                         log.log(new ToolsLogRecord(ToolsLevel.WARNING,
                                 "No version found in label or registry for"
                                 + " association to " + re.getLogicalID()
-                                + ".", product));
+                                + ". Version will be set to 1.0.", product));
+                        //TODO: Is this correct behavior?
+                        association.setTargetVersionId("1.0");
                     }
                 }
                 associations.add(association);
