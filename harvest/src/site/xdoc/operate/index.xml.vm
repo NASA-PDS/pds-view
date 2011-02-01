@@ -156,6 +156,8 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
           <tr><td>-u, --username</td><td>Specify a username for authentication with the PDS Security Service.</td></tr>
           <tr><td>-p, --password</td><td>Specify a password associated with the username.</td></tr>
           <tr><td>-l, --log-file</td><td>Specify a log file name. Default is standard out.</td></tr>
+          <tr><td>-P, --port</td><td>Specify a port number to use if running the tool in continuous mode. See the <a href="#Continuous_Mode">Continuous Mode</a> section for more details.</td></tr>
+          <tr><td>-w, --wait</td><td>Specify the time, in seconds, to wait in between the crawls. This option is used only when running the tool in continuous mode.</td></tr>
           <tr><td>-V, --version</td><td>Display the release number and copyright information.</td></tr>
           <tr><td>-h, --help</td><td>Display Harvest usage.</td></tr>
         </table>
@@ -168,7 +170,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         <p>The Harvest Tool operates with a policy file to register product metadata. Details on how to create this policy file can be found in the <a href="#Harvest Policy File">Harvest Policy File</a> section.
         </p>
 
-        <p>The following command demonstrates how to run the Harvest Tool against a policy file, <i>policy.xml</i>, using a valid username, <i>pds</i>, and password, <i>mypwd</i>, with the output going to standard out:
+        <p>The following command demonstrates how to run the Harvest Tool against a policy file, <i>policy.xml</i>, using a valid username and password, with the output going to standard out:
         </p>
 
         <source>
@@ -203,6 +205,9 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
       &lt;path&gt;/home/user/pds4/geo/product_files&lt;/path&gt;
       &lt;filePattern&gt;*.xml&lt;/filePattern&gt;
    &lt;/directories&gt;
+   &lt;validation&gt;
+      &lt;enabled&gt;true&lt;/enabled&gt;
+   &lt;/validation&gt;
    &lt;candidates&gt;
       &lt;namespace prefix="geo" uri="http://pds.nasa.gov/schema/pds4/geo"/&gt;
       &lt;productMetadata objectType="character_table"&gt;
@@ -220,7 +225,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
 &lt;/policy&gt;
         </source>
 
-        <p>The policy file is made up of the following complex type elements: <i>bundles</i>, <i>collections</i>, <i>directories</i>, <i>candidates</i>, and <i>productMetadata</i>.
+        <p>The policy file is made up of the following complex type elements: <i>bundles</i>, <i>collections</i>, <i>directories</i>, <i>validation</i>, <i>candidates</i>, and <i>productMetadata</i>.
         </p>
 
         <b><i>bundles</i></b>
@@ -264,6 +269,19 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </table>
 
         <p>In the example above, the Harvest tool will crawl the directory location, <i>/home/user/pds4/geo/product_files</i>, looking for files that have a <i>.xml</i> file extension. The default is to touch all files in the directory if the <i>filePattern</i> element is omitted from the policy file.
+        </p>
+
+        <p><b><i>validation</i></b></p>
+
+        <p>Specify this element to tell the Harvest Tool to validate a data product before registering it. If the data product does not pass the validation step, the data product will not be registered. The following table describes the elements that are allowed:
+        </p>
+
+        <table>
+          <tr><th>Element Name</th><th>Description</th></tr>
+          <tr><td>enabled</td><td>Specify a boolean value to tell the Harvest Tool whether or not to validate a data product.</td></tr>
+        </table>
+
+        <p>By default, if the <i>validation</i> element is not specified in the policy file, validation is turned on.
         </p>
 
         <p><b><i>candidates</i></b></p>
@@ -338,6 +356,66 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </p>
       </subsection>
 
+      <subsection name="Continuous Mode">
+        <p>The Harvest Tool can be run in continuous mode through an XML-RPC accessible web service called a daemon. Under this scenario, the Harvest Tool wakes up periodically, inspects a target directory or directories, and registers the latest products. This section details how to set this up.
+        </p>
+
+        <p>In order to run the tool through the daemon, the command-line option flags <i>-P</i> and <i>-w</i> need to be used. This tells the Harvest Tool the port number to use and how long to sleep in between crawls, respectively. When the daemon is running, it can be accessed through the following url: <i>http://localhost:{port number}/xmlrpc</i>. The following command demonstrates launching the Harvest Tool through the daemon on port <i>9000</i>, where it will wait 120 seconds in between crawls:
+        </p>
+
+        <source>
+% Harvest policy.xml -u {username} -p {password} -l log.txt -P 9000 -w 120
+        </source>
+
+        <p>After running the above command, the daemon will be accessible at <i>http://localhost:9000/xmlrpc</i>.
+        </p>
+
+        <p>In order to stop the daemon from running, a daemon controller is needed. The <i>bin/</i> directory of the Harvest Tool release package contains a shell script, <i>HarvestController</i>, and a batch file, <i>HarvestController.bat</i>, which are used to gracefully shut down the daemon service on a UNIX-like and Windows system, respectively. In addition, they can provide a few additional statistics about the crawling.
+        </p>
+
+        <p>The following table describes the command-line options available for the HarvestController:
+        </p>
+
+        <table>
+          <tr><th>Command-Line Option</th><th>Description</th></tr>
+          <tr><td>--url</td><td>Specify the URL of the daemon service running the Harvest Tool.</td></tr>
+          <tr><td>--operation</td><td>Specify a single operation to perform. List of valid operation names is found in the next table.</td></tr>
+        </table>
+
+        <p>The following table describes the operation names available to pass into the <i>--operation</i> command-line flag option:
+        </p>
+
+        <table>
+          <tr><th>Operation Name</th><th>Description</th></tr>
+          <tr><td>--stop</td><td>Specify this operation to shut down the daemon service.</td></tr>
+          <tr><td>--isRunning</td><td>Gives an indication whether the daemon service is running.</td></tr>
+          <tr><td>--getNumCrawls</td><td>Returns the number of crawls that have occurred.</td></tr>
+          <tr><td>--getWaitInterval</td><td>Returns the time, in seconds, that the crawler has to wait in between crawls.</td></tr>
+          <tr><td>--getMilisCrawling</td><td>Returns the amount of milliseconds spent crawling.</td></tr>
+          <tr><td>--getAverageCrawlTime</td><td>Returns the average amount of time, in milliseconds, spent during each crawl.</td></tr>
+        </table>
+
+        <p>The following examples demonstrate how to run the HarvestController using a few of the different operations. For demonstration purposes, assume that the daemon service is located at the following url: <i>http://localhost:9000/xmlrpc</i>.
+        </p>
+
+        <p><b><i>Shutdown the daemon service</i></b></p>
+
+        <p>The following command demonstrates shutting down the daemon service:
+        </p>
+
+        <source>
+% HarvestController --url http://localhost:9000/xmlrpc --operation --stop
+        </source>
+
+        <p><b><i>Find Out The Status Of The Daemon Service</i></b></p>
+
+        <p>The following command is used to find out if the daemon service is still running:
+        </p>
+
+        <source>
+% HarvestController --url http://localhost:9000/xmlrpc --operation --isRunning
+        </source>
+      </subsection>
     </section>
 
     <section name="Report Format">
@@ -352,34 +430,34 @@ Time                Wed, Sep 29 2010 at 02:02:27 PM
 Registry Location   http://localhost:8080/registry-service
 
 INFO:   [C:\pds4\geo\BUGLAB_Archive_Bundle.xml] Begin processing.
-SKIP:   [C:\pds4\geo\BUGLAB_Archive_Bundle.xml] 'archive bundle' is not 
+SKIP:   [C:\pds4\geo\BUGLAB_Archive_Bundle.xml] 'archive bundle' is not
 an object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\BUGLAB_Archive_Bundle.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\BUGLAB_Archive_Bundle.xml] 'XML_Schema' is not 
+SKIP:   [C:\pds4\geo\schema\BUGLAB_Archive_Bundle.xml] 'XML_Schema' is not
 an object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\BUGLAB_Collection.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\BUGLAB_Collection.xml] 'XML_Schema' is not an 
+SKIP:   [C:\pds4\geo\schema\BUGLAB_Collection.xml] 'XML_Schema' is not an
 object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\BUGLAB_Schema_Collection.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\BUGLAB_Schema_Collection.xml] 'collection' is 
+SKIP:   [C:\pds4\geo\schema\BUGLAB_Schema_Collection.xml] 'collection' is
 not an object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\BUG_BDRF_product.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\BUG_BDRF_product.xml] 'XML_Schema' is not an 
+SKIP:   [C:\pds4\geo\schema\BUG_BDRF_product.xml] 'XML_Schema' is not an
 object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\BUG_Document_Set.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\BUG_Document_Set.xml] 'XML_Schema' is not an 
+SKIP:   [C:\pds4\geo\schema\BUG_Document_Set.xml] 'XML_Schema' is not an
 object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\Data_Dict_2010-04-22f.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\Data_Dict_2010-04-22f.xml] 'XML_Schema' is not 
+SKIP:   [C:\pds4\geo\schema\Data_Dict_2010-04-22f.xml] 'XML_Schema' is not
 an object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\Data_Dict_commpds3_2010-04-22f.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\Data_Dict_commpds3_2010-04-22f.xml] 'XML_Schema' 
+SKIP:   [C:\pds4\geo\schema\Data_Dict_commpds3_2010-04-22f.xml] 'XML_Schema'
 is not an object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\Data_Types_2010-04-22f.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\Data_Types_2010-04-22f.xml] 'XML_Schema' is not an 
+SKIP:   [C:\pds4\geo\schema\Data_Types_2010-04-22f.xml] 'XML_Schema' is not an
 object type found in the policy file.
 INFO:   [C:\pds4\geo\schema\Product_XML_Schema.xml] Begin processing.
-SKIP:   [C:\pds4\geo\schema\Product_XML_Schema.xml] 'XML_Schema' is not an 
+SKIP:   [C:\pds4\geo\schema\Product_XML_Schema.xml] 'XML_Schema' is not an
 object type found in the policy file.
 INFO:   [C:\pds4\geo\mars_analog_data\aref_235_450.xml] Begin processing.
 SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_450.xml] Succesfully registered product: \
@@ -415,31 +493,31 @@ INFO:   [C:\pds4\geo\mars_analog_data\aref_235_990.xml] Begin processing.
 SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_990.xml] Succesfully registered product: \
 URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_990::1.0
 INFO:   [C:\pds4\geo\mars_analog_data\MAS_Data_Collection.xml] Begin processing.
-SKIP:   [C:\pds4\geo\mars_analog_data\MAS_Data_Collection.xml] 'collection' is not 
+SKIP:   [C:\pds4\geo\mars_analog_data\MAS_Data_Collection.xml] 'collection' is not
 an object type found in the policy file.
 INFO:   [C:\pds4\geo\geometry\BUGLAB_Geometry_Collection.xml] Begin processing.
-SKIP:   [C:\pds4\geo\geometry\BUGLAB_Geometry_Collection.xml] 'collection' is not 
+SKIP:   [C:\pds4\geo\geometry\BUGLAB_Geometry_Collection.xml] 'collection' is not
 an object type found in the policy file.
 INFO:   [C:\pds4\geo\geometry\geominfo.xml] Begin processing.
-SKIP:   [C:\pds4\geo\geometry\geominfo.xml] 'document_set' is not an object type 
+SKIP:   [C:\pds4\geo\geometry\geominfo.xml] 'document_set' is not an object type
 found in the policy file.
 INFO:   [C:\pds4\geo\context\BUGLAB_Context_Collection.xml] Begin processing.
-SKIP:   [C:\pds4\geo\context\BUGLAB_Context_Collection.xml] 'collection' is not an 
+SKIP:   [C:\pds4\geo\context\BUGLAB_Context_Collection.xml] 'collection' is not an
 object type found in the policy file.
 INFO:   [C:\pds4\geo\context\bug_instrument.xml] Begin processing.
-SKIP:   [C:\pds4\geo\context\bug_instrument.xml] 'document_set' is not an object 
+SKIP:   [C:\pds4\geo\context\bug_instrument.xml] 'document_set' is not an object
 type found in the policy file.
 INFO:   [C:\pds4\geo\context\bug_laboratory.xml] Begin processing.
-SKIP:   [C:\pds4\geo\context\bug_laboratory.xml] 'document_set' is not an object 
+SKIP:   [C:\pds4\geo\context\bug_laboratory.xml] 'document_set' is not an object
 type found in the policy file.
 INFO:   [C:\pds4\geo\context\bug_mars_data_set.xml] Begin processing.
-SKIP:   [C:\pds4\geo\context\bug_mars_data_set.xml] 'document_set' is not an object 
+SKIP:   [C:\pds4\geo\context\bug_mars_data_set.xml] 'document_set' is not an object
 type found in the policy file.
 INFO:   [C:\pds4\geo\about\aareadme.xml] Begin processing.
-SKIP:   [C:\pds4\geo\about\aareadme.xml] 'document_set' is not an object type found 
+SKIP:   [C:\pds4\geo\about\aareadme.xml] 'document_set' is not an object type found
 in the policy file.
 INFO:   [C:\pds4\geo\about\BUGLAB_About_Collection.xml] Begin processing.
-SKIP:   [C:\pds4\geo\about\BUGLAB_About_Collection.xml] 'collection' is not an object 
+SKIP:   [C:\pds4\geo\about\BUGLAB_About_Collection.xml] 'collection' is not an object
 type found in the policy file.
 
 Summary:
