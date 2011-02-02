@@ -94,6 +94,7 @@ public class AuditableEvent extends RegistryObject {
   private String user;
 
   public AuditableEvent() {
+     this.setObjectType(AuditableEvent.class.getSimpleName());
   }
 
   public AuditableEvent(EventType eventType, List<String> affectedObjects,

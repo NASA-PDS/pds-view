@@ -50,6 +50,10 @@ public class Service extends RegistryObject {
   @XmlElementRef(name="serviceBinding", namespace = "http://registry.pds.nasa.gov")
   @OrderBy
   private Set<ServiceBinding> serviceBindings;
+  
+  public Service() {
+    this.setObjectType(Service.class.getSimpleName());
+  }
 
   public Set<ServiceBinding> getServiceBindings() {
     return serviceBindings;

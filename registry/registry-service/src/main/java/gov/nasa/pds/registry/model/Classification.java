@@ -64,7 +64,12 @@ public class Classification extends RegistryObject {
    */
   @XmlAttribute
   private String nodeRepresentation;
-
+  
+  public Classification() {
+    this.setObjectType(Classification.class.getSimpleName());
+  }
+  
+    
   public String getClassificationScheme() {
     return classificationScheme;
   }

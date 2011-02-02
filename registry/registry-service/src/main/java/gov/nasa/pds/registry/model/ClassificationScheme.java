@@ -70,8 +70,6 @@ public class ClassificationScheme extends RegistryObject {
 
   public ClassificationScheme() {
     this.setObjectType(ClassificationScheme.class.getSimpleName());
-    this.setVersionName(null);
-    this.setVersionId(null);
   }
 
   public Boolean getIsInternal() {

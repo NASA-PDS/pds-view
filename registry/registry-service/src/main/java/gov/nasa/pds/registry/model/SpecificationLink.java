@@ -92,6 +92,10 @@ public class SpecificationLink extends RegistryObject {
   @XmlElement(name = "usageParameter", namespace = "http://registry.pds.nasa.gov")
   private List<String> usageParameters;
 
+  public SpecificationLink() {
+    this.setObjectType(SpecificationLink.class.getSimpleName());
+  }
+  
   public String getServiceBinding() {
     return serviceBinding;
   }

@@ -61,8 +61,6 @@ public class ClassificationNode extends RegistryObject {
 
   public ClassificationNode() {
     this.setObjectType(ClassificationNode.class.getSimpleName());
-    this.setVersionName(null);
-    this.setVersionId(null);
   }
   
   public String getParent() {

@@ -81,7 +81,11 @@ public class ServiceBinding extends RegistryObject {
    */
   @XmlAttribute
   private String targetBinding;
-
+  
+  public ServiceBinding() {
+    this.setObjectType(ServiceBinding.class.getSimpleName());
+  }
+  
   public String getAccessURI() {
     return accessURI;
   }
