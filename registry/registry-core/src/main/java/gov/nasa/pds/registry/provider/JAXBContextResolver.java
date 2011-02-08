@@ -13,7 +13,7 @@
 //	$Id$
 //
 
-package gov.nasa.pds.registry;
+package gov.nasa.pds.registry.provider;
 
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.AuditableEvent;

@@ -15,7 +15,9 @@
   $Id$
 -->
 
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
@@ -42,8 +44,24 @@
     </license>
   </licenses>
 
-  <!-- These properties support PDF generation with Maven 1. -->
   <properties>
+    <!-- These properties support PDF generation with Maven 1. -->
+    <xdoc-artifactId>${artifactId}</xdoc-artifactId>
+    <xdoc-version>${version}</xdoc-version>
+    <!-- These properties support the application. -->
+    <jersey-version>1.1.5.1</jersey-version>
+    <junit-version>4.8.1</junit-version>
+    <xerces-version>2.6.1</xerces-version>
+    <jaxb-version>2.2</jaxb-version>
+    <woodstox-version>3.2.3</woodstox-version>
+    <spring.version>3.0.2.RELEASE</spring.version>
+    <commons-dbcp.version>1.2.2</commons-dbcp.version>
+    <commons-logging.version>1.0.4</commons-logging.version>
+    <log4j.version>1.2.15</log4j.version>
+    <derby.version>10.6.1.0</derby.version>
+    <env>default</env>
+    <registry.endpoint>${registry.protocol}://${registry.host}:${registry.port}${registry.context}/</registry.endpoint>
+    <!-- These properties support PDF generation with Maven 1. -->
     <xdoc-artifactId>${artifactId}</xdoc-artifactId>
     <xdoc-version>${version}</xdoc-version>
   </properties>
@@ -102,6 +120,98 @@
       </snapshots>
     </repository>
   </repositories>
+  
+  <dependencies>
+    <!-- JPA START -->
+    <dependency>
+      <groupId>org.hibernate.java-persistence</groupId>
+      <artifactId>jpa-api</artifactId>
+      <version>2.0-cr-1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>3.5.2-Final</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>${commons-logging.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-jdk14</artifactId>
+      <version>1.5.8</version>
+    </dependency>
+    <!-- JPA END -->
+    <!-- SPRING START -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aop</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <!-- SPRING END -->
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-server</artifactId>
+      <version>${jersey-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-json</artifactId>
+      <version>${jersey-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-client</artifactId>
+      <version>${jersey-version}</version>
+    </dependency>
+  </dependencies>
 
   <!-- Project Information and Reports inherited from parent. -->
   <reporting>

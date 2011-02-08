@@ -20,8 +20,8 @@ import java.util.List;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
-import gov.nasa.pds.registry.JAXBContextResolver;
-import gov.nasa.pds.registry.JSONContextResolver;
+import gov.nasa.pds.registry.provider.JAXBContextResolver;
+import gov.nasa.pds.registry.provider.JSONContextResolver;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.Product;
