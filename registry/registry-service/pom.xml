@@ -44,6 +44,7 @@
   </licenses>
 
   <properties>
+    <registry.core.version>0.1.0-dev</registry.core.version>
     <!-- These properties support PDF generation with Maven 1. -->
     <xdoc-artifactId>${artifactId}</xdoc-artifactId>
     <xdoc-version>${version}</xdoc-version>
@@ -532,6 +533,12 @@
   </pluginRepositories>
 
   <dependencies>
+    <dependency>
+      <groupId>gov.nasa.pds.2010.registry</groupId>
+      <artifactId>registry-core</artifactId>
+      <version>${registry.core.version}</version>
+    </dependency>
+    
     <dependency>
       <groupId>org.hibernate.java-persistence</groupId>
       <artifactId>jpa-api</artifactId>
