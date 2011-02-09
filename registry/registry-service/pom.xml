@@ -448,6 +448,7 @@
       </activation>
       <build>
         <plugins>
+          <!--
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
@@ -481,7 +482,6 @@
                   <goal>exec</goal>
                 </goals>
                 <phase>compile</phase>
-                <!--<phase>package</phase>-->
                 <configuration>
                   <executable>xsltproc</executable>
                   <commandlineArgs>-o target/index.html src/main/doc/wadl_documentation-2008-12.xsl target/classes/application.wadl</commandlineArgs>
@@ -489,6 +489,7 @@
               </execution>
             </executions>
           </plugin>
+          -->
         </plugins>
       </build>
     </profile>
