@@ -34,6 +34,7 @@ import gov.nasa.pds.registry.model.StatusInfo;
 import gov.nasa.pds.registry.model.naming.IdentifierGenerator;
 import gov.nasa.pds.registry.model.naming.Versioner;
 import gov.nasa.pds.registry.query.AssociationQuery;
+import gov.nasa.pds.registry.query.ObjectQuery;
 import gov.nasa.pds.registry.query.ProductQuery;
 
 import java.util.ArrayList;
@@ -464,7 +465,32 @@ public class RegistryService {
    */
   public RegistryResponse getAssociations(AssociationQuery query,
       Integer start, Integer rows) {
+    if (start <= 0) {
+      start = 1;
+    }
     return metadataStore.getAssociations(query, start, rows);
+  }
+  
+  /**
+   * Generic query for a given class of registry objects. This query only
+   * contains attributes that are applicable across all registry objects.
+   * 
+   * @param query
+   *          based on a set of filters
+   * @param start
+   *          index within the results to start at. This index is one based
+   * @param rows
+   *          number of results to get
+   * @param objectClass
+   *          the type of registry object to look for
+   * @return list of {@link RegistryObject} with the given class
+   */
+  public RegistryResponse getRegistryObjects(ObjectQuery query,
+      Integer start, Integer rows, Class<? extends RegistryObject> objectClass) {
+    if (start <= 0) {
+      start = 1;
+    }
+    return metadataStore.getRegistryObjects(query, start, rows, objectClass);
   }
 
   /**

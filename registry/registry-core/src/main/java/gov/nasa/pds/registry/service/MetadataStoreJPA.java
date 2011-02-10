@@ -24,6 +24,7 @@ import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ObjectFilter;
+import gov.nasa.pds.registry.query.ObjectQuery;
 import gov.nasa.pds.registry.query.ProductQuery;
 import gov.nasa.pds.registry.query.QueryOperator;
 
@@ -424,6 +425,86 @@ public class MetadataStoreJPA implements MetadataStore {
     // Database is 0 indexed not 1
     return (List<RegistryObject>) query.setFirstResult(start - 1)
         .setMaxResults(rows).getResultList();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nasa.pds.registry.service.MetadataStore#getRegistryObjects(gov.nasa
+   * .pds.registry.query.ObjectQuery, java.lang.Integer, java.lang.Integer,
+   * java.lang.Class)
+   */
+  @SuppressWarnings("unchecked")
+  @Override
+  public RegistryResponse getRegistryObjects(ObjectQuery query, Integer start,
+      Integer rows, Class<? extends RegistryObject> objectClass) {
+
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<?> cq = cb.createQuery(objectClass);
+    Root<?> objectEntity = cq.from(objectClass);
+    ObjectFilter filter = query.getFilter();
+    List<Predicate> predicates = new ArrayList<Predicate>();
+    if (filter != null) {
+      if (filter.getGuid() != null) {
+        predicates.add(cb.like(objectEntity.get("guid").as(String.class),
+            filter.getGuid().replace('*', '%')));
+      }
+      if (filter.getLid() != null) {
+        predicates.add(cb.like(objectEntity.get("lid").as(String.class), filter
+            .getLid().replace('*', '%')));
+      }
+      if (filter.getName() != null) {
+        predicates.add(cb.like(objectEntity.get("name").as(String.class),
+            filter.getName().replace('*', '%')));
+      }
+      if (filter.getObjectType() != null) {
+        predicates.add(cb.like(objectEntity.get("objectType").as(String.class),
+            filter.getObjectType().replace('*', '%')));
+      }
+      if (filter.getStatus() != null) {
+        predicates
+            .add(cb.equal(objectEntity.get("status"), filter.getStatus()));
+      }
+      if (filter.getVersionId() != null) {
+        predicates.add(cb.like(objectEntity.get("versionId").as(String.class),
+            filter.getVersionId().replace('*', '%')));
+      }
+      if (filter.getVersionName() != null) {
+        predicates.add(cb.like(
+            objectEntity.get("versionName").as(String.class), filter
+                .getVersionName().replace('*', '%')));
+      }
+    }
+
+    if (predicates.size() != 0) {
+      Predicate[] p = new Predicate[predicates.size()];
+      if (query.getOperator() == QueryOperator.AND) {
+        cq.where(cb.and(predicates.toArray(p)));
+      } else {
+        cq.where(cb.or(predicates.toArray(p)));
+      }
+    }
+
+    List<Order> orders = new ArrayList<Order>();
+    if (query.getSort().size() > 0) {
+      for (String sort : query.getSort()) {
+        String[] s = sort.split(" ");
+        if (s.length == 1 || s[1].equalsIgnoreCase("ASC")) {
+          orders.add(cb.asc(objectEntity.get(s[0])));
+        } else {
+          orders.add(cb.desc(objectEntity.get(s[0])));
+        }
+      }
+    } else {
+      orders.add(cb.asc(objectEntity.get("guid")));
+    }
+    cq.orderBy(orders);
+    TypedQuery<?> dbQuery = entityManager.createQuery(cq);
+    RegistryResponse response = new RegistryResponse(start, (long) dbQuery
+        .getResultList().size(), (List<RegistryObject>) dbQuery.setFirstResult(
+        start - 1).setMaxResults(rows).getResultList());
+    return response;
   }
 
   /*

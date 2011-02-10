@@ -21,6 +21,7 @@ import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ProductQuery;
+import gov.nasa.pds.registry.query.ObjectQuery;
 
 import java.util.List;
 
@@ -203,6 +204,23 @@ public interface MetadataStore {
    */
   public List<RegistryObject> getRegistryObjects(Integer start, Integer rows,
       Class<? extends RegistryObject> objectClass);
+
+  /**
+   * Generic query for a given class of registry objects. This query only
+   * contains attributes that are applicable across all registry objects.
+   * 
+   * @param query
+   *          based on a set of filters
+   * @param start
+   *          index within the results to start at. This index is one based
+   * @param rows
+   *          number of results to get
+   * @param objectClass
+   *          the type of registry object to look for
+   * @return list of {@link RegistryObject} with the given class
+   */
+  public RegistryResponse getRegistryObjects(ObjectQuery query, Integer start,
+      Integer rows, Class<? extends RegistryObject> objectClass);
 
   /**
    * Test to see if a registry object exists with a logical identifier, version,
