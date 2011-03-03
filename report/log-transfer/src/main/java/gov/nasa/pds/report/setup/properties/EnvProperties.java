@@ -18,8 +18,6 @@ import org.xml.sax.SAXParseException;
 public class EnvProperties {
 
 	private static final String ENV_FILE = "env_vars.xml";
-	
-	private Properties _envProps;
 
 	private Document _doc;
 
@@ -35,11 +33,9 @@ public class EnvProperties {
 
 			// normalize text representation
 			this._doc.getDocumentElement().normalize();
-			this._log.info("Root element of the doc is "
+			this._log.finest("Root element of the doc is "
 					+ _doc.getDocumentElement().getNodeName());
 
-			//this._envProps = new Properties();
-			//setProperties();
 		} catch (SAXParseException err) {
 			this._log.warning("** Parsing error" + ", line " + err.getLineNumber()
 					+ ", uri " + err.getSystemId());
@@ -65,23 +61,6 @@ public class EnvProperties {
 	public String getSawmillHome() {
 		return this._doc.getElementsByTagName("sawmill_home").item(0).getTextContent();
 	}
-	
-	/*public void setProperties() {
-		String propName;
-
-		// Gets all of the child nodes of the root.
-		NodeList propList = this._doc.getDocumentElement().getChildNodes();
-		for (int i = 0; i < propList.getLength(); i++) {
-			Node propNode = propList.item(i);
-
-			if (propNode.getNodeType() == Node.ELEMENT_NODE) {
-				propName = propNode.getNodeName();
-				if (!propName.equals("driver") || !propName.equals("url")) {
-					this._envProps.setProperty(propName, getPropValue(propName));
-				}
-			}
-		}
-	}*/
 	
 	public static void main(String[] args) throws Exception {
 		EnvProperties envProps = new EnvProperties("/Users/jpadams/dev/workspace/2010-workspace/report/transfer-logs/src/main/resources");

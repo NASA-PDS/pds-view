@@ -21,7 +21,7 @@ rm -f $log
 log_home=`egrep log_dest ./env_vars.xml | awk -F\< '{print $2}' | awk -F\> '{print $2}'`
 
 # Query Mysql DB for profile and log_set information
-mysql -u $user -p$pass report_service -B -e "select p.node, p.name, ls.label, ls.hostname,ls.username, ls.pathname from profiles p, log_sets ls where ls.active_flag='y' and p.active_flag='y' and p.profile_id=ls.profile_id" >> $log
+mysql -u $user -p$pass report_service -e "select p.node, p.name, ls.label, ls.hostname,ls.username, ls.pathname from profiles p, log_sets ls where ls.active_flag='y' and p.active_flag='y' and p.profile_id=ls.profile_id" >> $log
 mysql -u $user -p$pass report_service --skip-column-names -B -e "select p.node, p.name, ls.label, ls.hostname,ls.username, ls.pathname from profiles p, log_sets ls where ls.active_flag='y' and p.active_flag='y' and p.profile_id=ls.profile_id" > temp.txt
 
 while read line; do
