@@ -1,6 +1,15 @@
+/** 
+ * Copyright (c) 2011, California Institute of Technology.
+ * ALL RIGHTS RESERVED. U.S. Government sponsorship acknowledged.
+ *
+ * $Id$ 
+ * 
+ */
 package gov.nasa.pds.report.setup.servlets;
 
-import gov.nasa.pds.report.setup.model.Host;
+import gov.nasa.pds.report.setup.model.LogSet;
+import gov.nasa.pds.report.setup.model.Profile;
+import gov.nasa.pds.report.setup.util.SFTPUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,130 +39,30 @@ import com.jcraft.jsch.SftpException;
  */
 public class SetupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	protected Logger log = Logger.getLogger(this.getClass().getName());
-	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public SetupServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public SetupServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       	JSch jsch = new JSch(); 
-        Gson gson = new Gson();
-        JsonObject root = new JsonObject();
-        byte connect = 1;
-        byte sftp = 1;
-        String error = "";
-        byte empty = 1;
-       
-       Session session = null;
-       
-       Host host = new Host();
-       
-       // Profile name to create/update
-       host.setProfile(request.getParameter("profile"));
-       // Remote machine host name or IP
-       host.setHostname(request.getParameter("hostname"));
-       // User name to connect the remote machine
-       host.setUsername(request.getParameter("username"));
-       // Password for remote machine authentication
-       host.setPassword(request.getParameter("password"));    
-       // Source file path on local machine
-       //String srcPath = "D:\\Test.txt";
-       // Destination directory location on remote machine
-       host.setSrcPath(request.getParameter("srcPath"));
-       // Regex to find files at source
-       host.setRegex(request.getParameter("regex"));
-       
-       log.info("profile: "+host.getProfile());
-       log.info("hostname: "+host.getHostname());
-       log.info("username: "+host.getUsername());
-       log.info("srcPath: "+host.getSrcPath());
-       log.info("regex: "+host.getRegex());
-       
-       try {
-        // Getting the session
-        session = jsch.getSession(host.getUsername(), host.getHostname(), 22);
-                    
-        // Ignore HostKeyChecking
-        session.setConfig("StrictHostKeyChecking", "no");                  
-      
-        // set the password for authentication
-        session.setPassword(host.getPassword());
-        session.connect();
-                    
-        // Getting the channel using sftp
-        Channel channel = session.openChannel("sftp");
-        channel.connect();
-        ChannelSftp sftpChannel = (ChannelSftp) channel;
+		Profile profile = new Profile();
+		profile.setProfile(request.getParameterMap());
+		
+		SFTPUtil util = new SFTPUtil(profile.getLogSetList());
+		
+		Gson gson = new Gson();
+		gson.toJson(util.checkConnections(), response.getWriter());	
 
-        String[] dirList;
-        String filename;
-        Vector lsOut = sftpChannel.ls(host.getSrcPath());
-        
-        JsonArray matches = new JsonArray();
-        for (Iterator it = lsOut.iterator(); it.hasNext();) {
-        	dirList = it.next().toString().split(" ");
-        	filename = dirList[dirList.length-1];
-        	if (filename.matches(host.getRegex())) {
-        		matches.add(new JsonPrimitive(filename));
-        	}
-        }
-        
-        if (!matches.isJsonNull()) {
-        	empty = 0;
-        	root.add("files", matches);
-        }
-        
-        //root.add("count", new JsonPrimitive(matches.size()));
-        
-        // Found JSONLib has memory leak
-//	        JSONObject jsonRoot = new JSONObject();
-//	        JSONArray fileList = new JSONArray();
-//	        if (!lsOut.isEmpty()) {
-//		        for (Iterator it = lsOut.iterator(); it.hasNext();) {
-//		        	dirList = it.next().toString().split(" ");
-//		        	filename = dirList[dirList.length-1];
-//		        	if (filename.matches(regex)) {
-//		        		fileList.add(filename);
-//		        		log.info("file found: "+filename);
-//		        	}
-//		        }
-//		        empty = 0;
-//		        jsonRoot.put("files", fileList);
-//	        }
-//	        jsonRoot.put("empty", empty);
-//	        
-//	        PrintWriter out = response.getWriter();
-//	        out.print(jsonRoot.toString());
-        
-        // Exits the channel
-         sftpChannel.exit();
-                    
-         // Disconnect the session
-         session.disconnect();
-
-       } catch (JSchException e) {
-    	   //root.add("connect", new JsonPrimitive(0));
-    	   connect = 0;
-    	   error = e.getMessage();
-       } catch (SftpException e) {
-           sftp = 0;
-           error = e.getMessage();   
-       } finally {
-	        root.add("connect", new JsonPrimitive(connect));
-	        root.add("sftp", new JsonPrimitive(sftp));
-	        root.add("error", new JsonPrimitive(error));
-	        root.add("empty", new JsonPrimitive(empty));
-    	   gson.toJson(root, response.getWriter());
-       }
 	}
 
 }

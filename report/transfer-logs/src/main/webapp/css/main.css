@@ -73,6 +73,7 @@ div.top-bar {
 
 div.top-bar h1 {
 	color: #000099;
+	text-variant: small-caps;
 	margin:0;
     padding:0;
 }
@@ -124,22 +125,26 @@ div.form-section .label {
     vertical-align: middle;
 }
 
-.info-input {
+.set-info, #name, #profile {
 	width: 200px;
 }
 
-div.modal-section {
+.modal-section {
 	display:none;
 	padding: 10px;
 }
 
 div.modal-section .label {
 	font-weight: bold;
+	float: left;
+    text-align: right;
+    margin-right: 2px;
+    width: 100px;
 }
 
 div.modal-section .form-row {
 	margin: 25px;
-	text-align:center;
+	text-align:left;
 	width: 100%;
 }
 
@@ -147,7 +152,58 @@ div.modal-section .form-row {
 	margin-left:102px;
 }
 
+.hidden-files {
+	display: none;
+}
+
+.log-set-header {
+	font-variant: small-caps;
+	font-weight:bold;
+	font-size:125%;
+	text-align: center;
+	width:100%;
+}
+
 .form-row .ui-icon {
 	float: right;
 	margin-right: 40px;
+}
+
+.form-row .add-log {
+	float: left;
+	margin-left: 10px;
+	margin-right: 5px;
+	line-height: 50px;
+	vertical-align: top;
+}
+
+div.add-log-section {
+	padding: 3px;
+}
+
+.add-log-section p {
+	text-decoration: none;
+	line-height: 16px;
+	vertical-align: middle;
+}
+
+.form-row .log-header {
+	font-weight: bold;
+	text-align: center;
+}
+
+.add-log-section {
+	cursor: pointer;
+}
+
+.highlight-text {
+	color: blue;
+}
+
+.remove-icon {
+	width: 15px;
+	position: relative; 
+	float: right; 
+	margin-right: 5px;
+	cursor: pointer;
 }
