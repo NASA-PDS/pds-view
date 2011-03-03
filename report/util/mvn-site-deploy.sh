@@ -22,7 +22,7 @@ mvn site
 
 cd sawmill
 maven pdf
-cd ../transfer-logs
+cd ../log-transfer
 maven pdf
 
 cd ..
