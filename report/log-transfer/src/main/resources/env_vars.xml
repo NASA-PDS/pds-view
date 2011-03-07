@@ -1,5 +1,5 @@
 <variables>
-	<sawmill_home>/Users/jpadams/Tomcat/webapps/ROOT/WEB-INF/cgi</sawmill_home>
-	<profile_cfg_home>/Users/jpadams/Tomcat/webapps/ROOT/WEB-INF/cgi/LogAnalysisInfo/profiles</profile_cfg_home>
-	<log_dest>/Users/jpadams/Documents/report_service/metrics/test</log_dest>
+	<sawmill_home></sawmill_home>
+	<profile_cfg_home></profile_cfg_home>
+	<log_dest></log_dest>
 </variables>
