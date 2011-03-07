@@ -24,13 +24,13 @@ import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.NodeType;
 import gov.nasa.pds.registry.model.ObjectStatus;
 import gov.nasa.pds.registry.model.RegistryResponse;
-import gov.nasa.pds.registry.model.Product;
+import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryStatus;
 import gov.nasa.pds.registry.model.Service;
 import gov.nasa.pds.registry.model.ServiceBinding;
 import gov.nasa.pds.registry.model.Slot;
 import gov.nasa.pds.registry.model.SpecificationLink;
-import gov.nasa.pds.registry.model.StatusInfo;
+import gov.nasa.pds.registry.model.Report;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,128 +63,121 @@ public class Examples {
 						"http://pds.jpl.nasa.gov/registry-service/registry/storage/1234-v1.0/label",
 						"label", null));
 	}
-	public final static Product REQUEST_PRODUCT = new Product();
+	public final static ExtrinsicObject REQUEST_EXTRINSIC = new ExtrinsicObject();
 	static {
-		REQUEST_PRODUCT.setDescription("Default Description");
-		REQUEST_PRODUCT.setHome("http://pds.jpl.nasa.gov/registry-service");
-		REQUEST_PRODUCT.setLid("1234");
-		REQUEST_PRODUCT.setVersionName("1.0");
-		REQUEST_PRODUCT.setObjectType("Product");
-		REQUEST_PRODUCT.setSlots(RESPONSE_SLOTS);
+		REQUEST_EXTRINSIC.setDescription("Default Description");
+		REQUEST_EXTRINSIC.setHome("http://pds.jpl.nasa.gov/registry-service");
+		REQUEST_EXTRINSIC.setLid("1234");
+		REQUEST_EXTRINSIC.setVersionName("1.0");
+		REQUEST_EXTRINSIC.setSlots(RESPONSE_SLOTS);
 	}
 
-	public final static Product RESPONSE_PRODUCT = new Product();
+	public final static ExtrinsicObject RESPONSE_EXTRINSIC = new ExtrinsicObject();
 	static {
-		RESPONSE_PRODUCT.setGuid("urn:uuid" + UUID.randomUUID().toString());
-		RESPONSE_PRODUCT.setDescription("Default Description");
-		RESPONSE_PRODUCT
+		RESPONSE_EXTRINSIC.setGuid("urn:uuid" + UUID.randomUUID().toString());
+		RESPONSE_EXTRINSIC.setDescription("Default Description");
+		RESPONSE_EXTRINSIC
 				.setHome("http://pds.jpl.nasa.gov/registry-service");
-		RESPONSE_PRODUCT.setLid("1234");
-		RESPONSE_PRODUCT.setVersionName("1.0");
-		RESPONSE_PRODUCT.setVersionId("1.0");
-		RESPONSE_PRODUCT.setStatus(ObjectStatus.Submitted);
-		RESPONSE_PRODUCT.setObjectType("Product");
-		RESPONSE_PRODUCT.setSlots(RESPONSE_SLOTS);
+		RESPONSE_EXTRINSIC.setLid("1234");
+		RESPONSE_EXTRINSIC.setVersionName("1.0");
+		RESPONSE_EXTRINSIC.setVersionId("1.0");
+		RESPONSE_EXTRINSIC.setStatus(ObjectStatus.Submitted);
+		RESPONSE_EXTRINSIC.setSlots(RESPONSE_SLOTS);
 	}
 
-	public final static Product RESPONSE_PRODUCT_UPDATED = new Product();
+	public final static ExtrinsicObject RESPONSE_EXTRINSIC_UPDATED = new ExtrinsicObject();
 	static {
-		RESPONSE_PRODUCT_UPDATED.setGuid("urn:uuid" + UUID.randomUUID().toString());
-		RESPONSE_PRODUCT_UPDATED.setDescription("Default Description");
-		RESPONSE_PRODUCT_UPDATED
+		RESPONSE_EXTRINSIC_UPDATED.setGuid("urn:uuid" + UUID.randomUUID().toString());
+		RESPONSE_EXTRINSIC_UPDATED.setDescription("Default Description");
+		RESPONSE_EXTRINSIC_UPDATED
 				.setHome("http://pds.jpl.nasa.gov/registry-service");
-		RESPONSE_PRODUCT_UPDATED.setLid("1234");
-		RESPONSE_PRODUCT_UPDATED.setVersionName("1.0");
-		RESPONSE_PRODUCT_UPDATED.setVersionId("1.1");
-		RESPONSE_PRODUCT_UPDATED.setStatus(ObjectStatus.Submitted);
-		RESPONSE_PRODUCT_UPDATED.setObjectType("Produc");
-		RESPONSE_PRODUCT_UPDATED.setSlots(RESPONSE_SLOTS);
+		RESPONSE_EXTRINSIC_UPDATED.setLid("1234");
+		RESPONSE_EXTRINSIC_UPDATED.setVersionName("1.0");
+		RESPONSE_EXTRINSIC_UPDATED.setVersionId("1.1");
+		RESPONSE_EXTRINSIC_UPDATED.setStatus(ObjectStatus.Submitted);
+		RESPONSE_EXTRINSIC_UPDATED.setSlots(RESPONSE_SLOTS);
 	}
 
-	public final static Product RESPONSE_PRODUCT_APPROVED = new Product();
+	public final static ExtrinsicObject RESPONSE_EXTRINSIC_APPROVED = new ExtrinsicObject();
 	static {
-		RESPONSE_PRODUCT_APPROVED.setGuid(UUID.randomUUID().toString());
-		RESPONSE_PRODUCT_APPROVED.setDescription("Default Description");
-		RESPONSE_PRODUCT_APPROVED
+		RESPONSE_EXTRINSIC_APPROVED.setGuid(UUID.randomUUID().toString());
+		RESPONSE_EXTRINSIC_APPROVED.setDescription("Default Description");
+		RESPONSE_EXTRINSIC_APPROVED
 				.setHome("http://pds.jpl.nasa.gov/registry-service");
-		RESPONSE_PRODUCT_APPROVED.setLid("1234");
-		RESPONSE_PRODUCT_APPROVED.setVersionId("1.1");
-		RESPONSE_PRODUCT_APPROVED.setVersionName("1.0");
-		RESPONSE_PRODUCT_APPROVED.setStatus(ObjectStatus.Approved);
-		RESPONSE_PRODUCT_APPROVED.setObjectType("Product");
-		RESPONSE_PRODUCT_APPROVED.setSlots(RESPONSE_SLOTS);
+		RESPONSE_EXTRINSIC_APPROVED.setLid("1234");
+		RESPONSE_EXTRINSIC_APPROVED.setVersionId("1.1");
+		RESPONSE_EXTRINSIC_APPROVED.setVersionName("1.0");
+		RESPONSE_EXTRINSIC_APPROVED.setStatus(ObjectStatus.Approved);
+		RESPONSE_EXTRINSIC_APPROVED.setSlots(RESPONSE_SLOTS);
 	}
 
-	public final static Product RESPONSE_PRODUCT_DEPRECATED = new Product();
+	public final static ExtrinsicObject RESPONSE_EXTRINSIC_DEPRECATED = new ExtrinsicObject();
 	static {
-		RESPONSE_PRODUCT_DEPRECATED.setGuid("urn:uuid" + UUID.randomUUID().toString());
-		RESPONSE_PRODUCT_DEPRECATED.setDescription("Default Description");
-		RESPONSE_PRODUCT_DEPRECATED
+		RESPONSE_EXTRINSIC_DEPRECATED.setGuid("urn:uuid" + UUID.randomUUID().toString());
+		RESPONSE_EXTRINSIC_DEPRECATED.setDescription("Default Description");
+		RESPONSE_EXTRINSIC_DEPRECATED
 				.setHome("http://pds.jpl.nasa.gov/registry-service");
-		RESPONSE_PRODUCT_DEPRECATED.setLid("1234");
-		RESPONSE_PRODUCT_DEPRECATED.setVersionId("1.1");
-		RESPONSE_PRODUCT_DEPRECATED.setVersionName("1.0");
-		RESPONSE_PRODUCT_DEPRECATED.setStatus(ObjectStatus.Deprecated);
-		RESPONSE_PRODUCT_DEPRECATED.setObjectType("Product");
-		RESPONSE_PRODUCT_DEPRECATED.setSlots(RESPONSE_SLOTS);
+		RESPONSE_EXTRINSIC_DEPRECATED.setLid("1234");
+		RESPONSE_EXTRINSIC_DEPRECATED.setVersionId("1.1");
+		RESPONSE_EXTRINSIC_DEPRECATED.setVersionName("1.0");
+		RESPONSE_EXTRINSIC_DEPRECATED.setStatus(ObjectStatus.Deprecated);
+		RESPONSE_EXTRINSIC_DEPRECATED.setSlots(RESPONSE_SLOTS);
 	}
 
-	public final static StatusInfo RESPONSE_STATUS = new StatusInfo();
+	public final static Report RESPONSE_REPORT = new Report();
 	static {
-		RESPONSE_STATUS.setStatus(RegistryStatus.OK);
-		RESPONSE_STATUS.setServerStarted(new GregorianCalendar());
+		RESPONSE_REPORT.setStatus(RegistryStatus.OK);
+		RESPONSE_REPORT.setServerStarted(new GregorianCalendar());
 	}
 
 	public final static RegistryResponse RESPONSE_REGISTRY_OBJECT_REVISIONS = new RegistryResponse();
 	static {
-		List<Product> ros = new ArrayList<Product>();
-		ros.add(RESPONSE_PRODUCT);
-		ros.add(RESPONSE_PRODUCT_UPDATED);
-		ros.add(RESPONSE_PRODUCT_APPROVED);
-		ros.add(RESPONSE_PRODUCT_DEPRECATED);
+		List<ExtrinsicObject> ros = new ArrayList<ExtrinsicObject>();
+		ros.add(RESPONSE_EXTRINSIC);
+		ros.add(RESPONSE_EXTRINSIC_UPDATED);
+		ros.add(RESPONSE_EXTRINSIC_APPROVED);
+		ros.add(RESPONSE_EXTRINSIC_DEPRECATED);
 		RESPONSE_REGISTRY_OBJECT_REVISIONS.setResults(ros);
 	}
 
-	public final static Product REQUEST_PRODUCT_VERSIONED = new Product();
+	public final static ExtrinsicObject REQUEST_EXTRINSIC_VERSIONED = new ExtrinsicObject();
 	static {
-		REQUEST_PRODUCT_VERSIONED.setGuid("urn:uuid" + UUID.randomUUID().toString());
-		REQUEST_PRODUCT_VERSIONED.setDescription("Default Description");
-		REQUEST_PRODUCT_VERSIONED
+		REQUEST_EXTRINSIC_VERSIONED.setGuid("urn:uuid" + UUID.randomUUID().toString());
+		REQUEST_EXTRINSIC_VERSIONED.setDescription("Default Description");
+		REQUEST_EXTRINSIC_VERSIONED
 				.setHome("http://pds.jpl.nasa.gov/registry-service");
-		REQUEST_PRODUCT_VERSIONED.setLid("1234");
-		REQUEST_PRODUCT_VERSIONED.setVersionName("2.0");
-		REQUEST_PRODUCT_VERSIONED.setVersionId("1.0");
-		REQUEST_PRODUCT_VERSIONED.setStatus(ObjectStatus.Submitted);
-		REQUEST_PRODUCT_VERSIONED.setObjectType("Product");
-		REQUEST_PRODUCT_VERSIONED.setSlots(RESPONSE_SLOTS);
+		REQUEST_EXTRINSIC_VERSIONED.setLid("1234");
+		REQUEST_EXTRINSIC_VERSIONED.setVersionName("2.0");
+		REQUEST_EXTRINSIC_VERSIONED.setVersionId("1.0");
+		REQUEST_EXTRINSIC_VERSIONED.setStatus(ObjectStatus.Submitted);
+		REQUEST_EXTRINSIC_VERSIONED.setSlots(RESPONSE_SLOTS);
 	}
 
-	public final static Product RESPONSE_PRODUCT_VERSIONED = new Product();
+	public final static ExtrinsicObject RESPONSE_EXTRINSIC_VERSIONED = new ExtrinsicObject();
 	static {
-		RESPONSE_PRODUCT_VERSIONED.setGuid("urn:uuid" + UUID.randomUUID().toString());
-		RESPONSE_PRODUCT_VERSIONED.setDescription("Default Description");
-		RESPONSE_PRODUCT_VERSIONED
+		RESPONSE_EXTRINSIC_VERSIONED.setGuid("urn:uuid" + UUID.randomUUID().toString());
+		RESPONSE_EXTRINSIC_VERSIONED.setDescription("Default Description");
+		RESPONSE_EXTRINSIC_VERSIONED
 				.setHome("http://pds.jpl.nasa.gov/registry-service");
-		RESPONSE_PRODUCT_VERSIONED.setLid("1234");
-		RESPONSE_PRODUCT_VERSIONED.setVersionName("2.0");
-		RESPONSE_PRODUCT_VERSIONED.setVersionId("1.1");
-		RESPONSE_PRODUCT_VERSIONED.setStatus(ObjectStatus.Submitted);
-		RESPONSE_PRODUCT_VERSIONED.setObjectType("Product");
-		RESPONSE_PRODUCT_VERSIONED.setSlots(RESPONSE_SLOTS);
+		RESPONSE_EXTRINSIC_VERSIONED.setLid("1234");
+		RESPONSE_EXTRINSIC_VERSIONED.setVersionName("2.0");
+		RESPONSE_EXTRINSIC_VERSIONED.setVersionId("1.1");
+		RESPONSE_EXTRINSIC_VERSIONED.setStatus(ObjectStatus.Submitted);
+		RESPONSE_EXTRINSIC_VERSIONED.setSlots(RESPONSE_SLOTS);
 	}
 
-	public final static RegistryResponse RESPONSE_PRODUCT_VERSIONS = new RegistryResponse();
+	public final static RegistryResponse RESPONSE_EXTRINSIC_VERSIONS = new RegistryResponse();
 	static {
-		List<Product> vers = new ArrayList<Product>();
-		vers.add(RESPONSE_PRODUCT);
-		vers.add(RESPONSE_PRODUCT_VERSIONED);
-		RESPONSE_PRODUCT_VERSIONS.setResults(vers);
+		List<ExtrinsicObject> vers = new ArrayList<ExtrinsicObject>();
+		vers.add(RESPONSE_EXTRINSIC);
+		vers.add(RESPONSE_EXTRINSIC_VERSIONED);
+		RESPONSE_EXTRINSIC_VERSIONS.setResults(vers);
 	}
 
 	public final static RegistryResponse RESPONSE_PAGED = new RegistryResponse(1, 1L);
 	static {
-		List<Product> results = new ArrayList<Product>();
-		results.add(RESPONSE_PRODUCT);
+		List<ExtrinsicObject> results = new ArrayList<ExtrinsicObject>();
+		results.add(RESPONSE_EXTRINSIC);
 		RESPONSE_PAGED.setResults(results);
 	}
 
@@ -272,33 +265,33 @@ public class Examples {
 
 	public final static ClassificationNode REQUEST_NODE = new ClassificationNode();
 	static {
-	  REQUEST_NODE.setGuid("urn:registry:ObjectTypeScheme:Product");
-	  REQUEST_NODE.setName("Product Node");
-	  REQUEST_NODE.setDescription("This is the classification node for product.");
-	  REQUEST_NODE.setCode("Product");
+	  REQUEST_NODE.setGuid("urn:registry:ObjectTypeScheme:ExtrinsicObject");
+	  REQUEST_NODE.setName("Extrinsic Object Node");
+	  REQUEST_NODE.setDescription("This is the classification node for extrinsic object.");
+	  REQUEST_NODE.setCode("ExtrinsicObject");
 	  REQUEST_NODE.setParent("urn:registry:ObjectTypeScheme");
 	}
 	
 	public final static ClassificationNode RESPONSE_NODE = new ClassificationNode();
 	static {
-    RESPONSE_NODE.setGuid("urn:registry:ObjectTypeScheme:Product");
+    RESPONSE_NODE.setGuid("urn:registry:ObjectTypeScheme:ExtrinsicObject");
     RESPONSE_NODE.setHome("http://pds.jpl.nasa.gov/registry-service");
-    RESPONSE_NODE.setName("Product Node");
-    RESPONSE_NODE.setDescription("This is the classification node for product.");
-    RESPONSE_NODE.setCode("Product");
-    RESPONSE_NODE.setPath("/urn:registry:ObjectTypeScheme/Product");
+    RESPONSE_NODE.setName("Extrinsic Object Node");
+    RESPONSE_NODE.setDescription("This is the classification node for extrinsic.");
+    RESPONSE_NODE.setCode("ExtrinsicObject");
+    RESPONSE_NODE.setPath("/urn:registry:ObjectTypeScheme/ExtrinsicObject");
     RESPONSE_NODE.setParent("urn:registry:ObjectTypeScheme");
 	}
 	
 	public final static ClassificationNode RESPONSE_NODE_OTHER = new ClassificationNode();
   static {
-    RESPONSE_NODE_OTHER.setGuid("urn:registry:ObjectTypeScheme:Product:Test");
+    RESPONSE_NODE_OTHER.setGuid("urn:registry:ObjectTypeScheme:ExtrinsicObject:Test");
     RESPONSE_NODE_OTHER.setHome("http://pds.jpl.nasa.gov/registry-service");
-    RESPONSE_NODE_OTHER.setName("Test Product Node");
-    RESPONSE_NODE_OTHER.setDescription("This is the classification node for product.");
+    RESPONSE_NODE_OTHER.setName("Test Extrinsic Object Node");
+    RESPONSE_NODE_OTHER.setDescription("This is the classification node for test.");
     RESPONSE_NODE_OTHER.setCode("Test");
-    RESPONSE_NODE_OTHER.setPath("/urn:registry:ObjectTypeScheme/Product/Test");
-    RESPONSE_NODE_OTHER.setParent("urn:registry:ObjectTypeScheme:Product");
+    RESPONSE_NODE_OTHER.setPath("/urn:registry:ObjectTypeScheme/ExtrinsicObject/Test");
+    RESPONSE_NODE_OTHER.setParent("urn:registry:ObjectTypeScheme:ExtrinsicObject");
   }
 	
 	public final static RegistryResponse RESPONSE_NODES = new RegistryResponse();

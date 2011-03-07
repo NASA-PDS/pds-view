@@ -4,5 +4,5 @@
     lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Mission"
     name="Product Mission" 
     description="An Mission product is an information object that describes a mission."
-    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
     code="Product_Mission"/>

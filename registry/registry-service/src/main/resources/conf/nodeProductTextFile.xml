@@ -4,5 +4,5 @@
     lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Text_File"
     name="Product Text File" 
     description="The Product Text File  consists of a single text file with ASCII character encoding."
-    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
     code="Product_Text_File"/>

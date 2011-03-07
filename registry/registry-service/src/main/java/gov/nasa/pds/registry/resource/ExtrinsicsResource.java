@@ -22,12 +22,11 @@ import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.ObjectStatus;
 import gov.nasa.pds.registry.model.RegistryResponse;
-import gov.nasa.pds.registry.model.Product;
+import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.query.ObjectFilter;
-import gov.nasa.pds.registry.query.ProductQuery;
+import gov.nasa.pds.registry.query.ExtrinsicQuery;
 import gov.nasa.pds.registry.query.QueryOperator;
 import gov.nasa.pds.registry.service.RegistryService;
-import gov.nasa.pds.registry.util.Examples;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -52,16 +51,17 @@ import javax.ws.rs.core.UriInfo;
  * 
  */
 @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-public class ProductsResource {
+public class ExtrinsicsResource {
   @Context
   UriInfo uriInfo;
 
   @Context
   Request request;
 
+  @Context
   RegistryService registryService;
 
-  public ProductsResource(UriInfo uriInfo, Request request,
+  public ExtrinsicsResource(UriInfo uriInfo, Request request,
       RegistryService registryService) {
     this.uriInfo = uriInfo;
     this.request = request;
@@ -69,14 +69,14 @@ public class ProductsResource {
   }
 
   /**
-   * Allows access to all the products managed by this repository. This list of
-   * products is based on the latest received product's logical identifier
+   * Allows access to all the extrinsics managed by this repository. This list of
+   * extrinsics is based on the latest received extrinsic's logical identifier
    * (lid). The header will contain pointers to next and previous when
    * applicable.
    * 
    * @response.representation.200.qname {http://registry.pds.nasa.gov}response
    * @response.representation.200.mediaType application/xml
-   * @response.representation.200.example {@link Examples#RESPONSE_PAGED}
+   * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_PAGED}
    * @response.param {@name Link} {@style header} {@type
    *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI to
    *                 the next and previous pages.}
@@ -132,12 +132,12 @@ public class ProductsResource {
         lid).versionName(versionName).versionId(versionId).objectType(
         objectType).submitter(submitter).status(status).eventType(eventType)
         .build();
-    ProductQuery.Builder queryBuilder = new ProductQuery.Builder().filter(
+    ExtrinsicQuery.Builder queryBuilder = new ExtrinsicQuery.Builder().filter(
         filter).operator(operator);
     if (sort != null) {
       queryBuilder.sort(sort);
     }
-    RegistryResponse rr = registryService.getProducts(queryBuilder.build(),
+    RegistryResponse rr = registryService.getExtrinsics(queryBuilder.build(),
         start, rows);
     Response.ResponseBuilder builder = Response.ok(rr);
     UriBuilder absolute = uriInfo.getAbsolutePathBuilder();
@@ -161,32 +161,32 @@ public class ProductsResource {
   }
 
   /**
-   * Publishes a product to the registry. Publishing includes validation,
+   * Publishes a extrinsic object to the registry. Publishing includes validation,
    * assigning an internal version, validating the submission, and notification.
-   * The submitted product should not contain the same logical identifier as
-   * previously submitted product (412 Precondition Failed), in that scenario
+   * The submitted extrinsic object should not contain the same logical identifier as
+   * previously submitted extrinsic (412 Precondition Failed), in that scenario
    * the version interface should be used.
    * 
-   * @request.representation.qname {http://registry.pds.nasa.gov}product
+   * @request.representation.qname {http://registry.pds.nasa.gov}extrinsicObject
    * @request.representation.mediaType application/xml
-   * @request.representation.example {@link Examples#REQUEST_PRODUCT}
+   * @request.representation.example {@link gov.nasa.pds.registry.util.Examples#REQUEST_EXTRINSIC}
    * @response.param {@name Location} {@style header} {@type
    *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI
    *                 where the created item is accessible.}
    * 
-   * @param product
+   * @param extrinsic
    *          to update to
    * @return returns an HTTP response that indicates an error or the location of
    *         the created product and its guid
    */
   @POST
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Response publishProduct(Product product) {
+  public Response publishProduct(ExtrinsicObject extrinsic) {
     // TODO: Change to set user
     try {
-      String guid = registryService.publishRegistryObject("Unknown", product);
+      String guid = registryService.publishObject("Unknown", extrinsic);
       return Response.created(
-          ProductResource.getProductUri(registryService.getProduct(guid),
+          ExtrinsicResource.getExtrinsicUri(registryService.getExtrinsic(guid),
               uriInfo)).entity(guid).build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
@@ -200,34 +200,34 @@ public class ProductsResource {
    * product carries should already exist in the registry (412 Precondition
    * Failed).
    * 
-   * @request.representation.qname {http://registry.pds.nasa.gov}product
+   * @request.representation.qname {http://registry.pds.nasa.gov}extrinsic
    * @request.representation.mediaType application/xml
-   * @request.representation.example {@link Examples#REQUEST_PRODUCT_VERSIONED}
+   * @request.representation.example {@link gov.nasa.pds.registry.util.Examples#REQUEST_EXTRINSIC_VERSIONED}
    * @response.param {@name Location} {@style header} {@type
    *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI
    *                 where the created item is accessible.}
-   * @param product
+   * @param extrinsic
    *          to update to
    * @param lid
-   *          the logical identifier to the product
+   *          the logical identifier to the extrinsic
    * @param major
    *          if true indicates a major revision otherwise considered minor
    * @return returns an HTTP response that indicates an error or the location of
-   *         the versioned product and its guid
+   *         the versioned extrinsic and its guid
    */
   @POST
   @Path("{lid}")
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Response versionProduct(Product product, @PathParam("lid") String lid,
+  public Response versionExtrinsic(ExtrinsicObject extrinsic, @PathParam("lid") String lid,
       @QueryParam("major") @DefaultValue("true") boolean major) {
     // TODO Check to make sure the path lid matches that of the product
     // provided
     // TODO Change to set user
     try {
-      String guid = registryService.versionProduct("Unknown", lid, product,
+      String guid = registryService.versionObject("Unknown", lid, extrinsic,
           major);
       return Response.created(
-          ProductResource.getProductUri(registryService.getProduct(guid),
+          ExtrinsicResource.getExtrinsicUri(registryService.getExtrinsic(guid),
               uriInfo)).entity(guid).build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
@@ -236,71 +236,71 @@ public class ProductsResource {
   }
 
   /**
-   * Retrieves the collection of products that share the same local identifier.
-   * This method supports finding all versions of an product.
+   * Retrieves the collection of extrinsics that share the same local identifier.
+   * This method supports finding all versions of extrinsic.
    * 
    * @response.representation.200.qname {http://registry.pds.nasa.gov}response
    * @response.representation.200.mediaType application/xml
-   * @response.representation.200.example {@link Examples#RESPONSE_PRODUCT_VERSIONS}
+   * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_EXTRINSIC_VERSIONS}
    * 
    * @param lid
-   *          local identifier of set products to retrieve
-   * @return collection of products
+   *          local identifier of set extrinsics to retrieve
+   * @return collection of extrinsics
    */
   @GET
   @Path("{lid}/all")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public RegistryResponse getProductVersions(@PathParam("lid") String lid) {
-    return new RegistryResponse(registryService.getProductVersions(lid));
+  public RegistryResponse getExtrinsicVersions(@PathParam("lid") String lid) {
+    return new RegistryResponse(registryService.getObjectVersions(lid, ExtrinsicObject.class));
   }
 
   /**
    * Retrieves the earliest product from the registry. The local identifier
    * points to a collection of versions of the same product.
    * 
-   * @response.representation.200.qname {http://registry.pds.nasa.gov}product
+   * @response.representation.200.qname {http://registry.pds.nasa.gov}extrinsicObject
    * @response.representation.200.mediaType application/xml
-   * @response.representation.200.example {@link Examples#RESPONSE_PRODUCT}
+   * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_EXTRINSIC}
    * 
    * @param lid
    *          local identifier of product to retrieve
    * 
-   * @return Product within the registry with the lid and version
+   * @return ExtrinsicObject within the registry with the lid and version
    */
   @GET
   @Path("{lid}/earliest")
   public Response getEarliestVersion(@PathParam("lid") String lid) {
-    Product product = registryService.getEarliestProduct(lid);
-    Response.ResponseBuilder builder = Response.ok(product);
-    ProductResource.addNextProductLink(builder, uriInfo, registryService,
-        product);
-    ProductResource.addLatestProductLink(builder, uriInfo, registryService,
-        product);
+    ExtrinsicObject extrinsic = (ExtrinsicObject) registryService.getEarliestObject(lid, ExtrinsicObject.class);
+    Response.ResponseBuilder builder = Response.ok(extrinsic);
+    ExtrinsicResource.addNextExtrinsicLink(builder, uriInfo, registryService,
+        extrinsic);
+    ExtrinsicResource.addLatestExtrinsicLink(builder, uriInfo, registryService,
+        extrinsic);
     return builder.build();
   }
 
   /**
-   * Retrieves the latest product from the registry. The local identifier points
-   * to a collection of versions of the same product.
+   * Retrieves the latest extrinsic from the registry. The local identifier points
+   * to a collection of versions of the same extrinsic.
    * 
-   * @response.representation.200.qname {http://registry.pds.nasa.gov}product
+   * @response.representation.200.qname {http://registry.pds.nasa.gov}extrinsicObject
    * @response.representation.200.mediaType application/xml
-   * @response.representation.200.example {@link Examples#RESPONSE_PRODUCT}
+   * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_EXTRINSIC}
    * 
    * @param lid
-   *          the logical identifier to the product
+   *          the logical identifier to the extrinsic
    * 
-   * @return Product within the registry with the lid and version
+   * @return Extrinsic within the registry with the lid and version
    */
   @GET
   @Path("{lid}")
   public Response getLatestVersion(@PathParam("lid") String lid) {
-    Product product = registryService.getLatestProduct(lid);
-    Response.ResponseBuilder builder = Response.ok(product);
-    ProductResource.addPreviousProductLink(builder, uriInfo, registryService,
-        product);
-    ProductResource.addEarliestProductLink(builder, uriInfo, registryService,
-        product);
+    ExtrinsicObject extrinsic = (ExtrinsicObject) registryService.getLatestObject(lid, ExtrinsicObject.class);
+    Response.ResponseBuilder builder = Response.ok(extrinsic);
+    ExtrinsicResource.addPreviousExtrinsicLink(builder, uriInfo, registryService,
+        extrinsic);
+    ExtrinsicResource.addEarliestExtrinsicLink(builder, uriInfo, registryService,
+        extrinsic);
     return builder.build();
   }
 
@@ -312,9 +312,9 @@ public class ProductsResource {
    * @return the resource that manages an Product in the registry
    */
   @Path("{lid}/{versionId}")
-  public ProductResource getProductResource(@PathParam("lid") String lid,
+  public ExtrinsicResource getExtrinsicResource(@PathParam("lid") String lid,
       @PathParam("versionId") String versionId) {
-    return new ProductResource(uriInfo, request, registryService, lid,
+    return new ExtrinsicResource(uriInfo, request, registryService, lid,
         versionId);
   }
 

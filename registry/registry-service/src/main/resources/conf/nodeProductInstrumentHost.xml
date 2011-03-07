@@ -4,5 +4,5 @@
     lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Instrument_Host"
     name="Product Instrument Host" 
     description="An Instrument Host product is an information object that describes an instrument host."
-    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
     code="Product_Instrument_Host"/>

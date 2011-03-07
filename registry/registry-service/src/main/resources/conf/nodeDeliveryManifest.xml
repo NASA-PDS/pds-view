@@ -4,5 +4,5 @@
     lid="urn:nasa:pds:profile:regrep:ObjectType:Delivery_Manifest"
     name="Delivery Manifest" 
     description="A delivery manifest is a system product  that contains a table of references to one or more  files."
-    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
     code="Delivery_Manifest"/>

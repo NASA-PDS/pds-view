@@ -4,5 +4,5 @@
     lid="urn:nasa:pds:profile:regrep:ObjectType:Product_PDS_Guest"
     name="Product PDS Guest" 
     description="A PDS Guest product is an information object that describes a person in the role of guest user of the PDS."
-    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
     code="Product_PDS_Guest"/>

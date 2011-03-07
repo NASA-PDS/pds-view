@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classificationNode xmlns="http://registry.pds.nasa.gov" 
+    guid="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    lid="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    name="Extrinsic Object" 
+    description="This is the classification node for an Extrinsic Object. This represents a core registry object."
+    parent="urn:registry:ObjectType:RegistryObject"
+    code="ExtrinsicObject"/>

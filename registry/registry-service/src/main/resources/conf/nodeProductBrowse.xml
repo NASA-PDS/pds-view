@@ -4,5 +4,5 @@
     lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Browse"
     name="Product Browse" 
     description="The Product Browse class defines a product consisting of one  encoded byte stream digital object."
-    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
     code="Product_Browse"/>

@@ -22,7 +22,6 @@ import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.QueryOperator;
 import gov.nasa.pds.registry.service.RegistryService;
-import gov.nasa.pds.registry.util.Examples;
 
 import java.net.URI;
 import java.util.List;
@@ -72,7 +71,7 @@ public class AssociationsResource {
    * 
    * @response.representation.200.qname {http://registry.pds.nasa.gov}response
    * @response.representation.200.mediaType application/xml
-   * @response.representation.200.example {@link Examples#RESPONSE_ASSOCIATION_QUERY}
+   * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_ASSOCIATION_QUERY}
    * 
    * @param start
    *          the index at which to start the result list from
@@ -143,7 +142,7 @@ public class AssociationsResource {
    * 
    * @response.representation.200.qname {http://registry.pds.nasa.gov}response
    * @response.representation.200.mediaType application/xml
-   * @response.representation.200.example {@link Examples#RESPONSE_ASSOCIATION_QUERY}
+   * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_ASSOCIATION_QUERY}
    * @param start
    *          the index at which to start the result list from
    * @param rows
@@ -173,7 +172,7 @@ public class AssociationsResource {
    * 
    * @request.representation.qname {http://registry.pds.nasa.gov}association
    * @request.representation.mediaType application/xml
-   * @request.representation.example {@link Examples#REQUEST_ASSOCIATION}
+   * @request.representation.example {@link gov.nasa.pds.registry.util.Examples#REQUEST_ASSOCIATION}
    * @response.param {@name Location} {@style header} {@type
    *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI
    *                 where the created item is accessible.}
@@ -189,7 +188,7 @@ public class AssociationsResource {
     // TODO: Change to add user
     try {
       String guid = registryService
-          .publishRegistryObject("Unkown", association);
+          .publishObject("Unkown", association);
       return Response.created(
           AssociationsResource.getAssociationUri(registryService
               .getAssocation(guid), uriInfo)).entity(guid).build();
@@ -211,7 +210,7 @@ public class AssociationsResource {
    * 
    * @response.representation.200.qname {http://registry.pds.nasa.gov}response
    * @response.representation.200.mediaType application/xml
-   * @response.representation.200.example {@link Examples#RESPONSE_ASSOCIATION}
+   * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_ASSOCIATION}
    * @return the association
    */
   @GET
@@ -232,7 +231,7 @@ public class AssociationsResource {
   @DELETE
   @Path("{guid}")
   public Response deleteAssociation(@PathParam("guid") String guid) {
-    registryService.deleteRegistryObject("Unknown", guid, Association.class);
+    registryService.deleteObject("Unknown", guid, Association.class);
     return Response.ok().build();
   }
 

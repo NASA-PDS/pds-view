@@ -4,5 +4,5 @@
     lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Element_Definition"
     name="Product Element Definition" 
     description="The Product Element Definition provides a data element definition in XML encoding."
-    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
     code="Product_Element_Definition"/>

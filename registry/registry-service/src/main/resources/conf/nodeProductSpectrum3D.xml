@@ -4,5 +4,5 @@
     lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Spectrum_3D"
     name="Product Spectrum 3D" 
     description="The Product Spectrum 3D class defines a product consisting of at least one 3D spectrum and other associated data objects and metadata."
-    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
     code="Product_Spectrum_3D"/>

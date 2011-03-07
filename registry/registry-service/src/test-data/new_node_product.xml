@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:registry:ObjectTypeScheme:Product"
-    name="Product Node" 
-    description="This is the classification node for product."
-    parent="urn:registry:ObjectTypeScheme"
-    code="Product"/>
+    guid="urn:nasa:pds:profile:regrep:ObjectType:ProductTest"
+    lid="urn:nasa:pds:profile:regrep:ObjectType:ProductTest"
+    name="Product Test Node" 
+    description="This is the classification node for testing."
+    parent="urn:registry:classificationScheme:ObjectTypeScheme:Test"
+    code="ProductTest"/>

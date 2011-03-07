@@ -15,10 +15,9 @@
 
 package gov.nasa.pds.registry.resource;
 
-import gov.nasa.pds.registry.model.Product;
-import gov.nasa.pds.registry.model.StatusInfo;
+import gov.nasa.pds.registry.model.RegistryObject;
+import gov.nasa.pds.registry.model.Report;
 import gov.nasa.pds.registry.service.RegistryService;
-import gov.nasa.pds.registry.util.Examples;
 
 import java.util.Collection;
 
@@ -61,22 +60,22 @@ public class RegistryResource {
    * the health of the registry.
    * 
    * @response.representation.200.qname 
-   *                                    {http://registry.pds.nasa.gov}status_information
+   *                                    {http://registry.pds.nasa.gov}report
    * @response.representation.200.mediaType application/xml
-   * @response.representation.200.example {@link Examples#RESPONSE_STATUS}
+   * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_REPORT}
    * 
    * @return registry status
    */
   @GET
-  @Path("status")
+  @Path("report")
   @Produces( { MediaType.APPLICATION_XML, MediaType.TEXT_XML,
       MediaType.APPLICATION_JSON })
-  public StatusInfo getStatus() {
-    return registryService.getStatus();
+  public Report getReport() {
+    return registryService.getReport();
   }
 
   /**
-   * Synchronizes the incoming registry products with those already present in
+   * Synchronizes the incoming registry objects with those already present in
    * the registry.
    * 
    * @param products
@@ -86,20 +85,20 @@ public class RegistryResource {
   @Path("sync")
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public void synchronize(Collection<Product> products) {
+  public void synchronize(Collection<RegistryObject> products) {
     // TODO implement
   }
 
   /**
-   * Provides access to operations that can be done on products. The product
+   * Provides access to operations that can be done on extrinsics. The extrinsic
    * resource is simply a subresource of the registry resource.
    * 
    * @return product resource that will process the remaining portion of the
    *         request
    */
-  @Path("products")
-  public ProductsResource getProductsResource() {
-    return new ProductsResource(uriInfo, request, this.registryService);
+  @Path("extrinsics")
+  public ExtrinsicsResource getExtrinsicsResource() {
+    return new ExtrinsicsResource(uriInfo, request, this.registryService);
   }
 
   /**

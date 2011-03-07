@@ -4,5 +4,5 @@
     lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Zipped"
     name="Product Zipped" 
     description="The Product_Zipped  is a product with references to other products. The referenced products and all associated products and files are packaged into a single ZIP file."
-    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
     code="Product_Zipped"/>

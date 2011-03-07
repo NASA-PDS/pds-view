@@ -4,5 +4,5 @@
     lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Table_Character_Grouped"
     name="Product Table Character Grouped" 
     description="The Product Table Character Grouped class defines a product consisting of at least one Character table with groups of repeating fields and other associated data objects and metadata."
-    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
     code="Product_Table_Character_Grouped"/>

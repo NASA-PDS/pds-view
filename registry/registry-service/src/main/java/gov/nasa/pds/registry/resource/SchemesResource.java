@@ -20,7 +20,6 @@ import java.net.URI;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.ClassificationScheme;
 import gov.nasa.pds.registry.service.RegistryService;
-import gov.nasa.pds.registry.util.Examples;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -67,7 +66,7 @@ public class SchemesResource {
    * @request.representation.qname 
    *                               {http://registry.pds.nasa.gov}classificationScheme
    * @request.representation.mediaType application/xml
-   * @request.representation.example {@link Examples#REQUEST_SCHEME}
+   * @request.representation.example {@link gov.nasa.pds.registry.util.Examples#REQUEST_SCHEME}
    * @response.param {@name Location} {@style header} {@type
    *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI
    *                 where the created item is accessible.}
@@ -81,10 +80,10 @@ public class SchemesResource {
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response publishScheme(ClassificationScheme scheme) {
     try {
-      String guid = registryService.publishRegistryObject("Unknown", scheme);
+      String guid = registryService.publishObject("Unknown", scheme);
       return Response.created(
           SchemesResource.getSchemeUri((ClassificationScheme) registryService
-              .getRegistryObject(guid, scheme.getClass()), uriInfo)).entity(
+              .getObject(guid, scheme.getClass()), uriInfo)).entity(
           guid).build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
@@ -98,7 +97,7 @@ public class SchemesResource {
    * @response.representation.200.qname 
    *                                    {http://registry.pds.nasa.gov}classificationScheme
    * @response.representation.200.mediaType application/xml
-   * @response.representation.200.example {@link Examples#RESPONSE_SCHEME}
+   * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_SCHEME}
    * @param schemeGuid
    *          globally unique id of scheme
    * @return the classification scheme
@@ -108,7 +107,7 @@ public class SchemesResource {
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public ClassificationScheme getClassificationScheme(
       @PathParam("schemeGuid") String schemeGuid) {
-    return (ClassificationScheme) registryService.getRegistryObject(schemeGuid,
+    return (ClassificationScheme) registryService.getObject(schemeGuid,
         ClassificationScheme.class);
   }
 
@@ -123,7 +122,7 @@ public class SchemesResource {
   @Path("{schemeGuid}")
   public Response deleteClassificationScheme(
       @PathParam("schemeGuid") String schemeGuid) {
-    registryService.deleteRegistryObject("Unknown", schemeGuid,
+    registryService.deleteObject("Unknown", schemeGuid,
         ClassificationScheme.class);
     return Response.ok().build();
   }
@@ -139,8 +138,9 @@ public class SchemesResource {
   @Path("{schemeGuid}/nodes")
   public NodesResource getNodesResource(
       @PathParam("schemeGuid") String schemeGuid) {
+    ClassificationScheme scheme = (ClassificationScheme) registryService.getObject(schemeGuid, ClassificationScheme.class);
     return new NodesResource(this.uriInfo, this.request, this.registryService,
-        schemeGuid);
+        scheme);
   }
 
   protected static URI getSchemeUri(ClassificationScheme scheme, UriInfo uriInfo) {

@@ -68,12 +68,12 @@
       </p>
 
       <subsection name="Products">
-        <p>In PDS terms, a product can be a data product, document, element definition, mission description, schema, etc. The following is an example of a product description in XML form:
+        <p>In PDS terms, a product can be a data product, document, element definition, mission description, schema, etc. Within the ebXML terminology this maps to an Extrinsic Object which is simply a way for a particular instantiation of a registry to extend its model. The following is an example of a product description in XML form:
         </p>
 
         <source>
 &lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
-&lt;product xmlns="http://registry.pds.nasa.gov" 
+&lt;extrinsicObject xmlns="http://registry.pds.nasa.gov" 
   lid="1234" 
   versionId="1.0" 
   name="Product 1234 v1" 
@@ -89,7 +89,7 @@
     &lt;value&gt;(818)123-4567&lt;/value&gt;
     &lt;value&gt;(818)765-4321&lt;/value&gt;
   &lt;/slot&gt;
-&lt;/product&gt;
+&lt;/extrinsicObject&gt;
         </source>
 
         <p>The product description above is contained in the <i>new_product.xml</i> file, which can be found in the <i>/examples</i> directory of the software distribution package. The following command registers this product with the service:
@@ -97,7 +97,7 @@
 
         <source>
 % curl -X POST -H "Content-type:application/xml" -v -d @new_product.xml \
-http://localhost:8080/registry-service/registry/products
+http://localhost:8080/registry-service/registry/extrinsics
         </source>
 
         <p>A successful registration with the above command would produce the following output to standard out: 
@@ -109,7 +109,7 @@ http://localhost:8080/registry-service/registry/products
 *   Trying fe80::1... Connection refused
 *   Trying 127.0.0.1... connected
 * Connected to localhost (127.0.0.1) port 8080 (#0)
-&gt; POST registry-service/registry/products HTTP/1.1
+&gt; POST registry-service/registry/extrinsics HTTP/1.1
 &gt; User-Agent: curl/7.16.3 (powerpc-apple-darwin9.0) ...
 &gt; Host: localhost:8080
 &gt; Accept: */*
@@ -118,7 +118,7 @@ http://localhost:8080/registry-service/registry/products
 &gt; 
 &lt; HTTP/1.1 201 Created
 &lt; Server: Apache-Coyote/1.1
-&lt; Location: http://localhost:8080/registry-service/registry/products/1234/1.0
+&lt; Location: http://localhost:8080/registry-service/registry/extrinsics/1234/1.0
 &lt; Content-Type: application/xml
 &lt; Content-Length: 0
 &lt; Date: Wed, 14 Apr 2010 20:33:32 GMT
@@ -133,7 +133,7 @@ urn:uuid:53451c5e-1809-4799-8dd8-060672f3e0e1
 
         <source>
 % curl -X POST -H "Content-type:application/xml" -v -d @new_product_v2.xml \
-http://localhost:8080/registry-service/registry/products/1234
+http://localhost:8080/registry-service/registry/extrinsics/1234
         </source>
 
         <p>The value of <i>1234</i> in the example above represents the logical identifier of the original published product, which must be specified in order for the service to recognize it as a new version. The following is an example of a product description in JSON form:
@@ -155,7 +155,7 @@ http://localhost:8080/registry-service/registry/products/1234
 
         <source>
 % curl -X POST -H "Content-type:application/json" -v -d @json_product.txt \
-http://localhost:8080/registry-service/registry/products
+http://localhost:8080/registry-service/registry/extrinsics
         </source>
       </subsection>
 
@@ -237,7 +237,7 @@ http://localhost:8080/registry-service/registry/services
 
         <source>
 % curl -X GET -H "Accept:application/xml" -v \
-http://localhost:8080/registry-service/registry/products
+http://localhost:8080/registry-service/registry/extrinsics
         </source>
 
         <p>The interface above accepts a number of parameters for filtering the return results. See the <a href="../api/index.html">API</a> section for a detailed list of the parameters. The following command retrieves the latest product with logical identifier <i>1234</i> from the service:
@@ -245,7 +245,7 @@ http://localhost:8080/registry-service/registry/products
 
         <source>
 % curl -X GET -H "Accept:application/xml" -v \
-http://localhost:8080/registry-service/registry/products/1234
+http://localhost:8080/registry-service/registry/extrinsics/1234
         </source>
 
         <p>In order to retrieve the earliest product with logical identifier <i>1234</i>, append <i>/earliest</i> to the URL in the example above. In order to retrieve all products with logical identifier <i>1234</i>, append <i>/all</i> to the URL in the example above. In order to retrieve a specific product with logical identifier <i>1234</i>, append the version identifier (e.g., <i>/1.0</i>) to the URL in the example above. The following command retrieves the specific product with logical identifier <i>1234</i> and version identifier <i>1.0</i>, but in JSON form:
@@ -253,7 +253,7 @@ http://localhost:8080/registry-service/registry/products/1234
 
         <source>
 % curl -X GET -H "Accept:application/json" -v \
-http://localhost:8080/registry-service/registry/products/1234/1.0
+http://localhost:8080/registry-service/registry/extrinsics/1234/1.0
         </source>
 
         <p>The example above will not work in a browser because it is not possible to set the HTTP Accept Header via a browser, but the following command will work in a browser by encoding the return type with a suffix in the URL:
@@ -261,7 +261,7 @@ http://localhost:8080/registry-service/registry/products/1234/1.0
 
         <source>
 % curl -X GET -v \
-http://localhost:8080/registry-service/registry/products/1234/1.0.json
+http://localhost:8080/registry-service/registry/extrinsics/1234/1.0.json
         </source>
       </subsection>
 
@@ -326,7 +326,7 @@ http://localhost:8080/registry-service/registry/events/&lt;guid&gt;
 
       <source>
 % curl -X POST -H "Content-type:application/xml" -v \
-http://localhost:8080/registry-service/registry/products/1234/1.0/&lt;action&gt;
+http://localhost:8080/registry-service/registry/extrinsics/1234/1.0/&lt;action&gt;
       </source>
 
       <p>Valid values for &lt;action&gt; include <i>approve</i>, <i>deprecate</i> and <i>undeprecate</i>. The following diagram details the relationship of the status state with the above actions.
@@ -341,7 +341,7 @@ http://localhost:8080/registry-service/registry/products/1234/1.0/&lt;action&gt;
 
       <source>
 % curl -X DELETE -v \
-http://localhost:8080/registry-service/registry/products/1234/1.0
+http://localhost:8080/registry-service/registry/extrinsics/1234/1.0
       </source>
 
       <p>The following two examples delete an association and a service, respectively, by specifying their global unique identifier:
@@ -362,7 +362,7 @@ http://localhost:8080/registry-service/registry/services/&lt;guid&gt;
 
       <source>
 % curl -X GET -H "Content-type:application/xml" -v \
-http://localhost:8080/registry-service/registry/status
+http://localhost:8080/registry-service/registry/report
       </source>
     </section>
 

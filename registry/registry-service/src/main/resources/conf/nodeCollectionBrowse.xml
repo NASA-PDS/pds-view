@@ -4,5 +4,5 @@
     lid="urn:nasa:pds:profile:regrep:ObjectType:Collection_Browse"
     name="Collection Browse" 
     description="A Browse collection is a product that has a table of references to one or more browse products."
-    parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
     code="Collection_Browse"/>

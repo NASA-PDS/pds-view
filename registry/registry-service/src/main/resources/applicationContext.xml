@@ -46,7 +46,7 @@
 	<bean id="idGenerator" class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
 	    p:home="${registry.home}"/>
 	
-	<bean id="statusInfo" class="gov.nasa.pds.registry.model.StatusInfo"
+	<bean id="report" class="gov.nasa.pds.registry.model.Report"
 		p:status="OK"/>
 	
 	<bean id="dataSource"

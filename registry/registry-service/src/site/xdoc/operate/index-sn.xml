@@ -34,8 +34,8 @@
       <source>
 &lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
 &lt;classificationScheme xmlns="http://registry.pds.nasa.gov" 
-  guid="urn:registry:ObjectTypeScheme"
-  name="Test Canonical Object Type Classification Scheme" 
+  guid="urn:registry:classificationScheme:ObjectTypeScheme:Test"
+  name="TestObjectType" 
   description="This is the canonical object type classification 
   that is one of the core registry objects"
   isInternal="true"
@@ -56,11 +56,12 @@ http://localhost:8080/registry-service/registry/schemes
       <source>
 &lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
 &lt;classificationNode xmlns="http://registry.pds.nasa.gov" 
-  guid="urn:registry:ObjectTypeScheme:Product"
-  name="Product Node" 
-  description="This is the classification node for product."
-  parent="urn:registry:ObjectTypeScheme"
-  code="Product"/&gt;
+  guid="urn:nasa:pds:profile:regrep:ObjectType:ProductTest"
+  lid="urn:nasa:pds:profile:regrep:ObjectType:ProductTest"
+  name="Product Test Node" 
+  description="This is the classification node for testing."
+  parent="urn:registry:classificationScheme:ObjectTypeScheme:Test"
+  code="ProductTest"/&gt;
       </source>
 
       <p>The node description above is contained in the <i>new_node_product.xml</i> file. The following command registers this node with the service:

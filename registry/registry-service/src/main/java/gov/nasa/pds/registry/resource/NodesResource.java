@@ -19,9 +19,9 @@ import java.net.URI;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.ClassificationNode;
+import gov.nasa.pds.registry.model.ClassificationScheme;
 import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.service.RegistryService;
-import gov.nasa.pds.registry.util.Examples;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -53,17 +53,17 @@ public class NodesResource {
   Request request;
 
   @Context
-  String schemeGuid;
+  ClassificationScheme scheme;
 
   @Context
   RegistryService registryService;
 
   public NodesResource(UriInfo uriInfo, Request request,
-      RegistryService registryService, String schemeGuid) {
+      RegistryService registryService, ClassificationScheme scheme) {
     this.uriInfo = uriInfo;
     this.request = request;
     this.registryService = registryService;
-    this.schemeGuid = schemeGuid;
+    this.scheme = scheme;
   }
 
   /**
@@ -72,7 +72,7 @@ public class NodesResource {
    * @request.representation.qname 
    *                               {http://registry.pds.nasa.gov}classificationNode
    * @request.representation.mediaType application/xml
-   * @request.representation.example {@link Examples#REQUEST_NODE}
+   * @request.representation.example {@link gov.nasa.pds.registry.util.Examples#REQUEST_NODE}
    * @response.param {@name Location} {@style header} {@type
    *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI
    *                 where the created item is accessible.}
@@ -85,13 +85,13 @@ public class NodesResource {
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response publishNode(ClassificationNode node) {
     if (node.getParent() == null) {
-      node.setParent(schemeGuid);
+      node.setParent(scheme.getGuid());
     }
     try {
-      String guid = registryService.publishRegistryObject("Unknown", node);
+      String guid = registryService.publishObject("Unknown", node);
       return Response.created(
-          NodesResource.getNodeUri(schemeGuid,
-              (ClassificationNode) registryService.getRegistryObject(guid, node
+          NodesResource.getNodeUri(scheme.getGuid(),
+              (ClassificationNode) registryService.getObject(guid, node
                   .getClass()), uriInfo)).entity(guid).build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
@@ -104,7 +104,7 @@ public class NodesResource {
    * 
    * @response.representation.200.qname {http://registry.pds.nasa.gov}response
    * @response.representation.200.mediaType application/xml
-   * @response.representation.200.example {@link Examples#RESPONSE_NODES}
+   * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_NODES}
    * 
    * @return List of nodes
    */
@@ -112,7 +112,7 @@ public class NodesResource {
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public RegistryResponse getClassificationNodes() {
     return new RegistryResponse(registryService
-        .getClassificationNodes(schemeGuid));
+        .getClassificationNodes(scheme.getGuid()));
   }
 
   /**
@@ -121,7 +121,7 @@ public class NodesResource {
    * @response.representation.200.qname 
    *                                    {http://registry.pds.nasa.gov}classificationNode
    * @response.representation.200.mediaType application/xml
-   * @response.representation.200.example {@link Examples#RESPONSE_NODE}
+   * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_NODE}
    * 
    * @param nodeGuid
    *          globally unique identifier of classification node
@@ -132,7 +132,7 @@ public class NodesResource {
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public ClassificationNode getClassificationNode(
       @PathParam("nodeGuid") String nodeGuid) {
-    return (ClassificationNode) registryService.getRegistryObject(nodeGuid,
+    return (ClassificationNode) registryService.getObject(nodeGuid,
         ClassificationNode.class);
   }
 
@@ -147,7 +147,7 @@ public class NodesResource {
   @Path("{nodeGuid}")
   public Response deleteClassificationNode(
       @PathParam("nodeGuid") String nodeGuid) {
-    registryService.deleteRegistryObject("Unknown", nodeGuid,
+    registryService.deleteObject("Unknown", nodeGuid,
         ClassificationNode.class);
     return Response.ok().build();
   }

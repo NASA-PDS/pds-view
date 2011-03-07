@@ -24,6 +24,9 @@
 
   <body>
     <release version="0.6.0" date="TBD" description="TBD">
+      <action dev="pramirez" type="update">
+        PDS-7 Mapped Product to ExtrinsicObject to align better with information model for registry. Moved all interfaces that ended in product(s) to extrinsic(s).
+      </action>
       <action dev="pramirez" type="fix">
         Set the object type for all intrinsic objects.
       </action>
