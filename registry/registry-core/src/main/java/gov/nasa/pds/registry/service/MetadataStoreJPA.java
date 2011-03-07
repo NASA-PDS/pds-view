@@ -19,13 +19,13 @@ import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.RegistryResponse;
-import gov.nasa.pds.registry.model.Product;
+import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ObjectFilter;
 import gov.nasa.pds.registry.query.ObjectQuery;
-import gov.nasa.pds.registry.query.ProductQuery;
+import gov.nasa.pds.registry.query.ExtrinsicQuery;
 import gov.nasa.pds.registry.query.QueryOperator;
 
 import java.util.ArrayList;
@@ -73,16 +73,16 @@ public class MetadataStoreJPA implements MetadataStore {
    * (non-Javadoc)
    * 
    * @see
-   * gov.nasa.pds.registry.service.MetadataStore#getProducts(gov.nasa.pds.registry
+   * gov.nasa.pds.registry.service.MetadataStore#getExtrinsics(gov.nasa.pds.registry
    * .query.ProductQuery, java.lang.Integer, java.lang.Integer)
    */
   @Override
   @Transactional(readOnly = true)
-  public RegistryResponse getProducts(ProductQuery query, Integer start,
+  public RegistryResponse getExtrinsics(ExtrinsicQuery query, Integer start,
       Integer rows) {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Product> cq = cb.createQuery(Product.class);
-    Root<Product> productEntity = cq.from(Product.class);
+    CriteriaQuery<ExtrinsicObject> cq = cb.createQuery(ExtrinsicObject.class);
+    Root<ExtrinsicObject> productEntity = cq.from(ExtrinsicObject.class);
     ObjectFilter filter = query.getFilter();
     List<Predicate> predicates = new ArrayList<Predicate>();
     if (filter != null) {
@@ -140,7 +140,7 @@ public class MetadataStoreJPA implements MetadataStore {
       orders.add(cb.asc(productEntity.get("guid")));
     }
     cq.orderBy(orders);
-    TypedQuery<Product> dbQuery = entityManager.createQuery(cq);
+    TypedQuery<ExtrinsicObject> dbQuery = entityManager.createQuery(cq);
     RegistryResponse response = new RegistryResponse(start, (long) dbQuery
         .getResultList().size(), dbQuery.setFirstResult(start - 1)
         .setMaxResults(rows).getResultList());

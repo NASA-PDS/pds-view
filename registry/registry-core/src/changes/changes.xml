@@ -24,6 +24,12 @@
 
   <body>
     <release version="0.1.0-dev" date="TBD" description="TBD">
+      <action dev="pramirez" type="fix">
+        PDS-7 Mapped Product to ExtrinsicObject to follow more from information model agnostic from the PDS model.
+      </action>
+      <action dev="pramirez" type="update">
+        Refactored model classes from the service classes to allow for the core to be included as a jar dependency.
+      </action>
     </release>
   </body>
 </document>

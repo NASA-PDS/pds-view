@@ -20,13 +20,13 @@ import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationQuery;
-import gov.nasa.pds.registry.query.ProductQuery;
+import gov.nasa.pds.registry.query.ExtrinsicQuery;
 import gov.nasa.pds.registry.query.ObjectQuery;
 
 import java.util.List;
 
 /**
- * This interface provides the methods required by the {@link RegistryService}
+ * This interface provides the methods required by the {@link RegistryServiceImpl}
  * in order for it to operate. This is the extension point one would implement
  * when providing a different back end storage.
  * 
@@ -40,14 +40,14 @@ public interface MetadataStore {
    * the requested result list range
    * 
    * @param query
-   *          to filter against products
+   *          to filter against extrinsics
    * @param start
    *          index within the results to start at. This index is one based
    * @param rows
    *          number of results to get
-   * @return list of products
+   * @return list of extrinsics
    */
-  public RegistryResponse getProducts(ProductQuery query, Integer start,
+  public RegistryResponse getExtrinsics(ExtrinsicQuery query, Integer start,
       Integer rows);
 
   /**
@@ -120,7 +120,7 @@ public interface MetadataStore {
    * @param guid
    *          of requested registry object
    * @param objectClass
-   *          type of object. For instance, a {@link Product},
+   *          type of object. For instance, a {@link ExtrinsicObject},
    *          {@link ClassificationNode}, {@link Service}, etc. Anything that
    *          extends from a {@link RegistryObject}
    * @return

@@ -23,24 +23,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @Entity
-@XmlRootElement(name = "product", namespace = "http://registry.pds.nasa.gov")
+@XmlRootElement(name = "extrinsicObject", namespace = "http://registry.pds.nasa.gov")
 @XmlType(name = "")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Product extends RegistryObject {
+public class ExtrinsicObject extends RegistryObject {
 
   private static final long serialVersionUID = 4629220512391515679L;
 
   /**
-   * Each Product instance MAY have a contentVersion attribute. The value of the
+   * Each ExtrinsicObject instance MAY have a contentVersion attribute. The value of the
    * contentVersion attribute. The contentVersion attribute provides information
-   * about the specific version of the RepositoryItem associated with a Product.
+   * about the specific version of the RepositoryItem associated with a ExtrinsicObject.
    * The contentVersion attribute is set by the registry.
    */
   @XmlAttribute
   private String contentVersion;
 
   /**
-   * Each Product instance MAY have a mimeType attribute defined. The mimeType
+   * Each ExtrinsicObject instance MAY have a mimeType attribute defined. The mimeType
    * provides information on the type of repository item catalogued by the
    * Product instance. The value of this attribute SHOULD be a registered MIME
    * media type at http://www.iana.org/assignments/media-types.
@@ -48,7 +48,8 @@ public class Product extends RegistryObject {
   @XmlAttribute
   private String mimeType;
 
-  public Product() {
+  public ExtrinsicObject() {
+    this.setObjectType(ExtrinsicObject.class.getSimpleName());
   }
 
   public String getContentVersion() {
@@ -85,7 +86,7 @@ public class Product extends RegistryObject {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Product other = (Product) obj;
+    ExtrinsicObject other = (ExtrinsicObject) obj;
     if (contentVersion == null) {
       if (other.contentVersion != null)
         return false;

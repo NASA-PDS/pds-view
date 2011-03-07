@@ -15,71 +15,29 @@
 
 package gov.nasa.pds.registry.service;
 
-import gov.nasa.pds.registry.exception.ExceptionType;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Association;
-import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.ClassificationScheme;
-import gov.nasa.pds.registry.model.EventType;
+import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.ObjectAction;
-import gov.nasa.pds.registry.model.ObjectStatus;
-import gov.nasa.pds.registry.model.RegistryResponse;
-import gov.nasa.pds.registry.model.Product;
 import gov.nasa.pds.registry.model.RegistryObject;
-import gov.nasa.pds.registry.model.Service;
-import gov.nasa.pds.registry.model.ServiceBinding;
-import gov.nasa.pds.registry.model.SpecificationLink;
-import gov.nasa.pds.registry.model.StatusInfo;
+import gov.nasa.pds.registry.model.RegistryResponse;
+import gov.nasa.pds.registry.model.Report;
 import gov.nasa.pds.registry.model.naming.IdentifierGenerator;
 import gov.nasa.pds.registry.model.naming.Versioner;
 import gov.nasa.pds.registry.query.AssociationQuery;
+import gov.nasa.pds.registry.query.ExtrinsicQuery;
 import gov.nasa.pds.registry.query.ObjectQuery;
-import gov.nasa.pds.registry.query.ProductQuery;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
- * This class contains all the logic for publishing, versioning, updating, and
- * deleting registry objects. The registry aims to support the registry portion
- * of the CCSDS regrep specification at the same time it leverages the much of
- * the ebXML information model.
- * 
  * @author pramirez
- * 
+ *
  */
-@org.springframework.stereotype.Service("registryService")
-public class RegistryService {
-
-  @Autowired
-  MetadataStore metadataStore;
-
-  @Autowired
-  @Qualifier("versioner")
-  Versioner versioner;
-
-  @Autowired
-  @Qualifier("idGenerator")
-  IdentifierGenerator idGenerator;
-
-  @Autowired
-  @Qualifier("statusInfo")
-  StatusInfo statusInfo;
-
-  private static List<String> CORE_OBJECT_TYPES = Arrays.asList("Association",
-      "AuditableEvent", "Classification", "ClassificationNode",
-      "ClassificationScheme", "Product", "Service", "ServiceBinding",
-      "SpecificationLink");
-
-  private static String OBJECT_TYPE_SCHEME = "urn:registry:ObjectType";
+public interface RegistryService {
 
   /**
    * Set where to store all the metadata for registry objects. Typically this
@@ -88,9 +46,7 @@ public class RegistryService {
    * @param metadataStore
    *          for registry object metadata
    */
-  public void setMetadataStore(MetadataStore metadataStore) {
-    this.metadataStore = metadataStore;
-  }
+  public void setMetadataStore(MetadataStore metadataStore);
 
   /**
    * Get access to the back end store for the registry service. Mostly used for
@@ -98,9 +54,7 @@ public class RegistryService {
    * 
    * @return metadata store for registry objects
    */
-  public MetadataStore getMetadataStore() {
-    return metadataStore;
-  }
+  public MetadataStore getMetadataStore();
 
   /**
    * Sets the class used to generate and sort versions for registry objects.
@@ -108,16 +62,12 @@ public class RegistryService {
    * @param versioner
    *          to use when generating a new version of a registry object.
    */
-  public void setVersioner(Versioner versioner) {
-    this.versioner = versioner;
-  }
+  public void setVersioner(Versioner versioner);
 
   /**
    * @return versioner used to generate version for registry objects
    */
-  public Versioner getVersioner() {
-    return this.versioner;
-  }
+  public Versioner getVersioner();
 
   /**
    * Sets the class used to generate unique ids for registry objects
@@ -126,66 +76,50 @@ public class RegistryService {
    *          to use to generate a guid for registry objects when there is not
    *          one supplied by clients.
    */
-  public void setIdentifierGenerator(IdentifierGenerator idGenerator) {
-    this.idGenerator = idGenerator;
-  }
+  public void setIdentifierGenerator(IdentifierGenerator idGenerator) ;
 
   /**
    * @return id generator used to generate guids for registry objects
    */
-  public IdentifierGenerator getIdentifierGenerator() {
-    return this.idGenerator;
-  }
+  public IdentifierGenerator getIdentifierGenerator() ;
 
   /**
-   * This method allows one to page through the {@link Product}'s in the
+   * This method allows one to page through the {@link ExtrinsicObject}'s in the
    * registry.
    * 
    * @param start
    *          the index at which to start the result list from
    * @param rows
    *          how many results to return
-   * @return a list of products
+   * @return a list of extrinsics
    */
-  public RegistryResponse getProducts(Integer start, Integer rows) {
-    RegistryResponse page = new RegistryResponse(start, metadataStore
-        .getNumRegistryObjects(Product.class), metadataStore
-        .getRegistryObjects(start, rows, Product.class));
-    return page;
-  }
+  public RegistryResponse getExtrinsics(Integer start, Integer rows);
 
   /**
-   * Retrieves the first set of products that match the query
+   * Retrieves the first set of extrinsics that match the query
    * 
    * @param query
-   *          holds a set of filters to match against products
-   * @return a list of products
+   *          holds a set of filters to match against extrinsics
+   * @return a list of extrinsics
    */
-  public RegistryResponse getProducts(ProductQuery query) {
-    return this.getProducts(query, 1, 20);
-  }
+  public RegistryResponse getExtrinsics(ExtrinsicQuery query);
 
   /**
-   * Retrieves a set of products that match the given query. Allows one to page
+   * Retrieves a set of extinsics that match the given query. Allows one to page
    * through results.
    * 
    * @param query
-   *          holds a set of filters to match against {@link Product}'s
+   *          holds a set of filters to match against {@link ExtrinsicObject}'s
    * @param start
    *          the index at which to start the result list from. This index
    *          starts at one and if anything less than one is provided it will
    *          default to one.
    * @param rows
    *          how many results to return
-   * @return a list of products
+   * @return a list of extrinsics
    */
-  public RegistryResponse getProducts(ProductQuery query, Integer start,
-      Integer rows) {
-    if (start <= 0) {
-      start = 1;
-    }
-    return metadataStore.getProducts(query, start, rows);
-  }
+  public RegistryResponse getExtrinsics(ExtrinsicQuery query, Integer start,
+      Integer rows);
 
   /**
    * Gives back some basic summary information about the registry. This summary
@@ -193,185 +127,110 @@ public class RegistryService {
    * 
    * @return registry status
    */
-  public StatusInfo getStatus() {
-    StatusInfo status = new StatusInfo(this.statusInfo);
-    status.setAssociations(metadataStore
-        .getNumRegistryObjects(Association.class));
-    status.setProducts(metadataStore.getNumRegistryObjects(Product.class));
-    status.setServices(metadataStore.getNumRegistryObjects(Service.class));
-    status.setClassificationNodes(metadataStore
-        .getNumRegistryObjects(ClassificationNode.class));
-    status.setClassificationSchemes(metadataStore
-        .getNumRegistryObjects(ClassificationScheme.class));
-    return status;
-  }
+  public Report getReport();
 
   /**
-   * Versions a {@link Product} in the registry and publishes the contents of
-   * the provided product.
+   * Versions a {@link RegistryObject} in the registry and publishes the
+   * contents of the provided extrinsic object.
    * 
    * @param user
    *          that has taken the action. Typically this should point to a unique
    *          username.
    * @param lid
-   *          logical identifier of the parent registry object
-   * @param product
-   *          the contents for this version of the product
+   *          logical identifier of the parent extrinsic object
+   * @param object
+   *          the contents for this version of the extrinsic object
    * @param major
    *          flag to indicate whether this is a minor or major version
-   * @return the guid of the versioned product
+   * @return the guid of the versioned extrinsic object
    * @throws RegistryServiceException
    */
-  public String versionProduct(String user, String lid, Product product,
-      boolean major) throws RegistryServiceException {
-    Product referencedProduct = this.getLatestProduct(lid);
-    product.setGuid(idGenerator.getGuid());
-    product.setHome(idGenerator.getHome());
-    product.setLid(referencedProduct.getLid());
-    product.setVersionName(versioner.getNextVersion(referencedProduct
-        .getVersionName(), major));
-    product.setStatus(referencedProduct.getStatus());
-    this.validate(product);
-    metadataStore.saveRegistryObject(product);
-    AuditableEvent createEvent = new AuditableEvent(EventType.Created, Arrays
-        .asList(product.getGuid()), user);
-    createEvent.setGuid(idGenerator.getGuid());
-    createEvent.setHome(idGenerator.getHome());
-    metadataStore.saveRegistryObject(createEvent);
-    AuditableEvent event = new AuditableEvent(EventType.Versioned, Arrays
-        .asList(referencedProduct.getGuid()), user);
-    event.setGuid(idGenerator.getGuid());
-    event.setHome(idGenerator.getHome());
-    metadataStore.saveRegistryObject(event);
-    return product.getGuid();
-  }
+  public String versionObject(String user, String lid,
+      RegistryObject object, boolean major) throws RegistryServiceException;
 
   /**
-   * Retrieves the latest version of the {@link Product} with the given logical
-   * identifier
-   * 
-   * @param lid
-   *          of product to look up
-   * @return latest version of product
-   */
-  public Product getLatestProduct(String lid) {
-    // TODO: Make this throw an exception if the lid does not exist
-    List<RegistryObject> products = metadataStore.getRegistryObjectVersions(
-        lid, Product.class);
-    Collections.sort(products, versioner.getComparator());
-    if (products.size() > 0) {
-      return (Product) products.get(products.size() - 1);
-    }
-    return null;
-  }
-
-  /**
-   * Retrieves the earliest version of the {@link Product} with the given
+   * Retrieves the latest version of the {@link RegistryObject} with the given
    * logical identifier
    * 
    * @param lid
-   *          of product to look up
-   * @return earliest version of product
+   *          of extrinsic to look up
+   * @return latest version of extrinsic
    */
-  public Product getEarliestProduct(String lid) {
-    // TODO: Make this throw an exception if the lid does not exist
-    List<RegistryObject> products = metadataStore.getRegistryObjectVersions(
-        lid, Product.class);
-    Collections.sort(products, versioner.getComparator());
-    if (products.size() > 0) {
-      return (Product) products.get(0);
-    }
-    return null;
-  }
+  public RegistryObject getLatestObject(String lid,
+      Class<? extends RegistryObject> objectClass);
 
   /**
-   * Retrieves the next version of the {@link Product}
+   * Retrieves the earliest version of the {@link RegsitryObject} with the given
+   * logical identifier
    * 
    * @param lid
-   *          of the current product
+   *          of registry object to look up
+   * @param objectClass
+   *          the type of object to look up
+   * @return earliest version of registry object
+   */
+  public RegistryObject getEarliestObject(String lid,
+      Class<? extends RegistryObject> objectClass);
+
+  /**
+   * Retrieves the next version of the {@link RegsitryObject}
+   * 
+   * @param lid
+   *          of the current registry object
    * @param versionId
-   *          of the current product. This is the user provided version.
-   * @return the next version of the product otherwise null if there is no more
-   *         versions
+   *          of the current registry object. This is the user provided version.
+   * @param objectClass
+   *          the type of object to look up
+   * @return the next version of the registry object otherwise null if there is
+   *         no more versions
    */
-  public Product getNextProduct(String lid, String versionId) {
-    // TODO: Make this method throw an exception if the lid or version is not
-    // found
-    List<RegistryObject> products = metadataStore.getRegistryObjectVersions(
-        lid, Product.class);
-    Collections.sort(products, versioner.getComparator());
-    for (int i = 0; i < products.size(); i++) {
-      Product product = (Product) products.get(i);
-      if (versionId.equals(product.getVersionId())) {
-        if (i < products.size() - 1) {
-          return (Product) products.get(i + 1);
-        } else {
-          return null;
-        }
-      }
-    }
-    return null;
-  }
+  public RegistryObject getNextObject(String lid, String versionId,
+      Class<? extends RegistryObject> objectClass);
 
   /**
-   * Retrieves the previous version of the {@link Product}
+   * Retrieves the previous version of the {@link RegistryObject}
    * 
    * @param lid
-   *          of the current product
+   *          of the current registry object
    * @param versionId
-   *          of the current product. This is the user provided version.
-   * @return the previous version of the product otherwise null if there is no
-   *         versions before the current one
+   *          of the current registry version. This is the user provided
+   *          version.
+   * @param objectClass
+   *          the type of object to look up
+   * @return the previous version of the registry object otherwise null if there
+   *         is no versions before the current one
    */
-  public Product getPreviousProduct(String lid, String versionId) {
-    // TODO: Make this method throw an exception if the lid or version is not
-    // found
-    List<RegistryObject> products = metadataStore.getRegistryObjectVersions(
-        lid, Product.class);
-    Collections.sort(products, versioner.getComparator());
-    for (int i = 0; i < products.size(); i++) {
-      Product product = (Product) products.get(i);
-      if (versionId.equals(product.getVersionId())) {
-        if (i > 0) {
-          return (Product) products.get(i - 1);
-        } else {
-          return null;
-        }
-      }
-    }
-    return null;
-  }
+  public RegistryObject getPreviousObject(String lid, String versionId,
+      Class<? extends RegistryObject> objectClass);
 
   /**
-   * Retrieves all versions of a {@link Product}
+   * Retrieves all versions of a {@link RegistryObject}
    * 
    * @param lid
-   *          of the product of interest
-   * @return all versions of the product that share the given lid
+   *          of the registry object of interest
+   * @param objectClass
+   *          the type of object to look up
+   * @return all versions of the registry object that share the given lid
    */
-  @SuppressWarnings("unchecked")
-  public List<Product> getProductVersions(String lid) {
-    ArrayList products = new ArrayList<Product>();
-    products
-        .addAll(metadataStore.getRegistryObjectVersions(lid, Product.class));
-    return products;
-  }
-
+  public List<RegistryObject> getObjectVersions(String lid,
+      Class<? extends RegistryObject> objectClass);
+  
   /**
-   * Retrieves a {@link Product} from the registry with the given identifying
-   * information.
+   * Retrieves a {@link RegistryObject} from the registry with the given
+   * identifying information.
    * 
    * @param lid
-   *          of the product of interest.
+   *          of the registry object of interest.
    * @param versionId
-   *          of the product of interest. This is the user provided version.
-   * @return a product
+   *          of the registry object of interest. This is the user provided
+   *          version.
+   * @param objectClass
+   *          the type of object to look up
+   * @return a registry object
    */
-  public Product getProduct(String lid, String versionId) {
-    return (Product) metadataStore.getRegistryObject(lid, versionId,
-        Product.class);
-  }
-
+  public RegistryObject getObject(String lid, String versionId,
+      Class<? extends RegistryObject> objectClass);
+  
   /**
    * Retrieves all {@link ClassificationNode} for a given
    * {@link ClassificationScheme}
@@ -380,30 +239,25 @@ public class RegistryService {
    *          guid for which to get the classification nodes for
    * @return all classification nodes for the scheme's guid
    */
-  public List<ClassificationNode> getClassificationNodes(String scheme) {
-    ArrayList<ClassificationNode> nodes = new ArrayList<ClassificationNode>();
-    nodes.addAll(metadataStore.getClassificationNodes(scheme));
-    return nodes;
-  }
+  public List<ClassificationNode> getClassificationNodes(String scheme);
 
   /**
-   * Changes the {@link Product} status with the given identifying information.
+   * Changes the {@link RegistryObject} status with the given identifying
+   * information.
    * 
    * @param user
    *          that is requesting the change
    * @param lid
-   *          logical identifier of the product
+   *          logical identifier of the extrinsic
    * @param versionId
-   *          of the product. This is the user supplied version
+   *          of the registry object. This is the user supplied version
    * @param action
    *          which to take (i.e. approve, deprecate, etc.)
+   * @param objectClass
+   *          identifies the type of registry object
    */
-  public void changeStatus(String user, String lid, String versionId,
-      ObjectAction action) {
-    Product product = (Product) metadataStore.getRegistryObject(lid, versionId,
-        Product.class);
-    this.changeRegistryObjectStatus(user, product, action);
-  }
+  public void changeObjectStatus(String user, String lid, String versionId,
+      ObjectAction action, Class<? extends RegistryObject> objectClass);
 
   /**
    * Changes the status of registry object with the given guid and of the given
@@ -412,29 +266,14 @@ public class RegistryService {
    * @param user
    *          that is requesting the change
    * @param guid
-   *          of the product to uniquely identify it
+   *          of the registry object to uniquely identify it
    * @param action
    *          which to take (i.e. approve, deprecate, etc.)
    * @param objectClass
    *          identifies the type of registry object
    */
-  public void changeRegistryObjectStatus(String user, String guid,
-      ObjectAction action, Class<? extends RegistryObject> objectClass) {
-    RegistryObject registryObject = metadataStore.getRegistryObject(guid,
-        objectClass);
-    this.changeRegistryObjectStatus(user, registryObject, action);
-  }
-
-  private void changeRegistryObjectStatus(String user,
-      RegistryObject registryObject, ObjectAction action) {
-    registryObject.setStatus(action.getObjectStatus());
-    metadataStore.updateRegistryObject(registryObject);
-    AuditableEvent event = new AuditableEvent(action.getEventType(), Arrays
-        .asList(registryObject.getGuid()), user);
-    event.setGuid(idGenerator.getGuid());
-    event.setHome(idGenerator.getHome());
-    metadataStore.saveRegistryObject(event);
-  }
+  public void changeObjectStatus(String user, String guid,
+      ObjectAction action, Class<? extends RegistryObject> objectClass);
 
   /**
    * This method allows one to update all the metadata associated with a
@@ -445,9 +284,7 @@ public class RegistryService {
    * @param registryObject
    *          to update too. The update is made to the object with the same guid
    */
-  public void updateRegistryObject(String user, RegistryObject registryObject) {
-    metadataStore.updateRegistryObject(registryObject);
-  }
+  public void updateObject(String user, RegistryObject registryObject);
 
   /**
    * Retrieves a set of associations that match the given query. Allows one to
@@ -464,13 +301,8 @@ public class RegistryService {
    * @return a list of associations
    */
   public RegistryResponse getAssociations(AssociationQuery query,
-      Integer start, Integer rows) {
-    if (start <= 0) {
-      start = 1;
-    }
-    return metadataStore.getAssociations(query, start, rows);
-  }
-  
+      Integer start, Integer rows);
+
   /**
    * Generic query for a given class of registry objects. This query only
    * contains attributes that are applicable across all registry objects.
@@ -485,13 +317,8 @@ public class RegistryService {
    *          the type of registry object to look for
    * @return list of {@link RegistryObject} with the given class
    */
-  public RegistryResponse getRegistryObjects(ObjectQuery query,
-      Integer start, Integer rows, Class<? extends RegistryObject> objectClass) {
-    if (start <= 0) {
-      start = 1;
-    }
-    return metadataStore.getRegistryObjects(query, start, rows, objectClass);
-  }
+  public RegistryResponse getObjects(ObjectQuery query, Integer start,
+      Integer rows, Class<? extends RegistryObject> objectClass);
 
   /**
    * Retrieves the list of (@link AuditableEvent}'s for the affected object
@@ -500,11 +327,7 @@ public class RegistryService {
    *          guid for the registry object of interest
    * @return list of events associated with the guid
    */
-  public RegistryResponse getAuditableEvents(String affectedObject) {
-    RegistryResponse response = new RegistryResponse();
-    response.setResults(metadataStore.getAuditableEvents(affectedObject));
-    return response;
-  }
+  public RegistryResponse getAuditableEvents(String affectedObject);
 
   /**
    * Retrieves all associations for a given registry object. The registry object
@@ -523,12 +346,7 @@ public class RegistryService {
    * @return a list of associations
    */
   public RegistryResponse getAssociations(String lid, String versionId,
-      Integer start, Integer rows) {
-    if (start <= 0) {
-      start = 1;
-    }
-    return metadataStore.getAssociations(lid, versionId, start, rows);
-  }
+      Integer start, Integer rows);
 
   /**
    * Publishes a registry object to the registry.
@@ -540,152 +358,8 @@ public class RegistryService {
    * @return guid of the published object
    * @throws RegistryServiceException
    */
-  public String publishRegistryObject(String user, RegistryObject registryObject)
-      throws RegistryServiceException {
-    if (registryObject.getGuid() == null) {
-      registryObject.setGuid(idGenerator.getGuid());
-    }
-    if (registryObject.getHome() == null) {
-      registryObject.setHome(idGenerator.getHome());
-    }
-    registryObject.setVersionName(versioner.getInitialVersion());
-    if (registryObject.getLid() == null) {
-      registryObject.setLid(idGenerator.getGuid());
-    }
-    if (registryObject.getVersionId() == null) {
-      registryObject.setVersionId(registryObject.getVersionName());
-    }
-    // Check to see if object with same lid already exists
-    if (metadataStore.hasRegistryObjectVersions(registryObject.getLid(),
-        registryObject.getClass())) {
-      throw new RegistryServiceException("Registry object with logical id "
-          + registryObject.getLid() + registryObject.getVersionId()
-          + " already exists.", ExceptionType.EXISTING_OBJECT);
-    }
-    registryObject.setStatus(ObjectStatus.Submitted);
-    this.validate(registryObject);
-    metadataStore.saveRegistryObject(registryObject);
-    this.createAuditableEvents(user, registryObject, EventType.Created);
-    return registryObject.getGuid();
-  }
-
-  private void createAuditableEvents(String user,
-      RegistryObject registryObject, EventType eventType) {
-    List<String> affectedObjects = new ArrayList<String>();
-    affectedObjects.add(registryObject.getGuid());
-    // If this is a service we have other affected objects
-    if (registryObject instanceof Service) {
-      Service service = (Service) registryObject;
-      for (ServiceBinding binding : service.getServiceBindings()) {
-        affectedObjects.add(binding.getGuid());
-        for (SpecificationLink link : binding.getSpecificationLinks()) {
-          affectedObjects.add(link.getGuid());
-        }
-      }
-    }
-    AuditableEvent event = new AuditableEvent(eventType, affectedObjects, user);
-    event.setGuid(idGenerator.getGuid());
-    event.setHome(idGenerator.getHome());
-    metadataStore.saveRegistryObject(event);
-  }
-
-  private void validate(RegistryObject registryObject)
-      throws RegistryServiceException {
-    // Check to see if object already exists
-    if (metadataStore.hasRegistryObject(registryObject.getLid(), registryObject
-        .getVersionId(), registryObject.getClass())) {
-      throw new RegistryServiceException("Registry object with logical id "
-          + registryObject.getLid() + " and version id "
-          + registryObject.getVersionId() + " already exists.",
-          ExceptionType.EXISTING_OBJECT);
-    }
-    // Check object type
-    if (!metadataStore.hasClassificationNode(OBJECT_TYPE_SCHEME, registryObject
-        .getObjectType())
-        && !CORE_OBJECT_TYPES.contains(registryObject.getObjectType())) {
-      throw new RegistryServiceException("Not a valid object type \""
-          + registryObject.getObjectType() + "\"",
-          ExceptionType.INVALID_REQUEST);
-    }
-    // Run type specific validation
-    if (registryObject instanceof Product) {
-      this.validateProduct((Product) registryObject);
-    } else if (registryObject instanceof Association) {
-      this.validateAssociation((Association) registryObject);
-    } else if (registryObject instanceof ClassificationNode) {
-      this.validateNode((ClassificationNode) registryObject);
-    } else if (registryObject instanceof Service) {
-      this.validateService((Service) registryObject);
-    }
-  }
-
-  private void validateProduct(Product product) {
-    // Nothing to validate at this point
-  }
-
-  private void validateAssociation(Association association) {
-    // Only thing to validate at this point is to make sure the home values are
-    // set
-    if (association.getSourceHome() == null) {
-      association.setSourceHome(idGenerator.getHome());
-    }
-    if (association.getTargetHome() == null) {
-      association.setTargetHome(idGenerator.getHome());
-    }
-  }
-
-  private void validateNode(ClassificationNode node) {
-    StringBuffer path = new StringBuffer(node.getCode());
-    path.insert(0, "/");
-    boolean done = false;
-    ClassificationNode currentNode = node;
-    while (!done) {
-      boolean nodeParentFound = false;
-      try {
-        currentNode = (ClassificationNode) this.getRegistryObject(currentNode
-            .getParent(), ClassificationNode.class);
-        path.insert(0, currentNode.getCode());
-        path.insert(0, "/");
-        nodeParentFound = true;
-      } catch (NoResultException nre) {
-        // Suppress as it could be the parent is a classification scheme
-      }
-      if (!nodeParentFound) {
-        ClassificationScheme parent = (ClassificationScheme) this
-            .getRegistryObject(currentNode.getParent(),
-                ClassificationScheme.class);
-        path.insert(0, parent.getGuid());
-        path.insert(0, "/");
-        done = true;
-      }
-    }
-    node.setPath(path.toString());
-  }
-
-  private void validateService(Service service) {
-    for (ServiceBinding binding : service.getServiceBindings()) {
-      if (binding.getGuid() == null) {
-        binding.setGuid(idGenerator.getGuid());
-      }
-      if (binding.getGuid() == null) {
-        binding.setHome(idGenerator.getHome());
-      }
-      if (binding.getService() == null) {
-        binding.setService(service.getGuid());
-      }
-      for (SpecificationLink link : binding.getSpecificationLinks()) {
-        if (link.getGuid() == null) {
-          link.setGuid(idGenerator.getGuid());
-        }
-        if (link.getHome() == null) {
-          link.setHome(idGenerator.getHome());
-        }
-        if (link.getServiceBinding() == null) {
-          link.setServiceBinding(binding.getGuid());
-        }
-      }
-    }
-  }
+  public String publishObject(String user, RegistryObject registryObject)
+      throws RegistryServiceException;
 
   /**
    * Deletes a {@link RegistryObject} from the registry which share the logical
@@ -700,12 +374,8 @@ public class RegistryService {
    * @param objectClass
    *          type of registry object
    */
-  public void deleteRegistryObject(String user, String lid, String versionId,
-      Class<? extends RegistryObject> objectClass) {
-    RegistryObject registryObject = metadataStore.getRegistryObject(lid,
-        versionId, objectClass);
-    this.deleteRegistryObject(user, registryObject, objectClass);
-  }
+  public void deleteObject(String user, String lid, String versionId,
+      Class<? extends RegistryObject> objectClass);
 
   /**
    * Deletes a {@link RegistryObject} from the registry which share the logical
@@ -718,18 +388,8 @@ public class RegistryService {
    * @param objectClass
    *          type of registry object
    */
-  public void deleteRegistryObject(String user, String guid,
-      Class<? extends RegistryObject> objectClass) {
-    RegistryObject registryObject = metadataStore.getRegistryObject(guid,
-        objectClass);
-    this.deleteRegistryObject(user, registryObject, objectClass);
-  }
-
-  private void deleteRegistryObject(String user, RegistryObject registryObject,
-      Class<? extends RegistryObject> objectClass) {
-    metadataStore.deleteRegistryObject(registryObject.getGuid(), objectClass);
-    this.createAuditableEvents(user, registryObject, EventType.Deleted);
-  }
+  public void deleteObject(String user, String guid,
+      Class<? extends RegistryObject> objectClass);
 
   /**
    * Retrieves the {@link Association} from the registry with the given guid
@@ -738,20 +398,16 @@ public class RegistryService {
    *          globally unique identifier of the registry object
    * @return the identified association
    */
-  public Association getAssocation(String guid) {
-    return (Association) this.getRegistryObject(guid, Association.class);
-  }
+  public Association getAssocation(String guid);
 
   /**
-   * Retrieves a {@link Product} from the registry
+   * Retrieves a {@link ExtrinsicObject} from the registry
    * 
    * @param guid
-   *          globally unique identifier of the registry object
-   * @return matching product
+   *          globally unique identifier of the extrinsic object
+   * @return matching extrinsic object
    */
-  public Product getProduct(String guid) {
-    return (Product) this.getRegistryObject(guid, Product.class);
-  }
+  public ExtrinsicObject getExtrinsic(String guid);
 
   /**
    * Retrieves a registry object of the requested type
@@ -762,8 +418,6 @@ public class RegistryService {
    *          type of the registry object
    * @return matching registry object
    */
-  public RegistryObject getRegistryObject(String guid,
-      Class<? extends RegistryObject> objectClass) {
-    return metadataStore.getRegistryObject(guid, objectClass);
-  }
+  public RegistryObject getObject(String guid,
+      Class<? extends RegistryObject> objectClass);
 }

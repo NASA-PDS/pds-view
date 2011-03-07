@@ -21,12 +21,12 @@ import gov.nasa.pds.registry.model.Classification;
 import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.ClassificationScheme;
 import gov.nasa.pds.registry.model.RegistryResponse;
-import gov.nasa.pds.registry.model.Product;
+import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.Service;
 import gov.nasa.pds.registry.model.ServiceBinding;
 import gov.nasa.pds.registry.model.SpecificationLink;
-import gov.nasa.pds.registry.model.StatusInfo;
+import gov.nasa.pds.registry.model.Report;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -54,11 +54,11 @@ public final class JSONContextResolver implements ContextResolver<JAXBContext> {
   private final Set<Class> types;
 
   @SuppressWarnings("unchecked")
-  private final Class[] cTypes = { Association.class, Product.class,
+  private final Class[] cTypes = { Association.class, ExtrinsicObject.class,
       AuditableEvent.class, Classification.class, ClassificationNode.class,
       ClassificationScheme.class, Service.class, ServiceBinding.class,
       SpecificationLink.class, RegistryResponse.class, RegistryObject.class,
-      StatusInfo.class };
+      Report.class };
 
   @SuppressWarnings("unchecked")
   public JSONContextResolver() throws Exception {

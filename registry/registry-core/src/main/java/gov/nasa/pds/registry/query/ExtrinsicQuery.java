@@ -22,16 +22,16 @@ import java.util.List;
  * @author pramirez
  *
  */
-public class ProductQuery extends RegistryQuery<ObjectFilter> {
-	private ProductQuery() {
+public class ExtrinsicQuery extends RegistryQuery<ObjectFilter> {
+	private ExtrinsicQuery() {
 		this.filter = null;
 	}
 	
 	public static class Builder extends AbstractBuilder {
-		private ProductQuery query;
+		private ExtrinsicQuery query;
 		
 		public Builder() {
-			query = new ProductQuery();
+			query = new ExtrinsicQuery();
 			this.query.sort = new ArrayList<String>();
 			this.query.sort.add("guid");
 			this.query.operator = QueryOperator.AND;
@@ -55,7 +55,7 @@ public class ProductQuery extends RegistryQuery<ObjectFilter> {
 			return this;
 		}
 		
-		public ProductQuery build() {
+		public ExtrinsicQuery build() {
 			this.checkBuilt();
 			this.isBuilt = true;
 			return this.query;

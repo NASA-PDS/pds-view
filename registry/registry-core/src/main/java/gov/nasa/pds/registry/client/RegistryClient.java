@@ -24,12 +24,12 @@ import gov.nasa.pds.registry.provider.JAXBContextResolver;
 import gov.nasa.pds.registry.provider.JSONContextResolver;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.RegistryResponse;
-import gov.nasa.pds.registry.model.Product;
+import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ObjectFilter;
-import gov.nasa.pds.registry.query.ProductQuery;
+import gov.nasa.pds.registry.query.ExtrinsicQuery;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -65,7 +65,7 @@ public class RegistryClient {
     this.mediaType = mediaType;
   }
 
-  public ClientResponse publishProduct(String user, Product product) {
+  public ClientResponse publishProduct(String user, ExtrinsicObject product) {
     WebResource.Builder builder = registryResource.path("products")
         .getRequestBuilder();
     if (token != null) {
@@ -75,11 +75,11 @@ public class RegistryClient {
     return builder.accept(mediaType).post(ClientResponse.class, product);
   }
 
-  public ClientResponse versionProduct(String user, Product product, String lid) {
+  public ClientResponse versionProduct(String user, ExtrinsicObject product, String lid) {
     return this.versionProduct(user, product, lid, true);
   }
 
-  public ClientResponse versionProduct(String user, Product product,
+  public ClientResponse versionProduct(String user, ExtrinsicObject product,
       String lid, Boolean major) {
     WebResource.Builder builder = registryResource.path("products").path(
         product.getLid()).queryParam("major", major.toString())
@@ -132,10 +132,10 @@ public class RegistryClient {
   }
 
   public ClientResponse getProducts(Integer start, Integer rows) {
-    return this.getProducts(new ProductQuery.Builder().build(), start, rows);
+    return this.getProducts(new ExtrinsicQuery.Builder().build(), start, rows);
   }
 
-  public ClientResponse getProducts(ProductQuery query, Integer start,
+  public ClientResponse getProducts(ExtrinsicQuery query, Integer start,
       Integer rows) {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     if (start != null) {
@@ -271,14 +271,14 @@ public class RegistryClient {
     }
 
     if (args.length > 1) {
-      Product product = client.getLatestProduct(args[1]).getEntity(
-          Product.class);
+      ExtrinsicObject product = client.getLatestProduct(args[1]).getEntity(
+          ExtrinsicObject.class);
       System.out.println("Latest Product");
       System.out.println("Product " + product.getGuid());
       if (args.length > 2) {
         ObjectFilter filter = new ObjectFilter.Builder().lid(args[1])
             .versionId(args[2]).build();
-        ProductQuery query = new ProductQuery.Builder().filter(filter).build();
+        ExtrinsicQuery query = new ExtrinsicQuery.Builder().filter(filter).build();
         response = client.getProducts(query, null, null).getEntity(
             RegistryResponse.class);
         for (RegistryObject object : response.getResults()) {
