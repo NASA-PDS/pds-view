@@ -1,17 +1,17 @@
 #!/bin/bash
+	
+#if [ "$1" == "" ] || [ "$2" == "" ]; then
+#    echo
+#    echo "Parameters required: Need to include MySQL username and password"
+#    echo "                     with access to report_service DB."
+#    echo
+#    echo "::: ./transferLogs.sh <username> <password> :::" 
+#    echo
+#    exit 0
+#fi
 
-if [ "$1" == "" ] || [ "$2" == "" ]; then
-    echo
-    echo "Parameters required: Need to include MySQL username and password"
-    echo "                     with access to report_service DB."
-    echo
-    echo "::: ./transferLogs.sh <username> <password> :::" 
-    echo
-    exit 0
-fi
-
-user=$1
-pass=$2
+#user=$1
+#pass=$2
 
 # Create log file for information
 log=transfer.`date +%Y%m%d`.log
@@ -19,6 +19,10 @@ rm -f $log
 
 # Get Log Home from env_vars.xml
 log_home=`egrep log_dest ./env_vars.xml | awk -F\< '{print $2}' | awk -F\> '{print $2}'`
+
+# Get MySQL login info from db_config.xml
+user=`egrep user ./db_config.xml | awk -F\< '{print $2}' | awk -F\> '{print $2}'`
+pass=`egrep password ./db_config.xml | awk -F\< '{print $2}' | awk -F\> '{print $2}'`
 
 # Query Mysql DB for profile and log_set information
 mysql -u $user -p$pass report_service -e "select p.node, p.name, ls.label, ls.hostname,ls.username, ls.pathname from profiles p, log_sets ls where ls.active_flag='y' and p.active_flag='y' and p.profile_id=ls.profile_id" >> $log
