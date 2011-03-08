@@ -26,6 +26,7 @@ export REGISTRY_SERVICE=http://localhost:8080/registry-service
 curl -X POST -H "Content-type:application/xml" -v -d @../conf/schemeObjectType.xml "${REGISTRY_SERVICE}/registry/schemes"
 
 # Load Core Object Type Classification Nodes
+curl -X POST -H "Content-type:application/xml" -v -d @../conf/nodeRegistryObject.xml "${REGISTRY_SERVICE}/registry/schemes/urn:registry:classificationScheme:ObjectType/nodes"
 curl -X POST -H "Content-type:application/xml" -v -d @../conf/nodeAssociation.xml "${REGISTRY_SERVICE}/registry/schemes/urn:registry:classificationScheme:ObjectType/nodes"
 curl -X POST -H "Content-type:application/xml" -v -d @../conf/nodeAuditableEvent.xml "${REGISTRY_SERVICE}/registry/schemes/urn:registry:classificationScheme:ObjectType/nodes"
 curl -X POST -H "Content-type:application/xml" -v -d @../conf/nodeClassification.xml "${REGISTRY_SERVICE}/registry/schemes/urn:registry:classificationScheme:ObjectType/nodes"
