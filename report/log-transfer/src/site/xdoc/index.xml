@@ -17,14 +17,14 @@
 
 <document>
   <properties>
-    <title>About Transfer Logs</title>
+    <title>About Log Transfer</title>
     <author email="Jordan.Padams@jpl.nasa.gov">Jordan Padams</author>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
-    <section name="About Logs Transfer">
-      <p>TBD
+    <section name="About Log Transfer">
+      <p>The Log Transfer software provides a web interface for transferring remote logs for Apache, Tomcat, and FTP to the Engineering node for use in the Report Service.  The interface will not only copy the logs from a remote location, but also set up a new basic profile (if needed) in the Report Service.  Transferring the logs to the Engineering node provides PDS Nodes with an extra backup of the logs, as well as a more stable and secure way for the Report Service to calculate the metrics from them.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.

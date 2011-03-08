@@ -16,33 +16,33 @@
   $Id$
 -->
 
-<project name="Transfer Logs">
+<project name="Log Transfer">
   <bannerLeft>
     <src>images/pds4_logo.jpg</src>
     <href>http://pds-cm.jpl.nasa.gov/2010/</href>
   </bannerLeft>
 
   <bannerRight>
-    <name>Transfer Logs</name>
+    <name>Log Transfer</name>
   </bannerRight>
 
   <version/>
 
   <body>
     <links>
-      <item name="Transfer Logs" href="http://pds-cm.jpl.nasa.gov/2010/report/transfer-logs/index.html" />
+      <item name="Log Transfer" href="http://pds-cm.jpl.nasa.gov/2010/report/log-transfer/index.html" />
     </links>
 
     <menu name="Software Documentation">
-      <item name="About Transfer Logs" href="index.html"/>
+      <item name="About Log Transfer" href="index.html"/>
       <item name="Release Notes" href="release/index.html"/>
       <item name="Installation" href="install/index.html"/>
       <item name="Operation" href="operate/index.html"/>
     </menu>
 
     <menu name="Download">
-      <item name="Transfer Logs Guide (pdf)" href="${project.artifactId}-${project.version}.pdf"/>
-      <!--item name="Transfer Logs Design (pdf)" href="docs/pds2010_report_design.pdf"/-->
+      <item name="Log Transfer Guide (pdf)" href="${project.artifactId}-${project.version}.pdf"/>
+      <!--item name="Log Transfer Design (pdf)" href="docs/pds2010_report_design.pdf"/-->
     </menu>
 
     <menu ref="reports"/>
