@@ -146,6 +146,8 @@ Query OK, 0 rows affected (0.00 sec)
 &lt;variables&gt;
   # The home directory of the Sawmill software containing the file sawmill.cgi
   &lt;sawmill_home&gt;{sawmill_home}&lt;/sawmill_home&gt;
+  # The home directory for the Sawmill profiles (should be contained within sawmill home directory)
+  &lt;sawmill_profile_home&gt;{sawmill_home}/LogAnalysisInfo/profiles&lt;/sawmill_profile_home&gt;
   # The destination directory to store all of the logs to be transferred.
   &lt;log_dest&gt;{log_destination}&lt;/log_dest&gt;
 &lt;/variables&gt;

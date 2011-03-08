@@ -54,8 +54,8 @@ public class EnvProperties {
 		return this._doc.getElementsByTagName("log_dest").item(0).getTextContent();
 	}
 
-	public String getProfileCfgHome() {
-		return this._doc.getElementsByTagName("profile_cfg_home").item(0).getTextContent();
+	public String getSawmillProfileHome() {
+		return this._doc.getElementsByTagName("sawmill_profile_home").item(0).getTextContent();
 	}
 
 	public String getSawmillHome() {

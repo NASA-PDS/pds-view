@@ -23,64 +23,94 @@ public class SawmillUtil {
 
 	private Logger _log = Logger.getLogger(this.getClass().getName());
 	
-	private Profile _profile;
-	private ArrayList<LogSet> _lsList;
+	//private Profile _profile;
+	//private ArrayList<LogSet> _lsList;
 	private String _cfgText;
 	private File _defaultCfg;
-	private String _outputCfg;
+	private File _outputCfg;
 	private String _logBasePath;
+	private String _sawmillProfHome;
+	private String _profName;
 	
-	public SawmillUtil(String profileCfgHome, String logBasePath, String path, Profile profile) {
-		this._defaultCfg = new File(path+"/default.cfg");
+	public SawmillUtil(String sawmillProfHome, String logBasePath, String path, String profName) {
+		this._sawmillProfHome = sawmillProfHome;
 		this._logBasePath = logBasePath;
-		this._outputCfg = profileCfgHome+'/'+profile.getName().replace('-', '_')+".cfg";  //Must replace all dashes, otherwise Sawmill will fail
-		this._profile = profile;
-		this._lsList = profile.getLogSetList();
+		this._profName = profName;
+		
+		this._defaultCfg = new File(path+"/default.cfg");
+		this._outputCfg = new File(this._sawmillProfHome+'/' + this._profName.replace('-', '_')+".cfg"); //Must replace all dashes from profile name, otherwise Sawmill will fail
+
+		//this._outputCfg = new File(profileCfgHome+'/'+profile.getName().replace('-', '_')+".cfg");  //Must replace all dashes, otherwise Sawmill will fail
+		//this._profile = profile;
+		//this._lsList = profile.getLogSetList();
 	}
 	
-	public void buildCfg() throws IOException {
-		int count = 0;
+	public void createCfg(ArrayList<LogSet> lsList) throws IOException {
+		//buildCfg(this._defaultCfg, lsList);
+	}
+	
+	public void updateCfg(ArrayList<LogSet> lsList) throws IOException {
+		//buildCfg(this._outputCfg, lsList);
+	}
+	
+	/**
+	 * Builds the configuration for Sawmill profile
+	 * 
+	 * @throws IOException
+	 */
+	// TODO Currently overwrites profile - Need to allow for addition of Log Sources
+	public void buildCfg(ArrayList<LogSet> lsList, boolean isNewProf) throws IOException {
 		String sourcesTxt = "";
 		String newline = "";
 		LogSet ls;
+		int setNum;
 		
 		String pathname0 = "";
-		for (Iterator<LogSet> it = this._lsList.iterator(); it.hasNext();) {
+		for (Iterator<LogSet> it = lsList.iterator(); it.hasNext();) {
 			ls = it.next();
 			
-			if (count == 0)
+			this._log.info("set number"+ls.getSetNumber());
+			setNum = ls.getSetNumber();
+			
+			if (setNum == 0)
 				pathname0 = this._logBasePath+'/'+ls.getLabel()+"/*";
-			else if (count == 1)
+			else
 				newline = "\n";
-				
-			sourcesTxt += "\t" + newline + count + " = {\n" +
+
+			sourcesTxt += "\t" + newline + setNum + " = {\n" +
 					"\t\tdisabled = \"false\"\n" +
 					"\t\tlabel = \""+ls.getLabel()+"\"\n" +
 	    	        "\t\tpathname = \""+this._logBasePath+ls.getLabel()+"/*\" \n" +
 	    	        "\t\tpattern_is_regular_expression = \"false\" \n" +
 	    	        "\t\tprocess_subdirectories = \"false\" \n" +
 	    	        "\t\ttype = \"local\"\n" +
-	    	      "\t} # "+count;
-/*	    	      1 = {
-	    	        disabled = "false"
-	    	        label = "log source 2"
-	    	        pathname = "/Users/jpadams/Documents/Report_Service/metrics/en/pdsdlb2-tomcat/localhost_access_log.*.txt"
-	    	        pattern_is_regular_expression = "false"
-	    	        process_subdirectories = "false"
-	    	        type = "local"
-	    	      } # 1*/
-			count++;
+	    	      "\t} # "+setNum;
+			
+			newline = "\n";
 		}
 		
-		String text = FileUtils.readFileToString(this._defaultCfg);
-		text = text.replace("#PROFILE_NAME#", this._profile.getName().replace('-', '_'))
-					.replace("#PROFILE_LABEL#", this._profile.getName().replace('_', '-'))
-					.replace("#LOG_SOURCES#", sourcesTxt)
-					.replace("#PATHNAME_0#", pathname0);
+		sourcesTxt += "\n#LOG_SOURCES#";
 		
-		// TODO May want to utilize Sawmill commandline instead of just placing a config in the profiles directory
-		FileUtils.writeStringToFile(new File(this._outputCfg), text);
+		String text = setCfgText(isNewProf, sourcesTxt, pathname0);
+		
+		FileUtils.writeStringToFile(this._outputCfg, text);
 		this._log.info("output config: "+this._outputCfg);
+	}
+	
+	private String setCfgText(boolean isNewProf, String sourcesTxt, String pathname0) throws IOException {
+		String text = "";
+		if (isNewProf) {
+			text = FileUtils.readFileToString(this._defaultCfg);
+			text = text.replace("#PROFILE_NAME#", this._profName.replace('-', '_'))
+						.replace("#PROFILE_LABEL#", this._profName.replace('_', '-'))
+						.replace("#LOG_SOURCES#", sourcesTxt)
+						.replace("#PATHNAME_0#", pathname0);
+		} else {
+			text = FileUtils.readFileToString(this._outputCfg);
+			text = text.replace("#LOG_SOURCES#", sourcesTxt);			
+		}
+		
+		return text;
 	}
 	
 	/**
@@ -117,9 +147,9 @@ public class SawmillUtil {
 		SawmillUtil util = new SawmillUtil("/Users/jpadams/Tomcat/webapps/ROOT/WEB-INF/cgi/LogAnalysisInfo/profiles",
 				"/Users/jpadams/Documents/report_service/metrics/test",
 				"/Users/jpadams/dev/workspace/2010-workspace/report/transfer-logs/src/main/resources",
-				profile);
+				profile.getName());
 		try {
-			util.buildCfg();
+			util.createCfg(lsList);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

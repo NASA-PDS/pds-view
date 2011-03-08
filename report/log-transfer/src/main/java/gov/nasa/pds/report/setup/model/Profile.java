@@ -68,19 +68,8 @@ public class Profile {
 		//int logCount = Integer.parseInt(paramMap.get("log-set-count")[0]);
 		LogSet ls;
 		for (int i=1; i<=Integer.parseInt(paramMap.get("log-set-count")[0]); i++) {
-			ls = new LogSet();
+			ls = new LogSet(paramMap,i);
 			ls.setProfileId(getProfileId());
-			ls.setLogSetId(Integer.parseInt(paramMap.get("log-set-id-"+i)[0]));
-			// Remote machine host name or IP
-			ls.setLabel(paramMap.get("label-"+i)[0]);
-			ls.setHostname(paramMap.get("hostname-"+i)[0]);
-			// User name to connect the remote machine
-			ls.setUsername(paramMap.get("username-"+i)[0]);
-			// Password for remote machine authentication
-			ls.setPassword(paramMap.get("password-"+i)[0]);
-			// Destination directory location on remote machine
-			ls.setPathname(paramMap.get("pathname-"+i)[0]);
-			ls.setActiveFlag(paramMap.get("active-flag-"+i)[0]);
 
 			log.info("profile-"+i+": "+ls.getProfileId());
 			log.info("log-set-id-"+i+": "+ls.getLogSetId());
@@ -142,6 +131,17 @@ public class Profile {
 
 	public ArrayList<LogSet> getLogSetList() {
 		return _lsList;
+	}
+	
+	public ArrayList<LogSet> getNewLogSets() {
+		ArrayList<LogSet> newSetList = new ArrayList<LogSet>();
+		LogSet ls;
+		for (Iterator<LogSet> it = this._lsList.iterator(); it.hasNext();) {
+			ls = it.next();
+			if (ls.isNewSet())
+				newSetList.add(ls);
+		}
+		return newSetList;
 	}
 	
 	public void setLogSetList(ArrayList<LogSet> logSetList) {

@@ -151,7 +151,6 @@ public class SFTPUtil {
 
 	public void getLogs() {
 		//byte empty = 1;
-		JsonObject root = new JsonObject();
 		LogSet logSet;
 		byte connect = 1;
 		byte sftp = 1;

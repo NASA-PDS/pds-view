@@ -62,18 +62,18 @@ public class SaveServlet extends HttpServlet {
 			boolean isNew = false;
 			try {
 				DBUtil db = new DBUtil(realPath);
+				EnvProperties env = new EnvProperties(realPath);
+				String logBasePath = env.getLogDest()+'/'+profile.getNode()+'/'+profile.getName()+'/';
+				SawmillUtil sawmill = new SawmillUtil(env.getSawmillProfileHome(), logBasePath, realPath, profile.getName());
 				
+				ArrayList<LogSet> newLogSets = profile.getNewLogSets();
 				if (request.getParameter("profile").equals("new")) {
 					isNew=true;
 					db.createNew(profile);
 				} else
-					db.update(profile);
+					db.update(newLogSets, profile.getProfileId());
 				
-				EnvProperties env = new EnvProperties(realPath);
-				String logBasePath = env.getLogDest()+'/'+profile.getNode()+'/'+profile.getName()+'/';
-				
-				SawmillUtil cfg = new SawmillUtil(env.getProfileCfgHome(), logBasePath, realPath, profile);
-				cfg.buildCfg();
+				sawmill.buildCfg(newLogSets, isNew);
 				
 				Copy copyLogs = new Copy(logBasePath, env, profile, isNew);
 				copyLogs.start();

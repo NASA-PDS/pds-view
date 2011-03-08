@@ -64,6 +64,7 @@ try {
 				<span class="tooltip-link hover-light" title="The ABSOLUTE path where the logs reside on the host machine. Wildcards are preferred. i.e. /home/logs/access_log.*" ><span class="ui-icon ui-icon-info"></span></span>
 			</div>
 			<input id="log-set-id-${'${'}count}" class="set-id" name="log-set-id-${'${'}count}" type="hidden" value="${'${'}logSetId}" />
+			<input id="set-number-${'${'}count}" name="set-number-${'${'}count}" type="hidden" value="${'${'}setNumber}" />
 			<input id="active-flag-${'${'}count}" class="flag" name="active-flag-${'${'}count}" type="hidden" value="y" />
 		</div>
 	</div>
@@ -86,6 +87,7 @@ try {
 
 <script type="text/javascript">
 var details= {};
+var maxSetNum = 0;
 
 $(function() {
 	
@@ -245,15 +247,17 @@ function resetForm() {
 function resetLogSetCnt() {
 	$('#log-set-count').val(0);
 	$('#new-log-set').val(0);
+	maxSetNum=0;
 }
 
 function createLogSet(details, isNew) {
+	// Tracks total number of log sets, new or loaded from DB
 	$('#log-set-count').val($('#log-set-count').val()/1+1);
 	
 	if (isNew) {
+		// Tracks total number of NEW log sets
 		$('#new-log-set').val($('#new-log-set').val()/1+1);
-		//details = { count: $('#log-set-count').val(), label: '', hostname: 'pdsdev.jpl.nasa.gov', username: 'jpadams', password: 'Ph1ll1es8008', pathname: '/home/jpadams/logs/access_log.2011-01-01.txt.gz', logSetId: 0 };
-		details = { count: $('#log-set-count').val(), label: 'log set '+$('#log-set-count').val(), hostname: '', username: '', password: '', pathname: '', logSetId: 0, newSet: 1};
+		details = { count: $('#log-set-count').val(), label: 'log set '+$('#log-set-count').val(), hostname: '', username: '', password: '', pathname: '', logSetId: 0, setNumber: maxSetNum, newSet: 1};
 		$('#logDetailsTemplate').tmpl(details).appendTo('#log-set-container', details);
 	} else {
 		details.newSet = 0;
@@ -261,6 +265,8 @@ function createLogSet(details, isNew) {
 		$('.log-set input').attr('readonly','readonly').addClass('ui-state-disabled'); // Remove input styling from input boxes
 		//$('.log-set').prepend('<span class="remove-icon"><span class="ui-icon ui-icon-close"></span></span>');
 	}
+
+	maxSetNum++;
 	// Set the highlight for hover over icons
 	//setHover();	
 }
@@ -302,8 +308,11 @@ function getProfileInfo() {
 				$('#method').val(data.method);
 
 				$('#log-set-container').html('');
+
 				$.each(data.logSets, function (i, logset) {
-					details = { count: i+1, label: logset.label, hostname: logset.hostname, username: logset.username, password: logset.password, pathname: logset.pathname, logSetId: logset.logSetId };
+					details = { count: i+1, label: logset.label, hostname: logset.hostname, username: logset.username, password: logset.password, pathname: logset.pathname, logSetId: logset.logSetId, setNumber: logset.setNumber };
+					if (logset.setNumber > maxSetNum)
+						maxSetNum = logset.setNumber+1;
 					createLogSet(details, false); // Add new log set section for each log set queried from DB
 				});
 			} else {
@@ -410,6 +419,7 @@ function toggleHiddenFiles() {
 		<input id="log-set-count" name="log-set-count" type="hidden" value="0" />
 		<input id="new-log-set" name="new-log-set" type="hidden" value="0" />
 		<input id="removed-log-set" class="update-fields" name="removed-log-set" type="hidden" value="0" />
+		<input id="max-set-num" name="max-set-num" type="hidden" value="0" />
 	</form>
 	<div id="setup-modal" class="modal-section"></div>
 	<div id="save-modal" class="modal-section"></div>

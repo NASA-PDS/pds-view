@@ -189,11 +189,11 @@ public class DBUtil {
 		}
 	}
 	
-	public void update(Profile profile) throws SQLException {
+	public void update(ArrayList<LogSet> lsList, int profileId) throws SQLException {
 		LogSet ls;
-		this._profileId = profile.getProfileId();
+		this._profileId = profileId;
 		//updateProfile(profile);
-		for(Iterator<LogSet> it = profile.getLogSetList().iterator(); it.hasNext();) {
+		for(Iterator<LogSet> it = lsList.iterator(); it.hasNext();) {
 			ls = it.next();
 			if (ls.getLogSetId() == 0)
 				insertLogInfo(ls);
@@ -232,6 +232,7 @@ public class DBUtil {
 				"password='"+logSet.getPassword()+"'," +
 				"pathname='"+logSet.getPathname()+"'," +
 				"label='"+logSet.getLabel()+"'," +
+				//"set_number="+logSet.getSetNumber()+"," +
 				"created_by='UNK' " + // TODO change from default UNK
 				"WHERE log_set_id="+logSet.getLogSetId();
 
@@ -258,6 +259,7 @@ public class DBUtil {
 			"'"+logSet.getPassword()+"',"+
 			"'"+logSet.getPathname()+"',"+
 			"'"+logSet.getLabel()+"',"+
+			//""+logSet.getSetNumber()+","+
 			"'UNK')"; // TODO change from default UNK
 
 		executeUpdate(sql);

@@ -2,6 +2,7 @@ package gov.nasa.pds.report.setup.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -10,6 +11,7 @@ public class LogSet {
 
 	private int _logSetId;
 	private int _profileId;
+	private int _setNumber;
 	private String _activeFlag;
 	private String _label;
 	private String _hostname;
@@ -26,17 +28,30 @@ public class LogSet {
 		this._password = "";
 		this._pathname = "";
 		this._activeFlag = "";
+		this._setNumber = 0;
 	}
 	
 	public LogSet(ResultSet rs)  throws SQLException {
-		this._logSetId = rs.getInt("log_set_id");
-		this._hostname = rs.getString("hostname");
-		this._username = rs.getString("username");
-		this._password = rs.getString("password");
-		this._pathname = rs.getString("pathname");
-		this._label = rs.getString("label");
-		this._profileId = rs.getInt("profile_id");
-		//this._activeFlag = rs.getString("active_flag");
+		setLogSetId(rs.getInt("log_set_id"));
+		setHostname(rs.getString("hostname"));
+		setUsername(rs.getString("username"));
+		setPassword(rs.getString("password"));
+		setPathname(rs.getString("pathname"));
+		setLabel(rs.getString("label"));
+		setProfileId(rs.getInt("profile_id"));
+		setSetNumber(rs.getInt("set_number"));
+		setActiveFlag(rs.getString("active_flag"));
+	}
+	
+	public LogSet(Map<String,String[]> paramMap, int i) {
+		setLogSetId(Integer.parseInt(paramMap.get("log-set-id-"+i)[0]));
+		setLabel(paramMap.get("label-"+i)[0]);
+		setHostname(paramMap.get("hostname-"+i)[0]);
+		setUsername(paramMap.get("username-"+i)[0]);
+		setPassword(paramMap.get("password-"+i)[0]);
+		setPathname(paramMap.get("pathname-"+i)[0]);
+		setActiveFlag(paramMap.get("active-flag-"+i)[0]);
+		setSetNumber(Integer.parseInt(paramMap.get("set-number-"+i)[0]));
 	}
 
 	public String getActiveFlag() {
@@ -87,12 +102,25 @@ public class LogSet {
 	public void setPathname(String pathname) {
 		this._pathname = pathname;
 	}
+	public int getSetNumber() {
+		return _setNumber;
+	}
+	public void setSetNumber(int setNumber) {
+		this._setNumber = setNumber;
+	}
+	public boolean isNewSet() {
+		if (this._logSetId == 0)
+			return true;
+		
+		return false;
+	}
 	public JsonObject toJson() {
 		JsonObject jObj = new JsonObject();
 		jObj.add("hostname", new JsonPrimitive(this._hostname));
 		jObj.add("label", new JsonPrimitive(this._label));
 		jObj.add("password", new JsonPrimitive(this._password));
 		jObj.add("pathname", new JsonPrimitive(this._pathname));
+		jObj.add("setNumber", new JsonPrimitive(this._setNumber));
 		jObj.add("username", new JsonPrimitive(this._username));
 		jObj.add("logSetId", new JsonPrimitive(this._logSetId));
 		jObj.add("profileId", new JsonPrimitive(this._profileId));
