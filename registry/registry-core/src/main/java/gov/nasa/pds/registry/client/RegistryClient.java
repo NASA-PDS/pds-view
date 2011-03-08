@@ -65,34 +65,34 @@ public class RegistryClient {
     this.mediaType = mediaType;
   }
 
-  public ClientResponse publishProduct(String user, ExtrinsicObject product) {
-    WebResource.Builder builder = registryResource.path("products")
+  public ClientResponse publishExtrinsic(String user, ExtrinsicObject extrinsic) {
+    WebResource.Builder builder = registryResource.path("extrinsics")
         .getRequestBuilder();
     if (token != null) {
       builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
           + "\"");
     }
-    return builder.accept(mediaType).post(ClientResponse.class, product);
+    return builder.accept(mediaType).post(ClientResponse.class, extrinsic);
   }
 
-  public ClientResponse versionProduct(String user, ExtrinsicObject product, String lid) {
-    return this.versionProduct(user, product, lid, true);
+  public ClientResponse versionExtrinsic(String user, ExtrinsicObject extrinsic, String lid) {
+    return this.versionExtrinsic(user, extrinsic, lid, true);
   }
 
-  public ClientResponse versionProduct(String user, ExtrinsicObject product,
+  public ClientResponse versionExtrinsic(String user, ExtrinsicObject extrinsic,
       String lid, Boolean major) {
-    WebResource.Builder builder = registryResource.path("products").path(
-        product.getLid()).queryParam("major", major.toString())
+    WebResource.Builder builder = registryResource.path("extrinsics").path(
+        extrinsic.getLid()).queryParam("major", major.toString())
         .getRequestBuilder();
     if (token != null) {
       builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
           + "\"");
     }
-    return builder.accept(mediaType).post(ClientResponse.class, product);
+    return builder.accept(mediaType).post(ClientResponse.class, extrinsic);
   }
 
-  public ClientResponse getLatestProduct(String lid) {
-    WebResource.Builder builder = registryResource.path("products").path(lid)
+  public ClientResponse getLatestExtrinsic(String lid) {
+    WebResource.Builder builder = registryResource.path("extrinsics").path(lid)
         .getRequestBuilder();
     if (token != null) {
       builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
@@ -101,8 +101,8 @@ public class RegistryClient {
     return builder.accept(mediaType).get(ClientResponse.class);
   }
 
-  public ClientResponse getProduct(String lid, String version) {
-    WebResource.Builder builder = registryResource.path("products").path(lid)
+  public ClientResponse getExtrinsic(String lid, String version) {
+    WebResource.Builder builder = registryResource.path("extrinsics").path(lid)
         .path(version).getRequestBuilder();
     if (token != null) {
       builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
@@ -131,11 +131,11 @@ public class RegistryClient {
     return builder.accept(mediaType).post(ClientResponse.class, association);
   }
 
-  public ClientResponse getProducts(Integer start, Integer rows) {
-    return this.getProducts(new ExtrinsicQuery.Builder().build(), start, rows);
+  public ClientResponse getExtrinsics(Integer start, Integer rows) {
+    return this.getExtrinsics(new ExtrinsicQuery.Builder().build(), start, rows);
   }
 
-  public ClientResponse getProducts(ExtrinsicQuery query, Integer start,
+  public ClientResponse getExtrinsics(ExtrinsicQuery query, Integer start,
       Integer rows) {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     if (start != null) {
@@ -177,7 +177,7 @@ public class RegistryClient {
 
     params.add("queryOp", query.getOperator().toString());
 
-    WebResource.Builder builder = registryResource.path("products")
+    WebResource.Builder builder = registryResource.path("extrinsics")
         .queryParams(params).getRequestBuilder();
     if (token != null) {
       builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
@@ -261,7 +261,7 @@ public class RegistryClient {
 
   public static void main(String[] args) throws Exception {
     RegistryClient client = new RegistryClient(args[0]);
-    RegistryResponse response = client.getProducts(null, null).getEntity(
+    RegistryResponse response = client.getExtrinsics(null, null).getEntity(
         RegistryResponse.class);
     System.out.println("Total results: " + response.getNumFound());
     System.out.println("Number displayed: " + response.getResults().size());
@@ -271,15 +271,15 @@ public class RegistryClient {
     }
 
     if (args.length > 1) {
-      ExtrinsicObject product = client.getLatestProduct(args[1]).getEntity(
+      ExtrinsicObject extrinsic = client.getLatestExtrinsic(args[1]).getEntity(
           ExtrinsicObject.class);
-      System.out.println("Latest Product");
-      System.out.println("Product " + product.getGuid());
+      System.out.println("Latest Extrinsic");
+      System.out.println("Extrinsic " + extrinsic.getGuid());
       if (args.length > 2) {
         ObjectFilter filter = new ObjectFilter.Builder().lid(args[1])
             .versionId(args[2]).build();
         ExtrinsicQuery query = new ExtrinsicQuery.Builder().filter(filter).build();
-        response = client.getProducts(query, null, null).getEntity(
+        response = client.getExtrinsics(query, null, null).getEntity(
             RegistryResponse.class);
         for (RegistryObject object : response.getResults()) {
           System.out.println(object.getClass().getSimpleName() + " "
