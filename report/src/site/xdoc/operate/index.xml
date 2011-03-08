@@ -110,7 +110,7 @@
           <li>Find the section of the file where LogFormats are declared (if exists) and add the following:</li>
             <source>
 LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&gt;s %b \&quot;%{Referer}i\&quot; \&quot;%{User-agent}i\&quot;&quot; combined
-CustomLog &quot;|$APACHE_HOME/bin/rotatelogs $LOG_DIR/access_log.%Y-%m-%d.txt 86400&quot; combined
+CustomLog &quot;||$APACHE_HOME/bin/rotatelogs $LOG_DIR/access_log.%Y-%m-%d.txt 86400&quot; combined
             </source>
             A few things to note about the above configuration:
           <ul>
@@ -118,6 +118,7 @@ CustomLog &quot;|$APACHE_HOME/bin/rotatelogs $LOG_DIR/access_log.%Y-%m-%d.txt 86
             <li>$APACHE_HOME is the home directory for the Apache server.</li>
             <li>$LOG_DIR is the directory where you would like to place the log files.</li>
             <li>The <i>CustomLog</i> section above denotes using the Apache <i>rotatelogs</i> script that rotates the logs daily instead of creating one large access_log file.</li>
+            <li>The double pipe (||) is used to rotate the logs without opening another shell.</li>
           </ul>
         </ol>
       </subsection>
