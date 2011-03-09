@@ -38,7 +38,7 @@ import com.google.gson.JsonPrimitive;
 public class SaveServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private Logger _log = Logger.getLogger(this.getClass().getName());
+	private Logger log = Logger.getLogger(this.getClass().getName());
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -51,7 +51,7 @@ public class SaveServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected final void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		String error = "";
 		//if (Integer.parseInt(request.getParameter("new-log-set")) > 0) {  //TODO find better method
 			Profile profile = new Profile();
@@ -70,8 +70,9 @@ public class SaveServlet extends HttpServlet {
 				if (request.getParameter("profile").equals("new")) {
 					isNew=true;
 					db.createNew(profile);
-				} else
+				} else {
 					db.update(newLogSets, profile.getProfileId());
+				}
 				
 				sawmill.buildCfg(newLogSets, isNew);
 				

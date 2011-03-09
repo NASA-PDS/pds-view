@@ -23,46 +23,46 @@ import com.google.gson.JsonPrimitive;
  *
  */
 public class Profile {
-	//private String _activeFlag;
-	private String _node;
-	private String _identifier;
-	private String _name;
-	private String _method;
-	private int _profileId;
-	private ArrayList<LogSet> _lsList;
+	//private String activeFlag;
+	private String node;
+	private String identifier;
+	private String name;
+	private String method;
+	private int profileId;
+	private ArrayList<LogSet> lsList;
 	
 	protected Logger log = Logger.getLogger(this.getClass().getName());
 	
 	public Profile() {
 		//this._activeFlag = "";
-		this._profileId = 0;
-		this._node = "";
-		this._identifier = "";
-		this._name = "";
-		this._method = "";
-		this._lsList = new ArrayList<LogSet>();
+		this.profileId = 0;
+		this.node = "";
+		this.identifier = "";
+		this.name = "";
+		this.method = "";
+		this.lsList = new ArrayList<LogSet>();
 	}
 	
 	public Profile(ResultSet rs) throws SQLException {
-		this._profileId = rs.getInt("profile_id");
-		this._node = rs.getString("node");
-		this._identifier = rs.getString("identifier");
-		this._name = rs.getString("name");
-		this._method = rs.getString("method");
+		this.profileId = rs.getInt("profile_id");
+		this.node = rs.getString("node");
+		this.identifier = rs.getString("identifier");
+		this.name = rs.getString("name");
+		this.method = rs.getString("method");
 	}
 	
 	public void setProfile(Map<String,String[]> paramMap) {
-		this._profileId = Integer.parseInt((paramMap.get("profile-id")[0]));
-		this._identifier = paramMap.get("identifier")[0];
-		this._method = paramMap.get("method")[0];
-		this._name = paramMap.get("name")[0];
-		this._node = paramMap.get("node")[0];
+		this.profileId = Integer.parseInt((paramMap.get("profile-id")[0]));
+		this.identifier = paramMap.get("identifier")[0];
+		this.method = paramMap.get("method")[0];
+		this.name = paramMap.get("name")[0];
+		this.node = paramMap.get("node")[0];
 		
-		log.info("profileId: "+this._profileId);
-		log.info("identifier: "+this._identifier);
-		log.info("method: "+this._method);
-		log.info("name: "+this._name);
-		log.info("node: "+this._node);
+		log.info("profileId: "+this.profileId);
+		log.info("identifier: "+this.identifier);
+		log.info("method: "+this.method);
+		log.info("name: "+this.name);
+		log.info("node: "+this.node);
 		
 		ArrayList<LogSet> lsList = new ArrayList<LogSet>();
 		//int logCount = Integer.parseInt(paramMap.get("log-set-count")[0]);
@@ -90,53 +90,53 @@ public class Profile {
 		this._activeFlag = activeFlag;
 	}*/
 	public int getProfileId() {
-		return _profileId;
+		return profileId;
 	}
 
 	public void setProfileId(int profileId) {
-		this._profileId = profileId;
+		this.profileId = profileId;
 	}	
 	
 	public String getNode() {
-		return _node;
+		return node;
 	}
 
 	public void setNode(String node) {
-		this._node = node;
+		this.node = node;
 	}
 
 	public String getIdentifier() {
-		return _identifier;
+		return identifier;
 	}
 
 	public void setIdentifier(String identifier) {
-		this._identifier = identifier;
+		this.identifier = identifier;
 	}
 
 	public String getName() {
-		return _name;
+		return name;
 	}
 
 	public void setName(String name) {
-		this._name = name;
+		this.name = name;
 	}
 
 	public String getMethod() {
-		return _method;
+		return method;
 	}
 
 	public void setMethod(String method) {
-		this._method = method;
+		this.method = method;
 	}
 
 	public ArrayList<LogSet> getLogSetList() {
-		return _lsList;
+		return lsList;
 	}
 	
 	public ArrayList<LogSet> getNewLogSets() {
 		ArrayList<LogSet> newSetList = new ArrayList<LogSet>();
 		LogSet ls;
-		for (Iterator<LogSet> it = this._lsList.iterator(); it.hasNext();) {
+		for (Iterator<LogSet> it = this.lsList.iterator(); it.hasNext();) {
 			ls = it.next();
 			if (ls.isNewSet())
 				newSetList.add(ls);
@@ -145,20 +145,20 @@ public class Profile {
 	}
 	
 	public void setLogSetList(ArrayList<LogSet> logSetList) {
-		this._lsList = logSetList;
+		this.lsList = logSetList;
 	}
 	
 	public JsonObject toJson() {
 		JsonObject root=  new JsonObject();
 		JsonArray jArray = new JsonArray();
 		
-		root.add("identifier",new JsonPrimitive(this._identifier));
-		root.add("method", new JsonPrimitive(this._method));
-		root.add("name", new JsonPrimitive(this._name));
-		root.add("node", new JsonPrimitive(this._node));
-		root.add("profileId", new JsonPrimitive(this._profileId));
+		root.add("identifier",new JsonPrimitive(this.identifier));
+		root.add("method", new JsonPrimitive(this.method));
+		root.add("name", new JsonPrimitive(this.name));
+		root.add("node", new JsonPrimitive(this.node));
+		root.add("profileId", new JsonPrimitive(this.profileId));
 
-		for (Iterator<LogSet> it = this._lsList.iterator(); it.hasNext();) {
+		for (Iterator<LogSet> it = this.lsList.iterator(); it.hasNext();) {
 			jArray.add(it.next().toJson());
 		}
 		root.add("logSets", jArray);

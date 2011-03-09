@@ -21,13 +21,13 @@ public class DBProperties {
 
 	private static final String DB_CONFIG = "db_config.xml";
 	
-	private Properties _dbProps;
+	private Properties dbProps;
 
-	private Document _doc;
+	private Document doc;
 
-	private Logger _log = Logger.getLogger(this.getClass().getName());
+	private Logger log = Logger.getLogger(this.getClass().getName());
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(final String[] args) throws Exception {
 		DBProperties connect = new DBProperties("/Users/jpadams/dev/workspace/2010-workspace/report/transfer-logs/src/main/resources");
 		System.out.println("driver = " + connect.getDriver());
 		System.out.println("driver = " + connect.getUrl());
@@ -35,25 +35,25 @@ public class DBProperties {
 		conn.close();
 	}
 
-	public DBProperties(String path) throws FileNotFoundException {
+	public DBProperties(final String path) throws FileNotFoundException {
 		try {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
 			File dbConfig = new File(path+'/'+DB_CONFIG);
-			this._doc = docBuilder.parse(dbConfig);
+			this.doc = docBuilder.parse(dbConfig);
 
 			// normalize text representation
-			this._doc.getDocumentElement().normalize();
-			this._log.fine("Root element of the doc is "
-					+ _doc.getDocumentElement().getNodeName());
+			this.doc.getDocumentElement().normalize();
+			this.log.fine("Root element of the doc is "
+					+ doc.getDocumentElement().getNodeName());
 
-			this._dbProps = new Properties();
+			this.dbProps = new Properties();
 			setProperties();
 		} catch (SAXParseException err) {
-			this._log.warning("** Parsing error" + ", line " + err.getLineNumber()
+			this.log.warning("** Parsing error" + ", line " + err.getLineNumber()
 					+ ", uri " + err.getSystemId());
-			this._log.warning(" " + err.getMessage());
+			this.log.warning(" " + err.getMessage());
 
 		} catch (SAXException e) {
 			// Exception x = e.getException ();
@@ -64,7 +64,7 @@ public class DBProperties {
 
 	}
 
-	public Connection getConnection() {
+	public final Connection getConnection() {
 		try {
 			Class.forName(getDriver());
 			return DriverManager.getConnection(getUrl(), getProperties());
@@ -77,34 +77,34 @@ public class DBProperties {
 		return null;
 	}
 
-	public String getDriver() {
-		return this._doc.getElementsByTagName("driver").item(0).getTextContent();
+	public final String getDriver() {
+		return this.doc.getElementsByTagName("driver").item(0).getTextContent();
 	}
 
-	public Properties getProperties() {
-		return this._dbProps;
+	public final Properties getProperties() {
+		return this.dbProps;
 	}
 
-	public String getPropValue(String tagName) {
-		return this._doc.getElementsByTagName(tagName).item(0).getTextContent();
+	public final String getPropValue(final String tagName) {
+		return this.doc.getElementsByTagName(tagName).item(0).getTextContent();
 	}
 
-	public String getUrl() {
-		return this._doc.getElementsByTagName("url").item(0).getTextContent();
+	public final String getUrl() {
+		return this.doc.getElementsByTagName("url").item(0).getTextContent();
 	}
 
-	public void setProperties() {
+	public final void setProperties() {
 		String propName;
 
 		// Gets all of the child nodes of the root.
-		NodeList propList = this._doc.getDocumentElement().getChildNodes();
+		NodeList propList = this.doc.getDocumentElement().getChildNodes();
 		for (int i = 0; i < propList.getLength(); i++) {
 			Node propNode = propList.item(i);
 
 			if (propNode.getNodeType() == Node.ELEMENT_NODE) {
 				propName = propNode.getNodeName();
 				if (!propName.equals("driver") || !propName.equals("url")) {
-					this._dbProps.setProperty(propName, getPropValue(propName));
+					this.dbProps.setProperty(propName, getPropValue(propName));
 				}
 			}
 		}

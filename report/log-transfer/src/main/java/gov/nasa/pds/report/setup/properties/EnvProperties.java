@@ -19,27 +19,27 @@ public class EnvProperties {
 
 	private static final String ENV_FILE = "env_vars.xml";
 
-	private Document _doc;
+	private Document doc;
 
-	private Logger _log = Logger.getLogger(this.getClass().getName());
+	private Logger log = Logger.getLogger(this.getClass().getName());
 
-	public EnvProperties(String path) throws FileNotFoundException {
+	public EnvProperties(final String path) throws FileNotFoundException {
 		try {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
 			File envFile = new File(path+'/'+ENV_FILE);
-			this._doc = docBuilder.parse(envFile);
+			this.doc = docBuilder.parse(envFile);
 
 			// normalize text representation
-			this._doc.getDocumentElement().normalize();
-			this._log.finest("Root element of the doc is "
-					+ _doc.getDocumentElement().getNodeName());
+			this.doc.getDocumentElement().normalize();
+			this.log.finest("Root element of the doc is "
+					+ doc.getDocumentElement().getNodeName());
 
 		} catch (SAXParseException err) {
-			this._log.warning("** Parsing error" + ", line " + err.getLineNumber()
+			this.log.warning("** Parsing error" + ", line " + err.getLineNumber()
 					+ ", uri " + err.getSystemId());
-			this._log.warning(" " + err.getMessage());
+			this.log.warning(" " + err.getMessage());
 
 		} catch (SAXException e) {
 			// Exception x = e.getException ();
@@ -50,19 +50,19 @@ public class EnvProperties {
 
 	}
 	
-	public String getLogDest() {
-		return this._doc.getElementsByTagName("log_dest").item(0).getTextContent();
+	public final String getLogDest() {
+		return this.doc.getElementsByTagName("log_dest").item(0).getTextContent();
 	}
 
-	public String getSawmillProfileHome() {
-		return this._doc.getElementsByTagName("sawmill_profile_home").item(0).getTextContent();
+	public final String getSawmillProfileHome() {
+		return this.doc.getElementsByTagName("sawmill_profile_home").item(0).getTextContent();
 	}
 
-	public String getSawmillHome() {
-		return this._doc.getElementsByTagName("sawmill_home").item(0).getTextContent();
+	public final String getSawmillHome() {
+		return this.doc.getElementsByTagName("sawmill_home").item(0).getTextContent();
 	}
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(final String[] args) throws Exception {
 		EnvProperties envProps = new EnvProperties("/Users/jpadams/dev/workspace/2010-workspace/report/transfer-logs/src/main/resources");
 		System.out.println("logDest = " + envProps.getLogDest());
 		//Connection conn = connect.getConnection();

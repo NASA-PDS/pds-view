@@ -32,6 +32,7 @@
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Creating_and_Loading_the_Database">Creating and Loading the Database</a></li>
         <li><a href="#Configuring_Database_Access">Configuring Database Access</a></li>
+        <li><a href="#Configuring_Environment">Configuring Environment</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
       </ul>
     </section>
@@ -144,12 +145,16 @@ Query OK, 0 rows affected (0.00 sec)
 
       <source>
 &lt;variables&gt;
+
   # The home directory of the Sawmill software containing the file sawmill.cgi
   &lt;sawmill_home&gt;{sawmill_home}&lt;/sawmill_home&gt;
+
   # The home directory for the Sawmill profiles (should be contained within sawmill home directory)
   &lt;sawmill_profile_home&gt;{sawmill_home}/LogAnalysisInfo/profiles&lt;/sawmill_profile_home&gt;
+
   # The destination directory to store all of the logs to be transferred.
   &lt;log_dest&gt;{log_destination}&lt;/log_dest&gt;
+
 &lt;/variables&gt;
       </source>
 

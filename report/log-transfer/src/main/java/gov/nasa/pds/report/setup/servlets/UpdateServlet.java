@@ -29,7 +29,7 @@ import com.jcraft.jsch.SftpException;
 public class UpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private Logger _log = Logger.getLogger(this.getClass().getName());
+	private Logger log = Logger.getLogger(this.getClass().getName());
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -42,7 +42,7 @@ public class UpdateServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected final void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		String error = "";
 		int removeId;
 		int empty = 0;
@@ -86,7 +86,7 @@ public class UpdateServlet extends HttpServlet {
 		root.add("error", new JsonPrimitive(error));
 		root.add("empty", new JsonPrimitive(empty));
 		
-		this._log.info(root.toString());
+		this.log.info(root.toString());
 		Gson gson = new Gson();
 		gson.toJson(root, response.getWriter());
 	}
@@ -94,7 +94,7 @@ public class UpdateServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
 

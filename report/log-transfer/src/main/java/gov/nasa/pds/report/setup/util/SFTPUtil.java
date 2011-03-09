@@ -22,62 +22,90 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
+/**
+ * Utility that provides all SFTP connection functionality
+ * @author jpadams
+ *
+ */
 public class SFTPUtil {
-	private Logger _log = Logger.getLogger(this.getClass().getName());
+	private Logger log = Logger.getLogger(this.getClass().getName());
 
-	private Session _session;
-	private ChannelSftp _sftpChannel;
-	private String _logDestBase;
+	private Session session;
+	private ChannelSftp sftpChannel;
+	private String logDestBase;
 
-	private Profile _profile;
-	private ArrayList<LogSet> _lsList;
+	private Profile profile;
+	private ArrayList<LogSet> lsList;
 
-	public SFTPUtil(String logDest, Profile profile) {
-		this._session = null;
-		this._sftpChannel = new ChannelSftp();
+	/**
+	 * 
+	 * @param logDest
+	 * @param profile
+	 */
+	public SFTPUtil(final String logDest, final Profile profile) {
+		this.session = null;
+		this.sftpChannel = new ChannelSftp();
 
-		this._profile = profile;
-		this._lsList = profile.getLogSetList();
+		this.profile = profile;
+		this.lsList = profile.getLogSetList();
 
 		setLogDest(logDest);
 	}
 
-	public SFTPUtil(ArrayList<LogSet> logInfoList) {
-		this._session = null;
-		this._sftpChannel = new ChannelSftp();
+	/**
+	 * 
+	 * @param logInfoList
+	 */
+	public SFTPUtil(final ArrayList<LogSet> logInfoList) {
+		this.session = null;
+		this.sftpChannel = new ChannelSftp();
 
-		this._lsList = logInfoList;
+		this.lsList = logInfoList;
 	}
 
-	private void connect(LogSet logSet) throws JSchException {
+	/**
+	 * 
+	 * @param logSet
+	 * @throws JSchException
+	 */
+	private void connect(final LogSet logSet) throws JSchException {
 		JSch jsch = new JSch();
-		
-		this._session = jsch.getSession(logSet.getUsername(), logSet.getHostname(), 22);
+
+		this.session = jsch.getSession(logSet.getUsername(), logSet.getHostname(), 22);
 
 		// Ignore HostKeyChecking
-		this._session.setConfig("StrictHostKeyChecking", "no");                  
+		this.session.setConfig("StrictHostKeyChecking", "no");                  
 
 		// set the password for authentication
-		this._session.setPassword(logSet.getPassword());
-		this._session.connect();
+		this.session.setPassword(logSet.getPassword());
+		this.session.connect();
 
 		// Getting the channel using sftp
-		Channel channel = this._session.openChannel("sftp");
+		Channel channel = this.session.openChannel("sftp");
 		channel.connect();
-		this._sftpChannel = (ChannelSftp) channel;
+		this.sftpChannel = (ChannelSftp) channel;
 	}
 
+	/**
+	 * 
+	 */
 	private void disconnect() {
 		// Exits the channel
-		if (this._sftpChannel.isConnected())
-			this._sftpChannel.exit();
+		if (this.sftpChannel.isConnected()) {
+			this.sftpChannel.exit();
+		}
 
 		// Disconnect the session
-		if (this._session.isConnected())
-			this._session.disconnect();
+		if (this.session.isConnected()) {
+			this.session.disconnect();
+		}
 	}
 
-	public JsonObject checkConnections() {
+	/**
+	 * 
+	 * @return
+	 */
+	public final JsonObject checkConnections() {
 		//byte empty = 1;
 		byte connect = 1;
 		byte sftp = 1;
@@ -89,52 +117,51 @@ public class SFTPUtil {
 		JsonObject jObj = null;
 		LogSet ls = null;
 
-		for (Iterator<LogSet> it1 = this._lsList.iterator(); it1.hasNext();) {
+		for (Iterator<LogSet> it1 = this.lsList.iterator(); it1.hasNext();) {
 			jObj = new JsonObject();
 
 			ls = it1.next();
 			if (ls.getActiveFlag().equals("y")) {
 				try {
 					jObj = ls.toJson();
-					
+
 					connect(ls);
-	
+
 					// Getting the session
 					String[] dirList;
 					String filename;
-	
-					Vector lsOut = this._sftpChannel.ls(ls.getPathname());
-	
+
+					Vector lsOut = this.sftpChannel.ls(ls.getPathname());
+
 					JsonArray matches = new JsonArray();
 					for (Iterator it2 = lsOut.iterator(); it2.hasNext();) {
 						dirList = it2.next().toString().split(" ");
-	
+
 						//TODO May need to change this
-						filename = dirList[dirList.length-1];
+						filename = dirList[dirList.length - 1];
 						if (!filename.equals(".") && !filename.equals("..")) {
 							matches.add(new JsonPrimitive(filename));
 						}
 					}
-	
 					/*if (!matches.isJsonNull()) {
 						empty = 0;
 					}*/
-					
+
 					jObj.add("files", matches);
 				} catch (JSchException e) {
 					//root.add("connect", new JsonPrimitive(0));
-					this._log.warning("Jsch Error: "+e.getMessage());
+					this.log.warning("Jsch Error: "+e.getMessage());
 					connect = 0;
 					error = e.getMessage();
 				} catch (SftpException e) {
-					this._log.warning("SFTP Error: "+e.getMessage());
+					this.log.warning("SFTP Error: "+e.getMessage());
 					sftp = 0;
 					error = e.getMessage();   
 				} finally {
-					
+
 					disconnect();
 				}
-				
+
 				//logObj.add("label", new JsonPrimitive(logInfo.getLabel()));
 				jObj.add("connect", new JsonPrimitive(connect));
 				jObj.add("sftp", new JsonPrimitive(sftp));
@@ -145,11 +172,14 @@ public class SFTPUtil {
 		}
 
 		root.add("logs", jArray);
-		this._log.info(root.toString());
+		this.log.info(root.toString());
 		return root;
 	}
 
-	public void getLogs() {
+	/**
+	 * 
+	 */
+	public final void getLogs() {
 		//byte empty = 1;
 		LogSet logSet;
 		byte connect = 1;
@@ -157,13 +187,13 @@ public class SFTPUtil {
 		String error = "";
 		String logDestPath = "";
 
-		for (Iterator<LogSet> it = this._lsList.iterator(); it.hasNext();) {
+		for (Iterator<LogSet> it = this.lsList.iterator(); it.hasNext();) {
 			try {
 				logSet = it.next();
 				
-				logDestPath = this._logDestBase + logSet.getLabel(); //TODO Create LogPath object since it is reused in SawmillUtil
+				logDestPath = this.logDestBase + logSet.getLabel(); //TODO Create LogPath object since it is reused in SawmillUtil
 				
-				this._log.info(logDestPath);
+				this.log.info(logDestPath);
 
 				// Create the dir structure to put the logs
 				createDirStruct(logDestPath);
@@ -171,14 +201,14 @@ public class SFTPUtil {
 				connect(logSet);
 
 				// Getting the session
-				this._sftpChannel.get(logSet.getPathname(), logDestPath);
+				this.sftpChannel.get(logSet.getPathname(), logDestPath);
 			} catch (JSchException e) {
 				//root.add("connect", new JsonPrimitive(0));
-				this._log.warning("Jsch Error: "+e.getMessage());
+				this.log.warning("Jsch Error: "+e.getMessage());
 				connect = 0;
 				error = e.getMessage();
 			} catch (SftpException e) {
-				this._log.warning("SFTP Error: "+e.getMessage());
+				this.log.warning("SFTP Error: "+e.getMessage());
 				sftp = 0;
 				error = e.getMessage();   
 			} finally {
@@ -192,16 +222,26 @@ public class SFTPUtil {
 		//return root;
 	}
 
-	private boolean createDirStruct(String path) {
+	/**
+	 * Creates directory structure to place copied logs
+	 * @param path
+	 * @return
+	 */
+	private boolean createDirStruct(final String path) {
 		File dirStruct = new File(path);
-		if (!dirStruct.exists())
+		if (!dirStruct.exists()) {
 			return dirStruct.mkdirs();
-		else
+		} else {
 			return true;
+		}
 	}
 
-	public void setLogDest(String logDest) {
-		this._logDestBase = logDest;
+	/**
+	 * 
+	 * @param logDest
+	 */
+	public final void setLogDest(final String logDest) {
+		this.logDestBase = logDest;
 	}
 
 
@@ -209,7 +249,7 @@ public class SFTPUtil {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		Profile profile = new Profile();
 		profile.setIdentifier("ident10");
 		//profile.setMethod("pull1");

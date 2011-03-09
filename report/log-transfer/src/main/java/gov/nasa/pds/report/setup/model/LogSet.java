@@ -9,28 +9,28 @@ import com.google.gson.JsonPrimitive;
 
 public class LogSet {
 
-	private int _logSetId;
-	private int _profileId;
-	private int _setNumber;
-	private String _activeFlag;
-	private String _label;
-	private String _hostname;
-	private String _username;
-	private String _password;
-	private String _pathname;
-	
+	private int logSetId;
+	private int profileId;
+	private int setNumber;
+	private String activeFlag;
+	private String label;
+	private String hostname;
+	private String username;
+	private String password;
+	private String pathname;
+
 	public LogSet() {
-		this._logSetId = 0;
-		this._profileId = 0;
-		this._label = "";
-		this._hostname = "";
-		this._username = "";
-		this._password = "";
-		this._pathname = "";
-		this._activeFlag = "";
-		this._setNumber = 0;
+		this.logSetId = 0;
+		this.profileId = 0;
+		this.label = "";
+		this.hostname = "";
+		this.username = "";
+		this.password = "";
+		this.pathname = "";
+		this.activeFlag = "";
+		this.setNumber = 0;
 	}
-	
+
 	public LogSet(ResultSet rs)  throws SQLException {
 		setLogSetId(rs.getInt("log_set_id"));
 		setHostname(rs.getString("hostname"));
@@ -42,88 +42,88 @@ public class LogSet {
 		setSetNumber(rs.getInt("set_number"));
 		setActiveFlag(rs.getString("active_flag"));
 	}
-	
-	public LogSet(Map<String,String[]> paramMap, int i) {
-		setLogSetId(Integer.parseInt(paramMap.get("log-set-id-"+i)[0]));
-		setLabel(paramMap.get("label-"+i)[0]);
-		setHostname(paramMap.get("hostname-"+i)[0]);
-		setUsername(paramMap.get("username-"+i)[0]);
-		setPassword(paramMap.get("password-"+i)[0]);
-		setPathname(paramMap.get("pathname-"+i)[0]);
+
+	public LogSet( Map<String, String[]> paramMap, int i) {
+		setLogSetId(Integer.parseInt(paramMap.get("log-set-id-" + i)[0]));
+		setLabel(paramMap.get("label-" + i)[0]);
+		setHostname(paramMap.get("hostname-" + i)[0]);
+		setUsername(paramMap.get("username-" + i)[0]);
+		setPassword(paramMap.get("password-" + i)[0]);
+		setPathname(paramMap.get("pathname-" + i)[0]);
 		setActiveFlag(paramMap.get("active-flag-"+i)[0]);
-		setSetNumber(Integer.parseInt(paramMap.get("set-number-"+i)[0]));
+		setSetNumber(Integer.parseInt(paramMap.get("set-number-" + i)[0]));
 	}
 
 	public String getActiveFlag() {
-		return _activeFlag;
+		return activeFlag;
 	}
 	public void setActiveFlag(String activeFlag) {
-		this._activeFlag = activeFlag;
+		this.activeFlag = activeFlag;
 	}
 	public int getLogSetId() {
-		return _logSetId;
+		return logSetId;
 	}
 	public void setLogSetId(int infoId) {
-		this._logSetId = infoId;
+		this.logSetId = infoId;
 	}
 	public int getProfileId() {
-		return _profileId;
+		return profileId;
 	}
 	public void setProfileId(int profileId) {
-		this._profileId = profileId;
+		this.profileId = profileId;
 	}
 	public String getLabel() {
-		return _label;
+		return label;
 	}
 	public void setLabel(String label) {
-		this._label = label.replace(' ', '_');
+		this.label = label.replace(' ', '_');
 	}
 	public String getHostname() {
-		return _hostname;
+		return hostname;
 	}
 	public void setHostname(String hostname) {
-		this._hostname = hostname;
+		this.hostname = hostname;
 	}
 	public String getUsername() {
-		return _username;
+		return username;
 	}
 	public void setUsername(String username) {
-		this._username = username;
+		this.username = username;
 	}
 	public String getPassword() {
-		return _password;
+		return password;
 	}
 	public void setPassword(String password) {
-		this._password = password;
+		this.password = password;
 	}
 	public String getPathname() {
-		return _pathname;
+		return pathname;
 	}
 	public void setPathname(String pathname) {
-		this._pathname = pathname;
+		this.pathname = pathname;
 	}
 	public int getSetNumber() {
-		return _setNumber;
+		return setNumber;
 	}
 	public void setSetNumber(int setNumber) {
-		this._setNumber = setNumber;
+		this.setNumber = setNumber;
 	}
 	public boolean isNewSet() {
-		if (this._logSetId == 0)
+		if (this.logSetId == 0) {
 			return true;
-		
+		}
 		return false;
 	}
 	public JsonObject toJson() {
 		JsonObject jObj = new JsonObject();
-		jObj.add("hostname", new JsonPrimitive(this._hostname));
-		jObj.add("label", new JsonPrimitive(this._label));
-		jObj.add("password", new JsonPrimitive(this._password));
-		jObj.add("pathname", new JsonPrimitive(this._pathname));
-		jObj.add("setNumber", new JsonPrimitive(this._setNumber));
-		jObj.add("username", new JsonPrimitive(this._username));
-		jObj.add("logSetId", new JsonPrimitive(this._logSetId));
-		jObj.add("profileId", new JsonPrimitive(this._profileId));
+		jObj.add("hostname", new JsonPrimitive(this.hostname));
+		jObj.add("label", new JsonPrimitive(this.label));
+		jObj.add("password", new JsonPrimitive(this.password));
+		jObj.add("pathname", new JsonPrimitive(this.pathname));
+		jObj.add("setNumber", new JsonPrimitive(this.setNumber));
+		jObj.add("username", new JsonPrimitive(this.username));
+		jObj.add("logSetId", new JsonPrimitive(this.logSetId));
+		jObj.add("profileId", new JsonPrimitive(this.profileId));
 		//jObj.add("activeFlag", new JsonPrimitive(this._activeFlag));
 		return jObj;
 	}
