@@ -79,7 +79,7 @@ public class RegistryServiceImpl implements RegistryService {
       "ClassificationScheme", "ExtrinsicObject", "Service", "ServiceBinding",
       "SpecificationLink");
 
-  private static String OBJECT_TYPE_SCHEME = "urn:registry:ObjectType";
+  private static String OBJECT_TYPE_SCHEME = "urn:registry:classificationScheme:ObjectType";
 
   /*
    * (non-Javadoc)
