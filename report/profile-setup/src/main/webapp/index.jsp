@@ -7,7 +7,7 @@
 
 <link rel="stylesheet" href="css/jquery-ui-1.8.6.custom.css"></link>
 <link rel="stylesheet" href="css/main.css"></link>
-<title>Log Transfer</title>
+<title>Profile Setup</title>
 
 <!-- %
 boolean dbError = false;
@@ -337,8 +337,8 @@ function toggleHiddenFiles() {
 </head>
 <body>
 	<div class="top-bar">
-		<h1>Log Transfer</h1>
-		<p class="transfer-text">Software that gains access to all node web/ftp logs to be utilized by the Report Service.</p>
+		<h1>Profile Setup</h1>
+		<p class="transfer-text">Software that creates Report Service profiles and manages log transfer information.</p>
 	</div>
 	<form id="transfer-form" action="setup" method="post">
 		<div id="main-content">

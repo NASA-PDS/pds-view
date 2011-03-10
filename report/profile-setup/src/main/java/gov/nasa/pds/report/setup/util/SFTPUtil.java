@@ -172,7 +172,6 @@ public class SFTPUtil {
 		}
 
 		root.add("logs", jArray);
-		this.log.info(root.toString());
 		return root;
 	}
 
@@ -190,10 +189,10 @@ public class SFTPUtil {
 		for (Iterator<LogSet> it = this.lsList.iterator(); it.hasNext();) {
 			try {
 				logSet = it.next();
-				
+
 				logDestPath = this.logDestBase + logSet.getLabel(); //TODO Create LogPath object since it is reused in SawmillUtil
-				
-				this.log.info(logDestPath);
+
+				this.log.fine(logDestPath);
 
 				// Create the dir structure to put the logs
 				createDirStruct(logDestPath);

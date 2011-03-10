@@ -56,7 +56,6 @@ public class SawmillUtil {
 		for (Iterator<LogSet> it = lsList.iterator(); it.hasNext();) {
 			ls = it.next();
 
-			this.log.info("set number" + ls.getSetNumber());
 			setNum = ls.getSetNumber();
 
 			if (setNum == 0) {
