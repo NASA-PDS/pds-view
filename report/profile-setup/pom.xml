@@ -25,15 +25,15 @@
   </parent>
 
   <groupId>gov.nasa.pds.2010.report</groupId>
-  <artifactId>log-transfer</artifactId>
+  <artifactId>profile-setup</artifactId>
   <version>0.1.0-dev</version>
   <packaging>war</packaging>
 
-  <name>Log Transfer</name>
+  <name>Profile Setup</name>
   <description>
-    The Log Transfer web application is used to store the information necessary to copy log files from remote locations to a PDS Engineering machine.
+    The Profile Setup web application is used to create a new Sawmill profile and, if necessary, store the information to copy log files from remote locations to a PDS Engineering machine.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/report/log-transfer</url>
+  <url>http://pds-cm.jpl.nasa.gov/2010/report/profile-setup</url>
 
   <licenses>
     <license>
@@ -107,7 +107,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
-            <descriptor>src/main/assembly/log-transfer.xml</descriptor>
+            <descriptor>src/main/assembly/profile-setup.xml</descriptor>
           </descriptors>
         </configuration>
         <executions>

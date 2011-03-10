@@ -37,7 +37,7 @@
 
   <modules>
     <module>sawmill</module>
-    <module>log-transfer</module>
+    <module>profile-setup</module>
   </modules>
 
   <licenses>

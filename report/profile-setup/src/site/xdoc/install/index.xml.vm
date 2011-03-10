@@ -24,7 +24,7 @@
 
   <body>
     <section name="Installation">
-      <p>This section describes how to install the Log Transfer software web application contained in the <i>${xdoc-artifactId}</i> package. The following topics can be found in this section:
+      <p>This section describes how to install the Profile Setup software web application contained in the <i>${xdoc-artifactId}</i> package. The following topics can be found in this section:
       </p>
 
       <ul>
@@ -38,13 +38,13 @@
     </section>
 
     <section name="System Requirements">
-      <p>The Log Transfer web application was developed using Java and <a href="http://jquery.com/" target="_blank">jQuery</a> and will run under a standard Java Application Server. The application was specifically developed under Sun Java version 1.5, so the tool will execute correctly under versions 1.5 or 1.6.
+      <p>The Profile Setup web application was developed using Java and <a href="http://jquery.com/" target="_blank">jQuery</a> and will run under a standard Java Application Server. The application was specifically developed under Sun Java version 1.5, so the tool will execute correctly under versions 1.5 or 1.6.
       </p>
 
       <p>Since the tool was developed using Sun's Java, the target Java Application Server should support Sun's Java Runtime Environment (JRE). The application was tested using Apache's Tomcat version 5.5.X, which is the preferred Java Application Server for deployment. The software can be obtained from the <a href="http://tomcat.apache.org/" target="_blank"> Apache Tomcat</a> web site. Other Java Application Servers should be compatible.
       </p>
 
-      <p>The Log Transfer software also requires a <a href="http://www.mysql.com/" target="_blank">MySQL</a> Server installation for hosting the Report Service database. The application was tested using the Community Server 5.X.X.
+      <p>The Profile Setup software also requires a <a href="http://www.mysql.com/" target="_blank">MySQL</a> Server installation for hosting the Report Service database. The application was tested using the Community Server 5.X.X.
       </p>
 
       <p>The web application also requires that Sawmill (8.X.X) be installed on the local machine in order for the software to performs its duty of configuring profiles for the service as needed. See the <a href="http://pdscm/2010/report/install/index.html">Report Service Installation Instructions</a> for more detail.
@@ -77,7 +77,7 @@ or
           </p>
         </li>
         <li><b>${xdoc-artifactId}-${xdoc-version}.war</b><br/>
-          <p>This is the Web Archive (WAR) file containing the Log Transfer software including all dependent JAR files. The application is intended to be hosted on the Engineering Node site but can be hosted elsewhere.
+          <p>This is the Web Archive (WAR) file containing the Profile Setup software including all dependent JAR files. The application is intended to be hosted on the Engineering Node site but can be hosted elsewhere.
           </p>
         </li>
         <li><b>conf/</b><br/>
@@ -85,17 +85,17 @@ or
           </p>
         </li>
         <li><b>doc/</b><br/>
-          <p>This document directory contains a local web site with the Log Transfer Guide, javadoc, unit test results and other configuration management related information. Just point your favorite browser to the <i>index.html</i> file in this directory.
+          <p>This document directory contains a local web site with the Profile Setup Guide, javadoc, unit test results and other configuration management related information. Just point your favorite browser to the <i>index.html</i> file in this directory.
           </p>
         </li>
       </ul>
     </section>
 
     <section name="Creating and Loading the Database">
-      <p>The Log Transfer software requires a MySQL Server instance to host the Report Service database. If the target environment does not already have a MySQL Server instance installed, have an instance installed before continuing the installation. The software can be obtained from the <a href="http://www.mysql.com/" target="_blank">MySQL</a> web site.
+      <p>The Profile Setup software requires a MySQL Server instance to host the Report Service database. If the target environment does not already have a MySQL Server instance installed, have an instance installed before continuing the installation. The software can be obtained from the <a href="http://www.mysql.com/" target="_blank">MySQL</a> web site.
       </p>
 
-      <p>Once the MySQL Server instance is installed and/or identified, the database and user account for the Log Transfer software must be created. The following commands detail the steps for logging into the server, creating the database and creating the user account to access the database:
+      <p>Once the MySQL Server instance is installed and/or identified, the database and user account for the Profile Setup software must be created. The following commands detail the steps for logging into the server, creating the database and creating the user account to access the database:
       </p>
 
       <source>
@@ -123,7 +123,7 @@ Query OK, 0 rows affected (0.00 sec)
     </section>
 
     <section name="Configuring Database Access">
-      <p>The Log Transfer software comes preconfigured to access the MySQL database instance on the operational machine. If this configuration requires modification, the WAR file will need to be unpacked and the <i>./WEB-INF/classes/db_config.xml</i> file modified. The file contents are as follows:
+      <p>The Profile Setup software comes preconfigured to access the MySQL database instance on the operational machine. If this configuration requires modification, the WAR file will need to be unpacked and the <i>./WEB-INF/classes/db_config.xml</i> file modified. The file contents are as follows:
       </p>
 
       <source>
@@ -140,7 +140,7 @@ Query OK, 0 rows affected (0.00 sec)
     </section>
 
     <section name="Configuring Environment">
-      <p>The Log Transfer software comes preconfigured to create and modify Sawmill profiles as well as transfer web logs from remote locations. In order to ensure stable functionality, several environment variables must be set prior to application deployment. If this configuration requires modification, the WAR file will need to be unpacked and the <i>./WEB-INF/classes/db_config.xml</i> file modified. The file contents are as follows:
+      <p>The Profile Setup software comes preconfigured to create and modify Sawmill profiles as well as transfer web logs from remote locations. In order to ensure stable functionality, several environment variables must be set prior to application deployment. If this configuration requires modification, the WAR file will need to be unpacked and the <i>./WEB-INF/classes/db_config.xml</i> file modified. The file contents are as follows:
       </p>
 
       <source>
@@ -163,7 +163,7 @@ Query OK, 0 rows affected (0.00 sec)
     </section>
 
     <section name="Deploying the Application">
-      <p>The Log Transfer web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation the WAR file should be renamed from <i>${xdoc-artifactId}-${xdoc-version}.war</i> to <i>${xdoc-artifactId}.war</i>. A WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation.
+      <p>The Profile Setup web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation the WAR file should be renamed from <i>${xdoc-artifactId}-${xdoc-version}.war</i> to <i>${xdoc-artifactId}.war</i>. A WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation.
       </p>
     </section>
   </body>

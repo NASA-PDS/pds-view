@@ -24,11 +24,11 @@
 
   <body>
     <section name="Web Application Operation">
-      <p>The Log Transfer software is a web application for transferring a specific nodes web logs to the Engineering need for use in the Report Service. The application is available from the Engineering Node site at 
-      <a href="http://pdsops.jpl.nasa.gov/log-transfer/" target="_blank">http://pdsops.jpl.nasa.gov/log-transfer/</a>. The main screen of the application is as follows:
+      <p>The Profile Setup software is a web application for setting up a new profile for the Report Service, and provides functionality to transfer a nodes web logs to the Engineering need for use in the Service. The application is available from the Engineering Node site at 
+      <a href="http://pdsops.jpl.nasa.gov/profile-setup/" target="_blank">http://pdsops.jpl.nasa.gov/profile-setup/</a>. The main screen of the application is as follows:
       </p>
 
-      <center><img src="../images/transfer_main.jpg"/></center>
+      <center><img src="../images/profile-main.jpg"/></center>
 
       <p>The user may begin by either entering the necessary information in the appropriate text fields in order to create a new profile, or select one from the drop-down list to modify.
       </p>
