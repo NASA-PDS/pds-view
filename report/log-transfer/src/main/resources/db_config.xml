@@ -1,6 +1,0 @@
-<dbinfo>
-  <url>jdbc:mysql://localhost/report_service</url>
-  <driver>com.mysql.jdbc.Driver</driver>
-  <user></user>
-  <password></password>
-</dbinfo>
