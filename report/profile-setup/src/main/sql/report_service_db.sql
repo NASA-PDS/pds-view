@@ -16,14 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `report_service`
---
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `report_service` /*!40100 DEFAULT CHARACTER SET latin1 */;
-
-USE `report_service`;
-
---
 -- Table structure for table `log_sets`
 --
 
@@ -40,8 +32,9 @@ CREATE TABLE `log_sets` (
   `label` varchar(30) DEFAULT NULL,
   `active_flag` varchar(1) DEFAULT 'y',
   `log_set_id` int(11) NOT NULL AUTO_INCREMENT,
+  `set_number` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_set_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -60,7 +53,7 @@ CREATE TABLE `profiles` (
   `method` varchar(10) DEFAULT NULL,
   `active_flag` varchar(1) DEFAULT 'y',
   PRIMARY KEY (`profile_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -72,4 +65,4 @@ CREATE TABLE `profiles` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-03-02 15:09:41
+-- Dump completed on 2011-03-10 15:48:05
