@@ -51,16 +51,10 @@ public class DBUtil {
 	private int profileId = -1;
 
 	/**
-	 * For testing purposes only.
+	 * 
+	 * @param path
+	 * @throws FileNotFoundException
 	 */
-	public DBUtil() throws FileNotFoundException {
-		try {
-			this.dbProps = new DBProperties("/Users/jpadams/dev/workspace/2010-workspace/report/transfer-logs/src/main/resources/");
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
-	}
-
 	public DBUtil(final String path) throws FileNotFoundException {
 		try {
 			this.dbProps = new DBProperties(path);
@@ -69,6 +63,12 @@ public class DBUtil {
 		}
 	}
 
+	/**
+	 * 
+	 * @param path
+	 * @param qs
+	 * @throws FileNotFoundException
+	 */
 	public DBUtil(final String path, final String qs) throws FileNotFoundException {
 		try {
 			this.dbProps = new DBProperties(path);
@@ -78,6 +78,9 @@ public class DBUtil {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public final void closeConn() {
 		try {
 			this.conn.close();
@@ -88,16 +91,28 @@ public class DBUtil {
 		}
 	}
 
+	/**
+	 * 
+	 * @throws SQLException
+	 */
 	private void connect() throws SQLException {
 		try {
 			Class.forName(this.dbProps.getDriver());
-			this.conn = DriverManager.getConnection(this.dbProps.getUrl(),
-					this.dbProps.getProperties());
+			this.conn = DriverManager.getConnection(
+					this.dbProps.getUrl(), 
+					this.dbProps.getUsername(), 
+					this.dbProps.getPassword());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * 
+	 * @param profileId
+	 * @return
+	 * @throws SQLException
+	 */
 	public final Profile findByProfileId(final int profileId) throws SQLException {
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -138,6 +153,11 @@ public class DBUtil {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
 	public final ArrayList<Profile> findAllProfiles() throws SQLException {
 		Statement stmt1 = null;
 		Statement stmt2 = null;
@@ -182,6 +202,11 @@ public class DBUtil {
 		}
 	}
 
+	/**
+	 * 
+	 * @param profile
+	 * @throws SQLException
+	 */
 	public final void createNew(final Profile profile) throws SQLException {
 		insertProfile(profile);
 		for(Iterator<LogSet> it = profile.getLogSetList().iterator(); it.hasNext();) {
@@ -189,6 +214,12 @@ public class DBUtil {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param lsList
+	 * @param profileId
+	 * @throws SQLException
+	 */
 	public final void update(final ArrayList<LogSet> lsList, final int profileId) throws SQLException {
 		LogSet ls;
 		this.profileId = profileId;
@@ -203,6 +234,11 @@ public class DBUtil {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @throws SQLException
+	 */
 	public final void removeLogInfo(final int id) throws SQLException {
 		String sql = "UPDATE log_sets SET " +
 			"active_flag='n' "+
@@ -212,6 +248,11 @@ public class DBUtil {
 		executeUpdate(sql);
 	}
 	
+	/**
+	 * 
+	 * @param profile
+	 * @throws SQLException
+	 */
 	public final void updateProfile(final Profile profile) throws SQLException {
 		this.profileId = profile.getProfileId();
 		String sql = "UPDATE profiles SET " +
@@ -226,6 +267,11 @@ public class DBUtil {
 		executeUpdate(sql);
 	}
 	
+	/**
+	 * 
+	 * @param logSet
+	 * @throws SQLException
+	 */
 	public final void updateLogInfo(final LogSet logSet) throws SQLException {
 		String sql = "UPDATE log_sets SET " +
 				"hostname='"+logSet.getHostname()+"'," +
@@ -241,6 +287,11 @@ public class DBUtil {
 		executeUpdate(sql);
 	}
 	
+	/**
+	 * 
+	 * @param profile
+	 * @throws SQLException
+	 */
 	public final void insertProfile(final Profile profile) throws SQLException {
 		String sql = "INSERT INTO profiles ( node, identifier, name, method, created_by)"+
 					"values ('"+profile.getNode()+"',"+
@@ -252,20 +303,31 @@ public class DBUtil {
 		this.profileId = executeUpdate(sql);
 	}
 	
+	/**
+	 * 
+	 * @param logSet
+	 * @throws SQLException
+	 */
 	public final void insertLogInfo(final LogSet logSet) throws SQLException {
-		String sql = "INSERT INTO log_sets ( profile_id, hostname, username, password, pathname, label, created_by"+
-		") values ("+this.profileId+","+
-			"'"+logSet.getHostname()+"',"+
-			"'"+logSet.getUsername()+"',"+
-			"'"+logSet.getPassword()+"',"+
-			"'"+logSet.getPathname()+"',"+
-			"'"+logSet.getLabel()+"',"+
+		String sql = "INSERT INTO log_sets ( profile_id, hostname, username, password, pathname, label, created_by"
+		+ ") values (" + this.profileId + ","
+			+ "'" + logSet.getHostname() + "',"
+			+ "'" + logSet.getUsername() + "',"
+			+ "'" + logSet.getPassword() + "',"
+			+ "'" + logSet.getPathname() + "',"
+			+ "'" + logSet.getLabel() + "',"
 			//""+logSet.getSetNumber()+","+
-			"'UNK')"; // TODO change from default UNK
+			+ "'UNK')"; // TODO change from default UNK
 
 		executeUpdate(sql);
 	}
-	
+
+	/**
+	 * 
+	 * @param sql
+	 * @return
+	 * @throws SQLException
+	 */
 	public final int executeUpdate(final String sql) throws SQLException {
 		this.log.fine(sql);
 		connect();
@@ -294,7 +356,7 @@ public class DBUtil {
 	 */
 	public static void main(final String[] args){
 		try {			
-			DBUtil util = new DBUtil();
+			DBUtil util = new DBUtil("/Users/jpadams/dev/workspace/2010-workspace/report/profile-setup/src/main/resources/");
 			//util.connect();
 			
 			Profile profile = new Profile();
@@ -311,10 +373,10 @@ public class DBUtil {
 			logSet.setPathname("srcPath10");
 			logInfoList.add(logSet);
 			
-			profile.setLogSetList(logInfoList);
+			//profile.setLogSetList(logInfoList);
 			//util.createNew(profile);
 			
-			profile = util.findByProfileId(8);
+			//profile = util.findByProfileId(8);
 			
 			ArrayList<Profile> profileList = util.findAllProfiles();
 			//log.info("Profile Output: "profile.getProfileId())

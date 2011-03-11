@@ -77,7 +77,7 @@ public class SFTPUtil {
 		this.session.setConfig("StrictHostKeyChecking", "no");                  
 
 		// set the password for authentication
-		this.session.setPassword(logSet.getPassword());
+		this.session.setPassword(logSet.getDecryptedPassword());
 		this.session.connect();
 
 		// Getting the channel using sftp

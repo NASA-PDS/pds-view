@@ -63,7 +63,7 @@ public class SaveServlet extends HttpServlet {
 			try {
 				DBUtil db = new DBUtil(realPath);
 				EnvProperties env = new EnvProperties(realPath);
-				String logBasePath = env.getLogDest()+'/'+profile.getNode()+'/'+profile.getName()+'/';
+				String logBasePath = env.getSawmillLogHome()+'/'+profile.getNode()+'/'+profile.getName()+'/';
 				SawmillUtil sawmill = new SawmillUtil(env.getSawmillProfileHome(), logBasePath, realPath, profile.getName());
 				
 				ArrayList<LogSet> newLogSets = profile.getNewLogSets();

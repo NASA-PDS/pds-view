@@ -1,13 +1,17 @@
 package gov.nasa.pds.report.setup.model;
 
+import gov.nasa.pds.report.setup.Globals;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-public class LogSet {
+public class LogSet extends Globals {
 
 	private int logSetId;
 	private int profileId;
@@ -18,8 +22,12 @@ public class LogSet {
 	private String username;
 	private String password;
 	private String pathname;
+	
+	private StandardPBEStringEncryptor encryptor;
 
 	public LogSet() {
+		setEncryptor();
+		
 		this.logSetId = 0;
 		this.profileId = 0;
 		this.label = "";
@@ -32,6 +40,8 @@ public class LogSet {
 	}
 
 	public LogSet(ResultSet rs)  throws SQLException {
+		setEncryptor();
+		
 		setLogSetId(rs.getInt("log_set_id"));
 		setHostname(rs.getString("hostname"));
 		setUsername(rs.getString("username"));
@@ -44,6 +54,8 @@ public class LogSet {
 	}
 
 	public LogSet( Map<String, String[]> paramMap, int i) {
+		setEncryptor();
+		
 		setLogSetId(Integer.parseInt(paramMap.get("log-set-id-" + i)[0]));
 		setLabel(paramMap.get("label-" + i)[0]);
 		setHostname(paramMap.get("hostname-" + i)[0]);
@@ -52,6 +64,11 @@ public class LogSet {
 		setPathname(paramMap.get("pathname-" + i)[0]);
 		setActiveFlag(paramMap.get("active-flag-"+i)[0]);
 		setSetNumber(Integer.parseInt(paramMap.get("set-number-" + i)[0]));
+	}
+	
+	private void setEncryptor() {
+		this.encryptor = new StandardPBEStringEncryptor();
+		this.encryptor.setPassword(CRYPT_PASSWORD);
 	}
 
 	public String getActiveFlag() {
@@ -93,8 +110,21 @@ public class LogSet {
 	public String getPassword() {
 		return password;
 	}
+	public String getDecryptedPassword() {
+		return this.encryptor.decrypt(password);
+	}
+	/**
+	 * Set the local password variable.
+	 * If new log set, encrypt.
+	 * Else leave because password is already encrypted.
+	 * @param password
+	 */
 	public void setPassword(String password) {
-		this.password = password;
+		if (this.logSetId == 0) {
+			this.password = this.encryptor.encrypt(password);
+		} else {
+			this.password = password;
+		}
 	}
 	public String getPathname() {
 		return pathname;
