@@ -95,7 +95,7 @@ or
       <p>The Profile Setup software requires a MySQL Server instance to host the Report Service database. If the target environment does not already have a MySQL Server instance installed, have an instance installed before continuing the installation. The software can be obtained from the <a href="http://www.mysql.com/" target="_blank">MySQL</a> web site.
       </p>
 
-      <p>Once the MySQL Server instance is installed and/or identified, the database and user account for the Profile Setup software must be created. The following commands detail the steps for logging into the server, creating the database and creating the user account to access the database:
+      <p>Once the MySQL Server instance is installed and/or identified, the database and user account for theProfile Setup software must be created. The following commands detail the steps for logging into the server, creating the database and creating the user account to access the database:
       </p>
 
       <source>
@@ -109,7 +109,7 @@ mysql> grant all on {database}.* to {username}@localhost identified by '{passwor
 Query OK, 0 rows affected (0.00 sec)
       </source>
 
-      <p>The values contained in the {} must correspond with the values in the <i>db_config.xml</i> file. See the <a href="#Configuring_Database_Access">Configuring Database Access</a> section for more details. Now that the database and corresponding account are available, it is time to load the database with a MySQL dump that contains the necessary tables for the database. The following commands will load the database:
+      <p>The values contained in the {} must correspond with the values in the <i>database.properties</i> file. See the <a href="#Configuring_Database_Access">Configuring Database Access</a> section for more details. Now that the database and corresponding account are available, it is time to load the database with a MySQL dump that contains the necessary tables for the database. The following commands will load the database:
       </p>
 
       <source>
@@ -123,16 +123,14 @@ Query OK, 0 rows affected (0.00 sec)
     </section>
 
     <section name="Configuring Database Access">
-      <p>The Profile Setup software comes preconfigured to access the MySQL database instance on the operational machine. If this configuration requires modification, the WAR file will need to be unpacked and the <i>./WEB-INF/classes/db_config.xml</i> file modified. The file contents are as follows:
+      <p>The Profile Setup sofware comes preconfigured to access the MySQL database instance on the operational machine. If this configuration requires modification, the WAR file will need to be unpacked and the <i>./WEB-INF/classes/database.properties</i> file modified. The file contents are as follows:
       </p>
 
       <source>
-&lt;dbinfo&gt;
-  &lt;url&gt;jdbc:mysql://{node}:{port}/{database}&lt;/url&gt;
-  &lt;driver&gt;com.mysql.jdbc.Driver&lt;/driver&gt;
-  &lt;user&gt;{username}&lt;/user&gt;
-  &lt;password&gt;{password}&lt;/password&gt;
-&lt;/dbinfo&gt;
+datasource.url=jdbc:mysql://{node}:{port}/{database}
+datasource.driver=com.mysql.jdbc.Driver
+datasource.user={username}
+datasource.password={password}
       </source>
 
       <p>Modify the values contained in the {} according to the desired MySQL database instance, save the file and repack the WAR file.
@@ -140,22 +138,13 @@ Query OK, 0 rows affected (0.00 sec)
     </section>
 
     <section name="Configuring Environment">
-      <p>The Profile Setup software comes preconfigured to create and modify Sawmill profiles as well as transfer web logs from remote locations. In order to ensure stable functionality, several environment variables must be set prior to application deployment. If this configuration requires modification, the WAR file will need to be unpacked and the <i>./WEB-INF/classes/db_config.xml</i> file modified. The file contents are as follows:
+      <p>The Profile Setup software comes preconfigured to create and modify Sawmill profiles as well as transfer web logs from remote locations. In order to ensure stable functionality, several environment variables must be set prior to application deployment. If this configuration requires modification, the WAR file will need to be unpacked and the <i>./WEB-INF/classes/environment.properties</i> file modified. The file contents are as follows:
       </p>
 
       <source>
-&lt;variables&gt;
-
-  # The home directory of the Sawmill software containing the file sawmill.cgi
-  &lt;sawmill_home&gt;{sawmill_home}&lt;/sawmill_home&gt;
-
-  # The home directory for the Sawmill profiles (should be contained within sawmill home directory)
-  &lt;sawmill_profile_home&gt;{sawmill_home}/LogAnalysisInfo/profiles&lt;/sawmill_profile_home&gt;
-
-  # The destination directory to store all of the logs to be transferred.
-  &lt;log_dest&gt;{log_destination}&lt;/log_dest&gt;
-
-&lt;/variables&gt;
+sawmill.home={sawmill_home}
+sawmill.profile.home={sawmill_home}/LogAnalysisInfo/profiles
+sawmill.log.home={log_home}  # Where the logs should be copied
       </source>
 
       <p>Modify the values contained in the {} according to the desired machine directories, save the file and repack the WAR file.
