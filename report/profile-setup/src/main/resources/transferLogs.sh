@@ -15,21 +15,23 @@ decrypt_pass=$1
 log=report_service_update.`date +%Y%m%d`.log
 rm -f $log
 
-# Get Log Home from env_vars.xml
+# Get Log Home from environment.properties
 log_home=`egrep sawmill.log.home ./environment.properties | awk -F\= '{print $NF}'`
 
-# Get MySQL login info from db_config.xml
+# Get Sawmill Home from environment.properties
+sawmill_home=`egrep sawmill.home ./environment.properties | awk -F\= '{print $NF}'`
+
+# Get MySQL login info from database.properties
 user=`egrep datasource.username ./database.properties | awk -F\= '{print $NF}'`
 password=`egrep datasource.password ./database.properties | awk -F\( '{print $NF}' | tr -d ')'`
 password=`./decrypt.sh input="$password" password=$decrypt_pass verbose=no`
 
-echo $log_home
-echo $user
-echo $password
+echo "Log Home - $log_home"
+echo "MySQL username - $user"
 
 # Query Mysql DB for profile and log_set information
-#mysql -u $user -p$pass report_service -e "select p.node, p.name, ls.label, ls.hostname,ls.username, ls.pathname from profiles p, log_sets ls where ls.active_flag='y' and p.active_flag='y' and p.profile_id=ls.profile_id" >> $log
-#mysql -u $user -p$pass report_service --skip-column-names -B -e "select p.node, p.name, ls.label, ls.hostname,ls.username, ls.pathname from profiles p, log_sets ls where ls.active_flag='y' and p.active_flag='y' and p.profile_id=ls.profile_id" > temp.txt
+mysql -u $user -p$password pdsbeta.jpl.nasa.gov report_service -e "select p.node, p.name, ls.label, ls.hostname,ls.username, ls.pathname from profiles p, log_sets ls where ls.active_flag='y' and p.active_flag='y' and p.profile_id=ls.profile_id" >> $log
+mysql -u $user -p$password pdsbeta.jpl.nasa.gov report_service --skip-column-names -B -e "select p.node, p.name, ls.label, ls.hostname,ls.username, ls.pathname from profiles p, log_sets ls where ls.active_flag='y' and p.active_flag='y' and p.profile_id=ls.profile_id" > temp.txt
 
 while read line; do
     node=`echo "${line}" | awk '{print $1}'`
@@ -46,6 +48,9 @@ while read line; do
     echo >> $log
     rsync -rv --ignore-existing -e ssh $username@$hostname:$pathname $log_home/$node/$name/$label >> $log
     echo >> $log
+    echo "Updating Sawmill database" >> $log
+    echo "$sawmill_home/sawmill.cgi -p $name -a ud" >> $log
+    $sawmill_home/sawmill.cgi -p $name -a ud >> $log
      echo "-----" >> $log
 done < temp.txt
 
