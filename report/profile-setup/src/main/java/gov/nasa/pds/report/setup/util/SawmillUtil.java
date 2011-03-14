@@ -10,7 +10,6 @@ import org.apache.commons.io.FileUtils;
 
 import gov.nasa.pds.report.setup.model.LogSet;
 import gov.nasa.pds.report.setup.model.Profile;
-import gov.nasa.pds.report.setup.properties.EnvProperties;
 
 /**
  * @author jpadams

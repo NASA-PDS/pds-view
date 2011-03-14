@@ -2,16 +2,12 @@ package gov.nasa.pds.report.setup.util;
 
 import gov.nasa.pds.report.setup.model.LogSet;
 import gov.nasa.pds.report.setup.model.Profile;
-import gov.nasa.pds.report.setup.properties.DBProperties;
-import gov.nasa.pds.report.setup.properties.EnvProperties;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;

@@ -7,6 +7,7 @@
 
 <link rel="stylesheet" href="css/jquery-ui-1.8.6.custom.css"></link>
 <link rel="stylesheet" href="css/main.css"></link>
+<link rel="shortcut icon" href="favicon.ico"></link>
 <title>Profile Setup</title>
 
 <!-- %
@@ -132,7 +133,7 @@ $(function() {
 		logSet.find('.flag').val('n');
 		$('#removed-log-set').val(logSet.find('.set-id').val());
 		$.getJSON('update', $('.update-fields').serialize(), function(data) {
-			alert("Log Set Inactive");
+			alert("Log Set Deactivated");
 		});
 		$('#removed-log-set').val(0);
 		//$('#log-set-count').val($('#log-set-count').val()/1-1);
@@ -196,8 +197,8 @@ $(function() {
 								 	"Depending on the file size, they may not be immediately available " +
 								 	"by the Report Service.</p>";
 								 	
-								//saveButtons['Continue'] = function() { window.location.replace("http://pdsops.jpl.nasa.gov/report-service/"); };
-								saveButtons['Continue'] = function() { window.location.replace("http://127.0.0.1:8080/cgi-bin/sawmill.cgi"); };
+								saveButtons['Continue'] = function() { window.location.replace("http://pdsops.jpl.nasa.gov/report-service/"); };
+								//saveButtons['Continue'] = function() { window.location.replace("http://127.0.0.1:8080/cgi-bin/sawmill.cgi"); };
 								saveButtons['Close'] = function() {
 									resetForm(); 
 									$(this).dialog("close");

@@ -13,29 +13,14 @@ import gov.nasa.pds.report.setup.model.LogSet;
 import gov.nasa.pds.report.setup.model.Profile;
 import gov.nasa.pds.report.setup.properties.DBProperties;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
@@ -116,43 +101,43 @@ public class DBUtil {
 	public final Profile findByProfileId(final int profileId) throws SQLException {
 		Statement stmt = null;
 		ResultSet rs = null;
-		
+
 		try {
 			Profile prof = null;
 			ArrayList<LogSet> liList = new ArrayList<LogSet>();
-			
+
 			connect();			
 			stmt = this.conn.createStatement();
 			rs = stmt.executeQuery("SELECT * FROM profiles WHERE profile_id="+profileId+" AND active_flag='y'");
 			if (rs.next()) {
 				prof = new Profile(rs);
-				
+
 				this.log.finer("PROFILE: "+String.valueOf(prof.getProfileId())+", "+prof.getNode()+", "+
 						prof.getIdentifier()+", "+prof.getName()+", "+prof.getMethod());
 			}
-			
+
 			LogSet li;
 			rs = stmt.executeQuery("SELECT * FROM log_sets WHERE profile_id="+profileId+" AND active_flag='y'");
 			while (rs.next()) {
 				li = new LogSet(rs);
-				
+
 				this.log.finer("LOG INFO: "+String.valueOf(li.getProfileId())+", "+li.getHostname()+", "+
 						li.getUsername()+", "+li.getPassword()+", "+li.getPathname()+", "+li.getLogSetId());
-				
+
 				liList.add(li);
 			}
-			
+
 			prof.setLogSetList(liList);
 			return prof;
 		} catch (NullPointerException e) {
 			throw new SQLException("Profile not found.");
-		} finally { 
+		} finally {
 			stmt.close();
 			rs.close();
 			closeConn();
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -163,13 +148,13 @@ public class DBUtil {
 		Statement stmt2 = null;
 		ResultSet rs1 = null;
 		ResultSet rs2 = null;
-		
+
 		try {
 			ArrayList<Profile> pList = new ArrayList<Profile>();
 			Profile prof;
 			ArrayList<LogSet> lsList;
 			LogSet li;
-			
+
 			connect();
 			stmt1 = this.conn.createStatement();
 			rs1 = stmt1.executeQuery("SELECT * FROM profiles WHERE active_flag='y' ORDER BY name");
@@ -177,7 +162,7 @@ public class DBUtil {
 				prof = new Profile(rs1);
 				this.log.finer("PROFILE: "+String.valueOf(prof.getProfileId())+", "+prof.getNode()+", "+
 						prof.getIdentifier()+", "+prof.getName()+", "+prof.getMethod());
-				
+
 				lsList=  new ArrayList<LogSet>();
 				stmt2 = this.conn.createStatement();
 				rs2 = stmt2.executeQuery("SELECT * FROM log_sets WHERE profile_id="+rs1.getInt("profile_id")+" AND active_flag='y'");
@@ -185,7 +170,7 @@ public class DBUtil {
 					li = new LogSet(rs2);
 					this.log.finer("LOG INFO: "+String.valueOf(li.getProfileId())+", "+li.getHostname()+", "+
 							li.getUsername()+", "+li.getPassword()+", "+li.getPathname());
-					
+
 					lsList.add(li);
 				}
 				prof.setLogSetList(lsList);
@@ -213,7 +198,7 @@ public class DBUtil {
 			insertLogInfo(it.next());
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param lsList
@@ -233,7 +218,7 @@ public class DBUtil {
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param id
@@ -243,7 +228,7 @@ public class DBUtil {
 		String sql = "UPDATE log_sets SET " +
 			"active_flag='n' "+
 			"WHERE log_set_id="+id;
-		
+
 		this.log.fine(sql);
 		executeUpdate(sql);
 	}
@@ -255,18 +240,18 @@ public class DBUtil {
 	 */
 	public final void updateProfile(final Profile profile) throws SQLException {
 		this.profileId = profile.getProfileId();
-		String sql = "UPDATE profiles SET " +
-				"node='"+profile.getNode()+"'," +
-				"identifier='"+profile.getIdentifier()+"'," +
-				"name='"+profile.getName()+"'," +
-				"method='"+profile.getMethod()+"'," +
-				"created_by='UNK' " + // TODO change from default UNK
-				"WHERE profile_id="+this.profileId;
-		
+		String sql = "UPDATE profiles SET "
+				+ "node='" + profile.getNode() + "',"
+				+ "identifier='" + profile.getIdentifier() + "',"
+				+ "name='" + profile.getName() + "',"
+				+ "method='" + profile.getMethod() + "',"
+				+ "created_by='UNK' " // TODO change from default UNK
+				+ "WHERE profile_id=" + this.profileId;
+
 		this.log.fine(sql);
 		executeUpdate(sql);
 	}
-	
+
 	/**
 	 * 
 	 * @param logSet
@@ -279,14 +264,14 @@ public class DBUtil {
 				"password='"+logSet.getPassword()+"'," +
 				"pathname='"+logSet.getPathname()+"'," +
 				"label='"+logSet.getLabel()+"'," +
-				//"set_number="+logSet.getSetNumber()+"," +
+				"set_number="+logSet.getSetNumber()+"," +
 				"created_by='UNK' " + // TODO change from default UNK
 				"WHERE log_set_id="+logSet.getLogSetId();
 
 		this.log.fine(sql);
 		executeUpdate(sql);
 	}
-	
+
 	/**
 	 * 
 	 * @param profile
@@ -302,21 +287,21 @@ public class DBUtil {
 
 		this.profileId = executeUpdate(sql);
 	}
-	
+
 	/**
 	 * 
 	 * @param logSet
 	 * @throws SQLException
 	 */
 	public final void insertLogInfo(final LogSet logSet) throws SQLException {
-		String sql = "INSERT INTO log_sets ( profile_id, hostname, username, password, pathname, label, created_by"
+		String sql = "INSERT INTO log_sets ( profile_id, hostname, username, password, pathname, label, set_number, created_by"
 		+ ") values (" + this.profileId + ","
 			+ "'" + logSet.getHostname() + "',"
 			+ "'" + logSet.getUsername() + "',"
 			+ "'" + logSet.getPassword() + "',"
 			+ "'" + logSet.getPathname() + "',"
 			+ "'" + logSet.getLabel() + "',"
-			//""+logSet.getSetNumber()+","+
+			+ "" + logSet.getSetNumber() + ","
 			+ "'UNK')"; // TODO change from default UNK
 
 		executeUpdate(sql);

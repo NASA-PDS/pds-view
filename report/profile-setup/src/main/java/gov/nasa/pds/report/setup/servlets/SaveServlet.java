@@ -13,14 +13,12 @@ import gov.nasa.pds.report.setup.model.Profile;
 import gov.nasa.pds.report.setup.properties.EnvProperties;
 import gov.nasa.pds.report.setup.runnable.Copy;
 import gov.nasa.pds.report.setup.util.DBUtil;
-import gov.nasa.pds.report.setup.util.SFTPUtil;
 import gov.nasa.pds.report.setup.util.SawmillUtil;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -51,21 +49,22 @@ public class SaveServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected final void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		String error = "";
 		//if (Integer.parseInt(request.getParameter("new-log-set")) > 0) {  //TODO find better method
 			Profile profile = new Profile();
 			profile.setProfile(request.getParameterMap());
-			
+
 			String realPath = getServletContext().getRealPath("/WEB-INF/classes");
-			
+
 			boolean isNew = false;
 			try {
 				DBUtil db = new DBUtil(realPath);
 				EnvProperties env = new EnvProperties(realPath);
 				String logBasePath = env.getSawmillLogHome()+'/'+profile.getNode()+'/'+profile.getName()+'/';
 				SawmillUtil sawmill = new SawmillUtil(env.getSawmillProfileHome(), logBasePath, realPath, profile.getName());
-				
+
 				ArrayList<LogSet> newLogSets = profile.getNewLogSets();
 				if (request.getParameter("profile").equals("new")) {
 					isNew=true;
@@ -73,9 +72,9 @@ public class SaveServlet extends HttpServlet {
 				} else {
 					db.update(newLogSets, profile.getProfileId());
 				}
-				
+
 				sawmill.buildCfg(newLogSets, isNew);
-				
+
 				Copy copyLogs = new Copy(logBasePath, env, profile, isNew);
 				copyLogs.start();
 			} catch (SQLException e) {
@@ -88,7 +87,7 @@ public class SaveServlet extends HttpServlet {
 				error= "Config Error: "+e.getMessage();
 				e.printStackTrace();
 			} 
-			
+
 			JsonObject root = new JsonObject();
 			root.add("error", new JsonPrimitive(error));
 			

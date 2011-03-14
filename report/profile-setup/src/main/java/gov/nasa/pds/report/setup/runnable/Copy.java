@@ -1,15 +1,12 @@
 package gov.nasa.pds.report.setup.runnable;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.logging.Logger;
 
 import gov.nasa.pds.report.setup.model.Profile;
 import gov.nasa.pds.report.setup.properties.EnvProperties;
 import gov.nasa.pds.report.setup.util.SFTPUtil;
-import gov.nasa.pds.report.setup.util.SawmillUtil;
 
 public class Copy implements Runnable {
 

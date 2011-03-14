@@ -1,14 +1,11 @@
 package gov.nasa.pds.report.setup.servlets;
 
-import gov.nasa.pds.report.setup.model.LogSet;
 import gov.nasa.pds.report.setup.model.Profile;
 import gov.nasa.pds.report.setup.util.DBUtil;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Vector;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -20,8 +17,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.SftpException;
 
 /**
  * Servlet implementation class UpdateServlet
@@ -42,6 +37,7 @@ public class UpdateServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected final void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		String error = "";
 		int removeId;
@@ -94,6 +90,7 @@ public class UpdateServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
