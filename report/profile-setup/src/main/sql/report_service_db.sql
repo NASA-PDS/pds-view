@@ -29,12 +29,12 @@ CREATE TABLE `log_sets` (
   `pathname` varchar(200) NOT NULL,
   `created_by` varchar(30) DEFAULT NULL,
   `profile_id` int(11) NOT NULL,
-  `label` varchar(30) DEFAULT NULL,
+  `label` varchar(30) NOT NULL,
   `active_flag` varchar(1) DEFAULT 'y',
   `log_set_id` int(11) NOT NULL AUTO_INCREMENT,
-  `set_number` int(11) DEFAULT NULL,
+  `set_number` int(11) NOT NULL,
   PRIMARY KEY (`log_set_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,10 +50,10 @@ CREATE TABLE `profiles` (
   `identifier` varchar(20) NOT NULL,
   `name` varchar(25) NOT NULL,
   `created_by` varchar(30) DEFAULT NULL,
-  `method` varchar(10) DEFAULT NULL,
+  `method` varchar(10) NOT NULL,
   `active_flag` varchar(1) DEFAULT 'y',
   PRIMARY KEY (`profile_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
