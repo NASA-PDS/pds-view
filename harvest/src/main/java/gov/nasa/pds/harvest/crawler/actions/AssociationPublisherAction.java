@@ -32,7 +32,7 @@ import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.registry.client.RegistryClient;
 import gov.nasa.pds.registry.model.Association;
-import gov.nasa.pds.registry.model.Product;
+import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.AssociationQuery;
@@ -223,11 +223,12 @@ public class AssociationPublisherAction extends CrawlerAction {
                 if (re.hasVersion()) {
                     association.setTargetVersionId(re.getVersion());
                 } else {
-                    ClientResponse response = registryClient.getLatestProduct(
+                    ClientResponse response = registryClient.getLatestExtrinsic(
                             re.getLogicalID());
                     if (response.getStatus()
                             == ClientResponse.Status.OK.getStatusCode()) {
-                        Product target = response.getEntity(Product.class);
+                        ExtrinsicObject target = response.getEntity(
+                            ExtrinsicObject.class);
                         association.setTargetVersionId(target.getVersionId());
                         log.log(new ToolsLogRecord(ToolsLevel.INFO,
                                 "Found association in registry: "

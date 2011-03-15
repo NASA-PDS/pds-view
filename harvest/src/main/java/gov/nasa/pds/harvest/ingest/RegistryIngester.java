@@ -34,7 +34,7 @@ import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.registry.client.RegistryClient;
-import gov.nasa.pds.registry.model.Product;
+import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.Slot;
 
 /**
@@ -99,7 +99,7 @@ public class RegistryIngester implements Ingester {
     throws CatalogException {
         RegistryClient client = new RegistryClient(registry.toString(),
                 token);
-        ClientResponse response = client.getLatestProduct(productID);
+        ClientResponse response = client.getLatestExtrinsic(productID);
         if (response.getStatus()
                 == ClientResponse.Status.OK.getStatusCode()) {
             return true;
@@ -125,7 +125,7 @@ public class RegistryIngester implements Ingester {
             String productVersion) throws CatalogException {
         RegistryClient client = new RegistryClient(registry.toString(),
                 token);
-        ClientResponse response = client.getProduct(productID,
+        ClientResponse response = client.getExtrinsic(productID,
                 productVersion);
         if (response.getStatus()
                 == ClientResponse.Status.OK.getStatusCode()) {
@@ -150,15 +150,15 @@ public class RegistryIngester implements Ingester {
     throws IngestException {
         RegistryClient client = new RegistryClient(registry.toString(),
                 token);
-        Product product = createProduct(met);
+        ExtrinsicObject product = createProduct(met);
         ClientResponse response = null;
         try {
             if (hasProduct(registry, product.getLid())) {
-                response = client.versionProduct(user, product,
+                response = client.versionExtrinsic(user, product,
                         product.getLid());
             }
             else {
-                response = client.publishProduct(user, product);
+                response = client.publishExtrinsic(user, product);
             }
         } catch (CatalogException c) {
             throw new IngestException(c.getMessage());
@@ -180,6 +180,7 @@ public class RegistryIngester implements Ingester {
                     "POST request returned HTTP code: "
                     + response.getStatus(),
                     prodFile));
+            System.out.println("RESPONSE: " + response.getEntity(String.class));
             throw new IngestException("POST request returned HTTP code: "
                     + response.getStatus());
         }
@@ -192,8 +193,8 @@ public class RegistryIngester implements Ingester {
      *
      * @return A Product object.
      */
-    private Product createProduct(Metadata metadata) {
-        Product product = new Product();
+    private ExtrinsicObject createProduct(Metadata metadata) {
+        ExtrinsicObject product = new ExtrinsicObject();
         Set<Slot> slots = new HashSet<Slot>();
         Set metSet = metadata.getHashtable().entrySet();
         for (Iterator i = metSet.iterator(); i.hasNext();) {

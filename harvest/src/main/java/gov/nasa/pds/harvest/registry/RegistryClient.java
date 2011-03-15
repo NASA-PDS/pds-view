@@ -21,7 +21,7 @@ import com.sun.jersey.api.client.ClientResponse;
 
 import gov.nasa.pds.harvest.util.HttpUtils;
 import gov.nasa.pds.registry.model.Association;
-import gov.nasa.pds.registry.model.Product;
+import gov.nasa.pds.registry.model.ExtrinsicObject;
 
 /**
  * Class that allows Harvest to talk to the Registry Service.
@@ -75,11 +75,12 @@ public class RegistryClient {
         return response;
     }
 
-    public ClientResponse versionProduct(String user, Product product, String lid) {
+    public ClientResponse versionProduct(String user, ExtrinsicObject product,
+        String lid) {
         return this.versionProduct(user, product, lid, true);
       }
 
-    public ClientResponse versionProduct(String user, Product product,
+    public ClientResponse versionProduct(String user, ExtrinsicObject product,
             String lid, Boolean major) {
         String uri = productsURI + "/" + lid;
         NameValuePair param = new NameValuePair();
@@ -96,7 +97,8 @@ public class RegistryClient {
         return response;
     }
 
-    public ClientResponse publishProduct(String user, Product product) {
+    public ClientResponse publishProduct(String user,
+        ExtrinsicObject product) {
         ClientResponse response = null;
         if(enableSecurity) {
             response = HttpUtils.post(productsURI, product,
