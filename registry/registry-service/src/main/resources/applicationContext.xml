@@ -30,7 +30,7 @@
 			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
 			">
 	<!-- Database properties -->
-	<context:property-placeholder location="classpath:db.properties"/>
+	<context:property-placeholder location="classpath:${registry.db.type}.properties"/>
 			
 	<context:annotation-config />
 	

@@ -2,7 +2,7 @@
 <classificationNode xmlns="http://registry.pds.nasa.gov" 
     guid="urn:registry:ObjectType:RegistryObject"
     lid="urn:registry:ObjectType:RegistryObject"
-    name="Extrinsic Object" 
+    name="Registry Object" 
     description="This is the classification node for an Extrinsic Object. This represents a core registry object."
     parent="urn:registry:classificationScheme:ObjectType"
-    code="ExtrinsicObject"/>
+    code="RegistryObject"/>

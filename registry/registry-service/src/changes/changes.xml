@@ -24,6 +24,9 @@
 
   <body>
     <release version="0.6.0" date="TBD" description="TBD">
+      <action dev="pramirez" type="add">
+        Support for MySQL back end. Provided documentation for configuration and property file configuration.
+      </action>
       <action dev="pramirez" type="update">
         PDS-7 Mapped Product to ExtrinsicObject to align better with information model for registry. Moved all interfaces that ended in product(s) to extrinsic(s).
       </action>

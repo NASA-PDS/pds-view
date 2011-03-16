@@ -70,18 +70,41 @@ to the CATALINA_OPTS environment variable
 variable is used in Tomcat's startup scripts. If this is not set the Derby 
 Registry Database home will be set to wherever you start Tomcat from. 
 
-C. Jar 
+If deploying to Tomcat and using MySQL as a back end simply run 
+"mvn -Dregistry.database=mysql package". This will make a package that assumes 
+that you have mysql installed with a database named "registry" and will use a 
+default username and password as specified below:
 
-To create the JAR to use as a dependency within other projects simply run 
-"mvn compile jar:jar". This will create the target/registry-service.jar which 
-can be used to integrate with other libraries. Perform the following command 
-to deploy the JAR file to the Maven repository:
+If you want to change the database name, user, and/or password you will need
+to edit the mysql.properties file located in the 
+$TOMCAT_HOME/webapps/registry-service/WEB-INF/classes directory. 
 
-mvn deploy:deploy-file -DgroupId=gov.nasa.pds.2010.registry \
--DartifactId=registry-service -Dversion=X.X.X -Dpackaging=jar \
--Dfile=target/registry-service-X.X.X.jar -DpomFile=pom.xml \
--Drepository=pds-repo \
--Durl=sftp://starcell.jpl.nasa.gov/usr/local/svn/apache2/htdocs/maven2
+The following line specifies the connection url (database name at the end):
+javax.persistence.jdbc.url=jdbc:mysql://localhost:3306/registry 
+
+The following line specifies the user name:
+javax.persistence.jdbc.user=registry
+
+The following line specifies the password:
+javax.persistence.jdbc.password=p@ssw0rd
+
+Additionally, if you are using a version of MySQL older than 5.x you will need
+to change the dialect. To do this simply add a "#" before the first 
+hibernate.dialect entry and remove the "# from the second entry.
+
+Before:
+# For use with MySQL 5+
+hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+# For use with older versions of MySQL. See hibernate documentation.
+#hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
+
+After:
+
+# For use with MySQL 5+
+#hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+# For use with older versions of MySQL. See hibernate documentation.
+hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
+
 
 Eclipse
 =======

@@ -108,7 +108,42 @@ CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
 
       <p>The <i>CATALINA_OPTS</i> environment variable is loaded from the Apache Tomcat startup scripts. If this value is not set, the Derby database home will default to the current working directory where the Apache Tomcat server was launched.
       </p>
-
+      
+      <p>If deploying to Tomcat and using MySQL as a back end the default configuration assumes that you have mysql installed with a database named "registry" and will use a default username and password as specified below. If you want to change the database name, user, and/or password you will need to edit the mysql.properties file located in:
+      </p>
+      <source> 
+$TOMCAT_HOME/webapps/registry-service/WEB-INF/classes directory. 
+      </source>
+      <p>This property file contains several entries.The following line specifies the connection url (database name at the end):
+      </p>
+      <source>
+javax.persistence.jdbc.url=jdbc:mysql://localhost:3306/registry
+      </source>
+      <p>The following line specifies the user name:
+      </p>
+      <source>
+javax.persistence.jdbc.user=registry
+      </source>
+      <p>The following line specifies the password:</p>
+      <source>
+javax.persistence.jdbc.password=p@ssw0rd
+      </source>
+      <p>Additionally, if you are using a version of MySQL older than 5.x you will need to change the dialect. To do this simply add a "#" before the first hibernate.dialect entry and remove the "# from the second entry.
+      </p>
+      <p>Before:</p>
+      <source>
+# For use with MySQL 5+
+hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+# For use with older versions of MySQL. See hibernate documentation.
+#hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
+      </source>
+      <p>After:</p>
+      <source>
+# For use with MySQL 5+
+#hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+# For use with older versions of MySQL. See hibernate documentation.
+hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
+      </source>
       <p>Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping_Service">Ping Service</a> portion of the Operation section.
       </p>
     </section>
