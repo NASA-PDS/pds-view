@@ -560,14 +560,7 @@ public class RegistryServiceImpl implements RegistryService {
   }
 
   private void validateAssociation(Association association) {
-    // Only thing to validate at this point is to make sure the home values are
-    // set
-    if (association.getSourceHome() == null) {
-      association.setSourceHome(idGenerator.getHome());
-    }
-    if (association.getTargetHome() == null) {
-      association.setTargetHome(idGenerator.getHome());
-    }
+    // TODO: Validate that the associationType exist within the classification scheme for associations
   }
 
   private void validateNode(ClassificationNode node) {

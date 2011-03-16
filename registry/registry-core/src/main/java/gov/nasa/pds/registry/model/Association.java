@@ -41,56 +41,17 @@ public class Association extends RegistryObject {
 	private static final long serialVersionUID = -7276791609858383804L;
 
 	/**
-	 * Global unique identifier of the source registry object.
+	 * Unique identifier of the source registry object.
 	 */
 	@XmlAttribute
-	private String sourceGuid;
+	private String sourceObject;
 
 	/**
-	 * Local identifier of the source artifact. This references a unique set of
-	 * artifacts in the registry.
+	 * Unique identifier for the target registry object.
 	 */
 	@XmlAttribute
-	private String sourceLid;
-
-	/**
-	 * Version of the source artifact. When used in conjunction with the source
-	 * local identifier this maps to one artifact in a registry.
-	 */
-	@XmlAttribute
-	private String sourceVersionId;
-
-	/**
-	 * URI of the registry that the source registry object originates from.
-	 */
-	@XmlAttribute
-	private String sourceHome;
-
-	/**
-	 * Global unique identifier for the target registry object.
-	 */
-	@XmlAttribute
-	private String targetGuid;
-
-	/**
-	 * Local identifier of the target registry object.
-	 */
-	@XmlAttribute
-	private String targetLid;
-
-	/**
-	 * Version of the target artifact. When used in in conjunction with the
-	 * target local identifier this maps to one artifact in a registry.
-	 */
-	@XmlAttribute
-	private String targetVersionId;
-
-	/**
-	 * URI of the registry that the target registry object originates from.
-	 */
-	@XmlAttribute
-	private String targetHome;
-
+	private String targetObject;
+	
 	/**
 	 * Named relation between source and target registry object.
 	 */
@@ -101,66 +62,6 @@ public class Association extends RegistryObject {
 		this.setObjectType(Association.class.getSimpleName());
 		this.setVersionName(null);
 		this.setVersionId(null);
-	}
-
-	/**
-	 * @return the local identifier of the source artifact
-	 */
-	public String getSourceLid() {
-		return sourceLid;
-	}
-
-	/**
-	 * @param sourceLid
-	 *            the local identifier of the source artifact
-	 */
-	public void setSourceLid(String sourceLid) {
-		this.sourceLid = sourceLid;
-	}
-
-	/**
-	 * @return the version of the source artifact
-	 */
-	public String getSourceVersionId() {
-		return sourceVersionId;
-	}
-
-	/**
-	 * @param sourceVersion
-	 *            the version of the source's local identifier
-	 */
-	public void setSourceVersionId(String sourceVersionId) {
-		this.sourceVersionId = sourceVersionId;
-	}
-
-	/**
-	 * @return the local identifier of the target artifact
-	 */
-	public String getTargetLid() {
-		return targetLid;
-	}
-
-	/**
-	 * @param targetLid
-	 *            the local identifier of the target artifact
-	 */
-	public void setTargetLid(String targetLid) {
-		this.targetLid = targetLid;
-	}
-
-	/**
-	 * @return the version of the target artifact
-	 */
-	public String getTargetVersionId() {
-		return targetVersionId;
-	}
-
-	/**
-	 * @param targetVersionId
-	 *            the version of the target's local identifier
-	 */
-	public void setTargetVersionId(String targetVersionId) {
-		this.targetVersionId = targetVersionId;
 	}
 
 	/**
@@ -179,118 +80,60 @@ public class Association extends RegistryObject {
 		this.associationType = associationType;
 	}
 
-	public String getSourceGuid() {
-		return sourceGuid;
+	public String getSourceObject() {
+		return sourceObject;
 	}
 
-	public void setSourceGuid(String sourceGuid) {
-		this.sourceGuid = sourceGuid;
+	public void setSourceObject(String sourceObject) {
+		this.sourceObject = sourceObject;
+	}
+	
+	public String getTargetObject() {
+		return targetObject;
 	}
 
-	public String getSourceHome() {
-		return sourceHome;
+	public void setTargetObject(String targetObject) {
+		this.targetObject = targetObject;
 	}
 
-	public void setSourceHome(String sourceHome) {
-		this.sourceHome = sourceHome;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result
+        + ((associationType == null) ? 0 : associationType.hashCode());
+    result = prime * result
+        + ((sourceObject == null) ? 0 : sourceObject.hashCode());
+    result = prime * result
+        + ((targetObject == null) ? 0 : targetObject.hashCode());
+    return result;
+  }
 
-	public String getTargetGuid() {
-		return targetGuid;
-	}
-
-	public void setTargetGuid(String targetGuid) {
-		this.targetGuid = targetGuid;
-	}
-
-	public String getTargetHome() {
-		return targetHome;
-	}
-
-	public void setTargetHome(String targetHome) {
-		this.targetHome = targetHome;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result
-				+ ((associationType == null) ? 0 : associationType.hashCode());
-		result = prime * result
-				+ ((sourceGuid == null) ? 0 : sourceGuid.hashCode());
-		result = prime * result
-				+ ((sourceHome == null) ? 0 : sourceHome.hashCode());
-		result = prime * result
-				+ ((sourceLid == null) ? 0 : sourceLid.hashCode());
-		result = prime * result
-				+ ((sourceVersionId == null) ? 0 : sourceVersionId.hashCode());
-		result = prime * result
-				+ ((targetGuid == null) ? 0 : targetGuid.hashCode());
-		result = prime * result
-				+ ((targetHome == null) ? 0 : targetHome.hashCode());
-		result = prime * result
-				+ ((targetLid == null) ? 0 : targetLid.hashCode());
-		result = prime * result
-				+ ((targetVersionId == null) ? 0 : targetVersionId.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Association other = (Association) obj;
-		if (associationType == null) {
-			if (other.associationType != null)
-				return false;
-		} else if (!associationType.equals(other.associationType))
-			return false;
-		if (sourceGuid == null) {
-			if (other.sourceGuid != null)
-				return false;
-		} else if (!sourceGuid.equals(other.sourceGuid))
-			return false;
-		if (sourceHome == null) {
-			if (other.sourceHome != null)
-				return false;
-		} else if (!sourceHome.equals(other.sourceHome))
-			return false;
-		if (sourceLid == null) {
-			if (other.sourceLid != null)
-				return false;
-		} else if (!sourceLid.equals(other.sourceLid))
-			return false;
-		if (sourceVersionId == null) {
-			if (other.sourceVersionId != null)
-				return false;
-		} else if (!sourceVersionId.equals(other.sourceVersionId))
-			return false;
-		if (targetGuid == null) {
-			if (other.targetGuid != null)
-				return false;
-		} else if (!targetGuid.equals(other.targetGuid))
-			return false;
-		if (targetHome == null) {
-			if (other.targetHome != null)
-				return false;
-		} else if (!targetHome.equals(other.targetHome))
-			return false;
-		if (targetLid == null) {
-			if (other.targetLid != null)
-				return false;
-		} else if (!targetLid.equals(other.targetLid))
-			return false;
-		if (targetVersionId == null) {
-			if (other.targetVersionId != null)
-				return false;
-		} else if (!targetVersionId.equals(other.targetVersionId))
-			return false;
-		return true;
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (!super.equals(obj))
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Association other = (Association) obj;
+    if (associationType == null) {
+      if (other.associationType != null)
+        return false;
+    } else if (!associationType.equals(other.associationType))
+      return false;
+    if (sourceObject == null) {
+      if (other.sourceObject != null)
+        return false;
+    } else if (!sourceObject.equals(other.sourceObject))
+      return false;
+    if (targetObject == null) {
+      if (other.targetObject != null)
+        return false;
+    } else if (!targetObject.equals(other.targetObject))
+      return false;
+    return true;
+  }
 
 }

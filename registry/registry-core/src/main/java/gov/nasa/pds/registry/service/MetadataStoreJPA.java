@@ -237,29 +237,13 @@ public class MetadataStoreJPA implements MetadataStore {
     AssociationFilter filter = query.getFilter();
     List<Predicate> predicates = new ArrayList<Predicate>();
     if (filter != null) {
-      if (filter.getTargetLid() != null) {
-        predicates.add(cb.like(associationEntity.get("targetLid").as(
-            String.class), filter.getTargetLid().replace('*', '%')));
+      if (filter.getTargetObject() != null) {
+        predicates.add(cb.like(associationEntity.get("targetObject").as(
+            String.class), filter.getTargetObject().replace('*', '%')));
       }
-      if (filter.getTargetVersionId() != null) {
-        predicates.add(cb.like(associationEntity.get("targetVersionId").as(
-            String.class), filter.getTargetVersionId().replace('*', '%')));
-      }
-      if (filter.getTargetHome() != null) {
-        predicates.add(cb.like(associationEntity.get("targetHome").as(
-            String.class), filter.getTargetHome().replace('*', '%')));
-      }
-      if (filter.getSourceLid() != null) {
-        predicates.add(cb.like(associationEntity.get("sourceLid").as(
-            String.class), filter.getSourceLid().replace('*', '%')));
-      }
-      if (filter.getSourceVersionId() != null) {
-        predicates.add(cb.like(associationEntity.get("sourceVersionId").as(
-            String.class), filter.getSourceVersionId().replace('*', '%')));
-      }
-      if (filter.getSourceHome() != null) {
-        predicates.add(cb.like(associationEntity.get("sourceHome").as(
-            String.class), filter.getSourceHome().replace('*', '%')));
+      if (filter.getSourceObject() != null) {
+        predicates.add(cb.like(associationEntity.get("sourceObject").as(
+            String.class), filter.getSourceObject().replace('*', '%')));
       }
       if (filter.getAssociationType() != null) {
         predicates.add(cb.like(associationEntity.get("associationType").as(

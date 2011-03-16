@@ -219,23 +219,11 @@ public class RegistryClient {
 
     AssociationFilter filter = query.getFilter();
     if (filter != null) {
-      if (filter.getTargetLid() != null) {
-        params.add("targetLid", filter.getTargetLid());
+      if (filter.getTargetObject() != null) {
+        params.add("targetObject", filter.getTargetObject());
       }
-      if (filter.getTargetVersionId() != null) {
-        params.add("targetVersionId", filter.getTargetVersionId());
-      }
-      if (filter.getTargetHome() != null) {
-        params.add("targetHome", filter.getTargetHome());
-      }
-      if (filter.getSourceLid() != null) {
-        params.add("sourceLid", filter.getSourceLid());
-      }
-      if (filter.getSourceVersionId() != null) {
-        params.add("sourceVersionId", filter.getSourceVersionId());
-      }
-      if (filter.getSourceHome() != null) {
-        params.add("sourceHome", filter.getSourceHome());
+      if (filter.getSourceObject() != null) {
+        params.add("sourceLid", filter.getSourceObject());
       }
       if (filter.getAssociationType() != null) {
         params.add("associationType", filter.getAssociationType());

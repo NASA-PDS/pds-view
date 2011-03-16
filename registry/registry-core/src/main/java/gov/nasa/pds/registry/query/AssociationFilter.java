@@ -16,12 +16,8 @@
 package gov.nasa.pds.registry.query;
 
 public class AssociationFilter extends ObjectFilter {
-	private String sourceLid;
-	private String sourceVersionId;
-	private String sourceHome;
-	private String targetLid;
-	private String targetVersionId;
-	private String targetHome;
+	private String sourceObject;
+	private String targetObject;
 	private String associationType;
 	
 	private AssociationFilter() {
@@ -35,39 +31,15 @@ public class AssociationFilter extends ObjectFilter {
 			filter = new AssociationFilter();
 		}
 		
-		public Builder sourceLid(String sourceLid) {
+		public Builder sourceObject(String sourceObject) {
 			this.checkBuilt();
-			this.filter.sourceLid = sourceLid;
+			this.filter.sourceObject = sourceObject;
 			return this;
 		}
 		
-		public Builder sourceVersionId(String sourceVersionId) {
-			this.checkBuilt();
-			this.filter.sourceVersionId = sourceVersionId;
-			return this;
-		}
-		
-		public Builder sourceHome(String sourceHome) {
-			this.checkBuilt();
-			this.filter.sourceHome = sourceHome;
-			return this;
-		}
-		
-		public Builder targetLid(String targetLid) {
+		public Builder targetObject(String targetObject) {
 			this.checkBuilt(); 
-			this.filter.targetLid = targetLid;
-			return this;
-		}
-		
-		public Builder targetVersionId(String targetVersionId) {
-			this.checkBuilt();
-			this.filter.targetVersionId = targetVersionId;
-			return this;
-		}
-		
-		public Builder targetHome(String targetHome) {
-			this.checkBuilt();
-			this.filter.targetHome = targetHome;
+			this.filter.targetObject = targetObject;
 			return this;
 		}
 		
@@ -84,28 +56,12 @@ public class AssociationFilter extends ObjectFilter {
 		}
 	}
 
-	public String getSourceLid() {
-		return sourceLid;
+	public String getSourceObject() {
+		return sourceObject;
 	}
 
-	public String getSourceVersionId() {
-		return sourceVersionId;
-	}
-
-	public String getSourceHome() {
-		return sourceHome;
-	}
-
-	public String getTargetLid() {
-		return targetLid;
-	}
-
-	public String getTargetVersionId() {
-		return targetVersionId;
-	}
-
-	public String getTargetHome() {
-		return targetHome;
+	public String getTargetObject() {
+		return targetObject;
 	}
 
 	public String getAssociationType() {
