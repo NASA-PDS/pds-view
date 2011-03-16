@@ -186,14 +186,8 @@ public class Examples {
 		REQUEST_ASSOCIATION.setGuid("urn:uuid" + UUID.randomUUID().toString());
 		REQUEST_ASSOCIATION
 				.setHome("http://pds.jpl.nasa.gov/registry-service");
-		REQUEST_ASSOCIATION.setSourceLid("1234");
-		REQUEST_ASSOCIATION
-				.setSourceHome("http://pds.jpl.nasa.gov/registry-service");
-		REQUEST_ASSOCIATION.setSourceVersionId("1.0");
-		REQUEST_ASSOCIATION.setTargetLid("1234");
-		REQUEST_ASSOCIATION
-				.setTargetHome("http://pds.jpl.nasa.gov/registry-service");
-		REQUEST_ASSOCIATION.setTargetVersionId("3.0");
+		REQUEST_ASSOCIATION.setSourceObject("1234");
+		REQUEST_ASSOCIATION.setTargetObject("1234");
 		REQUEST_ASSOCIATION.setStatus(ObjectStatus.Submitted);
 	}
 	
@@ -202,14 +196,8 @@ public class Examples {
     RESPONSE_ASSOCIATION.setGuid("urn:uuid" + UUID.randomUUID().toString());
     RESPONSE_ASSOCIATION
         .setHome("http://pds.jpl.nasa.gov/registry-service");
-    RESPONSE_ASSOCIATION.setSourceLid("1234");
-    RESPONSE_ASSOCIATION
-        .setSourceHome("http://pds.jpl.nasa.gov/registry-service");
-    RESPONSE_ASSOCIATION.setSourceVersionId("1.0");
-    RESPONSE_ASSOCIATION.setTargetLid("1234");
-    RESPONSE_ASSOCIATION
-        .setTargetHome("http://pds.jpl.nasa.gov/registry-service");
-    RESPONSE_ASSOCIATION.setTargetVersionId("3.0");
+    RESPONSE_ASSOCIATION.setSourceObject("1234");
+    RESPONSE_ASSOCIATION.setTargetObject("1234");
     RESPONSE_ASSOCIATION.setStatus(ObjectStatus.Submitted);
 	}
 

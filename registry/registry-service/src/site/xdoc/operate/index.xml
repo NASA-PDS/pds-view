@@ -166,10 +166,8 @@ http://localhost:8080/registry-service/registry/extrinsics
         <source>
 &lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
 &lt;association xmlns="http://registry.pds.nasa.gov"
-  sourceLid="1234"
-  sourceVersionId="1.0"
-  targetLid="1234"
-  targetVersionId="3.0"
+  sourceObject="1234"
+  targetObject="1234"
   associationType="associatedTo"/&gt;
         </source>
 

@@ -77,23 +77,11 @@ public class AssociationsResource {
    *          the index at which to start the result list from
    * @param rows
    *          how many results to return
-   * @param targetLid
-   *          filter on the logical identifier of the target in the association
+   * @param targetObject
+   *          filter on the identifier of the target in the association
    *          supports wildcard (*)
-   * @param targetVersionId
-   *          filter on the version id of the target in the association supports
-   *          wildcard (*)
-   * @param targetHome
-   *          filter on the URI of the home of the target in the association
-   *          supports wildcard (*)
-   * @param sourcetLid
-   *          filter on the logical identifier of the source in the association
-   *          supports wildcard (*)
-   * @param sourceVersionId
-   *          filter on the version id of the source in the association supports
-   *          wildcard (*)
-   * @param sourceHome
-   *          filter on the URI of the home of the source in the association
+   * @param sourceObject
+   *          filter on the identifier of the source in the association
    *          supports wildcard (*)
    * @param associationType
    *          filter on the type of association supports wildcard (*)
@@ -110,20 +98,14 @@ public class AssociationsResource {
   public Response getAssociations(
       @QueryParam("start") @DefaultValue("1") Integer start,
       @QueryParam("rows") @DefaultValue("20") Integer rows,
-      @QueryParam("targetLid") String targetLid,
-      @QueryParam("targetVersionId") String targetVersionId,
-      @QueryParam("targetHome") String targetHome,
-      @QueryParam("sourceLid") String sourceLid,
-      @QueryParam("sourceVersionId") String sourceVersionId,
-      @QueryParam("sourceHome") String sourceHome,
+      @QueryParam("targetObject") String targetObject,
+      @QueryParam("sourceObject") String sourceObject,
       @QueryParam("associationType") String associationType,
       @QueryParam("queryOp") @DefaultValue("AND") QueryOperator operator,
       @QueryParam("sort") List<String> sort) {
-    AssociationFilter filter = new AssociationFilter.Builder().targetLid(
-        targetLid).targetVersionId(targetVersionId).targetHome(targetHome)
-        .sourceLid(sourceLid).sourceVersionId(sourceVersionId).sourceHome(
-            sourceHome).associationType(associationType).associationType(
-            associationType).build();
+    AssociationFilter filter = new AssociationFilter.Builder().targetObject(
+        targetObject).sourceObject(sourceObject).associationType(associationType).
+        associationType(associationType).build();
     AssociationQuery.Builder queryBuilder = new AssociationQuery.Builder()
         .filter(filter).operator(operator);
     if (sort != null) {
