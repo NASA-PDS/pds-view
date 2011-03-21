@@ -274,10 +274,16 @@ public class MetadataStoreJPA implements MetadataStore {
     }
     cq.orderBy(orders);
     TypedQuery<Association> dbQuery = entityManager.createQuery(cq);
-    RegistryResponse response = new RegistryResponse(start, (long) dbQuery
+    
+    if (rows == -1) {
+      return new RegistryResponse(start, (long) dbQuery
+          .getResultList().size(), dbQuery.setFirstResult(start - 1)
+          .getResultList());
+    }
+    
+    return  new RegistryResponse(start, (long) dbQuery
         .getResultList().size(), dbQuery.setFirstResult(start - 1)
         .setMaxResults(rows).getResultList());
-    return response;
   }
 
   /*

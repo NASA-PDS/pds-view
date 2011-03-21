@@ -16,11 +16,16 @@
 package gov.nasa.pds.registry.model;
 
 import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -38,6 +43,16 @@ import javax.xml.bind.annotation.XmlType;
 public class RegistryObject extends Identifiable {
 
   private static final long serialVersionUID = 1477919575493686135L;
+
+  @OneToMany(cascade = CascadeType.ALL)
+  @XmlElementRef(name="classification", namespace = "http://registry.pds.nasa.gov")
+  @OrderBy
+  private Set<Classification> classifications;
+  
+  @OneToMany(cascade = CascadeType.ALL)
+  @XmlElementRef(name="externalIdentifier", namespace = "http://registry.pds.nasa.gov")
+  @OrderBy
+  private Set<ExternalIdentifier> externalIdentifiers;
 
   // Logical identifier supplied by submitter
   @XmlAttribute
@@ -209,12 +224,32 @@ public class RegistryObject extends Identifiable {
     this.versionId = versionId;
   }
 
+  public Set<Classification> getClassifications() {
+    return classifications;
+  }
+
+  public void setClassifications(Set<Classification> classifications) {
+    this.classifications = classifications;
+  }
+
+  public Set<ExternalIdentifier> getExternalIdentifiers() {
+    return externalIdentifiers;
+  }
+
+  public void setExternalIdentifiers(Set<ExternalIdentifier> externalIdentifiers) {
+    this.externalIdentifiers = externalIdentifiers;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
     result = prime * result
+        + ((classifications == null) ? 0 : classifications.hashCode());
+    result = prime * result
         + ((description == null) ? 0 : description.hashCode());
+    result = prime * result
+        + ((externalIdentifiers == null) ? 0 : externalIdentifiers.hashCode());
     result = prime * result + ((lid == null) ? 0 : lid.hashCode());
     result = prime * result + ((name == null) ? 0 : name.hashCode());
     result = prime * result
@@ -235,10 +270,20 @@ public class RegistryObject extends Identifiable {
     if (getClass() != obj.getClass())
       return false;
     RegistryObject other = (RegistryObject) obj;
+    if (classifications == null) {
+      if (other.classifications != null)
+        return false;
+    } else if (!classifications.equals(other.classifications))
+      return false;
     if (description == null) {
       if (other.description != null)
         return false;
     } else if (!description.equals(other.description))
+      return false;
+    if (externalIdentifiers == null) {
+      if (other.externalIdentifiers != null)
+        return false;
+    } else if (!externalIdentifiers.equals(other.externalIdentifiers))
       return false;
     if (lid == null) {
       if (other.lid != null)

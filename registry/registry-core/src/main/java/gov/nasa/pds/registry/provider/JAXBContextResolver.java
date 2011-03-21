@@ -20,6 +20,9 @@ import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.Classification;
 import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.ClassificationScheme;
+import gov.nasa.pds.registry.model.ExternalIdentifier;
+import gov.nasa.pds.registry.model.RegistryObjectList;
+import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryObject;
@@ -55,7 +58,8 @@ public final class JAXBContextResolver implements ContextResolver<JAXBContext> {
       AuditableEvent.class, Classification.class, ClassificationNode.class,
       ClassificationScheme.class, Service.class, ServiceBinding.class,
       SpecificationLink.class, RegistryResponse.class, RegistryObject.class,
-      Report.class };
+      Report.class, RegistryObjectList.class, RegistryPackage.class,
+      ExternalIdentifier.class };
 
   @SuppressWarnings("unchecked")
   public JAXBContextResolver() throws Exception {

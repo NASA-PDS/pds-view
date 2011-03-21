@@ -59,7 +59,7 @@ public interface MetadataStore {
    * @param start
    *          index within the results to start at. This index is one based
    * @param rows
-   *          number of results to get
+   *          number of results to get. If equal to -1 return all.
    * @return list of associations
    */
   public RegistryResponse getAssociations(AssociationQuery query,

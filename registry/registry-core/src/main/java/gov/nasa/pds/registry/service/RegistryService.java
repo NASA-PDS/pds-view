@@ -22,6 +22,7 @@ import gov.nasa.pds.registry.model.ClassificationScheme;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.ObjectAction;
 import gov.nasa.pds.registry.model.RegistryObject;
+import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.Report;
 import gov.nasa.pds.registry.model.naming.IdentifierGenerator;
@@ -32,10 +33,9 @@ import gov.nasa.pds.registry.query.ObjectQuery;
 
 import java.util.List;
 
-
 /**
  * @author pramirez
- *
+ * 
  */
 public interface RegistryService {
 
@@ -76,12 +76,12 @@ public interface RegistryService {
    *          to use to generate a guid for registry objects when there is not
    *          one supplied by clients.
    */
-  public void setIdentifierGenerator(IdentifierGenerator idGenerator) ;
+  public void setIdentifierGenerator(IdentifierGenerator idGenerator);
 
   /**
    * @return id generator used to generate guids for registry objects
    */
-  public IdentifierGenerator getIdentifierGenerator() ;
+  public IdentifierGenerator getIdentifierGenerator();
 
   /**
    * This method allows one to page through the {@link ExtrinsicObject}'s in the
@@ -145,8 +145,8 @@ public interface RegistryService {
    * @return the guid of the versioned extrinsic object
    * @throws RegistryServiceException
    */
-  public String versionObject(String user, String lid,
-      RegistryObject object, boolean major) throws RegistryServiceException;
+  public String versionObject(String user, String lid, RegistryObject object,
+      boolean major) throws RegistryServiceException;
 
   /**
    * Retrieves the latest version of the {@link RegistryObject} with the given
@@ -214,7 +214,7 @@ public interface RegistryService {
    */
   public List<RegistryObject> getObjectVersions(String lid,
       Class<? extends RegistryObject> objectClass);
-  
+
   /**
    * Retrieves a {@link RegistryObject} from the registry with the given
    * identifying information.
@@ -230,7 +230,7 @@ public interface RegistryService {
    */
   public RegistryObject getObject(String lid, String versionId,
       Class<? extends RegistryObject> objectClass);
-  
+
   /**
    * Retrieves all {@link ClassificationNode} for a given
    * {@link ClassificationScheme}
@@ -272,8 +272,8 @@ public interface RegistryService {
    * @param objectClass
    *          identifies the type of registry object
    */
-  public void changeObjectStatus(String user, String guid,
-      ObjectAction action, Class<? extends RegistryObject> objectClass);
+  public void changeObjectStatus(String user, String guid, ObjectAction action,
+      Class<? extends RegistryObject> objectClass);
 
   /**
    * This method allows one to update all the metadata associated with a
@@ -360,6 +360,20 @@ public interface RegistryService {
    */
   public String publishObject(String user, RegistryObject registryObject)
       throws RegistryServiceException;
+  
+  /**
+   * Publishes a registry object to the registry.
+   * 
+   * @param user
+   *          that is requesting the object to be published
+   * @param registryObject
+   *          to publish
+   * @param packageId
+   *          to associate this publish event with
+   * @return guid of the published object
+   * @throws RegistryServiceException
+   */
+  public String publishObject(String user, RegistryObject registryObject, String packageId) throws RegistryServiceException;
 
   /**
    * Deletes a {@link RegistryObject} from the registry which share the logical
@@ -420,4 +434,22 @@ public interface RegistryService {
    */
   public RegistryObject getObject(String guid,
       Class<? extends RegistryObject> objectClass);
+
+  /**
+   * Configures the registry with a list of registry objects as input. This
+   * should be limited to publishing a set of Classification Schemes and Nodes
+   * that drive registry function. This would include but not limited to object
+   * types and association types.
+   * 
+   * @param user
+   *          that has taken the action. Typically this should point to a unique
+   *          username.
+   * @param registryPackage
+   *          to associate objects to
+   * @param list
+   *          classification schemes and nodes that are apart of this config
+   * @return identifier for the package with which the configuration is associated
+   */
+  public String configure(String user, RegistryPackage registryPackage,
+      List<? extends RegistryObject> list) throws RegistryServiceException;
 }

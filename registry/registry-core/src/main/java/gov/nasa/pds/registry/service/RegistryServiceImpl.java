@@ -24,6 +24,7 @@ import gov.nasa.pds.registry.model.ClassificationScheme;
 import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.ObjectAction;
 import gov.nasa.pds.registry.model.ObjectStatus;
+import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryObject;
@@ -33,14 +34,18 @@ import gov.nasa.pds.registry.model.SpecificationLink;
 import gov.nasa.pds.registry.model.Report;
 import gov.nasa.pds.registry.model.naming.IdentifierGenerator;
 import gov.nasa.pds.registry.model.naming.Versioner;
+import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ObjectQuery;
 import gov.nasa.pds.registry.query.ExtrinsicQuery;
+import gov.nasa.pds.registry.query.QueryOperator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.NoResultException;
 
@@ -77,7 +82,7 @@ public class RegistryServiceImpl implements RegistryService {
   private static List<String> CORE_OBJECT_TYPES = Arrays.asList("Association",
       "AuditableEvent", "Classification", "ClassificationNode",
       "ClassificationScheme", "ExtrinsicObject", "Service", "ServiceBinding",
-      "SpecificationLink");
+      "SpecificationLink", "RegistryPackage", "ExternalIdentifier");
 
   private static String OBJECT_TYPE_SCHEME = "urn:registry:classificationScheme:ObjectType";
 
@@ -473,11 +478,13 @@ public class RegistryServiceImpl implements RegistryService {
   /*
    * (non-Javadoc)
    * 
-   * @see gov.nasa.pds.registry.service.RegistryService#publishObject(java
-   * .lang.String, gov.nasa.pds.registry.model.RegistryObject)
+   * @see
+   * gov.nasa.pds.registry.service.RegistryService#publishObject(java.lang.String
+   * , gov.nasa.pds.registry.model.RegistryObject, java.lang.String)
    */
-  public String publishObject(String user, RegistryObject registryObject)
-      throws RegistryServiceException {
+  @Override
+  public String publishObject(String user, RegistryObject registryObject,
+      String packageId) throws RegistryServiceException {
     if (registryObject.getGuid() == null) {
       registryObject.setGuid(idGenerator.getGuid());
     }
@@ -501,13 +508,44 @@ public class RegistryServiceImpl implements RegistryService {
     registryObject.setStatus(ObjectStatus.Submitted);
     this.validateObject(registryObject);
     metadataStore.saveRegistryObject(registryObject);
-    this.createAuditableEvents(user, registryObject, EventType.Created);
+
+    if (packageId == null) {
+      this.createAuditableEvents(user, registryObject, EventType.Created);
+    } else {
+      Association hasMember = new Association();
+      hasMember.setGuid(idGenerator.getGuid());
+      hasMember.setHome(idGenerator.getHome());
+      hasMember.setSourceObject(packageId);
+      hasMember.setTargetObject(registryObject.getGuid());
+      hasMember.setAssociationType("urn:registry:AssociationType:HasMember");
+      metadataStore.saveRegistryObject(hasMember);
+      this.createAuditableEvents(user, registryObject, EventType.Created,
+          Arrays.asList(new String[] { packageId }));
+    }
     return registryObject.getGuid();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see gov.nasa.pds.registry.service.RegistryService#publishObject(java
+   * .lang.String, gov.nasa.pds.registry.model.RegistryObject)
+   */
+  public String publishObject(String user, RegistryObject registryObject)
+      throws RegistryServiceException {
+    return this.publishObject(user, registryObject, null);
   }
 
   private void createAuditableEvents(String user,
       RegistryObject registryObject, EventType eventType) {
-    List<String> affectedObjects = new ArrayList<String>();
+    this.createAuditableEvents(user, registryObject, eventType,
+        new ArrayList<String>());
+  }
+
+  private void createAuditableEvents(String user,
+      RegistryObject registryObject, EventType eventType,
+      List<String> alsoAffected) {
+    List<String> affectedObjects = new ArrayList<String>(alsoAffected);
     affectedObjects.add(registryObject.getGuid());
     // If this is a service we have other affected objects
     if (registryObject instanceof Service) {
@@ -560,7 +598,8 @@ public class RegistryServiceImpl implements RegistryService {
   }
 
   private void validateAssociation(Association association) {
-    // TODO: Validate that the associationType exist within the classification scheme for associations
+    // TODO: Validate that the associationType exist within the classification
+    // scheme for associations
   }
 
   private void validateNode(ClassificationNode node) {
@@ -625,7 +664,7 @@ public class RegistryServiceImpl implements RegistryService {
       Class<? extends RegistryObject> objectClass) {
     RegistryObject registryObject = metadataStore.getRegistryObject(lid,
         versionId, objectClass);
-    this.deleteObject(user, registryObject, objectClass);
+    this.deleteObject(user, registryObject);
   }
 
   /*
@@ -638,13 +677,26 @@ public class RegistryServiceImpl implements RegistryService {
       Class<? extends RegistryObject> objectClass) {
     RegistryObject registryObject = metadataStore.getRegistryObject(guid,
         objectClass);
-    this.deleteObject(user, registryObject, objectClass);
+    this.deleteObject(user, registryObject);
   }
 
-  private void deleteObject(String user, RegistryObject registryObject,
-      Class<? extends RegistryObject> objectClass) {
-    metadataStore.deleteRegistryObject(registryObject.getGuid(), objectClass);
-    this.createAuditableEvents(user, registryObject, EventType.Deleted);
+  private void deleteObject(String user, RegistryObject registryObject) {
+    metadataStore.deleteRegistryObject(registryObject.getGuid(), registryObject
+        .getClass());
+    AssociationFilter filter = new AssociationFilter.Builder().targetObject(
+        registryObject.getGuid()).sourceObject(registryObject.getGuid())
+        .build();
+    AssociationQuery.Builder queryBuilder = new AssociationQuery.Builder()
+        .filter(filter).operator(QueryOperator.OR);
+    RegistryResponse response = metadataStore.getAssociations(queryBuilder
+        .build(), 1, -1);
+    List<String> associationIds = new ArrayList<String>();
+    for (RegistryObject object : response.getResults()) {
+      associationIds.add(object.getGuid());
+      metadataStore.deleteRegistryObject(object.getGuid(), object.getClass());
+    }
+    this.createAuditableEvents(user, registryObject, EventType.Deleted,
+        associationIds);
   }
 
   /*
@@ -679,4 +731,53 @@ public class RegistryServiceImpl implements RegistryService {
       Class<? extends RegistryObject> objectClass) {
     return metadataStore.getRegistryObject(guid, objectClass);
   }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nasa.pds.registry.service.RegistryService#configure(java.lang.String,
+   * gov.nasa.pds.registry.model.RegistryPackage, java.util.List)
+   */
+  public String configure(String user, RegistryPackage registryPackage,
+      List<? extends RegistryObject> registryObjects)
+      throws RegistryServiceException {
+    RegistryServiceException exception = null;
+    String packageId = null;
+    Map<String, Class<? extends RegistryObject>> registered = new HashMap<String, Class<? extends RegistryObject>>();
+    try {
+      packageId = this.publishObject(user, registryPackage);
+    } catch (RegistryServiceException e) {
+      throw e;
+    }
+    // For now we will simply call publish on every item in the list that is a
+    // classification scheme of classification node
+    // TODO: Make this a transaction to rollback if all don't work
+    for (RegistryObject object : registryObjects) {
+      try {
+        if (object instanceof ClassificationScheme
+            || object instanceof ClassificationNode) {
+          String id = this.publishObject(user, object, packageId);
+          System.out.println("Published: " + id);
+          registered.put(id, object.getClass());
+        }
+      } catch (RegistryServiceException e) {
+        exception = e;
+        break;
+      }
+    }
+
+    // TODO: Make this method transactional and just rollback anything added
+    // here. Instead of deleting one by one
+    if (exception != null) {
+      for (String id : registered.keySet()) {
+        this.deleteObject(user, id, registered.get(id));
+      }
+      // TODO: Remove package and associations?
+      throw exception;
+    }
+
+    return packageId;
+  }
+
 }
