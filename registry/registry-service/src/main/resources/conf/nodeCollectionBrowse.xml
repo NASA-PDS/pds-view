@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Collection_Browse"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Collection_Browse"
-    name="Collection Browse" 
-    description="A Browse collection is a product that has a table of references to one or more browse products."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Collection_Browse"/>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_XML_Schema"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_XML_Schema"
-    name="Product XML Schema" 
-    description="The Product XML Schema consists of a single text file in XML Schema encoding."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_XML_Schema"/>

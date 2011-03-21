@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Element_Definition"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Element_Definition"
-    name="Product Element Definition" 
-    description="The Product Element Definition provides a data element definition in XML encoding."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_Element_Definition"/>

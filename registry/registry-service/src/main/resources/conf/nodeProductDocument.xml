@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Document"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Document"
-    name="Product Document" 
-    description="A Product Document is a product consisting of a single logical document that may be comprised of one or more document formats."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_Document"/>

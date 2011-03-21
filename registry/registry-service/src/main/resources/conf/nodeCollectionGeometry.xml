@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Collection_Geometry"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Collection_Geometry"
-    name="Collection Geometry" 
-    description="A Geometry collection  is a product that has a table of references to one or more geometry products."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Collection_Geometry"/>

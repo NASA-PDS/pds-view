@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Spectrum_3D"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Spectrum_3D"
-    name="Product Spectrum 3D" 
-    description="The Product Spectrum 3D class defines a product consisting of at least one 3D spectrum and other associated data objects and metadata."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_Spectrum_3D"/>

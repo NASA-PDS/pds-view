@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Mission"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Mission"
-    name="Product Mission" 
-    description="An Mission product is an information object that describes a mission."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_Mission"/>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_PDS_Affiliate"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_PDS_Affiliate"
-    name="Product PDS Affiliate" 
-    description="A PDS Affiliate product is an information object that describes a person in the role of an affiliate of the PDS."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_PDS_Affiliate"/>

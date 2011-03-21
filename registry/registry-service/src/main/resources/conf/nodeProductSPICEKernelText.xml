@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_SPICE_Kernel_Text"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_SPICE_Kernel_Text"
-    name="Product SPICE Kernel Text" 
-    description="The Product SPICE Kernel Text class defines a text SPICE product."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_SPICE_Kernel_Text"/>

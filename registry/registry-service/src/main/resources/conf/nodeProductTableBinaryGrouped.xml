@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Table_Binary_Grouped"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Table_Binary_Grouped"
-    name="Product Table Binary Grouped" 
-    description="The Product Table Binary Grouped class defines a product consisting of at least one Binary table with groups of repeating fields and other associated data objects and metadata."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_Table_Binary_Grouped"/>

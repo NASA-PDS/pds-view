@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Node"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Node"
-    name="Product Node" 
-    description="A node product is an information object that describes a node."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_Node"/>

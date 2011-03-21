@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Table_Character"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Table_Character"
-    name="Product Table Character" 
-    description="The Product Table Character class defines a product consisting of at least one character table and other associated data objects and metadata."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_Table_Character"/>

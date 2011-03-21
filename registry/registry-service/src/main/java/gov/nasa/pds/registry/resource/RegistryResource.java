@@ -15,6 +15,7 @@
 
 package gov.nasa.pds.registry.resource;
 
+import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.Report;
 import gov.nasa.pds.registry.service.RegistryService;
@@ -29,6 +30,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * This is the root resource for managing the registry.
+ * This is the registry resource for managing the registry.
  * 
  * @author pramirez
  * 
@@ -55,12 +57,52 @@ public class RegistryResource {
   @Autowired
   RegistryService registryService;
 
+  @GET
+  public Response listResources() {
+    Response.ResponseBuilder builder = Response
+        .ok("Welcome to the Registry Service.");
+    String associationsUri = uriInfo.getBaseUriBuilder().clone().path(
+        RegistryResource.class).path(RegistryResource.class,
+        "getAssociationsResource").build().toString();
+    builder.header("Link", new Link(associationsUri, "associations", null));
+    String classificationsUri = uriInfo.getBaseUriBuilder().clone().path(
+        RegistryResource.class).path(RegistryResource.class,
+        "getClassificationsResource").build().toString();
+    builder.header("Link",
+        new Link(classificationsUri, "classifications", null));
+    String extrinsicsUri = uriInfo.getBaseUriBuilder().clone().path(
+        RegistryResource.class).path(RegistryResource.class,
+        "getExtrinsicsResource").build().toString();
+    builder.header("Link", new Link(extrinsicsUri, "extrinsics", null));
+    String externalIdentifiersUri = uriInfo.getBaseUriBuilder().clone().path(
+        RegistryResource.class).path(RegistryResource.class,
+        "getExternalIdentifiersResource").build().toString();
+    builder.header("Link",
+        new Link(externalIdentifiersUri, "identifiers", null));
+    String eventsUri = uriInfo.getBaseUriBuilder().clone().path(
+        RegistryResource.class).path(RegistryResource.class,
+        "getEventsResource").build().toString();
+    builder.header("Link", new Link(eventsUri, "events", null));
+    String schemesUri = uriInfo.getBaseUriBuilder().clone().path(
+        RegistryResource.class).path(RegistryResource.class,
+        "getSchemesResource").build().toString();
+    builder.header("Link", new Link(schemesUri, "schemes", null));
+    String servicesUri = uriInfo.getBaseUriBuilder().clone().path(
+        RegistryResource.class).path(RegistryResource.class,
+        "getServicesResource").build().toString();
+    builder.header("Link", new Link(servicesUri, "services", null));
+    String packagesUri = uriInfo.getBaseUriBuilder().clone().path(
+        RegistryResource.class).path(RegistryResource.class,
+        "getPackagesResource").build().toString();
+    builder.header("Link", new Link(packagesUri, "packages", null));
+    return builder.build();
+  }
+
   /**
    * Retrieve the status of the registry service. This can be used to monitor
    * the health of the registry.
    * 
-   * @response.representation.200.qname 
-   *                                    {http://registry.pds.nasa.gov}report
+   * @response.representation.200.qname {http://registry.pds.nasa.gov}report
    * @response.representation.200.mediaType application/xml
    * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_REPORT}
    * 
@@ -161,6 +203,39 @@ public class RegistryResource {
   @Path("classifications")
   public ClassificationsResource getClassificationsResource() {
     return new ClassificationsResource(this.uriInfo, this.request,
+        this.registryService);
+  }
+
+  /**
+   * Provides access to configure the registry.
+   * 
+   * @return resource to deal with configuration
+   */
+  @Path("configure")
+  public ConfigurationResource getConfigurationResource() {
+    return new ConfigurationResource(this.uriInfo, this.request,
+        this.registryService);
+  }
+
+  /**
+   * Provides access to operations on RegistryPackages.
+   * 
+   * @return resource to deal with packages
+   */
+  @Path("packages")
+  public PackagesResource getPackagesResource() {
+    return new PackagesResource(this.uriInfo, this.request,
+        this.registryService);
+  }
+  
+  /**
+   * Provides access to operations on ExternalIdentifiers.
+   * 
+   * @return resource to deal with external identifiers
+   */
+  @Path("identifiers")
+  public ExternalIdentifiersResource getExternalIdentifiersResource() {
+    return new ExternalIdentifiersResource(this.uriInfo, this.request,
         this.registryService);
   }
 }

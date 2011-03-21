@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Text_File"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Text_File"
-    name="Product Text File" 
-    description="The Product Text File  consists of a single text file with ASCII character encoding."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_Text_File"/>

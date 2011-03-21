@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Bundle"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Bundle"
-    name="Product Bundle" 
-    description="Product Bundle has a table of references to one or more collections."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_Bundle"/>

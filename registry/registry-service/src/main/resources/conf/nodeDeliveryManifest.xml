@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Delivery_Manifest"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Delivery_Manifest"
-    name="Delivery Manifest" 
-    description="A delivery manifest is a system product  that contains a table of references to one or more  files."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Delivery_Manifest"/>

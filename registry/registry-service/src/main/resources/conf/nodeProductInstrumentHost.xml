@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Instrument_Host"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Instrument_Host"
-    name="Product Instrument Host" 
-    description="An Instrument Host product is an information object that describes an instrument host."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_Instrument_Host"/>

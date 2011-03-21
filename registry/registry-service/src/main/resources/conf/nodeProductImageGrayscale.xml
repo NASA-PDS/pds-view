@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Image_Grayscale"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Image_Grayscale"
-    name="Product Image Grayscale" 
-    description="The Product Image Grayscale class defines a product consisting of at least one grayscale image and other associated data objects and metadata."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_Image_Grayscale"/>

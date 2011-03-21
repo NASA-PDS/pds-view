@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Stream_Delimited"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Stream_Delimited"
-    name="Product Stream Delimited" 
-    description="The Product Stream Delimited class defines a product consisting of at least one Stream Delimited file (Spreadsheet) and other associated data objects and metadata."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_Stream_Delimited"/>

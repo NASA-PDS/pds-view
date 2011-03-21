@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:registry:ObjectType:RegistryObject:Classification"
-    lid="urn:registry:ObjectType:RegistryObject:Classification"
-    name="Classification" 
-    description="This is the classification node for classification. This represents a core registry object."
-    parent="urn:registry:ObjectType:RegistryObject"
-    code="Classification"/>

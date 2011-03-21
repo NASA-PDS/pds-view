@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Investigation"
-    lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Investigation"
-    name="Product Investigation" 
-    description="An Investigation product is an information object that describes an investigation."
-    parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-    code="Product_Investigation"/>

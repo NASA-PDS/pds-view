@@ -18,7 +18,7 @@ package gov.nasa.pds.registry.resource;
 import java.net.URI;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
-import gov.nasa.pds.registry.model.Classification;
+import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.service.RegistryService;
 
 import javax.ws.rs.Consumes;
@@ -36,14 +36,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 /**
- * This is the resource for managing Classifications. Currently there are no
- * operations associated with this Resource.
- * 
  * @author pramirez
  * 
  */
-public class ClassificationsResource {
-
+public class PackagesResource {
   @Context
   UriInfo uriInfo;
 
@@ -53,37 +49,37 @@ public class ClassificationsResource {
   @Context
   RegistryService registryService;
 
-  public ClassificationsResource(UriInfo uriInfo, Request request,
+  public PackagesResource(UriInfo uriInfo, Request request,
       RegistryService registryService) {
     this.uriInfo = uriInfo;
     this.request = request;
     this.registryService = registryService;
   }
-  
+
   /**
-   * Publishes a classification to the registry. Publishing includes validation,
+   * Publishes a package to the registry. Publishing includes validation,
    * assigning an internal version, validating the submission, and notification.
    * 
-   * @request.representation.qname {http://registry.pds.nasa.gov}classification
+   * @request.representation.qname {http://registry.pds.nasa.gov}registryPackage
    * @request.representation.mediaType application/xml
    * @response.param {@name Location} {@style header} {@type
    *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI
    *                 where the created item is accessible.}
    * 
-   * @param classification
+   * @param registryPackage
    *          to publish
    * @return returns an HTTP response that indicates an error or the location of
-   *         the created classification and its guid
+   *         the created package and its guid
    */
   @POST
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Response publishClassification(Classification classification) {
+  public Response publishPackage(RegistryPackage registryPackage) {
     // TODO: Change to add user
     try {
-      String guid = registryService.publishObject("Unkown", classification);
+      String guid = registryService.publishObject("Unkown", registryPackage);
       return Response.created(
-          ClassificationsResource.getClassificationUri((Classification) registryService
-              .getObject(guid, Classification.class), uriInfo)).entity(guid)
+          PackagesResource.getPackageUri((RegistryPackage) registryService
+              .getObject(guid, RegistryPackage.class), uriInfo)).entity(guid)
           .build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
@@ -91,42 +87,41 @@ public class ClassificationsResource {
     }
   }
 
-  protected static URI getClassificationUri(Classification classification,
+  protected static URI getPackageUri(RegistryPackage registryPackage,
       UriInfo uriInfo) {
     return uriInfo.getBaseUriBuilder().clone().path(RegistryResource.class)
-        .path(RegistryResource.class, "getClassificationsResource").path(
-            classification.getGuid()).build();
+        .path(RegistryResource.class, "getPackagesResource").path(
+            registryPackage.getGuid()).build();
   }
 
   /**
-   * Retrieves a classification with the given global identifier.
+   * Retrieves a package with the given global identifier.
    * 
    * @response.representation.200.qname 
-   *                                    {http://registry.pds.nasa.gov}classification
+   *                                    {http://registry.pds.nasa.gov}registryPackage
    * @response.representation.200.mediaType application/xml
-   * @return the classification
+   * @return the package
    */
   @GET
   @Path("{guid}")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Classification getClassification(@PathParam("guid") String guid) {
-    Classification classification = (Classification) registryService
-        .getObject(guid, Classification.class);
-    return classification;
+  public RegistryPackage getPackage(@PathParam("guid") String guid) {
+    RegistryPackage registryPackage = (RegistryPackage) registryService
+        .getObject(guid, RegistryPackage.class);
+    return registryPackage;
   }
 
   /**
-   * Deletes the classification with the given guid
+   * Deletes the package with the given guid
    * 
    * @param guid
-   *          of classification
+   *          of package
    * @return Response indicating whether the operation succeeded or had an error
    */
   @DELETE
   @Path("{guid}")
-  public Response deleteClassification(@PathParam("guid") String guid) {
-    registryService.deleteObject("Unknown", guid, Classification.class);
+  public Response deletePackage(@PathParam("guid") String guid) {
+    registryService.deleteObject("Unknown", guid, RegistryPackage.class);
     return Response.ok().build();
   }
-
 }

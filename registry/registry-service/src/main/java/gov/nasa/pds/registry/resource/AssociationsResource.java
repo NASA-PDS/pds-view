@@ -78,11 +78,11 @@ public class AssociationsResource {
    * @param rows
    *          how many results to return
    * @param targetObject
-   *          filter on the identifier of the target in the association
-   *          supports wildcard (*)
+   *          filter on the identifier of the target in the association supports
+   *          wildcard (*)
    * @param sourceObject
-   *          filter on the identifier of the source in the association
-   *          supports wildcard (*)
+   *          filter on the identifier of the source in the association supports
+   *          wildcard (*)
    * @param associationType
    *          filter on the type of association supports wildcard (*)
    * @param operator
@@ -104,8 +104,8 @@ public class AssociationsResource {
       @QueryParam("queryOp") @DefaultValue("AND") QueryOperator operator,
       @QueryParam("sort") List<String> sort) {
     AssociationFilter filter = new AssociationFilter.Builder().targetObject(
-        targetObject).sourceObject(sourceObject).associationType(associationType).
-        associationType(associationType).build();
+        targetObject).sourceObject(sourceObject).associationType(
+        associationType).build();
     AssociationQuery.Builder queryBuilder = new AssociationQuery.Builder()
         .filter(filter).operator(operator);
     if (sort != null) {
@@ -169,8 +169,7 @@ public class AssociationsResource {
   public Response publishAssociation(Association association) {
     // TODO: Change to add user
     try {
-      String guid = registryService
-          .publishObject("Unkown", association);
+      String guid = registryService.publishObject("Unkown", association);
       return Response.created(
           AssociationsResource.getAssociationUri(registryService
               .getAssocation(guid), uriInfo)).entity(guid).build();
@@ -190,7 +189,7 @@ public class AssociationsResource {
   /**
    * Retrieves an association with the given global identifier.
    * 
-   * @response.representation.200.qname {http://registry.pds.nasa.gov}response
+   * @response.representation.200.qname {http://registry.pds.nasa.gov}association
    * @response.representation.200.mediaType application/xml
    * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_ASSOCIATION}
    * @return the association
