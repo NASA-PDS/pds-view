@@ -35,6 +35,7 @@
         <li><a href="#Update_Status">Update Status</a></li>
         <li><a href="#Delete_Artifacts">Delete Artifacts</a></li>
         <li><a href="#Ping_Service">Ping Service</a></li>
+        <li><a href="#Report_Service">Report Service</a></li>
         <li><a href="#Controlled_Access">Controlled Access</a></li>
       </ul>
 
@@ -353,8 +354,18 @@ http://localhost:8080/registry-service/registry/associations/&lt;guid&gt;
 http://localhost:8080/registry-service/registry/services/&lt;guid&gt;
       </source>
     </section>
-
+    
     <section name="Ping Service">
+      <p>The following command checks to see if the registry service is up and running:
+      </p>
+      
+      <source>
+% curl -X GET -H "Content-type:application/xml" -v \
+http://localhost:8080/registry-service/registry
+      </source>
+    </section>
+
+    <section name="Report Service">
       <p>The following command details the status of the service along with registered counts by Registry Object type:
       </p>
 
