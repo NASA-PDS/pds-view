@@ -25,29 +25,29 @@
 
   <body>
     <section name="Operation">
-      <p>When Graphical User Interface (GUI) applications have been configured for access control, the user is redirected to the following OpenAM login screen to provide their identification credentials:
+      <p>When Graphical User Interface (GUI) applications have been configured for access control, the following login screen will be displayed to provide their identification credentials:
       </p>
 
       <center>
-        <a href="../images/openam-login-screen.jpg" target="_blank"><img alt="OpenAM Login" src="../images/openam-login-screen-scale.jpg" border="1" /></a><br/>
-        If viewing this document in online form, click the image for a larger version.
+        <img src="../images/tomcat_opends_login_screen.jpg" target="_blank"/>
       </center>
 
-      <p>Once the user enters their identification credentials (user name and password) correctly, they are redirected back to the original application. If the user is accessing an access controlled application via its REST-based interface, they can utilize the <i>curl</i> application to obtain an authentication cookie as follows:
+      <p>Once the user enters their identification credentials (user name and password) correctly, you can access to the original application.</p>
+      <p>Also, you can utilize the <i>curl</i> commmand to an access controlled application. An example of the command is as follows:
       </p>
 
       <source>
-% curl -d "&amp;username=&lt;username&gt;&amp;password=&lt;password&gt;" \
-http://pdsops.jpl.nasa.gov/openam/identity/authenticate
-
-token.id=AQIC5wM2LY4SfcyFAElnVTJ4ywAONCJRVy74LMgzFYbRmdI=@AAJTSQACMDE=#
+% curl -X POST -H "Content-type:application/xml" -d @./new_product_build0.xml \
+-v https://pdsdev.jpl.nasa.gov:8443/registry-service/registry/products -u username:password \
+-k -c tomcat_cookie.txt
       </source>
 
-      <p>This cookie can then be passed as follows in a <i>POST</i> request:
+      <p>The cookie file (tomcat_cookie.txt) can then be passed to next curl commands. 
       </p>
 
       <source>
-% curl -X POST ... --cookie 'iPlanetDirectoryPro="&lt;token.id&gt;"'
+% curl -X POST -H "Content-type:application/xml" -d @./new_product_build1.xml \
+-v https://pdsdev.jpl.nasa.gov:8443/registry-service/registry/products/1234 -k -b tomcat_cookie.txt
       </source>
 
       <p>The example above also applies to a <i>DELETE</i> request.

@@ -74,8 +74,8 @@
         </p>
 
         <ul>
-          <li>Download the appropriate binary package for your platform from <a href="http://tomcat.apache.org/download-60.cgi" target="_blank">http://tomcat.apache.org/download-60.cgi</a>.</li>
-          <li>Install the package so that it operates on port 80. Documentation can be found in the binary distributions and at <a href="http://tomcat.apache.org/tomcat-6.0-doc/" target="_blank">http://tomcat.apache.org/tomcat-6.0-doc/</a>.<br/>
+          <li>Download the appropriate binary package for your platform from <a href="http://tomcat.apache.org/download-70.cgi" target="_blank">http://tomcat.apache.org/download-70.cgi</a>.</li>
+          <li>Install the package so that it operates on port 80. Documentation can be found in the binary distributions and at <a href="http://tomcat.apache.org/tomcat-7.0-doc/" target="_blank">http://tomcat.apache.org/tomcat-7.0-doc/</a>.<br/>
             <p>Modify the <i>$CATALINA_HOME/bin/catalina.sh</i> file as follows:
             </p>
             <source>
@@ -106,14 +106,14 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
 <source>% $JAVA_HOME/bin/keytool -genkey -alias virtualhostname -keyalg RSA \
  -keystore /usr/local/tomcat7/.keystore</source> 
  	   <p>The password you enter in the first password prompt will be the password for the keystore where your server certificate is stored. For the operational system, you may need to purchase a Certificate from a well-known <i>Certificate Authority(CA)</i> such as VeriSign or Thawte.</p>
-           
-        <p>After generating the server certificate, edit the Tomcat's server configuration file (<code class="codespan">$CATALINA_HOME/conf/server.xml</code>) to have Tomcat server listening on the port 8080. The <code class="codespan">redirectPort</code> option is the port that will be used when redirecting from http to https.</p> 
+        
+        <p>After generating the server certificate, edit the Tomcat's server configuration file (<code class="codespan">$CATALINA_HOME/conf/server.xml</code>) to have Tomcat server listening on the port 8080. The <code class="codespan">redirectPort</code> option is the port that will be used when redirecting from <i>http</i> to <i>https</i>.</p> 
         <source>
 <pre>&lt;Connector port="8080" protocol="HTTP/1.1" 
            connectionTimeout="20000" 
            redirectPort="8443" /&gt;</pre></source> 
  
-<p>To make Tomcat listen on the port 8443, with a SSL transport, the following needs to be configured in the <code class="codespan">server.xml</code> file:</p> 
+<p>To make Tomcat listen on the port 8443, with a SSL transport, the following needs to be configured in the <code class="codespan">server.xml</code> file.</p> 
  
 		<source>
 &lt;Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"
@@ -125,7 +125,7 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
  
 
 
-<p>Add an OpenDS realm to Tomcat Server</p>
+<p>Add an OpenDS realm to the Tomcat Server to authenticate the users with the Directory Server.</p>
 <source>
 &lt;Realm className="org.apache.catalina.realm.JNDIRealm" debug="99"
         connectionName="cn=Directory Manager"
@@ -137,14 +137,14 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
         roleSearch="(uniqueMember={0})"/&gt;
 </source>
 
-<p>Enable Tomcat for Single Sign On Support</p>
+<p>To enable Single Sign On feature of the Tomcat server, make sure following element is not commented out.</p>
 <source>
 &lt;Valve class="org.apache.catalina.authenticator.SingleSignOn"/&gt;
 </source>
       </subsection>
       
       <subsection name="Tomcat Application Configuration">
-      <p>Add the security-constraint, role, and login-config elements to your application's web.xml file as shown below.</p>
+      <p>Add the security-constraint, role, and login-config elements to your application's <i>web.xml</i> file as shown below.</p>
       <source>    
 &lt;security-constraint&gt;
   &lt;web-resource-collection&gt;
@@ -166,7 +166,7 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
       </source>
       
       
-      <p>Add the following in the <code class="codespan">$CATALINA_HOME/webapps/yourapplication/WEB-INF/web.xml</code> in the <code class="codespan">&lt;security-constraint&gt;</code> tag:</p> 
+      <p>Add the following in the your application's web.xml (<code class="codespan">$CATALINA_HOME/webapps/yourapplication/WEB-INF/web.xml</code>) in the <code class="codespan">&lt;security-constraint&gt;</code> tag:</p> 
       <source>
 &lt;user-data-constraint&gt;
    &lt;transport-guarantee&gt;CONFIDENTIAL&lt;/transport-guarantee&gt;
