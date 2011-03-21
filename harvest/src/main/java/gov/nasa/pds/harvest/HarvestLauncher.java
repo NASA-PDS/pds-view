@@ -371,6 +371,7 @@ public class HarvestLauncher {
                     + pEx.getMessage());
             System.exit(1);
         } catch (Exception e) {
+          e.printStackTrace();
             System.out.println(e.getMessage());
             System.exit(1);
         }

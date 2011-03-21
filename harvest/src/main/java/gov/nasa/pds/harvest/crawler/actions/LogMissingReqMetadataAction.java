@@ -54,6 +54,9 @@ public class LogMissingReqMetadataAction extends CrawlerAction {
     public boolean performAction(File product, Metadata productMetadata)
             throws CrawlerActionException {
         boolean passFlag = true;
+        if (productMetadata.getHashtable().isEmpty()) {
+          return false;
+        }
         for (String key : reqMetadata) {
             if (!productMetadata.containsKey(key)) {
                 log.log(new ToolsLogRecord(ToolsLevel.SEVERE,

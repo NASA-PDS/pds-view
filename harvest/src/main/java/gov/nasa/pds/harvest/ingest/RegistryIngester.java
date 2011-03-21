@@ -167,12 +167,12 @@ public class RegistryIngester implements Ingester {
                 == ClientResponse.Status.CREATED.getStatusCode()) {
             String lidvid = met.getMetadata(Constants.LOGICAL_ID) + "::"
             + met.getMetadata(Constants.PRODUCT_VERSION);
-
+            String guid = response.getEntity(String.class);
             log.log(new ToolsLogRecord(ToolsLevel.INGEST_SUCCESS,
                     "Successfully registered product: " + lidvid, prodFile));
             log.log(new ToolsLogRecord(ToolsLevel.INFO,
-                    "Product has the following guid: " +
-                    response.getEntity(String.class), prodFile));
+                    "Product has the following GUID: " + guid, prodFile));
+            met.addMetadata(Constants.PRODUCT_GUID, guid);
             return response.getLocation().toString();
         }
         else {
@@ -180,7 +180,6 @@ public class RegistryIngester implements Ingester {
                     "POST request returned HTTP code: "
                     + response.getStatus(),
                     prodFile));
-            System.out.println("RESPONSE: " + response.getEntity(String.class));
             throw new IngestException("POST request returned HTTP code: "
                     + response.getStatus());
         }

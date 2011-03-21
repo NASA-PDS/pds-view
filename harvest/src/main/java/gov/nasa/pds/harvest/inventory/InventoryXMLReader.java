@@ -94,11 +94,11 @@ public class InventoryXMLReader implements InventoryReader {
             file = new File(
                     FilenameUtils.separatorsToSystem(
                     extractor.getValueFromItem(
-                            Constants.FILE_SPEC_XPATH, entry)));
-            checksum = extractor.getValueFromItem(Constants.CHECKSUM_XPATH,
+                            InventoryKeys.FILE_SPEC_XPATH, entry)));
+            checksum = extractor.getValueFromItem(InventoryKeys.CHECKSUM_XPATH,
                     entry);
             lidvid = extractor.getValueFromItem(
-                    Constants.IDENTITY_REFERENCE_XPATH, entry);
+                    InventoryKeys.IDENTITY_REFERENCE_XPATH, entry);
         } catch (XPathExpressionException x) {
             throw new InventoryReaderException(x.getMessage());
         }

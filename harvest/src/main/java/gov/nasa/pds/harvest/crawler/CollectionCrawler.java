@@ -24,6 +24,10 @@ public class CollectionCrawler extends PDSProductCrawler {
     private static Logger log = Logger.getLogger(
             CollectionCrawler.class.getName());
 
+    /** XPath that will indicate if a collection is primary. */
+    public static final String IS_PRIMARY_COLLECTION_XPATH =
+      "//*[starts-with(name(), 'Identification_Area')]/is_primary_collection";
+
     /**
      * Constructor.
      *
@@ -52,7 +56,7 @@ public class CollectionCrawler extends PDSProductCrawler {
             XMLExtractor extractor = new XMLExtractor();
             extractor.parse(collection);
             String isPrimary = extractor.getValueFromDoc(
-                    Constants.IS_PRIMARY_COLLECTION_XPATH);
+                    IS_PRIMARY_COLLECTION_XPATH);
             if ((!"".equals(isPrimary))
                     && (!Boolean.parseBoolean(isPrimary))) {
                 return;

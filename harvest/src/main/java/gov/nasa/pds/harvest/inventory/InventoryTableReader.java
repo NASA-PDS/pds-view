@@ -13,16 +13,12 @@
 // $Id$
 package gov.nasa.pds.harvest.inventory;
 
-import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.util.XMLExtractor;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -70,19 +66,24 @@ public class InventoryTableReader implements InventoryReader {
         XMLExtractor extractor = new XMLExtractor();
         try {
             extractor.parse(file);
+            String dataFileName = extractor.getValueFromDoc(
+                InventoryKeys.DATA_FILE_XPATH);
+            if (dataFileName.equals("")) {
+              throw new Exception("Could not retrieve a data file name using "
+                  + "the following XPath: " + InventoryKeys.DATA_FILE_XPATH);
+            }
             dataFile = new File(FilenameUtils.separatorsToSystem(
-                    extractor.getValueFromDoc(
-                            Constants.DATA_FILE_XPATH)));
+                dataFileName));
             if (!dataFile.isAbsolute()) {
                 dataFile = new File(file.getParent(), dataFile.toString());
             }
             reader = new LineNumberReader(new FileReader(dataFile));
             filenameFieldLocation = Integer.parseInt(
                     extractor.getValueFromDoc(
-                            Constants.FILE_SPEC_FIELD_NUM_XPATH));
+                            InventoryKeys.FILE_SPEC_FIELD_NUM_XPATH));
             lidvidFieldLocation = Integer.parseInt(
                     extractor.getValueFromDoc(
-                            Constants.LIDVID_FIELD_NUM_XPATH));
+                            InventoryKeys.LIDVID_FIELD_NUM_XPATH));
         } catch (Exception e) {
             throw new InventoryReaderException(e.getMessage());
         }

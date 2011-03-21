@@ -251,7 +251,7 @@ public class PDSProductCrawler extends ProductCrawler {
             log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
                     "Error while gathering metadata: " + m.getMessage(),
                     product));
-            return null;
+            return new Metadata();
         }
     }
 
