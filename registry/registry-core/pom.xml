@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
 
-  This software may be subject to U.S. export control laws. By accepting 
-  this software, the user agrees to comply with all applicable U.S. export 
-  laws and regulations. User has the responsibility to obtain export licenses, 
-  or other export authority as may be required before exporting such 
-  information to foreign countries or providing access to foreign persons.
+  This software is subject to U. S. export control laws and regulations 
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+  is subject to U.S. export control laws and regulations, the recipient has 
+  the responsibility to obtain export licenses or other export authority as 
+  may be required before exporting such information to foreign countries or 
+  providing access to foreign nationals.
 
   $Id$
 -->
@@ -61,9 +62,6 @@
     <derby.version>10.6.1.0</derby.version>
     <env>default</env>
     <registry.endpoint>${registry.protocol}://${registry.host}:${registry.port}${registry.context}/</registry.endpoint>
-    <!-- These properties support PDF generation with Maven 1. -->
-    <xdoc-artifactId>${artifactId}</xdoc-artifactId>
-    <xdoc-version>${version}</xdoc-version>
   </properties>
 
   <build>
@@ -118,6 +116,18 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
+    </repository>
+    <!-- Hosts the Hibernate artifacts. -->
+    <repository>
+      <id>jboss-repo</id>
+      <name>JBoss.org Maven Repository</name>
+      <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+    </repository>
+    <!-- Hosts the Jersey artifacts. -->
+    <repository>
+      <id>java.net-repo</id>
+      <name>Java.net Maven Repository</name>
+      <url>http://download.java.net/maven/2</url>
     </repository>
   </repositories>
   
@@ -220,6 +230,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
       </plugin>
     </plugins>
   </reporting>
