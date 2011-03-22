@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2009-2010, by the California Institute of Technology.
+  Copyright 2009-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -38,7 +38,7 @@
     </section>
 
     <section name="System Requirements">
-      <p>The Profile Setup web application was developed using Java and <a href="http://jquery.com/" target="_blank">jQuery</a> and will run under a standard Java Application Server. The application was specifically developed under Sun Java version 1.5, so the tool will execute correctly under versions 1.5 or 1.6.
+      <p>The Profile Setup web application was developed using Java and <a href="http://jquery.com/" target="_blank">jQuery</a> and will run under a standard Java Application Server. The application was specifically developed under Sun Java version 1.6, so the tool will execute correctly under versions 1.6 or later.
       </p>
 
       <p>Since the tool was developed using Sun's Java, the target Java Application Server should support Sun's Java Runtime Environment (JRE). The application was tested using Apache's Tomcat version 5.5.X, which is the preferred Java Application Server for deployment. The software can be obtained from the <a href="http://tomcat.apache.org/" target="_blank"> Apache Tomcat</a> web site. Other Java Application Servers should be compatible.
@@ -47,7 +47,7 @@
       <p>The Profile Setup software also requires a <a href="http://www.mysql.com/" target="_blank">MySQL</a> Server installation for hosting the Report Service database. The application was tested using the Community Server 5.X.X.
       </p>
 
-      <p>The web application also requires that Sawmill (8.X.X) be installed on the local machine in order for the software to performs its duty of configuring profiles for the service as needed. See the <a href="http://pdscm/2010/report/install/index.html">Report Service Installation Instructions</a> for more detail.
+      <p>The web application also requires that Sawmill (8.X.X) be installed on the local machine in order for the software to perform its duty of configuring profiles for the service as needed. See the <a href="../../sawmill/install/index.html">Sawmill Installation Instructions</a> for more detail.
       </p>
     </section>
 

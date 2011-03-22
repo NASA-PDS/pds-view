@@ -1,18 +1,18 @@
-The Report Service is satisfied with the commercial product Sawmill. 
-This project contains the web site containing the documentation for 
-installing and configuring the  software for the PDS 2010 system.
+The Report Service project contains the web site that serves as the entry 
+point for the report components. It also includes the POM that should be 
+inherited by all of the report projects. The site should be online at 
+http://pds-cm.jpl.nasa.gov/2010/report/. If it is not accessible, you 
+can execute the "mvn site:run" command and view the documentation locally at 
+http://localhost:8080.
 
-The documentation including release notes, installation and operation of 
-the software should be online at http://pds-cm.jpl.nasa.gov/2010/report/. 
-If it is not accessible, you can execute the "mvn site:run" command and 
-view the documentation locally at http://localhost:8080.
+Because this is a POM project, it should be deployed to the Maven repository 
+so that it can be referenced by the child projects. This can be accomplished 
+with the following command:
 
-In order to create a complete package for distribution, execute the 
-following commands: 
+% mvn deploy --non-recursive
 
-% mvn site
-% maven pdf
-% mvn package
+Using the "--non-recursive" option will by typical for most commands 
+executed against this project so that they are not applied against the 
+child projects or modules. The site can be deployed as follows: 
 
-The project still relies on Maven 1 functionality to generate the PDF form 
-of the documentation.
+% mvn site-deploy --non-resursive

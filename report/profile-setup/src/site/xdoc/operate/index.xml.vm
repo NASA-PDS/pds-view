@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2009-2010, by the California Institute of Technology.
+  Copyright 2009-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -28,7 +28,10 @@
       <a href="http://pdsops.jpl.nasa.gov/profile-setup/" target="_blank">http://pdsops.jpl.nasa.gov/profile-setup/</a>. The main screen of the application is as follows:
       </p>
 
-      <center><img src="../images/profile-main.jpg"/></center>
+      <center>
+        <a href="../images/profile-main.jpg" target="_blank"><img alt="Profile Main Screen" src="../images/profile-main-scale.jpg" border="1" /></a><br/>
+        If viewing this document in online form, click the image for a larger version.
+      </center>
 
       <p>The user may begin by either entering the necessary information in the appropriate text fields in order to create a new profile, or select one from the drop-down list to modify.
       </p>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -42,7 +42,6 @@
 
     <menu name="Download">
       <item name="Sawmill Guide (pdf)" href="${project.artifactId}-${project.version}.pdf"/>
-      <!--item name="Transfer Logs Design (pdf)" href="docs/pds2010_report_design.pdf"/-->
     </menu>
 
     <menu ref="reports"/>

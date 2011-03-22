@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -24,7 +24,7 @@
 
   <body>
     <section name="About Profile Setup">
-      <p>The Log Transfer software provides a web interface to set up a new, basic profile for the Report Servie. It also provides functionality to manager the transfer remote logs for Apache, Tomcat, and FTP to the Engineering node to be used by the Service. Transferring the logs to the Engineering node provides PDS Nodes with an extra backup of the logs, as well as a more stable and secure way for the Report Service to calculate the metrics from them.
+      <p>The Profile Setup software provides a web interface to set up a new, basic profile for the Report Service. It also provides functionality to manage the transfer of remote logs for Apache, Tomcat, and FTP to the Engineering Node to be used by the service. Transferring the logs to the Engineering Node provides the PDS Discipline Nodes with an extra backup of the logs, as well as a more stable and secure way for the Report Service to calculate the metrics from them.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.

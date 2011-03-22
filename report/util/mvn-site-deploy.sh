@@ -20,9 +20,9 @@ cd ..
 mvn clean
 mvn site
 
-cd sawmill
+cd profile-setup
 maven pdf
-cd ../log-transfer
+cd ../sawmill
 maven pdf
 
 cd ..

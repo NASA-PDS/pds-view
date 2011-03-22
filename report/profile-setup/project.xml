@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -17,9 +17,9 @@
 -->
 
 <project>
-  <id>transfer-logs</id>
-  <name>Transfer Logs</name>
-  <currentVersion>0.1.0</currentVersion>
+  <id>profile-setup</id>
+  <name>Profile Setup</name>
+  <currentVersion>0.1.0-dev</currentVersion>
 
   <organization>
     <name>NASA Jet Propulsion Laboratory, California Institute of Technology</name>

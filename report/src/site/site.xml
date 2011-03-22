@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -26,7 +26,7 @@
     <name>Report Service</name>
   </bannerRight>
 
-  <version/>
+  <version position="none"/>
 
   <body>
     <links>
@@ -35,14 +35,7 @@
 
     <menu name="Software Documentation">
       <item name="About Report Service" href="index.html"/>
-      <item name="Release Notes" href="release/index.html"/>
-      <item name="Installation" href="install/index.html"/>
-      <item name="Operation" href="operate/index.html"/>
-    </menu>
-
-    <menu name="Download">
-      <item name="Report Service Guide (pdf)" href="${project.artifactId}-${project.version}.pdf"/>
-      <item name="Report Service Design (pdf)" href="docs/pds2010_report_design.pdf"/>
+      <item name="Design (pdf)" href="docs/pds2010_report_design.pdf"/>
     </menu>
 
     <menu ref="modules"/>
