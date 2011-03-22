@@ -216,8 +216,12 @@ public class RegistryServiceImpl implements RegistryService {
       boolean major) throws RegistryServiceException {
     RegistryObject referencedObject = this.getLatestObject(lid, object
         .getClass());
-    object.setGuid(idGenerator.getGuid());
-    object.setHome(idGenerator.getHome());
+    if (object.getGuid() == null) {
+      object.setGuid(idGenerator.getGuid());
+    }
+    if (object.getHome() == null) {
+      object.setHome(idGenerator.getHome());
+    }
     object.setLid(referencedObject.getLid());
     object.setVersionName(versioner.getNextVersion(referencedObject
         .getVersionName(), major));
@@ -458,21 +462,6 @@ public class RegistryServiceImpl implements RegistryService {
     RegistryResponse response = new RegistryResponse();
     response.setResults(metadataStore.getAuditableEvents(affectedObject));
     return response;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * gov.nasa.pds.registry.service.RegistryService#getAssociations(java.lang
-   * .String, java.lang.String, java.lang.Integer, java.lang.Integer)
-   */
-  public RegistryResponse getAssociations(String lid, String versionId,
-      Integer start, Integer rows) {
-    if (start <= 0) {
-      start = 1;
-    }
-    return metadataStore.getAssociations(lid, versionId, start, rows);
   }
 
   /*

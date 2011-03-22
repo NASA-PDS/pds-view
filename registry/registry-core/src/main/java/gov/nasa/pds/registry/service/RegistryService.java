@@ -330,25 +330,6 @@ public interface RegistryService {
   public RegistryResponse getAuditableEvents(String affectedObject);
 
   /**
-   * Retrieves all associations for a given registry object. The registry object
-   * can be the source or target in the association
-   * 
-   * @param lid
-   *          of the object of interest
-   * @param versionId
-   *          of the object of interest. This is the user provided version.
-   * @param start
-   *          the index at which to start the result list from. This index
-   *          starts at one and if anything less than one is provided it will
-   *          default to one.
-   * @param rows
-   *          how many results to return
-   * @return a list of associations
-   */
-  public RegistryResponse getAssociations(String lid, String versionId,
-      Integer start, Integer rows);
-
-  /**
    * Publishes a registry object to the registry.
    * 
    * @param user

@@ -66,24 +66,6 @@ public interface MetadataStore {
       Integer start, Integer rows);
 
   /**
-   * Retrieves associations that have the lid and version id where they appear
-   * as either the source or target.
-   * 
-   * @param lid
-   *          logical identifier to match
-   * @param versionId
-   *          user provided version to match. This is different from the
-   *          internally tracked registry version.
-   * @param start
-   *          index within the results to start at. This index is one based.
-   * @param rows
-   *          number of results to get
-   * @return list of associations
-   */
-  public RegistryResponse getAssociations(String lid, String versionId,
-      Integer start, Integer rows);
-
-  /**
    * Retrieves the list of events that the given affected object was referenced
    * in
    * 

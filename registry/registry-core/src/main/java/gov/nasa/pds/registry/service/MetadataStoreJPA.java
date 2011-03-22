@@ -151,34 +151,6 @@ public class MetadataStoreJPA implements MetadataStore {
    * (non-Javadoc)
    * 
    * @see
-   * gov.nasa.pds.registry.service.MetadataStore#getAssociations(java.lang.String
-   * , java.lang.String, java.lang.Integer, java.lang.Integer)
-   */
-  @Override
-  @Transactional(readOnly = true)
-  public RegistryResponse getAssociations(String lid, String versionId,
-      Integer start, Integer rows) {
-    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Association> cq = cb.createQuery(Association.class);
-    Root<Association> associationEntity = cq.from(Association.class);
-    cq.where(cb.or(cb.and(cb.equal(associationEntity.get("targetLid"), lid), cb
-        .equal(associationEntity.get("targetVersionId"), versionId)), cb.and(cb
-        .equal(associationEntity.get("sourceLid"), lid), cb.equal(
-        associationEntity.get("sourceVersionId"), versionId))));
-    List<Order> orders = new ArrayList<Order>();
-    orders.add(cb.asc(associationEntity.get("guid")));
-    cq.orderBy(orders);
-    TypedQuery<Association> dbQuery = entityManager.createQuery(cq);
-    RegistryResponse response = new RegistryResponse(start, (long) dbQuery
-        .getResultList().size(), dbQuery.setFirstResult(start - 1)
-        .setMaxResults(rows).getResultList());
-    return response;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
    * gov.nasa.pds.registry.service.MetadataStore#getAuditableEvents(java.lang
    * .String)
    */

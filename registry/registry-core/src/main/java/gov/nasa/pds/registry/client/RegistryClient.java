@@ -40,7 +40,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * @author pramirez
- *
+ * 
  */
 public class RegistryClient {
   private WebResource registryResource;
@@ -75,12 +75,13 @@ public class RegistryClient {
     return builder.accept(mediaType).post(ClientResponse.class, extrinsic);
   }
 
-  public ClientResponse versionExtrinsic(String user, ExtrinsicObject extrinsic, String lid) {
+  public ClientResponse versionExtrinsic(String user,
+      ExtrinsicObject extrinsic, String lid) {
     return this.versionExtrinsic(user, extrinsic, lid, true);
   }
 
-  public ClientResponse versionExtrinsic(String user, ExtrinsicObject extrinsic,
-      String lid, Boolean major) {
+  public ClientResponse versionExtrinsic(String user,
+      ExtrinsicObject extrinsic, String lid, Boolean major) {
     WebResource.Builder builder = registryResource.path("extrinsics").path(
         extrinsic.getLid()).queryParam("major", major.toString())
         .getRequestBuilder();
@@ -132,7 +133,8 @@ public class RegistryClient {
   }
 
   public ClientResponse getExtrinsics(Integer start, Integer rows) {
-    return this.getExtrinsics(new ExtrinsicQuery.Builder().build(), start, rows);
+    return this
+        .getExtrinsics(new ExtrinsicQuery.Builder().build(), start, rows);
   }
 
   public ClientResponse getExtrinsics(ExtrinsicQuery query, Integer start,
@@ -179,26 +181,6 @@ public class RegistryClient {
 
     WebResource.Builder builder = registryResource.path("extrinsics")
         .queryParams(params).getRequestBuilder();
-    if (token != null) {
-      builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
-          + "\"");
-    }
-
-    return builder.accept(mediaType).get(ClientResponse.class);
-  }
-
-  public ClientResponse getAssociations(String lid, String userVersion,
-      Integer start, Integer rows) {
-    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
-    if (start != null) {
-      params.add("start", start.toString());
-    }
-    if (rows != null) {
-      params.add("rows", rows.toString());
-    }
-
-    WebResource.Builder builder = registryResource.path("associations").path(
-        lid).path(userVersion).queryParams(params).getRequestBuilder();
     if (token != null) {
       builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
           + "\"");
@@ -266,7 +248,8 @@ public class RegistryClient {
       if (args.length > 2) {
         ObjectFilter filter = new ObjectFilter.Builder().lid(args[1])
             .versionId(args[2]).build();
-        ExtrinsicQuery query = new ExtrinsicQuery.Builder().filter(filter).build();
+        ExtrinsicQuery query = new ExtrinsicQuery.Builder().filter(filter)
+            .build();
         response = client.getExtrinsics(query, null, null).getEntity(
             RegistryResponse.class);
         for (RegistryObject object : response.getResults()) {
