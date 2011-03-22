@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <association xmlns="http://registry.pds.nasa.gov"
-    sourceObject="1234"
-    targetObject="1234"
+    sourceObject="1234v1.0"
+    targetObject="1234v2.0"
     associationType="associatedTo"/>

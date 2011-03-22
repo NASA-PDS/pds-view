@@ -119,36 +119,6 @@ public class AssociationsResource {
   }
 
   /**
-   * Retrieves the associations related with a given product in the registry
-   * regardless if the product is the source or target in the relationship.
-   * 
-   * @response.representation.200.qname {http://registry.pds.nasa.gov}response
-   * @response.representation.200.mediaType application/xml
-   * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_ASSOCIATION_QUERY}
-   * @param start
-   *          the index at which to start the result list from
-   * @param rows
-   *          how many results to return
-   * @param lid
-   *          of the product
-   * @param versionId
-   *          of the product
-   * @return List of associations
-   */
-  @GET
-  @Path("{lid}/{versionId}")
-  @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Response getAssociations(
-      @QueryParam("start") @DefaultValue("1") Integer start,
-      @QueryParam("rows") @DefaultValue("20") Integer rows,
-      @PathParam("lid") String lid, @PathParam("versionId") String versionId) {
-    RegistryResponse rr = registryService.getAssociations(lid, versionId,
-        start, rows);
-    Response.ResponseBuilder builder = Response.ok(rr);
-    return builder.build();
-  }
-
-  /**
    * Publishes an association to the registry. Publishing includes validation,
    * assigning an internal version, validating the submission, and notification.
    * 

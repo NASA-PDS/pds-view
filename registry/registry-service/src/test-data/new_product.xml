@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<extrinsicObject xmlns="http://registry.pds.nasa.gov" 
+<extrinsicObject xmlns="http://registry.pds.nasa.gov"
+    guid="1234v1.0"
     lid="1234" 
     versionId="1.0" 
     name="Product 1234 v1" 

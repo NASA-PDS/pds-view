@@ -74,7 +74,8 @@
 
         <source>
 &lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
-&lt;extrinsicObject xmlns="http://registry.pds.nasa.gov" 
+&lt;extrinsicObject xmlns="http://registry.pds.nasa.gov"  
+  guid="1234v1.0" 
   lid="1234" 
   versionId="1.0" 
   name="Product 1234 v1" 
@@ -167,8 +168,8 @@ http://localhost:8080/registry-service/registry/extrinsics
         <source>
 &lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
 &lt;association xmlns="http://registry.pds.nasa.gov"
-  sourceObject="1234"
-  targetObject="1234"
+  sourceObject="1234v1.0"
+  targetObject="1234v2.0"
   associationType="associatedTo"/&gt;
         </source>
 

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <extrinsicObject xmlns="http://registry.pds.nasa.gov" 
+    guid="1234v2.0"
     lid="1234" 
     versionId="2.0" 
     name="Product 1234 v2" 
     objectType="Product"
-    description="This is a new version test product 1234 v3" >
+    description="This is a new version test product 1234 v2" >
     <slot name="first-name">
         <value>John</value>
     </slot>
