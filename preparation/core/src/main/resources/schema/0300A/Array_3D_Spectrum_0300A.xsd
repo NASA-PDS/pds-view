@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!-- PDS4 XML/Schema for Array_3D_Spectrum_0.3.0.0.Alpha  Mon Mar 21 16:24:02 PDT 2011 -->
+  <!-- Generated from the PDS4 Information Model V0.3.0.0.Alpha -->
+  <!-- *** This PDS4 product schema is a preliminary deliverable. *** -->
+  <!-- *** It is being made available for review and testing. *** -->
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://pds.nasa.gov/schema/pds4/pds"
+    xmlns:pds="http://pds.nasa.gov/schema/pds4/pds"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    version="3.0.0">
+ 
+    <xsd:include schemaLocation="Class_Types_0300A.xsd">
+      <xsd:annotation>
+        <xsd:documentation>PDS (common) Data Dictionary - Tagged Data Objects</xsd:documentation>
+      </xsd:annotation>
+    </xsd:include>
+ 
+  <!-- <xsd:import namespace="http://pds.nasa.gov/schema/pds4/anyNS"
+    schemaLocation="Any_Described_Data_Object_0300A.xsd"/> -->
+
+  <xsd:element name="Array_3D_Spectrum" type="pds:Array_3D_Spectrum_Type">
+    <xsd:annotation>
+      <xsd:documentation>
+        The Array_3D_Spectrum XML Schema
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:schema>

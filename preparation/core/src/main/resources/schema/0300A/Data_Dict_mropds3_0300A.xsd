@@ -1,0 +1,1286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!-- PDS4 XML/Schema for Data_Types_PDS3_0.3.0.0.Alpha  Mon Mar 21 16:24:02 PDT 2011 -->
+  <!-- Generated using the PDS3 Data Dictionary and the PDS4 Information Model V0.3.0.0.Alpha -->
+  <!-- *** This PDS4 product schema is a preliminary deliverable. *** -->
+  <!-- *** It is being made available for review and testing. *** -->
+  <!-- *** It contains PDS3 data elements not used in the core PDS4 model. *** -->
+  <schema xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://pds.nasa.gov/schema/pds4/mropds3"
+    xmlns:mropds3="http://pds.nasa.gov/schema/pds4/mropds3"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    version="3.0.0">
+
+  <xsd:simpleType name="activity_id_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="adc_timing_settings_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="analog_power_start_count_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="analog_power_start_time_Type">
+      <xsd:union memberTypes="xsd:string">
+        <!-- PDS4 Value Type="ASCII_Date_Time" -->
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="unknown"/>
+            <xsd:enumeration value="unk"/>
+            <xsd:enumeration value="null"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:union>
+    </xsd:simpleType>
+
+
+  <xsd:simpleType name="atmo_correction_flag_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="azimuth_spacing_type_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="barrel_baffle_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="binning_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="calibration_lamp_level_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="calibration_lamp_status_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="calibration_start_count_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="calibration_start_time_Type">
+      <xsd:union memberTypes="xsd:string">
+        <!-- PDS4 Value Type="ASCII_Date_Time" -->
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="unknown"/>
+            <xsd:enumeration value="unk"/>
+            <xsd:enumeration value="null"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:union>
+    </xsd:simpleType>
+
+
+  <xsd:simpleType name="ccd_flag_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="channel_number_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="closed_loop_tracking_flag_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="commanded_id_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="compression_selection_flag_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_negative_5_current_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_negative_5_voltage_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_number_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_positive_10_current_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_positive_10_voltage_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_positive_1_8_current_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_positive_1_8_voltage_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_positive_29_current_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_positive_29_voltage_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_positive_2_5_current_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_positive_2_5_voltage_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_positive_3_3_current_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_positive_3_3_voltage_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_positive_5_current_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_positive_5_voltage_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cpmm_pws_board_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="delta_line_timer_count_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="detector_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="dll_frequency_correct_count_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="dll_locked_flag_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="dll_locked_once_flag_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="dll_reset_count_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="exposure_parameter_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="felics_compression_flag_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_stop_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="focus_motor_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="focus_position_count_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="fpa_negative_y_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="fpa_positive_y_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="fpe_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="frame_rate_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="heater_control_flag_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="heater_control_mode_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="heater_current_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="ie_pws_board_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="iea_negative_15_voltage_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="iea_positive_15_voltage_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="iea_positive_28_voltage_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="iea_positive_5_voltage_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="iea_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="image_exposure_duration_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="inst_cont_board_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="inst_cont_fpga_pos_2_5_voltage_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="instrument_pointing_mode_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="inv_lookup_table_file_name_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="invalid_pixel_location_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="line_exposure_duration_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="lookup_conversion_table_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="lookup_table_file_name_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="lookup_table_k_value_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="lookup_table_maximum_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="lookup_table_median_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="lookup_table_minimum_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="lookup_table_number_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="lookup_table_type_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="manual_gain_control_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="maximum_stretch_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="measurement_atm_composition_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="measurement_geometry_desc_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="measurement_geometry_type_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="measurement_mass_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="measurement_max_resolution_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="measurement_min_resolution_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="measurement_pressure_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="measurement_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="mech_tlm_board_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="mech_tlm_fpga_pos_2_5_voltage_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="minimum_stretch_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="ms_truss_leg_0_a_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="ms_truss_leg_0_b_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="ms_truss_leg_120_a_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="ms_truss_leg_120_b_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="ms_truss_leg_240_a_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="ms_truss_leg_240_b_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="nominal_along_track_resolution_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="numerical_filter_type_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="observation_number_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="observation_start_count_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="observation_start_time_Type">
+      <xsd:union memberTypes="xsd:string">
+        <!-- PDS4 Value Type="ASCII_Date_Time" -->
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="unknown"/>
+            <xsd:enumeration value="unk"/>
+            <xsd:enumeration value="null"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:union>
+    </xsd:simpleType>
+
+
+  <xsd:simpleType name="opt_bnch_box_beam_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="opt_bnch_cover_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="opt_bnch_flexure_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="opt_bnch_fold_flat_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="opt_bnch_fpa_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="opt_bnch_fpe_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="opt_bnch_living_rm_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="opt_bnch_mirror_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="optical_bench_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="phase_compensation_type_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="phase_correction_type_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="photoclin_correction_flag_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="pixel_proc_file_name_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="powered_cpmm_flag_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="primary_mirror_baf_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="primary_mirror_mnt_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="primary_mirror_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="pulse_repetition_interval_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="radargram_return_interval_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="readout_start_count_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="readout_start_time_Type">
+      <xsd:union memberTypes="xsd:string">
+        <!-- PDS4 Value Type="ASCII_Date_Time" -->
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="unknown"/>
+            <xsd:enumeration value="unk"/>
+            <xsd:enumeration value="null"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:union>
+    </xsd:simpleType>
+
+
+  <xsd:simpleType name="reference_function_file_name_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="replaced_pixel_location_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="scan_exposure_duration_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="sec_mirror_baffle_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="sec_mirror_mtr_rng_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="sec_mirror_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="sensor_id_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="spatial_resampling_file_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="spatial_resampling_flag_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="spatial_rescaling_file_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="spatial_rescaling_flag_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="special_processing_flag_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="specimen_class_name_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="specimen_collect_location_desc_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="specimen_current_location_name_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="specimen_desc_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="specimen_last_owner_name_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="specimen_max_particle_size_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="specimen_min_particle_size_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="specimen_name_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="spectral_resampling_file_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="spectral_resampling_flag_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="spectrometer_housing_temp_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="sphere_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="spider_leg_150_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="spider_leg_270_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="spider_leg_30_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="start_sub_spacecraft_latitude_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="start_sub_spacecraft_longitude_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="stimulation_lamp_flag_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="stop_sub_spacecraft_latitude_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="stop_sub_spacecraft_longitude_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="sun_shade_temperature_Type">
+    <xsd:restriction base="xsd:float">
+  <!-- PDS4 Value Type="ASCII_Real" -->
+     <xsd:minInclusive value="-INF"/>
+     <xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="tdi_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="thermal_correction_mode_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="trim_lines_Type">
+    <xsd:restriction base="xsd:integer">
+  <!-- PDS4 Value Type="ASCII_Integer" -->
+     <xsd:minInclusive value="-2147483648"/>
+     <xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="wavelength_file_name_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="wavelength_filter_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="weighting_function_name_Type">
+    <xsd:restriction base="xsd:token">
+  <!-- PDS4 Value Type="ASCII_Short_String_Collapsed" -->
+     <xsd:minLength value="1"/>
+     <xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+</schema>
