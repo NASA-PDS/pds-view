@@ -776,8 +776,7 @@ public class Registry_ui implements EntryPoint {
 				get()
 						.getTableModel()
 						.getAssociations(
-								product.getLid(),
-								product.getVersionId(),
+								product.getGuid(),
 								new AsyncCallback<SerializableResponse<ViewAssociation>>() {
 
 									public void onFailure(Throwable caught) {
@@ -813,11 +812,11 @@ public class Registry_ui implements EntryPoint {
 											final ViewAssociation association = associations
 													.get(i);
 											grid.setText(i, 0, association
-													.getSourceLid());
+													.getSourceGuid());
 											grid.setText(i, 1, association
 													.getAssociationType());
 											grid.setText(i, 2, association
-													.getTargetLid());
+													.getTargetGuid());
 										}
 
 										// remove placeholder
@@ -879,13 +878,13 @@ public class Registry_ui implements EntryPoint {
 		FixedWidthFlexTable headerTable = new FixedWidthFlexTable();
 		FlexCellFormatter formatter = headerTable.getFlexCellFormatter();
 
-		headerTable.setHTML(0, 0, "Source LID");
+		headerTable.setHTML(0, 0, "Source Object");
 		formatter.setHorizontalAlignment(0, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
 		headerTable.setHTML(0, 1, "Association Type");
 		formatter.setHorizontalAlignment(0, 1,
 				HasHorizontalAlignment.ALIGN_CENTER);
-		headerTable.setHTML(0, 2, "Target LID");
+		headerTable.setHTML(0, 2, "Target Object");
 		formatter.setHorizontalAlignment(0, 2,
 				HasHorizontalAlignment.ALIGN_CENTER);
 
@@ -968,20 +967,6 @@ public class Registry_ui implements EntryPoint {
 								.setText(row, 1, association.getSourceGuid());
 						row++;
 
-						detailTable.setText(row, 0, "Source Home");
-						detailTable
-								.setText(row, 1, association.getSourceHome());
-						row++;
-
-						detailTable.setText(row, 0, "Source Logical ID");
-						detailTable.setText(row, 1, association.getSourceLid());
-						row++;
-
-						detailTable.setText(row, 0, "Source Version");
-						detailTable.setText(row, 1, association
-								.getSourceVersionId());
-						row++;
-
 						detailTable.setText(row, 0, "Status");
 						detailTable.setText(row, 1, association.getStatus());
 						row++;
@@ -989,20 +974,6 @@ public class Registry_ui implements EntryPoint {
 						detailTable.setText(row, 0, "Target GUID");
 						detailTable
 								.setText(row, 1, association.getTargetGuid());
-						row++;
-
-						detailTable.setText(row, 0, "Target Home");
-						detailTable
-								.setText(row, 1, association.getTargetHome());
-						row++;
-
-						detailTable.setText(row, 0, "Target Logical ID");
-						detailTable.setText(row, 1, association.getTargetLid());
-						row++;
-
-						detailTable.setText(row, 0, "Target Version");
-						detailTable.setText(row, 1, association
-								.getTargetVersionId());
 						row++;
 
 						detailTable.setText(row, 0, "Version ID");

@@ -2,8 +2,8 @@ package gov.nasa.pds.registry.ui.server;
 
 import gov.nasa.pds.registry.model.ObjectStatus;
 import gov.nasa.pds.registry.query.ObjectFilter;
-import gov.nasa.pds.registry.query.ProductQuery;
-import gov.nasa.pds.registry.query.ProductQuery.Builder;
+import gov.nasa.pds.registry.query.ExtrinsicQuery;
+import gov.nasa.pds.registry.query.ExtrinsicQuery.Builder;
 import gov.nasa.pds.registry.server.connection.ConnectionManager;
 import gov.nasa.pds.registry.ui.client.ProductsService;
 import gov.nasa.pds.registry.ui.client.SerializableProductResponse;
@@ -66,7 +66,7 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 
 		// create a builder for assembling sort and filter info into a service
 		// specific query
-		Builder queryBuilder = new ProductQuery.Builder();
+		Builder queryBuilder = new ExtrinsicQuery.Builder();
 
 		// if there is sort info, assemble transform into query format
 		if (sortInfo != null) {
@@ -142,7 +142,7 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 		}
 
 		// build the assembled query
-		ProductQuery query = queryBuilder.build();
+		ExtrinsicQuery query = queryBuilder.build();
 
 		// get the results, offsetting the start row by one to deal with index
 		// inconsistency

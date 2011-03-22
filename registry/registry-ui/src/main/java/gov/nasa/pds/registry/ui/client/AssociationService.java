@@ -13,6 +13,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("associations")
 public interface AssociationService extends RemoteService {
-	SerializableResponse<ViewAssociation> getAssociations(final String lid,
-			final String userVersion);
+	SerializableResponse<ViewAssociation> getAssociations(final String guid);
 }

@@ -6,7 +6,7 @@ import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.Slot;
 import gov.nasa.pds.registry.query.AssociationQuery;
-import gov.nasa.pds.registry.query.ProductQuery;
+import gov.nasa.pds.registry.query.ExtrinsicQuery;
 import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.ui.shared.StatusInformation;
 import gov.nasa.pds.registry.ui.shared.ViewAssociation;
@@ -113,17 +113,17 @@ public class ConnectionManager {
 	 *         filter conditions
 	 * 
 	 */
-	public static ViewProducts getProducts(ProductQuery query, Integer start,
+	public static ViewProducts getProducts(ExtrinsicQuery query, Integer start,
 			Integer numResults) {
 
 		RegistryClient client = getRegistry();
 
 		RegistryResponse pagedResp = null;
 		if (query != null) {
-			pagedResp = client.getProducts(query, start, numResults).getEntity(
+			pagedResp = client.getExtrinsics(query, start, numResults).getEntity(
 					RegistryResponse.class);
 		} else {
-			pagedResp = client.getProducts(start, numResults).getEntity(
+			pagedResp = client.getExtrinsics(start, numResults).getEntity(
 					RegistryResponse.class);
 		}
 
@@ -151,17 +151,6 @@ public class ConnectionManager {
 		return viewAssociations;
 	}
 
-	public static List<ViewAssociation> getAssociations(String lid,
-			String userVersion, Integer start, Integer numResults) {
-		RegistryClient client = getRegistry();
-
-		RegistryResponse pagedResp = client.getAssociations(lid, userVersion,
-				start, numResults).getEntity(RegistryResponse.class);
-
-		List<ViewAssociation> viewAssociations = respToViewAssociation(pagedResp);
-
-		return viewAssociations;
-	}
 
 	// TODO: determine the response format, returns errors for duplicate id for
 	// instance
@@ -283,14 +272,8 @@ public class ConnectionManager {
 			ViewAssociation vAssociation = new ViewAssociation();
 			viewAssociations.add(vAssociation);
 			vAssociation.setAssociationType(association.getAssociationType());
-			vAssociation.setSourceGuid(association.getSourceGuid());
-			vAssociation.setSourceHome(association.getSourceHome());
-			vAssociation.setSourceLid(association.getSourceLid());
-			vAssociation.setSourceVersionId(association.getSourceVersionId());
-			vAssociation.setTargetGuid(association.getTargetGuid());
-			vAssociation.setTargetHome(association.getTargetHome());
-			vAssociation.setTargetLid(association.getTargetLid());
-			vAssociation.setTargetVersionId(association.getTargetVersionId());
+			vAssociation.setSourceGuid(association.getSourceObject());
+			vAssociation.setTargetGuid(association.getTargetObject());
 
 			vAssociation.setLid(association.getLid());
 			vAssociation.setObjectType(association.getObjectType());

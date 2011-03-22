@@ -22,42 +22,10 @@ public class ViewAssociation extends ViewRegistryObject implements
 	private String sourceGuid;
 
 	/**
-	 * Local identifier of the source artifact. This references a unique set of
-	 * artifacts in the registry.
-	 */
-	private String sourceLid;
-
-	/**
-	 * Version of the source artifact. When used in conjunction with the source
-	 * local identifier this maps to one artifact in a registry.
-	 */
-	private String sourceVersionId;
-
-	/**
-	 * URI of the registry that the source registry object originates from.
-	 */
-	private String sourceHome;
-
-	/**
 	 * Global unique identifier for the target registry object.
 	 */
 	private String targetGuid;
 
-	/**
-	 * Local identifier of the target registry object.
-	 */
-	private String targetLid;
-
-	/**
-	 * Version of the target artifact. When used in in conjunction with the
-	 * target local identifier this maps to one artifact in a registry.
-	 */
-	private String targetVersionId;
-
-	/**
-	 * URI of the registry that the target registry object originates from.
-	 */
-	private String targetHome;
 
 	/**
 	 * Named relation between source and target registry object.
@@ -72,60 +40,12 @@ public class ViewAssociation extends ViewRegistryObject implements
 		this.sourceGuid = sourceGuid;
 	}
 
-	public String getSourceLid() {
-		return this.sourceLid;
-	}
-
-	public void setSourceLid(String sourceLid) {
-		this.sourceLid = sourceLid;
-	}
-
-	public String getSourceVersionId() {
-		return this.sourceVersionId;
-	}
-
-	public void setSourceVersionId(String sourceVersionId) {
-		this.sourceVersionId = sourceVersionId;
-	}
-
-	public String getSourceHome() {
-		return this.sourceHome;
-	}
-
-	public void setSourceHome(String sourceHome) {
-		this.sourceHome = sourceHome;
-	}
-
 	public String getTargetGuid() {
 		return this.targetGuid;
 	}
 
 	public void setTargetGuid(String targetGuid) {
 		this.targetGuid = targetGuid;
-	}
-
-	public String getTargetLid() {
-		return this.targetLid;
-	}
-
-	public void setTargetLid(String targetLid) {
-		this.targetLid = targetLid;
-	}
-
-	public String getTargetVersionId() {
-		return this.targetVersionId;
-	}
-
-	public void setTargetVersionId(String targetVersionId) {
-		this.targetVersionId = targetVersionId;
-	}
-
-	public String getTargetHome() {
-		return this.targetHome;
-	}
-
-	public void setTargetHome(String targetHome) {
-		this.targetHome = targetHome;
 	}
 
 	public String getAssociationType() {

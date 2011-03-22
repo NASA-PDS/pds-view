@@ -12,6 +12,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface AssociationServiceAsync {
 
-	void getAssociations(final String lid, final String userVersion,
+	void getAssociations(final String guid,
 			AsyncCallback<SerializableResponse<ViewAssociation>> callback);
 }
