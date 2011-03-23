@@ -15,18 +15,18 @@ package gov.nasa.pds.harvest.security;
 
 public class SecuredUser {
     private String name;
-    private String token;
+    private String password;
 
-    public SecuredUser(String name, String token) {
+    public SecuredUser(String name, String password) {
         this.name = name;
-        this.token = token;
+        this.password = password;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getToken() {
-        return token;
+    public String getPassword() {
+        return password;
     }
 }

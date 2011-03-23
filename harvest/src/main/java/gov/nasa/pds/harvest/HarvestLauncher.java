@@ -23,6 +23,7 @@ import gov.nasa.pds.harvest.logging.handler.HarvestStreamHandler;
 import gov.nasa.pds.harvest.policy.Namespace;
 import gov.nasa.pds.harvest.policy.Policy;
 import gov.nasa.pds.harvest.policy.PolicyReader;
+import gov.nasa.pds.harvest.registry.RegistryClientException;
 import gov.nasa.pds.harvest.security.SecurityClient;
 import gov.nasa.pds.harvest.security.SecurityClientException;
 import gov.nasa.pds.harvest.security.SecuredUser;
@@ -182,7 +183,8 @@ public class HarvestLauncher {
                     "Policy file not found on the command-line.");
         }
 
-        if ((securityURL != null) && (username == null || password == null)) {
+        if ((username != null && password == null)
+            || (username == null && password != null)) {
             throw new InvalidOptionException(
                     "Username and/or password must be specified.");
         }
@@ -274,10 +276,11 @@ public class HarvestLauncher {
      * is invalid.
      * @throws SecurityClientException If there was an error while
      * interfacing with the Security Service.
+     * @throws RegistryClientException
      */
     private void doHarvesting(final Policy policy, final String securityUrl)
     throws MalformedURLException, ParserConfigurationException,
-    SecurityClientException {
+    SecurityClientException, RegistryClientException {
         SecurityClient securityClient = null;
         String token = null;
 
@@ -285,10 +288,8 @@ public class HarvestLauncher {
                 policy.getCandidates());
         List<String> fileFilters = policy.getDirectories().getFilePattern();
         setupExtractor(policy.getCandidates().getNamespace());
-        if (securityUrl != null) {
-            securityClient = new SecurityClient(securityURL);
-            token = securityClient.authenticate(username, password);
-            harvester.setSecuredUser(new SecuredUser(username, token));
+        if ((username != null) && (password != null)) {
+            harvester.setSecuredUser(new SecuredUser(username, password));
         }
         harvester.setDoValidation(policy.getValidation().isEnabled());
         if (daemonPort != -1) {

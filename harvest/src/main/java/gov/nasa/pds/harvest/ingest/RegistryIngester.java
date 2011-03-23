@@ -33,7 +33,8 @@ import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
-import gov.nasa.pds.registry.client.RegistryClient;
+import gov.nasa.pds.harvest.registry.RegistryClient;
+import gov.nasa.pds.harvest.registry.RegistryClientException;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.Slot;
 
@@ -97,7 +98,8 @@ public class RegistryIngester implements Ingester {
      */
     public boolean hasProduct(URL registry, String productID)
     throws CatalogException {
-        RegistryClient client = new RegistryClient(registry.toString(),
+      try {
+        RegistryClient client = new RegistryClient(registry.toString(), user,
                 token);
         ClientResponse response = client.getLatestExtrinsic(productID);
         if (response.getStatus()
@@ -106,6 +108,9 @@ public class RegistryIngester implements Ingester {
         } else {
             return false;
         }
+      } catch (RegistryClientException re) {
+        throw new CatalogException(re.getMessage());
+      }
     }
 
     /**
@@ -123,7 +128,8 @@ public class RegistryIngester implements Ingester {
      */
     public boolean hasProduct(URL registry, String productID,
             String productVersion) throws CatalogException {
-        RegistryClient client = new RegistryClient(registry.toString(),
+      try {
+        RegistryClient client = new RegistryClient(registry.toString(), user,
                 token);
         ClientResponse response = client.getExtrinsic(productID,
                 productVersion);
@@ -133,6 +139,9 @@ public class RegistryIngester implements Ingester {
         } else {
             return false;
         }
+      } catch (RegistryClientException re) {
+        throw new CatalogException(re.getMessage());
+      }
     }
 
     /**
@@ -148,7 +157,8 @@ public class RegistryIngester implements Ingester {
      */
     public String ingest(URL registry, File prodFile, Metadata met)
     throws IngestException {
-        RegistryClient client = new RegistryClient(registry.toString(),
+      try {
+        RegistryClient client = new RegistryClient(registry.toString(), user,
                 token);
         ExtrinsicObject product = createProduct(met);
         ClientResponse response = null;
@@ -183,6 +193,9 @@ public class RegistryIngester implements Ingester {
             throw new IngestException("POST request returned HTTP code: "
                     + response.getStatus());
         }
+      } catch (RegistryClientException re) {
+        throw new IngestException(re.getMessage());
+      }
     }
 
     /**

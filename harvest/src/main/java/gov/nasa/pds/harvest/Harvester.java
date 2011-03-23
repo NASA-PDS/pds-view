@@ -24,6 +24,7 @@ import gov.nasa.pds.harvest.crawler.daemon.HarvestDaemon;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractorConfig;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.policy.Candidate;
+import gov.nasa.pds.harvest.registry.RegistryClientException;
 import gov.nasa.pds.harvest.security.SecuredUser;
 import gov.nasa.pds.harvest.target.Target;
 import gov.nasa.pds.harvest.target.Type;
@@ -93,7 +94,7 @@ public class Harvester {
      */
     public void setSecuredUser(SecuredUser user) {
         this.securedUser = user;
-        this.ingester = new RegistryIngester(user.getName(), user.getToken());
+        this.ingester = new RegistryIngester(user.getName(), user.getPassword());
     }
 
     /**
@@ -128,14 +129,16 @@ public class Harvester {
      * Get the default crawler actions.
      *
      * @return A list of default crawler actions.
+     * @throws RegistryClientException
      */
-    private List<CrawlerAction> getDefaultCrawlerActions() {
+    private List<CrawlerAction> getDefaultCrawlerActions()
+    throws RegistryClientException {
         List<CrawlerAction> ca = new ArrayList<CrawlerAction>();
         ca.add(new RegistryUniquenessCheckerAction(registryUrl,
                 this.ingester));
         if (securedUser != null) {
             ca.add(new AssociationPublisherAction(registryUrl,
-                    securedUser.getName(), securedUser.getToken()));
+                    securedUser.getName(), securedUser.getPassword()));
         } else {
             ca.add(new AssociationPublisherAction(registryUrl));
         }
@@ -154,9 +157,10 @@ public class Harvester {
      * metadata extraction.
      * @throws MalformedURLException If an error occurred while setting
      * the registry URL to the crawler.
+     * @throws RegistryClientException
      */
     public void harvest(Target target) throws MalformedURLException,
-    ParserConfigurationException {
+    ParserConfigurationException, RegistryClientException {
         harvest(target, new ArrayList<String>());
     }
 
@@ -171,10 +175,11 @@ public class Harvester {
      * metadata extraction.
      * @throws MalformedURLException If an error occurred while setting
      * the registry URL to the crawler.
+     * @throws RegistryClientException
      *
      */
     public void harvest(Target target, List<String> fileFilters)
-    throws ParserConfigurationException, MalformedURLException {
+    throws ParserConfigurationException, MalformedURLException, RegistryClientException {
         PDSProductCrawler crawler = null;
         PDSMetExtractorConfig config = new PDSMetExtractorConfig(candidates);
         if (Type.COLLECTION.equals(target.getType())) {

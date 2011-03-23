@@ -32,7 +32,8 @@ import gov.nasa.pds.harvest.crawler.stats.AssociationStats;
 import gov.nasa.pds.harvest.inventory.ReferenceEntry;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
-import gov.nasa.pds.registry.client.RegistryClient;
+import gov.nasa.pds.harvest.registry.RegistryClient;
+import gov.nasa.pds.harvest.registry.RegistryClientException;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryResponse;
@@ -71,8 +72,9 @@ public class AssociationPublisherAction extends CrawlerAction {
      * Constructor.
      *
      * @param registryUrl The URL to the registry service.
+     * @throws RegistryClientException
      */
-    public AssociationPublisherAction(String registryUrl) {
+    public AssociationPublisherAction(String registryUrl) throws RegistryClientException {
         this(registryUrl, null, null);
     }
 
@@ -82,13 +84,14 @@ public class AssociationPublisherAction extends CrawlerAction {
      * @param registryUrl The URL to the registry service.
      * @param user Name of the user authorized to publish the associations.
      * @param token A security token associated with the user.
+     * @throws RegistryClientException
      */
     public AssociationPublisherAction(String registryUrl, String user,
-            String token) {
+            String token) throws RegistryClientException {
         super();
-        if (user != null) {
+        if ((user != null) && (token != null)) {
             this.user = user;
-            this.registryClient = new RegistryClient(registryUrl, token);
+            this.registryClient = new RegistryClient(registryUrl, user, token);
         } else {
             this.registryClient = new RegistryClient(registryUrl);
         }

@@ -13,113 +13,266 @@
 // $Id$
 package gov.nasa.pds.harvest.registry;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
-import org.apache.commons.httpclient.NameValuePair;
-
+import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.sun.jersey.client.urlconnection.HTTPSProperties;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
-import gov.nasa.pds.harvest.util.HttpUtils;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
+import gov.nasa.pds.registry.provider.JAXBContextResolver;
+import gov.nasa.pds.registry.provider.JSONContextResolver;
+import gov.nasa.pds.registry.query.AssociationFilter;
+import gov.nasa.pds.registry.query.AssociationQuery;
+import gov.nasa.pds.registry.query.ExtrinsicQuery;
+import gov.nasa.pds.registry.query.ObjectFilter;
 
-/**
- * Class that allows Harvest to talk to the Registry Service.
- *
- * @author mcayanan
- *
- */
 public class RegistryClient {
-    private String baseURI;
-    private String productsURI;
-    private String registryURI;
-    private String associationsURI;
-    private boolean enableSecurity;
-    private String token;
+  private WebResource registryResource;
+  private String user;
+  private String password;
+  private String mediaType;
 
-    public RegistryClient(String baseURI) {
-        this(baseURI, null);
+  public RegistryClient(String baseUrl) throws RegistryClientException {
+    this(baseUrl, null, null);
+  }
+
+  public RegistryClient(String baseUrl, String user, String password)
+  throws RegistryClientException {
+    ClientConfig clientConfig = new DefaultClientConfig();
+    clientConfig.getClasses().add(JSONContextResolver.class);
+    clientConfig.getClasses().add(JAXBContextResolver.class);
+    //With the current setup of the Security Service, we need to set up
+    //an insecure SSL connection.
+    HostnameVerifier hv = getHostnameVerifier();
+    try {
+      SSLContext ctx = this.getSSLContext();
+      clientConfig.getProperties().put(
+          HTTPSProperties.PROPERTY_HTTPS_PROPERTIES,
+          new HTTPSProperties(hv, ctx));
+    } catch (Exception e) {
+      throw new RegistryClientException("Error occurred while initializing "
+          + "the registry client: " + e.getMessage());
     }
-
-    public RegistryClient(String baseURI, String token) {
-        this.baseURI = baseURI;
-        this.registryURI = this.baseURI.toString() + "/registry";
-        this.token = token;
-        if(this.token != null)
-            enableSecurity = true;
-        else
-            enableSecurity = false;
-        this.productsURI = this.registryURI.toString() + "/products";
-        this.associationsURI = this.registryURI.toString() + "/" + "associations";
+    registryResource = Client.create(clientConfig).resource(baseUrl).path(
+        "registry");
+    if (user != null && password != null) {
+      registryResource.addFilter(new HTTPBasicAuthFilter(user, password));
     }
+    this.user = user;
+    this.password = password;
+    mediaType = MediaType.APPLICATION_XML;
+  }
 
-    public ClientResponse getLatestProduct(String lid) {
-        String uri = productsURI + "/" + lid;
-        ClientResponse response = null;
-        if(enableSecurity) {
-            response = HttpUtils.get(uri, MediaType.TEXT_PLAIN_TYPE, token);
-        } else {
-            response = HttpUtils.get(uri, MediaType.TEXT_PLAIN_TYPE);
-        }
-        return response;
-    }
+  public void setMediaType(String mediaType) {
+    this.mediaType = mediaType;
+  }
 
-    public ClientResponse getProduct(String logicalID, String version) {
-        String uri = productsURI + "/" + logicalID + "/" + version;
-        ClientResponse response = null;
-        if(enableSecurity) {
-            response = HttpUtils.get(uri, MediaType.TEXT_PLAIN_TYPE, token);
-        } else {
-            response = HttpUtils.get(uri, MediaType.TEXT_PLAIN_TYPE);
-        }
-        return response;
-    }
+  /**
+   * Class that supports insecure SSL connection.
+   *
+   * @return HostnameVerifier object
+   */
+  private HostnameVerifier getHostnameVerifier() {
+    HostnameVerifier hv = new HostnameVerifier() {
 
-    public ClientResponse versionProduct(String user, ExtrinsicObject product,
-        String lid) {
-        return this.versionProduct(user, product, lid, true);
+      @Override
+      public boolean verify(String hostname, SSLSession session) {
+        // TODO Auto-generated method stub
+        return true;
+      }
+    };
+    return hv;
+  }
+
+  /**
+   * Class that supports insecure SSL connection. This method basically
+   * says trust anything!
+   *
+   * @return an instance of the SSLContext.
+   *
+   * @throws KeyManagementException
+   * @throws NoSuchAlgorithmException
+   */
+  private SSLContext getSSLContext() throws KeyManagementException,
+  NoSuchAlgorithmException {
+    final SSLContext sslContext = SSLContext.getInstance("SSL");
+
+    sslContext.init(null, new TrustManager[] { new X509TrustManager() {
+      @Override
+      public void checkClientTrusted(
+          X509Certificate[] chain, String authType)
+          throws CertificateException {
+        // TODO Auto-generated method stub
+
       }
 
-    public ClientResponse versionProduct(String user, ExtrinsicObject product,
-            String lid, Boolean major) {
-        String uri = productsURI + "/" + lid;
-        NameValuePair param = new NameValuePair();
-        param.setName("major");
-        param.setValue(major.toString());
-        ClientResponse response = null;
-        if(enableSecurity) {
-            response = HttpUtils.post(uri, product, param,
-                    MediaType.APPLICATION_XML_TYPE, token);
-        } else {
-            response = HttpUtils.post(uri, product, param,
-                    MediaType.APPLICATION_XML_TYPE);
-        }
-        return response;
+      @Override
+      public void checkServerTrusted(
+          X509Certificate[] chain, String authType)
+          throws CertificateException {
+        // TODO Auto-generated method stub
+
+      }
+
+      @Override
+      public X509Certificate[] getAcceptedIssuers() {
+        // TODO Auto-generated method stub
+        return null;
+      }
+    }}, new SecureRandom());
+
+    return sslContext;
+  }
+
+  public ClientResponse publishExtrinsic(String user, ExtrinsicObject extrinsic) {
+    WebResource.Builder builder = registryResource.path("extrinsics")
+        .getRequestBuilder();
+    return builder.accept(mediaType).post(ClientResponse.class, extrinsic);
+  }
+
+  public ClientResponse versionExtrinsic(String user,
+      ExtrinsicObject extrinsic, String lid) {
+    return this.versionExtrinsic(user, extrinsic, lid, true);
+  }
+
+  public ClientResponse versionExtrinsic(String user,
+      ExtrinsicObject extrinsic, String lid, Boolean major) {
+    WebResource.Builder builder = registryResource.path("extrinsics").path(
+        extrinsic.getLid()).queryParam("major", major.toString())
+        .getRequestBuilder();
+    return builder.accept(mediaType).post(ClientResponse.class, extrinsic);
+  }
+
+  public ClientResponse getLatestExtrinsic(String lid) {
+    WebResource.Builder builder = registryResource.path("extrinsics").path(lid)
+        .getRequestBuilder();
+    return builder.accept(mediaType).get(ClientResponse.class);
+  }
+
+  public ClientResponse getExtrinsic(String lid, String version) {
+    WebResource.Builder builder = registryResource.path("extrinsics").path(lid)
+        .path(version).getRequestBuilder();
+    return builder.accept(mediaType).get(ClientResponse.class);
+  }
+
+  public ClientResponse getStatus() {
+    WebResource.Builder builder = registryResource.path("status")
+        .getRequestBuilder();
+    return builder.accept(mediaType).get(ClientResponse.class);
+  }
+
+  public ClientResponse publishAssociation(String user, Association association) {
+    WebResource.Builder builder = registryResource.path("associations")
+        .getRequestBuilder();
+    return builder.accept(mediaType).post(ClientResponse.class, association);
+  }
+
+  public ClientResponse getExtrinsics(Integer start, Integer rows) {
+    return this
+        .getExtrinsics(new ExtrinsicQuery.Builder().build(), start, rows);
+  }
+
+  public ClientResponse getExtrinsics(ExtrinsicQuery query, Integer start,
+      Integer rows) {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    if (start != null) {
+      params.add("start", start.toString());
+    }
+    if (rows != null) {
+      params.add("rows", rows.toString());
     }
 
-    public ClientResponse publishProduct(String user,
-        ExtrinsicObject product) {
-        ClientResponse response = null;
-        if(enableSecurity) {
-            response = HttpUtils.post(productsURI, product,
-                    MediaType.APPLICATION_XML_TYPE, token);
-        } else {
-            response = HttpUtils.post(productsURI, product,
-                    MediaType.APPLICATION_XML_TYPE);
-        }
-        return response;
+    ObjectFilter filter = query.getFilter();
+    if (filter != null) {
+      if (filter.getGuid() != null) {
+        params.add("guid", filter.getGuid());
+      }
+      if (filter.getLid() != null) {
+        params.add("lid", filter.getLid());
+      }
+      if (filter.getName() != null) {
+        params.add("name", filter.getName());
+      }
+      if (filter.getObjectType() != null) {
+        params.add("objectType", filter.getObjectType());
+      }
+      if (filter.getStatus() != null) {
+        params.add("status", filter.getStatus().toString());
+      }
+      if (filter.getVersionId() != null) {
+        params.add("versionId", filter.getVersionId());
+      }
+      if (filter.getVersionName() != null) {
+        params.add("versionName", filter.getVersionName());
+      }
     }
 
-    public ClientResponse publishAssociation(String user,
-            Association association) {
-        ClientResponse response = null;
-        if(enableSecurity) {
-            response = HttpUtils.post(this.associationsURI, association,
-                    MediaType.APPLICATION_XML_TYPE, token);
-        } else {
-            response = HttpUtils.post(this.associationsURI, association,
-                    MediaType.APPLICATION_XML_TYPE);
-        }
-        return response;
+    List<String> sort = query.getSort();
+    for (String s : sort) {
+      params.add("sort", s);
     }
+
+    params.add("queryOp", query.getOperator().toString());
+
+    WebResource.Builder builder = registryResource.path("extrinsics")
+        .queryParams(params).getRequestBuilder();
+
+    return builder.accept(mediaType).get(ClientResponse.class);
+  }
+
+  public ClientResponse getAssociations(AssociationQuery query, Integer start,
+      Integer rows) {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    if (start != null) {
+      params.add("start", start.toString());
+    }
+    if (rows != null) {
+      params.add("rows", rows.toString());
+    }
+
+    AssociationFilter filter = query.getFilter();
+    if (filter != null) {
+      if (filter.getTargetObject() != null) {
+        params.add("targetObject", filter.getTargetObject());
+      }
+      if (filter.getSourceObject() != null) {
+        params.add("sourceObject", filter.getSourceObject());
+      }
+      if (filter.getAssociationType() != null) {
+        params.add("associationType", filter.getAssociationType());
+      }
+    }
+
+    List<String> sort = query.getSort();
+    for (String s : sort) {
+      params.add("sort", s);
+    }
+
+    params.add("queryOp", query.getOperator().toString());
+
+    WebResource.Builder builder = registryResource.path("associations")
+        .queryParams(params).getRequestBuilder();
+
+    return builder.accept(mediaType).get(ClientResponse.class);
+  }
 }
