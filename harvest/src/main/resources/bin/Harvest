@@ -35,5 +35,5 @@ HARVEST_JAR=`ls ${LIB_DIR}/harvest-*.jar`
 # Executes Harvest via the executable jar file
 # Arguments are passed in to the tool via '$@'
 
-java -Dpds.registry="http://pdsops2.jpl.nasa.gov/registry-service" -Dpds.security="http://pdsops.jpl.nasa.gov/openam/identity" -jar ${HARVEST_JAR} "$@"
+java -Dpds.registry="https://pdsops2.jpl.nasa.gov/registry-service" -jar ${HARVEST_JAR} "$@"
 

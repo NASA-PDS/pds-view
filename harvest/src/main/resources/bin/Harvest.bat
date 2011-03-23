@@ -40,6 +40,6 @@ for %%i in ("%LIB_DIR%"\harvest-*.jar) do set HARVEST_JAR=%%i
 :: The special variable '%*' allows the arguments
 :: to be passed into the executable.
 
-java -Dpds.registry="http://pdsops2.jpl.nasa.gov/registry-service" -Dpds.security="http://pdsops.jpl.nasa.gov/openam/identity" -jar "%HARVEST_JAR%" %*
+java -Dpds.registry="https://pdsops2.jpl.nasa.gov/registry-service" -jar "%HARVEST_JAR%" %*
 
 :END
