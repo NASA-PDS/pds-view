@@ -57,6 +57,16 @@
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
      </productMetadata>
+     <productMetadata objectType="Collection_Volume_PDS3">
+        <xPath>//product_subclass</xPath>
+        <xPath>//last_modification_date_time</xPath>
+        <xPath>//is_primary_collection</xPath>
+     </productMetadata>
+     <productMetadata objectType="Collection_Volume_Set_PDS3">
+        <xPath>//product_subclass</xPath>
+        <xPath>//last_modification_date_time</xPath>
+        <xPath>//is_primary_collection</xPath>
+     </productMetadata>
      <productMetadata objectType="Product_Bundle">
         <xPath>//last_modification_date_time</xPath>
         <xPath>//product_subclass</xPath>
