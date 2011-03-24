@@ -23,10 +23,13 @@
   </properties>
 
   <body>
-    <release version="0.2.0" date="TBD" description="TBD">
+    <release version="0.2.0" date="2011-03-25" description="This release of the Design Tool is a component of the integrated release 1.1.0 of the PDS 2010 System.">
+      <action dev="shardman" type="update">
+        Updated the schema references in the Operation document.
+      </action>
     </release>
 
-    <release version="0.1.0" date="2010-10-31" description="This release of the Registry Service is a component of the integrated releases 1.0.0 and 1.1.0 of the PDS 2010 System.">
+    <release version="0.1.0" date="2010-10-31" description="This release of the Design Tool is a component of the integrated release 1.0.0 of the PDS 2010 System.">
       <action dev="shardman" type="add">
         Add Installation and Operation documents for utilizing Oxygen and Eclipse for manipulating XML Schema files.
       </action>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -32,7 +32,7 @@
         <img alt="Schema Lifecycle" src="../images/pds2010_schema_design.jpg" border="1" />
       </center>
 
-      <p>As depicted in the diagram above, generic product schemas are derived from the information model. These schemas can be used as templates for defining new products via specific schemas. The steps detailed in this section for producing a specific product label schema follow the steps (pretty closely) defined in section <i>6.0 - PDS4 Product Label Schema</i> of the Data Providers' Handbook. In this section the steps have been boiled down to the following:
+      <p>As depicted in the diagram above, generic product schemas are derived from the information model. These schemas can be used as templates for defining new products via specific schemas. The steps detailed in this section for producing a specific product label schema follow the steps (pretty closely) defined in section <i>6.0 - PDS4 Product Label Schema</i> of the Data Providers' Handbook. In this section the steps have been narrowed down to the following:
       </p>
 
       <ul>
@@ -44,11 +44,11 @@
     </section>
 
     <section name="Select Generic Schema">
-      <p>The first step is to select a generic product schema from the repository. The repository is located at <a href="http://pds.nasa.gov/schema/pds4/generic/common/" target="_blank">http://pds.nasa.gov/schema/pds4/generic/common/</a>. Generic schemas are available for several products (e.g., Grayscale Image, Character Table, etc.). Select the appropriate schema that corresponds with the data product to be described. In addition, download any ancillary schemas (e.g., base types, extended types, etc.) are are included in the selected generic schema. For this example, the following schemas should be downloaded:
+      <p>The first step is to select a generic product schema from the repository. The repository is located at <a href="http://pds.nasa.gov/schema/pds4/generic/common/" target="_blank">http://pds.nasa.gov/schema/pds4/generic/common/</a>. Generic schemas are available for several products (e.g., Grayscale Image, Character Table, etc.). Select the appropriate schema that corresponds with the data product to be described. In addition, download any ancillary schemas (e.g., base types, extended types, etc.) that are included in the selected generic schema. The examples in this document use schemas from version <i>0111c</i>. A later version may be available from the repository. For this example, the following schemas should be downloaded:
       </p>
 
       <ul>
-        <li><a href="http://pds.nasa.gov/schema/pds4/generic/common/Product_Table_Character_0111c.xsd" target="_blank">Product_Generic_0111c.xsd</a></li>
+        <li><a href="http://pds.nasa.gov/schema/pds4/generic/common/Product_Table_Character_0111c.xsd" target="_blank">Product_Table_Character_0111c.xsd</a></li>
         <li><a href="http://pds.nasa.gov/schema/pds4/generic/common/Extended_Types_0111c.xsd" target="_blank">Extended_Types_0111c.xsd</a></li>
         <li><a href="http://pds.nasa.gov/schema/pds4/generic/common/Base_Types_0111c.xsd" target="_blank">Base_Types_0111c.xsd</a></li>
       </ul>
