@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  * ExternalIdentifier instances provide the additional identifier information to
  * RegistryObject such as DUNS number, Social Security Number, or an alias name
  * of the organization. The attribute identificationScheme is used to reference
- * the identification scheme (e.g., ÒDUNSÓ, ÒSocial Security #Ó), and the
+ * the identification scheme (e.g., DUNS, Social Security #), and the
  * attribute value contains the actual information (e.g., the DUNS number, the
  * social security number). Each RegistryObject MAY contain 0 or more
  * ExternalIdentifier instances.
