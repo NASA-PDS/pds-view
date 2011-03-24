@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -25,7 +25,7 @@
 
   <body>
     <section name="Installation">
-      <p>This section describes how to install the <a href="http://forgerock.com/openam.html" target="_blank">OpenAM</a> software package and its associated software packages. These packages serve as the Security Service for the PDS 2010 system. The following topics can be found in this section:
+      <p>This section describes how to install the <a href="http://www.opends.org/" target="_blank">OpenDS</a> software package. This package serve as the Security Service for the PDS 2010 system. The following topics can be found in this section:
       </p>
 
       <ul>
@@ -33,20 +33,17 @@
         <li><a href="#Software_Installation">Software Installation</a></li>
         <li><a href="#Configuration">Configuration</a></li>
       </ul>
-
-      <p>Note that much of the documentation and examples for OpenAM still make reference to OpenSSO (the former name of the package under Sun Microsystems).
-      </p>
     </section>
 
     <section name="System Requirements">
-      <p>The software that makes up this project consists of open source packages that are available for download and installation. The packages and their release versions are as follows:
+      <p>The software that makes up this project consists of an open source package that is available for download and installation. The package and its release version is as follows:
       </p>
 
       <ul>
         <li>OpenDS 2.2.0</li>
       </ul>
 
-      <p>The above software packages require the following software to be installed in the target environment:
+      <p>The above software package requires the following software to be installed in the target environment:
       </p>
 
       <ul>
@@ -92,41 +89,58 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
       <p>This section details the Directory Sever, the Tomcat Server, and the Tomcat Application configuration.
       </p>
 
-	  <subsection name="Directory Server Configuration">
-        <p>With the software configuration is complete it is time to add groups and users to the directory server. Execute the commands as follows.</p>
-        <ul>
-          <li><i>% $OPEN_DS/bin/ldapmodify -p 389 -h pdsops.jpl.nasa.gov -D "cn=Directory Manager" -w &lt;password&gt; -c -a -f pdspers_schema.ldif</i></li>
-          <li><i>% $OPEN_DS/bin/ldapmodify -p 389 -h pdsops.jpl.nasa.gov -D "cn=Directory Manager" -w &lt;password&gt; -c -a -f pds_groups.ldif</i></li>
-          <li><i>% $OPEN_DS/bin/ldapmodify -p 389 -h pdsops.jpl.nasa.gov -D "cn=Directory Manager" -w &lt;password&gt; -c -a -f pdsops_pers.ldif</i></li>
-        </ul>
+    <subsection name="Directory Server Configuration">
+        <p>With the software configuration complete, it is time to add groups and users to the directory server. Execute the commands as follows:
+        </p>
+
+        <source>
+% $OPEN_DS/bin/ldapmodify -p 389 -h pdsops.jpl.nasa.gov -D "cn=Directory Manager" \
+-w &lt;password&gt; -c -a -f pdspers_schema.ldif
+
+% $OPEN_DS/bin/ldapmodify -p 389 -h pdsops.jpl.nasa.gov -D "cn=Directory Manager" \
+-w &lt;password&gt; -c -a -f pds_groups.ldif
+
+% $OPEN_DS/bin/ldapmodify -p 389 -h pdsops.jpl.nasa.gov -D "cn=Directory Manager" \
+-w &lt;password&gt; -c -a -f pdsops_pers.ldif
+        </source>
       </subsection>
 
       <subsection name="Tomcat Server Configuration">   
-      <p>Type following command to generate a self-signed server cerfitifate:</p> 
-<source>% $JAVA_HOME/bin/keytool -genkey -alias virtualhostname -keyalg RSA \
- -keystore /usr/local/tomcat7/.keystore</source> 
- 	   <p>The password you enter in the first password prompt will be the password for the keystore where your server certificate is stored. For the operational system, you may need to purchase a Certificate from a well-known <i>Certificate Authority(CA)</i> such as VeriSign or Thawte.</p>
-        
-        <p>After generating the server certificate, edit the Tomcat's server configuration file (<code class="codespan">$CATALINA_HOME/conf/server.xml</code>) to have Tomcat server listening on the port 8080. The <code class="codespan">redirectPort</code> option is the port that will be used when redirecting from <i>http</i> to <i>https</i>.</p> 
+        <p>Type following command to generate a self-signed server certificate:
+        </p>
+
         <source>
-<pre>&lt;Connector port="8080" protocol="HTTP/1.1" 
+% $JAVA_HOME/bin/keytool -genkey -alias virtualhostname -keyalg RSA \
+-keystore /usr/local/tomcat7/.keystore
+        </source> 
+
+        <p>The password you enter in the first password prompt will be the password for the keystore where your server certificate is stored. For the operational system, you may need to purchase a Certificate from a well-known <i>Certificate Authority(CA)</i> such as VeriSign or Thawte.
+        </p>
+        
+        <p>After generating the server certificate, edit the Tomcat's server configuration file (<code class="codespan">$CATALINA_HOME/conf/server.xml</code>) to have Tomcat server listening on the port 8080. The <code class="codespan">redirectPort</code> option is the port that will be used when redirecting from <i>http</i> to <i>https</i>.
+        </p> 
+
+        <source>
+&lt;Connector port="8080" protocol="HTTP/1.1" 
            connectionTimeout="20000" 
-           redirectPort="8443" /&gt;</pre></source> 
+           redirectPort="8443" /&gt;
+        </source> 
  
-<p>To make Tomcat listen on the port 8443, with a SSL transport, the following needs to be configured in the <code class="codespan">server.xml</code> file.</p> 
+        <p>To make Tomcat listen on the port 8443, with an SSL transport, the following needs to be configured in the <code class="codespan">server.xml</code> file.
+        </p> 
  
-		<source>
+        <source>
 &lt;Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"
           maxThreads="150" scheme="https" secure="true"
           clientAuth="false" sslProtocol="TLS" 
           keystoreFile="/usr/local/tomcat7/.keystore"
           keystorePass="password"/&gt;
-         </source> 
- 
+        </source> 
 
+        <p>Add an OpenDS realm to the Tomcat Server to authenticate the users with the Directory Server.
+        </p>
 
-<p>Add an OpenDS realm to the Tomcat Server to authenticate the users with the Directory Server.</p>
-<source>
+        <source>
 &lt;Realm className="org.apache.catalina.realm.JNDIRealm" debug="99"
         connectionName="cn=Directory Manager"
         connectionPassword="password"
@@ -135,17 +149,21 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
         roleBase="ou=groups,dc=pdsdev,dc=jpl,dc=nasa,dc=gov"
         roleName="cn"
         roleSearch="(uniqueMember={0})"/&gt;
-</source>
+        </source>
 
-<p>To enable Single Sign On feature of the Tomcat server, make sure following element is not commented out.</p>
-<source>
+        <p>To enable Single Sign On feature of the Tomcat server, make sure following element is not commented out.
+        </p>
+
+        <source>
 &lt;Valve class="org.apache.catalina.authenticator.SingleSignOn"/&gt;
-</source>
+        </source>
       </subsection>
       
       <subsection name="Tomcat Application Configuration">
-      <p>Add the security-constraint, role, and login-config elements to your application's <i>web.xml</i> file as shown below.</p>
-      <source>    
+        <p>Add the security-constraint, role, and login-config elements to your application's <i>web.xml</i> file as shown below.
+        </p>
+
+        <source>    
 &lt;security-constraint&gt;
   &lt;web-resource-collection&gt;
     &lt;web-resource-name&gt;registry-service&lt;/web-resource-name&gt;
@@ -163,17 +181,28 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
    &lt;auth-method&gt;BASIC&lt;/auth-method&gt;
    &lt;realm-name&gt;OpenDS&lt;/realm-name&gt;
 &lt;/login-config&gt;      
-      </source>
-      
-      
-      <p>Add the following in the your application's web.xml (<code class="codespan">$CATALINA_HOME/webapps/yourapplication/WEB-INF/web.xml</code>) in the <code class="codespan">&lt;security-constraint&gt;</code> tag:</p> 
-      <source>
+        </source>
+
+        <p>Add the following in the your application's web.xml (<code class="codespan">$CATALINA_HOME/webapps/yourapplication/WEB-INF/web.xml</code>) in the <code class="codespan">&lt;security-constraint&gt;</code> tag:
+        </p> 
+
+        <source>
 &lt;user-data-constraint&gt;
    &lt;transport-guarantee&gt;CONFIDENTIAL&lt;/transport-guarantee&gt;
 &lt;/user-data-constraint&gt;
-      </source> 
-      <p>This forces to switch from <i><b>http</b></i> to <i><b>https</b></i>, using a secure protocol.<br /> 
-      With this configuration, you can create a Tomcat application that will automatically be secured, even if accessing it using <code class="codespan"><a href="http://pdsdev.jpl.nasa.gov:8080/registry-service/registry/products">http://pdsdev.jpl.nasa.gov:8080/registry-service/registry/products</a></code> URL. You will be automatically redirected to <code class="codespan"><a href="https://pdsdev.jpl.nasa.gov:8443/registry-service/registry/products">https://pdsdev.jpl.nasa.gov:8443/registry-service/registry/products</a></code></p>
+        </source> 
+
+        <p>This forces a switch from <i>http</i> to <i>https</i>, using the secure protocol. With this configuration, you can create a Tomcat application that will automatically be secured if accessing it at:
+        </p>
+
+        <p><code class="codespan">http://localhost:8080/registry-service/registry/extrinsics</code>
+        </p>
+
+        <p>You will be automatically redirected to:
+        </p>
+
+        <p><code class="codespan">https://localhost:8443/registry-service/registry/extrinsics</code>
+        </p>
       </subsection>
     </section>
   </body>

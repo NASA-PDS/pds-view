@@ -1,4 +1,4 @@
-The Security Service is satisfied with the Open Source software OpenAM. 
+The Security Service is satisfied with the Open Source software OpenDS. 
 This project contains the web site containing the documentation for 
 installing and configuring the open source software for the PDS 2010 
 system.

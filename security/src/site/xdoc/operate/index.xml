@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -25,29 +25,28 @@
 
   <body>
     <section name="Operation">
-      <p>When Graphical User Interface (GUI) applications have been configured for access control, the following login screen will be displayed to provide their identification credentials:
+      <p>When Graphical User Interface (GUI) applications have been configured for access control, the following login screen is displayed for users to provide their identification credentials:
       </p>
 
       <center>
-        <img src="../images/tomcat_opends_login_screen.jpg" target="_blank"/>
+        <img alt="OpenDS Login Screen" src="../images/tomcat_opends_login_screen.jpg" border="1"/>
       </center>
 
-      <p>Once the user enters their identification credentials (user name and password) correctly, you can access to the original application.</p>
-      <p>Also, you can utilize the <i>curl</i> commmand to an access controlled application. An example of the command is as follows:
+      <p>Once the user enters their identification credentials (user name and password) correctly, you can access to the requestd application. Also, you can utilize the <i>curl</i> command to access a controlled application. An example of the command is as follows:
       </p>
 
       <source>
 % curl -X POST -H "Content-type:application/xml" -d @./new_product_build0.xml \
--v https://pdsdev.jpl.nasa.gov:8443/registry-service/registry/products -u username:password \
+-v https://localhost:8443/registry-service/registry/extrinsics -u username:password \
 -k -c tomcat_cookie.txt
       </source>
 
-      <p>The cookie file (tomcat_cookie.txt) can then be passed to next curl commands. 
+      <p>The cookie file <i>tomcat_cookie.txt</i> can then be passed to the next <i>curl</i> command: 
       </p>
 
       <source>
 % curl -X POST -H "Content-type:application/xml" -d @./new_product_build1.xml \
--v https://pdsdev.jpl.nasa.gov:8443/registry-service/registry/products/1234 -k -b tomcat_cookie.txt
+-v https://localhost:8443/registry-service/registry/extrinsics/1234 -k -b tomcat_cookie.txt
       </source>
 
       <p>The example above also applies to a <i>DELETE</i> request.
