@@ -63,7 +63,59 @@
           <li>Startup the server.</li>
         </ul>
         
-        <p>Add for ldaps configuration</p>
+        <subsection name="Configure the LDAP server with SSL using a self-signed certificate">
+        
+        <ol>
+       		<li>Create a private key for the certificate
+       		<source>
+% /usr/java/jdk/bin/keytool -genkey -alias server-cert -keyalg rsa \
+ -dname "CN=pdsops.jpl.nasa.gov,O=JPL,C=US" -keystore keystore -storetype JKS      		
+       		</source>
+       		</li>
+       		<li>Generate a self-signed certificate for the key with the command:
+       	    <source>
+% /usr/java/jdk/bin/keytool -selfcert -alias server-cert -validity 1825 -keystore keystore -storetype JKS       	    
+       	    </source>
+       	    <p>When you are prompted for the keystore password, enter the same password that you provided in Step 1.</p>
+       		</li>
+       		<li>Export the public key for the certificate.
+			<source>
+% /usr/java/jdk/bin/keytool -export -alias server-cert -file server-cert.txt -rfc -keystore keystore -storetype JKS
+			</source>
+       		</li>
+       		<li>Create a new trust store and import the server certificate into it.
+       		<source>
+% /usr/java/jdk/bin/keytool -import -alias server-cert -file server-cert.txt -keystore truststore -storetype JKS
+       		</source>
+       		<p>Type <code class="codespan">yes</code> when you are prompted about whether you want to trust the certificate.</p>
+       		</li>		
+       		<li>Use the <code class="codespan">dsconfig</code> command to enable the key manager provider, trust manager provider, and connection handler.
+       		<source>
+% dsconfig -h pdsops.jpl.nasa.gov -p 4444 -D "cn=Directory Manager" -w password \
+ -X -n set-key-manager-provider-prop --provider-name JKS --set enabled:true
+
+
+% dsconfig -h pdsops.jpl.nasa.gov -p 4444 -D "cn=Directory Manager" -w password \
+-X -n set-trust-manager-provider-prop --provider-name "Blind Trust" --set enabled:true
+
+
+% dsconfig -h pdsops.jpl.nasa.gov -p 4444 -D "cn=Directory Manager" -w password \
+-X -n set-connection-handler-prop --handler-name "LDAPS Connection Handler" \
+--set "trust-manager-provider:Blind Trust" --set key-manager-provider:JKS \
+--set listen-port:636 --set enabled:true
+       		</source>
+       		<p>Port <code class="codespan">636</code> is the standard LDAPS port, but you might not be able to use it if it is already taken or you are a regular user. If you need to use other port than <code class="codespan">636</code>, then change the <code class="codespan">listen-port</code> property in the last command to the number being used.</p> 
+       		</li>
+       		<li>Test the LDAPS connection with the <code class="codespan">ldapsearch</code> command.
+       		<source>
+% $OPENDS_HOME/bin/ldapsearch --port 636 --useSSL --baseDN "" --searchScope base "(objectClass=*)"
+       		</source>
+       		<p>Type <code class="codespan">yes</code> when you are prompted about whether you want to trust the server's certificate.</p>
+       		</li>
+        </ol>
+        
+        </subsection>
+        
       </subsection>
 
       <subsection name="2. Install Application Server">
