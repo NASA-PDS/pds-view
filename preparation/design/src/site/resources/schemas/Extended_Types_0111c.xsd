@@ -1,0 +1,2533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!-- PDS4 XML/Schema for Extended_Types_0.1.1.1.c  Fri Oct 29 06:29:36 PDT 2010 -->
+  <!-- Generated from the PDS4 Information Model V0.1.1.1.c -->
+  <!-- *** This PDS4 product schema is a preliminary deliverable. *** -->
+  <!-- *** It is being made available for review and testing. *** -->
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://pds.nasa.gov/schema/pds4/pds"
+    xmlns:pds="http://pds.nasa.gov/schema/pds4/pds"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    version="1.1.1">
+
+    <xsd:annotation>
+      <xsd:documentation>The puropse of this schema is to support elements that need more constraints
+        than those applicable at the base type level. The types defined in here must build on the base
+        types. This is another component of the common dictionary and therefore falls within the
+        pds namespace. This file is not finished as any type in here should only build on the types
+        in base types.
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:include schemaLocation="Base_Types_0111c.xsd">
+      <xsd:annotation>
+        <xsd:documentation>This import is done so the type definitions in this file can build on the
+          base types.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:include>
+
+  <xsd:simpleType name="Array_2D_axes_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Array_2D_axes_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="2"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Array_3D_axes_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Array_3D_axes_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="3"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="elements_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="sequence_number_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="-2147483648"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="unit_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="unit_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="m"></xsd:enumeration>
+	     <xsd:enumeration value="s"></xsd:enumeration>
+	     <xsd:enumeration value="km"></xsd:enumeration>
+	     <xsd:enumeration value="deg"></xsd:enumeration>
+	     <xsd:enumeration value="rad"></xsd:enumeration>
+	     <xsd:enumeration value="ms"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="axis_order_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="axis_order_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="FIRST_INDEX_FASTEST"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Array_Base_encoding_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="30"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="data_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="30"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="scaling_factor_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="value_offset_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="-2147483648"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="positive_azimuth_direction_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="positive_azimuth_direction_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="clockwise"></xsd:enumeration>
+	     <xsd:enumeration value="counterclockwise"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="positive_elevation_direction_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="positive_elevation_direction_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="down"></xsd:enumeration>
+	     <xsd:enumeration value="nadir"></xsd:enumeration>
+	     <xsd:enumeration value="up"></xsd:enumeration>
+	     <xsd:enumeration value="zenith"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="reference_coordinate_system_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="doi_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="reference_text_Type">
+    <xsd:restriction base="pds:ASCII_Text_Preserved">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="url_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="edit_mode_id_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="20"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="exposure_duration_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="0.0"/>
+    	<xsd:maxInclusive value="INF"/>
+  <!-- unit_of_measure=UnitOfMeasure_Time -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="exposure_duration_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:exposure_duration_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Time" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="filter_id_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="filter_id_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="0"></xsd:enumeration>
+	     <xsd:enumeration value="1"></xsd:enumeration>
+	     <xsd:enumeration value="2"></xsd:enumeration>
+	     <xsd:enumeration value="3"></xsd:enumeration>
+	     <xsd:enumeration value="4"></xsd:enumeration>
+	     <xsd:enumeration value="5"></xsd:enumeration>
+	     <xsd:enumeration value="6"></xsd:enumeration>
+	     <xsd:enumeration value="7"></xsd:enumeration>
+	     <xsd:enumeration value="8"></xsd:enumeration>
+	     <xsd:enumeration value="A"></xsd:enumeration>
+	     <xsd:enumeration value="B"></xsd:enumeration>
+	     <xsd:enumeration value="C1"></xsd:enumeration>
+	     <xsd:enumeration value="C2"></xsd:enumeration>
+	     <xsd:enumeration value="C3"></xsd:enumeration>
+	     <xsd:enumeration value="D"></xsd:enumeration>
+	     <xsd:enumeration value="HFM1"></xsd:enumeration>
+	     <xsd:enumeration value="LFM1"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="filter_name_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="filter_name_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="A"></xsd:enumeration>
+	     <xsd:enumeration value="B"></xsd:enumeration>
+	     <xsd:enumeration value="BLUE"></xsd:enumeration>
+	     <xsd:enumeration value="BLUE-GREEN"></xsd:enumeration>
+	     <xsd:enumeration value="C"></xsd:enumeration>
+	     <xsd:enumeration value="CLEAR"></xsd:enumeration>
+	     <xsd:enumeration value="D"></xsd:enumeration>
+	     <xsd:enumeration value="E"></xsd:enumeration>
+	     <xsd:enumeration value="F"></xsd:enumeration>
+	     <xsd:enumeration value="GREEN"></xsd:enumeration>
+	     <xsd:enumeration value="IR-7270"></xsd:enumeration>
+	     <xsd:enumeration value="IR-7560"></xsd:enumeration>
+	     <xsd:enumeration value="IR-8890"></xsd:enumeration>
+	     <xsd:enumeration value="IR-9680"></xsd:enumeration>
+	     <xsd:enumeration value="L1000_R480"></xsd:enumeration>
+	     <xsd:enumeration value="L440_R440"></xsd:enumeration>
+	     <xsd:enumeration value="L450_R670"></xsd:enumeration>
+	     <xsd:enumeration value="L670_R670"></xsd:enumeration>
+	     <xsd:enumeration value="L800_R750"></xsd:enumeration>
+	     <xsd:enumeration value="L860_R-DIOPTER"></xsd:enumeration>
+	     <xsd:enumeration value="L885_R947"></xsd:enumeration>
+	     <xsd:enumeration value="L900_R600"></xsd:enumeration>
+	     <xsd:enumeration value="L925_R935"></xsd:enumeration>
+	     <xsd:enumeration value="L930_R530"></xsd:enumeration>
+	     <xsd:enumeration value="L935_R990"></xsd:enumeration>
+	     <xsd:enumeration value="L965_R965"></xsd:enumeration>
+	     <xsd:enumeration value="LONGWAVE"></xsd:enumeration>
+	     <xsd:enumeration value="METHANE-JST"></xsd:enumeration>
+	     <xsd:enumeration value="METHANE-U"></xsd:enumeration>
+	     <xsd:enumeration value="MINUS BLUE"></xsd:enumeration>
+	     <xsd:enumeration value="MI_CLOSED"></xsd:enumeration>
+	     <xsd:enumeration value="MI_OPEN"></xsd:enumeration>
+	     <xsd:enumeration value="NEAR-INFRARED"></xsd:enumeration>
+	     <xsd:enumeration value="NONE"></xsd:enumeration>
+	     <xsd:enumeration value="ORANGE"></xsd:enumeration>
+	     <xsd:enumeration value="PANCAM_L2_753NM"></xsd:enumeration>
+	     <xsd:enumeration value="PANCAM_L8_440NM"></xsd:enumeration>
+	     <xsd:enumeration value="PANCAM_LV_602NM"></xsd:enumeration>
+	     <xsd:enumeration value="PANCAM_R8_880NM"></xsd:enumeration>
+	     <xsd:enumeration value="RED"></xsd:enumeration>
+	     <xsd:enumeration value="SHORTWAVE"></xsd:enumeration>
+	     <xsd:enumeration value="SODIUM-D"></xsd:enumeration>
+	     <xsd:enumeration value="SOLAR UV-22"></xsd:enumeration>
+	     <xsd:enumeration value="T11"></xsd:enumeration>
+	     <xsd:enumeration value="T15"></xsd:enumeration>
+	     <xsd:enumeration value="T20"></xsd:enumeration>
+	     <xsd:enumeration value="T7"></xsd:enumeration>
+	     <xsd:enumeration value="T9"></xsd:enumeration>
+	     <xsd:enumeration value="ULTRAVIOLET"></xsd:enumeration>
+	     <xsd:enumeration value="VIOLET"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="gain_mode_id_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="gain_mode_id_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="100K"></xsd:enumeration>
+	     <xsd:enumeration value="10K"></xsd:enumeration>
+	     <xsd:enumeration value="400K"></xsd:enumeration>
+	     <xsd:enumeration value="40K"></xsd:enumeration>
+	     <xsd:enumeration value="HIGH"></xsd:enumeration>
+	     <xsd:enumeration value="LOW"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="scan_mode_id_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="scan_mode_id_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value=".055"></xsd:enumeration>
+	     <xsd:enumeration value="4.0"></xsd:enumeration>
+	     <xsd:enumeration value="epf"></xsd:enumeration>
+	     <xsd:enumeration value="long"></xsd:enumeration>
+	     <xsd:enumeration value="short"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="shutter_mode_id_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="shutter_mode_id_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="BODARK"></xsd:enumeration>
+	     <xsd:enumeration value="BOTSIM"></xsd:enumeration>
+	     <xsd:enumeration value="BSIMAN"></xsd:enumeration>
+	     <xsd:enumeration value="NADARK"></xsd:enumeration>
+	     <xsd:enumeration value="NAONLY"></xsd:enumeration>
+	     <xsd:enumeration value="WADARK"></xsd:enumeration>
+	     <xsd:enumeration value="WAONLY"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="citation_text_Type">
+    <xsd:restriction base="pds:ASCII_Text_Preserved">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="coefficient_1_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="coefficient_2_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="coefficient_3_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="process_level_id_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="process_level_id_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="CLB"></xsd:enumeration>
+	     <xsd:enumeration value="DRV"></xsd:enumeration>
+	     <xsd:enumeration value="RAW"></xsd:enumeration>
+	     <xsd:enumeration value="RDC"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Collection_Reference_Entry_reference_association_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Context_Reference_Entry_reference_association_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="coordinate_system_name_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="coordinate_system_name_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="..."></xsd:enumeration>
+	     <xsd:enumeration value="apxs_frame"></xsd:enumeration>
+	     <xsd:enumeration value="body_fixed_spherical_coords"></xsd:enumeration>
+	     <xsd:enumeration value="earth-sun_line_cartes_coords"></xsd:enumeration>
+	     <xsd:enumeration value="ecliptic_inertial_cart_coords"></xsd:enumeration>
+	     <xsd:enumeration value="ecliptic_inertl_sphercl_coords"></xsd:enumeration>
+	     <xsd:enumeration value="equatorial_inert_sphrcl_coords"></xsd:enumeration>
+	     <xsd:enumeration value="equatorial_inertial_cart_coord"></xsd:enumeration>
+	     <xsd:enumeration value="jupiter_minus_system_iii"></xsd:enumeration>
+	     <xsd:enumeration value="mast_frame"></xsd:enumeration>
+	     <xsd:enumeration value="mb_frame"></xsd:enumeration>
+	     <xsd:enumeration value="mean_inertial_hg_1950"></xsd:enumeration>
+	     <xsd:enumeration value="mi_frame"></xsd:enumeration>
+	     <xsd:enumeration value="neptune_west_longitude_system"></xsd:enumeration>
+	     <xsd:enumeration value="non-rotating_spin_coordinates"></xsd:enumeration>
+	     <xsd:enumeration value="planet_centered_cylindrical"></xsd:enumeration>
+	     <xsd:enumeration value="planetocentric"></xsd:enumeration>
+	     <xsd:enumeration value="planetographic"></xsd:enumeration>
+	     <xsd:enumeration value="pvo_inertial_spacecraft_coords"></xsd:enumeration>
+	     <xsd:enumeration value="pvo_spinning_spacecraft_coords"></xsd:enumeration>
+	     <xsd:enumeration value="rat_frame"></xsd:enumeration>
+	     <xsd:enumeration value="rover_frame"></xsd:enumeration>
+	     <xsd:enumeration value="saturn_minus_longitude_system"></xsd:enumeration>
+	     <xsd:enumeration value="sc_centered_ecliptic_coords"></xsd:enumeration>
+	     <xsd:enumeration value="uranus_minus_longitude_system"></xsd:enumeration>
+	     <xsd:enumeration value="uranus_west_longitude_system"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="file_local_identifier_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="offset_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="-2147483648"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="acknowledgement_text_Type">
+    <xsd:restriction base="pds:ASCII_Text_Preserved">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="author_list_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="copyright_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="document_title_Type">
+    <xsd:restriction base="pds:UTF8_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="editor_list_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="publication_date_Type">
+    <xsd:restriction base="pds:ASCII_Date_YMD">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="10"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="revision_id_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="format_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="starting_point_identifier_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="encoding_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="30"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="external_standard_id_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="external_standard_id_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="PDF-A"></xsd:enumeration>
+	     <xsd:enumeration value="ENCAPSULATED_POSTSCRIPT"></xsd:enumeration>
+	     <xsd:enumeration value="GIF"></xsd:enumeration>
+	     <xsd:enumeration value="HTML"></xsd:enumeration>
+	     <xsd:enumeration value="JPG"></xsd:enumeration>
+	     <xsd:enumeration value="LaTEX"></xsd:enumeration>
+	     <xsd:enumeration value="MICROSOFT_WORD"></xsd:enumeration>
+	     <xsd:enumeration value="PNG"></xsd:enumeration>
+	     <xsd:enumeration value="POSTSCRIPT"></xsd:enumeration>
+	     <xsd:enumeration value="RICH_TEXT"></xsd:enumeration>
+	     <xsd:enumeration value="TEXT"></xsd:enumeration>
+	     <xsd:enumeration value="TIFF"></xsd:enumeration>
+	     <xsd:enumeration value="PDF"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="data_element_concept_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="identifier_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:pattern value='[a-zA-Z]{1}([-._a-zA-Z0-9]*)'/>
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="is_enumerated_flag_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="is_enumerated_flag_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="F"></xsd:enumeration>
+	     <xsd:enumeration value="T"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="name_space_id_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="registered_by_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="registration_authority_id_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="steward_id_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="submitter_id_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Encoded_Byte_Stream_encoding_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="30"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Encoded_Image_external_standard_id_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Encoded_Image_external_standard_id_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="JPEG"></xsd:enumeration>
+	     <xsd:enumeration value="GIF"></xsd:enumeration>
+	     <xsd:enumeration value="TIFF"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="creation_date_time_Type">
+    <xsd:restriction base="pds:ASCII_Date_Time">
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="file_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="120"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="file_size_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="-2147483648"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="max_record_bytes_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="-2147483648"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="md5_checksum_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:pattern value='([a-f0-9]{32})'/>
+    	<xsd:minLength value="32"/>
+    	<xsd:maxLength value="32"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="records_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="bytes_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Header_external_standard_id_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Header_external_standard_id_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="VICR"></xsd:enumeration>
+	     <xsd:enumeration value="ODL"></xsd:enumeration>
+	     <xsd:enumeration value="FITS"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="alternate_id_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="alternate_title_Type">
+    <xsd:restriction base="pds:UTF8_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="last_modification_date_time_Type">
+    <xsd:restriction base="pds:ASCII_Date_Time">
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="logical_identifier_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="product_class_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="100"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="product_subclass_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="title_Type">
+    <xsd:restriction base="pds:UTF8_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="version_id_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:pattern value='([-._a-zA-Z0-9]*)'/>
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="is_primary_collection_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Identification_Area_Document_product_subclass_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Identification_Area_Document_product_subclass_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="AAREADME"></xsd:enumeration>
+	     <xsd:enumeration value="ERRATA"></xsd:enumeration>
+	     <xsd:enumeration value="Programmers_Manual"></xsd:enumeration>
+	     <xsd:enumeration value="SIS"></xsd:enumeration>
+	     <xsd:enumeration value="Users_Manual"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="first_line_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="first_line_sample_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="line_display_direction_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="line_display_direction_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="DOWN"></xsd:enumeration>
+	     <xsd:enumeration value="LEFT"></xsd:enumeration>
+	     <xsd:enumeration value="RIGHT"></xsd:enumeration>
+	     <xsd:enumeration value="UP"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="sample_display_direction_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="sample_display_direction_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="DOWN"></xsd:enumeration>
+	     <xsd:enumeration value="LEFT"></xsd:enumeration>
+	     <xsd:enumeration value="RIGHT"></xsd:enumeration>
+	     <xsd:enumeration value="UP"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Image_3D_axis_order_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Image_3D_axis_order_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="FIRST_INDEX_FASTEST"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Image_Grayscale_axis_order_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Image_Grayscale_axis_order_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="FIRST_INDEX_FASTEST"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="a_axis_radius_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+  <!-- unit_of_measure=UnitOfMeasure_Length -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="a_axis_radius_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:a_axis_radius_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Length" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="b_axis_radius_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+  <!-- unit_of_measure=UnitOfMeasure_Length -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="b_axis_radius_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:b_axis_radius_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Length" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="c_axis_radius_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+  <!-- unit_of_measure=UnitOfMeasure_Length -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="c_axis_radius_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:c_axis_radius_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Length" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="center_latitude_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-90.0"/>
+    	<xsd:maxInclusive value="90.0"/>
+  <!-- unit_of_measure=UnitOfMeasure_Angle -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="center_latitude_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:center_latitude_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Angle" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="center_longitude_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-180.0"/>
+    	<xsd:maxInclusive value="360.0"/>
+  <!-- unit_of_measure=UnitOfMeasure_Angle -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="center_longitude_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:center_longitude_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Angle" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="coordinate_system_type_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="coordinate_system_type_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="body-fixed_non-rotating"></xsd:enumeration>
+	     <xsd:enumeration value="body-fixed_rotating"></xsd:enumeration>
+	     <xsd:enumeration value="inertial"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="data_set_id_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="40"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="eastern_most_longitude_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="first_standard_parallel_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-90.0"/>
+    	<xsd:maxInclusive value="90.0"/>
+  <!-- unit_of_measure=UnitOfMeasure_Angle -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="first_standard_parallel_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:first_standard_parallel_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Angle" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="horizontal_framelet_offset_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="1.0"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="image_id_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="30"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="line_first_pixel_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="0"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="line_last_pixel_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="0"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="line_projection_offset_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+  <!-- unit_of_measure=UnitOfMeasure_Misc -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="line_projection_offset_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:line_projection_offset_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Misc" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="map_projection_name_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="map_projection_name_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="AITOFF"></xsd:enumeration>
+	     <xsd:enumeration value="ALBERS"></xsd:enumeration>
+	     <xsd:enumeration value="BONNE"></xsd:enumeration>
+	     <xsd:enumeration value="BRIESEMEISTER"></xsd:enumeration>
+	     <xsd:enumeration value="CYLINDRICAL_EQUAL_AREA"></xsd:enumeration>
+	     <xsd:enumeration value="EQUIDISTANT"></xsd:enumeration>
+	     <xsd:enumeration value="EQUIRECTANGULAR"></xsd:enumeration>
+	     <xsd:enumeration value="GNOMONIC"></xsd:enumeration>
+	     <xsd:enumeration value="HAMMER"></xsd:enumeration>
+	     <xsd:enumeration value="HENDU"></xsd:enumeration>
+	     <xsd:enumeration value="LAMBERT AZIMUTHAL EQUAL AREA"></xsd:enumeration>
+	     <xsd:enumeration value="LAMBERT CONFORMAL"></xsd:enumeration>
+	     <xsd:enumeration value="MERCATOR"></xsd:enumeration>
+	     <xsd:enumeration value="MOLLWEIDE"></xsd:enumeration>
+	     <xsd:enumeration value="OBLIQUE CYLINDRICAL"></xsd:enumeration>
+	     <xsd:enumeration value="ORTHOGRAPHIC"></xsd:enumeration>
+	     <xsd:enumeration value="POLAR STEREOGRAPHIC"></xsd:enumeration>
+	     <xsd:enumeration value="SIMPLE CYLINDRICAL"></xsd:enumeration>
+	     <xsd:enumeration value="SINUSOIDAL"></xsd:enumeration>
+	     <xsd:enumeration value="STEREOGRAPHIC"></xsd:enumeration>
+	     <xsd:enumeration value="TRANSVERSE MERCATOR"></xsd:enumeration>
+	     <xsd:enumeration value="VAN DER GRINTEN"></xsd:enumeration>
+	     <xsd:enumeration value="WERNER"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="map_projection_rotation_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="0.0"/>
+    	<xsd:maxInclusive value="180.0"/>
+  <!-- unit_of_measure=UnitOfMeasure_Angle -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="map_projection_rotation_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:map_projection_rotation_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Angle" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="map_resolution_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="0.0"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="map_scale_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+  <!-- unit_of_measure=UnitOfMeasure_Misc -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="map_scale_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:map_scale_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Misc" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="maximum_latitude_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-90.0"/>
+    	<xsd:maxInclusive value="90.0"/>
+  <!-- unit_of_measure=UnitOfMeasure_Angle -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="maximum_latitude_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:maximum_latitude_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Angle" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="minimum_latitude_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-90.0"/>
+    	<xsd:maxInclusive value="90.0"/>
+  <!-- unit_of_measure=UnitOfMeasure_Angle -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="minimum_latitude_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:minimum_latitude_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Angle" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="positive_longitude_direction_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="positive_longitude_direction_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="east"></xsd:enumeration>
+	     <xsd:enumeration value="west"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="reference_latitude_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-90.0"/>
+    	<xsd:maxInclusive value="90.0"/>
+  <!-- unit_of_measure=UnitOfMeasure_Angle -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="reference_latitude_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:reference_latitude_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Angle" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="reference_longitude_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-180.0"/>
+    	<xsd:maxInclusive value="360.0"/>
+  <!-- unit_of_measure=UnitOfMeasure_Angle -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="reference_longitude_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:reference_longitude_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Angle" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="sample_first_pixel_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="0"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="sample_last_pixel_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="0"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="sample_projection_offset_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+  <!-- unit_of_measure=UnitOfMeasure_Misc -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="sample_projection_offset_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:sample_projection_offset_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Misc" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="second_standard_parallel_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-90.0"/>
+    	<xsd:maxInclusive value="90.0"/>
+  <!-- unit_of_measure=UnitOfMeasure_Angle -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="second_standard_parallel_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:second_standard_parallel_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Angle" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="vertical_framelet_offset_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="1.0"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="western_most_longitude_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Inventory_LID_fields_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Inventory_LID_fields_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="2"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Inventory_LIDVID_fields_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Inventory_LIDVID_fields_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="2"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="reference_association_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Investigation_description_Type">
+    <xsd:restriction base="pds:ASCII_Text_Preserved">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="objectives_summary_Type">
+    <xsd:restriction base="pds:ASCII_Text_Preserved">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="start_date_Type">
+    <xsd:restriction base="pds:ASCII_Date_YMD">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="10"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="stop_date_Type">
+    <xsd:restriction base="pds:ASCII_Date_YMD">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="10"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="class_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="lidvid_reference_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:pattern value='URN:NASA:PDS:{1}[a-zA-Z]{1}([^x20][-./_a-zA-Z0-9]+)(:*)([0-9]*)(.?)([0-9]*)'/>
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="61"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="primary_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="role_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="role_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="ALTERNATE"></xsd:enumeration>
+	     <xsd:enumeration value="PRIMARY"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="maximum_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="mean_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="0.0"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="median_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="1.0e32"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="minimum_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="sample_bit_mask_Type">
+    <xsd:restriction base="pds:ASCII_Integer_Hex">
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="standard_deviation_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="0.0"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="spacecraft_clock_start_count_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="30"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="spacecraft_clock_stop_count_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="30"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="start_date_time_Type">
+    <xsd:restriction base="pds:ASCII_Date_Time">
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="stop_date_time_Type">
+    <xsd:restriction base="pds:ASCII_Date_Time">
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="observing_system_component_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Observing_System_Reference_Entry_reference_association_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="alternate_telephone_number_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="alternate_telephone_number_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="+cc ddd ddd dddd"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="electronic_mail_address_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="institution_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:pattern value='[a-zA-Z]{1}([-/,. a-zA-Z0-9]*)'/>
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="60"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="node_name_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="node_name_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="Engineering"></xsd:enumeration>
+	     <xsd:enumeration value="Geosciences"></xsd:enumeration>
+	     <xsd:enumeration value="Imaging"></xsd:enumeration>
+	     <xsd:enumeration value="Navigation_Ancillary_Information_Facility"></xsd:enumeration>
+	     <xsd:enumeration value="Planetary_Atmospheres"></xsd:enumeration>
+	     <xsd:enumeration value="Planetary_Plasma_Interactions"></xsd:enumeration>
+	     <xsd:enumeration value="Planetary_Rings"></xsd:enumeration>
+	     <xsd:enumeration value="Radio_Science"></xsd:enumeration>
+	     <xsd:enumeration value="Small_Bodies"></xsd:enumeration>
+	     <xsd:enumeration value="unk"></xsd:enumeration>
+	     <xsd:enumeration value="HQ"></xsd:enumeration>
+	     <xsd:enumeration value="National_Space_Science_Data_Center"></xsd:enumeration>
+	     <xsd:enumeration value="PDS_Management"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="postal_address_text_Type">
+    <xsd:restriction base="pds:ASCII_Text_Preserved">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="telephone_number_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="telephone_number_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="+cc ddd ddd dddd"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Parsable_Byte_Stream_encoding_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="30"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="begin_date_Type">
+    <xsd:restriction base="pds:ASCII_Date_YMD">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="10"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="end_date_Type">
+    <xsd:restriction base="pds:ASCII_Date_YMD">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="10"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="value_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="value_meaning_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="affiliation_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="registration_date_Type">
+    <xsd:restriction base="pds:ASCII_Date_YMD">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="10"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="sort_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:pattern value='[a-zA-Z]{1}([-., a-zA-Z0-9]*)'/>
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Product_Reference_Entry_reference_association_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="container_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="property_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="property_value_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="cosine_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Reference_Entry_reference_association_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="lid_reference_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Resource_description_Type">
+    <xsd:restriction base="pds:ASCII_Text_Preserved">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="incidence_angle_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="0.0"/>
+    	<xsd:maxInclusive value="180.0"/>
+  <!-- unit_of_measure=UnitOfMeasure_Angle -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="incidence_angle_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:incidence_angle_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Angle" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="maximum_ring_radius_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="0.0"/>
+    	<xsd:maxInclusive value="INF"/>
+  <!-- unit_of_measure=UnitOfMeasure_Length -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="maximum_ring_radius_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:maximum_ring_radius_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Length" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="minimum_ring_radius_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="0.0"/>
+    	<xsd:maxInclusive value="INF"/>
+  <!-- unit_of_measure=UnitOfMeasure_Length -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="minimum_ring_radius_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:minimum_ring_radius_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Length" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="node_id_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="node_id_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="RINGS"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="occultation_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="10"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="planetary_occultation_flag_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="planetary_occultation_flag_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="n"></xsd:enumeration>
+	     <xsd:enumeration value="y"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="radial_resolution_Type_WO_Units">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="0.0"/>
+    	<xsd:maxInclusive value="INF"/>
+  <!-- unit_of_measure=UnitOfMeasure_Length -->
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="radial_resolution_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="pds:radial_resolution_Type_WO_Units">
+        <xsd:attribute name="unit_of_measure_name" type="pds:UnitOfMeasure_Length" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="ring_event_start_time_Type">
+    <xsd:restriction base="pds:ASCII_Date_Time">
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="ring_event_stop_time_Type">
+    <xsd:restriction base="pds:ASCII_Date_Time">
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="ring_occultation_direction_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="ring_occultation_direction_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="both"></xsd:enumeration>
+	     <xsd:enumeration value="egress"></xsd:enumeration>
+	     <xsd:enumeration value="ingress"></xsd:enumeration>
+	     <xsd:enumeration value="multiple"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="star_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="40"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="SPICE_Kernel_Binary_external_standard_id_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="SPICE_Kernel_Binary_external_standard_id_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="SPICE"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="kernel_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="18"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="SPICE_Kernel_Text_encoding_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="30"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="error_constant_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="invalid_constant_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="20"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="missing_constant_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="20"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="not_applicable_constant_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="20"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="saturated_constant_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="unknown_constant_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="20"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Stream_Delimited_encoding_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="30"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Stream_Delimited_external_standard_id_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Stream_Delimited_external_standard_id_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="CSV"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_delimiter_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_delimiter_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="0x09"></xsd:enumeration>
+	     <xsd:enumeration value="0x2C"></xsd:enumeration>
+	     <xsd:enumeration value="0x3B"></xsd:enumeration>
+	     <xsd:enumeration value="0x7C"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="maximum_record_length_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="record_delimiter_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="record_delimiter_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="0xOA"></xsd:enumeration>
+	     <xsd:enumeration value="0xOD"></xsd:enumeration>
+	     <xsd:enumeration value="0xOD_0xOA"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_bytes_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_data_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_format_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="full_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="60"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="instrument_host_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="120"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="instrument_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="60"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="investigation_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="observing_system_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="target_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="120"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="comment_Type">
+    <xsd:restriction base="pds:ASCII_Text_Preserved">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="local_identifier_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="description_Type">
+    <xsd:restriction base="pds:ASCII_Text_Preserved">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="fields_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="record_bytes_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="0"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Base_Binary_encoding_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="30"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Base_Character_encoding_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="30"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Binary_Field_field_data_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="bit_mask_Type">
+    <xsd:restriction base="pds:ASCII_Integer_Hex">
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="bits_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="32"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Binary_Grouped_Bit_Field_field_data_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="start_bit_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Binary_Grouped_Field_field_data_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Character_Field_field_data_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Character_Field_field_location_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Character_Grouped_Field_field_data_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="repetitions_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_description_Type">
+    <xsd:restriction base="pds:ASCII_Text_Preserved">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_length_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_location_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_number_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_Extended_field_format_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_max_logical_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_min_logical_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_scaling_factor_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_unit_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_unit_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="mol"></xsd:enumeration>
+	     <xsd:enumeration value="deg"></xsd:enumeration>
+	     <xsd:enumeration value="rad"></xsd:enumeration>
+	     <xsd:enumeration value="m**2"></xsd:enumeration>
+	     <xsd:enumeration value="m"></xsd:enumeration>
+	     <xsd:enumeration value="km"></xsd:enumeration>
+	     <xsd:enumeration value="kg"></xsd:enumeration>
+	     <xsd:enumeration value="K"></xsd:enumeration>
+	     <xsd:enumeration value="C"></xsd:enumeration>
+	     <xsd:enumeration value="s"></xsd:enumeration>
+	     <xsd:enumeration value="ms"></xsd:enumeration>
+	     <xsd:enumeration value="m/s"></xsd:enumeration>
+	     <xsd:enumeration value="L"></xsd:enumeration>
+	     <xsd:enumeration value="m**3"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="field_value_offset_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="maximum_scaled_value_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="minimum_scaled_value_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_File_Specification_Name_field_data_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_File_Specification_Name_field_format_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_File_Specification_Name_field_format_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="dir1/dir2/file_name.file_extension"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_File_Specification_Name_field_length_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_File_Specification_Name_field_location_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_File_Specification_Name_field_name_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_File_Specification_Name_field_name_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="file_specification_name"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_File_Specification_Name_field_number_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_File_Specification_Name_field_number_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="2"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LID_field_data_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LID_field_format_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LID_field_format_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="URN:NASA:PDS:xxxx"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LID_field_location_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LID_field_location_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="1"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LID_field_name_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LID_field_name_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="LID"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LID_field_number_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LID_field_number_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="1"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LIDVID_field_data_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LIDVID_field_format_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LIDVID_field_format_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="URN:NASA:PDS:xxxx::M.n"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LIDVID_field_length_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="1"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LIDVID_field_location_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LIDVID_field_location_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="1"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LIDVID_field_name_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LIDVID_field_name_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="LIDVID"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LIDVID_field_number_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Table_Field_LIDVID_field_number_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="1"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="application_process_id_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="application_process_name_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="application_process_name_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="APXS"></xsd:enumeration>
+	     <xsd:enumeration value="DESCENT IMAGER"></xsd:enumeration>
+	     <xsd:enumeration value="HAZCAM LEFT FRONT"></xsd:enumeration>
+	     <xsd:enumeration value="HAZCAM LEFT REAR"></xsd:enumeration>
+	     <xsd:enumeration value="HAZCAM RIGHT FRONT"></xsd:enumeration>
+	     <xsd:enumeration value="HAZCAM RIGHT REAR"></xsd:enumeration>
+	     <xsd:enumeration value="MB"></xsd:enumeration>
+	     <xsd:enumeration value="MI"></xsd:enumeration>
+	     <xsd:enumeration value="MINITES"></xsd:enumeration>
+	     <xsd:enumeration value="NAVCAM LEFT"></xsd:enumeration>
+	     <xsd:enumeration value="NAVCAM RIGHT"></xsd:enumeration>
+	     <xsd:enumeration value="PANCAM LEFT"></xsd:enumeration>
+	     <xsd:enumeration value="PANCAM RIGHT"></xsd:enumeration>
+	     <xsd:enumeration value="RAT"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="application_process_subtype_id_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="2"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="earth_received_start_time_Type">
+    <xsd:restriction base="pds:ASCII_Date_Time">
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="earth_received_stop_time_Type">
+    <xsd:restriction base="pds:ASCII_Date_Time">
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="expected_packets_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="0"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="packet_map_mask_Type">
+    <xsd:restriction base="pds:ASCII_Integer_Hex">
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="received_packets_Type">
+    <xsd:restriction base="pds:ASCII_Integer">
+    	<xsd:minInclusive value="0"/>
+    	<xsd:maxInclusive value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="spice_file_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="180"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="telemetry_provider_id_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="telemetry_provider_id_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="ssw_mer_dp"></xsd:enumeration>
+	     <xsd:enumeration value="ttacs"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="telemetry_source_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="60"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="telemetry_source_type_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="telemetry_source_type_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="data_product"></xsd:enumeration>
+	     <xsd:enumeration value="sfdu"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="definition_Type">
+    <xsd:restriction base="pds:ASCII_Text_Preserved">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="2147483647"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="designation_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="language_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="language_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="English"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="actor_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="date_time_Type">
+    <xsd:restriction base="pds:ASCII_Date_Time">
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="formation_rule_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="maximum_characters_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="maximum_value_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="minimum_characters_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="minimum_value_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="pattern_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="unit_of_measure_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="x_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="y_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="z_Type">
+    <xsd:restriction base="pds:ASCII_Real">
+    	<xsd:minInclusive value="-INF"/>
+    	<xsd:maxInclusive value="INF"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="XML_Schema_encoding_type_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="30"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="XML_Schema_external_standard_id_Scheme">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="XML_Schema_external_standard_id_Type">
+  <!-- ENUMERATED -->
+    <xsd:restriction base="xsd:string">
+	     <xsd:enumeration value="XML_Schema"></xsd:enumeration>
+	   </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="file_specification_name_Type">
+    <xsd:restriction base="pds:ASCII_Short_String_Collapsed">
+    	<xsd:minLength value="1"/>
+    	<xsd:maxLength value="255"/>
+	   </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

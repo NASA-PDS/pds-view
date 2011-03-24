@@ -44,13 +44,13 @@
     </section>
 
     <section name="Select Generic Schema">
-      <p>The first step is to select a generic product schema from the repository. The repository is located at <a href="http://pds.nasa.gov/schema/pds4/generic/common/" target="_blank">http://pds.nasa.gov/schema/pds4/generic/common/</a>. Generic schemas are available for several products (e.g., Grayscale Image, Character Table, etc.). Select the appropriate schema that corresponds with the data product to be described. In addition, download any ancillary schemas (e.g., base types, extended types, etc.) that are included in the selected generic schema. The examples in this document use schemas from version <i>0111c</i>. A later version may be available from the repository. For this example, the following schemas should be downloaded:
+      <p>The first step is to select a generic product schema from the repository. The repository is located at <a href="http://pds.nasa.gov/schema/pds4/generic/common/" target="_blank">http://pds.nasa.gov/schema/pds4/generic/common/</a>. Generic schemas are available for several products (e.g., Grayscale Image, Character Table, etc.). Select the appropriate schema that corresponds with the data product to be described. In addition, download any ancillary schemas (e.g., base types, extended types, etc.) that are included in the selected generic schema. The examples in this document use schemas from version <i>0111c</i>. A later version may be available from the repository. The following schemas are utilized in this example:
       </p>
 
       <ul>
-        <li><a href="http://pds.nasa.gov/schema/pds4/generic/common/Product_Table_Character_0111c.xsd" target="_blank">Product_Table_Character_0111c.xsd</a></li>
-        <li><a href="http://pds.nasa.gov/schema/pds4/generic/common/Extended_Types_0111c.xsd" target="_blank">Extended_Types_0111c.xsd</a></li>
-        <li><a href="http://pds.nasa.gov/schema/pds4/generic/common/Base_Types_0111c.xsd" target="_blank">Base_Types_0111c.xsd</a></li>
+        <li><a href="../schemas/Product_Table_Character_0111c.xsd" target="_blank">Product_Table_Character_0111c.xsd</a></li>
+        <li><a href="../schemas/Extended_Types_0111c.xsd" target="_blank">Extended_Types_0111c.xsd</a></li>
+        <li><a href="../schemas/Base_Types_0111c.xsd" target="_blank">Base_Types_0111c.xsd</a></li>
       </ul>
     </section>
 
