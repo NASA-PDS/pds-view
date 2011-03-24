@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -30,8 +30,22 @@
     </section>
 
     <section name="Release 0.3.0">
-      <p>TBD
+      <p>This release of the Harvest Tool is a component of the integrated release <a href="../../../release/index-1.1.0.html">1.1.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date. The new or modified capabilities for this release are as follows:
       </p>
+
+      <ul>
+        <li>Added the capability to validate products prior to registration.</li>
+        <li>Added the capability to execute the tool as a daemon.</li>
+        <li>Modified and made more robust the handling of association registrations.</li>
+        <li>Modified to keep pace with changes occurring in the PDS4 data model.</li>
+      </ul>
+
+      <p>The liens for this release are as follows:
+      </p>
+
+      <ul>
+        <li>Needs to support registration of PDS3 products.</li>
+      </ul>
     </section>
 
     <section name="Release 0.2.0">

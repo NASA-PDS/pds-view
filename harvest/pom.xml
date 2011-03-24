@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>harvest</artifactId>
-  <version>0.3.0-dev</version>
+  <version>0.3.0</version>
   <packaging>jar</packaging>
 
   <name>Harvest Tool</name>
@@ -356,7 +356,7 @@
     <dependency>
       <groupId>gov.nasa.pds.2010.preparation</groupId>
       <artifactId>core</artifactId>
-      <version>0.2.0-dev</version>
+      <version>0.2.0</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
