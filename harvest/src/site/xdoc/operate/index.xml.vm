@@ -92,16 +92,15 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
       <p>This section details how to re-configure the Harvest Tool to interface with another instance of the PDS Registry Service. This would be in cases where a user wants to test the registration of data products on a local instance of the Registry first before registering the products on the operational release of the PDS Registry. Users that wish to not do this can skip this section.
       </p>
 
-      <p>The Harvest Tool points to the PDS Registry and Security Service through the following Java System Properties:
+      <p>The Harvest Tool points to the PDS Registry through the following Java System Property:
       </p>
 
       <table>
         <tr><th>System Property Name</th><th>Description</th></tr>
         <tr><td>pds.registry</td><td>Specify the URL to the PDS Registry Service. This property is required.</td></tr>
-        <tr><td>pds.security</td><td>Specify the URL to the PDS Security Service. If the PDS Registry being pointed to is not secured (i.e. a local instance), then this property can be omitted.</td></tr>
       </table>
 
-      <p>By default, the Harvest shell script and batch file point to the operational releases of the PDS Registry and Security Services. The sections below detail how to modify these scripts to point to another instance of these services.
+      <p>By default, the Harvest shell script and batch file point to the secured, operational release of the PDS Registry Service. The sections below detail how to modify these scripts to point to another instance of this service.
       </p>
 
       <subsection name="UNIX-Based Users">
@@ -109,13 +108,10 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </p>
 
         <source>
-% java \
--Dpds.registry="http://pdsops2.jpl.nasa.gov/registry-service" \
--Dpds.security="http://pdsops.jpl.nasa.gov/openam/identity" \
--jar ${HARVEST_JAR} "$@"
+% java -Dpds.registry="https://pdsops2.jpl.nasa.gov/registry-service" -jar ${HARVEST_JAR} "$@"
         </source>
 
-        <p>Replace the URL values of <i>pds.registry</i> and/or <i>pds.security</i> with URLs to the desired instance of the PDS Registry and/or Security. For example, making the following change to the script will have Harvest pointing to a non-secured, local instance of the PDS Registry on port 8080:
+        <p>Replace the URL value of <i>pds.registry</i> with the URL to the desired instance of the PDS Registry. For example, making the following change to the script will have Harvest pointing to a non-secured, local instance of the PDS Registry on port 8080:
         </p>
 
         <source>
@@ -128,13 +124,10 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </p>
 
         <source>
-% java \
--Dpds.registry="http://pdsops2.jpl.nasa.gov/registry-service" \
--Dpds.security="http://pdsops.jpl.nasa.gov/openam/identity" \
--jar "%HARVEST_JAR%" %*
+% java -Dpds.registry="https://pdsops2.jpl.nasa.gov/registry-service" -jar "%HARVEST_JAR%" %*
         </source>
 
-        <p>Replace the URL values of <i>pds.registry</i> and/or <i>pds.security</i> with URLs to the desired instance of the PDS Registry and/or Security. For example, making the following change to the batch file will have Harvest pointing to a non-secured, local instance of the PDS Registry on port 8080:
+        <p>Replace the URL value of <i>pds.registry</i> with the URL to the desired instance of the PDS Registry. For example, making the following change to the batch file will have Harvest pointing to a non-secured, local instance of the PDS Registry on port 8080:
         </p>
 
         <source>
@@ -183,6 +176,14 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         <source>
 % Harvest policy.xml -u {username} -p {password} -l log.txt
         </source>
+        
+        <p>When registering product metadata to a non-secured instance of the PDS Registry (such as one running on your local machine), the <i>-u</i> and <i>-p</i> command-line option flags do not need to be passed into the tool. The following command demonstrates how to run the Harvest Tool to register product metadata to a non-secured instance of the PDS Registry Service, with the output going to a log file:
+        </p>
+        
+        <source>
+% Harvest policy.xml -l log.txt
+        </source>
+        
       </subsection>
 
       <subsection name="Harvest Policy File">
