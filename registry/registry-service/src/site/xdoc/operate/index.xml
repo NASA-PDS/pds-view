@@ -34,15 +34,20 @@
         <li><a href="#Query_Artifacts">Query Artifacts</a></li>
         <li><a href="#Update_Status">Update Status</a></li>
         <li><a href="#Delete_Artifacts">Delete Artifacts</a></li>
-        <li><a href="#Ping_Service">Ping Service</a></li>
-        <li><a href="#Report_Service">Report Service</a></li>
+        <li><a href="#Ping">Ping</a></li>
+        <li><a href="#Report">Report</a></li>
         <li><a href="#Controlled_Access">Controlled Access</a></li>
       </ul>
 
     </section>
 
     <section name="Service Interface">
+      <!-- Need to fix API documentation generation.
       <p>The Registry Service provides a REST-based interface accessible via HTTP for interacting with the service. Details on the REST-based interface can be found in the <a href="../api/index.html">API</a> section. If viewing this document in PDF form, the API section is not available. The API documentation is available from any deployed instance of the Registry Service by accessing <i>/registry-service/docs/</i> from the host application server. Because the REST-based interface operates over HTTP, there are several options for interacting with the Registry Service:
+      </p>
+      -->
+
+      <p>The Registry Service provides a REST-based interface accessible via HTTP for interacting with the service. Because the REST-based interface operates over HTTP, there are several options for interacting with the Registry Service:
       </p>
 
       <ul>
@@ -240,7 +245,12 @@ http://localhost:8080/registry-service/registry/services
 http://localhost:8080/registry-service/registry/extrinsics
         </source>
 
+        <!-- Need to fix API documentation generation.
         <p>The interface above accepts a number of parameters for filtering the return results. See the <a href="../api/index.html">API</a> section for a detailed list of the parameters. The following command retrieves the latest product with logical identifier <i>1234</i> from the service:
+        </p>
+        -->
+
+        <p>The interface above accepts a number of parameters for filtering the return results. The following command retrieves the latest product with logical identifier <i>1234</i> from the service:
         </p>
 
         <source>
@@ -274,7 +284,12 @@ http://localhost:8080/registry-service/registry/extrinsics/1234/1.0.json
 http://localhost:8080/registry-service/registry/associations
         </source>
 
+        <!-- Need to fix API documentation generation.
         <p>The interface above accepts a number of parameters for filtering the return results. See the <a href="../api/index.html">API</a> section for a detailed list of the parameters. In order to retrieve a specific association, append the global unique identifier (/&lt;guid&gt;) for that association to the URL in the example above.
+        </p>
+        -->
+
+        <p>The interface above accepts a number of parameters for filtering the return results. In order to retrieve a specific association, append the global unique identifier (/&lt;guid&gt;) for that association to the URL in the example above.
         </p>
       </subsection>
 
@@ -297,12 +312,13 @@ http://localhost:8080/registry-service/registry/services/&lt;guid&gt;
 http://localhost:8080/registry-service/registry/schemes/&lt;guid&gt;
         </source>
 
-        <p>In order to retrieve the only supported scheme (at this time), replace &lt;guid&gt; in the example above with <i>urn:registry:ObjectType</i>. The following command retrieves the list of nodes associated with the <i>urn:registry:ObjectType</i> scheme:
+        <p>In order to retrieve the only supported scheme (at this time), replace &lt;guid&gt; in the example above with <i>urn:registry:classificationScheme:ObjectType</i>. The following command retrieves the list of nodes associated with the <i>urn:registry:ObjectType</i> scheme:
         </p>
 
         <source>
 % curl -X GET -H "Accept:application/xml" -v \
-http://localhost:8080/registry-service/registry/schemes/urn:registry:ObjectType/nodes
+http://localhost:8080/registry-service/registry/schemes/\
+urn:registry:classificationScheme:ObjectType/nodes
         </source>
 
         <p>In order to retrieve a specific node, append the global unique identifier (/&lt;guid&gt;) for that node to the URL in the example above.
@@ -356,7 +372,7 @@ http://localhost:8080/registry-service/registry/services/&lt;guid&gt;
       </source>
     </section>
     
-    <section name="Ping Service">
+    <section name="Ping">
       <p>The following command checks to see if the registry service is up and running:
       </p>
       
@@ -366,7 +382,7 @@ http://localhost:8080/registry-service/registry
       </source>
     </section>
 
-    <section name="Report Service">
+    <section name="Report">
       <p>The following command details the status of the service along with registered counts by Registry Object type:
       </p>
 
@@ -381,17 +397,17 @@ http://localhost:8080/registry-service/registry/report
       </p>
 
       <source>
-% curl -d "&amp;username=&lt;username&gt;&amp;password=&lt;password&gt;" \
-http://localhost:8080/openam/identity/authenticate
-
-token.id=AQIC5wM2LY4SfcyFAElnVTJ4ywAONCJRVy74LMgzFYbRmdI=@AAJ...
+% curl -X POST -H "Content-type:application/xml" -v -d @new_product.xml \
+https://localhost:8443/registry-service/registry/extrinsics -u username:password \
+-k -c tomcat_cookie.txt
       </source>
 
-      <p>The Security Service will likely be hosted on a different machine than the Registry Service. The cookie returned by the above command can then be passed as follows in a <i>POST</i> request:
+      <p>The cookie file <i>tomcat_cookie.txt</i> can then be passed to the next <i>curl</i> command: 
       </p>
 
       <source>
-% curl -X POST ... --cookie 'iPlanetDirectoryPro="&lt;token.id&gt;"'
+% curl -X POST -H "Content-type:application/xml" -v -d @new_product_v2.xml \
+https://localhost:8443/registry-service/registry/extrinsics/1234 -k -b tomcat_cookie.txt
       </source>
 
       <p>The example above also applies to a <i>DELETE</i> request.
