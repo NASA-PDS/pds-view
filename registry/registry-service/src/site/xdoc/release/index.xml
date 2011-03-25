@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -30,8 +30,26 @@
     </section>
 
     <section name="Release 0.6.0">
-      <p>TBD
+      <p>This release of the Registry Service is a component of the integrated release <a href="../../../release/index-1.1.0.html">1.1.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date. The new or modified capabilities for this release are as follows:
       </p>
+
+      <ul>
+        <li>The core functionality was moved from this package to the registry-core package to better satisfy JAR dependencies from other projects.</li>
+        <li>Added additional support for Classifications in the registry.</li>
+        <li>Added a configuration endpoint allowing the configuration file generated from the data model to be processed in one action.</li>
+        <li>Added support for a RegistryPackage object to support batch operations.</li>
+        <li>Added additional support for Service registrations.</li>
+        <li>Modifications to support better alignment with the ebXML registry specification.</li>
+      </ul>
+
+      <p>The liens for this release are as follows:
+      </p>
+
+      <ul>
+        <li>Query support has been improved but is still case sensitive.</li>
+        <li>The Federation and Registry objects have not been addressed yet.</li>
+        <li>Need to generate a log file that conforms to the Report Service format.</li>
+      </ul>
     </section>
 
     <section name="Release 0.5.0">

@@ -28,7 +28,7 @@
 
   <groupId>gov.nasa.pds.2010.registry</groupId>
   <artifactId>registry-core</artifactId>
-  <version>0.1.0-dev</version>
+  <version>0.1.0</version>
   <packaging>jar</packaging>
 
   <name>Registry Core</name>
@@ -65,7 +65,35 @@
   </properties>
 
   <build>
+    <testSourceDirectory>src/test</testSourceDirectory>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <!-- Enable once the NTR process is complete.
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>jar</goal>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -220,6 +248,12 @@
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-client</artifactId>
       <version>${jersey-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit-version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -23,36 +23,36 @@
   </properties>
 
   <body>
-    <release version="0.6.0" date="TBD" description="TBD">
+    <release version="0.6.0" date="2011-03-25" description="This release of the Registry Service is a component of the integrated release 1.1.0 of the PDS 2010 System.">
       <action dev="pramirez" type="add">
-        PDS-13 Endpoint responses for /registry-service and /registry-service/registry. This merely respond to GET requests for now with Link headers pointing to the sub resources. 
+        PDS-3: Ability to page through all services. Inherited from registry-core.
+      </action>
+      <action dev="pramirez" type="update">
+        PDS-7: Mapped Product to ExtrinsicObject to align better with information model for registry. Moved all interfaces that ended in product(s) to extrinsic(s). Inherited from registry-core.
       </action>
       <action dev="pramirez" type="add">
-        PDS-19 RegistryPackage endpoint to support retrieval of the it's metadata. 
+        PDS-8: Allow a set of Classifications to be associated with a given registry object. Inherited from registry-core.
       </action>
       <action dev="pramirez" type="add">
-        PDS-20 Endpoint for ExternalIdentifier support on registered objects.
+        PDS-13: Endpoint responses for /registry-service and /registry-service/registry. This merely respond to GET requests for now with link headers pointing to the sub-resources. 
       </action>
       <action dev="pramirez" type="add">
-        PDS-22 Endpoint to delete Classifications. 
+        PDS-16: Configuration endpoint to pass in classification schemes and nodes as one XML file. Inherited from registry-core.
       </action>
       <action dev="pramirez" type="add">
-        PDS-8 Classification enpoint for 
+        PDS-19: Defined RegistryPackage as an intrinsic object. Acts merely as a collection of registered objects through the use of Associations. Inherited from registry-core.
       </action>
       <action dev="pramirez" type="add">
-        PDS-16 Configuration endpoint to pass in classifcation schemes and nodes as one XML file. 
+        PDS-20: Added ExternalIdentifier support for registered objects. Inherited from registry-core.
+      </action>
+      <action dev="pramirez" type="add">
+        PDS-22: Include delete operation for Classifications delete. Inherited from registry-core.
+      </action>
+      <action dev="pramirez" type="add">
+        Added improved support for registration and retrieval of service registrations.
       </action>
       <action dev="pramirez" type="add">
         Support for MySQL back end. Provided documentation for configuration and property file configuration.
-      </action>
-      <action dev="pramirez" type="add">
-        PDS-3 Ability to page through all services.
-      </action>
-      <action dev="pramirez" type="update">
-        PDS-7 Moved all endpoints that ended in product(s) to extrinsic(s).
-      </action>
-      <action dev="pramirez" type="fix">
-        Set the object type for all intrinsic objects.
       </action>
     </release>
 

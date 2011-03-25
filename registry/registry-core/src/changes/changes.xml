@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -23,42 +23,39 @@
   </properties>
 
   <body>
-    <release version="0.1.0-dev" date="TBD" description="TBD">
-      <action dev="pramirez" type="add">
-        PDS-19 Defined RegistryPackage as an intrinsic object. Acts merely as a collection of registered objects through the use of Associations.
-      </action>
-      <action dev="pramirez" type="add">
-        PDS-20 Added ExternalIdentifier support for registered objects.
-      </action>
-      <action dev="pramirez" type="add">
-        PDS-8 Allow a set of Classifications to be associated with a given registry object
-      </action>
-      <action dev="pramirez" type="add">
-        PDS-16 Configuration interface for registry service. 
-      </action>
-      <action dev="pramirez" type="add">
-        PDS-22 Include delete operation for Classifications delete. 
-      </action>
+    <release version="0.1.0" date="2011-03-25" description="This release of the Registry Core is a component of the integrated release 1.1.0 of the PDS 2010 System.">
       <action dev="pramirez" type="fix">
-        PDS-1 Delete associations when a registry object is removed
+        PDS-1: Delete associations when a registry object is removed.
+      </action>
+      <action dev="pramirez" type="add">
+        PDS-3: Ability to page through all services.
       </action>
       <action dev="pramirez" type="update">
-        PDS-17 Make associations based off their global identifier instead of lid vid.
+        PDS-7: Mapped Product to ExtrinsicObject to align better with information model for registry. Moved all interfaces that ended in product(s) to extrinsic(s).
       </action>
       <action dev="pramirez" type="add">
-        PDS-3 Ability to page through all services.
+        PDS-8: Allow a set of Classifications to be associated with a given registry object.
+      </action>
+      <action dev="pramirez" type="add">
+        PDS-16: Configuration endpoint to pass in classification schemes and nodes as one XML file.
       </action>
       <action dev="pramirez" type="update">
-        PDS-7 Mapped Product to ExtrinsicObject to align better with information model for registry. Moved all interfaces that ended in product(s) to extrinsic(s).
+        PDS-17: Make associations based off their global identifier instead of the LIDVID.
       </action>
-      <action dev="pramirez" type="fix">
-        Set the object type for all intrinsic objects.
+      <action dev="pramirez" type="add">
+        PDS-19: Defined RegistryPackage as an intrinsic object. Acts merely as a collection of registered objects through the use of Associations.
       </action>
-      <action dev="pramirez" type="fix">
-        PDS-7 Mapped Product to ExtrinsicObject to follow more from information model agnostic from the PDS model.
+      <action dev="pramirez" type="add">
+        PDS-20: Added ExternalIdentifier support for registered objects.
+      </action>
+      <action dev="pramirez" type="add">
+        PDS-22: Include delete operation for Classifications delete. 
       </action>
       <action dev="pramirez" type="update">
         Refactored model classes from the service classes to allow for the core to be included as a jar dependency.
+      </action>
+      <action dev="pramirez" type="fix">
+        Set the object type for all intrinsic objects.
       </action>
     </release>
   </body>

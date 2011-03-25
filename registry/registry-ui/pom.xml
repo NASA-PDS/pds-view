@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010.registry</groupId>
   <artifactId>registry-ui</artifactId>
-  <version>0.3.0-dev</version>
+  <version>0.3.0</version>
   <packaging>war</packaging>
 
   <name>Registry User Interface</name>
@@ -82,6 +82,9 @@
   </developers>
 
   <build>
+    <!-- Disable the unit test.
+    <testSourceDirectory>src/test</testSourceDirectory>
+    -->
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -277,10 +280,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-report-plugin</artifactId>
       </plugin>
     </plugins>
   </reporting>

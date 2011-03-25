@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -69,7 +69,8 @@ http://localhost:8080/registry-service/registry/schemes
 
       <source>
 % curl -X POST -H "Content-type:application/xml" -v -d @new_node_product.xml \
-http://localhost:8080/registry-service/registry/schemes/urn:registry:classificationScheme:ObjectTypeScheme:Test/nodes
+http://localhost:8080/registry-service/registry/\
+schemes/urn:registry:classificationScheme:ObjectTypeScheme:Test/nodes
       </source>
     </section>
   </body>
