@@ -17,11 +17,15 @@ commands:
 
 % mvn site
 % maven pdf
-% mvn package -Denv=default
+% mvn package
 
 The project still relies on Maven 1 functionality to generate the PDF form 
-of the documentation. The "env" property is used to set the registry service 
-endpoint for the documentation. Valid values are default, dev and ops.
+of the documentation. The "env" property can be specified to set the 
+registry service endpoint and the backend database. Execute as follows:
+
+% mvn package -Denv=local-derby
+
+Valid values are local-derby (default), local-mysql, dev and ops.
 
 
 Installation
@@ -52,9 +56,8 @@ bash shell one would run "export MAVEN_OPTS="-Xms128m -Xmx256m".
 
 The file src/main/resources/applicationContext.xml contains most of the 
 configuration for the registry and its database (or at least pointers to it). 
-Here you will find a reference to db.properties which are the Derby settings. 
-This can be changed to mysql.properties to support a MySQL setup but has not 
-yet been tested. 
+Here you will find a reference to derby.properties which are the Derby 
+settings. This can be changed to mysql.properties to support a MySQL setup. 
 
 B. Deployable War
 
@@ -71,7 +74,7 @@ variable is used in Tomcat's startup scripts. If this is not set the Derby
 Registry Database home will be set to wherever you start Tomcat from. 
 
 If deploying to Tomcat and using MySQL as a back end simply run 
-"mvn -Dregistry.database=mysql package". This will make a package that assumes 
+"mvn -Dregistry.db.type=mysql package". This will make a package that assumes 
 that you have mysql installed with a database named "registry" and will use a 
 default username and password as specified below:
 

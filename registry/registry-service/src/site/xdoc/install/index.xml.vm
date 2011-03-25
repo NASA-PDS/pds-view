@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -109,27 +109,18 @@ CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
       <p>The <i>CATALINA_OPTS</i> environment variable is loaded from the Apache Tomcat startup scripts. If this value is not set, the Derby database home will default to the current working directory where the Apache Tomcat server was launched.
       </p>
       
-      <p>If deploying to Tomcat and using MySQL as a back end the default configuration assumes that you have mysql installed with a database named "registry" and will use a default username and password as specified below. If you want to change the database name, user, and/or password you will need to edit the mysql.properties file located in:
+      <p>If deploying to Tomcat and using MySQL as the backend database, the default configuration assumes that you have MySQL installed with a database named <i>registry</i> and will use a default user name and password as specified below. If you want to change the URL, database name, user name, and/or password you will need to edit the <i>mysql.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry-service/WEB-INF/classes</i> directory. The following lines pertain to the default configuration:
       </p>
-      <source> 
-$TOMCAT_HOME/webapps/registry-service/WEB-INF/classes directory. 
-      </source>
-      <p>This property file contains several entries.The following line specifies the connection url (database name at the end):
-      </p>
+
       <source>
 javax.persistence.jdbc.url=jdbc:mysql://localhost:3306/registry
-      </source>
-      <p>The following line specifies the user name:
-      </p>
-      <source>
 javax.persistence.jdbc.user=registry
-      </source>
-      <p>The following line specifies the password:</p>
-      <source>
 javax.persistence.jdbc.password=p@ssw0rd
       </source>
+
       <p>Additionally, if you are using a version of MySQL older than 5.x you will need to change the dialect. To do this simply add a "#" before the first hibernate.dialect entry and remove the "# from the second entry.
       </p>
+
       <p>Before:</p>
       <source>
 # For use with MySQL 5+
@@ -144,25 +135,29 @@ hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
 # For use with older versions of MySQL. See hibernate documentation.
 hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
       </source>
-      <p>Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping_Service">Ping Service</a> portion of the Operation section.
+
+      <p>Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping">Ping</a> portion of the Operation section.
       </p>
     </section>
 
     <section name="Configuration">
-      <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of objects types corresponds with the types of products that a given instance of the Registry Service will support. Execute the <i>load_registry</i> script from the <i>bin</i> directory in order to registry the full set of object types:
+      <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of objects types corresponds with the types of products that a given instance of the Registry Service will support. Execute the <i>RegistryConfig</i> script from the <i>bin</i> directory in order to register the full set of object types:
       </p>
 
       <source>
 % cd ${xdoc-artifactId}-${xdoc-version}/bin
-% load_registry
+% RegistryConfig
       </source>
-      <p>The output from this command should show the registration of the Core object types and PDS object types. Since the config files referenced in the load script are slightly larger they are sent in chunks. Each config will get associated with a Registry Package and can be found by following the Location link that comes in the header of the response.
+
+      <p>The output from this command should show the registration of the Core object types and PDS object types. Since the config files referenced in the configuration script are slightly larger they are sent in chunks. Each config will get associated with a Registry Package and can be found by following the Location link that comes in the header of the response.
       </p>
+
       <source>
 * About to connect() to localhost port 8080 (#0)
 *   Trying ::1... connected
 * Connected to localhost (::1) port 8080 (#0)
-&gt; POST /registry-service/registry/configure?name=Core+Objects&amp;description=This+configures+the+core+set+of+registry+objects HTTP/1.1
+&gt; POST /registry-service/registry/configure?name=Core+Objects&amp;\
+description=This+configures+the+core+set+of+registry+objects HTTP/1.1
 &gt; User-Agent: curl/7.19.7 (universal-apple-darwin10.0) libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3
 &gt; Host: localhost:8080
 &gt; Accept: */*
@@ -173,7 +168,8 @@ hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
 &lt; HTTP/1.1 100 Continue
 &lt; HTTP/1.1 201 Created
 &lt; Server: Apache-Coyote/1.1
-&lt; Location: http://localhost:8080/registry-service/registry/packages/urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
+&lt; Location: http://localhost:8080/registry-service/registry/packages/\
+urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
 &lt; Content-Type: text/plain
 &lt; Transfer-Encoding: chunked
 &lt; Date: Mon, 21 Mar 2011 19:55:52 GMT
@@ -185,7 +181,8 @@ urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
 * About to connect() to localhost port 8080 (#0)
 *   Trying ::1... connected
 * Connected to localhost (::1) port 8080 (#0)
-&gt; POST /registry-service/registry/configure?name=PDS+Objects&amp;description=This+configures+PDS+object+types HTTP/1.1
+&gt; POST /registry-service/registry/configure?name=PDS+Objects&amp;\
+description=This+configures+PDS+object+types HTTP/1.1
 &gt; User-Agent: curl/7.19.7 (universal-apple-darwin10.0) libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3
 &gt; Host: localhost:8080
 &gt; Accept: */*
@@ -196,7 +193,8 @@ urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
 &lt; HTTP/1.1 100 Continue
 &lt; HTTP/1.1 201 Created
 &lt; Server: Apache-Coyote/1.1
-&lt; Location: http://localhost:8080/registry-service/registry/packages/urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
+&lt; Location: http://localhost:8080/registry-service/registry/packages/\
+urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
 &lt; Content-Type: text/plain
 &lt; Transfer-Encoding: chunked
 &lt; Date: Mon, 21 Mar 2011 19:55:53 GMT
@@ -206,7 +204,7 @@ urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
 urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
       </source>
 
-      <p>The <i>load_registry</i> script defaults to a Registry Service end point of <i>http://localhost:8080/registry-service</i>. If necessary, modify the script so that it corresponds with the target installation. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface.
+      <p>The <i>RegistryConfig</i> script defaults to a Registry Service end point of <i>http://localhost:8080/registry-service</i>. If necessary, modify the script so that it corresponds with the target installation. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface.
       </p>
     </section>
   </body>
