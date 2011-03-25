@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2010, by the California Institute of Technology. 
+# Copyright 2010-2011, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -33,14 +33,15 @@ cd ../validate
 mvn site
 maven pdf
 mvn deploy
+cd ../..
 
-#cd ../registry/registry-core
-#maven pdf
-#cd ../registry-service
-
-cd ../../registry
+cd registry
 mvn deploy --non-recursive
-cd registry-service
+cd registry-core
+mvn site
+maven pdf
+mvn deploy
+cd ../registry-service
 mvn site
 maven pdf
 mvn deploy
@@ -48,8 +49,9 @@ cd ../registry-ui
 mvn site
 maven pdf
 mvn deploy
+cd ../..
 
-cd ../../harvest
+cd harvest
 mvn site
 maven pdf
 mvn deploy

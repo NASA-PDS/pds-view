@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2010, by the California Institute of Technology. 
+# Copyright 2010-2011, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -26,30 +26,37 @@ mvn site
 
 cd harvest
 maven pdf
+cd ..
 
-#cd ../registry/registry-core
-#maven pdf
-#cd ../registry-service
-
-cd ../registry/registry-service
-maven pdf
-cd ../registry-ui
-maven pdf
-
-cd ../../report
-maven pdf
-
-cd ../security
-maven pdf
-
-cd ../preparation/core
+cd preparation/core
 maven pdf
 cd ../design
 maven pdf
 cd ../validate
 maven pdf
-
 cd ../..
+
+cd registry/registry-core
+maven pdf
+cd ../registry-service
+maven pdf
+cd ../registry-ui
+maven pdf
+cd ../..
+
+#cd report/profile-setup
+#maven pdf
+#cd ../sawmill
+#maven pdf
+#cd ../..
+
+cd report
+maven pdf
+cd ..
+
+cd security
+maven pdf
+cd ..
 
 # Create a JAR of each site (recursive) including the generated PDFs.
 mvn site:jar

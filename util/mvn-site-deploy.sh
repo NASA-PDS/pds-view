@@ -44,11 +44,15 @@ cd ../registry-ui
 maven pdf
 cd ../..
 
-cd report/profile-setup
+#cd report/profile-setup
+#maven pdf
+#cd ../sawmill
+#maven pdf
+#cd ../..
+
+cd report
 maven pdf
-cd ../sawmill
-maven pdf
-cd ../..
+cd ..
 
 cd security
 maven pdf
