@@ -1,4 +1,4 @@
-:: Copyright 2010, by the California Institute of Technology.
+:: Copyright 2010-2011, by the California Institute of Technology.
 :: ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 :: Any commercial use must be negotiated with the Office of Technology Transfer
 :: at the California Institute of Technology.
@@ -40,6 +40,6 @@ for %%i in ("%LIB_DIR%"\harvest-*.jar) do set HARVEST_JAR=%%i
 :: The special variable '%*' allows the arguments
 :: to be passed into the executable.
 
-java -Dpds.registry="https://pdsops2.jpl.nasa.gov/registry-service" -jar "%HARVEST_JAR%" %*
+java -Dpds.registry="http://localhost:8080/registry-service" -jar "%HARVEST_JAR%" %*
 
 :END
