@@ -32,7 +32,7 @@
         <img alt="OpenDS Login Screen" src="../images/tomcat_opends_login_screen.jpg" border="1"/>
       </center>
 
-      <p>Once the user enters their identification credentials (user name and password) correctly, you can access to the requestd application. Also, you can utilize the <i>curl</i> command to access a controlled application. An example of the command is as follows:
+      <p>Once the user enters their identification credentials (user name and password) correctly, they can access the requested application. Also, you can utilize the <i>curl</i> command to access a controlled application. An example of the command is as follows:
       </p>
 
       <source>
