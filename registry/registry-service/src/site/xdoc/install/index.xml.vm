@@ -40,7 +40,7 @@
       <p>The Registry Service was developed using Java and <a href="http://jersey.dev.java.net/" target="_blank">Jersey</a> and will run under a standard Java Application Server. The tool was specifically developed under Sun Java version 1.6, so the tool will execute correctly under 1.6 and future versions.
       </p>
 
-      <p>Since the tool was developed using Sun's Java, the target Java Application Server should support Sun's Java Runtime Environment (JRE). The application was tested using Apache's Tomcat version 5.5.X, which is the preferred Java Application Server for deployment. The software can be obtained from the <a href="http://tomcat.apache.org/" target="_blank"> Apache Tomcat</a> web site. Other Java Application Servers should be compatible.
+      <p>Since the tool was developed using Sun's Java, the target Java Application Server should support Sun's Java Runtime Environment (JRE). The application was tested using Apache's Tomcat version 6.0.X, which is the preferred Java Application Server for deployment. The software can be obtained from the <a href="http://tomcat.apache.org/" target="_blank"> Apache Tomcat</a> web site. Other Java Application Servers should be compatible.
       </p>
 
       <p>Although it is generally a useful tool for interacting with the Registry Service, the <a href="http://curl.haxx.se/" target="_blank">cURL</a> command-line application is required by the <i>load_registry</i> script for populating the service with the supported object types. See the <a href="#Configuration">Configuration</a> section for more information.

@@ -48,7 +48,7 @@
 
       <ul>
         <li>Sun Java Standard Edition (J2SE) 1.6.X</li>
-        <li>Apache Tomcat 7.0.4</li>
+        <li>Apache Tomcat 6.0.X</li>
       </ul>
     </section>
 
@@ -128,8 +128,8 @@
         </p>
 
         <ul>
-          <li>Download the appropriate binary package for your platform from <a href="http://tomcat.apache.org/download-70.cgi" target="_blank">http://tomcat.apache.org/download-70.cgi</a>.</li>
-          <li>Install the package so that it operates on port 80. Documentation can be found in the binary distributions and at <a href="http://tomcat.apache.org/tomcat-7.0-doc/" target="_blank">http://tomcat.apache.org/tomcat-7.0-doc/</a>.<br/>
+          <li>Download the appropriate binary package for your platform from <a href="http://tomcat.apache.org/download-60.cgi" target="_blank">http://tomcat.apache.org/download-60.cgi</a>.</li>
+          <li>Install the package so that it operates on port 80. Documentation can be found in the binary distributions and at <a href="http://tomcat.apache.org/tomcat-6.0-doc/" target="_blank">http://tomcat.apache.org/tomcat-6.0-doc/</a>.<br/>
             <p>Modify the <i>$CATALINA_HOME/bin/catalina.sh</i> file as follows:
             </p>
             <source>
