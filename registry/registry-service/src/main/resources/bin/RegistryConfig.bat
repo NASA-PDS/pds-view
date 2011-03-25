@@ -1,4 +1,4 @@
-:: Copyright 2010, by the California Institute of Technology.
+:: Copyright 2010-2011, by the California Institute of Technology.
 :: ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 :: Any commercial use must be negotiated with the Office of Technology Transfer
 :: at the California Institute of Technology.
@@ -15,7 +15,7 @@
 :: Batch file that registers the list of supported objects types 
 :: with the Registry Service specified by the REGISTRY_SERVICE variable.
 :: Upon successful completion of this script, go to 
-:: http://%REGISTRY_SERVICE%/registry/status
+:: http://%REGISTRY_SERVICE%/registry/report 
 :: to verify that all classification nodes and schemes were loaded.
 
 set REGISTRY_SERVICE=http://localhost:8080/registry-service
