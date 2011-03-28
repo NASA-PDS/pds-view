@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="0.4.0" date="TBD" description="TBD">
+    </release>
+
     <release version="0.3.0" date="2011-03-25" description="This release of the Harvest Tool is a component of the integrated release 1.1.0 of the PDS 2010 System.">
       <action dev="mcayanan" type="update">
         PDS-2: Update to make sure that an association does not exist in the registry before attempting to register it.

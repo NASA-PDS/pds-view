@@ -19,12 +19,12 @@
 <project>
   <id>core</id>
   <name>Core Library</name>
-  <currentVersion>0.2.0</currentVersion>
+  <currentVersion>0.3.0-dev</currentVersion>
 
   <organization>
     <name>NASA Jet Propulsion Laboratory, California Institute of Technology</name>
   </organization>
-  <inceptionYear>2005</inceptionYear>
+  <inceptionYear>2010</inceptionYear>
 
   <dependencies>
     <dependency>

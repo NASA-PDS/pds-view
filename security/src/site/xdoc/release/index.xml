@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -26,6 +26,11 @@
   <body>
     <section name="Release Notes">
       <p>The purpose of this section is to provide a description of a Security Service release including any impact that the new or modified capabilities will have on the Discipline Nodes or the PDS user community. If viewing the web-based version of this document, a somewhat itemized list of changes for each release can be found on the <a href="../changes-report.html">Release Changes</a> page.
+      </p>
+    </section>
+
+    <section name="Release 0.4.0">
+      <p>TBD
       </p>
     </section>
 
