@@ -38,10 +38,17 @@
     </section>
 
     <section name="Command-Line Operation">
-      <p>The logs transferred from remote nodes must be updated regularly as more logs become available.  This can either be done manually or on a cron job basis. To run the transferLogs.sh script, unpack the WAR file, and run the script from the <i>./WEB-INF/classes/</i> directory.  The script uses the database.properties and environment.properties files to access the MySQL database and rsync all new web logs to the specified storage location. A decryption password is also required in order to read the encrypted password foy MySQL (Contact System Administrator).  Run the script as follows:
+      <p>The logs transferred from remote nodes must be updated regularly as more logs become available.  This can either be done manually or on a cron job basis. To run the transferLogs.sh script, unpack the WAR file, and run the script from the <i>./WEB-INF/classes/</i> directory.  The script uses the database.properties and environment.properties files to access the MySQL database and rsync all new web logs to the specified storage location. A decryption password is also required in order to read the encrypted password foy MySQL (Contact System Administrator).  To run the script, go to the <i>./WEB-INF/classes/</i> directory in the unpacked WAR and change the permissions of the transferLogs.sh and decrypt.sh files:
       </p>
       <source>
-	./transferLogs &lt;decrypt_password&gt;
+        chmod 700 transferLogs.sh
+	chmod 700 decrypt.sh
+      </source>
+      <p>
+        The run the script as follows:
+      </p>
+      <source>
+        ./transferLogs &lt;decrypt_password&gt;
       </source>
     </section>
   </body>
