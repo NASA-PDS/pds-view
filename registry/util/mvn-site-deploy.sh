@@ -18,6 +18,11 @@
 
 cd ..
 mvn clean
+
+cd registry-core
+mvn install clean
+cd ..
+
 mvn site
 
 cd registry-core

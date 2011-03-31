@@ -19,6 +19,14 @@
 cd ..
 mvn clean
 
+# Install the dependent JARs locally.
+cd preparation/core
+mvn install clean
+cd ../..
+cd registry/registry-core
+mvn install clean
+cd ../..
+
 # Build each site (recursive).
 mvn site
 
@@ -44,15 +52,11 @@ cd ../registry-ui
 maven pdf
 cd ../..
 
-#cd report/profile-setup
-#maven pdf
-#cd ../sawmill
-#maven pdf
-#cd ../..
-
-cd report
+cd report/profile-setup
 maven pdf
-cd ..
+cd ../sawmill
+maven pdf
+cd ../..
 
 cd security
 maven pdf
