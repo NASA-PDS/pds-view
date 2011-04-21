@@ -15,8 +15,10 @@
 
 package gov.nasa.pds.registry.service;
 
+import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.ClassificationNode;
+import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationQuery;
@@ -26,9 +28,9 @@ import gov.nasa.pds.registry.query.ObjectQuery;
 import java.util.List;
 
 /**
- * This interface provides the methods required by the {@link RegistryServiceImpl}
- * in order for it to operate. This is the extension point one would implement
- * when providing a different back end storage.
+ * This interface provides the methods required by the
+ * {@link RegistryServiceImpl} in order for it to operate. This is the extension
+ * point one would implement when providing a different back end storage.
  * 
  * @author pramirez
  * 
@@ -47,8 +49,8 @@ public interface MetadataStore {
    *          number of results to get
    * @return list of extrinsics
    */
-  public RegistryResponse getExtrinsics(ExtrinsicQuery query, Integer start,
-      Integer rows);
+  public RegistryResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query,
+      Integer start, Integer rows);
 
   /**
    * Retrieves associations from the back end store that match the query and are
@@ -62,7 +64,7 @@ public interface MetadataStore {
    *          number of results to get. If equal to -1 return all.
    * @return list of associations
    */
-  public RegistryResponse getAssociations(AssociationQuery query,
+  public RegistryResponse<Association> getAssociations(AssociationQuery query,
       Integer start, Integer rows);
 
   /**
@@ -170,7 +172,7 @@ public interface MetadataStore {
    *          type of registry object
    * @return list of matching registry objects
    */
-  public List<RegistryObject> getRegistryObjectVersions(String lid,
+  public List<? extends RegistryObject> getRegistryObjectVersions(String lid,
       Class<? extends RegistryObject> objectClass);
 
   /**
@@ -184,7 +186,7 @@ public interface MetadataStore {
    *          type of object to get
    * @return list of registry objects that share the type requested
    */
-  public List<RegistryObject> getRegistryObjects(Integer start, Integer rows,
+  public List<? extends RegistryObject> getRegistryObjects(Integer start, Integer rows,
       Class<? extends RegistryObject> objectClass);
 
   /**
@@ -201,8 +203,9 @@ public interface MetadataStore {
    *          the type of registry object to look for
    * @return list of {@link RegistryObject} with the given class
    */
-  public RegistryResponse getRegistryObjects(ObjectQuery query, Integer start,
-      Integer rows, Class<? extends RegistryObject> objectClass);
+  public RegistryResponse<? extends RegistryObject> getRegistryObjects(
+      ObjectQuery query, Integer start, Integer rows,
+      Class<? extends RegistryObject> objectClass);
 
   /**
    * Test to see if a registry object exists with a logical identifier, version,

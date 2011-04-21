@@ -17,6 +17,7 @@ package gov.nasa.pds.registry.service;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Association;
+import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.ClassificationScheme;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
@@ -93,7 +94,7 @@ public interface RegistryService {
    *          how many results to return
    * @return a list of extrinsics
    */
-  public RegistryResponse getExtrinsics(Integer start, Integer rows);
+  public RegistryResponse<ExtrinsicObject> getExtrinsics(Integer start, Integer rows);
 
   /**
    * Retrieves the first set of extrinsics that match the query
@@ -102,7 +103,7 @@ public interface RegistryService {
    *          holds a set of filters to match against extrinsics
    * @return a list of extrinsics
    */
-  public RegistryResponse getExtrinsics(ExtrinsicQuery query);
+  public RegistryResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query);
 
   /**
    * Retrieves a set of extinsics that match the given query. Allows one to page
@@ -118,7 +119,7 @@ public interface RegistryService {
    *          how many results to return
    * @return a list of extrinsics
    */
-  public RegistryResponse getExtrinsics(ExtrinsicQuery query, Integer start,
+  public RegistryResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query, Integer start,
       Integer rows);
 
   /**
@@ -300,7 +301,7 @@ public interface RegistryService {
    *          how many results to return
    * @return a list of associations
    */
-  public RegistryResponse getAssociations(AssociationQuery query,
+  public RegistryResponse<Association> getAssociations(AssociationQuery query,
       Integer start, Integer rows);
 
   /**
@@ -317,7 +318,7 @@ public interface RegistryService {
    *          the type of registry object to look for
    * @return list of {@link RegistryObject} with the given class
    */
-  public RegistryResponse getObjects(ObjectQuery query, Integer start,
+  public RegistryResponse<? extends RegistryObject> getObjects(ObjectQuery query, Integer start,
       Integer rows, Class<? extends RegistryObject> objectClass);
 
   /**
@@ -327,7 +328,7 @@ public interface RegistryService {
    *          guid for the registry object of interest
    * @return list of events associated with the guid
    */
-  public RegistryResponse getAuditableEvents(String affectedObject);
+  public RegistryResponse<AuditableEvent> getAuditableEvents(String affectedObject);
 
   /**
    * Publishes a registry object to the registry.

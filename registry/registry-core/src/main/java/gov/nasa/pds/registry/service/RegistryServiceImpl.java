@@ -153,10 +153,13 @@ public class RegistryServiceImpl implements RegistryService {
    * gov.nasa.pds.registry.service.RegistryService#getExtrinsics(java.lang.Integer
    * , java.lang.Integer)
    */
-  public RegistryResponse getExtrinsics(Integer start, Integer rows) {
-    RegistryResponse page = new RegistryResponse(start, metadataStore
-        .getNumRegistryObjects(ExtrinsicObject.class), metadataStore
-        .getRegistryObjects(start, rows, ExtrinsicObject.class));
+  @SuppressWarnings("unchecked")
+  public RegistryResponse<ExtrinsicObject> getExtrinsics(Integer start,
+      Integer rows) {
+    RegistryResponse<ExtrinsicObject> page = new RegistryResponse<ExtrinsicObject>(
+        start, metadataStore.getNumRegistryObjects(ExtrinsicObject.class),
+        (List<ExtrinsicObject>) metadataStore.getRegistryObjects(start, rows,
+            ExtrinsicObject.class));
     return page;
   }
 
@@ -167,7 +170,7 @@ public class RegistryServiceImpl implements RegistryService {
    * gov.nasa.pds.registry.service.RegistryService#getExtrinsics(gov.nasa.pds
    * .registry.query.ExtrinsicQuery)
    */
-  public RegistryResponse getExtrinsics(ExtrinsicQuery query) {
+  public RegistryResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query) {
     return this.getExtrinsics(query, 1, 20);
   }
 
@@ -178,8 +181,8 @@ public class RegistryServiceImpl implements RegistryService {
    * gov.nasa.pds.registry.service.RegistryService#getExtrinsics(gov.nasa.pds
    * .registry.query.ExtrinsicQuery, java.lang.Integer, java.lang.Integer)
    */
-  public RegistryResponse getExtrinsics(ExtrinsicQuery query, Integer start,
-      Integer rows) {
+  public RegistryResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query,
+      Integer start, Integer rows) {
     if (start <= 0) {
       start = 1;
     }
@@ -251,7 +254,7 @@ public class RegistryServiceImpl implements RegistryService {
   public RegistryObject getLatestObject(String lid,
       Class<? extends RegistryObject> objectClass) {
     // TODO: Make this throw an exception if the lid does not exist
-    List<RegistryObject> objects = metadataStore.getRegistryObjectVersions(lid,
+    List<? extends RegistryObject> objects = metadataStore.getRegistryObjectVersions(lid,
         objectClass);
     Collections.sort(objects, versioner.getComparator());
     if (objects.size() > 0) {
@@ -270,7 +273,7 @@ public class RegistryServiceImpl implements RegistryService {
   public RegistryObject getEarliestObject(String lid,
       Class<? extends RegistryObject> objectClass) {
     // TODO: Make this throw an exception if the lid does not exist
-    List<RegistryObject> objects = metadataStore.getRegistryObjectVersions(lid,
+    List<? extends RegistryObject> objects = metadataStore.getRegistryObjectVersions(lid,
         objectClass);
     Collections.sort(objects, versioner.getComparator());
     if (objects.size() > 0) {
@@ -290,7 +293,7 @@ public class RegistryServiceImpl implements RegistryService {
       Class<? extends RegistryObject> objectClass) {
     // TODO: Make this method throw an exception if the lid or version is not
     // found
-    List<RegistryObject> objects = metadataStore.getRegistryObjectVersions(lid,
+    List<? extends RegistryObject> objects = metadataStore.getRegistryObjectVersions(lid,
         objectClass);
     Collections.sort(objects, versioner.getComparator());
     for (int i = 0; i < objects.size(); i++) {
@@ -317,7 +320,7 @@ public class RegistryServiceImpl implements RegistryService {
       Class<? extends RegistryObject> objectClass) {
     // TODO: Make this method throw an exception if the lid or version is not
     // found
-    List<RegistryObject> objects = metadataStore.getRegistryObjectVersions(lid,
+    List<? extends RegistryObject> objects = metadataStore.getRegistryObjectVersions(lid,
         objectClass);
     Collections.sort(objects, versioner.getComparator());
     for (int i = 0; i < objects.size(); i++) {
@@ -428,7 +431,7 @@ public class RegistryServiceImpl implements RegistryService {
    * gov.nasa.pds.registry.service.RegistryService#getAssociations(gov.nasa.
    * pds.registry.query.AssociationQuery, java.lang.Integer, java.lang.Integer)
    */
-  public RegistryResponse getAssociations(AssociationQuery query,
+  public RegistryResponse<Association> getAssociations(AssociationQuery query,
       Integer start, Integer rows) {
     if (start <= 0) {
       start = 1;
@@ -443,12 +446,14 @@ public class RegistryServiceImpl implements RegistryService {
    * .pds.registry.query.ObjectQuery, java.lang.Integer, java.lang.Integer,
    * java.lang.Class)
    */
-  public RegistryResponse getObjects(ObjectQuery query, Integer start,
-      Integer rows, Class<? extends RegistryObject> objectClass) {
+  @SuppressWarnings("unchecked")
+  public RegistryResponse<Association> getObjects(ObjectQuery query,
+      Integer start, Integer rows, Class<? extends RegistryObject> objectClass) {
     if (start <= 0) {
       start = 1;
     }
-    return metadataStore.getRegistryObjects(query, start, rows, objectClass);
+    return (RegistryResponse<Association>) metadataStore.getRegistryObjects(
+        query, start, rows, objectClass);
   }
 
   /*
@@ -458,8 +463,8 @@ public class RegistryServiceImpl implements RegistryService {
    * gov.nasa.pds.registry.service.RegistryService#getAuditableEvents(java.lang
    * .String)
    */
-  public RegistryResponse getAuditableEvents(String affectedObject) {
-    RegistryResponse response = new RegistryResponse();
+  public RegistryResponse<AuditableEvent> getAuditableEvents(String affectedObject) {
+    RegistryResponse<AuditableEvent> response = new RegistryResponse<AuditableEvent>();
     response.setResults(metadataStore.getAuditableEvents(affectedObject));
     return response;
   }
@@ -677,7 +682,7 @@ public class RegistryServiceImpl implements RegistryService {
         .build();
     AssociationQuery.Builder queryBuilder = new AssociationQuery.Builder()
         .filter(filter).operator(QueryOperator.OR);
-    RegistryResponse response = metadataStore.getAssociations(queryBuilder
+    RegistryResponse<Association> response = metadataStore.getAssociations(queryBuilder
         .build(), 1, -1);
     List<String> associationIds = new ArrayList<String>();
     for (RegistryObject object : response.getResults()) {

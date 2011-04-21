@@ -74,11 +74,11 @@ public class MetadataStoreJPA implements MetadataStore {
    * 
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#getExtrinsics(gov.nasa.pds.registry
-   * .query.ProductQuery, java.lang.Integer, java.lang.Integer)
+   * .query.ProductQuery, java.lang.Long, java.lang.Integer)
    */
   @Override
   @Transactional(readOnly = true)
-  public RegistryResponse getExtrinsics(ExtrinsicQuery query, Integer start,
+  public RegistryResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query, Integer start,
       Integer rows) {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<ExtrinsicObject> cq = cb.createQuery(ExtrinsicObject.class);
@@ -141,7 +141,7 @@ public class MetadataStoreJPA implements MetadataStore {
     }
     cq.orderBy(orders);
     TypedQuery<ExtrinsicObject> dbQuery = entityManager.createQuery(cq);
-    RegistryResponse response = new RegistryResponse(start, (long) dbQuery
+    RegistryResponse<ExtrinsicObject> response = new RegistryResponse<ExtrinsicObject>(start, (long) dbQuery
         .getResultList().size(), dbQuery.setFirstResult(start - 1)
         .setMaxResults(rows).getResultList());
     return response;
@@ -201,7 +201,7 @@ public class MetadataStoreJPA implements MetadataStore {
    */
   @Override
   @Transactional(readOnly = true)
-  public RegistryResponse getAssociations(AssociationQuery query,
+  public RegistryResponse<Association> getAssociations(AssociationQuery query,
       Integer start, Integer rows) {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<Association> cq = cb.createQuery(Association.class);
@@ -248,12 +248,12 @@ public class MetadataStoreJPA implements MetadataStore {
     TypedQuery<Association> dbQuery = entityManager.createQuery(cq);
     
     if (rows == -1) {
-      return new RegistryResponse(start, (long) dbQuery
+      return new RegistryResponse<Association>(start, (long) dbQuery
           .getResultList().size(), dbQuery.setFirstResult(start - 1)
           .getResultList());
     }
     
-    return  new RegistryResponse(start, (long) dbQuery
+    return  new RegistryResponse<Association>(start, (long) dbQuery
         .getResultList().size(), dbQuery.setFirstResult(start - 1)
         .setMaxResults(rows).getResultList());
   }

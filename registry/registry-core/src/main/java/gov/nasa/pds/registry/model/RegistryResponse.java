@@ -15,13 +15,14 @@
 
 package gov.nasa.pds.registry.model;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -35,7 +36,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "response", namespace = "http://registry.pds.nasa.gov")
 @XmlType(name = "")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RegistryResponse {
+public class RegistryResponse<T> implements Serializable {
+  
+  private static final long serialVersionUID = 2848386465677347398L;
 
   // Where in the set of results to start
   @XmlAttribute
@@ -46,23 +49,35 @@ public class RegistryResponse {
   private Long numFound;
 
   @XmlElementWrapper(name = "results", namespace = "http://registry.pds.nasa.gov")
-  @XmlElementRef
-  private List<? extends RegistryObject> results;
+  @XmlElements({
+    @XmlElement(name="association", type=Association.class, namespace="http://registry.pds.nasa.gov"),
+    @XmlElement(name="auditableEvent", type=AuditableEvent.class, namespace="http://registry.pds.nasa.gov"),
+    @XmlElement(name="classification", type=Classification.class, namespace="http://registry.pds.nasa.gov"),
+    @XmlElement(name="classificationNode", type=ClassificationNode.class, namespace="http://registry.pds.nasa.gov"),
+    @XmlElement(name="classificationScheme", type=ClassificationScheme.class, namespace="http://registry.pds.nasa.gov"),
+    @XmlElement(name="externalIdentifier", type=ExternalIdentifier.class, namespace="http://registry.pds.nasa.gov"),
+    @XmlElement(name="extrinsicObject", type=ExtrinsicObject.class, namespace="http://registry.pds.nasa.gov"),
+    @XmlElement(name="registryPackage", type=RegistryPackage.class, namespace="http://registry.pds.nasa.gov"),
+    @XmlElement(name="service", type=Service.class, namespace="http://registry.pds.nasa.gov"),
+    @XmlElement(name="serviceBinding", type=ServiceBinding.class, namespace="http://registry.pds.nasa.gov"),
+    @XmlElement(name="slot", type=Slot.class, namespace="http://registry.pds.nasa.gov"),
+    @XmlElement(name="specificationLink", type=SpecificationLink.class, namespace="http://registry.pds.nasa.gov")
+  })
+  private List<T> results;
 
   public RegistryResponse() {
-    this(null, null, null);
   }
 
   public RegistryResponse(Integer start, Long numFound) {
     this(start, numFound, null);
   }
 
-  public RegistryResponse(List<? extends RegistryObject> results) {
+  public RegistryResponse(List<T> results) {
     this(null, null, results);
   }
 
   public RegistryResponse(Integer start, Long numFound,
-      List<? extends RegistryObject> results) {
+      List<T> results) {
     this.start = start;
     this.numFound = numFound;
     this.results = results;
@@ -84,11 +99,11 @@ public class RegistryResponse {
     this.numFound = numFound;
   }
 
-  public List<? extends RegistryObject> getResults() {
-    return this.results;
+  public List<T> getResults() {
+    return results;
   }
 
-  public void setResults(List<? extends RegistryObject> results) {
-    this.results = new ArrayList<RegistryObject>(results);
+  public void setResults(List<T> results) {
+    this.results = results;
   }
 }

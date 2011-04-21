@@ -21,7 +21,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
 import gov.nasa.pds.registry.provider.JAXBContextResolver;
-import gov.nasa.pds.registry.provider.JSONContextResolver;
+import gov.nasa.pds.registry.provider.JacksonObjectMapperProvider;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
@@ -53,7 +53,7 @@ public class RegistryClient {
 
   public RegistryClient(String baseUrl, String token) {
     ClientConfig clientConfig = new DefaultClientConfig();
-    clientConfig.getClasses().add(JSONContextResolver.class);
+    clientConfig.getClasses().add(JacksonObjectMapperProvider.class);
     clientConfig.getClasses().add(JAXBContextResolver.class);
     registryResource = Client.create(clientConfig).resource(baseUrl).path(
         "registry");
@@ -235,7 +235,7 @@ public class RegistryClient {
         RegistryResponse.class);
     System.out.println("Total results: " + response.getNumFound());
     System.out.println("Number displayed: " + response.getResults().size());
-    for (RegistryObject object : response.getResults()) {
+    for (RegistryObject object : (List<RegistryObject>)response.getResults()) {
       System.out.println(object.getClass().getSimpleName() + " "
           + object.getGuid());
     }
@@ -252,7 +252,7 @@ public class RegistryClient {
             .build();
         response = client.getExtrinsics(query, null, null).getEntity(
             RegistryResponse.class);
-        for (RegistryObject object : response.getResults()) {
+        for (RegistryObject object : (List<RegistryObject>)response.getResults()) {
           System.out.println(object.getClass().getSimpleName() + " "
               + object.getGuid() + " " + object.getLid() + " "
               + object.getVersionId());

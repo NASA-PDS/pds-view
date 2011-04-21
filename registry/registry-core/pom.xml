@@ -50,7 +50,8 @@
     <xdoc-artifactId>${artifactId}</xdoc-artifactId>
     <xdoc-version>${version}</xdoc-version>
     <!-- These properties support the application. -->
-    <jersey-version>1.1.5.1</jersey-version>
+    <!--<jersey-version>1.1.5.1</jersey-version>-->
+    <jersey-version>1.5</jersey-version>
     <junit-version>4.8.1</junit-version>
     <xerces-version>2.6.1</xerces-version>
     <jaxb-version>2.2</jaxb-version>
@@ -238,6 +239,16 @@
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-server</artifactId>
       <version>${jersey-version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring</artifactId>
+        </exclusion>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey</groupId>
