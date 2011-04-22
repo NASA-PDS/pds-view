@@ -1,0 +1,2 @@
+recursive-include src *.cfg *.xml *.json
+include distribute_setup.py pom.xml

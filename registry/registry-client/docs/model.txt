@@ -1,0 +1,100 @@
+Product
+-------
+
+"lid" is primary key.
+
+aProduct = {
+    "versionId":"1.0.0",
+    "versionName":"1.0",
+    "description":"A water biscuit is a type of biscuit or cracker. Water biscuits are baked using only flour and water, without shortening or other fats usually used in biscuit production.",
+    "status":"Submitted",
+    "objectType":"Product",
+    "name":"water biscuit",
+    "lid":"urn:crackers:c972,133",
+    "home":"http://localhost:8080/registry-service",
+    "guid":"urn:uuid:464525b0-3032-4193-a4ca-2f286c55b377",
+    "slot":[
+        { "name":"shortening", "id":12, "value":["none"] }
+    ]
+}
+
+
+Association
+-----------
+
+anAssociation = {
+    "associationType":"urn:food:preparation-techniques:spread-upon",
+    "targetHome":"http://localhost:8080/registry-service",
+    "targetVersionId":"1.0.0",
+    "targetLid":"urn:crackers:c972,133",
+    "sourceHome":"http://localhost:8080/registry-service",
+    "sourceVersionId":"1.0.0",
+    "sourceLid":"urn:cheeses:a123,456",
+    "versionId":"1.0",
+    "versionName":"1.0",
+    "status":"Submitted",
+    "objectType":"Association",
+    "lid":"urn:uuid:d25ddb97-9c5c-4c3d-bd2f-c5803e06b2c0",
+    "home":"http://localhost:8080/registry-service",
+    "guid":"urn:uuid:a0c6b2d5-e843-4e42-a991-4f9fc295c0b7"
+}
+
+
+Service
+-------
+
+aService = {
+    "versionId":"1.0",
+    "versionName":"1.0",
+    "description":"Provides live streams for tuning the Lush radio station at Soma FM.",
+    "status":"Submitted",
+    "objectType":"Service",
+    "name":"Lush Radio Service",
+    "lid":"urn:uuid:5e85ba8e-51c7-483a-a25d-6016129cbe74",
+    "home":"http://localhost:8080/registry-service",
+    "guid":"urn:sk:radio:lush",
+    "serviceBinding":[
+        {
+            "service":"urn:sk:radio:lush",
+            "accessURI":"http://somafm.com/play/lush/mp3",
+            "description":"The main Lush stream (and hence the most popular).",
+            "objectType":"ServiceBinding",
+            "name":"128k MP3 Lush Stream",
+            "guid":"urn:uuid:659a0ffb-7e1c-4770-9c6e-7f924461ffac",
+            "specificationLink":[
+                {
+                    "specificationObject":"urn:ietf:rfc:2326",
+                    "serviceBinding":"urn:uuid:659a0ffb-7e1c-4770-9c6e-7f924461ffac",
+                    "description":"Real Time Streaming Protocol",
+                    "objectType":"SpecificationLink",
+                    "name":"RSTP",
+                    "home":"http://localhost:8080/registry-service",
+                    "guid":"urn:uuid:90631405-6798-41ac-95dc-ac7eafde5157",
+                    "usageDescription":"Recommended media players.",
+                    "usageParameter":["iTunes","VLC"]
+                }
+            ]
+        },
+        {
+            "service":"urn:sk:radio:lush",
+            "accessURI":"http://somafm.com/play/lush/wmv",
+            "description":"The windows-specific Lush stream, which sucks.",
+            "objectType":"ServiceBinding",
+            "name":"64k WMP Lush Stream",
+            "guid":"urn:uuid:76c53cf8-7df2-4a5b-baf1-d6c5e74bdf72",
+            "specificationLink":[
+                {
+                    "specificationObject":"urn:microsfot:fuck-your-standards:wmpsp",
+                    "serviceBinding":"urn:uuid:76c53cf8-7df2-4a5b-baf1-d6c5e74bdf72",
+                    "description":"Windows Media Player Streaming Protocol",
+                    "objectType":"SpecificationLink",
+                    "name":"WMPSP",
+                    "home":"http://localhost:8080/registry-service",
+                    "guid":"urn:uuid:29da6452-72ed-477d-83e6-2ee77d1d339d",
+                    "usageDescription":"There's only one media player that'll work.",
+                    "usageParameter":["Windows Media Player"]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,46 @@
+Requirements
+============
+
+Python 2.6.
+
+
+Installation
+============
+
+By far, the easiest way to install pds.registry is to use pip_ or
+easy_install_.  As a privileged user, type::
+
+    pip install pds.registry
+
+or::
+
+    easy_install pds.registry
+
+The software as well as its dependencies will be downloaded and installed
+automatically.
+
+
+Installing from Source
+----------------------
+
+If neither pip nor easy_install are available on your system, just install
+from source:
+
+1.  Download the source package archive.
+2.  Extract the gzip'd tar archive.
+3.  In the extracted directory, run ``python setup.py install`` as a
+    privileged user.
+
+
+.. References:
+.. _pip: http://pip.openplans.org/
+.. _easy_install: http://peak.telecommunity.com/DevCenter/EasyInstall
+
+.. Author:
+    Sean Kelly
+    Jet Propulsion Laboratory
+    California Institute of Technology
+
+.. Copyright:
+    Copyright 2011 California Institute of Technology. ALL RIGHTS RESERVED.
+    U.S. Government sponsorship acknowledged.

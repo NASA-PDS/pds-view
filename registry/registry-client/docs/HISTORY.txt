@@ -1,0 +1,21 @@
+Changelog
+=========
+
+What follows is a history of changes from release to release, along with
+issues addressed and new features in each release.
+
+
+0.0.0 - Unreleased
+------------------
+
+There are no releases yet of the PDS Registry Client.
+
+
+Issue Tracker
+-------------
+
+Visit https://oodt.jpl.nasa.gov/jira/browse/PDSEN to find the issue tracker.
+
+
+.. References:
+.. _FCS: http://en.wikipedia.org/wiki/Development_stage#General_availability
