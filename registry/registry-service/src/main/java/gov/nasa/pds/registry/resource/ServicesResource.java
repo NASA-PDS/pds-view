@@ -30,6 +30,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -86,9 +87,8 @@ public class ServicesResource {
     try {
       String guid = registryService.publishObject("Unknown", service);
       return Response.created(
-          ServicesResource.getServiceUri((Service) registryService
-              .getObject(guid, service.getClass()), uriInfo)).entity(
-          guid).build();
+          ServicesResource.getServiceUri((Service) registryService.getObject(
+              guid, service.getClass()), uriInfo)).entity(guid).build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
           ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
@@ -126,16 +126,41 @@ public class ServicesResource {
     registryService.deleteObject("Unknown", guid, Service.class);
     return Response.ok().build();
   }
-  
+
+  /**
+   * Allows update of a Service and its contained objects.
+   * 
+   * @param guid
+   *          globally unique identifier of the service
+   * @param service
+   *          updates to the service
+   * @return returns an HTTP response that indicates an error or ok
+   */
+  @PUT
+  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  @Path("{guid}")
+  public Response updateService(@PathParam("guid") String guid, Service service) {
+    registryService.updateObject("Unknown", service);
+    return Response.ok().build();
+  }
+
+  @POST
+  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  @Path("{guid}")
+  public Response updateServiceWithPost(@PathParam("guid") String guid, Service service) {
+    return this.updateService(guid, service);
+  }
+
+  @SuppressWarnings("unchecked")
   @GET
-  @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+  @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response getServices(
       @QueryParam("start") @DefaultValue("1") Integer start,
       @QueryParam("rows") @DefaultValue("20") Integer rows) {
     ObjectFilter filter = new ObjectFilter.Builder().build();
     ObjectQuery.Builder queryBuilder = new ObjectQuery.Builder().filter(filter);
-    RegistryResponse rr = registryService.getObjects(queryBuilder.build(),
-        start, rows, Service.class);
+    RegistryResponse<Service> rr = (RegistryResponse<Service>) registryService
+        .getObjects(queryBuilder.build(), start, rows, Service.class);
     Response.ResponseBuilder builder = Response.ok(rr);
     UriBuilder absolute = uriInfo.getAbsolutePathBuilder();
     absolute.queryParam("start", "{start}");

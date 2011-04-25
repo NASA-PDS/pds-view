@@ -110,8 +110,8 @@ public class NodesResource {
    */
   @GET
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public RegistryResponse getClassificationNodes() {
-    return new RegistryResponse(registryService
+  public RegistryResponse<ClassificationNode> getClassificationNodes() {
+    return new RegistryResponse<ClassificationNode>(registryService
         .getClassificationNodes(scheme.getGuid()));
   }
 
