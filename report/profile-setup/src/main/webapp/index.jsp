@@ -140,98 +140,83 @@ $(function() {
 	});
 		
 	$('#submit-btn').click(function() {
-		var html="", fail, connect, sftp, modalButtons = {}, label1, label2, saveButtons = {};
-		
-		$.post('setup', $('#transfer-form').serialize(), function(data) {
-			var testSetup = {count: 0};
-			var filelist = '';
-			$('#setup-modal').html('');
-			$.each(data.logs, function (i, log) {
-				connect = "OK";
-				sftp = "OK";
-				fail = 0;
-				filelist = '';
-				testSetup.count++;
+		var html="", fail, connect, sftp, testModalButtons = {}, label1, label2, saveModalButtons = {};
 
-				if (log.connect == 0) {
-					connect = "<div class=\"ui-state-error\">FAILED -  "+log.error+"</div>";
-					fail = 1;
-				} else if (log.sftp == 0) {
-					sftp = "<div class=\"ui-state-error\">FAILED -  "+log.error+"</div>";
-					fail = 1;
-				}
-
-				testSetup.connect = connect;
-				testSetup.sftp = sftp;
-				testSetup.fail = fail;
-				testSetup.hostname = log.hostname;
-				testSetup.pathname = log.pathname;
-				testSetup.label = log.label;
-
-				modalButtons = {};
-				if (fail == 0) {
-					if (log.files.length == 0) {
-						filelist = "0 Files Found<br />Verify this is expected";
-					} else {
-						$.each(log.files, function (i, filename) {
-							if (i < 9) {
-								filelist += filename+"<br />";
-							} else {
-								if (i == 9) {
-									filelist += "<span class=\"hidden-files\" style=\"display: inline;\"><a href=\"javascript:toggleHiddenFiles()\">More Files...</a></span>";
-								}
-								filelist += "<span class=\"hidden-files\">"+filename+"<br /></span>";
-							}
-						});
+		if ($('#new-log-set').val() == 0) {
+			  alert("No New Log Sets Specified");
+		} else {
+			$.post('setup', $('#transfer-form').serialize(), function(data) {
+				var testSetup = {count: 0};
+				var filelist = '';
+				$('#setup-modal').html('');
+	
+				$.each(data.logs, function (i, logSet) {
+					connect = "OK";
+					sftp = "OK";
+					fail = 0;
+					filelist = '';
+					testSetup.count++;
+	
+					// Check for connection and sftp errors for each log set
+					if (logSet.connect == 0) {
+						connect = "<div class=\"ui-state-error\">FAILED -  "+logSet.error+"</div>";
+						fail = 1;
+					} else if (logSet.sftp == 0) {
+						sftp = "<div class=\"ui-state-error\">FAILED -  "+logSet.error+"</div>";
+						fail = 1;
 					}
-
-					testSetup.filelist = filelist;
-
-					// Set modal buttons according to whether or not error is thrown
-					modalButtons['Submit'] = function() { 				
-						$.post('save',$('#transfer-form').serialize(), function (data) {
-							saveButtons = {};
-							$('#setup-modal').dialog('close');
-							if (data.error == "") {
-								var saveHtml = "<p>Please Note: Logs will now be migrated. " +
-								 	"Depending on the file size, they may not be immediately available " +
-								 	"by the Report Service.</p>";
-								 	
-								saveButtons['Continue'] = function() { window.location.replace("http://pdsops.jpl.nasa.gov/report-service/"); };
-								//saveButtons['Continue'] = function() { window.location.replace("http://127.0.0.1:8080/cgi-bin/sawmill.cgi"); };
-								saveButtons['Close'] = function() {
-									resetForm(); 
-									$(this).dialog("close");
-								}; 	
-							} else {
-								var saveHtml = "<p class=\"ui-state-error\">Error: "+data.error+"</p>";
-								saveButtons['Close'] = function() { $(this).dialog("close"); };
-							}
-						 	$('#save-modal').html(saveHtml);
-							$('#save-modal').dialog({
-								modal: true,
-								title: "Save Complete",
-								width: "500px",
-								buttons: saveButtons
+	
+					// Set testSetup object values for the template
+					testSetup.connect = connect;
+					testSetup.sftp = sftp;
+					testSetup.fail = fail;
+					testSetup.hostname = logSet.hostname;
+					testSetup.pathname = logSet.pathname;
+					testSetup.label = logSet.label;
+	
+					// Initialize buttons object for modal window
+					testModalButtons = {};
+	
+					// Display different information if connection failed
+					if (fail == 0) {
+						// If no files found, display note to user to make sure information is correct
+						if (logSet.files.length == 0) {
+							filelist = "0 Files Found<br />Verify this is expected";
+						} else {  // Otherwise, loop through the files found and display the first 9 and hide the remaining
+							$.each(logSet.files, function (i, filename) {
+								if (i < 9) {
+									filelist += filename+"<br />";
+								} else {
+									if (i == 9) {
+										filelist += "<span class=\"hidden-files\" style=\"display: inline;\"><a href=\"javascript:toggleHiddenFiles()\">More Files...</a></span>";
+									}
+									filelist += "<span class=\"hidden-files\">"+filename+"<br /></span>";
+								}
 							});
-						}, 'json');
-					};
-					modalButtons['Cancel'] = function() { $(this).dialog("close"); };
-				} else {
-					modalButtons['Close'] = function() { $(this).dialog("close"); };
-				}			
-				$('#setup-modal').append($('#connectionsTemplate').tmpl(testSetup));
-			});
-			
-			//$('#setup-modal').html(html);
-			$('#setup-modal').dialog({
-				modal: true,
-				title: 'Profile: '+$('#name').val(),
-				width: '500px',
-				maxHeight: '500px',
-				buttons: modalButtons
-			});
-		}, "json");
+						}
+	
+						testSetup.filelist = filelist;
+	
+						// Set modal buttons
+						testModalButtons['Submit'] = function() { saveLogSets(); };
+						testModalButtons['Cancel'] = function() { $(this).dialog("close"); };
+					} else {
+						testModalButtons['Close'] = function() { $(this).dialog("close"); };
+					}			
+					
+					$('#setup-modal').append($('#connectionsTemplate').tmpl(testSetup));
+				});
+					
+				//$('#setup-modal').html(html);
+				$('#setup-modal').dialog({
+					modal: true,
+					title: 'Profile: '+$('#name').val(),
+					width: '500px',
+					maxHeight: '500px',
+					buttons: testModalButtons
+				});
+			}, "json");
+		}
 	});
 });
 
@@ -245,22 +230,61 @@ function resetForm() {
 	$('.set-info').attr('readonly','').removeClass('ui-state-disabled');
 }
 
+// Resets the counts used throughout the application
 function resetLogSetCnt() {
 	$('#log-set-count').val(0);
 	$('#new-log-set').val(0);
 	maxSetNum=0;
 }
 
+// Function to save all of the new log set information
+function saveLogSets() {
+    $.post('save',$('#transfer-form').serialize(), function (data) {
+        saveModalButtons = {};  // Initialize the modal buttons object for the saveModal
+        
+        $('#setup-modal').dialog('close');  // Close the setup modal window
+
+        // Verify no errors are reported, and display note about log migration
+        if (data.error == "") {
+          var saveHtml = "<p>Please Note: Logs will now be migrated. " +
+            "Depending on the file size, they may not be immediately available " +
+            "by the Report Service.</p>";
+            
+          saveModalButtons['Continue'] = function() { window.location.replace("http://pdsops.jpl.nasa.gov/report-service/"); };
+          //saveModalButtons['Continue'] = function() { window.location.replace("http://127.0.0.1:8080/cgi-bin/sawmill.cgi"); };
+          saveModalButtons['Close'] = function() {
+            resetForm(); 
+            $(this).dialog("close");
+          };  
+        } else {  // Otherwise, display the error
+          var saveHtml = "<p class=\"ui-state-error\">Error: "+data.error+"</p>";
+          saveModalButtons['Close'] = function() { $(this).dialog("close"); };
+        }
+
+        // Sets the modal HTML prior to calling the dialog window
+        $('#save-modal').html(saveHtml);
+
+        // Display the modal dialog
+        $('#save-modal').dialog({
+          modal: true,
+          title: "Save Complete",
+          width: "500px",
+          buttons: saveModalButtons
+        });
+      }, 'json');
+}
+
+// Function to instantiate the template
 function createLogSet(details, isNew) {
 	// Tracks total number of log sets, new or loaded from DB
 	$('#log-set-count').val($('#log-set-count').val()/1+1);
-	
+
+	// If the log set is new, display the default/empty log set
 	if (isNew) {
-		// Tracks total number of NEW log sets
-		$('#new-log-set').val($('#new-log-set').val()/1+1);
+		$('#new-log-set').val($('#new-log-set').val()/1+1);  // Tracks total number of NEW log sets
 		details = { count: $('#log-set-count').val(), label: 'log set '+$('#log-set-count').val(), hostname: '', username: '', password: '', pathname: '', logSetId: 0, setNumber: maxSetNum, newSet: 1};
 		$('#logDetailsTemplate').tmpl(details).appendTo('#log-set-container', details);
-	} else {
+	} else {  // Otherwise, display the queried log set
 		details.newSet = 0;
 		$('#logDetailsTemplate').tmpl(details).appendTo('#log-set-container', details);
 		$('.log-set input').attr('readonly','readonly').addClass('ui-state-disabled'); // Remove input styling from input boxes
@@ -268,8 +292,6 @@ function createLogSet(details, isNew) {
 	}
 
 	maxSetNum++;
-	// Set the highlight for hover over icons
-	//setHover();	
 }
 
 function resetProfiles() {
@@ -312,8 +334,10 @@ function getProfileInfo() {
 
 				$.each(data.logSets, function (i, logset) {
 					details = { count: i+1, label: logset.label, hostname: logset.hostname, username: logset.username, password: logset.password, pathname: logset.pathname, logSetId: logset.logSetId, setNumber: logset.setNumber };
+					
 					if (logset.setNumber > maxSetNum)
 						maxSetNum = logset.setNumber+1;
+					
 					createLogSet(details, false); // Add new log set section for each log set queried from DB
 				});
 			} else {

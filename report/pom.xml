@@ -36,6 +36,7 @@
   <url>http://pds-cm.jpl.nasa.gov/2010/report/</url>
 
   <modules>
+    <module>log-transfer</module>
     <module>profile-setup</module>
     <module>sawmill</module>
   </modules>
@@ -96,6 +97,15 @@
       </snapshots>
     </repository>
   </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
   <!-- Project Information and Reports inherited from parent. -->
   <reporting/>

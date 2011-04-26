@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -19,6 +20,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 /**
+ * Profile object
+ * 
  * @author jpadams
  *
  */
@@ -29,10 +32,13 @@ public class Profile {
 	private String name;
 	private String method;
 	private int profileId;
-	private ArrayList<LogSet> lsList;
+	private List<LogSet> lsList;
 	
 	protected Logger log = Logger.getLogger(this.getClass().getName());
 	
+	/**
+	 * Base constructor class with no parameters
+	 */
 	public Profile() {
 		//this._activeFlag = "";
 		this.profileId = 0;
@@ -43,6 +49,11 @@ public class Profile {
 		this.lsList = new ArrayList<LogSet>();
 	}
 	
+	/**
+	 * Constructor class that gets values from a ResultSet
+	 * @param rs
+	 * @throws SQLException
+	 */
 	public Profile(ResultSet rs) throws SQLException {
 		this.profileId = rs.getInt("profile_id");
 		this.node = rs.getString("node");
@@ -51,6 +62,10 @@ public class Profile {
 		this.method = rs.getString("method");
 	}
 	
+	/**
+	 * Constructor class that gets values from a paramater map
+	 * @param paramMap
+	 */
 	public void setProfile(Map<String,String[]> paramMap) {
 		this.profileId = Integer.parseInt((paramMap.get("profile-id")[0]));
 		this.identifier = paramMap.get("identifier")[0];
@@ -58,11 +73,11 @@ public class Profile {
 		this.name = paramMap.get("name")[0];
 		this.node = paramMap.get("node")[0];
 		
-		log.info("profileId: "+this.profileId);
-		log.info("identifier: "+this.identifier);
-		log.info("method: "+this.method);
-		log.info("name: "+this.name);
-		log.info("node: "+this.node);
+		log.fine("profileId: "+this.profileId);
+		log.fine("identifier: "+this.identifier);
+		log.fine("method: "+this.method);
+		log.fine("name: "+this.name);
+		log.fine("node: "+this.node);
 		
 		ArrayList<LogSet> lsList = new ArrayList<LogSet>();
 		//int logCount = Integer.parseInt(paramMap.get("log-set-count")[0]);
@@ -71,12 +86,12 @@ public class Profile {
 			ls = new LogSet(paramMap,i);
 			ls.setProfileId(getProfileId());
 
-			log.info("profile-"+i+": "+ls.getProfileId());
-			log.info("log-set-id-"+i+": "+ls.getLogSetId());
-			log.info("label-"+i+": "+ls.getLabel());
-			log.info("hostname-"+i+": "+ls.getHostname());
-			log.info("username-"+i+": "+ls.getUsername());
-			log.info("pathname-"+i+": "+ls.getPathname());
+			log.fine("profile-"+i+": "+ls.getProfileId());
+			log.fine("log-set-id-"+i+": "+ls.getLogSetId());
+			log.fine("label-"+i+": "+ls.getLabel());
+			log.fine("hostname-"+i+": "+ls.getHostname());
+			log.fine("username-"+i+": "+ls.getUsername());
+			log.fine("pathname-"+i+": "+ls.getPathname());
 			
 			lsList.add(ls);
 		}
@@ -129,12 +144,12 @@ public class Profile {
 		this.method = method;
 	}
 
-	public ArrayList<LogSet> getLogSetList() {
+	public List<LogSet> getLogSetList() {
 		return lsList;
 	}
 	
-	public ArrayList<LogSet> getNewLogSets() {
-		ArrayList<LogSet> newSetList = new ArrayList<LogSet>();
+	public List<LogSet> getNewLogSets() {
+		List<LogSet> newSetList = new ArrayList<LogSet>();
 		LogSet ls;
 		for (Iterator<LogSet> it = this.lsList.iterator(); it.hasNext();) {
 			ls = it.next();
@@ -144,7 +159,7 @@ public class Profile {
 		return newSetList;
 	}
 	
-	public void setLogSetList(ArrayList<LogSet> logSetList) {
+	public void setLogSetList(List<LogSet> logSetList) {
 		this.lsList = logSetList;
 	}
 	

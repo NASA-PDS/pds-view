@@ -1,6 +1,8 @@
 package gov.nasa.pds.report.setup.model;
 
-import gov.nasa.pds.report.setup.Globals;
+//import gov.nasa.pds.report.setup.Globals;
+
+import gov.nasa.pds.report.transfer.Globals;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +13,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-public class LogSet extends Globals {
+public class LogSet {
 
 	private int logSetId;
 	private int profileId;
@@ -68,7 +70,7 @@ public class LogSet extends Globals {
 	
 	private void setEncryptor() {
 		this.encryptor = new StandardPBEStringEncryptor();
-		this.encryptor.setPassword(CRYPT_PASSWORD);
+		this.encryptor.setPassword(Globals.CRYPT_PASSWORD);
 	}
 
 	public String getActiveFlag() {
@@ -110,9 +112,9 @@ public class LogSet extends Globals {
 	public String getPassword() {
 		return password;
 	}
-	public String getDecryptedPassword() {
+	/*public String getDecryptedPassword() {
 		return this.encryptor.decrypt(password);
-	}
+	}*/
 	/**
 	 * Set the local password variable.
 	 * If new log set, encrypt.

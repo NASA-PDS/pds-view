@@ -31,7 +31,7 @@ public class UpdateServlet extends HttpServlet {
      */
     public UpdateServlet() {
         super();
-        // TODO Auto-generated constructor stub
+        
     }
 
 	/**
@@ -56,9 +56,9 @@ public class UpdateServlet extends HttpServlet {
 				Profile prof;
 				if (id.equals("new")) {
 					jArray = new JsonArray();
-					for(Iterator<Profile> it = util.findAllProfiles().iterator(); it.hasNext();) {
+					for (Iterator<Profile> it = util.findAllProfiles().iterator(); it.hasNext();) {
 						prof = it.next();
-						
+
 						jObj =  new JsonObject();
 						
 						jObj.add("id", new JsonPrimitive(prof.getProfileId()));

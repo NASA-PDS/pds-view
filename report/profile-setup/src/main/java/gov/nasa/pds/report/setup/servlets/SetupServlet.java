@@ -7,10 +7,14 @@
  */
 package gov.nasa.pds.report.setup.servlets;
 
+import gov.nasa.pds.report.setup.model.LogSet;
 import gov.nasa.pds.report.setup.model.Profile;
-import gov.nasa.pds.report.setup.util.SFTPUtil;
+import gov.nasa.pds.report.setup.util.TransferUtil;
+import gov.nasa.pds.report.transfer.util.SFTPConnect;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -19,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 /**
  * Servlet implementation class SetupServlet
@@ -40,15 +46,22 @@ public class SetupServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	protected final void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		Profile profile = new Profile();
 		profile.setProfile(request.getParameterMap());
 		
-		SFTPUtil util = new SFTPUtil(profile.getLogSetList());
+		JsonObject root = new JsonObject();
+		List<LogSet> lsList = profile.getNewLogSets();
+		if (lsList.size() != 0) {
+			TransferUtil connect = new TransferUtil(lsList);
+			root = connect.checkAllConnections();
+		} else { 
+			root.add("empty", new JsonPrimitive("0"));
+		}
+			
 		
 		Gson gson = new Gson();
-		gson.toJson(util.checkConnections(), response.getWriter());	
+		gson.toJson(root, response.getWriter());	
 
 	}
 

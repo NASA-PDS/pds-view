@@ -11,28 +11,24 @@ package gov.nasa.pds.report.setup.util;
 
 import gov.nasa.pds.report.setup.model.LogSet;
 import gov.nasa.pds.report.setup.model.Profile;
-import gov.nasa.pds.report.setup.properties.DBProperties;
+import gov.nasa.pds.report.transfer.util.DatabaseManager;
 
 import java.io.FileNotFoundException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
  * @author jpadams
  * 
  */
-public class DBUtil {
+public class DBUtil extends DatabaseManager {
 
-	private Connection conn;
-	//private String qString;
-	private DBProperties dbProps;
-	private Logger log = Logger.getLogger(this.getClass().getName());
 	private int profileId = -1;
 
 	/**
@@ -41,55 +37,7 @@ public class DBUtil {
 	 * @throws FileNotFoundException
 	 */
 	public DBUtil(final String path) throws FileNotFoundException {
-		try {
-			this.dbProps = new DBProperties(path);
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
-	}
-
-	/**
-	 * 
-	 * @param path
-	 * @param qs
-	 * @throws FileNotFoundException
-	 */
-	public DBUtil(final String path, final String qs) throws FileNotFoundException {
-		try {
-			this.dbProps = new DBProperties(path);
-			//this.qString = qs;
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
-	}
-
-	/**
-	 * 
-	 */
-	public final void closeConn() {
-		try {
-			this.conn.close();
-			//DriverManager.deregisterDriver(DriverManager.getDriver(this._dbProps.getDriver()));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * 
-	 * @throws SQLException
-	 */
-	private void connect() throws SQLException {
-		try {
-			Class.forName(this.dbProps.getDriver());
-			this.conn = DriverManager.getConnection(
-					this.dbProps.getUrl(), 
-					this.dbProps.getUsername(), 
-					this.dbProps.getPassword());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		super(path);
 	}
 
 	/**
@@ -104,7 +52,7 @@ public class DBUtil {
 
 		try {
 			Profile prof = null;
-			ArrayList<LogSet> liList = new ArrayList<LogSet>();
+			List<LogSet> liList = new ArrayList<LogSet>();
 
 			connect();			
 			stmt = this.conn.createStatement();
@@ -134,7 +82,7 @@ public class DBUtil {
 		} finally {
 			stmt.close();
 			rs.close();
-			closeConn();
+			closeConnect();
 		}
 	}
 
@@ -143,16 +91,16 @@ public class DBUtil {
 	 * @return
 	 * @throws SQLException
 	 */
-	public final ArrayList<Profile> findAllProfiles() throws SQLException {
+	public final List<Profile> findAllProfiles() throws SQLException {
 		Statement stmt1 = null;
 		Statement stmt2 = null;
 		ResultSet rs1 = null;
 		ResultSet rs2 = null;
 
 		try {
-			ArrayList<Profile> pList = new ArrayList<Profile>();
+			List<Profile> pList = new ArrayList<Profile>();
 			Profile prof;
-			ArrayList<LogSet> lsList;
+			List<LogSet> lsList;
 			LogSet li;
 
 			connect();
@@ -183,7 +131,7 @@ public class DBUtil {
 			rs2.close();
 			stmt1.close();
 			stmt2.close();
-			closeConn();
+			closeConnect();
 		}
 	}
 
@@ -205,7 +153,7 @@ public class DBUtil {
 	 * @param profileId
 	 * @throws SQLException
 	 */
-	public final void update(final ArrayList<LogSet> lsList, final int profileId) throws SQLException {
+	public final void update(final List<LogSet> lsList, final int profileId) throws SQLException {
 		LogSet ls;
 		this.profileId = profileId;
 		//updateProfile(profile);
@@ -306,69 +254,4 @@ public class DBUtil {
 
 		executeUpdate(sql);
 	}
-
-	/**
-	 * 
-	 * @param sql
-	 * @return
-	 * @throws SQLException
-	 */
-	public final int executeUpdate(final String sql) throws SQLException {
-		this.log.fine(sql);
-		connect();
-		Statement stmt1 = null;
-		try {
-			stmt1 = this.conn.createStatement();
-			stmt1.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-			ResultSet rs = stmt1.getGeneratedKeys();
-			if (rs.next()) {
-				return rs.getInt(1);
-			}
-		} finally {
-			try {
-				stmt1.close();
-				closeConn();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return -1;
-	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(final String[] args){
-		try {			
-			DBUtil util = new DBUtil("/Users/jpadams/dev/workspace/2010-workspace/report/profile-setup/src/main/resources/");
-			//util.connect();
-			
-			Profile profile = new Profile();
-			profile.setIdentifier("ident10");
-			//profile.setMethod("pull1");
-			profile.setName("name10");
-			profile.setNode("eng");
-
-			ArrayList<LogSet> logInfoList = new ArrayList<LogSet>(); 
-			LogSet logSet = new LogSet();
-			logSet.setHostname("hostname10");
-			logSet.setUsername("username10");
-			logSet.setPassword("password10");    
-			logSet.setPathname("srcPath10");
-			logInfoList.add(logSet);
-			
-			//profile.setLogSetList(logInfoList);
-			//util.createNew(profile);
-			
-			//profile = util.findByProfileId(8);
-			
-			ArrayList<Profile> profileList = util.findAllProfiles();
-			//log.info("Profile Output: "profile.getProfileId())
-		}catch(Exception e) {
-			e.printStackTrace();
-		}//end catch
-	}//end main
-
-
 }

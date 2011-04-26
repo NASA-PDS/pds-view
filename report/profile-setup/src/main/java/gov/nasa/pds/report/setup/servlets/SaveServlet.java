@@ -10,15 +10,16 @@ package gov.nasa.pds.report.setup.servlets;
 
 import gov.nasa.pds.report.setup.model.LogSet;
 import gov.nasa.pds.report.setup.model.Profile;
-import gov.nasa.pds.report.setup.properties.EnvProperties;
-import gov.nasa.pds.report.setup.runnable.Copy;
+import gov.nasa.pds.report.setup.transfer.TransferLogs;
+import gov.nasa.pds.report.setup.util.ConfigUtil;
 import gov.nasa.pds.report.setup.util.DBUtil;
-import gov.nasa.pds.report.setup.util.SawmillUtil;
+import gov.nasa.pds.report.transfer.util.ConfigManager;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -52,48 +53,50 @@ public class SaveServlet extends HttpServlet {
 	@Override
 	protected final void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		String error = "";
-		//if (Integer.parseInt(request.getParameter("new-log-set")) > 0) {  //TODO find better method
-			Profile profile = new Profile();
-			profile.setProfile(request.getParameterMap());
+		Profile profile = new Profile();
+		profile.setProfile(request.getParameterMap());
 
-			String realPath = getServletContext().getRealPath("/WEB-INF/classes");
+		String realPath = getServletContext().getRealPath("/WEB-INF/classes");
 
-			boolean isNew = false;
-			try {
-				DBUtil db = new DBUtil(realPath);
-				EnvProperties env = new EnvProperties(realPath);
-				String logBasePath = env.getSawmillLogHome()+'/'+profile.getNode()+'/'+profile.getName()+'/';
-				SawmillUtil sawmill = new SawmillUtil(env.getSawmillProfileHome(), logBasePath, realPath, profile.getName());
-
-				ArrayList<LogSet> newLogSets = profile.getNewLogSets();
-				if (request.getParameter("profile").equals("new")) {
-					isNew=true;
-					db.createNew(profile);
-				} else {
-					db.update(newLogSets, profile.getProfileId());
-				}
-
-				sawmill.buildCfg(newLogSets, isNew);
-
-				Copy copyLogs = new Copy(logBasePath, env, profile, isNew);
-				copyLogs.start();
-			} catch (SQLException e) {
-				error = "SQL Error: "+e.getMessage();
-				e.printStackTrace();
-			} catch (FileNotFoundException e) {
-				error= "Environment Error.  Notify system administrator.";
-				e.printStackTrace();
-			} catch (IOException e) {
-				error= "Config Error: "+e.getMessage();
-				e.printStackTrace();
-			} 
-
-			JsonObject root = new JsonObject();
-			root.add("error", new JsonPrimitive(error));
+		boolean isNew = false;
+		try {
+			DBUtil db = new DBUtil(realPath);
+			String logPath = profile.getNode()+'/'+profile.getName()+'/';		// TODO fix the log dest path, use it everywhere
 			
-			Gson gson = new Gson();
-			gson.toJson(root, response.getWriter());
-		//}
+			
+			List<LogSet> newLogSets = profile.getNewLogSets();
+			if (request.getParameter("profile").equals("new")) {
+				isNew=true;
+				db.createNew(profile);
+			} else {
+				db.update(newLogSets, profile.getProfileId());
+			}
+			
+			ConfigUtil cfg = new ConfigUtil(logPath, realPath, profile.getName());
+			cfg.buildCfg(newLogSets, isNew);
+
+			TransferLogs copyLogs = new TransferLogs(realPath, logPath, profile, isNew);
+			copyLogs.start();
+		} catch (SQLException e) {
+			error = "SQL Error: "+e.getMessage();
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			error= "Environment Error.  Notify system administrator.";
+			e.printStackTrace();
+		} catch (IOException e) {
+			error= "Config Error: "+e.getMessage();
+			e.printStackTrace();
+		} 
+
+		JsonObject root = new JsonObject();
+		root.add("error", new JsonPrimitive(error));
+		
+		Gson gson = new Gson();
+		gson.toJson(root, response.getWriter());
+	}
+	
+	private String getLogPath(Profile profile) {
+		return profile.getNode()+'/'+profile.getName()+'/';
 	}
 
 }
