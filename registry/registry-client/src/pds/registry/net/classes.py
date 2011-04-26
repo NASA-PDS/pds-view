@@ -4,11 +4,11 @@
 
 '''PDS Registry network communication classes'''
 
-from urllib import urlencode
-from urllib2 import Request, urlopen
 from contextlib import closing
 from pds.registry.model.classes import Service, ServiceBinding, SpecificationLink, Slot
-import anyjson
+from urllib import urlencode
+from urllib2 import Request, urlopen, HTTPError
+import anyjson, httplib
 
 _standardHeaders = {
     u'Accept':       u'application/json',
@@ -20,15 +20,18 @@ class PDSRegistryClient(object):
     def __init__(self, url):
         '''Initialize a registry client with the ``url`` to the server.'''
         self.url = url
-    def _callServer(self, path='', params=None, json=None):
+    def _callServer(self, path='', params=None, json=None, method='GET'):
         ''''''
         url = self.url + path + (params and u'?' + urlencode(params) or u'')
         request = Request(url, data=None, headers=_standardHeaders)
+        request.get_method = lambda: method
         if json:
+            assert method != 'GET'
             request.add_data(json)
+            request.add_header(u'Content-type', 'application/json')
             request.add_header(u'Content-length', unicode(len(json)))
         with closing(urlopen(request)) as f:
-            return anyjson.deserialize(f.read())
+            return method == 'GET' and anyjson.deserialize(f.read()) or None
     def _createSlots(self, s):
         '''Create a set of Slots from the given post-JSON-quantized sequence ``s``.'''
         return set([Slot(i['name'], i['values'], i.get('slotType', None)) for i in s])
@@ -85,6 +88,57 @@ class PDSRegistryClient(object):
             versionID=d.get('versionId', None),
             serviceBindings=self._createServiceBindings(serviceGUID, d.get('serviceBindings', []))
         )
+    def _mapSlots(self, slots):
+        '''Map a set of Slots into a structure acceptable to JSON.
+        '''
+        return [dict(name=i.name, slotType=i.slotType, values=i.values) for i in slots]
+    def _mapSpecificationLinks(self, links):
+        '''Map a set of SpecificationLinks into a structure acceptable to JSON'''
+        return [{
+            'description':          i.description,
+            'guid':                 i.guid,
+            'home':                 i.home,
+            'lid':                  i.lid,
+            'name':                 i.name,
+            'objectType':           i.objectType,
+            'serviceBinding':       i.serviceBinding,
+            'slots':                self._mapSlots(i.slots),
+            'specificationObject':  i.specificationObject,
+            'usageDescription':     i.usageDescription,
+            'usageParameters':      i.usageParameters,
+            'versionId':            i.versionID,
+            'versionName':          i.versionName,
+        } for i in links]
+    def _mapServiceBindings(self, bindings):
+        '''Map a set of ServiceBindings into a structure acceptable to JSON'''
+        return [{
+            'accessURI':            i.accessURI,
+            'description':          i.description,
+            'guid':                 i.guid,
+            'home':                 i.home,
+            'lid':                  i.lid,
+            'name':                 i.name,
+            'objectType':           i.objectType,
+            'service':              i.service,
+            'slots':                self._mapSlots(i.slots),
+            'specificationLinks':   self._mapSpecificationLinks(i.specificationLinks),
+            'versionId':            i.versionID,
+            'versionName':          i.versionName,
+        } for i in bindings]
+    def _serializeService(self, service):
+        '''Serialize a Service into JSON.'''
+        return anyjson.serialize({
+            'description':      service.description,
+            'guid':             service.guid,
+            'home':             service.home,
+            'lid':              service.lid,
+            'name':             service.name,
+            'objectType':       service.objectType,
+            'serviceBindings':  self._mapServiceBindings(service.serviceBindings),
+            'slots':            self._mapSlots(service.slots),
+            'versionId':        service.versionID,
+            'versionName':      service.versionName,
+        })
     def getServices(self, start=0, rows=20):
         '''Retrieve services registered with the registry service, starting at index ``start`` in the
         services list and retrieving no more than ``rows`` worth.
@@ -105,7 +159,7 @@ class PDSRegistryClient(object):
         answer = self._callServer('/services', dict(start=start+1, rows=rows)) # Why is it one-based indexing? Lame.
         return [self._createService(i) for i in answer.get('results', [])]
     def getService(self, guid):
-        '''Retrieve a service with a known ``guid``.
+        '''Retrieve a service with a known ``guid``, or None if ``guid`` is not found.
         
         >>> import pds.registry.net.tests.base
         >>> rs = PDSRegistryClient('testscheme:/rs')
@@ -139,8 +193,54 @@ class PDSRegistryClient(object):
         (u'RSTP', u'Real Time Streaming Protocol', u'urn:ietf:rfc:2326')
         >>> sl.objectType, sl.guid
         ('SpecificationLink', u'urn:uuid:5de615ab-242d-463d-b0dc-1f6efeaae0ee')
+        >>> unknown = rs.getService('urn:this:does:not:exist')
+        >>> unknown is None
+        True
         '''
-        answer = self._callServer('/services/%s' % guid)
-        if 'Service' != answer.get('objectType', None): return None
-        return self._createService(answer)
-    
+        try:
+            answer = self._callServer('/services/%s' % guid)
+            if 'Service' != answer.get('objectType', None): return None
+            return self._createService(answer)
+        except HTTPError, ex:
+            # TODO: We should return None in the case of a 404, but the PDS Registry Service currently
+            # returns 500 for not found.  When https://oodt.jpl.nasa.gov/jira/browse/PDS-29 is
+            # fixed, fix this below:
+            if ex.code in (httplib.INTERNAL_SERVER_ERROR, httplib.NOT_FOUND):
+                return None
+            else:
+                raise ex
+    def putService(self, service):
+        '''Send Service ``service`` into the Registry.
+        
+        >>> import pds.registry.net.tests.base
+        >>> from pds.registry.model.classes import Service
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> service = Service(u'urn:services:new-service', u'urn:services:new-service', u'testscheme:/rs', set(), u'New Service')
+        >>> rs.putService(service)
+        >>> service = Service(u'urn:sk:radio:lush', u'urn:sk:radio:lush', u'testscheme:/rs', set(), u'Lush Radio Service')
+        >>> rs.putService(service)
+        '''
+        # If it doesn't exist, POST to the /services path, but if it does exist, PUT to
+        # the existing /services/guid path. FIXME: Yes, there is a race here.
+        json = self._serializeService(service)
+        existing = self.getService(service.guid)
+        if existing:
+            self._callServer('/services/%s' % service.guid, params=None, json=json, method='PUT')
+        else:
+            self._callServer('/services', params=None, json=json, method='POST')
+
+# Demonstration with actual PDS Registry Service:
+def main():
+    c = PDSRegistryClient('http://localhost:8080/registry-service/registry')
+    serviceSlots = set([Slot('bpm', ['140'], 'int'), Slot('genre', ['goa', 'psy'], 'enum')])
+    bindingSlots = set([Slot('strength', ['strong'])])
+    linkSlots = set([Slot('broken', ['true'], 'bool'), Slot('with-icon', ['false', 'maybe'], 'huh?')])
+    service = Service('urn:sk:global:guid:1', 'urn:sk:logical:1', 'http://localhost:8080/registry-service', serviceSlots, 'T.H.E. SERVICE', 'submitted', 'It is indeed THE service.', 'One Point Oh Point One', '1.0.1')
+    binding = ServiceBinding('urn:sk:global:guid:1:1', 'http://endpoint.com/', service.guid, service.home, bindingSlots, 'T.H.E. BINDING', 'submitted', 'It is quite the binding.', 'Two Point Oh Point Oh', '2.0.0', 'http://endpoint.com/')
+    link = SpecificationLink('urn:sk:global:guid:1:1:1', 'urn:sk:logical:link:1', binding.guid, 'urn:ietf:rfc:1136', service.home, linkSlots, 'T.H.E. Specification', 'submitted', 'Woo woo', 'Three', '3', 'Use it wisely', ['or', 'not'])
+    binding.specificationLinks.add(link)
+    service.serviceBindings.add(binding)
+    c.putService(service)
+
+if __name__ == '__main__':
+    main()
