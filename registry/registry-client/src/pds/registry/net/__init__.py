@@ -4,3 +4,4 @@
 
 '''PDS Registry Client: network communications.'''
 
+from classes import PDSRegistryClient
