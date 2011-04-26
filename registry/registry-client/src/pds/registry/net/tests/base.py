@@ -50,7 +50,10 @@ class _TestHandler(urllib2.BaseHandler):
         if len(self.acceptableTypes & clientTypes) == 0:
             raise _TestHandlerError(fullURL, httplib.NOT_ACCEPTABLE, 'The testscheme can only return application/json')
         if kind not in _testData:
-            raise _TestHandlerError(fullURL, httplib.NOT_FOUND, 'Sorry')
+            # TODO: The PDS Registry Service currently treats these at 500's not 404's. That should be
+            # fixed some day (see https://oodt.jpl.nasa.gov/jira/browse/PDS-29).  Replace with:
+            # raise _TestHandlerError(fullURL, httplib.NOT_FOUND, 'Sorry, not found')
+            raise _TestHandlerError(fullURL, httplib.INTERNAL_SERVER_ERROR, 'Should be a 404, sorry')
         return StringIO(_testData[kind])
 
 urllib2.install_opener(urllib2.build_opener(_TestHandler))
