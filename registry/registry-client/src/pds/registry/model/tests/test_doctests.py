@@ -9,6 +9,7 @@ import unittest, doctest
 def test_suite():
     return unittest.TestSuite([
         doctest.DocTestSuite(module='pds.registry.model.classes'),
+        doctest.DocTestSuite(module='pds.registry.model.functions'),
     ])
     
 if __name__ == '__main__':
