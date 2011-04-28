@@ -228,6 +228,14 @@ class PDSRegistryClient(object):
             self._callServer('/services/%s' % service.guid, params=None, json=json, method='PUT')
         else:
             self._callServer('/services', params=None, json=json, method='POST')
+    def deleteService(self, serviceGUID):
+        '''Delete the service with UUID ``serviceGUID`` from the Registry.
+        
+        >>> import pds.registry.net.tests.base
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> rs.deleteService('urn:sk:radio:lush')
+        '''
+        self._callServer('/services/%s' % serviceGUID, params=None, json=None, method='DELETE')
 
 # Demonstration with actual PDS Registry Service:
 def main():
@@ -241,6 +249,7 @@ def main():
     binding.specificationLinks.add(link)
     service.serviceBindings.add(binding)
     c.putService(service)
+    c.deleteService(service.guid)
 
 if __name__ == '__main__':
     main()
