@@ -1,6 +1,6 @@
-package gov.nasa.pds.report.transfer.util;
+package gov.nasa.pds.report.update.util;
 
-import gov.nasa.pds.report.transfer.constants.Constants;
+import gov.nasa.pds.report.update.constants.Constants;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -134,7 +134,7 @@ public class SFTPConnect implements RemoteFileTransfer {
 		String[] dirList;
 		String filename;
 		
-		Vector<String> lsOut = (Vector<String>)this.sftpChannel.ls(pathname);
+		Vector lsOut = (Vector)this.sftpChannel.ls(pathname);
 
 		JsonArray matches = new JsonArray();
 		for (Object obj : lsOut) {

@@ -6,11 +6,11 @@
  * 
  */
 
-package gov.nasa.pds.report.transfer.db;
+package gov.nasa.pds.report.update.db;
 
 
-import gov.nasa.pds.report.transfer.model.LogSet;
-import gov.nasa.pds.report.transfer.model.Profile;
+import gov.nasa.pds.report.update.model.LogSet;
+import gov.nasa.pds.report.update.model.Profile;
 
 import java.io.FileNotFoundException;
 import java.sql.Connection;
@@ -98,7 +98,7 @@ public class DBUtil extends DatabaseManager {
 
 			connect();			
 			stmt = this.conn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM profiles WHERE profile_name="+profileName+" AND active_flag='y'");
+			rs = stmt.executeQuery("SELECT * FROM profiles WHERE name="+profileName+" AND active_flag='y'");
 			if (rs.next()) {
 				prof = new Profile(rs);
 

@@ -1,12 +1,12 @@
-package gov.nasa.pds.report.transfer.launch;
+package gov.nasa.pds.report.update.launch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.logging.Logger;
 
-import gov.nasa.pds.report.transfer.RSUpdateException;
-import gov.nasa.pds.report.transfer.properties.EnvProperties;
+import gov.nasa.pds.report.update.RSUpdateException;
+import gov.nasa.pds.report.update.properties.EnvProperties;
 
 public class SawmillLauncher_old {
 

@@ -1,8 +1,8 @@
-package gov.nasa.pds.report.transfer.sawmill;
+package gov.nasa.pds.report.update.sawmill;
 
-import gov.nasa.pds.report.transfer.model.LogPath;
-import gov.nasa.pds.report.transfer.model.LogSet;
-import gov.nasa.pds.report.transfer.properties.EnvProperties;
+import gov.nasa.pds.report.update.model.LogPath;
+import gov.nasa.pds.report.update.model.LogSet;
+import gov.nasa.pds.report.update.properties.EnvProperties;
 
 import java.io.File;
 import java.io.IOException;

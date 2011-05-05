@@ -8,8 +8,8 @@
 package gov.nasa.pds.report.setup.servlets;
 
 import gov.nasa.pds.report.setup.util.TransferUtil;
-import gov.nasa.pds.report.transfer.model.LogSet;
-import gov.nasa.pds.report.transfer.model.Profile;
+import gov.nasa.pds.report.update.model.LogSet;
+import gov.nasa.pds.report.update.model.Profile;
 import gov.nasa.pds.report.transfer.util.SFTPConnect;
 
 import java.io.IOException;

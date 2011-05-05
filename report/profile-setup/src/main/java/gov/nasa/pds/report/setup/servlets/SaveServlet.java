@@ -9,12 +9,12 @@
 package gov.nasa.pds.report.setup.servlets;
 
 import gov.nasa.pds.report.setup.sawmill.SawmillController;
-import gov.nasa.pds.report.transfer.db.DBUtil;
-import gov.nasa.pds.report.transfer.model.LogPath;
-import gov.nasa.pds.report.transfer.model.LogSet;
-import gov.nasa.pds.report.transfer.model.Profile;
-import gov.nasa.pds.report.transfer.properties.EnvProperties;
-import gov.nasa.pds.report.transfer.sawmill.ProfileConfigUtil;
+import gov.nasa.pds.report.update.db.DBUtil;
+import gov.nasa.pds.report.update.model.LogPath;
+import gov.nasa.pds.report.update.model.LogSet;
+import gov.nasa.pds.report.update.model.Profile;
+import gov.nasa.pds.report.update.properties.EnvProperties;
+import gov.nasa.pds.report.update.sawmill.ProfileConfigUtil;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

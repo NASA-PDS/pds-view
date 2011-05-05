@@ -1,8 +1,9 @@
-package gov.nasa.pds.report.transfer;
+package gov.nasa.pds.report.update;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -19,20 +20,20 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.Option;
 
-import gov.nasa.pds.report.transfer.cli.options.Flag;
-import gov.nasa.pds.report.transfer.cli.options.InvalidOptionException;
-import gov.nasa.pds.report.transfer.db.DBUtil;
-import gov.nasa.pds.report.transfer.logging.ToolsLevel;
-import gov.nasa.pds.report.transfer.logging.ToolsLogRecord;
-import gov.nasa.pds.report.transfer.model.LogPath;
-import gov.nasa.pds.report.transfer.model.LogSet;
-import gov.nasa.pds.report.transfer.model.Profile;
-import gov.nasa.pds.report.transfer.properties.EnvProperties;
-import gov.nasa.pds.report.transfer.sawmill.SawmillDB;
-import gov.nasa.pds.report.transfer.util.BasicUtil;
-import gov.nasa.pds.report.transfer.util.FileUtil;
-import gov.nasa.pds.report.transfer.util.RemoteFileTransfer;
-import gov.nasa.pds.report.transfer.util.SFTPConnect;
+import gov.nasa.pds.report.update.util.RemoteFileTransfer;
+import gov.nasa.pds.report.update.cli.options.Flag;
+import gov.nasa.pds.report.update.cli.options.InvalidOptionException;
+import gov.nasa.pds.report.update.db.DBUtil;
+import gov.nasa.pds.report.update.logging.ToolsLevel;
+import gov.nasa.pds.report.update.logging.ToolsLogRecord;
+import gov.nasa.pds.report.update.model.LogPath;
+import gov.nasa.pds.report.update.model.LogSet;
+import gov.nasa.pds.report.update.model.Profile;
+import gov.nasa.pds.report.update.properties.EnvProperties;
+import gov.nasa.pds.report.update.sawmill.SawmillDB;
+import gov.nasa.pds.report.update.util.BasicUtil;
+import gov.nasa.pds.report.update.util.FileUtil;
+import gov.nasa.pds.report.update.util.SFTPConnect;
 
 public class RSUpdateLauncher {
 	
@@ -161,7 +162,7 @@ public class RSUpdateLauncher {
     private void execute() throws RSUpdateException, SQLException {
 		try {
 	    	DBUtil util = new DBUtil(this.propsHome);
-	    	List<Profile> pList = null;
+	    	List<Profile> pList = new ArrayList<Profile>();
     	
 	    	if (this.profileName != null) {
 	    		pList.add(util.findByProfileName(profileName));
@@ -198,15 +199,15 @@ public class RSUpdateLauncher {
 	 */
 	public static void main(String[] args) {
         if (args.length == 0) {
-            System.out.println("\nType 'LogTransfer -h' for usage");
+            System.out.println("\nType 'RSUpdate -h' for usage");
             System.exit(0);
         }
         try {
             RSUpdateLauncher launcher = new RSUpdateLauncher();
             CommandLine commandline = launcher.parse(args);
             launcher.query(commandline);
-
-            //launcher
+            launcher.execute();
+            
             //launcher.closeHandlers();
         } catch (JAXBException je) {
             //Don't do anything

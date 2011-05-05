@@ -5,7 +5,7 @@
  * $Id$ 
  * 
  */
-package gov.nasa.pds.report.transfer.model;
+package gov.nasa.pds.report.update.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

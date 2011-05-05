@@ -1,12 +1,12 @@
-package gov.nasa.pds.report.transfer;
+package gov.nasa.pds.report.update;
 
 import static org.junit.Assert.fail;
 
 import java.util.logging.Logger;
 
-import gov.nasa.pds.report.transfer.launch.SawmillLauncher_old;
-import gov.nasa.pds.report.transfer.model.LogPath;
-import gov.nasa.pds.report.transfer.properties.EnvProperties;
+import gov.nasa.pds.report.update.launch.SawmillLauncher_old;
+import gov.nasa.pds.report.update.model.LogPath;
+import gov.nasa.pds.report.update.properties.EnvProperties;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -23,6 +23,7 @@ public class SawmillUpdateTest {
 	 * Tests the LogTransferLauncher, which in turn tests 
 	 * createDirStruct and getLogs
 	 */
+	@Ignore
 	@Test
 	public void testSawmillUpdateLauncher()
 	{

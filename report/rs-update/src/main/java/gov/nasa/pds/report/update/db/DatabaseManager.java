@@ -6,9 +6,9 @@
  * 
  */
 
-package gov.nasa.pds.report.transfer.db;
+package gov.nasa.pds.report.update.db;
 
-import gov.nasa.pds.report.transfer.properties.DBProperties;
+import gov.nasa.pds.report.update.properties.DBProperties;
 
 import java.io.FileNotFoundException;
 import java.sql.Connection;

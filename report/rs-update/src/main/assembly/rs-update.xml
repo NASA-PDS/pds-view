@@ -63,6 +63,16 @@
       <fileMode>644</fileMode>
       <filtered>true</filtered>
     </file>
+    <file>
+      <source>src/main/resources/conf/database.properties</source>
+      <outputDirectory>conf</outputDirectory>
+      <fileMode>644</fileMode>
+    </file>
+    <file>
+      <source>src/main/resources/conf/environment.properties</source>
+      <outputDirectory>conf</outputDirectory>
+      <fileMode>644</fileMode>
+    </file>
   </files>
 
   <dependencySets>

@@ -1,11 +1,11 @@
-package gov.nasa.pds.report.transfer;
+package gov.nasa.pds.report.update;
 
-import gov.nasa.pds.report.transfer.model.LogPath;
-import gov.nasa.pds.report.transfer.properties.EnvProperties;
-import gov.nasa.pds.report.transfer.sawmill.SawmillDB;
-import gov.nasa.pds.report.transfer.util.FileUtil;
-import gov.nasa.pds.report.transfer.util.RemoteFileTransfer;
-import gov.nasa.pds.report.transfer.util.SFTPConnect;
+import gov.nasa.pds.report.update.util.RemoteFileTransfer;
+import gov.nasa.pds.report.update.model.LogPath;
+import gov.nasa.pds.report.update.properties.EnvProperties;
+import gov.nasa.pds.report.update.sawmill.SawmillDB;
+import gov.nasa.pds.report.update.util.FileUtil;
+import gov.nasa.pds.report.update.util.SFTPConnect;
 
 import java.io.IOException;
 

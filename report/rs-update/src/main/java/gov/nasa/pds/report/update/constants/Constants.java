@@ -1,4 +1,4 @@
-package gov.nasa.pds.report.transfer.constants;
+package gov.nasa.pds.report.update.constants;
 
 /**
  * 

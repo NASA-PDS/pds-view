@@ -1,4 +1,4 @@
-package gov.nasa.pds.report.transfer.util;
+package gov.nasa.pds.report.update.util;
 
 import java.io.File;
 

@@ -1,4 +1,4 @@
-package gov.nasa.pds.report.transfer.model;
+package gov.nasa.pds.report.update.model;
 
 public class LogPath {
 

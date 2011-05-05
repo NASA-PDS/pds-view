@@ -1,8 +1,8 @@
-package gov.nasa.pds.report.transfer.model;
+package gov.nasa.pds.report.update.model;
 
 //import gov.nasa.pds.report.setup.Globals;
 
-import gov.nasa.pds.report.transfer.constants.Constants;
+import gov.nasa.pds.report.update.constants.Constants;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

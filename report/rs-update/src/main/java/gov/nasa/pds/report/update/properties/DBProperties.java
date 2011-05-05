@@ -1,6 +1,6 @@
-package gov.nasa.pds.report.transfer.properties;
+package gov.nasa.pds.report.update.properties;
 
-import gov.nasa.pds.report.transfer.constants.Constants;
+import gov.nasa.pds.report.update.constants.Constants;
 
 import java.io.FileInputStream;
 import java.io.IOException;

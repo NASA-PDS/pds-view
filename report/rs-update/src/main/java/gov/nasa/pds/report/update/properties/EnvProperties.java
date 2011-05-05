@@ -1,4 +1,4 @@
-package gov.nasa.pds.report.transfer.properties;
+package gov.nasa.pds.report.update.properties;
 
 import java.io.FileInputStream;
 import java.io.IOException;

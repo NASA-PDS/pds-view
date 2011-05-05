@@ -1,4 +1,4 @@
-package gov.nasa.pds.report.transfer.util;
+package gov.nasa.pds.report.update.util;
 
 import com.google.gson.JsonObject;
 import com.jcraft.jsch.JSchException;

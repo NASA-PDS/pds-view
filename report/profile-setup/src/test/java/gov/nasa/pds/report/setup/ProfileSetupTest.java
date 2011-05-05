@@ -8,13 +8,12 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import gov.nasa.pds.report.setup.sawmill.SawmillController;
-import gov.nasa.pds.report.transfer.RSUpdateLauncher;
-import gov.nasa.pds.report.transfer.db.DBUtil;
-import gov.nasa.pds.report.transfer.db.DatabaseManager;
-import gov.nasa.pds.report.transfer.launch.SawmillLauncher_old;
-import gov.nasa.pds.report.transfer.model.LogPath;
-import gov.nasa.pds.report.transfer.model.LogSet;
-import gov.nasa.pds.report.transfer.model.Profile;
+import gov.nasa.pds.report.update.RSUpdateLauncher;
+import gov.nasa.pds.report.update.db.DBUtil;
+import gov.nasa.pds.report.update.db.DatabaseManager;
+import gov.nasa.pds.report.update.model.LogPath;
+import gov.nasa.pds.report.update.model.LogSet;
+import gov.nasa.pds.report.update.model.Profile;
 
 import org.junit.Ignore;
 import org.junit.Test;

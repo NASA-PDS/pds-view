@@ -1,9 +1,9 @@
 package gov.nasa.pds.report.setup.util;
 
-import gov.nasa.pds.report.transfer.model.LogSet;
-import gov.nasa.pds.report.transfer.model.Profile;
-import gov.nasa.pds.report.transfer.util.RemoteFileTransfer;
-import gov.nasa.pds.report.transfer.util.SFTPConnect;
+import gov.nasa.pds.report.update.model.LogSet;
+import gov.nasa.pds.report.update.model.Profile;
+import gov.nasa.pds.report.update.util.RemoteFileTransfer;
+import gov.nasa.pds.report.update.util.SFTPConnect;
 
 import java.util.ArrayList;
 import java.util.Iterator;

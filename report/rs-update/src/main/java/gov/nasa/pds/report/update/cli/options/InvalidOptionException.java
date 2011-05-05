@@ -11,7 +11,7 @@
 // providing access to foreign nationals.
 //
 // $Id$
-package gov.nasa.pds.report.transfer.cli.options;
+package gov.nasa.pds.report.update.cli.options;
 
 /**
  * Exception class that is called upon errors found during command-line

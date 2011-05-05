@@ -1,4 +1,4 @@
-package gov.nasa.pds.report.transfer;
+package gov.nasa.pds.report.update;
 
 public class RSUpdateException extends Exception {
 	

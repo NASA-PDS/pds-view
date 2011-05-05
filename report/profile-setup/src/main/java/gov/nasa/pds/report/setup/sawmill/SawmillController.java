@@ -1,16 +1,14 @@
 package gov.nasa.pds.report.setup.sawmill;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-import gov.nasa.pds.report.transfer.ReportServiceUpdate;
-import gov.nasa.pds.report.transfer.model.LogPath;
-import gov.nasa.pds.report.transfer.model.LogSet;
-import gov.nasa.pds.report.transfer.model.Profile;
+import gov.nasa.pds.report.update.ReportServiceUpdate;
+import gov.nasa.pds.report.update.model.LogPath;
+import gov.nasa.pds.report.update.model.LogSet;
+import gov.nasa.pds.report.update.model.Profile;
 import gov.nasa.pds.report.transfer.properties.EnvProperties;
 
 /**

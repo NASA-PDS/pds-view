@@ -1,7 +1,6 @@
-package gov.nasa.pds.report.transfer.sawmill;
+package gov.nasa.pds.report.update.sawmill;
 
-import gov.nasa.pds.report.transfer.RSUpdateException;
-import gov.nasa.pds.report.transfer.properties.EnvProperties;
+import gov.nasa.pds.report.update.RSUpdateException;
 
 import java.io.BufferedReader;
 import java.io.IOException;

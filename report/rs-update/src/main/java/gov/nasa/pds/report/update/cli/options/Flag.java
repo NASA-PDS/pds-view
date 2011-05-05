@@ -11,7 +11,7 @@
 // providing access to foreign nationals.
 //
 // $Id$
-package gov.nasa.pds.report.transfer.cli.options;
+package gov.nasa.pds.report.update.cli.options;
 
 import org.apache.commons.cli.Options;
 

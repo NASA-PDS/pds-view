@@ -18,7 +18,7 @@
 
 <project>
   <body>
-    <menu name="Transfer Logs Guide">
+    <menu name="RS Update Guide">
       <item name="Overview" href="index.html"/>
       <item name="Release Notes" href="release/index.html"/>
       <item name="Installation" href="install/index.html"/>

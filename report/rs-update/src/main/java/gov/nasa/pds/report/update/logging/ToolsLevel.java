@@ -11,7 +11,7 @@
 // providing access to foreign nationals.
 //
 // $Id$
-package gov.nasa.pds.report.transfer.logging;
+package gov.nasa.pds.report.update.logging;
 
 import java.util.logging.Level;
 
