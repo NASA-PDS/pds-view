@@ -98,7 +98,7 @@ public class DBUtil extends DatabaseManager {
 
 			connect();			
 			stmt = this.conn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM profiles WHERE name="+profileName+" AND active_flag='y'");
+			rs = stmt.executeQuery("SELECT * FROM profiles WHERE name='"+profileName+"' AND active_flag='y'");
 			if (rs.next()) {
 				prof = new Profile(rs);
 
@@ -113,7 +113,7 @@ public class DBUtil extends DatabaseManager {
 			while (rs.next()) {
 				li = new LogSet(rs);
 
-				this.log.finer("LOG INFO: "+String.valueOf(li.getProfileId())+", "+li.getHostname()+", "+
+				this.log.info("LOG INFO: "+String.valueOf(li.getProfileId())+", "+li.getHostname()+", "+
 						li.getUsername()+", "+li.getPassword()+", "+li.getPathname()+", "+li.getLogSetId());
 
 				liList.add(li);

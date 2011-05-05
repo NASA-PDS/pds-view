@@ -170,6 +170,8 @@ public class RSUpdateLauncher {
 	    		pList = util.findAllProfiles();
 	    	}
 	    	
+	    	this.log.info(pList.toString());
+	    	
 	    	EnvProperties env = new EnvProperties(this.propsHome);
 	    	
 			ReportServiceUpdate sawmill = new ReportServiceUpdate();
