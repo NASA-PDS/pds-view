@@ -8,12 +8,13 @@
 
 package gov.nasa.pds.report.setup.servlets;
 
-import gov.nasa.pds.report.setup.model.LogSet;
-import gov.nasa.pds.report.setup.model.Profile;
-import gov.nasa.pds.report.setup.transfer.TransferLogs;
-import gov.nasa.pds.report.setup.util.ConfigUtil;
-import gov.nasa.pds.report.setup.util.DBUtil;
-import gov.nasa.pds.report.transfer.util.ConfigManager;
+import gov.nasa.pds.report.setup.sawmill.SawmillController;
+import gov.nasa.pds.report.transfer.db.DBUtil;
+import gov.nasa.pds.report.transfer.model.LogPath;
+import gov.nasa.pds.report.transfer.model.LogSet;
+import gov.nasa.pds.report.transfer.model.Profile;
+import gov.nasa.pds.report.transfer.properties.EnvProperties;
+import gov.nasa.pds.report.transfer.sawmill.ProfileConfigUtil;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -61,7 +62,9 @@ public class SaveServlet extends HttpServlet {
 		boolean isNew = false;
 		try {
 			DBUtil db = new DBUtil(realPath);
-			String logPath = profile.getNode()+'/'+profile.getName()+'/';		// TODO fix the log dest path, use it everywhere
+			
+			LogPath logPath = new LogPath(profile.getNode(), profile.getName());
+			//String logPath = profile.getNode()+'/'+profile.getName()+'/';		// TODO fix the log dest path, use it everywhere
 			
 			
 			List<LogSet> newLogSets = profile.getNewLogSets();
@@ -72,10 +75,10 @@ public class SaveServlet extends HttpServlet {
 				db.update(newLogSets, profile.getProfileId());
 			}
 			
-			ConfigUtil cfg = new ConfigUtil(logPath, realPath, profile.getName());
+			ProfileConfigUtil cfg = new ProfileConfigUtil(logPath, realPath, profile.getName());
 			cfg.buildCfg(newLogSets, isNew);
 
-			TransferLogs copyLogs = new TransferLogs(realPath, logPath, profile, isNew);
+			SawmillController copyLogs = new SawmillController(logPath, realPath, profile, isNew);
 			copyLogs.start();
 		} catch (SQLException e) {
 			error = "SQL Error: "+e.getMessage();
@@ -94,9 +97,4 @@ public class SaveServlet extends HttpServlet {
 		Gson gson = new Gson();
 		gson.toJson(root, response.getWriter());
 	}
-	
-	private String getLogPath(Profile profile) {
-		return profile.getNode()+'/'+profile.getName()+'/';
-	}
-
 }

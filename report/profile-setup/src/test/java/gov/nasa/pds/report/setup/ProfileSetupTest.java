@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import gov.nasa.pds.report.setup.model.LogSet;
-import gov.nasa.pds.report.setup.model.Profile;
-import gov.nasa.pds.report.setup.transfer.TransferLogs;
-import gov.nasa.pds.report.setup.util.DBUtil;
-import gov.nasa.pds.report.transfer.launch.LogTransferLauncher;
-import gov.nasa.pds.report.transfer.launch.SawmillUpdateLauncher;
-import gov.nasa.pds.report.transfer.util.DatabaseManager;
+import gov.nasa.pds.report.setup.sawmill.SawmillController;
+import gov.nasa.pds.report.transfer.RSUpdateLauncher;
+import gov.nasa.pds.report.transfer.db.DBUtil;
+import gov.nasa.pds.report.transfer.db.DatabaseManager;
+import gov.nasa.pds.report.transfer.launch.SawmillLauncher_old;
+import gov.nasa.pds.report.transfer.model.LogPath;
+import gov.nasa.pds.report.transfer.model.LogSet;
+import gov.nasa.pds.report.transfer.model.Profile;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -54,7 +55,9 @@ public class ProfileSetupTest {
 			lsList.add(ls);
 			profile.setLogSetList(lsList);
 			
-			TransferLogs transfer = new TransferLogs("/Users/jpadams/dev/workspace/2010-workspace/report/log-transfer/src/main/resources/conf", "/Users/jpadams/dev/workspace/2010-workspace/report/profile-setup/target/transfertest", profile, true);
+			
+			LogPath logPath = new LogPath("/Users/jpadams/dev/workspace/2010-workspace/report/profile-setup/target/transfertest",profile.getNode(), profile.getName(), ls.getLabel());
+			SawmillController transfer = new SawmillController(logPath, "/Users/jpadams/dev/workspace/2010-workspace/report/log-transfer/src/main/resources/conf", profile, true);
 			
 			transfer.start();
 			//transfer.run();
@@ -69,6 +72,7 @@ public class ProfileSetupTest {
 	/**
 	 * Tests the ProfileDBUtil class
 	 */
+	@Ignore
 	@Test
 	public void testProfileDBUtil()
 	{

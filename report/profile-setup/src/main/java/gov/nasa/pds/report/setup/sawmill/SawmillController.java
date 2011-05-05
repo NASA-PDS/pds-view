@@ -1,4 +1,4 @@
-package gov.nasa.pds.report.setup.transfer;
+package gov.nasa.pds.report.setup.sawmill;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -7,15 +7,11 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-import gov.nasa.pds.report.setup.model.LogSet;
-import gov.nasa.pds.report.setup.model.Profile;
-import gov.nasa.pds.report.transfer.SawmillException;
-import gov.nasa.pds.report.transfer.launch.SawmillUpdateLauncher;
-import gov.nasa.pds.report.transfer.launch.LogTransferLauncher;
+import gov.nasa.pds.report.transfer.ReportServiceUpdate;
+import gov.nasa.pds.report.transfer.model.LogPath;
+import gov.nasa.pds.report.transfer.model.LogSet;
+import gov.nasa.pds.report.transfer.model.Profile;
 import gov.nasa.pds.report.transfer.properties.EnvProperties;
-import gov.nasa.pds.report.transfer.util.FileUtil;
-import gov.nasa.pds.report.transfer.util.RemoteFileTransfer;
-import gov.nasa.pds.report.transfer.util.SFTPConnect;
 
 /**
  * Current implementation to create profiles and copy logs.
@@ -24,19 +20,19 @@ import gov.nasa.pds.report.transfer.util.SFTPConnect;
  * @author jpadams
  *
  */
-public class TransferLogs implements Runnable {
+public class SawmillController implements Runnable {
 
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	private Thread thread;
 	private Profile profile;
-	private String logPath;
+	private LogPath logPath;
 	//private String realPath;
 	private boolean isNewProfile;
 	private EnvProperties env;
 
-	public TransferLogs(final String realPath, final String logDestPath, final Profile profile, final boolean isNew) throws FileNotFoundException {
+	public SawmillController(final LogPath logPath, final String realPath, final Profile profile, final boolean isNew) throws FileNotFoundException {
 		this.thread = new Thread(this);
-		this.logPath = logDestPath;
+		this.logPath = logPath;
 		this.profile = profile;
 		this.isNewProfile = isNew;
 
@@ -46,25 +42,27 @@ public class TransferLogs implements Runnable {
 			e.printStackTrace();
 			this.log.warning(e.getMessage());
 		}
+		
+		this.logPath.setLogHome(this.env.getSawmillLogHome());
 	}
 
 	/**
 	 * Implementation of run method from Runnable interface.
 	 */
 	public final void run() {
-		LogSet ls;
-		String logDest;
-		LogTransferLauncher transfer;
-		SawmillUpdateLauncher sawmill;
+		LogSet ls = null;
+		ReportServiceUpdate sawmill = new ReportServiceUpdate();
+		//SawmillUpdateLauncher sawmill;
 		try {
 			for (Iterator<LogSet> it = this.profile.getNewLogSets().iterator(); it.hasNext();) {
 				ls = it.next();
-				transfer = new LogTransferLauncher(this.env, this.logPath, ls.getHostname(), ls.getUsername(), ls.getPassword(), ls.getPathname(), ls.getLabel());
-				transfer.execute();
+				this.logPath.setLogSetLabel(ls.getLabel());
+				//sawmill = new SawmillUpdate(this.env., this.logPath);
+				//sawmill.transferLogs(ls.getHostname(), ls.getUsername(), ls.getPassword(), ls.getPathname(), ls.getLabel());
+				sawmill.transferLogs(ls.getHostname(), ls.getUsername(), ls.getPassword(), ls.getPathname(), this.logPath.getPath());
 			}
 
-			sawmill = new SawmillUpdateLauncher(env, this.profile.getName(), this.isNewProfile);
-			sawmill.execute();
+			sawmill.updateSawmill(this.env.getSawmillHome(), this.profile.getName(), this.isNewProfile);
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.log.warning(e.getMessage());

@@ -36,7 +36,7 @@
   <url>http://pds-cm.jpl.nasa.gov/2010/report/</url>
 
   <modules>
-    <module>log-transfer</module>
+    <module>rs-update</module>
     <module>profile-setup</module>
     <module>sawmill</module>
   </modules>

@@ -1,7 +1,7 @@
 package gov.nasa.pds.report.setup.servlets;
 
-import gov.nasa.pds.report.setup.model.Profile;
-import gov.nasa.pds.report.setup.util.DBUtil;
+import gov.nasa.pds.report.transfer.db.DBUtil;
+import gov.nasa.pds.report.transfer.model.Profile;
 
 import java.io.IOException;
 import java.sql.SQLException;

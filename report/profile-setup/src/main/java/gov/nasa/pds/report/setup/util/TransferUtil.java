@@ -1,7 +1,7 @@
 package gov.nasa.pds.report.setup.util;
 
-import gov.nasa.pds.report.setup.model.LogSet;
-import gov.nasa.pds.report.setup.model.Profile;
+import gov.nasa.pds.report.transfer.model.LogSet;
+import gov.nasa.pds.report.transfer.model.Profile;
 import gov.nasa.pds.report.transfer.util.RemoteFileTransfer;
 import gov.nasa.pds.report.transfer.util.SFTPConnect;
 
