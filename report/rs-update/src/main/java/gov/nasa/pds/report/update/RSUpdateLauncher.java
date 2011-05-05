@@ -1,0 +1,224 @@
+package gov.nasa.pds.report.transfer;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.xml.bind.JAXBException;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.Option;
+
+import gov.nasa.pds.report.transfer.cli.options.Flag;
+import gov.nasa.pds.report.transfer.cli.options.InvalidOptionException;
+import gov.nasa.pds.report.transfer.db.DBUtil;
+import gov.nasa.pds.report.transfer.logging.ToolsLevel;
+import gov.nasa.pds.report.transfer.logging.ToolsLogRecord;
+import gov.nasa.pds.report.transfer.model.LogPath;
+import gov.nasa.pds.report.transfer.model.LogSet;
+import gov.nasa.pds.report.transfer.model.Profile;
+import gov.nasa.pds.report.transfer.properties.EnvProperties;
+import gov.nasa.pds.report.transfer.sawmill.SawmillDB;
+import gov.nasa.pds.report.transfer.util.BasicUtil;
+import gov.nasa.pds.report.transfer.util.FileUtil;
+import gov.nasa.pds.report.transfer.util.RemoteFileTransfer;
+import gov.nasa.pds.report.transfer.util.SFTPConnect;
+
+public class RSUpdateLauncher {
+	
+    /** logger object. */
+    private static Logger log = Logger.getLogger(
+            RSUpdateLauncher.class.getName());
+	
+	private String propsHome;
+    private String logFile;
+    private String profileName;
+    private boolean sawmillFlag;
+	
+    public RSUpdateLauncher() {
+    	this.propsHome = null;
+    	this.logFile = null;
+    	this.profileName = null;
+    	this.sawmillFlag = true;
+    }
+    
+    /**
+     * A method to parse the command-line arguments.
+     *
+     * @param args The command-line arguments
+     * @return A class representation of the command-line arguments
+     *
+     * @throws ParseException If there was an error during parsing.
+     */
+    public final CommandLine parse(final String[] args)
+    throws ParseException {
+        CommandLineParser parser = new GnuParser();
+        return parser.parse(Flag.getOptions(), args);
+    }
+    
+    /**
+     * Examines the command-line arguments passed into the Harvest Tool
+     * and takes the appropriate action based on what flags were set.
+     *
+     * @param line A class representation of the command-line arguments.
+     *
+     * @throws Exception If there was an error while querying the options
+     * that were set on the command-line.
+     */
+    public final void query(final CommandLine line) throws Exception {
+        List<Option> processedOptions = Arrays.asList(line.getOptions());
+        for (Option o : processedOptions) {
+            if (o.getOpt().equals(Flag.HELP.getShortName())) {
+                displayHelp();
+                System.exit(0);
+            } else if (o.getOpt().equals(Flag.PROPERTIES.getShortName())) {
+                this.propsHome = o.getValue();
+            } else if (o.getOpt().equals(Flag.LOG.getShortName())) {
+                this.logFile = o.getValue();
+            } else if (o.getOpt().equals(Flag.PROFILE_NAME.getShortName())) {
+                this.profileName = o.getValue();
+            }  else if (o.getOpt().equals(Flag.SAWMILL_OFF.getShortName())) {
+                this.sawmillFlag = false;
+            }
+        }
+
+        if (propsHome == null) {
+            throw new InvalidOptionException(
+                    "Properties file path must be specified.");
+        }
+        setLogger();
+        logHeader();
+    }
+    
+    /**
+     * Logs header information for the log output.
+     *
+     */
+    private void logHeader() {
+        log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+                "PDS Sawmill Update Tool Log\n"));
+        log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+                "Time                " + BasicUtil.getDateTime()));
+        log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+                "Properties Home   " + this.propsHome + "\n"));
+    }
+
+    /**
+     * Sets the appropriate handlers for the logging.
+     *
+     * @throws IOException If a log file was specified and could not
+     * be read.
+     */
+    private void setLogger() throws IOException {
+        Logger logger = Logger.getLogger("");
+        logger.setLevel(Level.ALL);
+        Handler []handler = logger.getHandlers();
+        /*for (int i = 0; i < logger.getHandlers().length; i++) {
+            logger.removeHandler(handler[i]);
+        }
+        if (logFile != null) {
+            logger.addHandler(new HarvestFileHandler(logFile,
+                    Level.INFO, new HarvestFormatter()));
+        } else {
+            logger.addHandler(new HarvestStreamHandler(System.out,
+                    Level.INFO, new HarvestFormatter()));
+        }*/
+    }
+    
+    /**
+     * Displays tool usage.
+     *
+     */
+    public final void displayHelp() {
+        int maxWidth = 80;
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp(maxWidth, "Harvest <policy file> <options>",
+                null, Flag.getOptions(), null);
+    }
+
+    /**
+     * Closes the handlers for the logger.
+     *
+     */
+    private void closeHandlers() {
+        Logger logger = Logger.getLogger("");
+        Handler []handlers = logger.getHandlers();
+        for (int i = 0; i < logger.getHandlers().length; i++) {
+            handlers[i].close();
+        }
+    }
+    
+    private void execute() throws RSUpdateException, SQLException {
+		try {
+	    	DBUtil util = new DBUtil(this.propsHome);
+	    	List<Profile> pList = null;
+    	
+	    	if (this.profileName != null) {
+	    		pList.add(util.findByProfileName(profileName));
+	    	} else {
+	    		pList = util.findAllProfiles();
+	    	}
+	    	
+	    	EnvProperties env = new EnvProperties(this.propsHome);
+	    	
+			ReportServiceUpdate sawmill = new ReportServiceUpdate();
+			LogPath logPath = new LogPath(env.getSawmillLogHome());
+			//SawmillUpdateLauncher sawmill;
+			for (Profile profile : pList) {
+				logPath.setProfileName(profile.getName());
+				logPath.setProfileNode(profile.getNode());
+				for (LogSet ls : profile.getNewLogSets()) {
+					logPath.setLogSetLabel(ls.getLabel());
+					//sawmill = new SawmillUpdate(this.env., this.logPath);
+					//sawmill.transferLogs(ls.getHostname(), ls.getUsername(), ls.getPassword(), ls.getPathname(), ls.getLabel());
+					sawmill.transferLogs(ls.getHostname(), ls.getUsername(), ls.getPassword(), ls.getPathname(), logPath.getPath());
+				}
+	
+				sawmill.updateSawmill(env.getSawmillHome(), profile.getName(), false);
+			}
+		} catch (NullPointerException e) {
+			throw new RSUpdateException("Profile not found.");
+		} catch (IOException e) {
+			throw new RSUpdateException("Properties file path is invalid.  Please re-enter.");
+		}
+    }
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+        if (args.length == 0) {
+            System.out.println("\nType 'LogTransfer -h' for usage");
+            System.exit(0);
+        }
+        try {
+            RSUpdateLauncher launcher = new RSUpdateLauncher();
+            CommandLine commandline = launcher.parse(args);
+            launcher.query(commandline);
+
+            //launcher
+            //launcher.closeHandlers();
+        } catch (JAXBException je) {
+            //Don't do anything
+        } catch (ParseException pEx) {
+            System.err.println("Command-line parse failure: "
+                    + pEx.getMessage());
+            System.exit(1);
+        } catch (Exception e) {
+          e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.exit(1);
+        }
+	}
+
+}
