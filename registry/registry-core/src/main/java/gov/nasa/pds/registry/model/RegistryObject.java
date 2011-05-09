@@ -78,10 +78,6 @@ public class RegistryObject extends Identifiable {
   @XmlAttribute
   private String versionName;
 
-  // Version provided by user
-  @XmlAttribute
-  private String versionId;
-
   /**
    * Meant for JAXB only
    */
@@ -116,7 +112,6 @@ public class RegistryObject extends Identifiable {
     this.status = object.getStatus();
     this.description = object.getDescription();
     this.versionName = object.getVersionName();
-    this.versionId = object.getVersionId();
   }
 
   /**
@@ -209,21 +204,6 @@ public class RegistryObject extends Identifiable {
     this.versionName = versionName;
   }
 
-  /**
-   * @return the versionId
-   */
-  public String getVersionId() {
-    return versionId;
-  }
-
-  /**
-   * @param versionId
-   *          the externally tracked version managed by the user
-   */
-  public void setVersionId(String versionId) {
-    this.versionId = versionId;
-  }
-
   public Set<Classification> getClassifications() {
     return classifications;
   }
@@ -255,7 +235,6 @@ public class RegistryObject extends Identifiable {
     result = prime * result
         + ((objectType == null) ? 0 : objectType.hashCode());
     result = prime * result + ((status == null) ? 0 : status.hashCode());
-    result = prime * result + ((versionId == null) ? 0 : versionId.hashCode());
     result = prime * result
         + ((versionName == null) ? 0 : versionName.hashCode());
     return result;
@@ -304,11 +283,6 @@ public class RegistryObject extends Identifiable {
       if (other.status != null)
         return false;
     } else if (!status.equals(other.status))
-      return false;
-    if (versionId == null) {
-      if (other.versionId != null)
-        return false;
-    } else if (!versionId.equals(other.versionId))
       return false;
     if (versionName == null) {
       if (other.versionName != null)

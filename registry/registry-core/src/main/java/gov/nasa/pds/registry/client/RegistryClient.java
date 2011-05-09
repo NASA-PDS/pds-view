@@ -164,9 +164,6 @@ public class RegistryClient {
       if (filter.getStatus() != null) {
         params.add("status", filter.getStatus().toString());
       }
-      if (filter.getVersionId() != null) {
-        params.add("versionId", filter.getVersionId());
-      }
       if (filter.getVersionName() != null) {
         params.add("versionName", filter.getVersionName());
       }
@@ -229,6 +226,7 @@ public class RegistryClient {
     return builder.accept(mediaType).get(ClientResponse.class);
   }
 
+  @SuppressWarnings("unchecked")
   public static void main(String[] args) throws Exception {
     RegistryClient client = new RegistryClient(args[0]);
     RegistryResponse response = client.getExtrinsics(null, null).getEntity(
@@ -246,8 +244,7 @@ public class RegistryClient {
       System.out.println("Latest Extrinsic");
       System.out.println("Extrinsic " + extrinsic.getGuid());
       if (args.length > 2) {
-        ObjectFilter filter = new ObjectFilter.Builder().lid(args[1])
-            .versionId(args[2]).build();
+        ObjectFilter filter = new ObjectFilter.Builder().lid(args[1]).build();
         ExtrinsicQuery query = new ExtrinsicQuery.Builder().filter(filter)
             .build();
         response = client.getExtrinsics(query, null, null).getEntity(
@@ -255,7 +252,7 @@ public class RegistryClient {
         for (RegistryObject object : (List<RegistryObject>)response.getResults()) {
           System.out.println(object.getClass().getSimpleName() + " "
               + object.getGuid() + " " + object.getLid() + " "
-              + object.getVersionId());
+              + object.getVersionName());
         }
       }
     }

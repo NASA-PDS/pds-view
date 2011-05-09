@@ -107,10 +107,6 @@ public class MetadataStoreJPA implements MetadataStore {
         predicates.add(cb
             .equal(productEntity.get("status"), filter.getStatus()));
       }
-      if (filter.getVersionId() != null) {
-        predicates.add(cb.like(productEntity.get("versionId").as(String.class),
-            filter.getVersionId().replace('*', '%')));
-      }
       if (filter.getVersionName() != null) {
         predicates.add(cb.like(productEntity.get("versionName")
             .as(String.class), filter.getVersionName().replace('*', '%')));
@@ -333,16 +329,16 @@ public class MetadataStoreJPA implements MetadataStore {
    * .String, java.lang.String, java.lang.Class)
    */
   @Override
-  public RegistryObject getRegistryObject(String lid, String versionId,
+  public RegistryObject getRegistryObject(String lid, String versionName,
       Class<? extends RegistryObject> objectClass) {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<?> cq = cb.createQuery(objectClass);
     Root<?> entity = cq.from(objectClass);
     Path<String> lidAttr = entity.get("lid");
-    Path<String> versionIdAttr = entity.get("versionId");
+    Path<String> versionNameAttr = entity.get("versionName");
     cq
         .where(cb.and(cb.equal(lidAttr, lid), cb
-            .equal(versionIdAttr, versionId)));
+            .equal(versionNameAttr, versionName)));
     TypedQuery<?> query = entityManager.createQuery(cq);
     return (RegistryObject) query.getSingleResult();
   }
@@ -428,10 +424,6 @@ public class MetadataStoreJPA implements MetadataStore {
         predicates
             .add(cb.equal(objectEntity.get("status"), filter.getStatus()));
       }
-      if (filter.getVersionId() != null) {
-        predicates.add(cb.like(objectEntity.get("versionId").as(String.class),
-            filter.getVersionId().replace('*', '%')));
-      }
       if (filter.getVersionName() != null) {
         predicates.add(cb.like(
             objectEntity.get("versionName").as(String.class), filter
@@ -478,16 +470,16 @@ public class MetadataStoreJPA implements MetadataStore {
    */
   @Override
   @Transactional(readOnly = true)
-  public boolean hasRegistryObject(String lid, String versionId,
+  public boolean hasRegistryObject(String lid, String versionName,
       Class<? extends RegistryObject> objectClass) {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<?> cq = cb.createQuery(objectClass);
     Root<?> entity = cq.from(objectClass);
     Path<String> lidAttr = entity.get("lid");
-    Path<String> versionIdAttr = entity.get("versionId");
+    Path<String> versionNameAttr = entity.get("versionName");
     cq
         .where(cb.and(cb.equal(lidAttr, lid), cb
-            .equal(versionIdAttr, versionId)));
+            .equal(versionNameAttr, versionName)));
     TypedQuery<?> query = entityManager.createQuery(cq);
     return !query.getResultList().isEmpty();
   }

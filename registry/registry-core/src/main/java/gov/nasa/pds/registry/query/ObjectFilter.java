@@ -30,7 +30,6 @@ public class ObjectFilter {
 	private String name;
 	private String lid;
 	private String versionName;
-	private String versionId;
 	private String objectType;
 	private String submitter;
 	private ObjectStatus status;
@@ -70,12 +69,6 @@ public class ObjectFilter {
 		public Builder versionName(String versionName) {
 			this.checkBuilt();
 			this.filter.versionName = versionName;
-			return this;
-		}
-		
-		public Builder versionId(String versionId) {
-			this.checkBuilt();
-			this.filter.versionId = versionId;
 			return this;
 		}
 		
@@ -137,10 +130,6 @@ public class ObjectFilter {
 
 	public String getVersionName() {
 		return versionName;
-	}
-
-	public String getVersionId() {
-		return versionId;
 	}
 
 	public String getObjectType() {

@@ -61,7 +61,6 @@ public class Association extends RegistryObject {
 	public Association() {
 		this.setObjectType(Association.class.getSimpleName());
 		this.setVersionName(null);
-		this.setVersionId(null);
 	}
 
 	/**

@@ -118,13 +118,13 @@ public interface MetadataStore {
    * 
    * @param lid
    *          logical identifier of registry object.
-   * @param versionId
+   * @param versionName
    *          version of registry object.
    * @param objectClass
    *          type of registry object.
    * @return The identfied registry object of the requested type.
    */
-  public RegistryObject getRegistryObject(String lid, String versionId,
+  public RegistryObject getRegistryObject(String lid, String versionName,
       Class<? extends RegistryObject> objectClass);
 
   /**
@@ -213,13 +213,13 @@ public interface MetadataStore {
    * 
    * @param lid
    *          logical id of object
-   * @param versionId
-   *          user provided version
+   * @param versionName
+   *          registry generated version
    * @param objectClass
    *          type of registry object
    * @return flag indicating existence of registry object
    */
-  public boolean hasRegistryObject(String lid, String versionId,
+  public boolean hasRegistryObject(String lid, String versionName,
       Class<? extends RegistryObject> objectClass);
 
   /**

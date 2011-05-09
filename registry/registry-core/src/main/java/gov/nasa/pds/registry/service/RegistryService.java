@@ -94,7 +94,8 @@ public interface RegistryService {
    *          how many results to return
    * @return a list of extrinsics
    */
-  public RegistryResponse<ExtrinsicObject> getExtrinsics(Integer start, Integer rows);
+  public RegistryResponse<ExtrinsicObject> getExtrinsics(Integer start,
+      Integer rows);
 
   /**
    * Retrieves the first set of extrinsics that match the query
@@ -119,8 +120,8 @@ public interface RegistryService {
    *          how many results to return
    * @return a list of extrinsics
    */
-  public RegistryResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query, Integer start,
-      Integer rows);
+  public RegistryResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query,
+      Integer start, Integer rows);
 
   /**
    * Gives back some basic summary information about the registry. This summary
@@ -132,13 +133,13 @@ public interface RegistryService {
 
   /**
    * Versions a {@link RegistryObject} in the registry and publishes the
-   * contents of the provided extrinsic object.
+   * contents of the provided extrinsic object. A registry object with the the
+   * same lid must be already published otherwise there will be nothing to
+   * version off of.
    * 
    * @param user
    *          that has taken the action. Typically this should point to a unique
    *          username.
-   * @param lid
-   *          logical identifier of the parent extrinsic object
    * @param object
    *          the contents for this version of the extrinsic object
    * @param major
@@ -146,8 +147,8 @@ public interface RegistryService {
    * @return the guid of the versioned extrinsic object
    * @throws RegistryServiceException
    */
-  public String versionObject(String user, String lid, RegistryObject object,
-      boolean major) throws RegistryServiceException;
+  public String versionObject(String user, RegistryObject object, boolean major)
+      throws RegistryServiceException;
 
   /**
    * Retrieves the latest version of the {@link RegistryObject} with the given
@@ -176,32 +177,27 @@ public interface RegistryService {
   /**
    * Retrieves the next version of the {@link RegsitryObject}
    * 
-   * @param lid
-   *          of the current registry object
-   * @param versionId
-   *          of the current registry object. This is the user provided version.
+   * @param guid
+   *          of the registry object to uniquely identify it
    * @param objectClass
    *          the type of object to look up
    * @return the next version of the registry object otherwise null if there is
    *         no more versions
    */
-  public RegistryObject getNextObject(String lid, String versionId,
+  public RegistryObject getNextObject(String guid,
       Class<? extends RegistryObject> objectClass);
 
   /**
    * Retrieves the previous version of the {@link RegistryObject}
    * 
-   * @param lid
-   *          of the current registry object
-   * @param versionId
-   *          of the current registry version. This is the user provided
-   *          version.
+   * @param guid
+   *          of the registry object to uniquely identify it
    * @param objectClass
    *          the type of object to look up
    * @return the previous version of the registry object otherwise null if there
    *         is no versions before the current one
    */
-  public RegistryObject getPreviousObject(String lid, String versionId,
+  public RegistryObject getPreviousObject(String guid,
       Class<? extends RegistryObject> objectClass);
 
   /**
@@ -217,22 +213,6 @@ public interface RegistryService {
       Class<? extends RegistryObject> objectClass);
 
   /**
-   * Retrieves a {@link RegistryObject} from the registry with the given
-   * identifying information.
-   * 
-   * @param lid
-   *          of the registry object of interest.
-   * @param versionId
-   *          of the registry object of interest. This is the user provided
-   *          version.
-   * @param objectClass
-   *          the type of object to look up
-   * @return a registry object
-   */
-  public RegistryObject getObject(String lid, String versionId,
-      Class<? extends RegistryObject> objectClass);
-
-  /**
    * Retrieves all {@link ClassificationNode} for a given
    * {@link ClassificationScheme}
    * 
@@ -241,24 +221,6 @@ public interface RegistryService {
    * @return all classification nodes for the scheme's guid
    */
   public List<ClassificationNode> getClassificationNodes(String scheme);
-
-  /**
-   * Changes the {@link RegistryObject} status with the given identifying
-   * information.
-   * 
-   * @param user
-   *          that is requesting the change
-   * @param lid
-   *          logical identifier of the extrinsic
-   * @param versionId
-   *          of the registry object. This is the user supplied version
-   * @param action
-   *          which to take (i.e. approve, deprecate, etc.)
-   * @param objectClass
-   *          identifies the type of registry object
-   */
-  public void changeObjectStatus(String user, String lid, String versionId,
-      ObjectAction action, Class<? extends RegistryObject> objectClass);
 
   /**
    * Changes the status of registry object with the given guid and of the given
@@ -318,8 +280,9 @@ public interface RegistryService {
    *          the type of registry object to look for
    * @return list of {@link RegistryObject} with the given class
    */
-  public RegistryResponse<? extends RegistryObject> getObjects(ObjectQuery query, Integer start,
-      Integer rows, Class<? extends RegistryObject> objectClass);
+  public RegistryResponse<? extends RegistryObject> getObjects(
+      ObjectQuery query, Integer start, Integer rows,
+      Class<? extends RegistryObject> objectClass);
 
   /**
    * Retrieves the list of (@link AuditableEvent}'s for the affected object
@@ -328,7 +291,8 @@ public interface RegistryService {
    *          guid for the registry object of interest
    * @return list of events associated with the guid
    */
-  public RegistryResponse<AuditableEvent> getAuditableEvents(String affectedObject);
+  public RegistryResponse<AuditableEvent> getAuditableEvents(
+      String affectedObject);
 
   /**
    * Publishes a registry object to the registry.
@@ -342,7 +306,7 @@ public interface RegistryService {
    */
   public String publishObject(String user, RegistryObject registryObject)
       throws RegistryServiceException;
-  
+
   /**
    * Publishes a registry object to the registry.
    * 
@@ -355,23 +319,8 @@ public interface RegistryService {
    * @return guid of the published object
    * @throws RegistryServiceException
    */
-  public String publishObject(String user, RegistryObject registryObject, String packageId) throws RegistryServiceException;
-
-  /**
-   * Deletes a {@link RegistryObject} from the registry which share the logical
-   * identifier and version.
-   * 
-   * @param user
-   *          that requested the delete
-   * @param lid
-   *          logical identifier of registry object
-   * @param versionId
-   *          user defined version for the registry object
-   * @param objectClass
-   *          type of registry object
-   */
-  public void deleteObject(String user, String lid, String versionId,
-      Class<? extends RegistryObject> objectClass);
+  public String publishObject(String user, RegistryObject registryObject,
+      String packageId) throws RegistryServiceException;
 
   /**
    * Deletes a {@link RegistryObject} from the registry which share the logical
@@ -418,6 +367,16 @@ public interface RegistryService {
       Class<? extends RegistryObject> objectClass);
 
   /**
+   * 
+   * @param lid logical identifier which correlates to a group of related registry objects
+   * @param versionName that specifially identifies an object withing the group
+   * @param objectClass type of registry object that is being looked for
+   * @return matching registry object
+   */
+  public RegistryObject getObject(String lid, String versionName,
+      Class<? extends RegistryObject> objectClass);
+
+  /**
    * Configures the registry with a list of registry objects as input. This
    * should be limited to publishing a set of Classification Schemes and Nodes
    * that drive registry function. This would include but not limited to object
@@ -430,7 +389,8 @@ public interface RegistryService {
    *          to associate objects to
    * @param list
    *          classification schemes and nodes that are apart of this config
-   * @return identifier for the package with which the configuration is associated
+   * @return identifier for the package with which the configuration is
+   *         associated
    */
   public String configure(String user, RegistryPackage registryPackage,
       List<? extends RegistryObject> list) throws RegistryServiceException;
