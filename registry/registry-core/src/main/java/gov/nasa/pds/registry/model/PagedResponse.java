@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "response", namespace = "http://registry.pds.nasa.gov")
 @XmlType(name = "")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RegistryResponse<T> implements Serializable {
+public class PagedResponse<T> implements Serializable {
   
   private static final long serialVersionUID = 2848386465677347398L;
 
@@ -65,18 +65,18 @@ public class RegistryResponse<T> implements Serializable {
   })
   private List<T> results;
 
-  public RegistryResponse() {
+  public PagedResponse() {
   }
 
-  public RegistryResponse(Integer start, Long numFound) {
+  public PagedResponse(Integer start, Long numFound) {
     this(start, numFound, null);
   }
 
-  public RegistryResponse(List<T> results) {
+  public PagedResponse(List<T> results) {
     this(null, null, results);
   }
 
-  public RegistryResponse(Integer start, Long numFound,
+  public PagedResponse(Integer start, Long numFound,
       List<T> results) {
     this.start = start;
     this.numFound = numFound;

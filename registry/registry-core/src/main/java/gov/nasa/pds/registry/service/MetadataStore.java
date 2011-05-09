@@ -19,7 +19,7 @@ import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
-import gov.nasa.pds.registry.model.RegistryResponse;
+import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.ExtrinsicQuery;
@@ -49,7 +49,7 @@ public interface MetadataStore {
    *          number of results to get
    * @return list of extrinsics
    */
-  public RegistryResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query,
+  public PagedResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query,
       Integer start, Integer rows);
 
   /**
@@ -64,7 +64,7 @@ public interface MetadataStore {
    *          number of results to get. If equal to -1 return all.
    * @return list of associations
    */
-  public RegistryResponse<Association> getAssociations(AssociationQuery query,
+  public PagedResponse<Association> getAssociations(AssociationQuery query,
       Integer start, Integer rows);
 
   /**
@@ -203,7 +203,7 @@ public interface MetadataStore {
    *          the type of registry object to look for
    * @return list of {@link RegistryObject} with the given class
    */
-  public RegistryResponse<? extends RegistryObject> getRegistryObjects(
+  public PagedResponse<? extends RegistryObject> getRegistryObjects(
       ObjectQuery query, Integer start, Integer rows,
       Class<? extends RegistryObject> objectClass);
 

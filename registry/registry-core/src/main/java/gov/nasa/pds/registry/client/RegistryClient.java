@@ -23,7 +23,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import gov.nasa.pds.registry.provider.JAXBContextResolver;
 import gov.nasa.pds.registry.provider.JacksonObjectMapperProvider;
 import gov.nasa.pds.registry.model.Association;
-import gov.nasa.pds.registry.model.RegistryResponse;
+import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationFilter;
@@ -229,8 +229,8 @@ public class RegistryClient {
   @SuppressWarnings("unchecked")
   public static void main(String[] args) throws Exception {
     RegistryClient client = new RegistryClient(args[0]);
-    RegistryResponse response = client.getExtrinsics(null, null).getEntity(
-        RegistryResponse.class);
+    PagedResponse response = client.getExtrinsics(null, null).getEntity(
+        PagedResponse.class);
     System.out.println("Total results: " + response.getNumFound());
     System.out.println("Number displayed: " + response.getResults().size());
     for (RegistryObject object : (List<RegistryObject>)response.getResults()) {
@@ -248,7 +248,7 @@ public class RegistryClient {
         ExtrinsicQuery query = new ExtrinsicQuery.Builder().filter(filter)
             .build();
         response = client.getExtrinsics(query, null, null).getEntity(
-            RegistryResponse.class);
+            PagedResponse.class);
         for (RegistryObject object : (List<RegistryObject>)response.getResults()) {
           System.out.println(object.getClass().getSimpleName() + " "
               + object.getGuid() + " " + object.getLid() + " "

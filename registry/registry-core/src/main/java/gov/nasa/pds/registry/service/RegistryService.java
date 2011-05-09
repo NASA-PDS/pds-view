@@ -24,7 +24,7 @@ import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.ObjectAction;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.RegistryPackage;
-import gov.nasa.pds.registry.model.RegistryResponse;
+import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.Report;
 import gov.nasa.pds.registry.model.naming.IdentifierGenerator;
 import gov.nasa.pds.registry.model.naming.Versioner;
@@ -94,7 +94,7 @@ public interface RegistryService {
    *          how many results to return
    * @return a list of extrinsics
    */
-  public RegistryResponse<ExtrinsicObject> getExtrinsics(Integer start,
+  public PagedResponse<ExtrinsicObject> getExtrinsics(Integer start,
       Integer rows);
 
   /**
@@ -104,7 +104,7 @@ public interface RegistryService {
    *          holds a set of filters to match against extrinsics
    * @return a list of extrinsics
    */
-  public RegistryResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query);
+  public PagedResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query);
 
   /**
    * Retrieves a set of extinsics that match the given query. Allows one to page
@@ -120,7 +120,7 @@ public interface RegistryService {
    *          how many results to return
    * @return a list of extrinsics
    */
-  public RegistryResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query,
+  public PagedResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query,
       Integer start, Integer rows);
 
   /**
@@ -263,7 +263,7 @@ public interface RegistryService {
    *          how many results to return
    * @return a list of associations
    */
-  public RegistryResponse<Association> getAssociations(AssociationQuery query,
+  public PagedResponse<Association> getAssociations(AssociationQuery query,
       Integer start, Integer rows);
 
   /**
@@ -280,7 +280,7 @@ public interface RegistryService {
    *          the type of registry object to look for
    * @return list of {@link RegistryObject} with the given class
    */
-  public RegistryResponse<? extends RegistryObject> getObjects(
+  public PagedResponse<? extends RegistryObject> getObjects(
       ObjectQuery query, Integer start, Integer rows,
       Class<? extends RegistryObject> objectClass);
 
@@ -291,7 +291,7 @@ public interface RegistryService {
    *          guid for the registry object of interest
    * @return list of events associated with the guid
    */
-  public RegistryResponse<AuditableEvent> getAuditableEvents(
+  public PagedResponse<AuditableEvent> getAuditableEvents(
       String affectedObject);
 
   /**

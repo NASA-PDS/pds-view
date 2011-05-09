@@ -25,7 +25,7 @@ import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.ObjectAction;
 import gov.nasa.pds.registry.model.ObjectStatus;
 import gov.nasa.pds.registry.model.RegistryPackage;
-import gov.nasa.pds.registry.model.RegistryResponse;
+import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.Service;
@@ -154,9 +154,9 @@ public class RegistryServiceImpl implements RegistryService {
    * , java.lang.Integer)
    */
   @SuppressWarnings("unchecked")
-  public RegistryResponse<ExtrinsicObject> getExtrinsics(Integer start,
+  public PagedResponse<ExtrinsicObject> getExtrinsics(Integer start,
       Integer rows) {
-    RegistryResponse<ExtrinsicObject> page = new RegistryResponse<ExtrinsicObject>(
+    PagedResponse<ExtrinsicObject> page = new PagedResponse<ExtrinsicObject>(
         start, metadataStore.getNumRegistryObjects(ExtrinsicObject.class),
         (List<ExtrinsicObject>) metadataStore.getRegistryObjects(start, rows,
             ExtrinsicObject.class));
@@ -170,7 +170,7 @@ public class RegistryServiceImpl implements RegistryService {
    * gov.nasa.pds.registry.service.RegistryService#getExtrinsics(gov.nasa.pds
    * .registry.query.ExtrinsicQuery)
    */
-  public RegistryResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query) {
+  public PagedResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query) {
     return this.getExtrinsics(query, 1, 20);
   }
 
@@ -181,7 +181,7 @@ public class RegistryServiceImpl implements RegistryService {
    * gov.nasa.pds.registry.service.RegistryService#getExtrinsics(gov.nasa.pds
    * .registry.query.ExtrinsicQuery, java.lang.Integer, java.lang.Integer)
    */
-  public RegistryResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query,
+  public PagedResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query,
       Integer start, Integer rows) {
     if (start <= 0) {
       start = 1;
@@ -416,7 +416,7 @@ public class RegistryServiceImpl implements RegistryService {
    * gov.nasa.pds.registry.service.RegistryService#getAssociations(gov.nasa.
    * pds.registry.query.AssociationQuery, java.lang.Integer, java.lang.Integer)
    */
-  public RegistryResponse<Association> getAssociations(AssociationQuery query,
+  public PagedResponse<Association> getAssociations(AssociationQuery query,
       Integer start, Integer rows) {
     if (start <= 0) {
       start = 1;
@@ -432,12 +432,12 @@ public class RegistryServiceImpl implements RegistryService {
    * java.lang.Class)
    */
   @SuppressWarnings("unchecked")
-  public RegistryResponse<Association> getObjects(ObjectQuery query,
+  public PagedResponse<Association> getObjects(ObjectQuery query,
       Integer start, Integer rows, Class<? extends RegistryObject> objectClass) {
     if (start <= 0) {
       start = 1;
     }
-    return (RegistryResponse<Association>) metadataStore.getRegistryObjects(
+    return (PagedResponse<Association>) metadataStore.getRegistryObjects(
         query, start, rows, objectClass);
   }
 
@@ -448,8 +448,8 @@ public class RegistryServiceImpl implements RegistryService {
    * gov.nasa.pds.registry.service.RegistryService#getAuditableEvents(java.lang
    * .String)
    */
-  public RegistryResponse<AuditableEvent> getAuditableEvents(String affectedObject) {
-    RegistryResponse<AuditableEvent> response = new RegistryResponse<AuditableEvent>();
+  public PagedResponse<AuditableEvent> getAuditableEvents(String affectedObject) {
+    PagedResponse<AuditableEvent> response = new PagedResponse<AuditableEvent>();
     response.setResults(metadataStore.getAuditableEvents(affectedObject));
     return response;
   }
@@ -664,7 +664,7 @@ public class RegistryServiceImpl implements RegistryService {
         .build();
     AssociationQuery.Builder queryBuilder = new AssociationQuery.Builder()
         .filter(filter).operator(QueryOperator.OR);
-    RegistryResponse<Association> response = metadataStore.getAssociations(queryBuilder
+    PagedResponse<Association> response = metadataStore.getAssociations(queryBuilder
         .build(), 1, -1);
     List<String> associationIds = new ArrayList<String>();
     for (RegistryObject object : response.getResults()) {
