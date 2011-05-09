@@ -68,6 +68,13 @@
         lid="urn:registry:ObjectType:RegistryObject:ExternalIdentifier"
         guid="urn:registry:ObjectType:RegistryObject:ExternalIdentifier"/>
     <classificationNode
+        code="ExternalLink" 
+        parent="urn:registry:ObjectType:RegistryObject"
+        description="This is the classification node for an external link. This represents a core registry object."
+        name="External Link"
+        lid="urn:registry:ObjectType:RegistryObject:ExternalLink"
+        guid="urn:registry:ObjectType:RegistryObject:ExternalLink"/>
+    <classificationNode
         code="RegistryPackage" 
         parent="urn:registry:ObjectType:RegistryObject"
         description="This is the classification node for a registry package. This represents a core registry object."

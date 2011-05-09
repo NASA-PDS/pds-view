@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<externalLink xmlns="http://registry.pds.nasa.gov" 
+    name="PDS Home Page" 
+    description="This is a link to the PDS Home Page"
+    externalURI="http://pds.jpl.nasa.gov"/>

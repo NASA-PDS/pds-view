@@ -193,6 +193,15 @@ public class RegistryResource {
     return new ServicesResource(this.uriInfo, this.request,
         this.registryService);
   }
+  
+  /**
+   * Provides access to operations that can be done on links.
+   * @return resource to deal with ExternalLinks
+   */
+  @Path("links")
+  public LinksResource getLinksResource() {
+    return new LinksResource(this.uriInfo, this.request, this.registryService);
+  }
 
   /**
    * Provides access to operations on Classifications that are made on
