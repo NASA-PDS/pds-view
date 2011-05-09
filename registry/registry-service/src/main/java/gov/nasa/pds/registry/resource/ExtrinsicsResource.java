@@ -248,7 +248,7 @@ submitter).status(status).contentVersion(contentVersion)
    */
   @SuppressWarnings("unchecked")
   @GET
-  @Path("{lid}/all")
+  @Path("logicals/{lid}")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public RegistryResponse<ExtrinsicObject> getExtrinsicVersions(
       @PathParam("lid") String lid) {
@@ -271,7 +271,7 @@ submitter).status(status).contentVersion(contentVersion)
    * @return ExtrinsicObject within the registry with the lid and version
    */
   @GET
-  @Path("{lid}/earliest")
+  @Path("logicals/{lid}/earliest")
   public Response getEarliestVersion(@PathParam("lid") String lid) {
     ExtrinsicObject extrinsic = (ExtrinsicObject) registryService
         .getEarliestObject(lid, ExtrinsicObject.class);
@@ -298,7 +298,7 @@ submitter).status(status).contentVersion(contentVersion)
    * @return Extrinsic within the registry with the lid and version
    */
   @GET
-  @Path("logicals/{lid}")
+  @Path("logicals/{lid}/latest")
   public Response getLatestVersion(@PathParam("lid") String lid) {
     ExtrinsicObject extrinsic = (ExtrinsicObject) registryService
         .getLatestObject(lid, ExtrinsicObject.class);
