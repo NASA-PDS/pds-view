@@ -23,7 +23,7 @@ import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.NodeType;
 import gov.nasa.pds.registry.model.ObjectStatus;
-import gov.nasa.pds.registry.model.RegistryResponse;
+import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryStatus;
 import gov.nasa.pds.registry.model.Service;
@@ -126,7 +126,7 @@ public class Examples {
 		RESPONSE_REPORT.setServerStarted(new GregorianCalendar());
 	}
 
-	public final static RegistryResponse<ExtrinsicObject> RESPONSE_REGISTRY_OBJECT_REVISIONS = new RegistryResponse<ExtrinsicObject>();
+	public final static PagedResponse<ExtrinsicObject> RESPONSE_REGISTRY_OBJECT_REVISIONS = new PagedResponse<ExtrinsicObject>();
 	static {
 		List<ExtrinsicObject> ros = new ArrayList<ExtrinsicObject>();
 		ros.add(RESPONSE_EXTRINSIC);
@@ -160,7 +160,7 @@ public class Examples {
 		RESPONSE_EXTRINSIC_VERSIONED.setSlots(RESPONSE_SLOTS);
 	}
 
-	public final static RegistryResponse<ExtrinsicObject> RESPONSE_EXTRINSIC_VERSIONS = new RegistryResponse<ExtrinsicObject>();
+	public final static PagedResponse<ExtrinsicObject> RESPONSE_EXTRINSIC_VERSIONS = new PagedResponse<ExtrinsicObject>();
 	static {
 		List<ExtrinsicObject> vers = new ArrayList<ExtrinsicObject>();
 		vers.add(RESPONSE_EXTRINSIC);
@@ -168,7 +168,7 @@ public class Examples {
 		RESPONSE_EXTRINSIC_VERSIONS.setResults(vers);
 	}
 
-	public final static RegistryResponse<ExtrinsicObject> RESPONSE_PAGED = new RegistryResponse<ExtrinsicObject>(1, 1L);
+	public final static PagedResponse<ExtrinsicObject> RESPONSE_PAGED = new PagedResponse<ExtrinsicObject>(1, 1L);
 	static {
 		List<ExtrinsicObject> results = new ArrayList<ExtrinsicObject>();
 		results.add(RESPONSE_EXTRINSIC);
@@ -195,7 +195,7 @@ public class Examples {
     RESPONSE_ASSOCIATION.setStatus(ObjectStatus.Submitted);
 	}
 
-	public final static RegistryResponse<Association> RESPONSE_ASSOCIATION_QUERY = new RegistryResponse<Association>();
+	public final static PagedResponse<Association> RESPONSE_ASSOCIATION_QUERY = new PagedResponse<Association>();
 	static {
 	  List<Association> results = new ArrayList<Association>();
 	  results.add(REQUEST_ASSOCIATION);
@@ -215,7 +215,7 @@ public class Examples {
     APPROVE_EVENT.setHome("http://pds.jpl.nasa.gov/registry-service");
 	}
 	
-	public final static RegistryResponse<AuditableEvent> RESPONSE_AUDITABLE_EVENTS = new RegistryResponse<AuditableEvent>();
+	public final static PagedResponse<AuditableEvent> RESPONSE_AUDITABLE_EVENTS = new PagedResponse<AuditableEvent>();
 	static {
 	  List<AuditableEvent> results = new ArrayList<AuditableEvent>();
 	  results.add(CREATE_EVENT);
@@ -275,7 +275,7 @@ public class Examples {
     RESPONSE_NODE_OTHER.setParent("urn:registry:ObjectTypeScheme:ExtrinsicObject");
   }
 	
-	public final static RegistryResponse<ClassificationNode> RESPONSE_NODES = new RegistryResponse<ClassificationNode>();
+	public final static PagedResponse<ClassificationNode> RESPONSE_NODES = new PagedResponse<ClassificationNode>();
 	static {
 	  List<ClassificationNode> results = new ArrayList<ClassificationNode>();
 	  results.add(RESPONSE_NODE);

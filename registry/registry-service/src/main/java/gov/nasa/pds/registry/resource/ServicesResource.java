@@ -19,7 +19,7 @@ import java.net.URI;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Link;
-import gov.nasa.pds.registry.model.RegistryResponse;
+import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.Service;
 import gov.nasa.pds.registry.query.ObjectFilter;
 import gov.nasa.pds.registry.query.ObjectQuery;
@@ -159,7 +159,7 @@ public class ServicesResource {
       @QueryParam("rows") @DefaultValue("20") Integer rows) {
     ObjectFilter filter = new ObjectFilter.Builder().build();
     ObjectQuery.Builder queryBuilder = new ObjectQuery.Builder().filter(filter);
-    RegistryResponse<Service> rr = (RegistryResponse<Service>) registryService
+    PagedResponse<Service> rr = (PagedResponse<Service>) registryService
         .getObjects(queryBuilder.build(), start, rows, Service.class);
     Response.ResponseBuilder builder = Response.ok(rr);
     UriBuilder absolute = uriInfo.getAbsolutePathBuilder();

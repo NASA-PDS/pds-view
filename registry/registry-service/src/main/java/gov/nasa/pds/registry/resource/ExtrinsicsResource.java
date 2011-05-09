@@ -21,7 +21,7 @@ import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.ObjectStatus;
-import gov.nasa.pds.registry.model.RegistryResponse;
+import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.ExtrinsicQuery;
@@ -136,7 +136,7 @@ submitter).status(status).contentVersion(contentVersion)
     if (sort != null) {
       queryBuilder.sort(sort);
     }
-    RegistryResponse<ExtrinsicObject> rr = registryService.getExtrinsics(
+    PagedResponse<ExtrinsicObject> rr = registryService.getExtrinsics(
         queryBuilder.build(), start, rows);
     Response.ResponseBuilder builder = Response.ok(rr);
     UriBuilder absolute = uriInfo.getAbsolutePathBuilder();
@@ -250,9 +250,9 @@ submitter).status(status).contentVersion(contentVersion)
   @GET
   @Path("logicals/{lid}")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public RegistryResponse<ExtrinsicObject> getExtrinsicVersions(
+  public PagedResponse<ExtrinsicObject> getExtrinsicVersions(
       @PathParam("lid") String lid) {
-    return new RegistryResponse(registryService.getObjectVersions(lid,
+    return new PagedResponse(registryService.getObjectVersions(lid,
         ExtrinsicObject.class));
   }
 

@@ -20,7 +20,7 @@ import java.net.URI;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.ClassificationScheme;
-import gov.nasa.pds.registry.model.RegistryResponse;
+import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.service.RegistryService;
 
 import javax.ws.rs.Consumes;
@@ -110,8 +110,8 @@ public class NodesResource {
    */
   @GET
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public RegistryResponse<ClassificationNode> getClassificationNodes() {
-    return new RegistryResponse<ClassificationNode>(registryService
+  public PagedResponse<ClassificationNode> getClassificationNodes() {
+    return new PagedResponse<ClassificationNode>(registryService
         .getClassificationNodes(scheme.getGuid()));
   }
 

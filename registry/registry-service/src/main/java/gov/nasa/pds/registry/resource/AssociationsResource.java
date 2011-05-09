@@ -17,7 +17,7 @@ package gov.nasa.pds.registry.resource;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Association;
-import gov.nasa.pds.registry.model.RegistryResponse;
+import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.QueryOperator;
@@ -112,7 +112,7 @@ public class AssociationsResource {
       queryBuilder.sort(sort);
     }
 
-    RegistryResponse<Association> pr = registryService.getAssociations(queryBuilder.build(),
+    PagedResponse<Association> pr = registryService.getAssociations(queryBuilder.build(),
         start, rows);
     Response.ResponseBuilder builder = Response.ok(pr);
     return builder.build();
