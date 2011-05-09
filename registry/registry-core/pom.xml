@@ -96,6 +96,51 @@
       </plugin>
       -->
       <plugin>
+        <groupId>com.sun.tools.jxc.maven2</groupId>
+        <artifactId>maven-jaxb-schemagen-plugin</artifactId>
+        <version>1.2</version>
+        <executions>
+          <execution>
+            <!--<phase>generate-sources</phase>-->
+            <phase>compile</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <schemas>
+            <schema>
+              <namespace>http://registry.pds.nasa.gov</namespace>
+              <file>registry-service.xsd</file>
+            </schema>
+          </schemas>
+          <includes>
+            <include>**.java</include>
+          </includes>
+          <srcdir>${project.build.sourceDirectory}/gov/nasa/pds/registry/model</srcdir>
+          <destdir>${project.build.directory}/classes</destdir>
+          <verbose>true</verbose>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>${jaxb-version}</version>
+          </dependency>
+          <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-xjc</artifactId>
+            <version>${jaxb-version}</version>
+          </dependency>
+          <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>${jaxb-version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
