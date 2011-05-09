@@ -112,7 +112,7 @@ public class AssociationsResource {
       queryBuilder.sort(sort);
     }
 
-    RegistryResponse pr = registryService.getAssociations(queryBuilder.build(),
+    RegistryResponse<Association> pr = registryService.getAssociations(queryBuilder.build(),
         start, rows);
     Response.ResponseBuilder builder = Response.ok(pr);
     return builder.build();

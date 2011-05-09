@@ -80,7 +80,6 @@ public class Examples {
 				.setHome("http://pds.jpl.nasa.gov/registry-service");
 		RESPONSE_EXTRINSIC.setLid("1234");
 		RESPONSE_EXTRINSIC.setVersionName("1.0");
-		RESPONSE_EXTRINSIC.setVersionId("1.0");
 		RESPONSE_EXTRINSIC.setStatus(ObjectStatus.Submitted);
 		RESPONSE_EXTRINSIC.setSlots(RESPONSE_SLOTS);
 	}
@@ -93,7 +92,6 @@ public class Examples {
 				.setHome("http://pds.jpl.nasa.gov/registry-service");
 		RESPONSE_EXTRINSIC_UPDATED.setLid("1234");
 		RESPONSE_EXTRINSIC_UPDATED.setVersionName("1.0");
-		RESPONSE_EXTRINSIC_UPDATED.setVersionId("1.1");
 		RESPONSE_EXTRINSIC_UPDATED.setStatus(ObjectStatus.Submitted);
 		RESPONSE_EXTRINSIC_UPDATED.setSlots(RESPONSE_SLOTS);
 	}
@@ -105,7 +103,6 @@ public class Examples {
 		RESPONSE_EXTRINSIC_APPROVED
 				.setHome("http://pds.jpl.nasa.gov/registry-service");
 		RESPONSE_EXTRINSIC_APPROVED.setLid("1234");
-		RESPONSE_EXTRINSIC_APPROVED.setVersionId("1.1");
 		RESPONSE_EXTRINSIC_APPROVED.setVersionName("1.0");
 		RESPONSE_EXTRINSIC_APPROVED.setStatus(ObjectStatus.Approved);
 		RESPONSE_EXTRINSIC_APPROVED.setSlots(RESPONSE_SLOTS);
@@ -118,7 +115,6 @@ public class Examples {
 		RESPONSE_EXTRINSIC_DEPRECATED
 				.setHome("http://pds.jpl.nasa.gov/registry-service");
 		RESPONSE_EXTRINSIC_DEPRECATED.setLid("1234");
-		RESPONSE_EXTRINSIC_DEPRECATED.setVersionId("1.1");
 		RESPONSE_EXTRINSIC_DEPRECATED.setVersionName("1.0");
 		RESPONSE_EXTRINSIC_DEPRECATED.setStatus(ObjectStatus.Deprecated);
 		RESPONSE_EXTRINSIC_DEPRECATED.setSlots(RESPONSE_SLOTS);
@@ -130,7 +126,7 @@ public class Examples {
 		RESPONSE_REPORT.setServerStarted(new GregorianCalendar());
 	}
 
-	public final static RegistryResponse RESPONSE_REGISTRY_OBJECT_REVISIONS = new RegistryResponse();
+	public final static RegistryResponse<ExtrinsicObject> RESPONSE_REGISTRY_OBJECT_REVISIONS = new RegistryResponse<ExtrinsicObject>();
 	static {
 		List<ExtrinsicObject> ros = new ArrayList<ExtrinsicObject>();
 		ros.add(RESPONSE_EXTRINSIC);
@@ -148,7 +144,6 @@ public class Examples {
 				.setHome("http://pds.jpl.nasa.gov/registry-service");
 		REQUEST_EXTRINSIC_VERSIONED.setLid("1234");
 		REQUEST_EXTRINSIC_VERSIONED.setVersionName("2.0");
-		REQUEST_EXTRINSIC_VERSIONED.setVersionId("1.0");
 		REQUEST_EXTRINSIC_VERSIONED.setStatus(ObjectStatus.Submitted);
 		REQUEST_EXTRINSIC_VERSIONED.setSlots(RESPONSE_SLOTS);
 	}
@@ -161,12 +156,11 @@ public class Examples {
 				.setHome("http://pds.jpl.nasa.gov/registry-service");
 		RESPONSE_EXTRINSIC_VERSIONED.setLid("1234");
 		RESPONSE_EXTRINSIC_VERSIONED.setVersionName("2.0");
-		RESPONSE_EXTRINSIC_VERSIONED.setVersionId("1.1");
 		RESPONSE_EXTRINSIC_VERSIONED.setStatus(ObjectStatus.Submitted);
 		RESPONSE_EXTRINSIC_VERSIONED.setSlots(RESPONSE_SLOTS);
 	}
 
-	public final static RegistryResponse RESPONSE_EXTRINSIC_VERSIONS = new RegistryResponse();
+	public final static RegistryResponse<ExtrinsicObject> RESPONSE_EXTRINSIC_VERSIONS = new RegistryResponse<ExtrinsicObject>();
 	static {
 		List<ExtrinsicObject> vers = new ArrayList<ExtrinsicObject>();
 		vers.add(RESPONSE_EXTRINSIC);
@@ -174,7 +168,7 @@ public class Examples {
 		RESPONSE_EXTRINSIC_VERSIONS.setResults(vers);
 	}
 
-	public final static RegistryResponse RESPONSE_PAGED = new RegistryResponse(1, 1L);
+	public final static RegistryResponse<ExtrinsicObject> RESPONSE_PAGED = new RegistryResponse<ExtrinsicObject>(1, 1L);
 	static {
 		List<ExtrinsicObject> results = new ArrayList<ExtrinsicObject>();
 		results.add(RESPONSE_EXTRINSIC);
@@ -201,7 +195,7 @@ public class Examples {
     RESPONSE_ASSOCIATION.setStatus(ObjectStatus.Submitted);
 	}
 
-	public final static RegistryResponse RESPONSE_ASSOCIATION_QUERY = new RegistryResponse();
+	public final static RegistryResponse<Association> RESPONSE_ASSOCIATION_QUERY = new RegistryResponse<Association>();
 	static {
 	  List<Association> results = new ArrayList<Association>();
 	  results.add(REQUEST_ASSOCIATION);
@@ -221,7 +215,7 @@ public class Examples {
     APPROVE_EVENT.setHome("http://pds.jpl.nasa.gov/registry-service");
 	}
 	
-	public final static RegistryResponse RESPONSE_AUDITABLE_EVENTS = new RegistryResponse();
+	public final static RegistryResponse<AuditableEvent> RESPONSE_AUDITABLE_EVENTS = new RegistryResponse<AuditableEvent>();
 	static {
 	  List<AuditableEvent> results = new ArrayList<AuditableEvent>();
 	  results.add(CREATE_EVENT);
@@ -243,7 +237,6 @@ public class Examples {
     RESPONSE_SCHEME.setGuid("urn:registry:ObjectTypeScheme");
     RESPONSE_SCHEME.setLid("urn:uuid" + UUID.randomUUID().toString());
     RESPONSE_SCHEME.setVersionName("1.0");
-    RESPONSE_SCHEME.setVersionId("1.0");
     RESPONSE_SCHEME.setHome("http://pds.jpl.nasa.gov/registry-service");
     RESPONSE_SCHEME.setName("Test Canonical Object Type Classification Scheme");
     RESPONSE_SCHEME.setDescription("This is the canonical object type classification that is one of the core registry objects");
@@ -282,7 +275,7 @@ public class Examples {
     RESPONSE_NODE_OTHER.setParent("urn:registry:ObjectTypeScheme:ExtrinsicObject");
   }
 	
-	public final static RegistryResponse RESPONSE_NODES = new RegistryResponse();
+	public final static RegistryResponse<ClassificationNode> RESPONSE_NODES = new RegistryResponse<ClassificationNode>();
 	static {
 	  List<ClassificationNode> results = new ArrayList<ClassificationNode>();
 	  results.add(RESPONSE_NODE);

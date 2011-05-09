@@ -15,6 +15,7 @@
 
 package gov.nasa.pds.registry.resource;
 
+import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.RegistryResponse;
 import gov.nasa.pds.registry.service.RegistryService;
 
@@ -65,7 +66,7 @@ public class EventsResource {
   @Path("{affectedObject}")
   @GET
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public RegistryResponse getAuditableEvents(
+  public RegistryResponse<AuditableEvent> getAuditableEvents(
       @PathParam("affectedObject") String affectedObject) {
     return registryService.getAuditableEvents(affectedObject);
   }
