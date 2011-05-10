@@ -108,6 +108,38 @@
           </execution>
         </executions>
       </plugin>
+      
+      <!-- Produce the resourcedoc.xml that includes javadoc comments and special tags. 
+           This is the WADL document that will be processed through an XSLT. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>javadoc</goal>
+            </goals>
+            <phase>compile</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <encoding>UTF-8</encoding>
+          <verbose>false</verbose>
+          <show>public</show>
+          <useStandardDocletOptions>false</useStandardDocletOptions>
+          <subpackages>gov.nasa.pds.registry:gov.nasa.pds.registry.model:gov.nasa.pds.registry.resource:gov.nasa.pds.registry.util</subpackages>
+          <doclet>com.sun.jersey.wadl.resourcedoc.ResourceDoclet</doclet>
+          <docletArtifacts>
+            <docletArtifact>
+              <groupId>com.sun.jersey.contribs</groupId>
+              <artifactId>wadl-resourcedoc-doclet</artifactId>
+              <version>${jersey-version}</version>
+            </docletArtifact>
+          </docletArtifacts>
+          <additionalparam>-output ${project.build.outputDirectory}/resourcedoc.xml</additionalparam>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -132,7 +164,7 @@
               </includes>
             </resource>
             <resource>
-              <directory>src/main/resources/schema</directory>
+              <directory>${project.build.directory}/generated-schema</directory>
               <targetPath>docs</targetPath>
               <filtering>true</filtering>
               <includes>
@@ -335,7 +367,7 @@
       <version>5.1.6</version>
     </dependency>
     <!-- JPA END -->
-
+    
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-server</artifactId>

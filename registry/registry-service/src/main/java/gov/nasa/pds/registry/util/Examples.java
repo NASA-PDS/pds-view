@@ -20,6 +20,7 @@ import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.ClassificationScheme;
 import gov.nasa.pds.registry.model.EventType;
+import gov.nasa.pds.registry.model.ExternalLink;
 import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.NodeType;
 import gov.nasa.pds.registry.model.ObjectStatus;
@@ -32,6 +33,8 @@ import gov.nasa.pds.registry.model.Slot;
 import gov.nasa.pds.registry.model.SpecificationLink;
 import gov.nasa.pds.registry.model.Report;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -309,5 +312,14 @@ public class Examples {
 	  SERVICE.setServiceBindings(bindings);
 	  SERVICE.setName("PDS Service");
 	  SERVICE.setDescription("This is a service to test adding a service description to the registry");
+	}
+	
+	public final static ExternalLink EXTERNAL_LINK = new ExternalLink();
+	static {
+	  try {
+      EXTERNAL_LINK.setExternalURI(new URI("http://pds.nasa.gov"));
+    } catch (URISyntaxException e) {
+      e.printStackTrace();
+    }
 	}
 }
