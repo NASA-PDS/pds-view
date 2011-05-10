@@ -43,7 +43,7 @@ public class RootResource {
   Request request;
   
   @GET
-  public Response listRegistryResource() {
+  public Response getRegistryResource() {
     Response.ResponseBuilder builder = Response.ok("Registry Service Root");
     String registryUri = uriInfo.getBaseUriBuilder().clone().path(
         RegistryResource.class).build().toString();

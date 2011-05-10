@@ -49,7 +49,7 @@
     <xdoc-artifactId>${artifactId}</xdoc-artifactId>
     <xdoc-version>${version}</xdoc-version>
     <!-- These properties support the application. -->
-    <jersey-version>1.5</jersey-version>
+    <jersey-version>1.4</jersey-version>
     <junit-version>4.8.1</junit-version>
     <xerces-version>2.6.1</xerces-version>
     <jaxb-version>2.2</jaxb-version>
@@ -139,6 +139,62 @@
           <additionalparam>-output ${project.build.outputDirectory}/resourcedoc.xml</additionalparam>
         </configuration>
       </plugin>
+      
+      <!-- Now build the WADL file -->
+      <plugin>
+        <groupId>com.sun.jersey.contribs</groupId>
+        <artifactId>maven-wadl-plugin</artifactId>
+        <version>${jersey-version}</version>
+        <executions>
+          <execution>
+            <id>generate</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <phase>compile</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <wadlFile>${project.build.outputDirectory}/application.wadl</wadlFile>
+          <formatWadlFile>true</formatWadlFile>
+          <baseUri>http://pds.nasa.gov/registry-service</baseUri>
+          <packagesResourceConfig>
+            <param>gov.nasa.pds.registry</param>
+            <param>gov.nasa.pds.registry.resource</param>
+            <param>gov.nasa.pds.registry.model</param>
+            <param>gov.nasa.pds.registry.util</param>
+          </packagesResourceConfig>
+          <wadlGenerators>
+            <wadlGeneratorDescription>
+              <className>com.sun.jersey.server.wadl.generators.WadlGeneratorApplicationDoc</className>
+              <properties>
+                <property>
+                  <name>applicationDocsFile</name>
+                  <value>${basedir}/src/main/doc/application-doc.xml</value>
+                </property>
+              </properties>
+            </wadlGeneratorDescription>
+            <wadlGeneratorDescription>
+              <className>com.sun.jersey.server.wadl.generators.WadlGeneratorGrammarsSupport</className>
+              <properties>
+                <property>
+                  <name>grammarsFile</name>
+                  <value>${basedir}/src/main/doc/application-grammars.xml</value>
+                </property>
+              </properties>
+            </wadlGeneratorDescription>
+            <wadlGeneratorDescription>
+              <className>com.sun.jersey.server.wadl.generators.resourcedoc.WadlGeneratorResourceDocSupport</className>
+              <properties>
+                <property>
+                  <name>resourceDocFile</name>
+                  <value>${project.build.outputDirectory}/resourcedoc.xml</value>
+                </property>
+              </properties>
+            </wadlGeneratorDescription>
+          </wadlGenerators>
+        </configuration>
+      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -169,6 +225,15 @@
               <filtering>true</filtering>
               <includes>
                 <include>*.xsd</include>
+              </includes>
+            </resource>
+            <resource>
+              <directory>${project.build.outputDirectory}</directory>
+              <targetPath>docs</targetPath>
+              <filtering>true</filtering>
+              <includes>
+                <include>*.xml</include>
+                <include>*.wadl</include>
               </includes>
             </resource>
           </webResources>
@@ -232,7 +297,62 @@
       </plugin>   
     </plugins>
   </build>
-
+  
+  <profiles>
+    <profile>
+      <id>xsltproc</id>
+      <activation>
+        <file>
+          <exists>/usr/bin/xsltproc</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.1</version>
+            <executions>
+              <execution>
+                <id>copy-docs-to-builddir</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <phase>compile</phase>
+                <configuration>
+                  <executable>cp</executable>
+                  <commandlineArgs>src/main/doc/*.xml target/classes/</commandlineArgs>
+                </configuration>
+              </execution>
+              <execution>
+                <id>prepare-xsltproc</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <phase>compile</phase>
+                <configuration>
+                  <executable>cp</executable>
+                  <commandlineArgs>target/generated-schema/*.xsd target/classes/</commandlineArgs>
+                </configuration>
+              </execution>
+              <execution>
+                <id>exec-xsltproc: target/index.html</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <phase>compile</phase>
+                <!--<phase>package</phase>-->
+                <configuration>
+                  <executable>xsltproc</executable>
+                  <commandlineArgs>-o target/index.html src/main/doc/wadl_documentation-2008-12.xsl target/classes/application.wadl</commandlineArgs>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <repositories>
     <!-- Hosts the PDS and OODT artifacts. -->

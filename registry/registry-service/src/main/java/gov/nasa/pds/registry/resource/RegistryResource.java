@@ -58,7 +58,7 @@ public class RegistryResource {
   RegistryService registryService;
 
   @GET
-  public Response listResources() {
+  public Response getRegistryResources() {
     Response.ResponseBuilder builder = Response
         .ok("Welcome to the Registry Service.");
     String associationsUri = uriInfo.getBaseUriBuilder().clone().path(
