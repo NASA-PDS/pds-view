@@ -110,7 +110,12 @@ public class ServicesResource {
   @Path("{guid}")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Service getService(@PathParam("guid") String guid) {
-    return (Service) registryService.getObject(guid, Service.class);
+    try {
+      return (Service) registryService.getObject(guid, Service.class);
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
 
   /**
@@ -147,7 +152,8 @@ public class ServicesResource {
   @POST
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   @Path("{guid}")
-  public Response updateServiceWithPost(@PathParam("guid") String guid, Service service) {
+  public Response updateServiceWithPost(@PathParam("guid") String guid,
+      Service service) {
     return this.updateService(guid, service);
   }
 

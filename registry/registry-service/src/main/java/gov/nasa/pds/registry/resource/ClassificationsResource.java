@@ -59,7 +59,7 @@ public class ClassificationsResource {
     this.request = request;
     this.registryService = registryService;
   }
-  
+
   /**
    * Publishes a classification to the registry. Publishing includes validation,
    * assigning an internal version, validating the submission, and notification.
@@ -82,9 +82,9 @@ public class ClassificationsResource {
     try {
       String guid = registryService.publishObject("Unkown", classification);
       return Response.created(
-          ClassificationsResource.getClassificationUri((Classification) registryService
-              .getObject(guid, Classification.class), uriInfo)).entity(guid)
-          .build();
+          ClassificationsResource.getClassificationUri(
+              (Classification) registryService.getObject(guid,
+                  Classification.class), uriInfo)).entity(guid).build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
           ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
@@ -110,9 +110,15 @@ public class ClassificationsResource {
   @Path("{guid}")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Classification getClassification(@PathParam("guid") String guid) {
-    Classification classification = (Classification) registryService
-        .getObject(guid, Classification.class);
-    return classification;
+    try {
+      Classification classification = (Classification) registryService
+          .getObject(guid, Classification.class);
+      return classification;
+
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
 
   /**

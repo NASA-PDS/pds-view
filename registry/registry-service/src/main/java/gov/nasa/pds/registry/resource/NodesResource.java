@@ -132,8 +132,14 @@ public class NodesResource {
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public ClassificationNode getClassificationNode(
       @PathParam("nodeGuid") String nodeGuid) {
-    return (ClassificationNode) registryService.getObject(nodeGuid,
-        ClassificationNode.class);
+    try {
+      return (ClassificationNode) registryService.getObject(nodeGuid,
+          ClassificationNode.class);
+
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
 
   /**
@@ -147,8 +153,7 @@ public class NodesResource {
   @Path("{nodeGuid}")
   public Response deleteClassificationNode(
       @PathParam("nodeGuid") String nodeGuid) {
-    registryService.deleteObject("Unknown", nodeGuid,
-        ClassificationNode.class);
+    registryService.deleteObject("Unknown", nodeGuid, ClassificationNode.class);
     return Response.ok().build();
   }
 

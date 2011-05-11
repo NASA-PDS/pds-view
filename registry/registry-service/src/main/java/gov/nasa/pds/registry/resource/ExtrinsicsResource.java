@@ -15,11 +15,13 @@
 
 package gov.nasa.pds.registry.resource;
 
+import java.net.URI;
 import java.util.List;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.Link;
+import gov.nasa.pds.registry.model.ObjectAction;
 import gov.nasa.pds.registry.model.ObjectStatus;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
@@ -29,6 +31,7 @@ import gov.nasa.pds.registry.query.QueryOperator;
 import gov.nasa.pds.registry.service.RegistryService;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -127,9 +130,9 @@ public class ExtrinsicsResource {
       @QueryParam("eventType") EventType eventType,
       @QueryParam("queryOp") @DefaultValue("AND") QueryOperator operator,
       @QueryParam("sort") List<String> sort) {
-    ExtrinsicFilter filter = new ExtrinsicFilter.Builder().guid(guid).name(name).lid(
-        lid).versionName(versionName).objectType(objectType).submitter(
-submitter).status(status).contentVersion(contentVersion)
+    ExtrinsicFilter filter = new ExtrinsicFilter.Builder().guid(guid)
+        .name(name).lid(lid).versionName(versionName).objectType(objectType)
+        .submitter(submitter).status(status).contentVersion(contentVersion)
         .mimeType(mimeType).eventType(eventType).build();
     ExtrinsicQuery.Builder queryBuilder = new ExtrinsicQuery.Builder().filter(
         filter).operator(operator);
@@ -185,8 +188,8 @@ submitter).status(status).contentVersion(contentVersion)
     try {
       String guid = registryService.publishObject("Unknown", extrinsic);
       return Response.created(
-          ExtrinsicResource.getExtrinsicUri(registryService.getExtrinsic(guid),
-              uriInfo)).entity(guid).build();
+          getExtrinsicUri(registryService.getExtrinsic(guid), uriInfo)).entity(
+          guid).build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
           ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
@@ -226,8 +229,8 @@ submitter).status(status).contentVersion(contentVersion)
     try {
       String guid = registryService.versionObject("Unknown", extrinsic, major);
       return Response.created(
-          ExtrinsicResource.getExtrinsicUri(registryService.getExtrinsic(guid),
-              uriInfo)).entity(guid).build();
+          getExtrinsicUri(registryService.getExtrinsic(guid), uriInfo)).entity(
+          guid).build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
           ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
@@ -276,10 +279,8 @@ submitter).status(status).contentVersion(contentVersion)
     ExtrinsicObject extrinsic = (ExtrinsicObject) registryService
         .getEarliestObject(lid, ExtrinsicObject.class);
     Response.ResponseBuilder builder = Response.ok(extrinsic);
-    ExtrinsicResource.addNextExtrinsicLink(builder, uriInfo, registryService,
-        extrinsic);
-    ExtrinsicResource.addLatestExtrinsicLink(builder, uriInfo, registryService,
-        extrinsic);
+    addNextExtrinsicLink(builder, uriInfo, registryService, extrinsic);
+    addLatestExtrinsicLink(builder, uriInfo, registryService, extrinsic);
     return builder.build();
   }
 
@@ -303,23 +304,182 @@ submitter).status(status).contentVersion(contentVersion)
     ExtrinsicObject extrinsic = (ExtrinsicObject) registryService
         .getLatestObject(lid, ExtrinsicObject.class);
     Response.ResponseBuilder builder = Response.ok(extrinsic);
-    ExtrinsicResource.addPreviousExtrinsicLink(builder, uriInfo,
-        registryService, extrinsic);
-    ExtrinsicResource.addEarliestExtrinsicLink(builder, uriInfo,
-        registryService, extrinsic);
+    addPreviousExtrinsicLink(builder, uriInfo, registryService, extrinsic);
+    addEarliestExtrinsicLink(builder, uriInfo, registryService, extrinsic);
     return builder.build();
   }
 
   /**
-   * @param versionName
-   *          of the extrinsic object's local identifier
-   * @param lid
-   *          local identifier which identifies a unique set of products
-   * @return the resource that manages an Product in the registry
+   * Retrieves a single extrinsic from the registry. The local identifier with
+   * the version uniquely identifies one extrinsic.
+   * 
+   * @response.representation.200.qname 
+   *                                    {http://registry.pds.nasa.gov}extrinsicObject
+   * @response.representation.200.mediaType application/xml
+   * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_EXTRINSIC}
+   * 
+   * @param guid
+   *          unique identifier of registry item
+   * 
+   * @return ExtrinsicObject within the registry with the guid
    */
+  @GET
   @Path("{guid}")
-  public ExtrinsicResource getExtrinsicResource(@PathParam("guid") String guid) {
-    return new ExtrinsicResource(uriInfo, request, registryService, guid);
+  @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  public Response getExtrinsic(@PathParam("guid") String guid) {
+    try {
+      ExtrinsicObject extrinsic = registryService.getExtrinsic(guid);
+      Response.ResponseBuilder builder = Response.ok(extrinsic);
+      addPreviousExtrinsicLink(builder, uriInfo, registryService, extrinsic);
+      addNextExtrinsicLink(builder, uriInfo, registryService, extrinsic);
+      addEarliestExtrinsicLink(builder, uriInfo, registryService, extrinsic);
+      addLatestExtrinsicLink(builder, uriInfo, registryService, extrinsic);
+      // TODO: Should be adding an approve and deprecate link based upon
+      // if the user has permission
+      if (ObjectStatus.Submitted.equals(extrinsic.getStatus())) {
+        addApproveExtrinsicLink(builder, uriInfo, extrinsic);
+      } else if (ObjectStatus.Approved.equals(extrinsic.getStatus())) {
+        addDeprecateExtrinsicLink(builder, uriInfo, extrinsic);
+      }
+      return builder.build();
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
+  }
+
+  /**
+   * Updates an existing extrinsic with the given local identifier and version.
+   * 
+   * @param guid
+   *          unique identifier of registry item
+   * @param extrinsic
+   *          to update to
+   * @return returns an HTTP response that indicates an error or ok
+   */
+  @POST
+  @Path("{guid}")
+  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  public Response updateExtrinsic(@PathParam("guid") String guid,
+      ExtrinsicObject extrinsic) {
+    // TODO handle error condition mapping
+    registryService.updateObject("Unknown", extrinsic);
+    return Response.ok().build();
+  }
+
+  /**
+   * Removes an extrinsic from the registry.
+   * 
+   * @param guid
+   *          unique identifier of registry item
+   */
+  @DELETE
+  @Path("{guid}")
+  public Response deleteExtrinsic(@PathParam("guid") String guid) {
+    // TODO figure out what to do if there was a problem deleting the
+    // extrinsic
+    registryService.deleteObject("Unknown", guid, ExtrinsicObject.class);
+    return Response.ok().build();
+  }
+
+  /**
+   * This will change the status of the registered extrinsic
+   * 
+   * @param guid
+   *          unique identifier of registry item
+   * @param action
+   *          to take on extrinsic which will result in an update of status
+   *          {@link ObjectAction}
+   * @return the updated extrinsic
+   */
+  @POST
+  @Path("{guid}/{status}")
+  public Response changeStatus(@PathParam("guid") String guid,
+      @PathParam("status") ObjectAction action) {
+    registryService.changeObjectStatus("Unknown", guid, action,
+        ExtrinsicObject.class);
+    return Response.ok().build();
+  }
+
+  protected static void addPreviousExtrinsicLink(
+      Response.ResponseBuilder builder, UriInfo uriInfo,
+      RegistryService registryService, ExtrinsicObject extrinsic) {
+    ExtrinsicObject previous = (ExtrinsicObject) registryService
+        .getPreviousObject(extrinsic.getGuid(), ExtrinsicObject.class);
+    if (previous != null) {
+      String previousUri = uriInfo.getBaseUriBuilder().clone().path(
+          RegistryResource.class).path(RegistryResource.class,
+          "getExtrinsicsResource").path(previous.getGuid()).build().toString();
+      builder.header("Link", new Link(previousUri, "previous", null));
+    }
+  }
+
+  protected static void addNextExtrinsicLink(Response.ResponseBuilder builder,
+      UriInfo uriInfo, RegistryService registryService,
+      ExtrinsicObject extrinsic) {
+    ExtrinsicObject next = (ExtrinsicObject) registryService.getNextObject(
+        extrinsic.getGuid(), ExtrinsicObject.class);
+    if (next != null) {
+      String nextUri = uriInfo.getBaseUriBuilder().clone().path(
+          RegistryResource.class).path(RegistryResource.class,
+          "getExtrinsicsResource").path(next.getGuid()).build().toString();
+      builder.header("Link", new Link(nextUri, "next", null));
+    }
+  }
+
+  protected static void addEarliestExtrinsicLink(
+      Response.ResponseBuilder builder, UriInfo uriInfo,
+      RegistryService registryService, ExtrinsicObject extrinsic) {
+    ExtrinsicObject earliest = (ExtrinsicObject) registryService
+        .getEarliestObject(extrinsic.getLid(), ExtrinsicObject.class);
+    if (earliest != null) {
+      String earliestUri = uriInfo.getBaseUriBuilder().clone().path(
+          RegistryResource.class).path(RegistryResource.class,
+          "getExtrinsicsResource").path("logicals").path(earliest.getLid())
+          .path("earliest").build().toString();
+      builder.header("Link", new Link(earliestUri, "earliest", null));
+    }
+  }
+
+  protected static void addLatestExtrinsicLink(
+      Response.ResponseBuilder builder, UriInfo uriInfo,
+      RegistryService registryService, ExtrinsicObject extrinsic) {
+    ExtrinsicObject latest = (ExtrinsicObject) registryService.getLatestObject(
+        extrinsic.getLid(), ExtrinsicObject.class);
+    if (latest != null) {
+      String latestUri = uriInfo.getBaseUriBuilder().clone().path(
+          RegistryResource.class).path(RegistryResource.class,
+          "getExtrinsicsResource").path("logicals").path(latest.getLid()).path(
+          "latest").build().toString();
+      builder.header("Link", new Link(latestUri, "latest", null));
+    }
+  }
+
+  protected static void addDeprecateExtrinsicLink(
+      Response.ResponseBuilder builder, UriInfo uriInfo,
+      ExtrinsicObject extrinsic) {
+    String deprecateUri = uriInfo.getBaseUriBuilder().clone().path(
+        RegistryResource.class).path(RegistryResource.class,
+        "getExtrinsicsResource").path(extrinsic.getGuid()).path("deprecate")
+        .build().toString();
+    builder.header("Link", new Link(deprecateUri, "deprecate", null));
+  }
+
+  protected static void addApproveExtrinsicLink(
+      Response.ResponseBuilder builder, UriInfo uriInfo,
+      ExtrinsicObject extrinsic) {
+    String approveUri = uriInfo.getBaseUriBuilder().clone().path(
+        RegistryResource.class).path(RegistryResource.class,
+        "getExtrinsicsResource").path(extrinsic.getGuid()).path("approve")
+        .build().toString();
+    builder.header("Link", new Link(approveUri, "approve", null));
+  }
+
+  protected static URI getExtrinsicUri(ExtrinsicObject extrinsic,
+      UriInfo uriInfo) {
+    return uriInfo.getBaseUriBuilder().clone().path(RegistryResource.class)
+        .path(RegistryResource.class, "getExtrinsicsResource").path(
+            extrinsic.getGuid()).build();
   }
 
 }

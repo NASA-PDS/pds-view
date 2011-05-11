@@ -112,7 +112,12 @@ public class LinksResource {
   @Path("{guid}")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public ExternalLink getLInk(@PathParam("guid") String guid) {
-    return (ExternalLink) registryService.getObject(guid, ExternalLink.class);
+    try {
+      return (ExternalLink) registryService.getObject(guid, ExternalLink.class);
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
 
   /**
@@ -196,7 +201,7 @@ public class LinksResource {
 
   protected static URI getLinkUri(ExternalLink link, UriInfo uriInfo) {
     return uriInfo.getBaseUriBuilder().clone().path(RegistryResource.class)
-        .path(RegistryResource.class, "getLinksResource").path(
-            link.getGuid()).build();
+        .path(RegistryResource.class, "getLinksResource").path(link.getGuid())
+        .build();
   }
 }

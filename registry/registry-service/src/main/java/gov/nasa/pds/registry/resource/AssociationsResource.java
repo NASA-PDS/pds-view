@@ -112,8 +112,8 @@ public class AssociationsResource {
       queryBuilder.sort(sort);
     }
 
-    PagedResponse<Association> pr = registryService.getAssociations(queryBuilder.build(),
-        start, rows);
+    PagedResponse<Association> pr = registryService.getAssociations(
+        queryBuilder.build(), start, rows);
     Response.ResponseBuilder builder = Response.ok(pr);
     return builder.build();
   }
@@ -159,7 +159,8 @@ public class AssociationsResource {
   /**
    * Retrieves an association with the given global identifier.
    * 
-   * @response.representation.200.qname {http://registry.pds.nasa.gov}association
+   * @response.representation.200.qname 
+   *                                    {http://registry.pds.nasa.gov}association
    * @response.representation.200.mediaType application/xml
    * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_ASSOCIATION}
    * @return the association
@@ -168,8 +169,13 @@ public class AssociationsResource {
   @Path("{guid}")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Association getAssociation(@PathParam("guid") String guid) {
-    Association association = registryService.getAssocation(guid);
-    return association;
+    try {
+      Association association = registryService.getAssocation(guid);
+      return association;
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
 
   /**

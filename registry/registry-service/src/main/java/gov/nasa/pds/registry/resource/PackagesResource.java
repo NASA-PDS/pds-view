@@ -106,9 +106,14 @@ public class PackagesResource {
   @Path("{guid}")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public RegistryPackage getPackage(@PathParam("guid") String guid) {
-    RegistryPackage registryPackage = (RegistryPackage) registryService
-        .getObject(guid, RegistryPackage.class);
-    return registryPackage;
+    try {
+      RegistryPackage registryPackage = (RegistryPackage) registryService
+          .getObject(guid, RegistryPackage.class);
+      return registryPackage;
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
 
   /**

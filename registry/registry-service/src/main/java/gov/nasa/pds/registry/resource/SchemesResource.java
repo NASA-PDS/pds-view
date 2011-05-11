@@ -83,8 +83,8 @@ public class SchemesResource {
       String guid = registryService.publishObject("Unknown", scheme);
       return Response.created(
           SchemesResource.getSchemeUri((ClassificationScheme) registryService
-              .getObject(guid, scheme.getClass()), uriInfo)).entity(
-          guid).build();
+              .getObject(guid, scheme.getClass()), uriInfo)).entity(guid)
+          .build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
           ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
@@ -107,8 +107,13 @@ public class SchemesResource {
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public ClassificationScheme getClassificationScheme(
       @PathParam("schemeGuid") String schemeGuid) {
-    return (ClassificationScheme) registryService.getObject(schemeGuid,
-        ClassificationScheme.class);
+    try {
+      return (ClassificationScheme) registryService.getObject(schemeGuid,
+          ClassificationScheme.class);
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
 
   /**
@@ -138,9 +143,15 @@ public class SchemesResource {
   @Path("{schemeGuid}/nodes")
   public NodesResource getNodesResource(
       @PathParam("schemeGuid") String schemeGuid) {
-    ClassificationScheme scheme = (ClassificationScheme) registryService.getObject(schemeGuid, ClassificationScheme.class);
-    return new NodesResource(this.uriInfo, this.request, this.registryService,
-        scheme);
+    try {
+      ClassificationScheme scheme = (ClassificationScheme) registryService
+          .getObject(schemeGuid, ClassificationScheme.class);
+      return new NodesResource(this.uriInfo, this.request,
+          this.registryService, scheme);
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
 
   protected static URI getSchemeUri(ClassificationScheme scheme, UriInfo uriInfo) {

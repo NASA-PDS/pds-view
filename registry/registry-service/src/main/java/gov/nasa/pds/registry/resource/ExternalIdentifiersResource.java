@@ -37,7 +37,7 @@ import javax.ws.rs.core.UriInfo;
 
 /**
  * @author pramirez
- *
+ * 
  */
 public class ExternalIdentifiersResource {
 
@@ -61,7 +61,8 @@ public class ExternalIdentifiersResource {
    * Publishes a package to the registry. Publishing includes validation,
    * assigning an internal version, validating the submission, and notification.
    * 
-   * @request.representation.qname {http://registry.pds.nasa.gov}externalIdentifier
+   * @request.representation.qname 
+   *                               {http://registry.pds.nasa.gov}externalIdentifier
    * @request.representation.mediaType application/xml
    * @response.param {@name Location} {@style header} {@type
    *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI
@@ -79,9 +80,9 @@ public class ExternalIdentifiersResource {
     try {
       String guid = registryService.publishObject("Unkown", identifier);
       return Response.created(
-          ExternalIdentifiersResource.getIdentifierUri((ExternalIdentifier) registryService
-              .getObject(guid, ExternalIdentifier.class), uriInfo)).entity(guid)
-          .build();
+          ExternalIdentifiersResource.getIdentifierUri(
+              (ExternalIdentifier) registryService.getObject(guid,
+                  ExternalIdentifier.class), uriInfo)).entity(guid).build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
           ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
@@ -107,9 +108,15 @@ public class ExternalIdentifiersResource {
   @Path("{guid}")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public ExternalIdentifier getIdentifier(@PathParam("guid") String guid) {
-    ExternalIdentifier identifier = (ExternalIdentifier) registryService
-        .getObject(guid, ExternalIdentifier.class);
-    return identifier;
+    try {
+      ExternalIdentifier identifier = (ExternalIdentifier) registryService
+          .getObject(guid, ExternalIdentifier.class);
+      return identifier;
+
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
 
   /**
