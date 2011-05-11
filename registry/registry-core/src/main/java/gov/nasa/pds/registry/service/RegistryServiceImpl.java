@@ -212,13 +212,12 @@ public class RegistryServiceImpl implements RegistryService {
    * (non-Javadoc)
    * 
    * @see gov.nasa.pds.registry.service.RegistryService#versionObject(java
-   * .lang.String, gov.nasa.pds.registry.model.RegistryObject,
-   * boolean)
+   * .lang.String, gov.nasa.pds.registry.model.RegistryObject, boolean)
    */
-  public String versionObject(String user, RegistryObject object,
-      boolean major) throws RegistryServiceException {
-    RegistryObject referencedObject = this.getLatestObject(object.getLid(), object
-        .getClass());
+  public String versionObject(String user, RegistryObject object, boolean major)
+      throws RegistryServiceException {
+    RegistryObject referencedObject = this.getLatestObject(object.getLid(),
+        object.getClass());
     if (object.getGuid() == null) {
       object.setGuid(idGenerator.getGuid());
     }
@@ -254,8 +253,8 @@ public class RegistryServiceImpl implements RegistryService {
   public RegistryObject getLatestObject(String lid,
       Class<? extends RegistryObject> objectClass) {
     // TODO: Make this throw an exception if the lid does not exist
-    List<? extends RegistryObject> objects = metadataStore.getRegistryObjectVersions(lid,
-        objectClass);
+    List<? extends RegistryObject> objects = metadataStore
+        .getRegistryObjectVersions(lid, objectClass);
     Collections.sort(objects, versioner.getComparator());
     if (objects.size() > 0) {
       return objects.get(objects.size() - 1);
@@ -273,8 +272,8 @@ public class RegistryServiceImpl implements RegistryService {
   public RegistryObject getEarliestObject(String lid,
       Class<? extends RegistryObject> objectClass) {
     // TODO: Make this throw an exception if the lid does not exist
-    List<? extends RegistryObject> objects = metadataStore.getRegistryObjectVersions(lid,
-        objectClass);
+    List<? extends RegistryObject> objects = metadataStore
+        .getRegistryObjectVersions(lid, objectClass);
     Collections.sort(objects, versioner.getComparator());
     if (objects.size() > 0) {
       return (ExtrinsicObject) objects.get(0);
@@ -293,8 +292,8 @@ public class RegistryServiceImpl implements RegistryService {
       Class<? extends RegistryObject> objectClass) {
     // TODO: Make this method throw an exception if the lid or version is not
     // found
-    List<? extends RegistryObject> objects = metadataStore.getRegistryObjectVersions(lid,
-        objectClass);
+    List<? extends RegistryObject> objects = metadataStore
+        .getRegistryObjectVersions(lid, objectClass);
     Collections.sort(objects, versioner.getComparator());
     for (int i = 0; i < objects.size(); i++) {
       RegistryObject object = objects.get(i);
@@ -320,8 +319,8 @@ public class RegistryServiceImpl implements RegistryService {
       Class<? extends RegistryObject> objectClass) {
     // TODO: Make this method throw an exception if the lid or version is not
     // found
-    List<? extends RegistryObject> objects = metadataStore.getRegistryObjectVersions(lid,
-        objectClass);
+    List<? extends RegistryObject> objects = metadataStore
+        .getRegistryObjectVersions(lid, objectClass);
     Collections.sort(objects, versioner.getComparator());
     for (int i = 0; i < objects.size(); i++) {
       RegistryObject object = objects.get(i);
@@ -437,8 +436,8 @@ public class RegistryServiceImpl implements RegistryService {
     if (start <= 0) {
       start = 1;
     }
-    return (PagedResponse<Association>) metadataStore.getRegistryObjects(
-        query, start, rows, objectClass);
+    return (PagedResponse<Association>) metadataStore.getRegistryObjects(query,
+        start, rows, objectClass);
   }
 
   /*
@@ -477,10 +476,11 @@ public class RegistryServiceImpl implements RegistryService {
     // Check to see if object with same lid already exists
     if (metadataStore.hasRegistryObjectVersions(registryObject.getLid(),
         registryObject.getClass())) {
-      throw new RegistryServiceException("Registry object with global unique id "
-          + registryObject.getGuid() + " logical id " + registryObject.getLid() 
-          + " version name " + registryObject.getVersionName()
-          + " already exists.", ExceptionType.EXISTING_OBJECT);
+      throw new RegistryServiceException(
+          "Registry object with global unique id " + registryObject.getGuid()
+              + " logical id " + registryObject.getLid() + " version name "
+              + registryObject.getVersionName() + " already exists.",
+          ExceptionType.EXISTING_OBJECT);
     }
     registryObject.setStatus(ObjectStatus.Submitted);
     this.validateObject(registryObject);
@@ -543,7 +543,8 @@ public class RegistryServiceImpl implements RegistryService {
   private void validateObject(RegistryObject registryObject)
       throws RegistryServiceException {
     // Check to see if object already exists
-    if (metadataStore.hasRegistryObject(registryObject.getLid(), registryObject.getVersionName(), registryObject.getClass())) {
+    if (metadataStore.hasRegistryObject(registryObject.getLid(), registryObject
+        .getVersionName(), registryObject.getClass())) {
       throw new RegistryServiceException("Registry object with logical id "
           + registryObject.getLid() + " and version id "
           + registryObject.getVersionName() + " already exists.",
@@ -578,7 +579,7 @@ public class RegistryServiceImpl implements RegistryService {
     // scheme for associations
   }
 
-  private void validateNode(ClassificationNode node) {
+  private void validateNode(ClassificationNode node) throws RegistryServiceException {
     StringBuffer path = new StringBuffer(node.getCode());
     path.insert(0, "/");
     boolean done = false;
@@ -591,7 +592,7 @@ public class RegistryServiceImpl implements RegistryService {
         path.insert(0, currentNode.getCode());
         path.insert(0, "/");
         nodeParentFound = true;
-      } catch (NoResultException nre) {
+      } catch (RegistryServiceException rse) {
         // Suppress as it could be the parent is a classification scheme
       }
       if (!nodeParentFound) {
@@ -664,8 +665,8 @@ public class RegistryServiceImpl implements RegistryService {
         .build();
     AssociationQuery.Builder queryBuilder = new AssociationQuery.Builder()
         .filter(filter).operator(QueryOperator.OR);
-    PagedResponse<Association> response = metadataStore.getAssociations(queryBuilder
-        .build(), 1, -1);
+    PagedResponse<Association> response = metadataStore.getAssociations(
+        queryBuilder.build(), 1, -1);
     List<String> associationIds = new ArrayList<String>();
     for (RegistryObject object : response.getResults()) {
       associationIds.add(object.getGuid());
@@ -682,7 +683,7 @@ public class RegistryServiceImpl implements RegistryService {
    * gov.nasa.pds.registry.service.RegistryService#getAssocation(java.lang.String
    * )
    */
-  public Association getAssocation(String guid) {
+  public Association getAssocation(String guid) throws RegistryServiceException {
     return (Association) this.getObject(guid, Association.class);
   }
 
@@ -693,19 +694,22 @@ public class RegistryServiceImpl implements RegistryService {
    * gov.nasa.pds.registry.service.RegistryService#getExtrinsic(java.lang.String
    * )
    */
-  public ExtrinsicObject getExtrinsic(String guid) {
+  public ExtrinsicObject getExtrinsic(String guid) throws RegistryServiceException {
     return (ExtrinsicObject) this.getObject(guid, ExtrinsicObject.class);
   }
 
   /*
    * (non-Javadoc)
-   * 
-   * @see gov.nasa.pds.registry.service.RegistryService#getObject(java.lang
-   * .String, java.lang.Class)
+   * @see gov.nasa.pds.registry.service.RegistryService#getObject(java.lang.String, java.lang.Class)
    */
   public RegistryObject getObject(String guid,
-      Class<? extends RegistryObject> objectClass) {
-    return metadataStore.getRegistryObject(guid, objectClass);
+      Class<? extends RegistryObject> objectClass) throws RegistryServiceException {
+    try {
+      return metadataStore.getRegistryObject(guid, objectClass);
+    } catch (NoResultException nre) {
+      throw new RegistryServiceException("Object not found "
+          + guid, ExceptionType.OBJECT_NOT_FOUND);
+    }
   }
 
   /*
@@ -734,7 +738,6 @@ public class RegistryServiceImpl implements RegistryService {
         if (object instanceof ClassificationScheme
             || object instanceof ClassificationNode) {
           String id = this.publishObject(user, object, packageId);
-          System.out.println("Published: " + id);
           registered.put(id, object.getClass());
         }
       } catch (RegistryServiceException e) {
@@ -756,8 +759,12 @@ public class RegistryServiceImpl implements RegistryService {
     return packageId;
   }
 
-  /* (non-Javadoc)
-   * @see gov.nasa.pds.registry.service.RegistryService#getNextObject(java.lang.String, java.lang.Class)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nasa.pds.registry.service.RegistryService#getNextObject(java.lang.String
+   * , java.lang.Class)
    */
   @Override
   public RegistryObject getNextObject(String guid,
@@ -766,8 +773,12 @@ public class RegistryServiceImpl implements RegistryService {
     return null;
   }
 
-  /* (non-Javadoc)
-   * @see gov.nasa.pds.registry.service.RegistryService#getPreviousObject(java.lang.String, java.lang.Class)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nasa.pds.registry.service.RegistryService#getPreviousObject(java.lang
+   * .String, java.lang.Class)
    */
   @Override
   public RegistryObject getPreviousObject(String guid,
@@ -775,6 +786,5 @@ public class RegistryServiceImpl implements RegistryService {
     // TODO Auto-generated method stub
     return null;
   }
-
 
 }

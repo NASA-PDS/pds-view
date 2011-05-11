@@ -342,8 +342,9 @@ public interface RegistryService {
    * @param guid
    *          globally unique identifier of the registry object
    * @return the identified association
+   * @throws RegistryServiceException 
    */
-  public Association getAssocation(String guid);
+  public Association getAssocation(String guid) throws RegistryServiceException;
 
   /**
    * Retrieves a {@link ExtrinsicObject} from the registry
@@ -351,8 +352,9 @@ public interface RegistryService {
    * @param guid
    *          globally unique identifier of the extrinsic object
    * @return matching extrinsic object
+   * @throws RegistryServiceException 
    */
-  public ExtrinsicObject getExtrinsic(String guid);
+  public ExtrinsicObject getExtrinsic(String guid) throws RegistryServiceException;
 
   /**
    * Retrieves a registry object of the requested type
@@ -362,9 +364,10 @@ public interface RegistryService {
    * @param objectClass
    *          type of the registry object
    * @return matching registry object
+   * @throws RegistryServiceException 
    */
   public RegistryObject getObject(String guid,
-      Class<? extends RegistryObject> objectClass);
+      Class<? extends RegistryObject> objectClass) throws RegistryServiceException;
 
   /**
    * 
