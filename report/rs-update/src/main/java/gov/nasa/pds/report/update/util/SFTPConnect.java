@@ -56,7 +56,7 @@ public class SFTPConnect implements RemoteFileTransfer {
 		channel.connect();
 		this.sftpChannel = (ChannelSftp) channel;
 		
-		this.log.info("Connection: " + channel.isConnected());
+		//this.log.fine("Connection: " + channel.isConnected());
 	}
 	
 	private String decrypt(String password) {
@@ -152,8 +152,6 @@ public class SFTPConnect implements RemoteFileTransfer {
 		try {
 			connect(hostname, username, password);
 			
-			this.log.info("SFTP GET - " + pathname + " to " + logDestPath);
-			
 			JsonArray array = getFileList(pathname);
 			
 			List<String> localFileList = BasicUtil.getLocalFileList(logDestPath);
@@ -164,10 +162,10 @@ public class SFTPConnect implements RemoteFileTransfer {
 			for (JsonElement element : array) {
 				filename = element.getAsString();
 				if (!localFileList.contains(filename)) {
-					this.log.info("Getting " + basePath + "/" + filename + " to " + logDestPath);
+					this.log.info("Transferring - " + hostname + ": " + basePath + "/" + filename + " to " + logDestPath + "\n");
 					this.sftpChannel.get(basePath + "/" + filename, logDestPath);
 				} else {
-					this.log.info(basePath + "/" + filename + " already exists in " + logDestPath);
+					this.log.info(hostname + ": " +basePath + "/" + filename + " already exists in " + logDestPath + "\n");
 				}
 			}
 		} catch (JSchException e) {

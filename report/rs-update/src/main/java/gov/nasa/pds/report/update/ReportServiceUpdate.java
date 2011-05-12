@@ -35,9 +35,19 @@ public class ReportServiceUpdate {
 	public void transferLogs(String hostname, String username, String password,
 			String remotePath, String label) throws IOException {
 		this.logPath.setLogSetLabel(label);
+
+		String baseLogPath = this.logPath.getPath();
 		
-		String baseLogPath;
-		if (label.contains("pdsimg")) { 								// If label is pdsimg machine, special case */
+		if (label.contains("pdsimg")) { 					// If label is pdsimg machine, special case
+			baseLogPath += "/" + BasicUtil.getFileDate();	// Add date directory to path
+		}
+		
+		FileUtil.createDirStruct(baseLogPath);
+		RemoteFileTransfer transfer = new SFTPConnect();
+		transfer.getLogs(hostname, username, password, remotePath, baseLogPath);
+		
+/*		String baseLogPath;
+		if (label.contains("pdsimg")) { 								// If label is pdsimg machine, special case
 			baseLogPath = this.logPath.getPath() + "/" + BasicUtil.getFileDate();	// Add date directory to path
 			FileUtil.createDirStruct(baseLogPath);
 			ImgFileTransfer transfer = new ImgFileTransfer();
@@ -47,7 +57,7 @@ public class ReportServiceUpdate {
 			FileUtil.createDirStruct(baseLogPath);
 			RemoteFileTransfer transfer = new SFTPConnect();
 			transfer.getLogs(hostname, username, password, remotePath, baseLogPath);
-		}
+		}*/
 	}
 
 	public void updateSawmill(String sawmillHome) throws IOException,

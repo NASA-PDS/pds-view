@@ -47,7 +47,7 @@ public class SawmillController implements Runnable {
 	 * Implementation of run method from Runnable interface.
 	 */
 	public final void run() {
-		ReportServiceUpdate rsUpdate = new ReportServiceUpdate(logPath, profile.getName(), false);
+		ReportServiceUpdate rsUpdate = new ReportServiceUpdate(logPath, profile.getName(), this.isNewProfile);
 
 		try {
 			List<LogSet> newLogSets = this.profile.getNewLogSets();
@@ -61,7 +61,7 @@ public class SawmillController implements Runnable {
 			rsUpdate.updateSawmill(this.sawmillHome);
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.log.warning(e.getCause() + " " + e.getMessage());
+			this.log.warning(e.getClass().getName() + ": " + e.getMessage());
 		}
 	}
 

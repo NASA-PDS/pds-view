@@ -36,12 +36,12 @@ public class RSUpdateLauncher {
 	
 	private String propsHome;
     private String profileName;
-    private String logFile;
+    //private String logFile;
     private boolean sawmillFlag;
 	
     public RSUpdateLauncher() {
     	this.propsHome = PROPS_HOME;
-    	this.logFile = null;
+    	//this.logFile = null;
     	this.profileName = null;
     	this.sawmillFlag = true;
     }
@@ -77,9 +77,9 @@ public class RSUpdateLauncher {
                 System.exit(0);
             } else if (o.getOpt().equals(Flag.PROPERTIES.getShortName())) {
                 this.propsHome = o.getValue();
-            } else if (o.getOpt().equals(Flag.LOG.getShortName())) {
+            }/* else if (o.getOpt().equals(Flag.LOG.getShortName())) {
                 this.logFile = o.getValue();
-            } else if (o.getOpt().equals(Flag.PROFILE_NAME.getShortName())) {
+            }*/ else if (o.getOpt().equals(Flag.PROFILE_NAME.getShortName())) {
                 this.profileName = o.getValue();
             }  else if (o.getOpt().equals(Flag.SAWMILL_OFF.getShortName())) {
                 this.sawmillFlag = false;
@@ -180,7 +180,6 @@ public class RSUpdateLauncher {
 				List<LogSet> logSets = profile.getLogSetList();
 				
 				for (LogSet ls : logSets) {
-					RSUpdateLauncher.log.info("In transfer - "+ ls.getLabel());
 					rsUpdate.transferLogs(ls.getHostname(), ls.getUsername(), ls.getPassword(), ls.getPathname(), ls.getLabel());
 				}
 				

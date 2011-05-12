@@ -42,7 +42,7 @@ public class ProfileConfigUtil {
 		this.outputCfg = new File(env.getSawmillProfileHome() + '/' + this.profileName.replace('-', '_') + ".cfg"); //Must replace all dashes from profile name, otherwise Sawmill will fail
 	}*/
 	
-	public ProfileConfigUtil(final LogPath logPath, final String localPath, final String profileHome, final String profileName) throws FileNotFoundException {
+	public ProfileConfigUtil(final LogPath logPath, final String localPath, final String profileHome, final String profileName) throws IOException {
 		this.sourcesTxt = "";
 		this.logPath = logPath;
 		this.profileName = profileName;		
@@ -50,24 +50,28 @@ public class ProfileConfigUtil {
 		
 		if (!this.baseCfg.exists())
 			throw new FileNotFoundException(localPath + "/" + DEFAULT_CFG + " not found.");
-		
+
 		this.outputCfg = new File(profileHome + '/' + this.profileName.replace('-', '_') + ".cfg");	//Must replace all dashes from profile name, otherwise Sawmill will fail
 	}
 	
 	public void buildCfg(final List<LogSet> lsList, final boolean isNewProfile) throws IOException {
-		for (LogSet ls : lsList) {
-			this.logPath.setLogSetLabel(ls.getLabel());
-			addSource(ls.getSetNumber());
-		}
-
-		createProfile(isNewProfile);
+			for (LogSet ls : lsList) {
+				this.logPath.setLogSetLabel(ls.getLabel());
+				addSource(ls.getSetNumber());
+			}
+	
+			try {
+			createProfile(isNewProfile);
+			} catch (IOException e) {
+				throw new IOException("WTF");
+			}
 	}
 
 	/**
 	 * Builds the configuration for Sawmill profile
 	 * @throws IOException
 	 */
-	public void addSource(final int setNumber) throws IOException {
+	public void addSource(final int setNumber) {
 		String newline = "";
 		//String logDest = this.logPath + '/' + label;
 		
@@ -93,9 +97,8 @@ public class ProfileConfigUtil {
 	
 	public void createProfile(final boolean isNewProfile) throws IOException {
 		String text = setCfgText(isNewProfile, sourcesTxt, pathname0);
-		
 		FileUtils.writeStringToFile(this.outputCfg, text);
-		this.log.info("output config: " + this.outputCfg);		
+		this.log.info("New Profile Config: " + this.outputCfg);
 	}
 	
 	/**
