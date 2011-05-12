@@ -1,6 +1,5 @@
 package gov.nasa.pds.report.update;
 
-import gov.nasa.pds.report.update.custom.img.ImgFileTransfer;
 import gov.nasa.pds.report.update.model.LogPath;
 import gov.nasa.pds.report.update.model.LogSet;
 import gov.nasa.pds.report.update.sawmill.ProfileConfigUtil;
@@ -45,19 +44,6 @@ public class ReportServiceUpdate {
 		FileUtil.createDirStruct(baseLogPath);
 		RemoteFileTransfer transfer = new SFTPConnect();
 		transfer.getLogs(hostname, username, password, remotePath, baseLogPath);
-		
-/*		String baseLogPath;
-		if (label.contains("pdsimg")) { 								// If label is pdsimg machine, special case
-			baseLogPath = this.logPath.getPath() + "/" + BasicUtil.getFileDate();	// Add date directory to path
-			FileUtil.createDirStruct(baseLogPath);
-			ImgFileTransfer transfer = new ImgFileTransfer();
-			transfer.getImgLogs(hostname, username, password, remotePath, baseLogPath);
-		} else {
-			baseLogPath = this.logPath.getPath();
-			FileUtil.createDirStruct(baseLogPath);
-			RemoteFileTransfer transfer = new SFTPConnect();
-			transfer.getLogs(hostname, username, password, remotePath, baseLogPath);
-		}*/
 	}
 
 	public void updateSawmill(String sawmillHome) throws IOException,
