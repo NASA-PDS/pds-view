@@ -13,14 +13,12 @@ import gov.nasa.pds.report.update.model.LogSet;
 import gov.nasa.pds.report.update.model.Profile;
 
 import java.io.FileNotFoundException;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * @author jpadams
@@ -41,9 +39,9 @@ public class DBUtil extends DatabaseManager {
 	}
 
 	/**
-	 * 
+	 * Query the report service database for a specific profile by ID
 	 * @param profileId
-	 * @return
+	 * @return Profile object
 	 * @throws SQLException
 	 */
 	public final Profile findByProfileId(final int profileId) throws SQLException {
@@ -88,6 +86,12 @@ public class DBUtil extends DatabaseManager {
 		}
 	}
 	
+	/**
+	 * Query the report service database for a specific profile by ID
+	 * @param profileName
+	 * @return Profile object
+	 * @throws SQLException
+	 */
 	public final Profile findByProfileName(final String profileName) throws SQLException {
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -131,8 +135,8 @@ public class DBUtil extends DatabaseManager {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Query the database for all active profiles
+	 * @return List&lt;Profile&gt;
 	 * @throws SQLException
 	 */
 	public final List<Profile> findAllProfiles() throws SQLException {

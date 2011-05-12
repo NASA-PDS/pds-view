@@ -246,9 +246,9 @@ function saveLogSets() {
 
         // Verify no errors are reported, and display note about log migration
         if (data.error == "") {
-          var saveHtml = "<p>Please Note: Logs will now be migrated. " +
-            "Depending on the file size, they may not be immediately available " +
-            "by the Report Service.</p>";
+          var saveHtml = "<p>Please Note: Logs will now be transferred and Sawmill will be automatically updated. " +
+            "Depending on the size and number of logs, they may not be immediately available " +
+            "by the Report Service software.</p>";
             
           saveModalButtons['Continue'] = function() { window.location.replace("http://pdsops.jpl.nasa.gov/report-service/"); };
           //saveModalButtons['Continue'] = function() { window.location.replace("http://127.0.0.1:8080/cgi-bin/sawmill.cgi"); };
@@ -288,7 +288,6 @@ function createLogSet(details, isNew) {
 		details.newSet = 0;
 		$('#logDetailsTemplate').tmpl(details).appendTo('#log-set-container', details);
 		$('.log-set input').attr('readonly','readonly').addClass('ui-state-disabled'); // Remove input styling from input boxes
-		//$('.log-set').prepend('<span class="remove-icon"><span class="ui-icon ui-icon-close"></span></span>');
 	}
 
 	maxSetNum++;
@@ -333,7 +332,9 @@ function getProfileInfo() {
 				$('#log-set-container').html('');
 
 				$.each(data.logSets, function (i, logset) {
-					details = { count: i+1, label: logset.label, hostname: logset.hostname, username: logset.username, password: logset.password, pathname: logset.pathname, logSetId: logset.logSetId, setNumber: logset.setNumber };
+					details = { count: i+1, label: logset.label, hostname: logset.hostname, 
+							username: logset.username, password: logset.password, 
+							pathname: logset.pathname, logSetId: logset.logSetId, setNumber: logset.setNumber };
 					
 					if (logset.setNumber > maxSetNum)
 						maxSetNum = logset.setNumber+1;
@@ -420,7 +421,7 @@ function toggleHiddenFiles() {
 					<select id="method" name="method" class="set-info">
 						<option value="pull">Weekly download</option>
 						<!-- option value="push">Upload</option>
-						<option value="email">Submit by email</option-->
+						<option value="email">Email</option-->
 					</select>
 					<span class="tooltip-link hover-light" title="Select a method you would like to use to submit your logs to the Report Service." ><span class="ui-icon ui-icon-info"></span></span>
 				</div>

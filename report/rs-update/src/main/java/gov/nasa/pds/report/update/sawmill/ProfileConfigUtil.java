@@ -2,12 +2,10 @@ package gov.nasa.pds.report.update.sawmill;
 
 import gov.nasa.pds.report.update.model.LogPath;
 import gov.nasa.pds.report.update.model.LogSet;
-import gov.nasa.pds.report.update.properties.EnvProperties;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -18,6 +16,8 @@ import org.apache.commons.io.FileUtils;
  *
  */
 public class ProfileConfigUtil {
+	private static final String DEFAULT_CFG = "default.cfg";
+	
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	private File baseCfg;
 	private File outputCfg;
@@ -27,7 +27,7 @@ public class ProfileConfigUtil {
 	private String sourcesTxt;
 	private String pathname0;
 	
-	public ProfileConfigUtil(final LogPath logPath, final String localPath, final String name) throws IOException {
+	/*public ProfileConfigUtil(final LogPath logPath, final String localPath, final String name) throws IOException {
 		EnvProperties env = new EnvProperties(localPath);
 		this.sourcesTxt = "";
 		//this.logPath = env.getSawmillLogHome() + "/" + logDest;
@@ -40,12 +40,21 @@ public class ProfileConfigUtil {
 		this.baseCfg = new File(localPath + "/default.cfg");
 		
 		this.outputCfg = new File(env.getSawmillProfileHome() + '/' + this.profileName.replace('-', '_') + ".cfg"); //Must replace all dashes from profile name, otherwise Sawmill will fail
+	}*/
+	
+	public ProfileConfigUtil(final LogPath logPath, final String localPath, final String profileHome, final String profileName) throws FileNotFoundException {
+		this.sourcesTxt = "";
+		this.logPath = logPath;
+		this.profileName = profileName;		
+		this.baseCfg = new File(localPath + "/" + DEFAULT_CFG);
+		
+		if (!this.baseCfg.exists())
+			throw new FileNotFoundException(localPath + "/" + DEFAULT_CFG + " not found.");
+		
+		this.outputCfg = new File(profileHome + '/' + this.profileName.replace('-', '_') + ".cfg");	//Must replace all dashes from profile name, otherwise Sawmill will fail
 	}
 	
 	public void buildCfg(final List<LogSet> lsList, final boolean isNewProfile) throws IOException {
-		// TODO Currently overwrites profile - Need to allow for addition of Log Sources
-
-		//ConfigManager sawmill = new ConfigManager(this.logPath, this.realPath, this.profileName);
 		for (LogSet ls : lsList) {
 			this.logPath.setLogSetLabel(ls.getLabel());
 			addSource(ls.getSetNumber());
@@ -73,7 +82,7 @@ public class ProfileConfigUtil {
 				+ "\t\tlabel = \"" + this.logPath.getLogSetLabel() + "\"\n"
     	        + "\t\tpathname = \"" + this.logPath.getPath() + "/*\" \n"
     	        + "\t\tpattern_is_regular_expression = \"false\" \n"
-    	        + "\t\tprocess_subdirectories = \"false\" \n"
+    	        + "\t\tprocess_subdirectories = \"true\" \n"
     	        + "\t\ttype = \"local\"\n"
     	        + "\t} # " + setNumber;
 

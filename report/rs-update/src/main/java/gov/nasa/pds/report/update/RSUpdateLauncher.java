@@ -1,28 +1,6 @@
 package gov.nasa.pds.report.update;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.xml.bind.JAXBException;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.GnuParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.Option;
-
-import gov.nasa.pds.report.update.util.RemoteFileTransfer;
 import gov.nasa.pds.report.update.cli.options.Flag;
-import gov.nasa.pds.report.update.cli.options.InvalidOptionException;
 import gov.nasa.pds.report.update.db.DBUtil;
 import gov.nasa.pds.report.update.logging.ToolsLevel;
 import gov.nasa.pds.report.update.logging.ToolsLogRecord;
@@ -30,24 +8,39 @@ import gov.nasa.pds.report.update.model.LogPath;
 import gov.nasa.pds.report.update.model.LogSet;
 import gov.nasa.pds.report.update.model.Profile;
 import gov.nasa.pds.report.update.properties.EnvProperties;
-import gov.nasa.pds.report.update.sawmill.SawmillDB;
 import gov.nasa.pds.report.update.util.BasicUtil;
-import gov.nasa.pds.report.update.util.FileUtil;
-import gov.nasa.pds.report.update.util.SFTPConnect;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.ParseException;
 
 public class RSUpdateLauncher {
+	
+	private static final String PROPS_HOME = "../conf/";
 	
     /** logger object. */
     private static Logger log = Logger.getLogger(
             RSUpdateLauncher.class.getName());
 	
 	private String propsHome;
-    private String logFile;
     private String profileName;
+    private String logFile;
     private boolean sawmillFlag;
 	
     public RSUpdateLauncher() {
-    	this.propsHome = null;
+    	this.propsHome = PROPS_HOME;
     	this.logFile = null;
     	this.profileName = null;
     	this.sawmillFlag = true;
@@ -68,7 +61,7 @@ public class RSUpdateLauncher {
     }
     
     /**
-     * Examines the command-line arguments passed into the Harvest Tool
+     * Examines the command-line arguments passed into the RSUpdate Tool
      * and takes the appropriate action based on what flags were set.
      *
      * @param line A class representation of the command-line arguments.
@@ -93,10 +86,6 @@ public class RSUpdateLauncher {
             }
         }
 
-        if (propsHome == null) {
-            throw new InvalidOptionException(
-                    "Properties file path must be specified.");
-        }
         setLogger();
         logHeader();
     }
@@ -123,7 +112,7 @@ public class RSUpdateLauncher {
     private void setLogger() throws IOException {
         Logger logger = Logger.getLogger("");
         logger.setLevel(Level.ALL);
-        Handler []handler = logger.getHandlers();
+//        Handler []handler = logger.getHandlers();
         /*for (int i = 0; i < logger.getHandlers().length; i++) {
             logger.removeHandler(handler[i]);
         }
@@ -159,35 +148,46 @@ public class RSUpdateLauncher {
         }
     }
     
+    /**
+     * Executes the necessary functions in order to copy the log files and update the database.
+     * @throws RSUpdateException
+     * @throws SQLException
+     */
     private void execute() throws RSUpdateException, SQLException {
 		try {
+			/* Use propsHome to create DBUtil object */
 	    	DBUtil util = new DBUtil(this.propsHome);
 	    	List<Profile> pList = new ArrayList<Profile>();
     	
+	    	/* If profileName is given, query for profile, otherwise get all active Profiles from DB */
 	    	if (this.profileName != null) {
 	    		pList.add(util.findByProfileName(profileName));
 	    	} else {
 	    		pList = util.findAllProfiles();
 	    	}
 	    	
-	    	this.log.info(pList.toString());
-	    	
+	    	/* Use propsHome to get Environment Properties */
 	    	EnvProperties env = new EnvProperties(this.propsHome);
 	    	
-			ReportServiceUpdate sawmill = new ReportServiceUpdate();
+	    	ReportServiceUpdate rsUpdate = null;
 			LogPath logPath = new LogPath(env.getSawmillLogHome());
-			//SawmillUpdateLauncher sawmill;
 			for (Profile profile : pList) {
-				logPath.setProfileName(profile.getName());
 				logPath.setProfileNode(profile.getNode());
-				for (LogSet ls : profile.getNewLogSets()) {
-					logPath.setLogSetLabel(ls.getLabel());
-					//sawmill = new SawmillUpdate(this.env., this.logPath);
-					//sawmill.transferLogs(ls.getHostname(), ls.getUsername(), ls.getPassword(), ls.getPathname(), ls.getLabel());
-					sawmill.transferLogs(ls.getHostname(), ls.getUsername(), ls.getPassword(), ls.getPathname(), logPath.getPath());
+				logPath.setProfileName(profile.getName());
+				
+				rsUpdate = new ReportServiceUpdate(logPath, profile.getName(), false);
+
+				List<LogSet> logSets = profile.getLogSetList();
+				
+				for (LogSet ls : logSets) {
+					RSUpdateLauncher.log.info("In transfer - "+ ls.getLabel());
+					rsUpdate.transferLogs(ls.getHostname(), ls.getUsername(), ls.getPassword(), ls.getPathname(), ls.getLabel());
 				}
-	
-				sawmill.updateSawmill(env.getSawmillHome(), profile.getName(), false);
+				
+				/* Depending on whether sawmillFlag was specified, update Sawmill DB */
+				if (this.sawmillFlag) {
+					rsUpdate.updateSawmill(env.getSawmillHome());
+				}
 			}
 		} catch (NullPointerException e) {
 			throw new RSUpdateException("Profile not found.");
@@ -211,16 +211,10 @@ public class RSUpdateLauncher {
             launcher.execute();
             
             //launcher.closeHandlers();
-        } catch (JAXBException je) {
-            //Don't do anything
-        } catch (ParseException pEx) {
-            System.err.println("Command-line parse failure: "
-                    + pEx.getMessage());
-            System.exit(1);
         } catch (Exception e) {
-          e.printStackTrace();
-            System.out.println(e.getMessage());
-            System.exit(1);
+        	e.printStackTrace();
+        	System.out.println(e.getMessage());
+        	System.exit(1);
         }
 	}
 

@@ -18,7 +18,6 @@ import org.apache.commons.cli.Options;
 /**
  * Class that holds the command-line option flags.
  *
- * @author mcayanan
  * @author jpadams
  *
  */
@@ -32,32 +31,14 @@ public enum Flag {
 
     /** Flag for the path where environment and database properties files are located. */
     PROPERTIES("p", "properties-home", "file path", String.class,
-            "Specify the directory path where the environment.properties and database.propeties files are located"),
+            "Specify the directory path where the *.properties files are located. Default location is ../conf/ ."),
     
+    /** Flag for the name of a specific profile to update. */
     PROFILE_NAME("n", "profile-name", "profile name", String.class,
     		"Specify the name of a specific profile to update."),
-            
-    SAWMILL_OFF("s", "sawmill-off", "Specify flag to turn off updating the Sawmill DB after downloading the remote logs (default=ON)");
-    
-    
 
-    
-    /** Flag for the username of an authorized user. */
-    /*USERNAME("u", "username", "name", String.class,
-            "Specify a username to login to the PDS security service."),
-
-    *//** Flag for the daemon port number to be used if running the tool
-     *  continuously.
-     *//*
-    PORT("P", "port", "number", int.class, "Specify a port number to use "
-        + "if running the tool in continous mode."),
-
-    *//** Flag to specify the wait time in between crawls. *//*
-    WAIT("w", "wait", "seconds", int.class, "Specify the wait time in "
-        + "seconds in between crawls if running in continuous mode."),
-
-    *//** Flag to display the version. *//*
-    VERSION("V", "version", "Display application version.");*/
+    /** Flag to only transfer the logs and not update the Sawmill profile. */
+    SAWMILL_OFF("s", "sawmill-off", "Specify flag to turn off updating the Sawmill DB after downloading the remote logs.  Default = ON");
 
     /** The short name of the flag. */
     private final String shortName;

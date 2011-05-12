@@ -10,12 +10,9 @@ package gov.nasa.pds.report.setup.servlets;
 import gov.nasa.pds.report.setup.util.TransferUtil;
 import gov.nasa.pds.report.update.model.LogSet;
 import gov.nasa.pds.report.update.model.Profile;
-import gov.nasa.pds.report.transfer.util.SFTPConnect;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,8 +28,6 @@ import com.google.gson.JsonPrimitive;
  */
 public class SetupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	protected Logger log = Logger.getLogger(this.getClass().getName());
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -53,8 +48,8 @@ public class SetupServlet extends HttpServlet {
 		JsonObject root = new JsonObject();
 		List<LogSet> lsList = profile.getNewLogSets();
 		if (lsList.size() != 0) {
-			TransferUtil connect = new TransferUtil(lsList);
-			root = connect.checkAllConnections();
+			TransferUtil connect = new TransferUtil();
+			root = connect.checkAllConnections(lsList);
 		} else { 
 			root.add("empty", new JsonPrimitive("0"));
 		}

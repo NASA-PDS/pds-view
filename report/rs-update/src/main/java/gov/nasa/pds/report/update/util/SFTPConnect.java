@@ -2,13 +2,6 @@ package gov.nasa.pds.report.update.util;
 
 import gov.nasa.pds.report.update.constants.Constants;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -45,6 +38,7 @@ public class SFTPConnect implements RemoteFileTransfer {
 	}
 
 	/**
+	 * Provides connection to the remote machine via SFTP
 	 * 
 	 * @param logSet
 	 * @throws JSchException
@@ -54,15 +48,11 @@ public class SFTPConnect implements RemoteFileTransfer {
 
 		this.session = jsch.getSession(username, hostname, 22);
 
-		// Ignore HostKeyChecking
-		this.session.setConfig("StrictHostKeyChecking", "no");                  
-
-		// set the password for authentication
-		this.session.setPassword(decrypt(password));
+		this.session.setConfig("StrictHostKeyChecking", "no");	// Ignore HostKeyChecking                  
+		this.session.setPassword(decrypt(password));			// set the password for authentication
 		this.session.connect();
 
-		// Getting the channel using sftp
-		Channel channel = this.session.openChannel("sftp");
+		Channel channel = this.session.openChannel("sftp");		// Getting the channel using sftp
 		channel.connect();
 		this.sftpChannel = (ChannelSftp) channel;
 		
@@ -76,21 +66,20 @@ public class SFTPConnect implements RemoteFileTransfer {
 	}
 
 	/**
-	 * 
+	 * Disconnect SFTP and the session
 	 */
 	private void disconnect() {
-		// Exits the channel
-		if (this.sftpChannel.isConnected()) {
+		if (this.sftpChannel.isConnected()) {	// Exits the channel
 			this.sftpChannel.exit();
 		}
 
-		// Disconnect the session
-		if (this.session.isConnected()) {
+		if (this.session.isConnected()) {		// Disconnect the session
 			this.session.disconnect();
 		}
 	}
 
 	/**
+	 * Check the SFTP connection to the specified machine according the login information
 	 * 
 	 * @param hostname
 	 * @param username
@@ -99,7 +88,6 @@ public class SFTPConnect implements RemoteFileTransfer {
 	 * @return
 	 */
 	public final JsonObject checkConnection(final JsonObject start, final String hostname, final String username, final String password, final String pathname) {
-		//byte empty = 1;
 		byte connect = 1;
 		byte sftp = 1;
 
@@ -130,11 +118,18 @@ public class SFTPConnect implements RemoteFileTransfer {
 		return jObj;
 	}
 	
+	/**
+	 * Retrieves the file listing from a remote machine
+	 * 
+	 * @param pathname
+	 * @return
+	 * @throws SftpException
+	 */
 	private final JsonArray getFileList (String pathname) throws SftpException {
 		String[] dirList;
 		String filename;
 		
-		Vector lsOut = (Vector)this.sftpChannel.ls(pathname);
+		Vector lsOut = this.sftpChannel.ls(pathname);
 
 		JsonArray matches = new JsonArray();
 		for (Object obj : lsOut) {
@@ -149,14 +144,9 @@ public class SFTPConnect implements RemoteFileTransfer {
 		
 		return matches;
 	}
-
-	private final List<String> getLocalFileList(String path) {
-		File dir = new File(path);
-		return Arrays.asList(dir.list());
-	}
 	
-	/** 
-	 * 
+	/**
+	 * Retrieve the logs using the specified login information and host
 	 */
 	public final void getLogs(final String hostname, final String username, final String password, final String pathname, final String logDestPath) {
 		try {
@@ -166,7 +156,7 @@ public class SFTPConnect implements RemoteFileTransfer {
 			
 			JsonArray array = getFileList(pathname);
 			
-			List<String> localFileList = getLocalFileList(logDestPath);
+			List<String> localFileList = BasicUtil.getLocalFileList(logDestPath);
 			
 			String filename;
 			String basePath = getBasePath(pathname);
@@ -180,7 +170,6 @@ public class SFTPConnect implements RemoteFileTransfer {
 					this.log.info(basePath + "/" + filename + " already exists in " + logDestPath);
 				}
 			}
-			//this.sftpChannel.get(pathname, logDestPath);
 		} catch (JSchException e) {
 			this.log.warning("Jsch Error: "+e.getMessage());
 		} catch (SftpException e) {
@@ -204,12 +193,4 @@ public class SFTPConnect implements RemoteFileTransfer {
 		}
 		return basePath;
 	}
-
-	/**
-	 * 
-	 * @param logDest
-	 */
-	/*public final void setLogDest(final String logDest) {
-		this.logDestBase = logDest;
-	}*/
 }

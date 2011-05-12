@@ -5,7 +5,6 @@ import gov.nasa.pds.report.update.model.Profile;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -25,7 +24,7 @@ public class UpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());
-       
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -53,12 +52,9 @@ public class UpdateServlet extends HttpServlet {
 				util.removeLogInfo(removeId);
 			} else {
 				id = request.getParameter("profile");
-				Profile prof;
 				if (id.equals("new")) {
 					jArray = new JsonArray();
-					for (Iterator<Profile> it = util.findAllProfiles().iterator(); it.hasNext();) {
-						prof = it.next();
-
+					for (Profile prof : util.findAllProfiles()) {
 						jObj =  new JsonObject();
 						
 						jObj.add("id", new JsonPrimitive(prof.getProfileId()));

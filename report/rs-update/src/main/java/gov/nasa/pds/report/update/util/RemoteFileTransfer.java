@@ -1,7 +1,6 @@
 package gov.nasa.pds.report.update.util;
 
 import com.google.gson.JsonObject;
-import com.jcraft.jsch.JSchException;
 
 public interface RemoteFileTransfer {
 	

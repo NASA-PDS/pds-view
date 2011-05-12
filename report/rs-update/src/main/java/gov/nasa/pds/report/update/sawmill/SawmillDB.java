@@ -56,9 +56,6 @@ public class SawmillDB {
 			} else {
 				this.LOG.info("Error trying to build " + this.profileName + " database");
 			}*/
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} finally {
 			input.close();
 			pr.destroy();

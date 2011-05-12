@@ -1,15 +1,14 @@
 package gov.nasa.pds.report.setup.sawmill;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.logging.Logger;
-
 import gov.nasa.pds.report.update.ReportServiceUpdate;
 import gov.nasa.pds.report.update.model.LogPath;
 import gov.nasa.pds.report.update.model.LogSet;
 import gov.nasa.pds.report.update.model.Profile;
-import gov.nasa.pds.report.transfer.properties.EnvProperties;
+import gov.nasa.pds.report.update.properties.EnvProperties;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Current implementation to create profiles and copy logs.
@@ -21,49 +20,48 @@ import gov.nasa.pds.report.transfer.properties.EnvProperties;
 public class SawmillController implements Runnable {
 
 	private Logger log = Logger.getLogger(this.getClass().getName());
-	private Thread thread;
-	private Profile profile;
-	private LogPath logPath;
-	//private String realPath;
-	private boolean isNewProfile;
-	private EnvProperties env;
 
-	public SawmillController(final LogPath logPath, final String realPath, final Profile profile, final boolean isNew) throws FileNotFoundException {
+	private Thread thread;
+	private LogPath logPath;
+	private Profile profile;
+	private boolean isNewProfile;
+	private String sawmillHome;
+	private String sawmillProfileHome;
+	private String localPath;
+
+	public SawmillController(final String localPath, final LogPath logPath,
+			final Profile profile, final boolean isNew) throws IOException {
 		this.thread = new Thread(this);
 		this.logPath = logPath;
 		this.profile = profile;
 		this.isNewProfile = isNew;
+		this.localPath = localPath;
 
-		try {
-			this.env = new EnvProperties(realPath);
-		} catch (IOException e) {
-			e.printStackTrace();
-			this.log.warning(e.getMessage());
-		}
-		
-		this.logPath.setLogHome(this.env.getSawmillLogHome());
+		EnvProperties env = new EnvProperties(localPath);
+		this.sawmillHome = env.getSawmillHome();
+		this.sawmillProfileHome = env.getSawmillProfileHome();
+		this.logPath.setLogHome(env.getSawmillLogHome());
 	}
 
 	/**
 	 * Implementation of run method from Runnable interface.
 	 */
 	public final void run() {
-		LogSet ls = null;
-		ReportServiceUpdate sawmill = new ReportServiceUpdate();
-		//SawmillUpdateLauncher sawmill;
+		ReportServiceUpdate rsUpdate = new ReportServiceUpdate(logPath, profile.getName(), false);
+
 		try {
-			for (Iterator<LogSet> it = this.profile.getNewLogSets().iterator(); it.hasNext();) {
-				ls = it.next();
-				this.logPath.setLogSetLabel(ls.getLabel());
-				//sawmill = new SawmillUpdate(this.env., this.logPath);
-				//sawmill.transferLogs(ls.getHostname(), ls.getUsername(), ls.getPassword(), ls.getPathname(), ls.getLabel());
-				sawmill.transferLogs(ls.getHostname(), ls.getUsername(), ls.getPassword(), ls.getPathname(), this.logPath.getPath());
+			List<LogSet> newLogSets = this.profile.getNewLogSets();
+			//ProfileConfigUtil cfg = new ProfileConfigUtil();
+			rsUpdate.buildCfg(this.localPath, this.sawmillProfileHome, newLogSets);
+
+			for (LogSet ls : newLogSets) {
+				rsUpdate.transferLogs(ls.getHostname(), ls.getUsername(), ls.getPassword(), ls.getPathname(), ls.getLabel());
 			}
 
-			sawmill.updateSawmill(this.env.getSawmillHome(), this.profile.getName(), this.isNewProfile);
+			rsUpdate.updateSawmill(this.sawmillHome);
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.log.warning(e.getMessage());
+			this.log.warning(e.getCause() + " " + e.getMessage());
 		}
 	}
 

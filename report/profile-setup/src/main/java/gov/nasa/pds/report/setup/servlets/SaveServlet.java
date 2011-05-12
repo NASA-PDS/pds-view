@@ -13,13 +13,10 @@ import gov.nasa.pds.report.update.db.DBUtil;
 import gov.nasa.pds.report.update.model.LogPath;
 import gov.nasa.pds.report.update.model.LogSet;
 import gov.nasa.pds.report.update.model.Profile;
-import gov.nasa.pds.report.update.properties.EnvProperties;
-import gov.nasa.pds.report.update.sawmill.ProfileConfigUtil;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -36,10 +33,17 @@ import com.google.gson.JsonPrimitive;
  * Servlet implementation class SaveServlet
  */
 public class SaveServlet extends HttpServlet {
+	/** Generated versionID **/
 	private static final long serialVersionUID = 1L;
 	
+	protected String localPath;
+	protected Profile profile;
+	protected List<LogSet> newLogSets;
+	protected LogPath logPath;
+	protected boolean isNew;
+	
 	private Logger log = Logger.getLogger(this.getClass().getName());
-       
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -54,47 +58,46 @@ public class SaveServlet extends HttpServlet {
 	@Override
 	protected final void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		String error = "";
-		Profile profile = new Profile();
-		profile.setProfile(request.getParameterMap());
+		this.isNew = false;
 
-		String realPath = getServletContext().getRealPath("/WEB-INF/classes");
+		this.profile = new Profile();
+		this.profile.setProfile(request.getParameterMap());
 
-		boolean isNew = false;
+		this.localPath = getServletContext().getRealPath("/WEB-INF/classes");
+
+		this.logPath = new LogPath(this.profile.getNode(), this.profile.getName());
+
+		this.newLogSets = this.profile.getNewLogSets();
 		try {
-			DBUtil db = new DBUtil(realPath);
-			
-			LogPath logPath = new LogPath(profile.getNode(), profile.getName());
-			//String logPath = profile.getNode()+'/'+profile.getName()+'/';		// TODO fix the log dest path, use it everywhere
-			
-			
-			List<LogSet> newLogSets = profile.getNewLogSets();
-			if (request.getParameter("profile").equals("new")) {
-				isNew=true;
-				db.createNew(profile);
-			} else {
-				db.update(newLogSets, profile.getProfileId());
-			}
-			
-			ProfileConfigUtil cfg = new ProfileConfigUtil(logPath, realPath, profile.getName());
-			cfg.buildCfg(newLogSets, isNew);
+			updateDB(request.getParameter("profile").equals("new"));
 
-			SawmillController copyLogs = new SawmillController(logPath, realPath, profile, isNew);
-			copyLogs.start();
+			SawmillController sawmill = new SawmillController(this.localPath, this.logPath, this.profile, this.isNew);
+			sawmill.start();
 		} catch (SQLException e) {
-			error = "SQL Error: "+e.getMessage();
+			error = "SQL Error: " + e.getMessage();
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			error= "Environment Error.  Notify system administrator.";
+			error = "Environment Error.  Notify system administrator.";
 			e.printStackTrace();
 		} catch (IOException e) {
-			error= "Config Error: "+e.getMessage();
+			error = "Config Error: " + e.getMessage();
 			e.printStackTrace();
-		} 
+		}
 
 		JsonObject root = new JsonObject();
 		root.add("error", new JsonPrimitive(error));
-		
+
 		Gson gson = new Gson();
 		gson.toJson(root, response.getWriter());
+	}
+	
+	protected void updateDB(boolean isNew) throws SQLException, FileNotFoundException {
+		DBUtil db = new DBUtil(this.localPath);
+		if (isNew) {
+			this.isNew =  true;
+			db.createNew(this.profile);
+		} else {
+			db.update(this.newLogSets, this.profile.getProfileId());
+		}
 	}
 }

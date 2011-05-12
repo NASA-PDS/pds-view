@@ -24,8 +24,6 @@ import org.junit.Test;
  * @author jpadams
  */
 public class ProfileSetupTest {
-	
-	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
 	/**
 	 * Tests the LogTransferLauncher, which in turn tests 
@@ -56,9 +54,9 @@ public class ProfileSetupTest {
 			
 			
 			LogPath logPath = new LogPath("/Users/jpadams/dev/workspace/2010-workspace/report/profile-setup/target/transfertest",profile.getNode(), profile.getName(), ls.getLabel());
-			SawmillController transfer = new SawmillController(logPath, "/Users/jpadams/dev/workspace/2010-workspace/report/log-transfer/src/main/resources/conf", profile, true);
+			//GenericController transfer = new GenericController(logPath, "/Users/jpadams/dev/workspace/2010-workspace/report/log-transfer/src/main/resources/conf", profile, true);
 			
-			transfer.start();
+			//transfer.start();
 			//transfer.run();
 			
 			

@@ -207,7 +207,7 @@
     </dependency>
     <dependency>
       <groupId>gov.nasa.pds.2010.report</groupId>
-      <artifactId>log-transfer</artifactId>
+      <artifactId>rs-update</artifactId>
       <version>0.1.0-dev</version>
       <scope>compile</scope>
     </dependency>
