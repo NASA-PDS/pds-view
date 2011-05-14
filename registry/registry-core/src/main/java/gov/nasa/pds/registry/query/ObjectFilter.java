@@ -16,6 +16,7 @@
 package gov.nasa.pds.registry.query;
 
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.ObjectStatus;
@@ -26,19 +27,20 @@ import gov.nasa.pds.registry.model.ObjectStatus;
  *
  */
 public class ObjectFilter {
-	private String guid;
-	private String name;
-	private String lid;
-	private String versionName;
-	private String objectType;
-	private String submitter;
-	private ObjectStatus status;
-	private EventType eventType;
-	private GregorianCalendar eventStart;
-	private GregorianCalendar eventEnd;
+	protected String guid;
+	protected String name;
+	protected String lid;
+	protected String versionName;
+	protected String objectType;
+	protected String submitter;
+	protected ObjectStatus status;
+	protected EventType eventType;
+	protected GregorianCalendar eventStart;
+	protected GregorianCalendar eventEnd;
+	protected List<String> sort;
+  protected QueryOperator operator;
 	
 	protected ObjectFilter() {
-		super();
 	}
 	
 	public static class Builder extends AbstractBuilder {
@@ -108,6 +110,18 @@ public class ObjectFilter {
 			return this;
 		}
 		
+		public Builder sort(List<String> sort) {
+      this.checkBuilt();
+      this.filter.sort = sort;
+      return this;
+    }
+    
+    public Builder operator(QueryOperator operator) {
+      this.checkBuilt();
+      this.filter.operator = operator;
+      return this;
+    }
+    
 		public ObjectFilter build() {
 			this.checkBuilt();
 			this.isBuilt = true;

@@ -21,9 +21,10 @@ import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
-import gov.nasa.pds.registry.query.AssociationQuery;
-import gov.nasa.pds.registry.query.ExtrinsicQuery;
-import gov.nasa.pds.registry.query.ObjectQuery;
+import gov.nasa.pds.registry.query.AssociationFilter;
+import gov.nasa.pds.registry.query.ExtrinsicFilter;
+import gov.nasa.pds.registry.query.ObjectFilter;
+import gov.nasa.pds.registry.query.RegistryQuery;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public interface MetadataStore {
    *          number of results to get
    * @return list of extrinsics
    */
-  public PagedResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query,
+  public PagedResponse<ExtrinsicObject> getExtrinsics(RegistryQuery<ExtrinsicFilter> query,
       Integer start, Integer rows);
 
   /**
@@ -64,7 +65,7 @@ public interface MetadataStore {
    *          number of results to get. If equal to -1 return all.
    * @return list of associations
    */
-  public PagedResponse<Association> getAssociations(AssociationQuery query,
+  public PagedResponse<Association> getAssociations(RegistryQuery<AssociationFilter> query,
       Integer start, Integer rows);
 
   /**
@@ -204,7 +205,7 @@ public interface MetadataStore {
    * @return list of {@link RegistryObject} with the given class
    */
   public PagedResponse<? extends RegistryObject> getRegistryObjects(
-      ObjectQuery query, Integer start, Integer rows,
+      RegistryQuery<ObjectFilter> query, Integer start, Integer rows,
       Class<? extends RegistryObject> objectClass);
 
   /**

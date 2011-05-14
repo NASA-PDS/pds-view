@@ -28,9 +28,10 @@ import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.Report;
 import gov.nasa.pds.registry.model.naming.IdentifierGenerator;
 import gov.nasa.pds.registry.model.naming.Versioner;
-import gov.nasa.pds.registry.query.AssociationQuery;
-import gov.nasa.pds.registry.query.ExtrinsicQuery;
-import gov.nasa.pds.registry.query.ObjectQuery;
+import gov.nasa.pds.registry.query.AssociationFilter;
+import gov.nasa.pds.registry.query.ExtrinsicFilter;
+import gov.nasa.pds.registry.query.ObjectFilter;
+import gov.nasa.pds.registry.query.RegistryQuery;
 
 import java.util.List;
 
@@ -104,7 +105,7 @@ public interface RegistryService {
    *          holds a set of filters to match against extrinsics
    * @return a list of extrinsics
    */
-  public PagedResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query);
+  public PagedResponse<ExtrinsicObject> getExtrinsics(RegistryQuery<ExtrinsicFilter> query);
 
   /**
    * Retrieves a set of extinsics that match the given query. Allows one to page
@@ -120,7 +121,7 @@ public interface RegistryService {
    *          how many results to return
    * @return a list of extrinsics
    */
-  public PagedResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query,
+  public PagedResponse<ExtrinsicObject> getExtrinsics(RegistryQuery<ExtrinsicFilter> query,
       Integer start, Integer rows);
 
   /**
@@ -183,9 +184,10 @@ public interface RegistryService {
    *          the type of object to look up
    * @return the next version of the registry object otherwise null if there is
    *         no more versions
+   * @throws RegistryServiceException 
    */
   public RegistryObject getNextObject(String guid,
-      Class<? extends RegistryObject> objectClass);
+      Class<? extends RegistryObject> objectClass) throws RegistryServiceException;
 
   /**
    * Retrieves the previous version of the {@link RegistryObject}
@@ -196,9 +198,10 @@ public interface RegistryService {
    *          the type of object to look up
    * @return the previous version of the registry object otherwise null if there
    *         is no versions before the current one
+   * @throws RegistryServiceException 
    */
   public RegistryObject getPreviousObject(String guid,
-      Class<? extends RegistryObject> objectClass);
+      Class<? extends RegistryObject> objectClass) throws RegistryServiceException;
 
   /**
    * Retrieves all versions of a {@link RegistryObject}
@@ -263,7 +266,7 @@ public interface RegistryService {
    *          how many results to return
    * @return a list of associations
    */
-  public PagedResponse<Association> getAssociations(AssociationQuery query,
+  public PagedResponse<Association> getAssociations(RegistryQuery<AssociationFilter> query,
       Integer start, Integer rows);
 
   /**
@@ -281,7 +284,7 @@ public interface RegistryService {
    * @return list of {@link RegistryObject} with the given class
    */
   public PagedResponse<? extends RegistryObject> getObjects(
-      ObjectQuery query, Integer start, Integer rows,
+      RegistryQuery<ObjectFilter> query, Integer start, Integer rows,
       Class<? extends RegistryObject> objectClass);
 
   /**

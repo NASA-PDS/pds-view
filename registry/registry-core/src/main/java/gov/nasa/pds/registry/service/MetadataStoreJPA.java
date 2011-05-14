@@ -22,11 +22,10 @@ import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationFilter;
-import gov.nasa.pds.registry.query.AssociationQuery;
+import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.ObjectFilter;
-import gov.nasa.pds.registry.query.ObjectQuery;
-import gov.nasa.pds.registry.query.ExtrinsicQuery;
 import gov.nasa.pds.registry.query.QueryOperator;
+import gov.nasa.pds.registry.query.RegistryQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,12 +77,12 @@ public class MetadataStoreJPA implements MetadataStore {
    */
   @Override
   @Transactional(readOnly = true)
-  public PagedResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query, Integer start,
+  public PagedResponse<ExtrinsicObject> getExtrinsics(RegistryQuery<ExtrinsicFilter> query, Integer start,
       Integer rows) {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<ExtrinsicObject> cq = cb.createQuery(ExtrinsicObject.class);
     Root<ExtrinsicObject> productEntity = cq.from(ExtrinsicObject.class);
-    ObjectFilter filter = query.getFilter();
+    ExtrinsicFilter filter = query.getFilter();
     List<Predicate> predicates = new ArrayList<Predicate>();
     if (filter != null) {
       if (filter.getGuid() != null) {
@@ -197,7 +196,7 @@ public class MetadataStoreJPA implements MetadataStore {
    */
   @Override
   @Transactional(readOnly = true)
-  public PagedResponse<Association> getAssociations(AssociationQuery query,
+  public PagedResponse<Association> getAssociations(RegistryQuery<AssociationFilter> query,
       Integer start, Integer rows) {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<Association> cq = cb.createQuery(Association.class);
@@ -395,7 +394,7 @@ public class MetadataStoreJPA implements MetadataStore {
    */
   @SuppressWarnings("unchecked")
   @Override
-  public PagedResponse getRegistryObjects(ObjectQuery query, Integer start,
+  public PagedResponse getRegistryObjects(RegistryQuery<ObjectFilter> query, Integer start,
       Integer rows, Class<? extends RegistryObject> objectClass) {
 
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();

@@ -35,10 +35,10 @@ import gov.nasa.pds.registry.model.Report;
 import gov.nasa.pds.registry.model.naming.IdentifierGenerator;
 import gov.nasa.pds.registry.model.naming.Versioner;
 import gov.nasa.pds.registry.query.AssociationFilter;
-import gov.nasa.pds.registry.query.AssociationQuery;
-import gov.nasa.pds.registry.query.ObjectQuery;
-import gov.nasa.pds.registry.query.ExtrinsicQuery;
+import gov.nasa.pds.registry.query.ExtrinsicFilter;
+import gov.nasa.pds.registry.query.ObjectFilter;
 import gov.nasa.pds.registry.query.QueryOperator;
+import gov.nasa.pds.registry.query.RegistryQuery;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -168,9 +168,10 @@ public class RegistryServiceImpl implements RegistryService {
    * 
    * @see
    * gov.nasa.pds.registry.service.RegistryService#getExtrinsics(gov.nasa.pds
-   * .registry.query.ExtrinsicQuery)
+   * .registry.query.RegistryQuery)
    */
-  public PagedResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query) {
+  public PagedResponse<ExtrinsicObject> getExtrinsics(
+      RegistryQuery<ExtrinsicFilter> query) {
     return this.getExtrinsics(query, 1, 20);
   }
 
@@ -179,10 +180,10 @@ public class RegistryServiceImpl implements RegistryService {
    * 
    * @see
    * gov.nasa.pds.registry.service.RegistryService#getExtrinsics(gov.nasa.pds
-   * .registry.query.ExtrinsicQuery, java.lang.Integer, java.lang.Integer)
+   * .registry.query.RegistryQuery, java.lang.Integer, java.lang.Integer)
    */
-  public PagedResponse<ExtrinsicObject> getExtrinsics(ExtrinsicQuery query,
-      Integer start, Integer rows) {
+  public PagedResponse<ExtrinsicObject> getExtrinsics(
+      RegistryQuery<ExtrinsicFilter> query, Integer start, Integer rows) {
     if (start <= 0) {
       start = 1;
     }
@@ -413,10 +414,10 @@ public class RegistryServiceImpl implements RegistryService {
    * 
    * @see
    * gov.nasa.pds.registry.service.RegistryService#getAssociations(gov.nasa.
-   * pds.registry.query.AssociationQuery, java.lang.Integer, java.lang.Integer)
+   * pds.registry.query.RegistryQuery, java.lang.Integer, java.lang.Integer)
    */
-  public PagedResponse<Association> getAssociations(AssociationQuery query,
-      Integer start, Integer rows) {
+  public PagedResponse<Association> getAssociations(
+      RegistryQuery<AssociationFilter> query, Integer start, Integer rows) {
     if (start <= 0) {
       start = 1;
     }
@@ -426,13 +427,15 @@ public class RegistryServiceImpl implements RegistryService {
   /*
    * (non-Javadoc)
    * 
-   * @see gov.nasa.pds.registry.service.RegistryService#getObjects(gov.nasa
-   * .pds.registry.query.ObjectQuery, java.lang.Integer, java.lang.Integer,
+   * @see
+   * gov.nasa.pds.registry.service.RegistryService#getObjects(gov.nasa.pds.registry
+   * .query.RegistryQuery, java.lang.Integer, java.lang.Integer,
    * java.lang.Class)
    */
   @SuppressWarnings("unchecked")
-  public PagedResponse<Association> getObjects(ObjectQuery query,
-      Integer start, Integer rows, Class<? extends RegistryObject> objectClass) {
+  public PagedResponse<Association> getObjects(
+      RegistryQuery<ObjectFilter> query, Integer start, Integer rows,
+      Class<? extends RegistryObject> objectClass) {
     if (start <= 0) {
       start = 1;
     }
@@ -579,7 +582,8 @@ public class RegistryServiceImpl implements RegistryService {
     // scheme for associations
   }
 
-  private void validateNode(ClassificationNode node) throws RegistryServiceException {
+  private void validateNode(ClassificationNode node)
+      throws RegistryServiceException {
     StringBuffer path = new StringBuffer(node.getCode());
     path.insert(0, "/");
     boolean done = false;
@@ -663,7 +667,7 @@ public class RegistryServiceImpl implements RegistryService {
     AssociationFilter filter = new AssociationFilter.Builder().targetObject(
         registryObject.getGuid()).sourceObject(registryObject.getGuid())
         .build();
-    AssociationQuery.Builder queryBuilder = new AssociationQuery.Builder()
+    RegistryQuery.Builder<AssociationFilter> queryBuilder = new RegistryQuery.Builder<AssociationFilter>()
         .filter(filter).operator(QueryOperator.OR);
     PagedResponse<Association> response = metadataStore.getAssociations(
         queryBuilder.build(), 1, -1);
@@ -694,21 +698,26 @@ public class RegistryServiceImpl implements RegistryService {
    * gov.nasa.pds.registry.service.RegistryService#getExtrinsic(java.lang.String
    * )
    */
-  public ExtrinsicObject getExtrinsic(String guid) throws RegistryServiceException {
+  public ExtrinsicObject getExtrinsic(String guid)
+      throws RegistryServiceException {
     return (ExtrinsicObject) this.getObject(guid, ExtrinsicObject.class);
   }
 
   /*
    * (non-Javadoc)
-   * @see gov.nasa.pds.registry.service.RegistryService#getObject(java.lang.String, java.lang.Class)
+   * 
+   * @see
+   * gov.nasa.pds.registry.service.RegistryService#getObject(java.lang.String,
+   * java.lang.Class)
    */
   public RegistryObject getObject(String guid,
-      Class<? extends RegistryObject> objectClass) throws RegistryServiceException {
+      Class<? extends RegistryObject> objectClass)
+      throws RegistryServiceException {
     try {
       return metadataStore.getRegistryObject(guid, objectClass);
     } catch (NoResultException nre) {
-      throw new RegistryServiceException("Object not found "
-          + guid, ExceptionType.OBJECT_NOT_FOUND);
+      throw new RegistryServiceException("Object not found " + guid,
+          ExceptionType.OBJECT_NOT_FOUND);
     }
   }
 
@@ -768,9 +777,9 @@ public class RegistryServiceImpl implements RegistryService {
    */
   @Override
   public RegistryObject getNextObject(String guid,
-      Class<? extends RegistryObject> objectClass) {
-    // TODO Auto-generated method stub
-    return null;
+      Class<? extends RegistryObject> objectClass) throws RegistryServiceException {
+    RegistryObject object = getObject(guid, objectClass);
+    return getNextObject(object.getLid(), object.getVersionName(), objectClass);
   }
 
   /*
@@ -782,9 +791,9 @@ public class RegistryServiceImpl implements RegistryService {
    */
   @Override
   public RegistryObject getPreviousObject(String guid,
-      Class<? extends RegistryObject> objectClass) {
-    // TODO Auto-generated method stub
-    return null;
+      Class<? extends RegistryObject> objectClass) throws RegistryServiceException {
+    RegistryObject object = getObject(guid, objectClass);
+    return getPreviousObject(object.getLid(), object.getVersionName(), objectClass);
   }
 
 }
