@@ -33,7 +33,8 @@ public final class JacksonObjectMapperProvider extends
 
   @Override
   public ObjectMapper getContext(Class<?> type) {
-    return new ObjectMapper().configure(
-        SerializationConfig.Feature.USE_ANNOTATIONS, false);
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.getSerializationConfig().set(SerializationConfig.Feature.USE_ANNOTATIONS, false);
+    return mapper;
   }
 }

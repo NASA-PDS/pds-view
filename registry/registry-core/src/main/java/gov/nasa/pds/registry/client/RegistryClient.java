@@ -15,130 +15,234 @@
 
 package gov.nasa.pds.registry.client;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 
 import gov.nasa.pds.registry.provider.JAXBContextResolver;
 import gov.nasa.pds.registry.provider.JacksonObjectMapperProvider;
+import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Association;
-import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
+import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
+import gov.nasa.pds.registry.model.Service;
 import gov.nasa.pds.registry.query.AssociationFilter;
-import gov.nasa.pds.registry.query.AssociationQuery;
-import gov.nasa.pds.registry.query.ObjectFilter;
-import gov.nasa.pds.registry.query.ExtrinsicQuery;
+import gov.nasa.pds.registry.query.ExtrinsicFilter;
+import gov.nasa.pds.registry.query.RegistryQuery;
 
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
+ * This class is a Java client to be used to exchange information with a
+ * registry service. In the background it simply uses HTTP calls but returns
+ * Java objects to ease integration.
+ * 
  * @author pramirez
  * 
  */
 public class RegistryClient {
-  private WebResource registryResource;
-  private String token;
+  private WebResource service;
+  private String username;
+  private String password;
   private String mediaType;
+  private final static HashMap<Class<? extends RegistryObject>, String> resourceMap = new HashMap<Class<? extends RegistryObject>, String>();
+  static {
+    resourceMap.put(ExtrinsicObject.class, "extrinsics");
+    resourceMap.put(Association.class, "associations");
+    resourceMap.put(Service.class, "services");
+  }
 
   public RegistryClient(String baseUrl) {
-    this(baseUrl, null);
+    this(baseUrl, null, null);
   }
 
-  public RegistryClient(String baseUrl, String token) {
-    ClientConfig clientConfig = new DefaultClientConfig();
-    clientConfig.getClasses().add(JacksonObjectMapperProvider.class);
-    clientConfig.getClasses().add(JAXBContextResolver.class);
-    registryResource = Client.create(clientConfig).resource(baseUrl).path(
-        "registry");
-    this.token = token;
-    mediaType = MediaType.APPLICATION_XML;
+  public RegistryClient(String baseUrl, String username, String password) {
+    ClientConfig config = new DefaultClientConfig();
+    config.getClasses().add(JacksonObjectMapperProvider.class);
+    config.getClasses().add(JAXBContextResolver.class);
+    service = Client.create(config).resource(baseUrl);
+    mediaType = MediaType.APPLICATION_JSON;
+    this.username = username;
+    this.password = password;
   }
 
+  /**
+   * Used to override the type of messages the client will exchange. Currently
+   * the regsitry supports application/xml and application/json but defaults to
+   * json. The end client will not see these calls so to cut down on data
+   * transferred the more compact json should be used.
+   * 
+   * @param mediaType
+   *          to use for exchanging messages
+   */
   public void setMediaType(String mediaType) {
     this.mediaType = mediaType;
   }
 
-  public ClientResponse publishExtrinsic(String user, ExtrinsicObject extrinsic) {
-    WebResource.Builder builder = registryResource.path("extrinsics")
-        .getRequestBuilder();
-    if (token != null) {
-      builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
-          + "\"");
+  /**
+   * Retrieves an object from the registry of the given type
+   * 
+   * @param guid
+   *          identifier for the object
+   * @param objectClass
+   *          of object interested in retrieving
+   * @return the identified object
+   * @throws RegistryServiceException
+   */
+  public <T extends RegistryObject> T getObject(String guid,
+      Class<T> objectClass) throws RegistryServiceException {
+    WebResource.Builder builder = service.path(resourceMap.get(objectClass))
+        .path(guid).getRequestBuilder();
+    ClientResponse response = builder.accept(mediaType).get(
+        ClientResponse.class);
+    if (response.getClientResponseStatus() == Status.OK) {
+      return response.getEntity(objectClass);
+    } else {
+      throw new RegistryServiceException(response.getEntity(String.class),
+          Response.Status.fromStatusCode(response.getStatus()));
     }
-    return builder.accept(mediaType).post(ClientResponse.class, extrinsic);
   }
 
-  public ClientResponse versionExtrinsic(String user,
-      ExtrinsicObject extrinsic, String lid) {
-    return this.versionExtrinsic(user, extrinsic, lid, true);
-  }
-
-  public ClientResponse versionExtrinsic(String user,
-      ExtrinsicObject extrinsic, String lid, Boolean major) {
-    WebResource.Builder builder = registryResource.path("extrinsics").path(
-        extrinsic.getLid()).queryParam("major", major.toString())
-        .getRequestBuilder();
-    if (token != null) {
-      builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
-          + "\"");
+  /**
+   * Publish a registry object to the service
+   * 
+   * @param object
+   *          to publish
+   * @return the globally unique identifier
+   * @throws RegistryServiceException
+   */
+  public String publishObject(RegistryObject object)
+      throws RegistryServiceException {
+    WebResource.Builder builder = service.path(
+        resourceMap.get(object.getClass())).getRequestBuilder();
+    ClientResponse response = builder.accept(mediaType).post(
+        ClientResponse.class, object);
+    if (response.getClientResponseStatus() == Status.OK) {
+      return response.getEntity(String.class);
+    } else {
+      throw new RegistryServiceException(response.getEntity(String.class),
+          Response.Status.fromStatusCode(response.getStatus()));
     }
-    return builder.accept(mediaType).post(ClientResponse.class, extrinsic);
   }
 
-  public ClientResponse getLatestExtrinsic(String lid) {
-    WebResource.Builder builder = registryResource.path("extrinsics").path(lid)
-        .getRequestBuilder();
-    if (token != null) {
-      builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
-          + "\"");
+  /**
+   * Publishes a version of the given object that is considered a major version
+   * update.
+   * 
+   * @param object
+   *          to publish
+   * @return globally unique identifier of versioned object
+   * @throws RegistryServiceException
+   */
+  public String versionObject(RegistryObject object)
+      throws RegistryServiceException {
+    return this.versionObject(object, true);
+  }
+
+  /**
+   * Publishes a version of the given object
+   * 
+   * @param object
+   *          to publish
+   * @param major
+   *          flag to indicate major or minor version
+   * @return globally unique identifier of versioned object
+   * @throws RegistryServiceException
+   */
+  public String versionObject(RegistryObject object, Boolean major)
+      throws RegistryServiceException {
+    WebResource.Builder builder = service.path(
+        resourceMap.get(object.getClass())).path(object.getLid()).queryParam(
+        "major", major.toString()).getRequestBuilder();
+    ClientResponse response = builder.accept(mediaType).post(
+        ClientResponse.class, object);
+    if (response.getClientResponseStatus() == Status.OK) {
+      return response.getEntity(String.class);
+    } else {
+      throw new RegistryServiceException(response.getEntity(String.class),
+          Response.Status.fromStatusCode(response.getStatus()));
     }
-    return builder.accept(mediaType).get(ClientResponse.class);
   }
 
-  public ClientResponse getExtrinsic(String lid, String version) {
-    WebResource.Builder builder = registryResource.path("extrinsics").path(lid)
-        .path(version).getRequestBuilder();
-    if (token != null) {
-      builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
-          + "\"");
+  /**
+   * Retrieve the latest version of a registry object
+   * 
+   * @param lid
+   *          logical identifier which is associated with a collection of
+   *          objects
+   * @param objectClass
+   *          of object interested in retrieving
+   * @return latest managed copy of the requested object
+   * @throws RegistryServiceException
+   */
+  public <T extends RegistryObject> T getLatestObject(String lid,
+      Class<T> objectClass) throws RegistryServiceException {
+    WebResource.Builder builder = service.path(resourceMap.get(objectClass))
+        .path("logicals").path(lid).path("latest").getRequestBuilder();
+    ClientResponse response = builder.accept(mediaType).get(
+        ClientResponse.class);
+    if (response.getClientResponseStatus() == Status.OK) {
+      return response.getEntity(objectClass);
+    } else {
+      throw new RegistryServiceException(response.getEntity(String.class),
+          Response.Status.fromStatusCode(response.getStatus()));
     }
-    return builder.accept(mediaType).get(ClientResponse.class);
   }
 
-  public ClientResponse getStatus() {
-    WebResource.Builder builder = registryResource.path("status")
-        .getRequestBuilder();
-    if (token != null) {
-      builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
-          + "\"");
+  /**
+   * Retrieves a paged set of registry objects from the collection of objects of
+   * the specified type.
+   * 
+   * @param start
+   *          indicates where in the set of objects to begin
+   * @param rows
+   *          indicates how many objects to return
+   * @param objectClass
+   *          the type of object to retrieve
+   * @return all objects found with the given constraints
+   * @throws RegistryServiceException
+   */
+  public <T extends RegistryObject> PagedResponse<T> getObjects(Integer start,
+      Integer rows, Class<T> objectClass) throws RegistryServiceException {
+    WebResource.Builder builder = service.path(resourceMap.get(objectClass))
+        .queryParam("start", start.toString()).queryParam("rows",
+            rows.toString()).getRequestBuilder();
+    ClientResponse response = builder.accept(mediaType).get(
+        ClientResponse.class);
+    if (response.getClientResponseStatus() == Status.OK) {
+      return response.getEntity(new GenericType<PagedResponse<T>>() {
+      });
+    } else {
+      throw new RegistryServiceException(response.getEntity(String.class),
+          Response.Status.fromStatusCode(response.getStatus()));
     }
-    return builder.accept(mediaType).get(ClientResponse.class);
   }
 
-  public ClientResponse publishAssociation(String user, Association association) {
-    WebResource.Builder builder = registryResource.path("associations")
-        .getRequestBuilder();
-    if (token != null) {
-      builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
-          + "\"");
-    }
-    return builder.accept(mediaType).post(ClientResponse.class, association);
-  }
-
-  public ClientResponse getExtrinsics(Integer start, Integer rows) {
-    return this
-        .getExtrinsics(new ExtrinsicQuery.Builder().build(), start, rows);
-  }
-
-  public ClientResponse getExtrinsics(ExtrinsicQuery query, Integer start,
-      Integer rows) {
+  /**
+   * Retrieves a set of extrinsic objects that match the query.
+   * 
+   * @param query
+   *          filters for the extrinsic
+   * @param start
+   *          indicates where in the set of objects to begin
+   * @param rows
+   *          indicates how many objects to return
+   * @return paged set of extrisic objects
+   * @throws RegistryServiceException
+   */
+  public PagedResponse<ExtrinsicObject> getExtrinsics(RegistryQuery<ExtrinsicFilter> query,
+      Integer start, Integer rows) throws RegistryServiceException {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     if (start != null) {
       params.add("start", start.toString());
@@ -147,7 +251,7 @@ public class RegistryClient {
       params.add("rows", rows.toString());
     }
 
-    ObjectFilter filter = query.getFilter();
+    ExtrinsicFilter filter = query.getFilter();
     if (filter != null) {
       if (filter.getGuid() != null) {
         params.add("guid", filter.getGuid());
@@ -167,6 +271,9 @@ public class RegistryClient {
       if (filter.getVersionName() != null) {
         params.add("versionName", filter.getVersionName());
       }
+      if (filter.getContentVersion() != null) {
+        params.add("contentVersion", filter.getContentVersion());
+      }
     }
 
     List<String> sort = query.getSort();
@@ -176,18 +283,37 @@ public class RegistryClient {
 
     params.add("queryOp", query.getOperator().toString());
 
-    WebResource.Builder builder = registryResource.path("extrinsics")
-        .queryParams(params).getRequestBuilder();
-    if (token != null) {
-      builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
-          + "\"");
-    }
+    WebResource.Builder builder = service.path(
+        resourceMap.get(ExtrinsicObject.class)).queryParams(params)
+        .getRequestBuilder();
 
-    return builder.accept(mediaType).get(ClientResponse.class);
+    ClientResponse response = builder.accept(mediaType).get(
+        ClientResponse.class);
+
+    if (response.getClientResponseStatus() == Status.OK) {
+      return response
+          .getEntity(new GenericType<PagedResponse<ExtrinsicObject>>() {
+          });
+    } else {
+      throw new RegistryServiceException(response.getEntity(String.class),
+          Response.Status.fromStatusCode(response.getStatus()));
+    }
   }
 
-  public ClientResponse getAssociations(AssociationQuery query, Integer start,
-      Integer rows) {
+  /**
+   * Retrieves a set of association objects that match the query.
+   * 
+   * @param query
+   *          filters for the association
+   * @param start
+   *          indicates where in the set of objects to begin
+   * @param rows
+   *          indicates how many objects to return
+   * @return paged set of association objects
+   * @throws RegistryServiceException
+   */
+  public PagedResponse<Association> getAssociations(RegistryQuery<AssociationFilter> query,
+      Integer start, Integer rows) throws RegistryServiceException {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     if (start != null) {
       params.add("start", start.toString());
@@ -216,45 +342,31 @@ public class RegistryClient {
 
     params.add("queryOp", query.getOperator().toString());
 
-    WebResource.Builder builder = registryResource.path("associations")
-        .queryParams(params).getRequestBuilder();
-    if (token != null) {
-      builder = builder.header("Cookie", "iPlanetDirectoryPro=\"" + token
-          + "\"");
+    WebResource.Builder builder = service.path(
+        resourceMap.get(ExtrinsicObject.class)).queryParams(params)
+        .getRequestBuilder();
+
+    ClientResponse response = builder.accept(mediaType).get(
+        ClientResponse.class);
+
+    if (response.getClientResponseStatus() == Status.OK) {
+      return response.getEntity(new GenericType<PagedResponse<Association>>() {
+      });
+    } else {
+      throw new RegistryServiceException(response.getEntity(String.class),
+          Response.Status.fromStatusCode(response.getStatus()));
     }
 
-    return builder.accept(mediaType).get(ClientResponse.class);
   }
 
-  @SuppressWarnings("unchecked")
   public static void main(String[] args) throws Exception {
     RegistryClient client = new RegistryClient(args[0]);
-    PagedResponse response = client.getExtrinsics(null, null).getEntity(
-        PagedResponse.class);
-    System.out.println("Total results: " + response.getNumFound());
-    System.out.println("Number displayed: " + response.getResults().size());
-    for (RegistryObject object : (List<RegistryObject>)response.getResults()) {
-      System.out.println(object.getClass().getSimpleName() + " "
-          + object.getGuid());
-    }
-
-    if (args.length > 1) {
-      ExtrinsicObject extrinsic = client.getLatestExtrinsic(args[1]).getEntity(
-          ExtrinsicObject.class);
-      System.out.println("Latest Extrinsic");
-      System.out.println("Extrinsic " + extrinsic.getGuid());
-      if (args.length > 2) {
-        ObjectFilter filter = new ObjectFilter.Builder().lid(args[1]).build();
-        ExtrinsicQuery query = new ExtrinsicQuery.Builder().filter(filter)
-            .build();
-        response = client.getExtrinsics(query, null, null).getEntity(
-            PagedResponse.class);
-        for (RegistryObject object : (List<RegistryObject>)response.getResults()) {
-          System.out.println(object.getClass().getSimpleName() + " "
-              + object.getGuid() + " " + object.getLid() + " "
-              + object.getVersionName());
-        }
-      }
-    }
+    ExtrinsicObject eo = client.getObject(args[1], ExtrinsicObject.class);
+    PagedResponse<ExtrinsicObject> pr = client.getObjects(1, 10,
+        ExtrinsicObject.class);
+    System.out.println(eo.getGuid());
+    System.out.println(pr.getNumFound());
+    ExtrinsicFilter filter = new ExtrinsicFilter.Builder().guid(args[1]).build();
+    RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>().filter(filter).build();
   }
 }

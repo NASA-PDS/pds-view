@@ -15,6 +15,8 @@
 
 package gov.nasa.pds.registry.exception;
 
+import javax.ws.rs.core.Response;
+
 /**
  * @author pramirez
  * 
@@ -24,12 +26,21 @@ public class RegistryServiceException extends Exception {
   private final ExceptionType exceptionType;
   private final String messageKey;
   private final Object[] arguments;
+  private final Response.Status status;
 
   public RegistryServiceException(final String messageKey,
       final ExceptionType exceptionType, final Object... arguments) {
     this.messageKey = messageKey;
     this.exceptionType = exceptionType;
     this.arguments = arguments;
+    this.status = null;
+  }
+  
+  public RegistryServiceException(final String messageKey, final Response.Status status) {
+    this.messageKey = messageKey;
+    this.status = status;
+    this.arguments = null;
+    this.exceptionType = null;
   }
 
   public ExceptionType getExceptionType() {
@@ -48,5 +59,9 @@ public class RegistryServiceException extends Exception {
   public String getMessage() {
     //TODO fix to generate message from resource bundle
     return messageKey;
+  }
+  
+  public Response.Status getStatus () {
+    return (exceptionType == null) ? status : exceptionType.getStatus();
   }
 }
