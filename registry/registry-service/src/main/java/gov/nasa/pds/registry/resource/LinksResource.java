@@ -20,7 +20,7 @@ import gov.nasa.pds.registry.model.ExternalLink;
 import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.query.ObjectFilter;
-import gov.nasa.pds.registry.query.ObjectQuery;
+import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.service.RegistryService;
 
 import java.net.URI;
@@ -175,7 +175,7 @@ public class LinksResource {
       @QueryParam("start") @DefaultValue("1") Integer start,
       @QueryParam("rows") @DefaultValue("20") Integer rows) {
     ObjectFilter filter = new ObjectFilter.Builder().build();
-    ObjectQuery.Builder queryBuilder = new ObjectQuery.Builder().filter(filter);
+    RegistryQuery.Builder<ObjectFilter> queryBuilder = new RegistryQuery.Builder<ObjectFilter>().filter(filter);
     PagedResponse<ExternalLink> rr = (PagedResponse<ExternalLink>) registryService
         .getObjects(queryBuilder.build(), start, rows, ExternalLink.class);
     Response.ResponseBuilder builder = Response.ok(rr);

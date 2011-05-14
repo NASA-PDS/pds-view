@@ -26,8 +26,8 @@ import gov.nasa.pds.registry.model.ObjectStatus;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
-import gov.nasa.pds.registry.query.ExtrinsicQuery;
 import gov.nasa.pds.registry.query.QueryOperator;
+import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.service.RegistryService;
 
 import javax.ws.rs.Consumes;
@@ -134,8 +134,8 @@ public class ExtrinsicsResource {
         .name(name).lid(lid).versionName(versionName).objectType(objectType)
         .submitter(submitter).status(status).contentVersion(contentVersion)
         .mimeType(mimeType).eventType(eventType).build();
-    ExtrinsicQuery.Builder queryBuilder = new ExtrinsicQuery.Builder().filter(
-        filter).operator(operator);
+    RegistryQuery.Builder<ExtrinsicFilter> queryBuilder = new RegistryQuery.Builder<ExtrinsicFilter>()
+        .filter(filter).operator(operator);
     if (sort != null) {
       queryBuilder.sort(sort);
     }
@@ -404,8 +404,17 @@ public class ExtrinsicsResource {
   protected static void addPreviousExtrinsicLink(
       Response.ResponseBuilder builder, UriInfo uriInfo,
       RegistryService registryService, ExtrinsicObject extrinsic) {
-    ExtrinsicObject previous = (ExtrinsicObject) registryService
-        .getPreviousObject(extrinsic.getGuid(), ExtrinsicObject.class);
+    ExtrinsicObject previous = null;
+    try {
+      previous = (ExtrinsicObject) registryService
+          .getPreviousObject(extrinsic.getGuid(), ExtrinsicObject.class);
+      String previousUri = uriInfo.getBaseUriBuilder().clone().path(
+          RegistryResource.class).path(RegistryResource.class,
+          "getExtrinsicsResource").path(previous.getGuid()).build().toString();
+      builder.header("Link", new Link(previousUri, "previous", null));
+    } catch (RegistryServiceException e) {
+      // Suppress
+    }
     if (previous != null) {
       String previousUri = uriInfo.getBaseUriBuilder().clone().path(
           RegistryResource.class).path(RegistryResource.class,
@@ -417,8 +426,13 @@ public class ExtrinsicsResource {
   protected static void addNextExtrinsicLink(Response.ResponseBuilder builder,
       UriInfo uriInfo, RegistryService registryService,
       ExtrinsicObject extrinsic) {
-    ExtrinsicObject next = (ExtrinsicObject) registryService.getNextObject(
-        extrinsic.getGuid(), ExtrinsicObject.class);
+    ExtrinsicObject next = null;
+    try {
+      next = (ExtrinsicObject) registryService.getNextObject(
+          extrinsic.getGuid(), ExtrinsicObject.class);
+    } catch (RegistryServiceException e) {
+      // Suppress
+    }
     if (next != null) {
       String nextUri = uriInfo.getBaseUriBuilder().clone().path(
           RegistryResource.class).path(RegistryResource.class,

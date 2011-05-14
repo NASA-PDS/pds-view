@@ -22,7 +22,7 @@ import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.Service;
 import gov.nasa.pds.registry.query.ObjectFilter;
-import gov.nasa.pds.registry.query.ObjectQuery;
+import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.service.RegistryService;
 
 import javax.ws.rs.Consumes;
@@ -164,7 +164,7 @@ public class ServicesResource {
       @QueryParam("start") @DefaultValue("1") Integer start,
       @QueryParam("rows") @DefaultValue("20") Integer rows) {
     ObjectFilter filter = new ObjectFilter.Builder().build();
-    ObjectQuery.Builder queryBuilder = new ObjectQuery.Builder().filter(filter);
+    RegistryQuery.Builder<ObjectFilter> queryBuilder = new RegistryQuery.Builder<ObjectFilter>().filter(filter);
     PagedResponse<Service> rr = (PagedResponse<Service>) registryService
         .getObjects(queryBuilder.build(), start, rows, Service.class);
     Response.ResponseBuilder builder = Response.ok(rr);

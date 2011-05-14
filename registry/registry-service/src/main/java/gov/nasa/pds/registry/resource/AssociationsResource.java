@@ -19,8 +19,8 @@ import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.query.AssociationFilter;
-import gov.nasa.pds.registry.query.AssociationQuery;
 import gov.nasa.pds.registry.query.QueryOperator;
+import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.service.RegistryService;
 
 import java.net.URI;
@@ -106,7 +106,7 @@ public class AssociationsResource {
     AssociationFilter filter = new AssociationFilter.Builder().targetObject(
         targetObject).sourceObject(sourceObject).associationType(
         associationType).build();
-    AssociationQuery.Builder queryBuilder = new AssociationQuery.Builder()
+    RegistryQuery.Builder<AssociationFilter> queryBuilder = new RegistryQuery.Builder<AssociationFilter>()
         .filter(filter).operator(operator);
     if (sort != null) {
       queryBuilder.sort(sort);
