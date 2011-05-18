@@ -15,6 +15,8 @@ package gov.nasa.pds.harvest;
 
 import gov.nasa.pds.harvest.commandline.options.Flag;
 import gov.nasa.pds.harvest.commandline.options.InvalidOptionException;
+import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds3MetExtractorConfig;
+import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds4MetExtractorConfig;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.harvest.logging.formatter.HarvestFormatter;
@@ -24,8 +26,6 @@ import gov.nasa.pds.harvest.policy.Namespace;
 import gov.nasa.pds.harvest.policy.Policy;
 import gov.nasa.pds.harvest.policy.PolicyReader;
 import gov.nasa.pds.harvest.registry.RegistryClientException;
-import gov.nasa.pds.harvest.security.SecurityClient;
-import gov.nasa.pds.harvest.security.SecurityClientException;
 import gov.nasa.pds.harvest.security.SecuredUser;
 import gov.nasa.pds.harvest.target.Target;
 import gov.nasa.pds.harvest.target.Type;
@@ -274,50 +274,58 @@ public class HarvestLauncher {
      * metadata extraction.
      * @throws MalformedURLException If the URL to the registry service
      * is invalid.
-     * @throws SecurityClientException If there was an error while
-     * interfacing with the Security Service.
      * @throws RegistryClientException
      */
     private void doHarvesting(final Policy policy, final String securityUrl)
     throws MalformedURLException, ParserConfigurationException,
-    SecurityClientException, RegistryClientException {
-        SecurityClient securityClient = null;
-        String token = null;
+    RegistryClientException {
+      Harvester harvester = new Harvester(registryURL);
+      if (daemonPort != -1) {
+        harvester.setDaemonPort(daemonPort);
+      }
+      if (waitInterval != -1) {
+        harvester.setWaitInterval(waitInterval);
+      }
+      if ((username != null) && (password != null)) {
+        harvester.setSecuredUser(new SecuredUser(username, password));
+      }
 
-        Harvester harvester = new Harvester(registryURL,
-                policy.getCandidates());
-        List<String> fileFilters = policy.getDirectories().getFilePattern();
-        setupExtractor(policy.getCandidates().getNamespace());
-        if ((username != null) && (password != null)) {
-            harvester.setSecuredUser(new SecuredUser(username, password));
+      if (policy.getPds3Directory().getPath() != null) {
+        Pds3MetExtractorConfig pds3MetConfig = new Pds3MetExtractorConfig(
+            policy.getCandidates().getPds3ProductMetadata());
+        harvester.setPds3MetExtractorConfig(pds3MetConfig);
+        harvester.setDoValidation(false);
+        String path = policy.getPds3Directory().getPath();
+        List<String> fileFilters =
+          policy.getPds3Directory().getFilePattern();
+        if (!fileFilters.isEmpty()) {
+          harvester.harvest(new Target(path, Type.PDS3_DIRECTORY),
+              fileFilters);
+        } else {
+          harvester.harvest(new Target(path, Type.PDS3_DIRECTORY));
         }
-        harvester.setDoValidation(policy.getValidation().isEnabled());
-        if (daemonPort != -1) {
-            harvester.setDaemonPort(daemonPort);
+      }
+      Pds4MetExtractorConfig pds4MetConfig = new Pds4MetExtractorConfig(
+          policy.getCandidates().getProductMetadata());
+      harvester.setPds4MetExtractorConfig(pds4MetConfig);
+      List<String> fileFilters = policy.getDirectories().getFilePattern();
+      setupExtractor(policy.getCandidates().getNamespace());
+
+      harvester.setDoValidation(policy.getValidation().isEnabled());
+      for (String bundle : policy.getBundles().getFile()) {
+        harvester.harvest(new Target(bundle, Type.BUNDLE));
+      }
+      for (String collection : policy.getCollections().getFile()) {
+        harvester.harvest(new Target(collection, Type.COLLECTION));
+      }
+      for (String path : policy.getDirectories().getPath()) {
+        if (!fileFilters.isEmpty()) {
+          harvester.harvest(new Target(path, Type.PDS4_DIRECTORY),
+            fileFilters);
+        } else {
+          harvester.harvest(new Target(path, Type.PDS4_DIRECTORY));
         }
-        if (waitInterval != -1) {
-            harvester.setWaitInterval(waitInterval);
-        }
-        try {
-            for (String bundle : policy.getBundles().getFile()) {
-                harvester.harvest(new Target(bundle, Type.BUNDLE));
-            }
-            for (String collection : policy.getCollections().getFile()) {
-                harvester.harvest(new Target(collection, Type.COLLECTION));
-            }
-            for (String path : policy.getDirectories().getPath()) {
-                if (!fileFilters.isEmpty()) {
-                    harvester.harvest(new Target(path, Type.DIRECTORY),
-                        fileFilters);
-                } else {
-                    harvester.harvest(new Target(path, Type.DIRECTORY));
-                }
-            }
-        } finally {
-            if (securityUrl != null) {
-                securityClient.logout(token);
-            }
-        }
+      }
     }
 
     /**
@@ -362,7 +370,10 @@ public class HarvestLauncher {
             Policy policy = PolicyReader.unmarshall(launcher.policy);
             Policy globalPolicy = PolicyReader.unmarshall(
                     launcher.globalPolicy);
-            policy.add(globalPolicy);
+            policy.getCandidates().getNamespace().addAll(
+                globalPolicy.getCandidates().getNamespace());
+            policy.getCandidates().getProductMetadata().addAll(
+                globalPolicy.getCandidates().getProductMetadata());
             launcher.doHarvesting(policy, launcher.securityURL);
             launcher.closeHandlers();
         } catch (JAXBException je) {

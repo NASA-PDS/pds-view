@@ -4,8 +4,7 @@ import java.io.File;
 import java.util.logging.Logger;
 
 import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerActionRepo;
-import gov.nasa.pds.harvest.constants.Constants;
-import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractorConfig;
+import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds4MetExtractorConfig;
 import gov.nasa.pds.harvest.inventory.InventoryEntry;
 import gov.nasa.pds.harvest.inventory.InventoryReader;
 import gov.nasa.pds.harvest.inventory.InventoryTableReader;
@@ -34,7 +33,7 @@ public class CollectionCrawler extends PDSProductCrawler {
      * @param extractorConfig A configuration class for the metadata
      * extractor.
      */
-    public CollectionCrawler(PDSMetExtractorConfig extractorConfig) {
+    public CollectionCrawler(Pds4MetExtractorConfig extractorConfig) {
         super(extractorConfig);
     }
 

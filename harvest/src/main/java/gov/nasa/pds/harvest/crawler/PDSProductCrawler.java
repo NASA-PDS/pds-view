@@ -22,10 +22,10 @@ import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.crawler.actions.AssociationCheckerAction;
 import gov.nasa.pds.harvest.crawler.actions.AssociationPublisherAction;
 import gov.nasa.pds.harvest.crawler.actions.LogMissingReqMetadataAction;
-import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSBundleMetExtractor;
-import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSCollectionMetExtractor;
-import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractor;
-import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractorConfig;
+import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds4MetExtractorConfig;
+import gov.nasa.pds.harvest.crawler.metadata.extractor.BundleMetExtractor;
+import gov.nasa.pds.harvest.crawler.metadata.extractor.CollectionMetExtractor;
+import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds4MetExtractor;
 import gov.nasa.pds.harvest.crawler.stats.AssociationStats;
 import gov.nasa.pds.harvest.crawler.status.Status;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
@@ -60,7 +60,7 @@ public class PDSProductCrawler extends ProductCrawler {
             PDSProductCrawler.class.getName());
 
     /** Holds the configuration to extract metadata. */
-    private PDSMetExtractorConfig metExtractorConfig;
+    private Pds4MetExtractorConfig metExtractorConfig;
 
     /** A list of crawler actions to perform while crawling. */
     private List<CrawlerAction> crawlerActions;
@@ -68,15 +68,19 @@ public class PDSProductCrawler extends ProductCrawler {
     /** Holds the product type of the file being processed. */
     private String objectType;
 
-    private boolean inContinuousMode;
+    protected boolean inContinuousMode;
 
-    private Map<File, Long> touchedFiles;
+    protected Map<File, Long> touchedFiles;
 
-    private int numDiscoveredProducts;
+    protected int numDiscoveredProducts;
 
-    private int numBadFiles;
+    protected int numBadFiles;
 
-    private int numFilesSkipped;
+    protected int numFilesSkipped;
+
+    public PDSProductCrawler() {
+      this(null);
+    }
 
     /**
      * Constructor.
@@ -84,7 +88,7 @@ public class PDSProductCrawler extends ProductCrawler {
      * @param extractorConfig A configuration class that tells the crawler
      * what data product types to look for and what metadata to extract.
      */
-    public PDSProductCrawler(PDSMetExtractorConfig extractorConfig) {
+    public PDSProductCrawler(Pds4MetExtractorConfig extractorConfig) {
         this.objectType = "";
         this.metExtractorConfig = extractorConfig;
         this.crawlerActions = new ArrayList<CrawlerAction>();
@@ -111,7 +115,7 @@ public class PDSProductCrawler extends ProductCrawler {
      *
      * @return The PDSMetExtractorConfig object.
      */
-    public PDSMetExtractorConfig getMetExtractorConfig() {
+    public Pds4MetExtractorConfig getMetExtractorConfig() {
         return metExtractorConfig;
     }
 
@@ -227,6 +231,13 @@ public class PDSProductCrawler extends ProductCrawler {
         return crawlerActions;
     }
 
+    public void setProperties(String registryUrl, RegistryIngester ingester,
+        List<CrawlerAction> actions) throws MalformedURLException {
+      setRegistryUrl(registryUrl);
+      setIngester(ingester);
+      addActions(actions);
+    }
+
     /**
      * Extracts metadata from the given product.
      *
@@ -237,13 +248,13 @@ public class PDSProductCrawler extends ProductCrawler {
      */
     @Override
     protected Metadata getMetadataForProduct(File product) {
-        PDSMetExtractor metExtractor = null;
+        Pds4MetExtractor metExtractor = null;
         if (objectType.contains(Constants.BUNDLE)) {
-            metExtractor = new PDSBundleMetExtractor(metExtractorConfig);
+            metExtractor = new BundleMetExtractor(metExtractorConfig);
         } else if (objectType.contains(Constants.COLLECTION)) {
-            metExtractor = new PDSCollectionMetExtractor(metExtractorConfig);
+            metExtractor = new CollectionMetExtractor(metExtractorConfig);
         } else {
-            metExtractor = new PDSMetExtractor(metExtractorConfig);
+            metExtractor = new Pds4MetExtractor(metExtractorConfig);
         }
         try {
             return metExtractor.extractMetadata(product);

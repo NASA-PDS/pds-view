@@ -36,64 +36,61 @@ import gov.nasa.pds.harvest.logging.ToolsLogRecord;
  *
  */
 public class RegistryUniquenessCheckerAction extends CrawlerAction {
-    private static Logger log = Logger.getLogger(
-            RegistryUniquenessCheckerAction.class.getName());
-    private RegistryIngester ingester;
-    private String registryUrl;
-    private final String ID = "RegistryUniquenessChecker";
-    private final String DESCRIPTION =
-        "Checks if a product with the same LID and VID exists in the "
-        + "registry.";
+  private static Logger log = Logger.getLogger(
+          RegistryUniquenessCheckerAction.class.getName());
+  private RegistryIngester ingester;
+  private String registryUrl;
 
-    /**
-     * Constructor.
-     *
-     * @param registryUrl The URL to the registry service.
-     * @param ingester The Registry Ingester.
-     */
-    public RegistryUniquenessCheckerAction(String registryUrl,
-            RegistryIngester ingester) {
-        super();
-        this.ingester = ingester;
-        this.registryUrl = registryUrl;
+  private final String ID = "RegistryUniquenessChecker";
+  private final String DESCRIPTION =
+      "Checks if a product with the same LID and VID exists in the "
+      + "registry.";
 
-        String []phases = {CrawlerActionPhases.PRE_INGEST};
-        setPhases(Arrays.asList(phases));
-        setId(ID);
-        setDescription(DESCRIPTION);
+  /**
+   * Constructor.
+   *
+   * @param registryUrl The URL to the registry service.
+   * @param ingester The Registry Ingester.
+   */
+  public RegistryUniquenessCheckerAction(String registryUrl,
+      RegistryIngester ingester) {
+    super();
+    this.ingester = ingester;
+    this.registryUrl = registryUrl;
+    String []phases = {CrawlerActionPhases.PRE_INGEST};
+    setPhases(Arrays.asList(phases));
+    setId(ID);
+    setDescription(DESCRIPTION);
+  }
+
+  /**
+   * Action that checks to see if a product was already registerd.
+   *
+   * @param product The product file.
+   * @param productMetadata The metadata associatied with the given product.
+   *
+   * @return 'false' if the product was already registered.
+   */
+  @Override
+  public boolean performAction(File product, Metadata productMetadata)
+          throws CrawlerActionException {
+    String lid = productMetadata.getMetadata(Constants.LOGICAL_ID);
+    String vid = productMetadata.getMetadata(Constants.PRODUCT_VERSION);
+    String lidvid = lid + "::" + vid;
+    try {
+      boolean result;
+      result = this.ingester.hasProduct(new URL(this.registryUrl), lid, vid);
+      if (result == true) {
+        log.log(new ToolsLogRecord(Level.WARNING,
+            "Product already exists in the registry: "
+            + lidvid, product));
+        return false;
+      } else {
+        return true;
+      }
+    } catch (Exception e) {
+      log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage(), product));
+      throw new CrawlerActionException(e.getMessage());
     }
-
-    /**
-     * Action that checks to see if a product was already registerd.
-     *
-     * @param product The product file.
-     * @param productMetadata The metadata associatied with the given product.
-     *
-     * @return 'false' if the product was already registered.
-     */
-    @Override
-    public boolean performAction(File product, Metadata productMetadata)
-            throws CrawlerActionException {
-        String lid = productMetadata.getMetadata(Constants.LOGICAL_ID);
-        String vid = productMetadata.getMetadata(
-                Constants.PRODUCT_VERSION);
-        String lidvid = lid + "::" + vid;
-        try {
-            boolean result;
-            result = this.ingester.hasProduct(new URL(this.registryUrl), lid,
-                    vid);
-            if (result == true) {
-                log.log(new ToolsLogRecord(Level.WARNING,
-                        "Product already exists in the registry: "
-                        + lidvid, product));
-                return false;
-            } else {
-                return true;
-            }
-        } catch (Exception e) {
-            log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage(),
-                    product));
-            throw new CrawlerActionException(e.getMessage());
-        }
-    }
+  }
 }

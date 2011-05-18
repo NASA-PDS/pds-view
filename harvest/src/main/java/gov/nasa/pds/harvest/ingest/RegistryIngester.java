@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.ClientResponse.Status;
 
 import gov.nasa.jpl.oodt.cas.filemgr.ingest.Ingester;
 import gov.nasa.jpl.oodt.cas.filemgr.structs.exceptions.CatalogException;
@@ -45,158 +46,154 @@ import gov.nasa.pds.registry.model.Slot;
  *
  */
 public class RegistryIngester implements Ingester {
-    /** Logger object. */
-    private static Logger log = Logger.getLogger(
-            RegistryIngester.class.getName());
+  /** Logger object. */
+  private static Logger log = Logger.getLogger(
+      RegistryIngester.class.getName());
 
-    /** A security token. */
-    private String token;
+  /** A security token. */
+  private String token;
 
-    /** Username of the authorized user. */
-    private String user;
+  /** Username of the authorized user. */
+  private String user;
 
-    /**
-     * Default constructor.
-     *
-     */
-    public RegistryIngester() {
-        this(null, null);
-    }
 
-    /**
-     * Constructor.
-     *
-     * @param user An authorized user.
-     * @param token The security token that allows the authorized user to
-     * ingest products into the registry.
-     */
-    public RegistryIngester(String user, String token) {
-        this.token = token;
-        this.user = user;
-    }
+  /**
+   * Default constructor.
+   *
+   */
+  public RegistryIngester() {
+    this(null, null);
+  }
 
-    /**
-     * Method not used at this time.
-     *
-     */
-    public boolean hasProduct(URL registry, File prodFile)
-    throws CatalogException {
-        // No use for this method for now
+  /**
+    * Constructor.
+    *
+    * @param user An authorized user.
+    * @param token The security token that allows the authorized user to
+    * ingest products into the registry.
+    */
+  public RegistryIngester(String user, String token) {
+    this.token = token;
+    this.user = user;
+  }
+
+  /**
+   * Method not used at this time.
+   *
+   */
+  public boolean hasProduct(URL registry, File prodFile)
+  throws CatalogException {
+      // No use for this method for now
+    return false;
+  }
+
+  /**
+   * Determines whether a product is already in the registry.
+   *
+   * @param registry The URL to the registry service.
+   * @param productID The PDS4 logical identifier.
+   *
+   * @return 'true' if the logical identifier was found in the registry.
+   *
+   * @throws CatalogException If an error occurred while talking to the
+   * ingester.
+   */
+  public boolean hasProduct(URL registry, String productID)
+  throws CatalogException {
+    try {
+      RegistryClient client = new RegistryClient(registry.toString(), user,
+          token);
+      ClientResponse response = client.getLatestExtrinsic(productID);
+      if (response.getStatus() == Status.OK.getStatusCode()) {
+        return true;
+      } else {
         return false;
+      }
+    } catch (RegistryClientException re) {
+      throw new CatalogException(re.getMessage());
     }
+  }
 
-    /**
-     * Determines whether a product is already in the registry.
-     *
-     * @param registry The URL to the registry service.
-     * @param productID The PDS4 logical identifier.
-     *
-     * @return 'true' if the logical identifier was found in the registry.
-     *
-     * @throws CatalogException If an error occurred while talking to the
-     * ingester.
-     */
-    public boolean hasProduct(URL registry, String productID)
-    throws CatalogException {
+  /**
+   * Determines whether a version of a product is already in the registry.
+   *
+   * @param registry The URL to the registry service.
+   * @param productID The PDS4 logical identifier.
+   * @param productVersion The version of the product.
+   *
+   * @return 'true' if the logical identifier and version was found in the
+   * registry.
+   *
+   * @throws CatalogException If an error occurred while talking to the
+   * ingester.
+   */
+  public boolean hasProduct(URL registry, String productID,
+          String productVersion) throws CatalogException {
+    try {
+      RegistryClient client = new RegistryClient(registry.toString(), user,
+              token);
+      ClientResponse response = client.getExtrinsic(productID,
+              productVersion);
+      if (response.getStatus() == Status.OK.getStatusCode()) {
+          return true;
+      } else {
+          return false;
+      }
+    } catch (RegistryClientException re) {
+      throw new CatalogException(re.getMessage());
+    }
+  }
+
+  /**
+   * Ingests the product into the registry.
+   *
+   * @param registry The URL to the registry service.
+   * @param prodFile The PDS4 product file.
+   * @param met The metadata to register.
+   *
+   * @return The URL of the registered product.
+   * @throws IngestException If an error occurred while ingesting the
+   * product.
+   */
+  public String ingest(URL registry, File prodFile, Metadata met)
+  throws IngestException {
+    try {
+      RegistryClient client = new RegistryClient(registry.toString(), user,
+              token);
+      ExtrinsicObject product = createProduct(met);
+      ClientResponse response = null;
       try {
-        RegistryClient client = new RegistryClient(registry.toString(), user,
-                token);
-        ClientResponse response = client.getLatestExtrinsic(productID);
-        if (response.getStatus()
-                == ClientResponse.Status.OK.getStatusCode()) {
-            return true;
+        if (hasProduct(registry, product.getLid())) {
+          response = client.versionExtrinsic(user, product, product.getLid());
         } else {
-            return false;
+          response = client.publishExtrinsic(user, product);
         }
-      } catch (RegistryClientException re) {
-        throw new CatalogException(re.getMessage());
+      } catch (CatalogException c) {
+        throw new IngestException(c.getMessage());
       }
-    }
 
-    /**
-     * Determines whether a version of a product is already in the registry.
-     *
-     * @param registry The URL to the registry service.
-     * @param productID The PDS4 logical identifier.
-     * @param productVersion The version of the product.
-     *
-     * @return 'true' if the logical identifier and version was found in the
-     * registry.
-     *
-     * @throws CatalogException If an error occurred while talking to the
-     * ingester.
-     */
-    public boolean hasProduct(URL registry, String productID,
-            String productVersion) throws CatalogException {
-      try {
-        RegistryClient client = new RegistryClient(registry.toString(), user,
-                token);
-        ClientResponse response = client.getExtrinsic(productID,
-                productVersion);
-        if (response.getStatus()
-                == ClientResponse.Status.OK.getStatusCode()) {
-            return true;
-        } else {
-            return false;
-        }
-      } catch (RegistryClientException re) {
-        throw new CatalogException(re.getMessage());
+      if (response.getStatus() == Status.CREATED.getStatusCode()) {
+        String lid = met.getMetadata(Constants.LOGICAL_ID);
+        String vid = met.getMetadata(Constants.PRODUCT_VERSION);
+        String lidvid = lid + "::" + vid;
+        String guid = response.getEntity(String.class);
+        log.log(new ToolsLogRecord(ToolsLevel.INGEST_SUCCESS,
+                "Successfully registered product: " + lidvid, prodFile));
+        log.log(new ToolsLogRecord(ToolsLevel.INFO,
+                "Product has the following GUID: " + guid, prodFile));
+        met.addMetadata(Constants.PRODUCT_GUID, guid);
+        return response.getLocation().toString();
+      } else {
+        log.log(new ToolsLogRecord(ToolsLevel.INGEST_FAIL,
+            "POST request returned HTTP code: "
+             + response.getStatus(), prodFile));
+        throw new IngestException("POST request returned HTTP code: "
+             + response.getStatus());
       }
+    } catch (RegistryClientException re) {
+      throw new IngestException(re.getMessage());
     }
-
-    /**
-     * Ingests the product into the registry.
-     *
-     * @param registry The URL to the registry service.
-     * @param prodFile The PDS4 product file.
-     * @param met The metadata to register.
-     *
-     * @return The URL of the registered product.
-     * @throws IngestException If an error occurred while ingesting the
-     * product.
-     */
-    public String ingest(URL registry, File prodFile, Metadata met)
-    throws IngestException {
-      try {
-        RegistryClient client = new RegistryClient(registry.toString(), user,
-                token);
-        ExtrinsicObject product = createProduct(met);
-        ClientResponse response = null;
-        try {
-            if (hasProduct(registry, product.getLid())) {
-                response = client.versionExtrinsic(user, product,
-                        product.getLid());
-            }
-            else {
-                response = client.publishExtrinsic(user, product);
-            }
-        } catch (CatalogException c) {
-            throw new IngestException(c.getMessage());
-        }
-        if (response.getStatus()
-                == ClientResponse.Status.CREATED.getStatusCode()) {
-            String lidvid = met.getMetadata(Constants.LOGICAL_ID) + "::"
-            + met.getMetadata(Constants.PRODUCT_VERSION);
-            String guid = response.getEntity(String.class);
-            log.log(new ToolsLogRecord(ToolsLevel.INGEST_SUCCESS,
-                    "Successfully registered product: " + lidvid, prodFile));
-            log.log(new ToolsLogRecord(ToolsLevel.INFO,
-                    "Product has the following GUID: " + guid, prodFile));
-            met.addMetadata(Constants.PRODUCT_GUID, guid);
-            return response.getLocation().toString();
-        }
-        else {
-            log.log(new ToolsLogRecord(ToolsLevel.INGEST_FAIL,
-                    "POST request returned HTTP code: "
-                    + response.getStatus(),
-                    prodFile));
-            throw new IngestException("POST request returned HTTP code: "
-                    + response.getStatus());
-        }
-      } catch (RegistryClientException re) {
-        throw new IngestException(re.getMessage());
-      }
-    }
+  }
 
     /**
      * Create the Product object.
@@ -205,58 +202,58 @@ public class RegistryIngester implements Ingester {
      *
      * @return A Product object.
      */
-    private ExtrinsicObject createProduct(Metadata metadata) {
-        ExtrinsicObject product = new ExtrinsicObject();
-        Set<Slot> slots = new HashSet<Slot>();
-        Set metSet = metadata.getHashtable().entrySet();
-        for (Iterator i = metSet.iterator(); i.hasNext();) {
-            Map.Entry entry = (Map.Entry) i.next();
-            String key = entry.getKey().toString();
-            if (key.equals(Constants.REFERENCES)) {
-                continue;
-            }
-            if (key.equals(Constants.LOGICAL_ID)) {
-                product.setLid(metadata.getMetadata(Constants.LOGICAL_ID));
-            } else if (key.equals(Constants.PRODUCT_VERSION)) {
-                product.setVersionId(metadata.getMetadata(
-                        Constants.PRODUCT_VERSION));
-            } else if (key.equals(Constants.OBJECT_TYPE)) {
-                product.setObjectType(metadata.getMetadata(
-                        Constants.OBJECT_TYPE));
-            } else if (key.equals(Constants.TITLE)) {
-                product.setName(metadata.getMetadata(Constants.TITLE));
-            } else {
-                List<String> values = new ArrayList<String>();
-                if (metadata.isMultiValued(key)) {
-                    values.addAll(metadata.getAllMetadata(key));
-                } else {
-                    values.add(metadata.getMetadata(key));
-                }
-                slots.add(new Slot(key, values));
-            }
-        }
-        product.setSlots(slots);
-
-        return product;
+  private ExtrinsicObject createProduct(Metadata metadata) {
+    ExtrinsicObject product = new ExtrinsicObject();
+    Set<Slot> slots = new HashSet<Slot>();
+    Set metSet = metadata.getHashtable().entrySet();
+    for (Iterator i = metSet.iterator(); i.hasNext();) {
+      Map.Entry entry = (Map.Entry) i.next();
+      String key = entry.getKey().toString();
+      if (key.equals(Constants.REFERENCES)) {
+        continue;
+      }
+      if (key.equals(Constants.LOGICAL_ID)) {
+        product.setLid(metadata.getMetadata(Constants.LOGICAL_ID));
+      } else if (key.equals(Constants.PRODUCT_VERSION)) {
+         product.setVersionId(metadata.getMetadata(
+             Constants.PRODUCT_VERSION));
+      } else if (key.equals(Constants.OBJECT_TYPE)) {
+         product.setObjectType(metadata.getMetadata(
+             Constants.OBJECT_TYPE));
+      } else if (key.equals(Constants.TITLE)) {
+         product.setName(metadata.getMetadata(Constants.TITLE));
+      } else {
+         List<String> values = new ArrayList<String>();
+         if (metadata.isMultiValued(key)) {
+           values.addAll(metadata.getAllMetadata(key));
+         } else {
+           values.add(metadata.getMetadata(key));
+         }
+           slots.add(new Slot(key, values));
+      }
     }
+    product.setSlots(slots);
 
-    /**
-     * Method not implemented at this time.
-     *
-     */
-    public String ingest(URL fmUrl, File prodFile, MetExtractor extractor,
-            File metConfFile) throws IngestException {
-        //No need for this method at this time
-        return null;
-    }
+    return product;
+  }
 
-    /**
-     * Method not implemented at this time.
-     *
-     */
-    public void ingest(URL fmUrl, List<String> prodFiles,
-            MetExtractor extractor, File metConfFile)
-            throws IngestException {
-        //No need for this method at this time
-    }
+  /**
+   * Method not implemented at this time.
+   *
+   */
+  public String ingest(URL fmUrl, File prodFile, MetExtractor extractor,
+          File metConfFile) throws IngestException {
+    //No need for this method at this time
+    return null;
+  }
+
+  /**
+   * Method not implemented at this time.
+   *
+   */
+  public void ingest(URL fmUrl, List<String> prodFiles,
+          MetExtractor extractor, File metConfFile)
+          throws IngestException {
+      //No need for this method at this time
+  }
 }

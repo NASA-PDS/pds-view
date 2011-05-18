@@ -7,7 +7,12 @@
 <xsd:element name="file" type="xsd:string"/>
 <xsd:element name="filePattern" type="xsd:string"/>
 <xsd:element name="xPath" type="xsd:string"/>
-<xsd:element name="enabled" type="xsd:boolean"/>
+<xsd:element name="enabled" type="xsd:boolean" default="true"/>
+<xsd:element name="lidPrefix" type="xsd:string"/>
+<xsd:element name="lidReference" type="xsd:string"/>
+<xsd:element name="lidVidReference" type="xsd:string"/>
+<xsd:element name="referenceType" type="xsd:string"/>
+<xsd:element name="elementName" type="xsd:string"/>
 
 <xsd:attribute name="objectType" type="xsd:string"/>
 <xsd:attribute name="prefix" type="xsd:string"/>
@@ -43,19 +48,29 @@
    <xsd:attribute ref="default"/>
 </xsd:complexType>
 
-<xsd:element name="productMetadata" type="ProductMetadata"/>
-<xsd:complexType name="ProductMetadata">
+<xsd:element name="productMetadata" type="Pds4ProductMetadata"/>
+<xsd:complexType name="Pds4ProductMetadata">
    <xsd:sequence>
       <xsd:element ref="xPath" maxOccurs="unbounded"/>
    </xsd:sequence>
    <xsd:attribute ref="objectType" use="required"/>
 </xsd:complexType>
 
+<xsd:element name="pds3ProductMetadata" type="Pds3ProductMetadata"/>
+<xsd:complexType name="Pds3ProductMetadata">
+   <xsd:all>
+      <xsd:element ref="lidPrefix" minOccurs="0"/>
+      <xsd:element ref="associations" minOccurs="0"/>
+      <xsd:element ref="ancillaryMetadata" minOccurs="0"/>
+   </xsd:all>
+</xsd:complexType>
+
 <xsd:element name="candidates" type="Candidate"/>
 <xsd:complexType name="Candidate">
    <xsd:sequence>
+      <xsd:element ref="pds3ProductMetadata" minOccurs="0"/>
       <xsd:element ref="namespace" minOccurs="0" maxOccurs="unbounded"/>
-      <xsd:element ref="productMetadata" maxOccurs="unbounded"/>
+      <xsd:element ref="productMetadata" minOccurs="0" maxOccurs="unbounded"/>
    </xsd:sequence>
 </xsd:complexType>
 
@@ -66,15 +81,49 @@
    </xsd:sequence>
 </xsd:complexType>
 
-<xsd:element name="policy" type="Policy"/>
-<xsd:complexType name="Policy">
+<xsd:element name="associations" type="Associations"/>
+<xsd:complexType name="Associations">
    <xsd:sequence>
-      <xsd:element ref="bundles" minOccurs="0"/>
-      <xsd:element ref="collections" minOccurs="0"/>
-      <xsd:element ref="directories" minOccurs="0"/>
-      <xsd:element ref="validation" minOccurs="0"/>
-      <xsd:element ref="candidates"/>
+      <xsd:element ref="association" minOccurs="0" maxOccurs="unbounded"/>
    </xsd:sequence>
 </xsd:complexType>
 
+<xsd:element name="association" type="Association"/>
+<xsd:complexType name="Association">
+   <xsd:sequence>
+      <xsd:element ref="referenceType"/>
+      <xsd:choice>
+         <xsd:element ref="lidVidReference"/>
+         <xsd:element ref="lidReference"/>
+      </xsd:choice>
+   </xsd:sequence>
+</xsd:complexType>
+
+<xsd:element name="ancillaryMetadata" type="AncillaryMetadata"/>
+<xsd:complexType name="AncillaryMetadata">
+   <xsd:sequence>
+      <xsd:element ref="elementName" maxOccurs="unbounded"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+<xsd:element name="pds3Directory" type="Pds3Directory"/>
+<xsd:complexType name="Pds3Directory">
+   <xsd:sequence>
+      <xsd:element ref="path"/>
+      <xsd:element ref="filePattern" minOccurs="0" maxOccurs="unbounded"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+<xsd:element name="policy">
+  <xsd:complexType>
+     <xsd:all>
+        <xsd:element ref="bundles" minOccurs="0"/>
+        <xsd:element ref="collections" minOccurs="0"/>
+        <xsd:element ref="directories" minOccurs="0"/>
+        <xsd:element ref="pds3Directory" minOccurs="0"/>
+        <xsd:element ref="validation" minOccurs="0"/>
+        <xsd:element ref="candidates"/>
+     </xsd:all>
+  </xsd:complexType>
+</xsd:element>
 </xsd:schema>

@@ -14,8 +14,11 @@ public enum Type {
     /** Collection file. */
     COLLECTION("Collection"),
 
-    /** Directory file. */
-    DIRECTORY("Directory");
+    /** PDS3 Directory file. */
+    PDS3_DIRECTORY("Pds3Directory"),
+
+    /** PDS4 Directory file. */
+    PDS4_DIRECTORY("Pds4Directory");
 
     private final String name;
 

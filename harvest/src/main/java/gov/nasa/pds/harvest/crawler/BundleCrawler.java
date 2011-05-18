@@ -1,7 +1,7 @@
 package gov.nasa.pds.harvest.crawler;
 
 import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerActionRepo;
-import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractorConfig;
+import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds4MetExtractorConfig;
 import gov.nasa.pds.harvest.inventory.InventoryEntry;
 import gov.nasa.pds.harvest.inventory.InventoryReader;
 import gov.nasa.pds.harvest.inventory.InventoryReaderException;
@@ -29,7 +29,7 @@ public class BundleCrawler extends CollectionCrawler {
      * @param extractorConfig A configuration object for the
      * metadata extractor.
      */
-    public BundleCrawler(PDSMetExtractorConfig extractorConfig) {
+    public BundleCrawler(Pds4MetExtractorConfig extractorConfig) {
         super(extractorConfig);
     }
 

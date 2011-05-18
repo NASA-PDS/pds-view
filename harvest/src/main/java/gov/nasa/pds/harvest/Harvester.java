@@ -16,14 +16,17 @@ package gov.nasa.pds.harvest;
 import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerAction;
 import gov.nasa.pds.harvest.crawler.BundleCrawler;
 import gov.nasa.pds.harvest.crawler.CollectionCrawler;
+import gov.nasa.pds.harvest.crawler.PDS3ProductCrawler;
 import gov.nasa.pds.harvest.crawler.PDSProductCrawler;
 import gov.nasa.pds.harvest.crawler.actions.AssociationPublisherAction;
 import gov.nasa.pds.harvest.crawler.actions.RegistryUniquenessCheckerAction;
 import gov.nasa.pds.harvest.crawler.actions.ValidateProductAction;
 import gov.nasa.pds.harvest.crawler.daemon.HarvestDaemon;
-import gov.nasa.pds.harvest.crawler.metadata.extractor.PDSMetExtractorConfig;
+import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds3MetExtractorConfig;
+import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds4MetExtractorConfig;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.policy.Candidate;
+import gov.nasa.pds.harvest.policy.Collection;
 import gov.nasa.pds.harvest.registry.RegistryClientException;
 import gov.nasa.pds.harvest.security.SecuredUser;
 import gov.nasa.pds.harvest.target.Target;
@@ -49,9 +52,6 @@ public class Harvester {
     /** URL of the registry service. */
     private String registryUrl;
 
-    /** Product candidates defined in the policy file. */
-    private Candidate candidates;
-
     /** An ingester for the PDS Registry Service. */
     private RegistryIngester ingester;
 
@@ -68,6 +68,12 @@ public class Harvester {
      */
     private int waitInterval;
 
+    private Pds3MetExtractorConfig pds3MetExtractorConfig;
+
+    private Pds4MetExtractorConfig pds4MetExtractorConfig;
+
+    private List<PDSProductCrawler> crawlers;
+
     /**
      * Constructor.
      *
@@ -76,15 +82,25 @@ public class Harvester {
      * metadata to extract.
      *
      */
-    public Harvester(String registryUrl, Candidate candidates) {
+    public Harvester(String registryUrl) {
         this.registryUrl = registryUrl;
-        this.candidates = candidates;
         this.securedUser = null;
         this.registryUrl = registryUrl;
         this.ingester = new RegistryIngester();
         this.doValidation = true;
         this.daemonPort = -1;
         this.waitInterval = -1;
+        this.pds3MetExtractorConfig = null;
+        this.pds4MetExtractorConfig = null;
+        this.crawlers = new ArrayList<PDSProductCrawler>();
+    }
+
+    public void setPds3MetExtractorConfig(Pds3MetExtractorConfig config) {
+      this.pds3MetExtractorConfig = config;
+    }
+
+    public void setPds4MetExtractorConfig(Pds4MetExtractorConfig config) {
+      this.pds4MetExtractorConfig = config;
     }
 
     /**
@@ -148,6 +164,10 @@ public class Harvester {
         return ca;
     }
 
+    public List<PDSProductCrawler> getCrawlers() {
+      return crawlers;
+    }
+
     /**
      * Harvests the products in the given target.
      *
@@ -179,19 +199,25 @@ public class Harvester {
      *
      */
     public void harvest(Target target, List<String> fileFilters)
-    throws ParserConfigurationException, MalformedURLException, RegistryClientException {
+    throws ParserConfigurationException, MalformedURLException,
+    RegistryClientException {
         PDSProductCrawler crawler = null;
-        PDSMetExtractorConfig config = new PDSMetExtractorConfig(candidates);
         if (Type.COLLECTION.equals(target.getType())) {
-            crawler = new CollectionCrawler(config);
+          crawler = new CollectionCrawler(pds4MetExtractorConfig);
         } else if (Type.BUNDLE.equals(target.getType())) {
-            crawler = new BundleCrawler(config);
-        } else {
-            //Default is to assume a directory.
-            crawler = new PDSProductCrawler(config);
-            if (!fileFilters.isEmpty()) {
-                crawler.setFileFilter(fileFilters);
-            }
+          crawler = new BundleCrawler(pds4MetExtractorConfig);
+        } else if (Type.PDS4_DIRECTORY.equals(target.getType())) {
+          crawler = new PDSProductCrawler(pds4MetExtractorConfig);
+          if (!fileFilters.isEmpty()) {
+            crawler.setFileFilter(fileFilters);
+          }
+        } else if (Type.PDS3_DIRECTORY.equals(target.getType())) {
+          PDS3ProductCrawler pds3Crawler = new PDS3ProductCrawler();
+          if (!fileFilters.isEmpty()) {
+            pds3Crawler.setFileFilter(fileFilters);
+          }
+          pds3Crawler.setPDS3MetExtractorConfig(pds3MetExtractorConfig);
+          crawler = pds3Crawler;
         }
         crawler.setRegistryUrl(registryUrl);
         crawler.setIngester(ingester);
