@@ -408,10 +408,6 @@ public class ExtrinsicsResource {
     try {
       previous = (ExtrinsicObject) registryService
           .getPreviousObject(extrinsic.getGuid(), ExtrinsicObject.class);
-      String previousUri = uriInfo.getBaseUriBuilder().clone().path(
-          RegistryResource.class).path(RegistryResource.class,
-          "getExtrinsicsResource").path(previous.getGuid()).build().toString();
-      builder.header("Link", new Link(previousUri, "previous", null));
     } catch (RegistryServiceException e) {
       // Suppress
     }
