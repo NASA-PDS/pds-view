@@ -47,9 +47,9 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  * This class is a Java client to be used to exchange information with a
  * registry service. In the background it simply uses HTTP calls but returns
  * Java objects to ease integration.
- * 
+ *
  * @author pramirez
- * 
+ *
  */
 public class RegistryClient {
   private WebResource service;
@@ -82,7 +82,7 @@ public class RegistryClient {
    * the regsitry supports application/xml and application/json but defaults to
    * json. The end client will not see these calls so to cut down on data
    * transferred the more compact json should be used.
-   * 
+   *
    * @param mediaType
    *          to use for exchanging messages
    */
@@ -92,7 +92,7 @@ public class RegistryClient {
 
   /**
    * Retrieves an object from the registry of the given type
-   * 
+   *
    * @param guid
    *          identifier for the object
    * @param objectClass
@@ -102,7 +102,7 @@ public class RegistryClient {
    */
   public <T extends RegistryObject> T getObject(String guid,
       Class<T> objectClass) throws RegistryServiceException {
-    WebResource.Builder builder = service.path(resourceMap.get(objectClass))
+    WebResource.Builder builder = service.path("registry").path(resourceMap.get(objectClass))
         .path(guid).getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).get(
         ClientResponse.class);
@@ -116,7 +116,7 @@ public class RegistryClient {
 
   /**
    * Publish a registry object to the service
-   * 
+   *
    * @param object
    *          to publish
    * @return the globally unique identifier
@@ -124,7 +124,7 @@ public class RegistryClient {
    */
   public String publishObject(RegistryObject object)
       throws RegistryServiceException {
-    WebResource.Builder builder = service.path(
+    WebResource.Builder builder = service.path("registry").path(
         resourceMap.get(object.getClass())).getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).post(
         ClientResponse.class, object);
@@ -139,7 +139,7 @@ public class RegistryClient {
   /**
    * Publishes a version of the given object that is considered a major version
    * update.
-   * 
+   *
    * @param object
    *          to publish
    * @return globally unique identifier of versioned object
@@ -152,7 +152,7 @@ public class RegistryClient {
 
   /**
    * Publishes a version of the given object
-   * 
+   *
    * @param object
    *          to publish
    * @param major
@@ -162,7 +162,7 @@ public class RegistryClient {
    */
   public String versionObject(RegistryObject object, Boolean major)
       throws RegistryServiceException {
-    WebResource.Builder builder = service.path(
+    WebResource.Builder builder = service.path("registry").path(
         resourceMap.get(object.getClass())).path(object.getLid()).queryParam(
         "major", major.toString()).getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).post(
@@ -177,7 +177,7 @@ public class RegistryClient {
 
   /**
    * Retrieve the latest version of a registry object
-   * 
+   *
    * @param lid
    *          logical identifier which is associated with a collection of
    *          objects
@@ -188,7 +188,7 @@ public class RegistryClient {
    */
   public <T extends RegistryObject> T getLatestObject(String lid,
       Class<T> objectClass) throws RegistryServiceException {
-    WebResource.Builder builder = service.path(resourceMap.get(objectClass))
+    WebResource.Builder builder = service.path("registry").path(resourceMap.get(objectClass))
         .path("logicals").path(lid).path("latest").getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).get(
         ClientResponse.class);
@@ -203,7 +203,7 @@ public class RegistryClient {
   /**
    * Retrieves a paged set of registry objects from the collection of objects of
    * the specified type.
-   * 
+   *
    * @param start
    *          indicates where in the set of objects to begin
    * @param rows
@@ -215,9 +215,15 @@ public class RegistryClient {
    */
   public <T extends RegistryObject> PagedResponse<T> getObjects(Integer start,
       Integer rows, Class<T> objectClass) throws RegistryServiceException {
-    WebResource.Builder builder = service.path(resourceMap.get(objectClass))
-        .queryParam("start", start.toString()).queryParam("rows",
-            rows.toString()).getRequestBuilder();
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    if (start != null) {
+      params.add("start", start.toString());
+    }
+    if (rows != null) {
+      params.add("rows", rows.toString());
+    }
+    WebResource.Builder builder = service.path("registry").path(resourceMap.get(objectClass))
+        .queryParams(params).getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).get(
         ClientResponse.class);
     if (response.getClientResponseStatus() == Status.OK) {
@@ -231,7 +237,7 @@ public class RegistryClient {
 
   /**
    * Retrieves a set of extrinsic objects that match the query.
-   * 
+   *
    * @param query
    *          filters for the extrinsic
    * @param start
@@ -283,7 +289,7 @@ public class RegistryClient {
 
     params.add("queryOp", query.getOperator().toString());
 
-    WebResource.Builder builder = service.path(
+    WebResource.Builder builder = service.path("registry").path(
         resourceMap.get(ExtrinsicObject.class)).queryParams(params)
         .getRequestBuilder();
 
@@ -302,7 +308,7 @@ public class RegistryClient {
 
   /**
    * Retrieves a set of association objects that match the query.
-   * 
+   *
    * @param query
    *          filters for the association
    * @param start
@@ -342,7 +348,7 @@ public class RegistryClient {
 
     params.add("queryOp", query.getOperator().toString());
 
-    WebResource.Builder builder = service.path(
+    WebResource.Builder builder = service.path("registry").path(
         resourceMap.get(ExtrinsicObject.class)).queryParams(params)
         .getRequestBuilder();
 
