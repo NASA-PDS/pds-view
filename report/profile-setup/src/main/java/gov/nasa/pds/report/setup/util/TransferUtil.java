@@ -12,15 +12,17 @@ import com.google.gson.JsonObject;
 
 /**
  * Utility that provides all SFTP connection functionality
+ * 
  * @author jpadams
- *
+ * 
  */
 public class TransferUtil {
-	
-	public TransferUtil() { }
-	
+
+	public TransferUtil() {
+	}
+
 	public final JsonObject checkAllConnections(List<LogSet> lsList) {
-		//byte empty = 1;
+		// byte empty = 1;
 		byte connect = 1;
 		byte sftp = 1;
 
@@ -30,12 +32,13 @@ public class TransferUtil {
 		JsonArray jArray = new JsonArray();
 		JsonObject jObj = null;
 		LogSet ls = null;
-		
+
 		RemoteFileTransfer transfer = new SFTPConnect();
 
 		for (Iterator<LogSet> it1 = lsList.iterator(); it1.hasNext();) {
 			ls = it1.next();
-			jObj = transfer.checkConnection(ls.toJson(), ls.getHostname(), ls.getUsername(), ls.getPassword(), ls.getPathname());
+			jObj = transfer.checkConnection(ls.toJson(), ls.getHostname(), ls
+					.getUsername(), ls.getPassword(), ls.getPathname());
 			jArray.add(jObj);
 		}
 		root.add("logs", jArray);

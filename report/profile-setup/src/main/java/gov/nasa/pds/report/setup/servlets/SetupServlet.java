@@ -38,25 +38,27 @@ public class SetupServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
-	protected final void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+	protected final void doPost(final HttpServletRequest request,
+			final HttpServletResponse response) throws ServletException,
+			IOException {
 		Profile profile = new Profile();
 		profile.setProfile(request.getParameterMap());
-		
+
 		JsonObject root = new JsonObject();
 		List<LogSet> lsList = profile.getNewLogSets();
 		if (lsList.size() != 0) {
 			TransferUtil connect = new TransferUtil();
 			root = connect.checkAllConnections(lsList);
-		} else { 
+		} else {
 			root.add("empty", new JsonPrimitive("0"));
 		}
-			
-		
+
 		Gson gson = new Gson();
-		gson.toJson(root, response.getWriter());	
+		gson.toJson(root, response.getWriter());
 
 	}
 

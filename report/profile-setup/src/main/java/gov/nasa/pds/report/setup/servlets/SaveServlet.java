@@ -35,28 +35,31 @@ import com.google.gson.JsonPrimitive;
 public class SaveServlet extends HttpServlet {
 	/** Generated versionID **/
 	private static final long serialVersionUID = 1L;
-	
+
 	protected String localPath;
 	protected Profile profile;
 	protected List<LogSet> newLogSets;
 	protected LogPath logPath;
 	protected boolean isNew;
-	
+
 	private Logger log = Logger.getLogger(this.getClass().getName());
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public SaveServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public SaveServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
-	protected final void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+	protected final void doPost(final HttpServletRequest request,
+			final HttpServletResponse response) throws ServletException,
+			IOException {
 		String error = "";
 		this.isNew = false;
 
@@ -65,13 +68,15 @@ public class SaveServlet extends HttpServlet {
 
 		this.localPath = getServletContext().getRealPath("/WEB-INF/classes");
 
-		this.logPath = new LogPath(this.profile.getNode(), this.profile.getName());
+		this.logPath = new LogPath(this.profile.getNode(), this.profile
+				.getName());
 
 		this.newLogSets = this.profile.getNewLogSets();
 		try {
 			updateDB(request.getParameter("profile").equals("new"));
 
-			SawmillController sawmill = new SawmillController(this.localPath, this.logPath, this.profile, this.isNew);
+			SawmillController sawmill = new SawmillController(this.localPath,
+					this.logPath, this.profile, this.isNew);
 			sawmill.start();
 		} catch (SQLException e) {
 			error = "SQL Error: " + e.getMessage();
@@ -90,11 +95,12 @@ public class SaveServlet extends HttpServlet {
 		Gson gson = new Gson();
 		gson.toJson(root, response.getWriter());
 	}
-	
-	protected void updateDB(boolean isNew) throws SQLException, FileNotFoundException {
+
+	protected void updateDB(boolean isNew) throws SQLException,
+			FileNotFoundException {
 		DBUtil db = new DBUtil(this.localPath);
 		if (isNew) {
-			this.isNew =  true;
+			this.isNew = true;
 			db.createNew(this.profile);
 		} else {
 			db.update(this.newLogSets, this.profile.getProfileId());

@@ -55,7 +55,7 @@
       <filtered>true</filtered>
     </file>
     <file>
-      <source>src/main/sql/report_service_db.sql</source>
+      <source>src/main/sql/profile_setup_db.sql</source>
       <outputDirectory>conf</outputDirectory>
       <fileMode>644</fileMode>
     </file>

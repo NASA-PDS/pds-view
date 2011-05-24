@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * Current implementation to create profiles and copy logs.
- * Updates are only made if new log sources are added
+ * Current implementation to create profiles and copy logs. Updates are only
+ * made if new log sources are added
  * 
  * @author jpadams
- *
+ * 
  */
 public class SawmillController implements Runnable {
 
@@ -47,15 +47,18 @@ public class SawmillController implements Runnable {
 	 * Implementation of run method from Runnable interface.
 	 */
 	public final void run() {
-		ReportServiceUpdate rsUpdate = new ReportServiceUpdate(logPath, profile.getName(), this.isNewProfile);
+		ReportServiceUpdate rsUpdate = new ReportServiceUpdate(logPath, profile
+				.getName(), this.isNewProfile);
 
 		try {
 			List<LogSet> newLogSets = this.profile.getNewLogSets();
-			//ProfileConfigUtil cfg = new ProfileConfigUtil();
-			rsUpdate.buildCfg(this.localPath, this.sawmillProfileHome, newLogSets);
+			// ProfileConfigUtil cfg = new ProfileConfigUtil();
+			rsUpdate.buildCfg(this.localPath, this.sawmillProfileHome,
+					newLogSets);
 
 			for (LogSet ls : newLogSets) {
-				rsUpdate.transferLogs(ls.getHostname(), ls.getUsername(), ls.getPassword(), ls.getPathname(), ls.getLabel());
+				rsUpdate.transferLogs(ls.getHostname(), ls.getUsername(), ls
+						.getPassword(), ls.getPathname(), ls.getLabel());
 			}
 
 			rsUpdate.updateSawmill(this.sawmillHome);
