@@ -23,24 +23,24 @@ import com.google.gson.JsonPrimitive;
  * Profile object
  * 
  * @author jpadams
- *
+ * 
  */
 public class Profile {
-	//private String activeFlag;
+	// private String activeFlag;
 	private String node;
 	private String identifier;
 	private String name;
 	private String method;
 	private int profileId;
 	private List<LogSet> lsList;
-	
+
 	protected Logger log = Logger.getLogger(this.getClass().getName());
-	
+
 	/**
 	 * Base constructor class with no parameters
 	 */
 	public Profile() {
-		//this._activeFlag = "";
+		// this._activeFlag = "";
 		this.profileId = 0;
 		this.node = "";
 		this.identifier = "";
@@ -48,9 +48,10 @@ public class Profile {
 		this.method = "";
 		this.lsList = new ArrayList<LogSet>();
 	}
-	
+
 	/**
 	 * Constructor class that gets values from a ResultSet
+	 * 
 	 * @param rs
 	 * @throws SQLException
 	 */
@@ -61,57 +62,56 @@ public class Profile {
 		this.name = rs.getString("name");
 		this.method = rs.getString("method");
 	}
-	
+
 	/**
 	 * Constructor class that gets values from a paramater map
+	 * 
 	 * @param paramMap
 	 */
-	public void setProfile(Map<String,String[]> paramMap) {
+	public void setProfile(Map<String, String[]> paramMap) {
 		this.profileId = Integer.parseInt((paramMap.get("profile-id")[0]));
 		this.identifier = paramMap.get("identifier")[0];
 		this.method = paramMap.get("method")[0];
 		this.name = paramMap.get("name")[0];
 		this.node = paramMap.get("node")[0];
-		
-		log.fine("profileId: "+this.profileId);
-		log.fine("identifier: "+this.identifier);
-		log.fine("method: "+this.method);
-		log.fine("name: "+this.name);
-		log.fine("node: "+this.node);
-		
+
+		log.fine("profileId: " + this.profileId);
+		log.fine("identifier: " + this.identifier);
+		log.fine("method: " + this.method);
+		log.fine("name: " + this.name);
+		log.fine("node: " + this.node);
+
 		ArrayList<LogSet> lsList = new ArrayList<LogSet>();
-		//int logCount = Integer.parseInt(paramMap.get("log-set-count")[0]);
+		// int logCount = Integer.parseInt(paramMap.get("log-set-count")[0]);
 		LogSet ls;
-		for (int i=1; i<=Integer.parseInt(paramMap.get("log-set-count")[0]); i++) {
-			ls = new LogSet(paramMap,i);
+		for (int i = 1; i <= Integer.parseInt(paramMap.get("log-set-count")[0]); i++) {
+			ls = new LogSet(paramMap, i);
 			ls.setProfileId(getProfileId());
 
-			log.fine("profile-"+i+": "+ls.getProfileId());
-			log.fine("log-set-id-"+i+": "+ls.getLogSetId());
-			log.fine("label-"+i+": "+ls.getLabel());
-			log.fine("hostname-"+i+": "+ls.getHostname());
-			log.fine("username-"+i+": "+ls.getUsername());
-			log.fine("pathname-"+i+": "+ls.getPathname());
-			
+			log.fine("profile-" + i + ": " + ls.getProfileId());
+			log.fine("log-set-id-" + i + ": " + ls.getLogSetId());
+			log.fine("label-" + i + ": " + ls.getLabel());
+			log.fine("hostname-" + i + ": " + ls.getHostname());
+			log.fine("username-" + i + ": " + ls.getUsername());
+			log.fine("pathname-" + i + ": " + ls.getPathname());
+
 			lsList.add(ls);
 		}
 		setLogSetList(lsList);
 	}
-	
-	/*public String get_activeFlag() {
-		return _activeFlag;
-	}
-	public void set_activeFlag(String activeFlag) {
-		this._activeFlag = activeFlag;
-	}*/
+
+	/*
+	 * public String get_activeFlag() { return _activeFlag; } public void
+	 * set_activeFlag(String activeFlag) { this._activeFlag = activeFlag; }
+	 */
 	public int getProfileId() {
 		return profileId;
 	}
 
 	public void setProfileId(int profileId) {
 		this.profileId = profileId;
-	}	
-	
+	}
+
 	public String getNode() {
 		return node;
 	}
@@ -147,7 +147,7 @@ public class Profile {
 	public List<LogSet> getLogSetList() {
 		return lsList;
 	}
-	
+
 	public List<LogSet> getNewLogSets() {
 		List<LogSet> newSetList = new ArrayList<LogSet>();
 		LogSet ls;
@@ -158,16 +158,16 @@ public class Profile {
 		}
 		return newSetList;
 	}
-	
+
 	public void setLogSetList(List<LogSet> logSetList) {
 		this.lsList = logSetList;
 	}
-	
+
 	public JsonObject toJson() {
-		JsonObject root=  new JsonObject();
+		JsonObject root = new JsonObject();
 		JsonArray jArray = new JsonArray();
-		
-		root.add("identifier",new JsonPrimitive(this.identifier));
+
+		root.add("identifier", new JsonPrimitive(this.identifier));
 		root.add("method", new JsonPrimitive(this.method));
 		root.add("name", new JsonPrimitive(this.name));
 		root.add("node", new JsonPrimitive(this.node));
@@ -177,8 +177,8 @@ public class Profile {
 			jArray.add(it.next().toJson());
 		}
 		root.add("logSets", jArray);
-		
+
 		return root;
 	}
-	
+
 }

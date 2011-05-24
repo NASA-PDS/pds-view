@@ -4,9 +4,7 @@ import static org.junit.Assert.fail;
 
 import java.util.logging.Logger;
 
-import gov.nasa.pds.report.update.launch.SawmillLauncher_old;
 import gov.nasa.pds.report.update.model.LogPath;
-import gov.nasa.pds.report.update.model.LogSet;
 import gov.nasa.pds.report.update.properties.EnvProperties;
 
 import org.junit.Ignore;

@@ -8,7 +8,6 @@
 
 package gov.nasa.pds.report.update.db;
 
-
 import gov.nasa.pds.report.update.model.LogSet;
 import gov.nasa.pds.report.update.model.Profile;
 
@@ -40,11 +39,13 @@ public class DBUtil extends DatabaseManager {
 
 	/**
 	 * Query the report service database for a specific profile by ID
+	 * 
 	 * @param profileId
 	 * @return Profile object
 	 * @throws SQLException
 	 */
-	public final Profile findByProfileId(final int profileId) throws SQLException {
+	public final Profile findByProfileId(final int profileId)
+			throws SQLException {
 		Statement stmt = null;
 		ResultSet rs = null;
 
@@ -52,25 +53,31 @@ public class DBUtil extends DatabaseManager {
 			Profile prof = null;
 			List<LogSet> liList = new ArrayList<LogSet>();
 
-			connect();			
+			connect();
 			stmt = this.conn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM profiles WHERE profile_id="+profileId+" AND active_flag='y'");
+			rs = stmt.executeQuery("SELECT * FROM profiles WHERE profile_id="
+					+ profileId + " AND active_flag='y'");
 			if (rs.next()) {
 				prof = new Profile(rs);
 
-				this.log.finer("PROFILE: "+String.valueOf(prof.getProfileId())+", "+prof.getNode()+", "+
-						prof.getIdentifier()+", "+prof.getName()+", "+prof.getMethod());
+				this.log.finer("PROFILE: "
+						+ String.valueOf(prof.getProfileId()) + ", "
+						+ prof.getNode() + ", " + prof.getIdentifier() + ", "
+						+ prof.getName() + ", " + prof.getMethod());
 			} else {
 				return null;
 			}
 
 			LogSet li;
-			rs = stmt.executeQuery("SELECT * FROM log_sets WHERE profile_id="+profileId+" AND active_flag='y'");
+			rs = stmt.executeQuery("SELECT * FROM log_sets WHERE profile_id="
+					+ profileId + " AND active_flag='y'");
 			while (rs.next()) {
 				li = new LogSet(rs);
 
-				this.log.finer("LOG INFO: "+String.valueOf(li.getProfileId())+", "+li.getHostname()+", "+
-						li.getUsername()+", "+li.getPassword()+", "+li.getPathname()+", "+li.getLogSetId());
+				this.log.finer("LOG INFO: " + String.valueOf(li.getProfileId())
+						+ ", " + li.getHostname() + ", " + li.getUsername()
+						+ ", " + li.getPassword() + ", " + li.getPathname()
+						+ ", " + li.getLogSetId());
 
 				liList.add(li);
 			}
@@ -85,14 +92,16 @@ public class DBUtil extends DatabaseManager {
 			closeConnect();
 		}
 	}
-	
+
 	/**
 	 * Query the report service database for a specific profile by ID
+	 * 
 	 * @param profileName
 	 * @return Profile object
 	 * @throws SQLException
 	 */
-	public final Profile findByProfileName(final String profileName) throws SQLException {
+	public final Profile findByProfileName(final String profileName)
+			throws SQLException {
 		Statement stmt = null;
 		ResultSet rs = null;
 
@@ -100,25 +109,31 @@ public class DBUtil extends DatabaseManager {
 			Profile prof = null;
 			List<LogSet> liList = new ArrayList<LogSet>();
 
-			connect();			
+			connect();
 			stmt = this.conn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM profiles WHERE name='"+profileName+"' AND active_flag='y'");
+			rs = stmt.executeQuery("SELECT * FROM profiles WHERE name='"
+					+ profileName + "' AND active_flag='y'");
 			if (rs.next()) {
 				prof = new Profile(rs);
 
-				this.log.finer("PROFILE: "+String.valueOf(prof.getProfileId())+", "+prof.getNode()+", "+
-						prof.getIdentifier()+", "+prof.getName()+", "+prof.getMethod());
+				this.log.finer("PROFILE: "
+						+ String.valueOf(prof.getProfileId()) + ", "
+						+ prof.getNode() + ", " + prof.getIdentifier() + ", "
+						+ prof.getName() + ", " + prof.getMethod());
 			} else {
 				return null;
 			}
 
 			LogSet li;
-			rs = stmt.executeQuery("SELECT * FROM log_sets WHERE profile_id="+prof.getProfileId()+" AND active_flag='y'");
+			rs = stmt.executeQuery("SELECT * FROM log_sets WHERE profile_id="
+					+ prof.getProfileId() + " AND active_flag='y'");
 			while (rs.next()) {
 				li = new LogSet(rs);
 
-				this.log.info("LOG INFO: "+String.valueOf(li.getProfileId())+", "+li.getHostname()+", "+
-						li.getUsername()+", "+li.getPassword()+", "+li.getPathname()+", "+li.getLogSetId());
+				this.log.info("LOG INFO: " + String.valueOf(li.getProfileId())
+						+ ", " + li.getHostname() + ", " + li.getUsername()
+						+ ", " + li.getPassword() + ", " + li.getPathname()
+						+ ", " + li.getLogSetId());
 
 				liList.add(li);
 			}
@@ -136,6 +151,7 @@ public class DBUtil extends DatabaseManager {
 
 	/**
 	 * Query the database for all active profiles
+	 * 
 	 * @return List&lt;Profile&gt;
 	 * @throws SQLException
 	 */
@@ -153,19 +169,27 @@ public class DBUtil extends DatabaseManager {
 
 			connect();
 			stmt1 = this.conn.createStatement();
-			rs1 = stmt1.executeQuery("SELECT * FROM profiles WHERE active_flag='y' ORDER BY name");
+			rs1 = stmt1
+					.executeQuery("SELECT * FROM profiles WHERE active_flag='y' ORDER BY name");
 			while (rs1.next()) {
 				prof = new Profile(rs1);
-				this.log.finer("PROFILE: "+String.valueOf(prof.getProfileId())+", "+prof.getNode()+", "+
-						prof.getIdentifier()+", "+prof.getName()+", "+prof.getMethod());
+				this.log.finer("PROFILE: "
+						+ String.valueOf(prof.getProfileId()) + ", "
+						+ prof.getNode() + ", " + prof.getIdentifier() + ", "
+						+ prof.getName() + ", " + prof.getMethod());
 
-				lsList=  new ArrayList<LogSet>();
+				lsList = new ArrayList<LogSet>();
 				stmt2 = this.conn.createStatement();
-				rs2 = stmt2.executeQuery("SELECT * FROM log_sets WHERE profile_id="+rs1.getInt("profile_id")+" AND active_flag='y'");
+				rs2 = stmt2
+						.executeQuery("SELECT * FROM log_sets WHERE profile_id="
+								+ rs1.getInt("profile_id")
+								+ " AND active_flag='y'");
 				while (rs2.next()) {
 					li = new LogSet(rs2);
-					this.log.finer("LOG INFO: "+String.valueOf(li.getProfileId())+", "+li.getHostname()+", "+
-							li.getUsername()+", "+li.getPassword()+", "+li.getPathname());
+					this.log.finer("LOG INFO: "
+							+ String.valueOf(li.getProfileId()) + ", "
+							+ li.getHostname() + ", " + li.getUsername() + ", "
+							+ li.getPassword() + ", " + li.getPathname());
 
 					lsList.add(li);
 				}
@@ -190,7 +214,8 @@ public class DBUtil extends DatabaseManager {
 	 */
 	public final void createNew(final Profile profile) throws SQLException {
 		insertProfile(profile);
-		for(Iterator<LogSet> it = profile.getLogSetList().iterator(); it.hasNext();) {
+		for (Iterator<LogSet> it = profile.getLogSetList().iterator(); it
+				.hasNext();) {
 			insertLogInfo(it.next());
 		}
 	}
@@ -201,11 +226,12 @@ public class DBUtil extends DatabaseManager {
 	 * @param profileId
 	 * @throws SQLException
 	 */
-	public final void update(final List<LogSet> lsList, final int profileId) throws SQLException {
+	public final void update(final List<LogSet> lsList, final int profileId)
+			throws SQLException {
 		LogSet ls;
 		this.profileId = profileId;
-		//updateProfile(profile);
-		for(Iterator<LogSet> it = lsList.iterator(); it.hasNext();) {
+		// updateProfile(profile);
+		for (Iterator<LogSet> it = lsList.iterator(); it.hasNext();) {
 			ls = it.next();
 			if (ls.getLogSetId() == 0) {
 				insertLogInfo(ls);
@@ -221,14 +247,13 @@ public class DBUtil extends DatabaseManager {
 	 * @throws SQLException
 	 */
 	public final void removeLogInfo(final int id) throws SQLException {
-		String sql = "UPDATE log_sets SET " +
-			"active_flag='n' "+
-			"WHERE log_set_id="+id;
+		String sql = "UPDATE log_sets SET " + "active_flag='n' "
+				+ "WHERE log_set_id=" + id;
 
 		this.log.fine(sql);
 		executeUpdate(sql);
 	}
-	
+
 	/**
 	 * 
 	 * @param profile
@@ -236,12 +261,14 @@ public class DBUtil extends DatabaseManager {
 	 */
 	public final void updateProfile(final Profile profile) throws SQLException {
 		this.profileId = profile.getProfileId();
-		String sql = "UPDATE profiles SET "
-				+ "node='" + profile.getNode() + "',"
-				+ "identifier='" + profile.getIdentifier() + "',"
-				+ "name='" + profile.getName() + "',"
-				+ "method='" + profile.getMethod() + "',"
-				+ "created_by='UNK' " // TODO change from default UNK
+		String sql = "UPDATE profiles SET " + "node='" + profile.getNode()
+				+ "'," + "identifier='" + profile.getIdentifier() + "',"
+				+ "name='" + profile.getName() + "'," + "method='"
+				+ profile.getMethod() + "'," + "created_by='UNK' " // TODO
+																	// change
+																	// from
+																	// default
+																	// UNK
 				+ "WHERE profile_id=" + this.profileId;
 
 		this.log.fine(sql);
@@ -254,15 +281,14 @@ public class DBUtil extends DatabaseManager {
 	 * @throws SQLException
 	 */
 	public final void updateLogInfo(final LogSet logSet) throws SQLException {
-		String sql = "UPDATE log_sets SET " +
-				"hostname='"+logSet.getHostname()+"'," +
-				"username='"+logSet.getUsername()+"'," +
-				"password='"+logSet.getPassword()+"'," +
-				"pathname='"+logSet.getPathname()+"'," +
-				"label='"+logSet.getLabel()+"'," +
-				"set_number="+logSet.getSetNumber()+"," +
-				"created_by='UNK' " + // TODO change from default UNK
-				"WHERE log_set_id="+logSet.getLogSetId();
+		String sql = "UPDATE log_sets SET " + "hostname='"
+				+ logSet.getHostname() + "'," + "username='"
+				+ logSet.getUsername() + "'," + "password='"
+				+ logSet.getPassword() + "'," + "pathname='"
+				+ logSet.getPathname() + "'," + "label='" + logSet.getLabel()
+				+ "'," + "set_number=" + logSet.getSetNumber() + ","
+				+ "created_by='UNK' " + // TODO change from default UNK
+				"WHERE log_set_id=" + logSet.getLogSetId();
 
 		this.log.fine(sql);
 		executeUpdate(sql);
@@ -274,12 +300,20 @@ public class DBUtil extends DatabaseManager {
 	 * @throws SQLException
 	 */
 	public final void insertProfile(final Profile profile) throws SQLException {
-		String sql = "INSERT INTO profiles ( node, identifier, name, method, created_by)"+
-					"values ('"+profile.getNode()+"',"+
-					"'"+profile.getIdentifier()+"',"+
-					"'"+profile.getName()+"',"+
-					"'"+profile.getMethod()+"',"+
-					"'UNK')"; // TODO change from default UNK
+		String sql = "INSERT INTO profiles ( node, identifier, name, method, created_by)"
+				+ "values ('"
+				+ profile.getNode()
+				+ "',"
+				+ "'"
+				+ profile.getIdentifier()
+				+ "',"
+				+ "'"
+				+ profile.getName()
+				+ "'," + "'" + profile.getMethod() + "'," + "'UNK')"; // TODO
+																		// change
+																		// from
+																		// default
+																		// UNK
 
 		this.profileId = executeUpdate(sql);
 	}
@@ -291,14 +325,27 @@ public class DBUtil extends DatabaseManager {
 	 */
 	public final void insertLogInfo(final LogSet logSet) throws SQLException {
 		String sql = "INSERT INTO log_sets ( profile_id, hostname, username, password, pathname, label, set_number, created_by"
-		+ ") values (" + this.profileId + ","
-			+ "'" + logSet.getHostname() + "',"
-			+ "'" + logSet.getUsername() + "',"
-			+ "'" + logSet.getPassword() + "',"
-			+ "'" + logSet.getPathname() + "',"
-			+ "'" + logSet.getLabel() + "',"
-			+ "" + logSet.getSetNumber() + ","
-			+ "'UNK')"; // TODO change from default UNK
+				+ ") values ("
+				+ this.profileId
+				+ ","
+				+ "'"
+				+ logSet.getHostname()
+				+ "',"
+				+ "'"
+				+ logSet.getUsername()
+				+ "',"
+				+ "'"
+				+ logSet.getPassword()
+				+ "',"
+				+ "'"
+				+ logSet.getPathname()
+				+ "',"
+				+ "'"
+				+ logSet.getLabel()
+				+ "',"
+				+ "" + logSet.getSetNumber() + "," + "'UNK')"; // TODO change
+																// from default
+																// UNK
 
 		executeUpdate(sql);
 	}

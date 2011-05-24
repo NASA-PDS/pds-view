@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 public class DatabaseManager {
 
 	protected Connection conn;
-	//private String qString;
+	// private String qString;
 	protected DBProperties dbProps;
 	protected Logger log = Logger.getLogger(this.getClass().getName());
 
@@ -60,15 +60,13 @@ public class DatabaseManager {
 	protected void connect() throws SQLException {
 		try {
 			Class.forName(this.dbProps.getDriver());
-			this.conn = DriverManager.getConnection(
-					this.dbProps.getUrl(), 
-					this.dbProps.getUsername(), 
-					this.dbProps.getPassword());
+			this.conn = DriverManager.getConnection(this.dbProps.getUrl(),
+					this.dbProps.getUsername(), this.dbProps.getPassword());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param sql

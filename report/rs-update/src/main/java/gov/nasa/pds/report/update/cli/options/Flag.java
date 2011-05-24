@@ -17,169 +17,190 @@ import org.apache.commons.cli.Options;
 
 /**
  * Class that holds the command-line option flags.
- *
+ * 
  * @author jpadams
- *
+ * 
  */
 public enum Flag {
-    /** Flag to display the help. */
-    HELP("h", "help", "Display usage."),
+	/** Flag to display the help. */
+	HELP("h", "help", "Display usage."),
 
-    /** Flag to output the logging to a file. */
-    LOG("l", "log-file", "file name", String.class,
-            "Specify a log file name. Default is standard out."),
+	/** Flag to output the logging to a file. */
+	/*LOG("l", "log-file", "file name", String.class,
+			"Specify a log file name. Default is standard out."),*/
 
-    /** Flag for the path where environment and database properties files are located. */
-    PROPERTIES("p", "properties-home", "file path", String.class,
-            "Specify the directory path where the *.properties files are located. Default location is ../conf/ ."),
-    
-    /** Flag for the name of a specific profile to update. */
-    PROFILE_NAME("n", "profile-name", "profile name", String.class,
-    		"Specify the name of a specific profile to update."),
+	/**
+	 * Flag for the path where environment and database properties files are
+	 * located.
+	 */
+	PROPERTIES("p", "properties-home", "file path", String.class,
+			"Specify the directory path where the *.properties files are located. Default location is ../conf/ ."),
 
-    /** Flag to only transfer the logs and not update the Sawmill profile. */
-    SAWMILL_OFF("s", "sawmill-off", "Specify flag to turn off updating the Sawmill DB after downloading the remote logs.  Default = ON");
+	/** Flag for the name of a specific profile to update. */
+	PROFILE_NAME("n", "profile-name", "profile name", String.class,
+			"Specify the name of a specific profile to update."),
 
-    /** The short name of the flag. */
-    private final String shortName;
+	/** Flag to only transfer the logs and not update the Sawmill profile. */
+	SAWMILL_OFF("s", "sawmill-off",
+			"Specify flag to turn off updating the Sawmill DB after downloading the remote logs.  Default = ON"),
+	
+	/** Flag to only transfer the logs and not update the Sawmill profile. */
+	TRANSFER_OFF("t", "transfer-off",
+			"Specify flag to turn off the downloading of remote logs.  Default = ON");
 
-    /** The long name of the flag. */
-    private final String longName;
+	/** The short name of the flag. */
+	private final String shortName;
 
-    /** An argument name for the flag, if it accepts argument values. */
-    private final String argName;
+	/** The long name of the flag. */
+	private final String longName;
 
-    /** The type of argument values the flag accepts. */
-    private final Object argType;
+	/** An argument name for the flag, if it accepts argument values. */
+	private final String argName;
 
-    /** A boolean value indicating if the flag accepts more than one
-     * argument.
-     */
-    private final boolean allowsMultipleArgs;
+	/** The type of argument values the flag accepts. */
+	private final Object argType;
 
-    /** The flag description. */
-    private final String description;
+	/**
+	 * A boolean value indicating if the flag accepts more than one argument.
+	 */
+	private final boolean allowsMultipleArgs;
 
-    /** A list of Option objects for command-line processing. */
-    private static Options options;
+	/** The flag description. */
+	private final String description;
 
-    /**
-     * Constructor.
-     *
-     * @param shortName The short name.
-     * @param longName The long name.
-     * @param description A description of the flag.
-     */
-    private Flag(final String shortName, final String longName,
-            final String description) {
-        this(shortName, longName, null, null, description);
-    }
+	/** A list of Option objects for command-line processing. */
+	private static Options options;
 
-    /**
-     * Constructor for flags that can take arguments.
-     *
-     * @param shortName The short name.
-     * @param longName The long name.
-     * @param argName The argument name.
-     * @param argType The argument type.
-     * @param description A description of the flag.
-     */
-    private Flag(final String shortName, final String longName,
-            final String argName, final Object argType,
-            final String description) {
-        this(shortName, longName, argName, argType, false, description);
-    }
+	/**
+	 * Constructor.
+	 * 
+	 * @param shortName
+	 *            The short name.
+	 * @param longName
+	 *            The long name.
+	 * @param description
+	 *            A description of the flag.
+	 */
+	private Flag(final String shortName, final String longName,
+			final String description) {
+		this(shortName, longName, null, null, description);
+	}
 
-    /**
-     * Constructor for flags that can take arguments.
-     *
-     * @param shortName The short name.
-     * @param longName The long name.
-     * @param argName The argument name.
-     * @param argType The argument type.
-     * @param description A description of the flag.
-     */
-    private Flag(final String shortName, final String longName,
-            final String argName, final Object argType,
-            final boolean allowsMultipleArgs, final String description) {
-        this.shortName = shortName;
-        this.longName = longName;
-        this.argName = argName;
-        this.argType = argType;
-        this.allowsMultipleArgs = allowsMultipleArgs;
-        this.description = description;
-    }
+	/**
+	 * Constructor for flags that can take arguments.
+	 * 
+	 * @param shortName
+	 *            The short name.
+	 * @param longName
+	 *            The long name.
+	 * @param argName
+	 *            The argument name.
+	 * @param argType
+	 *            The argument type.
+	 * @param description
+	 *            A description of the flag.
+	 */
+	private Flag(final String shortName, final String longName,
+			final String argName, final Object argType, final String description) {
+		this(shortName, longName, argName, argType, false, description);
+	}
 
-    /**
-     * Get the short name of the flag.
-     *
-     * @return The short name.
-     */
-    public String getShortName() {
-        return shortName;
-    }
+	/**
+	 * Constructor for flags that can take arguments.
+	 * 
+	 * @param shortName
+	 *            The short name.
+	 * @param longName
+	 *            The long name.
+	 * @param argName
+	 *            The argument name.
+	 * @param argType
+	 *            The argument type.
+	 * @param description
+	 *            A description of the flag.
+	 */
+	private Flag(final String shortName, final String longName,
+			final String argName, final Object argType,
+			final boolean allowsMultipleArgs, final String description) {
+		this.shortName = shortName;
+		this.longName = longName;
+		this.argName = argName;
+		this.argType = argType;
+		this.allowsMultipleArgs = allowsMultipleArgs;
+		this.description = description;
+	}
 
-    /**
-     * Get the long name of the flag.
-     *
-     * @return The long name.
-     */
-    public String getLongName() {
-        return longName;
-    }
+	/**
+	 * Get the short name of the flag.
+	 * 
+	 * @return The short name.
+	 */
+	public String getShortName() {
+		return shortName;
+	}
 
-    /**
-     * Get the argument name of the flag.
-     *
-     * @return The argument name.
-     */
-    public String getArgName() {
-        return argName;
-    }
+	/**
+	 * Get the long name of the flag.
+	 * 
+	 * @return The long name.
+	 */
+	public String getLongName() {
+		return longName;
+	}
 
-    /**
-     * Find out if the flag can handle multiple arguments.
-     *
-     * @return 'true' if yes.
-     */
-    public boolean allowsMultipleArgs() {
-        return allowsMultipleArgs;
-    }
+	/**
+	 * Get the argument name of the flag.
+	 * 
+	 * @return The argument name.
+	 */
+	public String getArgName() {
+		return argName;
+	}
 
-    /**
-     * Get the argument type of the flag.
-     *
-     * @return The argument type.
-     */
-    public Object getArgType() {
-        return argType;
-    }
+	/**
+	 * Find out if the flag can handle multiple arguments.
+	 * 
+	 * @return 'true' if yes.
+	 */
+	public boolean allowsMultipleArgs() {
+		return allowsMultipleArgs;
+	}
 
-    /**
-     * Get the flag description.
-     *
-     * @return The description.
-     */
-    public String getDescription() {
-        return description;
-    }
+	/**
+	 * Get the argument type of the flag.
+	 * 
+	 * @return The argument type.
+	 */
+	public Object getArgType() {
+		return argType;
+	}
 
-    static {
-        options = new Options();
+	/**
+	 * Get the flag description.
+	 * 
+	 * @return The description.
+	 */
+	public String getDescription() {
+		return description;
+	}
 
-        options.addOption(new ToolsOption(HELP));
-        options.addOption(new ToolsOption(LOG));
-        options.addOption(new ToolsOption(PROPERTIES));
-        options.addOption(new ToolsOption(PROFILE_NAME));
-        options.addOption(new ToolsOption(SAWMILL_OFF));
-    }
+	static {
+		options = new Options();
 
-    /**
-     * Get the command-line options.
-     *
-     * @return A class representation of the command-line options.
-     */
-    public static Options getOptions() {
-        return options;
-    }
+		options.addOption(new ToolsOption(HELP));
+		//options.addOption(new ToolsOption(LOG));
+		options.addOption(new ToolsOption(PROPERTIES));
+		options.addOption(new ToolsOption(PROFILE_NAME));
+		options.addOption(new ToolsOption(SAWMILL_OFF));
+		options.addOption(new ToolsOption(TRANSFER_OFF));
+	}
+
+	/**
+	 * Get the command-line options.
+	 * 
+	 * @return A class representation of the command-line options.
+	 */
+	public static Options getOptions() {
+		return options;
+	}
 }
