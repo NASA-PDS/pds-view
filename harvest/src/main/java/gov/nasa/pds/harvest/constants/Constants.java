@@ -25,9 +25,6 @@ import java.util.Map;
  *
  */
 public class Constants {
-  /** The PDS namespace. */
-  public static final String PDS_NAMESPACE =
-    "http://pds.nasa.gov/schema/pds4/pds";
 
   public static final String BUNDLE = "Bundle";
 
@@ -73,7 +70,7 @@ public class Constants {
     coreXpathsMap.put(REFERENCES,
             "//*[ends-with(name(),'Member_Entry')]"
             + " | //*[ends-with(name(),'Reference_Entry')] | "
-            + "//Reference_Entry_Generic");
+            + "//*[starts-with(name(), 'Reference_Entry')]");
   }
 
   /** Mapping of PDS3 to PDS4 names */

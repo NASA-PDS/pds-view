@@ -13,6 +13,7 @@
 // $Id: PDSMetExtractorConfig.java 8162 2010-11-10 22:05:09Z mcayanan $
 package gov.nasa.pds.harvest.crawler.metadata.extractor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import gov.nasa.jpl.oodt.cas.metadata.MetExtractorConfig;
@@ -54,7 +55,7 @@ public class Pds4MetExtractorConfig implements MetExtractorConfig {
                 return p.getXPath();
             }
         }
-        return null;
+        return new ArrayList<String>();
     }
 
     /**

@@ -40,11 +40,11 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.provider.JAXBContextResolver;
-import gov.nasa.pds.registry.provider.JSONContextResolver;
+import gov.nasa.pds.registry.provider.JacksonObjectMapperProvider;
 import gov.nasa.pds.registry.query.AssociationFilter;
-import gov.nasa.pds.registry.query.AssociationQuery;
-import gov.nasa.pds.registry.query.ExtrinsicQuery;
+import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.ObjectFilter;
+import gov.nasa.pds.registry.query.RegistryQuery;
 
 public class RegistryClient {
   private WebResource registryResource;
@@ -59,7 +59,7 @@ public class RegistryClient {
   public RegistryClient(String baseUrl, String user, String password)
   throws RegistryClientException {
     ClientConfig clientConfig = new DefaultClientConfig();
-    clientConfig.getClasses().add(JSONContextResolver.class);
+    clientConfig.getClasses().add(JacksonObjectMapperProvider.class);
     clientConfig.getClasses().add(JAXBContextResolver.class);
     //With the current setup of the Security Service, we need to set up
     //an insecure SSL connection.
@@ -187,13 +187,8 @@ public class RegistryClient {
     return builder.accept(mediaType).post(ClientResponse.class, association);
   }
 
-  public ClientResponse getExtrinsics(Integer start, Integer rows) {
-    return this
-        .getExtrinsics(new ExtrinsicQuery.Builder().build(), start, rows);
-  }
-
-  public ClientResponse getExtrinsics(ExtrinsicQuery query, Integer start,
-      Integer rows) {
+  public ClientResponse getExtrinsics(RegistryQuery<ExtrinsicFilter> query,
+      Integer start, Integer rows) {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     if (start != null) {
       params.add("start", start.toString());
@@ -219,9 +214,6 @@ public class RegistryClient {
       if (filter.getStatus() != null) {
         params.add("status", filter.getStatus().toString());
       }
-      if (filter.getVersionId() != null) {
-        params.add("versionId", filter.getVersionId());
-      }
       if (filter.getVersionName() != null) {
         params.add("versionName", filter.getVersionName());
       }
@@ -240,8 +232,8 @@ public class RegistryClient {
     return builder.accept(mediaType).get(ClientResponse.class);
   }
 
-  public ClientResponse getAssociations(AssociationQuery query, Integer start,
-      Integer rows) {
+  public ClientResponse getAssociations(RegistryQuery<AssociationFilter> query,
+      Integer start, Integer rows) {
     MultivaluedMap<String, String> params = new MultivaluedMapImpl();
     if (start != null) {
       params.add("start", start.toString());

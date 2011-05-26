@@ -27,7 +27,6 @@ import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds4MetExtractorConfig;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.policy.Candidate;
 import gov.nasa.pds.harvest.policy.Collection;
-import gov.nasa.pds.harvest.registry.RegistryClientException;
 import gov.nasa.pds.harvest.security.SecuredUser;
 import gov.nasa.pds.harvest.target.Target;
 import gov.nasa.pds.harvest.target.Type;
@@ -147,8 +146,7 @@ public class Harvester {
      * @return A list of default crawler actions.
      * @throws RegistryClientException
      */
-    private List<CrawlerAction> getDefaultCrawlerActions()
-    throws RegistryClientException {
+    private List<CrawlerAction> getDefaultCrawlerActions() {
         List<CrawlerAction> ca = new ArrayList<CrawlerAction>();
         ca.add(new RegistryUniquenessCheckerAction(registryUrl,
                 this.ingester));
@@ -180,7 +178,7 @@ public class Harvester {
      * @throws RegistryClientException
      */
     public void harvest(Target target) throws MalformedURLException,
-    ParserConfigurationException, RegistryClientException {
+    ParserConfigurationException {
         harvest(target, new ArrayList<String>());
     }
 
@@ -199,8 +197,7 @@ public class Harvester {
      *
      */
     public void harvest(Target target, List<String> fileFilters)
-    throws ParserConfigurationException, MalformedURLException,
-    RegistryClientException {
+    throws ParserConfigurationException, MalformedURLException {
         PDSProductCrawler crawler = null;
         if (Type.COLLECTION.equals(target.getType())) {
           crawler = new CollectionCrawler(pds4MetExtractorConfig);

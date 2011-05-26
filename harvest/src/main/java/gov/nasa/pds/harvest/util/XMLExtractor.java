@@ -13,8 +13,6 @@
 // $Id$
 package gov.nasa.pds.harvest.util;
 
-import gov.nasa.pds.harvest.constants.Constants;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +41,7 @@ public class XMLExtractor {
     private XPathEvaluator xpath = null;
 
     /** Default namespace uri */
-    private static String defaultNamespaceUri = Constants.PDS_NAMESPACE;
+    private static String defaultNamespaceUri = "";
 
     /** Namespace Context */
     private static PDSNamespaceContext namespaceContext = null;
@@ -97,6 +95,15 @@ public class XMLExtractor {
     public static void setDefaultNamespace(String uri) {
         //xpath.getStaticContext().setDefaultElementNamespace(uri);
         defaultNamespaceUri = uri;
+    }
+
+    /**
+     * Get the default namespace URI.
+     *
+     * @return The namespace.
+     */
+    public static String getDefaultNamespace() {
+      return defaultNamespaceUri;
     }
 
     /**

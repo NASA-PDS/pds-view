@@ -121,21 +121,8 @@ public class Pds4MetExtractor implements MetExtractor {
                     "No associations found.", product));
         }
         if ((!"".equals(objectType)) && (config.hasObjectType(objectType))) {
-            List<String> metXPaths = new ArrayList<String>();
-            metXPaths.addAll(config.getMetXPaths(objectType));
-            for (String xpath : metXPaths) {
-                try {
-                    List<TinyElementImpl> list =
-                        extractor.getNodesFromDoc(xpath);
-                    for (int i = 0; i < list.size(); i++) {
-                        metadata.addMetadata(list.get(i).getDisplayName(),
-                                extractor.getValuesFromDoc(xpath));
-                    }
-                } catch (Exception xe) {
-                    throw new MetExtractionException("Bad XPath Expression: "
-                            + xpath);
-                }
-            }
+          metadata.addMetadata(extractMetadata(config.getMetXPaths(objectType))
+              .getHashtable());
         }
         try {
             List<ReferenceEntry> refEntries = getReferences(references,
@@ -145,6 +132,33 @@ public class Pds4MetExtractor implements MetExtractor {
             throw new MetExtractionException(e.getMessage());
         }
         return metadata;
+    }
+
+    /**
+     * Extracts metadata
+     *
+     * @param xPaths A list of xpath expressions.
+     *
+     * @return A metadata object containing the extracted metadata.
+     *
+     * @throws MetExtractionException If a bad xPath expression was
+     *  encountered.
+     */
+    protected Metadata extractMetadata(List<String> xPaths)
+    throws MetExtractionException {
+      Metadata metadata = new Metadata();
+      for (String xpath : xPaths) {
+        try {
+          List<TinyElementImpl> list = extractor.getNodesFromDoc(xpath);
+          for (int i = 0; i < list.size(); i++) {
+            metadata.addMetadata(list.get(i).getDisplayName(),
+                extractor.getValuesFromDoc(xpath));
+          }
+        } catch (Exception xe) {
+          throw new MetExtractionException("Bad XPath Expression: " + xpath);
+        }
+      }
+      return metadata;
     }
 
     /**

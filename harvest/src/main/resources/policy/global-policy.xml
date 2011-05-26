@@ -3,71 +3,123 @@
    <candidates>
      <namespace prefix="pds" uri="http://pds.nasa.gov/schema/pds4/pds" default="true"/>
      <productMetadata objectType="Collection_Browse">
+        <xPath>//Data_Standards/dd_version_id</xPath>
+        <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//product_subclass</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
      </productMetadata>
      <productMetadata objectType="Collection_Calibration">
+        <xPath>//Data_Standards/dd_version_id</xPath>
+        <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//product_subclass</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
      </productMetadata>
      <productMetadata objectType="Collection_Context">
+        <xPath>//Data_Standards/dd_version_id</xPath>
+        <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//product_subclass</xPath>
+        <xPath>//Identification_Area_Collection/type</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
+        <xPath>//File_Area_Inventory_LIDVID/File/local_identifier</xPath>
+        <xPath>//File_Area_Inventory_LIDVID/File/creation_date_time</xPath>
+        <xPath>//File_Area_Inventory_LIDVID/File/file_name</xPath>
+        <xPath>//File_Area_Inventory_LIDVID/File/file_size</xPath>
+        <xPath>//File_Area_Inventory_LIDVID/File/md5_checksum</xPath>
+        <xPath>//File_Area_Inventory_LIDVID/File/records</xPath>
+        <xPath>//File_Area_Inventory_LIDVID/Inventory_LIDVID/local_identifier</xPath>
+        <xPath>//File_Area_Inventory_LIDVID/Inventory_LIDVID/encoding_type</xPath>
+        <xPath>//File_Area_Inventory_LIDVID/Inventory_LIDVID/fields</xPath>
+        <xPath>//File_Area_Inventory_LIDVID/Inventory_LIDVID/record_bytes</xPath>
+        <xPath>//File_Area_Inventory_LIDVID/Inventory_LIDVID/records</xPath>
+        <xPath>//File_Area_Inventory_LIDVID/Inventory_LIDVID/reference_association_type</xPath>
+        <xPath>//Table_Record_Inventory_LIDVID/Table_Field_LIDVID/field_name</xPath>
+        <xPath>//Table_Record_Inventory_LIDVID/Table_Field_LIDVID/field_number</xPath>
+        <xPath>//Table_Record_Inventory_LIDVID/Table_Field_LIDVID/field_data_type</xPath>
+        <xPath>//Table_Record_Inventory_LIDVID/Table_Field_LIDVID/field_location</xPath>
+        <xPath>//Table_Record_Inventory_LIDVID/Table_Field_LIDVID/field_length</xPath>
+        <xPath>//Table_Record_Inventory_LIDVID/Table_Field_LIDVID/field_description</xPath>
+        <xPath>//Table_Record_Inventory_LIDVID/Table_Field_File_Specification_Name/field_name</xPath>
+        <xPath>//Table_Record_Inventory_LIDVID/Table_Field_File_Specification_Name/field_number</xPath>
+        <xPath>//Table_Record_Inventory_LIDVID/Table_Field_File_Specification_Name/field_data_type</xPath>
+        <xPath>//Table_Record_Inventory_LIDVID/Table_Field_File_Specification_Name/field_location</xPath>
+        <xPath>//Table_Record_Inventory_LIDVID/Table_Field_File_Specification_Name/field_description</xPath>
      </productMetadata>
      <productMetadata objectType="Collection_Data">
+        <xPath>//Data_Standards/dd_version_id</xPath>
+        <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//product_subclass</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
      </productMetadata>
      <productMetadata objectType="Collection_Document">
+        <xPath>//Data_Standards/dd_version_id</xPath>
+        <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//product_subclass</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
      </productMetadata>
      <productMetadata objectType="Collection_Generic">
+        <xPath>//Data_Standards/dd_version_id</xPath>
+        <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//product_subclass</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
      </productMetadata>
      <productMetadata objectType="Collection_Geometry">
+        <xPath>//Data_Standards/dd_version_id</xPath>
+        <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//product_subclass</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
      </productMetadata>
      <productMetadata objectType="Collection_Miscellaneous">
+        <xPath>//Data_Standards/dd_version_id</xPath>
+        <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//product_subclass</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
      </productMetadata>
      <productMetadata objectType="Collection_Secondary">
+        <xPath>//Data_Standards/dd_version_id</xPath>
+        <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//product_subclass</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
      </productMetadata>
      <productMetadata objectType="Collection_SPICE">
+        <xPath>//Data_Standards/dd_version_id</xPath>
+        <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//product_subclass</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
      </productMetadata>
      <productMetadata objectType="Collection_XML_Schema">
+        <xPath>//Data_Standards/dd_version_id</xPath>
+        <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//product_subclass</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
      </productMetadata>
      <productMetadata objectType="Collection_Volume_PDS3">
+        <xPath>//Data_Standards/dd_version_id</xPath>
+        <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//product_subclass</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
      </productMetadata>
      <productMetadata objectType="Collection_Volume_Set_PDS3">
+        <xPath>//Data_Standards/dd_version_id</xPath>
+        <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//product_subclass</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//is_primary_collection</xPath>
      </productMetadata>
      <productMetadata objectType="Product_Bundle">
+        <xPath>//Data_Standards/dd_version_id</xPath>
+        <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//last_modification_date_time</xPath>
         <xPath>//product_subclass</xPath>
      </productMetadata>

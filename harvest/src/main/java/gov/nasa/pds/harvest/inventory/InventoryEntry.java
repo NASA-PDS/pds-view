@@ -31,6 +31,13 @@ public class InventoryEntry {
     /** A logical identifier. */
     private String lidvid;
 
+    /** Default constructor */
+    public InventoryEntry() {
+        this.file = null;
+        this.checksum = "";
+        this.lidvid = "";
+    }
+
     /**
      * Constructor.
      *
@@ -69,5 +76,19 @@ public class InventoryEntry {
      */
     public String getLidvid() {
         return lidvid;
+    }
+
+    /**
+     * Determines whether the object is empty.
+     *
+     * @return true if the object is empty, false otherwise.
+     */
+    public boolean isEmpty() {
+        if (this.file == null && this.checksum.isEmpty()
+            && this.lidvid.isEmpty()) {
+          return true;
+        } else {
+          return false;
+        }
     }
 }

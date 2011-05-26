@@ -21,6 +21,7 @@ import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -98,22 +99,9 @@ public class BundleMetExtractor extends Pds4MetExtractor {
             log.log(new ToolsLogRecord(ToolsLevel.INFO,
                     "No associations found.", product));
         }
-        if (!"".equals(objectType)) {
-            String xpath = "";
-            try {
-                xpath = Constants.IDENTIFICATION_AREA_XPATH + "/*";
-                List<TinyElementImpl> list = extractor.getNodesFromDoc(xpath);
-                for (int i = 0; i < list.size(); i++) {
-                    TinyElementImpl node = list.get(i);
-                    if (!metadata.containsKey(node.getLocalPart())) {
-                        metadata.addMetadata(node.getDisplayName(),
-                            node.getStringValue());
-                    }
-                }
-            } catch (Exception xe) {
-                throw new MetExtractionException("Bad XPath Expression: "
-                        + xpath);
-            }
+        if ((!"".equals(objectType)) && (config.hasObjectType(objectType))) {
+          metadata.addMetadata(extractMetadata(config.getMetXPaths(objectType))
+              .getHashtable());
         }
         try {
             List<ReferenceEntry> refEntries = getReferences(references,

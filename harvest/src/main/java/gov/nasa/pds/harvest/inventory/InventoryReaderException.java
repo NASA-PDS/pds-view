@@ -24,11 +24,45 @@ public class InventoryReaderException extends Exception {
    private static final long serialVersionUID = 4687976349704354553L;
 
    /**
+    * Holds the exception object.
+    */
+   private Exception exception;
+
+   /** line number where the exception occurred. */
+   private int lineNumber;
+
+   /**
     * Constructor.
     *
-    * @param message An exception message.
+    * @param exception An exception.
     */
-   public InventoryReaderException(String message) {
-       super(message);
+   public InventoryReaderException(Exception exception) {
+       super(exception.getMessage());
+       this.exception = exception;
+       lineNumber = -1;
+   }
+
+   /**
+    * @return Returns the exception.
+    */
+   public Exception getException() {
+     return exception;
+   }
+
+   /**
+    * @return Returns the line number associated with the exception.
+    * Could be -1 if it was not set.
+    */
+   public int getLineNumber() {
+     return lineNumber;
+   }
+
+   /**
+    * Sets the line number.
+    *
+    * @param line An integer value.
+    */
+   public void setLineNumber(int line) {
+     lineNumber = line;
    }
 }

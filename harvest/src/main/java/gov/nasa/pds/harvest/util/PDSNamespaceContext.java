@@ -72,7 +72,7 @@ public class PDSNamespaceContext implements NamespaceContext {
     @Override
     public String getNamespaceURI(String prefix) {
         if (prefix == null || "".equals(prefix)) {
-            return namespaces.get("pds");
+            return "";
         } else {
             return namespaces.get(prefix);
         }

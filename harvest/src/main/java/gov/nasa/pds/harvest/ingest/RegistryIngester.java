@@ -16,6 +16,7 @@ package gov.nasa.pds.harvest.ingest;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -23,8 +24,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.ClientResponse.Status;
+import javax.ws.rs.core.Response.Status;
 
 import gov.nasa.jpl.oodt.cas.filemgr.ingest.Ingester;
 import gov.nasa.jpl.oodt.cas.filemgr.structs.exceptions.CatalogException;
@@ -34,10 +34,13 @@ import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
-import gov.nasa.pds.harvest.registry.RegistryClient;
-import gov.nasa.pds.harvest.registry.RegistryClientException;
+import gov.nasa.pds.registry.client.RegistryClient;
+import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
+import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.Slot;
+import gov.nasa.pds.registry.query.ExtrinsicFilter;
+import gov.nasa.pds.registry.query.RegistryQuery;
 
 /**
  * Class that supports ingestion of PDS4 products into the PDS registry.
@@ -50,8 +53,8 @@ public class RegistryIngester implements Ingester {
   private static Logger log = Logger.getLogger(
       RegistryIngester.class.getName());
 
-  /** A security token. */
-  private String token;
+  /** Password of the authorized user. */
+  private String password;
 
   /** Username of the authorized user. */
   private String user;
@@ -72,8 +75,8 @@ public class RegistryIngester implements Ingester {
     * @param token The security token that allows the authorized user to
     * ingest products into the registry.
     */
-  public RegistryIngester(String user, String token) {
-    this.token = token;
+  public RegistryIngester(String user, String password) {
+    this.password = password;
     this.user = user;
   }
 
@@ -94,24 +97,22 @@ public class RegistryIngester implements Ingester {
    * @param productID The PDS4 logical identifier.
    *
    * @return 'true' if the logical identifier was found in the registry.
+   * 'false' otherwise.
    *
-   * @throws CatalogException If an error occurred while talking to the
-   * ingester.
+   * @throws CatalogException exception ignored.
    */
   public boolean hasProduct(URL registry, String productID)
   throws CatalogException {
     try {
       RegistryClient client = new RegistryClient(registry.toString(), user,
-          token);
-      ClientResponse response = client.getLatestExtrinsic(productID);
-      if (response.getStatus() == Status.OK.getStatusCode()) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (RegistryClientException re) {
-      throw new CatalogException(re.getMessage());
+          password);
+      ExtrinsicObject extrinsic = client.getLatestObject(productID,
+          ExtrinsicObject.class);
+      return true;
+    } catch (RegistryServiceException re) {
+      // Do nothing
     }
+    return false;
   }
 
   /**
@@ -129,19 +130,31 @@ public class RegistryIngester implements Ingester {
    */
   public boolean hasProduct(URL registry, String productID,
           String productVersion) throws CatalogException {
+    RegistryClient client = new RegistryClient(registry.toString(), user,
+        password);
+    ExtrinsicFilter filter = new ExtrinsicFilter.Builder().lid(productID)
+    .build();
+    RegistryQuery<ExtrinsicFilter> query = new RegistryQuery
+    .Builder<ExtrinsicFilter>().filter(filter).build();
     try {
-      RegistryClient client = new RegistryClient(registry.toString(), user,
-              token);
-      ClientResponse response = client.getExtrinsic(productID,
-              productVersion);
-      if (response.getStatus() == Status.OK.getStatusCode()) {
-          return true;
+      PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, null,
+          null);
+      if (pr.getNumFound() == 0) {
+        return false;
       } else {
-          return false;
+        for (ExtrinsicObject extrinsic : pr.getResults()) {
+          for (Slot slot : extrinsic.getSlots()) {
+            if (slot.getName().equals(Constants.PRODUCT_VERSION)
+                && slot.getValues().contains(productVersion)) {
+              return true;
+            }
+          }
+        }
       }
-    } catch (RegistryClientException re) {
-      throw new CatalogException(re.getMessage());
+    } catch (RegistryServiceException r) {
+      throw new CatalogException(r.getMessage());
     }
+    return false;
   }
 
   /**
@@ -157,42 +170,32 @@ public class RegistryIngester implements Ingester {
    */
   public String ingest(URL registry, File prodFile, Metadata met)
   throws IngestException {
-    try {
       RegistryClient client = new RegistryClient(registry.toString(), user,
-              token);
+              password);
       ExtrinsicObject product = createProduct(met);
-      ClientResponse response = null;
+      String guid = "";
       try {
         if (hasProduct(registry, product.getLid())) {
-          response = client.versionExtrinsic(user, product, product.getLid());
+          guid = client.versionObject(product);
         } else {
-          response = client.publishExtrinsic(user, product);
+          guid = client.publishObject(product);
         }
-      } catch (CatalogException c) {
-        throw new IngestException(c.getMessage());
-      }
-
-      if (response.getStatus() == Status.CREATED.getStatusCode()) {
-        String lid = met.getMetadata(Constants.LOGICAL_ID);
-        String vid = met.getMetadata(Constants.PRODUCT_VERSION);
-        String lidvid = lid + "::" + vid;
-        String guid = response.getEntity(String.class);
-        log.log(new ToolsLogRecord(ToolsLevel.INGEST_SUCCESS,
-                "Successfully registered product: " + lidvid, prodFile));
-        log.log(new ToolsLogRecord(ToolsLevel.INFO,
-                "Product has the following GUID: " + guid, prodFile));
-        met.addMetadata(Constants.PRODUCT_GUID, guid);
-        return response.getLocation().toString();
-      } else {
+      } catch (RegistryServiceException r) {
         log.log(new ToolsLogRecord(ToolsLevel.INGEST_FAIL,
-            "POST request returned HTTP code: "
-             + response.getStatus(), prodFile));
-        throw new IngestException("POST request returned HTTP code: "
-             + response.getStatus());
+            r.getMessage(), prodFile));
+        throw new IngestException(r.getMessage());
+      } catch (CatalogException c) {
+        //hasProduct throws this exception, but we can ignore it
       }
-    } catch (RegistryClientException re) {
-      throw new IngestException(re.getMessage());
-    }
+      String lid = met.getMetadata(Constants.LOGICAL_ID);
+      String vid = met.getMetadata(Constants.PRODUCT_VERSION);
+      String lidvid = lid + "::" + vid;
+      log.log(new ToolsLogRecord(ToolsLevel.INGEST_SUCCESS,
+          "Successfully registered product: " + lidvid, prodFile));
+      log.log(new ToolsLogRecord(ToolsLevel.INFO,
+          "Product has the following GUID: " + guid, prodFile));
+      met.addMetadata(Constants.PRODUCT_GUID, guid);
+      return guid;
   }
 
     /**
@@ -214,9 +217,6 @@ public class RegistryIngester implements Ingester {
       }
       if (key.equals(Constants.LOGICAL_ID)) {
         product.setLid(metadata.getMetadata(Constants.LOGICAL_ID));
-      } else if (key.equals(Constants.PRODUCT_VERSION)) {
-         product.setVersionId(metadata.getMetadata(
-             Constants.PRODUCT_VERSION));
       } else if (key.equals(Constants.OBJECT_TYPE)) {
          product.setObjectType(metadata.getMetadata(
              Constants.OBJECT_TYPE));

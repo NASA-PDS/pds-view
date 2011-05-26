@@ -39,21 +39,41 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.FilenameUtils;
 
+/**
+ * A class to extract metadata from a PDS3 data product label.
+ *
+ * @author mcayanan
+ *
+ */
 public class Pds3MetExtractor implements MetExtractor {
   /** Logger object. */
   private static Logger log = Logger.getLogger(
           Pds3MetExtractor.class.getName());
 
+  /** Holds the metadata extractor configuration. */
   private Pds3MetExtractorConfig config;
 
+  /** Label parser. */
   private DefaultLabelParser parser;
 
+  /**
+   * Constructor.
+   *
+   * @param config A configuration object for the metadata extractor.
+   */
   public Pds3MetExtractor(Pds3MetExtractorConfig config) {
     this.config = config;
     ManualPathResolver resolver = new ManualPathResolver();
     parser = new DefaultLabelParser(false, true, resolver);
   }
 
+  /**
+   * Extract the metadata from the given file.
+   *
+   * @param product The PDS3 label file.
+   *
+   * @return A metadata object containing the extracted metadata.
+   */
   public Metadata extractMetadata(File product)
   throws MetExtractionException {
     Metadata metadata = new Metadata();
