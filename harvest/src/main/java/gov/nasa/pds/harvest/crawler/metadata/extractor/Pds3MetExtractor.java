@@ -161,7 +161,23 @@ public class Pds3MetExtractor implements MetExtractor {
     List<ReferenceEntry> references = getReferences(config.getAssociations(),
         product);
     if (!references.isEmpty()) {
-      metadata.addMetadata(Constants.REFERENCES, references);
+      List<ReferenceEntry> lidVidEntries = new ArrayList<ReferenceEntry>();
+      // Search for LID-based associations and register them as slots
+      for (ReferenceEntry entry : references) {
+        if (!entry.hasVersion()) {
+          metadata.addMetadata(entry.getAssociationType(),
+              entry.getLogicalID());
+          log.log(new ToolsLogRecord(ToolsLevel.INFO, "Setting "
+              + "LID-based association, \'" + entry.getLogicalID()
+              + "\', under slot name \'" + entry.getAssociationType()
+              + "\'.", product));
+        } else {
+          lidVidEntries.add(entry);
+        }
+      }
+      if (!lidVidEntries.isEmpty()) {
+        metadata.addMetadata(Constants.REFERENCES, lidVidEntries);
+      }
     } else {
       log.log(new ToolsLogRecord(ToolsLevel.INFO,
           "No associations found.", product));
@@ -179,6 +195,8 @@ public class Pds3MetExtractor implements MetExtractor {
     }
     return metadata;
   }
+
+
 
   private List<ReferenceEntry> getReferences(List<Association> associations,
       File product) {

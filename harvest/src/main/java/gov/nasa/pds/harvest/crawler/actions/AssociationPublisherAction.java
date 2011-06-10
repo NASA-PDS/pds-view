@@ -220,41 +220,23 @@ public class AssociationPublisherAction extends CrawlerAction {
     association.setSourceObject(metadata.getMetadata(Constants.PRODUCT_GUID));
     association.setAssociationType(refEntry.getAssociationType());
     association.setObjectType(refEntry.getObjectType());
-    //In both cases, check to see if the target product is in the registry.
-    //If it isn't, then the target GUID will be the LID or LIDVID reference
+    //Check to see if the target product is in the registry.
+    //If it isn't, then the target GUID will be the LIDVID reference
     //of the target.
-    if (refEntry.hasVersion()) {
-      ExtrinsicObject target = getExtrinsic(refEntry.getLogicalID(),
-          refEntry.getVersion());
-      String lidvid = refEntry.getLogicalID() + "::" + refEntry.getVersion();
-      if (target != null) {
-        association.setTargetObject(target.getGuid());
-        log.log(new ToolsLogRecord(ToolsLevel.INFO, "Found registered "
-            + "product for LIDVID-based reference: " + lidvid, product));
-        verifiedFlag = true;
-      } else {
-        association.setTargetObject(lidvid);
-        log.log(new ToolsLogRecord(ToolsLevel.WARNING,
-            "Product not found in registry for LIDVID-based reference: "
-            + lidvid + ". LIDVID will be used as the target reference "
-            + "for the association.", product));
-        }
+    ExtrinsicObject target = getExtrinsic(refEntry.getLogicalID(),
+        refEntry.getVersion());
+    String lidvid = refEntry.getLogicalID() + "::" + refEntry.getVersion();
+    if (target != null) {
+      association.setTargetObject(target.getGuid());
+      log.log(new ToolsLogRecord(ToolsLevel.INFO, "Found registered "
+          + "product for reference: " + lidvid, product));
+      verifiedFlag = true;
     } else {
-      try {
-        ExtrinsicObject target = registryClient.getLatestObject(
-            refEntry.getLogicalID(), ExtrinsicObject.class);
-        association.setTargetObject(target.getGuid());
-        log.log(new ToolsLogRecord(ToolsLevel.INFO, "Found registered "
-            + "product for LID-based reference: " + refEntry.getLogicalID(),
-            product));
-        verifiedFlag = true;
-      } catch (RegistryServiceException r) {
-        log.log(new ToolsLogRecord(ToolsLevel.WARNING,
-            "Product not found in registry for the LID-based reference: "
-            + refEntry.getLogicalID() + ". LID will be used as the target "
-            + "reference for the association.", product));
-        association.setTargetObject(refEntry.getLogicalID());
-      }
+      association.setTargetObject(lidvid);
+      log.log(new ToolsLogRecord(ToolsLevel.WARNING,
+          "Product not found in registry for reference: "
+          + lidvid + ". LIDVID will be used as the target reference "
+          + "for the association.", product));
     }
     Set<Slot> slots = new HashSet<Slot>();
     slots.add(new Slot("verified", Arrays.asList(

@@ -34,82 +34,96 @@ import net.sf.saxon.tinytree.TinyElementImpl;
  *
  */
 public class BundleMetExtractor extends Pds4MetExtractor {
-    /** Logger object. */
-    private static Logger log = Logger.getLogger(
-            BundleMetExtractor.class.getName());
+  /** Logger object. */
+  private static Logger log = Logger.getLogger(
+      BundleMetExtractor.class.getName());
 
-    /**
-     * Constructor.
-     *
-     * @param config A configuration to do metadata extraction.
-     */
-    public BundleMetExtractor(Pds4MetExtractorConfig config) {
-        super(config);
-    }
+  /**
+   * Constructor.
+   *
+   * @param config A configuration to do metadata extraction.
+   */
+  public BundleMetExtractor(Pds4MetExtractorConfig config) {
+    super(config);
+  }
 
-    /**
-     * Extract the metadata.
-     *
-     * @param product A PDS4 collection file
-     * @return a class representation of the extracted metadata
-     *
-     */
-    public Metadata extractMetadata(File product)
-    throws MetExtractionException {
-        Metadata metadata = new Metadata();
-        String objectType = "";
-        String logicalID = "";
-        String version = "";
-        String title = "";
-        List<TinyElementImpl> references = null;
-        try {
-            extractor.parse(product);
-        } catch (Exception e) {
-            throw new MetExtractionException("Parse failure: "
-                    + e.getMessage());
-        }
-        try {
-            objectType = extractor.getValueFromDoc(
-                    Constants.coreXpathsMap.get(Constants.OBJECT_TYPE));
-            logicalID = extractor.getValueFromDoc(
-                    Constants.coreXpathsMap.get(Constants.LOGICAL_ID));
-            version = extractor.getValueFromDoc(
-                    Constants.coreXpathsMap.get(Constants.PRODUCT_VERSION));
-            title = extractor.getValueFromDoc(
-                    Constants.coreXpathsMap.get(Constants.TITLE));
-            references = extractor.getNodesFromDoc(
-                    Constants.coreXpathsMap.get(Constants.REFERENCES));
-        } catch (Exception x) {
-            //TODO: getMessage() doesn't always return a message
-            throw new MetExtractionException(x.getMessage());
-        }
-        if (!"".equals(logicalID)) {
-            metadata.addMetadata(Constants.LOGICAL_ID, logicalID);
-        }
-        if (!"".equals(version)) {
-            metadata.addMetadata(Constants.PRODUCT_VERSION, version);
-        }
-        if (!"".equals(title)) {
-            metadata.addMetadata(Constants.TITLE, title);
-        }
-        if (!"".equals(objectType)) {
-            metadata.addMetadata(Constants.OBJECT_TYPE, objectType);
-        }
-        if (references.size() == 0) {
-            log.log(new ToolsLogRecord(ToolsLevel.INFO,
-                    "No associations found.", product));
-        }
-        if ((!"".equals(objectType)) && (config.hasObjectType(objectType))) {
-          metadata.addMetadata(extractMetadata(config.getMetXPaths(objectType))
-              .getHashtable());
-        }
-        try {
-            List<ReferenceEntry> refEntries = getReferences(references,
-              product);
-            metadata.addMetadata(Constants.REFERENCES, refEntries);
-        } catch (Exception e) {
-            throw new MetExtractionException(e.getMessage());
-        }
-        return metadata;
+  /**
+   * Extract the metadata.
+   *
+   * @param product A PDS4 collection file
+   * @return a class representation of the extracted metadata
+   *
+   */
+  public Metadata extractMetadata(File product)
+  throws MetExtractionException {
+    Metadata metadata = new Metadata();
+    String objectType = "";
+    String logicalID = "";
+    String version = "";
+    String title = "";
+    List<TinyElementImpl> references = null;
+    try {
+      extractor.parse(product);
+    } catch (Exception e) {
+      throw new MetExtractionException("Parse failure: " + e.getMessage());
     }
+    try {
+      objectType = extractor.getValueFromDoc(Constants.coreXpathsMap.get(
+          Constants.OBJECT_TYPE));
+      logicalID = extractor.getValueFromDoc(Constants.coreXpathsMap.get(
+          Constants.LOGICAL_ID));
+      version = extractor.getValueFromDoc(Constants.coreXpathsMap.get(
+          Constants.PRODUCT_VERSION));
+      title = extractor.getValueFromDoc(Constants.coreXpathsMap.get(
+          Constants.TITLE));
+      references = extractor.getNodesFromDoc(Constants.coreXpathsMap.get(
+          Constants.REFERENCES));
+    } catch (Exception x) {
+      //TODO: getMessage() doesn't always return a message
+      throw new MetExtractionException(x.getMessage());
+    }
+    if (!"".equals(logicalID)) {
+      metadata.addMetadata(Constants.LOGICAL_ID, logicalID);
+    }
+    if (!"".equals(version)) {
+      metadata.addMetadata(Constants.PRODUCT_VERSION, version);
+    }
+    if (!"".equals(title)) {
+      metadata.addMetadata(Constants.TITLE, title);
+    }
+    if (!"".equals(objectType)) {
+      metadata.addMetadata(Constants.OBJECT_TYPE, objectType);
+    }
+    if (references.size() == 0) {
+      log.log(new ToolsLogRecord(ToolsLevel.INFO, "No associations found.",
+          product));
+    }
+    if ((!"".equals(objectType)) && (config.hasObjectType(objectType))) {
+      metadata.addMetadata(extractMetadata(config.getMetXPaths(objectType))
+          .getHashtable());
+    }
+    try {
+      List<ReferenceEntry> refEntries = new ArrayList<ReferenceEntry>();
+      // Search for LID-based associations and register them as slots
+      for (ReferenceEntry entry : getReferences(references, product)) {
+        if (!entry.hasVersion()) {
+          metadata.addMetadata(entry.getAssociationType(),
+              entry.getLogicalID());
+          log.log(new ToolsLogRecord(ToolsLevel.INFO, "Setting "
+              + "LID-based association, \'" + entry.getLogicalID()
+              + "\', under slot name \'" + entry.getAssociationType()
+              + "\'.", product));
+          refEntries.remove(entry);
+        } else {
+          refEntries.add(entry);
+        }
+      }
+      if (!refEntries.isEmpty()) {
+        metadata.addMetadata(Constants.REFERENCES, refEntries);
+      }
+    } catch (Exception e) {
+      throw new MetExtractionException(e.getMessage());
+    }
+    return metadata;
+  }
 }

@@ -143,7 +143,23 @@ public class CollectionMetExtractor extends Pds4MetExtractor {
         log.log(new ToolsLogRecord(ToolsLevel.INFO,
             "No associations found.", reader.getDataFile()));
       } else {
-        metadata.addMetadata(Constants.REFERENCES, refEntries);
+        // Search for LID-based associations and register them as slots
+        List<ReferenceEntry> lidVidEntries = new ArrayList<ReferenceEntry>();
+        for (ReferenceEntry entry : refEntries) {
+          if (!entry.hasVersion()) {
+            metadata.addMetadata(entry.getAssociationType(),
+                entry.getLogicalID());
+            log.log(new ToolsLogRecord(ToolsLevel.INFO, "Setting "
+                + "LID-based association, \'" + entry.getLogicalID()
+                + "\', under slot name \'" + entry.getAssociationType()
+                + "\'.", product));
+          } else {
+            lidVidEntries.add(entry);
+          }
+        }
+        if (!lidVidEntries.isEmpty()) {
+          metadata.addMetadata(Constants.REFERENCES, lidVidEntries);
+        }
       }
     } catch (InventoryReaderException ire) {
       throw new MetExtractionException(ire.getMessage());
