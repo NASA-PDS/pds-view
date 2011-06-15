@@ -43,12 +43,18 @@ public class PDS3ProductCrawler extends PDSProductCrawler {
   /** The configuration object for PDS3 product metadata registrations. */
   private Pds3MetExtractorConfig config;
 
-  /** Gets the PDS3 metextractor configuration object. */
+  /** Gets the PDS3 metextractor configuration object.
+   *
+   * @return Return the configuration object.
+   */
   public Pds3MetExtractorConfig getPDS3MetExtractorConfig() {
     return this.config;
   }
 
-  /** Sets the PDS3 metextractor configuration. */
+  /** Sets the PDS3 metextractor configuration.
+   *
+   *  @param config A configuration object.
+   */
   public void setPDS3MetExtractorConfig(Pds3MetExtractorConfig config) {
     this.config = config;
   }
@@ -84,7 +90,7 @@ public class PDS3ProductCrawler extends PDSProductCrawler {
    */
   @Override
   protected boolean passesPreconditions(File product) {
-    if (inContinuousMode) {
+    if (inPersistanceMode) {
       if (touchedFiles.containsKey(product)) {
         long lastModified = touchedFiles.get(product);
         if (product.lastModified() == lastModified) {

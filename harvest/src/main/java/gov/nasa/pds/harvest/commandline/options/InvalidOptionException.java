@@ -22,7 +22,7 @@ package gov.nasa.pds.harvest.commandline.options;
  *
  */
 public class InvalidOptionException extends Exception {
-    /** Generated serial ID */
+    /** Generated serial ID. */
     private static final long serialVersionUID = -5439038812448365813L;
 
     /**

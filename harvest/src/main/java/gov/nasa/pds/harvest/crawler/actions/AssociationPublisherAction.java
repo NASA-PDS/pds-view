@@ -20,13 +20,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.ClientResponse.Status;
-
 import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerAction;
 import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerActionPhases;
 import gov.nasa.jpl.oodt.cas.crawl.structs.exceptions.CrawlerActionException;
-import gov.nasa.jpl.oodt.cas.filemgr.structs.exceptions.CatalogException;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.crawler.stats.AssociationStats;
@@ -84,7 +80,7 @@ public class AssociationPublisherAction extends CrawlerAction {
    *
    * @param registryUrl The URL to the registry service.
    * @param user Name of the user authorized to publish the associations.
-   * @param token A security token associated with the user.
+   * @param password The password associated with the user.
    * @throws RegistryClientException
    */
   public AssociationPublisherAction(String registryUrl, String user,

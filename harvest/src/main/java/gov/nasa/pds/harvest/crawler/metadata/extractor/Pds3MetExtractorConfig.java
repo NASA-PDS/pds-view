@@ -16,8 +16,6 @@ package gov.nasa.pds.harvest.crawler.metadata.extractor;
 
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import gov.nasa.jpl.oodt.cas.metadata.MetExtractorConfig;
 import gov.nasa.pds.harvest.policy.Association;
 import gov.nasa.pds.harvest.policy.Pds3ProductMetadata;
@@ -29,15 +27,11 @@ public class Pds3MetExtractorConfig implements MetExtractorConfig {
   /**
    * Default contstructor.
    *
-   * @param candidates A class that contains what product types
-   * to extract and which metadata fields to get from those
-   * product types.
+   * @param metadata A class that contains what metadata
+   * to extract from a PDS3 product.
    *
-   * @throws ParserConfigurationException If there was an error
-   * setting up the default XML Extractor.
    */
-  public Pds3MetExtractorConfig(Pds3ProductMetadata metadata)
-  throws ParserConfigurationException {
+  public Pds3MetExtractorConfig(Pds3ProductMetadata metadata) {
     associations = metadata.getAssociations().getAssociation();
     lidPrefix = metadata.getLidPrefix();
     ancillaryMetadata = metadata.getAncillaryMetadata().getElementName();

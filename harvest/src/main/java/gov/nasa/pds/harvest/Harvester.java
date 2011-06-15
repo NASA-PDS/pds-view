@@ -25,18 +25,12 @@ import gov.nasa.pds.harvest.crawler.daemon.HarvestDaemon;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds3MetExtractorConfig;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds4MetExtractorConfig;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
-import gov.nasa.pds.harvest.policy.Candidate;
-import gov.nasa.pds.harvest.policy.Collection;
+import gov.nasa.pds.harvest.policy.Policy;
 import gov.nasa.pds.harvest.security.SecuredUser;
-import gov.nasa.pds.harvest.target.Target;
-import gov.nasa.pds.harvest.target.Type;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Front end class to the Harvest tool.
@@ -45,185 +39,163 @@ import javax.xml.parsers.ParserConfigurationException;
  *
  */
 public class Harvester {
-    /** An authorized user. */
-    private SecuredUser securedUser;
+  /** An authorized user. */
+  private SecuredUser securedUser;
 
-    /** URL of the registry service. */
-    private String registryUrl;
+  /** URL of the registry service. */
+  private String registryUrl;
 
-    /** An ingester for the PDS Registry Service. */
-    private RegistryIngester ingester;
+  /** An ingester for the PDS Registry Service. */
+  private RegistryIngester ingester;
 
-    /** Flag to enable/disable validation */
-    private boolean doValidation;
+  /** Flag to enable/disable validation. */
+  private boolean doValidation;
 
-    /** The port number to use for the daemon if running Harvest in continuous
-     *  mode.
-     */
-    private int daemonPort;
+  /** The port number to use for the daemon if running Harvest in continuous
+   *  mode.
+   */
+  private int daemonPort;
 
-    /** The wait interval in seconds in between crawls when running Harvest in
-     *  continuous mode.
-     */
-    private int waitInterval;
+  /** The wait interval in seconds in between crawls when running Harvest in
+   *  continuous mode.
+   */
+  private int waitInterval;
 
-    private Pds3MetExtractorConfig pds3MetExtractorConfig;
+  /**
+   * Constructor.
+   *
+   * @param registryUrl The registry location.
+   *
+   */
+  public Harvester(String registryUrl) {
+    this.registryUrl = registryUrl;
+    this.securedUser = null;
+    this.registryUrl = registryUrl;
+    this.ingester = new RegistryIngester();
+    this.doValidation = true;
+    this.daemonPort = -1;
+    this.waitInterval = -1;
+  }
 
-    private Pds4MetExtractorConfig pds4MetExtractorConfig;
+  /**
+   * Sets the security for the Harvest tool.
+   *
+   * @param user An authorized user.
+   */
+  public void setSecuredUser(SecuredUser user) {
+    this.securedUser = user;
+    this.ingester = new RegistryIngester(user.getName(), user.getPassword());
+  }
 
-    private List<PDSProductCrawler> crawlers;
+  /**
+   * Sets the daemon port.
+   *
+   * @param port The port number to use.
+   */
+  public void setDaemonPort(int port) {
+    this.daemonPort = port;
+  }
 
-    /**
-     * Constructor.
-     *
-     * @param registryUrl The registry location.
-     * @param candidates Class containing the products to look for and what
-     * metadata to extract.
-     *
-     */
-    public Harvester(String registryUrl) {
-        this.registryUrl = registryUrl;
-        this.securedUser = null;
-        this.registryUrl = registryUrl;
-        this.ingester = new RegistryIngester();
-        this.doValidation = true;
-        this.daemonPort = -1;
-        this.waitInterval = -1;
-        this.pds3MetExtractorConfig = null;
-        this.pds4MetExtractorConfig = null;
-        this.crawlers = new ArrayList<PDSProductCrawler>();
+  /**
+   * Sets the wait interval in seconds in between crawls.
+   *
+   * @param interval The wait interval in seconds.
+   */
+  public void setWaitInterval(int interval) {
+    this.waitInterval = interval;
+  }
+
+  /**
+   * Get the default crawler actions.
+   *
+   * @return A list of default crawler actions.
+   * @throws RegistryClientException
+   */
+  private List<CrawlerAction> getDefaultCrawlerActions() {
+    List<CrawlerAction> ca = new ArrayList<CrawlerAction>();
+    ca.add(new RegistryUniquenessCheckerAction(registryUrl, this.ingester));
+    if (securedUser != null) {
+      ca.add(new AssociationPublisherAction(registryUrl,
+          securedUser.getName(), securedUser.getPassword()));
+    } else {
+      ca.add(new AssociationPublisherAction(registryUrl));
     }
-
-    public void setPds3MetExtractorConfig(Pds3MetExtractorConfig config) {
-      this.pds3MetExtractorConfig = config;
+    if (doValidation) {
+      ca.add(new ValidateProductAction());
     }
+    return ca;
+  }
 
-    public void setPds4MetExtractorConfig(Pds4MetExtractorConfig config) {
-      this.pds4MetExtractorConfig = config;
+  /**
+   * Harvest the products specified in the given policy.
+   *
+   * @param policy An object representation of the configuration file that
+   *  specifies what to harvest.
+   *
+   * @throws MalformedURLException If the registry url is malformed.
+   */
+  public void harvest(Policy policy) throws MalformedURLException {
+    boolean doCrawlerPersistance = false;
+    if (waitInterval != -1 && daemonPort != -1) {
+      doCrawlerPersistance = true;
     }
-
-    /**
-     * Sets the security for the Harvest tool.
-     *
-     * @param user An authorized user.
-     */
-    public void setSecuredUser(SecuredUser user) {
-        this.securedUser = user;
-        this.ingester = new RegistryIngester(user.getName(), user.getPassword());
+    Pds4MetExtractorConfig pds4MetExtractorConfig = new Pds4MetExtractorConfig(
+        policy.getCandidates().getProductMetadata());
+    boolean enableValidation = policy.getValidation().isEnabled();
+    List<PDSProductCrawler> crawlers = new ArrayList<PDSProductCrawler>();
+    // Crawl bundles
+    for (String bundle : policy.getBundles().getFile()) {
+      BundleCrawler bc = new BundleCrawler(pds4MetExtractorConfig);
+      bc.setProductPath(bundle);
+      crawlers.add(bc);
     }
-
-    /**
-     * Set the flag to perform validation while crawling. Set to true
-     * by default.
-     *
-     * @param value A boolean value.
-     */
-    public void setDoValidation(boolean value) {
-        this.doValidation = value;
+    // Crawl collections
+    for (String collection : policy.getCollections().getFile()) {
+      CollectionCrawler cc = new CollectionCrawler(pds4MetExtractorConfig);
+      cc.setProductPath(collection);
+      crawlers.add(cc);
     }
-
-    /**
-     * Sets the daemon port.
-     *
-     * @param port The port number to use.
-     */
-    public void setDaemonPort(int port) {
-        this.daemonPort = port;
+    // Crawl directories
+    for (String directory : policy.getDirectories().getPath()) {
+      PDSProductCrawler pc = new PDSProductCrawler(pds4MetExtractorConfig);
+      pc.setProductPath(directory);
+      List<String> filters = policy.getDirectories().getFilePattern();
+      if (!filters.isEmpty()) {
+        pc.setFileFilter(filters);
+      }
+      crawlers.add(pc);
     }
-
-    /**
-     * Sets the wait interval in seconds in between crawls.
-     *
-     * @param interval The wait interval in seconds.
-     */
-    public void setWaitInterval(int interval) {
-        this.waitInterval = interval;
+    // Crawl a PDS3 directory
+    if (policy.getPds3Directory().getPath() != null) {
+      PDS3ProductCrawler p3c = new PDS3ProductCrawler();
+      p3c.setPDS3MetExtractorConfig(new Pds3MetExtractorConfig(
+          policy.getCandidates().getPds3ProductMetadata()));
+      p3c.setProductPath(policy.getPds3Directory().getPath());
+      List<String> filters = policy.getPds3Directory().getFilePattern();
+      if (!filters.isEmpty()) {
+        p3c.setFileFilter(filters);
+      }
+      crawlers.add(p3c);
     }
-
-    /**
-     * Get the default crawler actions.
-     *
-     * @return A list of default crawler actions.
-     * @throws RegistryClientException
-     */
-    private List<CrawlerAction> getDefaultCrawlerActions() {
-        List<CrawlerAction> ca = new ArrayList<CrawlerAction>();
-        ca.add(new RegistryUniquenessCheckerAction(registryUrl,
-                this.ingester));
-        if (securedUser != null) {
-            ca.add(new AssociationPublisherAction(registryUrl,
-                    securedUser.getName(), securedUser.getPassword()));
-        } else {
-            ca.add(new AssociationPublisherAction(registryUrl));
-        }
-        if (doValidation) {
-            ca.add(new ValidateProductAction());
-        }
-        return ca;
+    // Perform crawl while looping through the crawler list if
+    // crawler persistance is disabled.
+    for (PDSProductCrawler crawler : crawlers) {
+      if (crawler instanceof PDS3ProductCrawler) {
+        doValidation = false;
+      } else {
+        doValidation = enableValidation;
+      }
+      crawler.setRegistryUrl(registryUrl);
+      crawler.setIngester(ingester);
+      crawler.addActions(getDefaultCrawlerActions());
+      if (!doCrawlerPersistance) {
+        crawler.crawl();
+      }
     }
-
-    public List<PDSProductCrawler> getCrawlers() {
-      return crawlers;
+    // If crawler persistance is enabled, use the HarvestDaemon object to
+    // do the crawling
+    if (doCrawlerPersistance) {
+      new HarvestDaemon(waitInterval, crawlers, daemonPort).startCrawling();
     }
-
-    /**
-     * Harvests the products in the given target.
-     *
-     * @param target A target file (directory, collection, or bundle).
-     *
-     * @throws ParserConfigurationException If an error occurred during
-     * metadata extraction.
-     * @throws MalformedURLException If an error occurred while setting
-     * the registry URL to the crawler.
-     * @throws RegistryClientException
-     */
-    public void harvest(Target target) throws MalformedURLException,
-    ParserConfigurationException {
-        harvest(target, new ArrayList<String>());
-    }
-
-    /**
-     * Harvests the products in the given file..
-     *
-     * @param target A target file (directory, collection, or bundle).
-     * @param fileFilters Specify a list of file filters to search for
-     * specific files in a target directory.
-     *
-     * @throws ParserConfigurationException If an error occurred during
-     * metadata extraction.
-     * @throws MalformedURLException If an error occurred while setting
-     * the registry URL to the crawler.
-     * @throws RegistryClientException
-     *
-     */
-    public void harvest(Target target, List<String> fileFilters)
-    throws ParserConfigurationException, MalformedURLException {
-        PDSProductCrawler crawler = null;
-        if (Type.COLLECTION.equals(target.getType())) {
-          crawler = new CollectionCrawler(pds4MetExtractorConfig);
-        } else if (Type.BUNDLE.equals(target.getType())) {
-          crawler = new BundleCrawler(pds4MetExtractorConfig);
-        } else if (Type.PDS4_DIRECTORY.equals(target.getType())) {
-          crawler = new PDSProductCrawler(pds4MetExtractorConfig);
-          if (!fileFilters.isEmpty()) {
-            crawler.setFileFilter(fileFilters);
-          }
-        } else if (Type.PDS3_DIRECTORY.equals(target.getType())) {
-          PDS3ProductCrawler pds3Crawler = new PDS3ProductCrawler();
-          if (!fileFilters.isEmpty()) {
-            pds3Crawler.setFileFilter(fileFilters);
-          }
-          pds3Crawler.setPDS3MetExtractorConfig(pds3MetExtractorConfig);
-          crawler = pds3Crawler;
-        }
-        crawler.setRegistryUrl(registryUrl);
-        crawler.setIngester(ingester);
-        crawler.addActions(getDefaultCrawlerActions());
-        if (daemonPort != -1 && waitInterval != -1) {
-            crawler.setProductPath(target.getFilename());
-            new HarvestDaemon(waitInterval, crawler, daemonPort).startCrawling();
-        } else {
-            crawler.crawl(new File(target.getFilename()));
-        }
-    }
+  }
 }

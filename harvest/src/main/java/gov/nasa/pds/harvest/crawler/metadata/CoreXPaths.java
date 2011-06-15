@@ -22,7 +22,7 @@ import java.util.HashMap;
  *
  */
 public class CoreXPaths implements PDSCoreMetKeys {
-    private final static String IDENTIFICATION_AREA_XPATH =
+    private static final String IDENTIFICATION_AREA_XPATH =
         "//*[starts-with(name(),'Identification_Area')]";
 
     public static final HashMap<String,String> map =

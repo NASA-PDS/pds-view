@@ -103,9 +103,9 @@ public class ValidateProductAction extends CrawlerAction {
      */
     private void record(LabelException exception) {
         Level level = null;
-        if(ExceptionType.WARNING.equals(exception.getExceptionType())) {
+        if (ExceptionType.WARNING.equals(exception.getExceptionType())) {
             level = Level.WARNING;
-        } else if(ExceptionType.ERROR.equals(exception.getExceptionType())
+        } else if (ExceptionType.ERROR.equals(exception.getExceptionType())
                 || (ExceptionType.FATAL.equals(exception.getExceptionType()))
                 ) {
             level = Level.SEVERE;

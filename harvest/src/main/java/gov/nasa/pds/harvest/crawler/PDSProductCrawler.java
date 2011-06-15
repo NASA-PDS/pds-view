@@ -20,13 +20,11 @@ import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.jpl.oodt.cas.metadata.exceptions.MetExtractionException;
 import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.crawler.actions.AssociationCheckerAction;
-import gov.nasa.pds.harvest.crawler.actions.AssociationPublisherAction;
 import gov.nasa.pds.harvest.crawler.actions.LogMissingReqMetadataAction;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds4MetExtractorConfig;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.BundleMetExtractor;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.CollectionMetExtractor;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds4MetExtractor;
-import gov.nasa.pds.harvest.crawler.stats.AssociationStats;
 import gov.nasa.pds.harvest.crawler.status.Status;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
@@ -68,14 +66,20 @@ public class PDSProductCrawler extends ProductCrawler {
   /** Holds the product type of the file being processed. */
   private String objectType;
 
-  protected boolean inContinuousMode;
+  /** Flag for crawler persistance. */
+  protected boolean inPersistanceMode;
 
+  /** A map of files that were touched during crawler persistance. */
   protected Map<File, Long> touchedFiles;
 
+  /** The number of candidate products that were discovered during the crawl.
+   */
   protected int numDiscoveredProducts;
 
+  /** The number of bad files that were found during the crawl. */
   protected int numBadFiles;
 
+  /** The number of files that were skipped during the crawl. */
   protected int numFilesSkipped;
 
   /**
@@ -96,7 +100,7 @@ public class PDSProductCrawler extends ProductCrawler {
     this.objectType = "";
     this.metExtractorConfig = extractorConfig;
     this.crawlerActions = new ArrayList<CrawlerAction>();
-    inContinuousMode = false;
+    inPersistanceMode = false;
     touchedFiles = new HashMap<File, Long>();
     numDiscoveredProducts = 0;
     numBadFiles = 0;
@@ -122,8 +126,12 @@ public class PDSProductCrawler extends ProductCrawler {
     return metExtractorConfig;
   }
 
-  public void setInContinuousMode(boolean value) {
-    inContinuousMode = value;
+  public void setMetExtractorConfig(Pds4MetExtractorConfig config) {
+    this.metExtractorConfig = config;
+  }
+
+  public void setInPersistanceMode(boolean value) {
+    inPersistanceMode = value;
   }
 
   public int getNumDiscoveredProducts() {
@@ -148,7 +156,7 @@ public class PDSProductCrawler extends ProductCrawler {
    * Sets the registry location.
    *
    * @param url A url of the registry location.
-   * @throws MalformedURLException
+   * @throws MalformedURLException If the given url is malformed.
    */
   public void setRegistryUrl(String url) throws MalformedURLException {
     setFilemgrUrl(url);
@@ -278,7 +286,7 @@ public class PDSProductCrawler extends ProductCrawler {
    */
   @Override
   protected boolean passesPreconditions(File product) {
-    if (inContinuousMode) {
+    if (inPersistanceMode) {
       if (touchedFiles.containsKey(product)) {
         long lastModified = touchedFiles.get(product);
         if (product.lastModified() == lastModified) {

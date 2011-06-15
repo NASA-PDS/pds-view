@@ -15,8 +15,6 @@ package gov.nasa.pds.harvest;
 
 import gov.nasa.pds.harvest.commandline.options.Flag;
 import gov.nasa.pds.harvest.commandline.options.InvalidOptionException;
-import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds3MetExtractorConfig;
-import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds4MetExtractorConfig;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.harvest.logging.formatter.HarvestFormatter;
@@ -26,8 +24,6 @@ import gov.nasa.pds.harvest.policy.Namespace;
 import gov.nasa.pds.harvest.policy.Policy;
 import gov.nasa.pds.harvest.policy.PolicyReader;
 import gov.nasa.pds.harvest.security.SecuredUser;
-import gov.nasa.pds.harvest.target.Target;
-import gov.nasa.pds.harvest.target.Type;
 import gov.nasa.pds.harvest.util.PDSNamespaceContext;
 import gov.nasa.pds.harvest.util.ToolInfo;
 import gov.nasa.pds.harvest.util.Utility;
@@ -196,13 +192,11 @@ public class HarvestLauncher {
     log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
         "PDS Harvest Tool Log\n"));
     log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
-        "Version             " + ToolInfo.getVersion()));
+        "Version                     " + ToolInfo.getVersion()));
     log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
-        "Time                " + Utility.getDateTime()));
+        "Time                        " + Utility.getDateTime()));
     log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
-        "Registry Location   " + registryURL.toString()));
-    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
-        "Default Namespace   " + XMLExtractor.getDefaultNamespace() + "\n"));
+        "Registry Location           " + registryURL.toString() + "\n"));
   }
 
   /**
@@ -276,54 +270,24 @@ public class HarvestLauncher {
    */
   private void doHarvesting(final Policy policy, final String securityUrl)
   throws MalformedURLException, ParserConfigurationException {
+    log.log(new ToolsLogRecord(ToolsLevel.INFO, "XML extractor set to the "
+        + "following default namespace: "
+        + XMLExtractor.getDefaultNamespace()));
     Harvester harvester = new Harvester(registryURL);
-    if (daemonPort != -1) {
-      harvester.setDaemonPort(daemonPort);
-    }
-    if (waitInterval != -1) {
-      harvester.setWaitInterval(waitInterval);
-    }
     if ((username != null) && (password != null)) {
       harvester.setSecuredUser(new SecuredUser(username, password));
     }
-
-    if (policy.getPds3Directory().getPath() != null) {
-      Pds3MetExtractorConfig pds3MetConfig = new Pds3MetExtractorConfig(
-          policy.getCandidates().getPds3ProductMetadata());
-      harvester.setPds3MetExtractorConfig(pds3MetConfig);
-      harvester.setDoValidation(false);
-      String path = policy.getPds3Directory().getPath();
-      List<String> fileFilters =
-        policy.getPds3Directory().getFilePattern();
-      if (!fileFilters.isEmpty()) {
-        harvester.harvest(new Target(path, Type.PDS3_DIRECTORY), fileFilters);
-      } else {
-        harvester.harvest(new Target(path, Type.PDS3_DIRECTORY));
-      }
+    if (daemonPort != -1 && waitInterval != -1) {
+      harvester.setDaemonPort(daemonPort);
+      harvester.setWaitInterval(waitInterval);
     }
-    Pds4MetExtractorConfig pds4MetConfig = new Pds4MetExtractorConfig(
-        policy.getCandidates().getProductMetadata());
-    harvester.setPds4MetExtractorConfig(pds4MetConfig);
-    List<String> fileFilters = policy.getDirectories().getFilePattern();
-    harvester.setDoValidation(policy.getValidation().isEnabled());
-    for (String bundle : policy.getBundles().getFile()) {
-      harvester.harvest(new Target(bundle, Type.BUNDLE));
-    }
-    for (String collection : policy.getCollections().getFile()) {
-      harvester.harvest(new Target(collection, Type.COLLECTION));
-    }
-    for (String path : policy.getDirectories().getPath()) {
-      if (!fileFilters.isEmpty()) {
-        harvester.harvest(new Target(path, Type.PDS4_DIRECTORY),
-          fileFilters);
-      } else {
-        harvester.harvest(new Target(path, Type.PDS4_DIRECTORY));
-      }
-    }
+    harvester.harvest(policy);
   }
 
   /**
    * Sets up the configuration for the XML extractor.
+   *
+   * @param namespaces A list of namespaces.
    *
    */
   private void setupExtractor(List<Namespace> namespaces) {
@@ -377,7 +341,6 @@ public class HarvestLauncher {
             + pEx.getMessage());
       System.exit(1);
     } catch (Exception e) {
-      e.printStackTrace();
       System.out.println(e.getMessage());
       System.exit(1);
     }

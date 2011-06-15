@@ -13,6 +13,7 @@
 // $Id$
 package gov.nasa.pds.harvest.crawler.daemon;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -30,29 +31,35 @@ import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 
 /**
  * Class that provides the capability to make the Harvest Tool run
- * continuously via a daemon.
+ * in persistance mode.
  *
  * @author mcayanan
  *
  */
 public class HarvestDaemon extends CrawlDaemon {
-  /** To log messages */
+  /** To log messages. */
   private static Logger log = Logger.getLogger(
       HarvestDaemon.class.getName());
 
-  /** The port number to be used */
+  /** The port number to be used. */
   private int daemonPort;
+
+  /** A list of crawlers. */
+  private List<PDSProductCrawler> crawlers;
 
   /**
    * Constructor
    *
    * @param wait The time in seconds to wait in between crawls.
-   * @param crawler The PDSProductCrawler to be used.
+   * @param crawlers A list of PDSProductCrawler objects to be used during
+   * crawler persistance.
    * @param port The port nunmber to be used.
    */
-  public HarvestDaemon(int wait, PDSProductCrawler crawler, int port) {
-    super(wait, crawler, port);
+  public HarvestDaemon(int wait, List<PDSProductCrawler> crawlers, int port) {
+    super(wait, null, port);
     daemonPort = port;
+    this.crawlers = new ArrayList<PDSProductCrawler>();
+    this.crawlers.addAll(crawlers);
   }
 
   /**
@@ -65,22 +72,26 @@ public class HarvestDaemon extends CrawlDaemon {
     server.start();
 
     log.log(new ToolsLogRecord(ToolsLevel.INFO, "Starting crawler daemon."));
-    getCrawler().setInContinuousMode(true);
+    for (PDSProductCrawler crawler : crawlers) {
+      crawler.setInPersistanceMode(true);
+    }
 
     while (isRunning()) {
+      int totalFilesFound = 0;
       // okay, time to crawl
-      long timeBefore = System.currentTimeMillis();
-      getCrawler().crawl();
-      long timeAfter = System.currentTimeMillis();
-      setMilisCrawling((long) getMilisCrawling() + (timeAfter - timeBefore));
-      setNumCrawls(getNumCrawls() + 1);
-
-      int filesFound = getCrawler().getNumDiscoveredProducts()
-      + getCrawler().getNumBadFiles() + getCrawler().getNumFilesSkipped();
-      log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION, filesFound
+      for (PDSProductCrawler crawler : crawlers) {
+        long timeBefore = System.currentTimeMillis();
+        crawler.crawl();
+        long timeAfter = System.currentTimeMillis();
+        setMilisCrawling((long) getMilisCrawling() + (timeAfter - timeBefore));
+        setNumCrawls(getNumCrawls() + 1);
+        totalFilesFound += crawler.getNumDiscoveredProducts()
+        + crawler.getNumBadFiles() + crawler.getNumFilesSkipped();
+      }
+      log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION, totalFilesFound
           + " new file(s) found."));
       //Print out some statistics if new files were found
-      if (filesFound != 0) {
+      if (totalFilesFound != 0) {
         printSummary();
       }
       log.log(new ToolsLogRecord(ToolsLevel.INFO, "Sleeping for: ["
@@ -90,12 +101,16 @@ public class HarvestDaemon extends CrawlDaemon {
           Thread.currentThread().sleep(getWaitInterval() * 1000);
       } catch (InterruptedException ignore) {
       }
-      getCrawler().clearCrawlStats();
-      getCrawler().clearIngestStatus();
+      for (PDSProductCrawler crawler : crawlers) {
+        crawler.clearCrawlStats();
+        crawler.clearIngestStatus();
+      }
     }
-    log.log(new ToolsLogRecord(ToolsLevel.INFO, "Crawl Daemon: Shutting "
-        + "down gracefully", getCrawler().getProductPath()));
-    log.log(new ToolsLogRecord(ToolsLevel.INFO, "Num Crawls: ["
+    for (PDSProductCrawler crawler : crawlers) {
+      log.log(new ToolsLogRecord(ToolsLevel.INFO, "Crawl Daemon: Shutting "
+        + "down gracefully", crawler.getProductPath()));
+    }
+    log.log(new ToolsLogRecord(ToolsLevel.INFO, "Total num Crawls: ["
         + getNumCrawls() + "]"));
     log.log(new ToolsLogRecord(ToolsLevel.INFO, "Total time spent crawling: "
         + "[" + (getMilisCrawling() / 1000.0) + "] seconds"));
@@ -109,34 +124,48 @@ public class HarvestDaemon extends CrawlDaemon {
    *
    */
   private void printSummary() {
-    int filesProcessed = getCrawler().getNumDiscoveredProducts()
-    + getCrawler().getNumBadFiles();
-    log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
-        getCrawler().getNumDiscoveredProducts()
-        + " of " + filesProcessed + " file(s) are candidate products, "
-        + getCrawler().getNumFilesSkipped() + " skipped"));
-      List<IngestStatus> ingestStatus = getCrawler().getIngestStatus();
-      int productsRegistered = 0;
-      int productsNotRegistered = 0;
+    int totalNumDiscoveredProducts = 0;
+    int totalNumBadFiles = 0;
+    int totalNumFilesSkipped = 0;
+    int totalProductsRegistered = 0;
+    int totalProductsNotRegistered = 0;
+    int totalAssociationsRegistered = 0;
+    int totalAssociationsNotRegistered = 0;
+    int totalAssociationsSkipped = 0;
+
+    for (PDSProductCrawler crawler : crawlers) {
+      totalNumDiscoveredProducts += crawler.getNumDiscoveredProducts();
+      totalNumBadFiles += crawler.getNumBadFiles();
+      totalNumFilesSkipped += crawler.getNumFilesSkipped();
+
+      List<IngestStatus> ingestStatus = crawler.getIngestStatus();
       for (IngestStatus status : ingestStatus) {
         if (status.getResult().equals(Result.SUCCESS)) {
-          ++productsRegistered;
+          ++totalProductsRegistered;
         } else if (status.getResult().equals(Result.FAILURE)) {
-          ++productsNotRegistered;
+          ++totalProductsNotRegistered;
         }
       }
-      int totalProducts = productsRegistered + productsNotRegistered;
-      log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION, productsRegistered
-          + " of " + totalProducts + " candidate products registered."));
-      AssociationStats aStats = getAssociationStats(
-          getCrawler().getActions());
-      int totalAssociations = aStats.getNumRegistered()
-      + aStats.getNumNotRegistered();
-      log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
-          aStats.getNumRegistered() + " of " + totalAssociations
-          + " associations registered, " + aStats.getNumSkipped()
-          + " skipped."));
+      AssociationStats aStats = getAssociationStats(crawler.getActions());
+      totalAssociationsRegistered += aStats.getNumRegistered();
+      totalAssociationsNotRegistered += aStats.getNumNotRegistered();
+      totalAssociationsSkipped += aStats.getNumSkipped();
       aStats.clear();
+    }
+    int totalFilesProcessed = totalNumDiscoveredProducts + totalNumBadFiles;
+    log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
+        totalNumDiscoveredProducts
+        + " of " + totalFilesProcessed + " file(s) are candidate products, "
+        + totalNumFilesSkipped + " skipped"));
+    int totalProducts = totalProductsRegistered + totalProductsNotRegistered;
+    log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION, totalProductsRegistered
+        + " of " + totalProducts + " candidate products registered."));
+    int totalAssociations = totalAssociationsRegistered
+    + totalAssociationsNotRegistered;
+    log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
+          totalAssociationsRegistered + " of " + totalAssociations
+          + " associations registered, " + totalAssociationsSkipped
+          + " skipped."));
   }
 
   /**
@@ -148,7 +177,7 @@ public class HarvestDaemon extends CrawlDaemon {
    */
   private AssociationStats getAssociationStats(
       List<CrawlerAction> actions) {
-    for(CrawlerAction action : actions) {
+    for (CrawlerAction action : actions) {
       if (action instanceof AssociationPublisherAction) {
         AssociationPublisherAction ap = (AssociationPublisherAction) action;
         return ap.getAssociationStats();
@@ -160,6 +189,7 @@ public class HarvestDaemon extends CrawlDaemon {
   /**
    * Get the crawler being used.
    *
+   * @return The crawler.
    */
   public PDSProductCrawler getCrawler() {
     return (PDSProductCrawler) super.getCrawler();

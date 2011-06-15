@@ -72,8 +72,7 @@ public class RegistryIngester implements Ingester {
     * Constructor.
     *
     * @param user An authorized user.
-    * @param token The security token that allows the authorized user to
-    * ingest products into the registry.
+    * @param password The password associated with the user.
     */
   public RegistryIngester(String user, String password) {
     this.password = password;
