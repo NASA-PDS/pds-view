@@ -145,17 +145,17 @@ public class Pds3MetExtractor implements MetExtractor {
     if (pds3Met.containsKey("INSTRUMENT_HOST_NAME")) {
       title += pds3Met.getMetadata("INSTRUMENT_HOST_NAME") + " ";
     }
-    if (pds3Met.containsKey("TARGET_NAME")) {
-      title += pds3Met.getMetadata("TARGET_NAME") + " ";
-    }
-    if (pds3Met.containsKey("INSTRUMENT_ID")) {
-      title += pds3Met.getMetadata("INSTRUMENT_ID") + " ";
+    if (pds3Met.containsKey("INSTRUMENT_NAME")) {
+      title += pds3Met.getMetadata("INSTRUMENT_NAME") + " ";
     } else {
-      if (pds3Met.containsKey("INSTRUMENT_NAME")) {
-        title += pds3Met.getMetadata("INSTRUMENT_NAME") + " ";
+      if (pds3Met.containsKey("INSTRUMENT_ID")) {
+        title += pds3Met.getMetadata("INSTRUMENT_ID") + " ";
       }
     }
-    title += "Experiment";
+    //This is a default title.
+    if (title.trim().isEmpty()) {
+      title = "PDS3 Data Product";
+    }
     metadata.addMetadata(Constants.TITLE, title);
 
     List<ReferenceEntry> references = getReferences(config.getAssociations(),
