@@ -26,6 +26,7 @@
       <item name="Appendix A - UNIX Setup Options" href="operate/index-unix.html"/>
       <item name="Appendix B - Windows Setup Options" href="operate/index-win.html"/>
       <item name="Appendix C - Harvest Policy Schema" href="operate/index-policy-schema.html"/>
+      <item name="Appendix D - Harvesting of PDS3 Data Products" href="operate/index-pds3Harvesting.html"/>
     </menu>
   </body>
 </project>
