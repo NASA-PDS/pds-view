@@ -41,7 +41,7 @@
                     template="index-policy-schema.xml.vm"/>
     <velocity:merge name="${maven.build.dir}/pdf/operate/index-pds3Harvesting.xml"
                     basedir="${basedir}/src/site/xdoc/operate"
-                    template="index-policy-pds3Harvesting.xml.vm"/>
+                    template="index-pds3Harvesting.xml.vm"/>
   </goal>
 </project>
 
