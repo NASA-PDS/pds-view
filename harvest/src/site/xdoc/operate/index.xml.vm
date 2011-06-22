@@ -32,6 +32,7 @@
         <li><a href="#Tool_Setup">Tool Setup</a></li>
         <li><a href="#Additional_Tool_Setup">Additional Tool Setup</a></li>
         <li><a href="#Tool_Execution">Tool Execution</a></li>
+        <li><a href="#Harvest_Policy_File">Harvest Policy File</a></li> 
         <li><a href="#Report_Format">Report Format</a></li>
       </ul>
 
@@ -149,7 +150,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
           <tr><td>-u, --username</td><td>Specify a username for authentication with the PDS Security Service.</td></tr>
           <tr><td>-p, --password</td><td>Specify a password associated with the username.</td></tr>
           <tr><td>-l, --log-file</td><td>Specify a log file name. Default is standard out.</td></tr>
-          <tr><td>-P, --port</td><td>Specify a port number to use if running the tool in continuous mode. See the <a href="#Continuous_Mode">Continuous Mode</a> section for more details.</td></tr>
+          <tr><td>-P, --port</td><td>Specify a port number to use if running the tool in persistance mode. See the <a href="#Persistance_Mode">Persistance Mode</a> section for more details.</td></tr>
           <tr><td>-w, --wait</td><td>Specify the time, in seconds, to wait in between the crawls. This option is used only when running the tool in continuous mode.</td></tr>
           <tr><td>-V, --version</td><td>Display the release number and copyright information.</td></tr>
           <tr><td>-h, --help</td><td>Display Harvest usage.</td></tr>
@@ -182,183 +183,11 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         
         <source>
 % Harvest policy.xml -l log.txt
-        </source>
-        
+        </source>       
       </subsection>
-
-      <subsection name="Harvest Policy File">
-        <p>The Harvest policy file is an XML file that the tool uses to find products and register their metadata. The schema for the policy file can be found in the <a href="index-policy-schema.html">Harvest Policy Schema</a> section. If viewing this document in PDF form, see the appendix for details.
-        </p>
-
-        <p>The following is an example of a policy file:
-        </p>
-
-        <source>
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;policy&gt;
-   &lt;bundles&gt;
-      &lt;file&gt;/home/pds4/context-bundle/bundle.xml&lt;/file&gt;
-   &lt;/bundles&gt;
-   &lt;collections&gt;
-      &lt;file&gt;/home/pds4/insthost/collection_instrument_host.xml&lt;/file&gt;
-   &lt;/collections&gt;
-   &lt;directories&gt;
-      &lt;path&gt;/home/user/pds4/geo/product_files&lt;/path&gt;
-      &lt;filePattern&gt;*.xml&lt;/filePattern&gt;
-   &lt;/directories&gt;
-   &lt;validation&gt;
-      &lt;enabled&gt;true&lt;/enabled&gt;
-   &lt;/validation&gt;
-   &lt;candidates&gt;
-      &lt;namespace prefix="geo" uri="http://pds.nasa.gov/schema/pds4/geo"/&gt;
-      &lt;productMetadata objectType="character_table"&gt;
-         &lt;xPath&gt;//geo:Product_Identification_Area/geo:creation_date_time&lt;/xPath&gt;
-         &lt;xPath&gt;//geo:Subject_Area/geo:instrument_name&lt;/xPath&gt;
-         &lt;xPath&gt;//Subject_Area/observing_system_name&lt;/xPath&gt;
-      &lt;/productMetadata&gt;
-      &lt;productMetadata objectType="Product_Target"&gt;
-         &lt;xPath&gt;//alternate_title&lt;/xPath&gt;
-         &lt;xPath&gt;//creation_date_time&lt;/xPath&gt;
-         &lt;xPath&gt;//identifier&lt;/xPath&gt;
-         &lt;xPath&gt;//Subject_Area/target_name&lt;/xPath&gt;
-      &lt;/productMetadata&gt;
-   &lt;/candidates&gt;
-&lt;/policy&gt;
-        </source>
-
-        <p>The policy file is made up of the following complex type elements: <i>bundles</i>, <i>collections</i>, <i>directories</i>, <i>validation</i>, <i>candidates</i>, and <i>productMetadata</i>.
-        </p>
-
-        <b><i>bundles</i></b>
-
-        <p>Specify this element to tell the Harvest Tool to register and crawl a bundle file. The following table describes the elements that are allowed:
-        </p>
-
-        <table>
-          <tr><th>Element Name</th><th>Description</th></tr>
-          <tr><td>file</td><td>Specify a bundle file. Specify this element tag more than once to point to multiple bundle files.</td></tr>
-        </table>
-
-        <p>In the example above, the Harvest Tool will register the bundle file named <i>/home/pds4/context-bundle/bundle.xml</i>. It will then crawl the bundle file, looking for collection files to register and process.
-        </p>
-
-        <b><i>collections</i></b>
-
-        <p>Specify this element to tell the Harvest Tool to register and crawl a collection file. Crawling only occurs when the collection file is a primary collection. This is indicated by a value of <i>true</i> in the <i>is_primary_collection</i> element tag within the collection.
-        </p>
-
-        <p>The following table describes the elements that are allowed:
-        </p>
-
-        <table>
-          <tr><th>Element Name</th><th>Description</th></tr>
-          <tr><td>file</td><td>Specify a collection file. Specify this element tag more than once to point to multiple collection files.</td></tr>
-        </table>
-
-        <p>In the example above, the Harvest Tool will register the collection file named <i>/home/pds4/insthost/collection_instrument_host.xml</i>. It will then crawl the file, looking for products to register if it is a primary collection.
-        </p>
-
-        <b><i>directories</i></b>
-
-        <p>Specify this element to tell the Harvest Tool where to crawl for data products. The following table describes the elements that are allowed:
-        </p>
-
-        <table>
-          <tr><th>Element Name</th><th>Description</th></tr>
-          <tr><td>path</td><td>Specify a directory path to start crawling. Specify this element tag more than once to point to multiple directories to crawl.</td></tr>
-          <tr><td>filePattern</td><td>Specify a file pattern to look for specific files. If omitted, the default is to get all files within a directory.</td></tr>
-        </table>
-
-        <p>In the example above, the Harvest tool will crawl the directory location, <i>/home/user/pds4/geo/product_files</i>, looking for files that have a <i>.xml</i> file extension. The default is to touch all files in the directory if the <i>filePattern</i> element is omitted from the policy file.
-        </p>
-
-        <p><b><i>validation</i></b></p>
-
-        <p>Specify this element to tell the Harvest Tool to validate a data product before registering it. If the data product does not pass the validation step, the data product will not be registered. The following table describes the elements that are allowed:
-        </p>
-
-        <table>
-          <tr><th>Element Name</th><th>Description</th></tr>
-          <tr><td>enabled</td><td>Specify a boolean value to tell the Harvest Tool whether or not to validate a data product.</td></tr>
-        </table>
-
-        <p>By default, if the <i>validation</i> element is not specified in the policy file, validation is turned on.
-        </p>
-
-        <p><b><i>candidates</i></b></p>
-
-        <p>Specify this element to tell the Harvest Tool what product types to register and what metadata to extract from a data product. This is a required element in the policy file. The following table describes the elements that are allowed:
-        </p>
-
-        <table>
-          <tr><th>Element Name</th><th>Description</th></tr>
-          <tr><td>namespace</td><td>Specify to allow the Harvest Tool to extract metadata that is in a namespace other than the default PDS namespace.</td></tr>
-          <tr><td>productMetadata</td><td>Specify to tell the tool what object types and what metadata to register.</td></tr>
-        </table>
-
-        <p>By default, the Harvest Tool defines the default namespace to be the PDS namespace, <i>http://pds.nasa.gov/schema/pds4/pds</i>. To override this default, specify the <i>default</i> attribute in the namespace element and give it a value of <i>true</i>. The following makes the <i>geo</i> namespace the default namespace:
-        </p>
-
-        <source>
-          &lt;candidates&gt;
-          &lt;namespace prefix="geo" uri="http://pds.nasa.gov/schema/pds4/geo" default="true"/&gt;
-          ...
-        </source>
-
-        <p>Namespaces need to be defined in the Harvest policy file only if the metadata to be extracted exists in a namespace other than the PDS namespace. In the example above, a namespace with the prefix <i>geo</i> and uri <i>http://pds.nasa.gov/schema/pds4/geo</i> has been defined. This means that any xPath expressions defined in the policy file will be able to use the <i>geo</i> prefix to be able to extract metadata that are within the geo namespace. xPaths will be explained in greater detail in the <i>productMetadata</i> section.
-        </p>
-
-        <b><i>productMetadata</i></b>
-
-        <p>Specify this element to tell the Harvest Tool what metadata to register. It requires an attribute called <i>objectType</i> that tells the Harvest Tool what product types to register. The following table describes the elements that are allowed:
-        </p>
-
-        <table>
-          <tr><th>Element Name</th><th>Description</th></tr>
-          <tr><td>xPath</td><td>Specify an XPath expression to extract metadata.</td></tr>
-        </table>
-
-        <p>In the example above, the policy file tells the Harvest Tool to look for and register the <i>character_table</i> and <i>Product_Target</i> object types.
-        </p>
-
-        <p>Also in the example is a set of <i>xPath</i> elements found under each <i>productMetadata</i> element. This defines what metadata to extract from the different products. XPath is a query language that uses path expressions to select nodes in an XML document. These path expressions look very much like expressions in a traditional computer file system. In its simplest form, prepending a <i>//</i> before a name will find the element no matter where it is in the XML file.
-        </p>
-
-        <p>The following XPath expression will find the <i>creation_date_time</i> element within the default namespace, no matter where this element is located in the file:
-        </p>
-
-        <source>
-//creation_date_time
-        </source>
-
-        <p>The following XPath expression will find the <i>creation_date_time</i> element within the geo namespace, no matter where this element is located in the file:
-        </p>
-
-        <source>
-//geo:creation_date_time
-        </source>
-
-
-        <p>The following XPath expression will find all <i>target_name</i> elements that are children of <i>Subject_Area</i> within the default namespace:
-        </p>
-
-        <source>
-//Subject_Area/target_name
-        </source>
-
-        <p>The following XPath expression will find all <i>target_name</i> elements that are children of <i>Subject_Area</i> and that have a value of <i>MARS</i>:
-        </p>
-
-        <source>
-//Subject_Area/target_name[text()="MARS"]
-        </source>
-
-        <p>For a more detailed explanation on XPath, go to your favorite search engine and type <i>XPath tutorial</i>.
-        </p>
-      </subsection>
-
-      <subsection name="Continuous Mode">
-        <p>The Harvest Tool can be run in continuous mode through an XML-RPC accessible web service called a daemon. Under this scenario, the Harvest Tool wakes up periodically, inspects a target directory or directories, and registers the latest products. This section details how to set this up.
+      
+      <subsection name="Persistance Mode">
+        <p>The Harvest Tool can be run in persistance mode through an XML-RPC accessible web service called a daemon. Under this scenario, the Harvest Tool wakes up periodically, inspects a target directory or directories, and registers the latest products. This section details how to set this up.
         </p>
 
         <p>In order to run the tool through the daemon, the command-line option flags <i>-P</i> and <i>-w</i> need to be used. This tells the Harvest Tool the port number to use and how long to sleep in between crawls, respectively. When the daemon is running, it can be accessed through the following url: <i>http://localhost:{port number}/xmlrpc</i>. The following command demonstrates launching the Harvest Tool through the daemon on port <i>9000</i>, where it will wait 120 seconds in between crawls:
@@ -416,14 +245,301 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         <source>
 % HarvestController --url http://localhost:9000/xmlrpc --operation --isRunning
         </source>
-      </subsection>
-    </section>
+      </subsection>      
+   </section>
+   
+   <section name="Harvest Policy File">
+     <p>The Harvest policy file is an XML-based configuration file that the tool uses to find products and register their metadata. The schema for the policy file can be found in the <a href="index-policy-schema.html">Harvest Policy Schema</a> section. If viewing this document in PDF form, see the appendix for details. This section details how to setup the policy file to do PDS data product registration.
+     </p>
+     
+     <subsection name="PDS4 Data Product Registration">
+       <p>The following is an example of a policy file to perform registration of PDS4 data products:
+       </p>
 
-    <section name="Report Format">
-      <p>This section describes the contents of the Harvest Tool report. At this time, the Harvest Tool only outputs a series of log messages. The log will report the success or failure of a discovered product attempting to be registered. Additionally, any syntactical errors in a discovered product are reported. A log consists of a severity level, file name, and a message. The following is an example of some of the log messages that can be expected from the Harvest Tool:
+       <source>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;policy&gt;
+   &lt;bundles&gt;
+      &lt;file&gt;/home/pds4/context-bundle/bundle.xml&lt;/file&gt;
+   &lt;/bundles&gt;
+   &lt;collections&gt;
+      &lt;file&gt;/home/pds4/insthost/collection_instrument_host.xml&lt;/file&gt;
+   &lt;/collections&gt;
+   &lt;directories&gt;
+      &lt;path&gt;/home/user/pds4/geo/product_files&lt;/path&gt;
+      &lt;filePattern&gt;*.xml&lt;/filePattern&gt;
+   &lt;/directories&gt;
+   &lt;validation&gt;
+      &lt;enabled&gt;true&lt;/enabled&gt;
+   &lt;/validation&gt;
+   &lt;candidates&gt;
+      &lt;namespace prefix="geo" uri="http://pds.nasa.gov/schema/pds4/geo"/&gt;
+      &lt;productMetadata objectType="character_table"&gt;
+         &lt;xPath&gt;//geo:Product_Identification_Area/geo:creation_date_time&lt;/xPath&gt;
+         &lt;xPath&gt;//geo:Subject_Area/geo:instrument_name&lt;/xPath&gt;
+         &lt;xPath&gt;//Subject_Area/observing_system_name&lt;/xPath&gt;
+      &lt;/productMetadata&gt;
+      &lt;productMetadata objectType="Product_Target"&gt;
+         &lt;xPath&gt;//alternate_title&lt;/xPath&gt;
+         &lt;xPath&gt;//creation_date_time&lt;/xPath&gt;
+         &lt;xPath&gt;//identifier&lt;/xPath&gt;
+         &lt;xPath&gt;//Subject_Area/target_name&lt;/xPath&gt;
+      &lt;/productMetadata&gt;
+   &lt;/candidates&gt;
+&lt;/policy&gt;
+       </source>
+
+       <p>This policy file is made up of the following complex type elements: <i>bundles</i>, <i>collections</i>, <i>directories</i>, <i>validation</i>, <i>candidates</i>, and <i>productMetadata</i>.
+       </p>
+
+       <b><i>bundles</i></b>
+
+       <p>Specify this element to tell the Harvest Tool to register and crawl a bundle file. The following table describes the elements that are allowed:
+       </p>
+
+       <table>
+         <tr><th>Element Name</th><th>Description</th></tr>
+         <tr><td>file</td><td>Specify a bundle file. Specify this element tag more than once to point to multiple bundle files.</td></tr>
+       </table>
+
+       <p>In the example above, the Harvest Tool will register the bundle file named <i>/home/pds4/context-bundle/bundle.xml</i>. It will then crawl the bundle file, looking for collection files to register and process.
+       </p>
+
+       <b><i>collections</i></b>
+
+       <p>Specify this element to tell the Harvest Tool to register and crawl a collection file. Crawling only occurs when the collection file is a primary collection. This is indicated by a value of <i>true</i> in the <i>is_primary_collection</i> element tag within the collection.
+       </p>
+
+       <p>The following table describes the elements that are allowed:
+       </p>
+
+       <table>
+         <tr><th>Element Name</th><th>Description</th></tr>
+         <tr><td>file</td><td>Specify a collection file. Specify this element tag more than once to point to multiple collection files.</td></tr>
+       </table>
+
+       <p>In the example above, the Harvest Tool will register the collection file named <i>/home/pds4/insthost/collection_instrument_host.xml</i>. It will then crawl the file, looking for products to register if it is a primary collection.
+       </p>
+
+       <b><i>directories</i></b>
+
+       <p>Specify this element to tell the Harvest Tool where to crawl for data products. The following table describes the elements that are allowed:
+       </p>
+
+       <table>
+         <tr><th>Element Name</th><th>Description</th></tr>
+         <tr><td>path</td><td>Specify a directory path to start crawling. Specify this element tag more than once to point to multiple directories to crawl.</td></tr>
+         <tr><td>filePattern</td><td>Specify a file pattern to look for specific files. If omitted, the default is to get all files within a directory.</td></tr>
+       </table>
+
+       <p>In the example above, the Harvest tool will crawl the directory location, <i>/home/user/pds4/geo/product_files</i>, looking for files that have a <i>.xml</i> file extension. The default is to touch all files in the directory if the <i>filePattern</i> element is omitted from the policy file.
+       </p>
+
+       <p><b><i>validation</i></b></p>
+
+       <p>Specify this element to tell the Harvest Tool to validate a data product before registering it. If the data product does not pass the validation step, the data product will not be registered. The following table describes the elements that are allowed:
+       </p>
+
+       <table>
+         <tr><th>Element Name</th><th>Description</th></tr>
+         <tr><td>enabled</td><td>Specify a boolean value to tell the Harvest Tool whether or not to validate a data product.</td></tr>
+       </table>
+
+       <p>By default, if the <i>validation</i> element is not specified in the policy file, validation is turned on.
+       </p>
+
+       <p><b><i>candidates</i></b></p>
+
+       <p>Specify this element to tell the Harvest Tool what product types to register and what metadata to extract from a data product. This is a required element in the policy file. The following table describes the elements that are allowed:
+       </p>
+
+       <table>
+         <tr><th>Element Name</th><th>Description</th></tr>
+         <tr><td>namespace</td><td>Specify to allow the Harvest Tool to extract metadata that is in a namespace other than the default PDS namespace.</td></tr>
+         <tr><td>productMetadata</td><td>Specify to tell the tool what object types and what metadata to register.</td></tr>
+       </table>
+
+       <p>By default, the Harvest Tool defines the default namespace to be the PDS namespace, <i>http://pds.nasa.gov/schema/pds4/pds</i>. To override this default, specify the <i>default</i> attribute in the namespace element and give it a value of <i>true</i>. The following makes the <i>geo</i> namespace the default namespace:
+       </p>
+
+       <source>
+&lt;candidates&gt;
+  &lt;namespace prefix="geo" uri="http://pds.nasa.gov/schema/pds4/geo" default="true"/&gt;
+          ...
+       </source>
+
+       <p>Namespaces need to be defined in the Harvest policy file only if the metadata to be extracted exists in a namespace other than the PDS namespace. In the example above, a namespace with the prefix <i>geo</i> and uri <i>http://pds.nasa.gov/schema/pds4/geo</i> has been defined. This means that any xPath expressions defined in the policy file will be able to use the <i>geo</i> prefix to be able to extract metadata that are within the geo namespace. xPaths will be explained in greater detail in the <i>productMetadata</i> section.
+       </p>
+
+       <b><i>productMetadata</i></b>
+
+       <p>Specify this element to tell the Harvest Tool what metadata to register. It requires an attribute called <i>objectType</i> that tells the Harvest Tool what product types to register. The following table describes the elements that are allowed:
+       </p>
+
+       <table>
+         <tr><th>Element Name</th><th>Description</th></tr>
+         <tr><td>xPath</td><td>Specify an XPath expression to extract metadata.</td></tr>
+       </table>
+
+       <p>In the example above, the policy file tells the Harvest Tool to look for and register the <i>character_table</i> and <i>Product_Target</i> object types.
+       </p>
+
+       <p>Also in the example is a set of <i>xPath</i> elements found under each <i>productMetadata</i> element. This defines what metadata to extract from the different products. XPath is a query language that uses path expressions to select nodes in an XML document. These path expressions look very much like expressions in a traditional computer file system. In its simplest form, prepending a <i>//</i> before a name will find the element no matter where it is in the XML file.
+       </p>
+
+       <p>The following XPath expression will find the <i>creation_date_time</i> element within the default namespace, no matter where this element is located in the file:
+       </p>
+
+       <source>
+//creation_date_time
+       </source>
+
+       <p>The following XPath expression will find the <i>creation_date_time</i> element within the geo namespace, no matter where this element is located in the file:
+       </p>
+
+       <source>
+//geo:creation_date_time
+       </source>
+
+
+       <p>The following XPath expression will find all <i>target_name</i> elements that are children of <i>Subject_Area</i> within the default namespace:
+       </p>
+
+       <source>
+//Subject_Area/target_name
+       </source>
+
+       <p>The following XPath expression will find all <i>target_name</i> elements that are children of <i>Subject_Area</i> and that have a value of <i>MARS</i>:
+       </p>
+
+       <source>
+//Subject_Area/target_name[text()="MARS"]
+       </source>
+
+       <p>For a more detailed explanation on XPath, go to your favorite search engine and type <i>XPath tutorial</i>.
+       </p>
+     </subsection>
+     
+    <subsection name="PDS3 Product Registration">
+      <p>By default, the tool registers discovered PDS3 products under the <i>Product_Proxy_PDS3</i> objectType in the registry. Additionally, the tool has to dynamically create certain metadata in order to support ingestion of PDS3 data products into the registry. The <a href="index-pds3Harvesting.html">Harvesting of PDS3 Data Products</a> section details how the Harvest Tool behaves when registering PDS3 data products. If viewing this document in PDF form, see the appendix for details.
+      </p>
+       
+      <p>The following is an example of a policy file to perform product registration of PDS3 data products: 
+      </p>
+       
+      <source>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!-- Example of a Harvest policy configuration file that will do PDS3 data
+    product registration  --&gt;
+&lt;policy&gt;
+  &lt;!-- Specify a single directory containing the PDS3 data products to
+    register --&gt;
+  &lt;pds3Directory&gt;
+    &lt;path&gt;/data/pds3/dataset&lt;/path&gt;
+    &lt;filePattern&gt;*.LBL&lt;/filePattern&gt;
+  &lt;/pds3Directory&gt;
+  &lt;candidates&gt;
+    &lt;!-- Harvest will register PDS3 data products under the objectType 
+      'Product_Proxy_PDS3' --&gt;
+    &lt;pds3ProductMetadata&gt;
+        &lt;!-- Prefix to add to the LID of a PDS3 product registration --&gt;
+        &lt;lidPrefix&gt;URN:JPL:PDS:ENGINEERING&lt;/lidPrefix&gt;
+        &lt;!-- Associations to register with discovered PDS3 products --&gt;
+        &lt;associations&gt;
+          &lt;!-- Specify either a LID or LIDVID reference --&gt;
+          &lt;association&gt;
+            &lt;referenceType&gt;has_Target&lt;/referenceType&gt;
+            &lt;lidVidReference&gt;URN:NASA:PDS:target.MARS::1.0&lt;/lidVidReference&gt;
+          &lt;/association&gt;
+          &lt;association&gt;
+            &lt;referenceType&gt;has_Mission&lt;/referenceType&gt;
+            &lt;lidReference&gt;URN:NASA:PDS:mission.MER&lt;/lidReference&gt;
+          &lt;/association&gt;
+        &lt;/associations&gt;
+        &lt;!-- Register any additional metadata. They will be registered as 
+          slots with their element names in lowercase form. Default is to 
+          register metadata defined in the identification area of the 
+          Product_Proxy_PDS3 schema. --&gt;
+        &lt;ancillaryMetadata&gt;
+          &lt;elementName&gt;START_DATE_TIME&lt;/elementName&gt;
+          &lt;elementName&gt;STOP_DATE_TIME&lt;/elementName&gt;
+        &lt;/ancillaryMetadata&gt;
+    &lt;/pds3ProductMetadata&gt;    
+  &lt;/candidates&gt;      
+&lt;/policy&gt;       
+      </source>
+        
+      <p>This policy file is made up of the following complex type elements: <i>pds3Directory</i>, <i>pds3ProductMetadata</i>, <i>association</i>, <i>ancillaryMetadata</i>.
+      </p>
+      
+      <p><b><i>pds3Directory</i></b></p>
+      
+      <p>Specify this element to tell the Harvest Tool the directory location to crawl. The following table describes the elements that are allowed:
+      </p>
+      
+      <table>
+        <tr><th>Element Name</th><th>Description</th></tr>
+        <tr><td>path</td><td>Specify a directory location containing the PDS3 data products to register. Only one directory location is allowed per executable run.</td></tr>
+        <tr><td>filePattern</td><td>Specify a file pattern to look for specific files. If omitted, the default is to get all files within a directory.</td></tr>
+      </table>
+      
+      <p>In the example above, the Harvest Tool will crawl for PDS3 data products starting at the location <i>/data/pds3/dataset</i>, looking for files with a <i>.LBL</i> file extension.
+      </p>
+       
+      <p><b><i>pds3ProductMetadata</i></b></p>
+               
+      <p>Specify this element to tell the Harvest Tool what metadata to ingest into the registry when registering PDS3 data products. This element must be specified within the <i>candidates</i> tag as shown in the example. The following table describes the elements that are allowed:
+      </p>
+      
+      <table>
+        <tr><th>Element name</th><th>Description</th></tr>
+        <tr><td>lidPrefix</td><td>Specify a prefix to add to the logical identifier.</td></tr>
+        <tr><td>associations</td><td>Specify one or more associations.</td></tr>
+        <tr><td>ancillaryMetadata</td><td>Specify ancillary metadata to ingest into the registry for every discovered PDS3 data product.</td></tr>
+      </table>
+      
+      <p>In the example above, the logical identifiers of every discovered PDS3 data product will be prefixed with <i>URN:JPL:PDS:ENGINEERING</i>.
+      </p>
+      
+      <p><b><i>association</i></b></p>
+      
+      <p>Specify this element to tell the Harvest Tool what associations belong to each discovered PDS3 data product. Specifying one or more <i>association</i> elements is allowed and they must be within the <i>associations</i> tag as shown in the example. The following table describes the elements that are allowed:
       </p>
 
-      <source>
+      <table>
+        <tr><th>Element name</th><th>Description</th></tr>
+        <tr><td>referenceType</td><td>Specify the association type.</td></tr>
+        <tr><td>lidVidReference</td><td>Specify a lidvid reference.</td></tr>
+        <tr><td>lidReference</td><td>Specify a lid reference.</td></tr>
+      </table>
+      
+      <p>Note that <i>lidVidReference</i> and <i>lidReference</i> cannot be used together within the same <i>association</i> tag. Only one can be chosen.
+      </p>
+
+      <p>In the example above, each discovered PDS3 product will have two associations: one with a LIDVID of <i>URN:NASA:PDS:target.MARS::1.0</i> and association type of <i>has_Target</i>, and one with a LID of <i>URN:NASA:PDS:mission.MER</i> and association type of <i>has_Mission</i>.
+      </p>
+      
+      <p><b><i>ancillaryMetadata</i></b></p>
+      
+      <p>Specify this element to tell the Harvest tool what additional metadata to register. The following table describes the elements that are allowed:
+      </p>
+      
+      <table>
+        <tr><th>Element name</th><th>Description</th></tr>
+        <tr><td>elementName</td><td>Specify an element name found in the PDS3 data product label.</td></tr>
+      </table>
+      
+      <p>In the example above, the values from the following elements will be extracted from a PDS3 product label: <i>START_DATE_TIME</i> and <i>STOP_DATE_TIME</i>. If they are found in the label, they will be registered as slots in the registry, using their element names in lowercase form as the slot names. In this case, <i>start_date_time</i> and <i>stop_date_time</i> will be used as slot names in the registry.
+      </p>
+      
+    </subsection>      
+  </section>
+      
+  <section name="Report Format">
+    <p>This section describes the contents of the Harvest Tool report. At this time, the Harvest Tool only outputs a series of log messages. The log will report the success or failure of a discovered product attempting to be registered. Additionally, any syntactical errors in a discovered product are reported. A log consists of a severity level, file name, and a message. The following is an example of some of the log messages that can be expected from the Harvest Tool:
+     </p>
+
+     <source>
 PDS Harvest Tool Log
 
 Version             Version 0.2.0-dev
@@ -528,7 +644,7 @@ Summary:
 0 of 0 associations registered.
 
 End of Log
-      </source>
-    </section>
-  </body>
+     </source>
+   </section>
+ </body>
 </document>
