@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2010-2011, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Operation</title>
+    <author email="Jordan.H.Padams@jpl.nasa.gov">Jordan Padams</author>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Operation">
+      <p>The following topics can be found in this section:
+      </p>
+
+      <ul>
+        <li><a href="#Tool_Setup">Tool Setup</a></li>
+        <li><a href="#Tool_Execution">Tool Execution</a></li>
+      </ul>
+
+      <p>Note: The command-line examples in this section have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution.
+      </p>
+    </section>
+
+    <section name="Tool Setup">
+      <p>In order to execute the Report Service Update Tool, the user's environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.
+      </p>
+
+      <subsection name="UNIX-Based Setup">
+        <p>This section details the environment setup for UNIX-based machines. The preferred method is to specify the shell script, <i>RSUpdate</i>, on the command-line. Setting the <i>PATH</i> environment variable to the location of the script, enables the shell script to be executed from any location on the user's machine.
+        </p>
+
+        <p>The following command demonstrates how to set the <i>PATH</i> environment variable, by appending to its current setting:
+        </p>
+
+        <source>
+% setenv PATH ${PATH}:$HOME/${xdoc-artifactId}-${xdoc-version}/bin
+        </source>
+
+        <p>The tool can now be executed via the shell script as demonstrated in the following example:
+        </p>
+
+        <source>
+% RSUpdate &lt;command-line arguments&gt;
+        </source>
+
+        <p>Additional methods for setting up a UNIX-based environment can be found in the <a href="index-unix.html">UNIX Setup Options</a> section. If viewing this document in PDF form, see the appendix for details.
+        </p>
+      </subsection>
+
+      <subsection name="Windows Setup">
+        <p>This section details the environment setup for Windows machines. The preferred method is to specify the batch file, <i>RSUpdate.bat</i>, on the command-line. Setting the <i>PATH</i> environment variable to the location of the file, enables the batch file to be executed from any location on the user's machine.
+        </p>
+
+        <p>The following command demonstrates how to set the <i>PATH</i> environment variable, by appending to its current setting:
+        </p>
+
+        <source>
+C:\&gt; set PATH = %PATH%;C:\\${xdoc-artifactId}-${xdoc-version}\bin
+        </source>
+
+        <p>The tool can now be executed via the batch file as demonstrated in the following example:
+        </p>
+
+        <source>
+C:\&gt; RSUpdate &lt;command-line arguments&gt;
+        </source>
+
+        <p>Additional methods for setting up a Windows environment can be found in the <a href="index-win.html">Windows Setup Options</a> section. If viewing this document in PDF form, see the appendix for details.
+        </p>
+      </subsection>
+    </section>
+
+    <section name="Tool Execution">
+      <p>Report Service Update Tool can be executed in various ways. This section describes how to run the tool, as well as its behaviors and caveats.
+      </p>
+
+      <subsection name="Command-Line Options">
+        <p>The following table describes the command-line options available:
+        </p>
+
+        <table>
+          <tr><th>Command-Line Option</th><th>Description</th></tr>
+          <tr><td>-h, --help</td><td>Display usage.</td></tr>
+          <!-- tr><td> -l, - -log-file</td><td>Specify a log file name.  Default is standard out.</td></tr -->
+          <tr><td>-p, --properties-home</td><td>Specify the directory path where the *.properties files are located.  Default location is <i>../conf/</i> .</td></tr>
+          <tr><td>-n, --profile-name</td><td>Specify the name of a specific profile to update. Default updates ALL active profiles.</td></tr>
+          <tr><td>-s, --sawmill-off</td><td>Specify flag to turn off updating the Sawmill DB after downloading the remote logs.  Default = ON</td></tr>
+          <tr><td>-t, --transfer-off</td><td>Specify flag to turn off the downloading of remote logs.  Default = ON</td></tr>
+        </table>
+      </subsection>
+
+      <subsection name="Execute Report Service Update Tool">
+        <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script. Alternate methods for executing the tool can be found in the <a href="#Tool_Setup">Tool Setup</a> section.
+        </p>
+
+        <p>The following command demonstrates how to run the Report Service Update Tool to update all Sawmill profiles by downloading the remote logs and performing Sawmill database update using all default settings.
+        </p>
+
+        <source>
+% RSUpdate
+        </source>
+
+        <p>The following command demonstrates how to run the Report Service update Tool with the output going to a log file, <i>log.txt</i> instead of standard out:
+        </p>
+
+        <source>
+% RSUpdate -l log.txt
+        </source>
+        
+        <p>The following command demonstrates how to run the Report Service Update Tool for a specified profile only, i.e. <i>img-web</i>:
+        </p>
+
+        <source>
+% RSUpdate -n img-web
+        </source>
+        
+      </subsection>
+
+    </section>
+  </body>
+</document>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+## Handles specifying XML attributes 
+<MER_Product xmlns:pds="http://pds.nasa.gov/schema/pds4/pds" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://pds.nasa.gov/schema/pds4/pds">
+  
+## Scenario 1
+  <data_set_id>$pds3.DATA_SET_ID</data_set_id>
+  
+## Scenario 2 
+  <Encoded_Image>
+  	<mean>$pds3.IMAGE-MEAN</mean>
+  	<maximum>$pds3.IMAGE-MAXIMUM</maximum>
+  	<minimum>$pds3.IMAGE-MINIMUM</minimum>
+  </Encoded_Image>  
+
+  ## Scenario 3
+  <Coordinate_System>
+  $pds3.setIndexedGroup('ROVER_COORDINATE_SYSTEM-COORDINATE_SYSTEM_INDEX', 'ROVER_COORDINATE_SYSTEM-COORDINATE_SYSTEM_INDEX_NAME')
+  #foreach ( $index in $pds3.indexedGroup.indexList )
+  #set( $count = $velocityCount - 1 )
+  	<Index_Description>
+ 	  <coordinate_system_index>$index</coordinate_system_index>
+ 	  <coordinate_system_index_name>$pds3.indexedGroup.getIndexedValue('ROVER_COORDINATE_SYSTEM-COORDINATE_SYSTEM_INDEX_NAME', $count)</coordinate_system_index_name>
+  	</Index_Description>
+  #end
+  </Coordinate_System>
+  
+## Scenario 4
+  <Array_2D_Image>
+    <axis_order>FIRST_INDEX_FASTEST</axis_order>
+  </Array_2D_Image>
+  	
+## Scenario 5
+  <Array_2D_Image>
+    <Array_Axis>
+      <elements>$pds3.IMAGE-LINE_SAMPLES</elements>
+      <name>SAMPLES</name>
+    </Array_Axis>
+    <Array_Axis>
+      <elements>$pds3.IMAGE-LINES</elements>
+      <name>LINES</name>
+    </Array_Axis>
+  </Array_2D_Image>
+
+  
+## Scenario 6
+  <Geometry_Parameters>
+    <instrument_azimuth units="$pds3.getUnits('SITE_DERIVED_GEOMETRY_PARMS-INSTRUMENT_AZIMUTH')">$pds3.SITE_DERIVED_GEOMETRY_PARMS-INSTRUMENT_AZIMUTH</instrument_azimuth>
+  </Geometry_Parameters>
+  
+## Scenario 7
+  <File_Area>
+    <md5_checksum>$generate.md5_checksum</md5_checksum>
+  </File_Area>
+</MER_Product>
