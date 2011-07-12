@@ -21,7 +21,7 @@
 set REGISTRY_SERVICE=http://localhost:8080/registry-service
 
 :: Load Object Type Classification Scheme
-curl -X POST -H "Content-type:application/xml" -v -d @../conf/registryObjectTypeScheme.xml "%REGISTRY_SERVICE%/registry/configure?name=Core+Objects&description=This+configures+the+core+set+of+registry+objects"
+curl -X POST -H "Content-type:application/xml" -v -d @../conf/registryObjectTypeScheme.xml "%REGISTRY_SERVICE%/configure?name=Core+Objects&description=This+configures+the+core+set+of+registry+objects"
 
 :: Load PDS Object Type Classification Nodes
-curl -X POST -H "Content-type:application/xml" -v -d @../conf/PDSObjectTypes.xml "%REGISTRY_SERVICE%/registry/configure?name=PDS+Objects&description=This+configures+PDS+object+types"
+curl -X POST -H "Content-type:application/xml" -v -d @../conf/PDSObjectTypes.xml "%REGISTRY_SERVICE%/configure?name=PDS+Objects&description=This+configures+PDS+object+types"

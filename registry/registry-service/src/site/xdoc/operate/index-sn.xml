@@ -47,7 +47,7 @@
 
       <source>
 % curl -X POST -H "Content-type:application/xml" -v -d @new_scheme.xml \
-http://localhost:8080/registry-service/registry/schemes
+http://localhost:8080/registry-service/schemes
       </source>
 
       <p>The following is an example of a node description in XML form:
@@ -69,7 +69,7 @@ http://localhost:8080/registry-service/registry/schemes
 
       <source>
 % curl -X POST -H "Content-type:application/xml" -v -d @new_node_product.xml \
-http://localhost:8080/registry-service/registry/\
+http://localhost:8080/registry-service/\
 schemes/urn:registry:classificationScheme:ObjectTypeScheme:Test/nodes
       </source>
     </section>

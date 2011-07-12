@@ -43,7 +43,7 @@ import org.springframework.stereotype.Component;
  * @author pramirez
  * 
  */
-@Path("registry")
+@Path("/")
 @Component
 @Scope("request")
 public class RegistryResource {
@@ -120,14 +120,14 @@ public class RegistryResource {
    * Synchronizes the incoming registry objects with those already present in
    * the registry.
    * 
-   * @param products
+   * @param object
    *          from some other registry
    */
   @PUT
   @Path("sync")
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public void synchronize(Collection<RegistryObject> products) {
+  public void synchronize(Collection<RegistryObject> objects) {
     // TODO implement
   }
 
@@ -135,7 +135,7 @@ public class RegistryResource {
    * Provides access to operations that can be done on extrinsics. The extrinsic
    * resource is simply a subresource of the registry resource.
    * 
-   * @return product resource that will process the remaining portion of the
+   * @return extrinsic resource that will process the remaining portion of the
    *         request
    */
   @Path("extrinsics")

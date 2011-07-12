@@ -156,7 +156,7 @@ hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
 * About to connect() to localhost port 8080 (#0)
 *   Trying ::1... connected
 * Connected to localhost (::1) port 8080 (#0)
-&gt; POST /registry-service/registry/configure?name=Core+Objects&amp;\
+&gt; POST /registry-service/configure?name=Core+Objects&amp;\
 description=This+configures+the+core+set+of+registry+objects HTTP/1.1
 &gt; User-Agent: curl/7.19.7 (universal-apple-darwin10.0) libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3
 &gt; Host: localhost:8080
@@ -168,7 +168,7 @@ description=This+configures+the+core+set+of+registry+objects HTTP/1.1
 &lt; HTTP/1.1 100 Continue
 &lt; HTTP/1.1 201 Created
 &lt; Server: Apache-Coyote/1.1
-&lt; Location: http://localhost:8080/registry-service/registry/packages/\
+&lt; Location: http://localhost:8080/registry-service/packages/\
 urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
 &lt; Content-Type: text/plain
 &lt; Transfer-Encoding: chunked
@@ -181,7 +181,7 @@ urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
 * About to connect() to localhost port 8080 (#0)
 *   Trying ::1... connected
 * Connected to localhost (::1) port 8080 (#0)
-&gt; POST /registry-service/registry/configure?name=PDS+Objects&amp;\
+&gt; POST /registry-service/configure?name=PDS+Objects&amp;\
 description=This+configures+PDS+object+types HTTP/1.1
 &gt; User-Agent: curl/7.19.7 (universal-apple-darwin10.0) libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3
 &gt; Host: localhost:8080
@@ -193,7 +193,7 @@ description=This+configures+PDS+object+types HTTP/1.1
 &lt; HTTP/1.1 100 Continue
 &lt; HTTP/1.1 201 Created
 &lt; Server: Apache-Coyote/1.1
-&lt; Location: http://localhost:8080/registry-service/registry/packages/\
+&lt; Location: http://localhost:8080/registry-service/packages/\
 urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
 &lt; Content-Type: text/plain
 &lt; Transfer-Encoding: chunked
