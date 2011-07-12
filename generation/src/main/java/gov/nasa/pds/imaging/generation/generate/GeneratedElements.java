@@ -1,18 +1,18 @@
 package gov.nasa.pds.imaging.generation.generate;
 
-import java.io.File;
-import java.util.HashMap;
-
 import gov.nasa.pds.imaging.generation.TemplateException;
 import gov.nasa.pds.imaging.generation.context.PDSContext;
 import gov.nasa.pds.imaging.generation.generate.elements.Element;
-import gov.nasa.pds.imaging.generation.label.PDS3Label;
-import gov.nasa.pds.imaging.generation.label.PDSObject;
 import gov.nasa.pds.imaging.generation.util.XMLUtil;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GeneratedElements implements PDSContext {
+	/** Specifies the CONTEXT to be mapped to the Velocity Templates.  **/
 	public static final String CONTEXT = "generate";
 	
+	/** The XML File Path for the file with the generated value mappings **/
     public static final String XML_FILENAME = "../conf/generated-mappings.xml";
     
     /** XML element name holding the key value **/
@@ -21,8 +21,8 @@ public class GeneratedElements implements PDSContext {
     /** XML element name holding the mapped value **/
     public static final String XML_VALUE = "class";
     
-    
-    public HashMap<String, Class<?>> genValsMap = new HashMap<String, Class<?>>();
+    /** Map that will hole the String -> Class mappings specified in the XML **/
+    public Map<String, Class<?>> genValsMap = new HashMap<String, Class<?>>();
 	
 	public GeneratedElements() throws TemplateException, Exception {
 		this.genValsMap.putAll(XMLUtil.getGeneratedMappings(XML_FILENAME, XML_KEY, XML_VALUE));

@@ -1,7 +1,5 @@
 package gov.nasa.pds.imaging.generation.cli.options;
 
-import gov.nasa.pds.imaging.generation.cli.options.ToolsOption;
-
 import org.apache.commons.cli.Options;
 
 public enum Flag  {

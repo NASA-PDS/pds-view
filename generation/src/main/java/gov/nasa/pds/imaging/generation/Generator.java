@@ -1,19 +1,13 @@
 package gov.nasa.pds.imaging.generation;
 
 import gov.nasa.pds.imaging.generation.context.ContextMappings;
-import gov.nasa.pds.imaging.generation.generate.GeneratedElements;
-import gov.nasa.pds.imaging.generation.label.PDS3Label;
 import gov.nasa.pds.imaging.generation.label.PDSObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -22,7 +16,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;

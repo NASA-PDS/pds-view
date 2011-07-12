@@ -8,14 +8,17 @@ public class Md5Checksum implements Element {
 		this.md5Checksum = "My Checksum";
 	}
 	
+	@Override
 	public String getValue() {
 		return this.md5Checksum;
 	}
 	
+	@Override
 	public String getUnits() {
 		return this.md5Checksum;
 	}
 	
+	@Override
 	public void setParameters() {
 		
 	}

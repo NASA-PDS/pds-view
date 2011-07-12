@@ -16,32 +16,32 @@
   $Id$
 -->
 
-<project name="PDS4 Translation Tool">
+<project name="PDS4 Generation Tool">
   <bannerLeft>
     <src>images/pds4_logo.jpg</src>
     <href>http://pds-cm.jpl.nasa.gov/2010/</href>
   </bannerLeft>
 
   <bannerRight>
-    <name>PDS4 Translation Tool</name>
+    <name>PDS4 Generation Tool</name>
   </bannerRight>
 
   <version/>
 
   <body>
     <links>
-      <item name="PDS4 Translation Tool" href="http://pds-cm.jpl.nasa.gov/2010/report/rs-update/index.html" />
+      <item name="PDS4 Generation Tool" href="http://pds-cm.jpl.nasa.gov/2010/generation/index.html" />
     </links>
 
     <menu name="Software Documentation">
-      <item name="About Translation Tool" href="index.html"/>
+      <item name="About Generation Tool" href="index.html"/>
       <item name="Release Notes" href="release/index.html"/>
       <item name="Installation" href="install/index.html"/>
       <item name="Operation" href="operate/index.html"/>
     </menu>
 
     <menu name="Download">
-      <item name="Translation Tool Guide (pdf)" href="${project.artifactId}-${project.version}.pdf"/>
+      <item name="Generation Tool Guide (pdf)" href="${project.artifactId}-${project.version}.pdf"/>
     </menu>
 
     <menu ref="reports"/>

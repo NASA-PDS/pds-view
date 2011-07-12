@@ -8,22 +8,15 @@ package gov.nasa.pds.imaging.generation;
 
 import gov.nasa.pds.imaging.generation.cli.options.Flag;
 import gov.nasa.pds.imaging.generation.cli.options.InvalidOptionException;
-import gov.nasa.pds.imaging.generation.generate.GeneratedElements;
 import gov.nasa.pds.imaging.generation.label.PDS3Label;
 import gov.nasa.pds.imaging.generation.label.PDSObject;
 import gov.nasa.pds.imaging.generation.util.ToolInfo;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.commons.cli.CommandLine;
@@ -32,41 +25,27 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.ParseException;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
-import org.xml.sax.SAXException;
 
 public class GenerationLauncher {
 	private PDSObject pdsObject = null;
     
     private String filePath = null;
-    
-    //private Map<String,Map> mapped = null;
-    
-    //private VelocityContext context;
-    //private String templatePath;
+
     private File templateFile;
-    //private Template template;
     private File outputFile;
     private boolean debug;
     Generator translator;
-    private List<String> contextList;
     
     public GenerationLauncher() {
-		//this.context = null;
-		//this.templatePath = "";
 		this.templateFile = null;
-		//this.template = null;
 		this.pdsObject = null;
 		this.filePath = null;
 		this.outputFile = null;
 		this.debug = false;
 		this.translator = null;
-		this.contextList = new ArrayList<String>();
     }
     
     /**
@@ -103,14 +82,8 @@ public class GenerationLauncher {
                 System.exit(0);
             } else if (o.getOpt().equals(Flag.PDS3.getShortName())) {
             	this.pdsObject = new PDS3Label(o.getValue().trim());
-            	//this.contextList.add(PDS3Label.CONTEXT);	// Add PDS3Label context since PDS3 Label is included on command-line
-            	//translator.setPDSObject(object);
-                //this.pds3Label = new PDS3Label(o.getValue().trim());
-            	//this.label = new PDS3Label("src/main/resources/mer/1p216067135edn76pop2102l2m1.img");
             } else if (o.getOpt().equals(Flag.TEMPLATE.getShortName())) {
             	this.templateFile = new File(o.getValue().trim());
-                //System.out.println(this.templatePath);
-            	//this.templatePath = "/Users/jpadams/mer_template.vm";
             } else if (o.getOpt().equals(Flag.FILE.getShortName())) {
                 this.filePath = o.getValue();
             } else if (o.getOpt().equals(Flag.OUTPUT.getShortName())) {
@@ -156,7 +129,7 @@ public class GenerationLauncher {
     public final void displayHelp() {
         int maxWidth = 80;
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp(maxWidth, "PDS4Transform <policy file> <options>",
+        formatter.printHelp(maxWidth, "PDS4Generate <policy file> <options>",
                 null, Flag.getOptions(), null);
     }
     
@@ -165,7 +138,7 @@ public class GenerationLauncher {
      */
     public static void main(String[] args) {
         if (args.length == 0) {
-        	System.out.println("\nType 'PDS4Transform -h' for usage");
+        	System.out.println("\nType 'PDS4Generate -h' for usage");
             System.exit(0);
        	}
         try {
@@ -183,63 +156,6 @@ public class GenerationLauncher {
             System.out.println(e.getMessage());
             System.exit(1);
         }
-    	
-    	
-       /* PDS3Label label = new PDS3Label(args[0]);
-        //System.out.println("-----------Original Label------------");
-        //System.out.println(label.toString());
-        
-        PDS4Transform transform;
-        try {
-            transform = new PDS4Transform(label, 
-            		new File(args[1]),
-            		args[2]);
-
-        System.out.println("-----------New Label----------");
-        //PDS4Label newLabel = transform.getNewLabel();
-        transform.display();
-        //newLabel.toString();
-        //System.out.println(newLabel.clean());
-        
-        } catch (ParserConfigurationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SAXException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //Label normLabel = norm.getNormalizedLabel();
-        //System.out.println("-----------Normalized Label----------");
-        //System.out.println(normLabel.toString());
-        
-        // Display output for SQL insert - Can probably delete
-        /*System.out.println();
-        Map<String,Map> mapped = norm.getSchemaMappedLabel();
-        for (Iterator it = mapped.keySet().iterator(); it.hasNext();) {
-            String tab = (String)it.next();
-            System.out.println("insert into "+tab);
-            StringBuffer colNames = new StringBuffer();
-            StringBuffer values = new StringBuffer();
-            Map map = mapped.get(tab);
-            for (Iterator it2 = map.keySet().iterator(); it2.hasNext(); ) {
-                String colt = (String)it2.next();
-                colNames.append(colt+",");
-                values.append(map.get(colt)+",");
-                System.out.println("\t"+colt+"="+map.get(colt));
-            }
-            
-            // remove the last ","
-            System.out.println("("+colNames.substring(0,colNames.length()-1)+")");
-            System.out.println("values ("+values.substring(0,values.length()-1)+")");
-        }*/
-        
-
-
     }
 
 }

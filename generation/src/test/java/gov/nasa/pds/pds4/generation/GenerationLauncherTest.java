@@ -4,7 +4,7 @@
 //All rights reserved.                                                            */
 //U.S. Government sponsorship is acknowledged.                                    */
 //******************************************************************* *************/
-package gov.nasa.pds.pds4.translation;
+package gov.nasa.pds.pds4.generation;
 
 import gov.nasa.pds.imaging.generation.GenerationLauncher;
 

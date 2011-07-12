@@ -17,7 +17,6 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -102,11 +101,13 @@ public class PDS3Label implements PDSObject {
 
     }
     
-    public String getContext() {
+    @Override
+	public String getContext() {
     	return CONTEXT;
     }
     
-    public String getFilePath() {
+    @Override
+	public String getFilePath() {
     	return this.filePath;
     }
     
@@ -164,7 +165,7 @@ public class PDS3Label implements PDSObject {
      */
     private void handleItemNode(Node item, Map container) {
         Map<String, String> attributes = getAttributes(item);
-        String elementName = (String)attributes.get("key");
+        String elementName = attributes.get("key");
         //Map<String, Object> elementValues = new HashMap<String, Object>();
         //elementValues.put("units",  attributes.get("units"));
         
@@ -262,11 +263,13 @@ public class PDS3Label implements PDSObject {
      * @param key
      * @return value for key
      */
-    public String get(String key) {
+    @Override
+	public String get(String key) {
     	return getItemNode(key).getValue();
     }
     
-    public String getUnits(String key) {
+    @Override
+	public String getUnits(String key) {
     	return getItemNode(key).getUnits();
     }
     
@@ -291,7 +294,8 @@ public class PDS3Label implements PDSObject {
         }
     }
     
-    public void setIndexedGroup(String[] keys) {
+    @Override
+	public void setIndexedGroup(String[] keys) {
     	this.indexedGroup = new IndexedGroup(getList(keys[0]));
     	
     	String key;
@@ -305,11 +309,13 @@ public class PDS3Label implements PDSObject {
      * Called directly from template in order to produce an IndexedGroup Object
      * @return
      */
-    public IndexedGroup getIndexedGroup() {
+    @Override
+	public IndexedGroup getIndexedGroup() {
     	return this.indexedGroup;
     }
     
-    public List getList(String key) {
+    @Override
+	public List getList(String key) {
         return getItemNode(key).getValues();
     }
     

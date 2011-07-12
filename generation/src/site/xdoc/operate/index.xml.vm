@@ -38,7 +38,7 @@
     </section>
 
     <section name="Tool Setup">
-      <p>In order to execute the Report Service Update Tool, the user's environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.
+      <p>In order to execute the PDS4 Generation Tool, the user's environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.
       </p>
 
       <subsection name="UNIX-Based Setup">
@@ -87,7 +87,7 @@ C:\&gt; RSUpdate &lt;command-line arguments&gt;
     </section>
 
     <section name="Tool Execution">
-      <p>Report Service Update Tool can be executed in various ways. This section describes how to run the tool, as well as its behaviors and caveats.
+      <p>PDS4 Generation Tool can be executed in various ways. This section describes how to run the tool, as well as its behaviors and caveats.
       </p>
 
       <subsection name="Command-Line Options">
@@ -96,39 +96,35 @@ C:\&gt; RSUpdate &lt;command-line arguments&gt;
 
         <table>
           <tr><th>Command-Line Option</th><th>Description</th></tr>
+          <tr><td>-d, --debug</td><td>Directs output to screen, not file.</td></tr>
+          <tr><td>-f, --file-list</td><td>Specify the path for a file containing a list of file paths for PDS3 Labels</td></tr>
           <tr><td>-h, --help</td><td>Display usage.</td></tr>
-          <!-- tr><td> -l, - -log-file</td><td>Specify a log file name.  Default is standard out.</td></tr -->
-          <tr><td>-p, --properties-home</td><td>Specify the directory path where the *.properties files are located.  Default location is <i>../conf/</i> .</td></tr>
-          <tr><td>-n, --profile-name</td><td>Specify the name of a specific profile to update. Default updates ALL active profiles.</td></tr>
-          <tr><td>-s, --sawmill-off</td><td>Specify flag to turn off updating the Sawmill DB after downloading the remote logs.  Default = ON</td></tr>
-          <tr><td>-t, --transfer-off</td><td>Specify flag to turn off the downloading of remote logs.  Default = ON</td></tr>
+          <tr><td>-o, --output-file</td><td>Specify an output filename.  Default is PDS3 label name with _pds4 suffix.</td></tr>
+          <tr><td>-p, --pds3-label</td><td>Specify the file path for the PDS3 Label to be converted to PDS4</td></tr>
+          <tr><td>-t, --template</td><td>Specify the file path for the Velocity template for PDS3 -> PDS4 conversion</td></tr>
+          <tr><td>-V, --version</td><td>Display application version.</td></tr>
         </table>
       </subsection>
 
-      <subsection name="Execute Report Service Update Tool">
+      <subsection name="Execute PDS4 Generation Tool">
         <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script. Alternate methods for executing the tool can be found in the <a href="#Tool_Setup">Tool Setup</a> section.
         </p>
 
-        <p>The following command demonstrates how to run the Report Service Update Tool to update all Sawmill profiles by downloading the remote logs and performing Sawmill database update using all default settings.
+        <p>The following command demonstrates how to run the PDS4 Generation Tool to convert from a PDS3 Label to a PDS4 Label using a Velocity template file and output to standard out:
         </p>
 
         <source>
-% RSUpdate
+% PDS4Generate -d -p &lt;pds3-label-path&gt; -t &lt;velocity-template-path&gt;
         </source>
 
-        <p>The following command demonstrates how to run the Report Service update Tool with the output going to a log file, <i>log.txt</i> instead of standard out:
+        <p>The following command demonstrates how to run the PDS4 Generation Tool to convert from a PDS3 Label to a PDS4 Label using a Velocity template file and output to a file:
         </p>
 
         <source>
-% RSUpdate -l log.txt
+% PDS4Generate -p &lt;pds3-label-path&gt; -t &lt;velocity-template-path&gt;
         </source>
-        
-        <p>The following command demonstrates how to run the Report Service Update Tool for a specified profile only, i.e. <i>img-web</i>:
-        </p>
 
-        <source>
-% RSUpdate -n img-web
-        </source>
+	<p>The output would go into a file &lt;pds3-label-path&gt;_pd4</p>
         
       </subsection>
 

@@ -29,11 +29,13 @@ public class FlatLabel implements LabelObject {
         this._type = type;
     }
     
-    public void setElements(Map elements) {
+    @Override
+	public void setElements(Map elements) {
         this._flatLabel = elements;
     }
     
-    public Object getElement(String key) {
+    @Override
+	public Object getElement(String key) {
         return this._flatLabel.get(key);
     }
     

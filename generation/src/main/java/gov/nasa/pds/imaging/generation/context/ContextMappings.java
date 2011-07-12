@@ -2,9 +2,7 @@ package gov.nasa.pds.imaging.generation.context;
 
 import gov.nasa.pds.imaging.generation.TemplateException;
 import gov.nasa.pds.imaging.generation.util.XMLUtil;
-import gov.nasa.pds.imaging.generation.generate.*;
 
-import java.io.File;
 import java.util.HashMap;
 
 public class ContextMappings {
