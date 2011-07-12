@@ -23,6 +23,8 @@ public class GeneratedElements implements PDSContext {
     
     /** Map that will hole the String -> Class mappings specified in the XML **/
     public Map<String, Class<?>> genValsMap = new HashMap<String, Class<?>>();
+    
+    private String filePath;
 	
 	public GeneratedElements() throws TemplateException, Exception {
 		this.genValsMap.putAll(XMLUtil.getGeneratedMappings(XML_FILENAME, XML_KEY, XML_VALUE));
@@ -33,10 +35,11 @@ public class GeneratedElements implements PDSContext {
     }
 	
 	@Override
-	public String get(String value) {
+	public String get(String value) throws TemplateException {
 		Element el;
 		try {
 			el = (Element) this.genValsMap.get(value).newInstance();
+			el.setParameters(this.filePath);
 			return el.getValue();
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
@@ -44,8 +47,17 @@ public class GeneratedElements implements PDSContext {
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (NullPointerException e) {
+			return "Object Not Found";
+			//throw new TemplateException("Generated value: " + value + " Not expected.  Verify class mapping exists.");
 		}
 		return null;
+	}
+	
+	@Override
+	public void setParameters(String filePath) {
+		System.out.println("GeneratedElements-filePath " + filePath);
+		this.filePath = filePath;
 	}
 
 	@Override

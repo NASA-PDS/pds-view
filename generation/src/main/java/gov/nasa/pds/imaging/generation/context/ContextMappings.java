@@ -21,6 +21,15 @@ public class ContextMappings {
      * @throws TemplateException
      * @throws Exception
      */
+	public ContextMappings(String filePath) throws TemplateException, Exception {
+		for (String cl : XMLUtil.getClassList(XML_FILENAME, XML_TAG)) {
+			PDSContext context = (PDSContext) Class.forName(cl).newInstance();
+			System.out.println("ContextMappings-filePath " + filePath);
+			context.setParameters(filePath);
+			this.contextMap.put(context.getContext(), context);
+		}
+	}
+	
 	public ContextMappings() throws TemplateException, Exception {
 		for (String cl : XMLUtil.getClassList(XML_FILENAME, XML_TAG)) {
 			PDSContext context = (PDSContext) Class.forName(cl).newInstance();

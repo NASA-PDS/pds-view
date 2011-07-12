@@ -98,7 +98,34 @@ public class PDS3Label implements PDSObject {
             // TODO - create a logger
             fnfe.printStackTrace();
         }
-
+    }
+    
+    public PDS3Label() {
+    	this.flatLabel = new TreeMap<String, Map>();
+    	
+        // TODO - make this configurable
+        // read from config file maybe?
+        this.pdsObjectTypes = new ArrayList<String>();
+        this.pdsObjectTypes.add(FlatLabel.GROUP_TYPE);
+        this.pdsObjectTypes.add(FlatLabel.OBJECT_TYPE);
+    }
+    
+    @Override
+    public void setParameters(String filePath) {
+    	this.filePath = filePath;
+        
+        try { 
+            parseLabel(filePath);
+            
+            // start of traversal of DOM
+            Node root = this.document.getDocumentElement();
+            
+            traverseDOM(root);
+                        
+        } catch (FileNotFoundException fnfe) {
+            // TODO - create a logger
+            fnfe.printStackTrace();
+        }
     }
     
     @Override

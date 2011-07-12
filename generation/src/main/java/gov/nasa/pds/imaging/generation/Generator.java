@@ -54,7 +54,7 @@ public class Generator {
 		this.pdsObject = pdsObject;
 		this.filePath = filePath;
 		this.outputFile = outputFile;
-		this.ctxMappings = new ContextMappings();
+		this.ctxMappings = new ContextMappings(pdsObject.getFilePath());
     	
     	initTemplate();
     	setContext();
@@ -97,7 +97,7 @@ public class Generator {
     
     public void generate(boolean toFile) throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException, TransformerException, SAXException, ParserConfigurationException {
     	StringWriter sw = new StringWriter();
-    	PrintWriter out = new PrintWriter(this.outputFile);
+    	PrintWriter out = null;
     	try {
 	    	//this.template.merge( this.context, clean(sw) );
     		this.template.merge(this.context, sw);
@@ -105,12 +105,15 @@ public class Generator {
 	    	if (toFile) {
 	    		System.out.println(clean(sw));
 	    	} else {
+	    		out = new PrintWriter(this.outputFile);
 	    		out.write(clean(sw));
 	    		
 	    	}
     	} finally {
     		sw.close();
-    		out.close();	
+    		try {
+    			out.close();
+    		} catch (NullPointerException e) { }
     	}
     }
     

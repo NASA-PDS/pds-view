@@ -1,23 +1,24 @@
 package gov.nasa.pds.imaging.generation.generate.elements;
 
-public class FileSize {
+import java.io.File;
 
-	private String fileSize;
+public class FileSize implements Element {
+
+	private File file;
 	
-	public FileSize() {
-		this.fileSize = "My File Size";
-	}
+	public FileSize() { }
 	
 	public String getValue() {
-		return this.fileSize;
+		return String.valueOf(this.file.length());
 	}
 	
 	public String getUnits() {
-		return this.fileSize;
+		return null;
 	}
 	
-	public void setParameters() {
-		
+	public void setParameters(String filePath) {
+		System.out.println("FileSize-filePath " + filePath);
+		this.file = new File(filePath);
 	}
 	
 }
