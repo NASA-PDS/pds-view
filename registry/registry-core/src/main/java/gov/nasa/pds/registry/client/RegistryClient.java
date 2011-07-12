@@ -102,7 +102,7 @@ public class RegistryClient {
    */
   public <T extends RegistryObject> T getObject(String guid,
       Class<T> objectClass) throws RegistryServiceException {
-    WebResource.Builder builder = service.path("registry").path(
+    WebResource.Builder builder = service.path(
         resourceMap.get(objectClass)).path(guid).getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).get(
         ClientResponse.class);
@@ -124,7 +124,7 @@ public class RegistryClient {
    */
   public String publishObject(RegistryObject object)
       throws RegistryServiceException {
-    WebResource.Builder builder = service.path("registry").path(
+    WebResource.Builder builder = service.path(
         resourceMap.get(object.getClass())).getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).post(
         ClientResponse.class, object);
@@ -162,7 +162,7 @@ public class RegistryClient {
    */
   public String versionObject(RegistryObject object, Boolean major)
       throws RegistryServiceException {
-    WebResource.Builder builder = service.path("registry").path(
+    WebResource.Builder builder = service.path(
         resourceMap.get(object.getClass())).path("logicals").path(
         object.getLid()).queryParam("major", major.toString())
         .getRequestBuilder();
@@ -186,7 +186,7 @@ public class RegistryClient {
    */
   public void updateObject(RegistryObject object)
       throws RegistryServiceException {
-    WebResource.Builder builder = service.path("registry").path(
+    WebResource.Builder builder = service.path(
         resourceMap.get(object.getClass())).path(object.getGuid())
         .getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).post(
@@ -212,7 +212,7 @@ public class RegistryClient {
    */
   public <T extends RegistryObject> T getLatestObject(String lid,
       Class<T> objectClass) throws RegistryServiceException {
-    WebResource.Builder builder = service.path("registry").path(
+    WebResource.Builder builder = service.path(
         resourceMap.get(objectClass)).path("logicals").path(lid).path("latest")
         .getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).get(
@@ -247,7 +247,7 @@ public class RegistryClient {
     if (rows != null) {
       params.add("rows", rows.toString());
     }
-    WebResource.Builder builder = service.path("registry").path(
+    WebResource.Builder builder = service.path(
         resourceMap.get(objectClass)).queryParams(params).getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).get(
         ClientResponse.class);
@@ -315,7 +315,7 @@ public class RegistryClient {
 
     params.add("queryOp", query.getOperator().toString());
 
-    WebResource.Builder builder = service.path("registry").path(
+    WebResource.Builder builder = service.path(
         resourceMap.get(ExtrinsicObject.class)).queryParams(params)
         .getRequestBuilder();
 
@@ -375,7 +375,7 @@ public class RegistryClient {
 
     params.add("queryOp", query.getOperator().toString());
 
-    WebResource.Builder builder = service.path("registry").path(
+    WebResource.Builder builder = service.path(
         resourceMap.get(Association.class)).queryParams(params)
         .getRequestBuilder();
 
