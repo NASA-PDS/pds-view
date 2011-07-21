@@ -13,8 +13,10 @@
 // $Id$
 package gov.nasa.pds.harvest.crawler.daemon;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.apache.xmlrpc.WebServer;
@@ -23,11 +25,14 @@ import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerAction;
 import gov.nasa.jpl.oodt.cas.crawl.daemon.CrawlDaemon;
 import gov.nasa.jpl.oodt.cas.crawl.status.IngestStatus;
 import gov.nasa.jpl.oodt.cas.crawl.status.IngestStatus.Result;
+import gov.nasa.jpl.oodt.cas.metadata.Metadata;
+import gov.nasa.pds.harvest.association.AssociationPublisher;
+import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.crawler.PDSProductCrawler;
-import gov.nasa.pds.harvest.crawler.actions.AssociationPublisherAction;
 import gov.nasa.pds.harvest.crawler.stats.AssociationStats;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
+import gov.nasa.pds.harvest.security.SecuredUser;
 
 /**
  * Class that provides the capability to make the Harvest Tool run
@@ -47,6 +52,15 @@ public class HarvestDaemon extends CrawlDaemon {
   /** A list of crawlers. */
   private List<PDSProductCrawler> crawlers;
 
+  /** The registry url. */
+  private String registryUrl;
+
+  /** An authenticated user. */
+  private SecuredUser securedUser;
+
+  /** The association publisher. */
+  private AssociationPublisher associationPublisher;
+
   /**
    * Constructor
    *
@@ -54,10 +68,14 @@ public class HarvestDaemon extends CrawlDaemon {
    * @param crawlers A list of PDSProductCrawler objects to be used during
    * crawler persistance.
    * @param port The port nunmber to be used.
+   * @param associationPublisher An AssociationPublisher object to process
+   * the associations.
    */
-  public HarvestDaemon(int wait, List<PDSProductCrawler> crawlers, int port) {
+  public HarvestDaemon(int wait, List<PDSProductCrawler> crawlers, int port,
+      AssociationPublisher associationPublisher) {
     super(wait, null, port);
-    daemonPort = port;
+    this.daemonPort = port;
+    this.associationPublisher = associationPublisher;
     this.crawlers = new ArrayList<PDSProductCrawler>();
     this.crawlers.addAll(crawlers);
   }
@@ -88,12 +106,19 @@ public class HarvestDaemon extends CrawlDaemon {
         totalFilesFound += crawler.getNumDiscoveredProducts()
         + crawler.getNumBadFiles() + crawler.getNumFilesSkipped();
       }
+      for ( Entry<File, Metadata> entry :
+        Constants.registeredProducts.entrySet()) {
+        associationPublisher.publish(entry.getKey(), entry.getValue());
+      }
       log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION, totalFilesFound
           + " new file(s) found."));
       //Print out some statistics if new files were found
       if (totalFilesFound != 0) {
         printSummary();
       }
+      //Make sure to clear the map of registered products
+      Constants.registeredProducts.clear();
+
       log.log(new ToolsLogRecord(ToolsLevel.INFO, "Sleeping for: ["
           + getWaitInterval() + "] seconds"));
       // take a nap
@@ -146,7 +171,7 @@ public class HarvestDaemon extends CrawlDaemon {
           ++totalProductsNotRegistered;
         }
       }
-      AssociationStats aStats = getAssociationStats(crawler.getActions());
+      AssociationStats aStats = associationPublisher.getAssociationStats();
       totalAssociationsRegistered += aStats.getNumRegistered();
       totalAssociationsNotRegistered += aStats.getNumNotRegistered();
       totalAssociationsSkipped += aStats.getNumSkipped();
@@ -166,32 +191,5 @@ public class HarvestDaemon extends CrawlDaemon {
           totalAssociationsRegistered + " of " + totalAssociations
           + " associations registered, " + totalAssociationsSkipped
           + " skipped."));
-  }
-
-  /**
-   * Gets the association stats object.
-   *
-   * @param actions A list of crawler actions.
-   *
-   * @return The object representation of association statistics.
-   */
-  private AssociationStats getAssociationStats(
-      List<CrawlerAction> actions) {
-    for (CrawlerAction action : actions) {
-      if (action instanceof AssociationPublisherAction) {
-        AssociationPublisherAction ap = (AssociationPublisherAction) action;
-        return ap.getAssociationStats();
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Get the crawler being used.
-   *
-   * @return The crawler.
-   */
-  public PDSProductCrawler getCrawler() {
-    return (PDSProductCrawler) super.getCrawler();
   }
 }

@@ -14,12 +14,15 @@
 package gov.nasa.pds.harvest;
 
 import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerAction;
+import gov.nasa.jpl.oodt.cas.metadata.Metadata;
+import gov.nasa.pds.harvest.association.AssociationPublisher;
+import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.crawler.BundleCrawler;
 import gov.nasa.pds.harvest.crawler.CollectionCrawler;
 import gov.nasa.pds.harvest.crawler.PDS3ProductCrawler;
 import gov.nasa.pds.harvest.crawler.PDSProductCrawler;
-import gov.nasa.pds.harvest.crawler.actions.AssociationPublisherAction;
 import gov.nasa.pds.harvest.crawler.actions.RegistryUniquenessCheckerAction;
+import gov.nasa.pds.harvest.crawler.actions.SaveMetadataAction;
 import gov.nasa.pds.harvest.crawler.actions.ValidateProductAction;
 import gov.nasa.pds.harvest.crawler.daemon.HarvestDaemon;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds3MetExtractorConfig;
@@ -28,9 +31,12 @@ import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.policy.Policy;
 import gov.nasa.pds.harvest.security.SecuredUser;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Front end class to the Harvest tool.
@@ -61,6 +67,9 @@ public class Harvester {
    */
   private int waitInterval;
 
+  /** Object that registers the associations. */
+  private AssociationPublisher associationPublisher;
+
   /**
    * Constructor.
    *
@@ -75,6 +84,7 @@ public class Harvester {
     this.doValidation = true;
     this.daemonPort = -1;
     this.waitInterval = -1;
+    this.associationPublisher = new AssociationPublisher(registryUrl);
   }
 
   /**
@@ -85,6 +95,8 @@ public class Harvester {
   public void setSecuredUser(SecuredUser user) {
     this.securedUser = user;
     this.ingester = new RegistryIngester(user.getName(), user.getPassword());
+    this.associationPublisher = new AssociationPublisher(this.registryUrl,
+        user.getName(), user.getPassword());
   }
 
   /**
@@ -114,12 +126,15 @@ public class Harvester {
   private List<CrawlerAction> getDefaultCrawlerActions() {
     List<CrawlerAction> ca = new ArrayList<CrawlerAction>();
     ca.add(new RegistryUniquenessCheckerAction(registryUrl, this.ingester));
+    ca.add(new SaveMetadataAction());
+/*
     if (securedUser != null) {
       ca.add(new AssociationPublisherAction(registryUrl,
           securedUser.getName(), securedUser.getPassword()));
     } else {
       ca.add(new AssociationPublisherAction(registryUrl));
     }
+*/
     if (doValidation) {
       ca.add(new ValidateProductAction());
     }
@@ -195,7 +210,13 @@ public class Harvester {
     // If crawler persistance is enabled, use the HarvestDaemon object to
     // do the crawling
     if (doCrawlerPersistance) {
-      new HarvestDaemon(waitInterval, crawlers, daemonPort).startCrawling();
+      new HarvestDaemon(waitInterval, crawlers, daemonPort,
+          associationPublisher).startCrawling();
+    } else {
+      for (Entry<File, Metadata> entry
+          : Constants.registeredProducts.entrySet()) {
+        associationPublisher.publish(entry.getKey(), entry.getValue());
+      }
     }
   }
 }

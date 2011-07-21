@@ -10,8 +10,8 @@
 // may be required before exporting such information to foreign countries or
 // providing access to foreign nationals.
 //
-// $Id$
-package gov.nasa.pds.harvest.crawler.actions;
+// $Id: AssociationPublisherAction.java 9158 2011-06-15 16:08:22Z mcayanan $
+package gov.nasa.pds.harvest.association;
 
 import java.io.File;
 import java.util.Arrays;
@@ -20,9 +20,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerAction;
-import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerActionPhases;
-import gov.nasa.jpl.oodt.cas.crawl.structs.exceptions.CrawlerActionException;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.crawler.stats.AssociationStats;
@@ -46,22 +43,16 @@ import gov.nasa.pds.registry.query.RegistryQuery;
  * @author mcayanan
  *
  */
-public class AssociationPublisherAction extends CrawlerAction {
+public class AssociationPublisher {
   /** Logger object. */
   private static Logger log = Logger.getLogger(
-      AssociationPublisherAction.class.getName());
+      AssociationPublisher.class.getName());
 
   /** The registry client. */
   private RegistryClient registryClient;
 
   /** The usernname of the authorized user. */
   private String user;
-
-  /** The ID of the crawler action. */
-  private final String ID = "AssociationPublisherAction";
-
-  /** A description of the crawler action. */
-  private final String DESCRIPTION = "Registers the product's associations.";
 
   private AssociationStats stats;
 
@@ -71,7 +62,7 @@ public class AssociationPublisherAction extends CrawlerAction {
    * @param registryUrl The URL to the registry service.
    * @throws RegistryClientException
    */
-  public AssociationPublisherAction(String registryUrl) {
+  public AssociationPublisher(String registryUrl) {
     this(registryUrl, null, null);
   }
 
@@ -83,7 +74,7 @@ public class AssociationPublisherAction extends CrawlerAction {
    * @param password The password associated with the user.
    * @throws RegistryClientException
    */
-  public AssociationPublisherAction(String registryUrl, String user,
+  public AssociationPublisher(String registryUrl, String user,
       String password) {
     super();
     if ((user != null) && (password != null)) {
@@ -93,11 +84,6 @@ public class AssociationPublisherAction extends CrawlerAction {
     } else {
       this.registryClient = new RegistryClient(registryUrl);
     }
-
-    String []phases = {CrawlerActionPhases.POST_INGEST_SUCCESS};
-    setPhases(Arrays.asList(phases));
-    setId(ID);
-    setDescription(DESCRIPTION);
     stats = new AssociationStats();
   }
 
@@ -117,12 +103,8 @@ public class AssociationPublisherAction extends CrawlerAction {
    *
    * @return 'true' if the associations were registered successfully.
    *
-   * @throws CrawlerActionException If an error occured while performing
-   * this action.
    */
-  @Override
-  public boolean performAction(File product, Metadata productMetadata)
-  throws CrawlerActionException {
+  public boolean publish(File product, Metadata productMetadata) {
     boolean passFlag = true;
     int numRegistered = 0;
     int numNotRegistered = 0;

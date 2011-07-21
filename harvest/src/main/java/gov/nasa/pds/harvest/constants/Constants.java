@@ -13,6 +13,10 @@
 // $Id$
 package gov.nasa.pds.harvest.constants;
 
+import gov.nasa.jpl.oodt.cas.metadata.Metadata;
+import gov.nasa.pds.harvest.inventory.ReferenceEntry;
+
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -84,5 +88,9 @@ public class Constants {
       pds3ToPds4Map.put("INSTRUMENT_ID", "instrument_name");
       pds3ToPds4Map.put("INSTRUMENT_HOST_NAME", "instrument_host_name");
     }
+
+    /** Map of files to metadata needed for registering associations. */
+    public static final Map<File, Metadata> registeredProducts =
+      new HashMap<File, Metadata>();
 
 }
