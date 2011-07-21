@@ -28,6 +28,9 @@
         Added the capability to register PDS3 data products.
       </action>
       <action dev="mcayanan" type="update">
+        Update to register associations at the end of a Harvest run.
+      </action>
+      <action dev="mcayanan" type="update">
         Update to register LID-based associations as slots.
       </action>
       <action dev="mcayanan" type="update">
