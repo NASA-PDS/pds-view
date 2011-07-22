@@ -97,7 +97,7 @@ C:\&gt; RSUpdate &lt;command-line arguments&gt;
         <table>
           <tr><th>Command-Line Option</th><th>Description</th></tr>
           <tr><td>-h, --help</td><td>Display usage.</td></tr>
-          <!--tr><td>-l, --log-file</td><td>Specify a log file name.  Default is standard out.</td></tr-->
+          <!-- tr><td> -l, - -log-file</td><td>Specify a log file name.  Default is standard out.</td></tr -->
           <tr><td>-p, --properties-home</td><td>Specify the directory path where the *.properties files are located.  Default location is <i>../conf/</i> .</td></tr>
           <tr><td>-n, --profile-name</td><td>Specify the name of a specific profile to update. Default updates ALL active profiles.</td></tr>
           <tr><td>-s, --sawmill-off</td><td>Specify flag to turn off updating the Sawmill DB after downloading the remote logs.  Default = ON</td></tr>
