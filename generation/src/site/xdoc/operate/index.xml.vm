@@ -42,7 +42,7 @@
       </p>
 
       <subsection name="UNIX-Based Setup">
-        <p>This section details the environment setup for UNIX-based machines. The preferred method is to specify the shell script, <i>RSUpdate</i>, on the command-line. Setting the <i>PATH</i> environment variable to the location of the script, enables the shell script to be executed from any location on the user's machine.
+        <p>This section details the environment setup for UNIX-based machines. The preferred method is to specify the shell script, <i>PDS4Generate</i>, on the command-line. Setting the <i>PATH</i> environment variable to the location of the script, enables the shell script to be executed from any location on the user's machine.
         </p>
 
         <p>The following command demonstrates how to set the <i>PATH</i> environment variable, by appending to its current setting:
@@ -56,7 +56,7 @@
         </p>
 
         <source>
-% RSUpdate &lt;command-line arguments&gt;
+% PDS4Generate &lt;command-line arguments&gt;
         </source>
 
         <p>Additional methods for setting up a UNIX-based environment can be found in the <a href="index-unix.html">UNIX Setup Options</a> section. If viewing this document in PDF form, see the appendix for details.
@@ -64,7 +64,7 @@
       </subsection>
 
       <subsection name="Windows Setup">
-        <p>This section details the environment setup for Windows machines. The preferred method is to specify the batch file, <i>RSUpdate.bat</i>, on the command-line. Setting the <i>PATH</i> environment variable to the location of the file, enables the batch file to be executed from any location on the user's machine.
+        <p>This section details the environment setup for Windows machines. The preferred method is to specify the batch file, <i>PDS4Generate.bat</i>, on the command-line. Setting the <i>PATH</i> environment variable to the location of the file, enables the batch file to be executed from any location on the user's machine.
         </p>
 
         <p>The following command demonstrates how to set the <i>PATH</i> environment variable, by appending to its current setting:
@@ -78,7 +78,7 @@ C:\&gt; set PATH = %PATH%;C:\\${xdoc-artifactId}-${xdoc-version}\bin
         </p>
 
         <source>
-C:\&gt; RSUpdate &lt;command-line arguments&gt;
+C:\&gt; PDS4Generate &lt;command-line arguments&gt;
         </source>
 
         <p>Additional methods for setting up a Windows environment can be found in the <a href="index-win.html">Windows Setup Options</a> section. If viewing this document in PDF form, see the appendix for details.

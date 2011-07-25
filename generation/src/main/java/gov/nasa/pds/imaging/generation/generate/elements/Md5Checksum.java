@@ -27,7 +27,7 @@ public class Md5Checksum implements Element {
 
 	private byte[] createChecksum()
 	{
-		InputStream fis;
+		InputStream fis = null;
 		MessageDigest complete = null;
 		try {
 			fis = new FileInputStream(this.file);
@@ -42,11 +42,21 @@ public class Md5Checksum implements Element {
 					complete.update(buffer, 0, numRead);
 				}
 			} while (numRead != -1);
-			fis.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();			
+		}
+		finally {
+			try {
+				fis.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return complete.digest();
 	}
 	
