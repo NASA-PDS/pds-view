@@ -6,9 +6,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
-public class BasicUtil {
-
+public class Utility {
+	
 	/**
 	 * Get the current date time.
 	 * 
@@ -30,5 +31,14 @@ public class BasicUtil {
 	public final static List<String> getLocalFileList(String path) {
 		File dir = new File(path);
 		return Arrays.asList(dir.list());
+	}
+	
+	public final static String getRSUpdateHome() {
+		String home = "";
+		String[] fullPath = System.getProperty("java.class.path").split("/");	// Gives full path where jar file is located
+		for (int i=1; i<fullPath.length-2; i++) {	// We know jar is in RS_UPDATE_HOME/lib/rs-update-x.x.x.jar
+			home += "/" + fullPath[i];
+		}
+		return home;
 	}
 }

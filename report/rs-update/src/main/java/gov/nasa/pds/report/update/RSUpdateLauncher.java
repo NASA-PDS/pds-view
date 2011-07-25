@@ -8,7 +8,7 @@ import gov.nasa.pds.report.update.model.LogPath;
 import gov.nasa.pds.report.update.model.LogSet;
 import gov.nasa.pds.report.update.model.Profile;
 import gov.nasa.pds.report.update.properties.EnvProperties;
-import gov.nasa.pds.report.update.util.BasicUtil;
+import gov.nasa.pds.report.update.util.Utility;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -30,7 +30,7 @@ import org.apache.commons.cli.ParseException;
 
 public class RSUpdateLauncher {
 
-	private static final String PROPS_HOME = "../conf/";
+	private static final String PROPS_HOME = "/conf/";
 
 	/** logger object. */
 	private static Logger log = Logger.getLogger(RSUpdateLauncher.class
@@ -43,7 +43,7 @@ public class RSUpdateLauncher {
 	private boolean transferFlag;
 
 	public RSUpdateLauncher() {
-		this.propsHome = PROPS_HOME;
+		this.propsHome = "";
 		//this.logFile = null;
 		this.profileName = null;
 		this.sawmillFlag = true;
@@ -93,12 +93,16 @@ public class RSUpdateLauncher {
 			} else if (o.getOpt().equals(Flag.TRANSFER_OFF.getShortName())) {
 				this.transferFlag = false;
 			}
+			
+			if (this.propsHome.equals("")) {
+				this.propsHome = Utility.getRSUpdateHome() + PROPS_HOME;
+			}
 		}
 
 		//setLogger();
 		logHeader();
 	}
-
+	
 	/**
 	 * Logs header information for the log output.
 	 * 
@@ -107,7 +111,7 @@ public class RSUpdateLauncher {
 		log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
 				"PDS Sawmill Update Tool Log\n"));
 		log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
-				"Time                " + BasicUtil.getDateTime()));
+				"Time                " + Utility.getDateTime()));
 		log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
 				"Properties Home   " + this.propsHome + "\n"));
 	}
@@ -195,23 +199,30 @@ public class RSUpdateLauncher {
 
 				List<LogSet> logSets = profile.getLogSetList();
 
-				if (this.transferFlag) {
-					for (LogSet ls : logSets) {
-						rsUpdate.transferLogs(ls.getHostname(), ls.getUsername(),
-								ls.getPassword(), ls.getPathname(), ls.getLabel());
+				try {
+					if (this.transferFlag) {
+						for (LogSet ls : logSets) {
+							rsUpdate.transferLogs(ls.getHostname(), ls.getUsername(),
+									ls.getPassword(), ls.getPathname(), ls.getLabel());
+						}
 					}
+				} catch (NullPointerException e) {
+					throw new RSUpdateException("Error transferring logs: " + e.getMessage());
 				}
-
+				
+				
 				/*
 				 * Depending on whether sawmillFlag was specified, update
 				 * Sawmill DB
 				 */
-				if (this.sawmillFlag) {
-					rsUpdate.updateSawmill(env.getSawmillHome());
+				try {
+					if (this.sawmillFlag) {
+						rsUpdate.updateSawmill(env.getSawmillHome());
+					}
+				} catch (NullPointerException e) {
+					throw new RSUpdateException("Profile not found: " + e.getMessage());
 				}
 			}
-		} catch (NullPointerException e) {
-			throw new RSUpdateException("Profile not found.");
 		} catch (IOException e) {
 			throw new RSUpdateException(
 					"Properties file path is invalid.  Please re-enter.");

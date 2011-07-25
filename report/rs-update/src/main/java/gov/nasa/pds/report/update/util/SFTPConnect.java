@@ -2,6 +2,7 @@ package gov.nasa.pds.report.update.util;
 
 import gov.nasa.pds.report.update.constants.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -137,7 +138,7 @@ public class SFTPConnect implements RemoteFileTransfer {
 	private final JsonArray getFileList(String pathname) throws SftpException {
 		String[] dirList;
 		String filename;
-
+		
 		Vector lsOut = this.sftpChannel.ls(pathname);
 
 		JsonArray matches = new JsonArray();
@@ -162,11 +163,10 @@ public class SFTPConnect implements RemoteFileTransfer {
 			final String logDestPath) {
 		try {
 			connect(hostname, username, password);
-
 			JsonArray array = getFileList(pathname);
 
-			List<String> localFileList = BasicUtil
-					.getLocalFileList(logDestPath);
+			List<String> localFileList = new ArrayList<String>();
+			localFileList.addAll(Utility.getLocalFileList(logDestPath));
 
 			String filename;
 			String basePath = getBasePath(pathname);
@@ -201,6 +201,7 @@ public class SFTPConnect implements RemoteFileTransfer {
 	 */
 	private final String getBasePath(String pathname) {
 		String basePath = "";
+		this.log.info(pathname);
 		String[] pathArray = pathname.split("/");
 		for (int i = 0; i < pathArray.length - 1; i++) {
 			if (!pathArray[i].equals(""))
