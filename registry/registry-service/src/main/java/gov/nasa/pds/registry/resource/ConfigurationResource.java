@@ -62,14 +62,14 @@ public class ConfigurationResource {
    */
   @POST
   @Consumes( { MediaType.APPLICATION_XML })
-  public Response configure(@QueryParam("packageId") String packageId,
+  public Response configure(@QueryParam("packageGuid") String packageGuid,
       @QueryParam("name") String name,
       @QueryParam("description") String description,
       RegistryObjectList objectList) {
     // TODO: Change to add user
     try {
       RegistryPackage registryPackage = new RegistryPackage();
-      registryPackage.setGuid(packageId);
+      registryPackage.setGuid(packageGuid);
       registryPackage.setName(name);
       registryPackage.setDescription(description);
       String guid = registryService.configure("Unknown", registryPackage,

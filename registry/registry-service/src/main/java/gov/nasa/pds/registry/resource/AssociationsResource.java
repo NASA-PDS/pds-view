@@ -130,16 +130,21 @@ public class AssociationsResource {
    *                 where the created item is accessible.}
    * 
    * @param association
-   *          to publish
+   *          to publish to registry
+   * @param packageGuid
+   *          optional package guid which this registry object is a member of
    * @return returns an HTTP response that indicates an error or the location of
    *         the created association and its guid
    */
   @POST
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Response publishAssociation(Association association) {
+  public Response publishAssociation(Association association,
+      @QueryParam("packageGuid") String packageGuid) {
     // TODO: Change to add user
     try {
-      String guid = registryService.publishObject("Unkown", association);
+      String guid = (packageGuid == null) ? registryService.publishObject(
+          "Unkown", association) : registryService.publishObject("Unkown",
+          association, packageGuid);
       return Response.created(
           AssociationsResource.getAssociationUri(registryService
               .getAssocation(guid), uriInfo)).entity(guid).build();

@@ -78,15 +78,20 @@ public class LinksResource {
    *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI
    *                 where the created item is accessible.}
    * @param link
-   *          to publish
+   *          to publish to registry
+   * @param packageGuid
+   *          optional package guid which this registry object is a member of
    * @return a HTTP response that indicates an error or the location of the
    *         created association and its guid
    */
   @POST
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Response publishLink(ExternalLink link) {
+  public Response publishLink(ExternalLink link,
+      @QueryParam("packageGuid") String packageGuid) {
     try {
-      String guid = registryService.publishObject("Unknown", link);
+      String guid = (packageGuid == null) ? registryService.publishObject(
+          "Unknown", link) : registryService.publishObject("Unknown", link,
+          packageGuid);
       return Response.created(
           LinksResource.getLinkUri((ExternalLink) registryService.getObject(
               guid, link.getClass()), uriInfo)).entity(guid).build();
@@ -175,7 +180,8 @@ public class LinksResource {
       @QueryParam("start") @DefaultValue("1") Integer start,
       @QueryParam("rows") @DefaultValue("20") Integer rows) {
     ObjectFilter filter = new ObjectFilter.Builder().build();
-    RegistryQuery.Builder<ObjectFilter> queryBuilder = new RegistryQuery.Builder<ObjectFilter>().filter(filter);
+    RegistryQuery.Builder<ObjectFilter> queryBuilder = new RegistryQuery.Builder<ObjectFilter>()
+        .filter(filter);
     PagedResponse<ExternalLink> rr = (PagedResponse<ExternalLink>) registryService
         .getObjects(queryBuilder.build(), start, rows, ExternalLink.class);
     Response.ResponseBuilder builder = Response.ok(rr);

@@ -30,6 +30,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -77,18 +78,23 @@ public class NodesResource {
    *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI
    *                 where the created item is accessible.}
    * @param node
-   *          to publish
+   *          to publish to registry
+   * @param packageGuid
+   *          optional package guid which this registry object is a member of
    * @return a HTTP response that indicates an error or the location of the
    *         created association and its guid
    */
   @POST
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Response publishNode(ClassificationNode node) {
+  public Response publishNode(ClassificationNode node,
+      @QueryParam("packageGuid") String packageGuid) {
     if (node.getParent() == null) {
       node.setParent(scheme.getGuid());
     }
     try {
-      String guid = registryService.publishObject("Unknown", node);
+      String guid = (packageGuid == null) ? registryService.publishObject(
+          "Unknown", node) : registryService.publishObject("Unknown", node,
+          packageGuid);
       return Response.created(
           NodesResource.getNodeUri(scheme.getGuid(),
               (ClassificationNode) registryService.getObject(guid, node

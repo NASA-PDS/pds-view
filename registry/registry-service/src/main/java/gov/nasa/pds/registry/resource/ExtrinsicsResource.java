@@ -177,16 +177,21 @@ public class ExtrinsicsResource {
    *                 where the created item is accessible.}
    * 
    * @param extrinsic
-   *          to update to
+   *          to publish to registry
+   * @param packageGuid
+   *          optional package guid which this registry object is a member of
    * @return returns an HTTP response that indicates an error or the location of
    *         the created product and its guid
    */
   @POST
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Response publishExtrinsic(ExtrinsicObject extrinsic) {
+  public Response publishExtrinsic(ExtrinsicObject extrinsic,
+      @QueryParam("packageGuid") String packageGuid) {
     // TODO: Change to set user
     try {
-      String guid = registryService.publishObject("Unknown", extrinsic);
+      String guid = (packageGuid == null) ? registryService.publishObject(
+          "Unknown", extrinsic) : registryService.publishObject("Unknown",
+          extrinsic, packageGuid);
       return Response.created(
           getExtrinsicUri(registryService.getExtrinsic(guid), uriInfo)).entity(
           guid).build();
@@ -406,8 +411,8 @@ public class ExtrinsicsResource {
       RegistryService registryService, ExtrinsicObject extrinsic) {
     ExtrinsicObject previous = null;
     try {
-      previous = (ExtrinsicObject) registryService
-          .getPreviousObject(extrinsic.getGuid(), ExtrinsicObject.class);
+      previous = (ExtrinsicObject) registryService.getPreviousObject(extrinsic
+          .getGuid(), ExtrinsicObject.class);
     } catch (RegistryServiceException e) {
       // Suppress
     }
@@ -424,8 +429,8 @@ public class ExtrinsicsResource {
       ExtrinsicObject extrinsic) {
     ExtrinsicObject next = null;
     try {
-      next = (ExtrinsicObject) registryService.getNextObject(
-          extrinsic.getGuid(), ExtrinsicObject.class);
+      next = (ExtrinsicObject) registryService.getNextObject(extrinsic
+          .getGuid(), ExtrinsicObject.class);
     } catch (RegistryServiceException e) {
       // Suppress
     }

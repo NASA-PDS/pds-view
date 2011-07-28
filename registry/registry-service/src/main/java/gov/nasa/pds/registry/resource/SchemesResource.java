@@ -28,6 +28,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -72,15 +73,20 @@ public class SchemesResource {
    *                 where the created item is accessible.}
    * 
    * @param scheme
-   *          to publish
+   *          to publish to registry
+   * @param packageGuid
+   *          optional package guid which this registry object is a member of
    * @return a HTTP response that indicates an error or the location of the
    *         created association and its guid
    */
   @POST
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Response publishScheme(ClassificationScheme scheme) {
+  public Response publishScheme(ClassificationScheme scheme,
+      @QueryParam("packageGuid") String packageGuid) {
     try {
-      String guid = registryService.publishObject("Unknown", scheme);
+      String guid = (packageGuid == null) ? registryService.publishObject(
+          "Unknown", scheme) : registryService.publishObject("Unknown", scheme,
+          packageGuid);
       return Response.created(
           SchemesResource.getSchemeUri((ClassificationScheme) registryService
               .getObject(guid, scheme.getClass()), uriInfo)).entity(guid)

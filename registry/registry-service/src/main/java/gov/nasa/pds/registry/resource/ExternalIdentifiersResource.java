@@ -28,6 +28,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -69,16 +70,21 @@ public class ExternalIdentifiersResource {
    *                 where the created item is accessible.}
    * 
    * @param identifier
-   *          to publish
+   *          to publish to registry
+   * @param packageGuid
+   *          optional package guid which this registry object is a member of
    * @return returns an HTTP response that indicates an error or the location of
    *         the created identifier and its guid
    */
   @POST
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Response publishIdentifier(ExternalIdentifier identifier) {
+  public Response publishIdentifier(ExternalIdentifier identifier,
+      @QueryParam("packageGuid") String packageGuid) {
     // TODO: Change to add user
     try {
-      String guid = registryService.publishObject("Unkown", identifier);
+      String guid = (packageGuid == null) ? registryService.publishObject(
+          "Unkown", identifier) : registryService.publishObject("Unkown",
+          identifier, packageGuid);
       return Response.created(
           ExternalIdentifiersResource.getIdentifierUri(
               (ExternalIdentifier) registryService.getObject(guid,

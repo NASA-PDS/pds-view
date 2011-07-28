@@ -77,15 +77,20 @@ public class ServicesResource {
    *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI
    *                 where the created item is accessible.}
    * @param service
-   *          to publish
+   *          to publish to registry
+   * @param packageGuid
+   *          optional package guid which this registry object is a member of
    * @return a HTTP response that indicates an error or the location of the
    *         created association and its guid
    */
   @POST
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Response publishService(Service service) {
+  public Response publishService(Service service,
+      @QueryParam("packageGuid") String packageGuid) {
     try {
-      String guid = registryService.publishObject("Unknown", service);
+      String guid = (packageGuid == null) ? registryService.publishObject(
+          "Unknown", service) : registryService.publishObject("Unknown",
+          service, packageGuid);
       return Response.created(
           ServicesResource.getServiceUri((Service) registryService.getObject(
               guid, service.getClass()), uriInfo)).entity(guid).build();
@@ -164,7 +169,8 @@ public class ServicesResource {
       @QueryParam("start") @DefaultValue("1") Integer start,
       @QueryParam("rows") @DefaultValue("20") Integer rows) {
     ObjectFilter filter = new ObjectFilter.Builder().build();
-    RegistryQuery.Builder<ObjectFilter> queryBuilder = new RegistryQuery.Builder<ObjectFilter>().filter(filter);
+    RegistryQuery.Builder<ObjectFilter> queryBuilder = new RegistryQuery.Builder<ObjectFilter>()
+        .filter(filter);
     PagedResponse<Service> rr = (PagedResponse<Service>) registryService
         .getObjects(queryBuilder.build(), start, rows, Service.class);
     Response.ResponseBuilder builder = Response.ok(rr);
