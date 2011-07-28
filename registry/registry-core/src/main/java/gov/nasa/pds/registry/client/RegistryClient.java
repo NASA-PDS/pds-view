@@ -58,6 +58,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.ClientResponse.Status;
+import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
@@ -76,7 +77,7 @@ public class RegistryClient {
   private WebResource service;
   private SecurityContext securityContext;
   private String mediaType;
-  private String registrationPackageId;
+  private String registrationPackageGuid;
 
   private final static HashMap<Class<? extends RegistryObject>, String> resourceMap = new HashMap<Class<? extends RegistryObject>, String>();
   static {
@@ -162,8 +163,12 @@ public class RegistryClient {
    */
   public String publishObject(RegistryObject object)
       throws RegistryServiceException {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    if (registrationPackageGuid != null) {
+      params.add("packageGuid", registrationPackageGuid);
+    }
     WebResource.Builder builder = service.path(
-        resourceMap.get(object.getClass())).getRequestBuilder();
+        resourceMap.get(object.getClass())).queryParams(params).getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).post(
         ClientResponse.class, object);
     if (response.getClientResponseStatus() == Status.CREATED) {
@@ -428,6 +433,14 @@ public class RegistryClient {
     }
 
   }
+
+  public String getRegistrationPackageGuid() {
+    return registrationPackageGuid;
+  }
+
+  public void setRegistrationPackageId(String registrationPackageGuid) {
+    this.registrationPackageGuid = registrationPackageGuid;
+  }
   
   /**
    * Mehthod for SSL connection.
@@ -638,13 +651,5 @@ public class RegistryClient {
         .build();
     RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
         .filter(filter).build();
-  }
-
-  public String getRegistrationPackageId() {
-    return registrationPackageId;
-  }
-
-  public void setRegistrationPackageId(String registrationPackageId) {
-    this.registrationPackageId = registrationPackageId;
   }
 }
