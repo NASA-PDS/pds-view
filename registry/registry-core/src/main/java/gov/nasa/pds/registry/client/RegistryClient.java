@@ -15,32 +15,53 @@
 
 package gov.nasa.pds.registry.client;
 
-import java.util.HashMap;
-import java.util.List;
-
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-
-import gov.nasa.pds.registry.provider.JAXBContextResolver;
-import gov.nasa.pds.registry.provider.JacksonObjectMapperProvider;
+import gov.nasa.pds.registry.exception.RegistryClientException;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
+import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.model.Service;
+import gov.nasa.pds.registry.provider.JAXBContextResolver;
+import gov.nasa.pds.registry.provider.JacksonObjectMapperProvider;
 import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.Socket;
+import java.security.KeyStore;
+import java.security.Principal;
+import java.security.PrivateKey;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509KeyManager;
+import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+
+import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.sun.jersey.client.urlconnection.HTTPSProperties;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
@@ -53,28 +74,45 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  */
 public class RegistryClient {
   private WebResource service;
-  private String username;
-  private String password;
+  private SecurityContext securityContext;
   private String mediaType;
+  private String registrationPackageId;
+
   private final static HashMap<Class<? extends RegistryObject>, String> resourceMap = new HashMap<Class<? extends RegistryObject>, String>();
   static {
     resourceMap.put(ExtrinsicObject.class, "extrinsics");
     resourceMap.put(Association.class, "associations");
     resourceMap.put(Service.class, "services");
+    resourceMap.put(RegistryPackage.class, "packages");
   }
 
-  public RegistryClient(String baseUrl) {
-    this(baseUrl, null, null);
+  public RegistryClient(String baseUrl) throws RegistryClientException {
+    this(baseUrl, null, null, null);
   }
 
-  public RegistryClient(String baseUrl, String username, String password) {
+  public RegistryClient(String baseUrl, SecurityContext securityContext,
+      String username, String password) throws RegistryClientException {
     ClientConfig config = new DefaultClientConfig();
     config.getClasses().add(JacksonObjectMapperProvider.class);
     config.getClasses().add(JAXBContextResolver.class);
     service = Client.create(config).resource(baseUrl);
+    if (securityContext != null) {
+      try {
+        // With the current setup of the Security Service, we need to set up
+        // an insecure SSL connection.
+        HostnameVerifier hv = getHostnameVerifier();
+        SSLContext ctx = this.getSSLContext();
+        config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES,
+            new HTTPSProperties(hv, ctx));
+        this.securityContext = securityContext;
+        service.addFilter(new HTTPBasicAuthFilter(username, password));
+      } catch (Exception e) {
+        throw new RegistryClientException("Error occurred while initializing "
+            + "the registry client: " + e.getMessage());
+      }
+    }
+
     mediaType = MediaType.APPLICATION_JSON;
-    this.username = username;
-    this.password = password;
   }
 
   /**
@@ -102,8 +140,8 @@ public class RegistryClient {
    */
   public <T extends RegistryObject> T getObject(String guid,
       Class<T> objectClass) throws RegistryServiceException {
-    WebResource.Builder builder = service.path(
-        resourceMap.get(objectClass)).path(guid).getRequestBuilder();
+    WebResource.Builder builder = service.path(resourceMap.get(objectClass))
+        .path(guid).getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).get(
         ClientResponse.class);
     if (response.getClientResponseStatus() == Status.OK) {
@@ -212,9 +250,8 @@ public class RegistryClient {
    */
   public <T extends RegistryObject> T getLatestObject(String lid,
       Class<T> objectClass) throws RegistryServiceException {
-    WebResource.Builder builder = service.path(
-        resourceMap.get(objectClass)).path("logicals").path(lid).path("latest")
-        .getRequestBuilder();
+    WebResource.Builder builder = service.path(resourceMap.get(objectClass))
+        .path("logicals").path(lid).path("latest").getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).get(
         ClientResponse.class);
     if (response.getClientResponseStatus() == Status.OK) {
@@ -247,8 +284,8 @@ public class RegistryClient {
     if (rows != null) {
       params.add("rows", rows.toString());
     }
-    WebResource.Builder builder = service.path(
-        resourceMap.get(objectClass)).queryParams(params).getRequestBuilder();
+    WebResource.Builder builder = service.path(resourceMap.get(objectClass))
+        .queryParams(params).getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).get(
         ClientResponse.class);
     if (response.getClientResponseStatus() == Status.OK) {
@@ -391,6 +428,204 @@ public class RegistryClient {
     }
 
   }
+  
+  /**
+   * Mehthod for SSL connection.
+   * 
+   * @return HostnameVerifier object
+   */
+  private HostnameVerifier getHostnameVerifier() {
+    HostnameVerifier hv = new HostnameVerifier() {
+
+      @Override
+      public boolean verify(String hostname, SSLSession session) {
+        // TODO Auto-generated method stub
+        return true;
+      }
+    };
+    return hv;
+  }
+
+  private SSLContext getSSLContext() {
+    TrustManager mytm[] = null;
+    KeyManager mykm[] = null;
+
+    try {
+      mytm = new TrustManager[] { new MyX509TrustManager(securityContext
+          .getTruststorePath(), securityContext.getKeystorePassword()
+          .toCharArray()) };
+      mykm = new KeyManager[] { new MyX509KeyManager(securityContext
+          .getKeystorePath(), securityContext.getKeystorePassword()
+          .toCharArray()) };
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
+
+    SSLContext ctx = null;
+    try {
+      ctx = SSLContext.getInstance("SSL");
+      ctx.init(mykm, mytm, null);
+    } catch (java.security.GeneralSecurityException ex) {
+    }
+    return ctx;
+  }
+
+  /**
+   * Taken from
+   * http://java.sun.com/javase/6/docs/technotes/guides/security/jsse/
+   * JSSERefGuide.html
+   * 
+   */
+  static class MyX509TrustManager implements X509TrustManager {
+
+    /*
+     * The default PKIX X509TrustManager9. We'll delegate decisions to it, and
+     * fall back to the logic in this class if the default X509TrustManager
+     * doesn't trust it.
+     */
+    X509TrustManager pkixTrustManager;
+
+    MyX509TrustManager(String trustStore, char[] password) throws Exception {
+      this(new File(trustStore), password);
+    }
+
+    MyX509TrustManager(File trustStore, char[] password) throws Exception {
+      // create a "default" JSSE X509TrustManager.
+
+      KeyStore ks = KeyStore.getInstance("JKS");
+
+      ks.load(new FileInputStream(trustStore), password);
+
+      TrustManagerFactory tmf = TrustManagerFactory.getInstance("PKIX");
+      tmf.init(ks);
+
+      TrustManager tms[] = tmf.getTrustManagers();
+
+      /*
+       * Iterate over the returned trustmanagers, look for an instance of
+       * X509TrustManager. If found, use that as our "default" trust manager.
+       */
+      for (int i = 0; i < tms.length; i++) {
+        if (tms[i] instanceof X509TrustManager) {
+          pkixTrustManager = (X509TrustManager) tms[i];
+          return;
+        }
+      }
+
+      /*
+       * Find some other way to initialize, or else we have to fail the
+       * constructor.
+       */
+      throw new Exception("Couldn't initialize");
+    }
+
+    /*
+     * Delegate to the default trust manager.
+     */
+    public void checkClientTrusted(X509Certificate[] chain, String authType)
+        throws CertificateException {
+      try {
+        pkixTrustManager.checkClientTrusted(chain, authType);
+      } catch (CertificateException excep) {
+        // do any special handling here, or rethrow exception.
+      }
+    }
+
+    /*
+     * Delegate to the default trust manager.
+     */
+    public void checkServerTrusted(X509Certificate[] chain, String authType)
+        throws CertificateException {
+      try {
+        pkixTrustManager.checkServerTrusted(chain, authType);
+      } catch (CertificateException excep) {
+        /*
+         * Possibly pop up a dialog box asking whether to trust the cert chain.
+         */
+      }
+    }
+
+    /*
+     * Merely pass this through.
+     */
+    public X509Certificate[] getAcceptedIssuers() {
+      return pkixTrustManager.getAcceptedIssuers();
+    }
+  }
+
+  /**
+   * Inspired from
+   * http://java.sun.com/javase/6/docs/technotes/guides/security/jsse
+   * /JSSERefGuide.html
+   * 
+   */
+  static class MyX509KeyManager implements X509KeyManager {
+
+    /*
+     * The default PKIX X509KeyManager. We'll delegate decisions to it, and fall
+     * back to the logic in this class if the default X509KeyManager doesn't
+     * trust it.
+     */
+    X509KeyManager pkixKeyManager;
+
+    MyX509KeyManager(String keyStore, char[] password) throws Exception {
+      this(new File(keyStore), password);
+    }
+
+    MyX509KeyManager(File keyStore, char[] password) throws Exception {
+      // create a "default" JSSE X509KeyManager.
+
+      KeyStore ks = KeyStore.getInstance("JKS");
+      ks.load(new FileInputStream(keyStore), password);
+
+      KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509",
+          "SunJSSE");
+      kmf.init(ks, password);
+
+      KeyManager kms[] = kmf.getKeyManagers();
+
+      /*
+       * Iterate over the returned keymanagers, look for an instance of
+       * X509KeyManager. If found, use that as our "default" key manager.
+       */
+      for (int i = 0; i < kms.length; i++) {
+        if (kms[i] instanceof X509KeyManager) {
+          pkixKeyManager = (X509KeyManager) kms[i];
+          return;
+        }
+      }
+
+      /*
+       * Find some other way to initialize, or else we have to fail the
+       * constructor.
+       */
+      throw new Exception("Couldn't initialize");
+    }
+
+    public PrivateKey getPrivateKey(String arg0) {
+      return pkixKeyManager.getPrivateKey(arg0);
+    }
+
+    public X509Certificate[] getCertificateChain(String arg0) {
+      return pkixKeyManager.getCertificateChain(arg0);
+    }
+
+    public String[] getClientAliases(String arg0, Principal[] arg1) {
+      return pkixKeyManager.getClientAliases(arg0, arg1);
+    }
+
+    public String chooseClientAlias(String[] arg0, Principal[] arg1, Socket arg2) {
+      return pkixKeyManager.chooseClientAlias(arg0, arg1, arg2);
+    }
+
+    public String[] getServerAliases(String arg0, Principal[] arg1) {
+      return pkixKeyManager.getServerAliases(arg0, arg1);
+    }
+
+    public String chooseServerAlias(String arg0, Principal[] arg1, Socket arg2) {
+      return pkixKeyManager.chooseServerAlias(arg0, arg1, arg2);
+    }
+  }
 
   public static void main(String[] args) throws Exception {
     RegistryClient client = new RegistryClient(args[0]);
@@ -403,5 +638,13 @@ public class RegistryClient {
         .build();
     RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
         .filter(filter).build();
+  }
+
+  public String getRegistrationPackageId() {
+    return registrationPackageId;
+  }
+
+  public void setRegistrationPackageId(String registrationPackageId) {
+    this.registrationPackageId = registrationPackageId;
   }
 }
