@@ -69,9 +69,9 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  * This class is a Java client to be used to exchange information with a
  * registry service. In the background it simply uses HTTP calls but returns
  * Java objects to ease integration.
- * 
+ *
  * @author pramirez
- * 
+ *
  */
 public class RegistryClient {
   private WebResource service;
@@ -96,21 +96,23 @@ public class RegistryClient {
     ClientConfig config = new DefaultClientConfig();
     config.getClasses().add(JacksonObjectMapperProvider.class);
     config.getClasses().add(JAXBContextResolver.class);
-    service = Client.create(config).resource(baseUrl);
     if (securityContext != null) {
       try {
         // With the current setup of the Security Service, we need to set up
         // an insecure SSL connection.
+        this.securityContext = securityContext;
         HostnameVerifier hv = getHostnameVerifier();
         SSLContext ctx = this.getSSLContext();
         config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES,
             new HTTPSProperties(hv, ctx));
-        this.securityContext = securityContext;
+        service = Client.create(config).resource(baseUrl);
         service.addFilter(new HTTPBasicAuthFilter(username, password));
       } catch (Exception e) {
         throw new RegistryClientException("Error occurred while initializing "
             + "the registry client: " + e.getMessage());
       }
+    } else {
+      service = Client.create(config).resource(baseUrl);
     }
 
     mediaType = MediaType.APPLICATION_JSON;
@@ -121,7 +123,7 @@ public class RegistryClient {
    * the regsitry supports application/xml and application/json but defaults to
    * json. The end client will not see these calls so to cut down on data
    * transferred the more compact json should be used.
-   * 
+   *
    * @param mediaType
    *          to use for exchanging messages
    */
@@ -131,7 +133,7 @@ public class RegistryClient {
 
   /**
    * Retrieves an object from the registry of the given type
-   * 
+   *
    * @param guid
    *          identifier for the object
    * @param objectClass
@@ -155,7 +157,7 @@ public class RegistryClient {
 
   /**
    * Publish a registry object to the service
-   * 
+   *
    * @param object
    *          to publish
    * @return the globally unique identifier
@@ -182,7 +184,7 @@ public class RegistryClient {
   /**
    * Publishes a version of the given object that is considered a major version
    * update.
-   * 
+   *
    * @param object
    *          to publish
    * @return globally unique identifier of versioned object
@@ -195,7 +197,7 @@ public class RegistryClient {
 
   /**
    * Publishes a version of the given object
-   * 
+   *
    * @param object
    *          to publish
    * @param major
@@ -222,7 +224,7 @@ public class RegistryClient {
   /**
    * Updates the given registry object by using its guid to indicate the object
    * to update.
-   * 
+   *
    * @param object
    *          to update to
    * @throws RegistryServiceException
@@ -244,7 +246,7 @@ public class RegistryClient {
 
   /**
    * Retrieve the latest version of a registry object
-   * 
+   *
    * @param lid
    *          logical identifier which is associated with a collection of
    *          objects
@@ -270,7 +272,7 @@ public class RegistryClient {
   /**
    * Retrieves a paged set of registry objects from the collection of objects of
    * the specified type.
-   * 
+   *
    * @param start
    *          indicates where in the set of objects to begin
    * @param rows
@@ -304,7 +306,7 @@ public class RegistryClient {
 
   /**
    * Retrieves a set of extrinsic objects that match the query.
-   * 
+   *
    * @param query
    *          filters for the extrinsic
    * @param start
@@ -376,7 +378,7 @@ public class RegistryClient {
 
   /**
    * Retrieves a set of association objects that match the query.
-   * 
+   *
    * @param query
    *          filters for the association
    * @param start
@@ -441,10 +443,10 @@ public class RegistryClient {
   public void setRegistrationPackageId(String registrationPackageGuid) {
     this.registrationPackageGuid = registrationPackageGuid;
   }
-  
+
   /**
    * Mehthod for SSL connection.
-   * 
+   *
    * @return HostnameVerifier object
    */
   private HostnameVerifier getHostnameVerifier() {
@@ -487,7 +489,7 @@ public class RegistryClient {
    * Taken from
    * http://java.sun.com/javase/6/docs/technotes/guides/security/jsse/
    * JSSERefGuide.html
-   * 
+   *
    */
   static class MyX509TrustManager implements X509TrustManager {
 
@@ -570,7 +572,7 @@ public class RegistryClient {
    * Inspired from
    * http://java.sun.com/javase/6/docs/technotes/guides/security/jsse
    * /JSSERefGuide.html
-   * 
+   *
    */
   static class MyX509KeyManager implements X509KeyManager {
 
