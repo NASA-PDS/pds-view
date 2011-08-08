@@ -10,12 +10,13 @@
 // may be required before exporting such information to foreign countries or
 // providing access to foreign nationals.
 //
-// $Id: PDSCollectionMetExtractor.java 8360 2011-01-11 19:26:28Z mcayanan $
+// $Id$
 package gov.nasa.pds.harvest.crawler.metadata.extractor;
 
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.jpl.oodt.cas.metadata.exceptions.MetExtractionException;
 import gov.nasa.pds.harvest.constants.Constants;
+import gov.nasa.pds.harvest.file.FileObject;
 import gov.nasa.pds.harvest.inventory.InventoryEntry;
 import gov.nasa.pds.harvest.inventory.InventoryReaderException;
 import gov.nasa.pds.harvest.inventory.InventoryTableReader;
@@ -69,7 +70,7 @@ public class CollectionMetExtractor extends Pds4MetExtractor {
     String version = "";
     String title = "";
     String associationType = "";
-    List<TinyElementImpl> references = null;
+    List<TinyElementImpl> references = new ArrayList<TinyElementImpl>();
     try {
       extractor.parse(product);
     } catch (Exception e) {
@@ -160,9 +161,11 @@ public class CollectionMetExtractor extends Pds4MetExtractor {
         if (!lidVidEntries.isEmpty()) {
           metadata.addMetadata(Constants.REFERENCES, lidVidEntries);
         }
+        List<FileObject> fileObjectEntries = getFileObjects(product);
+        metadata.addMetadata(Constants.FILE_OBJECTS, fileObjectEntries);
       }
-    } catch (InventoryReaderException ire) {
-      throw new MetExtractionException(ire.getMessage());
+    } catch (Exception e) {
+      throw new MetExtractionException(e.getMessage());
     }
     return metadata;
   }

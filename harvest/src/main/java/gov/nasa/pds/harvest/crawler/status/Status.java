@@ -18,4 +18,5 @@ public interface Status {
     public static String BADFILE = "BAD FILE";
 
     public static String DISCOVERY = "DISCOVERED PRODUCT";
+    public static String PRODUCT_EXISTS = "PRODUCT EXISTS";
 }

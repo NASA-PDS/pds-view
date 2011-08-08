@@ -19,24 +19,36 @@ import gov.nasa.jpl.oodt.cas.metadata.MetExtractorConfig;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.jpl.oodt.cas.metadata.exceptions.MetExtractionException;
 import gov.nasa.pds.harvest.constants.Constants;
+import gov.nasa.pds.harvest.file.FileObject;
+import gov.nasa.pds.harvest.file.MD5Checksum;
 import gov.nasa.pds.harvest.inventory.ReferenceEntry;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.harvest.policy.Association;
+import gov.nasa.pds.harvest.util.PointerStatementFinder;
 import gov.nasa.pds.tools.LabelParserException;
+import gov.nasa.pds.tools.containers.FileReference;
 import gov.nasa.pds.tools.label.AttributeStatement;
 import gov.nasa.pds.tools.label.Label;
 import gov.nasa.pds.tools.label.ManualPathResolver;
+import gov.nasa.pds.tools.label.PointerStatement;
 import gov.nasa.pds.tools.label.parser.DefaultLabelParser;
 import gov.nasa.pds.tools.util.MessageUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 /**
@@ -182,6 +194,14 @@ public class Pds3MetExtractor implements MetExtractor {
       log.log(new ToolsLogRecord(ToolsLevel.INFO,
           "No associations found.", product));
     }
+    List<FileObject> fileObjectEntries = new ArrayList<FileObject>();
+    try {
+      fileObjectEntries = getFileObjects(product, label);
+    } catch (Exception e) {
+      throw new MetExtractionException("Error occurred while getting file "
+          + "objects: " + e.getMessage());
+    }
+    metadata.addMetadata(Constants.FILE_OBJECTS, fileObjectEntries);
     // Register additional metadata (if specified)
     if (!config.getAncillaryMetadata().isEmpty()) {
       for (String element : config.getAncillaryMetadata()) {
@@ -195,8 +215,6 @@ public class Pds3MetExtractor implements MetExtractor {
     }
     return metadata;
   }
-
-
 
   private List<ReferenceEntry> getReferences(List<Association> associations,
       File product) {
@@ -221,6 +239,74 @@ public class Pds3MetExtractor implements MetExtractor {
       references.add(entry);
     }
     return references;
+  }
+
+  private List<FileObject> getFileObjects(File product, Label label)
+  throws URISyntaxException, MalformedURLException {
+    SimpleDateFormat format = new SimpleDateFormat(
+        "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'");
+    List<FileObject> results = new ArrayList<FileObject>();
+    // Create a file object of the label file
+    String lastModified = format.format(new Date(product.lastModified()));
+    try {
+      log.log(new ToolsLogRecord(ToolsLevel.INFO, "Capturing file object "
+          + "metadata for " + product.getName(), product));
+      FileObject fileObject = new FileObject(product.getName(),
+          product.getParent(), product.length(),
+          lastModified, MD5Checksum.getMD5Checksum(product.toString()));
+      results.add(fileObject);
+    } catch (Exception e) {
+      log.log(new ToolsLogRecord(ToolsLevel.SEVERE, "Error "
+          + "occurred while calculating checksum for " + product.getName()
+          + ": " + e.getMessage(), product.toString()));
+    }
+    // File references are found in pointer statements in a label.
+    String basePath = product.getParent();
+    List<PointerStatement> pointers = PointerStatementFinder.find(label);
+    for (PointerStatement ps : pointers) {
+      for (FileReference fileRef : ps.getFileRefs()) {
+        File file = resolvePath(fileRef.getPath(), basePath,
+            config.getIncludePaths());
+        try {
+          if (file != null) {
+            if (!file.getName().equals(product.getName())) {
+              log.log(new ToolsLogRecord(ToolsLevel.INFO, "Capturing file "
+                + "object metadata for " + file.getName(), product));
+              long size = file.length();
+              String creationDateTime = format.format(new Date(
+                file.lastModified()));
+              String checksum = MD5Checksum.getMD5Checksum(file.toString());
+              results.add(new FileObject(file.getName(), file.getParent(),
+                  size, creationDateTime, checksum));
+            }
+          } else {
+            log.log(new ToolsLogRecord(ToolsLevel.SEVERE, "File object not "
+                + "found: " + fileRef.getPath(), product.toString()));
+          }
+        } catch (Exception e) {
+          log.log(new ToolsLogRecord(ToolsLevel.SEVERE, "Error occurred "
+              + "while calculating checksum for " + file.getName() + ": ",
+              product));
+        }
+      }
+    }
+    return results;
+  }
+
+  private File resolvePath(String name, String basePath,
+      List<String> includePaths) {
+    File file = new File(basePath, name);
+    if (file.exists()) {
+      return file;
+    } else {
+      for (String includePath : includePaths) {
+        file = new File(includePath, name);
+        if (file.exists()) {
+          return file;
+        }
+      }
+    }
+    return null;
   }
 
   /**

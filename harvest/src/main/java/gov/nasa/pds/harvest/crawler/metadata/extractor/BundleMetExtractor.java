@@ -10,12 +10,13 @@
 // may be required before exporting such information to foreign countries or
 // providing access to foreign nationals.
 //
-// $Id: PDSBundleMetExtractor.java 8360 2011-01-11 19:26:28Z mcayanan $
+// $Id$
 package gov.nasa.pds.harvest.crawler.metadata.extractor;
 
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.jpl.oodt.cas.metadata.exceptions.MetExtractionException;
 import gov.nasa.pds.harvest.constants.Constants;
+import gov.nasa.pds.harvest.file.FileObject;
 import gov.nasa.pds.harvest.inventory.ReferenceEntry;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
@@ -61,7 +62,7 @@ public class BundleMetExtractor extends Pds4MetExtractor {
     String logicalID = "";
     String version = "";
     String title = "";
-    List<TinyElementImpl> references = null;
+    List<TinyElementImpl> references = new ArrayList<TinyElementImpl>();
     try {
       extractor.parse(product);
     } catch (Exception e) {
@@ -121,6 +122,8 @@ public class BundleMetExtractor extends Pds4MetExtractor {
       if (!refEntries.isEmpty()) {
         metadata.addMetadata(Constants.REFERENCES, refEntries);
       }
+      List<FileObject> fileObjectEntries = getFileObjects(product);
+      metadata.addMetadata(Constants.FILE_OBJECTS, fileObjectEntries);
     } catch (Exception e) {
       throw new MetExtractionException(e.getMessage());
     }

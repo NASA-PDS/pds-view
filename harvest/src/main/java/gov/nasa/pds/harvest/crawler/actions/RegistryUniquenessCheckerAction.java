@@ -24,6 +24,7 @@ import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerActionPhases;
 import gov.nasa.jpl.oodt.cas.crawl.structs.exceptions.CrawlerActionException;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.pds.harvest.constants.Constants;
+import gov.nasa.pds.harvest.crawler.status.Status;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
@@ -84,6 +85,8 @@ public class RegistryUniquenessCheckerAction extends CrawlerAction {
         log.log(new ToolsLogRecord(Level.WARNING,
             "Product already exists in the registry: "
             + lidvid, product));
+        log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
+            Status.PRODUCT_EXISTS, product));
         return false;
       } else {
         return true;

@@ -24,6 +24,7 @@ public class Pds3MetExtractorConfig implements MetExtractorConfig {
   private List<Association> associations;
   private String lidPrefix;
   private List<String> ancillaryMetadata;
+  private List<String> includePaths;
   /**
    * Default contstructor.
    *
@@ -35,6 +36,7 @@ public class Pds3MetExtractorConfig implements MetExtractorConfig {
     associations = metadata.getAssociations().getAssociation();
     lidPrefix = metadata.getLidPrefix();
     ancillaryMetadata = metadata.getAncillaryMetadata().getElementName();
+    includePaths = metadata.getIncludePaths().getPath();
   }
 
   public List<Association> getAssociations() {
@@ -47,5 +49,9 @@ public class Pds3MetExtractorConfig implements MetExtractorConfig {
 
   public List<String> getAncillaryMetadata() {
     return ancillaryMetadata;
+  }
+
+  public List<String> getIncludePaths() {
+    return includePaths;
   }
 }
