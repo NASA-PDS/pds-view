@@ -39,16 +39,11 @@ import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.inventory.ReferenceEntry;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
-import gov.nasa.pds.registry.client.RegistryClient;
-import gov.nasa.pds.registry.client.SecurityContext;
 import gov.nasa.pds.registry.exception.RegistryClientException;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
-import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
-import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.Slot;
-import gov.nasa.pds.registry.query.AssociationFilter;
-import gov.nasa.pds.registry.query.RegistryQuery;
+
 
 /**
  * Class to register file objects.
@@ -68,6 +63,7 @@ public class FileObjectRegistrationAction extends CrawlerAction {
   private final String DESCRIPTION = "Registers file objects associated with "
     + "a product.";
 
+  /** Registry URL. */
   private String registryUrl;
 
   /** The registry client. */
@@ -77,11 +73,7 @@ public class FileObjectRegistrationAction extends CrawlerAction {
    * Constructor.
    *
    * @param registryUrl url of the registry.
-   * @param registryPackageGuid The GUID of the registry package to associate
-   * to all the products being registered during a single Harvest run.
-   * @param securityContext An object containing keystore information.
-   * @param user username.
-   * @param password The password associated with the given username.
+   * @param ingester The RegistryIngester.
    * @throws RegistryClientException
    */
   public FileObjectRegistrationAction(String registryUrl,
