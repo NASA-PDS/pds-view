@@ -34,7 +34,9 @@
 
         <source>
 % java -Djava.ext.dirs=$HOME/${xdoc-artifactId}-${xdoc-version}/lib \
-gov.nasa.pds.harvest.HarvestLauncher -Dpds.registry="&lt;Registry URL&gt;" \
+gov.nasa.pds.harvest.HarvestLauncher \
+-Dpds.registry="&lt;Registry URL&gt;" \
+-Dpds.security.keystore="$HOME/${xdoc-artifactId}-${xdoc-version}/keystore/tomcat_self_sign_keystore" \
 &lt;policy file&gt; &lt;command-line arguments&gt;
         </source>
       </subsection>
@@ -45,7 +47,9 @@ gov.nasa.pds.harvest.HarvestLauncher -Dpds.registry="&lt;Registry URL&gt;" \
 
         <source>
 % java -jar $HOME/${xdoc-artifactId}-${xdoc-version}/lib/${xdoc-artifactId}-${xdoc-version}.jar \
--Dpds.registry="&lt;Registry URL&gt;" &lt;policy file&gt; &lt;command-line arguments&gt;
+-Dpds.registry="&lt;Registry URL&gt;" \
+-Dpds.security.keystore="$HOME/${xdoc-artifactId}-${xdoc-version}/keystore/tomcat_self_sign_keystore" \
+&lt;policy file&gt; &lt;command-line arguments&gt;
         </source>
       </subsection>
     </section>
