@@ -465,12 +465,15 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
           &lt;elementName&gt;START_DATE_TIME&lt;/elementName&gt;
           &lt;elementName&gt;STOP_DATE_TIME&lt;/elementName&gt;
         &lt;/ancillaryMetadata&gt;
+        &lt;includePaths&gt;
+          &lt;path&gt;/data/pds3/label&lt;/path&gt;
+        &lt;/includePaths&gt;
     &lt;/pds3ProductMetadata&gt;
   &lt;/candidates&gt;
 &lt;/policy&gt;
       </source>
 
-      <p>This policy file is made up of the following complex type elements: <i>pds3Directory</i>, <i>pds3ProductMetadata</i>, <i>association</i>, <i>ancillaryMetadata</i>.
+      <p>This policy file is made up of the following complex type elements: <i>pds3Directory</i>, <i>pds3ProductMetadata</i>, <i>association</i>, <i>ancillaryMetadata</i>, <i>includePaths</i>.
       </p>
 
       <p><b><i>pds3Directory</i></b></p>
@@ -531,6 +534,19 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
       </table>
 
       <p>In the example above, the values from the following elements will be extracted from a PDS3 product label: <i>START_DATE_TIME</i> and <i>STOP_DATE_TIME</i>. If they are found in the label, they will be registered as slots in the registry, using their element names in lowercase form as the slot names. In this case, <i>start_date_time</i> and <i>stop_date_time</i> will be used as slot names in the registry.
+      </p>
+      
+      <p><b><i>includePaths</i></b></p>
+      
+      <p>Specify this element to tell the Harvest tool the locations of where to find file references specified in a label. By default, the tool will look for the file reference in the location of the label file. The following table describes the elements that are allowed:
+      </p>
+      
+      <table>
+        <tr><th>Element name</th><th>Description</th></tr>
+        <tr><td>path</td><td>Specify the directory location of where to find the file references in a label. This element can be specified more than once to specify multiple search paths.</td></tr>
+      </table>
+      
+      <p>In the example above, the tool will look at the <i>/data/pds3/label</i> directory for file references if they cannot be found in the same location as the label file.
       </p>
 
     </subsection>
