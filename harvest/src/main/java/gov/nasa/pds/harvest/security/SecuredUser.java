@@ -13,20 +13,29 @@
 // $Id$
 package gov.nasa.pds.harvest.security;
 
+import gov.nasa.pds.registry.client.SecurityContext;
+
 public class SecuredUser {
-    private String name;
-    private String password;
+  private String name;
+  private String password;
+  private SecurityContext securityContext;
 
-    public SecuredUser(String name, String password) {
-        this.name = name;
-        this.password = password;
-    }
+  public SecuredUser(SecurityContext securityContext, String name,
+      String password) {
+    this.name = name;
+    this.password = password;
+    this.securityContext = securityContext;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getPassword() {
-        return password;
-    }
+  public String getPassword() {
+    return password;
+  }
+
+  public SecurityContext getSecurityContext() {
+    return securityContext;
+  }
 }

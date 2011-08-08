@@ -14,12 +14,10 @@
 package gov.nasa.pds.harvest.constants;
 
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
-import gov.nasa.pds.harvest.inventory.ReferenceEntry;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -46,6 +44,9 @@ public class Constants {
   /** The associations in a product label. */
   public static final String REFERENCES = "references";
 
+  /** The File objects of a product label. */
+  public static final String FILE_OBJECTS = "file_objects";
+
   /** The title of a product label. */
   public static final String TITLE = "title";
 
@@ -54,6 +55,21 @@ public class Constants {
 
   /** Metadata key to indicate if an association was verified. */
   public static final String VERIFIED = "verified";
+
+  /** The file name. */
+  public static final String FILE_NAME = "file_name";
+
+  /** The file size. */
+  public static final String FILE_SIZE = "file_size";
+
+  /** The file location. */
+  public static final String FILE_LOCATION = "file_location";
+
+  /** The MD5 checksum of a file. */
+  public static final String MD5_CHECKSUM = "md5_checksum";
+
+  /** The creation datetime of a file. */
+  public static final String CREATION_DATE_TIME = "creation_date_time";
 
   /** Holds the XPaths to the expected metadata in a product label. */
   public static final HashMap<String, String> coreXpathsMap =
@@ -65,16 +81,18 @@ public class Constants {
 
   static {
     coreXpathsMap.put(LOGICAL_ID, IDENTIFICATION_AREA_XPATH + "/"
-            + LOGICAL_ID);
+        + LOGICAL_ID);
     coreXpathsMap.put(PRODUCT_VERSION, IDENTIFICATION_AREA_XPATH + "/"
-            + PRODUCT_VERSION);
+        + PRODUCT_VERSION);
     coreXpathsMap.put(OBJECT_TYPE, IDENTIFICATION_AREA_XPATH + "/"
-            + OBJECT_TYPE);
+        + OBJECT_TYPE);
     coreXpathsMap.put(TITLE, IDENTIFICATION_AREA_XPATH + "/" + TITLE);
     coreXpathsMap.put(REFERENCES,
-            "//*[ends-with(name(),'Member_Entry')]"
-            + " | //*[ends-with(name(),'Reference_Entry')] | "
-            + "//*[starts-with(name(), 'Reference_Entry')]");
+          "//*[ends-with(name(),'Member_Entry')]"
+        + " | //*[ends-with(name(),'Reference_Entry')] | "
+        + "//*[starts-with(name(), 'Reference_Entry')]");
+    coreXpathsMap.put(FILE_OBJECTS, "//*[starts-with(name(), 'File_Area')]/"
+        + "File");
   }
 
   /** Mapping of PDS3 to PDS4 names */
@@ -91,6 +109,6 @@ public class Constants {
 
     /** Map of files to metadata needed for registering associations. */
     public static final Map<File, Metadata> registeredProducts =
-      new HashMap<File, Metadata>();
+      new LinkedHashMap<File, Metadata>();
 
 }

@@ -28,6 +28,9 @@ public class ReferenceEntry {
     /** Version. */
     private String version;
 
+    /** The guid. */
+    private String guid;
+
     /** The association type. */
     private String associationType;
 
@@ -54,6 +57,7 @@ public class ReferenceEntry {
         objectType = null;
         lineNumber = -1;
         file = null;
+        guid = null;
 
         hasVersion = false;
     }
@@ -176,5 +180,31 @@ public class ReferenceEntry {
      */
     public int getLineNumber() {
         return lineNumber;
+    }
+
+    public String getGuid() {
+      return guid;
+    }
+
+    /**
+     * Set the guid.
+     *
+     * @param guid A guid.
+     */
+    public void setGuid(String guid) {
+      this.guid = guid;
+    }
+
+    /**
+     * Determines if the guid has been set.
+     *
+     * @return true if the guid is not null.
+     */
+    public boolean hasGuid() {
+      if (guid != null) {
+        return true;
+      } else {
+        return false;
+      }
     }
 }

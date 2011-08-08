@@ -27,6 +27,8 @@ import gov.nasa.pds.harvest.inventory.ReferenceEntry;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.registry.client.RegistryClient;
+import gov.nasa.pds.registry.client.SecurityContext;
+import gov.nasa.pds.registry.exception.RegistryClientException;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
@@ -60,30 +62,38 @@ public class AssociationPublisher {
    * Constructor.
    *
    * @param registryUrl The URL to the registry service.
+   * @param registryPackageGuid The GUID of the registry package to associate
+   * to all the products being registered during a single Harvest run.
    * @throws RegistryClientException
    */
-  public AssociationPublisher(String registryUrl) {
-    this(registryUrl, null, null);
+  public AssociationPublisher(String registryUrl, String registryPackageGuid)
+  throws RegistryClientException {
+    this(registryUrl, registryPackageGuid, null, null, null);
   }
 
   /**
    * Constructor.
    *
    * @param registryUrl The URL to the registry service.
+   * @param registryPackageGuid The GUID of the registry package to associate
+   * to all the products being registered during a single Harvest run.
+   * @param securityContext An object containing keystore information.
    * @param user Name of the user authorized to publish the associations.
    * @param password The password associated with the user.
    * @throws RegistryClientException
    */
-  public AssociationPublisher(String registryUrl, String user,
-      String password) {
+  public AssociationPublisher(String registryUrl, String registryPackageGuid,
+      SecurityContext securityContext, String user, String password)
+  throws RegistryClientException {
     super();
     if ((user != null) && (password != null)) {
       this.user = user;
-      this.registryClient = new RegistryClient(registryUrl, user,
-          password);
+      this.registryClient = new RegistryClient(registryUrl, securityContext,
+          user, password);
     } else {
       this.registryClient = new RegistryClient(registryUrl);
     }
+    this.registryClient.setRegistrationPackageId(registryPackageGuid);
     stats = new AssociationStats();
   }
 
@@ -198,23 +208,28 @@ public class AssociationPublisher {
     association.setSourceObject(metadata.getMetadata(Constants.PRODUCT_GUID));
     association.setAssociationType(refEntry.getAssociationType());
     association.setObjectType(refEntry.getObjectType());
-    //Check to see if the target product is in the registry.
-    //If it isn't, then the target GUID will be the LIDVID reference
-    //of the target.
-    ExtrinsicObject target = getExtrinsic(refEntry.getLogicalID(),
-        refEntry.getVersion());
-    String lidvid = refEntry.getLogicalID() + "::" + refEntry.getVersion();
-    if (target != null) {
-      association.setTargetObject(target.getGuid());
-      log.log(new ToolsLogRecord(ToolsLevel.INFO, "Found registered "
-          + "product for reference: " + lidvid, product));
+    if (refEntry.hasGuid()) {
+      association.setTargetObject(refEntry.getGuid());
       verifiedFlag = true;
     } else {
-      association.setTargetObject(lidvid);
-      log.log(new ToolsLogRecord(ToolsLevel.WARNING,
+      //Check to see if the target product is in the registry.
+      //If it isn't, then the target GUID will be the LIDVID reference
+      //of the target.
+      ExtrinsicObject target = getExtrinsic(refEntry.getLogicalID(),
+        refEntry.getVersion());
+      String lidvid = refEntry.getLogicalID() + "::" + refEntry.getVersion();
+      if (target != null) {
+        association.setTargetObject(target.getGuid());
+        log.log(new ToolsLogRecord(ToolsLevel.INFO, "Found registered "
+          + "product for reference: " + lidvid, product));
+        verifiedFlag = true;
+      } else {
+        association.setTargetObject(lidvid);
+        log.log(new ToolsLogRecord(ToolsLevel.WARNING,
           "Product not found in registry for reference: "
           + lidvid + ". LIDVID will be used as the target reference "
           + "for the association.", product));
+      }
     }
     Set<Slot> slots = new HashSet<Slot>();
     slots.add(new Slot("verified", Arrays.asList(
@@ -224,6 +239,13 @@ public class AssociationPublisher {
     return association;
   }
 
+  /**
+   * Gets the extrinsic object with the given LID and VID.
+   *
+   * @param lid The LID to look up in the registry.
+   * @param version The version of the product to look up.
+   * @return The extrinsic object that matches the given LID and VID.
+   */
   private ExtrinsicObject getExtrinsic(String lid, String version) {
     ExtrinsicObject result = null;
     ExtrinsicFilter filter = new ExtrinsicFilter.Builder().lid(lid)

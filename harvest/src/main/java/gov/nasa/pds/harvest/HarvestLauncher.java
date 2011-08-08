@@ -23,17 +23,24 @@ import gov.nasa.pds.harvest.logging.handler.HarvestStreamHandler;
 import gov.nasa.pds.harvest.policy.Namespace;
 import gov.nasa.pds.harvest.policy.Policy;
 import gov.nasa.pds.harvest.policy.PolicyReader;
-import gov.nasa.pds.harvest.security.SecuredUser;
 import gov.nasa.pds.harvest.util.PDSNamespaceContext;
 import gov.nasa.pds.harvest.util.ToolInfo;
 import gov.nasa.pds.harvest.util.Utility;
 import gov.nasa.pds.harvest.util.XMLExtractor;
+import gov.nasa.pds.registry.client.RegistryClient;
+import gov.nasa.pds.registry.client.SecurityContext;
+import gov.nasa.pds.registry.exception.RegistryClientException;
+import gov.nasa.pds.registry.exception.RegistryServiceException;
+import gov.nasa.pds.registry.model.RegistryPackage;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Handler;
@@ -76,8 +83,8 @@ public class HarvestLauncher {
   /** URL of the registry service. */
   private String registryURL;
 
-  /** URL of the security service. */
-  private String securityURL;
+  /** Path to the self sign on keystore. */
+  private String keystore;
 
   /** A log file name. */
   private String logFile;
@@ -91,6 +98,19 @@ public class HarvestLauncher {
    */
   private int daemonPort;
 
+  /** Security context to support handling of the PDS Security. */
+  private SecurityContext securityContext;
+
+  /** Keystore default password for the self sign certificate. */
+  private static String KEYSTORE_PASSWORD = "changeit";
+
+  /** The GUID of the registry package created before harvesting of products.
+   */
+  private String registryPackageGuid;
+
+  /** The registry package name to be used when harvesting products. */
+  private String registryPackageName;
+
   /**
    * Default constructor.
    *
@@ -100,10 +120,13 @@ public class HarvestLauncher {
     password = null;
     username = null;
     registryURL = null;
-    securityURL = null;
+    keystore = null;
     logFile = null;
     waitInterval = -1;
     daemonPort = -1;
+    securityContext = null;
+    registryPackageGuid = null;
+    registryPackageName = null;
 
     globalPolicy = this.getClass().getResourceAsStream("global-policy.xml");
   }
@@ -133,7 +156,7 @@ public class HarvestLauncher {
    */
   public final void query(final CommandLine line) throws Exception {
     registryURL = System.getProperty("pds.registry");
-    securityURL = System.getProperty("pds.security");
+    keystore = System.getProperty("pds.security.keystore");
     if (registryURL == null) {
       throw new Exception("\'pds.registry\' java property is not set.");
     }
@@ -181,6 +204,19 @@ public class HarvestLauncher {
       throw new InvalidOptionException(
         "Username and/or password must be specified.");
     }
+    if ( (username != null) && (password != null) ) {
+      if (keystore == null) {
+        throw new Exception("\'pds.security.keystore\' java property not "
+            + "set.");
+      }
+    }
+    if (keystore != null) {
+      if (!new File(keystore).exists()) {
+        throw new Exception("Keystore file does not exist: " + keystore);
+      }
+      securityContext = new SecurityContext(keystore, KEYSTORE_PASSWORD,
+          keystore, KEYSTORE_PASSWORD);
+    }
     setLogger();
   }
 
@@ -196,7 +232,11 @@ public class HarvestLauncher {
     log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
         "Time                        " + Utility.getDateTime()));
     log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
-        "Registry Location           " + registryURL.toString() + "\n"));
+        "Registry Location           " + registryURL.toString()));
+    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+        "Registry Package Name       " + registryPackageName));
+    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+        "Registration Package GUID   " + registryPackageGuid + "\n"));
   }
 
   /**
@@ -259,23 +299,23 @@ public class HarvestLauncher {
    * Perform harvesting of the target files.
    *
    * @param policy Class representation of the policy file.
-   * @param securityUrl Url of the Security Service. Can be null
-   * if the Registry Service instance is not tied to Security.
    *
    * @throws ParserConfigurationException If an error occurred during
    * metadata extraction.
    * @throws MalformedURLException If the URL to the registry service
    * is invalid.
-   * @throws RegistryClientException
+   * @throws RegistryClientException If an error occurred while setting
+   * up the Harvester with the PDS Security Service.
    */
-  private void doHarvesting(final Policy policy, final String securityUrl)
-  throws MalformedURLException, ParserConfigurationException {
+  private void doHarvesting(final Policy policy)
+  throws MalformedURLException, ParserConfigurationException,
+  RegistryClientException {
     log.log(new ToolsLogRecord(ToolsLevel.INFO, "XML extractor set to the "
         + "following default namespace: "
         + XMLExtractor.getDefaultNamespace()));
-    Harvester harvester = new Harvester(registryURL);
+    Harvester harvester = new Harvester(registryURL, registryPackageGuid);
     if ((username != null) && (password != null)) {
-      harvester.setSecuredUser(new SecuredUser(username, password));
+      harvester.setSecurity(securityContext, username, password);
     }
     if (daemonPort != -1 && waitInterval != -1) {
       harvester.setDaemonPort(daemonPort);
@@ -312,6 +352,32 @@ public class HarvestLauncher {
   }
 
   /**
+   * Creates a registry package to be used to associate all products
+   * being registered during a single Harvest run.
+   *
+   * @throws RegistryClientException If an error occurred while initializing
+   * the RegistryClient.
+   * @throws RegistryServiceException If an error occurred while trying to
+   * register a package to the Registry.
+   */
+  private void createRegistryPackage() throws RegistryClientException,
+  RegistryServiceException {
+    RegistryClient client = null;
+    DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+    if ( (username != null) && (password != null) ) {
+      client = new RegistryClient(registryURL, securityContext, username,
+          password);
+    } else {
+      client = new RegistryClient(registryURL);
+    }
+    registryPackageName = "Harvest-Package_" + dateFormat.format(
+        new Date().getTime());
+    RegistryPackage registryPackage = new RegistryPackage();
+    registryPackage.setName(registryPackageName);
+    registryPackageGuid = client.publishObject(registryPackage);
+  }
+
+  /**
    * Process main.
    *
    * @param args Command-line arguments.
@@ -331,8 +397,9 @@ public class HarvestLauncher {
       policy.getCandidates().getProductMetadata().addAll(
           globalPolicy.getCandidates().getProductMetadata());
       setupExtractor(policy.getCandidates().getNamespace());
+      createRegistryPackage();
       logHeader();
-      doHarvesting(policy, securityURL);
+      doHarvesting(policy);
       closeHandlers();
     } catch (JAXBException je) {
       //Don't do anything

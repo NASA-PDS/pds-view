@@ -67,6 +67,9 @@ public class HarvestFormatter extends Formatter {
                 } else if (tlr.getMessage().equals(Status.BADFILE)) {
                     ++badFiles;
                     return "";
+                } else if (tlr.getMessage().equals(Status.PRODUCT_EXISTS)) {
+                    ++productsNotRegistered;
+                    return "";
                 } else {
                     return tlr.getMessage() + lineFeed;
                 }
@@ -117,11 +120,12 @@ public class HarvestFormatter extends Formatter {
     private void processSummary() {
         int totalFiles = discoveredProducts + badFiles + filesSkipped;
         int totalAssociations = associationsRegistered + associationsFailed;
+        int totalProducts = productsRegistered + productsNotRegistered;
         summary.append(discoveredProducts + " of " + totalFiles
-                + " files are candidate products, " + filesSkipped + " skipped"
+                + " files processed, " + filesSkipped + " skipped"
                 + lineFeed);
-        summary.append(productsRegistered + " of " + discoveredProducts
-                + " candidate products registered." + lineFeed);
+        summary.append(productsRegistered + " of " + totalProducts
+                + " products registered." + lineFeed);
         summary.append(associationsRegistered + " of " + totalAssociations
                 + " associations registered, " + associationsSkipped
                 + " skipped" + lineFeed);

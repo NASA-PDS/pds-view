@@ -16,15 +16,12 @@ package gov.nasa.pds.harvest.ingest;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-
-import javax.ws.rs.core.Response.Status;
 
 import gov.nasa.jpl.oodt.cas.filemgr.ingest.Ingester;
 import gov.nasa.jpl.oodt.cas.filemgr.structs.exceptions.CatalogException;
@@ -35,6 +32,8 @@ import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.registry.client.RegistryClient;
+import gov.nasa.pds.registry.client.SecurityContext;
+import gov.nasa.pds.registry.exception.RegistryClientException;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.PagedResponse;
@@ -59,24 +58,39 @@ public class RegistryIngester implements Ingester {
   /** Username of the authorized user. */
   private String user;
 
+  /** The registry package guid. */
+  private String registryPackageGuid;
+
+  /** The security context. */
+  private SecurityContext securityContext;
+
 
   /**
    * Default constructor.
    *
+   * @param packageGuid The GUID of the registry package to associate to
+   * the products being registered.
+   *
    */
-  public RegistryIngester() {
-    this(null, null);
+  public RegistryIngester(String packageGuid) {
+    this(packageGuid, null, null, null);
   }
 
   /**
     * Constructor.
     *
+    * @param packageGuid The GUID of the registry package to associate to
+    * the products being registered.
+    * @param securityContext An object containing keystore information.
     * @param user An authorized user.
     * @param password The password associated with the user.
     */
-  public RegistryIngester(String user, String password) {
+  public RegistryIngester(String packageGuid, SecurityContext securityContext,
+      String user, String password) {
     this.password = password;
     this.user = user;
+    this.securityContext = securityContext;
+    this.registryPackageGuid = packageGuid;
   }
 
   /**
@@ -103,13 +117,18 @@ public class RegistryIngester implements Ingester {
   public boolean hasProduct(URL registry, String productID)
   throws CatalogException {
     try {
-      RegistryClient client = new RegistryClient(registry.toString(), user,
-          password);
+      RegistryClient client = new RegistryClient(registry.toString(),
+          securityContext, user, password);
       ExtrinsicObject extrinsic = client.getLatestObject(productID,
           ExtrinsicObject.class);
       return true;
-    } catch (RegistryServiceException re) {
+    } catch (RegistryServiceException rse) {
       // Do nothing
+    } catch (RegistryClientException rce) {
+      log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+          "Error occurred while initializing RegistryClient: "
+          + rce.getMessage()));
+      throw new CatalogException(rce.getMessage());
     }
     return false;
   }
@@ -129,8 +148,15 @@ public class RegistryIngester implements Ingester {
    */
   public boolean hasProduct(URL registry, String productID,
           String productVersion) throws CatalogException {
-    RegistryClient client = new RegistryClient(registry.toString(), user,
-        password);
+    RegistryClient client = null;
+    try {
+      client = new RegistryClient(registry.toString(),
+          securityContext, user, password);
+    } catch (RegistryClientException rc) {
+      log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+          "Error while initializing RegistryClient: " + rc.getMessage()));
+      throw new CatalogException(rc.getMessage());
+    }
     ExtrinsicFilter filter = new ExtrinsicFilter.Builder().lid(productID)
     .build();
     RegistryQuery<ExtrinsicFilter> query = new RegistryQuery
@@ -169,22 +195,20 @@ public class RegistryIngester implements Ingester {
    */
   public String ingest(URL registry, File prodFile, Metadata met)
   throws IngestException {
-      RegistryClient client = new RegistryClient(registry.toString(), user,
-              password);
-      ExtrinsicObject product = createProduct(met);
       String guid = "";
       try {
-        if (hasProduct(registry, product.getLid())) {
-          guid = client.versionObject(product);
-        } else {
-          guid = client.publishObject(product);
-        }
+        ExtrinsicObject extrinsic = createProduct(met);
+        guid = ingest(registry, extrinsic);
       } catch (RegistryServiceException r) {
         log.log(new ToolsLogRecord(ToolsLevel.INGEST_FAIL,
             r.getMessage(), prodFile));
         throw new IngestException(r.getMessage());
       } catch (CatalogException c) {
         //hasProduct throws this exception, but we can ignore it
+      } catch (RegistryClientException rce) {
+        log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+            "Error while initializing RegistryClient: " + rce.getMessage()));
+        throw new IngestException(rce.getMessage());
       }
       String lid = met.getMetadata(Constants.LOGICAL_ID);
       String vid = met.getMetadata(Constants.PRODUCT_VERSION);
@@ -211,7 +235,8 @@ public class RegistryIngester implements Ingester {
     for (Iterator i = metSet.iterator(); i.hasNext();) {
       Map.Entry entry = (Map.Entry) i.next();
       String key = entry.getKey().toString();
-      if (key.equals(Constants.REFERENCES)) {
+      if (key.equals(Constants.REFERENCES)
+          || key.equals(Constants.FILE_OBJECTS)) {
         continue;
       }
       if (key.equals(Constants.LOGICAL_ID)) {
@@ -234,6 +259,35 @@ public class RegistryIngester implements Ingester {
     product.setSlots(slots);
 
     return product;
+  }
+
+  /**
+   * Ingest the given extrinsic object to the registry.
+   *
+   * @param registry The url of the registry.
+   * @param extrinsic The extrinsic object to register.
+   * @return The GUID of the registered extrinsic object.
+   *
+   * @throws RegistryServiceException If an error occurred while
+   * attempting to register the extrinsic object.
+   * @throws RegistryClientException If an error occurred initializing
+   * the registry client.
+   * @throws CatalogException
+   */
+  public String ingest(URL registry, ExtrinsicObject extrinsic)
+  throws RegistryServiceException, RegistryClientException, CatalogException {
+    String guid = "";
+    RegistryClient client = new RegistryClient(registry.toString(),
+        securityContext, user, password);
+    if (!registryPackageGuid.isEmpty()) {
+      client.setRegistrationPackageId(registryPackageGuid);
+    }
+    if (hasProduct(registry, extrinsic.getLid())) {
+      guid = client.versionObject(extrinsic);
+    } else {
+      guid = client.publishObject(extrinsic);
+    }
+    return guid;
   }
 
   /**

@@ -21,6 +21,7 @@ import gov.nasa.pds.harvest.crawler.BundleCrawler;
 import gov.nasa.pds.harvest.crawler.CollectionCrawler;
 import gov.nasa.pds.harvest.crawler.PDS3ProductCrawler;
 import gov.nasa.pds.harvest.crawler.PDSProductCrawler;
+import gov.nasa.pds.harvest.crawler.actions.FileObjectRegistrationAction;
 import gov.nasa.pds.harvest.crawler.actions.RegistryUniquenessCheckerAction;
 import gov.nasa.pds.harvest.crawler.actions.SaveMetadataAction;
 import gov.nasa.pds.harvest.crawler.actions.ValidateProductAction;
@@ -29,13 +30,13 @@ import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds3MetExtractorConfig;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds4MetExtractorConfig;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.policy.Policy;
-import gov.nasa.pds.harvest.security.SecuredUser;
+import gov.nasa.pds.registry.client.SecurityContext;
+import gov.nasa.pds.registry.exception.RegistryClientException;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 /**
@@ -45,9 +46,6 @@ import java.util.Map.Entry;
  *
  */
 public class Harvester {
-  /** An authorized user. */
-  private SecuredUser securedUser;
-
   /** URL of the registry service. */
   private String registryUrl;
 
@@ -70,33 +68,56 @@ public class Harvester {
   /** Object that registers the associations. */
   private AssociationPublisher associationPublisher;
 
+  /** CrawlerAction that performs file object registration. */
+  private FileObjectRegistrationAction fileObjectRegistrationAction;
+
+  /** The registry package GUID to associate the products being registered
+   *  during a single Harvest run. */
+  private String registryPackageGuid;
+
   /**
    * Constructor.
    *
    * @param registryUrl The registry location.
+   * @param registryPackageGuid The GUID of the registry package to associate
+   * to all the products being registered during a single Harvest run.
+   *
+   * @throws RegistryClientException
    *
    */
-  public Harvester(String registryUrl) {
+  public Harvester(String registryUrl, String registryPackageGuid)
+  throws RegistryClientException {
     this.registryUrl = registryUrl;
-    this.securedUser = null;
     this.registryUrl = registryUrl;
-    this.ingester = new RegistryIngester();
+    this.ingester = new RegistryIngester(registryPackageGuid);
     this.doValidation = true;
     this.daemonPort = -1;
     this.waitInterval = -1;
-    this.associationPublisher = new AssociationPublisher(registryUrl);
+    this.associationPublisher = new AssociationPublisher(registryUrl,
+        registryPackageGuid);
+    this.fileObjectRegistrationAction = new FileObjectRegistrationAction(
+        this.registryUrl, this.ingester);
+    this.registryPackageGuid = registryPackageGuid;
   }
 
   /**
-   * Sets the security for the Harvest tool.
+   * Sets the security.
    *
-   * @param user An authorized user.
+   * @param securityContext An object containing the keystore information.
+   * @param username Username of an authorized user.
+   * @param password Password associated with the given username.
+   *
+   * @throws RegistryClientException If an error occurred while initializing
+   * the security.
    */
-  public void setSecuredUser(SecuredUser user) {
-    this.securedUser = user;
-    this.ingester = new RegistryIngester(user.getName(), user.getPassword());
+  public void setSecurity(SecurityContext securityContext, String username,
+      String password) throws RegistryClientException {
+    this.ingester = new RegistryIngester(registryPackageGuid,
+        securityContext, username, password);
     this.associationPublisher = new AssociationPublisher(this.registryUrl,
-        user.getName(), user.getPassword());
+        registryPackageGuid, securityContext, username, password);
+    this.fileObjectRegistrationAction = new FileObjectRegistrationAction(
+        this.registryUrl, this.ingester);
   }
 
   /**
@@ -127,14 +148,7 @@ public class Harvester {
     List<CrawlerAction> ca = new ArrayList<CrawlerAction>();
     ca.add(new RegistryUniquenessCheckerAction(registryUrl, this.ingester));
     ca.add(new SaveMetadataAction());
-/*
-    if (securedUser != null) {
-      ca.add(new AssociationPublisherAction(registryUrl,
-          securedUser.getName(), securedUser.getPassword()));
-    } else {
-      ca.add(new AssociationPublisherAction(registryUrl));
-    }
-*/
+    ca.add(fileObjectRegistrationAction);
     if (doValidation) {
       ca.add(new ValidateProductAction());
     }
