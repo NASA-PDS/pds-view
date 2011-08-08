@@ -83,6 +83,10 @@ or
           <p>This directory contains the dependent jar files for the tool along with the executable jar file (${xdoc-artifactId}-${xdoc-version}.jar) containing the Harvest Tool software.
           </p>
         </li>
+        <li><b>keystore/</b><br/>
+          <p>This directory contains the keystore file needed for Harvest to support product registration to a secured instance of the PDS Registry.
+          </p>
+        </li>
       </ul>
     </section>
   </body>

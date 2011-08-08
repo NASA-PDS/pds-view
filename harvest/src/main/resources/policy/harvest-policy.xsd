@@ -62,7 +62,15 @@
       <xsd:element ref="lidPrefix" minOccurs="0"/>
       <xsd:element ref="associations" minOccurs="0"/>
       <xsd:element ref="ancillaryMetadata" minOccurs="0"/>
+      <xsd:element ref="includePaths" minOccurs="0"/>
    </xsd:all>
+</xsd:complexType>
+
+<xsd:element name="includePaths" type="IncludePath"/>
+<xsd:complexType name="IncludePath">
+   <xsd:sequence>
+      <xsd:element ref="path" maxOccurs="unbounded"/>
+   </xsd:sequence>
 </xsd:complexType>
 
 <xsd:element name="candidates" type="Candidate"/>

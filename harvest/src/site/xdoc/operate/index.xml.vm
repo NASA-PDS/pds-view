@@ -32,7 +32,7 @@
         <li><a href="#Tool_Setup">Tool Setup</a></li>
         <li><a href="#Additional_Tool_Setup">Additional Tool Setup</a></li>
         <li><a href="#Tool_Execution">Tool Execution</a></li>
-        <li><a href="#Harvest_Policy_File">Harvest Policy File</a></li> 
+        <li><a href="#Harvest_Policy_File">Harvest Policy File</a></li>
         <li><a href="#Report_Format">Report Format</a></li>
       </ul>
 
@@ -93,15 +93,16 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
       <p>This section details how to re-configure the Harvest Tool to interface with another instance of the Registry Service.
       </p>
 
-      <p>The Harvest Tool points to the Registry Service via the following Java System Property:
+      <p>The Harvest Tool points to the Registry Service via the <i>pds.registry</i> Java System Property. If a secured, Registry Service instance is being pointed to, then the <i>pds.security.keystore</i> Java System Property must also be set. The following table details these 2 Java System properties:
       </p>
 
       <table>
         <tr><th>System Property Name</th><th>Description</th></tr>
         <tr><td>pds.registry</td><td>Specify the URL to the Registry Service. This property is required.</td></tr>
+        <tr><td>pds.security.keystore</td><td>Specify the file path to the self sign keystore file located in the <i>keystore</i> directory of the <i>harvest</i> package. This property can be omitted if pointing to a non-secured, instance of the Registry Service.</td></tr>
       </table>
 
-      <p>By default, the Harvest shell script and batch file point to local installation of the Registry Service. The sections below detail how to modify these scripts to point to another instance of this service.
+      <p>By default, the Harvest shell script and batch file point to local installations of the Registry Service. Additionally, they automatically point to the keystore file that is included with the Harvest package. The sections below detail how to modify these scripts to point to another instance of the Registry.
       </p>
 
       <subsection name="UNIX-Based Users">
@@ -109,14 +110,14 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </p>
 
         <source>
-% java -Dpds.registry="http://localhost:8080/registry-service" -jar ${HARVEST_JAR} "$@"
+% java -Dpds.registry="http://localhost:8080/registry-service" -Dpds.security.keystore="${KEYSTORE}" -jar ${HARVEST_JAR} "$@"
         </source>
 
-        <p>Replace the URL value of <i>pds.registry</i> with the URL to the desired instance of the Registry. For example, making the following change to the script will have Harvest pointing to the secured operational instance of the Registry at the Engineering Node:
+        <p>Replace the URL value of <i>pds.registry</i> with the URL to the desired instance of the Registry. For example, making the following change to the script will have Harvest pointing to the secured, operational instance of the Registry at the Engineering Node:
         </p>
 
         <source>
-% java -Dpds.registry="https://pdsops2.jpl.nasa.gov/registry-service" -jar ${HARVEST_JAR} "$@"
+% java -Dpds.registry="https://pdsops2.jpl.nasa.gov/registry-service" -Dpds.security.keystore=${KEYSTORE} -jar ${HARVEST_JAR} "$@"
         </source>
       </subsection>
 
@@ -125,14 +126,14 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </p>
 
         <source>
-% java -Dpds.registry="http://localhost:8080/registry-service" -jar "%HARVEST_JAR%" %*
+% java -Dpds.registry="http://localhost:8080/registry-service" -Dpds.security.keystore="%KEYSTORE%" -jar "%HARVEST_JAR%" %*
         </source>
 
         <p>Replace the URL value of <i>pds.registry</i> with the URL to the desired instance of the Registry. For example, making the following change to the batch file will have Harvest pointing to a secured operational instance of the Registry at the Engineering Node:
         </p>
 
         <source>
-% java -Dpds.registry="https://pdsops2.jpl.nasa.gov/registry-service" -jar "%HARVEST_JAR%" %*
+% java -Dpds.registry="https://pdsops2.jpl.nasa.gov/registry-service" -Dpds.security.keystore="%KEYSTORE%" -jar "%HARVEST_JAR%" %*
         </source>
       </subsection>
     </section>
@@ -177,15 +178,15 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         <source>
 % Harvest policy.xml -u {username} -p {password} -l log.txt
         </source>
-        
+
         <p>When registering product metadata to a non-secured instance of the Registry (such as one running on your local machine), the <i>-u</i> and <i>-p</i> command-line option flags do not need to be passed into the tool. The following command demonstrates how to run the Harvest Tool to register product metadata to a non-secured instance of the Registry Service, with the output going to a log file:
         </p>
-        
+
         <source>
 % Harvest policy.xml -l log.txt
-        </source>       
+        </source>
       </subsection>
-      
+
       <subsection name="Persistance Mode">
         <p>The Harvest Tool can be run in persistance mode through an XML-RPC accessible web service called a daemon. Under this scenario, the Harvest Tool wakes up periodically, inspects a target directory or directories, and registers the latest products. This section details how to set this up.
         </p>
@@ -245,13 +246,13 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         <source>
 % HarvestController --url http://localhost:9000/xmlrpc --operation --isRunning
         </source>
-      </subsection>      
+      </subsection>
    </section>
-   
+
    <section name="Harvest Policy File">
      <p>The Harvest policy file is an XML-based configuration file that the tool uses to find products and register their metadata. The schema for the policy file can be found in the <a href="index-policy-schema.html">Harvest Policy Schema</a> section. If viewing this document in PDF form, see the appendix for details. This section details how to setup the policy file to do PDS data product registration.
      </p>
-     
+
      <subsection name="PDS4 Data Product Registration">
        <p>The following is an example of a policy file to perform registration of PDS4 data products:
        </p>
@@ -419,14 +420,14 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
        <p>For a more detailed explanation on XPath, go to your favorite search engine and type <i>XPath tutorial</i>.
        </p>
      </subsection>
-     
+
     <subsection name="PDS3 Product Registration">
       <p>By default, the tool registers discovered PDS3 products under the <i>Product_Proxy_PDS3</i> objectType in the registry. Additionally, the tool has to dynamically create certain metadata in order to support ingestion of PDS3 data products into the registry. The <a href="index-pds3Harvesting.html">Harvesting of PDS3 Data Products</a> section details how the Harvest Tool behaves when registering PDS3 data products. If viewing this document in PDF form, see the appendix for details.
       </p>
-       
-      <p>The following is an example of a policy file to perform product registration of PDS3 data products: 
+
+      <p>The following is an example of a policy file to perform product registration of PDS3 data products:
       </p>
-       
+
       <source>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- Example of a Harvest policy configuration file that will do PDS3 data
@@ -439,7 +440,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
     &lt;filePattern&gt;*.LBL&lt;/filePattern&gt;
   &lt;/pds3Directory&gt;
   &lt;candidates&gt;
-    &lt;!-- Harvest will register PDS3 data products under the objectType 
+    &lt;!-- Harvest will register PDS3 data products under the objectType
       'Product_Proxy_PDS3' --&gt;
     &lt;pds3ProductMetadata&gt;
         &lt;!-- Prefix to add to the LID of a PDS3 product registration --&gt;
@@ -456,53 +457,53 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
             &lt;lidReference&gt;URN:NASA:PDS:mission.MER&lt;/lidReference&gt;
           &lt;/association&gt;
         &lt;/associations&gt;
-        &lt;!-- Register any additional metadata. They will be registered as 
-          slots with their element names in lowercase form. Default is to 
-          register metadata defined in the identification area of the 
+        &lt;!-- Register any additional metadata. They will be registered as
+          slots with their element names in lowercase form. Default is to
+          register metadata defined in the identification area of the
           Product_Proxy_PDS3 schema. --&gt;
         &lt;ancillaryMetadata&gt;
           &lt;elementName&gt;START_DATE_TIME&lt;/elementName&gt;
           &lt;elementName&gt;STOP_DATE_TIME&lt;/elementName&gt;
         &lt;/ancillaryMetadata&gt;
-    &lt;/pds3ProductMetadata&gt;    
-  &lt;/candidates&gt;      
-&lt;/policy&gt;       
+    &lt;/pds3ProductMetadata&gt;
+  &lt;/candidates&gt;
+&lt;/policy&gt;
       </source>
-        
+
       <p>This policy file is made up of the following complex type elements: <i>pds3Directory</i>, <i>pds3ProductMetadata</i>, <i>association</i>, <i>ancillaryMetadata</i>.
       </p>
-      
+
       <p><b><i>pds3Directory</i></b></p>
-      
+
       <p>Specify this element to tell the Harvest Tool the directory location to crawl. The following table describes the elements that are allowed:
       </p>
-      
+
       <table>
         <tr><th>Element Name</th><th>Description</th></tr>
         <tr><td>path</td><td>Specify a directory location containing the PDS3 data products to register. Only one directory location is allowed per executable run.</td></tr>
         <tr><td>filePattern</td><td>Specify a file pattern to look for specific files. If omitted, the default is to get all files within a directory.</td></tr>
       </table>
-      
+
       <p>In the example above, the Harvest Tool will crawl for PDS3 data products starting at the location <i>/data/pds3/dataset</i>, looking for files with a <i>.LBL</i> file extension.
       </p>
-       
+
       <p><b><i>pds3ProductMetadata</i></b></p>
-               
+
       <p>Specify this element to tell the Harvest Tool what metadata to ingest into the registry when registering PDS3 data products. This element must be specified within the <i>candidates</i> tag as shown in the example. The following table describes the elements that are allowed:
       </p>
-      
+
       <table>
         <tr><th>Element name</th><th>Description</th></tr>
         <tr><td>lidPrefix</td><td>Specify a prefix to add to the logical identifier.</td></tr>
         <tr><td>associations</td><td>Specify one or more associations.</td></tr>
         <tr><td>ancillaryMetadata</td><td>Specify ancillary metadata to ingest into the registry for every discovered PDS3 data product.</td></tr>
       </table>
-      
+
       <p>In the example above, the logical identifiers of every discovered PDS3 data product will be prefixed with <i>URN:JPL:PDS:ENGINEERING</i>.
       </p>
-      
+
       <p><b><i>association</i></b></p>
-      
+
       <p>Specify this element to tell the Harvest Tool what associations belong to each discovered PDS3 data product. Specifying one or more <i>association</i> elements is allowed and they must be within the <i>associations</i> tag as shown in the example. The following table describes the elements that are allowed:
       </p>
 
@@ -512,29 +513,29 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         <tr><td>lidVidReference</td><td>Specify a lidvid reference.</td></tr>
         <tr><td>lidReference</td><td>Specify a lid reference.</td></tr>
       </table>
-      
+
       <p>Note that <i>lidVidReference</i> and <i>lidReference</i> cannot be used together within the same <i>association</i> tag. Only one can be chosen.
       </p>
 
       <p>In the example above, each discovered PDS3 product will have two associations: one with a LIDVID of <i>URN:NASA:PDS:target.MARS::1.0</i> and association type of <i>has_Target</i>, and one with a LID of <i>URN:NASA:PDS:mission.MER</i> and association type of <i>has_Mission</i>.
       </p>
-      
+
       <p><b><i>ancillaryMetadata</i></b></p>
-      
+
       <p>Specify this element to tell the Harvest tool what additional metadata to register. The following table describes the elements that are allowed:
       </p>
-      
+
       <table>
         <tr><th>Element name</th><th>Description</th></tr>
         <tr><td>elementName</td><td>Specify an element name found in the PDS3 data product label.</td></tr>
       </table>
-      
+
       <p>In the example above, the values from the following elements will be extracted from a PDS3 product label: <i>START_DATE_TIME</i> and <i>STOP_DATE_TIME</i>. If they are found in the label, they will be registered as slots in the registry, using their element names in lowercase form as the slot names. In this case, <i>start_date_time</i> and <i>stop_date_time</i> will be used as slot names in the registry.
       </p>
-      
-    </subsection>      
+
+    </subsection>
   </section>
-      
+
   <section name="Report Format">
     <p>This section describes the contents of the Harvest Tool report. At this time, the Harvest Tool only outputs a series of log messages. The log will report the success or failure of a discovered product attempting to be registered. Additionally, any syntactical errors in a discovered product are reported. A log consists of a severity level, file name, and a message. The following is an example of some of the log messages that can be expected from the Harvest Tool:
      </p>

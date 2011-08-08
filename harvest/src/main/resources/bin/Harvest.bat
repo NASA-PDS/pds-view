@@ -25,10 +25,17 @@ set PARENT_DIR=%SCRIPT_DIR%..
 
 set LIB_DIR=%PARENT_DIR%\lib
 
+set KEYSTORE=%PARENT_DIR%\keystore\tomcat_self_sign_keystore
+
 if exist "%LIB_DIR%\harvest-*.jar" (
 set HARVEST_JAR=%LIB_DIR%\harvest-*.jar
 ) else (
 echo Cannot find Harvest jar file in %LIB_DIR%
+goto END
+)
+
+if not exist "%KEYSTORE%" (
+echo Cannot find keystore file: %KEYSTORE%
 goto END
 )
 
@@ -40,6 +47,6 @@ for %%i in ("%LIB_DIR%"\harvest-*.jar) do set HARVEST_JAR=%%i
 :: The special variable '%*' allows the arguments
 :: to be passed into the executable.
 
-java -Dpds.registry="http://localhost:8080/registry-service" -jar "%HARVEST_JAR%" %*
+java -Dpds.registry="http://localhost:8080/registry-service" -Dpds.security.keystore="%KEYSTORE%" -jar "%HARVEST_JAR%" %*
 
 :END
