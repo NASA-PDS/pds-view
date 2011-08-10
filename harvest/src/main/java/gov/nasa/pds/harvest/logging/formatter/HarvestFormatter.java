@@ -118,11 +118,11 @@ public class HarvestFormatter extends Formatter {
     }
 
     private void processSummary() {
-        int totalFiles = discoveredProducts + badFiles + filesSkipped;
+        int totalFiles = discoveredProducts + badFiles;
         int totalAssociations = associationsRegistered + associationsFailed;
         int totalProducts = productsRegistered + productsNotRegistered;
         summary.append(discoveredProducts + " of " + totalFiles
-                + " files processed, " + filesSkipped + " skipped"
+                + " file(s) processed, " + filesSkipped + " skipped"
                 + lineFeed);
         summary.append(productsRegistered + " of " + totalProducts
                 + " products registered." + lineFeed);

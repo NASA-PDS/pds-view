@@ -29,7 +29,9 @@ import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.pds.harvest.association.AssociationPublisher;
 import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.crawler.PDSProductCrawler;
+import gov.nasa.pds.harvest.crawler.actions.FileObjectRegistrationAction;
 import gov.nasa.pds.harvest.crawler.stats.AssociationStats;
+import gov.nasa.pds.harvest.crawler.stats.FileObjectStats;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.harvest.security.SecuredUser;
@@ -171,6 +173,11 @@ public class HarvestDaemon extends CrawlDaemon {
           ++totalProductsNotRegistered;
         }
       }
+      FileObjectStats fStats = getFileObjectStats(crawler);
+      totalProductsRegistered += fStats.getNumRegistered();
+      totalProductsNotRegistered += fStats.getNumNotRegistered();
+      fStats.clear();
+
       AssociationStats aStats = associationPublisher.getAssociationStats();
       totalAssociationsRegistered += aStats.getNumRegistered();
       totalAssociationsNotRegistered += aStats.getNumNotRegistered();
@@ -180,16 +187,27 @@ public class HarvestDaemon extends CrawlDaemon {
     int totalFilesProcessed = totalNumDiscoveredProducts + totalNumBadFiles;
     log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
         totalNumDiscoveredProducts
-        + " of " + totalFilesProcessed + " file(s) are candidate products, "
+        + " of " + totalFilesProcessed + " file(s) processed, "
         + totalNumFilesSkipped + " skipped"));
     int totalProducts = totalProductsRegistered + totalProductsNotRegistered;
     log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION, totalProductsRegistered
-        + " of " + totalProducts + " candidate products registered."));
+        + " of " + totalProducts + " products registered."));
     int totalAssociations = totalAssociationsRegistered
     + totalAssociationsNotRegistered;
     log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
           totalAssociationsRegistered + " of " + totalAssociations
           + " associations registered, " + totalAssociationsSkipped
           + " skipped."));
+  }
+
+  private FileObjectStats getFileObjectStats(PDSProductCrawler crawler) {
+    for (CrawlerAction action : crawler.getActions()) {
+      if (action instanceof FileObjectRegistrationAction) {
+        FileObjectRegistrationAction foa =
+          (FileObjectRegistrationAction) action;
+        return foa.getFileObjectStats();
+      }
+    }
+    return null;
   }
 }

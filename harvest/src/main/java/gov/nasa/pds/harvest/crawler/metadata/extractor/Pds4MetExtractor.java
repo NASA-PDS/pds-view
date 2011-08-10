@@ -23,8 +23,6 @@ import java.util.logging.Logger;
 
 import javax.xml.xpath.XPathExpressionException;
 
-import org.apache.commons.io.FilenameUtils;
-
 import net.sf.saxon.tinytree.TinyElementImpl;
 
 import gov.nasa.jpl.oodt.cas.metadata.MetExtractor;
@@ -32,7 +30,6 @@ import gov.nasa.jpl.oodt.cas.metadata.MetExtractorConfig;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.jpl.oodt.cas.metadata.exceptions.MetExtractionException;
 import gov.nasa.pds.harvest.constants.Constants;
-import gov.nasa.pds.harvest.crawler.status.Status;
 import gov.nasa.pds.harvest.file.FileObject;
 import gov.nasa.pds.harvest.file.MD5Checksum;
 import gov.nasa.pds.harvest.inventory.ReferenceEntry;

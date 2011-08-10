@@ -33,6 +33,7 @@ import gov.nasa.jpl.oodt.cas.crawl.structs.exceptions.CrawlerActionException;
 import gov.nasa.jpl.oodt.cas.filemgr.structs.exceptions.CatalogException;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.pds.harvest.constants.Constants;
+import gov.nasa.pds.harvest.crawler.stats.FileObjectStats;
 import gov.nasa.pds.harvest.crawler.status.Status;
 import gov.nasa.pds.harvest.file.FileObject;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
@@ -69,6 +70,9 @@ public class FileObjectRegistrationAction extends CrawlerAction {
   /** The registry client. */
   private RegistryIngester registryIngester;
 
+  /** File object registration stats. */
+  private FileObjectStats stats;
+
   /**
    * Constructor.
    *
@@ -86,6 +90,7 @@ public class FileObjectRegistrationAction extends CrawlerAction {
       setDescription(DESCRIPTION);
       this.registryUrl = registryUrl;
       this.registryIngester = ingester;
+      stats = new FileObjectStats();
   }
 
   /**
@@ -102,6 +107,8 @@ public class FileObjectRegistrationAction extends CrawlerAction {
   @Override
   public boolean performAction(File product, Metadata metadata)
       throws CrawlerActionException {
+    int numProductsRegistered = 0;
+    int numProductsNotRegistered = 0;
     for (FileObject fileObject
         : (List<FileObject>) metadata.getAllMetadata(Constants.FILE_OBJECTS)) {
       ExtrinsicObject fileProduct = createFileProduct(fileObject, metadata);
@@ -127,30 +134,41 @@ public class FileObjectRegistrationAction extends CrawlerAction {
             Constants.REFERENCES);
           refEntries.add(refEntry);
           metadata.replaceMetadata(Constants.REFERENCES, refEntries);
+          ++numProductsRegistered;
         } else {
           log.log(new ToolsLogRecord(ToolsLevel.WARNING,
               "File product already exists: " + lidvid, product));
           log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
               Status.PRODUCT_EXISTS, product));
+          ++numProductsNotRegistered;
         }
       } catch (RegistryServiceException ex) {
         log.log(new ToolsLogRecord(ToolsLevel.INGEST_FAIL,
             "Problems registering file product \'" + fileObject.getName()
             + "\': " + ex.getMessage(), product));
+        ++numProductsNotRegistered;
       } catch (MalformedURLException mue) {
         log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
             "Malformed registry url: " + mue.getMessage(), product));
+        ++numProductsNotRegistered;
         throw new CrawlerActionException(mue.getMessage());
       } catch (RegistryClientException rce) {
         log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
             "Error while initializing RegistryClient: " + rce.getMessage(),
             product));
+        ++numProductsNotRegistered;
         throw new CrawlerActionException(rce.getMessage());
       } catch (CatalogException ce) {
         // Ignore
       }
     }
+    stats.addNumRegistered(numProductsRegistered);
+    stats.addNumNotRegistered(numProductsNotRegistered);
     return true;
+  }
+
+  public FileObjectStats getFileObjectStats() {
+    return stats;
   }
 
   /**
