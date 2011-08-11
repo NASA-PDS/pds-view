@@ -27,6 +27,9 @@
       <action dev="mcayanan" type="add">
         Added the capability to register PDS3 data products.
       </action>
+      <action dev="mcayanan" type="add">
+        Added the capability to perform file object registration.
+      </action>
       <action dev="mcayanan" type="update">
         Update to register associations at the end of a Harvest run.
       </action>
@@ -34,7 +37,13 @@
         Update to register LID-based associations as slots.
       </action>
       <action dev="mcayanan" type="update">
+        Update to register products to a registry package.
+      </action>
+      <action dev="mcayanan" type="update">
         Update to register the version ID of a data product as a slot in the registry.
+      </action>
+      <action dev="mcayanan" type="update">
+        Update to support the latest version of the PDS Security Service.
       </action>
       <action dev="mcayanan" type="fix">
         Fixed a bug where namespaces being defined in the configuration policy file were not being recognized.
