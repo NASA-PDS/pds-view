@@ -47,5 +47,9 @@ public class ItemNode {
 		this.units = units;
 	}
 	
+	public String toString() {
+		return this.values.get(0);
+	}
+	
 	
 }

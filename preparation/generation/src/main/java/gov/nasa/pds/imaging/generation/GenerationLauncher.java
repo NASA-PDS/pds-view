@@ -33,19 +33,21 @@ public class GenerationLauncher {
 	private PDSObject pdsObject = null;
     
     private String filePath = null;
+    private String confPath = null;
 
     private File templateFile;
     private File outputFile;
     private boolean debug;
-    Generator translator;
+    Generator generator;
     
     public GenerationLauncher() {
 		this.templateFile = null;
 		this.pdsObject = null;
 		this.filePath = null;
+		this.confPath = null;
 		this.outputFile = null;
 		this.debug = false;
-		this.translator = null;
+		this.generator = null;
     }
     
     /**
@@ -82,10 +84,13 @@ public class GenerationLauncher {
                 System.exit(0);
             } else if (o.getOpt().equals(Flag.PDS3.getShortName())) {
             	this.pdsObject = new PDS3Label(o.getValue().trim());
+            	this.pdsObject.setMappings();
             } else if (o.getOpt().equals(Flag.TEMPLATE.getShortName())) {
             	this.templateFile = new File(o.getValue().trim());
             } else if (o.getOpt().equals(Flag.FILE.getShortName())) {
                 this.filePath = o.getValue();
+            }  else if (o.getOpt().equals(Flag.CONFIG.getShortName())) {
+                this.confPath = o.getValue();
             } else if (o.getOpt().equals(Flag.OUTPUT.getShortName())) {
                 this.outputFile = new File(o.getValue());
             } else if (o.getOpt().equals(Flag.DEBUG.getShortName())) {
@@ -102,13 +107,26 @@ public class GenerationLauncher {
         if (this.outputFile == null) {	// Need to set output filename based on label filename
         	this.outputFile = new File(this.pdsObject.getFilePath() + "_pds4");	// TODO Currently just add _pds4 to pds3 label name
         }
+        if (this.confPath == null) {	// Need to set output filename based on label filename
+        	this.confPath = getConfigPath();
+        }
         
-        this.translator = new Generator(this.pdsObject, this.templateFile, this.filePath, this.outputFile);
+        this.generator = new Generator(this.pdsObject, this.templateFile, this.filePath, this.confPath, this.outputFile);
         
     }
     
     public final void generate() throws TemplateException, IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException, TransformerException, Exception {
-    	this.translator.generate(this.debug);
+    	this.generator.generate(this.debug);
+    }
+    
+    private String getConfigPath() {
+    	String home = "";
+    	String[] classpath = System.getProperty("java.class.path").split("/");
+    	for (int i=0; i<classpath.length-2; i++) {
+    		home += classpath[i] + "/";
+    	}
+    	
+    	return home + "conf";
     }
     
     /**

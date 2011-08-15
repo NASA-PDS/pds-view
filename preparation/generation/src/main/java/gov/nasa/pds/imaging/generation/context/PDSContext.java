@@ -11,7 +11,9 @@ import gov.nasa.pds.imaging.generation.TemplateException;
  */
 public interface PDSContext {
 	public String getContext();
-	public String get(String key) throws TemplateException;
+	public Object get(String key) throws TemplateException;
 	public String getUnits(String key);
-	public void setParameters(String str);
+	public void setInputPath(String str);
+	public void setConfigPath(String path);
+	public void setMappings() throws Exception;
 }

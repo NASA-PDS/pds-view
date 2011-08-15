@@ -13,7 +13,7 @@ public class GeneratedElements implements PDSContext {
 	public static final String CONTEXT = "generate";
 	
 	/** The XML File Path for the file with the generated value mappings **/
-    public static final String XML_FILENAME = "../conf/generated-mappings.xml";
+    public static final String XML_FILENAME = "generated-mappings.xml";
     
     /** XML element name holding the key value **/
     public static final String XML_KEY = "context";
@@ -25,9 +25,15 @@ public class GeneratedElements implements PDSContext {
     public Map<String, Class<?>> genValsMap = new HashMap<String, Class<?>>();
     
     private String filePath;
+    private String confPath;
 	
-	public GeneratedElements() throws TemplateException, Exception {
-		this.genValsMap.putAll(XMLUtil.getGeneratedMappings(XML_FILENAME, XML_KEY, XML_VALUE));
+	public GeneratedElements() {
+
+	}
+
+	public void setMappings() throws Exception {
+		System.out.println("ContextMappings xml: " + confPath + "/" + XML_FILENAME);
+		this.genValsMap.putAll(XMLUtil.getGeneratedMappings(this.confPath + "/" + XML_FILENAME, XML_KEY, XML_VALUE));
 	}
 	
     public void addMapping(String key, Class<?> value) {
@@ -55,8 +61,7 @@ public class GeneratedElements implements PDSContext {
 	}
 	
 	@Override
-	public void setParameters(String filePath) {
-		System.out.println("GeneratedElements-filePath " + filePath);
+	public void setInputPath(String filePath) {
 		this.filePath = filePath;
 	}
 
@@ -69,6 +74,11 @@ public class GeneratedElements implements PDSContext {
 	public String getUnits(String key) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public void setConfigPath(String path) {
+		this.confPath = path;
 	}
 	
 }

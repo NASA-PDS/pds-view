@@ -12,11 +12,15 @@ public enum Flag  {
     
 	/** Flag to specify the path of a velocity template. */
     TEMPLATE("t", "template", "velocity template", String.class,
-            "Specify the file path for the Velocity template for PDS3 -> PDS4 conversion"),
+            "Specify the file path for the Velocity template for the PDS4 label"),
 
 	/** Flag to specify a file containing multiple PDS3 Label paths. */
     FILE("f", "file-list", "file list", String.class,
             "Specify the path for a file containing a list of file paths for PDS3 Labels"),
+            
+	/** Flag to specify path for the context-classes.xml */
+    CONFIG("c", "config-home", "config home", String.class,
+            "Specify the path for the configuration files"),
             
 	/** Flag to specify the output file name */
     OUTPUT("o", "output-file", "output file", String.class,
@@ -160,6 +164,7 @@ public enum Flag  {
         options.addOption(new ToolsOption(PDS3));
         options.addOption(new ToolsOption(TEMPLATE));
         options.addOption(new ToolsOption(FILE));
+        options.addOption(new ToolsOption(CONFIG));
         options.addOption(new ToolsOption(OUTPUT));
         options.addOption(new ToolsOption(DEBUG));
     }

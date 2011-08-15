@@ -7,7 +7,8 @@ import java.util.HashMap;
 
 public class ContextMappings {
 
-    public static final String XML_FILENAME = "../conf/context-classes.xml";
+    //public static final String XML_FILENAME = "../conf/context-classes.xml";
+	public static final String XML_FILENAME = "context-classes.xml";
     
     /** XML element name holding the key value **/
     public static final String XML_TAG = "class";
@@ -21,11 +22,14 @@ public class ContextMappings {
      * @throws TemplateException
      * @throws Exception
      */
-	public ContextMappings(String filePath) throws TemplateException, Exception {
-		for (String cl : XMLUtil.getClassList(XML_FILENAME, XML_TAG)) {
+	public ContextMappings(String filePath, String confPath) throws TemplateException, Exception {
+		System.out.println("ContextMappings xml: " + confPath + "/" + XML_FILENAME);
+		for (String cl : XMLUtil.getClassList(confPath + "/" + XML_FILENAME, XML_TAG)) {
 			PDSContext context = (PDSContext) Class.forName(cl).newInstance();
 			System.out.println("ContextMappings-filePath " + filePath);
-			context.setParameters(filePath);
+			context.setInputPath(filePath);
+			context.setConfigPath(confPath);
+			context.setMappings();
 			this.contextMap.put(context.getContext(), context);
 		}
 	}

@@ -46,15 +46,15 @@ public class Generator {
     private File templateFile;
     private Template template;
     private File outputFile;
-    private ContextMappings ctxMappings;
+    private ContextMappings ctxtMappings;
     
-    public Generator(PDSObject pdsObject, File templateFile, String filePath, File outputFile) throws Exception {
+    public Generator(PDSObject pdsObject, File templateFile, String filePath, String confPath, File outputFile) throws Exception {
 		this.context = null;
 		this.templateFile = templateFile;
 		this.pdsObject = pdsObject;
 		this.filePath = filePath;
 		this.outputFile = outputFile;
-		this.ctxMappings = new ContextMappings(pdsObject.getFilePath());
+		this.ctxtMappings = new ContextMappings(pdsObject.getFilePath(), confPath);
     	
     	initTemplate();
     	setContext();
@@ -69,7 +69,7 @@ public class Generator {
 		this.filePath = null;
 		this.outputFile = null;
 		
-		this.ctxMappings = new ContextMappings();
+		this.ctxtMappings = new ContextMappings();
     }
 
     private void initTemplate() throws TemplateException, IOException {
@@ -120,8 +120,8 @@ public class Generator {
     private void setContext() throws TemplateException, Exception {
     	this.context.put(this.pdsObject.getContext(), this.pdsObject);	// Set context for base initial PDSObject
     	//this.context.put(GeneratedObjects.CONTEXT, new GeneratedObjects());
-    	for (String str : this.ctxMappings.contextMap.keySet()) {	// Set default contexts
-    		this.context.put(str, this.ctxMappings.contextMap.get(str));
+    	for (String str : this.ctxtMappings.contextMap.keySet()) {	// Set default contexts
+    		this.context.put(str, this.ctxtMappings.contextMap.get(str));
     	}
     }
     
@@ -147,11 +147,11 @@ public class Generator {
     }
     
     public ContextMappings getContextMappings() {
-    	return ctxMappings;
+    	return ctxtMappings;
     }
     
     public void setContextMappings(ContextMappings ctxMappings) {
-    	this.ctxMappings = ctxMappings;
+    	this.ctxtMappings = ctxMappings;
     }
 	
     public PDSObject getPdsObject() {

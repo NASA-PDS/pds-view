@@ -11,6 +11,8 @@
 package gov.nasa.pds.imaging.generation.label;
 
 
+import gov.nasa.pds.imaging.generation.context.ContextUtil;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -67,7 +69,8 @@ public class PDS3Label implements PDSObject {
 	// to simple keyword=value pairs.
     private Map<String, Map> flatLabel;
     private String filePath;
-    public IndexedGroup indexedGroup;
+    public ContextUtil ctxtUtil;
+    private String configPath;
 	
     /**
      * Constructor
@@ -85,19 +88,6 @@ public class PDS3Label implements PDSObject {
         this.pdsObjectTypes = new ArrayList<String>();
         this.pdsObjectTypes.add(FlatLabel.GROUP_TYPE);
         this.pdsObjectTypes.add(FlatLabel.OBJECT_TYPE);
-        
-        try { 
-            parseLabel(filePath);
-            
-            // start of traversal of DOM
-            Node root = this.document.getDocumentElement();
-            
-            traverseDOM(root);
-                        
-        } catch (FileNotFoundException fnfe) {
-            // TODO - create a logger
-            fnfe.printStackTrace();
-        }
     }
     
     public PDS3Label() {
@@ -111,21 +101,8 @@ public class PDS3Label implements PDSObject {
     }
     
     @Override
-    public void setParameters(String filePath) {
+    public void setInputPath(String filePath) {
     	this.filePath = filePath;
-        
-        try { 
-            parseLabel(filePath);
-            
-            // start of traversal of DOM
-            Node root = this.document.getDocumentElement();
-            
-            traverseDOM(root);
-                        
-        } catch (FileNotFoundException fnfe) {
-            // TODO - create a logger
-            fnfe.printStackTrace();
-        }
     }
     
     @Override
@@ -136,6 +113,11 @@ public class PDS3Label implements PDSObject {
     @Override
 	public String getFilePath() {
     	return this.filePath;
+    }
+    
+    @Override
+    public void setConfigPath(String path) {
+    	this.configPath = path;
     }
     
     /**
@@ -291,19 +273,23 @@ public class PDS3Label implements PDSObject {
      * @return value for key
      */
     @Override
-	public String get(String key) {
-    	return getItemNode(key).getValue();
+	public Object get(String key) {
+    	Object node = getNode(key.toUpperCase());
+    	if (node instanceof LabelObject) {
+    		return (LabelObject) node;
+    	} else {
+    		return ((ItemNode)node).toString();
+    	}
     }
     
     @Override
 	public String getUnits(String key) {
-    	return getItemNode(key).getUnits();
+    	return ((ItemNode)getNode(key)).getUnits();
     }
     
-    private ItemNode getItemNode(String key) {
-        if (key.contains("-")) {
-            String links[] = key.split("-");
-
+    private Object getNode(String key) {    	
+        if (key.contains(".")) {	// Handles call where . is embedded in key. Mainly for IndexedGroup implementation.        	
+            String links[] = key.split("\\.");
             // object->item
             // object->subobject->item
             if(links[0] == null) return null;
@@ -311,25 +297,27 @@ public class PDS3Label implements PDSObject {
             if(labelObj == null) return null;
             Object obj = null;
             for (int i=1; i < links.length; ++i) {
-                obj = labelObj.getElement(links[i]);
+                obj = labelObj.get(links[i]);
                 if (obj instanceof LabelObject)
                     labelObj = (LabelObject)obj;
             }
-            return (ItemNode)obj;
+            return obj;
         } else {
-            return ((ItemNode)this.flatLabel.get(key));
+            return this.flatLabel.get(key);
         }
     }
     
     @Override
-	public void setIndexedGroup(String[] keys) {
-    	this.indexedGroup = new IndexedGroup(getList(keys[0]));
+	public void setDictionary(String[] keys) {
+    	//this.indexedGroup = new IndexedGroup(getList(keys[0]));
+    	this.ctxtUtil = new ContextUtil();
     	
     	String key;
-    	for (int i=1; i<keys.length; i++) {
-    		key = keys[i];
-    		this.indexedGroup.addSubElement(key, getList(key));
+    	for (int i=0; i<keys.length; i++) {
+    		key = keys[i].toUpperCase();
+    		this.ctxtUtil.addDictionaryElement(key, getList(key));
     	}
+    	this.ctxtUtil.setDictionary();
     }
     
     /**
@@ -337,13 +325,29 @@ public class PDS3Label implements PDSObject {
      * @return
      */
     @Override
-	public IndexedGroup getIndexedGroup() {
-    	return this.indexedGroup;
+	public List<Map<String, String>> getDictionary() {
+    	return this.ctxtUtil.getDictionary();
     }
     
     @Override
 	public List getList(String key) {
-        return getItemNode(key).getValues();
+        return ((ItemNode)getNode(key)).getValues();
+    }
+    
+    @Override
+    public void setMappings() {
+        try { 
+            parseLabel(filePath);
+            
+            // start of traversal of DOM
+            Node root = this.document.getDocumentElement();
+            
+            traverseDOM(root);
+                        
+        } catch (FileNotFoundException fnfe) {
+            // TODO - create a logger
+            fnfe.printStackTrace();
+        }
     }
     
     @Override

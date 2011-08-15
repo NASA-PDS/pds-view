@@ -23,11 +23,11 @@ public class GenerationLauncherTest {
     /**
      * Test Transformer with MER data
      */
-    @Ignore
+    //@Ignore
     @Test
     public void testGenerationMER() {
         String[] args = {"-d", "-p","src/main/resources/examples/1p216067135edn76pop2102l2m1.img",
-        		"-t","src/main/resources/examples/mer_template.vm"};
+        		"-t","src/main/resources/examples/mer_template.vm","-c","src/main/resources/conf"};
         GenerationLauncher.main(args);
     }
 

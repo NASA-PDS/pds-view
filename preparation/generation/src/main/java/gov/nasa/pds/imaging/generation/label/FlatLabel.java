@@ -35,7 +35,7 @@ public class FlatLabel implements LabelObject {
     }
     
     @Override
-	public Object getElement(String key) {
+	public Object get(String key) {
         return this._flatLabel.get(key);
     }
     

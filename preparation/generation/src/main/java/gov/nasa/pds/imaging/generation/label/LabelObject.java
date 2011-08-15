@@ -25,5 +25,5 @@ public interface LabelObject {
      * @param key
      * @return
      */
-    public Object getElement(String key);
+    public Object get(String key);
 }
