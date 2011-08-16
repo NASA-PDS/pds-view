@@ -105,7 +105,8 @@ public interface RegistryService {
    *          holds a set of filters to match against extrinsics
    * @return a list of extrinsics
    */
-  public PagedResponse<ExtrinsicObject> getExtrinsics(RegistryQuery<ExtrinsicFilter> query);
+  public PagedResponse<ExtrinsicObject> getExtrinsics(
+      RegistryQuery<ExtrinsicFilter> query);
 
   /**
    * Retrieves a set of extinsics that match the given query. Allows one to page
@@ -121,8 +122,8 @@ public interface RegistryService {
    *          how many results to return
    * @return a list of extrinsics
    */
-  public PagedResponse<ExtrinsicObject> getExtrinsics(RegistryQuery<ExtrinsicFilter> query,
-      Integer start, Integer rows);
+  public PagedResponse<ExtrinsicObject> getExtrinsics(
+      RegistryQuery<ExtrinsicFilter> query, Integer start, Integer rows);
 
   /**
    * Gives back some basic summary information about the registry. This summary
@@ -184,10 +185,11 @@ public interface RegistryService {
    *          the type of object to look up
    * @return the next version of the registry object otherwise null if there is
    *         no more versions
-   * @throws RegistryServiceException 
+   * @throws RegistryServiceException
    */
   public RegistryObject getNextObject(String guid,
-      Class<? extends RegistryObject> objectClass) throws RegistryServiceException;
+      Class<? extends RegistryObject> objectClass)
+      throws RegistryServiceException;
 
   /**
    * Retrieves the previous version of the {@link RegistryObject}
@@ -198,10 +200,11 @@ public interface RegistryService {
    *          the type of object to look up
    * @return the previous version of the registry object otherwise null if there
    *         is no versions before the current one
-   * @throws RegistryServiceException 
+   * @throws RegistryServiceException
    */
   public RegistryObject getPreviousObject(String guid,
-      Class<? extends RegistryObject> objectClass) throws RegistryServiceException;
+      Class<? extends RegistryObject> objectClass)
+      throws RegistryServiceException;
 
   /**
    * Retrieves all versions of a {@link RegistryObject}
@@ -266,8 +269,8 @@ public interface RegistryService {
    *          how many results to return
    * @return a list of associations
    */
-  public PagedResponse<Association> getAssociations(RegistryQuery<AssociationFilter> query,
-      Integer start, Integer rows);
+  public PagedResponse<Association> getAssociations(
+      RegistryQuery<AssociationFilter> query, Integer start, Integer rows);
 
   /**
    * Generic query for a given class of registry objects. This query only
@@ -294,8 +297,7 @@ public interface RegistryService {
    *          guid for the registry object of interest
    * @return list of events associated with the guid
    */
-  public PagedResponse<AuditableEvent> getAuditableEvents(
-      String affectedObject);
+  public PagedResponse<AuditableEvent> getAuditableEvents(String affectedObject);
 
   /**
    * Publishes a registry object to the registry.
@@ -345,7 +347,7 @@ public interface RegistryService {
    * @param guid
    *          globally unique identifier of the registry object
    * @return the identified association
-   * @throws RegistryServiceException 
+   * @throws RegistryServiceException
    */
   public Association getAssocation(String guid) throws RegistryServiceException;
 
@@ -355,9 +357,10 @@ public interface RegistryService {
    * @param guid
    *          globally unique identifier of the extrinsic object
    * @return matching extrinsic object
-   * @throws RegistryServiceException 
+   * @throws RegistryServiceException
    */
-  public ExtrinsicObject getExtrinsic(String guid) throws RegistryServiceException;
+  public ExtrinsicObject getExtrinsic(String guid)
+      throws RegistryServiceException;
 
   /**
    * Retrieves a registry object of the requested type
@@ -367,16 +370,21 @@ public interface RegistryService {
    * @param objectClass
    *          type of the registry object
    * @return matching registry object
-   * @throws RegistryServiceException 
+   * @throws RegistryServiceException
    */
   public RegistryObject getObject(String guid,
-      Class<? extends RegistryObject> objectClass) throws RegistryServiceException;
+      Class<? extends RegistryObject> objectClass)
+      throws RegistryServiceException;
 
   /**
    * 
-   * @param lid logical identifier which correlates to a group of related registry objects
-   * @param versionName that specifially identifies an object withing the group
-   * @param objectClass type of registry object that is being looked for
+   * @param lid
+   *          logical identifier which correlates to a group of related registry
+   *          objects
+   * @param versionName
+   *          that specifially identifies an object withing the group
+   * @param objectClass
+   *          type of registry object that is being looked for
    * @return matching registry object
    */
   public RegistryObject getObject(String lid, String versionName,
@@ -400,4 +408,33 @@ public interface RegistryService {
    */
   public String configure(String user, RegistryPackage registryPackage,
       List<? extends RegistryObject> list) throws RegistryServiceException;
+
+  /**
+   * Removes all registry objects that are associated with the package. This
+   * call will not delete the package itself.
+   * 
+   * @param user
+   *          that has taken the action. Typically this should point to a unique
+   *          username.
+   * @param packageId
+   *          unique guid of the package to delete members from
+   * @throws RegistryServiceException
+   */
+  public void deletePackageMembers(String user, String packageId)
+      throws RegistryServiceException;
+
+  /**
+   * Changes the status of all registry objects that are members of the package.
+   * This will not change the status on the package itself.
+   * 
+   * @param user
+   *          that has taken the action. Typically this should point to a unique
+   *          username.
+   * @param packageId
+   *          unique guid of the package to update members status from
+   * @param action
+   *          which to take (i.e. approve, deprecate, etc.)
+   */
+  public void changeStatusOfPackageMembers(String user, String packageId,
+      ObjectAction action);
 }

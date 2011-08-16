@@ -117,6 +117,22 @@ public abstract class Identifiable implements Serializable {
     this.slots = slots;
   }
 
+  /**
+   * Convenience method to look up a slot with a given name.
+   * 
+   * @param slotName
+   *          to look for within the list of slots
+   * @return Slot of null if not found
+   */
+  public Slot getSlot(String slotName) {
+    for (Slot slot : slots) {
+      if (slot.getName().equals(slotName)) {
+        return slot;
+      }
+    }
+    return null;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;

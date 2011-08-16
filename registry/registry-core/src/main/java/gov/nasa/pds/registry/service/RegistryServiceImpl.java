@@ -23,6 +23,7 @@ import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.ClassificationScheme;
 import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.ObjectAction;
+import gov.nasa.pds.registry.model.ObjectClass;
 import gov.nasa.pds.registry.model.ObjectStatus;
 import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.model.PagedResponse;
@@ -30,6 +31,7 @@ import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.Service;
 import gov.nasa.pds.registry.model.ServiceBinding;
+import gov.nasa.pds.registry.model.Slot;
 import gov.nasa.pds.registry.model.SpecificationLink;
 import gov.nasa.pds.registry.model.Report;
 import gov.nasa.pds.registry.model.naming.IdentifierGenerator;
@@ -44,8 +46,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.NoResultException;
 
@@ -231,16 +235,8 @@ public class RegistryServiceImpl implements RegistryService {
     object.setStatus(referencedObject.getStatus());
     this.validateObject(object);
     metadataStore.saveRegistryObject(object);
-    AuditableEvent createEvent = new AuditableEvent(EventType.Created, Arrays
-        .asList(object.getGuid()), user);
-    createEvent.setGuid(idGenerator.getGuid());
-    createEvent.setHome(idGenerator.getHome());
-    metadataStore.saveRegistryObject(createEvent);
-    AuditableEvent event = new AuditableEvent(EventType.Versioned, Arrays
-        .asList(referencedObject.getGuid()), user);
-    event.setGuid(idGenerator.getGuid());
-    event.setHome(idGenerator.getHome());
-    metadataStore.saveRegistryObject(event);
+    this.createAuditableEvent("versionObject " + referencedObject.getGuid()
+        + " " + object.getGuid(), user, EventType.Versioned, object.getGuid());
     return object.getGuid();
   }
 
@@ -383,13 +379,13 @@ public class RegistryServiceImpl implements RegistryService {
    */
   public void changeObjectStatus(String user, String guid, ObjectAction action,
       Class<? extends RegistryObject> objectClass) {
-    RegistryObject registryObject = metadataStore.getRegistryObject(guid,
-        objectClass);
-    this.changeObjectStatus(user, registryObject, action);
+    this.changeObjectStatus("changeObjectStatus " + guid, user, guid, action, objectClass);
   }
 
-  private void changeObjectStatus(String user, RegistryObject registryObject,
-      ObjectAction action) {
+  private void changeObjectStatus(String requestId, String user, String guid,
+      ObjectAction action, Class<? extends RegistryObject> objectClass) {
+    RegistryObject registryObject = metadataStore.getRegistryObject(guid,
+        objectClass);
     registryObject.setStatus(action.getObjectStatus());
     metadataStore.updateRegistryObject(registryObject);
     AuditableEvent event = new AuditableEvent(action.getEventType(), Arrays
@@ -490,7 +486,8 @@ public class RegistryServiceImpl implements RegistryService {
     metadataStore.saveRegistryObject(registryObject);
 
     if (packageId == null) {
-      this.createAuditableEvents(user, registryObject, EventType.Created);
+      this.createAuditableEvent("publishObject " + registryObject.getGuid(),
+          user, EventType.Created, registryObject.getGuid());
     } else {
       Association hasMember = new Association();
       hasMember.setGuid(idGenerator.getGuid());
@@ -498,9 +495,15 @@ public class RegistryServiceImpl implements RegistryService {
       hasMember.setSourceObject(packageId);
       hasMember.setTargetObject(registryObject.getGuid());
       hasMember.setAssociationType("urn:registry:AssociationType:HasMember");
+      Set<Slot> slots = new HashSet<Slot>();
+      Slot targetObjectType = new Slot("targetObjectType", Arrays
+          .asList(registryObject.getClass().getSimpleName()));
+      slots.add(targetObjectType);
+      hasMember.setSlots(slots);
       metadataStore.saveRegistryObject(hasMember);
-      this.createAuditableEvents(user, registryObject, EventType.Created,
-          Arrays.asList(new String[] { packageId }));
+      this.createAuditableEvent("publishObjectWithPackage " + packageId + " "
+          + registryObject.getGuid(), user, EventType.Created, registryObject
+          .getGuid());
     }
     return registryObject.getGuid();
   }
@@ -516,30 +519,17 @@ public class RegistryServiceImpl implements RegistryService {
     return this.publishObject(user, registryObject, null);
   }
 
-  private void createAuditableEvents(String user,
-      RegistryObject registryObject, EventType eventType) {
-    this.createAuditableEvents(user, registryObject, eventType,
-        new ArrayList<String>());
+  private void createAuditableEvent(String requestId, String user,
+      EventType eventType, String guid) {
+    this.createAuditableEvent(requestId, user, eventType, Arrays.asList(guid));
   }
 
-  private void createAuditableEvents(String user,
-      RegistryObject registryObject, EventType eventType,
-      List<String> alsoAffected) {
-    List<String> affectedObjects = new ArrayList<String>(alsoAffected);
-    affectedObjects.add(registryObject.getGuid());
-    // If this is a service we have other affected objects
-    if (registryObject instanceof Service) {
-      Service service = (Service) registryObject;
-      for (ServiceBinding binding : service.getServiceBindings()) {
-        affectedObjects.add(binding.getGuid());
-        for (SpecificationLink link : binding.getSpecificationLinks()) {
-          affectedObjects.add(link.getGuid());
-        }
-      }
-    }
+  private void createAuditableEvent(String requestId, String user,
+      EventType eventType, List<String> affectedObjects) {
     AuditableEvent event = new AuditableEvent(eventType, affectedObjects, user);
     event.setGuid(idGenerator.getGuid());
     event.setHome(idGenerator.getHome());
+    event.setRequestId(requestId);
     metadataStore.saveRegistryObject(event);
   }
 
@@ -645,7 +635,8 @@ public class RegistryServiceImpl implements RegistryService {
       Class<? extends RegistryObject> objectClass) {
     RegistryObject registryObject = metadataStore.getRegistryObject(lid,
         versionId, objectClass);
-    this.deleteObject(user, registryObject);
+    this.deleteObjectById("deleteObjectByLidVid " + lid + versionId, user,
+        registryObject.getGuid(), registryObject.getClass());
   }
 
   /*
@@ -656,28 +647,25 @@ public class RegistryServiceImpl implements RegistryService {
    */
   public void deleteObject(String user, String guid,
       Class<? extends RegistryObject> objectClass) {
-    RegistryObject registryObject = metadataStore.getRegistryObject(guid,
-        objectClass);
-    this.deleteObject(user, registryObject);
+    this.deleteObject("deleteObjectById " + guid, user, guid, objectClass);
   }
 
-  private void deleteObject(String user, RegistryObject registryObject) {
-    metadataStore.deleteRegistryObject(registryObject.getGuid(), registryObject
-        .getClass());
+  private void deleteObjectById(String requestId, String user, String guid,
+      Class<? extends RegistryObject> objectClass) {
+    metadataStore.deleteRegistryObject(guid, objectClass);
     AssociationFilter filter = new AssociationFilter.Builder().targetObject(
-        registryObject.getGuid()).sourceObject(registryObject.getGuid())
-        .build();
+        guid).sourceObject(guid).build();
     RegistryQuery.Builder<AssociationFilter> queryBuilder = new RegistryQuery.Builder<AssociationFilter>()
         .filter(filter).operator(QueryOperator.OR);
     PagedResponse<Association> response = metadataStore.getAssociations(
         queryBuilder.build(), 1, -1);
-    List<String> associationIds = new ArrayList<String>();
+    List<String> affectedIds = new ArrayList<String>();
+    affectedIds.add(guid);
     for (RegistryObject object : response.getResults()) {
-      associationIds.add(object.getGuid());
+      affectedIds.add(object.getGuid());
       metadataStore.deleteRegistryObject(object.getGuid(), object.getClass());
     }
-    this.createAuditableEvents(user, registryObject, EventType.Deleted,
-        associationIds);
+    this.createAuditableEvent(requestId, user, EventType.Deleted, affectedIds);
   }
 
   /*
@@ -777,7 +765,8 @@ public class RegistryServiceImpl implements RegistryService {
    */
   @Override
   public RegistryObject getNextObject(String guid,
-      Class<? extends RegistryObject> objectClass) throws RegistryServiceException {
+      Class<? extends RegistryObject> objectClass)
+      throws RegistryServiceException {
     RegistryObject object = getObject(guid, objectClass);
     return getNextObject(object.getLid(), object.getVersionName(), objectClass);
   }
@@ -791,9 +780,115 @@ public class RegistryServiceImpl implements RegistryService {
    */
   @Override
   public RegistryObject getPreviousObject(String guid,
-      Class<? extends RegistryObject> objectClass) throws RegistryServiceException {
+      Class<? extends RegistryObject> objectClass)
+      throws RegistryServiceException {
     RegistryObject object = getObject(guid, objectClass);
-    return getPreviousObject(object.getLid(), object.getVersionName(), objectClass);
+    return getPreviousObject(object.getLid(), object.getVersionName(),
+        objectClass);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nasa.pds.registry.service.RegistryService#changeStatusOfPackageMembers
+   * (java.lang.String, java.lang.String,
+   * gov.nasa.pds.registry.model.ObjectAction)
+   */
+  @Override
+  public void changeStatusOfPackageMembers(String user, String packageId,
+      ObjectAction action) {
+    // Formulate a filter to look up members of the specified package
+    AssociationFilter filter = new AssociationFilter.Builder().sourceObject(
+        packageId).associationType("urn:registry:AssociationType:HasMember")
+        .build();
+    RegistryQuery.Builder<AssociationFilter> queryBuilder = new RegistryQuery.Builder<AssociationFilter>()
+        .filter(filter);
+
+    // Set up some counting variables to use for paging
+    int count = 0;
+    int rows = 10;
+
+    // Create the query that will be used
+    RegistryQuery<AssociationFilter> query = queryBuilder.build();
+    // Grab first page of results
+    PagedResponse<Association> pagedAssociations = this.getAssociations(query,
+        1, rows);
+    boolean done = (pagedAssociations.getNumFound() > 0) ? false : true;
+    while (!done) {
+      // Process this set of target objects
+      for (Association association : pagedAssociations.getResults()) {
+        count++;
+        Slot slot = association.getSlot("targetObjectType");
+        Class objectClass = null;
+        if (slot != null) {
+          objectClass = ObjectClass.fromName(slot.getValues().get(0))
+              .getObjectClass();
+        }
+        this.changeObjectStatus("changeStatusOfPackageMembers " + packageId + " "
+            + association.getTargetObject(), user, association
+            .getTargetObject(), action, objectClass);
+      }
+      // Check to see if we are done processing all
+      if (count >= pagedAssociations.getNumFound()) {
+        done = true;
+      } else {
+        // Grab next set
+        pagedAssociations = this.getAssociations(query, count, rows);
+      }
+    }
+
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nasa.pds.registry.service.RegistryService#deletePackageMembers(java
+   * .lang.String, java.lang.String)
+   */
+  @Override
+  public void deletePackageMembers(String user, String packageId)
+      throws RegistryServiceException {
+    // Formulate a filter to look up members of the specified package
+    AssociationFilter filter = new AssociationFilter.Builder().sourceObject(
+        packageId).associationType("urn:registry:AssociationType:HasMember")
+        .build();
+    RegistryQuery.Builder<AssociationFilter> queryBuilder = new RegistryQuery.Builder<AssociationFilter>()
+        .filter(filter);
+
+    // Set up some counting variables to use for paging
+    int count = 0;
+    int rows = 10;
+
+    // Create the query that will be used
+    RegistryQuery<AssociationFilter> query = queryBuilder.build();
+    // Grab first page of results
+    PagedResponse<Association> pagedAssociations = this.getAssociations(query,
+        1, rows);
+    boolean done = (pagedAssociations.getNumFound() > 0) ? false : true;
+    while (!done) {
+      // Process this set of target objects
+      for (Association association : pagedAssociations.getResults()) {
+        count++;
+        Slot slot = association.getSlot("targetObjectType");
+        Class objectClass = null;
+        if (slot != null) {
+          objectClass = ObjectClass.fromName(slot.getValues().get(0))
+              .getObjectClass();
+        }
+        this.deleteObjectById("deletePackageMembers " + packageId + " "
+            + association.getTargetObject(), user, association
+            .getTargetObject(), objectClass);
+      }
+      // Check to see if we are done processing all
+      if (count >= pagedAssociations.getNumFound()) {
+        done = true;
+      } else {
+        // Grab next set
+        pagedAssociations = this.getAssociations(query, count, rows);
+      }
+    }
   }
 
 }
