@@ -825,8 +825,7 @@ public class RegistryServiceImpl implements RegistryService {
           objectClass = ObjectClass.fromName(slot.getValues().get(0))
               .getObjectClass();
         }
-        this.changeObjectStatus("changeStatusOfPackageMembers " + packageId + " "
-            + association.getTargetObject(), user, association
+        this.changeObjectStatus("changeStatusOfPackageMembers " + packageId, user, association
             .getTargetObject(), action, objectClass);
       }
       // Check to see if we are done processing all
@@ -857,8 +856,7 @@ public class RegistryServiceImpl implements RegistryService {
     RegistryQuery.Builder<AssociationFilter> queryBuilder = new RegistryQuery.Builder<AssociationFilter>()
         .filter(filter);
 
-    // Set up some counting variables to use for paging
-    int count = 0;
+    // How many we will grab on each query to the database (process in chunks)
     int rows = 10;
 
     // Create the query that will be used
@@ -866,28 +864,20 @@ public class RegistryServiceImpl implements RegistryService {
     // Grab first page of results
     PagedResponse<Association> pagedAssociations = this.getAssociations(query,
         1, rows);
-    boolean done = (pagedAssociations.getNumFound() > 0) ? false : true;
-    while (!done) {
+    while (pagedAssociations.getNumFound() > 0) {
       // Process this set of target objects
       for (Association association : pagedAssociations.getResults()) {
-        count++;
         Slot slot = association.getSlot("targetObjectType");
         Class objectClass = null;
         if (slot != null) {
           objectClass = ObjectClass.fromName(slot.getValues().get(0))
               .getObjectClass();
         }
-        this.deleteObjectById("deletePackageMembers " + packageId + " "
-            + association.getTargetObject(), user, association
+        this.deleteObjectById("deletePackageMembers " + packageId, user, association
             .getTargetObject(), objectClass);
       }
-      // Check to see if we are done processing all
-      if (count >= pagedAssociations.getNumFound()) {
-        done = true;
-      } else {
-        // Grab next set
-        pagedAssociations = this.getAssociations(query, count, rows);
-      }
+      // Grab next set
+      pagedAssociations = this.getAssociations(query, 1, rows);
     }
   }
 
