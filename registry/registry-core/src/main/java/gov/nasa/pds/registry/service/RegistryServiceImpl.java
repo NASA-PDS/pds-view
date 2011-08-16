@@ -379,7 +379,8 @@ public class RegistryServiceImpl implements RegistryService {
    */
   public void changeObjectStatus(String user, String guid, ObjectAction action,
       Class<? extends RegistryObject> objectClass) {
-    this.changeObjectStatus("changeObjectStatus " + guid, user, guid, action, objectClass);
+    this.changeObjectStatus("changeObjectStatus " + guid, user, guid, action,
+        objectClass);
   }
 
   private void changeObjectStatus(String requestId, String user, String guid,
@@ -825,8 +826,8 @@ public class RegistryServiceImpl implements RegistryService {
           objectClass = ObjectClass.fromName(slot.getValues().get(0))
               .getObjectClass();
         }
-        this.changeObjectStatus("changeStatusOfPackageMembers " + packageId, user, association
-            .getTargetObject(), action, objectClass);
+        this.changeObjectStatus("changeStatusOfPackageMembers " + packageId,
+            user, association.getTargetObject(), action, objectClass);
       }
       // Check to see if we are done processing all
       if (count >= pagedAssociations.getNumFound()) {
@@ -873,8 +874,8 @@ public class RegistryServiceImpl implements RegistryService {
           objectClass = ObjectClass.fromName(slot.getValues().get(0))
               .getObjectClass();
         }
-        this.deleteObjectById("deletePackageMembers " + packageId, user, association
-            .getTargetObject(), objectClass);
+        this.deleteObjectById("deletePackageMembers " + packageId, user,
+            association.getTargetObject(), objectClass);
       }
       // Grab next set
       pagedAssociations = this.getAssociations(query, 1, rows);
