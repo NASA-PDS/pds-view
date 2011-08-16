@@ -1,5 +1,6 @@
 package gov.nasa.pds.imaging.generation.label;
 
+import gov.nasa.pds.imaging.generation.TemplateException;
 import gov.nasa.pds.imaging.generation.context.PDSContext;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public interface PDSObject extends PDSContext {
 	public String getFilePath();
 	//public void setIndexedGroup(String[] keys);
 	//public IndexedGroup getIndexedGroup();
-	public void setDictionary(String[] keys);
-	public List<Map<String, String>> getDictionary();
+	//public void setDictionary(String[] keys);
+	public List<Map<String, String>> getRecords(List<String> keys, String... keyword)  throws TemplateException;
 	public List getList(String key);
 }

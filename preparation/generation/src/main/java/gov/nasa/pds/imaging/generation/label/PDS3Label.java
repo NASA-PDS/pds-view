@@ -11,6 +11,7 @@
 package gov.nasa.pds.imaging.generation.label;
 
 
+import gov.nasa.pds.imaging.generation.TemplateException;
 import gov.nasa.pds.imaging.generation.context.ContextUtil;
 
 import java.io.BufferedReader;
@@ -307,7 +308,7 @@ public class PDS3Label implements PDSObject {
         }
     }
     
-    @Override
+    /*@Override
 	public void setDictionary(String[] keys) {
     	//this.indexedGroup = new IndexedGroup(getList(keys[0]));
     	this.ctxtUtil = new ContextUtil();
@@ -318,14 +319,23 @@ public class PDS3Label implements PDSObject {
     		this.ctxtUtil.addDictionaryElement(key, getList(key));
     	}
     	this.ctxtUtil.setDictionary();
-    }
+    }*/
     
-    /**
-     * Called directly from template in order to produce an IndexedGroup Object
-     * @return
-     */
     @Override
-	public List<Map<String, String>> getDictionary() {
+	public List<Map<String, String>> getRecords(List<String> keys, String... keyword) throws TemplateException {
+    	this.ctxtUtil = new ContextUtil();
+    	
+    	int size = keys.size();
+    	if (keys.size() != keyword.length)
+    		throw new TemplateException("getRecords method must contain same number of keys and keywords.");
+    	
+    	//String key;
+    	for (int i=0; i<size; i++) {
+    		//key = keys.get(i).toUpperCase();
+    		System.out.println(keys.get(i) + " : " + keyword[i]);
+    		this.ctxtUtil.addDictionaryElement(keys.get(i).toUpperCase(), getList(keyword[i].toUpperCase()));
+    	}
+    	this.ctxtUtil.setDictionary();
     	return this.ctxtUtil.getDictionary();
     }
     
