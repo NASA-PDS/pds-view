@@ -808,7 +808,8 @@ public class RegistryServiceImpl implements RegistryService {
 
     // Set up some counting variables to use for paging
     int count = 0;
-    int rows = 10;
+    // How many we will grab on each query to the database (process in chunks)
+    int rows = 100;
 
     // Create the query that will be used
     RegistryQuery<AssociationFilter> query = queryBuilder.build();
@@ -858,7 +859,7 @@ public class RegistryServiceImpl implements RegistryService {
         .filter(filter);
 
     // How many we will grab on each query to the database (process in chunks)
-    int rows = 10;
+    int rows = 100;
 
     // Create the query that will be used
     RegistryQuery<AssociationFilter> query = queryBuilder.build();
