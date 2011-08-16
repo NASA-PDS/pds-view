@@ -15,17 +15,26 @@
 
 package gov.nasa.pds.registry.resource;
 
+import java.util.Arrays;
+
 import gov.nasa.pds.registry.model.AuditableEvent;
+import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.PagedResponse;
+import gov.nasa.pds.registry.query.ObjectFilter;
+import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.service.RegistryService;
 
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -69,5 +78,37 @@ public class EventsResource {
   public PagedResponse<AuditableEvent> getAuditableEvents(
       @PathParam("affectedObject") String affectedObject) {
     return registryService.getAuditableEvents(affectedObject);
+  }
+  
+  @SuppressWarnings("unchecked")
+  @GET
+  @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  public Response getEvents(
+      @QueryParam("start") @DefaultValue("1") Integer start,
+      @QueryParam("rows") @DefaultValue("20") Integer rows) {
+    ObjectFilter filter = new ObjectFilter.Builder().build();
+    RegistryQuery.Builder<ObjectFilter> queryBuilder = new RegistryQuery.Builder<ObjectFilter>()
+        .filter(filter).sort(Arrays.asList("timestamp DESC"));
+    PagedResponse<AuditableEvent> rr = (PagedResponse<AuditableEvent>) registryService
+        .getObjects(queryBuilder.build(), start, rows, AuditableEvent.class);
+    Response.ResponseBuilder builder = Response.ok(rr);
+    UriBuilder absolute = uriInfo.getAbsolutePathBuilder();
+    absolute.queryParam("start", "{start}");
+    absolute.queryParam("rows", "{rows}");
+    // Add in next link
+    if (start - 1 + rows < rr.getNumFound()) {
+      int next = start + rows;
+      String nextUri = absolute.clone().build(next, rows).toString();
+      builder.header("Link", new Link(nextUri, "next", null));
+    }
+    // Add in previous link
+    if (start > 1) {
+      int previous = start - rows;
+      if (previous < 1)
+        previous = 1;
+      String previousUri = absolute.clone().build(previous, rows).toString();
+      builder.header("Link", new Link(previousUri, "previous", null));
+    }
+    return builder.build();
   }
 }
