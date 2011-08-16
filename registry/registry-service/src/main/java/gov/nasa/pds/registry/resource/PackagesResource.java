@@ -16,19 +16,13 @@
 package gov.nasa.pds.registry.resource;
 
 import java.net.URI;
-import java.util.List;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
-import gov.nasa.pds.registry.model.EventType;
-import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.Link;
-import gov.nasa.pds.registry.model.ObjectStatus;
+import gov.nasa.pds.registry.model.ObjectAction;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryPackage;
-import gov.nasa.pds.registry.model.Service;
-import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.ObjectFilter;
-import gov.nasa.pds.registry.query.QueryOperator;
 import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.service.RegistryService;
 
@@ -143,7 +137,40 @@ public class PackagesResource {
     registryService.deleteObject("Unknown", guid, RegistryPackage.class);
     return Response.ok().build();
   }
+
+  @DELETE
+  @Path("{guid}/members")
+  public Response deletePackageMembers(@PathParam("guid") String guid) {
+    try {
+      registryService.deletePackageMembers("Unknown", guid);
+      return Response.ok().build();
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
+  }
   
+  /**
+   * This will change the status of all the members of a package
+   * 
+   * @param guid
+   *          unique identifier of package to look up members of 
+   * @param action
+   *          to take on all members which will result in an update of status
+   *          {@link ObjectAction}
+   */
+  @POST
+  @Path("{guid}/members/{action}")
+  public Response changeStatusOfPackageMembers(@PathParam("guid") String guid, @PathParam("action") ObjectAction action) {
+    try {
+      registryService.deletePackageMembers("Unknown", guid);
+      return Response.ok().build();
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
+  }
+
   @SuppressWarnings("unchecked")
   @GET
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

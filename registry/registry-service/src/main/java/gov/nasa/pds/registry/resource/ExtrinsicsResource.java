@@ -395,12 +395,11 @@ public class ExtrinsicsResource {
    * @param action
    *          to take on extrinsic which will result in an update of status
    *          {@link ObjectAction}
-   * @return the updated extrinsic
    */
   @POST
-  @Path("{guid}/{status}")
+  @Path("{guid}/{action}")
   public Response changeStatus(@PathParam("guid") String guid,
-      @PathParam("status") ObjectAction action) {
+      @PathParam("action") ObjectAction action) {
     registryService.changeObjectStatus("Unknown", guid, action,
         ExtrinsicObject.class);
     return Response.ok().build();
