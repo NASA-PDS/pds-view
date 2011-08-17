@@ -379,21 +379,19 @@ public class RegistryServiceImpl implements RegistryService {
    */
   public void changeObjectStatus(String user, String guid, ObjectAction action,
       Class<? extends RegistryObject> objectClass) {
-    this.changeObjectStatus("changeObjectStatus " + guid, user, guid, action,
-        objectClass);
+    this.createAuditableEvent("changeObjectStatus " + guid, user, action
+        .getEventType(), this.changeObjectStatusById(user, guid, action,
+        objectClass));
   }
 
-  private void changeObjectStatus(String requestId, String user, String guid,
+  private List<String> changeObjectStatusById(String user, String guid,
       ObjectAction action, Class<? extends RegistryObject> objectClass) {
+    // TODO: Consider whether a status update should apply to nested objects
     RegistryObject registryObject = metadataStore.getRegistryObject(guid,
         objectClass);
     registryObject.setStatus(action.getObjectStatus());
     metadataStore.updateRegistryObject(registryObject);
-    AuditableEvent event = new AuditableEvent(action.getEventType(), Arrays
-        .asList(registryObject.getGuid()), user);
-    event.setGuid(idGenerator.getGuid());
-    event.setHome(idGenerator.getHome());
-    metadataStore.saveRegistryObject(event);
+    return Arrays.asList(guid);
   }
 
   /*
@@ -636,8 +634,10 @@ public class RegistryServiceImpl implements RegistryService {
       Class<? extends RegistryObject> objectClass) {
     RegistryObject registryObject = metadataStore.getRegistryObject(lid,
         versionId, objectClass);
-    this.deleteObjectById("deleteObjectByLidVid " + lid + versionId, user,
-        registryObject.getGuid(), registryObject.getClass());
+    List<String> affectedIds = this.deleteObjectById(user, registryObject
+        .getGuid(), registryObject.getClass());
+    this.createAuditableEvent("deleteObjectByLidVid " + lid + versionId, user,
+        EventType.Deleted, affectedIds);
   }
 
   /*
@@ -648,10 +648,12 @@ public class RegistryServiceImpl implements RegistryService {
    */
   public void deleteObject(String user, String guid,
       Class<? extends RegistryObject> objectClass) {
-    this.deleteObject("deleteObjectById " + guid, user, guid, objectClass);
+    List<String> affectedIds = this.deleteObjectById(user, guid, objectClass);
+    this.createAuditableEvent("deleteObjectById " + guid, user,
+        EventType.Deleted, affectedIds);
   }
 
-  private void deleteObjectById(String requestId, String user, String guid,
+  private List<String> deleteObjectById(String user, String guid,
       Class<? extends RegistryObject> objectClass) {
     metadataStore.deleteRegistryObject(guid, objectClass);
     AssociationFilter filter = new AssociationFilter.Builder().targetObject(
@@ -666,7 +668,7 @@ public class RegistryServiceImpl implements RegistryService {
       affectedIds.add(object.getGuid());
       metadataStore.deleteRegistryObject(object.getGuid(), object.getClass());
     }
-    this.createAuditableEvent(requestId, user, EventType.Deleted, affectedIds);
+    return affectedIds;
   }
 
   /*
@@ -810,7 +812,8 @@ public class RegistryServiceImpl implements RegistryService {
     int count = 0;
     // How many we will grab on each query to the database (process in chunks)
     int rows = 100;
-
+    // Keep track of items whose status have been changed
+    List<String> changedIds = new ArrayList<String>();
     // Create the query that will be used
     RegistryQuery<AssociationFilter> query = queryBuilder.build();
     // Grab first page of results
@@ -827,8 +830,8 @@ public class RegistryServiceImpl implements RegistryService {
           objectClass = ObjectClass.fromName(slot.getValues().get(0))
               .getObjectClass();
         }
-        this.changeObjectStatus("changeStatusOfPackageMembers " + packageId,
-            user, association.getTargetObject(), action, objectClass);
+        changedIds.addAll(this.changeObjectStatusById(user, association
+            .getTargetObject(), action, objectClass));
       }
       // Check to see if we are done processing all
       if (count >= pagedAssociations.getNumFound()) {
@@ -838,7 +841,8 @@ public class RegistryServiceImpl implements RegistryService {
         pagedAssociations = this.getAssociations(query, count, rows);
       }
     }
-
+    this.createAuditableEvent("changeStatusOfPackageMembers " + packageId,
+        user, action.getEventType(), changedIds);
   }
 
   /*
@@ -857,10 +861,10 @@ public class RegistryServiceImpl implements RegistryService {
         .build();
     RegistryQuery.Builder<AssociationFilter> queryBuilder = new RegistryQuery.Builder<AssociationFilter>()
         .filter(filter);
-
     // How many we will grab on each query to the database (process in chunks)
     int rows = 100;
-
+    // Keep track of items that have been deleted
+    List<String> deletedIds = new ArrayList<String>();
     // Create the query that will be used
     RegistryQuery<AssociationFilter> query = queryBuilder.build();
     // Grab first page of results
@@ -875,12 +879,14 @@ public class RegistryServiceImpl implements RegistryService {
           objectClass = ObjectClass.fromName(slot.getValues().get(0))
               .getObjectClass();
         }
-        this.deleteObjectById("deletePackageMembers " + packageId, user,
-            association.getTargetObject(), objectClass);
+        deletedIds.addAll(this.deleteObjectById(user, association
+            .getTargetObject(), objectClass));
       }
       // Grab next set
       pagedAssociations = this.getAssociations(query, 1, rows);
     }
+    this.createAuditableEvent("deletePackageMembers " + packageId, user,
+        EventType.Deleted, deletedIds);
   }
 
 }
