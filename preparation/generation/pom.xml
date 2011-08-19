@@ -64,17 +64,25 @@
 
   <contributors>
     <contributor>
-      <name>Alice Stanboli</name>
-      <email>Alice.Stanboli@jpl.nasa.gov</email>
-      <roles>
-        <role>Development Supervisor</role>
-      </roles>
-    </contributor>
-    <contributor>
       <name>Elizabeth Rye</name>
       <email>Elzabeth.D.Rye@jpl.nasa.gov</email>
       <roles>
         <role>System Engineer</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Alice Stanboli</name>
+      <email>Alice.Stanboli@jpl.nasa.gov</email>
+      <roles>
+        <role>Dev Supervisor</role>
+        <role>Atlas Ingest Developer</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Adrian Tinio</name>
+      <email>Adrian.W.Tinio@jpl.nasa.gov</email>
+      <roles>
+        <role>Atlas Ingest Developer</role>
       </roles>
     </contributor>
   </contributors>

@@ -29,10 +29,10 @@ public class ContextUtil {
 		else if (this.elCnt != currSize)
 			throw new TemplateException("Length of keyword lists must be equal");
 		
-		this.elMap.put(key, elList);
+		this.elMap.put(cleanKey(key), elList);
 	}
 	
-	public void setDictionary() {
+	public List<Map<String, String>> getDictionary() {
 		Map<String, String> map;
 		Set<String> keyList = this.elMap.keySet();
 		for (int i=0; i<this.elCnt; i++) {
@@ -42,9 +42,11 @@ public class ContextUtil {
 			}
 			this.objectList.add(map);
 		}
+		return this.objectList;
 	}
 	
-	public List<Map<String, String>> getDictionary() {
-		return this.objectList;
+	private String cleanKey(String str) {
+		String[] keyArr = str.split("\\.");
+		return keyArr[keyArr.length-1];
 	}
 }

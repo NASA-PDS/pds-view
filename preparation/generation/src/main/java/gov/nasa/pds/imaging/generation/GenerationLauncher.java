@@ -105,7 +105,7 @@ public class GenerationLauncher {
         	throw new InvalidOptionException("Template file must be specified.");
         }
         if (this.outputFile == null) {	// Need to set output filename based on label filename
-        	this.outputFile = new File(this.pdsObject.getFilePath() + "_pds4");	// TODO Currently just add _pds4 to pds3 label name
+        	this.outputFile = new File(this.pdsObject.getFilePath().split("\\.")[0] + ".xml");	// TODO Currently just replaces file suffix with .xml
         }
         if (this.confPath == null) {	// Need to set output filename based on label filename
         	this.confPath = getConfigPath();

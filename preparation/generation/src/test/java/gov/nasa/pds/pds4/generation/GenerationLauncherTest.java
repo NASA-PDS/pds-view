@@ -21,25 +21,35 @@ import org.xml.sax.SAXException;
 public class GenerationLauncherTest {
     
     /**
-     * Test Transformer with MER data
+     * Test Generation Tool with Demo data
      */
     //@Ignore
+    @Test
+    public void testGenerationDemo() {
+        String[] args = {"-d", "-p","src/main/resources/examples/pds3_example.lbl",
+        		"-t","src/main/resources/examples/template_example.vm","-c","src/main/resources/conf"};
+        GenerationLauncher.main(args);
+    }    
+	
+    /**
+     * Test Transformer with MER data
+     */
+    @Ignore
     @Test
     public void testGenerationMER() {
         String[] args = {"-d", "-p","src/main/resources/examples/1p216067135edn76pop2102l2m1.img",
         		"-t","src/main/resources/examples/mer_template.vm","-c","src/main/resources/conf"};
         GenerationLauncher.main(args);
     }
-
+    
     /**
-     * Test Transformer with Voyager Data
+     * Test Generation Tool with MPF Data
      */
     @Ignore
     @Test
-    public void testGenerationVoyager() {
-        String[] args = {"src/main/resources/voyager/c0903842.img", 
-                "src/main/resources/voyager/voyager_mapping.xml",
-                "src/main/resources/voyager/Product_Browse_0311B.vm"};
+    public void testGenerationMPF() {
+        String[] args = {"-d", "-p","src/main/resources/examples/i985135l.img",
+        		"-t","src/main/resources/examples/MPF_IMP_EDR7.vm","-c","src/main/resources/conf"};
         GenerationLauncher.main(args);
-    }
+    }    
 }

@@ -15,9 +15,7 @@ import java.util.Map;
  */
 public interface PDSObject extends PDSContext {
 	public String getFilePath();
-	//public void setIndexedGroup(String[] keys);
-	//public IndexedGroup getIndexedGroup();
-	//public void setDictionary(String[] keys);
-	public List<Map<String, String>> getRecords(List<String> keys, String... keyword)  throws TemplateException;
+	public List<Map<String, String>> getRecordsWithIndices(List<String> keys, String... keyword)  throws TemplateException;
+	public List<Map<String, String>> getRecords(String... keyword)  throws TemplateException;
 	public List getList(String key);
 }

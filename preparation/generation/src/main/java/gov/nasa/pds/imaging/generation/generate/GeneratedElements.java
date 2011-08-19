@@ -27,12 +27,9 @@ public class GeneratedElements implements PDSContext {
     private String filePath;
     private String confPath;
 	
-	public GeneratedElements() {
-
-	}
+	public GeneratedElements() { }
 
 	public void setMappings() throws Exception {
-		System.out.println("ContextMappings xml: " + confPath + "/" + XML_FILENAME);
 		this.genValsMap.putAll(XMLUtil.getGeneratedMappings(this.confPath + "/" + XML_FILENAME, XML_KEY, XML_VALUE));
 	}
 	
