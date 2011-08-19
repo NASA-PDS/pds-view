@@ -22,7 +22,6 @@ import gov.nasa.pds.harvest.crawler.CollectionCrawler;
 import gov.nasa.pds.harvest.crawler.PDS3ProductCrawler;
 import gov.nasa.pds.harvest.crawler.PDSProductCrawler;
 import gov.nasa.pds.harvest.crawler.actions.FileObjectRegistrationAction;
-import gov.nasa.pds.harvest.crawler.actions.RegistryUniquenessCheckerAction;
 import gov.nasa.pds.harvest.crawler.actions.SaveMetadataAction;
 import gov.nasa.pds.harvest.crawler.actions.ValidateProductAction;
 import gov.nasa.pds.harvest.crawler.daemon.HarvestDaemon;
@@ -82,19 +81,19 @@ public class Harvester {
    * @param registryPackageGuid The GUID of the registry package to associate
    * to all the products being registered during a single Harvest run.
    *
-   * @throws RegistryClientException
+   * @throws MalformedURLException
    *
    */
   public Harvester(String registryUrl, String registryPackageGuid)
-  throws RegistryClientException {
+  throws RegistryClientException, MalformedURLException {
     this.registryUrl = registryUrl;
     this.registryUrl = registryUrl;
     this.ingester = new RegistryIngester(registryPackageGuid);
     this.doValidation = true;
     this.daemonPort = -1;
     this.waitInterval = -1;
-    this.associationPublisher = new AssociationPublisher(registryUrl,
-        registryPackageGuid);
+    this.associationPublisher = new AssociationPublisher(this.registryUrl,
+        this.ingester);
     this.fileObjectRegistrationAction = new FileObjectRegistrationAction(
         this.registryUrl, this.ingester);
     this.registryPackageGuid = registryPackageGuid;
@@ -107,15 +106,14 @@ public class Harvester {
    * @param username Username of an authorized user.
    * @param password Password associated with the given username.
    *
-   * @throws RegistryClientException If an error occurred while initializing
-   * the security.
+   * @throws MalformedURLException
    */
   public void setSecurity(SecurityContext securityContext, String username,
-      String password) throws RegistryClientException {
+      String password) throws MalformedURLException {
     this.ingester = new RegistryIngester(registryPackageGuid,
         securityContext, username, password);
     this.associationPublisher = new AssociationPublisher(this.registryUrl,
-        registryPackageGuid, securityContext, username, password);
+        this.ingester);
     this.fileObjectRegistrationAction = new FileObjectRegistrationAction(
         this.registryUrl, this.ingester);
   }
@@ -146,7 +144,6 @@ public class Harvester {
    */
   private List<CrawlerAction> getDefaultCrawlerActions() {
     List<CrawlerAction> ca = new ArrayList<CrawlerAction>();
-    ca.add(new RegistryUniquenessCheckerAction(registryUrl, this.ingester));
     ca.add(new SaveMetadataAction());
     ca.add(fileObjectRegistrationAction);
     if (doValidation) {
@@ -225,7 +222,7 @@ public class Harvester {
     // do the crawling
     if (doCrawlerPersistance) {
       new HarvestDaemon(waitInterval, crawlers, daemonPort,
-          associationPublisher).startCrawling();
+          associationPublisher, ingester).startCrawling();
     } else {
       for (Entry<File, Metadata> entry
           : Constants.registeredProducts.entrySet()) {

@@ -30,8 +30,7 @@ import gov.nasa.pds.harvest.association.AssociationPublisher;
 import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.crawler.PDSProductCrawler;
 import gov.nasa.pds.harvest.crawler.actions.FileObjectRegistrationAction;
-import gov.nasa.pds.harvest.crawler.stats.AssociationStats;
-import gov.nasa.pds.harvest.crawler.stats.FileObjectStats;
+import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.harvest.security.SecuredUser;
@@ -63,6 +62,9 @@ public class HarvestDaemon extends CrawlDaemon {
   /** The association publisher. */
   private AssociationPublisher associationPublisher;
 
+  /** Registry ingester. */
+  private RegistryIngester ingester;
+
   /**
    * Constructor
    *
@@ -74,12 +76,13 @@ public class HarvestDaemon extends CrawlDaemon {
    * the associations.
    */
   public HarvestDaemon(int wait, List<PDSProductCrawler> crawlers, int port,
-      AssociationPublisher associationPublisher) {
+      AssociationPublisher associationPublisher, RegistryIngester ingester) {
     super(wait, null, port);
     this.daemonPort = port;
     this.associationPublisher = associationPublisher;
     this.crawlers = new ArrayList<PDSProductCrawler>();
     this.crawlers.addAll(crawlers);
+    this.ingester = ingester;
   }
 
   /**
@@ -118,6 +121,7 @@ public class HarvestDaemon extends CrawlDaemon {
       if (totalFilesFound != 0) {
         printSummary();
       }
+      ingester.clearStats();
       //Make sure to clear the map of registered products
       Constants.registeredProducts.clear();
 
@@ -154,60 +158,26 @@ public class HarvestDaemon extends CrawlDaemon {
     int totalNumDiscoveredProducts = 0;
     int totalNumBadFiles = 0;
     int totalNumFilesSkipped = 0;
-    int totalProductsRegistered = 0;
-    int totalProductsNotRegistered = 0;
-    int totalAssociationsRegistered = 0;
-    int totalAssociationsNotRegistered = 0;
-    int totalAssociationsSkipped = 0;
 
     for (PDSProductCrawler crawler : crawlers) {
       totalNumDiscoveredProducts += crawler.getNumDiscoveredProducts();
       totalNumBadFiles += crawler.getNumBadFiles();
       totalNumFilesSkipped += crawler.getNumFilesSkipped();
-
-      List<IngestStatus> ingestStatus = crawler.getIngestStatus();
-      for (IngestStatus status : ingestStatus) {
-        if (status.getResult().equals(Result.SUCCESS)) {
-          ++totalProductsRegistered;
-        } else if (status.getResult().equals(Result.FAILURE)) {
-          ++totalProductsNotRegistered;
-        }
-      }
-      FileObjectStats fStats = getFileObjectStats(crawler);
-      totalProductsRegistered += fStats.getNumRegistered();
-      totalProductsNotRegistered += fStats.getNumNotRegistered();
-      fStats.clear();
-
-      AssociationStats aStats = associationPublisher.getAssociationStats();
-      totalAssociationsRegistered += aStats.getNumRegistered();
-      totalAssociationsNotRegistered += aStats.getNumNotRegistered();
-      totalAssociationsSkipped += aStats.getNumSkipped();
-      aStats.clear();
     }
     int totalFilesProcessed = totalNumDiscoveredProducts + totalNumBadFiles;
     log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
         totalNumDiscoveredProducts
         + " of " + totalFilesProcessed + " file(s) processed, "
         + totalNumFilesSkipped + " skipped"));
-    int totalProducts = totalProductsRegistered + totalProductsNotRegistered;
-    log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION, totalProductsRegistered
-        + " of " + totalProducts + " products registered."));
-    int totalAssociations = totalAssociationsRegistered
-    + totalAssociationsNotRegistered;
+    int totalProducts = ingester.getNumProductsRegistered()
+    + ingester.getNumProductsNotRegistered();
     log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
-          totalAssociationsRegistered + " of " + totalAssociations
-          + " associations registered, " + totalAssociationsSkipped
-          + " skipped."));
-  }
-
-  private FileObjectStats getFileObjectStats(PDSProductCrawler crawler) {
-    for (CrawlerAction action : crawler.getActions()) {
-      if (action instanceof FileObjectRegistrationAction) {
-        FileObjectRegistrationAction foa =
-          (FileObjectRegistrationAction) action;
-        return foa.getFileObjectStats();
-      }
-    }
-    return null;
+        ingester.getNumProductsRegistered() + " of " + totalProducts
+        + " products registered."));
+    int totalAssociations = ingester.getNumAssociationsRegistered()
+    + ingester.getNumAssociationsNotRegistered();
+    log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
+          ingester.getNumAssociationsRegistered() + " of " + totalAssociations
+          + " associations registered."));
   }
 }

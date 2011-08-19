@@ -18,32 +18,21 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
-
-import org.apache.commons.io.FilenameUtils;
 
 import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerAction;
 import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerActionPhases;
 import gov.nasa.jpl.oodt.cas.crawl.structs.exceptions.CrawlerActionException;
-import gov.nasa.jpl.oodt.cas.filemgr.structs.exceptions.CatalogException;
+import gov.nasa.jpl.oodt.cas.filemgr.structs.exceptions.IngestException;
 import gov.nasa.jpl.oodt.cas.metadata.Metadata;
 import gov.nasa.pds.harvest.constants.Constants;
-import gov.nasa.pds.harvest.crawler.stats.FileObjectStats;
-import gov.nasa.pds.harvest.crawler.status.Status;
 import gov.nasa.pds.harvest.file.FileObject;
 import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.inventory.ReferenceEntry;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.registry.exception.RegistryClientException;
-import gov.nasa.pds.registry.exception.RegistryServiceException;
-import gov.nasa.pds.registry.model.ExtrinsicObject;
-import gov.nasa.pds.registry.model.Slot;
 
 
 /**
@@ -70,9 +59,6 @@ public class FileObjectRegistrationAction extends CrawlerAction {
   /** The registry client. */
   private RegistryIngester registryIngester;
 
-  /** File object registration stats. */
-  private FileObjectStats stats;
-
   /**
    * Constructor.
    *
@@ -81,8 +67,7 @@ public class FileObjectRegistrationAction extends CrawlerAction {
    * @throws RegistryClientException
    */
   public FileObjectRegistrationAction(String registryUrl,
-      RegistryIngester ingester)
-  throws RegistryClientException {
+      RegistryIngester ingester) {
       super();
       String []phases = {CrawlerActionPhases.POST_INGEST_SUCCESS};
       setPhases(Arrays.asList(phases));
@@ -90,7 +75,6 @@ public class FileObjectRegistrationAction extends CrawlerAction {
       setDescription(DESCRIPTION);
       this.registryUrl = registryUrl;
       this.registryIngester = ingester;
-      stats = new FileObjectStats();
   }
 
   /**
@@ -107,110 +91,38 @@ public class FileObjectRegistrationAction extends CrawlerAction {
   @Override
   public boolean performAction(File product, Metadata metadata)
       throws CrawlerActionException {
-    int numProductsRegistered = 0;
-    int numProductsNotRegistered = 0;
     for (FileObject fileObject
         : (List<FileObject>) metadata.getAllMetadata(Constants.FILE_OBJECTS)) {
-      ExtrinsicObject fileProduct = createFileProduct(fileObject, metadata);
+      String lid = metadata.getMetadata(Constants.LOGICAL_ID) + ":"
+      + fileObject.getName();
+      String vid = metadata.getMetadata(Constants.PRODUCT_VERSION);
+      String lidvid = lid + "::" + vid;
       try {
-        String guid = "";
-        String lid = fileProduct.getLid();
-        String vid = metadata.getMetadata(Constants.PRODUCT_VERSION);
-        String lidvid = lid + "::" + vid;
-        if (!registryIngester.hasProduct(new URL(registryUrl), lid, vid)) {
-          guid = registryIngester.ingest(new URL(registryUrl), fileProduct);
-          log.log(new ToolsLogRecord(ToolsLevel.INGEST_SUCCESS,
-            "Successfully registered file product: " + lidvid, product));
-          log.log(new ToolsLogRecord(ToolsLevel.INFO,
-            "File product has the following GUID: " + guid, product));
-          // Create a reference entry of the file association and add that
+        String guid = registryIngester.ingest(new URL(registryUrl), product,
+            fileObject, metadata);
+        log.log(new ToolsLogRecord(ToolsLevel.INGEST_SUCCESS,
+            "Successfully registered product: " + lidvid, product));
+        log.log(new ToolsLogRecord(ToolsLevel.INFO,
+            "Product has the following GUID: " + guid, product));
+        // Create a reference entry of the file association and add that
           // back to the list of reference entries to be processed later.
-          ReferenceEntry refEntry = new ReferenceEntry();
-          refEntry.setLogicalID(fileProduct.getLid());
-          refEntry.setVersion(metadata.getMetadata(Constants.PRODUCT_VERSION));
-          refEntry.setGuid(guid);
-          refEntry.setAssociationType("has_File");
-          List<ReferenceEntry> refEntries = metadata.getAllMetadata(
-            Constants.REFERENCES);
-          refEntries.add(refEntry);
-          metadata.replaceMetadata(Constants.REFERENCES, refEntries);
-          ++numProductsRegistered;
-        } else {
-          log.log(new ToolsLogRecord(ToolsLevel.WARNING,
-              "File product already exists: " + lidvid, product));
-          log.log(new ToolsLogRecord(ToolsLevel.NOTIFICATION,
-              Status.PRODUCT_EXISTS, product));
-          ++numProductsNotRegistered;
-        }
-      } catch (RegistryServiceException ex) {
-        log.log(new ToolsLogRecord(ToolsLevel.INGEST_FAIL,
-            "Problems registering file product \'" + fileObject.getName()
-            + "\': " + ex.getMessage(), product));
-        ++numProductsNotRegistered;
+        ReferenceEntry refEntry = new ReferenceEntry();
+        refEntry.setLogicalID(lid);
+        refEntry.setVersion(metadata.getMetadata(Constants.PRODUCT_VERSION));
+        refEntry.setGuid(guid);
+        refEntry.setAssociationType("has_File");
+        List<ReferenceEntry> refEntries = metadata.getAllMetadata(
+          Constants.REFERENCES);
+        refEntries.add(refEntry);
+        metadata.replaceMetadata(Constants.REFERENCES, refEntries);
+      } catch (IngestException ie) {
+        throw new CrawlerActionException(ie.getMessage());
       } catch (MalformedURLException mue) {
-        log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
-            "Malformed registry url: " + mue.getMessage(), product));
-        ++numProductsNotRegistered;
-        throw new CrawlerActionException(mue.getMessage());
-      } catch (RegistryClientException rce) {
-        log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
-            "Error while initializing RegistryClient: " + rce.getMessage(),
+        log.log(new ToolsLogRecord(ToolsLevel.INGEST_FAIL, mue.getMessage(),
             product));
-        ++numProductsNotRegistered;
-        throw new CrawlerActionException(rce.getMessage());
-      } catch (CatalogException ce) {
-        // Ignore
+        throw new CrawlerActionException(mue.getMessage());
       }
     }
-    stats.addNumRegistered(numProductsRegistered);
-    stats.addNumNotRegistered(numProductsNotRegistered);
     return true;
-  }
-
-  public FileObjectStats getFileObjectStats() {
-    return stats;
-  }
-
-  /**
-   * Creates the object needed for the registry.
-   *
-   * @param fileObject The file object to be registered.
-   * @param metadata The metadata associated with the file.
-   *
-   * @return An ExtrinsicObject.
-   */
-  private ExtrinsicObject createFileProduct(FileObject fileObject,
-      Metadata metadata) {
-    ExtrinsicObject product = new ExtrinsicObject();
-    product.setLid(metadata.getMetadata(
-        Constants.LOGICAL_ID) + ":" + fileObject.getName());
-    product.setName(FilenameUtils.getBaseName(fileObject.getName()));
-    product.setObjectType("Product_File_Repository");
-
-    Set<Slot> slots = new HashSet<Slot>();
-
-    slots.add(new Slot(Constants.FILE_NAME, Arrays.asList(
-        new String[]{fileObject.getName()})));
-    slots.add(new Slot(Constants.FILE_LOCATION, Arrays.asList(
-        new String[]{fileObject.getLocation()})));
-    slots.add(new Slot(Constants.FILE_SIZE, Arrays.asList(
-        new String[]{Long.toString(fileObject.getSize())})));
-    slots.add(new Slot(Constants.MD5_CHECKSUM, Arrays.asList(
-        new String[]{fileObject.getChecksum()})));
-    slots.add(new Slot(Constants.CREATION_DATE_TIME, Arrays.asList(
-        new String[]{fileObject.getCreationDateTime()})));
-    Set metSet = metadata.getHashtable().entrySet();
-    for (Iterator i = metSet.iterator(); i.hasNext();) {
-      Map.Entry entry = (Map.Entry) i.next();
-      String key = entry.getKey().toString();
-      if (key.equals("dd_version_id")
-          || key.equals("std_ref_version_id")
-          || key.equals(Constants.PRODUCT_VERSION)) {
-        slots.add(new Slot(key, Arrays.asList(
-            new String[]{metadata.getMetadata(key)})));
-      }
-    }
-    product.setSlots(slots);
-    return product;
   }
 }
