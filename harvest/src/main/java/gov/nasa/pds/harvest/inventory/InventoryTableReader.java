@@ -77,10 +77,25 @@ public class InventoryTableReader implements InventoryReader {
         dataFile = new File(file.getParent(), dataFile.toString());
       }
       reader = new LineNumberReader(new FileReader(dataFile));
-      filenameFieldLocation = Integer.parseInt(extractor.getValueFromDoc(
-          InventoryKeys.FILE_SPEC_FIELD_NUM_XPATH));
-      lidvidFieldLocation = Integer.parseInt(extractor.getValueFromDoc(
-          InventoryKeys.LIDVID_FIELD_NUM_XPATH));
+      String value = "";
+      value = extractor.getValueFromDoc(
+          InventoryKeys.FILE_SPEC_FIELD_NUM_XPATH);
+      if (!value.isEmpty()) {
+        filenameFieldLocation = Integer.parseInt(value);
+      } else {
+        throw new Exception("Problems parsing file: " + file + ". XPath "
+            + "expression returned no result: "
+            + InventoryKeys.FILE_SPEC_FIELD_NUM_XPATH);
+      }
+      value = extractor.getValueFromDoc(
+          InventoryKeys.LIDVID_FIELD_NUM_XPATH);
+      if (!value.isEmpty()) {
+        lidvidFieldLocation = Integer.parseInt(value);
+      } else {
+        throw new Exception("Problems parsing file: " + file + ". XPath "
+            + "expression returned no result: "
+            + InventoryKeys.LIDVID_FIELD_NUM_XPATH);
+      }
     } catch (Exception e) {
       throw new InventoryReaderException(e);
     }
