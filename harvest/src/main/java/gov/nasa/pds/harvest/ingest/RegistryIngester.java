@@ -336,8 +336,8 @@ public class RegistryIngester implements Ingester {
     Metadata fileObjectMet = createFileObjectMetadata(fileObject, met);
     ExtrinsicObject fileProduct = createProduct(fileObjectMet);
     String guid = "";
-    String lid = met.getMetadata(Constants.LOGICAL_ID);
-    String vid = met.getMetadata(Constants.PRODUCT_VERSION);
+    String lid = fileObjectMet.getMetadata(Constants.LOGICAL_ID);
+    String vid = fileObjectMet.getMetadata(Constants.PRODUCT_VERSION);
     String lidvid = lid + "::" + vid;
     try {
       if (!hasProduct(registry, lid, vid)) {
