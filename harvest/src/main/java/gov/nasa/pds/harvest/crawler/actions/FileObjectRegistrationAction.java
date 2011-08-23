@@ -17,6 +17,7 @@ package gov.nasa.pds.harvest.crawler.actions;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -111,10 +112,16 @@ public class FileObjectRegistrationAction extends CrawlerAction {
         refEntry.setVersion(metadata.getMetadata(Constants.PRODUCT_VERSION));
         refEntry.setGuid(guid);
         refEntry.setAssociationType("has_File");
-        List<ReferenceEntry> refEntries = metadata.getAllMetadata(
-          Constants.REFERENCES);
-        refEntries.add(refEntry);
-        metadata.replaceMetadata(Constants.REFERENCES, refEntries);
+        if (metadata.containsKey(Constants.REFERENCES)) {
+          List<ReferenceEntry> refEntries = metadata.getAllMetadata(
+              Constants.REFERENCES);
+          refEntries.add(refEntry);
+          metadata.replaceMetadata(Constants.REFERENCES, refEntries);
+        } else {
+          List<ReferenceEntry> refEntries = new ArrayList<ReferenceEntry>();
+          refEntries.add(refEntry);
+          metadata.addMetadata(Constants.REFERENCES, refEntries);
+        }
       } catch (IngestException ie) {
         throw new CrawlerActionException(ie.getMessage());
       } catch (MalformedURLException mue) {
