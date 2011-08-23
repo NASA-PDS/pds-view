@@ -92,7 +92,7 @@ public class Constants {
         + " | //*[ends-with(name(),'Reference_Entry')] | "
         + "//*[starts-with(name(), 'Reference_Entry')]");
     coreXpathsMap.put(FILE_OBJECTS, "//*[starts-with(name(), 'File_Area')]/"
-        + "File");
+        + "File | //Document_Format_Set/Document_File");
   }
 
   /** Mapping of PDS3 to PDS4 names */
