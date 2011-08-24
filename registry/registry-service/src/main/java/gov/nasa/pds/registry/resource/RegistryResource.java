@@ -247,4 +247,14 @@ public class RegistryResource {
     return new ExternalIdentifiersResource(this.uriInfo, this.request,
         this.registryService);
   }
+  
+  /**
+   * Provides access to replication operations.
+   * 
+   * @return resource to deal with replication
+   */
+  @Path("replication")
+  public ReplicationResource getReplicationResource() {
+    return new ReplicationResource(this.uriInfo, this.request, this.registryService);
+  }
 }

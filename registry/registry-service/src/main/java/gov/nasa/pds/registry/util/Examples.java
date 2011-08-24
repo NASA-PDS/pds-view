@@ -38,7 +38,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -126,7 +126,7 @@ public class Examples {
 	public final static Report RESPONSE_REPORT = new Report();
 	static {
 		RESPONSE_REPORT.setStatus(RegistryStatus.OK);
-		RESPONSE_REPORT.setServerStarted(new GregorianCalendar());
+		RESPONSE_REPORT.setServerStarted(new Date());
 	}
 
 	public final static PagedResponse<ExtrinsicObject> RESPONSE_REGISTRY_OBJECT_REVISIONS = new PagedResponse<ExtrinsicObject>();

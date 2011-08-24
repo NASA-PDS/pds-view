@@ -19,7 +19,6 @@ import java.net.URI;
 import java.util.List;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
-import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.ObjectAction;
 import gov.nasa.pds.registry.model.ObjectStatus;
@@ -127,13 +126,12 @@ public class ExtrinsicsResource {
       @QueryParam("contentVersion") String contentVersion,
       @QueryParam("mimeType") String mimeType,
       @QueryParam("status") ObjectStatus status,
-      @QueryParam("eventType") EventType eventType,
       @QueryParam("queryOp") @DefaultValue("AND") QueryOperator operator,
       @QueryParam("sort") List<String> sort) {
     ExtrinsicFilter filter = new ExtrinsicFilter.Builder().guid(guid)
         .name(name).lid(lid).versionName(versionName).objectType(objectType)
         .submitter(submitter).status(status).contentVersion(contentVersion)
-        .mimeType(mimeType).eventType(eventType).build();
+        .mimeType(mimeType).build();
     RegistryQuery.Builder<ExtrinsicFilter> queryBuilder = new RegistryQuery.Builder<ExtrinsicFilter>()
         .filter(filter).operator(operator);
     if (sort != null) {
