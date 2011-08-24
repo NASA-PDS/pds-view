@@ -32,8 +32,9 @@ public class InventoryKeys {
      * reference.
      */
     public static final String LIDVID_FIELD_NUM_XPATH =
-        "//Table_Record_Inventory_LIDVID/Table_Field_LIDVID/field_number | "
-        + "//Table_Record_Inventory_LID/Table_Field_LID/field_number";
+      "//*[starts-with(name(), 'Table_Record_Inventory')]/"
+      + "Table_Field_LIDVID/field_number | //*[starts-with(name(), "
+      + "'Table_Record_Inventory')]/Table_Field_LID/field_number";
 
     /** XPath to the external table file of a collection. */
     public static final String DATA_FILE_XPATH = "//*[starts-with(name(),"

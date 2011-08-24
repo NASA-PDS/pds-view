@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.logging.Logger;
 
 import gov.nasa.jpl.oodt.cas.crawl.action.CrawlerActionRepo;
+import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.crawler.metadata.extractor.Pds4MetExtractorConfig;
 import gov.nasa.pds.harvest.inventory.InventoryEntry;
 import gov.nasa.pds.harvest.inventory.InventoryReader;
@@ -23,10 +24,6 @@ public class CollectionCrawler extends PDSProductCrawler {
   /** Logger object. */
   private static Logger log = Logger.getLogger(
       CollectionCrawler.class.getName());
-
-  /** XPath that will indicate if a collection is primary. */
-  public static final String IS_PRIMARY_COLLECTION_XPATH =
-    "//*[starts-with(name(), 'Identification_Area')]/is_primary_collection";
 
   /**
    * Constructor.
@@ -56,9 +53,11 @@ public class CollectionCrawler extends PDSProductCrawler {
       XMLExtractor extractor = new XMLExtractor();
       extractor.parse(collection);
       String isPrimary = extractor.getValueFromDoc(
-          IS_PRIMARY_COLLECTION_XPATH);
+          Constants.CONTAINS_PRIMARY_COLLECTION_XPATH);
       if ((!"".equals(isPrimary))
-          && (!Boolean.parseBoolean(isPrimary))) {
+          && (!isPrimary.equalsIgnoreCase("T"))) {
+        log.log(new ToolsLogRecord(ToolsLevel.INFO, "Not a primary "
+            + "collection. Members will not be registered.", collection));
         return;
       }
       InventoryReader reader = new InventoryTableReader(collection);

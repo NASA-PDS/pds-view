@@ -79,6 +79,10 @@ public class Constants {
   public static final String IDENTIFICATION_AREA_XPATH =
     "//*[starts-with(name(),'Identification_Area')]";
 
+  /** XPath that will indicate if a collection is primary. */
+  public static final String CONTAINS_PRIMARY_COLLECTION_XPATH =
+    "//*[starts-with(name(), 'Identification_Area')]/contains_primary_member";
+
   static {
     coreXpathsMap.put(LOGICAL_ID, IDENTIFICATION_AREA_XPATH + "/"
         + LOGICAL_ID);
