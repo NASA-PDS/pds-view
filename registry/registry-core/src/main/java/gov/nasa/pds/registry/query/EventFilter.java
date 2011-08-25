@@ -15,39 +15,31 @@
 
 package gov.nasa.pds.registry.query;
 
+import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.ObjectStatus;
 
-/**
- * This class supports filtering on an extrinsics attributes.
- * 
- * @author pramirez
- * 
- */
-public class ExtrinsicFilter extends ObjectFilter {
-  private String contentVersion;
-  private String mimeType;
+import java.util.Date;
 
-  private ExtrinsicFilter() {
+/**
+ * @author pramirez
+ *
+ */
+public class EventFilter extends ObjectFilter {
+  private EventType eventType;
+  private Date eventStart;
+  private Date eventEnd;
+  private String requestId;
+  private String user;
+
+  private EventFilter() {
     super();
   }
 
   public static class Builder extends AbstractBuilder {
-    private ExtrinsicFilter filter;
+    private EventFilter filter;
 
     public Builder() {
-      filter = new ExtrinsicFilter();
-    }
-
-    public Builder contentVersion(String contentVersion) {
-      this.checkBuilt();
-      this.filter.contentVersion = contentVersion;
-      return this;
-    }
-
-    public Builder mimeType(String mimeType) {
-      this.checkBuilt();
-      this.filter.mimeType = mimeType;
-      return this;
+      filter = new EventFilter();
     }
     
     public Builder guid(String guid) {
@@ -80,25 +72,66 @@ public class ExtrinsicFilter extends ObjectFilter {
       return this;
     }
     
+    public Builder user(String user) {
+      this.checkBuilt();
+      this.filter.user = user;
+      return this;
+    }
+    
     public Builder status(ObjectStatus status) {
       this.checkBuilt();
       this.filter.status = status;
       return this;
     }
+    
+    public Builder eventType(EventType eventType) {
+      this.checkBuilt();
+      this.filter.eventType = eventType;
+      return this;
+    }
+    
+    public Builder eventStart(Date eventStart) {
+      this.checkBuilt();
+      this.filter.eventStart = eventStart;
+      return this;
+    }
+    
+    public Builder eventEnd(Date eventEnd) {
+      this.checkBuilt();
+      this.filter.eventEnd = eventEnd;
+      return this;
+    }
+    
+    public Builder requestId(String requestId) {
+      this.checkBuilt();
+      this.filter.requestId = requestId;
+      return this;
+    }
 
-    public ExtrinsicFilter build() {
+    public EventFilter build() {
       this.checkBuilt();
       this.isBuilt = true;
       return this.filter;
     }
   }
   
-  public String getContentVersion() {
-    return contentVersion;
+  public Date getEventStart() {
+    return eventStart;
   }
 
-  public String getMimeType() {
-    return mimeType;
+  public Date getEventEnd() {
+    return eventEnd;
   }
 
+  public EventType getEventType() {
+    return eventType;
+  }
+  
+  public String getRequestId() {
+    return requestId;
+  }
+
+  public String getUser() {
+    return user;
+  }
 }

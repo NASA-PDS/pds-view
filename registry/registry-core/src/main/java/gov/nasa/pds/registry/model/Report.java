@@ -15,7 +15,7 @@
 
 package gov.nasa.pds.registry.model;
 
-import java.util.GregorianCalendar;
+import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -32,7 +32,7 @@ public class Report {
   private RegistryStatus status;
 
   @XmlAttribute
-  private GregorianCalendar serverStarted;
+  private Date serverStarted;
 
   @XmlAttribute
   private long associations;
@@ -48,9 +48,12 @@ public class Report {
 
   @XmlAttribute
   private long classificationNodes;
+  
+  @XmlAttribute
+  private String regsitryVersion;
 
   public Report() {
-    serverStarted = new GregorianCalendar();
+    serverStarted = new Date();
   }
 
   public Report(Report statusInfo) {
@@ -84,7 +87,7 @@ public class Report {
   /**
    * @return the serverStarted
    */
-  public GregorianCalendar getServerStarted() {
+  public Date getServerStarted() {
     return serverStarted;
   }
 
@@ -92,7 +95,7 @@ public class Report {
    * @param serverStarted
    *          the serverStarted to set
    */
-  public void setServerStarted(GregorianCalendar serverStarted) {
+  public void setServerStarted(Date serverStarted) {
     this.serverStarted = serverStarted;
   }
 
@@ -134,6 +137,14 @@ public class Report {
 
   public void setClassificationNodes(long classificationNodes) {
     this.classificationNodes = classificationNodes;
+  }
+
+  public String getRegsitryVersion() {
+    return regsitryVersion;
+  }
+
+  public void setRegsitryVersion(String regsitryVersion) {
+    this.regsitryVersion = regsitryVersion;
   }
 
 }

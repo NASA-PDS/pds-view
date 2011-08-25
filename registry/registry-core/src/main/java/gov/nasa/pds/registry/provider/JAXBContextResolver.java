@@ -26,6 +26,7 @@ import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryObject;
+import gov.nasa.pds.registry.model.ReplicationReport;
 import gov.nasa.pds.registry.model.Service;
 import gov.nasa.pds.registry.model.ServiceBinding;
 import gov.nasa.pds.registry.model.SpecificationLink;
@@ -59,7 +60,7 @@ public final class JAXBContextResolver implements ContextResolver<JAXBContext> {
       ClassificationScheme.class, Service.class, ServiceBinding.class,
       SpecificationLink.class, PagedResponse.class, RegistryObject.class,
       Report.class, RegistryObjectList.class, RegistryPackage.class,
-      ExternalIdentifier.class };
+      ExternalIdentifier.class, ReplicationReport.class };
 
   @SuppressWarnings("unchecked")
   public JAXBContextResolver() throws Exception {

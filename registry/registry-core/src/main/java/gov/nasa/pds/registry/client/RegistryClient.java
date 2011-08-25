@@ -18,6 +18,7 @@ package gov.nasa.pds.registry.client;
 import gov.nasa.pds.registry.exception.RegistryClientException;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Association;
+import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
@@ -26,6 +27,7 @@ import gov.nasa.pds.registry.model.Service;
 import gov.nasa.pds.registry.provider.JAXBContextResolver;
 import gov.nasa.pds.registry.provider.JacksonObjectMapperProvider;
 import gov.nasa.pds.registry.query.AssociationFilter;
+import gov.nasa.pds.registry.query.EventFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
 
@@ -37,6 +39,7 @@ import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,7 +61,6 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.ClientResponse.Status;
-import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
@@ -69,11 +71,13 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  * This class is a Java client to be used to exchange information with a
  * registry service. In the background it simply uses HTTP calls but returns
  * Java objects to ease integration.
- *
+ * 
  * @author pramirez
- *
+ * 
  */
 public class RegistryClient {
+  private static final SimpleDateFormat dateFormat = new SimpleDateFormat(
+      "yyyy-MM-dd'T'HH:mm:ss");
   private WebResource service;
   private SecurityContext securityContext;
   private String mediaType;
@@ -85,6 +89,7 @@ public class RegistryClient {
     resourceMap.put(Association.class, "associations");
     resourceMap.put(Service.class, "services");
     resourceMap.put(RegistryPackage.class, "packages");
+    resourceMap.put(AuditableEvent.class, "events");
   }
 
   public RegistryClient(String baseUrl) throws RegistryClientException {
@@ -123,7 +128,7 @@ public class RegistryClient {
    * the regsitry supports application/xml and application/json but defaults to
    * json. The end client will not see these calls so to cut down on data
    * transferred the more compact json should be used.
-   *
+   * 
    * @param mediaType
    *          to use for exchanging messages
    */
@@ -133,7 +138,7 @@ public class RegistryClient {
 
   /**
    * Retrieves an object from the registry of the given type
-   *
+   * 
    * @param guid
    *          identifier for the object
    * @param objectClass
@@ -157,7 +162,7 @@ public class RegistryClient {
 
   /**
    * Publish a registry object to the service
-   *
+   * 
    * @param object
    *          to publish
    * @return the globally unique identifier
@@ -170,7 +175,8 @@ public class RegistryClient {
       params.add("packageGuid", registrationPackageGuid);
     }
     WebResource.Builder builder = service.path(
-        resourceMap.get(object.getClass())).queryParams(params).getRequestBuilder();
+        resourceMap.get(object.getClass())).queryParams(params)
+        .getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).post(
         ClientResponse.class, object);
     if (response.getClientResponseStatus() == Status.CREATED) {
@@ -184,7 +190,7 @@ public class RegistryClient {
   /**
    * Publishes a version of the given object that is considered a major version
    * update.
-   *
+   * 
    * @param object
    *          to publish
    * @return globally unique identifier of versioned object
@@ -197,7 +203,7 @@ public class RegistryClient {
 
   /**
    * Publishes a version of the given object
-   *
+   * 
    * @param object
    *          to publish
    * @param major
@@ -224,7 +230,7 @@ public class RegistryClient {
   /**
    * Updates the given registry object by using its guid to indicate the object
    * to update.
-   *
+   * 
    * @param object
    *          to update to
    * @throws RegistryServiceException
@@ -246,7 +252,7 @@ public class RegistryClient {
 
   /**
    * Retrieve the latest version of a registry object
-   *
+   * 
    * @param lid
    *          logical identifier which is associated with a collection of
    *          objects
@@ -272,7 +278,7 @@ public class RegistryClient {
   /**
    * Retrieves a paged set of registry objects from the collection of objects of
    * the specified type.
-   *
+   * 
    * @param start
    *          indicates where in the set of objects to begin
    * @param rows
@@ -306,7 +312,7 @@ public class RegistryClient {
 
   /**
    * Retrieves a set of extrinsic objects that match the query.
-   *
+   * 
    * @param query
    *          filters for the extrinsic
    * @param start
@@ -378,7 +384,7 @@ public class RegistryClient {
 
   /**
    * Retrieves a set of association objects that match the query.
-   *
+   * 
    * @param query
    *          filters for the association
    * @param start
@@ -436,6 +442,57 @@ public class RegistryClient {
 
   }
 
+  /**
+   * Retrieves a paged set of registry objects from the collection of objects of
+   * the specified type.
+   * 
+   * @param start
+   *          indicates where in the set of objects to begin
+   * @param rows
+   *          indicates how many objects to return
+   * @param objectClass
+   *          the type of object to retrieve
+   * @return all objects found with the given constraints
+   * @throws RegistryServiceException
+   */
+  public PagedResponse<AuditableEvent> getAuditableEvents(
+      RegistryQuery<EventFilter> query, Integer start, Integer rows)
+      throws RegistryServiceException {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    if (start != null) {
+      params.add("start", start.toString());
+    }
+    if (rows != null) {
+      params.add("rows", rows.toString());
+    }
+    EventFilter filter = query.getFilter();
+    if (filter != null) {
+      if (filter.getEventStart() != null) {
+        params.add("eventStart", dateFormat.format(filter.getEventStart()));
+      }
+      if (filter.getEventEnd() != null) {
+        params.add("eventEnd", dateFormat.format(filter.getEventEnd()));
+      }
+      if (filter.getEventType() != null) {
+        params.add("eventType", filter.getEventType().toString());
+      }
+    }
+
+    WebResource.Builder builder = service.path(
+        resourceMap.get(AuditableEvent.class)).queryParams(params)
+        .getRequestBuilder();
+    ClientResponse response = builder.accept(mediaType).get(
+        ClientResponse.class);
+    if (response.getClientResponseStatus() == Status.OK) {
+      return response
+          .getEntity(new GenericType<PagedResponse<AuditableEvent>>() {
+          });
+    } else {
+      throw new RegistryServiceException(response.getEntity(String.class),
+          Response.Status.fromStatusCode(response.getStatus()));
+    }
+  }
+
   public String getRegistrationPackageGuid() {
     return registrationPackageGuid;
   }
@@ -446,7 +503,7 @@ public class RegistryClient {
 
   /**
    * Mehthod for SSL connection.
-   *
+   * 
    * @return HostnameVerifier object
    */
   private HostnameVerifier getHostnameVerifier() {
@@ -489,7 +546,7 @@ public class RegistryClient {
    * Taken from
    * http://java.sun.com/javase/6/docs/technotes/guides/security/jsse/
    * JSSERefGuide.html
-   *
+   * 
    */
   static class MyX509TrustManager implements X509TrustManager {
 
@@ -572,7 +629,7 @@ public class RegistryClient {
    * Inspired from
    * http://java.sun.com/javase/6/docs/technotes/guides/security/jsse
    * /JSSERefGuide.html
-   *
+   * 
    */
   static class MyX509KeyManager implements X509KeyManager {
 

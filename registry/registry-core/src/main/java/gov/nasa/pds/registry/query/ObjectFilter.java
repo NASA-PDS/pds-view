@@ -15,10 +15,6 @@
 
 package gov.nasa.pds.registry.query;
 
-import java.util.GregorianCalendar;
-import java.util.List;
-
-import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.ObjectStatus;
 
 /**
@@ -32,13 +28,7 @@ public class ObjectFilter {
 	protected String lid;
 	protected String versionName;
 	protected String objectType;
-	protected String submitter;
 	protected ObjectStatus status;
-	protected EventType eventType;
-	protected GregorianCalendar eventStart;
-	protected GregorianCalendar eventEnd;
-	protected List<String> sort;
-  protected QueryOperator operator;
 	
 	protected ObjectFilter() {
 	}
@@ -80,47 +70,11 @@ public class ObjectFilter {
 			return this;
 		}
 		
-		public Builder submitter(String submitter) {
-			this.checkBuilt();
-			this.filter.submitter = submitter;
-			return this;
-		}
-		
 		public Builder status(ObjectStatus status) {
 			this.checkBuilt();
 			this.filter.status = status;
 			return this;
 		}
-		
-		public Builder eventType(EventType eventType) {
-			this.checkBuilt();
-			this.filter.eventType = eventType;
-			return this;
-		}
-		
-		public Builder eventStart(GregorianCalendar eventStart) {
-			this.checkBuilt();
-			this.filter.eventStart = eventStart;
-			return this;
-		}
-		
-		public Builder eventEnd(GregorianCalendar eventEnd) {
-			this.checkBuilt();
-			this.filter.eventEnd = eventEnd;
-			return this;
-		}
-		
-		public Builder sort(List<String> sort) {
-      this.checkBuilt();
-      this.filter.sort = sort;
-      return this;
-    }
-    
-    public Builder operator(QueryOperator operator) {
-      this.checkBuilt();
-      this.filter.operator = operator;
-      return this;
-    }
     
 		public ObjectFilter build() {
 			this.checkBuilt();
@@ -150,23 +104,7 @@ public class ObjectFilter {
 		return objectType;
 	}
 
-	public String getSubmitter() {
-		return submitter;
-	}
-
 	public ObjectStatus getStatus() {
 		return status;
-	}
-
-	public EventType getEventType() {
-		return eventType;
-	}
-
-	public GregorianCalendar getEventStart() {
-		return eventStart;
-	}
-
-	public GregorianCalendar getEventEnd() {
-		return eventEnd;
 	}
 }

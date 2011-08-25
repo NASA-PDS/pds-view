@@ -22,12 +22,14 @@ import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationFilter;
+import gov.nasa.pds.registry.query.EventFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.ObjectFilter;
 import gov.nasa.pds.registry.query.QueryOperator;
 import gov.nasa.pds.registry.query.RegistryQuery;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -72,13 +74,13 @@ public class MetadataStoreJPA implements MetadataStore {
    * (non-Javadoc)
    * 
    * @see
-   * gov.nasa.pds.registry.service.MetadataStore#getExtrinsics(gov.nasa.pds.registry
-   * .query.ProductQuery, java.lang.Long, java.lang.Integer)
+   * gov.nasa.pds.registry.service.MetadataStore#getExtrinsics(gov.nasa.pds.
+   * registry .query.ProductQuery, java.lang.Long, java.lang.Integer)
    */
   @Override
   @Transactional(readOnly = true)
-  public PagedResponse<ExtrinsicObject> getExtrinsics(RegistryQuery<ExtrinsicFilter> query, Integer start,
-      Integer rows) {
+  public PagedResponse<ExtrinsicObject> getExtrinsics(
+      RegistryQuery<ExtrinsicFilter> query, Integer start, Integer rows) {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<ExtrinsicObject> cq = cb.createQuery(ExtrinsicObject.class);
     Root<ExtrinsicObject> productEntity = cq.from(ExtrinsicObject.class);
@@ -136,9 +138,9 @@ public class MetadataStoreJPA implements MetadataStore {
     }
     cq.orderBy(orders);
     TypedQuery<ExtrinsicObject> dbQuery = entityManager.createQuery(cq);
-    PagedResponse<ExtrinsicObject> response = new PagedResponse<ExtrinsicObject>(start, (long) dbQuery
-        .getResultList().size(), dbQuery.setFirstResult(start - 1)
-        .setMaxResults(rows).getResultList());
+    PagedResponse<ExtrinsicObject> response = new PagedResponse<ExtrinsicObject>(
+        start, (long) dbQuery.getResultList().size(), dbQuery.setFirstResult(
+            start - 1).setMaxResults(rows).getResultList());
     return response;
   }
 
@@ -196,8 +198,8 @@ public class MetadataStoreJPA implements MetadataStore {
    */
   @Override
   @Transactional(readOnly = true)
-  public PagedResponse<Association> getAssociations(RegistryQuery<AssociationFilter> query,
-      Integer start, Integer rows) {
+  public PagedResponse<Association> getAssociations(
+      RegistryQuery<AssociationFilter> query, Integer start, Integer rows) {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<Association> cq = cb.createQuery(Association.class);
     Root<Association> associationEntity = cq.from(Association.class);
@@ -241,16 +243,16 @@ public class MetadataStoreJPA implements MetadataStore {
     }
     cq.orderBy(orders);
     TypedQuery<Association> dbQuery = entityManager.createQuery(cq);
-    
+
     if (rows == -1) {
       return new PagedResponse<Association>(start, (long) dbQuery
           .getResultList().size(), dbQuery.setFirstResult(start - 1)
           .getResultList());
     }
-    
-    return  new PagedResponse<Association>(start, (long) dbQuery
-        .getResultList().size(), dbQuery.setFirstResult(start - 1)
-        .setMaxResults(rows).getResultList());
+
+    return new PagedResponse<Association>(start, (long) dbQuery.getResultList()
+        .size(), dbQuery.setFirstResult(start - 1).setMaxResults(rows)
+        .getResultList());
   }
 
   /*
@@ -335,9 +337,8 @@ public class MetadataStoreJPA implements MetadataStore {
     Root<?> entity = cq.from(objectClass);
     Path<String> lidAttr = entity.get("lid");
     Path<String> versionNameAttr = entity.get("versionName");
-    cq
-        .where(cb.and(cb.equal(lidAttr, lid), cb
-            .equal(versionNameAttr, versionName)));
+    cq.where(cb.and(cb.equal(lidAttr, lid), cb.equal(versionNameAttr,
+        versionName)));
     TypedQuery<?> query = entityManager.createQuery(cq);
     return (RegistryObject) query.getSingleResult();
   }
@@ -394,8 +395,8 @@ public class MetadataStoreJPA implements MetadataStore {
    */
   @SuppressWarnings("unchecked")
   @Override
-  public PagedResponse getRegistryObjects(RegistryQuery<ObjectFilter> query, Integer start,
-      Integer rows, Class<? extends RegistryObject> objectClass) {
+  public PagedResponse getRegistryObjects(RegistryQuery<ObjectFilter> query,
+      Integer start, Integer rows, Class<? extends RegistryObject> objectClass) {
 
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<?> cq = cb.createQuery(objectClass);
@@ -476,9 +477,8 @@ public class MetadataStoreJPA implements MetadataStore {
     Root<?> entity = cq.from(objectClass);
     Path<String> lidAttr = entity.get("lid");
     Path<String> versionNameAttr = entity.get("versionName");
-    cq
-        .where(cb.and(cb.equal(lidAttr, lid), cb
-            .equal(versionNameAttr, versionName)));
+    cq.where(cb.and(cb.equal(lidAttr, lid), cb.equal(versionNameAttr,
+        versionName)));
     TypedQuery<?> query = entityManager.createQuery(cq);
     return !query.getResultList().isEmpty();
   }
@@ -555,6 +555,79 @@ public class MetadataStoreJPA implements MetadataStore {
         + scheme + "/%"), cb.equal(nodeEntity.get("code"), code)));
     TypedQuery<ClassificationNode> dbQuery = entityManager.createQuery(cq);
     return !dbQuery.getResultList().isEmpty();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nasa.pds.registry.service.MetadataStore#getAuditableEvents(gov.nasa
+   * .pds.registry.query.RegistryQuery, java.lang.Integer, java.lang.Integer)
+   */
+  @Override
+  public PagedResponse<AuditableEvent> getAuditableEvents(
+      RegistryQuery<EventFilter> query, Integer start, Integer rows) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<AuditableEvent> cq = cb.createQuery(AuditableEvent.class);
+    Root<AuditableEvent> eventEntity = cq.from(AuditableEvent.class);
+    EventFilter filter = query.getFilter();
+    List<Predicate> predicates = new ArrayList<Predicate>();
+    if (filter != null) {
+      if (filter.getEventType() != null) {
+        predicates.add(cb.equal(eventEntity.get("eventType"),
+            filter.getEventType()));
+      }
+      if (filter.getEventStart() != null) {
+        predicates.add(cb.greaterThanOrEqualTo(eventEntity.get("timestamp").as(
+            Date.class), filter.getEventStart()));
+      }
+      if (filter.getEventEnd() != null) {
+        predicates.add(cb.lessThanOrEqualTo(eventEntity.get("timestamp").as(
+            Date.class), filter.getEventEnd()));
+      }
+      if (filter.getRequestId() != null) {
+        predicates.add(cb.like(eventEntity.get("requestId").as(String.class),
+            filter.getRequestId().replace('*', '%')));
+      }
+      if (filter.getUser() != null) {
+        predicates.add(cb.like(eventEntity.get("user").as(String.class),
+            filter.getUser().replace('*', '%')));
+      }
+    }
+    if (predicates.size() != 0) {
+      Predicate[] p = new Predicate[predicates.size()];
+      if (query.getOperator() == QueryOperator.AND) {
+        cq.where(cb.and(predicates.toArray(p)));
+      } else {
+        cq.where(cb.or(predicates.toArray(p)));
+      }
+    }
+
+    List<Order> orders = new ArrayList<Order>();
+    if (query.getSort().size() > 0) {
+      for (String sort : query.getSort()) {
+        String[] s = sort.split(" ");
+        if (s.length == 1 || s[1].equalsIgnoreCase("ASC")) {
+          orders.add(cb.asc(eventEntity.get(s[0])));
+        } else {
+          orders.add(cb.desc(eventEntity.get(s[0])));
+        }
+      }
+    } else {
+      orders.add(cb.asc(eventEntity.get("guid")));
+    }
+    cq.orderBy(orders);
+    TypedQuery<AuditableEvent> dbQuery = entityManager.createQuery(cq);
+
+    if (rows == -1) {
+      return new PagedResponse<AuditableEvent>(start, (long) dbQuery
+          .getResultList().size(), dbQuery.setFirstResult(start - 1)
+          .getResultList());
+    }
+
+    return new PagedResponse<AuditableEvent>(start, (long) dbQuery.getResultList()
+        .size(), dbQuery.setFirstResult(start - 1).setMaxResults(rows)
+        .getResultList());
   }
 
 }

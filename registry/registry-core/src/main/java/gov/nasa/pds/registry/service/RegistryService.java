@@ -25,14 +25,17 @@ import gov.nasa.pds.registry.model.ObjectAction;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.model.PagedResponse;
+import gov.nasa.pds.registry.model.ReplicationReport;
 import gov.nasa.pds.registry.model.Report;
 import gov.nasa.pds.registry.model.naming.IdentifierGenerator;
 import gov.nasa.pds.registry.model.naming.Versioner;
 import gov.nasa.pds.registry.query.AssociationFilter;
+import gov.nasa.pds.registry.query.EventFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.ObjectFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -300,6 +303,20 @@ public interface RegistryService {
   public PagedResponse<AuditableEvent> getAuditableEvents(String affectedObject);
 
   /**
+   * Retrieves the list of (@link AuditableEvent}'s matching the query
+   * 
+   * @param query
+   *          to filter out events
+   * @param start
+   *          index within the results to start at. This index is one based
+   * @param rows
+   *          number of results to get
+   * @return list of events
+   */
+  public PagedResponse<AuditableEvent> getAuditableEvents(
+      RegistryQuery<EventFilter> query, Integer start, Integer rows);
+
+  /**
    * Publishes a registry object to the registry.
    * 
    * @param user
@@ -434,7 +451,48 @@ public interface RegistryService {
    *          unique guid of the package to update members status from
    * @param action
    *          which to take (i.e. approve, deprecate, etc.)
+   * @throws RegistryServiceException
    */
   public void changeStatusOfPackageMembers(String user, String packageId,
-      ObjectAction action);
+      ObjectAction action) throws RegistryServiceException;
+
+  /**
+   * Replicates contents from a remote registry connected to using the provided
+   * URL. Items that have been delete, updated, or added will be replicated in
+   * the local registry. Only one replication event can happen at a given time.
+   * 
+   * @param user
+   *          that has taken the action. Typically this should point to a unique
+   *          username.
+   * @param registryUrl
+   *          to pull registry object from to replicate locally
+   * @param lastModified
+   *          time to constrain which registry objects are relevant to
+   *          replicate. This time is inclusive. If set to null all will be
+   *          pulled.
+   * @param objectTypes
+   *          which should be replicated. If null or empty list all will be
+   *          replicated
+   * @throws RegistryServiceException
+   *           if another replication is already taking place
+   */
+  public void performReplication(String user, String registryUrl,
+      Date lastModified, List<String> objectTypes)
+      throws RegistryServiceException;
+
+  /**
+   * Get the inform about the current replication event.
+   * 
+   * @return report statistics about the replication event that was last
+   *         completed or in process
+   */
+  public ReplicationReport getReplicationReport();
+
+  /**
+   * A check to see if replication is currently under way by the registry.
+   * 
+   * @return flag to indicate in progress (true) or completed/none pending
+   *         (false)
+   */
+  public Boolean hasReplicationInProgress();
 }

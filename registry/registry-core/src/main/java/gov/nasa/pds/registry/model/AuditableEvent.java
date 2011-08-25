@@ -15,7 +15,7 @@
 
 package gov.nasa.pds.registry.model;
 
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
@@ -23,6 +23,8 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -82,7 +84,8 @@ public class AuditableEvent extends RegistryObject {
    * and time that this event occurred.
    */
   @XmlAttribute
-  private GregorianCalendar timestamp;
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date timestamp;
 
   /**
    * Each AuditableEvent MUST have a user attribute that identifies the User
@@ -95,14 +98,15 @@ public class AuditableEvent extends RegistryObject {
 
   public AuditableEvent() {
      this.setObjectType(AuditableEvent.class.getSimpleName());
+     this.timestamp = new Date();
   }
 
   public AuditableEvent(EventType eventType, List<String> affectedObjects,
       String user) {
+    this();
     this.eventType = eventType;
     this.affectedObjects = affectedObjects;
     this.user = user;
-    this.timestamp = new GregorianCalendar();
   }
 
   /**
@@ -138,7 +142,7 @@ public class AuditableEvent extends RegistryObject {
   /**
    * @return the timestamp when the event occurred
    */
-  public GregorianCalendar getTimestamp() {
+  public Date getTimestamp() {
     return timestamp;
   }
 
@@ -146,7 +150,7 @@ public class AuditableEvent extends RegistryObject {
    * @param timestamp
    *          the timestamp to when event occured
    */
-  public void setTimestamp(GregorianCalendar timestamp) {
+  public void setTimestamp(Date timestamp) {
     this.timestamp = timestamp;
   }
 

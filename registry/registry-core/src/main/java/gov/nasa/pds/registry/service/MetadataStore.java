@@ -22,6 +22,7 @@ import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.query.AssociationFilter;
+import gov.nasa.pds.registry.query.EventFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.ObjectFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
@@ -77,6 +78,21 @@ public interface MetadataStore {
    * @return list of events
    */
   public List<AuditableEvent> getAuditableEvents(String affectedObject);
+  
+  /**
+   * Retrieves auditable events from the back end store that match the query and are
+   * within the requested results list range
+   * 
+   * @param query
+   *          to filter against events.
+   * @param start
+   *          index within the results to start at. This index is one based
+   * @param rows
+   *          number of results to get. If equal to -1 return all.
+   * @return list of events
+   */
+  public PagedResponse<AuditableEvent> getAuditableEvents(RegistryQuery<EventFilter> query,
+      Integer start, Integer rows);
 
   /**
    * Retrieves the list of classification nodes which fall under a given

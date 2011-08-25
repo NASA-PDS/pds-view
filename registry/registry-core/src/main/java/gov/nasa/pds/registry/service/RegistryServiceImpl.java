@@ -15,7 +15,9 @@
 
 package gov.nasa.pds.registry.service;
 
+import gov.nasa.pds.registry.client.RegistryClient;
 import gov.nasa.pds.registry.exception.ExceptionType;
+import gov.nasa.pds.registry.exception.RegistryClientException;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.AuditableEvent;
@@ -29,6 +31,8 @@ import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryObject;
+import gov.nasa.pds.registry.model.ReplicationReport;
+import gov.nasa.pds.registry.model.ReplicationStatus;
 import gov.nasa.pds.registry.model.Service;
 import gov.nasa.pds.registry.model.ServiceBinding;
 import gov.nasa.pds.registry.model.Slot;
@@ -37,14 +41,17 @@ import gov.nasa.pds.registry.model.Report;
 import gov.nasa.pds.registry.model.naming.IdentifierGenerator;
 import gov.nasa.pds.registry.model.naming.Versioner;
 import gov.nasa.pds.registry.query.AssociationFilter;
+import gov.nasa.pds.registry.query.EventFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.ObjectFilter;
 import gov.nasa.pds.registry.query.QueryOperator;
 import gov.nasa.pds.registry.query.RegistryQuery;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -52,6 +59,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.NoResultException;
+import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -82,6 +90,11 @@ public class RegistryServiceImpl implements RegistryService {
   @Autowired
   @Qualifier("report")
   Report report;
+
+  private ReplicationReport replicationReport = null;
+  
+  private static final SimpleDateFormat dateFormat = new SimpleDateFormat(
+      "yyyy-MM-dd'T'HH:mm:ss");
 
   private static List<String> CORE_OBJECT_TYPES = Arrays.asList("Association",
       "AuditableEvent", "Classification", "ClassificationNode",
@@ -838,7 +851,7 @@ public class RegistryServiceImpl implements RegistryService {
         done = true;
       } else {
         // Grab next set
-        pagedAssociations = this.getAssociations(query, count, rows);
+        pagedAssociations = this.getAssociations(query, count+1, rows);
       }
     }
     this.createAuditableEvent("changeStatusOfPackageMembers " + packageId,
@@ -887,6 +900,127 @@ public class RegistryServiceImpl implements RegistryService {
     }
     this.createAuditableEvent("deletePackageMembers " + packageId, user,
         EventType.Deleted, deletedIds);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see gov.nasa.pds.registry.service.RegistryService#getReplicationReport()
+   */
+  @Override
+  public ReplicationReport getReplicationReport() {
+    return replicationReport;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nasa.pds.registry.service.RegistryService#hasReplicationInProgress()
+   */
+  @Override
+  public Boolean hasReplicationInProgress() {
+    return (replicationReport == null) ? false
+        : (replicationReport.getStatus() == ReplicationStatus.RUNNING) ? true
+            : false;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nasa.pds.registry.service.RegistryService#performReplication(java.lang
+   * .String, java.lang.String, java.util.Date, java.util.List)
+   */
+  @Override
+  public void performReplication(String user, String registryUrl,
+      Date lastModified, List<String> objectTypes)
+      throws RegistryServiceException {
+    // Setup the replication report
+    intializeReplicationReport(objectTypes);
+
+    // Create a client to talk to the remote registry
+    try {
+      RegistryClient remoteRegistry = new RegistryClient(registryUrl);
+      // Query the remote registry for all the events based on last modified
+      EventFilter filter = new EventFilter.Builder().eventStart(lastModified)
+          .eventEnd(replicationReport.getStarted()).build();
+      // Set up some counting variables to use for paging
+      int count = 0;
+      // How many we will grab on each query to the database (process in chunks)
+      int rows = 10;
+      RegistryQuery<EventFilter> query = new RegistryQuery.Builder<EventFilter>()
+          .filter(filter).build();
+      PagedResponse<AuditableEvent> events = remoteRegistry.getAuditableEvents(
+          query, 1, rows);
+      // Set the total number of events to be processed
+      replicationReport.setTotalEvents(events.getNumFound());
+      boolean done = (events.getNumFound() > 0) ? false : true;
+      while (!done) {
+        // Process this set of target objects
+        for (AuditableEvent event : events.getResults()) {
+          count++;
+          /*
+          Slot slot = association.getSlot("targetObjectType");
+          Class objectClass = null;
+          if (slot != null) {
+            objectClass = ObjectClass.fromName(slot.getValues().get(0))
+                .getObjectClass();
+          }
+          changedIds.addAll(this.changeObjectStatusById(user, association
+              .getTargetObject(), action, objectClass));
+              */
+        }
+        // Check to see if we are done processing all
+        if (count >= events.getNumFound()) {
+          done = true;
+        } else {
+          // Grab next set
+          events = remoteRegistry.getAuditableEvents(query, count+1, rows);
+        }
+      }
+      //this.createAuditableEvent("performReplication " + registryUrl + " " + dateFormat.format(lastModified),
+      //    user, action.getEventType(), changedIds);
+
+    } catch (RegistryClientException e) {
+      throw new RegistryServiceException("Could not contact remote registry: "
+          + e.getMessage(), Response.Status.BAD_REQUEST);
+    }
+
+    // Now we're done so let's set the status to complete and record the time we
+    // finished
+    replicationReport.setStatus(ReplicationStatus.COMPLETE);
+    replicationReport.setLastModified(new Date());
+  }
+
+  private synchronized void intializeReplicationReport(List<String> objectTypes)
+      throws RegistryServiceException {
+    if (replicationReport != null
+        && replicationReport.getStatus() == ReplicationStatus.RUNNING) {
+      throw new RegistryServiceException(
+          "Replication is already running. Only one request can be processed at a time",
+          Response.Status.CONFLICT);
+    }
+    if (replicationReport == null
+        || replicationReport.getStatus() == ReplicationStatus.COMPLETE) {
+      replicationReport = new ReplicationReport(objectTypes);
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nasa.pds.registry.service.RegistryService#getAuditableEvents(gov.nasa
+   * .pds.registry.query.RegistryQuery, java.lang.Integer, java.lang.Integer)
+   */
+  @Override
+  public PagedResponse<AuditableEvent> getAuditableEvents(
+      RegistryQuery<EventFilter> query, Integer start, Integer rows) {
+    if (start <= 0) {
+      start = 1;
+    }
+    return metadataStore.getAuditableEvents(query, start, rows);
   }
 
 }
