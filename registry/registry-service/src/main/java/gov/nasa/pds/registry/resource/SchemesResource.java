@@ -19,10 +19,15 @@ import java.net.URI;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.ClassificationScheme;
+import gov.nasa.pds.registry.model.Link;
+import gov.nasa.pds.registry.model.PagedResponse;
+import gov.nasa.pds.registry.query.ObjectFilter;
+import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.service.RegistryService;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -34,6 +39,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -158,6 +164,39 @@ public class SchemesResource {
       throw new WebApplicationException(Response.status(
           ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
     }
+  }
+  
+  @SuppressWarnings("unchecked")
+  @GET
+  @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  public Response getServices(
+      @QueryParam("start") @DefaultValue("1") Integer start,
+      @QueryParam("rows") @DefaultValue("20") Integer rows) {
+    ObjectFilter filter = new ObjectFilter.Builder().build();
+    RegistryQuery.Builder<ObjectFilter> queryBuilder = new RegistryQuery.Builder<ObjectFilter>()
+        .filter(filter);
+    // TODO: Fix so cast is not needed
+    PagedResponse<ClassificationScheme> pr = (PagedResponse<ClassificationScheme>) registryService
+        .getObjects(queryBuilder.build(), start, rows, ClassificationScheme.class);
+    Response.ResponseBuilder builder = Response.ok(pr);
+    UriBuilder absolute = uriInfo.getAbsolutePathBuilder();
+    absolute.queryParam("start", "{start}");
+    absolute.queryParam("rows", "{rows}");
+    // Add in next link
+    if (start - 1 + rows < pr.getNumFound()) {
+      int next = start + rows;
+      String nextUri = absolute.clone().build(next, rows).toString();
+      builder.header("Link", new Link(nextUri, "next", null));
+    }
+    // Add in previous link
+    if (start > 1) {
+      int previous = start - rows;
+      if (previous < 1)
+        previous = 1;
+      String previousUri = absolute.clone().build(previous, rows).toString();
+      builder.header("Link", new Link(previousUri, "previous", null));
+    }
+    return builder.build();
   }
 
   protected static URI getSchemeUri(ClassificationScheme scheme, UriInfo uriInfo) {
