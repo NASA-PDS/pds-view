@@ -33,6 +33,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
 
 /**
  * This resource is responsible for managing replication requests
@@ -77,16 +78,20 @@ public class ReplicationResource {
       @QueryParam("registryUrl") String registryUrl,
       @QueryParam("objectType") List<String> objectTypes,
       @QueryParam("lastModified") DateParam lastModified) {
+    if (registryUrl == null) {
+      throw new WebApplicationException(Response.status(Status.BAD_REQUEST)
+          .entity("registryUrl was not set").build());
+    }
     try {
-      registryService.performReplication("Unknown", registryUrl, lastModified.getDate(),
-          objectTypes);
+      registryService.performReplication("Unknown", registryUrl,
+          (lastModified == null) ? null : lastModified.getDate(), objectTypes);
       return Response.created(
           uriInfo.getBaseUriBuilder().clone().path(RegistryResource.class)
               .path(RegistryResource.class, "getReplicationResource").path(
                   "report").build()).build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
-          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+          ex.getStatus()).entity(ex.getMessage()).build());
     }
   }
 
