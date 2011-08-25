@@ -98,13 +98,9 @@ public class ExtrinsicsResource {
    * @param objectType
    *          filter to apply on the user defined registry object types,supports
    *          wildcard (*)
-   * @param submitter
-   *          CURRENTLY UNSUPPORTED
    * @param status
    *          filter to apply on the object status, maps to {@link ObjectStatus}
    *          enum
-   * @param eventType
-   *          CURRENTLY UNSUPPORTED
    * @param operator
    *          to apply to filters, valid values are AND or OR. Defaults to AND.
    * @param sort
@@ -122,7 +118,6 @@ public class ExtrinsicsResource {
       @QueryParam("lid") String lid,
       @QueryParam("versionName") String versionName,
       @QueryParam("objectType") String objectType,
-      @QueryParam("submitter") String submitter,
       @QueryParam("contentVersion") String contentVersion,
       @QueryParam("mimeType") String mimeType,
       @QueryParam("status") ObjectStatus status,
@@ -130,8 +125,8 @@ public class ExtrinsicsResource {
       @QueryParam("sort") List<String> sort) {
     ExtrinsicFilter filter = new ExtrinsicFilter.Builder().guid(guid)
         .name(name).lid(lid).versionName(versionName).objectType(objectType)
-        .submitter(submitter).status(status).contentVersion(contentVersion)
-        .mimeType(mimeType).build();
+        .status(status).contentVersion(contentVersion).mimeType(mimeType)
+        .build();
     RegistryQuery.Builder<ExtrinsicFilter> queryBuilder = new RegistryQuery.Builder<ExtrinsicFilter>()
         .filter(filter).operator(operator);
     if (sort != null) {
