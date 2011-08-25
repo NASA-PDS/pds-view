@@ -25,6 +25,7 @@ import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.query.EventFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.service.RegistryService;
+import gov.nasa.pds.registry.util.DateParam;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -81,20 +82,21 @@ public class EventsResource {
       @PathParam("affectedObject") String affectedObject) {
     return registryService.getAuditableEvents(affectedObject);
   }
-  
+
   @GET
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response getEvents(
       @QueryParam("start") @DefaultValue("1") Integer start,
       @QueryParam("rows") @DefaultValue("20") Integer rows,
-      @QueryParam("eventStart") Date eventStart,
-      @QueryParam("eventEnd") Date eventEnd,
+      @QueryParam("eventStart") DateParam eventStart,
+      @QueryParam("eventEnd") DateParam eventEnd,
       @QueryParam("eventType") EventType eventType) {
-    EventFilter filter = new EventFilter.Builder().eventType(eventType).eventStart(eventStart).eventEnd(eventEnd).build();
+    EventFilter filter = new EventFilter.Builder().eventType(eventType)
+        .eventStart(eventStart.getDate()).eventEnd(eventEnd.getDate()).build();
     RegistryQuery.Builder<EventFilter> queryBuilder = new RegistryQuery.Builder<EventFilter>()
         .filter(filter).sort(Arrays.asList("timestamp DESC"));
-    PagedResponse<AuditableEvent> rr = registryService
-        .getAuditableEvents(queryBuilder.build(), start, rows);
+    PagedResponse<AuditableEvent> rr = registryService.getAuditableEvents(
+        queryBuilder.build(), start, rows);
     Response.ResponseBuilder builder = Response.ok(rr);
     UriBuilder absolute = uriInfo.getAbsolutePathBuilder();
     absolute.queryParam("start", "{start}");
