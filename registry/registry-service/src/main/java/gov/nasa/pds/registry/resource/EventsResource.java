@@ -16,13 +16,14 @@
 package gov.nasa.pds.registry.resource;
 
 import java.util.Arrays;
-import java.util.Date;
+import java.util.List;
 
 import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.EventType;
 import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.query.EventFilter;
+import gov.nasa.pds.registry.query.QueryOperator;
 import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.service.RegistryService;
 import gov.nasa.pds.registry.util.DateParam;
@@ -90,11 +91,24 @@ public class EventsResource {
       @QueryParam("rows") @DefaultValue("20") Integer rows,
       @QueryParam("eventStart") DateParam eventStart,
       @QueryParam("eventEnd") DateParam eventEnd,
-      @QueryParam("eventType") EventType eventType) {
-    EventFilter filter = new EventFilter.Builder().eventType(eventType)
-        .eventStart(eventStart.getDate()).eventEnd(eventEnd.getDate()).build();
+      @QueryParam("eventType") EventType eventType,
+      @QueryParam("requestId") String requestId,
+      @QueryParam("user") String user,
+      @QueryParam("queryOp") @DefaultValue("AND") QueryOperator operator,
+      @QueryParam("sort") List<String> sort) {
+    EventFilter.Builder filterBuilder = new EventFilter.Builder().eventType(
+        eventType).requestId(requestId).user(user);
+    if (eventStart != null) {
+      filterBuilder.eventStart(eventStart.getDate());
+    }
+    if (eventEnd != null) {
+      filterBuilder.eventEnd(eventEnd.getDate());
+    }
+    if (sort.size() == 0) {
+      sort = Arrays.asList("timestamp DESC");
+    }
     RegistryQuery.Builder<EventFilter> queryBuilder = new RegistryQuery.Builder<EventFilter>()
-        .filter(filter).sort(Arrays.asList("timestamp DESC"));
+        .filter(filterBuilder.build()).sort(sort).operator(operator);
     PagedResponse<AuditableEvent> rr = registryService.getAuditableEvents(
         queryBuilder.build(), start, rows);
     Response.ResponseBuilder builder = Response.ok(rr);
