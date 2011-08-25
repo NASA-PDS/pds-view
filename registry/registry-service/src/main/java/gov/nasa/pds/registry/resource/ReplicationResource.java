@@ -15,12 +15,12 @@
 
 package gov.nasa.pds.registry.resource;
 
-import java.util.Date;
 import java.util.List;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.ReplicationReport;
 import gov.nasa.pds.registry.service.RegistryService;
+import gov.nasa.pds.registry.util.DateParam;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -76,9 +76,9 @@ public class ReplicationResource {
   public Response performReplication(
       @QueryParam("registryUrl") String registryUrl,
       @QueryParam("objectType") List<String> objectTypes,
-      @QueryParam("lastModified") Date lastModified) {
+      @QueryParam("lastModified") DateParam lastModified) {
     try {
-      registryService.performReplication("Unknown", registryUrl, lastModified,
+      registryService.performReplication("Unknown", registryUrl, lastModified.getDate(),
           objectTypes);
       return Response.created(
           uriInfo.getBaseUriBuilder().clone().path(RegistryResource.class)
