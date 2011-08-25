@@ -138,9 +138,15 @@ public class PackagesResource {
     return Response.ok().build();
   }
 
+  /**
+   * This will delete of all the members of a package
+   * 
+   * @param guid
+   *          unique identifier of package to look up members of 
+   */
   @DELETE
   @Path("{guid}/members")
-  public Response deletePackageMembers(@PathParam("guid") String guid) {
+  public Response deletePackageMembers(@PathParam("packageGuid") String guid) {
     try {
       registryService.deletePackageMembers("Unknown", guid);
       return Response.ok().build();
@@ -161,9 +167,9 @@ public class PackagesResource {
    */
   @POST
   @Path("{guid}/members/{action}")
-  public Response changeStatusOfPackageMembers(@PathParam("guid") String guid, @PathParam("action") ObjectAction action) {
+  public Response changeStatusOfPackageMembers(@PathParam("guid") String packageGuid, @PathParam("action") ObjectAction action) {
     try {
-      registryService.deletePackageMembers("Unknown", guid);
+      registryService.changeStatusOfPackageMembers("Unknown", packageGuid, action);
       return Response.ok().build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
