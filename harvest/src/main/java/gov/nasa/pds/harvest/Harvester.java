@@ -144,11 +144,12 @@ public class Harvester {
    */
   private List<CrawlerAction> getDefaultCrawlerActions() {
     List<CrawlerAction> ca = new ArrayList<CrawlerAction>();
-    ca.add(new SaveMetadataAction());
     ca.add(fileObjectRegistrationAction);
     if (doValidation) {
       ca.add(new ValidateProductAction());
     }
+    //This is the last action that should be performed.
+    ca.add(new SaveMetadataAction());
     return ca;
   }
 
