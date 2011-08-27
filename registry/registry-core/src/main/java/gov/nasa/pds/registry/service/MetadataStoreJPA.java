@@ -366,6 +366,9 @@ public class MetadataStoreJPA implements MetadataStore {
     Path<String> lidAttr = entity.get("lid");
     cq.where(cb.equal(lidAttr, lid));
     TypedQuery<?> query = entityManager.createQuery(cq);
+    if (query.getResultList().size() == 0) {
+      throw new NoResultException();
+    }
     return (List<RegistryObject>) query.getResultList();
   }
 

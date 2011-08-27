@@ -162,9 +162,10 @@ public interface RegistryService {
    * @param lid
    *          of extrinsic to look up
    * @return latest version of extrinsic
+   * @throws RegistryServiceException 
    */
   public RegistryObject getLatestObject(String lid,
-      Class<? extends RegistryObject> objectClass);
+      Class<? extends RegistryObject> objectClass) throws RegistryServiceException;
 
   /**
    * Retrieves the earliest version of the {@link RegsitryObject} with the given
@@ -175,9 +176,10 @@ public interface RegistryService {
    * @param objectClass
    *          the type of object to look up
    * @return earliest version of registry object
+   * @throws RegistryServiceException 
    */
   public RegistryObject getEarliestObject(String lid,
-      Class<? extends RegistryObject> objectClass);
+      Class<? extends RegistryObject> objectClass) throws RegistryServiceException;
 
   /**
    * Retrieves the next version of the {@link RegsitryObject}
@@ -217,9 +219,10 @@ public interface RegistryService {
    * @param objectClass
    *          the type of object to look up
    * @return all versions of the registry object that share the given lid
+   * @throws RegistryServiceException 
    */
   public List<RegistryObject> getObjectVersions(String lid,
-      Class<? extends RegistryObject> objectClass);
+      Class<? extends RegistryObject> objectClass) throws RegistryServiceException;
 
   /**
    * Retrieves all {@link ClassificationNode} for a given

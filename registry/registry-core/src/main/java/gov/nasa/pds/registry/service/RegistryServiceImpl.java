@@ -266,15 +266,17 @@ public class RegistryServiceImpl implements RegistryService {
    * .String, java.lang.Class)
    */
   public RegistryObject getLatestObject(String lid,
-      Class<? extends RegistryObject> objectClass) {
-    // TODO: Make this throw an exception if the lid does not exist
-    List<? extends RegistryObject> objects = metadataStore
-        .getRegistryObjectVersions(lid, objectClass);
-    Collections.sort(objects, versioner.getComparator());
-    if (objects.size() > 0) {
+      Class<? extends RegistryObject> objectClass)
+      throws RegistryServiceException {
+    try {
+      List<? extends RegistryObject> objects = metadataStore
+          .getRegistryObjectVersions(lid, objectClass);
+      Collections.sort(objects, versioner.getComparator());
       return objects.get(objects.size() - 1);
+    } catch (NoResultException nre) {
+      throw new RegistryServiceException("No object found for lid: " + lid,
+          ExceptionType.OBJECT_NOT_FOUND);
     }
-    return null;
   }
 
   /*
@@ -285,15 +287,17 @@ public class RegistryServiceImpl implements RegistryService {
    * .String, java.lang.Class)
    */
   public RegistryObject getEarliestObject(String lid,
-      Class<? extends RegistryObject> objectClass) {
-    // TODO: Make this throw an exception if the lid does not exist
-    List<? extends RegistryObject> objects = metadataStore
-        .getRegistryObjectVersions(lid, objectClass);
-    Collections.sort(objects, versioner.getComparator());
-    if (objects.size() > 0) {
+      Class<? extends RegistryObject> objectClass)
+      throws RegistryServiceException {
+    try {
+      List<? extends RegistryObject> objects = metadataStore
+          .getRegistryObjectVersions(lid, objectClass);
+      Collections.sort(objects, versioner.getComparator());
       return (ExtrinsicObject) objects.get(0);
+    } catch (NoResultException nre) {
+      throw new RegistryServiceException("No object found for lid: " + lid,
+          ExceptionType.OBJECT_NOT_FOUND);
     }
-    return null;
   }
 
   /*
@@ -304,11 +308,17 @@ public class RegistryServiceImpl implements RegistryService {
    * , java.lang.String, java.lang.Class)
    */
   public RegistryObject getNextObject(String lid, String versionName,
-      Class<? extends RegistryObject> objectClass) {
+      Class<? extends RegistryObject> objectClass)
+      throws RegistryServiceException {
     // TODO: Make this method throw an exception if the lid or version is not
     // found
-    List<? extends RegistryObject> objects = metadataStore
-        .getRegistryObjectVersions(lid, objectClass);
+    List<? extends RegistryObject> objects = null;
+    try {
+      objects = metadataStore.getRegistryObjectVersions(lid, objectClass);
+    } catch (NoResultException nre) {
+      throw new RegistryServiceException("No object found for lid: " + lid,
+          ExceptionType.OBJECT_NOT_FOUND);
+    }
     Collections.sort(objects, versioner.getComparator());
     for (int i = 0; i < objects.size(); i++) {
       RegistryObject object = objects.get(i);
@@ -320,7 +330,8 @@ public class RegistryServiceImpl implements RegistryService {
         }
       }
     }
-    return null;
+    throw new RegistryServiceException("No object found for lid: " + lid
+        + " versionName: " + versionName, ExceptionType.OBJECT_NOT_FOUND);
   }
 
   /*
@@ -331,11 +342,15 @@ public class RegistryServiceImpl implements RegistryService {
    * .String, java.lang.String, java.lang.Class)
    */
   public RegistryObject getPreviousObject(String lid, String versionName,
-      Class<? extends RegistryObject> objectClass) {
-    // TODO: Make this method throw an exception if the lid or version is not
-    // found
-    List<? extends RegistryObject> objects = metadataStore
-        .getRegistryObjectVersions(lid, objectClass);
+      Class<? extends RegistryObject> objectClass)
+      throws RegistryServiceException {
+    List<? extends RegistryObject> objects = null;
+    try {
+      objects = metadataStore.getRegistryObjectVersions(lid, objectClass);
+    } catch (NoResultException nre) {
+      throw new RegistryServiceException("No object found for lid: " + lid,
+          ExceptionType.OBJECT_NOT_FOUND);
+    }
     Collections.sort(objects, versioner.getComparator());
     for (int i = 0; i < objects.size(); i++) {
       RegistryObject object = objects.get(i);
@@ -347,7 +362,8 @@ public class RegistryServiceImpl implements RegistryService {
         }
       }
     }
-    return null;
+    throw new RegistryServiceException("No object found for lid: " + lid
+        + " versionName: " + versionName, ExceptionType.OBJECT_NOT_FOUND);
   }
 
   /*
@@ -358,9 +374,15 @@ public class RegistryServiceImpl implements RegistryService {
    * .String, java.lang.Class)
    */
   public List<RegistryObject> getObjectVersions(String lid,
-      Class<? extends RegistryObject> objectClass) {
-    return new ArrayList<RegistryObject>(metadataStore
-        .getRegistryObjectVersions(lid, objectClass));
+      Class<? extends RegistryObject> objectClass)
+      throws RegistryServiceException {
+    try {
+      return new ArrayList<RegistryObject>(metadataStore
+          .getRegistryObjectVersions(lid, objectClass));
+    } catch (NoResultException nre) {
+      throw new RegistryServiceException("No object found for lid: " + lid,
+          ExceptionType.OBJECT_NOT_FOUND);
+    }
   }
 
   /*
