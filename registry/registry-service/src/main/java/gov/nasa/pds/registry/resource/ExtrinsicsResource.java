@@ -401,85 +401,98 @@ public class ExtrinsicsResource {
   protected static void addPreviousExtrinsicLink(
       Response.ResponseBuilder builder, UriInfo uriInfo,
       RegistryService registryService, ExtrinsicObject extrinsic) {
-    ExtrinsicObject previous = null;
-    try {
-      previous = (ExtrinsicObject) registryService.getPreviousObject(extrinsic
-          .getGuid(), ExtrinsicObject.class);
-    } catch (RegistryServiceException e) {
-      // Suppress
-    }
-    if (previous != null) {
-      String previousUri = uriInfo.getBaseUriBuilder().clone().path(
-          RegistryResource.class).path(RegistryResource.class,
-          "getExtrinsicsResource").path(previous.getGuid()).build().toString();
-      builder.header("Link", new Link(previousUri, "previous", null));
+    if (extrinsic != null) {
+      ExtrinsicObject previous = null;
+      try {
+        previous = (ExtrinsicObject) registryService.getPreviousObject(
+            extrinsic.getGuid(), ExtrinsicObject.class);
+      } catch (RegistryServiceException e) {
+        // Suppress
+      }
+      if (previous != null) {
+        String previousUri = uriInfo.getBaseUriBuilder().clone().path(
+            RegistryResource.class).path(RegistryResource.class,
+            "getExtrinsicsResource").path(previous.getGuid()).build()
+            .toString();
+        builder.header("Link", new Link(previousUri, "previous", null));
+      }
     }
   }
 
   protected static void addNextExtrinsicLink(Response.ResponseBuilder builder,
       UriInfo uriInfo, RegistryService registryService,
       ExtrinsicObject extrinsic) {
-    ExtrinsicObject next = null;
-    try {
-      next = (ExtrinsicObject) registryService.getNextObject(extrinsic
-          .getGuid(), ExtrinsicObject.class);
-    } catch (RegistryServiceException e) {
-      // Suppress
-    }
-    if (next != null) {
-      String nextUri = uriInfo.getBaseUriBuilder().clone().path(
-          RegistryResource.class).path(RegistryResource.class,
-          "getExtrinsicsResource").path(next.getGuid()).build().toString();
-      builder.header("Link", new Link(nextUri, "next", null));
+    if (extrinsic != null) {
+      ExtrinsicObject next = null;
+      try {
+        next = (ExtrinsicObject) registryService.getNextObject(extrinsic
+            .getGuid(), ExtrinsicObject.class);
+      } catch (RegistryServiceException e) {
+        // Suppress
+      }
+      if (next != null) {
+        String nextUri = uriInfo.getBaseUriBuilder().clone().path(
+            RegistryResource.class).path(RegistryResource.class,
+            "getExtrinsicsResource").path(next.getGuid()).build().toString();
+        builder.header("Link", new Link(nextUri, "next", null));
+      }
     }
   }
 
   protected static void addEarliestExtrinsicLink(
       Response.ResponseBuilder builder, UriInfo uriInfo,
       RegistryService registryService, ExtrinsicObject extrinsic) {
-    ExtrinsicObject earliest = (ExtrinsicObject) registryService
-        .getEarliestObject(extrinsic.getLid(), ExtrinsicObject.class);
-    if (earliest != null) {
-      String earliestUri = uriInfo.getBaseUriBuilder().clone().path(
-          RegistryResource.class).path(RegistryResource.class,
-          "getExtrinsicsResource").path("logicals").path(earliest.getLid())
-          .path("earliest").build().toString();
-      builder.header("Link", new Link(earliestUri, "earliest", null));
+    if (extrinsic != null) {
+      ExtrinsicObject earliest = (ExtrinsicObject) registryService
+          .getEarliestObject(extrinsic.getLid(), ExtrinsicObject.class);
+      if (earliest != null) {
+        String earliestUri = uriInfo.getBaseUriBuilder().clone().path(
+            RegistryResource.class).path(RegistryResource.class,
+            "getExtrinsicsResource").path("logicals").path(earliest.getLid())
+            .path("earliest").build().toString();
+        builder.header("Link", new Link(earliestUri, "earliest", null));
+      }
     }
   }
 
   protected static void addLatestExtrinsicLink(
       Response.ResponseBuilder builder, UriInfo uriInfo,
       RegistryService registryService, ExtrinsicObject extrinsic) {
-    ExtrinsicObject latest = (ExtrinsicObject) registryService.getLatestObject(
-        extrinsic.getLid(), ExtrinsicObject.class);
-    if (latest != null) {
-      String latestUri = uriInfo.getBaseUriBuilder().clone().path(
-          RegistryResource.class).path(RegistryResource.class,
-          "getExtrinsicsResource").path("logicals").path(latest.getLid()).path(
-          "latest").build().toString();
-      builder.header("Link", new Link(latestUri, "latest", null));
+    if (extrinsic != null) {
+      ExtrinsicObject latest = (ExtrinsicObject) registryService
+          .getLatestObject(extrinsic.getLid(), ExtrinsicObject.class);
+      if (latest != null) {
+        String latestUri = uriInfo.getBaseUriBuilder().clone().path(
+            RegistryResource.class).path(RegistryResource.class,
+            "getExtrinsicsResource").path("logicals").path(latest.getLid())
+            .path("latest").build().toString();
+        builder.header("Link", new Link(latestUri, "latest", null));
+      }
     }
   }
 
   protected static void addDeprecateExtrinsicLink(
       Response.ResponseBuilder builder, UriInfo uriInfo,
       ExtrinsicObject extrinsic) {
-    String deprecateUri = uriInfo.getBaseUriBuilder().clone().path(
-        RegistryResource.class).path(RegistryResource.class,
-        "getExtrinsicsResource").path(extrinsic.getGuid()).path("deprecate")
-        .build().toString();
-    builder.header("Link", new Link(deprecateUri, "deprecate", null));
+    if (extrinsic != null) {
+      String deprecateUri = uriInfo.getBaseUriBuilder().clone().path(
+          RegistryResource.class).path(RegistryResource.class,
+          "getExtrinsicsResource").path(extrinsic.getGuid()).path("deprecate")
+          .build().toString();
+      builder.header("Link", new Link(deprecateUri, "deprecate", null));
+    }
   }
 
   protected static void addApproveExtrinsicLink(
       Response.ResponseBuilder builder, UriInfo uriInfo,
       ExtrinsicObject extrinsic) {
-    String approveUri = uriInfo.getBaseUriBuilder().clone().path(
-        RegistryResource.class).path(RegistryResource.class,
-        "getExtrinsicsResource").path(extrinsic.getGuid()).path("approve")
-        .build().toString();
-    builder.header("Link", new Link(approveUri, "approve", null));
+    if (extrinsic != null) {
+      String approveUri = uriInfo.getBaseUriBuilder().clone().path(
+          RegistryResource.class).path(RegistryResource.class,
+          "getExtrinsicsResource").path(extrinsic.getGuid()).path("approve")
+          .build().toString();
+      builder.header("Link", new Link(approveUri, "approve", null));
+    }
   }
 
   protected static URI getExtrinsicUri(ExtrinsicObject extrinsic,
