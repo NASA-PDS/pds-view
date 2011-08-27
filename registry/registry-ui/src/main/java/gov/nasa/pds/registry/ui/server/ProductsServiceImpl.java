@@ -1,9 +1,8 @@
 package gov.nasa.pds.registry.ui.server;
 
 import gov.nasa.pds.registry.model.ObjectStatus;
-import gov.nasa.pds.registry.query.ObjectFilter;
-import gov.nasa.pds.registry.query.ExtrinsicQuery;
-import gov.nasa.pds.registry.query.ExtrinsicQuery.Builder;
+import gov.nasa.pds.registry.query.ExtrinsicFilter;
+import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.server.connection.ConnectionManager;
 import gov.nasa.pds.registry.ui.client.ProductsService;
 import gov.nasa.pds.registry.ui.client.SerializableProductResponse;
@@ -66,7 +65,7 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 
 		// create a builder for assembling sort and filter info into a service
 		// specific query
-		Builder queryBuilder = new ExtrinsicQuery.Builder();
+		RegistryQuery.Builder<ExtrinsicFilter> queryBuilder = new RegistryQuery.Builder<ExtrinsicFilter>();
 
 		// if there is sort info, assemble transform into query format
 		if (sortInfo != null) {
@@ -92,7 +91,7 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 		if (filters.size() > 0) {
 
 			// create a filter builder
-			ObjectFilter.Builder filterBuilder = new ObjectFilter.Builder();
+			ExtrinsicFilter.Builder filterBuilder = new ExtrinsicFilter.Builder();
 
 			// for each sortable column, if the filter exists, add it
 
@@ -117,13 +116,10 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 				filterBuilder.status(ObjectStatus
 						.valueOf(filters.get("status")));
 			}
-
-			if (filters.containsKey("submitter")) {
-				filterBuilder.submitter(filters.get("submitter"));
-			}
-
+			
+			// Map this to version name as version id no longer exists
 			if (filters.containsKey("versionId")) {
-				filterBuilder.versionId(filters.get("versionId"));
+				filterBuilder.versionName(filters.get("versionId"));
 			}
 
 			if (filters.containsKey("versionName")) {
@@ -135,14 +131,14 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 			// filterBuilder.eventType(arg0)
 
 			// build the filter
-			ObjectFilter filter = filterBuilder.build();
+			ExtrinsicFilter filter = filterBuilder.build();
 
 			// add the filter to the query
 			queryBuilder.filter(filter);
 		}
 
 		// build the assembled query
-		ExtrinsicQuery query = queryBuilder.build();
+		RegistryQuery<ExtrinsicFilter> query = queryBuilder.build();
 
 		// get the results, offsetting the start row by one to deal with index
 		// inconsistency
