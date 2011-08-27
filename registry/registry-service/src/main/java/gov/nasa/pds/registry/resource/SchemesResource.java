@@ -18,6 +18,7 @@ package gov.nasa.pds.registry.resource;
 import java.net.URI;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
+import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.ClassificationScheme;
 import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.PagedResponse;
@@ -145,27 +146,33 @@ public class SchemesResource {
   }
 
   /**
-   * This returns a resource that manages the classification nodes for the given
-   * scheme
+   * Retrieves the classification nodes for the scheme
+   * 
+   * @response.representation.200.qname {http://registry.pds.nasa.gov}response
+   * @response.representation.200.mediaType application/xml
+   * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_NODES}
    * 
    * @param schemeGuid
    *          globally unique id of scheme
-   * @return classification node resource
+   * 
+   * @return List of nodes
    */
+  @GET
   @Path("{schemeGuid}/nodes")
-  public NodesResource getNodesResource(
+  @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  public PagedResponse<ClassificationNode> getClassificationNodes(
       @PathParam("schemeGuid") String schemeGuid) {
     try {
       ClassificationScheme scheme = (ClassificationScheme) registryService
           .getObject(schemeGuid, ClassificationScheme.class);
-      return new NodesResource(this.uriInfo, this.request,
-          this.registryService, scheme);
+      return new PagedResponse<ClassificationNode>(registryService
+          .getClassificationNodes(scheme.getGuid()));
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
           ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
     }
   }
-  
+
   @SuppressWarnings("unchecked")
   @GET
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
@@ -177,7 +184,8 @@ public class SchemesResource {
         .filter(filter);
     // TODO: Fix so cast is not needed
     PagedResponse<ClassificationScheme> pr = (PagedResponse<ClassificationScheme>) registryService
-        .getObjects(queryBuilder.build(), start, rows, ClassificationScheme.class);
+        .getObjects(queryBuilder.build(), start, rows,
+            ClassificationScheme.class);
     Response.ResponseBuilder builder = Response.ok(pr);
     UriBuilder absolute = uriInfo.getAbsolutePathBuilder();
     absolute.queryParam("start", "{start}");

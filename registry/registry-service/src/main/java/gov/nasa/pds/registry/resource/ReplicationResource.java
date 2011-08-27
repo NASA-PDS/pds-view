@@ -15,8 +15,6 @@
 
 package gov.nasa.pds.registry.resource;
 
-import java.util.List;
-
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.ReplicationReport;
 import gov.nasa.pds.registry.service.RegistryService;
@@ -64,8 +62,6 @@ public class ReplicationResource {
    * 
    * @param registryUrl
    *          to replicate contents from
-   * @param objectTypes
-   *          to pull in
    * @param lastModified
    *          time to constrain which registry objects are relevant to
    *          replicate. This time is inclusive. If set to null all will be
@@ -76,7 +72,6 @@ public class ReplicationResource {
   @POST
   public Response performReplication(
       @QueryParam("registryUrl") String registryUrl,
-      @QueryParam("objectType") List<String> objectTypes,
       @QueryParam("lastModified") DateParam lastModified) {
     if (registryUrl == null) {
       throw new WebApplicationException(Response.status(Status.BAD_REQUEST)
@@ -84,7 +79,7 @@ public class ReplicationResource {
     }
     try {
       registryService.performReplication("Unknown", registryUrl,
-          (lastModified == null) ? null : lastModified.getDate(), objectTypes);
+          (lastModified == null) ? null : lastModified.getDate());
       return Response.created(
           uriInfo.getBaseUriBuilder().clone().path(RegistryResource.class)
               .path(RegistryResource.class, "getReplicationResource").path(

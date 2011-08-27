@@ -16,15 +16,10 @@
 package gov.nasa.pds.registry.resource;
 
 import gov.nasa.pds.registry.model.Link;
-import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.Report;
 import gov.nasa.pds.registry.service.RegistryService;
 
-import java.util.Collection;
-
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -43,7 +38,7 @@ import org.springframework.stereotype.Component;
  * @author pramirez
  * 
  */
-@Path("/")
+@Path("")
 @Component
 @Scope("request")
 public class RegistryResource {
@@ -114,21 +109,6 @@ public class RegistryResource {
       MediaType.APPLICATION_JSON })
   public Report getReport() {
     return registryService.getReport();
-  }
-
-  /**
-   * Synchronizes the incoming registry objects with those already present in
-   * the registry.
-   * 
-   * @param object
-   *          from some other registry
-   */
-  @PUT
-  @Path("sync")
-  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public void synchronize(Collection<RegistryObject> objects) {
-    // TODO implement
   }
 
   /**
@@ -245,6 +225,17 @@ public class RegistryResource {
   @Path("identifiers")
   public ExternalIdentifiersResource getExternalIdentifiersResource() {
     return new ExternalIdentifiersResource(this.uriInfo, this.request,
+        this.registryService);
+  }
+  
+  /**
+   * Provides access to operations on ClassificationNodes.
+   * 
+   * @return resource to deal with classification nodes
+   */
+  @Path("nodes")
+  public NodesResource getNodesResource() {
+    return new NodesResource(this.uriInfo, this.request,
         this.registryService);
   }
   

@@ -111,12 +111,12 @@ public class PackagesResource {
    * @return the package
    */
   @GET
-  @Path("{guid}")
+  @Path("{packageGuid}")
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public RegistryPackage getPackage(@PathParam("guid") String guid) {
+  public RegistryPackage getPackage(@PathParam("packageGuid") String packageGuid) {
     try {
       RegistryPackage registryPackage = (RegistryPackage) registryService
-          .getObject(guid, RegistryPackage.class);
+          .getObject(packageGuid, RegistryPackage.class);
       return registryPackage;
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
@@ -127,28 +127,28 @@ public class PackagesResource {
   /**
    * Deletes the package with the given guid
    * 
-   * @param guid
+   * @param packageGuid
    *          of package
    * @return Response indicating whether the operation succeeded or had an error
    */
   @DELETE
-  @Path("{guid}")
-  public Response deletePackage(@PathParam("guid") String guid) {
-    registryService.deleteObject("Unknown", guid, RegistryPackage.class);
+  @Path("{packageGuid}")
+  public Response deletePackage(@PathParam("packageGuid") String packageGuid) {
+    registryService.deleteObject("Unknown", packageGuid, RegistryPackage.class);
     return Response.ok().build();
   }
 
   /**
    * This will delete of all the members of a package
    * 
-   * @param guid
+   * @param packageGuid
    *          unique identifier of package to look up members of 
    */
   @DELETE
-  @Path("{guid}/members")
-  public Response deletePackageMembers(@PathParam("packageGuid") String guid) {
+  @Path("{packageGuid}/members")
+  public Response deletePackageMembers(@PathParam("packageGuid") String packageGuid) {
     try {
-      registryService.deletePackageMembers("Unknown", guid);
+      registryService.deletePackageMembers("Unknown", packageGuid);
       return Response.ok().build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
@@ -159,15 +159,15 @@ public class PackagesResource {
   /**
    * This will change the status of all the members of a package
    * 
-   * @param guid
+   * @param packageGuid
    *          unique identifier of package to look up members of 
    * @param action
    *          to take on all members which will result in an update of status
    *          {@link ObjectAction}
    */
   @POST
-  @Path("{guid}/members/{action}")
-  public Response changeStatusOfPackageMembers(@PathParam("guid") String packageGuid, @PathParam("action") ObjectAction action) {
+  @Path("{packageGuid}/members/{action}")
+  public Response changeStatusOfPackageMembers(@PathParam("packageGuid") String packageGuid, @PathParam("action") ObjectAction action) {
     try {
       registryService.changeStatusOfPackageMembers("Unknown", packageGuid, action);
       return Response.ok().build();

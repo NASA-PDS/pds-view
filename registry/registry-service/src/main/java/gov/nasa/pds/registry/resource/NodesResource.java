@@ -19,8 +19,6 @@ import java.net.URI;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.ClassificationNode;
-import gov.nasa.pds.registry.model.ClassificationScheme;
-import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.service.RegistryService;
 
 import javax.ws.rs.Consumes;
@@ -54,17 +52,13 @@ public class NodesResource {
   Request request;
 
   @Context
-  ClassificationScheme scheme;
-
-  @Context
   RegistryService registryService;
 
   public NodesResource(UriInfo uriInfo, Request request,
-      RegistryService registryService, ClassificationScheme scheme) {
+      RegistryService registryService) {
     this.uriInfo = uriInfo;
     this.request = request;
     this.registryService = registryService;
-    this.scheme = scheme;
   }
 
   /**
@@ -88,37 +82,17 @@ public class NodesResource {
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response publishNode(ClassificationNode node,
       @QueryParam("packageGuid") String packageGuid) {
-    if (node.getParent() == null) {
-      node.setParent(scheme.getGuid());
-    }
     try {
       String guid = (packageGuid == null) ? registryService.publishObject(
           "Unknown", node) : registryService.publishObject("Unknown", node,
           packageGuid);
       return Response.created(
-          NodesResource.getNodeUri(scheme.getGuid(),
-              (ClassificationNode) registryService.getObject(guid, node
-                  .getClass()), uriInfo)).entity(guid).build();
+          NodesResource.getNodeUri((ClassificationNode) registryService
+              .getObject(guid, node.getClass()), uriInfo)).entity(guid).build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
           ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
     }
-  }
-
-  /**
-   * Retrieves the classification nodes for the scheme
-   * 
-   * @response.representation.200.qname {http://registry.pds.nasa.gov}response
-   * @response.representation.200.mediaType application/xml
-   * @response.representation.200.example {@link gov.nasa.pds.registry.util.Examples#RESPONSE_NODES}
-   * 
-   * @return List of nodes
-   */
-  @GET
-  @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public PagedResponse<ClassificationNode> getClassificationNodes() {
-    return new PagedResponse<ClassificationNode>(registryService
-        .getClassificationNodes(scheme.getGuid()));
   }
 
   /**
@@ -141,7 +115,6 @@ public class NodesResource {
     try {
       return (ClassificationNode) registryService.getObject(nodeGuid,
           ClassificationNode.class);
-
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
           ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
@@ -163,10 +136,9 @@ public class NodesResource {
     return Response.ok().build();
   }
 
-  protected static URI getNodeUri(String schemeGuid, ClassificationNode node,
-      UriInfo uriInfo) {
+  protected static URI getNodeUri(ClassificationNode node, UriInfo uriInfo) {
     return uriInfo.getBaseUriBuilder().clone().path(RegistryResource.class)
-        .path(RegistryResource.class, "getSchemesResource").path(schemeGuid)
-        .path("nodes").path(node.getGuid()).build();
+        .path(RegistryResource.class, "getNodesResource").path(node.getGuid())
+        .build();
   }
 }
