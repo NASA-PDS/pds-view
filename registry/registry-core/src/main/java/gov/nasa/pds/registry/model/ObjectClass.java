@@ -30,14 +30,13 @@ public enum ObjectClass {
   EXTRINSIC_OBJECT("ExtrinsicObject", ExtrinsicObject.class),
   REGISTRY_PACKAGE("RegistryPackage", RegistryPackage.class),
   SERVICE("Service", Service.class),
-  SLOT("Slot", Slot.class),
   SERVICE_BINDING("ServiceBinding", ServiceBinding.class),
   SPECIFICATION_LINK("SpecificationLink", SpecificationLink.class);
   
   private String name;
-  private Class<?> clazz;
+  private Class<? extends RegistryObject> clazz;
   
-  ObjectClass(String name, Class<?> clazz) {
+  ObjectClass(String name, Class<? extends RegistryObject> clazz) {
     this.name = name;
     this.clazz = clazz;
   }
@@ -57,7 +56,7 @@ public enum ObjectClass {
     return name;
   }
   
-  public Class<?> getObjectClass() {
+  public Class<? extends RegistryObject> getObjectClass() {
     return clazz;
   }
 }

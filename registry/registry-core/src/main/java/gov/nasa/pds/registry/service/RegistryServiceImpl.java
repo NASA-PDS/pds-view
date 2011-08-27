@@ -19,6 +19,7 @@ import gov.nasa.pds.registry.client.RegistryClient;
 import gov.nasa.pds.registry.exception.ExceptionType;
 import gov.nasa.pds.registry.exception.RegistryClientException;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
+import gov.nasa.pds.registry.model.AffectedInfo;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.ClassificationNode;
@@ -59,6 +60,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.NoResultException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,9 +94,6 @@ public class RegistryServiceImpl implements RegistryService {
   Report report;
 
   private ReplicationReport replicationReport = null;
-  
-  private static final SimpleDateFormat dateFormat = new SimpleDateFormat(
-      "yyyy-MM-dd'T'HH:mm:ss");
 
   private static List<String> CORE_OBJECT_TYPES = Arrays.asList("Association",
       "AuditableEvent", "Classification", "ClassificationNode",
@@ -102,6 +101,9 @@ public class RegistryServiceImpl implements RegistryService {
       "SpecificationLink", "RegistryPackage", "ExternalIdentifier");
 
   private static String OBJECT_TYPE_SCHEME = "urn:registry:classificationScheme:ObjectType";
+
+  private static final SimpleDateFormat dateFormat = new SimpleDateFormat(
+      "yyyy-MM-dd'T'HH:mm:ss");
 
   /*
    * (non-Javadoc)
@@ -223,6 +225,8 @@ public class RegistryServiceImpl implements RegistryService {
         .getNumRegistryObjects(ClassificationNode.class));
     report.setClassificationSchemes(metadataStore
         .getNumRegistryObjects(ClassificationScheme.class));
+    report.setPackages(metadataStore
+        .getNumRegistryObjects(RegistryPackage.class));
     return report;
   }
 
@@ -249,7 +253,8 @@ public class RegistryServiceImpl implements RegistryService {
     this.validateObject(object);
     metadataStore.saveRegistryObject(object);
     this.createAuditableEvent("versionObject " + referencedObject.getGuid()
-        + " " + object.getGuid(), user, EventType.Versioned, object.getGuid());
+        + " " + object.getGuid(), user, EventType.Versioned, object.getGuid(),
+        object.getClass());
     return object.getGuid();
   }
 
@@ -397,14 +402,15 @@ public class RegistryServiceImpl implements RegistryService {
         objectClass));
   }
 
-  private List<String> changeObjectStatusById(String user, String guid,
+  private AffectedInfo changeObjectStatusById(String user, String guid,
       ObjectAction action, Class<? extends RegistryObject> objectClass) {
     // TODO: Consider whether a status update should apply to nested objects
     RegistryObject registryObject = metadataStore.getRegistryObject(guid,
         objectClass);
     registryObject.setStatus(action.getObjectStatus());
     metadataStore.updateRegistryObject(registryObject);
-    return Arrays.asList(guid);
+    return new AffectedInfo(Arrays.asList(guid), Arrays.asList(objectClass
+        .getSimpleName()));
   }
 
   /*
@@ -499,7 +505,8 @@ public class RegistryServiceImpl implements RegistryService {
 
     if (packageId == null) {
       this.createAuditableEvent("publishObject " + registryObject.getGuid(),
-          user, EventType.Created, registryObject.getGuid());
+          user, EventType.Created, registryObject.getGuid(), registryObject
+              .getClass());
     } else {
       Association hasMember = new Association();
       hasMember.setGuid(idGenerator.getGuid());
@@ -514,8 +521,10 @@ public class RegistryServiceImpl implements RegistryService {
       hasMember.setSlots(slots);
       metadataStore.saveRegistryObject(hasMember);
       this.createAuditableEvent("publishObjectWithPackage " + packageId + " "
-          + registryObject.getGuid(), user, EventType.Created, registryObject
-          .getGuid());
+          + registryObject.getGuid(), user, EventType.Created,
+          new AffectedInfo(Arrays.asList(registryObject.getGuid(), hasMember
+              .getGuid()), Arrays.asList(registryObject.getClass()
+              .getSimpleName(), hasMember.getClass().getSimpleName())));
     }
     return registryObject.getGuid();
   }
@@ -532,16 +541,21 @@ public class RegistryServiceImpl implements RegistryService {
   }
 
   private void createAuditableEvent(String requestId, String user,
-      EventType eventType, String guid) {
-    this.createAuditableEvent(requestId, user, eventType, Arrays.asList(guid));
+      EventType eventType, String guid,
+      Class<? extends RegistryObject> objectClass) {
+    this.createAuditableEvent(requestId, user, eventType, new AffectedInfo(
+        Arrays.asList(guid), Arrays.asList(objectClass.getSimpleName())));
   }
 
   private void createAuditableEvent(String requestId, String user,
-      EventType eventType, List<String> affectedObjects) {
-    AuditableEvent event = new AuditableEvent(eventType, affectedObjects, user);
+      EventType eventType, AffectedInfo affectedInfo) {
+    AuditableEvent event = new AuditableEvent(eventType, affectedInfo
+        .getAffectedIds(), user);
     event.setGuid(idGenerator.getGuid());
     event.setHome(idGenerator.getHome());
     event.setRequestId(requestId);
+    event.addSlot(new Slot("affectedObjectTypes", affectedInfo
+        .getAffectedTypes()));
     metadataStore.saveRegistryObject(event);
   }
 
@@ -647,10 +661,10 @@ public class RegistryServiceImpl implements RegistryService {
       Class<? extends RegistryObject> objectClass) {
     RegistryObject registryObject = metadataStore.getRegistryObject(lid,
         versionId, objectClass);
-    List<String> affectedIds = this.deleteObjectById(user, registryObject
+    AffectedInfo affectedInfo = this.deleteObjectById(user, registryObject
         .getGuid(), registryObject.getClass());
     this.createAuditableEvent("deleteObjectByLidVid " + lid + versionId, user,
-        EventType.Deleted, affectedIds);
+        EventType.Deleted, affectedInfo);
   }
 
   /*
@@ -661,12 +675,12 @@ public class RegistryServiceImpl implements RegistryService {
    */
   public void deleteObject(String user, String guid,
       Class<? extends RegistryObject> objectClass) {
-    List<String> affectedIds = this.deleteObjectById(user, guid, objectClass);
+    AffectedInfo affectedInfo = this.deleteObjectById(user, guid, objectClass);
     this.createAuditableEvent("deleteObjectById " + guid, user,
-        EventType.Deleted, affectedIds);
+        EventType.Deleted, affectedInfo);
   }
 
-  private List<String> deleteObjectById(String user, String guid,
+  private AffectedInfo deleteObjectById(String user, String guid,
       Class<? extends RegistryObject> objectClass) {
     metadataStore.deleteRegistryObject(guid, objectClass);
     AssociationFilter filter = new AssociationFilter.Builder().targetObject(
@@ -676,12 +690,15 @@ public class RegistryServiceImpl implements RegistryService {
     PagedResponse<Association> response = metadataStore.getAssociations(
         queryBuilder.build(), 1, -1);
     List<String> affectedIds = new ArrayList<String>();
+    List<String> affectedTypes = new ArrayList<String>();
     affectedIds.add(guid);
+    affectedTypes.add(objectClass.getSimpleName());
     for (RegistryObject object : response.getResults()) {
       affectedIds.add(object.getGuid());
+      affectedTypes.add(object.getClass().getSimpleName());
       metadataStore.deleteRegistryObject(object.getGuid(), object.getClass());
     }
-    return affectedIds;
+    return new AffectedInfo(affectedIds, affectedTypes);
   }
 
   /*
@@ -827,6 +844,7 @@ public class RegistryServiceImpl implements RegistryService {
     int rows = 100;
     // Keep track of items whose status have been changed
     List<String> changedIds = new ArrayList<String>();
+    List<String> changedTypes = new ArrayList<String>();
     // Create the query that will be used
     RegistryQuery<AssociationFilter> query = queryBuilder.build();
     // Grab first page of results
@@ -838,24 +856,28 @@ public class RegistryServiceImpl implements RegistryService {
       for (Association association : pagedAssociations.getResults()) {
         count++;
         Slot slot = association.getSlot("targetObjectType");
-        Class objectClass = null;
+        Class<? extends RegistryObject> objectClass = null;
         if (slot != null) {
           objectClass = ObjectClass.fromName(slot.getValues().get(0))
               .getObjectClass();
         }
-        changedIds.addAll(this.changeObjectStatusById(user, association
-            .getTargetObject(), action, objectClass));
+        AffectedInfo affectedInfo = this.changeObjectStatusById(user,
+            association.getTargetObject(), action, objectClass);
+        changedIds.addAll(affectedInfo.getAffectedIds());
+        changedTypes.addAll(affectedInfo.getAffectedTypes());
       }
       // Check to see if we are done processing all
       if (count >= pagedAssociations.getNumFound()) {
         done = true;
       } else {
         // Grab next set
-        pagedAssociations = this.getAssociations(query, count+1, rows);
+        pagedAssociations = this.getAssociations(query, count + 1, rows);
       }
     }
-    this.createAuditableEvent("changeStatusOfPackageMembers " + packageId,
-        user, action.getEventType(), changedIds);
+    this
+        .createAuditableEvent("changeStatusOfPackageMembers " + packageId,
+            user, action.getEventType(), new AffectedInfo(changedIds,
+                changedTypes));
   }
 
   /*
@@ -878,6 +900,7 @@ public class RegistryServiceImpl implements RegistryService {
     int rows = 100;
     // Keep track of items that have been deleted
     List<String> deletedIds = new ArrayList<String>();
+    List<String> deletedTypes = new ArrayList<String>();
     // Create the query that will be used
     RegistryQuery<AssociationFilter> query = queryBuilder.build();
     // Grab first page of results
@@ -887,19 +910,21 @@ public class RegistryServiceImpl implements RegistryService {
       // Process this set of target objects
       for (Association association : pagedAssociations.getResults()) {
         Slot slot = association.getSlot("targetObjectType");
-        Class objectClass = null;
+        Class<? extends RegistryObject> objectClass = null;
         if (slot != null) {
           objectClass = ObjectClass.fromName(slot.getValues().get(0))
               .getObjectClass();
         }
-        deletedIds.addAll(this.deleteObjectById(user, association
-            .getTargetObject(), objectClass));
+        AffectedInfo affectedInfo = this.deleteObjectById(user, association
+            .getTargetObject(), objectClass);
+        deletedIds.addAll(affectedInfo.getAffectedIds());
+        deletedTypes.addAll(affectedInfo.getAffectedTypes());
       }
       // Grab next set
       pagedAssociations = this.getAssociations(query, 1, rows);
     }
     this.createAuditableEvent("deletePackageMembers " + packageId, user,
-        EventType.Deleted, deletedIds);
+        EventType.Deleted, new AffectedInfo(deletedIds, deletedTypes));
   }
 
   /*
@@ -930,25 +955,25 @@ public class RegistryServiceImpl implements RegistryService {
    * 
    * @see
    * gov.nasa.pds.registry.service.RegistryService#performReplication(java.lang
-   * .String, java.lang.String, java.util.Date, java.util.List)
+   * .String, java.lang.String, java.util.Date)
    */
   @Override
   public void performReplication(String user, String registryUrl,
-      Date lastModified, List<String> objectTypes)
-      throws RegistryServiceException {
+      Date lastModified) throws RegistryServiceException {
     // Setup the replication report
-    intializeReplicationReport(objectTypes);
+    intializeReplicationReport();
 
     // Create a client to talk to the remote registry
     try {
       RegistryClient remoteRegistry = new RegistryClient(registryUrl);
+      remoteRegistry.setMediaType(MediaType.APPLICATION_XML);
       // Query the remote registry for all the events based on last modified
       EventFilter filter = new EventFilter.Builder().eventStart(lastModified)
           .eventEnd(replicationReport.getStarted()).build();
       // Set up some counting variables to use for paging
       int count = 0;
       // How many we will grab on each query to the database (process in chunks)
-      int rows = 10;
+      int rows = 100;
       RegistryQuery<EventFilter> query = new RegistryQuery.Builder<EventFilter>()
           .filter(filter).build();
       PagedResponse<AuditableEvent> events = remoteRegistry.getAuditableEvents(
@@ -956,32 +981,85 @@ public class RegistryServiceImpl implements RegistryService {
       // Set the total number of events to be processed
       replicationReport.setTotalEvents(events.getNumFound());
       boolean done = (events.getNumFound() > 0) ? false : true;
+      // Create a map of items that have already been addressed
+      Map<String, EventType> processed = new HashMap<String, EventType>();
+      List<String> affectedReplicatedIds = new ArrayList<String>();
+      List<String> affectedReplicatedTypes = new ArrayList<String>();
       while (!done) {
         // Process this set of target objects
         for (AuditableEvent event : events.getResults()) {
           count++;
-          /*
-          Slot slot = association.getSlot("targetObjectType");
-          Class objectClass = null;
-          if (slot != null) {
-            objectClass = ObjectClass.fromName(slot.getValues().get(0))
-                .getObjectClass();
+          if (event.getRequestId().startsWith("performReplication")) {
+            replicationReport.addSkippedEvent(event.getGuid());
+          } else {
+            Slot affectedTypes = event.getSlot("affectedObjectTypes");
+            for (int i = 0; i < event.getAffectedObjects().size(); i++) {
+              String affectedId = event.getAffectedObjects().get(i);
+              String affectedType = affectedTypes.getValues().get(i);
+              Class<? extends RegistryObject> objectClass = ObjectClass
+                  .fromName(affectedType).getObjectClass();
+              if (!processed.containsKey(affectedId)) {
+                processed.put(affectedId, event.getEventType());
+                if (event.getEventType() == EventType.Deleted) {
+                  try {
+                    // Get object from our local registry
+                    RegistryObject object = this.getObject(affectedId,
+                        objectClass);
+                    // Check to make the object is not owned by us (i.e. the
+                    // home
+                    // is not equal to local home)
+                    if (!object.getHome().equals(idGenerator.getHome())) {
+                      affectedReplicatedIds.add(affectedId);
+                      affectedReplicatedTypes.add(objectClass.getSimpleName());
+                      metadataStore.deleteRegistryObject(affectedId,
+                          objectClass);
+                    }
+                  } catch (RegistryServiceException ex) {
+                    replicationReport.addSkippedObject(affectedId);
+                  }
+                } else {
+                  try {
+                    // Time to grab the object from the remote registry
+                    RegistryObject remoteObject = remoteRegistry.getObject(
+                        affectedId, objectClass);
+                    // Check to make the object is not owned by us (i.e. the
+                    // home
+                    // is not equal to local home)
+                    if (!remoteObject.getHome().equals(idGenerator.getHome())) {
+                      affectedReplicatedIds.add(affectedId);
+                      affectedReplicatedTypes.add(objectClass.getSimpleName());
+                      // Remove the object in case it already exists
+                      metadataStore.deleteRegistryObject(affectedId,
+                          objectClass);
+                      // Replicate it
+                      metadataStore.saveRegistryObject(remoteObject);
+                    }
+                  } catch (RegistryServiceException ex) {
+                    replicationReport.addSkippedObject(affectedId);
+                  }
+                }
+              }
+            }
+            // Increment the number of events that have been taken care of
+            replicationReport.setEventsProcessed(replicationReport
+                .getEventsProcessed() + 1);
           }
-          changedIds.addAll(this.changeObjectStatusById(user, association
-              .getTargetObject(), action, objectClass));
-              */
         }
         // Check to see if we are done processing all
         if (count >= events.getNumFound()) {
           done = true;
         } else {
           // Grab next set
-          events = remoteRegistry.getAuditableEvents(query, count+1, rows);
+          events = remoteRegistry.getAuditableEvents(query, count + 1, rows);
         }
-      }
-      //this.createAuditableEvent("performReplication " + registryUrl + " " + dateFormat.format(lastModified),
-      //    user, action.getEventType(), changedIds);
 
+        // Create an auditable event to track what happened for this replication
+        this.createAuditableEvent("performReplication "
+            + registryUrl
+            + ((lastModified == null) ? "" : " "
+                + dateFormat.format(lastModified)), user, EventType.Replicated,
+            new AffectedInfo(affectedReplicatedIds, affectedReplicatedTypes));
+      }
     } catch (RegistryClientException e) {
       throw new RegistryServiceException("Could not contact remote registry: "
           + e.getMessage(), Response.Status.BAD_REQUEST);
@@ -993,7 +1071,7 @@ public class RegistryServiceImpl implements RegistryService {
     replicationReport.setLastModified(new Date());
   }
 
-  private synchronized void intializeReplicationReport(List<String> objectTypes)
+  private synchronized void intializeReplicationReport()
       throws RegistryServiceException {
     if (replicationReport != null
         && replicationReport.getStatus() == ReplicationStatus.RUNNING) {
@@ -1003,7 +1081,7 @@ public class RegistryServiceImpl implements RegistryService {
     }
     if (replicationReport == null
         || replicationReport.getStatus() == ReplicationStatus.COMPLETE) {
-      replicationReport = new ReplicationReport(objectTypes);
+      replicationReport = new ReplicationReport();
     }
   }
 

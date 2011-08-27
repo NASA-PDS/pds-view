@@ -15,17 +15,30 @@
 
 package gov.nasa.pds.registry.model;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlType;
+import java.util.List;
 
 /**
- * This enum captures the core event types for {@link AuditableEvent}
- * 
  * @author pramirez
- * 
+ *
  */
-@XmlType(name = "")
-@XmlEnum
-public enum EventType {
-	Created, Approved, Deleted, Updated, Deprecated, Versioned, Undeprecated, Replicated;
+public class AffectedInfo {
+  private List<String> _affectedIds;
+  private List<String> _affectedTypes;
+  
+  public AffectedInfo() {
+  }
+  
+  public AffectedInfo(List<String> affectedIds, List<String> affectedTypes) {
+    _affectedIds = affectedIds;
+    _affectedTypes = affectedTypes;
+  }
+  
+  public List<String> getAffectedIds() {
+    return _affectedIds;
+  }
+  
+  public List<String> getAffectedTypes() {
+    return _affectedTypes;
+  }
+
 }

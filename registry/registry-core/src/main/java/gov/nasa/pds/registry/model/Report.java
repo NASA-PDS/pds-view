@@ -50,7 +50,10 @@ public class Report {
   private long classificationNodes;
   
   @XmlAttribute
-  private String regsitryVersion;
+  private long packages;
+  
+  @XmlAttribute
+  private String registryVersion = "0.7.0";
 
   public Report() {
     serverStarted = new Date();
@@ -62,6 +65,7 @@ public class Report {
     this.associations = statusInfo.associations;
     this.extrinsics = statusInfo.extrinsics;
     this.services = statusInfo.services;
+    this.packages = statusInfo.packages;
   }
 
   public Report(RegistryStatus status) {
@@ -138,13 +142,21 @@ public class Report {
   public void setClassificationNodes(long classificationNodes) {
     this.classificationNodes = classificationNodes;
   }
-
-  public String getRegsitryVersion() {
-    return regsitryVersion;
+  
+  public long getPackages() {
+    return packages;
   }
 
-  public void setRegsitryVersion(String regsitryVersion) {
-    this.regsitryVersion = regsitryVersion;
+  public void setPackages(long packages) {
+    this.packages = packages;
+  }
+
+  public String getRegistryVersion() {
+    return registryVersion;
+  }
+
+  public void setRegistryVersion(String registryVersion) {
+    this.registryVersion = registryVersion;
   }
 
 }

@@ -19,6 +19,8 @@ import gov.nasa.pds.registry.exception.RegistryClientException;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.AuditableEvent;
+import gov.nasa.pds.registry.model.ClassificationNode;
+import gov.nasa.pds.registry.model.ClassificationScheme;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
@@ -90,6 +92,8 @@ public class RegistryClient {
     resourceMap.put(Service.class, "services");
     resourceMap.put(RegistryPackage.class, "packages");
     resourceMap.put(AuditableEvent.class, "events");
+    resourceMap.put(ClassificationScheme.class, "schemes");
+    resourceMap.put(ClassificationNode.class, "nodes");
   }
 
   public RegistryClient(String baseUrl) throws RegistryClientException {
@@ -706,9 +710,5 @@ public class RegistryClient {
         ExtrinsicObject.class);
     System.out.println(eo.getGuid());
     System.out.println(pr.getNumFound());
-    ExtrinsicFilter filter = new ExtrinsicFilter.Builder().guid(args[1])
-        .build();
-    RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
-        .filter(filter).build();
   }
 }

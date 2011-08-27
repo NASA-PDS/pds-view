@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -300,9 +301,13 @@ public class MetadataStoreJPA implements MetadataStore {
   @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
   public void deleteRegistryObject(String guid,
       Class<? extends RegistryObject> objectClass) {
-    RegistryObject registryObject = this.getRegistryObject(guid, objectClass);
-    entityManager.remove(registryObject);
-    entityManager.flush();
+    try {
+      RegistryObject registryObject = this.getRegistryObject(guid, objectClass);
+      entityManager.remove(registryObject);
+      entityManager.flush();
+    } catch (NoResultException nre) {
+      // Suppress as the object was not found
+    }
   }
 
   /*
@@ -574,8 +579,8 @@ public class MetadataStoreJPA implements MetadataStore {
     List<Predicate> predicates = new ArrayList<Predicate>();
     if (filter != null) {
       if (filter.getEventType() != null) {
-        predicates.add(cb.equal(eventEntity.get("eventType"),
-            filter.getEventType()));
+        predicates.add(cb.equal(eventEntity.get("eventType"), filter
+            .getEventType()));
       }
       if (filter.getEventStart() != null) {
         predicates.add(cb.greaterThanOrEqualTo(eventEntity.get("timestamp").as(
@@ -590,8 +595,8 @@ public class MetadataStoreJPA implements MetadataStore {
             filter.getRequestId().replace('*', '%')));
       }
       if (filter.getUser() != null) {
-        predicates.add(cb.like(eventEntity.get("user").as(String.class),
-            filter.getUser().replace('*', '%')));
+        predicates.add(cb.like(eventEntity.get("user").as(String.class), filter
+            .getUser().replace('*', '%')));
       }
     }
     if (predicates.size() != 0) {
@@ -625,9 +630,9 @@ public class MetadataStoreJPA implements MetadataStore {
           .getResultList());
     }
 
-    return new PagedResponse<AuditableEvent>(start, (long) dbQuery.getResultList()
-        .size(), dbQuery.setFirstResult(start - 1).setMaxResults(rows)
-        .getResultList());
+    return new PagedResponse<AuditableEvent>(start, (long) dbQuery
+        .getResultList().size(), dbQuery.setFirstResult(start - 1)
+        .setMaxResults(rows).getResultList());
   }
 
 }

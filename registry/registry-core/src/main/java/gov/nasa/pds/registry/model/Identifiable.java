@@ -16,6 +16,7 @@
 package gov.nasa.pds.registry.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -64,12 +65,13 @@ public abstract class Identifiable implements Serializable {
   private Set<Slot> slots;
 
   public Identifiable() {
+    slots = new HashSet<Slot>();
   }
 
   public Identifiable(String guid, String home, Set<Slot> slots) {
     this.guid = guid;
     this.home = home;
-    // this.slots = slots;
+    this.slots = slots;
   }
 
   /**
@@ -131,6 +133,16 @@ public abstract class Identifiable implements Serializable {
       }
     }
     return null;
+  }
+
+  /**
+   * Convenience method to add a slot to the set of slots.
+   * 
+   * @param slot
+   *          to be added
+   */
+  public void addSlot(Slot slot) {
+    slots.add(slot);
   }
 
   @Override

@@ -16,6 +16,7 @@
 package gov.nasa.pds.registry.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,48 +29,45 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author pramirez
- *
+ * 
  */
 @XmlRootElement(name = "replicationReport", namespace = "http://registry.pds.nasa.gov")
 @XmlType(name = "")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ReplicationReport implements Serializable {
   private static final long serialVersionUID = 8976639738002140711L;
-  
+
   @XmlAttribute
   private ReplicationStatus status;
-  
+
   @XmlAttribute
   private Date started;
-  
+
   @XmlAttribute
   private long totalEvents;
-  
+
   @XmlAttribute
   private long eventsProcessed;
-  
+
   @XmlAttribute
   private Date lastModified;
-  
+
   @XmlAttribute
   private String registryUrl;
-  
-  @XmlAttribute
-  private List<String> objectTypes;
-  
-  @XmlElement(name = "failedObject", namespace = "http://registry.pds.nasa.gov")
-  private List<String> failedObjects;
-  
-  // Needed for JAXB
+
+  @XmlElement(name = "skippedEvent", namespace = "http://registry.pds.nasa.gov")
+  private List<String> skippedEvents;
+
+  @XmlElement(name = "skippedObject", namespace = "http://registry.pds.nasa.gov")
+  private List<String> skippedObjects;
+
   public ReplicationReport() {
-  }
-  
-  public ReplicationReport(List<String> objectTypes) {
     super();
     started = new Date();
     lastModified = new Date();
-    this.objectTypes = objectTypes;
     status = ReplicationStatus.RUNNING;
+    skippedObjects = new ArrayList<String>();
+    skippedEvents = new ArrayList<String>();
   }
 
   public ReplicationStatus getStatus() {
@@ -120,20 +118,28 @@ public class ReplicationReport implements Serializable {
     this.registryUrl = registryUrl;
   }
 
-  public List<String> getObjectTypes() {
-    return objectTypes;
+  public List<String> getSkippedObjects() {
+    return skippedObjects;
   }
 
-  public void setObjectTypes(List<String> objectTypes) {
-    this.objectTypes = objectTypes;
+  public void setSkippedObjects(List<String> skippedObjects) {
+    this.skippedObjects = skippedObjects;
   }
 
-  public List<String> getFailedObjects() {
-    return failedObjects;
+  public void addSkippedObject(String skippedObject) {
+    this.skippedObjects.add(skippedObject);
   }
 
-  public void setFailedObjects(List<String> failedObjects) {
-    this.failedObjects = failedObjects;
+  public List<String> getSkippedEvents() {
+    return skippedEvents;
+  }
+
+  public void setSkippedEvents(List<String> skippedEvents) {
+    this.skippedEvents = skippedEvents;
+  }
+
+  public void addSkippedEvent(String skippedEvent) {
+    this.skippedEvents.add(skippedEvent);
   }
 
   @Override
@@ -143,13 +149,13 @@ public class ReplicationReport implements Serializable {
     result = prime * result
         + (int) (eventsProcessed ^ (eventsProcessed >>> 32));
     result = prime * result
-        + ((failedObjects == null) ? 0 : failedObjects.hashCode());
-    result = prime * result
         + ((lastModified == null) ? 0 : lastModified.hashCode());
     result = prime * result
-        + ((objectTypes == null) ? 0 : objectTypes.hashCode());
-    result = prime * result
         + ((registryUrl == null) ? 0 : registryUrl.hashCode());
+    result = prime * result
+        + ((skippedObjects == null) ? 0 : skippedObjects.hashCode());
+    result = prime * result
+        + ((skippedEvents == null) ? 0 : skippedEvents.hashCode());
     result = prime * result + ((started == null) ? 0 : started.hashCode());
     result = prime * result + ((status == null) ? 0 : status.hashCode());
     result = prime * result + (int) (totalEvents ^ (totalEvents >>> 32));
@@ -167,25 +173,25 @@ public class ReplicationReport implements Serializable {
     ReplicationReport other = (ReplicationReport) obj;
     if (eventsProcessed != other.eventsProcessed)
       return false;
-    if (failedObjects == null) {
-      if (other.failedObjects != null)
-        return false;
-    } else if (!failedObjects.equals(other.failedObjects))
-      return false;
     if (lastModified == null) {
       if (other.lastModified != null)
         return false;
     } else if (!lastModified.equals(other.lastModified))
       return false;
-    if (objectTypes == null) {
-      if (other.objectTypes != null)
-        return false;
-    } else if (!objectTypes.equals(other.objectTypes))
-      return false;
     if (registryUrl == null) {
       if (other.registryUrl != null)
         return false;
     } else if (!registryUrl.equals(other.registryUrl))
+      return false;
+    if (skippedObjects == null) {
+      if (other.skippedObjects != null)
+        return false;
+    } else if (!skippedObjects.equals(other.skippedObjects))
+      return false;
+    if (skippedEvents == null) {
+      if (other.skippedEvents != null)
+        return false;
+    } else if (!skippedEvents.equals(other.skippedEvents))
       return false;
     if (started == null) {
       if (other.started != null)
@@ -201,6 +207,5 @@ public class ReplicationReport implements Serializable {
       return false;
     return true;
   }
-  
-  
+
 }
