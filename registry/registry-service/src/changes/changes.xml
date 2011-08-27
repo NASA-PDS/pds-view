@@ -24,6 +24,30 @@
 
   <body>
     <release version="0.7.0" date="TBD" description="TBD">
+      <action dev="pramirez" type="add">
+        PDS-14 Endpoint to remove package members and update the status of all package members.
+      </action>
+      <action dev="pramirez" type="add">
+        Endpoint to page through packages.
+      </action>
+      <action dev="pramirez" type="add">
+        PDS-30 Allow PUT operation to create/update a Service object.
+      </action>
+      <action dev="pramirez" type="add">
+        PDS-32 Added endpoint to manage ExternalLinks which can be used to tie registry contents to URLs that exist outside the registry.
+      </action>
+      <action dev="pramirez" type="update">
+        PDS-37 Moved registry endpoints one level removing the redundant /registry from the path.
+      </action>
+      <action dev="pramirez" type="update">
+        PDS-38 Registry version now comes back as part of the report endpoint.
+      </action>
+      <action dev="pramirez" type="update">
+        Enchanced Auditable Event endpoint to allow for better filtering. Now supports eventStart, eventEnd, and requestId.
+      </action>
+      <action dev="pramirez" type="add">
+        PDS-39 Added endpoint to allow for replication from a remote registry.
+      </action>
     </release>
 
     <release version="0.6.0" date="2011-03-25" description="This release of the Registry Service is a component of the integrated release 1.1.0 of the PDS 2010 System.">
