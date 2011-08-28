@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!-- PDS4 XML/Schema for Local_DD_0.4.1.1.f  Sat Aug 27 06:57:16 PDT 2011 -->
+  <!-- Generated from the PDS4 Information Model V0.4.1.1.f -->
+  <!-- *** This PDS4 product schema is a preliminary deliverable. *** -->
+  <!-- *** It is being made available for review and testing. *** -->
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://pds.nasa.gov/schema/pds4/pds/v04"
+    xmlns:pds="http://pds.nasa.gov/schema/pds4/pds/v04"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    version="0.4.1.1">
+ 
+    <xsd:include schemaLocation="Class_Types_0411f.xsd">
+      <xsd:annotation>
+        <xsd:documentation>PDS (common) Data Dictionary - Tagged Data Objects</xsd:documentation>
+      </xsd:annotation>
+    </xsd:include>
+ 
+  <!-- <xsd:import namespace="http://pds.nasa.gov/schema/pds4/anyNS"
+    schemaLocation="Any_Described_Data_Object_0411f.xsd"/> -->
+
+  <xsd:complexType name="Local_DD">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Local_DD class provides a form for collecting class and attribute definitions for a data dictionary.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="local_identifier" type="pds:local_identifier" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TNDO_Supplemental:local_identifier -->
+      <xsd:element name="comment" type="pds:comment" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:Local_DD:comment -->
+      <xsd:element name="full_name" type="pds:full_name" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:Local_DD:full_name -->
+      <xsd:element name="last_modification_date_time" type="pds:last_modification_date_time" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:Local_DD:last_modification_date_time -->
+      <xsd:element name="pds4_merge_flag" type="pds:pds4_merge_flag" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:Local_DD:pds4_merge_flag -->
+      <xsd:element name="DD_Attribute" type="pds:DD_Attribute" minOccurs="1" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Attribute -->
+      <xsd:element name="DD_Class" type="pds:DD_Class" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Class -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="DD_Attribute">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The DD_Attribute class defines an attribute for a data dictionary.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="local_identifier" type="pds:local_identifier" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:TNDO_Supplemental:local_identifier -->
+      <xsd:element name="comment" type="pds:comment" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Attribute:comment -->
+      <xsd:element name="version_id" type="pds:version_id" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Attribute:version_id -->
+      <xsd:element name="name" type="pds:name" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Attribute:name -->
+      <xsd:element name="steward_id" type="pds:steward_id" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Attribute:steward_id -->
+      <xsd:element name="name_space_id" type="pds:name_space_id" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Attribute:name_space_id -->
+      <xsd:element name="submitter_id" type="pds:submitter_id" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Attribute:submitter_id -->
+      <xsd:element name="definition" type="pds:definition" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Attribute:definition -->
+      <xsd:element name="DD_Value_Domain" type="pds:DD_Value_Domain" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Value_Domain -->
+      <xsd:element name="Terminological_Entry" type="pds:Terminological_Entry" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:Terminological_Entry -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="DD_Value_Domain">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The DD_Value_Domain class defines the value domain for a data dictionary attribute.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="enumeration_flag" type="pds:enumeration_flag" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Value_Domain:enumeration_flag -->
+      <xsd:element name="formation_rule" type="pds:formation_rule" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Value_Domain:formation_rule -->
+      <xsd:element name="minimum_characters" type="pds:minimum_characters" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Value_Domain:minimum_characters -->
+      <xsd:element name="maximum_characters" type="pds:maximum_characters" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Value_Domain:maximum_characters -->
+      <xsd:element name="minimum_value" type="pds:minimum_value" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Value_Domain:minimum_value -->
+      <xsd:element name="maximum_value" type="pds:maximum_value" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Value_Domain:maximum_value -->
+      <xsd:element name="pattern" type="pds:pattern" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Value_Domain:pattern -->
+      <xsd:element name="unit_of_measure_type" type="pds:unit_of_measure_type" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Value_Domain:unit_of_measure_type -->
+      <xsd:element name="specified_unit_id" type="pds:specified_unit_id" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Value_Domain:specified_unit_id -->
+      <xsd:element name="value_data_type" type="pds:value_data_type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Value_Domain:value_data_type -->
+      <xsd:element name="DD_Permissible_Value" type="pds:DD_Permissible_Value" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Permissible_Value -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="DD_Permissible_Value">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The DD_Permissible_Value class lists permissible values and their meanings.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="value" type="pds:value" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Permissible_Value:value -->
+      <xsd:element name="value_meaning" type="pds:value_meaning" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Permissible_Value:value_meaning -->
+      <xsd:element name="value_begin_date" type="pds:value_begin_date" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Permissible_Value:value_begin_date -->
+      <xsd:element name="value_end_date" type="pds:value_end_date" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Permissible_Value:value_end_date -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Terminological_Entry">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The terminological_entry class provides the name (designation) and definition of the attribute in a specified natural language.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="name" type="pds:name" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Terminological_Entry:name -->
+      <xsd:element name="definition" type="pds:definition" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Terminological_Entry:definition -->
+      <xsd:element name="language" type="pds:language" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Terminological_Entry:language -->
+      <xsd:element name="preferred_flag" type="pds:preferred_flag" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:Terminological_Entry:preferred_flag -->
+      <xsd:element name="Bibliographic_Reference" type="pds:Bibliographic_Reference" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Bibliographic_Reference">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Bibliographic Reference  class provides references to documents that are not regisered with the PDS.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="name" type="pds:name" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:name -->
+      <xsd:element name="description" type="pds:description" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:description -->
+      <xsd:element name="doi" type="pds:doi" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:doi -->
+      <xsd:element name="reference_text" type="pds:reference_text" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:reference_text -->
+      <xsd:element name="url" type="pds:url" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:url -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="DD_Class">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The DD_Class class defines a user class, a collection of attributes in a data dictionary.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="local_identifier" type="pds:DD_Class_local_identifier" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Class:local_identifier -->
+      <xsd:element name="version_id" type="pds:version_id" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Class:version_id -->
+      <xsd:element name="name" type="pds:name" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Class:name -->
+      <xsd:element name="steward_id" type="pds:steward_id" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Class:steward_id -->
+      <xsd:element name="name_space_id" type="pds:name_space_id" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Class:name_space_id -->
+      <xsd:element name="definition" type="pds:definition" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Class:definition -->
+      <xsd:element name="DD_Association" type="pds:DD_Association" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Association -->
+      <xsd:element name="Terminological_Entry" type="pds:Terminological_Entry" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:Terminological_Entry -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="DD_Association">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The DD_Association class defines the association between two classes or a class and an attribute in a data dictionary.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="local_identifier" type="pds:local_identifier" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Association:local_identifier -->
+      <xsd:element name="constant_value" type="pds:constant_value" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Association:constant_value -->
+      <xsd:element name="maximum_occurrences" type="pds:maximum_occurrences" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Association:maximum_occurrences -->
+      <xsd:element name="minimum_occurrences" type="pds:minimum_occurrences" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Association:minimum_occurrences -->
+      <xsd:element name="reference_association_type" type="pds:reference_association_type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:DD_Association:reference_association_type -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="Local_DD" type="pds:Local_DD">
+    <xsd:annotation>
+      <xsd:documentation>
+        The Local_DD XML Schema
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:schema>
