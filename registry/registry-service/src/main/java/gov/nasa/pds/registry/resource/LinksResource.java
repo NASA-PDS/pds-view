@@ -1,16 +1,16 @@
-//	Copyright 2009-2010, by the California Institute of Technology.
-//	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
-//	Any commercial use must be negotiated with the Office of Technology 
-//	Transfer at the California Institute of Technology.
-//	
-//	This software is subject to U. S. export control laws and regulations 
-//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
-//	is subject to U.S. export control laws and regulations, the recipient has 
-//	the responsibility to obtain export licenses or other export authority as 
-//	may be required before exporting such information to foreign countries or 
-//	providing access to foreign nationals.
-//	
-//	$Id$
+//  Copyright 2009-2011, by the California Institute of Technology.
+//  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+//  Any commercial use must be negotiated with the Office of Technology 
+//  Transfer at the California Institute of Technology.
+//  
+//  This software is subject to U. S. export control laws and regulations 
+//  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+//  is subject to U.S. export control laws and regulations, the recipient has 
+//  the responsibility to obtain export licenses or other export authority as 
+//  may be required before exporting such information to foreign countries or 
+//  providing access to foreign nationals.
+//  
+//  $Id$
 //
 
 package gov.nasa.pds.registry.resource;
@@ -44,11 +44,11 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 /**
- * This resource manages ExternalLinks which are essentially URIs to items that
+ * This resource is responsible for managing External Links with the 
+ * registry service. External links are essentially URIs to items that 
  * are outside the control of the registry.
  * 
  * @author pramirez
- * 
  */
 public class LinksResource {
 
@@ -69,7 +69,7 @@ public class LinksResource {
   }
 
   /**
-   * Publishes a link to the registry.
+   * Publishes an external link to the registry.
    * 
    * @request.representation.qname {http://registry.pds.nasa.gov}externalLink
    * @request.representation.mediaType application/xml
@@ -102,7 +102,7 @@ public class LinksResource {
   }
 
   /**
-   * Retrieves the external link with the given identifier.
+   * Retrieves the external link with the given global identifier.
    * 
    * @response.representation.200.qname 
    *                                    {http://registry.pds.nasa.gov}externalLink
@@ -126,7 +126,7 @@ public class LinksResource {
   }
 
   /**
-   * Deletes the external link from the registry.
+   * Deletes the external link with the given global identifier.
    * 
    * @param guid
    *          globally unique identifier of link
@@ -140,12 +140,12 @@ public class LinksResource {
   }
 
   /**
-   * Allows update of a ExternalLink.
+   * Updates the external link with the given global identifier.
    * 
    * @param guid
    *          globally unique identifier of the service
    * @param link
-   *          updates to the liunk
+   *          updates to the link
    * @return returns an HTTP response that indicates an error or ok
    */
   @PUT
@@ -157,12 +157,13 @@ public class LinksResource {
   }
 
   /**
-   * This method is to support clients that can not do a PUT operation
+   * Updates the external link with the given global identifier. This 
+   * method supports clients that can not do a PUT operation.
    * 
    * @param guid
    *          globally unique identifier of the service
    * @param link
-   *          updates to the liunk
+   *          updates to the link
    * @return returns an HTTP response that indicates an error or ok
    */
   @POST
@@ -173,6 +174,10 @@ public class LinksResource {
     return this.updateLink(guid, link);
   }
 
+  /**
+   * Retrieves all external links managed by the registry given a set of 
+   * filters.
+   */
   @SuppressWarnings("unchecked")
   @GET
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

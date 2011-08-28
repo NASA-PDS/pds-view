@@ -1,16 +1,16 @@
-//	Copyright 2009-2010, by the California Institute of Technology.
-//	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
-//	Any commercial use must be negotiated with the Office of Technology 
-//	Transfer at the California Institute of Technology.
-//	
-//	This software is subject to U. S. export control laws and regulations 
-//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
-//	is subject to U.S. export control laws and regulations, the recipient has 
-//	the responsibility to obtain export licenses or other export authority as 
-//	may be required before exporting such information to foreign countries or 
-//	providing access to foreign nationals.
-//	
-//	$Id$
+//  Copyright 2009-2011, by the California Institute of Technology.
+//  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+//  Any commercial use must be negotiated with the Office of Technology 
+//  Transfer at the California Institute of Technology.
+//  
+//  This software is subject to U. S. export control laws and regulations 
+//  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+//  is subject to U.S. export control laws and regulations, the recipient has 
+//  the responsibility to obtain export licenses or other export authority as 
+//  may be required before exporting such information to foreign countries or 
+//  providing access to foreign nationals.
+//  
+//  $Id$
 //
 
 package gov.nasa.pds.registry.resource;
@@ -33,10 +33,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * This is the registry resource for managing the registry.
+ * This is the top-level resource for the registry service.
  * 
  * @author pramirez
- * 
  */
 @Path("")
 @Component
@@ -52,6 +51,10 @@ public class RegistryResource {
   @Autowired
   RegistryService registryService;
 
+  /**
+   * Returns a welcome message from the registry service. Can be used 
+   * to ping the registry.
+   */
   @GET
   public Response getRegistryResources() {
     Response.ResponseBuilder builder = Response
@@ -94,8 +97,8 @@ public class RegistryResource {
   }
 
   /**
-   * Retrieve the status of the registry service. This can be used to monitor
-   * the health of the registry.
+   * Returns a report of objects registered with the registry service. 
+   * Can be used to monitor the health of the registry.
    * 
    * @response.representation.200.qname {http://registry.pds.nasa.gov}report
    * @response.representation.200.mediaType application/xml

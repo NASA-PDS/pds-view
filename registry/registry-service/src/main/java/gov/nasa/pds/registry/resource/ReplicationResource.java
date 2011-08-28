@@ -1,16 +1,16 @@
-//	Copyright 2009-2010, by the California Institute of Technology.
-//	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
-//	Any commercial use must be negotiated with the Office of Technology 
-//	Transfer at the California Institute of Technology.
-//	
-//	This software is subject to U. S. export control laws and regulations 
-//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
-//	is subject to U.S. export control laws and regulations, the recipient has 
-//	the responsibility to obtain export licenses or other export authority as 
-//	may be required before exporting such information to foreign countries or 
-//	providing access to foreign nationals.
-//	
-//	$Id$
+//  Copyright 2009-2011, by the California Institute of Technology.
+//  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+//  Any commercial use must be negotiated with the Office of Technology 
+//  Transfer at the California Institute of Technology.
+//  
+//  This software is subject to U. S. export control laws and regulations 
+//  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+//  is subject to U.S. export control laws and regulations, the recipient has 
+//  the responsibility to obtain export licenses or other export authority as 
+//  may be required before exporting such information to foreign countries or 
+//  providing access to foreign nationals.
+//  
+//  $Id$
 //
 
 package gov.nasa.pds.registry.resource;
@@ -34,10 +34,9 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 /**
- * This resource is responsible for managing replication requests
+ * This resource is responsible for managing replication requests.
  * 
  * @author pramirez
- * 
  */
 @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 public class ReplicationResource {
@@ -58,7 +57,7 @@ public class ReplicationResource {
   }
 
   /**
-   * Requests a replication of a remote registry contents to be started.
+   * Requests a replication of a remote registry contents to be initiated.
    * 
    * @param registryUrl
    *          to replicate contents from
@@ -91,7 +90,7 @@ public class ReplicationResource {
   }
 
   /**
-   * Allows one to get some information about the ongoing replication
+   * Retrieves information about an ongoing replication request.
    * 
    * @return the report of the ongoing or last finished replication event if no
    *         replication event has occurred since the server was restarted a 404

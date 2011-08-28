@@ -1,16 +1,16 @@
-//	Copyright 2009-2010, by the California Institute of Technology.
-//	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
-//	Any commercial use must be negotiated with the Office of Technology 
-//	Transfer at the California Institute of Technology.
-//	
-//	This software is subject to U. S. export control laws and regulations 
-//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
-//	is subject to U.S. export control laws and regulations, the recipient has 
-//	the responsibility to obtain export licenses or other export authority as 
-//	may be required before exporting such information to foreign countries or 
-//	providing access to foreign nationals.
-//	
-//	$Id$
+//  Copyright 2009-2011, by the California Institute of Technology.
+//  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+//  Any commercial use must be negotiated with the Office of Technology 
+//  Transfer at the California Institute of Technology.
+//  
+//  This software is subject to U. S. export control laws and regulations 
+//  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+//  is subject to U.S. export control laws and regulations, the recipient has 
+//  the responsibility to obtain export licenses or other export authority as 
+//  may be required before exporting such information to foreign countries or 
+//  providing access to foreign nationals.
+//  
+//  $Id$
 //
 
 package gov.nasa.pds.registry.resource;
@@ -44,8 +44,10 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 /**
+ * This resource is responsible for managing Packages with the 
+ * registry service.
+ *
  * @author pramirez
- * 
  */
 public class PackagesResource {
   @Context
@@ -103,7 +105,7 @@ public class PackagesResource {
   }
 
   /**
-   * Retrieves a package with the given global identifier.
+   * Retrieves the package with the given global identifier.
    * 
    * @response.representation.200.qname 
    *                                    {http://registry.pds.nasa.gov}registryPackage
@@ -125,7 +127,7 @@ public class PackagesResource {
   }
 
   /**
-   * Deletes the package with the given guid
+   * Deletes the package with the given global identifier.
    * 
    * @param packageGuid
    *          of package
@@ -139,7 +141,7 @@ public class PackagesResource {
   }
 
   /**
-   * This will delete of all the members of a package
+   * Deletes all the members of a package with the given global identifier.
    * 
    * @param packageGuid
    *          unique identifier of package to look up members of 
@@ -157,7 +159,8 @@ public class PackagesResource {
   }
   
   /**
-   * This will change the status of all the members of a package
+   * Updates the status of all the members of the package with the given 
+   * global identifier.
    * 
    * @param packageGuid
    *          unique identifier of package to look up members of 
@@ -177,6 +180,9 @@ public class PackagesResource {
     }
   }
 
+  /**
+   * Retrieves all packages managed by the registry given a set of filters.
+   */ 
   @SuppressWarnings("unchecked")
   @GET
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

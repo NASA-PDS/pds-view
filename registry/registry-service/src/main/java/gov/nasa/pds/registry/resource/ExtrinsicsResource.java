@@ -1,16 +1,16 @@
-//	Copyright 2009-2010, by the California Institute of Technology.
-//	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
-//	Any commercial use must be negotiated with the Office of Technology 
-//	Transfer at the California Institute of Technology.
-//	
-//	This software is subject to U. S. export control laws and regulations 
-//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
-//	is subject to U.S. export control laws and regulations, the recipient has 
-//	the responsibility to obtain export licenses or other export authority as 
-//	may be required before exporting such information to foreign countries or 
-//	providing access to foreign nationals.
-//	
-//	$Id$
+//  Copyright 2009-2011, by the California Institute of Technology.
+//  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+//  Any commercial use must be negotiated with the Office of Technology 
+//  Transfer at the California Institute of Technology.
+//  
+//  This software is subject to U. S. export control laws and regulations 
+//  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+//  is subject to U.S. export control laws and regulations, the recipient has 
+//  the responsibility to obtain export licenses or other export authority as 
+//  may be required before exporting such information to foreign countries or 
+//  providing access to foreign nationals.
+//  
+//  $Id$
 //
 
 package gov.nasa.pds.registry.resource;
@@ -47,7 +47,8 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 /**
- * This resource is responsible for managing collections of Products.
+ * This resource is responsible for managing Extrinsics with the 
+ * registry service.
  * 
  * @author pramirez
  * 
@@ -71,7 +72,7 @@ public class ExtrinsicsResource {
   }
 
   /**
-   * Allows access to all the extrinsics managed by this repository. This list
+   * Allows access to all the extrinsics managed by the registry. This list
    * of extrinsics is based on the latest received extrinsic's logical
    * identifier (lid). The header will contain pointers to next and previous
    * when applicable.
@@ -156,7 +157,7 @@ public class ExtrinsicsResource {
   }
 
   /**
-   * Publishes a extrinsic object to the registry. Publishing includes
+   * Publishes an extrinsic object to the registry. Publishing includes
    * validation, assigning an internal version, validating the submission, and
    * notification. The submitted extrinsic object should not contain the same
    * logical identifier as previously submitted extrinsic (412 Precondition
@@ -195,7 +196,7 @@ public class ExtrinsicsResource {
   }
 
   /**
-   * Creates a new version of a product in the registry. Follows the same
+   * Creates a new version of an extrinsic in the registry. Follows the same
    * procedures as publishing with the caveat that the logical identifier this
    * product carries should already exist in the registry (412 Precondition
    * Failed).
@@ -236,7 +237,7 @@ public class ExtrinsicsResource {
   }
 
   /**
-   * Retrieves the collection of extrinsics that share the same local
+   * Retrieves the collection of extrinsics that share the same logical
    * identifier. This method supports finding all versions of extrinsic.
    * 
    * @response.representation.200.qname {http://registry.pds.nasa.gov}response
@@ -263,8 +264,8 @@ public class ExtrinsicsResource {
   }
 
   /**
-   * Retrieves the earliest product from the registry. The local identifier
-   * points to a collection of versions of the same product.
+   * Retrieves the earliest extrinsic from the registry. The logical identifier
+   * points to a collection of versions of the same extrinsic.
    * 
    * @response.representation.200.qname 
    *                                    {http://registry.pds.nasa.gov}extrinsicObject
@@ -293,7 +294,7 @@ public class ExtrinsicsResource {
   }
 
   /**
-   * Retrieves the latest extrinsic from the registry. The local identifier
+   * Retrieves the latest extrinsic from the registry. The logical identifier
    * points to a collection of versions of the same extrinsic.
    * 
    * @response.representation.200.qname 
@@ -323,8 +324,8 @@ public class ExtrinsicsResource {
   }
 
   /**
-   * Retrieves a single extrinsic from the registry. The local identifier with
-   * the version uniquely identifies one extrinsic.
+   * Retrieves a single extrinsic from the registry. The logical identifier 
+   * with the version uniquely identifies one extrinsic.
    * 
    * @response.representation.200.qname 
    *                                    {http://registry.pds.nasa.gov}extrinsicObject
@@ -362,7 +363,8 @@ public class ExtrinsicsResource {
   }
 
   /**
-   * Updates an existing extrinsic with the given local identifier and version.
+   * Updates the existing extrinsic with the given logical identifier and 
+   * version.
    * 
    * @param guid
    *          unique identifier of registry item
@@ -381,7 +383,7 @@ public class ExtrinsicsResource {
   }
 
   /**
-   * Removes an extrinsic from the registry.
+   * Removes the extrinsic with the given global identifier.
    * 
    * @param guid
    *          unique identifier of registry item
@@ -396,7 +398,7 @@ public class ExtrinsicsResource {
   }
 
   /**
-   * This will change the status of the registered extrinsic
+   * Updates the status of the extrinsic with the given global identifier.
    * 
    * @param guid
    *          unique identifier of registry item

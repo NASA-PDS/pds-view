@@ -1,16 +1,16 @@
-//	Copyright 2009-2010, by the California Institute of Technology.
-//	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
-//	Any commercial use must be negotiated with the Office of Technology 
-//	Transfer at the California Institute of Technology.
-//	
-//	This software is subject to U. S. export control laws and regulations 
-//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
-//	is subject to U.S. export control laws and regulations, the recipient has 
-//	the responsibility to obtain export licenses or other export authority as 
-//	may be required before exporting such information to foreign countries or 
-//	providing access to foreign nationals.
-//	
-//	$Id$
+//  Copyright 2009-2011, by the California Institute of Technology.
+//  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+//  Any commercial use must be negotiated with the Office of Technology 
+//  Transfer at the California Institute of Technology.
+//  
+//  This software is subject to U. S. export control laws and regulations 
+//  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+//  is subject to U.S. export control laws and regulations, the recipient has 
+//  the responsibility to obtain export licenses or other export authority as 
+//  may be required before exporting such information to foreign countries or 
+//  providing access to foreign nationals.
+//  
+//  $Id$
 //
 
 package gov.nasa.pds.registry.resource;
@@ -44,11 +44,10 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 /**
- * This resource is responsible for managing operations involving Classification
- * Schemes.
+ * This resource is responsible for managing Classification Schemes with 
+ * the registry service.
  * 
  * @author pramirez
- * 
  */
 public class SchemesResource {
 
@@ -69,7 +68,7 @@ public class SchemesResource {
   }
 
   /**
-   * Publishes a Classification Scheme to the registry.
+   * Publishes a classification scheme to the registry.
    * 
    * @request.representation.qname 
    *                               {http://registry.pds.nasa.gov}classificationScheme
@@ -105,7 +104,7 @@ public class SchemesResource {
   }
 
   /**
-   * Retrieves the classification scheme with the given identifier
+   * Retrieves the classification scheme with the given global identifier.
    * 
    * @response.representation.200.qname 
    *                                    {http://registry.pds.nasa.gov}classificationScheme
@@ -130,7 +129,7 @@ public class SchemesResource {
   }
 
   /**
-   * Deletes the classification scheme with the given guid
+   * Deletes the classification scheme with the given global identifier.
    * 
    * @param schemeGuid
    *          globally unique id of scheme
@@ -146,7 +145,7 @@ public class SchemesResource {
   }
 
   /**
-   * Retrieves the classification nodes for the scheme
+   * Retrieves the classification nodes for the given classification scheme.
    * 
    * @response.representation.200.qname {http://registry.pds.nasa.gov}response
    * @response.representation.200.mediaType application/xml
@@ -173,6 +172,10 @@ public class SchemesResource {
     }
   }
 
+  /**
+   * Retrieves all classification schemes managed by the registry given a 
+   * set of filters.
+   */
   @SuppressWarnings("unchecked")
   @GET
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

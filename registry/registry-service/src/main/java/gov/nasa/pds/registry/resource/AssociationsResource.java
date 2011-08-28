@@ -1,4 +1,4 @@
-//	Copyright 2009-2010, by the California Institute of Technology.
+//	Copyright 2009-2011, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -43,10 +43,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 /**
- * This is the resource responsible for managing Associations
+ * This resource is responsible for managing Associations with the 
+ * registry service.
  * 
  * @author pramirez
- * 
  */
 public class AssociationsResource {
 
@@ -184,7 +184,7 @@ public class AssociationsResource {
   }
 
   /**
-   * Deletes the association with the given guid
+   * Deletes the association with the given global identifier.
    * 
    * @param guid
    *          of association
