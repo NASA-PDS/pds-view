@@ -535,6 +535,7 @@ public class RegistryServiceImpl implements RegistryService {
       hasMember.setHome(idGenerator.getHome());
       hasMember.setSourceObject(packageId);
       hasMember.setTargetObject(registryObject.getGuid());
+      hasMember.setStatus(ObjectStatus.Submitted);
       hasMember.setAssociationType("urn:registry:AssociationType:HasMember");
       Set<Slot> slots = new HashSet<Slot>();
       Slot targetObjectType = new Slot("targetObjectType", Arrays
