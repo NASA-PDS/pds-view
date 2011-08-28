@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Example of a Harvest policy configuration file that will do PDS3 data
-    product registration  -->
+
+<!--
+  Harvest Tool Example Policy File
+
+  This policy file provides an example configuration for registering 
+  PDS3 products. By specifying the base path below, Harvest crawls 
+  the directory structure recursively looking for files with an extension 
+  of "LBL".
+
+  $Id$
+-->
+
 <policy>
   <!-- Specify a single directory containing the PDS3 data products to
     register -->
   <pds3Directory>
-    <path>/Users/mcayanan/pds3</path>
+    <path>$HOME/pds3</path>
     <filePattern>*.LBL</filePattern>
   </pds3Directory>
   <candidates>
@@ -18,11 +28,11 @@
         <associations>
           <!-- Specify either a LID or LIDVID reference -->
           <association>
-            <referenceType>has_Target</referenceType>
+            <referenceType>has_target</referenceType>
             <lidVidReference>URN:NASA:PDS:target.MARS::1.0</lidVidReference>
           </association>
           <association>
-            <referenceType>has_Mission</referenceType>
+            <referenceType>has_mission</referenceType>
             <lidReference>URN:NASA:PDS:mission.MER</lidReference>
           </association>
         </associations>
