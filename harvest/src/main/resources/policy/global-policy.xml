@@ -184,7 +184,7 @@
         <xPath>//Subject_Area/observing_system_name</xPath>
         <xPath>//Subject_Area/target_name</xPath>
      </productMetadata>
-     <productMetadata objectType="Product_Bundle">
+     <productMetadata objectType="Product_Archive_Bundle">
         <xPath>//Data_Standards/dd_version_id</xPath>
         <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//last_modification_date_time</xPath>
@@ -197,7 +197,7 @@
         <xPath>//Subject_Area/observing_system_name</xPath>
         <xPath>//Subject_Area/target_name</xPath>
      </productMetadata>
-     <productMetadata objectType="Archive_Bundle">
+     <productMetadata objectType="Product_Bundle">
         <xPath>//Data_Standards/dd_version_id</xPath>
         <xPath>//Data_Standards/std_ref_version_id</xPath>
         <xPath>//last_modification_date_time</xPath>
