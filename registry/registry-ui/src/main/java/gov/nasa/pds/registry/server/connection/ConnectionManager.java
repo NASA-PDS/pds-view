@@ -26,6 +26,7 @@ import java.util.Set;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.ws.rs.core.MediaType;
 
 /**
  * Manager to send and receive info from remote registry service.
@@ -215,7 +216,9 @@ public class ConnectionManager {
 
     // create an instance of the registry client
     try {
-      return new RegistryClient(serviceEndpoint);
+      RegistryClient client = new RegistryClient(serviceEndpoint);
+      client.setMediaType(MediaType.APPLICATION_XML);
+      return client;
     } catch (RegistryClientException e) {
       System.out.println(e.getMessage());
       return null;
@@ -257,7 +260,11 @@ public class ConnectionManager {
       vProduct.setHome(product.getHome());
       vProduct.setLid(product.getLid());
       vProduct.setObjectType(product.getObjectType());
-      vProduct.setStatus(product.getStatus().toString());
+      if (product.getStatus() == null) {
+        vProduct.setStatus("Unknown");
+      } else {
+        vProduct.setStatus(product.getStatus().toString());
+      }
       vProduct.setName(product.getName());
       // There is no longer a PDS internal version so copy name
       vProduct.setVersionId(product.getVersionName());
@@ -293,7 +300,11 @@ public class ConnectionManager {
 
       vAssociation.setLid(association.getLid());
       vAssociation.setObjectType(association.getObjectType());
-      vAssociation.setStatus(association.getStatus().toString());
+      if (association.getStatus() == null) {
+        vAssociation.setStatus("Unknown");
+      } else {
+        vAssociation.setStatus(association.getStatus().toString());
+      }
       vAssociation.setName(association.getName());
       // There is no longer a PDS internal version so copy name
       vAssociation.setVersionId(association.getVersionName());
