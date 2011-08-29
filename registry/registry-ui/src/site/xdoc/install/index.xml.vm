@@ -31,7 +31,6 @@
       <ul>
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
-        <li><a href="#Configuring_Service_Endpoint">Configuring Service Endpoint</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
       </ul>
     </section>
@@ -80,21 +79,18 @@ or
       </ul>
     </section>
 
-    <section name="Configuring Service Endpoint">
-      <p>The Registry User Interface software is configured at build time to access a specific Registry Service endpoint. If this configuration requires modification, the WAR file will need to be unpacked and the <i>./WEB-INF/classes/application.properties</i> file modified. The file contents are as follows:
-      </p>
-
-      <source>
-service.endpoint=http\://{host}\:{port}/registry-service/
-      </source>
-
-      <p>Modify the values contained in the {} according to the desired Registry Service endpoint, save the file and repack the WAR file.
-      </p>
-    </section>
-
     <section name="Deploying the Application">
       <p>The Registry User Interface web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation the WAR file should be renamed from <i>${xdoc-artifactId}-${xdoc-version}.war</i> to <i>${xdoc-artifactId}.war</i>. A WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation.
       </p>
+
+      <subsection name="Registry Service End Point Configuration">
+        <p>By default, the Registry User Interface comes configured to access the Registry Service at the specific end point <i>http://localhost:8080/registry</i>. This should be modified to represent the end point of the Registry Service target installation. To modify the configuration, edit the <i>application.properties</i> file located in the <i>$TOMCAT_HOME/webapps/${xdoc-artifactId}/WEB-INF/classes</i> directory. Modify the following line with the new end point:
+        </p>
+
+        <source>
+service.endpoint=http\://localhost\:8080/registry/
+        </source>
+      </subsection>
     </section>
   </body>
 </document>

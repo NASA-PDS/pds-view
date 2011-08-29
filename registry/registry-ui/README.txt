@@ -18,7 +18,7 @@ following commands:
 
 The project still relies on Maven 1 functionality to generate the PDF form 
 of the documentation. Replace the {URL} placeholder with URL for the 
-Registry Service. It should end with ".../registry-service/".
+Registry Service. It should end with ".../registry/".
 
 For ease of deployment to an Apache Tomcat Server, use the 
 "mvn tomcat:deploy" command. The tomcat-maven-plugin is configured in the 

@@ -61,7 +61,7 @@
 		<description>Path to registry service REST interface, defaults in
 			java code to localhost:8080</description>
 		<env-entry-name>serviceEndpoint</env-entry-name>
-		<env-entry-value>http://localhost:8080/registry-service/</env-entry-value>
+		<env-entry-value>http://localhost:8080/registry/</env-entry-value>
 		<env-entry-type>java.lang.String</env-entry-type>
 	</env-entry>
 
