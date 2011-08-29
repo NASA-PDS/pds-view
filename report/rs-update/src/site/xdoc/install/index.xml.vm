@@ -43,7 +43,7 @@
     </section>
 
     <section name="Unpacking the Package">
-      <p>Download the <i>${xdoc-artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/report/rs-update/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. Unpack the selected binary distribution file with one of the following commands:
+      <p>Download the <i>${xdoc-artifactId}</i> package from the internal PDS <a href="http://starcell.jpl.nasa.gov/maven2/gov/nasa/pds/${xdoc-artifactId}/${xdoc-version}/" target="_blank">Maven</a> repository. The binary distribution is available in identical zip or tar/gzip packages. Unpack the selected binary distribution file with one of the following commands:
       </p>
 
       <source>

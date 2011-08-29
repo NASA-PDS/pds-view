@@ -47,12 +47,12 @@
       <p>The Profile Setup software also requires a <a href="http://www.mysql.com/" target="_blank">MySQL</a> Server installation for hosting the Report Service database. The application was tested using the Community Server 5.X.X.
       </p>
 
-      <p>The web application also requires that Sawmill (8.X.X) be installed on the local machine in order for the software to perform its duty of configuring profiles for the service as needed. See the <a href="../../sawmill/install/index.html">Sawmill Installation Instructions</a> for more detail.
+      <p>The web application also requires that Sawmill (8.X.X) be installed on the local machine in order for the software to perform its duty of configuring profiles for the service as needed. See the <a href="../../sawmill/install/index.html">Sawmill Installation</a> instructions for more detail.
       </p>
     </section>
 
     <section name="Unpacking the Package">
-      <p>Download the <i>${xdoc-artifactId}</i> package from the <a href="http://starcell.jpl.nasa.gov/maven2/gov/nasa/pds/${xdoc-artifactId}/${xdoc-version}/" target="_blank">PDS Maven Repository</a>. The binary distribution is available in identical zip or tar/gzip packages. Unpack the selected binary distribution file with one of the following commands:
+      <p>Download the <i>${xdoc-artifactId}</i> package from the internal PDS <a href="http://starcell.jpl.nasa.gov/maven2/gov/nasa/pds/${xdoc-artifactId}/${xdoc-version}/" target="_blank">Maven</a> repository. The binary distribution is available in identical zip or tar/gzip packages. Unpack the selected binary distribution file with one of the following commands:
       </p>
 
       <source>
