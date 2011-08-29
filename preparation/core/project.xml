@@ -19,7 +19,7 @@
 <project>
   <id>core</id>
   <name>Core Library</name>
-  <currentVersion>0.3.0-dev</currentVersion>
+  <currentVersion>0.3.0</currentVersion>
 
   <organization>
     <name>NASA Jet Propulsion Laboratory, California Institute of Technology</name>
