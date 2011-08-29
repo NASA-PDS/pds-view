@@ -16,15 +16,17 @@
   $Id$
 -->
 
-<project>
+<document>
+  <properties>
+    <title>Release Changes</title>
+    <author email="Jordan.Padams@jpl.nasa.gov">Jordan Padams</author>
+  </properties>
+
   <body>
-    <menu name="Generate Tool Guide">
-      <item name="Overview" href="index.html"/>
-      <item name="Release Notes" href="release/index.html"/>
-      <item name="Installation" href="install/index.html"/>
-      <item name="Operation" href="operate/index.html"/>
-      <item name="Appendix A - UNIX Setup Options" href="operate/index-unix.html"/>
-      <item name="Appendix B - Windows Setup Options" href="operate/index-win.html"/>
-    </menu>
+    <release version="0.1.0" date="2011-08-29" description="This release of the Generate Tool is a component of the integrated release 1.2.0 of the PDS 2010 System.">
+      <action dev="jpadams" type="add">
+        Initial capabilities for generating PDS4 product labels from PDS3 product labels.
+      </action>
+    </release>
   </body>
-</project>
+</document>

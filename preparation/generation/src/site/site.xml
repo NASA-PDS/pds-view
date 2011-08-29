@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -16,32 +16,34 @@
   $Id$
 -->
 
-<project name="PDS4 Generation Tool">
+<project name="Generate Tool">
   <bannerLeft>
     <src>images/pds4_logo.jpg</src>
     <href>http://pds-cm.jpl.nasa.gov/2010/</href>
   </bannerLeft>
 
   <bannerRight>
-    <name>PDS4 Generation Tool</name>
+    <name>Generate Tool</name>
   </bannerRight>
 
   <version/>
 
   <body>
     <links>
-      <item name="PDS4 Generation Tool" href="http://pds-cm.jpl.nasa.gov/2010/generation/index.html" />
+      <item name="Generate Tool" href="http://pds-cm.jpl.nasa.gov/2010/preparation/generate/index.html" />
     </links>
 
     <menu name="Software Documentation">
-      <item name="About Generation Tool" href="index.html"/>
+      <item name="About Generate Tool" href="index.html"/>
       <item name="Release Notes" href="release/index.html"/>
       <item name="Installation" href="install/index.html"/>
       <item name="Operation" href="operate/index.html"/>
     </menu>
 
     <menu name="Download">
-      <item name="Generation Tool Guide (pdf)" href="${project.artifactId}-${project.version}.pdf"/>
+      <item name="Generate Tool Guide (pdf)" href="${project.artifactId}-${project.version}.pdf"/>
+      <item name="Binary Package (tar.gz)" href="ftp://pds.nasa.gov/pub/toplevel/2010/preparation/${project.artifactId}-${project.version}-bin.tar.gz"/>
+      <item name="Binary Package (zip)" href="ftp://pds.nasa.gov/pub/toplevel/2010/preparation/${project.artifactId}-${project.version}-bin.zip"/>
     </menu>
 
     <menu ref="reports"/>

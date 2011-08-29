@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2009-2010, by the California Institute of Technology.
+  Copyright 2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -24,16 +24,16 @@
     <version>0.0.0</version>
   </parent>
 
-  <groupId>gov.nasa.pds.2010</groupId>
-  <artifactId>generation-tool</artifactId>
-  <version>0.1.0-dev</version>
+  <groupId>gov.nasa.pds.2010.preparation</groupId>
+  <artifactId>generate</artifactId>
+  <version>0.1.0</version>
   <packaging>jar</packaging>
 
-  <name>PDS4 Generation Tool</name>
+  <name>Generate Tool</name>
   <description>
-    TBD
+    The Generate Tool provides a command-line interface for generating PDS4 Labels from either a PDS3 Label or a PDS-specific DOM object.
   </description>
-  <url>http://pdscm/tools/generation</url>
+  <url>http://pds-cm.jpl.nasa.gov/2010/preparation/generate/</url>
 
   <licenses>
     <license>
@@ -99,14 +99,6 @@
       </resource>
     </resources>
     <plugins>
-     <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -125,7 +117,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
-            <descriptor>src/main/assembly/generation.xml</descriptor>
+            <descriptor>src/main/assembly/generate.xml</descriptor>
           </descriptors>
         </configuration>
         <executions>
@@ -172,7 +164,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
         <configuration>
-	  <filesets>
+          <filesets>
             <fileset>
               <directory>${basedir}</directory>
               <includes>
@@ -180,19 +172,20 @@
               </includes>
             </fileset>
           </filesets>
-	</configuration>
+        </configuration>
       </plugin>
     </plugins>
   </build>
 
   <repositories>
+    <!-- Hosts the PDS and OODT artifacts. -->
     <repository>
       <id>pds-repo</id>
       <name>PDS Repository</name>
       <layout>default</layout>
       <url>http://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
-	<enabled>true</enabled>
+        <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>
         <checksumPolicy>warn</checksumPolicy>
       </releases>
@@ -210,7 +203,6 @@
     </pluginRepository>
   </pluginRepositories>
 
-
   <dependencies>
     <dependency>
       <groupId>commons-cli</groupId>
@@ -218,11 +210,11 @@
       <version>1.2</version>
       <scope>compile</scope>
     </dependency>
-  	<dependency>
-		<groupId>org.apache.velocity</groupId>
-		<artifactId>velocity</artifactId>
-		<version>1.7</version>
-	</dependency>
+    <dependency>
+    <groupId>org.apache.velocity</groupId>
+    <artifactId>velocity</artifactId>
+    <version>1.7</version>
+  </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-io</artifactId>
@@ -235,18 +227,20 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>commons-collections</groupId>
-        <artifactId>commons-collections</artifactId>
-        <version>3.2.1</version>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2.1</version>
     </dependency>
     <dependency>
-    	<groupId>jpl.mipl.io</groupId>
-    	<artifactId>vicario</artifactId>
-    	<version>1.0</version>
+      <groupId>jpl.mipl.io</groupId>
+      <artifactId>vicario</artifactId>
+      <version>1.0</version>
     </dependency>
   </dependencies>
 
+  <!-- Project Information and Reports inherited from parent. -->
   <reporting>
+    <!-- Project Reports not inherited from parent. -->
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

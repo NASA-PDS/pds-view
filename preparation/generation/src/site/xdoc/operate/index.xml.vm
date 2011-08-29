@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -38,7 +38,7 @@
     </section>
 
     <section name="Tool Setup">
-      <p>In order to execute the PDS4 Generation Tool, the user's environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.
+      <p>In order to execute the Generate Tool, the user's environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.
       </p>
 
       <subsection name="UNIX-Based Setup">
@@ -87,7 +87,7 @@ C:\&gt; PDS4Generate &lt;command-line arguments&gt;
     </section>
 
     <section name="Tool Execution">
-      <p>PDS4 Generation Tool can be executed in various ways. This section describes how to run the tool, as well as its behaviors and caveats.
+      <p>Generate Tool can be executed in various ways. This section describes how to run the tool, as well as its behaviors and caveats.
       </p>
 
       <subsection name="Command-Line Options">
@@ -106,18 +106,18 @@ C:\&gt; PDS4Generate &lt;command-line arguments&gt;
         </table>
       </subsection>
 
-      <subsection name="Execute PDS4 Generation Tool">
+      <subsection name="Execute Generate Tool">
         <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script. Alternate methods for executing the tool can be found in the <a href="#Tool_Setup">Tool Setup</a> section.
         </p>
 
-        <p>The following command demonstrates how to run the PDS4 Generation Tool to convert from a PDS3 Label to a PDS4 Label using a Velocity template file and output to standard out:
+        <p>The following command demonstrates how to run the Generate Tool to convert from a PDS3 Label to a PDS4 Label using a Velocity template file and output to standard out:
         </p>
 
         <source>
 % PDS4Generate -d -p &lt;pds3-label-path&gt; -t &lt;velocity-template-path&gt;
         </source>
 
-        <p>The following command demonstrates how to run the PDS4 Generation Tool to convert from a PDS3 Label to a PDS4 Label using a Velocity template file and output to a file:
+        <p>The following command demonstrates how to run the Generate Tool to convert from a PDS3 Label to a PDS4 Label using a Velocity template file and output to a file:
         </p>
 
         <source>
@@ -127,7 +127,6 @@ C:\&gt; PDS4Generate &lt;command-line arguments&gt;
 	<p>The output would go into a file &lt;pds3-label-path&gt;_pd4</p>
         
       </subsection>
-
     </section>
   </body>
 </document>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -25,7 +25,7 @@
 
   <body>
     <section name="Installation">
-      <p>This section describes how to install the PDS4 Generation Tool contained in the <i>${xdoc-artifactId}</i> package. The following topics can be found in this section:
+      <p>This section describes how to install the Generate Tool contained in the <i>${xdoc-artifactId}</i> package. The following topics can be found in this section:
       </p>
 
       <ul>
@@ -35,7 +35,7 @@
     </section>
 
     <section name="System Requirements">
-      <p>The PDS4 Generation Tool was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The tool was specifically developed under Sun Java version 1.6, so the tool will execute correctly under 1.6 and future versions.
+      <p>The Generate Tool was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The tool was specifically developed under Sun Java version 1.6, so the tool will execute correctly under 1.6 and future versions.
       </p>
 
       <p>Since the tool was developed using Sun's Java, this is the preferred Java environment for operation. The Sun Java package can be obtained from the <a href="http://java.sun.com/" target="_blank"> Sun Java</a> web site. Other Java environments are relatively compatible with Sun's Java.
@@ -43,7 +43,7 @@
     </section>
 
     <section name="Unpacking the Package">
-      <p>Download the <i>${xdoc-artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/generation/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. Unpack the selected binary distribution file with one of the following commands:
+      <p>Download the <i>${xdoc-artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/preparation/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. Unpack the selected binary distribution file with one of the following commands:
       </p>
 
       <source>
@@ -72,7 +72,7 @@ or
           </p>
         </li>
         <li><b>lib/</b><br/>
-          <p>This directory contains the dependent jar files for the tool along with the executable jar file (${xdoc-artifactId}-${xdoc-version}.jar) containing the PDS4 Generation Tool software.
+          <p>This directory contains the dependent jar files for the tool along with the executable jar file (${xdoc-artifactId}-${xdoc-version}.jar) containing the Generate Tool software.
           </p>
         </li>
       </ul>
