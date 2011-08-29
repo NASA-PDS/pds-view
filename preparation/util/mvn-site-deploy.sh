@@ -29,6 +29,8 @@ cd core
 maven pdf
 cd ../design
 maven pdf
+cd ../generate
+maven pdf
 cd ../validate
 maven pdf
 
