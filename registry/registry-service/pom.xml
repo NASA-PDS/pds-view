@@ -108,7 +108,6 @@
           </execution>
         </executions>
       </plugin>
-      
       <!-- Produce the resourcedoc.xml that includes javadoc comments and special tags. 
            This is the WADL document that will be processed through an XSLT. -->
       <plugin>
@@ -139,7 +138,6 @@
           <additionalparam>-output ${project.build.outputDirectory}/resourcedoc.xml</additionalparam>
         </configuration>
       </plugin>
-      
       <!-- Now build the WADL file -->
       <plugin>
         <groupId>com.sun.jersey.contribs</groupId>
@@ -157,7 +155,7 @@
         <configuration>
           <wadlFile>${project.build.outputDirectory}/application.wadl</wadlFile>
           <formatWadlFile>true</formatWadlFile>
-          <baseUri>http://pds.nasa.gov/registry-service</baseUri>
+          <baseUri>http://pds.nasa.gov/services/registry</baseUri>
           <packagesResourceConfig>
             <param>gov.nasa.pds.registry</param>
             <param>gov.nasa.pds.registry.resource</param>
@@ -195,7 +193,6 @@
           </wadlGenerators>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -248,6 +245,30 @@
               <goal>javadoc</goal>
             </goals>
             <phase>compile</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>site</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/site/api</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}</directory>
+                  <filtering>false</filtering>
+                  <includes>
+                    <include>index.html</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
           </execution>
         </executions>
       </plugin>

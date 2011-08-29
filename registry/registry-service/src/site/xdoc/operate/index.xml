@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -29,7 +29,7 @@
       </p>
 
       <ul>
-        <li><a href="#Service_Interface">Service Interface</a></li>
+        <li><a href="#Interface">Interface</a></li>
         <li><a href="#Publish_Artifacts">Publish Artifacts</a></li>
         <li><a href="#Query_Artifacts">Query Artifacts</a></li>
         <li><a href="#Update_Status">Update Status</a></li>
@@ -41,13 +41,8 @@
 
     </section>
 
-    <section name="Service Interface">
-      <!-- Need to fix API documentation generation.
-      <p>The Registry Service provides a REST-based interface accessible via HTTP for interacting with the service. Details on the REST-based interface can be found in the <a href="../api/index.html">API</a> section. If viewing this document in PDF form, the API section is not available. The API documentation is available from any deployed instance of the Registry Service by accessing <i>/registry-service/docs/</i> from the host application server. Because the REST-based interface operates over HTTP, there are several options for interacting with the Registry Service:
-      </p>
-      -->
-
-      <p>The Registry Service provides a REST-based interface accessible via HTTP for interacting with the service. Because the REST-based interface operates over HTTP, there are several options for interacting with the Registry Service:
+    <section name="Interface">
+      <p>The Registry Service provides a REST-based interface accessible via HTTP for interacting with the service. Details on the REST-based interface can be found in the <a href="../api/index.html">API</a> section. If viewing this document in PDF form, the API section is not available. The API documentation is available from any deployed instance of the Registry Service by accessing <i>/registry/docs/</i> from the host application server. Because the REST-based interface operates over HTTP, there are several options for interacting with the Registry Service:
       </p>
 
       <ul>
@@ -65,7 +60,7 @@
         </li>
       </ul>
 
-      <p>The Registry Service also allows messaging (acceptance of and return of content descriptions) in the form of XML or JavaScript Object Notation (JSON). More on this in the examples below. Each PDS Node may have their own installation of the Registry Service with its own service endpoint. Because of this, the examples below use <i>http://localhost:8080</i> as the generic endpoint for the service.
+      <p>The Registry Service also allows messaging (acceptance of and return of content descriptions) in the form of XML or JavaScript Object Notation (JSON). More on this in the examples below. Each PDS Node will have their own installation of the Registry Service with its own service endpoint. Because of this, the examples below use <i>http://localhost:8080</i> as the generic endpoint for the service.
       </p>
     </section>
 
@@ -73,8 +68,8 @@
       <p>The Registry Service supports a wide range of artifacts for registration with the service. In ebXML terms, artifacts are referred to as Registry Objects. The following subsections provide examples for each of the supported Registry Object types.
       </p>
 
-      <subsection name="Products">
-        <p>In PDS terms, a product can be a data product, document, element definition, mission description, schema, etc. Within the ebXML terminology this maps to an Extrinsic Object which is simply a way for a particular instantiation of a registry to extend its model. The following is an example of a product description in XML form:
+      <subsection name="Extrinsics">
+        <p>In PDS terms, an extrinsic can be a data product, document, element definition, mission description, schema, etc. Within the ebXML terminology this maps to an Extrinsic Object which is simply a way for a particular instantiation of a registry to extend its model. The following is an example of an extrinsic description in XML form:
         </p>
 
         <source>
@@ -99,12 +94,12 @@
 &lt;/extrinsicObject&gt;
         </source>
 
-        <p>The product description above is contained in the <i>new_product.xml</i> file, which can be found in the <i>/examples</i> directory of the software distribution package. The following command registers this product with the service:
+        <p>The extrinsic description above is contained in the <i>new_product.xml</i> file, which can be found in the <i>/examples</i> directory of the software distribution package. The following command registers this extrinsic with the service:
         </p>
 
         <source>
 % curl -X POST -H "Content-type:application/xml" -v -d @new_product.xml \
-http://localhost:8080/registry-service/extrinsics
+http://localhost:8080/registry/extrinsics
         </source>
 
         <p>A successful registration with the above command would produce the following output to standard out: 
@@ -116,7 +111,7 @@ http://localhost:8080/registry-service/extrinsics
 *   Trying fe80::1... Connection refused
 *   Trying 127.0.0.1... connected
 * Connected to localhost (127.0.0.1) port 8080 (#0)
-&gt; POST registry-service/extrinsics HTTP/1.1
+&gt; POST registry/extrinsics HTTP/1.1
 &gt; User-Agent: curl/7.16.3 (powerpc-apple-darwin9.0) ...
 &gt; Host: localhost:8080
 &gt; Accept: */*
@@ -125,7 +120,7 @@ http://localhost:8080/registry-service/extrinsics
 &gt; 
 &lt; HTTP/1.1 201 Created
 &lt; Server: Apache-Coyote/1.1
-&lt; Location: http://localhost:8080/registry-service/extrinsics/1234v1.0
+&lt; Location: http://localhost:8080/registry/extrinsics/1234v1.0
 &lt; Content-Type: application/xml
 &lt; Content-Length: 0
 &lt; Date: Wed, 14 Apr 2010 20:33:32 GMT
@@ -135,15 +130,15 @@ http://localhost:8080/registry-service/extrinsics
 urn:uuid:53451c5e-1809-4799-8dd8-060672f3e0e1
         </source>
 
-        <p>By inspecting the HTTP Response Location Header one can see the URL to the registered product. This header is a standard way for exchanging information about a newly created resource using HTTP. The last line of the response is the global unique identifier that the service assigned to the registered product. The following example details how to publish a new version of the above product to the service:
+        <p>By inspecting the HTTP Response Location Header one can see the URL to the registered extrinsic. This header is a standard way for exchanging information about a newly created resource using HTTP. The last line of the response is the global unique identifier that the service assigned to the registered extrinsic. The following example details how to publish a new version of the above extrinsic to the service:
         </p>
 
         <source>
 % curl -X POST -H "Content-type:application/xml" -v -d @new_product_v2.xml \
-http://localhost:8080/registry-service/extrinsics/logicals/1234
+http://localhost:8080/registry/extrinsics/logicals/1234
         </source>
 
-        <p>The value of <i>1234</i> in the example above represents the logical identifier of the original published product, which must be specified in order for the service to recognize it as a new version. The following is an example of a product description in JSON form:
+        <p>The value of <i>1234</i> in the example above represents the logical identifier of the original published extrinsic, which must be specified in order for the service to recognize it as a new version. The following is an example of a extrinsic description in JSON form:
         </p>
 
         <source>
@@ -157,12 +152,12 @@ http://localhost:8080/registry-service/extrinsics/logicals/1234
          {"name":"first-name","value":["Jane"]}]}
         </source>
 
-        <p>The product description above is contained in the <i>json_product.txt</i> file. The following command registers this product with the service:
+        <p>The extrinsic description above is contained in the <i>json_product.txt</i> file. The following command registers this extrinsic with the service:
         </p>
 
         <source>
 % curl -X POST -H "Content-type:application/json" -v -d @json_product.txt \
-http://localhost:8080/registry-service/extrinsics
+http://localhost:8080/registry/extrinsics
         </source>
       </subsection>
 
@@ -183,7 +178,7 @@ http://localhost:8080/registry-service/extrinsics
 
         <source>
 % curl -X POST -H "Content-type:application/xml" -v -d @new_association.xml \
-http://localhost:8080/registry-service/associations
+http://localhost:8080/registry/associations
         </source>
       </subsection>
 
@@ -222,7 +217,7 @@ http://localhost:8080/registry-service/associations
 
         <source>
 % curl -X POST -H "Content-type:application/xml" -v -d @new_service.xml \
-http://localhost:8080/registry-service/services
+http://localhost:8080/registry/services
         </source>
       </subsection>
 
@@ -236,34 +231,29 @@ http://localhost:8080/registry-service/services
       <p>Although the Registry Service does not offer an advanced query interface, it does offer interfaces for discovering and retrieving artifact descriptions. The URLs shown in the examples below will work in a web browser.
       </p>
 
-      <subsection name="Products">
-        <p>The following command retrieves a paged list of registered products from the service:
+      <subsection name="Extrinsics">
+        <p>The following command retrieves a paged list of registered extrinsics (products) from the service:
         </p>
 
         <source>
 % curl -X GET -H "Accept:application/xml" -v \
-http://localhost:8080/registry-service/extrinsics
+http://localhost:8080/registry/extrinsics
         </source>
 
-        <!-- Need to fix API documentation generation.
-        <p>The interface above accepts a number of parameters for filtering the return results. See the <a href="../api/index.html">API</a> section for a detailed list of the parameters. The following command retrieves the latest product with logical identifier <i>1234</i> from the service:
-        </p>
-        -->
-
-        <p>The interface above accepts a number of parameters for filtering the return results. The following command retrieves all versions of the product with logical identifier <i>1234</i> from the service:
+        <p>The interface above accepts a number of parameters for filtering the return results. See the <a href="../api/index.html">API</a> section for a detailed list of the parameters. The following command retrieves the latest extrinsic with logical identifier <i>1234</i> from the service:
         </p>
 
         <source>
 % curl -X GET -H "Accept:application/xml" -v \
-http://localhost:8080/registry-service/extrinsics/logicals/1234
+http://localhost:8080/registry/extrinsics/logicals/1234
         </source>
 
-        <p>In order to retrieve the earliest product with logical identifier <i>1234</i>, append <i>/earliest</i> to the URL in the example above. In order to retrieve the latest product with logical identifier <i>1234</i>, append <i>/latest</i> to the URL in the example above. The following command retrieves the specific product with guid <i>1234</i>, but in JSON form:
+        <p>In order to retrieve the earliest extrinsic with logical identifier <i>1234</i>, append <i>/earliest</i> to the URL in the example above. In order to retrieve the latest extrinsic with logical identifier <i>1234</i>, append <i>/latest</i> to the URL in the example above. The following command retrieves the specific extrinsic with guid <i>1234</i>, but in JSON form:
         </p>
 
         <source>
 % curl -X GET -H "Accept:application/json" -v \
-http://localhost:8080/registry-service/extrinsics/1234v1.0
+http://localhost:8080/registry/extrinsics/1234v1.0
         </source>
 
         <p>The example above will not work in a browser because it is not possible to set the HTTP Accept Header via a browser, but the following command will work in a browser by encoding the return type with a suffix in the URL:
@@ -271,7 +261,7 @@ http://localhost:8080/registry-service/extrinsics/1234v1.0
 
         <source>
 % curl -X GET -v \
-http://localhost:8080/registry-service/extrinsics/1234v1.0.json
+http://localhost:8080/registry/extrinsics/1234v1.0.json
         </source>
       </subsection>
 
@@ -281,44 +271,44 @@ http://localhost:8080/registry-service/extrinsics/1234v1.0.json
 
         <source>
 % curl -X GET -H "Accept:application/xml" -v \
-http://localhost:8080/registry-service/associations
+http://localhost:8080/registry/associations
         </source>
 
-        <!-- Need to fix API documentation generation.
         <p>The interface above accepts a number of parameters for filtering the return results. See the <a href="../api/index.html">API</a> section for a detailed list of the parameters. In order to retrieve a specific association, append the global unique identifier (/&lt;guid&gt;) for that association to the URL in the example above.
-        </p>
-        -->
-
-        <p>The interface above accepts a number of parameters for filtering the return results. In order to retrieve a specific association, append the global unique identifier (/&lt;guid&gt;) for that association to the URL in the example above.
         </p>
       </subsection>
 
       <subsection name="Services">
-        <p>The service does not yet support a general query of registered services but a specific service can be retrieved by specifying its global unique identifier as follows:
+        <p>The following command retrieves a paged list of registered services from the service:
         </p>
 
         <source>
 % curl -X GET -H "Accept:application/xml" -v \
-http://localhost:8080/registry-service/services/&lt;guid&gt;
+http://localhost:8080/registry/services
         </source>
+
+        <p>The interface above accepts a number of parameters for filtering the return results. See the <a href="../api/index.html">API</a> section for a detailed list of the parameters. In order to retrieve a specific service, append the global unique identifier (/&lt;guid&gt;) for that service to the URL in the example above.
+        </p>
       </subsection>
 
       <subsection name="Schemes and Nodes">
-        <p>The service does not yet support a general query of registered schemes but a specific scheme can be retrieved by specifying its global unique identifier as follows:
+        <p>The following command retrieves a paged list of registered schemes from the service:
         </p>
 
         <source>
 % curl -X GET -H "Accept:application/xml" -v \
-http://localhost:8080/registry-service/schemes/&lt;guid&gt;
+http://localhost:8080/registry/schemes
         </source>
 
-        <p>In order to retrieve the only supported scheme (at this time), replace &lt;guid&gt; in the example above with <i>urn:registry:classificationScheme:ObjectType</i>. The following command retrieves the list of nodes associated with the <i>urn:registry:ObjectType</i> scheme:
+        <p>The interface above accepts a number of parameters for filtering the return results. See the <a href="../api/index.html">API</a> section for a detailed list of the parameters. In order to retrieve a specific scheme, append the global unique identifier (/&lt;guid&gt;) for that scheme to the URL in the example above.
+        </p>
+
+        <p>The following command retrieves the list of nodes associated with a specific scheme:
         </p>
 
         <source>
 % curl -X GET -H "Accept:application/xml" -v \
-http://localhost:8080/registry-service/schemes/\
-urn:registry:classificationScheme:ObjectType/nodes
+http://localhost:8080/registry/schemes/&lt;guid&gt;/nodes
         </source>
 
         <p>In order to retrieve a specific node, append the global unique identifier (/&lt;guid&gt;) for that node to the URL in the example above.
@@ -326,50 +316,74 @@ urn:registry:classificationScheme:ObjectType/nodes
       </subsection>
 
       <subsection name="Events">
-        <p>The service tracks auditable events for each registered artifact including submission, approval, deprecation, etc. The service does not yet support a general query of these events but the associated events for a specific artifact can be retrieved by specifying the artifact's global unique identifier as follows:
+        <p>The service tracks auditable events for each registered artifact including submission, approval, deprecation, etc. The following command retrieves a paged list of events from the service:
         </p>
 
         <source>
 % curl -X GET -H "Accept:application/xml" -v \
-http://localhost:8080/registry-service/events/&lt;guid&gt;
+http://localhost:8080/registry/events
         </source>
+        
+        <p>The interface above accepts a number of parameters for filtering the return results. See the <a href="../api/index.html">API</a> section for a detailed list of the parameters. In order to retrieve events for a specific object, append the global unique identifier (/&lt;guid&gt;) for the affected object to the URL in the example above.
+        </p>
+      </subsection>
+
+      <subsection name="Packages">
+        <p>When Harvest Tool registers a bundle or collection or products with the service, it precedes the registration with the registration of a package that all of the registered products will be associated with. The following command retrieves a paged list of packages from the service:
+        </p>
+
+        <source>
+% curl -X GET -H "Accept:application/xml" -v \
+http://localhost:8080/registry/packages
+        </source>
+        
+        <p>The interface above accepts a number of parameters for filtering the return results. See the <a href="../api/index.html">API</a> section for a detailed list of the parameters. In order to retrieve a specific package, append the global unique identifier (/&lt;guid&gt;) for that package to the URL in the example above.
+        </p>
       </subsection>
     </section>
 
     <section name="Update Status">
-      <p>When products are successfully registered with the service they are given a status of <i>Submitted</i>. The status for a specific product can be modified with the following command:
+      <p>When extrinsics are successfully registered with the service they are given a status of <i>Submitted</i>. The status for a specific extrinsic can be modified with the following command:
       </p>
 
       <source>
 % curl -X POST -H "Content-type:application/xml" -v \
-http://localhost:8080/registry-service/extrinsics/&lt;guid&gt;/&lt;action&gt;
+http://localhost:8080/registry/extrinsics/&lt;guid&gt;/&lt;action&gt;
       </source>
       
       <p>Valid values for &lt;action&gt; include <i>approve</i>, <i>deprecate</i> and <i>undeprecate</i>. The following diagram details the relationship of the status state with the above actions.
       </p>
 
       <img alt="Status State" src="../images/status-state.jpg" border="1" />
+
+      <p>As mentioned above, Harvest Tool associates all registrations with a package. The status for the entire package, including its members, can be modified with the following command:
+      </p>
+
+        <source>
+% curl -X POST -H "Content-type:application/xml" -v \
+http://localhost:8080/registry/packages/&lt;guid&gt;/members/&lt;action&gt;
+        </source>
     </section>
 
     <section name="Delete Artifacts">
-      <p>The following command deletes the specific product with logical identifier <i>1234</i> and version identifier <i>1.0</i> from the service:
+      <p>The following command deletes the specific extrinsic from the service:
       </p>
 
       <source>
 % curl -X DELETE -v \
-http://localhost:8080/registry-service/extrinsics/&lt;guid&gt;
+http://localhost:8080/registry/extrinsics/&lt;guid&gt;
       </source>
 
-      <p>The following two examples delete an association and a service, respectively, by specifying their global unique identifier:
+      <p>The same format applies to the other registry objects as well (e.g., associations, services, etc.). As mentioned above, Harvest Tool associates all registrations with a package. An entire package, including its members, can be deleted with the following command:
       </p>
 
       <source>
 % curl -X DELETE -v \
-http://localhost:8080/registry-service/associations/&lt;guid&gt;
-
-% curl -X DELETE -v \
-http://localhost:8080/registry-service/services/&lt;guid&gt;
+http://localhost:8080/registry/packages/&lt;guid&gt;/members
       </source>
+
+      <p>The above command does not delete the package itself. The package can be deleted just like any other registry object as shown above.
+      </p>
     </section>
     
     <section name="Ping">
@@ -378,8 +392,11 @@ http://localhost:8080/registry-service/services/&lt;guid&gt;
       
       <source>
 % curl -X GET -H "Content-type:application/xml" -v \
-http://localhost:8080/registry-service
+http://localhost:8080/registry
       </source>
+
+      <p>The above command will return a welcome message and an HTTP status of 200.
+      </p>
     </section>
 
     <section name="Report">
@@ -388,7 +405,7 @@ http://localhost:8080/registry-service
 
       <source>
 % curl -X GET -H "Content-type:application/xml" -v \
-http://localhost:8080/registry-service/report
+http://localhost:8080/registry/report
       </source>
     </section>
 
@@ -398,7 +415,7 @@ http://localhost:8080/registry-service/report
 
       <source>
 % curl -X POST -H "Content-type:application/xml" -v -d @new_product.xml \
-https://localhost:8443/registry-service/extrinsics -u username:password \
+https://localhost:8443/registry/extrinsics -u username:password \
 -k -c tomcat_cookie.txt
       </source>
 
@@ -407,7 +424,7 @@ https://localhost:8443/registry-service/extrinsics -u username:password \
 
       <source>
 % curl -X DELETE -H "Content-type:application/xml" -v -d @new_product_v2.xml \
-https://localhost:8443/registry-service/extrinsics/1234v1.0 -k -b tomcat_cookie.txt
+https://localhost:8443/registry/extrinsics/1234v1.0 -k -b tomcat_cookie.txt
       </source>
 
       <p>The example above also applies to a <i>DELETE</i> request.

@@ -37,12 +37,9 @@
       <item name="About Registry Service" href="index.html"/>
       <item name="Release Notes" href="release/index.html"/>
       <item name="Installation" href="install/index.html"/>
-      <item name="Operation" href="operate/index.html"/>
-      <!-- Need to fix API doc generation.
       <item name="Operation" href="operate/index.html" collapse="true">
         <item name="API" href="api/index.html"/>
       </item>
-      -->
     </menu>
 
     <menu name="Download">

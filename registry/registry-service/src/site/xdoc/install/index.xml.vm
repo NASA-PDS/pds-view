@@ -32,7 +32,7 @@
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
-        <li><a href="#Configuration">Configuration</a></li>
+        <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
       </ul>
     </section>
 
@@ -96,60 +96,86 @@ or
     </section>
 
     <section name="Deploying the Application">
-      <p>The Registry Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation the WAR file should be renamed from <i>${xdoc-artifactId}-${xdoc-version}.war</i> to <i>${xdoc-artifactId}.war</i>. A WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation.
+      <p>The Registry Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation the WAR file should be renamed from <i>${xdoc-artifactId}-${xdoc-version}.war</i> to <i>registry.war</i>. A WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation. Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping">Ping</a> portion of the Operation section.
       </p>
 
-      <p>If deploying to an Apache Tomcat server and using Derby as the backend database, you may want to permanently set the home directory of the database by adding the following to the <i>CATALINA_OPTS</i> environment variable:
-      </p>
+      <subsection name="Database Configuration">
+        <p>By default, the Registry Service comes configured to utilize Derby as the backend database. The Derby database home directory will default to the current working directory where the Apache Tomcat server was launched. To permanently set the home directory of the database, add the following to the <i>CATALINA_OPTS</i> environment variable:
+        </p>
 
-      <source>
+        <source>
 CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
-      </source>
+        </source>
 
-      <p>The <i>CATALINA_OPTS</i> environment variable is loaded from the Apache Tomcat startup scripts. If this value is not set, the Derby database home will default to the current working directory where the Apache Tomcat server was launched.
-      </p>
-      
-      <p>If deploying to Tomcat and using MySQL as the backend database, the default configuration assumes that you have MySQL installed with a database named <i>registry</i> and will use a default user name and password as specified below. If you want to change the URL, database name, user name, and/or password you will need to edit the <i>mysql.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry-service/WEB-INF/classes</i> directory. The following lines pertain to the default configuration:
-      </p>
+        <p>The <i>CATALINA_OPTS</i> environment variable is loaded from the Apache Tomcat startup scripts. The Tomcat server will need to be restarted for this configuration to take effect.
+        </p>
 
-      <source>
+        <p>The backend database can be changed from Derby to another database provider. As of the current release, MySQL is the only other supported database provider. To modify the configuration, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. The following line:
+        </p>
+
+        <source>
+&lt;context:property-placeholder location="classpath:derby.properties"/&gt;
+
+  should be changed to:
+
+&lt;context:property-placeholder location="classpath:mysql.properties"/&gt;
+        </source>
+
+        <p>The default configuration assumes that you have MySQL installed with a database named <i>registry</i> and will use a default user name and password as specified below. If you want to change the URL, database name, user name, and/or password you will need to edit the <i>mysql.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. The following lines pertain to the default configuration:
+        </p>
+
+        <source>
 javax.persistence.jdbc.url=jdbc:mysql://localhost:3306/registry
 javax.persistence.jdbc.user=registry
 javax.persistence.jdbc.password=p@ssw0rd
-      </source>
+        </source>
 
-      <p>Additionally, if you are using a version of MySQL older than 5.x you will need to change the dialect. To do this simply add a "#" before the first hibernate.dialect entry and remove the "# from the second entry.
-      </p>
+        <p>Additionally, if you are using a version of MySQL older than 5.x you will need to change the dialect. To do this simply add a "#" before the first hibernate.dialect entry and remove the "#" from the second entry.
+        </p>
 
-      <p>Before:</p>
-      <source>
+        <p>Before:</p>
+        <source>
 # For use with MySQL 5+
 hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
 # For use with older versions of MySQL. See hibernate documentation.
 #hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
-      </source>
-      <p>After:</p>
-      <source>
+        </source>
+        <p>After:</p>
+        <source>
 # For use with MySQL 5+
 #hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
 # For use with older versions of MySQL. See hibernate documentation.
 hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
-      </source>
+        </source>
 
-      <p>Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping">Ping</a> portion of the Operation section.
-      </p>
+        <p>No matter which database provider is configured as the backend database, the schema that supports the Registry Service is created by default when launching the service for the first time.
+        </p>
+      </subsection>
+
+      <subsection name="Home Configuration">
+        <p>By default, the registry home is configured as <i>http://localhost:8080/registry</i>. This should be modified to represent the end point of the target installation. To modify the configuration, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. Modify the following line with the new end point:
+        </p>
+
+        <source>
+&lt;bean id="idGenerator" class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
+p:home="http://localhost:8080/registry"/&gt;
+        </source>
+
+        <p>In a distributed environment with multiple Registry Service instances, the registry home value identifies the source of registered entries when replication is occurring among the instances.
+        </p>
+      </subsection>
     </section>
 
-    <section name="Configuration">
+    <section name="Configuring the Application">
       <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of objects types corresponds with the types of products that a given instance of the Registry Service will support. Execute the <i>RegistryConfig</i> script from the <i>bin</i> directory in order to register the full set of object types:
       </p>
 
       <source>
 % cd ${xdoc-artifactId}-${xdoc-version}/bin
-% RegistryConfig
+% ./RegistryConfig
       </source>
 
-      <p>The output from this command should show the registration of the Core object types and PDS object types. Since the config files referenced in the configuration script are slightly larger they are sent in chunks. Each config will get associated with a Registry Package and can be found by following the Location link that comes in the header of the response.
+      <p>The output from this command should show the registration of the Core object types and PDS object types. Since the configuration files referenced in the configuration script are slightly larger they are sent in chunks. Each configuration will get associated with a Registry Package and can be found by following the location link that comes in the header of the response. The output from the command should look something like the following:
       </p>
 
       <source>
@@ -168,7 +194,7 @@ description=This+configures+the+core+set+of+registry+objects HTTP/1.1
 &lt; HTTP/1.1 100 Continue
 &lt; HTTP/1.1 201 Created
 &lt; Server: Apache-Coyote/1.1
-&lt; Location: http://localhost:8080/registry-service/packages/\
+&lt; Location: http://localhost:8080/registry/packages/\
 urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
 &lt; Content-Type: text/plain
 &lt; Transfer-Encoding: chunked
@@ -193,7 +219,7 @@ description=This+configures+PDS+object+types HTTP/1.1
 &lt; HTTP/1.1 100 Continue
 &lt; HTTP/1.1 201 Created
 &lt; Server: Apache-Coyote/1.1
-&lt; Location: http://localhost:8080/registry-service/packages/\
+&lt; Location: http://localhost:8080/registry/packages/\
 urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
 &lt; Content-Type: text/plain
 &lt; Transfer-Encoding: chunked
@@ -204,8 +230,17 @@ urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
 urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
       </source>
 
-      <p>The <i>RegistryConfig</i> script defaults to a Registry Service end point of <i>http://localhost:8080/registry-service</i>. If necessary, modify the script so that it corresponds with the target installation. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface.
+      <p>The <i>RegistryConfig</i> script defaults to a Registry Service end point of <i>http://localhost:8080/registry</i>. If necessary, modify the script so that it corresponds with the end point of the target installation. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface.
       </p>
+
+      <p>Verify successful configuration by executing the command from the <a href="../operate/index.html#Report">Report</a> portion of the Operation section. The output from this command should look something like the following:
+      </p>
+
+      <source>
+&lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='0.7.0' packages='2' 
+classificationNodes='67' classificationSchemes='1' services='0' extrinsics='0' associations='68' 
+serverStarted='2011-08-28T12:45:43.514-07:00' status='OK'/&gt;
+      </source>
     </section>
   </body>
 </document>
