@@ -99,6 +99,24 @@ or
       <p>The Registry Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation the WAR file should be renamed from <i>${xdoc-artifactId}-${xdoc-version}.war</i> to <i>registry.war</i>. A WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation. Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping">Ping</a> portion of the Operation section.
       </p>
 
+      <p>When deploying the application via the Tomcat Manager interface, users have occasionally encountered a situation where the application appears to hang or generates the following stack trace:
+      </p>
+
+      <source>
+javax.servlet.ServletException: java.lang.OutOfMemoryError: PermGen space
+  com.sun.jersey.spi.container.servlet.WebComponent.service(WebComponent.java:424)
+  com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:497)
+  com.sun.jersey.spi.container.servlet.ServletContainer.doFilter(ServletContainer.java:855)
+  com.sun.jersey.spi.container.servlet.ServletContainer.doFilter(ServletContainer.java:828)
+  com.sun.jersey.spi.container.servlet.ServletContainer.doFilter(ServletContainer.java:789)
+  org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal
+  (OpenEntityManagerInViewFilter.java:113)
+  org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:76)
+      </source>
+
+      <p>If either of the above situations occur, stop and restart the Tomcat server to clear the problem.
+      </p>
+
       <subsection name="Database Configuration">
         <p>By default, the Registry Service comes configured to utilize Derby as the backend database. The Derby database home directory will default to the current working directory where the Apache Tomcat server was launched. To permanently set the home directory of the database, add the following to the <i>CATALINA_OPTS</i> environment variable:
         </p>
