@@ -44,7 +44,7 @@
   </licenses>
 
   <properties>
-    <registry.core.version>0.2.0-dev</registry.core.version>
+    <registry.core.version>0.2.0</registry.core.version>
     <!-- These properties support PDF generation with Maven 1. -->
     <xdoc-artifactId>${artifactId}</xdoc-artifactId>
     <xdoc-version>${version}</xdoc-version>
