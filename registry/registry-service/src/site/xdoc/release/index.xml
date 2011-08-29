@@ -30,8 +30,24 @@
     </section>
 
     <section name="Release 0.7.0">
-      <p>TBD
+      <p>This release of the Registry Service is a component of the integrated release <a href="../../../release/index-1.2.0.html">1.2.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date. The new or modified capabilities for this release are as follows:
       </p>
+
+      <ul>
+        <li>Added support for package registration allowing actions like approval and deletion to be applied to all members of a package.</li>
+        <li>Added support for replication from one registry instance to another.</li>
+        <li>Enhanced query support for auditable events.</li>
+        <li>Moved the end points up one level to remove the redundant /registry from the path.</li>
+      </ul>
+
+      <p>The liens for this release are as follows:
+      </p>
+
+      <ul>
+        <li>Query support has been improved but is still case sensitive.</li>
+        <li>The Federation and Registry objects have not been addressed yet.</li>
+        <li>Need to generate a log file that conforms to the Report Service format.</li>
+      </ul>
     </section>
 
     <section name="Release 0.6.0">

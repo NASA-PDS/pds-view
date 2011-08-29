@@ -23,27 +23,27 @@
   </properties>
 
   <body>
-    <release version="0.2.0" date="TBD" description="TBD">
+    <release version="0.2.0" date="2011-08-29" description="This release of the Registry Core is a component of the integrated release 1.2.0 of the PDS 2010 System.">
       <action dev="pramirez" type="add">
-        PDS-14 Support to do package level operations such as delete and update status. In addition, allows for items to be published into a package.
-      </action>
-      <action dev="pramirez" type="fix">
-        Now throws an exception when looking up object versions of something that does not exist. Previously this returned null which caused problems upstream.
+        PDS-14: Support to do package level operations such as delete and update status. In addition, allows for items to be published into a package.
       </action>
       <action dev="pramirez" type="update">
-        PDS-18 Updated RegistryClient for to use RegistryObjects instead of low level constructs. This will ease integration with outside tools.
+        PDS-18: Updated RegistryClient to use RegistryObjects instead of low-level constructs. This will ease integration with outside tools.
       </action>
       <action dev="pramirez" type="add">
-        PDS-32 Added support for external link operations.
+        PDS-32: Added support for external link operations.
+      </action>
+      <action dev="pramirez" type="add">
+        PDS-39: Built in support for replication operations and report on ongoing replication.
       </action>
       <action dev="pramirez" type="update">
-        Enchanced AuditableEvent filtering. Now supports eventStart, eventEnd, and requestId.
-      </action>
-      <action dev="pramirez" type="add">
-        PDS-39 Built in support for replication operations and report on ongoing replication.
+        Enchanced Auditable Event end point to allow for better filtering. Now supports eventStart, eventEnd, and requestId.
       </action>
       <action dev="pramirez" type="update">
         Refactored registry service interface and implementation to consolidate and remove redundant code. Publish and delete of all objects now go through single methods instead of one for each object.
+      </action>
+      <action dev="pramirez" type="fix">
+        Now throws an exception when looking up object versions of something that does not exist. Previously this returned null which caused problems upstream.
       </action>
     </release>
 
@@ -61,7 +61,7 @@
         PDS-8: Allow a set of Classifications to be associated with a given registry object.
       </action>
       <action dev="pramirez" type="add">
-        PDS-16: Configuration endpoint to pass in classification schemes and nodes as one XML file.
+        PDS-16: Configuration end point to pass in classification schemes and nodes as one XML file.
       </action>
       <action dev="pramirez" type="update">
         PDS-17: Make associations based off their global identifier instead of the LIDVID.

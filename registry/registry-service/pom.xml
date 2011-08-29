@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010.registry</groupId>
   <artifactId>registry-service</artifactId>
-  <version>0.7.0-dev</version>
+  <version>0.7.0</version>
   <packaging>war</packaging>
 
   <name>Registry Service</name>

@@ -23,30 +23,30 @@
   </properties>
 
   <body>
-    <release version="0.7.0" date="TBD" description="TBD">
+    <release version="0.7.0" date="2011-08-29" description="This release of the Registry Service is a component of the integrated release 1.2.0 of the PDS 2010 System.">
       <action dev="pramirez" type="add">
-        PDS-14 Endpoint to remove package members and update the status of all package members.
+        PDS-14: End point to remove package members and update the status of all package members. Inherited from registry-core.
       </action>
       <action dev="pramirez" type="add">
-        Endpoint to page through packages.
+        PDS-30: Allow PUT operation to create/update a Service object.
       </action>
       <action dev="pramirez" type="add">
-        PDS-30 Allow PUT operation to create/update a Service object.
-      </action>
-      <action dev="pramirez" type="add">
-        PDS-32 Added endpoint to manage ExternalLinks which can be used to tie registry contents to URLs that exist outside the registry.
+        PDS-32: Added end point to manage ExternalLinks which can be used to tie registry contents to URLs that exist outside the registry. Inherited from registry-core.
       </action>
       <action dev="pramirez" type="update">
-        PDS-37 Moved registry endpoints one level removing the redundant /registry from the path.
+        PDS-37: Moved registry end points one level removing the redundant /registry from the path.
       </action>
       <action dev="pramirez" type="update">
-        PDS-38 Registry version now comes back as part of the report endpoint.
-      </action>
-      <action dev="pramirez" type="update">
-        Enchanced Auditable Event endpoint to allow for better filtering. Now supports eventStart, eventEnd, and requestId.
+        PDS-38: Registry version now comes back as part of the report end point.
       </action>
       <action dev="pramirez" type="add">
-        PDS-39 Added endpoint to allow for replication from a remote registry.
+        PDS-39: Added end point to allow for replication from a remote registry. Inherited from registry-core.
+      </action>
+      <action dev="pramirez" type="add">
+        End point to page through packages.
+      </action>
+      <action dev="pramirez" type="update">
+        Enchanced Auditable Event end point to allow for better filtering. Now supports eventStart, eventEnd, and requestId. Inherited from registry-core.
       </action>
     </release>
 
@@ -61,10 +61,10 @@
         PDS-8: Allow a set of Classifications to be associated with a given registry object. Inherited from registry-core.
       </action>
       <action dev="pramirez" type="add">
-        PDS-13: Endpoint responses for /registry-service and /registry-service/registry. This merely respond to GET requests for now with link headers pointing to the sub-resources. 
+        PDS-13: End point responses for /registry-service and /registry-service/registry. This merely respond to GET requests for now with link headers pointing to the sub-resources. 
       </action>
       <action dev="pramirez" type="add">
-        PDS-16: Configuration endpoint to pass in classification schemes and nodes as one XML file. Inherited from registry-core.
+        PDS-16: Configuration end point to pass in classification schemes and nodes as one XML file. Inherited from registry-core.
       </action>
       <action dev="pramirez" type="add">
         PDS-19: Defined RegistryPackage as an intrinsic object. Acts merely as a collection of registered objects through the use of Associations. Inherited from registry-core.
