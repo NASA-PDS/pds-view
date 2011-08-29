@@ -77,7 +77,6 @@
 &lt;extrinsicObject xmlns="http://registry.pds.nasa.gov"  
   guid="1234v1.0" 
   lid="1234" 
-  versionId="1.0" 
   name="Product 1234 v1" 
   objectType="Product" 
   description="This is a new version test product 1234 v1" &gt;
@@ -145,7 +144,6 @@ http://localhost:8080/registry/extrinsics/logicals/1234
 {"description":"This is a new version test product 5678 v1",
  "name":"Product 5678 v1",
  "objectType":"Product",
- "versionId":"1.0",
  "lid":"5678",
  "slot":[{"name":"last-name","value":["Doe"]},
          {"name":"phone","value":["(818)123-4567","(818)765-4321"]},
@@ -382,8 +380,13 @@ http://localhost:8080/registry/extrinsics/&lt;guid&gt;
 http://localhost:8080/registry/packages/&lt;guid&gt;/members
       </source>
 
-      <p>The above command does not delete the package itself. The package can be deleted just like any other registry object as shown above.
+      <p>The above command does not delete the package itself. The package can be deleted using the following:
       </p>
+      
+      <source>
+% curl -X DELETE -v \
+http://localhost:8080/registry/packages/&lt;guid&gt;
+      </source>
     </section>
     
     <section name="Ping">

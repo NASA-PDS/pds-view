@@ -2,7 +2,6 @@
 <extrinsicObject xmlns="http://registry.pds.nasa.gov" 
     guid="1234v2.0"
     lid="1234" 
-    versionId="2.0" 
     name="Product 1234 v2" 
     objectType="Product"
     description="This is a new version test product 1234 v2" >
