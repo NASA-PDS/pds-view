@@ -70,10 +70,14 @@
         </p>
 
         <ul>
-          <li>Harvest Tool now includes support for validation of products prior to registration and can now be executed and run as a daemon process.
+          <li>Generate Tool, developed by the Imaging Node at JPL, is available for generating PDS4 labels from PDS3 labels.
           </li>
-          <li>Registry Service now includes a configuration endpoint allowing the configuration file generated from the data model to be processed in one action. Also added support for a registry package object to support batch operations. Also added support for MySQL as a backend database.
+          <li>Harvest Tool now includes support file object registration and registration of PDS3 products using a proxy label to facilitate tracking.
           </li>
+          <li>Registry Service added support for replication from one registry instance to another.</li>
+          <li>Registry Service and Harvest Tool added support for package registration allowing enabling support for actions like approval and deletion to be applied to all members of a package in the Registry Service.</li>
+          <li>Report Service added support for remote transfer of log files, automatic triggering of database updates and default profile setup.</li>
+          <li></li>
         </ul>
       </subsection>
 
@@ -82,13 +86,9 @@
         </p>
 
         <ul>
-          <li>Harvest Tool was modified for more robust handling of Association registrations as well as modified to keep pace with changes occurring in the PDS4 data model and the Registry Service interface.
-          </li>
-          <li>Registry Service was modified to move the core functionality to the Registry Core component to better satisfy JAR dependencies from other components. Also modified to include additional support for service registrations, general query improvements for registry objects and better alignment with the ebXML registry specification.
+          <li>Harvest Tool was modified to represent LID-based references as slots instead of associations as well as modified to keep pace with changes occurring in the PDS4 data model and the Registry Service interface.
           </li>
           <li>Registry User Interface was modified to keep pace with the changes to the Registry Service interface.
-          </li>
-          <li>Security Service was modified to simplify the deployed solution by utilizing a single directory service to satisfy the requirements.
           </li>
           <li>Validate Tool was modified to include the latest set of generic schemas generated from the data model.
           </li>
@@ -129,25 +129,31 @@
       </p>
 
       <ul>
-        <li><a href="../harvest/index.html">Harvest Tool</a> - 0.3.0</li>
+        <li><a href="../harvest/index.html">Harvest Tool</a> - 0.4.0</li>
         <li><a href="../preparation/index.html">Preparation Tools</a></li>
         <ul>
-          <li><a href="../preparation/core/index.html">Core Library</a> - 0.2.0</li>
+          <li><a href="../preparation/core/index.html">Core Library</a> - 0.3.0</li>
           <li><a href="../preparation/design/index.html">Design Tool</a> - 0.2.0</li>
-          <li><a href="../preparation/validate/index.html">Validate Tool</a> - 0.2.0</li>
+          <li><a href="../preparation/generate/index.html">Generate Tool</a> - 0.1.0</li>
+          <li><a href="../preparation/validate/index.html">Validate Tool</a> - 0.3.0</li>
         </ul>
         <li><a href="../registry/index.html">Registry</a></li>
         <ul>
-          <li><a href="../registry/registry-core/index.html">Registry Core</a> - 0.1.0</li>
-          <li><a href="../registry/registry-service/index.html">Registry Service</a> - 0.6.0</li>
-          <li><a href="../registry/registry-ui/index.html">Registry User Interface</a> - 0.3.0</li>
+          <li><a href="../registry/registry-core/index.html">Registry Core</a> - 0.2.0</li>
+          <li><a href="../registry/registry-service/index.html">Registry Service</a> - 0.7.0</li>
+          <li><a href="../registry/registry-ui/index.html">Registry User Interface</a> - 0.4.0</li>
         </ul>
         <li><a href="../report/index.html">Report Service</a> - 0.1.0</li>
+        <ul>
+          <li><a href="../report/rs-update/index.html">Update Tool</a> - 0.1.0</li>
+          <li><a href="../report/profile-setup/index.html">Profile Setup</a> - 0.1.0</li>
+          <li><a href="../report/sawmill/index.html">Sawmill</a> - 0.2.0</li>
+        </ul>
         <li><a href="../security/index.html">Security Service</a> - 0.3.0</li>
       </ul>
 
-      <subsection name="EN Environment">
-        <p>This section details deployment to the EN operations environment. The following diagram details the deployment of the major components of this release and gives a very high-level view of the interfaces between the components and system resources:
+      <subsection name="Engineering Node Environment">
+        <p>This section details deployment to the Engineering Node operations environment. The following diagram details the deployment of the major components of this release and gives a very high-level view of the interfaces between the components and system resources:
         </p>
 
         <center>
@@ -160,15 +166,15 @@
 
         <ul>
           <li><b>Registry Service</b><br/>
-            <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. For this release, the registry is populated with the PDS4 context products migrated from the PDS3 central catalog database. New for this release, the EN deployment will utilize MySQL as the backend database for the service. The web-based endpoint for this service is <a href="http://pdsops2.jpl.nasa.gov/registry-service/registry/" target="_blank">http://pdsops2.jpl.nasa.gov/registry-service/registry/</a>.
+            <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. For this release, the registry is populated with the PDS4 context products migrated from the PDS3 central catalog database. New for this release, the EN deployment will utilize MySQL as the backend database for the service. The web-based endpoint for this service is <a href="http://pdsops2.jpl.nasa.gov/services/registry/" target="_blank">http://pdsops2.jpl.nasa.gov/services/registry/</a>.
             </p>
           </li>
           <li><b>Registry User Interface</b><br/>
-            <p>The Registry User Interface provides a simple viewing capability of the contents of the associated Registry Service. It is intended to offer visual verification of successful registration of products. The web-based endpoint for this application is <a href="http://pdsops2.jpl.nasa.gov/registry-ui/" target="_blank">http://pdsops2.jpl.nasa.gov/registry-ui/</a>.
+            <p>The Registry User Interface provides a simple viewing capability of the contents of the associated Registry Service. It is intended to offer visual verification of successful registration of products. The web-based endpoint for this application is <a href="http://pdsops2.jpl.nasa.gov/services/registry-ui/" target="_blank">http://pdsops2.jpl.nasa.gov/services/registry-ui/</a>.
             </p>
           </li>
           <li><b>Report Service</b><br/>
-            <p>The Report Service provides the capability for capturing and reporting metrics. With this release and the previous release, this service is undergoing testing of configurations and features with a set of metrics from the Engineering Node and the Imaging Node at JPL. This service is not yet available to the user community. The web-based endpoint for this service is <a href="http://pdsops.jpl.nasa.gov/report-service/" target="_blank">http://pdsops.jpl.nasa.gov/report-service/</a>.
+            <p>The Report Service provides the capability for capturing and reporting metrics. With this release and the previous release, this service is undergoing testing of configurations and features with a set of metrics from the Engineering Node and the Imaging Node at JPL. This service is not yet available to the user community. The web-based endpoint for this service is <a href="http://pdsops.jpl.nasa.gov/services/report/" target="_blank">http://pdsops.jpl.nasa.gov/services/report/</a>.
             </p>
           </li>
           <li><b>Security Service</b><br/>
@@ -182,8 +188,8 @@
         </ul>
       </subsection>
 
-      <subsection name="Node Environment">
-        <p>This section details the deployment to a participating Node environment. The Nodes are asked to download, install and exercise the software that makes up this release. The following diagram details an example deployment of selected components:
+      <subsection name="Discipline Node Environment">
+        <p>This section details the deployment to a participating Discipline Node environment. The Nodes are asked to download, install and exercise the software that makes up this release. The following diagram details an example deployment of selected components:
         </p>
 
         <center>
@@ -207,12 +213,16 @@
             <p>Although not depicted in the deployment diagram, the Design Tool is intended to aid users in the development of their data product label schemas. This release identifies two off-the-shelf products (Oxygen and Eclipse) that are available for this purpose. The provided documentation guides the user with respect to the download, installation and operation of each of these products.
             </p>
           </li>
+          <li><b>Generate Tool</b><br/>
+            <p>Although not depicted in the deployment diagram, the Generate Tool is intended to aid users in the generation of their data product labels. This tool was developed by the Imaging Node at JPL and provides a command-line interface for generating PDS4 Labels from either a PDS3 Label or a PDS-specific DOM object.
+            </p>
+          </li>
           <li><b>Validate Tool</b><br/>
             <p>The Validate Tool comes pre-packaged with the latest version of the generic schemas generated from the data model. The tool allows the user to validate collections of products or single products against the associated generic schema. Specific schemas can be passed into the tool to enable a more detailed validation check. Although the Design Tools listed above provide a file-by-file validation capability, this tool allows the user to validate a batch of products and generates a summary report.
             </p>
           </li>
           <li><b>Registry Service</b><br/>
-            <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. Ultimately, all products (including PDS3 products) will be registered and tracked with the Registry Service. For this release, users are asked to install and configure a local instance of the service in order to exercise this procedure. Additionally if the user is participating in the PDS3 to PDS4 conversion exercises, the resulting products or collections of products can be registered with their local registry instance. For this release, it is assumed that the Node deployments will utilize Derby as the backend database for the service. If MySQL is preferred, a specific package can be provided upon request.
+            <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. Ultimately, all products (including PDS3 products) will be registered and tracked with the Registry Service. For this release, users are asked to install and configure a local instance of the service in order to exercise this procedure. Additionally if the user is participating in the PDS3 to PDS4 conversion exercises, the resulting products or collections of products can be registered with their local registry instance. By default, the registry will utilize Derby as the backend database for the service. The configuration can be modified after the installation to utilize MySQL as the database backend. If another database provider is desired, inform the Engineering Node development team and they will work with you to specify the proper configuration.
             </p>
           </li>
           <li><b>Registry User Interface</b><br/>
@@ -220,7 +230,7 @@
             </p>
           </li>
           <li><b>Harvest Tool</b><br/>
-            <p>The Harvest Tool provides the means for registering products with the Registry Service. This tool reads a PDS4 product label, extracts specified metadata and registers the product with the registry. This tool functions as the Validate Tool does, in that it allows the user to register a batch of products and generates a summary report.
+            <p>The Harvest Tool provides the means for registering products with the Registry Service. This tool reads a PDS4 product label, extracts specified metadata and registers the product with the registry. This tool allows the user to register a batch of products and generates a summary report.
             </p>
           </li>
         </ul>
