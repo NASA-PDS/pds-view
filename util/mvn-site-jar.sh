@@ -26,6 +26,9 @@ cd ../..
 cd registry/registry-core
 mvn install clean
 cd ../..
+cd report/rs-update
+mvn install clean
+cd ../..
 
 # Build each site (recursive).
 mvn site
@@ -40,6 +43,8 @@ cd preparation/core
 maven pdf
 cd ../design
 maven pdf
+cd ../generate
+maven pdf
 cd ../validate
 maven pdf
 cd ../..
@@ -52,7 +57,9 @@ cd ../registry-ui
 maven pdf
 cd ../..
 
-cd report/profile-setup
+cd report/rs-update
+maven pdf
+cd ../profile-setup
 maven pdf
 cd ../sawmill
 maven pdf

@@ -29,6 +29,10 @@ cd core
 mvn site
 maven pdf
 mvn deploy
+cd ../generate
+mvn site
+maven pdf
+mvn deploy
 cd ../validate
 mvn site
 maven pdf

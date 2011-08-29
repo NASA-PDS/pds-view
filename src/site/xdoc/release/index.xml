@@ -30,6 +30,7 @@
 
     <table>
       <tr><th>Version</th><th>Date</th><th>Description</th></tr>
+      <tr><td><a href="index-1.2.0.html">1.2.0</a></td><td>2011-08-28</td><td>This release of the PDS 2010 System represents Build 1d and is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date.</td></tr>
       <tr><td><a href="index-1.1.0.html">1.1.0</a></td><td>2011-03-25</td><td>This release of the PDS 2010 System represents Build 1c and is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date.</td></tr>
       <tr><td><a href="index-1.0.0.html">1.0.0</a></td><td>2010-10-31</td><td>This release of the PDS 2010 System represents Build 1 and is intended as a prototype release in support of the assessment of the PDS4 standards.</td></tr>
       <tr><td><a href="index-0.1.0.html">0.1.0</a></td><td>2010-08-25</td><td>This first release of the PDS 2010 System is intended as a prototype release in support of the demonstration at the Management Council Face-to-Face meeting in August 2010.</td></tr>
