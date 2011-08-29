@@ -20,7 +20,7 @@
 # http://${REGISTRY_SERVICE}/registry/report
 # to verify that all classification nodes and schemes were loaded.
 
-export REGISTRY_SERVICE=http://localhost:8080/registry-service
+export REGISTRY_SERVICE=http://localhost:8080/registry
 
 # Load Core Object Type Scheme
 curl -X POST -H "Content-type:application/xml" -v -d @../conf/registryObjectTypeScheme.xml "${REGISTRY_SERVICE}/configure?name=Core+Objects&description=This+configures+the+core+set+of+registry+objects"

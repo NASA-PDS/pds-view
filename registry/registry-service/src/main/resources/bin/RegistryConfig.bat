@@ -18,7 +18,7 @@
 :: http://%REGISTRY_SERVICE%/registry/report 
 :: to verify that all classification nodes and schemes were loaded.
 
-set REGISTRY_SERVICE=http://localhost:8080/registry-service
+set REGISTRY_SERVICE=http://localhost:8080/registry
 
 :: Load Object Type Classification Scheme
 curl -X POST -H "Content-type:application/xml" -v -d @../conf/registryObjectTypeScheme.xml "%REGISTRY_SERVICE%/configure?name=Core+Objects&description=This+configures+the+core+set+of+registry+objects"
