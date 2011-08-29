@@ -18,9 +18,16 @@
 
 cd ..
 mvn clean
+
+cd rs-update
+mvn install clean
+cd ..
+
 mvn site
 
-cd profile-setup
+cd rs-update
+maven pdf
+cd ../profile-setup
 maven pdf
 cd ../sawmill
 maven pdf

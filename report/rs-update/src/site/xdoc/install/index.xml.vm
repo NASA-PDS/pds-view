@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -25,7 +25,7 @@
 
   <body>
     <section name="Installation">
-      <p>This section describes how to install the Report Service Update Tool contained in the <i>${xdoc-artifactId}</i> package. The following topics can be found in this section:
+      <p>This section describes how to install the Update Tool contained in the <i>${xdoc-artifactId}</i> package. The following topics can be found in this section:
       </p>
 
       <ul>
@@ -35,7 +35,7 @@
     </section>
 
     <section name="System Requirements">
-      <p>The Report Service Update Tool was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The tool was specifically developed under Sun Java version 1.6, so the tool will execute correctly under 1.6 and future versions.
+      <p>The Update Tool was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The tool was specifically developed under Sun Java version 1.6, so the tool will execute correctly under 1.6 and future versions.
       </p>
 
       <p>Since the tool was developed using Sun's Java, this is the preferred Java environment for operation. The Sun Java package can be obtained from the <a href="http://java.sun.com/" target="_blank"> Sun Java</a> web site. Other Java environments are relatively compatible with Sun's Java.
@@ -72,7 +72,7 @@ or
           </p>
         </li>
         <li><b>lib/</b><br/>
-          <p>This directory contains the dependent jar files for the tool along with the executable jar file (${xdoc-artifactId}-${xdoc-version}.jar) containing the Report Service Update Tool software.
+          <p>This directory contains the dependent jar files for the tool along with the executable jar file (${xdoc-artifactId}-${xdoc-version}.jar) containing the Update Tool software.
           </p>
         </li>
       </ul>

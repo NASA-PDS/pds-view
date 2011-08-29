@@ -26,12 +26,12 @@
 
   <groupId>gov.nasa.pds.2010.report</groupId>
   <artifactId>profile-setup</artifactId>
-  <version>0.1.0-dev</version>
+  <version>0.1.0</version>
   <packaging>war</packaging>
 
   <name>Profile Setup</name>
   <description>
-    The Profile Setup web application is used to create a new Sawmill profile and, if necessary, store the information to copy log files from remote locations to a PDS Engineering machine.
+    The Profile Setup software provides a web interface to set up a new, basic profile for the Report Service. It also provides functionality to manage the transfer of remote logs for Apache, Tomcat, and FTP to the Engineering Node to be used by the service. Transferring the logs to the Engineering Node provides the PDS Discipline Nodes with an extra backup of the logs, as well as a more stable and secure way for the Report Service to calculate the metrics from them.
   </description>
   <url>http://pds-cm.jpl.nasa.gov/2010/report/profile-setup</url>
 
@@ -70,24 +70,7 @@
     </developer>
   </developers>
 
-  <contributors>
-    <contributor>
-      <name>Steve Hughes</name>
-      <email>John.S.Hughes@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>System Engineering Lead</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Ron Joyner</name>
-      <email>Ronald.Joyner@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>System Engineer</role>
-      </roles>
-    </contributor>
-  </contributors>
+  <contributors/>
 
   <build>
     <plugins>
@@ -146,10 +129,10 @@
   </build>
 
   <repositories>
+    <!-- Hosts the PDS and OODT artifacts. -->
     <repository>
       <id>pds-repo</id>
-      <name>PDS Repository</name>
-      <layout>default</layout>
+      <name>PDS Maven Repository</name>
       <url>http://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
@@ -160,6 +143,7 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    <!-- Hosts the Google artifacts. -->
     <repository>
       <id>gson</id>
       <url>http://google-gson.googlecode.com/svn/mavenrepo</url>
@@ -208,11 +192,19 @@
     <dependency>
       <groupId>gov.nasa.pds.2010.report</groupId>
       <artifactId>rs-update</artifactId>
-      <version>0.1.0-dev</version>
+      <version>0.1.0</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
 
   <!-- Project Information and Reports inherited from parent. -->
-  <reporting/>
+  <reporting>
+    <!-- Project Reports not inherited from parent. -->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>

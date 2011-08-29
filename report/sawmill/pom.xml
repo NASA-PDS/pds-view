@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -26,12 +26,12 @@
 
   <groupId>gov.nasa.pds.2010.report</groupId>
   <artifactId>sawmill</artifactId>
-  <version>0.2.0-dev</version>
+  <version>0.2.0</version>
   <packaging>jar</packaging>
 
   <name>Sawmill</name>
   <description>
-    The Sawmill software package that provides the reports of the metric logs submitted to the PDS Engineering node.
+    The Report Service provides functionality for capturing and reporting metrics. Sawmill is the commercial product chosen to satisfy the PDS reporting requirements.
   </description>
   <url>http://pds-cm.jpl.nasa.gov/2010/report/sawmill</url>
 
@@ -70,24 +70,7 @@
     </developer>
   </developers>
 
-  <contributors>
-    <contributor>
-      <name>Steve Hughes</name>
-      <email>John.S.Hughes@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>System Engineering Lead</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Ron Joyner</name>
-      <email>Ronald.Joyner@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>System Engineer</role>
-      </roles>
-    </contributor>
-  </contributors>
+  <contributors/>
 
   <build>
     <plugins>
@@ -128,10 +111,10 @@
   </build>
 
   <repositories>
+    <!-- Hosts the PDS and OODT artifacts. -->
     <repository>
       <id>pds-repo</id>
-      <name>PDS Repository</name>
-      <layout>default</layout>
+      <name>PDS Maven Repository</name>
       <url>http://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>

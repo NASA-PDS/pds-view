@@ -79,6 +79,22 @@
         <role>System Engineer</role>
       </roles>
     </contributor>
+    <contributor>
+      <name>Mike Martin</name>
+      <email>tahoe_mike@sbcglobal.net</email>
+      <organization>Independent Consultant</organization>
+      <roles>
+        <role>System Design Working Group Member</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Duc Truong</name>
+      <email>Duc.Truong@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>System Administrator</role>
+      </roles>
+    </contributor>
   </contributors>
 
   <repositories>

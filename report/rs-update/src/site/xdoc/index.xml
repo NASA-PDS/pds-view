@@ -17,14 +17,14 @@
 
 <document>
   <properties>
-    <title>About Report Service Update Tool</title>
+    <title>About Update Tool</title>
     <author email="Jordan.Padams@jpl.nasa.gov">Jordan Padams</author>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
-    <section name="About Report Service Update Tool">
-      <p>The Report Service Update Tool provides a command-line interface for transferring node logs from remote locations and update the Sawmill database for the accompanying profiles.  This software also provides the core for the Profile Setup interface.
+    <section name="About Update Tool">
+      <p>The Update Tool provides a command-line application for transferring node logs from remote locations and for updating the Sawmill database for the associated profiles. This software also provides the core functionality for the Profile Setup web application.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.

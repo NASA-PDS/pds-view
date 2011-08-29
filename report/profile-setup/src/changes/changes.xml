@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -23,7 +23,10 @@
   </properties>
 
   <body>
-    <release version="0.1.0" date="TBD" description="TBD">
+    <release version="0.1.0" date="2011-08-29" description="This release of the Profile Setup application is a component of the integrated release 1.2.0 of the PDS 2010 System.">
+      <action dev="jpadams" type="add">
+        Initial capabilities for setting up Sawmill profiles.
+      </action>
     </release>
   </body>
 </document>
