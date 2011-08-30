@@ -55,6 +55,18 @@ maven pdf
 mvn deploy
 cd ../..
 
+cd report
+mvn deploy --non-recursive
+cd rs-update
+mvn site
+maven pdf
+mvn deploy
+cd ../profile-setup
+mvn site
+maven pdf
+mvn deploy
+cd ../..
+
 cd harvest
 mvn site
 maven pdf
