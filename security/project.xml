@@ -19,7 +19,7 @@
 <project>
   <id>security</id>
   <name>Security Service</name>
-  <currentVersion>0.3.0</currentVersion>
+  <currentVersion>0.4.0-dev</currentVersion>
 
   <organization>
     <name>NASA Jet Propulsion Laboratory, California Institute of Technology</name>

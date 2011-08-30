@@ -19,7 +19,7 @@
 <project>
   <id>registry-service</id>
   <name>Registry Service</name>
-  <currentVersion>0.7.0</currentVersion>
+  <currentVersion>0.8.0-dev</currentVersion>
 
   <organization>
     <name>NASA Jet Propulsion Laboratory, California Institute of Technology</name>
