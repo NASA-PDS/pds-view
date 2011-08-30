@@ -21,7 +21,6 @@ import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.springframework.stereotype.Component;
 
 @Provider
@@ -34,7 +33,6 @@ public final class JacksonObjectMapperProvider extends
   @Override
   public ObjectMapper getContext(Class<?> type) {
     ObjectMapper mapper = new ObjectMapper();
-    mapper.getSerializationConfig().set(SerializationConfig.Feature.USE_ANNOTATIONS, false);
     return mapper;
   }
 }
