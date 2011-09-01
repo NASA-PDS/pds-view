@@ -72,7 +72,7 @@
         <p>Tomcat produces access logs that record all requests processed by the web container.  The following are the steps needed to configure the server to create the Combined Format logs:</p>
         <ol>
           <li>Log into the machine hosting the web server you would like to gather metrics from.</li>
-          <li>Open <i>$CATALINA_HOME/conf/server.xml</i> for editting.</li>
+          <li>Open <i>$CATALINA_HOME/conf/server.xml</i> for editing.</li>
           <li>Find the &quot;Host&quot; XML node.  It should resemble the following:
             <source>
 &lt;Host name=&quot;localhost&quot;  appBase=&quot;webapps&quot;
@@ -110,7 +110,8 @@
           <li>Find the section of the file where LogFormats are declared (if exists) and add the following:</li>
             <source>
 LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&gt;s %b \&quot;%{Referer}i\&quot; \&quot;%{User-agent}i\&quot;&quot; combined
-CustomLog &quot;||$APACHE_HOME/bin/rotatelogs $LOG_DIR/access_log.%Y-%m-%d.txt 86400&quot; combined
+CustomLog &quot;||$APACHE_HOME/bin/rotatelogs \
+$LOG_DIR/access_log.%Y-%m-%d.txt 86400&quot; combined
             </source>
             A few things to note about the above configuration:
           <ul>
