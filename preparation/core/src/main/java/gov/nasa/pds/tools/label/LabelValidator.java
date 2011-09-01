@@ -54,8 +54,6 @@ public class LabelValidator {
 
   public static final String SCHEMA_CHECK = "gov.nasa.pds.tools.label.SchemaCheck";
 
-  private static final String PDS_DEFAULT_NAMESPACE = "http://pds.nasa.gov/schema/pds4/pds";
-
   static {
     internalMode = VersionInfo.isInternalMode();
   }
@@ -112,7 +110,8 @@ public class LabelValidator {
     DocumentBuilder parser = dbf.newDocumentBuilder();
     Document labelDocument = parser.parse(labelFile);
     XPathEvaluator xpath = new XPathEvaluator();
-    xpath.getStaticContext().setDefaultElementNamespace(PDS_DEFAULT_NAMESPACE);
+    xpath.getStaticContext().setDefaultElementNamespace(
+        VersionInfo.getPDSDefaultNamespace(modelVersion));
     return xpath.evaluate("//product_class/text()", labelDocument);
   }
 

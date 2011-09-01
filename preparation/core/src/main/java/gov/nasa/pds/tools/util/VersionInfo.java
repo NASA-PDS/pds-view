@@ -59,6 +59,8 @@ public class VersionInfo {
 
   public final static String SCHEMA_DIR_PROP = "core.schema.dir";
 
+  public final static String PDS_DEFAULT_NAMESPACE = "pds.default.namespace";
+
   private final static Properties props = new Properties();
   private final static File schemaDir;
   private final static Boolean internalMode;
@@ -91,7 +93,7 @@ public class VersionInfo {
   public static String getXMLVersion() {
     return props.getProperty(XML_VERSION);
   }
-  
+
   public static String getXMLParserVersion() {
     return xmlParserVersion;
   }
@@ -161,6 +163,11 @@ public class VersionInfo {
     return productClass + "_" + modelVersion + ".xsd";
   }
 
+  public static String getPDSDefaultNamespace(String modelVersion) {
+    return props.getProperty(PDS_DEFAULT_NAMESPACE + "." + modelVersion, props
+        .getProperty(PDS_DEFAULT_NAMESPACE));
+  }
+
   public static List<String> getSupportedModels() {
     if (internalMode) {
       return Arrays.asList(getSafeResourceListing(SCHEMA_DIR));
@@ -198,7 +205,7 @@ public class VersionInfo {
       String me = VersionInfo.class.getName().replace(".", "/") + ".class";
       dirURL = VersionInfo.class.getClassLoader().getResource(me);
     }
-    
+
     if (!path.endsWith("/")) {
       path += "/";
     }
