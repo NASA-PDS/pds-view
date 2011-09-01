@@ -47,6 +47,6 @@ for %%i in ("%LIB_DIR%"\harvest-*.jar) do set HARVEST_JAR=%%i
 :: The special variable '%*' allows the arguments
 :: to be passed into the executable.
 
-java -Dpds.registry="http://localhost:8080/registry-service" -Dpds.security.keystore="%KEYSTORE%" -jar "%HARVEST_JAR%" %*
+java -Dpds.registry="http://localhost:8080/registry" -Dpds.security.keystore="%KEYSTORE%" -jar "%HARVEST_JAR%" %*
 
 :END
