@@ -110,14 +110,16 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </p>
 
         <source>
-% java -Dpds.registry="http://localhost:8080/registry-service" -Dpds.security.keystore="${KEYSTORE}" -jar ${HARVEST_JAR} "$@"
+% java -Dpds.registry="http://localhost:8080/registry" \
+-Dpds.security.keystore="${KEYSTORE}" -jar ${HARVEST_JAR} "$@"
         </source>
 
         <p>Replace the URL value of <i>pds.registry</i> with the URL to the desired instance of the Registry. For example, making the following change to the script will have Harvest pointing to the secured, operational instance of the Registry at the Engineering Node:
         </p>
 
         <source>
-% java -Dpds.registry="https://pdsops2.jpl.nasa.gov/registry-service" -Dpds.security.keystore=${KEYSTORE} -jar ${HARVEST_JAR} "$@"
+% java -Dpds.registry="https://pdsops2.jpl.nasa.gov/registry" \
+-Dpds.security.keystore=${KEYSTORE} -jar ${HARVEST_JAR} "$@"
         </source>
       </subsection>
 
@@ -126,14 +128,16 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </p>
 
         <source>
-% java -Dpds.registry="http://localhost:8080/registry-service" -Dpds.security.keystore="%KEYSTORE%" -jar "%HARVEST_JAR%" %*
+% java -Dpds.registry="http://localhost:8080/registry" \
+-Dpds.security.keystore="%KEYSTORE%" -jar "%HARVEST_JAR%" %*
         </source>
 
         <p>Replace the URL value of <i>pds.registry</i> with the URL to the desired instance of the Registry. For example, making the following change to the batch file will have Harvest pointing to a secured operational instance of the Registry at the Engineering Node:
         </p>
 
         <source>
-% java -Dpds.registry="https://pdsops2.jpl.nasa.gov/registry-service" -Dpds.security.keystore="%KEYSTORE%" -jar "%HARVEST_JAR%" %*
+% java -Dpds.registry="https://pdsops2.jpl.nasa.gov/registry" \
+-Dpds.security.keystore="%KEYSTORE%" -jar "%HARVEST_JAR%" %*
         </source>
       </subsection>
     </section>
@@ -151,7 +155,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
           <tr><td>-u, --username</td><td>Specify a username for authentication with the PDS Security Service.</td></tr>
           <tr><td>-p, --password</td><td>Specify a password associated with the username.</td></tr>
           <tr><td>-l, --log-file</td><td>Specify a log file name. Default is standard out.</td></tr>
-          <tr><td>-P, --port</td><td>Specify a port number to use if running the tool in persistance mode. See the <a href="#Persistance_Mode">Persistance Mode</a> section for more details.</td></tr>
+          <tr><td>-P, --port</td><td>Specify a port number to use if running the tool in persistence mode. See the <a href="#Persistence_Mode">Persistence Mode</a> section for more details.</td></tr>
           <tr><td>-w, --wait</td><td>Specify the time, in seconds, to wait in between the crawls. This option is used only when running the tool in continuous mode.</td></tr>
           <tr><td>-V, --version</td><td>Display the release number and copyright information.</td></tr>
           <tr><td>-h, --help</td><td>Display Harvest usage.</td></tr>
@@ -162,7 +166,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script. Alternate methods for executing the tool can be found in the <a href="#Tool_Setup">Tool Setup</a> section.
         </p>
 
-        <p>The Harvest Tool operates with a policy file to register product metadata. Details on how to create this policy file can be found in the <a href="#Harvest Policy File">Harvest Policy File</a> section.
+        <p>The Harvest Tool operates with a policy file to register product metadata. Details on how to create this policy file can be found in the <a href="#Harvest_Policy_File">Harvest Policy File</a> section.
         </p>
 
         <p>The following command demonstrates how to run the Harvest Tool against a policy file, <i>policy.xml</i>, using a valid username and password, with the output going to standard out:
@@ -187,8 +191,8 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         </source>
       </subsection>
 
-      <subsection name="Persistance Mode">
-        <p>The Harvest Tool can be run in persistance mode through an XML-RPC accessible web service called a daemon. Under this scenario, the Harvest Tool wakes up periodically, inspects a target directory or directories, and registers the latest products. This section details how to set this up.
+      <subsection name="Persistence Mode">
+        <p>The Harvest Tool can be run in persistence mode through an XML-RPC accessible web service called a daemon. Under this scenario, the Harvest Tool wakes up periodically, inspects a target directory or directories, and registers the latest products. This section details how to set this up.
         </p>
 
         <p>In order to run the tool through the daemon, the command-line option flags <i>-P</i> and <i>-w</i> need to be used. This tells the Harvest Tool the port number to use and how long to sleep in between crawls, respectively. When the daemon is running, it can be accessed through the following url: <i>http://localhost:{port number}/xmlrpc</i>. The following command demonstrates launching the Harvest Tool through the daemon on port <i>9000</i>, where it will wait 120 seconds in between crawls:
