@@ -20,6 +20,7 @@
     <enabled>false</enabled>
   </validation>
   <candidates>
+    <namespace prefix="pds" uri="http://pds.nasa.gov/schema/pds4/pds/v04" default="true"/>
     <productMetadata objectType="Product_Attribute_Definition">
       <xPath>//Data_Standards/dd_version_id</xPath>
       <xPath>//Data_Standards/std_ref_version_id</xPath>
