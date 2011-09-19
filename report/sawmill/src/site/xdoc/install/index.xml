@@ -31,11 +31,12 @@
       <ul>
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Software_Installation">Software Installation</a></li>
+        <li><a href="#Software_Upgrade">Software Upgrade</a></li>
       </ul>
     </section>
 
     <section name="System Requirements">
-      <p>The software that makes up this project consists of a commercial package that is available for download and installation. The current version of the Sawmill package is 8.1.7. If installing the package in <a href="#Web_Server_Mode_Installation">Web Server Mode</a>, there are no further system requirements. If installing the package in <a href="#CGI_Mode_Installation">CGI Mode</a>, the following software is required to be installed on the host machine:
+      <p>The software that makes up this project consists of a commercial package that is available for download and installation. This installation guide pertains to the Sawmill software version 8.5.1. If installing the package in <a href="#Web_Server_Mode_Installation">Web Server Mode</a>, there are no further system requirements. If installing the package in <a href="#CGI_Mode_Installation">CGI Mode</a>, the following software is required to be installed on the host machine:
       </p>
 
       <ul>
@@ -45,7 +46,7 @@
     </section>
 
     <section name="Software Installation">
-      <p>This section details the download and installation of the Sawmill software package. At this time, the <a href="#CGI_Mode_Installation">CGI Mode</a> installation is preferred but if we procure a dedicated machine for this service in the future the <a href="#Web_Server_Mode_Installation">Web Server Mode</a> installation will be the best approach.
+      <p>This section details the download and installation of the Sawmill software package. The preferred method of installation is <a href="#CGI_Mode_Installation">CGI Mode</a> until a dedicated machine is procured for this service.  In the future, the <a href="#Web_Server_Mode_Installation">Web Server Mode</a> installation will be the best approach.
       </p>
 
       <subsection name="Download Software">
@@ -118,17 +119,24 @@
             <source>
 % gunzip -c (sawmill.tar.gz) | tar xf -
             </source>
-            <p>A directory called <i>sawmill</i> is created containing the Sawmill executable file (sawmill) and a few other files.
-            </p>
-          </li>
-          <li>Copy the executable and <i>LogAnalysisInfo</i> directory to the <i>cgi</i> directory created in step 2c.</li>
-          <source>
-% cp (installation-directory)/sawmill (cgi-bin)/sawmill.cgi
-% cp -r (installation-directory)/LogAnalysisInfo (cgi-bin)
-          </source>
-	  Make sure you copy the whole directory (LogAnalysisInfo), not its contents (LogAnalysisInfo/)
+            <p>A <i>sawmill</i> directory is created.</p>
+	  </li>
+	  <li>Move this directory to an arbitrary directory of your choice, $NEW_HOME , making SAWMILL_HOME=$NEW_HOME/sawmill.  (<i>For the current PDS Engineering installation, SAWMILL_HOME=/pds4/report-service/&lt;machine-name&gt;/sawmill</i>)
+	  </li>
+	  
+          <li>Make the sawmill executable into a cgi script by appending .cgi:
+            <source>
+% mv $SAWMILL_HOME/sawmill $SAWMILL_HOME/sawmill.cgi
+            </source>
+	  </li>
+	  <li>
+	    Create a symbolic link to this CGI script from the <i>cgi</i> directory in step 2c:
+	    <source>
+	      ln -s $SAWMILL_HOME/sawmill.cgi $CATALINA_HOME/webapps/ROOT/WEB-INF/cgi/sawmill.cgi
+	    </source>
+	  </li>
           <li>Open a web browser, and navigate to the URL <i>http://(yourserver)/cgi-bin/sawmill.cgi</i> .</li>
-          <li>Enter <i>License Key</i> when prompted.</li>
+          <li>Enter <i>License Key</i> when prompted (if applicable).</li>
           <li>Proceed through the steps to create an admin username and password.</li>
         </ol>
       </subsection>
@@ -159,6 +167,23 @@ cd sawmill
           <li>Proceed through the steps to create an admin username and password.</li>
         </ol>
       </subsection>
+    </section>
+    <section name="Software Upgrade">
+      <p>All upgrades for the current license version are free.  For instance, a license purchase for Sawmill version 8 covers all 8.x.x upgrades.  The following steps should be performed to complete an upgrade of the Sawmill software:
+	<ol>
+	  <li>Follow <a href="#Download_Software">Download Software</a> instructions above.</li>
+	  <li>Untar the new version of Sawmill to a directory $INSTALL_DIR .</li>
+	  <li>Run the upgrade-sawmill script (currently found at /pds4/report-service on pdsdev/pdsops and in <a href="http://starcell.jpl.nasa.gov/repo/2010/trunk/report/sawmill/src/main/resources/upgrade-sawmill">Subversion</a>) :
+	    <source>
+# ./upgrade-sawmill &lt;install-dir&gt; &lt;sawmill-base-dir&gt;
+
+./upgrade-sawmill $INSTALL_DIR /pds4/report-service/
+            </source>
+	    &lt;sawmill-base-dir&gt; should be a directory that contains <i>pdsdev</i> and <i>pdsops</i> subdirectories.
+	  </li>
+	  <li>Go to web interface and verify profiles and data are sufficiently migrated.</li>
+	</ol>
+      </p>
     </section>
   </body>
 </document>
