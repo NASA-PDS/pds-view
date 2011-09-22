@@ -34,6 +34,7 @@
         <li><a href="#Tool_Execution">Tool Execution</a></li>
         <li><a href="#Harvest_Policy_File">Harvest Policy File</a></li>
         <li><a href="#Report_Format">Report Format</a></li>
+        <li><a href="#Common_Errors">Common Errors</a></li>
       </ul>
 
       <p>Note: The command-line examples in this section have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution.
@@ -297,7 +298,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
        <p>This policy file is made up of the following complex type elements: <i>bundles</i>, <i>collections</i>, <i>directories</i>, <i>validation</i>, <i>candidates</i>, and <i>productMetadata</i>.
        </p>
 
-       <b><i>bundles</i></b>
+       <p><b><i>bundles</i></b></p>
 
        <p>Specify this element to tell the Harvest Tool to register and crawl a bundle file. The following table describes the elements that are allowed:
        </p>
@@ -310,7 +311,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
        <p>In the example above, the Harvest Tool will register the bundle file named <i>/home/pds4/context-bundle/bundle.xml</i>. It will then crawl the bundle file, looking for collection files to register and process.
        </p>
 
-       <b><i>collections</i></b>
+       <p><b><i>collections</i></b></p>
 
        <p>Specify this element to tell the Harvest Tool to register and crawl a collection file. Crawling only occurs when the collection file is a primary collection. This is indicated by a value of <i>true</i> in the <i>is_primary_collection</i> element tag within the collection.
        </p>
@@ -326,7 +327,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
        <p>In the example above, the Harvest Tool will register the collection file named <i>/home/pds4/insthost/collection_instrument_host.xml</i>. It will then crawl the file, looking for products to register if it is a primary collection.
        </p>
 
-       <b><i>directories</i></b>
+       <p><b><i>directories</i></b></p>
 
        <p>Specify this element to tell the Harvest Tool where to crawl for data products. The following table describes the elements that are allowed:
        </p>
@@ -364,7 +365,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
          <tr><td>productMetadata</td><td>Specify to tell the tool what object types and what metadata to register.</td></tr>
        </table>
 
-       <p>By default, the Harvest Tool defines the default namespace to be the PDS namespace, <i>http://pds.nasa.gov/schema/pds4/pds</i>. To override this default, specify the <i>default</i> attribute in the namespace element and give it a value of <i>true</i>. The following makes the <i>geo</i> namespace the default namespace:
+       <p>By default, the Harvest Tool defines the default namespace to be the PDS namespace, <i>http://pds.nasa.gov/schema/pds4/pds/v04</i>. To override this default, specify the <i>default</i> attribute in the namespace element and give it a value of <i>true</i>. The following makes the <i>geo</i> namespace the default namespace:
        </p>
 
        <source>
@@ -376,7 +377,7 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
        <p>Namespaces need to be defined in the Harvest policy file only if the metadata to be extracted exists in a namespace other than the PDS namespace. In the example above, a namespace with the prefix <i>geo</i> and uri <i>http://pds.nasa.gov/schema/pds4/geo</i> has been defined. This means that any xPath expressions defined in the policy file will be able to use the <i>geo</i> prefix to be able to extract metadata that are within the geo namespace. xPaths will be explained in greater detail in the <i>productMetadata</i> section.
        </p>
 
-       <b><i>productMetadata</i></b>
+       <p><b><i>productMetadata</i></b></p>
 
        <p>Specify this element to tell the Harvest Tool what metadata to register. It requires an attribute called <i>objectType</i> that tells the Harvest Tool what product types to register. The following table describes the elements that are allowed:
        </p>
@@ -598,38 +599,49 @@ INFO:   [C:\pds4\geo\schema\Product_XML_Schema.xml] Begin processing.
 SKIP:   [C:\pds4\geo\schema\Product_XML_Schema.xml] 'XML_Schema' is not an
 object type found in the policy file.
 INFO:   [C:\pds4\geo\mars_analog_data\aref_235_450.xml] Begin processing.
-SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_450.xml] Succesfully registered product: \
-URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_450::1.0
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_450.xml] \
+Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_450::1.0
 INFO:   [C:\pds4\geo\mars_analog_data\aref_235_480.xml] Begin processing.
-SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_480.xml] Succesfully registered product: \
-URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_480::1.0
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_480.xml] \
+Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_480::1.0
 INFO:   [C:\pds4\geo\mars_analog_data\aref_235_530.xml] Begin processing.
-SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_530.xml] Succesfully registered product: \
-URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_530::1.0
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_530.xml] \
+Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_530::1.0
 INFO:   [C:\pds4\geo\mars_analog_data\aref_235_600.xml] Begin processing.
-SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_600.xml] Succesfully registered product: \
-URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_600::1.0
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_600.xml] \
+Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_600::1.0
 INFO:   [C:\pds4\geo\mars_analog_data\aref_235_670.xml] Begin processing.
-SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_670.xml] Succesfully registered product: \
-URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_670::1.0
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_670.xml] \
+Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_670::1.0
 INFO:   [C:\pds4\geo\mars_analog_data\aref_235_750.xml] Begin processing.
-SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_750.xml] Succesfully registered product: \
-URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_750::1.0
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_750.xml] \
+Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_750::1.0
 INFO:   [C:\pds4\geo\mars_analog_data\aref_235_800.xml] Begin processing.
-SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_800.xml] Succesfully registered product: \
-URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_800::1.0
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_800.xml] \
+Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_800::1.0
 INFO:   [C:\pds4\geo\mars_analog_data\aref_235_860.xml] Begin processing.
-SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_860.xml] Succesfully registered product: \
-URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_860::1.0
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_860.xml] \
+Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_860::1.0
 INFO:   [C:\pds4\geo\mars_analog_data\aref_235_900.xml] Begin processing.
-SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_900.xml] Succesfully registered product: \
-URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_900::1.0
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_900.xml] \
+Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_900::1.0
 INFO:   [C:\pds4\geo\mars_analog_data\aref_235_930.xml] Begin processing.
-SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_930.xml] Succesfully registered product: \
-URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_930::1.0
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_930.xml] \
+Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_930::1.0
 INFO:   [C:\pds4\geo\mars_analog_data\aref_235_990.xml] Begin processing.
-SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_990.xml] Succesfully registered product: \
-URN:NASA:PDS:BUGLAB-GB:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_990::1.0
+SUCCESS:   [C:\pds4\geo\mars_analog_data\aref_235_990.xml] \
+Succesfully registered product: \
+URN:NASA:PDS:BUGLAB-GB:MARS-ANALOG-SAMPLE-DATA:AREF_235_990::1.0
 INFO:   [C:\pds4\geo\mars_analog_data\MAS_Data_Collection.xml] Begin processing.
 SKIP:   [C:\pds4\geo\mars_analog_data\MAS_Data_Collection.xml] 'collection' is not
 an object type found in the policy file.
@@ -666,6 +678,22 @@ Summary:
 
 End of Log
      </source>
-   </section>
- </body>
+    </section>
+
+    <section name="Common Errors">
+      <p>Execution of the Harvest Tool may result in the following message appearing in the log:
+      </p>
+
+      <source>
+INFO:   XML extractor set to the following default namespace: \
+http://pds.nasa.gov/schema/pds4/pds
+INFO:   [/pds4/VG2PLS_archive/Product_Archive_Bundle.xml] Begin processing.
+SKIP:   [/pds4/VG2PLS_archive/Product_Archive_Bundle.xml] No product_class \
+element found.
+      </source>
+
+      <p>The message above is normally the result of a namespace mismatch between the Harvest Tool configuration and the product labels being registered. See the <a href="#PDS4_Data_Product_Registration">PDS4 Data Product Registration</a> section above for details on specifying the namespace in the configuration file. By the way, the message could be telling the truth where the product label does not contain the &lt;product_class&gt; element. If this is the case, then the file is not a valid PDS product label.
+      </p>
+    </section>
+  </body>
 </document>
