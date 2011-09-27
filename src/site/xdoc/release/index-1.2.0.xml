@@ -300,7 +300,8 @@ java -jar ${VALIDATE_JAR} "$@"
 
 should be changed to:
 
-java -Dcore.schema.dir=$HOME/VG2PLS_archive/schemas -jar ${VALIDATE_JAR} "$@"
+java -Dcore.schema.dir=$HOME/VG2PLS_archive/schemas \
+-jar ${VALIDATE_JAR} "$@"
             </source>
             <p>A subsequent run of the tool against the example bundle (using the same command as used in the first run) should result in no errors found. Implementation of this feature is likely to change in Build 2 with the adoption of XML Schema 1.1 and the use of XML Catalogs.
             </p>
@@ -329,9 +330,10 @@ End of Log
             <p>The next step verifies that the registered content from the previous step can be viewed via the Registry Service REST-based API and the Registry User Interface. The <a href="../registry/registry-service/operate/index.html">Operation</a> document for the Registry Service provides the details for interfacing with the service via the REST-based API. Assuming a default installation, the Registry Service should be accessible via the following URL: <i>http://localhost:8080/registry/</i>. Accessing the <i>report</i> endpoint (append report to the URL) from your favorite web browser (some browsers display XML better than others), should produce the following output:
             </p>
             <source>
-&lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='0.7.0' packages='3' 
-classificationNodes='67' classificationSchemes='1' services='0' extrinsics='91' 
-associations='337' serverStarted='2011-09-26T15:57:51.978-07:00' status='OK'/&gt;
+&lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='0.7.0' 
+packages='3' classificationNodes='67' classificationSchemes='1' 
+services='0' extrinsics='91' associations='337' 
+serverStarted='2011-09-26T15:57:51.978-07:00' status='OK'/&gt;
             </source>
             <p>The above report shows 91 extrinsics registered which corresponds with the Harvest summary. The number of associations registered is a little harder to verify because there were already some associations in the registry from the configuration step and at this time Harvest registers some additional associations which are not counted in the final summary. Feel free to try out some of the other endpoints (e.g. extrinsics) detailed in the <a href="../registry/registry-service/operate/index.html#Query_Artifacts">Query Artifacts</a> section of the Operations document.
             </p>
