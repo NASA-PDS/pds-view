@@ -130,12 +130,12 @@ Java(TM) SE Runtime Environment (build 1.6.0_26-b03-384-10M3425)
 Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
         </source>
 
-        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.6, Java will need to be downloaded and installed in the current environment. Consult your local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/">Oracle Java Download</a> page. The software package of choice is the Java Standard Edition (SE) 6, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
+        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.6, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The software package of choice is the Java Standard Edition (SE) 6, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
         </p>
       </subsection>
 
       <subsection name="Java Application Server">
-        <p>The other main system requirement pertains to providing a Java application server for hosting certain components (Registry Service, Registry User Interface and Report Service). The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.21. Consult your local system administrator for installation of this software. For the do-it-yourself crowd, the Apache Tomcat software can be downloaded from the <a href="http://tomcat.apache.org/">Apache Tomcat</a> page. Choose the version to download (6.0 or 7.0) from the menu on the left.
+        <p>The other main system requirement pertains to providing a Java application server for hosting certain components (Registry Service, Registry User Interface and Report Service). The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.21. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Apache Tomcat software can be downloaded from the <a href="http://tomcat.apache.org/" target="_blank">Apache Tomcat</a> page. Choose the version to download (6.0 or 7.0) from the menu on the left. Details on downloading, installing and configuring an Apache Tomcat server can be found in the <a href="index-tomcat.html">Tomcat Deployment</a> document.
         </p>
       </subsection>
     </section>
@@ -241,7 +241,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
             </p>
           </li>
           <li><b>Registry Service</b><br/>
-            <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. Ultimately, all products (including PDS3 products) will be registered and tracked with the Registry Service. For this release, users are asked to install and configure a local instance of the service in order to exercise this procedure. Additionally if the user is participating in the PDS3 to PDS4 conversion exercises, the resulting products or collections of products can be registered with their local registry instance. By default, the registry will utilize Derby as the backend database for the service. The configuration can be modified after the installation to utilize MySQL as the database backend. If another database provider is desired, inform the Engineering Node development team and they will work with you to specify the proper configuration.
+            <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. Ultimately, all products (including PDS3 products) will be registered and tracked with the Registry Service. For this release, users are asked to install and configure a local instance of the service in order to exercise this procedure. Additionally if the user is participating in the PDS3 to PDS4 conversion exercises, the resulting products or collections of products can be registered with their local registry instance. By default, the registry will utilize Derby as the backend database for the service. The configuration can be modified after the installation to utilize MySQL as the database backend. If another database provider is desired, inform the Engineering Node development team and they will help to specify the proper configuration.
             </p>
           </li>
           <li><b>Registry User Interface</b><br/>
@@ -261,13 +261,13 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
           <li><b>Verify System Requirements</b><br/>
             <p>As specified in the <a href="#System_Requirements">System Requirements</a> section above, the software requires Java and a Java Application Server to be installed and accessible. These installations should be verified before proceeding to the next step.
             </p>
-            <p>Although we have specified Java 1.6 and Tomcat 6.0 or 7.0, if a Node has Java 1.7 or another Java Application Server (e.g, Glassfish, Jetty, etc.) installed, we would be very interested in how the software functions in these environments. Feel free to install the software in these environment and let us know if you run into any issues.
+            <p>Although we have specified Java 1.6 and Tomcat 6.0 or 7.0, if a Node has Java 1.7 or another Java Application Server (e.g, Glassfish, Jetty, etc.) installed, we would be very interested in how the software functions in these environments. Feel free to install the software in these environments and let the EN development team know if there are any issues.
             </p>
           </li>
           <li><b>Install Registry Service</b><br/>
-            <p>The next step is to install the Registry Service. The <a href="../registry/registry-service/install/index.html">Installation</a> document for the Registry Service provides the details for downloading, installing and configuring the software. Out of the box, the service uses a Derby database for storing registered content. This database will be located in the directory where the Tomcat server was launched, by default. The Installation document describes how to change this location as well as how to use MySQL as the backend database instead of Derby. If a Node has another database server that they would like to use as the backend, please let us know and we will help with the configuration.
+            <p>The next step is to install the Registry Service. The <a href="../registry/registry-service/install/index.html">Installation</a> document for the Registry Service provides the details for downloading, installing and configuring the software. Out of the box, the service uses a Derby database for storing registered content. This database will be located in the directory where the Tomcat server was launched, by default. The Installation document describes how to change this location as well as how to use MySQL as the backend database instead of Derby. If a Node has another database server that they would like to use as the backend, please contact the EN development team for help with the configuration.
             </p>
-            <p>If you by chance had a previous installation of the Registry Service, you should un-deploy the application from the application server and remove the Derby database directory named <i>RegistryDb</i> and the <i>derby.log</i> file prior to installing the new version.
+            <p>If there was a previous installation of the Registry Service, the application should be un-deployed from the application server and then remove the Derby database directory named <i>RegistryDb</i> and the <i>derby.log</i> file prior to installing the new version.
             </p>
           </li>
           <li><b>Install Registry User Interface</b><br/>
@@ -283,7 +283,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
             </p>
           </li>
           <li><b>Download Example Bundle</b><br/>
-            <p>In order to test the software, we are going to use the example bundle that is referenced by the Data Provider's Handbook. The bundle has been modified slightly from the official version. The <i>schemas</i> directory was reorganized to facilitate validation. The bundle can be downloaded from <a href="http://pds.nasa.gov/repository/pds4/packages/VG2PLS_archive.zip">http://pds.nasa.gov/repository/pds4/packages/VG2PLS_archive.zip</a>. Unzipping the package results in a directory named <i>VG2PLS_archive</i>.
+            <p>In order to test the software, we are going to use the example bundle that is referenced by the Data Provider's Handbook. The bundle has been modified slightly from the official version. The <i>schemas</i> directory was reorganized to facilitate validation. The bundle can be downloaded from <a href="http://pds.nasa.gov/repository/pds4/packages/VG2PLS_archive.zip" target="_blank">http://pds.nasa.gov/repository/pds4/packages/VG2PLS_archive.zip</a>. Unzipping the package results in a directory named <i>VG2PLS_archive</i>.
             </p>
           </li>
           <li><b>Validate Example Bundle</b><br/>
@@ -307,7 +307,7 @@ java -Dcore.schema.dir=$HOME/VG2PLS_archive/schemas \
             </p>
           </li>
           <li><b>Register Example Bundle</b><br/>
-            <p>The next step tests the Harvest Tool and Registry Service by registering the contents of the example bundle. The <a href="../harvest/operate/index.html">Operation</a> document for the Harvest Tool provides the details for executing the software. A custom configuration file for the example bundle can be downloaded from <a href="http://pds.nasa.gov/repository/pds4/system/harvest/harvest-policy-example.xml">http://pds.nasa.gov/repository/pds4/system/harvest/harvest-policy-example.xml</a>. Depending on the location of the example bundle and the local environment, the <i>$HOME</i> variable in the configuration file may need to be replaced with the absolute path to the example bundle directory. Execute the Harvest Tool against the example bundle with the following commands:
+            <p>The next step tests the Harvest Tool and Registry Service by registering the contents of the example bundle. The <a href="../harvest/operate/index.html">Operation</a> document for the Harvest Tool provides the details for executing the software. A custom configuration file for the example bundle can be downloaded from <a href="http://pds.nasa.gov/repository/pds4/system/harvest/harvest-policy-example.xml" target="_blank">http://pds.nasa.gov/repository/pds4/system/harvest/harvest-policy-example.xml</a>. Depending on the location of the example bundle and the local environment, the <i>$HOME</i> variable in the configuration file may need to be replaced with the absolute path to the example bundle directory. Execute the Harvest Tool against the example bundle with the following commands:
             </p>
             <source>
 % cd $HOME/harvest-0.4.0/bin
@@ -327,7 +327,7 @@ End of Log
             </source>
           </li>
           <li><b>View Registry Contents</b><br/>
-            <p>The next step verifies that the registered content from the previous step can be viewed via the Registry Service REST-based API and the Registry User Interface. The <a href="../registry/registry-service/operate/index.html">Operation</a> document for the Registry Service provides the details for interfacing with the service via the REST-based API. Assuming a default installation, the Registry Service should be accessible via the following URL: <i>http://localhost:8080/registry/</i>. Accessing the <i>report</i> endpoint (append report to the URL) from your favorite web browser (some browsers display XML better than others), should produce the following output:
+            <p>The next step verifies that the registered content from the previous step can be viewed via the Registry Service REST-based API and the Registry User Interface. The <a href="../registry/registry-service/operate/index.html">Operation</a> document for the Registry Service provides the details for interfacing with the service via the REST-based API. Assuming a default installation, the Registry Service should be accessible via the following URL: <i>http://localhost:8080/registry/</i>. Accessing the <i>report</i> endpoint (append report to the URL) from the desired web browser (some browsers display XML better than others), should produce the following output:
             </p>
             <source>
 &lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='0.7.0' 
@@ -337,8 +337,7 @@ serverStarted='2011-09-26T15:57:51.978-07:00' status='OK'/&gt;
             </source>
             <p>The above report shows 91 extrinsics registered which corresponds with the Harvest summary. The number of associations registered is a little harder to verify because there were already some associations in the registry from the configuration step and at this time Harvest registers some additional associations which are not counted in the final summary. Feel free to try out some of the other endpoints (e.g. extrinsics) detailed in the <a href="../registry/registry-service/operate/index.html#Query_Artifacts">Query Artifacts</a> section of the Operations document.
             </p>
-
-            <p>Assuming a default installation, the Registry User Interface should be accessible via the following URL: <i>http://localhost:8080/registry-ui/</i>. Accessing this URL from your favorite web browser, should produce the following display:
+            <p>Assuming a default installation, the Registry User Interface should be accessible via the following URL: <i>http://localhost:8080/registry-ui/</i>. Accessing this URL from the desired web browser, should produce the following display:
             </p>
             <center>
               <a href="../images/registry-ui-main.jpg" target="_blank"><img alt="Registry User Interface" src="../images/registry-ui-main-scale.jpg" border="1" /></a><br/>
@@ -349,7 +348,7 @@ serverStarted='2011-09-26T15:57:51.978-07:00' status='OK'/&gt;
           </li>
         </ol>
 
-        <p>The above steps are not exhaustive by any measure with respect to testing the software, but they will verify that the software can be installed and executed in the various Node environments. Some Nodes are actively working on generating test PDS4 bundles and collections. If a Node would like to attempt to register those products with their local registry we would be glad to assist in this effort. Additionally, if any Nodes can easily make their Registry Service instance publicly available on the Internet, we at the EN would like to test our replication feature with a remote instance of the service. Please contact us and let us know if this is possible with your installation.
+        <p>The above steps are not exhaustive by any measure with respect to testing the software, but they will verify that the software can be installed and executed in the various Node environments. Some Nodes are actively working on generating test PDS4 bundles and collections. If a Node would like to attempt to register those products with their local registry we would be glad to assist in this effort. Additionally, if any Nodes can easily make their Registry Service instance publicly available on the Internet, we at the EN would like to test our replication feature with a remote instance of the service. Please contact the EN development team if this is possible with the Node's local installation.
         </p>
       </subsection>
     </section>

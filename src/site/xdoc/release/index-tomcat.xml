@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2011, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology 
+  Transfer at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Tomcat Deployment</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Tomcat Deployment">
+      <p>Many of the components of the PDS system are packaged as Java-based web applications and require a Java Application Server to host them. Although there are a few free choices out on the market (e.g., Glassfish, Jetty, etc.) the EN development team consistently uses Apache Tomcat as its application server of choice. This document details the download, installation and configuration of an Apache Tomcat server for use in hosting PDS web applications.
+      </p>
+
+      <ul>
+        <li><a href="#Download">Download</a></li>
+        <li><a href="#Install_and_Configure">Install and Configure</a></li>
+        <li><a href="#Launch_Tomcat">Launch Tomcat</a></li>
+        <li><a href="#Deploy_Application">Deploy Application</a></li>
+        <li><a href="#Shutdown_Tomcat">Shutdown Tomcat</a></li>
+      </ul>
+    </section>
+
+    <section name="Download">
+      <p>As of the writing of this document the current version of Tomcat is <i>7.0.21</i>. New releases are made available periodically, with the latest version of <i>7.0.X</i> available from the <a herf="http://tomcat.apache.org/download-70.cgi" target="_blank">Apache Tomcat 7 Downloads</a> page. The download page has several binary distributions to choose from:
+      </p>
+
+      <center>
+        <a href="../images/tomcat-download.jpg" target="_blank"><img alt="Tomcat Download" src="../images/tomcat-download-scale.jpg" border="1" /></a><br/>
+        If viewing this document in online form, click the image for a larger version.
+      </center>
+
+      <p>The first two listed under the <i>Core</i> bullet work nicely in UNIX-based environments. This deployment example assumes download and installation of the TAR/GZIP package. Select the link of the desired package to download the file to a local machine. In UNIX-based environments it is common to install additional machine-wide accessible software in the <i>/usr/local</i> directory. Depending on the machine, this may require <i>root</i> privileges. Copy the downloaded package file to this directory.
+      </p>
+    </section>
+
+    <section name="Install and Configure">
+      <p>Installation, at least in the UNIX environment, is as simple as unpacking the downloaded package. Execute the following commands to unpack the software and create a symbolic link to the resulting directory:
+      </p>
+
+      <source>
+% cd /usr/local
+% tar xzvf apache-tomcat-7.0.X.tar.gz
+% ln -s apache-tomcat-7.0.X tomcat
+      </source>
+
+      <p>The symbolic link will be useful when upgrading to future versions, minimizing the number path changes to be made in startup scripts. There are a number of configuration options that can be made to a Tomcat deployment but the software will pretty much run out of the box. Extensive documentation with respect to configuration options is available from the <a href="http://tomcat.apache.org/tomcat-7.0-doc/" target="_blank">Apache Documentation 7 Documentation Index</a> page. That said, there are a couple of common configuration changes like changing the port number that the server listens to and enabling access to the Manager interface that this document will cover.
+      </p>
+
+      <p>By default, Tomcat comes configured to listen for requests on port <i>8080</i>. This is actually a very common test port for various web server applications and may conflict with an existing application running in the local environment. To change the port number, execute the following commands to edit the <i>server.xml</i> configuration file (the example uses <i>vi</i>, but any editor will suffice):
+      </p>
+
+      <source>
+% cd /usr/local/tomcat/conf
+% vi server.xml
+      </source>
+
+      <p>A search for <i>8080</i> should discover the following block of XML statements:
+      </p>
+
+      <source>
+&lt;Server port="8005" shutdown="SHUTDOWN"&gt;
+  ...
+    &lt;Connector port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" /&gt;
+    &lt;Connector executor="tomcatThreadPool"
+               port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+              redirectPort="8443" /&gt;
+  ...
+&lt;/Server&gt;
+      </source>
+
+      <p>In general, ports <i>1023</i> and below are commonly reserved by the system and require <i>root</i> user privileges to access. Ports <i>1024</i> through <i>49151</i> are sporadically used by applications registered with IANA. If the need is for another available port, than ports in the <i>9000</i> range are commonly available without conflict in most environments. The following three scenarios will help guide the port selection:
+      </p>
+
+      <ul>
+        <li>To avoid a conflict with another application listening on port <i>8080</i>, try changing the port to <i>8090</i>, otherwise <i>9000</i> and above are usually unused.</li>
+        <li>If running multiple Tomcat servers, than <i>8090</i> is still a good alternative but the <i>shutdown</i> and <i>redirect</i> ports also need to be modified so that they do not conflict with the other Tomcat server.</li>
+        <li>If this Tomcat server is intended to respond to operational requests, then the port should be changed to <i>80</i> along with changing the <i>redirect</i> port to <i>443</i>. The alternative to having Tomcat listen on port <i>80</i> is to have another web server (e.g., Apache HTTP Server, Microsoft IIS, etc.) listen on that port and have it redirect requests to the Tomcat server at port <i>8080</i>. This type of configuration is covered in the Tomcat documentation and should also be covered in the documentation for the other web server.</li>
+      </ul>
+
+      <p>Another common configuration change involves enabling the Manager interface. The Manager interface is not necessary to run Tomcat but it is nice for viewing status and deploying applications. In order to enable the interface, an account must be specified in the Tomcat users configuration file with the appropriate role. Execute the following commands to edit the <i>tomcat-users.xml</i> configuration file:
+      </p>
+
+      <source>
+% cd /usr/local/tomcat/conf
+% vi tomcat-users.xml
+      </source>
+
+      <p>Add the two XML statements listed below within the &lt;tomcat-users&gt; block.
+      </p>
+
+      <source>
+&lt;tomcat-users&gt;
+  ...
+  &lt;role rolename="manager-gui"/&gt;
+  &lt;user username="&lt;username&gt;" password="&lt;password&gt;" roles="manager-gui"/&gt;
+  ...
+&lt;/tomcat-users&gt;
+      </source>
+
+      <p>The first statement defines the <i>manager-gui</i> role and the second statement defines a user with that role. Replace the &lt;username&gt; and &lt;password&gt; in the second statement with desired values for the local environment. This document discusses using the Manager interface in the <a href="#Deploy_Application">Deploy Application</a> section below.
+      </p>
+    </section>
+
+    <section name="Launch Tomcat">
+      <p>Launching the Tomcat server is relatively straight forward as long as the <i>JAVA_HOME</i> environment variable is set appropriately. Execute the following commands to launch the Tomcat server:
+      </p>
+
+      <source>
+% cd /usr/local/tomcat/bin
+% ./startup.sh
+      </source>
+
+      <p>If launching the Tomcat server automatically upon system startup is desired, the <a href="http://tomcat.apache.org/tomcat-7.0-doc/setup.html" target="_blank">Tomcat Setup</a> portion of the Tomcat documentation provides details on setting this up. Alternatively, consult your system administrator for standard mechanisms of accomplishing this in the local environment. Another useful method for launching the Tomcat server is to create a separate script where specific environment variables can be set for use by Tomcat. The following is an example of such a script:
+      </p>
+
+      <source>
+#!/bin/sh
+export CATALINA_HOME=/usr/local/tomcat
+export CATALINA_OPTS="-Dderby.system.home=/usr/local/derby"
+export JAVA_HOME=/usr/local/java
+$CATALINA_HOME/bin/startup.sh
+      </source>
+
+      <p>The above script can be run from anywhere on the system because it defines the location of the Tomcat software and calls the same startup script that was demonstrated above. This script also defines a Java property and the Java home directory:
+      </p>
+
+      <ul>
+        <li>CATALINA_OPTS<br/>
+          <p>This environment variable allows the user to pass in application-specific Java properties to the applications that are deployed on the Tomcat server. In the example above, the location of the Derby database for the Registry Service is specified. This property is described in more detail in the <a href="../registry/registry-service/install/index.html">Installation</a> document for the Registry Service.
+          </p>
+        </li>
+        <li>JAVA_HOME<br/>
+          <p>In most environments there will be one Java installation and this variable should reference the root directory of that installation. Because Tomcat 7 and the PDS software require Java 1.6, it may have been required to install this version of Java while version 1.5 was already installed in the local environment. By referencing the Java 1.6 installation with this variable in a separate startup script, it allows the rest of the local environment to utilize the Java 1.5 installation.
+          </p>
+        </li>
+      </ul>
+
+      <p>Once the Tomcat server has been launched by one of the methods above, the server should be accessible via the following URL: <i>http://localhost:8080/</i>. This assumes the listening port was not changed during the configuration. Accessing this URL from the desired web browser, should produce the following display:
+      </p>
+
+      <center>
+        <a href="../images/tomcat-welcome.jpg" target="_blank"><img alt="Tomcat Welcome" src="../images/tomcat-welcome-scale.jpg" border="1" /></a><br/>
+        If viewing this document in online form, click the image for a larger version.
+      </center>
+    </section>
+
+    <section name="Deploy Application">
+      <p>There are a few methods for deploying web applications (e.g., Registry Service, Registry User Interface, etc.) to the Tomcat server and two of them are discussed here. The first is to simply copy the WAR file from the software distribution package into the <i>/usr/local/tomcat/webapps/</i> directory. The second is to access the Tomcat Manager interface from the <i>Manager App</i> button on the Welcome page displayed in the image above. The user is prompted to enter the username and password that was specified during the configuration. Upon successful authentication and authorization, the following page should be displayed:
+      </p>
+
+      <center>
+        <a href="../images/tomcat-manager.jpg" target="_blank"><img alt="Tomcat Manager" src="../images/tomcat-manager-scale.jpg" border="1" /></a><br/>
+        If viewing this document in online form, click the image for a larger version.
+      </center>
+
+      <p>Scrolling down towards the bottom of the page will expose the <i>WAR file to deploy</i> section of the page. From there, choose the WAR file from a local disk and then select the <i>Deploy</i> button to deploy the application to the Tomcat server.
+      </p>
+
+      <p>For both methods of deployment, the application will be accessible from the base URL followed by a "/" and then the name of the WAR file minus the extension. So, the Registry Service would be accessible at the following URL: <i>http://localhost:8080/registry/</i>. This assumes the user followed the installation instructions for the Registry Service and renamed the WAR file to <i>registry.war</i>.
+      </p>
+    </section>
+
+    <section name="Shutdown Tomcat">
+      <p>Execute the following commands to shutdown the Tomcat server:
+      </p>
+
+      <source>
+% cd /usr/local/tomcat/bin
+% ./shutdown.sh
+      </source>
+    </section>
+  </body>
+</document>
