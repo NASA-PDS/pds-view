@@ -252,6 +252,7 @@ public class Pds4MetExtractor implements MetExtractor {
     List<TinyElementImpl> fileObjects = extractor.getNodesFromDoc(
         Constants.coreXpathsMap.get(Constants.FILE_OBJECTS));
     for (TinyElementImpl file : fileObjects) {
+      String fileLocation = product.getParent();
       String name = "";
       long size = -1;
       String checksum = "";
@@ -266,6 +267,10 @@ public class Pds4MetExtractor implements MetExtractor {
           checksum = child.getStringValue();
         } else if ("creation_date_time".equals(child.getLocalPart())) {
           creationDateTime = child.getStringValue();
+        } else if ("directory_path_name".equals(child.getLocalPart())) {
+          //Append the directory_path_name value to the file location
+          fileLocation = new File(fileLocation, child.getStringValue())
+          .toString();
         }
       }
       try {
@@ -277,7 +282,7 @@ public class Pds4MetExtractor implements MetExtractor {
         }
         log.log(new ToolsLogRecord(ToolsLevel.INFO, "Capturing file "
             + "object metadata for " + name, product));
-        File f = new File(product.getParent(), name);
+        File f = new File(fileLocation, name);
         if (!f.exists()) {
           log.log(new ToolsLogRecord(ToolsLevel.WARNING, "File object does "
               + "not exist: " + f, product));
