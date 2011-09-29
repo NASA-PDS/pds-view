@@ -135,7 +135,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       </subsection>
 
       <subsection name="Java Application Server">
-        <p>The other main system requirement pertains to providing a Java application server for hosting certain components (Registry Service, Registry User Interface and Report Service). The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.21. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Apache Tomcat software can be downloaded from the <a href="http://tomcat.apache.org/" target="_blank">Apache Tomcat</a> page. Choose the version to download (6.0 or 7.0) from the menu on the left. Details on downloading, installing and configuring an Apache Tomcat server can be found in the <a href="index-tomcat.html">Tomcat Deployment</a> document.
+        <p>The other main system requirement pertains to providing a Java application server for hosting certain components (Registry Service, Registry User Interface and Report Service). The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Apache Tomcat software can be downloaded from the <a href="http://tomcat.apache.org/" target="_blank">Apache Tomcat</a> page. Choose the version to download (6.0 or 7.0) from the menu on the left. Details on downloading, installing and configuring an Apache Tomcat server can be found in the <a href="index-tomcat.html">Tomcat Deployment</a> document.
         </p>
       </subsection>
     </section>
@@ -185,15 +185,27 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
 
         <ul>
           <li><b>Registry Service</b><br/>
+<!--
             <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. For this release, the registry is populated with the PDS4 context products migrated from the PDS3 central catalog database. New for this release, the EN deployment will utilize MySQL as the backend database for the service. The web-based endpoint for this service is <a href="http://pdsops2.jpl.nasa.gov/services/registry/" target="_blank">http://pdsops2.jpl.nasa.gov/services/registry/</a>.
+            </p>
+-->
+            <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. For this release, the registry is populated with the PDS4 context products migrated from the PDS3 central catalog database. New for this release, the EN deployment will utilize MySQL as the backend database for the service.
             </p>
           </li>
           <li><b>Registry User Interface</b><br/>
+<!--
             <p>The Registry User Interface provides a simple viewing capability of the contents of the associated Registry Service. It is intended to offer visual verification of successful registration of products. The web-based endpoint for this application is <a href="http://pdsops2.jpl.nasa.gov/services/registry-ui/" target="_blank">http://pdsops2.jpl.nasa.gov/services/registry-ui/</a>.
+            </p>
+-->
+            <p>The Registry User Interface provides a simple viewing capability of the contents of the associated Registry Service. It is intended to offer visual verification of successful registration of products.
             </p>
           </li>
           <li><b>Report Service</b><br/>
+<!--
             <p>The Report Service provides the capability for capturing and reporting metrics. With this release and the previous release, this service is undergoing testing of configurations and features with a set of metrics from the Engineering Node and the Imaging Node at JPL. This service is not yet available to the user community. The web-based endpoint for this service is <a href="http://pdsops.jpl.nasa.gov/services/report/" target="_blank">http://pdsops.jpl.nasa.gov/services/report/</a>.
+            </p>
+-->
+            <p>The Report Service provides the capability for capturing and reporting metrics. With this release and the previous release, this service is undergoing testing of configurations and features with a set of metrics from the Engineering Node and the Imaging Node at JPL. This service is not yet available to the user community.
             </p>
           </li>
           <li><b>Security Service</b><br/>
@@ -265,17 +277,39 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
             </p>
           </li>
           <li><b>Install Registry Service</b><br/>
-            <p>The next step is to install the Registry Service. The <a href="../registry/registry-service/install/index.html">Installation</a> document for the Registry Service provides the details for downloading, installing and configuring the software. Out of the box, the service uses a Derby database for storing registered content. This database will be located in the directory where the Tomcat server was launched, by default. The Installation document describes how to change this location as well as how to use MySQL as the backend database instead of Derby. If a Node has another database server that they would like to use as the backend, please contact the EN development team for help with the configuration.
+            <p>The next step is to install the Registry Service. The <a href="../registry/registry-service/install/index.html">Installation</a> document for the Registry Service provides the details for downloading, installing and configuring the software. By default, the Registry Service comes packaged with and configured to utilize Apache Derby as the backend database for storing registered content. This database will be located in the directory where the Tomcat server was launched, by default. The Installation document describes how to change this location as well as how to use MySQL as the backend database instead of Derby. If a Node has another database server that they would like to use as the backend, please contact the EN development team for help with the configuration.
             </p>
             <p>If there was a previous installation of the Registry Service, the application should be un-deployed from the application server and then remove the Derby database directory named <i>RegistryDb</i> and the <i>derby.log</i> file prior to installing the new version.
             </p>
           </li>
           <li><b>Install Registry User Interface</b><br/>
-            <p>The next step is to install the Registry User Interface. The <a href="../registry/registry-ui/install/index.html">Installation</a> document for the Registry User Interface provides the details for downloading, installing and configuring the software. 
+            <p>The next step is to install the Registry User Interface. The <a href="../registry/registry-ui/install/index.html">Installation</a> document for the Registry User Interface provides the details for downloading, installing and configuring the software. There is a typo in this document stating that the default endpoint is <i>http://localhost:8080/registry</i> when the actual default is <i>http://localhost:8080/registry-service</i>. The impact of this typo is that even if a default installation is performed, the endpoint will need to be changed.
             </p>
           </li>
           <li><b>Install Harvest Tool</b><br/>
-            <p>The next step is to install the Harvest Tool. The <a href="../harvest/install/index.html">Installation</a> document for the Harvest Tool provides the details for downloading, installing and configuring the software.
+            <p>The next step is to install the Harvest Tool. The <a href="../harvest/install/index.html">Installation</a> document for the Harvest Tool provides the details for downloading and installing the software. By default, the Harvest Tool comes configured to access the Registry Service at the specific endpoint <i>http://localhost:8080/registry-service</i>. The same issue exists here as it does for the Registry User Interface and that is even if a default installation is performed, the endpoint will need to be changed. This should be modified to represent the endpoint of the Registry Service target installation. To change the endpoint, the <i>Harvest</i> script should be modified as follows:
+            </p>
+            <source>
+java -Dpds.registry="http://localhost:8080/registry-service" \
+-Dpds.security.keystore="${KEYSTORE}" -jar ${HARVEST_JAR} "$@"
+
+  should be changed to (if hosted at node.nasa.gov on port 80):
+
+java -Dpds.registry="http://node.nasa.gov/registry" \
+-Dpds.security.keystore="${KEYSTORE}" -jar ${HARVEST_JAR} "$@"
+            </source>
+            <p>To change the endpoint for Windows, the <i>Harvest.bat</i> script should be modified as follows:
+            </p>
+            <source>
+java -Dpds.registry="http://localhost:8080/registry-service" \
+-Dpds.security.keystore="%KEYSTORE%" -jar "%HARVEST_JAR%" %*
+
+  should be changed to (if hosted at node.nasa.gov on port 80):
+
+java -Dpds.registry="http://node.nasa.gov/registry" \
+-Dpds.security.keystore="%KEYSTORE%" -jar "%HARVEST_JAR%" %*
+            </source>
+            <p>The examples above have been broken into multiple lines for readability. The commands should be reassembled into a single line.
             </p>
           </li>
           <li><b>Install Validate Tool</b><br/>
@@ -298,12 +332,22 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
             <source>
 java -jar ${VALIDATE_JAR} "$@"
 
-should be changed to:
+  should be changed to:
 
 java -Dcore.schema.dir=$HOME/VG2PLS_archive/schemas \
 -jar ${VALIDATE_JAR} "$@"
             </source>
-            <p>A subsequent run of the tool against the example bundle (using the same command as used in the first run) should result in no errors found. Implementation of this feature is likely to change in Build 2 with the adoption of XML Schema 1.1 and the use of XML Catalogs.
+            <p>To enable this for Windows, the <i>Validate.bat</i> script should be modified as follows:
+            </p>
+            <source>
+java -jar "%VALIDATE_JAR%" %*
+
+  should be changed to:
+
+java -Dcore.schema.dir=$HOME/VG2PLS_archive/schemas \
+-jar "%VALIDATE_JAR%" %*
+            </source>
+            <p>The examples above have been broken into multiple lines for readability. The commands should be reassembled into a single line. A subsequent run of the tool against the example bundle (using the same command as used in the first run) should result in no errors found. Implementation of this feature is likely to change in Build 2 with the adoption of XML Schema 1.1 and the use of XML Catalogs.
             </p>
           </li>
           <li><b>Register Example Bundle</b><br/>
