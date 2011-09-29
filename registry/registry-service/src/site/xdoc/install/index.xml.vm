@@ -37,14 +37,41 @@
     </section>
 
     <section name="System Requirements">
-      <p>The Registry Service was developed using Java and <a href="http://jersey.dev.java.net/" target="_blank">Jersey</a> and will run under a standard Java Application Server. The tool was specifically developed under Sun Java version 1.6, so the tool will execute correctly under 1.6 and future versions.
+      <p>This section details the system requirements for installing and operating the Registry Service.
       </p>
 
-      <p>Since the tool was developed using Sun's Java, the target Java Application Server should support Sun's Java Runtime Environment (JRE). The application was tested using Apache's Tomcat version 6.0.X, which is the preferred Java Application Server for deployment. The software can be obtained from the <a href="http://tomcat.apache.org/" target="_blank"> Apache Tomcat</a> web site. Other Java Application Servers should be compatible.
-      </p>
+      <subsection name="Java Runtime Environment">
+        <p>The Registry Service was developed using Java and <a href="http://jersey.dev.java.net/" target="_blank">Jersey</a> and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically developed under Java version 1.6 and has only been tested with this version. The following commands test the local Java installation in a UNIX-based environment:
+        </p>
 
-      <p>Although it is generally a useful tool for interacting with the Registry Service, the <a href="http://curl.haxx.se/" target="_blank">cURL</a> command-line application is required by the <i>load_registry</i> script for populating the service with the supported object types. See the <a href="#Configuration">Configuration</a> section for more information.
-      </p>
+        <source>
+% which java
+/usr/bin/java
+
+% java -version
+java version "1.6.0_26"
+Java(TM) SE Runtime Environment (build 1.6.0_26-b03-384-10M3425)
+Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
+        </source>
+
+        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.6, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The software package of choice is the Java Standard Edition (SE) 6, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
+        </p>
+      </subsection>
+
+      <subsection name="Java Application Server">
+        <p>The Registry Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Apache Tomcat software can be downloaded from the <a href="http://tomcat.apache.org/" target="_blank">Apache Tomcat</a> page. Choose the version to download (6.0 or 7.0) from the menu on the left.
+        </p>
+      </subsection>
+
+      <subsection name="cURL Utility">
+        <p>Although it is generally a useful tool for interacting with the Registry Service, the <a href="http://curl.haxx.se/" target="_blank">cURL</a> command-line application is required by the <i>RegistryConfig</i> script for populating the service with the supported object types. See the <a href="#Configuration">Configuration</a> section for more information on configuring the service.
+        </p>
+      </subsection>
+
+      <subsection name="Database Server">
+        <p>The Registry Service comes prepackaged with the <a href="http://db.apache.org/derby/" target="_blank">Apache Derby</a> database. If another database solution is desired (i.e., MySQL), it should be installed and accessible by the Registry Service. See the <a href="#Configuration">Configuration</a> section for more information on configuring the service for a different database solution.
+        </p>
+      </subsection>
     </section>
 
     <section name="Unpacking the Package">
@@ -85,7 +112,7 @@ or
           </p>
         </li>
         <li><b>doc/</b><br/>
-          <p>This document directory contains a local web site with the Registry Service Guide, javadoc, unit test results and other configuration management related information. Just point your favorite browser to the <i>index.html</i> file in this directory.
+          <p>This document directory contains a local web site with the Registry Service Guide, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
           </p>
         </li>
         <li><b>examples/</b><br/>
@@ -96,7 +123,7 @@ or
     </section>
 
     <section name="Deploying the Application">
-      <p>The Registry Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation the WAR file should be renamed from <i>${xdoc-artifactId}-${xdoc-version}.war</i> to <i>registry.war</i>. A WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation. Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping">Ping</a> portion of the Operation section.
+      <p>The Registry Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation, the WAR file should be renamed from <i>${xdoc-artifactId}-${xdoc-version}.war</i> to <i>registry.war</i>. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation. Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping">Ping</a> portion of the Operation section.
       </p>
 
       <p>When deploying the application via the Tomcat Manager interface, users have occasionally encountered a situation where the application appears to hang or generates the following stack trace:
@@ -116,19 +143,24 @@ javax.servlet.ServletException: java.lang.OutOfMemoryError: PermGen space
 
       <p>If either of the above situations occur, stop and restart the Tomcat server to clear the problem.
       </p>
+    </section>
 
+    <section name="Configuring the Application">
+      <p>The following steps configure the Registry Service for the target installation and ready the service for operation.
+      </p>
+      
       <subsection name="Database Configuration">
-        <p>By default, the Registry Service comes configured to utilize Derby as the backend database. The Derby database home directory will default to the current working directory where the Apache Tomcat server was launched. To permanently set the home directory of the database, add the following to the <i>CATALINA_OPTS</i> environment variable:
+        <p>By default, the Registry Service comes packaged with and configured to utilize Derby as the backend database. The Derby database home directory will default to the current working directory where the Tomcat server was launched. To permanently set the home directory of the database, add the following to the <i>CATALINA_OPTS</i> environment variable:
         </p>
 
         <source>
 CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
         </source>
 
-        <p>The <i>CATALINA_OPTS</i> environment variable is loaded from the Apache Tomcat startup scripts. The Tomcat server will need to be restarted for this configuration to take effect.
+        <p>The <i>CATALINA_OPTS</i> environment variable is loaded from the Tomcat startup scripts. The Tomcat server will need to be restarted for this configuration to take effect.
         </p>
 
-        <p>The backend database can be changed from Derby to another database provider. As of the current release, MySQL is the only other supported database provider. To modify the configuration, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. The following line:
+        <p>The backend database can be changed from Derby to another database provider. As of the current release, <a href="http://www.mysql.com/" target="_blank">MySQL</a> is the only other supported database solution. To modify the configuration, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. The following line:
         </p>
 
         <source>
@@ -166,37 +198,41 @@ hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
 hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
         </source>
 
-        <p>No matter which database provider is configured as the backend database, the schema that supports the Registry Service is created by default when launching the service for the first time.
+        <p>No matter which database solution is configured as the backend database, the schema that supports the Registry Service is created by default when launching the service for the first time.
         </p>
       </subsection>
 
       <subsection name="Home Configuration">
-        <p>By default, the registry home is configured as <i>http://localhost:8080/registry</i>. This should be modified to represent the end point of the target installation. To modify the configuration, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. Modify the following line with the new end point:
+        <p>By default, the registry home is configured as <i>http://localhost:8080/registry</i>. This should be modified to represent the endpoint of the target installation. To modify the configuration, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. Modify the following line with the new endpoint:
         </p>
 
         <source>
 &lt;bean id="idGenerator" class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
 p:home="http://localhost:8080/registry"/&gt;
+
+  should be changed to (if hosted at node.nasa.gov on port 80):
+
+&lt;bean id="idGenerator" class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
+p:home="http://node.nasa.gov/registry"/&gt;
         </source>
 
         <p>In a distributed environment with multiple Registry Service instances, the registry home value identifies the source of registered entries when replication is occurring among the instances.
         </p>
       </subsection>
-    </section>
 
-    <section name="Configuring the Application">
-      <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of objects types corresponds with the types of products that a given instance of the Registry Service will support. Execute the <i>RegistryConfig</i> script from the <i>bin</i> directory in order to register the full set of object types:
-      </p>
+      <subsection name="Object Type Configuration">
+        <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of objects types corresponds with the types of products that a given instance of the Registry Service will support. The <i>RegistryConfig</i> and <i>RegistryConfig.bat</i> scripts default to a Registry Service endpoint of <i>http://localhost:8080/registry</i>. If necessary, modify the appropriate script for the local environment so that it corresponds with the endpoint of the target installation. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface. Execute the script from the <i>bin</i> directory in order to register the full set of object types:
+        </p>
 
-      <source>
+        <source>
 % cd ${xdoc-artifactId}-${xdoc-version}/bin
 % ./RegistryConfig
-      </source>
+        </source>
 
-      <p>The output from this command should show the registration of the Core object types and PDS object types. Since the configuration files referenced in the configuration script are slightly larger they are sent in chunks. Each configuration will get associated with a Registry Package and can be found by following the location link that comes in the header of the response. The output from the command should look something like the following:
-      </p>
+        <p>The output from this command should show the registration of the Core object types and PDS object types. Since the configuration files referenced in the configuration script are slightly larger they are sent in chunks. Each configuration will get associated with a Registry Package and can be found by following the location link that comes in the header of the response. The output from the command should look something like the following:
+        </p>
 
-      <source>
+        <source>
 * About to connect() to localhost port 8080 (#0)
 *   Trying ::1... connected
 * Connected to localhost (::1) port 8080 (#0)
@@ -246,19 +282,17 @@ urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
 * Connection #0 to host localhost left intact
 * Closing connection #0
 urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
-      </source>
+        </source>
 
-      <p>The <i>RegistryConfig</i> script defaults to a Registry Service end point of <i>http://localhost:8080/registry</i>. If necessary, modify the script so that it corresponds with the end point of the target installation. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface.
-      </p>
+        <p>Verify successful configuration by executing the command from the <a href="../operate/index.html#Report">Report</a> portion of the Operation section. The output from this command should look something like the following:
+        </p>
 
-      <p>Verify successful configuration by executing the command from the <a href="../operate/index.html#Report">Report</a> portion of the Operation section. The output from this command should look something like the following:
-      </p>
-
-      <source>
-&lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='0.7.0' packages='2' 
+        <source>
+&lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='${xdoc-version}' packages='2' 
 classificationNodes='67' classificationSchemes='1' services='0' extrinsics='0' associations='68' 
 serverStarted='2011-08-28T12:45:43.514-07:00' status='OK'/&gt;
-      </source>
+        </source>
+      </subsection>
     </section>
   </body>
 </document>

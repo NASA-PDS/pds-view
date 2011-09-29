@@ -32,15 +32,36 @@
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+        <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
       </ul>
     </section>
 
     <section name="System Requirements">
-      <p>The Registry User Interface was developed using Java and <a href="http://code.google.com/webtoolkit/" target="_blank">Google Web Toolkit</a> and will run under a standard Java Application Server. The tool was specifically developed under Sun Java version 1.6, so the tool will execute correctly under 1.6 and future versions.
+      <p>This section details the system requirements for installing and operating the Registry Service.
       </p>
 
-      <p>Since the tool was developed using Sun's Java, the target Java Application Server should support Sun's Java Runtime Environment (JRE). The application was tested using Apache's Tomcat version 6.0.X, which is the preferred Java Application Server for deployment. The software can be obtained from the <a href="http://tomcat.apache.org/" target="_blank"> Apache Tomcat</a> web site. Other Java Application Servers should be compatible.
-      </p>
+      <subsection name="Java Runtime Environment">
+        <p>The Registry User Interface was developed using Java and and <a href="http://code.google.com/webtoolkit/" target="_blank">Google Web Toolkit</a> and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically developed under Java version 1.6 and has only been tested with this version. The following commands test the local Java installation in a UNIX-based environment:
+        </p>
+
+        <source>
+% which java
+/usr/bin/java
+
+% java -version
+java version "1.6.0_26"
+Java(TM) SE Runtime Environment (build 1.6.0_26-b03-384-10M3425)
+Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
+        </source>
+
+        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.6, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The software package of choice is the Java Standard Edition (SE) 6, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
+        </p>
+      </subsection>
+
+      <subsection name="Java Application Server">
+        <p>The Registry User Interface requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Apache Tomcat software can be downloaded from the <a href="http://tomcat.apache.org/" target="_blank">Apache Tomcat</a> page. Choose the version to download (6.0 or 7.0) from the menu on the left.
+        </p>
+      </subsection>
     </section>
 
     <section name="Unpacking the Package">
@@ -73,24 +94,28 @@ or
           </p>
         </li>
         <li><b>doc/</b><br/>
-          <p>This document directory contains a local web site with the Registry User Interface Guide, javadoc, unit test results and other configuration management related information. Just point your favorite browser to the <i>index.html</i> file in this directory.
+          <p>This document directory contains a local web site with the Registry User Interface Guide, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
           </p>
         </li>
       </ul>
     </section>
 
     <section name="Deploying the Application">
-      <p>The Registry User Interface web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation the WAR file should be renamed from <i>${xdoc-artifactId}-${xdoc-version}.war</i> to <i>${xdoc-artifactId}.war</i>. A WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation.
+      <p>The Registry User Interface web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation the WAR file should be renamed from <i>${xdoc-artifactId}-${xdoc-version}.war</i> to <i>${xdoc-artifactId}.war</i>. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation.
+      </p>
+    </section>
+
+    <section name="Configuring the Application">
+      <p>By default, the Registry User Interface comes configured to access the Registry Service at the specific endpoint <i>http://localhost:8080/registry</i>. This should be modified to represent the endpoint of the Registry Service target installation. To modify the configuration, edit the <i>application.properties</i> file located in the <i>$TOMCAT_HOME/webapps/${xdoc-artifactId}/WEB-INF/classes</i> directory. Modify the following line with the new endpoint:
       </p>
 
-      <subsection name="Registry Service End Point Configuration">
-        <p>By default, the Registry User Interface comes configured to access the Registry Service at the specific end point <i>http://localhost:8080/registry</i>. This should be modified to represent the end point of the Registry Service target installation. To modify the configuration, edit the <i>application.properties</i> file located in the <i>$TOMCAT_HOME/webapps/${xdoc-artifactId}/WEB-INF/classes</i> directory. Modify the following line with the new end point:
-        </p>
-
-        <source>
+      <source>
 service.endpoint=http\://localhost\:8080/registry/
-        </source>
-      </subsection>
+
+  should be changed to (if hosted at node.nasa.gov on port 80):
+
+service.endpoint=http\://node.nasa.gov/registry/
+      </source>
     </section>
   </body>
 </document>
