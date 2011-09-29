@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -31,14 +31,25 @@
       <ul>
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
+        <li><a href="#Configuring_the_Tool">Configuring the Tool</a></li>
       </ul>
     </section>
 
     <section name="System Requirements">
-      <p>The Harvest Tool was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The tool was specifically developed under Sun Java version 1.6, so the tool will execute correctly under 1.6 and future versions.
+      <p>The Harvest Tool was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically developed under Java version 1.6 and has only been tested with this version. The following commands test the local Java installation in a UNIX-based environment:
       </p>
 
-      <p>Since the tool was developed using Sun's Java, this is the preferred Java environment for operation. The Sun Java package can be obtained from the <a href="http://java.sun.com/" target="_blank"> Sun Java</a> web site. Other Java environments are relatively compatible with Sun's Java.
+      <source>
+% which java
+/usr/bin/java
+
+% java -version
+java version "1.6.0_26"
+Java(TM) SE Runtime Environment (build 1.6.0_26-b03-384-10M3425)
+Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
+      </source>
+
+      <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.6, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The software package of choice is the Java Standard Edition (SE) 6, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
       </p>
     </section>
 
@@ -72,7 +83,7 @@ or
           </p>
         </li>
         <li><b>doc/</b><br/>
-          <p>This document directory contains a local web site with the Harvest Tool Guide, javadoc, unit test results and other configuration management related information. Just point your favorite browser to the <i>index.html</i> file in this directory.
+          <p>This document directory contains a local web site with the Harvest Tool Guide, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
           </p>
         </li>
         <li><b>examples/</b><br/>
@@ -88,6 +99,37 @@ or
           </p>
         </li>
       </ul>
+    </section>
+
+    <section name="Configuring the Tool">
+      <p>By default, the Harvest Tool comes configured to access the Registry Service at the specific endpoint <i>http://localhost:8080/registry</i>. This should be modified to represent the endpoint of the Registry Service target installation. To change the endpoint, the <i>Harvest</i> script should be modified as follows:
+      </p>
+
+      <source>
+java -Dpds.registry="http://localhost:8080/registry" \
+-Dpds.security.keystore="${KEYSTORE}" -jar ${HARVEST_JAR} "$@"
+
+  should be changed to (if hosted at node.nasa.gov on port 80):
+
+java -Dpds.registry="http://node.nasa.gov/registry" \
+-Dpds.security.keystore="${KEYSTORE}" -jar ${HARVEST_JAR} "$@"
+      </source>
+
+      <p>To change the endpoint for Windows, the <i>Harvest.bat</i> script should be modified as follows:
+      </p>
+
+      <source>
+java -Dpds.registry="http://localhost:8080/registry" \
+-Dpds.security.keystore="%KEYSTORE%" -jar "%HARVEST_JAR%" %*
+
+  should be changed to (if hosted at node.nasa.gov on port 80):
+
+java -Dpds.registry="http://node.nasa.gov/registry" \
+-Dpds.security.keystore="%KEYSTORE%" -jar "%HARVEST_JAR%" %*
+      </source>
+
+      <p>The examples above have been broken into multiple lines for readability. The commands should be reassembled into a single line.
+      </p>
     </section>
   </body>
 </document>
