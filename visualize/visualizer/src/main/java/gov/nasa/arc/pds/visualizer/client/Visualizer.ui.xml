@@ -1,0 +1,39 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:vis='urn:import:gov.nasa.arc.pds.visualizer.client'>
+	<ui:style>
+		.top {
+			margin: 5px;
+		}		
+
+		.errorReportPanel {
+			border: 1px solid gray;
+		}
+
+	</ui:style>
+	<g:DockLayoutPanel styleName='{style.top}' unit='PX'>
+		<g:north size='75'>
+			<vis:TopPanel ui:field='topPanel' />
+		</g:north>
+		<g:south size='27'>
+			<vis:ErrorReportUI ui:field='errorReportUI'
+				styleName='{style.errorReportPanel}' />
+		</g:south>
+		<g:center>
+			<g:SplitLayoutPanel>
+
+				<g:west size='290'>
+					<g:ScrollPanel>
+						<vis:ProductView ui:field='productView' />
+					</g:ScrollPanel>
+				</g:west>
+
+				<g:center size='600'>
+					<vis:ListView ui:field='listView' />
+				</g:center>
+
+
+			</g:SplitLayoutPanel>
+		</g:center>
+	</g:DockLayoutPanel>
+
+</ui:UiBinder>
