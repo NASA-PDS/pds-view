@@ -31,6 +31,7 @@ import gov.nasa.pds.harvest.ingest.RegistryIngester;
 import gov.nasa.pds.harvest.policy.Policy;
 import gov.nasa.pds.registry.client.SecurityContext;
 import gov.nasa.pds.registry.exception.RegistryClientException;
+import gov.nasa.pds.tools.util.VersionInfo;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -53,6 +54,9 @@ public class Harvester {
 
   /** Flag to enable/disable validation. */
   private boolean doValidation;
+
+  /** The model version to use if validation is enabled. */
+  private String modelVersion;
 
   /** The port number to use for the daemon if running Harvest in continuous
    *  mode.
@@ -97,6 +101,7 @@ public class Harvester {
     this.fileObjectRegistrationAction = new FileObjectRegistrationAction(
         this.registryUrl, this.ingester);
     this.registryPackageGuid = registryPackageGuid;
+    this.modelVersion = VersionInfo.getModelVersion();
   }
 
   /**
@@ -146,7 +151,7 @@ public class Harvester {
     List<CrawlerAction> ca = new ArrayList<CrawlerAction>();
     ca.add(fileObjectRegistrationAction);
     if (doValidation) {
-      ca.add(new ValidateProductAction());
+      ca.add(new ValidateProductAction(modelVersion));
     }
     //This is the last action that should be performed.
     ca.add(new SaveMetadataAction());
@@ -169,6 +174,9 @@ public class Harvester {
     Pds4MetExtractorConfig pds4MetExtractorConfig = new Pds4MetExtractorConfig(
         policy.getCandidates().getProductMetadata());
     boolean enableValidation = policy.getValidation().isEnabled();
+    if (policy.getValidation().getModelVersion() != null) {
+      modelVersion = policy.getValidation().getModelVersion();
+    }
     List<PDSProductCrawler> crawlers = new ArrayList<PDSProductCrawler>();
     // Crawl bundles
     for (String bundle : policy.getBundles().getFile()) {

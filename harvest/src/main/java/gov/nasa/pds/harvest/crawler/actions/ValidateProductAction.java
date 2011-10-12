@@ -37,82 +37,85 @@ import gov.nasa.pds.tools.label.LabelValidator;
  *
  */
 public class ValidateProductAction extends CrawlerAction {
-    /** Logger object. */
-    private static Logger log = Logger.getLogger(
-            ValidateProductAction.class.getName());
+  /** Logger object. */
+  private static Logger log = Logger.getLogger(
+      ValidateProductAction.class.getName());
 
-    /** Crawler action ID. */
-    private final String ID = "ValidateProductAction";
+  /** Crawler action ID. */
+  private final String ID = "ValidateProductAction";
 
-    /** Crawler action description. */
-    private final String DESCRIPTION = "Validates a product.";
+  /** Crawler action description. */
+  private final String DESCRIPTION = "Validates a product.";
 
-    /**
-     * Constructor.
-     *
-     */
-    public ValidateProductAction() {
-        super();
+  /** Model version to use when validating products. */
+  private String modelVersion;
 
-        String []phases = {CrawlerActionPhases.PRE_INGEST};
-        setPhases(Arrays.asList(phases));
-        setId(ID);
-        setDescription(DESCRIPTION);
+  /**
+   * Constructor.
+   *
+   */
+  public ValidateProductAction(String modelVersion) {
+    super();
+    String []phases = {CrawlerActionPhases.PRE_INGEST};
+    setPhases(Arrays.asList(phases));
+    setId(ID);
+    setDescription(DESCRIPTION);
+    this.modelVersion = modelVersion;
+  }
+
+  /**
+   * Perform the action to validate a product.
+   *
+   * @param product The product to validate.
+   * @param productMetadata The metadata associated with the given product.
+   *
+   * @return true if the product validated successfully.
+   *
+   * @throws CrawlerActionException Not used at the moment.
+   */
+  @Override
+  public boolean performAction(File product, Metadata productMetadata)
+  throws CrawlerActionException {
+    boolean passFlag = true;
+    LabelValidator lv = new LabelValidator();
+    ExceptionContainer exceptionContainer = new ExceptionContainer();
+    try {
+      lv.setModelVersion(modelVersion);
+      lv.validate(exceptionContainer, product);
+      exceptionContainer.getExceptions();
+    } catch(Exception e) {
+      LabelException le = new LabelException(ExceptionType.FATAL,
+          e.getMessage(), product.toString(), product.toString(), null, null);
+      exceptionContainer.addException(le);
     }
-
-    /**
-     * Perform the action to validate a product.
-     *
-     * @param product The product to validate.
-     * @param productMetadata The metadata associated with the given product.
-     *
-     * @return true if the product validated successfully.
-     *
-     * @throws CrawlerActionException Not used at the moment.
-     */
-    @Override
-    public boolean performAction(File product, Metadata productMetadata)
-            throws CrawlerActionException {
-        boolean passFlag = true;
-        LabelValidator lv = new LabelValidator();
-        ExceptionContainer exceptionContainer = new ExceptionContainer();
-        try {
-            lv.validate(exceptionContainer, product);
-            exceptionContainer.getExceptions();
-        } catch(Exception e) {
-            LabelException le = new LabelException(ExceptionType.FATAL,
-                    e.getMessage(), product.toString(), product.toString(),
-                    null, null);
-            exceptionContainer.addException(le);
-        }
-        if (exceptionContainer.hasError() || exceptionContainer.hasFatal()) {
-            log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
-                    "Product did not pass validation.", product));
-            passFlag = false;
-        }
-        for (LabelException le : exceptionContainer.getExceptions()) {
-            record(le);
-        }
-        return passFlag;
+    if (exceptionContainer.hasError() || exceptionContainer.hasFatal()) {
+      log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+              "Product did not pass validation.", product));
+      passFlag = false;
     }
-
-    /**
-     * Record the label exception.
-     *
-     * @param exception The label exception.
-     */
-    private void record(LabelException exception) {
-        Level level = null;
-        if (ExceptionType.WARNING.equals(exception.getExceptionType())) {
-            level = Level.WARNING;
-        } else if (ExceptionType.ERROR.equals(exception.getExceptionType())
-                || (ExceptionType.FATAL.equals(exception.getExceptionType()))
-                ) {
-            level = Level.SEVERE;
-        } else {
-            level = Level.INFO;
-        }
-        log.log(new ToolsLogRecord(level, exception.getMessage(),
-                exception.getSource(), exception.getLineNumber()));
+    for (LabelException le : exceptionContainer.getExceptions()) {
+      record(le);
     }
+    return passFlag;
+  }
+
+  /**
+   * Record the label exception.
+   *
+   * @param exception The label exception.
+   */
+  private void record(LabelException exception) {
+    Level level = null;
+    if (ExceptionType.WARNING.equals(exception.getExceptionType())) {
+      level = Level.WARNING;
+    } else if (ExceptionType.ERROR.equals(exception.getExceptionType())
+          || (ExceptionType.FATAL.equals(exception.getExceptionType()))
+          ) {
+      level = Level.SEVERE;
+    } else {
+      level = Level.INFO;
+    }
+    log.log(new ToolsLogRecord(level, exception.getMessage(),
+        exception.getSource(), exception.getLineNumber()));
+  }
 }
