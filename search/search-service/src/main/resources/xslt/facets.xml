@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<facets>
+  <facet name="facet class" caption="Type" />
+  <facet name="facet target" caption="Target" />
+  <facet name="facet mission" caption="Mission" />
+  <facet name="facet instrument" caption="Instrument" />
+
+  <category name="dataset" caption="Data Set" />
+  <category name="instrumenthost" caption="Instrument Host" />
+  <category name="instrument" caption="Instrument" />
+  <category name="mission" caption="Mission" />
+  <category name="searchtool" caption="Search Tool" />
+  <category name="target" caption="Target" />
+</facets>
