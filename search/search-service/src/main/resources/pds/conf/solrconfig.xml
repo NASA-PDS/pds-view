@@ -665,7 +665,7 @@
        of SearchComponents (see below) and supports distributed
        queries across multiple shards
     -->
-  <requestHandler name="search" class="gov.nasa.pds.search.PDSSearchProtocol" default="true">
+  <requestHandler name="search" class="solr.SearchHandler" default="true">
      <lst name="defaults">
        <str name="echoParams">explicit</str>
 
@@ -709,6 +709,37 @@
      <!--
      <str name="url-scheme">httpx</str>
      -->
+  </requestHandler>
+  
+  <requestHandler name="pdssp" class="gov.nasa.pds.search.PDSSearchProtocol" default="false">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      
+      <str name="defType">edismax</str>
+      <str name="q.alt">*:*</str>
+      <str name="rows">10</str>
+      <str name="fl">*,score</str>
+      
+      <!--
+        <str name="mlt.qf">
+        text^0.5 features^1.0 name^1.2 sku^1.5 id^10.0 manu^1.1 cat^1.4
+        </str>
+        <str name="mlt.fl">text,features,name,sku,id,manu,cat</str>
+        <int name="mlt.count">3</int>
+        
+        <str name="qf">
+        text^0.5 features^1.0 name^1.2 sku^1.5 id^10.0 manu^1.1 cat^1.4
+        </str>
+        
+      -->
+      
+    </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
+    <!--
+      <str name="url-scheme">httpx</str>
+    -->
   </requestHandler>
 
   <!-- XML Update Request Handler.  
