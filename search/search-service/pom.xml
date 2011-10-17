@@ -166,7 +166,14 @@
     </repository>
   </repositories>
 
-  <dependencies/>
+  <dependencies>
+   <dependency>
+      <artifactId>search-core</artifactId>
+      <groupId>gov.nasa.pds.2010.search</groupId>
+      <version>0.1.0-dev</version>
+      <type>jar</type>
+    </dependency>
+  </dependencies>
 
   <!-- Project Information and Reports inherited from parent. -->
   <reporting>
