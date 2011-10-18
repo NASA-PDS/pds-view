@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2011, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Using Wget</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+    <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
+  </properties>
+
+  <body>
+    <section name="Using Wget">
+      <p>Although <a href="http://curl.haxx.se/" target="_blank">cURL</a> is the command-line application of choice for interacting with the Registry Service, some machines may only have <a href="http://www.gnu.org/s/wget/" target="_blank">Wget</a> installed or some users may prefer <i>Wget</i> over <i>cURL</i>. The functionality of each application is essentially the same. This section describes the differences between the two applications.
+      </p>
+
+      <p>The following command provides an example of using <i>cURL</i> to register a product with the Registry Service:
+      </p>
+
+      <source>
+% curl -X POST -H "Content-type:application/xml" -v -d @new_product.xml \
+http://localhost:8080/registry-service/extrinsics
+      </source>
+
+      <p>The same action can be achieved using <i>Wget</i> with the following command:
+      </p>
+
+      <source>
+% wget --post-file new_product.xml --header "Content-type:application/xml" -v \
+http://localhost:8080/registry-service/extrinsics
+      </source>
+
+      <p>The following command provides an example of using <i>cURL</i> to retrieve content from the Registry Service:
+      </p>
+
+      <source>
+% curl -X GET -H "Accept:application/xml" -v \
+http://localhost:8080/registry/extrinsics
+      </source>
+
+      <p>The same action can be achieved using <i>Wget</i> with the following command:
+      </p>
+
+      <source>
+% wget --header "Accept:application/xml" -v -O - \
+http://localhost:8080/registry-service/extrinsics
+      </source>
+
+      <p>The <i>Wget</i> application works fine for actions requiring GET or POST requests but does not offer an equivalent function for DELETE requests.
+      </p>
+    </section>
+  </body>
+</document>

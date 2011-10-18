@@ -55,7 +55,7 @@
           </p>
         </li>
         <li>cURL<br/>
-          <p>The <a href="http://curl.haxx.se/" target="_blank">cURL</a> utility offers the most flexible means for interacting with the service. The utility comes installed on most UNIX-based platforms and is available for download for the Windows platform. The examples in the sections that follow utilize <i>cURL</i> to interact with the service.
+          <p>The <a href="http://curl.haxx.se/" target="_blank">cURL</a> utility offers the most flexible means for interacting with the service. The utility comes installed on most UNIX-based platforms and is available for download for the Windows platform. The examples in the sections that follow utilize <i>cURL</i> to interact with the service. If <i>cURL</i> is not installed on the local machine but <i>Wget</i> is, see the <a href="index-wget.html">Using Wget</a> section for converting <i>cURL</i> commands to <i>Wget</i> commands. If viewing this document in PDF form, see the appendix for details.
           </p>
         </li>
       </ul>
@@ -394,7 +394,7 @@ http://localhost:8080/registry/packages/&lt;guid&gt;
       </p>
       
       <source>
-% curl -X GET -H "Content-type:application/xml" -v \
+% curl -X GET -H "Accept:application/xml" -v \
 http://localhost:8080/registry
       </source>
 
@@ -407,7 +407,7 @@ http://localhost:8080/registry
       </p>
 
       <source>
-% curl -X GET -H "Content-type:application/xml" -v \
+% curl -X GET -H "Accept:application/xml" -v \
 http://localhost:8080/registry/report
       </source>
     </section>
