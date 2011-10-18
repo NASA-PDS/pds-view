@@ -33,7 +33,7 @@
 
       <source>
 % curl -X POST -H "Content-type:application/xml" -v -d @new_product.xml \
-http://localhost:8080/registry-service/extrinsics
+http://localhost:8080/registry/extrinsics
       </source>
 
       <p>The same action can be achieved using <i>Wget</i> with the following command:
@@ -41,7 +41,7 @@ http://localhost:8080/registry-service/extrinsics
 
       <source>
 % wget --post-file new_product.xml --header "Content-type:application/xml" -v \
-http://localhost:8080/registry-service/extrinsics
+http://localhost:8080/registry/extrinsics
       </source>
 
       <p>The following command provides an example of using <i>cURL</i> to retrieve content from the Registry Service:
@@ -57,7 +57,7 @@ http://localhost:8080/registry/extrinsics
 
       <source>
 % wget --header "Accept:application/xml" -v -O - \
-http://localhost:8080/registry-service/extrinsics
+http://localhost:8080/registry/extrinsics
       </source>
 
       <p>The <i>Wget</i> application works fine for actions requiring GET or POST requests but does not offer an equivalent function for DELETE requests.

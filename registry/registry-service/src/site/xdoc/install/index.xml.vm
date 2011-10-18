@@ -236,7 +236,7 @@ p:home="http://node.nasa.gov/registry"/&gt;
 * About to connect() to localhost port 8080 (#0)
 *   Trying ::1... connected
 * Connected to localhost (::1) port 8080 (#0)
-&gt; POST /registry-service/configure?name=Core+Objects&amp;\
+&gt; POST /registry/configure?name=Core+Objects&amp;\
 description=This+configures+the+core+set+of+registry+objects HTTP/1.1
 &gt; User-Agent: curl/7.19.7 (universal-apple-darwin10.0) libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3
 &gt; Host: localhost:8080
@@ -261,7 +261,7 @@ urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
 * About to connect() to localhost port 8080 (#0)
 *   Trying ::1... connected
 * Connected to localhost (::1) port 8080 (#0)
-&gt; POST /registry-service/configure?name=PDS+Objects&amp;\
+&gt; POST /registry/configure?name=PDS+Objects&amp;\
 description=This+configures+PDS+object+types HTTP/1.1
 &gt; User-Agent: curl/7.19.7 (universal-apple-darwin10.0) libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3
 &gt; Host: localhost:8080
