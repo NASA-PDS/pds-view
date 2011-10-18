@@ -1,0 +1,87 @@
+<!-- 
+     Target Configuration File
+     Must be in the following format:
+
+     <target>
+       <query>...</query>
+       <column>
+	 <name>...</name>
+	 <index>...</index>
+	 <value>...</value>
+       </column>
+       .
+       .
+       .
+     </target>
+
+     All null values must be represented by the string "null".
+-->
+
+<target>
+  <query>select * from targetinfo where targname like '%' order by targname</query>
+  <column>
+    <name>resContext</name>
+    <index>0</index>
+    <value>NASA.PDS</value>
+  </column>
+  <column>
+    <name>primary_body_name</name>
+    <index>2</index>
+    <value>null</value>
+  </column>
+  <column>
+    <name>target_desc</name>
+    <index>-2</index>
+    <value>select distinct targetd.targetd from targetd where targetd.targname like '#' order by targetd.tupseqnum</value>
+  </column>
+  <column>
+    <name>format</name>
+    <index>0</index>
+    <value>XML</value>
+  </column>
+  <column>
+    <name>title</name>
+    <index>0</index>
+    <value>null</value>
+  </column>
+  <column>
+    <name>description</name>
+    <index>0</index>
+    <value>null</value>
+  </column>
+  <column>
+    <name>resLocation</name>
+    <index>0</index>
+    <value>http://starbrite.jpl.nasa.gov/pds/viewTargetProfile.jsp?TARGET_NAME=#</value>
+  </column>
+  <column>
+    <name>language</name>
+    <index>0</index>
+    <value>en</value>
+  </column>
+  <column>
+    <name>identifier</name>
+    <index>0</index>
+    <value>null</value>
+  </column>
+  <column>
+    <name>target_name</name>
+    <index>1</index>
+    <value>null</value>
+  </column>
+  <column>
+    <name>resClass</name>
+    <index>0</index>
+    <value>metadata.target</value>
+  </column>
+  <column>
+    <name>resource_class</name>
+    <index>0</index>
+    <value>Target_Description</value>
+  </column>
+  <column>
+    <name>target_type</name>
+    <index>5</index>
+    <value>null</value>
+  </column>
+</target>

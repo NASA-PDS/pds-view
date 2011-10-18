@@ -1,0 +1,38 @@
+#! /bin/bash
+
+SOLR_HOME=/apps/solr
+
+if [ "$1" == "" ] || [ "$2" == "" ]; then
+    echo
+    echo "Parameters required:  ./ops-index <init-machine-name> <username>"
+    echo
+    exit 0
+fi
+
+INIT_MACHINE=$1
+USERNAME=$2
+
+cd $SOLR_HOME
+pwd
+
+svn update
+
+#rm -fr catalog_index
+if [ -d catalog_index_old ]
+then
+  echo "LOG:Removing 'catalog_index_old'"
+  rm -rf catalog_index_old
+fi
+mv catalog_index catalog_index_old
+
+  echo "LOG:Backing up 'solr_index.xml' to 'solr_index.xml_old'"
+mv ./pds/solr_index.xml ./pds/solr_index.xml_old
+
+
+rsync -zvr $USERNAME@$INIT_MACHINE:$SOLR_HOME/catalog_index $SOLR_HOME
+rsync -zvr $USERNAME@$INIT_MACHINE:$SOLR_HOME/pds/solr_index.xml $SOLR_HOME/pds
+
+
+./bin/solr-post
+
+exit 0

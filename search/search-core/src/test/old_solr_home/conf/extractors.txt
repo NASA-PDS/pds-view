@@ -1,0 +1,5 @@
+extractor.DataSet = datasetconfig.xml
+extractor.Target = targetconfig.xml
+extractor.Instrument = instrumentconfig.xml
+extractor.InstrumentHost = instrumenthostconfig.xml
+extractor.Mission = missionconfig.xml
