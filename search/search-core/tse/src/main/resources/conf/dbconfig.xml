@@ -1,0 +1,9 @@
+<dbinfo>
+  <url>jdbc:sybase::Tds:starsyb.jpl.nasa.gov:4100/dbonline</url>
+  <driver>com.sybase.jdbc2.jdbc.SybDriver</driver>
+  <user>pdsnode</user>
+  <password>pdsnode</password>
+  <jconnect_version>5</jconnect_version>
+  <disable_unichar_sending>false</disable_unichar_sending>
+  <charset>ascii_7</charset>
+</dbinfo>

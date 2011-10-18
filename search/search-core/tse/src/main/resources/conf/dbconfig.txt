@@ -1,0 +1,6 @@
+user = pdsnode
+password = pdsnode
+jconnect_version = 5
+disable_unichar_sending = false
+charset = ascii_7
+charset_converter_class = com.sybase.jdbc2.utils.PureConverter
