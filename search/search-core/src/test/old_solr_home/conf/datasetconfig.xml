@@ -1,183 +1,205 @@
 <dataset>
-  <query>select * from dsinfo where dsid like '%' and archivestat not like 'SUPERSEDED' order by dsid</query>
+	<object_type>Product_Data_Set_PDS3</object_type>
+	<association>has_target</association>
+	<association>has_instrument</association>
+	<association>has_instrument_host</association>
+	<association>has_investigation</association>
+	<association>has_resource</association>
   <column>
     <name>identifier</name>
-    <index>0</index>
+    <type>attribute</type>
     <value>null</value>
   </column>
   <column>
     <name>title</name>
-    <index>0</index>
+    <type>attribute</type>
     <value>null</value>
   </column>
   <column>
     <name>format</name>
-    <index>0</index>
+    <type>out</type>
     <value>XML</value>
   </column>
   <column>
+    <!-- name>description</name>
+    <type>slot</type>
+    <value>data_set_desc</value-->
     <name>description</name>
-    <index>0</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>data_set_terse_desc</value>
   </column>
   <column>
     <name>publisher</name>
-    <index>0</index>
+    <type>out</type>
     <value>NASA.PDS</value>
   </column>
   <column>
     <name>language</name>
-    <index>0</index>
+    <type>out</type>
     <value>en</value>
   </column>
   <column>
     <name>resContext</name>
-    <index>0</index>
+    <type>out</type>
     <value>NASA.PDS</value>
   </column>
   <column>
     <name>resClass</name>
-    <index>0</index>
+    <type>out</type>
     <value>metadata.dataset</value>
   </column>
   <column>
     <name>resLocation</name>
-    <index>0</index>
-    <value>http://starbrite.jpl.nasa.gov/pds/viewDataset.jsp?dsid=#</value>
+    <type>out</type>
+    <value>http://starbrite.jpl.nasa.gov/pds/viewDataset.jsp?dsid={data_set_id}</value>
   </column>
   <column>
     <name>nssdc_data_set_id</name>
-    <index>-3</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>nssdc_collection_id</value>
   </column>
   <column>
+  	<!-- association mapping to another objectType -->
     <name>target_type</name>
-    <index>-1</index>
-    <value>select distinct ti.targtype from targetinfo ti,  dstarg dt where ti.targname = dt.targname and dt.dsid like '#' order by ti.targtype</value>
+    <type>association</type>
+    <value>has_target.target_type</value>
   </column>
   <column>
+    <!-- association mapping to another objectType -->
     <name>instrument_type</name>
-    <index>-1</index>
-    <value>select distinct ii.insttype from dshost dh,  instinfo ii where dh.insthostid = ii.insthostid and dh.instid = ii.instid and dh.dsid like '#' order by ii.insttype</value>
+    <type>association</type>
+    <value>has_instrument.instrument_type</value>
   </column>
   <column>
+  	<!-- No mapping found -->
     <name>instrument_host_id</name>
-    <index>-1</index>
-    <value>select distinct insthostid from dshost where dsid like '#' order by insthostid</value>
+    <type>association</type>
+    <value>has_instrument_host.instrument_host_id</value>
   </column>
   <column>
     <name>data_set_name</name>
-    <index>2</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>data_set_name</value>
   </column>
-  <column>
+  <!-- column>
     <name>resource_link</name>
-    <index>-3</index>
+    <type>other</type>
     <value>null</value>
-  </column>
+  </column-->
   <column>
     <name>stop_time</name>
-    <index>4</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>stop_date_time</value>
   </column>
   <column>
+  	<!-- No direct mapping found -->
     <name>node_id</name>
-    <index>17</index>
-    <value>null</value>
+    <type>out</type>
+    <value>UNK</value>
   </column>
   <column>
     <name>full_name</name>
-    <index>7</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>producer_full_name</value>
   </column>
   <column>
+    <!-- name>mission_name</name>
+    <type>slot</type>
+    <value>investigation_name</value-->
     <name>mission_name</name>
-    <index>-1</index>
-    <value>select distinct msnname from dsmsn where dsid like '#' order by msnname</value>
+    <type>association</type>
+    <value>has_investigation.investigation_name</value>
   </column>
   <column>
     <name>mission_start_date</name>
-    <index>-1</index>
-    <value>select distinct mi.msnstrtdate from msninfo mi, dsmsn dm where mi.msnname = dm.msnname and dm.dsid like '#'</value>
+    <type>association</type>
+    <value>has_investigation.mission_start_date</value>
   </column>
   <column>
     <name>mission_stop_date</name>
-    <index>-1</index>
-    <value>select distinct mi.msnstopdate from msninfo mi, dsmsn dm where mi.msnname = dm.msnname and dm.dsid like '#'</value>
+    <type>association</type>
+    <value>has_investigation.mission_stop_date</value>
   </column>
   <column>
+    <!-- name>target_name</name>
+    <type>slot</type>
+    <value>target_name</value-->
     <name>target_name</name>
-    <index>-1</index>
-    <value>select distinct targname from dstarg where dsid like '#' order by targname</value>
+    <type>association</type>
+    <value>has_target.target_name</value>
   </column>
   <column>
     <name>archive_status</name>
-    <index>14</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>archive_status</value>
   </column>
   <column>
     <name>start_time</name>
-    <index>3</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>start_date_time</value>
   </column>
   <column>
     <name>data_set_release_date</name>
-    <index>6</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>data_set_release_date</value>
   </column>
   <column>
     <name>instrument_id</name>
-    <index>-1</index>
-    <value>select distinct instid from dshost where dsid like '#' order by instid</value>
+    <type>association</type>
+    <value>has_instrument.instrument_id</value>
   </column>
   <column>
+  	<!-- Mapping not found -->
     <name>data_object_type</name>
-    <index>5</index>
-    <value>null</value>
+    <type>out</type>
+    <value>UNK</value>
   </column>
   <column>
     <name>data_set_terse_desc</name>
-    <index>10</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>data_set_terse_desc</value>
   </column>
   <column>
     <name>data_set_id</name>
-    <index>1</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>data_set_id</value>
   </column>
   <column>
     <name>citation_desc</name>
-    <index>13</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>citation_text</value>
   </column>
   <column>
     <name>abstract_text</name>
-    <index>12</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>abstract_desc</value>
   </column>
   <column>
+    <!-- name>instrument_name</name>
+    <type>slot</type>
+    <value>instrument_name</value-->
     <name>instrument_name</name>
-    <index>-1</index>
-    <value>select distinct ii.instname from dshost dh, instinfo ii where dh.insthostid = ii.insthostid and dh.instid = ii.instid and dh.dsid like '#' order by ii.instname</value>
+    <type>association</type>
+    <value>has_instrument.instrument_name</value>    
   </column>
   <column>
     <name>resource_id</name>
-    <index>-1</index>
-    <value>select distinct rd.resourceid from resds rd where rd.dsid like '#' order by rd.resourceid</value>
+    <type>association</type>
+    <value>has_resource.logical_identifier</value>
   </column>
   <column>
     <name>data_set_desc</name>
-    <index>-2</index>
-    <value>select distinct dsd.dsd from dsd where dsd.dsid like '#' order by dsd.tupseqnum</value>
+    <type>slot</type>
+    <value>data_set_desc</value>
   </column>
   <column>
     <name>confidence_level_note</name>
-    <index>-2</index>
-    <value>select distinct dsconf.conflvlnote from dsconf where dsconf.dsid like '#' order by dsconf.tupseqnum</value>
+    <type>slot</type>
+    <value>confidence_level_note</value>
   </column>
   <column>
     <name>resource_class</name>
-    <index>0</index>
+    <type>out</type>
     <value>Data_Set_Description</value>
   </column>
 </dataset>

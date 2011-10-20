@@ -1,6 +1,7 @@
 #! /bin/bash
 
 #SOLR_HOME=/apps/solr
+SOLR_HOME=/Users/jpadams/dev/workspace/search-tools-workspace/search/search-core/src/test/old_solr_home
 
 echo "-----------------------------------------------------"
 echo "----------------------WARNINGS------------------------"
@@ -20,7 +21,7 @@ pwd
 #rm -fr catalog_index
 
 echo "LOG: Performing an svn update on SOLR_HOME directory"
-svn update
+#svn update
 
 if [ -d tse_old ]
 then
@@ -35,8 +36,8 @@ fi
 echo
 echo "---------CREATING NEW TSE DIR----------"
 # Modified extractor.basedir to just be SOLR_HOME
-echo "LOG: java -Djava.ext.dirs=lib -Dextractor.file=$SOLR_HOME/conf/extractors.txt -Dextractor.basedir=$SOLR_HOME gov.nasa.pds.tse.catalog.CatalogExtractor"
-java -Djava.ext.dirs=lib -Dextractor.file=$SOLR_HOME/conf/extractors.txt -Dextractor.basedir=$SOLR_HOME gov.nasa.pds.tse.catalog.CatalogExtractor > /dev/null
+echo "LOG: java -Djava.ext.dirs=lib -Dextractor.file=$SOLR_HOME/conf/extractors.txt -Dextractor.basedir=$SOLR_HOME gov.nasa.pds.search.core.catalog.CatalogExtractor"
+java -Djava.ext.dirs=lib -Dextractor.file=$SOLR_HOME/conf/extractors.txt -Dextractor.basedir=$SOLR_HOME gov.nasa.pds.search.core.catalog.CatalogExtractor > /dev/null
 echo "---------------------------------------"
 echo
 
@@ -53,8 +54,8 @@ then
 fi
 echo
 echo "----CREATING NEW SOLR_INDEX.XML-----"
-echo "LOG: java -Djava.ext.dirs=lib gov.nasa.pds.tse.index.SolrIndexer $SOLR_HOME/pds $SOLR_HOME/tse/extract"
-java -Djava.ext.dirs=lib gov.nasa.pds.tse.index.SolrIndexer $SOLR_HOME/pds $SOLR_HOME/tse/extract > /dev/null
+echo "LOG: java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.SolrIndexer $SOLR_HOME/pds $SOLR_HOME/tse/extract"
+java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.SolrIndexer $SOLR_HOME/pds $SOLR_HOME/tse/extract > /dev/null
 echo "------------------------------------"
 echo
 if [ -d catalog_index_old ]
@@ -74,8 +75,8 @@ then
 fi
 echo
 echo "----CREATING NEW CATALOG_INDEX DIR-----"
-echo "java -Djava.ext.dirs=lib gov.nasa.pds.tse.index.Indexer $SOLR_HOME $SOLR_HOME/tse/extract"
-java -Djava.ext.dirs=lib gov.nasa.pds.tse.index.Indexer $SOLR_HOME $SOLR_HOME/tse/extract > /dev/null
+echo "java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.Indexer $SOLR_HOME $SOLR_HOME/tse/extract"
+java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.Indexer $SOLR_HOME $SOLR_HOME/tse/extract > /dev/null
 echo "---------------------------------------"
 echo
 

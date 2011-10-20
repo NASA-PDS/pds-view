@@ -1,78 +1,79 @@
 <instrument>
-  <query>select * from instinfo where insthostid like '%' order by insthostid, instid</query>
+  <object_type>Product_Instrument_PDS3</object_type>
+  <association>has_instrument_host</association>
   <column>
     <name>identifier</name>
+    <type>attribute</type>
     <value>null</value>
-    <index>0</index>
   </column>
   <column>
     <name>title</name>
+    <type>attribute</type>
     <value>null</value>
-    <index>0</index>
   </column>
   <column>
     <name>format</name>
+    <type>out</type>
     <value>XML</value>
-    <index>0</index>
   </column>
   <column>
     <name>description</name>
-    <value>null</value>
-    <index>0</index>
+    <type>slot</type>
+    <value>instrument_desc</value>
   </column>
   <column>
     <name>language</name>
+    <type>out</type>
     <value>en</value>
-    <index>0</index>
   </column>
   <column>
     <name>publisher</name>
+    <type>out</type>
     <value>NASA.PDS</value>
-    <index>0</index>
   </column>
   <column>
     <name>resContext</name>
+    <type>out</type>
     <value>NASA.PDS</value>
-    <index>0</index>
   </column>
   <column>
     <name>resClass</name>
+    <type>out</type>
     <value>metadata.instrument</value>
-    <index>0</index>
   </column>
   <column>
     <name>resLocation</name>
-    <value>http://starbrite.jpl.nasa.gov/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID=#</value>
-    <index>0</index>
+    <type>out</type>
+    <value>http://starbrite.jpl.nasa.gov/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID={instrument_id}&amp;INSTRUMENT_HOST_ID={has_instrument_host.instrument_host_id}</value>
   </column>
   <column>
     <name>instrument_host_id</name>
-    <value>null</value>
-    <index>1</index>
+	<type>association</type>
+    <value>has_instrument_host.instrument_host_id</value>
   </column>
   <column>
     <name>instrument_id</name>
-    <value>null</value>
-    <index>2</index>
+    <type>slot</type>
+    <value>instrument_id</value>
   </column>
   <column>
     <name>instrument_name</name>
-    <value>null</value>
-    <index>3</index>
+    <type>slot</type>
+    <value>instrument_name</value>
   </column>
   <column>
     <name>instrument_type</name>
-    <value>null</value>
-    <index>4</index>
+	<type>slot</type>    
+    <value>instrument_type</value>
   </column>
   <column>
     <name>instrument_desc</name>
-    <value>select distinct instd.instd from instd where instd.insthostid like '#' and instd.instid like '@' order by instd.tupseqnum</value>
-    <index>-2</index>
+    <type>slot</type>
+    <value>instrument_desc</value>
   </column>
   <column>
     <name>resource_class</name>
+    <type>out</type>
     <value>Instrument_Description</value>
-    <index>0</index>
   </column>
 </instrument>

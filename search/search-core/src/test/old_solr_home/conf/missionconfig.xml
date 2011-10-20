@@ -1,83 +1,83 @@
 <mission>
-  <query>select * from msninfo where msnname like '%' order by msnname</query>
+  <object_type>Product_Mission_PDS3</object_type>
   <column>
     <name>identifier</name>
-    <index>0</index>
+    <type>attribute</type>
     <value>null</value>
   </column>
   <column>
     <name>title</name>
-    <index>0</index>
+    <type>attribute</type>
     <value>null</value>
   </column>
   <column>
     <name>format</name>
-    <index>0</index>
+    <type>out</type>
     <value>XML</value>
   </column>
   <column>
     <name>description</name>
-    <index>0</index>
-    <value>null</value>
+    <type>slot-single</type>
+    <value>mission_desc</value>
   </column>
   <column>
     <name>language</name>
-    <index>0</index>
+    <type>out</type>
     <value>en</value>
   </column>
   <column>
     <name>publisher</name>
-    <index>0</index>
+    <type>out</type>
     <value>NASA.PDS</value>
   </column>
   <column>
     <name>resContext</name>
-    <index>0</index>
+    <type>out</type>
     <value>NASA.PDS</value>
   </column>
   <column>
     <name>resClass</name>
-    <index>0</index>
+    <type>out</type>
     <value>metadata.mission</value>
   </column>
   <column>
     <name>resLocation</name>
-    <index>0</index>
-    <value>http://starbrite.jpl.nasa.gov/pds/viewMissionProfile.jsp?MISSION_NAME=#</value>
+    <type>out</type>
+    <value>http://starbrite.jpl.nasa.gov/pds/viewMissionProfile.jsp?MISSION_NAME={investigation_name}</value>
   </column>
   <column>
     <name>mission_name</name>
-    <index>1</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>investigation_name</value>
   </column>
   <column>
     <name>mission_name_or_alias</name>
-    <index>4</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>alternate_title</value>
   </column>
   <column>
     <name>mission_start_date</name>
-    <index>2</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>mission_start_date</value>
   </column>
   <column>
     <name>mission_stop_date</name>
-    <index>3</index>
-    <value>null</value>
+    <type>slot</type>
+    <value>mission_stop_date</value>
   </column>
   <column>
     <name>mission_desc</name>
-    <index>-2</index>
-    <value>select distinct msnd.msnd from msnd where msnd.msnname like '#' order by msnd.tupseqnum</value>
+    <type>slot-single</type>
+    <value>mission_desc</value>
   </column>
   <column>
     <name>mission_objectives_summary</name>
-    <index>-2</index>
-    <value>select distinct msnobjsmy.msnobjsmy from msnobjsmy where msnobjsmy.msnname like '#' order by msnobjsmy.tupseqnum</value>
+    <type>slot</type>
+    <value>mission_objectives_summary</value>
   </column>
   <column>
     <name>resource_class</name>
-    <index>0</index>
+    <type>out</type>
     <value>Mission_Description</value>
   </column>
 </mission>

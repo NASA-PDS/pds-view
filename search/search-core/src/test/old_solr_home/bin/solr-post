@@ -1,6 +1,7 @@
 #! /bin/bash
 
 #SOLR_HOME=/apps/solr
+SOLR_HOME=/Users/jpadams/dev/workspace/search-tools-workspace/search/search-core/src/test/old_solr_home
 POST_HOME=$HOME/dev/workspace/search-tools-workspace/apache-solr-3.4.0/example/exampledocs/
 
 cd $SOLR_HOME
@@ -37,4 +38,4 @@ java -Dcommit=no -jar $POST_HOME/post.jar $SOLR_HOME/pds/search-tools.hierarchy.
 
 # Commit the changes
 #curl "$SOLR_UPDATE" -H "Content-Type: text/xml" --silent --request POST --data-binary '<commit />'
-java -jar post.jar
+java -jar $POST_HOME/post.jar

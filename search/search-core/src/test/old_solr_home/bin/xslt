@@ -1,6 +1,7 @@
 #! /bin/bash
 
 #SOLR_HOME=/apps/solr
+SOLR_HOME=/Users/jpadams/dev/workspace/search-tools-workspace/search/search-core/src/test/old_solr_home
 
 export SAXON_LIB=$SOLR_HOME/lib
 CLASSPATH=`echo $SAXON_LIB/*.jar | sed -e 's/ /:/g'`
