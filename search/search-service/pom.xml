@@ -27,7 +27,7 @@
   <groupId>gov.nasa.pds.2010.search</groupId>
   <artifactId>search-service</artifactId>
   <version>0.1.0-dev</version>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
 
   <name>Search</name>
   <description>
@@ -167,6 +167,18 @@
   </repositories>
 
   <dependencies>
+    <dependency>
+      <groupId>net.sf.saxon</groupId>
+      <artifactId>saxon</artifactId>
+      <version>9</version>
+      <scope>compile</scope>
+    </dependency>
+   <dependency>
+     <artifactId>pds-search</artifactId>
+     <groupId>gov.nasa.pds.search-tools</groupId>
+     <version>1.0.0</version>
+     <type>jar</type>
+   </dependency>
    <dependency>
       <artifactId>search-core</artifactId>
       <groupId>gov.nasa.pds.2010.search</groupId>

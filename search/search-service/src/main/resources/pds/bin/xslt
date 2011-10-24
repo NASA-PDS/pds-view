@@ -1,0 +1,26 @@
+#! /bin/bash
+
+#SOLR_HOME=$SOLR_HOME/pds
+
+SOLR_HOME=$SOLR_HOME/..
+
+export SAXON_LIB=$SOLR_HOME/lib
+CLASSPATH=`echo $SAXON_LIB/*.jar | sed -e 's/ /:/g'`
+
+if [ $# -lt 2 ]; then
+  echo "usage: $0 xmlFile stylesheet [outFile]"
+  exit 1
+fi
+
+IN="-s:$1"
+STYLESHEET="-xsl:$2"
+shift 2
+
+if [ $# -lt 1 ]; then
+  java -jar $SAXON_LIB/saxon-9.jar "$IN" "$STYLESHEET"
+else
+  OUT="-o:$1"
+  shift
+  echo "java -Xmx256m -jar $SAXON_LIB/saxon-9.jar \"$IN\" \"$STYLESHEET\" \"$OUT\" \"$@\""
+  java -Xmx256m -jar $SAXON_LIB/saxon-9.jar "$IN" "$STYLESHEET" "$OUT" "$@"
+fi
