@@ -98,9 +98,9 @@ public class Extractor { // implements Extractor {
 	 * 
 	 * @see gov.nasa.pds.tse.catalog.Extractor#extract()
 	 */
-	public List extract(File baseDir, File extractorDir)
+	public List extract(File extractorDir)
 			throws ExtractionException {
-		log.info("basedir : " + baseDir);
+		//log.fine("confdir : " + confDir);
 		ArrayList instkeys = new ArrayList();
 
 		this.columns = new ColumnNodes(this.classFilename);
@@ -118,7 +118,7 @@ public class Extractor { // implements Extractor {
 				oidseq++;
 
 				// Get class properties
-				log.info(object.getLid() + " - " + object.getObjectType());
+				log.fine(object.getLid() + " - " + object.getObjectType());
 				setColumnProperties(object);
 
 				XMLWriter xml = new XMLWriter(finalVals, extractorDir, oidseq,

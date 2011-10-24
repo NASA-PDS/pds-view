@@ -34,12 +34,12 @@ then
   mv tse tse_old
 fi
 echo
-echo "---------CREATING NEW TSE DIR----------"
+#echo "---------CREATING NEW TSE DIR----------"
 # Modified extractor.basedir to just be SOLR_HOME
-echo "LOG: java -Djava.ext.dirs=lib -Dextractor.file=$SOLR_HOME/conf/extractors.txt -Dextractor.basedir=$SOLR_HOME gov.nasa.pds.search.core.catalog.CatalogExtractor"
-java -Djava.ext.dirs=lib -Dextractor.file=$SOLR_HOME/conf/extractors.txt -Dextractor.basedir=$SOLR_HOME gov.nasa.pds.search.core.catalog.CatalogExtractor > /dev/null
-echo "---------------------------------------"
-echo
+#echo "LOG: java -Djava.ext.dirs=lib -Dextractor.file=$SOLR_HOME/conf/extractors.txt -Dextractor.basedir=$SOLR_HOME gov.nasa.pds.search.core.catalog.CatalogExtractor"
+#java -Djava.ext.dirs=lib -Dextractor.file=$SOLR_HOME/conf/extractors.txt -Dextractor.basedir=$SOLR_HOME gov.nasa.pds.search.core.catalog.CatalogExtractor > /dev/null
+#echo "---------------------------------------"
+#echo
 
 
 if [ -f pds/solr_index_old.xml ]
@@ -53,10 +53,10 @@ then
   mv pds/solr_index.xml pds/solr_index_old.xml
 fi
 echo
-echo "----CREATING NEW SOLR_INDEX.XML-----"
-echo "LOG: java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.SolrIndexer $SOLR_HOME/pds $SOLR_HOME/tse/extract"
-java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.SolrIndexer $SOLR_HOME/pds $SOLR_HOME/tse/extract > /dev/null
-echo "------------------------------------"
+#echo "----CREATING NEW SOLR_INDEX.XML-----"
+#echo "LOG: java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.SolrIndexer $SOLR_HOME/pds $SOLR_HOME/tse/extract"
+#java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.SolrIndexer $SOLR_HOME/pds $SOLR_HOME/tse/extract > /dev/null
+#echo "------------------------------------"
 echo
 if [ -d catalog_index_old ]
 then
@@ -74,11 +74,15 @@ then
   sleep 15
 fi
 echo
-echo "----CREATING NEW CATALOG_INDEX DIR-----"
-echo "java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.Indexer $SOLR_HOME $SOLR_HOME/tse/extract"
-java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.Indexer $SOLR_HOME $SOLR_HOME/tse/extract > /dev/null
+#echo "----CREATING NEW CATALOG_INDEX DIR-----"
+#echo "java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.Indexer $SOLR_HOME $SOLR_HOME/tse/extract"
+#java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.Indexer $SOLR_HOME $SOLR_HOME/tse/extract > /dev/null
 echo "---------------------------------------"
 echo
+
+echo "-----Running PDSIndexer------"
+PDSIndexer $SOLR_HOME
+echo "-----PDSIndexer Complete-----"
 
 #echo "Committing new 'catalog_index' dir to Subversion."
 #svn add catalog_index

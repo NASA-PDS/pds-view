@@ -7,6 +7,7 @@
  */
 package gov.nasa.pds.search.core.catalog.extractor;
 
+import gov.nasa.pds.search.core.catalog.CatalogExtractor;
 import gov.nasa.pds.search.core.catalog.TseConstants;
 
 import java.io.File;
@@ -44,7 +45,8 @@ public class ColumnNodes {
 					.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
-			doc = docBuilder.parse(new File(TseConstants.CONF_BASE + "/" + filename));
+			//doc = docBuilder.parse(new File(TseConstants.CONF_BASE + "/" + filename));
+			doc = docBuilder.parse(CatalogExtractor.class.getResourceAsStream(filename));
 
 			// normalize text representation
 			doc.getDocumentElement().normalize();

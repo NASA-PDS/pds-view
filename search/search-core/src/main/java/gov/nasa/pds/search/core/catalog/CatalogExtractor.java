@@ -35,8 +35,9 @@ import org.apache.commons.io.FileUtils;
 public class CatalogExtractor {
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
-	private File baseDir = null;
-	private File extractDir = null;
+	private File confDir = null;
+	private File outDir = null;
+	//private File extractDir = null;
 
 	private HashMap<String, String> mappings;
 
@@ -51,8 +52,10 @@ public class CatalogExtractor {
 	 * @param base
 	 *            - Directory used as the base for all extractor files.
 	 */
-	public CatalogExtractor(String base) {
-		baseDir = new File(System.getProperty("extractor.basedir", base));
+	public CatalogExtractor(String confDir, String outDir) {
+		//baseDir = new File(System.getProperty("extractor.basedir", base));
+		this.confDir = new File(confDir);
+		this.outDir = new File(outDir);
 	}
 
 	/**
@@ -63,15 +66,19 @@ public class CatalogExtractor {
 	 */
 	public void run() throws ExtractionException {// throws InvalidExtractor {
 		PrintWriter writer = null;
+		File extractDir = null;
 		File dataDir = null;
 
 		try {
-			dataDir = new File(baseDir, "tse");
+			System.out.println("Creating tse dir: " + this.outDir + "/tse");
+			dataDir = new File(this.outDir, "tse");
+			this.LOG.info("Create tse dir: " + dataDir.getAbsolutePath());
 			// First create base data directory in case this is the first run
 			FileUtils.forceMkdir(dataDir);
 
 			// Next create a place to put extracted files
 			extractDir = new File(dataDir, "extract");
+			this.LOG.info("Create extract dir: " + extractDir.getAbsolutePath());
 
 			FileUtils.forceMkdir(extractDir);
 		} catch (IOException e) {
@@ -96,7 +103,7 @@ public class CatalogExtractor {
 		writer.println("run.date=" + new Date());
 		// Run extract method on each class
 		for (String extractorName : getExtractors()) {
-			LOG.info("currExtName: " + extractorName);
+			LOG.fine("currExtName: " + extractorName);
 			Extractor extractor;
 			try {
 				// Create directory for writing results to
@@ -111,7 +118,7 @@ public class CatalogExtractor {
 
 				Date start = new Date();
 
-				uids = extractor.extract(baseDir, extractorDir);
+				uids = extractor.extract(extractorDir);
 
 				Date end = new Date();
 
@@ -139,19 +146,20 @@ public class CatalogExtractor {
 	}
 
 	public Set<String> getExtractors() {
-		mappings = new HashMap<String, String>();
+		this.mappings = new HashMap<String, String>();
 		// TODO Change back
 		// String extractorFile = System.getProperty("extractor.file",
 		// System.getProperty("user.home") + "/" + EXTRACTOR_CONFIG);
 		// String extractorFile = System.getProperty("extractor.file", baseDir +
 		// "/" + EXTRACTOR_CONFIG);
-		System.out.println("In here");
-		String extractorFile = System.getProperty("extractor.file", baseDir
-				+ "/" + TseConstants.CONF_BASE + EXTRACTOR_CONFIG);
-		System.out.println(extractorFile);
+		//String extractorFile = this.confDir
+		//		+ "/" + TseConstants.CONF_BASE + EXTRACTOR_CONFIG;
+		//String extractorFile = this.confDir
+		//		+ "/" + EXTRACTOR_CONFIG;
+		//System.out.println(extractorFile);
 		Properties props = new Properties();
 		try {
-			props.load(new FileInputStream(extractorFile));
+			props.load(CatalogExtractor.class.getResourceAsStream(EXTRACTOR_CONFIG));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -167,22 +175,28 @@ public class CatalogExtractor {
 				value = props.getProperty((String) key);
 				String name = ((String) key).substring(EXTRACTOR_PREFIX
 						.length() + 1);
-				mappings.put(name, value);
+				this.mappings.put(name, value);
 			}
 		}
 
-		return mappings.keySet();
+		return this.mappings.keySet();
 	}
 
 	public static void main(String[] args) throws Exception {
-		String base = null;
-		if (args.length == 1)
-			base = args[0];
-		else
-			base = "/Users/jpadams/dev/workspace/search-tools-workspace/search/search-core/src/main/resources/";
+		String confHome = "";
+		String outDir = "../";
+		if (args.length == 2) {
+			confHome = args[0];
+			outDir = args[1];
+		} else if (args.length == 1) {
+			outDir = args[0];
+		}
+		
+		//else
+		//	System.err.println("Error: Need to specify ";
 		// base = System.getProperty("user.home") + "/dev/workspace/tse";
 		// base = System.getProperty("user.home") + "/tse";
-		CatalogExtractor extractor = new CatalogExtractor(base);
+		CatalogExtractor extractor = new CatalogExtractor(confHome, outDir);
 		extractor.run();
 	}
 
