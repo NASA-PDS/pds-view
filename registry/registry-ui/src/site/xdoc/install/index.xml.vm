@@ -116,6 +116,9 @@ service.endpoint=http\://localhost\:8080/registry/
 
 service.endpoint=http\://node.nasa.gov/registry/
       </source>
+
+      <p>The Apache Tomcat server must be restarted for this change to take effect.
+      </p>
     </section>
   </body>
 </document>
