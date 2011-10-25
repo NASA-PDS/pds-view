@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cas:metadata xmlns:cas="http://oodt.jpl.nasa.gov/1.0/cas">
+  <keyval>
+    <key>ProductClass</key>
+    <val>Product_Test</val>
+  </keyval>
+</cas:metadata>

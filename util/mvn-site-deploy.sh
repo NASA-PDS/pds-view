@@ -69,5 +69,9 @@ cd security
 maven pdf
 cd ..
 
+cd storage
+maven pdf
+cd ..
+
 # Deploy each site (recursive) including the generated PDFs.
 mvn site:deploy

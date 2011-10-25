@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2011, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology
+  Transfer at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<cas:producttypes xmlns:cas="http://oodt.jpl.nasa.gov/1.0/cas">
+  <type id="urn:pds:InPlaceProduct" name="InPlaceProduct">
+    <repository path="file://[FILEMGR_HOME]/archive"/>
+    <versioner class="org.apache.oodt.cas.filemgr.versioning.InPlaceVersioner"/>
+    <description>The product type for all PDS products that are ingested in place with the File Manager.</description>
+    <metadata>
+      <keyval>
+        <key>ProductType</key>
+        <val>InPlaceProduct</val>
+      </keyval>
+    </metadata>
+    <metExtractors>
+      <extractor class="org.apache.oodt.cas.filemgr.metadata.extractors.CoreMetExtractor">
+        <configuration>
+          <property name="nsAware" value="true" />
+          <property name="elementNs" value="CAS" />
+          <property name="elements"
+            value="ProductReceivedTime,ProductName,ProductId" />
+        </configuration>
+      </extractor>
+      <extractor class="org.apache.oodt.cas.filemgr.metadata.extractors.examples.MimeTypeExtractor" />
+    </metExtractors>
+  </type>
+
+  <type id="urn:pds:TransferProduct" name="TransferProduct">
+    <repository path="file://[FILEMGR_HOME]/archive"/>
+    <versioner class="org.apache.oodt.cas.filemgr.versioning.BasicVersioner"/>
+    <description>The product type for all PDS products that are transferred to the File Manager.</description>
+    <metadata>
+      <keyval>
+        <key>ProductType</key>
+        <val>TransferProduct</val>
+      </keyval>
+    </metadata>
+    <metExtractors>
+      <extractor class="org.apache.oodt.cas.filemgr.metadata.extractors.CoreMetExtractor">
+        <configuration>
+          <property name="nsAware" value="true" />
+          <property name="elementNs" value="CAS" />
+          <property name="elements"
+            value="ProductReceivedTime,ProductName,ProductId" />
+        </configuration>
+      </extractor>
+      <extractor class="org.apache.oodt.cas.filemgr.metadata.extractors.examples.MimeTypeExtractor" />
+      <extractor class="org.apache.oodt.cas.filemgr.metadata.extractors.examples.FinalFileLocationExtractor">
+        <configuration>
+           <property name="replace" value="true"/>
+        </configuration>
+      </extractor>
+    </metExtractors>
+  </type>
+</cas:producttypes>

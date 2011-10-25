@@ -13,7 +13,7 @@
 #
 # $Id$
 
-# This script traverses the module directories deploy the artifacts 
+# This script traverses the module directories to deploy the artifacts 
 # to the Maven repository.
 
 cd ..
@@ -55,6 +55,12 @@ maven pdf
 mvn deploy
 cd ../..
 
+cd harvest
+mvn site
+maven pdf
+mvn deploy
+cd ..
+
 cd report
 mvn deploy --non-recursive
 cd rs-update
@@ -67,7 +73,7 @@ maven pdf
 mvn deploy
 cd ../..
 
-cd harvest
+cd storage
 mvn site
 maven pdf
 mvn deploy

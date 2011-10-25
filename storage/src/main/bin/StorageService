@@ -1,0 +1,77 @@
+#!/bin/sh
+#
+# Copyright 2011, by the California Institute of Technology.
+# ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+# Any commercial use must be negotiated with the Office of Technology Transfer
+# at the California Institute of Technology.
+#
+# This software is subject to U. S. export control laws and regulations
+# (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+# is subject to U.S. export control laws and regulations, the recipient has
+# the responsibility to obtain export licenses or other export authority as
+# may be required before exporting such information to foreign countries or
+# providing access to foreign nationals.
+#
+# $Id$
+
+# Bourne Shell script that allows easy execution of the Storage Service 
+# without the need to set the CLASSPATH or having to type in that long java
+# command (java org.apache.oodt.cas.filemgr.system.XmlRpcFileManager ...)
+
+# Expects the File Manager jar file to be in the ../lib directory.
+
+# Set the JAVA_HOME environment variable here in the script if it will 
+# not be defined in the environment.
+if [ -z ${JAVA_HOME} ] ; then
+  export JAVA_HOME=/path/to/java/home
+fi
+
+# Setup environment variables.
+SCRIPT_DIR=`dirname $0`
+FILEMGR_HOME=`cd ${SCRIPT_DIR}/.. && pwd`
+SERVER_PORT=9000
+
+export FILEMGR_HOME
+
+# Create the File Manager support directories.
+mkdir -p ${FILEMGR_HOME}/logs
+mkdir -p ${FILEMGR_HOME}/run
+
+# Execute the requested action.
+case "$1" in
+  start)
+    echo "Starting the File Manager"
+    ${JAVA_HOME}/bin/java \
+      -Djava.ext.dirs=${FILEMGR_HOME}/lib \
+      -Djava.util.logging.config.file=${FILEMGR_HOME}/etc/logging.properties \
+      -Dorg.apache.oodt.cas.filemgr.properties=${FILEMGR_HOME}/etc/filemgr.properties \
+      org.apache.oodt.cas.filemgr.system.XmlRpcFileManager \
+      --portNum ${SERVER_PORT} &
+    echo $! > ${FILEMGR_HOME}/run/filemgr.pid 
+    echo "OK"
+    sleep 5
+    ;;
+  stop)
+    echo "Shutting down the File Manager"
+    kill `cat ${FILEMGR_HOME}/run/filemgr.pid`
+    rm -f ${FILEMGR_HOME}/run/filemgr.pid
+    echo "OK"
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  status)
+    if [ -e ${FILEMGR_HOME}/run/filemgr.pid ] ; then
+       pid=`cat ${FILEMGR_HOME}/run/filemgr.pid`
+       echo "File Manager is running with pid: $pid" 
+    else
+       echo "File Manager is not running"
+    fi
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart|status}"
+    exit 1
+esac
+
+exit 0

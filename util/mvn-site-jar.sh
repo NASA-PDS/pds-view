@@ -69,5 +69,9 @@ cd security
 maven pdf
 cd ..
 
+cd storage
+maven pdf
+cd ..
+
 # Create a JAR of each site (recursive) including the generated PDFs.
 mvn site:jar
