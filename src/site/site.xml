@@ -45,6 +45,7 @@
       <item name="Registry" href="registry/index.html"/>
       <item name="Report" href="report/index.html"/>
       <item name="Security" href="security/index.html"/>
+      <item name="Storage" href="storage/index.html"/>
     </menu>
 
     <menu ref="reports"/>
