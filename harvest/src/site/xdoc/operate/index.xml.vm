@@ -29,8 +29,6 @@
       </p>
 
       <ul>
-        <li><a href="#Tool_Setup">Tool Setup</a></li>
-        <li><a href="#Additional_Tool_Setup">Additional Tool Setup</a></li>
         <li><a href="#Tool_Execution">Tool Execution</a></li>
         <li><a href="#Harvest_Policy_File">Harvest Policy File</a></li>
         <li><a href="#Report_Format">Report Format</a></li>
@@ -39,108 +37,6 @@
 
       <p>Note: The command-line examples in this section have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution.
       </p>
-    </section>
-
-    <section name="Tool Setup">
-      <p>In order to execute Harvest Tool, the user's environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.
-      </p>
-
-      <subsection name="UNIX-Based Setup">
-        <p>This section details the environment setup for UNIX-based machines. The preferred method is to specify the shell script, <i>Harvest</i>, on the command-line. Setting the <i>PATH</i> environment variable to the location of the script, enables the shell script to be executed from any location on the user's machine.
-        </p>
-
-        <p>The following command demonstrates how to set the <i>PATH</i> environment variable, by appending to its current setting:
-        </p>
-
-        <source>
-% setenv PATH ${PATH}:$HOME/${xdoc-artifactId}-${xdoc-version}/bin
-        </source>
-
-        <p>The tool can now be executed via the shell script as demonstrated in the following example:
-        </p>
-
-        <source>
-% Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
-        </source>
-
-        <p>Additional methods for setting up a UNIX-based environment can be found in the <a href="index-unix.html">UNIX Setup Options</a> section. If viewing this document in PDF form, see the appendix for details.
-        </p>
-      </subsection>
-
-      <subsection name="Windows Setup">
-        <p>This section details the environment setup for Windows machines. The preferred method is to specify the batch file, <i>Harvest.bat</i>, on the command-line. Setting the <i>PATH</i> environment variable to the location of the file, enables the batch file to be executed from any location on the user's machine.
-        </p>
-
-        <p>The following command demonstrates how to set the <i>PATH</i> environment variable, by appending to its current setting:
-        </p>
-
-        <source>
-C:\&gt; set PATH = %PATH%;C:\\${xdoc-artifactId}-${xdoc-version}\bin
-        </source>
-
-        <p>The tool can now be executed via the batch file as demonstrated in the following example:
-        </p>
-
-        <source>
-C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
-        </source>
-
-        <p>Additional methods for setting up a Windows environment can be found in the <a href="index-win.html">Windows Setup Options</a> section. If viewing this document in PDF form, see the appendix for details.
-        </p>
-      </subsection>
-    </section>
-
-    <section name="Additional Tool Setup">
-      <p>This section details how to re-configure the Harvest Tool to interface with another instance of the Registry Service.
-      </p>
-
-      <p>The Harvest Tool points to the Registry Service via the <i>pds.registry</i> Java System Property. If a secured, Registry Service instance is being pointed to, then the <i>pds.security.keystore</i> Java System Property must also be set. The following table details these 2 Java System properties:
-      </p>
-
-      <table>
-        <tr><th>System Property Name</th><th>Description</th></tr>
-        <tr><td>pds.registry</td><td>Specify the URL to the Registry Service. This property is required.</td></tr>
-        <tr><td>pds.security.keystore</td><td>Specify the file path to the self sign keystore file located in the <i>keystore</i> directory of the <i>harvest</i> package. This property can be omitted if pointing to a non-secured, instance of the Registry Service.</td></tr>
-      </table>
-
-      <p>By default, the Harvest shell script and batch file point to local installations of the Registry Service. Additionally, they automatically point to the keystore file that is included with the Harvest package. The sections below detail how to modify these scripts to point to another instance of the Registry.
-      </p>
-
-      <subsection name="UNIX-Based Users">
-        <p>Open the <i>Harvest</i> shell script and go to the last line in the file. It should look like the following:
-        </p>
-
-        <source>
-% java -Dpds.registry="http://localhost:8080/registry" \
--Dpds.security.keystore="${KEYSTORE}" -jar ${HARVEST_JAR} "$@"
-        </source>
-
-        <p>Replace the URL value of <i>pds.registry</i> with the URL to the desired instance of the Registry. For example, making the following change to the script will have Harvest pointing to the secured, operational instance of the Registry at the Engineering Node:
-        </p>
-
-        <source>
-% java -Dpds.registry="https://pdsops2.jpl.nasa.gov/registry" \
--Dpds.security.keystore=${KEYSTORE} -jar ${HARVEST_JAR} "$@"
-        </source>
-      </subsection>
-
-      <subsection name="Windows-Based Users">
-        <p>Open the <i>Harvest</i> batch and go to the last line in the file. It should look like the following:
-        </p>
-
-        <source>
-% java -Dpds.registry="http://localhost:8080/registry" \
--Dpds.security.keystore="%KEYSTORE%" -jar "%HARVEST_JAR%" %*
-        </source>
-
-        <p>Replace the URL value of <i>pds.registry</i> with the URL to the desired instance of the Registry. For example, making the following change to the batch file will have Harvest pointing to a secured operational instance of the Registry at the Engineering Node:
-        </p>
-
-        <source>
-% java -Dpds.registry="https://pdsops2.jpl.nasa.gov/registry" \
--Dpds.security.keystore="%KEYSTORE%" -jar "%HARVEST_JAR%" %*
-        </source>
-      </subsection>
     </section>
 
     <section name="Tool Execution">
@@ -157,14 +53,14 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
           <tr><td>-p, --password</td><td>Specify a password associated with the username.</td></tr>
           <tr><td>-l, --log-file</td><td>Specify a log file name. Default is standard out.</td></tr>
           <tr><td>-P, --port</td><td>Specify a port number to use if running the tool in persistence mode. See the <a href="#Persistence_Mode">Persistence Mode</a> section for more details.</td></tr>
-          <tr><td>-w, --wait</td><td>Specify the time, in seconds, to wait in between the crawls. This option is used only when running the tool in continuous mode.</td></tr>
+          <tr><td>-w, --wait</td><td>Specify the time, in seconds, to wait in between the crawls if running the tool in persistence mode. See the <a href="#Persistence_Mode">Persistence Mode</a> section for more details.</td></tr>
           <tr><td>-V, --version</td><td>Display the release number and copyright information.</td></tr>
           <tr><td>-h, --help</td><td>Display Harvest usage.</td></tr>
         </table>
       </subsection>
 
       <subsection name="Execute Harvest Tool">
-        <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script. Alternate methods for executing the tool can be found in the <a href="#Tool_Setup">Tool Setup</a> section.
+        <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script.
         </p>
 
         <p>The Harvest Tool operates with a policy file to register product metadata. Details on how to create this policy file can be found in the <a href="#Harvest_Policy_File">Harvest Policy File</a> section.
@@ -215,14 +111,14 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         <table>
           <tr><th>Command-Line Option</th><th>Description</th></tr>
           <tr><td>--url</td><td>Specify the URL of the daemon service running the Harvest Tool.</td></tr>
-          <tr><td>--operation</td><td>Specify a single operation to perform. List of valid operation names is found in the next table.</td></tr>
+          <tr><td>--operation</td><td>Specify a single operation to perform. List of valid operations can be found in the next table.</td></tr>
         </table>
 
-        <p>The following table describes the operation names available to pass into the <i>--operation</i> command-line flag option:
+        <p>The following table describes the operation names available to pass with the <i>--operation</i> command-line option:
         </p>
 
         <table>
-          <tr><th>Operation Name</th><th>Description</th></tr>
+          <tr><th>Operation Option</th><th>Description</th></tr>
           <tr><td>--stop</td><td>Specify this operation to shut down the daemon service.</td></tr>
           <tr><td>--isRunning</td><td>Gives an indication whether the daemon service is running.</td></tr>
           <tr><td>--getNumCrawls</td><td>Returns the number of crawls that have occurred.</td></tr>
@@ -234,22 +130,22 @@ C:\&gt; Harvest &lt;policy file&gt; &lt;command-line arguments&gt;
         <p>The following examples demonstrate how to run the HarvestController using a few of the different operations. For demonstration purposes, assume that the daemon service is located at the following url: <i>http://localhost:9000/xmlrpc</i>.
         </p>
 
-        <p><b><i>Shutdown the daemon service</i></b></p>
-
-        <p>The following command demonstrates shutting down the daemon service:
-        </p>
-
-        <source>
-% HarvestController --url http://localhost:9000/xmlrpc --operation --stop
-        </source>
-
-        <p><b><i>Find Out The Status Of The Daemon Service</i></b></p>
+        <p><b><i>Determine the Status of the Daemon Service</i></b></p>
 
         <p>The following command is used to find out if the daemon service is still running:
         </p>
 
         <source>
 % HarvestController --url http://localhost:9000/xmlrpc --operation --isRunning
+        </source>
+
+        <p><b><i>Shutdown the Daemon Service</i></b></p>
+
+        <p>The following command demonstrates shutting down the daemon service:
+        </p>
+
+        <source>
+% HarvestController --url http://localhost:9000/xmlrpc --operation --stop
         </source>
       </subsection>
    </section>

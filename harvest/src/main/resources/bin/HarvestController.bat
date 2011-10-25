@@ -18,4 +18,11 @@
 
 @echo off
 
-java -Djava.ext.dirs=../lib gov.nasa.jpl.oodt.cas.crawl.daemon.CrawlDaemonController %*
+:: Set the JAVA_HOME environment variable here in the script if it will
+:: not be defined in the environment.
+if not defined JAVA_HOME (
+  set JAVA_HOME=\path\to\java\home
+)
+
+:: Execute the application.
+"%JAVA_HOME%"\bin\java -Djava.ext.dirs=../lib gov.nasa.jpl.oodt.cas.crawl.daemon.CrawlDaemonController %*

@@ -20,12 +20,19 @@
 
 # Expects the Harvest jar file to be in the ../lib directory.
 
+# Set the JAVA_HOME environment variable here in the script if it will 
+# not be defined in the environment.
+if [ -z ${JAVA_HOME} ] ; then
+  export JAVA_HOME=/path/to/java/home
+fi
+
+# Setup environment variables.
 SCRIPT_DIR=`dirname $0`
 PARENT_DIR=`cd ${SCRIPT_DIR}/.. && pwd`
-
 LIB_DIR=${PARENT_DIR}/lib
 KEYSTORE=${PARENT_DIR}/keystore/tomcat_self_sign_keystore
 
+# Check for dependencies.
 if [ ! -f ${LIB_DIR}/harvest-*.jar ]; then
     echo "Cannot find Harvest jar file in ${LIB_DIR}"
     exit 1
@@ -36,10 +43,10 @@ if [ ! -f ${KEYSTORE} ]; then
     exit 1
 fi
 
+# Finds the jar file in LIB_DIR and sets it to HARVEST_JAR.
 HARVEST_JAR=`ls ${LIB_DIR}/harvest-*.jar`
 
 # Executes Harvest via the executable jar file
 # Arguments are passed in to the tool via '$@'
-
-java -Dpds.registry="http://localhost:8080/registry" -Dpds.security.keystore="${KEYSTORE}" -jar ${HARVEST_JAR} "$@"
+${JAVA_HOME}/bin/java -Dpds.registry="http://localhost:8080/registry" -Dpds.security.keystore="${KEYSTORE}" -jar ${HARVEST_JAR} "$@"
 

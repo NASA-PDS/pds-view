@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -23,10 +23,9 @@
       <item name="Release Notes" href="release/index.html"/>
       <item name="Installation" href="install/index.html"/>
       <item name="Operation" href="operate/index.html"/>
-      <item name="Appendix A - UNIX Setup Options" href="operate/index-unix.html"/>
-      <item name="Appendix B - Windows Setup Options" href="operate/index-win.html"/>
-      <item name="Appendix C - Harvest Policy Schema" href="operate/index-policy-schema.html"/>
-      <item name="Appendix D - Harvesting of PDS3 Data Products" href="operate/index-pds3Harvesting.html"/>
+      <item name="Appendix A - Windows System Properties" href="install/index-win.html"/>
+      <item name="Appendix B - Harvest Policy Schema" href="operate/index-policy-schema.html"/>
+      <item name="Appendix C - Harvesting of PDS3 Data Products" href="operate/index-pds3Harvesting.html"/>
     </menu>
   </body>
 </project>
