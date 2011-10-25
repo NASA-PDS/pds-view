@@ -123,7 +123,7 @@ or
     </section>
 
     <section name="Deploying the Application">
-      <p>The Registry Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation, the WAR file should be renamed from <i>${xdoc-artifactId}-${xdoc-version}.war</i> to <i>registry.war</i>. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation. Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping">Ping</a> portion of the Operation section.
+      <p>The Registry Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation, the WAR file should be renamed from <i>${xdoc-artifactId}-${xdoc-version}.war</i> to <i>registry.war</i>. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>$TOMCAT_HOME/webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation. Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping">Ping</a> portion of the Operation section.
       </p>
 
       <p>When deploying the application via the Tomcat Manager interface, users have occasionally encountered a situation where the application appears to hang or generates the following stack trace:
@@ -203,7 +203,7 @@ hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
       </subsection>
 
       <subsection name="Home Configuration">
-        <p>By default, the registry home is configured as <i>http://localhost:8080/registry</i>. This should be modified to represent the endpoint of the target installation. To modify the configuration, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. Modify the following line with the new endpoint:
+        <p>In a distributed environment with multiple Registry Service instances, the registry home value identifies the source of a registry entry when it has been replicated to another registry instance. By default, the registry home is configured as <i>http://localhost:8080/registry</i>. This should be modified to represent the Registry Service endpoint of the local installation. Meaning that instead of <i>localhost</i>, the fully qualified name of the local machine should be specified (e.g., node.nasa.gov). To modify the configuration, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. Modify the following line with the new endpoint:
         </p>
 
         <source>
@@ -215,9 +215,6 @@ p:home="http://localhost:8080/registry"/&gt;
 &lt;bean id="idGenerator" class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
 p:home="http://node.nasa.gov/registry"/&gt;
         </source>
-
-        <p>In a distributed environment with multiple Registry Service instances, the registry home value identifies the source of registered entries when replication is occurring among the instances.
-        </p>
       </subsection>
 
       <subsection name="Object Type Configuration">

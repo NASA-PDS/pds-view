@@ -395,10 +395,10 @@ http://localhost:8080/registry/packages/&lt;guid&gt;
       
       <source>
 % curl -X GET -H "Accept:application/xml" -v \
-http://localhost:8080/registry
+http://localhost:8080/registry/
       </source>
 
-      <p>The above command will return a welcome message and an HTTP status of 200.
+      <p>The above command will return the list of links to the service's endpoints and an HTTP status of 200. From a web browser, the command returns a welcome message. Make sure to include the trailing slash on the above command.
       </p>
     </section>
 
