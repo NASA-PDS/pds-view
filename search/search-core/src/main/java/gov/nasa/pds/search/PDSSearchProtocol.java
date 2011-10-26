@@ -1,0 +1,134 @@
+//	Copyright 2009-2010, by the California Institute of Technology.
+//	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+//	Any commercial use must be negotiated with the Office of Technology 
+//	Transfer at the California Institute of Technology.
+//	
+//	This software is subject to U. S. export control laws and regulations 
+//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+//	is subject to U.S. export control laws and regulations, the recipient has 
+//	the responsibility to obtain export licenses or other export authority as 
+//	may be required before exporting such information to foreign countries or 
+//	providing access to foreign nationals.
+//	
+//	$Id$
+//
+
+package gov.nasa.pds.search;
+
+import org.apache.solr.common.params.ModifiableSolrParams;
+import org.apache.solr.handler.StandardRequestHandler;
+import org.apache.solr.request.SolrQueryRequest;
+import org.apache.solr.response.SolrQueryResponse;
+
+/**
+ * @author pramirez
+ * 
+ */
+public class PDSSearchProtocol extends StandardRequestHandler {
+  public final static String[] MULTI_PARAMS = { "identifier", "instrument",
+      "instrument_host", "instrument_host_type", "instrument_type",
+      "investigation", "observing_system", "person", "product_class", "target",
+      "target_type", "title" };
+  public final static String QUERY_PARAM = "q";
+  public final static String START_TIME_PARAM = "start_time";
+  public final static String STOP_TIME_PARAM = "stop_time";
+  public final static String TERM_PARAM = "term";
+  public final static String RETURN_TYPE_PARAM = "return_type";
+
+  public void handleRequestBody(SolrQueryRequest request,
+      SolrQueryResponse response) throws Exception {
+    ModifiableSolrParams pdsParams = new ModifiableSolrParams(request
+        .getParams());
+    request.setParams(pdsParams);
+    StringBuilder queryString = new StringBuilder();
+
+    // Handle multi valued parameters
+    for (String parameter : MULTI_PARAMS) {
+      if (request.getOriginalParams().getParams(parameter) != null) {
+        queryString.append("(");
+        // Loop through and add in the identifier to the query string
+        for (String value : request.getOriginalParams().getParams(parameter)) {
+          if (!value.trim().isEmpty()) {
+            queryString.append(parameter);
+            queryString.append(":");
+            queryString.append(value);
+            queryString.append(" OR ");
+          }
+        }
+        // Remove the last OR
+        queryString.delete(queryString.length() - 4, queryString.length());
+        queryString.append(")");
+        queryString.append(" AND ");
+      }
+    }
+
+    // Remove the last AND
+    if (queryString.length() != 0) {
+      queryString.delete(queryString.length() - 5, queryString.length());
+    }
+
+    // Handle start time
+    if (request.getOriginalParams().getParams(START_TIME_PARAM) != null) {
+      // if there is already a portion of the query string group with AND
+      if (queryString.length() != 0) {
+        queryString.append(" AND ");
+      }
+      queryString.append(START_TIME_PARAM);
+      queryString.append(":");
+      queryString.append(request.getOriginalParams()
+          .getParams(START_TIME_PARAM)[0]);
+    }
+
+    // Handle stop time
+    if (request.getOriginalParams().getParams(STOP_TIME_PARAM) != null) {
+      // if there is already a portion of the query string group with AND
+      if (queryString.length() != 0) {
+        queryString.append(" AND ");
+      }
+      queryString.append(STOP_TIME_PARAM);
+      queryString.append(":");
+      queryString
+          .append(request.getOriginalParams().getParams(STOP_TIME_PARAM)[0]);
+    }
+
+    // Group other parameters together using ()
+    if (queryString.length() != 0) {
+      queryString.insert(0, "(");
+      queryString.append(")");
+    }
+
+    // Handle terms
+    if (request.getOriginalParams().getParams(TERM_PARAM) != null) {
+      // if there is already a portion of the query string group with AND
+      if (queryString.length() != 0) {
+        queryString.append(" ");
+      }
+      queryString.append(request.getOriginalParams().getParams(TERM_PARAM)[0]);
+    }
+
+    // Handle query by appending to query string.
+    if (request.getOriginalParams().getParams(QUERY_PARAM) != null) {
+      // if there is already a portion of the query string group with AND
+      if (queryString.length() != 0) {
+        queryString.append(" ");
+      }
+      queryString.append(request.getOriginalParams().getParams(QUERY_PARAM)[0]);
+    }
+
+    // If there is a query pass it on to Solr as the q param
+    if (queryString.length() > 0) {
+      pdsParams.remove("q");
+      pdsParams.add("q", queryString.toString());
+    }
+
+    // Handle return type maps to Solrs wt param
+    if (request.getOriginalParams().getParams(RETURN_TYPE_PARAM) != null) {
+      pdsParams.remove("wt");
+      pdsParams.add("wt", request.getOriginalParams().getParams(
+          RETURN_TYPE_PARAM)[0]);
+    }
+
+    super.handleRequestBody(request, response);
+  }
+
+}
