@@ -592,15 +592,21 @@
    <field name="target_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="telephone_number" type="string" indexed="false" stored="true" />
    <field name="title" type="text" indexed="true" stored="true" />
-   <field name="observing_system" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="observing-system" type="text_lc" indexed="true" stored="false" multiValued="true" />
    
    <!-- A few aliases of the fields above, filled in via copyField, below -->
    <field name="target" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="instrument" type="text" indexed="true" stored="false" multiValued="true" />
    <field name="mission" type="text" indexed="true" stored="false" multiValued="true" />
    <field name="investigation" type="text_lc" indexed="true" stored="false" multiValued="true" />
-   <field name="person" type="text" indexed="true" stored="true" multiValued="true" />
-   <field name="product_subclass" type="string" indexed="true" stored="true" />
+   <field name="person" type="text" indexed="true" stored="false" multiValued="true" />
+   <field name="product-subclass" type="string" indexed="false" stored="true" />
+   <field name="stop-time" type="date" indexed="true" stored="false" />
+   <field name="start-time" type="date" indexed="true" stored="false" />
+   <field name="instrument-host" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="instrument-host-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="instrument-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="target-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
    
    <!-- And the faceting fields -->
    <field name="facet_class" type="string_lc" indexed="true" stored="false" multiValued="false" />
@@ -714,7 +720,13 @@
   <copyField source="instrument_id" dest="instrument" />
   <copyField source="mission_name" dest="investigation" />
   <copyField source="full_name" dest="person" />
-  <copyField source="resClass" dest="product_subclass" />
+  <copyField source="resClass" dest="product-subclass" />
+  <copyField source="stop_time" dest="stop-time" />
+  <copyField source="start_time" dest="start-time" />
+  <copyField source="instrument_host_name" dest="instrument-host" />
+  <copyField source="instrument_host_type" dest="instrument-host-type" />
+  <copyField source="instrument_type" dest="instrument-type" />
+  <copyField source="target_type" dest="target-type" />
   
   <!-- And the spell-check field -->
   <copyField source="target_name" dest="spell" />
