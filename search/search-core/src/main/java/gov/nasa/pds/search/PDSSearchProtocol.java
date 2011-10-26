@@ -26,14 +26,14 @@ import org.apache.solr.response.SolrQueryResponse;
  */
 public class PDSSearchProtocol extends StandardRequestHandler {
   public final static String[] MULTI_PARAMS = { "identifier", "instrument",
-      "instrument_host", "instrument_host_type", "instrument_type",
-      "investigation", "observing_system", "person", "product_class", "target",
-      "target_type", "title" };
+      "instrument-host", "instrument-host-type", "instrument-type",
+      "investigation", "observing-system", "person", "product-subclass", "target",
+      "target-type", "title" };
   public final static String QUERY_PARAM = "q";
-  public final static String START_TIME_PARAM = "start_time";
-  public final static String STOP_TIME_PARAM = "stop_time";
+  public final static String START_TIME_PARAM = "start-time";
+  public final static String STOP_TIME_PARAM = "stop-time";
   public final static String TERM_PARAM = "term";
-  public final static String RETURN_TYPE_PARAM = "return_type";
+  public final static String RETURN_TYPE_PARAM = "return-type";
 
   public void handleRequestBody(SolrQueryRequest request,
       SolrQueryResponse response) throws Exception {
