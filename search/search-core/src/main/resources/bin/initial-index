@@ -1,0 +1,90 @@
+#! /bin/bash
+
+SOLR_HOME=$SOLR_HOME/pds
+
+echo "-----------------------------------------------------"
+echo "----------------------WARNINGS------------------------"
+echo "-----------------------------------------------------"
+echo " RUN ON PDSBETA ONLY! "
+echo " - If on ops machine, kill script immediately."
+echo
+echo " SOLR_HOME must be set prior to running script"
+echo " - Your SOLR_HOME = $SOLR_HOME "
+echo "-----------------------------------------------------"
+echo "-----------------------------------------------------"
+echo "-----------------------------------------------------"
+
+cd $SOLR_HOME
+pwd
+
+#rm -fr catalog_index
+
+echo "LOG: Performing an svn update on SOLR_HOME directory"
+#svn update
+
+if [ -d tse_old ]
+then
+  echo "LOG: Removing 'tse_old/'"
+  rm -rf tse_old
+fi
+if [ -d tse ]
+then
+  echo "LOG: Backing up 'tse/' to 'tse_old/'"
+  mv tse tse_old
+fi
+echo
+#echo "---------CREATING NEW TSE DIR----------"
+# Modified extractor.basedir to just be SOLR_HOME
+#echo "LOG: java -Djava.ext.dirs=lib -Dextractor.file=$SOLR_HOME/conf/extractors.txt -Dextractor.basedir=$SOLR_HOME gov.nasa.pds.search.core.catalog.CatalogExtractor"
+#java -Djava.ext.dirs=lib -Dextractor.file=$SOLR_HOME/conf/extractors.txt -Dextractor.basedir=$SOLR_HOME gov.nasa.pds.search.core.catalog.CatalogExtractor > /dev/null
+#echo "---------------------------------------"
+#echo
+
+
+if [ -f pds/solr_index_old.xml ]
+then
+  echo "LOG: Removing 'pds/solr_index_old.xml'"
+  rm pds/solr_index_old.xml
+fi
+if [ -f pds/solr_index.xml ]
+then
+  echo "LOG: Backing up 'pds/solr_index.xml' to 'pds/solr_index_old.xml'"
+  mv pds/solr_index.xml pds/solr_index_old.xml
+fi
+echo
+#echo "----CREATING NEW SOLR_INDEX.XML-----"
+#echo "LOG: java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.SolrIndexer $SOLR_HOME/pds $SOLR_HOME/tse/extract"
+#java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.SolrIndexer $SOLR_HOME/pds $SOLR_HOME/tse/extract > /dev/null
+#echo "------------------------------------"
+echo
+if [ -d catalog_index_old ]
+then
+  echo "LOG:Removing 'catalog_index_old'"
+  rm -rf catalog_index_old
+fi
+if [ -d catalog_index ]
+then
+  echo "Backing up 'catalog_index' to 'catalog_index_old'"
+  cp -r catalog_index catalog_index_old
+  echo "Removing 'catalog_index' before new index is created"
+  rm -fr catalog_index
+  #svn rm catalog_index
+  #svn --username $1 --password $2 commit -m "Removing old catalog_index and committing new solr_index."
+  sleep 15
+fi
+echo
+#echo "----CREATING NEW CATALOG_INDEX DIR-----"
+#echo "java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.Indexer $SOLR_HOME $SOLR_HOME/tse/extract"
+#java -Djava.ext.dirs=lib gov.nasa.pds.search.core.index.Indexer $SOLR_HOME $SOLR_HOME/tse/extract > /dev/null
+echo "---------------------------------------"
+echo
+
+echo "-----Running PDSIndexer------"
+PDSIndexer $SOLR_HOME
+echo "-----PDSIndexer Complete-----"
+
+#echo "Committing new 'catalog_index' dir to Subversion."
+#svn add catalog_index
+#svn --username $1 --password $2 commit -m "New catalog_index has been created."
+
+./bin/solr-post

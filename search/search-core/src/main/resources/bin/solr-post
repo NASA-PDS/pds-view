@@ -1,0 +1,41 @@
+#! /bin/bash
+
+#SOLR_HOME=/apps/solr
+#SOLR_HOME=/Users/jpadams/dev/workspace/search-tools-workspace/search/search-core/src/test/old_solr_home
+POST_HOME=$HOME/dev/workspace/search-tools-workspace/apache-solr-3.4.0/example/exampledocs/
+
+cd $SOLR_HOME
+pwd
+
+./bin/xslt pds/solr_index.xml pds/add-hierarchy.xslt pds/solr-index.hierarchy.xml
+./bin/xslt pds/search-tools.xml pds/add-hierarchy.xslt pds/search-tools.hierarchy.xml
+
+#SOLR_UPDATE="http://127.0.0.1/tools/data-search/QwJsb3NKu3fJ/update/"
+SOLR_UPDATE="http://localhost:8983/QwJsb3NKu3fJ/update/"
+
+#Backup existing solr index. This currently is in the wrong place and will need updating
+if [ -d data_old ]
+then
+  echo "Removing 'data_old'"
+  rm -rf data_old
+fi
+if [ -d data ]
+then
+  echo "Backing up 'data' to 'data_old"
+  cp -rp data data_old
+fi
+
+# Delete all existing documents.
+#curl "$SOLR_UPDATE" -H "Content-Type: text/xml" --silent --data-binary '<delete><query>*:*</query></delete>'
+java -Ddata=args -Dcommit=no -jar $POST_HOME/post.jar "<delete><query>*:*</query></delete>"
+
+# Push new index data
+#curl "$SOLR_UPDATE" -H "Content-Type: text/xml" --silent --request POST --data-binary @pds/solr-index.hierarchy.xml
+#curl "$SOLR_UPDATE" -H "Content-Type: text/xml" --silent --request POST --data-binary @pds/search-tools.hierarchy.xml
+java -Dcommit=no -jar $POST_HOME/post.jar $SOLR_HOME/pds/solr-index.hierarchy.xml
+java -Dcommit=no -jar $POST_HOME/post.jar $SOLR_HOME/pds/search-tools.hierarchy.xml
+
+
+# Commit the changes
+#curl "$SOLR_UPDATE" -H "Content-Type: text/xml" --silent --request POST --data-binary '<commit />'
+java -jar $POST_HOME/post.jar

@@ -7,13 +7,17 @@
 package gov.nasa.pds.search.core.catalog.extractor;
 
 import gov.nasa.pds.registry.client.RegistryClient;
+import gov.nasa.pds.registry.exception.RegistryClientException;
+import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Association;
+import gov.nasa.pds.registry.model.ExtrinsicObject;
+import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
-import gov.nasa.pds.registry.model.RegistryResponse;
+import gov.nasa.pds.registry.model.Slot;
 import gov.nasa.pds.registry.query.AssociationFilter;
-import gov.nasa.pds.registry.query.AssociationQuery;
-import gov.nasa.pds.registry.query.ExtrinsicQuery;
+import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.ObjectFilter;
+import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.search.core.catalog.ExtractionException;
 import gov.nasa.pds.search.core.catalog.InvalidExtractorException;
 import gov.nasa.pds.search.core.catalog.TseConstants;
@@ -67,7 +71,7 @@ public class Extractor { // implements Extractor {
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	private PrintWriter xmlDisplay;
 
-	private RegistryClient client;
+	//private RegistryClient client;
 	private PrintWriter writer;
 	private Map<String, List<RegistrySlots>> associationMap;
 
@@ -107,13 +111,12 @@ public class Extractor { // implements Extractor {
 
 		try {
 			// Initialize the global RegistryClient
-			this.client = new RegistryClient(TseConstants.REGISTRY_URL);
+			//this.client = new RegistryClient(TseConstants.REGISTRY_URL);
 
-			RegistryResponse response = getResponse(ResponseTypes.EXTRINSIC,
-					ExtrinsicFilterTypes.OBJECT_TYPE,
+			PagedResponse<ExtrinsicObject> response = getExtrinsics(ExtrinsicFilterTypes.OBJECT_TYPE,
 					this.columns.getObjectType());
 
-			for (RegistryObject object : (List<RegistryObject>) response
+			for (ExtrinsicObject object : (List<ExtrinsicObject>) response
 					.getResults()) {
 				oidseq++;
 
@@ -267,8 +270,9 @@ public class Extractor { // implements Extractor {
 
 	/**
 	 * Sets the associationMap values.
+	 * @throws  
 	 */
-	private void setAssociations() {
+	private void setAssociations() throws Exception {
 		for (String assocType : (List<String>) this.columns.getAssociations()) {
 			this.associationMap.put(assocType, getAssociationSlots(this.guid, assocType));
 		}
@@ -279,17 +283,17 @@ public class Extractor { // implements Extractor {
 	 * @param guid
 	 * @param assocType
 	 * @return
+	 * @throws Exception 
 	 */
-	private List<RegistrySlots> getAssociationSlots(String guid, String assocType) {
-		RegistryResponse assocResponse = getResponse(ResponseTypes.ASSOCIATION,
-				assocType, guid);
+	private List<RegistrySlots> getAssociationSlots(String guid, String assocType) throws Exception {
+		PagedResponse<Association> assocResponse = getAssociations(assocType, guid);
 		//System.out.println("Num Associations: " + assocResponse.getNumFound());
 		List<RegistrySlots> slotLst = new ArrayList<RegistrySlots>();
 
 		// Get list of associations for specific association type
 		for (Association association : (List<Association>) assocResponse
 				.getResults()) {
-			RegistryResponse extResponse = getResponse(ResponseTypes.EXTRINSIC,
+			PagedResponse<ExtrinsicObject> extResponse = getExtrinsics(
 					((new RegistrySlots(association.getSlots()).get("verified").get(0).equals("false") ? ExtrinsicFilterTypes.LIDVID : ExtrinsicFilterTypes.GUID)),
 					association.getTargetObject());
 
@@ -305,8 +309,7 @@ public class Extractor { // implements Extractor {
 				this.log.info("Association found : "
 						+ association.getAssociationType() + " - "
 						+ association.getTargetObject());
-				for (RegistryObject extObj : (List<RegistryObject>) extResponse
-						.getResults()) {
+				for (ExtrinsicObject extObj : extResponse.getResults()) {
 					slotLst.add(new RegistrySlots(extObj.getSlots()));
 				}
 			}
@@ -314,6 +317,76 @@ public class Extractor { // implements Extractor {
 		return slotLst;
 	}
 
+	private PagedResponse<ExtrinsicObject> getExtrinsics(String type, String value) throws Exception {
+		//Build the filter
+		ExtrinsicFilter filter = new ExtrinsicFilter.Builder().lid(lid).build();
+		if (type.equals(ExtrinsicFilterTypes.LIDVID)) {
+			//filter = new ExtrinsicFilter.Builder().lid(value.split("::")[0]).build();
+			filter = new ExtrinsicFilter.Builder().lid(value).build();
+		} else if (type.equals(ExtrinsicFilterTypes.GUID)) {
+			filter = new ExtrinsicFilter.Builder().guid(value).build();
+		} else if (type.equals(ExtrinsicFilterTypes.OBJECT_TYPE)) {
+			filter = new ExtrinsicFilter.Builder().objectType(value).build();
+		}
+		//Create the query
+		RegistryQuery<ExtrinsicFilter> query = new
+		RegistryQuery.Builder<ExtrinsicFilter>().filter(filter).build();
+		try {
+			RegistryClient client = new RegistryClient(TseConstants.REGISTRY_URL);
+					//securityContext, user, password);
+			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1, TseConstants.QUERY_MAX);
+			//Examine the results of the query
+			/*if (pr.getNumFound() != 0) {
+				for (ExtrinsicObject extrinsic : pr.getResults()) {
+					for (Slot slot : extrinsic.getSlots()) {
+						if (slot.getName().equals(Constants.PRODUCT_VERSION) &&
+								slot.getValues().contains(version)) {
+							result = extrinsic;
+						}
+					}
+				}
+			}*/
+			return pr;
+		} catch (RegistryServiceException rse) {
+			//Ignore. Nothing found.
+		} catch (RegistryClientException rce) {
+			throw new Exception(rce.getMessage());
+		}
+		return null;
+	}
+	
+	private PagedResponse<Association> getAssociations(String type, String value) throws Exception {
+		//Build the filter
+		AssociationFilter assocFilter = new AssociationFilter.Builder()
+			.sourceObject(value).associationType(type).build();
+		RegistryQuery<AssociationFilter> query = new RegistryQuery.Builder<AssociationFilter>()
+			.filter(assocFilter).build();
+
+		try {
+			RegistryClient client = new RegistryClient(TseConstants.REGISTRY_URL);
+					//securityContext, user, password);
+			PagedResponse<Association> pr = client.getAssociations(query, 1, TseConstants.QUERY_MAX);
+			//Examine the results of the query
+			/*if (pr.getNumFound() != 0) {
+				for (ExtrinsicObject extrinsic : pr.getResults()) {
+					for (Slot slot : extrinsic.getSlots()) {
+						if (slot.getName().equals(Constants.PRODUCT_VERSION) &&
+								slot.getValues().contains(version)) {
+							result = extrinsic;
+						}
+					}
+				}
+			}*/
+			
+			return pr;
+		} catch (RegistryServiceException rse) {
+			//Ignore. Nothing found.
+		} catch (RegistryClientException rce) {
+			throw new Exception(rce.getMessage());
+		}
+		return null;
+	}
+	
 	/**
 	 * Depending upon the responseType, sets the necessary filter
 	 * and gets a RegistryResponse
@@ -322,8 +395,8 @@ public class Extractor { // implements Extractor {
 	 * @param type
 	 * @param value
 	 * @return
-	 */
-	private RegistryResponse getResponse(int responseType, String type, String value) {
+	 */	
+	/*private RegistryResponse getResponse(int responseType, String type, String value) {
 
 		if (responseType == ResponseTypes.EXTRINSIC) {
 			ObjectFilter filter = null;
@@ -337,7 +410,7 @@ public class Extractor { // implements Extractor {
 				filter = new ObjectFilter.Builder().objectType(value).build();
 			}
 
-			ExtrinsicQuery query = new ExtrinsicQuery.Builder().filter(filter)
+			RegistryQuery<ExtrinsicFilter> query = new RegistryQuery<ExtrinicFilter>().Builder<ExtrinicFilter>().filter(filter)
 					.build();
 			return this.client.getExtrinsics(query, 1, TseConstants.QUERY_MAX)
 					.getEntity(RegistryResponse.class);
@@ -352,7 +425,7 @@ public class Extractor { // implements Extractor {
 		}
 
 		return null;
-	}
+	}*/
 
 	private void setIdentifiers(RegistryObject object) {
 		this.lid = object.getLid();
