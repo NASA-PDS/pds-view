@@ -63,8 +63,55 @@
           <li>Startup the server.</li>
         </ul>
 
+		<subsection name="Install OpenDS with QuickSetup">
+		  <p>Launch QuickSetup Locally.</p>
+		  <source>% $OPENDS_HOME/setup</source>
+		  <ul>
+		  <li>Click <i>Next</i> to install a server.</li>
+		  <center>
+		    <a href="../images/opends_step1.jpg" target="_blank"><img src="../images/opends_step1.jpg" border="1"/></a>
+		    <br/>OpenDS QuickSetup Welcome Screen<br/><br/>
+		  </center>
+		  
+		  <li>Enter a valid port for LDAP operations. If you run QuickSetup as the root user, port 389 is used as default LDAP port. If you run QuickSetup as a non-root user, port 1389 is used as the default port.</li>
+		  <li>LDAP secure access is disabled by default. If you require secure access, follow the instructions under <a href="#Configure_the_LDAP_server_with_SSL_using_a_self-signed_certificate">Configure the LDAP server with SSL using a self-signed certificate.</a></li>
+		  <br/>
+		  <center>
+		    <a href="../images/opends_step2.jpg" target="_blank"><img src="../images/opends_step2.jpg" border="1"/></a>
+		    <br/>OpenDS QuickSetup Server Settings Screen<br/><br/>
+		  </center>
+		  	  
+		  <li>Select <i>This will be a standalone server</i> and click Next.</li>
+		  <center>
+		    <a href="../images/opends_step3.jpg" target="_blank"><img src="../images/opends_step3.jpg" border="1"/></a>
+		    <br/>OpenDS QuickSetup Topoloty Options Screen<br/><br/>
+		  </center>
+		  
+		  <li>Enter <i>Directory Base DN: </i> (example: dc=pdsops,dc=jpl,dc=nasa,dc=gov) and click Next.</li>
+		  <center>
+		    <a href="../images/opends_step4.jpg" target="_blank"><img src="../images/opends_step4.jpg" border="1"/></a>
+		    <br/>OpenDS QuickSetup Data Options Screen<br/><br/>
+		  </center>
+		  
+		  <li>This panel enables you to review your configuration settings and make any necessary adjustments.</li>
+		  <li>Click <i>Finish</i> to complete the configuration after verifying your configuration settings.</li>
+		  <center>
+		    <a href="../images/opends_step5.jpg" target="_blank"><img src="../images/opends_step5.jpg" border="1"/></a>
+		    <br/>OpenDS QuickSetup Review Screen<br/><br/>
+		  </center>
+		  
+		  <li>When the installation is complete, a status message is displayed indicating success or failure.</li>
+		  <li>To view the staus of the server, click the <i>Launch Control Panel</i> button.</li>
+		  <center>
+		    <a href="../images/opends_step6.jpg" target="_blank"><img src="../images/opends_step6.jpg" border="1"/></a>
+		    <br/>OpenDS QuickSetup Progress Screen when Done<br/><br/>
+		  </center>
+		  
+		  </ul>
+		</subsection>
+		
         <subsection name="Configure the LDAP server with SSL using a self-signed certificate">
-
+        <p>Assume that you are running following commands under <i>$OPENDS_HOME/config</i> directory.</p>
         <ol>
           <li>Create a private key for the certificate
           <source>
@@ -78,7 +125,10 @@
 -keystore keystore -storetype JKS             
             </source>
             <p>When you are prompted for the keystore password, enter the same password that you provided in Step 1.
-            </p>
+            </p><br/><br/>
+          </li>
+          <li>Create a text file named <i>keystore.pin</i>.<br/>
+          <p>The file should contain the password that you chose to protect the contents of the keystore.</p><br/><br/>
           </li>
           <li>Export the public key for the certificate.
             <source>
@@ -92,23 +142,23 @@
 -keystore truststore -storetype JKS
             </source>
             <p>Type <code class="codespan">yes</code> when you are prompted about whether you want to trust the certificate.
-            </p>
+            </p><br/><br/>
           </li>   
           <li>Use the <code class="codespan">dsconfig</code> command to enable the key manager provider, trust manager provider, and connection handler.
             <source>
-% dsconfig -h pdsops.jpl.nasa.gov -p 4444 -D "cn=Directory Manager" -w password \
+% $OPENDS_HOME/bin/dsconfig -h pdsops.jpl.nasa.gov -p 4444 -D "cn=Directory Manager" -w password \
  -X -n set-key-manager-provider-prop --provider-name JKS --set enabled:true
 
-% dsconfig -h pdsops.jpl.nasa.gov -p 4444 -D "cn=Directory Manager" -w password \
+% $OPENDS_HOME/bin/dsconfig -h pdsops.jpl.nasa.gov -p 4444 -D "cn=Directory Manager" -w password \
 -X -n set-trust-manager-provider-prop --provider-name "Blind Trust" --set enabled:true
 
-% dsconfig -h pdsops.jpl.nasa.gov -p 4444 -D "cn=Directory Manager" -w password \
+% $OPENDS_HOME/bin/dsconfig -h pdsops.jpl.nasa.gov -p 4444 -D "cn=Directory Manager" -w password \
 -X -n set-connection-handler-prop --handler-name "LDAPS Connection Handler" \
 --set "trust-manager-provider:Blind Trust" --set key-manager-provider:JKS \
 --set listen-port:636 --set enabled:true
             </source>
             <p>Port <code class="codespan">636</code> is the standard LDAPS port, but you might not be able to use it if it is already taken or you are a regular user. If you need to use other port than <code class="codespan">636</code>, then change the <code class="codespan">listen-port</code> property in the last command to the number being used.
-            </p> 
+            </p><br/><br/>
           </li>
           <li>Test the LDAPS connection with the <code class="codespan">ldapsearch</code> command.
             <source>
@@ -252,13 +302,13 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
         <p>This forces a switch from <i>http</i> to <i>https</i>, using the secure protocol. With this configuration, you can create a Tomcat application that will automatically be secured if accessing it at:
         </p>
 
-        <p><code class="codespan">http://localhost:8080/registry-service/registry/extrinsics</code>
+        <p><code class="codespan">http://localhost:8080/registry-service/extrinsics</code>
         </p>
 
         <p>You will be automatically redirected to:
         </p>
 
-        <p><code class="codespan">https://localhost:8443/registry-service/registry/extrinsics</code>
+        <p><code class="codespan">https://localhost:8443/registry-service/extrinsics</code>
         </p>
       </subsection>
     </section>
