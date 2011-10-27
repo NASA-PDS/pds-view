@@ -24,6 +24,36 @@
 		<servlet-name>statusServlet</servlet-name>
 		<servlet-class>gov.nasa.pds.registry.ui.server.StatusServiceImpl</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>serviceServlet</servlet-name>
+		<servlet-class>gov.nasa.pds.registry.ui.server.ServiceBindingServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>packagesServlet</servlet-name>
+		<servlet-class>gov.nasa.pds.registry.ui.server.PackageServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>eventsServlet</servlet-name>
+		<servlet-class>gov.nasa.pds.registry.ui.server.EventsServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>schemesServlet</servlet-name>
+		<servlet-class>gov.nasa.pds.registry.ui.server.SchemesServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>nodesServlet</servlet-name>
+		<servlet-class>gov.nasa.pds.registry.ui.server.ClassificationNodeServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>linksServlet</servlet-name>
+		<servlet-class>gov.nasa.pds.registry.ui.server.LinksServiceImpl</servlet-class>
+	</servlet>
 
 	<servlet>
 		<servlet-name>remoteLoggingService</servlet-name>
@@ -50,6 +80,36 @@
 		<servlet-name>statusServlet</servlet-name>
 		<url-pattern>/registry_ui/status</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping> 
+	    <servlet-name>serviceServlet</servlet-name> 
+	    <url-pattern>/registry_ui/services</url-pattern> 
+    </servlet-mapping>
+    
+    <servlet-mapping> 
+	    <servlet-name>packagesServlet</servlet-name> 
+	    <url-pattern>/registry_ui/packages</url-pattern> 
+    </servlet-mapping>
+    
+    <servlet-mapping> 
+	    <servlet-name>eventsServlet</servlet-name> 
+	    <url-pattern>/registry_ui/events</url-pattern> 
+    </servlet-mapping>
+    
+    <servlet-mapping> 
+	    <servlet-name>schemesServlet</servlet-name> 
+	    <url-pattern>/registry_ui/schemes</url-pattern> 
+    </servlet-mapping>
+    
+    <servlet-mapping> 
+	    <servlet-name>nodesServlet</servlet-name> 
+	    <url-pattern>/registry_ui/nodes</url-pattern> 
+    </servlet-mapping>
+    
+    <servlet-mapping> 
+	    <servlet-name>linksServlet</servlet-name> 
+	    <url-pattern>/registry_ui/links</url-pattern> 
+    </servlet-mapping>
 
 	<!-- Default page to serve -->
 	<welcome-file-list>
