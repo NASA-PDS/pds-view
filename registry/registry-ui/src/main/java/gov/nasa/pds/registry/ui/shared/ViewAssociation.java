@@ -1,3 +1,16 @@
+// Copyright 2009, by the California Institute of Technology.
+// ALL RIGHTS RESERVED. United States Government sponsorship acknowledged.
+// Any commercial use must be negotiated with the Office of Technology Transfer
+// at the California Institute of Technology.
+//
+// This software is subject to U. S. export control laws and regulations 
+// (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+// is subject to U.S. export control laws and regulations, the recipient has 
+// the responsibility to obtain export licenses or other export authority as 
+// may be required before exporting such information to foreign countries or 
+// providing access to foreign nationals.
+//
+// $Id$
 package gov.nasa.pds.registry.ui.shared;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -26,6 +39,10 @@ public class ViewAssociation extends ViewRegistryObject implements
 	 */
 	private String targetGuid;
 
+	private String sourceLid;
+	
+	private String targetLid;
+	
 
 	/**
 	 * Named relation between source and target registry object.
@@ -39,6 +56,14 @@ public class ViewAssociation extends ViewRegistryObject implements
 	public void setSourceGuid(String sourceGuid) {
 		this.sourceGuid = sourceGuid;
 	}
+	
+	public String getSourceLid() {
+		return this.sourceLid;
+	}
+
+	public void setSourceLid(String sourceLid) {
+		this.sourceLid = sourceLid;
+	}
 
 	public String getTargetGuid() {
 		return this.targetGuid;
@@ -48,6 +73,14 @@ public class ViewAssociation extends ViewRegistryObject implements
 		this.targetGuid = targetGuid;
 	}
 
+	public String getTargetLid() {
+		return this.targetLid;
+	}
+	
+	public void setTargetLid(String targetLid) {
+		this.targetLid = targetLid;
+	}
+	 
 	public String getAssociationType() {
 		return this.associationType;
 	}
@@ -55,5 +88,4 @@ public class ViewAssociation extends ViewRegistryObject implements
 	public void setAssociationType(String associationType) {
 		this.associationType = associationType;
 	}
-
 }

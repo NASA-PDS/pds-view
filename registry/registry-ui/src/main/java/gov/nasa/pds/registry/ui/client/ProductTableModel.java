@@ -1,3 +1,16 @@
+// Copyright 2009, by the California Institute of Technology.
+// ALL RIGHTS RESERVED. United States Government sponsorship acknowledged.
+// Any commercial use must be negotiated with the Office of Technology Transfer
+// at the California Institute of Technology.
+//
+// This software is subject to U. S. export control laws and regulations 
+// (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+// is subject to U.S. export control laws and regulations, the recipient has 
+// the responsibility to obtain export licenses or other export authority as 
+// may be required before exporting such information to foreign countries or 
+// providing access to foreign nationals.
+//
+// $Id$ 
 package gov.nasa.pds.registry.ui.client;
 
 import gov.nasa.pds.registry.ui.shared.ViewAssociation;
@@ -8,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.gen2.table.client.MutableTableModel;
 import com.google.gwt.gen2.table.client.TableModelHelper.Request;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
@@ -17,7 +31,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * Table model for products. Determines the behaviors for retrieving data to
  * fill the paging scrolling table.
  * 
- * @author jagander
+ * @author jagander, hyunlee
  */
 public class ProductTableModel extends MutableTableModel<ViewProduct> {
 
@@ -36,18 +50,6 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 	 * A store of filter params as they are not supported in the request object
 	 */
 	private Map<String, String> filters = new HashMap<String, String>();
-
-	// TODO: needed?
-	/*
-	 * // we keep a map so we can index by id private Map<String, ViewProduct>
-	 * map;
-	 * 
-	 * 
-	 * public void setData(ArrayList<ViewProduct> list) { // toss the list,
-	 * index by id in a map. this.map = new HashMap<String,
-	 * ViewProduct>(list.size()); for (ViewProduct m : list) {
-	 * this.map.put(m.getGuid(), m); } }
-	 */
 
 	/**
 	 * Add a filter condition
@@ -83,7 +85,6 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 
 		// if the data service is null, instantiate it
 		if (this.dataService == null) {
-
 			// create a new instance of the class
 			this.dataService = GWT.create(ProductsService.class);
 		}
@@ -97,7 +98,8 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 				new AsyncCallback<SerializableResponse<ViewProduct>>() {
 					@SuppressWarnings("nls")
 					public void onFailure(Throwable caught) {
-						callback.onFailure(new Exception("RPC Failure"));
+						callback.onFailure(new Exception("Products RPC Failure"));
+						Window.alert("Products RPC Failure" + caught.getMessage());
 						System.out.println("RPC Failure");
 					}
 
@@ -124,18 +126,15 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 
 		// if the data service is null, instantiate it
 		if (this.associationService == null) {
-
 			// create a new instance of the class
 			this.associationService = GWT.create(AssociationService.class);
 		}
 
 		// Send RPC request for data, including previously set filters
-		this.associationService
-				.getAssociations(guid, asyncCallback);
+		this.associationService.getAssociations(guid, asyncCallback);
 	}
 
 	// Default behaviors for common table access, add functionality as necessary
-
 	@Override
 	protected boolean onRowInserted(int beforeRow) {
 		return true;
@@ -150,5 +149,4 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 	protected boolean onSetRowValue(int row, ViewProduct rowValue) {
 		return true;
 	}
-
 }

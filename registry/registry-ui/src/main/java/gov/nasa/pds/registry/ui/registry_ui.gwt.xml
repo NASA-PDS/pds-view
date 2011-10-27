@@ -13,12 +13,41 @@
 
   <!-- Other module inherits                                      -->
   <inherits name='com.google.gwt.gen2.table.Table'/>
-
+  
+  <!--  GWT LOGGING -->
+  <!--inherits name='com.google.gwt.logging.Logging'/>
+  <set-property name='gwt.logging.logLevel' value='DEBUG'/>
+  <set-property name='gwt.logging.enabled' value='TRUE'/-->
+  <!--set-property name='gwt.logging.consoleHandler' value='DISABLED'/-->
+  
+  <!-- For development, a default of `DEBUG` is recommended -->
+  <!--inherits name="com.allen_sauer.gwt.log.gwt-log-DEBUG" />
+  <extend-property name="log_level" values="DEBUG,WARN"/-->
+  
+  <!-- In gwt-log-3.0.2 or earlier releases only, use this instead -->
+  <!--set-property name="log_RemoteLogger" value="ENABLED" /-->
+  
+  <!-- 
+    Inspired by Apache log4j PatternLayout:
+    http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html
+  -->
+  <!--set-configuration-property name="log_pattern" value="(%F:%L) %d [%-5p] %m%n" /-->
+  
+  
+  
   <!-- Specify the app entry point class.                         -->
-  <entry-point class='gov.nasa.pds.registry.ui.client.Registry_ui'/>
+  <!--entry-point class='gov.nasa.pds.registry.ui.client.Registry_ui'/-->
+  
+  <entry-point class='gov.nasa.pds.registry.ui.client.RegistryUI'/>
+  
+  <!-- example service servlet -->
+  <!--servlet path="/products" class="gov.nasa.pds.registry.ui.server.ProductsServiceImpl"/>
+  <servlet path="/services" class="gov.nasa.pds.registry.ui.server.ServiceBindingServiceImpl"/-->
 
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
   <source path='shared'/>
 
+  <stylesheet src='RegistryUI.css'/>
+  <!--stylesheet src='ProductList.css'/-->
 </module>

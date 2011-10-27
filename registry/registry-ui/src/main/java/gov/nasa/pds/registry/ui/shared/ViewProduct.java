@@ -1,6 +1,17 @@
+// Copyright 2009, by the California Institute of Technology.
+// ALL RIGHTS RESERVED. United States Government sponsorship acknowledged.
+// Any commercial use must be negotiated with the Office of Technology Transfer
+// at the California Institute of Technology.
+//
+// This software is subject to U. S. export control laws and regulations 
+// (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+// is subject to U.S. export control laws and regulations, the recipient has 
+// the responsibility to obtain export licenses or other export authority as 
+// may be required before exporting such information to foreign countries or 
+// providing access to foreign nationals.
+//
+// $Id$
 package gov.nasa.pds.registry.ui.shared;
-
-import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -11,76 +22,30 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * 
  * @see gov.nasa.pds.registry.model.Product
  * 
- * @author jagander
+ * @author jagander, hyunlee
  */
 public class ViewProduct extends ViewRegistryObject implements IsSerializable {
 
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Source url
-	 * 
-	 * @see gov.nasa.pds.registry.model.RegistryObject#getHome()
-	 */
-	private String home;
-
-	/**
-	 * Globally unique identifier
-	 * 
-	 * @see gov.nasa.pds.registry.model.RegistryObject#getGuid()
-	 */
-	private String guid;
-
-	/**
-	 * Arbitrary name value pairs of properties associated with the product
-	 * 
-	 * @see gov.nasa.pds.registry.model.RegistryObject#getSlots()
-	 */
-	private List<ViewSlot> slots;
-
-	/**
-	 * Get source url for product
-	 */
-	public String getHome() {
-		return this.home;
+	
+	private String contentVersion;
+	
+	private String mimeType;
+	
+	
+	public String getContentVersion() {
+		return this.contentVersion;
 	}
-
-	/**
-	 * Set the home attribute, should only be used when transforming an actual
-	 * Product instance into a ViewProduct or in tests.
-	 */
-	public void setHome(final String home) {
-		this.home = home;
+	
+	public void setContentVersion(String contentVersion) {
+		this.contentVersion = contentVersion;
 	}
-
-	/**
-	 * Get the globally unique identifier
-	 */
-	public String getGuid() {
-		return this.guid;
+	
+	public String getMimeType() {
+		return this.mimeType;
 	}
-
-	/**
-	 * Set the globally unique identifier, should only be used when transforming
-	 * an actual Product instance into a ViewProduct or in tests.
-	 */
-	public void setGuid(final String guid) {
-		this.guid = guid;
+	
+	public void setMimeType(String mimeType) {
+		this.mimeType = mimeType;
 	}
-
-	/**
-	 * Get the arbitrary property name value pairs
-	 */
-	public List<ViewSlot> getSlots() {
-		return this.slots;
-	}
-
-	/**
-	 * Set the arbitrary property name value pairs, should only be used when
-	 * transforming an actual Product instance into a ViewProduct or in tests.
-	 */
-	public void setSlots(final List<ViewSlot> slots) {
-		this.slots = slots;
-	}
-
 }
