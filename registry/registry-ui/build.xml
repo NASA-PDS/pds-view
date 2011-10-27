@@ -6,7 +6,7 @@
   <property name="war.dir" value="${basedir}/war" />
   <property name="target.dir" value="${basedir}/target" />
   <property name="war.path" value="${dist.dir}/registry-ui.war" />
-  <property name="service.endpoint" value="http://localhost:8080/registry-service/" />
+  <property name="service.endpoint" value="http://localhost:8080/registry/" />
 
   <target name="update-endpoint">
     <echo>Writing endpoint location as ${service.endpoint}, use -Dservice.endpoint=... to overwrite.</echo>
