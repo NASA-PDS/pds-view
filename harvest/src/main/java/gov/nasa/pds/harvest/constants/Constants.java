@@ -71,6 +71,15 @@ public class Constants {
   /** The creation datetime of a file. */
   public static final String CREATION_DATE_TIME = "creation_date_time";
 
+  /** The access urls to get the registered product. */
+  public static final String ACCESS_URLS = "accessUrls";
+
+  /** The product identifier associated to a product registered with the
+   *  PDS Storage Service.
+   */
+  public static final String STORAGE_SERVICE_PRODUCT_ID =
+    "storageServiceProductId";
+
   /** Holds the XPaths to the expected metadata in a product label. */
   public static final HashMap<String, String> coreXpathsMap =
     new HashMap<String, String>();

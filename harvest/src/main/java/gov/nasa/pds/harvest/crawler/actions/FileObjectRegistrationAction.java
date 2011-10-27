@@ -60,6 +60,9 @@ public class FileObjectRegistrationAction extends CrawlerAction {
   /** The registry client. */
   private RegistryIngester registryIngester;
 
+  /** A list of actions to perform before file object registration. */
+  private List<CrawlerAction> actions;
+
   /**
    * Constructor.
    *
@@ -76,6 +79,7 @@ public class FileObjectRegistrationAction extends CrawlerAction {
       setDescription(DESCRIPTION);
       this.registryUrl = registryUrl;
       this.registryIngester = ingester;
+      this.actions = new ArrayList<CrawlerAction>();
   }
 
   /**
@@ -99,6 +103,21 @@ public class FileObjectRegistrationAction extends CrawlerAction {
       String vid = metadata.getMetadata(Constants.PRODUCT_VERSION);
       String lidvid = lid + "::" + vid;
       try {
+        // Perform a set of actions before ingesting the file object
+        for (CrawlerAction action : actions) {
+          if (action instanceof StorageIngestAction) {
+            StorageIngestAction siAction =
+              (StorageIngestAction) action;
+            String productId = siAction.performAction(product, fileObject,
+                metadata);
+            fileObject.setStorageServiceProductId(productId);
+          } else if (action instanceof CreateAccessUrlsAction) {
+            CreateAccessUrlsAction cauAction = (CreateAccessUrlsAction) action;
+            List<String> urls = cauAction.performAction(product, fileObject,
+                metadata);
+            fileObject.setAccessUrls(urls);
+          }
+        }
         String guid = registryIngester.ingest(new URL(registryUrl), product,
             fileObject, metadata);
         log.log(new ToolsLogRecord(ToolsLevel.INGEST_SUCCESS,
@@ -132,4 +151,15 @@ public class FileObjectRegistrationAction extends CrawlerAction {
     }
     return true;
   }
+
+  /**
+   * Sets a list of crawler actions to perform before file object
+   * registration.
+   *
+   * @param actions A list of crawler actions.
+   */
+  public void setActions(List<CrawlerAction> actions) {
+    this.actions = actions;
+  }
+
 }

@@ -14,6 +14,9 @@
 
 package gov.nasa.pds.harvest.file;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class that contains file information to be used in registering file objects
  * to the PDS4 Registry.
@@ -37,6 +40,12 @@ public class FileObject {
   /** md5 checksum. */
   private String checksum;
 
+  /** The product identifier when registered to the PDS Storage Service. */
+  private String storageServiceProductId;
+
+  /** Access urls to the file object. */
+  private List<String> accessUrls;
+
   /**
    * Constructor.
    *
@@ -53,6 +62,8 @@ public class FileObject {
     this.size = size;
     this.creationDateTime = creationDateTime;
     this.checksum = checksum;
+    this.storageServiceProductId = null;
+    this.accessUrls = new ArrayList<String>();
   }
 
   public String getName() {return name;}
@@ -64,4 +75,20 @@ public class FileObject {
   public String getCreationDateTime() {return creationDateTime;}
 
   public String getChecksum() {return checksum;}
+
+  public void setStorageServiceProductId(String productId) {
+    this.storageServiceProductId = productId;
+  }
+
+  public String getStorageServiceProductId() {
+    return storageServiceProductId;
+  }
+
+  public void setAccessUrls(List<String> accessUrls) {
+    this.accessUrls = accessUrls;
+  }
+
+  public List<String> getAccessUrls() {
+    return accessUrls;
+  }
 }

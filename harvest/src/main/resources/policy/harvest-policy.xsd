@@ -30,6 +30,9 @@
 <xsd:element name="referenceType" type="xsd:string"/>
 <xsd:element name="elementName" type="xsd:string"/>
 <xsd:element name="modelVersion" type="xsd:string"/>
+<xsd:element name="baseUrl" type="xsd:string"/>
+<xsd:element name="serverUrl" type="xsd:string"/>
+<xsd:element name="dataTransferType" type="xsd:string"/>
 
 <xsd:attribute name="objectType" type="xsd:string"/>
 <xsd:attribute name="prefix" type="xsd:string"/>
@@ -140,6 +143,21 @@
    </xsd:sequence>
 </xsd:complexType>
 
+<xsd:element name="storageIngestion" type="StorageIngestion"/>
+<xsd:complexType name="StorageIngestion">
+   <xsd:sequence>
+      <xsd:element ref="serverUrl"/>
+      <xsd:element ref="dataTransferType" minOccurs="0"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+<xsd:element name="accessUrls" type="AccessUrl"/>
+<xsd:complexType name="AccessUrl">
+   <xsd:sequence>
+      <xsd:element ref="baseUrl" maxOccurs="unbounded"/>
+   </xsd:sequence>
+</xsd:complexType>
+
 <xsd:element name="policy">
   <xsd:complexType>
      <xsd:all>
@@ -148,6 +166,8 @@
         <xsd:element ref="directories" minOccurs="0"/>
         <xsd:element ref="pds3Directory" minOccurs="0"/>
         <xsd:element ref="validation" minOccurs="0"/>
+        <xsd:element ref="storageIngestion" minOccurs="0"/>
+        <xsd:element ref="accessUrls" minOccurs="0"/>
         <xsd:element ref="candidates"/>
      </xsd:all>
   </xsd:complexType>

@@ -56,6 +56,11 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.ParseException;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.PatternLayout;
+import org.apache.log4j.Priority;
+import org.apache.oodt.cas.filemgr.structs.exceptions.ConnectionException;
 
 /**
  * Wrapper class of the Harvest tool that handles the command-line processing.
@@ -306,10 +311,11 @@ public class HarvestLauncher {
    * is invalid.
    * @throws RegistryClientException If an error occurred while setting
    * up the Harvester with the PDS Security Service.
+   * @throws ConnectionException
    */
   private void doHarvesting(final Policy policy)
   throws MalformedURLException, ParserConfigurationException,
-  RegistryClientException {
+  RegistryClientException, ConnectionException {
     log.log(new ToolsLogRecord(ToolsLevel.INFO, "XML extractor set to the "
         + "following default namespace: "
         + XMLExtractor.getDefaultNamespace()));
@@ -383,6 +389,10 @@ public class HarvestLauncher {
    * @param args Command-line arguments.
    */
   private void processMain(String []args) {
+    //This removes the log4j warnings
+    ConsoleAppender ca = new ConsoleAppender(new PatternLayout("%-5p %m%n"));
+    ca.setThreshold(Priority.FATAL);
+    BasicConfigurator.configure(ca);
     if (args.length == 0) {
       System.out.println("\nType 'Harvest -h' for usage");
       System.exit(0);

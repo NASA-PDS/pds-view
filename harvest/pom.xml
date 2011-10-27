@@ -365,6 +365,12 @@
       <version>3.2.0</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.oodt</groupId>
+      <artifactId>cas-filemgr</artifactId>
+      <version>0.3</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <!-- Project Information and Reports inherited from parent. -->

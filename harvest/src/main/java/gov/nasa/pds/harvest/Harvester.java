@@ -21,7 +21,9 @@ import gov.nasa.pds.harvest.crawler.BundleCrawler;
 import gov.nasa.pds.harvest.crawler.CollectionCrawler;
 import gov.nasa.pds.harvest.crawler.PDS3ProductCrawler;
 import gov.nasa.pds.harvest.crawler.PDSProductCrawler;
+import gov.nasa.pds.harvest.crawler.actions.CreateAccessUrlsAction;
 import gov.nasa.pds.harvest.crawler.actions.FileObjectRegistrationAction;
+import gov.nasa.pds.harvest.crawler.actions.StorageIngestAction;
 import gov.nasa.pds.harvest.crawler.actions.SaveMetadataAction;
 import gov.nasa.pds.harvest.crawler.actions.ValidateProductAction;
 import gov.nasa.pds.harvest.crawler.daemon.HarvestDaemon;
@@ -35,9 +37,12 @@ import gov.nasa.pds.tools.util.VersionInfo;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+
+import org.apache.oodt.cas.filemgr.structs.exceptions.ConnectionException;
 
 /**
  * Front end class to the Harvest tool.
@@ -145,14 +150,32 @@ public class Harvester {
    * Get the default crawler actions.
    *
    * @return A list of default crawler actions.
+   * @throws ConnectionException
+   * @throws MalformedURLException
    * @throws RegistryClientException
    */
-  private List<CrawlerAction> getDefaultCrawlerActions() {
+  private List<CrawlerAction> getDefaultCrawlerActions(Policy policy)
+  throws MalformedURLException, ConnectionException {
     List<CrawlerAction> ca = new ArrayList<CrawlerAction>();
+    List<CrawlerAction> fileObjectRegistrationActions =
+      new ArrayList<CrawlerAction>();
     ca.add(fileObjectRegistrationAction);
     if (doValidation) {
       ca.add(new ValidateProductAction(modelVersion));
     }
+    if (policy.getStorageIngestion() != null) {
+      CrawlerAction fmAction = new StorageIngestAction(
+          new URL(policy.getStorageIngestion().getServerUrl()));
+      ca.add(fmAction);
+      fileObjectRegistrationActions.add(fmAction);
+    }
+    if (!policy.getAccessUrls().getBaseUrl().isEmpty()) {
+      CrawlerAction cauAction = new CreateAccessUrlsAction(
+          policy.getAccessUrls().getBaseUrl());
+      ca.add(cauAction);
+      fileObjectRegistrationActions.add(cauAction);
+    }
+    fileObjectRegistrationAction.setActions(fileObjectRegistrationActions);
     //This is the last action that should be performed.
     ca.add(new SaveMetadataAction());
     return ca;
@@ -165,8 +188,10 @@ public class Harvester {
    *  specifies what to harvest.
    *
    * @throws MalformedURLException If the registry url is malformed.
+   * @throws ConnectionException
    */
-  public void harvest(Policy policy) throws MalformedURLException {
+  public void harvest(Policy policy) throws MalformedURLException,
+  ConnectionException {
     boolean doCrawlerPersistance = false;
     if (waitInterval != -1 && daemonPort != -1) {
       doCrawlerPersistance = true;
@@ -203,8 +228,10 @@ public class Harvester {
     // Crawl a PDS3 directory
     if (policy.getPds3Directory().getPath() != null) {
       PDS3ProductCrawler p3c = new PDS3ProductCrawler();
-      p3c.setPDS3MetExtractorConfig(new Pds3MetExtractorConfig(
-          policy.getCandidates().getPds3ProductMetadata()));
+      Pds3MetExtractorConfig pds3MetExtractorConfig =
+        new Pds3MetExtractorConfig(policy.getCandidates()
+            .getPds3ProductMetadata());
+      p3c.setPDS3MetExtractorConfig(pds3MetExtractorConfig);
       p3c.setProductPath(policy.getPds3Directory().getPath());
       List<String> filters = policy.getPds3Directory().getFilePattern();
       if (!filters.isEmpty()) {
@@ -222,7 +249,7 @@ public class Harvester {
       }
       crawler.setRegistryUrl(registryUrl);
       crawler.setIngester(ingester);
-      crawler.addActions(getDefaultCrawlerActions());
+      crawler.addActions(getDefaultCrawlerActions(policy));
       if (!doCrawlerPersistance) {
         crawler.crawl();
       }
