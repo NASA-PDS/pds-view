@@ -173,12 +173,12 @@
       <version>9</version>
       <scope>compile</scope>
     </dependency>
-   <dependency>
+   <!-- dependency>
      <artifactId>pds-search</artifactId>
      <groupId>gov.nasa.pds.search-tools</groupId>
      <version>1.0.0</version>
      <type>jar</type>
-   </dependency>
+   </dependency-->
    <dependency>
       <artifactId>search-core</artifactId>
       <groupId>gov.nasa.pds.2010.search</groupId>

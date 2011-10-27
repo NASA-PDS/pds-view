@@ -1401,7 +1401,7 @@
   </queryResponseWriter -->
   
   <!-- Previous solr configuration -->
-  <queryResponseWriter name="xslt" class="gov.nasa.pds.solr.XSLTResponseWriter">
+  <queryResponseWriter name="xslt" class="gov.nasa.pds.search.XSLTResponseWriter">
     <int name="xsltCacheLifetimeSeconds">5</int>
   </queryResponseWriter>
 

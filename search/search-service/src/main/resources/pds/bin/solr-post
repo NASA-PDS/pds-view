@@ -1,13 +1,14 @@
 #!/bin/bash
 
-SOLR_HOME=$SOLR_HOME/pds
+SOLR_HOME=$SOLR_HOME
+
 POST_HOME=$HOME/dev/workspace/search-tools-workspace/apache-solr-3.4.0/example/exampledocs/
 
 cd $SOLR_HOME
 pwd
 
-./bin/xslt hierarchy/solr_index.xml hierarchy/add-hierarchy.xslt hierarchy/solr-index.hierarchy.xml
-./bin/xslt hierarchy/search-tools.xml hierarchy/add-hierarchy.xslt hierarchy/search-tools.hierarchy.xml
+./bin/xslt index/solr_index.xml index/add-hierarchy.xslt index/solr-index.hierarchy.xml
+./bin/xslt index/search-tools.xml index/add-hierarchy.xslt index/search-tools.hierarchy.xml
 
 #SOLR_UPDATE="http://127.0.0.1/tools/data-search/QwJsb3NKu3fJ/update/"
 SOLR_UPDATE="http://localhost:8983/QwJsb3NKu3fJ/update/"
@@ -29,10 +30,10 @@ fi
 java -Ddata=args -Dcommit=no -jar $POST_HOME/post.jar "<delete><query>*:*</query></delete>"
 
 # Push new index data
-#curl "$SOLR_UPDATE" -H "Content-Type: text/xml" --silent --request POST --data-binary @hierarchy/solr-index.hierarchy.xml
-#curl "$SOLR_UPDATE" -H "Content-Type: text/xml" --silent --request POST --data-binary @hierarchy/search-tools.hierarchy.xml
-java -Dcommit=no -jar $POST_HOME/post.jar $SOLR_HOME/hierarchy/solr-index.hierarchy.xml
-java -Dcommit=no -jar $POST_HOME/post.jar $SOLR_HOME/hierarchy/search-tools.hierarchy.xml
+#curl "$SOLR_UPDATE" -H "Content-Type: text/xml" --silent --request POST --data-binary @index/solr-index.hierarchy.xml
+#curl "$SOLR_UPDATE" -H "Content-Type: text/xml" --silent --request POST --data-binary @index/search-tools.hierarchy.xml
+java -Dcommit=no -jar $POST_HOME/post.jar $SOLR_HOME/index/solr-index.hierarchy.xml
+java -Dcommit=no -jar $POST_HOME/post.jar $SOLR_HOME/index/search-tools.hierarchy.xml
 
 
 # Commit the changes
