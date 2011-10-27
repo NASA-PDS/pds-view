@@ -45,7 +45,6 @@ public class ColumnNodes {
 					.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
-			//doc = docBuilder.parse(new File(TseConstants.CONF_BASE + "/" + filename));
 			doc = docBuilder.parse(CatalogExtractor.class.getResourceAsStream(filename));
 
 			// normalize text representation
@@ -109,7 +108,7 @@ public class ColumnNodes {
 
 	/**
 	 * Used under old search tools and database back end. See getResponse() for
-	 * use with Registry;
+	 * use with Registry Service
 	 * 
 	 * @return
 	 */

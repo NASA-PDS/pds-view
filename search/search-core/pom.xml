@@ -166,14 +166,14 @@
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
-    <!--dependency>
+    <dependency>
       <artifactId>solr-solrj</artifactId>
       <groupId>org.apache.solr</groupId>
       <version>3.4.0</version>
       <type>jar</type>
       <scope>compile</scope>
-    </dependency-->
-    <dependency>
+    </dependency>
+    <!-- dependency>
       <groupId>lucene</groupId>
       <artifactId>lucene</artifactId>
       <version>1.4.3</version>
@@ -184,7 +184,7 @@
       <artifactId>commons-io</artifactId>
       <version>1.2</version>
       <scope>compile</scope>
-    </dependency>
+    </dependency-->
     <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>saxon-dom</artifactId>

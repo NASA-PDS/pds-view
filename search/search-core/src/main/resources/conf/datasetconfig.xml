@@ -185,7 +185,7 @@
   <column>
     <name>resource_id</name>
     <type>association</type>
-    <value>has_resource.logical_identifier</value>
+    <value>has_resource.lid</value>
   </column>
   <column>
     <name>data_set_desc</name>

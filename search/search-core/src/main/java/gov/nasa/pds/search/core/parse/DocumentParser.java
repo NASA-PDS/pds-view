@@ -80,6 +80,7 @@ public class DocumentParser {
 		String resClass = "";
 		boolean invalidDoc = false;
 		indexDoc.append("<doc>\n");
+		
 		// The name of the cataloged item should be the child at position
 		if (children.getLength() > 1) {
 			Node catalogItem = children.item(1);
@@ -91,9 +92,11 @@ public class DocumentParser {
 				Node child = children.item(i);
 				if (child.getNodeType() != Node.TEXT_NODE) {
 					String name = child.getLocalName();
-					LOG.info("name: " + name);
 					String value = child.getFirstChild().getNodeValue();
-					LOG.info("value: " + value);
+					
+					LOG.fine("name: " + name);
+					LOG.fine("value: " + value);
+					
 					if ("title".equals(name)
 							&& ("N/A".equals(value.toUpperCase())
 									|| "UNK".equals(value.toUpperCase()) || "NULL"
@@ -105,13 +108,21 @@ public class DocumentParser {
 							&& !"UNK".equals(value.toUpperCase())
 							&& !"NULL".equals(value.toUpperCase())) {
 						if (!"resClass".equals(name)) {
-							if (name.endsWith("date")) {
-								if (value.length() == 4)
-									value += "-01";
-								if (value.length() == 7)
-									value += "-01";
-								if (value.length() == 10)
+							if (name.endsWith("date") || name.endsWith("time")) {
+								value = value.toUpperCase();
+								if (value.length() < 4 || !value.matches(".*[0-9].*"))
+									value = "3000-01-01T00:00:00Z";
+								else if (value.length() == 4)
+									value += "-01-01T00:00:00Z";
+								else if (value.length() == 7)
+									value += "-01T00:00:00Z";
+								else if (value.length() == 10)
 									value += "T00:00:00Z";
+								else if (value.length() == 16)
+									value += ":00Z";
+								else
+									value += "Z";
+								
 								indexDoc.append("<field name=\"" + name + "\">"
 										+ value + "</field>\n");
 							} else if (name.endsWith("time")) {

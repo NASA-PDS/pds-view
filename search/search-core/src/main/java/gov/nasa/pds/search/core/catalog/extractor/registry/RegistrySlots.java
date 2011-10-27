@@ -1,7 +1,10 @@
 package gov.nasa.pds.search.core.catalog.extractor.registry;
 
+import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.Slot;
+import gov.nasa.pds.search.core.catalog.TseConstants;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -14,15 +17,24 @@ public class RegistrySlots {
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
 	private Map<String, List<String>> slotMap;
+	private ExtrinsicObject extObj;
+	private boolean missingSlots;
+	private List<String> missingSlotList;
 
 	public RegistrySlots() {
-		slotMap = new HashMap<String, List<String>>();
+		this.extObj = null;
+		this.slotMap = new HashMap<String, List<String>>();
+		this.missingSlotList = new ArrayList<String>();
+		this.missingSlots = false;
 	}
 
-	public RegistrySlots(Set<Slot> initSlots) {
-		slotMap = new HashMap<String, List<String>>();
-
-		setSlotMap(initSlots);
+	public RegistrySlots(ExtrinsicObject extObj) {
+		this.slotMap = new HashMap<String, List<String>>();
+		this.extObj = extObj; 
+		this.missingSlotList = new ArrayList<String>();
+		this.missingSlots = false;
+		
+		setSlotMap(extObj.getSlots());
 	}
 
 	public void setSlotMap(Set<Slot> slotSet) {
@@ -36,11 +48,27 @@ public class RegistrySlots {
 	}
 
 	public List<String> get(String key) {
-		if (this.slotMap.containsKey(key.trim())) {
+		if (key.equals(TseConstants.LOGICAL_IDENTIFIER)) {
+			return Arrays.asList(this.extObj.getLid());
+		} if (this.slotMap.containsKey(key.trim())) {
 			return this.slotMap.get(key.trim());
 		} else {
-			this.LOG.warning("Key not found : " + key);
+			//this.LOG.warning("Key not found : " + key);
+			this.missingSlotList.add(key);
+			this.missingSlots = true;
 			return Arrays.asList("UNK");
 		}
+	}
+	
+	public boolean isMissingSlots() {
+		return this.missingSlots;
+	}
+	
+	public String getObjectType() {
+		return this.extObj.getObjectType();
+	}
+	
+	public List<String> getMissingSlotList() {
+		return this.missingSlotList;
 	}
 }

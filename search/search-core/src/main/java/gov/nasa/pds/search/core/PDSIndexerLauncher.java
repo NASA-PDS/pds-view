@@ -48,7 +48,7 @@ public class PDSIndexerLauncher {
 	
 	private void runSolrIndexer() throws IOException {
 		this.LOG.info("\nRunning Solr Indexer to create new SOLR_INDEX.XML ...\n");
-		String[] args = { this.solrHome+"/pds", this.solrHome+"/tse/extract" };
+		String[] args = { this.solrHome+"/index", this.solrHome+"/tse/extract" };
 		SolrIndexer.main(args);
 	}
 	

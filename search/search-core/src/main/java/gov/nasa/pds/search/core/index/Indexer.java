@@ -12,13 +12,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.store.SimpleFSDirectory;
+import org.apache.lucene.util.Version;
 
 /**
  * This class creates a lucene index for text search.
@@ -28,6 +32,8 @@ import org.apache.lucene.index.IndexWriter;
  * 
  */
 public class Indexer {
+	private static Logger LOG = Logger.getLogger(ProfileParser.class.getName());
+	
 	public static void main(String[] args) throws IOException {
 		String usage = "java " + Indexer.class
 				+ " <index_directory> <crawl_directory> [weights_file]";
@@ -38,8 +44,11 @@ public class Indexer {
 
 		Date start = new Date();
 		try {
-			IndexWriter writer = new IndexWriter(new File(args[0],
-					"catalog_index"), new StandardAnalyzer(), true);
+			//IndexWriter writer = new IndexWriter(new File(args[0],
+			//		"catalog_index"), new StandardAnalyzer(), true);
+			IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_34, new StandardAnalyzer(Version.LUCENE_34));
+			IndexWriter writer = new IndexWriter(new SimpleFSDirectory(new File(args[0], 
+					"catalog_index")), config);
 			Properties weights = new Properties();
 
 			if (args.length == 3)
@@ -86,22 +95,23 @@ public class Indexer {
 					}
 				}
 			} else {
-				System.out.println("adding " + file);
+				System.out.println("Parsing " + file);
 				Document doc = ProfileParser.parse(file);
 
 				// Set document weight
-				Field resClass = doc.getField("resClass");
+				//Field resClass = doc.getField("resClass");
+				Field resClass = (Field) doc.getFieldable("resClass");
 				doc.setBoost(Float.parseFloat(weights.getProperty("document."
 						+ resClass.stringValue(), "1.0")));
 
 				// Set field weights
-				for (Enumeration e = doc.fields(); e.hasMoreElements();) {
-					Field field = (Field) e.nextElement();
+				//for (Enumeration e = doc.fields(); e.hasMoreElements();) {
+					//Field field = (Field) e.nextElement();
+				for (Fieldable field : doc.getFields()) {
 					float weight = Float.parseFloat(weights.getProperty(
 							"field." + field.name(), "1.0"));
 					field.setBoost(weight);
 				}
-
 				writer.addDocument(doc);
 			}
 		}

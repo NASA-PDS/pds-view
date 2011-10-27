@@ -96,7 +96,7 @@ public class CatalogExtractor {
 			throw new ExtractionException("Could not create run log");
 		}
 
-		LOG.info("Beginning extraction");
+		this.LOG.info("Beginning extraction");
 		List uids = null;
 		long totalTime = 0;
 		int totalCount = 0;
@@ -192,10 +192,6 @@ public class CatalogExtractor {
 			outDir = args[0];
 		}
 		
-		//else
-		//	System.err.println("Error: Need to specify ";
-		// base = System.getProperty("user.home") + "/dev/workspace/tse";
-		// base = System.getProperty("user.home") + "/tse";
 		CatalogExtractor extractor = new CatalogExtractor(confHome, outDir);
 		extractor.run();
 	}
