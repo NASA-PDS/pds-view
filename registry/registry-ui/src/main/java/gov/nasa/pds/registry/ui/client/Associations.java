@@ -92,11 +92,6 @@ public class Associations extends Tab {
 		};
 	}
 	
-	/**
-	 * Default number of records to fetch 
-	 */
-	public final int FETCH_ROW_SIZE = 100;
-	
 	private VerticalPanel panel = new VerticalPanel();	
 	private VerticalPanel scrollPanel = new VerticalPanel();
 	private VerticalPanel associationVPanel = new VerticalPanel();
@@ -107,6 +102,8 @@ public class Associations extends Tab {
 	protected ScrollTable srcScrollTable, targScrollTable;
 
 	protected ViewProducts srcProducts, targetProducts;
+	
+	private int recordCount;
 	
 	protected HTML recordCountContainer = new HTML("");
 	protected final HTML srcPlaceholder = new HTML("Loading a source product...");
@@ -170,6 +167,14 @@ public class Associations extends Tab {
 	 */
 	public PagingScrollTable<ViewAssociation> getPagingScrollTable() {
 		return this.pagingScrollTable;
+	}
+	
+	private void setRecordCount(int count) {
+		this.recordCount = count;
+	}
+	
+	private int getRecordCount() {
+		return this.recordCount;
 	}
 	
 	public Associations() {
@@ -546,7 +551,7 @@ public class Associations extends Tab {
 
 				// create grid for data, there are 8 fixed fields and fields for
 				// each slot
-				Grid detailTable = new Grid(16, 2);
+				Grid detailTable = new Grid(9+association.getSlots().size()+2, 2);
 
 				// set each field label and the values
 				int row = 0;
@@ -906,7 +911,7 @@ public class Associations extends Tab {
 
 				// HACK: row count of zero causes cache check to fail and table
 				// not be updated
-				get().tableModel.setRowCount(FETCH_ROW_SIZE);
+				get().tableModel.setRowCount(RegistryUI.FETCH_ROW_SIZE);
 
 				// go back to first page and force update
 				get().getPagingScrollTable().gotoPage(0, true);
@@ -921,7 +926,7 @@ public class Associations extends Tab {
 				assocTypeInput.setSelectedIndex(0);
 				
 				get().getTableModel().clearFilters();
-				//get().getTableModel().setRowCount(RegistryUI.FETCH_ROW_SIZE);
+				get().getTableModel().setRowCount(getRecordCount());
 
 				// go back to first page and force update
 				get().getPagingScrollTable().gotoPage(0, true);
@@ -1081,6 +1086,7 @@ public class Associations extends Tab {
 	protected void onModuleLoaded() {
 		// set page to first page, triggering call for data
 		this.pagingScrollTable.gotoFirstPage();
+		setRecordCount(get().pagingScrollTable.getTableModel().getRowCount());
 	}
 	
 	protected void getProducts(String guid, final boolean srcFlag) {

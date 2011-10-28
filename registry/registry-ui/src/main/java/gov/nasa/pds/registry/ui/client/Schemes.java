@@ -234,7 +234,7 @@ public class Schemes extends Tab {
 
         // add title to scroll table
         this.scrollPanel.add(new HTML(
-                "<div class=\"title\">Schemes Registry</div>"));
+                "<div class=\"title\">Scheme Registry</div>"));
 
         // add record count container
         this.layout.setWidget(3, 0, this.recordCountContainer);

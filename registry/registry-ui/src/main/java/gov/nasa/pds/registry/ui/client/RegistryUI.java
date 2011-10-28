@@ -16,6 +16,7 @@ package gov.nasa.pds.registry.ui.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.ui.HTML;
@@ -60,7 +61,7 @@ public class RegistryUI implements EntryPoint, HistoryListener {
 	public static Label lbl = new Label();
 	
 	public final static String TABLE_HEIGHT = "848px";
-	
+		
 	/**
 	 * Default number of records for each page
 	 */

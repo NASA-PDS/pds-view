@@ -14,7 +14,6 @@
 package gov.nasa.pds.registry.ui.client;
 
 import gov.nasa.pds.registry.ui.client.Tab.TabInfo;
-//import gov.nasa.pds.registry.ui.client.ResizePanel;
 
 import gov.nasa.pds.registry.ui.shared.InputContainer;
 import gov.nasa.pds.registry.ui.shared.ViewAssociation;
@@ -57,7 +56,6 @@ import com.google.gwt.gen2.table.override.client.FlexTable;
 import com.google.gwt.gen2.table.override.client.FlexTable.FlexCellFormatter;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -110,7 +108,7 @@ public class Products extends Tab {
 		return instance;
 	}
 	
-	/**
+	/*
 	 * The main layout panel. All view components should be children of this.
 	 */
 	private VerticalPanel panel = new VerticalPanel();  // main panel
@@ -150,6 +148,8 @@ public class Products extends Tab {
 	protected Button associationCloseButton;
 
 	protected HTML recordCountContainer = new HTML("");
+	
+	private int recordCount;
 
 	/**
 	 * The {@link CachedTableModel} around the main table model.
@@ -244,13 +244,21 @@ public class Products extends Tab {
 	protected void setTempAssociations(List<ViewAssociation> tempAssociations) {
 		this.tempAssociations = tempAssociations;
 	}
+	
+	private void setRecordCount(int count) {
+		this.recordCount = count;
+	}
+	
+	private int getRecordCount() {
+		return this.recordCount;
+	}
 
 	public Products() {
 		// assign instance for exterior retrieval
 		instance = this;	
-		//panel.setSpacing(10);
 		panel.setWidth("100%");
 		initWidget(panel);	
+		
 		// Initialize and add the main layout to the page
 		this.initLayout();
 
@@ -281,6 +289,7 @@ public class Products extends Tab {
 				get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE);
 			}
 		});
+	
 		onModuleLoaded();
 	}
 
@@ -484,15 +493,6 @@ public class Products extends Tab {
 		InputContainer nameInputWrap = new InputContainer("Name", nameInput);
 		inputTable.add(nameInputWrap);
 
-		/*
-		// create dropdown input for submitter
-		final TextBox submitterInput = new TextBox();
-		submitterInput.setName("submitter");
-		InputContainer submitterInputWrap = new InputContainer("Submitter",
-				submitterInput);
-		inputTable.add(submitterInputWrap);
-		*/
-
 		// create dropdown input for object type
 		// TODO: list should be exhaustive, get from enum or build process?
 		final ListBox objectsInput = new ListBox(false);
@@ -618,13 +618,7 @@ public class Products extends Tab {
 				if (!name.equals("")) {
 					tablemodel.addFilter("name", name);
 				}
-/*
-				// submitter
-				String submitter = submitterInput.getValue();
-				if (!submitter.equals("")) {
-					tablemodel.addFilter("submitter", submitter);
-				}
-*/
+
 				// object type
 				String objectType = objectsInput.getValue(objectsInput
 						.getSelectedIndex());
@@ -660,8 +654,8 @@ public class Products extends Tab {
 				statusInput.setSelectedIndex(0);
 				
 				get().getTableModel().clearFilters();
-				//get().getTableModel().setRowCount(RegistryUI.FETCH_ROW_SIZE);
-
+				get().getTableModel().setRowCount(getRecordCount());
+				
 				// go back to first page and force update
 				get().getPagingScrollTable().gotoPage(0, true);
 			}
@@ -934,8 +928,7 @@ public class Products extends Tab {
 							return;
 						}
 
-						// since only one row can be selected, just get the
-						// first one
+						// since only one row can be selected, just get the first one
 						int rowIndex = selected.iterator().next().getRowIndex();
 
 						// get the product instance associated with that row
@@ -1027,6 +1020,7 @@ public class Products extends Tab {
 		// set page to first page, triggering call for data
 		//this.cachedTableModel.clearCache();
 		this.pagingScrollTable.gotoFirstPage();
+		setRecordCount(get().pagingScrollTable.getTableModel().getRowCount());
 	}
 
 	/**

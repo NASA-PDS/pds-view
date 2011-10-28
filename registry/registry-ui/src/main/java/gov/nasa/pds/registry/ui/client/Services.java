@@ -215,7 +215,7 @@ public class Services extends Tab {
 
         // add title to scroll table
         this.scrollPanel.add(new HTML(
-                "<div class=\"title\">Services Registry</div>"));
+                "<div class=\"title\">Service Registry</div>"));
 
         // add record count container
         this.layout.setWidget(3, 0, this.recordCountContainer);

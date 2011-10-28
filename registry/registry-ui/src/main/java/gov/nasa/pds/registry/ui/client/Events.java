@@ -135,6 +135,8 @@ public class Events extends Tab {
 	protected Button closeButton;
 
 	protected HTML recordCountContainer = new HTML("");
+	
+	private int recordCount;
 
 	/**
 	 * The {@link CachedTableModel} around the main table model.
@@ -220,6 +222,14 @@ public class Events extends Tab {
 
 	protected FlexTable getLayout() {
 		return this.layout;
+	}
+	
+	private void setRecordCount(int count) {
+		this.recordCount = count;
+	}
+	
+	private int getRecordCount() {
+		return this.recordCount;
 	}
 	
 	public Events() {
@@ -496,7 +506,7 @@ public class Events extends Tab {
 				requestIdInput.setText("");
 				
 				get().getTableModel().clearFilters();
-				//get().getTableModel().setRowCount(RegistryUI.FETCH_ROW_SIZE);
+				get().getTableModel().setRowCount(getRecordCount());
 
 				// go back to first page and force update
 				get().getPagingScrollTable().gotoPage(0, true);
@@ -577,7 +587,7 @@ public class Events extends Tab {
 				
 				// create grid for data, there are 7 fixed fields and fields for
 				// each slot
-				Grid detailTable = new Grid(7 + product.getSlots().size() + 10, 2);
+				Grid detailTable = new Grid(7 + product.getSlots().size() + 8, 2);
 
 				// set each field label and the values
 				// name
@@ -713,6 +723,7 @@ public class Events extends Tab {
 	protected void onModuleLoaded() {
 		// set page to first page, triggering call for data
 		this.pagingScrollTable.gotoFirstPage();
+		setRecordCount(get().pagingScrollTable.getTableModel().getRowCount());
 	}
 
 	/**

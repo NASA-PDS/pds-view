@@ -212,7 +212,7 @@ public class Packages extends Tab {
 
         // add title to scroll table
         this.scrollPanel.add(new HTML(
-                "<div class=\"title\">Packages Registry</div>"));
+                "<div class=\"title\">Package Registry</div>"));
 
         // add record count container
         this.layout.setWidget(3, 0, this.recordCountContainer);
@@ -291,7 +291,7 @@ public class Packages extends Tab {
 
 				// create grid for data, there are 7 fixed fields and fields for
 				// each slot
-				Grid detailTable = new Grid(7 + product.getSlots().size() + 5, 2);
+				Grid detailTable = new Grid(7 + product.getSlots().size() + 2, 2);
 
 				// set each field label and the values
 				// name
