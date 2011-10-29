@@ -101,7 +101,7 @@ public class ProfileParser {
 				Node child = children.item(i);
 				if (child.getNodeType() != Node.TEXT_NODE) {
 					String name = child.getLocalName();
-					String value = child.getFirstChild().getNodeValue();
+					String value = child.getTextContent();
 
 					if (!"resClass".equals(name)) {
 						//indexDoc.add(new Field(name, value, true, true, true, false));

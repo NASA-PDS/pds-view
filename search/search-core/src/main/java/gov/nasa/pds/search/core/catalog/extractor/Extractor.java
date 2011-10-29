@@ -153,7 +153,7 @@ public class Extractor { // implements Extractor {
 				oidseq++;
 
 				// Get class properties
-				log.fine(object.getLid() + " - " + object.getObjectType());
+				log.info(object.getLid() + " - " + object.getObjectType());
 				setColumnProperties(object);
 
 				XMLWriter xml = new XMLWriter(finalVals, extractorDir, oidseq,
@@ -270,10 +270,7 @@ public class Extractor { // implements Extractor {
 					String[] values = currVal.split("\\.");				// slot
 					valArray = new ArrayList();
 
-					if (this.associationMap.get(values[0]) == null) {
-						valArray.add("UNK");
-						finalVals.put(currName, valArray);
-					} else {
+					if (this.associationMap.containsKey(values[0])) {
 						for (RegistrySlots assocSlots : this.associationMap.get(values[0])) {
 							for (String value : assocSlots.get(values[1])) {
 								tval1 = cleanText(remNull(value));
@@ -282,11 +279,18 @@ public class Extractor { // implements Extractor {
 								}
 							}
 							
-							recordMissingSlots(assocSlots);
-							
+							try {
+								recordMissingSlots(assocSlots);
+							} catch (NullPointerException e) {
+								System.err.println("NullPointerException - " + this.lid + " - " + values[0]);
+							}			
 							finalVals.put(currName, valArray);
 						}
+					} else {
+						valArray.add("UNK");
+						finalVals.put(currName, valArray);
 					}
+						
 				} else if (currType.equals(MappingTypes.OTHER)) {		// Unknown mapping that is currently ignored
 
 					/*
@@ -300,8 +304,12 @@ public class Extractor { // implements Extractor {
 							"Unknown Mapping Type - " + currType);
 				}
 			}
-			
-			recordMissingSlots(this.slots);
+
+			try {
+				recordMissingSlots(this.slots);
+			} catch (NullPointerException e) {
+				System.err.println("NullPointerException - " + this.lid);
+			}
 
 			setResLocation();
 		} catch (Exception ex) {
@@ -318,7 +326,10 @@ public class Extractor { // implements Extractor {
 	private void setAssociations() throws Exception {
 		for (String assocType : (List<String>) this.columns.getAssociations()) {
 			//System.out.println(assocType + " - " + this.guid);
-			this.associationMap.put(assocType, getAssociationSlots(this.guid, assocType));
+			
+			List<RegistrySlots> slots = getAssociationSlots(this.guid, assocType);
+			if (!slots.isEmpty())
+				this.associationMap.put(assocType, slots);
 		}
 	}
 
@@ -349,7 +360,7 @@ public class Extractor { // implements Extractor {
 				//		+ association.getAssociationType() + " - "
 				//		+ association.getTargetObject());
 				this.missingAssociations.add(association);
-				slotLst.add(new RegistrySlots());
+				//slotLst.add(new RegistrySlots());
 			} else {
 				this.log.fine("Association found : "
 						+ association.getAssociationType() + " - "

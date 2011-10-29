@@ -32,6 +32,8 @@ import org.xml.sax.SAXException;
 public class DocumentParser {
 	private static Logger LOG = Logger
 			.getLogger(DocumentParser.class.getName());
+	
+	
 
 	/**
 	 * Creates the document object a parses out all of the data from each
@@ -92,10 +94,13 @@ public class DocumentParser {
 				Node child = children.item(i);
 				if (child.getNodeType() != Node.TEXT_NODE) {
 					String name = child.getLocalName();
-					String value = child.getFirstChild().getNodeValue();
+					String value = child.getTextContent();
 					
 					LOG.fine("name: " + name);
 					LOG.fine("value: " + value);
+					
+					if (value.toUpperCase().equals("UNKNOWN"))
+							value = "UNK";
 					
 					if ("title".equals(name)
 							&& ("N/A".equals(value.toUpperCase())
@@ -120,7 +125,7 @@ public class DocumentParser {
 									value += "T00:00:00Z";
 								else if (value.length() == 16)
 									value += ":00Z";
-								else
+								else if (value.length() < 24)
 									value += "Z";
 								
 								indexDoc.append("<field name=\"" + name + "\">"

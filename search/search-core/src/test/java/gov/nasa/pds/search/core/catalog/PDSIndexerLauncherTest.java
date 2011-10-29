@@ -1,5 +1,6 @@
 package gov.nasa.pds.search.core.catalog;
 
+import gov.nasa.pds.search.core.PDSIndexerLauncher;
 import gov.nasa.pds.search.core.index.Indexer;
 import gov.nasa.pds.search.core.index.SolrIndexer;
 
@@ -52,8 +53,8 @@ public class PDSIndexerLauncherTest {
     @Ignore
     @Test
     public void testPDSIndexerLauncher() throws Exception {
-        String[] args = {  };
-        CatalogExtractor.main(args);
+        String[] args = { "../" };
+        PDSIndexerLauncher.main(args);
     }
 	
 }
