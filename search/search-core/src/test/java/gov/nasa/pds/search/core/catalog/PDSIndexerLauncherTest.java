@@ -52,7 +52,7 @@ public class PDSIndexerLauncherTest {
      */
     @Ignore
     @Test
-    public void testPDSIndexerLauncher() throws Exception {
+    public void testDefault() throws Exception {
         String[] args = { "../" };
         PDSIndexerLauncher.main(args);
     }

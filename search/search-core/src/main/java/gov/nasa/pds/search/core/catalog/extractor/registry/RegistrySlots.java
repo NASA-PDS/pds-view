@@ -2,7 +2,7 @@ package gov.nasa.pds.search.core.catalog.extractor.registry;
 
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.Slot;
-import gov.nasa.pds.search.core.catalog.TseConstants;
+import gov.nasa.pds.search.core.constants.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +48,7 @@ public class RegistrySlots {
 	}
 
 	public List<String> get(String key) {
-		if (key.equals(TseConstants.LOGICAL_IDENTIFIER)) {
+		if (key.equals(Constants.LOGICAL_IDENTIFIER)) {
 			return Arrays.asList(this.extObj.getLid());
 		} if (this.slotMap.containsKey(key.trim())) {
 			return this.slotMap.get(key.trim());

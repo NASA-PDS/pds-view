@@ -12,6 +12,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -22,7 +23,7 @@ import java.util.Date;
  * 
  */
 public class SolrIndexer {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, ParseException {
 		String usage = "java " + SolrIndexer.class
 				+ " <output_directory> <crawl_directory>";
 		if (args.length > 2) {
@@ -50,7 +51,7 @@ public class SolrIndexer {
 	}
 
 	public static void indexDocs(BufferedWriter writer, File file)
-			throws IOException {
+			throws IOException, ParseException {
 		// do not try to index files that cannot be read
 		if (file.canRead()) {
 			if (file.isDirectory()) {

@@ -20,11 +20,11 @@ import gov.nasa.pds.registry.query.ObjectFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.search.core.catalog.ExtractionException;
 import gov.nasa.pds.search.core.catalog.InvalidExtractorException;
-import gov.nasa.pds.search.core.catalog.TseConstants;
 import gov.nasa.pds.search.core.catalog.extractor.registry.ExtrinsicFilterTypes;
 import gov.nasa.pds.search.core.catalog.extractor.registry.MappingTypes;
 import gov.nasa.pds.search.core.catalog.extractor.registry.RegistrySlots;
 import gov.nasa.pds.search.core.catalog.extractor.registry.ResponseTypes;
+import gov.nasa.pds.search.core.constants.Constants;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -388,9 +388,9 @@ public class Extractor { // implements Extractor {
 		RegistryQuery<ExtrinsicFilter> query = new
 		RegistryQuery.Builder<ExtrinsicFilter>().filter(filter).build();
 		try {
-			RegistryClient client = new RegistryClient(TseConstants.REGISTRY_URL);
+			RegistryClient client = new RegistryClient(Constants.REGISTRY_URL);
 					//securityContext, user, password);
-			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1, TseConstants.QUERY_MAX);
+			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1, Constants.QUERY_MAX);
 			//Examine the results of the query
 			/*if (pr.getNumFound() != 0) {
 				for (ExtrinsicObject extrinsic : pr.getResults()) {
@@ -419,9 +419,9 @@ public class Extractor { // implements Extractor {
 			.filter(assocFilter).build();
 
 		try {
-			RegistryClient client = new RegistryClient(TseConstants.REGISTRY_URL);
+			RegistryClient client = new RegistryClient(Constants.REGISTRY_URL);
 					//securityContext, user, password);
-			PagedResponse<Association> pr = client.getAssociations(query, 1, TseConstants.QUERY_MAX);
+			PagedResponse<Association> pr = client.getAssociations(query, 1, Constants.QUERY_MAX);
 			//Examine the results of the query
 			/*if (pr.getNumFound() != 0) {
 				for (Association assoc : pr.getResults()) {

@@ -8,7 +8,7 @@
 package gov.nasa.pds.search.core.catalog.extractor;
 
 import gov.nasa.pds.search.core.catalog.CatalogExtractor;
-import gov.nasa.pds.search.core.catalog.TseConstants;
+import gov.nasa.pds.search.core.constants.Constants;
 
 import java.io.File;
 import java.util.ArrayList;
