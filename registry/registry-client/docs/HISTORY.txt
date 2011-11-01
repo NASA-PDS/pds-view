@@ -8,8 +8,13 @@ issues addressed and new features in each release.
 0.0.0 - Unreleased
 ------------------
 
-There are no releases yet of the PDS Registry Client.
+There are no releases yet of the PDS Registry Client.  However, this release
+does include the following changes from the original unreleased release:
 
+* The client now works with 0.8.0-dev of the Registry Service.
+* Support for the ``versionID`` attribute in the RegistryObject class is
+  dropped as the Registry Service no longer makes that a "user-visible"
+  attribute.
 
 Issue Tracker
 -------------
