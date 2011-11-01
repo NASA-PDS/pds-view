@@ -49,7 +49,6 @@ class PDSRegistryClient(object):
             status=d.get('status', None),
             description=d.get('description', None),
             versionName=d.get('versionName', None),
-            versionID=d.get('versionId', None),
             usageDescription=d.get('usageDescription', None),
             usageParameters=d.get('usageParameters', [])
         ) for d in s])
@@ -66,7 +65,6 @@ class PDSRegistryClient(object):
             status=d.get('status', None),
             description=d.get('description', None),
             versionName=d.get('versionName', None),
-            versionID=d.get('versionId', None),
             accessURI=d['accessURI'],
             specificationLinks=self._createSpecificationLinks(d['guid'], d.get('specificationLinks', [])),
             targetBinding=d.get('targetBinding', None)
@@ -85,7 +83,6 @@ class PDSRegistryClient(object):
             status=d.get('status', None),
             description=d.get('description', None),
             versionName=d.get('versionName', None),
-            versionID=d.get('versionId', None),
             serviceBindings=self._createServiceBindings(serviceGUID, d.get('serviceBindings', []))
         )
     def _mapSlots(self, slots):
@@ -106,7 +103,6 @@ class PDSRegistryClient(object):
             'specificationObject':  i.specificationObject,
             'usageDescription':     i.usageDescription,
             'usageParameters':      i.usageParameters,
-            'versionId':            i.versionID,
             'versionName':          i.versionName,
         } for i in links]
     def _mapServiceBindings(self, bindings):
@@ -122,7 +118,6 @@ class PDSRegistryClient(object):
             'service':              i.service,
             'slots':                self._mapSlots(i.slots),
             'specificationLinks':   self._mapSpecificationLinks(i.specificationLinks),
-            'versionId':            i.versionID,
             'versionName':          i.versionName,
         } for i in bindings]
     def _serializeService(self, service):
@@ -136,7 +131,6 @@ class PDSRegistryClient(object):
             'objectType':       service.objectType,
             'serviceBindings':  self._mapServiceBindings(service.serviceBindings),
             'slots':            self._mapSlots(service.slots),
-            'versionId':        service.versionID,
             'versionName':      service.versionName,
         })
     def getServices(self, start=0, rows=20):
@@ -166,8 +160,8 @@ class PDSRegistryClient(object):
         >>> lush = rs.getService('urn:sk:radio:lush')
         >>> lush.guid, lush.home, lush.lid
         (u'urn:sk:radio:lush:2.1', u'http://localhost:8080/registry-service', u'urn:uuid:0b2aebc3-dde7-4453-901d-9b3f9660dfc2')
-        >>> lush.versionName, lush.versionID, lush.objectType
-        (u'1.0', u'2.1', 'Service')
+        >>> lush.versionName, lush.objectType
+        (u'1.0', 'Service')
         >>> lush.name ,lush.description
         (u'Lush Radio Service', u'Provides live streams for tuning the Lush radio station at Soma FM.')
         >>> len(lush.slots)
@@ -239,13 +233,13 @@ class PDSRegistryClient(object):
 
 # Demonstration with actual PDS Registry Service:
 def main():
-    c = PDSRegistryClient('http://localhost:8080/registry-service/registry')
+    c = PDSRegistryClient('http://localhost:8080/registry')
     serviceSlots = set([Slot('bpm', ['140'], 'int'), Slot('genre', ['goa', 'psy'], 'enum')])
     bindingSlots = set([Slot('strength', ['strong'])])
     linkSlots = set([Slot('broken', ['true'], 'bool'), Slot('with-icon', ['false', 'maybe'], 'huh?')])
-    service = Service('urn:sk:global:guid:1', 'urn:sk:logical:1', 'http://localhost:8080/registry-service', serviceSlots, 'T.H.E. SERVICE', 'submitted', 'It is indeed THE service.', 'One Point Oh Point One', '1.0.1')
-    binding = ServiceBinding('urn:sk:global:guid:1:1', 'http://endpoint.com/', service.guid, service.home, bindingSlots, 'T.H.E. BINDING', 'submitted', 'It is quite the binding.', 'Two Point Oh Point Oh', '2.0.0', 'http://endpoint.com/')
-    link = SpecificationLink('urn:sk:global:guid:1:1:1', 'urn:sk:logical:link:1', binding.guid, 'urn:ietf:rfc:1136', service.home, linkSlots, 'T.H.E. Specification', 'submitted', 'Woo woo', 'Three', '3', 'Use it wisely', ['or', 'not'])
+    service = Service('urn:sk:global:guid:1', 'urn:sk:logical:1', 'http://localhost:8080/registry-service', serviceSlots, 'T.H.E. SERVICE', 'submitted', 'It is indeed THE service.', 'One Point Oh Point One')
+    binding = ServiceBinding('urn:sk:global:guid:1:1', 'http://endpoint.com/', service.guid, service.home, bindingSlots, 'T.H.E. BINDING', 'submitted', 'It is quite the binding.', 'Two Point Oh Point Oh', 'http://endpoint.com/')
+    link = SpecificationLink('urn:sk:global:guid:1:1:1', 'urn:sk:logical:link:1', binding.guid, 'urn:ietf:rfc:1136', service.home, linkSlots, 'T.H.E. Specification', 'submitted', 'Woo woo', 'Three', 'Use it wisely', ['or', 'not'])
     binding.specificationLinks.add(link)
     service.serviceBindings.add(binding)
     c.putService(service)
