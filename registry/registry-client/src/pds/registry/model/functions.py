@@ -13,8 +13,8 @@ def areSpecificationLinksIdentical(a, b):
     
     >>> from pds.registry.model.classes import Slot, SpecificationLink
     >>> slots = set([Slot('a', ['a'])])
-    >>> a = SpecificationLink('urn:a', 'urn:a', 'urn:s', 'urn:x', 'urn:h', slots, 'a', 'accepted', 'a', '1', '1', 'a', ['a'])
-    >>> b = SpecificationLink('urn:a', 'urn:a', 'urn:s', 'urn:x', 'urn:h', slots, 'a', 'accepted', 'a', '1', '1', 'a', ['a', 'b'])
+    >>> a = SpecificationLink('urn:a', 'urn:a', 'urn:s', 'urn:x', 'urn:h', slots, 'a', 'accepted', 'a', '1', 'a', ['a'])
+    >>> b = SpecificationLink('urn:a', 'urn:a', 'urn:s', 'urn:x', 'urn:h', slots, 'a', 'accepted', 'a', '1', 'a', ['a', 'b'])
     >>> a is not b
     True
     >>> a == b
@@ -27,7 +27,7 @@ def areSpecificationLinksIdentical(a, b):
     '''
     for fieldName in (
         'guid', 'lid', 'serviceBinding', 'specificationObject', 'home', 'slots', 'name', 'status', 'description',
-        'versionName', 'versionID', 'usageDescription', 'usageParameters'
+        'versionName', 'usageDescription', 'usageParameters'
     ):
         if getattr(a, fieldName, None) != getattr(b, fieldName, None): return False
     return True
@@ -39,8 +39,8 @@ def areSpecificationBindingsIdentical(a, b):
     
     >>> from pds.registry.model.classes import Slot, ServiceBinding, SpecificationLink
     >>> slots = set([Slot('a', ['a'])])
-    >>> a = ServiceBinding('urn:a', 'urn:a', 'urn:s', 'http://a/', slots, 'a', 'accepted', 'a', '1', '1', 'http://x/')
-    >>> b = ServiceBinding('urn:a', 'urn:a', 'urn:s', 'http://a/', slots, 'a', 'accepted', 'a', '1', '1', 'http://y/')
+    >>> a = ServiceBinding('urn:a', 'urn:a', 'urn:s', 'http://a/', slots, 'a', 'accepted', 'a', '1', 'http://x/')
+    >>> b = ServiceBinding('urn:a', 'urn:a', 'urn:s', 'http://a/', slots, 'a', 'accepted', 'a', '1', 'http://y/')
     >>> a is not b
     True
     >>> a == b
@@ -50,17 +50,17 @@ def areSpecificationBindingsIdentical(a, b):
     >>> b.accessURI = 'http://x/'
     >>> areSpecificationBindingsIdentical(a, b)
     True
-    >>> aLink = SpecificationLink('urn:a', 'urn:a', 'urn:a', 'http://spec/', 'http://a/', None, 'a', 'accepted', 'a', '1', '1')
+    >>> aLink = SpecificationLink('urn:a', 'urn:a', 'urn:a', 'http://spec/', 'http://a/', None, 'a', 'accepted', 'a', '1')
     >>> a.specificationLinks.add(aLink)
     >>> areSpecificationBindingsIdentical(a, b)
     False
-    >>> bLink = SpecificationLink('urn:a', 'urn:a', 'urn:a', 'http://spec/', 'http://a/', None, 'a', 'accepted', 'a', '1', '1')
+    >>> bLink = SpecificationLink('urn:a', 'urn:a', 'urn:a', 'http://spec/', 'http://a/', None, 'a', 'accepted', 'a', '1')
     >>> b.specificationLinks.add(bLink)
     >>> areSpecificationBindingsIdentical(a, b)
     True
     '''
     for fieldName in (
-        'guid', 'lid', 'service', 'home', 'name', 'status', 'description', 'versionName', 'versionID', 
+        'guid', 'lid', 'service', 'home', 'name', 'status', 'description', 'versionName', 
         'slots', 'accessURI', 'targetBinding'
     ):
         if getattr(a, fieldName, None) != getattr(b, fieldName, None): return False
@@ -80,35 +80,35 @@ def areServicesIdentical(a, b):
     might've quantized from multiple databases, for example.
     
     >>> from pds.registry.model.classes import Slot, Service, ServiceBinding, SpecificationLink
-    >>> a = Service('urn:a', 'urn:a', 'http://a/', set([Slot('a', ['a'])]), 'a', 'accepted', 'a', '1', '1')
-    >>> b = Service('urn:a', 'urn:a', 'http://a/', set([Slot('a', ['a'])]), 'a', 'accepted', 'a', '1', '2')
+    >>> a = Service('urn:a', 'urn:a', 'http://a/', set([Slot('a', ['a'])]), 'a', 'accepted', 'a', '1')
+    >>> b = Service('urn:a', 'urn:a', 'http://a/', set([Slot('a', ['a'])]), 'a', 'accepted', 'a', '2')
     >>> a is not b
     True
     >>> a == b
     True
     >>> areServicesIdentical(a, b)
     False
-    >>> b.versionID = '1'
+    >>> b.versionName = '1'
     >>> areServicesIdentical(a, b)
     True
-    >>> aBinding = ServiceBinding('urn:a', 'urn:a', 'urn:a', 'http://a/', None, 'a', 'accepted', 'a', '1', '1', 'http://a/')
+    >>> aBinding = ServiceBinding('urn:a', 'urn:a', 'urn:a', 'http://a/', None, 'a', 'accepted', 'a', '1', 'http://a/')
     >>> a.serviceBindings.add(aBinding)
     >>> areServicesIdentical(a, b)
     False
-    >>> bBinding = ServiceBinding('urn:a', 'urn:a', 'urn:a', 'http://a/', None, 'a', 'accepted', 'a', '1', '1', 'http://a/')
+    >>> bBinding = ServiceBinding('urn:a', 'urn:a', 'urn:a', 'http://a/', None, 'a', 'accepted', 'a', '1', 'http://a/')
     >>> b.serviceBindings.add(bBinding)
     >>> areServicesIdentical(a, b)
     True
-    >>> aLink = SpecificationLink('urn:a', 'urn:a', 'urn:a', 'http://spec/', 'http://a/', None, 'a', 'accepted', 'a', '1', '1')
+    >>> aLink = SpecificationLink('urn:a', 'urn:a', 'urn:a', 'http://spec/', 'http://a/', None, 'a', 'accepted', 'a', '1')
     >>> aBinding.specificationLinks.add(aLink)
     >>> areServicesIdentical(a, b)
     False
-    >>> bLink = SpecificationLink('urn:a', 'urn:a', 'urn:a', 'http://spec/', 'http://a/', None, 'a', 'accepted', 'a', '1', '1')
+    >>> bLink = SpecificationLink('urn:a', 'urn:a', 'urn:a', 'http://spec/', 'http://a/', None, 'a', 'accepted', 'a', '1')
     >>> bBinding.specificationLinks.add(bLink)
     >>> areServicesIdentical(a, b)
     True
     '''
-    for fieldName in ('guid', 'lid', 'home', 'name', 'status', 'description', 'versionName', 'versionID', 'slots'):
+    for fieldName in ('guid', 'lid', 'home', 'name', 'status', 'description', 'versionName', 'slots'):
         if getattr(a, fieldName, None) != getattr(b, fieldName, None): return False
     aBindings, bBindings = list(a.serviceBindings), list(b.serviceBindings)
     if len(aBindings) != len(bBindings): return False
