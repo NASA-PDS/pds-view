@@ -89,6 +89,17 @@ class RegistryObject(Identifiable):
     '''
     The RegistryObject class extends the Identifiable class and serves as a
     common super class for most classes in the information model.
+    
+    There should be no more versionID attribute anymore:
+    
+    >>> ro = RegistryObject(
+    ...     guid=u'urn:test:guid:1', lid=u'urn:test:lid:1', home=u'http://localhost:8080/test',
+    ...     slots=set(), name=u'Test Object', status='Accepted', description=u'An object for testing',
+    ...     versionName=u'3.0.0', versionID=u'1.0'
+    ... )
+    Traceback (most recent call last):
+    ...
+    TypeError: __init__() got an unexpected keyword argument 'versionID'
     '''
     # Constant values for the objectType attribute.
     SERVICE = 'Service'
@@ -96,7 +107,7 @@ class RegistryObject(Identifiable):
     SPECIFICATION_LINK = 'SpecificationLink'
     def __init__(
         self, guid, lid,
-        home=None, slots=None, name=None, objectType=None, status=None, description=None, versionName=None, versionID=None
+        home=None, slots=None, name=None, objectType=None, status=None, description=None, versionName=None
     ):
         super(RegistryObject, self).__init__(guid, home, slots)
         self._lid = lid
@@ -104,7 +115,7 @@ class RegistryObject(Identifiable):
             self._objectType = objectType
         else:
             self._objectType = 'RegistryObject'
-        self.name,self.status,self.description,self.versionName,self.versionID = name,status,description,versionName,versionID
+        self.name, self.status, self.description, self.versionName = name, status, description, versionName
     @property
     def lid(self):
         '''Logical Identifier, immutable'''
@@ -119,11 +130,11 @@ class Service(RegistryObject):
     '''Service instances describe services, such as web services.'''
     def __init__(
         self, guid, lid,
-        home=None, slots=None, name=None, status=None, description=None, versionName=None, versionID=None,
+        home=None, slots=None, name=None, status=None, description=None, versionName=None,
         serviceBindings=None
     ):
         super(Service, self).__init__(
-            guid, lid, home, slots, name, RegistryObject.SERVICE, status, description, versionName, versionID
+            guid, lid, home, slots, name, RegistryObject.SERVICE, status, description, versionName
         )
         if serviceBindings is not None:
             if not isinstance(serviceBindings, set):
@@ -142,11 +153,11 @@ class ServiceBinding(RegistryObject):
     '''
     def __init__(
         self, guid, lid, service,
-        home=None, slots=None, name=None, status=None, description=None, versionName=None, versionID=None,
+        home=None, slots=None, name=None, status=None, description=None, versionName=None,
         accessURI=None, specificationLinks=None, targetBinding=None
     ):
         super(ServiceBinding, self).__init__(
-            guid, lid, home, slots, name, RegistryObject.SERVICE_BINDING, status, description, versionName, versionID
+            guid, lid, home, slots, name, RegistryObject.SERVICE_BINDING, status, description, versionName
         )
         self._service = service
         self.accessURI, self.targetBinding = accessURI, targetBinding
@@ -172,11 +183,11 @@ class SpecificationLink(RegistryObject):
     '''
     def __init__(
         self, guid, lid, serviceBinding, specificationObject,
-        home=None, slots=None, name=None, status=None, description=None, versionName=None, versionID=None,
+        home=None, slots=None, name=None, status=None, description=None, versionName=None,
         usageDescription=None, usageParameters=None        
     ):
         super(SpecificationLink, self).__init__(
-            guid, lid, home, slots, name, RegistryObject.SPECIFICATION_LINK, status, description, versionName, versionID
+            guid, lid, home, slots, name, RegistryObject.SPECIFICATION_LINK, status, description, versionName,
         )
         self._serviceBinding = serviceBinding
         self.specificationObject, self.usageDescription = specificationObject, usageDescription
