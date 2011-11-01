@@ -128,7 +128,7 @@ or
     </section>
     
     <section name="Database Creation">
-      <p>If this is the first time the regsitry service has been installed then a new registry database must be created. If however, you already have an existing registry skip down to the <a href="#Database_Configuration">Configuration</a> section. The following is a set of instructions that are dependent on the type of database chosen. Currently there is support for Derby, MySQL, and Postgres.
+      <p>If this is the first time the regsitry service has been installed then a new registry database must be created. If however, you already have an existing registry skip down to the <a href="#Database_Configuration">Configuration</a> section. The following is a set of instructions that are dependent on the type of database chosen. Currently, there is support for Derby, MySQL, and Postgres.
       </p>
 
       <subsection name="Derby">
@@ -142,6 +142,7 @@ ij> run 'conf/derby-registry-schema.ddl';
 ij> exit;
         </source>
         <p>The RegistryDB directory, which is the Derby, will now be present in the current working directory. The path to this directory should be used in the <a href="#Database_Configuration">Configuration</a> section. Note: Feel free to move this RegistryDB directory to anywhere on disk that is accessible by Tomcat and configured below.
+        </p>   
       </subsection>
       
       <subsection name="MySQL">
@@ -150,7 +151,7 @@ ij> exit;
         <source>
 % mysqladmin -uroot -p create registry
 % mysql registry -uroot -p -e"GRANT ALL ON registry.* TO registry@localhost IDENTIFIED BY 'p@ssw0rd'"
-% mysql -u root -p -D registry < conf/mysql-registry-schema.ddl
+% mysql -u root -p -D registry &lt; conf/mysql-registry-schema.ddl
         </source>
       </subsection>
 
