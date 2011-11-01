@@ -31,6 +31,7 @@
       <ul>
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
+        <li><a href="#Database_Creation">Database Creation</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
         <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
       </ul>
@@ -69,7 +70,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       </subsection>
 
       <subsection name="Database Server">
-        <p>The Registry Service comes prepackaged with the <a href="http://db.apache.org/derby/" target="_blank">Apache Derby</a> database. If another database solution is desired (i.e., MySQL), it should be installed and accessible by the Registry Service. See the <a href="#Configuration">Configuration</a> section for more information on configuring the service for a different database solution.
+        <p>The Registry Service comes prepackaged with the <a href="http://db.apache.org/derby/" target="_blank">Apache Derby</a> database. If another database solution is desired (i.e., MySQL), it should be installed and accessible by the Registry Service. See the <a href="Database_Creation">Database Creation</a> section if this is the first time you are installing the registry service and <a href="#Database_Configuration">Configuration</a> section for more information on configuring the service for a different database solution.
         </p>
       </subsection>
     </section>
@@ -107,6 +108,10 @@ or
           <p>This directory contains the batch and shell scripts for registering the supported object types.
           </p>
         </li>
+        <li><b>lib</b><br/>
+          <p>This directory contains jar files for working with the Derby Database.
+          </p>
+        </li>
         <li><b>conf/</b><br/>
           <p>This directory contains the policy files identifying the supported object types.
           </p>
@@ -120,6 +125,40 @@ or
           </p>
         </li>
       </ul>
+    </section>
+    
+    <section name="Database Creation">
+      <p>If this is the first time the regsitry service has been installed then a new registry database must be created. If however, you already have an existing registry skip down to the <a href="#Database_Configuration">Configuration</a> section. The following is a set of instructions that are dependent on the type of database chosen. Currently there is support for Derby, MySQL, and Postgres.
+      </p>
+
+      <subsection name="Derby">
+        <p>The Derby database comes packaged with the registry service. The following commands will create the database and install the registry schema: 
+        </p>
+        <source>
+% cd registry-service-0.8.0-dev
+% java -Djava.ext.dirs=lib/ org.apache.derby.tools.ij
+ij> connect 'jdbc:derby:RegistryDB;create=true;user=user';
+ij> run 'conf/derby-registry-schema.ddl';
+ij> exit;
+        </source>
+        <p>The RegistryDB directory, which is the Derby, will now be present in the current working directory. The path to this directory should be used in the <a href="#Database_Configuration">Configuration</a> section. Note: Feel free to move this RegistryDB directory to anywhere on disk that is accessible by Tomcat and configured below.
+      </subsection>
+      
+      <subsection name="MySQL">
+        <p>
+        </p>
+        <source>
+% mysqladmin -uroot -p create registry
+% mysql registry -uroot -p -e"GRANT ALL ON registry.* TO registry@localhost IDENTIFIED BY 'p@ssw0rd'"
+% mysql -u root -p -D registry < conf/mysql-registry-schema.ddl
+        </source>
+      </subsection>
+
+      <subsection name="Postgres">
+        <p>
+        </p>
+      </subsection>
+      
     </section>
 
     <section name="Deploying the Application">
