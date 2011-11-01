@@ -75,7 +75,7 @@ class RegistryObjectTest(unittest.TestCase):
         '''Safeguard the initialization parameters get assigned to expected attributes'''
         a = RegistryObject(
             guid='123', lid='urn:pds:lid1', home=u'http://home.com/', slots=set(), name=u'Eric', objectType='test-object',
-            status='submitted', description=u'A testing registry object—no need to panic.', versionName='1.0', versionID='1.0.0'
+            status='submitted', description=u'A testing registry object—no need to panic.', versionName='1.0'
         )
         self.assertEquals('123', a.guid)
         self.assertEquals(u'http://home.com/', a.home)
@@ -86,12 +86,11 @@ class RegistryObjectTest(unittest.TestCase):
         self.assertEquals('submitted', a.status)
         self.assertEquals(u'A testing registry object—no need to panic.', a.description)
         self.assertEquals('1.0', a.versionName)
-        self.assertEquals('1.0.0', a.versionID)
     def testReadOnlyAttributes(self):
         '''Establish that the lid and objectType attributes are read-only'''
         a = RegistryObject(
             guid='123', lid='urn:pds:lid1', home=u'http://home.com/', slots=set(), name=u'Eric', objectType='test-object',
-            status='submitted', description=u'A testing registry object—no need to panic.', versionName='1.0', versionID='1.0.0'
+            status='submitted', description=u'A testing registry object—no need to panic.', versionName='1.0'
         )
         try:
             a.lid = 'urn:pds:lid2'
@@ -131,7 +130,7 @@ class ServiceTest(_RegistryObjectTestCase):
     def _createInstance(self):
         return Service(
             guid='456', lid='urn:pds:service1', home=u'http://home.com/', slots=set(), name=u'Cheese Shop', status='submitted',
-            description=u'A test service—still no need to panic.', versionName='1.0', versionID='1.0.0', serviceBindings=set()
+            description=u'A test service—still no need to panic.', versionName='1.0', serviceBindings=set()
         )
     def _getObjectType(self):
         return 'Service'
@@ -146,7 +145,7 @@ class ServiceBindingTest(_RegistryObjectTestCase):
     def _createInstance(self):
         return ServiceBinding(
             guid='789', lid='urn:pds:service1', service='456', home=u'http://home.com/', slots=set(), name=u'Cheese Shop',
-            status='submitted', description=u'A test service—still no need to panic.', versionName='1.0', versionID='1.0.0',
+            status='submitted', description=u'A test service—still no need to panic.', versionName='1.0',
             accessURI=u'http://services.com/service', specificationLinks=set(), targetBinding='778899'
         )
     def _getObjectType(self):
@@ -173,7 +172,7 @@ class SpecificationLinkTest(_RegistryObjectTestCase):
         return SpecificationLink(
             guid='1138', lid='urn:pds:speclink1', serviceBinding='789', specificationObject='123', home=u'http://home.com/',
             slots=set(), name=u'Order Counter', status='submitted', description=u'Using the Order Counter to shop for cheese.',
-            versionName='1.0', versionID='1.0.0', usageDescription=u'Arrive at counter, ask for cheese, exchange currency—duh.',
+            versionName='1.0', usageDescription=u'Arrive at counter, ask for cheese, exchange currency—duh.',
             usageParameters=[
                 u'cheese: what kind of cheese you want to buy',
                 u'currency: what money you have to exchange for cheese'
