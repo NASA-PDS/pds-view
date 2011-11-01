@@ -501,6 +501,11 @@
       <artifactId>derby</artifactId>
       <version>${derby.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derbytools</artifactId>
+      <version>${derby.version}</version>
+    </dependency>
     <!-- MySQL -->
     <dependency>
       <groupId>mysql</groupId>

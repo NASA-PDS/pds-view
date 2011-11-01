@@ -68,4 +68,15 @@
       <filtered>true</filtered>
     </file>
   </files>
+  
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory>lib</outputDirectory>
+      <includes>
+        <include>org.apache.derby:derbytools</include>
+        <include>org.apache.derby:derby</include>
+      </includes>
+      <useTransitiveDependencies>true</useTransitiveDependencies>
+    </dependencySet>
+  </dependencySets>
 </assembly>
