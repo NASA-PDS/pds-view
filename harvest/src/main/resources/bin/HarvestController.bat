@@ -24,5 +24,10 @@ if not defined JAVA_HOME (
   set JAVA_HOME=\path\to\java\home
 )
 
+:: Setup environment variables.
+set SCRIPT_DIR=%~dps0
+set PARENT_DIR=%SCRIPT_DIR%..
+set LIB_DIR=%PARENT_DIR%\lib
+
 :: Execute the application.
-"%JAVA_HOME%"\bin\java -Djava.ext.dirs=../lib gov.nasa.jpl.oodt.cas.crawl.daemon.CrawlDaemonController %*
+"%JAVA_HOME%"\bin\java -Djava.ext.dirs="%LIB_DIR%" gov.nasa.jpl.oodt.cas.crawl.daemon.CrawlDaemonController %*

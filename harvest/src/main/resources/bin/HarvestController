@@ -17,11 +17,16 @@
 # without the need to set the CLASSPATH or having to type in that long java
 # command (java gov.nasa.jpl.oodt.cas.crawl.daemon.CrawlDaemonController ...)
 
-# Set the JAVA_HOME environment variable here in the script if it will 
+# Set the JAVA_HOME environment variable here in the script if it will
 # not be defined in the environment.
 if [ -z ${JAVA_HOME} ] ; then
   export JAVA_HOME=/path/to/java/home
 fi
 
+# Setup environment variables.
+SCRIPT_DIR=`dirname $0`
+PARENT_DIR=`cd ${SCRIPT_DIR}/.. && pwd`
+LIB_DIR=${PARENT_DIR}/lib
+
 # Execute the application.
-${JAVA_HOME}/bin/java -Djava.ext.dirs=../lib gov.nasa.jpl.oodt.cas.crawl.daemon.CrawlDaemonController $*
+${JAVA_HOME}/bin/java -Djava.ext.dirs=${LIB_DIR} gov.nasa.jpl.oodt.cas.crawl.daemon.CrawlDaemonController $*
