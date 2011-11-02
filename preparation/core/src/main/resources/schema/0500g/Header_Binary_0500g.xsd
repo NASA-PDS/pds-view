@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!-- PDS4 XML/Schema for Header_Binary_0.5.0.0.g  Fri Oct 28 10:17:55 PDT 2011 -->
+  <!-- Generated from the PDS4 Information Model V0.5.0.0.g -->
+  <!-- *** This PDS4 product schema is a preliminary deliverable. *** -->
+  <!-- *** It is being made available for review and testing. *** -->
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://pds.nasa.gov/schema/pds4/pds/v05"
+    xmlns:pds="http://pds.nasa.gov/schema/pds4/pds/v05"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    version="0.5.0.0">
+ 
+    <xsd:include schemaLocation="Class_Types_0500g.xsd">
+      <xsd:annotation>
+        <xsd:documentation>PDS (common) Data Dictionary - Tagged Data Objects</xsd:documentation>
+      </xsd:annotation>
+    </xsd:include>
+ 
+  <!-- <xsd:import namespace="http://pds.nasa.gov/schema/pds4/anyNS"
+    schemaLocation="Any_Described_Data_Object_0500g.xsd"/> -->
+
+  <xsd:element name="Header_Binary" type="pds:Header_Binary">
+    <xsd:annotation>
+      <xsd:documentation>
+        The Header_Binary XML Schema
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:schema>

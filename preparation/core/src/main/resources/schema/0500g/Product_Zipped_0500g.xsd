@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!-- PDS4 XML/Schema for Product_Zipped_0.5.0.0.g  Fri Oct 28 10:17:55 PDT 2011 -->
+  <!-- Generated from the PDS4 Information Model V0.5.0.0.g -->
+  <!-- *** This PDS4 product schema is a preliminary deliverable. *** -->
+  <!-- *** It is being made available for review and testing. *** -->
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://pds.nasa.gov/schema/pds4/pds/v05"
+    xmlns:pds="http://pds.nasa.gov/schema/pds4/pds/v05"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    version="0.5.0.0">
+ 
+    <xsd:include schemaLocation="Class_Types_0500g.xsd">
+      <xsd:annotation>
+        <xsd:documentation>PDS (common) Data Dictionary - Tagged Data Objects</xsd:documentation>
+      </xsd:annotation>
+    </xsd:include>
+ 
+  <!-- <xsd:import namespace="http://pds.nasa.gov/schema/pds4/anyNS"
+    schemaLocation="Any_Described_Data_Object_0500g.xsd"/> -->
+
+  <xsd:complexType name="Product_Zipped">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Product_Zipped  is a product with references to other products. The referenced products and all associated products and files are packaged into a single ZIP file.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="container_type" type="pds:container_type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:OPS:Product_Zipped:container_type -->
+      <xsd:element name="Data_Standards" type="pds:Data_Standards" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Standards -->
+      <xsd:element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area -->
+      <xsd:element name="File" type="pds:File" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:File -->
+      <xsd:element name="Cross_Reference_Area_Generic" type="pds:Cross_Reference_Area_Generic" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Cross_Reference_Area_Generic -->
+      <xsd:element name="Zipped_Member_Entry" type="pds:Zipped_Member_Entry" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Zipped_Member_Entry -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Data_Standards">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Data Standards class indicates the controlling standards for this product.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="dd_version_id" type="pds:dd_version_id" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Standards:dd_version_id -->
+      <xsd:element name="std_ref_version_id" type="pds:std_ref_version_id" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Data_Standards:std_ref_version_id -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Identification_Area">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The identification area consists of attributes that identify and name an object.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="logical_identifier" type="pds:logical_identifier" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:logical_identifier -->
+      <xsd:element name="version_id" type="pds:version_id" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:version_id -->
+      <xsd:element name="product_class" type="pds:product_class" fixed="Product_Zipped" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:product_class -->
+      <xsd:element name="title" type="pds:title" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:title -->
+      <xsd:element name="alternate_title" type="pds:alternate_title" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:alternate_title -->
+      <xsd:element name="alternate_id" type="pds:alternate_id" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:alternate_id -->
+      <xsd:element name="last_modification_date_time" type="pds:last_modification_date_time" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:last_modification_date_time -->
+      <xsd:element name="type" type="pds:type" minOccurs="1" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Identification_Area:type -->
+      <xsd:element name="Subject_Area" type="pds:Subject_Area" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Subject_Area">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Subject Area provides one or more topics associated with the identifiable using keywords, key phrases, or classification codes.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="target_name" type="pds:target_name" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:target_name -->
+      <xsd:element name="instrument_name" type="pds:instrument_name" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:instrument_name -->
+      <xsd:element name="instrument_host_name" type="pds:instrument_host_name" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:instrument_host_name -->
+      <xsd:element name="keywords" type="pds:keywords" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:keywords -->
+      <xsd:element name="full_name" type="pds:full_name" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:full_name -->
+      <xsd:element name="investigation_name" type="pds:investigation_name" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:investigation_name -->
+      <xsd:element name="observing_system_name" type="pds:observing_system_name" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Subject_Area:observing_system_name -->
+      <xsd:element name="Name_Resolution" type="pds:Name_Resolution" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Name_Resolution">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Name_Resolution (aka Target) class provides a means for target identification in observational data products labels.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="comment" type="pds:comment" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution:comment -->
+      <xsd:element name="name" type="pds:name" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution:name -->
+      <xsd:element name="alternate_designation" type="pds:alternate_designation" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution:alternate_designation -->
+      <xsd:element name="lid_reference" type="pds:lid_reference" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution:lid_reference -->
+      <xsd:element name="type" type="pds:type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Name_Resolution:type -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="File">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The File class consists of attributes that describe a file in a data store.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="local_identifier" type="pds:local_identifier" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:File:local_identifier -->
+      <xsd:element name="comment" type="pds:comment" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:File:comment -->
+      <xsd:element name="creation_date_time" type="pds:creation_date_time" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:File:creation_date_time -->
+      <xsd:element name="file_name" type="pds:file_name" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:File:file_name -->
+      <xsd:element name="file_size" type="pds:file_size" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:File:file_size -->
+      <xsd:element name="maximum_record_bytes" type="pds:maximum_record_bytes" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:File:maximum_record_bytes -->
+      <xsd:element name="md5_checksum" type="pds:md5_checksum" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:File:md5_checksum -->
+      <xsd:element name="records" type="pds:records" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:File:records -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Cross_Reference_Area_Generic">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The cross reference area generic provides references for associated products.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="Bibliographic_Reference" type="pds:Bibliographic_Reference" minOccurs="0" maxOccurs="unbounded"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Bibliographic_Reference">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Bibliographic Reference  class provides references to documents that are not regisered with the PDS.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="name" type="pds:name" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:name -->
+      <xsd:element name="description" type="pds:description" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:description -->
+      <xsd:element name="doi" type="pds:doi" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:doi -->
+      <xsd:element name="reference_text" type="pds:reference_text" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:reference_text -->
+      <xsd:element name="url" type="pds:url" minOccurs="0" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Bibliographic_Reference:url -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Zipped_Member_Entry">
+    <xsd:sequence>
+      <xsd:annotation>
+        <xsd:documentation>
+          The Zipped Member Entry class provides a member reference to a product.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="file_specification_name" type="pds:file_specification_name" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Zipped_Member_Entry:file_specification_name -->
+      <xsd:element name="lidvid_reference" type="pds:lidvid_reference" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Zipped_Member_Entry:lidvid_reference -->
+      <xsd:element name="md5_checksum" type="pds:md5_checksum" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Zipped_Member_Entry:md5_checksum -->
+      <xsd:element name="reference_association_type" type="pds:reference_association_type" minOccurs="1" maxOccurs="1"> </xsd:element>    <!-- RA_0001_NASA_PDS_1:PDS:Zipped_Member_Entry:reference_association_type -->
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="Product_Zipped" type="pds:Product_Zipped">
+    <xsd:annotation>
+      <xsd:documentation>
+        The Product_Zipped XML Schema
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:schema>
