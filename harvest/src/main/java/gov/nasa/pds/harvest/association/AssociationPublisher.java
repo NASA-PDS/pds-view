@@ -59,7 +59,7 @@ public class AssociationPublisher {
    * Constructor.
    *
    * @param registryUrl The URL to the registry service.
-   * @param registryIngester The registry ingester.
+   * @param ingester The registry ingester.
    *
    * @throws RegistryClientException
    * @throws MalformedURLException

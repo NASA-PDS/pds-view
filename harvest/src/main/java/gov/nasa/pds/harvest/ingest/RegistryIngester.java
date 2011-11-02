@@ -328,7 +328,7 @@ public class RegistryIngester implements Ingester {
    * @param sourceFile The source file of the file object.
    * @param fileObject The file object to register.
    * @param met The file object metadata.
-   * @return
+   * @return the guid of the registered file object.
    * @throws IngestException
    */
   public String ingest(URL registry, File sourceFile, FileObject fileObject,
