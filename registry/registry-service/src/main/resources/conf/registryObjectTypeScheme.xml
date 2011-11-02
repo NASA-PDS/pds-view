@@ -61,6 +61,13 @@
         lid="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
         guid="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"/>
     <classificationNode
+        code="SlotDescription" 
+        parent="urn:registry:ObjectType:RegistryObject:ExtrinsicObject"
+        description="This is the classification node for a slot description. While this is not a core registry object it provides a means to describe the slots associated with a given object type."
+        name="Extrinsic Object"
+        lid="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription"
+        guid="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription"/>
+    <classificationNode
         code="ExternalIdentifier" 
         parent="urn:registry:ObjectType:RegistryObject"
         description="This is the classification node for an external identifier. This represents a core registry object."

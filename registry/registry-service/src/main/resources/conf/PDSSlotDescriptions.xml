@@ -1,0 +1,1554 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<registryObjectList xmlns="http://registry.pds.nasa.gov">
+    <extrinsicObject
+        guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Delivery_Manifest:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_member" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="member_of" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Proxy_PDS3:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="member_of" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Instrument:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="version_id" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Collection_Data:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="has_associated_collection" slotType="guid"/>
+        <slot name="has_investigation_collection" slotType="guid"/>
+        <slot name="has_node_collection" slotType="guid"/>
+        <slot name="has_publication_collection" slotType="guid"/>
+        <slot name="has_target_collection" slotType="guid"/>
+        <slot name="has_update_collection" slotType="guid"/>
+        <slot name="has_member_LIDVID_Primary" slotType="guid"/>
+        <slot name="has_member_LIDVID_Secondary" slotType="guid"/>
+        <slot name="has_member_LID_Secondary" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject
+        guid="urn:nasa:pds:profile:regrep:ObjectType:Collection_Volume_Set_PDS3:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_File_Repository:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="member_of" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_PDS_Guest:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Target:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Mission_PDS3:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Browse:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="curated_by_node" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_browse" slotType="guid"/>
+        <slot name="has_calibration" slotType="guid"/>
+        <slot name="has_document" slotType="guid"/>
+        <slot name="has_geometry" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_primary_collection" slotType="guid"/>
+        <slot name="has_primary_product" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_spice" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+        <slot name="has_thumbnail" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Instrument_Host:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="version_id" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Local_DD:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="full_name" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="attribute_of" slotType="guid"/>
+        <slot name="subclass_of" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Instrument_PDS3:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Data_Set_PDS3:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="data_set_name" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Bundle:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_browse_collection" slotType="guid"/>
+        <slot name="has_calibration_collection" slotType="guid"/>
+        <slot name="has_context_collection" slotType="guid"/>
+        <slot name="has_data_collection" slotType="guid"/>
+        <slot name="has_document_collection" slotType="guid"/>
+        <slot name="has_geometry_collection" slotType="guid"/>
+        <slot name="has_member_collection" slotType="guid"/>
+        <slot name="has_miscellaneous_collection" slotType="guid"/>
+        <slot name="has_spice_collection" slotType="guid"/>
+        <slot name="has_xml_schema_collection" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="member_of" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_XML_Schema:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="member_of" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject
+        guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Delimited_Table_Grouped:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="curated_by_node" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_browse" slotType="guid"/>
+        <slot name="has_calibration" slotType="guid"/>
+        <slot name="has_document" slotType="guid"/>
+        <slot name="has_geometry" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_primary_collection" slotType="guid"/>
+        <slot name="has_primary_product" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_spice" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+        <slot name="has_thumbnail" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Update:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="full_name" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Zipped:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="contained_product" slotType="guid"/>
+        <slot name="manifest_product" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Investigation:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="start_date" slotType="string"/>
+        <slot name="stop_date" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject
+        guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Array_3D_Spectrum:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="curated_by_node" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_browse" slotType="guid"/>
+        <slot name="has_calibration" slotType="guid"/>
+        <slot name="has_document" slotType="guid"/>
+        <slot name="has_geometry" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_primary_collection" slotType="guid"/>
+        <slot name="has_primary_product" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_spice" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+        <slot name="has_thumbnail" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Software:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="version_id" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="member_of" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Mission:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="start_date" slotType="string"/>
+        <slot name="stop_date" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject
+        guid="urn:nasa:pds:profile:regrep:ObjectType:Product_SPICE_Kernel_Text:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="curated_by_node" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_browse" slotType="guid"/>
+        <slot name="has_calibration" slotType="guid"/>
+        <slot name="has_document" slotType="guid"/>
+        <slot name="has_geometry" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_primary_collection" slotType="guid"/>
+        <slot name="has_primary_product" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_spice" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+        <slot name="has_thumbnail" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Service:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="member_of" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Array_2D_Image:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="curated_by_node" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_browse" slotType="guid"/>
+        <slot name="has_calibration" slotType="guid"/>
+        <slot name="has_document" slotType="guid"/>
+        <slot name="has_geometry" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_primary_collection" slotType="guid"/>
+        <slot name="has_primary_product" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_spice" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+        <slot name="has_thumbnail" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject
+        guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Table_Character_Grouped:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="curated_by_node" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_browse" slotType="guid"/>
+        <slot name="has_calibration" slotType="guid"/>
+        <slot name="has_document" slotType="guid"/>
+        <slot name="has_geometry" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_primary_collection" slotType="guid"/>
+        <slot name="has_primary_product" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_spice" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+        <slot name="has_thumbnail" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Document:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="member_of" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_File_Text:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="member_of" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Node:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Table_Character:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="curated_by_node" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_browse" slotType="guid"/>
+        <slot name="has_calibration" slotType="guid"/>
+        <slot name="has_document" slotType="guid"/>
+        <slot name="has_geometry" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_primary_collection" slotType="guid"/>
+        <slot name="has_primary_product" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_spice" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+        <slot name="has_thumbnail" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Delimited_Table:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="curated_by_node" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_browse" slotType="guid"/>
+        <slot name="has_calibration" slotType="guid"/>
+        <slot name="has_document" slotType="guid"/>
+        <slot name="has_geometry" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_primary_collection" slotType="guid"/>
+        <slot name="has_primary_product" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_spice" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+        <slot name="has_thumbnail" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guguid="urn:nasa:pds:profile:regrep:ObjectType:Product_Resource:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Thumbnail:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="member_of" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject
+        guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Attribute_Definition:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="member_of" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Target_PDS3:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="target_name" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_PDS_Affiliate:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Non_Specific:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="curated_by_node" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_browse" slotType="guid"/>
+        <slot name="has_calibration" slotType="guid"/>
+        <slot name="has_document" slotType="guid"/>
+        <slot name="has_geometry" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_primary_collection" slotType="guid"/>
+        <slot name="has_primary_product" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_spice" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+        <slot name="has_thumbnail" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Collection:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="has_associated_collection" slotType="guid"/>
+        <slot name="has_investigation_collection" slotType="guid"/>
+        <slot name="has_node_collection" slotType="guid"/>
+        <slot name="has_publication_collection" slotType="guid"/>
+        <slot name="has_target_collection" slotType="guid"/>
+        <slot name="has_update_collection" slotType="guid"/>
+        <slot name="has_member_LIDVID_Primary" slotType="guid"/>
+        <slot name="has_member_LIDVID_Secondary" slotType="guid"/>
+        <slot name="has_member_LID_Secondary" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject
+        guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Table_Binary_Grouped:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="curated_by_node" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_browse" slotType="guid"/>
+        <slot name="has_calibration" slotType="guid"/>
+        <slot name="has_document" slotType="guid"/>
+        <slot name="has_geometry" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_primary_collection" slotType="guid"/>
+        <slot name="has_primary_product" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_spice" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+        <slot name="has_thumbnail" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject
+        guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Instrument_Host_PDS3:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Archive_Bundle:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_browse_collection" slotType="guid"/>
+        <slot name="has_calibration_collection" slotType="guid"/>
+        <slot name="has_context_collection" slotType="guid"/>
+        <slot name="has_data_collection" slotType="guid"/>
+        <slot name="has_document_collection" slotType="guid"/>
+        <slot name="has_geometry_collection" slotType="guid"/>
+        <slot name="has_member_collection" slotType="guid"/>
+        <slot name="has_miscellaneous_collection" slotType="guid"/>
+        <slot name="has_spice_collection" slotType="guid"/>
+        <slot name="has_xml_schema_collection" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="member_of" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Array_3D_Image:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="curated_by_node" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_browse" slotType="guid"/>
+        <slot name="has_calibration" slotType="guid"/>
+        <slot name="has_document" slotType="guid"/>
+        <slot name="has_geometry" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_primary_collection" slotType="guid"/>
+        <slot name="has_primary_product" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_spice" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+        <slot name="has_thumbnail" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Collection_Volume_PDS3:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_data_producer" slotType="guid"/>
+        <slot name="has_data_set" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Table_Binary:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="curated_by_node" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_browse" slotType="guid"/>
+        <slot name="has_calibration" slotType="guid"/>
+        <slot name="has_document" slotType="guid"/>
+        <slot name="has_geometry" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_primary_collection" slotType="guid"/>
+        <slot name="has_primary_product" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_spice" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+        <slot name="has_thumbnail" slotType="guid"/>
+    </extrinsicObject>
+
+    <extrinsicObject
+        guid="urn:nasa:pds:profile:regrep:ObjectType:Product_SPICE_Kernel_Binary:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="product_class" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
+        <slot name="instrument_name" slotType="string"/>
+        <slot name="instrument_host_name" slotType="string"/>
+        <slot name="investigation_name" slotType="string"/>
+        <slot name="observing_system_name" slotType="string"/>
+        <slot name="target_name" slotType="string"/>
+
+        <!--       a way to specify an association, this is currently the approach harvest employs       -->
+        <slot name="Analyst" slotType="guid"/>
+        <slot name="Artificial_Illumination" slotType="guid"/>
+        <slot name="Ground-based_Laboratory" slotType="guid"/>
+        <slot name="Ground-based_Observatory" slotType="guid"/>
+        <slot name="Ground-based_Telescope" slotType="guid"/>
+        <slot name="Instrument" slotType="guid"/>
+        <slot name="Literature_Search" slotType="guid"/>
+        <slot name="PDS_Archived_Data" slotType="guid"/>
+        <slot name="Spacecraft" slotType="guid"/>
+        <slot name="curated_by_node" slotType="guid"/>
+        <slot name="has_association" slotType="guid"/>
+        <slot name="has_browse" slotType="guid"/>
+        <slot name="has_calibration" slotType="guid"/>
+        <slot name="has_document" slotType="guid"/>
+        <slot name="has_geometry" slotType="guid"/>
+        <slot name="has_instrument" slotType="guid"/>
+        <slot name="has_instrument_host" slotType="guid"/>
+        <slot name="has_investigation" slotType="guid"/>
+        <slot name="has_node" slotType="guid"/>
+        <slot name="has_personnel" slotType="guid"/>
+        <slot name="has_primary_collection" slotType="guid"/>
+        <slot name="has_primary_product" slotType="guid"/>
+        <slot name="has_publication" slotType="guid"/>
+        <slot name="has_resource" slotType="guid"/>
+        <slot name="has_spice" slotType="guid"/>
+        <slot name="has_target" slotType="guid"/>
+        <slot name="has_thumbnail" slotType="guid"/>
+    </extrinsicObject>
+
+</registryObjectList>

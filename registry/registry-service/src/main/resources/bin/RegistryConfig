@@ -27,3 +27,9 @@ curl -X POST -H "Content-type:application/xml" -v -d @../conf/registryObjectType
 
 # Load PDS Object Type Classification Nodes
 curl -X POST -H "Content-type:application/xml" -v -d @../conf/PDSObjectTypes.xml "${REGISTRY_SERVICE}/configure?name=PDS+Objects&description=This+configures+PDS+object+types"
+
+# Load Core Association Type Scheme
+curl -X POST -H "Content-type:application/xml" -v -d @../conf/registryAssociationTypeScheme.xml "${REGISTRY_SERVICE}/configure?name=Core+Associationss&description=This+configures+the+core+set+of+associations"
+
+# Load PDS Association Type Classification Nodes
+curl -X POST -H "Content-type:application/xml" -v -d @../conf/PDSAssociationTypes.xml "${REGISTRY_SERVICE}/configure?name=PDS+Associations&description=This+configures+PDS+association+types"
