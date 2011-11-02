@@ -44,6 +44,10 @@
 &lt;xsd:element name="lidVidReference" type="xsd:string"/&gt;
 &lt;xsd:element name="referenceType" type="xsd:string"/&gt;
 &lt;xsd:element name="elementName" type="xsd:string"/&gt;
+&lt;xsd:element name="modelVersion" type="xsd:string"/&gt;
+&lt;xsd:element name="baseUrl" type="xsd:string"/&gt;
+&lt;xsd:element name="serverUrl" type="xsd:string"/&gt;
+&lt;xsd:element name="dataTransferType" type="xsd:string"/&gt;
 
 &lt;xsd:attribute name="objectType" type="xsd:string"/&gt;
 &lt;xsd:attribute name="prefix" type="xsd:string"/&gt;
@@ -109,6 +113,7 @@
 &lt;xsd:complexType name="Validation"&gt;
    &lt;xsd:sequence&gt;
       &lt;xsd:element ref="enabled" minOccurs="0"/&gt;
+      &lt;xsd:element ref="modelVersion" minOccurs="0"/&gt;
    &lt;/xsd:sequence&gt;
 &lt;/xsd:complexType&gt;
 
@@ -145,6 +150,21 @@
    &lt;/xsd:sequence&gt;
 &lt;/xsd:complexType&gt;
 
+&lt;xsd:element name="storageIngestion" type="StorageIngestion"/&gt;
+&lt;xsd:complexType name="StorageIngestion"&gt;
+   &lt;xsd:sequence&gt;
+      &lt;xsd:element ref="serverUrl"/&gt;
+      &lt;xsd:element ref="dataTransferType" minOccurs="0"/&gt;
+   &lt;/xsd:sequence&gt;
+&lt;/xsd:complexType&gt;
+
+&lt;xsd:element name="accessUrls" type="AccessUrl"/&gt;
+&lt;xsd:complexType name="AccessUrl"&gt;
+   &lt;xsd:sequence&gt;
+      &lt;xsd:element ref="baseUrl" maxOccurs="unbounded"/&gt;
+   &lt;/xsd:sequence&gt;
+&lt;/xsd:complexType&gt;
+
 &lt;xsd:element name="policy"&gt;
   &lt;xsd:complexType&gt;
      &lt;xsd:all&gt;
@@ -153,6 +173,8 @@
         &lt;xsd:element ref="directories" minOccurs="0"/&gt;
         &lt;xsd:element ref="pds3Directory" minOccurs="0"/&gt;
         &lt;xsd:element ref="validation" minOccurs="0"/&gt;
+        &lt;xsd:element ref="storageIngestion" minOccurs="0"/&gt;
+        &lt;xsd:element ref="accessUrls" minOccurs="0"/&gt;
         &lt;xsd:element ref="candidates"/&gt;
      &lt;/xsd:all&gt;
   &lt;/xsd:complexType&gt;
