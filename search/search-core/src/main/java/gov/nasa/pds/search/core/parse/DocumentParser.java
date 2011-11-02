@@ -212,7 +212,7 @@ public class DocumentParser {
 			value = newFrmt.format(msFrmt.parse(value));			
 		} else if (length == 23) {
 			SimpleDateFormat msFrmt = new SimpleDateFormat("yyyy-MM-ddkk:mm:ss.SSSS");
-			value = newFrmt.format(msFrmt.parse(value));			
+			value = newFrmt.format(msFrmt.parse(value));
 		}
 		
 		
