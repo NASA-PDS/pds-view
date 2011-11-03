@@ -16,7 +16,11 @@
     <file>$HOME/context_bundle/context_dataset/collection_context_dataset.xml</file>
     <file>$HOME/context_bundle/context_insthost/collection_context_insthost.xml</file>
     <file>$HOME/context_bundle/context_instrument/collection_context_instrument.xml</file>
-    <file>$HOME/context_bundle/context_investigation/collection_context_investigation.xml</file>
+    <file>$HOME/context_bundle/context_mission/collection_context_mission.xml</file>
+    <file>$HOME/context_bundle/context_node/collection_context_node.xml</file>
+    <file>$HOME/context_bundle/context_personnel/collection_context_affil.xml</file>
+    <file>$HOME/context_bundle/context_personnel/collection_context_guest.xml</file>
+    <file>$HOME/context_bundle/context_resource/collection_context_resource.xml</file>
     <file>$HOME/context_bundle/context_target/collection_context_target.xml</file>
   </collections>
   <validation>
@@ -30,8 +34,8 @@
       <xPath>//Identification_Area_Product/alternate_id</xPath>
       <xPath>//Identification_Area_Product/last_modification_date_time</xPath>
       <xPath>//Identification_Area_Product/type</xPath>
-      <xPath>//Subject_Area/data_set_name</xPath>
       <xPath>//Data_Set_PDS3/data_set_id</xPath>
+      <xPath>//Data_Set_PDS3/data_set_name</xPath>
       <xPath>//Data_Set_PDS3/description</xPath>
       <xPath>//Data_Set_PDS3/data_set_release_date</xPath>
       <xPath>//Data_Set_PDS3/start_date_time</xPath>
@@ -52,7 +56,7 @@
       <xPath>//Identification_Area_Product/alternate_id</xPath>
       <xPath>//Identification_Area_Product/last_modification_date_time</xPath>
       <xPath>//Identification_Area_Product/type</xPath>
-      <xPath>//Subject_Area/instrument_host_name</xPath>
+      <xPath>//Instrument_Host_PDS3/instrument_host_name</xPath>
       <xPath>//Instrument_Host_PDS3/instrument_host_desc</xPath>
       <xPath>//Instrument_Host_PDS3/instrument_host_id</xPath>
       <xPath>//Instrument_Host_PDS3/instrument_host_type</xPath>
@@ -64,7 +68,7 @@
       <xPath>//Identification_Area_Product/alternate_id</xPath>
       <xPath>//Identification_Area_Product/last_modification_date_time</xPath>
       <xPath>//Identification_Area_Product/type</xPath>
-      <xPath>//Subject_Area/instrument_name</xPath>
+      <xPath>//Instrument_PDS3/instrument_name</xPath>
       <xPath>//Instrument_PDS3/instrument_desc</xPath>
       <xPath>//Instrument_PDS3/instrument_id</xPath>
       <xPath>//Instrument_PDS3/instrument_serial_number</xPath>
@@ -78,7 +82,7 @@
       <xPath>//Identification_Area_Product/alternate_id</xPath>
       <xPath>//Identification_Area_Product/last_modification_date_time</xPath>
       <xPath>//Identification_Area_Product/type</xPath>
-      <xPath>//Subject_Area/investigation_name</xPath>
+      <xPath>//Mission_PDS3/mission_name</xPath>
       <xPath>//Mission_PDS3/mission_desc</xPath>
       <xPath>//Mission_PDS3/mission_objectives_summary</xPath>
       <xPath>//Mission_PDS3/mission_start_date</xPath>
@@ -91,8 +95,8 @@
       <xPath>//Identification_Area_Product/alternate_id</xPath>
       <xPath>//Identification_Area_Product/last_modification_date_time</xPath>
       <xPath>//Identification_Area_Product/type</xPath>
+      <xPath>//Node/name</xPath>
       <xPath>//Node/description</xPath>
-      <xPath>//Node/node_name</xPath>
       <xPath>//Node/institution_name</xPath>
     </productMetadata>
     <productMetadata objectType="Product_PDS_Affiliate">
@@ -133,10 +137,9 @@
       <xPath>//Identification_Area_Product/alternate_id</xPath>
       <xPath>//Identification_Area_Product/last_modification_date_time</xPath>
       <xPath>//Identification_Area_Product/type</xPath>
-      <xPath>//Subject_Area/resource_name</xPath>
+      <xPath>//Resource/name</xPath>
       <xPath>//Resource/description</xPath>
       <xPath>//Resource/url</xPath>
-      <xPath>//Resource/name</xPath>
     </productMetadata>
     <productMetadata objectType="Product_Target_PDS3">
       <xPath>//Data_Standards/dd_version_id</xPath>
@@ -145,7 +148,7 @@
       <xPath>//Identification_Area_Product/alternate_id</xPath>
       <xPath>//Identification_Area_Product/last_modification_date_time</xPath>
       <xPath>//Identification_Area_Product/type</xPath>
-      <xPath>//Subject_Area/target_name</xPath>
+      <xPath>//Target_PDS3/target_name</xPath>
       <xPath>//Target_PDS3/primary_body_name</xPath>
       <xPath>//Target_PDS3/target_desc</xPath>
       <xPath>//Target_PDS3/target_type</xPath>      
