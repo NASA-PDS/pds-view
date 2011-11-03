@@ -24,6 +24,8 @@
 
   <body>
     <release version="0.3.0" date="TBD" description="This release of the Registry Core is a component of the integrated release 2.0.0 of the PDS 2010 System.">
+      <action dev="pramirez" type="add">Support for postgres</action>
+      <action dev="pramirez" type="add">Ability to generate database schema from the model classes</action>
       <action dev="pramirez" type="fix">JSON serialization of Enums</action>
     </release>
 
