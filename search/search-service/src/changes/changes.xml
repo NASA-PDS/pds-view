@@ -25,6 +25,10 @@
 
   <body>
     <release version="0.1.0" date="TBD" description="This release of the Search Service is a component of the integrated release 2.0.0 of the PDS 2010 System.">
+      <action dev="pramirez" type="add">Assembly descriptor to make directory Solr expects for its home</action>
+      <action dev="pramirez" type="add">Configure PDS Search Protocol endpoint</action>
+      <action dev="pramirez" type="add">Initial configuration for Solr</action>
+      <action dev="pramirez" type="add">Project structure for Search Service</action>
     </release>
 
   </body>
