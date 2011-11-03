@@ -104,8 +104,7 @@ public class BundleMetExtractor extends Pds4MetExtractor {
           .getHashtable());
     }
     try {
-      List<ReferenceEntry> refEntries = new ArrayList<ReferenceEntry>();
-      // Search for LID-based associations and register them as slots
+      // Register LID-based and LIDVID-based associations as slots
       for (ReferenceEntry entry : getReferences(references, product)) {
         if (!entry.hasVersion()) {
           metadata.addMetadata(entry.getAssociationType(),
@@ -114,13 +113,14 @@ public class BundleMetExtractor extends Pds4MetExtractor {
               + "LID-based association, \'" + entry.getLogicalID()
               + "\', under slot name \'" + entry.getAssociationType()
               + "\'.", product));
-          refEntries.remove(entry);
         } else {
-          refEntries.add(entry);
+          String lidvid = entry.getLogicalID() + "::" + entry.getVersion();
+          metadata.addMetadata(entry.getAssociationType(), lidvid);
+          log.log(new ToolsLogRecord(ToolsLevel.INFO, "Setting "
+              + "LIDVID-based association, \'" + lidvid
+              + "\', under slot name \'" + entry.getAssociationType()
+              + "\'.", product));
         }
-      }
-      if (!refEntries.isEmpty()) {
-        metadata.addMetadata(Constants.REFERENCES, refEntries);
       }
       List<FileObject> fileObjectEntries = getFileObjects(product);
       metadata.addMetadata(Constants.FILE_OBJECTS, fileObjectEntries);
