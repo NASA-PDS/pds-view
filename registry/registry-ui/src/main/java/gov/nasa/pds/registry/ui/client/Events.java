@@ -393,15 +393,6 @@ public class Events extends Tab {
 		InputContainer requestIdInputWrap = new InputContainer("Request ID",
 				requestIdInput);
 		inputTable.add(requestIdInputWrap);
-
-		// create dropdown input for user
-		/*
-		final TextBox userInput = new TextBox();
-		userInput.setName("user");
-		InputContainer userInputWrap = new InputContainer("User",
-				userInput);
-		inputTable.add(userInputWrap);
-		*/
 		
 		// create dropdown input for event type search
 		//Created, Approved, Deleted, Updated, Deprecated, Versioned, Undeprecated, Replicated
@@ -465,8 +456,6 @@ public class Events extends Tab {
 					tablemodel.addFilter("eventEnd", evtEnd);
 				}
 				
-				//RegistryUI.lbl.setText("eventStart = "+ evtStart + "    eventEnd = " + evtEnd);
-				
 				String evtType = evtTypeInput.getValue(evtTypeInput
 						.getSelectedIndex());
 				// set eventType if set to something specific
@@ -479,15 +468,7 @@ public class Events extends Tab {
 				if (!requestId.equals("")) {
 					tablemodel.addFilter("requestId", requestId);
 				}
-				
-				//RegistryUI.lbl.setText("requestId = " + requestId);
-/*
-				// user
-				String user = userInput.getValue();
-				if (!user.equals("")) {
-					tablemodel.addFilter("user", user);
-				}
-*/
+
 				// HACK: row count of zero causes cache check to fail and table
 				// not be updated
 				get().getTableModel().setRowCount(RegistryUI.FETCH_ROW_SIZE);
@@ -799,8 +780,8 @@ public class Events extends Tab {
 				}
 
 			};
-			columnDef.setMinimumColumnWidth(50);
-			columnDef.setPreferredColumnWidth(50);
+			columnDef.setMinimumColumnWidth(30);
+			columnDef.setPreferredColumnWidth(30);
 			columnDef.setColumnSortable(true);
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);

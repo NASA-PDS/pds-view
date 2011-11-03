@@ -994,7 +994,7 @@ public class Associations extends Tab {
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(100);
 			columnDef.setColumnSortable(true);
-			//columnDef.setColumnTruncatable(false);
+			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
 
@@ -1008,8 +1008,8 @@ public class Associations extends Tab {
 				}
 			};
 
-			columnDef.setMinimumColumnWidth(50);
-			columnDef.setPreferredColumnWidth(50);
+			columnDef.setMinimumColumnWidth(35);
+			columnDef.setPreferredColumnWidth(35);
 			columnDef.setColumnSortable(true);
 			//columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
