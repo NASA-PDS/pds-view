@@ -106,8 +106,8 @@ public class HarvestLauncher {
   /** Security context to support handling of the PDS Security. */
   private SecurityContext securityContext;
 
-  /** Keystore default password for the self sign certificate. */
-  private static String KEYSTORE_PASSWORD = "changeit";
+  /** Keystore password for the self sign certificate. */
+  private String keystorePassword;
 
   /** The GUID of the registry package created before harvesting of products.
    */
@@ -132,6 +132,7 @@ public class HarvestLauncher {
     securityContext = null;
     registryPackageGuid = null;
     registryPackageName = null;
+    keystorePassword = null;
 
     globalPolicy = this.getClass().getResourceAsStream("global-policy.xml");
   }
@@ -173,6 +174,8 @@ public class HarvestLauncher {
       } else if (o.getOpt().equals(Flag.VERSION.getShortName())) {
         displayVersion();
         System.exit(0);
+      } else if (o.getOpt().equals(Flag.KEYSTOREPASS.getShortName())) {
+        keystorePassword = o.getValue();
       } else if (o.getOpt().equals(Flag.PASSWORD.getShortName())) {
         password = o.getValue();
       } else if (o.getOpt().equals(Flag.USERNAME.getShortName())) {
@@ -213,14 +216,18 @@ public class HarvestLauncher {
       if (keystore == null) {
         throw new Exception("\'pds.security.keystore\' java property not "
             + "set.");
+      } else if (keystorePassword == null) {
+        throw new Exception("Keystore password must be specified.");
       }
     }
     if (keystore != null) {
       if (!new File(keystore).exists()) {
         throw new Exception("Keystore file does not exist: " + keystore);
+      } else if (keystorePassword == null) {
+        throw new Exception("Keystore password must be specified.");
       }
-      securityContext = new SecurityContext(keystore, KEYSTORE_PASSWORD,
-          keystore, KEYSTORE_PASSWORD);
+      securityContext = new SecurityContext(keystore, keystorePassword,
+          keystore, keystorePassword);
     }
     setLogger();
   }

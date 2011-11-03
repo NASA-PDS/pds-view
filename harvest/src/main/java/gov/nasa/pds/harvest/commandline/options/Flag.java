@@ -25,6 +25,10 @@ public enum Flag {
     /** Flag to display the help. */
     HELP("h", "help", "Display usage."),
 
+    /** Flag for the keystore password. */
+    KEYSTOREPASS("k", "keystore-pass", "pwd", String.class, "Specify the "
+        + "keystore password associated with the given keystore file."),
+
     /** Flag to output the logging to a file. */
     LOG("l", "log-file", "file name", String.class,
             "Specify a log file name. Default is standard out."),
@@ -178,6 +182,7 @@ public enum Flag {
         options = new Options();
 
         options.addOption(new ToolsOption(HELP));
+        options.addOption(new ToolsOption(KEYSTOREPASS));
         options.addOption(new ToolsOption(VERSION));
         options.addOption(new ToolsOption(PASSWORD));
         options.addOption(new ToolsOption(USERNAME));
