@@ -51,6 +51,7 @@
           <tr><th>Command-Line Option</th><th>Description</th></tr>
           <tr><td>-u, --username</td><td>Specify a username for authentication with the PDS Security Service.</td></tr>
           <tr><td>-p, --password</td><td>Specify a password associated with the username.</td></tr>
+          <tr><td>-k, --keystore-pass</td><td>Specify a keystore password associated with the keystore file being passed into the tool.</td></tr>
           <tr><td>-l, --log-file</td><td>Specify a log file name. Default is standard out.</td></tr>
           <tr><td>-P, --port</td><td>Specify a port number to use if running the tool in persistence mode. See the <a href="#Persistence_Mode">Persistence Mode</a> section for more details.</td></tr>
           <tr><td>-w, --wait</td><td>Specify the time, in seconds, to wait in between the crawls if running the tool in persistence mode. See the <a href="#Persistence_Mode">Persistence Mode</a> section for more details.</td></tr>
@@ -66,18 +67,18 @@
         <p>The Harvest Tool operates with a policy file to register product metadata. Details on how to create this policy file can be found in the <a href="#Harvest_Policy_File">Harvest Policy File</a> section.
         </p>
 
-        <p>The following command demonstrates how to run the Harvest Tool against a policy file, <i>policy.xml</i>, using a valid username and password, with the output going to standard out:
+        <p>The following command demonstrates how to run the Harvest Tool against a policy file, <i>policy.xml</i>, using a valid username, password and keystore password, with the output going to standard out:
         </p>
 
         <source>
-% Harvest policy.xml -u {username} -p {password}
+% Harvest policy.xml -u {username} -p {password} -k {keystorePassword}
         </source>
 
         <p>The following command demonstrates how to run the Harvest Tool with the output going to a log file, <i>log.txt</i> instead of standard out:
         </p>
 
         <source>
-% Harvest policy.xml -u {username} -p {password} -l log.txt
+% Harvest policy.xml -u {username} -p {password} -k {keystorePassword} -l log.txt
         </source>
 
         <p>When registering product metadata to a non-secured instance of the Registry (such as one running on your local machine), the <i>-u</i> and <i>-p</i> command-line option flags do not need to be passed into the tool. The following command demonstrates how to run the Harvest Tool to register product metadata to a non-secured instance of the Registry Service, with the output going to a log file:
@@ -96,7 +97,7 @@
         </p>
 
         <source>
-% Harvest policy.xml -u {username} -p {password} -l log.txt -P 9000 -w 120
+% Harvest policy.xml -u {username} -p {password} -k {keystorePassword} -l log.txt -P 9000 -w 120
         </source>
 
         <p>After running the above command, the daemon will be accessible at <i>http://localhost:9000/xmlrpc</i>.
