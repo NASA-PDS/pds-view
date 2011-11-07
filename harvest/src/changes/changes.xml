@@ -23,12 +23,18 @@
   </properties>
 
   <body>
-    <release version="0.5.0" date="2011-11-11" description="This release of the Harvest Tool is a component of the integrated release 2.0.0 of the PDS 2010 System.">
-      <action dev="mcayanan" type="add">
-        Added support for ingestion to the PDS Storage.
+    <release version="1.0.0" date="TBD" description="This release of the Harvest Tool is a component of the integrated release 2.0.0 of the PDS 2010 System.">
+      <action dev="mcayanan" type="fix">
+        PDS-42: Fixed to look for the directory_path_name attribute when constructing the file specification for the document file.
+      </action>
+      <action dev="mcayanan" type="fix">
+        PDS-49: Fixed HarvestController shell script and batch file to no longer throw a NoClassDefFoundError exception.
       </action>
       <action dev="mcayanan" type="add">
-        Added support for providing access urls to the registered products.
+        Added support for ingestion to the PDS Storage Service.
+      </action>
+      <action dev="mcayanan" type="add">
+        Added support for providing access URLs with the registered products.
       </action>
       <action dev="mcayanan" type="add">
         Added a new command-line flag option, -k, in order to be able to pass in a keystore password when accessing a secured instance of the registry.
@@ -38,12 +44,6 @@
       </action>
       <action dev="mcayanan" type="update">
         Update to support validation of older versions of the PDS4 data model.
-      </action>
-      <action dev="mcayanan" type="fix">
-        PDS-42: Fixed to look for the directory_path_name attribute when constructing the file specification for the document file.
-      </action>
-      <action dev="mcayanan" type="fix">
-        PDS-49: Fixed HarvestController shell script and batch file to no longer throw a NoClassDefFoundError exception.
       </action>
     </release>
 
