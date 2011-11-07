@@ -28,9 +28,23 @@
       </p>
     </section>
 
-    <section name="Release 0.5.0">
-      <p>TBD
+    <section name="Release 1.0.0">
+      <p>This release of the Registry User Interface is a component of the integrated release <a href="../../../release/index-2.0.0.html">2.0.0</a> of the PDS 2010 System. This is an operational release of the system components to date. The new or modified capabilities for this release are as follows:
       </p>
+
+      <ul>
+        <li>Added support for browsing associations, packages, services, events, schemes, and classification nodes.</li>
+        <li>Cleaned up the interface with respect to scrolling and window behavior.</li>
+        <li>Modifications to support interfaces changes in the Registry Service.</li>
+        <li>Update the contents of the Object Type pull-down menu to conform with the supported types from the data model.</li>
+      </ul>
+
+      <p>The liens for this release are as follows:
+      </p>
+
+      <ul>
+        <li>Need to add support for artifact registration.</li>
+      </ul>
     </section>
 
     <section name="Release 0.4.0">

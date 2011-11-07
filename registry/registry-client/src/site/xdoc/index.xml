@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -17,14 +17,14 @@
 
 <document>
   <properties>
-    <title>About Registry</title>
-    <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
+    <title>About Registry Client</title>
+    <author email="Sean.Kelly@jpl.nasa.gov">Sean Kelly</author>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
-    <section name="About Registry">
-      <p>The Registry component provides functionality for tracking, auditing, locating, and maintaining artifacts within the system. These artifacts can range from data files and label files, schemas, dictionary definitions for objects and elements, services, etc.
+    <section name="About Registry Client">
+      <p>The Registry Client is a Python-based API for accessing the Registry Service.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.

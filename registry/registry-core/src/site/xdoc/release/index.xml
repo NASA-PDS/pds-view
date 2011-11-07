@@ -29,9 +29,14 @@
       </p>
     </section>
 
-    <section name="Release 0.3.0">
-      <p>TBD
+    <section name="Release 1.0.0">
+      <p>This release of the Registry Core is a component of the integrated release <a href="../../../release/index-2.0.0.html">2.0.0</a> of the PDS 2010 System. This is an operational release of the system components to date. The new or modified capabilities for this release are as follows:
       </p>
+
+      <ul>
+        <li>Added support PostgreSQL database.</li>
+        <li>Added the ability to generate database schema from the model classes.</li>
+      </ul>
     </section>
 
     <section name="Release 0.2.0">

@@ -21,12 +21,11 @@
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
     <artifactId>registry</artifactId>
-    <version>0.0.0</version>
+    <version>1.0.0</version>
   </parent>
 
   <groupId>gov.nasa.pds.2010.registry</groupId>
   <artifactId>registry-service</artifactId>
-  <version>0.8.0-dev</version>
   <packaging>war</packaging>
 
   <name>Registry Service</name>

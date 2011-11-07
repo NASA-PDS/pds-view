@@ -23,13 +23,25 @@
   </properties>
 
   <body>
-    <release version="0.8.0" date="TBD" description="This release of the Registry Service is a component of the integrated release 2.0.0 of the PDS 2010 System.">
-      <action dev="pramirez" type="update">PDS object type and association type configuration</action>
-      <action dev="pramirez" type="add">Core association type classification scheme</action>
-      <action dev="pramirez" type="add">Update documentation to include how to create a database and install the registry schema</action>
-      <action dev="pramirez" type="add">Postgres configuration</action>
-      <action dev="pramirez" type="add">Derby tools packaged into distribution</action>
-      <action dev="pramirez" type="add">PDS-43 Ability to page through classifications nodes</action>
+    <release version="1.0.0" date="TBD" description="This release of the Registry Service is a component of the integrated release 2.0.0 of the PDS 2010 System.">
+      <action dev="pramirez" type="add">
+        PDS-43: Ability to page through classifications nodes.
+      </action>
+      <action dev="pramirez" type="add">
+        Core association type classification scheme.
+      </action>
+      <action dev="pramirez" type="add">
+        Update documentation to include how to create a database and install the registry schema.
+      </action>
+      <action dev="pramirez" type="add">
+        Postgres configuration.
+      </action>
+      <action dev="pramirez" type="add">
+        Derby tools packaged into distribution.
+      </action>
+      <action dev="pramirez" type="update">
+        PDS object type and association type configuration.
+      </action>
     </release>
 
     <release version="0.7.0" date="2011-08-29" description="This release of the Registry Service is a component of the integrated release 1.2.0 of the PDS 2010 System.">

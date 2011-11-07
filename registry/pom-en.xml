@@ -22,11 +22,12 @@
     <groupId>gov.nasa.pds</groupId>
     <artifactId>2010</artifactId>
     <version>0.0.0</version>
+    <relativePath>../pom-en.xml</relativePath>
   </parent>
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>registry</artifactId>
-  <version>1.0.0</version>
+  <version>0.0.0</version>
   <packaging>pom</packaging>
 
   <name>Registry</name>
@@ -36,8 +37,6 @@
   <url>http://pds-cm.jpl.nasa.gov/2010/registry/</url>
 
   <modules>
-    <module>registry-client</module>
-    <module>registry-core</module>
     <module>registry-service</module>
     <module>registry-ui</module>
   </modules>
@@ -51,7 +50,7 @@
       <roles>
         <role>Development Lead</role>
       </roles>
-    </developer>
+    </developer>   
     <developer>
       <name>Paul Ramirez</name>
       <id>pramirez</id>
