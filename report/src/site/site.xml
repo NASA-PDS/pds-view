@@ -26,7 +26,7 @@
     <name>Report Service</name>
   </bannerRight>
 
-  <version position="none"/>
+  <version/>
 
   <body>
     <links>
@@ -36,6 +36,8 @@
     <menu name="Software Documentation">
       <item name="About Report Service" href="index.html"/>
       <item name="Design (pdf)" href="docs/pds2010_report_design.pdf"/>
+      <item name="Release Notes" href="release/index.html"/>
+      <item name="Operation" href="operate/index.html"/>
     </menu>
 
     <menu ref="modules"/>

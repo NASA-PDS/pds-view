@@ -21,12 +21,11 @@
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
     <artifactId>report</artifactId>
-    <version>0.0.0</version>
+    <version>1.0.0</version>
   </parent>
 
   <groupId>gov.nasa.pds.2010.report</groupId>
   <artifactId>sawmill</artifactId>
-  <version>0.3.0-dev</version>
   <packaging>jar</packaging>
 
   <name>Sawmill</name>
@@ -79,7 +78,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
-            <descriptor>src/main/assembly/sawmill.xml</descriptor>
+            <descriptor>src/main/assembly/assembly.xml</descriptor>
           </descriptors>
         </configuration>
         <executions>

@@ -35,13 +35,14 @@
 
     <menu name="Software Documentation">
       <item name="About Update Tool" href="index.html"/>
-      <item name="Release Notes" href="release/index.html"/>
       <item name="Installation" href="install/index.html"/>
       <item name="Operation" href="operate/index.html"/>
     </menu>
 
     <menu name="Download">
       <item name="Update Tool Guide (pdf)" href="${project.artifactId}-${project.version}.pdf"/>
+      <item name="Binary Package (tar.gz)" href="http://starcell.jpl.nasa.gov/maven2/gov/nasa/pds/2010/report/${project.artifactId}/${project.version}/${project.artifactId}-${project.version}-bin.tar.gz"/>
+      <item name="Binary Package (zip)" href="http://starcell.jpl.nasa.gov/maven2/gov/nasa/pds/2010/report/${project.artifactId}/${project.version}/${project.artifactId}-${project.version}-bin.zip"/>
     </menu>
 
     <menu ref="reports"/>

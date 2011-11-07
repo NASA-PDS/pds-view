@@ -19,7 +19,7 @@
 <project>
   <id>sawmill</id>
   <name>Sawmill</name>
-  <currentVersion>0.3.0-dev</currentVersion>
+  <currentVersion>1.0.0</currentVersion>
 
   <organization>
     <name>NASA Jet Propulsion Laboratory, California Institute of Technology</name>
