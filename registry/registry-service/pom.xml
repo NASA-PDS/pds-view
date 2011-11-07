@@ -275,7 +275,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
-            <descriptor>src/main/assembly/registry-service.xml</descriptor>
+            <descriptor>src/main/assembly/assembly.xml</descriptor>
           </descriptors>
         </configuration>
         <executions>
