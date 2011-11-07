@@ -43,7 +43,6 @@
   </licenses>
 
   <properties>
-    <registry.core.version>0.3.0-dev</registry.core.version>
     <!-- These properties support PDF generation with Maven 1. -->
     <xdoc-artifactId>${artifactId}</xdoc-artifactId>
     <xdoc-version>${version}</xdoc-version>
@@ -416,7 +415,7 @@
     <dependency>
       <groupId>gov.nasa.pds.2010.registry</groupId>
       <artifactId>registry-core</artifactId>
-      <version>${registry.core.version}</version>
+      <version>${project.parent.version}</version>
     </dependency>
     
     <dependency>

@@ -45,10 +45,8 @@
   <properties>
     <junit-version>4.8.1</junit-version>
     <gwt-archetype-version>1.2</gwt-archetype-version>
-    <!--gwt-archetype-version>1.2</gwt-archetype-version-->
     <gwt-version>2.0.0</gwt-version>
     <jersey-version>1.1.5.1</jersey-version>
-    <registry-version>0.2.0</registry-version>
     <!-- These properties support PDF generation with Maven 1. -->
     <xdoc-artifactId>${artifactId}</xdoc-artifactId>
     <xdoc-version>${version}</xdoc-version>
@@ -63,7 +61,7 @@
       <roles>
         <role>Development Lead</role>
       </roles>
-    </developer>  
+    </developer>
     <developer>
       <name>Hyun H. Lee</name>
       <email>Hyun.H.Lee@jpl.nasa.gov</email>
@@ -251,8 +249,7 @@
     <dependency>
       <groupId>gov.nasa.pds.2010.registry</groupId>
       <artifactId>registry-core</artifactId>
-      <!--version>0.2.0</version-->
-      <version>${registry-version}</version>
+      <version>${project.parent.version}</version>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey</groupId>
