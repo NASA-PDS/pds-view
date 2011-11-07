@@ -45,8 +45,8 @@
 
     <menu name="Download">
       <item name="Storage Service Guide (pdf)" href="${project.artifactId}-${project.version}.pdf"/>
-      <item name="Binary Package (tar.gz)" href="ftp://pds.nasa.gov/pub/toplevel/2010/storage/${project.artifactId}-${project.version}-bin.tar.gz"/>
-      <item name="Binary Package (zip)" href="ftp://pds.nasa.gov/pub/toplevel/2010/storage/${project.artifactId}-${project.version}-bin.zip"/>
+      <item name="Binary Package (tar.gz)" href="http://starcell.jpl.nasa.gov/maven2/gov/nasa/pds/2010/${project.artifactId}/${project.version}/${project.artifactId}-${project.version}-bin.tar.gz"/>
+      <item name="Binary Package (zip)" href="http://starcell.jpl.nasa.gov/maven2/gov/nasa/pds/2010/${project.artifactId}/${project.version}/${project.artifactId}-${project.version}-bin.zip"/>
     </menu>
 
     <menu ref="reports"/>

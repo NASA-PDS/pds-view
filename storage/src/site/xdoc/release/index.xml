@@ -29,7 +29,7 @@
     </section>
 
     <section name="Release 0.1.0">
-      <p>This release of the Storage Service is a component of the integrated release <a href="../../release/index-2.0.0.html">2.0.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date. This initial release of the service is based on the 0.3 release of the <a href="http://oodt.apache.org/components/maven/filemgr/" target="_blank">Apace OODT File Manager</a> along with PDS-specific configuration for supported product types.
+      <p>This release of the Storage Service is a component of the integrated release <a href="../../release/index-2.0.0.html">2.0.0</a> of the PDS 2010 System. This is an operational release of the system components to date. This initial release of the service is based on the 0.3 release of the <a href="http://oodt.apache.org/components/maven/filemgr/" target="_blank">Apace OODT File Manager</a> along with PDS-specific configuration for supported product types.
       </p>
     </section>
   </body>

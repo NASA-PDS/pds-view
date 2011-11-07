@@ -26,10 +26,10 @@
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>storage</artifactId>
-  <version>0.1.0-dev</version>
+  <version>0.1.0</version>
   <packaging>jar</packaging>
 
-  <name>Storage Service</name>
+  <name>Storage</name>
   <description>
     The Storage Service provides functionality for managing the data repository. This includes movement of data files in and out of the repository. The functionality for this service is satisfied by the Apache OODT File Manager.
   </description>
