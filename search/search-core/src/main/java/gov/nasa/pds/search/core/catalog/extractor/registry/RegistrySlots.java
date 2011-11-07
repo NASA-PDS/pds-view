@@ -50,6 +50,8 @@ public class RegistrySlots {
 	public List<String> get(String key) {
 		if (key.equals(Constants.LOGICAL_IDENTIFIER)) {
 			return Arrays.asList(this.extObj.getLid());
+		} if (key.equals("name")) {
+			return Arrays.asList(this.extObj.getName());
 		} if (this.slotMap.containsKey(key.trim())) {
 			return this.slotMap.get(key.trim());
 		} else {

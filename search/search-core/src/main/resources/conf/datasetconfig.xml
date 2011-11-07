@@ -3,6 +3,8 @@
 	<association>has_target</association>
 	<association>has_instrument</association>
 	<association>has_instrument_host</association>
+	<association>has_mission</association>
+	<!-- Need to include has_mission and has_investigation -->
 	<association>has_investigation</association>
 	<association>has_resource</association>
   <column>
@@ -108,17 +110,17 @@
     <value>investigation_name</value-->
     <name>mission_name</name>
     <type>association</type>
-    <value>has_investigation.investigation_name</value>
+    <value>has_mission.mission_name</value>
   </column>
   <column>
     <name>mission_start_date</name>
     <type>association</type>
-    <value>has_investigation.mission_start_date</value>
+    <value>has_mission.mission_start_date</value>
   </column>
   <column>
     <name>mission_stop_date</name>
     <type>association</type>
-    <value>has_investigation.mission_stop_date</value>
+    <value>has_mission.mission_stop_date</value>
   </column>
   <column>
     <!-- name>target_name</name>

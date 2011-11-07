@@ -119,11 +119,12 @@ public class ColumnNodes {
 	}
 
 	public List getAssociations() {
+		String associationType;
 		List assocList = new ArrayList();
 		NodeList assocNodes = doc.getElementsByTagName("association");
 		for (int i = 0; i < assocNodes.getLength(); i++) {
-			assocList.add(assocNodes.item(i).getChildNodes().item(0)
-					.getNodeValue().trim());
+			associationType = assocNodes.item(i).getChildNodes().item(0).getNodeValue().trim();
+			assocList.add(associationType);
 		}
 		return assocList;
 	}

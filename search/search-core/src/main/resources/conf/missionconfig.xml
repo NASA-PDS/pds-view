@@ -43,12 +43,12 @@
   <column>
     <name>resLocation</name>
     <type>out</type>
-    <value>http://starbrite.jpl.nasa.gov/pds/viewMissionProfile.jsp?MISSION_NAME={investigation_name}</value>
+    <value>http://starbrite.jpl.nasa.gov/pds/viewMissionProfile.jsp?MISSION_NAME={mission_name}</value>
   </column>
   <column>
     <name>mission_name</name>
     <type>slot</type>
-    <value>investigation_name</value>
+    <value>mission_name</value>
   </column>
   <column>
     <name>mission_name_or_alias</name>
