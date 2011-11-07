@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -14,6 +14,12 @@
   providing access to foreign nationals.
 
   $Id$
+-->
+
+<!--
+  This POM enables building the project web site with the Engineering Node site 
+  skin as well as limiting the modules and reports generated for the EN site 
+  deployment.
 -->
 
 <project>
