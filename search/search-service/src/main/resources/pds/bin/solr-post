@@ -27,8 +27,8 @@ SOLR_UPDATE="http://pdsbeta/tools/search-service/pds/update/"
 cd $PDS_SOLR_HOME
 pwd
 
-./bin/xslt index/solr_index.xml index/add-hierarchy.xslt index/solr-index.hierarchy.xml
-./bin/xslt index/search-tools.xml index/add-hierarchy.xslt index/search-tools.hierarchy.xml
+./bin/xslt $SOLR_HOME index/solr_index.xml index/add-hierarchy.xslt index/solr-index.hierarchy.xml
+./bin/xslt $SOLR_HOME index/search-tools.xml index/add-hierarchy.xslt index/search-tools.hierarchy.xml
 
 #Backup existing solr index. This currently is in the wrong place and will need updating
 if [ -d data_old ]
