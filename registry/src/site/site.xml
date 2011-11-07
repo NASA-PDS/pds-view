@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -26,7 +26,7 @@
     <name>Registry</name>
   </bannerRight>
 
-  <version position="none"/>
+  <version/>
 
   <body>
     <links>
@@ -36,6 +36,7 @@
     <menu name="Software Documentation">
       <item name="About Registry" href="index.html"/>
       <item name="Design (pdf)" href="docs/pds2010_registry_design.pdf"/>
+      <item name="Release Notes" href="release/index.html"/>
     </menu>
 
     <menu ref="modules"/>

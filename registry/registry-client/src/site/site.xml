@@ -35,7 +35,6 @@
 
     <menu name="Software Documentation">
       <item name="About Registry Client" href="index.html"/>
-      <item name="Release Notes" href="release/index.html"/>
     </menu>
 <!--
     <menu name="Download">

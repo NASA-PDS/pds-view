@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2010-2011, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Release Notes</title>
+    <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Release Notes">
+      <p>The purpose of this section is to provide a description of a Registry component release including any impact that the new or modified capabilities will have on the Discipline Nodes or the PDS user community. A somewhat itemized list of changes for each component can be found on the Release Changes page for that component.
+      </p>
+    </section>
+
+    <section name="Release 1.0.0">
+      <p>This release of Registry is a component of the integrated release <a href="../../../release/index-2.0.0.html">2.0.0</a> of the PDS 2010 System. This is an operational release of the system components to date. The new or modified capabilities for this release are as follows:
+      </p>
+
+      <ul>
+        <li>Added support for a PostgreSQL database in the Registry Core and Service components.</li>
+        <li>Added the ability to generate database schema from the model classes in the Registry Core and Service components.</li>
+        <li>Added support for browsing associations, packages, services, events, schemes, and classification nodes in the Registry UI component.</li>
+        <li>Cleaned up the interface with respect to scrolling and window behavior in the Registry UI component.</li>
+        <li>Update the contents of the Object Type pull-down menu to conform with the supported types from the data model in the Registry UI component.</li>
+        <li>Introduced the Python-based API to the Registry Service.</li>
+      </ul>
+
+      <p>The liens for this release are as follows:
+      </p>
+
+      <ul>
+        <li>Query support has been improved but is still case sensitive.</li>
+        <li>The Federation and Registry objects have not been addressed yet.</li>
+        <li>Need to generate a log file that conforms to the Report Service format.</li>
+        <li>Need to add support for artifact registration in the Registry UI component.</li>
+      </ul>
+    </section>
+
+    <section name="Release 0.7.0">
+      <p>This release of Registry is a component of the integrated release <a href="../../../release/index-1.2.0.html">1.2.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date. The new or modified capabilities for this release are as follows:
+      </p>
+
+      <ul>
+        <li>Added support for package registration allowing actions like approval and deletion to be applied to all members of a package.</li>
+        <li>Added support for replication from one registry instance to another.</li>
+        <li>Enhanced query support for auditable events.</li>
+        <li>Moved the end points up one level to remove the redundant /registry from the path.</li>
+      </ul>
+
+      <p>The liens for this release are as follows:
+      </p>
+
+      <ul>
+        <li>Query support has been improved but is still case sensitive.</li>
+        <li>The Federation and Registry objects have not been addressed yet.</li>
+        <li>Need to generate a log file that conforms to the Report Service format.</li>
+      </ul>
+    </section>
+
+    <section name="Release 0.6.0">
+      <p>This release of Registry is a component of the integrated release <a href="../../../release/index-1.1.0.html">1.1.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date. The new or modified capabilities for this release are as follows:
+      </p>
+
+      <ul>
+        <li>The core functionality was moved from this package to the registry-core package to better satisfy JAR dependencies from other projects.</li>
+        <li>Added additional support for Classifications in the registry.</li>
+        <li>Added a configuration endpoint allowing the configuration file generated from the data model to be processed in one action.</li>
+        <li>Added support for a RegistryPackage object to support batch operations.</li>
+        <li>Added additional support for Service registrations.</li>
+        <li>Modifications to support better alignment with the ebXML registry specification.</li>
+      </ul>
+
+      <p>The liens for this release are as follows:
+      </p>
+
+      <ul>
+        <li>Query support has been improved but is still case sensitive.</li>
+        <li>The Federation and Registry objects have not been addressed yet.</li>
+        <li>Need to generate a log file that conforms to the Report Service format.</li>
+      </ul>
+    </section>
+
+    <section name="Release 0.5.0">
+      <p>This release of Registry is a component of the integrated release <a href="../../../release/index-1.0.0.html">1.0.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards. The new or modified capabilities for this release are as follows:
+      </p>
+
+      <ul>
+        <li>Added support for registering Service and Classification objects.</li>
+        <li>Added support for deleting Products and Associations.</li>
+        <li>Added an interface for retrieving Auditable Events.</li>
+        <li>Updated the status message to include counts of registered objects.</li>
+      </ul>
+
+      <p>The liens for this release are as follows:
+      </p>
+
+      <ul>
+        <li>Exception handling at this stage of development is minimal. Many error conditions have not yet been mapped to HTTP error codes.</li>
+        <li>Query support is case sensitive and not fully implemented for each object type.</li>
+        <li>Not all aspects of JSON support have been implemented.</li>
+        <li>The Federation and Registry objects have not been addressed yet.</li>
+        <li>Need to generate a log file that conforms to the Report Service format.</li>
+      </ul>
+    </section>
+
+    <section name="Release 0.4.0">
+      <p>This release of Registry is a component of the integrated release <a href="../../../release/index-0.1.0.html">0.1.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the demonstration at the Management Council Face-to-Face meeting in August 2010. This initial release of the service provides the capability to register and browse data products and their associations.
+      </p>
+    </section>
+  </body>
+</document>
+

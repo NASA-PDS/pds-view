@@ -20,7 +20,6 @@
   <body>
     <menu name="Registry Service Guide">
       <item name="Overview" href="index.html"/>
-      <item name="Release Notes" href="release/index.html"/>
       <item name="Installation" href="install/index.html"/>
       <item name="Operation" href="operate/index.html"/>
       <item name="Appendix A - Using Wget" href="operate/index-wget.html"/>

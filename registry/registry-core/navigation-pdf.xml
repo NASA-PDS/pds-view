@@ -20,7 +20,6 @@
   <body>
     <menu name="Registry Core Guide">
       <item name="Overview" href="index.html"/>
-      <item name="Release Notes" href="release/index.html"/>
       <item name="Installation" href="install/index.html"/>
       <item name="Development" href="develop/index.html"/>
     </menu>
