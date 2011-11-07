@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -31,6 +31,8 @@
     </section>
 
     <section name="Release 0.1.0">
+      <p>This release of the Search Core is a component of the integrated release <a href="../../../release/index-2.0.0.html">2.0.0</a> of the PDS 2010 System. This is an operational release of the system components to date. This initial release includes the integration of Apache Solr.
+      </p>
     </section>
   </body>
 </document>

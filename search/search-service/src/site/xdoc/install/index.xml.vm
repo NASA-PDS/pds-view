@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -100,6 +100,6 @@ or
     <section name="Deploying the Application">
       <p>The Search Service is the Solr configuration along with the Java extensions written to support PDS Search Protool. One must download the war file from the Solr website. The context file in the should be updated to reference where you have placed the war file locally and then deployed into tomcat.
       </p>
-
+    </section>
   </body>
 </document>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
   Copyright 2011, by the California Institute of Technology.
@@ -16,35 +16,29 @@
   $Id$
 -->
 
-<project name="Search Service">
+<project name="Search">
   <bannerLeft>
     <src>images/pds4_logo.jpg</src>
     <href>http://pds-cm.jpl.nasa.gov/2010/</href>
   </bannerLeft>
 
   <bannerRight>
-    <name>Search Service</name>
+    <name>Search</name>
   </bannerRight>
 
-  <version/>
+  <version position="none"/>
 
   <body>
     <links>
-      <item name="Search Service" href="http://pds-cm.jpl.nasa.gov/2010/search/search-service/index.html" />
+      <item name="Search" href="http://pds-cm.jpl.nasa.gov/2010/search/index.html" />
     </links>
 
     <menu name="Software Documentation">
-      <item name="About Search Service" href="index.html"/>
-      <item name="Release Notes" href="release/index.html"/>
-      <item name="Installation" href="install/index.html"/>
-      <item name="Operation" href="operate/index.html"/>
+      <item name="About Search" href="index.html"/>
+      <item name="Design (pdf)" href="docs/pds2010_search_design.pdf"/>
     </menu>
 
-    <menu name="Download">
-      <item name="Search Service Guide (pdf)" href="${project.artifactId}-${project.version}.pdf"/>
-      <item name="Binary Package (tar.gz)" href="ftp://pds.nasa.gov/pub/toplevel/2010/search/${project.artifactId}-${project.version}-bin.tar.gz"/>
-      <item name="Binary Package (zip)" href="ftp://pds.nasa.gov/pub/toplevel/2010/search/${project.artifactId}-${project.version}-bin.zip"/>
-    </menu>
+    <menu ref="modules"/>
 
     <menu ref="reports"/>
   </body>

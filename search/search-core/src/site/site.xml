@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2009-2010, by the California Institute of Technology.
+  Copyright 2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -16,23 +16,32 @@
   $Id$
 -->
 
-<project name="Text Search Extractor">
+<project name="Search Core">
   <bannerLeft>
-    <src>images/pds_logo.jpg</src>
+    <src>images/pds4_logo.jpg</src>
     <href>http://pds-cm.jpl.nasa.gov</href>
   </bannerLeft>
 
   <bannerRight>
-    <name>Text Search Extractor&nbsp;&nbsp;</name>
+    <name>Search Core</name>
   </bannerRight>
 
   <body>
     <links>
-      <item name="TSE" href="http://pds-cm.jpl.nasa.gov/search-tools/tse/index.html" />
+      <item name="Search Core" href="http://pds-cm.jpl.nasa.gov/search/search-core/index.html" />
     </links>
 
     <menu name="Software Documentation">
-      <item name="About Text Search Extractor" href="index.html"/>
+      <item name="About Search Core" href="index.html"/>
+      <item name="Release Notes" href="release/index.html"/>
+      <item name="Installation" href="install/index.html"/>
+      <item name="Operation" href="operate/index.html"/>
+    </menu>
+
+    <menu name="Download">
+      <item name="Search Core Guide (pdf)" href="${project.artifactId}-${project.version}.pdf"/>
+      <item name="Binary Package (tar.gz)" href="ftp://pds.nasa.gov/pub/toplevel/2010/search/${project.artifactId}-${project.version}-bin.tar.gz"/>
+      <item name="Binary Package (zip)" href="ftp://pds.nasa.gov/pub/toplevel/2010/search/${project.artifactId}-${project.version}-bin.zip"/>
     </menu>
 
     <menu ref="reports"/>

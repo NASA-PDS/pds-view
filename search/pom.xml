@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -26,14 +26,22 @@
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>search</artifactId>
-  <version>0.0.0</version>
+  <version>0.1.0</version>
   <packaging>pom</packaging>
 
   <name>Search</name>
   <description>
-    This package contains the solr configuration and code extensions to support PDS Search.
+    The Search component provides functionality for accepting queries from data consumers for registered products and includes functionality for retrieving search results. This component acts as the interface to the Registry Service for the data consumer. The service itself will consist of indexed metadata utilizing common facets to facilitate search across the Nodes along with Node-specific facets utilized by Node-specific search applications.
   </description>
   <url>http://pds-cm.jpl.nasa.gov/2010/search/</url>
+
+  <licenses>
+    <license>
+      <name>California Institute of Technology</name>
+      <url>file:///${basedir}/LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <modules>
     <module>search-core</module>
