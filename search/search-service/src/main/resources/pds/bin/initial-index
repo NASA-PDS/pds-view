@@ -1,9 +1,24 @@
 #! /bin/bash
 
-# May need to set SOLR_HOME within this script
-# May need to set CLASSPATH for PDSIndexer
+CLASSPATH=/apps/search-core/bin
 
-PDS_PDS_SOLR_HOME=$SOLR_HOME/pds
+if [ "$SOLR_HOME" != "" ]; then
+    echo
+    echo "SOLR_HOME = ${SOLR_HOME}"
+    echo
+elif [ "$1" != "" ]; then
+    SOLR_HOME=${1}
+    echo
+    echo "SOLR_HOME = ${1}"
+    echo
+else
+    echo
+    echo "SOLR_HOME must be specified as environment var or command-line:  ./initial-index <solr-home>"
+    echo
+    exit 0
+fi
+
+PDS_SOLR_HOME=$SOLR_HOME/pds
 
 echo "-----------------------------------------------------"
 echo "----------------------WARNINGS------------------------"
@@ -72,4 +87,4 @@ echo "-----Running PDSIndexer------"
 PDSIndexer $PDS_SOLR_HOME
 echo "-----PDSIndexer Complete-----"
 
-./bin/solr-post
+./bin/solr-post $SOLR_HOME

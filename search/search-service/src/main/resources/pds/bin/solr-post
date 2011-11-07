@@ -1,6 +1,24 @@
 #!/bin/bash
 
-# May need to set SOLR_HOME in script
+echo
+echo "Running SOLR update..."
+echo
+
+if [ "$SOLR_HOME" != "" ]; then
+    echo
+    echo "SOLR_HOME = ${SOLR_HOME}"
+    echo
+elif [ "$1" != "" ]; then
+    SOLR_HOME=${1}
+    echo
+    echo "SOLR_HOME = ${1}"
+    echo
+else
+    echo
+    echo "SOLR_HOME must be specified as environment var or command-line:  ./solr-post <solr-home>"
+    echo
+    exit 0
+fi
 
 PDS_SOLR_HOME=$SOLR_HOME/pds
 
