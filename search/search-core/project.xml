@@ -19,7 +19,7 @@
 <project>
   <id>search-core</id>
   <name>Search Core</name>
-  <currentVersion>0.1.0-dev</currentVersion>
+  <currentVersion>0.1.0</currentVersion>
 
   <organization>
     <name>NASA Jet Propulsion Laboratory, California Institute of Technology</name>

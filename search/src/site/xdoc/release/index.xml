@@ -26,12 +26,12 @@
 
   <body>
     <section name="Release Notes">
-      <p>The purpose of this section is to provide a description of a Search Core release including any impact that the new or modified capabilities will have on the Discipline Nodes or the PDS user community. If viewing the web-based version of this document, a somewhat itemized list of changes for each release can be found on the <a href="../changes-report.html">Release Changes</a> page.
+      <p>The purpose of this section is to provide a description of a Search component release including any impact that the new or modified capabilities will have on the Discipline Nodes or the PDS user community. A somewhat itemized list of changes for each component can be found on the Release Changes page for that component.
       </p>
     </section>
 
     <section name="Release 0.1.0">
-      <p>This release of the Search Core is a component of the integrated release <a href="../../../release/index-2.0.0.html">2.0.0</a> of the PDS 2010 System. This is an operational release of the system components to date. This initial release includes the PDS search protocol request handler.
+      <p>This release of Search is a component of the integrated release <a href="../../../release/index-2.0.0.html">2.0.0</a> of the PDS 2010 System. This is an operational release of the system components to date. This initial release includes the PDS search protocol request handler and generation of the search index from a populated Registry Service.
       </p>
     </section>
   </body>
