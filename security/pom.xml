@@ -26,10 +26,10 @@
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>security</artifactId>
-  <version>0.4.0-dev</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
 
-  <name>Security Service</name>
+  <name>Security</name>
   <description>
     The Security service provides the authentication and authorization functions for the PDS 2010 system. The intent of this service is to control access to interfaces and services that require authentication and authorization (e.g., Monitor, Report, Registry interfaces, etc.).
   </description>

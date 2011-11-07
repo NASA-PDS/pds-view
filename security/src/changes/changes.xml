@@ -23,7 +23,10 @@
   </properties>
 
   <body>
-    <release version="0.4.0" date="TBD" description="This release of the Security Service is a component of the integrated release 2.0.0 of the PDS 2010 System.">
+    <release version="1.0.0" date="TBD" description="This release of the Security Service is a component of the integrated release 2.0.0 of the PDS 2010 System.">
+      <action dev="hyunlee" type="update">
+        Updated the installation documentation.
+      </action>
     </release>
 
     <release version="0.3.0" date="2011-03-25" description="This release of the Security Service is a component of the integrated releases 1.1.0 and 1.2.0 of the PDS 2010 System.">
