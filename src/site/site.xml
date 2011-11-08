@@ -39,14 +39,7 @@
       <item name="System Releases" href="release/index.html"/>
     </menu>
 
-    <menu name="Components">
-      <item name="Harvest" href="harvest/index.html"/>
-      <item name="Preparation" href="preparation/index.html"/>
-      <item name="Registry" href="registry/index.html"/>
-      <item name="Report" href="report/index.html"/>
-      <item name="Security" href="security/index.html"/>
-      <item name="Storage" href="storage/index.html"/>
-    </menu>
+    <menu ref="modules"/>
 
     <menu ref="reports"/>
   </body>
