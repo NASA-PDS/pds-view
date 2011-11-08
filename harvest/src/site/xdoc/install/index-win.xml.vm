@@ -25,7 +25,7 @@
 
   <body>
     <section name="Windows System Properties">
-      <p>The required environment variables for the ${xdoc-artifactId} package can also be set through the Windows system properties panel. The <i>Path</i> environment variable can be modified as follows:
+      <p>The required environment variables for the <i>${xdoc-artifactId}</i> package can also be set through the Windows system properties panel. The <i>Path</i> environment variable can be modified as follows:
       </p>
 
       <ul>
