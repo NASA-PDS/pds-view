@@ -29,6 +29,9 @@ cd ../..
 cd report/rs-update
 mvn install clean
 cd ../..
+cd search/search-core
+mvn install clean
+cd ../..
 
 # Build each site (recursive).
 mvn site
@@ -62,6 +65,12 @@ maven pdf
 cd ../profile-setup
 maven pdf
 cd ../sawmill
+maven pdf
+cd ../..
+
+cd search/search-core
+maven pdf
+cd ../search-service
 maven pdf
 cd ../..
 

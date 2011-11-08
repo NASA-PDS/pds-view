@@ -73,6 +73,18 @@ maven pdf
 mvn deploy
 cd ../..
 
+cd search
+mvn deploy --non-recursive
+cd search-core
+mvn site
+maven pdf
+mvn deploy
+cd ../search-service
+mvn site
+maven pdf
+mvn deploy
+cd ../..
+
 cd storage
 mvn site
 maven pdf

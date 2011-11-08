@@ -17,7 +17,7 @@
 # files for the associated sites.
 
 cd ..
-mvn clean
+mvn --file pom-en.xml clean
 
 # Install the dependent JARs locally.
 cd preparation/core
@@ -29,9 +29,12 @@ cd ../..
 cd report/rs-update
 mvn install clean
 cd ../..
+cd search/search-core
+mvn install clean
+cd ../..
 
 # Build each site (recursive).
-mvn site
+mvn --file pom-en.xml site
 
 # Go back through the modules and create the PDFs.
 
@@ -49,7 +52,9 @@ cd ../validate
 maven pdf
 cd ../..
 
-cd registry/registry-core
+cd registry
+mvn --file pds-en.xml --non-recursive site
+cd registry-core
 maven pdf
 cd ../registry-service
 maven pdf
@@ -57,11 +62,19 @@ cd ../registry-ui
 maven pdf
 cd ../..
 
-cd report/rs-update
+cd report
+mvn --file pds-en.xml --non-recursive site
+cd rs-update
 maven pdf
 cd ../profile-setup
 maven pdf
 cd ../sawmill
+maven pdf
+cd ../..
+
+cd search/search-core
+maven pdf
+cd ../search-service
 maven pdf
 cd ../..
 
@@ -74,4 +87,4 @@ maven pdf
 cd ..
 
 # Create a JAR of each site (recursive) including the generated PDFs.
-mvn site:jar
+mvn --file pom-en.xml site:jar
