@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- 
+  Copyright 2011, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology 
+  Transfer at the California Institute of Technology.
+
+  This software may be subject to U.S. export control laws. By accepting 
+  this software, the user agrees to comply with all applicable U.S. export 
+  laws and regulations. User has the responsibility to obtain export licenses, 
+  or other export authority as may be required before exporting such 
+  information to foreign countries or providing access to foreign persons.
+
+  $Id$
+-->
+
+<!--
+  This POM enables building the project web site with the Engineering Node site 
+  skin as well as limiting the modules and reports generated for the EN site 
+  deployment.
+-->
+
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>gov.nasa.pds</groupId>
+    <artifactId>pds-en</artifactId>
+    <version>0.0.0</version>
+  </parent>
+
+  <groupId>gov.nasa.pds</groupId>
+  <artifactId>2010</artifactId>
+  <version>0.0.0</version>
+  <packaging>pom</packaging>
+
+  <name>PDS 2010</name>
+  <description>
+    This project provides documentation for the PDS 2010 effort and contains the PDS 2010 parent Project Object Model (POM).
+  </description>
+  <url>http://pds-cm.jpl.nasa.gov/2010/</url>
+
+  <inceptionYear>2010</inceptionYear>
+
+  <modules>
+    <module>harvest</module>
+    <module>preparation</module>
+    <module>registry</module>
+    <module>report</module>
+    <module>security</module>
+  </modules>
+
+  <developers>
+    <developer>
+      <name>Sean Hardman</name>
+      <id>shardman</id>
+      <email>Sean.Hardman@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Development Lead</role>
+        <role>System Design Working Group Member</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Michael Cayanan</name>
+      <id>mcayanan</id>
+      <email>Michael.Cayanan@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Sean Kelly</name>
+      <id>kelly</id>
+      <email>Sean.Kelly@jpl.nasa.gov</email>
+      <organization>Independent Consultant</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Hyun Lee</name>
+      <id>hyunlee</id>
+      <email>Hyun.Lee@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Jordan Padams</name>
+      <id>jpadams</id>
+      <email>Jordan.Padams@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+        <role>System Design Working Group Member</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Paul Ramirez</name>
+      <id>pramirez</id>
+      <email>Paul.Ramirez@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+        <role>System Design Working Group Member</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Joshua Ganderson</name>
+      <id>jagander</id>
+      <email>Joshua.Ganderson@nasa.gov</email>
+      <organization>NASA Ames Research Center</organization>
+      <roles>
+        <role>Former Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <contributors>
+    <contributor>
+      <name>Dan Crichton</name>
+      <email>Dan.Crichton@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Project Manager</role>
+        <role>System Design Working Group Member</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Steve Hughes</name>
+      <email>John.S.Hughes@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>System Engineering Lead</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Ron Joyner</name>
+      <email>Ronald.Joyner@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>System Engineer</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Elizabeth Rye</name>
+      <email>Elizabeth.Rye@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>System Engineer</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Todd King</name>
+      <email>tking@igpp.ucla.edu</email>
+      <organization>University of California, Los Angeles</organization>
+      <roles>
+        <role>System Design Working Group Member</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Mike Martin</name>
+      <email>tahoe_mike@sbcglobal.net</email>
+      <organization>Independent Consultant</organization>
+      <roles>
+        <role>System Design Working Group Member</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Alice Stanboli</name>
+      <email>Alice.Stanboli@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>System Design Working Group Member</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Tom Stein</name>
+      <email>stein@rsmail.wustl.edu</email>
+      <organization>Washington University</organization>
+      <roles>
+        <role>System Design Working Group Member</role>
+      </roles>
+    </contributor>
+  </contributors>
+
+  <!-- Build inherited from parent. -->
+  <build/>
+
+  <repositories>
+    <!-- Hosts the PDS and OODT artifacts. -->
+    <repository>
+      <id>pds-repo</id>
+      <name>PDS Maven Repository</name>
+      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <reporting>
+    <plugins>
+      <!-- Project Information inherited by project modules. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <inherited>true</inherited>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>dependencies</report>
+              <report>issue-tracking</report>
+              <report>license</report>
+              <report>mailing-list</report>
+              <report>project-team</report>
+              <report>summary</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <!-- Project Reports inherited by the project modules. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <inherited>true</inherited>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>changes-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
