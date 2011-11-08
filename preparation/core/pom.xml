@@ -27,7 +27,7 @@
 
   <groupId>gov.nasa.pds.2010.preparation</groupId>
   <artifactId>core</artifactId>
-  <version>0.4.0-dev</version>
+  <version>0.4.0</version>
   <packaging>jar</packaging>
 
   <name>Core Library</name>
@@ -85,7 +85,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
-            <descriptor>src/main/assembly/core.xml</descriptor>
+            <descriptor>src/main/assembly/assembly.xml</descriptor>
           </descriptors>
         </configuration>
         <executions>
