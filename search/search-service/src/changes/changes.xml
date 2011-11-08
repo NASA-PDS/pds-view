@@ -23,7 +23,7 @@
   </properties>
 
   <body>
-    <release version="0.1.0" date="TBD" description="This release of the Search Service is a component of the integrated release 2.0.0 of the PDS 2010 System.">
+    <release version="0.1.0" date="2011-11-09" description="This release of the Search Service is a component of the integrated release 2.0.0 of the PDS 2010 System.">
       <action dev="pramirez" type="add">
         Assembly descriptor to make directory Solr expects for its home.
       </action>
