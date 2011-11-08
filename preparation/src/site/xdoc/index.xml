@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2011, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -24,7 +24,10 @@
 
   <body>
     <section name="About Preparation Tools">
-      <p>The Preparation Tools provide functionality for preparing data for ingestion into PDS. This includes product label design, generation, transformation and validation as well as package formation. This project consists of a suite of tools and a core library allowing existing Node processes and procedures to be utilized in the ingestion process.
+      <p>The Preparation component provides functionality for preparing data for ingestion into PDS. This includes product label design, generation, transformation and validation as well as package formation. This project consists of a suite of tools and a core library allowing existing Node processes and procedures to be utilized in the ingestion process.
+      </p>
+
+      <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
       </p>
     </section>
   </body>
