@@ -24,6 +24,12 @@
 
   <body>
     <release version="0.1.0" date="2011-11-09" description="This release of the Search Service is a component of the integrated release 2.0.0 of the PDS 2010 System.">
+      <action dev="jpadams" type="add">
+        PDS-specific stylsheets and configurations in order to function with data search interface.
+      </action>
+      <action dev="jpadams" type="add">
+        Included shell scripts to backup index, run Search Core, and post index to Solr instance.
+      </action>
       <action dev="pramirez" type="add">
         Assembly descriptor to make directory Solr expects for its home.
       </action>

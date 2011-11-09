@@ -20,6 +20,7 @@
   <properties>
     <title>Release Changes</title>
     <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
+    <author email="jordan.h.padams@jpl.nasa.gov">Jordan Padams</author>
   </properties>
   
   <body>
@@ -27,6 +28,13 @@
       <action dev="pramirez" type="add">
         Initial implementation of PDS search protocol request handler.
       </action>
+      <action dev="jpadams" type="add">
+	Refactored implementation of Registry Data Search prototype to work with registry-core v1.0.0
+      </action>
+      <action dev="jpadams" type="add">
+	Command-line interface to run Registry Extractor, Solr Indexer, and PDS Indexer.
+      </action>
+
     </release>
   </body>
 </document>
