@@ -27,5 +27,8 @@
     <velocity:merge name="${maven.build.dir}/pdf/install/index.xml" 
                     basedir="${basedir}/src/site/xdoc/install" 
                     template="index.xml.vm"/>
+    <velocity:merge name="${maven.build.dir}/pdf/install/index-win.xml"
+                    basedir="${basedir}/src/site/xdoc/install"
+                    template="index-win.xml.vm"/>
   </goal>
 </project>
