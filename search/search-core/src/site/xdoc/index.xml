@@ -17,67 +17,56 @@
 
 <document>
   <properties>
-    <title>About Text Search Extractor</title>
+    <title>About Search Core</title>
     <author email="Jordan.H.Padams@jpl.nasa.gov">Jordan Padams</author>
   </properties>
 
   <body>
-    <section name="About Text Search Extractor">
-      <p>The Text Search Extractor (TSE) provides the capability for catalog extraction, indexing and search. The indexing and search aspects will be provided by <a href="http://lucene.apache.org/nutch/" target="_blank">Nutch</a>, an Open Source solution. In addition, this package will contain built-in tests to ensure that the catalog is being extracted and indexed correctly. The user interface can be found in the <i>text-search</i> package.  The rest of this document will elaborate on the following topics:</p>
-      <ul>
-	<li><a href="#Purpose">Purpose</a></li>
-	<li><a href="#Main_Components">3 Main Components</a></li>
-	<li><a href="#Create_New_Extractor_Class">Create New Extractor Class</a></li>
-	<li><a href="#Modify_Data_Search_Web_Pages">Modify Data Search Web Page</a></li>
-      </ul>
-    </section>
-    
-    <section name="Purpose">
-      <p>As the basis of the search tools package, the main purpose of the TSE software is to extract all data used in the data search from the archived database.  Currently, the Solr package contains a "make-index" script that calls on each of the main components of the TSE software, to get the necessary data.  The software is packaged into a JAR executable, and placed in the Solr /lib directory.
+    <section name="About Search Core">
+      <p>The Search Core provides the basis for creating and searching an <a href="http://lucene.apache.org/solr/">Apache Solr</a> index.  This index can then be leveraged by other softwareto provide a searchable user interface to a prospective user.  The Search Core software itself has a command-line interface and API to provide this functionality.
       </p>
     </section>
     
     <section name="Main Components">
       <p>
-	The following section describes the 3 main components of the Text Search Extractor.  These components are used by the text search software and the Solr software to produce the data search.
+	The following section describes the main components of the Search Core.  These components are used by the search core and the Solr software to produce the index and searchability present on the PDS <a href="http://pds.jpl.nasa.gov/tools/data-search">Data Search page</a>.
       </p>
-      <subsection name="Catalog Extractor">
-	<p>
-	  This component is made up of several classes, including:
+      <subsection name="Registry Extractor">
+	<p>This component uses the Registry Core and XML configuration files to build XML documents on a per product basis.  The Registry context products queried through the software are as follows:
 	</p>
 	<ul>
-	  <li><i>CatalogExtractor</i> - As the base class of the catalog extractor component, this class creates the necessary directories for all of the data files to be created, and based on a list of extractors creates a new Extractor object for each one.</li>
-	  <li><i>ExtractionException</i> - A general exception thrown by any of the classes within this component as a way to catch any errors during catalog extraction.</li>
-	  <li><i>Attributes</i> - An object class used to hold the attribute names, indexes, and values.  Separates the functionality to extract each attributes information from the rest of the program.</li>
-	  <li><i>DBInfo</i> - An object used specifically to extract all necessary database information from a XML file.  This allows the user to modify the database properties from the XML file, rather than having to modify the code.</li>
-	  <li><i>Extractor</i> - The base object class created for each extractor class.  Creates a connection with the database, queries the database using the base query from each extractor class XML file, modifies the data according to past code, and creates a new XML object,</li>
-	  <li><i>XMLWriter</i> - The XML object that takes in an Arraylist and directory, builds a XML file using the DOM, and writes it to the base directory specified.</li>
+	  <li>Product_Data_Set_PDS3</li>
+	  <li>Product_Target_PDS3</li>
+	  <li>Product_Instrument_PDS3</li>
+	  <li>Product_Instrument_Host_PDS3</li>
+	  <li>Product_Mission_PDS3</li>
+	  <li>Product_Resource (indirectly through Association)</li>
 	</ul>
       </subsection>
-      <subsection name="Indexer">
+      <subsection name="Solr Indexer">
 	<p>
-	  This component is composed of two classes:
+	  The Solr Indexer leverages <a href="http://lucene.apache.org/java/docs/index.html">Apache Lucene</a> and the XML document produced by the Registry Extractor to create a Solr index that provides the necessary data for the Solr software to operate.
 	</p>
-	<ul>
-	  <li><i>Indexer</i> - The first of the two indexer classes to be called from the Solr software, this class utilizes the ProfileParser object to build the initial lucene indexed DOM document by combining all of the XML files created in the Catalog Extractor component, and adding any neccessary boosts.</li>
-	  <li><i>SolrIndexer</i> - This class utilizes the DocumentParser object to reformat the index created in the Indexer class into the necessary Solr format.</li>
-	</ul>
       </subsection>
-      <subsection name="Parser">
+      <subsection name="PDS Indexer">
 	<p>
-	  This component is composed of two classes:
+	  Produces catalog_index directory which produces segmented binary files that are leveraged by Solr.  Remaining use and functionality, TBD.
+	</p>
+      </subsection>
+      <subsection name="Solr">
+	<p>
+	  This component is the API aspect of the sofware used by Solr to provide the searchability and output to the user.  More specifically it is home to the following two classes:
 	</p>
 	<ul>
-	  <li><i>DocumentParser</i> - Utilized by the SolrIndexer object, this class takes a Lucene index DOM document, and returns a DOM document in a format readable by Solr.</li>
-	  <li><i>ProfileParser</i> - Utilized by the Indexer object, this class builds a Lucene index from a collection of XML documents containing raw data.</li>
+	  <li>XSLTResponseWriter - provides the Saxon interface for producing the search output using XML Stylsheets.</li>
+	  <li>PDSProtocolHandler - provides the PDS-specific search protocol for the Solr instance.</li>
 	</ul>
       </subsection>
     </section>
-    <section name="Create New Extractor Class">
-      See Solr documentation.
-    </section>
-    <section name="Modify Data Search Web Pages">
-      The index.jsp and search.jsp are simply containers that hold the data search software.  Changes to these pages will modify the header and footer on the page, but will not have an effect on the actual search box or results layout.  See Solr documentation for information on how to modify this.
-    </section>
+
+      <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.g
+ov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
+      </p>
+
   </body>
 </document>

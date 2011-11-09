@@ -14,7 +14,7 @@
 
 :: Batch file that allows easy execution of the Search Core Indexer
 :: without the need to set the CLASSPATH or having to type in that long java
-:: command (java gov.nasa.pds.search.core.catalog.CatalogExtractor ...)
+:: command (java gov.nasa.pds.search.core.RegistryExtractor ...)
 
 @echo off
 

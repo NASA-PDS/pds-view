@@ -1,5 +1,12 @@
 package gov.nasa.pds.search.core;
 
+import gov.nasa.pds.search.core.cli.options.Flag;
+import gov.nasa.pds.search.core.cli.options.InvalidOptionException;
+import gov.nasa.pds.search.core.constants.Constants;
+import gov.nasa.pds.search.core.index.Indexer;
+import gov.nasa.pds.search.core.index.SolrIndexer;
+import gov.nasa.pds.search.util.ToolInfo;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -13,13 +20,6 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.ParseException;
 
-import gov.nasa.pds.search.core.catalog.CatalogExtractor;
-import gov.nasa.pds.search.core.index.Indexer;
-import gov.nasa.pds.search.core.index.SolrIndexer;
-import gov.nasa.pds.search.util.ToolInfo;
-import gov.nasa.pds.search.core.cli.options.Flag;
-import gov.nasa.pds.search.core.cli.options.InvalidOptionException;
-
 public class PDSIndexerLauncher {
 
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
@@ -30,6 +30,7 @@ public class PDSIndexerLauncher {
 	private boolean solrFlag;
 	private boolean pdsFlag;
 	private boolean debug;
+	private String registryUrl;
 
 	public PDSIndexerLauncher() {
 		this.solrHome = null;
@@ -38,6 +39,7 @@ public class PDSIndexerLauncher {
 		this.solrFlag = false;
 		this.pdsFlag = false;
 		this.debug = false;
+		this.registryUrl = null;
 
 	}
 
@@ -112,18 +114,24 @@ public class PDSIndexerLauncher {
 				this.allFlag = false;
 			} else if (o.getOpt().equals(Flag.DEBUG.getShortName())) {
 				this.debug = true;
+			} else if (o.getOpt().equals(Flag.REGISTRY.getShortName())) {
+				this.registryUrl = o.getValue();
 			}
 		}
 
-		if (line.getArgList().size() !=  0) {
+		if (line.getArgList().size() != 0) {
 			this.solrHome = new File(line.getArgList().get(0).toString());
 			if (!this.solrHome.exists()) {
 				throw new InvalidOptionException("Solr Home does not exist: "
 						+ this.solrHome);
-			} 
+			}
 		} else {
 			throw new InvalidOptionException(
 					"Solr Home not found in command-line.");
+		}
+
+		if (this.registryUrl == null) {
+			this.registryUrl = Constants.REGISTRY_URL;
 		}
 	}
 
@@ -159,8 +167,8 @@ public class PDSIndexerLauncher {
 
 	private void runTse() throws Exception {
 		this.LOG.info("Running TSE to create new TSE directory...");
-		String[] args = { this.solrHome.getAbsolutePath() };
-		CatalogExtractor.main(args);
+		String[] args = { this.registryUrl, this.solrHome.getAbsolutePath() };
+		RegistryExtractor.main(args);
 	}
 
 	private void runSolrIndexer() throws IOException, ParseException, Exception {

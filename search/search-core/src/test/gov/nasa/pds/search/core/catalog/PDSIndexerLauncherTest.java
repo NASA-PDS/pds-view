@@ -1,6 +1,7 @@
 package gov.nasa.pds.search.core.catalog;
 
 import gov.nasa.pds.search.core.PDSIndexerLauncher;
+import gov.nasa.pds.search.core.RegistryExtractor;
 import gov.nasa.pds.search.core.index.Indexer;
 import gov.nasa.pds.search.core.index.SolrIndexer;
 
@@ -12,14 +13,14 @@ public class PDSIndexerLauncherTest {
 	private final static String SOLR_HOME = "src/test/old_solr_home";
 	
     /**
-     * Test CatalogExtractor
+     * Test RegistryExtractor
      * @throws Exception 
      */
     @Ignore
     @Test
-    public void testCatalogExtractor() throws Exception {
+    public void testRegistryExtractor() throws Exception {
         String[] args = { };
-        CatalogExtractor.main(args);
+        RegistryExtractor.main(args);
     }
 
     /**
@@ -53,7 +54,7 @@ public class PDSIndexerLauncherTest {
     @Ignore
     @Test
     public void testDefault() throws Exception {
-        String[] args = { "../" };
+        String[] args = { "../", "-r", "http://localhost:8080/registry-service/" };
         PDSIndexerLauncher.main(args);
     }
 	

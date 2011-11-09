@@ -28,9 +28,23 @@
     <section name="Operation">
       <p>This section describes how to operate the Search Service software. The following topics can be found in this section:
       </p>
-
-      <p>TBD
-      </p>
+      <ul>
+	<li><a href="#Create_Index">Create Index</a></li>
+	<li><a href="#Update_Index">Update Index</a></li>
+      </ul>
+    </section>
+    <section name="Create Index">
+      <p>An index is required in order for Solr to provide a search interface.  This index is created by the the Search Core Tool.  From the Search Service package, go into the <i>$SEARCH_SERVICE_HOME/pds/bin</i> directory and perform the following command to create a new index:</p>
+      <source>
+% ./initial-index &lt;solr-home&gt;
+      </source>
+      <p>By running this script, the old index will be backed up and replaced by the new one developed by the Search Core.  The solr-post script will then transform the index using XSLT and post the information to the Solr instance using cUrl.</p>
+    </section>
+    <section name="Update Index">
+      <p>It may not be necessary to run an entirely new index, but only update the Solr core in order to reflect the present index.  This can be accomplished by performing the folling command from the <i>$SEARCH_SERVICE_HOME/pds/bin</i> directory:</p>
+      <source>
+% ./solr-post &lt;solr-home&gt;
+      </source>
     </section>
   </body>
 </document>

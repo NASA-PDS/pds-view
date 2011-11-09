@@ -1,4 +1,4 @@
-package gov.nasa.pds.search.core.catalog.extractor.registry;
+package gov.nasa.pds.search.core.extractor.registry;
 
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.Slot;
@@ -30,10 +30,10 @@ public class RegistrySlots {
 
 	public RegistrySlots(ExtrinsicObject extObj) {
 		this.slotMap = new HashMap<String, List<String>>();
-		this.extObj = extObj; 
+		this.extObj = extObj;
 		this.missingSlotList = new ArrayList<String>();
 		this.missingSlots = false;
-		
+
 		setSlotMap(extObj.getSlots());
 	}
 
@@ -50,26 +50,28 @@ public class RegistrySlots {
 	public List<String> get(String key) {
 		if (key.equals(Constants.LOGICAL_IDENTIFIER)) {
 			return Arrays.asList(this.extObj.getLid());
-		} if (key.equals("name")) {
+		}
+		if (key.equals("name")) {
 			return Arrays.asList(this.extObj.getName());
-		} if (this.slotMap.containsKey(key.trim())) {
+		}
+		if (this.slotMap.containsKey(key.trim())) {
 			return this.slotMap.get(key.trim());
 		} else {
-			//this.LOG.warning("Key not found : " + key);
+			// this.LOG.warning("Key not found : " + key);
 			this.missingSlotList.add(key);
 			this.missingSlots = true;
 			return Arrays.asList("UNK");
 		}
 	}
-	
+
 	public boolean isMissingSlots() {
 		return this.missingSlots;
 	}
-	
+
 	public String getObjectType() {
 		return this.extObj.getObjectType();
 	}
-	
+
 	public List<String> getMissingSlotList() {
 		return this.missingSlotList;
 	}

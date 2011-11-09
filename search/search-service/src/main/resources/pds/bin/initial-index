@@ -53,15 +53,15 @@ fi
 echo
 
 
-if [ -f pds/solr_index_old.xml ]
+if [ -f index/solr_index_old.xml ]
 then
-  echo "LOG: Removing 'pds/solr_index_old.xml'"
-  rm pds/solr_index_old.xml
+  echo "LOG: Removing 'index/solr_index_old.xml'"
+  rm index/solr_index_old.xml
 fi
-if [ -f pds/solr_index.xml ]
+if [ -f index/solr_index.xml ]
 then
-  echo "LOG: Backing up 'pds/solr_index.xml' to 'pds/solr_index_old.xml'"
-  mv pds/solr_index.xml pds/solr_index_old.xml
+  echo "LOG: Backing up 'index/solr_index.xml' to 'index/solr_index_old.xml'"
+  mv index/solr_index.xml index/solr_index_old.xml
 fi
 echo
 
@@ -74,17 +74,15 @@ fi
 if [ -d catalog_index ]
 then
   echo "Backing up 'catalog_index' to 'catalog_index_old'"
-  cp -r catalog_index catalog_index_old
+  mv catalog_index catalog_index_old
   echo "Removing 'catalog_index' before new index is created"
-  rm -fr catalog_index
-  sleep 15
 fi
 echo
 echo "---------------------------------------"
 echo
 
 echo "-----Running PDSIndexer------"
-PDSIndexer $PDS_SOLR_HOME
+SearchCore $PDS_SOLR_HOME
 echo "-----PDSIndexer Complete-----"
 
 ./bin/solr-post $SOLR_HOME

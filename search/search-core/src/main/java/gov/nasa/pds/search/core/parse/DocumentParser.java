@@ -11,7 +11,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -35,8 +34,6 @@ import org.xml.sax.SAXException;
 public class DocumentParser {
 	private static Logger LOG = Logger
 			.getLogger(DocumentParser.class.getName());
-	
-	
 
 	/**
 	 * Creates the document object a parses out all of the data from each
@@ -46,7 +43,7 @@ public class DocumentParser {
 	 *            - The individual profile document for each record for the
 	 *            current class.
 	 * @return indexDoc - Lucene DOM document returned with parsed data.
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	public static StringBuffer parse(File file) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -80,9 +77,10 @@ public class DocumentParser {
 	 * @return indexDoc - Lucene DOM Document object that takes parsed pairs and
 	 *         recreates document with added fields and values, and makes it
 	 *         ready for SOLR.
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
-	private static StringBuffer retrieveMetadata(org.w3c.dom.Document document) throws ParseException {
+	private static StringBuffer retrieveMetadata(org.w3c.dom.Document document)
+			throws ParseException {
 		StringBuffer indexDoc = new StringBuffer();
 		StringBuffer contents = new StringBuffer();
 		Element root = document.getDocumentElement();
@@ -90,7 +88,7 @@ public class DocumentParser {
 		String resClass = "";
 		boolean invalidDoc = false;
 		indexDoc.append("<doc>\n");
-		
+
 		// The name of the cataloged item should be the child at position
 		if (children.getLength() > 1) {
 			Node catalogItem = children.item(1);
@@ -103,13 +101,13 @@ public class DocumentParser {
 				if (child.getNodeType() != Node.TEXT_NODE) {
 					String name = child.getLocalName();
 					String value = child.getTextContent();
-					
+
 					LOG.fine("name: " + name);
 					LOG.fine("value: " + value);
-					
+
 					if (value.toUpperCase().equals("UNKNOWN"))
-							value = "UNK";
-					
+						value = "UNK";
+
 					if ("title".equals(name)
 							&& ("N/A".equals(value.toUpperCase())
 									|| "UNK".equals(value.toUpperCase()) || "NULL"
@@ -123,7 +121,7 @@ public class DocumentParser {
 						if (!"resClass".equals(name)) {
 							if (name.endsWith("date") || name.endsWith("time")) {
 								value = configureDateTimes(value);
-								
+
 								indexDoc.append("<field name=\"" + name + "\">"
 										+ value + "</field>\n");
 							} else if (name.endsWith("time")) {
@@ -150,26 +148,29 @@ public class DocumentParser {
 
 		return indexDoc;
 	}
-	
+
 	/**
 	 * @param value
 	 * @return
 	 * @throws ParseException
 	 */
-	private static String configureDateTimes(String value) throws ParseException {
-		//System.out.println("Configuring Datetime: "+ value);
-		SimpleDateFormat newFrmt = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss.SSS'Z'");
-		
-		//System.out.println("Input datetime: " + value);
+	private static String configureDateTimes(String value)
+			throws ParseException {
+		// System.out.println("Configuring Datetime: "+ value);
+		SimpleDateFormat newFrmt = new SimpleDateFormat(
+				"yyyy-MM-dd'T'kk:mm:ss.SSS'Z'");
+
+		// System.out.println("Input datetime: " + value);
 		value = value.toUpperCase();
-		value =	value.replaceAll("(T|Z)", "");
-		
+		value = value.replaceAll("(T|Z)", "");
+
 		if (value.matches("PROCESSING__.*"))
 			value = value.replace("PROCESSING__", "");
-		
+
 		int length = value.length();
 
-		if (length < 4 || !value.matches(".*[0-9].*")) {	// Invalid/null/unknown datetime
+		if (length < 4 || !value.matches(".*[0-9].*")) { // Invalid/null/unknown
+															// datetime
 			value = "3000-01-01T00:00:00Z";
 		} else if (length == 4) {
 			SimpleDateFormat yearFrmt = new SimpleDateFormat("yyyy");
@@ -184,38 +185,46 @@ public class DocumentParser {
 			SimpleDateFormat yearMonthFrmt = new SimpleDateFormat("yyyy-MM-dd");
 			value = newFrmt.format(yearMonthFrmt.parse(value));
 		} else if (length == 12) {
-			SimpleDateFormat yearMonthFrmt = new SimpleDateFormat("yyyy-MM-ddkk");
+			SimpleDateFormat yearMonthFrmt = new SimpleDateFormat(
+					"yyyy-MM-ddkk");
 			value = newFrmt.format(yearMonthFrmt.parse(value));
 		} else if (length == 15) {
-			SimpleDateFormat yearMonthFrmt = new SimpleDateFormat("yyyy-MM-ddkk:mm");
+			SimpleDateFormat yearMonthFrmt = new SimpleDateFormat(
+					"yyyy-MM-ddkk:mm");
 			value = newFrmt.format(yearMonthFrmt.parse(value));
 		} else if (length == 16) {
 			SimpleDateFormat doyFrmt = new SimpleDateFormat("yyyy-DDDkk:mm:ss");
 			value = newFrmt.format(doyFrmt.parse(value));
 		} else if (length == 18 && value.contains("-")) {
-			SimpleDateFormat dateFrmt = new SimpleDateFormat("yyyy-MM-ddkk:mm:ss");
+			SimpleDateFormat dateFrmt = new SimpleDateFormat(
+					"yyyy-MM-ddkk:mm:ss");
 			value = newFrmt.format(dateFrmt.parse(value));
 		} else if (length == 18) {
-			SimpleDateFormat dateFrmt = new SimpleDateFormat("yyyyMMddkkmmss.SSS");
+			SimpleDateFormat dateFrmt = new SimpleDateFormat(
+					"yyyyMMddkkmmss.SSS");
 			value = newFrmt.format(dateFrmt.parse(value));
 		} else if (length == 19) {
-			SimpleDateFormat dateFrmt = new SimpleDateFormat("yyyy-DDDkk:mm:ss.SS");
+			SimpleDateFormat dateFrmt = new SimpleDateFormat(
+					"yyyy-DDDkk:mm:ss.SS");
 			value = newFrmt.format(dateFrmt.parse(value));
 		} else if (length == 20) {
-			SimpleDateFormat doyFrmt = new SimpleDateFormat("yyyy-DDDkk:mm:ss.SSS");
+			SimpleDateFormat doyFrmt = new SimpleDateFormat(
+					"yyyy-DDDkk:mm:ss.SSS");
 			value = newFrmt.format(doyFrmt.parse(value));
 		} else if (length == 21) {
-			SimpleDateFormat msFrmt = new SimpleDateFormat("yyyy-MM-ddkk:mm:ss.SS");
-			value = newFrmt.format(msFrmt.parse(value));			
+			SimpleDateFormat msFrmt = new SimpleDateFormat(
+					"yyyy-MM-ddkk:mm:ss.SS");
+			value = newFrmt.format(msFrmt.parse(value));
 		} else if (length == 22) {
-			SimpleDateFormat msFrmt = new SimpleDateFormat("yyyy-MM-ddkk:mm:ss.SSS");
-			value = newFrmt.format(msFrmt.parse(value));			
+			SimpleDateFormat msFrmt = new SimpleDateFormat(
+					"yyyy-MM-ddkk:mm:ss.SSS");
+			value = newFrmt.format(msFrmt.parse(value));
 		} else if (length == 23) {
-			SimpleDateFormat msFrmt = new SimpleDateFormat("yyyy-MM-ddkk:mm:ss.SSSS");
+			SimpleDateFormat msFrmt = new SimpleDateFormat(
+					"yyyy-MM-ddkk:mm:ss.SSSS");
 			value = newFrmt.format(msFrmt.parse(value));
 		}
-		
-		
+
 		return value;
 	}
 
@@ -230,23 +239,35 @@ public class DocumentParser {
 		factory.setNamespaceAware(true);
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		// System.out.println(DocumentParser.retrieveMetadata(builder.parse(args[0])));
-		//System.out.println(DocumentParser.retrieveMetadata(builder.parse("/Users/jpadams/dev/workspace/solr/tse/extract/target/tse_target_10001.xml")));
-		System.out.println(DocumentParser.configureDateTimes("processing__unk"));
-		System.out.println(DocumentParser.configureDateTimes("processing__1988-08-01"));
+		// System.out.println(DocumentParser.retrieveMetadata(builder.parse("/Users/jpadams/dev/workspace/solr/tse/extract/target/tse_target_10001.xml")));
+		System.out
+				.println(DocumentParser.configureDateTimes("processing__unk"));
+		System.out.println(DocumentParser
+				.configureDateTimes("processing__1988-08-01"));
 		System.out.println(DocumentParser.configureDateTimes("unknown"));
 		System.out.println(DocumentParser.configureDateTimes("1999"));
 		System.out.println(DocumentParser.configureDateTimes("2000-03"));
 		System.out.println(DocumentParser.configureDateTimes("2001-04-30"));
-		System.out.println(DocumentParser.configureDateTimes("2002-05-15t14:20"));
-		System.out.println(DocumentParser.configureDateTimes("1994-07-20t20:16:32"));
-		System.out.println(DocumentParser.configureDateTimes("1977-09-05t00:14z"));
-		System.out.println(DocumentParser.configureDateTimes("1999-354t06:53:12z"));
-		System.out.println(DocumentParser.configureDateTimes("1979-02-26T00:00:35.897"));
-		System.out.println(DocumentParser.configureDateTimes("19851108070408.649"));
-		System.out.println(DocumentParser.configureDateTimes("2009-06-30t00:00:00.00"));
-		System.out.println(DocumentParser.configureDateTimes("2004-001t00:00:00.000"));
-		System.out.println(DocumentParser.configureDateTimes("2002-02-19t19:00:29.6236"));
-		System.out.println(DocumentParser.configureDateTimes("2001-266t10:44:29.81"));
+		System.out.println(DocumentParser
+				.configureDateTimes("2002-05-15t14:20"));
+		System.out.println(DocumentParser
+				.configureDateTimes("1994-07-20t20:16:32"));
+		System.out.println(DocumentParser
+				.configureDateTimes("1977-09-05t00:14z"));
+		System.out.println(DocumentParser
+				.configureDateTimes("1999-354t06:53:12z"));
+		System.out.println(DocumentParser
+				.configureDateTimes("1979-02-26T00:00:35.897"));
+		System.out.println(DocumentParser
+				.configureDateTimes("19851108070408.649"));
+		System.out.println(DocumentParser
+				.configureDateTimes("2009-06-30t00:00:00.00"));
+		System.out.println(DocumentParser
+				.configureDateTimes("2004-001t00:00:00.000"));
+		System.out.println(DocumentParser
+				.configureDateTimes("2002-02-19t19:00:29.6236"));
+		System.out.println(DocumentParser
+				.configureDateTimes("2001-266t10:44:29.81"));
 	}
 
 }

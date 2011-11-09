@@ -19,31 +19,130 @@
   <properties>
     <title>Installation</title>
     <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
+    <author email="jordan.h.padams@jpl.nasa.gov">Jordan Padams</author>
   </properties>
 
   <body>
     <section name="Installation">
-      <p>TBD. The following sections can be found in this document:
+      <p>This section describes how to install the Search Core command-line tool contained in the <i>${xdoc-artifactId}</i> package. The following topics can be found in this section:
       </p>
 
       <ul>
-        <li>
-          <a href="#Nutch Installation">Nutch Installation</a>
+        <li><a href="#System_Requirements">System Requirements</a></li>
+        <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
+        <li><a href="#Configuring_the_Tool">Configuring the Tool</a></li>
+        <li><a href="#Configuring_the_Environment">Configuring the Environment</a></li>
+      </ul>
+    </section>
+
+    <section name="System Requirements">
+      <p>The Search Core Tool was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically developed under Java version 1.6 and has only been tested with this version. The following commands test the local Java installation in a UNIX-based environment:
+      </p>
+
+      <source>
+% which java
+/usr/bin/java
+
+% java -version
+java version "1.6.0_26"
+Java(TM) SE Runtime Environment (build 1.6.0_26-b03-384-10M3425)
+Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
+      </source>
+      <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.6, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The software package of choice is the Java Standard Edition (SE) 6, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
+      </p>
+    </section>
+
+    <section name="Unpacking the Package">
+      <p>Download the <i>${xdoc-artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/search/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. Unpack the selected binary distribution file with one of the following commands:
+      </p>
+
+      <source>
+% unzip ${xdoc-artifactId}-${xdoc-version}-bin.zip
+or
+% tar -xzvf ${xdoc-artifactId}-${xdoc-version}-bin.tar.gz
+      </source>
+
+      <p>Note: Depending on the platform, the native version of <i>tar</i> may produce an error when attempting to unpack the distribution file because many of the file paths are greater than 100 characters. If available, the GNU version of tar will resolve this problem. If that is not available or cannot be installed, the zipped package will work just fine in a UNIX environment.
+      </p>
+
+      <p>The commands above result in the creation of the <i>${xdoc-artifactId}-${xdoc-version}</i> directory with the following directory structure:
+      </p>
+
+      <ul>
+        <li><b>README.txt</b><br/>
+          <p>A README file directing the user to the available documentation for the project.
+          </p>
         </li>
-        <li>
-          <a href="#Package Installation">Package Installation</a>
+        <li><b>LICENSE.txt</b><br/>
+          <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
+          </p>
+        </li>
+        <li><b>bin/</b><br/>
+          <p>This directory contains batch and shell scripts for executing the tool.
+          </p>
+        </li>
+        <li><b>conf/</b><br/>
+          <p>This directory contains the configuration files needed to specify the Registry context products and the information needed to extract necessary data from the Registry.
+          </p>
+        </li>
+        <li><b>doc/</b><br/>
+          <p>This document directory contains a local web site with the Search Core Guide, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
+          </p>
+        </li>
+        <li><b>lib/</b><br/>
+          <p>This directory contains the dependent jar files for the tool along with the executable jar file (${xdoc-artifactId}-${xdoc-version}.jar) containing the Search Core software.
+          </p>
         </li>
       </ul>
     </section>
 
-    <section name="Nutch Installation">
-      <p>TBD
+    <section name="Configuring the Environment">
+      <p>In order to execute the Search Core Tool the local environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.
       </p>
-    </section>
 
-    <section name="Package Installation">
-      <p>TBD
-      </p>
+      <subsection name="UNIX-Based Environment">
+        <p>This section details the environment setup for UNIX-based machines. The binary distribution includes a couple shell scripts that must be executed from the command-line. Setting the <i>PATH</i> environment variable to the location of the scripts, enables the shell scripts to be executed from any location on the local machine.
+        </p>
+
+        <p>The following command demonstrates how to set the <i>PATH</i> environment variable (in Bourne shell), by appending to its current setting:
+        </p>
+
+        <source>
+% export PATH=${PATH}:${HOME}/${xdoc-artifactId}-${xdoc-version}/bin
+        </source>
+
+        <p>In addition, the shell scripts require that the <i>JAVA_HOME</i> environment variable be set to the appropriate location of the Java installation on the local machine. The following command demonstrates how to set the <i>JAVA_HOME</i> environment variable:
+        </p>
+
+        <source>
+% export JAVA_HOME=/path/to/java/home
+        </source>
+
+        <p>The system administrator for the local machine may need to be consulted for this location. The path specified should have a <i>bin</i> sub-directory that contains the <i>java</i> executable. This variable may also be defined within the scripts. Edit the scripts (files without the .bat extension) and change the line in the example above to represent the local Java installation.
+        </p>
+      </subsection>
+      
+      <subsection name="Windows Setup">
+        <p>This section details the environment setup for Windows machines. The binary distribution includes a couple batch scripts that must be executed from the command-line. Setting the <i>PATH</i> environment variable to the location of the files, enables the batch scripts to be executed from any location on the local machine.
+        </p>
+
+        <p>The following command demonstrates how to set the <i>PATH</i> environment variable, by appending to its current setting:
+        </p>
+
+        <source>
+C:\&gt; set PATH = %PATH%;C:\\${xdoc-artifactId}-${xdoc-version}\bin
+        </source>
+
+        <p>In addition, the batch scripts require that the <i>JAVA_HOME</i> environment variable be set to the appropriate location of the Java installation on the local machine. The following command demonstrates how to set the <i>JAVA_HOME</i> environment variable:
+        </p>
+
+        <source>
+C:\&gt; set JAVA_HOME = C:\path\to\java\home
+        </source>
+
+        <p>The system administrator for the local machine may need to be consulted for this location. The path specified should have a <i>bin</i> sub-directory that contains the <i>java</i> executable. This variable may also be defined within the scripts. Edit the scripts (files with the .bat extension) and change the line in the example above to represent the local Java installation. Additional methods for setting Windows environment variables can be found in the <a href="index-win.html">Windows System Properties</a> section. If viewing this document in PDF form, see the appendix for details.
+        </p>
+      </subsection>
     </section>
   </body>
 </document>

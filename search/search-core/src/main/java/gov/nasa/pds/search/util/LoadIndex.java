@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.Rule;
@@ -16,28 +15,27 @@ import org.apache.solr.core.SolrCore;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import com.sun.org.apache.bcel.internal.classfile.Field;
-
 public class LoadIndex {
 
 	/**
 	 * @param args
-	 * @throws IOException 
-	 * @throws SolrServerException 
-	 * @throws SAXException 
+	 * @throws IOException
+	 * @throws SolrServerException
+	 * @throws SAXException
 	 */
-	public static void main(String[] args) throws SolrServerException, IOException, SAXException {
+	public static void main(String[] args) throws SolrServerException,
+			IOException, SAXException {
 		if (args.length != 1) {
 			System.err.println("usage: LoadIndex xmlFile");
 			System.exit(1);
 		}
-		
+
 		SolrCore core = SolrCore.getSolrCore();
 		SolrServer server = new EmbeddedSolrServer(core);
-		
+
 		final Digester digester = new Digester();
 		digester.setValidating(false);
-		
+
 		digester.addRule("add", new Rule() {
 			@Override
 			public void begin(String namespace, String name,
@@ -63,13 +61,15 @@ public class LoadIndex {
 			public void body(String text) throws Exception {
 				float boost = Float.parseFloat((String) digester.pop());
 				String name = (String) digester.pop();
-				((SolrInputDocument) digester.peek()).addField(name, text, boost);
+				((SolrInputDocument) digester.peek()).addField(name, text,
+						boost);
 			}
 		});
 		digester.addSetNext("add/doc", "add", SolrInputDocument.class.getName());
-		
+
 		File input = new File(args[0]);
-		Collection<SolrInputDocument> docs = (Collection<SolrInputDocument>) digester.parse(input);
+		Collection<SolrInputDocument> docs = (Collection<SolrInputDocument>) digester
+				.parse(input);
 
 		server.add(docs);
 		server.commit();

@@ -4,7 +4,7 @@
 // $Id$ 
 //
 
-package gov.nasa.pds.search.core.catalog.extractor;
+package gov.nasa.pds.search.core.extractor;
 
 import gov.nasa.pds.registry.client.RegistryClient;
 import gov.nasa.pds.registry.exception.RegistryClientException;
@@ -13,18 +13,15 @@ import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
-import gov.nasa.pds.registry.model.Slot;
 import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
-import gov.nasa.pds.registry.query.ObjectFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
-import gov.nasa.pds.search.core.catalog.ExtractionException;
-import gov.nasa.pds.search.core.catalog.InvalidExtractorException;
-import gov.nasa.pds.search.core.catalog.extractor.registry.ExtrinsicFilterTypes;
-import gov.nasa.pds.search.core.catalog.extractor.registry.MappingTypes;
-import gov.nasa.pds.search.core.catalog.extractor.registry.RegistrySlots;
-import gov.nasa.pds.search.core.catalog.extractor.registry.ResponseTypes;
+import gov.nasa.pds.search.core.ExtractionException;
+import gov.nasa.pds.search.core.InvalidExtractorException;
 import gov.nasa.pds.search.core.constants.Constants;
+import gov.nasa.pds.search.core.extractor.registry.ExtrinsicFilterTypes;
+import gov.nasa.pds.search.core.extractor.registry.MappingTypes;
+import gov.nasa.pds.search.core.extractor.registry.RegistrySlots;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -35,18 +32,14 @@ import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.apache.solr.common.util.DateUtil;
-import org.apache.solr.schema.DateField;
+import org.apache.commons.httpclient.util.DateParseException;
 
 /**
  * @author pramirez
@@ -57,25 +50,24 @@ import org.apache.solr.schema.DateField;
 public class Extractor { // implements Extractor {
 	// Database configuration file default
 
-    public static final List<String> DATE_FIELDS = new ArrayList<String>() {
+	public static final List<String> DATE_FIELDS = new ArrayList<String>() {
 		private static final long serialVersionUID = 4549083437446527668L;
 		{
-    		add("start_time");
-        	add("stop_time");
-    	}
-    };
+			add("start_time");
+			add("stop_time");
+		}
+	};
 
-    public static final List<String> DATE_FORMATS = new ArrayList<String>() {
+	public static final List<String> DATE_FORMATS = new ArrayList<String>() {
 		private static final long serialVersionUID = -790664498543223562L;
 		{
-        	add("yyyy-MM-dd");
-    		add("yyyy-MM-dd'T'kk:mm:ss.SSS'Z'");
-        	add("yyyy-MM-dd'T'kk:mm:ss.SSS");
-        	add("yyyy-MM-dd'T'kk:mm");
-    	}
-    };
-    
-	
+			add("yyyy-MM-dd");
+			add("yyyy-MM-dd'T'kk:mm:ss.SSS'Z'");
+			add("yyyy-MM-dd'T'kk:mm:ss.SSS");
+			add("yyyy-MM-dd'T'kk:mm");
+		}
+	};
+
 	private int oidseq = 10000;
 
 	private String classname, classFilename;
@@ -98,21 +90,23 @@ public class Extractor { // implements Extractor {
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	private PrintWriter xmlDisplay;
 
-	//private RegistryClient client;
+	// private RegistryClient client;
 	private PrintWriter writer;
 	private Map<String, List<RegistrySlots>> associationMap;
-	
+
 	private Map<String, List<String>> missingSlotsMap;
-	
+
 	/**
 	 * List of Associations where target extrinsic is not found
 	 */
 	private List<String> missingAssocTargets;
-	
+
+	private String registryUrl;
+
 	/**
 	 * List of associationTypes that do not exist for extrinsic object
 	 */
-	//private List<String> missingAssociations;
+	// private List<String> missingAssociations;
 
 	/**
 	 * Initialize global variables used throughout
@@ -122,7 +116,8 @@ public class Extractor { // implements Extractor {
 	 * @param value
 	 *            - name of column properties file
 	 */
-	public Extractor(PrintWriter writer, String name, String file) {
+	public Extractor(PrintWriter writer, String name, String file,
+			String registryUrl) {
 		log.fine("In Generic Extractor");
 
 		this.writer = writer;
@@ -130,9 +125,10 @@ public class Extractor { // implements Extractor {
 
 		classname = name;
 		classFilename = file;
+		this.registryUrl = registryUrl;
 
 		associationMap = new HashMap<String, List<RegistrySlots>>();
-		
+
 		missingSlotsMap = new HashMap<String, List<String>>();
 		missingAssocTargets = new ArrayList<String>();
 
@@ -144,18 +140,18 @@ public class Extractor { // implements Extractor {
 	 * 
 	 * @see gov.nasa.pds.tse.catalog.Extractor#extract()
 	 */
-	public List extract(File extractorDir)
-			throws ExtractionException {
-		//log.fine("confdir : " + confDir);
+	public List extract(File extractorDir) throws ExtractionException {
+		// log.fine("confdir : " + confDir);
 		List instkeys = new ArrayList();
 
 		this.columns = new ColumnNodes(this.classFilename);
 
 		try {
 			// Initialize the global RegistryClient
-			//this.client = new RegistryClient(TseConstants.REGISTRY_URL);
+			// this.client = new RegistryClient(TseConstants.REGISTRY_URL);
 
-			PagedResponse<ExtrinsicObject> response = getExtrinsics(ExtrinsicFilterTypes.OBJECT_TYPE,
+			PagedResponse<ExtrinsicObject> response = getExtrinsics(
+					ExtrinsicFilterTypes.OBJECT_TYPE,
 					this.columns.getObjectType());
 
 			for (ExtrinsicObject object : (List<ExtrinsicObject>) response
@@ -173,9 +169,9 @@ public class Extractor { // implements Extractor {
 				// log.info("Files placed in dir : " + extractorDir);
 				createXML(extractorDir);
 			}
-			
+
 			displayWarnings();
-			
+
 			// rs1.close();
 			// connection1.close();
 		} catch (Exception ex) {
@@ -245,16 +241,24 @@ public class Extractor { // implements Extractor {
 				currType = columns.getType(i);
 				currVal = columns.getValue(i);
 
-				if (currType.equals(MappingTypes.OUTPUT)) {				// Output value given in XML
+				if (currType.equals(MappingTypes.OUTPUT)) { // Output value
+															// given in XML
 					valArray = new ArrayList();
 					valArray.add(currVal);
 					finalVals.put(currName, valArray);
-				
-				// TODO should refactor this entire else-if and create a separate RegistryAttribute class that handles all those search parameters that fit the specific criteria
-				// very similar code is being replicated in the RegistrySlots class
-				} else if (currType.equals(MappingTypes.ATTRIBUTE)) {	// Specific attributes that can
-					if (currName.equals("identifier")) {				// be queried from a RegistryObject
-						valArray = new ArrayList();						// method
+
+					// TODO should refactor this entire else-if and create a
+					// separate RegistryAttribute class that handles all those
+					// search parameters that fit the specific criteria
+					// very similar code is being replicated in the
+					// RegistrySlots class
+				} else if (currType.equals(MappingTypes.ATTRIBUTE)) { // Specific
+																		// attributes
+																		// that
+																		// can
+					if (currName.equals("identifier")) { // be queried from a
+															// RegistryObject
+						valArray = new ArrayList(); // method
 						valArray.add(extObject.getLid());
 						finalVals.put(currName, valArray);
 					} else if (currName.equals("title")) {
@@ -262,63 +266,91 @@ public class Extractor { // implements Extractor {
 						valArray.add(extObject.getName());
 						finalVals.put(currName, valArray);
 					}
-				} else if (currType.equals(MappingTypes.SLOT)) {		// Value maps to a specific
-					valArray = new ArrayList();						// slot in the current object type
+				} else if (currType.equals(MappingTypes.SLOT)) { // Value maps
+																	// to a
+																	// specific
+					valArray = new ArrayList(); // slot in the current object
+												// type
 					for (String value : this.slots.get(currVal)) {
 						tval1 = remNull(value);
 						// tval1 = tval1.trim();
 						valArray.add(cleanText(tval1));
-						
+
 					}
-//					if (DATE_FIELDS.contains(currName))
-//						valArray = reformatDateFields(valArray);
+					// if (DATE_FIELDS.contains(currName))
+					// valArray = reformatDateFields(valArray);
 					finalVals.put(currName, valArray);
-				} else if (currType.equals(MappingTypes.SLOT_SINGLE)) {	// Values maps to a specific
-					valArray = new ArrayList();							// slot in the current object type
-					tval1 = remNull(this.slots.get(currVal).get(0));	// AND ensures that certain columns
-					valArray.add(cleanText(tval1));						// that are only allowed one value
-					finalVals.put(currName, valArray);					// do not output a list
-																		// (i.e. description, mission_desc)
-				} else if (currType.equals(MappingTypes.ASSOCIATION)) { // Value maps to an associated object
-					String[] values = currVal.split("\\.");				// slot
+				} else if (currType.equals(MappingTypes.SLOT_SINGLE)) { // Values
+																		// maps
+																		// to a
+																		// specific
+					valArray = new ArrayList(); // slot in the current object
+												// type
+					tval1 = remNull(this.slots.get(currVal).get(0)); // AND
+																		// ensures
+																		// that
+																		// certain
+																		// columns
+					valArray.add(cleanText(tval1)); // that are only allowed one
+													// value
+					finalVals.put(currName, valArray); // do not output a list
+														// (i.e. description,
+														// mission_desc)
+				} else if (currType.equals(MappingTypes.ASSOCIATION)) { // Value
+																		// maps
+																		// to an
+																		// associated
+																		// object
+					String[] values = currVal.split("\\."); // slot
 					valArray = new ArrayList();
 					String assocType = values[0];
-					boolean foundAssociation = this.associationMap.containsKey(assocType);
-					
-					// Code hack in order to handle has_mission and has_investigation overlap
-					// Assumption that product cannot have both has_investigation and has_mission associations
+					boolean foundAssociation = this.associationMap
+							.containsKey(assocType);
+
+					// Code hack in order to handle has_mission and
+					// has_investigation overlap
+					// Assumption that product cannot have both
+					// has_investigation and has_mission associations
 					if (!foundAssociation) {
 						if (assocType.equals("has_mission")) {
 							assocType = "has_investigation";
-							foundAssociation = this.associationMap.containsKey(assocType);
+							foundAssociation = this.associationMap
+									.containsKey(assocType);
 						} else if (assocType.equals("has_investigation")) {
 							assocType = "has_mission";
-							foundAssociation = this.associationMap.containsKey(assocType);
+							foundAssociation = this.associationMap
+									.containsKey(assocType);
 						}
 					}
-					
+
 					if (foundAssociation) {
-						for (RegistrySlots assocSlots : this.associationMap.get(assocType)) {
+						for (RegistrySlots assocSlots : this.associationMap
+								.get(assocType)) {
 							for (String value : assocSlots.get(values[1])) {
 								tval1 = cleanText(remNull(value));
 								if (!valArray.contains(tval1)) {
 									valArray.add(tval1);
 								}
 							}
-							
+
 							try {
 								recordMissingSlots(assocSlots);
 							} catch (NullPointerException e) {
-								System.err.println("NullPointerException - " + this.lid + " - " + assocType);
-							}			
+								System.err.println("NullPointerException - "
+										+ this.lid + " - " + assocType);
+							}
 							finalVals.put(currName, valArray);
 						}
 					} else {
 						valArray.add("UNK");
 						finalVals.put(currName, valArray);
 					}
-						
-				} else if (currType.equals(MappingTypes.OTHER)) {		// Unknown mapping that is currently ignored
+
+				} else if (currType.equals(MappingTypes.OTHER)) { // Unknown
+																	// mapping
+																	// that is
+																	// currently
+																	// ignored
 
 					/*
 					 * tval1 = "UNK"; valArray = new ArrayList();
@@ -346,61 +378,63 @@ public class Extractor { // implements Extractor {
 		}
 	}
 
-	private PagedResponse<ExtrinsicObject> getExtrinsics(String type, String value) throws Exception {
-		//Build the filter
-		ExtrinsicFilter filter = null; //new ExtrinsicFilter.Builder().lid(this.lid).build();
+	private PagedResponse<ExtrinsicObject> getExtrinsics(String type,
+			String value) throws Exception {
+		// Build the filter
+		ExtrinsicFilter filter = null; // new
+										// ExtrinsicFilter.Builder().lid(this.lid).build();
 		if (type.equals(ExtrinsicFilterTypes.LIDVID)) {
-			filter = new ExtrinsicFilter.Builder().lid(value.split("::")[0]).build();
-			//filter = new ExtrinsicFilter.Builder().lid(value).build();
+			filter = new ExtrinsicFilter.Builder().lid(value.split("::")[0])
+					.build();
+			// filter = new ExtrinsicFilter.Builder().lid(value).build();
 		} else if (type.equals(ExtrinsicFilterTypes.GUID)) {
 			filter = new ExtrinsicFilter.Builder().guid(value).build();
 		} else if (type.equals(ExtrinsicFilterTypes.OBJECT_TYPE)) {
 			filter = new ExtrinsicFilter.Builder().objectType(value).build();
 		}
-		//Create the query
-		RegistryQuery<ExtrinsicFilter> query = new
-		RegistryQuery.Builder<ExtrinsicFilter>().filter(filter).build();
+		// Create the query
+		RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
+				.filter(filter).build();
 		try {
-			RegistryClient client = new RegistryClient(Constants.REGISTRY_URL);
-					//securityContext, user, password);
-			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1, Constants.QUERY_MAX);
-			//Examine the results of the query
-			/*if (pr.getNumFound() != 0) {
-				for (ExtrinsicObject extrinsic : pr.getResults()) {
-					for (Slot slot : extrinsic.getSlots()) {
-						if (slot.getName().equals(Constants.PRODUCT_VERSION) &&
-								slot.getValues().contains(version)) {
-							result = extrinsic;
-						}
-					}
-				}
-			}*/
+			RegistryClient client = new RegistryClient(this.registryUrl);
+			// securityContext, user, password);
+			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1,
+					Constants.QUERY_MAX);
+			// Examine the results of the query
+			/*
+			 * if (pr.getNumFound() != 0) { for (ExtrinsicObject extrinsic :
+			 * pr.getResults()) { for (Slot slot : extrinsic.getSlots()) { if
+			 * (slot.getName().equals(Constants.PRODUCT_VERSION) &&
+			 * slot.getValues().contains(version)) { result = extrinsic; } } } }
+			 */
 			return pr;
 		} catch (RegistryServiceException rse) {
-			//Ignore. Nothing found.
+			// Ignore. Nothing found.
 		} catch (RegistryClientException rce) {
 			throw new Exception(rce.getMessage());
 		}
 		return null;
 	}
-	
 
 	/**
 	 * Sets the associationMap values.
-	 * @throws  
+	 * 
+	 * @throws
 	 */
 	private void setAssociations(RegistrySlots slots) throws Exception {
 		for (String assocType : (List<String>) this.columns.getAssociations()) {
-			//System.out.println(assocType + " - " + this.guid);
-			
+			// System.out.println(assocType + " - " + this.guid);
+
 			List<String> assocLidList = slots.get(assocType);
-			
-			//PagedResponse<ExtrinsicObject> extObjResponse = getExtrinsics(ExtrinsicFilterTypes.GUID, this.guid);
+
+			// PagedResponse<ExtrinsicObject> extObjResponse =
+			// getExtrinsics(ExtrinsicFilterTypes.GUID, this.guid);
 			if (assocLidList.isEmpty()) {
-				this.log.fine("Missing Association Slot : "
-						+ this.lid + " - " + assocType);
+				this.log.fine("Missing Association Slot : " + this.lid + " - "
+						+ assocType);
 			} else {
-				List<RegistrySlots> assocSlotList = getAssociationSlots(assocLidList, assocType);
+				List<RegistrySlots> assocSlotList = getAssociationSlots(
+						assocLidList, assocType);
 				if (!assocSlotList.isEmpty()) {
 					this.associationMap.put(assocType, assocSlotList);
 				}
@@ -410,37 +444,43 @@ public class Extractor { // implements Extractor {
 
 	/**
 	 * Query the associated objects and map the objects to their slots
+	 * 
 	 * @param guid
 	 * @param assocType
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	private List<RegistrySlots> getAssociationSlots(List<String> assocLidList, String assocType) throws Exception {
-		//PagedResponse<Association> assocResponse = getAssociationResponse(assocType, guid);
-		//System.out.println("Num Associations: " + assocResponse.getNumFound());
-		//PagedResponse<ExtrinsicObject> extResponse = getExtrinsics(ExtrinsicFilterTypes.LIDVID, this.guid);
+	private List<RegistrySlots> getAssociationSlots(List<String> assocLidList,
+			String assocType) throws Exception {
+		// PagedResponse<Association> assocResponse =
+		// getAssociationResponse(assocType, guid);
+		// System.out.println("Num Associations: " +
+		// assocResponse.getNumFound());
+		// PagedResponse<ExtrinsicObject> extResponse =
+		// getExtrinsics(ExtrinsicFilterTypes.LIDVID, this.guid);
 		List<RegistrySlots> slotLst = new ArrayList<RegistrySlots>();
 
 		// Get list of associations for specific association type
-		//for (Association association : (List<Association>) assocResponse
-		//		.getResults()) {
+		// for (Association association : (List<Association>) assocResponse
+		// .getResults()) {
 		for (String assocLid : assocLidList) {
-			
+
 			PagedResponse<ExtrinsicObject> extResponse = getExtrinsics(
 					ExtrinsicFilterTypes.LIDVID, assocLid);
 
 			if (extResponse.getNumFound() == 0) {
-				//this.log.warning("Association not found : "
-				//		+ association.getAssociationType() + " - "
-				//		+ association.getTargetObject());
-				//this.writer.println("Association not found : "
-				//		+ association.getAssociationType() + " - "
-				//		+ association.getTargetObject());
-				this.missingAssocTargets.add(this.lid + " - " + assocType + " - " + assocLid);
-				//slotLst.add(new RegistrySlots());
+				// this.log.warning("Association not found : "
+				// + association.getAssociationType() + " - "
+				// + association.getTargetObject());
+				// this.writer.println("Association not found : "
+				// + association.getAssociationType() + " - "
+				// + association.getTargetObject());
+				this.missingAssocTargets.add(this.lid + " - " + assocType
+						+ " - " + assocLid);
+				// slotLst.add(new RegistrySlots());
 			} else {
-				this.log.fine("Associated Object found : "
-						+ this.lid + " - " + assocType + " - " + assocLid);
+				this.log.fine("Associated Object found : " + this.lid + " - "
+						+ assocType + " - " + assocLid);
 				for (ExtrinsicObject extObj : extResponse.getResults()) {
 					slotLst.add(new RegistrySlots(extObj));
 				}
@@ -448,43 +488,47 @@ public class Extractor { // implements Extractor {
 		}
 		return slotLst;
 	}
-	
-	private PagedResponse<Association> getAssociationResponse(String assocType, String id) throws Exception {
-		//Build the filter
+
+	private PagedResponse<Association> getAssociationResponse(String assocType,
+			String id) throws Exception {
+		// Build the filter
 		AssociationFilter assocFilter = new AssociationFilter.Builder()
-			.sourceObject(id).associationType(assocType).build();
+				.sourceObject(id).associationType(assocType).build();
 		RegistryQuery<AssociationFilter> query = new RegistryQuery.Builder<AssociationFilter>()
-			.filter(assocFilter).build();
+				.filter(assocFilter).build();
 
 		try {
 			RegistryClient client = new RegistryClient(Constants.REGISTRY_URL);
-					//securityContext, user, password);
-			PagedResponse<Association> pr = client.getAssociations(query, 1, Constants.QUERY_MAX);
-			
+			// securityContext, user, password);
+			PagedResponse<Association> pr = client.getAssociations(query, 1,
+					Constants.QUERY_MAX);
+
 			return pr;
 		} catch (RegistryServiceException rse) {
-			//Ignore. Nothing found.
+			// Ignore. Nothing found.
 		} catch (RegistryClientException rce) {
 			throw new Exception(rce.getMessage());
 		}
 		return null;
 	}
-	
+
 	private void recordMissingSlots(RegistrySlots slots) {
-		if (!this.missingSlotsMap.containsKey(slots.getObjectType()) && slots.isMissingSlots())
-			this.missingSlotsMap.put(slots.getObjectType(), slots.getMissingSlotList());
+		if (!this.missingSlotsMap.containsKey(slots.getObjectType())
+				&& slots.isMissingSlots())
+			this.missingSlotsMap.put(slots.getObjectType(),
+					slots.getMissingSlotList());
 	}
-	
+
 	private void displayWarnings() {
 		String out = "";
-		
+
 		if (!this.missingAssocTargets.isEmpty()) {
 			out += "\nWARNING - Missing the following Association Targets:\n";
 			for (String missingAssociation : this.missingAssocTargets) {
 				out += missingAssociation + "\n";
 			}
 		}
-		
+
 		if (!this.missingSlotsMap.isEmpty()) {
 			out += "\nWARNING - Missing the following Registry Slots:\n";
 			for (String objectType : this.missingSlotsMap.keySet()) {
@@ -494,78 +538,76 @@ public class Extractor { // implements Extractor {
 			}
 			out += "\n\n";
 		}
-		
+
 		if (!out.equals("")) {
 			this.writer.println(out);
 			this.log.warning(out);
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Registry 0.2.0-dev implementation
 	 * 
-	 * Depending upon the responseType, sets the necessary filter
-	 * and gets a RegistryResponse
+	 * Depending upon the responseType, sets the necessary filter and gets a
+	 * RegistryResponse
 	 * 
 	 * @param responseType
 	 * @param type
 	 * @param value
 	 * @return
-	 * @throws ParseException 
-	 * @throws DateParseException 
-	 */	
-	/*private RegistryResponse getResponse(int responseType, String type, String value) {
+	 * @throws ParseException
+	 * @throws DateParseException
+	 */
+	/*
+	 * private RegistryResponse getResponse(int responseType, String type,
+	 * String value) {
+	 * 
+	 * if (responseType == ResponseTypes.EXTRINSIC) { ObjectFilter filter =
+	 * null; // TODO account for version which is second part of split value if
+	 * (type.equals(ExtrinsicFilterTypes.LIDVID)) { filter = new
+	 * ObjectFilter.Builder().lid(value.split("::")[0]) .build(); } else if
+	 * (type.equals(ExtrinsicFilterTypes.GUID)) { filter = new
+	 * ObjectFilter.Builder().guid(value).build(); } else if
+	 * (type.equals(ExtrinsicFilterTypes.OBJECT_TYPE)) { filter = new
+	 * ObjectFilter.Builder().objectType(value).build(); }
+	 * 
+	 * RegistryQuery<ExtrinsicFilter> query = new
+	 * RegistryQuery<ExtrinicFilter>().Builder<ExtrinicFilter>().filter(filter)
+	 * .build(); return this.client.getExtrinsics(query, 1,
+	 * TseConstants.QUERY_MAX) .getEntity(RegistryResponse.class);
+	 * 
+	 * } else if (responseType == ResponseTypes.ASSOCIATION) { AssociationFilter
+	 * assocFilter = new AssociationFilter.Builder()
+	 * .sourceObject(value).associationType(type).build(); AssociationQuery
+	 * assocQuery = new AssociationQuery.Builder() .filter(assocFilter).build();
+	 * return this.client.getAssociations(assocQuery, 1,
+	 * TseConstants.QUERY_MAX).getEntity( RegistryResponse.class); }
+	 * 
+	 * return null; }
+	 */
 
-		if (responseType == ResponseTypes.EXTRINSIC) {
-			ObjectFilter filter = null;
-			// TODO account for version which is second part of split value
-			if (type.equals(ExtrinsicFilterTypes.LIDVID)) {
-				filter = new ObjectFilter.Builder().lid(value.split("::")[0])
-						.build();
-			} else if (type.equals(ExtrinsicFilterTypes.GUID)) {
-				filter = new ObjectFilter.Builder().guid(value).build();
-			} else if (type.equals(ExtrinsicFilterTypes.OBJECT_TYPE)) {
-				filter = new ObjectFilter.Builder().objectType(value).build();
-			}
-
-			RegistryQuery<ExtrinsicFilter> query = new RegistryQuery<ExtrinicFilter>().Builder<ExtrinicFilter>().filter(filter)
-					.build();
-			return this.client.getExtrinsics(query, 1, TseConstants.QUERY_MAX)
-					.getEntity(RegistryResponse.class);
-
-		} else if (responseType == ResponseTypes.ASSOCIATION) {
-			AssociationFilter assocFilter = new AssociationFilter.Builder()
-					.sourceObject(value).associationType(type).build();
-			AssociationQuery assocQuery = new AssociationQuery.Builder()
-					.filter(assocFilter).build();
-			return this.client.getAssociations(assocQuery, 1, TseConstants.QUERY_MAX).getEntity(
-					RegistryResponse.class);
-		}
-
-		return null;
-	}*/
-	
 	private List reformatDateFields(List array) throws ParseException {
 		System.out.println("FOUND Date Field - " + array.get(0));
 		SimpleDateFormat frmt = new SimpleDateFormat(DATE_FORMATS.get(1));
-		
+
 		List newVals = new ArrayList<String>();
 		String newDate = "";
 		for (Object date : array) {
-				if (((String)date).matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}")) {
-					newDate = (String)date + ":00";
-				} else if (((String)date).matches("[0-9]{4}-[0-9]{2}-[0-9]{2}")) {
-					newDate = (String)date + "T00:00:00";
-				} else if (((String)date).equals("unknown")) {
-					newDate = "UNK";
-				} else {
-					newDate = (String)date;
-				}
-				System.out.println("New Date: " + newDate);
-				newVals.add(date);
+			if (((String) date)
+					.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}")) {
+				newDate = (String) date + ":00";
+			} else if (((String) date).matches("[0-9]{4}-[0-9]{2}-[0-9]{2}")) {
+				newDate = (String) date + "T00:00:00";
+			} else if (((String) date).equals("unknown")) {
+				newDate = "UNK";
+			} else {
+				newDate = (String) date;
+			}
+			System.out.println("New Date: " + newDate);
+			newVals.add(date);
 		}
 		return newVals;
-		
+
 	}
 
 	private void setIdentifiers(RegistryObject object) {
@@ -588,9 +630,11 @@ public class Extractor { // implements Extractor {
 				tval = this.slots.get(key).get(0);
 			else { // Association mapping
 				String[] values = key.split("\\.");
-				List<RegistrySlots> slotList = this.associationMap.get(values[0]);
+				List<RegistrySlots> slotList = this.associationMap
+						.get(values[0]);
 				if (slotList != null)
-					tval = this.associationMap.get(values[0]).get(0).get(values[1]).get(0);
+					tval = this.associationMap.get(values[0]).get(0)
+							.get(values[1]).get(0);
 			}
 
 			resLoc = resLoc.replace('#', '&').replace("{" + key + "}",

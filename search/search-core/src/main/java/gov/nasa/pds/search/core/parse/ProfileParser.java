@@ -104,11 +104,15 @@ public class ProfileParser {
 					String value = child.getTextContent();
 
 					if (!"resClass".equals(name)) {
-						//indexDoc.add(new Field(name, value, true, true, true, false));
-						indexDoc.add(new Field(name, value, Field.Store.YES, Field.Index.ANALYZED));
+						// indexDoc.add(new Field(name, value, true, true, true,
+						// false));
+						indexDoc.add(new Field(name, value, Field.Store.YES,
+								Field.Index.ANALYZED));
 					} else {
-						//indexDoc.add(new Field(name, resClass, true, true, true, false));
-						indexDoc.add(new Field(name, resClass, Field.Store.YES, Field.Index.ANALYZED));
+						// indexDoc.add(new Field(name, resClass, true, true,
+						// true, false));
+						indexDoc.add(new Field(name, resClass, Field.Store.YES,
+								Field.Index.ANALYZED));
 					}
 					contents.append(value + " ");
 					LOG.fine("name: " + name);
@@ -117,8 +121,9 @@ public class ProfileParser {
 				}
 			}
 		}
-		//indexDoc.add(Field.Text("contents", contents.toString()));
-		indexDoc.add(new Field("contents", contents.toString(), Field.Store.YES, Field.Index.ANALYZED));
+		// indexDoc.add(Field.Text("contents", contents.toString()));
+		indexDoc.add(new Field("contents", contents.toString(),
+				Field.Store.YES, Field.Index.ANALYZED));
 		return indexDoc;
 	}
 

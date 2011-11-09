@@ -1,4 +1,4 @@
-package gov.nasa.pds.search.core.catalog.extractor.registry;
+package gov.nasa.pds.search.core.extractor.registry;
 
 public class ExtrinsicFilterTypes {
 

@@ -1,5 +1,5 @@
-catalog.extractor.DataSet = datasetconfig.xml
-catalog.extractor.Target = targetconfig.xml
-catalog.extractor.Instrument = instrumentconfig.xml
-catalog.extractor.InstrumentHost = instrumenthostconfig.xml
-catalog.extractor.Mission = missionconfig.xml
+registry.extractor.DataSet = datasetconfig.xml
+registry.extractor.Target = targetconfig.xml
+registry.extractor.Instrument = instrumentconfig.xml
+registry.extractor.InstrumentHost = instrumenthostconfig.xml
+registry.extractor.Mission = missionconfig.xml

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2010-2011, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Operation</title>
+    <author email="jordan.h.padams@jpl.nasa.gov">Jordan Padams</author>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Operation">
+      <p>The following topics can be found in this section:
+      </p>
+
+      <ul>
+        <li><a href="#Tool_Execution">Tool Execution</a></li>
+        <li><a href="#Common_Errors">Common Errors</a></li>
+      </ul>
+
+      <p>Note: The command-line examples in this section have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution.
+      </p>
+    </section>
+
+    <section name="Tool Execution">
+      <p>Harvest Tool can be executed in various ways. This section describes how to run the tool, as well as its behaviors and caveats.
+      </p>
+
+      <subsection name="Command-Line Options">
+        <p>The following table describes the command-line options available:
+        </p>
+
+        <table>
+          <tr><th>Command-Line Option</th><th>Description</th></tr>
+          <tr><td>-a, --all</td><td>Run Registry Extractor, Solr Indexer, and PDS Indexer. [default]</td></tr>
+          <tr><td>-d, --debug</td><td>Turn on debugger.</td></tr>
+          <tr><td>-e, --extractor</td><td>Run Registry Extractor.</td></tr>
+          <tr><td>-h, --help</td><td>Display usage.</td></tr>
+          <tr><td>-p, --pds-indexer</td><td>Run PDS Indexer</td></tr>
+          <tr><td>-s, --solr-indexer</td><td>Run Solr Indexer</td></tr>
+          <tr><td>-V, --version</td><td>Display the release number and copyright information.</td></tr>
+        </table>
+      </subsection>
+
+      <subsection name="Execute Search Core Tool">
+        <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script.
+        </p>
+
+        <p>The Solr Core Tool requires a Solr Home directory to be specified prior to running the tool.  The following is the format for commands:
+        </p>
+	<source>
+% SearchCore &lt;solr-home-path&gt; [options]
+	</source>
+
+        <p>The following command demonstrates how to run the Search Core Tool with a SOLR_HOME=/apps/search-service and the default execution to run all components:
+        </p>
+
+        <source>
+% SearchCore /apps/service
+        </source>
+
+        <p>The following command demonstrates how to run the Search Core Tool with a SOLR_HOME=/apps/search-service and only run the Solr Indexer:
+        </p>
+
+        <source>
+% SearchCore /apps/service -s
+        </source>
+
+        <p>By default, the Search Core tool runs against the Registry Service at <a href="http://pdsbeta:8080/registry-service">http://pdsbeta:8080/registry-service</a>.  The following command demonstrates how to run the Search Core Tool and all its components against a Registry Service installed at <i>http://localhost:8080/registry-service</i>
+        </p>
+
+        <source>
+% SearchCore /apps/service -r http://localhost:8080/registry-service
+        </source>
+      </subsection>
+    </section>
+  </body>
+</document>

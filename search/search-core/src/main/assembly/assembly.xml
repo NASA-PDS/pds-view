@@ -39,8 +39,8 @@
       <directory>src/main/resources/bin</directory>
       <outputDirectory>bin</outputDirectory>
       <includes>
-        <include>PDSIndexer</include>
-        <include>PDSIndexer.bat</include>
+        <include>SearchCore</include>
+        <include>SearchCore.bat</include>
       </includes>
       <fileMode>755</fileMode>
     </fileSet>

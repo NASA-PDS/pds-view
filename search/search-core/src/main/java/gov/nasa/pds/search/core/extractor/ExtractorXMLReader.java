@@ -1,7 +1,7 @@
 /**
  * 
  */
-package gov.nasa.pds.search.core.catalog.extractor;
+package gov.nasa.pds.search.core.extractor;
 
 /**
  * @author jpadams

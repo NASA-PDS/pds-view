@@ -3,13 +3,12 @@
 //
 //  $Id$
 
-package gov.nasa.pds.search.core.catalog;
+package gov.nasa.pds.search.core;
 
-import gov.nasa.pds.search.core.catalog.extractor.Extractor;
+import gov.nasa.pds.search.core.extractor.Extractor;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -32,18 +31,19 @@ import org.apache.commons.io.FileUtils;
  * @modifieddate 05/04/09
  * @version $Revision$
  */
-public class CatalogExtractor {
+public class RegistryExtractor {
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
 	private File confDir = null;
 	private File outDir = null;
-	//private File extractDir = null;
+	private String registryUrl;
+	// private File extractDir = null;
 
 	private HashMap<String, String> mappings;
 
 	// Variables are dependent upon extractor configuration file format.
 	// If format changes, these variables will need to be changed.
-	private static final String EXTRACTOR_PREFIX = "catalog.extractor";
+	private static final String EXTRACTOR_PREFIX = "registry.extractor";
 	private static final String EXTRACTOR_CONFIG = "extractors.txt";
 
 	/**
@@ -52,10 +52,11 @@ public class CatalogExtractor {
 	 * @param base
 	 *            - Directory used as the base for all extractor files.
 	 */
-	public CatalogExtractor(String confDir, String outDir) {
-		//baseDir = new File(System.getProperty("extractor.basedir", base));
+	public RegistryExtractor(String registryUrl, String outDir, String confDir) {
+		// baseDir = new File(System.getProperty("extractor.basedir", base));
 		this.confDir = new File(confDir);
 		this.outDir = new File(outDir);
+		this.registryUrl = registryUrl;
 	}
 
 	/**
@@ -114,7 +115,7 @@ public class CatalogExtractor {
 
 				// Create new extractor instance for given class.
 				extractor = new Extractor(writer, extractorName,
-						mappings.get(extractorName));
+						mappings.get(extractorName), this.registryUrl);
 
 				Date start = new Date();
 
@@ -152,14 +153,15 @@ public class CatalogExtractor {
 		// System.getProperty("user.home") + "/" + EXTRACTOR_CONFIG);
 		// String extractorFile = System.getProperty("extractor.file", baseDir +
 		// "/" + EXTRACTOR_CONFIG);
-		//String extractorFile = this.confDir
-		//		+ "/" + TseConstants.CONF_BASE + EXTRACTOR_CONFIG;
-		//String extractorFile = this.confDir
-		//		+ "/" + EXTRACTOR_CONFIG;
-		//System.out.println(extractorFile);
+		// String extractorFile = this.confDir
+		// + "/" + TseConstants.CONF_BASE + EXTRACTOR_CONFIG;
+		// String extractorFile = this.confDir
+		// + "/" + EXTRACTOR_CONFIG;
+		// System.out.println(extractorFile);
 		Properties props = new Properties();
 		try {
-			props.load(CatalogExtractor.class.getResourceAsStream(EXTRACTOR_CONFIG));
+			props.load(RegistryExtractor.class
+					.getResourceAsStream(EXTRACTOR_CONFIG));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -185,14 +187,18 @@ public class CatalogExtractor {
 	public static void main(String[] args) throws Exception {
 		String confHome = "";
 		String outDir = "../";
-		if (args.length == 2) {
-			confHome = args[0];
+		String registryUrl = "";
+		if (args.length == 3) {
+			registryUrl = args[0];
 			outDir = args[1];
-		} else if (args.length == 1) {
-			outDir = args[0];
+			confHome = args[2];
+		} else if (args.length == 2) {
+			registryUrl = args[0];
+			outDir = args[1];
 		}
-		
-		CatalogExtractor extractor = new CatalogExtractor(confHome, outDir);
+
+		RegistryExtractor extractor = new RegistryExtractor(registryUrl,
+				outDir, confHome);
 		extractor.run();
 	}
 

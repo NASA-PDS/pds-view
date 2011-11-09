@@ -5,10 +5,12 @@
  * $Id$
  *  
  */
-package gov.nasa.pds.search.core.catalog.extractor;
+package gov.nasa.pds.search.core.extractor;
 
-import java.io.File;
+import gov.nasa.pds.search.core.RegistryExtractor;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -25,31 +27,29 @@ import org.xml.sax.SAXParseException;
  * @author Jordan Padams
  * 
  */
-public class ExtractorAttributes {
+public class ColumnNodes {
 
 	private Document doc;
 	private ArrayList attrNames;
-	private ArrayList attrIndexes;
+	private ArrayList attrTypes;
 	private ArrayList attrValues;
 	private int totalColumns;
 
 	private Logger log = Logger.getLogger(this.getClass().getName());
 
-	public ExtractorAttributes(String filename) {
+	public ColumnNodes(String filename) {
 		try {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
-			doc = docBuilder.parse(new File(filename));
+			doc = docBuilder.parse(RegistryExtractor.class
+					.getResourceAsStream(filename));
 
 			// normalize text representation
 			doc.getDocumentElement().normalize();
-			log.info("New attribute list for "
-					+ doc.getDocumentElement().getNodeName());
 
 			setAttrInfo();
-
 		} catch (SAXParseException e) {
 			System.err.println("** Parsing error" + ", line "
 					+ e.getLineNumber() + ", uri " + e.getSystemId());
@@ -72,7 +72,7 @@ public class ExtractorAttributes {
 		NodeList columnList = doc.getElementsByTagName("column");
 
 		attrNames = new ArrayList();
-		attrIndexes = new ArrayList();
+		attrTypes = new ArrayList();
 		attrValues = new ArrayList();
 
 		totalColumns = columnList.getLength();
@@ -87,15 +87,15 @@ public class ExtractorAttributes {
 					// its appropriate ArrayList.
 					Element columnElement = (Element) columnNode;
 
-					attrNames.add((columnElement
-							.getElementsByTagName("name").item(0)
-							.getChildNodes().item(0)).getNodeValue().trim());
-					attrIndexes.add((columnElement
-							.getElementsByTagName("index").item(0)
-							.getChildNodes().item(0)).getNodeValue().trim());
-					attrValues.add((columnElement
-							.getElementsByTagName("value").item(0)
-							.getChildNodes().item(0)).getNodeValue().trim());
+					attrNames.add((columnElement.getElementsByTagName("name")
+							.item(0).getChildNodes().item(0)).getNodeValue()
+							.trim());
+					attrTypes.add((columnElement.getElementsByTagName("type")
+							.item(0).getChildNodes().item(0)).getNodeValue()
+							.trim());
+					attrValues.add((columnElement.getElementsByTagName("value")
+							.item(0).getChildNodes().item(0)).getNodeValue()
+							.trim());
 				}
 			}
 		} catch (NullPointerException e) {
@@ -105,21 +105,49 @@ public class ExtractorAttributes {
 		}
 	}
 
+	/**
+	 * Used under old search tools and database back end. See getResponse() for
+	 * use with Registry Service
+	 * 
+	 * @return
+	 */
+	@Deprecated
 	public String getQuery() {
-		return (doc.getElementsByTagName("query").item(0)
-				.getChildNodes().item(0)).getNodeValue().trim();
+		return (doc.getElementsByTagName("query").item(0).getChildNodes()
+				.item(0)).getNodeValue().trim();
+	}
+
+	public List getAssociations() {
+		String associationType;
+		List assocList = new ArrayList();
+		NodeList assocNodes = doc.getElementsByTagName("association");
+		for (int i = 0; i < assocNodes.getLength(); i++) {
+			associationType = assocNodes.item(i).getChildNodes().item(0)
+					.getNodeValue().trim();
+			assocList.add(associationType);
+		}
+		return assocList;
+	}
+
+	public String getObjectType() {
+		return (doc.getElementsByTagName("object_type").item(0).getChildNodes()
+				.item(0)).getNodeValue().trim();
 	}
 
 	public String getName(int column) {
 		return (String) attrNames.get(column);
 	}
 
-	public int getIndex(int column) {
-		return Integer.parseInt((String) attrIndexes.get(column));
+	public String getType(int column) {
+		return (String) attrTypes.get(column);
 	}
 
 	public String getValue(int column) {
 		return (String) attrValues.get(column);
+	}
+
+	public List<String> getPKs() {
+		return null;
 	}
 
 	public int getNumAttr() {
@@ -130,16 +158,12 @@ public class ExtractorAttributes {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		ExtractorAttributes attributes = new ExtractorAttributes(
-				"targetconfig.xml");
+		ColumnNodes attributes = new ColumnNodes("targetconfig.xml");
 
 		System.out.println("query = " + attributes.getQuery());
-		// System.out.println(attributes.attrNames.size());
-		// System.out.println(attributes.getName(0));
 		for (int i = 0; i < attributes.getNumAttr(); i++) {
 			System.out.println("name = " + attributes.getName(i));
-			System.out.println("index = "
-					+ Integer.toString(attributes.getIndex(i)));
+			System.out.println("index = " + attributes.getType(i));
 			System.out.println("value = " + attributes.getValue(i));
 		}
 

@@ -63,6 +63,11 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
         </p>
       </subsection>
 
+      <subsection name="Search Core">
+	<p>The Search Service depends directly on the Search Core to create the Solr index, and the tool is executed as part of the Search Service.  Be sure to include the SearchCore tool in your PATH.  See the <a href="../../search-core">Search Core Documentation</a> for more details.
+	</p>
+      </subsection>
+
     </section>
 
     <section name="Unpacking the Package">

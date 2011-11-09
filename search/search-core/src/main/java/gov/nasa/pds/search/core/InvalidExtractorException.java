@@ -4,7 +4,7 @@
 // $Id$ 
 //
 
-package gov.nasa.pds.search.core.catalog;
+package gov.nasa.pds.search.core;
 
 /**
  * @author pramirez
