@@ -128,14 +128,14 @@ or
     </section>
     
     <section name="Database Creation">
-      <p>If this is the first time the regsitry service has been installed then a new registry database must be created. If however, you already have an existing registry skip down to the <a href="#Database_Configuration">Configuration</a> section. The following is a set of instructions that are dependent on the type of database chosen. Currently, there is support for Derby, MySQL, and Postgres.
+      <p>If this is the first time the Registry Service has been installed then a new registry database must be created. If however, you already have an existing registry skip down to the <a href="#Database_Configuration">Configuration</a> section. The following is a set of instructions that are dependent on the type of database chosen. Currently, there is support for Derby and MySQL.
       </p>
 
       <subsection name="Derby">
         <p>The Derby database comes packaged with the registry service. The following commands will create the database and install the registry schema: 
         </p>
         <source>
-% cd registry-service-0.8.0-dev
+% cd ${xdoc-artifactId}-${xdoc-version}
 % java -Djava.ext.dirs=lib/ org.apache.derby.tools.ij
 ij> connect 'jdbc:derby:RegistryDB;create=true;user=user';
 ij> run 'conf/derby-registry-schema.ddl';
@@ -150,16 +150,17 @@ ij> exit;
         </p>
         <source>
 % mysqladmin -uroot -p create registry
-% mysql registry -uroot -p -e"GRANT ALL ON registry.* TO registry@localhost IDENTIFIED BY 'p@ssw0rd'"
+% mysql registry -uroot -p -e"GRANT ALL ON registry.* TO registry@localhost \
+  IDENTIFIED BY 'p@ssw0rd'"
 % mysql -u root -p -D registry &lt; conf/mysql-registry-schema.ddl
         </source>
       </subsection>
-
-      <subsection name="Postgres">
+<!--
+      <subsection name="PostgreSQL">
         <p>
         </p>
       </subsection>
-      
+-->
     </section>
 
     <section name="Deploying the Application">

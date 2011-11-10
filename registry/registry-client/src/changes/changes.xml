@@ -23,7 +23,7 @@
   </properties>
 
   <body>
-    <release version="1.0.0" date="TBD" description="This release of the Registry Client is a component of the integrated release 2.0.0 of the PDS 2010 System.">
+    <release version="1.0.0" date="2011-11-09" description="This release of the Registry Client is a component of the integrated release 2.0.0 of the PDS 2010 System.">
       <action dev="kelly" type="add">Initial release of the Python-based interface to the Registry Service.
       </action>
     </release>

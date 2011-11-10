@@ -72,7 +72,9 @@ cd ../sawmill
 maven pdf
 cd ../..
 
-cd search/search-core
+cd search
+mvn --file pds-en.xml --non-recursive site
+cd search-core
 maven pdf
 cd ../search-service
 maven pdf
