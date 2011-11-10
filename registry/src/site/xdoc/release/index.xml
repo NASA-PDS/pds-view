@@ -30,7 +30,7 @@
     </section>
 
     <section name="Release 1.0.0">
-      <p>This release of Registry is a component of the integrated release <a href="../../../release/index-2.0.0.html">2.0.0</a> of the PDS 2010 System. This is an operational release of the system components to date. The new or modified capabilities for this release are as follows:
+      <p>This release of Registry is a component of the integrated release <a href="../../release/index-2.0.0.html">2.0.0</a> of the PDS 2010 System. This is an operational release of the system components to date. The new or modified capabilities for this release are as follows:
       </p>
 
       <ul>
@@ -54,7 +54,7 @@
     </section>
 
     <section name="Release 0.7.0">
-      <p>This release of Registry is a component of the integrated release <a href="../../../release/index-1.2.0.html">1.2.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date. The new or modified capabilities for this release are as follows:
+      <p>This release of Registry is a component of the integrated release <a href="../../release/index-1.2.0.html">1.2.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date. The new or modified capabilities for this release are as follows:
       </p>
 
       <ul>
@@ -75,7 +75,7 @@
     </section>
 
     <section name="Release 0.6.0">
-      <p>This release of Registry is a component of the integrated release <a href="../../../release/index-1.1.0.html">1.1.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date. The new or modified capabilities for this release are as follows:
+      <p>This release of Registry is a component of the integrated release <a href="../../release/index-1.1.0.html">1.1.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date. The new or modified capabilities for this release are as follows:
       </p>
 
       <ul>
@@ -98,7 +98,7 @@
     </section>
 
     <section name="Release 0.5.0">
-      <p>This release of Registry is a component of the integrated release <a href="../../../release/index-1.0.0.html">1.0.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards. The new or modified capabilities for this release are as follows:
+      <p>This release of Registry is a component of the integrated release <a href="../../release/index-1.0.0.html">1.0.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards. The new or modified capabilities for this release are as follows:
       </p>
 
       <ul>
@@ -121,7 +121,7 @@
     </section>
 
     <section name="Release 0.4.0">
-      <p>This release of Registry is a component of the integrated release <a href="../../../release/index-0.1.0.html">0.1.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the demonstration at the Management Council Face-to-Face meeting in August 2010. This initial release of the service provides the capability to register and browse data products and their associations.
+      <p>This release of Registry is a component of the integrated release <a href="../../release/index-0.1.0.html">0.1.0</a> of the PDS 2010 System. This release is intended as a prototype release in support of the demonstration at the Management Council Face-to-Face meeting in August 2010. This initial release of the service provides the capability to register and browse data products and their associations.
       </p>
     </section>
   </body>

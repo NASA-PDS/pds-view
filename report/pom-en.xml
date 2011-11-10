@@ -42,6 +42,14 @@
   </description>
   <url>http://pds-cm.jpl.nasa.gov/2010/report/</url>
 
+  <licenses>
+    <license>
+      <name>California Institute of Technology</name>
+      <url>file:///${basedir}/LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <developers>
     <developer>
       <name>Sean Hardman</name>

@@ -20,16 +20,27 @@ cd ..
 mvn --file pom-en.xml clean
 
 # Install the dependent JARs locally.
-cd preparation/core
+cd preparation
+mvn --non-recursive install clean
+cd core
 mvn install clean
 cd ../..
-cd registry/registry-core
+
+cd registry
+mvn --non-recursive install clean
+cd registry-core
 mvn install clean
 cd ../..
-cd report/rs-update
+
+cd report
+mvn --non-recursive install clean
+cd rs-update
 mvn install clean
 cd ../..
-cd search/search-core
+
+cd search
+mvn --non-recursive install clean
+cd search-core
 mvn install clean
 cd ../..
 
@@ -53,7 +64,7 @@ maven pdf
 cd ../..
 
 cd registry
-mvn --file pds-en.xml --non-recursive site
+mvn --file pom-en.xml --non-recursive site
 cd registry-core
 maven pdf
 cd ../registry-service
@@ -63,7 +74,7 @@ maven pdf
 cd ../..
 
 cd report
-mvn --file pds-en.xml --non-recursive site
+mvn --file pom-en.xml --non-recursive site
 cd rs-update
 maven pdf
 cd ../profile-setup
@@ -73,7 +84,7 @@ maven pdf
 cd ../..
 
 cd search
-mvn --file pds-en.xml --non-recursive site
+mvn --file pom-en.xml --non-recursive site
 cd search-core
 maven pdf
 cd ../search-service

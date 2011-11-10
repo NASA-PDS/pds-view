@@ -31,7 +31,7 @@
     </section>
 
     <section name="Release 0.1.0">
-      <p>This release of Search is a component of the integrated release <a href="../../../release/index-2.0.0.html">2.0.0</a> of the PDS 2010 System. This is an operational release of the system components to date. This initial release includes the PDS search protocol request handler and generation of the search index from a populated Registry Service.
+      <p>This release of Search is a component of the integrated release <a href="../../release/index-2.0.0.html">2.0.0</a> of the PDS 2010 System. This is an operational release of the system components to date. This initial release includes the PDS search protocol request handler and generation of the search index from a populated Registry Service.
       </p>
     </section>
   </body>

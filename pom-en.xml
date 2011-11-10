@@ -47,6 +47,7 @@
     <module>preparation</module>
     <module>registry</module>
     <module>report</module>
+    <module>search</module>
     <module>security</module>
   </modules>
 
