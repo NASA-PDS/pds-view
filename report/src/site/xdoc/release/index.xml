@@ -29,6 +29,11 @@
       </p>
     </section>
 
+    <section name="Release 1.1.0">
+      <p>This release of Report is a component of the integrated release <a href="../../release/index-2.1.0.html">2.1.0</a> of the PDS 2010 System. This is an operational release of the system components to date.
+      </p>
+    </section>
+
     <section name="Release 1.0.0">
       <p>This release of Report is a component of the integrated release <a href="../../release/index-2.0.0.html">2.0.0</a> of the PDS 2010 System. This is an operational release of the system components to date. This release includes a restructuring of the project directory and the documentation but does not include any new functionality.
       </p>

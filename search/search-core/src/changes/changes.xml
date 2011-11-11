@@ -23,6 +23,9 @@
   </properties>
   
   <body>
+    <release version="0.2.0" date="TBD" description="This release of the Search Core is a component of the integrated release 2.1.0 of the PDS 2010 System.">
+    </release>
+
     <release version="0.1.0" date="2011-11-09" description="This release of the Search Core is a component of the integrated release 2.0.0 of the PDS 2010 System.">
       <action dev="pramirez" type="add">
         Initial implementation of PDS search protocol request handler.
@@ -33,7 +36,6 @@
       <action dev="jpadams" type="add">
         Command-line interface to run Registry Extractor, Solr Indexer, and PDS Indexer.
       </action>
-
     </release>
   </body>
 </document>

@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="1.1.0" date="TBD" description="This release of the Registry Core is a component of the integrated release 2.1.0 of the PDS 2010 System.">
+    </release>
+
     <release version="1.0.0" date="2011-11-09" description="This release of the Registry Core is a component of the integrated release 2.0.0 of the PDS 2010 System.">
       <action dev="pramirez" type="add">
         Added support for PostgreSQL.

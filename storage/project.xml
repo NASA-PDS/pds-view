@@ -19,7 +19,7 @@
 <project>
   <id>storage</id>
   <name>Storage Service</name>
-  <currentVersion>0.1.0</currentVersion>
+  <currentVersion>0.2.0-dev</currentVersion>
 
   <organization>
     <name>NASA Jet Propulsion Laboratory, California Institute of Technology</name>
