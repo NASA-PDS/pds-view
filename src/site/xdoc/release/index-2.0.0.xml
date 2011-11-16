@@ -50,6 +50,8 @@
         <li>Planetary Data System (PDS) Preparation Tools Software Requirements and Design Document (SRD/SDD), Version 0.1, October 6, 2010.</li>
         <li>Planetary Data System (PDS) Registry Service Software Requirements and Design Document (SRD/SDD), Version 1.0, June 12, 2011.</li>
         <li>Planetary Data System (PDS) Report Service Software Requirements and Design Document (SRD/SDD), Version 1.0, June 12, 2011.</li>
+        <li>Planetary Data System (PDS) Search Service Software Requirements and Design Document (SRD/SDD), Version 0.4, June 12, 2011.</li>
+        <li>Planetary Data System (PDS) Search Protocol, Version 0.2, October 17, 2011.</li>
         <li>Planetary Data System (PDS) Security Service Software Requirements and Design Document (SRD/SDD), Version 1.0, June 11, 2011.</li>
       </ul>
 
@@ -70,13 +72,10 @@
         </p>
 
         <ul>
-          <li>Generate Tool, developed by the Imaging Node at JPL, is available for generating PDS4 labels from PDS3 labels.
+					<li>Search Service is new for this release and includes the PDS search protocol request handler and generation of the search index from a populated Registry Service.
+					</li>
+          <li>Registry User Interface includes new support for browsing associations, packages, services, events, schemes, and classification nodes.
           </li>
-          <li>Harvest Tool now includes support file object registration and registration of PDS3 products using a proxy label to facilitate tracking.
-          </li>
-          <li>Registry Service added support for replication from one registry instance to another.</li>
-          <li>Registry Service and Harvest Tool added support for package registration allowing enabling support for actions like approval and deletion to be applied to all members of a package in the Registry Service.</li>
-          <li>Report Service added support for remote transfer of log files, automatic triggering of database updates and default profile setup.</li>
         </ul>
       </subsection>
 
@@ -85,9 +84,9 @@
         </p>
 
         <ul>
-          <li>Harvest Tool was modified to represent LID-based references as slots instead of associations as well as modified to keep pace with changes occurring in the PDS4 data model and the Registry Service interface.
-          </li>
-          <li>Registry User Interface was modified to keep pace with the changes to the Registry Service interface.
+					<li>Registry Service was modified to include schema creation scripts for the target database and now requires a database population step during configuration.
+					</li>
+          <li>Harvest Tool was modified to represent LIDVID-based references as slots instead of associations as well as modified to keep pace with changes occurring in the PDS4 data model and the Registry Service interface.
           </li>
           <li>Validate Tool was modified to include the latest set of generic schemas generated from the data model.
           </li>
@@ -95,8 +94,15 @@
       </subsection>
 
       <subsection name="Corrected Capabilities">
-        <p>There were no corrected capabilities in this release.
+        <p>The following capabilities were corrected in this release:
         </p>
+
+				<ul>
+					<li>Registry User Interface was modified to correct scrolling issues and window behavior.
+					</li>
+					<li>Harvest Tool was modified to correct an issue where the directory path was not determined correctly for document products.
+					</li>
+				</ul>
       </subsection>
     </section>
 
@@ -105,9 +111,13 @@
       </p>
 
       <ul>
-        <li>Need to expand the Registry Service functionality to include registration of federation and registry objects.
-        </li>
-        <li>Need to expand the Registry User Interface to support browsing of objects beyond products and associations. Also need to add support for updating status and single product registration.
+				<li>Complete development of the Catalog Ingest Tool supporting ingestion of PDS3 catalog files into the PDS4 registry.
+				</li>
+				<li>Add support for XML Schema 1.1 to the Validate Tool.
+				</li>
+				<li>Upgrade the Data Search interface to remove the dependence on the PDS3 catalog database.
+				</li>
+        <li>Need to expand the Registry User Interface to support updating status and single product registration.
         </li>
       </ul>
     </section>
@@ -175,6 +185,14 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
           If viewing this document in online form, click the image for a larger version.
         </center>
 
+        <p>The following diagram depicts the EN system flow, starting with central catalog migration, data product registration and finishing up with search index generation:
+        </p>
+
+        <center>
+          <a href="../images/en-system-flow-2.0.0.jpg" target="_blank"><img alt="EN System Flow" src="../images/en-system-flow-2.0.0-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
+
         <p>The components depicted above serve as the operational deployment of this release for the Engineering Node. The main purpose of this deployment is for demonstration and testing purposes.
         </p>
 
@@ -231,11 +249,11 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
         </p>
 
         <center>
-          <a href="../images/system-flow-2.0.0.jpg" target="_blank"><img alt="System Flow" src="../images/system-flow-2.0.0-scale.jpg" border="1" /></a><br/>
+          <a href="../images/dn-system-flow-2.0.0.jpg" target="_blank"><img alt="DN System Flow" src="../images/dn-system-flow-2.0.0-scale.jpg" border="1" /></a><br/>
           If viewing this document in online form, click the image for a larger version.
         </center>
 
-        <p>The system flow depicted above is described in more detail in the Data Provider's Handbook, albeit with a different flavor of this diagram. This diagram identifies where the system components come into play within the system flow. These components and the ones depicted in the deployment diagram, are described in more detail with respect to how the components can be utilized in the PDS3 to PDS4 conversion exercises with an eye towards testing these components for use in operations:
+        <p>This diagram identifies where the system components come into play within the system flow. These components and the ones depicted in the deployment diagram, are described in more detail with respect to how the components can be utilized in the PDS3 to PDS4 conversion exercises with an eye towards testing these components for use in operations:
         </p>
 
         <ul>
@@ -264,6 +282,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
             </p>
           </li>
         </ul>
+
+				<p>An installation exercise was not specified for this release but each Node is welcome to download, install and exercise the above components in their environment. The Installation document for the desired component(s) is a good place to get started.
+				</p>
       </subsection>
     </section>
   </body>
