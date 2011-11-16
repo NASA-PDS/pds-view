@@ -223,8 +223,6 @@ public class HarvestLauncher {
     if (keystore != null) {
       if (!new File(keystore).exists()) {
         throw new Exception("Keystore file does not exist: " + keystore);
-      } else if (keystorePassword == null) {
-        throw new Exception("Keystore password must be specified.");
       }
       securityContext = new SecurityContext(keystore, keystorePassword,
           keystore, keystorePassword);
