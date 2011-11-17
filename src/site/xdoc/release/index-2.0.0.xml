@@ -232,6 +232,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
           <li><b>Harvest Tool</b><br/>
             <p>The Harvest Tool provides the means for registering products with the Registry Service. This tool reads a PDS4 product label, extracts specified metadata and registers the product with the registry. This tool allows the user to register a batch of products and generates a summary report.
             </p>
+
+						<p>An issue was discovered post-delivery where the application is requiring the keystore password to be provided to the application even when accessing an unsecured instance of the Registry Service. The workaround for this issue is to remove the reference to the <i>pds.security.keystore</i> system property from the launch script (e.g., Harvest, Harvest.bat).
+						</p>
           </li>
         </ul>
       </subsection>
@@ -280,6 +283,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
           <li><b>Harvest Tool</b><br/>
             <p>The Harvest Tool provides the means for registering products with the Registry Service. This tool reads a PDS4 product label, extracts specified metadata and registers the product with the registry. This tool allows the user to register a batch of products and generates a summary report.
             </p>
+
+						<p>An issue was discovered post-delivery where the application is requiring the keystore password to be provided to the application even when accessing an unsecured instance of the Registry Service. The workaround for this issue is to remove the reference to the <i>pds.security.keystore</i> system property from the launch script (e.g., Harvest, Harvest.bat).
+						</p>
           </li>
         </ul>
 
