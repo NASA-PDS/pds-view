@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2011, by the California Institute of Technology.
+  Copyright 2011-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -43,12 +43,13 @@
   <inceptionYear>2010</inceptionYear>
 
   <modules>
-    <module>harvest</module>
+    <module>ingest</module>
     <module>preparation</module>
     <module>registry</module>
     <module>report</module>
     <module>search</module>
     <module>security</module>
+    <module>storage</module>
   </modules>
 
   <developers>
