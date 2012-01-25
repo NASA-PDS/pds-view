@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011, by the California Institute of Technology.
+  Copyright 2011-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -61,7 +61,7 @@
 
   <element id="urn:pds:ProductClass" name="ProductClass">
     <dcElement/>
-    <description>The PDS product class for the product.
+    <description>The PDS product class for the associated product.
     </description>
   </element>
 </cas:elements>

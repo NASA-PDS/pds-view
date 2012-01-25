@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011, by the California Institute of Technology.
+  Copyright 2011-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -24,12 +24,12 @@
 
   <body>
     <section name="Release Notes">
-      <p>The purpose of this section is to provide a description of a Storage Service release including any impact that the new or modified capabilities will have on the Discipline Nodes or the PDS user community. If viewing the web-based version of this document, a somewhat itemized list of changes for each release can be found on the <a href="../changes-report.html">Release Changes</a> page.
+      <p>The purpose of this section is to provide a description of a Storage Service release including any impact that the new or modified capabilities will have on the Discipline Nodes or the PDS user community. An itemized list of changes for each release can be found on the <a href="../changes-report.html">Release Changes</a> page.
       </p>
     </section>
 
     <section name="Release 0.2.0">
-      <p>This release of the Storage Service is a component of the integrated release <a href="../../release/index-2.1.0.html">2.1.0</a> of the PDS 2010 System. This is an operational release of the system components to date.
+      <p>This release of the Storage Service is a component of the integrated release <a href="../../release/index-2.1.0.html">2.1.0</a> of the PDS 2010 System. This is an operational release of the system components to date. This release contains product policy to support the Catalog Ingest and Harvest Tools, a delete script and also includes documentation updates.
       </p>
     </section>
 

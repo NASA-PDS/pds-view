@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011, by the California Institute of Technology.
+  Copyright 2011-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -24,7 +24,7 @@
 
   <body>
     <section name="About Storage Service">
-      <p>The Storage Service provides functionality for managing the data repository. This includes movement of data files in and out of the repository. The functionality for this service is satisfied by the <a href="http://oodt.apache.org/components/maven/filemgr/" target="_blank">Apache OODT File Manager</a>.
+      <p>The Storage Service provides functionality for managing a data repository. This includes movement of data files in and out of the repository. The functionality for this service is satisfied by the <a href="http://oodt.apache.org/components/maven/filemgr/" target="_blank">Apache OODT File Manager</a>.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.

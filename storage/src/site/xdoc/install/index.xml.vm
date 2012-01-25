@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011, by the California Institute of Technology.
+  Copyright 2011-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -24,7 +24,7 @@
 
   <body>
     <section name="Installation">
-      <p>This section describes how to install the Storage Service contained in the <i>${xdoc-artifactId}</i> package. The following topics can be found in this section:
+      <p>This document describes how to install the Storage Service contained in the <i>${project.artifactId}</i> package. The following topics can be found in this document:
       </p>
 
       <ul>
@@ -54,19 +54,19 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
     </section>
 
     <section name="Unpacking the Package">
-      <p>Download the <i>${xdoc-artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/storage/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. Unpack the selected binary distribution file with one of the following commands:
+      <p>Download the <i>${project.artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/storage/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. The installation directory may vary from environment to environment but in UNIX-based environments it is typical to install software packages in the <i>/usr/local</i> directory and in Windows-based environments it is typical to install software packages in the <i>C:\Program Files</i> directory. Unpack the selected binary distribution file in the installation directory for the local environment with one of the following commands:
       </p>
 
       <source>
-% unzip ${xdoc-artifactId}-${xdoc-version}-bin.zip
+% unzip ${project.artifactId}-${project.version}-bin.zip
 or
-% tar -xzvf ${xdoc-artifactId}-${xdoc-version}-bin.tar.gz
+% tar -xzvf ${project.artifactId}-${project.version}-bin.tar.gz
       </source>
 
       <p>Note: Depending on the platform, the native version of <i>tar</i> may produce an error when attempting to unpack the distribution file because many of the file paths are greater than 100 characters. If available, the GNU version of tar will resolve this problem. If that is not available or cannot be installed, the zipped package will work just fine in a UNIX environment.
       </p>
 
-      <p>The commands above result in the creation of the <i>${xdoc-artifactId}-${xdoc-version}</i> directory with the following directory structure:
+      <p>The commands above result in the creation of the <i>${project.artifactId}-${project.version}</i> directory with the following directory structure:
       </p>
 
       <ul>
@@ -106,22 +106,93 @@ or
     </section>
 
     <section name="Configuring the Service">
-      <p>By default, the Storage Service comes configured to run on port <i>9000</i> on the local machine. In order to change the port number, each of the scripts in the <i>/bin</i> directory must be modified. In the <i>StorageService</i> and <i>StorageService.bat </i>scripts, modify the following line to specify the desired port:
+      <p>This section details the configuration of the service port, product policy, log file location and installation location.
       </p>
 
-      <source>
+      <subsection name="Service Port">
+        <p>By default, the Storage Service comes configured to run on port <i>9000</i> on the local machine. In order to change the port number, each of the scripts in the <i>bin</i> directory must be modified. In the <i>storage-service</i> script, modify the following line (replacing <i>9000</i>) to specify the desired port:
+        </p>
+
+        <source>
 SERVER_PORT=9000
-      </source>
+        </source>
 
-      <p>In the other scripts, modify the following line to specify the desired port:
-      </p>
+        <p>In the <i>storage-client</i>, <i>storage-delete</i> and <i>storage-query</i> scripts, modify the following line (replacing <i>9000</i>) to specify the desired port:
+        </p>
 
-      <source>
+        <source>
 FILEMGR_URL=http://localhost:9000
-      </source>
+        </source>
 
-      <p>The Storage Service also comes configured for PDS product types. Information regarding how to modify or add product types can be found on the <a href="https://cwiki.apache.org/confluence/display/OODT/Everything+you+want+to+know+about+File+Manger+Policy" target="_blank">Apache OODT Wiki</a>.
-      </p>
+        <p>If the client and query scripts will be executed from a machine other than the machine where the service is running, the <i>localhost</i> portion of the line above should be replaced with the actual machine name (i.e., host.jpl.nasa.gov). The examples above detail lines from the UNIX-based shell scripts. The lines in the Windows-based batch scripts are identical except that they are prefixed with "set ".
+        </p>
+      </subsection>
+
+      <subsection name="Product Policy">
+        <p>By default, the service comes configured to use the <i>example</i> product policy. Other sets of product policy may be defined in the future, but as of this release the only other product policy set is the <i>pds</i> policy that supports the Harvest and Catalog Ingest Tools. In order to change to the <i>pds</i> policy, modify the <i>filemgr.properties</i> file in the <i>etc</i> directory as follows:
+        </p>
+
+        <source>
+# XML repository manager configuration
+org.apache.oodt.cas.filemgr.repositorymgr.dirs=file:///[FILEMGR_HOME]/policy/example
+
+# XML validation layer configuration
+org.apache.oodt.cas.filemgr.validation.dirs=file:///[FILEMGR_HOME]/policy/example
+
+  should be changed to:
+
+# XML repository manager configuration
+org.apache.oodt.cas.filemgr.repositorymgr.dirs=file:///[FILEMGR_HOME]/policy/pds
+
+# XML validation layer configuration
+org.apache.oodt.cas.filemgr.validation.dirs=file:///[FILEMGR_HOME]/policy/pds
+        </source>
+
+        <p>Information regarding how to modify or add product types to the product policy can be found on the <a href="https://cwiki.apache.org/confluence/display/OODT/Everything+you+want+to+know+about+File+Manger+Policy" target="_blank">Apache OODT Wiki</a>.
+        </p>
+      </subsection>
+
+      <subsection name="Log Location">
+        <p>By default, the location of the log file is defined as a relative reference to the <i>logs</i> directory in the distribution package. This will work just fine as long as the <i>storage-service</i> script is executed directly from the <i>bin</i> directory. If this will not be the case (meaning the script location is set in the user's path and the script is executed from another directory), then the location of the log file must be defined as an absolute reference. In order to change the log file location, modify the <i>logging.properties</i> file in the <i>etc</i> directory as follows:
+        </p>
+
+        <source>
+java.util.logging.FileHandler.pattern = ../logs/filemgr%g.log
+
+  should be changed to:
+
+java.util.logging.FileHandler.pattern = /&lt;absolute-path&gt;/logs/filemgr%g.log
+        </source>
+
+        <p>Replace the <i>&lt;absolute-path&gt;</i> place holder above with the full path to the log file location.
+        </p>
+      </subsection>
+
+      <subsection name="Installation Location">
+        <p>Both the shell and batch scripts for this service utilize system commands for determining the installation home directory that may or may not be available on all platforms. If these commands are not available in the current environment, their use can be replaced in the scripts by setting the <i>FILEMGR_HOME</i> variable with the actual installation path. Modify the UNIX-based shell scripts as follows (the actual installation path may be different in the current environment):
+        </p>
+
+        <source>
+SCRIPT_DIR=`dirname $0`
+FILEMGR_HOME=`cd ${SCRIPT_DIR}/.. &amp;&amp; pwd`
+
+  should be replaced with:
+
+FILEMGR_HOME=/usr/local/${project.artifactId}-${project.version}
+        </source>
+
+        <p>Modify the Windows-based batch scripts as follows (the actual installation path may be different in the current environment):
+        </p>
+
+        <source>
+set SCRIPT_DIR=%~dps0
+set FILEMGR_HOME=%SCRIPT_DIR%..
+
+  should be replaced with:
+
+set FILEMGR_HOME=C:\Program Files\\${project.artifactId}-${project.version}
+        </source>
+      </subsection>
     </section>
 
     <section name="Configuring the Environment">
@@ -136,7 +207,7 @@ FILEMGR_URL=http://localhost:9000
         </p>
 
         <source>
-% export PATH=${PATH}:${HOME}/${xdoc-artifactId}-${xdoc-version}/bin
+% export PATH=${PATH}:/usr/local/${project.artifactId}-${project.version}/bin
         </source>
 
         <p>In addition, the shell scripts require that the <i>JAVA_HOME</i> environment variable be set to the appropriate location of the Java installation on the local machine. The following command demonstrates how to set the <i>JAVA_HOME</i> environment variable:
@@ -158,7 +229,7 @@ FILEMGR_URL=http://localhost:9000
         </p>
 
         <source>
-C:\&gt; set PATH = %PATH%;C:\\${xdoc-artifactId}-${xdoc-version}\bin
+C:\&gt; set PATH = %PATH%;C:\Program Files\\${project.artifactId}-${project.version}\bin
         </source>
 
         <p>In addition, the batch scripts require that the <i>JAVA_HOME</i> environment variable be set to the appropriate location of the Java installation on the local machine. The following command demonstrates how to set the <i>JAVA_HOME</i> environment variable:
@@ -168,7 +239,7 @@ C:\&gt; set PATH = %PATH%;C:\\${xdoc-artifactId}-${xdoc-version}\bin
 C:\&gt; set JAVA_HOME = C:\path\to\java\home
         </source>
 
-        <p>The system administrator for the local machine may need to be consulted for this location. The path specified should have a <i>bin</i> sub-directory that contains the <i>java</i> executable. This variable may also be defined within the scripts. Edit the scripts (files with the .bat extension) and change the line in the example above to represent the local Java installation. Additional methods for setting Windows environment variables can be found in the <a href="index-win.html">Windows System Properties</a> section. If viewing this document in PDF form, see the appendix for details.
+        <p>The system administrator for the local machine may need to be consulted for this location. The path specified should have a <i>bin</i> sub-directory that contains the <i>java</i> executable. This variable may also be defined within the scripts. Edit the scripts (files with the .bat extension) and change the line in the example above to represent the local Java installation. Additional methods for setting Windows environment variables can be found in the <a href="index-win.html">Windows System Properties</a> document.
         </p>
       </subsection>
     </section>

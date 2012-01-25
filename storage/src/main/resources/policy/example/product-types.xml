@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011, by the California Institute of Technology.
+  Copyright 2011-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -23,8 +23,8 @@
     <description>The product type for all PDS products that are ingested in place with the File Manager.</description>
     <metadata>
       <keyval>
-        <key>ProductType</key>
-        <val>InPlaceProduct</val>
+        <key>FileFormat</key>
+        <val>Unknown</val>
       </keyval>
     </metadata>
     <metExtractors>
@@ -46,8 +46,8 @@
     <description>The product type for all PDS products that are transferred to the File Manager.</description>
     <metadata>
       <keyval>
-        <key>ProductType</key>
-        <val>TransferProduct</val>
+        <key>FileFormat</key>
+        <val>Unknown</val>
       </keyval>
     </metadata>
     <metExtractors>

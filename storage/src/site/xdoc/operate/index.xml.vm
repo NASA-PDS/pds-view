@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011, by the California Institute of Technology.
+  Copyright 2011-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -24,7 +24,7 @@
 
   <body>
     <section name="Operation">
-      <p>This section describes how to operate the Storage Service. The following topics can be found in this section:
+      <p>This document describes how to operate the Storage Service. The following topics can be found in this document:
       </p>
 
       <ul>
@@ -32,16 +32,16 @@
         <li><a href="#Interact_with_the_Service">Interact with the Service</a></li>
       </ul>
 
-      <p>Note: The command-line examples in this section have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution.
+      <p>Note: The command-line examples in this document have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution.
       </p>
     </section>
 
     <section name="Manage the Service">
-      <p>This section describes how to start and stop the Storage Service. The examples below manage the service via a batch/shell script. Alternate methods for calling these functions can be found in the <a href="#Service_Setup">Service Setup</a> section. The service is started with the following command:
+      <p>This section describes how to start and stop the Storage Service. The examples below manage the service via a batch/shell script. The service is started with the following command:
       </p>
 
       <source>
-% StorageService start
+% storage-service start
 
 Starting the File Manager
 OK
@@ -50,7 +50,7 @@ Oct 20, 2011 ... org.apache.oodt.cas.filemgr.system.XmlRpcFileManager &lt;init&g
 INFO: File Manager started by user
       </source>
 
-      <p>The following table describes the actions available for the <i>StorageService</i> script:
+      <p>The following table describes the actions available for the <i>storage-service</i> script:
       </p>
 
       <table>
@@ -61,23 +61,23 @@ INFO: File Manager started by user
         <tr><td>status</td><td>Determine whether the service is running.</td></tr>
       </table>
 
-      <p>When the Storage Service is started for the first time, it creates the <i>/logs</i> and <i>/run</i> directories under the the installation directory to hold the log and pid files, respectively. When the first product is ingested, it creates the <i>catalog</i> directory to hold the Lucene-based catalog. If the product type is defined to move the product to a local repository, then it creates the <i>archive</i> directory to hold this repository.
+      <p>When the Storage Service is started for the first time, it creates the <i>logs</i> and <i>run</i> directories under the the installation directory to hold the log and pid files, respectively. When the first product is ingested, it creates the <i>catalog</i> directory to hold the Lucene-based catalog. If the product type is defined to move the product to a local repository, then it creates the <i>archive</i> directory to hold this repository.
       </p>
     </section>
 
     <section name="Interact with the Service">
-      <p>This section describes how to ingest products with and query the Storage Service. The examples below interact with the service via batch/shell scripts. Alternate methods for calling these functions can be found in the <a href="#Service_Setup">Service Setup</a> section.
+      <p>This section describes how to ingest products into, query for products from and delete products from the Storage Service. The examples below interact with the service via batch/shell scripts.
       </p>
 
-      <subsection name="Ingest a Product">
-        <p>This section describes how to ingest a product with the Storage Service and then verify its ingestion via the <i>StorageClient</i> script. The following command is an example of ingesting the test file included in the package distribution:
+      <subsection name="Ingest Products">
+        <p>This section describes how to ingest a product with the Storage Service and then verify its ingestion via the <i>storage-client</i> script. The following command is an example of ingesting the test file included in the package distribution:
         </p>
 
         <source>
-% StorageClient --operation --ingestProduct --productName TransferTest \
+% storage-client --operation --ingestProduct --productName TransferTest \
   --productStructure Flat --productTypeName TransferProduct \
-  --metadataFile "file://${HOME}/${xdoc-artifactId}-${xdoc-version}/test/test.txt.met" \
-  --refs "file://${HOME}/${xdoc-artifactId}-${xdoc-version}/test/test.txt"
+  --metadataFile "file:///usr/local/${project.artifactId}-${project.version}/test/test.txt.met" \
+  --refs "file:///usr/local/${project.artifactId}-${project.version}/test/test.txt"
 
 Oct 20, 2011 ... org.apache.oodt.cas.filemgr.system.XmlRpcFileManagerClient &lt;init&gt;
 ...
@@ -88,18 +88,18 @@ ingestProduct: Result: c76a527b-fb89-11e0-b6e9-4bb4c5e6fa85
         </p>
 
         <source>
-% StorageClient --operation --ingestProduct --productName TransferTest \
+% storage-client --operation --ingestProduct --productName TransferTest \
   --productStructure Flat --productTypeName TransferProduct --clientTransfer \
   --dataTransfer org.apache.oodt.cas.filemgr.datatransfer.RemoteDataTransferFactory \
-  --metadataFile "file://${HOME}/${xdoc-artifactId}-${xdoc-version}/test/test.txt.met" \
-  --refs "file://${HOME}/${xdoc-artifactId}-${xdoc-version}/test/test.txt"
+  --metadataFile "file:///usr/local/${project.artifactId}-${project.version}/test/test.txt.met" \
+  --refs "file:///usr/local/${project.artifactId}-${project.version}/test/test.txt"
         </source>
 
         <p>In either case above, the following command verifies the product ingestion:
         </p>
 
         <source>
-% StorageClient --operation --hasProduct --productName TransferTest
+% storage-client --operation --hasProduct --productName TransferTest
 
 Oct 20, 2011 ... org.apache.oodt.cas.filemgr.system.XmlRpcFileManagerClient &lt;init&gt;
 ...
@@ -110,11 +110,11 @@ hasProduct: Result: true
         </p>
 
         <source>
-% StorageClient --operation --ingestProduct --productName InPlaceTest \
+% storage-client --operation --ingestProduct --productName InPlaceTest \
   --productStructure Flat --productTypeName InPlaceProduct --clientTransfer \
   --dataTransfer org.apache.oodt.cas.filemgr.datatransfer.InPlaceDataTransferFactory \
-  --metadataFile "file://${HOME}/${xdoc-artifactId}-${xdoc-version}/test/test.txt.met" \
-  --refs "file://${HOME}/${xdoc-artifactId}-${xdoc-version}/test/test.txt"
+  --metadataFile "file:///user/local/${project.artifactId}-${project.version}/test/test.txt.met" \
+  --refs "file:///usr/local/${project.artifactId}-${project.version}/test/test.txt"
 
 Oct 20, 2011 ... org.apache.oodt.cas.filemgr.system.XmlRpcFileManagerClient &lt;init&gt;
 ...
@@ -124,16 +124,16 @@ ingestProduct: Result: 168442dc-fb8a-11e0-b6e9-4bb4c5e6fa85
         <p>The test file above is ingested as product type <i>InPlaceProduct</i>. This product type assumes the product will be ingested in place, meaning it will not be moved. Because of this, the default data transfer mechanism was overridden with the <i>InPlaceDataTransferFactory</i>.
         </p>
 
-        <p>The <i>StorageClient</i> script has a number of other options available. Execute the script with the <i>--help</i> option to see what is available. See the <a href="https://cwiki.apache.org/confluence/display/OODT/OODT+Filemgr+User+Guide" target="_blank">Apache OODT Wiki</a> for more details and examples. The <i>StorageClient</i> script is equivalent to the <i>filemgr_client</i> script described on the wiki except that the <i>--url</i> option is specified in the <i>StorageClient</i> script and is not required to be passed on the command line.
+        <p>The <i>storage-client</i> script has a number of other options available. Execute the script with the <i>--help</i> option to see what is available. See the <a href="https://cwiki.apache.org/confluence/display/OODT/OODT+Filemgr+User+Guide" target="_blank">Apache OODT Wiki</a> for more details and examples. The <i>storage-client</i> script is equivalent to the <i>filemgr_client</i> script described on the wiki except that the <i>--url</i> option is specified in the <i>storage-client</i> script and is not required to be passed on the command line.
         </p>
       </subsection>
 
       <subsection name="Query for Products">
-        <p>This section describes how to query the Storage Service for products via the <i>StorageQuery</i> script. The following command queries the service for all ingested products:
+        <p>This section describes how to query the Storage Service for products via the <i>storage-query</i> script. The following command queries the service for all ingested products:
         </p>
 
         <source>
-% StorageQuery --sql -query "SELECT * FROM *"
+% storage-query --sql -query "SELECT * FROM *"
 
 Oct 20, 2011 ... org.apache.oodt.cas.filemgr.system.XmlRpcFileManager complexQuery
 INFO: Query returned 2 results
@@ -145,11 +145,11 @@ InPlaceTest,2011-10-20T19:12:12.295-07:00,test.txt,text/plain,text,plain,\
 168442dc-fb8a-11e0-b6e9-4bb4c5e6fa85,InPlaceProduct
         </source>
 
-        <p>The results from the above command are little cryptic but serviceable. The following command details specification of the metadata elements to return:
+        <p>The results from the above command are little cryptic but serviceable. The following command details specification of the metadata elements to return from the query:
         </p>
 
         <source>
-% StorageQuery --sql --query "SELECT * FROM *" \
+% storage-query --sql --query "SELECT * FROM *" \
 -outputFormat 'ProductId = $CAS.ProductId | ProductName = $CAS.ProductName'
 
 Oct 20, 2011 ... org.apache.oodt.cas.filemgr.system.XmlRpcFileManager complexQuery
@@ -158,11 +158,36 @@ ProductId = c76a527b-fb89-11e0-b6e9-4bb4c5e6fa85 | ProductName = TransferTest
 ProductId = 168442dc-fb8a-11e0-b6e9-4bb4c5e6fa85 | ProductName = InPlaceTest
         </source>
 
-        <p>The <i>StorageQuery</i> script has a number of other options available. Execute the script with the <i>--help</i> option to see what is available. See the <a href="https://cwiki.apache.org/confluence/display/OODT/OODT+Filemgr+User+Guide" target="_blank">Apache OODT Wiki</a> for more details and examples. The <i>StorageQuery</i> script is equivalent to the <i>query_tool</i> script described on the wiki except that the <i>--url</i> option is specified in the <i>StorageQuery</i> script and is not required to be passed on the command line.
+        <p>The <i>storage-query</i> script has a number of other options available. Execute the script with the <i>--help</i> option to see what is available. See the <a href="https://cwiki.apache.org/confluence/display/OODT/OODT+Filemgr+User+Guide" target="_blank">Apache OODT Wiki</a> for more details and examples. The <i>storage-query</i> script is equivalent to the <i>query_tool</i> script described on the wiki except that the <i>--url</i> option is specified in the <i>storage-query</i> script and is not required to be passed on the command line.
         </p>
 
-        <p>Note: the query function will throw an exception until the first product is ingested.
+        <p>Note: The query function will throw an exception until the first product is ingested. There is also a bug in the current version of the Apache OODT File Manager that causes the query function to fail unless there is at least one product ingested for each product type.
         </p>
+      </subsection>
+
+      <subsection name="Delete Products">
+        <p>This section describes how to delete products from the Storage Service via the <i>storage-delete</i> script. The following command deletes a single product from the service:
+        </p>
+
+        <source>
+% storage-delete --productID c76a527b-fb89-11e0-b6e9-4bb4c5e6fa85
+
+Oct 20, 2011 ... org.apache.oodt.cas.filemgr.tools.DeleteProduct &lt;init&gt;
+INFO: Commit enabled.
+        </source>
+
+        <p>Multiple products can be deleted in one command by using the <i>storage-query</i> script in conjunction with the <i>storage-delete</i> script. This is accomplished by formulating the query to return a list of product identifiers that are then piped into the delete command. The following would delete all ingested products from the service:
+        </p>
+
+        <source>
+% storage-query --sql -query "SELECT * FROM *" -outputFormat '$CAS.ProductId' | \
+storage-delete --read
+
+Oct 20, 2011 ... org.apache.oodt.cas.filemgr.tools.DeleteProduct &lt;init&gt;
+INFO: Commit enabled.
+Oct 20, 2011 ... org.apache.oodt.cas.filemgr.system.XmlRpcFileManager complexQuery
+INFO: Query returned 2 results
+        </source>
       </subsection>
     </section>
   </body>
