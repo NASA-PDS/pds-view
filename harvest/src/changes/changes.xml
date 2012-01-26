@@ -23,7 +23,31 @@
   </properties>
 
   <body>
-    <release version="1.1.0" date="TBD" description="This release of the Harvest Tool is a component of the integrated release 2.1.0 of the PDS 2010 System.">
+    <release version="1.1.0" date="2012-01-31" description="This release of the Harvest Tool is a component of the integrated release 2.1.0 of the PDS 2010 System.">
+      <action dev="mcayanan" type="add">
+        Added an attribute called 'slotName' to the 'xPath' element tag in the policy configuration file to allow the capability to specify customized slot names in the registry for registered metadata.
+      </action>
+      <action dev="mcayanan" type="add">
+        Added the capability to look for the different object types specified in a data product label and stores them under the 'dataClass' slot name in the registry.
+      </action>
+      <action dev="mcayanan" type="add">
+        Added the capability to specify targets on the command-line.
+      </action>
+      <action dev="mcayanan" type="add">
+        Added a required -c, --config flag option to specify the harvest policy configuration file.
+      </action>
+      <action dev="mcayanan" type="add">
+        Added a -D, --pds3-directory flag option to specify a PDS3 directory for PDS3 data product registration.
+      </action>
+      <action dev="mcayanan" type="update">
+        Updated xpath expressions that look for specific metadata needed for product registration and tool behavior due to updates to the latest PDS4 model.
+      </action>
+      <action dev="mcayanan" type="update">
+        Updated to set the product type to "ProductFile" when ingesting products to the PDS Storage.
+      </action>
+      <action dev="mcayanan" type="fix">
+        Fixed a bug where the tool complained about the keystore password not being specified when attempting to register to an unsecured registry instance.
+      </action>
     </release>
 
     <release version="1.0.0" date="2011-11-09" description="This release of the Harvest Tool is a component of the integrated release 2.0.0 of the PDS 2010 System.">

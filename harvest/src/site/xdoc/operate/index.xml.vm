@@ -53,6 +53,8 @@
           <tr><td>-p, --password</td><td>Specify a password associated with the username.</td></tr>
           <tr><td>-k, --keystore-pass</td><td>Specify a keystore password associated with the keystore file being passed into the tool.</td></tr>
           <tr><td>-l, --log-file</td><td>Specify a log file name. Default is standard out.</td></tr>
+          <tr><td>-e, --regexp</td><td>Specify file patterns to look for when registering products from a target directory.</td></tr>
+          <tr><td>-D, --pds3-directory</td><td>Specify a target directory to register PDS3 products.</td></tr>
           <tr><td>-P, --port</td><td>Specify a port number to use if running the tool in persistence mode. See the <a href="#Persistence_Mode">Persistence Mode</a> section for more details.</td></tr>
           <tr><td>-w, --wait</td><td>Specify the time, in seconds, to wait in between the crawls if running the tool in persistence mode. See the <a href="#Persistence_Mode">Persistence Mode</a> section for more details.</td></tr>
           <tr><td>-V, --version</td><td>Display the release number and copyright information.</td></tr>
@@ -61,31 +63,60 @@
       </subsection>
 
       <subsection name="Execute Harvest Tool">
-        <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script.
-        </p>
-
         <p>The Harvest Tool operates with a policy file to register product metadata. Details on how to create this policy file can be found in the <a href="#Harvest_Policy_File">Harvest Policy File</a> section.
         </p>
+        
+        <p>This section demonstrates some of the ways that the tool can be executed:
+        </p>
+        
+        <ul>
+          <li>Registering Products From a Single Target</li>
+          <li>Registering Products From Multiple Targets</li>
+          <li>Registering Products From Targets Specified In The Policy File</li>
+          <li>Registering Products To A Secured Registry Instance</li>
+        </ul>
 
-        <p>The following command demonstrates how to run the Harvest Tool against a policy file, <i>policy.xml</i>, using a valid username, password and keystore password, with the output going to standard out:
+        <p><b><i>Registering Products From a Single Target</i></b></p>
+        
+        <p>The following command demonstrates how to register products to a non-secured registry instance from a target bundle file, <i>product_bundle.xml</i>, using the policy file, <i>policy.xml</i>, where the output is going to standard out:
         </p>
 
         <source>
-% Harvest policy.xml -u {username} -p {password} -k {keystorePassword}
+% Harvest product_bundle.xml -c policy.xml
         </source>
 
-        <p>The following command demonstrates how to run the Harvest Tool with the output going to a log file, <i>log.txt</i> instead of standard out:
+        <p>The following command demonstrates how to register products to a non-secured registry instance from a target directory, <i>$HOME/pds4Directory</i>, where only files that end with a <i>.xml</i> file extension, will be processed:
         </p>
 
         <source>
-% Harvest policy.xml -u {username} -p {password} -k {keystorePassword} -l log.txt
+% Harvest $HOME/pds4Directory -e "*.xml" -c policy.xml
         </source>
 
-        <p>When registering product metadata to a non-secured instance of the Registry (such as one running on your local machine), the <i>-u</i> and <i>-p</i> command-line option flags do not need to be passed into the tool. The following command demonstrates how to run the Harvest Tool to register product metadata to a non-secured instance of the Registry Service, with the output going to a log file:
+        <p><b><i>Registering Products From Multiple Targets</i></b></p>
+        
+        <p>The following command demonstrates how to register products to a non-secured registry instance from a target bundle file, <i>product_bundle.xml</i>, and a target collection file, <i>product_collection.xml</i>, using the policy file, <i>policy.xml</i>. The output will go to a log file, <i>log-file.txt</i>:
+        </p>
+        
+        <source>
+% Harvest product_bundle.xml, product_collection.xml -c policy.xml -l log-file.txt 
+        </source>
+
+        <p><b><i>Registering Products From Targets Specified In The Policy File</i></b></p>
+        
+        <p>Targets can either be specified on the command-line or in in the policy file. Any targets specified on the command-line will overwrite any targets specified in the policy file. The following command demonstrates registering products based on targets specified in the policy file, <i>policy.xml</i>:
+        </p>
+        
+        <source>
+% Harvest -c policy.xml
+        </source>
+
+        <p><b><i>Registering Products To A Secured Registry Instance</i></b></p>
+        
+        <p>The following command demonstrates how to register products to a secured registry instance from a target bundle file, <i>product_bundle.xml</i>, using the policy file, <i>policy.xml</i>:
         </p>
 
         <source>
-% Harvest policy.xml -l log.txt
+% Harvest product_bundle.xml -c policy.xml -u {username} -p {password} -k {keystorePassword}
         </source>
       </subsection>
 
@@ -97,7 +128,7 @@
         </p>
 
         <source>
-% Harvest policy.xml -u {username} -p {password} -k {keystorePassword} -l log.txt -P 9000 -w 120
+% Harvest -c policy.xml -u {username} -p {password} -k {keystorePassword} -l log.txt -P 9000 -w 120
         </source>
 
         <p>After running the above command, the daemon will be accessible at <i>http://localhost:9000/xmlrpc</i>.
@@ -162,44 +193,58 @@
        <source>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;policy&gt;
-   &lt;bundles&gt;
-      &lt;file&gt;/home/pds4/context-bundle/bundle.xml&lt;/file&gt;
-   &lt;/bundles&gt;
-   &lt;collections&gt;
-      &lt;file&gt;/home/pds4/insthost/collection_instrument_host.xml&lt;/file&gt;
-   &lt;/collections&gt;
-   &lt;directories&gt;
-      &lt;path&gt;/home/user/pds4/geo/product_files&lt;/path&gt;
-      &lt;filePattern&gt;*.xml&lt;/filePattern&gt;
-   &lt;/directories&gt;
-   &lt;validation&gt;
-      &lt;enabled&gt;true&lt;/enabled&gt;
-   &lt;/validation&gt;
-   &lt;storageIngestion&gt;
-      &lt;serverUrl&gt;http://localhost:9000&lt;/serverUrl&gt;
-   &lt;/storageIngestion&gt;
-   &lt;accessUrls&gt;
-      &lt;baseUrl&gt;http://pds.nasa.gov/pds4&lt;/baseUrl&gt;
-      &lt;baseUrl&gt;file://pds4&lt;/baseUrl&gt;
-   &lt;/accessUrls&gt;
-   &lt;candidates&gt;
-      &lt;namespace prefix="geo" uri="http://pds.nasa.gov/schema/pds4/geo"/&gt;
-      &lt;productMetadata objectType="character_table"&gt;
-         &lt;xPath&gt;//geo:Product_Identification_Area/geo:creation_date_time&lt;/xPath&gt;
-         &lt;xPath&gt;//geo:Subject_Area/geo:instrument_name&lt;/xPath&gt;
-         &lt;xPath&gt;//Subject_Area/observing_system_name&lt;/xPath&gt;
-      &lt;/productMetadata&gt;
-      &lt;productMetadata objectType="Product_Target"&gt;
-         &lt;xPath&gt;//alternate_title&lt;/xPath&gt;
-         &lt;xPath&gt;//creation_date_time&lt;/xPath&gt;
-         &lt;xPath&gt;//identifier&lt;/xPath&gt;
-         &lt;xPath&gt;//Subject_Area/target_name&lt;/xPath&gt;
-      &lt;/productMetadata&gt;
-   &lt;/candidates&gt;
+  &lt;bundles&gt;
+    &lt;file&gt;/home/pds4/context-bundle/bundle.xml&lt;/file&gt;
+  &lt;/bundles&gt;
+  &lt;collections&gt;
+    &lt;file&gt;/home/pds4/insthost/collection_instrument_host.xml&lt;/file&gt;
+  &lt;/collections&gt;
+  &lt;directories&gt;
+    &lt;path&gt;/home/dph_examples_513B/dph_example_products&lt;/path&gt;
+    &lt;filePattern&gt;*.xml&lt;/filePattern&gt;
+  &lt;/directories&gt;
+  &lt;validation&gt;
+    &lt;enabled&gt;true&lt;/enabled&gt;
+  &lt;/validation&gt;
+  &lt;accessUrls&gt;
+    &lt;baseUrl&gt;http://pds.nasa.gov/pds4&lt;/baseUrl&gt;
+    &lt;baseUrl&gt;file://pds/pds4/&lt;/baseUrl&gt;
+  &lt;/accessUrls&gt;
+  &lt;candidates&gt;
+    &lt;namespace prefix="dph" uri="http://pds.nasa.gov/schema/pds4/dph/v01"/&gt;
+    &lt;productMetadata objectType="Product_Observational"&gt;
+      &lt;xPath&gt;//Identification_Area/information_model_version&lt;/xPath&gt;
+      &lt;xPath&gt;//Identification_Area/Modification_History/Modification_Detail/modification_date&lt;/xPath&gt;
+      &lt;xPath slotName="modification_version_id"&gt;//Identification_Area/Modification_History/Modification_Detail/version_id&lt;/xPath&gt;
+      &lt;xPath slotName="modification_description"&gt;//Identification_Area/Modification_History/Modification_Detail/description&lt;/xPath&gt;
+      &lt;xPath&gt;//Observation_Area/Time_Coordinates/start_date_time&lt;/xPath&gt;
+      &lt;xPath&gt;//Observation_Area/Time_Coordinates/stop_date_time&lt;/xPath&gt;
+      &lt;xPath&gt;//Observation_Area/Time_Coordinates/local_mean_solar_time&lt;/xPath&gt;
+      &lt;xPath&gt;//Observation_Area/Time_Coordinates/local_true_solar_time&lt;/xPath&gt;
+      &lt;xPath slotName="investigation_area_name"&gt;//Observation_Area/Investigation_Area/name&lt;/xPath&gt;
+      &lt;xPath slotName="investigation_area_type"&gt;//Observation_Area/Investigation_Area/type&lt;/xPath&gt;
+      &lt;xPath slotName="target_identification_name"&gt;//Observation_Area/Target_Identification/name&lt;/xPath&gt;
+      &lt;xPath slotName="target_identification_type"&gt;//Observation_Area/Target_Identification/type&lt;/xPath&gt;
+      &lt;xPath slotName="target_identification_description"&gt;//Observation_Area/Target_Identification/description&lt;/xPath&gt;
+      &lt;xPath&gt;//Observation_Area/Mission_Area/dph:spacecraft_clock_start_count&lt;/xPath&gt;
+      &lt;xPath&gt;//Observation_Area/Mission_Area/dph:spacecraft_clock_stop_count&lt;/xPath&gt;
+    &lt;/productMetadata&gt;
+    &lt;productMetadata objectType="Product_Document"&gt;
+      &lt;xPath&gt;//Identification_Area/information_model_version&lt;/xPath&gt;
+      &lt;xPath&gt;//Identification_Area/Modification_History/Modification_Detail/modification_date&lt;/xPath&gt;
+      &lt;xPath slotName="modification_version_id"&gt;//Identification_Area/Modification_History/Modification_Detail/version_id&lt;/xPath&gt;
+      &lt;xPath slotName="modification_description"&gt;//Identification_Area/Modification_History/Modification_Detail/description&lt;/xPath&gt;
+      &lt;xPath&gt;//Document_Desc/doi&lt;/xPath&gt;
+      &lt;xPath&gt;//Document_Desc/author_list&lt;/xPath&gt;
+      &lt;xPath&gt;//Document_Desc/acknowledgement_text&lt;/xPath&gt;
+      &lt;xPath slotName="document_description"&gt;//Document_Desc/description&lt;/xPath&gt;
+      &lt;xPath&gt;//Document_Desc/publication_date&lt;/xPath&gt;
+    &lt;/productMetadata&gt;
+  &lt;/candidates&gt;  
 &lt;/policy&gt;
        </source>
 
-       <p>This policy file is made up of the following complex type elements: <i>bundles</i>, <i>collections</i>, <i>directories</i>, <i>validation</i>, <i>storageIngestion</i>, <i>accessUrls</i>, <i>candidates</i>, and <i>productMetadata</i>.
+       <p>The policy file is made up of the following complex type elements: <i>bundles</i>, <i>collections</i>, <i>directories</i>, <i>validation</i>, <i>storageIngestion</i>, <i>accessUrls</i>, <i>candidates</i>, and <i>productMetadata</i>.
        </p>
 
        <p><b><i>bundles</i></b></p>
@@ -296,16 +341,16 @@
          <tr><td>productMetadata</td><td>Specify to tell the tool what object types and what metadata to register.</td></tr>
        </table>
 
-       <p>By default, the Harvest Tool defines the default namespace to be the PDS namespace, <i>http://pds.nasa.gov/schema/pds4/pds/v04</i>. To override this default, specify the <i>default</i> attribute in the namespace element and give it a value of <i>true</i>. The following makes the <i>geo</i> namespace the default namespace:
+       <p>By default, the Harvest Tool defines the default namespace to be the PDS namespace. To override this default, specify the <i>default</i> attribute in the namespace element and give it a value of <i>true</i>. The following sets the <i>dph</i> namespace to be the default namespace in Harvest:
        </p>
 
        <source>
 &lt;candidates&gt;
-  &lt;namespace prefix="geo" uri="http://pds.nasa.gov/schema/pds4/geo" default="true"/&gt;
+  &lt;namespace prefix="dph" uri="http://pds.nasa.gov/schema/pds4/dph/v01" default="true"/&gt;
           ...
        </source>
 
-       <p>Namespaces need to be defined in the Harvest policy file only if the metadata to be extracted exists in a namespace other than the PDS namespace. In the example above, a namespace with the prefix <i>geo</i> and uri <i>http://pds.nasa.gov/schema/pds4/geo</i> has been defined. This means that any xPath expressions defined in the policy file will be able to use the <i>geo</i> prefix to be able to extract metadata that are within the geo namespace. xPaths will be explained in greater detail in the <i>productMetadata</i> section.
+       <p>Namespaces need to be defined in the Harvest policy file only if the metadata to be extracted exists in a namespace other than the PDS namespace. In the example above, a namespace with the prefix <i>dph</i> and uri <i>http://pds.nasa.gov/schema/pds4/dph/v01</i> has been defined. This means that any xPath expressions defined in the policy file will be able to use the <i>dph</i> prefix to be able to extract metadata that are within the dph namespace. xPaths will be explained in greater detail in the <i>productMetadata</i> section.
        </p>
 
        <p><b><i>productMetadata</i></b></p>
@@ -318,43 +363,53 @@
          <tr><td>xPath</td><td>Specify an XPath expression to extract metadata.</td></tr>
        </table>
 
-       <p>In the example above, the policy file tells the Harvest Tool to look for and register the <i>character_table</i> and <i>Product_Target</i> object types.
+       <p>In the example above, the policy file tells the Harvest Tool to look for and register the <i>Product_Observational</i> and <i>Product_Document</i> object types.
        </p>
 
        <p>Also in the example is a set of <i>xPath</i> elements found under each <i>productMetadata</i> element. This defines what metadata to extract from the different products. XPath is a query language that uses path expressions to select nodes in an XML document. These path expressions look very much like expressions in a traditional computer file system. In its simplest form, prepending a <i>//</i> before a name will find the element no matter where it is in the XML file.
        </p>
 
-       <p>The following XPath expression will find the <i>creation_date_time</i> element within the default namespace, no matter where this element is located in the file:
+       <p>The following XPath expression will find the <i>start_date_time</i> element within the default namespace, no matter where this element is located in the file:
        </p>
 
        <source>
-//creation_date_time
+//start_date_time
        </source>
 
-       <p>The following XPath expression will find the <i>creation_date_time</i> element within the geo namespace, no matter where this element is located in the file:
+       <p>The following XPath expression will find the <i>spacecraft_clock_start_count</i> element within the dph namespace, no matter where this element is located in the file:
        </p>
 
        <source>
-//geo:creation_date_time
+//dph:spacecraft_clock_start_count
        </source>
 
 
-       <p>The following XPath expression will find all <i>target_name</i> elements that are children of <i>Subject_Area</i> within the default namespace:
+       <p>The following XPath expression will find all <i>information_model_version</i> elements that are children of <i>Identification_Area</i> within the default namespace:
        </p>
 
        <source>
-//Subject_Area/target_name
+//Identification_Area/information_model_version
        </source>
 
-       <p>The following XPath expression will find all <i>target_name</i> elements that are children of <i>Subject_Area</i> and that have a value of <i>MARS</i>:
+       <p>The following XPath expression will find all <i>name</i> elements that are children of <i>Target_Identification</i> and that have a value of <i>MARS</i>:
        </p>
 
        <source>
-//Subject_Area/target_name[text()="MARS"]
+//Target_Identification/name[text()="MARS"]
        </source>
 
        <p>For a more detailed explanation on XPath, go to your favorite search engine and type <i>XPath tutorial</i>.
        </p>
+       
+       <p>The <i>slotName</i> attribute within the <i>xPath</i> element allows the renaming of metadata element names when they are registered as slots in the registry. By default, the slot name is set to the element name that results from an xpath expression. For example, for the xpath expression, //Target_Identification/name, the slot name will be set to <i>name</i>.
+       </p>
+       
+       <p>The following demonstrates setting the policy file to find any <i>name</i> elements that are children of <i>Target_Identification</i> and setting the slot name to <i>target_identification_name</i>:
+       </p>
+       
+       <source>
+&lt;xPath slotName="target_identification_name"&gt;//Target_Identification/name&lt;/xPath&gt;       
+       </source>
      </subsection>
 
     <subsection name="PDS3 Product Registration">
