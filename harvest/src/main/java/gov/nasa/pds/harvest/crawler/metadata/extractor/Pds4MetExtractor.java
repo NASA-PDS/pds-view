@@ -23,6 +23,8 @@ import java.util.logging.Logger;
 
 import javax.xml.xpath.XPathExpressionException;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+
 import net.sf.saxon.tinytree.TinyElementImpl;
 
 import gov.nasa.jpl.oodt.cas.metadata.MetExtractor;
@@ -35,6 +37,7 @@ import gov.nasa.pds.harvest.file.MD5Checksum;
 import gov.nasa.pds.harvest.inventory.ReferenceEntry;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
+import gov.nasa.pds.harvest.policy.XPath;
 import gov.nasa.pds.harvest.util.XMLExtractor;
 
 /**
@@ -83,6 +86,7 @@ public class Pds4MetExtractor implements MetExtractor {
     String version = "";
     String title = "";
     List<TinyElementImpl> references = new ArrayList<TinyElementImpl>();
+    List<TinyElementImpl> dataClasses = new ArrayList<TinyElementImpl>();
     try {
       extractor.parse(product);
     } catch (Exception e) {
@@ -100,9 +104,10 @@ public class Pds4MetExtractor implements MetExtractor {
           Constants.TITLE));
       references = extractor.getNodesFromDoc(Constants.coreXpathsMap.get(
           Constants.REFERENCES));
+      dataClasses = extractor.getNodesFromDoc(Constants.coreXpathsMap.get(
+          Constants.DATA_CLASS));
     } catch (Exception x) {
-      //TODO: getMessage() doesn't always return a message
-      throw new MetExtractionException(x.getMessage());
+      throw new MetExtractionException(ExceptionUtils.getRootCauseMessage(x));
     }
     if (!"".equals(logicalID)) {
       metadata.addMetadata(Constants.LOGICAL_ID, logicalID);
@@ -124,29 +129,32 @@ public class Pds4MetExtractor implements MetExtractor {
       metadata.addMetadata(extractMetadata(config.getMetXPaths(objectType))
           .getHashtable());
     }
+    for (TinyElementImpl dataClass : dataClasses) {
+      metadata.addMetadata(Constants.DATA_CLASS, dataClass.getDisplayName());
+    }
     try {
       // Register LID-based and LIDVID-based associations as slots
       for (ReferenceEntry entry : getReferences(references, product)) {
         if (!entry.hasVersion()) {
-          metadata.addMetadata(entry.getAssociationType(),
+          metadata.addMetadata(entry.getType(),
               entry.getLogicalID());
           log.log(new ToolsLogRecord(ToolsLevel.INFO, "Setting "
               + "LID-based association, \'" + entry.getLogicalID()
-              + "\', under slot name \'" + entry.getAssociationType()
+              + "\', under slot name \'" + entry.getType()
               + "\'.", product));
         } else {
           String lidvid = entry.getLogicalID() + "::" + entry.getVersion();
-          metadata.addMetadata(entry.getAssociationType(), lidvid);
+          metadata.addMetadata(entry.getType(), lidvid);
           log.log(new ToolsLogRecord(ToolsLevel.INFO, "Setting "
               + "LIDVID-based association, \'" + lidvid
-              + "\', under slot name \'" + entry.getAssociationType()
+              + "\', under slot name \'" + entry.getType()
               + "\'.", product));
         }
       }
       List<FileObject> fileObjectEntries = getFileObjects(product);
       metadata.addMetadata(Constants.FILE_OBJECTS, fileObjectEntries);
     } catch (Exception e) {
-      throw new MetExtractionException(e.getMessage());
+      throw new MetExtractionException(ExceptionUtils.getRootCauseMessage(e));
     }
     return metadata;
   }
@@ -161,18 +169,26 @@ public class Pds4MetExtractor implements MetExtractor {
    * @throws MetExtractionException If a bad xPath expression was
    *  encountered.
    */
-  protected Metadata extractMetadata(List<String> xPaths)
+  protected Metadata extractMetadata(List<XPath> xPaths)
   throws MetExtractionException {
     Metadata metadata = new Metadata();
-    for (String xpath : xPaths) {
+    for (XPath xpath : xPaths) {
       try {
-        List<TinyElementImpl> list = extractor.getNodesFromDoc(xpath);
+        List<TinyElementImpl> list = extractor.getNodesFromDoc(
+            xpath.getValue());
         for (int i = 0; i < list.size(); i++) {
-          metadata.addMetadata(list.get(i).getDisplayName(),
-              extractor.getValuesFromDoc(xpath));
+          String name = "";
+          if (xpath.getSlotName() != null) {
+            name = xpath.getSlotName();
+          } else {
+            name = list.get(i).getDisplayName();
+          }
+          metadata.addMetadata(name,
+              extractor.getValuesFromDoc(xpath.getValue()));
         }
       } catch (Exception xe) {
-        throw new MetExtractionException("Bad XPath Expression: " + xpath);
+        throw new MetExtractionException("Bad XPath Expression: "
+            + xpath.getValue());
       }
     }
     return metadata;
@@ -195,6 +211,7 @@ public class Pds4MetExtractor implements MetExtractor {
       List<TinyElementImpl> references, File product)
   throws XPathExpressionException, MetExtractionException {
     List<ReferenceEntry> refEntries = new ArrayList<ReferenceEntry>();
+    String REFERENCE_TYPE = "reference_type";
     String name = "";
     String value = "";
     for (TinyElementImpl reference : references) {
@@ -218,13 +235,17 @@ public class Pds4MetExtractor implements MetExtractor {
           }
         } else if (name.equals("lid_reference")) {
           re.setLogicalID(value);
-        } else if (name.equals("reference_association_type")) {
-          re.setAssociationType(value);
-        } else if (name.equals("referenced_object_type")) {
-          re.setObjectType(value);
+        } else if (name.equals(REFERENCE_TYPE)) {
+          re.setType(value);
         }
       }
-      refEntries.add(re);
+      if (re.getType() == null) {
+        log.log(new ToolsLogRecord(ToolsLevel.SEVERE, "Could not find \'"
+            + REFERENCE_TYPE + "\' element.", product.toString(),
+            re.getLineNumber()));
+      } else {
+        refEntries.add(re);
+      }
     }
     return refEntries;
   }

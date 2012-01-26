@@ -18,6 +18,7 @@ import java.util.List;
 
 import gov.nasa.jpl.oodt.cas.metadata.MetExtractorConfig;
 import gov.nasa.pds.harvest.policy.Pds4ProductMetadata;
+import gov.nasa.pds.harvest.policy.XPath;
 
 /**
  * Configuration class for extracting metadata from
@@ -49,13 +50,13 @@ public class Pds4MetExtractorConfig implements MetExtractorConfig {
      *
      * @return A list of XPath expressions based on the given object type.
      */
-    public List<String> getMetXPaths(String objectType) {
+    public List<XPath> getMetXPaths(String objectType) {
         for (Pds4ProductMetadata p : pds4Candidates) {
             if (p.getObjectType().equalsIgnoreCase(objectType)) {
                 return p.getXPath();
             }
         }
-        return new ArrayList<String>();
+        return new ArrayList<XPath>();
     }
 
     /**

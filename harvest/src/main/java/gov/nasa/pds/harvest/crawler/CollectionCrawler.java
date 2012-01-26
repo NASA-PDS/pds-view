@@ -52,13 +52,22 @@ public class CollectionCrawler extends PDSProductCrawler {
     try {
       XMLExtractor extractor = new XMLExtractor();
       extractor.parse(collection);
-      String isPrimary = extractor.getValueFromDoc(
-          Constants.CONTAINS_PRIMARY_COLLECTION_XPATH);
-      if ((!"".equals(isPrimary))
-          && (!isPrimary.equalsIgnoreCase("T"))) {
-        log.log(new ToolsLogRecord(ToolsLevel.INFO, "Not a primary "
-            + "collection. Members will not be registered.", collection));
-        return;
+      if ("".equals(extractor.getValueFromDoc(
+          Constants.PRIMARY_COLLECTION_XPATH))) {
+        if ("".equals(extractor.getValueFromDoc(
+            Constants.SECONDARY_COLLECTION_XPATH))) {
+          log.log(new ToolsLogRecord(ToolsLevel.WARNING, "Cannot determine if "
+              + "this is a primary or secondary collection. Members will "
+              + "not be registered.", collection));
+          return;
+        } else {
+          log.log(new ToolsLogRecord(ToolsLevel.INFO, "Not a primary "
+              + "collection. Members will not be registered.", collection));
+          return;
+        }
+      } else {
+        log.log(new ToolsLogRecord(ToolsLevel.INFO, "This is a primary "
+            + "collection. Members will be registered.", collection));
       }
       InventoryReader reader = new InventoryTableReader(collection);
       for (InventoryEntry entry = new InventoryEntry(); entry != null;) {

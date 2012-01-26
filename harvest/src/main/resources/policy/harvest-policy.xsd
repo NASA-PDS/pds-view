@@ -22,7 +22,6 @@
 <xsd:element name="path" type="xsd:string"/>
 <xsd:element name="file" type="xsd:string"/>
 <xsd:element name="filePattern" type="xsd:string"/>
-<xsd:element name="xPath" type="xsd:string"/>
 <xsd:element name="enabled" type="xsd:boolean" default="true"/>
 <xsd:element name="lidPrefix" type="xsd:string"/>
 <xsd:element name="lidReference" type="xsd:string"/>
@@ -38,6 +37,16 @@
 <xsd:attribute name="prefix" type="xsd:string"/>
 <xsd:attribute name="uri" type="xsd:string"/>
 <xsd:attribute name="default" type="xsd:boolean" default="false"/>
+<xsd:attribute name="slotName" type="xsd:string"/>
+
+<xsd:element name="xPath" type="XPath"/>
+<xsd:complexType name="XPath">
+   <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+         <xsd:attribute ref="slotName"/>
+      </xsd:extension>
+   </xsd:simpleContent>
+</xsd:complexType>
 
 <xsd:element name="directories" type="Directory"/>
 <xsd:complexType name="Directory">

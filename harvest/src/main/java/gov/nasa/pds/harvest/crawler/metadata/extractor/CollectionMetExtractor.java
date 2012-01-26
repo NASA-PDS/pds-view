@@ -18,7 +18,6 @@ import gov.nasa.jpl.oodt.cas.metadata.exceptions.MetExtractionException;
 import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.file.FileObject;
 import gov.nasa.pds.harvest.inventory.InventoryEntry;
-import gov.nasa.pds.harvest.inventory.InventoryReaderException;
 import gov.nasa.pds.harvest.inventory.InventoryTableReader;
 import gov.nasa.pds.harvest.inventory.ReferenceEntry;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
@@ -28,6 +27,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 import net.sf.saxon.tinytree.TinyElementImpl;
 
@@ -44,7 +45,7 @@ public class CollectionMetExtractor extends Pds4MetExtractor {
 
   /** XPath to get the associaton type. */
   public static final String ASSOCIATION_TYPE_XPATH = "//*[starts-with("
-      + "name(),'Inventory')]/reference_association_type";
+      + "name(),'Inventory')]/reference_type";
 
   /**
    * Constructor.
@@ -104,6 +105,11 @@ public class CollectionMetExtractor extends Pds4MetExtractor {
     if (!"".equals(objectType)) {
        metadata.addMetadata(Constants.OBJECT_TYPE, objectType);
     }
+    if ("".equals(associationType)) {
+      throw new MetExtractionException("Could not find the inventory "
+          + "reference_type element tag with the following xpath expression: "
+          + ASSOCIATION_TYPE_XPATH);
+    }
     if (references.size() == 0) {
       log.log(new ToolsLogRecord(ToolsLevel.INFO, "No associations found.",
           product));
@@ -135,7 +141,7 @@ public class CollectionMetExtractor extends Pds4MetExtractor {
               re.setLogicalID(identifier);
             }
           }
-          re.setAssociationType(associationType);
+          re.setType(associationType);
           refEntries.add(re);
         }
         entry = reader.getNext();
@@ -148,11 +154,11 @@ public class CollectionMetExtractor extends Pds4MetExtractor {
         List<ReferenceEntry> lidVidEntries = new ArrayList<ReferenceEntry>();
         for (ReferenceEntry entry : refEntries) {
           if (!entry.hasVersion()) {
-            metadata.addMetadata(entry.getAssociationType(),
+            metadata.addMetadata(entry.getType(),
                 entry.getLogicalID());
             log.log(new ToolsLogRecord(ToolsLevel.INFO, "Setting "
                 + "LID-based association, \'" + entry.getLogicalID()
-                + "\', under slot name \'" + entry.getAssociationType()
+                + "\', under slot name \'" + entry.getType()
                 + "\'.", product));
           } else {
             lidVidEntries.add(entry);
@@ -165,7 +171,7 @@ public class CollectionMetExtractor extends Pds4MetExtractor {
         metadata.addMetadata(Constants.FILE_OBJECTS, fileObjectEntries);
       }
     } catch (Exception e) {
-      throw new MetExtractionException(e.getMessage());
+      throw new MetExtractionException(ExceptionUtils.getRootCauseMessage(e));
     }
     return metadata;
   }

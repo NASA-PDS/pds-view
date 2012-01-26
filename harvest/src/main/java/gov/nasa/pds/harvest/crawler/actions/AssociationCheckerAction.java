@@ -80,9 +80,9 @@ public class AssociationCheckerAction extends CrawlerAction {
               re.getFile().toString(), re.getLineNumber()));
           passFlag = false;
         }
-        if (re.getAssociationType() == null) {
+        if (re.getType() == null) {
           log.log(new ToolsLogRecord(ToolsLevel.SEVERE, "Association "
-              + "entry is missing the reference_association_type tag.",
+              + "entry is missing the reference_type tag.",
               re.getFile().toString(), re.getLineNumber()));
           passFlag = false;
         }

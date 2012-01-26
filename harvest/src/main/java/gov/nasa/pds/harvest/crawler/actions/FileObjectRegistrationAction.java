@@ -130,7 +130,7 @@ public class FileObjectRegistrationAction extends CrawlerAction {
         refEntry.setLogicalID(lid);
         refEntry.setVersion(metadata.getMetadata(Constants.PRODUCT_VERSION));
         refEntry.setGuid(guid);
-        refEntry.setAssociationType("has_file");
+        refEntry.setType("has_file");
         if (metadata.containsKey(Constants.REFERENCES)) {
           List<ReferenceEntry> refEntries = metadata.getAllMetadata(
               Constants.REFERENCES);

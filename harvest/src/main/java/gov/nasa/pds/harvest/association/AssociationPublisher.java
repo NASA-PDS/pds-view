@@ -127,8 +127,7 @@ public class AssociationPublisher {
     Boolean verifiedFlag = false;
 
     association.setSourceObject(metadata.getMetadata(Constants.PRODUCT_GUID));
-    association.setAssociationType(refEntry.getAssociationType());
-    association.setObjectType(refEntry.getObjectType());
+    association.setAssociationType(refEntry.getType());
     if (refEntry.hasGuid()) {
       association.setTargetObject(refEntry.getGuid());
       verifiedFlag = true;

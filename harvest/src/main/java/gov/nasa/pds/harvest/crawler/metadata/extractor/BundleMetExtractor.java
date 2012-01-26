@@ -107,18 +107,18 @@ public class BundleMetExtractor extends Pds4MetExtractor {
       // Register LID-based and LIDVID-based associations as slots
       for (ReferenceEntry entry : getReferences(references, product)) {
         if (!entry.hasVersion()) {
-          metadata.addMetadata(entry.getAssociationType(),
+          metadata.addMetadata(entry.getType(),
               entry.getLogicalID());
           log.log(new ToolsLogRecord(ToolsLevel.INFO, "Setting "
               + "LID-based association, \'" + entry.getLogicalID()
-              + "\', under slot name \'" + entry.getAssociationType()
+              + "\', under slot name \'" + entry.getType()
               + "\'.", product));
         } else {
           String lidvid = entry.getLogicalID() + "::" + entry.getVersion();
-          metadata.addMetadata(entry.getAssociationType(), lidvid);
+          metadata.addMetadata(entry.getType(), lidvid);
           log.log(new ToolsLogRecord(ToolsLevel.INFO, "Setting "
               + "LIDVID-based association, \'" + lidvid
-              + "\', under slot name \'" + entry.getAssociationType()
+              + "\', under slot name \'" + entry.getType()
               + "\'.", product));
         }
       }

@@ -44,7 +44,7 @@ public class LogMissingReqMetadataAction extends CrawlerAction {
         super();
         this.reqMetadata = new ArrayList<String>();
         this.reqMetadata.addAll(reqMetadata);
-        String []phases = {CrawlerActionPhases.POST_INGEST_FAILURE};
+        String []phases = {CrawlerActionPhases.PRE_INGEST};
         setPhases(Arrays.asList(phases));
         setId(ID);
         setDescription(DESCRIPTION);

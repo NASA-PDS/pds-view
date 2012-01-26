@@ -15,14 +15,20 @@ package gov.nasa.pds.harvest;
 
 import gov.nasa.pds.harvest.commandline.options.Flag;
 import gov.nasa.pds.harvest.commandline.options.InvalidOptionException;
+import gov.nasa.pds.harvest.constants.Constants;
 import gov.nasa.pds.harvest.logging.ToolsLevel;
 import gov.nasa.pds.harvest.logging.ToolsLogRecord;
 import gov.nasa.pds.harvest.logging.formatter.HarvestFormatter;
 import gov.nasa.pds.harvest.logging.handler.HarvestFileHandler;
 import gov.nasa.pds.harvest.logging.handler.HarvestStreamHandler;
+import gov.nasa.pds.harvest.policy.Bundle;
+import gov.nasa.pds.harvest.policy.Collection;
+import gov.nasa.pds.harvest.policy.Directory;
 import gov.nasa.pds.harvest.policy.Namespace;
+import gov.nasa.pds.harvest.policy.Pds3Directory;
 import gov.nasa.pds.harvest.policy.Policy;
 import gov.nasa.pds.harvest.policy.PolicyReader;
+import gov.nasa.pds.harvest.target.TargetType;
 import gov.nasa.pds.harvest.util.PDSNamespaceContext;
 import gov.nasa.pds.harvest.util.ToolInfo;
 import gov.nasa.pds.harvest.util.Utility;
@@ -39,6 +45,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
@@ -49,6 +56,9 @@ import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
+import net.sf.saxon.trans.XPathException;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -56,6 +66,7 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.PatternLayout;
@@ -116,6 +127,16 @@ public class HarvestLauncher {
   /** The registry package name to be used when harvesting products. */
   private String registryPackageName;
 
+  /** List of targets specified on the command line. */
+  private List<File> targets;
+
+  /** List of regular expressions to use as filters when crawling a directory.
+   */
+  private List<String> regExps;
+
+  /** A PDS3 directory specified on the command line. */
+  private String pds3Directory;
+
   /**
    * Default constructor.
    *
@@ -133,6 +154,9 @@ public class HarvestLauncher {
     registryPackageGuid = null;
     registryPackageName = null;
     keystorePassword = null;
+    targets = new ArrayList<File>();
+    regExps = new ArrayList<String>();
+    pds3Directory = null;
 
     globalPolicy = this.getClass().getResourceAsStream("global-policy.xml");
   }
@@ -166,6 +190,16 @@ public class HarvestLauncher {
     if (registryURL == null) {
       throw new Exception("\'pds.registry\' java property is not set.");
     }
+    List<String> targetList = new ArrayList<String>();
+    for (Iterator<String> i = line.getArgList().iterator(); i.hasNext();) {
+      String[] values = i.next().split(",");
+      for (int index = 0; index < values.length; index++) {
+        targetList.add(values[index].trim());
+      }
+    }
+    if (!targetList.isEmpty()) {
+      setTargets(targetList);
+    }
     List<Option> processedOptions = Arrays.asList(line.getOptions());
     for (Option o : processedOptions) {
       if (o.getOpt().equals(Flag.HELP.getShortName())) {
@@ -174,12 +208,20 @@ public class HarvestLauncher {
       } else if (o.getOpt().equals(Flag.VERSION.getShortName())) {
         displayVersion();
         System.exit(0);
+      } else if (o.getOpt().equals(Flag.CONFIG.getShortName())) {
+        policy = new File(o.getValue());
+        if (!policy.exists()) {
+          throw new InvalidOptionException("Policy file does not exist: "
+              + policy);
+         }
       } else if (o.getOpt().equals(Flag.KEYSTOREPASS.getShortName())) {
         keystorePassword = o.getValue();
       } else if (o.getOpt().equals(Flag.PASSWORD.getShortName())) {
         password = o.getValue();
       } else if (o.getOpt().equals(Flag.USERNAME.getShortName())) {
         username = o.getValue();
+      } else if (o.getOpt().equals(Flag.REGEXP.getShortName())) {
+        setRegExps((List<String>) o.getValuesList());
       } else if (o.getOpt().equals(Flag.LOG.getShortName())) {
         logFile = o.getValue();
       } else if (o.getOpt().equals(Flag.PORT.getShortName())) {
@@ -194,19 +236,14 @@ public class HarvestLauncher {
         } catch (NumberFormatException n) {
           throw new Exception(n.getMessage());
         }
+      } else if (o.getOpt().equals(Flag.PDS3DIRECTORY.getShortName())) {
+        pds3Directory = o.getValue();
       }
     }
-    if (line.getArgList().size() != 0) {
-      policy = new File(line.getArgList().get(0).toString());
-      if (!policy.exists()) {
-        throw new InvalidOptionException("Policy file does not exist: "
-            + policy);
-       }
-    } else {
-        throw new InvalidOptionException(
-          "Policy file not found on the command-line.");
+    if (policy == null) {
+      throw new Exception("Missing '-c' flag option. Policy file must be "
+          + "specified.");
     }
-
     if ((username != null && password == null)
         || (username == null && password != null)) {
       throw new InvalidOptionException(
@@ -228,6 +265,29 @@ public class HarvestLauncher {
           keystore, keystorePassword);
     }
     setLogger();
+  }
+
+  /**
+   * Set the target.
+   *
+   * @param targets A list of targets.
+   */
+  private void setTargets(List<String> targets) {
+    this.targets.clear();
+    while (targets.remove(""));
+    for (String t : targets) {
+      this.targets.add(new File(t));
+    }
+  }
+
+  /**
+   * Sets the list of file patterns to look for if traversing a directory.
+   *
+   * @param patterns A list of file patterns.
+   */
+  private void setRegExps(List<String> patterns) {
+    this.regExps = patterns;
+    while (this.regExps.remove(""));
   }
 
   /**
@@ -289,7 +349,7 @@ public class HarvestLauncher {
   public final void displayHelp() {
     int maxWidth = 80;
     HelpFormatter formatter = new HelpFormatter();
-    formatter.printHelp(maxWidth, "Harvest <policy file> <options>",
+    formatter.printHelp(maxWidth, "Harvest <options>",
         null, Flag.getOptions(), null);
   }
 
@@ -331,6 +391,45 @@ public class HarvestLauncher {
     if (daemonPort != -1 && waitInterval != -1) {
       harvester.setDaemonPort(daemonPort);
       harvester.setWaitInterval(waitInterval);
+    }
+    Bundle bundles = new Bundle();
+    Collection collections = new Collection();
+    Directory directories = new Directory();
+    Pds3Directory pds3Dir = new Pds3Directory();
+    for (File target : targets) {
+      try {
+        TargetType type = getTargetType(target);
+        if (TargetType.BUNDLE.equals(type)) {
+          bundles.getFile().add(target.toString());
+        } else if (TargetType.COLLECTION.equals(type)) {
+          collections.getFile().add(target.toString());
+        } else if (TargetType.DIRECTORY.equals(type)) {
+          directories.getPath().add(target.toString());
+          directories.getFilePattern().addAll(regExps);
+        } else {
+          log.log(new ToolsLogRecord(ToolsLevel.SEVERE, "Cannot determine if "
+              + "target type is a bundle, collection, or directory.", target)
+          );
+        }
+      } catch (XPathException xpe) {
+        log.log(new ToolsLogRecord(ToolsLevel.SEVERE, "XPathExpression "
+            + "exception: " + ExceptionUtils.getRootCauseMessage(xpe),
+            target));
+      }
+    }
+    if (pds3Directory != null) {
+      pds3Dir.setPath(pds3Directory);
+      pds3Dir.getFilePattern().addAll(regExps);
+    }
+    // Any targets specified on the command line will overwrite any targets
+    // specified in the policy file.
+    if ( (!bundles.getFile().isEmpty()) || (!collections.getFile().isEmpty())
+        || (!directories.getPath().isEmpty())
+        || (pds3Dir.getPath() != null) ) {
+      policy.setBundles(bundles);
+      policy.setCollections(collections);
+      policy.setDirectories(directories);
+      policy.setPds3Directory(pds3Dir);
     }
     harvester.harvest(policy);
   }
@@ -388,6 +487,41 @@ public class HarvestLauncher {
     registryPackageGuid = client.publishObject(registryPackage);
   }
 
+  /**
+   * Get the target type of the file.
+   *
+   * @param target The file.
+   *
+   * @return A TargetType. The default is a file if the product_class
+   * tag value is not part of the list of bundle and collection type
+   * names.
+   *
+   * @throws XPathException If an error occurred while parsing the file.
+   */
+  private TargetType getTargetType(File target) throws XPathException {
+    String PRODUCT_TYPE_XPATH = Constants.IDENTIFICATION_AREA_XPATH + "/"
+    + Constants.OBJECT_TYPE;
+    TargetType type = TargetType.FILE;
+    if (target.isDirectory()) {
+      type = TargetType.DIRECTORY;
+    } else {
+      XMLExtractor extractor = new XMLExtractor();
+      extractor.parse(target);
+      String value = "";
+      try {
+        value = extractor.getValueFromDoc(PRODUCT_TYPE_XPATH);
+      } catch (XPathExpressionException x) {
+        throw new XPathException("Bad xpath expression: "
+            + PRODUCT_TYPE_XPATH);
+      }
+      if (value.contains("Bundle")) {
+        type = TargetType.BUNDLE;
+      } else if (value.contains("Collection")) {
+        type = TargetType.COLLECTION;
+      }
+    }
+    return type;
+  }
   /**
    * Process main.
    *

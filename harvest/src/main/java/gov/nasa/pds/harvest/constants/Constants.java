@@ -80,6 +80,15 @@ public class Constants {
   public static final String STORAGE_SERVICE_PRODUCT_ID =
     "storageServiceProductId";
 
+  /** The data classes found in a PDS4 label. */
+  public static final String DATA_CLASS = "dataClass";
+
+  /**
+   * The XPath to the data classes in the PDS4 label.
+   */
+  public static final String DATA_CLASS_XPATH =
+    "//File_Area_Observational/*[not(self::File)]";
+
   /** Holds the XPaths to the expected metadata in a product label. */
   public static final HashMap<String, String> coreXpathsMap =
     new HashMap<String, String>();
@@ -89,8 +98,12 @@ public class Constants {
     "//*[starts-with(name(),'Identification_Area')]";
 
   /** XPath that will indicate if a collection is primary. */
-  public static final String CONTAINS_PRIMARY_COLLECTION_XPATH =
-    "//*[starts-with(name(), 'Identification_Area')]/contains_primary_member";
+  public static final String PRIMARY_COLLECTION_XPATH =
+    "//Inventory_LIDVID_Primary";
+
+  /** Xpath to indicate if a collection is secondary. */
+  public static final String SECONDARY_COLLECTION_XPATH =
+    "//Inventory_LIDVID_Secondary | //Inventory_LID_Secondary";
 
   static {
     coreXpathsMap.put(LOGICAL_ID, IDENTIFICATION_AREA_XPATH + "/"
@@ -102,10 +115,10 @@ public class Constants {
     coreXpathsMap.put(TITLE, IDENTIFICATION_AREA_XPATH + "/" + TITLE);
     coreXpathsMap.put(REFERENCES,
           "//*[ends-with(name(),'Member_Entry')]"
-        + " | //*[ends-with(name(),'Reference_Entry')] | "
-        + "//*[starts-with(name(), 'Reference_Entry')]");
+        + " | //Internal_Reference");
     coreXpathsMap.put(FILE_OBJECTS, "//*[starts-with(name(), 'File_Area')]/"
         + "File | //Document_Format_Set/Document_File");
+    coreXpathsMap.put(DATA_CLASS, DATA_CLASS_XPATH);
   }
 
   /** Mapping of PDS3 to PDS4 names */

@@ -31,11 +31,8 @@ public class ReferenceEntry {
     /** The guid. */
     private String guid;
 
-    /** The association type. */
-    private String associationType;
-
-    /** The referenced object type. */
-    private String objectType;
+    /** The reference type. */
+    private String type;
 
     /** Flag to indicate whether the association has a LID-VID reference. */
     private boolean hasVersion;
@@ -53,8 +50,7 @@ public class ReferenceEntry {
     public ReferenceEntry() {
         logicalID = null;
         version = null;
-        associationType = null;
-        objectType = null;
+        type = null;
         lineNumber = -1;
         file = null;
         guid = null;
@@ -111,39 +107,21 @@ public class ReferenceEntry {
     }
 
     /**
-     * Get the association type.
+     * Get the reference type.
      *
-     * @return An association type.
+     * @return A type.
      */
-    public String getAssociationType() {
-        return associationType;
+    public String getType() {
+        return type;
     }
 
     /**
-     * Set the association type.
-     *
-     * @param type An association type.
-     */
-    public void setAssociationType(String type) {
-        associationType = type;
-    }
-
-    /**
-     * Get the referenced object type.
-     *
-     * @return A referenced object type.
-     */
-    public String getObjectType() {
-        return objectType;
-    }
-
-    /**
-     * Set the reference object type.
+     * Set the reference type.
      *
      * @param type A type.
      */
-    public void setObjectType(String type) {
-        objectType = type;
+    public void setType(String type) {
+        this.type = type;
     }
 
     /**

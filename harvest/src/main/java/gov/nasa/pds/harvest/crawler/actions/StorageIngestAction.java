@@ -82,7 +82,7 @@ public class StorageIngestAction extends CrawlerAction {
     setPhases(Arrays.asList(phases));
     setId(ID);
     setDescription(DESCRIPTION);
-    productTypeName = "InPlaceProduct";
+    productTypeName = "ProductFile";
   }
 
   /**
