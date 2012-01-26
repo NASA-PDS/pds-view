@@ -53,10 +53,6 @@ public class VersionInfo {
 
   public final static String SCHEMA_DIR = "schema";
 
-  public final static String BASE_TYPES = "Base_Types";
-
-  public final static String EXTENDED_TYPES = "Extended_Types";
-
   public final static String SCHEMA_DIR_PROP = "core.schema.dir";
 
   public final static String PDS_DEFAULT_NAMESPACE = "pds.default.namespace";
@@ -114,23 +110,26 @@ public class VersionInfo {
     return props.getProperty(COPYRIGHT);
   }
 
-  public static String getModelVersion() {
+  public static String getDefaultModelVersion() {
     return props.getProperty(MODEL_VERSION);
   }
 
   public static List<String> getSchemas() {
     if (internalMode) {
       return Arrays.asList(getSafeResourceListing(SCHEMA_DIR + "/"
-          + getModelVersion()));
+          + getDefaultModelVersion()));
     } else {
-      return getDirectoryListingNames(new File(schemaDir, getModelVersion()));
+      return getDirectoryFileNames(schemaDir);
     }
   }
 
-  public static List<String> getDirectoryListingNames(File directory) {
+  public static List<String> getDirectoryFileNames(File directory) {
     List<String> names = new ArrayList<String>();
     for (File file : getDirectoryListing(directory)) {
-      names.add(file.getName());
+      // Ignore directories
+      if (file.isFile()) {
+        names.add(file.getName());
+      }
     }
     return names;
   }
@@ -144,23 +143,8 @@ public class VersionInfo {
       return Arrays.asList(getSafeResourceListing(SCHEMA_DIR + "/"
           + modelVersion));
     } else {
-      return getDirectoryListingNames(new File(schemaDir, modelVersion));
+      return getDirectoryFileNames(schemaDir);
     }
-  }
-
-  public static String getSchemaReference(String modelVersion,
-      String productClass) {
-    if (internalMode) {
-      return "/" + SCHEMA_DIR + "/" + modelVersion + "/"
-          + getSchemaName(modelVersion, productClass);
-    } else {
-      return new File(new File(schemaDir, modelVersion), getSchemaName(
-          modelVersion, productClass)).getAbsolutePath();
-    }
-  }
-
-  public static String getSchemaName(String modelVersion, String productClass) {
-    return productClass + "_" + modelVersion + ".xsd";
   }
 
   public static String getPDSDefaultNamespace(String modelVersion) {
@@ -169,11 +153,7 @@ public class VersionInfo {
   }
 
   public static List<String> getSupportedModels() {
-    if (internalMode) {
-      return Arrays.asList(getSafeResourceListing(SCHEMA_DIR));
-    } else {
-      return getDirectoryListingNames(schemaDir);
-    }
+    return Arrays.asList(getSafeResourceListing(SCHEMA_DIR));
   }
 
   private static String[] getSafeResourceListing(String path) {
@@ -247,7 +227,6 @@ public class VersionInfo {
     System.out.println(VersionInfo.isInternalMode());
     System.out.println(VersionInfo.getSchemas());
     System.out.println(VersionInfo.getSupportedModels());
-    System.out.println(VersionInfo.getSchemaReference(args[0], args[1]));
   }
 
 }

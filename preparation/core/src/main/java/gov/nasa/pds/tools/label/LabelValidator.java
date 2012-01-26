@@ -24,19 +24,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.XMLConstants;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.stream.StreamSource;
 
-import net.sf.saxon.xpath.XPathEvaluator;
-
-import org.w3c.dom.Document;
+import org.apache.xerces.util.XMLCatalogResolver;
 import org.xml.sax.SAXException;
 
 /**
@@ -48,114 +42,89 @@ import org.xml.sax.SAXException;
  */
 public class LabelValidator {
   private Map<String, Boolean> configurations = new HashMap<String, Boolean>();
-  private Map<String, Map<String, Schema>> schemas = new HashMap<String, Map<String, Schema>>();
+  private Schema userSchema;
   private String modelVersion;
-  private final static Boolean internalMode;
+  private Boolean internalMode;
+  private XMLCatalogResolver resolver;
+  public final static String USER_VERSION = "User Supplied Version";
 
   public static final String SCHEMA_CHECK = "gov.nasa.pds.tools.label.SchemaCheck";
 
-  static {
-    internalMode = VersionInfo.isInternalMode();
-  }
-
   public LabelValidator() {
     this.configurations.put(SCHEMA_CHECK, true);
-    modelVersion = VersionInfo.getModelVersion();
+    modelVersion = VersionInfo.getDefaultModelVersion();
+    internalMode = true;
+    resolver = null;
   }
 
-  public synchronized Schema getSchema(String modelVersion, String productClass)
-      throws SAXException {
-    Map<String, Schema> modelMap = schemas.get(modelVersion);
-    if (modelMap == null) {
-      modelMap = new HashMap<String, Schema>();
-      schemas.put(modelVersion, modelMap);
-    }
-    Schema schema = modelMap.get(productClass);
-    if (schema == null) {
-      SchemaFactory factory = SchemaFactory
-          .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-      if (internalMode) {
-        factory.setResourceResolver(new ModelResourceResolver(modelVersion));
-      }
-      schema = factory.newSchema(this.getSchemaSources(modelVersion,
-          productClass).toArray(new StreamSource[0]));
-      modelMap.put(productClass, schema);
-    }
-    return schema;
+  public void setSchema(String[] schemaFiles) throws SAXException {
+    setSchema(loadSchema(schemaFiles));
   }
 
-  private List<StreamSource> getSchemaSources(String modelVersion,
-      String productClass) {
+  public void setSchema(Schema schema) {
+    internalMode = false;
+    this.userSchema = schema;
+  }
+
+  public void setCatalogs(String[] catalogFiles) {
+    internalMode = false;
+    resolver = new XMLCatalogResolver();
+    resolver.setPreferPublic(true);
+    resolver.setCatalogList(catalogFiles);
+  }
+  
+  private Schema loadSchema(String[] schemaFiles) throws SAXException {
     List<StreamSource> sources = new ArrayList<StreamSource>();
-    // Load product schema
-    StreamSource productSource;
-    if (internalMode) {
-      productSource = new StreamSource(LabelValidator.class
-          .getResourceAsStream(VersionInfo.getSchemaReference(modelVersion,
-              productClass)), VersionInfo.getSchemaName(modelVersion,
-          productClass));
-    } else {
-      productSource = new StreamSource(new File(VersionInfo.getSchemaReference(
-          modelVersion, productClass)));
+    for (String schemaFile : schemaFiles) {
+      sources.add(new StreamSource(new File(schemaFile)));
     }
-    sources.add(productSource);
-    return sources;
+    SchemaFactory schemaFactory = SchemaFactory.newInstance("http://www.w3.org/XML/XMLSchema/v1.1");
+    return schemaFactory.newSchema(sources.toArray(new StreamSource[0]));
   }
 
-  private String getProductClass(File labelFile)
-      throws XPathExpressionException, ParserConfigurationException,
-      SAXException, IOException {
-    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-    dbf.setNamespaceAware(true);
-    DocumentBuilder parser = dbf.newDocumentBuilder();
-    Document labelDocument = parser.parse(labelFile);
-    XPathEvaluator xpath = new XPathEvaluator();
-    xpath.getStaticContext().setDefaultElementNamespace(
-        VersionInfo.getPDSDefaultNamespace(modelVersion));
-    return xpath.evaluate("//product_class/text()", labelDocument);
-  }
-
+  /**
+   * Currently this method only validates the label against schema constraints
+   * @param container to store output messages in
+   * @param labelFile to validate
+   * @throws SAXException
+   * @throws IOException
+   * @throws ParserConfigurationException
+   */
   public void validate(ExceptionContainer container, File labelFile)
-      throws SAXException, IOException, ParserConfigurationException,
-      XPathExpressionException {
-    String productClass = this.getProductClass(labelFile);
-    if (productClass == null || "".equals(productClass.trim())) {
-      container.addException(new LabelException(ExceptionType.ERROR,
-          "Could not find product class for label.", null, labelFile
-              .getAbsolutePath(), -1, -1));
-      return;
+      throws SAXException, IOException, ParserConfigurationException {
+    Schema validatingSchema = null;
+    if (internalMode) {
+      validatingSchema = loadSchema(VersionInfo.getSchemas().toArray(new String[0]));
+    } else {
+      validatingSchema = userSchema;
     }
-    Schema schema = this.getSchema(modelVersion, productClass);
-    this.validate(container, labelFile, schema);
-  }
-
-  public void validate(ExceptionContainer container, File labelFile,
-      Schema schema) throws SAXException, IOException,
-      ParserConfigurationException {
+    
     if (performsSchemaValidation()) {
-      Validator validator = schema.newValidator();
+      Validator validator = validatingSchema.newValidator();
       if (container != null) {
         validator.setErrorHandler(new LabelErrorHandler(container));
+      }
+      if (resolver != null) {
+        validator.setResourceResolver(resolver);
       }
       validator.validate(new StreamSource(labelFile));
     }
   }
 
-  public void validate(File labelFile, Schema schema) throws SAXException,
-      IOException, ParserConfigurationException {
-    validate(null, labelFile, schema);
-  }
-
-  public void validate(File labelFile) throws XPathExpressionException,
-      SAXException, IOException, ParserConfigurationException {
+  public void validate(File labelFile) throws SAXException, IOException,
+      ParserConfigurationException {  
     validate(null, labelFile);
   }
-
+  
   public String getModelVersion() {
-    return modelVersion;
+    if (internalMode) {
+      return modelVersion;
+    }
+    return USER_VERSION;
   }
 
   public void setModelVersion(String modelVersion) {
+    this.internalMode = true;
     this.modelVersion = modelVersion;
   }
 
@@ -180,17 +149,4 @@ public class LabelValidator {
     return internalMode;
   }
 
-  public static void main(String[] args) throws Exception {
-    LabelValidator validator = new LabelValidator();
-    System.out.println("Parser Version: " + VersionInfo.getXMLParserVersion());
-    System.out.println("Model Version: " + validator.getModelVersion());
-    ExceptionContainer container = new ExceptionContainer();
-    validator.validate(container, new File(args[0]));
-    for (LabelException exception : container.getExceptions()) {
-      System.out.println(exception.getExceptionType() + " ["
-          + exception.getLineNumber() + ":" + exception.getColumnNumber()
-          + "] " + exception.getSource() + ": " + exception.getMessage());
-    }
-    System.out.println("Exiting Main!");
-  }
 }
