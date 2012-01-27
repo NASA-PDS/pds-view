@@ -106,7 +106,7 @@ public class Harvester {
     this.fileObjectRegistrationAction = new FileObjectRegistrationAction(
         this.registryUrl, this.ingester);
     this.registryPackageGuid = registryPackageGuid;
-    this.modelVersion = VersionInfo.getModelVersion();
+    this.modelVersion = VersionInfo.getDefaultModelVersion();
   }
 
   /**
