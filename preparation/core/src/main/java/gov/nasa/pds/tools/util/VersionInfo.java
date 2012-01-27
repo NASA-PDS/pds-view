@@ -114,6 +114,19 @@ public class VersionInfo {
     return props.getProperty(MODEL_VERSION);
   }
 
+  public static List<String> getSchemasFromDirectory() {
+      return getDirectoryFileNames(schemaDir);
+  }
+
+  public static List<String> getSchemasFromJar(String modelVersion) {
+    return Arrays.asList(getSafeResourceListing(SCHEMA_DIR + "/"
+        + modelVersion));
+  }
+  
+  public static String getSchemaRefFromJar(String modelVersion, String schemaFile) {
+    return "/" + SCHEMA_DIR + "/" + modelVersion + "/" + schemaFile;
+  }
+  
   public static List<String> getSchemas() {
     if (internalMode) {
       return Arrays.asList(getSafeResourceListing(SCHEMA_DIR + "/"
@@ -122,7 +135,7 @@ public class VersionInfo {
       return getDirectoryFileNames(schemaDir);
     }
   }
-
+  
   public static List<String> getDirectoryFileNames(File directory) {
     List<String> names = new ArrayList<String>();
     for (File file : getDirectoryListing(directory)) {
@@ -136,15 +149,6 @@ public class VersionInfo {
 
   public static File[] getDirectoryListing(File directory) {
     return directory.listFiles();
-  }
-
-  public static List<String> getSchemas(String modelVersion) {
-    if (internalMode) {
-      return Arrays.asList(getSafeResourceListing(SCHEMA_DIR + "/"
-          + modelVersion));
-    } else {
-      return getDirectoryFileNames(schemaDir);
-    }
   }
 
   public static String getPDSDefaultNamespace(String modelVersion) {
@@ -221,12 +225,6 @@ public class VersionInfo {
 
   public static Boolean isInternalMode() {
     return internalMode;
-  }
-
-  public static void main(String[] args) throws Exception {
-    System.out.println(VersionInfo.isInternalMode());
-    System.out.println(VersionInfo.getSchemas());
-    System.out.println(VersionInfo.getSupportedModels());
   }
 
 }

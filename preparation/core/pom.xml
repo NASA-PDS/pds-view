@@ -171,6 +171,11 @@
       <version>2.11.0-xml-schema-1.1-beta</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>xml-resolver</groupId>
+      <artifactId>xml-resolver</artifactId>
+      <version>1.2</version>
+    </dependency>
   </dependencies>
 
   <!-- Project Information and Reports inherited from parent. -->

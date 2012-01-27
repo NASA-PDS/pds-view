@@ -42,9 +42,9 @@ import org.xml.sax.SAXException;
  */
 public class LabelValidator {
   private Map<String, Boolean> configurations = new HashMap<String, Boolean>();
-  private Schema userSchema;
+  private String[] userSchemaFiles;
   private String modelVersion;
-  private Boolean internalMode;
+  private Validator cachedValidator;
   private XMLCatalogResolver resolver;
   public final static String USER_VERSION = "User Supplied Version";
 
@@ -53,78 +53,117 @@ public class LabelValidator {
   public LabelValidator() {
     this.configurations.put(SCHEMA_CHECK, true);
     modelVersion = VersionInfo.getDefaultModelVersion();
-    internalMode = true;
+    cachedValidator = null;
     resolver = null;
   }
 
   public void setSchema(String[] schemaFiles) throws SAXException {
-    setSchema(loadSchema(schemaFiles));
-  }
-
-  public void setSchema(Schema schema) {
-    internalMode = false;
-    this.userSchema = schema;
+    userSchemaFiles = schemaFiles;
+    modelVersion = USER_VERSION;
   }
 
   public void setCatalogs(String[] catalogFiles) {
-    internalMode = false;
     resolver = new XMLCatalogResolver();
     resolver.setPreferPublic(true);
     resolver.setCatalogList(catalogFiles);
+    modelVersion = USER_VERSION;
   }
-  
-  private Schema loadSchema(String[] schemaFiles) throws SAXException {
+
+  private List<StreamSource> loadSchemaSources(String[] schemaFiles) {
     List<StreamSource> sources = new ArrayList<StreamSource>();
     for (String schemaFile : schemaFiles) {
       sources.add(new StreamSource(new File(schemaFile)));
     }
-    SchemaFactory schemaFactory = SchemaFactory.newInstance("http://www.w3.org/XML/XMLSchema/v1.1");
-    return schemaFactory.newSchema(sources.toArray(new StreamSource[0]));
+    return sources;
+  }
+
+  private List<StreamSource> loadSchemaSourcesFromJar() {
+    String[] schemaFiles = VersionInfo.getSchemasFromJar(modelVersion).toArray(
+        new String[0]);
+    List<StreamSource> sources = new ArrayList<StreamSource>();
+    for (String schemaFile : schemaFiles) {
+      sources.add(new StreamSource(LabelValidator.class
+          .getResourceAsStream(VersionInfo.getSchemaRefFromJar(modelVersion,
+              schemaFile))));
+    }
+    return sources;
   }
 
   /**
    * Currently this method only validates the label against schema constraints
-   * @param container to store output messages in
-   * @param labelFile to validate
+   * 
+   * @param container
+   *          to store output messages in
+   * @param labelFile
+   *          to validate
    * @throws SAXException
    * @throws IOException
    * @throws ParserConfigurationException
    */
-  public void validate(ExceptionContainer container, File labelFile)
+  public synchronized void validate(ExceptionContainer container, File labelFile)
       throws SAXException, IOException, ParserConfigurationException {
-    Schema validatingSchema = null;
-    if (internalMode) {
-      validatingSchema = loadSchema(VersionInfo.getSchemas().toArray(new String[0]));
-    } else {
-      validatingSchema = userSchema;
-    }
-    
+    // Are we perfoming schema validation?
     if (performsSchemaValidation()) {
-      Validator validator = validatingSchema.newValidator();
-      if (container != null) {
-        validator.setErrorHandler(new LabelErrorHandler(container));
+      // Do we have a schema we have loaded previously?
+      if (cachedValidator == null) {
+        // Support for XSD 1.1
+        SchemaFactory schemaFactory = SchemaFactory
+            .newInstance("http://www.w3.org/XML/XMLSchema/v1.1");
+        // If catalog is used allow resources to be loaded for schemas
+        if (resolver != null) {
+          schemaFactory.setResourceResolver(resolver);
+        }
+        // Time to load schema that will be used for validation
+        Schema validatingSchema = null;
+        if (userSchemaFiles != null) {
+          // User has specified schema files to use
+          validatingSchema = schemaFactory.newSchema(loadSchemaSources(
+              userSchemaFiles).toArray(new StreamSource[0]));
+        } else if (resolver == null) {
+          // There is no catalog file
+          if (VersionInfo.isInternalMode()) {
+            // No external schema directory was specified so load from jar
+            validatingSchema = schemaFactory
+                .newSchema(loadSchemaSourcesFromJar().toArray(
+                    new StreamSource[0]));
+          } else {
+            // Load from user specified external directory
+            validatingSchema = schemaFactory.newSchema(loadSchemaSources(
+                VersionInfo.getSchemasFromDirectory().toArray(new String[0]))
+                .toArray(new StreamSource[0]));
+          }
+        } else {
+          // We're only going to use the catalog to validate against.
+          validatingSchema = schemaFactory.newSchema();
+        }
+        // Time to create a validator from our schema
+        Validator validator = validatingSchema.newValidator();
+        // Allow access to the catalog from the parser
+        if (resolver != null) {
+          validator.setResourceResolver(resolver);
+        }
+        // Capture messages in a container
+        if (container != null) {
+          validator.setErrorHandler(new LabelErrorHandler(container));
+        }
+        // Cache once we have loaded so we don't have to do again
+        cachedValidator = validator;
       }
-      if (resolver != null) {
-        validator.setResourceResolver(resolver);
-      }
-      validator.validate(new StreamSource(labelFile));
+      // Finally validate the file
+      cachedValidator.validate(new StreamSource(labelFile));
     }
   }
 
   public void validate(File labelFile) throws SAXException, IOException,
-      ParserConfigurationException {  
+      ParserConfigurationException {
     validate(null, labelFile);
   }
-  
+
   public String getModelVersion() {
-    if (internalMode) {
-      return modelVersion;
-    }
-    return USER_VERSION;
+    return modelVersion;
   }
 
   public void setModelVersion(String modelVersion) {
-    this.internalMode = true;
     this.modelVersion = modelVersion;
   }
 
@@ -145,8 +184,10 @@ public class LabelValidator {
     this.configurations.put(key, value);
   }
 
-  public Boolean isInternalMode() {
-    return internalMode;
+  public static void main(String[] args) throws Exception {
+    LabelValidator lv = new LabelValidator();
+    String[] catalogs = new String[] { args[1] };
+    lv.setCatalogs(catalogs);
+    lv.validate(new File(args[0]));
   }
-
 }
