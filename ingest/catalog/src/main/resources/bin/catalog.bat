@@ -30,6 +30,7 @@ if not defined JAVA_HOME (
 set SCRIPT_DIR=%~dp0
 set PARENT_DIR=%SCRIPT_DIR%..
 set LIB_DIR=%PARENT_DIR%\lib
+set KEYSTORE=%PARENT_DIR%\keystore\tomcat_self_sign_keystore
 
 :: Check for dependencies.
 if exist "%LIB_DIR%\catalog-*.jar" (
@@ -39,12 +40,17 @@ echo Cannot find Catalog jar file in %LIB_DIR%
 goto END
 )
 
+if not exist "%KEYSTORE%" (
+echo Cannot find keystore file: %KEYSTORE%
+goto END
+)
+
 :: Finds the jar file in LIB_DIR and sets it to CATALOG_JAR
 for %%i in ("%LIB_DIR%"\catalog-*.jar) do set CATALOG_JAR=%%i
 
 :: Executes Catalog via the executable jar file
 :: The special variable '%*' allows the arguments
 :: to be passed into the executable.
-"%JAVA_HOME%"\bin\java -jar "%CATALOG_JAR%" %*
+"%JAVA_HOME%"\bin\java -Dpds.registry="http://localhost:8080/registry" -Dpds.security.keystore="%KEYSTORE%" -jar "%CATALOG_JAR%" %*
 
 :END
