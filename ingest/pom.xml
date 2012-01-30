@@ -31,24 +31,16 @@
 
   <name>Ingest</name>
   <description>
-    The Storage Service provides functionality for managing the data repository. This includes movement of data files in and out of the repository. The functionality for this service is satisfied by the Apache OODT File Manager.
+    The Ingest component provides functionality for ingesting products with the Registry. This project consists of a suite of tools for ingesting PDS3 Catalog Files, PDS3 Data Sets and PDS4 Products with the Registry Service.
   </description>
   <url>http://pds-cm.jpl.nasa.gov/2010/ingest/</url>
 
   <modules>
     <!--
     <module>catalog</module>
-    <module>harvest</module>
     -->
+    <module>harvest</module>
   </modules>
-
-  <licenses>
-    <license>
-      <name>California Institute of Technology</name>
-      <url>file:///${basedir}/LICENSE.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
 
   <developers>
     <developer>

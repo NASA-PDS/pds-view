@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2010-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -30,7 +30,7 @@
 
   <body>
     <links>
-      <item name="Harvest" href="http://pds-cm.jpl.nasa.gov/2010/harvest/index.html" />
+      <item name="Harvest" href="http://pds-cm.jpl.nasa.gov/2010/ingest/harvest/index.html" />
     </links>
 
     <menu name="Software Documentation">
@@ -42,7 +42,6 @@
     </menu>
 
     <menu name="Download">
-      <item name="Harvest Tool Guide (pdf)" href="${project.artifactId}-${project.version}.pdf"/>
       <item name="Binary Package (tar.gz)" href="ftp://pds.nasa.gov/pub/toplevel/2010/harvest/${project.artifactId}-${project.version}-bin.tar.gz"/>
       <item name="Binary Package (zip)" href="ftp://pds.nasa.gov/pub/toplevel/2010/harvest/${project.artifactId}-${project.version}-bin.zip"/>
     </menu>
