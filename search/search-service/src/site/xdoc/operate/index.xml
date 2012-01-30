@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011, by the California Institute of Technology.
+  Copyright 2011-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -26,13 +26,14 @@
 
   <body>
     <section name="Operation">
-      <p>This section describes how to operate the Search Service software. The following topics can be found in this section:
+      <p>This document describes how to operate the Search Service software. The following topics can be found in this document:
       </p>
       <ul>
-	<li><a href="#Create_Index">Create Index</a></li>
-	<li><a href="#Update_Index">Update Index</a></li>
+        <li><a href="#Create_Index">Create Index</a></li>
+        <li><a href="#Update_Index">Update Index</a></li>
       </ul>
     </section>
+
     <section name="Create Index">
       <p>An index is required in order for Solr to provide a search interface.  This index is created by the the Search Core Tool.  From the Search Service package, go into the <i>$SEARCH_SERVICE_HOME/pds/bin</i> directory and perform the following command to create a new index:</p>
       <source>

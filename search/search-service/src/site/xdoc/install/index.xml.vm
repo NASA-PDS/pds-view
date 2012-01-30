@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011, by the California Institute of Technology.
+  Copyright 2011-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -26,7 +26,7 @@
 
   <body>
     <section name="Installation">
-      <p>This section describes how to install the Search Service software contained in the <i>${xdoc-artifactId}</i> package. The following topics can be found in this section:
+      <p>This document describes how to install the Search Service software contained in the <i>${project.artifactId}</i> package. The following topics can be found in this section:
       </p>
 
       <ul>
@@ -64,26 +64,25 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       </subsection>
 
       <subsection name="Search Core">
-	<p>The Search Service depends directly on the Search Core to create the Solr index, and the tool is executed as part of the Search Service.  Be sure to include the SearchCore tool in your PATH.  See the <a href="../../search-core">Search Core Documentation</a> for more details.
-	</p>
+        <p>The Search Service depends directly on the Search Core software to create the Solr index, and the tool is executed as part of the Search Service.  Be sure to include the <i>search-core</i> tool in your PATH.  See the <a href="../../search-core">Search Core Documentation</a> for more details.
+        </p>
       </subsection>
-
     </section>
 
     <section name="Unpacking the Package">
-      <p>Download the <i>${xdoc-artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/search/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. Unpack the selected binary distribution file with one of the following commands:
+      <p>Download the <i>${project.artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/search/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. The installation directory may vary from environment to environment but in UNIX-based environments it is typical to install software packages in the <i>/usr/local</i> directory and in Windows-based environments it is typical to install software packages in the <i>C:\Program Files</i> directory. Unpack the selected binary distribution file with one of the following commands:
       </p>
 
       <source>
-% unzip ${xdoc-artifactId}-${xdoc-version}-bin.zip
+% unzip ${project.artifactId}-${project.version}-bin.zip
 or
-% tar -xzvf ${xdoc-artifactId}-${xdoc-version}-bin.tar.gz
+% tar -xzvf ${project.artifactId}-${project.version}-bin.tar.gz
       </source>
 
       <p>Note: Depending on the platform, the native version of <i>tar</i> may produce an error when attempting to unpack the distribution file because many of the file paths are greater than 100 characters. If available, the GNU version of tar will resolve this problem. If that is not available or cannot be installed, the zipped package will work just fine in a UNIX environment.
       </p>
 
-      <p>The commands above result in the creation of the <i>${xdoc-artifactId}-${xdoc-version}</i> directory with the following directory structure:
+      <p>The commands above result in the creation of the <i>${project.artifactId}-${project.version}</i> directory with the following directory structure:
       </p>
 
       <ul>
@@ -96,14 +95,14 @@ or
           </p>
         </li>
         <li><b>doc/</b><br/>
-          <p>This document directory contains a local web site with the Registry Service Guide, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
+          <p>This directory contains a local web site with the Search Service documentation, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
           </p>
         </li>
       </ul>
     </section>
 
     <section name="Deploying the Application">
-      <p>The Search Service is the Solr configuration along with the Java extensions written to support PDS Search Protool. One must download the war file from the Solr website. The context file in the should be updated to reference where you have placed the war file locally and then deployed into tomcat.
+      <p>The Search Service is the Solr configuration along with the Java extensions written to support PDS Search Protocol. One must download the WAR file from the Solr website. The context file in the should be updated to reference where you have placed the WAR file locally and then deployed into Tomcat.
       </p>
     </section>
   </body>

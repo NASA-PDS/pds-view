@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2009, by the California Institute of Technology.
+  Copyright 2009-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -23,50 +23,51 @@
 
   <body>
     <section name="About Search Core">
-      <p>The Search Core provides the basis for creating and searching an <a href="http://lucene.apache.org/solr/">Apache Solr</a> index.  This index can then be leveraged by other softwareto provide a searchable user interface to a prospective user.  The Search Core software itself has a command-line interface and API to provide this functionality.
+      <p>The Search Core provides the basis for creating and searching an <a href="http://lucene.apache.org/solr/">Apache Solr</a> index.  This index can then be leveraged by other software to provide a searchable user interface to a prospective user.  The Search Core software itself has a command-line interface and API to provide this functionality.
+      </p>
+
+      <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.g
+ov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
       </p>
     </section>
     
     <section name="Main Components">
       <p>
-	The following section describes the main components of the Search Core.  These components are used by the search core and the Solr software to produce the index and searchability present on the PDS <a href="http://pds.jpl.nasa.gov/tools/data-search">Data Search page</a>.
+  The following section describes the main components of the Search Core.  These components are used by the search core and the Solr software to produce the index and searchability present on the PDS <a href="http://pds.jpl.nasa.gov/tools/data-search">Data Search page</a>.
       </p>
+
       <subsection name="Registry Extractor">
-	<p>This component uses the Registry Core and XML configuration files to build XML documents on a per product basis.  The Registry context products queried through the software are as follows:
-	</p>
-	<ul>
-	  <li>Product_Data_Set_PDS3</li>
-	  <li>Product_Target_PDS3</li>
-	  <li>Product_Instrument_PDS3</li>
-	  <li>Product_Instrument_Host_PDS3</li>
-	  <li>Product_Mission_PDS3</li>
-	  <li>Product_Resource (indirectly through Association)</li>
-	</ul>
+        <p>This component uses the Registry Core and XML configuration files to build XML documents on a per product basis.  The Registry context products queried through the software are as follows:
+        </p>
+        <ul>
+          <li>Product_Data_Set_PDS3</li>
+          <li>Product_Target_PDS3</li>
+          <li>Product_Instrument_PDS3</li>
+          <li>Product_Instrument_Host_PDS3</li>
+          <li>Product_Mission_PDS3</li>
+          <li>Product_Resource (indirectly through Association)</li>
+        </ul>
+            </subsection>
+            <subsection name="Solr Indexer">
+        <p>
+          The Solr Indexer leverages <a href="http://lucene.apache.org/java/docs/index.html">Apache Lucene</a> and the XML document produced by the Registry Extractor to create a Solr index that provides the necessary data for the Solr software to operate.
+        </p>
       </subsection>
-      <subsection name="Solr Indexer">
-	<p>
-	  The Solr Indexer leverages <a href="http://lucene.apache.org/java/docs/index.html">Apache Lucene</a> and the XML document produced by the Registry Extractor to create a Solr index that provides the necessary data for the Solr software to operate.
-	</p>
-      </subsection>
+
       <subsection name="PDS Indexer">
-	<p>
-	  Produces catalog_index directory which produces segmented binary files that are leveraged by Solr.  Remaining use and functionality, TBD.
-	</p>
-      </subsection>
-      <subsection name="Solr">
-	<p>
-	  This component is the API aspect of the sofware used by Solr to provide the searchability and output to the user.  More specifically it is home to the following two classes:
-	</p>
-	<ul>
-	  <li>XSLTResponseWriter - provides the Saxon interface for producing the search output using XML Stylsheets.</li>
-	  <li>PDSProtocolHandler - provides the PDS-specific search protocol for the Solr instance.</li>
-	</ul>
+        <p>
+          Produces catalog_index directory which produces segmented binary files that are leveraged by Solr.  Remaining use and functionality, TBD.
+        </p>
+            </subsection>
+            <subsection name="Solr">
+        <p>
+          This component is the API aspect of the sofware used by Solr to provide the searchability and output to the user.  More specifically it is home to the following two classes:
+        </p>
+        <ul>
+          <li>XSLTResponseWriter - provides the Saxon interface for producing the search output using XML Stylsheets.</li>
+          <li>PDSProtocolHandler - provides the PDS-specific search protocol for the Solr instance.</li>
+        </ul>
       </subsection>
     </section>
-
-      <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.g
-ov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
-      </p>
-
   </body>
 </document>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2010-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -19,13 +19,13 @@
 <document>
   <properties>
     <title>Operation</title>
-    <author email="jordan.h.padams@jpl.nasa.gov">Jordan Padams</author>
+    <author email="Jordan.H.Padams@jpl.nasa.gov">Jordan Padams</author>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
     <section name="Operation">
-      <p>The following topics can be found in this section:
+      <p>This document describes how to operate the Search Core software. The following topics can be found in this document:
       </p>
 
       <ul>
@@ -38,7 +38,7 @@
     </section>
 
     <section name="Tool Execution">
-      <p>Harvest Tool can be executed in various ways. This section describes how to run the tool, as well as its behaviors and caveats.
+      <p>Search Core can be executed in various ways. This section describes how to run the tool, as well as its behaviors and caveats.
       </p>
 
       <subsection name="Command-Line Options">
@@ -61,31 +61,32 @@
         <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script.
         </p>
 
-        <p>The Solr Core Tool requires a Solr Home directory to be specified prior to running the tool.  The following is the format for commands:
+        <p>The Solr Core Tool requires a Solr Home directory to be specified prior to running the tool. The following is the format for commands:
         </p>
-	<source>
-% SearchCore &lt;solr-home-path&gt; [options]
-	</source>
+
+        <source>
+% search-core &lt;solr-home-path&gt; [options]
+        </source>
 
         <p>The following command demonstrates how to run the Search Core Tool with a SOLR_HOME=/apps/search-service and the default execution to run all components:
         </p>
 
         <source>
-% SearchCore /apps/service
+% search-core /apps/service
         </source>
 
         <p>The following command demonstrates how to run the Search Core Tool with a SOLR_HOME=/apps/search-service and only run the Solr Indexer:
         </p>
 
         <source>
-% SearchCore /apps/service -s
+% search-core /apps/service -s
         </source>
 
-        <p>By default, the Search Core tool runs against the Registry Service at <a href="http://pdsbeta:8080/registry-service">http://pdsbeta:8080/registry-service</a>.  The following command demonstrates how to run the Search Core Tool and all its components against a Registry Service installed at <i>http://localhost:8080/registry-service</i>
+        <p>By default, the Search Core tool runs against the Registry Service at http://pdsbeta:8080/registry. The following command demonstrates how to run the Search Core Tool and all its components against a Registry Service installed at <i>http://localhost:8080/registry</i>
         </p>
 
         <source>
-% SearchCore /apps/service -r http://localhost:8080/registry-service
+% search-core /apps/service -r http://localhost:8080/registry
         </source>
       </subsection>
     </section>
