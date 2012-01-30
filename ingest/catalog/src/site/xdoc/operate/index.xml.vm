@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2009-2011, by the California Institute of Technology.
+  Copyright 2009-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -25,7 +25,7 @@
 
   <body>
     <section name="Operation">
-      <p>The Catalog Ingest Tool (CITool) has three functions:
+      <p>This document describes how to operate the Catalog Tool. The tool has three functions:
       </p>
 
       <ul>
@@ -36,15 +36,14 @@
           <p>Validation specific to catalog files can be performed with a report detailing the results. In addition, referential integrity checks are performed within the set of catalog files. Details on the types of checks performed can be found in the <a href="index-ref.html">Referential Integrity Checking</a> section. If viewing this document in PDF form, see the appendix for details.</p>
         </li>
         <li>Ingest a Catalog Submission<br/>
-          <p>Ingestion into the central catalog database can be performed assuming the user has appropriate permissions.</p>
+          <p>Ingestion into the Registry Service can be performed assuming the user has appropriate permissions.</p>
         </li>
       </ul>
 
-      <p>The following topics can be found in this section:
+      <p>The following topics can be found in this document:
       </p>
 
       <ul>
-        <li><a href="#Tool_Setup">Tool Setup</a></li>
         <li><a href="#Tool_Execution">Tool Execution</a></li>
         <li><a href="#Report_Formats">Report Formats</a></li>
       </ul>
@@ -53,61 +52,12 @@
       </p>
     </section>
 
-    <section name="Tool Setup">
-      <p>In order to execute CITool, the user's environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.
-      </p>
-
-      <subsection name="UNIX-Based Setup">
-        <p>This section details the environment setup for UNIX-based machines. The preferred method is to specify the shell script, <i>CITool</i>, on the command-line. Setting the <i>PATH</i> environment variable to the location of the script, enables the shell script to be executed from any location on the user's machine.
-        </p>
-        
-        <p>The following command demonstrates how to set the <i>PATH</i> environment variable, by appending to its current setting: 
-        </p>
-        
-        <source>
-% setenv PATH ${PATH}:$HOME/${xdoc-artifactId}-${xdoc-version}/bin
-        </source>        
-        
-        <p>The tool can now be executed via the shell script as demonstrated in the following example:
-        </p>
-        
-        <source>
-% CITool &lt;command-line arguments&gt;
-        </source>
-
-        <p>Additional methods for setting up a UNIX-based environment can be found in the <a href="index-unix.html">UNIX Setup Options</a> section. If viewing this document in PDF form, see the appendix for details.
-        </p>
-      </subsection>
-
-      <subsection name="Windows Setup">
-        <p>This section details the environment setup for Windows machines. The preferred method is to specify the batch file, <i>CITool.bat</i>, on the command-line. Setting the <i>PATH</i> environment variable to the location of the file, enables the batch file to be executed from any location on the user's machine.
-        </p>
-        
-        <p>The following command demonstrates how to set the <i>PATH</i> environment variable, by appending to its current setting:
-        </p>
-        
-        <source>
-C:\&gt; set PATH = %PATH%;C:\\${xdoc-artifactId}-${xdoc-version}\bin
-        </source>       
-        
-        <p>The tool can now be executed via the batch file as demonstrated in the following example:
-        </p>
-        
-        <source>
-C:\&gt; CITool &lt;command-line arguments&gt;
-        </source>
-
-        <p>Additional methods for setting up a Windows environment can be found in the <a href="index-win.html">Windows Setup Options</a> section. If viewing this document in PDF form, see the appendix for details.
-        </p>
-      </subsection>
-    </section>
-    
     <section name="Tool Execution">
-      <p>CITool can be executed in various ways. This section describes how to run the tool, as well as its behaviors and caveats.
+      <p>Catalog Tool can be executed in various ways. This section describes how to run the tool, as well as its behaviors and caveats.
       </p>
       
       <subsection name="Command-Line Options">
-        <p>CITool can be run in three modes: compare, validate and ingest. The following tables describe the command-line options available when each mode is enabled.
+        <p>Catalog Tool can be run in three modes: compare, validate and ingest. The following tables describe the command-line options available when each mode is enabled.
         </p>
         
         <p><b>Compare Mode</b></p>
@@ -132,7 +82,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             <tr>
               <td>-t, --target &lt;catalogs,URLs,dirs&gt;
               </td>
-              <td>Explicitly specify two targets (catalog files, directories, and URLs) to compare. Targets can also be specified implicitly (example: CITool OLDDATASET.CAT, NEWDATASET.CAT).
+              <td>Explicitly specify two targets (catalog files, directories, and URLs) to compare. Targets can also be specified implicitly (example: catalog OLDDATASET.CAT, NEWDATASET.CAT).
               </td>
             </tr>
             <tr>
@@ -160,13 +110,13 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             <tr>
               <td>-h, --help
               </td>
-              <td>Display CITool usage.
+              <td>Display Catalog Tool usage.
               </td>
             </tr>
             <tr>
               <td>-V, --version
               </td>
-              <td>Display CITool version.
+              <td>Display Catalog Tool version.
               </td>
             </tr> 
           </tbody>
@@ -230,7 +180,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             <tr>
               <td>-t, --target &lt;catalogs,URLs,dirs&gt;
               </td>
-              <td>Explicitly specify the target (catalog file, directory, or URL). The target can also be specified implicitly (example: CITool DATASET.CAT).
+              <td>Explicitly specify the target (catalog file, directory, or URL). The target can also be specified implicitly (example: catalog DATASET.CAT).
               </td>
             </tr>
             <tr>
@@ -245,11 +195,11 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             </tr>            
             <tr>
               <td>-h, --help</td>
-              <td>Display CITool usage.</td>
+              <td>Display Catalog Tool usage.</td>
             </tr>
             <tr>
               <td>-V, --version</td>
-              <td>Display CITool version.</td>
+              <td>Display Catalog Tool version.</td>
             </tr>            
           </tbody>
         </table>
@@ -276,7 +226,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             <tr>
               <td>-t, --target &lt;catalog,URLs,dirs&gt;
               </td>
-              <td>Explicitly specify target (catalog file, directory, and URLs) to ingest. Targets can also be specified implicitly (example: CITool -m ingest TEST.CAT).
+              <td>Explicitly specify target (catalog file, directory, and URLs) to ingest. Targets can also be specified implicitly (example: catalog -m ingest TEST.CAT).
               </td>
             </tr>
             <tr>
@@ -328,20 +278,20 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             <tr>
               <td>-h, --help
               </td>
-              <td>Display CITool usage.
+              <td>Display Catalog Tool usage.
               </td>
             </tr>
             <tr>
               <td>-V, --version
               </td>
-              <td>Display CITool version.
+              <td>Display Catalog Tool version.
               </td>
             </tr> 
           </tbody>
         </table>
       </subsection>
         
-      <subsection name="Execute CITool">
+      <subsection name="Execute Catalog Tool">
         <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script. Alternate methods for executing the tool can be found in the <a href="#Tool_Setup">Tool Setup</a> section.
         </p>
         
@@ -356,7 +306,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             </p>
           
             <source>
-% CITool $HOME/DIR1/DATASET.CAT, $HOME/DIR2/DATASET.CAT -m compare
+% catalog $HOME/DIR1/DATASET.CAT, $HOME/DIR2/DATASET.CAT -m compare
             </source>
           </li>
           <li>Comparing Two Catalog Directories<br/>
@@ -364,7 +314,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             </p>
           
             <source>
-% CITool $HOME/DIR1, $HOME/DIR2 -m compare
+% catalog $HOME/DIR1, $HOME/DIR2 -m compare
             </source>
           
             <p>In this example, the tool will look for files with matching file names between the source and target directory before doing a comparison. So, if a <i>DATASET.CAT</i> file is found in directory <i>$HOME/DIR1</i>, a <i>DATASET.CAT</i> file needs to be found in directory <i>$HOME/DIR2</i>, and so forth.
@@ -375,7 +325,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             </p>
         
             <source>
-% CITool $HOME/DIR1/DATASET.CAT, $HOME/DIR2/DATASET.CAT -m compare -r report.txt
+% catalog $HOME/DIR1/DATASET.CAT, $HOME/DIR2/DATASET.CAT -m compare -r report.txt
             </source>
           </li> 
         </ul>  
@@ -391,7 +341,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             </p>
         
             <source>
-% CITool DATASET.CAT -m validate -d pdsdd.full
+% catalog DATASET.CAT -m validate -d pdsdd.full
             </source>
           </li>
           <li>Validate a Directory of Catalog Files<br/>
@@ -399,7 +349,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             </p>
         
             <source>
-% CITool $HOME/DIR -m validate -d pdsdd.full
+% catalog $HOME/DIR -m validate -d pdsdd.full
             </source>          
           </li>
           
@@ -411,7 +361,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             </p>
             
             <source>
-% CITool VOLDESC.CAT -m validate -d pdsdd.full -I $HOME/CATALOG
+% catalog VOLDESC.CAT -m validate -d pdsdd.full -I $HOME/CATALOG
             </source>
           </li>
           
@@ -423,7 +373,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             </p>
         
             <source>
-% CITool $HOME/DIR -m validate -d pdsdd.full -A allrefs.out        
+% catalog $HOME/DIR -m validate -d pdsdd.full -A allrefs.out        
             </source>          
           </li>
           <li>Writing the Validation Report to File<br/>
@@ -431,7 +381,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             </p>
             
             <source>
-% CITool $HOME/DIR -m validate -d pdsdd.full -A allrefs.out -r report.txt           
+% catalog $HOME/DIR -m validate -d pdsdd.full -A allrefs.out -r report.txt           
             </source>
           </li>
         </ul>
@@ -447,7 +397,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             </p>
         
             <source>
-% CITool DATASET.CAT -m ingest -u tempuser -p temppass -s starsyb -n tempdb
+% catalog DATASET.CAT -m ingest -u tempuser -p temppass -s starsyb -n tempdb
 		        </source>          
           </li>
           <li>Ingest a Directory of Catalog Files<br/>
@@ -455,7 +405,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
             </p>
         
             <source>
-% CITool $HOME/DIR -m ingest -u tempuser -p temppass -s starsyb -n tempdb
+% catalog $HOME/DIR -m ingest -u tempuser -p temppass -s starsyb -n tempdb
             </source>          
           </li>
         </ul>
@@ -469,7 +419,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
         </p>
         
         <source>
-% CITool -c config.cfg
+% catalog -c config.cfg
         </source>          
       </subsection>
       
@@ -484,7 +434,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
           </li>
           <li>Escape sequences for special characters like a line feed, a tabulation or a unicode character, are allowed in the values and are specified in the same notation as those used in Java strings (e.g. \n, \t, \r).
           </li>
-          <li>Since backslashes (\) have special meanings in a configuration file, keyword values that contain this character will not be interpreted properly by CITool even if it is surrounded by quotes. A common example would be a Windows path name (e.g. c:\VTT_EN_1-1\target). Use the forward slash character instead (c:/VTT_EN_1-1/target) or escape the backslash character (c:\\VTT_EN_1-1\\target).
+          <li>Since backslashes (\) have special meanings in a configuration file, keyword values that contain this character will not be interpreted properly by Catalog Tool even if it is surrounded by quotes. A common example would be a Windows path name (e.g. c:\VTT_EN_1-1\target). Use the forward slash character instead (c:/VTT_EN_1-1/target) or escape the backslash character (c:\\VTT_EN_1-1\\target).
           </li>
         </ul>
         
@@ -672,7 +622,7 @@ C:\&gt; CITool &lt;command-line arguments&gt;
         </p>
         
         <source>
-# This is a CITool configuration file          
+# This is a Catalog Tool configuration file          
 
 citool.mode         = validate
 citool.targets      = ./TEST_DIR
@@ -691,7 +641,7 @@ citool.dictionaries = pdsdd.full
         </p>
         
         <source>
-# This is a CITool configuration file with multiple values
+# This is a Catalog Tool configuration file with multiple values
 
 citool.mode         = compare
 citool.targets      = DIR
@@ -709,7 +659,7 @@ citool.dictionaries = pdsdd.full, localdd.full
         </p>        
 
         <source>
-# This is a CITool configuration file with multiple values
+# This is a Catalog Tool configuration file with multiple values
 
 citool.mode         = compare
 citool.targets      = DIR
@@ -724,7 +674,7 @@ citool.dictionaries = pdsdd.full, \
         </p>
         
         <source>
-# This is a CITool configuration file          
+# This is a Catalog Tool configuration file          
 
 citool.mode         = validate
 citool.targets      = ./TEST_DIR
@@ -735,16 +685,16 @@ citool.dictionaries = pdsdd.full
         </p>
         
         <source>
-% CITool -c config.cfg -d mypdsdd.full
+% catalog -c config.cfg -d mypdsdd.full
         </source>
       </subsection>            
     </section>
 
     <section name="Report Formats">
-      <p>This section describes the contents of the CITool report formats. The links below detail the results. If viewing this document in PDF form, see the appendix for the actual examples.
+      <p>This section describes the contents of the Catalog Tool report formats. The links below detail the results. If viewing this document in PDF form, see the appendix for the actual examples.
       </p>
 
-      <p>The tool has a different report format depending on the CITool mode. 
+      <p>The tool has a different report format depending on the Catalog Tool mode. 
       </p>
 
       <subsection name="Compare Report">

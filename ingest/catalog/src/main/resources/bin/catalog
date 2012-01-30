@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright 2009, by the California Institute of Technology.
+# Copyright 2009-2012, by the California Institute of Technology.
 # ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 # Any commercial use must be negotiated with the Office of Technology Transfer
 # at the California Institute of Technology.
@@ -14,26 +14,32 @@
 #
 # $Id$
 
-# Bourne Shell script that allows easy execution of the Catalog Ingest Tool
+# Bourne Shell script that allows easy execution of the Catalog Tool
 # without the need to set the CLASSPATH or having to type in that long java
 # command (java gov.nasa.pds.citool.CITool ...)
 
-# Expects the CITool jar file to be in the ../lib directory.
+# Expects the Catalog jar file to be in the ../lib directory.
 
+# Set the JAVA_HOME environment variable here in the script if it will 
+# not be defined in the environment.
+if [ -z ${JAVA_HOME} ] ; then
+  export JAVA_HOME=/path/to/java/home
+fi
+
+# Setup environment variables.
 SCRIPT_DIR=`dirname $0`
 PARENT_DIR=`cd ${SCRIPT_DIR}/.. && pwd`
-
 LIB_DIR=${PARENT_DIR}/lib
 
+# Check for dependencies.
 if [ ! -f ${LIB_DIR}/citool-*.jar ]; then
-    echo "Cannot find CITool jar file in ${LIB_DIR}"
+    echo "Cannot find Catalog jar file in ${LIB_DIR}"
     exit 1
 fi
 
-CITOOL_JAR=`ls ${LIB_DIR}/citool-*.jar`
+# Finds the jar file in LIB_DIR and sets it to CATALOG_JAR.
+CATALOG_JAR=`ls ${LIB_DIR}/citool-*.jar`
 
-# Executes CITool via the executable jar file
+# Executes Catalog via the executable jar file
 # Arguments are passed in to the tool via '$@'
-
-java -jar ${CITOOL_JAR} "$@"
-
+${JAVA_HOME}/bin/java -jar ${CATALOG_JAR} "$@"

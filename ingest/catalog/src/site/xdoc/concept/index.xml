@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2010-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -23,10 +23,10 @@
 
   <body>
     <section name="Concept">
-      <p>The Catalog Ingest Tool (CITool) has been designed to replace several tools that have been utilized over the years to support the catalog submission process. Besides simplifying the process by consolidating tools, it also provides consistency in handling of catalog files because the application is built on top of the Product Tools Library which provides reusable APIs for parsing and validating PDS product labels. The following diagram details the flow of the catalog submission process:
+      <p>The Catalog Tool has been designed to replace several tools that have been utilized over the years to support the PDS3 catalog submission process. Besides simplifying the process by consolidating tools, it also provides consistency in handling of catalog files because the application is built on top of the Product Tools Library which provides reusable APIs for parsing and validating PDS product labels. The following diagram details the flow of the catalog submission process:
       </p>
 
-      <center><img alt="CITool Activity" src="../images/citool_activity.jpg"/></center>
+      <center><img alt="Catalog Activity" src="../images/citool_activity.jpg"/></center>
 
       <p>The catalog submission process is divided into three steps:
       </p>
@@ -40,18 +40,18 @@
           <p>During this step the EN Data Engineers also utilize the <i>Compare</i> and <i>Validate</i> modes of the application. By utilizing the same tool to accomplish these tasks, we should be able to reduce the back-and-forth between the EN and DN's during the submission process.
           </p>
           <p/>
-        <li>Ingestion of the catalog files into the PDS catalog database by the Operations staff at the Engineering Node</li><br/>
-          <p>During this step the EN Operator utilizes the <i>Ingest</i> mode to ingest the catalog submission. Although this mode is generally available to users of the application, only the EN Operator is authorized to perform ingestions into the PDS catalog database. Although it has not been incorporated into the tool yet, there is a post-ingestion referential integrity check against the database that is performed. This should be included in the next release of CITool.
+        <li>Ingestion of the catalog files into the Registry Service by the Operations staff at the Engineering Node</li><br/>
+          <p>During this step the EN Operator utilizes the <i>Ingest</i> mode to ingest the catalog submission. Although this mode is generally available to users of the application, only the EN Operator is authorized to perform ingestions into the Registry Service. Although it has not been incorporated into the tool yet, there is a post-ingestion referential integrity check against the registry that is performed. This will be included in a future release of Catalog Tool.
           </p>
           <p/>
       </ul>
     </section>
 
     <section name="Inputs/Outputs">
-      <p>The following diagram details the inputs and outputs for CITool:
+      <p>The following diagram details the inputs and outputs for Catalog Tool:
       </p>
 
-      <center><img alt="CITool Interfaces" src="../images/citool_interfaces.jpg"/></center>
+      <center><img alt="Catalog Interfaces" src="../images/citool_interfaces.jpg"/></center>
 
       <p>The inputs and outputs for the tool are described below.
       </p>
@@ -71,7 +71,7 @@
         <p>Each mode of the application (Compare, Validate, Ingest) produces a report in a slightly different format. The <a href="../operate/index.html#Report_Formats">Operation</a> section provides details on these reports and links to example reports. If viewing this document in PDF form, see the appendix for the actual examples.
         </p>
 
-        <p>The other major output of this application is the ingestion of the catalog submission into the PDS catalog database. This interface utilizes the Java Database Connectivity (JDBC) API and supports the proprietary database schema of the PDS catalog database.
+        <p>The other major output of this application is the ingestion of the catalog submission into the Registry Service. This interface utilizes the REST-based API provided by the Registry Service.
         </p>
       </subsection>
     </section>

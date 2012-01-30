@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2009, by the California Institute of Technology.
+  Copyright 2009-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -25,10 +25,10 @@
 
   <body>
     <section name="Referential Integrity Checking">
-      <p>This section describes how CITool checks for referential integrity among the catalog files.
+      <p>This document describes how Catalog Tool checks for referential integrity among the catalog files.
       </p>
         
-      <p>Referential integrity is a database concept that ensures that relationships between the tables remain consistent. In CITool, referential integrity is performed during validation mode. The following referential integrity checks are performed:
+      <p>Referential integrity is a database concept that ensures that relationships between the tables remain consistent. In Catalog Tool, referential integrity is performed during validation mode. The following referential integrity checks are performed:
       </p>
         
       <ul>
@@ -45,7 +45,7 @@
       </p>
         
       <subsection name="Reference Integrity">
-        <p>In a reference integrity check, CITool will ensure that referential integrity exists in the use of <i>REFERENCE_KEY_ID</i> and <i>REFERENCE_DESC</i> as follows:
+        <p>In a reference integrity check, Catalog Tool will ensure that referential integrity exists in the use of <i>REFERENCE_KEY_ID</i> and <i>REFERENCE_DESC</i> as follows:
         </p>
         
         <ul>
@@ -61,7 +61,7 @@
       </subsection>
 
       <subsection name="Personnel Integrity">
-        <p>In a personnel integrity check, CITool will ensure that referential integrity exists in the use of <i>PDS_USER_ID</i> and <i>NODE_ID</i> as follows:
+        <p>In a personnel integrity check, Catalog Tool will ensure that referential integrity exists in the use of <i>PDS_USER_ID</i> and <i>NODE_ID</i> as follows:
         </p>
         
         <ul>
@@ -71,7 +71,7 @@
       </subsection>
 
       <subsection name="Target Integrity">
-        <p>In a target integrity check, CITool will ensure that referential integrity exists in the use of <i>TARGET_NAME</i> as follows:
+        <p>In a target integrity check, Catalog Tool will ensure that referential integrity exists in the use of <i>TARGET_NAME</i> as follows:
         </p>
         
         <ul>
@@ -83,7 +83,7 @@
       </subsection>
 
       <subsection name="Instrument Integrity">
-        <p>In an instrument integrity check, CITool will ensure that referential integrity exists in the use of <i>INSTRUMENT_ID</i> as follows:
+        <p>In an instrument integrity check, Catalog Tool will ensure that referential integrity exists in the use of <i>INSTRUMENT_ID</i> as follows:
         </p>
         
         <ul>
@@ -95,7 +95,7 @@
       </subsection>
 
       <subsection name="Instrument Host Integrity">
-        <p>In an instrument host integrity check, CITool will ensure that referential integrity exists in the use of <i>INSTRUMENT_HOST_ID</i> as follows:
+        <p>In an instrument host integrity check, Catalog Tool will ensure that referential integrity exists in the use of <i>INSTRUMENT_HOST_ID</i> as follows:
         </p>
         
         <ul>
@@ -107,7 +107,7 @@
       </subsection>
 
       <subsection name="Mission Integrity">
-        <p>In a mission integrity check, CITool will ensure that referential integrity exists in the use of <i>MISSION_NAME</i> as follows:
+        <p>In a mission integrity check, Catalog Tool will ensure that referential integrity exists in the use of <i>MISSION_NAME</i> as follows:
         </p>
         
          <ul>
@@ -119,7 +119,7 @@
       </subsection>
 
       <subsection name="Data Set Integrity">
-        <p>In a data set integrity check, CITool will esnure that referential integrity exists in the use of <i>DATA_SET_ID</i> and <i>DATA_SET_ID_COLLECTION_ID</i> as follows:
+        <p>In a data set integrity check, Catalog Tool will esnure that referential integrity exists in the use of <i>DATA_SET_ID</i> and <i>DATA_SET_ID_COLLECTION_ID</i> as follows:
         </p>
         
         <ul>

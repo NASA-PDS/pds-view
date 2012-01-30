@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2009, by the California Institute of Technology.
+  Copyright 2009-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -18,13 +18,13 @@
 
 <document>
   <properties>
-    <title>About Catalog Ingest Tool</title>
+    <title>About Catalog Tool</title>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
-    <section name="About Catalog Ingest Tool">
-      <p>The Catalog Ingest Tool (CITool) is intended to streamline the ingestion process. The legacy process involves a myriad of tools and manual steps in order to ingest catalog files submitted by the nodes into the PDS central catalog. CITool offers three functions:
+    <section name="About Catalog Tool">
+      <p>The Catalog Tool provides functionality for ingesting PDS3 catalog files into the the PDS4 infrastructure including the Registry and Storage Services. Catalog Tool offers three functions:
       </p>
 
       <ul>
@@ -35,7 +35,7 @@
           <p>The validation function is also intended for both Discipline Node and Engineering Node Data Engineers to validate a current submission including checks for referential integrity.</p>
         </li>
         <li>Ingest a Catalog Submission<br/>
-          <p>The ingestion function is intended for the Engineering Node Operator to ingest the current submission into the PDS central catalog.</p>
+          <p>The ingestion function is intended for the Engineering Node Operator to ingest the current submission into the PDS Registry Service.</p>
         </li>
       </ul>
 

@@ -36,9 +36,7 @@
   <url>http://pds-cm.jpl.nasa.gov/2010/ingest/</url>
 
   <modules>
-    <!--
     <module>catalog</module>
-    -->
     <module>harvest</module>
   </modules>
 

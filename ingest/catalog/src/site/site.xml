@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2009-2011, by the California Institute of Technology.
+  Copyright 2009-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -16,25 +16,25 @@
   $Id$
 -->
 
-<project name="Catalog Ingest Tool">
+<project name="Catalog Tool">
   <bannerLeft>
     <src>images/pds_logo.jpg</src>
     <href>http://pds-cm.jpl.nasa.gov/</href>
   </bannerLeft>
 
   <bannerRight>
-    <name>Catalog Ingest Tool</name>
+    <name>Catalog Tool</name>
   </bannerRight>
 
   <version/>
 
   <body>
     <links>
-      <item name="Catalog Ingest Tool" href="http://pds-cm.jpl.nasa.gov/citool/index.html" />
+      <item name="Catalog Tool" href="http://pds-cm.jpl.nasa.gov/ingest/catalog/index.html" />
     </links>
 
     <menu name="Software Documentation">
-      <item name="About Catalog Ingest Tool" href="index.html"/>
+      <item name="About Catalog Tool" href="index.html"/>
       <item name="Release Notes" href="release/index.html"/>
       <item name="Concept" href="concept/index.html"/>
       <item name="Installation" href="install/index.html"/>
@@ -42,9 +42,8 @@
     </menu>
 
     <menu name="Download">
-      <item name="Catalog Ingest Tool Guide (pdf)" href="${project.artifactId}-${project.version}.pdf"/>
-      <item name="Binary Package (tar.gz)" href="ftp://pds.nasa.gov/pub/toplevel/tools/bin/${project.artifactId}-${project.version}-bin.tar.gz"/>
-      <item name="Binary Package (zip)" href="ftp://pds.nasa.gov/pub/toplevel/tools/bin/${project.artifactId}-${project.version}-bin.zip"/>
+      <item name="Binary Package (tar.gz)" href="ftp://pds.nasa.gov/pub/toplevel/2010/ingest/${project.artifactId}-${project.version}-bin.tar.gz"/>
+      <item name="Binary Package (zip)" href="ftp://pds.nasa.gov/pub/toplevel/2010/ingest/${project.artifactId}-${project.version}-bin.zip"/>
     </menu>
 
     <menu ref="reports"/>
