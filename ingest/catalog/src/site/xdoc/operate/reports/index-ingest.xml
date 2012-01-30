@@ -31,33 +31,71 @@
 PDS Catalog Ingest Tool Report
 
 Configuration:
-Version                Version 1.0.1-dev
-Date                   Mon, Feb 07 2011 at 09:38:22 AM
+Version                Version 1.2.0-dev
+Date                   Mon, Jan 30 2012 at 10:17:08 AM
 
 Parameters:
 Mode                   ingest
-Target                 file:/Users/hyunlee/dev/pds_en/citool/catfiles/regression/others/CH1_MISSION.CAT
+Target                 file:/Users/hyunlee/dev/pds_en/new_citool/sample_data_mer1ao_0xxx/
 Directory Recursion    true
-Severity Level         NONE
+Severity Level         INFO
+Report File            ing.rpt
 
 Ingest Details:
 
-  PASS: file:/Users/hyunlee/dev/pds_en/citool/catfiles/regression/others/CH1_MISSION.CAT
-      INFO:  Updated: msnhost - CH1-ORB / MOON
-      INFO:  Updated: msndoc - BHANDARI2005
-      INFO:  Updated: msndoc - GOSWAMI&amp;ANNADUR2008
-      INFO:  Updated: msnd - CHANDRAYAAN-1 (472 rows)
-      INFO:  Updated: msnobjsmy - CHANDRAYAAN-1 (248 rows)
-      INFO:  Updated: msninfo - CHANDRAYAAN-1
+  PASS: file:/Users/hyunlee/dev/pds_en/new_citool/sample_data_mer1ao_0xxx/voldesc.cat
+      INFO:  Successfully registed product - urn:nasa:pds:volume.MER1AP_0XXX::1.0
+      INFO:  Product has the following GUID - urn:uuid:8717a0c3-b81b-40d1-9881-2cb5b206c0bd
+      INFO:  Successfully ingested to the storage service. productID - a011eaff-4b6e-11e1-85f1-b3a4ea8ba027
+      INFO:  Successfully ingested a file object. GUID - urn:uuid:c4d20d0a-0b47-4dad-a6ea-bb3e2eff6e4b
+
+  PASS: file:/Users/hyunlee/dev/pds_en/new_citool/sample_data_mer1ao_0xxx/catalog/apxs_mer1_ds.cat
+      INFO:  Successfully registed product - urn:nasa:pds:data_set.MER1-M-APXS-2-EDR-OPS-V1.0::2.0
+      INFO:  Product has the following GUID - urn:uuid:6ef69686-dacd-4d56-a3db-8ed303c90f81
+      INFO:  Successfully ingested to the storage service. productID - a06d7880-4b6e-11e1-85f1-b3a4ea8ba027
+      INFO:  Successfully ingested a file object. GUID - urn:uuid:cd31875f-fe28-4ea6-b91d-7113d4ac2979
+
+  PASS: file:/Users/hyunlee/dev/pds_en/new_citool/sample_data_mer1ao_0xxx/catalog/mer1_apxs_inst.cat
+      INFO:  Successfully registed product - urn:nasa:pds:instrument.APXS__MER1::1.0
+      INFO:  Product has the following GUID - urn:uuid:4bfd7480-001c-40dc-9701-8f9177b750bd
+      INFO:  Successfully ingested to the storage service. productID - a0a8d3d1-4b6e-11e1-85f1-b3a4ea8ba027
+      INFO:  Successfully ingested a file object. GUID - urn:uuid:521c5898-35d1-4e5c-9195-7b7db5c91977
+
+  PASS: file:/Users/hyunlee/dev/pds_en/new_citool/sample_data_mer1ao_0xxx/catalog/mer1_insthost.cat
+      INFO:  Successfully registed product - urn:nasa:pds:instrument_host.MER1::1.0
+      INFO:  Product has the following GUID - urn:uuid:3daa9946-fe5a-4550-b056-fbe4612de811
+      INFO:  Successfully ingested to the storage service. productID - a0e3b9f2-4b6e-11e1-85f1-b3a4ea8ba027
+      INFO:  Successfully ingested a file object. GUID - urn:uuid:7c2ff0c3-adac-4d3d-aa3c-f97db2ddbe14
+
+  PASS: file:/Users/hyunlee/dev/pds_en/new_citool/sample_data_mer1ao_0xxx/catalog/mission.cat
+      INFO:  Successfully registed product - urn:nasa:pds:mission.MARS_EXPLORATION_ROVER::1.0
+      INFO:  Product has the following GUID - urn:uuid:7a26a81f-6197-4706-8710-618df82c212e
+      INFO:  Successfully ingested to the storage service. productID - a11c2f13-4b6e-11e1-85f1-b3a4ea8ba027
+      INFO:  Successfully ingested a file object. GUID - urn:uuid:9d4d6637-54a9-4149-a0d9-b0d5d65fce87
+
+  FAIL: file:/Users/hyunlee/dev/pds_en/new_citool/sample_data_mer1ao_0xxx/catalog/person.cat
+      ERROR:  line 39, 38: Illegal character "A".
+      ERROR:  line 42, 38: Illegal character "A".
+      ERROR:  line 45, 38: Illegal character "A".
+      ERROR:  line 104, 0: Unable to parse statement at the token "END_OBJECT".
+      ERROR:  line 1: Labels must end in an END statement.
+      ERROR:  Failed to execute ingestExtrinsicObject method.
+      INFO:  Successfully ingested to the storage service. productID - a1523334-4b6e-11e1-85f1-b3a4ea8ba027
+      INFO:  Successfully ingested a file object. GUID - urn:uuid:60f7e5b2-e33d-44dc-9069-ad6a7309bf77
+
+  FAIL: file:/Users/hyunlee/dev/pds_en/new_citool/sample_data_mer1ao_0xxx/catalog/ref.cat
+      ERROR:  Failed to execute ingestExtrinsicObject method.
+      INFO:  Successfully ingested to the storage service. productID - a171a215-4b6e-11e1-85f1-b3a4ea8ba027
+      INFO:  Successfully ingested a file object. GUID - urn:uuid:091b7751-004a-4916-9751-e2dbdeea0096
 
 Summary:
 
-  1 of 1 ingested, 0 skipped
-  1 of 1 passed
+  7 of 7 ingested, 0 skipped
+  5 of 7 passed
 
-  Number of successful ingestion to the table: 6
-  Number of failed ingestion to the table: 0
-  Number of new standard values ingested: 0
+  Number of successful file object ingestion: 7
+  Number of successful storage service ingestion: 7
+  Number of successful registry ingestion: 5
 
 End of Report
       </source>

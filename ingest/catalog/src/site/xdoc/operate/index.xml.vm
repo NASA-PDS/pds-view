@@ -224,35 +224,31 @@
               </td>
             </tr>
             <tr>
-              <td>-t, --target &lt;catalog,URLs,dirs&gt;
+              <td>-t, --target &lt;dir, a VOLUME catalog file&gt;
               </td>
-              <td>Explicitly specify target (catalog file, directory, and URLs) to ingest. Targets can also be specified implicitly (example: catalog -m ingest TEST.CAT).
-              </td>
-            </tr>
-            <tr>
-              <td>-u, --dbuser &lt;username&gt;
-              </td>
-              <td>Username of the database.
+              <td>Explicitly specify target (directory, or a VOLUME catalog file) to ingest. Targets can also be specified implicitly (example: CITool -m ingest $CATALOG_DIR).
               </td>
             </tr>
             <tr>
-              <td>-p, --dbpass &lt;password&gt;
+              <td>-u, --user &lt;username&gt;
               </td>
-              <td>Password of the database.
-              </td>
-            </tr>
-            <tr>
-              <td>-s, --dbserver &lt;servername&gt;
-              </td>
-              <td>Name of the database server.
+              <td>Specify a username for authentication with the PDS Security Service.
               </td>
             </tr>
             <tr>
-              <td>-n, --dbname &lt;db name&gt;
+              <td>-p, --pass &lt;password&gt;
               </td>
-              <td>Name of the database.
+              <td>Specify a password associated with the username.
               </td>
-          	</tr>
+            </tr>    
+            <tr>
+              <td>-s, --serverUrl &lt;server URL&gt;</td>
+              <td>Specify the URL to the PDS Storage Service.</td>
+            </tr>
+            <tr>
+              <td>-T, --transportUrl &lt;transport URL&gt;</td>
+              <td>Specify the URL to the PDS Transport Service.</td>
+            </tr>        
             <tr>
               <td>-r, --report-file &lt;file&gt;
               </td>
@@ -266,9 +262,9 @@
               </td>
             </tr>
             <tr>
-              <td>-L, --local
+              <td>-k, --keypass &lt;keystore password&gt;
               </td>
-              <td>Do not perform directory recursion on a target directory.
+              <td>Specify a password of the keystore file. 
               </td>
             </tr>
             <tr>
@@ -392,20 +388,21 @@
         </p>
         
         <ul>
-          <li>Ingest a Single Catalog File<br/>
-            <p>The following command demonstrates how to ingest a single catalog file <i>DATASET.CAT</i> as a user <i>tempuser</i> with a password <i>temppass</i> into the database server <i>starsyb</i> and the database name <i>tempdb</i>.
+          <li>Ingest with a VOLUME Catalog File<br/>
+            <p>The following command demonstrates how to ingest a VOLUME catalog file <i>voldesc.cat</i> as a user <i>tempuser</i> with a password <i>temppass</i> using the storage service on <i>http://pdsdev.jpl.nasa.gov:9000</i> and the transport service on <i>http://pdsdev.jpl.nasa.gov:8080</i>.
             </p>
         
             <source>
-% catalog DATASET.CAT -m ingest -u tempuser -p temppass -s starsyb -n tempdb
+% catalog voldesc.cat -m ingest -u tempuser -p temppass -s http://pdsdev.jpl.nasa.gov:9000 -T http://pdsdev.jpl.nasa.gov:8080
 		        </source>          
           </li>
-          <li>Ingest a Directory of Catalog Files<br/>
-            <p>The following command demonstrates how to ingest a directory <i>$HOME/DIR</i> containing a set of catalog files as a user <i>tempuser</i> with a password <i>temppass</i> into the database server <i>starsyb</i> and the database name <i>tempdb</i>.
+          
+          <li>Ingest a Directory of archive volume<br/>
+            <p>The following command demonstrates how to ingest a directory <i>$HOME/DIR</i> containing a set of catalog files as a user <i>tempuser</i> with a password <i>temppass</i> using the storage service on <i>http://pdsdev.jpl.nasa.gov:9000</i> and the transport service on <i>http://pdsdev.jpl.nasa.gov:8080</i>.
             </p>
         
             <source>
-% catalog $HOME/DIR -m ingest -u tempuser -p temppass -s starsyb -n tempdb
+% catalog $HOME/DIR -m ingest -u tempuser -p temppass -s http://pdsdev.jpl.nasa.gov:9000 -T http://pdsdev.jpl.nasa.gov:8080
             </source>          
           </li>
         </ul>
@@ -575,29 +572,35 @@
             </tr>
                         
             <tr>
-              <td>citool.dbuser</td>
+              <td>citool.user</td>
               <td>-u</td>
-              <td>Specify the username of the database.</td>
+              <td>Specify the username for authentication with the PDS Security Service.</td>
             </tr>
 
             <tr>
-              <td>citool.dbpass</td>
+              <td>citool.pass</td>
               <td>-p</td>
-              <td>Specify the password of the database.</td>
+              <td>Specify the password associated with the username.</td>
             </tr>
 
-            <tr>
-              <td>citool.dbserver</td>
-              <td>-s</td>
-              <td>Specify the name of the database server.</td>
-            </tr>
+			<tr>
+			  <td>citool.serverUrl</td>
+			  <td>-s</td>
+			  <td>Specify the URL to the Storage Service.</td>
+			</tr>
+			
+			<tr>
+			  <td>citool.transportUrl</td>
+			  <td>-T</td>
+			  <td>Specify the URL to the Transport Service.</td>
+			</tr>
 
-            <tr>
-              <td>citool.dbname</td>
-              <td>-n</td>
-              <td>Specify the name of the database.</td>
-            </tr>
-
+			<tr>
+			  <td>citool.keypass</td>
+			  <td>-k</td>
+			  <td>Specify a password of the keystore file.</td>
+			</tr>
+			
             <tr>
               <td>citool.report</td>
               <td>-r</td>
