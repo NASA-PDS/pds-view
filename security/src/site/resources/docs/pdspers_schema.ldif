@@ -1,0 +1,14 @@
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributeTypes: ( institutionName-oid NAME 'institutionName' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )
+attributeTypes: ( registrationDate-oid NAME 'registrationDate' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )
+attributeTypes: ( sortName-oid NAME 'sortName' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )
+attributeTypes: ( nodeName-oid NAME 'nodeName' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )
+attributeTypes: ( alternateTelephoneNumber-oid NAME 'alternateTelephoneNumber' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )
+attributeTypes: ( role-oid NAME 'role' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )
+attributeTypes: ( affiliationType-oid NAME 'affiliationType' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )
+attributeTypes: ( fullName-oid NAME 'fullName' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )
+-
+add: objectClasses
+objectClasses: ( PDSPerson-oid NAME 'PDSPerson' SUP inetOrgPerson STRUCTURAL MUST ( objectClass $ cn $ sn ) MAY ( jpegPhoto $ x500UniqueIdentifier $ initials $ givenName $ audio $ manager $ displayName $ postalAddress $ postalCode $ role $ postOfficeBox $ physicalDeliveryOfficeName $ title $ uid $ description $ businessCategory $ nodeName $ pager $ mobile $ roomNumber $ mail $ ou $ o $ photo $ alternateTelephoneNumber $ fullName $ registeredAddress $ internationaliSDNNumber $ x121Address $ facsimileTelephoneNumber $ preferredDeliveryMethod $ labeledURI $ destinationIndicator $ affiliationType $ homePostalAddress $ telexNumber $ teletexTerminalIdentifier $ telephoneNumber $ institutionName $ userPKCS12 $ userPassword $ seeAlso $ userCertificate $ departmentNumber $ carLicense $ employeeType $ preferredLanguage $ employeeNumber $ registrationDate $ userSMIMECertificate $ street $ homePhone $ l $ secretary $ st $ sortName ) )

@@ -10,9 +10,4 @@ view the documentation locally at http://localhost:8080.
 
 In order to create the site and deploy it, execute the following commands: 
 
-% mvn site
-% maven pdf
-% mvn site:deploy
-
-The project still relies on Maven 1 functionality to generate the PDF form 
-of the documentation.
+% mvn site-deploy
