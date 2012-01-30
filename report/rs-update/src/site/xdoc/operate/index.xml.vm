@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2010-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -25,65 +25,15 @@
 
   <body>
     <section name="Operation">
-      <p>The following topics can be found in this section:
+      <p>This document describes how to operate the Update Tool. The following topics can be found in this document:
       </p>
 
       <ul>
-        <li><a href="#Tool_Setup">Tool Setup</a></li>
         <li><a href="#Tool_Execution">Tool Execution</a></li>
       </ul>
 
       <p>Note: The command-line examples in this section have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution.
       </p>
-    </section>
-
-    <section name="Tool Setup">
-      <p>In order to execute the Update Tool, the user's environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.
-      </p>
-
-      <subsection name="UNIX-Based Setup">
-        <p>This section details the environment setup for UNIX-based machines. The preferred method is to specify the shell script, <i>RSUpdate</i>, on the command-line. Setting the <i>PATH</i> environment variable to the location of the script, enables the shell script to be executed from any location on the user's machine.
-        </p>
-
-        <p>The following command demonstrates how to set the <i>PATH</i> environment variable, by appending to its current setting:
-        </p>
-
-        <source>
-% setenv PATH ${PATH}:$HOME/${xdoc-artifactId}-${xdoc-version}/bin
-        </source>
-
-        <p>The tool can now be executed via the shell script as demonstrated in the following example:
-        </p>
-
-        <source>
-% RSUpdate &lt;command-line arguments&gt;
-        </source>
-
-        <p>Additional methods for setting up a UNIX-based environment can be found in the <a href="index-unix.html">UNIX Setup Options</a> section. If viewing this document in PDF form, see the appendix for details.
-        </p>
-      </subsection>
-
-      <subsection name="Windows Setup">
-        <p>This section details the environment setup for Windows machines. The preferred method is to specify the batch file, <i>RSUpdate.bat</i>, on the command-line. Setting the <i>PATH</i> environment variable to the location of the file, enables the batch file to be executed from any location on the user's machine.
-        </p>
-
-        <p>The following command demonstrates how to set the <i>PATH</i> environment variable, by appending to its current setting:
-        </p>
-
-        <source>
-C:\&gt; set PATH = %PATH%;C:\\${xdoc-artifactId}-${xdoc-version}\bin
-        </source>
-
-        <p>The tool can now be executed via the batch file as demonstrated in the following example:
-        </p>
-
-        <source>
-C:\&gt; RSUpdate &lt;command-line arguments&gt;
-        </source>
-
-        <p>Additional methods for setting up a Windows environment can be found in the <a href="index-win.html">Windows Setup Options</a> section. If viewing this document in PDF form, see the appendix for details.
-        </p>
-      </subsection>
     </section>
 
     <section name="Tool Execution">
@@ -106,28 +56,28 @@ C:\&gt; RSUpdate &lt;command-line arguments&gt;
       </subsection>
 
       <subsection name="Execute Update Tool">
-        <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script. Alternate methods for executing the tool can be found in the <a href="#Tool_Setup">Tool Setup</a> section.
+        <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script.
         </p>
 
         <p>The following command demonstrates how to run the Update Tool to update all Sawmill profiles by downloading the remote logs and performing a Sawmill database update using all default settings.
         </p>
 
         <source>
-% RSUpdate
+% update-tool
         </source>
 
         <p>The following command demonstrates how to run the Update Tool with the output going to a log file, <i>log.txt</i> instead of standard out:
         </p>
 
         <source>
-% RSUpdate -l log.txt
+% update-tool -l log.txt
         </source>
         
         <p>The following command demonstrates how to run the Update Tool for a specified profile only, i.e. <i>img-web</i>:
         </p>
 
         <source>
-% RSUpdate -n img-web
+% update-tool -n img-web
         </source>
       </subsection>
     </section>

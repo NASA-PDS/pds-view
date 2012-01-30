@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2009-2011, by the California Institute of Technology.
+  Copyright 2009-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -23,7 +23,7 @@
   </properties>
 
   <body>
-    <section name="Web Application Operation">
+    <section name="Operation">
       <p>The Profile Setup software is a web application for setting up a new profile for the Report Service, and provides functionality to transfer a nodes web logs to the Engineering need for use in the Service. The application is available from the Engineering Node site at 
       <a href="http://pdsops.jpl.nasa.gov/profile-setup/" target="_blank">http://pdsops.jpl.nasa.gov/profile-setup/</a>. The main screen of the application is as follows:
       </p>
@@ -41,14 +41,14 @@
       <p>The logs transferred from remote nodes must be updated regularly as more logs become available.  This can either be done manually or on a cron job basis. To run the transferLogs.sh script, unpack the WAR file, and run the script from the <i>./WEB-INF/classes/</i> directory.  The script uses the database.properties and environment.properties files to access the MySQL database and rsync all new web logs to the specified storage location. A decryption password is also required in order to read the encrypted password foy MySQL (Contact System Administrator).  To run the script, go to the <i>./WEB-INF/classes/</i> directory in the unpacked WAR and change the permissions of the transferLogs.sh and decrypt.sh files:
       </p>
       <source>
-        chmod 700 transferLogs.sh
-	chmod 700 decrypt.sh
+chmod 700 transferLogs.sh
+chmod 700 decrypt.sh
       </source>
       <p>
         The run the script as follows:
       </p>
       <source>
-        ./transferLogs &lt;decrypt_password&gt;
+./transferLogs &lt;decrypt_password&gt;
       </source>
     </section>
   </body>

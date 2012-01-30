@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2009-2011, by the California Institute of Technology.
+  Copyright 2009-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -24,7 +24,7 @@
 
   <body>
     <section name="Installation">
-      <p>This section describes how to install the Profile Setup software web application contained in the <i>${xdoc-artifactId}</i> package. The following topics can be found in this section:
+      <p>This document describes how to install the Profile Setup software web application contained in the <i>${project.artifactId}</i> package. The following topics can be found in this document:
       </p>
 
       <ul>
@@ -52,19 +52,19 @@
     </section>
 
     <section name="Unpacking the Package">
-      <p>Download the <i>${xdoc-artifactId}</i> package from the internal PDS <a href="http://starcell.jpl.nasa.gov/maven2/gov/nasa/pds/2010/report/${xdoc-artifactId}/${xdoc-version}/" target="_blank">Maven</a> repository. The binary distribution is available in identical zip or tar/gzip packages. Unpack the selected binary distribution file with one of the following commands:
+      <p>Download the <i>${project.artifactId}</i> package from the internal PDS <a href="http://starcell.jpl.nasa.gov/maven2/gov/nasa/pds/2010/report/${project.artifactId}/${project.version}/" target="_blank">Maven</a> repository. The binary distribution is available in identical zip or tar/gzip packages. Unpack the selected binary distribution file with one of the following commands:
       </p>
 
       <source>
-[node: ~] unzip ${xdoc-artifactId}-${xdoc-version}.zip
+[node: ~] unzip ${project.artifactId}-${project.version}.zip
 or
-[node: ~] tar -xzvf ${xdoc-artifactId}-${xdoc-version}.tar.gz
+[node: ~] tar -xzvf ${project.artifactId}-${project.version}.tar.gz
       </source>
 
       <p>Note: Depending on the platform, the native version of <i>tar</i> may produce an error when attempting to unpack the distribution file because many of the file paths are greater than 100 characters. If available, the GNU version of tar will resolve this problem. If that is not available or cannot be installed, the zipped package will work just fine in a UNIX environment.
       </p>
 
-      <p>The commands above result in the creation of the <i>${xdoc-artifactId}-${xdoc-version}</i> directory with the following directory structure:
+      <p>The commands above result in the creation of the <i>${project.artifactId}-${project.version}</i> directory with the following directory structure:
       </p>
 
       <ul>
@@ -76,7 +76,7 @@ or
           <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
           </p>
         </li>
-        <li><b>${xdoc-artifactId}-${xdoc-version}.war</b><br/>
+        <li><b>${project.artifactId}-${project.version}.war</b><br/>
           <p>This is the Web Archive (WAR) file containing the Profile Setup software including all dependent JAR files. The application is intended to be hosted on the Engineering Node site but can be hosted elsewhere.
           </p>
         </li>
@@ -85,7 +85,7 @@ or
           </p>
         </li>
         <li><b>doc/</b><br/>
-          <p>This document directory contains a local web site with the Profile Setup Guide, javadoc, unit test results and other configuration management related information. Just point your favorite browser to the <i>index.html</i> file in this directory.
+          <p>This directory contains a local web site with the Profile Setup documentation, javadoc, unit test results and other configuration management related information. Just point your favorite browser to the <i>index.html</i> file in this directory.
           </p>
         </li>
       </ul>
@@ -113,7 +113,7 @@ Query OK, 0 rows affected (0.00 sec)
       </p>
 
       <source>
-% cd ${xdoc-artifactId}-${xdoc-version}/conf
+% cd ${project.artifactId}-${project.version}/conf
 
 % mysql -u {username} -p{password} {database} &lt; report_service_db.sql
       </source>
@@ -152,7 +152,7 @@ sawmill.log.home={log_home}  # Where the logs should be copied
     </section>
 
     <section name="Deploying the Application">
-      <p>The Profile Setup web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation the WAR file should be renamed from <i>${xdoc-artifactId}-${xdoc-version}.war</i> to <i>${xdoc-artifactId}.war</i>. A WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation.
+      <p>The Profile Setup web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation the WAR file should be renamed from <i>${project.artifactId}-${project.version}.war</i> to <i>${project.artifactId}.war</i>. A WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation.
       </p>
     </section>
   </body>

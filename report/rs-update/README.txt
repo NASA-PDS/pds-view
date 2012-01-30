@@ -11,8 +11,4 @@ In order to create a complete package for distribution, execute the
 following commands: 
 
 % mvn site
-% maven pdf
 % mvn package
-
-The project still relies on Maven 1 functionality to generate the PDF form 
-of the documentation.

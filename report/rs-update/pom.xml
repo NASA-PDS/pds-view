@@ -21,7 +21,7 @@
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
     <artifactId>report</artifactId>
-    <version>1.1.0-dev</version>
+    <version>1.1.0</version>
   </parent>
 
   <groupId>gov.nasa.pds.2010.report</groupId>
@@ -41,12 +41,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
-  <!-- These properties support PDF generation with Maven 1. -->
-  <properties>
-    <xdoc-artifactId>${artifactId}</xdoc-artifactId>
-    <xdoc-version>${version}</xdoc-version>
-  </properties>
 
   <developers>
     <developer>

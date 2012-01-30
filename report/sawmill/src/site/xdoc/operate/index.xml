@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2010-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -24,7 +24,7 @@
   </properties>
 
   <body>
-  	<section name="Operation">
+    <section name="Operation">
       <p>The Sawmill software offers a web-based interface for configuring and generating reports with the software. The login screen is as follows:
       </p>
 
@@ -55,7 +55,7 @@
         </source>
         <p>Where each value is as follows (a &quot;hyphen&quot; in the output indicates that the requested piece of information is not available):</p>
         <table>
-       	  <tr><td width="125px">%h</td><td>The IP address of the client which made the request to the server.</td></tr>
+          <tr><td width="125px">%h</td><td>The IP address of the client which made the request to the server.</td></tr>
           <tr><td>%l</td><td>The RFC 1413 identity of the client.</td></tr>
           <tr><td>%u</td><td>The userid of the person requesting the document as determined by HTTP authentication.</td></tr>
           <tr><td>%t</td><td>The time that the request was received [day/month/year:hour:minute:second zone]</td></tr>

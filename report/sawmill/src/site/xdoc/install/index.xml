@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2010-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -25,7 +25,7 @@
 
   <body>
     <section name="Installation">
-      <p>This section describes how to install the <a href="http://www.sawmill.net/" target="_blank">Sawmill</a> software package. This package serves as the majority of the Report Service for the PDS 2010 system. The following topics can be found in this section:
+      <p>This document describes how to install the <a href="http://www.sawmill.net/" target="_blank">Sawmill</a> software package. This package serves as the majority of the Report Service for the PDS 2010 system. The following topics can be found in this document:
       </p>
 
       <ul>
@@ -74,7 +74,7 @@
           <li>Configure Apache Tomcat to support CGI binary executables.</li>
           <ul>
             <li>a. Add the following XML blocks to Servlet Definition and Servlet Mappings sections of <i>$CATALINA_HOME/conf/web.xml</i>:</li>
-	    <br /><i>Note</i>: These XML blocks are already included in the default Tomcat web.xml and only need to be uncommented. If so, be sure to add the <i>executable</i> parameter in the Servlet Definition):
+      <br /><i>Note</i>: These XML blocks are already included in the default Tomcat web.xml and only need to be uncommented. If so, be sure to add the <i>executable</i> parameter in the Servlet Definition):
             <source>
 &lt;!-- ================== Built In Servlet Definitions ==================== --&gt;
 &lt;servlet&gt;
@@ -102,39 +102,39 @@
 &lt;/servlet-mapping&gt;
             </source>
             <li>b. Set attribute privileged="true" for the Context element in <i>$CATALINA_HOME/conf/context.xml</i>.</li>
-	    <source>
+            <source>
 &lt;Context privileged="true"&gt;
   .
   .
   .
 &lt;/Context&gt;
-	    </source>
+            </source>
             <li>c. Create a <i>cgi</i> directory, if one does not already exist:</li>
             <source>
 % mkdir $CATALINA_HOME/webapps/ROOT/WEB-INF/cgi
             </source>
-	    Note that the directory name, <i>cgi</i>, matches the &lt;servlet-name&gt; specified in the Servlet Definition from step 2a.
+      Note that the directory name, <i>cgi</i>, matches the &lt;servlet-name&gt; specified in the Servlet Definition from step 2a.
           </ul>
           <li>Navigate to the directory where the Sawmill compressed package was copied, and enter the following command from the command line:
             <source>
 % gunzip -c (sawmill.tar.gz) | tar xf -
             </source>
             <p>A <i>sawmill</i> directory is created.</p>
-	  </li>
-	  <li>Move this directory to an arbitrary directory of your choice, $NEW_HOME , making SAWMILL_HOME=$NEW_HOME/sawmill.  (<i>For the current PDS Engineering installation, SAWMILL_HOME=/pds4/report-service/&lt;machine-name&gt;/sawmill</i>)
-	  </li>
-	  
+          </li>
+          <li>Move this directory to an arbitrary directory of your choice, $NEW_HOME , making SAWMILL_HOME=$NEW_HOME/sawmill.  (<i>For the current PDS Engineering installation, SAWMILL_HOME=/pds4/report-service/&lt;machine-name&gt;/sawmill</i>)
+          </li>
+    
           <li>Make the sawmill executable into a cgi script by appending .cgi:
             <source>
 % mv $SAWMILL_HOME/sawmill $SAWMILL_HOME/sawmill.cgi
             </source>
-	  </li>
-	  <li>
-	    Create a symbolic link to this CGI script from the <i>cgi</i> directory in step 2c:
-	    <source>
-	      ln -s $SAWMILL_HOME/sawmill.cgi $CATALINA_HOME/webapps/ROOT/WEB-INF/cgi/sawmill.cgi
-	    </source>
-	  </li>
+          </li>
+          <li>
+            Create a symbolic link to this CGI script from the <i>cgi</i> directory in step 2c:
+            <source>
+              ln -s $SAWMILL_HOME/sawmill.cgi $CATALINA_HOME/webapps/ROOT/WEB-INF/cgi/sawmill.cgi
+            </source>
+          </li>
           <li>Open a web browser, and navigate to the URL <i>http://(yourserver)/cgi-bin/sawmill.cgi</i> .</li>
           <li>Enter <i>License Key</i> when prompted (if applicable).</li>
           <li>Proceed through the steps to create an admin username and password.</li>
@@ -168,21 +168,22 @@ cd sawmill
         </ol>
       </subsection>
     </section>
+
     <section name="Software Upgrade">
       <p>All upgrades for the current license version are free.  For instance, a license purchase for Sawmill version 8 covers all 8.x.x upgrades.  The following steps should be performed to complete an upgrade of the Sawmill software:
-	<ol>
-	  <li>Follow <a href="#Download_Software">Download Software</a> instructions above.</li>
-	  <li>Untar the new version of Sawmill to a directory $INSTALL_DIR .</li>
-	  <li>Run the upgrade-sawmill script (currently found at /pds4/report-service on pdsdev/pdsops and in <a href="http://starcell.jpl.nasa.gov/repo/2010/trunk/report/sawmill/src/main/resources/upgrade-sawmill">Subversion</a>) :
-	    <source>
-# ./upgrade-sawmill &lt;install-dir&gt; &lt;sawmill-base-dir&gt;
+        <ol>
+          <li>Follow <a href="#Download_Software">Download Software</a> instructions above.</li>
+          <li>Untar the new version of Sawmill to a directory $INSTALL_DIR .</li>
+          <li>Run the upgrade-sawmill script (currently found at /pds4/report-service on pdsdev/pdsops and in <a href="http://starcell.jpl.nasa.gov/repo/2010/trunk/report/sawmill/src/main/resources/upgrade-sawmill">Subversion</a>) :
+            <source>
+      # ./upgrade-sawmill &lt;install-dir&gt; &lt;sawmill-base-dir&gt;
 
-./upgrade-sawmill $INSTALL_DIR /pds4/report-service/
-            </source>
-	    &lt;sawmill-base-dir&gt; should be a directory that contains <i>pdsdev</i> and <i>pdsops</i> subdirectories.
-	  </li>
-	  <li>Go to web interface and verify profiles and data are sufficiently migrated.</li>
-	</ol>
+      ./upgrade-sawmill $INSTALL_DIR /pds4/report-service/
+                  </source>
+            &lt;sawmill-base-dir&gt; should be a directory that contains <i>pdsdev</i> and <i>pdsops</i> subdirectories.
+          </li>
+          <li>Go to web interface and verify profiles and data are sufficiently migrated.</li>
+        </ol>
       </p>
     </section>
   </body>
