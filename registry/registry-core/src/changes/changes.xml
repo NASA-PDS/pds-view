@@ -24,14 +24,14 @@
 
   <body>
     <release version="1.1.0" date="2012-01-31" description="This release of the Registry Core is a component of the integrated release 2.1.0 of the PDS 2010 System.">
+      <action dev="pramirez" type="update">
+        PDS-41: Allow filtering by status.
+      </action>
+      <action dev="pramirez" type="update">
+        PDS-43: Registry client now supports an expanded set of registry objects. Namely, ExtrinsicObject, Association, Service, RegistryPackage, AuditableEvent, ClassificationScheme, and ClassificationNode.
+      </action>
       <action dev="shardman" type="update">
         Cleaned up the documentation and removed the PDF generation feature.
-      </action>
-      <action dev="pramirez" type="update">
-        PDS-43 Registry client now supports an expanded set of registry objects. Namely, ExtrinsicObject, Association, Service, RegistryPackage, AuditableEvent, ClassificationScheme, and ClassificationNode.
-      </action>
-      <action dev="pramirez" type="update">
-        PDS-41 Allow filtering by status.
       </action>
     </release>
 
