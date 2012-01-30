@@ -326,8 +326,8 @@ urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
         </p>
 
         <source>
-&lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='${project.version}' packages='2' 
-classificationNodes='67' classificationSchemes='1' services='0' extrinsics='0' associations='68' 
+&lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='${project.version}' packages='4' 
+classificationNodes='76' classificationSchemes='2' services='0' extrinsics='0' associations='78' 
 serverStarted='2011-08-28T12:45:43.514-07:00' status='OK'/&gt;
         </source>
       </subsection>
