@@ -167,32 +167,6 @@ java.util.logging.FileHandler.pattern = /&lt;absolute-path&gt;/logs/filemgr%g.lo
         <p>Replace the <i>&lt;absolute-path&gt;</i> place holder above with the full path to the log file location.
         </p>
       </subsection>
-
-      <subsection name="Installation Location">
-        <p>Both the shell and batch scripts for this service utilize system commands for determining the installation home directory that may or may not be available on all platforms. If these commands are not available in the current environment, their use can be replaced in the scripts by setting the <i>FILEMGR_HOME</i> variable with the actual installation path. Modify the UNIX-based shell scripts as follows (the actual installation path may be different in the current environment):
-        </p>
-
-        <source>
-SCRIPT_DIR=`dirname $0`
-FILEMGR_HOME=`cd ${SCRIPT_DIR}/.. &amp;&amp; pwd`
-
-  should be replaced with:
-
-FILEMGR_HOME=/usr/local/${project.artifactId}-${project.version}
-        </source>
-
-        <p>Modify the Windows-based batch scripts as follows (the actual installation path may be different in the current environment):
-        </p>
-
-        <source>
-set SCRIPT_DIR=%~dps0
-set FILEMGR_HOME=%SCRIPT_DIR%..
-
-  should be replaced with:
-
-set FILEMGR_HOME=C:\Program Files\\${project.artifactId}-${project.version}
-        </source>
-      </subsection>
     </section>
 
     <section name="Configuring the Environment">
@@ -221,7 +195,7 @@ set FILEMGR_HOME=C:\Program Files\\${project.artifactId}-${project.version}
         </p>
       </subsection>
       
-      <subsection name="Windows Setup">
+      <subsection name="Windows Environment">
         <p>This section details the environment setup for Windows machines. The binary distribution includes a few batch scripts that must be executed from the command-line. Setting the <i>PATH</i> environment variable to the location of the files, enables the batch scripts to be executed from any location on the local machine.
         </p>
 
@@ -241,6 +215,32 @@ C:\&gt; set JAVA_HOME = C:\path\to\java\home
 
         <p>The system administrator for the local machine may need to be consulted for this location. The path specified should have a <i>bin</i> sub-directory that contains the <i>java</i> executable. This variable may also be defined within the scripts. Edit the scripts (files with the .bat extension) and change the line in the example above to represent the local Java installation. Additional methods for setting Windows environment variables can be found in the <a href="index-win.html">Windows System Properties</a> document.
         </p>
+      </subsection>
+
+      <subsection name="Installation Location">
+        <p>Both the shell and batch scripts for this service utilize system commands for determining the installation home directory that may or may not be available on all platforms. If these commands are not available in the current environment, their use can be replaced in the scripts by setting the <i>FILEMGR_HOME</i> variable with the actual installation path. Modify the UNIX-based shell scripts as follows (the actual installation path may be different in the current environment):
+        </p>
+
+        <source>
+SCRIPT_DIR=`dirname $0`
+FILEMGR_HOME=`cd ${SCRIPT_DIR}/.. &amp;&amp; pwd`
+
+  should be replaced with:
+
+FILEMGR_HOME=/usr/local/${project.artifactId}-${project.version}
+        </source>
+
+        <p>Modify the Windows-based batch scripts as follows (the actual installation path may be different in the current environment):
+        </p>
+
+        <source>
+set SCRIPT_DIR=%~dps0
+set FILEMGR_HOME=%SCRIPT_DIR%..
+
+  should be replaced with:
+
+set FILEMGR_HOME=C:\Program Files\\${project.artifactId}-${project.version}
+        </source>
       </subsection>
     </section>
   </body>
