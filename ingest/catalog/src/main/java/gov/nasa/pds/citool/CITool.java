@@ -1,4 +1,4 @@
-// Copyright 2009, by the California Institute of Technology.
+// Copyright 2009-2012, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -534,7 +534,7 @@ public class CITool {
         ca.setThreshold(Priority.FATAL);
         BasicConfigurator.configure(ca);
         if (args.length == 0) {
-            System.out.println("\nType 'CITool -h' for usage");
+            System.out.println("\nEnter 'catalog -h' for usage");
             System.exit(0);
         }
         try {

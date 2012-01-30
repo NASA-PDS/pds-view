@@ -30,7 +30,7 @@
 
   <body>
     <links>
-      <item name="Catalog Tool" href="http://pds-cm.jpl.nasa.gov/ingest/catalog/index.html" />
+      <item name="Catalog Tool" href="http://pds-cm.jpl.nasa.gov/2010/ingest/catalog/index.html" />
     </links>
 
     <menu name="Software Documentation">

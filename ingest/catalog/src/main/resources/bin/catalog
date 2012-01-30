@@ -32,13 +32,13 @@ PARENT_DIR=`cd ${SCRIPT_DIR}/.. && pwd`
 LIB_DIR=${PARENT_DIR}/lib
 
 # Check for dependencies.
-if [ ! -f ${LIB_DIR}/citool-*.jar ]; then
+if [ ! -f ${LIB_DIR}/catalog-*.jar ]; then
     echo "Cannot find Catalog jar file in ${LIB_DIR}"
     exit 1
 fi
 
 # Finds the jar file in LIB_DIR and sets it to CATALOG_JAR.
-CATALOG_JAR=`ls ${LIB_DIR}/citool-*.jar`
+CATALOG_JAR=`ls ${LIB_DIR}/catalog-*.jar`
 
 # Executes Catalog via the executable jar file
 # Arguments are passed in to the tool via '$@'

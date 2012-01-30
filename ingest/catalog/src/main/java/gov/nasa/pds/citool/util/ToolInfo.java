@@ -1,4 +1,4 @@
-// Copyright 2006-2010, by the California Institute of Technology.
+// Copyright 2006-2012, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -11,6 +11,7 @@
 // providing access to foreign nationals.
 //
 // $Id: ToolInfo.java 8162 2010-11-10 22:05:09Z mcayanan $
+
 package gov.nasa.pds.citool.util;
 
 import java.io.IOException;
@@ -22,18 +23,18 @@ import java.util.Properties;
  * Class to get tool release information.
  *
  * @author mcayanan
- *
+ * @version $Id$
  */
 public class ToolInfo {
-    public static final String FILE = "citool.properties";
+    public static final String FILE = "catalog.properties";
 
-    public static final String NAME = "citool.name";
+    public static final String NAME = "catalog.name";
 
-    public static final String VERSION = "citool.version";
+    public static final String VERSION = "catalog.version";
 
-    public static final String RELEASE_DATE = "citool.date";
+    public static final String RELEASE_DATE = "catalog.date";
 
-    public static final String COPYRIGHT = "citool.copyright";
+    public static final String COPYRIGHT = "catalog.copyright";
 
     private static final Properties props = new Properties();
 

@@ -33,7 +33,7 @@
   <description>
     The Catalog Tool provides functionality for ingesting PDS3 catalog files into the the PDS4 infrastructure including the Registry and Storage Services.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/ingest/catalog/</url>
+  <url>http://pds-cm.jpl.nasa.gov/2010/ingest/catalog/</url>
 
   <licenses>
     <license>
@@ -152,7 +152,7 @@
         <targetPath>gov/nasa/pds/citool/util</targetPath>
         <directory>src/main/resources/conf</directory>
         <includes>
-          <include>citool.properties</include>
+          <include>catalog.properties</include>
         </includes>
       </resource>
       <resource>
@@ -271,7 +271,7 @@
     <dependency>
       <groupId>gov.nasa.pds.2010.registry</groupId>
       <artifactId>registry-core</artifactId>
-      <version>1.0.0</version>
+      <version>1.1.0</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>
