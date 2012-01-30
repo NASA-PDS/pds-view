@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Copyright 2009, by the California Institute of Technology.
+ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+Any commercial use must be negotiated with the Office of Technology Transfer
+at the California Institute of Technology.
+
+This software is subject to U. S. export control laws and regulations
+(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+is subject to U.S. export control laws and regulations, the recipient has
+the responsibility to obtain export licenses or other export authority as
+may be required before exporting such information to foreign countries or
+providing access to foreign nationals.
+
+$Id: index-validate.xml 4165 2009-04-02 17:46:25Z mcayanan $
+-->
+
+<document>
+  <properties>
+    <title>Validate Report</title>
+    <author email="Michael.Cayanan@jpl.nasa.gov">Michael Cayanan</author>
+  </properties>
+
+  <body>
+    <section name="Validate Report">
+      <p>The following is an example of a validate report:
+      </p>
+
+      <source>
+PDS Catalog Ingestion Tool Report
+
+  Version                1.0.0
+  Date                   Tue, Jan 05 2010 at 08:24:24 AM
+  Dictionary version     
+/* Planetary Science Data Dictionary database dump */
+/* Start of alias definitions */
+/* Version: OPS */
+/* Online Database: pdscat1r76 */
+/* Generated: Wed Nov 11 07:39:27 2009 */
+
+
+Parameter Settings:
+
+  Mode                   Validate
+  Target                 file:/C:/catalog-files/goodcatfiles/
+  Directory Recursion    true
+  Dictionary File(s)     [c:\pdsdd\pdsdd.full]
+  Allrefs File           file:/C:/catalog-files/goodcatfiles/allrefs_1r74.out
+  Severity Level         WARNING
+  Report File            report-validate.txt
+
+Summary:
+
+  5 of 5 validated, 0 skipped
+  5 of 5 passed
+
+  4 referential integrity check(s) made, 0 skipped
+  2 of 4 passed
+
+  0 new standard value(s) found
+
+
+Validation Details:
+
+
+  PASS: file:/C:/catalog-files/goodcatfiles/MK88-120DS.CAT
+
+  PASS: file:/C:/catalog-files/goodcatfiles/MK88-120DS_REF.CAT
+      WARNING  line 17: Could not find year at the end of the citation. Found 557-578.
+      WARNING  line 24: Could not find year at the end of the citation. Found http://www.ifa.hawaii.edu/88inch/manuals/user.pdf.
+      WARNING  line 24: REFERENCE_DESC value does not start with UHGUIDE
+      WARNING  line 31: Could not find year at the end of the citation. Found #2059.
+
+  PASS: file:/C:/catalog-files/goodcatfiles/MK88-120_INM.CAT
+
+  PASS: file:/C:/catalog-files/goodcatfiles/MK88_INST.CAT
+
+  PASS: file:/C:/catalog-files/goodcatfiles/MK88_INSTHOST.CAT
+
+
+Referential Integrity Details:
+
+
+  FAIL: Data Set Integrity
+    Parent File(s): [MK88-120DS.CAT]
+    Begin checking children
+    End checking children
+      line 7: MK88-120DS.CAT: DATA_SET_ID = MK88-L-120CVF-3-RDR-120COLOR-V1.0 is not specified in a non DATASET.CAT.
+
+  FAIL: Reference Integrity
+    Parent File(s): [MK88-120DS_REF.CAT]
+      line 17: Description for PIETERS1986 does not match description in allrefs dictionary.
+         Source: allrefs_1r74.out
+         &lt; Pieters, C. M. (1986), Composition of the Lunar Highland Crust from Near-Infrared Spectroscopy, Reviews of Geophysics, Vol. 24, No. 3, 557-578.
+         ----
+         &gt; Pieters, C. M. (1986), Composition of the Lunar Highland Crust from Near-Infrared Spectroscopy Reviews of Geophysics, Vol. 24, No. 3, 557-578.
+
+      line 8: MCCORDETAL not found in allrefs dictionary.
+    Begin checking children
+      line 102: MK88-120DS.CAT: REFERENCE_KEY_ID = MCCORDETAL1981 is not found in a REF.CAT.
+      line 33: MK88_INST.CAT: REFERENCE_KEY_ID = MCCORDETAL1981 is not found in a REF.CAT.
+    End checking children
+
+  PASS: Instrument Integrity
+    Parent File(s): [MK88_INST.CAT]
+    Begin checking children
+    End checking children
+
+  PASS: Instrument Host Integrity
+    Parent File(s): [MK88_INSTHOST.CAT]
+    Begin checking children
+    End checking children
+
+
+End of Report
+      </source>
+    </section>
+  </body>
+</document>

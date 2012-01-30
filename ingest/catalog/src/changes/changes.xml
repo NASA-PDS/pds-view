@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2009-2011, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology
+  Transfer at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Release Changes</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <release version="1.2.0" date="TBD" description="TBD">
+    </release>
+
+    <release version="1.1.0" date="2011-02-10" description="This is a maintenance release of the Catalog Ingest Tool.">
+      <action dev="mcayanan, hyunlee" type="update">
+        PDSEN-256 - Update the tool to be compatible with version 3.X.X of the Product Tools Library.
+      </action>
+      <action dev="mcayanan" type="fix">
+        PDSEN-326 - Support apostrophe characters in author's names during reference validation.
+      </action>
+      <action dev="mcayanan" type="fix">
+        PDSEN-327 - During reference validation, do a more robust checking of possible REFERENCE_KEY_ID values within square brackets inside a description.
+      </action>
+      <action dev="mcayanan" type="fix">
+        PDSEN-328 - Support space characters in author's names during reference validation.
+      </action>
+      <action dev="mcayanan" type="fix">
+        PDSEN-333 - Perform a proper comparison between two Set values. Fixed as the result of fixing PDSEN-332 for the product-tools project.
+      </action>
+      <action dev="mcayanan" type="fix">
+        PDSEN-334 - No longer look for "AND" when determining if a REFERENCE_KEY_ID value denotes multiple authors.
+      </action>
+      <action dev="mcayanan" type="fix">
+        PDSEN-337 - Perform string manipulation when matching values during referential integrity checking.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Corrected an issue ingesting the VOLUME catalog file when NODE_ID, ON_LINE_NAME, ON_LINE_IDENTIFICATION, and PROTOCOL_TYPE keywords are absent.
+      </action>
+    </release>
+
+    <release version="1.0.0" date="2010-01-05" description="This is the official release of the Catalog Ingest Tool.">
+      <action dev="mcayanan" type="add">
+        Added the capability to automatically ingest new standard values into the database.
+      </action>
+      <action dev="mcayanan" type="add">
+        Added the capability to report references found in descriptions that do not match a REFERENCE_KEY_ID value within the same catalog file.
+      </action>
+      <action dev="mcayanan" type="add">
+        Added an include path, '-i', command line flag option for validate mode to search for referenced catalog files.
+      </action>
+      <action dev="mcayanan" type="add">
+        Added the capability to recursively traverse a target directory.
+      </action>
+      <action dev="mcayanan" type="add">
+        Added a local, '-L', command line flag option to turn off directory recursion.
+      </action>
+      <action dev="mcayanan" type="update">
+        Removed volume referential integrity checking.
+      </action>
+      <action dev="mcayanan" type="update">
+        Support handling of multiple values when doing referential integrity checking.
+      </action>
+      <action dev="mcayanan" type="update">
+        Disabled following pointers in compare mode.
+      </action>
+      <action dev="mcayanan" type="update">
+        Removed reporting of severity levels in the compare report.
+      </action>
+      <action dev="mcayanan" type="update">
+        Updated the compare report to report messages in alphabetical order, according to the file name.
+      </action>
+      <action dev="hyunlee" type="update">
+        Updated the ingestion to report an error for lines greater than 80 characters instead of truncating it.
+      </action>
+      <action dev="hyunlee" type="update">
+        Updated the ingestion to ingest the DESCRIPTION statement instead of the RESOURCE_DESC statement in a dshousekeeping catalog file.
+      </action>
+      <action dev="hyunlee" type="update">
+        Updated the ingestion to ignore pointer validation.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to report an error if the database name specified on the command-line is invalid.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to do a more complete check for missing keywords in a software catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to throw an ingestion error when a REFERENCE_KEY_ID statement is missing in a reference catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to throw an ingestion error when a REFERENCE_KEY_ID statement is missing in a dataset collections catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to throw an ingestion error if a dataset collections catalog file is missing a DATA_SET_COLL_ASSOC_DATA_SETS object.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to do a more complete check for missing keywords when ingesting an 'nssdcdsid' catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to throw an ingestion error when a MEDIUM_TYPE statement is missing in an inventory catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to ingest all INVENTORY_DATA_SET_INFO objects in an inventory catalog file instead of just the last one.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to do a more complete check for missing keywords when ingesting an instrument catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to report a missing INSTRUMENT_HOST_REFERENCE_INFO when ingesting an instrument host catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to do a more complete check for missing keywords and objects when ingesting a dataset catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to throw an error when DATA_SET_ID is missing when ingesting a dataset catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to no longer check for a TARGET_REFERENCE_INFORMATION object when ingesting a target catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to throw an error when TARGET_NAME is missing when ingesting a target catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to be able to support ingestion of multiple TARGET objects in a single target catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to ignore the PDS_AFFILIATION statement when ingesting a personnel catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to throw an error if PDS_USER_ID is missing when ingesting a personnel catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to throw an error when DATA_SET_ID or NODE_ID is missing when ingesting a dshousekeeping catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to throw an error when DATA_SET_ID or RELEASE_ID is missing when ingesting a dsrelease catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed the tool to be able to ingest multiple DATA_SET_RELEASE records in a dsrelease catalog file.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed a bug where the tool had problems ingesting all files in a target directory.
+      </action>
+      <action dev="mcayanan" type="fix">
+        Fixed a bug dealing with REFERENCE_KEY_ID values that contain multiple authors like PUTZIGANDMELLON2007. The tool was not correctly matching the start of the REFERENCE_DESC value with the first author listed in the associated REFERENCE_KEY_ID value.
+      </action>
+      <action dev="mcayanan" type="fix">
+        Fixed a bug found in the compare report, where it would mark a pair of files as 'SAME' and report a warning, while marking another pair of files as 'DIFFERENT' and report the same type of warning message.
+      </action>
+    </release>
+
+    <release version="0.4.0" date="2009-10-11" description="This fourth release of the Catalog Ingest Tool is intended for beta testing by the PDS Technical Staff.">
+      <action dev="mcayanan" type="add">
+        Added a "-c, --config" command line flag option to pass in a configuration file.
+      </action>
+      <action dev="mcayanan" type="add">
+        Added an "-a, --alias" command line flag option to enable aliasing in the validate mode.
+      </action>
+      <action dev="mcayanan" type="update">
+        Validate only files with a .CAT extension when passing in a target directory to the tool.
+      </action>
+      <action dev="mcayanan" type="update">
+        Changed message severity level to INFO for REFERENCE_DESC values not beginning with the author name from the associated REFERNCE_KEY_ID value.
+      </action>
+      <action dev="mcayanan" type="update">
+        Changed message severity level to INFO for REFERENCE_KEY_ID values in a REF.CAT not being found in a non-REF.CAT.
+      </action>
+      <action dev="mcayanan" type="update">
+        Removed a referential integrity check to see if PDS_USER_ID and NODE_ID in a PERSON.CAT file exists in a non-PERSON.CAT file.
+      </action>
+      <action dev="mcayanan" type="update">
+        Updated the "allrefs" command line flag option to "-A".
+      </action>
+    </release>
+
+    <release version="0.3.0" date="2009-08-25" description="This third release of the Catalog Ingest Tool is intended for beta testing at the Engineering Node.">
+      <action dev="mcayanan" type="add">
+        Added the capability to find new standard values in validate mode.
+      </action>
+      <action dev="mcayanan" type="add">
+        Added a complete referential integrity check in validate mode.
+      </action>
+      <action dev="mcayanan" type="fix">
+        Fixed reference validation to support REFERENCE_KEY_ID values that are not made up of an author and year field.
+      </action>
+      <action dev="mcayanan" type="fix">
+        Fixed various minor reporting issues to the compare function based on beta testing at the Engineering Node.
+      </action>
+    </release>
+
+    <release version="0.2.0" date="2009-06-08" description="This second release of the Catalog Ingest Tool is intended for beta testing at the Engineering Node.">
+      <action dev="mcayanan" type="add">
+        Added the capability to do validation of catalog files.
+      </action>
+      <action dev="hyunlee" type="add">
+        Added the capability to ingest catalog files into the PDS central catalog database.
+      </action>
+      <action dev="mcayanan" type="add">
+        Added referential integrity checking of references.
+      </action>
+      <action dev="mcayanan" type="update">
+        Updated compare function to show a UNIX diff-like output for differences between the source and target.
+      </action>
+      <action dev="mcayanan" type="update">
+        Updated command-line flag options with a "-m" or "--mode" flag. This enables the compare, ingest, or validate mode.
+      </action>
+      <action dev="mcayanan" type="fix">
+        Fix the compare function to provide better support in comparing objects between the source and target.
+      </action>
+    </release>
+
+    <release version="0.1.0" date="2009-04-03" description="This first release of the Catalog Ingest Tool is intended for beta testing at the Engineering Node.">
+      <action dev="mcayanan" type="add">
+        Added the capability to compare a catalog file with another catalog file or a directory of catalog files with another directory.
+      </action>
+    </release>
+  </body>
+</document>

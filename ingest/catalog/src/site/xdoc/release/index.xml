@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+  Copyright 2009-2011, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology 
+  Transfer at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations 
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+  is subject to U.S. export control laws and regulations, the recipient has 
+  the responsibility to obtain export licenses or other export authority as 
+  may be required before exporting such information to foreign countries or 
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Release Notes</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Release Notes">
+      <p>The purpose of this section is to provide a description of a Catalog Ingest Tool release including any impact that the new or modified capabilities will have on the Discipline Nodes or the PDS user community. If viewing the web-based version of this document, a somewhat itemized list of changes for each release can be found on the <a href="../changes-report.html">Release Changes</a> page.
+      </p>
+    </section>
+
+    <section name="Release 1.2.0">
+      <p>TBD
+      </p>
+    </section>
+
+    <section name="Release 1.1.0">
+      <p>This is a maintenance release of the Catalog Ingest Tool.
+      </p>
+
+      <ul>
+        <li>Corrected a couple of issues handling author's names during reference validation.</li>
+        <li>Corrected a couple of issues handling REFERENCE_KEY_ID values.</li>
+        <li>Corrected an issue comparing two Set values.</li>
+        <li>Corrected an issue ingesting the VOLUME catalog file when NODE_ID, ON_LINE_NAME, ON_LINE_IDENTIFICATION, and PROTOCOL_TYPE keywords are absent.</li>
+        <li>Integrated the tool with version 3.1.0 of the Product Tools Library.</li>
+      </ul>
+    </section>
+
+    <section name="Release 1.0.0">
+      <p>This is the official release of the Catalog Ingest Tool to the PDS community. The major changes for this release include:
+      </p>
+
+      <ul>
+        <li>Interface and General Functionality<br/>
+          <p>Added the capability to recursively traverse a target directory as well as the ability to turn this capability off. Modified the compare report content by ordering files alphabetically, removing severity levels and not following pointers in compare mode.
+          </p>
+        </li>
+        <li>Referential Integrity Checking<br/>
+          <p>Implemented a couple of additions/fixes related to checking REFERENCE_KEY_ID. Added support for multiple values.
+          </p>
+        </li>
+        <li>Ingestion<br/>
+          <p>Implemented several fixes associated with ingestion of the catalog file content into the PDS catalog database. Also added the capability to ingest new standard values as part of the ingestion step.
+          </p>
+        </li>
+      </ul>
+
+      <p>The liens for this release are as follows:
+      </p>
+
+      <ul>
+        <li>Report lines greater than 80 characters<br/>
+          <p>This capability will be incorporated when CITool is integrated with the new Product Tools library.
+          </p>
+        </li>
+        <li>Support for like-named Elements and Objects<br/>
+          <p>The PDS Data Dictionary currently has elements and objects with identical names. This capability will be incorporated when CITool is integrated with the new Product Tools library.
+          </p>
+        </li>
+        <li>Support for multi-valued pointers<br/>
+          <p>This capability will be incorporated when CITool is integrated with the new Product Tools library.
+          </p>
+        </li>
+        <li>Detect changes in like-named Objects<br/>
+          <p>The tool does not correctly detect and report a change within an object that appears multiple times (same name) within the same catalog file.
+          </p>
+        </li>
+      </ul>
+    </section>
+
+    <section name="Release 0.4.0">
+      <p>This release of the Catalog Ingest Tool, is intended for beta testing by the PDS Technical Staff. The minor changes in this release include some updates to the command-line options and message severities.
+      </p>
+    </section>
+
+    <section name="Release 0.3.0">
+      <p>This release of the Catalog Ingest Tool, is intended for beta testing at the Engineering Node. The major changes in this release include the capabilities to find new standard values and perform a complete referential integrity check within a set of catalog files. Other changes include various, minor fixes to reference validation and the compare mode functionality based on the previous beta testing period.
+      </p>
+    </section>
+
+    <section name="Release 0.2.0">
+      <p>This release of the Catalog Ingest Tool, is intended for beta testing at the Engineering Node. This release includes the capabilities to validate catalog files, perform referential integrity checking for references and ingest the catalog files into the PDS central catalog database.
+      </p>
+    </section>
+
+    <section name="Release 0.1.0">
+      <p>This is the first release of the Catalog Ingest Tool, intended for beta testing at the Engineering Node. This release includes the capability to compare a catalog file with another catalog file or a directory of catalog files with another directory.
+      </p>
+    </section>
+  </body>
+</document>

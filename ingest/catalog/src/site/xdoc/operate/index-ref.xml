@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+  Copyright 2009, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology 
+  Transfer at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations 
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+  is subject to U.S. export control laws and regulations, the recipient has 
+  the responsibility to obtain export licenses or other export authority as 
+  may be required before exporting such information to foreign countries or 
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Referential Integrity Checking</title>
+    <author email="Michael.Cayanan@jpl.nasa.gov">Michael Cayanan</author>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Referential Integrity Checking">
+      <p>This section describes how CITool checks for referential integrity among the catalog files.
+      </p>
+        
+      <p>Referential integrity is a database concept that ensures that relationships between the tables remain consistent. In CITool, referential integrity is performed during validation mode. The following referential integrity checks are performed:
+      </p>
+        
+      <ul>
+        <li><a href="#Reference_Integrity">Reference Integrity</a></li>
+        <li><a href="#Personnel_Integrity">Personnel Integrity</a></li>
+        <li><a href="#Target_Integrity">Target Integrity</a></li>
+        <li><a href="#Instrument_Integrity">Instrument Integrity</a></li>
+        <li><a href="#Instrument_Host_Integrity">Instrument Host Integrity</a></li>
+        <li><a href="#Mission_Integrity">Mission Integrity</a></li>
+        <li><a href="#Data_Set_Integrity">Data Set Integrity</a></li>
+      </ul>
+        
+      <p>Note, however, that not all referential integrity checks can be performed if the set of catalog files that were passed into the tool is incomplete. For example, if a <i>TARGET.CAT</i> file is not passed into the tool, then target integrity checks will not be performed.
+      </p>
+        
+      <subsection name="Reference Integrity">
+        <p>In a reference integrity check, CITool will ensure that referential integrity exists in the use of <i>REFERENCE_KEY_ID</i> and <i>REFERENCE_DESC</i> as follows:
+        </p>
+        
+        <ul>
+          <li>Each <i>REFERENCE_KEY_ID</i> value specified in a catalog file other than the <i>REF.CAT</i> file exists in the <i>REF.CAT</i> file.
+          </li>
+          <li>Each <i>REFERENCE_KEY_ID</i> value specified in the <i>REF.CAT</i> file is specified in at least one other catalog file.
+          </li>
+          <li>Each <i>REFERENCE_KEY_ID</i> value exists in the <i>'allrefs'</i> dictionary support file.
+          </li>
+          <li>Each <i>REFERENCE_DESC</i> value specified in the <i>REF.CAT</i> file matches the corresponding value in the <i>'allrefs'</i> dictionary support file.
+          </li>
+        </ul>
+      </subsection>
+
+      <subsection name="Personnel Integrity">
+        <p>In a personnel integrity check, CITool will ensure that referential integrity exists in the use of <i>PDS_USER_ID</i> and <i>NODE_ID</i> as follows:
+        </p>
+        
+        <ul>
+          <li>Each <i>PDS_USER_ID</i> and <i>NODE_ID</i> value specified in a catalog file other than the <i>PERSON.CAT</i> file exists in the <i>PERSON.CAT</i> file.
+          </li>
+        </ul>
+      </subsection>
+
+      <subsection name="Target Integrity">
+        <p>In a target integrity check, CITool will ensure that referential integrity exists in the use of <i>TARGET_NAME</i> as follows:
+        </p>
+        
+        <ul>
+          <li>Each <i>TARGET_NAME</i> value specified in a catalog file other than the <i>TARGET.CAT</i> file exists in the <i>TARGET.CAT</i> file.
+          </li>
+          <li>Each <i>TARGET_NAME</i> value specified in the <i>TARGET.CAT</i> file is specified in at least one other catalog file.
+          </li>
+        </ul>
+      </subsection>
+
+      <subsection name="Instrument Integrity">
+        <p>In an instrument integrity check, CITool will ensure that referential integrity exists in the use of <i>INSTRUMENT_ID</i> as follows:
+        </p>
+        
+        <ul>
+          <li>Each <i>INSTRUMENT_ID</i> value specified in a catalog file other than the <i>INSTRUMENT.CAT</i> file exists in the <i>INSTRUMENT.CAT</i> file.
+          </li>
+          <li>Each <i>INSTRUMENT_ID</i> value specified in the <i>INSTRUMENT.CAT</i> file is specified in at least one other catalog file.
+          </li>
+        </ul>
+      </subsection>
+
+      <subsection name="Instrument Host Integrity">
+        <p>In an instrument host integrity check, CITool will ensure that referential integrity exists in the use of <i>INSTRUMENT_HOST_ID</i> as follows:
+        </p>
+        
+        <ul>
+          <li>Each <i>INSTRUMENT_HOST_ID</i> value specified in a catalog file other than the <i>INSTRUMENT.CAT</i> file, exists in the <i>INSTRUMENT.CAT</i> file.
+          </li>
+          <li>Each <i>INSTRUMENT_HOST_ID</i> value specified in the <i>INSTRUMENT.CAT</i> file is specified in at least one other catalog file.
+          </li>
+        </ul>
+      </subsection>
+
+      <subsection name="Mission Integrity">
+        <p>In a mission integrity check, CITool will ensure that referential integrity exists in the use of <i>MISSION_NAME</i> as follows:
+        </p>
+        
+         <ul>
+          <li>Each <i>MISSION_NAME</i> value specified in a catalog file other than the <i>MISSION.CAT</i> file exists in the <i>MISSION.CAT</i> file.
+          </li>
+          <li>Each <i>MISSION_NAME</i> value specified in the <i>MISSION.CAT</i> file is specified in at least one other catalog file.
+          </li>
+        </ul>
+      </subsection>
+
+      <subsection name="Data Set Integrity">
+        <p>In a data set integrity check, CITool will esnure that referential integrity exists in the use of <i>DATA_SET_ID</i> and <i>DATA_SET_ID_COLLECTION_ID</i> as follows:
+        </p>
+        
+        <ul>
+          <li>Each <i>DATA_SET_ID</i> value specified in a catalog file other than the <i>DATASET.CAT</i> file exists in the <i>DATASET.CAT</i> file.
+          </li>
+          <li>Each <i>DATA_SET_ID</i> value specified in the <i>DATASET.CAT</i> file is specified in at least one other catalog file.
+          </li>
+          <li>The <i>DATA_SET_COLL_OR_DATA_SET_ID</i> value specified in the <i>VOLUME.CAT</i> and <i>NSSDC.CAT</i> files is consistent with the <i>DATA_SET_ID</i> or <i>DATA_SET_COLLECTION_ID</i> value specified in the <i>DATASET.CAT</i> file.
+          </li>
+          <li>The <i>PRODUCT_DATA_SET_ID</i> value specified in the <i>INVENTORY.CAT</i> file is consistent with the <i>DATA_SET_ID</i> or <i>DATA_SET_COLLECTION_ID</i> value specified in the <i>DATASET.CAT</i> file.
+          </li>
+        </ul>
+      </subsection>
+    </section>
+  </body>
+</document>

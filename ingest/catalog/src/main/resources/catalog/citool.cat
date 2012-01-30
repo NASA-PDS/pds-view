@@ -1,0 +1,63 @@
+PDS_VERSION_ID                    = PDS3
+RECORD_TYPE                       = STREAM
+LABEL_REVISION_NOTE               = "
+2011-02-10, SH(EN) V1.1.0;
+ This is a maintenance release of the Catalog Ingest Tool."
+
+OBJECT                            = SOFTWARE
+  SOFTWARE_ID                     = "citool"
+  SOFTWARE_VERSION_ID             = "1.1.0"
+
+  OBJECT                          = SOFTWARE_INFORMATION
+    SOFTWARE_NAME                 = "PDS Catalog Ingest Tool"
+    DATA_FORMAT                   = "PDS"
+    SOFTWARE_LICENSE_TYPE         = "PUBLIC_DOMAIN"
+    TECHNICAL_SUPPORT_TYPE        = "FULL"
+    REQUIRED_STORAGE_BYTES        = "6.0 MB"
+    PDS_USER_ID                   = "PDS_OPERATOR"
+    NODE_ID                       = "EN"
+    SOFTWARE_DESC                 = "
+
+ Software Overview
+ =================
+ The Catalog Ingest Tool (CITool) is intended to streamline the catalog 
+ submission process. The legacy process involves a myriad of tools and 
+ manual steps in order to ingest catalog files submitted by the nodes 
+ into the PDS central catalog.
+
+
+ Available Support Material
+ ==========================
+ Installation and user guides are bundled with the binary package.
+
+
+ Programming Language
+ ====================
+ Java
+
+
+ Compilers Used
+ ====================
+ Sun Java version 1.6
+
+
+ Platforms Supported
+ ===================
+ Any platform with a supported Java Runtime Environment (JRE),
+ version 1.6 or later."
+
+  END_OBJECT                      = SOFTWARE_INFORMATION
+
+  OBJECT                          = SOFTWARE_ONLINE
+    ON_LINE_IDENTIFICATION        = "http://starbeam.jpl.nasa.gov/tools/license_citoolpkg.html"
+    ON_LINE_NAME                  = "PDS Catalog Ingest Tool"
+    NODE_ID                       = "EN"
+    PROTOCOL_TYPE                 = "URL"
+    PLATFORM                      = "MULTIPLE"
+  END_OBJECT                      = SOFTWARE_ONLINE
+
+  OBJECT                          = SOFTWARE_PURPOSE
+    SOFTWARE_PURPOSE              = "VERIFICATION"
+  END_OBJECT                      = SOFTWARE_PURPOSE
+END_OBJECT                        = SOFTWARE
+END
