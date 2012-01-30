@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2010-2011, by the California Institute of Technology. 
+# Copyright 2010-2012, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -23,14 +23,4 @@ cd registry-core
 mvn install clean
 cd ..
 
-mvn site
-
-cd registry-core
-maven pdf
-cd ../registry-service
-maven pdf
-cd ../registry-ui
-maven pdf
-
-cd ..
-mvn site:deploy
+mvn site-deploy

@@ -16,11 +16,9 @@ generated API documentation (application.html), execute the following
 commands: 
 
 % mvn site
-% maven pdf
 % mvn package
 
-The project still relies on Maven 1 functionality to generate the PDF form 
-of the documentation. The "env" property can be specified to set the 
+The "env" property can be specified to set the 
 registry service endpoint and the backend database. Execute as follows:
 
 % mvn package -Denv=local-derby

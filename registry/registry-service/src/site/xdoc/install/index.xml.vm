@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2010-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -25,7 +25,7 @@
 
   <body>
     <section name="Installation">
-      <p>This section describes how to install the Registry Service software contained in the <i>${xdoc-artifactId}</i> package. The following topics can be found in this section:
+      <p>This document describes how to install the Registry Service software contained in the <i>${project.artifactId}</i> package. The following topics can be found in this section:
       </p>
 
       <ul>
@@ -76,19 +76,19 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
     </section>
 
     <section name="Unpacking the Package">
-      <p>Download the <i>${xdoc-artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/registry/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. Unpack the selected binary distribution file with one of the following commands:
+      <p>Download the <i>${project.artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/registry/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. The installation directory may vary from environment to environment but in UNIX-based environments it is typical to install software packages in the <i>/usr/local</i> directory and in Windows-based environments it is typical to install software packages in the <i>C:\Program Files</i> directory. Unpack the selected binary distribution file with one of the following commands:
       </p>
 
       <source>
-% unzip ${xdoc-artifactId}-${xdoc-version}-bin.zip
+% unzip ${project.artifactId}-${project.version}-bin.zip
 or
-% tar -xzvf ${xdoc-artifactId}-${xdoc-version}-bin.tar.gz
+% tar -xzvf ${project.artifactId}-${project.version}-bin.tar.gz
       </source>
 
       <p>Note: Depending on the platform, the native version of <i>tar</i> may produce an error when attempting to unpack the distribution file because many of the file paths are greater than 100 characters. If available, the GNU version of tar will resolve this problem. If that is not available or cannot be installed, the zipped package will work just fine in a UNIX environment.
       </p>
 
-      <p>The commands above result in the creation of the <i>${xdoc-artifactId}-${xdoc-version}</i> directory with the following directory structure:
+      <p>The commands above result in the creation of the <i>${project.artifactId}-${project.version}</i> directory with the following directory structure:
       </p>
 
       <ul>
@@ -100,7 +100,7 @@ or
           <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
           </p>
         </li>
-        <li><b>${xdoc-artifactId}-${xdoc-version}.war</b><br/>
+        <li><b>registry.war</b><br/>
           <p>This is the Web ARchive (WAR) file containing the Registry Service software including all dependent JAR files.
           </p>
         </li>
@@ -117,7 +117,7 @@ or
           </p>
         </li>
         <li><b>doc/</b><br/>
-          <p>This document directory contains a local web site with the Registry Service Guide, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
+          <p>This directory contains a local web site with the Registry Service documentation, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
           </p>
         </li>
         <li><b>examples/</b><br/>
@@ -135,7 +135,7 @@ or
         <p>The Derby database comes packaged with the registry service. The following commands will create the database and install the registry schema: 
         </p>
         <source>
-% cd ${xdoc-artifactId}-${xdoc-version}
+% cd ${project.artifactId}-${project.version}
 % java -Djava.ext.dirs=lib/ org.apache.derby.tools.ij
 ij> connect 'jdbc:derby:RegistryDB;create=true;user=user';
 ij> run 'conf/derby-registry-schema.ddl';
@@ -164,7 +164,7 @@ ij> exit;
     </section>
 
     <section name="Deploying the Application">
-      <p>The Registry Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. Prior to installation, the WAR file should be renamed from <i>${xdoc-artifactId}-${xdoc-version}.war</i> to <i>registry.war</i>. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>$TOMCAT_HOME/webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation. Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping">Ping</a> portion of the Operation section.
+      <p>The Registry Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>$TOMCAT_HOME/webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation. Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping">Ping</a> portion of the Operation document.
       </p>
 
       <p>When deploying the application via the Tomcat Manager interface, users have occasionally encountered a situation where the application appears to hang or generates the following stack trace:
@@ -259,12 +259,12 @@ p:home="http://node.nasa.gov/registry"/&gt;
       </subsection>
 
       <subsection name="Object Type Configuration">
-        <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of objects types corresponds with the types of products that a given instance of the Registry Service will support. The <i>RegistryConfig</i> and <i>RegistryConfig.bat</i> scripts default to a Registry Service endpoint of <i>http://localhost:8080/registry</i>. If necessary, modify the appropriate script for the local environment so that it corresponds with the endpoint of the target installation. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface. Execute the script from the <i>bin</i> directory in order to register the full set of object types:
+        <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of objects types corresponds with the types of products that a given instance of the Registry Service will support. The <i>registry-config</i> and <i>registry-config.bat</i> scripts default to a Registry Service endpoint of <i>http://localhost:8080/registry</i>. If necessary, modify the appropriate script for the local environment so that it corresponds with the endpoint of the target installation. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface. Execute the script from the <i>bin</i> directory in order to register the full set of object types:
         </p>
 
         <source>
-% cd ${xdoc-artifactId}-${xdoc-version}/bin
-% ./RegistryConfig
+% cd ${project.artifactId}-${project.version}/bin
+% ./registry-config
         </source>
 
         <p>The output from this command should show the registration of the Core object types and PDS object types. Since the configuration files referenced in the configuration script are slightly larger they are sent in chunks. Each configuration will get associated with a Registry Package and can be found by following the location link that comes in the header of the response. The output from the command should look something like the following:
@@ -326,7 +326,7 @@ urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
         </p>
 
         <source>
-&lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='${xdoc-version}' packages='2' 
+&lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='${project.version}' packages='2' 
 classificationNodes='67' classificationSchemes='1' services='0' extrinsics='0' associations='68' 
 serverStarted='2011-08-28T12:45:43.514-07:00' status='OK'/&gt;
         </source>

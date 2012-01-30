@@ -13,11 +13,9 @@ In order to create a complete package for distribution, execute the
 following commands: 
 
 % mvn site
-% maven pdf
 % mvn package -Dservice.endpoint={URL} -DskipTests=true
 
-The project still relies on Maven 1 functionality to generate the PDF form 
-of the documentation. Replace the {URL} placeholder with URL for the 
+Replace the {URL} placeholder with URL for the 
 Registry Service. It should end with ".../registry/".
 
 For ease of deployment to an Apache Tomcat Server, use the 

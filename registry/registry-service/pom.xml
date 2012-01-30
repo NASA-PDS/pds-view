@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2010-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -21,7 +21,7 @@
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
     <artifactId>registry</artifactId>
-    <version>1.1.0-dev</version>
+    <version>1.1.0</version>
   </parent>
 
   <groupId>gov.nasa.pds.2010.registry</groupId>
@@ -43,9 +43,6 @@
   </licenses>
 
   <properties>
-    <!-- These properties support PDF generation with Maven 1. -->
-    <xdoc-artifactId>${artifactId}</xdoc-artifactId>
-    <xdoc-version>${version}</xdoc-version>
     <!-- These properties support the application. -->
     <jersey-version>1.4</jersey-version>
     <junit-version>4.8.1</junit-version>
@@ -196,6 +193,7 @@
         <artifactId>maven-war-plugin</artifactId>
         <version>2.1-beta-1</version>
         <configuration>
+          <warName>registry</warName>
           <!-- If we wanted different filters for the war we could put them here
           <filters>
             <filter>src/main/filters/${env}.properties</filter>

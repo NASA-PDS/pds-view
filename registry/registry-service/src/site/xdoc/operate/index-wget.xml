@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011, by the California Institute of Technology.
+  Copyright 2011-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -25,7 +25,7 @@
 
   <body>
     <section name="Using Wget">
-      <p>Although <a href="http://curl.haxx.se/" target="_blank">cURL</a> is the command-line application of choice for interacting with the Registry Service, some machines may only have <a href="http://www.gnu.org/s/wget/" target="_blank">Wget</a> installed or some users may prefer <i>Wget</i> over <i>cURL</i>. The functionality of each application is essentially the same. This section describes the differences between the two applications.
+      <p>Although <a href="http://curl.haxx.se/" target="_blank">cURL</a> is the command-line application of choice for interacting with the Registry Service, some machines may only have <a href="http://www.gnu.org/s/wget/" target="_blank">Wget</a> installed or some users may prefer <i>Wget</i> over <i>cURL</i>. The functionality of each application is essentially the same. This document describes the differences between the two applications.
       </p>
 
       <p>The following command provides an example of using <i>cURL</i> to register a product with the Registry Service:

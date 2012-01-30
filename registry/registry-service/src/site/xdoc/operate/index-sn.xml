@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2010-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -25,7 +25,7 @@
 
   <body>
     <section name="Scheme and Node Registration">
-      <p>This section describes classification scheme and classification node registration in more detail. At this point in time, only one classification scheme is supported by the Registry Service and that is the ObjectType scheme. This scheme is utilized by the service for determining the allowable object types (artifacts) for registration. These object types are represented by the classification nodes, which are children of the ObjectType classification scheme.
+      <p>This document describes classification scheme and classification node registration in more detail. At this point in time, only one classification scheme is supported by the Registry Service and that is the ObjectType scheme. This scheme is utilized by the service for determining the allowable object types (artifacts) for registration. These object types are represented by the classification nodes, which are children of the ObjectType classification scheme.
       </p>
 
       <p>The standard scheme and associated nodes are registered during the installation of the service. That procedure is detailed in the <a href="../install/index.html#Configuration">Configuration</a> portion of the Installation section. The rest of this section gives a little insight into the content of the scheme and node descriptions and how they are registered with the service. The following is an example of a scheme description in XML form:
