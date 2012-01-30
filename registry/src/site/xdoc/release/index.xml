@@ -25,13 +25,20 @@
 
   <body>
     <section name="Release Notes">
-      <p>The purpose of this section is to provide a description of a Registry component release including any impact that the new or modified capabilities will have on the Discipline Nodes or the PDS user community. An itemized list of changes for each component can be found on the Release Changes page for that component.
+      <p>The purpose of this document is to provide a description of a Registry component release including any impact that the new or modified capabilities will have on the Discipline Nodes or the PDS user community. An itemized list of changes for each component can be found in the Release Changes document for that component.
       </p>
     </section>
 
     <section name="Release 1.1.0">
-      <p>This release of Registry is a component of the integrated release <a href="../../release/index-2.1.0.html">2.1.0</a> of the PDS 2010 System. This is an operational release of the system components to date. This release contains documentation updates.
+      <p>This release of Registry is a component of the integrated release <a href="../../release/index-2.1.0.html">2.1.0</a> of the PDS 2010 System. This is an operational release of the system components to date. The new or modified capabilities for this release are as follows:
       </p>
+
+      <ul>
+        <li>Added the ability to filter by a product's status.</li>
+        <li>Added support for all registry objects through the registry client.</li>
+        <li>Updated the registry configuration to match the updated PDS4 data model.</li>
+        <li>Cleaned up the documentation.</li>
+      </ul>
     </section>
 
     <section name="Release 1.0.0">
