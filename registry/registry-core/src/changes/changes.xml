@@ -28,10 +28,10 @@
         Cleaned up the documentation and removed the PDF generation feature.
       </action>
       <action dev="pramirez" type="update">
-        Registry client now supports an expanded set of registry objects. Namely, ExtrinsicObject, Association, Service, RegistryPackage, AuditableEvent, ClassificationScheme, and ClassificationNode.
+        PDS-43 Registry client now supports an expanded set of registry objects. Namely, ExtrinsicObject, Association, Service, RegistryPackage, AuditableEvent, ClassificationScheme, and ClassificationNode.
       </action>
       <action dev="pramirez" type="update">
-        Allow filtering by status.
+        PDS-41 Allow filtering by status.
       </action>
     </release>
 
