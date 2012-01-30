@@ -83,7 +83,7 @@ or
           </p>
         </li>
         <li><b>doc/</b><br/>
-          <p>This directory contains a local web site with the Storage Service Guide, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
+          <p>This directory contains a local web site with the Storage Service documentation and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
           </p>
         </li>
         <li><b>etc/</b><br/>
