@@ -39,10 +39,10 @@ import gov.nasa.pds.tools.util.Utility;
 import gov.nasa.pds.citool.report.IngestReport;
 import gov.nasa.pds.citool.file.FileObject;
 import gov.nasa.pds.citool.file.MD5Checksum;
+import gov.nasa.pds.registry.model.ExtrinsicObject;
 
 /**
- * Class to parse a PDS catalog file and to call a CatalogDB class to ingest the
- * data into DB.
+ * Class to parse a PDS catalog file 
  *
  * @author hlee
  */
@@ -65,6 +65,7 @@ public class CatalogObject {
 	private List<String> _pointerFiles;
 	private String _filename;
 	private float _version;
+	private ExtrinsicObject _product;
 	
 	public CatalogObject(IngestReport report) {
 		this._report = report;
@@ -75,6 +76,7 @@ public class CatalogObject {
 		this._isLocal = true;
 		this._filename = null;
 		this._version = 1.0f;
+		this._product = null;
 	}
 	
 	public String getFilename() {
@@ -137,6 +139,14 @@ public class CatalogObject {
 	
 	public List<String> getPointerFiles() {
 		return this._pointerFiles;
+	}
+	
+	public ExtrinsicObject getExtrinsicObject() {
+		return this._product;
+	}
+	
+	public void setExtrinsicObject(ExtrinsicObject product) {
+		this._product = product;
 	}
 	
 	/**

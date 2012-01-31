@@ -58,7 +58,7 @@ public class Constants {
     
     public static final String VOLUME_OBJ = "VOLUME";
     
-    public static final String HAS_MISSION = "has_investigation";
+    public static final String HAS_MISSION = "has_mission";
     
     public static final String HAS_INST = "has_instrument";
     
