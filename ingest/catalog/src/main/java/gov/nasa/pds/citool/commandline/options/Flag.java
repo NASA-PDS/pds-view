@@ -65,6 +65,9 @@ public enum Flag {
     /** Flag to specify the transport url of the PDS transport service. **/
     TRANSPORTURL("T", "transportUrl", "transport URL", String.class, "Specify the url to the PDS Transport Service."),
     
+    /** Flag to specify the password for the keystore file. **/
+    KEYPASS("k", "keystorePass", "keystore password", String.class, "Specify the password for the keystore file."),
+    
     /** Flag to explicitly specify the targets. */
     TARGET("t", "target", "catalogs", String.class, true, "Explicitly specify "
             + "the catalog target(s). Targets can be specified implicitly as "

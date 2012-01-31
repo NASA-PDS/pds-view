@@ -1,4 +1,4 @@
-// Copyright 2009-2012, by the California Institute of Technology.
+// Copyright 2009, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -76,6 +76,7 @@ public class CITool {
  
     private String username;
     private String password;
+    private String keystore_pass;
     private String storageUrl;  
     private String registryUrl;
     private String transportUrl;
@@ -109,6 +110,7 @@ public class CITool {
         registryUrl = null;
         storageUrl = null;
         transportUrl = null;
+        keystore_pass = null;
     }
 
     /**
@@ -188,6 +190,8 @@ public class CITool {
             	setTransportUrl(o.getValue());
             } else if (o.getOpt().equals(Flag.ALLREFS.getShortName())) {
                 setAllrefs(o.getValue());
+            } else if (o.getOpt().equals(Flag.KEYPASS.getShortName())) {
+            	setKeystorePass(o.getValue());
             }
         }
         //while statement removes empty values that get added to the list as
@@ -227,11 +231,6 @@ public class CITool {
                 	throw new Exception("\'pds.registry\' java property is not set.");
                 }               
                 keystore = System.getProperty("pds.security.keystore");
-                /*
-                if (username == null || password == null) {
-                	throw new InvalidOptionException("-u/-p must be " + 
-                      	"specified when running in ingest mode.");
-                }*/
                 if ((username!=null) && (password!=null)) {
                 	if (keystore == null) {
                 		throw new Exception("\'pds.security.keystore\' java property not set.");
@@ -240,9 +239,11 @@ public class CITool {
                 		if (!new File(keystore).exists()) {
                 			throw new Exception("Keystore file does not exist: " + keystore);
                 		}
-                		securityContext = new SecurityContext(keystore, KEYSTORE_PASSWORD,
-                				keystore, KEYSTORE_PASSWORD);
-                		//System.out.println("*****securityContext is set...");
+                		
+                		if (keystore_pass == null)
+                			keystore_pass = KEYSTORE_PASSWORD;
+                		securityContext = new SecurityContext(keystore, keystore_pass,
+                				keystore, keystore_pass);
                 	}
                 }
                 if (transportUrl==null || storageUrl==null)
@@ -346,6 +347,9 @@ public class CITool {
             }
             if (config.containsKey(ConfigKey.TRANSPORTURL)) {
             	setTransportUrl(config.getString(ConfigKey.TRANSPORTURL));
+            }
+            if (config.containsKey(ConfigKey.KEYPASS)) {
+            	setKeystorePass(config.getString(ConfigKey.KEYPASS));
             }
         } catch(Exception e) {
             throw new ConfigurationException(e.getMessage());
@@ -452,6 +456,10 @@ public class CITool {
     	this.transportUrl = transportUrl;
     }
     
+    public void setKeystorePass(String keypass) {
+    	this.keystore_pass = keypass;
+    }
+    
     /**
      * Show the version and disclaimer notice.
      *
@@ -468,7 +476,7 @@ public class CITool {
      */
     public void showHelp() {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp(80, "CITool", null, Flag.getOptions(), null);
+        formatter.printHelp(80, "catalog", null, Flag.getOptions(), null);
     }
 
 
@@ -534,7 +542,7 @@ public class CITool {
         ca.setThreshold(Priority.FATAL);
         BasicConfigurator.configure(ca);
         if (args.length == 0) {
-            System.out.println("\nEnter 'catalog -h' for usage");
+            System.out.println("\nType 'catalog -h' for usage");
             System.exit(0);
         }
         try {

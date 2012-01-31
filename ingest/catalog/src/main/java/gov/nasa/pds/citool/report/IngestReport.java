@@ -129,6 +129,7 @@ public class IngestReport extends Report {
       // when it can't find a key. In these cases the actual message seems to
       // be the key itself.
       writer.println(problem.getKey());
+      re.printStackTrace();
     }
   }
 

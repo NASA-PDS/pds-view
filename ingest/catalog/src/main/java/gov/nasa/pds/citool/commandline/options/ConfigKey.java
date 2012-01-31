@@ -25,6 +25,7 @@ public enum ConfigKey {
     PASS("citool.pass"),
     SERVERURL("citool.serverUrl"),
     TRANSPORTURL("citool.transportUrl"),
+    KEYPASS("citool.keypass"),
     ALLREFS("citool.allrefs"),
     ALIAS("citool.alias");
 
