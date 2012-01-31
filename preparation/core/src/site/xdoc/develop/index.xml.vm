@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -25,7 +25,7 @@
 
   <body>
     <section name="Development">
-       <p>This section describes how a user can utilize the Application Program Interface (API) of the <i>${xdoc-artifactId}</i> package to develop their own tool. The following topics can be found in this section:
+       <p>This document describes how a user can utilize the Application Program Interface (API) of the <i>${project.artifactId}</i> package to develop their own tool. The following topics can be found in this document:
       </p>
 
       <ul>

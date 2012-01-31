@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2010-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -25,7 +25,7 @@
 
   <body>
     <section name="Operation">
-      <p>This section describes how to use the recommended Design Tool software packages to produce specific PDS product label schemas, which can then be used to generate product labels. In PDS4, product label schemas must conform to the <a href="http://www.w3.org/standards/techs/xmlschema" target="_blank">XML Schema</a> standard. The following diagram details the product label schema lifecycle:
+      <p>This document describes how to use the recommended Design Tool software packages to produce specific PDS product label schemas, which can then be used to generate product labels. In PDS4, product label schemas must conform to the <a href="http://www.w3.org/standards/techs/xmlschema" target="_blank">XML Schema</a> standard. The following diagram details the product label schema lifecycle:
       </p>
 
       <center>
