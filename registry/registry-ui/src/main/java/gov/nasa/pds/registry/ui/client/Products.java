@@ -498,8 +498,18 @@ public class Products extends Tab {
 		final ListBox objectsInput = new ListBox(false);
 		objectsInput.setName("objectType");
 		objectsInput.addItem("Any Object Type", "-1");
+		objectsInput.addItem("Collection_Browse");
+		objectsInput.addItem("Collection_Calibration");
+		objectsInput.addItem("Collection_Context");
+		objectsInput.addItem("Collection_Data");
+		objectsInput.addItem("Collection_Document");
+		objectsInput.addItem("Collection_Generic");
+		objectsInput.addItem("Collection_Geometry");
+		objectsInput.addItem("Collection_Miscellaneous");
+		objectsInput.addItem("Collection_SPICE");
 		objectsInput.addItem("Collection_Volume_PDS3");
 		objectsInput.addItem("Collection_Volume_Set_PDS3");
+		objectsInput.addItem("Collection_XML_Schema");
 		objectsInput.addItem("Local_DD");
 		objectsInput.addItem("Product");
 		objectsInput.addItem("Product_Archive_Bundle");
@@ -509,11 +519,11 @@ public class Products extends Tab {
 		objectsInput.addItem("Product_Attribute_Definition");
 		objectsInput.addItem("Product_Browse");
 		objectsInput.addItem("Product_Bundle");
-		objectsInput.addItem("Product_Collection");
-		objectsInput.addItem("Product_Collection_Data");		
+		//objectsInput.addItem("Product_Collection");
+		//objectsInput.addItem("Product_Collection_Data");		
 		objectsInput.addItem("Product_Data_Set_PDS3");
-		objectsInput.addItem("Product_Delimited_Table");
-		objectsInput.addItem("Product_Delimited_Table_Grouped");
+		//objectsInput.addItem("Product_Delimited_Table");
+		//objectsInput.addItem("Product_Delimited_Table_Grouped");
 		objectsInput.addItem("Product_Delivery_Manifest");
 		objectsInput.addItem("Product_Document");
 		objectsInput.addItem("Product_File_Repository");
@@ -535,6 +545,7 @@ public class Products extends Tab {
 		objectsInput.addItem("Product_SPICE_Kernel_Text");
 		objectsInput.addItem("Product_Service");
 		objectsInput.addItem("Product_Software");
+		objectsInput.addItem("Product_Stream_Delimited");
 		objectsInput.addItem("Product_Table_Binary");
 		objectsInput.addItem("Product_Table_Binary_Grouped");
 		objectsInput.addItem("Product_Table_Character");
@@ -547,7 +558,6 @@ public class Products extends Tab {
 		objectsInput.addItem("Product_Zipped");
 		InputContainer objectsInputWrap = new InputContainer("Object Type",
 				objectsInput);
-
 		inputTable.add(objectsInputWrap);
 
 		// create dropdown input for status type
