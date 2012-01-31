@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2010-2011, by the California Institute of Technology. 
+# Copyright 2010-2012, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -27,15 +27,12 @@ cd preparation
 mvn deploy --non-recursive
 cd core
 mvn site
-maven pdf
 mvn deploy
 cd ../generate
 mvn site
-maven pdf
 mvn deploy
 cd ../validate
 mvn site
-maven pdf
 mvn deploy
 cd ../..
 
@@ -43,21 +40,22 @@ cd registry
 mvn deploy --non-recursive
 cd registry-core
 mvn site
-maven pdf
 mvn deploy
 cd ../registry-service
 mvn site
-maven pdf
 mvn deploy
 cd ../registry-ui
 mvn site
-maven pdf
 mvn deploy
 cd ../..
 
-cd harvest
+cd ingest
+mvn deploy --non-recursive
+cd catalog
 mvn site
-maven pdf
+mvn deploy
+cd ../harvest
+mvn site
 mvn deploy
 cd ..
 
@@ -65,11 +63,9 @@ cd report
 mvn deploy --non-recursive
 cd rs-update
 mvn site
-maven pdf
 mvn deploy
 cd ../profile-setup
 mvn site
-maven pdf
 mvn deploy
 cd ../..
 
@@ -77,15 +73,18 @@ cd search
 mvn deploy --non-recursive
 cd search-core
 mvn site
-maven pdf
 mvn deploy
 cd ../search-service
 mvn site
-maven pdf
 mvn deploy
 cd ../..
 
 cd storage
 mvn site
-maven pdf
+mvn deploy
+
+cd transport
+mvn deploy --non-recursive
+cd cas-product
+mvn site
 mvn deploy

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2010-2011, by the California Institute of Technology. 
+# Copyright 2010-2012, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -44,60 +44,5 @@ cd search-core
 mvn install clean
 cd ../..
 
-# Build each site (recursive).
-mvn --file pom-en.xml site
-
-# Go back through the modules and create the PDFs.
-
-cd harvest
-maven pdf
-cd ..
-
-cd preparation/core
-maven pdf
-cd ../design
-maven pdf
-cd ../generate
-maven pdf
-cd ../validate
-maven pdf
-cd ../..
-
-cd registry
-mvn --file pom-en.xml --non-recursive site
-cd registry-core
-maven pdf
-cd ../registry-service
-maven pdf
-cd ../registry-ui
-maven pdf
-cd ../..
-
-cd report
-mvn --file pom-en.xml --non-recursive site
-cd rs-update
-maven pdf
-cd ../profile-setup
-maven pdf
-cd ../sawmill
-maven pdf
-cd ../..
-
-cd search
-mvn --file pom-en.xml --non-recursive site
-cd search-core
-maven pdf
-cd ../search-service
-maven pdf
-cd ../..
-
-cd security
-maven pdf
-cd ..
-
-cd storage
-maven pdf
-cd ..
-
-# Create a JAR of each site (recursive) including the generated PDFs.
+# Build and create a JAR of each site (recursive).
 mvn --file pom-en.xml site:jar
