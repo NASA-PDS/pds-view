@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!-- PDS4 XML/Schema for PDS4_0.6.0.0.h  Sun Jan 29 18:47:14 PST 2012 -->
+  <!-- PDS4 XML/Schema for PDS4_0.6.0.0.h  Mon Jan 30 17:07:21 PST 2012 -->
   <!-- Generated from the PDS4 Information Model V0.6.0.0.h -->
   <!-- *** This PDS4 product schema is a preliminary deliverable. *** -->
   <!-- *** It is being made available for review and testing. *** -->
@@ -10,6 +10,43 @@
     attributeFormDefault="unqualified"
     version="0.6.0.0">
  
+
+  <complexType name="Collection_Volume_PDS3">
+    <annotation>
+      <documentation> A Collection Volume PDS3 product captures the PDS3 volume information. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Volume_PDS3" type="pds:Volume_PDS3" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Collection_Volume_Set_PDS3">
+    <annotation>
+      <documentation> A Collection Volume Set PDS3 product captures the PDS3 volume set information. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Volume_Set_PDS3" type="pds:Volume_Set_PDS3" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Local_DD">
+    <annotation>
+      <documentation> The Local_DD class provides a form for collecting class and attribute definitions for a data dictionary. </documentation>
+    </annotation>
+    <sequence>
+      <element name="full_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="local_identifier" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="comment" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
+      <element name="last_modification_date_time" type="pds:ASCII_Date_Time" minOccurs="1" maxOccurs="1"> </element>
+      <element name="pds4_merge_flag" type="pds:ASCII_Boolean" minOccurs="1" maxOccurs="1"> </element>
+      <element name="DD_Attribute" type="pds:DD_Attribute" minOccurs="1" maxOccurs="unbounded"> </element>
+      <element name="DD_Class" type="pds:DD_Class" minOccurs="0" maxOccurs="unbounded"> </element>
+    </sequence>
+  </complexType>
 
   <complexType name="Product_Archive_Bundle">
     <annotation>
@@ -25,6 +62,17 @@
     </sequence>
   </complexType>
 
+  <complexType name="Product_Attribute_Definition">
+    <annotation>
+      <documentation> The Product Attribute Definition provides an attribute definition in XML encoding. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="DD_Attribute_Full" type="pds:DD_Attribute_Full" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
   <complexType name="Product_Browse">
     <annotation>
       <documentation> The Product Browse class defines a product consisting of one  encoded byte stream digital object. </documentation>
@@ -33,6 +81,19 @@
       <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
       <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
       <element name="File_Area_Browse" type="pds:File_Area_Browse" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_Bundle">
+    <annotation>
+      <documentation> A Product_Bundle is an aggregate product and has a table of references to one or more collections. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Observation_Area" type="pds:Observation_Area" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="File_Area_Text" type="pds:File_Area_Text" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Bundle_Member_Entry" type="pds:Bundle_Member_Entry" minOccurs="1" maxOccurs="unbounded"> </element>
     </sequence>
   </complexType>
 
@@ -52,6 +113,28 @@
     <assert test="pds:reduction_level = ('Analytic', 'Calibrated', 'Derived', 'Raw')"/>
   </complexType>
 
+  <complexType name="Product_Data_Set_PDS3">
+    <annotation>
+      <documentation> The Data Set PDS3 product  is used to create proxy labels for the data sets in the PDS3 Data Set catalog. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Data_Set_PDS3" type="pds:Data_Set_PDS3" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_Delivery_Manifest">
+    <annotation>
+      <documentation> The Product Delivery Manifest is class that defines a system product  that contains a table of references to one or more  files. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="File_Area_Delivery_Manifest" type="pds:File_Area_Delivery_Manifest" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
   <complexType name="Product_Document">
     <annotation>
       <documentation> A Product Document is a product consisting of a single logical document that may be comprised of one or more document formats. </documentation>
@@ -61,6 +144,105 @@
       <element name="Document_Format_Set" type="pds:Document_Format_Set" minOccurs="1" maxOccurs="unbounded"> </element>
       <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
       <element name="Document_Description" type="pds:Document_Description" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_File_Repository">
+    <annotation>
+      <documentation> The Product File Repository class consists of a single text file. This product is used to register a file in a repository. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="File_Area_Binary" type="pds:File_Area_Binary" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_File_Text">
+    <annotation>
+      <documentation> The Product File Text consists of a single text file with ASCII character encoding. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="File_Area_Text" type="pds:File_Area_Text" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_Instrument">
+    <annotation>
+      <documentation> An Instrument product describes an instrument. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Instrument" type="pds:Instrument" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_Instrument_Host">
+    <annotation>
+      <documentation> An Instrument Host product describes an instrument host. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Instrument_Host" type="pds:Instrument_Host" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_Instrument_Host_PDS3">
+    <annotation>
+      <documentation> An Instrument Host product describes an instrument host. This product captures the PDS3 catalog instrument host information. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Instrument_Host_PDS3" type="pds:Instrument_Host_PDS3" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_Instrument_PDS3">
+    <annotation>
+      <documentation> An Instrument product describes an instrument. This product captures the PDS3 catalog instrument information. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Instrument_PDS3" type="pds:Instrument_PDS3" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_Investigation">
+    <annotation>
+      <documentation> The Investigation product describes an investigation. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Investigation" type="pds:Investigation" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_Mission_PDS3">
+    <annotation>
+      <documentation> An Mission product describes a mission. This product captures the PDS3 catalog mission information. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Mission_PDS3" type="pds:Mission_PDS3" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_Node">
+    <annotation>
+      <documentation> A node product describes a node. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Node" type="pds:Node" minOccurs="1" maxOccurs="1"> </element>
     </sequence>
   </complexType>
 
@@ -75,6 +257,50 @@
       <element name="File_Area_Observational" type="pds:File_Area_Observational" minOccurs="1" maxOccurs="unbounded"> </element>
     </sequence>
     <assert test="every $ref in (pds:Product_Observational/pds:Reference_List/pds:Internal_Reference/pds:reference_type) satisfies $ref = ('has_publication', 'has_resource', 'has_association', 'has_calibration', 'has_geometry', 'has_spice', 'has_thumbnail', 'has_node', 'has_document', 'has_primary_collection', 'has_investigation', 'has_instrument_host', 'has_instrument', 'has_target')"/>
+  </complexType>
+
+  <complexType name="Product_PDS_Affiliate">
+    <annotation>
+      <documentation> A PDS Affiliate product describes a person in the role of an affiliate of the PDS. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="PDS_Affiliate" type="pds:PDS_Affiliate" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_PDS_Guest">
+    <annotation>
+      <documentation> A PDS Guest product describes a person in the role of guest user of the PDS. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="PDS_Guest" type="pds:PDS_Guest" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_Proxy_PDS3">
+    <annotation>
+      <documentation> The Product Proxy PDS class defines a product with enough information to to register a PDS3 data product. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="File_Area_Binary" type="pds:File_Area_Binary" minOccurs="1" maxOccurs="unbounded"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_Resource">
+    <annotation>
+      <documentation> A resource product describes a web resource. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Resource" type="pds:Resource" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
   </complexType>
 
   <complexType name="Product_SPICE_Kernel_Binary">
@@ -99,6 +325,53 @@
     </sequence>
   </complexType>
 
+  <complexType name="Product_Service">
+    <annotation>
+      <documentation> The Product Service class defines a product for registering services. Service descriptions from this product are used to register services as intrinsic registry objects. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="File_Area_Service_Description" type="pds:File_Area_Service_Description" minOccurs="0" maxOccurs="unbounded"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_Software">
+    <annotation>
+      <documentation> Product Software is a product consisting of a set of one or more software formats. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Software_Desc" type="pds:Software_Desc" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Software_Binary" type="pds:Software_Binary" minOccurs="0" maxOccurs="unbounded"> </element>
+      <element name="Software_Script" type="pds:Software_Script" minOccurs="0" maxOccurs="unbounded"> </element>
+      <element name="Software_Source" type="pds:Software_Source" minOccurs="0" maxOccurs="unbounded"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_Target">
+    <annotation>
+      <documentation> A target product describes a target. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Target" type="pds:Target" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_Target_PDS3">
+    <annotation>
+      <documentation> A target product describes a target. This product captures a reduced set of the PDS3 catalog target information. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Target_PDS3" type="pds:Target_PDS3" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
   <complexType name="Product_Thumbnail">
     <annotation>
       <documentation> The Product Thumbnail class defines a product consisting of one encoded byte stream digital object. </documentation>
@@ -118,6 +391,66 @@
       <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
       <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
       <element name="Update" type="pds:Update" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_XML_Schema">
+    <annotation>
+      <documentation> The Product XML Schema consists of a single text file in XML Schema encoding. </documentation>
+    </annotation>
+    <sequence>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
+      <element name="File_Area_XML_Schema" type="pds:File_Area_XML_Schema" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Product_Zipped">
+    <annotation>
+      <documentation> The Product_Zipped  is a product with references to other products. The referenced products and all associated products and files are packaged into a single ZIP file. </documentation>
+    </annotation>
+    <sequence>
+      <element name="container_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
+      <element name="File" type="pds:File" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Zipped_Member_Entry" type="pds:Zipped_Member_Entry" minOccurs="0" maxOccurs="unbounded"> </element>
+    </sequence>
+    <assert test="pds:container_type = ('GZIP', 'LZIP', 'TAR', 'ZIP')"/>
+  </complexType>
+
+  <complexType name="Delivery_Manifest">
+    <annotation>
+      <documentation> The Delivery_Manifest class defines a two column table for file references. The table structure is compatible with the output from an MD5 checksum utility. </documentation>
+    </annotation>
+    <complexContent>
+      <extension base="pds:Table_Base">
+        <sequence>
+          <element name="reference_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+          <element name="Record_Character" type="pds:Record_Character" minOccurs="1" maxOccurs="1"> </element>
+        </sequence>
+        <assert test="pds:fields = ('2')"/>
+        <assert test="pds:encoding_type = ('CHARACTER')"/>
+        <assert test="pds:reference_type = ('has_member')"/>
+        <assert test="pds:Record_Character/pds:Field_Character[1]/pds:field_number eq '1'"/>
+        <assert test="pds:Record_Character/pds:Field_Character[1]/pds:field_location eq '1'"/>
+        <assert test="pds:Record_Character/pds:Field_Character[1]/pds:data_type eq 'ASCII_MD5_Checksum'"/>
+        <assert test="pds:Record_Character/pds:Field_Character[1]/pds:name eq 'MD5_Checksum'"/>
+        <assert test="pds:Record_Character/pds:Field_Character[2]/pds:field_number eq '2'"/>
+        <assert test="pds:Record_Character/pds:Field_Character[2]/pds:field_location  eq '17'"/>
+        <assert test="pds:Record_Character/pds:Field_Character[2]/pds:data_type eq 'ASCII_File_Specification_Name'"/>
+        <assert test="pds:Record_Character/pds:Field_Character[2]/pds:name eq 'File_Specification_Name'"/>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <complexType name="Detector">
+    <annotation>
+      <documentation> The Detector class provides a description of a phyiscal object that collects data. </documentation>
+    </annotation>
+    <sequence>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
     </sequence>
   </complexType>
 
@@ -166,7 +499,7 @@
       <element name="Citation_Information" type="pds:Citation_Information" minOccurs="0" maxOccurs="1"> </element>
       <element name="Modification_History" type="pds:Modification_History" minOccurs="0" maxOccurs="1"> </element>
     </sequence>
-    <assert test="pds:information_model_version = ('0.5.1.4.B')"/>
+    <assert test="pds:information_model_version = ('0.6.0.0.h')"/>
   </complexType>
 
   <complexType name="Alias_List">
@@ -280,6 +613,22 @@
     </sequence>
     <assert test="pds:type = ('Individual_Investigation', 'Mission', 'Observing_Campaign', 'Other_Investigation')"/>
     <assert test="if (pds:Investigation_Area/pds:Internal_Reference/pds:reference_type) then pds:Investigation_Area/pds:Internal_Reference/pds:reference_type = ('has_investigation') else true()"/>
+  </complexType>
+
+  <complexType name="Software_Desc">
+    <annotation>
+      <documentation> The Software Desc class describes a software product </documentation>
+    </annotation>
+    <sequence>
+      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="author_list" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
+      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="programmers_manual_identifier" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="software_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="software_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="users_manual_identifier" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
   </complexType>
 
   <complexType name="Observing_System">
@@ -842,6 +1191,155 @@
     <assert test="pds:reference_type = ('has_browse_collection', 'has_calibration_collection', 'has_context_collection', 'has_data_collection', 'has_document_collection', 'has_geometry_collection', 'has_member_collection', 'has_spice_kernels_collection', 'has_xml_schema_collection')"/>
   </complexType>
 
+  <complexType name="DD_Association">
+    <annotation>
+      <documentation> The DD_Association class defines the association between two classes or a class and an attribute in a data dictionary. </documentation>
+    </annotation>
+    <sequence>
+      <element name="local_identifier" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="reference_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="constant_value" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="maximum_occurrences" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="minimum_occurrences" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+    <assert test="pds:reference_type = ('attribute_of', 'subclass_of')"/>
+  </complexType>
+
+  <complexType name="DD_Attribute">
+    <annotation>
+      <documentation> The DD_Attribute class defines an attribute for a data dictionary. </documentation>
+    </annotation>
+    <sequence>
+      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="local_identifier" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="steward_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="name_space_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="submitter_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="definition" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="comment" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Terminological_Entry" type="pds:Terminological_Entry" minOccurs="0" maxOccurs="unbounded"> </element>
+      <element name="DD_Value_Domain" type="pds:DD_Value_Domain" minOccurs="0" maxOccurs="1"> </element>
+    </sequence>
+    <assert test="pds:steward_id = ('atm', 'geo', 'img', 'naif', 'ops', 'pds', 'ppi', 'rings', 'rs', 'sbn')"/>
+  </complexType>
+
+  <complexType name="DD_Attribute_Full">
+    <annotation>
+      <documentation> The DD_Attribute_Full class provides a more complete definition of an attribute in the data dictioonary. </documentation>
+    </annotation>
+    <sequence>
+      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="class_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="local_identifier" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="steward_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="name_space_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="submitter_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="definition" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="comment" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
+      <element name="registered_by" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="registration_authority_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="attribute_concept" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Terminological_Entry" type="pds:Terminological_Entry" minOccurs="1" maxOccurs="unbounded"> </element>
+      <element name="DD_Value_Domain_Full" type="pds:DD_Value_Domain_Full" minOccurs="0" maxOccurs="1"> </element>
+    </sequence>
+    <assert test="pds:attribute_concept = ('ADDRESS', 'ANGLE', 'ATTRIBUTE', 'BIT', 'CHECKSUM', 'COLLECTION', 'CONSTANT', 'COSINE', 'COUNT', 'DELIMITER', 'DESCRIPTION', 'DEVIATION', 'DIRECTION', 'DISTANCE', 'DOI', 'DURATION', 'FACTOR', 'FLAG', 'FORMAT', 'GROUP', 'HOME', 'ID', 'LATITUDE', 'LENGTH', 'LIST', 'LOCATION', 'LOGICAL', 'LONGITUDE', 'MASK', 'MAXIMUM', 'MEAN', 'MEDIAN', 'MINIMUM', 'NAME', 'NOTE', 'NUMBER', 'OFFSET', 'ORDER', 'PARALLEL', 'PASSWORD', 'PATH', 'PATTERN', 'PIXEL', 'QUATERNION', 'RADIUS', 'RATIO', 'REFERENCE', 'RESOLUTION', 'ROLE', 'ROTATION', 'SCALE', 'SEQUENCE', 'SET', 'SIZE', 'STATUS', 'SUMMARY', 'SYNTAX', 'TEMPERATURE', 'TEXT', 'TITLE', 'TYPE', 'UNIT', 'UNKNOWN', 'VALUE', 'VECTOR')"/>
+    <assert test="pds:registration_authority_id = ('0001_NASA_PDS_1')"/>
+    <assert test="pds:steward_id = ('atm', 'geo', 'img', 'naif', 'ops', 'pds', 'ppi', 'rings', 'rs', 'sbn')"/>
+  </complexType>
+
+  <complexType name="DD_Class">
+    <annotation>
+      <documentation> The DD_Class class defines a user class, a collection of attributes in a data dictionary. </documentation>
+    </annotation>
+    <sequence>
+      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="local_identifier" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="steward_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="name_space_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="submitter_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="definition" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
+      <element name="DD_Association" type="pds:DD_Association" minOccurs="0" maxOccurs="unbounded"> </element>
+      <element name="Terminological_Entry" type="pds:Terminological_Entry" minOccurs="0" maxOccurs="unbounded"> </element>
+    </sequence>
+    <assert test="pds:steward_id = ('atm', 'geo', 'img', 'naif', 'ops', 'pds', 'ppi', 'rings', 'rs', 'sbn')"/>
+  </complexType>
+
+  <complexType name="DD_Permissible_Value">
+    <annotation>
+      <documentation> The DD_Permissible_Value class lists permissible values and their meanings. </documentation>
+    </annotation>
+    <sequence>
+      <element name="value" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="value_meaning" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="value_begin_date" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="value_end_date" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="DD_Value_Domain">
+    <annotation>
+      <documentation> The DD_Value_Domain class defines the value domain for a data dictionary attribute. </documentation>
+    </annotation>
+    <sequence>
+      <element name="enumeration_flag" type="pds:ASCII_Boolean_TF" minOccurs="1" maxOccurs="1"> </element>
+      <element name="formation_rule" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="minimum_characters" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="maximum_characters" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="minimum_value" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="maximum_value" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="pattern" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="unit_of_measure_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="specified_unit_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="value_data_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="DD_Permissible_Value" type="pds:DD_Permissible_Value" minOccurs="0" maxOccurs="unbounded"> </element>
+    </sequence>
+    <assert test="pds:enumeration_flag = ('F', 'T')"/>
+    <assert test="pds:unit_of_measure_type = ('UnitOfMeasure_AmountOfSubstance', 'UnitOfMeasure_Angle', 'UnitOfMeasure_AngularVelocity', 'UnitOfMeasure_Area', 'UnitOfMeasure_Frequency', 'UnitOfMeasure_Length', 'UnitOfMeasure_MapScale', 'UnitOfMeasure_Mass', 'UnitOfMeasure_Misc', 'UnitOfMeasure_None', 'UnitOfMeasure_OpticalPathLength', 'UnitOfMeasure_Pressure', 'UnitOfMeasure_Radiance', 'UnitOfMeasure_Rates', 'UnitOfMeasure_SolidAngle', 'UnitOfMeasure_Storage', 'UnitOfMeasure_Temperature', 'UnitOfMeasure_Time', 'UnitOfMeasure_Velocity', 'UnitOfMeasure_Voltage', 'UnitOfMeasure_Volume')"/>
+    <assert test="pds:value_data_type = ('ASCII_AnyURI', 'ASCII_Boolean', 'ASCII_DOI', 'ASCII_Date_DOY', 'ASCII_Date_Time_UTC', 'ASCII_Date_Time_YMD', 'ASCII_Date_YMD', 'ASCII_File_Specification_Name', 'ASCII_Integer', 'ASCII_LID', 'ASCII_LIDVID', 'ASCII_MD5_Checksum', 'ASCII_NonNegative_Integer', 'ASCII_Numeric_Base16', 'ASCII_Numeric_Base2', 'ASCII_Real', 'ASCII_Short_String_Collapsed', 'ASCII_Short_String_Preserved', 'ASCII_Text_Preserved', 'ASCII_Time', 'ASCII_VID')"/>
+  </complexType>
+
+  <complexType name="DD_Value_Domain_Full">
+    <annotation>
+      <documentation> The DD_Value_Domain_Full class provides a more complete definition of a attribute's value domain. </documentation>
+    </annotation>
+    <complexContent>
+      <extension base="pds:DD_Value_Domain">
+        <sequence>
+          <element name="conceptual_domain" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+        </sequence>
+        <assert test="pds:conceptual_domain = ('BOOLEAN', 'INTEGER', 'NAME', 'NUMERIC', 'REAL', 'SHORT_STRING', 'TEXT', 'TIME', 'TYPE', 'UNKNOWN')"/>
+        <assert test="pds:enumeration_flag = ('F', 'T')"/>
+        <assert test="pds:unit_of_measure_type = ('UnitOfMeasure_AmountOfSubstance', 'UnitOfMeasure_Angle', 'UnitOfMeasure_AngularVelocity', 'UnitOfMeasure_Area', 'UnitOfMeasure_Frequency', 'UnitOfMeasure_Length', 'UnitOfMeasure_MapScale', 'UnitOfMeasure_Mass', 'UnitOfMeasure_Misc', 'UnitOfMeasure_None', 'UnitOfMeasure_OpticalPathLength', 'UnitOfMeasure_Pressure', 'UnitOfMeasure_Radiance', 'UnitOfMeasure_Rates', 'UnitOfMeasure_SolidAngle', 'UnitOfMeasure_Storage', 'UnitOfMeasure_Temperature', 'UnitOfMeasure_Time', 'UnitOfMeasure_Velocity', 'UnitOfMeasure_Voltage', 'UnitOfMeasure_Volume')"/>
+        <assert test="pds:value_data_type = ('ASCII_AnyURI', 'ASCII_Boolean', 'ASCII_DOI', 'ASCII_Date_DOY', 'ASCII_Date_Time_UTC', 'ASCII_Date_Time_YMD', 'ASCII_Date_YMD', 'ASCII_File_Specification_Name', 'ASCII_Integer', 'ASCII_LID', 'ASCII_LIDVID', 'ASCII_MD5_Checksum', 'ASCII_NonNegative_Integer', 'ASCII_Numeric_Base16', 'ASCII_Numeric_Base2', 'ASCII_Real', 'ASCII_Short_String_Collapsed', 'ASCII_Short_String_Preserved', 'ASCII_Text_Preserved', 'ASCII_Time', 'ASCII_VID')"/>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <complexType name="Data_Set_PDS3">
+    <annotation>
+      <documentation> The Data Set PDS3 class is used to capture the data set information from the PDS3 Data Set Catalog. </documentation>
+    </annotation>
+    <sequence>
+      <element name="data_set_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="data_set_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="data_set_release_date" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="start_date_time" type="pds:ASCII_Date_Time_YMD" minOccurs="1" maxOccurs="1"> </element>
+      <element name="stop_date_time" type="pds:ASCII_Date_Time_YMD" minOccurs="1" maxOccurs="1"> </element>
+      <element name="producer_full_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="citation_text" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="data_set_terse_desc" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="abstract_desc" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="data_set_desc" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="confidence_level_note" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="archive_status" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="NSSDC" type="pds:NSSDC" minOccurs="0" maxOccurs="unbounded"> </element>
+    </sequence>
+    <assert test="pds:archive_status = ('ARCHIVED', 'ARCHIVED_ACCUMULATING', 'IN_LIEN_RESOLUTION', 'IN_LIEN_RESOLUTION_ACCUMULATING', 'IN_PEER_REVIEW', 'IN_PEER_REVIEW_ACCUMULATING', 'IN_QUEUE', 'IN_QUEUE_ACCUMULATING', 'LOCALLY_ARCHIVED', 'LOCALLY_ARCHIVED_ACCUMULATING', 'PRE_PEER_REVIEW', 'PRE_PEER_REVIEW_ACCUMULATING', 'SAFED', 'SUPERSEDED')"/>
+  </complexType>
+
   <complexType name="Document_Description">
     <annotation>
       <documentation> The Document_Description class describes a document. </documentation>
@@ -937,6 +1435,20 @@
         <assert test="pds:external_standard_id = ('GIF', 'JPEG', 'PDF', 'PNG', 'TIFF')"/>
         <assert test="pds:encoding_type = ('BINARY')"/>
       </restriction>
+    </complexContent>
+  </complexType>
+
+  <complexType name="External_Reference_Extended">
+    <annotation>
+      <documentation> The External_Reference_Extended class is used to reference a source outside the PDS registry system. This extension is used in the local data dictionary. </documentation>
+    </annotation>
+    <complexContent>
+      <extension base="pds:External_Reference">
+        <sequence>
+          <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+          <element name="url" type="pds:ASCII_AnyURI" minOccurs="0" maxOccurs="1"> </element>
+        </sequence>
+      </extension>
     </complexContent>
   </complexType>
 
@@ -1082,6 +1594,16 @@
     </sequence>
   </complexType>
 
+  <complexType name="File_Area_Delivery_Manifest">
+    <annotation>
+      <documentation> The File_Area_Delivery_Manifest class describes a file that contains a character table that is compliant to a file generated from MD5 checksum software. </documentation>
+    </annotation>
+    <sequence>
+      <element name="File" type="pds:File" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Delivery_Manifest" type="pds:Delivery_Manifest" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
   <complexType name="File_Area_Inventory_LIDVID_Primary">
     <annotation>
       <documentation> The File Area Inventory LIDVID Primary class describes a file and an inventory with references to  primary members. The references are product LIDVIDs. </documentation>
@@ -1109,6 +1631,16 @@
     <sequence>
       <element name="File" type="pds:File" minOccurs="1" maxOccurs="1"> </element>
       <element name="Inventory_LID_Secondary" type="pds:Inventory_LID_Secondary" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="File_Area_Service_Description">
+    <annotation>
+      <documentation> The File Area Service Description class describes a file that contains a service description. </documentation>
+    </annotation>
+    <sequence>
+      <element name="File" type="pds:File" minOccurs="1" maxOccurs="1"> </element>
+      <element name="Service_Description" type="pds:Service_Description" minOccurs="0" maxOccurs="unbounded"> </element>
     </sequence>
   </complexType>
 
@@ -1159,6 +1691,62 @@
     <sequence>
       <element name="repetitions" type="pds:repetitions" minOccurs="1" maxOccurs="1"> </element>
       <element name="Field_Delimited" type="pds:Field_Delimited" minOccurs="1" maxOccurs="unbounded"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Instrument">
+    <annotation>
+      <documentation> The Instrument class provides a description of a phyiscal object that collects data. </documentation>
+    </annotation>
+    <sequence>
+      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="unbounded"> </element>
+      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="naif_instrument_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="serial_number" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+    </sequence>
+    <assert test="pds:type = ('Accelerometer', 'Altimeter', 'Camera', 'Cosmic_Ray_Detector', 'Detector_Array', 'Dust_Analyzer', 'Imaging_Spectrometer', 'Magnetometer', 'Meteorology', 'Naked_Eye', 'Other', 'Particle_Detector', 'Photometer', 'Plasma_Analyzer', 'Radio_Science', 'Radio_Spectrometer', 'Radio_Telescope', 'Radiometer', 'Reflectometer', 'Spectrometer')"/>
+  </complexType>
+
+  <complexType name="Instrument_Host">
+    <annotation>
+      <documentation> The Instrument Host class provides a description of the phyiscal object upon which an instrument is mounted. </documentation>
+    </annotation>
+    <sequence>
+      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="naif_host_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="serial_number" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+    </sequence>
+    <assert test="pds:type = ('Earth_Based', 'Rover', 'Spacecraft')"/>
+  </complexType>
+
+  <complexType name="Instrument_Host_PDS3">
+    <annotation>
+      <documentation> The Instrument Host class provides a description of the phyiscal object upon which an instrument is mounted. This class captures the PDS3 catalog Instrument Host information. </documentation>
+    </annotation>
+    <sequence>
+      <element name="instrument_host_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="instrument_host_desc" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="instrument_host_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="instrument_host_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Instrument_PDS3">
+    <annotation>
+      <documentation> The Instrument class provides a description of a phyiscal object that collects data. This class captures the PDS3 catalog Instrument information. </documentation>
+    </annotation>
+    <sequence>
+      <element name="instrument_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="instrument_desc" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="instrument_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="instrument_serial_number" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="instrument_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="instrument_version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
     </sequence>
   </complexType>
 
@@ -1226,6 +1814,90 @@
         <assert test="pds:Record_Character/pds:Field_Character[1]/pds:name eq 'LID'"/>
       </extension>
     </complexContent>
+  </complexType>
+
+  <complexType name="Investigation">
+    <annotation>
+      <documentation> The Investigation class is the abstract parent class for all activities involved in the collection of data. </documentation>
+    </annotation>
+    <sequence>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="start_date" type="pds:ASCII_Date_YMD" minOccurs="1" maxOccurs="1"> </element>
+      <element name="stop_date" type="pds:ASCII_Date_YMD" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+    <assert test="pds:type = ('Individual_Investigation', 'Mission', 'Observing_Campaign', 'Other_Investigation')"/>
+  </complexType>
+
+  <complexType name="Mission_PDS3">
+    <annotation>
+      <documentation> The Mission PDS3 class describes an activity involved in the collection of data. This class captures the PDS3 catalog Mission information. </documentation>
+    </annotation>
+    <sequence>
+      <element name="mission_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="mission_desc" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="mission_objectives_summary" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="mission_start_date" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="mission_stop_date" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="NSSDC">
+    <annotation>
+      <documentation> The NSSDC Information class provides identification information for data submitted to the NSSDC. </documentation>
+    </annotation>
+    <sequence>
+      <element name="medium_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="nssdc_collection_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Node">
+    <annotation>
+      <documentation> The Node class provides a description of a conceptual object that provides local governance within the federated Planetary Data System. </documentation>
+    </annotation>
+    <sequence>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="institution_name" type="pds:institution_name" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+    <assert test="pds:name = ('Engineering', 'Geosciences', 'Imaging', 'Navigation_Ancillary_Information_Facility', 'Planetary_Atmospheres', 'Planetary_Plasma_Interactions', 'Planetary_Rings', 'Radio_Science', 'Small_Bodies')"/>
+  </complexType>
+
+  <complexType name="PDS_Affiliate">
+    <annotation>
+      <documentation> The PDS Affiliate class provides a description of a person who has an association with the planetary science community and has access to PDS resources not normally allowed to the general public. </documentation>
+    </annotation>
+    <sequence>
+      <element name="node_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="registration_date" type="pds:ASCII_Date_YMD" minOccurs="1" maxOccurs="1"> </element>
+      <element name="electronic_mail_address" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="unbounded"> </element>
+      <element name="sort_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="affiliation_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="alternate_telephone_number" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="institution_name" type="pds:institution_name" minOccurs="1" maxOccurs="1"> </element>
+      <element name="phone_book_flag" type="pds:ASCII_Boolean" minOccurs="1" maxOccurs="1"> </element>
+      <element name="postal_address_text" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="telephone_number" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+    </sequence>
+    <assert test="pds:node_name = ('Engineering', 'Geosciences', 'HQ', 'Imaging', 'National_Space_Science_Data_Center', 'Navigation_Ancillary_Information_Facility', 'PDS_Management', 'Planetary_Atmospheres', 'Planetary_Plasma_Interactions', 'Planetary_Rings', 'Radio_Science', 'Small_Bodies', 'unk')"/>
+    <assert test="pds:affiliation_type = ('Affiliate', 'Data_Provider', 'Manager', 'Technical_Staff')"/>
+  </complexType>
+
+  <complexType name="PDS_Guest">
+    <annotation>
+      <documentation> The PDS_Guest class is the default description of a person who has an association with the planetary science community and who has the most limited access to PDS resources. </documentation>
+    </annotation>
+    <sequence>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="registration_date" type="pds:ASCII_Date_YMD" minOccurs="1" maxOccurs="1"> </element>
+      <element name="electronic_mail_address" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="unbounded"> </element>
+      <element name="sort_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
   </complexType>
 
   <complexType name="Parsable_Byte_Stream">
@@ -1308,6 +1980,18 @@
     </sequence>
   </complexType>
 
+  <complexType name="Resource">
+    <annotation>
+      <documentation> The Resouce class provides a description of a web resource. This class is a generic class and is used for resources not otherwise defined in the model. </documentation>
+    </annotation>
+    <sequence>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="url" type="pds:ASCII_AnyURI" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
   <complexType name="SPICE_Kernel_Binary">
     <annotation>
       <documentation> The SPICE Kernel class describes a SPICE file. </documentation>
@@ -1338,6 +2022,71 @@
         <assert test="pds:encoding_type = ('CHARACTER')"/>
       </extension>
     </complexContent>
+  </complexType>
+
+  <complexType name="Service_Description">
+    <annotation>
+      <documentation> The Service Description class defines a file that contains a standardized service specification. </documentation>
+    </annotation>
+    <complexContent>
+      <restriction base="pds:Parsable_Byte_Stream">
+        <sequence>
+          <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+          <element name="local_identifier" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+          <element name="offset" type="pds:offset" minOccurs="1" maxOccurs="1"> </element>
+          <element name="external_standard_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+          <element name="encoding_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+          <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
+        </sequence>
+        <assert test="pds:external_standard_id = ('WADL', 'WSDL')"/>
+        <assert test="pds:encoding_type = ('CHARACTER')"/>
+      </restriction>
+    </complexContent>
+  </complexType>
+
+  <complexType name="Software_Binary">
+    <annotation>
+      <documentation> The Software Script class provides a description of a software code that is stored as a compiled binary file. </documentation>
+    </annotation>
+    <sequence>
+      <element name="files" type="pds:files" minOccurs="1" maxOccurs="1"> </element>
+      <element name="os_version" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="unbounded"> </element>
+      <element name="program_notes_identifier" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="supported_architecture" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="unbounded"> </element>
+      <element name="supported_os" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="unbounded"> </element>
+      <element name="sw_format_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="system_requirements" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Software_Script">
+    <annotation>
+      <documentation> The Software Script class provides a description of a software code that is stored as a script. </documentation>
+    </annotation>
+    <sequence>
+      <element name="files" type="pds:files" minOccurs="1" maxOccurs="1"> </element>
+      <element name="install_notes" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="supported_environment" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="system_requirements" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Software_Source">
+    <annotation>
+      <documentation> The Software Script class provides a description of a software code that is stored as source code. </documentation>
+    </annotation>
+    <sequence>
+      <element name="compile_notes" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="files" type="pds:files" minOccurs="1" maxOccurs="1"> </element>
+      <element name="os_version" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="program_notes_identifier" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="software_dialect" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="software_language" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="supported_architecture" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="unbounded"> </element>
+      <element name="supported_os" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="unbounded"> </element>
+      <element name="sw_format_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="system_requirements" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
   </complexType>
 
   <complexType name="Stream_Text">
@@ -1419,11 +2168,49 @@
           <element name="Record_Delimited" type="pds:Record_Delimited" minOccurs="1" maxOccurs="1"> </element>
         </sequence>
         <assert test="pds:record_delimiter = ('0x0A', '0x0D', '0x0D0x0A')"/>
-        <assert test="pds:external_standard_id = ('tbd', 'text/csv')"/>
+        <assert test="pds:external_standard_id = ('CSV', 'TBD')"/>
         <assert test="pds:field_delimiter = ('0x09', '0x2C', '0x3B', '0x7C')"/>
         <assert test="pds:encoding_type = ('CHARACTER')"/>
       </extension>
     </complexContent>
+  </complexType>
+
+  <complexType name="Target">
+    <annotation>
+      <documentation> The Target class provides a description of a phyiscal object that is the object of data collection. </documentation>
+    </annotation>
+    <sequence>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="type" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="unbounded"> </element>
+      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+    <assert test="pds:type = ('Asteroid', 'Comet', 'Dust', 'Dwarf_Planet', 'Galaxy', 'Globular_Cluster', 'Meteorite', 'Meteoroid', 'Meteoroid_Stream', 'Nebula', 'Open_Cluster', 'Planet', 'Planetary_Nebula', 'Planetary_System', 'Plasma_Cloud', 'Ring', 'Satellite', 'Star', 'Star_Cluster', 'Sun', 'Terrestrial_Sample', 'Trans-Neptunian_Object')"/>
+  </complexType>
+
+  <complexType name="Target_PDS3">
+    <annotation>
+      <documentation> The Target class provides a description of a phyiscal object that is the object of data collection. This class captures the PDS3 catalog Target information. </documentation>
+    </annotation>
+    <sequence>
+      <element name="target_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="primary_body_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="target_desc" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="target_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Terminological_Entry">
+    <annotation>
+      <documentation> The terminological_entry class provides the name (designation) and definition of the attribute in a specified natural language. </documentation>
+    </annotation>
+    <sequence>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="definition" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+      <element name="language" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="preferred_flag" type="pds:ASCII_Boolean" minOccurs="1" maxOccurs="1"> </element>
+      <element name="External_Reference_Extended" type="pds:External_Reference_Extended" minOccurs="0" maxOccurs="unbounded"> </element>
+    </sequence>
+    <assert test="pds:language = ('English')"/>
   </complexType>
 
   <complexType name="Uniformly_Sampled">
@@ -1490,6 +2277,41 @@
       <element name="value" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
       <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
       <element name="sequence_number" type="pds:sequence_number" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Volume_PDS3">
+    <annotation>
+      <documentation> The Volume_PDS3 class is used to capture the volume information from the PDS3 Data Set Catalog. </documentation>
+    </annotation>
+    <sequence>
+      <element name="archive_status" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
+      <element name="archive_status_note" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="curating_node_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="unbounded"> </element>
+      <element name="medium_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="publication_date" type="pds:ASCII_Date_YMD" minOccurs="1" maxOccurs="1"> </element>
+      <element name="volume_de_fullname" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="volume_format" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="volume_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="volume_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="volume_set_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="volume_size" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="volume_version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+    <assert test="pds:archive_status = ('ARCHIVED', 'ARCHIVED_ACCUMULATING', 'IN_LIEN_RESOLUTION', 'IN_LIEN_RESOLUTION_ACCUMULATING', 'IN_PEER_REVIEW', 'IN_PEER_REVIEW_ACCUMULATING', 'IN_QUEUE', 'IN_QUEUE_ACCUMULATING', 'LOCALLY_ARCHIVED', 'LOCALLY_ARCHIVED_ACCUMULATING', 'PRE_PEER_REVIEW', 'PRE_PEER_REVIEW_ACCUMULATING', 'SAFED', 'SUPERSEDED')"/>
+  </complexType>
+
+  <complexType name="Volume_Set_PDS3">
+    <annotation>
+      <documentation> The Volume_Set_PDS3 class is used to capture the volume set information from the PDS3 Data Set Catalog. </documentation>
+    </annotation>
+    <sequence>
+      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
+      <element name="volume_series_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="volume_set_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="volume_set_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="volumes" type="pds:volumes" minOccurs="1" maxOccurs="1"> </element>
     </sequence>
   </complexType>
 
@@ -1590,6 +2412,13 @@
 	   </restriction>
   </simpleType>
 
+  <simpleType name="files">
+    <restriction base="pds:ASCII_Integer">
+     <minInclusive value="1"/>
+     <maxInclusive value="2147483647"/>
+	   </restriction>
+  </simpleType>
+
   <simpleType name="frame_rate_WO_Units">
     <restriction base="pds:ASCII_Integer">
      <minInclusive value="0"/>
@@ -1606,6 +2435,14 @@
       </extension>
     </simpleContent>
   </complexType>
+
+  <simpleType name="institution_name">
+    <restriction base="pds:ASCII_Short_String_Collapsed">
+    	<pattern value='[a-zA-Z]{1}([-/, ._a-zA-Z0-9]*)'/>
+     <minLength value="1"/>
+     <maxLength value="255"/>
+	   </restriction>
+  </simpleType>
 
   <simpleType name="lidvid_reference">
     <restriction base="pds:ASCII_Short_String_Collapsed">
@@ -1732,6 +2569,13 @@
     	<pattern value='([-._a-zA-Z0-9]*)'/>
      <minLength value="1"/>
      <maxLength value="255"/>
+	   </restriction>
+  </simpleType>
+
+  <simpleType name="volumes">
+    <restriction base="pds:ASCII_Integer">
+     <minInclusive value="0"/>
+     <maxInclusive value="2147483647"/>
 	   </restriction>
   </simpleType>
 
@@ -2177,10 +3021,83 @@
     </simpleType>
 
 
+<element name="PDS_Product" type="pds:PDS_Product" />
+<complexType name="PDS_Product">
+  <choice>
+    <element name="Collection_Volume_PDS3" type="pds:Collection_Volume_PDS3" />
+    <element name="Collection_Volume_Set_PDS3" type="pds:Collection_Volume_Set_PDS3" />
+    <element name="Local_DD" type="pds:Local_DD" />
+    <element name="Product_Archive_Bundle" type="pds:Product_Archive_Bundle" />
+    <element name="Product_Attribute_Definition" type="pds:Product_Attribute_Definition" />
+    <element name="Product_Browse" type="pds:Product_Browse" />
+    <element name="Product_Bundle" type="pds:Product_Bundle" />
+    <element name="Product_Collection" type="pds:Product_Collection" />
+    <element name="Product_Data_Set_PDS3" type="pds:Product_Data_Set_PDS3" />
+    <element name="Product_Delivery_Manifest" type="pds:Product_Delivery_Manifest" />
+    <element name="Product_Document" type="pds:Product_Document" />
+    <element name="Product_File_Repository" type="pds:Product_File_Repository" />
+    <element name="Product_File_Text" type="pds:Product_File_Text" />
+    <element name="Product_Instrument" type="pds:Product_Instrument" />
+    <element name="Product_Instrument_Host" type="pds:Product_Instrument_Host" />
+    <element name="Product_Instrument_Host_PDS3" type="pds:Product_Instrument_Host_PDS3" />
+    <element name="Product_Instrument_PDS3" type="pds:Product_Instrument_PDS3" />
+    <element name="Product_Investigation" type="pds:Product_Investigation" />
+    <element name="Product_Mission_PDS3" type="pds:Product_Mission_PDS3" />
+    <element name="Product_Node" type="pds:Product_Node" />
+    <element name="Product_Observational" type="pds:Product_Observational" />
+    <element name="Product_PDS_Affiliate" type="pds:Product_PDS_Affiliate" />
+    <element name="Product_PDS_Guest" type="pds:Product_PDS_Guest" />
+    <element name="Product_Proxy_PDS3" type="pds:Product_Proxy_PDS3" />
+    <element name="Product_Resource" type="pds:Product_Resource" />
+    <element name="Product_SPICE_Kernel_Binary" type="pds:Product_SPICE_Kernel_Binary" />
+    <element name="Product_SPICE_Kernel_Text" type="pds:Product_SPICE_Kernel_Text" />
+    <element name="Product_Service" type="pds:Product_Service" />
+    <element name="Product_Software" type="pds:Product_Software" />
+    <element name="Product_Target" type="pds:Product_Target" />
+    <element name="Product_Target_PDS3" type="pds:Product_Target_PDS3" />
+    <element name="Product_Thumbnail" type="pds:Product_Thumbnail" />
+    <element name="Product_Update" type="pds:Product_Update" />
+    <element name="Product_XML_Schema" type="pds:Product_XML_Schema" />
+    <element name="Product_Zipped" type="pds:Product_Zipped" />
+  </choice>
+</complexType>
+
+  <element name="Collection_Volume_PDS3" type="pds:Collection_Volume_PDS3">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Collection_Volume_PDS3 XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Collection_Volume_Set_PDS3" type="pds:Collection_Volume_Set_PDS3">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Collection_Volume_Set_PDS3 XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Local_DD" type="pds:Local_DD">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Local_DD XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
   <element name="Product_Archive_Bundle" type="pds:Product_Archive_Bundle">
     <annotation>
       <documentation>
         This element is the PDS4 Product_Archive_Bundle XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Attribute_Definition" type="pds:Product_Attribute_Definition">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Attribute_Definition XML Schema.
       </documentation>
     </annotation>
   </element>
@@ -2193,10 +3110,34 @@
     </annotation>
   </element>
 
+  <element name="Product_Bundle" type="pds:Product_Bundle">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Bundle XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
   <element name="Product_Collection" type="pds:Product_Collection">
     <annotation>
       <documentation>
         This element is the PDS4 Product_Collection XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Data_Set_PDS3" type="pds:Product_Data_Set_PDS3">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Data_Set_PDS3 XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Delivery_Manifest" type="pds:Product_Delivery_Manifest">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Delivery_Manifest XML Schema.
       </documentation>
     </annotation>
   </element>
@@ -2209,10 +3150,114 @@
     </annotation>
   </element>
 
+  <element name="Product_File_Repository" type="pds:Product_File_Repository">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_File_Repository XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_File_Text" type="pds:Product_File_Text">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_File_Text XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Instrument" type="pds:Product_Instrument">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Instrument XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Instrument_Host" type="pds:Product_Instrument_Host">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Instrument_Host XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Instrument_Host_PDS3" type="pds:Product_Instrument_Host_PDS3">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Instrument_Host_PDS3 XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Instrument_PDS3" type="pds:Product_Instrument_PDS3">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Instrument_PDS3 XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Investigation" type="pds:Product_Investigation">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Investigation XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Mission_PDS3" type="pds:Product_Mission_PDS3">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Mission_PDS3 XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Node" type="pds:Product_Node">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Node XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
   <element name="Product_Observational" type="pds:Product_Observational">
     <annotation>
       <documentation>
         This element is the PDS4 Product_Observational XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_PDS_Affiliate" type="pds:Product_PDS_Affiliate">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_PDS_Affiliate XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_PDS_Guest" type="pds:Product_PDS_Guest">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_PDS_Guest XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Proxy_PDS3" type="pds:Product_Proxy_PDS3">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Proxy_PDS3 XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Resource" type="pds:Product_Resource">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Resource XML Schema.
       </documentation>
     </annotation>
   </element>
@@ -2233,6 +3278,38 @@
     </annotation>
   </element>
 
+  <element name="Product_Service" type="pds:Product_Service">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Service XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Software" type="pds:Product_Software">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Software XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Target" type="pds:Product_Target">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Target XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Target_PDS3" type="pds:Product_Target_PDS3">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Target_PDS3 XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
   <element name="Product_Thumbnail" type="pds:Product_Thumbnail">
     <annotation>
       <documentation>
@@ -2245,6 +3322,22 @@
     <annotation>
       <documentation>
         This element is the PDS4 Product_Update XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_XML_Schema" type="pds:Product_XML_Schema">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_XML_Schema XML Schema.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="Product_Zipped" type="pds:Product_Zipped">
+    <annotation>
+      <documentation>
+        This element is the PDS4 Product_Zipped XML Schema.
       </documentation>
     </annotation>
   </element>
