@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!-- PDS4 XML/Schema for PDS4_0.6.0.0.h  Mon Jan 30 17:07:21 PST 2012 -->
+  <!-- PDS4 XML/Schema for PDS4_0.6.0.0.h  Tue Jan 31 16:52:06 PST 2012 -->
   <!-- Generated from the PDS4 Information Model V0.6.0.0.h -->
   <!-- *** This PDS4 product schema is a preliminary deliverable. *** -->
   <!-- *** It is being made available for review and testing. *** -->
@@ -102,7 +102,6 @@
       <documentation> A Product_Collection has a table of references to one or more basic products. The references are stored in a Table_Character called the Inventory. </documentation>
     </annotation>
     <sequence>
-      <element name="reduction_level" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
       <element name="Identification_Area" type="pds:Identification_Area" minOccurs="1" maxOccurs="1"> </element>
       <element name="Observation_Area" type="pds:Observation_Area" minOccurs="0" maxOccurs="1"> </element>
       <element name="Reference_List" type="pds:Reference_List" minOccurs="0" maxOccurs="1"> </element>
@@ -110,7 +109,6 @@
       <element name="File_Area_Inventory_LIDVID_Secondary" type="pds:File_Area_Inventory_LIDVID_Secondary" minOccurs="0" maxOccurs="1"> </element>
       <element name="File_Area_Inventory_LID_Secondary" type="pds:File_Area_Inventory_LID_Secondary" minOccurs="0" maxOccurs="1"> </element>
     </sequence>
-    <assert test="pds:reduction_level = ('Analytic', 'Calibrated', 'Derived', 'Raw')"/>
   </complexType>
 
   <complexType name="Product_Data_Set_PDS3">
@@ -428,7 +426,6 @@
           <element name="reference_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
           <element name="Record_Character" type="pds:Record_Character" minOccurs="1" maxOccurs="1"> </element>
         </sequence>
-        <assert test="pds:fields = ('2')"/>
         <assert test="pds:encoding_type = ('CHARACTER')"/>
         <assert test="pds:reference_type = ('has_member')"/>
         <assert test="pds:Record_Character/pds:Field_Character[1]/pds:field_number eq '1'"/>
@@ -620,8 +617,8 @@
       <documentation> The Software Desc class describes a software product </documentation>
     </annotation>
     <sequence>
-      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
       <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
       <element name="author_list" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
       <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
       <element name="programmers_manual_identifier" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
@@ -711,6 +708,21 @@
     </sequence>
   </complexType>
 
+  <complexType name="Uniformly_Sampled">
+    <annotation>
+      <documentation> The Uniformly_Sampled class provdes parameters for a uniformly sampled table. </documentation>
+    </annotation>
+    <sequence>
+      <element name="sampling_parameter_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="sampling_parameter_interval" type="pds:ASCII_Real" minOccurs="1" maxOccurs="1"> </element>
+      <element name="sampling_parameter_unit" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="first_sampling_parameter_value" type="pds:ASCII_Real" minOccurs="1" maxOccurs="1"> </element>
+      <element name="last_sampling_parameter_value" type="pds:ASCII_Real" minOccurs="1" maxOccurs="1"> </element>
+      <element name="sampling_parameter_scale" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+    </sequence>
+    <assert test="pds:sampling_parameter_scale = ('EXPONENTIAL', 'LINEAR', 'LOGARITHMIC')"/>
+  </complexType>
+
   <complexType name="Array_Element">
     <annotation>
       <documentation> The Array Element class is used as a component of the array class and defines an element of the array. </documentation>
@@ -724,6 +736,34 @@
     <assert test="pds:data_type = ('IEEE754LSBDouble', 'IEEE754LSBSingle', 'IEEE754MSBDouble', 'IEEE754MSBSingle', 'SignedByte', 'SignedLSB2', 'SignedLSB4', 'SignedLSB8', 'SignedMSB2', 'SignedMSB4', 'SignedMSB8', 'UnsignedByte', 'UnsignedLSB2', 'UnsignedLSB4', 'UnsignedLSB8', 'UnsignedMSB2', 'UnsignedMSB4', 'UnsignedMSB8')"/>
   </complexType>
 
+  <complexType name="Record_Binary">
+    <annotation>
+      <documentation> The Record_Binary class is a component of the table class and defines a record of the table. </documentation>
+    </annotation>
+    <sequence>
+      <element name="record_length" type="pds:record_length" minOccurs="1" maxOccurs="1"> </element>
+      <element name="fields" type="pds:fields" minOccurs="1" maxOccurs="1"> </element>
+      <choice minOccurs="1" maxOccurs="unbounded">
+        <element name="Field_Binary" type="pds:Field_Binary"> </element>
+        <element name="Group_Field_Binary" type="pds:Group_Field_Binary"> </element>
+      </choice>
+    </sequence>
+  </complexType>
+
+  <complexType name="Record_Character">
+    <annotation>
+      <documentation> The Record_Character class is a component of the table class and defines a record of the table. </documentation>
+    </annotation>
+    <sequence>
+      <element name="record_length" type="pds:record_length" minOccurs="1" maxOccurs="1"> </element>
+      <element name="fields" type="pds:fields" minOccurs="1" maxOccurs="1"> </element>
+      <choice minOccurs="1" maxOccurs="unbounded">
+        <element name="Field_Character" type="pds:Field_Character"> </element>
+        <element name="Group_Field_Character" type="pds:Group_Field_Character"> </element>
+      </choice>
+    </sequence>
+  </complexType>
+
   <complexType name="Array_Axis">
     <annotation>
       <documentation> The Array Axis class is used as a component of the array class and defines an axis of the array. </documentation>
@@ -735,6 +775,81 @@
       <element name="sequence_number" type="pds:sequence_number" minOccurs="1" maxOccurs="1"> </element>
       <element name="Axis_Display" type="pds:Axis_Display" minOccurs="0" maxOccurs="1"> </element>
       <element name="Band_Bin_Set" type="pds:Band_Bin_Set" minOccurs="0" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Field_Binary">
+    <annotation>
+      <documentation> The Field_Binary class defines a field of the record. </documentation>
+    </annotation>
+    <sequence>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="field_number" type="pds:field_number" minOccurs="0" maxOccurs="1"> </element>
+      <element name="field_location" type="pds:field_location" minOccurs="1" maxOccurs="1"> </element>
+      <element name="data_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="field_length" type="pds:field_length" minOccurs="0" maxOccurs="1"> </element>
+      <element name="field_format" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="unit" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="scaling_factor" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
+      <element name="value_offset" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
+      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Special_Constants" type="pds:Special_Constants" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Field_Statistics" type="pds:Field_Statistics" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Packed_Data_Fields" type="pds:Packed_Data_Fields" minOccurs="0" maxOccurs="1"> </element>
+    </sequence>
+    <assert test="pds:data_type = ('ASCII_AnyURI', 'ASCII_Boolean', 'ASCII_DOI', 'ASCII_Date_DOY', 'ASCII_Date_Time_DOY', 'ASCII_Date_Time_UTC', 'ASCII_Date_Time_YMD', 'ASCII_Date_YMD', 'ASCII_File_Name', 'ASCII_File_Specification_Name', 'ASCII_Integer', 'ASCII_LID', 'ASCII_LIDVID', 'ASCII_MD5_Checksum', 'ASCII_NonNegative_Integer', 'ASCII_Numeric_Base16', 'ASCII_Numeric_Base2', 'ASCII_Real', 'ASCII_Short_String_Collapsed', 'ASCII_Short_String_Preserved', 'ASCII_Text_Preserved', 'ASCII_Time', 'ASCII_VID', 'ComplexLSB16', 'ComplexLSB8', 'ComplexMSB16', 'ComplexMSB8', 'IEEE754LSBDouble', 'IEEE754LSBSingle', 'IEEE754MSBDouble', 'IEEE754MSBSingle', 'SignedByte', 'SignedLSB2', 'SignedLSB4', 'SignedLSB8', 'SignedMSB2', 'SignedMSB4', 'SignedMSB8', 'UnsignedByte', 'UnsignedLSB2', 'UnsignedLSB4', 'UnsignedLSB8', 'UnsignedMSB2', 'UnsignedMSB4', 'UnsignedMSB8')"/>
+  </complexType>
+
+  <complexType name="Field_Character">
+    <annotation>
+      <documentation> The Field_Character class defines a field of the record. </documentation>
+    </annotation>
+    <sequence>
+      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="field_number" type="pds:field_number" minOccurs="0" maxOccurs="1"> </element>
+      <element name="field_location" type="pds:field_location" minOccurs="1" maxOccurs="1"> </element>
+      <element name="data_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="field_length" type="pds:field_length" minOccurs="0" maxOccurs="1"> </element>
+      <element name="field_format" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="unit" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="scaling_factor" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
+      <element name="value_offset" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
+      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Special_Constants" type="pds:Special_Constants" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Field_Statistics" type="pds:Field_Statistics" minOccurs="0" maxOccurs="1"> </element>
+    </sequence>
+    <assert test="pds:data_type = ('ASCII_AnyURI', 'ASCII_Boolean', 'ASCII_DOI', 'ASCII_Date_DOY', 'ASCII_Date_Time_DOY', 'ASCII_Date_Time_UTC', 'ASCII_Date_Time_YMD', 'ASCII_Date_YMD', 'ASCII_File_Name', 'ASCII_File_Specification_Name', 'ASCII_Integer', 'ASCII_LID', 'ASCII_LIDVID', 'ASCII_MD5_Checksum', 'ASCII_NonNegative_Integer', 'ASCII_Numeric_Base16', 'ASCII_Numeric_Base2', 'ASCII_Real', 'ASCII_Short_String_Collapsed', 'ASCII_Short_String_Preserved', 'ASCII_Text_Preserved', 'ASCII_Time', 'ASCII_VID')"/>
+  </complexType>
+
+  <complexType name="Group_Field_Binary">
+    <annotation>
+      <documentation> The Group_Field_Binary class allows a group of table fields. </documentation>
+    </annotation>
+    <sequence>
+      <element name="repetitions" type="pds:repetitions" minOccurs="1" maxOccurs="1"> </element>
+      <element name="group_location" type="pds:group_location" minOccurs="1" maxOccurs="1"> </element>
+      <element name="fields" type="pds:fields" minOccurs="1" maxOccurs="1"> </element>
+      <element name="group_length" type="pds:group_length" minOccurs="1" maxOccurs="1"> </element>
+      <choice minOccurs="1" maxOccurs="unbounded">
+        <element name="Field_Binary" type="pds:Field_Binary"> </element>
+        <element name="Group_Field_Binary" type="pds:Group_Field_Binary"> </element>
+      </choice>
+    </sequence>
+  </complexType>
+
+  <complexType name="Group_Field_Character">
+    <annotation>
+      <documentation> The Group_Field_Character class allows a group of table fields. </documentation>
+    </annotation>
+    <sequence>
+      <element name="repetitions" type="pds:repetitions" minOccurs="1" maxOccurs="1"> </element>
+      <element name="group_location" type="pds:group_location" minOccurs="1" maxOccurs="1"> </element>
+      <element name="fields" type="pds:fields" minOccurs="1" maxOccurs="1"> </element>
+      <element name="group_length" type="pds:group_length" minOccurs="1" maxOccurs="1"> </element>
+      <choice minOccurs="1" maxOccurs="unbounded">
+        <element name="Field_Character" type="pds:Field_Character"> </element>
+        <element name="Group_Field_Character" type="pds:Group_Field_Character"> </element>
+      </choice>
     </sequence>
   </complexType>
 
@@ -753,12 +868,12 @@
       <documentation> The Special Constants class provides a set of values used to indicate special cases that occur in the data. </documentation>
     </annotation>
     <sequence>
+      <element name="saturated_constant" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="missing_constant" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="error_constant" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="invalid_constant" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
-      <element name="missing_constant" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
-      <element name="not_applicable_constant" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
-      <element name="saturated_constant" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="unknown_constant" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="not_applicable_constant" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
     </sequence>
   </complexType>
 
@@ -789,6 +904,8 @@
       <element name="bit_mask" type="pds:ASCII_Numeric_Base2" minOccurs="0" maxOccurs="1"> </element>
       <element name="median" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
       <element name="md5_checksum" type="pds:md5_checksum" minOccurs="0" maxOccurs="1"> </element>
+      <element name="maximum_scaled_value" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
+      <element name="minimum_scaled_value" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
       <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
     </sequence>
   </complexType>
@@ -800,6 +917,31 @@
     <sequence>
       <element name="reference_text" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
       <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="File_Area_Browse">
+    <annotation>
+      <documentation> The File Area Browse class describes a file and one or more tagged_data_objects contained within the file. </documentation>
+    </annotation>
+    <sequence>
+      <element name="File" type="pds:File" minOccurs="1" maxOccurs="1"> </element>
+      <choice minOccurs="1" maxOccurs="unbounded">
+        <element name="Array_2D_Image" type="pds:Array_2D_Image"> </element>
+        <element name="Array_2D_Map" type="pds:Array_2D_Map"> </element>
+        <element name="Array_2D_Spectrum" type="pds:Array_2D_Spectrum"> </element>
+        <element name="Array_3D_Image" type="pds:Array_3D_Image"> </element>
+        <element name="Array_3D_Movie" type="pds:Array_3D_Movie"> </element>
+        <element name="Array_3D_Spectrum" type="pds:Array_3D_Spectrum"> </element>
+        <element name="Encoded_Image" type="pds:Encoded_Image"> </element>
+        <element name="File_PDF" type="pds:File_PDF"> </element>
+        <element name="Header" type="pds:Header"> </element>
+        <element name="Header_Binary" type="pds:Header_Binary"> </element>
+        <element name="Stream_Text" type="pds:Stream_Text"> </element>
+        <element name="Table_Binary" type="pds:Table_Binary"> </element>
+        <element name="Table_Character" type="pds:Table_Character"> </element>
+        <element name="Table_Delimited" type="pds:Table_Delimited"> </element>
+      </choice>
     </sequence>
   </complexType>
 
@@ -1210,8 +1352,8 @@
       <documentation> The DD_Attribute class defines an attribute for a data dictionary. </documentation>
     </annotation>
     <sequence>
-      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
       <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
       <element name="local_identifier" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
       <element name="steward_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="name_space_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
@@ -1229,8 +1371,8 @@
       <documentation> The DD_Attribute_Full class provides a more complete definition of an attribute in the data dictioonary. </documentation>
     </annotation>
     <sequence>
-      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
       <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
       <element name="class_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
       <element name="local_identifier" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
       <element name="steward_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
@@ -1254,8 +1396,8 @@
       <documentation> The DD_Class class defines a user class, a collection of attributes in a data dictionary. </documentation>
     </annotation>
     <sequence>
-      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
+      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="local_identifier" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
       <element name="steward_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="name_space_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
@@ -1452,74 +1594,23 @@
     </complexContent>
   </complexType>
 
-  <complexType name="Field_Binary">
-    <annotation>
-      <documentation> The Field_Binary class defines a field of the record. </documentation>
-    </annotation>
-    <sequence>
-      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
-      <element name="field_number" type="pds:field_number" minOccurs="0" maxOccurs="1"> </element>
-      <element name="field_location" type="pds:field_location" minOccurs="1" maxOccurs="1"> </element>
-      <element name="data_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
-      <element name="field_length" type="pds:field_length" minOccurs="1" maxOccurs="1"> </element>
-      <element name="field_format" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
-      <element name="unit" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
-      <element name="maximum_scaled_value" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
-      <element name="minimum_scaled_value" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
-      <element name="scaling_factor" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
-      <element name="value_offset" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
-      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
-      <element name="Special_Constants" type="pds:Special_Constants" minOccurs="0" maxOccurs="1"> </element>
-      <element name="Field_Statistics" type="pds:Field_Statistics" minOccurs="0" maxOccurs="1"> </element>
-    </sequence>
-    <assert test="pds:data_type = ('ASCII_AnyURI', 'ASCII_Boolean', 'ASCII_DOI', 'ASCII_Date_DOY', 'ASCII_Date_Time_DOY', 'ASCII_Date_Time_UTC', 'ASCII_Date_Time_YMD', 'ASCII_Date_YMD', 'ASCII_File_Name', 'ASCII_File_Specification_Name', 'ASCII_Integer', 'ASCII_LID', 'ASCII_LIDVID', 'ASCII_MD5_Checksum', 'ASCII_NonNegative_Integer', 'ASCII_Numeric_Base16', 'ASCII_Numeric_Base2', 'ASCII_Real', 'ASCII_Short_String_Collapsed', 'ASCII_Short_String_Preserved', 'ASCII_Text_Preserved', 'ASCII_Time', 'ASCII_VID', 'ComplexLSB16', 'ComplexLSB8', 'ComplexMSB16', 'ComplexMSB8', 'IEEE754LSBDouble', 'IEEE754LSBSingle', 'IEEE754MSBDouble', 'IEEE754MSBSingle', 'SignedByte', 'SignedLSB2', 'SignedLSB4', 'SignedLSB8', 'SignedMSB2', 'SignedMSB4', 'SignedMSB8', 'UnsignedByte', 'UnsignedLSB2', 'UnsignedLSB4', 'UnsignedLSB8', 'UnsignedMSB2', 'UnsignedMSB4', 'UnsignedMSB8')"/>
-  </complexType>
-
   <complexType name="Field_Bit">
     <annotation>
-      <documentation> The Field_Bit class defines a bit field. </documentation>
+      <documentation> The Field_Bit class provides parameters for extracting one field out of a string of bytes which contains packed data (that is, data values either smaller than a single byte, or crossing byte boundaries, or both. </documentation>
     </annotation>
     <sequence>
       <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
-      <element name="field_number" type="pds:field_number" minOccurs="0" maxOccurs="1"> </element>
-      <element name="field_location" type="pds:field_location" minOccurs="1" maxOccurs="1"> </element>
-      <element name="data_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
-      <element name="field_length" type="pds:field_length" minOccurs="1" maxOccurs="1"> </element>
-      <element name="bit_mask" type="pds:ASCII_Numeric_Base2" minOccurs="0" maxOccurs="1"> </element>
-      <element name="field_format" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
-      <element name="unit" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
-      <element name="maximum_scaled_value" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
-      <element name="minimum_scaled_value" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
-      <element name="scaling_factor" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
-      <element name="value_offset" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
-      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
-      <element name="bits" type="pds:bits" minOccurs="1" maxOccurs="unbounded"> </element>
       <element name="start_bit" type="pds:start_bit" minOccurs="1" maxOccurs="1"> </element>
-    </sequence>
-    <assert test="pds:data_type = ('Bit')"/>
-  </complexType>
-
-  <complexType name="Field_Character">
-    <annotation>
-      <documentation> The Field_Character class defines a field of the record. </documentation>
-    </annotation>
-    <sequence>
-      <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
-      <element name="field_number" type="pds:field_number" minOccurs="0" maxOccurs="1"> </element>
-      <element name="field_location" type="pds:field_location" minOccurs="1" maxOccurs="1"> </element>
+      <element name="stop_bit" type="pds:stop_bit" minOccurs="1" maxOccurs="1"> </element>
       <element name="data_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
-      <element name="field_length" type="pds:field_length" minOccurs="1" maxOccurs="1"> </element>
       <element name="field_format" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="unit" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
-      <element name="maximum_scaled_value" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
-      <element name="minimum_scaled_value" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
       <element name="scaling_factor" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
       <element name="value_offset" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
       <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
       <element name="Special_Constants" type="pds:Special_Constants" minOccurs="0" maxOccurs="1"> </element>
-      <element name="Field_Statistics" type="pds:Field_Statistics" minOccurs="0" maxOccurs="1"> </element>
     </sequence>
-    <assert test="pds:data_type = ('ASCII_AnyURI', 'ASCII_Boolean', 'ASCII_DOI', 'ASCII_Date_DOY', 'ASCII_Date_Time_DOY', 'ASCII_Date_Time_UTC', 'ASCII_Date_Time_YMD', 'ASCII_Date_YMD', 'ASCII_File_Name', 'ASCII_File_Specification_Name', 'ASCII_Integer', 'ASCII_LID', 'ASCII_LIDVID', 'ASCII_MD5_Checksum', 'ASCII_NonNegative_Integer', 'ASCII_Numeric_Base16', 'ASCII_Numeric_Base2', 'ASCII_Real', 'ASCII_Short_String_Collapsed', 'ASCII_Short_String_Preserved', 'ASCII_Text_Preserved', 'ASCII_Time', 'ASCII_VID')"/>
+    <assert test="pds:data_type = ('Bit')"/>
   </complexType>
 
   <complexType name="Field_Delimited">
@@ -1533,8 +1624,6 @@
       <element name="field_length" type="pds:field_length" minOccurs="0" maxOccurs="1"> </element>
       <element name="field_format" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="unit" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
-      <element name="maximum_scaled_value" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
-      <element name="minimum_scaled_value" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
       <element name="scaling_factor" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
       <element name="value_offset" type="pds:ASCII_Real" minOccurs="0" maxOccurs="1"> </element>
       <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
@@ -1566,31 +1655,6 @@
     <sequence>
       <element name="File" type="pds:File" minOccurs="1" maxOccurs="1"> </element>
       <element name="Encoded_Binary" type="pds:Encoded_Binary" minOccurs="0" maxOccurs="unbounded"> </element>
-    </sequence>
-  </complexType>
-
-  <complexType name="File_Area_Browse">
-    <annotation>
-      <documentation> The File Area Browse class describes a file and one or more tagged_data_objects contained within the file. </documentation>
-    </annotation>
-    <sequence>
-      <element name="File" type="pds:File" minOccurs="1" maxOccurs="1"> </element>
-      <choice minOccurs="1" maxOccurs="unbounded">
-        <element name="Array_2D_Image" type="pds:Array_2D_Image"> </element>
-        <element name="Array_2D_Map" type="pds:Array_2D_Map"> </element>
-        <element name="Array_2D_Spectrum" type="pds:Array_2D_Spectrum"> </element>
-        <element name="Array_3D_Image" type="pds:Array_3D_Image"> </element>
-        <element name="Array_3D_Movie" type="pds:Array_3D_Movie"> </element>
-        <element name="Array_3D_Spectrum" type="pds:Array_3D_Spectrum"> </element>
-        <element name="Encoded_Image" type="pds:Encoded_Image"> </element>
-        <element name="File_PDF" type="pds:File_PDF"> </element>
-        <element name="Header" type="pds:Header"> </element>
-        <element name="Header_Binary" type="pds:Header_Binary"> </element>
-        <element name="Stream_Text" type="pds:Stream_Text"> </element>
-        <element name="Table_Binary" type="pds:Table_Binary"> </element>
-        <element name="Table_Character" type="pds:Table_Character"> </element>
-        <element name="Table_Delimited" type="pds:Table_Delimited"> </element>
-      </choice>
     </sequence>
   </complexType>
 
@@ -1663,33 +1727,13 @@
     </complexContent>
   </complexType>
 
-  <complexType name="Group_Field_Binary">
-    <annotation>
-      <documentation> The Group_Field_Binary class allows a group of table fields. </documentation>
-    </annotation>
-    <sequence>
-      <element name="repetitions" type="pds:repetitions" minOccurs="1" maxOccurs="1"> </element>
-      <element name="Field_Binary" type="pds:Field_Binary" minOccurs="1" maxOccurs="unbounded"> </element>
-      <element name="Field_Bit" type="pds:Field_Bit" minOccurs="1" maxOccurs="unbounded"> </element>
-    </sequence>
-  </complexType>
-
-  <complexType name="Group_Field_Character">
-    <annotation>
-      <documentation> The Group_Field_Character class allows a group of table fields. </documentation>
-    </annotation>
-    <sequence>
-      <element name="repetitions" type="pds:repetitions" minOccurs="1" maxOccurs="1"> </element>
-      <element name="Field_Character" type="pds:Field_Character" minOccurs="1" maxOccurs="unbounded"> </element>
-    </sequence>
-  </complexType>
-
   <complexType name="Group_Field_Delimited">
     <annotation>
       <documentation> The FIeld_Group_Delimited class allows a group of delimited fields. </documentation>
     </annotation>
     <sequence>
       <element name="repetitions" type="pds:repetitions" minOccurs="1" maxOccurs="1"> </element>
+      <element name="fields" type="pds:fields" minOccurs="1" maxOccurs="1"> </element>
       <element name="Field_Delimited" type="pds:Field_Delimited" minOccurs="1" maxOccurs="unbounded"> </element>
     </sequence>
   </complexType>
@@ -1699,8 +1743,8 @@
       <documentation> The Instrument class provides a description of a phyiscal object that collects data. </documentation>
     </annotation>
     <sequence>
-      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="unbounded"> </element>
       <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
       <element name="naif_instrument_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
@@ -1714,8 +1758,8 @@
       <documentation> The Instrument Host class provides a description of the phyiscal object upon which an instrument is mounted. </documentation>
     </annotation>
     <sequence>
-      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="version_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
       <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
       <element name="naif_host_id" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
@@ -1760,7 +1804,6 @@
           <element name="reference_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
           <element name="Record_Character" type="pds:Record_Character" minOccurs="1" maxOccurs="1"> </element>
         </sequence>
-        <assert test="pds:fields = ('2')"/>
         <assert test="pds:encoding_type = ('CHARACTER')"/>
         <assert test="pds:reference_type = ('has_member_LIDVID_Primary')"/>
         <assert test="pds:Record_Character/pds:Field_Character[1]/pds:field_number eq '1'"/>
@@ -1784,7 +1827,6 @@
           <element name="reference_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
           <element name="Record_Character" type="pds:Record_Character" minOccurs="1" maxOccurs="1"> </element>
         </sequence>
-        <assert test="pds:fields = ('1')"/>
         <assert test="pds:encoding_type = ('CHARACTER')"/>
         <assert test="pds:reference_type = ('has_member_LIDVID_Secondary')"/>
         <assert test="pds:Record_Character/pds:Field_Character[1]/pds:field_number eq '1'"/>
@@ -1805,7 +1847,6 @@
           <element name="reference_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
           <element name="Record_Character" type="pds:Record_Character" minOccurs="1" maxOccurs="1"> </element>
         </sequence>
-        <assert test="pds:fields = ('1')"/>
         <assert test="pds:encoding_type = ('CHARACTER')"/>
         <assert test="pds:reference_type = ('has_member_LID_Secondary')"/>
         <assert test="pds:Record_Character/pds:Field_Character[1]/pds:field_number eq '1'"/>
@@ -1870,8 +1911,8 @@
       <documentation> The PDS Affiliate class provides a description of a person who has an association with the planetary science community and has access to PDS resources not normally allowed to the general public. </documentation>
     </annotation>
     <sequence>
-      <element name="node_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
+      <element name="node_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="registration_date" type="pds:ASCII_Date_YMD" minOccurs="1" maxOccurs="1"> </element>
       <element name="electronic_mail_address" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="unbounded"> </element>
       <element name="sort_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
@@ -1897,6 +1938,16 @@
       <element name="electronic_mail_address" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="unbounded"> </element>
       <element name="sort_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
       <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="Packed_Data_Fields">
+    <annotation>
+      <documentation> The Packed_Data_Fields class contains field definitions for extracting packed data from the associated byte string field. </documentation>
+    </annotation>
+    <sequence>
+      <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
+      <element name="Field_Bit" type="pds:Field_Bit" minOccurs="1" maxOccurs="unbounded"> </element>
     </sequence>
   </complexType>
 
@@ -1943,36 +1994,13 @@
     </sequence>
   </complexType>
 
-  <complexType name="Record_Binary">
-    <annotation>
-      <documentation> The Record_Binary class is a component of the table class and defines a record of the table. </documentation>
-    </annotation>
-    <sequence>
-      <choice minOccurs="1" maxOccurs="unbounded">
-        <element name="Field_Binary" type="pds:Field_Binary"> </element>
-        <element name="Field_Bit" type="pds:Field_Bit"> </element>
-        <element name="Group_Field_Binary" type="pds:Group_Field_Binary"> </element>
-      </choice>
-    </sequence>
-  </complexType>
-
-  <complexType name="Record_Character">
-    <annotation>
-      <documentation> The Record_Character class is a component of the table class and defines a record of the table. </documentation>
-    </annotation>
-    <sequence>
-      <choice minOccurs="1" maxOccurs="unbounded">
-        <element name="Field_Character" type="pds:Field_Character"> </element>
-        <element name="Group_Field_Character" type="pds:Group_Field_Character"> </element>
-      </choice>
-    </sequence>
-  </complexType>
-
   <complexType name="Record_Delimited">
     <annotation>
       <documentation> The Record_Delimited class is a component of the delimited table (spreadsheet) class and defines a record of the delimited table. </documentation>
     </annotation>
     <sequence>
+      <element name="fields" type="pds:fields" minOccurs="1" maxOccurs="1"> </element>
+      <element name="maximum_record_length" type="pds:maximum_record_length" minOccurs="1" maxOccurs="1"> </element>
       <choice minOccurs="1" maxOccurs="unbounded">
         <element name="Field_Delimited" type="pds:Field_Delimited"> </element>
         <element name="Group_Field_Delimited" type="pds:Group_Field_Delimited"> </element>
@@ -2116,8 +2144,6 @@
       <element name="local_identifier" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
       <element name="offset" type="pds:offset" minOccurs="1" maxOccurs="1"> </element>
       <element name="records" type="pds:records" minOccurs="1" maxOccurs="1"> </element>
-      <element name="record_length" type="pds:record_length" minOccurs="1" maxOccurs="1"> </element>
-      <element name="fields" type="pds:fields" minOccurs="1" maxOccurs="1"> </element>
       <element name="encoding_type" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
       <element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </element>
     </sequence>
@@ -2130,8 +2156,8 @@
     <complexContent>
       <extension base="pds:Table_Base">
         <sequence>
-          <element name="Record_Binary" type="pds:Record_Binary" minOccurs="1" maxOccurs="1"> </element>
           <element name="Uniformly_Sampled" type="pds:Uniformly_Sampled" minOccurs="0" maxOccurs="1"> </element>
+          <element name="Record_Binary" type="pds:Record_Binary" minOccurs="1" maxOccurs="1"> </element>
         </sequence>
         <assert test="pds:encoding_type = ('BINARY')"/>
       </extension>
@@ -2145,8 +2171,8 @@
     <complexContent>
       <extension base="pds:Table_Base">
         <sequence>
-          <element name="Record_Character" type="pds:Record_Character" minOccurs="1" maxOccurs="1"> </element>
           <element name="Uniformly_Sampled" type="pds:Uniformly_Sampled" minOccurs="0" maxOccurs="1"> </element>
+          <element name="Record_Character" type="pds:Record_Character" minOccurs="1" maxOccurs="1"> </element>
         </sequence>
         <assert test="pds:encoding_type = ('CHARACTER')"/>
       </extension>
@@ -2161,9 +2187,7 @@
       <extension base="pds:Parsable_Byte_Stream">
         <sequence>
           <element name="records" type="pds:records" minOccurs="1" maxOccurs="1"> </element>
-          <element name="fields" type="pds:fields" minOccurs="1" maxOccurs="1"> </element>
           <element name="field_delimiter" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
-          <element name="maximum_record_length" type="pds:maximum_record_length" minOccurs="1" maxOccurs="1"> </element>
           <element name="record_delimiter" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
           <element name="Record_Delimited" type="pds:Record_Delimited" minOccurs="1" maxOccurs="1"> </element>
         </sequence>
@@ -2211,21 +2235,6 @@
       <element name="External_Reference_Extended" type="pds:External_Reference_Extended" minOccurs="0" maxOccurs="unbounded"> </element>
     </sequence>
     <assert test="pds:language = ('English')"/>
-  </complexType>
-
-  <complexType name="Uniformly_Sampled">
-    <annotation>
-      <documentation> The Uniformly_Sampled class provdes parameters for a uniformly sampled table. </documentation>
-    </annotation>
-    <sequence>
-      <element name="first_sampling_parameter_value" type="pds:ASCII_Real" minOccurs="1" maxOccurs="1"> </element>
-      <element name="last_sampling_parameter_value" type="pds:ASCII_Real" minOccurs="1" maxOccurs="1"> </element>
-      <element name="sampling_parameter_interval" type="pds:ASCII_Real" minOccurs="1" maxOccurs="1"> </element>
-      <element name="sampling_parameter_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
-      <element name="sampling_parameter_scale" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </element>
-      <element name="sampling_parameter_unit" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </element>
-    </sequence>
-    <assert test="pds:sampling_parameter_scale = ('EXPONENTIAL', 'LINEAR', 'LOGARITHMIC')"/>
   </complexType>
 
   <complexType name="Update">
@@ -2363,13 +2372,6 @@
 	   </restriction>
   </simpleType>
 
-  <simpleType name="bits">
-    <restriction base="pds:ASCII_Integer">
-     <minInclusive value="1"/>
-     <maxInclusive value="256"/>
-	   </restriction>
-  </simpleType>
-
   <simpleType name="bytes">
     <restriction base="pds:ASCII_Integer">
      <minInclusive value="1"/>
@@ -2384,19 +2386,39 @@
 	   </restriction>
   </simpleType>
 
-  <simpleType name="field_length">
+  <simpleType name="field_length_WO_Units">
     <restriction base="pds:ASCII_Integer">
      <minInclusive value="1"/>
      <maxInclusive value="2147483647"/>
+     <!-- unit_of_measure_type=UnitOfMeasure_Storage -->
 	   </restriction>
   </simpleType>
 
-  <simpleType name="field_location">
+  <complexType name="field_length">
+    <simpleContent>
+      <extension base="pds:field_length_WO_Units">
+        <attribute name="unit" type="pds:UnitOfMeasure_Storage" />
+        <!-- specified_unit_id=byte -->
+      </extension>
+    </simpleContent>
+  </complexType>
+
+  <simpleType name="field_location_WO_Units">
     <restriction base="pds:ASCII_Integer">
      <minInclusive value="1"/>
      <maxInclusive value="2147483647"/>
+     <!-- unit_of_measure_type=UnitOfMeasure_Storage -->
 	   </restriction>
   </simpleType>
+
+  <complexType name="field_location">
+    <simpleContent>
+      <extension base="pds:field_location_WO_Units">
+        <attribute name="unit" type="pds:UnitOfMeasure_Storage" />
+        <!-- specified_unit_id=byte -->
+      </extension>
+    </simpleContent>
+  </complexType>
 
   <simpleType name="field_number">
     <restriction base="pds:ASCII_Integer">
@@ -2432,6 +2454,40 @@
       <extension base="pds:frame_rate_WO_Units">
         <attribute name="unit" type="pds:UnitOfMeasure_FrameRate" />
         <!-- specified_unit_id=TBD_default_unit_id -->
+      </extension>
+    </simpleContent>
+  </complexType>
+
+  <simpleType name="group_length_WO_Units">
+    <restriction base="pds:ASCII_Integer">
+     <minInclusive value="1"/>
+     <maxInclusive value="2147483647"/>
+     <!-- unit_of_measure_type=UnitOfMeasure_Storage -->
+	   </restriction>
+  </simpleType>
+
+  <complexType name="group_length">
+    <simpleContent>
+      <extension base="pds:group_length_WO_Units">
+        <attribute name="unit" type="pds:UnitOfMeasure_Storage" />
+        <!-- specified_unit_id=byte -->
+      </extension>
+    </simpleContent>
+  </complexType>
+
+  <simpleType name="group_location_WO_Units">
+    <restriction base="pds:ASCII_Integer">
+     <minInclusive value="1"/>
+     <maxInclusive value="2147483647"/>
+     <!-- unit_of_measure_type=UnitOfMeasure_Storage -->
+	   </restriction>
+  </simpleType>
+
+  <complexType name="group_location">
+    <simpleContent>
+      <extension base="pds:group_location_WO_Units">
+        <attribute name="unit" type="pds:UnitOfMeasure_Storage" />
+        <!-- specified_unit_id=byte -->
       </extension>
     </simpleContent>
   </complexType>
@@ -2473,12 +2529,22 @@
 	   </restriction>
   </simpleType>
 
-  <simpleType name="maximum_record_length">
+  <simpleType name="maximum_record_length_WO_Units">
     <restriction base="pds:ASCII_Integer">
      <minInclusive value="1"/>
      <maxInclusive value="2147483647"/>
+     <!-- unit_of_measure_type=UnitOfMeasure_Storage -->
 	   </restriction>
   </simpleType>
+
+  <complexType name="maximum_record_length">
+    <simpleContent>
+      <extension base="pds:maximum_record_length_WO_Units">
+        <attribute name="unit" type="pds:UnitOfMeasure_Storage" />
+        <!-- specified_unit_id=byte -->
+      </extension>
+    </simpleContent>
+  </complexType>
 
   <simpleType name="md5_checksum">
     <restriction base="pds:ASCII_Short_String_Collapsed">
@@ -2558,6 +2624,13 @@
   </simpleType>
 
   <simpleType name="start_bit">
+    <restriction base="pds:ASCII_Integer">
+     <minInclusive value="1"/>
+     <maxInclusive value="2147483647"/>
+	   </restriction>
+  </simpleType>
+
+  <simpleType name="stop_bit">
     <restriction base="pds:ASCII_Integer">
      <minInclusive value="1"/>
      <maxInclusive value="2147483647"/>
