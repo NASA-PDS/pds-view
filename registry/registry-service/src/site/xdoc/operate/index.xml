@@ -42,7 +42,7 @@
     </section>
 
     <section name="Interface">
-      <p>The Registry Service provides a REST-based interface accessible via HTTP for interacting with the service. Details on the REST-based interface can be found in the <a href="../api/index.html">API</a> section. If viewing this document in PDF form, the API section is not available. The API documentation is available from any deployed instance of the Registry Service by accessing <i>/registry/docs/</i> from the host application server. Because the REST-based interface operates over HTTP, there are several options for interacting with the Registry Service:
+      <p>The Registry Service provides a REST-based interface accessible via HTTP for interacting with the service. Details on the REST-based interface can be found in the <a href="../api/index.html">API</a> document. The API documentation is also available from any deployed instance of the Registry Service by accessing <i>/registry/docs/</i> from the host application server. Because the REST-based interface operates over HTTP, there are several options for interacting with the Registry Service:
       </p>
 
       <ul>
@@ -60,7 +60,7 @@
         </li>
       </ul>
 
-      <p>The Registry Service also allows messaging (acceptance of and return of content descriptions) in the form of XML or JavaScript Object Notation (JSON). More on this in the examples below. Each PDS Node will have their own installation of the Registry Service with its own service endpoint. Because of this, the examples below use <i>http://localhost:8080</i> as the generic endpoint for the service.
+      <p>The Registry Service also allows messaging (acceptance of and return of content descriptions) in the form of XML or JavaScript Object Notation (JSON). More on this in the examples below. Each PDS Node will have their own installation of the Registry Service with its own service URL location. Because of this, the examples below use <i>http://localhost:8080</i> as the generic URL location for the service.
       </p>
     </section>
 
@@ -220,7 +220,7 @@ http://localhost:8080/registry/services
       </subsection>
 
       <subsection name="Schemes and Nodes">
-        <p>In order for the above artifacts to be accepted for registration by the service, the service must be preloaded with the list of supported object types. This procedure is detailed in the <a href="../install/index.html#Configuration">Configuration</a> portion of the Installation section. For more information on scheme and node registration see the <a href="index-sn.html">Scheme and Node Registration</a> section of the documentation. If viewing this document in PDF form, see the appendix for details.
+        <p>In order for the above artifacts to be accepted for registration by the service, the service must be preloaded with the list of supported object types. This procedure is detailed in the <a href="../install/index.html#Configuration">Configuration</a> section of the Installation document. For more information on scheme and node registration see the <a href="index-sn.html">Scheme and Node Registration</a> document.
         </p>
       </subsection>
     </section>
