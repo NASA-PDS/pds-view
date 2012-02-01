@@ -31,9 +31,10 @@
       <ul>
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
-        <li><a href="#Database_Creation">Database Creation</a></li>
+        <li><a href="#Deploying_the_Database">Deploying the Database</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
         <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
+        <li><a href="#Deleting_the_Database">Cleaning the Database</a></li>
       </ul>
     </section>
 
@@ -70,7 +71,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       </subsection>
 
       <subsection name="Database Server">
-        <p>The Registry Service comes prepackaged with the <a href="http://db.apache.org/derby/" target="_blank">Apache Derby</a> database. If another database solution is desired (i.e., MySQL), it should be installed and accessible by the Registry Service. See the <a href="Database_Creation">Database Creation</a> section if this is the first time you are installing the registry service and <a href="#Database_Configuration">Configuration</a> section for more information on configuring the service for a different database solution.
+        <p>The Registry Service comes prepackaged with the <a href="http://db.apache.org/derby/" target="_blank">Apache Derby</a> database. If another database solution is desired (i.e., MySQL), it should be installed and accessible by the Registry Service. See the <a href="#Deploying_the_Database">Deploying the Database</a> section if this is the first time you are installing the registry service and <a href="#Database_Configuration">Configuration</a> section for more information on configuring the service for a different database solution.
         </p>
       </subsection>
     </section>
@@ -127,13 +128,14 @@ or
       </ul>
     </section>
     
-    <section name="Database Creation">
-      <p>If this is the first time the Registry Service has been installed then a new registry database must be created. If however, you already have an existing registry skip down to the <a href="#Database_Configuration">Configuration</a> section. The following is a set of instructions that are dependent on the type of database chosen. Currently, there is support for Derby and MySQL.
+    <section name="Deploying the Database">
+      <p>If this is the first time the Registry Service has been installed, then a new registry database must be deployed. If you already have an existing registry database, see down to the <a href="#Database_Configuration">Configuration</a> section for instructions on how to configure the Registry Service to access the existing database. The following is a set of instructions for creating the database and installing the registry schema that are dependent on the database server to be used in the current environment.
       </p>
 
       <subsection name="Derby">
-        <p>The Derby database comes packaged with the registry service. The following commands will create the database and install the registry schema: 
+        <p>The Derby database comes packaged with the Registry Service. The following commands will create the database and install the registry schema: 
         </p>
+
         <source>
 % cd ${project.artifactId}-${project.version}
 % java -Djava.ext.dirs=lib/ org.apache.derby.tools.ij
@@ -141,14 +143,17 @@ ij> connect 'jdbc:derby:RegistryDB;create=true;user=user';
 ij> run 'conf/derby-registry-schema.ddl';
 ij> exit;
         </source>
-        <p>The RegistryDB directory, which is the Derby, will now be present in the current working directory. The path to this directory should be used in the <a href="#Database_Configuration">Configuration</a> section. Note: Feel free to move this RegistryDB directory to anywhere on disk that is accessible by Tomcat and configured below.
+
+        <p>The <i>RegistryDB</i> directory, which is the Derby database, will now be present in the current working directory. The path to this directory can be specified in the <a href="#Database_Configuration">Configuration</a> section. Note: Feel free to move this RegistryDB directory to anywhere on disk that is accessible by Tomcat and configured below.
         </p>   
       </subsection>
       
       <subsection name="MySQL">
-        <p>
+        <p>If choosing to utilize an existing MySQL database server, perform the commands below. If installing a new instance of MySQL, consult the local system administrator for installation of this software. For the do-it-yourself crowd, the MySQL software can be downloaded from the <a href="http://www.mysql.com/downloads/mysql/" target="_blank">MySQL Community Server Download</a> page. Choose the appropriate package (version 5.5.X) for the target environment. Once the installation is complete, perform the commands below to create the database and install the registry schema:
         </p>
+
         <source>
+% cd ${project.artifactId}-${project.version}
 % mysqladmin -uroot -p create registry
 % mysql registry -uroot -p -e"GRANT ALL ON registry.* TO registry@localhost \
   IDENTIFIED BY 'p@ssw0rd'"
@@ -164,7 +169,7 @@ ij> exit;
     </section>
 
     <section name="Deploying the Application">
-      <p>The Registry Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>$TOMCAT_HOME/webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation. Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping">Ping</a> portion of the Operation document.
+      <p>The Registry Service web application is packaged as a WAR file (<i>registry.war</i>) and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>$TOMCAT_HOME/webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation. Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping">Ping</a> section of the Operation document.
       </p>
 
       <p>When deploying the application via the Tomcat Manager interface, users have occasionally encountered a situation where the application appears to hang or generates the following stack trace:
@@ -182,7 +187,7 @@ javax.servlet.ServletException: java.lang.OutOfMemoryError: PermGen space
   org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:76)
       </source>
 
-      <p>If either of the above situations occur, stop and restart the Tomcat server to clear the problem.
+      <p>If the above situation occurs, stop and restart the Tomcat server to clear the problem.
       </p>
     </section>
 
@@ -244,7 +249,7 @@ hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
       </subsection>
 
       <subsection name="Home Configuration">
-        <p>In a distributed environment with multiple Registry Service instances, the registry home value identifies the source of a registry entry when it has been replicated to another registry instance. By default, the registry home is configured as <i>http://localhost:8080/registry</i>. This should be modified to represent the Registry Service endpoint of the local installation. Meaning that instead of <i>localhost</i>, the fully qualified name of the local machine should be specified (e.g., node.nasa.gov). To modify the configuration, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. Modify the following line with the new endpoint:
+        <p>In a distributed environment with multiple Registry Service instances, the registry home value identifies the source of a registry entry when it has been replicated to another registry instance. By default, the registry home is configured as <i>http://localhost:8080/registry</i>. This should be modified to represent the Registry Service URL location of the local installation. Meaning that instead of <i>localhost</i>, the fully qualified name of the local machine should be specified (e.g., node.nasa.gov). To modify the configuration, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. Modify the following line with the new URL location:
         </p>
 
         <source>
@@ -259,7 +264,7 @@ p:home="http://node.nasa.gov/registry"/&gt;
       </subsection>
 
       <subsection name="Object Type Configuration">
-        <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of objects types corresponds with the types of products that a given instance of the Registry Service will support. The <i>registry-config</i> and <i>registry-config.bat</i> scripts default to a Registry Service endpoint of <i>http://localhost:8080/registry</i>. If necessary, modify the appropriate script for the local environment so that it corresponds with the endpoint of the target installation. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface. Execute the script from the <i>bin</i> directory in order to register the full set of object types:
+        <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of objects types corresponds with the types of products that a given instance of the Registry Service will support. The <i>registry-config</i> and <i>registry-config.bat</i> scripts default to a Registry Service URL location of <i>http://localhost:8080/registry</i>. If necessary, modify the appropriate script for the local environment so that it corresponds with the URL location of the target installation. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface. Execute the script from the <i>bin</i> directory in order to register the full set of object types:
         </p>
 
         <source>
@@ -322,7 +327,7 @@ urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
 urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
         </source>
 
-        <p>Verify successful configuration by executing the command from the <a href="../operate/index.html#Report">Report</a> portion of the Operation section. The output from this command should look something like the following:
+        <p>Verify successful configuration by executing the command from the <a href="../operate/index.html#Report">Report</a> section of the Operation document. The output from this command should look something like the following:
         </p>
 
         <source>
@@ -331,6 +336,26 @@ classificationNodes='76' classificationSchemes='2' services='0' extrinsics='0' a
 serverStarted='2011-08-28T12:45:43.514-07:00' status='OK'/&gt;
         </source>
       </subsection>
+    </section>
+
+    <section name="Deleting the Database">
+      <p>An existing registry database can be deleted for testing purposes or if installing a new instance of the Registry Service. Prior to deleting the database, shutdown the Tomcat server. The following is a set of instructions for deleting the database that are dependent on the database server used in the current environment. For a Derby database instance, execute the following to delete the database:
+      </p>
+
+      <source>
+% cd /path/to/registrydb/home
+% rm -rf RegistryDb derby.log
+      </source>
+
+      <p>For a MySQL database instance, execute the following to delete the database from the database server: 
+      </p>
+
+      <source>
+% mysqladmin -uroot -p drop registry
+      </source>
+
+      <p>Once the database has been deleted, see the <a href="#Deploying_the_Database">Deploying the Database</a> section for instructions on how to create a new database and install the registry schema. When the new database is in place, restart the Tomcat server.
+      </p>
     </section>
   </body>
 </document>
