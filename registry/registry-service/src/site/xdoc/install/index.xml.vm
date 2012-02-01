@@ -344,7 +344,7 @@ serverStarted='2011-08-28T12:45:43.514-07:00' status='OK'/&gt;
 
       <source>
 % cd /path/to/registrydb/home
-% rm -rf RegistryDb derby.log
+% rm -rf RegistryDB derby.log
       </source>
 
       <p>For a MySQL database instance, execute the following to delete the database from the database server: 
