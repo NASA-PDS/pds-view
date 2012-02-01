@@ -1,4 +1,4 @@
-// Copyright 2009, by the California Institute of Technology.
+// Copyright 2009-2012, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -498,45 +498,28 @@ public class Products extends Tab {
 		final ListBox objectsInput = new ListBox(false);
 		objectsInput.setName("objectType");
 		objectsInput.addItem("Any Object Type", "-1");
-		objectsInput.addItem("Collection_Browse");
-		objectsInput.addItem("Collection_Calibration");
-		objectsInput.addItem("Collection_Context");
-		objectsInput.addItem("Collection_Data");
-		objectsInput.addItem("Collection_Document");
-		objectsInput.addItem("Collection_Generic");
-		objectsInput.addItem("Collection_Geometry");
-		objectsInput.addItem("Collection_Miscellaneous");
-		objectsInput.addItem("Collection_SPICE");
+		objectsInput.addItem("Product");
 		objectsInput.addItem("Collection_Volume_PDS3");
 		objectsInput.addItem("Collection_Volume_Set_PDS3");
-		objectsInput.addItem("Collection_XML_Schema");
 		objectsInput.addItem("Local_DD");
-		objectsInput.addItem("Product");
 		objectsInput.addItem("Product_Archive_Bundle");
-		objectsInput.addItem("Product_Array_2D_Image");
-		objectsInput.addItem("Product_Array_3D_Image");
-		objectsInput.addItem("Product_Array_3D_Spectrum");
 		objectsInput.addItem("Product_Attribute_Definition");
 		objectsInput.addItem("Product_Browse");
 		objectsInput.addItem("Product_Bundle");
-		//objectsInput.addItem("Product_Collection");
-		//objectsInput.addItem("Product_Collection_Data");		
+		objectsInput.addItem("Product_Collection");
 		objectsInput.addItem("Product_Data_Set_PDS3");
-		//objectsInput.addItem("Product_Delimited_Table");
-		//objectsInput.addItem("Product_Delimited_Table_Grouped");
 		objectsInput.addItem("Product_Delivery_Manifest");
 		objectsInput.addItem("Product_Document");
 		objectsInput.addItem("Product_File_Repository");
 		objectsInput.addItem("Product_File_Text");
 		objectsInput.addItem("Product_Instrument");
-		objectsInput.addItem("Product_Instrument_PDS3");
 		objectsInput.addItem("Product_Instrument_Host");
 		objectsInput.addItem("Product_Instrument_Host_PDS3");
+		objectsInput.addItem("Product_Instrument_PDS3");
 		objectsInput.addItem("Product_Investigation");
-		objectsInput.addItem("Product_Mission");
 		objectsInput.addItem("Product_Mission_PDS3");
 		objectsInput.addItem("Product_Node");
-		objectsInput.addItem("Product_Non_Specific");
+		objectsInput.addItem("Product_Observational");
 		objectsInput.addItem("Product_PDS_Affiliate");
 		objectsInput.addItem("Product_PDS_Guest");
 		objectsInput.addItem("Product_Proxy_PDS3");
@@ -545,11 +528,6 @@ public class Products extends Tab {
 		objectsInput.addItem("Product_SPICE_Kernel_Text");
 		objectsInput.addItem("Product_Service");
 		objectsInput.addItem("Product_Software");
-		objectsInput.addItem("Product_Stream_Delimited");
-		objectsInput.addItem("Product_Table_Binary");
-		objectsInput.addItem("Product_Table_Binary_Grouped");
-		objectsInput.addItem("Product_Table_Character");
-		objectsInput.addItem("Product_Table_Character_Grouped");
 		objectsInput.addItem("Product_Target");
 		objectsInput.addItem("Product_Target_PDS3");
 		objectsInput.addItem("Product_Thumbnail");
