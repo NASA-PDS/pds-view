@@ -74,8 +74,6 @@
         <ul>
           <li>Catalog Tool is new for this release supporting ingestion of PDS3 catalog files into the PDS4 registry.
           </li>
-          <li>Initial releases of the Storage and Transport services are available in this release supporting Catalog Tool operations.
-          </li>
           <li>Validate Tool added support for XML Schema 1.1 and XML Catalogs.
           </li>
         </ul>
@@ -184,7 +182,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
 
         <center>
           <a href="../images/en-deploy-2.1.0.jpg" target="_blank"><img alt="EN Deployment" src="../images/en-deploy-2.1.0-scale.jpg" border="1" /></a><br/>
-          If viewing this document in online form, click the image for a larger version.
+          Click the image for a larger version.
         </center>
 
         <p>The following diagram depicts the EN system flow, starting with central catalog migration, data product registration and finishing up with search index generation:
@@ -192,7 +190,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
 
         <center>
           <a href="../images/en-system-flow-2.1.0.jpg" target="_blank"><img alt="EN System Flow" src="../images/en-system-flow-2.1.0-scale.jpg" border="1" /></a><br/>
-          If viewing this document in online form, click the image for a larger version.
+          Click the image for a larger version.
         </center>
 
         <p>The components depicted above serve as the operational deployment of this release for the Engineering Node. The main purpose of this deployment is for demonstration and testing purposes.
@@ -248,7 +246,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
 
         <center>
           <a href="../images/dn-deploy-2.1.0.jpg" target="_blank"><img alt="DN Deployment" src="../images/dn-deploy-2.1.0-scale.jpg" border="1" /></a><br/>
-          If viewing this document in online form, click the image for a larger version.
+          Click the image for a larger version.
         </center>
 
         <p>The selected components depicted above are intended to aid the Nodes in their PDS3 to PDS4 conversion exercises. The following diagram depicts a normalized system flow, starting with schema design, continuing onto data product label generation and validation and finishing up with data product registration:
@@ -256,7 +254,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
 
         <center>
           <a href="../images/dn-system-flow-2.1.0.jpg" target="_blank"><img alt="DN System Flow" src="../images/dn-system-flow-2.1.0-scale.jpg" border="1" /></a><br/>
-          If viewing this document in online form, click the image for a larger version.
+          Click the image for a larger version.
         </center>
 
         <p>This diagram identifies where the system components come into play within the system flow. These components and the ones depicted in the deployment diagram, are described in more detail with respect to how the components can be utilized in the PDS3 to PDS4 conversion exercises with an eye towards testing these components for use in operations:
