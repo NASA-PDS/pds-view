@@ -57,7 +57,7 @@ mvn deploy
 cd ../harvest
 mvn site
 mvn deploy
-cd ..
+cd ../..
 
 cd report
 mvn deploy --non-recursive
@@ -82,6 +82,7 @@ cd ../..
 cd storage
 mvn site
 mvn deploy
+cd ..
 
 cd transport
 mvn deploy --non-recursive
