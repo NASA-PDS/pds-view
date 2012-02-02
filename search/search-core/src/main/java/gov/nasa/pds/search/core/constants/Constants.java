@@ -7,8 +7,8 @@ public class Constants {
 	// "http://localhost:8080/registry-service";
 	public final static String CONF_BASE = "conf/";
 
-	//public final static int QUERY_MAX = 10000000;
-	public final static int QUERY_MAX = 50;
+	public final static int QUERY_MAX = 10000000;
+	//public final static int QUERY_MAX = 50;
 	
 	public final static String LOGICAL_IDENTIFIER = "lid";
 	public final static String PRODUCT_VERSION = "version_id";
