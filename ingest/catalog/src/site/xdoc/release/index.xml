@@ -33,9 +33,12 @@
       </p>
 
       <ul>
-        <li>TBD</li>
+        <li>Modified to register catalog information with the Registry Service instead of the PDS catalog database.</li>
         <li>Cleaned up the documentation.</li>
       </ul>
+
+      <p>There is a lien for this release related to the support of Volume catalog files that reference multiple Mission catalog files. This will be addressed in the next release.
+      </p>
     </section>
 
     <section name="Release 1.1.0">
