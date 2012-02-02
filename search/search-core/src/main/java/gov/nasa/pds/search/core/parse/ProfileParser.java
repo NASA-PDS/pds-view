@@ -11,6 +11,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -22,6 +25,7 @@ import org.apache.lucene.document.Field;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -50,26 +54,30 @@ public class ProfileParser {
 		factory.setNamespaceAware(true);
 		DocumentBuilder builder;
 		Document indexDoc = null;
+		Reader reader = null;
 		org.w3c.dom.Document document = null;
 		try {
-			builder = factory.newDocumentBuilder();
-			StringBuffer fileData = new StringBuffer(1000);
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			char[] buf = new char[1024];
-			int numRead = 0;
-			while ((numRead = reader.read(buf)) != -1) {
-				String readData = String.valueOf(buf, 0, numRead);
-				fileData.append(readData);
-				buf = new char[1024];
+			try {
+				builder = factory.newDocumentBuilder();
+				
+				// Modified 2/2/2011 per MalformedByteSequenceException
+				// Need to ensure read in UTF-8 format, and override SAX input source
+				InputStream stream = new FileInputStream(file);		// Get InputStream
+				reader = new InputStreamReader(stream, "UTF-8");	// Specify reading content in UTF-8
+				InputSource is = new InputSource(reader);			// Init input source
+				is.setEncoding("UTF-8");							// Overriding SAX input source to UTF-8
+				document = builder.parse(is);						// Send to parser
+				
+				indexDoc = retrieveMetadata(document);
+			} catch (ParserConfigurationException e) {
+				e.printStackTrace();
+			} catch (SAXException e) {
+				e.printStackTrace();
+			} finally {
+				if (reader != null)
+					reader.close();
 			}
-			reader.close();
-			document = builder.parse(new FileInputStream(file));
-			indexDoc = retrieveMetadata(document);
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		}  catch (IOException e) {
 			e.printStackTrace();
 		}
 

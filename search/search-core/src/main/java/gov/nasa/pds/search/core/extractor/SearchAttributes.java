@@ -27,7 +27,7 @@ import org.xml.sax.SAXParseException;
  * @author Jordan Padams
  * 
  */
-public class ColumnNodes {
+public class SearchAttributes {
 
 	private Document doc;
 	private ArrayList attrNames;
@@ -37,7 +37,7 @@ public class ColumnNodes {
 
 	private Logger log = Logger.getLogger(this.getClass().getName());
 
-	public ColumnNodes(String filename) {
+	public SearchAttributes(String filename) {
 		try {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
 					.newInstance();
@@ -158,7 +158,7 @@ public class ColumnNodes {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		ColumnNodes attributes = new ColumnNodes("targetconfig.xml");
+		SearchAttributes attributes = new SearchAttributes("targetconfig.xml");
 
 		System.out.println("query = " + attributes.getQuery());
 		for (int i = 0; i < attributes.getNumAttr(); i++) {

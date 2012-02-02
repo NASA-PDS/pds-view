@@ -121,6 +121,7 @@ public class PDSIndexerLauncher {
 
 		if (line.getArgList().size() != 0) {
 			this.solrHome = new File(line.getArgList().get(0).toString());
+			System.out.println("HERE - " + this.solrHome.getAbsolutePath());
 			if (!this.solrHome.exists()) {
 				throw new InvalidOptionException("Solr Home does not exist: "
 						+ this.solrHome);

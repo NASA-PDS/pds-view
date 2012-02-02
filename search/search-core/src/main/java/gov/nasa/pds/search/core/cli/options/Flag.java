@@ -1,5 +1,7 @@
 package gov.nasa.pds.search.core.cli.options;
 
+import gov.nasa.pds.search.core.constants.Constants;
+
 import org.apache.commons.cli.Options;
 
 public enum Flag {
@@ -27,7 +29,7 @@ public enum Flag {
 
 	/** Flag to display the version. */
 	REGISTRY("r", "registry", "url", String.class,
-			"Specify Registry Service instance to query.");
+			"Specify Registry Service instance to query. (Default: " + Constants.REGISTRY_URL + ")");
 
 	/** The short name of the flag. */
 	private final String shortName;

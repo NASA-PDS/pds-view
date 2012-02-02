@@ -93,27 +93,31 @@ public class RegistryExtractor {
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(
 					new File(dataDir, "run.log"))));
 		} catch (IOException e) {
-			LOG.warning(e.getMessage());
+			this.LOG.warning(e.getMessage());
 			throw new ExtractionException("Could not create run log");
 		}
 
-		this.LOG.info("Beginning extraction");
+		this.LOG.info("------- Beginning extraction --------");
+		this.LOG.info("Registry URL: " + this.registryUrl);
+		this.LOG.info("-------------------------------------");
+		
 		List uids = null;
 		long totalTime = 0;
 		int totalCount = 0;
 		writer.println("run.date=" + new Date());
 		// Run extract method on each class
 		for (String extractorName : getExtractors()) {
-			LOG.fine("currExtName: " + extractorName);
+			this.LOG.fine("currExtName: " + extractorName);
 			Extractor extractor;
 			try {
 				// Create directory for writing results to
 				File extractorDir = new File(extractDir, extractorName);
 				FileUtils.forceMkdir(extractorDir);
 
-				LOG.info("Performing extraction for " + extractorName);
+				this.LOG.info("Performing extraction for " + extractorName);
 
 				// Create new extractor instance for given class.
+				// TODO Does not read files from conf directory, changes are required pre-compile
 				extractor = new Extractor(writer, extractorName,
 						mappings.get(extractorName), this.registryUrl);
 
@@ -129,7 +133,7 @@ public class RegistryExtractor {
 						+ (end.getTime() - start.getTime()));
 				// totalCount += uids.size();
 				totalTime += end.getTime() - start.getTime();
-				LOG.info("Completed extraction for " + extractorName);
+				this.LOG.info("Completed extraction for " + extractorName);
 			} catch (ExtractionException e) {
 				LOG.warning(e.getMessage());
 			} catch (IOException e) {
@@ -143,7 +147,7 @@ public class RegistryExtractor {
 		writer.flush();
 		writer.close();
 
-		LOG.info("Finished extraction");
+		this.LOG.info("Finished extraction");
 	}
 
 	public Set<String> getExtractors() {
