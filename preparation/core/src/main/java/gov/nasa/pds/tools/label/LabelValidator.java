@@ -30,7 +30,6 @@ import javax.xml.validation.Validator;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.xerces.util.XMLCatalogResolver;
 import org.xml.sax.SAXException;
 
 /**
@@ -111,7 +110,11 @@ public class LabelValidator {
             .newInstance("http://www.w3.org/XML/XMLSchema/v1.1");
         // If catalog is used allow resources to be loaded for schemas
         if (resolver != null) {
-          schemaFactory.setResourceResolver(resolver);
+          schemaFactory.setProperty("http://apache.org/xml/properties/internal/entity-resolver", resolver);
+        }
+        // Allow errors that happen in the schema to be logged there
+        if (container != null) {
+          schemaFactory.setErrorHandler(new LabelErrorHandler(container));
         }
         // Time to load schema that will be used for validation
         Schema validatingSchema = null;
@@ -140,7 +143,7 @@ public class LabelValidator {
         Validator validator = validatingSchema.newValidator();
         // Allow access to the catalog from the parser
         if (resolver != null) {
-          validator.setResourceResolver(resolver);
+          validator.setProperty("http://apache.org/xml/properties/internal/entity-resolver", resolver);
         }
         // Capture messages in a container
         if (container != null) {
@@ -186,8 +189,8 @@ public class LabelValidator {
 
   public static void main(String[] args) throws Exception {
     LabelValidator lv = new LabelValidator();
-    String[] catalogs = new String[] { args[1] };
+    String[] catalogs = new String[] { args[0] };
     lv.setCatalogs(catalogs);
-    lv.validate(new File(args[0]));
+    lv.validate(new File(args[1]));
   }
 }
