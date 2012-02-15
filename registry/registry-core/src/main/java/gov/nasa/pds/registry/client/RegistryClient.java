@@ -184,7 +184,11 @@ public class RegistryClient {
     ClientResponse response = builder.accept(mediaType).post(
         ClientResponse.class, object);
     if (response.getClientResponseStatus() == Status.CREATED) {
-      return response.getEntity(String.class);
+      String guid = response.getEntity(String.class);
+      // If the client didn't have a guid the service generated it so set it as
+      // a convenience
+      object.setGuid(guid);
+      return guid;
     } else {
       throw new RegistryServiceException(response.getEntity(String.class),
           Response.Status.fromStatusCode(response.getStatus()));
