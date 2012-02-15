@@ -44,8 +44,8 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 /**
- * This resource is responsible for managing Service descriptions with 
- * the registry service.
+ * This resource is responsible for managing Service descriptions with the
+ * registry service.
  * 
  * @author pramirez
  * 
@@ -139,7 +139,7 @@ public class ServicesResource {
   }
 
   /**
-   * Updates the service and its contained objects with the given global 
+   * Updates the service and its contained objects with the given global
    * identifier.
    * 
    * @param guid
@@ -152,12 +152,17 @@ public class ServicesResource {
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   @Path("{guid}")
   public Response updateService(@PathParam("guid") String guid, Service service) {
-    registryService.updateObject("Unknown", service);
-    return Response.ok().build();
+    try {
+      registryService.updateObject("Unknown", service);
+      return Response.ok().build();
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
 
   /**
-   * Updates the service and its contained objects with the given global 
+   * Updates the service and its contained objects with the given global
    * identifier. This method supports clients that can not do a PUT operation.
    */
   @POST

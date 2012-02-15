@@ -47,8 +47,8 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 /**
- * This resource is responsible for managing Extrinsics with the 
- * registry service.
+ * This resource is responsible for managing Extrinsics with the registry
+ * service.
  * 
  * @author pramirez
  * 
@@ -72,10 +72,10 @@ public class ExtrinsicsResource {
   }
 
   /**
-   * Allows access to all the extrinsics managed by the registry. This list
-   * of extrinsics is based on the latest received extrinsic's logical
-   * identifier (lid). The header will contain pointers to next and previous
-   * when applicable.
+   * Allows access to all the extrinsics managed by the registry. This list of
+   * extrinsics is based on the latest received extrinsic's logical identifier
+   * (lid). The header will contain pointers to next and previous when
+   * applicable.
    * 
    * @response.representation.200.qname {http://registry.pds.nasa.gov}response
    * @response.representation.200.mediaType application/xml
@@ -324,8 +324,8 @@ public class ExtrinsicsResource {
   }
 
   /**
-   * Retrieves a single extrinsic from the registry. The logical identifier 
-   * with the version uniquely identifies one extrinsic.
+   * Retrieves a single extrinsic from the registry. The logical identifier with
+   * the version uniquely identifies one extrinsic.
    * 
    * @response.representation.200.qname 
    *                                    {http://registry.pds.nasa.gov}extrinsicObject
@@ -363,7 +363,7 @@ public class ExtrinsicsResource {
   }
 
   /**
-   * Updates the existing extrinsic with the given logical identifier and 
+   * Updates the existing extrinsic with the given logical identifier and
    * version.
    * 
    * @param guid
@@ -377,9 +377,13 @@ public class ExtrinsicsResource {
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response updateExtrinsic(@PathParam("guid") String guid,
       ExtrinsicObject extrinsic) {
-    // TODO handle error condition mapping
-    registryService.updateObject("Unknown", extrinsic);
-    return Response.ok().build();
+    try {
+      registryService.updateObject("Unknown", extrinsic);
+      return Response.ok().build();
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
 
   /**

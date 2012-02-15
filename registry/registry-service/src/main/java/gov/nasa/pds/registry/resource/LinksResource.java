@@ -44,9 +44,9 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 /**
- * This resource is responsible for managing External Links with the 
- * registry service. External links are essentially URIs to items that 
- * are outside the control of the registry.
+ * This resource is responsible for managing External Links with the registry
+ * service. External links are essentially URIs to items that are outside the
+ * control of the registry.
  * 
  * @author pramirez
  */
@@ -152,13 +152,18 @@ public class LinksResource {
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   @Path("{guid}")
   public Response updateLink(@PathParam("guid") String guid, ExternalLink link) {
-    registryService.updateObject("Unknown", link);
-    return Response.ok().build();
+    try {
+      registryService.updateObject("Unknown", link);
+      return Response.ok().build();
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
   }
 
   /**
-   * Updates the external link with the given global identifier. This 
-   * method supports clients that can not do a PUT operation.
+   * Updates the external link with the given global identifier. This method
+   * supports clients that can not do a PUT operation.
    * 
    * @param guid
    *          globally unique identifier of the service
@@ -175,7 +180,7 @@ public class LinksResource {
   }
 
   /**
-   * Retrieves all external links managed by the registry given a set of 
+   * Retrieves all external links managed by the registry given a set of
    * filters.
    */
   @SuppressWarnings("unchecked")
