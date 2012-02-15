@@ -258,8 +258,9 @@ public interface RegistryService {
    *          that is requesting the update
    * @param registryObject
    *          to update too. The update is made to the object with the same guid
+   * @throws RegistryServiceException 
    */
-  public void updateObject(String user, RegistryObject registryObject);
+  public void updateObject(String user, RegistryObject registryObject) throws RegistryServiceException;
 
   /**
    * Retrieves a set of associations that match the given query. Allows one to

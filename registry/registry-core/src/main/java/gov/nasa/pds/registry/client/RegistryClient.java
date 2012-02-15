@@ -710,9 +710,6 @@ public class RegistryClient {
   public static void main(String[] args) throws Exception {
     RegistryClient client = new RegistryClient(args[0]);
     ExtrinsicObject eo = client.getObject(args[1], ExtrinsicObject.class);
-    PagedResponse<ExtrinsicObject> pr = client.getObjects(1, 10,
-        ExtrinsicObject.class);
     System.out.println(eo.getGuid());
-    System.out.println(pr.getNumFound());
   }
 }

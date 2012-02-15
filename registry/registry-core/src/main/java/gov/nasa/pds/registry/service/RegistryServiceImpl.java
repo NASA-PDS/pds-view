@@ -441,7 +441,23 @@ public class RegistryServiceImpl implements RegistryService {
    * @see gov.nasa.pds.registry.service.RegistryService#updateObject(java
    * .lang.String, gov.nasa.pds.registry.model.RegistryObject)
    */
-  public void updateObject(String user, RegistryObject registryObject) {
+  public void updateObject(String user, RegistryObject registryObject) throws RegistryServiceException {
+    //First grab the object that will be updated
+    RegistryObject foundObject = this.getObject(registryObject.getGuid(), registryObject.getClass());
+    // Home was originally set by the registry so if not set by a client it should be preserved
+    if (registryObject.getHome() == null) {
+      registryObject.setHome(foundObject.getHome());
+    }
+    // If the registry object status is not set it should use what is already in the registry
+    if (registryObject.getStatus() == null) {
+      registryObject.setStatus(foundObject.getStatus());
+    }
+    // If the client has not specified a lid then it should preserve the one in the registry
+    if (registryObject.getLid() == null) {
+      registryObject.setLid(foundObject.getLid());
+    }
+    // version name is controlled by the registry and should not be changed by the client
+    registryObject.setVersionName(foundObject.getVersionName());
     metadataStore.updateRegistryObject(registryObject);
   }
 
