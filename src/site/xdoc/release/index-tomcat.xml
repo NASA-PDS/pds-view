@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011, by the California Institute of Technology.
+  Copyright 2011-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -187,6 +187,37 @@ $CATALINA_HOME/bin/startup.sh
 % cd /usr/local/tomcat/bin
 % ./shutdown.sh
       </source>
+
+      <p>Depending on the environment or the load that the Tomcat server is under, it may fail to shutdown completely. Normally this won't be discovered until the user attempts to start the server again, where they will most likely encounter a "port in use" message. 
+      </p>
+
+      <source>
+% ps -ef | grep tomcat
+      </source>
+
+      <p>You should get something like the following, assuming the server is still up and running:
+      </p>
+
+      <source>
+pds   16870     1  0 Feb15 ?        00:04:43 /usr/java/latest/bin/java \
+  -Djava.util.logging.config.file=/usr/local/acce/tomcat5/conf/logging.properties \
+  -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager \
+  -Djava.endorsed.dirs=/usr/local/acce/tomcat5/common/endorsed \
+  -classpath /usr/local/acce/tomcat5/bin/bootstrap.jar \
+  -Dcatalina.base=/usr/local/acce/tomcat5 \
+  -Dcatalina.home=/usr/local/acce/tomcat5 \
+  -Djava.io.tmpdir=/usr/local/acce/tomcat5/temp org.apache.catalina.startup.Bootstrap start
+      </source>
+
+      <p>The process listed above can be terminated with the following command by specifying its process identifier (16870 as listed in the example above):
+      </p>
+
+      <source>
+% kill -9 16870
+      </source>
+
+      <p>The successful termination can be tested by re-executing the <i>ps</i> command from above which returns an empty result set this time around. If for some reason it is still lingering, ask the local system administrator to terminate the process for you.
+      </p>
     </section>
   </body>
 </document>
