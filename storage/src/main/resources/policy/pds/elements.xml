@@ -64,4 +64,9 @@
     <description>The PDS product class for the associated product.
     </description>
   </element>
+  <element id="urn:pds:VolumeId" name="VolumeId">
+    <dcElement/>
+    <description>The PDS archive volume identifier.
+    </description>
+  </element>
 </cas:elements>

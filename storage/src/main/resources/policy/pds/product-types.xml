@@ -67,4 +67,32 @@
       <extractor class="org.apache.oodt.cas.filemgr.metadata.extractors.examples.MimeTypeExtractor" />
     </metExtractors>
   </type>
+
+  <type id="urn:pds:CatalogObject" name="CatalogObject">
+    <repository path="file://[FILEMGR_HOME]/archive/[REPO_PATH]"/>
+    <versioner class="gov.nasa.pds.storage.RepoPathVersioner"/>
+    <description>The product type for ingesting Catalog files.</description>
+    <metadata>
+      <keyval>
+        <key>FileFormat</key>
+        <val>ODL</val>
+      </keyval> 
+    </metadata>
+    <metExtractors> 
+      <extractor class="org.apache.oodt.cas.filemgr.metadata.extractors.CoreMetExtractor">
+        <configuration>
+          <property name="nsAware" value="true" />
+          <property name="elementNs" value="CAS" />
+          <property name="elements"
+            value="ProductReceivedTime,ProductName,ProductId" />
+        </configuration> 
+      </extractor>
+      <extractor class="org.apache.oodt.cas.filemgr.metadata.extractors.examples.MimeTypeExtractor" />
+      <extractor class="org.apache.oodt.cas.filemgr.metadata.extractors.examples.FinalFileLocationExtractor">
+        <configuration> 
+           <property name="replace" value="true"/> 
+        </configuration>
+      </extractor>
+    </metExtractors>
+  </type>
 </cas:producttypes>
