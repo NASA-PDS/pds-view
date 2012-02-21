@@ -34,7 +34,7 @@
         <li><a href="#Deploying_the_Database">Deploying the Database</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
         <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
-        <li><a href="#Deleting_the_Database">Cleaning the Database</a></li>
+        <li><a href="#Deleting_the_Database">Deleting the Database</a></li>
       </ul>
     </section>
 
@@ -339,7 +339,7 @@ serverStarted='2011-08-28T12:45:43.514-07:00' status='OK'/&gt;
     </section>
 
     <section name="Deleting the Database">
-      <p>An existing registry database can be deleted for testing purposes or if installing a new instance of the Registry Service. Prior to deleting the database, shutdown the Tomcat server. The following is a set of instructions for deleting the database that are dependent on the database server used in the current environment. For a Derby database instance, execute the following to delete the database:
+      <p>An existing registry database can be deleted for testing purposes or if installing a new instance of the Registry Service. Prior to deleting the database, shutdown the Tomcat server. The following is a set of instructions for deleting the database that are dependent on the database server used in the current environment. For a Derby database instance, execute the following to delete the database (the path was specified in the <a href="#Database_Configuration">Configuration</a> section):
       </p>
 
       <source>
