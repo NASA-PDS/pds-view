@@ -13,6 +13,8 @@
 // $Id$
 package gov.nasa.pds.citool.ingestor;
 
+import java.util.Map;
+import java.util.HashMap;
 /**
  * Class that holds constants used in ingest.
  *
@@ -74,4 +76,23 @@ public class Constants {
     
     public static final String PRODUCT_VERSION = "version_id";
     
+   
+    /** Mapping of PDS3 to PDS4 names */
+    public static final Map<String, String> pds3ToPds4Map =
+      new HashMap<String, String>();
+
+      static {
+        pds3ToPds4Map.put("VOLUMES",  "volume_size");
+        pds3ToPds4Map.put("START_TIME", "data_set_start_date_time");
+        pds3ToPds4Map.put("STOP_TIME", "data_set_stop_date_time");
+        pds3ToPds4Map.put("CITATION_DESC", "data_set_citation_text");
+        pds3ToPds4Map.put("REFERENCE_KEY_ID", "reference_text");
+        pds3ToPds4Map.put("PRODUCER_FULL_NAME", "data_set_producer_full_name");
+        pds3ToPds4Map.put("LABEL_REVISION_NOTE", "modification_description");
+        pds3ToPds4Map.put("CONFIDENCE_LEVEL_NOTE", "data_set_confidence_level_note");
+        pds3ToPds4Map.put("ARCHIVE_STATUS", "data_set_archive_status");
+        pds3ToPds4Map.put("MEDIUM_TYPE", "data_set_medium_type");
+        pds3ToPds4Map.put("NSSDC_COLLECTION_ID", "data_set_nssdc_collection_id");
+        pds3ToPds4Map.put("ABSTRACT_DESC", "data_set_abstract_desc"); 
+      } 
 }

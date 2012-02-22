@@ -24,7 +24,9 @@ import gov.nasa.pds.registry.client.SecurityContext;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.Slot;
+import gov.nasa.pds.registry.model.ObjectStatus;
 import gov.nasa.pds.registry.model.PagedResponse;
+import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.query.AssociationFilter;
@@ -44,11 +46,14 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Arrays;
+import java.util.Date;
 import java.net.URI;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 
 public class CatalogRegistryIngester {
 	
@@ -62,6 +67,7 @@ public class CatalogRegistryIngester {
 	private String transportURL;
 	private StorageIngester storageIngester;
 	private String storageProductName;
+	private String registryPackageGuid;
 		
 	/**
 	 * Constructor
@@ -136,8 +142,10 @@ public class CatalogRegistryIngester {
 	 * Then, it calls ingestFileObject() for the corresponding file object registry.
 	 */
 	public String ingest(CatalogObject catObj) {
+		// initialize a FileObject for given CatalogObject
+		catObj.setFileObject();
 		// ingest an extrinsic object to the registry service
-		String productGuid = ingestExtrinsicObject(catObj);		
+		String productGuid = ingestExtrinsicObject(catObj);	
 		if (productGuid != null) registryCount++;
 		
 		// ingest a file object to the registry service
@@ -147,9 +155,7 @@ public class CatalogRegistryIngester {
 		return productGuid;
 	}
 	
-	public String ingestFileObject(CatalogObject catObj) {
-		// initialize a FileObject for given CatalogObject
-		catObj.setFileObject();
+	private String ingestFileObject(CatalogObject catObj) {	
 		String guid = null;	
 		LabelParserException lp = null;
 		ExtrinsicObject fileExtrinsic = null;
@@ -186,7 +192,11 @@ public class CatalogRegistryIngester {
 	        			Arrays.asList(new String[] { productId })));
 	        fileExtrinsic.getSlots().add(new Slot("access_url", 
 	        			Arrays.asList(new String[] { transportURL + productId })));
-
+	        
+	        if (!registryPackageGuid.isEmpty()) {
+				client.setRegistrationPackageId(registryPackageGuid);
+			}
+	        
 			if (productExists(fileExtrinsic.getLid())) {
 				guid = client.versionObject(fileExtrinsic);
 			} else {
@@ -222,11 +232,14 @@ public class CatalogRegistryIngester {
 	 */
 	public String ingestExtrinsicObject(CatalogObject catObj) {
 		Map<String, AttributeStatement> pdsLabelMap = catObj.getPdsLabelMap();
-		String objType = catObj.getCatObjType();
 		String guid = null;
 		LabelParserException lp = null;
-		try {				
-			this.product = createProduct(pdsLabelMap, objType);			
+		try {	
+			if (!registryPackageGuid.isEmpty()) {
+				client.setRegistrationPackageId(registryPackageGuid);
+			}
+					
+			this.product = createProduct(catObj);
 			if (productExists(product.getLid())) {
 				guid = client.versionObject(product);				
 				catObj.setVersion(Float.valueOf(latestProduct.getVersionName()).floatValue()+1.0f);
@@ -267,6 +280,7 @@ public class CatalogRegistryIngester {
         	failCount++;
   		}
   		this.product = product;
+  		
 		return guid;
 	}
 	
@@ -274,7 +288,7 @@ public class CatalogRegistryIngester {
 	 * Add reference information as slot values 
 	 * then, update the registered product
 	 */
-	public void updateProduct(CatalogObject catObj) {
+	public void updateProduct(CatalogObject catObj, Map<String, List<String>> refs) {
 		LabelParserException lp = null;
 		Set<Slot> slots = null;
 		if (catObj.getExtrinsicObject()==null) return;
@@ -285,14 +299,43 @@ public class CatalogRegistryIngester {
 			slots = new HashSet<Slot>();
 		else 
 			slots = catObj.getExtrinsicObject().getSlots();
+
+		String catObjType = catObj.getCatObjType();   		
+		String version = String.valueOf(catObj.getVersion());
 		
-		List<Reference> catRefs = catObj.getReferences();		
-		for (Reference aRef: catRefs) {
-			List<String> values = new ArrayList<String>();
-			values.add(aRef.getLogicalId()+ ":"+aRef.getVersion());
-			Slot slot = new Slot(aRef.getAssociationType(), values);
-			slots.add(slot);
+		if (catObjType.equalsIgnoreCase(Constants.MISSION_OBJ)) {   
+			slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
+			slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));
+			slots.add(new Slot(Constants.HAS_TARGET, getRefValues(version, Constants.HAS_TARGET, refs)));
 		}
+		else if (catObjType.equalsIgnoreCase(Constants.INSTHOST_OBJ)) {
+			slots.add(new Slot(Constants.HAS_MISSION, getRefValues(version, Constants.HAS_MISSION, refs)));
+			slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));
+			slots.add(new Slot(Constants.HAS_TARGET, getRefValues(version, Constants.HAS_TARGET, refs)));
+		}
+		else if (catObjType.equalsIgnoreCase(Constants.INST_OBJ)) {
+			slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
+			slots.add(new Slot(Constants.HAS_DATASET, getRefValues(version, Constants.HAS_DATASET, refs)));
+		}
+		else if (catObjType.equalsIgnoreCase(Constants.DATASET_OBJ)) {
+			//refs.add(new Reference((String)allRefs.get(Constants.HAS_RESOURCE), version, Constants.HAS_RESOURCE));
+			slots.add(new Slot(Constants.HAS_MISSION, getRefValues(version, Constants.HAS_MISSION, refs)));
+			slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
+			slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));
+			slots.add(new Slot(Constants.HAS_TARGET, getRefValues(version, Constants.HAS_TARGET, refs)));
+		}
+		else if (catObjType.equalsIgnoreCase(Constants.TARGET_OBJ)) {
+			//refs.add(new Reference((String)allRefs.get(Constants.HAS_RESOURCE), version, Constants.HAS_RESOURCE));
+			slots.add(new Slot(Constants.HAS_MISSION, getRefValues(version, Constants.HAS_MISSION, refs)));
+			slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
+			slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));
+			
+		}
+		
+		// TODO: need to get node info for curating node id for "has_node" 
+		List<String> verValue = new ArrayList<String>();
+		verValue.add(String.valueOf(catObj.getVersion()));
+		slots.add(new Slot("version_id", verValue));
 		product.setSlots(slots);
 		
 		try {
@@ -304,64 +347,72 @@ public class CatalogRegistryIngester {
         	failCount++;
 		}  
 	}
-	
-	/*public ExtrinsicObject getExtrinsicObject() {
-		return this.product;
-	}
-	*/
-	
-	/**
-	   * Determines whether a product is already in the registry.
-	   *
-	   * @param lid The PDS4 logical identifier.
-	   *
-	   * @return 'true' if the logical identifier was found in the registry.
-	   * 'false' otherwise.
-	   *
-	   * @throws RegistryClientException exception ignored.
-	**/
-	public boolean productExists(String lid) throws RegistryClientException {
-		try {
-			client.setMediaType("application/xml");
-			latestProduct = client.getLatestObject(lid,ExtrinsicObject.class);
-			return true;
-		} catch (RegistryServiceException re) {
-			// Do nothing
-			//re.printStackTrace();
+		
+	private List<String> getRefValues(String version, String associationType, Map<String, List<String>> allRefs) {	
+		//should ge a version independently...how????
+		List<String> values = new ArrayList<String>();
+		/*
+		//this may slow down the processing 
+		String tmpLidVid = Constants.LID_PREFIX + "node." + value;
+		if (getExtrinsic(tmpLidVid)!=null) {
+			tmpLidVid += "::" + getExtrinsic(tmpLidVid).getVersionName();
+		*/
+		
+		if (associationType==Constants.HAS_MISSION) {
+			for (String aValue: allRefs.get(Constants.HAS_MISSION)) {
+				values.add(aValue+"::" + version);
+			}			
 		}
-		return false;
+		else if (associationType==Constants.HAS_INSTHOST) {
+			for (String aValue: allRefs.get(Constants.HAS_INSTHOST)) {
+				values.add(aValue+"::" + version);
+			}
+		}
+		else if (associationType==Constants.HAS_INST) {
+			for (String aValue: allRefs.get(Constants.HAS_INST)) {
+				values.add(aValue+"::" + version);
+			}
+		}
+		else if (associationType==Constants.HAS_TARGET) {
+			for (String aValue: allRefs.get(Constants.HAS_TARGET)) {
+				values.add(aValue+"::" + version);
+			}
+		}
+		else if (associationType==Constants.HAS_DATASET) {
+			for (String aValue: allRefs.get(Constants.HAS_DATASET)) {
+				values.add(aValue+"::" + version);
+			}
+		}
+		return values;
 	}
 	
 	/**
 	 * Create an extrinsic object
 	 * 
-	 * @param pdsLabelMap hashmap that contains metadata of the pds label
-	 * @param objType    a catalog object type
+	 * @param catObj    a catalog object
 	 * @return an extrinsic object
 	 *  
 	 */
-	private ExtrinsicObject createProduct(Map<String, AttributeStatement> pdsLabelMap, String objType)
+	private ExtrinsicObject createProduct(CatalogObject catObj) 
 		throws  RegistryServiceException {
 		ExtrinsicObject product = new ExtrinsicObject();
 		Set<Slot> slots = new HashSet<Slot>();
 		String productLid = null;
-		
-    	for (Map.Entry<String,AttributeStatement> entry: pdsLabelMap.entrySet()) {
-    		String key = entry.getKey();
-    		String value = ((AttributeStatement)entry.getValue()).getValue().toString();
-   
+		String objType = catObj.getCatObjType();
+	
+		Metadata md = catObj.getMetadata();
+		for (String key: md.getKeys()) {
+			String value = md.getMetadata(key);;
 			List<String> values = new ArrayList<String>();
-			List<String> tmpVals = new ArrayList<String>();
+		
 			if (objType.equalsIgnoreCase(Constants.MISSION_OBJ) && key.equals("MISSION_NAME")) {
-				// need to replacce empty space with _
+				// need to replace empty space with _
 				if (value.contains(" "))
     				value = value.replace(' ', '_');
 				productLid = Constants.LID_PREFIX+"mission."+value;
 				product.setLid(productLid);
 				product.setObjectType(Constants.MISSION_PROD);
 				product.setName(value);	
-				tmpVals.add("Context.Investigation");
-				slots.add(new Slot("product_subclass", tmpVals));
 			}
 			else if (objType.equalsIgnoreCase(Constants.TARGET_OBJ) && key.equals("TARGET_NAME")) {
 				// may need to replace " " to "_" ????
@@ -369,35 +420,28 @@ public class CatalogRegistryIngester {
 				product.setLid(productLid);
 				product.setObjectType(Constants.TARGET_PROD);
 				product.setName(value);
-				tmpVals.add("Context.Target");
-				slots.add(new Slot("product_subclass", tmpVals));
 			}
 			else if (objType.equalsIgnoreCase(Constants.INST_OBJ) && key.equals("INSTRUMENT_ID")) {
-				String instHostId = ((AttributeStatement)pdsLabelMap.get("INSTRUMENT_HOST_ID")).getValue().toString();
+				String instHostId = md.getMetadata("INSTRUMENT_HOST_ID");
 				productLid = Constants.LID_PREFIX+"instrument."+value+"__" + instHostId;
 				product.setLid(productLid);
 				product.setObjectType(Constants.INST_PROD);
-				//product.setName(value);
-				product.setName(((AttributeStatement)pdsLabelMap.get("INSTRUMENT_NAME")).getValue().toString() + " for " + instHostId);
-				tmpVals.add("Context.Instrument");
-				slots.add(new Slot("product_subclass", tmpVals));
+				product.setName(md.getMetadata("INSTRUMENT_NAME") + " for " + instHostId);
 			}
 			else if (objType.equalsIgnoreCase(Constants.INSTHOST_OBJ) && key.equals("INSTRUMENT_HOST_ID")) {
 				productLid = Constants.LID_PREFIX+"instrument_host."+value;
 				product.setLid(productLid);
 				product.setObjectType(Constants.INSTHOST_PROD);
-				//product.setName(value);
-				product.setName(((AttributeStatement)pdsLabelMap.get("INSTRUMENT_HOST_NAME")).getValue().toString());
-				tmpVals.add("Context.Instrument_Host");
-				slots.add(new Slot("product_subclass", tmpVals));
+				product.setName(md.getMetadata("INSTRUMENT_HOST_NAME"));
 			}
 			else if (objType.equalsIgnoreCase(Constants.DATASET_OBJ) && key.equals("DATA_SET_ID")) {
+				value = md.getMetadata(key);
+				product.setName(md.getMetadata("DATA_SET_NAME"));				
+				if (value.contains("/"))
+    				value = value.replace('/', '-');
 				productLid = Constants.LID_PREFIX+"data_set."+value;
 				product.setLid(productLid);
 				product.setObjectType(Constants.DS_PROD);
-				product.setName(value);
-				tmpVals.add("Context.DataSet");
-				slots.add(new Slot("prudct_subclass", tmpVals));
 			}
 			else if (objType.equalsIgnoreCase(Constants.RESOURCE_OBJ) && key.equals("RESOURCE_ID")) {
 				///??? value should be "<DATA_SET_ID>__<RESOURCE_ID>????
@@ -407,29 +451,68 @@ public class CatalogRegistryIngester {
 				product.setLid(productLid);
 				product.setObjectType(Constants.RESOURCE_PROD);
 				product.setName(value); //need to get from RESOURCE_NAME????
-				tmpVals.add("Context.Resource");
-				slots.add(new Slot("product_subclass", tmpVals));
 			}
 			else if (objType.equalsIgnoreCase(Constants.VOLUME_OBJ) && key.equals("VOLUME_ID")) {
 				productLid = Constants.LID_PREFIX+"volume."+value;
 				product.setLid(productLid);
 				product.setObjectType(Constants.VOLUME_PROD);
 				product.setName(value);
-				tmpVals.add("Context.Volume");
-				slots.add(new Slot("product_subclass", tmpVals));
 			}
 			//??????
-			/*else if (objType.equalsIgnoreCase("PERSONNEL") && key.equals("PDS_USER_ID")) {
+			/*
+			else if (objType.equalsIgnoreCase("PERSONNEL") && key.equals("PDS_USER_ID")) {
 				product.setLid(Constants.LID_PREFIX+"personnel."+value);
 				product.setObjectType(Constants.)
-			}*/
+			}
+			else if (objType.equalsIgnoreCase("REFERENCE"))
+			*/
+				
+			else {	
+				// don't add this as slot values
+				if (key.equals("TARGET_NAME")) continue;
+				
+				if (md.isMultiValued(key)) {
+					List<String> tmpValues = md.getAllMetadata(key);
+					for (String aVal : tmpValues) {
+						if (key.equals("REFERENCE_KEY_ID"))
+							aVal = "reference." + aVal;
+						values.add(aVal);
+					}
+				} else {
+					if (key.equals("REFERENCE_KEY_ID"))
+						value = "reference." + value;
+					values.add(value);
+				}
 			
-            values.add(value);              
-
-			if (getKey(key) != null) 
-				slots.add(new Slot(getKey(key), values));
+				if (getKey(key, objType) != null) 
+					slots.add(new Slot(getKey(key, objType), values));
+			}
+			
+			// need to add more for citation information for DATA_SET
+			if (key.equals("PRODUCER_FULL_NAME"))
+				slots.add(new Slot("citation_author_list", values));
+			if (key.equals("DATA_SET_RELEASE_DATE"))
+				slots.add(new Slot("citation_publication_year", values));
+			if (key.equals("CITATION_DESC"))
+				slots.add(new Slot("citation_description", values));
+			
+			// create "has_node" slot value
+			if (key.equals("CURATING_NODE_ID")) { 
+				String tmpLidVid = Constants.LID_PREFIX + "node." + value;
+				if (getExtrinsic(tmpLidVid)!=null) {
+					tmpLidVid += "::" + getExtrinsic(tmpLidVid).getVersionName();
+					slots.add(new Slot("has_node", Arrays.asList(new String[] { tmpLidVid })));
+				}
+				
+			}
 		}
-		product.setSlots(slots);		
+		
+		List<String> tmpVals = new ArrayList<String>();
+		tmpVals.add(catObj.getFileObject().getCreationDateTime());
+		slots.add(new Slot("modification_date", tmpVals));
+		slots.add(new Slot("modification_version_id", Arrays.asList(new String[] {"1.0"})));
+		product.setSlots(slots);	
+
 		return product;
 	}
 	
@@ -446,8 +529,10 @@ public class CatalogRegistryIngester {
 		Set<Slot> slots = new HashSet<Slot>();
 		
 		// for PERSONNEL & REFERENCE object
-		if (this.product.getLid()==null) 
+		if (this.product.getLid()==null) {
+			// how to distinguish (personnel and reference????)
 			product.setLid(storageProductName + ":" + fileObject.getName());
+		}
 		else 
 			product.setLid(this.product.getLid() + ":" + fileObject.getName());
 		product.setObjectType(Constants.FILE_PROD);
@@ -470,23 +555,17 @@ public class CatalogRegistryIngester {
         return product;
 	}
 	
-	private String getKey(String key) {		
-		if (key.equalsIgnoreCase("VOLUMES"))
-			return "volume_size";
-		else if (key.equalsIgnoreCase("START_TIME")) 
-			return "start_date_time";
-		else if (key.equalsIgnoreCase("STOP_TIME"))
-			return "stop_date_time";
-		else if (key.equalsIgnoreCase("CITATION_DESC"))
-			return "citation_text";
-		else if (key.equalsIgnoreCase("PDS_VERSION_ID") ||
-				key.equalsIgnoreCase("LABEL_REVISION_NOTE") ||
-				key.equalsIgnoreCase("RECORD_TYPE")) 
+	private String getKey(String key, String objType) {	
+		if (key.equalsIgnoreCase("PDS_VERSION_ID") ||
+			key.equalsIgnoreCase("RECORD_TYPE"))
 			return null;
-		//else if (key.equalsIgnoreCase("REFERENCE_KEY_ID"))
-			// should be in Bibliographic_Reference => local_identifier
-		else 
-			return key.toLowerCase();
+		
+		for (Entry<String, String> entry: Constants.pds3ToPds4Map.entrySet()) {
+			if (key.equalsIgnoreCase(entry.getKey())) 
+				return entry.getValue(); 
+		}
+			
+		return key.toLowerCase();
 	}
 	
 	/**
@@ -498,13 +577,9 @@ public class CatalogRegistryIngester {
 		LabelParserException lp = null;
 		try {
 			List<Reference> catRefs = catObj.getReferences();
-			//System.out.println("catRefs.size() = " + catRefs.size());
 			for (Reference aRef: catRefs) {
-				//System.out.println("catObj.getExtrinsicObject() lid = " + catObj.getExtrinsicObject().getLid() + 
-				//		"    version = " + catObj.getExtrinsicObject().getVersionName());
 				Association association = createAssociation(aRef);			
-				if (!associationExists(association)) {
-					
+				if (!associationExists(association)) {					
 					try {
 						String guid = client.publishObject(association);
 					} catch (RegistryServiceException rse) {
@@ -532,6 +607,10 @@ public class CatalogRegistryIngester {
 	public void publishAssociation(CatalogObject catObj, Reference ref) {
 		LabelParserException lp = null;
 		try {
+			if (!registryPackageGuid.isEmpty()) {
+				client.setRegistrationPackageId(registryPackageGuid);
+			}
+			
 			Association association = createAssociation(ref);
 			if (!associationExists(association)) {
 				
@@ -613,7 +692,42 @@ public class CatalogRegistryIngester {
 			//Do nothing
 		}
 		return result;
-	}	
+	}
+	
+	/**
+	   * Determines whether a product is already in the registry.
+	   *
+	   * @param lid The PDS4 logical identifier.
+	   *
+	   * @return 'true' if the logical identifier was found in the registry.
+	   * 'false' otherwise.
+	   *
+	   * @throws RegistryClientException exception ignored.
+	**/
+	public boolean productExists(String lid) throws RegistryClientException {
+		try {
+			client.setMediaType("application/xml");
+			latestProduct = client.getLatestObject(lid,ExtrinsicObject.class);
+			return true;
+		} catch (RegistryServiceException re) {
+			// Do nothing
+			//re.printStackTrace();
+		}
+		return false;
+	}
+	
+	public ExtrinsicObject getExtrinsic(String lid)  {
+		ExtrinsicObject aProduct = null;
+		try {
+			client.setMediaType("application/xml");
+			aProduct = client.getLatestObject(lid, ExtrinsicObject.class);
+		} catch (RegistryServiceException rse) {
+			rse.printStackTrace();
+		//} catch (RegistryClientException rce) {
+		//	rce.printStackTrace(); 
+		}
+		return aProduct;
+	}
 
 	/**
 	 * Retrieve an extrinsic object from the registry
@@ -642,5 +756,19 @@ public class CatalogRegistryIngester {
 			rse.printStackTrace();
 		}
 		return result;
+	}
+	
+	public void createRegistryPackage() {
+		try {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+		String registryPackageName = "Catalog-Package_" + storageProductName + "_" + 
+				dateFormat.format(new Date().getTime());
+		RegistryPackage registryPackage = new RegistryPackage();
+		registryPackage.setName(registryPackageName);
+		this.registryPackageGuid = client.publishObject(registryPackage);
+		} 
+		catch (RegistryServiceException rse) {
+			rse.printStackTrace();
+		}
 	}
 }

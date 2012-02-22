@@ -225,6 +225,7 @@ public enum Flag {
         options.addOption(new ToolsOption(PASS));
         options.addOption(new ToolsOption(SERVERURL));
         options.addOption(new ToolsOption(TRANSPORTURL));
+        options.addOption(new ToolsOption(KEYPASS));
         options.addOption(new ToolsOption(PDSDD));
         options.addOption(new ToolsOption(TARGET));
         options.addOption(new ToolsOption(REPORT));

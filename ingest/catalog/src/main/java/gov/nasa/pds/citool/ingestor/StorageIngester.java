@@ -47,7 +47,7 @@ public class StorageIngester {
 	private XmlRpcFileManagerClient fmClient;
 
 	/** The product type name for the Storage Service. */
-	private String productTypeName = "CatalogObject";
+	private String productTypeName = "CatalogFile";
 	
 	/** The product name for the Storage Service. Uses VOLUME_ID for now */
 	private String productName;

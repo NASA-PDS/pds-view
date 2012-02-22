@@ -20,6 +20,7 @@ import gov.nasa.pds.citool.ingestor.CatalogRegistryIngester;
 import gov.nasa.pds.citool.ingestor.Reference;
 import gov.nasa.pds.citool.report.IngestReport;
 import gov.nasa.pds.citool.target.Target;
+
 import gov.nasa.pds.tools.LabelParserException;
 import gov.nasa.pds.tools.constants.Constants.ProblemType;
 import gov.nasa.pds.tools.label.Label;
@@ -30,6 +31,7 @@ import gov.nasa.pds.registry.client.SecurityContext;
 
 import org.apache.oodt.cas.filemgr.structs.Product;
 import org.apache.oodt.cas.filemgr.structs.exceptions.CatalogException;
+import org.apache.oodt.cas.metadata.Metadata;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -151,6 +153,8 @@ public class CIToolIngester {
 		// TODO: need to make sure to read voldesc.cat first
 		// how to handle the multiple sets of CATALOG object
 		boolean isVolumeCatalog = false;
+		
+		// TODO: need to add to handle multiple catalog objects (sets of catalog references???)
 		for (Label lbl : catLabels) {		
 			CatalogObject catObj = new CatalogObject(this.report);
 			catObj.processLabel(lbl);
@@ -164,7 +168,7 @@ public class CIToolIngester {
 			}
 			catObjs.add(catObj);
 		}
-		
+	    
 		if (!isVolumeCatalog) {
 			System.err.println("\nError: VOLUME catalog object is missing in this archive volume. Can't process further.\n");
 			System.exit(1);
@@ -179,14 +183,14 @@ public class CIToolIngester {
 			if (ptrFile.equals("N/A")) {
 				continue;
 			}
-			
+		
 			// need to find the file on the local system before trying to get from the file manager
 			String completeFilename = basePath + File.separator + "catalog" + File.separator + ptrFile.toLowerCase();
 			File aFile = new File(completeFilename);
 			try {
 				// check whether this reference file is already in the label list
 				if (!findLabel(ptrFile)) {
-					if (aFile.exists()) {		
+					if (aFile.exists()) {	
 						CatalogObject catObj = new CatalogObject(this.report);
 						Label tmpLbl = parse(aFile.toURL());
 						if (tmpLbl != null) {
@@ -200,14 +204,31 @@ public class CIToolIngester {
 						}
 					}			
 					else {
-						requiredFiles.add(ptrFile);
+						// also, check this reference file is in the same directory as VOLDESC.CAT
+						File tmpFile = new File(basePath + File.separator + ptrFile.toLowerCase());
+						if (tmpFile.exists()) {
+							CatalogObject catObj = new CatalogObject(this.report);
+							Label tmpLbl = parse(tmpFile.toURL());
+							if (tmpLbl != null) {
+								catObj.processLabel(tmpLbl);
+								catObj.setIsLocal(true);
+								catObjs.add(catObj);
+							}
+							else {
+								System.err.println("\n" + aFile.toURL() + " is NULL so it can't be processed. Please check the file.\n");
+								System.exit(1);
+							}
+						}
+						else {
+							requiredFiles.add(ptrFile);
+						}
 					}
 				}
 			} catch (MalformedURLException mue) {
 				mue.printStackTrace();
 			} catch (Exception ex) {
 				ex.printStackTrace();
-			}
+			}			
 		}
 		
 		// there are some files to retrieve from the file manager server
@@ -314,109 +335,135 @@ public class CIToolIngester {
     	    	
     	catIngester = new CatalogRegistryIngester(registryUrl, securityContext, username, password);
     	convertToCatalogObject();
-    		
     	
-    	// generate Reference info for each catObj, it will be used to create/publish associations
-    	Map<String,String> refs = populateReferenceEntries();
-    	
+    	// generate Reference info for each catObj, it will be used to create associations
+    	Map<String, List<String>> refs = populateReferenceEntries();
+ 
+    	catIngester.createRegistryPackage();
     	// publish a product and the corresponding associations  	
     	for (CatalogObject obj: catObjs) {	
     		if (obj.getIsLocal()) {
     			catIngester.ingest(obj);  // ingest extrinsic & file object	
-    			bindReferences(refs, obj);      // bind references to the catalog object
-    			// update ExtrinsicObject with reference info as slot values
-    			catIngester.updateProduct(obj);
+    			catIngester.updateProduct(obj, refs);  // update extrinsic object with associations
     			report.record(obj.getLabel().getLabelURI(), obj.getLabel().getProblems());
     		}
        	}
+       	
     }
-    
-    private void bindReferences(Map<String,String> allRefs, CatalogObject catObj) {
-    	String version = "1.0";
-    	List<Reference> refs = null;
-		
-    	String catObjType = catObj.getCatObjType();   		
-    	version = String.valueOf(catObj.getVersion());
-    	if (catObj.getReferences()==null)
-    		refs = new ArrayList<Reference>();
-    	else 
-    		refs = catObj.getReferences();
-    	if (catObjType.equalsIgnoreCase(Constants.MISSION_OBJ)) {    			
-    		refs.add(new Reference((String)allRefs.get(Constants.HAS_INSTHOST), version, Constants.HAS_INSTHOST));
-    		refs.add(new Reference((String)allRefs.get(Constants.HAS_INST), version, Constants.HAS_INST));
-    		refs.add(new Reference((String)allRefs.get(Constants.HAS_TARGET), version, Constants.HAS_TARGET));
-    	}
-    	else if (catObjType.equalsIgnoreCase(Constants.INSTHOST_OBJ)) {
-    		refs.add(new Reference((String)allRefs.get(Constants.HAS_MISSION), version, Constants.HAS_MISSION));
-    		refs.add(new Reference((String)allRefs.get(Constants.HAS_INST), version, Constants.HAS_INST));
-    		refs.add(new Reference((String)allRefs.get(Constants.HAS_TARGET), version, Constants.HAS_TARGET));
-    	}
-    	else if (catObjType.equalsIgnoreCase(Constants.INST_OBJ)) {
-    		refs.add(new Reference((String)allRefs.get(Constants.HAS_INSTHOST), version, Constants.HAS_INSTHOST));
-    		refs.add(new Reference((String)allRefs.get(Constants.HAS_DATASET), version, Constants.HAS_DATASET));
-    	}
-    	else if (catObjType.equalsIgnoreCase(Constants.DATASET_OBJ)) {
-    		refs.add(new Reference((String)allRefs.get(Constants.HAS_MISSION), version, Constants.HAS_MISSION));
-    		refs.add(new Reference((String)allRefs.get(Constants.HAS_INSTHOST), version, Constants.HAS_INSTHOST));
-    		refs.add(new Reference((String)allRefs.get(Constants.HAS_INST), version, Constants.HAS_INST));
-    		refs.add(new Reference((String)allRefs.get(Constants.HAS_TARGET), version, Constants.HAS_TARGET));
-    		//refs.add(new Reference((String)allRefs.get(Constants.HAS_RESOURCE), version, Constants.HAS_RESOURCE));	
-    	}
-    	else if (catObjType.equalsIgnoreCase(Constants.TARGET_OBJ)) {
-    		refs.add(new Reference((String)allRefs.get(Constants.HAS_MISSION), version, Constants.HAS_MISSION));
-    		refs.add(new Reference((String)allRefs.get(Constants.HAS_INSTHOST), version, Constants.HAS_INSTHOST));
-    		refs.add(new Reference((String)allRefs.get(Constants.HAS_INST), version, Constants.HAS_INST));
-    		//refs.add(new Reference((String)allRefs.get(Constants.HAS_RESOURCE), version, Constants.HAS_RESOURCE));
-    	}
-    	catObj.setReferences(refs);
-    }
-    
+ 
     /**
      * Generates reference class object for association information
      */
     private Map populateReferenceEntries() {
-    	Map<String, String> references = new HashMap<String,String>();
+    	Map<String, List<String>> refs = new HashMap<String, List<String>>();
+    	
     	String lidValue = null;
+    	List<String> values = null;
     	for (CatalogObject tmpCatObj: catObjs) {
     		String catObjType = tmpCatObj.getCatObjType();
     		Map<String, AttributeStatement> pdsLbl = tmpCatObj.getPdsLabelMap();
+    		Metadata md = tmpCatObj.getMetadata();
     		if (catObjType.equalsIgnoreCase(Constants.MISSION_OBJ)) {
     			lidValue = pdsLbl.get("MISSION_NAME").getValue().toString();
     			//System.out.println("mission name = " + lidValue);
-    			if (lidValue.contains(" "))
+    			if (lidValue.contains(" ")) {
     				lidValue = lidValue.replace(' ', '_');
-    			references.put(Constants.HAS_MISSION, Constants.LID_PREFIX+"mission."+lidValue);
+    			}
     			
-    			lidValue = pdsLbl.get("TARGET_NAME").getValue().toString();
-    			references.put(Constants.HAS_TARGET, Constants.LID_PREFIX+"target."+lidValue);
+    			if (refs.get(Constants.HAS_MISSION)!=null) {
+    				values = refs.get(Constants.HAS_MISSION);
+    			}
+    			else {
+    				values = new ArrayList<String>();
+    			}
+    			values.add(Constants.LID_PREFIX+"mission."+lidValue);
+    			refs.put(Constants.HAS_MISSION, values);
+/*    			
+    			lidValue = pdsLbl.get("TARGET_NAME").getValue().toString();		    			
+    			if (refs.get(Constants.HAS_TARGET)!=null) {
+    				values = refs.get(Constants.HAS_TARGET);
+    			}
+    			else {
+    				values = new ArrayList<String>();
+    			}
+*/ 			
+    			String key = "TARGET_NAME";
+    			if (md.isMultiValued(key)) {
+    				List<String> tmpValues = md.getAllMetadata(key);
+    				for (String aVal: tmpValues) {
+    					lidValue = aVal;
+    					values.add(Constants.LID_PREFIX+"target."+lidValue);
+    				}
+    			}
+    			else {
+    				lidValue = md.getMetadata(key);
+    				values.add(Constants.LID_PREFIX+"target."+lidValue);              
+    			}
+    			refs.put(Constants.HAS_TARGET, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.DATASET_OBJ)) {
     			lidValue = pdsLbl.get("DATA_SET_ID").getValue().toString();
-    			//System.out.println("data set id = " + lidValue);
-    			references.put(Constants.HAS_DATASET, Constants.LID_PREFIX+"data_set."+lidValue);    			
+    			if (lidValue.contains("/")) {
+    				lidValue = lidValue.replace('/', '-');
+    			}
+
+    			if (refs.get(Constants.HAS_DATASET)!=null) {
+    				values = refs.get(Constants.HAS_DATASET);
+    			}
+    			else {
+    				values = new ArrayList<String>();
+    			}
+    			values.add(Constants.LID_PREFIX+"data_set."+lidValue);
+    			refs.put(Constants.HAS_DATASET, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.INST_OBJ)) {
     			lidValue = pdsLbl.get("INSTRUMENT_ID").getValue().toString();
-    			//System.out.println("instrument id = " + lidValue);
     			String hostId = pdsLbl.get("INSTRUMENT_HOST_ID").getValue().toString();
-    			references.put(Constants.HAS_INST, Constants.LID_PREFIX+"instrument."+lidValue+"__"+hostId);
+   
+    			if (refs.get(Constants.HAS_INST)!=null) {
+    				values = refs.get(Constants.HAS_INST);
+    			}
+    			else {
+    				values = new ArrayList<String>();
+    			}
+    			values.add(Constants.LID_PREFIX+"instrument."+lidValue+"__"+hostId);
+    			refs.put(Constants.HAS_INST, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.INSTHOST_OBJ)) {
     			lidValue = pdsLbl.get("INSTRUMENT_HOST_ID").getValue().toString();
-    			//System.out.println("instrument host name = " + lidValue);
-    			references.put(Constants.HAS_INSTHOST, Constants.LID_PREFIX+"instrument_host."+lidValue);
+    			if (refs.get(Constants.HAS_INSTHOST)!=null) {
+    				values = refs.get(Constants.HAS_INSTHOST);
+    			}
+    			else {
+    				values = new ArrayList<String>();
+    			}
+    			values.add(Constants.LID_PREFIX+"instrument_host."+lidValue);
+    			refs.put(Constants.HAS_INSTHOST, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.TARGET_OBJ)) {
     			lidValue = pdsLbl.get("TARGET_NAME").getValue().toString();
-    			//System.out.println("target name = " + lidValue);
-    			references.put(Constants.HAS_TARGET, Constants.LID_PREFIX+"target."+lidValue);
+    			if (refs.get(Constants.HAS_TARGET)!=null) {
+    				values = refs.get(Constants.HAS_TARGET);
+    			}
+    			else {
+    				values = new ArrayList<String>();
+    			}
+    			values.add(Constants.LID_PREFIX+"target."+lidValue);
+    			refs.put(Constants.HAS_TARGET, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.RESOURCE_OBJ)) {
     			lidValue = pdsLbl.get("RESOURCE_ID").getValue().toString();
     			if (lidValue.contains("/"))
     				lidValue = lidValue.replace('/', '-');
-    			// where to get a data set id ????
-    			references.put(Constants.HAS_RESOURCE, Constants.LID_PREFIX+"resource."+lidValue);
+    			// where to get a data set id ????  			
+    			if (refs.get(Constants.HAS_RESOURCE)!=null) {
+    				values = refs.get(Constants.HAS_RESOURCE);
+    			}
+    			else {
+    				values = new ArrayList<String>();
+    			}
+    			values.add(Constants.LID_PREFIX+"resource."+lidValue);
+    			refs.put(Constants.HAS_RESOURCE, values);
     		}
     		// TODO: ????
     		else if (catObjType.equalsIgnoreCase(Constants.VOLUME_OBJ)) {
@@ -424,7 +471,7 @@ public class CIToolIngester {
     			storageProductName = lidValue;
     		}
     	}
-    	return references;
+    	return refs;
     }
         
 

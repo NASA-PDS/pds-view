@@ -18,6 +18,7 @@ import java.net.URL;
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Set;
 import java.util.Map;
@@ -31,15 +32,23 @@ import gov.nasa.pds.tools.label.Label;
 import gov.nasa.pds.tools.label.parser.LabelParser;
 import gov.nasa.pds.tools.LabelParserException;
 import gov.nasa.pds.tools.constants.Constants.ProblemType;
+import gov.nasa.pds.tools.label.Numeric;
+import gov.nasa.pds.tools.label.Scalar;
+import gov.nasa.pds.tools.label.Sequence;
 import gov.nasa.pds.tools.label.Statement;
 import gov.nasa.pds.tools.label.ObjectStatement;
 import gov.nasa.pds.tools.label.AttributeStatement;
 import gov.nasa.pds.tools.label.PointerStatement;
+import gov.nasa.pds.tools.label.Value;
 import gov.nasa.pds.tools.util.Utility;
+import gov.nasa.pds.tools.containers.FileReference;
+
 import gov.nasa.pds.citool.report.IngestReport;
 import gov.nasa.pds.citool.file.FileObject;
 import gov.nasa.pds.citool.file.MD5Checksum;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
+
+import org.apache.oodt.cas.metadata.Metadata;
 
 /**
  * Class to parse a PDS catalog file 
@@ -66,6 +75,8 @@ public class CatalogObject {
 	private String _filename;
 	private float _version;
 	private ExtrinsicObject _product;
+	//private List<PointerCatalog> _pointers;
+	private Metadata _metadata;
 	
 	public CatalogObject(IngestReport report) {
 		this._report = report;
@@ -77,6 +88,7 @@ public class CatalogObject {
 		this._filename = null;
 		this._version = 1.0f;
 		this._product = null;
+		this._metadata = null;
 	}
 	
 	public String getFilename() {
@@ -113,6 +125,10 @@ public class CatalogObject {
 	
 	public float getVersion() {
 		return this._version;
+	}
+	
+	public Metadata getMetadata() {
+		return this._metadata;
 	}
 	
 	public void setFileObject() {
@@ -159,54 +175,104 @@ public class CatalogObject {
 	 *            Hashmap of the PDS label keyword and value for all ATTRIBUTE
 	 */
 	protected Map<String, AttributeStatement> getCatalogObj(
-			List<ObjectStatement> objList, Map<String, AttributeStatement> pdsLabelMap) {
+			List<ObjectStatement> objList,
+			Map<String, AttributeStatement> pdsLabelMap) {
 		String objType = this._catObjType;
 		Map<String, AttributeStatement> lblMap = null;
 
+		// first level catalog object
 		for (ObjectStatement objSmt : objList) {
 			if (objType.equalsIgnoreCase("VOLUME")) {
 				List<ObjectStatement> objList2 = objSmt.getObjects("CATALOG");
 				List<PointerStatement> ptList = ((ObjectStatement) objList2.get(0)).getPointers();
-
-				// need to check these files are same is lbl file sets
 				_pointerFiles = new ArrayList<String>();
 				for (PointerStatement ptSmt : ptList) {
-					// Don't add REFERENCE_CATALOG or PERSONNEL_CATALOG
-					// references
-					if (!ptSmt.getIdentifier().toString().equalsIgnoreCase("REFERENCE_CATALOG")
-							&& !ptSmt.getIdentifier().toString().equalsIgnoreCase("PERSONNEL_CATALOG")) {
-						_pointerFiles.add(ptSmt.getValue().toString());
+					if (ptSmt.hasMultipleReferences()) {
+						if (!ptSmt.getIdentifier().toString().equalsIgnoreCase("REFERENCE_CATALOG")
+								&& !ptSmt.getIdentifier().toString().equalsIgnoreCase("PERSONNEL_CATALOG")) {
+							List<FileReference> refFiles = ptSmt.getFileRefs();
+							for (FileReference fileRef : refFiles) {
+								_pointerFiles.add(fileRef.getPath());
+							}
+						}
+					} else {
+						// Don't add REFERENCE_CATALOG or PERSONNEL_CATALOG
+						// references
+						if (!ptSmt.getIdentifier().toString().equalsIgnoreCase("REFERENCE_CATALOG")
+								&& !ptSmt.getIdentifier().toString().equalsIgnoreCase("PERSONNEL_CATALOG")) {
+							_pointerFiles.add(ptSmt.getValue().toString());
+						}
 					}
 				}
 			}
-			
 			List<AttributeStatement> attrList = objSmt.getAttributes();
 			for (AttributeStatement attrSmt : attrList) {
 				pdsLabelMap.put(attrSmt.getElementIdentifier(), attrSmt);
-			}
-			List<ObjectStatement> objList2 = objSmt.getObjects();
 
-			for (ObjectStatement smt2 : objList2) {
-				List<AttributeStatement> objAttr = smt2.getAttributes();
-				lblMap = new HashMap<String, AttributeStatement>(pdsLabelMap);
-				for (AttributeStatement attrSmt : objAttr) {
-					lblMap.put(attrSmt.getElementIdentifier(), attrSmt);
-				}
-
-				List<ObjectStatement> objList3 = smt2.getObjects();
-				for (ObjectStatement smt3 : objList3) {
-					List<AttributeStatement> objAttr2 = smt3.getAttributes();
-					for (AttributeStatement attrSmt2 : objAttr2) {
-						lblMap.put(attrSmt2.getElementIdentifier(), attrSmt2);
+				// multivalues
+				List<String> valueList = getValueList(attrSmt.getValue().toString());
+				if (valueList != null) {
+					for (int i = 0; i < valueList.size(); i++) {
+						_metadata.addMetadata(attrSmt.getElementIdentifier(),
+								valueList.get(i).trim());
 					}
+				} else {
+					_metadata.addMetadata(attrSmt.getElementIdentifier(),
+							attrSmt.getValue().toString());
 				}
+			}
 
-				// if there is no object nested third times, just copy from the
-				// top level obejct
-				if (lblMap == null)
+			if (!objType.equalsIgnoreCase("VOLUME")) {
+				// second nested level
+				List<ObjectStatement> objList2 = objSmt.getObjects();
+				for (ObjectStatement smt2 : objList2) {
+					List<AttributeStatement> objAttr = smt2.getAttributes();
 					lblMap = new HashMap<String, AttributeStatement>(pdsLabelMap);
 
-				pdsLabelMap = lblMap;
+					// TODO: how to handle same keywords in different
+					// object?????
+					for (AttributeStatement attrSmt : objAttr) {
+						lblMap.put(attrSmt.getElementIdentifier(), attrSmt);
+
+						List<String> valueList = getValueList(attrSmt.getValue().toString());
+						if (valueList != null) {
+							for (int i = 0; i < valueList.size(); i++) {
+								_metadata.addMetadata(attrSmt.getElementIdentifier(),
+										valueList.get(i).trim());
+							}
+						} else {
+							_metadata.addMetadata(attrSmt.getElementIdentifier(), attrSmt.getValue().toString());
+						}
+					}
+
+					// third nested level
+					List<ObjectStatement> objList3 = smt2.getObjects();
+					for (ObjectStatement smt3 : objList3) {
+						List<AttributeStatement> objAttr2 = smt3.getAttributes();
+						for (AttributeStatement attrSmt2 : objAttr2) {
+							lblMap.put(attrSmt2.getElementIdentifier(), attrSmt2);
+
+							List<String> valueList = getValueList(attrSmt2.getValue().toString());
+							if (valueList != null) {
+								for (int i = 0; i < valueList.size(); i++) {
+									_metadata.addMetadata(attrSmt2.getElementIdentifier(),
+											valueList.get(i).trim());
+								}
+							} else {
+								_metadata.addMetadata(attrSmt2.getElementIdentifier(),
+										attrSmt2.getValue().toString());
+							}
+						}
+					}
+
+					// if there is no object nested third times, just copy from
+					// the
+					// top level obejct
+					if (lblMap == null)
+						lblMap = new HashMap<String, AttributeStatement>(pdsLabelMap);
+
+					pdsLabelMap = lblMap;
+				}
 			}
 		}
 		return pdsLabelMap;
@@ -243,12 +309,14 @@ public class CatalogObject {
 		this._label = label;
 		try {
 			this._filename = label.getLabelURI().toURL().getFile();
-
+			this._metadata = new Metadata();
+			
 			List<AttributeStatement> attrList = label.getAttributes();
 			_pdsLabelMap = new HashMap<String, AttributeStatement>();
 			for (Iterator i = attrList.iterator(); i.hasNext();) {
 				AttributeStatement attrSmt = (AttributeStatement) i.next();
 				_pdsLabelMap.put(attrSmt.getElementIdentifier(), attrSmt);
+				_metadata.addMetadata(attrSmt.getElementIdentifier(), attrSmt.getValue().toString());
 			}
 
 			List<ObjectStatement> objList = object2List(label);
@@ -257,5 +325,17 @@ public class CatalogObject {
 		} catch (MalformedURLException mue) {
 			mue.printStackTrace();
 		}
+	}
+	
+	private List<String> getValueList(String value) {
+		if (value.startsWith("{")) {
+			value = value.substring(value.indexOf("{")+1);
+			if (value.endsWith("}"))
+				value = value.substring(0, value.indexOf("}"));
+			
+			return Arrays.asList(value.split(","));
+		}
+		else 
+			return null;
 	}
 }
