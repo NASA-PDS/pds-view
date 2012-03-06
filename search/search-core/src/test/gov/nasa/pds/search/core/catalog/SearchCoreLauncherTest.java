@@ -8,7 +8,7 @@ import gov.nasa.pds.search.core.index.SolrIndexer;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class PDSIndexerLauncherTest {
+public class SearchCoreLauncherTest {
 
 	private final static String SOLR_HOME = "src/test/old_solr_home";
 	
@@ -48,13 +48,13 @@ public class PDSIndexerLauncherTest {
     }
     
     /**
-     * Test PDSIndexerLauncher
+     * Test SearchCoreLauncher
      * @throws Exception 
      */
     @Ignore
     @Test
     public void testDefault() throws Exception {
-        String[] args = { "../", "-r", "http://localhost:8080/registry-service/" };
+        String[] args = { "../", "-r", "http://localhost:8080/registry" };
         SearchCoreLauncher.main(args);
     }
 	
