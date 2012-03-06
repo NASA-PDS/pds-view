@@ -20,7 +20,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.ParseException;
 
-public class PDSIndexerLauncher {
+public class SearchCoreLauncher {
 
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
@@ -32,7 +32,7 @@ public class PDSIndexerLauncher {
 	private boolean debug;
 	private String registryUrl;
 
-	public PDSIndexerLauncher() {
+	public SearchCoreLauncher() {
 		this.solrHome = null;
 		this.allFlag = true;
 		this.extractorFlag = false;
@@ -50,7 +50,7 @@ public class PDSIndexerLauncher {
 	public final void displayHelp() {
 		final int maxWidth = 80;
 		final HelpFormatter formatter = new HelpFormatter();
-		formatter.printHelp(maxWidth, "PDSIndexer <options>", null,
+		formatter.printHelp(maxWidth, "search-core <SOLR_HOME> [options]", null,
 				Flag.getOptions(), null);
 	}
 
@@ -121,7 +121,6 @@ public class PDSIndexerLauncher {
 
 		if (line.getArgList().size() != 0) {
 			this.solrHome = new File(line.getArgList().get(0).toString());
-			System.out.println("HERE - " + this.solrHome.getAbsolutePath());
 			if (!this.solrHome.exists()) {
 				throw new InvalidOptionException("Solr Home does not exist: "
 						+ this.solrHome);
@@ -189,11 +188,11 @@ public class PDSIndexerLauncher {
 
 	public static void main(String[] args) throws Exception {
 		if (args.length == 0) {
-			System.out.println("\nType 'PDSIndexer -h' for usage");
+			System.out.println("\nType 'search-core -h' for usage");
 			System.exit(0);
 		}
 		try {
-			final PDSIndexerLauncher launcher = new PDSIndexerLauncher();
+			final SearchCoreLauncher launcher = new SearchCoreLauncher();
 			final CommandLine commandline = launcher.parse(args);
 			launcher.query(commandline);
 			launcher.execute();
@@ -207,14 +206,5 @@ public class PDSIndexerLauncher {
 			System.out.println(e.getMessage());
 			System.exit(1);
 		}
-
-		/*
-		 * String solrHome = ""; if (args.length == 1) { solrHome = args[0]; }
-		 * 
-		 * //else // System.err.println("Error: Need to specify "; // base =
-		 * System.getProperty("user.home") + "/dev/workspace/tse"; // base =
-		 * System.getProperty("user.home") + "/tse"; PDSIndexerLauncher launcher
-		 * = new PDSIndexerLauncher(solrHome); launcher.execute();
-		 */
 	}
 }

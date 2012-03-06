@@ -455,16 +455,15 @@ public class Extractor { // implements Extractor {
 		String version = null;
 		
 		List<String> lidList = Arrays.asList(lidvid.split("::"));
+		assocLid = lidList.get(0);
 		
-		if (lidList.size() != 1) {		// Handles lidvids with bad format (: instead of ::)
-			assocLid = lidList.get(0);
+		if (lidList.size() > 1) {
 			version = lidList.get(1);
-			//this.log.info("***** GOOD LIDVID - " + assocLid + " -- " + version);
-		} else {
+			this.log.info("***** GOOD LIDVID - " + assocLid + " -- " + version);
+		} else if (lidList.size() == 0) {	// Handles lidvids with bad format (: instead of ::)
 			lidList = Arrays.asList(lidvid.split(":"));
 			assocLid = lidvid.substring(0, lidvid.lastIndexOf(":"));
 			version = lidList.get(lidList.size()-1);
-			lidvid.lastIndexOf(":");
 			
 			this.log.info("***** BAD LIDVID - " + assocLid + " -- " + version);
 		}

@@ -7,6 +7,7 @@
 	<!-- Need to include has_mission and has_investigation -->
 	<association>has_investigation</association>
 	<association>has_resource</association>
+	<association>has_node</association>
   <column>
     <name>identifier</name>
     <type>attribute</type>
@@ -23,6 +24,7 @@
     <value>XML</value>
   </column>
   <column>
+  <!--  Used data_set_terse_desc instead of data_set_desc because the data_set_desc can be extremely long, while terse_desc is shorter -->
     <!-- name>description</name>
     <type>slot</type>
     <value>data_set_desc</value-->
@@ -91,13 +93,12 @@
   <column>
     <name>stop_time</name>
     <type>slot</type>
-    <value>stop_date_time</value>
+    <value>data_set_stop_date_time</value>
   </column>
   <column>
-  	<!-- No direct mapping found -->
     <name>node_id</name>
-    <type>out</type>
-    <value>UNK</value>
+    <type>association</type>
+    <value>has_node.node_id</value>
   </column>
   <column>
     <name>full_name</name>
@@ -151,10 +152,9 @@
     <value>has_instrument.instrument_id</value>
   </column>
   <column>
-  	<!-- Mapping not found -->
     <name>data_object_type</name>
-    <type>out</type>
-    <value>UNK</value>
+    <type>slot</type>
+    <value>data_class</value>
   </column>
   <column>
     <name>data_set_terse_desc</name>
@@ -169,12 +169,12 @@
   <column>
     <name>citation_desc</name>
     <type>slot</type>
-    <value>citation_text</value>
+    <value>data_set_citation_text</value>
   </column>
   <column>
     <name>abstract_text</name>
     <type>slot</type>
-    <value>abstract_desc</value>
+    <value>data_set_abstract_desc</value>
   </column>
   <column>
     <!-- name>instrument_name</name>
@@ -197,7 +197,7 @@
   <column>
     <name>confidence_level_note</name>
     <type>slot</type>
-    <value>confidence_level_note</value>
+    <value>data_set_confidence_level_note</value>
   </column>
   <column>
     <name>resource_class</name>
