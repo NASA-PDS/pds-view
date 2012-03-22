@@ -59,8 +59,10 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -159,6 +161,28 @@ public class RegistryClient {
     if (response.getClientResponseStatus() == Status.OK) {
       return response.getEntity(objectClass);
     } else {
+      throw new RegistryServiceException(response.getEntity(String.class),
+          Response.Status.fromStatusCode(response.getStatus()));
+    }
+  }
+
+  /**
+   * Removes an object from the registry of the given type
+   * 
+   * @param <T>
+   * @param guid
+   *          identifier for the object
+   * @param objectClass
+   *          of object interested in deleting
+   * @throws RegistryServiceException
+   */
+  public <T extends RegistryObject> void deleteObject(String guid,
+      Class<T> objectClass) throws RegistryServiceException {
+    WebResource.Builder builder = service.path(resourceMap.get(objectClass))
+        .path(guid).getRequestBuilder();
+    ClientResponse response = builder.accept(mediaType).delete(
+        ClientResponse.class);
+    if (response.getClientResponseStatus() != Status.OK) {
       throw new RegistryServiceException(response.getEntity(String.class),
           Response.Status.fromStatusCode(response.getStatus()));
     }

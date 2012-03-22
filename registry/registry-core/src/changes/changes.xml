@@ -24,6 +24,9 @@
 
   <body>
     <release version="1.2.0" date="TBD" description="This release of the Registry Core is a component of the integrated release 2.2.0 of the PDS 2010 System.">
+      <action dev="pramirez" type="add">
+        PDS-59: Provided a RegistryClient method for deleting registry objects. 
+      </action>
       <action dev="pramirez" type="fix">
         PDS-51: Updates to registry objects no longer overwrite key attributes when not provided by the client. Key attributes include home, lid, status, and versionName.
       </action>
