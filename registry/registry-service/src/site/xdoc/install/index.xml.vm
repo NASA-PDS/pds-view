@@ -202,6 +202,8 @@ javax.servlet.ServletException: java.lang.OutOfMemoryError: PermGen space
         <source>
 CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
         </source>
+        
+        <p>Note: The "derby.system.home" should point to the parent directory which contains the registry database (i.e. the parent directory of the "RegistryDB" directory).</p>
 
         <p>The <i>CATALINA_OPTS</i> environment variable is loaded from the Tomcat startup scripts. The Tomcat server will need to be restarted for this configuration to take effect.
         </p>
