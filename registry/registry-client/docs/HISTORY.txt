@@ -5,8 +5,8 @@ What follows is a history of changes from release to release, along with
 issues addressed and new features in each release.
 
 
-1.0.0 - Released
-------------------
+1.0.0 — Released
+----------------
 
 This release includes the following changes from the original 
 unreleased release:
