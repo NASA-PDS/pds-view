@@ -1,5 +1,5 @@
 # encoding: utf-8
-# Copyright 2011 California Institute of Technology. ALL RIGHTS
+# Copyright 2011–2012 California Institute of Technology. ALL RIGHTS
 # RESERVED. U.S. Government Sponsorship acknowledged.
 
 from setuptools import setup, find_packages
@@ -26,16 +26,25 @@ def _text0(node, a):
 def _valueFor(nodeName, parentName, doc):
     return [_text(i) for i in pomDoc.getElementsByTagName(nodeName) if i.parentNode.nodeName == parentName][0]
 pomDoc = xml.dom.minidom.parse(os.path.join(os.path.dirname(__file__), 'pom.xml'))
-_name = _valueFor('name', 'project', pomDoc)
-_version = _valueFor('version', 'project', pomDoc)
 _description = _valueFor('description', 'project', pomDoc)
 _url = _valueFor('url', 'project', pomDoc)
 _author = _valueFor('name', 'developer', pomDoc)
 _authorEmail = _valueFor('email', 'developer', pomDoc)
 
+# The version is no longer included in pom.xml, but in ../pom.xml.  Although to be completely
+# Maven-subservient, we should look it up by the parent pom description.  But screw that.
+parentPOM = os.path.join(os.path.dirname(__file__), '..', 'pom.xml')
+if os.path.isfile(parentPOM):
+    pomDoc = xml.dom.minidom.parse(os.path.join(os.path.dirname(__file__), '..', 'pom.xml'))
+    _version = _valueFor('version', 'project', pomDoc)
+else:
+    _version = 'UNKNOWN'
+
+
 # Package data
 # ------------
 
+_name            = 'pds.registry'
 _downloadURL     = 'http://oodt.jpl.nasa.gov/dist/pds'
 _maintainer      = 'Sean Kelly'
 _maintainerEmail = 'sean.kelly@jpl.nasa.gov'
