@@ -236,26 +236,71 @@ public class RegistryServiceImpl implements RegistryService {
    * @see gov.nasa.pds.registry.service.RegistryService#versionObject(java
    * .lang.String, gov.nasa.pds.registry.model.RegistryObject, boolean)
    */
-  public String versionObject(String user, RegistryObject object, boolean major)
+  public String versionObject(String user, RegistryObject registryObject, boolean major)
       throws RegistryServiceException {
-    RegistryObject referencedObject = this.getLatestObject(object.getLid(),
-        object.getClass());
-    if (object.getGuid() == null) {
-      object.setGuid(idGenerator.getGuid());
+    return versionObject(user, registryObject, major, null);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nasa.pds.registry.service.RegistryService#versionObject(java.lang.String
+   * , gov.nasa.pds.registry.model.RegistryObject, boolean, java.lang.String)
+   */
+  @Override
+  public String versionObject(String user, RegistryObject registryObject,
+      boolean major, String packageId) throws RegistryServiceException {
+    RegistryObject referencedObject = this.getLatestObject(registryObject.getLid(),
+        registryObject.getClass());
+    if (registryObject.getGuid() == null) {
+      registryObject.setGuid(idGenerator.getGuid());
     }
-    if (object.getHome() == null) {
-      object.setHome(idGenerator.getHome());
+    if (registryObject.getHome() == null) {
+      registryObject.setHome(idGenerator.getHome());
     }
-    object.setLid(referencedObject.getLid());
-    object.setVersionName(versioner.getNextVersion(referencedObject
+    registryObject.setVersionName(versioner.getNextVersion(referencedObject
         .getVersionName(), major));
-    object.setStatus(referencedObject.getStatus());
-    this.validateObject(object);
-    metadataStore.saveRegistryObject(object);
+    registryObject.setStatus(referencedObject.getStatus());
+    // Make sure slots have no id associated with them. 
+    Set<Slot> newSlots = new HashSet<Slot>();
+    for (Slot slot : registryObject.getSlots()) {
+      Slot newSlot = new Slot(slot.getName(), slot.getValues());
+      slot.setSlotType(slot.getSlotType());
+      newSlots.add(newSlot);
+    }
+    registryObject.setSlots(newSlots);
+    this.validateObject(registryObject);
+    metadataStore.saveRegistryObject(registryObject);
     this.createAuditableEvent("versionObject " + referencedObject.getGuid()
-        + " " + object.getGuid(), user, EventType.Versioned, object.getGuid(),
-        object.getClass());
-    return object.getGuid();
+        + " " + registryObject.getGuid(), user, EventType.Versioned, registryObject.getGuid(),
+        registryObject.getClass());
+
+    if (packageId == null) {
+      this.createAuditableEvent("versionObject " + registryObject.getGuid(),
+          user, EventType.Created, registryObject.getGuid(), registryObject
+              .getClass());
+    } else {
+      Association hasMember = new Association();
+      hasMember.setGuid(idGenerator.getGuid());
+      hasMember.setHome(idGenerator.getHome());
+      hasMember.setSourceObject(packageId);
+      hasMember.setTargetObject(registryObject.getGuid());
+      hasMember.setStatus(ObjectStatus.Submitted);
+      hasMember.setAssociationType("urn:registry:AssociationType:HasMember");
+      Set<Slot> slots = new HashSet<Slot>();
+      Slot targetObjectType = new Slot("targetObjectType", Arrays
+          .asList(registryObject.getClass().getSimpleName()));
+      slots.add(targetObjectType);
+      hasMember.setSlots(slots);
+      metadataStore.saveRegistryObject(hasMember);
+      this.createAuditableEvent("versionObjectWithPackage " + packageId + " "
+          + registryObject.getGuid(), user, EventType.Created,
+          new AffectedInfo(Arrays.asList(registryObject.getGuid(), hasMember
+              .getGuid()), Arrays.asList(registryObject.getClass()
+              .getSimpleName(), hasMember.getClass().getSimpleName())));
+    }
+    return registryObject.getGuid();
   }
 
   /*
@@ -441,22 +486,28 @@ public class RegistryServiceImpl implements RegistryService {
    * @see gov.nasa.pds.registry.service.RegistryService#updateObject(java
    * .lang.String, gov.nasa.pds.registry.model.RegistryObject)
    */
-  public void updateObject(String user, RegistryObject registryObject) throws RegistryServiceException {
-    //First grab the object that will be updated
-    RegistryObject foundObject = this.getObject(registryObject.getGuid(), registryObject.getClass());
-    // Home was originally set by the registry so if not set by a client it should be preserved
+  public void updateObject(String user, RegistryObject registryObject)
+      throws RegistryServiceException {
+    // First grab the object that will be updated
+    RegistryObject foundObject = this.getObject(registryObject.getGuid(),
+        registryObject.getClass());
+    // Home was originally set by the registry so if not set by a client it
+    // should be preserved
     if (registryObject.getHome() == null) {
       registryObject.setHome(foundObject.getHome());
     }
-    // If the registry object status is not set it should use what is already in the registry
+    // If the registry object status is not set it should use what is already in
+    // the registry
     if (registryObject.getStatus() == null) {
       registryObject.setStatus(foundObject.getStatus());
     }
-    // If the client has not specified a lid then it should preserve the one in the registry
+    // If the client has not specified a lid then it should preserve the one in
+    // the registry
     if (registryObject.getLid() == null) {
       registryObject.setLid(foundObject.getLid());
     }
-    // version name is controlled by the registry and should not be changed by the client
+    // version name is controlled by the registry and should not be changed by
+    // the client
     registryObject.setVersionName(foundObject.getVersionName());
     metadataStore.updateRegistryObject(registryObject);
   }

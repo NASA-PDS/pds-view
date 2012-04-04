@@ -145,7 +145,7 @@ public interface RegistryService {
    * @param user
    *          that has taken the action. Typically this should point to a unique
    *          username.
-   * @param object
+   * @param registryObject
    *          the contents for this version of the extrinsic object
    * @param major
    *          flag to indicate whether this is a minor or major version
@@ -156,16 +156,38 @@ public interface RegistryService {
       throws RegistryServiceException;
 
   /**
+   * Versions a {@link RegistryObject} in the registry and publishes the
+   * contents of the provided extrinsic object. A registry object with the the
+   * same lid must be already published otherwise there will be nothing to
+   * version off of.
+   * 
+   * @param user
+   *          that has taken the action. Typically this should point to a unique
+   *          username.
+   * @param registryObject
+   *          the contents for this version of the extrinsic object
+   * @param major
+   *          flag to indicate whether this is a minor or major version
+   * @param packageId
+   *          to associate this version event with
+   * @return the guid of the versioned extrinsic object
+   * @throws RegistryServiceException
+   */
+  public String versionObject(String user, RegistryObject registryObject,
+      boolean major, String packageId) throws RegistryServiceException;
+
+  /**
    * Retrieves the latest version of the {@link RegistryObject} with the given
    * logical identifier
    * 
    * @param lid
    *          of extrinsic to look up
    * @return latest version of extrinsic
-   * @throws RegistryServiceException 
+   * @throws RegistryServiceException
    */
   public RegistryObject getLatestObject(String lid,
-      Class<? extends RegistryObject> objectClass) throws RegistryServiceException;
+      Class<? extends RegistryObject> objectClass)
+      throws RegistryServiceException;
 
   /**
    * Retrieves the earliest version of the {@link RegsitryObject} with the given
@@ -176,10 +198,11 @@ public interface RegistryService {
    * @param objectClass
    *          the type of object to look up
    * @return earliest version of registry object
-   * @throws RegistryServiceException 
+   * @throws RegistryServiceException
    */
   public RegistryObject getEarliestObject(String lid,
-      Class<? extends RegistryObject> objectClass) throws RegistryServiceException;
+      Class<? extends RegistryObject> objectClass)
+      throws RegistryServiceException;
 
   /**
    * Retrieves the next version of the {@link RegsitryObject}
@@ -219,10 +242,11 @@ public interface RegistryService {
    * @param objectClass
    *          the type of object to look up
    * @return all versions of the registry object that share the given lid
-   * @throws RegistryServiceException 
+   * @throws RegistryServiceException
    */
   public List<RegistryObject> getObjectVersions(String lid,
-      Class<? extends RegistryObject> objectClass) throws RegistryServiceException;
+      Class<? extends RegistryObject> objectClass)
+      throws RegistryServiceException;
 
   /**
    * Retrieves all {@link ClassificationNode} for a given
@@ -258,9 +282,10 @@ public interface RegistryService {
    *          that is requesting the update
    * @param registryObject
    *          to update too. The update is made to the object with the same guid
-   * @throws RegistryServiceException 
+   * @throws RegistryServiceException
    */
-  public void updateObject(String user, RegistryObject registryObject) throws RegistryServiceException;
+  public void updateObject(String user, RegistryObject registryObject)
+      throws RegistryServiceException;
 
   /**
    * Retrieves a set of associations that match the given query. Allows one to
@@ -478,8 +503,7 @@ public interface RegistryService {
    *           if another replication is already taking place
    */
   public void performReplication(String user, String registryUrl,
-      Date lastModified)
-      throws RegistryServiceException;
+      Date lastModified) throws RegistryServiceException;
 
   /**
    * Get the inform about the current replication event.
