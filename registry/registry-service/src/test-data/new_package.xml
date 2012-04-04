@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<registryPackage xmlns="http://registry.pds.nasa.gov" description="This configures the core set of associations" status="Submitted" objectType="RegistryPackage" name="Test Package" home="http://localhost:8080/registry" guid="testpackage"/>

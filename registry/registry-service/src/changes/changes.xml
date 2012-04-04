@@ -25,6 +25,9 @@
   <body>
     <release version="1.2.0" date="TBD" description="This release of the Registry Service is a component of the integrated release 2.2.0 of the PDS 2010 System.">
       <action dev="pramirez" type="update">
+        Support package id when versioning extrinsic objects.
+      </action>
+      <action dev="pramirez" type="update">
         Support error handling on service endpoints that update registry objects. When trying to update an object that does not exist an error will be thrown.
       </action>
     </release>

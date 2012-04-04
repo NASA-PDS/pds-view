@@ -173,7 +173,7 @@ public class ExtrinsicsResource {
    * @param extrinsic
    *          to publish to registry
    * @param packageGuid
-   *          optional package guid which this registry object is a member of
+   *          optional package guid which this registry object will be a member of
    * @return returns an HTTP response that indicates an error or the location of
    *         the created product and its guid
    */
@@ -213,6 +213,8 @@ public class ExtrinsicsResource {
    *          the logical identifier to the extrinsic
    * @param major
    *          if true indicates a major revision otherwise considered minor
+   * @param packageGuid
+   *          optional package guid which this registry object will be a member of
    * @return returns an HTTP response that indicates an error or the location of
    *         the versioned extrinsic and its guid
    */
@@ -221,12 +223,13 @@ public class ExtrinsicsResource {
   @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response versionExtrinsic(ExtrinsicObject extrinsic,
       @PathParam("lid") String lid,
-      @QueryParam("major") @DefaultValue("true") boolean major) {
-    // TODO Check to make sure the path lid matches that of the product
-    // provided
+      @QueryParam("major") @DefaultValue("true") boolean major,
+      @QueryParam("packageGuid") String packageGuid) {
     // TODO Change to set user
     try {
-      String guid = registryService.versionObject("Unknown", extrinsic, major);
+      String guid = (packageGuid == null) ? registryService.versionObject(
+          "Unknown", extrinsic, major) : registryService.versionObject("Unknown",
+          extrinsic, major, packageGuid);
       return Response.created(
           getExtrinsicUri(registryService.getExtrinsic(guid), uriInfo)).entity(
           guid).build();
