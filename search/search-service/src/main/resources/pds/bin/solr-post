@@ -4,25 +4,31 @@ echo
 echo "Running SOLR update..."
 echo
 
-if [ "$SOLR_HOME" != "" ]; then
-    echo
-    echo "SOLR_HOME = ${SOLR_HOME}"
-    echo
-elif [ "$1" != "" ]; then
+if [ "$1" != "" ]; then
     SOLR_HOME=${1}
     echo
     echo "SOLR_HOME = ${1}"
     echo
+elif [ "$SOLR_HOME" != "" ]; then
+    echo
+    echo "SOLR_HOME = ${SOLR_HOME}"
+    echo
+elif [ "$SEARCH_SERVICE_HOME" != "" ]; then
+    SOLR_HOME=$SEARCH_SERVICE_HOME
+    echo
+    echo "SOLR_HOME = ${SOLR_HOME}"
+    echo
 else
     echo
-    echo "SOLR_HOME must be specified as environment var or command-line:  ./solr-post <solr-home>"
+    echo "SOLR_HOME or SEARCH_SERVICE_HOME must be specified as environment var or via command-line:"
+    echo "    ./solr-post <search-service-home>"
     echo
     exit 0
 fi
 
 PDS_SOLR_HOME=$SOLR_HOME/pds
 
-SOLR_UPDATE="http://pdsbeta/tools/search-service/pds/update/"
+SOLR_UPDATE="http://pdsbeta/tools/search-service/pds/update"
 
 cd $PDS_SOLR_HOME
 pwd

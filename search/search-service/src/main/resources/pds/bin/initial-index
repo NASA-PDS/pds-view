@@ -2,23 +2,27 @@
 
 CLASSPATH=/apps/search-core/bin
 
-if [ "$SOLR_HOME" != "" ]; then
-    echo
-    echo "SOLR_HOME = ${SOLR_HOME}"
-    echo
-elif [ "$1" != "" ]; then
+if [ "$1" != "" ]; then
     SOLR_HOME=${1}
     echo
     echo "SOLR_HOME = ${1}"
     echo
+elif [ "$SOLR_HOME" != "" ]; then
+    echo
+    echo "SOLR_HOME = ${SOLR_HOME}"
+    echo
+elif [ "$SEARCH_SERVICE_HOME" != "" ]; then
+    SOLR_HOME=$SEARCH_SERVICE_HOME
+    echo
+    echo "SOLR_HOME = ${SOLR_HOME}"
+    echo
 else
     echo
-    echo "SOLR_HOME must be specified as environment var or command-line:  ./initial-index <solr-home>"
+    echo "SOLR_HOME OR SEARCH_SERVICE_HOME must be specified as environment var or command-line"
+    echo "    ./initial-index <search-service-home>"
     echo
     exit 0
 fi
-
-PDS_SOLR_HOME=$SOLR_HOME/pds
 
 echo "-----------------------------------------------------"
 echo "----------------------WARNINGS------------------------"
@@ -32,13 +36,13 @@ echo "-----------------------------------------------------"
 echo "-----------------------------------------------------"
 echo "-----------------------------------------------------"
 
+# Need PDS_SOLR_HOME to specify we are using the pds solr instance
+PDS_SOLR_HOME=$SOLR_HOME/pds
+
 cd $PDS_SOLR_HOME
 pwd
 
-#rm -fr catalog_index
-
 echo "LOG: Performing an svn update on PDS_SOLR_HOME directory"
-#svn update
 
 if [ -d tse_old ]
 then
@@ -81,8 +85,8 @@ echo
 echo "---------------------------------------"
 echo
 
-echo "-----Running PDSIndexer------"
-SearchCore $PDS_SOLR_HOME
-echo "-----PDSIndexer Complete-----"
+echo "-----Running search-core------"
+search-core $PDS_SOLR_HOME
+echo "-----search-core Complete-----"
 
 ./bin/solr-post $SOLR_HOME

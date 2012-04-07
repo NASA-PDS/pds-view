@@ -32,7 +32,9 @@
       <ul>
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
-        <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+        <li><a href="#Basic_Application_Deployment">Basic Application Deployment</a></li>
+        <li><a href="#Advanced_Application_Deployment">Advanced Application Deployment</a></li>
+	<li><a href="#Common_Errors">Common Errors</a></li>
       </ul>
     </section>
 
@@ -101,9 +103,108 @@ or
       </ul>
     </section>
 
-    <section name="Deploying the Application">
-      <p>The Search Service is the Solr configuration along with the Java extensions written to support PDS Search Protocol. One must download the WAR file from the Solr website. The context file in the should be updated to reference where you have placed the WAR file locally and then deployed into Tomcat.
+    <section name="Basic Application Deployment">
+      <p>The Search Service is the Solr configuration along with the Java extensions written to support PDS Search Protocol. In order to deploy Solr with the Search Service configuration, please complete the following procedure:
       </p>
+	
+      <p><i>Note: This deployment procedure is the basic version, where all steps need to be repeated whenever and upgrade is required.  For a more consistent approach for long-term deployment and maintenance, please see <a href="#Advanced_Application_Deployment">Advanced Application Deployment</a></i>.
+      </p>
+
+      <ol>
+	<li>Download the Apache Solr software from the <a href="http://lucene.apache.org/solr/">Solr</a> website (the WAR file can be found in the <i>dist</i> directory of the tar package).</li>
+	<li>Place the WAR file in the $SEARCH_SERVICE_HOME directory (i.e. /usr/local/${project.artifactId}-${project.version}).</li>
+	<li>Note the name of the WAR file (i.e. apache-solr-3.5.0.war)</li>
+	<li>Create a Tomcat context file <i>search-service.xml</i> to refer to this Solr war, and place it in the <i>$TOMCAT_HOME/conf/Catalina/localhost</i> directory.  The <i>search-service.xml</i> file should look something like this:
+	  <source>
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;Context docBase="/usr/local/${project.artifactId}-${project.version}/apache-solr-3.5.0.war" debug="0" crossContext="true"&gt;
+  &lt;Environment name="solr/home" type="java.lang.String" value="/usr/local/${project.artifactId}-${project.version}" override="true" /&gt;
+  &lt;Environment name="javax/xml/transform/TransformerFactory" type="java.lang.String" value="net/sf/saxon/TransformerFactoryImpl" override="true"/&gt;
+&lt;/Context&gt;
+	  </source>
+	</li>
+	<li>Modify $TOMCAT_HOME/bin/catalina.sh (or /etc/init.d/tomcat) to append something similar to the following to the CATALINA_OPTS and CLASSPATH environment variables:
+	  <source>
+CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.solr.home=/usr/local/${project.artifactId}-${project.version}"
+CATALINA_OPTS="${CATALINA_OPTS} -Djavax.xml.transform.TransformerFactory=net.sf.saxon.TransformerFactoryImpl"
+
+CLASSPATH="${CLASSPATH}:/usr/local/${project.artifactId}-${project.version}/lib/saxon-9.jar"
+	  </source>
+	</li>
+	<li>Restart Tomcat server</li>
+	<li>Test installation by going to http://localhost:8080/search-service/</li>
+      </ol>
+    </section>
+
+    <section name="Advanced Application Deployment">
+      <p>The Search Service is the Solr configuration along with the Java extensions written to support PDS Search Protocol. In order to deploy Solr with the Search Service configuration, please complete the following procedure:
+      </p>
+	
+      <p><i>Note: This deployment procedure is the <b>advanced</b> version, expected for long-term deployment and maintenance installation, please see <a href="#Basic_Application_Deployment">Basic Application Deployment</a> for a more simplistic approach</i>.
+      </p>
+
+      <subsection name="Initial Installation">
+	<ol>
+	  <li>Download the Apache Solr software from the <a href="http://lucene.apache.org/solr/">Solr</a> website (the WAR file can be found in the <i>dist</i> directory of the tar package).</li>
+	  <li>Place the WAR file in the $SERVICE_INSTALL_HOME directory as solr.war, i.e.:
+	    <source>
+cp apache-solr-3.5.0.war /usr/local/${project.artifactId}-${project.version}/solr.war
+	    </source>
+	  </li>
+	  <li>Create symbolic link to $SERVICE_INSTALL_HOME, i.e.
+	    <source>
+ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
+	    </source>
+	  </li>
+	  <li>Create a Tomcat context file <i>search-service.xml</i> to refer to this Solr war, and place it in the <i>$TOMCAT_HOME/conf/Catalina/localhost</i> directory.  The <i>search-service.xml</i> file should look something like this:
+	  <source>
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;Context docBase="/usr/local/${project.artifactId}/solr.war" debug="0" crossContext="true"&gt;
+  &lt;Environment name="solr/home" type="java.lang.String" value="/usr/local/${project.artifactId}" override="true" /&gt;
+  &lt;Environment name="javax/xml/transform/TransformerFactory" type="java.lang.String" value="net/sf/saxon/TransformerFactoryImpl" override="true"/&gt;
+&lt;/Context&gt;
+	  </source>
+	</li>
+	<li>Modify $TOMCAT_HOME/bin/catalina.sh (or /etc/init.d/tomcat) to set the following environment variables:
+	  <source>
+CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.solr.home=/usr/local/${project.artifactId}"
+CATALINA_OPTS="${CATALINA_OPTS} -Djavax.xml.transform.TransformerFactory=net.sf.saxon.TransformerFactoryImpl"
+
+CLASSPATH="${CLASSPATH}:/usr/local/${project.artifactId}-${project.version}/lib/saxon-9.jar"
+	  </source>
+	</li>
+	<li>Restart Tomcat server</li>
+	<li>Test installation by going to http://localhost:8080/search-service/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
+      </ol>
+      </subsection>
+      <subsection name="Upgrade">
+	<ol>
+	  <li>Copy Solr WAR from $SEARCH_SERVICE_HOME to upgraded version:
+	    <source>
+cp /usr/local/${project.artifactId}/solr.war /usr/local/${project.artifactId}-${project.version}
+	    </source>
+	  </li>
+	  <li>Change Search Service symbolic link to new location:
+	    <source>
+rm /usr/local/${project.artifactId}
+
+ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project-version}
+	    </source>
+	  </li>
+	  <li>Restart Tomcat server</li>
+	  <li>Test installation by going to http://localhost:8080/search-service/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
+	</ol>
+      </subsection>
+    </section>
+
+    <section name="Common Errors">
+      <subsection name="org.xml.sax.SAXParseException: A pseudo attribute name is expected.">
+	<p>This error usually means there is a typo in your context file.  More specifically, keep an eye on this line:
+	</p>
+	<source>
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+	</source>
+      </subsection>
     </section>
   </body>
 </document>
