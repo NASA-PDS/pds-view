@@ -5,9 +5,13 @@
 	<association>has_instrument_host</association>
 	<association>has_mission</association>
 	<!-- Need to include has_mission and has_investigation -->
+	<!-- Commented out because no investigations populated, only missions for PDS3 data
 	<association>has_investigation</association>
+	-->
 	<association>has_resource</association>
+	<!-- Commented out because no nodes populated
 	<association>has_node</association>
+	-->
   <column>
     <name>identifier</name>
     <type>attribute</type>
@@ -57,10 +61,15 @@
     <type>out</type>
     <value>http://starbrite.jpl.nasa.gov/pds/viewDataset.jsp?dsid={data_set_id}</value>
   </column>
-  <column>
+  <!-- UNCOMMENT column>
     <name>nssdc_data_set_id</name>
     <type>slot</type>
-    <value>nssdc_collection_id</value>
+    <value>data_set_nssdc_collection_id</value>
+  </column-->
+  <column>
+    <name>nssdc_data_set_id</name>
+    <type>out</type>
+    <value>null</value>
   </column>
   <column>
   	<!-- association mapping to another objectType -->
@@ -103,7 +112,7 @@
   <column>
     <name>full_name</name>
     <type>slot</type>
-    <value>producer_full_name</value>
+    <value>data_set_producer_full_name</value>
   </column>
   <column>
     <!-- name>mission_name</name>
@@ -134,12 +143,12 @@
   <column>
     <name>archive_status</name>
     <type>slot</type>
-    <value>archive_status</value>
+    <value>data_set_archive_status</value>
   </column>
   <column>
     <name>start_time</name>
     <type>slot</type>
-    <value>start_date_time</value>
+    <value>data_set_start_date_time</value>
   </column>
   <column>
     <name>data_set_release_date</name>
@@ -151,10 +160,17 @@
     <type>association</type>
     <value>has_instrument.instrument_id</value>
   </column>
+  <!-- Should be put back to data_class
   <column>
     <name>data_object_type</name>
     <type>slot</type>
     <value>data_class</value>
+  </column>
+  -->
+  <column>
+    <name>data_object_type</name>
+    <type>out</type>
+    <value>null</value>
   </column>
   <column>
     <name>data_set_terse_desc</name>

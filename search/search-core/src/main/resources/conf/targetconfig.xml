@@ -18,7 +18,7 @@
   <column>
     <name>primary_body_name</name>
     <type>slot</type>
-    <value>primary_body_name</value>
+    <value>target_primary_body_name</value>
   </column>
   <column>
     <name>target_desc</name>
