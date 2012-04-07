@@ -73,7 +73,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>gov.nasa.pds.search.core.PDSIndexerLauncher</mainClass>
+              <mainClass>gov.nasa.pds.search.core.SearchCoreLauncher</mainClass>
               <addClasspath>true</addClasspath>
               <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
             </manifest>

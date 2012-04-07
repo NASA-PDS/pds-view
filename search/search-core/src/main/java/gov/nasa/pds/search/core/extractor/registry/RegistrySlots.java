@@ -58,7 +58,7 @@ public class RegistrySlots {
 			return this.slotMap.get(key.trim());
 		} else {
 			// this.LOG.warning("Key not found : " + key);
-			this.missingSlotList.add(key);
+			this.missingSlotList.add(this.extObj.getLid() + " - " + key);
 			this.missingSlots = true;
 			return Arrays.asList("UNK");
 		}

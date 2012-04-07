@@ -30,7 +30,6 @@
       <ul>
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
-        <li><a href="#Configuring_the_Tool">Configuring the Tool</a></li>
         <li><a href="#Configuring_the_Environment">Configuring the Environment</a></li>
       </ul>
     </section>
@@ -145,16 +144,16 @@ C:\&gt; set JAVA_HOME = C:\path\to\java\home
       </subsection>
 
       <subsection name="Installation Location">
-        <p>Both the shell and batch scripts for this software utilize system commands for determining the installation home directory that may or may not be available on all platforms. If these commands are not available in the current environment, their use can be replaced in the scripts by setting the <i>FILEMGR_HOME</i> variable with the actual installation path. Modify the UNIX-based shell scripts as follows (the actual installation path may be different in the current environment):
+        <p>Both the shell and batch scripts for this software utilize system commands for determining the installation home directory that may or may not be available on all platforms. If these commands are not available in the current environment, their use can be replaced in the scripts by setting the <i>SEARCH_HOME</i> variable with the actual installation path. Modify the UNIX-based shell scripts as follows (the actual installation path may be different in the current environment):
         </p>
 
         <source>
 SCRIPT_DIR=`dirname $0`
-FILEMGR_HOME=`cd ${SCRIPT_DIR}/.. &amp;&amp; pwd`
+SEARCH_HOME=`cd ${SCRIPT_DIR}/.. &amp;&amp; pwd`
 
   should be replaced with:
 
-FILEMGR_HOME=/usr/local/${project.artifactId}-${project.version}
+SEARCH_HOME=/usr/local/${project.artifactId}-${project.version}
         </source>
 
         <p>Modify the Windows-based batch scripts as follows (the actual installation path may be different in the current environment):
@@ -162,11 +161,11 @@ FILEMGR_HOME=/usr/local/${project.artifactId}-${project.version}
 
         <source>
 set SCRIPT_DIR=%~dps0
-set FILEMGR_HOME=%SCRIPT_DIR%..
+set SEARCH_HOME=%SCRIPT_DIR%..
 
   should be replaced with:
 
-set FILEMGR_HOME=C:\Program Files\\${project.artifactId}-${project.version}
+set SEARCH_HOME=C:\Program Files\\${project.artifactId}-${project.version}
         </source>
       </subsection>
     </section>

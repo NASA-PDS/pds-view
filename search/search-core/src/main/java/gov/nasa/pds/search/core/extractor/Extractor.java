@@ -46,14 +46,14 @@ import org.apache.commons.httpclient.util.DateParseException;
 
 /**
  * @author pramirez
- * @modifiedby Jordan Padams
+ * @author jpadams
  * @version $Revision$
  * 
  */
 public class Extractor { // implements Extractor {
 	// Database configuration file default
 
-	public static final List<String> DATE_FIELDS = new ArrayList<String>() {
+	/*public static final List<String> DATE_FIELDS = new ArrayList<String>() {
 		private static final long serialVersionUID = 4549083437446527668L;
 		{
 			add("start_time");
@@ -69,7 +69,7 @@ public class Extractor { // implements Extractor {
 			add("yyyy-MM-dd'T'kk:mm:ss.SSS");
 			add("yyyy-MM-dd'T'kk:mm");
 		}
-	};
+	};*/
 
 	private int oidseq = 10000;
 
@@ -97,11 +97,10 @@ public class Extractor { // implements Extractor {
 	private PrintWriter writer;
 	private Map<String, List<RegistrySlots>> associationMap;
 
+	
 	private Map<String, List<String>> missingSlotsMap;
 
-	/**
-	 * List of Associations where target extrinsic is not found
-	 */
+	/** List of Associations where target extrinsic is not found */
 	private List<String> missingAssocTargets;
 
 	private String registryUrl;
@@ -121,21 +120,21 @@ public class Extractor { // implements Extractor {
 	 */
 	public Extractor(PrintWriter writer, String name, String file,
 			String registryUrl) {
-		log.fine("In Generic Extractor");
+		this.log.fine("In Generic Extractor");
 
 		this.writer = writer;
-		finalVals = new HashMap();
+		this.finalVals = new HashMap();
 
-		classname = name;
-		classFilename = file;
+		this.classname = name;
+		this.classFilename = file;
 		this.registryUrl = registryUrl;
 
-		associationMap = new HashMap<String, List<RegistrySlots>>();
+		this.associationMap = new HashMap<String, List<RegistrySlots>>();
 
-		missingSlotsMap = new HashMap<String, List<String>>();
-		missingAssocTargets = new ArrayList<String>();
+		this.missingSlotsMap = new HashMap<String, List<String>>();
+		this.missingAssocTargets = new ArrayList<String>();
 
-		log.fine("Class name: " + classname);
+		this.log.fine("Class name: " + classname);
 	}
 
 	/**
@@ -156,14 +155,14 @@ public class Extractor { // implements Extractor {
 
 			//for (ExtrinsicObject object : (List<ExtrinsicObject>) response.getResults()) {
 			for (ExtrinsicObject object : extList) {
-				oidseq++;
+				this.oidseq++;
 
 				// Get class properties
-				log.info(object.getLid() + " - " + object.getObjectType());
+				this.log.fine(object.getLid() + " - " + object.getObjectType());
 				setColumnProperties(object);
 
-				XMLWriter xml = new XMLWriter(finalVals, extractorDir, oidseq,
-						classname);
+				XMLWriter xml = new XMLWriter(this.finalVals, extractorDir, this.oidseq,
+						this.classname);
 
 				// Create the XML file
 				// log.info("Files placed in dir : " + extractorDir);
@@ -176,7 +175,7 @@ public class Extractor { // implements Extractor {
 			// connection1.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			log.warning("Exception " + ex.getClass().getName()
+			this.log.warning("Exception " + ex.getClass().getName()
 					+ ex.getMessage());
 		}
 
@@ -195,27 +194,27 @@ public class Extractor { // implements Extractor {
 			String itemoid = oidseqi.toString();
 
 			/* Start profile output */
-			fname = fnameprefix + "_" + classname + "_" + itemoid + "."
-					+ fnameext;
-			xmlDisplay = new PrintWriter(new BufferedWriter(new FileWriter(
-					new File(baseDir, fname), false)));
+			this.fname = this.fnameprefix + "_" + this.classname + "_" + itemoid + "."
+					+ this.fnameext;
+			this.xmlDisplay = new PrintWriter(new BufferedWriter(new FileWriter(
+					new File(baseDir, this.fname), false)));
 			printFileHeader();
 
-			Set set2 = finalVals.keySet();
+			Set set2 = this.finalVals.keySet();
 			Iterator iter2 = set2.iterator();
 			while (iter2.hasNext()) {
-				propName = (String) iter2.next();
-				valArray = (ArrayList) finalVals.get(propName);
-				for (Iterator i = valArray.iterator(); i.hasNext();) {
-					propVal = (String) i.next();
-					printXml(propName, propVal, isCleanedAttr(propName));
+				this.propName = (String) iter2.next();
+				this.valArray = (ArrayList) this.finalVals.get(this.propName);
+				for (Iterator i = this.valArray.iterator(); i.hasNext();) {
+					this.propVal = (String) i.next();
+					printXml(this.propName, this.propVal, isCleanedAttr(this.propName));
 				}
 			}
 			printFileFooter();
-			xmlDisplay.close();
+			this.xmlDisplay.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			log.warning("Exception " + ex.getClass().getName()
+			this.log.warning("Exception " + ex.getClass().getName()
 					+ ex.getMessage());
 		}
 	}
@@ -225,6 +224,8 @@ public class Extractor { // implements Extractor {
 	 * valArray. The HashMap is made of of attrName->value pairs. The value in
 	 * the pair depends upon the current attribute's index, where it is either
 	 * the value in attrVals or a value queried from the database.
+	 * 
+	 * @param ExtrinsicObject - 
 	 */
 	private void setColumnProperties(ExtrinsicObject extObject) {
 		try {
@@ -236,16 +237,16 @@ public class Extractor { // implements Extractor {
 			setAssociations(this.slots);
 
 			// Loop through class results beginning from top
-			for (int i = 0; i < searchAttrs.getNumAttr(); i++) {
-				currName = searchAttrs.getName(i);
-				currType = searchAttrs.getType(i);
-				currVal = searchAttrs.getValue(i);
+			for (int i = 0; i < this.searchAttrs.getNumAttr(); i++) {				
+				currName = this.searchAttrs.getName(i);
+				currType = this.searchAttrs.getType(i);
+				currVal = this.searchAttrs.getValue(i);
 
 				if (currType.equals(MappingTypes.OUTPUT)) { // Output value
 															// given in XML
-					valArray = new ArrayList();
-					valArray.add(currVal);
-					finalVals.put(currName, valArray);
+					this.valArray = new ArrayList();
+					this.valArray.add(currVal);
+					this.finalVals.put(currName, this.valArray);
 
 					// TODO should refactor this entire else-if and create a
 					// separate RegistryAttribute class that handles all those
@@ -258,42 +259,42 @@ public class Extractor { // implements Extractor {
 																		// can
 					if (currName.equals("identifier")) { // be queried from a
 															// RegistryObject
-						valArray = new ArrayList(); // method
-						valArray.add(extObject.getLid());
-						finalVals.put(currName, valArray);
+						this.valArray = new ArrayList(); // method
+						this.valArray.add(extObject.getLid());
+						this.finalVals.put(currName, this.valArray);
 					} else if (currName.equals("title")) {
-						valArray = new ArrayList();
-						valArray.add(extObject.getName());
-						finalVals.put(currName, valArray);
+						this.valArray = new ArrayList();
+						this.valArray.add(extObject.getName());
+						this.finalVals.put(currName, this.valArray);
 					}
 				} else if (currType.equals(MappingTypes.SLOT)) { // Value maps
 																	// to a
 																	// specific
-					valArray = new ArrayList(); // slot in the current object
+					this.valArray = new ArrayList(); // slot in the current object
 												// type
 					for (String value : this.slots.get(currVal)) {
-						tval1 = remNull(value);
+						this.tval1 = remNull(value);
 						// tval1 = tval1.trim();
-						valArray.add(cleanText(tval1));
+						this.valArray.add(cleanText(this.tval1));
 
 					}
 					// if (DATE_FIELDS.contains(currName))
 					// valArray = reformatDateFields(valArray);
-					finalVals.put(currName, valArray);
+					this.finalVals.put(currName, valArray);
 				} else if (currType.equals(MappingTypes.SLOT_SINGLE)) { // Values
 																		// maps
 																		// to a
 																		// specific
-					valArray = new ArrayList(); // slot in the current object
+					this.valArray = new ArrayList(); // slot in the current object
 												// type
-					tval1 = remNull(this.slots.get(currVal).get(0)); // AND
+					this.tval1 = remNull(this.slots.get(currVal).get(0)); // AND
 																		// ensures
 																		// that
 																		// certain
 																		// columns
-					valArray.add(cleanText(tval1)); // that are only allowed one
+					this.valArray.add(cleanText(this.tval1)); // that are only allowed one
 													// value
-					finalVals.put(currName, valArray); // do not output a list
+					this.finalVals.put(currName, this.valArray); // do not output a list
 														// (i.e. description,
 														// mission_desc)
 				} else if (currType.equals(MappingTypes.ASSOCIATION)) { // Value
@@ -302,7 +303,7 @@ public class Extractor { // implements Extractor {
 																		// associated
 																		// object
 					String[] values = currVal.split("\\."); // slot
-					valArray = new ArrayList();
+					this.valArray = new ArrayList();
 					String assocType = values[0];
 					boolean foundAssociation = this.associationMap
 							.containsKey(assocType);
@@ -327,9 +328,9 @@ public class Extractor { // implements Extractor {
 						for (RegistrySlots assocSlots : this.associationMap
 								.get(assocType)) {
 							for (String value : assocSlots.get(values[1])) {
-								tval1 = cleanText(remNull(value));
-								if (!valArray.contains(tval1)) {
-									valArray.add(tval1);
+								this.tval1 = cleanText(remNull(value));
+								if (!valArray.contains(this.tval1)) {
+									this.valArray.add(this.tval1);
 								}
 							}
 
@@ -339,11 +340,11 @@ public class Extractor { // implements Extractor {
 								System.err.println("NullPointerException - "
 										+ this.lid + " - " + assocType);
 							}
-							finalVals.put(currName, valArray);
+							this.finalVals.put(currName, this.valArray);
 						}
 					} else {
-						valArray.add("UNK");
-						finalVals.put(currName, valArray);
+						this.valArray.add("UNK");
+						this.finalVals.put(currName, this.valArray);
 					}
 
 				} else if (currType.equals(MappingTypes.OTHER)) { // Unknown
@@ -373,39 +374,10 @@ public class Extractor { // implements Extractor {
 			setResLocation();
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			log.warning("Exception " + ex.getClass().getName()
+			this.log.warning("Exception " + ex.getClass().getName()
 					+ ex.getMessage());
 		}
 	}
-
-	/*
-	 * private PagedResponse<ExtrinsicObject> getExtrinsics(String type, String
-	 * value) throws Exception { // Build the filter ExtrinsicFilter filter =
-	 * null; String versionName = null; if
-	 * (type.equals(ExtrinsicFilterTypes.LIDVID)) { String[] lidArray =
-	 * value.split("::"); lid = lidArray[0]; if (value.contains("::")) {
-	 * versionName = lidArray[lidArray.length - 1]; } else { throw new
-	 * RegistryClientException("BAD PRODUCT - " + lid); }
-	 * this.log.info("*********** " + lid + " -- " + versionName); //String
-	 * versionName = ( (lidArray.length > 1) ? lidArray[lidArray.length-1] :
-	 * "1.0"); filter = new ExtrinsicFilter.Builder().lid(lid).build(); } else
-	 * if (type.equals(ExtrinsicFilterTypes.GUID)) { filter = new
-	 * ExtrinsicFilter.Builder().guid(value).build(); } else if
-	 * (type.equals(ExtrinsicFilterTypes.OBJECT_TYPE)) { filter = new
-	 * ExtrinsicFilter.Builder().objectType(value).build(); } // Create the
-	 * query RegistryQuery<ExtrinsicFilter> query = new
-	 * RegistryQuery.Builder<ExtrinsicFilter>() .filter(filter).build(); try {
-	 * RegistryClient client = new RegistryClient(this.registryUrl); //
-	 * securityContext, user, password);
-	 * 
-	 * PagedResponse<ExtrinsicObject> resultResp = new
-	 * PagedResponse<ExtrinsicObject>(); List<ExtrinsicObject> results = new
-	 * ArrayList<ExtrinsicObject>(); PagedResponse<ExtrinsicObject> pr =
-	 * client.getExtrinsics(query, 1, Constants.QUERY_MAX); return pr; } catch
-	 * (RegistryServiceException rse) { // Ignore. Nothing found. } catch
-	 * (RegistryClientException rce) { throw new Exception(rce.getMessage()); }
-	 * return null; }
-	 */
 	
 	private List<ExtrinsicObject> getObjectTypeExtrinsics(String objectType) throws Exception {
 		// Build the filter
@@ -459,7 +431,7 @@ public class Extractor { // implements Extractor {
 		
 		if (lidList.size() > 1) {
 			version = lidList.get(1);
-			this.log.info("***** GOOD LIDVID - " + assocLid + " -- " + version);
+			//this.log.info("***** GOOD LIDVID - " + assocLid + " -- " + version);
 		} else if (lidList.size() == 0) {	// Handles lidvids with bad format (: instead of ::)
 			lidList = Arrays.asList(lidvid.split(":"));
 			assocLid = lidvid.substring(0, lidvid.lastIndexOf(":"));
@@ -584,6 +556,7 @@ public class Extractor { // implements Extractor {
 						+ " - " + assocLid);
 				// slotLst.add(new RegistrySlots());
 			} else {
+				// Remove has_investigation or has_mission from missing targets if the other is found
 				for (ExtrinsicObject extObj : extList) {
 					slotLst.add(new RegistrySlots(extObj));
 				}
@@ -610,10 +583,17 @@ public class Extractor { // implements Extractor {
 	 */
 
 	private void recordMissingSlots(RegistrySlots slots) {
-		if (!this.missingSlotsMap.containsKey(slots.getObjectType())
-				&& slots.isMissingSlots())
-			this.missingSlotsMap.put(slots.getObjectType(),
-					slots.getMissingSlotList());
+		if (slots.isMissingSlots()) {
+			if (this.missingSlotsMap.containsKey(slots.getObjectType())) {
+				List<String> slotList = this.missingSlotsMap.get(slots.getObjectType());
+				slotList.addAll(slots.getMissingSlotList());
+				this.missingSlotsMap.put(slots.getObjectType(),
+						slotList);
+			} else {
+				this.missingSlotsMap.put(slots.getObjectType(),
+						slots.getMissingSlotList());
+			}
+		}
 	}
 
 	private void displayWarnings() {

@@ -15,6 +15,8 @@
 
 package gov.nasa.pds.search;
 
+import java.util.logging.Logger;
+
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.handler.StandardRequestHandler;
 import org.apache.solr.request.SolrQueryRequest;
@@ -25,6 +27,8 @@ import org.apache.solr.response.SolrQueryResponse;
  * 
  */
 public class PDSSearchProtocol extends StandardRequestHandler {
+	private Logger LOG = Logger.getLogger(this.getClass().getName());
+	
 	public final static String[] MULTI_PARAMS = { "identifier", "instrument",
 			"instrument-host", "instrument-host-type", "instrument-type",
 			"investigation", "observing-system", "person", "product-subclass",
@@ -33,6 +37,7 @@ public class PDSSearchProtocol extends StandardRequestHandler {
 	public final static String START_TIME_PARAM = "start-time";
 	public final static String STOP_TIME_PARAM = "stop-time";
 	public final static String TERM_PARAM = "term";
+	public final static String ARCHIVE_STATUS_PARAM = "archive_status";
 	public final static String RETURN_TYPE_PARAM = "return-type";
 
 	@Override
@@ -118,6 +123,30 @@ public class PDSSearchProtocol extends StandardRequestHandler {
 			}
 			queryString.append(request.getOriginalParams().getParams(
 					QUERY_PARAM)[0]);
+		}
+
+		// JIRA Issue PDS-57
+		// Handle ignoring superseded data sets, if not specified in query
+		if (request.getOriginalParams().getParams(ARCHIVE_STATUS_PARAM) == null) {
+			// Check if ARCHIVE_STATUS_PARAM is specified in queryString
+			if (queryString.indexOf(ARCHIVE_STATUS_PARAM) == -1) {
+				this.LOG.info(queryString.toString() + " -- indexOf - " + queryString.indexOf(ARCHIVE_STATUS_PARAM));
+				if (queryString.length() != 0) {
+					queryString.append(" AND ");
+				}
+				queryString.append("-");
+				queryString.append(ARCHIVE_STATUS_PARAM);
+				queryString.append(":SUPERSEDED");
+			}
+		} else {
+			// if there is already a portion of the query string group with AND
+			if (queryString.length() != 0) {
+				queryString.append(" AND ");
+			}
+			queryString.append(ARCHIVE_STATUS_PARAM);
+			queryString.append(":");
+			queryString.append(request.getOriginalParams().getParams(
+					ARCHIVE_STATUS_PARAM)[0]);
 		}
 
 		// If there is a query pass it on to Solr as the q param
