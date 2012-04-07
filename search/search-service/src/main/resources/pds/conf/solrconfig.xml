@@ -698,13 +698,12 @@
        of SearchComponents (see below) and supports distributed
        queries across multiple shards
     -->
-  <requestHandler name="/search" class="solr.SearchHandler" default="true">
+  <requestHandler name="/solr" class="solr.SearchHandler" default="true">
      <lst name="defaults">
        <str name="echoParams">explicit</str>
 
        <str name="defType">edismax</str>
        <str name="q.alt">*:*</str>
-       <str name="rows">10</str>
        <str name="fl">*,score</str>
        
        <str name="wt">xslt</str>
@@ -744,14 +743,28 @@
      -->
   </requestHandler>
   
-  <requestHandler name="/pdssp" class="gov.nasa.pds.search.PDSSearchProtocol" default="false">
+  <requestHandler name="/search" class="gov.nasa.pds.search.PDSSearchProtocol" default="false">
     <lst name="defaults">
       <str name="echoParams">explicit</str>
       
       <str name="defType">edismax</str>
       <str name="q.alt">*:*</str>
-      <str name="rows">10</str>
       <str name="fl">*,score</str>
+
+       <str name="wt">xslt</str>
+       <str name="tr">data-sets.xsl</str>
+       <str name="start">0</str>
+       <str name="rows">50</str>
+       <str name="facet">true</str>
+       <str name="facet.mincount">1</str>
+       <str name="facet.field">facet_class</str>
+       <str name="facet.field">facet_target</str>
+       <str name="facet.field">facet_mission</str>
+       <str name="facet.field">facet_instrument</str>
+       <str name="f.facet_class.facet.prefix">1,</str>
+       <str name="f.facet_target.facet.prefix">1,</str>
+       <str name="f.facet_mission.facet.prefix">1,</str>
+       <str name="f.facet_instrument.facet.prefix">1,</str>
       
       <!--
         <str name="mlt.qf">
