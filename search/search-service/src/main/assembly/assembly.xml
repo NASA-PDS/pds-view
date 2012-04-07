@@ -30,7 +30,18 @@
   <fileSets>
     <fileSet>
       <directory>src/main/resources</directory>
-      <outputDirectory>.</outputDirectory>
+      <excludes>
+	<exclude>pds/bin/*</exclude>
+      </excludes>
+      <outputDirectory>/</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/resources</directory>
+      <includes>
+	<include>pds/bin/*</include>
+      </includes>
+      <fileMode>755</fileMode>
+      <outputDirectory>/</outputDirectory>
     </fileSet>
     <fileSet>
       <directory>target/site</directory>
