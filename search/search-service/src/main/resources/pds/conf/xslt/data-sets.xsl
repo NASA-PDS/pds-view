@@ -263,7 +263,7 @@
     <xsl:value-of select="concat('Information about the target ',str[@name='title'])" />
   </xsl:when>
   <xsl:otherwise>
-    <xsl:value-of select="str[@name='description']" />
+    <xsl:value-of select="fn:replace(str[@name='description'],'&lt;br /&gt;',' ')" />
   </xsl:otherwise>
 </xsl:choose>
 <xsl:if test="str[@name='resClass'] = 'DataSet'">
