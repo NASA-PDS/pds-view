@@ -31,6 +31,7 @@
       <ul>
         <li><a href="#Create_Index">Create Index</a></li>
         <li><a href="#Update_Index">Update Index</a></li>
+	<li><a href="#Common_Errors">Common Errors</a></li>
       </ul>
     </section>
 
@@ -47,5 +48,28 @@
 % ./solr-post &lt;search-service-home&gt;
       </source>
     </section>
+
+    <section name="Common Errors">
+      <subsection name="org.xml.sax.SAXParseException: A pseudo attribute name is expected.">
+	<p>This error usually means there is a typo in your context file.  More specifically, keep an eye on this line:
+        </p>
+        <source>
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+        </source>
+      </subsection>
+      <subsection name="Provider net.sf.saxon.TransformerFactoryImpl not found">
+        <p>This error occurs when the CLASSPATH environment variable is not properly set in /usr/local/tomcat/catalina.sh (or /etc/init.d):</p>
+        <source>
+export CLASSPATH=${CLASSPATH}:/usr/local/search-service/lib/saxon-9.jar
+        </source>
+      </subsection>
+      <subsection name="XSLT transformation error java.io.IOException: XSLT transformation error">
+        <p>This error occurs when the CATALINA_OPTS environment variable is not properly set, or set multiple times in /usr/local/tomcat/catalina.sh (or /etc/init.d):</p>
+        <source>
+export CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.pds.home=/usr/local/search-service"
+        </source>
+      </subsection>
+    </section>
+
   </body>
 </document>

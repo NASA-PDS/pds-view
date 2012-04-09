@@ -34,7 +34,6 @@
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Basic_Application_Deployment">Basic Application Deployment</a></li>
         <li><a href="#Advanced_Application_Deployment">Advanced Application Deployment</a></li>
-	<li><a href="#Common_Errors">Common Errors</a></li>
       </ul>
     </section>
 
@@ -125,7 +124,7 @@ or
 	</li>
 	<li>Modify $TOMCAT_HOME/bin/catalina.sh (or /etc/init.d/tomcat) to append something similar to the following to the CATALINA_OPTS and CLASSPATH environment variables:
 	  <source>
-CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.solr.home=/usr/local/${project.artifactId}-${project.version}"
+CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.pds.home=/usr/local/${project.artifactId}-${project.version}"
 CATALINA_OPTS="${CATALINA_OPTS} -Djavax.xml.transform.TransformerFactory=net.sf.saxon.TransformerFactoryImpl"
 
 CLASSPATH="${CLASSPATH}:/usr/local/${project.artifactId}-${project.version}/lib/saxon-9.jar"
@@ -167,7 +166,7 @@ ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${projec
 	</li>
 	<li>Modify $TOMCAT_HOME/bin/catalina.sh (or /etc/init.d/tomcat) to set the following environment variables:
 	  <source>
-CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.solr.home=/usr/local/${project.artifactId}"
+CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.pds.home=/usr/local/${project.artifactId}"
 CATALINA_OPTS="${CATALINA_OPTS} -Djavax.xml.transform.TransformerFactory=net.sf.saxon.TransformerFactoryImpl"
 
 CLASSPATH="${CLASSPATH}:/usr/local/${project.artifactId}-${project.version}/lib/saxon-9.jar"
@@ -194,16 +193,6 @@ ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${projec
 	  <li>Restart Tomcat server</li>
 	  <li>Test installation by going to http://localhost:8080/search-service/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
 	</ol>
-      </subsection>
-    </section>
-
-    <section name="Common Errors">
-      <subsection name="org.xml.sax.SAXParseException: A pseudo attribute name is expected.">
-	<p>This error usually means there is a typo in your context file.  More specifically, keep an eye on this line:
-	</p>
-	<source>
-&lt;?xml version="1.0" encoding="utf-8" ?&gt;
-	</source>
       </subsection>
     </section>
   </body>
