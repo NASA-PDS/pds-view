@@ -20,7 +20,7 @@ public class XSLTResponseWriter extends
 		if (transformer != null
 				&& transformer.getParameter(SOLR_HOME_PARAMETER) == null) {
 			transformer.setParameter(SOLR_HOME_PARAMETER,
-					System.getProperty("solr.solr.home") + "/pds");
+					System.getProperty("solr.pds.home") + "/pds");
 		}
 		return transformer;
 	}
