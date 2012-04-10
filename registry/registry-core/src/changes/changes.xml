@@ -24,6 +24,9 @@
 
   <body>
     <release version="1.2.0" date="TBD" description="This release of the Registry Core is a component of the integrated release 2.2.0 of the PDS 2010 System.">
+      <action dev="pramirez" type="fix">
+        PDS-65 Remove warning about XMLConstants.FEATURE_SECURE_PROCESSING by using Xerces 2.10.0.
+      </action>
       <action dev="pramirez" type="update">
         PDS-60: Updated RegistryClient to pass packageId when versioning an object if set.
       </action>
