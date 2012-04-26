@@ -22,7 +22,6 @@ import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.ObjectAction;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryPackage;
-import gov.nasa.pds.registry.model.Service;
 import gov.nasa.pds.registry.query.ObjectFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.service.RegistryService;
