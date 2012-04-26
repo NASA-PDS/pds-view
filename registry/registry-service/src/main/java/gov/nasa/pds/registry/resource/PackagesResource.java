@@ -87,7 +87,7 @@ public class PackagesResource {
   public Response publishPackage(RegistryPackage registryPackage) {
     // TODO: Change to add user
     try {
-      String guid = registryService.publishObject("Unkown", registryPackage);
+      String guid = registryService.publishObject("Unknown", registryPackage);
       return Response.created(
           PackagesResource.getPackageUri((RegistryPackage) registryService
               .getObject(guid, RegistryPackage.class), uriInfo)).entity(guid)
