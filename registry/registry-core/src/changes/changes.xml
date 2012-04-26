@@ -25,7 +25,10 @@
   <body>
     <release version="1.2.0" date="TBD" description="This release of the Registry Core is a component of the integrated release 2.2.0 of the PDS 2010 System.">
       <action dev="pramirez" type="add">
-        PDS-66 Add registry client support for deleting package members.
+        PDS-68 Add ability from client to update status of all package members.
+      </action>
+      <action dev="pramirez" type="add">
+        PDS-67 Add registry client support for deleting package members.
       </action>
       <action dev="pramirez" type="update">
         PDS-64 Update registry client to support sorting on auditable events and filtering on request id.

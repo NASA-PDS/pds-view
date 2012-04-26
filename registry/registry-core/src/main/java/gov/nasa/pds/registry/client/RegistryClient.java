@@ -22,6 +22,7 @@ import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.ClassificationScheme;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
+import gov.nasa.pds.registry.model.ObjectAction;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.RegistryPackage;
@@ -186,12 +187,41 @@ public class RegistryClient {
     }
   }
 
+  /**
+   * Deletes all members that are associated with the given package guid.
+   * 
+   * @param packageGuid
+   *          to delete from
+   * @throws RegistryServiceException
+   */
   public void deletePackageMembers(String packageGuid)
       throws RegistryServiceException {
     WebResource.Builder builder = service.path(
         resourceMap.get(RegistryPackage.class)).path(packageGuid).path(
         "members").getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).delete(
+        ClientResponse.class);
+    if (response.getClientResponseStatus() != Status.OK) {
+      throw new RegistryServiceException(response.getEntity(String.class),
+          Response.Status.fromStatusCode(response.getStatus()));
+    }
+  }
+
+  /**
+   * Approve, deprecate, or undeprecate all members of a package
+   * 
+   * @param packageGuid
+   *          to update members from
+   * @param action
+   *          to take which will end up affecting members statuses
+   * @throws RegistryServiceException
+   */
+  public void changeStatusOfPackageMembers(String packageGuid, ObjectAction action)
+      throws RegistryServiceException {
+    WebResource.Builder builder = service.path(
+        resourceMap.get(RegistryPackage.class)).path(packageGuid).path(
+        "members").path(action.toString()).getRequestBuilder();
+    ClientResponse response = builder.accept(mediaType).post(
         ClientResponse.class);
     if (response.getClientResponseStatus() != Status.OK) {
       throw new RegistryServiceException(response.getEntity(String.class),
