@@ -186,6 +186,19 @@ public class RegistryClient {
     }
   }
 
+  public void deletePackageMembers(String packageGuid)
+      throws RegistryServiceException {
+    WebResource.Builder builder = service.path(
+        resourceMap.get(RegistryPackage.class)).path(packageGuid).path(
+        "members").getRequestBuilder();
+    ClientResponse response = builder.accept(mediaType).delete(
+        ClientResponse.class);
+    if (response.getClientResponseStatus() != Status.OK) {
+      throw new RegistryServiceException(response.getEntity(String.class),
+          Response.Status.fromStatusCode(response.getStatus()));
+    }
+  }
+
   /**
    * Publish a registry object to the service
    * 
@@ -514,12 +527,12 @@ public class RegistryClient {
         params.add("requestId", filter.getRequestId().toString());
       }
     }
-    
+
     List<String> sort = query.getSort();
     for (String s : sort) {
       params.add("sort", s);
     }
-    
+
     WebResource.Builder builder = service.path(
         resourceMap.get(AuditableEvent.class)).queryParams(params)
         .getRequestBuilder();
