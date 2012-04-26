@@ -22,6 +22,7 @@ import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.ObjectAction;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryPackage;
+import gov.nasa.pds.registry.model.Service;
 import gov.nasa.pds.registry.query.ObjectFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.service.RegistryService;
@@ -31,6 +32,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -139,6 +141,40 @@ public class PackagesResource {
     registryService.deleteObject("Unknown", packageGuid, RegistryPackage.class);
     return Response.ok().build();
   }
+  
+  /**
+   * Updates the package with the given global identifier.
+   * 
+   * @param guid
+   *          globally unique identifier of the service
+   * @param service
+   *          updates to the service
+   * @return returns an HTTP response that indicates an error or ok
+   */
+  @PUT
+  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  @Path("{packageGuid}")
+  public Response updatePackage(@PathParam("packageGuid") String guid, RegistryPackage registryPackage) {
+    try {
+      registryService.updateObject("Unknown", registryPackage);
+      return Response.ok().build();
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
+  }
+
+  /**
+   * Updates the package with the given global identifier. This method supports 
+   * clients that can not do a PUT operation.
+   */
+  @POST
+  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+  @Path("{packageGuid}")
+  public Response updatePackageWithPost(@PathParam("packageGuid") String guid,
+      RegistryPackage registryPackage) {
+    return this.updatePackage(guid, registryPackage);
+  }
 
   /**
    * Deletes all the members of a package with the given global identifier.
@@ -186,7 +222,7 @@ public class PackagesResource {
   @SuppressWarnings("unchecked")
   @GET
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Response getServices(
+  public Response getPackages(
       @QueryParam("start") @DefaultValue("1") Integer start,
       @QueryParam("rows") @DefaultValue("20") Integer rows) {
     ObjectFilter filter = new ObjectFilter.Builder().build();
