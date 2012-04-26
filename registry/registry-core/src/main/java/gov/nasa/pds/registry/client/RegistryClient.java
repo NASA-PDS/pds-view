@@ -243,10 +243,14 @@ public class RegistryClient {
    */
   public String versionObject(RegistryObject object, Boolean major)
       throws RegistryServiceException {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    if (registrationPackageGuid != null) {
+      params.add("packageGuid", registrationPackageGuid);
+    }
+    params.add("major", major.toString());
     WebResource.Builder builder = service.path(
         resourceMap.get(object.getClass())).path("logicals").path(
-        object.getLid()).queryParam("major", major.toString())
-        .getRequestBuilder();
+        object.getLid()).queryParams(params).getRequestBuilder();
     ClientResponse response = builder.accept(mediaType).post(
         ClientResponse.class, object);
     if (response.getClientResponseStatus() == Status.CREATED) {
@@ -506,8 +510,16 @@ public class RegistryClient {
       if (filter.getEventType() != null) {
         params.add("eventType", filter.getEventType().toString());
       }
+      if (filter.getRequestId() != null) {
+        params.add("requestId", filter.getRequestId().toString());
+      }
     }
-
+    
+    List<String> sort = query.getSort();
+    for (String s : sort) {
+      params.add("sort", s);
+    }
+    
     WebResource.Builder builder = service.path(
         resourceMap.get(AuditableEvent.class)).queryParams(params)
         .getRequestBuilder();
@@ -731,7 +743,10 @@ public class RegistryClient {
 
   public static void main(String[] args) throws Exception {
     RegistryClient client = new RegistryClient(args[0]);
+    client.setRegistrationPackageId("testpackage");
     ExtrinsicObject eo = client.getObject(args[1], ExtrinsicObject.class);
-    System.out.println(eo.getGuid());
+    eo.setGuid(null);
+    String id = client.versionObject(eo);
+    System.out.println(id);
   }
 }
