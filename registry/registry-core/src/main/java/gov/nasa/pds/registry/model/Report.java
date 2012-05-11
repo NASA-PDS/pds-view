@@ -1,4 +1,4 @@
-//	Copyright 2009-2010, by the California Institute of Technology.
+//	Copyright 2009-2012, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -53,7 +53,7 @@ public class Report {
   private long packages;
   
   @XmlAttribute
-  private String registryVersion = "1.1.0";
+  private String registryVersion = "1.2.0";
 
   public Report() {
     serverStarted = new Date();

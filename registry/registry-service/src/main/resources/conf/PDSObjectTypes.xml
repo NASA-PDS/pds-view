@@ -179,6 +179,12 @@
         name="Product_Software"
         lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Software"
         guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Software"/>
+    <classificationNode code="Product_Subscription_PDS3"
+        parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
+        description="A subscription product describes a subscription."
+        name="Product_Subscription_PDS3"
+        lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Subscription_PDS3"
+        guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Subscription_PDS3"/>
     <classificationNode code="Product_Target"
         parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
         description="A target product describes a target."
