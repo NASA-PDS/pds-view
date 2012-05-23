@@ -607,6 +607,7 @@
    <field name="instrument-host-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="instrument-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="target-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="archive_status" type="text_lc" indexed="true" stored="false" />
    
    <!-- And the faceting fields -->
    <field name="facet_class" type="string_lc" indexed="true" stored="false" multiValued="false" />
@@ -727,6 +728,7 @@
   <copyField source="instrument_host_type" dest="instrument-host-type" />
   <copyField source="instrument_type" dest="instrument-type" />
   <copyField source="target_type" dest="target-type" />
+  <copyField source="archive_status" dest="archive-status" />
   
   <!-- And the spell-check field -->
   <copyField source="target_name" dest="spell" />

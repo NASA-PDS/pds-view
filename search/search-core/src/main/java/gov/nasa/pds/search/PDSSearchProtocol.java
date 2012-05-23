@@ -37,7 +37,7 @@ public class PDSSearchProtocol extends StandardRequestHandler {
 	public final static String START_TIME_PARAM = "start-time";
 	public final static String STOP_TIME_PARAM = "stop-time";
 	public final static String TERM_PARAM = "term";
-	public final static String ARCHIVE_STATUS_PARAM = "archive_status";
+	public final static String ARCHIVE_STATUS_PARAM = "archive-status";
 	public final static String RETURN_TYPE_PARAM = "return-type";
 
 	@Override
