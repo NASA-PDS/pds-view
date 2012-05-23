@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.FocusPanel;
 
 import com.google.gwt.gen2.table.override.client.FlexTable;
 import com.google.gwt.gen2.table.override.client.FlexTable.FlexCellFormatter;
@@ -92,6 +93,7 @@ public class Services extends Tab {
 	private VerticalPanel panel = new VerticalPanel();	
 	private VerticalPanel scrollPanel = new VerticalPanel();	
 	private FlexTable layout = new FlexTable();
+	private HorizontalPanel pagingPanel = new HorizontalPanel();
 	
 	/**
 	 * The dialog box that displays product details.
@@ -181,7 +183,7 @@ public class Services extends Tab {
         this.tableModel.addRowCountChangeHandler(new RowCountChangeHandler() {
             @Override
             public void onRowCountChange(RowCountChangeEvent event) {
-                get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE);
+                get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
             }
         });
         onModuleLoaded();
@@ -216,9 +218,6 @@ public class Services extends Tab {
         // add title to scroll table
         this.scrollPanel.add(new HTML(
                 "<div class=\"title\">Service Registry</div>"));
-
-        // add record count container
-        this.layout.setWidget(3, 0, this.recordCountContainer);
     }
     
     /**
@@ -234,10 +233,10 @@ public class Services extends Tab {
 				this.tableModel);
 
 		// set cache for rows before start row
-		this.cachedTableModel.setPreCachedRowCount(RegistryUI.PAGE_SIZE);
+		this.cachedTableModel.setPreCachedRowCount(RegistryUI.PAGE_SIZE1);
 
 		// set cache for rows after end row
-		this.cachedTableModel.setPostCachedRowCount(RegistryUI.PAGE_SIZE);
+		this.cachedTableModel.setPostCachedRowCount(RegistryUI.PAGE_SIZE1);
 
 		// create a table definition, this defines columns, layout, row colors
 		TableDefinition<ViewService> tableDef = createTableDefinition();
@@ -247,7 +246,7 @@ public class Services extends Tab {
 				this.cachedTableModel, tableDef);
 
 		// set the num rows to display per page
-		this.pagingScrollTable.setPageSize(RegistryUI.PAGE_SIZE);
+		this.pagingScrollTable.setPageSize(RegistryUI.PAGE_SIZE1);
 
 		// set content to display when there is no data
 		this.pagingScrollTable.setEmptyTableWidget(new HTML(
@@ -263,7 +262,7 @@ public class Services extends Tab {
 		this.pagingScrollTable.setCellSpacing(0);
 		this.pagingScrollTable
 				.setResizePolicy(ScrollTable.ResizePolicy.FILL_WIDTH);
-		this.pagingScrollTable.setHeight(RegistryUI.TABLE_HEIGHT);
+		this.pagingScrollTable.setHeight(RegistryUI.TABLE_HEIGHT_B);
 
 		// allow multiple cell resizing
 		this.pagingScrollTable
@@ -387,8 +386,9 @@ public class Services extends Tab {
 					detailTable.getCellFormatter().setStyleName(i, 1,
 							"detailValue");
 				}
-
-				get().dialogVPanel.insert(detailTable, 0);
+				
+				FocusPanel fp = new FocusPanel(detailTable);
+				get().dialogVPanel.insert(fp, 0);
 
 				// display, center and focus popup
 				get().productDetailsBox.center();
@@ -411,7 +411,7 @@ public class Services extends Tab {
 						// TODO: do number formatting and message formatting and
 						// externalize
 						get().recordCountContainer
-								.setHTML("<div class=\"recordCount\">Num Records: "
+								.setHTML("<div class=\"recordCount\">Total Records: "
 										+ count + "</div>");
 					}
 				});
@@ -497,8 +497,9 @@ public class Services extends Tab {
 	public void initPaging() {
 		PagingOptions pagingOptions = new PagingOptions(getPagingScrollTable());
 
-		// add the paging widget to the last row of the layout
-		this.layout.setWidget(2, 0, pagingOptions);
+		this.pagingPanel.add(pagingOptions);
+		this.pagingPanel.add(this.recordCountContainer);
+		this.layout.setWidget(2, 0, this.pagingPanel);
 	}
 	
 	/**
@@ -525,7 +526,7 @@ public class Services extends Tab {
 			};
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(50);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -542,7 +543,7 @@ public class Services extends Tab {
 			};
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(150);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			//columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -559,7 +560,7 @@ public class Services extends Tab {
 			};
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(100);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			//columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -576,7 +577,7 @@ public class Services extends Tab {
 			};
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(50);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -594,7 +595,7 @@ public class Services extends Tab {
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(50);
 			// columnDef.setMaximumColumnWidth(200);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
 
@@ -612,7 +613,7 @@ public class Services extends Tab {
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(50);
 			// columnDef.setMaximumColumnWidth(200);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
 

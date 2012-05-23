@@ -161,10 +161,13 @@ public class AssociationServiceImpl extends RemoteServiceServlet implements
 			*/	
 				
 			// get source lid from the product
+			// need to skip when the source or target object is empty
+			if (vAssoc.getSourceGuid()==null) continue;			
 			ViewProduct aProduct = ConnectionManager.getProduct(vAssoc.getSourceGuid());
 			if (aProduct!=null)
 				vAssoc.setSourceLid(aProduct.getLid());
 			
+			if (vAssoc.getTargetGuid()==null) continue;
 			// get target lid from the product
 		    aProduct = ConnectionManager.getProduct(vAssoc.getTargetGuid());
 		    if (aProduct!=null) 
@@ -191,9 +194,13 @@ public class AssociationServiceImpl extends RemoteServiceServlet implements
 		switch (index) {
 		case 0:
 			return "sourceObject";
-		case 1:
-			return "associationType";
 		case 2:
+			return "associationType";
+		case 3:
+			return "versionName";
+		case 4:
+			return "status";
+		case 5:
 			return "targetObject";
 		default:
 			return null;

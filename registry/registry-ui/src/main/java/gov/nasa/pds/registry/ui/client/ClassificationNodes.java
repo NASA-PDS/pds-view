@@ -19,10 +19,8 @@ import gov.nasa.pds.registry.ui.shared.ViewClassificationNode;
 import gov.nasa.pds.registry.ui.shared.ViewClassificationNodes;
 import gov.nasa.pds.registry.ui.shared.ViewSlot;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
@@ -51,6 +49,7 @@ import com.google.gwt.gen2.table.event.client.RowSelectionHandler;
 import com.google.gwt.gen2.table.event.client.TableEvent.Row;
 import com.google.gwt.gen2.table.override.client.FlexTable;
 import com.google.gwt.gen2.table.override.client.FlexTable.FlexCellFormatter;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -63,8 +62,16 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
+import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.i18n.client.DateTimeFormat;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  * A tab to browse the registered ClassificationNodes. 
@@ -111,6 +118,7 @@ public class ClassificationNodes extends Tab {
 	private VerticalPanel panel = new VerticalPanel();  // main panel
 	private VerticalPanel scrollPanel = new VerticalPanel();
 	private FlexTable layout = new FlexTable();
+	private HorizontalPanel pagingPanel = new HorizontalPanel();
 
 	/**
 	 * The dialog box that displays product details.
@@ -131,6 +139,7 @@ public class ClassificationNodes extends Tab {
 	protected Button closeButton;
 
 	protected HTML recordCountContainer = new HTML("");
+	Logger logger = RegistryUI.logger;
 
 	/**
 	 * The {@link CachedTableModel} around the main table model.
@@ -221,7 +230,7 @@ public class ClassificationNodes extends Tab {
 	public ClassificationNodes() {
 		// assign instance for exterior retrieval
 		instance = this;	
-		panel.setSpacing(10);
+		panel.setSpacing(8);
 		panel.setWidth("100%");
 		initWidget(panel);	
 		// Initialize and add the main layout to the page
@@ -244,9 +253,10 @@ public class ClassificationNodes extends Tab {
 
 			@Override
 			public void onRowCountChange(RowCountChangeEvent event) {
-				get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE);
+				get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
 			}
 		});
+		
 		onModuleLoaded();
 	}
 
@@ -279,9 +289,6 @@ public class ClassificationNodes extends Tab {
 		// add title to scroll table
 		this.scrollPanel.add(new HTML(
 				"<div class=\"title\">Classification Node Registry</div>"));
-
-		// add record count container
-		this.layout.setWidget(3, 0, this.recordCountContainer);
 	}
 
 	/**
@@ -303,8 +310,7 @@ public class ClassificationNodes extends Tab {
 		// add the close button to the panel
 		this.dialogVPanel.add(this.closeButton);
 
-		// create a handler for the click of the close button to hide the detail
-		// box
+		// create a handler for the click of the close button to hide the detail box
 		ClickHandler closButtonHandler = new ClickHandler() {
 
 			@Override
@@ -358,10 +364,10 @@ public class ClassificationNodes extends Tab {
 				this.tableModel);
 
 		// set cache for rows before start row
-		this.cachedTableModel.setPreCachedRowCount(RegistryUI.PAGE_SIZE);
+		this.cachedTableModel.setPreCachedRowCount(RegistryUI.PAGE_SIZE1);
 
 		// set cache for rows after end row
-		this.cachedTableModel.setPostCachedRowCount(RegistryUI.PAGE_SIZE);
+		this.cachedTableModel.setPostCachedRowCount(RegistryUI.PAGE_SIZE1);
 
 		// create a table definition, this defines columns, layout, row colors
 		TableDefinition<ViewClassificationNode> tableDef = createTableDefinition();
@@ -371,7 +377,7 @@ public class ClassificationNodes extends Tab {
 				this.cachedTableModel, tableDef);
 
 		// set the num rows to display per page
-		this.pagingScrollTable.setPageSize(RegistryUI.PAGE_SIZE);
+		this.pagingScrollTable.setPageSize(RegistryUI.PAGE_SIZE1);
 
 		// set content to display when there is no data
 		this.pagingScrollTable.setEmptyTableWidget(new HTML(
@@ -387,7 +393,7 @@ public class ClassificationNodes extends Tab {
 		this.pagingScrollTable.setCellSpacing(0);
 		this.pagingScrollTable
 				.setResizePolicy(ScrollTable.ResizePolicy.FILL_WIDTH);
-		this.pagingScrollTable.setHeight(RegistryUI.TABLE_HEIGHT);
+		this.pagingScrollTable.setHeight(RegistryUI.TABLE_HEIGHT_B);
 
 		// allow multiple cell resizing
 		this.pagingScrollTable
@@ -485,7 +491,8 @@ public class ClassificationNodes extends Tab {
 					detailTable.getCellFormatter().setStyleName(i, 1,
 							"detailValue");
 				}
-				get().dialogVPanel.insert(detailTable, 0);
+				FocusPanel fp = new FocusPanel(detailTable);
+				get().dialogVPanel.insert(fp, 0);
 
 				// display, center and focus popup
 				get().productDetailsBox.center();
@@ -506,10 +513,8 @@ public class ClassificationNodes extends Tab {
 								.getRowCount();
 
 						// display count in page
-						// TODO: do number formatting and message formatting and
-						// externalize
 						get().recordCountContainer
-								.setHTML("<div class=\"recordCount\">Num Records: "
+								.setHTML("<div class=\"recordCount\">Total Records: "
 										+ count + "</div>");
 					}
 				});
@@ -534,8 +539,46 @@ public class ClassificationNodes extends Tab {
 	public void initPaging() {
 		PagingOptions pagingOptions = new PagingOptions(getPagingScrollTable());
 
-		// add the paging widget to the last row of the layout
-		this.layout.setWidget(2, 0, pagingOptions);
+		this.pagingPanel.add(pagingOptions);
+		this.pagingPanel.add(this.recordCountContainer);
+		
+		final ListBox showRecordsInput = new ListBox(false);
+		showRecordsInput.setName("showRecords");
+		showRecordsInput.addItem("20 records", "0");
+		showRecordsInput.addItem("50 records");
+		showRecordsInput.addItem("100 records");
+		
+		showRecordsInput.addChangeHandler(new ChangeHandler() {
+			//@Override
+			public void onChange(ChangeEvent event) {
+				int itemSelected = showRecordsInput.getSelectedIndex();
+				logger.log(Level.FINEST, "show:   selected index = " + itemSelected);
+				switch (itemSelected) {
+					case 1: 
+						get().getPagingScrollTable().setHeight(RegistryUI.TBL_HGT_50_B);
+						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE2);
+						break;
+					case 2:
+						get().getPagingScrollTable().setHeight(RegistryUI.TBL_HGT_100_B);
+						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE3);
+						break;
+					default:
+						get().getPagingScrollTable().setHeight(RegistryUI.TABLE_HEIGHT_B);
+						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
+						break;
+				}
+				get().getPagingScrollTable().redraw();
+			}
+		});
+		
+		final Label showRecordsLbl = new Label("Show:");
+		showRecordsLbl.setWidth("200px");
+		showRecordsLbl.addStyleName("gwt-Label-Show");
+		this.pagingPanel.add(showRecordsLbl);
+		showRecordsInput.addStyleName("recordListBox");
+		this.pagingPanel.add(showRecordsInput);
+		
+		this.layout.setWidget(2, 0, this.pagingPanel);
 	}
 
 	/**
@@ -569,7 +612,7 @@ public class ClassificationNodes extends Tab {
 			};
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(80);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -586,7 +629,7 @@ public class ClassificationNodes extends Tab {
 			};
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(100);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -603,7 +646,7 @@ public class ClassificationNodes extends Tab {
 			};
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(100);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -621,7 +664,7 @@ public class ClassificationNodes extends Tab {
 			columnDef.setMinimumColumnWidth(40);
 			columnDef.setPreferredColumnWidth(40);
 			// columnDef.setMaximumColumnWidth(200);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -640,7 +683,7 @@ public class ClassificationNodes extends Tab {
 			columnDef.setMinimumColumnWidth(35);
 			columnDef.setPreferredColumnWidth(35);
 			// columnDef.setMaximumColumnWidth(200);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}

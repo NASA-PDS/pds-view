@@ -22,6 +22,8 @@ import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Interface to the packages service
  * 
@@ -31,5 +33,14 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface PackageService extends RemoteService {
 
 	SerializableResponse<ViewRegistryPackage> requestRows(Request request);
-
+	
+	boolean updatePackage(final ViewRegistryPackage registryPackage);
+	
+	boolean deletePackage(ViewRegistryPackage registryPackage);
+	
+	String getRemoteUser();
+	
+	String getRemotePassword();
+	
+	String getSessionId();
 }

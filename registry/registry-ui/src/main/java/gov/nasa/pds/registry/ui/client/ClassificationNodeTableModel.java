@@ -15,7 +15,6 @@ package gov.nasa.pds.registry.ui.client;
 
 import gov.nasa.pds.registry.ui.shared.ViewClassificationNode;
 import gov.nasa.pds.registry.ui.shared.ViewClassificationNodes;
-//import gov.nasa.pds.registry.ui.shared.ViewProduct;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,12 +38,6 @@ public class ClassificationNodeTableModel extends MutableTableModel<ViewClassifi
 	 * The RPC service used to generate data.
 	 */
 	private ClassificationNodeServiceAsync dataService = null;
-
-	/**
-	 * The RPC service used to generate a product data. Required separate from
-	 * other service due to difference in endpoint url.
-	 */
-	//private ProductsServiceAsync productService = null;
 
 	/**
 	 * A store of filter params as they are not supported in the request object
@@ -120,22 +113,6 @@ public class ClassificationNodeTableModel extends MutableTableModel<ViewClassifi
 					}
 				});
 	}
-
-	/*
-	public void getProduct(
-			final String guid,
-			final AsyncCallback<SerializableResponse<ViewProduct>> asyncCallback) {
-
-		// if the data service is null, instantiate it
-		if (this.productService == null) {
-			// create a new instance of the class
-			this.productService = GWT.create(ProductsService.class);
-		}
-
-		// Send RPC request for data, including previously set filters
-		this.productService.getProduct(guid, asyncCallback);
-	}
-	*/
 	
 	// Default behaviors for common table access, add functionality as necessary
 	@Override

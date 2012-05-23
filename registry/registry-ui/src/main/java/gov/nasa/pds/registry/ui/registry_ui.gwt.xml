@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module rename-to='registry_ui'>
+
   <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User'/>
 
@@ -13,27 +14,28 @@
 
   <!-- Other module inherits                                      -->
   <inherits name='com.google.gwt.gen2.table.Table'/>
+  <inherits name='com.google.gwt.widgetideas.GlassPanel'/>
   
   <!--  GWT LOGGING -->
-  <!--inherits name='com.google.gwt.logging.Logging'/>
-  <set-property name='gwt.logging.logLevel' value='DEBUG'/>
-  <set-property name='gwt.logging.enabled' value='TRUE'/-->
-  <!--set-property name='gwt.logging.consoleHandler' value='DISABLED'/-->
+  <inherits name='com.google.gwt.logging.Logging'/>
+  <set-property name='gwt.logging.logLevel' value='FINEST'/>
+  <set-property name='gwt.logging.enabled' value='TRUE'/>
+  <set-property name='gwt.logging.consoleHandler' value='DISABLED'/>
+  <set-property name='gwt.logging.popupHandler' value='ENABLED'/>
+  <!--set-property name='gwt.logging.systemHandler' value='ENABLED'/-->
+  <set-property name='gwt.logging.firebugHandler' value='ENABLED'/>
+  <!-- logged by client side code to be stored on the server side -->
+  <set-property name='gwt.logging.simpleRemoteHandler' value='DISABLED'/>
   
-  <!-- For development, a default of `DEBUG` is recommended -->
-  <!--inherits name="com.allen_sauer.gwt.log.gwt-log-DEBUG" />
-  <extend-property name="log_level" values="DEBUG,WARN"/-->
-  
-  <!-- In gwt-log-3.0.2 or earlier releases only, use this instead -->
-  <!--set-property name="log_RemoteLogger" value="ENABLED" /-->
+  <!-- for cookies -->
+  <inherits name='com.google.gwt.http.HTTP'/>
+  <!--inherits name='javax.servlet.http.HttpServletRequest'/-->
   
   <!-- 
     Inspired by Apache log4j PatternLayout:
     http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html
   -->
   <!--set-configuration-property name="log_pattern" value="(%F:%L) %d [%-5p] %m%n" /-->
-  
-  
   
   <!-- Specify the app entry point class.                         -->
   <!--entry-point class='gov.nasa.pds.registry.ui.client.Registry_ui'/-->
@@ -44,7 +46,7 @@
   <!--servlet path="/products" class="gov.nasa.pds.registry.ui.server.ProductsServiceImpl"/>
   <servlet path="/services" class="gov.nasa.pds.registry.ui.server.ServiceBindingServiceImpl"/-->
 
-  <!-- Specify the paths for translatable code                    -->
+  <!-- Specify the paths for translatable code -->
   <source path='client'/>
   <source path='shared'/>
 

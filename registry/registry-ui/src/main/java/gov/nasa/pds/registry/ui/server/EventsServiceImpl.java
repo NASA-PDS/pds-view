@@ -100,7 +100,7 @@ public class EventsServiceImpl extends RemoteServiceServlet implements
 			EventFilter.Builder filterBuilder = new EventFilter.Builder();
 
 			// for each sortable column, if the filter exists, add it
-
+/*
 			if (filters.containsKey("lid")) {
 				filterBuilder.lid(filters.get("lid"));
 			}
@@ -130,7 +130,7 @@ public class EventsServiceImpl extends RemoteServiceServlet implements
 			if (filters.containsKey("user")) {
 				filterBuilder.user(filters.get("user"));
 			}
-			
+*/			
 			// need to convert to enum type
 			if (filters.containsKey("eventType")) {
 				filterBuilder.eventType(EventType.valueOf(filters.get("eventType")));
@@ -153,8 +153,9 @@ public class EventsServiceImpl extends RemoteServiceServlet implements
 			
 			if (filters.containsKey("requestId")) {
 				filterBuilder.requestId(filters.get("requestId"));
+				//System.out.println("requestId = " + filters.get("requestId"));
 			}
-			
+
 			// build the filter
 			EventFilter filter = filterBuilder.build();
 
@@ -189,14 +190,16 @@ public class EventsServiceImpl extends RemoteServiceServlet implements
 	public static String indexToColumnName(int index) {
 		switch (index) {
 		case 0:
-			return "name";
+			return "requestId";
 		case 1:
-			return "lid";
+			return "timestamp";
 		case 2:
-			return "versionId";
+			return "eventType";
 		case 3:
-			return "objectType";
+			return "user";
 		case 4:
+			return "objectType";
+		case 5:
 			return "status";
 		default:
 			return null;

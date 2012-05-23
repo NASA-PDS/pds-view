@@ -122,7 +122,7 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 
 	public void getAssociations(
 			final String guid,
-			final AsyncCallback<SerializableResponse<ViewAssociation>> asyncCallback) {
+			AsyncCallback<SerializableResponse<ViewAssociation>> asyncCallback) {
 
 		// if the data service is null, instantiate it
 		if (this.associationService == null) {
@@ -134,6 +134,26 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 		this.associationService.getAssociations(guid, asyncCallback);
 	}
 
+	public void updateProduct(final ViewProduct product,
+			AsyncCallback<Boolean> asyncCallback) {
+		// if the data service is null, instantiate it
+		if (this.dataService == null) {
+			// create a new instance of the class
+			this.dataService = GWT.create(ProductsService.class);
+		}
+		
+		this.dataService.updateProduct(product, asyncCallback);
+	}
+	
+	public void deleteProduct(ViewProduct product,
+			AsyncCallback<Boolean> asyncCallback) {
+		if (this.dataService == null) {
+			this.dataService = GWT.create(ProductsService.class);
+		}
+		
+		this.dataService.deleteProduct(product, asyncCallback);
+	}
+	
 	// Default behaviors for common table access, add functionality as necessary
 	@Override
 	protected boolean onRowInserted(int beforeRow) {

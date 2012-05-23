@@ -17,12 +17,10 @@ import gov.nasa.pds.registry.ui.client.Tab.TabInfo;
 import gov.nasa.pds.registry.ui.shared.InputContainer;
 import gov.nasa.pds.registry.ui.shared.ViewAuditableEvent;
 import gov.nasa.pds.registry.ui.shared.ViewSlot;
+import gov.nasa.pds.registry.ui.shared.Constants;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-//import java.text.SimpleDateFormat;
-
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
@@ -51,6 +49,7 @@ import com.google.gwt.gen2.table.event.client.RowSelectionHandler;
 import com.google.gwt.gen2.table.event.client.TableEvent.Row;
 import com.google.gwt.gen2.table.override.client.FlexTable;
 import com.google.gwt.gen2.table.override.client.FlexTable.FlexCellFormatter;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -60,11 +59,19 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.i18n.client.DateTimeFormat;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A tab to browse the registered events. 
@@ -111,9 +118,8 @@ public class Events extends Tab {
 	private VerticalPanel panel = new VerticalPanel();  // main panel
 	private VerticalPanel scrollPanel = new VerticalPanel();
 	private FlexTable layout = new FlexTable();
+	private HorizontalPanel pagingPanel = new HorizontalPanel();
 
-	//private final SimpleDateFormat dateFormat = new SimpleDateFormat(
-    //	"yyyy-MM-dd'T'HH:mm:ss");
 	private final DateTimeFormat dateFormat = DateTimeFormat.getFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 	
 	/**
@@ -138,6 +144,8 @@ public class Events extends Tab {
 	
 	private int recordCount;
 
+	Logger logger = RegistryUI.logger;
+	
 	/**
 	 * The {@link CachedTableModel} around the main table model.
 	 */
@@ -235,7 +243,7 @@ public class Events extends Tab {
 	public Events() {
 		// assign instance for exterior retrieval
 		instance = this;	
-		panel.setSpacing(10);
+		panel.setSpacing(8);
 		panel.setWidth("100%");
 		initWidget(panel);	
 		// Initialize and add the main layout to the page
@@ -261,9 +269,10 @@ public class Events extends Tab {
 
 			@Override
 			public void onRowCountChange(RowCountChangeEvent event) {
-				get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE);
+				get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
 			}
 		});
+		
 		onModuleLoaded();
 	}
 
@@ -296,9 +305,6 @@ public class Events extends Tab {
 		// add title to scroll table
 		this.scrollPanel.add(new HTML(
 				"<div class=\"title\">Event Registry</div>"));
-
-		// add record count container
-		this.layout.setWidget(3, 0, this.recordCountContainer);
 	}
 
 	/**
@@ -386,9 +392,9 @@ public class Events extends Tab {
 		InputContainer evtEndInputWrap = new InputContainer("Event End", evtEndInput);
 		inputTable.add(evtEndInputWrap);
 
-		// create dropdown input for requestId
+		// create textual input for requestId
 		final TextBox requestIdInput = new TextBox();
-		requestIdInput.setWidth("250px");
+		//requestIdInput.setWidth("250px");
 		requestIdInput.setName("requestId");
 		InputContainer requestIdInputWrap = new InputContainer("Request ID",
 				requestIdInput);
@@ -401,27 +407,22 @@ public class Events extends Tab {
 		// order more important?
 		evtTypeInput.setName("eventType");
 		evtTypeInput.addItem("Any Event Type", "-1");
-		evtTypeInput.addItem("Created");
-		evtTypeInput.addItem("Approved");
-		evtTypeInput.addItem("Deleted");
-		evtTypeInput.addItem("Updated");
-		evtTypeInput.addItem("Deprecated");
-		evtTypeInput.addItem("Versioned");
-		evtTypeInput.addItem("Undeprecated");
-		evtTypeInput.addItem("Replicated");
+		for (int i=0; i<Constants.eventTypes.length; i++) {
+			evtTypeInput.addItem(Constants.eventTypes[i]);
+		}
 		InputContainer evtTypeInputWrap = new InputContainer("Event Type",
 				evtTypeInput);
 		inputTable.add(evtTypeInputWrap);
 
-		// create button for doing an update
-		final Button updateButton = new Button("Update");
-		updateButton.setWidth("55px");
-		updateButton.setStyleName("buttonwrapper");
-		InputContainer updateButtonWrap = new InputContainer(null, updateButton);
-		inputTable.add(updateButtonWrap);
+		// create button for refreshing the table
+		final Button refreshButton = new Button("Refresh");
+		//refreshButton.setWidth("55px");
+		refreshButton.setStyleName("buttonwrapper");
+		InputContainer refreshButtonWrap = new InputContainer(null, refreshButton);
+		inputTable.add(refreshButtonWrap);
 
 		final Button clearButton = new Button("Clear");
-		clearButton.setWidth("50px");
+		//clearButton.setWidth("50px");
 		clearButton.setStyleName("buttonwrapper");
 		InputContainer clearButtonWrap = new InputContainer(null, clearButton);
 		inputTable.add(clearButtonWrap);
@@ -431,7 +432,7 @@ public class Events extends Tab {
 		// not sure this is reasonable as we're not doing a real submit, it's
 		// triggering a javascript event that is integral to the behavior of the
 		// scroll table
-		updateButton.addClickHandler(new ClickHandler() {
+		refreshButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				// clear cache as data will be invalid after filter
@@ -464,7 +465,7 @@ public class Events extends Tab {
 				}
 
 				// requestId
-				String requestId = requestIdInput.getValue();
+				String requestId = requestIdInput.getValue().trim();
 				if (!requestId.equals("")) {
 					tablemodel.addFilter("requestId", requestId);
 				}
@@ -508,10 +509,10 @@ public class Events extends Tab {
 				this.tableModel);
 
 		// set cache for rows before start row
-		this.cachedTableModel.setPreCachedRowCount(RegistryUI.PAGE_SIZE);
+		this.cachedTableModel.setPreCachedRowCount(RegistryUI.PAGE_SIZE1);
 
 		// set cache for rows after end row
-		this.cachedTableModel.setPostCachedRowCount(RegistryUI.PAGE_SIZE);
+		this.cachedTableModel.setPostCachedRowCount(RegistryUI.PAGE_SIZE1);
 
 		// create a table definition, this defines columns, layout, row colors
 		TableDefinition<ViewAuditableEvent> tableDef = createTableDefinition();
@@ -521,7 +522,7 @@ public class Events extends Tab {
 				this.cachedTableModel, tableDef);
 
 		// set the num rows to display per page
-		this.pagingScrollTable.setPageSize(RegistryUI.PAGE_SIZE);
+		this.pagingScrollTable.setPageSize(RegistryUI.PAGE_SIZE1);
 
 		// set content to display when there is no data
 		this.pagingScrollTable.setEmptyTableWidget(new HTML(
@@ -537,7 +538,7 @@ public class Events extends Tab {
 		this.pagingScrollTable.setCellSpacing(0);
 		this.pagingScrollTable
 				.setResizePolicy(ScrollTable.ResizePolicy.FILL_WIDTH);
-		this.pagingScrollTable.setHeight(RegistryUI.TABLE_HEIGHT);
+		this.pagingScrollTable.setHeight(RegistryUI.TABLE_HEIGHT_B);
 
 		// allow multiple cell resizing
 		this.pagingScrollTable
@@ -630,8 +631,7 @@ public class Events extends Tab {
 				
 				detailTable.setText(row, 0, "Timestamp");
 				detailTable.setText(row++, 1, dateFormat.format(product.getTimestamp()));
-				//detailTable.setText(row++, 1, product.getTimestamp().toString());
-				
+
 				List<String> affectedObjs = product.getAffectedObjects();
 				for (String affectedObj: affectedObjs) {
 					detailTable.setText(row, 0, "Affected Object");
@@ -645,7 +645,8 @@ public class Events extends Tab {
 					detailTable.getCellFormatter().setStyleName(i, 1,
 							"detailValue");
 				}
-				get().dialogVPanel.insert(detailTable, 0);
+				FocusPanel fp = new FocusPanel(detailTable);
+				get().dialogVPanel.insert(fp, 0);
 
 				// display, center and focus popup
 				get().productDetailsBox.center();
@@ -666,10 +667,8 @@ public class Events extends Tab {
 								.getRowCount();
 
 						// display count in page
-						// TODO: do number formatting and message formatting and
-						// externalize
 						get().recordCountContainer
-								.setHTML("<div class=\"recordCount\">Num Records: "
+								.setHTML("<div class=\"recordCount\">Total Records: "
 										+ count + "</div>");
 					}
 				});
@@ -694,8 +693,46 @@ public class Events extends Tab {
 	public void initPaging() {
 		PagingOptions pagingOptions = new PagingOptions(getPagingScrollTable());
 
-		// add the paging widget to the last row of the layout
-		this.layout.setWidget(2, 0, pagingOptions);
+		this.pagingPanel.add(pagingOptions);
+		this.pagingPanel.add(this.recordCountContainer);
+		
+		final ListBox showRecordsInput = new ListBox(false);
+		showRecordsInput.setName("showRecords");
+		showRecordsInput.addItem("20 records", "0");
+		showRecordsInput.addItem("50 records");
+		showRecordsInput.addItem("100 records");
+		
+		showRecordsInput.addChangeHandler(new ChangeHandler() {
+			//@Override
+			public void onChange(ChangeEvent event) {
+				int itemSelected = showRecordsInput.getSelectedIndex();
+				logger.log(Level.FINEST, "show:   selected index = " + itemSelected);
+				switch (itemSelected) {
+					case 1: 
+						get().getPagingScrollTable().setHeight(RegistryUI.TBL_HGT_50_B);
+						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE2);
+						break;
+					case 2:
+						get().getPagingScrollTable().setHeight(RegistryUI.TBL_HGT_100_B);
+						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE3);
+						break;
+					default:
+						get().getPagingScrollTable().setHeight(RegistryUI.TABLE_HEIGHT_B);
+						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
+						break;
+				}
+				get().getPagingScrollTable().redraw();
+			}
+		});
+		
+		final Label showRecordsLbl = new Label("Show:");
+		showRecordsLbl.setWidth("200px");
+		showRecordsLbl.addStyleName("gwt-Label-Show");
+		this.pagingPanel.add(showRecordsLbl);
+		showRecordsInput.addStyleName("recordListBox");
+		this.pagingPanel.add(showRecordsInput);
+		
+		this.layout.setWidget(2, 0, this.pagingPanel);
 	}
 
 	/**
@@ -716,8 +753,7 @@ public class Events extends Tab {
 
 		// Set the row renderer
 		String[] rowColors = new String[] { "#FFFFCC", "#FFFFFF" };
-		this.tableDefinition
-				.setRowRenderer(new DefaultRowRenderer<ViewAuditableEvent>(rowColors));
+		this.tableDefinition.setRowRenderer(new DefaultRowRenderer<ViewAuditableEvent>(rowColors));
 		
 		// request id
 		{
@@ -800,7 +836,7 @@ public class Events extends Tab {
 			columnDef.setMinimumColumnWidth(40);
 			columnDef.setPreferredColumnWidth(40);
 			// columnDef.setMaximumColumnWidth(200);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -819,7 +855,7 @@ public class Events extends Tab {
 			columnDef.setMinimumColumnWidth(35);
 			columnDef.setPreferredColumnWidth(35);
 			// columnDef.setMaximumColumnWidth(200);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}

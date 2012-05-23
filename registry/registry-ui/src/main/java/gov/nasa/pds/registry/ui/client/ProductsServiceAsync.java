@@ -20,6 +20,7 @@ import java.util.Map;
 import com.google.gwt.gen2.table.client.TableModelHelper.Request;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.http.client.RequestBuilder;
 
 /**
  * Asynchronous interface to the products service
@@ -31,7 +32,19 @@ public interface ProductsServiceAsync {
 	void getProduct(final String guid,
 			AsyncCallback<SerializableResponse<ViewProduct>> callback);
 	
+	//Request getProduct(final String guid, 
+	//      AsyncCallback<SerializableResponse<ViewProduct>> callback);
+	
+	// or
+	
+	// Method returns the underlying HTTP RequestBuilder instance
+	//RequestBuilder getProduct(final String guid,
+	 //      AsyncCallback<SerializableResponse<ViewProduct>> callback);
+	
 	void requestRows(Request request, Map<String, String> filters,
 			AsyncCallback<SerializableResponse<ViewProduct>> callback);
+	
+	void updateProduct(final ViewProduct product, AsyncCallback<Boolean> callback);
 
+	void deleteProduct(ViewProduct product, AsyncCallback<Boolean> callback);
 }

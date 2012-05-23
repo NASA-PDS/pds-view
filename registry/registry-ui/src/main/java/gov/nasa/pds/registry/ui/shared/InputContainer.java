@@ -51,8 +51,7 @@ public class InputContainer extends VerticalPanel {
 		if (label != null && !label.equals("")) {
 			// wrap the label in a span, applying the style classname
 			// "inputLabel"
-			this
-					.add(new HTML("<span class=\"inputLabel\">" + label
+			this.add(new HTML("<span class=\"inputLabel\">" + label
 							+ "</span>"));
 		}
 

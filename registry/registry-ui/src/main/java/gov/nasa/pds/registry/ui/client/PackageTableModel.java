@@ -113,6 +113,51 @@ public class PackageTableModel extends MutableTableModel<ViewRegistryPackage> {
 				});
 	}
 
+	public void updatePackage(final ViewRegistryPackage viewRegistryPackage,
+			AsyncCallback<Boolean> asyncCallback) {
+		// if the data service is null, instantiate it
+		if (this.dataService == null) {
+			// create a new instance of the class
+			this.dataService = GWT.create(PackageService.class);
+		}
+		
+		this.dataService.updatePackage(viewRegistryPackage, asyncCallback);
+	}
+	
+	public void deletePackage(ViewRegistryPackage registryPackage,
+			AsyncCallback<Boolean> asyncCallback) {
+		// if the data service is null, instantiate it
+		if (this.dataService == null) {
+			// create a new instance of the class
+			this.dataService = GWT.create(PackageService.class);
+		}
+		
+		this.dataService.deletePackage(registryPackage, asyncCallback);
+	}
+	
+	public void getRemoteUser(AsyncCallback<String> asyncCallback) {
+		if (this.dataService == null) {
+			this.dataService = GWT.create(PackageService.class);
+		}
+		
+		this.dataService.getRemoteUser(asyncCallback);
+	}
+	public void getRemotePassword(AsyncCallback<String> asyncCallback) {
+		if (this.dataService == null) {
+			this.dataService = GWT.create(PackageService.class);
+		}
+		
+		this.dataService.getRemotePassword(asyncCallback);
+	}
+	
+	public void getSessionId(AsyncCallback<String> asyncCallback) {
+		if (this.dataService == null) {
+			this.dataService = GWT.create(PackageService.class);
+		}
+		
+		this.dataService.getSessionId(asyncCallback);
+	}
+		
 	// Default behaviors for common table access, add functionality as necessary
 	@Override
 	protected boolean onRowInserted(int beforeRow) {

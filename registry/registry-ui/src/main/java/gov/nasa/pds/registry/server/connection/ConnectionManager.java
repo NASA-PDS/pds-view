@@ -22,6 +22,8 @@ import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.ClassificationScheme;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.Link;
+import gov.nasa.pds.registry.model.ObjectAction;
+import gov.nasa.pds.registry.model.ObjectStatus;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.RegistryPackage;
@@ -58,11 +60,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.HashSet;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.core.MediaType;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Manager to send and receive info from remote registry service.
@@ -87,6 +91,9 @@ public class ConnectionManager {
 	 * Instance of applicaiton properties
 	 */
 	public static Properties props;
+	
+	
+	public static Logger logger = Logger.getLogger("registry-ui");
 
 	// Synchronizes the incoming registry artifacts with those already present
 	// in the registry.
@@ -158,10 +165,10 @@ public class ConnectionManager {
 			Integer numResults) {
 		RegistryClient client = getRegistry();
 		PagedResponse<ExtrinsicObject> pagedResp = null;
-		try {
+		try {			
 			if (query != null) {
 				pagedResp = client.getExtrinsics(query, start, numResults);
-			} else {
+			} else {				
 				pagedResp = client.getObjects(start, numResults,
 						ExtrinsicObject.class);
 			}
@@ -236,38 +243,6 @@ public class ConnectionManager {
 	}
 	
 	/**
-	 * Retrieve links from remote registry service. Note that this wraps the
-	 * returned results in a view-only version of the links so that they may
-	 * be used on the GWT client side.
-	 * 
-	 * @param start
-	 *            start index for retrieved results. Defaults to 1.
-	 * @param numResults
-	 *            number of results to return. Defaults to 20.
-	 * 
-	 * @return given number of links from the given start
-	 * 
-	 */
-	/*
-	public static ViewLinks getLinks(Integer start, Integer numResults) {
-		RegistryClient client = getRegistry();
-
-		PagedResponse<RegistryPackage> pagedResp = null;
-		try {
-			pagedResp = client.getObjects(start, numResults,
-					Link.class);
-		} catch (RegistryServiceException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-		}
-
-		ViewLinks viewLinks = respToViewLink(pagedResp);
-
-		return viewLinks;
-	}
-	*/
-
-	/**
 	 * Retrieve packages from remote registry service. Note that this wraps the
 	 * returned results in a view-only version of the packages so that they may
 	 * be used on the GWT client side.
@@ -294,8 +269,117 @@ public class ConnectionManager {
 		}
 
 		ViewRegistryPackages viewPackages = respToViewPackage(pagedResp);
-
+	
 		return viewPackages;
+	}
+	
+	/**
+	 * Updates the given RegistryPackage
+	 * 
+	 * @param viewRegistryPackage a RegistryPackage to update
+	 */
+	public static boolean updatePackage(ViewRegistryPackage registryPackage) {
+		RegistryClient client = getRegistry();
+		boolean returnStatus = false;
+		try {
+			RegistryPackage rp = client.getObject(registryPackage.getGuid(), RegistryPackage.class);
+			ObjectAction oa = null;			
+			if (registryPackage.getStatus().equals("Approved"))
+				oa = ObjectAction.approve;
+			else if (registryPackage.getStatus().equals("Deprecated"))
+				oa = ObjectAction.deprecate;
+			else if (registryPackage.getStatus().equals("Submitted"))
+				oa = ObjectAction.undeprecate;
+				
+			if (rp.getStatus()==null)  {
+				if (!rp.getStatus().equals("Unknown")) {
+					client.changeStatusOfPackageMembers(registryPackage.getGuid(), oa);
+					rp.setStatus(ObjectStatus.valueOf(registryPackage.getStatus()));
+					client.updateObject(rp);
+					returnStatus = true;
+				}
+			}
+			else {
+				if (!rp.getStatus().toString().equals(registryPackage.getStatus())) {
+					client.changeStatusOfPackageMembers(registryPackage.getGuid(), oa);
+					rp.setStatus(ObjectStatus.valueOf(registryPackage.getStatus()));				
+					client.updateObject(rp);
+					returnStatus = true;
+				}
+			}
+		} catch (RegistryServiceException e) {
+			e.printStackTrace();
+		}
+		return returnStatus;
+	}
+
+	/**
+	 * Updates the given ExtrinsicObject
+	 * 
+	 * @param product an ExtrinsicObject to update
+	 */
+	public static boolean updateProduct(ViewProduct product) {
+		RegistryClient client = getRegistry();
+		boolean returnStatus = false;
+		try {
+			ExtrinsicObject extObj = client.getObject(product.getGuid(), ExtrinsicObject.class);						
+			if (extObj.getStatus()==null) {
+				if (!product.getStatus().equals("Unknown")) {
+					extObj.setStatus(ObjectStatus.valueOf(product.getStatus()));
+					client.updateObject(extObj);
+					returnStatus = true;
+				}
+			}
+			else {
+				if (!extObj.getStatus().toString().equals(product.getStatus())) {
+					extObj.setStatus(ObjectStatus.valueOf(product.getStatus()));
+					client.updateObject(extObj);
+					returnStatus = true;
+				}
+			}
+		} catch (RegistryServiceException e) {
+			e.printStackTrace();
+		}
+		return returnStatus;
+	}
+
+	/**
+	 * Removes an ExtrinsicObject from the registry
+	 * 
+	 * @param product an extrinsic object to remove
+	 */
+	public static boolean deleteProduct(ViewProduct product) {
+		RegistryClient client = getRegistry();
+		boolean status = false;
+		try {
+			if (product!=null) {
+				client.deleteObject(product.getGuid(), ExtrinsicObject.class);
+				status = true;
+			}
+		} catch (RegistryServiceException e) {
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
+	/**
+	 * Removes a RegistryPackage from the registry 
+	 * 
+	 * @param registryPackage a RegistryPackage object to remove
+	 */
+	public static boolean deletePackage(ViewRegistryPackage registryPackage) {
+		RegistryClient client = getRegistry();
+		boolean status = false;
+		try {
+			if (registryPackage!=null) {
+				client.deletePackageMembers(registryPackage.getGuid());
+				client.deleteObject(registryPackage.getGuid(), RegistryPackage.class);
+				status = true;
+			}
+		} catch (RegistryServiceException e) {
+			e.printStackTrace();
+		}
+		return status;
 	}
 
 	/**
@@ -330,11 +414,11 @@ public class ConnectionManager {
 			}
 		} catch (RegistryServiceException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
-
 		// convert response to view events
 		ViewAuditableEvents viewEvents = respToViewEvents(pagedResp);
-
+		
 		return viewEvents;
 	}
 
@@ -385,6 +469,7 @@ public class ConnectionManager {
 			pagedResp = client.getObjects(start, numResults, ClassificationNode.class);
 		} catch (RegistryServiceException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		ViewClassificationNodes nodes = respToViewClassificationNodes(pagedResp);
 
@@ -484,6 +569,9 @@ public class ConnectionManager {
 
 		// create an instance of the registry client
 		try {
+			//RegistryClient client = new RegistryClientString baseUrl, SecurityContext securityContext,
+		    // String username, String password)
+			
 			RegistryClient client = new RegistryClient(serviceEndpoint);
 			client.setMediaType(MediaType.APPLICATION_XML);
 			return client;
@@ -734,7 +822,7 @@ public class ConnectionManager {
 		}
 		return viewPackages;
 	}
-
+	
 	private static ViewAuditableEvents respToViewEvents(
 			final PagedResponse<AuditableEvent> pagedResp) {
 		ViewAuditableEvents viewEvents = new ViewAuditableEvents();
@@ -858,22 +946,4 @@ public class ConnectionManager {
 		}
 		return viewClassificationNodes;
 	}
-	
-	/*
-	private static ViewLinks respToViewLink(
-			final PagedResponse<Link> pagedResp) {
-		ViewLinks viewLinks = new ViewLinks();
-		viewLinks.setStart(pagedResp.getStart());
-		viewLinks.setSize(pagedResp.getNumFound());
-		List<Link> links = pagedResp.getResults();
-		for (Link link: links) {
-			ViewLink vLink = new ViewLink();
-			viewLinks.add(vLink);
-			vLink.setHref(link.getHref());
-			vLink.setRelationship(link.getRelationship());
-			vLink.setType(link.getType());
-		}
-		return viewLinks;
-	}
-	*/
 }

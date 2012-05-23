@@ -26,6 +26,7 @@ import com.google.gwt.gen2.table.client.MutableTableModel;
 import com.google.gwt.gen2.table.client.TableModelHelper.Request;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.http.client.RequestBuilder;
 
 /**
  * Table model for associations. Determines the behaviors for retrieving data to
@@ -132,6 +133,7 @@ public class AssociationTableModel extends MutableTableModel<ViewAssociation> {
 		}
 
 		// Send RPC request for data, including previously set filters
+		//return this.productService.getProduct(guid, asyncCallback);
 		this.productService.getProduct(guid, asyncCallback);
 	}
 	

@@ -14,20 +14,11 @@
 package gov.nasa.pds.registry.ui.client;
 
 import gov.nasa.pds.registry.ui.client.Tab.TabInfo;
-
 import gov.nasa.pds.registry.ui.shared.InputContainer;
 import gov.nasa.pds.registry.ui.shared.ViewAssociation;
 import gov.nasa.pds.registry.ui.shared.ViewProduct;
 import gov.nasa.pds.registry.ui.shared.ViewSlot;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
+import gov.nasa.pds.registry.ui.shared.Constants;
 
 import com.google.gwt.gen2.table.client.AbstractScrollTable;
 import com.google.gwt.gen2.table.client.CachedTableModel;
@@ -44,6 +35,7 @@ import com.google.gwt.gen2.table.client.TableDefinition;
 import com.google.gwt.gen2.table.client.AbstractScrollTable.SortPolicy;
 import com.google.gwt.gen2.table.client.SelectionGrid.SelectionPolicy;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
+import com.google.gwt.gen2.table.client.ListCellEditor;
 
 import com.google.gwt.gen2.table.event.client.PageCountChangeEvent;
 import com.google.gwt.gen2.table.event.client.PageCountChangeHandler;
@@ -56,18 +48,41 @@ import com.google.gwt.gen2.table.override.client.FlexTable;
 import com.google.gwt.gen2.table.override.client.FlexTable.FlexCellFormatter;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.DisclosurePanel;
+import com.google.gwt.user.client.ui.SourcesTableEvents;
+import com.google.gwt.user.client.ui.TableListener;
+
+import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  * A tab to browse the registered products. 
@@ -98,17 +113,17 @@ public class Products extends Tab {
 	 * A mapping to <code>this</code> so that anonymous subclasses, handlers,
 	 * may get access to the containing class.
 	 */
-	private Products instance = null;
+	private static Products instance = null;
 
 	/**
 	 * 
 	 * @return <code>this</code> instance
 	 */
-	public Products get() {
+	public static Products get() {
 		return instance;
 	}
 	
-	/*
+	/**
 	 * The main layout panel. All view components should be children of this.
 	 */
 	private VerticalPanel panel = new VerticalPanel();  // main panel
@@ -116,6 +131,8 @@ public class Products extends Tab {
 	private FlexTable layout = new FlexTable();
 
 	private VerticalPanel scrollPanel = new VerticalPanel();
+	
+	private HorizontalPanel pagingPanel = new HorizontalPanel();
 
 	/**
 	 * The dialog box that displays product details.
@@ -137,8 +154,9 @@ public class Products extends Tab {
 
 	protected final VerticalPanel associationVPanel = new VerticalPanel();
 
-	protected final HTML associationPlaceholder = new HTML(
-			"Loading associations...");
+	protected final HTML associationPlaceholder = new HTML("Loading associations...");
+	
+	private HTML debugMsg = new HTML("TEST");
 
 	/**
 	 * The close button used by the dialogBox to close the dialog.
@@ -150,7 +168,21 @@ public class Products extends Tab {
 	protected HTML recordCountContainer = new HTML("");
 	
 	private int recordCount;
-
+	
+	/**
+	 * Components for filtering 
+	 */
+	private final TextBox guidInput = new TextBox();
+	private final TextBox lidInput = new TextBox();
+	private final TextBox nameInput = new TextBox();
+	private final ListBox objectsInput = new ListBox(false);
+	private final ListBox statusInput = new ListBox(false);
+	private final Button updateButton = new Button("Update");
+	private final Button clearButton = new Button("Clear");
+	private final Button refreshButton = new Button("Refresh");
+		
+	Logger logger = RegistryUI.logger;
+	
 	/**
 	 * The {@link CachedTableModel} around the main table model.
 	 */
@@ -244,18 +276,11 @@ public class Products extends Tab {
 	protected void setTempAssociations(List<ViewAssociation> tempAssociations) {
 		this.tempAssociations = tempAssociations;
 	}
-	
-	private void setRecordCount(int count) {
-		this.recordCount = count;
-	}
-	
-	private int getRecordCount() {
-		return this.recordCount;
-	}
 
 	public Products() {
 		// assign instance for exterior retrieval
-		instance = this;	
+		instance = this;
+		panel.setSpacing(8);
 		panel.setWidth("100%");
 		initWidget(panel);	
 		
@@ -286,7 +311,7 @@ public class Products extends Tab {
 		this.tableModel.addRowCountChangeHandler(new RowCountChangeHandler() {
 			@Override
 			public void onRowCountChange(RowCountChangeEvent event) {
-				get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE);
+				get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
 			}
 		});
 	
@@ -313,17 +338,14 @@ public class Products extends Tab {
 		// paging options
 		this.layout.insertRow(0);
 
+		this.layout.getCellFormatter().addStyleName(1, 0, "scrollTableWrapper");
+		
 		// add the scroll panel
 		this.layout.setWidget(1, 0, this.scrollPanel);
-
+		
 		// add title to scroll table
 		this.scrollPanel.add(new HTML(
 				"<div class=\"title\">Product Registry</div>"));
-
-		// add record count container
-		this.layout.setWidget(3, 0, this.recordCountContainer);		
-		
-		this.scrollPanel.addStyleName("scrollTableWrapper");
 	}
 
 	/**
@@ -335,14 +357,11 @@ public class Products extends Tab {
 	private void initProductDetailPopup() {
 		// set title
 		this.productDetailsBox.setText("Product Details");
-		//this.productDetailsBox.setWidth("100%");
-
 		// make hide and show be animated
-		//this.productDetailsBox.setAnimationEnabled(true);
-
+		this.productDetailsBox.setAnimationEnabled(true);
+		
 		// add label for associations
-		this.dialogVPanel
-				.add(new HTML(
+		this.dialogVPanel.add(new HTML(
 						"<div class=\"title\" style=\"margin-top: 10px;\">Associations</div>"));
 
 		// TODO: be nice to add association box here but needs return values
@@ -355,6 +374,9 @@ public class Products extends Tab {
 		// add the close button to the panel
 		this.dialogVPanel.add(this.closeButton);
 
+		// add for debugging
+		//this.dialogVPanel.add(this.debugMsg);
+
 		// create a handler for the click of the close button to hide the detail
 		// box
 		ClickHandler closButtonHandler = new ClickHandler() {
@@ -364,7 +386,7 @@ public class Products extends Tab {
 				get().productDetailsBox.hide();
 			}
 		};
-
+		
 		// create a handler for the detail box hide that de-selects the row that
 		// was selected when the dialog box was shown. This is separate from the
 		// close handler as there is a click-outside test that also triggers a
@@ -381,7 +403,7 @@ public class Products extends Tab {
 
 				// remove data from popup
 				get().dialogVPanel.remove(0);
-
+				
 				// remove data from table
 				get().associationScrollTable.getDataTable().clear();
 			}
@@ -389,7 +411,6 @@ public class Products extends Tab {
 
 		// add the handler to the button
 		this.closeButton.addClickHandler(closButtonHandler);
-
 		// add a vertical panel as master layout panel to the dialog box
 		// contents
 		this.productDetailsBox.setWidget(this.dialogVPanel);
@@ -468,7 +489,6 @@ public class Products extends Tab {
 	public void initFilterOptions() {
 		// create filter and search elements
 		HorizontalPanel inputTable = new HorizontalPanel();
-		//inputTable.setWidth("100%");
 		// set alignment to bottom so that button is positioned correctly
 		inputTable.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
 		inputTable.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -476,155 +496,81 @@ public class Products extends Tab {
 		this.layout.setWidget(0, 0, inputTable);
 
 		// create textual input for global unique identifier search
-		final TextBox guidInput = new TextBox();
 		guidInput.setName("guid");
 		InputContainer guidInputWrap = new InputContainer("GUID", guidInput);
 		inputTable.add(guidInputWrap);
 
 		// create textual input for local id search
-		final TextBox lidInput = new TextBox();
 		lidInput.setName("lid");
 		InputContainer lidInputWrap = new InputContainer("LID", lidInput);
 		inputTable.add(lidInputWrap);
 
 		// create textual input for name search
-		final TextBox nameInput = new TextBox();
 		nameInput.setName("name");
 		InputContainer nameInputWrap = new InputContainer("Name", nameInput);
 		inputTable.add(nameInputWrap);
 
 		// create dropdown input for object type
 		// TODO: list should be exhaustive, get from enum or build process?
-		final ListBox objectsInput = new ListBox(false);
 		objectsInput.setName("objectType");
 		objectsInput.addItem("Any Object Type", "-1");
-		objectsInput.addItem("Product");
-		objectsInput.addItem("Collection_Volume_PDS3");
-		objectsInput.addItem("Collection_Volume_Set_PDS3");
-		objectsInput.addItem("Local_DD");
-		objectsInput.addItem("Product_Archive_Bundle");
-		objectsInput.addItem("Product_Attribute_Definition");
-		objectsInput.addItem("Product_Browse");
-		objectsInput.addItem("Product_Bundle");
-		objectsInput.addItem("Product_Collection");
-		objectsInput.addItem("Product_Data_Set_PDS3");
-		objectsInput.addItem("Product_Delivery_Manifest");
-		objectsInput.addItem("Product_Document");
-		objectsInput.addItem("Product_File_Repository");
-		objectsInput.addItem("Product_File_Text");
-		objectsInput.addItem("Product_Instrument");
-		objectsInput.addItem("Product_Instrument_Host");
-		objectsInput.addItem("Product_Instrument_Host_PDS3");
-		objectsInput.addItem("Product_Instrument_PDS3");
-		objectsInput.addItem("Product_Investigation");
-		objectsInput.addItem("Product_Mission_PDS3");
-		objectsInput.addItem("Product_Node");
-		objectsInput.addItem("Product_Observational");
-		objectsInput.addItem("Product_PDS_Affiliate");
-		objectsInput.addItem("Product_PDS_Guest");
-		objectsInput.addItem("Product_Proxy_PDS3");
-		objectsInput.addItem("Product_Resource");
-		objectsInput.addItem("Product_SPICE_Kernel_Binary");
-		objectsInput.addItem("Product_SPICE_Kernel_Text");
-		objectsInput.addItem("Product_Service");
-		objectsInput.addItem("Product_Software");
-		objectsInput.addItem("Product_Target");
-		objectsInput.addItem("Product_Target_PDS3");
-		objectsInput.addItem("Product_Thumbnail");
-		objectsInput.addItem("Product_Update");
-		objectsInput.addItem("Product_XML_Schema");
-		objectsInput.addItem("Product_Zipped");
+		for (int i=0; i<Constants.objectTypes.length; i++) {
+			objectsInput.addItem(Constants.objectTypes[i]);
+		}
 		InputContainer objectsInputWrap = new InputContainer("Object Type",
 				objectsInput);
 		inputTable.add(objectsInputWrap);
 
 		// create dropdown input for status type
-		final ListBox statusInput = new ListBox(false);
+		//final ListBox statusInput = new ListBox(false);
 		// TODO: comes from enum ObjectStatus so iterate over values? or is
 		// order more important?
 		statusInput.setName("statusType");
 		statusInput.addItem("Any Status", "-1");
-		statusInput.addItem("Submitted");
-		statusInput.addItem("Approved");
-		statusInput.addItem("Deprecated");
+		for (int i=0; i<Constants.status.length; i++) {
+			statusInput.addItem(Constants.status[i]);
+		}
 		InputContainer statusInputWrap = new InputContainer("Status",
 				statusInput);
 		inputTable.add(statusInputWrap);
 
-		// create button for doing an update
-		final Button updateButton = new Button("Update");
-		updateButton.setWidth("55px");
-		updateButton.setStyleName("buttonwrapper");
-		InputContainer updateButtonWrap = new InputContainer(null, updateButton);
-		inputTable.add(updateButtonWrap);
+		// create button for doing refresh the table
+		//refreshButton.setWidth("60px");
+		refreshButton.setStyleName("buttonwrapper");
+		InputContainer refreshButtonWrap = new InputContainer(null, refreshButton);
+		inputTable.add(refreshButtonWrap);
 
-		final Button clearButton = new Button("Clear");
-		clearButton.setWidth("50px");
+		//final Button clearButton = new Button("Clear");
+		//clearButton.setWidth("50px");
 		clearButton.setStyleName("buttonwrapper");
 		InputContainer clearButtonWrap = new InputContainer(null, clearButton);
 		inputTable.add(clearButtonWrap);
 		
+		// create button for doing an update
+		final Button updateButton = new Button("Update Status");
+		//updateButton.setWidth("60px");
+		updateButton.setStyleName("buttonwrapper");
+		InputContainer updateButtonWrap = new InputContainer(null, updateButton);
+		inputTable.add(updateButtonWrap);
+
+		final Button deleteButton = new Button("Delete");
+		//deleteButton.setWidth("57px");
+		deleteButton.setStyleName("buttonwrapper");
+		InputContainer deleteButtonWrap = new InputContainer(null, deleteButton);
+		inputTable.add(deleteButtonWrap);
+				
 		// add handler to leverage the update button
 		// TODO: determine if there is a form widget that's better to use here,
 		// not sure this is reasonable as we're not doing a real submit, it's
 		// triggering a javascript event that is integral to the behavior of the
 		// scroll table
-		updateButton.addClickHandler(new ClickHandler() {
+		refreshButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				// clear cache as data will be invalid after filter
-				get().getCachedTableModel().clearCache();
-
-				// get table model that holds filters
-				ProductTableModel tablemodel = get().getTableModel();
-
-				// clear old filters
-				tablemodel.clearFilters();
-
-				// get values from input
-				// guid
-				String guid = guidInput.getValue();
-				if (!guid.equals("")) {
-					tablemodel.addFilter("guid", guid);
-				}
-
-				// lid
-				String lid = lidInput.getValue();
-				if (!lid.equals("")) {
-					tablemodel.addFilter("lid", lid);
-				}
-
-				// name
-				String name = nameInput.getValue();
-				if (!name.equals("")) {
-					tablemodel.addFilter("name", name);
-				}
-
-				// object type
-				String objectType = objectsInput.getValue(objectsInput
-						.getSelectedIndex());
-				// set object type filter if set to something specific
-				if (!objectType.equals("-1")) {
-					tablemodel.addFilter("objectType", objectType);
-				}
-
-				// status
-				String status = statusInput.getValue(statusInput
-						.getSelectedIndex());
-				// set status if set to something specific
-				if (!status.equals("-1")) {
-					tablemodel.addFilter("status", status);
-				}
-
-				// HACK: row count of zero causes cache check to fail and table
-				// not be updated
-				get().getTableModel().setRowCount(RegistryUI.FETCH_ROW_SIZE);
-
-				// go back to first page and force update
-				get().getPagingScrollTable().gotoPage(0, true);
+				get().refreshTable();
 			}
 		});
-		
+				
 		clearButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -635,12 +581,150 @@ public class Products extends Tab {
 				statusInput.setSelectedIndex(0);
 				
 				get().getTableModel().clearFilters();
-				get().getTableModel().setRowCount(getRecordCount());
 				
 				// go back to first page and force update
 				get().getPagingScrollTable().gotoPage(0, true);
 			}
 		});
+		
+		updateButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				Set<Integer> selectedRows = get().getDataTable().getSelectedRows();
+				logger.log(Level.FINEST, "size of selected rows = " + selectedRows.size());			
+				logger.log(Level.FINEST, "selected index = " + statusInput.getSelectedIndex() + "    selected status = " + statusInput.getItemText(statusInput.getSelectedIndex()));
+				
+				if (statusInput.getSelectedIndex()==0 || selectedRows.size()==0) {
+					Window.alert("Please choose the Status and/or select product(s) to update.");
+				}
+				else {
+					for (Integer rowIndex: selectedRows) {
+						logger.log(Level.FINEST, "row = " + rowIndex + 
+								"     value = " + get().getPagingScrollTable().getRowValue(rowIndex).getStatus());
+
+						ViewProduct aProduct = get().getPagingScrollTable().getRowValue(rowIndex);
+
+						aProduct.setStatus(statusInput.getItemText(statusInput.getSelectedIndex()));
+						logger.log(Level.FINEST, "aProduct.getStatus = " + aProduct.getStatus());
+						get().getTableModel().updateProduct(aProduct,
+								new AsyncCallback<Boolean>() {
+							@Override
+							public void onFailure(Throwable caught) {
+								Window.alert("Products.updateProduct() RPC Failure" + caught.getMessage());
+							}
+
+							@Override
+							public void onSuccess(Boolean result) {
+								logger.log(Level.FINEST, "result of updateProduct() = " + result);
+								get().reloadData();
+							}
+						});
+					}
+				}
+				statusInput.setSelectedIndex(0);
+			}
+		});
+		
+		deleteButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				Set<Integer> selectedRows = get().getDataTable().getSelectedRows();
+				List<Integer> selectedLists = new java.util.ArrayList<Integer>(selectedRows);
+				
+				logger.log(Level.FINEST, "size of selected rows = " + selectedRows.size());
+				logger.log(Level.FINEST, "selectedLists = " + selectedLists.toString());
+				
+				// call connectionmanager delete method
+				if (selectedRows.size()==0) {
+					Window.alert("Please select product(s) to delete.");
+				}
+				else {
+					boolean okToDelete = Window.confirm("Are you sure you want to delete the selected product(s)?");				
+					logger.log(Level.FINEST, "ok to delete = " + okToDelete);
+					
+					if (okToDelete) {	
+						// progress popup while deleting
+						for (int i=selectedLists.size()-1; i>=0;i--) {
+							final int rowIndex = selectedLists.get(i);
+							//boolean deleteStatus = false;
+							logger.log(Level.FINEST, "selected rowIndex = " + rowIndex);
+							ViewProduct aProduct = get().getPagingScrollTable().getRowValue(rowIndex);
+							logger.log(Level.FINEST, "row = " + rowIndex + "   aProduct.name = " + aProduct.getName());
+							
+							get().getTableModel().deleteProduct(aProduct,
+									new AsyncCallback<Boolean>() {
+								@Override
+								public void onFailure(Throwable caught) {
+									Window.alert("Products.deleteProduct() RPC Failure" + caught.getMessage());
+								}
+		
+								public void onSuccess(Boolean result) {
+									logger.log(Level.FINEST, "result of deleteProduct() = " + result);
+									logger.log(Level.FINEST, "refreshing the display.....");
+									get().reloadData();
+								}
+							});					
+							get().getDataTable().removeRow(rowIndex);
+						}
+					}
+				}
+			}
+		});			
+	}
+
+	protected void reloadData() {
+		get().getCachedTableModel().clearCache();
+		get().getTableModel().setRowCount(RegistryUI.PAGE_SIZE1);
+		get().getPagingScrollTable().redraw();
+	}
+	
+	private void refreshTable() {
+		// clear cache as data will be invalid after filter
+		get().getCachedTableModel().clearCache();
+
+		// get table model that holds filters
+		ProductTableModel tablemodel = get().getTableModel();
+
+		// clear old filters
+		tablemodel.clearFilters();
+
+		// get values from input
+		// guid
+		String guid = guidInput.getValue();
+		if (!guid.equals("")) {
+			tablemodel.addFilter("guid", guid);
+		}
+
+		// lid
+		String lid = lidInput.getValue();
+		if (!lid.equals("")) {
+			tablemodel.addFilter("lid", lid);
+		}
+
+		// name
+		String name = nameInput.getValue();
+		if (!name.equals("")) {
+			tablemodel.addFilter("name", name);
+		}
+
+		// object type
+		String objectType = objectsInput.getValue(objectsInput
+				.getSelectedIndex());
+		// set object type filter if set to something specific
+		if (!objectType.equals("-1")) {
+			tablemodel.addFilter("objectType", objectType);
+		}
+
+		// status
+		String status = statusInput.getValue(statusInput
+				.getSelectedIndex());
+		// set status if set to something specific
+		if (!status.equals("-1")) {
+			tablemodel.addFilter("status", status);
+		}
+
+		// go back to first page and force update
+		get().getPagingScrollTable().gotoPage(0, true);
 	}
 
 	/**
@@ -656,10 +740,10 @@ public class Products extends Tab {
 				this.tableModel);
 
 		// set cache for rows before start row
-		this.cachedTableModel.setPreCachedRowCount(RegistryUI.PAGE_SIZE);
+		this.cachedTableModel.setPreCachedRowCount(RegistryUI.PAGE_SIZE1);
 
 		// set cache for rows after end row
-		this.cachedTableModel.setPostCachedRowCount(RegistryUI.PAGE_SIZE);
+		this.cachedTableModel.setPostCachedRowCount(RegistryUI.PAGE_SIZE1);
 
 		// create a table definition, this defines columns, layout, row colors
 		TableDefinition<ViewProduct> tableDef = createTableDefinition();
@@ -669,7 +753,7 @@ public class Products extends Tab {
 				this.cachedTableModel, tableDef);
 
 		// set the num rows to display per page
-		this.pagingScrollTable.setPageSize(RegistryUI.PAGE_SIZE);
+		this.pagingScrollTable.setPageSize(RegistryUI.PAGE_SIZE1);
 
 		// set content to display when there is no data
 		this.pagingScrollTable.setEmptyTableWidget(new HTML(
@@ -695,164 +779,31 @@ public class Products extends Tab {
 		// TODO: implement multi-column sort? appears supported on the REST side
 		this.pagingScrollTable.setSortPolicy(SortPolicy.SINGLE_CELL);
 
-		// create row handler to fill in and display popup
-		RowSelectionHandler handler = new RowSelectionHandler() {
-			public void onRowSelection(RowSelectionEvent event) {
-
-				// get selected rows
-				Set<Row> selected = event.getSelectedRows();
-				if (selected.size() == 0) {
-					// TODO: out is for debugging purposes, fix for
-					// erroneously fired events is pending
-					System.out.println("Row selection event fired but no selected rows found.");
-					return;
-				}
-
-				// since only one row can be selected, just get the first one
-				int rowIndex = selected.iterator().next().getRowIndex();
-
-				// get the product instance associated with that row
-				ViewProduct product = get().getPagingScrollTable().getRowValue(
-						rowIndex);
-	
-				// create grid for data, there are 7 fixed fields and fields for
-				// each slot
-				Grid detailTable = new Grid(7 + product.getSlots().size(), 2);
-
-				// set each field label and the values
-				// name
-				detailTable.setText(0, 0, "Name");
-				detailTable.setText(0, 1, product.getName());
-
-				// type
-				detailTable.setText(1, 0, "Object Type");
-				detailTable.setText(1, 1, product.getObjectType());
-
-				// status
-				detailTable.setText(2, 0, "Status");
-				detailTable.setText(2, 1, product.getStatus());
-
-				// version
-				detailTable.setText(3, 0, "Version Name");
-				detailTable.setText(3, 1, product.getVersionName());
-
-				// guid
-				detailTable.setText(4, 0, "GUID");
-				detailTable.setText(4, 1, product.getGuid());
-
-				// lid
-				detailTable.setText(5, 0, "LID");
-				detailTable.setText(5, 1, product.getLid());
-
-				// home
-				detailTable.setText(6, 0, "Home");
-				detailTable.setText(6, 1, product.getHome());
-
-				// slots
-				List<ViewSlot> slots = product.getSlots();
-				for (int i = 0; i < slots.size(); i++) {
-					ViewSlot slot = slots.get(i);
-					int curRow = i + 7;
-					
-					detailTable.setText(curRow, 0, getNice(slot.getName(),
-							true, true));
-					
-					// check for long string....need to display differently (another popup???)
-					String valuesString = toSeparatedString(slot.getValues());
-					if (valuesString.length()>200) 
-						detailTable.setText(curRow, 1, valuesString.substring(0, 200) + "  .....");
-					else
-						detailTable.setText(curRow, 1, valuesString);					
-				}
-
-				// add styles to cells
-				for (int i = 0; i < detailTable.getRowCount(); i++) {
-					detailTable.getCellFormatter().setStyleName(i, 0,
-							"detailLabel");
-					detailTable.getCellFormatter().setStyleName(i, 1,
-							"detailValue");
-				}
-
-				get().dialogVPanel.insert(detailTable, 0);
-
-				// display, center and focus popup
-				get().productDetailsBox.center();
-				get().closeButton.setFocus(true);
-
-				// do async on getting associations
-				get().getTableModel()
-						.getAssociations(
-								product.getGuid(),
-								new AsyncCallback<SerializableResponse<ViewAssociation>>() {
-
-									public void onFailure(Throwable caught) {
-										System.out.println("RPC Failure");
-										Window.alert("Products.getAssociations() RPC Failure" + caught.getMessage());
-									}
-
-									public void onSuccess(
-											SerializableResponse<ViewAssociation> result) {
-										System.out.println("success called on getting associations");
-										// get results
-										SerializableProductResponse<ViewAssociation> spr = (SerializableProductResponse<ViewAssociation>) result;
-
-										// cast values to ViewProducts to get
-										// extended data
-										List<ViewAssociation> associations = (List<ViewAssociation>) spr
-												.getValues();
-										get().setTempAssociations(associations);
-
-										// TODO: factor this out
-										// TODO: make a loading element
-										// TODO: deal with situation where more
-										// than the requested amount are found
-										FixedWidthGrid grid = get().associationScrollTable
-												.getDataTable();
-										grid.resize(associations.size(), 3);
-
-										// add elements to the table
-										for (int i = 0; i < associations.size(); i++) {
-											final ViewAssociation association = associations
-													.get(i);
-											grid.setText(i, 0, association.getSourceGuid());
-											grid.setText(i, 1, association.getAssociationType());
-											grid.setText(i, 2, association.getTargetGuid());
-										}
-
-										// remove placeholder
-										get().dialogVPanel.remove(2);
-
-										// add table
-										get().dialogVPanel.insert(get().associationScrollTable,2);
-									}
-								});
+		get().getDataTable().addTableListener(new TableListener() {
+			public void onCellClicked(SourcesTableEvents sender, int row, int cell) {
+				String status = get().getPagingScrollTable().getRowValue(row).getStatus();
+				logger.log(Level.FINEST, "row = " + row + "    cell = " + cell + 
+						"     value = " + status + "   sender info = " + sender.toString());
+				get().getProductDetail(row);
 			}
-		};
-
-		// add detail popup handler to rows
-		this.pagingScrollTable.getDataTable().addRowSelectionHandler(handler);
+		});
 
 		// add handler to update found element count
 		this.pagingScrollTable
-				.addPageCountChangeHandler(new PageCountChangeHandler() {
+			.addPageCountChangeHandler(new PageCountChangeHandler() {
 					@Override
 					public void onPageCountChange(PageCountChangeEvent event) {
-						int count = get().pagingScrollTable.getTableModel()
-								.getRowCount();
-						
+						int count = get().getPagingScrollTable().getTableModel().getRowCount();						
 						// display count in page
-						// TODO: do number formatting and message formatting and
-						// externalize
 						get().recordCountContainer
-								.setHTML("<div class=\"recordCount\">Num Records: "
-										+ count + "</div>");
-
+								.setHTML("<div class=\"recordCount\">Total Records: " + count + "</div>");
 					}
 				});
 		
 		// set selection policy
 		SelectionGrid grid = get().getDataTable();
-		grid.setSelectionPolicy(SelectionPolicy.ONE_ROW);
+		//grid.setSelectionPolicy(SelectionPolicy.ONE_ROW);
+		grid.setSelectionPolicy(SelectionPolicy.CHECKBOX);
 		
 		// Add the scroll table to the layout
 		this.scrollPanel.add(this.pagingScrollTable);
@@ -913,11 +864,10 @@ public class Products extends Tab {
 						int rowIndex = selected.iterator().next().getRowIndex();
 
 						// get the product instance associated with that row
-						ViewAssociation association = get()
-								.getTempAssociations().get(rowIndex);
+						ViewAssociation association = get().getTempAssociations().get(rowIndex);
 
 						// create grid for data
-						Grid detailTable = new Grid(16, 2);
+						Grid detailTable = new Grid(12, 2);
 
 						// set each field label and the values
 						int row = 0;
@@ -973,15 +923,144 @@ public class Products extends Tab {
 						}
 
 						// add new data as first element in vertical stack,
-						// which should
-						// be the close button since last data table was removed
-						get().associationVPanel.insert(detailTable, 0);
+						// which should be the close button since last data table was removed
+						FocusPanel fp = new FocusPanel(detailTable);
+						get().associationVPanel.insert(fp, 0);
 
 						// display, center and focus popup
 						get().associationDetailsBox.center();
 						get().associationCloseButton.setFocus(true);
 					}
 				});
+	}
+	
+	public void getProductDetail(int rowIndex) {
+		// get the product instance associated with that row
+		ViewProduct product = get().getPagingScrollTable().getRowValue(
+				rowIndex);
+
+		// create grid for data, there are 7 fixed fields and fields for
+		// each slot				
+		final Grid detailTable = new Grid(7 + product.getSlots().size(), 2);
+	
+		// set each field label and the values
+		// name
+		detailTable.setText(0, 0, "Name");
+		detailTable.setText(0, 1, product.getName());
+
+		// type
+		detailTable.setText(1, 0, "Object Type");
+		detailTable.setText(1, 1, product.getObjectType());
+
+		// status
+		detailTable.setText(2, 0, "Status");
+		detailTable.setText(2, 1, product.getStatus());
+
+		// version
+		detailTable.setText(3, 0, "Version Name");
+		detailTable.setText(3, 1, product.getVersionName());
+
+		// guid
+		detailTable.setText(4, 0, "GUID");
+		detailTable.setText(4, 1, product.getGuid());
+
+		// lid
+		detailTable.setText(5, 0, "LID");
+		detailTable.setText(5, 1, product.getLid());
+
+		// home
+		detailTable.setText(6, 0, "Home");
+		detailTable.setText(6, 1, product.getHome());
+
+		// slots
+		List<ViewSlot> slots = product.getSlots();
+		for (int i = 0; i < slots.size(); i++) {
+			ViewSlot slot = slots.get(i);
+			int curRow = i + 7;
+			
+			detailTable.setText(curRow, 0, getNice(slot.getName(),
+					true, true));
+			
+			// slot value is null
+			if (slot.getValues()==null) {
+				detailTable.setText(curRow, 1, "");
+			}
+			else {
+				String valuesString = toSeparatedString(slot.getValues());
+				if (valuesString.length()>Constants.MAX_STR_SIZE) {
+					DisclosurePanel dp = new DisclosurePanel("Click to see the value.");
+					dp.setContent(new Label(valuesString));
+					dp.setWidth("96%");
+					detailTable.setWidget(curRow, 1, dp);
+				}
+				else
+					detailTable.setText(curRow, 1, valuesString);	
+			}
+		}
+	
+		// add styles to cells
+		for (int i = 0; i < detailTable.getRowCount(); i++) {
+			detailTable.getCellFormatter().setStyleName(i, 0,
+					"detailLabel");
+			detailTable.getCellFormatter().setStyleName(i, 1,
+					"detailValue");
+		}
+
+		FocusPanel fp = new FocusPanel(detailTable);
+		ScrollPanel sp = new ScrollPanel(fp);
+		sp.setHeight("450px");
+		get().dialogVPanel.insert(sp, 0);
+
+		// display, center and focus popup
+		get().productDetailsBox.center();
+		get().closeButton.setFocus(true);
+		
+		// do async on getting associations
+		get().getTableModel()
+				.getAssociations(
+						product.getGuid(),
+						new AsyncCallback<SerializableResponse<ViewAssociation>>() {
+
+							public void onFailure(Throwable caught) {
+								System.out.println("RPC Failure");
+								Window.alert("Products.getAssociations() RPC Failure" + caught.getMessage());
+							}
+
+							public void onSuccess(
+									SerializableResponse<ViewAssociation> result) {
+								System.out.println("success called on getting associations");
+								// get results
+								SerializableProductResponse<ViewAssociation> spr = (SerializableProductResponse<ViewAssociation>) result;
+
+								// cast values to ViewProducts to get extended data
+								List<ViewAssociation> associations = (List<ViewAssociation>) spr
+										.getValues();
+								get().setTempAssociations(associations);
+
+								// TODO: factor this out
+								// TODO: make a loading element
+								// TODO: deal with situation where more
+								// than the requested amount are found
+								FixedWidthGrid grid = get().associationScrollTable
+										.getDataTable();
+								grid.resize(associations.size(), 3);
+
+								// add elements to the table
+								for (int i = 0; i < associations.size(); i++) {
+									final ViewAssociation association = associations
+											.get(i);
+									grid.setText(i, 0, association.getSourceGuid());
+									grid.setText(i, 1, association.getAssociationType());
+									grid.setText(i, 2, association.getTargetGuid());
+								}
+
+								// remove placeholder
+								get().dialogVPanel.remove(2);
+
+								// add table
+								get().dialogVPanel.insert(get().associationScrollTable,2);
+							}
+						});
 	}
 
 	/**
@@ -991,7 +1070,46 @@ public class Products extends Tab {
 		PagingOptions pagingOptions = new PagingOptions(getPagingScrollTable());
 
 		// add the paging widget to the last row of the layout
-		this.layout.setWidget(2, 0, pagingOptions);
+		this.pagingPanel.add(pagingOptions);
+		this.pagingPanel.add(this.recordCountContainer);
+		
+		final ListBox showRecordsInput = new ListBox(false);
+		showRecordsInput.setName("showRecords");
+		showRecordsInput.addItem("20 records", "0");
+		showRecordsInput.addItem("50 records");
+		showRecordsInput.addItem("100 records");
+		
+		showRecordsInput.addChangeHandler(new ChangeHandler() {
+			//@Override
+			public void onChange(ChangeEvent event) {
+				int itemSelected = showRecordsInput.getSelectedIndex();
+				logger.log(Level.FINEST, "show:   selected index = " + itemSelected);
+				switch (itemSelected) {
+					case 1: 
+						get().getPagingScrollTable().setHeight(RegistryUI.TBL_HGT_50);
+						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE2);
+						break;
+					case 2:
+						get().getPagingScrollTable().setHeight(RegistryUI.TBL_HGT_100);
+						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE3);
+						break;
+					default:
+						get().getPagingScrollTable().setHeight(RegistryUI.TABLE_HEIGHT);
+						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
+						break;
+				}
+				get().getPagingScrollTable().redraw();
+			}
+		});
+		
+		final Label showRecordsLbl = new Label("Show:");
+		showRecordsLbl.setWidth("200px");
+		showRecordsLbl.addStyleName("gwt-Label-Show");
+		this.pagingPanel.add(showRecordsLbl);
+		showRecordsInput.addStyleName("recordListBox");
+		this.pagingPanel.add(showRecordsInput);
+		
+		this.layout.setWidget(2, 0, this.pagingPanel);
 	}
 
 	/**
@@ -999,9 +1117,8 @@ public class Products extends Tab {
 	 */
 	protected void onModuleLoaded() {
 		// set page to first page, triggering call for data
-		//this.cachedTableModel.clearCache();
+		this.cachedTableModel.clearCache();
 		this.pagingScrollTable.gotoFirstPage();
-		setRecordCount(get().pagingScrollTable.getTableModel().getRowCount());
 	}
 
 	/**
@@ -1053,7 +1170,7 @@ public class Products extends Tab {
 		// User Version
 		{
 			ProductColumnDefinition<String> columnDef = new ProductColumnDefinition<String>(
-					"Version ID") {
+					"Version Name") {
 				@Override
 				public String getCellValue(ViewProduct rowValue) {
 					return rowValue.getVersionName();
@@ -1093,7 +1210,6 @@ public class Products extends Tab {
 				public String getCellValue(ViewProduct rowValue) {
 					return rowValue.getStatus();
 				}
-
 			};
 
 			columnDef.setMinimumColumnWidth(35);
@@ -1103,7 +1219,7 @@ public class Products extends Tab {
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
-
+		
 		return this.tableDefinition;
 	}
 

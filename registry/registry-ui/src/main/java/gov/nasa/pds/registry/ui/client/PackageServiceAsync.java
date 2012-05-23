@@ -21,6 +21,8 @@ import com.google.gwt.gen2.table.client.TableModelHelper.Request;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Asynchronous interface to the packages service
  * 
@@ -30,4 +32,14 @@ public interface PackageServiceAsync {
 
 	void requestRows(Request request, AsyncCallback<SerializableResponse<ViewRegistryPackage>> callback);
 	
+	void updatePackage(final ViewRegistryPackage registryPackage, AsyncCallback<Boolean> callback);
+	
+	void deletePackage(ViewRegistryPackage registryPackage, AsyncCallback<Boolean> callback);
+	
+	void getRemoteUser(AsyncCallback<String> callback);
+	
+	void getRemotePassword(AsyncCallback<String> callback);
+	
+	void getSessionId(AsyncCallback<String> callback);
+
 }

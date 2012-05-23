@@ -33,6 +33,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.FocusPanel;
 
 import com.google.gwt.gen2.table.override.client.FlexTable;
 import com.google.gwt.gen2.table.override.client.FlexTable.FlexCellFormatter;
@@ -95,6 +96,7 @@ public class Schemes extends Tab {
 	private VerticalPanel panel = new VerticalPanel();	
 	private VerticalPanel scrollPanel = new VerticalPanel();	
 	private FlexTable layout = new FlexTable();
+	private HorizontalPanel pagingPanel = new HorizontalPanel();
 	
 	/**
 	 * The dialog box that displays product details.
@@ -200,7 +202,7 @@ public class Schemes extends Tab {
         this.tableModel.addRowCountChangeHandler(new RowCountChangeHandler() {
             @Override
             public void onRowCountChange(RowCountChangeEvent event) {
-                get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE);
+                get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
             }
         });
         onModuleLoaded();
@@ -235,9 +237,6 @@ public class Schemes extends Tab {
         // add title to scroll table
         this.scrollPanel.add(new HTML(
                 "<div class=\"title\">Scheme Registry</div>"));
-
-        // add record count container
-        this.layout.setWidget(3, 0, this.recordCountContainer);
     }
     
     /**
@@ -253,10 +252,10 @@ public class Schemes extends Tab {
 				this.tableModel);
 
 		// set cache for rows before start row
-		this.cachedTableModel.setPreCachedRowCount(RegistryUI.PAGE_SIZE);
+		this.cachedTableModel.setPreCachedRowCount(RegistryUI.PAGE_SIZE1);
 
 		// set cache for rows after end row
-		this.cachedTableModel.setPostCachedRowCount(RegistryUI.PAGE_SIZE);
+		this.cachedTableModel.setPostCachedRowCount(RegistryUI.PAGE_SIZE1);
 
 		// create a table definition, this defines columns, layout, row colors
 		TableDefinition<ViewScheme> tableDef = createTableDefinition();
@@ -266,7 +265,7 @@ public class Schemes extends Tab {
 				this.cachedTableModel, tableDef);
 
 		// set the num rows to display per page
-		this.pagingScrollTable.setPageSize(RegistryUI.PAGE_SIZE);
+		this.pagingScrollTable.setPageSize(RegistryUI.PAGE_SIZE1);
 
 		// set content to display when there is no data
 		this.pagingScrollTable.setEmptyTableWidget(new HTML(
@@ -282,7 +281,7 @@ public class Schemes extends Tab {
 		this.pagingScrollTable.setCellSpacing(0);
 		this.pagingScrollTable
 				.setResizePolicy(ScrollTable.ResizePolicy.FILL_WIDTH);
-		this.pagingScrollTable.setHeight(RegistryUI.TABLE_HEIGHT);
+		this.pagingScrollTable.setHeight(RegistryUI.TABLE_HEIGHT_B);
 
 		// allow multiple cell resizing
 		this.pagingScrollTable
@@ -355,12 +354,18 @@ public class Schemes extends Tab {
 					detailTable.setText(curRow, 0, Products.getNice(slot.getName(),
 							true, true));
 					
-					// check for long string....need to display differently (another popup???)
-					String valuesString = Products.toSeparatedString(slot.getValues());
-					if (valuesString.length()>200) 
-						detailTable.setText(curRow, 1, valuesString.substring(0, 200) + "  ...");
-					else
-						detailTable.setText(curRow, 1, valuesString);					
+					// slot value is null
+					if (slot.getValues()==null) {
+						detailTable.setText(curRow, 1, "");
+					}
+					else {
+						// check for long string....need to display differently (another popup???)
+						String valuesString = Products.toSeparatedString(slot.getValues());
+						if (valuesString.length()>200) 
+							detailTable.setText(curRow, 1, valuesString.substring(0, 200) + "  ...");
+						else
+							detailTable.setText(curRow, 1, valuesString);										
+					}
 					row = curRow;
 				}			
 				row++;
@@ -379,7 +384,8 @@ public class Schemes extends Tab {
 							"detailValue");
 				}
 
-				get().dialogVPanel.insert(detailTable, 0);
+				FocusPanel fp = new FocusPanel(detailTable);
+				get().dialogVPanel.insert(fp, 0);
 
 				// display, center and focus popup
 				get().productDetailsBox.center();
@@ -460,10 +466,8 @@ public class Schemes extends Tab {
 								.getRowCount();
 
 						// display count in page
-						// TODO: do number formatting and message formatting and
-						// externalize
 						get().recordCountContainer
-								.setHTML("<div class=\"recordCount\">Num Records: "
+								.setHTML("<div class=\"recordCount\">Total Records: "
 										+ count + "</div>");
 					}
 				});
@@ -575,10 +579,6 @@ public class Schemes extends Tab {
 				// clear selection and allow row to be clicked again
 				get().getPagingScrollTable().getDataTable().deselectAllRows();
 
-				// replace nodes with placeholder for next load
-				//get().dialogVPanel.remove(2);
-				//get().dialogVPanel.insert(get().nodePlaceholder, 2);
-
 				// remove data from popup
 				get().dialogVPanel.remove(0);
 
@@ -609,8 +609,9 @@ public class Schemes extends Tab {
 	public void initPaging() {
 		PagingOptions pagingOptions = new PagingOptions(getPagingScrollTable());
 
-		// add the paging widget to the last row of the layout
-		this.layout.setWidget(2, 0, pagingOptions);
+		this.pagingPanel.add(pagingOptions);
+		this.pagingPanel.add(this.recordCountContainer);
+		this.layout.setWidget(2, 0, this.pagingPanel);
 	}
 	
 	/**
@@ -637,7 +638,7 @@ public class Schemes extends Tab {
 			};
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(50);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -656,7 +657,7 @@ public class Schemes extends Tab {
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(50);
 			// columnDef.setMaximumColumnWidth(200);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
 
@@ -672,7 +673,7 @@ public class Schemes extends Tab {
 			};
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(150);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			//columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -689,7 +690,7 @@ public class Schemes extends Tab {
 			};
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(100);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			//columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -706,7 +707,7 @@ public class Schemes extends Tab {
 			};
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(50);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -724,7 +725,7 @@ public class Schemes extends Tab {
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(50);
 			// columnDef.setMaximumColumnWidth(200);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
 
@@ -742,7 +743,7 @@ public class Schemes extends Tab {
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(50);
 			// columnDef.setMaximumColumnWidth(200);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
 

@@ -34,4 +34,7 @@ public interface ProductsService extends RemoteService {
 	SerializableResponse<ViewProduct> requestRows(Request request,
 			Map<String, String> filters);
 
+	boolean updateProduct(final ViewProduct product);
+	
+	boolean deleteProduct(ViewProduct product);
 }

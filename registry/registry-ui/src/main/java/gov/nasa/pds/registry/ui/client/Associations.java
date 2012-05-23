@@ -19,14 +19,18 @@ import gov.nasa.pds.registry.ui.shared.ViewAssociation;
 import gov.nasa.pds.registry.ui.shared.ViewProduct;
 import gov.nasa.pds.registry.ui.shared.ViewProducts;
 import gov.nasa.pds.registry.ui.shared.ViewSlot;
+import gov.nasa.pds.registry.ui.shared.Constants;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -35,9 +39,11 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
 
 import com.google.gwt.gen2.table.override.client.FlexTable;
 import com.google.gwt.gen2.table.override.client.FlexTable.FlexCellFormatter;
@@ -56,6 +62,8 @@ import com.google.gwt.gen2.table.client.SelectionGrid;
 import com.google.gwt.gen2.table.client.TableDefinition;
 import com.google.gwt.gen2.table.client.AbstractScrollTable.SortPolicy;
 import com.google.gwt.gen2.table.client.SelectionGrid.SelectionPolicy;
+import com.google.gwt.user.client.ui.DisclosurePanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 
 import com.google.gwt.gen2.table.event.client.PageCountChangeEvent;
 import com.google.gwt.gen2.table.event.client.PageCountChangeHandler;
@@ -67,6 +75,8 @@ import com.google.gwt.gen2.table.event.client.TableEvent.Row;
 
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A tab to browse the registered associations. 
@@ -96,7 +106,8 @@ public class Associations extends Tab {
 	private VerticalPanel scrollPanel = new VerticalPanel();
 	private VerticalPanel associationVPanel = new VerticalPanel();
 	protected final VerticalPanel productVPanel = new VerticalPanel();
-	
+	private HorizontalPanel pagingPanel = new HorizontalPanel();
+		
 	private FlexTable layout = new FlexTable();
 	
 	protected ScrollTable srcScrollTable, targScrollTable;
@@ -108,6 +119,10 @@ public class Associations extends Tab {
 	protected HTML recordCountContainer = new HTML("");
 	protected final HTML srcPlaceholder = new HTML("Loading a source product...");
 	protected final HTML targetPlaceholder = new HTML("Loading a target product...");
+	
+	private HTML debugMsg = new HTML("TEST");
+	Logger logger = RegistryUI.logger;
+	
 	
 	/**
 	 * A panel used for layout within the dialogBox
@@ -179,8 +194,8 @@ public class Associations extends Tab {
 	
 	public Associations() {
 		panel.clear();
-		instance = this;		
-		panel.setSpacing(10);
+		instance = this;	
+		panel.setSpacing(8);
 		panel.setWidth("100%");
         initWidget(panel);
         // Initialize and add the main layout to the page
@@ -209,13 +224,12 @@ public class Associations extends Tab {
 		this.tableModel.addRowCountChangeHandler(new RowCountChangeHandler() {
 			@Override
 			public void onRowCountChange(RowCountChangeEvent event) {
-				get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE);
+				get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
 			}
 		});
 		
 		onModuleLoaded();     
 	}
-	
 	
 	private void initLayout() {
 		// set basic formatting options
@@ -233,6 +247,9 @@ public class Associations extends Tab {
 		this.layout.insertRow(0);
 		// paging options
 		this.layout.insertRow(0);
+		
+		// debugging lbl
+		//this.layout.insertRow(0);
 
 		// add style name to scroll table container
 		this.layout.getCellFormatter().addStyleName(1, 0, "scrollTableWrapper");
@@ -243,9 +260,6 @@ public class Associations extends Tab {
 		// add title to scroll table
 		this.scrollPanel.add(new HTML(
 				"<div class=\"title\">Association Registry</div>"));
-
-		// add record count container
-		this.layout.setWidget(3, 0, this.recordCountContainer);
 	}
 
 	private void initProductTables() {
@@ -312,75 +326,8 @@ public class Associations extends Tab {
 
 						// get the association instance associated with that row
 						ViewProduct aProduct = srcProducts.get(rowIndex);
-
-						// create grid for data, there are 8 fixed fields and
-						// fields for each slot
-						Grid detailTable = new Grid(8 + aProduct.getSlots().size(), 2);
-
-						// set each field label and the values
-						// name
-		                detailTable.setText(0, 0, "Name");
-		                detailTable.setText(0, 1, aProduct.getName());
-
-		                // type
-		                detailTable.setText(1, 0, "Object Type");
-		                detailTable.setText(1, 1, aProduct.getObjectType());
-
-		                // status
-		                detailTable.setText(2, 0, "Status");
-		                detailTable.setText(2, 1, aProduct.getStatus());
-
-		                // version
-		                detailTable.setText(3, 0, "Version Name");
-		                detailTable.setText(3, 1, aProduct.getVersionName());
-
-		                // guid
-		                detailTable.setText(4, 0, "GUID");
-		                detailTable.setText(4, 1, aProduct.getGuid());
-
-		                // lid
-		                detailTable.setText(5, 0, "LID");
-		                detailTable.setText(5, 1, aProduct.getLid());
-
-		                // home
-		                detailTable.setText(6, 0, "Home");
-		                detailTable.setText(6, 1, aProduct.getHome());
-
-		                // slots
-		                List<ViewSlot> slots = aProduct.getSlots();
-		                for (int i = 0; i < slots.size(); i++) {
-		                    ViewSlot slot = slots.get(i);
-		                    int curRow = i + 7;
-
-		                    detailTable.setText(curRow, 0, Products.getNice(slot.getName(),
-		                            true, true));
-
-		                    // check for long string....need to display differently (another popup???)
-		                    String valuesString = Products.toSeparatedString(slot.getValues());
-		                    if (valuesString.length()>200)
-		                        detailTable.setText(curRow, 1, valuesString.substring(0, 200) + "  ...");
-		                    else
-		                        detailTable.setText(curRow, 1, valuesString);
-		                }
-
-						// add styles to cells
-						for (int i = 0; i < detailTable.getRowCount(); i++) {
-							detailTable.getCellFormatter().setStyleName(i, 0,
-									"detailLabel");
-							detailTable.getCellFormatter().setStyleName(i, 1,
-									"detailValue");
-						}
-
-						// add new data as first element in vertical stack,
-						// which should be the close button since last data table was removed
-						get().productVPanel.insert(detailTable, 0);
-
-						// display, center and focus popup
-						get().productDetailsBox.center();
-						get().productCloseButton.setFocus(true);
-
+						get().displayProductDetail(aProduct);					
 					}
-
 				});
 		
 		// for TARGET OBJECT
@@ -404,74 +351,91 @@ public class Associations extends Tab {
 
 						// get the association instance associated with that row
 						ViewProduct aProduct = targetProducts.get(rowIndex);
-
-						// create grid for data, there are 7 fixed fields and
-						// fields for each slot
-						Grid detailTable = new Grid(7 + aProduct.getSlots().size(), 2);
-
-						// set each field label and the values
-						// name
-		                detailTable.setText(0, 0, "Name");
-		                detailTable.setText(0, 1, aProduct.getName());
-
-		                // type
-		                detailTable.setText(1, 0, "Object Type");
-		                detailTable.setText(1, 1, aProduct.getObjectType());
-
-		                // status
-		                detailTable.setText(2, 0, "Status");
-		                detailTable.setText(2, 1, aProduct.getStatus());
-
-		                // version
-		                detailTable.setText(3, 0, "Version Name");
-		                detailTable.setText(3, 1, aProduct.getVersionName());
-
-		                // guid
-		                detailTable.setText(4, 0, "GUID");
-		                detailTable.setText(4, 1, aProduct.getGuid());
-
-		                // lid
-		                detailTable.setText(5, 0, "LID");
-		                detailTable.setText(5, 1, aProduct.getLid());
-
-		                // home
-		                detailTable.setText(6, 0, "Home");
-		                detailTable.setText(6, 1, aProduct.getHome());
-
-		                // slots
-		                List<ViewSlot> slots = aProduct.getSlots();
-		                for (int i = 0; i < slots.size(); i++) {
-		                    ViewSlot slot = slots.get(i);
-		                    int curRow = i + 7;
-
-		                    detailTable.setText(curRow, 0, Products.getNice(slot.getName(),
-		                            true, true));
-
-		                    // check for long string....need to display differently (another popup???)
-		                    String valuesString = Products.toSeparatedString(slot.getValues());
-		                    if (valuesString.length()>200)
-		                        detailTable.setText(curRow, 1, valuesString.substring(0, 200) + "  ...");
-		                    else
-		                        detailTable.setText(curRow, 1, valuesString);
-		                }
-
-						// add styles to cells
-						for (int i = 0; i < detailTable.getRowCount(); i++) {
-							detailTable.getCellFormatter().setStyleName(i, 0,
-									"detailLabel");
-							detailTable.getCellFormatter().setStyleName(i, 1,
-									"detailValue");
-						}
-
-						// add new data as first element in vertical stack,
-						// which should be the close button since last data table was removed
-						get().productVPanel.insert(detailTable, 0);
-
-						// display, center and focus popup
-						get().productDetailsBox.center();
-						get().productCloseButton.setFocus(true);
+						get().displayProductDetail(aProduct);
 					}
 				});
+	}
+	
+	private void displayProductDetail(ViewProduct aProduct) {
+		// create grid for data, there are 7 fixed fields and
+		// fields for each slot
+		Grid detailTable = new Grid(7 + aProduct.getSlots().size(), 2);
+
+		// set each field label and the values
+		// name
+        detailTable.setText(0, 0, "Name");
+        detailTable.setText(0, 1, aProduct.getName());
+
+        // type
+        detailTable.setText(1, 0, "Object Type");
+        detailTable.setText(1, 1, aProduct.getObjectType());
+
+        // status
+        detailTable.setText(2, 0, "Status");
+        detailTable.setText(2, 1, aProduct.getStatus());
+
+        // version
+        detailTable.setText(3, 0, "Version Name");
+        detailTable.setText(3, 1, aProduct.getVersionName());
+
+        // guid
+        detailTable.setText(4, 0, "GUID");
+        detailTable.setText(4, 1, aProduct.getGuid());
+
+        // lid
+        detailTable.setText(5, 0, "LID");
+        detailTable.setText(5, 1, aProduct.getLid());
+
+        // home
+        detailTable.setText(6, 0, "Home");
+        detailTable.setText(6, 1, aProduct.getHome());
+
+        // slots
+        List<ViewSlot> slots = aProduct.getSlots();
+        for (int i = 0; i < slots.size(); i++) {
+            ViewSlot slot = slots.get(i);
+            int curRow = i + 7;
+
+            detailTable.setText(curRow, 0, Products.getNice(slot.getName(),
+                    true, true));
+            
+            // slot value is null
+			if (slot.getValues()==null) {
+				detailTable.setText(curRow, 1, "");
+			}
+			else {
+				String valuesString = Products.toSeparatedString(slot.getValues());
+				if (valuesString.length()>Constants.MAX_STR_SIZE) {
+					DisclosurePanel dp = new DisclosurePanel("Click to see the value.");
+					dp.setContent(new Label(valuesString));
+					dp.setWidth("90%");
+					detailTable.setWidget(curRow, 1, dp);
+					//detailTable.setText(curRow, 1, valuesString.substring(0, MAX_STR_SIZE) + "  .....");
+				}
+				else
+					detailTable.setText(curRow, 1, valuesString);	
+			}
+        }
+
+		// add styles to cells
+		for (int i = 0; i < detailTable.getRowCount(); i++) {
+			detailTable.getCellFormatter().setStyleName(i, 0,
+					"detailLabel");
+			detailTable.getCellFormatter().setStyleName(i, 1,
+					"detailValue");
+		}
+
+		// add new data as first element in vertical stack,
+		// which should be the close button since last data table was removed
+		FocusPanel fp = new FocusPanel(detailTable);
+		ScrollPanel sp = new ScrollPanel(fp);
+		
+		sp.setHeight("600px");
+		get().productVPanel.insert(sp, 0);
+
+		// display, center and focus popup
+		get().productDetailsBox.center();
+		get().productCloseButton.setFocus(true);
 	}
 	
 	protected void initAssociationTable() {
@@ -484,10 +448,10 @@ public class Associations extends Tab {
 				this.tableModel);
 
 		// set cache for rows before start row
-		this.cachedTableModel.setPreCachedRowCount(RegistryUI.PAGE_SIZE);
+		this.cachedTableModel.setPreCachedRowCount(RegistryUI.PAGE_SIZE1);
 
 		// set cache for rows after end row
-		this.cachedTableModel.setPostCachedRowCount(RegistryUI.PAGE_SIZE);
+		this.cachedTableModel.setPostCachedRowCount(RegistryUI.PAGE_SIZE1);
 
 		// create a table definition, this defines columns, layout, row colors
 		TableDefinition<ViewAssociation> tableDef = createTableDefinition();
@@ -497,7 +461,7 @@ public class Associations extends Tab {
 				this.cachedTableModel, tableDef);
 
 		// set the num rows to display per page
-		this.pagingScrollTable.setPageSize(RegistryUI.PAGE_SIZE);
+		this.pagingScrollTable.setPageSize(RegistryUI.PAGE_SIZE1);
 
 		// set content to display when there is no data
 		this.pagingScrollTable.setEmptyTableWidget(new HTML(
@@ -513,7 +477,7 @@ public class Associations extends Tab {
 		this.pagingScrollTable.setCellSpacing(0);
 		this.pagingScrollTable
 				.setResizePolicy(ScrollTable.ResizePolicy.FILL_WIDTH);
-		this.pagingScrollTable.setHeight(RegistryUI.TABLE_HEIGHT);
+		this.pagingScrollTable.setHeight(RegistryUI.TABLE_HEIGHT_B);
 
 		// allow multiple cell resizing
 		this.pagingScrollTable
@@ -528,7 +492,6 @@ public class Associations extends Tab {
 			
 			@Override
 			public void onRowSelection(RowSelectionEvent event) {
-
 				// get selected rows
 				Set<Row> selected = event.getSelectedRows();
 				if (selected.size() == 0) {
@@ -616,8 +579,8 @@ public class Associations extends Tab {
 					detailTable.getCellFormatter().setStyleName(i, 1,
 							"detailValue");
 				}
-
-				get().associationVPanel.insert(detailTable, 0);
+				FocusPanel fp = new FocusPanel(detailTable);
+				get().associationVPanel.insert(fp, 0);
 
 				// display, center and focus popup
 				get().associationDetailsBox.center();
@@ -634,23 +597,16 @@ public class Associations extends Tab {
 		// add handler to update found element count
 		this.pagingScrollTable
 				.addPageCountChangeHandler(new PageCountChangeHandler() {
-
 					@Override
 					public void onPageCountChange(PageCountChangeEvent event) {
-						int count = get().pagingScrollTable.getTableModel()
-								.getRowCount();
+						int count = get().pagingScrollTable.getTableModel().getRowCount();
 
 						// display count in page
-						// TODO: do number formatting and message formatting and
-						// externalize
 						get().recordCountContainer
-								.setHTML("<div class=\"recordCount\">Num Records: "
+								.setHTML("<div class=\"recordCount\">Total Records: "
 										+ count + "</div>");
-
 					}
-				}
-
-				);
+				});
 
 		// set selection policy
 		SelectionGrid grid = get().getDataTable();
@@ -685,8 +641,7 @@ public class Associations extends Tab {
 		// add the close button to the panel
 		this.productVPanel.add(this.productCloseButton);
 
-		// create a handler for the click of the close button to hide the detail
-		// box
+		// create a handler for the click of the close button to hide the detail box
 		ClickHandler closButtonHandler = new ClickHandler() {
 
 			@Override
@@ -723,9 +678,6 @@ public class Associations extends Tab {
 		// through external css
 		this.productDetailsBox.addStyleName("detailBox");
 
-		// enable hiding the dialog when clicking outside of its constraints
-		//this.productDetailsBox.setAutoHideEnabled(true);
-
 		// add the close handler that de-selects the row that was used to
 		// trigger the "show" of the dialog
 		this.productDetailsBox.addCloseHandler(dialogCloseHandler);
@@ -740,7 +692,6 @@ public class Associations extends Tab {
 	private void initAssociationDetailPopup() {
 		// set title
 		this.associationDetailsBox.setText("Association Details");
-		//this.associationDetailsBox.set
 
 		// make hide and show be animated
 		this.associationDetailsBox.setAnimationEnabled(true);
@@ -760,13 +711,16 @@ public class Associations extends Tab {
 		
 		// row 4
 		this.associationVPanel.add(this.targetPlaceholder);
-
+				
 		// create a close button
 		this.associationCloseButton = new Button("Close");
 
 		// add the close button to the panel (row 5)
 		this.associationVPanel.add(this.associationCloseButton);
-
+	
+		// for debugging (row 6)
+		//this.associationVPanel.add(this.debugMsg);
+				
 		// create a handler for the click of the close button to hide the detail
 		// box
 		ClickHandler closButtonHandler = new ClickHandler() {
@@ -846,27 +800,22 @@ public class Associations extends Tab {
 		final ListBox assocTypeInput = new ListBox(false);
 		assocTypeInput.setName("associationType");
 		assocTypeInput.addItem("Any Association Type", "-1");
-		assocTypeInput.addItem("has_target");
-		assocTypeInput.addItem("has_investigation");
-		assocTypeInput.addItem("has_data_set");
-		assocTypeInput.addItem("has_instrument_host");
-		assocTypeInput.addItem("has_instrument");
-		assocTypeInput.addItem("has_resource");
-		assocTypeInput.addItem("urn:registry:AssociationType:HasMember");
-				
+		for (int i=0; i<Constants.assocTypes.length; i++) {
+			assocTypeInput.addItem(Constants.assocTypes[i]);
+		}
 		InputContainer assocTypeInputWrap = new InputContainer("Association Type",
 				assocTypeInput);
 		inputTable.add(assocTypeInputWrap);
 
-		// create button for doing an update
-		final Button updateButton = new Button("Update");
-		updateButton.setWidth("55px");
-		updateButton.setStyleName("buttonwrapper");
-		InputContainer updateButtonWrap = new InputContainer(null, updateButton);
-		inputTable.add(updateButtonWrap);
+		// create button for doing an refresh the table
+		final Button refreshButton = new Button("Refresh");
+		//refreshButton.setWidth("55px");
+		refreshButton.setStyleName("buttonwrapper");
+		InputContainer refreshButtonWrap = new InputContainer(null, refreshButton);
+		inputTable.add(refreshButtonWrap);
 
 		final Button clearButton = new Button("Clear");
-		clearButton.setWidth("50px");
+		//clearButton.setWidth("50px");
 		clearButton.setStyleName("buttonwrapper");
 		InputContainer clearButtonWrap = new InputContainer(null, clearButton);
 		inputTable.add(clearButtonWrap);
@@ -876,7 +825,7 @@ public class Associations extends Tab {
 		// not sure this is reasonable as we're not doing a real submit, it's
 		// triggering a javascript event that is integral to the behavior of the
 		// scroll table
-		updateButton.addClickHandler(new ClickHandler() {
+		refreshButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				// clear cache as data will be invalid after filter
@@ -976,7 +925,7 @@ public class Associations extends Tab {
 			};
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(100);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -1011,7 +960,7 @@ public class Associations extends Tab {
 			columnDef.setMinimumColumnWidth(35);
 			columnDef.setPreferredColumnWidth(35);
 			columnDef.setColumnSortable(true);
-			//columnDef.setColumnTruncatable(false);
+			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
 
@@ -1029,7 +978,7 @@ public class Associations extends Tab {
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(50);
 			columnDef.setColumnSortable(true);
-			//columnDef.setColumnTruncatable(false);
+			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
 		
@@ -1062,7 +1011,7 @@ public class Associations extends Tab {
 			};
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(100);
-			columnDef.setColumnSortable(true);
+			columnDef.setColumnSortable(false);
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -1076,8 +1025,48 @@ public class Associations extends Tab {
 	public void initPaging() {
 		PagingOptions pagingOptions = new PagingOptions(getPagingScrollTable());
 
+		this.pagingPanel.add(pagingOptions);
+		this.pagingPanel.add(this.recordCountContainer);
+		
+		final ListBox showRecordsInput = new ListBox(false);
+		showRecordsInput.setName("showRecords");
+		showRecordsInput.addItem("20 records", "0");
+		showRecordsInput.addItem("50 records");
+		showRecordsInput.addItem("100 records");
+		
+		showRecordsInput.addChangeHandler(new ChangeHandler() {
+			//@Override
+			public void onChange(ChangeEvent event) {
+				int itemSelected = showRecordsInput.getSelectedIndex();
+				logger.log(Level.FINEST, "show:   selected index = " + itemSelected);
+				switch (itemSelected) {
+					case 1: 
+						get().getPagingScrollTable().setHeight(RegistryUI.TBL_HGT_50_B);
+						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE2);
+						break;
+					case 2:
+						get().getPagingScrollTable().setHeight(RegistryUI.TBL_HGT_100_B);
+						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE3);
+						break;
+					default:
+						get().getPagingScrollTable().setHeight(RegistryUI.TABLE_HEIGHT_B);
+						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
+						break;
+				}
+				get().getPagingScrollTable().redraw();
+			}
+		});
+		
+		final Label showRecordsLbl = new Label("Show:");
+		showRecordsLbl.setWidth("200px");
+		showRecordsLbl.addStyleName("gwt-Label-Show");
+		this.pagingPanel.add(showRecordsLbl);
+		showRecordsInput.addStyleName("recordListBox");
+		this.pagingPanel.add(showRecordsInput);
+		
+		this.layout.setWidget(2, 0, this.pagingPanel);
 		// add the paging widget to the last row of the layout
-		this.layout.setWidget(2, 0, pagingOptions);
+		//this.layout.setWidget(2, 0, pagingOptions);
 	}	
 	
 	/**
@@ -1089,11 +1078,10 @@ public class Associations extends Tab {
 		setRecordCount(get().pagingScrollTable.getTableModel().getRowCount());
 	}
 	
-	protected void getProducts(String guid, final boolean srcFlag) {
+	protected void getProducts(final String guid, final boolean srcFlag) {
 		get().tableModel.getProduct(guid, 
 				new AsyncCallback<SerializableResponse<ViewProduct>>() {
 					public void onFailure(Throwable caught) {
-						System.out.println("RPC Failure for getProduct with guid...");
 						Window.alert("Associations.getProducts() RPC Failure" + caught.getMessage());
 					}
 				
@@ -1101,13 +1089,17 @@ public class Associations extends Tab {
 						SerializableProductResponse<ViewProduct> spr = (SerializableProductResponse<ViewProduct>) result;
 					
 						ViewProducts products = (ViewProducts) spr.getValues();
-						if (srcFlag) {
+
+						int prodNums = 0;
+						if (guid!=null) prodNums = products.size();
+							
+						if (srcFlag) {		
 							get().srcProducts = products;
-												
+								
 							FixedWidthGrid grid = get().srcScrollTable.getDataTable();
-							grid.resize(products.size(), 5);
+							grid.resize(prodNums, 5);
 						
-							for (int i=0; i<products.size(); i++) {
+							for (int i=0; i<prodNums; i++) {
 								final ViewProduct aProduct = products.get(i);
 								grid.setText(i, 0, aProduct.getName());
 								grid.setText(i, 1, aProduct.getLid());
@@ -1121,11 +1113,11 @@ public class Associations extends Tab {
 						}
 						else {
 							get().targetProducts = products;
-							
+														
 							FixedWidthGrid grid = get().targScrollTable.getDataTable();
-							grid.resize(products.size(), 5);
-						
-							for (int i=0; i<products.size(); i++) {
+							grid.resize(prodNums, 5);
+															
+							for (int i=0; i<prodNums; i++) {
 								final ViewProduct aProduct = products.get(i);
 								grid.setText(i, 0, aProduct.getName());
 								grid.setText(i, 1, aProduct.getLid());

@@ -84,15 +84,13 @@ public class ServiceBindingServiceImpl extends RemoteServiceServlet implements
 		case 1:
 			return "lid";
 		case 2:
-			return "versionId";
-		case 3:
-			return "objectType";
-		case 4:
-			return "status";
-		case 5:
-			return "guid";
-		case 6: 
 			return "home";
+		case 3:
+			return "versionName";
+		case 4:
+			return "objectType";
+		case 5:
+			return "status";
 		default:
 			return null;
 		}

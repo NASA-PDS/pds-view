@@ -17,6 +17,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.ui.HTML;
@@ -24,18 +25,15 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-// gwt-log api
-//import com.allen_sauer.gwt.log.client.Log;  
-
 import gov.nasa.pds.registry.ui.client.Tab.TabInfo;
 import gov.nasa.pds.registry.ui.client.TabList;
 
 /*
 import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 */
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * Entry point for the registry front end application. Front end currently
@@ -45,8 +43,6 @@ import java.util.logging.Logger;
  * 
  */
 public class RegistryUI implements EntryPoint, HistoryListener {
-	
-	//public Logger logger = Logger.getLogger("RegistryUILogger");
 	
 	protected TabList list = new TabList();
 	
@@ -60,14 +56,26 @@ public class RegistryUI implements EntryPoint, HistoryListener {
 	
 	public static Label lbl = new Label();
 	
-	public final static String TABLE_HEIGHT = "848px";
-		
+	//public final static String TABLE_HEIGHT = "848px";  // with page size 30
+	//public final static String TABLE_HEIGHT = "617px";    // with page size 20???
+	public final static String TABLE_HEIGHT = "608px";	    // with page size 20 with CHECKBOX
+	public final static String TABLE_HEIGHT_B = "588px";      // with ONE_ROW selection
+	
+	public final static String TBL_HGT_50 = "1420px";  // 50 records with CHECKBOX
+	public final static String TBL_HGT_50_B = "1370px";    // 50 records with ONE_ROW
+	
+	public final static String TBL_HGT_100 = "2770px";  // 100 records with CHECKBOX
+	public final static String TBL_HGT_100_B = "2670px";
+	
 	/**
 	 * Default number of records for each page
 	 */
-	public static final int PAGE_SIZE = 30;
-	public static final int FETCH_ROW_SIZE = 100;
+	public static final int PAGE_SIZE1 = 20;
+	public static final int PAGE_SIZE2 = 50;
+	public static final int PAGE_SIZE3 = 100;
+	public static final int FETCH_ROW_SIZE = 50;
 	
+	public static Logger logger = Logger.getLogger("registry-ui");
 	
 	public void onHistoryChanged(String token) {
 		TabInfo info = list.find(token);
@@ -79,9 +87,6 @@ public class RegistryUI implements EntryPoint, HistoryListener {
 	}
 	
 	public void onModuleLoad() {
-		// with gwt-log
-		//Log.setUncaughtExceptionHander();
-		
 		// with java logging
 		//logger.log(Level.FINE, "About to load tabs for the registry ui ...");
 		loadTabs();
@@ -95,7 +100,7 @@ public class RegistryUI implements EntryPoint, HistoryListener {
 		
 		History.addHistoryListener(this);
 		RootPanel.get("productsContainer").add(panel);
-		
+			
 		// Show the initial screen.
         String initToken = History.getToken();
         if (initToken.length() > 0) {
@@ -108,8 +113,7 @@ public class RegistryUI implements EntryPoint, HistoryListener {
     public void show(TabInfo info, boolean affectHistory) {
         // Don't bother re-displaying the existing tab. This can be an issue
         // in practice, because when the history context is set, our
-        // onHistoryChanged() handler will attempt to show the currently-visible
-        // sink.
+        // onHistoryChanged() handler will attempt to show the currently-visible tab.
         if (info == curInfo) {
             return;
         }

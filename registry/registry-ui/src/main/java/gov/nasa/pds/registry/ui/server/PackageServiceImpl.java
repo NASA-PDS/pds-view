@@ -19,7 +19,6 @@ import gov.nasa.pds.registry.ui.client.SerializableProductResponse;
 import gov.nasa.pds.registry.ui.shared.ViewRegistryPackages;
 import gov.nasa.pds.registry.ui.shared.ViewRegistryPackage;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +28,9 @@ import com.google.gwt.gen2.table.client.TableModelHelper.ColumnSortList;
 import com.google.gwt.gen2.table.client.TableModelHelper.Request;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Implementation of the package service that retrieves registered packages from
@@ -64,6 +66,14 @@ public class PackageServiceImpl extends RemoteServiceServlet implements
 		return new SerializableProductResponse<ViewRegistryPackage>(packages);
 	}
 
+	public boolean updatePackage(final ViewRegistryPackage registryPackage) {
+		return ConnectionManager.updatePackage(registryPackage);
+	}
+	
+	public boolean deletePackage(ViewRegistryPackage registryPackage) {
+		return ConnectionManager.deletePackage(registryPackage);
+	}
+
 	/**
 	 * Convert index to column name
 	 * 
@@ -83,17 +93,40 @@ public class PackageServiceImpl extends RemoteServiceServlet implements
 		case 1:
 			return "lid";
 		case 2:
-			return "versionId";
+			return "versionName";
 		case 3:
 			return "objectType";
 		case 4:
 			return "status";
-		case 5:
-			return "guid";
-		case 6: 
-			return "home";
 		default:
 			return null;
 		}
+	}
+	
+	//private HttpSession getSession() {
+	//	return this.getThreadLocalRequest().getSession();
+	//}
+	
+	public String getRemoteUser() {
+		//logger.log(Level.FINEST, "header = " + this.getRequests().getHeaders().toString());
+		//System.out.println("header = " + this.getRequest().getHeaders().toString());
+		for (Cookie aCookie: this.getRequest().getCookies()) {
+			System.out.println("cookie name = " + aCookie.getName() + " :  value = " + aCookie.getValue() );
+		}
+		return this.getRequest().getRemoteUser();
+	}
+	
+	public String getRemotePassword() {
+		return this.getRequest().getRemoteUser();
+		//return this.getRequest().getRemotePassword();
+	}
+	
+	public String getSessionId() {
+		//return this.getRequest().getCookies().toString();
+		return this.getRequest().getRequestedSessionId();
+	}
+	
+	private HttpServletRequest getRequest() {
+		return this.getThreadLocalRequest();
 	}
 }

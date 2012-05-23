@@ -92,8 +92,7 @@ public class EventTableModel extends MutableTableModel<ViewAuditableEvent> {
 					@SuppressWarnings("nls")
 					public void onFailure(Throwable caught) {
 						callback.onFailure(new Exception("Events RPC Failure" + caught.getMessage()));
-						Window.alert("Events RPC Failure" + caught.getMessage());
-						//System.out.println("RPC Failure");						
+						Window.alert("Events RPC Failure" + caught.getMessage());					
 					}
 
 					public void onSuccess(

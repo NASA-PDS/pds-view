@@ -65,6 +65,14 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 		return new SerializableProductResponse<ViewProduct>(products);
 	}
 
+	public boolean updateProduct(final ViewProduct product) {
+		return ConnectionManager.updateProduct(product);
+	}
+	
+	public boolean deleteProduct(ViewProduct product) {
+	    return ConnectionManager.deleteProduct(product);
+	}
+	
 	/**
 	 * Retrieve a set of products from the registry with the given request
 	 * parameters.
@@ -112,9 +120,10 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 			queryBuilder = queryBuilder.sort(sortList);
 		}
 
+		
 		// if there are filters, add them
 		if (filters.size() > 0) {
-
+			System.out.println("filters = " + filters.toString());
 			// create a filter builder
 			ExtrinsicFilter.Builder filterBuilder = new ExtrinsicFilter.Builder();
 
@@ -142,11 +151,6 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 						.valueOf(filters.get("status")));
 			}
 			
-			// Map this to version name as version id no longer exists
-			if (filters.containsKey("versionId")) {
-				filterBuilder.versionName(filters.get("versionId"));
-			}
-
 			if (filters.containsKey("versionName")) {
 				filterBuilder.versionName(filters.get("versionName"));
 			}
@@ -189,7 +193,7 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 		case 1:
 			return "lid";
 		case 2:
-			return "versionId";
+			return "versionName";
 		case 3:
 			return "objectType";
 		case 4:

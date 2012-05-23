@@ -78,19 +78,19 @@ public class SchemesServiceImpl extends RemoteServiceServlet implements
 	public static String indexToColumnName(int index) {
 		switch (index) {
 		case 0:
-			return "name";
+			return "nodeType";
 		case 1:
-			return "lid";
+			return "isInternal";
 		case 2:
-			return "versionId";
+			return "lid";
 		case 3:
-			return "objectType";
-		case 4:
-			return "status";
-		case 5:
-			return "guid";
-		case 6: 
 			return "home";
+		case 4:
+			return "versionName";
+		case 5:
+			return "objectType";
+		case 6: 
+			return "status";
 		default:
 			return null;
 		}
