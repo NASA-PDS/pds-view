@@ -28,7 +28,7 @@ fi
 
 PDS_SOLR_HOME=$SOLR_HOME/pds
 
-SOLR_UPDATE="http://pdsbeta/tools/search-service/pds/update"
+SOLR_UPDATE="http://pdsbeta:8080/search-service/pds/update"
 
 cd $PDS_SOLR_HOME
 pwd
