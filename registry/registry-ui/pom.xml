@@ -44,8 +44,8 @@
 
   <properties>
     <junit-version>4.8.1</junit-version>
-    <gwt-archetype-version>1.2</gwt-archetype-version>
-    <gwt-version>2.0.0</gwt-version>
+    <gwt-archetype-version>2.4.0</gwt-archetype-version>
+    <gwt-version>2.4.0</gwt-version>
     <jersey-version>1.4</jersey-version>
   </properties>
 
@@ -113,14 +113,9 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
-        <!--version>1.2</version-->
         <version>${gwt-archetype-version}</version>
         <configuration>
           <localWorkers>1</localWorkers>
-          <!--
-          <warSourceDirectory>${basedir}/war</warSourceDirectory>
-          -->
-          <!--logLevel>ALL</logLevel-->
           <logLevel>WARN</logLevel>
           <!-- use style OBF for prod -->
           <style>OBFUSCATED</style>
@@ -128,22 +123,11 @@
           <disableCastChecking>true</disableCastChecking>
           <inplace>true</inplace>
           <soyc>false</soyc>
-          <!--server>com.google.appengine.tools.development.gwt.AppEngineLauncher</server-->
-          <!--packageNamePerModule>
-             <hello>gov/nasa/pds/registry/ui/registry_ui.gwt.xml</hello>
-          </packageNamePerModule-->
-          <!--scanRemoteServiceRelativePathAnnotation>true</scanRemoteServiceRelativePathAnnotation-->
         </configuration>
         <executions>
           <execution>
-            <!--configuration>
-              <module>gov.nasa.pds.registry.ui.registry_ui</module>
-              <runTarget>gov.nasa.pds.registry.ui.registry_ui/Registry_ui.html</runTarget>
-            </configuration-->
             <goals>
               <goal>compile</goal>
-              <!-- <goal>generateAsync</goal> -->
-              <!--goal>test</goal-->
             </goals>
           </execution>
         </executions>
@@ -187,6 +171,7 @@
         <artifactId>tomcat-maven-plugin</artifactId>
         <configuration>
           <server>tomcat-local</server>
+          <url>http://localhost:8080/registry-ui-${project.parent.version}/</url>
         </configuration>
       </plugin>
     </plugins>
@@ -211,7 +196,14 @@
     <repository>
       <id>gwt-repo</id>
       <name>Google Repository</name>
-      <url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
+      <url>http://repo2.maven.org/maven2/com/google/gwt/</url>
+      <!--url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url-->
+    </repository>
+    <repository>
+      <id>gwt-incubator-repo</id>
+      <name>Google Incubator Repository</name>
+      <!--urlhttp://repo2.maven.org/maven2/com/google/gwt/gwt-incubator/</url-->
+      <url>http://repository.pentaho.org/artifactory/repo/</url>
     </repository>
     <!-- Hosts the Hibernate artifacts. -->
     <repository>
@@ -232,6 +224,13 @@
       <groupId>gov.nasa.pds.2010.registry</groupId>
       <artifactId>registry-core</artifactId>
       <version>${project.parent.version}</version>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>xerces</groupId>
+          <artifactId>xercesImpl</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey</groupId>
@@ -264,18 +263,13 @@
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-incubator</artifactId>
-      <version>2.0.1</version>
+      <version>2.1.0</version>
     </dependency>
     <!-- gwt logging api -->
-    <dependency>
+    <!--dependency>
       <groupId>com.google.code.gwt-log</groupId>
       <artifactId>gwt-log</artifactId>
       <version>2.6.2</version>
-    </dependency>
-    <!--dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-dev</artifactId>
-      <version>${gwt-version}</version>
     </dependency-->
     <dependency>
       <groupId>org.codehaus.mojo</groupId>
@@ -287,6 +281,13 @@
       <groupId>org.hibernate.java-persistence</groupId>
       <artifactId>jpa-api</artifactId>
       <version>2.0-cr-1</version>
+    </dependency>
+    
+    <!--  Added in 3/22/12 with upgraded registry service (deleteObject method) -->
+    <dependency>
+        <groupId>org.codehaus.jackson</groupId>
+        <artifactId>jackson-jaxrs</artifactId>
+        <version>1.9.4</version>
     </dependency>
   </dependencies>
 
