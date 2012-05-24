@@ -23,7 +23,25 @@
   </properties>
 
   <body>
-    <release version="1.2.0" date="TBD" description="This release of the Registry User Interface is a component of the integrated release 2.2.0 of the PDS 2010 System.">
+    <release version="1.2.0" date="2012-05-24" description="This release of the Registry User Interface is a component of the integrated release 2.2.0 of the PDS 2010 System.">
+		<action dev="hyunlee" type="add">
+		  Provide the capability to update the status of product(s)/package(s).
+		</action>
+		<action dev="hyunlee" type="add">
+		  Provide the capability to delete the product(s)/package(s).
+		</action>
+		<action dev="hyunlee" type="add">
+		  Provide the capability to show the records with different numbers on the products, associations, events, and classification nodes tabs.
+		</action>
+		<action dev="hyunlee" type="update">
+		  Provide the capability to copy and paste with ctrl-c/ctrl-v keys on popup windows. 
+		</action>
+		<action dev="hyunlee" type="update">
+		  Fixed incorrect sorting with the eventType field on the events tab.
+		</action>
+		<action dev="hyunlee" type="update">
+		  Fixed incorrect filtering with a requestId on the events tab. 
+		</action>
     </release>
 
     <release version="1.1.0" date="2012-01-31" description="This release of the Registry User Interface is a component of the integrated release 2.1.0 of the PDS 2010 System.">
