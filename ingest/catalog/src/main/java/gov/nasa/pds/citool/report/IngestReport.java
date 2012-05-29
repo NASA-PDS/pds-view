@@ -142,8 +142,8 @@ public class IngestReport extends Report {
       writer.println();
       writer.println("  " + totalValidated + " of " + totalFiles + " ingested, "
               + this.getNumSkipped() + " skipped");
-      writer.println("  " + this.getNumPassed() + " of " + totalValidated
-              + " passed");
+      //writer.println("  " + this.getNumPassed() + " of " + totalValidated
+      //        + " passed");
       writer.println();  
       if (printDetails) {
     	  writer.println("  Number of successful file object ingestion: " + gov.nasa.pds.citool.ingestor.CatalogRegistryIngester.fileObjCount);

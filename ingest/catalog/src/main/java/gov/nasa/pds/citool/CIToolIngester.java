@@ -31,6 +31,7 @@ import gov.nasa.pds.registry.client.SecurityContext;
 
 import org.apache.oodt.cas.filemgr.structs.Product;
 import org.apache.oodt.cas.filemgr.structs.exceptions.CatalogException;
+import org.apache.oodt.cas.filemgr.structs.exceptions.ConnectionException;
 import org.apache.oodt.cas.metadata.Metadata;
 
 import java.net.MalformedURLException;
@@ -135,18 +136,29 @@ public class CIToolIngester {
         } 
         else {    
         	catLabels.add(lbl);
-        	/*
-        	if (!lbl.getProblems().isEmpty()) {
-        		LabelParserException lp = new LabelParserException(
-                        lbl.getLabelURI(), null, null,
-                        "ingest.source.UnParseable",
-                        ProblemType.INVALID_LABEL, lbl.getLabelURI());
-        		//report.record(lbl.getLabelURI(), lbl.getProblems());
-        	}
-        	*/
         }
     }
     
+    public void process() {   	
+    	catIngester = new CatalogRegistryIngester(registryUrl, securityContext, username, password);
+    	convertToCatalogObject();
+ 
+    	// generate Reference info for each catObj, it will be used to create associations
+    	Map<String, List<String>> refs = populateReferenceEntries();
+ 
+    	// create a package registry
+    	catIngester.createRegistryPackage();
+    	// publish a product and the corresponding associations  	
+    	for (CatalogObject obj: catObjs) {	
+    		if (obj.getIsLocal()) {
+       			//System.out.println("ingesting a catalog object..." + obj.getLabel().getLabelURI());
+    			catIngester.ingest(obj);  // ingest extrinsic & file object	
+    			catIngester.updateProduct(obj, refs);  // update extrinsic object with associations
+    			report.record(obj.getLabel().getLabelURI(), obj.getLabel().getProblems());
+    		}
+       	}     	
+    }
+ 
     private void convertToCatalogObject() {
 		List<String> pointerFiles = null;
 		// read a set of catalog archive volume files
@@ -157,16 +169,25 @@ public class CIToolIngester {
 		// TODO: need to add to handle multiple catalog objects (sets of catalog references???)
 		for (Label lbl : catLabels) {		
 			CatalogObject catObj = new CatalogObject(this.report);
-			catObj.processLabel(lbl);
+			boolean validFile = catObj.processLabel(lbl);
 			
-			if (catObj.getCatObjType().equalsIgnoreCase("VOLUME")) {
-				pointerFiles = catObj.getPointerFiles();
-				storageProductName = catObj.getPdsLabelMap().get("VOLUME_ID")
-						.getValue().toString();
-				basePath = catObj.getFilename().substring(0, catObj.getFilename().lastIndexOf(File.separator));
-				isVolumeCatalog = true;
+			if (validFile) {
+				if (catObj.getCatObjType().equalsIgnoreCase("VOLUME")) {
+					pointerFiles = catObj.getPointerFiles();
+					storageProductName = catObj.getPdsLabelMap().get("VOLUME_ID")
+							.getValue().toString();
+					basePath = catObj.getFilename().substring(0, catObj.getFilename().lastIndexOf(File.separator));
+					isVolumeCatalog = true;
+				}
+				catObjs.add(catObj);
 			}
-			catObjs.add(catObj);
+			else {
+				LabelParserException lp = new LabelParserException(
+                        lbl.getLabelURI(), null, null,
+                        "ingest.warning.skipFile",
+                        ProblemType.INVALID_LABEL_WARNING, "This file is not required to ingest into the registry service.");
+                report.recordSkip(lbl.getLabelURI(), lp);
+			}
 		}
 	    
 		if (!isVolumeCatalog) {
@@ -174,8 +195,8 @@ public class CIToolIngester {
 			System.exit(1);
 		}
 
-		catIngester.setStorageService(storageUrl, storageProductName);
-		catIngester.setTransportURL(transportUrl);
+		//catIngester.setStorageService(storageUrl, storageProductName);
+		//catIngester.setTransportURL(transportUrl);
 
 		List<String> requiredFiles = new ArrayList<String>();
 		for (String ptrFile : pointerFiles) {
@@ -231,6 +252,26 @@ public class CIToolIngester {
 			}			
 		}
 		
+		try {
+			//System.out.println("before setting storage service...");
+			catIngester.setStorageService(storageUrl, storageProductName);
+		} catch (ConnectionException ce) {
+			/*
+			Object[] arguments = { "storage service", storageUrl };
+			LabelParserException lp = new LabelParserException(
+                        null, null, null,
+                        "ingest.error.conn",
+                        ProblemType.EXECUTE_FAIL, arguments);
+            //report.recordSkip(targetLabel.getLabelURI(), lp);
+	  		report.recordSkip(new URI(), lp);
+	  		*/
+			System.err.println("\nWARNING: The storage service - " + storageUrl + 
+					" is not accessble. Please check the connection. " + 
+					"\n\t The catalog file(s) CANNOT be delivered to the storage service.");
+		}
+			
+		//System.out.println("before setting transport url...");
+		catIngester.setTransportURL(transportUrl);
 		// there are some files to retrieve from the file manager server
 		if (requiredFiles.size()>0) {
 			getFilesFromStorageService(requiredFiles);
@@ -305,52 +346,6 @@ public class CIToolIngester {
     	return catIngester.getStorageIngester().getProductByName(this.storageProductName+":"+fileName.toLowerCase());
     }
     
-    /*
-    public float getVersionFromStorageService(String fileName) {
-    	float fileVersion = 0.0f;
-    	try {
-			Product aProduct = getProductFromStorageService(fileName);
-			String productId = aProduct.getProductId();
-			URL tmpUrl = new URL(transportUrl + productId);
-			HttpURLConnection conn = (HttpURLConnection) tmpUrl.openConnection();
-
-			if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				String fileLoc = catIngester.getStorageIngester().getFMClient()
-						.getMetadata(aProduct).getMetadata("FileLocation");
-				fileVersion = Float.valueOf(fileLoc.substring(fileLoc
-									.lastIndexOf(File.separator) + 1)).floatValue();
-			}
-    	} catch (MalformedURLException mue) {
-    		mue.printStackTrace();
-    	} catch (CatalogException ce) {
-    		ce.printStackTrace();
-    	} catch (ConnectException ioe) {
-    		ioe.printStackTrace();
-    	}		
-		return fileVersion;
-    }
-    */
-    
-    public void process() {
-    	    	
-    	catIngester = new CatalogRegistryIngester(registryUrl, securityContext, username, password);
-    	convertToCatalogObject();
-    	
-    	// generate Reference info for each catObj, it will be used to create associations
-    	Map<String, List<String>> refs = populateReferenceEntries();
- 
-    	catIngester.createRegistryPackage();
-    	// publish a product and the corresponding associations  	
-    	for (CatalogObject obj: catObjs) {	
-    		if (obj.getIsLocal()) {
-    			catIngester.ingest(obj);  // ingest extrinsic & file object	
-    			catIngester.updateProduct(obj, refs);  // update extrinsic object with associations
-    			report.record(obj.getLabel().getLabelURI(), obj.getLabel().getProblems());
-    		}
-       	}
-       	
-    }
- 
     /**
      * Generates reference class object for association information
      */
@@ -365,7 +360,6 @@ public class CIToolIngester {
     		Metadata md = tmpCatObj.getMetadata();
     		if (catObjType.equalsIgnoreCase(Constants.MISSION_OBJ)) {
     			lidValue = pdsLbl.get("MISSION_NAME").getValue().toString();
-    			//System.out.println("mission name = " + lidValue);
     			if (lidValue.contains(" ")) {
     				lidValue = lidValue.replace(' ', '_');
     			}
@@ -378,16 +372,14 @@ public class CIToolIngester {
     			}
     			values.add(Constants.LID_PREFIX+"mission."+lidValue);
     			refs.put(Constants.HAS_MISSION, values);
-/*    			
-    			lidValue = pdsLbl.get("TARGET_NAME").getValue().toString();		    			
+
+    			String key = "TARGET_NAME";
     			if (refs.get(Constants.HAS_TARGET)!=null) {
     				values = refs.get(Constants.HAS_TARGET);
     			}
     			else {
     				values = new ArrayList<String>();
     			}
-*/ 			
-    			String key = "TARGET_NAME";
     			if (md.isMultiValued(key)) {
     				List<String> tmpValues = md.getAllMetadata(key);
     				for (String aVal: tmpValues) {
@@ -555,8 +547,7 @@ public class CIToolIngester {
             	return true;
             }
             else 
-            	return false;
-            
+            	return false;           
         }
         else {
             if (!sourceLabel.getProblems().isEmpty()) {

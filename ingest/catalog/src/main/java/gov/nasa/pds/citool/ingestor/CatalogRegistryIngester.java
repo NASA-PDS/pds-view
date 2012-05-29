@@ -33,6 +33,7 @@ import gov.nasa.pds.registry.query.AssociationFilter;
 
 import org.apache.oodt.cas.metadata.Metadata;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.oodt.cas.filemgr.structs.exceptions.ConnectionException;
 
 import gov.nasa.pds.tools.label.ObjectStatement;
 import gov.nasa.pds.tools.label.AttributeStatement;
@@ -53,6 +54,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.net.URI;
 import java.net.URL;
+//import java.net.ConnectException;
 import java.text.SimpleDateFormat;
 
 public class CatalogRegistryIngester {
@@ -116,22 +118,28 @@ public class CatalogRegistryIngester {
 	}
 	
 	/**
-	 * Set parameters for the storage service instace
+	 * Set parameters for the storage service instance
 	 * @param storageURL the URL of the storage service
 	 * @param productName Product name used in the storage service
 	 */
-	public void setStorageService(String storageURL, String productName) {
-		try {
-			storageIngester = new StorageIngester(new URL(storageURL));
+	public void setStorageService(String storageURL, String productName) throws ConnectionException {
+		try {			
 			if (productName != null) {
-				storageIngester.setProductName(productName);
 				this.storageProductName = productName;
+				storageIngester = new StorageIngester(new URL(storageURL));
+				storageIngester.setProductName(productName);
 			}
+		} catch (ConnectionException ce) {
+			throw ce;
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * Set URL of the transport service
+	 * @param transportURL the URL of the transport service
+	 */
 	public void setTransportURL(String transportURL) {
 		this.transportURL = transportURL;
 	}
@@ -140,6 +148,10 @@ public class CatalogRegistryIngester {
 	 * Method to ingest given catalog object to the registry service
 	 * It calls ingestExtrinsicObject() for the product registry.
 	 * Then, it calls ingestFileObject() for the corresponding file object registry.
+	 * 
+	 * @param catObj a Catalog Object instance
+	 * @return the guid of the registered extrinsic object
+	 * 
 	 */
 	public String ingest(CatalogObject catObj) {
 		// initialize a FileObject for given CatalogObject
@@ -151,7 +163,7 @@ public class CatalogRegistryIngester {
 		// ingest a file object to the registry service
 		String fileObjGuid = ingestFileObject(catObj);
 		if (fileObjGuid != null) fileObjCount++;
-
+		
 		return productGuid;
 	}
 	
@@ -170,55 +182,79 @@ public class CatalogRegistryIngester {
 					catObj.setVersion(1.0f);
 				}			
 			}
-			// ingest to the storage service
-			String productId = storageIngester.ingestToStorage(catObj);
-			if (productId != null) {
-				storageCount++;
+			
+			if (storageIngester==null) {
 				lp = new LabelParserException(catObj.getLabel().getLabelURI(),
-						null, null, "ingest.text.recordAdded",
+						null, null, "ingest.warning.failIngestion",
 						ProblemType.SUCCEED,
-						"Successfully ingested to the storage service. productID - "
-								+ productId);
+						"Failed ingesting to the storage service.");
 				catObj.getLabel().addProblem(lp);
 			}
+			else {
+				// ingest to the storage service
+				String productId = storageIngester.ingestToStorage(catObj);
+				if (productId != null) {
+					storageCount++;
+					lp = new LabelParserException(catObj.getLabel().getLabelURI(),
+							null, null, "ingest.text.recordAdded",
+							ProblemType.SUCCEED,
+							"Successfully ingested a catalog file to the storage service. productID - "
+									+ productId);
+					catObj.getLabel().addProblem(lp);
+					
+					// sets the storage product id to the file object,
+					// so that it can be added as the slot value for the registry
+					catObj.getFileObject().setStorageServiceProductId(productId);
+					catObj.getFileObject().setAccessUrl(transportURL + productId);
+						
+					// fileobject registration
+					fileExtrinsic.getSlots().add(new Slot("storage_service_productId", 
+			        			Arrays.asList(new String[] { productId })));
+			        fileExtrinsic.getSlots().add(new Slot("access_url", 
+			        			Arrays.asList(new String[] { transportURL + productId })));
+				}	 
+				else {
+					// TODO: need to create a problem type with warning...
+					lp = new LabelParserException(catObj.getLabel().getLabelURI(),
+							null, null, "ingest.warning.failIngestion",
+							ProblemType.SUCCEED,
+							"Failed ingesting to the storage service.");
+					catObj.getLabel().addProblem(lp);
+				}
+			}
 
-			// sets the storage product id to the file object,
-			// so that it can be added as the slot value for the registry
-			catObj.getFileObject().setStorageServiceProductId(productId);
-			catObj.getFileObject().setAccessUrl(transportURL + productId);
-				
-			// fileobject registration
-			fileExtrinsic.getSlots().add(new Slot("storage_service_productId", 
-	        			Arrays.asList(new String[] { productId })));
-	        fileExtrinsic.getSlots().add(new Slot("access_url", 
-	        			Arrays.asList(new String[] { transportURL + productId })));
-	        
-	        if (!registryPackageGuid.isEmpty()) {
+			if (!this.registryPackageGuid.isEmpty()) {
 				client.setRegistrationPackageId(registryPackageGuid);
 			}
-	        
+
 			if (productExists(fileExtrinsic.getLid())) {
 				guid = client.versionObject(fileExtrinsic);
 			} else {
 				guid = client.publishObject(fileExtrinsic);
 			}
-			
+
 			lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null,
-	  				"ingest.text.recordAdded", ProblemType.SUCCEED,
-	  				"Successfully ingested a file object. GUID - " + guid);
-	  		catObj.getLabel().addProblem(lp);
-	  		
-	  		// HAS_FILE is only association type to publish to the Registry Service, 
-	  		// other association types will be added as Slot
-	  		Reference ref = new Reference(fileExtrinsic.getLid(), String.valueOf(catObj.getVersion()), Constants.HAS_FILE);
-			publishAssociation(catObj, ref);
-	  		
+					"ingest.text.recordAdded", ProblemType.SUCCEED,
+					"Successfully ingested a file object. GUID - " + guid);
+			catObj.getLabel().addProblem(lp);
+
+			// HAS_FILE is only association type to publish to the Registry Service, 
+			// other association types will be added as Slot
+			Reference ref = new Reference(fileExtrinsic.getLid(), String.valueOf(catObj.getVersion()), Constants.HAS_FILE);
+			publishAssociation(catObj, ref);  		
 		} catch (RegistryServiceException re) {
 			// throw new IngestException(re.getMessage());
-			re.printStackTrace();
-			System.err.println("Error occurred..." + re.getMessage());
+			//re.printStackTrace();
+			//System.err.println("Error occurred..." + re.getMessage());			
+			lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null, 
+        			"ingest.error.failExecution", ProblemType.EXECUTE_FAIL, "ingestFileObject");
+        	catObj.getLabel().addProblem(lp);
 		} catch (Exception e) {
 			e.printStackTrace();
+			lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null, 
+        			"ingest.error.failExecution", ProblemType.EXECUTE_FAIL, "ingestFileObject");
+        	catObj.getLabel().addProblem(lp);
+        	//failCount++;
 		}
 		return guid;		
 	}
@@ -235,11 +271,25 @@ public class CatalogRegistryIngester {
 		String guid = null;
 		LabelParserException lp = null;
 		try {	
-			if (!registryPackageGuid.isEmpty()) {
+//System.out.println("client = " + client);
+			
+			if (!this.registryPackageGuid.isEmpty()) {
+				//System.out.println("setting a registryPackageGuid....." + this.registryPackageGuid);
 				client.setRegistrationPackageId(registryPackageGuid);
 			}
 					
 			this.product = createProduct(catObj);
+			
+			// don't ingest if the catalog object is PERSONNEL or REFERENCE
+			if (catObj.getCatObjType().equalsIgnoreCase("PERSONNEL")
+					|| catObj.getCatObjType().equalsIgnoreCase("REFERENCE")) {
+				// TODO: need to add warning problemtype instead of using INVALID_LABEL
+				lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null,
+                        "ingest.warning.skipFile",
+                        ProblemType.INVALID_LABEL_WARNING, "This file is not required to ingest into the registry service.");
+				catObj.getLabel().addProblem(lp);
+				return null;		
+			}
 			if (productExists(product.getLid())) {
 				guid = client.versionObject(product);				
 				catObj.setVersion(Float.valueOf(latestProduct.getVersionName()).floatValue()+1.0f);
@@ -255,12 +305,12 @@ public class CatalogRegistryIngester {
 			
 			lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null,
 	  				"ingest.text.recordAdded", ProblemType.SUCCEED,
-	  			    "Successfully registed product - " + product.getLid()+"::" + catObj.getVersion());
+	  			    "Successfully registered a product. LID - " + product.getLid()+"::" + catObj.getVersion());
 	  		catObj.getLabel().addProblem(lp);
 	  		
 	  		lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null,
 	  				"ingest.text.recordAdded", ProblemType.SUCCEED,
-	  				"Product has the following GUID - " + guid);
+	  				"Product GUID - " + guid);
 	  		catObj.getLabel().addProblem(lp);
 	  		
         } catch (RegistryServiceException re) {
@@ -287,6 +337,9 @@ public class CatalogRegistryIngester {
 	/**
 	 * Add reference information as slot values 
 	 * then, update the registered product
+	 * 
+	 * @param catObj a CatalogObject of the registered extrinsic object
+	 * @param refs Hashmap that holds reference information
 	 */
 	public void updateProduct(CatalogObject catObj, Map<String, List<String>> refs) {
 		LabelParserException lp = null;
@@ -303,15 +356,17 @@ public class CatalogRegistryIngester {
 		String catObjType = catObj.getCatObjType();   		
 		String version = String.valueOf(catObj.getVersion());
 		
+		// currently, there is only one version for the TARGET object. 
+		// will get a version from the extrinsic object...it may slow down the processing
 		if (catObjType.equalsIgnoreCase(Constants.MISSION_OBJ)) {   
 			slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
 			slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));
-			slots.add(new Slot(Constants.HAS_TARGET, getRefValues(version, Constants.HAS_TARGET, refs)));
+			slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs)));
 		}
 		else if (catObjType.equalsIgnoreCase(Constants.INSTHOST_OBJ)) {
 			slots.add(new Slot(Constants.HAS_MISSION, getRefValues(version, Constants.HAS_MISSION, refs)));
 			slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));
-			slots.add(new Slot(Constants.HAS_TARGET, getRefValues(version, Constants.HAS_TARGET, refs)));
+			slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs)));
 		}
 		else if (catObjType.equalsIgnoreCase(Constants.INST_OBJ)) {
 			slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
@@ -322,17 +377,15 @@ public class CatalogRegistryIngester {
 			slots.add(new Slot(Constants.HAS_MISSION, getRefValues(version, Constants.HAS_MISSION, refs)));
 			slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
 			slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));
-			slots.add(new Slot(Constants.HAS_TARGET, getRefValues(version, Constants.HAS_TARGET, refs)));
+			slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs)));
 		}
 		else if (catObjType.equalsIgnoreCase(Constants.TARGET_OBJ)) {
 			//refs.add(new Reference((String)allRefs.get(Constants.HAS_RESOURCE), version, Constants.HAS_RESOURCE));
 			slots.add(new Slot(Constants.HAS_MISSION, getRefValues(version, Constants.HAS_MISSION, refs)));
 			slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
-			slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));
-			
+			slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));			
 		}
 		
-		// TODO: need to get node info for curating node id for "has_node" 
 		List<String> verValue = new ArrayList<String>();
 		verValue.add(String.valueOf(catObj.getVersion()));
 		slots.add(new Slot("version_id", verValue));
@@ -458,15 +511,15 @@ public class CatalogRegistryIngester {
 				product.setObjectType(Constants.VOLUME_PROD);
 				product.setName(value);
 			}
-			//??????
+			// how to handle multiple PERSONNEL objects????
 			/*
 			else if (objType.equalsIgnoreCase("PERSONNEL") && key.equals("PDS_USER_ID")) {
 				product.setLid(Constants.LID_PREFIX+"personnel."+value);
-				product.setObjectType(Constants.)
+				product.setObjectType(Constants.PERSON_PROD);
+				product.setName(value);
 			}
-			else if (objType.equalsIgnoreCase("REFERENCE"))
-			*/
-				
+			//else if (objType.equalsIgnoreCase("REFERENCE") && key.equals(""
+				*/
 			else {	
 				// don't add this as slot values
 				if (key.equals("TARGET_NAME")) continue;
@@ -484,6 +537,8 @@ public class CatalogRegistryIngester {
 					values.add(value);
 				}
 			
+				
+				
 				if (getKey(key, objType) != null) 
 					slots.add(new Slot(getKey(key, objType), values));
 			}
@@ -531,7 +586,7 @@ public class CatalogRegistryIngester {
 		// for PERSONNEL & REFERENCE object
 		if (this.product.getLid()==null) {
 			// how to distinguish (personnel and reference????)
-			product.setLid(storageProductName + ":" + fileObject.getName());
+			product.setLid(Constants.LID_PREFIX + storageProductName + ":" + fileObject.getName());
 		}
 		else 
 			product.setLid(this.product.getLid() + ":" + fileObject.getName());
@@ -607,7 +662,7 @@ public class CatalogRegistryIngester {
 	public void publishAssociation(CatalogObject catObj, Reference ref) {
 		LabelParserException lp = null;
 		try {
-			if (!registryPackageGuid.isEmpty()) {
+			if (!this.registryPackageGuid.isEmpty()) {
 				client.setRegistrationPackageId(registryPackageGuid);
 			}
 			
@@ -643,14 +698,18 @@ public class CatalogRegistryIngester {
 
     	if (this.product!=null) {
     		association.setSourceObject(this.product.getGuid());
-    		// need to generate this as lidvid    		
+    		// need to generate this as lidvid   
+    		
     		ExtrinsicObject target = getExtrinsic(aRef.getLogicalId(), aRef.getVersion());
+    		//System.out.println("ref lid = " + aRef.getLogicalId() + "   version = " + aRef.getVersion());
     		String lidvid = aRef.getLogicalId()+"::" + aRef.getVersion();
     		if (target!=null) {
     			association.setTargetObject(target.getGuid());
     			verifiedFlag = true;
+    			//System.out.println("source guid = " + this.product.getGuid() + "    target guid = " + target.getGuid());
     		}
     		else {
+    			//System.out.println("target is NULL....");
     			association.setTargetObject(lidvid);
     		}
     		association.setAssociationType(aRef.getAssociationType());
@@ -716,6 +775,10 @@ public class CatalogRegistryIngester {
 		return false;
 	}
 	
+	/* 
+	 * Get a latest extrinsic object with given lid
+	 * 
+	 */
 	public ExtrinsicObject getExtrinsic(String lid)  {
 		ExtrinsicObject aProduct = null;
 		try {
@@ -723,8 +786,6 @@ public class CatalogRegistryIngester {
 			aProduct = client.getLatestObject(lid, ExtrinsicObject.class);
 		} catch (RegistryServiceException rse) {
 			rse.printStackTrace();
-		//} catch (RegistryClientException rce) {
-		//	rce.printStackTrace(); 
 		}
 		return aProduct;
 	}
@@ -747,9 +808,10 @@ public class CatalogRegistryIngester {
 			if (pr.getNumFound() != 0) {
 				// it shoudl find only one
 				for (ExtrinsicObject extrinsic : pr.getResults()) {
-					//for (Slot slot : extrinsic.getSlots()) {{
-							result = extrinsic;		
-					//}
+					
+//System.out.println("found an extrinsic object...." + lid + "    version = " + version);					
+					result = extrinsic;		
+					//System.out.println("result...lid = " + result.getLid() + "    guid = " + result.getGuid());
 				}
 			}
 		} catch (RegistryServiceException rse) {
@@ -760,14 +822,27 @@ public class CatalogRegistryIngester {
 	
 	public void createRegistryPackage() {
 		try {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-		String registryPackageName = "Catalog-Package_" + storageProductName + "_" + 
-				dateFormat.format(new Date().getTime());
-		RegistryPackage registryPackage = new RegistryPackage();
-		registryPackage.setName(registryPackageName);
-		this.registryPackageGuid = client.publishObject(registryPackage);
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+			String registryPackageName = "Catalog-Package_";
+			
+			if (this.storageProductName==null)
+				registryPackageName += "unknown";
+			else 
+				registryPackageName += storageProductName;
+			
+			registryPackageName += "_" + dateFormat.format(new Date().getTime());
+			System.out.println("registryPackageName = " + registryPackageName);
+			RegistryPackage registryPackage = new RegistryPackage();
+			registryPackage.setName(registryPackageName);
+			
+			//System.out.println("client = " + client);
+			this.registryPackageGuid = client.publishObject(registryPackage);
+			//client.setRegistrationPackageId(client.publishObject(registryPackage));
+			//System.out.println("registryPackageGuid = " + this.registryPackageGuid);
+			//System.out.println("client.registryPackage Id = " + client.getRegistrationPackageGuid());
 		} 
 		catch (RegistryServiceException rse) {
+			System.out.println("Error Occurred..." + rse.getMessage() + "   status = " + rse.getStatus());
 			rse.printStackTrace();
 		}
 	}

@@ -60,19 +60,20 @@ public class Constants {
     
     public static final String VOLUME_OBJ = "VOLUME";
     
-    public static final String HAS_MISSION = "has_mission";
+    public static final String HAS_MISSION = "investigation_ref";
     
-    public static final String HAS_INST = "has_instrument";
+    public static final String HAS_INST = "instrument_ref";
     
-    public static final String HAS_INSTHOST = "has_instrument_host";
+    public static final String HAS_INSTHOST = "instrument_host_ref";
     
-    public static final String HAS_DATASET = "has_data_set";
+    //??????
+    public static final String HAS_DATASET = "data_set_ref";
     
-    public static final String HAS_TARGET = "has_target";
+    public static final String HAS_TARGET = "target_ref";
     
-    public static final String HAS_RESOURCE = "has_resource";
+    public static final String HAS_RESOURCE = "resource_ref";
     
-    public static final String HAS_FILE = "has_file";
+    public static final String HAS_FILE = "file_ref";
     
     public static final String PRODUCT_VERSION = "version_id";
     

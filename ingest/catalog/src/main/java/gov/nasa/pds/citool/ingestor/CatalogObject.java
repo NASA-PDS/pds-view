@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Set;
+//import java.util.Set;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Vector;
@@ -34,6 +34,7 @@ import gov.nasa.pds.tools.LabelParserException;
 import gov.nasa.pds.tools.constants.Constants.ProblemType;
 import gov.nasa.pds.tools.label.Numeric;
 import gov.nasa.pds.tools.label.Scalar;
+import gov.nasa.pds.tools.label.Set;
 import gov.nasa.pds.tools.label.Sequence;
 import gov.nasa.pds.tools.label.Statement;
 import gov.nasa.pds.tools.label.ObjectStatement;
@@ -56,14 +57,18 @@ import org.apache.oodt.cas.metadata.Metadata;
  * @author hlee
  */
 public class CatalogObject {
-
+/*
 	private final static String[] CAT_OBJ_TYPES = { "MISSION",
 			"INSTRUMENT_HOST", "INSTRUMENT", "DATA_SET", "REFERENCE",
 			"PERSONNEL", "DATA_SET_COLLECTION", "INVENTORY", "SOFTWARE",
 			"TARGET", "VOLUME", "NSSDC_DATA_SET_ID", "NSSDCDSID",
 			"DIS_DATA_SET", "DATA_SET_RELEASE", "DATA_SET_HOUSEKEEPING",
 			"RESOURCE", "ELEMENT_DEFINITION", "OBJECT_DEFINITION" };
-	
+*/
+	private final static String[] CAT_OBJ_TYPES = { "MISSION",
+		"INSTRUMENT_HOST", "INSTRUMENT", "DATA_SET", "REFERENCE",
+		"PERSONNEL", "TARGET", "VOLUME" };
+		
 	private String _catObjType;
 	private boolean _isLocal;
 	private IngestReport _report;
@@ -131,6 +136,9 @@ public class CatalogObject {
 		return this._metadata;
 	}
 	
+	/**
+	 * Set a file object 
+	 */
 	public void setFileObject() {
 		try {
 		File product = new File(_label.getLabelURI().toURL().getFile());
@@ -188,28 +196,28 @@ public class CatalogObject {
 				_pointerFiles = new ArrayList<String>();
 				for (PointerStatement ptSmt : ptList) {
 					if (ptSmt.hasMultipleReferences()) {
-						if (!ptSmt.getIdentifier().toString().equalsIgnoreCase("REFERENCE_CATALOG")
-								&& !ptSmt.getIdentifier().toString().equalsIgnoreCase("PERSONNEL_CATALOG")) {
+						//if (!ptSmt.getIdentifier().toString().equalsIgnoreCase("REFERENCE_CATALOG")
+						//		&& !ptSmt.getIdentifier().toString().equalsIgnoreCase("PERSONNEL_CATALOG")) {
 							List<FileReference> refFiles = ptSmt.getFileRefs();
 							for (FileReference fileRef : refFiles) {
 								_pointerFiles.add(fileRef.getPath());
 							}
-						}
+						//}
 					} else {
 						// Don't add REFERENCE_CATALOG or PERSONNEL_CATALOG
 						// references
-						if (!ptSmt.getIdentifier().toString().equalsIgnoreCase("REFERENCE_CATALOG")
-								&& !ptSmt.getIdentifier().toString().equalsIgnoreCase("PERSONNEL_CATALOG")) {
+						//if (!ptSmt.getIdentifier().toString().equalsIgnoreCase("REFERENCE_CATALOG")
+						//		&& !ptSmt.getIdentifier().toString().equalsIgnoreCase("PERSONNEL_CATALOG")) {
 							_pointerFiles.add(ptSmt.getValue().toString());
-						}
+						//}
 					}
 				}
 			}
 			List<AttributeStatement> attrList = objSmt.getAttributes();
 			for (AttributeStatement attrSmt : attrList) {
 				pdsLabelMap.put(attrSmt.getElementIdentifier(), attrSmt);
-
 				// multivalues
+				/*
 				List<String> valueList = getValueList(attrSmt.getValue().toString());
 				if (valueList != null) {
 					for (int i = 0; i < valueList.size(); i++) {
@@ -220,6 +228,15 @@ public class CatalogObject {
 					_metadata.addMetadata(attrSmt.getElementIdentifier(),
 							attrSmt.getValue().toString());
 				}
+				*/
+				if (attrSmt.getValue() instanceof Set) {
+					List<String> valueList = getValueList(attrSmt.getValue());
+					for (int i=0; i<valueList.size(); i++) {
+						_metadata.addMetadata(attrSmt.getElementIdentifier(), valueList.get(i));
+					}
+				}
+				else 
+					_metadata.addMetadata(attrSmt.getElementIdentifier(), attrSmt.getValue().toString());
 			}
 
 			if (!objType.equalsIgnoreCase("VOLUME")) {
@@ -233,7 +250,7 @@ public class CatalogObject {
 					// object?????
 					for (AttributeStatement attrSmt : objAttr) {
 						lblMap.put(attrSmt.getElementIdentifier(), attrSmt);
-
+/*					
 						List<String> valueList = getValueList(attrSmt.getValue().toString());
 						if (valueList != null) {
 							for (int i = 0; i < valueList.size(); i++) {
@@ -243,6 +260,16 @@ public class CatalogObject {
 						} else {
 							_metadata.addMetadata(attrSmt.getElementIdentifier(), attrSmt.getValue().toString());
 						}
+						*/
+						if (attrSmt.getValue() instanceof Set) {
+							List<String> valueList = getValueList(attrSmt.getValue());
+							for (int i=0; i<valueList.size(); i++) {
+								_metadata.addMetadata(attrSmt.getElementIdentifier(), valueList.get(i));
+							}
+						}
+						else 
+							_metadata.addMetadata(attrSmt.getElementIdentifier(), attrSmt.getValue().toString());
+						
 					}
 
 					// third nested level
@@ -251,7 +278,7 @@ public class CatalogObject {
 						List<AttributeStatement> objAttr2 = smt3.getAttributes();
 						for (AttributeStatement attrSmt2 : objAttr2) {
 							lblMap.put(attrSmt2.getElementIdentifier(), attrSmt2);
-
+/*
 							List<String> valueList = getValueList(attrSmt2.getValue().toString());
 							if (valueList != null) {
 								for (int i = 0; i < valueList.size(); i++) {
@@ -262,6 +289,15 @@ public class CatalogObject {
 								_metadata.addMetadata(attrSmt2.getElementIdentifier(),
 										attrSmt2.getValue().toString());
 							}
+*/
+							if (attrSmt2.getValue() instanceof Set) {
+								List<String> valueList = getValueList(attrSmt2.getValue());
+								for (int i=0; i<valueList.size(); i++) {
+									_metadata.addMetadata(attrSmt2.getElementIdentifier(), valueList.get(i));
+								}
+							}
+							else 
+								_metadata.addMetadata(attrSmt2.getElementIdentifier(), attrSmt2.getValue().toString());
 						}
 					}
 
@@ -294,7 +330,16 @@ public class CatalogObject {
 		}
 		return objList;
 	}
-	
+
+	private boolean isValidCatalogFile(String objType) {
+		for (int i=0; i<CAT_OBJ_TYPES.length; i++) {
+			if (CAT_OBJ_TYPES[i].equals(objType)) {
+				return true;
+			}
+		}
+		return false;
+	}
+		
 	public Map<String, AttributeStatement> getPdsLabelMap() {
 		return this._pdsLabelMap;
 	}
@@ -305,8 +350,9 @@ public class CatalogObject {
 	 * 
 	 * @param label Label object
 	 */
-	public void processLabel(Label label) {
+	public boolean processLabel(Label label) {
 		this._label = label;
+		boolean isValid = true;
 		try {
 			this._filename = label.getLabelURI().toURL().getFile();
 			this._metadata = new Metadata();
@@ -319,23 +365,49 @@ public class CatalogObject {
 				_metadata.addMetadata(attrSmt.getElementIdentifier(), attrSmt.getValue().toString());
 			}
 
-			List<ObjectStatement> objList = object2List(label);
-			_pdsLabelMap = getCatalogObj(objList, _pdsLabelMap);
+			List<ObjectStatement> objLists = label.getObjects();
+			for (Iterator i=objLists.iterator(); i.hasNext();) {
+				ObjectStatement objSmt = (ObjectStatement) i.next();
+				//System.out.println("object = " + objSmt.getIdentifier());
+				isValid = isValidCatalogFile(objSmt.getIdentifier().toString());
+				//System.out.println("isValidCatalogFile = " + isValidCatalogFile(objSmt.getIdentifier().toString()));
+			}
 
+			if (isValid) {			
+				List<ObjectStatement> objList = object2List(label);			
+				//System.out.println("catalog object type = " + _catObjType);			
+				_pdsLabelMap = getCatalogObj(objList, _pdsLabelMap);
+			}	
+			
 		} catch (MalformedURLException mue) {
 			mue.printStackTrace();
 		}
+		return isValid;
 	}
 	
-	private List<String> getValueList(String value) {
-		if (value.startsWith("{")) {
-			value = value.substring(value.indexOf("{")+1);
-			if (value.endsWith("}"))
-				value = value.substring(0, value.indexOf("}"));
-			
-			return Arrays.asList(value.split(","));
+	/**
+	 * Determine the given string value is a multivalued or not
+	 * 
+	 * @return list of string value if the given value is multivalued (surrounding within { ... })
+	 * 	otherwise, null value is returned.
+	 */
+	private List<String> getValueList(Value value) {
+
+		List<String> valueList = new ArrayList<String>();
+		if (value instanceof Set) {			
+			Iterator<Scalar> it = ((Set) value).iterator();
+			while (it.hasNext()) {
+				final String strValue = it.next().toString();
+// System.out.println("strValue = " + strValue);           
+            	valueList.add(strValue);
+			}
+		}
+		else if (value instanceof Sequence) {
+//System.out.println("sequence    ");			
+			// TODO: add algorithm here
 		}
 		else 
 			return null;
+        return valueList;
 	}
 }
