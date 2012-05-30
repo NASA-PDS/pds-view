@@ -29,7 +29,11 @@ public enum Flag {
 
 	/** Flag to display the version. */
 	REGISTRY("r", "registry", "url", String.class,
-			"Specify Registry Service instance to query. (Default: " + Constants.REGISTRY_URL + ")");
+			"Specify Registry Service instance to query. (Default: " + Constants.REGISTRY_URL + ")"),
+	
+	/** Flag to display the version. */
+	MAX("m", "query-max", "query max", String.class,
+			"Specify the maximum number of registry values to be returned from query. (Default: " + Constants.QUERY_MAX + ")");
 
 	/** The short name of the flag. */
 	private final String shortName;
@@ -65,6 +69,7 @@ public enum Flag {
 		options.addOption(new ToolsOption(ALL));
 		options.addOption(new ToolsOption(DEBUG));
 		options.addOption(new ToolsOption(REGISTRY));
+		options.addOption(new ToolsOption(MAX));
 	}
 
 	/**

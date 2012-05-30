@@ -103,7 +103,11 @@ public class Extractor { // implements Extractor {
 	/** List of Associations where target extrinsic is not found */
 	private List<String> missingAssocTargets;
 
+	/** The URL of the desired registry to query. **/
 	private String registryUrl;
+	
+	/** The maximum records returned from registry query, as specified by user. **/
+	private int queryMax;
 
 	/**
 	 * List of associationTypes that do not exist for extrinsic object
@@ -119,7 +123,7 @@ public class Extractor { // implements Extractor {
 	 *            - name of column properties file
 	 */
 	public Extractor(PrintWriter writer, String name, String file,
-			String registryUrl) {
+			String registryUrl, int queryMax) {
 		this.log.fine("In Generic Extractor");
 
 		this.writer = writer;
@@ -128,6 +132,11 @@ public class Extractor { // implements Extractor {
 		this.classname = name;
 		this.classFilename = file;
 		this.registryUrl = registryUrl;
+		if (queryMax > -1) {
+			this.queryMax = queryMax;
+		} else {
+			this.queryMax = Constants.QUERY_MAX;
+		}
 
 		this.associationMap = new HashMap<String, List<RegistrySlots>>();
 
@@ -392,7 +401,7 @@ public class Extractor { // implements Extractor {
 			
 			List<ExtrinsicObject> results = new ArrayList<ExtrinsicObject>();
 			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1,
-					Constants.QUERY_MAX);
+					this.queryMax);
 			
 			// Examine the results of the query to grab the latest product for each
 			// ExtrinsicObject
@@ -459,7 +468,7 @@ public class Extractor { // implements Extractor {
 			
 			List<ExtrinsicObject> results = new ArrayList<ExtrinsicObject>();
 			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1,
-					Constants.QUERY_MAX);
+					this.queryMax);
 			
 			// Examine the results of the query
 			// Looping through the associated extrinsic objects

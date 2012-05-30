@@ -37,6 +37,7 @@ public class RegistryExtractor {
 	private File confDir = null;
 	private File outDir = null;
 	private String registryUrl;
+	private int queryMax;
 	// private File extractDir = null;
 
 	private HashMap<String, String> mappings;
@@ -57,6 +58,23 @@ public class RegistryExtractor {
 		this.confDir = new File(confDir);
 		this.outDir = new File(outDir);
 		this.registryUrl = registryUrl;
+		this.queryMax = -1;
+	}
+	
+	public RegistryExtractor(String registryUrl, String outDir) {
+		// baseDir = new File(System.getProperty("extractor.basedir", base));
+		this.confDir = new File("");
+		this.outDir = new File(outDir);
+		this.registryUrl = registryUrl;
+		this.queryMax = -1;
+	}
+	
+	public RegistryExtractor(String registryUrl) {
+		// baseDir = new File(System.getProperty("extractor.basedir", base));
+		this.confDir = new File("");
+		this.outDir = new File("../");
+		this.registryUrl = registryUrl;
+		this.queryMax = -1;
 	}
 
 	/**
@@ -119,7 +137,7 @@ public class RegistryExtractor {
 				// Create new extractor instance for given class.
 				// TODO Does not read files from conf directory, changes are required pre-compile
 				extractor = new Extractor(writer, extractorName,
-						mappings.get(extractorName), this.registryUrl);
+						mappings.get(extractorName), this.registryUrl, this.queryMax);
 
 				Date start = new Date();
 
@@ -188,11 +206,73 @@ public class RegistryExtractor {
 		return this.mappings.keySet();
 	}
 
+	/**
+	 * @return the confDir
+	 */
+	public File getConfDir() {
+		return confDir;
+	}
+
+	/**
+	 * @param confDir the confDir to set
+	 */
+	public void setConfDir(File confDir) {
+		this.confDir = confDir;
+	}
+
+	/**
+	 * @return the outDir
+	 */
+	public File getOutDir() {
+		return outDir;
+	}
+
+	/**
+	 * @param outDir the outDir to set
+	 */
+	public void setOutDir(File outDir) {
+		this.outDir = outDir;
+	}
+
+	/**
+	 * @return the registryUrl
+	 */
+	public String getRegistryUrl() {
+		return registryUrl;
+	}
+
+	/**
+	 * @param registryUrl the registryUrl to set
+	 */
+	public void setRegistryUrl(String registryUrl) {
+		this.registryUrl = registryUrl;
+	}
+
+	/**
+	 * @return the queryMax
+	 */
+	public int getQueryMax() {
+		return queryMax;
+	}
+
+	/**
+	 * @param queryMax the queryMax to set
+	 */
+	public void setQueryMax(int queryMax) {
+		this.queryMax = queryMax;
+	}
+
 	public static void main(String[] args) throws Exception {
 		String confHome = "";
 		String outDir = "../";
 		String registryUrl = "";
-		if (args.length == 3) {
+		int queryMax = -1;
+		if (args.length == 4) {
+			registryUrl = args[0];
+			outDir = args[1];
+			confHome = args[2];
+			queryMax = Integer.parseInt(args[3]);
+		} else if (args.length == 3) {
 			registryUrl = args[0];
 			outDir = args[1];
 			confHome = args[2];
@@ -203,6 +283,7 @@ public class RegistryExtractor {
 
 		RegistryExtractor extractor = new RegistryExtractor(registryUrl,
 				outDir, confHome);
+		extractor.setQueryMax(queryMax);
 		extractor.run();
 	}
 

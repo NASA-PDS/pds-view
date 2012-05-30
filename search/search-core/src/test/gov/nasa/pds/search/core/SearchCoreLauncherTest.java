@@ -1,4 +1,4 @@
-package gov.nasa.pds.search.core.catalog;
+package gov.nasa.pds.search.core;
 
 import gov.nasa.pds.search.core.SearchCoreLauncher;
 import gov.nasa.pds.search.core.RegistryExtractor;
@@ -16,11 +16,11 @@ public class SearchCoreLauncherTest {
      * Test RegistryExtractor
      * @throws Exception 
      */
-    @Ignore
+    //@Ignore
     @Test
     public void testRegistryExtractor() throws Exception {
-        String[] args = { };
-        RegistryExtractor.main(args);
+        String[] args = { "../", "-e", "-m", "5" };
+        SearchCoreLauncher.main(args);
     }
 
     /**

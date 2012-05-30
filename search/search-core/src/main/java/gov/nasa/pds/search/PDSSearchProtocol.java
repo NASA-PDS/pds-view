@@ -99,6 +99,31 @@ public class PDSSearchProtocol extends StandardRequestHandler {
 					STOP_TIME_PARAM)[0]);
 		}
 
+		// JIRA Issue PDS-57
+		// Handle ignoring superseded data sets, if not specified in query
+		/*if (request.getOriginalParams().getParams(ARCHIVE_STATUS_PARAM) == null) {
+			// Check if ARCHIVE_STATUS_PARAM is specified in queryString
+			if (queryString.indexOf(ARCHIVE_STATUS_PARAM) == -1) {
+				this.LOG.info(queryString.toString() + " -- indexOf - " + queryString.indexOf(ARCHIVE_STATUS_PARAM));
+				if (queryString.length() != 0) {
+					queryString.append(" AND ");
+				}
+				queryString.append("-");
+				queryString.append(ARCHIVE_STATUS_PARAM);
+				queryString.append(":SUPERSEDED");
+			}
+		} else {*/
+		if (request.getOriginalParams().getParams(ARCHIVE_STATUS_PARAM) != null) {
+			// if there is already a portion of the query string group with AND
+			if (queryString.length() != 0) {
+				queryString.append(" AND ");
+			}
+			queryString.append(ARCHIVE_STATUS_PARAM);
+			queryString.append(":");
+			queryString.append(request.getOriginalParams().getParams(
+					ARCHIVE_STATUS_PARAM)[0]);
+		}
+		
 		// Group other parameters together using ()
 		if (queryString.length() != 0) {
 			queryString.insert(0, "(");
@@ -125,30 +150,6 @@ public class PDSSearchProtocol extends StandardRequestHandler {
 					QUERY_PARAM)[0]);
 		}
 
-		// JIRA Issue PDS-57
-		// Handle ignoring superseded data sets, if not specified in query
-		if (request.getOriginalParams().getParams(ARCHIVE_STATUS_PARAM) == null) {
-			// Check if ARCHIVE_STATUS_PARAM is specified in queryString
-			if (queryString.indexOf(ARCHIVE_STATUS_PARAM) == -1) {
-				this.LOG.info(queryString.toString() + " -- indexOf - " + queryString.indexOf(ARCHIVE_STATUS_PARAM));
-				if (queryString.length() != 0) {
-					queryString.append(" AND ");
-				}
-				queryString.append("-");
-				queryString.append(ARCHIVE_STATUS_PARAM);
-				queryString.append(":SUPERSEDED");
-			}
-		} else {
-			// if there is already a portion of the query string group with AND
-			if (queryString.length() != 0) {
-				queryString.append(" AND ");
-			}
-			queryString.append(ARCHIVE_STATUS_PARAM);
-			queryString.append(":");
-			queryString.append(request.getOriginalParams().getParams(
-					ARCHIVE_STATUS_PARAM)[0]);
-		}
-
 		// If there is a query pass it on to Solr as the q param
 		if (queryString.length() > 0) {
 			pdsParams.remove("q");
@@ -163,6 +164,8 @@ public class PDSSearchProtocol extends StandardRequestHandler {
 							request.getOriginalParams().getParams(
 									RETURN_TYPE_PARAM)[0]);
 		}
+		
+		this.LOG.info("Solr Query String: " + queryString);
 
 		super.handleRequestBody(request, response);
 	}

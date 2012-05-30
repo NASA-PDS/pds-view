@@ -153,7 +153,7 @@
 
     <form class="search_form" method="GET">
     <div id="IEBug">
-      <p><input type="text" size="60" name="q" value="{$searchString}" /><input type="submit" value="Search" />&#160;<a style="position: relative; top: .4em; font-size: 90%;" href="index.jsp">New Search</a></p>
+      <p><input type="text" size="60" name="q" value="{fn:replace(fn:replace($searchString,'-archive-status:SUPERSEDED',''), ' AND $','')}" /><input type="submit" value="Search" />&#160;<a style="position: relative; top: .4em; font-size: 90%;" href="index.jsp">New Search</a></p>
       <xsl:for-each select="response/lst[@name='responseHeader']/lst[@name='params']/(str[@name ne 'q']|arr[@name ne 'q']/str)">
         <input type="hidden" name="{if (@name) then @name else parent::*/@name}" value="{.}" /><xsl:text>
 </xsl:text>

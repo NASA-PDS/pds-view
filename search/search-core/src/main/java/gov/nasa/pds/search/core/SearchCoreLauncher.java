@@ -24,22 +24,24 @@ public class SearchCoreLauncher {
 
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
-	private File solrHome;
+	private File searchServiceHome;
 	private boolean allFlag;
 	private boolean extractorFlag;
 	private boolean solrFlag;
 	private boolean pdsFlag;
 	private boolean debug;
 	private String registryUrl;
+	private int queryMax;
 
 	public SearchCoreLauncher() {
-		this.solrHome = null;
+		this.searchServiceHome = null;
 		this.allFlag = true;
 		this.extractorFlag = false;
 		this.solrFlag = false;
 		this.pdsFlag = false;
 		this.debug = false;
 		this.registryUrl = null;
+		this.queryMax = -1;
 
 	}
 
@@ -50,7 +52,7 @@ public class SearchCoreLauncher {
 	public final void displayHelp() {
 		final int maxWidth = 80;
 		final HelpFormatter formatter = new HelpFormatter();
-		formatter.printHelp(maxWidth, "search-core <SOLR_HOME> [options]", null,
+		formatter.printHelp(maxWidth, "search-core <SEARCH_SERVICE_HOME> [options]", null,
 				Flag.getOptions(), null);
 	}
 
@@ -116,18 +118,25 @@ public class SearchCoreLauncher {
 				this.debug = true;
 			} else if (o.getOpt().equals(Flag.REGISTRY.getShortName())) {
 				this.registryUrl = o.getValue();
+			} else if (o.getOpt().equals(Flag.MAX.getShortName())) {
+				try {
+					this.queryMax = Integer.parseInt(o.getValue());
+				} catch (NumberFormatException e) {
+					throw new InvalidOptionException("Query Max value must be an integer value.");
+				}
+				
 			}
 		}
 
 		if (line.getArgList().size() != 0) {
-			this.solrHome = new File(line.getArgList().get(0).toString());
-			if (!this.solrHome.exists()) {
-				throw new InvalidOptionException("Solr Home does not exist: "
-						+ this.solrHome);
+			this.searchServiceHome = new File(line.getArgList().get(0).toString());
+			if (!this.searchServiceHome.exists()) {
+				throw new InvalidOptionException("Search Service Home does not exist: "
+						+ this.searchServiceHome);
 			}
 		} else {
 			throw new InvalidOptionException(
-					"Solr Home not found in command-line.");
+					"Search Service Home not found in command-line.");
 		}
 
 		if (this.registryUrl == null) {
@@ -139,7 +148,7 @@ public class SearchCoreLauncher {
 
 		if (this.allFlag || this.extractorFlag) {
 			try {
-				runTse();
+				runRegistryExtractor();
 			} catch (Exception e) {
 				System.err.println("Error running TSE.");
 				e.printStackTrace();
@@ -165,23 +174,29 @@ public class SearchCoreLauncher {
 		}
 	}
 
-	private void runTse() throws Exception {
+	private void runRegistryExtractor() throws Exception {
+		// TODO - Remove all references to TSE
 		this.LOG.info("Running TSE to create new TSE directory...");
-		String[] args = { this.registryUrl, this.solrHome.getAbsolutePath() };
-		RegistryExtractor.main(args);
+		//String[] args = { this.registryUrl, this.searchServiceHome.getAbsolutePath(), this.queryMax };
+		//RegistryExtractor.main(args);
+		RegistryExtractor extractor = new RegistryExtractor(this.registryUrl, this.searchServiceHome.getAbsolutePath());
+		if (this.queryMax > -1)
+			extractor.setQueryMax(this.queryMax);
+		
+		extractor.run();
 	}
 
 	private void runSolrIndexer() throws IOException, ParseException, Exception {
 		this.LOG.info("\nRunning Solr Indexer to create new SOLR_INDEX.XML ...\n");
-		String[] args = { this.solrHome.getAbsolutePath() + "/index",
-				this.solrHome.getAbsolutePath() + "/tse/extract" };
+		String[] args = { this.searchServiceHome.getAbsolutePath() + "/index",
+				this.searchServiceHome.getAbsolutePath() + "/tse/extract" };
 		SolrIndexer.main(args);
 	}
 
 	private void runIndexer() throws IOException {
 		this.LOG.info("\nRunning Indexer to create new CATALOG_INDEX...\n");
-		String[] args = { this.solrHome.getAbsolutePath(),
-				this.solrHome.getAbsolutePath() + "/tse/extract" };
+		String[] args = { this.searchServiceHome.getAbsolutePath(),
+				this.searchServiceHome.getAbsolutePath() + "/tse/extract" };
 		Indexer.main(args);
 
 	}

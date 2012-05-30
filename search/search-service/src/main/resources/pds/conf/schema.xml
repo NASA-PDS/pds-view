@@ -607,7 +607,7 @@
    <field name="instrument-host-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="instrument-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="target-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
-   <field name="archive_status" type="text_lc" indexed="true" stored="false" />
+   <field name="archive-status" type="text_lc" indexed="true" stored="false" />
    
    <!-- And the faceting fields -->
    <field name="facet_class" type="string_lc" indexed="true" stored="false" multiValued="false" />

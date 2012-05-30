@@ -241,6 +241,9 @@ public class DocumentParser {
 			SimpleDateFormat msFrmt = new SimpleDateFormat(
 					"yyyy-MM-ddkk:mm:ss.SSSS");
 			value = newFrmt.format(msFrmt.parse(value));
+		} else {	// TODO - capture all possible time values so we can be sure to only NULL bad values
+			System.err.println("ERROR: Bad Time value.");
+			value = "1900-01-01T00:00:00Z";;
 		}
 
 		return value;
