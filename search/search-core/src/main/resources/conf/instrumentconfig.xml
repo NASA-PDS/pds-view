@@ -1,6 +1,6 @@
 <instrument>
   <object_type>Product_Instrument_PDS3</object_type>
-  <association>has_instrument_host</association>
+  <association>instrument_host_ref</association>
   <column>
     <name>identifier</name>
     <type>attribute</type>
@@ -44,12 +44,12 @@
   <column>
     <name>resLocation</name>
     <type>out</type>
-    <value>http://starbrite.jpl.nasa.gov/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID={instrument_id}&amp;INSTRUMENT_HOST_ID={has_instrument_host.instrument_host_id}</value>
+    <value>http://starbrite.jpl.nasa.gov/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID={instrument_id}&amp;INSTRUMENT_HOST_ID={instrument_host_ref.instrument_host_id}</value>
   </column>
   <column>
     <name>instrument_host_id</name>
 	<type>association</type>
-    <value>has_instrument_host.instrument_host_id</value>
+    <value>instrument_host_ref.instrument_host_id</value>
   </column>
   <column>
     <name>instrument_id</name>

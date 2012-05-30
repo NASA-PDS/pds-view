@@ -1,17 +1,11 @@
 <dataset>
 	<object_type>Product_Data_Set_PDS3</object_type>
-	<association>has_target</association>
-	<association>has_instrument</association>
-	<association>has_instrument_host</association>
-	<association>has_mission</association>
-	<!-- Need to include has_mission and has_investigation -->
-	<!-- Commented out because no investigations populated, only missions for PDS3 data
-	<association>has_investigation</association>
-	-->
-	<association>has_resource</association>
-	<!-- Commented out because no nodes populated
-	<association>has_node</association>
-	-->
+	<association>target_ref</association>
+	<association>instrument_ref</association>
+	<association>instrument_host_ref</association>
+	<association>investigation_ref</association>
+	<association>resource_ref</association>
+	<association>node_ref</association>
   <column>
     <name>identifier</name>
     <type>attribute</type>
@@ -75,19 +69,19 @@
   	<!-- association mapping to another objectType -->
     <name>target_type</name>
     <type>association</type>
-    <value>has_target.target_type</value>
+    <value>target_ref.target_type</value>
   </column>
   <column>
     <!-- association mapping to another objectType -->
     <name>instrument_type</name>
     <type>association</type>
-    <value>has_instrument.instrument_type</value>
+    <value>instrument_ref.instrument_type</value>
   </column>
   <column>
   	<!-- No mapping found -->
     <name>instrument_host_id</name>
     <type>association</type>
-    <value>has_instrument_host.instrument_host_id</value>
+    <value>instrument_host_ref.instrument_host_id</value>
   </column>
   <column>
     <name>data_set_name</name>
@@ -107,7 +101,7 @@
   <column>
     <name>node_id</name>
     <type>association</type>
-    <value>has_node.node_id</value>
+    <value>node_ref.node_id</value>
   </column>
   <column>
     <name>full_name</name>
@@ -120,17 +114,17 @@
     <value>investigation_name</value-->
     <name>mission_name</name>
     <type>association</type>
-    <value>has_mission.mission_name</value>
+    <value>investigation_ref.mission_name</value>
   </column>
   <column>
     <name>mission_start_date</name>
     <type>association</type>
-    <value>has_mission.mission_start_date</value>
+    <value>investigation_ref.mission_start_date</value>
   </column>
   <column>
     <name>mission_stop_date</name>
     <type>association</type>
-    <value>has_mission.mission_stop_date</value>
+    <value>investigation_ref.mission_stop_date</value>
   </column>
   <column>
     <!-- name>target_name</name>
@@ -138,7 +132,7 @@
     <value>target_name</value-->
     <name>target_name</name>
     <type>association</type>
-    <value>has_target.target_name</value>
+    <value>target_ref.target_name</value>
   </column>
   <column>
     <name>archive_status</name>
@@ -158,7 +152,7 @@
   <column>
     <name>instrument_id</name>
     <type>association</type>
-    <value>has_instrument.instrument_id</value>
+    <value>instrument_ref.instrument_id</value>
   </column>
   <!-- Should be put back to data_class
   <column>
@@ -198,12 +192,12 @@
     <value>instrument_name</value-->
     <name>instrument_name</name>
     <type>association</type>
-    <value>has_instrument.instrument_name</value>    
+    <value>instrument_ref.instrument_name</value>    
   </column>
   <column>
     <name>resource_id</name>
     <type>association</type>
-    <value>has_resource.lid</value>
+    <value>resource_ref.lid</value>
   </column>
   <column>
     <name>data_set_desc</name>
