@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- 
+  Copyright 2010-2012, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology 
+  Transfer at the California Institute of Technology.
+
+  This software may be subject to U.S. export control laws. By accepting 
+  this software, the user agrees to comply with all applicable U.S. export 
+  laws and regulations. User has the responsibility to obtain export licenses, 
+  or other export authority as may be required before exporting such 
+  information to foreign countries or providing access to foreign persons.
+
+  $Id$
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>gov.nasa.pds.2010</groupId>
+    <artifactId>search</artifactId>
+    <version>0.3.0-dev</version>
+  </parent>
+
+  <groupId>gov.nasa.pds.2010.search</groupId>
+  <artifactId>search-ui</artifactId>
+  <packaging>war</packaging>
+
+  <name>Search User Interface</name>
+  <description>
+    The Search User Interface software serves as the web-based interface for the Search Service.
+  </description>
+  <url>http://pds-cm.jpl.nasa.gov/2010/search/search-ui/</url>
+
+  <licenses>
+    <license>
+      <name>California Institute of Technology</name>
+      <url>file:///${basedir}/LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Sean Hardman</name>
+      <id>shardman</id>
+      <email>Sean.Hardman@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Development Lead</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Jordan Pada,s</name>
+      <email>Jordan.H.Padams@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer> 
+    <developer>
+      <name>Paul Ramirez</name>
+      <email>Paul.Ramirez@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <build>
+    <!-- Disable the unit test.
+    <testSourceDirectory>src/test</testSourceDirectory>
+    -->
+    <outputDirectory>target/classes</outputDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <warName>${artifactId}</warName>
+          <archive>
+            <manifest>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/main/assembly/assembly.xml</descriptor>
+          </descriptors>
+        </configuration>
+        <executions>
+          <execution>
+            <id>bin-release</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>   
+      <!-- 
+        Configuration for deploying to a local Tomcat server. Provide the 
+        username and password for the Manager interface in your settings.xml.
+      -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>tomcat-maven-plugin</artifactId>
+        <configuration>
+          <server>tomcat-local</server>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <!-- Hosts the PDS and OODT artifacts. -->
+    <repository>
+      <id>pds-repo</id>
+      <name>PDS Maven Repository</name>
+      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <dependencies>
+	<dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>jstl</artifactId>
+        <version>1.1.1</version>
+        <scope>runtime</scope>
+    </dependency>
+    <dependency>
+        <groupId>taglibs</groupId>
+        <artifactId>standard</artifactId>
+        <scope>runtime</scope>
+        <version>1.1.1</version>
+    </dependency>
+    <dependency>
+        <groupId>taglibs</groupId>
+        <artifactId>c</artifactId>
+        <version>1.1.1</version>
+        <scope>runtime</scope>
+        <type>tld</type>
+    </dependency>
+    <dependency>
+        <groupId>taglibs</groupId>
+        <artifactId>fmt</artifactId>
+        <version>1.1.1</version>
+        <scope>runtime</scope>
+        <type>tld</type>
+    </dependency>
+  </dependencies>
+
+  <!-- Project Information and Reports inherited from parent. -->
+  <reporting>
+    <!-- Project Reports not inherited from parent. -->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
