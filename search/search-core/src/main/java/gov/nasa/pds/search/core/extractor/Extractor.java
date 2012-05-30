@@ -321,7 +321,7 @@ public class Extractor { // implements Extractor {
 					// has_investigation overlap
 					// Assumption that product cannot have both
 					// has_investigation and has_mission associations
-					if (!foundAssociation) {
+					/*if (!foundAssociation) {
 						if (assocType.equals("has_mission")) {
 							assocType = "has_investigation";
 							foundAssociation = this.associationMap
@@ -331,7 +331,7 @@ public class Extractor { // implements Extractor {
 							foundAssociation = this.associationMap
 									.containsKey(assocType);
 						}
-					}
+					}*/
 
 					if (foundAssociation) {
 						for (RegistrySlots assocSlots : this.associationMap
