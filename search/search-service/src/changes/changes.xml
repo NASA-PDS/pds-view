@@ -24,6 +24,15 @@
 
   <body>
     <release version="0.3.0" date="TBD" description="This release of the Search Service is a component of the integrated release 2.2.0 of the PDS 2010 System.">
+      <action dev="jpadams" type="update">
+	Updated Solr schema to include archive-status, in accordance with PDS Protocol.
+      </action>
+      <action dev="jpadams" type="update">
+	Modified stylesheets to hide archive-status from user, but still include '-archive-status:SUPERSEDED' in all searches.
+      </action>
+      <action dev="jpadams" type="update">
+	Updated Solr configuration to now point to PDS Protocol as default search protocol.
+      </action>
     </release>
 
     <release version="0.2.0" date="2012-01-31" description="This release of the Search Service is a component of the integrated release 2.1.0 of the PDS 2010 System.">
