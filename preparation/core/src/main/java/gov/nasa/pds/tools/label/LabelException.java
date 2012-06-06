@@ -37,6 +37,18 @@ public class LabelException extends Exception {
     this.columnNumber = columnNumber;
   }
   
+  /**
+   * Used to capture information captured from schematron
+   * @param exceptionType
+   * @param message
+   * @param test
+   * @param location
+   * @param fileName
+   */
+  public LabelException(ExceptionType exceptionType, String message, String filepath, String location, String test) {
+    this(exceptionType, message + "[Context: " + location + "; Test: " + test + "]", "", filepath, -1, -1);
+  }
+  
   public ExceptionType getExceptionType() {
     return this.exceptionType;
   }

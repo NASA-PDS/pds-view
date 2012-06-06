@@ -19,6 +19,8 @@ import gov.nasa.pds.tools.util.VersionInfo;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,9 +29,20 @@ import java.util.Map;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -42,23 +55,33 @@ import org.xml.sax.SAXException;
 public class LabelValidator {
   private Map<String, Boolean> configurations = new HashMap<String, Boolean>();
   private String[] userSchemaFiles;
+  private String[] userSchematronFiles;
   private String modelVersion;
   private Validator cachedValidator;
+  private List<Transformer> cachedSchematron;
   private XMLCatalogResolver resolver;
   public final static String USER_VERSION = "User Supplied Version";
-
   public static final String SCHEMA_CHECK = "gov.nasa.pds.tools.label.SchemaCheck";
+  public static final String SCHEMATRON_CHECK = "gov.nasa.pds.tools.label.SchematronCheck";
 
   public LabelValidator() {
     this.configurations.put(SCHEMA_CHECK, true);
+    this.configurations.put(SCHEMATRON_CHECK, true);
     modelVersion = VersionInfo.getDefaultModelVersion();
     cachedValidator = null;
+    cachedSchematron = new ArrayList<Transformer>();
     resolver = null;
   }
 
   public void setSchema(String[] schemaFiles) throws SAXException {
     userSchemaFiles = schemaFiles;
     modelVersion = USER_VERSION;
+    cachedValidator = null;
+  }
+
+  public void setSchematronFiles(String[] schematronFiles) {
+    userSchematronFiles = schematronFiles;
+    cachedSchematron = new ArrayList<Transformer>();
   }
 
   public void setCatalogs(String[] catalogFiles) {
@@ -98,9 +121,11 @@ public class LabelValidator {
    * @throws SAXException
    * @throws IOException
    * @throws ParserConfigurationException
+   * @throws TransformerException
    */
   public synchronized void validate(ExceptionContainer container, File labelFile)
-      throws SAXException, IOException, ParserConfigurationException {
+      throws SAXException, IOException, ParserConfigurationException,
+      TransformerException {
     // Are we perfoming schema validation?
     if (performsSchemaValidation()) {
       // Do we have a schema we have loaded previously?
@@ -110,7 +135,9 @@ public class LabelValidator {
             .newInstance("http://www.w3.org/XML/XMLSchema/v1.1");
         // If catalog is used allow resources to be loaded for schemas
         if (resolver != null) {
-          schemaFactory.setProperty("http://apache.org/xml/properties/internal/entity-resolver", resolver);
+          schemaFactory.setProperty(
+              "http://apache.org/xml/properties/internal/entity-resolver",
+              resolver);
         }
         // Allow errors that happen in the schema to be logged there
         if (container != null) {
@@ -143,7 +170,9 @@ public class LabelValidator {
         Validator validator = validatingSchema.newValidator();
         // Allow access to the catalog from the parser
         if (resolver != null) {
-          validator.setProperty("http://apache.org/xml/properties/internal/entity-resolver", resolver);
+          validator.setProperty(
+              "http://apache.org/xml/properties/internal/entity-resolver",
+              resolver);
         }
         // Capture messages in a container
         if (container != null) {
@@ -155,10 +184,62 @@ public class LabelValidator {
       // Finally validate the file
       cachedValidator.validate(new StreamSource(labelFile));
     }
+    // Validate with any schematron files we have
+    if (performsSchematronValidation()) {
+      if (cachedSchematron.isEmpty()) {
+        // Use saxon for schematron (i.e. the XSLT generation).
+        System.setProperty("javax.xml.transform.TransformerFactory",
+            "net.sf.saxon.TransformerFactoryImpl");
+        TransformerFactory factory = TransformerFactory.newInstance();
+        // Load the isoSchematron stylesheet that will be used to transform each
+        // schematron file
+        Source isoSchematron = new StreamSource(LabelValidator.class
+            .getResourceAsStream("/schematron/iso_svrl_for_xslt2.xsl"));
+        Transformer isoTransformer = factory.newTransformer(isoSchematron);
+        // For each schematron file we need to setup a transformer that will be
+        // applied to the label
+        for (String schematronFile : userSchematronFiles) {
+          // Will hold stylesheet that encompasses the tests as specified in the
+          // schematron file
+          StringWriter schematronStyleSheet = new StringWriter();
+          // Create the stylesheet by transforming using the iso schematron
+          isoTransformer.transform(new StreamSource(schematronFile),
+              new StreamResult(schematronStyleSheet));
+          // Save for later
+          cachedSchematron.add(factory.newTransformer(new StreamSource(
+              new StringReader(schematronStyleSheet.toString()))));
+        }
+      }
+      // Boiler plate to handle parsing report outputs from schematron
+      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+      dbf.setNamespaceAware(true);
+      DocumentBuilder parser = dbf.newDocumentBuilder();
+      for (Transformer schematron : cachedSchematron) {
+        StringWriter report = new StringWriter();
+        // Apply the rules specified in the schematron file
+        schematron.transform(new StreamSource(labelFile), new StreamResult(
+            report));
+        // Output is svrl:schematron-output document
+        // Select out svrl:failed-assert nodes and put into exception container
+        Document reportDoc = parser.parse(new InputSource(new StringReader(
+            report.toString())));
+        NodeList nodes = reportDoc.getElementsByTagNameNS(
+            "http://purl.oclc.org/dsdl/svrl", "failed-assert");
+        for (int i = 0; i < nodes.getLength(); i++) {
+          Node node = nodes.item(i);
+          // Add an error for each failed asssert
+          container.addException(new LabelException(ExceptionType.ERROR, node
+              .getTextContent().trim(), labelFile.getAbsolutePath(), node
+              .getAttributes().getNamedItem("location").getTextContent(), node
+              .getAttributes().getNamedItem("test").getTextContent()));
+
+        }
+      }
+    }
   }
 
   public void validate(File labelFile) throws SAXException, IOException,
-      ParserConfigurationException {
+      ParserConfigurationException, TransformerException {
     validate(null, labelFile);
   }
 
@@ -176,6 +257,14 @@ public class LabelValidator {
 
   public void setSchemaCheck(Boolean value) {
     this.setConfiguration(SCHEMA_CHECK, value);
+  }
+
+  public Boolean performsSchematronValidation() {
+    return getConfiguration(SCHEMATRON_CHECK);
+  }
+
+  public void setSchematronCheck(Boolean value) {
+    this.setConfiguration(SCHEMATRON_CHECK, value);
   }
 
   public Boolean getConfiguration(String key) {
