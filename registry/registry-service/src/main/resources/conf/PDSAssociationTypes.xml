@@ -1,159 +1,123 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <registryObjectList xmlns="http://registry.pds.nasa.gov">
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Local_DD.attribute_of"
-        code="Local_DD.attribute_of"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Local_DD.attribute_of"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.attribute_of"
+        code="Ingest_DD.attribute_of"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.attribute_of"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Local_DD.attribute_of"/>
+        name="Ingest_DD.attribute_of"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Local_DD.subclass_of"
-        code="Local_DD.subclass_of"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Local_DD.subclass_of"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.component_of"
+        code="Ingest_DD.component_of"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.component_of"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Local_DD.subclass_of"/>
+        name="Ingest_DD.component_of"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_browse_collection"
-        code="Product_Archive_Bundle.has_browse_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_browse_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.extension_of"
+        code="Ingest_DD.extension_of"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.extension_of"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Archive_Bundle.has_browse_collection"/>
+        name="Ingest_DD.extension_of"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_calibration_collection"
-        code="Product_Archive_Bundle.has_calibration_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_calibration_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.restriction_of"
+        code="Ingest_DD.restriction_of"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.restriction_of"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Archive_Bundle.has_calibration_collection"/>
+        name="Ingest_DD.restriction_of"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_context_collection"
-        code="Product_Archive_Bundle.has_context_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_context_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.subclass_of"
+        code="Ingest_DD.subclass_of"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.subclass_of"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Archive_Bundle.has_context_collection"/>
+        name="Ingest_DD.subclass_of"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_data_collection"
-        code="Product_Archive_Bundle.has_data_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_data_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_browse_collection"
+        code="Product_Bundle.bundle_has_browse_collection"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_browse_collection"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Archive_Bundle.has_data_collection"/>
+        name="Product_Bundle.bundle_has_browse_collection"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_document_collection"
-        code="Product_Archive_Bundle.has_document_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_document_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_calibration_collection"
+        code="Product_Bundle.bundle_has_calibration_collection"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_calibration_collection"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Archive_Bundle.has_document_collection"/>
+        name="Product_Bundle.bundle_has_calibration_collection"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_geometry_collection"
-        code="Product_Archive_Bundle.has_geometry_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_geometry_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_context_collection"
+        code="Product_Bundle.bundle_has_context_collection"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_context_collection"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Archive_Bundle.has_geometry_collection"/>
+        name="Product_Bundle.bundle_has_context_collection"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_member_collection"
-        code="Product_Archive_Bundle.has_member_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_member_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_data_collection"
+        code="Product_Bundle.bundle_has_data_collection"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_data_collection"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Archive_Bundle.has_member_collection"/>
+        name="Product_Bundle.bundle_has_data_collection"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_spice_kernels_collection"
-        code="Product_Archive_Bundle.has_spice_kernels_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_spice_kernels_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_document_collection"
+        code="Product_Bundle.bundle_has_document_collection"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_document_collection"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Archive_Bundle.has_spice_kernels_collection"/>
+        name="Product_Bundle.bundle_has_document_collection"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_xml_schema_collection"
-        code="Product_Archive_Bundle.has_xml_schema_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Archive_Bundle.has_xml_schema_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_geometry_collection"
+        code="Product_Bundle.bundle_has_geometry_collection"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_geometry_collection"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Archive_Bundle.has_xml_schema_collection"/>
+        name="Product_Bundle.bundle_has_geometry_collection"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_browse_collection"
-        code="Product_Bundle.has_browse_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_browse_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_member_collection"
+        code="Product_Bundle.bundle_has_member_collection"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_member_collection"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Bundle.has_browse_collection"/>
+        name="Product_Bundle.bundle_has_member_collection"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_calibration_collection"
-        code="Product_Bundle.has_calibration_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_calibration_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_schema_collection"
+        code="Product_Bundle.bundle_has_schema_collection"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_schema_collection"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Bundle.has_calibration_collection"/>
+        name="Product_Bundle.bundle_has_schema_collection"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_context_collection"
-        code="Product_Bundle.has_context_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_context_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_spice_kernel_collection"
+        code="Product_Bundle.bundle_has_spice_kernel_collection"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_spice_kernel_collection"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Bundle.has_context_collection"/>
+        name="Product_Bundle.bundle_has_spice_kernel_collection"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_data_collection"
-        code="Product_Bundle.has_data_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_data_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.inventory_has_LIDVID_Primary"
+        code="Product_Collection.inventory_has_LIDVID_Primary"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.inventory_has_LIDVID_Primary"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Bundle.has_data_collection"/>
+        name="Product_Collection.inventory_has_LIDVID_Primary"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_document_collection"
-        code="Product_Bundle.has_document_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_document_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.inventory_has_LIDVID_Secondary"
+        code="Product_Collection.inventory_has_LIDVID_Secondary"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.inventory_has_LIDVID_Secondary"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Bundle.has_document_collection"/>
+        name="Product_Collection.inventory_has_LIDVID_Secondary"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_geometry_collection"
-        code="Product_Bundle.has_geometry_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_geometry_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.inventory_has_LID_Secondary"
+        code="Product_Collection.inventory_has_LID_Secondary"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.inventory_has_LID_Secondary"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Bundle.has_geometry_collection"/>
+        name="Product_Collection.inventory_has_LID_Secondary"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_member_collection"
-        code="Product_Bundle.has_member_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_member_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.package_has_bundle"
+        code="Product_Zipped.package_has_bundle"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.package_has_bundle"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Bundle.has_member_collection"/>
+        name="Product_Zipped.package_has_bundle"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_spice_kernels_collection"
-        code="Product_Bundle.has_spice_kernels_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_spice_kernels_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.package_has_collection"
+        code="Product_Zipped.package_has_collection"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.package_has_collection"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Bundle.has_spice_kernels_collection"/>
+        name="Product_Zipped.package_has_collection"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_xml_schema_collection"
-        code="Product_Bundle.has_xml_schema_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.has_xml_schema_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.package_has_delivery_manifest"
+        code="Product_Zipped.package_has_delivery_manifest"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.package_has_delivery_manifest"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Bundle.has_xml_schema_collection"/>
-    <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.has_member_LIDVID_Secondary"
-        code="Product_Collection.has_member_LIDVID_Secondary"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.has_member_LIDVID_Secondary"
-        parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Collection.has_member_LIDVID_Secondary"/>
-    <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.has_member_LID_Secondary"
-        code="Product_Collection.has_member_LID_Secondary"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.has_member_LID_Secondary"
-        parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Collection.has_member_LID_Secondary"/>
-    <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.has_member_LIDVID_Primary"
-        code="Product_Collection.has_member_LIDVID_Primary"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.has_member_LIDVID_Primary"
-        parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Collection.has_member_LIDVID_Primary"/>
-    <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Delivery_Manifest.has_member"
-        code="Product_Delivery_Manifest.has_member"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Delivery_Manifest.has_member"
-        parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Delivery_Manifest.has_member"/>
-    <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.contained_product"
-        code="Product_Zipped.contained_product"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.contained_product"
-        parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Zipped.contained_product"/>
-    <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.manifest_product"
-        code="Product_Zipped.manifest_product"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.manifest_product"
-        parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Zipped.manifest_product"/>
+        name="Product_Zipped.package_has_delivery_manifest"/>
 </registryObjectList>

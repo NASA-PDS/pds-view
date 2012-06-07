@@ -26,28 +26,11 @@
        <!--       a way to specify an association, this is currently the approach harvest employs       -->
     </extrinsicObject>
 
-    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Local_DD:Definition"
+    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Ingest_DD:Definition"
         objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
         <slot name="full_name" slotType="string"/>
         <slot name="version_id" slotType="string"/>
         <slot name="version_id" slotType="string"/>
-
-       <!--       a way to specify an association, this is currently the approach harvest employs       -->
-    </extrinsicObject>
-
-    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Archive_Bundle:Definition"
-        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
-        <slot name="stop_date_time" slotType="string"/>
-        <slot name="start_date_time" slotType="string"/>
-        <slot name="title" slotType="string"/>
-        <slot name="logical_identifier" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="product_class" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="alternate_title" slotType="string"/>
-        <slot name="alternate_id" slotType="string"/>
-        <slot name="stop_date_time" slotType="string"/>
-        <slot name="start_date_time" slotType="string"/>
 
        <!--       a way to specify an association, this is currently the approach harvest employs       -->
     </extrinsicObject>
@@ -81,6 +64,8 @@
 
     <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Bundle:Definition"
         objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
         <slot name="title" slotType="string"/>
         <slot name="logical_identifier" slotType="string"/>
         <slot name="version_id" slotType="string"/>
@@ -88,13 +73,26 @@
         <slot name="version_id" slotType="string"/>
         <slot name="alternate_title" slotType="string"/>
         <slot name="alternate_id" slotType="string"/>
-        <slot name="stop_date_time" slotType="string"/>
-        <slot name="start_date_time" slotType="string"/>
 
        <!--       a way to specify an association, this is currently the approach harvest employs       -->
     </extrinsicObject>
 
     <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Collection:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+
+       <!--       a way to specify an association, this is currently the approach harvest employs       -->
+    </extrinsicObject>
+
+    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Context:Definition"
         objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
         <slot name="title" slotType="string"/>
         <slot name="logical_identifier" slotType="string"/>
@@ -103,8 +101,10 @@
         <slot name="version_id" slotType="string"/>
         <slot name="alternate_title" slotType="string"/>
         <slot name="alternate_id" slotType="string"/>
-        <slot name="stop_date_time" slotType="string"/>
-        <slot name="start_date_time" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="stop_date" slotType="string"/>
+        <slot name="start_date" slotType="string"/>
 
        <!--       a way to specify an association, this is currently the approach harvest employs       -->
     </extrinsicObject>
@@ -140,6 +140,8 @@
 
     <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Document:Definition"
         objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
         <slot name="title" slotType="string"/>
         <slot name="logical_identifier" slotType="string"/>
         <slot name="version_id" slotType="string"/>
@@ -177,34 +179,6 @@
        <!--       a way to specify an association, this is currently the approach harvest employs       -->
     </extrinsicObject>
 
-    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Instrument:Definition"
-        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
-        <slot name="title" slotType="string"/>
-        <slot name="logical_identifier" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="product_class" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="alternate_title" slotType="string"/>
-        <slot name="alternate_id" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-
-       <!--       a way to specify an association, this is currently the approach harvest employs       -->
-    </extrinsicObject>
-
-    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Instrument_Host:Definition"
-        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
-        <slot name="title" slotType="string"/>
-        <slot name="logical_identifier" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="product_class" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="alternate_title" slotType="string"/>
-        <slot name="alternate_id" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-
-       <!--       a way to specify an association, this is currently the approach harvest employs       -->
-    </extrinsicObject>
-
     <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Instrument_Host_PDS3:Definition"
         objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
         <slot name="title" slotType="string"/>
@@ -233,35 +207,7 @@
        <!--       a way to specify an association, this is currently the approach harvest employs       -->
     </extrinsicObject>
 
-    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Investigation:Definition"
-        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
-        <slot name="title" slotType="string"/>
-        <slot name="logical_identifier" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="product_class" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="alternate_title" slotType="string"/>
-        <slot name="alternate_id" slotType="string"/>
-        <slot name="stop_date" slotType="string"/>
-        <slot name="start_date" slotType="string"/>
-
-       <!--       a way to specify an association, this is currently the approach harvest employs       -->
-    </extrinsicObject>
-
     <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Mission_PDS3:Definition"
-        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
-        <slot name="title" slotType="string"/>
-        <slot name="logical_identifier" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="product_class" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="alternate_title" slotType="string"/>
-        <slot name="alternate_id" slotType="string"/>
-
-       <!--       a way to specify an association, this is currently the approach harvest employs       -->
-    </extrinsicObject>
-
-    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Node:Definition"
         objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
         <slot name="title" slotType="string"/>
         <slot name="logical_identifier" slotType="string"/>
@@ -289,32 +235,6 @@
        <!--       a way to specify an association, this is currently the approach harvest employs       -->
     </extrinsicObject>
 
-    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_PDS_Affiliate:Definition"
-        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
-        <slot name="title" slotType="string"/>
-        <slot name="logical_identifier" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="product_class" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="alternate_title" slotType="string"/>
-        <slot name="alternate_id" slotType="string"/>
-
-       <!--       a way to specify an association, this is currently the approach harvest employs       -->
-    </extrinsicObject>
-
-    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_PDS_Guest:Definition"
-        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
-        <slot name="title" slotType="string"/>
-        <slot name="logical_identifier" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="product_class" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="alternate_title" slotType="string"/>
-        <slot name="alternate_id" slotType="string"/>
-
-       <!--       a way to specify an association, this is currently the approach harvest employs       -->
-    </extrinsicObject>
-
     <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Proxy_PDS3:Definition"
         objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
         <slot name="title" slotType="string"/>
@@ -328,7 +248,7 @@
        <!--       a way to specify an association, this is currently the approach harvest employs       -->
     </extrinsicObject>
 
-    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Resource:Definition"
+    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_SPICE_Kernel:Definition"
         objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
         <slot name="title" slotType="string"/>
         <slot name="logical_identifier" slotType="string"/>
@@ -337,32 +257,8 @@
         <slot name="version_id" slotType="string"/>
         <slot name="alternate_title" slotType="string"/>
         <slot name="alternate_id" slotType="string"/>
-
-       <!--       a way to specify an association, this is currently the approach harvest employs       -->
-    </extrinsicObject>
-
-    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_SPICE_Kernel_Binary:Definition"
-        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
-        <slot name="title" slotType="string"/>
-        <slot name="logical_identifier" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="product_class" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="alternate_title" slotType="string"/>
-        <slot name="alternate_id" slotType="string"/>
-
-       <!--       a way to specify an association, this is currently the approach harvest employs       -->
-    </extrinsicObject>
-
-    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_SPICE_Kernel_Text:Definition"
-        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
-        <slot name="title" slotType="string"/>
-        <slot name="logical_identifier" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="product_class" slotType="string"/>
-        <slot name="version_id" slotType="string"/>
-        <slot name="alternate_title" slotType="string"/>
-        <slot name="alternate_id" slotType="string"/>
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="start_date_time" slotType="string"/>
 
        <!--       a way to specify an association, this is currently the approach harvest employs       -->
     </extrinsicObject>
@@ -394,7 +290,7 @@
        <!--       a way to specify an association, this is currently the approach harvest employs       -->
     </extrinsicObject>
 
-    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Target:Definition"
+    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Subscription_PDS3:Definition"
         objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
         <slot name="title" slotType="string"/>
         <slot name="logical_identifier" slotType="string"/>
@@ -403,6 +299,7 @@
         <slot name="version_id" slotType="string"/>
         <slot name="alternate_title" slotType="string"/>
         <slot name="alternate_id" slotType="string"/>
+        <slot name="full_name" slotType="string"/>
 
        <!--       a way to specify an association, this is currently the approach harvest employs       -->
     </extrinsicObject>
