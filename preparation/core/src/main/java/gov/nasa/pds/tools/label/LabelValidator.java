@@ -16,6 +16,7 @@
 package gov.nasa.pds.tools.label;
 
 import gov.nasa.pds.tools.util.VersionInfo;
+import gov.nasa.pds.tools.util.XslURIResolver;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,6 +71,8 @@ public class LabelValidator {
     modelVersion = VersionInfo.getDefaultModelVersion();
     cachedValidator = null;
     cachedSchematron = new ArrayList<Transformer>();
+    userSchemaFiles = null;
+    userSchematronFiles = null;
     resolver = null;
   }
 
@@ -185,17 +188,22 @@ public class LabelValidator {
       cachedValidator.validate(new StreamSource(labelFile));
     }
     // Validate with any schematron files we have
-    if (performsSchematronValidation()) {
+    if (performsSchematronValidation() && userSchematronFiles != null) {
       if (cachedSchematron.isEmpty()) {
         // Use saxon for schematron (i.e. the XSLT generation).
         System.setProperty("javax.xml.transform.TransformerFactory",
             "net.sf.saxon.TransformerFactoryImpl");
-        TransformerFactory factory = TransformerFactory.newInstance();
+        TransformerFactory isoFactory = TransformerFactory.newInstance();
+        // Set the resolver that will look in the jar for imports
+        isoFactory.setURIResolver(new XslURIResolver());
         // Load the isoSchematron stylesheet that will be used to transform each
         // schematron file
         Source isoSchematron = new StreamSource(LabelValidator.class
             .getResourceAsStream("/schematron/iso_svrl_for_xslt2.xsl"));
-        Transformer isoTransformer = factory.newTransformer(isoSchematron);
+        Transformer isoTransformer = isoFactory.newTransformer(isoSchematron);
+        // Setup a different factory for user schematron files as it will not use
+        // the same URIResolver
+        TransformerFactory factory = TransformerFactory.newInstance();
         // For each schematron file we need to setup a transformer that will be
         // applied to the label
         for (String schematronFile : userSchematronFiles) {
