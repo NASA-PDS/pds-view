@@ -101,7 +101,7 @@
   <column>
     <name>node_id</name>
     <type>association</type>
-    <value>node_ref.node_id</value>
+    <value>node_ref.node_name</value>
   </column>
   <column>
     <name>full_name</name>
