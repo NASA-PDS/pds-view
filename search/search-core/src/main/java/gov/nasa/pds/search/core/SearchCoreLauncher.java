@@ -188,6 +188,12 @@ public class SearchCoreLauncher {
 
 	private void runSolrIndexer() throws IOException, ParseException, Exception {
 		this.LOG.info("\nRunning Solr Indexer to create new SOLR_INDEX.XML ...\n");
+		
+		File indexDir = new File(this.searchServiceHome.getAbsolutePath() + "/index");
+		if (!indexDir.isDirectory()) {
+			indexDir.mkdir();
+		}
+		
 		String[] args = { this.searchServiceHome.getAbsolutePath() + "/index",
 				this.searchServiceHome.getAbsolutePath() + "/tse/extract" };
 		SolrIndexer.main(args);
