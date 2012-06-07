@@ -30,6 +30,9 @@
       <action dev="pramirez" type="add">
         Added in 0800k version of schema and schematron and set as default for this release.
       </action>
+      <action dev="pramirez" type="add">
+        Added in 0700j version of schema and schematron.
+      </action>
     </release>
 
     <release version="1.0.0" date="2012-01-31" description="This release of the Core Library is a component of the integrated release 2.1.0 of the PDS 2010 System.">
