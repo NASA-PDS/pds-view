@@ -286,8 +286,6 @@ public class LabelValidator {
 
   public static void main(String[] args) throws Exception {
     LabelValidator lv = new LabelValidator();
-    String[] catalogs = new String[] { args[0] };
-    lv.setCatalogs(catalogs);
-    lv.validate(new File(args[1]));
+    lv.validate(new File(args[0]));
   }
 }

@@ -115,12 +115,26 @@ public class VersionInfo {
   }
 
   public static List<String> getSchemasFromDirectory() {
-      return getDirectoryFileNames(schemaDir);
+      List<String> filenames = getDirectoryFileNames(schemaDir);
+      List<String> results = new ArrayList<String>();
+      for (String filename : filenames) {
+        if (filename.endsWith(".xsd")) {
+          results.add(filename);
+        }
+      }
+      return results;
   }
 
   public static List<String> getSchemasFromJar(String modelVersion) {
-    return Arrays.asList(getSafeResourceListing(SCHEMA_DIR + "/"
+    List<String> filenames = Arrays.asList(getSafeResourceListing(SCHEMA_DIR + "/"
         + modelVersion));
+    List<String> results = new ArrayList<String>();
+    for (String filename : filenames) {
+      if (filename.endsWith(".xsd")) {
+        results.add(filename);
+      }
+    }
+    return results;
   }
   
   public static String getSchemaRefFromJar(String modelVersion, String schemaFile) {
@@ -129,8 +143,7 @@ public class VersionInfo {
   
   public static List<String> getSchemas() {
     if (internalMode) {
-      return Arrays.asList(getSafeResourceListing(SCHEMA_DIR + "/"
-          + getDefaultModelVersion()));
+      return getSchemasFromJar(getDefaultModelVersion());
     } else {
       return getDirectoryFileNames(schemaDir);
     }
