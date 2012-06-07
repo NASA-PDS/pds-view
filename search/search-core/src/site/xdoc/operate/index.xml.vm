@@ -51,7 +51,9 @@
           <tr><td>-d, --debug</td><td>Turn on debugger.</td></tr>
           <tr><td>-e, --extractor</td><td>Run Registry Extractor.</td></tr>
           <tr><td>-h, --help</td><td>Display usage.</td></tr>
+<tr><td>-m,--query-max</td><td>Specify the maximum number of registry values to be returned from query. (Default: 999999999)</td></tr>
           <tr><td>-p, --pds-indexer</td><td>Run PDS Indexer</td></tr>
+          <tr><td>-r, --registry</td><td>Specify Registry Service instance to query. (Default: http://pdsbeta.jpl.nasa.gov:8080/registry)</td></tr>
           <tr><td>-s, --solr-indexer</td><td>Run Solr Indexer</td></tr>
           <tr><td>-V, --version</td><td>Display the release number and copyright information.</td></tr>
         </table>
@@ -61,25 +63,48 @@
         <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script.
         </p>
 
-        <p>The Solr Core Tool requires a Solr Home directory to be specified prior to running the tool. The following is the format for commands:
+        <p>The Search Core Tool requires a Search Service Home directory to be specified prior to running the tool.  This path is the directory that contains the Apache Solr WAR file.  The following is the format for commands:
         </p>
 
         <source>
-% search-core &lt;solr-home-path&gt; [options]
+% search-core &lt;search-service-home-path&gt; [options]
         </source>
 
-        <p>The following command demonstrates how to run the Search Core Tool with a SOLR_HOME=/apps/search-service and the default execution to run all components:
+        <p>The following command demonstrates how to run the Search Core Tool with a SEARCH_SERVICE_HOME=/apps/search-service and the default execution to run all components:
         </p>
 
         <source>
 % search-core /apps/service
         </source>
 
-        <p>The following command demonstrates how to run the Search Core Tool with a SOLR_HOME=/apps/search-service and only run the Solr Indexer:
+	<p>By default, the command above will run all components of the Search Core software and produce a Solr index from the Registry Service data.  To run each component separately, they must be completed in the following order:</p>
+
+	<ol>
+	  <li>
+	    <p>The following command will run the Search Core Tool with a SEARCH_SERVICE_HOME=/apps/search-service and only run the Registry Extractor component:</p>
+	    <source>
+% search-core /apps/service -e
+	    </source>
+	  </li>
+	  <li>
+	    <p>The following command will run the Search Core Tool with a SEARCH_SERVICE_HOME=/apps/search-service and only run the Solr Indexer component:</p>
+	    <source>
+% search-core /apps/service -s
+	    </source>
+	  </li>
+	  <li>
+	    <p>The following command will run the Search Core Tool with a SEARCH_SERVICE_HOME=/apps/search-service and only run the PDS Indexer component:</p>
+	    <source>
+% search-core /apps/service -p
+	    </source>
+	  </li>
+	</ol>
+
+        <p>The following command demonstrates how to test the Search Core Tool with a SEARCH_SERVICE_HOME=/apps/search-service and only query 1000 products for indexing:
         </p>
 
         <source>
-% search-core /apps/service -s
+% search-core /apps/service -m 1000
         </source>
 
         <p>By default, the Search Core tool runs against the Registry Service at http://pdsbeta:8080/registry. The following command demonstrates how to run the Search Core Tool and all its components against a Registry Service installed at <i>http://localhost:8080/registry</i>
