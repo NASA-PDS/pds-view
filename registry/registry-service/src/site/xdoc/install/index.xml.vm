@@ -154,8 +154,8 @@ ij> exit;
 
         <source>
 % cd ${project.artifactId}-${project.version}
-% mysqladmin -uroot -p create registry
-% mysql registry -uroot -p -e"GRANT ALL ON registry.* TO registry@localhost \
+% mysqladmin -u root -p create registry
+% mysql -u root -p -e "GRANT ALL ON registry.* TO registry@localhost \
   IDENTIFIED BY 'p@ssw0rd'"
 % mysql -u root -p -D registry &lt; conf/mysql-registry-schema.ddl
         </source>
@@ -245,9 +245,6 @@ hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
 # For use with older versions of MySQL. See hibernate documentation.
 hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
         </source>
-
-        <p>No matter which database solution is configured as the backend database, the schema that supports the Registry Service is created by default when launching the service for the first time.
-        </p>
       </subsection>
 
       <subsection name="Home Configuration">
