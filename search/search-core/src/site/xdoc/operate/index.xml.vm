@@ -74,7 +74,7 @@
         </p>
 
         <source>
-% search-core /apps/service
+% search-core /apps/service-service
         </source>
 
 	<p>By default, the command above will run all components of the Search Core software and produce a Solr index from the Registry Service data.  To run each component separately, they must be completed in the following order:</p>
@@ -83,19 +83,19 @@
 	  <li>
 	    <p>The following command will run the Search Core Tool with a SEARCH_SERVICE_HOME=/apps/search-service and only run the Registry Extractor component:</p>
 	    <source>
-% search-core /apps/service -e
+% search-core /apps/service-service -e
 	    </source>
 	  </li>
 	  <li>
 	    <p>The following command will run the Search Core Tool with a SEARCH_SERVICE_HOME=/apps/search-service and only run the Solr Indexer component:</p>
 	    <source>
-% search-core /apps/service -s
+% search-core /apps/service-service -s
 	    </source>
 	  </li>
 	  <li>
 	    <p>The following command will run the Search Core Tool with a SEARCH_SERVICE_HOME=/apps/search-service and only run the PDS Indexer component:</p>
 	    <source>
-% search-core /apps/service -p
+% search-core /apps/service-service -p
 	    </source>
 	  </li>
 	</ol>
@@ -104,14 +104,14 @@
         </p>
 
         <source>
-% search-core /apps/service -m 1000
+% search-core /apps/service-service -m 1000
         </source>
 
         <p>By default, the Search Core tool runs against the Registry Service at http://pdsbeta:8080/registry. The following command demonstrates how to run the Search Core Tool and all its components against a Registry Service installed at <i>http://localhost:8080/registry</i>
         </p>
 
         <source>
-% search-core /apps/service -r http://localhost:8080/registry
+% search-core /apps/service-service -r http://localhost:8080/registry
         </source>
       </subsection>
     </section>
