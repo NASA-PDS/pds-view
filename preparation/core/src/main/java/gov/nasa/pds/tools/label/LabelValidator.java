@@ -188,7 +188,7 @@ public class LabelValidator {
       cachedValidator.validate(new StreamSource(labelFile));
     }
     // Validate with any schematron files we have
-    if (performsSchematronValidation() && userSchematronFiles != null) {
+    if (performsSchematronValidation()) {
       if (cachedSchematron.isEmpty()) {
         // Use saxon for schematron (i.e. the XSLT generation).
         System.setProperty("javax.xml.transform.TransformerFactory",
@@ -201,21 +201,40 @@ public class LabelValidator {
         Source isoSchematron = new StreamSource(LabelValidator.class
             .getResourceAsStream("/schematron/iso_svrl_for_xslt2.xsl"));
         Transformer isoTransformer = isoFactory.newTransformer(isoSchematron);
-        // Setup a different factory for user schematron files as it will not use
+        // Setup a different factory for user schematron files as it will not
+        // use
         // the same URIResolver
         TransformerFactory factory = TransformerFactory.newInstance();
-        // For each schematron file we need to setup a transformer that will be
-        // applied to the label
-        for (String schematronFile : userSchematronFiles) {
-          // Will hold stylesheet that encompasses the tests as specified in the
-          // schematron file
-          StringWriter schematronStyleSheet = new StringWriter();
-          // Create the stylesheet by transforming using the iso schematron
-          isoTransformer.transform(new StreamSource(schematronFile),
-              new StreamResult(schematronStyleSheet));
-          // Save for later
-          cachedSchematron.add(factory.newTransformer(new StreamSource(
-              new StringReader(schematronStyleSheet.toString()))));
+        // If user does not provide schematron then use ones in jar if available
+        if (userSchematronFiles == null) {
+          for (String schematronFile : VersionInfo
+              .getSchematronsFromJar(modelVersion)) {
+            // Will hold stylesheet that encompasses the tests as specified in
+            // the schematron file
+            StringWriter schematronStyleSheet = new StringWriter();
+            // Create the stylesheet by transforming using the iso schematron
+            isoTransformer.transform(new StreamSource(LabelValidator.class
+                .getResourceAsStream(VersionInfo.getSchematronRefFromJar(
+                    modelVersion, schematronFile))), new StreamResult(
+                schematronStyleSheet));
+            // Save for later
+            cachedSchematron.add(factory.newTransformer(new StreamSource(
+                new StringReader(schematronStyleSheet.toString()))));
+          }
+        } else {
+          // For each schematron file we need to setup a transformer that will
+          // be applied to the label
+          for (String schematronFile : userSchematronFiles) {
+            // Will hold stylesheet that encompasses the tests as specified in
+            // the schematron file
+            StringWriter schematronStyleSheet = new StringWriter();
+            // Create the stylesheet by transforming using the iso schematron
+            isoTransformer.transform(new StreamSource(schematronFile),
+                new StreamResult(schematronStyleSheet));
+            // Save for later
+            cachedSchematron.add(factory.newTransformer(new StreamSource(
+                new StringReader(schematronStyleSheet.toString()))));
+          }
         }
       }
       // Boiler plate to handle parsing report outputs from schematron
@@ -286,6 +305,10 @@ public class LabelValidator {
 
   public static void main(String[] args) throws Exception {
     LabelValidator lv = new LabelValidator();
-    lv.validate(new File(args[0]));
+    ExceptionContainer container = new ExceptionContainer();
+    lv.validate(container, new File(args[0]));
+    for (LabelException ex : container.getExceptions()) {
+      System.out.println(ex.getMessage());
+    }
   }
 }

@@ -137,6 +137,22 @@ public class VersionInfo {
     return results;
   }
   
+  public static List<String> getSchematronsFromJar(String modelVersion) {
+    List<String> filenames = Arrays.asList(getSafeResourceListing(SCHEMA_DIR + "/"
+        + modelVersion));
+    List<String> results = new ArrayList<String>();
+    for (String filename : filenames) {
+      if (filename.endsWith(".sch")) {
+        results.add(filename);
+      }
+    }
+    return results;
+  }
+  
+  public static String getSchematronRefFromJar(String modelVersion, String schematronFile) {
+    return "/" + SCHEMA_DIR + "/" + modelVersion + "/" + schematronFile;
+  }
+  
   public static String getSchemaRefFromJar(String modelVersion, String schemaFile) {
     return "/" + SCHEMA_DIR + "/" + modelVersion + "/" + schemaFile;
   }
