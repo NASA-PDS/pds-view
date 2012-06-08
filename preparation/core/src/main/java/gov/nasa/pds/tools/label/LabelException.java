@@ -17,7 +17,7 @@ package gov.nasa.pds.tools.label;
 
 /**
  * @author pramirez
- *
+ * 
  */
 public class LabelException extends Exception {
   private static final long serialVersionUID = 6046402124396835033L;
@@ -27,8 +27,9 @@ public class LabelException extends Exception {
   private String systemId;
   private Integer lineNumber;
   private Integer columnNumber;
-  
-  public LabelException(ExceptionType exceptionType, String messageKey, String publicId, String systemId, Integer lineNumber, Integer columnNumber) {
+
+  public LabelException(ExceptionType exceptionType, String messageKey,
+      String publicId, String systemId, Integer lineNumber, Integer columnNumber) {
     this.exceptionType = exceptionType;
     this.messageKey = messageKey;
     this.publicId = publicId;
@@ -36,43 +37,51 @@ public class LabelException extends Exception {
     this.lineNumber = lineNumber;
     this.columnNumber = columnNumber;
   }
-  
+
   /**
    * Used to capture information captured from schematron
+   * 
    * @param exceptionType
+   *          type of issue that occurred
    * @param message
-   * @param test
+   *          human readable message provided in schematron
+   * @param filepath
+   *          absolute location of the file
    * @param location
-   * @param fileName
+   *          context based on xpath where this occurred
+   * @param test
+   *          what the schematron was looking for
    */
-  public LabelException(ExceptionType exceptionType, String message, String filepath, String location, String test) {
-    this(exceptionType, message + "[Context: " + location + "; Test: " + test + "]", "", filepath, -1, -1);
+  public LabelException(ExceptionType exceptionType, String message,
+      String filepath, String location, String test) {
+    this(exceptionType, message + " [Context: \"" + location + "\"; Test: \""
+        + test + "\"]", "", filepath, -1, -1);
   }
-  
+
   public ExceptionType getExceptionType() {
     return this.exceptionType;
   }
-  
+
   public String getMessage() {
     return this.messageKey;
   }
-  
+
   public String getPublicId() {
     return this.publicId;
   }
-  
+
   public String getSystemId() {
     return this.systemId;
   }
-  
+
   public Integer getLineNumber() {
     return this.lineNumber;
   }
-  
+
   public Integer getColumnNumber() {
     return this.columnNumber;
   }
-  
+
   public String getSource() {
     return this.systemId;
   }
