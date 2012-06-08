@@ -23,10 +23,7 @@
   </properties>
 
   <body>
-    <release version="0.3.0" date="TBD" description="This release of the Storage Service is a component of the integrated release 2.2.0 of the PDS 2010 System.">
-    </release>
-
-    <release version="0.2.0" date="2012-01-31" description="This release of the Storage Service is a component of the integrated release 2.1.0 of the PDS 2010 System.">
+    <release version="0.2.0" date="2012-01-31" description="This release of the Storage Service is a component of the integrated releases 2.1.0 and 2.2.0 of the PDS 2010 System.">
       <action dev="shardman" type="add">
          Provided File Manager policy to support the Catalog Ingest and Harvest Tools.
       </action>

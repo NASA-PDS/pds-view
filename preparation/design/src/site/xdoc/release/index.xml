@@ -28,18 +28,13 @@
       </p>
     </section>
 
-    <section name="Release 0.4.0">
-      <p>This release of the Design Tool is a component of the integrated release <a href="../../../release/index-2.2.0.html">2.2.0</a> of the PDS 2010 System. This release is intended as an operational release of the system components to date.
-      </p>
-    </section>
-
     <section name="Release 0.3.0">
-      <p>This release of the Design Tool is a component of the integrated release <a href="../../../release/index-2.1.0.html">2.1.0</a> of the PDS 2010 System. This release is intended as an operational release of the system components to date. This release includes documentation updates.
+      <p>This release of the Design Tool is a component of the integrated releases <a href="../../../release/index-2.1.0.html">2.1.0</a> and <a href="../../../release/index-2.2.0.html">2.2.0</a> of the PDS 2010 System. This release is intended as an operational release of the system components to date. This release includes documentation updates.
       </p>
     </section>
 
     <section name="Release 0.2.0">
-      <p>This release of the Design Tool is a component of the integrated release <a href="../../../release/index-1.1.0.html">1.1.0</a>, <a href="../../../release/index-1.2.0.html">1.2.0</a> <a href="../../../release/index-2.0.0.html">2.0.0</a> of the PDS 2010 System. This latest release is an operational release of the system components to date. This release includes updates to the schema references in the Operation document.
+      <p>This release of the Design Tool is a component of the integrated releases <a href="../../../release/index-1.1.0.html">1.1.0</a>, <a href="../../../release/index-1.2.0.html">1.2.0</a> <a href="../../../release/index-2.0.0.html">2.0.0</a> of the PDS 2010 System. This latest release is an operational release of the system components to date. This release includes updates to the schema references in the Operation document.
       </p>
     </section>
 
