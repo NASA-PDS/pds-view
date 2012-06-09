@@ -26,8 +26,6 @@
     <name>Search</name>
   </bannerRight>
 
-  <version/>
-
   <body>
     <links>
       <item name="Search" href="http://pds-cm.jpl.nasa.gov/2010/search/index.html" />
