@@ -30,10 +30,11 @@ public abstract class Constants {
 		"target_ref",
 		"investigation_ref",
 		"data_set_ref",
-		"file_ref",
 		"instrument_host_ref",
 		"instrument_ref",
 		"resource_ref",
+		"file_ref",
+		"member_ref",
 		"urn:registry:AssociationType:HasMember"
 	};
 	
