@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2011, by the California Institute of Technology.
+  Copyright 2011-2012, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -34,7 +34,7 @@
     <menu name="Software Documentation">
       <item name="About Search" href="index.html"/>
       <item name="Design (pdf)" href="docs/pds2010_search_design.pdf"/>
-      <item name="Protocol (pdf)" href="docs/pds2010_search_protocol.pdf"/>
+      <item name="Protocol (pdf)" href="docs/pds2010_pds_search_protocol.pdf"/>
     </menu>
 
     <menu ref="modules"/>
