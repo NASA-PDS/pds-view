@@ -23,19 +23,22 @@
   </properties>
 
   <body>
-    <release version="1.2.0" date="TBD" description="This release of the Profile Setup application is a component of the integrated release 2.2.0 of the PDS 2010 System.">
+    <release version="1.2.0" date="2012-06-11" description="This release of the Profile Setup application is a component of the integrated release 2.2.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+      <action dev="shardman" type="remove">
+        Removed the parent project's Release Notes document. This document now serves as the single source for this component's release changes.
+      </action>
     </release>
 
-    <release version="1.1.0" date="2012-01-31" description="This release of the Profile Setup application is a component of the integrated release 2.1.0 of the PDS 2010 System.">
+    <release version="1.1.0" date="2012-01-31" description="This release of the Profile Setup application is a component of the integrated release 2.1.0 of the PDS 2010 System. This is an operational release of the system components to date.">
       <action dev="shardman" type="update">
         Cleaned up the documentation and removed the PDF generation feature.
       </action>
     </release>
 
-    <release version="1.0.0" date="2011-11-09" description="This release of the Profile Setup application is a component of the integrated release 2.0.0 of the PDS 2010 System.">
+    <release version="1.0.0" date="2011-11-09" description="This release of the Profile Setup application is a component of the integrated release 2.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
     </release>
 
-    <release version="0.1.0" date="2011-08-29" description="This release of the Profile Setup application is a component of the integrated release 1.2.0 of the PDS 2010 System.">
+    <release version="0.1.0" date="2011-08-29" description="This release of the Profile Setup application is a component of the integrated release 1.2.0 of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date.">
       <action dev="jpadams" type="add">
         Initial capabilities for setting up Sawmill profiles.
       </action>

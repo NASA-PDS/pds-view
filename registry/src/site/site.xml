@@ -26,8 +26,6 @@
     <name>Registry</name>
   </bannerRight>
 
-  <version/>
-
   <body>
     <links>
       <item name="Registry" href="http://pds-cm.jpl.nasa.gov/2010/registry/index.html" />
@@ -36,7 +34,6 @@
     <menu name="Software Documentation">
       <item name="About Registry" href="index.html"/>
       <item name="Design (pdf)" href="docs/pds2010_registry_design.pdf"/>
-      <item name="Release Notes" href="release/index.html"/>
     </menu>
 
     <menu ref="modules"/>

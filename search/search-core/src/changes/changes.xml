@@ -24,25 +24,28 @@
   </properties>
   
   <body>
-    <release version="0.3.0" date="TBD" description="This release of the Search Core is a component of the integrated release 2.2.0 of the PDS 2010 System.">
+    <release version="0.3.0" date="2012-06-11" description="This release of the Search Core is a component of the integrated release 2.2.0 of the PDS 2010 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="add">
-	Added command-line option to specify number of queried records.
+        Added command-line option to specify number of queried records.
       </action>
       <action dev="jpadams" type="add">
-	Updated the configuration to reflect to changes in slot names, in accordance with changes made by harvest.
+        Updated the configuration to reflect to changes in slot names, in accordance with changes made by harvest.
       </action>
       <action dev="jpadams" type="update">
-	Refactored Registry Extractor, Solr Indexer, and PDS Indexer to reflect changes in the registry-core client.
+        Refactored Registry Extractor, Solr Indexer, and PDS Indexer to reflect changes in the registry-core client.
+      </action>
+      <action dev="shardman" type="remove">
+        Removed the parent project's Release Notes document. This document now serves as the single source for this component's release changes.
       </action>
     </release>
 
-    <release version="0.2.0" date="2012-01-31" description="This release of the Search Core is a component of the integrated release 2.1.0 of the PDS 2010 System.">
+    <release version="0.2.0" date="2012-01-31" description="This release of the Search Core is a component of the integrated release 2.1.0 of the PDS 2010 System. This is an operational release of the system components to date.">
       <action dev="shardman" type="update">
         Cleaned up the documentation and removed the PDF generation feature.
       </action>
     </release>
 
-    <release version="0.1.0" date="2011-11-09" description="This release of the Search Core is a component of the integrated release 2.0.0 of the PDS 2010 System.">
+    <release version="0.1.0" date="2011-11-09" description="This release of the Search Core is a component of the integrated release 2.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
       <action dev="pramirez" type="add">
         Initial implementation of PDS search protocol request handler.
       </action>

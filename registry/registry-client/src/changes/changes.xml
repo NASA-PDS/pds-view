@@ -23,13 +23,20 @@
   </properties>
 
   <body>
-    <release version="1.2.0" date="TBD" description="This release of the Registry Client is a component of the integrated release 2.2.0 of the PDS 2010 System.">
+    <release version="1.2.0" date="2012-06-11" description="This release of the Registry Client is a component of the integrated release 2.2.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+      <action dev="kelly" type="update">
+        This release makes the client API compatible with the 1.2.0 release of the Registry Service. In particular, it fixes the integration of the
+Maven-provided project information with Python's Distribute-supplied project metadata.
+      </action>
+      <action dev="shardman" type="remove">
+        Removed the parent project's Release Notes document. This document now serves as the single source for this component's release changes.
+      </action>
     </release>
 
-    <release version="1.1.0" date="2012-01-31" description="This release of the Registry Client is a component of the integrated release 2.1.0 of the PDS 2010 System.">
+    <release version="1.1.0" date="2012-01-31" description="This release of the Registry Client is a component of the integrated release 2.1.0 of the PDS 2010 System. This is an operational release of the system components to date.">
     </release>
 
-    <release version="1.0.0" date="2011-11-09" description="This release of the Registry Client is a component of the integrated release 2.0.0 of the PDS 2010 System.">
+    <release version="1.0.0" date="2011-11-09" description="This release of the Registry Client is a component of the integrated release 2.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
       <action dev="kelly" type="add">
         Initial release of the Python-based interface to the Registry Service.
       </action>

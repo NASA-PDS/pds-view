@@ -23,7 +23,7 @@
   </properties>
 
   <body>
-    <release version="1.3.0" date="2012-05-29" description="This release of the Catalog Tool is a component of the integrated release 2.2.0 of the PDS 2010 System.">
+    <release version="1.3.0" date="2012-06-11" description="This release of the Catalog Tool is a component of the integrated release 2.2.0 of the PDS 2010 System. This is an operational release of the system components to date.">
 	  <action dev="hyunlee" type="update">
 	  	Updated the reference type mapping.
 	  </action>
@@ -32,7 +32,7 @@
 	  </action>
     </release>
 
-    <release version="1.2.0" date="2012-01-31" description="This release of the Catalog Tool is a component of the integrated release 2.1.0 of the PDS 2010 System.">
+    <release version="1.2.0" date="2012-01-31" description="This release of the Catalog Tool is a component of the integrated release 2.1.0 of the PDS 2010 System. This is an operational release of the system components to date. ">
       <action dev="hyunlee" type="update">
         Modified the tool to register catalog file information with the Registry Service instead of the PDS catalog database.
       </action>
@@ -42,29 +42,32 @@
       <action dev="shardman" type="update">
         Cleaned up the documentation and removed the PDF generation feature.
       </action>
+      <action dev="shardman" type="remove">
+        Removed the Release Notes document. This document now serves as the single source for release changes.
+      </action>
     </release>
 
     <release version="1.1.0" date="2011-02-10" description="This is a maintenance release of the Catalog Ingest Tool.">
-      <action dev="mcayanan, hyunlee" type="update">
-        PDSEN-256 - Update the tool to be compatible with version 3.X.X of the Product Tools Library.
+      <action dev="mcayanan, hyunlee" type="update" issue="PDSEN-256">
+        Update the tool to be compatible with version 3.X.X of the Product Tools Library.
       </action>
-      <action dev="mcayanan" type="fix">
-        PDSEN-326 - Support apostrophe characters in author's names during reference validation.
+      <action dev="mcayanan" type="fix" issue="PDSEN-326">
+        Support apostrophe characters in author's names during reference validation.
       </action>
-      <action dev="mcayanan" type="fix">
-        PDSEN-327 - During reference validation, do a more robust checking of possible REFERENCE_KEY_ID values within square brackets inside a description.
+      <action dev="mcayanan" type="fix" issue="PDSEN-327">
+        During reference validation, do a more robust checking of possible REFERENCE_KEY_ID values within square brackets inside a description.
       </action>
-      <action dev="mcayanan" type="fix">
-        PDSEN-328 - Support space characters in author's names during reference validation.
+      <action dev="mcayanan" type="fix" issue="PDSEN-328">
+        Support space characters in author's names during reference validation.
       </action>
-      <action dev="mcayanan" type="fix">
-        PDSEN-333 - Perform a proper comparison between two Set values. Fixed as the result of fixing PDSEN-332 for the product-tools project.
+      <action dev="mcayanan" type="fix" issue="PDSEN-333">
+        Perform a proper comparison between two Set values. Fixed as the result of fixing PDSEN-332 for the product-tools project.
       </action>
-      <action dev="mcayanan" type="fix">
-        PDSEN-334 - No longer look for "AND" when determining if a REFERENCE_KEY_ID value denotes multiple authors.
+      <action dev="mcayanan" type="fix" issue="PDSEN-334">
+        No longer look for "AND" when determining if a REFERENCE_KEY_ID value denotes multiple authors.
       </action>
-      <action dev="mcayanan" type="fix">
-        PDSEN-337 - Perform string manipulation when matching values during referential integrity checking.
+      <action dev="mcayanan" type="fix" issue="PDSEN-337">
+        Perform string manipulation when matching values during referential integrity checking.
       </action>
       <action dev="hyunlee" type="fix">
         Corrected an issue ingesting the VOLUME catalog file when NODE_ID, ON_LINE_NAME, ON_LINE_IDENTIFICATION, and PROTOCOL_TYPE keywords are absent.

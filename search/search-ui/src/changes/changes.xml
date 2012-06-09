@@ -23,15 +23,18 @@
   </properties>
 
   <body>
-    <release version="0.3.0" date="TBD" description="This release of the Search UI is a component of the integrated release 2.2.0 of the PDS 2010 System.">
+    <release version="0.3.0" date="2012-06-11" description="This release of the Search User Interface is a component of the integrated release 2.2.0 of the PDS 2010 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="add">
-	Project structure for Search UI.
+        Project structure for Search UI.
       </action>
       <action dev="jpadams" type="add">
-	Copied data-search interface as base for Search UI.
+        Copied data-search interface as base for Search UI.
       </action>
       <action dev="jpadams" type="update">
-	Changed data-search to point to new Search Service endpoint for search.
+        Changed data-search to point to new Search Service end point for search.
+      </action>
+      <action dev="shardman" type="remove">
+        Removed the parent project's Release Notes document. This document now serves as the single source for this component's release changes.
       </action>
     </release>
   </body>

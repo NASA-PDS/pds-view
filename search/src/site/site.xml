@@ -37,7 +37,6 @@
       <item name="About Search" href="index.html"/>
       <item name="Design (pdf)" href="docs/pds2010_search_design.pdf"/>
       <item name="Protocol (pdf)" href="docs/pds2010_search_protocol.pdf"/>
-      <item name="Release Notes" href="release/index.html"/>
     </menu>
 
     <menu ref="modules"/>

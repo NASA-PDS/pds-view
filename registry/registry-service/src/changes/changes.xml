@@ -23,12 +23,9 @@
   </properties>
 
   <body>
-    <release version="1.2.0" date="TBD" description="This release of the Registry Service is a component of the integrated release 2.2.0 of the PDS 2010 System.">
-      <action dev="pramirez" type="add">
-        PDS-66 Endpoint for updating packages with POST or PUT.
-      </action>
-      <action dev="pramirez" type="fix">
-        PDS-65 Remove warning about XMLConstants.FEATURE_SECURE_PROCESSING from server logs.
+    <release version="1.2.0" date="2012-06-11" description="This release of the Registry Service is a component of the integrated release 2.2.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+      <action dev="pramirez" type="add" issue="PDS-66">
+        Endpoint for updating packages with POST or PUT.
       </action>
       <action dev="pramirez" type="update">
         Support package id when versioning extrinsic objects.
@@ -36,20 +33,29 @@
       <action dev="pramirez" type="update">
         Support error handling on service endpoints that update registry objects. When trying to update an object that does not exist an error will be thrown.
       </action>
+      <action dev="pramirez" type="fix" issue="PDS-51">
+        Updates to registry objects no longer overwrite key attributes when not provided by the client. Key attributes include home, lid, status, and versionName. Inherited from registry-core.
+      </action>
+      <action dev="pramirez" type="fix" issue="PDS-65">
+        Remove warning about XMLConstants.FEATURE_SECURE_PROCESSING by using Xerces 2.10.0. Inherited from registry-core.
+      </action>
+      <action dev="shardman" type="remove">
+        Removed the parent project's Release Notes document. This document now serves as the single source for this component's release changes.
+      </action>
     </release>
 
-    <release version="1.1.0" date="2012-01-31" description="This release of the Registry Service is a component of the integrated release 2.1.0 of the PDS 2010 System.">
-      <action dev="pramirez" type="update">
-        PDS-41: Filtering endpoints now support status. Inherited from registry-core.
+    <release version="1.1.0" date="2012-01-31" description="This release of the Registry Service is a component of the integrated release 2.1.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+      <action dev="pramirez" type="update" issue="PDS-41">
+        Filtering endpoints now support status. Inherited from registry-core.
       </action>
       <action dev="shardman" type="update">
         Cleaned up the documentation and removed the PDF generation feature.
       </action>
     </release>
 
-    <release version="1.0.0" date="2011-11-09" description="This release of the Registry Service is a component of the integrated release 2.0.0 of the PDS 2010 System.">
-      <action dev="pramirez" type="add">
-        PDS-43: Ability to page through classifications nodes.
+    <release version="1.0.0" date="2011-11-09" description="This release of the Registry Service is a component of the integrated release 2.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+      <action dev="pramirez" type="add" issue="PDS-43">
+        Ability to page through classifications nodes.
       </action>
       <action dev="pramirez" type="add">
         Core association type classification scheme.
@@ -68,57 +74,54 @@
       </action>
     </release>
 
-    <release version="0.7.0" date="2011-08-29" description="This release of the Registry Service is a component of the integrated release 1.2.0 of the PDS 2010 System.">
-      <action dev="pramirez" type="add">
-        PDS-14: End point to remove package members and update the status of all package members. Inherited from registry-core.
+    <release version="0.7.0" date="2011-08-29" description="This release of the Registry Service is a component of the integrated release 1.2.0 of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date.">
+      <action dev="pramirez" type="add" issue="PDS-14">
+        End point to remove package members and update the status of all package members. Inherited from registry-core.
       </action>
-      <action dev="pramirez" type="add">
-        PDS-30: Allow PUT operation to create/update a Service object.
+      <action dev="pramirez" type="add" issue="PDS-30">
+        Allow PUT operation to create/update a Service object.
       </action>
-      <action dev="pramirez" type="add">
-        PDS-32: Added end point to manage ExternalLinks which can be used to tie registry contents to URLs that exist outside the registry. Inherited from registry-core.
+      <action dev="pramirez" type="add" issue="PDS-32">
+        Added end point to manage ExternalLinks which can be used to tie registry contents to URLs that exist outside the registry. Inherited from registry-core.
       </action>
-      <action dev="pramirez" type="update">
-        PDS-37: Moved registry end points one level removing the redundant /registry from the path.
-      </action>
-      <action dev="pramirez" type="update">
-        PDS-38: Registry version now comes back as part of the report end point.
-      </action>
-      <action dev="pramirez" type="add">
-        PDS-39: Added end point to allow for replication from a remote registry. Inherited from registry-core.
+      <action dev="pramirez" type="add" issue="PDS-39">
+        Added end point to allow for replication from a remote registry. Inherited from registry-core.
       </action>
       <action dev="pramirez" type="add">
         End point to page through packages.
+      </action>
+      <action dev="pramirez" type="update" issue="PDS-37">
+        Moved registry end points one level removing the redundant /registry from the path.
+      </action>
+      <action dev="pramirez" type="update" issue="PDS-38">
+        Registry version now comes back as part of the report end point.
       </action>
       <action dev="pramirez" type="update">
         Enchanced Auditable Event end point to allow for better filtering. Now supports eventStart, eventEnd, and requestId. Inherited from registry-core.
       </action>
     </release>
 
-    <release version="0.6.0" date="2011-03-25" description="This release of the Registry Service is a component of the integrated release 1.1.0 of the PDS 2010 System.">
-      <action dev="pramirez" type="add">
-        PDS-3: Ability to page through all services. Inherited from registry-core.
+    <release version="0.6.0" date="2011-03-25" description="This release of the Registry Service is a component of the integrated release 1.1.0 of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date.">
+      <action dev="pramirez" type="add" issue="PDS-3">
+        Ability to page through all services. Inherited from registry-core.
       </action>
-      <action dev="pramirez" type="update">
-        PDS-7: Mapped Product to ExtrinsicObject to align better with information model for registry. Moved all interfaces that ended in product(s) to extrinsic(s). Inherited from registry-core.
+      <action dev="pramirez" type="add" issue="PDS-8">
+        Allow a set of Classifications to be associated with a given registry object. Inherited from registry-core.
       </action>
-      <action dev="pramirez" type="add">
-        PDS-8: Allow a set of Classifications to be associated with a given registry object. Inherited from registry-core.
+      <action dev="pramirez" type="add" issue="PDS-13">
+        End point responses for /registry-service and /registry-service/registry. This merely respond to GET requests for now with link headers pointing to the sub-resources. 
       </action>
-      <action dev="pramirez" type="add">
-        PDS-13: End point responses for /registry-service and /registry-service/registry. This merely respond to GET requests for now with link headers pointing to the sub-resources. 
+      <action dev="pramirez" type="add" issue="PDS-16">
+        Configuration end point to pass in classification schemes and nodes as one XML file. Inherited from registry-core.
       </action>
-      <action dev="pramirez" type="add">
-        PDS-16: Configuration end point to pass in classification schemes and nodes as one XML file. Inherited from registry-core.
+      <action dev="pramirez" type="add" issue="PDS-19">
+        Defined RegistryPackage as an intrinsic object. Acts merely as a collection of registered objects through the use of Associations. Inherited from registry-core.
       </action>
-      <action dev="pramirez" type="add">
-        PDS-19: Defined RegistryPackage as an intrinsic object. Acts merely as a collection of registered objects through the use of Associations. Inherited from registry-core.
+      <action dev="pramirez" type="add" issue="PDS-20">
+        Added ExternalIdentifier support for registered objects. Inherited from registry-core.
       </action>
-      <action dev="pramirez" type="add">
-        PDS-20: Added ExternalIdentifier support for registered objects. Inherited from registry-core.
-      </action>
-      <action dev="pramirez" type="add">
-        PDS-22: Include delete operation for Classifications delete. Inherited from registry-core.
+      <action dev="pramirez" type="add" issue="PDS-22">
+        Include delete operation for Classifications delete. Inherited from registry-core.
       </action>
       <action dev="pramirez" type="add">
         Added improved support for registration and retrieval of service registrations.
@@ -126,9 +129,12 @@
       <action dev="pramirez" type="add">
         Support for MySQL back end. Provided documentation for configuration and property file configuration.
       </action>
+      <action dev="pramirez" type="update" issue="PDS-7">
+        Mapped Product to ExtrinsicObject to align better with information model for registry. Moved all interfaces that ended in product(s) to extrinsic(s). Inherited from registry-core.
+      </action>
     </release>
 
-    <release version="0.5.0" date="2010-10-31" description="This release of the Registry Service is a component of the integrated release 1.0.0 of the PDS 2010 System.">
+    <release version="0.5.0" date="2010-10-31" description="This release of the Registry Service is a component of the integrated release 1.0.0 of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards.">
       <action dev="pramirez" type="add">
         Ability to deal with Services. This required the addition of Service Bindings and Specification Links as well.
       </action>
@@ -164,7 +170,7 @@
       </action>
     </release>
 
-    <release version="0.4.0" date="2010-08-25" description="This release of the Registry Service is a component of the integrated release 0.1.0 of the PDS 2010 System.">
+    <release version="0.4.0" date="2010-08-25" description="This release of the Registry Service is a component of the integrated release 0.1.0 of the PDS 2010 System. This release is intended as a prototype release in support of the demonstration at the Management Council Face-to-Face meeting in August 2010.">
       <action dev="pramirez" type="add">
         Registry Client API support of filtering on products and associations.
       </action>

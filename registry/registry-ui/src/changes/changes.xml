@@ -23,34 +23,37 @@
   </properties>
 
   <body>
-    <release version="1.2.0" date="2012-05-24" description="This release of the Registry User Interface is a component of the integrated release 2.2.0 of the PDS 2010 System.">
-		<action dev="hyunlee" type="add">
-		  Provide the capability to update the status of product(s)/package(s).
-		</action>
-		<action dev="hyunlee" type="add">
-		  Provide the capability to delete the product(s)/package(s).
-		</action>
-		<action dev="hyunlee" type="add">
-		  Provide the capability to show the records with different numbers on the products, associations, events, and classification nodes tabs.
-		</action>
-		<action dev="hyunlee" type="update">
-		  Provide the capability to copy and paste with ctrl-c/ctrl-v keys on popup windows. 
-		</action>
-		<action dev="hyunlee" type="update">
-		  Fixed incorrect sorting with the eventType field on the events tab.
-		</action>
-		<action dev="hyunlee" type="update">
-		  Fixed incorrect filtering with a requestId on the events tab. 
-		</action>
+    <release version="1.2.0" date="2012-06-11" description="This release of the Registry User Interface is a component of the integrated release 2.2.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+  		<action dev="hyunlee" type="add">
+  		  Provide the capability to update the status of product(s)/package(s).
+  		</action>
+  		<action dev="hyunlee" type="add">
+  		  Provide the capability to delete the product(s)/package(s).
+  		</action>
+  		<action dev="hyunlee" type="add">
+  		  Provide the capability to show the records with different numbers on the products, associations, events, and classification nodes tabs.
+  		</action>
+  		<action dev="hyunlee" type="update">
+  		  Provide the capability to copy and paste with ctrl-c/ctrl-v keys on popup windows. 
+  		</action>
+  		<action dev="hyunlee" type="update">
+  		  Fixed incorrect sorting with the eventType field on the events tab.
+  		</action>
+  		<action dev="hyunlee" type="update">
+  		  Fixed incorrect filtering with a requestId on the events tab. 
+  		</action>
+      <action dev="shardman" type="remove">
+        Removed the parent project's Release Notes document. This document now serves as the single source for this component's release changes.
+      </action>
     </release>
 
-    <release version="1.1.0" date="2012-01-31" description="This release of the Registry User Interface is a component of the integrated release 2.1.0 of the PDS 2010 System.">
+    <release version="1.1.0" date="2012-01-31" description="This release of the Registry User Interface is a component of the integrated release 2.1.0 of the PDS 2010 System. This is an operational release of the system components to date.">
       <action dev="shardman" type="update">
         Cleaned up the documentation and removed the PDF generation feature.
       </action>
     </release>
 
-    <release version="1.0.0" date="2011-11-09" description="This release of the Registry User Interface is a component of the integrated release 2.0.0 of the PDS 2010 System.">
+    <release version="1.0.0" date="2011-11-09" description="This release of the Registry User Interface is a component of the integrated release 2.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" type="add">
         Provide the capability to browse associations, packages, services, events, schemes, and classification nodes contained in the registry.
       </action>
@@ -62,7 +65,7 @@
       </action>   
     </release>
 
-    <release version="0.4.0" date="2011-08-29" description="This release of the Registry User Interface is a component of the integrated release 1.2.0 of the PDS 2010 System.">
+    <release version="0.4.0" date="2011-08-29" description="This release of the Registry User Interface is a component of the integrated release 1.2.0 of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date.">
       <action dev="pramirez" type="update">
         Modify the interface with the Registry Service to conform with changes made in version 0.7.0.
       </action>
@@ -71,7 +74,7 @@
       </action>
     </release>
 
-    <release version="0.3.0" date="2011-03-25" description="This release of the Registry User Interface is a component of the integrated release 1.1.0 of the PDS 2010 System.">
+    <release version="0.3.0" date="2011-03-25" description="This release of the Registry User Interface is a component of the integrated release 1.1.0 of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date.">
       <action dev="pramirez" type="update">
         Modify the interface with the Registry Service to conform with changes made in version 0.6.0.
       </action>
@@ -80,7 +83,7 @@
       </action>
     </release>
 
-    <release version="0.2.0" date="2010-10-31" description="This release of the Registry User Interface is a component of the integrated release 1.0.0 of the PDS 2010 System.">
+    <release version="0.2.0" date="2010-10-31" description="This release of the Registry User Interface is a component of the integrated release 1.0.0 of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards.">
       <action dev="pramirez" type="update">
         Modify the interface with the Registry Service to conform with changes made in version 0.5.0.
       </action>
@@ -89,7 +92,7 @@
       </action>
     </release>
 
-    <release version="0.1.0" date="2010-08-25" description="This release of the Registry User Interface is a component of the integrated release 0.1.0 of the PDS 2010 System.">
+    <release version="0.1.0" date="2010-08-25" description="This release of the Registry User Interface is a component of the integrated release 0.1.0 of the PDS 2010 System. This release is intended as a prototype release in support of the demonstration at the Management Council Face-to-Face meeting in August 2010.">
       <action dev="jagander" type="add">
         Provide the capability to access a target Registry Service via the REST-based interface.
       </action>

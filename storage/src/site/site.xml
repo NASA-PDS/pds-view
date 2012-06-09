@@ -35,7 +35,6 @@
 
     <menu name="Software Documentation">
       <item name="About Storage Service" href="index.html"/>
-      <item name="Release Notes" href="release/index.html"/>
       <item name="Installation" href="install/index.html"/>
       <item name="Operation" href="operate/index.html"/>
       <item name="Development" href="develop/index.html" collapse="true">
