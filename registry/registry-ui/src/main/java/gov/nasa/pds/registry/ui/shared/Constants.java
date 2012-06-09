@@ -27,12 +27,6 @@ public abstract class Constants {
 	};
 
 	public static final String[] assocTypes = {
-		"target_ref",
-		"investigation_ref",
-		"data_set_ref",
-		"instrument_host_ref",
-		"instrument_ref",
-		"resource_ref",
 		"file_ref",
 		"member_ref",
 		"urn:registry:AssociationType:HasMember"
