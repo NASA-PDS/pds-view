@@ -27,13 +27,13 @@ public abstract class Constants {
 	};
 
 	public static final String[] assocTypes = {
-		"has_target",
-		"has_investigation",
-		"has_data_set",
-		"has_file",
-		"has_instrument_host",
-		"has_instrument",
-		"has_resource",
+		"target_ref",
+		"investigation_ref",
+		"data_set_ref",
+		"file_ref",
+		"instrument_host_ref",
+		"instrument_ref",
+		"resource_ref",
 		"urn:registry:AssociationType:HasMember"
 	};
 	
