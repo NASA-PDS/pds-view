@@ -1,4 +1,4 @@
-// Copyright 2009, by the California Institute of Technology.
+// Copyright 2009-2012, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -52,15 +52,23 @@ public abstract class Constants {
 		"Product_Document",
 		"Product_File_Repository",
 		"Product_File_Text",
+		"Product_Instrument",
+		"Product_Instrument_Host",
 		"Product_Instrument_Host_PDS3",
 		"Product_Instrument_PDS3",
+		"Product_Investigation",
 		"Product_Mission_PDS3",
+		"Product_Node",
 		"Product_Observational",
+		"Product_PDS_Affiliate",
+		"Product_PDS_Guest",
 		"Product_Proxy_PDS3",
+		"Product_Resource",
 		"Product_SPICE_Kernel",
 		"Product_Service",
 		"Product_Software",
-		"Product_Subscription_PDS3", 
+		"Product_Subscription_PDS3",
+		"Product_Target",
 		"Product_Target_PDS3",
 		"Product_Thumbnail",
 		"Product_Update",
