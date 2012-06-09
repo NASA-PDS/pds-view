@@ -18,7 +18,7 @@
   <column>
     <name>description</name>
     <type>slot-single</type>
-    <value>mission_desc</value>
+    <value>mission_description</value>
   </column>
   <column>
     <name>language</name>
@@ -68,7 +68,7 @@
   <column>
     <name>mission_desc</name>
     <type>slot-single</type>
-    <value>mission_desc</value>
+    <value>mission_description</value>
   </column>
   <column>
     <name>mission_objectives_summary</name>

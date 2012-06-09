@@ -19,7 +19,7 @@
   <column>
     <name>description</name>
     <type>slot</type>
-    <value>instrument_desc</value>
+    <value>instrument_description</value>
   </column>
   <column>
     <name>language</name>
@@ -69,7 +69,7 @@
   <column>
     <name>instrument_desc</name>
     <type>slot</type>
-    <value>instrument_desc</value>
+    <value>instrument_description</value>
   </column>
   <column>
     <name>resource_class</name>
