@@ -194,6 +194,11 @@
         <version>2.1-beta-1</version>
         <configuration>
           <warName>registry</warName>
+          <archive>
+            <manifest>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+          </archive>
           <!-- If we wanted different filters for the war we could put them here
           <filters>
             <filter>src/main/filters/${env}.properties</filter>
