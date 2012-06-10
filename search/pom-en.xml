@@ -50,6 +50,11 @@
     </license>
   </licenses>
 
+  <modules>
+    <module>search-core</module>
+    <module>search-service</module>
+  </modules>
+
   <developers>
     <developer>
       <name>Sean Hardman</name>
