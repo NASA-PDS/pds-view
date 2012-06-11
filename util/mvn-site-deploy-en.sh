@@ -107,6 +107,10 @@ cp -r report/target/site/* $1/report
 echo "Deploying Search component site to the deployment directory."
 mkdir -p $1/search
 cp -r search/target/site/* $1/search
+mkdir -p $1/search/search-core
+cp -r search/search-core/target/site/* $1/search/search-core
+mkdir -p $1/search/search-service
+cp -r search/search-service/target/site/* $1/search/search-service
 
 echo "Deploying Security component site to the deployment directory."
 mkdir -p $1/security
