@@ -123,7 +123,7 @@
       <ul>
         <li>Upgrade the Data Search interface to remove the dependence on the PDS3 catalog database.
         </li>
-        <li>Need to expand the Registry User Interface to support updating status and single product registration.
+        <li>Need to review use cases for the Catalog Tool and update the software accordingly.
         </li>
       </ul>
     </section>
