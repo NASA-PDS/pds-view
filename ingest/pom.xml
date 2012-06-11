@@ -38,6 +38,7 @@
   <modules>
     <module>catalog</module>
     <module>harvest</module>
+    <module>harvest-pdap</module>
   </modules>
 
   <developers>

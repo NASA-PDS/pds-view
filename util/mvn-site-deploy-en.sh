@@ -53,6 +53,10 @@ cd ../..
 mvn --file pom-en.xml site
 
 # Rebuild the project sites that have their own pom-en.xml.
+cd ingest
+mvn --file pom-en.xml --non-recursive clean site
+cd ..
+
 cd registry
 mvn --file pom-en.xml --non-recursive clean site
 cd ..

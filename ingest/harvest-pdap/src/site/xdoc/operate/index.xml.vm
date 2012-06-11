@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2012, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Operation</title>
+    <author email="Michael.Cayanan@jpl.nasa.gov">Michael Cayanan</author>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Operation">
+      <p>This document describes how to operate the Harvest-PDAP Tool software. The following topics can be found in this document:
+      </p>
+
+      <ul>
+        <li><a href="#Tool_Execution">Tool Execution</a></li>
+      </ul>
+
+      <p>Note: The command-line examples in this section have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution.
+      </p>
+    </section>
+
+    <section name="Tool Execution">
+      <p>Harvest-PDAP Tool can be executed in various ways. This section describes how to run the tool, as well as its behaviors and caveats.
+      </p>
+
+      <subsection name="Command-Line Options">
+        <p>The following table describes the command-line options available:
+        </p>
+
+        <table>
+          <tr><th>Command-Line Option</th><th>Description</th></tr>
+          <tr><td>-u, --username</td><td>Specify a username for authentication with the PDS Security Service.</td></tr>
+          <tr><td>-p, --password</td><td>Specify a password associated with the username.</td></tr>
+          <tr><td>-k, --keystore-pass</td><td>Specify a keystore password associated with the keystore file being passed into the tool.</td></tr>
+          <tr><td>-l, --log-file</td><td>Specify a log file name. Default is standard out.</td></tr>
+          <tr><td>-v, --verbose</td><td>Specify the message severity level and above to include in the log (0=Debug, 1=Info, 2=Warning, 3=Error). Default is Info and above (level 1).</td></tr>
+          <tr><td>-e, --regexp</td><td>Specify file patterns to look for when registering products from a target directory.</td></tr>
+          <tr><td>-D, --pds3-directory</td><td>Specify a target directory to register PDS3 products.</td></tr>
+          <tr><td>-P, --port</td><td>Specify a port number to use if running the tool in persistence mode. See the <a href="#Persistence_Mode">Persistence Mode</a> section for more details.</td></tr>
+          <tr><td>-w, --wait</td><td>Specify the time, in seconds, to wait in between the crawls if running the tool in persistence mode. See the <a href="#Persistence_Mode">Persistence Mode</a> section for more details.</td></tr>
+          <tr><td>-V, --version</td><td>Display the release number and copyright information.</td></tr>
+          <tr><td>-h, --help</td><td>Display <i>harvest</i> usage.</td></tr>
+        </table>
+      </subsection>
+
+      <subsection name="Execute Harvest Tool">
+        <p>TBD
+        </p>
+      </subsection>
+   </section>
+  </body>
+</document>
