@@ -19,18 +19,24 @@ child projects or modules. The site can be deployed as follows:
 
 The project includes a couple of scripts to aide in the process of building 
 and deploying this site and the module sites recursively as well as building
-the packages and deploying them to the Maven repository. In order to deploy 
-the sites to the CM site, execute the following:
+the packages and deploying them to the Maven repository. In order to build 
+packages for all of the projects, execute the following:
 
 % cd util
-% ./mvn-site-deploy.sh
+% ./mvn-package.sh
+
+In order to deploy the sites to the CM site, execute the following:
+
+% cd util
+% ./mvn-site-deploy-cm.sh
 
 Not all module sites are intended for the Engineering Node site. Additionally,
-the EN site uses a different skin. In order to build JAR files of the sites 
-for manual deployment to the EN site, execute the following:
+the EN site uses a different skin. In order to to build and deploy the
+associated sites with the EN skin to a deployment directory, execute the 
+following:
 
 % cd util
-% ./mvn-site-jar.sh
+% ./mvn-site-deploy-en.sh
 
 In order to build the module packages and deploy them to the Maven repository,
 execute the following:
