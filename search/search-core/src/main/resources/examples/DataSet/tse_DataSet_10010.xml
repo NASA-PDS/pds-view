@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doc>
+	<DataSet>
+		<instrument_type>magnetometer</instrument_type>
+		<data_set_name>gaspra_galileo_magnetometer/trajectory_data_v1.0</data_set_name>
+		<abstract_text>galileo_magnetometer_observations_of_the_asteroid_gaspra,&lt;br_/&gt;___extracted_from_the_galileo_archive.</abstract_text>
+		<instrument_name>triaxial_fluxgate_magnetometer</instrument_name>
+		<publisher>NASA.PDS</publisher>
+		<node_id>unk</node_id>
+		<nssdc_data_set_id>null</nssdc_data_set_id>
+		<title>GASPRA GALILEO MAGNETOMETER/TRAJECTORY DATA V1.0</title>
+		<citation_desc>blank</citation_desc>
+		<description>Galileo Magnetometer observations of the asteroid Gaspra,&lt;br /&gt;   extracted from the Galileo archive</description>
+		<instrument_id>mag</instrument_id>
+		<data_set_terse_desc>Galileo Magnetometer observations of the asteroid Gaspra,&lt;br /&gt;   extracted from the Galileo archive</data_set_terse_desc>
+		<resource_class>data_set_description</resource_class>
+		<resContext>NASA.PDS</resContext>
+		<mission_name>galileo</mission_name>
+		<stop_time>1991-10-30t02:51:03.452z</stop_time>
+		<target_name>gaspra</target_name>
+		<mission_stop_date>2003-09-21</mission_stop_date>
+		<format>XML</format>
+		<instrument_host_id>go</instrument_host_id>
+		<data_object_type>unk</data_object_type>
+		<confidence_level_note>confidence_level_overview&lt;br_/&gt;___=========================&lt;br_/&gt;___&lt;br_/&gt;___these_data_were_provided_by_the_galileo_project._they_were&lt;br_/&gt;___extracted_from_the_full_archive_as_it_was_being_prepared_for&lt;br_/&gt;___delivery_to_the_planetary_data_system.__subsequent_changes&lt;br_/&gt;___to_the_full_archive_have_not_been_propagated_to_these_files.&lt;br_/&gt;___&lt;br_/&gt;___note_in_particular_that_the_cruise_data_has_been_repeatedly&lt;br_/&gt;___revised_and_upgraded_since_the_present_file_was_extracted&lt;br_/&gt;___for_inclusion_here._these_cruise_data_are_included_merely_to&lt;br_/&gt;___provide_some_context_for_the_encounter_data._users_are_advised&lt;br_/&gt;___to_contact_the_galileo_project_directly_if_their_application&lt;br_/&gt;___depends_critically_on_cruise_data.&lt;br_/&gt;___&lt;br_/&gt;___please_see_the_accompanying_documentation_for_caveats_and&lt;br_/&gt;___comments_relevant_to_each_file.</confidence_level_note>
+		<resource_id>urn:nasa:pds:resource.go-a-mag-pos-3-rdr-summ-traj-gaspra-v1.0__browserp_go-a-mag-pos-3-rdr-summ-traj-gaspra-v1.0</resource_id>
+		<data_set_id>go-a-mag/pos-3-rdr/summ/traj-gaspra-v1.0</data_set_id>
+		<mission_start_date>1977-10-01</mission_start_date>
+		<data_set_release_date>1995-07-01</data_set_release_date>
+		<resLocation>http://starbrite.jpl.nasa.gov/pds/viewDataset.jsp?dsid=GO-A-MAG%2FPOS-3-RDR%2FSUMM%2FTRAJ-GASPRA-V1.0</resLocation>
+		<resClass>metadata.dataset</resClass>
+		<archive_status>archived</archive_status>
+		<start_time>1991-10-29t06:03:20.834z</start_time>
+		<data_set_desc>UNK</data_set_desc>
+		<language>en</language>
+		<target_type>asteroid</target_type>
+		<identifier>urn:nasa:pds:data_set.GO-A-MAG-POS-3-RDR-SUMM-TRAJ-GASPRA-V1.0</identifier>
+		<full_name>dr._margaret_kivelson</full_name>
+	</DataSet>
+</doc>
