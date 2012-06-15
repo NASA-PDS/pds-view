@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!-- PDS4 Schematron for PDS4_0.8.0.0.k  Fri Jun 01 16:52:43 PDT 2012 -->
+  <!-- PDS4 Schematron for PDS4_0.8.0.0.k  Thu Jun 14 14:12:46 PDT 2012 -->
   <!-- Generated from the PDS4 Information Model V0.8.0.0.k -->
   <!-- *** This PDS4 schematron file is a preliminary deliverable. *** -->
   <!-- *** It is being made available for review and testing. *** -->
@@ -323,7 +323,7 @@
   </sch:pattern>
   <sch:pattern>
     <sch:rule context="/*">
-      <sch:assert test="name() = ('Product_Browse','Product_Bundle','Product_Collection','Product_Context','Product_Document','Product_File_Text','Product_Observational','Product_SPICE_Kernel','Product_Thumbnail','Product_XML_Schema','Product_Delivery_Manifest','Product_Update')">
+      <sch:assert test="name() = ('Product_Attribute_Definition','Product_Browse','Product_Bundle','Product_Collection','Product_Context','Product_Document','Product_File_Repository','Product_File_Text','Product_Observational','Product_Service','Product_Software','Product_SPICE_Kernel','Product_Thumbnail','Product_XML_Schema','Product_Delivery_Manifest','Product_Update','Product_Zipped','Product_Instrument','Product_Instrument_Host','Product_Investigation','Product_Node','Product_Other','Product_PDS_Affiliate','Product_PDS_Guest','Product_Resource','Product_Target','Collection_Volume_PDS3','Collection_Volume_Set_PDS3','Product_Data_Set_PDS3','Product_Instrument_Host_PDS3','Product_Instrument_PDS3','Product_Mission_PDS3','Product_Proxy_PDS3','Product_Subscription_PDS3','Product_Target_PDS3')">
         The ROOT element is not one of the allowed product types.</sch:assert>
       <sch:assert test="name() eq pds:Identification_Area/pds:product_class">
         The name of the Product type is not equal to the value of the product_class attribute.</sch:assert>
@@ -407,8 +407,8 @@
   </sch:pattern>
   <sch:pattern>
     <sch:rule context="pds:Node">
-      <sch:assert test="pds:name = ('Engineering', 'Geosciences', 'Imaging', 'Management', 'Navigation_Ancillary_Information_Facility', 'Planetary_Atmospheres', 'Planetary_Plasma_Interactions', 'Planetary_Rings', 'Radio_Science', 'Small_Bodies')">
-        The attribute pds:name must be equal to one of the following values 'Engineering', 'Geosciences', 'Imaging', 'Management', 'Navigation_Ancillary_Information_Facility', 'Planetary_Atmospheres', 'Planetary_Plasma_Interactions', 'Planetary_Rings', 'Radio_Science', 'Small_Bodies'.</sch:assert>
+      <sch:assert test="pds:name = ('Engineering', 'European Space Agency', 'Geosciences', 'Imaging', 'Management', 'Navigation_Ancillary_Information_Facility', 'Planetary_Atmospheres', 'Planetary_Plasma_Interactions', 'Planetary_Rings', 'Radio_Science', 'Small_Bodies')">
+        The attribute pds:name must be equal to one of the following values 'Engineering', 'European Space Agency', 'Geosciences', 'Imaging', 'Management', 'Navigation_Ancillary_Information_Facility', 'Planetary_Atmospheres', 'Planetary_Plasma_Interactions', 'Planetary_Rings', 'Radio_Science', 'Small_Bodies'.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
@@ -444,9 +444,15 @@
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
+    <sch:rule context="pds:Product_Bundle/pds:Reference_List/pds:Internal_Reference">
+      <sch:assert test="every $ref in (pds:reference_type) satisfies $ref = ('bundle_to_errata')">
+        The attribute reference_type must be set to one of the following values 'bundle_to_errata'.</sch:assert>
+    </sch:rule>
+  </sch:pattern>
+  <sch:pattern>
     <sch:rule context="pds:Product_Collection/pds:Reference_List/pds:Internal_Reference">
-      <sch:assert test="every $ref in (pds:reference_type) satisfies $ref = ('data_collection_to_resource', 'data_collection_to_associate', 'data_collection_to_calibration', 'data_collection_to_geometry', 'data_collection_to_spice_kernel', 'data_collection_curated_by_node', 'data_collection_to_document', 'data_collection_to_browse', 'data_collection_to_context', 'data_collection_to_data', 'data_collection_to_document', 'data_collection_to_schema')">
-        The attribute reference_type must be set to one of the following values 'data_collection_to_resource', 'data_collection_to_associate', 'data_collection_to_calibration', 'data_collection_to_geometry', 'data_collection_to_spice_kernel', 'data_collection_curated_by_node', 'data_collection_to_document', 'data_collection_to_browse', 'data_collection_to_context', 'data_collection_to_data', 'data_collection_to_document', 'data_collection_to_schema'.</sch:assert>
+      <sch:assert test="every $ref in (pds:reference_type) satisfies $ref = ('data_collection_to_resource', 'data_collection_to_associate', 'data_collection_to_calibration', 'data_collection_to_geometry', 'data_collection_to_spice_kernel', 'data_collection_curated_by_node', 'data_collection_to_document', 'data_collection_to_browse', 'data_collection_to_context', 'data_collection_to_data', 'data_collection_to_document', 'data_collection_to_schema', 'data_collection_to_errata')">
+        The attribute reference_type must be set to one of the following values 'data_collection_to_resource', 'data_collection_to_associate', 'data_collection_to_calibration', 'data_collection_to_geometry', 'data_collection_to_spice_kernel', 'data_collection_curated_by_node', 'data_collection_to_document', 'data_collection_to_browse', 'data_collection_to_context', 'data_collection_to_data', 'data_collection_to_document', 'data_collection_to_schema', 'data_collection_to_errata'.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>

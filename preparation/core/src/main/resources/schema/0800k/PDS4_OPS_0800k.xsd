@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!-- PDS4 XML/Schema for PDS4_0.8.0.0.k  Fri Jun 01 16:52:43 PDT 2012 -->
+  <!-- PDS4 XML/Schema for PDS4_0.8.0.0.k  Thu Jun 14 14:12:46 PDT 2012 -->
   <!-- Generated from the PDS4 Information Model V0.8.0.0.k -->
   <!-- *** This PDS4 product schema is a preliminary deliverable. *** -->
   <!-- *** It is being made available for review and testing. *** -->
@@ -533,7 +533,7 @@
 
   <xs:complexType name="Investigation_Area">
     <xs:annotation>
-      <xs:documentation> The Investigation_Area class provides iformation about an investigation (mission, observing campaign or other coordinated, large-scale data collection effort). </xs:documentation>
+      <xs:documentation> The Investigation_Area class provides information about an investigation (mission, observing campaign or other coordinated, large-scale data collection effort). </xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </xs:element>
@@ -619,7 +619,7 @@
     </xs:annotation>
     <xs:sequence>
       <!-- When creating a specific XML schema, remove the 'xs:any' element. You may insert any described nondigital object, one or more times. -->
-      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+      <xs:any namespace="##other" processContents="strict" minOccurs="0" maxOccurs="unbounded" />
       <!-- <xs:element name="Any_NonDigital_Object" type="pds:Any_NonDigital_Object" minOccurs="0" maxOccurs="unbounded"> </xs:element> -->
     </xs:sequence>
   </xs:complexType>
@@ -630,7 +630,7 @@
     </xs:annotation>
     <xs:sequence>
       <!-- When creating a specific XML schema, remove the 'xs:any' element. You may insert any described nondigital object, one or more times. -->
-      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+      <xs:any namespace="##other" processContents="strict" minOccurs="0" maxOccurs="unbounded" />
       <!-- <xs:element name="Any_NonDigital_Object" type="pds:Any_NonDigital_Object" minOccurs="0" maxOccurs="unbounded"> </xs:element> -->
     </xs:sequence>
   </xs:complexType>
@@ -838,15 +838,6 @@
     </xs:annotation>
     <xs:sequence>
       <xs:element name="reference_text" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </xs:element>
-      <xs:element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </xs:element>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="Archive_Bundle">
-    <xs:annotation>
-      <xs:documentation> The Archive Bundle class describes a collection of collections. </xs:documentation>
-    </xs:annotation>
-    <xs:sequence>
       <xs:element name="description" type="pds:ASCII_Text_Preserved" minOccurs="0" maxOccurs="1"> </xs:element>
     </xs:sequence>
   </xs:complexType>
@@ -1712,7 +1703,7 @@
       <xs:documentation> The Other class provides a description of activities involved in the collection of data which are not otherwise modeled. </xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="description" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </xs:element>
+      <xs:element name="description" type="pds:ASCII_Text_Preserved" minOccurs="1" maxOccurs="1"> </xs:element>
     </xs:sequence>
   </xs:complexType>
 
@@ -2435,16 +2426,16 @@
     <xs:simpleType name="ASCII_Date_DOY">
       <xs:restriction base="xs:string">
         <xs:pattern value='(-)?[0-9]{4}'/>
-        <xs:pattern value='(-)?[0-9]{4}-((0[0-9][1-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))'/>
+        <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))'/>
       </xs:restriction>
     </xs:simpleType>
 
     <xs:simpleType name="ASCII_Date_Time_DOY">
       <xs:restriction base="xs:string">
-        <xs:pattern value='(-)?[0-9]{4}-((0[0-9][1-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9](Z)?'/>
-        <xs:pattern value='(-)?[0-9]{4}-((0[0-9][1-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(([0-5][0-9])|60)(\.([0-9]{1,4}))?(Z)?'/>
-        <xs:pattern value='(-)?[0-9]{4}-((0[0-9][1-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-4]))(Z)?'/>
-        <xs:pattern value='(-)?[0-9]{4}-((0[0-9][1-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)24:00((:00((\.0+)?))?)(Z)?'/>
+        <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9](Z)?'/>
+        <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(([0-5][0-9])|60)(\.([0-9]{1,4}))?(Z)?'/>
+        <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-4]))(Z)?'/>
+        <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)24:00((:00((\.0+)?))?)(Z)?'/>
       </xs:restriction>
     </xs:simpleType>
 
