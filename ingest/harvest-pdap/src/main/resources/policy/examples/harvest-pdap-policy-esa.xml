@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<policy>
+   <pdsRegistry url="http://localhost:8080/registry">
+     <packageName>Harvest-PDAP Package</packageName>
+     <packageDescription>This is a run that includes registration of products from the PSA.</packageDescription>
+   </pdsRegistry>
+   <pdapServices>
+     <!-- Currently, the only valid value for 'agency' is 'esa'. -->
+     <pdapService agency="esa" url="http://psa.esac.esa.int:8000"/>
+   </pdapServices>
+   <productMetadata>
+     <staticMetadata>
+       <slot name="information_model_version">
+         <value>0800k</value>
+       </slot>
+       <slot name="node_ref">
+         <value>urn:nasa:pds:node.ESA</value>
+       </slot>
+     </staticMetadata>
+     <!-- To extract more metadata other than the default set, add a 'dynamicMetadata' section like the following,
+     <dynamicMetadata>
+       <element name="DATA_SET_ID">
+         <slotName>data_set_id</slotName>
+         <slotName>alternate_id</slotName>
+       </element>
+     </dynamicMetadata>
+     -->
+   </productMetadata>
+   <resourceMetadata>
+     <title>The Planetary Science Archive METADATA Query Service</title>
+     <type>application.dataSetBrowserP</type>
+     <slot name="resource_name">
+       <value>The Planetary Science Archive METADATA Query Service</value>
+     </slot>
+     <slot name="resource_description">
+       <value>The Planetary Science Archive METADATA Query Service</value>
+     </slot>
+   </resourceMetadata>
+</policy>
