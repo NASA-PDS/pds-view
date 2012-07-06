@@ -139,7 +139,7 @@ or
         <source>
 % cd ${project.artifactId}-${project.version}
 % java -Djava.ext.dirs=lib/ org.apache.derby.tools.ij
-ij> connect 'jdbc:derby:RegistryDB;create=true;user=user';
+ij> connect 'jdbc:derby:registry;create=true;user=registry';
 ij> run 'conf/derby-registry-schema.ddl';
 ij> exit;
         </source>
