@@ -1,5 +1,3 @@
-.. contents::
-
 This is an implementation of the ebXML_ Registry information model and client
 software, implemented for the NASA_ Planetary Data System (PDS_).
 
@@ -27,5 +25,5 @@ instructions, license, and history of changes.
     California Institute of Technology
 
 .. Copyright:
-    Copyright 2011–2012 California Institute of Technology. ALL RIGHTS
+    Copyright 2011-2012 California Institute of Technology. ALL RIGHTS
     RESERVED.  U.S. Government sponsorship acknowledged.

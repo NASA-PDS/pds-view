@@ -5,7 +5,7 @@ What follows is a history of changes from release to release, along with
 issues addressed and new features in each release.
 
 
-1.2.0 — Version Updates
+1.2.0 - Version Updates
 -----------------------
 
 This release makes the client API compatible with the 1.2 release of the PDS
@@ -14,7 +14,7 @@ Maven-provided project information with Python's Distribute-supplied project
 metadata.
 
 
-1.0.0 — Released
+1.0.0 - Released
 ----------------
 
 This release includes the following changes from the original 
