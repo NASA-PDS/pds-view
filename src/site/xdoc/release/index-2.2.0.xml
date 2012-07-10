@@ -294,6 +294,8 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
           <li><b>Registry Service</b><br/>
             <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. Ultimately, all products (including PDS3 products) will be registered and tracked with the Registry Service. For this release, users are asked to install and configure a local instance of the service in order to exercise this procedure. Additionally if the user is participating in the PDS3 to PDS4 conversion exercises, the resulting products or collections of products can be registered with their local registry instance.
             </p>
+            <p>Note: There was a typo in the Derby database configuration portion of the Installation document at the time of release. The <a href="../registry/registry-service/install/index.html">Installation</a> document has been updated online but the version of the document in the release package has not been updated. Please refer to the online version of the document for the correct configuration.
+            </p>
           </li>
           <li><b>Registry User Interface</b><br/>
             <p>The Registry User Interface provides a simple viewing capability of the contents of the associated Registry Service. It is intended to offer visual verification of successful registration of products.

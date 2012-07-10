@@ -144,7 +144,7 @@ ij> run 'conf/derby-registry-schema.ddl';
 ij> exit;
         </source>
 
-        <p>The <i>RegistryDB</i> directory, which is the Derby database, will now be present in the current working directory. The path to this directory can be specified in the <a href="#Database_Configuration">Configuration</a> section. Note: Feel free to move this RegistryDB directory to anywhere on disk that is accessible by Tomcat and configured below.
+        <p>The <i>registry</i> directory, which is the Derby database, will now be present in the current working directory. The path to this directory can be specified in the <a href="#Database_Configuration">Configuration</a> section. Note: Feel free to move this <i>registry</i directory to anywhere on disk that is accessible by Tomcat and configured below.
         </p>   
       </subsection>
       
@@ -203,7 +203,7 @@ javax.servlet.ServletException: java.lang.OutOfMemoryError: PermGen space
 CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
         </source>
         
-        <p>Note: The "derby.system.home" should point to the parent directory which contains the registry database (i.e. the parent directory of the "RegistryDB" directory).</p>
+        <p>Note: The "derby.system.home" should point to the parent directory which contains the registry database (i.e. the parent directory of the "registry" directory).</p>
 
         <p>The <i>CATALINA_OPTS</i> environment variable is loaded from the Tomcat startup scripts. The Tomcat server will need to be restarted for this configuration to take effect.
         </p>
