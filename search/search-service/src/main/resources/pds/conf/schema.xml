@@ -600,7 +600,7 @@
    <field name="mission" type="text" indexed="true" stored="false" multiValued="true" />
    <field name="investigation" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="person" type="text" indexed="true" stored="false" multiValued="true" />
-   <field name="product-subclass" type="string" indexed="false" stored="true" />
+   <field name="product-class" type="string" indexed="true" stored="false" />
    <field name="stop-time" type="date" indexed="true" stored="false" />
    <field name="start-time" type="date" indexed="true" stored="false" />
    <field name="instrument-host" type="text_lc" indexed="true" stored="false" multiValued="true" />
@@ -721,7 +721,7 @@
   <copyField source="instrument_id" dest="instrument" />
   <copyField source="mission_name" dest="investigation" />
   <copyField source="full_name" dest="person" />
-  <copyField source="resClass" dest="product-subclass" />
+  <copyField source="resClass" dest="product-class" />
   <copyField source="stop_time" dest="stop-time" />
   <copyField source="start_time" dest="start-time" />
   <copyField source="instrument_host_name" dest="instrument-host" />
