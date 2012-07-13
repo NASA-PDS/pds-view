@@ -29,6 +29,13 @@
 
   <fileSets>
     <fileSet>
+      <directory>target</directory>
+      <outputDirectory>lib</outputDirectory>
+      <includes>
+        <include>*.jar</include>
+      </includes>
+    </fileSet>
+    <fileSet>
       <directory>src/main/resources</directory>
       <excludes>
 	<exclude>pds/bin/*</exclude>
@@ -67,11 +74,19 @@
   <dependencySets>
     <dependencySet>
       <outputDirectory>lib</outputDirectory>
+      <includes>
+        <include>net.sf.saxon:saxon</include>
+      </includes>
+    </dependencySet>
+    <!-- 
+    <dependencySet>
+      <outputDirectory>lib</outputDirectory>
       <unpack>false</unpack>
       <useProjectArtifact>false</useProjectArtifact>
       <useTransitiveDependencies>false</useTransitiveDependencies>
       <unpackOptions/>
     </dependencySet>
+    -->
   </dependencySets>
 
 </assembly>

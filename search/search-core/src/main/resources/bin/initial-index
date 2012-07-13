@@ -39,47 +39,43 @@ echo "-----------------------------------------------------"
 # Need PDS_SOLR_HOME to specify we are using the pds solr instance
 PDS_SOLR_HOME=$SOLR_HOME/pds
 
-cd $PDS_SOLR_HOME
-pwd
+echo $PDS_SOLR_HOME
 
-echo "LOG: Performing an svn update on PDS_SOLR_HOME directory"
-
-if [ -d tse_old ]
+if [ -d $PDS_SOLR_HOME/tse_old ]
 then
-  echo "LOG: Removing 'tse_old/'"
-  rm -rf tse_old
+  echo "LOG: Removing '$PDS_SOLR_HOME/tse_old/'"
+  rm -rf $PDS_SOLR_HOME/tse_old
 fi
-if [ -d tse ]
+if [ -d $PDS_SOLR_HOME/tse ]
 then
-  echo "LOG: Backing up 'tse/' to 'tse_old/'"
-  mv tse tse_old
+  echo "LOG: Backing up '$PDS_SOLR_HOME/tse/' to '$PDS_SOLR_HOME/tse_old/'"
+  mv $PDS_SOLR_HOME/tse $PDS_SOLR_HOME/tse_old
 fi
 echo
 
 
-if [ -f index/solr_index_old.xml ]
+if [ -f $PDS_SOLR_HOME/index/solr_index_old.xml ]
 then
-  echo "LOG: Removing 'index/solr_index_old.xml'"
-  rm index/solr_index_old.xml
+  echo "LOG: Removing '$PDS_SOLR_HOME/index/solr_index_old.xml'"
+  rm $PDS_SOLR_HOME/index/solr_index_old.xml
 fi
-if [ -f index/solr_index.xml ]
+if [ -f $PDS_SOLR_HOME/index/solr_index.xml ]
 then
-  echo "LOG: Backing up 'index/solr_index.xml' to 'index/solr_index_old.xml'"
-  mv index/solr_index.xml index/solr_index_old.xml
+  echo "LOG: Backing up '$PDS_SOLR_HOME/index/solr_index.xml' to '$PDS_SOLR_HOME/index/solr_index_old.xml'"
+  mv $PDS_SOLR_HOME/index/solr_index.xml $PDS_SOLR_HOME/index/solr_index_old.xml
 fi
 echo
 
 echo
-if [ -d catalog_index_old ]
+if [ -d $PDS_SOLR_HOME/catalog_index_old ]
 then
-  echo "LOG:Removing 'catalog_index_old'"
-  rm -rf catalog_index_old
+  echo "LOG:Removing '$PDS_SOLR_HOME/catalog_index_old'"
+  rm -rf $PDS_SOLR_HOME/catalog_index_old
 fi
-if [ -d catalog_index ]
+if [ -d $PDS_SOLR_HOME/catalog_index ]
 then
-  echo "Backing up 'catalog_index' to 'catalog_index_old'"
-  mv catalog_index catalog_index_old
-  echo "Removing 'catalog_index' before new index is created"
+  echo "Backing up '$PDS_SOLR_HOME/catalog_index' to '$PDS_SOLR_HOME/catalog_index_old'"
+  mv $PDS_SOLR_HOME/catalog_index $PDS_SOLR_HOME/catalog_index_old
 fi
 echo
 echo "---------------------------------------"
@@ -89,4 +85,4 @@ echo "-----Running search-core------"
 search-core $PDS_SOLR_HOME
 echo "-----search-core Complete-----"
 
-./bin/solr-post $SOLR_HOME
+./solr-post $SOLR_HOME

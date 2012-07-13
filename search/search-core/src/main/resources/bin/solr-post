@@ -30,30 +30,29 @@ PDS_SOLR_HOME=$SOLR_HOME/pds
 
 SOLR_UPDATE="http://pdsbeta:8080/search-service/pds/update"
 
-cd $PDS_SOLR_HOME
-pwd
+echo $PDS_SOLR_HOME
 
-./bin/xslt $SOLR_HOME index/solr_index.xml index/add-hierarchy.xslt index/solr-index.hierarchy.xml
-./bin/xslt $SOLR_HOME index/search-tools.xml index/add-hierarchy.xslt index/search-tools.hierarchy.xml
+./xslt $SOLR_HOME $PDS_SOLR_HOME/index/solr_index.xml $PDS_SOLR_HOME/index/add-hierarchy.xslt $PDS_SOLR_HOME/index/solr-index.hierarchy.xml
+./xslt $SOLR_HOME $PDS_SOLR_HOME/index/search-tools.xml $PDS_SOLR_HOME/index/add-hierarchy.xslt $PDS_SOLR_HOME/index/search-tools.hierarchy.xml
 
 #Backup existing solr index. This currently is in the wrong place and will need updating
-if [ -d data_old ]
+if [ -d $PDS_SOLR_HOME/data_old ]
 then
-  echo "Removing 'data_old'"
-  rm -rf data_old
+  echo "Removing '$PDS_SOLR_HOME/data_old'"
+  rm -rf $PDS_SOLR_HOME/data_old
 fi
-if [ -d data ]
+if [ -d $PDS_SOLR_HOME/data ]
 then
-  echo "Backing up 'data' to 'data_old"
-  cp -rp data data_old
+  echo "Backing up '$PDS_SOLR_HOME/data' to '$PDS_SOLR_HOME/data_old"
+  cp -rp $PDS_SOLR_HOME/data $PDS_SOLR_HOME/data_old
 fi
 
 # Delete all existing documents.
 curl "$SOLR_UPDATE" -H "Content-Type: application/xml" --silent --data-binary '<delete><query>*:*</query></delete>'
 
 # Push new index data
-curl "$SOLR_UPDATE" -H "Content-Type: application/xml" --silent --request POST --data-binary @index/solr-index.hierarchy.xml
-curl "$SOLR_UPDATE" -H "Content-Type: application/xml" --silent --request POST --data-binary @index/search-tools.hierarchy.xml
+curl "$SOLR_UPDATE" -H "Content-Type: application/xml" --silent --request POST --data-binary @$PDS_SOLR_HOME/index/solr-index.hierarchy.xml
+curl "$SOLR_UPDATE" -H "Content-Type: application/xml" --silent --request POST --data-binary @$PDS_SOLR_HOME/index/search-tools.hierarchy.xml
 
 
 # Commit the changes
