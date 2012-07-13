@@ -97,9 +97,8 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
+        <artifactId>maven-jar-plugin</artifactId>
         <configuration>
-          <warName>${artifactId}</warName>
           <archive>
             <manifest>
               <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
@@ -156,16 +155,30 @@
 
   <dependencies>
     <dependency>
+      <artifactId>solr-core</artifactId>
+      <groupId>org.apache.solr</groupId>
+      <version>3.4.0</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <artifactId>solr-solrj</artifactId>
+      <groupId>org.apache.solr</groupId>
+      <version>3.4.0</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>net.sf.saxon</groupId>
-      <artifactId>saxon</artifactId>
+      <artifactId>saxon-dom</artifactId>
       <version>9</version>
       <scope>compile</scope>
     </dependency>
-   <dependency>
-      <artifactId>search-core</artifactId>
-      <groupId>gov.nasa.pds.2010.search</groupId>
-      <version>${project.parent.version}</version>
-      <type>jar</type>
+    <dependency>
+      <groupId>net.sf.saxon</groupId>
+      <artifactId>saxon</artifactId>
+      <version>9</version>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
 

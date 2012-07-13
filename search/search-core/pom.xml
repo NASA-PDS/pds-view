@@ -56,6 +56,9 @@
           <include>missionconfig.xml</include>
           <include>targetconfig.xml</include>
           <include>extractors.txt</include>
+          <include>pds-extractors.txt</include>
+          <include>psa-extractors.txt</include>
+          <include>psa_datasetconfig.xml</include>
         </includes>
       </resource>
       <resource>
@@ -136,19 +139,6 @@
       <groupId>org.apache.solr</groupId>
       <version>3.4.0</version>
       <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <artifactId>solr-solrj</artifactId>
-      <groupId>org.apache.solr</groupId>
-      <version>3.4.0</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.sf.saxon</groupId>
-      <artifactId>saxon-dom</artifactId>
-      <version>9</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
