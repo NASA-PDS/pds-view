@@ -167,7 +167,7 @@ CLASSPATH="${CLASSPATH}:/usr/local/${project.artifactId}-${project.version}/lib/
 	<li>Test installation by going to http://localhost:8080/search-service/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
       </ol>
       </subsection>
-      <subsection name="Upgrade">
+      <subsection name="Upgrade To Newer Version of Search Service">
 	<ol>
 	  <li>Change Search Service symbolic link to new location:
 	    <source>
