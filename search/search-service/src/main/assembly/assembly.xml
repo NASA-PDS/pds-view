@@ -78,6 +78,12 @@
         <include>net.sf.saxon:saxon</include>
       </includes>
     </dependencySet>
+    <dependencySet>
+      <outputDirectory>./</outputDirectory>
+      <includes>
+        <include>org.apache.solr:solr</include>
+      </includes>
+    </dependencySet>
     <!-- 
     <dependencySet>
       <outputDirectory>lib</outputDirectory>

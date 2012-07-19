@@ -110,13 +110,13 @@ or
       </p>
 
       <ol>
-	<li>Download the Apache Solr software from the <a href="http://lucene.apache.org/solr/">Solr</a> website (the WAR file can be found in the <i>dist</i> directory of the tar package).</li>
+	<!--li>Download the Apache Solr software from the <a href="http://lucene.apache.org/solr/">Solr</a> website (the WAR file can be found in the <i>dist</i> directory of the tar package).</li>
 	<li>Place the WAR file in the $SEARCH_SERVICE_HOME directory (i.e. /usr/local/${project.artifactId}-${project.version}).</li>
-	<li>Note the name of the WAR file (i.e. apache-solr-3.5.0.war)</li>
-	<li>Create a Tomcat context file <i>search-service.xml</i> to refer to this Solr war, and place it in the <i>$TOMCAT_HOME/conf/Catalina/localhost</i> directory.  The <i>search-service.xml</i> file should look something like this:
+	<li>Note the name of the WAR file (i.e. solr-3.6.0.war)</li-->
+	<li>Create a Tomcat context file <i>search-service.xml</i> to refer to the Solr war (found in the $SERVICE_INSTALL_HOME directory), and place it in the <i>$TOMCAT_HOME/conf/Catalina/localhost</i> directory.  The <i>search-service.xml</i> file should look something like this:
 	  <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;Context docBase="/usr/local/${project.artifactId}-${project.version}/apache-solr-3.5.0.war" debug="0" crossContext="true"&gt;
+&lt;Context docBase="/usr/local/${project.artifactId}-${project.version}/solr-3.6.0.war" debug="0" crossContext="true"&gt;
   &lt;Environment name="solr/home" type="java.lang.String" value="/usr/local/${project.artifactId}-${project.version}" override="true" /&gt;
   &lt;Environment name="javax/xml/transform/TransformerFactory" type="java.lang.String" value="net/sf/saxon/TransformerFactoryImpl" override="true"/&gt;
 &lt;/Context&gt;
@@ -144,21 +144,21 @@ CLASSPATH="${CLASSPATH}:/usr/local/${project.artifactId}-${project.version}/lib/
 
       <subsection name="Initial Installation">
 	<ol>
-	  <li>Download the Apache Solr software from the <a href="http://lucene.apache.org/solr/">Solr</a> website (the WAR file can be found in the <i>dist</i> directory of the tar package).</li>
+	  <!--li>Download the Apache Solr software from the <a href="http://lucene.apache.org/solr/">Solr</a> website (the WAR file can be found in the <i>dist</i> directory of the tar package).</li>
 	  <li>Place the WAR file in the $SERVICE_INSTALL_HOME directory as solr.war, i.e.:
 	    <source>
 cp apache-solr-3.5.0.war /usr/local/${project.artifactId}-${project.version}/solr.war
 	    </source>
-	  </li>
+	  </li-->
 	  <li>Create symbolic link to $SERVICE_INSTALL_HOME, i.e.
 	    <source>
 ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
 	    </source>
 	  </li>
-	  <li>Create a Tomcat context file <i>search-service.xml</i> to refer to this Solr war, and place it in the <i>$TOMCAT_HOME/conf/Catalina/localhost</i> directory.  The <i>search-service.xml</i> file should look something like this:
+	  <li>Create a Tomcat context file <i>search-service.xml</i> to refer to the Solr war (found in the $SERVICE_INSTALL_HOME directory) and place it in the <i>$TOMCAT_HOME/conf/Catalina/localhost</i> directory.  The <i>search-service.xml</i> file should look something like this:
 	  <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;Context docBase="/usr/local/${project.artifactId}/solr.war" debug="0" crossContext="true"&gt;
+&lt;Context docBase="/usr/local/${project.artifactId}/solr-3.6.0.war" debug="0" crossContext="true"&gt;
   &lt;Environment name="solr/home" type="java.lang.String" value="/usr/local/${project.artifactId}" override="true" /&gt;
   &lt;Environment name="javax/xml/transform/TransformerFactory" type="java.lang.String" value="net/sf/saxon/TransformerFactoryImpl" override="true"/&gt;
 &lt;/Context&gt;
@@ -178,11 +178,11 @@ CLASSPATH="${CLASSPATH}:/usr/local/${project.artifactId}-${project.version}/lib/
       </subsection>
       <subsection name="Upgrade">
 	<ol>
-	  <li>Copy Solr WAR from $SEARCH_SERVICE_HOME to upgraded version:
+	  <!--li>Copy Solr WAR from $SEARCH_SERVICE_HOME to upgraded version:
 	    <source>
 cp /usr/local/${project.artifactId}/solr.war /usr/local/${project.artifactId}-${project.version}
 	    </source>
-	  </li>
+	  </li-->
 	  <li>Change Search Service symbolic link to new location:
 	    <source>
 rm /usr/local/${project.artifactId}
