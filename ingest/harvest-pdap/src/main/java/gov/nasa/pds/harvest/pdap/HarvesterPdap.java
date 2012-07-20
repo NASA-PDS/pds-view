@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBException;
@@ -49,29 +50,51 @@ import gov.nasa.pds.harvest.registry.PdsRegistryService;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.Slot;
+import gov.nasa.pds.tools.dict.parser.DictIDFactory;
 import gov.nasa.pds.tools.label.AttributeStatement;
 import gov.nasa.pds.tools.label.Label;
+import gov.nasa.pds.tools.label.ObjectStatement;
+import gov.nasa.pds.tools.label.PointerStatement;
 import gov.nasa.pds.tools.label.Scalar;
 import gov.nasa.pds.tools.label.Sequence;
 import gov.nasa.pds.tools.label.Value;
 
+/**
+ * Front-end class to the Harvest-PDAP Tool.
+ *
+ * @author mcayanan
+ *
+ */
 public class HarvesterPdap {
   /** logger object. */
   private static Logger log = Logger.getLogger(
       HarvesterPdap.class.getName());
 
+  /** PDS Registry Service. */
   private PdsRegistryService registryService;
 
+  /** Metadata to register with every product registration. */
   private StaticMetadata staticMetadata;
 
+  /** Metadata to extract for candidate products. */
   private DynamicMetadata dynamicMetadata;
 
+  /** Resource metadata for every product registration. */
   private ResourceMetadata resourceMetadata;
 
+  /** Contains the metadata to extract from every candidate product. */
   private List<String> elementsToGet;
 
+  /** PDAP Client interface. */
   private PdapRegistryClient pdapClient;
 
+  /**
+   * Constructor.
+   *
+   * @param registryService Registry Service.
+   * @param metadata Product metadata.
+   * @param resourceMet Resource metadata.
+   */
   public HarvesterPdap(PdsRegistryService registryService,
       ProductMetadata metadata, ResourceMetadata resourceMet) {
     this.pdapClient = null;
@@ -85,12 +108,22 @@ public class HarvesterPdap {
     }
   }
 
+  /**
+   * Harvest products from a list of PDAP Services.
+   *
+   * @param pdapServices List of PDAP services.
+   */
   public void harvest(PdapServices pdapServices) {
     for (PdapService pdapService : pdapServices.getPdapService()) {
       harvest(pdapService);
     }
   }
 
+  /**
+   * Harvest products from a PDAP service.
+   *
+   * @param pdapService A PDAP Service.
+   */
   public void harvest(PdapService pdapService) {
     log.log(new ToolsLogRecord(ToolsLevel.INFO, "Connecting to PDAP Service: "
         + pdapService.getUrl()));
@@ -187,6 +220,15 @@ public class HarvesterPdap {
     }
   }
 
+  /**
+   * Register the dataset.
+   *
+   * @param lid Logical identifier of the dataset to be registered.
+   * @param datasetMet The metadata to register.
+   * @return The GUID of the registered product.
+   * @throws RegistryServiceException If an error occurred while ingesting
+   * the product to the PDS Registry.
+   */
   private String registerDataset(String lid, Metadata datasetMet)
   throws RegistryServiceException {
     ExtrinsicObject extrinsic = createExtrinsic(lid, datasetMet);
@@ -202,6 +244,15 @@ public class HarvesterPdap {
     return registryService.ingest(extrinsic);
   }
 
+  /**
+   * Create the extrinsic object to be used to ingest into the PDS Registry.
+   *
+   * @param lid The logical identifier of the product to be registered.
+   *
+   * @param datasetMet Metadata associated with the product.
+   *
+   * @return An Extrinsic object.
+   */
   private ExtrinsicObject createExtrinsic(String lid, Metadata datasetMet) {
     String datasetId = datasetMet.getMetadata("DATA_SET_ID");
     Metadata extrinsicMet = new Metadata();
@@ -217,33 +268,41 @@ public class HarvesterPdap {
       log.log(new ToolsLogRecord(ToolsLevel.INFO, "Additional metadata "
           + "needed. Getting dataset catalog file.", datasetId));
       Label catalog = null;
+      String catalogFilename = "";
       try {
-        catalog = pdapClient.getCatalogFile(datasetId);
-        for (String leftoverElement : elementsToGetCopy) {
-          List<AttributeStatement> attributes =
-            StatementFinder.getStatementsRecursively(catalog, leftoverElement);
-          for (AttributeStatement a : attributes) {
-            Value value = a.getValue();
-            if (value instanceof Set) {
-              gov.nasa.pds.tools.label.Set set =
-                (gov.nasa.pds.tools.label.Set) value;
-              for (Iterator<Scalar> i = set.iterator(); i.hasNext();) {
-                extrinsicMet.addMetadata(leftoverElement, i.next().toString());
+        log.log(new ToolsLogRecord(ToolsLevel.INFO, "Retrieving VOLDESC.CAT to "
+            + "look up the data set catalog file name.", datasetId));
+        Label voldesc = pdapClient.getVoldescFile(datasetId);
+        catalogFilename = getCatalogFile(voldesc, datasetId);
+        if (catalogFilename != null) {
+          log.log(new ToolsLogRecord(ToolsLevel.INFO, "Retrieving catalog "
+              + "file: " + catalogFilename, datasetId));
+          catalog = pdapClient.getCatalogFile(datasetId, catalogFilename);
+          for (String leftoverElement : elementsToGetCopy) {
+            List<AttributeStatement> attributes =
+              StatementFinder.getStatementsRecursively(catalog, leftoverElement);
+            for (AttributeStatement a : attributes) {
+              Value value = a.getValue();
+              if (value instanceof Set) {
+                gov.nasa.pds.tools.label.Set set =
+                  (gov.nasa.pds.tools.label.Set) value;
+                for (Iterator<Scalar> i = set.iterator(); i.hasNext();) {
+                  extrinsicMet.addMetadata(leftoverElement, i.next().toString());
+                }
+              } else if (value instanceof Sequence) {
+                Sequence sequence = (Sequence) value;
+                for (Iterator<Value> i = sequence.iterator(); i.hasNext();) {
+                  extrinsicMet.addMetadata(leftoverElement, i.next().toString());
+                }
+              } else {
+                extrinsicMet.addMetadata(leftoverElement, value.toString());
               }
-            } else if (value instanceof Sequence) {
-              Sequence sequence = (Sequence) value;
-              for (Iterator<Value> i = sequence.iterator(); i.hasNext();) {
-                extrinsicMet.addMetadata(leftoverElement, i.next().toString());
-              }
-            } else {
-              extrinsicMet.addMetadata(leftoverElement, value.toString());
             }
           }
         }
       } catch (PdapRegistryClientException e) {
-        log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
-            "Exception occurred while getting catalog file: "
-            + e.getMessage(), datasetId));
+        log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage(),
+            datasetId));
       }
     }
     ExtrinsicObject extrinsic = new ExtrinsicObject();
@@ -286,6 +345,58 @@ public class HarvesterPdap {
     return extrinsic;
   }
 
+  /**
+   * Gets the catalog file name.
+   *
+   * @param voldesc The VOLDESC.CAT label.
+   * @param datasetId The dataset ID associated with the VOLDESC.CAT.
+   *
+   * @return The catalog file name associated with the given dataset ID.
+   */
+  private String getCatalogFile(Label voldesc, String datasetId) {
+    List<ObjectStatement> volumes = voldesc.getObjects("VOLUME");
+    if (volumes.isEmpty()) {
+      log.log(new ToolsLogRecord(Level.SEVERE, "No VOLUME object found in "
+          + "VOLDESC.CAT", datasetId));
+      return null;
+    } else {
+      ObjectStatement volume = volumes.get(0);
+      List<ObjectStatement> catalogs = volume.getObjects("CATALOG");
+      if (catalogs.isEmpty()) {
+        log.log(new ToolsLogRecord(Level.SEVERE, "No CATALOG object found "
+            + "in VOLDESC.CAT", datasetId));
+        return null;
+      } else {
+        ObjectStatement catalog = catalogs.get(0);
+        PointerStatement datasetCatPointer = catalog.getPointer(
+            DictIDFactory.createPointerDefId("DATA_SET_CATALOG"));
+        if (datasetCatPointer != null) {
+          return datasetCatPointer.getValue().toString();
+        } else {
+          log.log(new ToolsLogRecord(Level.SEVERE, "No DATA_SET_CATALOG "
+              + "pointer statement found in the CATALOG object within the "
+              + "VOLDESC.CAT.", datasetId));
+          return null;
+        }
+      }
+    }
+  }
+
+  /**
+   * Register a resource product.
+   *
+   * @param lid The logical identifier of the product to be registered.
+   * @param datasetMet The metadata to register.
+   *
+   * @return The GUID of the registered product.
+   *
+   * @throws PdapRegistryClientException If an error occurred while talking to
+   * the PDAP Registry Service.
+   *
+   * @throws RegistryServiceException If an error occurred while ingesting to
+   * the PDS Registry.
+   *
+   */
   private String registerResource(String lid, Metadata datasetMet)
   throws PdapRegistryClientException, RegistryServiceException {
     ExtrinsicObject extrinsic = createResourceExtrinsic(lid, datasetMet);
@@ -301,6 +412,16 @@ public class HarvesterPdap {
     return registryService.ingest(extrinsic);
   }
 
+  /**
+   * Creates an extrinsic object for the Resource product to be registered.
+   *
+   * @param lid The logical identifier of the product to be registered.
+   * @param datasetMet The metadata to register.
+   * @return An extrinsic object of the Resource product.
+   *
+   * @throws PdapRegistryClientException If an error occurred while talking
+   * to the PDAP Registry Service.
+   */
   private ExtrinsicObject createResourceExtrinsic(String lid, Metadata datasetMet)
   throws PdapRegistryClientException {
     String datasetId = datasetMet.getMetadata("DATA_SET_ID");

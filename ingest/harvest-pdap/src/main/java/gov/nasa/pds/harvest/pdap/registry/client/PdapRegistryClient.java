@@ -20,12 +20,26 @@ import java.util.List;
 
 import uk.ac.starlink.table.StarTable;
 
+/**
+ * Interface class to the PDAP-Compliant Registries.
+ *
+ * @author mcayanan
+ *
+ */
 public interface PdapRegistryClient {
+
+  /** Gets all the datasets. */
   public List<StarTable> getAllDataSets() throws PdapRegistryClientException;
 
+  /** Gets a single dataset. */
   public StarTable getDataSet(String datasetId) throws PdapRegistryClientException;
 
+  /** Gets the resource link associated with the given dataset. */
   public URL getResourceLink(String datasetId) throws PdapRegistryClientException;
 
-  public Label getCatalogFile(String datasetId) throws PdapRegistryClientException;
+  /** Gets the catalog file associated with the given dataset. */
+  public Label getCatalogFile(String datasetId, String filename) throws PdapRegistryClientException;
+
+  /** Gets the VOLDESC.CAT file associated with the given dataset. */
+  public Label getVoldescFile(String datasetId) throws PdapRegistryClientException;
 }

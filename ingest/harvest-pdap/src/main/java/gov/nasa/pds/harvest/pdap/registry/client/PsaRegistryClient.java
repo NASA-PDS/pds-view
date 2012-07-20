@@ -33,13 +33,29 @@ import uk.ac.starlink.table.TableSequence;
 import uk.ac.starlink.util.DataSource;
 import uk.ac.starlink.votable.VOTableBuilder;
 
+/**
+ * Client to the PSA Registry.
+ *
+ * @author mcayanan
+ *
+ */
 public class PsaRegistryClient implements PdapRegistryClient {
   private String baseUrl;
 
+  /**
+   * Constructor.
+   *
+   * @param baseUrl The base url of the registry.
+   */
   public PsaRegistryClient(String baseUrl) {
     this.baseUrl = baseUrl + "/aio";
   }
 
+  /**
+   * Gets all the datasets.
+   *
+   * @return List of datasets in VOTable format.
+   */
   @Override
   public List<StarTable> getAllDataSets() throws PdapRegistryClientException {
     try {
@@ -58,6 +74,16 @@ public class PsaRegistryClient implements PdapRegistryClient {
     }
   }
 
+  /**
+   * Gets a single dataset in VOTable format.
+   *
+   * @param datasetId The identifier of the dataset to get.
+   *
+   * @return The dataset in VOTable format.
+   *
+   * @throws PdapRegistryClientException If an error occurred while connecting
+   *  to the PSA.
+   */
   @Override
   public StarTable getDataSet(String datasetId) throws PdapRegistryClientException {
     try {
@@ -72,6 +98,16 @@ public class PsaRegistryClient implements PdapRegistryClient {
     }
   }
 
+  /**
+   * Gets the resource link associated with the given dataset identifier.
+   *
+   * @param datasetId The dataset identifier.
+   *
+   * @return A URL to the resource.
+   *
+   * @throws PdapRegistryClientException If an error occurred while getting
+   *  the resource link.
+   */
   @Override
   public URL getResourceLink(String datasetId) throws PdapRegistryClientException {
     try {
@@ -83,14 +119,51 @@ public class PsaRegistryClient implements PdapRegistryClient {
     }
   }
 
+  /**
+   * Gets the catalog file from the PSA Registry.
+   *
+   * @param datasetId The dataset identifier.
+   * @param filename The catalog filename.
+   *
+   * @return The catalog file label.
+   *
+   * @throws PdapRegistryClientException If an error occurred while getting
+   * the catalog file.
+   */
   @Override
-  public Label getCatalogFile(String datasetId) throws PdapRegistryClientException {
+  public Label getCatalogFile(String datasetId, String filename)
+  throws PdapRegistryClientException {
     try {
       URL url = new URL(baseUrl + "/jsp/product.jsp?dataSetID=" + datasetId
-          + "&productID=&path=CATALOG/&fileName=DATASET.CAT&protocol=HTTP");
+          + "&productID=&path=CATALOG/&fileName=" + filename + "&protocol=HTTP");
       ManualPathResolver resolver = new ManualPathResolver();
       resolver.setBaseURI(ManualPathResolver.getBaseURI(url.toURI()));
-      DefaultLabelParser parser = new DefaultLabelParser(true, true, true, resolver);
+      DefaultLabelParser parser = new DefaultLabelParser(false, true, true, resolver);
+      Label label = parser.parseLabel(url);
+      return label;
+    } catch (Exception e) {
+      throw new PdapRegistryClientException(e.getMessage());
+    }
+  }
+
+  /**
+   * Gets the VOLDESC.CAT file.
+   *
+   * @param datasetId The dataset identifier.
+   *
+   * @return The VOLDESC.CAT label.
+   *
+   * @throws PdapRegistryClientException If an error occurred while getting
+   *  the VOLDESC.CAT file.
+   *
+   */
+  public Label getVoldescFile(String datasetId) throws PdapRegistryClientException {
+    try {
+      URL url = new URL(baseUrl + "/jsp/product.jsp?dataSetID=" + datasetId
+          + "&productID=&path=/&fileName=VOLDESC.CAT&protocol=HTTP");
+      ManualPathResolver resolver = new ManualPathResolver();
+      resolver.setBaseURI(ManualPathResolver.getBaseURI(url.toURI()));
+      DefaultLabelParser parser = new DefaultLabelParser(false, true, true, resolver);
       Label label = parser.parseLabel(url);
       return label;
     } catch (Exception e) {

@@ -52,6 +52,13 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.ParseException;
 
+/**
+ * Wrapper class to the Harvest-PDAP Tool. Class handles command-line
+ * processing as well as reading of the policy config file.
+ *
+ * @author mcayanan
+ *
+ */
 public class HarvestPdapLauncher {
   /** logger object. */
   private static Logger log = Logger.getLogger(
@@ -258,6 +265,11 @@ public class HarvestPdapLauncher {
     }
   }
 
+  /**
+   * The report header for the log.
+   *
+   * @param policy The policy file.
+   */
   private void logHeader(Policy policy) {
     String registryUrl = policy.getPdsRegistry().getUrl();
     List<String> pdaps = new ArrayList<String>();
@@ -294,6 +306,14 @@ public class HarvestPdapLauncher {
     }
   }
 
+  /**
+   * Creates a registry package to associate with the product registration.
+   *
+   * @param policy Policy config file.
+   *
+   * @throws RegistryServiceException If an error occurred creating the
+   * registry package.
+   */
   private void createRegistryPackage(Policy policy)
   throws RegistryServiceException {
     DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -320,12 +340,22 @@ public class HarvestPdapLauncher {
     registryPackageGuid = registryService.createPackage(registryPackage);
   }
 
+  /**
+   * Perform the harvesting of the products.
+   *
+   * @param policy Policy config file.
+   */
   private void doHarvesting(Policy policy) {
     HarvesterPdap harvester = new HarvesterPdap(registryService,
         policy.getProductMetadata(), policy.getResourceMetadata());
     harvester.harvest(policy.getPdapServices());
   }
 
+  /**
+   * Process main.
+   *
+   * @param args command-line arguments.
+   */
   private void processMain(String []args) {
     if (args.length == 0) {
       System.out.println("\nType 'harvest-pdap -h' for usage");
