@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE process SYSTEM "procStatus.dtd">
+
+<process name="name server"
+  isRunning="no"
+  enabled="yes"
+  limit="3"
+  minTime="60000"
+  waitTime="10000"
+  resetTime="3600000"
+  restarts="0"
+  startTime="9612931823">
+  <webServer testURL="http://oodt/index.html">
+    <launch>
+      <arg value="start"/>
+    </launch>
+    <shutdown>
+      <arg value="stop"/>
+    </shutdown>
+  </webServer>
+</process>

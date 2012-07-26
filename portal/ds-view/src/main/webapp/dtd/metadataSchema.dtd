@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT metadataSchema (metadata?,element*)>
+
+    <!ELEMENT metadata
+      (DC.Identifier, DC.Title, DC.Format, DC.Description, DC.Creator,
+	DC.Subject, DC.Publisher, DC.Contributor, DC.Date, DC.Type, DC.Source,
+	DC.Language, DC.Relation, DC.Coverage, DC.Rights)>
+
+    <!ELEMENT element
+      	(name, regAuth, synName?, context, 
+	definition, classScheme?, keyword?, relatedDataRef?, relateType?,
+	dataType, maxSize, minSize, permitVal?, 
+	respOrg, submitOrg, comments?,
+	format, unit, minValue?, maxValue?
+	)>
+
+    <!ELEMENT DC.Identifier (#PCDATA)>
+    <!ELEMENT DC.Title (#PCDATA)>
+    <!ELEMENT DC.Format (#PCDATA)>
+    <!ELEMENT DC.Description (#PCDATA)>
+    <!ELEMENT DC.Creator (#PCDATA)>
+    <!ELEMENT DC.Subject (#PCDATA)>
+    <!ELEMENT DC.Publisher (#PCDATA)>
+    <!ELEMENT DC.Contributor (#PCDATA)>
+    <!ELEMENT DC.Date (#PCDATA)>
+    <!ELEMENT DC.Type (#PCDATA)>
+    <!ELEMENT DC.Source (#PCDATA)>
+    <!ELEMENT DC.Language (#PCDATA)>
+    <!ELEMENT DC.Relation (#PCDATA)>
+    <!ELEMENT DC.Coverage (#PCDATA)>
+    <!ELEMENT DC.Rights (#PCDATA)>
+
+    <!ELEMENT name (#PCDATA)>
+    <!ELEMENT regAuth (#PCDATA)>
+    <!ELEMENT synName (#PCDATA)>
+    <!ELEMENT context (#PCDATA)>
+
+    <!ELEMENT definition (#PCDATA)>
+    <!ELEMENT classScheme (#PCDATA)>
+    <!ELEMENT keyword (#PCDATA)>
+    <!ELEMENT relatedDataRef (#PCDATA)>
+    <!ELEMENT relateType (#PCDATA)>
+
+    <!ELEMENT dataType (#PCDATA)>
+    <!ELEMENT maxSize (#PCDATA)>
+    <!ELEMENT minSize (#PCDATA)>
+    <!ELEMENT permitVal (#PCDATA)>
+
+    <!ELEMENT respOrg (#PCDATA)>
+    <!ELEMENT submitOrg (#PCDATA)>
+    <!ELEMENT comments (#PCDATA)>
+
+    <!ELEMENT format (#PCDATA)>
+    <!ELEMENT unit (#PCDATA)>
+    <!ELEMENT minValue (#PCDATA)>
+    <!ELEMENT maxValue (#PCDATA)>

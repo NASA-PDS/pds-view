@@ -1,0 +1,43 @@
+<!--
+organizationQuery.dtd
+
+FPI:
+<!DOCTYPE organization PUBLIC "-//JPL//DTD EDA Organization Query 1.0//EN"
+          "http://enterprise.jpl.nasa.gov/dtd/organizationQuery.dtd">
+-->
+
+<!-- All expression components. -->
+<!ENTITY % expr "and|or|not|true|false|organizationID|name|parentOrganizationID|defaultAcctID|comments">
+
+<!-- root element -->
+<!ELEMENT organization (%expr;)>
+
+<!-- and: both parts must be true -->
+<!ELEMENT and ((%expr;), (%expr;))>
+
+<!-- or: either part may be true -->
+<!ELEMENT or ((%expr;), (%expr;))>
+
+<!-- not: reverses sense of single part -->
+<!ELEMENT not (%expr;)>
+
+<!-- true: matches all -->
+<!ELEMENT true EMPTY>
+
+<!-- false: matches none -->
+<!ELEMENT false EMPTY>
+
+<!-- organization number -->
+<!ELEMENT organizationID (#PCDATA)>
+
+<!-- name of the org. -->
+<!ELEMENT name (#PCDATA)>
+
+<!-- owning organization's number -->
+<!ELEMENT parentOrganizationID (#PCDATA)>
+
+<!-- default account for the organization -->
+<!ELEMENT defaultAcctID (#PCDATA)>
+
+<!-- comments about the organization -->
+<!ELEMENT comments (#PCDATA)>

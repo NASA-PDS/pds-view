@@ -1,0 +1,55 @@
+<!--
+PDS-D Network.
+
+Copyright 2002 California Institute of Technology.  ALL RIGHTS
+RESERVED.  U.S. Government Sponsorship acknowledged.
+
+$Id$
+-->
+
+<!ELEMENT network (server*, proc*, set*)>
+<!ATTLIST network
+  password CDATA #IMPLIED
+  proxy    CDATA #IMPLIED
+  username CDATA #IMPLIED
+  default  CDATA #IMPLIED>
+
+<!ELEMENT server (label*, os?, repository*, installation?, product*, contact*)>
+<!ATTLIST server
+  id       ID    #REQUIRED
+  url      CDATA #REQUIRED
+  proxy    CDATA #IMPLIED
+  password CDATA #IMPLIED
+  username CDATA #IMPLIED>
+
+<!ELEMENT proc (label*)>
+<!ATTLIST proc
+  id       ID    #REQUIRED
+  server   IDREF #REQUIRED
+  name     CDATA #IMPLIED>
+
+<!ELEMENT set (start, stop)>
+<!ATTLIST set id ID #REQUIRED>
+
+<!ELEMENT start (seq*)>
+
+<!ELEMENT stop (seq*)>
+
+<!ELEMENT seq EMPTY>
+<!ATTLIST seq procs IDREFS #REQUIRED>
+
+<!ELEMENT label (#PCDATA)>
+<!ATTLIST label xml:lang CDATA #IMPLIED>
+
+<!ELEMENT os (#PCDATA)>
+
+<!ELEMENT repository EMPTY>
+<!ATTLIST repository dir CDATA #REQUIRED>
+
+<!ELEMENT installation EMPTY>
+<!ATTLIST installation dir CDATA #REQUIRED>
+
+<!ELEMENT product (#PCDATA)>
+
+<!ELEMENT contact (#PCDATA)>
+<!ATTLIST contact uri CDATA #IMPLIED>

@@ -1,0 +1,33 @@
+<!--
+    personTypeQuery.dtd
+
+    FPI:
+    <!DOCTYPE personType PUBLIC "-//JPL//DTD EDA Person Type Query 1.0//EN" "http://eis.jpl.nasa.gov/~kelly/personTypeQuery.dtd">
+-->
+
+<!-- All expression components. -->
+<!ENTITY % expr "and|or|not|true|false|code|description">
+
+<!-- root element -->
+<!ELEMENT personType (%expr;)>
+
+<!-- and: both parts must be true -->
+<!ELEMENT and ((%expr;), (%expr;))>
+
+<!-- or: either part may be true -->
+<!ELEMENT or ((%expr;), (%expr;))>
+
+<!-- not: reverses sense of single part -->
+<!ELEMENT not (%expr;)>
+
+<!-- true: matches all -->
+<!ELEMENT true EMPTY>
+
+<!-- false: matches none -->
+<!ELEMENT false EMPTY>
+
+<!-- code -->
+<!ELEMENT code (#PCDATA)>
+
+<!-- description -->
+<!ELEMENT description (#PCDATA)>

@@ -105,15 +105,6 @@
         <role>System Design Working Group Member</role>
       </roles>
     </developer>
-    <developer>
-      <name>Joshua Ganderson</name>
-      <id>jagander</id>
-      <email>Joshua.Ganderson@nasa.gov</email>
-      <organization>NASA Ames Research Center</organization>
-      <roles>
-        <role>Former Developer</role>
-      </roles>
-    </developer>
   </developers>
 
   <contributors>

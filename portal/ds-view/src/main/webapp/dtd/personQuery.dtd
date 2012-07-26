@@ -1,0 +1,87 @@
+<!--
+    personQuery.dtd
+
+    FPI:
+    <!DOCTYPE person PUBLIC "-//JPL//DTD EDA Person Query 1.0//EN" "http://eis.jpl.nasa.gov/~kelly/personQuery.dtd">
+-->
+
+<!-- All expression components. -->
+<!ENTITY % expr "and|or|not|true|false|personID|userName|organization|company|badgeNumber|userID|personType|firstName|lastName|middleInitial|fullName|building|room|mailStop|businessAddress|phone|fax|email|emailType">
+
+<!-- root element -->
+<!ELEMENT person (%expr;)>
+
+<!-- and: both parts must be true -->
+<!ELEMENT and ((%expr;), (%expr;))>
+
+<!-- or: either part may be true -->
+<!ELEMENT or ((%expr;), (%expr;))>
+
+<!-- not: reverses sense of single part -->
+<!ELEMENT not (%expr;)>
+
+<!-- true: matches all -->
+<!ELEMENT true EMPTY>
+
+<!-- false: matches none -->
+<!ELEMENT false EMPTY>
+
+<!ELEMENT personID (#PCDATA)>
+
+<!-- userName -->
+<!ELEMENT userName (#PCDATA)>
+
+<!-- mail: Email address -->
+<!ELEMENT mail (#PCDATA)>
+
+<!-- organization:  -->
+<!ELEMENT organization (#PCDATA)>
+
+<!-- company:  -->
+<!ELEMENT company (#PCDATA)>
+
+<!-- badgeNumber:  -->
+<!ELEMENT badgeNumber (#PCDATA)>
+
+<!-- userID:  -->
+<!ELEMENT userID (#PCDATA)>
+
+<!-- personType:  -->
+<!ELEMENT personType (#PCDATA)>
+
+<!-- firstName:  -->
+<!ELEMENT firstName (#PCDATA)>
+
+<!-- lastName:  -->
+<!ELEMENT lastName (#PCDATA)>
+
+<!-- middleInitial:  -->
+<!ELEMENT middleInitial (#PCDATA)>
+
+<!-- fullName:  -->
+<!ELEMENT fullName (#PCDATA)>
+
+<!-- building:  -->
+<!ELEMENT building (#PCDATA)>
+
+<!-- room:  -->
+<!ELEMENT room (#PCDATA)>
+
+<!-- mailStop:  -->
+<!ELEMENT mailStop (#PCDATA)>
+
+<!-- businessAddress:  -->
+<!ELEMENT businessAddress (#PCDATA)>
+
+<!-- phone:  -->
+<!ELEMENT phone (#PCDATA)>
+
+<!-- fax:  -->
+<!ELEMENT fax (#PCDATA)>
+
+<!-- email:  -->
+<!ELEMENT email (#PCDATA)>
+
+<!-- emailType:  -->
+<!ELEMENT emailType (#PCDATA)>
+

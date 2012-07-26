@@ -1,0 +1,760 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2012, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Release Changes</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+  <body>
+    <release version="2.0.0" date="TBD" description="TBD">
+    </release>
+
+    <release version="1.0.8 and previous" date="2003-06-26" description="The entries below represent the change log for Data Set View over time and associated with a specific version.">
+      <action dev="kelly" type="update">
+        2003-06-26 - /home/oodt/cvs/pds/src/doc/release/news/index.html: Update news for 1.0.8.
+      </action>
+      <action dev="kelly" type="update">
+        2003-06-26 - /home/oodt/cvs/pds/build.xml: Bump version # to 1.0.8b.
+      </action>
+      <action dev="kelly" type="update">
+        2003-06-26 - /home/oodt/cvs/pds/src/java/jpl/pds/server/LabelQueryHandler.java: Rethrow an a ProductException wrapping the IOException instead of as containing merely the IOException message.
+      </action>
+      <action dev="thuytran" type="update">
+        2003-06-19 - /home/oodt/cvs/pds/src/java/jpl/pds/resource/DefaultQueryConstructor.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/DefaultResourceHandler.java: Factor out common code so it can be called somewhere else.
+      </action>
+      <action dev="thuytran" type="update">
+        2003-06-19 - /home/oodt/cvs/pds/src/java/jpl/pds/resource/ResourceServerConfig.java: Add main method
+      </action>
+      <action dev="thuytran" type="update">
+        2003-06-19 - /home/oodt/cvs/pds/src/java/jpl/pds/resource/Utility.java: Check for null string before trimming.
+      </action>
+      <action dev="shuliu" type="update">
+        2003-06-18 - /home/oodt/cvs/pds/src/java/jpl/pds/resource/gazetteer/LoadGazetteerData.java: Load data into database.
+      </action>
+      <action dev="shuliu" type="update">
+        2003-06-18 - /home/oodt/cvs/pds/src/java/jpl/pds/resource/gazetteer/GazetteerConfiguration.xml: Configuration file for Gazetteer profile server.
+      </action>
+      <action dev="shuliu" type="update">
+        2003-06-18 - /home/oodt/cvs/pds/src/java/jpl/pds/resource/gazetteer/GazetteerProfileServer.java: Gazetteer profile server.
+      </action>
+      <action dev="jerry" type="update">
+        2003-06-06 - /home/oodt/cvs/pds/src/java/jpl/pds/util/PDS2FName.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/LabelQueryHandler.java: Return the STRUCTURE file if found along with the label file.
+      </action>
+      <action dev="jerry" type="update">
+        2003-06-04 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipDFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipNFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipTESFileHandler.java: Change absolute paths in zip files to relative paths.
+      </action>
+      <action dev="thuytran" type="update">
+        2003-05-29 - /home/oodt/cvs/pds/src/java/jpl/pds/resource/DefaultQueryConstructor.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/DefaultResourceHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/QueryConstructor.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/Utility.java: Make QueryConstructor an interface to allow users of DefaultResourceHandler to define their own QueryConstructor. The DefaultQueryConstructor will be used if no specialized QueryConstructor is defined.
+      </action>
+      <action dev="thuytran" type="update">
+        2003-05-20 - /home/oodt/cvs/pds/src/java/jpl/pds/resource/CatalogSchema.java: Handle null MAPPINGS
+      </action>
+      <action dev="thuytran" type="update">
+        2003-05-14 - /home/oodt/cvs/pds/src/java/jpl/pds/resource/AliasMap.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/CatalogSchema.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/ConstantMap.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/DBUtil.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/DefaultResourceHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/Join.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/JoinColumnPair.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/NodeConfiguration.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/NodeConfiguration.xml, /home/oodt/cvs/pds/src/java/jpl/pds/resource/NodeServerManager.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/QueryConstructor.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/Resource.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/ResourceAttributes.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/ResourceLocation.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/ResourceServer.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/ResourceServerConfig.java, /home/oodt/cvs/pds/src/java/jpl/pds/resource/ThemisConfiguration.xml: Initial version of the PDS default profile server.  The default profile server (main class = jpl.pds.resource.DefaultResourceHander) can be dynamically configured to process queries sent to a PDS product catalog. The product catalog needs to be described in an XML configuration file (see ThemisConfiguration.xml as an example) defined by the property "jpl.pds.resource.config.url".
+      </action>
+      <action dev="kelly" type="update">
+        2003-05-01 - /home/oodt/cvs/pds/build.xml: Halt javadoc generation on an error with ${halt.on.error}.
+      </action>
+      <action dev="kelly" type="update">
+        2003-05-01 - /home/oodt/cvs/pds/build.xml: Parameterize whether unit tests should halt on failure.  Default to no.
+      </action>
+      <action dev="kelly" type="update">
+        2003-05-01 - /home/oodt/cvs/pds/build.xml: Add a no-op corba ant target.
+      </action>
+      <action dev="kelly" type="update">
+        2003-04-18 - /home/oodt/cvs/pds/etc/dev-network.xml: Remove test USGS product server as it's unaccessible.
+      </action>
+      <action dev="jerry" type="update">
+        2003-04-09 - /home/oodt/cvs/pds/src/native/pds2jpeg/win/pds2jpeg.c, /home/oodt/cvs/pds/src/native/pds2jpeg/win/pds2jpeg.exe, /home/oodt/cvs/pds/src/native/pds2jpeg/win/pds2jpeg1.doc, /home/oodt/cvs/pds/src/native/pds2jpeg/win/readmoc.lib, /home/oodt/cvs/pds/src/native/pds2jpeg/win/LIBJPEG.LIB, /home/oodt/cvs/pds/src/native/pds2jpeg/win/oal.lib: Windows version for converting image files to JPEG.
+      </action>
+      <action dev="jerry" type="update">
+        2003-04-09 - /home/oodt/cvs/pds/src/native/pds2jpeg/sun/pds2jpeg_source.tar, /home/oodt/cvs/pds/src/native/pds2jpeg/sun/libs.tar, /home/oodt/cvs/pds/src/native/pds2jpeg/sun/moc.tar, /home/oodt/cvs/pds/src/native/pds2jpeg/sun/pds2jpeg.sun, /home/oodt/cvs/pds/src/native/pds2jpeg/sun/jpeg.tar: Sun solaris version for converting image files to JPEG.
+      </action>
+      <action dev="jerry" type="update">
+        2003-04-09 - /home/oodt/cvs/pds/src/native/pds2jpeg/linux/pds2jpeg.linux: Linux version of pds2jpeg for converting image files to JPEG.
+      </action>
+      <action dev="kelly" type="update">
+        2003-04-09 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipNFileHandler.java: Close zip file before sampling size.
+      </action>
+      <action dev="jerry" type="update">
+        2003-04-09 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java: Add capability to download image files as JPEG.
+      </action>
+      <action dev="jerry" type="update">
+        2003-04-09 - /home/oodt/cvs/pds/src/java/jpl/pds/server/JPEGFileHandler.java: Add capability to display images as JPEG downloads.
+      </action>
+      <action dev="kelly" type="update">
+        2003-03-28 - /home/oodt/cvs/pds/etc/dev-network.xml, /home/oodt/cvs/pds/etc/network.xml:
+          From: Neil Heather 
+          To: Sean Kelly 
+          Cc: Steve Hughes 
+          Subject: Lost is now Ringmaster
+
+          Hi,
+
+          The product server lost.arc.nasa.gov has now become ringmaster.arc.nasa.gov.  Please make a note of it.
+
+          Thanks!
+          Neil
+      </action>
+      <action dev="kelly" type="update">
+        2003-03-15 - /home/oodt/cvs/pds/src/doc/release/install/index.html: Update substitutable tags so where we don't want substitution to occur, it doesn't.
+      </action>
+      <action dev="kelly" type="update">
+        2003-03-14 - /home/oodt/cvs/pds/src/doc/release/install/index.html: Add MacOS X installation instructions.
+      </action>
+      <action dev="thuytran" type="update">
+        2003-03-14 - /home/oodt/cvs/pds/src/www/apps/apps/pds/results.jsp: Per Pam Woncik's request, if the resource URL contains "pdsimg" or "pdsimage" (ie. Atlas browsers), don't append the user specified search criteria to the resource URL.
+      </action>
+      <action dev="thuytran" type="update">
+        2003-03-08 - /home/oodt/cvs/pds/src/java/jpl/pds/servlets/QueryServlet.java: Add attributes that are not on the Data Set View interface to the list of searchable attributes so queries from clients other than the Data Set View containing these attributes can be passed on to the PDS profile server.
+      </action>
+      <action dev="jerry" type="update">
+        2003-02-24 - /home/oodt/cvs/pds/src/java/jpl/pds/server/LabelQueryHandler.java: Use new VAXReader to handle VAX label files and standard ASCII label files.
+      </action>
+      <action dev="jerry" type="update">
+        2003-02-24 - /home/oodt/cvs/pds/src/java/jpl/pds/util/VAXReader.java: Created a version of readLine() that reads VAX label files and standard ASCII files.
+      </action>
+      <action dev="kelly" type="update">
+        2003-02-24 - /home/oodt/cvs/pds/etc/network.xml: Add proxy entry for USGS (and starbase, while I'm at it) so this network.xml file is usable anywhere.
+      </action>
+      <action dev="kelly" type="update">
+        2003-02-19 - /home/oodt/cvs/pds/etc/dev-network.xml: Add USGS server manager definition and product server entry for development.
+      </action>
+      <action dev="kelly" type="update">
+        2003-02-19 - /home/oodt/cvs/pds/etc/network.xml: Add USGS server manager definition and product server entry for operations.
+      </action>
+      <action dev="kelly" type="update">
+        2003-02-11 - /home/oodt/cvs/pds/etc/network.xml: Add Laura Back to list of admins for WUSTL.
+      </action>
+      <action dev="jerry" type="update">
+        2003-02-07 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipDFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipNFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipTESFileHandler.java: Use forward slash for path separator.
+      </action>
+      <action dev="thuytran" type="update">
+        2003-01-22 - /home/oodt/cvs/pds/src/www/apps/apps/pds/images/ds_latestdata.gif, /home/oodt/cvs/pds/src/www/apps/apps/pds/images/ds_stamp.gif, /home/oodt/cvs/pds/src/www/apps/apps/pds/images/title_entry.jpg: Images for data set view
+      </action>
+      <action dev="jerry" type="update">
+        2003-01-21 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipDFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipNFileHandler.java: Fix PDS zipname to return product_yyyyMMddHHmmss if zipname not specified.
+      </action>
+      <action dev="jerry" type="update">
+        2003-01-15 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipDFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipNFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipTESFileHandler.java: Add zip mime type and close temp file after addProduct.
+      </action>
+      <action dev="jerry" type="update">
+        2003-01-15 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java: Close temp file after addProduct.
+      </action>
+      <action dev="thuytran" type="update">
+        2003-01-15 - /home/oodt/cvs/pds/src/java/jpl/pds/beans/SearchBean.java: Use subList() method of java.util.List in getSubList().
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-10 - /home/oodt/cvs/pds/src/www/apps/apps/pds/results.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/release.jsp: Update for new SearchBean interface: returns Profile objects directly instead of Result objects that contain Profile objects in XML form.
+      </action>
+      <action dev="kelly" type="update">
+         2003-01-10 - /home/oodt/cvs/pds/src/java/jpl/pds/beans/SearchBean.java: Use ProfileClient instead of QUERY_CLIENT since the QueryService hides exceptions from the ProfileService.
+
+         N.B.: We need to fix the query service because it does spidering
+         ... this is just a short-term fix to keep PDS users happy.
+      </action>
+      <action dev="kelly" type="update">
+         2003-01-10 - /home/oodt/cvs/pds/etc/network.xml: Use new ASU server location.
+      </action>
+      <action dev="kelly" type="update">
+         2003-01-10 - /home/oodt/cvs/pds/etc/dev-network.xml: Use new ASU server location and add missing NMSU test product server.
+      </action>
+      <action dev="kelly" type="update">
+         2003-01-10 - Update version number to interim release 1.0.8a.
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-06 - /home/oodt/cvs/pds/etc/network.xml: Change URL to ASU server manager to themis-data.asu.edu.
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/src/doc/release/changelog/index.html: Add changelog entries for 1.0.7 and update the copyright for 2003.
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/etc/edarc.xml, /home/oodt/cvs/pds/etc/jacorb.properties, /home/oodt/cvs/pds/etc/orb.properties: edarc.xml no longer needed since it's generated from edarc.src. The other two are no longer needed since PDS uses RMI.
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java: Update the copyright for 2003.
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java: Make application/zip, not application/octet-stream, the default MIME type.
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/src/java/jpl/eda/gui/Install.properties: Update the copyright for 2003.
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/src/doc/release/news/index.html: Update news for 1.0.7 and update the copyright, too.
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/src/doc/release/license/index.html: Update copyright.  Remove reference to Helma software as we use Apache's XML-RPC library (which is just Helma's but with the Apache license).
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/src/doc/release/install/index.html: Update copyright and fine-tune a few installation steps.
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/src/doc/release/authors/index.html, /home/oodt/cvs/pds/src/doc/release/index.html, /home/oodt/cvs/pds/src/doc/README.src: Update copyright.
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/etc/us_en.nsi: Remove extraction of JacORB files.  Add extraction of edarc.src and filter.exe.  Run filter.exe to filter edarc.src into edarc.xml.
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/etc/license.txt: Update copyright. Remove reference to Helma software as we use Apache's XML-RPC library (which is just Helma's but with the Apache license).
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/etc/dev-network.xml: Update URL to ASU's Server Manager.  Update test process names.
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/build.xml: Update for release 1.0.7; add filter.exe for transforming the edarc.src into the edarc.xml file during installation and remove unneeded files from the staging area.
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/etc/edarc.src: edarc.xml file but with tokens that need to be substituted with correct values for the local installation in order to resolve XML entities.
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/src/java/jpl/eda/gui/Install.properties: Another important and recovered file that lets the installer actually work.
+      </action>
+      <action dev="kelly" type="update">
+        2003-01-02 - /home/oodt/cvs/pds/src/java/jpl/eda/gui/images/pds-big.png, /home/oodt/cvs/pds/src/java/jpl/eda/gui/images/pds-small.png, /home/oodt/cvs/pds/src/java/jpl/eda/gui/images/pds_bnr2.gif, /home/oodt/cvs/pds/src/java/jpl/eda/gui/images/pds_bnr_logo2.jpg: Bring back missing images for the PDS installer.  Lucky we found them!
+      </action>
+      <action dev="kelly" type="update">
+        2002-12-16 - /home/oodt/cvs/pds/etc/dev-network.xml: PDS development network.  The production network is just in network.xml now.
+      </action>
+      <action dev="kelly" type="update">
+        2002-11-08 - /home/oodt/cvs/pds/etc/network.xml: Make ops the default process set. Delete the test processes and the test process set. Change starbrite to starshine.
+      </action>
+      <action dev="kelly" type="update">
+        2002-10-29 - /home/oodt/cvs/pds/src/doc/release/install/index.html: Update release docs to say Java 1.4 is required.
+      </action>
+      <action dev="kelly" type="update">
+        2002-10-28 - /home/oodt/cvs/pds/src/doc/release/changelog/index.html: Update changelog for 1.0.6.
+      </action>
+      <action dev="kelly" type="update">
+        2002-10-28 - /home/oodt/cvs/pds/src/doc/release/news/index.html: Update news for what's new in this release 1.0.6.
+      </action>
+      <action dev="kelly" type="update">
+        2002-10-28 - /home/oodt/cvs/pds/build.xml: Bump version # to 1.0.6.
+      </action>
+      <action dev="jerry" type="update">
+        2002-10-24 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQuerier.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/LabelQueryHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/LabelQueryHandlerTest.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/RawFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/RawFileHandlerTest.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipDFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipNFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipTESFileHandler.java: Support changes to accommodate new FileListHandler.java.
+      </action>
+      <action dev="jerry" type="update">
+        2002-10-24 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileListHandler.java: Add new query handlers for RETURN_TYPE=FILELIST,FILELISTZIP,PDS_FILELIST,PDS_FILELISTZIP
+      </action>
+      <action dev="jerry" type="update">
+        2002-10-24 - /home/oodt/cvs/pds/src/java/jpl/pds/server/DirListHandler.java: Replacement for DirListFileHandler.java
+      </action>
+      <action dev="jerry" type="update">
+        2002-10-24 - /home/oodt/cvs/pds/src/java/jpl/pds/server/DirListFileHandler.java: Renaming this file to DirListHandler.java to fit better with the names of other Handlers.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-10-21 - /home/oodt/cvs/pds/src/www/apps/apps/pds/index.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/release.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/tech_help.html: Fixed email address for pds operator pds_operator@jpl.nasa.gov
+      </action>
+      <action dev="jerry" type="update">
+        2002-10-17 - /home/oodt/cvs/pds/src/java/jpl/pds/util/PDS2FName.java: Support changes to PDS_ZIPN_TES in ZipTESFileHandler.
+      </action>
+      <action dev="jerry" type="update">
+        2002-10-17 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipTESFileHandler.java: Change PDS_ZIPN_TES to look for product id instead of filename in OFSN path. Use product id to specify the returned zip filename. Recognize RT as well as RETURN_TYPE.
+      </action>
+      <action dev="jerry" type="update">
+        2002-10-09 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java: Change ZIPN_TES to PDS_ZIPN_TES for file handler type.
+      </action>
+      <action dev="jerry" type="update">
+        2002-10-09 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipDFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipNFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipTESFileHandler.java: Created new file ZipTESFileHandler.java to support ZIPN_TES return type.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-10-04 - /home/oodt/cvs/pds/src/www/apps/apps/pds/about.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/advanced.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/footer.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/index.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/index.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/noprod.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/power.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/release.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/results.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/tech_help.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/viewProfile.jsp: Marked as thread safe to allow multiple connections.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-09-25 - /home/oodt/cvs/pds/src/www/apps/apps/pds/images/title.jpg, /home/oodt/cvs/pds/src/www/apps/apps/pds/images/title_hm.jpg, /home/oodt/cvs/pds/src/www/apps/apps/pds/about.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/footer.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/noprod.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/release.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/results.jsp: Add "subscribe" link
+      </action>
+      <action dev="jerry" type="update">
+        2002-09-25 - /home/oodt/cvs/pds/src/java/jpl/pds/server/DirListFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java: Add a new query handler that returns a directory list of product files in XML format.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-09-23 - /home/oodt/cvs/pds/src/www/apps/apps/pds/results.jsp: Don't append DATA_SET_TERSE_DESCRIPTION to the product search and correlative search URLs.
+      </action>
+      <action dev="jerry" type="update">
+        2002-09-20 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipDFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipNFileHandler.java: Replaced Info-zip with ZipOutputStream. Changed zip file name from products.zip to products_yyMMddHHmmss.zip.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-09-18 - /home/oodt/cvs/pds/src/java/jpl/pds/beans/PDSKeywords.data, /home/oodt/cvs/pds/src/java/jpl/pds/beans/SearchBean.java: Add NODE_NAME to the query
+      </action>
+      <action dev="thuytran" type="update">
+        2002-09-18 - /home/oodt/cvs/pds/src/java/jpl/pds/servlets/QueryServlet.java: 1. fix for searching on nodename instead of nodeid, 2. the select always includes targname = MARS, PHOBOS, or DEIMOS by default.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-09-18 - /home/oodt/cvs/pds/src/www/apps/apps/pds/images/title.jpg, /home/oodt/cvs/pds/src/www/apps/apps/pds/images/title_ancil.jpg, /home/oodt/cvs/pds/src/www/apps/apps/pds/images/title_hm.jpg: updated images
+      </action>
+      <action dev="thuytran" type="update">
+        2002-09-18 - /home/oodt/cvs/pds/src/www/apps/apps/pds/about.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/advanced.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/advancedSearchParams.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/footer.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/glossary.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/index.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/paramsList.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/power.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/quickSearchParams.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/release.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/results.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/utils.js, /home/oodt/cvs/pds/src/www/apps/apps/pds/viewProfile.jsp: 1. fix for searching on nodename instead of nodeid, 2. the select always includes targname = MARS, PHOBOS, or DEIMOS by default.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-09-18 - /home/oodt/cvs/pds/src/www/apps/apps/pds/quickSearchParamsB.jsp: not used
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-31 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipDFileHandler.java: Make product IDs from ZipDFileHandler use "zipd" as the unique identifier prefix.
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-31 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipNFileHandler.java: Make product IDs from ZipNFileHandler use "zipn" as the unique identifier prefix.
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-29 - /home/oodt/cvs/pds/build.xml: Fix xmlrpc.jar; should be underscored name, not dotted.
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-29 - /home/oodt/cvs/pds/build.xml: Fix dnsjava.jar; should be underscored name, not dotted.
+      </action>
+      <action dev="jerry" type="update">
+        2002-08-29 - /home/oodt/cvs/pds/src/java/jpl/pds/util/PDS2FName.java: Add getDirectory() to support ZipDFileHandler and fix errors.
+      </action>
+      <action dev="jerry" type="update">
+        2002-08-29 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipDFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipNFileHandler.java: Change to work with new ZipDFileHandler.
+      </action>
+      <action dev="jerry" type="update">
+        2002-08-26 - /home/oodt/cvs/pds/src/java/jpl/pds/util/PDS2FName.java: Replace String.split() with StringTokenizer
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-23 - /home/oodt/cvs/pds/etc/pds: Add chkconfig comment for auto-installation on Linux init.
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-23 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java: Normalize EOL.
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-22 - /home/oodt/cvs/pds/etc/network.xml: Start web server and RMI registry together so that the longer time it takes for the web server to come up will allow the RMI registry to also come up before we start launching processes that want to register with the RMI registry.
+
+        This is kludge, though.  What we really need is a new process type specifically for RMI registries instead of "Java Process" which can do nothing but tell if the process exists.
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-22 - /home/oodt/cvs/pds/etc/network.xml: Ooops. Stop the *test* rmiregistry and web server when shutting down the test network, not the *operations* servers.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-08-22 - /home/oodt/cvs/pds/src/www/apps/apps/pds/advanced.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/footer.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/index.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/power.jsp: Few minor adjustments to the wording of things
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-22 - /home/oodt/cvs/pds/etc/network.xml: Ooops. Fix unclosed quoted string.
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-22 - /home/oodt/cvs/pds/etc/network.xml: Update labels.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-08-22 - /home/oodt/cvs/pds/src/www/apps/apps/pds/about.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/advanced.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/footer.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/glossary.html, /home/oodt/cvs/pds/src/www/apps/apps/pds/index.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/power.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/release.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/results.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/viewProfile.jsp: Popup alert when user selects more than one parameter on the quick search page, or selects nothing on the quick/advanced/power search pages.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-08-21 - /home/oodt/cvs/pds/src/www/apps/apps/pds/results.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/release.jsp: Change import jpl.oodt.profile_service to jpl.oodt.profile
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-20 - /home/oodt/cvs/pds/src/doc/release/changelog/index.html: Update changelog for 1.0.5.
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-20 - /home/oodt/cvs/pds/src/doc/release/news/index.html: Update news for 1.0.5.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-08-20 - /home/oodt/cvs/pds/src/www/apps/apps/pds/viewProfile.jsp: Fixed import jpl/oodt/profile/Profile
+      </action>
+      <action dev="thuytran" type="update">
+        2002-08-19 - /home/oodt/cvs/pds/src/java/jpl/pds/beans/SearchBean.java, /home/oodt/cvs/pds/src/java/jpl/pds/beans/pds.properties: Change PDS profile server reference to urn:eda:rmi:JPL.PDS.Profile
+      </action>
+      <action dev="thuytran" type="update">
+        2002-08-19 - /home/oodt/cvs/pds/src/java/jpl/pds/util/DisplayOptions.java:
+	Add a new argument to displayValList for the caller to specify &lt;option&gt; and &lt;value&gt; for a SELECT element object
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-16 - /home/oodt/cvs/pds/src/www/xml/ALLProdServProf.xml: Update with RMI based product server locations.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-08-16 - /home/oodt/cvs/pds/src/www/apps/apps/pds/images/reset.jpg, /home/oodt/cvs/pds/src/www/apps/apps/pds/images/space.jpg: new graphics for PDS
+      </action>
+      <action dev="thuytran" type="update">
+        2002-08-16 - /home/oodt/cvs/pds/src/www/apps/apps/pds/images/advanced.jpg, /home/oodt/cvs/pds/src/www/apps/apps/pds/images/power.jpg, /home/oodt/cvs/pds/src/www/apps/apps/pds/images/quick.jpg, /home/oodt/cvs/pds/src/www/apps/apps/pds/images/title.jpg, /home/oodt/cvs/pds/src/www/apps/apps/pds/images/title_hm.jpg: Graphics change.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-08-15 - /home/oodt/cvs/pds/src/www/apps/apps/pds/advanced.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/advancedSearchParams.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/index.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/paramsList.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/power.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/quickSearchParams.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/quickSearchParamsB.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/release.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/results.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/utils.js, /home/oodt/cvs/pds/src/www/apps/apps/pds/viewProfile.jsp: Incorporate feedbacks from PDS users
+      </action>
+      <action dev="thuytran" type="update">
+        2002-08-15 - /home/oodt/cvs/pds/src/java/jpl/pds/beans/SearchBean.java: Return the profile in raw format and let the caller displays it in his desired format.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-08-15 - /home/oodt/cvs/pds/src/java/jpl/pds/servlets/QueryServlet.java: Retrieve the instrument_host_id to display on the results page
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-15 - /home/oodt/cvs/pds/src/java/jpl/pds/beans/SearchBean.java: Use new jpl.oodt.profile interfaces.
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-14 - /home/oodt/cvs/pds/etc/network.xml: Update for RMI based product servers.
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-09 - /home/oodt/cvs/pds/etc/network.xml: Update installation dir of PDS software on starbase.
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-09 - /home/oodt/cvs/pds/etc/network.xml: Update with new hostname of ASU server.
+      </action>
+      <action dev="jerry" type="update">
+        2002-08-09 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipNFileHandler.java: Version that uses arrays.
+      </action>
+      <action dev="jerry" type="update">
+        2002-08-08 - /home/oodt/cvs/pds/src/java/jpl/pds/server/RawFileHandlerTest.java: Change File arg to queryForFile to array of Files.  Placed pds.util.PDS2FName in a loop of look for label files in each file passed in the array.
+      </action>
+      <action dev="jerry" type="update">
+        2002-08-08 - /home/oodt/cvs/pds/src/java/jpl/pds/server/RawFileHandler.java: Changed File arg in queryForFile to array of Files. Needed to allow array of files in ZipNFileHandler.
+      </action>
+      <action dev="jerry" type="update">
+        2002-08-08 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java: Changed File arg in queryForFile to array of File. Only first element of array is accessed. Changed label file search to use pds.util.PDS2FName.
+      </action>
+      <action dev="jerry" type="update">
+        2002-08-08 - /home/oodt/cvs/pds/src/java/jpl/pds/server/LabelQueryHandlerTest.java: Changed File arg in TestHandler to array of Files.
+      </action>
+      <action dev="jerry" type="update">
+        2002-08-08 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java: Added ZipNFileHandler to list of FileQueryHandler. Check query for multiple files and create an array of files to pass to handlers. Only ZipNFileHandler will be passed more than one element.
+      </action>
+      <action dev="jerry" type="update">
+        2002-08-08 - /home/oodt/cvs/pds/src/java/jpl/pds/server/LabelQueryHandler.java: File arg changed to array of files. Only the first element of array us accessed. Needed to make a common interface to ZipNFileHandler.
+      </action>
+      <action dev="jerry" type="update">
+        2002-08-08 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQuerier.java: File arg to queryForFile changed to array of files. Needed to make a common interface with ZipNFileHandler.
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-02 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipNFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/RawFileHandler.java: Remove unnecessary imports of obsolete jpl.oodt.product_service.
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-02 - /home/oodt/cvs/pds/src/java/jpl/pds/server/LabelQueryHandlerTest.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/LabelQueryHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQuerier.java, /home/oodt/cvs/pds/src/java/jpl/pds/mola/MolaQueryHandler.java: Use jpl.oodt.product instead of jpl.oodt.product_service.
+      </action>
+      <action dev="kelly" type="update">
+        2002-08-02 - /home/oodt/cvs/pds/etc/network.xml: Fix Formal Public Identifier reference. Add NMSU and its product servers back.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-31 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java: Clean up end-of-line problems.
+      </action>
+      <action dev="jerry" type="update">
+        2002-07-30 - /home/oodt/cvs/pds/src/java/jpl/pds/util/PDS2FName.java: Improve search for file references in label files
+      </action>
+      <action dev="jerry" type="update">
+        2002-07-30 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java: Added reference to ZipNFileHandler
+      </action>
+      <action dev="jerry" type="update">
+        2002-07-30 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipNFileHandler.java: Initial version using PDS2FName and Info-Zip.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-25 - /home/oodt/cvs/pds/build.xml, /home/oodt/cvs/pds/src/java/jpl/pds/util/Contact.java, /home/oodt/cvs/pds/src/java/jpl/pds/util/Control.java, /home/oodt/cvs/pds/src/java/jpl/pds/util/Labeled.java, /home/oodt/cvs/pds/src/java/jpl/pds/util/Network.java, /home/oodt/cvs/pds/src/java/jpl/pds/util/NetworkTest.java, /home/oodt/cvs/pds/src/java/jpl/pds/util/Process.java, /home/oodt/cvs/pds/src/java/jpl/pds/util/ProcessController.java, /home/oodt/cvs/pds/src/java/jpl/pds/util/Sequence.java, /home/oodt/cvs/pds/src/java/jpl/pds/util/Server.java, /home/oodt/cvs/pds/src/java/jpl/pds/util/ServerController.java, /home/oodt/cvs/pds/src/java/jpl/pds/util/Set.java, /home/oodt/cvs/pds/src/java/jpl/pds/util/Utility.java, /home/oodt/cvs/pds/src/java/jpl/pds/util/UtilityException.java, /home/oodt/cvs/pds/src/java/jpl/pds/util/UtilityTest.java, /home/oodt/cvs/pds/src/www/dtd/network.dtd: Upgrade to xmlrpc 1.1. Refactor EDRN and PDS network control programs into a common EDM network control program.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-20 - /home/oodt/cvs/pds/etc/network.xml: Get rid of PDS.Atmos.Product and its .Test counterpart.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-20 - /home/oodt/cvs/pds/etc/network.xml: Comment-out NMSU.  Add NAIF test servers.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-19 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ServerException.java: Exception in a PDS server.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-19 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java: Use a file accessor to locate files instead of constructing the path itself.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-19 - /home/oodt/cvs/pds/src/java/jpl/pds/server/NetShareAccessor.java: File accessor for files on shares in a Windows cluster, like at wustl.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-19 - /home/oodt/cvs/pds/src/java/jpl/pds/server/StdFileAccessor.java: Standard file accessor.
+
+        This accessor locates file by appending any file name onto a root product directory, specified by the system property named by FileQueryHandler.PRODUCT_DIR_PROPERTY.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-19 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileAccessor.java: A file accessor is a way to access files.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-18 - /home/oodt/cvs/pds/etc/jacorb.properties: Set jacorb verbosity to level 1, otherwise important error messages get suppressed.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-18 - /home/oodt/cvs/pds/build.xml: Include test data files in resource.binary.files list.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-18 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java: Refactor to conform to simplified FileQuerier interface.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-18 - /home/oodt/cvs/pds/src/java/jpl/pds/server/RawFileHandlerTest.java: Unit test for RawFileHandler.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-18 - /home/oodt/cvs/pds/src/java/jpl/pds/server/RawFileHandler.java: Refactor to conform to simplified FileQuerier interface.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-18 - /home/oodt/cvs/pds/src/java/jpl/pds/server/LabelQueryHandlerTest.java: Unit test for LabelQueryHandler.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-18 - /home/oodt/cvs/pds/src/java/jpl/pds/server/LabelQueryHandler.java: Refactor to conform to simplified FileQuerier interface.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-18 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java: Refactor to move determination of path to product file to one place (here) and to name the product dir property with a constant for reuse in unit tests.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-18 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQuerier.java: Refactor interface to remove unused returnType parameter and to change String filename to File file.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-18 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileHandlerTestCase.java: Abstract test case for file query handlers.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-18 - /home/oodt/cvs/pds/src/java/jpl/pds/server/testdata/img.jpg, /home/oodt/cvs/pds/src/java/jpl/pds/server/testdata/pds.lbl, /home/oodt/cvs/pds/src/java/jpl/pds/server/testdata/raw.dat: Test data for PDS unit tests.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-18 - /home/oodt/cvs/pds/etc/jacorb.properties: Double jacorb's retry limit.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-17 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java: Set the resource ID to "products.zip" so the product servlet can use it as a suggested filename to a browser.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-17 - /home/oodt/cvs/pds/src/java/jpl/pds/server/RawFileHandler.java: Set the resource ID to the name of the file being retrieved so the product handler can use it as a suggested filename to a browser.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-17 - /home/oodt/cvs/pds/src/doc/release/news/index.html: Update news for 1.0.5.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-17 - /home/oodt/cvs/pds/src/doc/release/changelog/index.html: Update changelog for 1.0.5.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-17 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Server.java: Add proxy access to a server manager's port manager.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-17 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Control.java: Add a reset command to reset all server managers.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-16 - /home/oodt/cvs/pds/etc/jacorb.properties: Adjust CORBA connection and timeout parameters and use weak references for reference caching.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-16 - /home/oodt/cvs/pds/build.xml: Add activation.jar and mail.jar to a release. Bump version number to 1.0.5.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-15 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Process.java: Implement getEventAddresses, setEventAddresses.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-14 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java, /home/oodt/cvs/pds/src/java/jpl/pds/server/RawFileHandler.java: Extend the ChunkedFileHandler and let it manage product fragmentation.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-14 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ChunkedFileHandler.java: Abstract querier that chunks product results.
+
+        This forms the base of the raw and zip file handlers by providing management for chunked product retrieval.  It hands out chunks on demand, accepts closing out of products, and includes facilities to timeout products that are never retrieved in their entireties as well deletion of temporary products during shutdown.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-13 - /home/oodt/cvs/pds/src/java/jpl/pds/server/LabelQueryHandler.java: Implement chunked product retrieval as no-ops since labels are never fragmented.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-13 - /home/oodt/cvs/pds/src/java/jpl/pds/server/RawFileHandler.java: Prefix product IDs with "raw" so they can be clearly differentiated from other chunked products.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-13 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQuerier.java: Add methods to retrieve a chunk and close off a chunked product.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-13 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java: Allow each file querier a chance to handle a chunked product request.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-13 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java: Create zip archives using temporary files in order to reduce gigantic memory usage. Support chunked retrieval of zip archives.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/beans/PDSKeywords.data: Add database field &lt;-&gt; PDS keyword mapping for MISSION_START_DATE and MISSION_STOP_DATE
+      </action>
+      <action dev="thuytran" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/beans/SearchBean.java: Add msnstrtdate and msnstopdate to the list of profile elements to be retrieved by the server.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/servlets/QueryServlet.java: Add msnstopdate to the list of query attributes so we can query the profile server for active mission data sets (msnstopdate=UNK)
+      </action>
+      <action dev="thuytran" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/www/apps/apps/pds/advanced.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/index.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/power.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/release.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/results.jsp: Add link to display list of active mission data sets.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Control.java: Fix command-line usage check.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Control.java: Increase join timeout to 5 minutes.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/etc/network.xml: Update NAIF's installation directory to their symbolic link, /usr/local/pds.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Control.java: Fix bug that prevented installation on all servers. Add a method to delete files from a set of servers.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java: Log the query object received if we get a non-ONLINE_FILE_SPECIFICATION_NAME query.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/util/testNetwork.xml: Update unit test data to include some process sets.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Server.java: Add a method to get an Ant manager. Add missing javadoc.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Sequence.java: Add a method to retrieve all of the processes in an execution sequence.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Process.java: Make the name of a process optional; if not specified, it defaults to its ID attribute in the XML file.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/util/NetworkTest.java: Add unit tests to test process sets.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Network.java: Provide accessors for process sets and parsing from XML description of process sets.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/www/dtd/network.dtd: Add a set element to the DTD.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/etc/network.xml: Define two sets of processes for PDS: an "ops" set and a "dev" set.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Set.java: A set of related processes.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Control.java: Refactor so adding new network-wide control features are a lot easier. Add a way to kill a process on a remote server. Support sets of processes.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/util/ServerController.java: Controller for a server.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-12 - /home/oodt/cvs/pds/src/java/jpl/pds/util/ProcessController.java: Controller for a process.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-07-08 - /home/oodt/cvs/pds/src/www/apps/apps/pds/advanced.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/index.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/paramsList.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/power.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/release.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/results.jsp: Add hyperlink to display the latest mission data set releases.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-07-08 - /home/oodt/cvs/pds/src/java/jpl/pds/beans/SearchBean.java: Query the profile server to retrieve the latest mission data releases.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-08 - /home/oodt/cvs/pds/etc/network.xml: Add PDS installation directory on pdsimg.jpl.nasa.gov.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-08 - /home/oodt/cvs/pds/etc/network.xml: Add PDS image node.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-07 - /home/oodt/cvs/pds/etc/network.xml: Add image node to PDS network description.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-03 - /home/oodt/cvs/pds/src/www/xml/ALLProdServProf.xml: Remove SYSTEM keyword.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-03 - /home/oodt/cvs/pds/src/www/xml/ALLProdServProf.xml: Profiles of all profile servers in PDS-D.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-02 - /home/oodt/cvs/pds/src/java/jpl/pds/server/ZipFileHandler.java: Implement the FileQuerier interface. Replace wildcard imports with imports of specific classes. Add missing javadoc.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-02 - /home/oodt/cvs/pds/src/java/jpl/pds/server/LabelQueryHandler.java: Implement the FileQuerier interface; add some missing javadoc.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-02 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQuerier.java: A file querier queries for files.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-02 - /home/oodt/cvs/pds/src/java/jpl/pds/server/FileQueryHandler.java: Replace switch statement with interface delegation. There are no switches or if/else's in object oriented programming.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-02 - /home/oodt/cvs/pds/src/java/jpl/pds/server/RawFileHandler.java: Chunk a product if its size exceeds a configurable threshold.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-02 - /home/oodt/cvs/pds/src/java/jpl/pds/server/RawFileHandler.java: Sort imports; add javadoc.
+      </action>
+      <action dev="kelly" type="update">
+        2002-07-02 - /home/oodt/cvs/pds/src/java/jpl/pds/server/RawFileHandler.java: Chunk results if the raw file's size exceeds a configurable threshold.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-07-01 - /home/oodt/cvs/pds/src/www/apps/apps/pds/advanced.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/power.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/results.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/utils.js: 1. Add links on the advanced and power pages, back to the quick search page, 2. Don't pass INSTRUMENT_HOST_NAME to the custom and default browsers because it is already appended to the URLs saved in the profile., 3. Make the "last updated" date at the bottom of the results page be the current date
+      </action>
+      <action dev="jerry" type="update">
+        2002-06-30 - /home/oodt/cvs/pds/src/java/jpl/pds/util/PDS2FName.java: Add package for util directory
+      </action>
+      <action dev="jerry" type="update">
+        2002-06-30 - /home/oodt/cvs/pds/src/java/jpl/pds/util/PDS2FName.java: First version of module to extract filename from PDS label files.
+      </action>
+      <action dev="kelly" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/src/java/jpl/pds/util/testNetwork.xml: Test network, used by NetworkTest unit test.
+      </action>
+      <action dev="kelly" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/etc/network.xml: XML description of the PDS-D network.
+
+        STEVE: when new servers come online, please edit this file.
+      </action>
+      <action dev="kelly" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/src/java/jpl/pds/util/UtilityTest.java: Unit test for class Utility.
+      </action>
+      <action dev="kelly" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/src/java/jpl/pds/util/UtilityException.java: An exception with a utility.
+      </action>
+      <action dev="kelly" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Utility.java: Utility functions.
+      </action>
+      <action dev="kelly" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Server.java: A server is a system that runs a server manager.
+      </action>
+      <action dev="kelly" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Sequence.java: An execution (startup or shutdown) sequence.
+      </action>
+      <action dev="kelly" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Process.java: A process deployed in the PDS-D network.
+      </action>
+      <action dev="kelly" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/src/java/jpl/pds/util/NetworkTest.java: Unit test for the PDS-D network.
+      </action>
+      <action dev="kelly" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Network.java: The PDS-D Network.
+      </action>
+      <action dev="kelly" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Labeled.java: Interface to indicate that something has a label.
+      </action>
+      <action dev="kelly" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Control.java: Command-line control of the PDS network. Enables you to start, stop, and check on the server processes that comprise the network. It also lets you install new jar files on all server systems.
+      </action>
+      <action dev="kelly" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Contact.java: Style: alphabetize imports.
+      </action>
+      <action dev="kelly" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/src/java/jpl/pds/util/Contact.java: A contact (such as a system administrator) who is responsible for a server running a server manager.
+      </action>
+      <action dev="kelly" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/src/www/dtd/network.dtd: DTD for describing the PDS-D network.
+      </action>
+      <action dev="thuytran" type="update">
+        2002-06-28 - /home/oodt/cvs/pds/src/www/apps/apps/pds/paramsList.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/results.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/utils.js: Update values for the GUI pull downs and selection boxes
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+      <action dev="" type="update">
+      </action>
+    </release>
+  </body>
+</document>

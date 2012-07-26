@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE web-app
+  PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+  "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+  <!-- The switcher takes requests for certain resource classes and
+       forwards them to specific web resources.  The resource class
+       is given as a request parameter (resclass=data.granule, for
+       example).  All other parameters get passed to the web resource.
+  -->
+  <resource-ref>
+  	<description>Sybase Database</description>
+  	<res-ref-name>jdbc/pdsprofile</res-ref-name>
+  	<res-type>javax.sql.DataSource</res-type>
+  	<res-auth>Container</res-auth>
+  </resource-ref>
+
+	<context-param>
+		<param-name>prodserver.url</param-name>
+		<param-value>http://starbrite.jpl.nasa.gov/</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>pdshome.url</param-name>
+		<param-value>http://pds.jpl.nasa.gov/</param-value>
+	</context-param>
+	
+	
+	
+  <servlet>
+    <servlet-name>switcher</servlet-name>
+    <servlet-class>jpl.pds.servlets.SwitchingQueryServlet</servlet-class>
+    <init-param>
+      <param-name>data.product</param-name>
+      <param-value>/pds/viewProductProfile.jsp</param-value>
+    </init-param>
+    <init-param>
+      <param-name>data.dataset</param-name>
+      <param-value>/pds/viewDataset.jsp</param-value>
+    </init-param>
+  </servlet>
+
+  <!-- The product servlet answers queries for products.  It delivers
+       actual product data as the response.
+  -->
+  <servlet>
+    <servlet-name>product</servlet-name>
+    <servlet-class>jpl.eda.product.ProductServlet</servlet-class>
+    <init-param>
+      <param-name>recorders</param-name>
+      <param-value>jpl.eda.product.HTTPFormRecorder</param-value>
+    </init-param>
+    <init-param>
+      <param-name>recorder.url</param-name>
+      <param-value>http://oodt.jpl.nasa.gov/data-stats/recorder</param-value>
+    </init-param>
+    <init-param>
+      <param-name>recorder.id</param-name>
+      <param-value>PDS</param-value>
+    </init-param>
+  </servlet>
+
+  <!-- The query servlet answers generic queries.  It expects
+       an XML query document (or its specific parts) as request
+       parameters and returns an XML query document adorned with
+       matching results.
+  -->
+  <servlet>
+    <servlet-name>query</servlet-name>
+    <servlet-class>jpl.eda.query.QueryServlet</servlet-class>
+  </servlet>
+
+  <!-- The upload servlet is used for system performance testing.
+       It accepts data and reports back the rate at which it received
+       the data.
+  -->
+  <servlet>
+    <servlet-name>upload</servlet-name>
+    <servlet-class>Upload</servlet-class>
+  </servlet>
+
+  <!-- /upload => the upload servlet. -->
+  <servlet-mapping>
+    <servlet-name>upload</servlet-name>
+    <url-pattern>/upload</url-pattern>
+  </servlet-mapping>
+
+  <!-- Invoker style way to address the product servlet. -->
+  <servlet-mapping>
+    <servlet-name>product</servlet-name>
+    <url-pattern>/servlet/jpl.eda.product.ProductServlet</url-pattern>
+  </servlet-mapping>
+
+  <!-- /prod => the preferred way of addressing the product servlet. -->
+  <servlet-mapping>
+    <servlet-name>product</servlet-name>
+    <url-pattern>/prod</url-pattern>
+  </servlet-mapping>
+
+  <!-- /query => the query serlvet -->
+  <servlet-mapping>
+    <servlet-name>query</servlet-name>
+    <url-pattern>/q</url-pattern>
+  </servlet-mapping>
+
+  <!-- /query => Yes, that's the way Steve wanted to address
+       the switching servlet.
+  -->
+  <servlet-mapping>
+    <servlet-name>switcher</servlet-name>
+    <url-pattern>/query</url-pattern>
+  </servlet-mapping>
+</web-app>
