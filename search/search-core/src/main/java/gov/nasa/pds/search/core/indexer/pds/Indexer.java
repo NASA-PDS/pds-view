@@ -4,9 +4,8 @@
 // $Id$ 
 //
 
-package gov.nasa.pds.search.core.index;
+package gov.nasa.pds.search.core.indexer.pds;
 
-import gov.nasa.pds.search.core.parse.ProfileParser;
 
 import java.io.File;
 import java.io.FileInputStream;

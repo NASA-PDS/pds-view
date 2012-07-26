@@ -7,8 +7,8 @@
  */
 package gov.nasa.pds.search.core.extractor;
 
-import gov.nasa.pds.search.core.RegistryExtractor;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -27,7 +27,7 @@ import org.xml.sax.SAXParseException;
  * @author Jordan Padams
  * 
  */
-public class SearchAttributes {
+public class SearchFields {
 
 	private Document doc;
 	private ArrayList attrNames;
@@ -37,28 +37,23 @@ public class SearchAttributes {
 
 	private Logger log = Logger.getLogger(this.getClass().getName());
 
-	public SearchAttributes(String filename) {
+	public SearchFields(String filename) throws ProductClassException {
 		try {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
-			doc = docBuilder.parse(RegistryExtractor.class
-					.getResourceAsStream(filename));
+			doc = docBuilder.parse(new File(filename));
 
 			// normalize text representation
 			doc.getDocumentElement().normalize();
 
 			setAttrInfo();
 		} catch (SAXParseException e) {
-			System.err.println("** Parsing error" + ", line "
+			throw new ProductClassException("SAXParseException: Parsing error" + ", line "
 					+ e.getLineNumber() + ", uri " + e.getSystemId());
-			System.err.println(" " + e.getMessage());
-
 		} catch (SAXException e) {
-			Exception x = e.getException();
-			((x == null) ? e : x).printStackTrace();
-
+			throw new ProductClassException("SAXException: " + e.getMessage());
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -158,13 +153,19 @@ public class SearchAttributes {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		SearchAttributes attributes = new SearchAttributes("targetconfig.xml");
+		SearchFields attributes;
+		try {
+			attributes = new SearchFields("targetconfig.xml");
 
-		System.out.println("query = " + attributes.getQuery());
-		for (int i = 0; i < attributes.getNumAttr(); i++) {
-			System.out.println("name = " + attributes.getName(i));
-			System.out.println("index = " + attributes.getType(i));
-			System.out.println("value = " + attributes.getValue(i));
+			System.out.println("query = " + attributes.getQuery());
+			for (int i = 0; i < attributes.getNumAttr(); i++) {
+				System.out.println("name = " + attributes.getName(i));
+				System.out.println("index = " + attributes.getType(i));
+				System.out.println("value = " + attributes.getValue(i));
+			}
+		} catch (ProductClassException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}

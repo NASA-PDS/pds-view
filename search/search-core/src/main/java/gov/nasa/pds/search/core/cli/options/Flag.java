@@ -5,35 +5,45 @@ import gov.nasa.pds.search.core.constants.Constants;
 import org.apache.commons.cli.Options;
 
 public enum Flag {
+	/** Flag to run all components of index */
+	ALL("a", "all",
+			"Run all components of the Search Core [default]"),
+
+	/** Flag to specify a configuration directory. */
+	CONFIG("c", "config-dir", "directory", String.class,
+			"Specify the product class configuration home directory (the directory containing product-classes.txt and the accompanying config files) (Default: $SEARCH_CORE_HOME/conf/pds/"),
+			
+	/** Flag to run in debug mode. */
+	DEBUG("d", "debug", "Turn on debugger."),
+			
+	/** Flag to run the Registry Extractor component. */
+	EXTRACTOR("e", "extractor", "Execute component to extract data from registry"),
+
 	/** Flag to display the help. */
 	HELP("h", "help", "Display usage."),
+	
+	/** Flag to specify Search Service Home. */
+	SERVICE_HOME("H", "search-service-home", "directory", String.class,
+			"Specify the Search Service Home directory. (Default: SEARCH_SERVICE_HOME environment variable)"),
+	
+	/** Flag to generate a Solr Index. */
+	SOLR("i", "solr-indexer", "Execute component to generate a Solr Index"),
 
-	/** Flag to output the logging to a file. */
-	SOLR("s", "solr-indexer", "Run Solr Indexer"),
-
-	/** Flag to specify the path of a velocity template. */
-	EXTRACTOR("e", "extractor", "Run Registry Extractor"),
-
-	/** Flag to specify a file containing multiple PDS3 Label paths. */
-	PDS("p", "pds-indexer", "Run PDS Indexer"),
-
-	/** Flag to specify path for the context-classes.xml */
-	ALL("a", "all",
-			"Run Registry Extractor, Solr Indexer, and PDS Indexer [default]"),
-
-	/** Flag to display the version. */
-	VERSION("V", "version", "Display application version."),
-
-	/** Flag to display the version. */
-	DEBUG("d", "debug", "Turn on debugger."),
-
-	/** Flag to display the version. */
-	REGISTRY("r", "registry", "url", String.class,
-			"Specify Registry Service instance to query. (Default: " + Constants.REGISTRY_URL + ")"),
+	/** Flag to specify query max for registry. */
+	MAX("m", "query-max", "integer", Integer.class,
+			"Specify the maximum number of registry values to be returned from query. (Default: " + Constants.QUERY_MAX + ")"),
 	
 	/** Flag to display the version. */
-	MAX("m", "query-max", "query max", String.class,
-			"Specify the maximum number of registry values to be returned from query. (Default: " + Constants.QUERY_MAX + ")");
+	REGISTRY("r", "registry", "url", String.class,
+			"Specify Registry Service instance to query. <REQUIRED>"),
+			
+	/** Flag to display the version. */
+	VERSION("V", "version", "Display application version.");
+	
+	/* Flag to specify a file containing multiple PDS3 Label paths. 
+	 * PDS("p", "pds-indexer", "Run PDS Indexer"),
+	 * 
+	 */
 
 	/** The short name of the flag. */
 	private final String shortName;
@@ -65,11 +75,13 @@ public enum Flag {
 		options.addOption(new ToolsOption(VERSION));
 		options.addOption(new ToolsOption(SOLR));
 		options.addOption(new ToolsOption(EXTRACTOR));
-		options.addOption(new ToolsOption(PDS));
+		//options.addOption(new ToolsOption(PDS));
 		options.addOption(new ToolsOption(ALL));
 		options.addOption(new ToolsOption(DEBUG));
 		options.addOption(new ToolsOption(REGISTRY));
+		options.addOption(new ToolsOption(SERVICE_HOME));
 		options.addOption(new ToolsOption(MAX));
+		options.addOption(new ToolsOption(CONFIG));
 	}
 
 	/**

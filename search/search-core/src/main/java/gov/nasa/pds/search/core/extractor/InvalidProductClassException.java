@@ -4,17 +4,17 @@
 // $Id$ 
 //
 
-package gov.nasa.pds.search.core;
+package gov.nasa.pds.search.core.extractor;
 
 /**
  * @author pramirez
  * @version $Revision$
  * 
  */
-public class InvalidExtractorException extends Exception {
+public class InvalidProductClassException extends Exception {
 	private static final long serialVersionUID = 5947032886827182399L;
 
-	public InvalidExtractorException(String message) {
+	public InvalidProductClassException(String message) {
 		super(message);
 	}
 

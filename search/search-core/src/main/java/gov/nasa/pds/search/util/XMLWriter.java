@@ -1,7 +1,7 @@
 /**
  * 
  */
-package gov.nasa.pds.search.core.extractor;
+package gov.nasa.pds.search.util;
 
 import java.io.File;
 import java.util.ArrayList;

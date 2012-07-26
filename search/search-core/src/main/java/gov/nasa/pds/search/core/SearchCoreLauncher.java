@@ -3,8 +3,9 @@ package gov.nasa.pds.search.core;
 import gov.nasa.pds.search.core.cli.options.Flag;
 import gov.nasa.pds.search.core.cli.options.InvalidOptionException;
 import gov.nasa.pds.search.core.constants.Constants;
-import gov.nasa.pds.search.core.index.Indexer;
-import gov.nasa.pds.search.core.index.SolrIndexer;
+import gov.nasa.pds.search.core.extractor.RegistryExtractor;
+import gov.nasa.pds.search.core.indexer.pds.Indexer;
+import gov.nasa.pds.search.core.indexer.solr.SolrIndexer;
 import gov.nasa.pds.search.util.ToolInfo;
 
 import java.io.File;
@@ -22,6 +23,9 @@ import org.apache.commons.cli.ParseException;
 
 public class SearchCoreLauncher {
 
+	private static final String PDS_CONFIG_PATH="/conf/pds";
+	private static final String SEARCH_SERVICE_ENVVAR="SEARCH_SERVICE_HOME";
+	
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
 	private File searchServiceHome;
@@ -32,6 +36,7 @@ public class SearchCoreLauncher {
 	private boolean debug;
 	private String registryUrl;
 	private int queryMax;
+	private String configDir;
 
 	public SearchCoreLauncher() {
 		this.searchServiceHome = null;
@@ -42,6 +47,7 @@ public class SearchCoreLauncher {
 		this.debug = false;
 		this.registryUrl = null;
 		this.queryMax = -1;
+		this.configDir = null;
 
 	}
 
@@ -52,7 +58,7 @@ public class SearchCoreLauncher {
 	public final void displayHelp() {
 		final int maxWidth = 80;
 		final HelpFormatter formatter = new HelpFormatter();
-		formatter.printHelp(maxWidth, "search-core <SEARCH_SERVICE_HOME> [options]", null,
+		formatter.printHelp(maxWidth, "search-core -" + Flag.REGISTRY.getShortName() + " <" + Flag.REGISTRY.getArgName() + "> [options]", null,
 				Flag.getOptions(), null);
 	}
 
@@ -111,13 +117,17 @@ public class SearchCoreLauncher {
 			} else if (o.getOpt().equals(Flag.SOLR.getShortName())) {
 				this.solrFlag = true;
 				this.allFlag = false;
-			} else if (o.getOpt().equals(Flag.PDS.getShortName())) {
+			} 
+			/* Commented out - This creates separate index in catalog_index directory.
+			else if (o.getOpt().equals(Flag.PDS.getShortName())) {
 				this.pdsFlag = true;
 				this.allFlag = false;
-			} else if (o.getOpt().equals(Flag.DEBUG.getShortName())) {
+			}*/ else if (o.getOpt().equals(Flag.DEBUG.getShortName())) {
 				this.debug = true;
 			} else if (o.getOpt().equals(Flag.REGISTRY.getShortName())) {
 				this.registryUrl = o.getValue();
+			}  else if (o.getOpt().equals(Flag.SERVICE_HOME.getShortName())) {
+				this.searchServiceHome = new File(getAbsolutePath("Search Service Home", o.getValue().trim())); 
 			} else if (o.getOpt().equals(Flag.MAX.getShortName())) {
 				try {
 					this.queryMax = Integer.parseInt(o.getValue());
@@ -125,24 +135,61 @@ public class SearchCoreLauncher {
 					throw new InvalidOptionException("Query Max value must be an integer value.");
 				}
 				
-			}
+			}  else if (o.getOpt().equals(Flag.CONFIG.getShortName())) {
+				this.configDir = getAbsolutePath("Config Dir", o.getValue().trim());
+				
+				// Check that the config dir contains the product class properties file
+				if (!Arrays.asList((new File(this.configDir)).list()).contains(Constants.PC_PROPS)) {
+					throw new InvalidOptionException(Constants.PC_PROPS + " does not exist in directory "
+							+ this.configDir);					
+				}					
+			} 
 		}
 
-		if (line.getArgList().size() != 0) {
-			this.searchServiceHome = new File(line.getArgList().get(0).toString());
-			if (!this.searchServiceHome.exists()) {
-				throw new InvalidOptionException("Search Service Home does not exist: "
-						+ this.searchServiceHome);
-			}
-		} else {
-			throw new InvalidOptionException(
-					"Search Service Home not found in command-line.");
-		}
-
+		// Verify a registry URL was specified
 		if (this.registryUrl == null) {
-			this.registryUrl = Constants.REGISTRY_URL;
+			throw new InvalidOptionException("Registry URL must be specified with " + Flag.REGISTRY.getShortName() + " flag.");
+		}
+		
+		// Set Search Service Home is not specified
+		if (this.searchServiceHome == null) {
+			String path = System.getenv(SEARCH_SERVICE_ENVVAR);
+			
+			if (path.equals("")) {
+				path = System.getProperty("user.dir");
+			}
+			this.searchServiceHome = new File(getAbsolutePath("Search Service Home", path));
+		}
+		
+		// Set config directory if not specified
+		if (this.configDir == null) {
+			this.configDir = (new File(System.getProperty("java.class.path"))).getParentFile().getParent() + PDS_CONFIG_PATH;
 		}
 	}
+	
+	/**
+	 * Method to convert the file path to absolute, if relative, and check if file exists
+	 * 
+	 * @param fileType
+	 * @param filePath
+	 * @return
+	 * @throws InvalidOptionException
+	 */
+    private String getAbsolutePath(String fileType, String filePath) throws InvalidOptionException {
+		String finalPath = "";
+    	File testFile = new File(filePath);
+		if (!testFile.isAbsolute()) {
+			finalPath = System.getProperty("user.dir") + "/" + filePath;
+		} else {
+			finalPath = filePath;
+		}
+    	
+    	if (!(new File(finalPath)).exists()) {
+    		throw new InvalidOptionException(fileType + " does not exist: " + filePath);
+    	}
+    	
+    	return finalPath;
+    }
 
 	public void execute() {
 
@@ -150,7 +197,7 @@ public class SearchCoreLauncher {
 			try {
 				runRegistryExtractor();
 			} catch (Exception e) {
-				System.err.println("Error running TSE.");
+				System.err.println("Error running Registry Extractor.");
 				e.printStackTrace();
 			}
 		}
@@ -164,22 +211,25 @@ public class SearchCoreLauncher {
 			}
 		}
 
-		if (this.allFlag || this.pdsFlag) {
+		/**
+		 * TODO - Commenting this out for now because I don't see the purpose of this indexer code 
+		 */
+/*		if (this.allFlag || this.pdsFlag) {
 			try {
 				runIndexer();
 			} catch (Exception e) {
 				System.err.println("Error running Indexer.");
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 
 	private void runRegistryExtractor() throws Exception {
 		// TODO - Remove all references to TSE
-		this.LOG.info("Running TSE to create new TSE directory...");
+		this.LOG.info("Running Registry Extractor to create new XML data files...");
 		//String[] args = { this.registryUrl, this.searchServiceHome.getAbsolutePath(), this.queryMax };
 		//RegistryExtractor.main(args);
-		RegistryExtractor extractor = new RegistryExtractor(this.registryUrl, this.searchServiceHome.getAbsolutePath());
+		RegistryExtractor extractor = new RegistryExtractor(this.registryUrl, this.searchServiceHome.getAbsolutePath(), this.configDir);
 		if (this.queryMax > -1)
 			extractor.setQueryMax(this.queryMax);
 		
@@ -194,8 +244,10 @@ public class SearchCoreLauncher {
 			indexDir.mkdir();
 		}
 		
+		//String[] args = { this.searchServiceHome.getAbsolutePath() + "/index",
+		//		this.searchServiceHome.getAbsolutePath() + "/tse/extract" };
 		String[] args = { this.searchServiceHome.getAbsolutePath() + "/index",
-				this.searchServiceHome.getAbsolutePath() + "/tse/extract" };
+				this.searchServiceHome.getAbsolutePath() + "/registry-data" };
 		SolrIndexer.main(args);
 	}
 
@@ -209,8 +261,8 @@ public class SearchCoreLauncher {
 
 	public static void main(String[] args) throws Exception {
 		if (args.length == 0) {
-			System.out.println("\nType 'search-core -h' for usage");
-			System.exit(0);
+			System.out.println();
+			throw new Exception("\nType 'search-core -h' for usage");
 		}
 		try {
 			final SearchCoreLauncher launcher = new SearchCoreLauncher();
@@ -219,13 +271,15 @@ public class SearchCoreLauncher {
 			launcher.execute();
 			// launcher.closeHandlers();
 		} catch (final ParseException pEx) {
-			System.err.println("Command-line parse failure: "
+			/*System.err.println("Command-line parse failure: "
 					+ pEx.getMessage());
-			System.exit(1);
-		} catch (final Exception e) {
+			System.exit(0);*/
+			throw new Exception("Command-line parse failure: "
+					+ pEx.getMessage());
+		}/* catch (final Exception e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
-			System.exit(1);
-		}
+			System.exit(0);
+		}*/
 	}
 }

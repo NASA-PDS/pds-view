@@ -9,21 +9,16 @@ package gov.nasa.pds.search.core.extractor;
 import gov.nasa.pds.registry.client.RegistryClient;
 import gov.nasa.pds.registry.exception.RegistryClientException;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
-import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
-import gov.nasa.pds.registry.model.Identifiable;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.Slot;
-import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
-import gov.nasa.pds.search.core.ExtractionException;
-import gov.nasa.pds.search.core.InvalidExtractorException;
 import gov.nasa.pds.search.core.constants.Constants;
-import gov.nasa.pds.search.core.extractor.registry.ExtrinsicFilterTypes;
 import gov.nasa.pds.search.core.extractor.registry.MappingTypes;
-import gov.nasa.pds.search.core.extractor.registry.RegistrySlots;
+import gov.nasa.pds.search.core.extractor.registry.ExtrinsicObjectSlots;
+import gov.nasa.pds.search.util.XMLWriter;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -32,7 +27,6 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,7 +44,7 @@ import org.apache.commons.httpclient.util.DateParseException;
  * @version $Revision$
  * 
  */
-public class Extractor { // implements Extractor {
+public class ProductClass { // implements Extractor {
 	// Database configuration file default
 
 	/*public static final List<String> DATE_FIELDS = new ArrayList<String>() {
@@ -78,12 +72,12 @@ public class Extractor { // implements Extractor {
 	private String fname = "", fnameprefix = "tse", fnameext = "xml";
 	private String tval1;
 
-	private SearchAttributes searchAttrs;
+	private SearchFields searchAttrs;
 
 	//private Map colNames;
 	private Map finalVals;
 
-	private RegistrySlots slots;
+	private ExtrinsicObjectSlots slots;
 
 	private String lid;
 	//private String guid;
@@ -95,7 +89,7 @@ public class Extractor { // implements Extractor {
 
 	// private RegistryClient client;
 	private PrintWriter writer;
-	private Map<String, List<RegistrySlots>> associationMap;
+	private Map<String, List<ExtrinsicObjectSlots>> associationMap;
 
 	
 	private Map<String, List<String>> missingSlotsMap;
@@ -122,7 +116,7 @@ public class Extractor { // implements Extractor {
 	 * @param value
 	 *            - name of column properties file
 	 */
-	public Extractor(PrintWriter writer, String name, String file,
+	public ProductClass(PrintWriter writer, String name, String file,
 			String registryUrl, int queryMax) {
 		this.log.fine("In Generic Extractor");
 
@@ -138,24 +132,24 @@ public class Extractor { // implements Extractor {
 			this.queryMax = Constants.QUERY_MAX;
 		}
 
-		this.associationMap = new HashMap<String, List<RegistrySlots>>();
+		this.associationMap = new HashMap<String, List<ExtrinsicObjectSlots>>();
 
 		this.missingSlotsMap = new HashMap<String, List<String>>();
 		this.missingAssocTargets = new ArrayList<String>();
 
 		this.log.fine("Class name: " + classname);
 	}
-
+	
 	/**
 	 * (non-Javadoc)
 	 * 
-	 * @see gov.nasa.pds.tse.catalog.Extractor#extract()
+	 * @see gov.nasa.pds.ProductClass.catalog.Extractor#extract()
 	 */
-	public List extract(File extractorDir) throws ExtractionException {
+	public List query(File outputDir) throws ProductClassException {
 		// log.fine("confdir : " + confDir);
 		List instkeys = new ArrayList();
 
-		this.searchAttrs = new SearchAttributes(this.classFilename);
+		this.searchAttrs = new SearchFields(this.classFilename);
 
 		try {
 
@@ -170,12 +164,12 @@ public class Extractor { // implements Extractor {
 				this.log.fine(object.getLid() + " - " + object.getObjectType());
 				setColumnProperties(object);
 
-				XMLWriter xml = new XMLWriter(this.finalVals, extractorDir, this.oidseq,
+				XMLWriter xml = new XMLWriter(this.finalVals, outputDir, this.oidseq,
 						this.classname);
 
 				// Create the XML file
 				// log.info("Files placed in dir : " + extractorDir);
-				createXML(extractorDir);
+				createXML(outputDir);
 			}
 
 			displayWarnings();
@@ -183,8 +177,7 @@ public class Extractor { // implements Extractor {
 			// rs1.close();
 			// connection1.close();
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			this.log.warning("Exception " + ex.getClass().getName()
+			throw new ProductClassException("Exception " + ex.getClass().getName()
 					+ ex.getMessage());
 		}
 
@@ -242,7 +235,7 @@ public class Extractor { // implements Extractor {
 			String currName, currType, currVal;
 
 			setIdentifiers(extObject);
-			this.slots = new RegistrySlots(extObject);
+			this.slots = new ExtrinsicObjectSlots(extObject);
 			setAssociations(this.slots);
 
 			// Loop through class results beginning from top
@@ -290,22 +283,6 @@ public class Extractor { // implements Extractor {
 					// if (DATE_FIELDS.contains(currName))
 					// valArray = reformatDateFields(valArray);
 					this.finalVals.put(currName, valArray);
-				} else if (currType.equals(MappingTypes.SLOT_SINGLE)) { // Values
-																		// maps
-																		// to a
-																		// specific
-					this.valArray = new ArrayList(); // slot in the current object
-												// type
-					this.tval1 = remNull(this.slots.get(currVal).get(0)); // AND
-																		// ensures
-																		// that
-																		// certain
-																		// columns
-					this.valArray.add(cleanText(this.tval1)); // that are only allowed one
-													// value
-					this.finalVals.put(currName, this.valArray); // do not output a list
-														// (i.e. description,
-														// mission_desc)
 				} else if (currType.equals(MappingTypes.ASSOCIATION)) { // Value
 																		// maps
 																		// to an
@@ -334,7 +311,7 @@ public class Extractor { // implements Extractor {
 					}*/
 
 					if (foundAssociation) {
-						for (RegistrySlots assocSlots : this.associationMap
+						for (ExtrinsicObjectSlots assocSlots : this.associationMap
 								.get(assocType)) {
 							for (String value : assocSlots.get(values[1])) {
 								this.tval1 = cleanText(remNull(value));
@@ -369,7 +346,7 @@ public class Extractor { // implements Extractor {
 					 */
 
 				} else {
-					throw new InvalidExtractorException(
+					throw new InvalidProductClassException(
 							"Unknown Mapping Type - " + currType);
 				}
 			}
@@ -410,10 +387,12 @@ public class Extractor { // implements Extractor {
 			if (pr.getNumFound() != 0) {
 				for (ExtrinsicObject extrinsic : pr.getResults()) {
 					lid = extrinsic.getLid();
+					//lid = extrinsic.getGuid();
 					
 					// Use list to verify we haven't already included this product in the results
-					if (!lidList.contains(lid)) { 	
+					if (!lidList.contains(lid) && lid != null) { 	
 						results.add(client.getLatestObject(lid, ExtrinsicObject.class));
+						//results.add(client.getObject(lid, ExtrinsicObject.class));
 						lidList.add(lid);
 					}
 				}
@@ -503,7 +482,7 @@ public class Extractor { // implements Extractor {
 	 * 
 	 * @throws
 	 */
-	private void setAssociations(RegistrySlots slots) throws Exception {
+	private void setAssociations(ExtrinsicObjectSlots slots) throws Exception {
 		for (String assocType : (List<String>) this.searchAttrs.getAssociations()) {
 			// System.out.println(assocType + " - " + this.guid);
 
@@ -515,7 +494,7 @@ public class Extractor { // implements Extractor {
 				this.log.fine("Missing Association Slot : " + this.lid + " - "
 						+ assocType);
 			} else {
-				List<RegistrySlots> assocSlotList = getAssociationSlots(
+				List<ExtrinsicObjectSlots> assocSlotList = getAssociationSlots(
 						assocLidList, assocType);
 				if (!assocSlotList.isEmpty()) {
 					this.associationMap.put(assocType, assocSlotList);
@@ -532,7 +511,7 @@ public class Extractor { // implements Extractor {
 	 * @return
 	 * @throws Exception
 	 */
-	private List<RegistrySlots> getAssociationSlots(List<String> assocLidList,
+	private List<ExtrinsicObjectSlots> getAssociationSlots(List<String> assocLidList,
 			String assocType) throws Exception {
 		// PagedResponse<Association> assocResponse =
 		// getAssociationResponse(assocType, guid);
@@ -540,7 +519,7 @@ public class Extractor { // implements Extractor {
 		// assocResponse.getNumFound());
 		// PagedResponse<ExtrinsicObject> extResponse =
 		// getExtrinsics(ExtrinsicFilterTypes.LIDVID, this.guid);
-		List<RegistrySlots> slotLst = new ArrayList<RegistrySlots>();
+		List<ExtrinsicObjectSlots> slotLst = new ArrayList<ExtrinsicObjectSlots>();
 
 		// Get list of associations for specific association type
 		// for (Association association : (List<Association>) assocResponse
@@ -567,7 +546,7 @@ public class Extractor { // implements Extractor {
 			} else {
 				// Remove has_investigation or has_mission from missing targets if the other is found
 				for (ExtrinsicObject extObj : extList) {
-					slotLst.add(new RegistrySlots(extObj));
+					slotLst.add(new ExtrinsicObjectSlots(extObj));
 				}
 			}
 		}
@@ -591,7 +570,7 @@ public class Extractor { // implements Extractor {
 	 * Exception(rce.getMessage()); } return null; }
 	 */
 
-	private void recordMissingSlots(RegistrySlots slots) {
+	private void recordMissingSlots(ExtrinsicObjectSlots slots) {
 		if (slots.isMissingSlots()) {
 			if (this.missingSlotsMap.containsKey(slots.getObjectType())) {
 				List<String> slotList = this.missingSlotsMap.get(slots.getObjectType());
@@ -710,7 +689,7 @@ public class Extractor { // implements Extractor {
 				tval = this.slots.get(key).get(0);
 			else { // Association mapping
 				String[] values = key.split("\\.");
-				List<RegistrySlots> slotList = this.associationMap
+				List<ExtrinsicObjectSlots> slotList = this.associationMap
 						.get(values[0]);
 				if (slotList != null)
 					tval = this.associationMap.get(values[0]).get(0)

@@ -4,9 +4,8 @@
 // $Id$ 
 //
 
-package gov.nasa.pds.search.core.index;
+package gov.nasa.pds.search.core.indexer.solr;
 
-import gov.nasa.pds.search.core.parse.DocumentParser;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -63,9 +62,9 @@ public class SolrIndexer {
 					}
 				}
 			} else {
-				String filename = file.getName().substring(0,
-						file.getName().indexOf("."))
-						+ ".xml";
+				//String filename = file.getName().substring(0,
+				//		file.getName().indexOf("."))
+				//		+ ".xml";
 				// System.out.println("creating " + filename);
 				StringBuffer doc = DocumentParser.parse(file);
 

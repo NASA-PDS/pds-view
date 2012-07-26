@@ -4,7 +4,7 @@
 // $Id$ 
 //
 
-package gov.nasa.pds.search.core.parse;
+package gov.nasa.pds.search.core.indexer.solr;
 
 import java.io.File;
 import java.io.FileInputStream;

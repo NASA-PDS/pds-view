@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-public class RegistrySlots {
+public class ExtrinsicObjectSlots {
 
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
@@ -21,14 +21,14 @@ public class RegistrySlots {
 	private boolean missingSlots;
 	private List<String> missingSlotList;
 
-	public RegistrySlots() {
+	public ExtrinsicObjectSlots() {
 		this.extObj = null;
 		this.slotMap = new HashMap<String, List<String>>();
 		this.missingSlotList = new ArrayList<String>();
 		this.missingSlots = false;
 	}
 
-	public RegistrySlots(ExtrinsicObject extObj) {
+	public ExtrinsicObjectSlots(ExtrinsicObject extObj) {
 		this.slotMap = new HashMap<String, List<String>>();
 		this.extObj = extObj;
 		this.missingSlotList = new ArrayList<String>();

@@ -3,15 +3,19 @@
 //
 //  $Id$
 
-package gov.nasa.pds.search.core;
+package gov.nasa.pds.search.core.extractor;
 
-import gov.nasa.pds.search.core.extractor.Extractor;
+
+import gov.nasa.pds.search.core.constants.Constants;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,12 +27,12 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 
 /**
- * Utilizes the Extractor Factory to create instances of each class that needs
- * to be included in the catalog.
+ * Utilizes XML configuration files to extract data from the Registry
+ * Service and create XML files for each Product containing the
+ * raw data found in the Registry
  * 
- * @author pramirez
- * @modifiedby Jordan Padams
- * @modifieddate 05/04/09
+ * @author Jordan Padams
+ * @date 05/04/09
  * @version $Revision$
  */
 public class RegistryExtractor {
@@ -45,7 +49,7 @@ public class RegistryExtractor {
 	// Variables are dependent upon extractor configuration file format.
 	// If format changes, these variables will need to be changed.
 	private static final String EXTRACTOR_PREFIX = "registry.extractor";
-	private static final String EXTRACTOR_CONFIG = "extractors.txt";
+	//private static final String EXTRACTOR_CONFIG = "product-classes.txt";
 
 	/**
 	 * Initializing method used when a base directory is given.
@@ -81,28 +85,28 @@ public class RegistryExtractor {
 	 * Driver method for extraction of data for all classes to be included in
 	 * catalog.
 	 * 
-	 * @throws ExtractionException
+	 * @throws ProductClassException
 	 */
-	public void run() throws ExtractionException {// throws InvalidExtractor {
+	public void run() throws ProductClassException {// throws InvalidExtractor {
 		PrintWriter writer = null;
 		File extractDir = null;
 		File dataDir = null;
 
+		// Create output directories
 		try {
-			System.out.println("Creating tse dir: " + this.outDir + "/tse");
-			dataDir = new File(this.outDir, "tse");
-			this.LOG.info("Create tse dir: " + dataDir.getAbsolutePath());
-			// First create base data directory in case this is the first run
+			dataDir = new File(this.outDir, "registry-data");
+			this.LOG.info("Create registry dir: " + dataDir.getAbsolutePath());
+			// Create registry directory to hold XML files containing desired registry data
 			FileUtils.forceMkdir(dataDir);
 
 			// Next create a place to put extracted files
-			extractDir = new File(dataDir, "extract");
-			this.LOG.info("Create extract dir: " + extractDir.getAbsolutePath());
-
-			FileUtils.forceMkdir(extractDir);
+			//extractDir = new File(dataDir, "extract");
+			//this.LOG.info("Create extract dir: " + extractDir.getAbsolutePath());
+			//FileUtils.forceMkdir(extractDir);
+			
 		} catch (IOException e) {
 			LOG.warning(e.getMessage());
-			throw new ExtractionException("Could not setup directories in "
+			throw new ProductClassException("Could not setup directories in "
 					+ dataDir);
 		}
 
@@ -112,50 +116,45 @@ public class RegistryExtractor {
 					new File(dataDir, "run.log"))));
 		} catch (IOException e) {
 			this.LOG.warning(e.getMessage());
-			throw new ExtractionException("Could not create run log");
+			throw new ProductClassException("Could not create run log");
 		}
 
-		this.LOG.info("------- Beginning extraction --------");
+		this.LOG.info("------- Beginning Registry Data Extraction --------");
 		this.LOG.info("Registry URL: " + this.registryUrl);
-		this.LOG.info("-------------------------------------");
+		this.LOG.info("---------------------------------------------------------");
 		
 		List uids = null;
 		long totalTime = 0;
 		int totalCount = 0;
 		writer.println("run.date=" + new Date());
 		// Run extract method on each class
-		for (String extractorName : getExtractors()) {
-			this.LOG.fine("currExtName: " + extractorName);
-			Extractor extractor;
+		for (String pc : getProductClassList()) {
+			ProductClass productClass;
 			try {
 				// Create directory for writing results to
-				File extractorDir = new File(extractDir, extractorName);
-				FileUtils.forceMkdir(extractorDir);
+				File productClassDir = new File(dataDir, pc);
+				FileUtils.forceMkdir(productClassDir);
 
-				this.LOG.info("Performing extraction for " + extractorName);
+				this.LOG.info("Querying " + pc + " objects");
 
-				// Create new extractor instance for given class.
-				// TODO Does not read files from conf directory, changes are required pre-compile
-				extractor = new Extractor(writer, extractorName,
-						mappings.get(extractorName), this.registryUrl, this.queryMax);
+				// Create new productClass instance for given class.
+				productClass = new ProductClass(writer, pc,
+						this.confDir.getAbsolutePath() + "/" + mappings.get(pc), this.registryUrl, this.queryMax);
 
 				Date start = new Date();
-
-				uids = extractor.extract(extractorDir);
-
+				uids = productClass.query(productClassDir);
 				Date end = new Date();
 
 				// Write to run log and track information for complete run
 				// writer.println(extractorName + ".count=" + uids.size());
-				writer.println(extractorName + ".time="
+				writer.println(pc + ".time="
 						+ (end.getTime() - start.getTime()));
-				// totalCount += uids.size();
 				totalTime += end.getTime() - start.getTime();
-				this.LOG.info("Completed extraction for " + extractorName);
-			} catch (ExtractionException e) {
-				LOG.warning(e.getMessage());
+				this.LOG.info("Completed data extraction for " + pc);
+			} catch (ProductClassException e) {
+				this.LOG.warning(e.getMessage());
 			} catch (IOException e) {
-				LOG.warning(e.getMessage());
+				this.LOG.warning(e.getMessage());
 			}
 		}
 
@@ -165,25 +164,19 @@ public class RegistryExtractor {
 		writer.flush();
 		writer.close();
 
-		this.LOG.info("Finished extraction");
+		this.LOG.info("Finished data extraction");
 	}
 
-	public Set<String> getExtractors() {
+	public Set<String> getProductClassList() {
 		this.mappings = new HashMap<String, String>();
-		// TODO Change back
-		// String extractorFile = System.getProperty("extractor.file",
-		// System.getProperty("user.home") + "/" + EXTRACTOR_CONFIG);
-		// String extractorFile = System.getProperty("extractor.file", baseDir +
-		// "/" + EXTRACTOR_CONFIG);
-		// String extractorFile = this.confDir
-		// + "/" + TseConstants.CONF_BASE + EXTRACTOR_CONFIG;
-		// String extractorFile = this.confDir
-		// + "/" + EXTRACTOR_CONFIG;
-		// System.out.println(extractorFile);
 		Properties props = new Properties();
 		try {
-			props.load(RegistryExtractor.class
-					.getResourceAsStream(EXTRACTOR_CONFIG));
+			if (this.confDir != null) {
+				props.load(new FileInputStream(new File(this.confDir.getAbsolutePath() + "/" + Constants.PC_PROPS)));
+			}/* else {
+				props.load(RegistryExtractor.class
+						.getResourceAsStream(Constants.PC_PROPS));
+			}*/
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

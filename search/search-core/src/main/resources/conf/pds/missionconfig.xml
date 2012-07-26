@@ -17,7 +17,7 @@
   </column>
   <column>
     <name>description</name>
-    <type>slot-single</type>
+    <type>slot</type>
     <value>mission_description</value>
   </column>
   <column>
@@ -67,7 +67,7 @@
   </column>
   <column>
     <name>mission_desc</name>
-    <type>slot-single</type>
+    <type>slot</type>
     <value>mission_description</value>
   </column>
   <column>

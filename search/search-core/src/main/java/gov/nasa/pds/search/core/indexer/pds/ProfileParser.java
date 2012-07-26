@@ -4,7 +4,7 @@
 // $Id$ 
 //
 
-package gov.nasa.pds.search.core.parse;
+package gov.nasa.pds.search.core.indexer.pds;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -111,7 +111,7 @@ public class ProfileParser {
 					String name = child.getLocalName();
 					String value = child.getTextContent();
 
-					if (!"resClass".equals(name)) {
+					if (!name.equals("resClass")) {
 						// indexDoc.add(new Field(name, value, true, true, true,
 						// false));
 						indexDoc.add(new Field(name, value, Field.Store.YES,
