@@ -25,7 +25,7 @@ public class TestSearchCoreLauncher extends TestCase {
 	private static final String TEST_ABSOLUTE_PATH="/Users/jpadams/Documents/workspace/2010-workspace/search/search-core/";
 	private static final String TEST_CONFIG_DIR_RELATIVE="./src/main/resources/conf/";
 	private static final String TEST_SERVICE_HOME_RELATIVE="./target/test";
-	private static final String TEST_PDS_REGISTRY_URL="http://pdsbeta.jpl.nasa.gov:8080/registry";
+	private static final String TEST_PDS_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry";
 	private static final String TEST_PSA_REGISTRY_URL="http://ipda.jpl.nasa.gov/registry";
 	
 	@Before public void setUp() {

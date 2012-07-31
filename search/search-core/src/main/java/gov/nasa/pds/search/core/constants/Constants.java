@@ -7,9 +7,6 @@ public class Constants {
 	/** Default maximum number of queried records to be returned from registry **/
 	public final static int QUERY_MAX = 999999999;
 	
-	/** Attribute for Logical Identifier **/
-	public final static String LOGICAL_IDENTIFIER = "lid";
-	
 	/** Attribute for version of a product **/
 	public final static String PRODUCT_VERSION = "version_id";
 }

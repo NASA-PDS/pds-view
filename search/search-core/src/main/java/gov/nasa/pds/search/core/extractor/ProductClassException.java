@@ -1,4 +1,4 @@
-//  Copyright 2009, California Institute of Technology.
+//  Copyright 2012, California Institute of Technology.
 //  ALL RIGHTS RESERVED. U.S. Government sponsorship acknowledged.
 //
 //  $Id$
@@ -7,7 +7,7 @@
 package gov.nasa.pds.search.core.extractor;
 
 /**
- * @author pramirez
+ * @author jpadams
  * @version $Revision$
  * 
  */

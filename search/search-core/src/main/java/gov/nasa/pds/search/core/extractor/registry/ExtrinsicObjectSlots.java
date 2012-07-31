@@ -12,9 +12,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+/**
+ * Extension of Registry Client functionality to specifically address
+ * needs of the Search Core.  This class is used to maintain
+ * a map of all the slots for an extrinsic object, as well as maintain
+ * a list of all missing slots.
+ * 
+ * @author jpadams
+ * @version $Revision$
+ *
+ */
 public class ExtrinsicObjectSlots {
-
-	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
 	private Map<String, List<String>> slotMap;
 	private ExtrinsicObject extObj;
@@ -48,19 +56,19 @@ public class ExtrinsicObjectSlots {
 	}
 
 	public List<String> get(String key) {
-		if (key.equals(Constants.LOGICAL_IDENTIFIER)) {
+		/*if (key.equals(RegistryAttributes.LOGICAL_IDENTIFIER)) {
 			return Arrays.asList(this.extObj.getLid());
 		}
 		if (key.equals("name")) {
 			return Arrays.asList(this.extObj.getName());
-		}
+		}*/
 		if (this.slotMap.containsKey(key.trim())) {
 			return this.slotMap.get(key.trim());
 		} else {
 			// this.LOG.warning("Key not found : " + key);
 			this.missingSlotList.add(this.extObj.getLid() + " - " + key);
 			this.missingSlots = true;
-			return Arrays.asList("UNK");
+			return new ArrayList<String>();
 		}
 	}
 

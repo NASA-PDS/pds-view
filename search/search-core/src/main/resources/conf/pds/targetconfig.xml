@@ -3,12 +3,12 @@
   <column>
     <name>identifier</name>
     <type>attribute</type>
-    <value>null</value>
+    <value>lid</value>
   </column>
   <column>
     <name>title</name>
     <type>attribute</type>
-    <value>null</value>
+    <value>name</value>
   </column>
   <column>
     <name>resContext</name>
@@ -23,7 +23,7 @@
   <column>
     <name>target_desc</name>
     <type>slot</type>
-    <value>target_description</value>
+    <value>target_desc</value>
   </column>
   <column>
     <name>format</name>
@@ -33,11 +33,11 @@
   <column>
     <name>description</name>
     <type>slot</type>
-    <value>target_description</value>
+    <value>target_desc</value>
   </column>
   <column>
     <name>resLocation</name>
-    <type>out</type>
+    <type>substring</type>
     <value>http://starbrite.jpl.nasa.gov/pds/viewTargetProfile.jsp?TARGET_NAME={target_name}</value>
   </column>
   <column>

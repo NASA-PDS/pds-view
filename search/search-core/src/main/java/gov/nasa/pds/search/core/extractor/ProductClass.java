@@ -18,6 +18,7 @@ import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.extractor.registry.MappingTypes;
 import gov.nasa.pds.search.core.extractor.registry.ExtrinsicObjectSlots;
+import gov.nasa.pds.search.core.extractor.registry.RegistryAttributes;
 import gov.nasa.pds.search.util.XMLWriter;
 
 import java.io.BufferedWriter;
@@ -45,53 +46,39 @@ import org.apache.commons.httpclient.util.DateParseException;
  * 
  */
 public class ProductClass { // implements Extractor {
-	// Database configuration file default
-
-	/*public static final List<String> DATE_FIELDS = new ArrayList<String>() {
-		private static final long serialVersionUID = 4549083437446527668L;
-		{
-			add("start_time");
-			add("stop_time");
-		}
-	};
-
-	public static final List<String> DATE_FORMATS = new ArrayList<String>() {
-		private static final long serialVersionUID = -790664498543223562L;
-		{
-			add("yyyy-MM-dd");
-			add("yyyy-MM-dd'T'kk:mm:ss.SSS'Z'");
-			add("yyyy-MM-dd'T'kk:mm:ss.SSS");
-			add("yyyy-MM-dd'T'kk:mm");
-		}
-	};*/
-
-	private int oidseq = 10000;
-
-	private String classname, classFilename;
-	private String propName, propVal;
-	private String fname = "", fnameprefix = "tse", fnameext = "xml";
-	private String tval1;
-
-	private SearchFields searchAttrs;
-
-	//private Map colNames;
-	private Map finalVals;
-
-	private ExtrinsicObjectSlots slots;
-
-	private String lid;
-	//private String guid;
-
-	private List valArray;
-
-	private Logger log = Logger.getLogger(this.getClass().getName());
-	private PrintWriter xmlDisplay;
-
-	// private RegistryClient client;
-	private PrintWriter writer;
-	private Map<String, List<ExtrinsicObjectSlots>> associationMap;
-
 	
+	private static final String FNAMEPREFIX = "product";
+	private static final int OUT_SEQ_START=10000;
+
+	/** Product class name **/
+	private String classname;
+	
+	/** User-specified product class config file **/
+	private String classFilename;
+
+	/** Collection of all search fields **/
+	private SearchFields searchFields;
+
+	/** Map of all values for desired search fields **/
+	private Map<String, List<String>> finalVals;
+
+	/** All slots for current queried extrinsic object **/
+	//private ExtrinsicObjectSlots slots;
+
+	/** Logical Identifier for the current data object **/
+	private String lid;
+
+	/** Output logger **/
+	private Logger log = Logger.getLogger(this.getClass().getName());
+
+	/** PrintWriter for outputting XML files **/
+	private PrintWriter writer;
+	
+	/** Map of all associations for the current data product **/
+	//private Map<String, List<ExtrinsicObjectSlots>> associationMap;
+	private Map<String, List<ExtrinsicObject>> associationMap;
+
+	/** Map of missing slots mapped to the LID **/
 	private Map<String, List<String>> missingSlotsMap;
 
 	/** List of Associations where target extrinsic is not found */
@@ -121,7 +108,7 @@ public class ProductClass { // implements Extractor {
 		this.log.fine("In Generic Extractor");
 
 		this.writer = writer;
-		this.finalVals = new HashMap();
+		this.finalVals = new HashMap<String, List<String>>();
 
 		this.classname = name;
 		this.classFilename = file;
@@ -132,7 +119,7 @@ public class ProductClass { // implements Extractor {
 			this.queryMax = Constants.QUERY_MAX;
 		}
 
-		this.associationMap = new HashMap<String, List<ExtrinsicObjectSlots>>();
+		this.associationMap = new HashMap<String, List<ExtrinsicObject>>();
 
 		this.missingSlotsMap = new HashMap<String, List<String>>();
 		this.missingAssocTargets = new ArrayList<String>();
@@ -141,35 +128,39 @@ public class ProductClass { // implements Extractor {
 	}
 	
 	/**
-	 * (non-Javadoc)
+	 * Driving method for querying data from the registry
 	 * 
-	 * @see gov.nasa.pds.ProductClass.catalog.Extractor#extract()
+	 * @param outputDir
+	 * @return
+	 * @throws ProductClassException
 	 */
-	public List query(File outputDir) throws ProductClassException {
+	public List<String> query(File outputDir) throws ProductClassException {
 		// log.fine("confdir : " + confDir);
-		List instkeys = new ArrayList();
+		List<String> instkeys = new ArrayList<String>();
+		int outSeqNum = OUT_SEQ_START;
 
-		this.searchAttrs = new SearchFields(this.classFilename);
+		this.searchFields = new SearchFields(this.classFilename);
 
 		try {
 
 			//PagedResponse<ExtrinsicObject> response = getObjectTypeExtrinsics(ExtrinsicFilterTypes.OBJECT_TYPE, this.columns.getObjectType());
-			List<ExtrinsicObject> extList = getObjectTypeExtrinsics(this.searchAttrs.getObjectType());
+			List<ExtrinsicObject> extList = getObjectTypeExtrinsics(this.searchFields.getObjectType());
 
 			//for (ExtrinsicObject object : (List<ExtrinsicObject>) response.getResults()) {
-			for (ExtrinsicObject object : extList) {
-				this.oidseq++;
+			for (ExtrinsicObject extObj : extList) {
+				outSeqNum++;
 
 				// Get class properties
-				this.log.fine(object.getLid() + " - " + object.getObjectType());
-				setColumnProperties(object);
+				setColumnProperties(extObj);
 
-				XMLWriter xml = new XMLWriter(this.finalVals, outputDir, this.oidseq,
+				XMLWriter writer = new XMLWriter(this.finalVals, outputDir, outSeqNum,
 						this.classname);
+				writer.write();
+				
+				createXML(outputDir, outSeqNum);
 
 				// Create the XML file
 				// log.info("Files placed in dir : " + extractorDir);
-				createXML(outputDir);
 			}
 
 			displayWarnings();
@@ -189,35 +180,27 @@ public class ProductClass { // implements Extractor {
 	 * 
 	 * @param baseDir
 	 *            - directory where the new XML should be placed
+	 * @throws ProductClassException 
 	 */
-	private void createXML(File baseDir) {
+	private void createXML(File baseDir, int seqNum) throws ProductClassException {
+		PrintWriter xmlDisplay = null;
 		try {
-			Integer oidseqi = new Integer(oidseq);
-			String itemoid = oidseqi.toString();
-
-			/* Start profile output */
-			this.fname = this.fnameprefix + "_" + this.classname + "_" + itemoid + "."
-					+ this.fnameext;
-			this.xmlDisplay = new PrintWriter(new BufferedWriter(new FileWriter(
-					new File(baseDir, this.fname), false)));
-			printFileHeader();
-
-			Set set2 = this.finalVals.keySet();
-			Iterator iter2 = set2.iterator();
-			while (iter2.hasNext()) {
-				this.propName = (String) iter2.next();
-				this.valArray = (ArrayList) this.finalVals.get(this.propName);
-				for (Iterator i = this.valArray.iterator(); i.hasNext();) {
-					this.propVal = (String) i.next();
-					printXml(this.propName, this.propVal, isCleanedAttr(this.propName));
+			String fname = FNAMEPREFIX + "_" + this.classname + "_" + String.valueOf(seqNum) + ".xml";
+			xmlDisplay = new PrintWriter(new BufferedWriter(new FileWriter(
+					new File(baseDir, fname), false)));
+			printFileHeader(xmlDisplay);
+			
+			for (String propName : this.finalVals.keySet()) {
+				for (String propVal : this.finalVals.get(propName)) {
+					printXml(xmlDisplay, propName, propVal, isCleanedAttr(propName));
 				}
 			}
-			printFileFooter();
-			this.xmlDisplay.close();
+			printFileFooter(xmlDisplay);
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			this.log.warning("Exception " + ex.getClass().getName()
+			throw new ProductClassException("Exception " + ex.getClass().getName()
 					+ ex.getMessage());
+		} finally {
+			xmlDisplay.close();
 		}
 	}
 
@@ -228,27 +211,30 @@ public class ProductClass { // implements Extractor {
 	 * the value in attrVals or a value queried from the database.
 	 * 
 	 * @param ExtrinsicObject - 
+	 * @throws ProductClassException 
 	 */
-	private void setColumnProperties(ExtrinsicObject extObject) {
+	private void setColumnProperties(ExtrinsicObject extObject) throws ProductClassException {
 		try {
 			/* Initialize local variables */
 			String currName, currType, currVal;
+			
+			List<String> valArray;
 
 			setIdentifiers(extObject);
-			this.slots = new ExtrinsicObjectSlots(extObject);
-			setAssociations(this.slots);
+			//this.slots = new ExtrinsicObjectSlots(extObject);
+			//setAssociations(this.slots);
 
 			// Loop through class results beginning from top
-			for (int i = 0; i < this.searchAttrs.getNumAttr(); i++) {				
-				currName = this.searchAttrs.getName(i);
-				currType = this.searchAttrs.getType(i);
-				currVal = this.searchAttrs.getValue(i);
+			for (int i = 0; i < this.searchFields.getNumAttr(); i++) {				
+				currName = this.searchFields.getName(i);
+				currType = this.searchFields.getType(i);
+				currVal = this.searchFields.getValue(i);
 
 				if (currType.equals(MappingTypes.OUTPUT)) { // Output value
 															// given in XML
-					this.valArray = new ArrayList();
-					this.valArray.add(currVal);
-					this.finalVals.put(currName, this.valArray);
+					valArray = new ArrayList<String>();
+					valArray.add(currVal);
+					this.finalVals.put(currName, valArray);
 
 					// TODO should refactor this entire else-if and create a
 					// separate RegistryAttribute class that handles all those
@@ -256,32 +242,26 @@ public class ProductClass { // implements Extractor {
 					// very similar code is being replicated in the
 					// RegistrySlots class
 				} else if (currType.equals(MappingTypes.ATTRIBUTE)) { // Specific
-																		// attributes
-																		// that
-																		// can
-					if (currName.equals("identifier")) { // be queried from a
-															// RegistryObject
-						this.valArray = new ArrayList(); // method
-						this.valArray.add(extObject.getLid());
-						this.finalVals.put(currName, this.valArray);
-					} else if (currName.equals("title")) {
-						this.valArray = new ArrayList();
-						this.valArray.add(extObject.getName());
-						this.finalVals.put(currName, this.valArray);
-					}
+																		// attribute value for the extrinsic object
+					
+					valArray = new ArrayList<String>();
+					valArray.add(RegistryAttributes.getAttributeValue(currVal, extObject));
+					this.finalVals.put(currName, valArray);
 				} else if (currType.equals(MappingTypes.SLOT)) { // Value maps
 																	// to a
 																	// specific
-					this.valArray = new ArrayList(); // slot in the current object
+					valArray = new ArrayList<String>(); // slot in the current object
 												// type
-					for (String value : this.slots.get(currVal)) {
-						this.tval1 = remNull(value);
-						// tval1 = tval1.trim();
-						this.valArray.add(cleanText(this.tval1));
-
+					String tval;
+					try {
+						for (String value : extObject.getSlot(currVal).getValues()) {
+							 tval = remNull(value);
+							// tval1 = tval1.trim();
+							valArray.add(cleanText(tval));
+						}
+					} catch (NullPointerException e) {
+						recordMissingSlot(extObject, currVal);
 					}
-					// if (DATE_FIELDS.contains(currName))
-					// valArray = reformatDateFields(valArray);
 					this.finalVals.put(currName, valArray);
 				} else if (currType.equals(MappingTypes.ASSOCIATION)) { // Value
 																		// maps
@@ -289,78 +269,30 @@ public class ProductClass { // implements Extractor {
 																		// associated
 																		// object
 					String[] values = currVal.split("\\."); // slot
-					this.valArray = new ArrayList();
+					valArray = new ArrayList<String>();
+					
 					String assocType = values[0];
-					boolean foundAssociation = this.associationMap
-							.containsKey(assocType);
 
-					// Code hack in order to handle has_mission and
-					// has_investigation overlap
-					// Assumption that product cannot have both
-					// has_investigation and has_mission associations
-					/*if (!foundAssociation) {
-						if (assocType.equals("has_mission")) {
-							assocType = "has_investigation";
-							foundAssociation = this.associationMap
-									.containsKey(assocType);
-						} else if (assocType.equals("has_investigation")) {
-							assocType = "has_mission";
-							foundAssociation = this.associationMap
-									.containsKey(assocType);
-						}
-					}*/
+					this.finalVals.put(currName, getAssociatedSlotValues(assocType, values[1], extObject));
 
-					if (foundAssociation) {
-						for (ExtrinsicObjectSlots assocSlots : this.associationMap
-								.get(assocType)) {
-							for (String value : assocSlots.get(values[1])) {
-								this.tval1 = cleanText(remNull(value));
-								if (!valArray.contains(this.tval1)) {
-									this.valArray.add(this.tval1);
-								}
-							}
-
-							try {
-								recordMissingSlots(assocSlots);
-							} catch (NullPointerException e) {
-								System.err.println("NullPointerException - "
-										+ this.lid + " - " + assocType);
-							}
-							this.finalVals.put(currName, this.valArray);
-						}
-					} else {
-						this.valArray.add("UNK");
-						this.finalVals.put(currName, this.valArray);
-					}
-
-				} else if (currType.equals(MappingTypes.OTHER)) { // Unknown
-																	// mapping
-																	// that is
-																	// currently
-																	// ignored
-
-					/*
-					 * tval1 = "UNK"; valArray = new ArrayList();
-					 * valArray.add(tval1); // Fix common special case to build
-					 * identifier finalVals.put(currName,valArray);
-					 */
-
+				} else if (currType.equals(MappingTypes.SUBSTRING)) {					
+					valArray = new ArrayList<String>();
+					valArray.add(setSubstring(currVal, extObject));
+					this.finalVals.put(currName, valArray);
 				} else {
 					throw new InvalidProductClassException(
-							"Unknown Mapping Type - " + currType);
+							"Unknown Mapping Type - " + currType + ".  Please use mapping types designated in API.");
 				}
 			}
 
-			try {
+			/*try {
 				recordMissingSlots(this.slots);
 			} catch (NullPointerException e) {
 				System.err.println("NullPointerException - " + this.lid);
-			}
-
-			setResLocation();
+			}*/
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			this.log.warning("Exception " + ex.getClass().getName()
+			throw new ProductClassException("Exception " + ex.getClass().getName()
 					+ ex.getMessage());
 		}
 	}
@@ -387,12 +319,10 @@ public class ProductClass { // implements Extractor {
 			if (pr.getNumFound() != 0) {
 				for (ExtrinsicObject extrinsic : pr.getResults()) {
 					lid = extrinsic.getLid();
-					//lid = extrinsic.getGuid();
 					
 					// Use list to verify we haven't already included this product in the results
 					if (!lidList.contains(lid) && lid != null) { 	
 						results.add(client.getLatestObject(lid, ExtrinsicObject.class));
-						//results.add(client.getObject(lid, ExtrinsicObject.class));
 						lidList.add(lid);
 					}
 				}
@@ -434,8 +364,6 @@ public class ProductClass { // implements Extractor {
 			
 		}*/
 		
-		//this.log.info("*********** " + lid + " -- " + version);
-		
 		filter = new ExtrinsicFilter.Builder().lid(assocLid).build();
 		
 		// Create the query
@@ -476,31 +404,60 @@ public class ProductClass { // implements Extractor {
 		}
 		return null;
 	}
+	
+	private List<String> getAssociatedSlotValues(String assocType, String slotName, ExtrinsicObject extObject) throws Exception {
+		String tval;
+		List<String> valArray = new ArrayList<String>();
+		if (setAssociation(assocType, extObject)) {	// Add association type to association map (if needed)
+		for (ExtrinsicObject assocExtObj : this.associationMap.get(assocType)) {	// Iterate through the associations for the given association type
+			//assocExtObj.getSlot(arg0)
+			if (!RegistryAttributes.isAttribute(slotName)) {
+				try { 
+					for (String slotValue : assocExtObj.getSlot(slotName).getValues()) {	// Get the associated object slot values
+						tval = cleanText(remNull(slotValue));
+						if (!valArray.contains(tval)) {
+							valArray.add(tval);
+						}
+					}
+				} catch (NullPointerException e) {	// Occurs when no slot is found
+					recordMissingSlot(assocExtObj, slotName);
+				}
+			} else {
+				valArray.add(RegistryAttributes.getAttributeValue(slotName, assocExtObj));
+			}
+
+		}
+		}  else {
+			valArray.add("UNK");
+		}
+		return valArray;
+	}
 
 	/**
 	 * Sets the associationMap values.
 	 * 
 	 * @throws
 	 */
-	private void setAssociations(ExtrinsicObjectSlots slots) throws Exception {
-		for (String assocType : (List<String>) this.searchAttrs.getAssociations()) {
-			// System.out.println(assocType + " - " + this.guid);
-
-			List<String> assocLidList = slots.get(assocType);
-
-			// PagedResponse<ExtrinsicObject> extObjResponse =
-			// getExtrinsics(ExtrinsicFilterTypes.GUID, this.guid);
-			if (assocLidList.isEmpty()) {
-				this.log.fine("Missing Association Slot : " + this.lid + " - "
-						+ assocType);
-			} else {
-				List<ExtrinsicObjectSlots> assocSlotList = getAssociationSlots(
-						assocLidList, assocType);
-				if (!assocSlotList.isEmpty()) {
-					this.associationMap.put(assocType, assocSlotList);
+	//private void setAssociation(ExtrinsicObjectSlots slots) throws Exception {
+	private boolean setAssociation(String assocType, ExtrinsicObject extObject) throws Exception {
+		if (!this.associationMap.containsKey(assocType)) {
+			//List<String> assocLidList = extObject.getSlot(assocType).getValues();
+			
+			//if (assocLidList.isEmpty()) {
+			//	recordMissingAssocSlot(this.lid, assocType);
+			//	return false;
+			//} else {
+				
+				List<ExtrinsicObject> assocExtObjList = getAssociatedObjects(extObject, assocType);
+				if (!assocExtObjList.isEmpty()) {
+					this.associationMap.put(assocType, assocExtObjList);
+				} else {
+					this.missingAssocTargets.add(this.lid + " - " + assocType);
 				}
-			}
+			//}
 		}
+		
+		return true;
 	}
 
 	/**
@@ -511,46 +468,54 @@ public class ProductClass { // implements Extractor {
 	 * @return
 	 * @throws Exception
 	 */
-	private List<ExtrinsicObjectSlots> getAssociationSlots(List<String> assocLidList,
-			String assocType) throws Exception {
+	private List<ExtrinsicObject> getAssociatedObjects(ExtrinsicObject extObject, String assocType) throws Exception {
 		// PagedResponse<Association> assocResponse =
 		// getAssociationResponse(assocType, guid);
 		// System.out.println("Num Associations: " +
 		// assocResponse.getNumFound());
 		// PagedResponse<ExtrinsicObject> extResponse =
 		// getExtrinsics(ExtrinsicFilterTypes.LIDVID, this.guid);
-		List<ExtrinsicObjectSlots> slotLst = new ArrayList<ExtrinsicObjectSlots>();
+		
+		Slot assocObjSlot = extObject.getSlot(assocType);
+		
+		//List<ExtrinsicObjectSlots> assocExtObjList = new ArrayList<ExtrinsicObjectSlots>();
+		List<ExtrinsicObject> assocExtObjList = new ArrayList<ExtrinsicObject>();
 
 		// Get list of associations for specific association type
 		// for (Association association : (List<Association>) assocResponse
 		// .getResults()) {
-		for (String assocLid : assocLidList) {
-			// Modified 2/2/12 - Test run showed some associations (instrument_host)
-			// were not found because contained suffix (::29)
-			// But doesn't appear to coincide with version, as expected
-			// i.e. has_instrument_host - urn:nasa:pds:instrument_host.MRO:29.0
-			//PagedResponse<ExtrinsicObject> extResponse = getAssociatedExtrinsics(ExtrinsicFilterTypes.LIDVID, assocLid);
-			List<ExtrinsicObject> extList = getAssociatedExtrinsics(assocLid);
-
-			//if (extResponse.getNumFound() == 0) {
-			if (extList.size() == 0) {
-				// this.log.warning("Association not found : "
-				// + association.getAssociationType() + " - "
-				// + association.getTargetObject());
-				// this.writer.println("Association not found : "
-				// + association.getAssociationType() + " - "
-				// + association.getTargetObject());
-				this.missingAssocTargets.add(this.lid + " - " + assocType
-						+ " - " + assocLid);
-				// slotLst.add(new RegistrySlots());
-			} else {
-				// Remove has_investigation or has_mission from missing targets if the other is found
-				for (ExtrinsicObject extObj : extList) {
-					slotLst.add(new ExtrinsicObjectSlots(extObj));
+		if (assocObjSlot != null) {
+			for (String assocLidVid : assocObjSlot.getValues()) {
+				// Modified 2/2/12 - Test run showed some associations (instrument_host)
+				// were not found because contained suffix (::29)
+				// But doesn't appear to coincide with version, as expected
+				// i.e. has_instrument_host - urn:nasa:pds:instrument_host.MRO:29.0
+				//PagedResponse<ExtrinsicObject> extResponse = getAssociatedExtrinsics(ExtrinsicFilterTypes.LIDVID, assocLid);
+				List<ExtrinsicObject> extList = getAssociatedExtrinsics(assocLidVid);
+	
+				//if (extResponse.getNumFound() == 0) {
+				if (extList.size() != 0) {
+					// Remove has_investigation or has_mission from missing targets if the other is found
+					/*for (ExtrinsicObject extObj : extList) {
+						assocExtObjList.add(new ExtrinsicObjectSlots(extObj));
+					}*/
+					assocExtObjList.addAll(extList);
+				} else {
+					// this.log.warning("Association not found : "
+					// + association.getAssociationType() + " - "
+					// + association.getTargetObject());
+					// this.writer.println("Association not found : "
+					// + association.getAssociationType() + " - "
+					// + association.getTargetObject());
+					this.missingAssocTargets.add(this.lid + " - " + assocType
+							+ " - " + assocLidVid);
 				}
 			}
+		} else {
+			recordMissingSlot(extObject, assocType);
 		}
-		return slotLst;
+		
+		return assocExtObjList;
 	}
 
 	/*
@@ -569,8 +534,20 @@ public class ProductClass { // implements Extractor {
 	 * found. } catch (RegistryClientException rce) { throw new
 	 * Exception(rce.getMessage()); } return null; }
 	 */
-
-	private void recordMissingSlots(ExtrinsicObjectSlots slots) {
+	
+	private void recordMissingSlot(ExtrinsicObject extObject, String slot) {
+		List<String> slotList;
+		String objectType = extObject.getObjectType();
+		if (this.missingSlotsMap.containsKey(objectType)) {	// Verify object type has not been included in missing slots map
+			slotList = this.missingSlotsMap.get(objectType);	// If it has, get the list
+		} else {	// Else create a new ArrayList
+			slotList = new ArrayList<String>();
+		}
+		slotList.add(this.lid + " - " + slot);
+		this.missingSlotsMap.put(objectType, slotList);
+	}
+	
+	/*private void recordMissingSlots(ExtrinsicObject extObj) {
 		if (slots.isMissingSlots()) {
 			if (this.missingSlotsMap.containsKey(slots.getObjectType())) {
 				List<String> slotList = this.missingSlotsMap.get(slots.getObjectType());
@@ -582,20 +559,20 @@ public class ProductClass { // implements Extractor {
 						slots.getMissingSlotList());
 			}
 		}
-	}
+	}*/
 
 	private void displayWarnings() {
 		String out = "";
 
 		if (!this.missingAssocTargets.isEmpty()) {
-			out += "\nWARNING - Missing the following Association Targets:\n";
+			out += "Missing the following Association Targets:\n";
 			for (String missingAssociation : this.missingAssocTargets) {
 				out += missingAssociation + "\n";
 			}
 		}
 
 		if (!this.missingSlotsMap.isEmpty()) {
-			out += "\nWARNING - Missing the following Registry Slots:\n";
+			out += "Missing the following Registry Slots:\n";
 			for (String objectType : this.missingSlotsMap.keySet()) {
 				out += "--- " + objectType + " ---\n";
 				for (String slot : this.missingSlotsMap.get(objectType))
@@ -671,38 +648,42 @@ public class ProductClass { // implements Extractor {
 
 	private void setIdentifiers(RegistryObject object) {
 		this.lid = object.getLid();
-		//this.guid = object.getGuid();
 	}
 
-	private void setResLocation() throws UnsupportedEncodingException {
+	private String setSubstring(String str, ExtrinsicObject extObject) throws Exception {
 		int start, end;
 		String tval = "", key;
 
-		String resLoc = (String) ((ArrayList) finalVals.get("resLocation"))
-				.get(0);
-		while (resLoc.contains("{")) {
-			start = resLoc.indexOf("{");
-			end = resLoc.indexOf("}");
-			key = resLoc.substring(start + 1, end);
-
-			if (!key.contains("."))
-				tval = this.slots.get(key).get(0);
-			else { // Association mapping
-				String[] values = key.split("\\.");
-				List<ExtrinsicObjectSlots> slotList = this.associationMap
-						.get(values[0]);
-				if (slotList != null)
-					tval = this.associationMap.get(values[0]).get(0)
-							.get(values[1]).get(0);
+		try {
+			while (str.contains("{")) {
+				start = str.indexOf("{");
+				end = str.indexOf("}");
+				key = str.substring(start + 1, end);
+	
+				// TODO ASSUMPTION: These substring slots/associated slots will only have 1 value - may want to specify multiple values here instead
+				if (!key.contains(".")) {	// If key is not an associated object
+					//tval = this.slots.get(key).get(0);
+					tval = extObject.getSlot(key).getValues().get(0);	// Get the first slot value
+				} else { // Association mapping
+					String[] values = key.split("\\.");
+					//List<ExtrinsicObject> assocExtObjList = this.associationMap.get(values[0]);
+					tval = getAssociatedSlotValues(values[0], values[1], extObject).get(0);
+					/*if (assocExtObjList != null) {
+						if (!RegistryAttributes.isAttribute(values[1])) {
+							tval = assocExtObjList.get(0).getSlot(values[1]).getValues().get(0);
+						} else {
+							tval = RegistryAttributes.getAttributeValue(values[1], assocExtObjList.get(0));
+						}
+					}*/
+				}
+	
+				str = str.replace('#', '&').replace("{" + key + "}",
+						URLEncoder.encode(((tval == null) ? "" : tval), "UTF-8"));
 			}
-
-			resLoc = resLoc.replace('#', '&').replace("{" + key + "}",
-					URLEncoder.encode(((tval == null) ? "" : tval), "UTF-8"));
+		} catch (NullPointerException e) {	// Associated Extrinsic Object does not have the slot requested
+			this.missingAssocTargets.add(this.lid + " - " + str);
 		}
-
-		valArray = new ArrayList();
-		valArray.add(resLoc);
-		finalVals.put("resLocation", valArray);
+		return str;
 	}
 
 	private String cleanText(String text) {
@@ -710,18 +691,9 @@ public class ProductClass { // implements Extractor {
 	}
 
 	/**
-	 * Find the number of attributes
-	 * 
-	 * @return attrNames.size() - number of names in attrNames Map
-	 */
-	/*
-	 * public int getNumAttr() { return colNames.size(); }
-	 */
-
-	/**
 	 * Display the header for the XML file.
 	 */
-	public void printFileHeader() {
+	public void printFileHeader(PrintWriter xmlDisplay) {
 		xmlDisplay.println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
 		xmlDisplay.println("<doc>");
 		xmlDisplay.println("\t<" + classname + ">");
@@ -730,7 +702,7 @@ public class ProductClass { // implements Extractor {
 	/**
 	 * Display the footer for the XML file.
 	 */
-	public void printFileFooter() {
+	public void printFileFooter(PrintWriter xmlDisplay) {
 		xmlDisplay.println("\t</" + classname + ">");
 		xmlDisplay.println("</doc>");
 	}
@@ -743,16 +715,12 @@ public class ProductClass { // implements Extractor {
 	 * @param value
 	 *            - value for specific record
 	 */
-	public void printXml(String name, String value, boolean clean) {
+	public void printXml(PrintWriter xmlDisplay, String name, String value, boolean clean) {
 		// Temporary variables to hold name and value
 		String tName, tValue;
 
 		tName = name.trim();
 		tValue = value.trim();
-
-		// Utilize JTidy servlet extension to encode all non-letter characters
-		// tName = HTMLEncode.encode(tName);
-		// tValue = HTMLEncode.encode(tValue);
 
 		if (clean) {
 			tValue = tValue.toLowerCase();
@@ -787,7 +755,7 @@ public class ProductClass { // implements Extractor {
 	 */
 	public String remNull(String s1) {
 		if (s1 == null) {
-			return "NULL";
+			return "UNK";
 		}
 		return s1;
 	}

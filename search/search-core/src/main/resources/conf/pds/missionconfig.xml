@@ -3,12 +3,12 @@
   <column>
     <name>identifier</name>
     <type>attribute</type>
-    <value>null</value>
+    <value>lid</value>
   </column>
   <column>
     <name>title</name>
     <type>attribute</type>
-    <value>null</value>
+    <value>name</value>
   </column>
   <column>
     <name>format</name>
@@ -18,7 +18,7 @@
   <column>
     <name>description</name>
     <type>slot</type>
-    <value>mission_description</value>
+    <value>mission_desc</value>
   </column>
   <column>
     <name>language</name>
@@ -42,7 +42,7 @@
   </column>
   <column>
     <name>resLocation</name>
-    <type>out</type>
+    <type>substring</type>
     <value>http://starbrite.jpl.nasa.gov/pds/viewMissionProfile.jsp?MISSION_NAME={mission_name}</value>
   </column>
   <column>
@@ -68,7 +68,7 @@
   <column>
     <name>mission_desc</name>
     <type>slot</type>
-    <value>mission_description</value>
+    <value>mission_desc</value>
   </column>
   <column>
     <name>mission_objectives_summary</name>

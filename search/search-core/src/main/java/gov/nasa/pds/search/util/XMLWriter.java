@@ -57,23 +57,21 @@ public class XMLWriter {
 			classElement = doc.createElement(classname);
 			root.appendChild(classElement);
 
-			write(map);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void write(Map map) {
+	public void write() {
 		String name = "";
 		String value = "";
 		ArrayList valArray;
 		try {
-			Set set = map.keySet();
+			Set set = this.map.keySet();
 			Iterator iter = set.iterator();
 			while (iter.hasNext()) {
 				name = (String) iter.next();
-				valArray = (ArrayList) map.get(name);
+				valArray = (ArrayList) this.map.get(name);
 				for (Iterator i = valArray.iterator(); i.hasNext();) {
 					value = (String) i.next();
 					// log.info("name: "+name);
@@ -92,7 +90,7 @@ public class XMLWriter {
 			// create file from xml tree
 			StreamResult result = new StreamResult(new File(basedir, filename));
 
-			DOMSource source = new DOMSource(doc);
+			DOMSource source = new DOMSource(this.doc);
 			trans.transform(source, result);
 		} catch (Exception e) {
 			e.printStackTrace();

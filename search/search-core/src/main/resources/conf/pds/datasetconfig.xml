@@ -1,20 +1,14 @@
 <dataset>
-	<object_type>Product_Data_Set_PDS3</object_type>
-	<association>target_ref</association>
-	<association>instrument_ref</association>
-	<association>instrument_host_ref</association>
-	<association>investigation_ref</association>
-	<association>resource_ref</association>
-	<association>node_ref</association>
+  <object_type>Product_Data_Set_PDS3</object_type>
   <column>
     <name>identifier</name>
     <type>attribute</type>
-    <value>null</value>
+    <value>lid</value>
   </column>
   <column>
     <name>title</name>
     <type>attribute</type>
-    <value>null</value>
+    <value>name</value>
   </column>
   <column>
     <name>format</name>
@@ -22,13 +16,9 @@
     <value>XML</value>
   </column>
   <column>
-  <!--  Used data_set_terse_desc instead of data_set_desc because the data_set_desc can be extremely long, while terse_desc is shorter -->
-    <!-- name>description</name>
-    <type>slot</type>
-    <value>data_set_desc</value-->
     <name>description</name>
     <type>slot</type>
-    <value>data_set_terse_description</value>
+    <value>data_set_terse_desc</value>
   </column>
   <column>
     <name>publisher</name>
@@ -52,18 +42,13 @@
   </column>
   <column>
     <name>resLocation</name>
-    <type>out</type>
+    <type>substring</type>
     <value>http://starbrite.jpl.nasa.gov/pds/viewDataset.jsp?dsid={data_set_id}</value>
   </column>
-  <!-- UNCOMMENT column>
+  <column>
     <name>nssdc_data_set_id</name>
     <type>slot</type>
     <value>data_set_nssdc_collection_id</value>
-  </column-->
-  <column>
-    <name>nssdc_data_set_id</name>
-    <type>out</type>
-    <value>null</value>
   </column>
   <column>
   	<!-- association mapping to another objectType -->
@@ -154,22 +139,15 @@
     <type>association</type>
     <value>instrument_ref.instrument_id</value>
   </column>
-  <!-- Should be put back to data_class
   <column>
     <name>data_object_type</name>
-    <type>slot</type>
-    <value>data_class</value>
-  </column>
-  -->
-  <column>
-    <name>data_object_type</name>
-    <type>out</type>
-    <value>null</value>
+    <type>attribute</type>
+    <value>objectType</value>
   </column>
   <column>
     <name>data_set_terse_desc</name>
     <type>slot</type>
-    <value>data_set_terse_description</value>
+    <value>data_set_terse_desc</value>
   </column>
   <column>
     <name>data_set_id</name>
@@ -184,12 +162,9 @@
   <column>
     <name>abstract_text</name>
     <type>slot</type>
-    <value>data_set_abstract_description</value>
+    <value>data_set_abstract_desc</value>
   </column>
   <column>
-    <!-- name>instrument_name</name>
-    <type>slot</type>
-    <value>instrument_name</value-->
     <name>instrument_name</name>
     <type>association</type>
     <value>instrument_ref.instrument_name</value>    
@@ -202,7 +177,7 @@
   <column>
     <name>data_set_desc</name>
     <type>slot</type>
-    <value>data_set_description</value>
+    <value>data_set_desc</value>
   </column>
   <column>
     <name>confidence_level_note</name>

@@ -24,6 +24,21 @@
   
   <body>
     <release version="0.4.0" date="TBD" description="This release of the Search Core is a component of the integrated release 3.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+	  <action dev="jpadams" type="update">
+	  	Refactored the Search Protocol and XML Response Writer out of the search-core and into search-service.
+	  </action>
+	  <action dev="jpadams" type="update">
+	  	Moved Solr index scripts from search-service to search-core and updated the scripts to use absolute paths.
+	  </action>
+	  <action dev="jpadams" type="update">
+	  	Updated pom files accordingly to reflect changes in dependencies from refactoring of Solr stuff.
+	  </action>
+	  <action dev="jpadams" type="update">
+	  	Updated CLI by requiring registry URL to be specified, a new flag to specify a configuration directory, and a new flag to specify Search Service Home.
+	  </action>
+	  <action dev="jpadams" type="update">
+	  	Renamed several classes to use PDS4 terminology.  i.e ProductClass.java and SearchFields.java .
+	  </action>
     </release>
 
     <release version="0.3.0" date="2012-06-11" description="This release of the Search Core is a component of the integrated release 2.2.0 of the PDS 2010 System. This is an operational release of the system components to date.">

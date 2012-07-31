@@ -1,15 +1,14 @@
 <instrument>
   <object_type>Product_Instrument_PDS3</object_type>
-  <association>instrument_host_ref</association>
   <column>
     <name>identifier</name>
     <type>attribute</type>
-    <value>null</value>
+    <value>lid</value>
   </column>
   <column>
     <name>title</name>
     <type>attribute</type>
-    <value>null</value>
+    <value>name</value>
   </column>
   <column>
     <name>format</name>
@@ -19,7 +18,7 @@
   <column>
     <name>description</name>
     <type>slot</type>
-    <value>instrument_description</value>
+    <value>instrument_desc</value>
   </column>
   <column>
     <name>language</name>
@@ -43,7 +42,7 @@
   </column>
   <column>
     <name>resLocation</name>
-    <type>out</type>
+    <type>substring</type>
     <value>http://starbrite.jpl.nasa.gov/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID={instrument_id}&amp;INSTRUMENT_HOST_ID={instrument_host_ref.instrument_host_id}</value>
   </column>
   <column>
@@ -69,7 +68,7 @@
   <column>
     <name>instrument_desc</name>
     <type>slot</type>
-    <value>instrument_description</value>
+    <value>instrument_desc</value>
   </column>
   <column>
     <name>resource_class</name>
