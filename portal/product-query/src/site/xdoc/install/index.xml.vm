@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+  Copyright 2012, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology 
+  Transfer at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations 
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+  is subject to U.S. export control laws and regulations, the recipient has 
+  the responsibility to obtain export licenses or other export authority as 
+  may be required before exporting such information to foreign countries or 
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Installation</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Installation">
+      <p>This document describes how to install the Product Query software contained in the <i>${project.artifactId}</i> package. The following topics can be found in this section:
+      </p>
+
+      <ul>
+        <li><a href="#System_Requirements">System Requirements</a></li>
+        <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
+        <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+        <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
+      </ul>
+    </section>
+
+    <section name="System Requirements">
+      <p>This section details the system requirements for installing and operating the Product Query software.
+      </p>
+
+      <subsection name="Java Runtime Environment">
+        <p>The Product Query software was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically developed under Java version 1.6 and has only been tested with this version. The following commands test the local Java installation in a UNIX-based environment:
+        </p>
+
+        <source>
+% which java
+/usr/bin/java
+
+% java -version
+java version "1.6.0_26"
+Java(TM) SE Runtime Environment (build 1.6.0_26-b03-384-10M3425)
+Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
+        </source>
+
+        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.6, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The software package of choice is the Java Standard Edition (SE) 6, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
+        </p>
+      </subsection>
+
+      <subsection name="Java Application Server">
+        <p>The Product Query software requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Apache Tomcat software can be downloaded from the <a href="http://tomcat.apache.org/" target="_blank">Apache Tomcat</a> page. Choose the version to download (6.0 or 7.0) from the menu on the left.
+        </p>
+      </subsection>
+    </section>
+
+    <section name="Unpacking the Package">
+      <p>Download the <i>${project.artifactId}</i> package from the internal PDS <a href="http://pds-cm.jpl.nasa.gov/maven2/gov/nasa/pds/2010/portal/${project.artifactId}/${project.version}" target="_blank">Maven</a> repository. The binary distribution is available in identical zip or tar/gzip packages. The installation directory may vary from environment to environment but in UNIX-based environments it is typical to install software packages in the <i>/usr/local</i> directory and in Windows-based environments it is typical to install software packages in the <i>C:\Program Files</i> directory. Unpack the selected binary distribution file with one of the following commands:
+      </p>
+
+      <source>
+% unzip ${project.artifactId}-${project.version}-bin.zip
+or
+% tar -xzvf ${project.artifactId}-${project.version}-bin.tar.gz
+      </source>
+
+      <p>Note: Depending on the platform, the native version of <i>tar</i> may produce an error when attempting to unpack the distribution file because many of the file paths are greater than 100 characters. If available, the GNU version of tar will resolve this problem. If that is not available or cannot be installed, the zipped package will work just fine in a UNIX environment.
+      </p>
+
+      <p>The commands above result in the creation of the <i>${project.artifactId}-${project.version}</i> directory with the following directory structure:
+      </p>
+
+      <ul>
+        <li><b>README.txt</b><br/>
+          <p>A README file directing the user to the available documentation for the project.
+          </p>
+        </li>
+        <li><b>LICENSE.txt</b><br/>
+          <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
+          </p>
+        </li>
+        <li><b>prod.war</b><br/>
+          <p>This is the Web ARchive (WAR) file containing the Product Query software including all dependent JAR files.
+          </p>
+        </li>
+        <li><b>doc/</b><br/>
+          <p>This directory contains a local web site with the Product Query documentation and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
+          </p>
+        </li>
+      </ul>
+    </section>
+
+    <section name="Deploying the Application">
+      <p>The Product Query web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory within the Tomcat installation or installed via the Manager interface. Once this step is complete, the application is ready for operation.
+      </p>
+    </section>
+
+    <section name="Configuring the Application">
+      <p>The Product Query web application provides the following parameters for configuration:
+      </p>
+
+      <table>
+        <tr><th>Parameter</th><th>Description</th></tr>
+        <tr><td>aliasFileSpec</td><td>The file specification for the <i>aliases.properties</i> file. This file maps the URNs of the Product Servers to their associated URLs. The default value specifies the version of this file that is included in the WAR.</td></tr>
+        <tr><td>chunkSize</td><td>The buffer size to be used when transferring product files from the Product Server. The value is represented in bytes and defaults to "8192".</td></tr>
+        <tr><td>preferredNamespace</td><td>The URN prefix that is added to Product Server identifiers in the case where it is not already present. The value defaults to "urn:eda:rmi:".</td></tr>
+      </table>
+
+      <p>To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/prod/WEB-INF</i> directory. The following block contains the parameters:
+      </p>
+
+      <source>
+&lt;servlet&gt;
+  &lt;servlet-name&gt;product&lt;/servlet-name&gt;
+  &lt;servlet-class&gt;gov.nasa.pds.portal.product.ProductServlet&lt;/servlet-class&gt;
+  &lt;!-- All parameters are optional and default to the values below.
+  &lt;init-param&gt;
+    &lt;param-name&gt;aliasFileSpec&lt;/param-name&gt;
+    &lt;param-value&gt;/aliases.properties&lt;/param-value&gt;
+  &lt;/init-param&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;chunkSize&lt;/param-name&gt;
+    &lt;param-value&gt;8192&lt;/param-value&gt;
+  &lt;/init-param&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;preferredNamespace&lt;/param-name&gt;
+    &lt;param-value&gt;urn:eda:rmi:&lt;/param-value&gt;
+  &lt;/init-param&gt;
+  --&gt;
+&lt;/servlet&gt;
+      </source>
+    </section>
+  </body>
+</document>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- 
+  Copyright 2012, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology 
+  Transfer at the California Institute of Technology.
+
+  This software may be subject to U.S. export control laws. By accepting 
+  this software, the user agrees to comply with all applicable U.S. export 
+  laws and regulations. User has the responsibility to obtain export licenses, 
+  or other export authority as may be required before exporting such 
+  information to foreign countries or providing access to foreign persons.
+
+  $Id$
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>gov.nasa.pds.2010</groupId>
+    <artifactId>portal</artifactId>
+    <version>0.0.0</version>
+  </parent>
+
+  <groupId>gov.nasa.pds.2010.portal</groupId>
+  <artifactId>product-query</artifactId>
+  <version>1.0.0-dev</version>
+  <packaging>war</packaging>
+
+  <name>Product Query</name>
+  <description>
+    The Product Query component is a web application that serves as the name resolver for the Product Servers that are located at the various Discipline Nodes. Although the web application can be installed anywhere, its legacy endpoint is at http://starbrite.jpl.nasa.gov/prod/.
+  </description>
+  <url>http://pds-cm.jpl.nasa.gov/2010/portal/product-query/</url>
+
+  <licenses>
+    <license>
+      <name>California Institute of Technology</name>
+      <url>file:///${basedir}/LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Sean Hardman</name>
+      <id>shardman</id>
+      <email>Sean.Hardman@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Development Lead</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <warName>prod</warName>
+          <archive>
+            <manifest>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+          </archive>
+          <packagingExcludes>WEB-INF/lib/servlet-api-*.jar</packagingExcludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/main/assembly/assembly.xml</descriptor>
+          </descriptors>
+        </configuration>
+        <executions>
+          <execution>
+            <id>bin-release</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>   
+      <!-- 
+        Configuration for deploying to a local Tomcat server. Provide the 
+        username and password for the Manager interface in your settings.xml.
+      -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>tomcat-maven-plugin</artifactId>
+        <configuration>
+          <server>tomcat-local</server>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <!-- Hosts the PDS and OODT artifacts. -->
+    <repository>
+      <id>pds-repo</id>
+      <name>PDS Maven Repository</name>
+      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <!-- Hosts the JPL OODT artifacts. -->
+    <repository>
+      <id>oodt-repo</id>
+      <name>OODT Private Maven Repository</name>
+      <url>http://oodt.jpl.nasa.gov/download/private</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>oodt</groupId>
+      <artifactId>edm-query</artifactId>
+      <version>2.0.6</version>
+      <scope>compile</scope>
+      <!-- Exclude packages picked up by the edm-commons dependency. -->
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>xmlrpc</groupId>
+          <artifactId>xmlrpc</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>oodt</groupId>
+      <artifactId>grid-product</artifactId>
+      <version>3.0.11</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+
+  <!-- Project Information and Reports inherited from parent. -->
+  <reporting/>
+</project>
