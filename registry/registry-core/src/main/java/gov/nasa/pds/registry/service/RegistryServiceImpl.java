@@ -510,6 +510,10 @@ public class RegistryServiceImpl implements RegistryService {
     // the client
     registryObject.setVersionName(foundObject.getVersionName());
     metadataStore.updateRegistryObject(registryObject);
+    // Record that a registry object has been updated
+    this.createAuditableEvent("updateObject " + registryObject.getGuid(),
+        user, EventType.Updated, registryObject.getGuid(), registryObject
+            .getClass());
   }
 
   /*
