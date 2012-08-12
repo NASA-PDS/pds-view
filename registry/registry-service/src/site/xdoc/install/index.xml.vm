@@ -144,7 +144,7 @@ ij> run 'conf/derby-registry-schema.ddl';
 ij> exit;
         </source>
 
-        <p>The <i>registry</i> directory, which is the Derby database, will now be present in the current working directory. The path to this directory can be specified in the <a href="#Database_Configuration">Configuration</a> section. Note: Feel free to move this <i>registry</i directory to anywhere on disk that is accessible by Tomcat and configured below.
+        <p>The <i>registry</i> directory, which is the Derby database, will now be present in the current working directory. The path to this directory can be specified in the <a href="#Database_Configuration">Configuration</a> section. Note: Feel free to move this <i>registry</i> directory to anywhere on disk that is accessible by Tomcat and configured below.
         </p>   
       </subsection>
       
