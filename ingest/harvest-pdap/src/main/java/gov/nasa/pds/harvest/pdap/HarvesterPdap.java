@@ -149,7 +149,7 @@ public class HarvesterPdap {
           log.log(new ToolsLogRecord(ToolsLevel.INFO, "Processing dataset.",
               datasetId));
           ++HarvestPdapStats.numDatasetsProcessed;
-          String lid = Constants.LID_PREFIX + "." + datasetId;
+          String lid = createLid(Constants.LID_PREFIX, datasetId);
           String lidvid = lid + "::1.0";
           if (registryService.hasProduct(lid, "1.0")) {
             log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
@@ -218,6 +218,29 @@ public class HarvesterPdap {
     } catch (Exception e) {
       log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage()));
     }
+  }
+
+  /**
+   * Creates the logical identifier. Any URI reserved characters found in
+   * the dataset id will be substituted with dash characters when forming
+   * the lid.
+   * 
+   * @param prefix A prefix for the lid.
+   * 
+   * @param datasetId The dataset id.
+   * 
+   * @return The logical identifier.
+   */
+  private String createLid(String prefix, String datasetId) {
+    String lid = prefix + "." + datasetId;
+    String conformingLid = lid.replaceAll("[%/?#]", "-");
+    if (!conformingLid.equals(lid)) {
+      log.log(new ToolsLogRecord(ToolsLevel.WARNING, "Dataset ID contains "
+          + "URI reserved characters. Replacing with '-' characters "
+          + "to create the logical identifier: " + conformingLid,
+          datasetId));
+    }
+    return conformingLid;
   }
 
   /**
