@@ -9,4 +9,7 @@ public class Constants {
 	
 	/** Attribute for version of a product **/
 	public final static String PRODUCT_VERSION = "version_id";
+	
+	/** Run Log File Name **/
+	public final static String LOG_FNAME="run.log";
 }

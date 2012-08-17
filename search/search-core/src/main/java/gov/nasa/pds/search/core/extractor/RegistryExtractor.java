@@ -167,6 +167,12 @@ public class RegistryExtractor {
 		this.LOG.info("Finished data extraction");
 	}
 
+	/**
+	 * Return the set of product classes to be parsed, as denoted in the product-classes.txt
+	 * configuration file.
+	 * 
+	 * @return
+	 */
 	public Set<String> getProductClassList() {
 		this.mappings = new HashMap<String, String>();
 		Properties props = new Properties();
@@ -255,7 +261,7 @@ public class RegistryExtractor {
 		this.queryMax = queryMax;
 	}
 
-	public static void main(String[] args) throws Exception {
+	/*public static void main(String[] args) throws Exception {
 		String confHome = "";
 		String outDir = "../";
 		String registryUrl = "";
@@ -278,6 +284,6 @@ public class RegistryExtractor {
 				outDir, confHome);
 		extractor.setQueryMax(queryMax);
 		extractor.run();
-	}
+	}*/
 
 }

@@ -7,6 +7,8 @@
 package gov.nasa.pds.search.core.indexer.solr;
 
 
+import gov.nasa.pds.search.core.constants.Constants;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -22,6 +24,7 @@ import java.util.Date;
  * 
  */
 public class SolrIndexer {
+	
 	public static void main(String[] args) throws IOException, ParseException {
 		String usage = "java " + SolrIndexer.class
 				+ " <output_directory> <crawl_directory>";
@@ -31,10 +34,12 @@ public class SolrIndexer {
 		}
 
 		Date start = new Date();
-		try {
-			File outputFile = new File(new File(args[0]), "solr_index.xml");
+		//try {
+			File outputFile = new File(new File(args[0]), "/solr_index.xml");
 			BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
 			bw.write("<add>");
+			
+			System.out.println("Index Docs: " + args[1]);
 			indexDocs(bw, new File(args[1]));
 			bw.write("</add>");
 			bw.close();
@@ -43,16 +48,16 @@ public class SolrIndexer {
 			System.out.print(end.getTime() - start.getTime());
 			System.out.println(" total milliseconds");
 
-		} catch (IOException e) {
+		/*} catch (IOException e) {
 			System.out.println(" caught a " + e.getClass()
 					+ "\n with message: " + e.getMessage());
-		}
+		}*/
 	}
 
 	public static void indexDocs(BufferedWriter writer, File file)
 			throws IOException, ParseException {
 		// do not try to index files that cannot be read
-		if (file.canRead()) {
+		if (file.canRead() && !file.getName().equals(Constants.LOG_FNAME)) {
 			if (file.isDirectory()) {
 				String[] files = file.list();
 				// an IO error could occur

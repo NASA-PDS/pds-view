@@ -157,7 +157,8 @@ public class ProductClass { // implements Extractor {
 						this.classname);
 				writer.write();
 				
-				createXML(outputDir, outSeqNum);
+				// Remove this createXML method
+				// createXML(outputDir, outSeqNum);
 
 				// Create the XML file
 				// log.info("Files placed in dir : " + extractorDir);
@@ -453,6 +454,7 @@ public class ProductClass { // implements Extractor {
 					this.associationMap.put(assocType, assocExtObjList);
 				} else {
 					this.missingAssocTargets.add(this.lid + " - " + assocType);
+					return false;
 				}
 			//}
 		}
@@ -517,23 +519,6 @@ public class ProductClass { // implements Extractor {
 		
 		return assocExtObjList;
 	}
-
-	/*
-	 * private PagedResponse<Association> getAssociationResponse(String
-	 * assocType, String id) throws Exception { // Build the filter
-	 * AssociationFilter assocFilter = new AssociationFilter.Builder()
-	 * .sourceObject(id).associationType(assocType).build();
-	 * RegistryQuery<AssociationFilter> query = new
-	 * RegistryQuery.Builder<AssociationFilter>() .filter(assocFilter).build();
-	 * 
-	 * try { RegistryClient client = new RegistryClient(Constants.REGISTRY_URL);
-	 * // securityContext, user, password); PagedResponse<Association> pr =
-	 * client.getAssociations(query, 1, Constants.QUERY_MAX);
-	 * 
-	 * return pr; } catch (RegistryServiceException rse) { // Ignore. Nothing
-	 * found. } catch (RegistryClientException rce) { throw new
-	 * Exception(rce.getMessage()); } return null; }
-	 */
 	
 	private void recordMissingSlot(ExtrinsicObject extObject, String slot) {
 		List<String> slotList;
@@ -546,20 +531,6 @@ public class ProductClass { // implements Extractor {
 		slotList.add(this.lid + " - " + slot);
 		this.missingSlotsMap.put(objectType, slotList);
 	}
-	
-	/*private void recordMissingSlots(ExtrinsicObject extObj) {
-		if (slots.isMissingSlots()) {
-			if (this.missingSlotsMap.containsKey(slots.getObjectType())) {
-				List<String> slotList = this.missingSlotsMap.get(slots.getObjectType());
-				slotList.addAll(slots.getMissingSlotList());
-				this.missingSlotsMap.put(slots.getObjectType(),
-						slotList);
-			} else {
-				this.missingSlotsMap.put(slots.getObjectType(),
-						slots.getMissingSlotList());
-			}
-		}
-	}*/
 
 	private void displayWarnings() {
 		String out = "";
@@ -588,68 +559,20 @@ public class ProductClass { // implements Extractor {
 	}
 
 	/**
-	 * Registry 0.2.0-dev implementation
 	 * 
-	 * Depending upon the responseType, sets the necessary filter and gets a
-	 * RegistryResponse
-	 * 
-	 * @param responseType
-	 * @param type
-	 * @param value
-	 * @return
-	 * @throws ParseException
-	 * @throws DateParseException
+	 * @param object
 	 */
-	/*
-	 * private RegistryResponse getResponse(int responseType, String type,
-	 * String value) {
-	 * 
-	 * if (responseType == ResponseTypes.EXTRINSIC) { ObjectFilter filter =
-	 * null; // TODO account for version which is second part of split value if
-	 * (type.equals(ExtrinsicFilterTypes.LIDVID)) { filter = new
-	 * ObjectFilter.Builder().lid(value.split("::")[0]) .build(); } else if
-	 * (type.equals(ExtrinsicFilterTypes.GUID)) { filter = new
-	 * ObjectFilter.Builder().guid(value).build(); } else if
-	 * (type.equals(ExtrinsicFilterTypes.OBJECT_TYPE)) { filter = new
-	 * ObjectFilter.Builder().objectType(value).build(); }
-	 * 
-	 * RegistryQuery<ExtrinsicFilter> query = new
-	 * RegistryQuery<ExtrinicFilter>().Builder<ExtrinicFilter>().filter(filter)
-	 * .build(); return this.client.getExtrinsics(query, 1,
-	 * TseConstants.QUERY_MAX) .getEntity(RegistryResponse.class);
-	 * 
-	 * } else if (responseType == ResponseTypes.ASSOCIATION) { AssociationFilter
-	 * assocFilter = new AssociationFilter.Builder()
-	 * .sourceObject(value).associationType(type).build(); AssociationQuery
-	 * assocQuery = new AssociationQuery.Builder() .filter(assocFilter).build();
-	 * return this.client.getAssociations(assocQuery, 1,
-	 * TseConstants.QUERY_MAX).getEntity( RegistryResponse.class); }
-	 * 
-	 * return null; }
-	 */
-
-	/*
-	 * private List reformatDateFields(List array) throws ParseException {
-	 * System.out.println("FOUND Date Field - " + array.get(0));
-	 * SimpleDateFormat frmt = new SimpleDateFormat(DATE_FORMATS.get(1));
-	 * 
-	 * List newVals = new ArrayList<String>(); String newDate = ""; for (Object
-	 * date : array) { if (((String) date)
-	 * .matches("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}")) { newDate =
-	 * (String) date + ":00"; } else if (((String)
-	 * date).matches("[0-9]{4}-[0-9]{2}-[0-9]{2}")) { newDate = (String) date +
-	 * "T00:00:00"; } else if (((String) date).equals("unknown")) { newDate =
-	 * "UNK"; } else { newDate = (String) date; }
-	 * System.out.println("New Date: " + newDate); newVals.add(date); } return
-	 * newVals;
-	 * 
-	 * }
-	 */
-
 	private void setIdentifiers(RegistryObject object) {
 		this.lid = object.getLid();
 	}
 
+	/**
+	 * 
+	 * @param str
+	 * @param extObject
+	 * @return
+	 * @throws Exception
+	 */
 	private String setSubstring(String str, ExtrinsicObject extObject) throws Exception {
 		int start, end;
 		String tval = "", key;
@@ -686,14 +609,20 @@ public class ProductClass { // implements Extractor {
 		return str;
 	}
 
+	/**
+	 * 
+	 * @param text
+	 * @return
+	 */
 	private String cleanText(String text) {
 		return text.trim().replace("\n", "<br />").replaceAll("    *", "   ");
 	}
 
 	/**
-	 * Display the header for the XML file.
+	 * 
+	 * @param xmlDisplay
 	 */
-	public void printFileHeader(PrintWriter xmlDisplay) {
+	private void printFileHeader(PrintWriter xmlDisplay) {
 		xmlDisplay.println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
 		xmlDisplay.println("<doc>");
 		xmlDisplay.println("\t<" + classname + ">");
@@ -702,7 +631,7 @@ public class ProductClass { // implements Extractor {
 	/**
 	 * Display the footer for the XML file.
 	 */
-	public void printFileFooter(PrintWriter xmlDisplay) {
+	private void printFileFooter(PrintWriter xmlDisplay) {
 		xmlDisplay.println("\t</" + classname + ">");
 		xmlDisplay.println("</doc>");
 	}
@@ -715,7 +644,7 @@ public class ProductClass { // implements Extractor {
 	 * @param value
 	 *            - value for specific record
 	 */
-	public void printXml(PrintWriter xmlDisplay, String name, String value, boolean clean) {
+	private void printXml(PrintWriter xmlDisplay, String name, String value, boolean clean) {
 		// Temporary variables to hold name and value
 		String tName, tValue;
 
@@ -728,17 +657,26 @@ public class ProductClass { // implements Extractor {
 		}
 
 		// Previous method used to encode only select HTML entities
-		tName = repAllCharWStr(tName);
-		tValue = repAllCharWStr(tValue);
+		tName = replaceURLEntities(tName);
+		tValue = replaceURLEntities(tValue);
 
 		xmlDisplay.println("\t\t<" + tName + ">" + tValue + "</" + tName + ">");
 	}
 
+	private String replaceURLEntities(String str) {
+		return str.replace("&", "&amp;")
+				.replace("<", "&lt;")
+				.replace(">", "&gt;")
+				.replace("\"", "&quot;")
+				.replace("[", "&#91;")
+				.replace("]", "&#93;");
+	}
+	
 	/**
 	 * Replace HTML entities & with &amp;, < with &lt;, > with &gt;, and " with
 	 * &quot;
 	 */
-	public String repAllCharWStr(String s1) {
+	private String repAllCharWStr(String s1) {
 		String s2;
 
 		s2 = repCharWStr(remNull(s1), '&', "&amp;");
@@ -753,7 +691,7 @@ public class ProductClass { // implements Extractor {
 	/**
 	 * Remove String Nulls
 	 */
-	public String remNull(String s1) {
+	private String remNull(String s1) {
 		if (s1 == null) {
 			return "UNK";
 		}
@@ -761,9 +699,14 @@ public class ProductClass { // implements Extractor {
 	}
 
 	/**
-	 * Replace character with string
+	 * Replace the character found in the string with the character with the string
+	 * 
+	 * @param str1
+	 * @param rc
+	 * @param rstr
+	 * @return
 	 */
-	public String repCharWStr(String str1, char rc, String rstr) {
+	private String repCharWStr(String str1, char rc, String rstr) {
 		int p1, str1len;
 		char tc;
 		StringBuffer sbuff1 = new StringBuffer(str1), sbuff2 = new StringBuffer();
@@ -782,7 +725,7 @@ public class ProductClass { // implements Extractor {
 		return sbuff2.toString();
 	}
 
-	public boolean isCleanedAttr(String s1) {
+	private boolean isCleanedAttr(String s1) {
 		String[] elemfacet = { "identifier", "title", "format", "description",
 				"publisher", "language", "resContext", "resClass",
 				"resLocation", "data_set_terse_desc", "data_set_desc",
