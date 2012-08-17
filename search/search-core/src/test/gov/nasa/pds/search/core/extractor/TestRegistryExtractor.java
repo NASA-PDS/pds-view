@@ -1,9 +1,12 @@
 package gov.nasa.pds.search.core.extractor;
 
+import org.junit.Ignore;
+
 import junit.framework.TestCase;
 import gov.nasa.pds.search.core.SearchCoreLauncher;
 import gov.nasa.pds.search.core.constants.TestConstants;
 
+@Ignore
 public class TestRegistryExtractor extends TestCase {
 
     /**

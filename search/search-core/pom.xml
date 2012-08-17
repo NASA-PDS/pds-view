@@ -99,7 +99,7 @@
         </executions>
       </plugin>
       <!-- Clean up generated content. -->
-      <plugin>
+      <!--plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
         <configuration>
@@ -109,7 +109,7 @@
             </fileset>
           </filesets>
         </configuration>
-      </plugin>   
+      </plugin-->
     </plugins>
   </build>
 
