@@ -104,7 +104,7 @@ public class TestSearchCoreLauncher extends TestCase {
 	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds", };
 	    	SearchCoreLauncher.main(args);
 		} catch (Exception e) {
-			fail("Registry Extractor with Absolute Paths failed: " + e.getMessage());
+			fail("Registry Extractor with Relative Paths failed: " + e.getMessage());
 		}
     }
 	
