@@ -16,10 +16,10 @@ public class TestRegistryExtractor extends TestCase {
     public void testExtractorAbsolute() {
     	try {
 	    	String[] args = { "-r", TestConstants.PDS_REGISTRY_URL, 
-	    			"-H", TestConstants.CORE_HOME + TestConstants.SERVICE_HOME_RELATIVE, 
+	    			"-H", System.getProperty("user.dir") + "/" + TestConstants.SERVICE_HOME_RELATIVE, 
 	    			"-e", 
 	    			"-m", "5", 
-	    			"-c", TestConstants.CORE_HOME + TestConstants.CONFIG_DIR_RELATIVE + "pds", };
+	    			"-c", System.getProperty("user.dir") + "/" + TestConstants.CONFIG_DIR_RELATIVE + "pds", };
 	    	SearchCoreLauncher.main(args);
     	} catch (Exception e) {
     		fail("Registry Extractor with Absolute Paths failed: " + e.getMessage());

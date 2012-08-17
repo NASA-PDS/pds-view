@@ -20,7 +20,7 @@ import junit.framework.TestCase;
 public class EndToEndTestPDSSearchCore extends TestCase {
 	
 	@Before public void setUp() {
-		File testDir = new File(TestConstants.CORE_HOME + TestConstants.SERVICE_HOME_RELATIVE);
+		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SERVICE_HOME_RELATIVE);
 		testDir.mkdirs();
 	}
 	
@@ -36,9 +36,9 @@ public class EndToEndTestPDSSearchCore extends TestCase {
     public void testPDSEndToEnd() {
     	try {
 	    	String[] args = { "-r", TestConstants.PDS_REGISTRY_URL, 
-	    			"-H", TestConstants.CORE_HOME + TestConstants.SERVICE_HOME_RELATIVE, 
+	    			"-H", System.getProperty("user.dir") + "/" + TestConstants.SERVICE_HOME_RELATIVE, 
 	    			"-m", "5",
-	    			"-c", TestConstants.CORE_HOME + TestConstants.CONFIG_DIR_RELATIVE + "pds", };
+	    			"-c", System.getProperty("user.dir") + "/" + TestConstants.CONFIG_DIR_RELATIVE + "pds", };
 	    	SearchCoreLauncher.main(args);
     	} catch (Exception e) {
     		fail("Registry Extractor with Absolute Paths failed: " + e.getMessage());

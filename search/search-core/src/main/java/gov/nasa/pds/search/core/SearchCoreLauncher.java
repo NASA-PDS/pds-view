@@ -158,6 +158,8 @@ public class SearchCoreLauncher {
 			if (path.equals("")) {
 				path = System.getProperty("user.dir");
 			}
+			
+			System.out.println("search_service_home " + getAbsolutePath("Search Service Home", path));
 			this.searchServiceHome = new File(getAbsolutePath("Search Service Home", path));
 		}
 		
