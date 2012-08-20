@@ -38,6 +38,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
@@ -71,6 +72,25 @@ public class MetadataStoreJPA implements MetadataStore {
     return entityManager;
   }
 
+  private Predicate generatePredicate(CriteriaBuilder builder,
+      Expression<String> attribute, String filter) {
+    // If a wildcard is used, indicated by star, then use like,
+    // otherwise use equal.
+    if (filter.contains("*")) {
+      return builder.like(attribute, escape(filter), '\\');
+    } else {
+      return builder.equal(attribute, filter);
+    }
+  }
+
+  private String escape(String filter) {
+    // Underscores count as a single wildard so escape them with a backslash.
+    // The replace all function ends up requiring 4 backslashes to replace one.
+    // Convert the star character to a percent for handling multi character
+    // wildcards.
+    return filter.replaceAll("_", "\\\\_").replaceAll("\\*", "%");
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -89,29 +109,28 @@ public class MetadataStoreJPA implements MetadataStore {
     List<Predicate> predicates = new ArrayList<Predicate>();
     if (filter != null) {
       if (filter.getGuid() != null) {
-        predicates.add(cb.like(productEntity.get("guid").as(String.class),
-            filter.getGuid().replace('*', '%')));
+        predicates.add(generatePredicate(cb, productEntity.get("guid").as(
+            String.class), filter.getGuid()));
       }
       if (filter.getLid() != null) {
-        predicates.add(cb.like(productEntity.get("lid").as(String.class),
-            filter.getLid().replace('*', '%')));
+        predicates.add(generatePredicate(cb, productEntity.get("lid").as(
+            String.class), filter.getLid()));
       }
       if (filter.getName() != null) {
-        predicates.add(cb.like(productEntity.get("name").as(String.class),
-            filter.getName().replace('*', '%')));
+        predicates.add(generatePredicate(cb, productEntity.get("name").as(
+            String.class), filter.getName()));
       }
       if (filter.getObjectType() != null) {
-        predicates.add(cb.like(
-            productEntity.get("objectType").as(String.class), filter
-                .getObjectType().replace('*', '%')));
+        predicates.add(generatePredicate(cb, productEntity.get("objectType")
+            .as(String.class), filter.getObjectType()));
       }
       if (filter.getStatus() != null) {
         predicates.add(cb
             .equal(productEntity.get("status"), filter.getStatus()));
       }
       if (filter.getVersionName() != null) {
-        predicates.add(cb.like(productEntity.get("versionName")
-            .as(String.class), filter.getVersionName().replace('*', '%')));
+        predicates.add(generatePredicate(cb, productEntity.get("versionName")
+            .as(String.class), filter.getVersionName()));
       }
     }
 
@@ -208,16 +227,16 @@ public class MetadataStoreJPA implements MetadataStore {
     List<Predicate> predicates = new ArrayList<Predicate>();
     if (filter != null) {
       if (filter.getTargetObject() != null) {
-        predicates.add(cb.like(associationEntity.get("targetObject").as(
-            String.class), filter.getTargetObject().replace('*', '%')));
+        predicates.add(generatePredicate(cb, associationEntity.get(
+            "targetObject").as(String.class), filter.getTargetObject()));
       }
       if (filter.getSourceObject() != null) {
-        predicates.add(cb.like(associationEntity.get("sourceObject").as(
-            String.class), filter.getSourceObject().replace('*', '%')));
+        predicates.add(generatePredicate(cb, associationEntity.get(
+            "sourceObject").as(String.class), filter.getSourceObject()));
       }
       if (filter.getAssociationType() != null) {
-        predicates.add(cb.like(associationEntity.get("associationType").as(
-            String.class), filter.getAssociationType().replace('*', '%')));
+        predicates.add(generatePredicate(cb, associationEntity.get(
+            "associationType").as(String.class), filter.getAssociationType()));
       }
     }
     if (predicates.size() != 0) {
@@ -413,29 +432,28 @@ public class MetadataStoreJPA implements MetadataStore {
     List<Predicate> predicates = new ArrayList<Predicate>();
     if (filter != null) {
       if (filter.getGuid() != null) {
-        predicates.add(cb.like(objectEntity.get("guid").as(String.class),
-            filter.getGuid().replace('*', '%')));
+        predicates.add(generatePredicate(cb, objectEntity.get("guid").as(
+            String.class), filter.getGuid()));
       }
       if (filter.getLid() != null) {
-        predicates.add(cb.like(objectEntity.get("lid").as(String.class), filter
-            .getLid().replace('*', '%')));
+        predicates.add(generatePredicate(cb, objectEntity.get("lid").as(
+            String.class), filter.getLid()));
       }
       if (filter.getName() != null) {
-        predicates.add(cb.like(objectEntity.get("name").as(String.class),
-            filter.getName().replace('*', '%')));
+        predicates.add(generatePredicate(cb, objectEntity.get("name").as(
+            String.class), filter.getName()));
       }
       if (filter.getObjectType() != null) {
-        predicates.add(cb.like(objectEntity.get("objectType").as(String.class),
-            filter.getObjectType().replace('*', '%')));
+        predicates.add(generatePredicate(cb, objectEntity.get("objectType").as(
+            String.class), filter.getObjectType()));
       }
       if (filter.getStatus() != null) {
         predicates
             .add(cb.equal(objectEntity.get("status"), filter.getStatus()));
       }
       if (filter.getVersionName() != null) {
-        predicates.add(cb.like(
-            objectEntity.get("versionName").as(String.class), filter
-                .getVersionName().replace('*', '%')));
+        predicates.add(generatePredicate(cb, objectEntity.get("versionName")
+            .as(String.class), filter.getVersionName()));
       }
     }
 
@@ -594,12 +612,12 @@ public class MetadataStoreJPA implements MetadataStore {
             Date.class), filter.getEventEnd()));
       }
       if (filter.getRequestId() != null) {
-        predicates.add(cb.like(eventEntity.get("requestId").as(String.class),
-            filter.getRequestId().replace('*', '%')));
+        predicates.add(generatePredicate(cb, eventEntity.get("requestId").as(
+            String.class), filter.getRequestId()));
       }
       if (filter.getUser() != null) {
-        predicates.add(cb.like(eventEntity.get("user").as(String.class), filter
-            .getUser().replace('*', '%')));
+        predicates.add(generatePredicate(cb, eventEntity.get("user").as(
+            String.class), filter.getUser()));
       }
     }
     if (predicates.size() != 0) {
