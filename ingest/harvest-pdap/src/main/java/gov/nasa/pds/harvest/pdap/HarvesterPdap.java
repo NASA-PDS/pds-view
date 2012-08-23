@@ -233,10 +233,10 @@ public class HarvesterPdap {
    */
   private String createLid(String prefix, String datasetId) {
     String lid = prefix + ":" + datasetId;
-    String conformingLid = lid.replaceAll("[%/?#]", "-");
+    String conformingLid = lid.replaceAll(Constants.URN_ILLEGAL_CHARACTERS, "-");
     if (!conformingLid.equals(lid)) {
       log.log(new ToolsLogRecord(ToolsLevel.WARNING, "Dataset ID contains "
-          + "URI reserved characters. Replacing with '-' characters "
+          + "URN reserved and/or excluded characters. Replacing with '-' characters "
           + "to create the logical identifier: " + conformingLid,
           datasetId));
     }

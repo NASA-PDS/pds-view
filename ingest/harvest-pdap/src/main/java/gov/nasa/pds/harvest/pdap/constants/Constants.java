@@ -28,4 +28,6 @@ public class Constants {
 
   /** The resource product class. */
   public static final String RESOURCE_PRODUCT_CLASS = "Product_Resource";
+
+  public static final String URN_ILLEGAL_CHARACTERS = "[%/\\\\?#\"&<>\\[\\]^`\\{\\|\\}~]";
 }
