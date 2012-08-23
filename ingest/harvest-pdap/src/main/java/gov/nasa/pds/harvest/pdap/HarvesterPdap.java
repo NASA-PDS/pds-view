@@ -224,15 +224,15 @@ public class HarvesterPdap {
    * Creates the logical identifier. Any URI reserved characters found in
    * the dataset id will be substituted with dash characters when forming
    * the lid.
-   * 
+   *
    * @param prefix A prefix for the lid.
-   * 
+   *
    * @param datasetId The dataset id.
-   * 
+   *
    * @return The logical identifier.
    */
   private String createLid(String prefix, String datasetId) {
-    String lid = prefix + "." + datasetId;
+    String lid = prefix + ":" + datasetId;
     String conformingLid = lid.replaceAll("[%/?#]", "-");
     if (!conformingLid.equals(lid)) {
       log.log(new ToolsLogRecord(ToolsLevel.WARNING, "Dataset ID contains "
