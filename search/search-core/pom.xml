@@ -50,12 +50,15 @@
         <targetPath>gov/nasa/pds/search/core/extractor</targetPath>
         <directory>src/main/resources/conf/pds</directory>
         <includes>
-          <include>datasetconfig.xml</include>
-          <include>instrumentconfig.xml</include>
-          <include>instrumenthostconfig.xml</include>
-          <include>missionconfig.xml</include>
-          <include>targetconfig.xml</include>
-          <include>product-classes.txt</include>
+          <include>*</include>
+        </includes>
+      </resource>
+      <resource>
+        <filtering>true</filtering>
+        <targetPath>gov/nasa/pds/search/core/extractor</targetPath>
+        <directory>src/main/resources/conf/psa</directory>
+        <includes>
+          <include>*</include>
         </includes>
       </resource>
       <resource>

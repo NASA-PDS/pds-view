@@ -39,14 +39,21 @@
       <directory>src/main/resources/bin</directory>
       <outputDirectory>bin</outputDirectory>
       <includes>
-        <include>search-core</include>
-        <include>search-core.bat</include>
+        <include>*</include>
       </includes>
       <fileMode>755</fileMode>
     </fileSet>
     <fileSet>
       <directory>src/main/resources/conf</directory>
       <outputDirectory>conf/</outputDirectory>
+      <includes>
+        <include>*</include>
+        <include>*/*</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/resources/facets</directory>
+      <outputDirectory>facets/</outputDirectory>
       <includes>
         <include>*</include>
       </includes>

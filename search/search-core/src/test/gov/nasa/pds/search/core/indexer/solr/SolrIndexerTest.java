@@ -5,15 +5,17 @@ import gov.nasa.pds.search.core.indexer.solr.SolrIndexer;
 
 import java.io.File;
 
+import org.junit.Ignore;
+
 import junit.framework.TestCase;
 
-public class TestSolrIndexer extends TestCase {
+public class SolrIndexerTest extends TestCase {
 
 	public void testSolrIndexer() {
 		try {
 			File indexDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SERVICE_HOME_RELATIVE + "/index");
 			if (!indexDir.isDirectory()) {
-				indexDir.mkdir();
+				indexDir.mkdirs();
 			}
 			
 			//String[] args = { this.searchServiceHome.getAbsolutePath() + "/index",

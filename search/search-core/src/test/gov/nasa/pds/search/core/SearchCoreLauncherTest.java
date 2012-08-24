@@ -21,7 +21,7 @@ import junit.framework.TestCase;
  * @author jpadams
  *
  */
-public class TestSearchCoreLauncher extends TestCase {
+public class SearchCoreLauncherTest extends TestCase {
 	
 	@Before public void setUp() {
 		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SERVICE_HOME_RELATIVE);

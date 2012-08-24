@@ -7,7 +7,7 @@ import gov.nasa.pds.search.core.SearchCoreLauncher;
 import gov.nasa.pds.search.core.constants.TestConstants;
 
 @Ignore
-public class TestRegistryExtractor extends TestCase {
+public class RegistryExtractorTest extends TestCase {
 
     /**
      * Test Registry Extractor with absolute paths and max query = 5

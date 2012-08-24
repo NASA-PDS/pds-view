@@ -5,24 +5,17 @@ echo "Running XSLT transformation..."
 echo
 
 if [ "$1" != "" ]; then
-    SOLR_HOME=${1}
-    echo
-    echo "SOLR_HOME = ${1}"
-    echo
-elif [ "$SOLR_HOME" != "" ]; then
-    echo
-    echo "SOLR_HOME = ${SOLR_HOME}"
-    echo
+    SEARCH_SERVICE_HOME=${1}
 else
     echo
-    echo "SOLR_HOME must be specified as environment var or command-line:  ./xslt <solr-home>"
+    echo "SEARCH_SERVICE_HOME must be specified via command-line:  ./xslt <search-service-home>"
     echo
     exit 0
 fi
 
-SOLR_HOME=$1
-echo $SOLR_HOME
-export SAXON_LIB=$SOLR_HOME/lib
+SEARCH_SERVICE_HOME=$1
+echo $SEARCH_SERVICE_HOME
+export SAXON_LIB=$SEARCH_SERVICE_HOME/lib
 CLASSPATH=`echo $SAXON_LIB/*.jar | sed -e 's/ /:/g'`
 
 if [ $# -lt 2 ]; then

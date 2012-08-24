@@ -36,7 +36,8 @@ public class SearchCoreLauncher {
 	private boolean debug;
 	private String registryUrl;
 	private int queryMax;
-	private String configDir;
+	private String configHome;
+	private File propsFile;
 
 	public SearchCoreLauncher() {
 		this.searchServiceHome = null;
@@ -47,7 +48,8 @@ public class SearchCoreLauncher {
 		this.debug = false;
 		this.registryUrl = null;
 		this.queryMax = -1;
-		this.configDir = null;
+		this.configHome = null;
+		this.propsFile = null;
 
 	}
 
@@ -135,15 +137,17 @@ public class SearchCoreLauncher {
 					throw new InvalidOptionException("Query Max value must be an integer value.");
 				}
 				
-			}  else if (o.getOpt().equals(Flag.CONFIG.getShortName())) {
-				this.configDir = getAbsolutePath("Config Dir", o.getValue().trim());
+			} else if (o.getOpt().equals(Flag.CONFIG_HOME.getShortName())) {
+				this.configHome = getAbsolutePath("Config Dir", o.getValue().trim());
 				
 				// Check that the config dir contains the product class properties file
-				if (!Arrays.asList((new File(this.configDir)).list()).contains(Constants.PC_PROPS)) {
+				if (!Arrays.asList((new File(this.configHome)).list()).contains(Constants.PC_PROPS)) {
 					throw new InvalidOptionException(Constants.PC_PROPS + " does not exist in directory "
-							+ this.configDir);					
+							+ this.configHome);					
 				}					
-			} 
+			} else if (o.getOpt().equals(Flag.PROPERTIES.getShortName())) {
+				this.propsFile = new File(getAbsolutePath("Properties File", o.getValue().trim()));
+			}
 		}
 
 		// Verify a registry URL was specified
@@ -163,9 +167,9 @@ public class SearchCoreLauncher {
 			this.searchServiceHome = new File(getAbsolutePath("Search Service Home", path));
 		}
 		
-		// Set config directory if not specified
-		if (this.configDir == null) {
-			this.configDir = (new File(System.getProperty("java.class.path"))).getParentFile().getParent() + PDS_CONFIG_PATH;
+		// Set config directory to pds if not specified
+		if (this.configHome == null) {
+			this.configHome = (new File(System.getProperty("java.class.path"))).getParentFile().getParent() + PDS_CONFIG_PATH;
 		}
 	}
 	
@@ -231,7 +235,7 @@ public class SearchCoreLauncher {
 		this.LOG.info("Running Registry Extractor to create new XML data files...");
 		//String[] args = { this.registryUrl, this.searchServiceHome.getAbsolutePath(), this.queryMax };
 		//RegistryExtractor.main(args);
-		RegistryExtractor extractor = new RegistryExtractor(this.registryUrl, this.searchServiceHome.getAbsolutePath(), this.configDir);
+		RegistryExtractor extractor = new RegistryExtractor(this.registryUrl, this.searchServiceHome.getAbsolutePath(), this.configHome);
 		if (this.queryMax > -1)
 			extractor.setQueryMax(this.queryMax);
 		

@@ -9,8 +9,8 @@ public enum Flag {
 	ALL("a", "all",
 			"Run all components of the Search Core [default]"),
 
-	/** Flag to specify a configuration directory. */
-	CONFIG("c", "config-dir", "directory", String.class,
+	/** Flag to specify a product class configuration directory. */
+	CONFIG_HOME("c", "config-home", "directory", String.class,
 			"Specify the product class configuration home directory (the directory containing product-classes.txt and the accompanying config files) (Default: $SEARCH_CORE_HOME/conf/pds/"),
 			
 	/** Flag to run in debug mode. */
@@ -33,6 +33,10 @@ public enum Flag {
 	MAX("m", "query-max", "integer", Integer.class,
 			"Specify the maximum number of registry values to be returned from query. (Default: " + Constants.QUERY_MAX + ")"),
 	
+	/** Flag to specify a configuration file. */
+	PROPERTIES("p", "properties-file", "directory", String.class,
+			"Specify properties file containing Search Service Home, Registry URL, and other configuration information."),
+			
 	/** Flag to display the version. */
 	REGISTRY("r", "registry", "url", String.class,
 			"Specify Registry Service instance to query. <REQUIRED>"),
@@ -81,7 +85,8 @@ public enum Flag {
 		options.addOption(new ToolsOption(REGISTRY));
 		options.addOption(new ToolsOption(SERVICE_HOME));
 		options.addOption(new ToolsOption(MAX));
-		options.addOption(new ToolsOption(CONFIG));
+		options.addOption(new ToolsOption(CONFIG_HOME));
+		options.addOption(new ToolsOption(PROPERTIES));
 	}
 
 	/**

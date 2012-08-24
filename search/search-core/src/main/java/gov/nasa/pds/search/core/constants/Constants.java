@@ -12,4 +12,10 @@ public class Constants {
 	
 	/** Run Log File Name **/
 	public final static String LOG_FNAME="run.log";
+
+	/** Default datetime for UNK/N/A/NULL datetime fields **/
+	public static final String DEFAULT_DATETIME="3000-01-01T00:00:00.000Z";
+	
+	/** Valid PDS4 representation for unknown values **/
+	public static String[] VALID_UNK_VALUES = { "N/A", "UNK", "NULL", "UNKNOWN", "" };
 }

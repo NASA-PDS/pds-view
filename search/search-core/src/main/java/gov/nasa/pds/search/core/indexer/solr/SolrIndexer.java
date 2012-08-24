@@ -25,7 +25,7 @@ import java.util.Date;
  */
 public class SolrIndexer {
 	
-	public static void main(String[] args) throws IOException, ParseException {
+	public static void main(String[] args) throws IOException, Exception {
 		String usage = "java " + SolrIndexer.class
 				+ " <output_directory> <crawl_directory>";
 		if (args.length > 2) {
@@ -55,7 +55,7 @@ public class SolrIndexer {
 	}
 
 	public static void indexDocs(BufferedWriter writer, File file)
-			throws IOException, ParseException {
+			throws IOException, Exception {
 		// do not try to index files that cannot be read
 		if (file.canRead() && !file.getName().equals(Constants.LOG_FNAME)) {
 			if (file.isDirectory()) {

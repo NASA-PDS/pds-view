@@ -70,11 +70,14 @@
     <xsl:param name="hierarchy" />
     <xsl:param name="key" />
 
-    <xsl:variable name="values" select="tokenize(key('category',lower-case(replace($key,'_',' ')),$hierarchy)/@hierarchy,'&gt;')" />
-    <xsl:call-template name="show-values">
-      <xsl:with-param name="typeName" select="$typeName" />
-      <xsl:with-param name="values" select="$values" />
-    </xsl:call-template>
+    <xsl:for-each select="key('category',lower-case(replace($key,'_',' ')),$hierarchy)">
+	    <xsl:variable name="hier" select="@hierarchy" />
+	    <xsl:variable name="values" select="tokenize($hier,'&gt;')" />
+	    <xsl:call-template name="show-values">
+	      <xsl:with-param name="typeName" select="$typeName" />
+	      <xsl:with-param name="values" select="$values" />
+	    </xsl:call-template>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template name="show-values">
