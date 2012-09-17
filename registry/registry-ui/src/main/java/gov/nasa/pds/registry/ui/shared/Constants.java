@@ -33,40 +33,36 @@ public abstract class Constants {
 	};
 	
 	public static final String[] objectTypes = {
-		"Collection_Volume_PDS3",
-		"Collection_Volume_Set_PDS3",
 		"Ingest_DD",
 		"Product", 
+		"Product_AIP", // added build3a
 		"Product_Attribute_Definition",
 		"Product_Browse",
 		"Product_Bundle",
+		"Product_Class_Definition", // added build3a
 		"Product_Collection",
 		"Product_Context",
+		"Product_DIP", // added build3a
+		"Product_DIP_Deep_Archive", // added build3a
 		"Product_Data_Set_PDS3",
-		"Product_Delivery_Manifest",
 		"Product_Document",
 		"Product_File_Repository",
 		"Product_File_Text",
-		"Product_Instrument",
-		"Product_Instrument_Host",
 		"Product_Instrument_Host_PDS3",
 		"Product_Instrument_PDS3",
-		"Product_Investigation",
 		"Product_Mission_PDS3",
-		"Product_Node",
 		"Product_Observational",
-		"Product_PDS_Affiliate",
-		"Product_PDS_Guest",
 		"Product_Proxy_PDS3",
-		"Product_Resource",
+		"Product_SIP", // added build3a
 		"Product_SPICE_Kernel",
 		"Product_Service",
 		"Product_Software",
 		"Product_Subscription_PDS3",
-		"Product_Target",
 		"Product_Target_PDS3",
 		"Product_Thumbnail",
 		"Product_Update",
+		"Product_Volume_PDS3", // added build3a
+		"Product_Volume_Set_PDS3", // added build3a
 		"Product_XML_Schema",
 		"Product_Zipped"
 	};
