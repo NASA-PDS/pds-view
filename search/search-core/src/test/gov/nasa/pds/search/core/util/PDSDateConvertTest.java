@@ -43,21 +43,32 @@ public class PDSDateConvertTest extends TestCase {
 		
 		/** Taken from XML validation test files (see resources/testing/time **/
 		// Negative ASCII_Date_YMD: valid values
-		/*this.timeMap.put("-0123", );
-		this.timeMap.put("-1008", );
-		this.timeMap.put("-2008", );
-		this.timeMap.put("-2008-01", );
+		this.timeMap.put("-0123", "-0123-01-01T00:00:00.000Z");
+		this.timeMap.put("-1008", "-1008-01-01T00:00:00.000Z");
+		this.timeMap.put("-2008", "-2008-01-01T00:00:00.000Z");
+		this.timeMap.put("-2008-01", "-2008-01-01T00:00:00.000Z");
 		
 		// Positive ASCII_Date_YMD: valid values
-		this.timeMap.put("0123", );
-		this.timeMap.put("1008", );
-		this.timeMap.put("2008", );
-		this.timeMap.put("2008-01", );
+		this.timeMap.put("0123", "0123-01-01T00:00:00.000Z");
+		this.timeMap.put("1008", "1008-01-01T00:00:00.000Z");
+		this.timeMap.put("2008", "2008-01-01T00:00:00.000Z");
+		this.timeMap.put("2008-01", "2008-01-01T00:00:00.000Z");
 		
 		// Negative ASCII_Date_Time_YMD: valid values
-		this.timeMap.put(, );
-		this.timeMap.put(, );
-		this.timeMap.put(, );*/
+		this.timeMap.put("-2008-01-01", "-2008-01-01T00:00:00.000Z");
+		this.timeMap.put("-2008-01-02", "-2008-01-02T00:00:00.000Z");
+
+		// Positive ASCII_Date_Time_YMD: valid values
+		this.timeMap.put("2008-01-01", "2008-01-01T00:00:00.000Z");
+		this.timeMap.put("2008-01-02", "2008-01-02T00:00:00.000Z");
+		
+		// Negative ASCII_Date_Time_YMD: valid values
+		this.timeMap.put("-2008-01-01T23:01:01.0000", "-2008-01-01T23:01:01.000Z");
+		this.timeMap.put("-2008-01-01T23:01:01.9999", "-2008-01-01T23:01:01.999Z");
+		
+		// ASCII_Date_YMD with Z: valid values 
+		this.timeMap.put("-2008-01-01T23:01:01.0000Z", "-2008-01-01T23:01:01.000Z");
+		this.timeMap.put("-2008-01-01T23:01:01.9999Z", "-2008-01-01T23:01:01.999Z");
 	}
 	
 	public void testPDSDateConvertValid() {
@@ -77,7 +88,7 @@ public class PDSDateConvertTest extends TestCase {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			fail("Exception: " + e.getMessage());
 		}
 	}
 }

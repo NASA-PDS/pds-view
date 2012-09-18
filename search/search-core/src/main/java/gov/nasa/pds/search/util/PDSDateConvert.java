@@ -35,13 +35,13 @@ public class PDSDateConvert {
 		"yyyy-MM-dd'T'HH",
 	};
 	
-	private static final String YMD_FORMAT = "yyyy-MM-dd";
+	private static final String POS_YMD_FORMAT = "yyyy-MM-dd";
 	
-	private static final String DOY_FORMAT = "yyyy-DDD";
+	private static final String POS_DOY_FORMAT = "yyyy-DDD";
 	
-	private static final String YM_FORMAT = "yyyy-MM";
+	private static final String POS_YM_FORMAT = "yyyy-MM";
 	
-	private static final String Y_FORMAT = "yyyy";
+	private static final String POS_Y_FORMAT = "yyyy";
 	
 	/**
 	 * Converts PDS4-Compliant Datetime Strings into Solr-Compliant Datetime Strings
@@ -55,6 +55,12 @@ public class PDSDateConvert {
 				"yyyy-MM-dd'T'HH:mm:ss");
 		
 		String datetime = input.toUpperCase().replaceAll("Z", "").replace("PROCESSING__", "");
+		
+		String prefix = "";			// String to hold negative sign if datetime starts with a "-" , designating BC
+		if (datetime.startsWith("-")) {
+			prefix = "-";
+			datetime = datetime.substring(1);
+		}
 		
 		// Before doing anything, check if date/time value is
 		// a valid unknown, in which case return default
@@ -82,27 +88,25 @@ public class PDSDateConvert {
 		// Loop through datetime formats
 		if (datetime.length() > 10) {
 			for (String strFrmt : DATE_TIME_FORMATS) {
-				//System.out.println(strFrmt + " - " + datetime);
-				DateFormat format = new SimpleDateFormat(strFrmt);
 				try {
-					return newFrmt.format(format.parse(datetime)) + milliseconds;
+					return prefix + newFrmt.format(parseDate(strFrmt, datetime)) + milliseconds;
 				} catch (ParseException e) { }
 			}
 		} else {
 			Date outputDate = null;
 			int dtLength = datetime.length();
-			if (dtLength == YMD_FORMAT.length() || dtLength == YMD_FORMAT.length()-1 ) {
-				outputDate = parseDate(YMD_FORMAT, datetime);
-			} else if (dtLength == DOY_FORMAT.length()) {
-				outputDate = parseDate(DOY_FORMAT, datetime);
-			} else if (dtLength == YM_FORMAT.length()) { 
-				outputDate = parseDate(YM_FORMAT, datetime);
-			} else if (dtLength == Y_FORMAT.length()) { 
-				outputDate = parseDate(Y_FORMAT, datetime);
+			if (dtLength == POS_YMD_FORMAT.length() || dtLength == POS_YMD_FORMAT.length()-1 ) {
+				outputDate = parseDate(POS_YMD_FORMAT, datetime);
+			} else if (dtLength == POS_DOY_FORMAT.length()) {
+				outputDate = parseDate(POS_DOY_FORMAT, datetime);
+			} else if (dtLength == POS_YM_FORMAT.length()) { 
+				outputDate = parseDate(POS_YM_FORMAT, datetime);
+			} else if (dtLength == POS_Y_FORMAT.length()) { 
+				outputDate = parseDate(POS_Y_FORMAT, datetime);
 			}
 
 			if (outputDate != null) {
-				return newFrmt.format(outputDate) + milliseconds;
+				return prefix + newFrmt.format(outputDate) + milliseconds;
 			}
 		}
 
@@ -149,52 +153,5 @@ public class PDSDateConvert {
 	private static Date parseDate(String format, String inputDate) throws ParseException {
 		DateFormat dateFormat = new SimpleDateFormat(format);
     	return dateFormat.parse(inputDate);
-	}
-	
-	/**
-	 * Parse the given date/time string in Year-Month format,
-	 * which is the YMD format without the day specified,
-	 * and return the resulting <code>Date</code> object.
-	 * 
-	 * The format is as follows: "yyyy-MM"
-	 * 
-	 * @param inputDate
-	 * @return
-	 * @throws ParseException
-	 */
-	private static Date ymParse(String inputDate) throws ParseException {
-		DateFormat format = new SimpleDateFormat(YM_FORMAT);
-    	return format.parse(inputDate);
-	}
-
-	/**
-	 * Parse the given date/time string in Day-of-year format,
-	 * and return the resulting <code>Date</code> object.
-	 * 
-	 * The format is as follows: "yyyy-DDD"
-	 * 
-	 * @param inputDate
-	 * @return
-	 * @throws ParseException
-	 */
-	private static Date doyParse(String inputDate) throws ParseException {
-		DateFormat format = new SimpleDateFormat(DOY_FORMAT);
-    	return format.parse(inputDate);
-	}
-	
-	/**
-	 * Parse the given date/time string in Year format,
-	 * which is the YMD format without the day or month specified,
-	 * and return the resulting <code>Date</code> object.
-	 * 
-	 * The format is as follows: "yyyy"
-	 * 
-	 * @param inputDate
-	 * @return
-	 * @throws ParseException
-	 */
-	private static Date yParse(String inputDate) throws ParseException {
-		DateFormat format = new SimpleDateFormat(Y_FORMAT);
-    	return format.parse(inputDate);
 	}
 }
