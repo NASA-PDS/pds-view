@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!-- PDS4 Schematron for PDS4_0.3.0.0.a  Fri Sep 14 18:01:16 PDT 2012 -->
+  <!-- PDS4 Schematron for PDS4_0.3.0.0.a  Wed Sep 19 10:02:44 PDT 2012 -->
   <!-- Generated from the PDS4 Information Model V0.3.0.0.a -->
   <!-- *** This PDS4 schematron file is a preliminary deliverable. *** -->
   <!-- *** It is being made available for review and testing. *** -->
