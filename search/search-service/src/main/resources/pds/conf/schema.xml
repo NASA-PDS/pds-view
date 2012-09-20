@@ -618,8 +618,13 @@
    <!-- Also create a field for facet terms used by the spell checker -->
    <field name="spell" type="text_lc" indexed="true" stored="false" multiValued="true" />
    
-
-
+   <!-- Faceting fields for form based search -->
+   <field name="form-mission" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="form-target" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="form-target-type" type="string" indexed="true" stored="true" multiValued="true" /> 
+   <field name="form-instrument" type="string" indexed="true" stored="true" multiValued="true" /> 
+   <field name="form-instrument-type" type="string" indexed="true" stored="true" multiValued="true" />    
+   
    <!--
    <field name="id" type="string" indexed="true" stored="true" required="true" />
    -->
@@ -735,6 +740,13 @@
   <copyField source="mission_name" dest="spell" />
   <copyField source="instrument_name" dest="spell" />
   <copyField source="instrument_host_name" dest="spell" />
+    
+  <!-- Form-based search support -->
+  <copyField source="mission_name" dest="form-mission" />
+  <copyField source="target_name" dest="form-target" />
+  <copyField source="target_type" dest="form-target-type" />
+  <copyField source="instrument_name" dest="form-instrument" />
+  <copyField source="instrument_type" dest="form-instrument-type" />
 	
  <!-- Similarity is the scoring routine for each document vs. a query.
       A custom similarity may be specified here, but the default is fine
