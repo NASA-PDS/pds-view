@@ -61,7 +61,6 @@ public class LabelValidator {
   private Validator cachedValidator;
   private List<Transformer> cachedSchematron;
   private XMLCatalogResolver resolver;
-  public final static String USER_VERSION = "User Supplied Version";
   public static final String SCHEMA_CHECK = "gov.nasa.pds.tools.label.SchemaCheck";
   public static final String SCHEMATRON_CHECK = "gov.nasa.pds.tools.label.SchematronCheck";
 
@@ -78,7 +77,6 @@ public class LabelValidator {
 
   public void setSchema(String[] schemaFiles) throws SAXException {
     userSchemaFiles = schemaFiles;
-    modelVersion = USER_VERSION;
     cachedValidator = null;
   }
 
@@ -91,7 +89,6 @@ public class LabelValidator {
     resolver = new XMLCatalogResolver();
     resolver.setPreferPublic(true);
     resolver.setCatalogList(catalogFiles);
-    modelVersion = USER_VERSION;
   }
 
   private List<StreamSource> loadSchemaSources(String[] schemaFiles) {
@@ -274,7 +271,12 @@ public class LabelValidator {
     return modelVersion;
   }
 
-  public void setModelVersion(String modelVersion) {
+  public void setModelVersion(String modelVersion) throws ValidatorException {
+    if (!VersionInfo.getSupportedModels().contains(modelVersion)) {
+      throw new ValidatorException(ExceptionType.ERROR, "Unsupported model version \""
+          + modelVersion + "\" use one of "
+          + VersionInfo.getSupportedModels().toString());
+    }
     this.modelVersion = modelVersion;
   }
 
@@ -305,6 +307,7 @@ public class LabelValidator {
 
   public static void main(String[] args) throws Exception {
     LabelValidator lv = new LabelValidator();
+    lv.setModelVersion("foo");
     ExceptionContainer container = new ExceptionContainer();
     lv.validate(container, new File(args[0]));
     for (LabelException ex : container.getExceptions()) {
