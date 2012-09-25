@@ -38,6 +38,7 @@
     <module>core</module>
     <module>design</module>
     <module>generate</module>
+    <!-- <module>transform</module> -->
     <module>validate</module>
   </modules>
 
@@ -50,7 +51,7 @@
       <roles>
         <role>Development Lead</role>
       </roles>
-    </developer>   
+    </developer>
     <developer>
       <name>Paul Ramirez</name>
       <id>pramirez</id>
