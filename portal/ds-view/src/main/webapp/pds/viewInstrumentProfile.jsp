@@ -1,290 +1,203 @@
 <%
-String pdshome = "";
-pdshome = application.getInitParameter("pdshome.url");
+   String pdshome = application.getInitParameter("pdshome.url");
+   String registryUrl = application.getInitParameter("registry.url");
 %>
 <html>
 <head>
-        <title>PDS Instrument Profile</title>
-        <META  NAME="keywords"  CONTENT="Planetary Data System">
+   <title>PDS Instrument Profile</title>
+   <META  NAME="keywords"  CONTENT="Planetary Data System">
 
-        <META  NAME="description" CONTENT="This website serves as a mechanism for displaying the instrument information in PDS planetary archives.">
-<link href="<%=pdshome%>css/pds_style.css" rel="stylesheet" type="text/css">
-<%@ page language="java" session="true" isThreadSafe="true" 
-info="PDS Search" isErrorPage="false" errorPage="error.jsp" 
-contentType="text/html; charset=ISO-8859-1" 
-import="jpl.eda.xmlquery.*, jpl.eda.profile.*, javax.naming.*, javax.sql.*"
-import="jpl.eda.profile.ProfileElement, java.util.*, java.io.*, java.sql.*, java.net.URLDecoder"
-%>
+   <META  NAME="description" CONTENT="This website serves as a mechanism for displaying the instrument information in PDS planetary archives.">
+   <link href="<%=pdshome%>css/pds_style.css" rel="stylesheet" type="text/css">
+   <%@ page language="java" session="true" isThreadSafe="true" 
+            info="PDS Search" isErrorPage="false" errorPage="error.jsp" 
+            contentType="text/html; charset=ISO-8859-1" 
+            import="gov.nasa.pds.registry.model.ExtrinsicObject, gov.nasa.pds.dsview.registry.Constants, 
+                    java.util.*, java.net.*, java.io.*, java.net.URLDecoder"
+   %>
 
-<SCRIPT LANGUAGE="JavaScript">
-<%@ include file="/pds/utils.js"%>
-</SCRIPT>
+   <SCRIPT LANGUAGE="JavaScript">
+      <%@ include file="/pds/utils.js"%>
+   </SCRIPT>
 </head>
 
 <%!
-  /**
-   * Null out the parameter value if any of the bad characters are present
-   * that facilitate Cross-Site Scripting and Blind SQL Injection.
-   */
-  public String cleanParam(String str) {
-    char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
-    String decodedStr = null;
+/**
+ * Null out the parameter value if any of the bad characters are present
+ * that facilitate Cross-Site Scripting and Blind SQL Injection.
+ */
+public String cleanParam(String str) {
+   char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
+   String decodedStr = null;
 
-    if (str != null) {
+   if (str != null) {
       decodedStr = URLDecoder.decode(str);
       for(int i = 0; i < badChars.length; i++) {
-        if (decodedStr.indexOf(badChars[i]) >= 0) {
-          return null;
-        }
+         if (decodedStr.indexOf(badChars[i]) >= 0) {
+            return null;
+         }
       }
-    }
-    return decodedStr;
-  }
+   }
+   return decodedStr;
+}
 %>
 
 <body BGCOLOR="#000000">
-
-<%
-String[] displayedElements = {"INSTRUMENT_ID","INSTRUMENT_NAME" ,
-                  "INSTRUMENT_TYPE", "INSTRUMENT_HOST_ID", //"RESLOCATION", 
-                  "INSTRUMENT_DESC", "REFERENCE_DESCRIPTION"};
-
-String instrumentId = null;
-String instrumentHostId = null;
-
-String query = null;
-Connection connection = null;
-Statement stmt = null;
-ResultSet rs = null;
-int inst_count =0;
-int insthost_count = 0;
-
-java.text.DateFormat df = new java.text.SimpleDateFormat ("yyyy.MM.dd HH:mm:ss");
-
-
-ProfileClient profileClient = new ProfileClient("urn:eda:rmi:JPL.PDS.Instrument");
-%>
-
 <table align="center" bgColor="#FFFFFF" BORDER="0" CELLPADDING="10" CELLSPACING="0">
-  <tr>
-    <td>
-      <%@ include file="/pds/pds_header.html" %>
-
+   <tr>
+      <td>
+         <%@ include file="/pds/pds_header.html" %>
+         <table width="760" border="0" cellspacing="3" cellpadding="2">
+            <tr valign="TOP">
+               <td valign="TOP" colspan="2" class="pageTitle">
+                  <br><FONT color="#6F4D0E"><b>Instrument Information</b></font><br><br>
+               </td>
+            </tr>
+            
 <%
 if (cleanParam(request.getParameter("INSTRUMENT_ID"))==null) {
 %>
-      <table width="760" border="0" cellspacing="3" cellpadding="2">
-        <tr valign="TOP">
-                <td valign="TOP" colspan="2" class="pageTitle">
-                        <br><FONT color="#6F4D0E"><b>Instrument Information</b>
-                            </font><br><br>
-                </td>
-        </tr>
-        
-        <tr valign="TOP">
-                <td bgcolor="#F0EFEF" width=200 valign=top>
-                Please specify a valid INSTRUMENT_ID
-                </td>
-        </tr>
+            <tr valign="TOP">
+               <td bgcolor="#F0EFEF" width=200 valign=top>
+                  Please specify a valid <b>INSTRUMENT_ID</b>.
+               </td>
+            </tr>
 <%
 }
 // Instrument id specified. Check if received instrument host id. 
 else {
-   instrumentId = request.getParameter("INSTRUMENT_ID");
+   String instrumentHostId = null;
+   String instrumentId = request.getParameter("INSTRUMENT_ID");
    instrumentId = instrumentId.toUpperCase();
+   boolean instFlag = false;
+    
+   gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);   
+   //out.println("instrumentId = " + instrumentId +  "instrument_host_id = " + request.getParameter("INSTRUMENT_HOST_ID"));
 
-   XMLQuery xml_query = null;
-
-  // INSTRUMENT_HOST_ID is optional
-  if (cleanParam(request.getParameter("INSTRUMENT_HOST_ID")) != null) {
-        instrumentHostId = request.getParameter("INSTRUMENT_HOST_ID");
-        instrumentHostId = instrumentHostId.toUpperCase();
-
-        xml_query = new XMLQuery(
-           /*keywordQuery*/"INSTRUMENT_ID=\"" + instrumentId + "\"" +
-                        " AND INSTRUMENT_HOST_ID=\"" + instrumentHostId
-                        + "\"",
-           /*id*/"OODT_XML_QUERY_V0.1",
-           /*title*/"OODT_XML_QUERY - Bean Query",
-           /*desc*/"This query can be handled by the OODT System",
-           /*ddId*/null,
-           /*resultModeId*/"profile",
-           /*propType*/"BROADCAST",
-           /*propLevels*/"N/A",
-           0);
-    }
-    else {
-        xml_query = new XMLQuery(
-           /*keywordQuery*/"INSTRUMENT_ID=\"" + instrumentId + "\"" ,
-           /*id*/"OODT_XML_QUERY_V0.1",
-           /*title*/"OODT_XML_QUERY - Bean Query",
-           /*desc*/"This query can be handled by the OODT System",
-           /*ddId*/null,
-           /*resultModeId*/"profile",
-           /*propType*/"BROADCAST",
-           /*propLevels*/"N/A",
-           0);
-    }
-
-    List profile = profileClient.query(xml_query);
-
-    // no result found
-    if (profile.size() < 1) {
-
-       // find out exactly which parameter contains invalid value
-       try {
-         javax.naming.Context init = new javax.naming.InitialContext();
-         javax.naming.Context env = (Context)init.lookup("java:comp/env");
-         DataSource ds = (DataSource) env.lookup("jdbc/pdsprofile");
-         connection = ds.getConnection();
-         stmt = connection.createStatement();
-         query = "select count(*) from instinfo where instid = '"
-                + instrumentId + "'";
-         rs = stmt.executeQuery (query);
-         while (rs.next()) {
-           inst_count = rs.getInt(1);
-         }
-         if (instrumentHostId != null) {
-            query = "select count(*) from instinfo where insthostid = '"
-                 + instrumentHostId + "'";
-            rs = stmt.executeQuery (query);
-            while (rs.next()) {
-              insthost_count = rs.getInt(1);
-            }
-         }
-         rs.close(); 
-         stmt.close();
-         connection.close();
-      }
-      catch (SQLException es) {
-          if (connection!=null) connection.close();
-          System.err.println ("viewInstrumentProfile.jsp: SQLException occurred while verifying instid and insthostid at time "+ df.format(new java.util.Date()));
-          throw es;
-       }
-       finally {
-        if (connection != null)  {
-           try {
-               connection.close();
-           }
-           catch (SQLException ess) {
-               //do nothing
-           }
-         }
-       }
-%>
-      <table width="760" border="0" cellspacing="3" cellpadding="2">
-        <tr valign="TOP">
-                <td valign="TOP" colspan="2" class="pageTitle">
-                        <br><FONT color="#6F4D0E"><b>Instrument Information</b>
-                            </font><br><br>
-                </td>
-        </tr>
-
-        <tr valign="TOP">
-                <td bgcolor="#F0EFEF" width=200 valign=top>
-
-<%     if (instrumentHostId!=null) {
-            if (inst_count==0 && insthost_count==0) { 
-%>
-                Instrument ID <b><%=instrumentId%></b> and 
-                Instrument Host ID <b><%=instrumentHostId%></b> 
-                are not valid.
-<%
-            }
-            else if (inst_count==0) { 
-%>
-                <b><%=instrumentId%></b> is not a valid Instrument ID.
-<%
-            }
-            else if (insthost_count==0) { 
-%>
-                <b><%=instrumentHostId%></b> is not a valid Instrument Host ID.
-<%
-             }
-            // found both values in catalog, then the combination must be
-            // invalid
-            else {
-%>
-                Instrument information not found for 
-                   Instrument ID <b><%=instrumentId%></b> and 
-                   Instrument Host ID <b><%=instrumentHostId%></b>.
-<%
-            }
-        }
-        else { 
-%>
-                <b><%=instrumentId%></b> is not a valid Instrument ID.
-<%      } %>
-                </td>
-        </tr>
-         
-<%
-    }
-
-   // found some result passed from profile client
-   else {
-
-       // we should get back only 1 profile
-       Map elements = ((Profile)profile.get(0)).getProfileElements(); 
-%>
-
-      <table width="760" border="0" cellspacing="3" cellpadding="2">
-        <tr valign="TOP">
-                <td valign="TOP" colspan="2" class="pageTitle">
-                        <br><FONT color="#6F4D0E"><b>Instrument Information</b></font><br><br>
-                </td>
-        </tr>
-      <% for (int i=0; i<displayedElements.length; i++) {
-             if (elements.containsKey(displayedElements[i])) { 
-                ProfileElement pe = (ProfileElement)elements.get(displayedElements[i]); %>
-               <TR>
-                 <td bgcolor="#F0EFEF" width=200 valign=top><%=displayedElements[i]%></td> 
-                 <td bgcolor="#F0EFEF" valign=top>
-
-				 <%-- Preserve exact spacing.  This is important for
-                    data such as diagrams and tables.
-                    Both <pre> and <tt> are used here to overwrite font
-                    defined for the <pre> tags in the top level css file --%>
-
-				 <% if (displayedElements[i].equals("INSTRUMENT_DESC")) {
-                    String val= (String)pe.getValues().iterator().next();
-              %>
-                    <pre><tt><%=val%></tt></pre>
-              <%
-               }  else  { // non-description attributes %>
-
-             <%     for (Iterator e = pe.getValues().iterator(); e.hasNext();) {
-                          String val = (String)e.next();
-                          val = val.replaceAll("\n","<br>");
-                          if (val.startsWith("http://") || 
-                             val.startsWith("HTTP://")) { %>
-                      <a href="<%=val%>" target="_blank"><%=val%></a>
-             <%           } else { %>
-                      <%=val%><br>
-             <%        }
-                    } //for 
-               }
-             %>
-          
-                </td>
-               </TR>
+   String instLid = "urn:nasa:pds:instrument." + instrumentId;
+   
+   // INSTRUMENT_HOST_ID is optional
+   if (cleanParam(request.getParameter("INSTRUMENT_HOST_ID")) != null) {
+      instrumentHostId = request.getParameter("INSTRUMENT_HOST_ID");
+      instrumentHostId = instrumentHostId.toUpperCase();  
+      //out.println("there is an instrument_host_id....instrument_host_id = " + instrumentHostId);
+   }
+  
+   // can use wildcard for the instrument_host_id...
+   // it will change to Product_Context for next build
+  
+   List<ExtrinsicObject> instObjs = searchRegistry.getObjects(instLid+"*", "Product_Instrument*"); 
+   if (instObjs != null)  { 
+  	  instFlag = true;
+  	  //out.println("instObjs.size = " + instObjs.size());
+   }
+  
+   if (instrumentHostId == null) {
+      if (instObjs!=null && instObjs.size()>0) {
+         for (ExtrinsicObject obj: instObjs) {
+            //out.println("obj = " + obj.toString() + "<br>");
+         	List<String> slotValues = searchRegistry.getSlotValues(obj, "instrument_host_ref");
+         	String val = slotValues.get(0);
+         	String lid = val.substring(0, val.indexOf("::"));
+    	 	ExtrinsicObject insthostObj = searchRegistry.getExtrinsic(lid);
+    	 	val = searchRegistry.getSlotValues(insthostObj, "instrument_host_id").get(0).toUpperCase(); 
+    	 	//out.println(val + "<br>");
+    	 	%>
+            <TR>
+               <td bgcolor="#F0EFEF" width=215 valign=top>INSTRUMENT_HOST_ID</td> 
+               <td bgcolor="#F0EFEF" valign=top>
+                  <a href="/ds-view/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID=<%=instrumentId%>&INSTRUMENT_HOST_ID=<%=val%>" target="_blank"><%=val%></a>
+               </td>
+            </TR>
          <%
-             } else { // this element does not have a value %>
-               <TR>
-                  <td bgcolor="#F0EFEF" width=200 valign=top><%=displayedElements[i]%></td>
-                  <td bgcolor="#F0EFEF"></td>
-               </TR>
-         <%  }
+      	 } // end for
+      } // if (instObjs!=null && instObjs.size()>0)
+      else {
+      %>
+    	    <tr valign="TOP">
+               <td bgcolor="#F0EFEF" width=200 valign=top>
+               <% if (instFlag) { %>
+                  Information not found for INSTRUMENT_HOST_ID <b><%=instrumentHostId%></b>. Please verify the value.
+               </td> 
+               <% } else { %>
+                  Information not found for INSTRUMENT_ID <b><%=instrumentId%></b>. Please verify the value.            
+               <% } %>
+               </td>
+            </tr>	
+      <%  
+	  } // end else
+   } // end instrumentHostId = null
+   else { // instrumentHostId!=null
+      instLid += "__" + instrumentHostId;
+      //out.println("instLid = " + instLid);
+      ExtrinsicObject instObj = searchRegistry.getExtrinsic(instLid);
+   
+      if (instObj==null || !instFlag)  { 
+      %>
+            <tr valign="TOP">
+               <td bgcolor="#F0EFEF" width=200 valign=top>
+               <% if (instFlag) { %>
+                  Information not found for INSTRUMENT_HOST_ID <b><%=instrumentHostId%></b>. Please verify the value.
+               </td> 
+               <% } else { %>
+                  Information not found for INSTRUMENT_ID <b><%=instrumentId%></b> and INSTRUMENT_HOST_ID <b><%=instrumentHostId%></b>. Please verify the values.
+               <% } %>
+               </td>
+            </tr>
+      <%
+      } // end if (instObj==null || !instFlag)
+      else {
+         //out.println("instObj guid = " + instObj.getGuid());
+                
+         for (java.util.Map.Entry<String, String> entry: Constants.instPds3ToRegistry.entrySet()) {
+		    String key = entry.getKey();
+		    String tmpValue = entry.getValue();
+            %>
+            <TR>
+               <td bgcolor="#F0EFEF" width=215 valign=top><%=key%></td> 
+               <td bgcolor="#F0EFEF" valign=top>
+			 <%
+             //out.println("tmpValue = " + tmpValue + "<br>");
+             List<String> slotValues = searchRegistry.getSlotValues(instObj, tmpValue);
+             if (slotValues!=null) {
+                if (tmpValue.equals("instrument_description")){                          
+                   String val = slotValues.get(0);
+                   //val = val.replaceFirst("            ", "  ");                         
+                   %>
+                   <pre><tt><%=val%></tt><pre>
+                <%
+                }
+                else {
+                   for (int j=0; j<slotValues.size(); j++) {
+                      if (tmpValue.equals("external_reference_description")) 
+                         out.println(slotValues.get(j) + "<br>");
+                      else 
+                         out.println(slotValues.get(j).toUpperCase() + "<br>");
+                         	      
+                      if (slotValues.size()>1) 
+                         out.println("<br>");
+                   } // end for
+                } // end else 
+             } // end if (slotValues!=null)
+             else {
+                if (tmpValue.equals("instrument_host_id")) {
+                   out.println(instrumentHostId + "<br>");
+                }
+             }
+             %>
+                </td>
+             </TR>
+         <%  
          } // for loop
-   }// if profile is found
-}// if instrument id is specified
-         %>
-         <%@ include file="/pds/footer.html" %>
-        </table>
+      } // end else
+   } // end else instrumentHostId!=null
+} // end else instrumentId!=null
+%>
 
-    </td>
-  </tr>
-
+            <%@ include file="/pds/footer.html" %>
+         </table>
+      </td>
+   </tr>
 </TABLE>
 
 </BODY>

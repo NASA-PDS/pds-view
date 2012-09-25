@@ -1,275 +1,268 @@
 <%
-String pdshome = "";
-pdshome = application.getInitParameter("pdshome.url");
+   String pdshome = application.getInitParameter("pdshome.url");
+   String registryUrl = application.getInitParameter("registry.url");
 %>
 <html>
 <head>
-        <title>PDS Data Set Profile</title>
-        <META  NAME="keywords"  CONTENT="Planetary Data System">
-
-        <META  NAME="description" CONTENT="This website serves as a mechanism for searching the PDS planetary
-archives.">
-<link href="<%=pdshome%>css/pds_style.css" rel="stylesheet" type="text/css">
-<%@ page language="java" session="true" isThreadSafe="true" info="PDS Search" isErrorPage="false" contentType="text/html; charset=ISO-8859-1" import="jpl.pds.beans.*,jpl.eda.profile.*,java.util.*,java.net.*,java.io.*,java.sql.*,javax.naming.*,javax.sql.*" %>
-
-<SCRIPT LANGUAGE="JavaScript">
-<%@ include file="/pds/utils.js"%>
-</SCRIPT>
+   <title>PDS Data Set Profile</title>
+   <META  NAME="keywords"  CONTENT="Planetary Data System">
+   <META  NAME="description" CONTENT="This website serves as a mechanism for searching the PDS planetary archives.">
+   <link href="<%=pdshome%>css/pds_style.css" rel="stylesheet" type="text/css">
+   <%@ page language="java" session="true" isThreadSafe="true" info="PDS Search" 
+            isErrorPage="false" contentType="text/html; charset=ISO-8859-1" 
+            import="gov.nasa.pds.registry.model.ExtrinsicObject, gov.nasa.pds.dsview.registry.Constants, 
+                    java.util.*, java.net.*, java.io.*" %>
+   <SCRIPT LANGUAGE="JavaScript">
+      <%@ include file="/pds/utils.js"%>
+   </SCRIPT>
 </head>
 
 <body BGCOLOR="#000000">
-
 <%!
 String constructURL (String url, String dsid) {
+   try {
+      URL aURL = new URL(url);
+      String filename = aURL.getFile();
 
-  try {
-   URL aURL = new URL(url);
-   String filename = aURL.getFile();
+      // don't pass any params to reslink that ends with /
+      if (filename.endsWith("/")) {
+         return url;
+      }
 
-   // don't pass any params to reslink that ends with /
-   if (filename.endsWith("/")) {
-      return url;
-   }
+      // per Pam Woncik 03/12/03 - if the URL contains "pdsimg" or "pdsimage" (ie. Atlas browsers),
+      // don't append the query string
+      if (url.indexOf("pdsimg") > 0 || url.indexOf("pdsimage") > 0 ||
+         url.indexOf("pds-imaging")>0 ) {
+         return url;
+      }
 
-   // per Pam Woncik 03/12/03 - if the URL contains "pdsimg" or "pdsimage" (ie. Atlas browsers),
-   // don't append the query string
-   if (url.indexOf("pdsimg") > 0 || url.indexOf("pdsimage") > 0 ||
-       url.indexOf("pds-imaging")>0 ) {
-      return url;
-   }
-
-   int pos = filename.indexOf('?');
-   String browserURL = url;
-   if (pos > 0) {
+      int pos = filename.indexOf('?');
+      String browserURL = url;
+      if (pos > 0) {
          browserURL += "&DATA_SET_ID=" + dsid;
-   } else {
+      } else {
          browserURL += "?DATA_SET_ID=" + dsid;
+      }
+
+      return browserURL;
+   } catch (java.net.MalformedURLException e) {
+      e.printStackTrace();
+      return url;
    }
+}
 
-   return browserURL;
+/**
+ * Null out the parameter value if any of the bad characters are present
+ * that facilitate Cross-Site Scripting and Blind SQL Injection.
+ */
+public String cleanParam(String str) {
+   char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
+   String decodedStr = null;
 
-  } catch (java.net.MalformedURLException e) {
-     e.printStackTrace();
-     return url;
-  }
+   if (str != null) {
+      decodedStr = URLDecoder.decode(str);
+      for(int i = 0; i < badChars.length; i++) {
+         if (decodedStr.indexOf(badChars[i]) >= 0) {
+            return null;
+         }
+      }
+   }
+   return decodedStr;
 }
 %>
 
-<%
-//Connection to database to get SBN aliases
-Connection connection = null;
-LinkedList target = new LinkedList();
-LinkedList alias = new LinkedList();
-try
-	{
-		//create connection to database
-		javax.naming.Context init = new javax.naming.InitialContext();
-		javax.naming.Context env = (Context)init.lookup("java:comp/env");
-		DataSource ds = (DataSource) env.lookup("jdbc/pdsprofile");
-		connection = ds.getConnection();
-		Statement statement = connection.createStatement();
-		/*Class.forName("com.sybase.jdbc2.jdbc.SybDriver");
-		connection = DriverManager.getConnection("jdbc:sybase::Tds:schema.jpl.nasa.gov:4100/dbonlinedev?user=pdsnode&password=pdsnode");
-		Statement stmt = connection.createStatement();*/
-		String query = "select targname, sbntarglocator from targetinfo ORDER by targname";
-		ResultSet rs = statement.executeQuery(query);
-		while(rs.next()){
-			String trimmed = rs.getString(1);
-			trimmed = trimmed.trim();
-			target.add(trimmed);
-			trimmed = rs.getString(2);
-			trimmed = trimmed.trim();
-			alias.add(trimmed);
-		}
-		statement.close();
-	} catch (NamingException e){
-%>
-		<h1>Error Occurred</h1>
-		<b>Exception: Naming Exception</b>  <%= e.getMessage() %>
-<%
-	}catch (SQLException e){
-%>
-		<h1>Error Occurred</h1>
-		<b>Exception: Database Access Failed</b>  <%= e.getMessage() %>
-<%
-	}finally{
-		if (connection != null ){
-			connection.close();
-		}
-	}
-
-
-
-String[] displayedElements = {"DATA_SET_NAME", "DATA_SET_ID", "NSSDC_DATA_SET_ID",
-		"DATA_SET_TERSE_DESCRIPTION", "DATASET_DESCRIPTION",
-		"DATA_SET_RELEASE_DATE", "RESOURCE_LINK",
-		"DATA_OBJECT_TYPE",  "START_TIME", "STOP_TIME",
-		"MISSION_NAME", "MISSION_START_DATE", "MISSION_STOP_DATE",
-		"TARGET_NAME", "TARGET_TYPE", "INSTRUMENT_HOST_ID",
-		"INSTRUMENT_NAME", "INSTRUMENT_ID", "INSTRUMENT_TYPE",
-		"NODE_NAME","ARCHIVE_STATUS", "CONFIDENCE_LEVEL_NOTE",
-		"CITATION_DESCRIPTION", "ABSTRACT_TEXT", "FULL_NAME", "TELEPHONE_NUMBER",
-		"RESOURCES"};
-
-String queryString = (request.getSession().getAttribute("queryString") != null ?
-                      (String)request.getSession().getAttribute("queryString") : "");
-
-String orgSearch = (request.getSession().getAttribute("requestURI") != null ?
-                     (String)request.getSession().getAttribute("requestURI") :
-                     "/pds/index.jsp");
-
-jpl.pds.beans.SearchBean searchBean =  new jpl.pds.beans.SearchBean();
-/*
-** SearchBean.getDatasetProfile() assumes that you pass it "dsid"
-*/
-Enumeration names = request.getParameterNames();
-String dsid = "";
-int desc_flag = 0;
-
-while (names.hasMoreElements()) {
-   dsid = request.getParameterValues((String) names.nextElement())[0];
-}
-if (dsid.length() == 0) {
-   response.setStatus(javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST);
-   return;
-}
-Profile profile = searchBean.getDatasetProfile(dsid);
-Map resourceMap = null;
-if  (profile != null && ! profile.getProfileElements().isEmpty()) {
-   resourceMap = searchBean.getResourceProfiles(Collections.singletonList(profile));
-}
-
-%>
 <table align="center" bgColor="#FFFFFF" BORDER="0" CELLPADDING="10" CELLSPACING="0">
-  <tr>
-    <td>
-      <%@ include file="/pds/pds_header.html" %>
+   <tr>
+      <td>
+         <%@ include file="/pds/pds_header.html" %>
 
-      <table width="760" border="0" cellspacing="3" cellpadding="2">
-
-<% if (profile == null || profile.getProfileElements().isEmpty()) { %>
-        <tr valign="TOP">
-                <td valign="TOP" colspan="2" class="pageTitle">
-                        <br><FONT color="#6F4D0E"><b>Data Set Not Found</b></font><br><br>
-                </td>
-        </tr>
-
-<% } else { %>
-        <tr valign="TOP">
-                <td valign="TOP" colspan="2" class="pageTitle">
-                        <br><FONT color="#6F4D0E"><b>Data Set Information</b></font><br><br>
-                </td>
-        </tr>
+         <table width="760" border="0" cellspacing="3" cellpadding="2">
+		    <tr valign="TOP">
+               <td valign="TOP" colspan="2" class="pageTitle">
+                  <br><FONT color="#6F4D0E"><b>Dataset Information</b></font><br><br>
+               </td>
+            </tr>
+<%      
+if (cleanParam(request.getParameter("dsid"))==null) {
+%>    
+            <tr valign="TOP">
+               <td bgcolor="#F0EFEF" width=200 valign=top>
+                  Please specify a valid <b>dsid</b>.
+               </td>
+            </tr>
 <%
-Map elements = profile.getProfileElements();
-String hostId = "";
-%>
-      <% for (int i=0; i<displayedElements.length; i++) {
-             if (elements.containsKey(displayedElements[i]) || 
-		 displayedElements[i].equals("RESOURCES")) { 
-        %>
+}
+else {
+   String dsid = request.getParameter("dsid");
+   gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
 
-               <TR>
-                 <td bgcolor="#F0EFEF" width=200 valign=top><%=displayedElements[i]%></td> 
-                 <td bgcolor="#F0EFEF" valign=top>
-
-              <%  if (displayedElements[i].equals("RESOURCES")) { 
-                      if (resourceMap != null && resourceMap.containsKey(dsid)) {
-                        List list = (List)resourceMap.get(dsid);
-                        for (int l=0; l<list.size(); l++) {
-                          String resname = ((DatasetResource)list.get(l)).getResourceName();
-                          String reslink = ((DatasetResource)list.get(l)).getResourceLink(); %>
-                        <li><a href=<%=constructURL(reslink, dsid)%> target="_new"><%=resname%></a><br> 
-                   <%   }
-                      }    %>
-                   </td>   
-
-         <%       } else { // else11
-
-
-                      if ( displayedElements[i].equals ("DATASET_DESCRIPTION") ) {
-						        desc_flag = 1; %>
-                      <pre><tt> <%
-                       } else {
-                          desc_flag = 0;
-                       }  
-                        ProfileElement pe = (ProfileElement)elements.get(displayedElements[i]); 
-                        for (Iterator e = pe.getValues().iterator(); e.hasNext();) 
-                        { // loop within a displayed Element
-                           String val = (String)e.next();
-
-                           if (desc_flag==1) {
-	                             val = val.replaceAll("\r","");
-                                val = val.replaceAll("\n","");
-                           }
-			
-
-                           if (val.startsWith("http://") || val.startsWith("HTTP://")) { %>
-                        <a href="<%=val%>" target="_blank"><%=val%><br></a>
-        <%                 } else if (displayedElements[i].equals("MISSION_NAME")) {
-                                 String missionProfileServerURL = "/pds/viewMissionProfile.jsp?MISSION_NAME=" + val;
-%>
-                        <a href="<%=missionProfileServerURL%>"  target="_blank"><%=val%><br></a>
-			<%   
-					           } else if (displayedElements[i].equals("TARGET_NAME")) {
-						             String targetProfileServerURL = "";
-						             for (int x = 0; x < target.size(); x++){
-							             if (((String)target.get(x)).equals(val.toUpperCase())){
-								               String SBNalias = (String)alias.get(x);
-								               if (SBNalias.equals(("CN_CATALOG").trim())){
-									               targetProfileServerURL = "/pds/viewTargetProfile.jsp?TARGET_NAME=" + val;
-								               }else if (SBNalias.equals(("UNK").trim())){
-									               targetProfileServerURL = "";
-								               }else{
-									               targetProfileServerURL = "http://pds-smallbodies.astro.umd.edu/SBNcgi/sbdbatt?mstring=" + SBNalias + "&mtype=part";
-								               }
-							             }
-						             }
-						             if (targetProfileServerURL == null || targetProfileServerURL.equals("")){
-%>
-							<%=val%><br><%
-						             }else{%>
-							<a href="<%=targetProfileServerURL%>"  target="_blank"><%=val%><br></a>
-             
+   //out.println("dsid = " + dsid + "    dsid_lower = " + dsid_lower);
+   ExtrinsicObject dsObj = searchRegistry.getExtrinsic("urn:nasa:pds:data_set."+dsid);
+   //out.println("<br>citation = " + searchRegistry.getSlotValues(product, "data_set_citation_text").toString());
+ 
+   if (dsObj==null) { 
+   %>
+            <tr valign="TOP">
+               <td bgcolor="#F0EFEF" width=200 valign=top>
+                  Information not found for dsid <b><%=dsid%></b>. Please verify the value.
+               </td> 
+            </tr>
+   <% 
+   }  // end if (dsObj==null)
+   else { 
+       //out.println("<br>guid = " + dsObj.getGuid());
+        
+       for (java.util.Map.Entry<String, String> entry: Constants.dsPds3ToRegistry.entrySet()) {
+          String key = entry.getKey();
+	      String tmpValue = entry.getValue();
+	       //out.println("key = " + key + "   tmpValue = " + tmpValue);
+          %>
+            <TR>
+               <td bgcolor="#F0EFEF" width=200 valign=top><%=key%></td> 
+               <td bgcolor="#F0EFEF" valign=top>
+          <% 
+          String val = "";
+          List<String> slotValues = searchRegistry.getSlotValues(dsObj, tmpValue);
+          if (slotValues!=null) {
+             if (tmpValue.equals("data_set_description")) {                          
+                val = slotValues.get(0);
+                //val = val.replaceAll("            ", "  ");
+             %>
+                  <pre><tt><%=val%></tt><pre>
              <%
-						             }
-
-			                 } else if (displayedElements[i].equals("INSTRUMENT_HOST_ID")) {
-                                 hostId = val;
-                                 String hostProfileServerURL = "/pds/viewHostProfile.jsp?INSTRUMENT_HOST_ID=" + val;
-%>
-                      <a href="<%=hostProfileServerURL%>"  target="_blank"><%=val%><br></a>
-
-             <%           } else if (displayedElements[i].equals("INSTRUMENT_ID")) {
-                                 String instrumentProfileServerURL = "/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID=" + val + "&INSTRUMENT_HOST_ID=" + hostId;
-%>
-                      <a href="<%=instrumentProfileServerURL%>"  target="_blank"><%=val%><br></a>
-            <%            } else { 
-                                 if (desc_flag==1) { %>
-<%=val%><%} // this code has to locat at the beginning of the source line, otherwise the alignment of the PRE would be off. 
-                                 else { %>
-                      <%=val%><br>
-             <%                   }
-                           }
-                   } // end loop within a displayed Element  
-
-                   if (desc_flag == 1) { %>
-                </tt></pre>
-             <%     } %>
-                </td>
-             <%     } // end else11 %>
-               </TR>
-         <%
-             } // end if
-         } // for loop
+             }
+             else {
+                for (int j=0; j<slotValues.size(); j++) {
+                   out.println(slotValues.get(j) + "<br>");
+                }
+             }
+          } // end if (slotValues!=null)
+          else {
+             if (tmpValue.startsWith("mission_")) {
+                String msnValue = searchRegistry.getMissionName(dsObj).get(0);
+                String lid = msnValue.substring(0, msnValue.indexOf("::"));
+    	       	ExtrinsicObject msnObj = searchRegistry.getExtrinsic(lid);   	       		       	
+    	        //out.println(searchRegistry.getSlotValues(msnObj, tmpValue).get(0).toUpperCase() + "<br>"); 
+    	       	val = searchRegistry.getSlotValues(msnObj, tmpValue).get(0).toUpperCase();	
+    	       	if (tmpValue.equals("mission_name")) { 
+    	       	%>
+    	       	   <a href="/ds-view/pds/viewMissionProfile.jsp?MISSION_NAME=<%=val%>" target="_blank"><%=val%></a><br> 
+    	       	<%
+    	       	}
+    	       	else {
+    	       	   out.println(val+ "<br>");
+    	       	}
+             } 
+             else if (tmpValue.startsWith("instrument_host_")) {
+                List<String> svalues = searchRegistry.getSlotValues(dsObj, "instrument_host_ref");     	 
+    	 		for (int j=0; j<svalues.size(); j++) {
+    	 		   String aValue = (String) svalues.get(j);
+    	   	       String lid = aValue.substring(0, aValue.indexOf("::"));
+    	    	   ExtrinsicObject insthostObj = searchRegistry.getExtrinsic(lid);
+    	    	   val = searchRegistry.getSlotValues(insthostObj, tmpValue).get(0).toUpperCase();
+    	    	   if (tmpValue.equals("instrument_host_id")) {
+    	    	   %>
+    	    	   <a href="/ds-view/pds/viewHostProfile.jsp?INSTRUMENT_HOST_ID=<%=val%>" target="_blank"><%=val%></a><br> 
+    	    	   <%
+    	    	   }	
+    	    	   else {
+    	              out.println(val + "<br>");
+    	           }
+    	        }
+             }
+             else if (tmpValue.startsWith("instrument_") && !tmpValue.startsWith("instrument_host_")) {
+                List<String> svalues = searchRegistry.getSlotValues(dsObj, "instrument_ref");     	 
+    	 		for (int j=0; j<svalues.size(); j++) {
+    	 		   String aValue = (String) svalues.get(j);
+    	   		   String lid = aValue.substring(0, aValue.indexOf("::"));
+    	    	   ExtrinsicObject instObj = searchRegistry.getExtrinsic(lid);
+    	    	   val = searchRegistry.getSlotValues(instObj, tmpValue).get(0).toUpperCase();
+    	    	   if (tmpValue.equals("instrument_id")) {
+    	    	   %>
+    	    	   <a href="/ds-view/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID=<%=val%>" target="_blank"><%=val%></a><br>
+    	    	   <%
+    	    	   }
+    	    	   else {
+    	        	  out.println(val + "<br>");
+    	           }
+    	        }
+             }
+             else if (tmpValue.startsWith("target_")) {
+                String targetValue = searchRegistry.getTargetName(dsObj).get(0);
+                String lid = targetValue.substring(0, targetValue.indexOf("::"));
+    	       	ExtrinsicObject targetObj = searchRegistry.getExtrinsic(lid);   	       		       	
+    	       	out.println(searchRegistry.getSlotValues(targetObj, tmpValue).get(0).toUpperCase() + "<br>"); 	
+             }
+             else if (tmpValue.equals("resource_link") ||
+                      tmpValue.equals("resources")) {
+                List<String> rvalues = searchRegistry.getResourceRefs(dsObj);
+     	        String refLid = rvalues.get(0);
+         	    refLid = refLid.substring(0, refLid.indexOf("::"));
+         	    //out.println("refLid = " + refLid + "<br>");
+         	    ExtrinsicObject resource1 = searchRegistry.getExtrinsic(refLid);
+         		String resname, reslink;
+                if (tmpValue.equals("resource_link")) {
+         	       //resname = searchRegistry.getSlotValues(resource1, "resource_name").get(0);
+         	       reslink = searchRegistry.getSlotValues(resource1, "resource_url").get(0);
+         	       %>
+         		   <a href=<%=constructURL(reslink, dsid)%> target="_new"><%=reslink%></a> 
+         		<%
+         	    } 
+         	    else {
+         	       for (int j=1; j<rvalues.size(); j++) {
+         		      //out.println(rvalues.get(j) + "<br>");
+         			  refLid = rvalues.get(j);
+         			  refLid = refLid.substring(0, refLid.indexOf("::"));
+         			  ExtrinsicObject resource = searchRegistry.getExtrinsic(refLid);
+         			  //out.println("resource_name = " + searchRegistry.getSlotValues(resource, "resource_name").get(0) + "<br>");
+         			  //out.println("resource_url = " + searchRegistry.getSlotValues(resource, "resource_url").get(0) + "<br>");
+         			  resname = searchRegistry.getSlotValues(resource, "resource_name").get(0);
+         			  reslink = searchRegistry.getSlotValues(resource, "resource_url").get(0); 
+         		      %>
+         			  <li><a href=<%=constructURL(reslink, dsid)%> target="_new"><%=resname%></a><br>
+         			  <%
+         		   } // end for
+         	    } // end else
+             } // end resource_link
+             else if (tmpValue.startsWith("node_name")) {
+                List<String> svalues = searchRegistry.getSlotValues(dsObj, "node_ref");     	 
+    	 	    for (int j=0; j<svalues.size(); j++) {
+    	 		   String aValue = (String) svalues.get(j);
+    	   		   String lid = aValue.substring(0, aValue.indexOf("::"));
+    	    	   ExtrinsicObject nodeObj = searchRegistry.getExtrinsic(lid);
+    	    	   val = searchRegistry.getSlotValues(nodeObj, tmpValue).get(0).toUpperCase();
+    	    	   out.println(val + "<br>");
+    	        }
+             }
+                         
+             if (key.equals("TELEPHONE_NUMBER")) {
+                List<String> svalues = searchRegistry.getSlotValues(dsObj, "node_ref");     	 
+    	 	    for (int j=0; j<svalues.size(); j++) {
+    	 		   String aValue = (String) svalues.get(j);
+    	   		   String lid = aValue.substring(0, aValue.indexOf("::"));
+    	    	   ExtrinsicObject nodeObj = searchRegistry.getExtrinsic(lid);
+    	    	   String tmpVal = searchRegistry.getSlotValues(nodeObj, "node_to_data_archivist").get(0);
+    	    	   String personLid = tmpVal.substring(0, tmpVal.indexOf("::"));
+    	    	   ExtrinsicObject personObj = searchRegistry.getExtrinsic(personLid);
+    	           String tmpVal2 = searchRegistry.getSlotValues(personObj, tmpValue).get(0).toUpperCase();
+    	    	   out.println(tmpVal2 + "<br>");
+    	        }
+             }
+          }   
+          %>
+               </td>
+            </TR>     
+      <%        
+       } // for loop
+   } // else
+}
          %>
-        <%@ include file="/pds/footer.html" %>
-        </table>
-
-    </td>
-  </tr>
+         
+            <%@ include file="/pds/footer.html" %>
+         </table>
+      </td>
+   </tr>
 </table>
-<% } %>
 </BODY>
 </HTML>
 
