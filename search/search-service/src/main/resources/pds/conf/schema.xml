@@ -626,10 +626,10 @@
    <field name="form-instrument-type" type="string" indexed="true" stored="true" multiValued="true" />    
    <field name="form-instrument-host" type="string" indexed="true" stored="true" multiValued="true" />    
    <field name="form-data-set-name" type="string" indexed="true" stored="true" multiValued="true" />    
-   <field name="form-data-set_id" type="string" indexed="true" stored="true" multiValued="true" />    
-   <field name="form-data-object_-type" type="string" indexed="true" stored="true" multiValued="true" />    
+   <field name="form-data-set-id" type="string" indexed="true" stored="true" multiValued="true" />    
+   <field name="form-data-object-type" type="string" indexed="true" stored="true" multiValued="true" />    
    <field name="form-instrument-host-type" type="string" indexed="true" stored="true" multiValued="true" />    
-   <field name="form-node_name" type="string" indexed="true" stored="true" multiValued="true" />    
+   <field name="form-node-name" type="string" indexed="true" stored="true" multiValued="true" />    
    <field name="form-archive-status" type="string" indexed="true" stored="true" multiValued="true" />    
    
    <!--
@@ -754,9 +754,9 @@
   <copyField source="target_type" dest="form-target-type" />
   <copyField source="instrument_name" dest="form-instrument" />
   <copyField source="instrument_type" dest="form-instrument-type" />
-  <copyField source="instrument_host_name" dest="form-instrument_host_name" />
-  <copyField source="data_set_name" dest="form-data_set_name" />
-  <copyField source="data_set_id" dest="form-data_set_id" />
+  <copyField source="instrument_host_name" dest="form-instrument-host-name" />
+  <copyField source="data_set_name" dest="form-data-set-name" />
+  <copyField source="data_set_id" dest="form-data-set-id" />
   <copyField source="data_object_type" dest="form-data-object-type" />
   <copyField source="instrument_host_type" dest="form-instrument-host-type" />
   <copyField source="node_name" dest="form-node-name" />
