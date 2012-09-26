@@ -8,10 +8,13 @@ public enum Flag {
 	/** Flag to run all components of index */
 	ALL("a", "all",
 			"Run all components of the Search Core [default]"),
-
+			
 	/** Flag to specify a product class configuration directory. */
-	CONFIG_HOME("c", "config-home", "directory", String.class,
-			"Specify the product class configuration home directory (the directory containing product-classes.txt and the accompanying config files) (Default: $SEARCH_CORE_HOME/conf/pds/"),
+	CONFIG_HOME("c", "config-home", "directory", String.class, true,
+			"Specify the product class configuration home directory (dir must contain product-classes.txt) (Default: $SEARCH_CORE_HOME/conf/pds/"),
+			
+	/** Flag to turn OFF removal of all directories from previous Search Core execution */
+	CLEAN("C", "clean-dirs", "Removal of all directories from previous Search Core execution output. These directories will still be backed up in the Search Service Home directory. (Default: True)"),
 			
 	/** Flag to run in debug mode. */
 	DEBUG("d", "debug", "Turn on debugger."),
@@ -34,20 +37,15 @@ public enum Flag {
 			"Specify the maximum number of registry values to be returned from query. (Default: " + Constants.QUERY_MAX + ")"),
 	
 	/** Flag to specify a configuration file. */
-	PROPERTIES("p", "properties-file", "directory", String.class,
-			"Specify properties file containing Search Service Home, Registry URL, and other configuration information."),
+	PROPERTIES("p", "properties-file", "directory", String.class, true,
+			"Specify properties file containing Search Service Home, Registry URL, and product class configuration home directory."),
 			
-	/** Flag to display the version. */
-	REGISTRY("r", "registry", "url", String.class,
+	/** Flag to specify at least one Registry URL. */
+	REGISTRY("r", "registry", "url", String.class, true,
 			"Specify Registry Service instance to query. <REQUIRED>"),
 			
 	/** Flag to display the version. */
 	VERSION("V", "version", "Display application version.");
-	
-	/* Flag to specify a file containing multiple PDS3 Label paths. 
-	 * PDS("p", "pds-indexer", "Run PDS Indexer"),
-	 * 
-	 */
 
 	/** The short name of the flag. */
 	private final String shortName;
@@ -79,13 +77,13 @@ public enum Flag {
 		options.addOption(new ToolsOption(VERSION));
 		options.addOption(new ToolsOption(SOLR));
 		options.addOption(new ToolsOption(EXTRACTOR));
-		//options.addOption(new ToolsOption(PDS));
 		options.addOption(new ToolsOption(ALL));
 		options.addOption(new ToolsOption(DEBUG));
 		options.addOption(new ToolsOption(REGISTRY));
 		options.addOption(new ToolsOption(SERVICE_HOME));
 		options.addOption(new ToolsOption(MAX));
 		options.addOption(new ToolsOption(CONFIG_HOME));
+		options.addOption(new ToolsOption(CLEAN));
 		options.addOption(new ToolsOption(PROPERTIES));
 	}
 

@@ -36,49 +36,113 @@ import org.apache.commons.io.FileUtils;
  * @version $Revision$
  */
 public class RegistryExtractor {
+	/** Standard output logger **/
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
-	private File confDir = null;
-	private File outDir = null;
+	/** Directory containing the product class configuration files **/
+	private File confDir;
+	
+	/** Directory created to hold the output Product Class data **/
+	private File dataDir;
+	
+	/** URL for Registry **/
 	private String registryUrl;
+	
+	/** Maximum query per product class **/ 
 	private int queryMax;
-	// private File extractDir = null;
 
+	/** Map of product classes to accompanying XML config files **/
 	private HashMap<String, String> mappings;
+	
+	/** Writes to output log **/
+	private PrintWriter writer;
+	
+	/** Total time to run each product class query **/
+	private long totalTime;
+	
+	/** Total number of queried objects **/
+	private int totalCount;
 
-	// Variables are dependent upon extractor configuration file format.
-	// If format changes, these variables will need to be changed.
+	/** Prefix used for in properties files	specifying product classes */
 	private static final String EXTRACTOR_PREFIX = "registry.extractor";
-	//private static final String EXTRACTOR_CONFIG = "product-classes.txt";
 
 	/**
-	 * Initializing method used when a base directory is given.
-	 * 
-	 * @param base
-	 *            - Directory used as the base for all extractor files.
+	 * Object initializer method with an output directory and clean boolean parameter specified.
+	 * @param outDir
+	 * @param clean
+	 * @throws ProductClassException
 	 */
-	public RegistryExtractor(String registryUrl, String outDir, String confDir) {
-		// baseDir = new File(System.getProperty("extractor.basedir", base));
-		this.confDir = new File(confDir);
-		this.outDir = new File(outDir);
-		this.registryUrl = registryUrl;
+	public RegistryExtractor(String outDir, boolean clean) throws ProductClassException {
+		this.confDir = null;
+		this.registryUrl = null;
 		this.queryMax = -1;
+		
+		this.writer = null;
+		this.totalTime = 0;
+		this.totalCount = 0;
+		
+		createOutputs(outDir, clean);
 	}
 	
-	public RegistryExtractor(String registryUrl, String outDir) {
-		// baseDir = new File(System.getProperty("extractor.basedir", base));
-		this.confDir = new File("");
-		this.outDir = new File(outDir);
-		this.registryUrl = registryUrl;
-		this.queryMax = -1;
+	/**
+	 * Create the output directory for the Registry Extractor data
+	 * 
+	 * @param outDir - The base directory where the registry-data directory is created.
+	 * @param clean - Boolean parameter used to determine whether or not the previous run data should be removed.
+	 * 				This is used in case user decides to append to previous runs data.
+	 * @throws ProductClassException
+	 */
+	private void createOutputs(String outDir, boolean clean) throws ProductClassException {
+		try {
+			this.dataDir = new File(outDir, "registry-data");
+			this.LOG.info("Create registry dir: " + this.dataDir.getAbsolutePath());
+			// Create registry directory to hold XML files containing desired registry data
+			
+			// Back up old registry-data if it exists
+			if (this.dataDir.isDirectory()) {
+				File backupDir = new File(outDir, "registry-data_old");
+				
+				if (backupDir.isDirectory()) {
+					FileUtils.forceDelete(backupDir);
+				}
+				
+				// Remove dataDir if clean flag is true
+				if (clean) {
+					FileUtils.moveDirectory(this.dataDir, backupDir);
+				} else {
+					FileUtils.copyDirectory(this.dataDir, backupDir);
+				}
+			}
+			
+			FileUtils.forceMkdir(this.dataDir);
+			
+		} catch (IOException e) {
+			LOG.warning(e.getMessage());
+			throw new ProductClassException("Could not setup directories in "
+					+ this.dataDir);
+		}
+
+		// Try to create run log file that will count the results
+		try {
+			this.writer = new PrintWriter(new BufferedWriter(new FileWriter(
+					new File(this.dataDir, "run.log"))));
+		} catch (IOException e) {
+			this.LOG.warning(e.getMessage());
+			throw new ProductClassException("Could not create run log");
+		}
 	}
 	
-	public RegistryExtractor(String registryUrl) {
-		// baseDir = new File(System.getProperty("extractor.basedir", base));
-		this.confDir = new File("");
-		this.outDir = new File("../");
-		this.registryUrl = registryUrl;
-		this.queryMax = -1;
+	/**
+	 * Complete the output for the log and flush/close the PrintWriter
+	 */
+	public void close() {
+		// Log complete run stats
+		this.writer.println("total.count=" + this.totalCount);
+		this.writer.println("total.time=" + this.totalTime);
+		this.writer.flush();
+		this.writer.close();
+
+		this.LOG.info("Finished data extraction");
 	}
 
 	/**
@@ -88,58 +152,24 @@ public class RegistryExtractor {
 	 * @throws ProductClassException
 	 */
 	public void run() throws ProductClassException {// throws InvalidExtractor {
-		PrintWriter writer = null;
-		File extractDir = null;
-		File dataDir = null;
-
-		// Create output directories
-		try {
-			dataDir = new File(this.outDir, "registry-data");
-			this.LOG.info("Create registry dir: " + dataDir.getAbsolutePath());
-			// Create registry directory to hold XML files containing desired registry data
-			FileUtils.forceMkdir(dataDir);
-
-			// Next create a place to put extracted files
-			//extractDir = new File(dataDir, "extract");
-			//this.LOG.info("Create extract dir: " + extractDir.getAbsolutePath());
-			//FileUtils.forceMkdir(extractDir);
-			
-		} catch (IOException e) {
-			LOG.warning(e.getMessage());
-			throw new ProductClassException("Could not setup directories in "
-					+ dataDir);
-		}
-
-		// Try to create run log file that will count the results
-		try {
-			writer = new PrintWriter(new BufferedWriter(new FileWriter(
-					new File(dataDir, "run.log"))));
-		} catch (IOException e) {
-			this.LOG.warning(e.getMessage());
-			throw new ProductClassException("Could not create run log");
-		}
-
 		this.LOG.info("------- Beginning Registry Data Extraction --------");
 		this.LOG.info("Registry URL: " + this.registryUrl);
 		this.LOG.info("---------------------------------------------------------");
 		
 		List uids = null;
-		long totalTime = 0;
-		int totalCount = 0;
-		writer.println("run.date=" + new Date());
+		this.writer.println("run.date=" + new Date());
 		// Run extract method on each class
 		for (String pc : getProductClassList()) {
 			ProductClass productClass;
 			try {
 				// Create directory for writing results to
-				File productClassDir = new File(dataDir, pc);
+				File productClassDir = new File(this.dataDir, pc);
 				FileUtils.forceMkdir(productClassDir);
-
 				this.LOG.info("Querying " + pc + " objects");
 
 				// Create new productClass instance for given class.
-				productClass = new ProductClass(writer, pc,
-						this.confDir.getAbsolutePath() + "/" + mappings.get(pc), this.registryUrl, this.queryMax);
+				productClass = new ProductClass(this.writer, pc,
+						this.confDir.getAbsolutePath() + "/" + this.mappings.get(pc), this.registryUrl, this.queryMax);
 
 				Date start = new Date();
 				uids = productClass.query(productClassDir);
@@ -147,9 +177,9 @@ public class RegistryExtractor {
 
 				// Write to run log and track information for complete run
 				// writer.println(extractorName + ".count=" + uids.size());
-				writer.println(pc + ".time="
+				this.writer.println(pc + ".time="
 						+ (end.getTime() - start.getTime()));
-				totalTime += end.getTime() - start.getTime();
+				this.totalTime += end.getTime() - start.getTime();
 				this.LOG.info("Completed data extraction for " + pc);
 			} catch (ProductClassException e) {
 				this.LOG.warning(e.getMessage());
@@ -157,14 +187,6 @@ public class RegistryExtractor {
 				this.LOG.warning(e.getMessage());
 			}
 		}
-
-		// Log complete run stats
-		writer.println("total.count=" + totalCount);
-		writer.println("total.time=" + totalTime);
-		writer.flush();
-		writer.close();
-
-		this.LOG.info("Finished data extraction");
 	}
 
 	/**
@@ -220,20 +242,6 @@ public class RegistryExtractor {
 	}
 
 	/**
-	 * @return the outDir
-	 */
-	public File getOutDir() {
-		return outDir;
-	}
-
-	/**
-	 * @param outDir the outDir to set
-	 */
-	public void setOutDir(File outDir) {
-		this.outDir = outDir;
-	}
-
-	/**
 	 * @return the registryUrl
 	 */
 	public String getRegistryUrl() {
@@ -260,30 +268,4 @@ public class RegistryExtractor {
 	public void setQueryMax(int queryMax) {
 		this.queryMax = queryMax;
 	}
-
-	/*public static void main(String[] args) throws Exception {
-		String confHome = "";
-		String outDir = "../";
-		String registryUrl = "";
-		int queryMax = -1;
-		if (args.length == 4) {
-			registryUrl = args[0];
-			outDir = args[1];
-			confHome = args[2];
-			queryMax = Integer.parseInt(args[3]);
-		} else if (args.length == 3) {
-			registryUrl = args[0];
-			outDir = args[1];
-			confHome = args[2];
-		} else if (args.length == 2) {
-			registryUrl = args[0];
-			outDir = args[1];
-		}
-
-		RegistryExtractor extractor = new RegistryExtractor(registryUrl,
-				outDir, confHome);
-		extractor.setQueryMax(queryMax);
-		extractor.run();
-	}*/
-
 }

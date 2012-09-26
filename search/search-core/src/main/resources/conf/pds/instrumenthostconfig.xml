@@ -18,7 +18,7 @@
   <column>
     <name>description</name>
     <type>slot</type>
-    <value>instrument_host_desc</value>
+    <value>instrument_host_description</value>
   </column>
   <column>
     <name>language</name>
@@ -63,7 +63,7 @@
   <column>
     <name>host_desc</name>
     <type>slot</type>
-    <value>instrument_host_desc</value>
+    <value>instrument_host_description</value>
   </column>
   <column>
     <name>resource_class</name>

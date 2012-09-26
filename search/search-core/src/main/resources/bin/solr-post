@@ -19,8 +19,9 @@ PDS_SERVICE_HOME=$SEARCH_SERVICE_HOME/pds
 
 PDS_UPDATE_URL="${SEARCH_SERVICE_URL}/pds/update"
 
-./xslt $SEARCH_SERVICE_HOME $PDS_SERVICE_HOME/index/solr_index.xml ../facets/add-hierarchy.xslt $PDS_SERVICE_HOME/index/solr-index.hierarchy.xml
 ./xslt $SEARCH_SERVICE_HOME ../facets/search-tools.xml ../facets/add-hierarchy.xslt $PDS_SERVICE_HOME/index/search-tools.hierarchy.xml
+
+curl "$PDS_UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary @$PDS_SERVICE_HOME/index/search-tools.hierarchy.xml
 
 #Backup existing solr index. This currently is in the wrong place and will need updating
 if [ -d $PDS_SERVICE_HOME/data_old ]
@@ -37,10 +38,17 @@ fi
 # Delete all existing documents.
 curl "$PDS_UPDATE_URL" -H "Content-Type: application/xml" --silent --data-binary '<delete><query>*:*</query></delete>'
 
-# Push new index data
-curl "$PDS_UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary @$PDS_SERVICE_HOME/index/solr-index.hierarchy.xml
-curl "$PDS_UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary @$PDS_SERVICE_HOME/index/search-tools.hierarchy.xml
+find $PDS_SERVICE_HOME/index/solr_index.xml.*
+for solrIndex in `find $PDS_SERVICE_HOME/index/solr_index.xml.*`; do
+    indexNum=`echo $solrIndex | gawk -F. '{print $NF}'`
+    ./xslt $SEARCH_SERVICE_HOME $solrIndex ../facets/add-hierarchy.xslt $PDS_SERVICE_HOME/index/solr-index.hierarchy.xml.$indexNum
 
+# Push new index data
+    curl "$PDS_UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary @$PDS_SERVICE_HOME/index/solr-index.hierarchy.xml.$indexNum
+
+done
 
 # Commit the changes
 curl "$PDS_UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary '<commit />'
+
+exit 0

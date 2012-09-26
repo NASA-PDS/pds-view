@@ -6,12 +6,19 @@ import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.extractor.RegistryExtractor;
 import gov.nasa.pds.search.core.indexer.pds.Indexer;
 import gov.nasa.pds.search.core.indexer.solr.SolrIndexer;
+import gov.nasa.pds.search.util.PropertiesUtil;
 import gov.nasa.pds.search.util.ToolInfo;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 import org.apache.commons.cli.CommandLine;
@@ -25,32 +32,38 @@ public class SearchCoreLauncher {
 
 	private static final String PDS_CONFIG_PATH="/conf/pds";
 	private static final String SEARCH_SERVICE_ENVVAR="SEARCH_SERVICE_HOME";
-	
-	private Logger LOG = Logger.getLogger(this.getClass().getName());
+	private static final String PROPS_PREFIX="search.service";
 
-	private File searchServiceHome;
 	private boolean allFlag;
 	private boolean extractorFlag;
 	private boolean solrFlag;
-	private boolean pdsFlag;
 	private boolean debug;
-	private String registryUrl;
+	private boolean clean;
+	
 	private int queryMax;
-	private String configHome;
-	private File propsFile;
+	
+	private File searchServiceHome;
+	
+	private List<String> registryUrlList;
+	private List<String> configHomeList;
+	private List<File> propsFilesList;
+	
+	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
 	public SearchCoreLauncher() {
-		this.searchServiceHome = null;
 		this.allFlag = true;
 		this.extractorFlag = false;
 		this.solrFlag = false;
-		this.pdsFlag = false;
 		this.debug = false;
-		this.registryUrl = null;
+		this.clean = true;
+		
 		this.queryMax = -1;
-		this.configHome = null;
-		this.propsFile = null;
-
+		
+		this.searchServiceHome = null;
+		
+		this.registryUrlList = new ArrayList<String>();
+		this.configHomeList = new ArrayList<String>();
+		this.propsFilesList = new ArrayList<File>();
 	}
 
 	/**
@@ -102,6 +115,7 @@ public class SearchCoreLauncher {
 	 *             If there was an error while querying the options that were
 	 *             set on the command-line.
 	 */
+	@SuppressWarnings("unchecked")
 	public final void query(final CommandLine line) throws Exception {
 		final List<Option> processedOptions = Arrays.asList(line.getOptions());
 		for (final Option o : processedOptions) {
@@ -119,17 +133,12 @@ public class SearchCoreLauncher {
 			} else if (o.getOpt().equals(Flag.SOLR.getShortName())) {
 				this.solrFlag = true;
 				this.allFlag = false;
-			} 
-			/* Commented out - This creates separate index in catalog_index directory.
-			else if (o.getOpt().equals(Flag.PDS.getShortName())) {
-				this.pdsFlag = true;
-				this.allFlag = false;
-			}*/ else if (o.getOpt().equals(Flag.DEBUG.getShortName())) {
+			} else if (o.getOpt().equals(Flag.DEBUG.getShortName())) {
 				this.debug = true;
 			} else if (o.getOpt().equals(Flag.REGISTRY.getShortName())) {
-				this.registryUrl = o.getValue();
+				this.registryUrlList = o.getValuesList();
 			}  else if (o.getOpt().equals(Flag.SERVICE_HOME.getShortName())) {
-				this.searchServiceHome = new File(getAbsolutePath("Search Service Home", o.getValue().trim())); 
+				setSearchServiceHome(o.getValue().trim());
 			} else if (o.getOpt().equals(Flag.MAX.getShortName())) {
 				try {
 					this.queryMax = Integer.parseInt(o.getValue());
@@ -138,38 +147,32 @@ public class SearchCoreLauncher {
 				}
 				
 			} else if (o.getOpt().equals(Flag.CONFIG_HOME.getShortName())) {
-				this.configHome = getAbsolutePath("Config Dir", o.getValue().trim());
-				
-				// Check that the config dir contains the product class properties file
-				if (!Arrays.asList((new File(this.configHome)).list()).contains(Constants.PC_PROPS)) {
-					throw new InvalidOptionException(Constants.PC_PROPS + " does not exist in directory "
-							+ this.configHome);					
-				}					
+				addConfigHome(o.getValue().trim());			
 			} else if (o.getOpt().equals(Flag.PROPERTIES.getShortName())) {
-				this.propsFile = new File(getAbsolutePath("Properties File", o.getValue().trim()));
+				for (Object value : o.getValuesList()) {
+					this.propsFilesList.add(new File(getAbsolutePath("Properties File", ((String)value).trim(), false)));
+				}
+				setProperties(this.propsFilesList);
+			} else if (o.getOpt().equals(Flag.CLEAN.getShortName())) {
+				this.clean = false;
 			}
 		}
 
-		// Verify a registry URL was specified
-		if (this.registryUrl == null) {
-			throw new InvalidOptionException("Registry URL must be specified with " + Flag.REGISTRY.getShortName() + " flag.");
-		}
+		// Check for required values
 		
-		// Set Search Service Home is not specified
-		if (this.searchServiceHome == null) {
-			String path = System.getenv(SEARCH_SERVICE_ENVVAR);
-			
-			if (path.equals("")) {
-				path = System.getProperty("user.dir");
-			}
-			
-			System.out.println("search_service_home " + getAbsolutePath("Search Service Home", path));
-			this.searchServiceHome = new File(getAbsolutePath("Search Service Home", path));
+		// Verify a registry URL was specified
+		if (this.registryUrlList.size() == 0) {
+			throw new InvalidOptionException("Registry URL must be specified with " + Flag.REGISTRY.getShortName() + " or " + Flag.PROPERTIES.getShortName() + " flags.");
 		}
 		
 		// Set config directory to pds if not specified
-		if (this.configHome == null) {
-			this.configHome = (new File(System.getProperty("java.class.path"))).getParentFile().getParent() + PDS_CONFIG_PATH;
+		if (this.configHomeList.size() == 0) {
+			setDefaultConfigHome();
+		}
+		
+		// Set Search Service Home if not specified
+		if (this.searchServiceHome == null) {
+			setDefaultSearchServiceHome();
 		}
 	}
 	
@@ -178,23 +181,110 @@ public class SearchCoreLauncher {
 	 * 
 	 * @param fileType
 	 * @param filePath
+	 * @param isDir - Designates if filePath specified is a directory.  False means filePath is a file.
 	 * @return
 	 * @throws InvalidOptionException
 	 */
-    private String getAbsolutePath(String fileType, String filePath) throws InvalidOptionException {
+    private String getAbsolutePath(String fileType, String filePath, boolean isDir) throws InvalidOptionException {
 		String finalPath = "";
-    	File testFile = new File(filePath);
-		if (!testFile.isAbsolute()) {
+    	File tFile = new File(filePath);
+		if (!tFile.isAbsolute()) {
 			finalPath = System.getProperty("user.dir") + "/" + filePath;
 		} else {
 			finalPath = filePath;
 		}
     	
-    	if (!(new File(finalPath)).exists()) {
-    		throw new InvalidOptionException(fileType + " does not exist: " + filePath);
-    	}
+		tFile = new File(finalPath);
+    	if ((isDir && !tFile.isDirectory()) || (!isDir && !tFile.isFile())) {
+			throw new InvalidOptionException(fileType + " does not exist: " + filePath);
+		}
     	
     	return finalPath;
+    }
+    
+    /**
+     * Set the properties for a given registry/search-service-home/etc.
+     * 
+     * TODO May want to refactor.  Very similar code in RegistryExtractor.getProductClassList
+     * 
+     * @param propsFileList
+     * @throws InvalidOptionException 
+     */
+    public void setProperties(List<File> propsFileList) throws InvalidOptionException {
+		Map<String,String> mappings = new HashMap<String, String>();
+
+		for (File propsFile : propsFileList) {
+			mappings = PropertiesUtil.getPropertiesMap(propsFile, PROPS_PREFIX);
+			
+			if (mappings.get("registry-url") != null) {
+				this.registryUrlList.add(mappings.get("registry-url"));
+			} else {
+				throw new InvalidOptionException("Registry URL must be specified in properties file - " + propsFile.getAbsolutePath());
+			}
+			
+			if (mappings.get("config-home") != null) {
+				addConfigHome(mappings.get("config-home"));
+			} else {
+				throw new InvalidOptionException("Config home must be specified in properties file - " + propsFile.getAbsolutePath());
+			}
+			
+			if (mappings.get("home") != null) {
+				setSearchServiceHome(mappings.get("home"));
+			}
+		}
+
+    }
+    
+    /**
+     * Performs verification the directory given contains the PC_PROPS file and ensures
+     * the path is reset to absolute.  Refactored into a separate method since it is called from
+     * 2 places.
+     * 
+     * @param configHome - A directory path (relative or absolute) that contains the product_classes.txt and accompanying config files
+     * @throws InvalidOptionException
+     */
+    public void addConfigHome(String configHome) throws InvalidOptionException {
+    	this.configHomeList.add(getAbsolutePath("Config Dir", configHome, true));
+    	
+		// Check that the config dir contains the product class properties file
+		if (!Arrays.asList((new File(this.configHomeList.get(0))).list()).contains(Constants.PC_PROPS)) {
+			throw new InvalidOptionException(Constants.PC_PROPS + " does not exist in directory "
+					+ this.configHomeList);					
+		}		
+    }
+    
+    /**
+     * Sets the searchServiceHome global variable after getting its absolute path and ensuring
+     * its files existence.
+     * 
+     * @param searchServiceHome
+     * @throws InvalidOptionException
+     */
+    public void setSearchServiceHome(String searchServiceHome) throws InvalidOptionException {
+    	this.searchServiceHome = new File(getAbsolutePath("Search Service Home", searchServiceHome, true)); 
+    }
+    
+    /**
+     * Sets the default value for the searchServiceHome global
+     * 
+     * @throws InvalidOptionException
+     */
+    public void setDefaultSearchServiceHome() throws InvalidOptionException {
+		String path = System.getenv(SEARCH_SERVICE_ENVVAR);
+		
+		if (path == null) {
+			path = System.getProperty("user.dir");
+		}
+		
+		//System.out.println("search_service_home " + getAbsolutePath("Search Service Home", path, true));
+		this.searchServiceHome = new File(getAbsolutePath("Search Service Home", path, true));
+    }
+    
+    /**
+     * Sets the default for the configuration home directory
+     */
+    public void setDefaultConfigHome() {
+    	this.configHomeList.add((new File(System.getProperty("java.class.path"))).getParentFile().getParent() + PDS_CONFIG_PATH);
     }
 
 	public void execute() {
@@ -216,18 +306,6 @@ public class SearchCoreLauncher {
 				e.printStackTrace();
 			}
 		}
-
-		/**
-		 * TODO - Commenting this out for now because I don't see the purpose of this indexer code 
-		 */
-/*		if (this.allFlag || this.pdsFlag) {
-			try {
-				runIndexer();
-			} catch (Exception e) {
-				System.err.println("Error running Indexer.");
-				e.printStackTrace();
-			}
-		}*/
 	}
 
 	private void runRegistryExtractor() throws Exception {
@@ -235,11 +313,19 @@ public class SearchCoreLauncher {
 		this.LOG.info("Running Registry Extractor to create new XML data files...");
 		//String[] args = { this.registryUrl, this.searchServiceHome.getAbsolutePath(), this.queryMax };
 		//RegistryExtractor.main(args);
-		RegistryExtractor extractor = new RegistryExtractor(this.registryUrl, this.searchServiceHome.getAbsolutePath(), this.configHome);
-		if (this.queryMax > -1)
-			extractor.setQueryMax(this.queryMax);
-		
-		extractor.run();
+		RegistryExtractor extractor = new RegistryExtractor(this.searchServiceHome.getAbsolutePath(), this.clean);
+		for (int i=0; i < this.registryUrlList.size(); i++) {
+			this.LOG.info("\n\tRegistry URL: " + this.registryUrlList.get(i) + "\n\tSearch Service Home: " + this.searchServiceHome.getAbsolutePath() + "\n\tConfig Home: " + this.configHomeList.get(i));
+			extractor.setRegistryUrl(this.registryUrlList.get(i));
+			extractor.setConfDir(new File(this.configHomeList.get(i)));
+			
+			if (this.queryMax > -1) {
+				extractor.setQueryMax(this.queryMax);
+			}
+			
+			extractor.run();
+		}
+		extractor.close();
 	}
 
 	private void runSolrIndexer() throws IOException, ParseException, Exception {
@@ -249,14 +335,13 @@ public class SearchCoreLauncher {
 		if (!indexDir.isDirectory()) {
 			indexDir.mkdir();
 		}
-		
-		//String[] args = { this.searchServiceHome.getAbsolutePath() + "/index",
-		//		this.searchServiceHome.getAbsolutePath() + "/tse/extract" };
+
 		String[] args = { this.searchServiceHome.getAbsolutePath() + "/index",
 				this.searchServiceHome.getAbsolutePath() + "/registry-data" };
 		SolrIndexer.main(args);
 	}
 
+	@Deprecated
 	private void runIndexer() throws IOException {
 		this.LOG.info("\nRunning Indexer to create new CATALOG_INDEX...\n");
 		String[] args = { this.searchServiceHome.getAbsolutePath(),

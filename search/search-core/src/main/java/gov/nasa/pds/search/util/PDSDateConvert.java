@@ -50,7 +50,7 @@ public class PDSDateConvert {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static String convert(String input) throws Exception{
+	public static String convert(String name, String input) throws Exception{
 		SimpleDateFormat newFrmt = new SimpleDateFormat(
 				"yyyy-MM-dd'T'HH:mm:ss");
 		
@@ -65,18 +65,14 @@ public class PDSDateConvert {
 		// Before doing anything, check if date/time value is
 		// a valid unknown, in which case return default
 		if (Arrays.asList(Constants.VALID_UNK_VALUES).contains(datetime)) {
-			return Constants.DEFAULT_DATETIME;
-		} else if(datetime.equals("TBD")) {
-			System.out.println("Bad Date Value: " + datetime);
-			return Constants.DEFAULT_DATETIME;
-		} else if(datetime.equals("NOT_APPLICABLE")) {
-			System.out.println("Bad Date Value: " + datetime);
-			return Constants.DEFAULT_DATETIME;
-		} else if(datetime.matches("[A-Z]*")) {
-			System.out.println("Bad Date Value: " + datetime);
-			return Constants.DEFAULT_DATETIME;			
+			return getDefaultTime(name);
+		} else if(datetime.equals("TBD") || datetime.equals("NOT_APPLICABLE") || datetime.matches("[A-Z]*")) {
+			recordInvalidDate(datetime);
+			return getDefaultTime(name);		
+		} else if(datetime.contains("_")) {		// TODO Should we replace this or throw error?
+			//recordInvalidDate(datetime);
+			datetime = datetime.replace("_", "T");
 		}
-
 		// Split datetime from fraction of seconds
 		// SimpleDateFormat only handles milliseconds
 		String[] timeArray = datetime.split("\\.");
@@ -111,8 +107,11 @@ public class PDSDateConvert {
 		}
 
 		// Remaining formats are invalid or not captured
-		throw new Exception("Bad Date Value: " + input);
-		//return null;
+		
+		// TODO Throw error instead of returning default
+		recordInvalidDate(input);
+		//throw new Exception("Bad Date Value: " + input);
+		return getDefaultTime(name);
 	}
 	
 	/**
@@ -153,5 +152,17 @@ public class PDSDateConvert {
 	private static Date parseDate(String format, String inputDate) throws ParseException {
 		DateFormat dateFormat = new SimpleDateFormat(format);
     	return dateFormat.parse(inputDate);
+	}
+	
+	private static void recordInvalidDate(String datetime) {
+		System.out.println("Ignoring Invalid Date Value: " + datetime);
+	}
+	
+	private static String getDefaultTime(String name) {
+		if (name.toLowerCase().contains("start")) {
+			return Constants.DEFAULT_STARTTIME;
+		} else {
+			return Constants.DEFAULT_STOPTIME;
+		}
 	}
 }

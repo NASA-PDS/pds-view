@@ -18,7 +18,7 @@
   <column>
     <name>description</name>
     <type>slot</type>
-    <value>data_set_terse_desc</value>
+    <value>data_set_terse_description</value>
   </column>
   <column>
     <name>publisher</name>
@@ -147,7 +147,7 @@
   <column>
     <name>data_set_terse_desc</name>
     <type>slot</type>
-    <value>data_set_terse_desc</value>
+    <value>data_set_terse_description</value>
   </column>
   <column>
     <name>data_set_id</name>
@@ -162,7 +162,7 @@
   <column>
     <name>abstract_text</name>
     <type>slot</type>
-    <value>data_set_abstract_desc</value>
+    <value>data_set_abstract_description</value>
   </column>
   <column>
     <name>instrument_name</name>
@@ -177,7 +177,7 @@
   <column>
     <name>data_set_desc</name>
     <type>slot</type>
-    <value>data_set_desc</value>
+    <value>data_set_description</value>
   </column>
   <column>
     <name>confidence_level_note</name>

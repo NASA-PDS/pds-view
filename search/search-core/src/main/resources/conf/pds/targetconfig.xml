@@ -23,7 +23,7 @@
   <column>
     <name>target_desc</name>
     <type>slot</type>
-    <value>target_desc</value>
+    <value>target_description</value>
   </column>
   <column>
     <name>format</name>
@@ -33,7 +33,7 @@
   <column>
     <name>description</name>
     <type>slot</type>
-    <value>target_desc</value>
+    <value>target_description</value>
   </column>
   <column>
     <name>resLocation</name>

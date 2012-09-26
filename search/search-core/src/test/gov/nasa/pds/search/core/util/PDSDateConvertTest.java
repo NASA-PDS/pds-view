@@ -18,7 +18,7 @@ public class PDSDateConvertTest extends TestCase {
 	
 	@Before public void setUp() {
 		this.timeMap = new HashMap<String, String>();
-		this.timeMap.put("processing__unk", Constants.DEFAULT_DATETIME);
+		this.timeMap.put("processing__unk", Constants.DEFAULT_STOPTIME);
 		this.timeMap.put("processing__1988-08-01", "1988-08-01T00:00:00.000Z");
 		this.timeMap.put("1999", "1999-01-01T00:00:00.000Z");
 		this.timeMap.put("2000-03", "2000-03-01T00:00:00.000Z");
@@ -36,10 +36,12 @@ public class PDSDateConvertTest extends TestCase {
 		this.timeMap.put("2002-02-19t19:00:29.6236", "2002-02-19T19:00:29.623Z");
 		this.timeMap.put("2001-266t10:44:29.81", "2001-09-23T10:44:29.810Z");
 		this.timeMap.put("2008-03-12T24:00:00.000", "2008-03-13T00:00:00.000Z");
-		this.timeMap.put("UNK", Constants.DEFAULT_DATETIME);
-		this.timeMap.put("N/A", Constants.DEFAULT_DATETIME);
-		this.timeMap.put("NULL", Constants.DEFAULT_DATETIME);
-		this.timeMap.put("UNKNOWN", Constants.DEFAULT_DATETIME);
+		this.timeMap.put("UNK", Constants.DEFAULT_STOPTIME);
+		this.timeMap.put("N/A", Constants.DEFAULT_STOPTIME);
+		this.timeMap.put("NULL", Constants.DEFAULT_STOPTIME);
+		this.timeMap.put("UNKNOWN", Constants.DEFAULT_STOPTIME);
+		this.timeMap.put("2005-11-27_14:29:04.0", "2005-11-27T14:29:04.000Z");	// Handle bad PSA data for now
+		this.timeMap.put("2005-06-27_18:48:06.416666666", "2005-06-27T18:48:06.416Z");	// Handle bad PSA data for now 
 		
 		/** Taken from XML validation test files (see resources/testing/time **/
 		// Negative ASCII_Date_YMD: valid values
@@ -76,7 +78,7 @@ public class PDSDateConvertTest extends TestCase {
 		// Test Valid Values
 		try {
 			for (String inputDateTime : this.timeMap.keySet()) {
-				String outputDateTime = PDSDateConvert.convert(inputDateTime);
+				String outputDateTime = PDSDateConvert.convert("test", inputDateTime);
 				if (!outputDateTime.equals(this.timeMap.get(inputDateTime))) {
 					fail("Invalid conversion."
 							+ "\n  Input   - " + inputDateTime 

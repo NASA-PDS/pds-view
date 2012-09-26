@@ -46,9 +46,10 @@ import org.apache.commons.httpclient.util.DateParseException;
  * 
  */
 public class ProductClass { // implements Extractor {
-	
-	private static final String FNAMEPREFIX = "product";
+
 	private static final int OUT_SEQ_START=10000;
+	
+	private boolean debug = true;
 
 	/** Product class name **/
 	private String classname;
@@ -108,7 +109,6 @@ public class ProductClass { // implements Extractor {
 		this.log.fine("In Generic Extractor");
 
 		this.writer = writer;
-		this.finalVals = new HashMap<String, List<String>>();
 
 		this.classname = name;
 		this.classFilename = file;
@@ -119,12 +119,18 @@ public class ProductClass { // implements Extractor {
 			this.queryMax = Constants.QUERY_MAX;
 		}
 
-		this.associationMap = new HashMap<String, List<ExtrinsicObject>>();
-
 		this.missingSlotsMap = new HashMap<String, List<String>>();
 		this.missingAssocTargets = new ArrayList<String>();
+		
+		this.finalVals = new HashMap<String, List<String>>();
+		this.associationMap = new HashMap<String, List<ExtrinsicObject>>();
 
 		this.log.fine("Class name: " + classname);
+	}
+	
+	private void clearMaps() {
+		this.finalVals.clear();
+		this.associationMap.clear();
 	}
 	
 	/**
@@ -137,8 +143,11 @@ public class ProductClass { // implements Extractor {
 	public List<String> query(File outputDir) throws ProductClassException {
 		// log.fine("confdir : " + confDir);
 		List<String> instkeys = new ArrayList<String>();
-		int outSeqNum = OUT_SEQ_START;
+		int outSeqNum = getOutputSeqNumber(outputDir);
+		//int outSeqNum = OUT_SEQ_START;
 
+		debug("Starting with outSeqNum: " + outSeqNum);
+		
 		this.searchFields = new SearchFields(this.classFilename);
 
 		try {
@@ -148,6 +157,8 @@ public class ProductClass { // implements Extractor {
 
 			//for (ExtrinsicObject object : (List<ExtrinsicObject>) response.getResults()) {
 			for (ExtrinsicObject extObj : extList) {
+				clearMaps();
+				
 				outSeqNum++;
 
 				// Get class properties
@@ -157,11 +168,7 @@ public class ProductClass { // implements Extractor {
 						this.classname);
 				writer.write();
 				
-				// Remove this createXML method
-				// createXML(outputDir, outSeqNum);
-
-				// Create the XML file
-				// log.info("Files placed in dir : " + extractorDir);
+				debug("----- Finished for " + extObj.getLid() + " -----\n\n");
 			}
 
 			displayWarnings();
@@ -175,33 +182,12 @@ public class ProductClass { // implements Extractor {
 
 		return instkeys;
 	}
-
-	/**
-	 * Creates the XML file using the properties specified
-	 * 
-	 * @param baseDir
-	 *            - directory where the new XML should be placed
-	 * @throws ProductClassException 
-	 */
-	private void createXML(File baseDir, int seqNum) throws ProductClassException {
-		PrintWriter xmlDisplay = null;
-		try {
-			String fname = FNAMEPREFIX + "_" + this.classname + "_" + String.valueOf(seqNum) + ".xml";
-			xmlDisplay = new PrintWriter(new BufferedWriter(new FileWriter(
-					new File(baseDir, fname), false)));
-			printFileHeader(xmlDisplay);
-			
-			for (String propName : this.finalVals.keySet()) {
-				for (String propVal : this.finalVals.get(propName)) {
-					printXml(xmlDisplay, propName, propVal, isCleanedAttr(propName));
-				}
-			}
-			printFileFooter(xmlDisplay);
-		} catch (Exception ex) {
-			throw new ProductClassException("Exception " + ex.getClass().getName()
-					+ ex.getMessage());
-		} finally {
-			xmlDisplay.close();
+	
+	private int getOutputSeqNumber(File outDir) {
+		if (outDir.list().length > 0) {
+			return OUT_SEQ_START + outDir.list().length;
+		} else {
+			return OUT_SEQ_START;
 		}
 	}
 
@@ -273,7 +259,8 @@ public class ProductClass { // implements Extractor {
 					valArray = new ArrayList<String>();
 					
 					String assocType = values[0];
-
+					
+					debug("Getting associations for " + extObject.getLid() + " - " + currVal);
 					this.finalVals.put(currName, getAssociatedSlotValues(assocType, values[1], extObject));
 
 				} else if (currType.equals(MappingTypes.SUBSTRING)) {					
@@ -320,6 +307,7 @@ public class ProductClass { // implements Extractor {
 			if (pr.getNumFound() != 0) {
 				for (ExtrinsicObject extrinsic : pr.getResults()) {
 					lid = extrinsic.getLid();
+					debug("\n\n----- " + lid + " -----");
 					
 					// Use list to verify we haven't already included this product in the results
 					if (!lidList.contains(lid) && lid != null) { 	
@@ -348,6 +336,8 @@ public class ProductClass { // implements Extractor {
 		List<String> lidList = Arrays.asList(lidvid.split("::"));
 		assocLid = lidList.get(0);
 		
+		debug("Associated LID: " + assocLid);
+		
 		if (lidList.size() > 1) {
 			version = lidList.get(1);
 			//this.log.info("***** GOOD LIDVID - " + assocLid + " -- " + version);
@@ -356,7 +346,9 @@ public class ProductClass { // implements Extractor {
 			assocLid = lidvid.substring(0, lidvid.lastIndexOf(":"));
 			version = lidList.get(lidList.size()-1);
 			
-			this.log.info("***** BAD LIDVID - " + assocLid + " -- " + version);
+			this.log.warning("***** BAD LIDVID - " + assocLid + " -- " + version);
+		} else {
+			version = "1.0";
 		}
 		
 		/*if (!lidvid.contains("::")) {	// Throw error when lidvid is not formatted properly
@@ -389,9 +381,11 @@ public class ProductClass { // implements Extractor {
 				for (ExtrinsicObject extrinsic : pr.getResults()) {
 					// Product version should only have 1 value, check if it is the version we want
 					versionIdSlot = extrinsic.getSlot(Constants.PRODUCT_VERSION);
+					
 					if (versionIdSlot != null) {
 						if (versionIdSlot.getValues().get(0).equals(version)) {
-								results.add(extrinsic);
+							debug("Adding associated extrinsic - " + extrinsic.getLid());
+							results.add(extrinsic);
 						}
 					}
 				}
@@ -410,24 +404,24 @@ public class ProductClass { // implements Extractor {
 		String tval;
 		List<String> valArray = new ArrayList<String>();
 		if (setAssociation(assocType, extObject)) {	// Add association type to association map (if needed)
-		for (ExtrinsicObject assocExtObj : this.associationMap.get(assocType)) {	// Iterate through the associations for the given association type
-			//assocExtObj.getSlot(arg0)
-			if (!RegistryAttributes.isAttribute(slotName)) {
-				try { 
-					for (String slotValue : assocExtObj.getSlot(slotName).getValues()) {	// Get the associated object slot values
-						tval = cleanText(remNull(slotValue));
-						if (!valArray.contains(tval)) {
-							valArray.add(tval);
+			for (ExtrinsicObject assocExtObj : this.associationMap.get(assocType)) {	// Iterate through the associations for the given association type
+				//assocExtObj.getSlot(arg0)
+				if (!RegistryAttributes.isAttribute(slotName)) {	// If slotName is not an attribute in the registry, search the Extrinsic Object slots
+					try { 
+						for (String slotValue : assocExtObj.getSlot(slotName).getValues()) {	// Get the associated object slot values
+							tval = cleanText(remNull(slotValue));
+							if (!valArray.contains(tval)) {
+								valArray.add(tval);
+							}
 						}
+					} catch (NullPointerException e) {	// Occurs when no slot is found
+						recordMissingSlot(assocExtObj, slotName);
 					}
-				} catch (NullPointerException e) {	// Occurs when no slot is found
-					recordMissingSlot(assocExtObj, slotName);
+				} else {
+					valArray.add(RegistryAttributes.getAttributeValue(slotName, assocExtObj));
 				}
-			} else {
-				valArray.add(RegistryAttributes.getAttributeValue(slotName, assocExtObj));
-			}
 
-		}
+			}
 		}  else {
 			valArray.add("UNK");
 		}
@@ -441,22 +435,14 @@ public class ProductClass { // implements Extractor {
 	 */
 	//private void setAssociation(ExtrinsicObjectSlots slots) throws Exception {
 	private boolean setAssociation(String assocType, ExtrinsicObject extObject) throws Exception {
-		if (!this.associationMap.containsKey(assocType)) {
-			//List<String> assocLidList = extObject.getSlot(assocType).getValues();
-			
-			//if (assocLidList.isEmpty()) {
-			//	recordMissingAssocSlot(this.lid, assocType);
-			//	return false;
-			//} else {
-				
-				List<ExtrinsicObject> assocExtObjList = getAssociatedObjects(extObject, assocType);
-				if (!assocExtObjList.isEmpty()) {
-					this.associationMap.put(assocType, assocExtObjList);
-				} else {
-					this.missingAssocTargets.add(this.lid + " - " + assocType);
-					return false;
-				}
-			//}
+		if (!this.associationMap.containsKey(assocType)) {	// TODO Create association map class and hold some threshold of associations for specific assocTypes like node, mission, target	
+			List<ExtrinsicObject> assocExtObjList = getAssociatedObjects(extObject, assocType);
+			if (!assocExtObjList.isEmpty()) {
+				this.associationMap.put(assocType, assocExtObjList);
+			} else {
+				this.missingAssocTargets.add(this.lid + " - " + assocType);
+				return false;
+			}
 		}
 		
 		return true;
@@ -493,6 +479,7 @@ public class ProductClass { // implements Extractor {
 				// But doesn't appear to coincide with version, as expected
 				// i.e. has_instrument_host - urn:nasa:pds:instrument_host.MRO:29.0
 				//PagedResponse<ExtrinsicObject> extResponse = getAssociatedExtrinsics(ExtrinsicFilterTypes.LIDVID, assocLid);
+				debug("Associated lidvid - " + assocLidVid);
 				List<ExtrinsicObject> extList = getAssociatedExtrinsics(assocLidVid);
 	
 				//if (extResponse.getNumFound() == 0) {
@@ -619,76 +606,6 @@ public class ProductClass { // implements Extractor {
 	}
 
 	/**
-	 * 
-	 * @param xmlDisplay
-	 */
-	private void printFileHeader(PrintWriter xmlDisplay) {
-		xmlDisplay.println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
-		xmlDisplay.println("<doc>");
-		xmlDisplay.println("\t<" + classname + ">");
-	}
-
-	/**
-	 * Display the footer for the XML file.
-	 */
-	private void printFileFooter(PrintWriter xmlDisplay) {
-		xmlDisplay.println("\t</" + classname + ">");
-		xmlDisplay.println("</doc>");
-	}
-
-	/**
-	 * Display the field name and value in XML format.
-	 * 
-	 * @param name
-	 *            - name of field
-	 * @param value
-	 *            - value for specific record
-	 */
-	private void printXml(PrintWriter xmlDisplay, String name, String value, boolean clean) {
-		// Temporary variables to hold name and value
-		String tName, tValue;
-
-		tName = name.trim();
-		tValue = value.trim();
-
-		if (clean) {
-			tValue = tValue.toLowerCase();
-			tValue = tValue.replace(' ', '_');
-		}
-
-		// Previous method used to encode only select HTML entities
-		tName = replaceURLEntities(tName);
-		tValue = replaceURLEntities(tValue);
-
-		xmlDisplay.println("\t\t<" + tName + ">" + tValue + "</" + tName + ">");
-	}
-
-	private String replaceURLEntities(String str) {
-		return str.replace("&", "&amp;")
-				.replace("<", "&lt;")
-				.replace(">", "&gt;")
-				.replace("\"", "&quot;")
-				.replace("[", "&#91;")
-				.replace("]", "&#93;");
-	}
-	
-	/**
-	 * Replace HTML entities & with &amp;, < with &lt;, > with &gt;, and " with
-	 * &quot;
-	 */
-	private String repAllCharWStr(String s1) {
-		String s2;
-
-		s2 = repCharWStr(remNull(s1), '&', "&amp;");
-		s2 = repCharWStr(s2, '<', "&lt;");
-		s2 = repCharWStr(s2, '>', "&gt;");
-		s2 = repCharWStr(s2, '\"', "&quot;");
-		s2 = repCharWStr(s2, '[', "&#91;");
-		s2 = repCharWStr(s2, ']', "&#93;");
-		return s2;
-	}
-
-	/**
 	 * Remove String Nulls
 	 */
 	private String remNull(String s1) {
@@ -698,46 +615,10 @@ public class ProductClass { // implements Extractor {
 		return s1;
 	}
 
-	/**
-	 * Replace the character found in the string with the character with the string
-	 * 
-	 * @param str1
-	 * @param rc
-	 * @param rstr
-	 * @return
-	 */
-	private String repCharWStr(String str1, char rc, String rstr) {
-		int p1, str1len;
-		char tc;
-		StringBuffer sbuff1 = new StringBuffer(str1), sbuff2 = new StringBuffer();
-
-		p1 = 0;
-		str1len = sbuff1.length();
-		while (p1 < str1len) {
-			tc = sbuff1.charAt(p1);
-			if (tc == rc) {
-				sbuff2.append(rstr);
-			} else {
-				sbuff2.append(tc);
-			}
-			p1++;
+	private void debug(String msg) {
+		if (this.debug) {
+			System.out.println(msg);
 		}
-		return sbuff2.toString();
 	}
-
-	private boolean isCleanedAttr(String s1) {
-		String[] elemfacet = { "identifier", "title", "format", "description",
-				"publisher", "language", "resContext", "resClass",
-				"resLocation", "data_set_terse_desc", "data_set_desc",
-				"mission_desc", "target_desc", "host_desc", "instrument_desc",
-				"volume_name", "volume_desc" };
-
-		for (int ind = 0; ind < elemfacet.length; ind++) {
-			if (s1.compareTo(elemfacet[ind]) == 0) {
-				return false;
-			}
-		}
-		return true;
-	}
-
+	
 }

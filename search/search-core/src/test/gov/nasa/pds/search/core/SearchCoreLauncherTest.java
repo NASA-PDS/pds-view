@@ -2,15 +2,12 @@ package gov.nasa.pds.search.core;
 
 import java.io.File;
 
-import org.apache.commons.cli.CommandLine;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 
 import gov.nasa.pds.search.core.SearchCoreLauncher;
 import gov.nasa.pds.search.core.constants.TestConstants;
-import gov.nasa.pds.search.core.extractor.RegistryExtractor;
-import gov.nasa.pds.search.core.indexer.pds.Indexer;
-import gov.nasa.pds.search.core.indexer.solr.SolrIndexer;
 
 //JUnit imports
 import junit.framework.TestCase;
@@ -36,6 +33,7 @@ public class SearchCoreLauncherTest extends TestCase {
 	/**
 	 * Test arguments are not empty
 	 */
+	@Ignore
 	public void testEmptyArgs() {
 		// Test empty args
         String[] args = { };
@@ -48,6 +46,7 @@ public class SearchCoreLauncherTest extends TestCase {
 	/**
 	 * Test for missing required arguments
 	 */
+	@Ignore
 	public void testRequiredArgs() {
 	    String[] args = { "-H", TestConstants.SERVICE_HOME_RELATIVE, 
 	    		"-e", 
@@ -62,6 +61,7 @@ public class SearchCoreLauncherTest extends TestCase {
 	/**
 	 * Test using an invalid argument
 	 */
+	@Ignore
 	public void testInvalidArg() {
         String[] args = { "-H", TestConstants.SERVICE_HOME_RELATIVE, 
         		"-e", 
@@ -78,6 +78,7 @@ public class SearchCoreLauncherTest extends TestCase {
      * Test Registry Extractor with absolute paths and max query = 5
      * @throws Exception 
      */
+	@Ignore
     public void testExtractorAbsolute() {
     	try {
 	    	String[] args = { "-r", TestConstants.PDS_REGISTRY_URL, 
@@ -95,6 +96,7 @@ public class SearchCoreLauncherTest extends TestCase {
      * Test Registry Extractor with relative paths and max query = 5
      * @throws Exception 
      */
+    @Ignore
     public void testExtractorRelative() {
     	try {
 	    	String[] args = { "-r", TestConstants.PDS_REGISTRY_URL, 
@@ -107,23 +109,39 @@ public class SearchCoreLauncherTest extends TestCase {
 			fail("Registry Extractor with Relative Paths failed: " + e.getMessage());
 		}
     }
-	
+    
+    /**
+     * Test Registry Extractor with 1 properties file and max query = 5
+     * @throws Exception 
+     */
+    @Ignore
+    public void testExtractorSinglePropsPDS() {
+    	try {
+	    	String[] args = { "-p", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds-search-service.properties",
+	    			"-e", 
+	    			"-m", "5"
+	    			};
+	    	SearchCoreLauncher.main(args);
+		} catch (Exception e) {
+			fail("Registry Extractor with Properties File failed: " + e.getMessage());
+		}
+    }
+    
     /**
      * Test Registry Extractor with PSA data and max query = 5
      * @throws Exception 
      */
-    // TODO - Change once 
-    /*public void testExtractorPSA() {
+    public void testExtractorMultipleProps() {
     	try {
-	        String[] args = { "-r", TEST_PSA_REGISTRY_URL,
-	        		"-H", TEST_SERVICE_HOME_RELATIVE, 
-	        		"-e", 
-	        		"-m", "5", 
-	        		"-c", TEST_CONFIG_DIR_RELATIVE + "psa" };
-	        SearchCoreLauncher.main(args);
-    	} catch (Exception e) {
-    		fail("Could not extract PSA data: " + e.getMessage());
-    	}
-    }*/
+	    	String[] args = { "-p",  
+	    					TestConstants.CONFIG_DIR_RELATIVE + "psa/psa-search-service.properties",
+	    			//"-e", 
+	    			"-m", "5"
+	    			};
+	    	SearchCoreLauncher.main(args);
+		} catch (Exception e) {
+			fail("Registry Extractor with Properties File failed: " + e.getMessage());
+		}
+    }
 	
 }

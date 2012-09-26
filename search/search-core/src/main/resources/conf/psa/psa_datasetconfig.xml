@@ -1,20 +1,14 @@
 <dataset>
 	<object_type>Product_Data_Set_PDS3</object_type>
-	<!-- association>target_ref</association>
-	<association>instrument_ref</association>
-	<association>instrument_host_ref</association>
-	<association>investigation_ref</association-->
-	<association>resource_ref</association>
-	<association>node_ref</association>
   <column>
     <name>identifier</name>
     <type>attribute</type>
-    <value>null</value>
+    <value>lid</value>
   </column>
   <column>
     <name>title</name>
     <type>attribute</type>
-    <value>null</value>
+    <value>name</value>
   </column>
   <column>
     <name>format</name>
@@ -60,7 +54,7 @@
   <column>
     <name>nssdc_data_set_id</name>
     <type>out</type>
-    <value>null</value>
+    <value>TBD</value>
   </column>
   <column>
   	<!-- association mapping to another objectType -->
@@ -113,15 +107,25 @@
     <type>slot</type>
     <value>psa_mission_name</value>
   </column>
-  <column>
+  <!-- column>
     <name>mission_start_date</name>
     <type>association</type>
     <value>investigation_ref.mission_start_date</value>
-  </column>
+  </column-->
   <column>
+    <name>mission_start_date</name>
+    <type>slot</type>
+    <value>data_set_start_time</value>
+  </column>
+  <!-- column>
     <name>mission_stop_date</name>
     <type>association</type>
     <value>investigation_ref.mission_stop_date</value>
+  </column-->
+  <column>
+    <name>mission_stop_date</name>
+    <type>slot</type>
+    <value>data_set_stop_time</value>
   </column>
   <column>
     <!-- name>target_name</name>
@@ -160,13 +164,13 @@
   -->
   <column>
     <name>data_object_type</name>
-    <type>out</type>
-    <value>null</value>
+    <type>attribute</type>
+    <value>objectType</value>
   </column>
   <column>
     <name>data_set_terse_desc</name>
     <type>out</type>
-    <value>null</value>
+    <value>TBD</value>
   </column>
   <column>
     <name>data_set_id</name>

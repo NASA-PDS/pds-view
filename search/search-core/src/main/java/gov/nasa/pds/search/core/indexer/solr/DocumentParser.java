@@ -136,7 +136,9 @@ public class DocumentParser {
 							value.toUpperCase())) {
 						invalidDoc = true;
 					} else if (name.endsWith("date") || name.endsWith("time")) {
-						value = PDSDateConvert.convert(value);
+						//System.out.println(name + " - " + value);
+						value = PDSDateConvert.convert(name, value);
+						//System.out.println("CONVERTED " + name + " - " + value);
 
 						appendStr = "<field name=\"" + name + "\">"
 								+ value + "</field>\n";

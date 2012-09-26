@@ -31,34 +31,6 @@ PDS_SERVICE_HOME=$SEARCH_SERVICE_HOME/pds
 
 echo $PDS_SERVICE_HOME
 
-if [ -d $PDS_SERVICE_HOME/registry-data_old ]
-then
-  echo "LOG: Removing '$PDS_SERVICE_HOME/tse_old/'"
-  rm -rf $PDS_SERVICE_HOME/registry-data_old
-fi
-if [ -d $PDS_SERVICE_HOME/registry-data ]
-then
-  echo "LOG: Backing up '$PDS_SERVICE_HOME/registry-data/' to '$PDS_SERVICE_HOME/registry-data_old/'"
-  mv $PDS_SERVICE_HOME/registry-data $PDS_SERVICE_HOME/registry-data_old
-fi
-echo
-
-
-if [ -f $PDS_SERVICE_HOME/index/solr_index_old.xml ]
-then
-  echo "LOG: Removing '$PDS_SERVICE_HOME/index/solr_index_old.xml'"
-  rm $PDS_SERVICE_HOME/index/solr_index_old.xml
-fi
-if [ -f $PDS_SERVICE_HOME/index/solr_index.xml ]
-then
-  echo "LOG: Backing up '$PDS_SERVICE_HOME/index/solr_index.xml' to '$PDS_SERVICE_HOME/index/solr_index_old.xml'"
-  mv $PDS_SERVICE_HOME/index/solr_index.xml $PDS_SERVICE_HOME/index/solr_index_old.xml
-fi
-echo
-
-echo "---------------------------------------"
-echo
-
 echo "-----Running search-core------"
 search-core -H $PDS_SERVICE_HOME -r $REGISTRY_URL
 echo "-----search-core Complete-----"
