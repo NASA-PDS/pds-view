@@ -572,7 +572,7 @@
    <field name="mission_objectives_summary" type="text" indexed="false" stored="true" />
    <field name="mission_start_date" type="string" indexed="true" stored="true" multiValued="true" />
    <field name="mission_stop_date" type="string" indexed="true" stored="true" multiValued="true" />
-   <field name="node_id" type="text_lc" indexed="true" stored="true" />
+   <field name="node_id" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="nssdc_data_set_id" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="primary_body_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="publisher" type="text" indexed="true" stored="true" />
@@ -754,12 +754,12 @@
   <copyField source="target_type" dest="form-target-type" />
   <copyField source="instrument_name" dest="form-instrument" />
   <copyField source="instrument_type" dest="form-instrument-type" />
-  <copyField source="instrument_host_name" dest="form-instrument-host-name" />
+  <copyField source="instrument_host_name" dest="form-instrument-host" />
   <copyField source="data_set_name" dest="form-data-set-name" />
   <copyField source="data_set_id" dest="form-data-set-id" />
   <copyField source="data_object_type" dest="form-data-object-type" />
   <copyField source="instrument_host_type" dest="form-instrument-host-type" />
-  <copyField source="node_name" dest="form-node-name" />
+  <copyField source="node_id" dest="form-node-name" />
   <copyField source="archive_status" dest="form-archive-status" />
 	
  <!-- Similarity is the scoring routine for each document vs. a query.
