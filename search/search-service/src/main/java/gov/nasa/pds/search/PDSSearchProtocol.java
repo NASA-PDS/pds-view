@@ -162,7 +162,7 @@ public class PDSSearchProtocol extends StandardRequestHandler {
         // Use votable.vm for the response style
         pdsParams.add("v.layout", "votable");
         // Use the results.vm to format the result set
-        pdsParams.add("v.template", "results")
+        pdsParams.add("v.template", "results");
       } else {
         // Just use Solr's default response writers
         pdsParams.add("wt", request.getOriginalParams().getParams(
