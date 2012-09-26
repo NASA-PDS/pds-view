@@ -85,7 +85,8 @@ public class XMLWriter {
 			Transformer trans = transfac.newTransformer();
 
 			trans.setOutputProperty(OutputKeys.INDENT, "yes");
-			trans.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			trans.setOutputProperty(
+					"{http://xml.apache.org/xslt}indent-amount", "2");
 			trans.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 
 			// create file from xml tree

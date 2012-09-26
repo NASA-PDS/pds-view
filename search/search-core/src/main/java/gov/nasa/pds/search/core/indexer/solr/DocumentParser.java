@@ -16,7 +16,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
@@ -83,8 +82,9 @@ public class DocumentParser {
 			} catch (SAXException e) {
 				e.printStackTrace();
 			} finally {
-				if (reader != null)
+				if (reader != null) {
 					reader.close();
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -132,21 +132,22 @@ public class DocumentParser {
 					// Slightly changed functionality from original document
 					// parser
 					// Now UNK/N/A/UNKNOWN etc are handled in date conversion
-					if (name.equals("title") && Arrays.asList(Constants.VALID_UNK_VALUES).contains(
-							value.toUpperCase())) {
+					if (name.equals("title")
+							&& Arrays.asList(Constants.VALID_UNK_VALUES)
+									.contains(value.toUpperCase())) {
 						invalidDoc = true;
 					} else if (name.endsWith("date") || name.endsWith("time")) {
-						//System.out.println(name + " - " + value);
+						// System.out.println(name + " - " + value);
 						value = PDSDateConvert.convert(name, value);
-						//System.out.println("CONVERTED " + name + " - " + value);
+						// System.out.println("CONVERTED " + name + " - " +
+						// value);
 
-						appendStr = "<field name=\"" + name + "\">"
-								+ value + "</field>\n";
+						appendStr = "<field name=\"" + name + "\">" + value
+								+ "</field>\n";
 					} else {
 						if (!name.equals("resClass")) {
 							appendStr = "<field name=\"" + name
-									+ "\"><![CDATA[" + value
-									+ "]]></field>\n";
+									+ "\"><![CDATA[" + value + "]]></field>\n";
 						} else {
 							appendStr = "<field name=\"" + name
 									+ "\"><![CDATA[" + resClass
@@ -159,8 +160,9 @@ public class DocumentParser {
 		}
 		indexDoc.append("</doc>\n");
 
-		if (invalidDoc)
+		if (invalidDoc) {
 			indexDoc = null;
+		}
 
 		return indexDoc;
 	}

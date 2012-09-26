@@ -12,10 +12,10 @@ import java.util.Properties;
  * Utility class used to read Properties files
  * 
  * @author jpadams
- *
+ * 
  */
 public class PropertiesUtil {
-	
+
 	/**
 	 * Static method to read a properties file and return a name-value mapping
 	 * given a prefix for the property key
@@ -24,7 +24,8 @@ public class PropertiesUtil {
 	 * @param prefix
 	 * @return
 	 */
-	public static Map<String, String> getPropertiesMap(File propsFile, String prefix) {
+	public static Map<String, String> getPropertiesMap(File propsFile,
+			String prefix) {
 		Map<String, String> mappings = new HashMap<String, String>();
 		Properties props = new Properties();
 		try {
@@ -39,9 +40,8 @@ public class PropertiesUtil {
 			String value = null;
 			if (((String) key).startsWith(prefix)) {
 				value = props.getProperty((String) key);
-				String name = ((String) key).substring(prefix
-						.length() + 1);
-				//System.out.println(name + " - " + value);
+				String name = ((String) key).substring(prefix.length() + 1);
+				// System.out.println(name + " - " + value);
 				mappings.put(name, value);
 			}
 		}

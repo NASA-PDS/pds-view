@@ -2,25 +2,21 @@ package gov.nasa.pds.search.core.extractor.registry;
 
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.Slot;
-import gov.nasa.pds.search.core.constants.Constants;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 /**
- * Extension of Registry Client functionality to specifically address
- * needs of the Search Core.  This class is used to maintain
- * a map of all the slots for an extrinsic object, as well as maintain
- * a list of all missing slots.
+ * Extension of Registry Client functionality to specifically address needs of
+ * the Search Core. This class is used to maintain a map of all the slots for an
+ * extrinsic object, as well as maintain a list of all missing slots.
  * 
  * @author jpadams
  * @version $Revision$
- *
+ * 
  */
 public class ExtrinsicObjectSlots {
 
@@ -56,12 +52,11 @@ public class ExtrinsicObjectSlots {
 	}
 
 	public List<String> get(String key) {
-		/*if (key.equals(RegistryAttributes.LOGICAL_IDENTIFIER)) {
-			return Arrays.asList(this.extObj.getLid());
-		}
-		if (key.equals("name")) {
-			return Arrays.asList(this.extObj.getName());
-		}*/
+		/*
+		 * if (key.equals(RegistryAttributes.LOGICAL_IDENTIFIER)) { return
+		 * Arrays.asList(this.extObj.getLid()); } if (key.equals("name")) {
+		 * return Arrays.asList(this.extObj.getName()); }
+		 */
 		if (this.slotMap.containsKey(key.trim())) {
 			return this.slotMap.get(key.trim());
 		} else {

@@ -1,49 +1,75 @@
+//	Copyright 2009-2012, by the California Institute of Technology.
+//	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+//	Any commercial use must be negotiated with the Office of Technology 
+//	Transfer at the California Institute of Technology.
+//	
+//	This software is subject to U. S. export control laws and regulations 
+//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+//	is subject to U.S. export control laws and regulations, the recipient has 
+//	the responsibility to obtain export licenses or other export authority as 
+//	may be required before exporting such information to foreign countries or 
+//	providing access to foreign nationals.
+//	
+//	$Id$
+//
+
 package gov.nasa.pds.search.core.cli.options;
 
 import gov.nasa.pds.search.core.constants.Constants;
 
 import org.apache.commons.cli.Options;
 
+/**
+ * Describes all the flags used in the CLI
+ * @author jpadams
+ *
+ */
 public enum Flag {
-	/** Flag to run all components of index */
-	ALL("a", "all",
-			"Run all components of the Search Core [default]"),
-			
+	/** Flag to run all components of index. */
+	ALL("a", "all", "Run all components of the Search Core [default]"),
+
 	/** Flag to specify a product class configuration directory. */
 	CONFIG_HOME("c", "config-home", "directory", String.class, true,
-			"Specify the product class configuration home directory (dir must contain product-classes.txt) (Default: $SEARCH_CORE_HOME/conf/pds/"),
-			
-	/** Flag to turn OFF removal of all directories from previous Search Core execution */
-	CLEAN("C", "clean-dirs", "Removal of all directories from previous Search Core execution output. These directories will still be backed up in the Search Service Home directory. (Default: True)"),
-			
+			"Specify the product class configuration home directory (dir must contain product-classes.txt)"
+					+ " (Default: $SEARCH_CORE_HOME/conf/pds/"),
+
+	/** Flag to turn OFF removal of all directories from previous Search Core execution. */
+	CLEAN("C", "clean-dirs",
+			"Removal of all directories from previous Search Core execution output."
+					+ " These directories will still be backed up in the Search Service Home directory."
+					+ " (Default: True)"),
+
 	/** Flag to run in debug mode. */
 	DEBUG("d", "debug", "Turn on debugger."),
-			
+
 	/** Flag to run the Registry Extractor component. */
-	EXTRACTOR("e", "extractor", "Execute component to extract data from registry"),
+	EXTRACTOR("e", "extractor",	"Execute component to extract data from registry"),
 
 	/** Flag to display the help. */
 	HELP("h", "help", "Display usage."),
-	
+
 	/** Flag to specify Search Service Home. */
 	SERVICE_HOME("H", "search-service-home", "directory", String.class,
-			"Specify the Search Service Home directory. (Default: SEARCH_SERVICE_HOME environment variable)"),
-	
+			"Specify the Search Service Home directory." 
+				+ " fault: SEARCH_SERVICE_HOME environment variable)"),
+
 	/** Flag to generate a Solr Index. */
 	SOLR("i", "solr-indexer", "Execute component to generate a Solr Index"),
 
 	/** Flag to specify query max for registry. */
 	MAX("m", "query-max", "integer", Integer.class,
-			"Specify the maximum number of registry values to be returned from query. (Default: " + Constants.QUERY_MAX + ")"),
-	
+			"Specify the maximum number of registry values to be returned from query." 
+					+ "(Default: " + Constants.QUERY_MAX + ")"),
+
 	/** Flag to specify a configuration file. */
 	PROPERTIES("p", "properties-file", "directory", String.class, true,
-			"Specify properties file containing Search Service Home, Registry URL, and product class configuration home directory."),
-			
+			"Specify properties file containing Search Service Home, Registry URL,"
+				+ " and product class configuration home directory."),
+
 	/** Flag to specify at least one Registry URL. */
 	REGISTRY("r", "registry", "url", String.class, true,
 			"Specify Registry Service instance to query. <REQUIRED>"),
-			
+
 	/** Flag to display the version. */
 	VERSION("V", "version", "Display application version.");
 
@@ -59,9 +85,7 @@ public enum Flag {
 	/** The type of argument values the flag accepts. */
 	private final Object argType;
 
-	/**
-	 * A boolean value indicating if the flag accepts more than one argument.
-	 */
+	/** A boolean value indicating if the flag accepts more than one argument. */
 	private final boolean allowsMultipleArgs;
 
 	/** The flag description. */
@@ -99,12 +123,9 @@ public enum Flag {
 	/**
 	 * Constructor.
 	 * 
-	 * @param shortName
-	 *            The short name.
-	 * @param longName
-	 *            The long name.
-	 * @param description
-	 *            A description of the flag.
+	 * @param shortName		The short name.
+	 * @param longName		The long name.
+	 * @param description	A description of the flag.
 	 */
 	private Flag(final String shortName, final String longName,
 			final String description) {
@@ -114,16 +135,11 @@ public enum Flag {
 	/**
 	 * Constructor for flags that can take arguments.
 	 * 
-	 * @param shortName
-	 *            The short name.
-	 * @param longName
-	 *            The long name.
-	 * @param argName
-	 *            The argument name.
-	 * @param argType
-	 *            The argument type.
-	 * @param description
-	 *            A description of the flag.
+	 * @param shortName		The short name.
+	 * @param longName		The long name.
+	 * @param argName		The argument name.
+	 * @param argType		The argument type.
+	 * @param description	A description of the flag.
 	 */
 	private Flag(final String shortName, final String longName,
 			final String argName, final Object argType,
@@ -139,16 +155,11 @@ public enum Flag {
 	/**
 	 * Constructor for flags that can take arguments.
 	 * 
-	 * @param shortName
-	 *            The short name.
-	 * @param longName
-	 *            The long name.
-	 * @param argName
-	 *            The argument name.
-	 * @param argType
-	 *            The argument type.
-	 * @param description
-	 *            A description of the flag.
+	 * @param shortName		The short name.
+	 * @param longName		The long name.
+	 * @param argName		The argument name.
+	 * @param argType		The argument type.
+	 * @param description		A description of the flag.
 	 */
 	private Flag(final String shortName, final String longName,
 			final String argName, final Object argType, final String description) {

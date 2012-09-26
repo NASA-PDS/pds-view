@@ -6,10 +6,8 @@
 
 package gov.nasa.pds.search.core.indexer.pds;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -59,25 +57,31 @@ public class ProfileParser {
 		try {
 			try {
 				builder = factory.newDocumentBuilder();
-				
+
 				// Modified 2/2/2011 per MalformedByteSequenceException
-				// Need to ensure read in UTF-8 format, and override SAX input source
-				InputStream stream = new FileInputStream(file);		// Get InputStream
-				reader = new InputStreamReader(stream, "UTF-8");	// Specify reading content in UTF-8
-				InputSource is = new InputSource(reader);			// Init input source
-				is.setEncoding("UTF-8");							// Overriding SAX input source to UTF-8
-				document = builder.parse(is);						// Send to parser
-				
+				// Need to ensure read in UTF-8 format, and override SAX input
+				// source
+				InputStream stream = new FileInputStream(file); // Get
+																// InputStream
+				reader = new InputStreamReader(stream, "UTF-8"); // Specify
+																	// reading
+																	// content
+																	// in UTF-8
+				InputSource is = new InputSource(reader); // Init input source
+				is.setEncoding("UTF-8"); // Overriding SAX input source to UTF-8
+				document = builder.parse(is); // Send to parser
+
 				indexDoc = retrieveMetadata(document);
 			} catch (ParserConfigurationException e) {
 				e.printStackTrace();
 			} catch (SAXException e) {
 				e.printStackTrace();
 			} finally {
-				if (reader != null)
+				if (reader != null) {
 					reader.close();
+				}
 			}
-		}  catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 

@@ -6,7 +6,6 @@
 
 package gov.nasa.pds.search.core.indexer.pds;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -51,8 +50,9 @@ public class Indexer {
 					new File(args[0], "catalog_index")), config);
 			Properties weights = new Properties();
 
-			if (args.length == 3)
+			if (args.length == 3) {
 				weights.load(new FileInputStream(new File(args[2])));
+			}
 
 			indexDocs(writer, new File(args[1]), weights);
 

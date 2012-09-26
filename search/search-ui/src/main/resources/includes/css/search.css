@@ -1,0 +1,156 @@
+h2 {
+  margin: 1em 0em .5em 0em;
+  font-size: 120%;
+}
+
+p {
+  margin: .5em 0em .5em 0em;
+}
+
+/*
+#banner {
+  position: relative;
+  height: 1.5em;
+  font-size: 150%;
+}
+
+#banner #logo {
+  display: block;
+  position: absolute;
+  top: 0em;
+  left: 0em;
+  word-spacing: -.05em;
+}
+
+#banner #search {
+  display: block;
+  position: absolute;
+  top: 0em;
+  right: 0em;
+  margin-left: 50%;
+}
+
+#search form {
+  display: inline;
+}
+
+#banner p {
+  margin: 0em;
+  padding: 0em;
+}
+
+#banner input {
+  font-size: 75%;
+}
+*/
+
+.categories h2 {
+  margin: 1em 0em 0em 0em;
+  padding: .25em .5em .25em .5em;
+  font-size: 95%;
+/*  font-family: "Arial Narrow", "Helvetica Narrow", Arial, Helvetica, sans-serif;*/
+}
+
+.categories p {
+  margin: .25em 0em .25em 0em;
+  line-height: 110%;
+  font-family: "Arial Narrow", "Helvetica Narrow", Arial, Helvetica, sans-serif;
+}
+
+.categories h2.color1 {background: #D7AEAE;}
+.categories .color1 {background: #F0E1E1;}
+
+.categories h2.color2 {background: #F5EEC5;}
+.categories .color2 {background: #FCF9E9;}
+
+.categories h2.color3 {background: #B9D7AE;}
+.categories .color3 {background: #E5F0E1;}
+
+.categories h2.color4 {background: #C5F5E0;}
+.categories .color4 {background: #E9FCF4;}
+
+.categories h2.color5 {background: #AEC5D7;}
+.categories .color5 {background: #E1EAF0;}
+
+.categories h2.color6 {background: #D3C5F5;}
+.categories .color6 {background: #EFE9FC;}
+
+.categories h2.color7 {background: #D7AED1;}
+.categories .color7 {background: #F0E1EE;}
+
+.remove_box {
+  vertical-align: 1px;
+  border: 1px solid #C0C0C0;
+  background: #F0F0F0;
+  color: #FF0000;
+  padding: 0px 3px 2px 3px;
+  text-decoration: none;
+  font-size: 11px;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.result {
+  padding: .25em 0em .25em 0em;
+}
+
+.resultgroup {
+  clear: both;
+  padding-top: 1em;
+}
+
+.resultgroup .result {
+  padding-left: .5em;
+}
+
+/*
+ * Styles for the search tabs for the text search interface.
+ */
+ul.tabs {
+  /* Add top padding to account for tab top padding, placement, and border,
+     and indent a little from the left edge. */
+  margin: 0em;
+  padding: 8px 0px 0px 1em;
+  background: transparent url(images/gray-30-1x1.gif) repeat-x left bottom;
+  text-align: bottom;
+  white-space: nowrap;
+}
+
+ul.tabs li {
+  display: inline;
+  list-style-type: none;
+  margin: 0em .2em;
+  /* Pad the top and bottom a little, and raise the tab above the 1-pixel
+     background image, so it shows through. */
+  position: relative;
+  bottom: 4px;
+  padding: 3px 0em;
+  background: #e5e5e5;
+  /* Use border colors to give a 3-D look. */
+  border-width: 1px;
+  border-style: solid solid none solid;
+  border-color: #f2f2f2 #c2c2c2 black #f2f2f2;
+}
+
+ul.tabs li.selected {
+  /* Pad the tab by one more pixel, thus dropping the bottom DOWN by one pixel,
+     so that our background covers up the UL background. */
+  padding: 3px .5em 4px .5em;
+  background: white;
+  border-color: #c2c2c2 #4d4d4d black #c2c2c2;
+}
+
+ul.tabs a {
+  padding: 0em .5em;
+  text-decoration: none;
+  color: black;
+}
+
+ul.tabs a:hover {
+  color: blue;
+}

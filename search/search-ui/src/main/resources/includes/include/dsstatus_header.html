@@ -1,0 +1,54 @@
+<!-- Header -->
+
+<div id="header">
+
+<div class="nonvisual">
+  <h2>Menu: Skip within this page</h2>
+  <ul>
+    <li><a href="#mainContent">Skip to main content</a></li>
+    <li><a href="#mainMenu">Skip to menu</a></li>
+  </ul>
+</div>
+
+<p id="logo">
+  <a href="/index.shtml" onclick="this.blur()"><img src="/images/nasa-logo.gif" width="60" height="50" border="0" alt="NASA logo" />&nbsp;PDS: The Planetary Data System</a>
+</p>
+    
+<form id="dummyForm" action="http://pds.jpl.nasa.gov/" method="get"></form>
+<script type="text/javascript">
+function setSearchAction(form, actionSelector) {
+    form.q.value = form.words.value;
+    var baseAction = document.getElementById("dummyForm").action;
+    form.action = baseAction + actionSelector.value;
+    return true;
+}
+</script>
+    
+<form id="search" action="/tools/data-search/search.jsp" method="get" onsubmit="setSearchAction(this,this.search_scope)">
+<input type="hidden" name="q" value="" />
+<input type="hidden" name="facet" value="" />
+<input type="hidden" name="in" value="all" />
+<p><label for="searchPhrase">Search for:</label><br />
+<input id="searchPhrase" class="text" type="text" size="30" name="words" /> <input class="submit" type="submit" value="Go" /><br />
+<label for="searchScope">in</label>
+<select id="searchScope" name="search_scope">
+          <option value="/tools/data-search/search.jsp">PDS data</option>
+          <option id="pds_phone_book" value="/tools/phonebook/phonebook.cfm">PDS phone book</option>
+          <option id="data_dictionary_lookup" value="/tools/ddlookup/data_dictionary_lookup.cfm">PDS Data Dictionary</option>
+          <option id="reference_lookup" value="/tools/rlookup/reference_lookup.cfm">References</option>
+</select>
+</p>
+</form>
+
+<h2 class="nonvisual">Menu: Help Links</h2>
+<ul id="nasaLinks">
+  <li><a href="http://www.nasa.gov">NASA Portal</a></li>
+  <li><a href="/site-help.shtml">Site Help</a></li>
+  <li><a href="/contact/feedback.cfm">Feedback</a></li>
+  <li><a href="/tools/phonebook/phonebook.cfm">Phone Book</a></li>
+</ul>
+
+<div class="clear"></div>
+
+</div>
+

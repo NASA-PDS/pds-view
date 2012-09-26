@@ -7,7 +7,6 @@
  */
 package gov.nasa.pds.search.core.extractor;
 
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +49,9 @@ public class SearchFields {
 
 			setAttrInfo();
 		} catch (SAXParseException e) {
-			throw new ProductClassException("SAXParseException: Parsing error" + ", line "
-					+ e.getLineNumber() + ", uri " + e.getSystemId());
+			throw new ProductClassException("SAXParseException: Parsing error"
+					+ ", line " + e.getLineNumber() + ", uri "
+					+ e.getSystemId());
 		} catch (SAXException e) {
 			throw new ProductClassException("SAXException: " + e.getMessage());
 		} catch (Throwable t) {

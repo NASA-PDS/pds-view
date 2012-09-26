@@ -1,0 +1,237 @@
+body, table, td, form, input, select, h1, h2, h3, h4, h5, h6, pre {font-family: Arial; font-size: 12px; color: #000000;}
+/* Netscape 4 font-size fix */
+
+html body, html table, html td, html input, html select, html h1, html h2, html h3, html h4, html h5, html h6 {font-size: 11px;}
+h1, h2, h3, h4, h5, h6 {font-weight: bold;}
+form {margin: 0px; padding: 0px;}
+/* Modified to make default link behave like featureLnk */
+a {color: #006699; text-decoration: none;}
+a:hover {text-decoration: underline;}
+a.alphLink {color: #006699; text-decoration: none; font-size: 12px; font-weight: bold;}
+a.alphLink:hover {
+	color: Black;
+	text-decoration: underline;
+	font-size: 12px;
+	font-weight: bold;
+}
+.alphLinkSel {
+	color: Black;
+	font-size: 12px;
+	font-weight: bold;
+}
+.boldTitle {font-size: 13px; font-weight: bold;}
+.italic {font-style: italic;}
+.light {color: #484848;}
+.small {font-size: 10px;}
+.red {color: #FF0000;}
+.white {color: #FFFFFF;}
+.grayedOut {background-color: #EBEBEB;}
+.alert {font-size: 16px; font-weight: bold; color: #DF2020; font-style: italic; line-height: 34px;}
+a.whatsNew {font-size: 14px; font-weight: bold;}
+
+.SmallText {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: medium;
+	text-decoration: none;
+}
+
+.SmallTextWhite {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: medium;
+	text-decoration: none;
+	color: #FFFFFF;
+}
+
+/* Global Styles */
+.headerLnk {color: #666666; line-height: 16px;}
+.footerLnk {color: #000000;}
+.navLnkBlack {color: #000000; line-height: 18px;}
+.navLnkBlue {color: #006699; line-height: 18px;}
+.navLnkRed {color: #FF3333; line-height: 18px;}
+.navLnkWhite {color: #FFFFFF; line-height: 18px;}
+.navLnkGreen {color: #408040; line-height: 18px;}
+.credits {color: #cccccc;}
+.pageTitle {font-size: 18px; color: #993300; font-weight: bold;}
+.pageTitleSub {font-size: 13px; color: #006699; font-weight: bold;}
+.loginBoxTitle {font-size: 15px; color: #FFFFFF; font-weight: bold;  padding-left: 5px;  padding-right: 5px;  padding-top: 5px;  padding-bottom: 1px;    }
+.loginBoxFormLabel {font-size: 11px; color: #FFFFFF; font-weight: bold; margin-left: 4px;}
+.loginBoxInput {
+	margin-left: 4px;
+	color: #000000;
+	font-family: Verdana;
+	font-size: 11px;
+	font-weight: bold;
+	width: 236px;
+}
+.loginBoxTextLink {
+	margin-left: 4px;
+	color: #DFE596;
+	font-size: 10px;
+}
+
+.formLabel {color: #003399; font-weight: bold;}
+
+/* Default blue color scheme */
+.backgroundBlue {color: #006699;}
+.foregroundBlue {background: #006699;}
+.rowColorHeader {background: #efefef}
+.rowColorFooter{background: #efefef}
+
+/* Alternating row colors */
+.rowColor0 {color: #E7EEF9}
+.rowColor1 {color: #FFFFFF}
+
+/* Select box color */
+.selectBlue {background: #E7EEF9}
+
+a.navLnkWhite:link, a.navLnkWhite:visited {text-decoration: none;}
+a.navLnkWhite:hover {text-decoration: underline;}
+td.leftnav {background: #E2E2E2;}
+a.leftnavOff:link, a.leftnavOff:visited {background: #E2E2E2; color: #626262; text-decoration: none;}
+a.leftnavOff:hover {background: #E2E2E2; color: #626262; text-decoration: underline;}
+a.leftnavOn:link, a.leftnavOn:visited {background: #E2E2E2; color: #000000; text-decoration: none;}
+a.leftnavOn:hover {background: #E2E2E2; color: #000000; text-decoration: underline;}
+.leftNavTitle {color: #000000; font-weight: bold; font-size: 12px; line-height:24px;  padding-left: 5px;}
+
+a.intLeftNav:link, a.intLeftNav:visited {color: #123466; text-decoration: none;}
+a.intLeftNav:hover {text-decoration: underline;}
+
+td.intLeftNavTitle {
+	background: #C5D5E9;
+	color: #617FA4;
+	font-weight: bold;
+	font-size: 14px;
+	padding: 3px 5px;
+}
+td.intLeftNav {
+	background: #E4EDF8;
+	color: #123466;
+	font-size: 13px;
+	font-weight: bold;
+}
+tr.intLeftNavOff {
+	background: #E4EDF8;
+	color: #123466;
+	font-size: 13px;
+	font-weight: bold;
+}
+tr.intLeftNavOn {
+	background: #FAFBFD;
+	color: #123466;
+	font-size: 13px;
+	font-weight: bold;
+}
+tr.intLeftNavSubOff {
+	background: #E4EDF8;
+	color: #123466;
+	font-size: 11px;
+	font-weight: bold;
+}
+tr.intLeftNavSubOn {
+	background: #FAFBFD;
+	color: #123466;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+td.intFileList {
+	color: #997A53;
+	font-weight: bold;
+}
+
+.inputBox {
+	background: #E2EAFC;
+	color: #000000;
+	font-family: Mono;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.contentnav {margin:4px 0;font:78% verdana;text-align:right;}
+.contentnav a {text-decoration:underline;}
+.contentnav span.first {float:left;text-align:left;}
+.contentnav span.last span {margin-left:1em;}
+.contentnav #checkall, .contentnav #clearall {margin:0;cursor:pointer;cursor:hand;text-decoration:underline;color:#039;}
+
+
+/* Bottom Nodes navbar styles */
+#navNodeBar ul {
+margin: 0;
+padding-left:0px;
+padding-right:0px;
+padding-top: 4px;
+}
+
+#navNodeBar ul li {
+display: inline;
+font-size: 12px;
+font-weight: bold;
+line-height: 15px;
+float: center;
+padding-left: 5px;
+padding-right: 5px;
+}
+
+#navNodeBar ul li a {
+color: #392000;
+text-decoration: none;
+padding: 3px 8px 3px 8px;
+}
+
+#navNodeBar ul li a:hover {
+color: #000;
+text-decoration: none;
+}
+
+#navNodeBar {
+position: relative;
+width: 760px;
+height: 22px;
+background-image: url(../images/bkg_bottomnode.gif);
+background-color: #123261;
+}
+
+
+
+/* Styles for Cyndi's PDS Explorer page */
+SPAN.noselect { 
+ font-weight: bold;
+ font-size: 14px;
+ font-family: arial;
+}
+.filtertype {
+ font-family: arial;
+
+ font-size: 12px;
+ line-height: 1.5em;
+}
+.dsid {
+ font-family: arial;
+ font-size: 12px;
+ line-height: 1.5em;
+}
+#filters{
+ position: absolute;
+ top: 210px;
+ left: 10px;
+ width: 760px;
+ background-color: #FFFFFF;
+}
+#frame1 {
+ position: absolute;
+ top: 330px;
+ left: 10px;
+ width: 455px;
+ padding-left: 4px;
+ background-color: #efefef;
+}
+#frame2 {
+ position: absolute;
+ top: 330px;
+ left: 510px;
+ width: 350px;
+ padding-left: 4px;
+ background-color: #dedede;
+}
