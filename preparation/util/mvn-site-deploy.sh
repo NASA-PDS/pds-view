@@ -21,6 +21,10 @@ mvn clean
 
 cd core
 mvn install clean
-cd ..
+cd ../pds4-tools/superpom
+mvn clean install clean
+cd ../packages
+mvn clean install clean
+cd ../..
 
 mvn site-deploy
