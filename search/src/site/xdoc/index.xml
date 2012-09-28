@@ -31,5 +31,13 @@
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
       </p>
     </section>
+
+    <section name="Recommended Installation">
+      The recommended installation ordering of the Search components is:
+      <ol>
+	<li>Search Service</li>
+	<li>Search Core</li>
+      </ol>
+    </section>
   </body>
 </document>

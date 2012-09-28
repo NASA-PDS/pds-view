@@ -24,8 +24,14 @@
 
   <body>
     <section name="About Search Service">
-      <p>The Search Service implements the PDS search protocol and leverages Apache Solr.
+      <p>The Search Service provides the search capability for the PDS Index developed through the Search Core.  It contains 3 main components:
       </p>
+
+      <ul>
+	<li>Apache Solr Web Application</li>
+	<li>PDS Search Protocol</li>
+	<li>PDAP Handler</li>
+      </ul>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
       </p>
