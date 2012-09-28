@@ -5,50 +5,48 @@ echo "Posting data index to SOLR..."
 echo
 
 if [ "$1" != "" ] && [ "$2" != "" ]; then
-    SEARCH_SERVICE_HOME=${1}
+    SEARCH_HOME=${1}
     SEARCH_SERVICE_URL=${2}
 else
     echo
-    echo "SEARCH_SERVICE_HOME and SEARCH_SERVICE_URL  must be specified via command-line:"
+    echo "SEARCH_HOME and SEARCH_SERVICE_URL  must be specified via command-line:"
     echo "    ./solr-post <search-service-home> <search-service-url>"
     echo
     exit 0
 fi
 
-PDS_SERVICE_HOME=$SEARCH_SERVICE_HOME/pds
+UPDATE_URL="${SEARCH_SERVICE_URL}/update"
 
-PDS_UPDATE_URL="${SEARCH_SERVICE_URL}/pds/update"
+./xslt $SEARCH_HOME ../facets/search-tools.xml ../facets/add-hierarchy.xslt $SEARCH_HOME/index/search-tools.hierarchy.xml
 
-./xslt $SEARCH_SERVICE_HOME ../facets/search-tools.xml ../facets/add-hierarchy.xslt $PDS_SERVICE_HOME/index/search-tools.hierarchy.xml
-
-curl "$PDS_UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary @$PDS_SERVICE_HOME/index/search-tools.hierarchy.xml
+curl "$UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary @$SEARCH_HOME/index/search-tools.hierarchy.xml
 
 #Backup existing solr index. This currently is in the wrong place and will need updating
-if [ -d $PDS_SERVICE_HOME/data_old ]
+if [ -d $SEARCH_HOME/data_old ]
 then
-  echo "Removing '$PDS_SERVICE_HOME/data_old'"
-  rm -rf $PDS_SERVICE_HOME/data_old
+  echo "Removing '$SEARCH_HOME/data_old'"
+  rm -rf $SEARCH_HOME/data_old
 fi
-if [ -d $PDS_SERVICE_HOME/data ]
+if [ -d $SEARCH_HOME/data ]
 then
-  echo "Backing up '$PDS_SERVICE_HOME/data' to '$PDS_SERVICE_HOME/data_old"
-  cp -rp $PDS_SERVICE_HOME/data $PDS_SERVICE_HOME/data_old
+  echo "Backing up '$SEARCH_HOME/data' to '$SEARCH_HOME/data_old"
+  cp -rp $SEARCH_HOME/data $SEARCH_HOME/data_old
 fi
 
 # Delete all existing documents.
-curl "$PDS_UPDATE_URL" -H "Content-Type: application/xml" --silent --data-binary '<delete><query>*:*</query></delete>'
+curl "$UPDATE_URL" -H "Content-Type: application/xml" --silent --data-binary '<delete><query>*:*</query></delete>'
 
-find $PDS_SERVICE_HOME/index/solr_index.xml.*
-for solrIndex in `find $PDS_SERVICE_HOME/index/solr_index.xml.*`; do
+find $SEARCH_HOME/index/solr_index.xml.*
+for solrIndex in `find $SEARCH_HOME/index/solr_index.xml.*`; do
     indexNum=`echo $solrIndex | gawk -F. '{print $NF}'`
-    ./xslt $SEARCH_SERVICE_HOME $solrIndex ../facets/add-hierarchy.xslt $PDS_SERVICE_HOME/index/solr-index.hierarchy.xml.$indexNum
+    ./xslt $SEARCH_HOME $solrIndex ../facets/add-hierarchy.xslt $SEARCH_HOME/index/solr-index.hierarchy.xml.$indexNum
 
 # Push new index data
-    curl "$PDS_UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary @$PDS_SERVICE_HOME/index/solr-index.hierarchy.xml.$indexNum
+    curl "$UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary @$SEARCH_HOME/index/solr-index.hierarchy.xml.$indexNum
 
 done
 
 # Commit the changes
-curl "$PDS_UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary '<commit />'
+curl "$UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary '<commit />'
 
 exit 0

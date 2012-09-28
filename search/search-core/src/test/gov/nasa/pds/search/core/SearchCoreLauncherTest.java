@@ -1,7 +1,10 @@
 package gov.nasa.pds.search.core;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -21,12 +24,12 @@ import junit.framework.TestCase;
 public class SearchCoreLauncherTest extends TestCase {
 	
 	@Before public void setUp() {
-		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SERVICE_HOME_RELATIVE);
+		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
 		testDir.mkdirs();
 	}
 	
 	@After public void tearDown() {
-		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SERVICE_HOME_RELATIVE);
+		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
 		testDir.delete();
 	}
 	
@@ -48,7 +51,7 @@ public class SearchCoreLauncherTest extends TestCase {
 	 */
 	@Ignore
 	public void testRequiredArgs() {
-	    String[] args = { "-H", TestConstants.SERVICE_HOME_RELATIVE, 
+	    String[] args = { "-H", TestConstants.SEARCH_HOME_RELATIVE, 
 	    		"-e", 
 	    		"-m", "5", 
 	    		"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds" };
@@ -63,7 +66,7 @@ public class SearchCoreLauncherTest extends TestCase {
 	 */
 	@Ignore
 	public void testInvalidArg() {
-        String[] args = { "-H", TestConstants.SERVICE_HOME_RELATIVE, 
+        String[] args = { "-H", TestConstants.SEARCH_HOME_RELATIVE, 
         		"-e", 
         		"-m", "5", 
         		"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds", 
@@ -82,7 +85,7 @@ public class SearchCoreLauncherTest extends TestCase {
     public void testExtractorAbsolute() {
     	try {
 	    	String[] args = { "-r", TestConstants.PDS_REGISTRY_URL, 
-	    			"-H", System.getProperty("user.dir") + "/" + TestConstants.SERVICE_HOME_RELATIVE, 
+	    			"-H", System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-e", 
 	    			"-m", "5", 
 	    			"-c", System.getProperty("user.dir") + "/" + TestConstants.CONFIG_DIR_RELATIVE + "pds", };
@@ -100,7 +103,7 @@ public class SearchCoreLauncherTest extends TestCase {
     public void testExtractorRelative() {
     	try {
 	    	String[] args = { "-r", TestConstants.PDS_REGISTRY_URL, 
-	    			"-H", TestConstants.SERVICE_HOME_RELATIVE, 
+	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-e", 
 	    			"-m", "5", 
 	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds", };
@@ -111,37 +114,30 @@ public class SearchCoreLauncherTest extends TestCase {
     }
     
     /**
-     * Test Registry Extractor with 1 properties file and max query = 5
-     * @throws Exception 
+     * Test SearchCoreLauncher with a Search Core properties file.
      */
-    @Ignore
-    public void testExtractorSinglePropsPDS() {
-    	try {
-	    	String[] args = { "-p", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds-search-service.properties",
-	    			"-e", 
-	    			"-m", "5"
+    public void testProps() {
+		try {
+			File tempFile = new File(TestConstants.SEARCH_HOME_RELATIVE + "/temp_props.properties");
+			
+			PrintWriter writer = new PrintWriter(tempFile);
+	    	writer.write("search.core.search-home = " + TestConstants.SEARCH_HOME_RELATIVE + "\n"
+	    			+ "search.core.registry-url = " + TestConstants.PDS_REGISTRY_URL + "\n"
+	    			+ "search.core.config-home = "+ TestConstants.CONFIG_DIR_RELATIVE + "pds");
+	    	writer.flush();
+	    	writer.close();
+	    	
+	    	String[] args = { "-p", tempFile.getAbsolutePath(), 
+	    			"-m", "1" 
 	    			};
 	    	SearchCoreLauncher.main(args);
+	    	
+	    	FileUtils.forceDelete(new File(TestConstants.SEARCH_HOME_RELATIVE + "/temp_props.properties"));
 		} catch (Exception e) {
-			fail("Registry Extractor with Properties File failed: " + e.getMessage());
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-    }
-    
-    /**
-     * Test Registry Extractor with PSA data and max query = 5
-     * @throws Exception 
-     */
-    public void testExtractorMultipleProps() {
-    	try {
-	    	String[] args = { "-p",  
-	    					TestConstants.CONFIG_DIR_RELATIVE + "psa/psa-search-service.properties",
-	    			//"-e", 
-	    			"-m", "5"
-	    			};
-	    	SearchCoreLauncher.main(args);
-		} catch (Exception e) {
-			fail("Registry Extractor with Properties File failed: " + e.getMessage());
-		}
+    	
     }
 	
 }

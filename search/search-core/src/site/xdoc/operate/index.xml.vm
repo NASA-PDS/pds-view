@@ -30,6 +30,9 @@
 
       <ul>
         <li><a href="#Tool_Execution">Tool Execution</a></li>
+	<li><a href="#Solr_Ingestion">Solr Ingestion</a></li>
+	<li><a href="#Basic_Search_Process">Basic Search Process</a></li>
+	<li><a href="#PDS_Search_Process">PDS Search Process</a></li>
         <li><a href="#Common_Errors">Common Errors</a></li>
       </ul>
 
@@ -47,15 +50,18 @@
 
         <table>
           <tr><th>Command-Line Option</th><th>Description</th></tr>
-          <tr><td>-a, --all</td><td>Run Registry Extractor, Solr Indexer, and PDS Indexer. [default]</td></tr>
-          <tr><td>-d, --debug</td><td>Turn on debugger.</td></tr>
-          <tr><td>-e, --extractor</td><td>Run Registry Extractor.</td></tr>
-          <tr><td>-h, --help</td><td>Display usage.</td></tr>
-<tr><td>-m,--query-max</td><td>Specify the maximum number of registry values to be returned from query. (Default: 999999999)</td></tr>
-          <tr><td>-p, --pds-indexer</td><td>Run PDS Indexer</td></tr>
-          <tr><td>-r, --registry</td><td>Specify Registry Service instance to query. (Default: http://pdsbeta.jpl.nasa.gov:8080/registry)</td></tr>
-          <tr><td>-s, --solr-indexer</td><td>Run Solr Indexer</td></tr>
-          <tr><td>-V, --version</td><td>Display the release number and copyright information.</td></tr>
+<tr><td>-a,--all</td><td>Run all components of the Search Core [default]</td></tr>
+<tr><td>-c,--config-home &lt;directories&gt;</td><td>Specify the product class configuration home directory.  Must contain product-classes.txt. Multiple directories can be specified to accompany multiple registries. (Default: $SEARCH_CORE_HOME/conf/pds/)</td></tr>
+<tr><td>-C,--clean-dirs</td><td>Removal of all directories from previous Search Core execution output. These directories will still be backed up in the Search Home directory. (Default: True)</td></tr>
+<tr><td>-d,--debug</td><td>Turn on debugger.</td></tr>
+<tr><td>-e,--extractor</td><td>Execute component to extract data from registry</td></tr>
+<tr><td>-H,--search-home &lt;directory&gt;</td><td>Specify the Search Home directory. The tool will output the index files to this directory. When using the Search Service, this should be the $SEARCH_SERVICE_HOME/pds directory (Default: $SEARCH_SERVICE_HOME/pds directory)</td></tr>
+<tr><td>-h,--help</td><td>Display usage.</td></tr>
+<tr><td>-i,--solr-indexer</td><td>Execute component to generate a Solr Index</td></tr>
+<tr><td>-m,--query-max &lt;integer&gt;</td><td>Specify the maximum number of registry values to be returned from query. (Default: 999999999)</td></tr>
+<tr><td>-p,--properties-file &lt;files&gt;</td><td>Specify properties file containing Search Home, Registry URL, and product class configuration home directory. Multiple files can be specified.</td></tr>
+<tr><td>-r,--registry &lt;urls&gt;</td><td>Specify Registry Service instance to query. Multiple registries can be specified.</td></tr>
+<tr><td>-V,--version</td><td>Display application version.</td></tr>
         </table>
       </subsection>
 
@@ -63,57 +69,117 @@
         <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script.
         </p>
 
-        <p>The Search Core Tool requires a Search Service Home directory to be specified prior to running the tool.  This path is the directory that contains the Apache Solr WAR file.  The following is the format for commands:
+        <p>The Search Core requires a SEARCH_HOME directory and REGISTRY_URL be specified via the command-line.  The following is the format for the command:
         </p>
 
         <source>
-% search-core &lt;search-service-home-path&gt; [options]
+% search-core -H &lt;SEARCH_HOME&gt; -r &lt;REGISTRY_URL&gt; [options]
         </source>
 
-        <p>The following command demonstrates how to run the Search Core Tool with a SEARCH_SERVICE_HOME=/apps/search-service and the default execution to run all components:
-        </p>
+	<p>To clarify, SEARCH_<i>SERVICE</i>_HOME is referenced during Search Service installation; the SEARCH_HOME directory to be specified above refers to the specific Solr instance where we want to apply this index.  For example, the default Search Service installation comes with two instances: pds and experimental (see $SEARCH_SERVICE_HOME directory). To run the Search Core against the PDS instance (desired for most users) with a SEARCH_SERVICE_HOME=/usr/local/search-service, then SEARCH_HOME=/usr/local/search-service/pds.  Along with a REGISTRY_URL=http://pdsdev.jpl.nasa.gov:8080/registry, the following command demonstrates how to run the all components of the Search Core:
+	</p>
 
         <source>
-% search-core /apps/service-service
+% search-core -H /usr/local/search-service/pds -r http://pdsdev.jpl.nasa.gov:8080/registry
         </source>
 
-	<p>By default, the command above will run all components of the Search Core software and produce a Solr index from the Registry Service data.  To run each component separately, they must be completed in the following order:</p>
+	<p>By default, the command above runs all components of the Search Core software and produces a Solr index from the Registry Service data.  The solr_index.xml file(s) will appear in the SEARCH_HOME/index directory.  To run each component separately, they must be completed in the following order:</p>
 
 	<ol>
 	  <li>
-	    <p>The following command will run the Search Core Tool with a SEARCH_SERVICE_HOME=/apps/search-service and only run the Registry Extractor component:</p>
+	    <p>The following command will run the Search Core with a SEARCH_HOME=/usr/local/search-service/pds and only run the Registry Extractor component to produce XML index documents for each Registry context product:</p>
 	    <source>
-% search-core /apps/service-service -e
+% search-core -e -H /usr/local/search-service/pds -r http://pdsdev.jpl.nasa.gov:8080/registry
 	    </source>
 	  </li>
 	  <li>
-	    <p>The following command will run the Search Core Tool with a SEARCH_SERVICE_HOME=/apps/search-service and only run the Solr Indexer component:</p>
+	    <p>The following command will run the Search Core with a SEARCH_HOME=/usr/local/search-service/pds and only run the Solr Indexer component and produce Solr Index XML files in the SEARCH_HOME/index directory:</p>
 	    <source>
-% search-core /apps/service-service -s
-	    </source>
-	  </li>
-	  <li>
-	    <p>The following command will run the Search Core Tool with a SEARCH_SERVICE_HOME=/apps/search-service and only run the PDS Indexer component:</p>
-	    <source>
-% search-core /apps/service-service -p
+% search-core -i -H /usr/local/search-service/pds -r http://pdsdev.jpl.nasa.gov:8080/registry
 	    </source>
 	  </li>
 	</ol>
 
-        <p>The following command demonstrates how to test the Search Core Tool with a SEARCH_SERVICE_HOME=/apps/search-service and only query 1000 products for indexing:
+        <p>The following command demonstrates how to test the Search Core with a SEARCH_HOME=/usr/local/search-service/pds and only query 100 products for indexing.  This is often useful for testing purposes:
         </p>
 
         <source>
-% search-core /apps/service-service -m 1000
+% search-core -i -H /usr/local/search-service/pds -r http://pdsdev.jpl.nasa.gov:8080/registry
         </source>
 
-        <p>By default, the Search Core tool runs against the Registry Service at http://pdsbeta:8080/registry. The following command demonstrates how to run the Search Core Tool and all its components against a Registry Service installed at <i>http://localhost:8080/registry</i>
+        <p>The following command demonstrates how to specify a SEARCH_HOME and REGISTRY_URL via a Search Core properties file:
         </p>
 
         <source>
-% search-core /apps/service-service -r http://localhost:8080/registry
+% search-core -p /usr/local/search-core/conf/pds/pds-search.properties
         </source>
+
+	<p>An example Search Core properties file looks like this:</p>
+
+	<source>
+search.core.search-home = /usr/local/search-service/pds
+search.core.registry-url = http://pdsdev.jpl.nasa.gov:8080/registry
+search.core.config-home = /usr/local/search-core/conf/pds
+	 </source>
+
+	<p>The following command demonstrates how to specify multiple registries:
+        </p>
+
+	<source>
+% search-core -H /usr/local/search-service/pds -r http://pdsdev.jpl.nasa.gov:8080/registry http://pdsdev.jpl.nasa.gov:8080/registry-psa
+	</source>
+
+	<p>The following command demonstrates how to specify multiple Search Core property files:
+        </p>
+
+	<source>
+% search-core -p /usr/local/search-core/conf/pds/pds-search.properties /usr/local/search-core/conf/psa/psa-search.properties
+	</source>
       </subsection>
+    </section>
+    <section name="Solr Ingestion">
+      <p>
+	Once the Lucene index has been created using the Search Core command-line tool, we want to ingest the data into the Apache Solr web application so it can be searched.  To do so we use the <i>solr-post</i> shell script using curl and HTTP POST to ingest the data in Solr.  The script can be found at SEARCH_CORE_HOME/bin/solr-post.  The following command demonstrates how to run the script:
+      </p>
+
+      <source>
+./solr-post &lt;SEARCH_HOME&gt; &lt;SEARCH_SERVICE_URL&gt;
+      </source>
+
+      <p>
+	For example:
+      </p>
+
+      <source>
+./solr-post /usr/local/search-service/pds http://pdsdev.jpl.nasa.gov:8080/search-service/pds
+      </source>
+    </section>
+    <section name="Basic Search Process">
+      <p>The initial-index shell script is included in the package in an effort to streamline the process by running both the Search Core to produce the index, and the solr-post script to post the data to the Solr application.  Go to the SEARCH_CORE_HOME/bin directory to run the script as follows:
+      </p>
+
+      <p><b>Assumptions.</b>  The initial-index script is intended only for those installations that only use 1 registry and the default configuration found in SEARCH_CORE_HOME/conf/pds .
+      </p>
+
+      <source>
+% ./initial-index &lt;SEARCH_HOME&gt; &lt;SEARCH_SERVICE_URL&gt; &lt;REGISTRY_URL&gt;
+      </source>
+
+      <p>For example:</p>
+
+      <source>
+% ./initial-index /usr/local/search-service/pds http://pdsdev.jpl.nasa.gov:8080/search-service/pds http://pdsdev.jpl.nasa.gov:8080/registry
+      </source>
+
+      <p>Once this script completes, the data should be available through the Search Service interface.</p>
+
+      <p><i>Note: To further streamline the process, the command-line arguments can be removed from the initial-index script, and the search-core line can modified according to your specific needs.</i>
+      </p>
+    </section>
+
+    <section name="PDS Search Process">
+      <p>See Basic Search Process.
+      </p>
     </section>
   </body>
 </document>

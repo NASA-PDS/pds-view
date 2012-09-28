@@ -43,13 +43,13 @@ import java.util.logging.Logger;
  * @author jpadams
  * 
  */
-public class ProductClass { // implements Extractor {
+public class ProductClass {
 
 	/** Default start number to be appended to output files */
 	private static final int OUT_SEQ_START = 10000;
 
 	/** Turns debugger on/off for this class */
-	private boolean debug = true;
+	private boolean debug = false;
 
 	/** Product class name **/
 	private String classname;

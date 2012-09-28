@@ -30,7 +30,7 @@ public final class TestConstants {
 	public static final String FACET_DIR_RELATIVE="./src/main/resources/facets/";
 	
 	/** Relative Search Service Directory Path for testing locally **/
-	public static final String SERVICE_HOME_RELATIVE="./target/test";
+	public static final String SEARCH_HOME_RELATIVE="./target/test";
 	
 	/** PDS Registry URL used for testing purposes **/
 	public static final String PDS_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry";

@@ -1,14 +1,13 @@
 #! /bin/bash
 
 if [ "$1" != "" ] && [ "$2" != "" ] && [ "$3" != "" ]; then
-    SEARCH_SERVICE_HOME=${1}	
+    SEARCH_HOME=${1}	
     SEARCH_SERVICE_URL=${2}
     REGISTRY_URL=${3}
-
 else
     echo
-    echo "SEARCH_SERVICE_HOME, SEARCH_SERVICE_URL, and REGISTRY_URL must be specified via command-line"
-    echo "    ./initial-index <search-service-home> <search-service-url> <registry-url> "
+    echo "SEARCH_HOME, SEARCH_SERVICE_URL, and REGISTRY_URL must be specified via command-line"
+    echo "    ./initial-index <search-home> <search-service-url> <registry-url>"
     echo
     exit 0
 fi
@@ -19,20 +18,19 @@ echo "-----------------------------------------------------"
 echo " RUN ON PDSBETA ONLY! "
 echo " - If on ops machine, kill script immediately."
 echo
-echo " - SEARCH_SERVICE_HOME = $SEARCH_SERVICE_HOME "
+echo " - SEARCH_HOME = $SEARCH_HOME "
 echo " - SEARCH_SERVICE_URL = $SEARCH_SERVICE_URL "
 echo " - REGISTRY_URL = $REGISTRY_URL"
 echo "-----------------------------------------------------"
 echo "-----------------------------------------------------"
 echo "-----------------------------------------------------"
 
-# Need PDS_SERVICE_HOME to specify we are using the pds solr instance
-PDS_SERVICE_HOME=$SEARCH_SERVICE_HOME/pds
+# Need SEARCH_HOME to specify we are using the pds solr instance
 
-echo $PDS_SERVICE_HOME
+echo $SEARCH_HOME
 
 echo "-----Running search-core------"
-search-core -H $PDS_SERVICE_HOME -r $REGISTRY_URL
+search-core -H $SEARCH_HOME -r $REGISTRY_URL
 echo "-----search-core Complete-----"
 
-./solr-post $SEARCH_SERVICE_HOME $SEARCH_SERVICE_URL
+./solr-post $SEARCH_HOME $SEARCH_SERVICE_URL

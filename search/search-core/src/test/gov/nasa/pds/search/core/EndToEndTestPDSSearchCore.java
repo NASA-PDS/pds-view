@@ -20,7 +20,7 @@ import junit.framework.TestCase;
 public class EndToEndTestPDSSearchCore extends TestCase {
 	
 	@Before public void setUp() {
-		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SERVICE_HOME_RELATIVE);
+		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
 		testDir.mkdirs();
 	}
 	
@@ -36,7 +36,7 @@ public class EndToEndTestPDSSearchCore extends TestCase {
     public void testPDSEndToEnd() {
     	try {
 	    	String[] args = { "-r", TestConstants.PDS_REGISTRY_URL, 
-	    			"-H", System.getProperty("user.dir") + "/" + TestConstants.SERVICE_HOME_RELATIVE, 
+	    			"-H", System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-m", "5",
 	    			"-c", System.getProperty("user.dir") + "/" + TestConstants.CONFIG_DIR_RELATIVE + "pds", };
 	    	SearchCoreLauncher.main(args);

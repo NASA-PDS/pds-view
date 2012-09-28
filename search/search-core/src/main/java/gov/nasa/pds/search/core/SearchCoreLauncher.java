@@ -51,11 +51,23 @@ public class SearchCoreLauncher {
 	/** Default PDS Config File Path, if not is specified. **/
 	private static final String PDS_CONFIG_PATH = "/conf/pds";
 
-	/** Search Service Environment Variable to use if not specified via CLI. **/
+	/** 
+	 * Search Environment Variable to use if not specified via CLI.
+	 * Specifies the specific Solr instance to output the index. 
+	 */
 	private static final String SEARCH_SERVICE_ENVVAR = "SEARCH_SERVICE_HOME";
 
 	/** Prefix used in the properties files. **/
-	private static final String PROPS_PREFIX = "search.service";
+	private static final String PROPS_PREFIX = "search.core";
+	
+	/** Key used in the properties file for the configuration home **/
+	private static final String PROPS_CONFIG_KEY = "config-home";
+	
+	/** Key used in the properties file for the search home **/
+	private static final String PROPS_SEARCH_KEY = "search-home";
+	
+	/** Key used in the properties file for the Registry URL **/
+	private static final String PROPS_REGISTRY_KEY = "registry-url";	
 
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#ALL **/
 	private boolean allFlag;
@@ -75,8 +87,8 @@ public class SearchCoreLauncher {
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#MAX **/
 	private int queryMax;
 
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#SERVICE_HOME **/
-	private File searchServiceHome;
+	/** @see gov.nasa.pds.search.core.cli.options.Flag#SEARCH_HOME **/
+	private File searchHome;
 
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#REGISTRY **/
 	private List<String> registryUrlList;
@@ -102,7 +114,7 @@ public class SearchCoreLauncher {
 
 		this.queryMax = -1;
 
-		this.searchServiceHome = null;
+		this.searchHome = null;
 
 		this.registryUrlList = new ArrayList<String>();
 		this.configHomeList = new ArrayList<String>();
@@ -182,8 +194,8 @@ public class SearchCoreLauncher {
 				this.debug = true;
 			} else if (o.getOpt().equals(Flag.REGISTRY.getShortName())) {
 				this.registryUrlList = o.getValuesList();
-			} else if (o.getOpt().equals(Flag.SERVICE_HOME.getShortName())) {
-				setSearchServiceHome(o.getValue().trim());
+			} else if (o.getOpt().equals(Flag.SEARCH_HOME.getShortName())) {
+				setSearchHome(o.getValue().trim());
 			} else if (o.getOpt().equals(Flag.MAX.getShortName())) {
 				try {
 					this.queryMax = Integer.parseInt(o.getValue());
@@ -221,9 +233,9 @@ public class SearchCoreLauncher {
 			setDefaultConfigHome();
 		}
 
-		// Set Search Service Home if not specified
-		if (this.searchServiceHome == null) {
-			setDefaultSearchServiceHome();
+		// Set Search Home if not specified
+		if (this.searchHome == null) {
+			setDefaultSearchHome();
 		}
 	}
 
@@ -262,7 +274,7 @@ public class SearchCoreLauncher {
 	}
 
 	/**
-	 * Set the properties for a given registry/search-service-home/etc.
+	 * Set the properties for a given registry/search-home/etc.
 	 * 
 	 * TODO May want to refactor. Very similar code in
 	 * RegistryExtractor.getProductClassList
@@ -274,27 +286,32 @@ public class SearchCoreLauncher {
 			throws InvalidOptionException {
 		Map<String, String> mappings = new HashMap<String, String>();
 
+		String registryUrl, configHome, searchHome;
 		for (File propsFile : propsFileList) {
 			mappings = PropertiesUtil.getPropertiesMap(propsFile, PROPS_PREFIX);
-
-			if (mappings.get("registry-url") != null) {
-				this.registryUrlList.add(mappings.get("registry-url"));
+			
+			registryUrl = mappings.get(PROPS_REGISTRY_KEY);
+			configHome = mappings.get(PROPS_CONFIG_KEY);
+			searchHome = mappings.get(PROPS_SEARCH_KEY);
+			
+			if (registryUrl != null) {
+				this.registryUrlList.add(registryUrl);
 			} else {
 				throw new InvalidOptionException(
 						"Registry URL must be specified in properties file - "
 								+ propsFile.getAbsolutePath());
 			}
 
-			if (mappings.get("config-home") != null) {
-				addConfigHome(mappings.get("config-home"));
+			if (configHome != null) {
+				addConfigHome(configHome);
 			} else {
 				throw new InvalidOptionException(
 						"Config home must be specified in properties file - "
 								+ propsFile.getAbsolutePath());
 			}
 
-			if (mappings.get("home") != null) {
-				setSearchServiceHome(mappings.get("home"));
+			if (searchHome != null) {
+				setSearchHome(searchHome);
 			}
 		}
 
@@ -312,8 +329,7 @@ public class SearchCoreLauncher {
 	 */
 	public final void addConfigHome(final String configHome)
 			throws InvalidOptionException {
-		this.configHomeList
-				.add(getAbsolutePath("Config Dir", configHome, true));
+		this.configHomeList.add(getAbsolutePath("Config Dir", configHome, true));
 
 		// Check that the config dir contains the product class properties file
 		if (!Arrays.asList((new File(this.configHomeList.get(0))).list())
@@ -324,35 +340,35 @@ public class SearchCoreLauncher {
 	}
 
 	/**
-	 * Sets the searchServiceHome global variable after getting its absolute
+	 * Sets the searchHome global variable after getting its absolute
 	 * path and ensuring its files existence.
 	 * 
-	 * @param searchServiceHome
+	 * @param searchHome
 	 * @throws InvalidOptionException	thrown if directory does not exist
 	 */
-	public final void setSearchServiceHome(final String searchServiceHome)
+	public final void setSearchHome(final String searchHome)
 			throws InvalidOptionException {
-		this.searchServiceHome = new File(getAbsolutePath(
-				"Search Service Home", searchServiceHome, true));
+		this.searchHome = new File(getAbsolutePath(
+				"Search Home", searchHome, true));
 	}
 
 	/**
-	 * Sets the default value for the searchServiceHome global.
+	 * Sets the default value for the searchHome global.
 	 * 
 	 * @throws InvalidOptionException	thrown if directory does not exist
 	 */
-	public final void setDefaultSearchServiceHome()
+	public final void setDefaultSearchHome()
 			throws InvalidOptionException {
 		String path = System.getenv(SEARCH_SERVICE_ENVVAR);
 
 		if (path == null) {
 			path = System.getProperty("user.dir");
+		} else {
+			path += System.getProperty("file.separator") + "pds";
 		}
 
-		// System.out.println("search_service_home "
-		// + getAbsolutePath("Search Service Home", path, true));
-		this.searchServiceHome = new File(getAbsolutePath(
-				"Search Service Home", path, true));
+		this.searchHome = new File(getAbsolutePath(
+				"Search Home", path, true));
 	}
 
 	/**
@@ -395,11 +411,11 @@ public class SearchCoreLauncher {
 	 */
 	private void runRegistryExtractor() throws Exception {
 		RegistryExtractor extractor = new RegistryExtractor(
-				this.searchServiceHome.getAbsolutePath(), this.clean);
+				this.searchHome.getAbsolutePath(), this.clean);
 		for (int i = 0; i < this.registryUrlList.size(); i++) {
 			this.log.info("\n\tRegistry URL: " + this.registryUrlList.get(i)
-					+ "\n\tSearch Service Home: "
-					+ this.searchServiceHome.getAbsolutePath()
+					+ "\n\tSearch Home: "
+					+ this.searchHome.getAbsolutePath()
 					+ "\n\tConfig Home: " + this.configHomeList.get(i));
 			extractor.setRegistryUrl(this.registryUrlList.get(i));
 			extractor.setConfDir(new File(this.configHomeList.get(i)));
@@ -423,14 +439,14 @@ public class SearchCoreLauncher {
 	private void runSolrIndexer() throws IOException, ParseException, Exception {
 		this.log.info("\nRunning Solr Indexer to create new SOLR_INDEX.XML ...\n");
 
-		File indexDir = new File(this.searchServiceHome.getAbsolutePath()
+		File indexDir = new File(this.searchHome.getAbsolutePath()
 				+ "/index");
 		if (!indexDir.isDirectory()) {
 			indexDir.mkdir();
 		}
 
-		String[] args = { this.searchServiceHome.getAbsolutePath() + "/index",
-				this.searchServiceHome.getAbsolutePath() + "/registry-data" };
+		String[] args = { this.searchHome.getAbsolutePath() + "/index",
+				this.searchHome.getAbsolutePath() + "/registry-data" };
 		SolrIndexer.main(args);
 	}
 
@@ -441,8 +457,8 @@ public class SearchCoreLauncher {
 	 */
 	@Deprecated private void runIndexer() throws IOException {
 		this.log.info("\nRunning Indexer to create new CATALOG_INDEX...\n");
-		String[] args = { this.searchServiceHome.getAbsolutePath(),
-				this.searchServiceHome.getAbsolutePath() + "/tse/extract" };
+		String[] args = { this.searchHome.getAbsolutePath(),
+				this.searchHome.getAbsolutePath() + "/tse/extract" };
 		Indexer.main(args);
 
 	}

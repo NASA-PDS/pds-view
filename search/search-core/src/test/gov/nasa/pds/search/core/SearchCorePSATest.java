@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 
 import gov.nasa.pds.search.core.constants.TestConstants;
 import junit.framework.TestCase;
@@ -11,29 +12,28 @@ import junit.framework.TestCase;
 public class SearchCorePSATest  extends TestCase {
 	
 	@Before public void setUp() {
-		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SERVICE_HOME_RELATIVE);
+		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
 		testDir.mkdirs();
 	}
 	
 	@After public void tearDown() {
-		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SERVICE_HOME_RELATIVE);
+		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
 		testDir.delete();
 	}
 	
     /**
-     * Test Registry Extractor with PSA data and max query = 5
+     * Test End-To-End with PSA Data, relative paths and max query = 5
      * @throws Exception 
      */
-    public void testExtractorMultipleProps() {
+    public void testExtractorRelative() {
     	try {
-	    	String[] args = { "-p",  
-	    					TestConstants.CONFIG_DIR_RELATIVE + "psa/psa-search-service.properties",
-	    			//"-e", 
-	    			"-m", "5",
-	    			};
+	    	String[] args = { "-r", TestConstants.PDS_REGISTRY_URL, 
+	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
+	    			"-m", "5", 
+	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds", };
 	    	SearchCoreLauncher.main(args);
 		} catch (Exception e) {
-			fail("Registry Extractor with Properties File failed: " + e.getMessage());
+			fail("Registry Extractor with Relative Paths failed: " + e.getMessage());
 		}
     }
 

@@ -54,6 +54,12 @@
       <action dev="jpadams" type="update">
 	Updated PSA Config to capture more information from data in registry. May be temporary fix until more data is available. Includes data_object_type and mission_start/stop_date.
       </action>
+      <action dev="jpadams" type="update">
+	Modified references to Search Service Home throughout application and documentation in an effort to eliminate confusion between the path used in Search Core versus the path specified in the Search Service installation.  Changed Search Service Home to Search Home, where applicable.
+      </action>
+      <action dev="jpadams" type="update">
+	Updated Installation and Operation documentation to reflect the changes in tool functionality.
+      </action>
     </release>
 
     <release version="0.3.0" date="2012-06-11" description="This release of the Search Core is a component of the integrated release 2.2.0 of the PDS 2010 System. This is an operational release of the system components to date.">

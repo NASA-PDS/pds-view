@@ -29,14 +29,15 @@ public enum Flag {
 	ALL("a", "all", "Run all components of the Search Core [default]"),
 
 	/** Flag to specify a product class configuration directory. */
-	CONFIG_HOME("c", "config-home", "directory", String.class, true,
-			"Specify the product class configuration home directory (dir must contain product-classes.txt)"
-					+ " (Default: $SEARCH_CORE_HOME/conf/pds/"),
+	CONFIG_HOME("c", "config-home", "directories", String.class, true,
+			"Specify the product class configuration home directory. Must contain"
+					+ " product-classes.txt. Multiple directories can be specified to accompany" 
+					+ " multiple registries. (Default: $SEARCH_CORE_HOME/conf/pds/)"),
 
 	/** Flag to turn OFF removal of all directories from previous Search Core execution. */
 	CLEAN("C", "clean-dirs",
 			"Removal of all directories from previous Search Core execution output."
-					+ " These directories will still be backed up in the Search Service Home directory."
+					+ " These directories will still be backed up in the Search Home directory."
 					+ " (Default: True)"),
 
 	/** Flag to run in debug mode. */
@@ -48,10 +49,12 @@ public enum Flag {
 	/** Flag to display the help. */
 	HELP("h", "help", "Display usage."),
 
-	/** Flag to specify Search Service Home. */
-	SERVICE_HOME("H", "search-service-home", "directory", String.class,
-			"Specify the Search Service Home directory." 
-				+ " fault: SEARCH_SERVICE_HOME environment variable)"),
+	/** Flag to specify Search Home. */
+	SEARCH_HOME("H", "search-home", "directory", String.class,
+			"Specify the Search Home directory. The tool will output the index files to this"
+					+ " directory. When using the Search Service, this should be the "
+					+ " $SEARCH_SERVICE_HOME/pds directory"
+					+ " (Default: $SEARCH_SERVICE_HOME/pds directory)"),
 
 	/** Flag to generate a Solr Index. */
 	SOLR("i", "solr-indexer", "Execute component to generate a Solr Index"),
@@ -62,13 +65,14 @@ public enum Flag {
 					+ "(Default: " + Constants.QUERY_MAX + ")"),
 
 	/** Flag to specify a configuration file. */
-	PROPERTIES("p", "properties-file", "directory", String.class, true,
-			"Specify properties file containing Search Service Home, Registry URL,"
-				+ " and product class configuration home directory."),
+	PROPERTIES("p", "properties-file", "files", String.class, true,
+			"Specify properties file containing Search Home, Registry URL,"
+				+ " and product class configuration home directory. Multiple"
+				+ " files can be specified."),
 
 	/** Flag to specify at least one Registry URL. */
-	REGISTRY("r", "registry", "url", String.class, true,
-			"Specify Registry Service instance to query. <REQUIRED>"),
+	REGISTRY("r", "registry", "urls", String.class, true,
+			"Specify Registry Service instance(s) to query. Multiple registries can be specified."),
 
 	/** Flag to display the version. */
 	VERSION("V", "version", "Display application version.");
@@ -104,7 +108,7 @@ public enum Flag {
 		options.addOption(new ToolsOption(ALL));
 		options.addOption(new ToolsOption(DEBUG));
 		options.addOption(new ToolsOption(REGISTRY));
-		options.addOption(new ToolsOption(SERVICE_HOME));
+		options.addOption(new ToolsOption(SEARCH_HOME));
 		options.addOption(new ToolsOption(MAX));
 		options.addOption(new ToolsOption(CONFIG_HOME));
 		options.addOption(new ToolsOption(CLEAN));
