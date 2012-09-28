@@ -24,7 +24,11 @@ cd preparation
 mvn --non-recursive install clean
 cd core
 mvn install clean
-cd ../..
+cd ../pds4-tools/superpom
+mvn clean install clean
+cd ../packages
+mvn clean install clean
+cd ../../..
 
 cd registry
 mvn --non-recursive install clean

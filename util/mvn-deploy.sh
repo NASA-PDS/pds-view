@@ -28,7 +28,13 @@ mvn deploy --non-recursive
 cd core
 mvn site
 mvn deploy
+cd ../pds4-tools
+mvn site
+mvn deploy
 cd ../generate
+mvn site
+mvn deploy
+cd ../transform
 mvn site
 mvn deploy
 cd ../validate

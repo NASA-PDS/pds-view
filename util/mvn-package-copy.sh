@@ -25,6 +25,7 @@ cd target/packages
 echo "Copying the Preparation packages to the package directory."
 cp ../../preparation/core/target/core*bin* .
 cp ../../preparation/generate/target/generate*bin* .
+cp ../../preparation/generate/target/transform*bin* .
 cp ../../preparation/validate/target/validate*bin* .
 
 echo "Copying the Registry packages to the package directory."
