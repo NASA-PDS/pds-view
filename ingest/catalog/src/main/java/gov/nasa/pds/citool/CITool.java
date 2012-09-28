@@ -231,7 +231,7 @@ public class CITool {
                 	throw new Exception("\'pds.registry\' java property is not set.");
                 }               
                 keystore = System.getProperty("pds.security.keystore");
-                if ((username!=null) && (password!=null)) {
+                if ((username!=null) && (password!=null) && registryUrl.startsWith("https")) {
                 	if (keystore == null) {
                 		throw new Exception("\'pds.security.keystore\' java property not set.");
                 	}

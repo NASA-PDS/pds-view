@@ -149,6 +149,7 @@ public class IngestReport extends Report {
     	  writer.println("  Number of successful file object ingestion: " + gov.nasa.pds.citool.ingestor.CatalogRegistryIngester.fileObjCount);
     	  writer.println("  Number of successful storage service ingestion: " + gov.nasa.pds.citool.ingestor.CatalogRegistryIngester.storageCount);
     	  writer.println("  Number of successful registry ingestion: " + gov.nasa.pds.citool.ingestor.CatalogRegistryIngester.registryCount);
+    	  writer.println("  Name of the registry package: " + gov.nasa.pds.citool.ingestor.CatalogRegistryIngester.registryPackageName);
     	  writer.println();
       }
       writer.println("End of Report\n");

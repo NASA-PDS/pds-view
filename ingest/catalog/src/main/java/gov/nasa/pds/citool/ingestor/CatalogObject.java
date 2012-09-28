@@ -47,6 +47,7 @@ import gov.nasa.pds.tools.containers.FileReference;
 import gov.nasa.pds.citool.report.IngestReport;
 import gov.nasa.pds.citool.file.FileObject;
 import gov.nasa.pds.citool.file.MD5Checksum;
+import gov.nasa.pds.citool.CIToolIngester;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 
 import org.apache.oodt.cas.metadata.Metadata;
@@ -82,6 +83,7 @@ public class CatalogObject {
 	private ExtrinsicObject _product;
 	//private List<PointerCatalog> _pointers;
 	private Metadata _metadata;
+	//private Map<String, String> _refInfo;
 	
 	public CatalogObject(IngestReport report) {
 		this._report = report;
@@ -165,6 +167,10 @@ public class CatalogObject {
 		return this._pointerFiles;
 	}
 	
+	//public Map<String, String> getRefInfo() {
+	//	return this._refInfo;
+	//}
+	
 	public ExtrinsicObject getExtrinsicObject() {
 		return this._product;
 	}
@@ -174,8 +180,7 @@ public class CatalogObject {
 	}
 	
 	/**
-	 * Gets the catalog object from the LIST, sets to hash map, and calls
-	 * CatalogDB object to ingest the data into the database.
+	 * Gets the catalog object from the LIST, sets to hash map 
 	 *
 	 * @param objList
 	 *            List of the catalog object statement(s)
@@ -190,54 +195,67 @@ public class CatalogObject {
 
 		// first level catalog object
 		for (ObjectStatement objSmt : objList) {
+			//System.out.println("CATALOG object type = " + objType);
 			if (objType.equalsIgnoreCase("VOLUME")) {
-				List<ObjectStatement> objList2 = objSmt.getObjects("CATALOG");
-				List<PointerStatement> ptList = ((ObjectStatement) objList2.get(0)).getPointers();
-				_pointerFiles = new ArrayList<String>();
-				for (PointerStatement ptSmt : ptList) {
-					if (ptSmt.hasMultipleReferences()) {
-						//if (!ptSmt.getIdentifier().toString().equalsIgnoreCase("REFERENCE_CATALOG")
-						//		&& !ptSmt.getIdentifier().toString().equalsIgnoreCase("PERSONNEL_CATALOG")) {
-							List<FileReference> refFiles = ptSmt.getFileRefs();
-							for (FileReference fileRef : refFiles) {
-								_pointerFiles.add(fileRef.getPath());
+				//List<ObjectStatement> objList2 = objSmt.getObjects("CATALOG");
+				List<ObjectStatement> objList2 = objSmt.getObjects();
+								
+				for (ObjectStatement objSmt2: objList2) {
+					//System.out.println("object name = " + objSmt2.getIdentifier());
+					
+					// how to handle multiple CATALOG objects???? or DATA_PRODUCER
+					if (objSmt2.getIdentifier().toString().equalsIgnoreCase("CATALOG")) {
+						List<PointerStatement> ptList = ((ObjectStatement) objList2.get(0)).getPointers();
+						_pointerFiles = new ArrayList<String>();
+						for (PointerStatement ptSmt : ptList) {
+							if (ptSmt.hasMultipleReferences()) {
+								//if (!ptSmt.getIdentifier().toString().equalsIgnoreCase("REFERENCE_CATALOG")
+								//		&& !ptSmt.getIdentifier().toString().equalsIgnoreCase("PERSONNEL_CATALOG")) {
+								List<FileReference> refFiles = ptSmt.getFileRefs();
+								for (FileReference fileRef : refFiles) {
+									_pointerFiles.add(fileRef.getPath());
+									//System.out.println("pointer file = " + fileRef.getPath());
+								}
+								//}
+							} else {
+								// Don't add REFERENCE_CATALOG or PERSONNEL_CATALOG
+								// references
+								//if (!ptSmt.getIdentifier().toString().equalsIgnoreCase("REFERENCE_CATALOG")
+								//		&& !ptSmt.getIdentifier().toString().equalsIgnoreCase("PERSONNEL_CATALOG")) {
+								_pointerFiles.add(ptSmt.getValue().toString());
+								//System.out.println("pointer file = " + ptSmt.getValue());
+								//}
 							}
-						//}
-					} else {
-						// Don't add REFERENCE_CATALOG or PERSONNEL_CATALOG
-						// references
-						//if (!ptSmt.getIdentifier().toString().equalsIgnoreCase("REFERENCE_CATALOG")
-						//		&& !ptSmt.getIdentifier().toString().equalsIgnoreCase("PERSONNEL_CATALOG")) {
-							_pointerFiles.add(ptSmt.getValue().toString());
-						//}
+						}
 					}
 				}
 			}
 			List<AttributeStatement> attrList = objSmt.getAttributes();
+			String keyId = null;
+			String keyDesc = null;
 			for (AttributeStatement attrSmt : attrList) {
 				pdsLabelMap.put(attrSmt.getElementIdentifier(), attrSmt);
+				//System.out.println(attrSmt.getElementIdentifier() + " = " + attrSmt.getValue().toString());
+				
 				// multivalues
-				/*
-				List<String> valueList = getValueList(attrSmt.getValue().toString());
-				if (valueList != null) {
-					for (int i = 0; i < valueList.size(); i++) {
-						_metadata.addMetadata(attrSmt.getElementIdentifier(),
-								valueList.get(i).trim());
-					}
-				} else {
-					_metadata.addMetadata(attrSmt.getElementIdentifier(),
-							attrSmt.getValue().toString());
-				}
-				*/
 				if (attrSmt.getValue() instanceof Set) {
 					List<String> valueList = getValueList(attrSmt.getValue());
 					for (int i=0; i<valueList.size(); i++) {
 						_metadata.addMetadata(attrSmt.getElementIdentifier(), valueList.get(i));
 					}
 				}
-				else 
+				else {
 					_metadata.addMetadata(attrSmt.getElementIdentifier(), attrSmt.getValue().toString());
+					//System.out.println(attrSmt.getElementIdentifier() + " is added into the metadata...");
+				    if (attrSmt.getElementIdentifier().equals("REFERENCE_KEY_ID"))
+				    	keyId = attrSmt.getValue().toString();
+				    
+				    if (attrSmt.getElementIdentifier().equals("REFERENCE_DESC"))
+				    	keyDesc = attrSmt.getValue().toString();
+				}
 			}
+			if (objType.equalsIgnoreCase("REFERENCE"))
+				CIToolIngester.refInfo.put(keyId, keyDesc);
 
 			if (!objType.equalsIgnoreCase("VOLUME")) {
 				// second nested level
@@ -246,21 +264,12 @@ public class CatalogObject {
 					List<AttributeStatement> objAttr = smt2.getAttributes();
 					lblMap = new HashMap<String, AttributeStatement>(pdsLabelMap);
 
+					//System.out.println("2nd object name = " + smt2.getIdentifier());
 					// TODO: how to handle same keywords in different
 					// object?????
 					for (AttributeStatement attrSmt : objAttr) {
 						lblMap.put(attrSmt.getElementIdentifier(), attrSmt);
-/*					
-						List<String> valueList = getValueList(attrSmt.getValue().toString());
-						if (valueList != null) {
-							for (int i = 0; i < valueList.size(); i++) {
-								_metadata.addMetadata(attrSmt.getElementIdentifier(),
-										valueList.get(i).trim());
-							}
-						} else {
-							_metadata.addMetadata(attrSmt.getElementIdentifier(), attrSmt.getValue().toString());
-						}
-						*/
+						//System.out.println(attrSmt.getElementIdentifier() + " = " + attrSmt.getValue().toString());
 						if (attrSmt.getValue() instanceof Set) {
 							List<String> valueList = getValueList(attrSmt.getValue());
 							for (int i=0; i<valueList.size(); i++) {
@@ -276,20 +285,10 @@ public class CatalogObject {
 					List<ObjectStatement> objList3 = smt2.getObjects();
 					for (ObjectStatement smt3 : objList3) {
 						List<AttributeStatement> objAttr2 = smt3.getAttributes();
+						//System.out.println("3rd object name = " + smt3.getIdentifier());
 						for (AttributeStatement attrSmt2 : objAttr2) {
 							lblMap.put(attrSmt2.getElementIdentifier(), attrSmt2);
-/*
-							List<String> valueList = getValueList(attrSmt2.getValue().toString());
-							if (valueList != null) {
-								for (int i = 0; i < valueList.size(); i++) {
-									_metadata.addMetadata(attrSmt2.getElementIdentifier(),
-											valueList.get(i).trim());
-								}
-							} else {
-								_metadata.addMetadata(attrSmt2.getElementIdentifier(),
-										attrSmt2.getValue().toString());
-							}
-*/
+							//System.out.println(attrSmt2.getElementIdentifier() + " = " + attrSmt2.getValue().toString());
 							if (attrSmt2.getValue() instanceof Set) {
 								List<String> valueList = getValueList(attrSmt2.getValue());
 								for (int i=0; i<valueList.size(); i++) {
@@ -311,6 +310,10 @@ public class CatalogObject {
 				}
 			}
 		}
+		
+		//if (CIToolIngester.refInfo.size()>0) 
+		//	System.out.println("refInfo = " + CIToolIngester.refInfo.toString());
+		
 		return pdsLabelMap;
 	}
 
@@ -397,13 +400,11 @@ public class CatalogObject {
 		if (value instanceof Set) {			
 			Iterator<Scalar> it = ((Set) value).iterator();
 			while (it.hasNext()) {
-				final String strValue = it.next().toString();
-// System.out.println("strValue = " + strValue);           
+				final String strValue = it.next().toString();          
             	valueList.add(strValue);
 			}
 		}
-		else if (value instanceof Sequence) {
-//System.out.println("sequence    ");			
+		else if (value instanceof Sequence) {			
 			// TODO: add algorithm here
 		}
 		else 

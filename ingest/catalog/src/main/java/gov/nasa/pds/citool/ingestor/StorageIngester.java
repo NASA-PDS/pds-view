@@ -155,6 +155,7 @@ public class StorageIngester {
 		try {
 			return fmClient.getProductByName(productName);
 		} catch (Exception e) {
+			System.err.println("Failed to get a product by name..");
 			e.printStackTrace();
 			return null;
 		}

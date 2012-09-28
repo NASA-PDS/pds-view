@@ -23,7 +23,13 @@
   </properties>
 
   <body>
-    <release version="1.4.0" date="TBD" description="This release of the Catalog Tool is a component of the integrated release 3.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+    <release version="1.4.0" date="2012-09-27" description="This release of the Catalog Tool is a component of the integrated release 3.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+      <action dev="hyunlee" type="fix" issue="PDS-88">
+        Corrected bad output message when voldesc points to a missing file.
+      </action>
+      <action dev="hyunlee" type="fix" issue="PDS-89">
+        Displays informative error message when a bad password is entered.
+      </action>
     </release>
 
     <release version="1.3.0" date="2012-06-11" description="This release of the Catalog Tool is a component of the integrated release 2.2.0 of the PDS 2010 System. This is an operational release of the system components to date.">

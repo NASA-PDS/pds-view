@@ -40,7 +40,7 @@ public class Constants {
     public static final String AFFIL_PROD = "Product_PDS_Affiliate";
     
     // or Collection_Volume_Set_PDS3 ????
-    public static final String VOLUME_PROD = "Collection_Volume_PDS3";
+    public static final String VOLUME_PROD = "Product_Volume_PDS3";
     
     public static final String FILE_PROD = "Product_File_Repository";
     
@@ -75,6 +75,8 @@ public class Constants {
     
     public static final String HAS_FILE = "file_ref";
     
+    public static final String HAS_NODE = "node_ref";
+    
     public static final String PRODUCT_VERSION = "version_id";
     
    
@@ -87,13 +89,17 @@ public class Constants {
         pds3ToPds4Map.put("START_TIME", "data_set_start_date_time");
         pds3ToPds4Map.put("STOP_TIME", "data_set_stop_date_time");
         pds3ToPds4Map.put("CITATION_DESC", "data_set_citation_text");
-        pds3ToPds4Map.put("REFERENCE_KEY_ID", "reference_text");
+        pds3ToPds4Map.put("REFERENCE_KEY_ID", "external_reference_description");  // how to handle this??? should be external_reference_description
         pds3ToPds4Map.put("PRODUCER_FULL_NAME", "data_set_producer_full_name");
         pds3ToPds4Map.put("LABEL_REVISION_NOTE", "modification_description");
         pds3ToPds4Map.put("CONFIDENCE_LEVEL_NOTE", "data_set_confidence_level_note");
         pds3ToPds4Map.put("ARCHIVE_STATUS", "data_set_archive_status");
-        pds3ToPds4Map.put("MEDIUM_TYPE", "data_set_medium_type");
+        pds3ToPds4Map.put("MEDIUM_TYPE", "volume_medium_type");
         pds3ToPds4Map.put("NSSDC_COLLECTION_ID", "data_set_nssdc_collection_id");
-        pds3ToPds4Map.put("ABSTRACT_DESC", "data_set_abstract_desc"); 
+        pds3ToPds4Map.put("ABSTRACT_DESC", "data_set_abstract_description"); 
+        pds3ToPds4Map.put("PUBLICATION_DATE", "volume_publication_date");
+        pds3ToPds4Map.put("DESCRIPTION", "volume_description");
+        pds3ToPds4Map.put("MISSION_ALIAS_NAME", "alternate_title");
+        //pds3ToPds4Map.put("INSTRUMENT_HOST_DESC", "instrument_host_description");
       } 
 }

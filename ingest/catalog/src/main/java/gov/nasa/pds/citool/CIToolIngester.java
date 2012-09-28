@@ -70,6 +70,9 @@ public class CIToolIngester {
     private List<Label> catLabels;
     private List<CatalogObject> catObjs;  
     private CatalogRegistryIngester catIngester;
+    public static Map<String, String> refInfo;
+    
+    private boolean storageAvailable = false;
 
     public CIToolIngester(IngestReport report) {
         this.report = report;
@@ -141,6 +144,7 @@ public class CIToolIngester {
     
     public void process() {   	
     	catIngester = new CatalogRegistryIngester(registryUrl, securityContext, username, password);
+    	CIToolIngester.refInfo = new HashMap<String, String>();
     	convertToCatalogObject();
  
     	// generate Reference info for each catObj, it will be used to create associations
@@ -148,15 +152,17 @@ public class CIToolIngester {
  
     	// create a package registry
     	catIngester.createRegistryPackage();
-    	// publish a product and the corresponding associations  	
+    	
+    	// publish extrinsic products and fileobject products 
+    	/* don't ingest for testing... uncomment it out for actual ingestion..... */    	
     	for (CatalogObject obj: catObjs) {	
     		if (obj.getIsLocal()) {
-       			//System.out.println("ingesting a catalog object..." + obj.getLabel().getLabelURI());
     			catIngester.ingest(obj);  // ingest extrinsic & file object	
     			catIngester.updateProduct(obj, refs);  // update extrinsic object with associations
     			report.record(obj.getLabel().getLabelURI(), obj.getLabel().getProblems());
     		}
-       	}     	
+       	} 
+   	
     }
  
     private void convertToCatalogObject() {
@@ -170,7 +176,6 @@ public class CIToolIngester {
 		for (Label lbl : catLabels) {		
 			CatalogObject catObj = new CatalogObject(this.report);
 			boolean validFile = catObj.processLabel(lbl);
-			
 			if (validFile) {
 				if (catObj.getCatObjType().equalsIgnoreCase("VOLUME")) {
 					pointerFiles = catObj.getPointerFiles();
@@ -180,6 +185,8 @@ public class CIToolIngester {
 					isVolumeCatalog = true;
 				}
 				catObjs.add(catObj);
+				
+				//if (catObj.getCatObjType().equalsIgnoreCase("REFERENCE"))
 			}
 			else {
 				LabelParserException lp = new LabelParserException(
@@ -195,9 +202,6 @@ public class CIToolIngester {
 			System.exit(1);
 		}
 
-		//catIngester.setStorageService(storageUrl, storageProductName);
-		//catIngester.setTransportURL(transportUrl);
-
 		List<String> requiredFiles = new ArrayList<String>();
 		for (String ptrFile : pointerFiles) {
 			// ignore the reference file when it's N/A
@@ -207,6 +211,7 @@ public class CIToolIngester {
 		
 			// need to find the file on the local system before trying to get from the file manager
 			String completeFilename = basePath + File.separator + "catalog" + File.separator + ptrFile.toLowerCase();
+            //System.out.println("completeFilename = " + completeFilename);
 			File aFile = new File(completeFilename);
 			try {
 				// check whether this reference file is already in the label list
@@ -241,6 +246,7 @@ public class CIToolIngester {
 							}
 						}
 						else {
+							System.err.println("\nWARNING: " + tmpFile + " is missing.");
 							requiredFiles.add(ptrFile);
 						}
 					}
@@ -253,24 +259,14 @@ public class CIToolIngester {
 		}
 		
 		try {
-			//System.out.println("before setting storage service...");
 			catIngester.setStorageService(storageUrl, storageProductName);
+			storageAvailable = true;
 		} catch (ConnectionException ce) {
-			/*
-			Object[] arguments = { "storage service", storageUrl };
-			LabelParserException lp = new LabelParserException(
-                        null, null, null,
-                        "ingest.error.conn",
-                        ProblemType.EXECUTE_FAIL, arguments);
-            //report.recordSkip(targetLabel.getLabelURI(), lp);
-	  		report.recordSkip(new URI(), lp);
-	  		*/
 			System.err.println("\nWARNING: The storage service - " + storageUrl + 
 					" is not accessble. Please check the connection. " + 
 					"\n\t The catalog file(s) CANNOT be delivered to the storage service.");
 		}
 			
-		//System.out.println("before setting transport url...");
 		catIngester.setTransportURL(transportUrl);
 		// there are some files to retrieve from the file manager server
 		if (requiredFiles.size()>0) {
@@ -296,34 +292,44 @@ public class CIToolIngester {
     	String productId = null;
     	try {
 			for (String aFile : requiredFiles) {
-				Product aProduct = getProductFromStorageService(aFile);
-				productId = aProduct.getProductId();
+				if (storageAvailable) {
+					Product aProduct = getProductFromStorageService(aFile);
+					productId = aProduct.getProductId();
 
-				// need to get a transport URL from the users
-				URL tmpUrl = new URL(transportUrl + productId);
-				HttpURLConnection conn = (HttpURLConnection) tmpUrl.openConnection();
-				
-				if (conn.getResponseCode()==HttpURLConnection.HTTP_OK) {
-					Label tmpLbl = parse(tmpUrl);
+					// need to get a transport URL from the users
+					URL tmpUrl = new URL(transportUrl + productId);
+					HttpURLConnection conn = (HttpURLConnection) tmpUrl.openConnection();
 
-					CatalogObject catObj = new CatalogObject(this.report);
-					catObj.processLabel(tmpLbl);
+					if (conn.getResponseCode()==HttpURLConnection.HTTP_OK) {
+						Label tmpLbl = parse(tmpUrl);
 
-					String fileLoc = catIngester.getStorageIngester()
-							.getFMClient().getMetadata(aProduct).getMetadata("FileLocation");
-					float fileVersion = Float.valueOf(
-							fileLoc.substring(fileLoc.lastIndexOf(File.separator) + 1)).floatValue();
-						
-					catObj.setVersion(fileVersion);
-					catObj.setIsLocal(false);
-					catObjs.add(catObj);
-				}
-				else {
+						CatalogObject catObj = new CatalogObject(this.report);
+						catObj.processLabel(tmpLbl);
+
+						String fileLoc = catIngester.getStorageIngester()
+								.getFMClient().getMetadata(aProduct).getMetadata("FileLocation");
+						float fileVersion = Float.valueOf(
+								fileLoc.substring(fileLoc.lastIndexOf(File.separator) + 1)).floatValue();
+
+						catObj.setVersion(fileVersion);
+						catObj.setIsLocal(false);
+						catObjs.add(catObj);
+					}
+					else {
+						// PDS-88 jira issue ???? ToDo: Check this part again...
+						// how to handle this case...(when there is no catalog file exist on the storage server?????)
+						//System.err.println("This URL is not accessble. status code = " + conn.getResponseCode());
+						System.err.println("Error: Catalog file (" + aFile + ") is missing in the archive volume and " + "" +
+								"can't get it from the storage service.");
+						System.exit(1);					
+					}
+				} else {
+					// PDS-88 jira issue
 					// how to handle this case...(when there is no catalog file exist on the storage server?????)
 					//System.err.println("This URL is not accessble. status code = " + conn.getResponseCode());
-					System.err.println("Error: Catalog file (" + aFile + ") is missing in this archive volume and " + "" +
+					System.err.println("Error: Catalog file (" + aFile + ") is missing in the archive volume and " + "" +
 							"can't get it from the storage service.");
-					System.exit(1);					
+					System.exit(1);	
 				}
 			}
 
@@ -384,14 +390,38 @@ public class CIToolIngester {
     				List<String> tmpValues = md.getAllMetadata(key);
     				for (String aVal: tmpValues) {
     					lidValue = aVal;
-    					values.add(Constants.LID_PREFIX+"target."+lidValue);
+    					if (!valueExists(Constants.LID_PREFIX+"target."+lidValue, values))
+    						values.add(Constants.LID_PREFIX+"target."+lidValue);
     				}
     			}
     			else {
     				lidValue = md.getMetadata(key);
-    				values.add(Constants.LID_PREFIX+"target."+lidValue);              
+    				if (!valueExists(Constants.LID_PREFIX+"target."+lidValue, values))
+    					values.add(Constants.LID_PREFIX+"target."+lidValue);              
     			}
     			refs.put(Constants.HAS_TARGET, values);
+    			
+    			key = "INSTRUMENT_HOST_ID";
+    			if (refs.get(Constants.HAS_INSTHOST)!=null) {
+    				values = refs.get(Constants.HAS_INSTHOST);
+    			}
+    			else {
+    				values = new ArrayList<String>();
+    			}
+    			if (md.isMultiValued(key)) {
+    				List<String> tmpValues = md.getAllMetadata(key);
+    				for (String aVal: tmpValues) {
+    					lidValue = aVal;
+    					if (!valueExists(Constants.LID_PREFIX+"instrument_host."+lidValue, values))
+    						values.add(Constants.LID_PREFIX+"instrument_host."+lidValue);
+    				}
+    			}
+    			else {
+    				lidValue = md.getMetadata(key);
+    				if (!valueExists(Constants.LID_PREFIX+"instrument_host."+lidValue, values))
+    					values.add(Constants.LID_PREFIX+"instrument_host."+lidValue);              
+    			}
+    			refs.put(Constants.HAS_INSTHOST, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.DATASET_OBJ)) {
     			lidValue = pdsLbl.get("DATA_SET_ID").getValue().toString();
@@ -405,8 +435,11 @@ public class CIToolIngester {
     			else {
     				values = new ArrayList<String>();
     			}
-    			values.add(Constants.LID_PREFIX+"data_set."+lidValue);
+    			if (!valueExists(Constants.LID_PREFIX+"data_set."+lidValue, values)) {
+    				values.add(Constants.LID_PREFIX+"data_set."+lidValue);
+    			}
     			refs.put(Constants.HAS_DATASET, values);
+    			
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.INST_OBJ)) {
     			lidValue = pdsLbl.get("INSTRUMENT_ID").getValue().toString();
@@ -429,7 +462,8 @@ public class CIToolIngester {
     			else {
     				values = new ArrayList<String>();
     			}
-    			values.add(Constants.LID_PREFIX+"instrument_host."+lidValue);
+    			if (!valueExists(Constants.LID_PREFIX+"instrument_host."+lidValue, values))
+    				values.add(Constants.LID_PREFIX+"instrument_host."+lidValue);
     			refs.put(Constants.HAS_INSTHOST, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.TARGET_OBJ)) {
@@ -440,7 +474,8 @@ public class CIToolIngester {
     			else {
     				values = new ArrayList<String>();
     			}
-    			values.add(Constants.LID_PREFIX+"target."+lidValue);
+    			if (!valueExists(Constants.LID_PREFIX+"target."+lidValue, values))
+    				values.add(Constants.LID_PREFIX+"target."+lidValue);
     			refs.put(Constants.HAS_TARGET, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.RESOURCE_OBJ)) {
@@ -457,15 +492,55 @@ public class CIToolIngester {
     			values.add(Constants.LID_PREFIX+"resource."+lidValue);
     			refs.put(Constants.HAS_RESOURCE, values);
     		}
-    		// TODO: ????
     		else if (catObjType.equalsIgnoreCase(Constants.VOLUME_OBJ)) {
     			lidValue = pdsLbl.get("VOLUME_ID").getValue().toString();
     			storageProductName = lidValue;
+    			
+    			String key = "DATA_SET_ID";
+    			if (key.contains("/")) {
+    				key = key.replace('/', '-');
+    			}  
+    			if (refs.get(Constants.HAS_DATASET)!=null)
+    				values = refs.get(Constants.HAS_DATASET);
+    			else
+    				values = new ArrayList<String>();
+    			
+    			if (md.isMultiValued(key)) {
+    				List<String> tmpValues = md.getAllMetadata(key);
+    				for (String aVal: tmpValues) {
+    					lidValue = aVal;
+    					if (lidValue.contains("/")) {
+    	    				lidValue = lidValue.replace('/', '-');
+    	    			}
+    					// shouldn't add if the value is already exists in the list
+    					if (!valueExists(Constants.LID_PREFIX+"data_set."+lidValue, values)) {
+    						values.add(Constants.LID_PREFIX+"data_set."+lidValue);
+    					}
+    				}
+    			}
+    			else {
+    				lidValue = md.getMetadata(key);
+    				if (lidValue.contains("/")) {
+	    				lidValue = lidValue.replace('/', '-');
+	    			}
+    				if (!valueExists(Constants.LID_PREFIX+"data_set."+lidValue, values)) {
+    					values.add(Constants.LID_PREFIX+"data_set."+lidValue);         
+    				}
+    			}
+    			refs.put(Constants.HAS_DATASET, values);
     		}
     	}
     	return refs;
     }
-        
+     
+    private boolean valueExists(String value, List<String> lists) {
+    	for (String listVal: lists) {
+    		if (listVal.equals(value)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 
     /**
      * Ingest catalog files from the given directories.

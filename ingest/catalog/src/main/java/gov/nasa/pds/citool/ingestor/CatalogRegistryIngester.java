@@ -16,6 +16,7 @@ package gov.nasa.pds.citool.ingestor;
 import gov.nasa.pds.citool.ingestor.Constants;
 import gov.nasa.pds.citool.ingestor.Reference;
 import gov.nasa.pds.citool.file.FileObject;
+import gov.nasa.pds.citool.CIToolIngester;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.exception.RegistryClientException;
@@ -54,8 +55,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.net.URI;
 import java.net.URL;
-//import java.net.ConnectException;
+
 import java.text.SimpleDateFormat;
+import javax.ws.rs.core.Response;
 
 public class CatalogRegistryIngester {
 	
@@ -63,6 +65,8 @@ public class CatalogRegistryIngester {
 	public static int storageCount = 0;
 	public static int registryCount = 0;
 	public static int failCount = 0;
+	
+	public static String registryPackageName;
 	
 	private ExtrinsicObject product, latestProduct;
 	private RegistryClient client;
@@ -99,7 +103,7 @@ public class CatalogRegistryIngester {
 			client = new RegistryClient(registryURL, securityContext, username, password);
 		} catch (RegistryClientException rce) {
 			System.err.println("RegistryClientException occurred..." + rce.getMessage());
-		}
+		} 
 	}
 	
 	private void initialize() {
@@ -132,6 +136,7 @@ public class CatalogRegistryIngester {
 		} catch (ConnectionException ce) {
 			throw ce;
 		} catch(Exception e) {
+			System.err.println("Exception occurred in setStorageService..." + e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -242,10 +247,7 @@ public class CatalogRegistryIngester {
 			// other association types will be added as Slot
 			Reference ref = new Reference(fileExtrinsic.getLid(), String.valueOf(catObj.getVersion()), Constants.HAS_FILE);
 			publishAssociation(catObj, ref);  		
-		} catch (RegistryServiceException re) {
-			// throw new IngestException(re.getMessage());
-			//re.printStackTrace();
-			//System.err.println("Error occurred..." + re.getMessage());			
+		} catch (RegistryServiceException re) {			
 			lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null, 
         			"ingest.error.failExecution", ProblemType.EXECUTE_FAIL, "ingestFileObject");
         	catObj.getLabel().addProblem(lp);
@@ -254,7 +256,6 @@ public class CatalogRegistryIngester {
 			lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null, 
         			"ingest.error.failExecution", ProblemType.EXECUTE_FAIL, "ingestFileObject");
         	catObj.getLabel().addProblem(lp);
-        	//failCount++;
 		}
 		return guid;		
 	}
@@ -267,17 +268,13 @@ public class CatalogRegistryIngester {
 	 * 
 	 */
 	public String ingestExtrinsicObject(CatalogObject catObj) {
-		Map<String, AttributeStatement> pdsLabelMap = catObj.getPdsLabelMap();
 		String guid = null;
 		LabelParserException lp = null;
 		try {	
-//System.out.println("client = " + client);
 			
 			if (!this.registryPackageGuid.isEmpty()) {
-				//System.out.println("setting a registryPackageGuid....." + this.registryPackageGuid);
 				client.setRegistrationPackageId(registryPackageGuid);
-			}
-					
+			}					
 			this.product = createProduct(catObj);
 			
 			// don't ingest if the catalog object is PERSONNEL or REFERENCE
@@ -318,16 +315,19 @@ public class CatalogRegistryIngester {
         			"ingest.error.failExecution", ProblemType.EXECUTE_FAIL, "ingestExtrinsicObject");
         	catObj.getLabel().addProblem(lp);
         	failCount++;
+        	//re.printStackTrace();
   		} catch (RegistryClientException rce) {
   			lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null, 
         			"ingest.error.failExecution", ProblemType.EXECUTE_FAIL, "ingestExtrinsicObject");
         	catObj.getLabel().addProblem(lp);
         	failCount++;
+        	//rce.printStackTrace();
   		} catch (Exception e) {
   			lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null, 
         			"ingest.error.failExecution", ProblemType.EXECUTE_FAIL, "ingestExtrinsicObject");
         	catObj.getLabel().addProblem(lp);
         	failCount++;
+        	//e.printStackTrace();
   		}
   		this.product = product;
   		
@@ -384,6 +384,9 @@ public class CatalogRegistryIngester {
 			slots.add(new Slot(Constants.HAS_MISSION, getRefValues(version, Constants.HAS_MISSION, refs)));
 			slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
 			slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));			
+		}
+		else if (catObjType.equalsIgnoreCase(Constants.VOLUME_OBJ)) {
+			slots.add(new Slot(Constants.HAS_DATASET, getRefValues(version, Constants.HAS_DATASET, refs)));
 		}
 		
 		List<String> verValue = new ArrayList<String>();
@@ -452,7 +455,7 @@ public class CatalogRegistryIngester {
 		Set<Slot> slots = new HashSet<Slot>();
 		String productLid = null;
 		String objType = catObj.getCatObjType();
-	
+		
 		Metadata md = catObj.getMetadata();
 		for (String key: md.getKeys()) {
 			String value = md.getMetadata(key);;
@@ -489,10 +492,11 @@ public class CatalogRegistryIngester {
 			}
 			else if (objType.equalsIgnoreCase(Constants.DATASET_OBJ) && key.equals("DATA_SET_ID")) {
 				value = md.getMetadata(key);
-				product.setName(md.getMetadata("DATA_SET_NAME"));				
+				product.setName(md.getMetadata("DATA_SET_NAME"));	
+				String tmpValue = null; 
 				if (value.contains("/"))
-    				value = value.replace('/', '-');
-				productLid = Constants.LID_PREFIX+"data_set."+value;
+    				tmpValue = value.replace('/', '-');
+				productLid = Constants.LID_PREFIX+"data_set."+tmpValue;
 				product.setLid(productLid);
 				product.setObjectType(Constants.DS_PROD);
 			}
@@ -506,7 +510,8 @@ public class CatalogRegistryIngester {
 				product.setName(value); //need to get from RESOURCE_NAME????
 			}
 			else if (objType.equalsIgnoreCase(Constants.VOLUME_OBJ) && key.equals("VOLUME_ID")) {
-				productLid = Constants.LID_PREFIX+"volume."+value;
+				String volumeSetId = md.getMetadata("VOLUME_SET_ID");
+				productLid = Constants.LID_PREFIX+"volume."+value+"__" + volumeSetId;
 				product.setLid(productLid);
 				product.setObjectType(Constants.VOLUME_PROD);
 				product.setName(value);
@@ -520,45 +525,46 @@ public class CatalogRegistryIngester {
 			}
 			//else if (objType.equalsIgnoreCase("REFERENCE") && key.equals(""
 				*/
-			else {	
-				// don't add this as slot values
-				if (key.equals("TARGET_NAME")) continue;
-				
-				if (md.isMultiValued(key)) {
-					List<String> tmpValues = md.getAllMetadata(key);
-					for (String aVal : tmpValues) {
-						if (key.equals("REFERENCE_KEY_ID"))
-							aVal = "reference." + aVal;
-						values.add(aVal);
+			
+			// don't add these as slot values
+			if (key.equals("TARGET_NAME"))
+				continue;
+			if (objType.equalsIgnoreCase(Constants.VOLUME_OBJ) && key.equals("DATA_SET_ID"))
+				continue;
+			if (objType.equalsIgnoreCase(Constants.MISSION_OBJ) && key.equals("INSTRUMENT_HOST_ID"))
+				continue;
+			
+			if (md.isMultiValued(key)) {
+				List<String> tmpValues = md.getAllMetadata(key);
+				for (String aVal : tmpValues) {
+					if (key.equals("REFERENCE_KEY_ID")) {
+						aVal = CIToolIngester.refInfo.get(aVal);
 					}
-				} else {
-					if (key.equals("REFERENCE_KEY_ID"))
-						value = "reference." + value;
-					values.add(value);
+					values.add(aVal);
 				}
-			
-				
-				
-				if (getKey(key, objType) != null) 
-					slots.add(new Slot(getKey(key, objType), values));
+			} else {
+				if (key.equals("REFERENCE_KEY_ID")) {
+					value = CIToolIngester.refInfo.get(value);
+				}
+				values.add(value);
 			}
-			
-			// need to add more for citation information for DATA_SET
-			if (key.equals("PRODUCER_FULL_NAME"))
-				slots.add(new Slot("citation_author_list", values));
-			if (key.equals("DATA_SET_RELEASE_DATE"))
-				slots.add(new Slot("citation_publication_year", values));
-			if (key.equals("CITATION_DESC"))
-				slots.add(new Slot("citation_description", values));
-			
+
+			if (getKey(key, objType) != null)
+				slots.add(new Slot(getKey(key, objType), values));
+
+			// need to add this one for alternate_id for MISSION object
+			if (key.equals("MISSION_ALIAS_NAME"))
+				slots.add(new Slot("alternate_id", values));
+
 			// create "has_node" slot value
-			if (key.equals("CURATING_NODE_ID")) { 
+			if (key.equals("CURATING_NODE_ID")) {
 				String tmpLidVid = Constants.LID_PREFIX + "node." + value;
-				if (getExtrinsic(tmpLidVid)!=null) {
+				if (getExtrinsic(tmpLidVid) != null) {
 					tmpLidVid += "::" + getExtrinsic(tmpLidVid).getVersionName();
-					slots.add(new Slot("has_node", Arrays.asList(new String[] { tmpLidVid })));
+					slots.add(new Slot(Constants.HAS_NODE, Arrays
+							.asList(new String[] { tmpLidVid })));
 				}
-				
+
 			}
 		}
 		
@@ -619,8 +625,10 @@ public class CatalogRegistryIngester {
 			if (key.equalsIgnoreCase(entry.getKey())) 
 				return entry.getValue(); 
 		}
-			
-		return key.toLowerCase();
+		if (key.endsWith("_DESC"))
+			return key.toLowerCase()+"ription";
+		else 
+			return key.toLowerCase();
 	}
 	
 	/**
@@ -698,18 +706,15 @@ public class CatalogRegistryIngester {
 
     	if (this.product!=null) {
     		association.setSourceObject(this.product.getGuid());
-    		// need to generate this as lidvid   
-    		
+    		  		
     		ExtrinsicObject target = getExtrinsic(aRef.getLogicalId(), aRef.getVersion());
-    		//System.out.println("ref lid = " + aRef.getLogicalId() + "   version = " + aRef.getVersion());
+    		// need to generate this as lidvid 
     		String lidvid = aRef.getLogicalId()+"::" + aRef.getVersion();
     		if (target!=null) {
     			association.setTargetObject(target.getGuid());
     			verifiedFlag = true;
-    			//System.out.println("source guid = " + this.product.getGuid() + "    target guid = " + target.getGuid());
     		}
     		else {
-    			//System.out.println("target is NULL....");
     			association.setTargetObject(lidvid);
     		}
     		association.setAssociationType(aRef.getAssociationType());
@@ -807,11 +812,8 @@ public class CatalogRegistryIngester {
 			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query,null, null);
 			if (pr.getNumFound() != 0) {
 				// it shoudl find only one
-				for (ExtrinsicObject extrinsic : pr.getResults()) {
-					
-//System.out.println("found an extrinsic object...." + lid + "    version = " + version);					
+				for (ExtrinsicObject extrinsic : pr.getResults()) {										
 					result = extrinsic;		
-					//System.out.println("result...lid = " + result.getLid() + "    guid = " + result.getGuid());
 				}
 			}
 		} catch (RegistryServiceException rse) {
@@ -823,7 +825,7 @@ public class CatalogRegistryIngester {
 	public void createRegistryPackage() {
 		try {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-			String registryPackageName = "Catalog-Package_";
+			this.registryPackageName = "Catalog-Package_";
 			
 			if (this.storageProductName==null)
 				registryPackageName += "unknown";
@@ -831,19 +833,30 @@ public class CatalogRegistryIngester {
 				registryPackageName += storageProductName;
 			
 			registryPackageName += "_" + dateFormat.format(new Date().getTime());
-			System.out.println("registryPackageName = " + registryPackageName);
 			RegistryPackage registryPackage = new RegistryPackage();
 			registryPackage.setName(registryPackageName);
 			
-			//System.out.println("client = " + client);
 			this.registryPackageGuid = client.publishObject(registryPackage);
-			//client.setRegistrationPackageId(client.publishObject(registryPackage));
-			//System.out.println("registryPackageGuid = " + this.registryPackageGuid);
-			//System.out.println("client.registryPackage Id = " + client.getRegistrationPackageGuid());
 		} 
 		catch (RegistryServiceException rse) {
-			System.out.println("Error Occurred..." + rse.getMessage() + "   status = " + rse.getStatus());
-			rse.printStackTrace();
+			if (!((rse.getStatus()==Response.Status.ACCEPTED) ||
+				  (rse.getStatus()==Response.Status.OK))) {
+				System.err.println("FAILURE: Error occurred to create a registry package. Error Status = " + rse.getStatus());
+				
+				// PDS-89 jira issue
+				if (rse.getStatus()==Response.Status.UNAUTHORIZED ||
+					rse.getStatus()==null) {
+					System.err.println("         Please provide correct username/password for the registry service.\n");
+				}
+				System.exit(1);
+			}
+		}		
+		catch (com.sun.jersey.api.client.ClientHandlerException ex) {
+			if (ex.getMessage().contains("Connection refused"))
+				System.err.println("Can't connect to the registry service.\n"+
+						"Please make sure that the registry service is up and running. \n" + 
+						"Or, provide correct information (registryUrl/username/password).");
+			System.exit(1);
 		}
 	}
 }
