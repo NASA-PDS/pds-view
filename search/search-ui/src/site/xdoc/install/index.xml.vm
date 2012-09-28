@@ -25,7 +25,7 @@
 
   <body>
     <section name="Installation">
-      <p>This document describes how to install the Saerch User Interface software contained in the <i>${project.artifactId}</i> package. The following topics can be found in this document:
+      <p>This document describes how to install the Searrch User Interface software contained in the <i>${project.artifactId}</i> package. The following topics can be found in this document:
       </p>
 
       <ul>
@@ -100,13 +100,27 @@ or
     </section>
 
     <section name="Deploying the Application">
-      <p>The Search User Interface web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, we need to set the application to allow for cross-context so it can use the various server-side includes.  WE can do this by creating <i>$TOMCAT_HOME/conf/Catalina/localhost/search-ui.xml</i> containing the following text:
+      <p>The Search User Interface web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, we need to set the application to allow for cross-context so it can use the various server-side includes.  We can do this by creating <i>$TOMCAT_HOME/conf/Catalina/localhost/search-ui.xml</i> containing the following text:
       </p>
       <source>
-<Context
-   crossContext="true">
-</Context>
+&lt;Context docBase="/usr/local/search-ui/search-ui.war" crossContext="true"&gt;
+&lt;/Context&gt;
       </source>
+
+      <p>The Search User Interface also depends on several other directories from the PDS Website that include images, Javascript, CSS, and server-side include files that are in the <i>includes</i> in Search UI package.  This contains the following directories:
+      </p>
+
+      <ul>
+	<li>css</li>
+	<li>images</li>
+	<li>include</li>
+	<li>js</li>
+	<li>scripts</li>
+      </ul>
+
+      <p>Move these directories into the $TOMCAT_HOME/webapps directory.</p>
+      
+      <p>Restart Tomcat.</p>
     </section>
 
   </body>

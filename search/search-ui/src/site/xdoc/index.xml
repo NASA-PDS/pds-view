@@ -24,7 +24,7 @@
 
   <body>
     <section name="About Search User Interface">
-      <p>The Search User Interface software serves as the PDS website interface for the Search Service.
+      <p>The Search User Interface software serves as the user interface for the Search Service on the PDS website.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
