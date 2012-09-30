@@ -23,28 +23,31 @@
   </properties>
 
   <body>
-    <release version="1.3.0" date="TBD" description="This release of the Registry User Interface is a component of the integrated release 3.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+    <release version="1.3.0" date="2012-09-30" description="This release of the Registry User Interface is a component of the integrated release 3.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+      <action dev="hyunlee" type="update">
+        Updated the supported data object type list based on the v03 information model.
+      </action>
     </release>
 
     <release version="1.2.0" date="2012-06-11" description="This release of the Registry User Interface is a component of the integrated release 2.2.0 of the PDS 2010 System. This is an operational release of the system components to date.">
-  		<action dev="hyunlee" type="add">
-  		  Provide the capability to update the status of product(s)/package(s).
-  		</action>
-  		<action dev="hyunlee" type="add">
-  		  Provide the capability to delete the product(s)/package(s).
-  		</action>
-  		<action dev="hyunlee" type="add">
-  		  Provide the capability to show the records with different numbers on the products, associations, events, and classification nodes tabs.
-  		</action>
-  		<action dev="hyunlee" type="update">
-  		  Provide the capability to copy and paste with ctrl-c/ctrl-v keys on popup windows. 
-  		</action>
-  		<action dev="hyunlee" type="update">
-  		  Fixed incorrect sorting with the eventType field on the events tab.
-  		</action>
-  		<action dev="hyunlee" type="update">
-  		  Fixed incorrect filtering with a requestId on the events tab. 
-  		</action>
+      <action dev="hyunlee" type="add">
+        Provide the capability to update the status of product(s)/package(s).
+      </action>
+      <action dev="hyunlee" type="add">
+        Provide the capability to delete the product(s)/package(s).
+      </action>
+      <action dev="hyunlee" type="add">
+        Provide the capability to show the records with different numbers on the products, associations, events, and classification nodes tabs.
+      </action>
+      <action dev="hyunlee" type="update">
+        Provide the capability to copy and paste with ctrl-c/ctrl-v keys on popup windows. 
+      </action>
+      <action dev="hyunlee" type="update">
+        Fixed incorrect sorting with the eventType field on the events tab.
+      </action>
+      <action dev="hyunlee" type="update">
+        Fixed incorrect filtering with a requestId on the events tab. 
+      </action>
       <action dev="shardman" type="remove">
         Removed the parent project's Release Notes document. This document now serves as the single source for this component's release changes.
       </action>

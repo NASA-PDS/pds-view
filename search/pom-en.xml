@@ -33,7 +33,7 @@
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>search</artifactId>
-  <version>0.4.0-dev</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
 
   <name>Search</name>
@@ -53,6 +53,7 @@
   <modules>
     <module>search-core</module>
     <module>search-service</module>
+    <module>search-ui</module>
   </modules>
 
   <developers>

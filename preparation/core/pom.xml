@@ -27,7 +27,7 @@
 
   <groupId>gov.nasa.pds.2010.preparation</groupId>
   <artifactId>core</artifactId>
-  <version>1.2.0-dev</version>
+  <version>1.2.0</version>
   <packaging>jar</packaging>
 
   <name>Core Library</name>

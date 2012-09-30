@@ -23,42 +23,36 @@
   </properties>
   
   <body>
-    <release version="0.4.0" date="TBD" description="This release of the Search Core is a component of the integrated release 3.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
-      <action dev="jpadams" type="add">
-	`    Created PDSDateConvert class to handle conversions of PDS4-compliant date/time values into Solr-compliant date/time values.
+    <release version="1.0.0" date="2012-09-30" description="This release of the Search Core is a component of the integrated release 3.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+      <action dev="jpadams" type="update" issue="PDS-100">
+        Refactored the Search Protocol and XML Response Writer out of the search-core and into search-service. Also moved Solr index scripts from search-service to search-core and updated the scripts to use absolute paths. Updated pom files accordingly to reflect changes in dependencies from refactoring of Solr stuff.
+      </action>
+      <action dev="jpadams" type="add" issue="PDS-102">
+        Created PDSDateConvert class to handle conversions of PDS4-compliant date/time values into Solr-compliant date/time values.
       </action>
       <action dev="jpadams" type="update">
-	Refactored the Search Protocol and XML Response Writer out of the search-core and into search-service.
+        Updated CLI by requiring registry URL to be specified, a new flag to specify a configuration directory, and a new flag to specify Search Service Home.
       </action>
       <action dev="jpadams" type="update">
-	Moved Solr index scripts from search-service to search-core and updated the scripts to use absolute paths.
+        Renamed several classes to use PDS4 terminology (i.e ProductClass.java and SearchFields.java).
       </action>
       <action dev="jpadams" type="update">
-	Updated pom files accordingly to reflect changes in dependencies from refactoring of Solr stuff.
+        Updated Solr document parser class to populate unknown/null date/time fields with values.
       </action>
       <action dev="jpadams" type="update">
-	Updated CLI by requiring registry URL to be specified, a new flag to specify a configuration directory, and a new flag to specify Search Service Home.
+        Updated Solr Indexer to create multiple solr-index.xml depending on a specified threshold of index documents for Solr Index file. This coincides with changes to the solr-post script, alleviating issues with Java Heap during XSLT transformations prior to posting to the Solr Web App.
       </action>
       <action dev="jpadams" type="update">
-	Renamed several classes to use PDS4 terminology.  i.e ProductClass.java and SearchFields.java .
+        Updated PSA Config to capture more information from data in the registry. May be temporary fix until more data is available. Includes data_object_type and mission_start/stop_date.
       </action>
       <action dev="jpadams" type="update">
-	Updated Solr document parser class to populate unknown/null date/time fields with values.
+        Modified references to Search Service Home throughout application and documentation in an effort to eliminate confusion between the path used in Search Core versus the path specified in the Search Service installation. Changed Search Service Home to Search Home, where applicable.
       </action>
       <action dev="jpadams" type="update">
-	Fixed bug in ProductClass class to set default version to 1.0 when associated lidvid does not contain a version.
+        Updated Installation and Operation documentation to reflect the changes in tool functionality.
       </action>
-      <action dev="jpadams" type="update">
-	Updated Solr Indexer to created multiple solr-index.xml depending on a specified threshold of index docs for Solr Index file. This coicides with changes to the solr-post script, alleviating issues with Java Heap during XSLT transformations prior to posting the Solr Web App.
-      </action>
-      <action dev="jpadams" type="update">
-	Updated PSA Config to capture more information from data in registry. May be temporary fix until more data is available. Includes data_object_type and mission_start/stop_date.
-      </action>
-      <action dev="jpadams" type="update">
-	Modified references to Search Service Home throughout application and documentation in an effort to eliminate confusion between the path used in Search Core versus the path specified in the Search Service installation.  Changed Search Service Home to Search Home, where applicable.
-      </action>
-      <action dev="jpadams" type="update">
-	Updated Installation and Operation documentation to reflect the changes in tool functionality.
+      <action dev="jpadams" type="fix">
+        Fixed bug in ProductClass class to set default version to 1.0 when associated lidvid does not contain a version.
       </action>
     </release>
 
