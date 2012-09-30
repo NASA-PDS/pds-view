@@ -172,22 +172,34 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    <!--repository>
+       <id>oodt-repo</id>
+       <name>OODT Private Maven Repository</name>
+       <url>http://oodt.jpl.nasa.gov/download/private</url>
+    </repository-->
+    <repository>
+       <id>javax-repo</id>
+       <name>javax sql maven repository</name>
+       <url>http://download.java.net/maven/2/</url>
+    </repository>
   </repositories>
 
   <dependencies>
-    <dependency>
+    <!--dependency>
       <groupId>com</groupId>
       <artifactId>sybase</artifactId>
       <version>2</version>
       <scope>system</scope>
       <systemPath>${basedir}/lib/jconn2.jar</systemPath>
-    </dependency>
+    </dependency-->
     <dependency>
       <groupId>jpl</groupId>
       <artifactId>eda</artifactId>
-      <version>???</version>
-      <scope>system</scope>
-      <systemPath>${basedir}/lib/eda.jar</systemPath>
+      <version>1.0</version>
+      <!--scope>compile</scope-->
+      <!--version>???</version-->
+      <!--scope>system</scope-->
+      <!--systemPath>${basedir}/lib/eda.jar</systemPath-->
     </dependency>
     <dependency>
       <groupId>javax</groupId>
@@ -196,12 +208,55 @@
       <scope>system</scope>
       <systemPath>${basedir}/lib/servlet-2_3.jar</systemPath>
     </dependency>
+    <!--dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+    </dependency-->
+    <!--dependency>
+      <groupId>javax.naming</groupId>
+      <artifactId>jndi</artifactId>
+      <version>1.2.1</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/jndi-1.2.1.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>javax.sql</groupId>
+      <artifactId>jdbc-stdext</artifactId>
+      <version>2.0</version>
+    </dependency-->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>???</version>
       <scope>system</scope>
       <systemPath>${basedir}/lib/junit.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>gov.nasa.pds.2010.registry</groupId>
+      <artifactId>registry-core</artifactId>
+      <version>1.2.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.solr</groupId>
+    	<artifactId>solr-solrj</artifactId>
+    	<version>3.6.0</version>
+    	<exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>jcl-over-slf4j</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+    	<groupId>org.slf4j</groupId>
+    	<artifactId>slf4j-log4j12</artifactId>
+    	<version>1.5.8</version>
     </dependency>
   </dependencies>
 
