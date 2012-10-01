@@ -26,6 +26,8 @@
     <name>Search Core</name>
   </bannerRight>
 
+  <version/>
+
   <body>
     <links>
       <item name="Search Core" href="http://pds-cm.jpl.nasa.gov/search/search-core/index.html" />

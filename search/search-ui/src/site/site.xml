@@ -26,6 +26,8 @@
     <name>Search User Interface</name>
   </bannerRight>
 
+  <version/>
+
   <body>
     <links>
       <item name="Search UI" href="http://pds-cm.jpl.nasa.gov/search/search-ui/index.html" />
