@@ -83,6 +83,9 @@ mvn deploy
 cd ../search-service
 mvn site
 mvn deploy
+cd ../search-ui
+mvn site
+mvn deploy
 cd ../..
 
 cd storage

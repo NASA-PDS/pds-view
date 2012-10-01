@@ -25,7 +25,7 @@ cd target/packages
 echo "Copying the Preparation packages to the package directory."
 cp ../../preparation/core/target/core*bin* .
 cp ../../preparation/generate/target/generate*bin* .
-cp ../../preparation/generate/target/transform*bin* .
+cp ../../preparation/transform/target/transform*bin* .
 cp ../../preparation/validate/target/validate*bin* .
 
 echo "Copying the Registry packages to the package directory."
@@ -44,6 +44,7 @@ cp ../../report/profile-setup/target/profile-setup*bin* .
 echo "Copying the Search packages to the package directory."
 cp ../../search/search-core/target/search-core*bin* .
 cp ../../search/search-service/target/search-service*bin* .
+cp ../../search/search-ui/target/search-ui*bin* .
 
 echo "Copying the Storage packages to the package directory."
 cp ../../storage/target/storage*bin* .

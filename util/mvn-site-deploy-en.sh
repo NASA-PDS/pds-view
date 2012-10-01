@@ -97,6 +97,10 @@ mkdir -p $1/preparation/design
 cp -r preparation/design/target/site/* $1/preparation/design
 mkdir -p $1/preparation/generate
 cp -r preparation/generate/target/site/* $1/preparation/generate
+mkdir -p $1/preparation/pds4-tools
+cp -r preparation/pds4-tools/target/site/* $1/preparation/pds4-tools
+mkdir -p $1/preparation/transform
+cp -r preparation/transform/target/site/* $1/preparation/transform
 mkdir -p $1/preparation/validate
 cp -r preparation/validate/target/site/* $1/preparation/validate
 
@@ -119,6 +123,8 @@ mkdir -p $1/search/search-core
 cp -r search/search-core/target/site/* $1/search/search-core
 mkdir -p $1/search/search-service
 cp -r search/search-service/target/site/* $1/search/search-service
+mkdir -p $1/search/search-ui
+cp -r search/search-ui/target/site/* $1/search/search-ui
 
 echo "Deploying Security component site to the deployment directory."
 mkdir -p $1/security
