@@ -37,7 +37,7 @@
     </section>
 
     <section name="Download">
-      <p>As of the writing of this document the current version of Tomcat is <i>7.0.21</i>. New releases are made available periodically, with the latest version of <i>7.0.X</i> available from the <a herf="http://tomcat.apache.org/download-70.cgi" target="_blank">Apache Tomcat 7 Downloads</a> page. The download page has several binary distributions to choose from:
+      <p>As of the writing of this document the current version of Tomcat is <i>7.0.30</i>. New releases are made available periodically, with the latest version of <i>7.0.X</i> available from the <a herf="http://tomcat.apache.org/download-70.cgi" target="_blank">Apache Tomcat 7 Downloads</a> page. Avoid version <i>7.0.29</i>, there is a bug in this version causing an error when loading the Registry Service. The download page has several binary distributions to choose from:
       </p>
 
       <center>
