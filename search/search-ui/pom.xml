@@ -167,13 +167,5 @@
   </dependencies>
 
   <!-- Project Information and Reports inherited from parent. -->
-  <reporting>
-    <!-- Project Reports not inherited from parent. -->
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </reporting>
+  <reporting/>
 </project>
