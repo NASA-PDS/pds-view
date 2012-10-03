@@ -72,14 +72,14 @@
         </p>
 
         <ul>
-          <li>Validate Tool added support for validation via Schematron.
+          <li>PDS4 Tools was added providing support for accessing PDS4 data objects including selected transformations to common formats.
+          <li>Transform Tool was added providing support for transforming PDS3 and PDS4 product labels and product data into common formats.
           </li>
-          <li>Harvest Tool added support for checksum comparison.
+          <li>Search User Interface was added providing a deployable graphical user interface for the Search Service.
           </li>
-          <li>Registry Service added a number of new API methods for managing registered products.
+          <li>Harvest Tool added support for comparing generated checksums with a supplied checksum manifest file.
           </li>
-          <li>Registry User Interface added support for updating the status and deleting packages and their associated products.
-          </li>
+          <li>Search Service added support for the Planetary Data Access Protocol (PDAP) as well as support for returning results in a VOTable structure.
         </ul>
       </subsection>
 
@@ -88,15 +88,11 @@
         </p>
 
         <ul>
-          <li>Validate Tool was modified to include the latest XML Schema and Schematron files (v03) generated from the data model.
+          <li>Validate Tool was modified to include the latest XML Schema and Schematron files (v03) generated from the PDS4 data model.
           </li>
           <li>Harvest Tool, Catalog Tool and Search Service were modified to keep pace with changes occurring in the PDS4 data model.
           </li>
-          <li>Harvest Tool was modified to support supplying an offset for the access URL specification, supplying a package name and description and updated the report summary based on user feedback.
-          </li>
-          <li>Registry Service was modified to provide better error handling for the various end points.
-          </li>
-          <li>Search Service was modified to utilize the PDS Search Protocol end point by default.
+          <li>Search Service was modified to better organize the service, separating index generation functionality from search handling functionality. The service was also modified to better handle PDS4 date fields.
           </li>
         </ul>
       </subsection>
@@ -106,11 +102,9 @@
         </p>
 
         <ul>
-          <li>Validate Tool was modified to correct an issue processing collection inventory tables.
+          <li>Validate Tool was modified to correct an issue that caused Schematron files to not be loaded internally when user supplied XML Schema file(s) were given.
           </li>
-          <li>Harvest Tool was modified to correct an issue handling multiple DATA_SET_ID values in a PDS3 label, an issue handling metadata extraction where the desired metadata attribute is found multiple times and an issue processing collection inventory tables.
-          </li>
-          <li>Registry User Interface was modified to correct an issue supporting ctrl-c/ctrl-v keys for popup windows and an issue sorting events.
+          <li>Registry Service was modified to correct an issue where an underscore character was acting as a single character wildcard causing queries to incorrectly find matches.
           </li>
         </ul>
       </subsection>
@@ -163,26 +157,29 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       <ul>
         <li><a href="../ingest/index.html">Ingest</a></li>
         <ul>
-          <li><a href="../ingest/catalog/index.html">Catalog Tool</a> - 1.3.0</li>
-          <li><a href="../ingest/harvest/index.html">Harvest Tool</a> - 1.2.0</li>
+          <li><a href="../ingest/catalog/index.html">Catalog Tool</a> - 1.4.0</li>
+          <li><a href="../ingest/harvest/index.html">Harvest Tool</a> - 1.3.0</li>
         </ul>
         <li><a href="../preparation/index.html">Preparation Tools</a></li>
         <ul>
-          <li><a href="../preparation/core/index.html">Core Library</a> - 1.1.0</li>
+          <li><a href="../preparation/core/index.html">Core Library</a> - 1.2.0</li>
           <li><a href="../preparation/design/index.html">Design Tool</a> - 0.4.0</li>
-          <li><a href="../preparation/generate/index.html">Generate Tool</a> - 0.4.0</li>
-          <li><a href="../preparation/validate/index.html">Validate Tool</a> - 1.1.0</li>
+          <li><a href="../preparation/generate/index.html">Generate Tool</a> - 0.5.0</li>
+          <li><a href="../preparation/pds4-tools/index.html">PDS4 Tools</a> - 0.1.0</li>
+          <li><a href="../preparation/transform/index.html">Transform Tool</a> - 0.1.0</li>
+          <li><a href="../preparation/validate/index.html">Validate Tool</a> - 1.2.0</li>
         </ul>
         <li><a href="../registry/index.html">Registry</a></li>
         <ul>
-          <li><a href="../registry/registry-service/index.html">Registry Service</a> - 1.2.0</li>
-          <li><a href="../registry/registry-ui/index.html">Registry User Interface</a> - 1.2.0</li>
+          <li><a href="../registry/registry-service/index.html">Registry Service</a> - 1.3.0</li>
+          <li><a href="../registry/registry-ui/index.html">Registry User Interface</a> - 1.3.0</li>
         </ul>
-        <li><a href="../report/index.html">Report Service</a> - 1.2.0</li>
+        <li><a href="../report/index.html">Report Service</a> - 1.3.0</li>
         <li><a href="../search/index.html">Search Service</a></li>
         <ul>
-          <li><a href="../search/search-core/index.html">Search Core</a> - 0.3.0</li>
-          <li><a href="../search/search-service/index.html">Search Service</a> - 0.3.0</li>
+          <li><a href="../search/search-core/index.html">Search Core</a> - 1.0.0</li>
+          <li><a href="../search/search-service/index.html">Search Service</a> - 1.0.0</li>
+          <li><a href="../search/search-ui/index.html">Search User Interface</a> - 1.0.0</li>
         </ul>
         <li><a href="../security/index.html">Security Service</a> - 1.2.0</li>
       </ul>
@@ -287,14 +284,16 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
             <p>The Validate Tool comes pre-packaged with the latest version of the generic schemas generated from the data model. The tool allows the user to validate collections of products or single products against the associated generic schema. Specific schemas can be passed into the tool to enable a more detailed validation check. Although the Design Tools listed above provide a file-by-file validation capability, this tool allows the user to validate a batch of products and generates a summary report.
             </p>
           </li>
+          <li><b>Transform Tool / PDS4 Tools</b><br/>
+            <p>The Transform Tool and the PDS4 Tools library comprise the initial release of the product transformation capability. The Transform Tool provides a command-line interface to a subset of the functions offered by the PDS4 Tools library. In addition, the PDS4 Tools library provides functionality for accessing PDS4 data objects. The functionality of both of these components will be expanded in future releases.
+            </p>
+          </li>
           <li><b>Harvest Tool</b><br/>
             <p>The Harvest Tool provides the means for registering products with the Registry Service. This tool reads a PDS4 product label, extracts specified metadata and registers the product with the registry. This tool allows the user to register a batch of products and generates a summary report.
             </p>
           </li>
           <li><b>Registry Service</b><br/>
             <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. Ultimately, all products (including PDS3 products) will be registered and tracked with the Registry Service. For this release, users are asked to install and configure a local instance of the service in order to exercise this procedure. Additionally if the user is participating in the PDS3 to PDS4 conversion exercises, the resulting products or collections of products can be registered with their local registry instance.
-            </p>
-            <p>Note: There was a typo in the Derby database configuration portion of the Installation document at the time of release. The <a href="../registry/registry-service/install/index.html">Installation</a> document has been updated online but the version of the document in the release package has not been updated. Please refer to the online version of the document for the correct configuration.
             </p>
           </li>
           <li><b>Registry User Interface</b><br/>
