@@ -73,6 +73,7 @@
 
         <ul>
           <li>PDS4 Tools was added providing support for accessing PDS4 data objects including selected transformations to common formats.
+          </li>
           <li>Transform Tool was added providing support for transforming PDS3 and PDS4 product labels and product data into common formats.
           </li>
           <li>Search User Interface was added providing a deployable graphical user interface for the Search Service.
@@ -80,6 +81,7 @@
           <li>Harvest Tool added support for comparing generated checksums with a supplied checksum manifest file.
           </li>
           <li>Search Service added support for the Planetary Data Access Protocol (PDAP) as well as support for returning results in a VOTable structure.
+          </li>
         </ul>
       </subsection>
 
@@ -115,7 +117,7 @@
       </p>
 
       <ul>
-        <li>Upgrade the Data Search interface to remove the dependence on the PDS3 catalog database.
+        <li>Upgrade miscellaneous portal interfaces to remove the dependence on the PDS3 catalog database.
         </li>
         <li>Need to review use cases for the Catalog Tool and update the software accordingly.
         </li>
