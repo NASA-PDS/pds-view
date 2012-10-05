@@ -23,7 +23,7 @@
 
   <body>
     <section name="About Search Core">
-      <p>The Search Core is a software tool, build in accordance with the Search Service to provide searching capabilities for PDS Engineering data extracted from Registry Services.  Its purpose is to provide the basis for creating a Lucene Index and searching it through an <a href="http://lucene.apache.org/solr/">Apache Solr</a> web application.  This index can then be leveraged by other software to provide a searchable user interface to a prospective user.  The Search Core software itself has a command-line interface and API to provide this functionality.
+      <p>The Search Core is a software tool, built in accordance with the Search Service to provide searching capabilities for PDS Engineering data extracted from Registry Services.  Its purpose is to provide the basis for creating a Lucene Index and searching it through an <a href="http://lucene.apache.org/solr/">Apache Solr</a> web application.  This index can then be leveraged by other software to provide a searchable user interface to a prospective user.  The Search Core software itself has a command-line interface and API to provide this functionality.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.g
@@ -33,7 +33,7 @@ ov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
 
     <section name="Main Components">
       <p>
-  The following section describes the main functionality and components of the Search Core.  These components are combined to produce a searchable index through a web interface, such as the PDS Engineering saerch <a href="http://pds.jpl.nasa.gov/tools/data-search">Data Search page</a>.  
+  The following section describes the main functionality and components of the Search Core.  These components are combined to produce a searchable index through a web interface, such as the PDS Engineering search <a href="http://pds.jpl.nasa.gov/tools/data-search">Data Search page</a>.  
       </p>
       <subsection name="Command-line Interface">
 	<p>

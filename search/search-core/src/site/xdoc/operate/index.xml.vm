@@ -104,7 +104,7 @@
         </p>
 
         <source>
-% search-core -i -H /usr/local/search-service/pds -r http://pdsdev.jpl.nasa.gov:8080/registry
+% search-core -H /usr/local/search-service/pds -r http://pdsdev.jpl.nasa.gov:8080/registry -m 100
         </source>
 
         <p>The following command demonstrates how to specify a SEARCH_HOME and REGISTRY_URL via a Search Core properties file:
