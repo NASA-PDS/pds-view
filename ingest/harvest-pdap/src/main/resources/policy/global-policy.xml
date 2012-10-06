@@ -17,8 +17,11 @@
 <policy>
   <productMetadata>
     <staticMetadata>
+       <slot name="information_model_version">
+         <value>0300a</value>
+       </slot>
       <slot name="node_ref">
-        <value>urn:nasa:pds:node.ESA</value>
+        <value>urn:nasa:pds:node.PSA</value>
       </slot>
     </staticMetadata>
     <dynamicMetadata>

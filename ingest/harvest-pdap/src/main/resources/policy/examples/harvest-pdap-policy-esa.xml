@@ -9,15 +9,17 @@
      <pdapService agency="esa" url="http://psa.esac.esa.int:8000"/>
    </pdapServices>
    <productMetadata>
+     <!-- To add static metadata other than the default set, add a 'staticMetadata' block as follows:
      <staticMetadata>
        <slot name="information_model_version">
-         <value>0800k</value>
+         <value>0300a</value>
        </slot>
        <slot name="node_ref">
-         <value>urn:nasa:pds:node.ESA</value>
+         <value>urn:nasa:pds:node.PSA</value>
        </slot>
      </staticMetadata>
-     <!-- To extract more metadata other than the default set, add a 'dynamicMetadata' section like the following,
+     -->
+     <!-- To extract more metadata other than the default set, add a 'dynamicMetadata' block as follows:
      <dynamicMetadata>
        <element name="DATA_SET_ID">
          <slotName>data_set_id</slotName>
@@ -28,7 +30,7 @@
    </productMetadata>
    <resourceMetadata>
      <title>The Planetary Science Archive METADATA Query Service</title>
-     <type>application.dataSetBrowserP</type>
+     <type>System.Browse</type>
      <slot name="resource_name">
        <value>The Planetary Science Archive METADATA Query Service</value>
      </slot>
