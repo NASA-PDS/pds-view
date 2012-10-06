@@ -336,12 +336,6 @@
       <version>2.0-cr-1</version>
     </dependency>
     <dependency>
-      <groupId>gov.nasa.pds</groupId>
-      <artifactId>product-tools</artifactId>
-      <version>3.2.0</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>cas-filemgr</artifactId>
       <version>0.3</version>
