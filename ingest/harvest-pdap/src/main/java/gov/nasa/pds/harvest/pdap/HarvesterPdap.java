@@ -194,8 +194,8 @@ public class HarvesterPdap {
               continue;
             } catch (RegistryServiceException rse) {
               log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
-                  "Exception occurred while attempting to register product '"
-                  + lidvid + "'", datasetId));
+                  "Exception occurred while attempting to register resource: "
+                  + rse.getMessage(), datasetId));
               ++HarvestPdapStats.numResourcesNotRegistered;
               continue;
             }

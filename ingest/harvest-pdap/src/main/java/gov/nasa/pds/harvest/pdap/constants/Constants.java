@@ -27,7 +27,7 @@ public class Constants {
   public static final String DATA_SET_PRODUCT_CLASS = "Product_Data_Set_PDS3";
 
   /** The resource product class. */
-  public static final String RESOURCE_PRODUCT_CLASS = "Product_Resource";
+  public static final String RESOURCE_PRODUCT_CLASS = "Product_Context";
 
   public static final String URN_ILLEGAL_CHARACTERS = "[%/\\\\?#\"&<>\\[\\]^`\\{\\|\\}~]";
 }
