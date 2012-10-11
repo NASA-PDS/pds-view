@@ -26,7 +26,7 @@
 
   <body>
     <section name="Operation">
-      <p>The Search Service tool operates as a standalone web application on a Tomcat server.  Once it is deployed, the only operations involve the modifying the Apache Solr configuration.  Go to <a href="http://lucene.apache.org/solr/">Apache Solr website</a> and <a href="http://wiki.apache.org/solr/">wiki</a>.
+      <p>The Search Service tool operates as a standalone web application on a Tomcat server.  Once it is deployed, the only operations involve the modifying the Apache Solr configuration.  The index used by Solr is generated and posted to the application by the <a href="../../search-core/operate/index.html">Search Core</a>.  See also the <a href="http://lucene.apache.org/solr/">Apache Solr website</a> and <a href="http://wiki.apache.org/solr/">wiki</a> for more information on configuring Apache Solr.
       </p>
     </section>
 
