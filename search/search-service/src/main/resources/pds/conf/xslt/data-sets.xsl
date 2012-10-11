@@ -263,7 +263,15 @@
     <xsl:value-of select="concat('Information about the target ',str[@name='title'])" />
   </xsl:when>
   <xsl:otherwise>
-    <xsl:value-of select="fn:replace(str[@name='description'],'&lt;br /&gt;',' ')" />
+    <xsl:variable name="desc"><xsl:value-of select="str[@name='description']" /></xsl:variable>
+    <xsl:choose>
+      <xsl:when test="$desc = ''">
+        <xsl:value-of select="concat('Information about the ',str[@name='data_set_id'],' data set')" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="replace(replace(str[@name='description'],'&amp;lt;br /&amp;gt;',' '), '&amp;amp;', '&amp;')" />
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:otherwise>
 </xsl:choose>
 <xsl:if test="str[@name='resClass'] = 'DataSet'">
