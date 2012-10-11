@@ -76,7 +76,7 @@ public class XMLWriter {
 					value = (String) i.next();
 					// log.info("name: "+name);
 					// log.info("value: "+value);
-					addElement(name, value, isCleanedAttr(name));
+					addElement(name, value);
 				}
 			}
 
@@ -112,21 +112,12 @@ public class XMLWriter {
 		return fname;
 	}
 
-	public void addElement(String name, String value, boolean clean) {
+	public void addElement(String name, String value) {
 		// Temporary variables to hold name and value
 		String tName, tValue;
 
 		tName = name.trim();
 		tValue = value.trim();
-
-		// Utilize JTidy servlet extension to encode all non-letter characters
-		// tName = HTMLEncode.encode(tName);
-		// tValue = HTMLEncode.encode(tValue);
-
-		if (clean) {
-			tValue = tValue.toLowerCase();
-			tValue = tValue.replace(' ', '_');
-		}
 
 		// Previous method used to encode only select HTML entities
 		tName = repAllCharWStr(tName);
@@ -183,21 +174,6 @@ public class XMLWriter {
 			p1++;
 		}
 		return sbuff2.toString();
-	}
-
-	public boolean isCleanedAttr(String s1) {
-		String[] elemfacet = { "identifier", "title", "format", "description",
-				"publisher", "language", "resContext", "resClass",
-				"resLocation", "data_set_terse_desc", "data_set_desc",
-				"mission_desc", "target_desc", "host_desc", "instrument_desc",
-				"volume_name", "volume_desc" };
-
-		for (int ind = 0; ind < elemfacet.length; ind++) {
-			if (s1.compareTo(elemfacet[ind]) == 0) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	/**
