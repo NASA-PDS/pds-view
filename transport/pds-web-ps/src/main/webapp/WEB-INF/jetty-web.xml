@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  Copyright 2005 California Institute of Technology.
+  ALL RIGHTS RESERVED. U.S. Government Sponsorship acknowledged.
+
+  $Id$
+-->
+<!DOCTYPE Configure PUBLIC '-//Mort Bay Consulting//DTD Configure 1.2//EN' 'http://jetty.mortbay.org/configure_1_2.dtd'>
+<Configure class='org.mortbay.jetty.servlet.WebApplicationContext'>
+  <Set name='extractWAR'>true</Set>
+</Configure>
