@@ -157,7 +157,7 @@ public class FileQueryHandler implements LargeProductQueryHandler {
       File[] fileArray = new File[filenameList.size()];
       for (int i = 0; i<fileArray.length; i++) {
         filename = (String)filenameList.get(i);
-        if (filename.contains("..")) {
+        if ((filename.contains("../")) || (filename.contentEquals(".."))) {
           System.err.println("FileQueryHandler received non-ONLINE_FILE_SPECIFICATION_NAME query");
           return query;
         }
