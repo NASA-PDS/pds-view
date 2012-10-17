@@ -23,7 +23,7 @@
   </properties>
 
   <body>
-    <release version="2.1.0" date="TBD" description="This release of the Web Grid Product Server addresses a couple of issues found in the previous release and moves the project to the PDS source repository.">
+    <release version="2.1.0" date="2012-10-17" description="This release of the Web Grid Product Server addresses a couple of issues found in the previous release and moves the project to the PDS source repository.">
       <action dev="shardman" type="add">
          Created this new project based on a combination of the OODT pds-ps (2.0.3) and pds-web-ps (2.0.3) packages migrated from the OODT source repository. The package has a dependency on OODT web-grid (1.4.0).
       </action>

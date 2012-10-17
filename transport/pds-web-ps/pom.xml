@@ -54,19 +54,28 @@
       </roles>
     </developer>
     <developer>
-      <name>Jerry Crichton</name>
-      <id>jerry</id>
-      <email>Gerald.A.Crichton@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Former Developer</role>
-      </roles>
-    </developer>
-    <developer>
       <name>Sean Kelly</name>
       <id>kelly</id>
       <email>Sean.Kelly@jpl.nasa.gov</email>
       <organization>Independent Consultant</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Hyun Lee</name>
+      <id>hyunlee</id>
+      <email>Hyun.Lee@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Jerry Crichton</name>
+      <id>jerry</id>
+      <email>Gerald.A.Crichton@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
         <role>Former Developer</role>
       </roles>
