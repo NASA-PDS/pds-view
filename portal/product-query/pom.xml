@@ -53,7 +53,63 @@
         <role>Development Lead</role>
       </roles>
     </developer>
+    <developer>
+      <name>Sean Kelly</name>
+      <id>kelly</id>
+      <email>Sean.Kelly@jpl.nasa.gov</email>
+      <organization>Independent Consultant</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Jerry Crichton</name>
+      <id>jerry</id>
+      <email>Gerald.A.Crichton@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Former Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Sean Kelly</name>
+      <id>kelly</id>
+      <email>Sean.Kelly@jpl.nasa.gov</email>
+      <organization>Independent Consultant</organization>
+      <roles>
+        <role>Former Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Thuy Tran</name>
+      <id>thuytran</id>
+      <email>Thuy.Tran@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Former Developer</role>
+      </roles>
+    </developer>
   </developers>
+
+  <contributors>
+    <contributor>
+      <name>Dan Crichton</name>
+      <email>Dan.Crichton@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>OODT Principal Investigator</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Steve Hughes</name>
+      <email>John.S.Hughes@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>OODT Co-Investigator</role>
+        <role>System Engineering Lead</role>
+      </roles>
+    </contributor>
+  </contributors>
 
   <build>
     <plugins>
