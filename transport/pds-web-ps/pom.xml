@@ -16,7 +16,7 @@
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
@@ -26,12 +26,12 @@
 
   <groupId>gov.nasa.pds.2010.transport</groupId>
   <artifactId>pds-web-ps</artifactId>
-  <version>2.0.4</version>
+  <version>2.1.0</version>
   <packaging>war</packaging>
 
   <name>Web Grid Product Server</name>
   <description>
-    The Web Grid Product Server provides functionality for transporting files from local data repositories.
+    The Web Grid Product Server provides functionality for transporting files from Discipline Node local data repositories. This software is based on OODT's grid framework Product Server for accessing product files, converting them when requested and transferring those files via HTTP to the requesting client.
   </description>
   <url>http://pds-cm.jpl.nasa.gov/2010/transport/pds-web-ps/</url>
 
@@ -53,10 +53,67 @@
         <role>Development Lead</role>
       </roles>
     </developer>
+    <developer>
+      <name>Jerry Crichton</name>
+      <id>jerry</id>
+      <email>Gerald.A.Crichton@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Former Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Sean Kelly</name>
+      <id>kelly</id>
+      <email>Sean.Kelly@jpl.nasa.gov</email>
+      <organization>Independent Consultant</organization>
+      <roles>
+        <role>Former Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Thuy Tran</name>
+      <id>thuytran</id>
+      <email>Thuy.Tran@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Former Developer</role>
+      </roles>
+    </developer>
   </developers>
+
+  <contributors>
+    <contributor>
+      <name>Dan Crichton</name>
+      <email>Dan.Crichton@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>OODT Principal Investigator</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Steve Hughes</name>
+      <email>John.S.Hughes@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>OODT Co-Investigator</role>
+        <role>System Engineering Lead</role>
+      </roles>
+    </contributor>
+  </contributors>
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <!-- Not a test, but an abstract base of other tests. -->
+            <exclude>**/FileHandlerTestCase.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -123,32 +180,77 @@
       <name>OODT Private Maven Repository</name>
       <url>http://oodt.jpl.nasa.gov/download/private</url>
     </repository>
-    <!-- Hosts the OODT-required miscellaneous artifacts. -->
-    <repository>
-      <id>oodt-pub-repo</id>
-      <name>OODT Public Maven Repository</name>
-      <url>http://oodt.jpl.nasa.gov/download/public</url>
-    </repository>
   </repositories>
 
   <dependencies>
     <dependency>
       <groupId>oodt</groupId>
-      <artifactId>web-grid</artifactId>
-      <version>1.2.0</version>
+      <artifactId>edm-commons</artifactId>
+      <version>2.2.10</version>
+    </dependency>
+    <dependency>
+      <groupId>oodt</groupId>
+      <artifactId>grid-profile</artifactId>
+      <version>3.1.2</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>oodt</groupId>
+      <artifactId>grid-product</artifactId>
+      <version>3.0.11</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>oodt</groupId>
+      <artifactId>edm-query</artifactId>
+      <version>2.0.6</version>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>oodt</groupId>
+          <artifactId>edm-commons</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>antlr</groupId>
       <artifactId>antlr</artifactId>
       <version>2.7.2</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>xerces</groupId>
       <artifactId>xerces</artifactId>
-      <version>1.4.4</version>
+      <version>2.4.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>gov.nasa.jpl.oodt</groupId>
+      <artifactId>web-grid</artifactId>
+      <version>1.4.0</version>
+      <scope>runtime</scope>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
   <!-- Project Information and Reports inherited from parent. -->
-  <reporting/>
+  <reporting>
+    <!-- Project Reports not inherited from parent. -->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>

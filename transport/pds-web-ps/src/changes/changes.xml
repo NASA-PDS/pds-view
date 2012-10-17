@@ -23,13 +23,15 @@
   </properties>
 
   <body>
-    <release version="2.0.4" date="TBD" description="This release of the Web Grid Product Server .">
-    </release>
+    <release version="2.1.0" date="TBD" description="This release of the Web Grid Product Server addresses a couple of issues found in the previous release.">
       <action dev="shardman" type="add">
-         Created the package based on a combination of the OODT pds-ps (2.0.3), pds-web-ps (2.0.3) and web-grid (1.2.0) packages.
+         Created this new project based on a combination of the OODT pds-ps (2.0.3) and pds-web-ps (2.0.3) packages migrated from the OODT source repository. The package has a dependency on OODT web-grid (1.4.0).
+      </action>
+      <action dev="kelly" type="fix">
+         Modified the dependencies and the unit tests to correct an issue encountered with saving configuration changes.
       </action>
       <action dev="shardman" type="fix">
-         Modified the FileQueryHandler class to detect the existence of ".." in the file name specification and reject the query as a non-OFSN query. This will restrict the ability to traverse up the directory tree.
+         Modified the FileQueryHandler class to detect the existence of "../" in the file name specification and reject the query as a non-OFSN query. This will restrict the ability to traverse up the directory tree.
       </action>
     </release>
   </body>
