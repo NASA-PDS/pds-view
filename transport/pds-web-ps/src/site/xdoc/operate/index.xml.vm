@@ -98,8 +98,46 @@ OFSN+%3D+&lt;online-file-specification-name&gt;+AND+RT+%3D+&lt;return-type&gt;
         <tr><td>DIRFILELIST</td><td>Returns an XML document containing all of the filenames (and only the files, not directories) and their sizes, recursing into subdirectories.</td></tr>
         <tr><td>DIRFILELIST1</td><td>Identical to <i>DIRFILELIST</i> except that it does not recurse into subdirectories.</td></tr>
         <tr><td>DIRLIST</td><td>Returns an XML document with directory names (and only directory names) and total size of files in each directory starting in the requested directory and traversing into the subdirectories.</td></tr>
-        <tr><td>DIRLIST1</td><td>Identical to <i>DIRLIST</i> but does not recursively descend into subdirectories.</td></tr>
-        <tr><td>FILELIST</td><td>Returns an XML document naming the requested file and also giving its size.</td></tr>
+        <tr>
+          <td>DIRLIST1</td>
+          <td>Identical to <i>DIRLIST</i> but does not recursively descend into subdirectories. An example response looks like:
+            <source>
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE dirresult PUBLIC "-//JPL/DTD OODT dirresult 1.0//EN"
+  "http://starbrite.jpl.nasa.gov:80/dtd/dirresult.dtd"&gt;
+&lt;dirResult&gt;
+  &lt;dirEntry&gt;
+    &lt;OFSN&gt;data/ody-m-rss-1-raw-v1.0/odrs_0001&lt;/OFSN&gt;
+    &lt;fileSize&gt;39360&lt;/fileSize &gt;
+  &lt;/dirEntry&gt;
+  &lt;dirEntry&gt;
+    &lt;OFSN&gt;data/ody-m-rss-1-raw-v1.0/odrs_0008&lt;/OFSN&gt;
+    &lt;fileSize&gt;42880&lt;/fileSize &gt;
+  &lt;/dirEntry&gt;
+  &lt;dirEntry&gt;
+    &lt;OFSN &gt;data/ody-m-rss-1-raw-v1.0/odrs_0002&lt;/OFSN&gt;
+    &lt;fileSize&gt;35280&lt;/fileSize&gt;
+  &lt;/dirEntry&gt;
+&lt;/dirResult&gt;
+            </source>
+          </td>
+        </tr>
+        <tr>
+          <td>FILELIST</td>
+          <td>Returns an XML document naming the requested file and also giving its size. An example response looks like:
+            <source>
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE dirresult PUBLIC "-//JPL/DTD OODT dirresult 1.0//EN"
+   "http://starbrite.jpl.nasa.gov:80/dtd/dirresult.dtd"&gt;
+&lt;dirResult&gt;
+  &lt;dirEntry&gt;
+    &lt;OFSN&gt;data/ody-m-rss-1-raw-v1.0/odrs_0001/eop/11352136.lbl&lt;/OFSN&gt;
+    &lt;fileSize&gt;1440&lt;/fileSize&gt;
+  &lt;/dirEntry&gt;
+&lt;/dirResult&gt;
+            </source>
+          </td>
+        </tr>
         <tr><td>FILELISTZIP</td><td>Similar to <i>FILELIST</i> except that it tells what the size of the requested file would be if compressed into a ZIP archive.</td></tr>
         <tr><td>PDS_FILELIST</td><td>Returns a file listing of the requested PDS label file and its references in XML format. This is similar to <i>FILELIST</i> but instead of giving the size of the requested file, it parses the requested file as a PDS label and gives the sizes of all referenced files.</td></tr>
         <tr><td>PDS_FILELISTZIP</td><td>Returns an XML document with the size of the ZIP archive that would be downloaded with <i>PDS_ZIP</i> but not if you expanded the archive.</td></tr>
