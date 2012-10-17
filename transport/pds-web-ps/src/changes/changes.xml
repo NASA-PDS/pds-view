@@ -23,7 +23,7 @@
   </properties>
 
   <body>
-    <release version="2.1.0" date="TBD" description="This release of the Web Grid Product Server addresses a couple of issues found in the previous release.">
+    <release version="2.1.0" date="TBD" description="This release of the Web Grid Product Server addresses a couple of issues found in the previous release and moves the project to the PDS source repository.">
       <action dev="shardman" type="add">
          Created this new project based on a combination of the OODT pds-ps (2.0.3) and pds-web-ps (2.0.3) packages migrated from the OODT source repository. The package has a dependency on OODT web-grid (1.4.0).
       </action>
@@ -33,6 +33,19 @@
       <action dev="shardman" type="fix">
          Modified the FileQueryHandler class to detect the existence of "../" in the file name specification and reject the query as a non-OFSN query. This will restrict the ability to traverse up the directory tree.
       </action>
+    </release>
+    <release version="2.0.3" date="2009-10-15" description="Maintenance release for the Web Grid Product Server.">
+      <action dev="hyunlee" type="fix">
+         Modified to correct an issue where format labels were being truncated after 100 lines.
+      </action>
+    </release>
+    <release version="2.0.2" date="2006-03-06" description="Maintenance release for the Web Grid Product Server.">
+    </release>
+    <release version="2.0.1" date="2005-06-18" description="Maintenance release for the Web Grid Product Server.">
+    </release>
+    <release version="2.0.0" date="2004-09-16" description="Maintenance release for the Web Grid Product Server.">
+    </release>
+    <release version="1.0.1" date="2004-04-05" description="Maintenance release for the Web Grid Product Server.">
     </release>
   </body>
 </document>
