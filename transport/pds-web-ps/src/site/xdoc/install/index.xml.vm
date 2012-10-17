@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2012, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Installation</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Installation">
+      <p>This document describes how to install the Web Grid Product Server software contained in the <i>${project.artifactId}</i> package. The following topics can be found in this section:
+      </p>
+
+      <ul>
+        <li><a href="#System_Requirements">System Requirements</a></li>
+        <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
+        <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+        <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
+      </ul>
+    </section>
+
+    <section name="System Requirements">
+      <p>This section details the system requirements for installing and operating the Web Grid Product Server.
+      </p>
+
+      <subsection name="Java Runtime Environment">
+        <p>The Web Grid Product Server was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically developed under Java version 1.6 and has only been tested with this version. The following commands test the local Java installation in a UNIX-based environment:
+        </p>
+
+        <source>
+% which java
+/usr/bin/java
+
+% java -version
+java version "1.6.0_26"
+Java(TM) SE Runtime Environment (build 1.6.0_26-b03-384-10M3425)
+Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
+        </source>
+
+        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.6, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The software package of choice is the Java Standard Edition (SE) 6, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
+        </p>
+      </subsection>
+
+      <subsection name="Java Application Server">
+        <p>The Web Grid Product Server requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Apache Tomcat software can be downloaded from the <a href="http://tomcat.apache.org/" target="_blank">Apache Tomcat</a> page. Choose the version to download (6.0 or 7.0) from the menu on the left.
+        </p>
+      </subsection>
+    </section>
+
+    <section name="Unpacking the Package">
+      <p>Download the <i>${project.artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/transport/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. The installation directory may vary from environment to environment but in UNIX-based environments it is typical to install software packages in the <i>/usr/local</i> directory and in Windows-based environments it is typical to install software packages in the <i>C:\Program Files</i> directory. Unpack the selected binary distribution file with one of the following commands:
+      </p>
+
+      <source>
+% unzip ${project.artifactId}-${project.version}-bin.zip
+or
+% tar -xzvf ${project.artifactId}-${project.version}-bin.tar.gz
+      </source>
+
+      <p>Note: Depending on the platform, the native version of <i>tar</i> may produce an error when attempting to unpack the distribution file because many of the file paths are greater than 100 characters. If available, the GNU version of tar will resolve this problem. If that is not available or cannot be installed, the zipped package will work just fine in a UNIX environment.
+      </p>
+
+      <p>The commands above result in the creation of the <i>${project.artifactId}-${project.version}</i> directory with the following directory structure:
+      </p>
+
+      <ul>
+        <li><b>README.txt</b><br/>
+          <p>A README file directing the user to the available documentation for the project.
+          </p>
+        </li>
+        <li><b>LICENSE.txt</b><br/>
+          <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
+          </p>
+        </li>
+        <li><b>${project.artifactId}-${project.version}.war</b><br/>
+          <p>This is the Web ARchive (WAR) file containing the Product Server software including all dependent JAR files.
+          </p>
+        </li>
+        <li><b>doc/</b><br/>
+          <p>This directory contains a local web site with the Web Grid Product Server documentation and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
+          </p>
+        </li>
+      </ul>
+    </section>
+
+    <section name="Deploying the Application">
+      <p>The Web Grid Product Server web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory within the Tomcat installation or installed via the Manager interface. It is suggested that the WAR file name be changed from <i>${project.artifactId}-${project.version}.war</i> to <i>pds.war</i> prior to installation. Once this step is complete, the application is ready for configuration.
+      </p>
+    </section>
+
+    <section name="Configuring the Application">
+      <p>The preferred method for configuring the Web Grid Product Server is to use the web-based interface. There is also a method for file-based configuration, which is especially useful when performing an upgrade of the Product Server.
+      </p>
+
+      <subsection name="Web-Based Configuration">
+        <p>The Product Server is a web application and can be accessed with any standard web browser (e.g., Firefox, Safari, Internet Explorer, etc.). Assuming the user is attempting access to the application from the local machine where the application server is running and the name of the WAR file was changed to <i>pds.war</i>, the application is accessible from the following endpoint: <i>http://localhost:8080/pds</i>. The following screen should appear in your web browser:
+        </p>
+
+        <center>
+          <a href="../images/main.jpg" target="_blank"><img alt="Product Server Main Screen" src="../images/main-scale.jpg" border="1"/></a><br/>
+          Click on the image for a larger version.
+        </center>
+
+        <p>Select the <i>Configure the Product Server</i> link, which will display the following login screen:
+        </p>
+
+        <center>
+          <a href="../images/login.jpg" target="_blank"><img alt="Product Server Login Screen" src="../images/login-scale.jpg" border="1"/></a><br/>
+          Click on the image for a larger version.
+        </center>
+
+        <p>Enter the default password of <i>maha.lo</i> and select the <i>Log In</i> button to display the following configuration screen:
+        </p>
+
+        <center>
+          <a href="../images/password.jpg" target="_blank"><img alt="Product Server Configuration Screen" src="../images/password-scale.jpg" border="1"/></a><br/>
+          Click on the image for a larger version.
+        </center>
+
+        <p>The top portion of the screen provides access to the following configuration settings:
+        </p>
+
+        <ul>
+          <li>Administrator Password<br/>
+            <p>Change the default administrator password. Enter a new password in the text box. This password will be required to reconfigure the Product Server in the future.
+            </p>
+          </li>
+          <li>Local Host Access<br/>
+            <p>Select the <i>Yes</i> button if administrative access should be limited to web browsers running on the host machine where the application server is running. Selecting the <i>No</i> button, will allow access to all hosts.
+            </p>
+          </li>
+          <li>HTTPS Access<br/>
+            <p>Select the <i>Yes</i> button to require HTTPS for administrative access. The host application server must support HTTPS. Selecting the <i>No</i> button, will provide access over HTTP.
+            </p>
+          </li>
+        </ul>
+
+        <p>Scroll down the screen to the <i>System Properties</i> section as displayed below:
+        </p>
+
+        <center>
+          <a href="../images/properties.jpg" target="_blank"><img alt="Product Server Configuration Screen" src="../images/properties-scale.jpg" border="1"/></a><br/>
+          Click on the image for a larger version.
+        </center>
+
+        <p>The values for the following two properties must be specified:
+        </p>
+
+        <ul>
+          <li>jpl.pds.server.JPEGFileHandler.pds2jpeg<br/>
+            <p>This property must contain the file specification to your <i>pds2jpeg</i> application. If you do not have a machine-specific version of the <i>pds2jpeg</i> application, contact the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> for a copy. In the <i>Value</i> text box next to the property, replace the placeholder value (@PDS2JPEG@) with the file specification for the application on the host machine (i.e., /usr/local/pds/bin/pds2jpeg).
+            </p>
+          </li>
+          <li>jpl.pds.server.FileQueryHandler.productDir<br/>
+            <p>This property must contain the full path to the Node's directory containing all PDS data. Typically, this will be a directory that contains the Node's data and (optionally) the Node's archive or browse directories. In the <i>Value</i> text box next to the property, replace the placeholder value (@PRODUCT_DIR@) with the full path to the directory (i.e., /archive/pds).
+            </p>
+          </li>
+        </ul>
+
+        <p>The Product Server does offer some more advanced configuration settings including adding code bases and additional product or profile query handlers. These advanced configuration settings will not be covered here. Scroll down to the bottom of the screen as displayed below:
+        </p>
+
+        <center>
+          <a href="../images/handlers.jpg" target="_blank"><img alt="Product Server Configuration Screen" src="../images/handlers-scale.jpg" border="1"/></a><br/>
+          Click on the image for a larger version.
+        </center>
+
+        <p>Select the <i>Save Changes</i> button to save any changes made to the configuration settings. The Product Server is now ready for operations.
+        </p>
+      </subsection>
+
+      <subsection name="File-Based Configuration">
+        <p>Although not the suggested method for configuring the Product Server, this method can be useful if the desire is to transfer the configuration from one Product Server to another (i.e., upgrading versions). The configuration file resides at <i>$TOMCAT_HOME/webapps/pds/WEB-INF/config.xml</i> and should look something like the following:
+        </p>
+
+        <source>
+&lt;configuration https='false' localhost='false' password='bWFoYS5sbw==' 
+   xmlns='http://oodt.jpl.nasa.gov/web-grid/ns/'&gt;
+  &lt;server className='jpl.pds.server.FileQueryHandler' type='product'/&gt;
+  &lt;properties&gt;
+    &lt;property key='jpl.pds.server.FileQueryHandler.productDir'&gt;
+      @PRODUCT_DIR@
+    &lt;/property&gt;
+    &lt;property key='jpl.pds.server.JPEGFileHandler.pds2jpeg'&gt;
+      @PDS2JPEG@
+    &lt;/property&gt;
+  &lt;/properties&gt;
+&lt;/configuration&gt;
+        </source>
+
+        <p>Before upgrading the Product Server, make a copy of the above configuration file. Install the new Product Server as specified above. Shutdown the host application server, copy the saved configuration file over the one that came in the new installation and they restart the application server. The Product Server is now ready for operations.
+        </p>
+      </subsection>
+    </section>
+  </body>
+</document>

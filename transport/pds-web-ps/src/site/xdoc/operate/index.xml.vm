@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2012, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Operation</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Operation">
+      <p>This document describes how to operate the Web Grid Product Server software contained in the <i>${project.artifactId}</i> package. The Product Server software is a web application for for transporting files from Discipline Node local data repositories. The following topics can be found in this section:
+      </p>
+
+      <ul>
+        <li><a href="#Interface">Interface</a></li>
+        <li><a href="#Product_Query">Product Query</a></li>
+      </ul>
+    </section>
+
+    <section name="Interface">
+      <p>The Web Grid Product Server provides a REST-based interface accessible via HTTP for interacting with the service. This interface accepts both HTTP GET and HTTP POST style requests. Because the REST-based interface operates over HTTP, there are several options for interacting with the Product Server:
+      </p>
+
+      <ul>
+        <li>Web Browser<br/>
+          <p>Any standard web browser (e.g., Firefox, Safari, Internet Explorer, etc.) will allow interaction with the service.
+          </p>
+        </li>
+        <li>cURL<br/>
+          <p>The <a href="http://curl.haxx.se/" target="_blank">cURL</a> utility offers the most flexible means for interacting with the service. The utility comes installed on most UNIX-based platforms and is available for download for the Windows platform. The examples in the sections that follow utilize <i>cURL</i> to interact with the service. If <i>cURL</i> is not installed on the local machine but <i>Wget</i> is, see the <a href="index-wget.html">Using Wget</a> section for converting <i>cURL</i> commands to <i>Wget</i> commands.
+          </p>
+        </li>
+      </ul>
+
+      <p>The examples below use <i>http://localhost:8080</i> as the default base URL for the service.
+      </p>
+    </section>
+
+    <section name="Product Query">
+      <p>The Web Grid Product Server provides functionality for for transporting files from Discipline Node local data repositories. The following table details the parameters available for querying a product:
+      </p>
+
+      <table>
+        <tr><th>Parameter</th><th>Description</th></tr>
+        <tr><td>q</td><td>The keyword query expression that selects what product (or set of files) to retrieve from the Product Server. This is the preferred parameter for querying the Product Server. This parameter is required if the <i>xmlq</i> parameter is not specified.</td></tr>
+        <tr><td>xmlq</td><td>The XML query expression that selects what product (or set of files) to retrieve from the Product Server. The details for the format of this query expression will not be covered here. Although supported, the <i>q</i> parameter is utilized by all existing client interfaces. This parameter is required if the <i>q</i> parameter is not specified.</td></tr>
+      </table>
+
+      <p>The following is an example query request via <i>cURL</i> using the <i>q</i> parameter:
+      </p>
+
+      <source>
+% curl -X GET -o product.out -v \
+http://localhost:8080/pds/prod?q=&lt;keyword-query&gt;
+      </source>
+
+      <p>The following table details the required keywords for the keyword query expression:
+      </p>
+
+      <table>
+        <tr><th>Keyword</th><th>Description</th></tr>
+        <tr><td>OFSN</td><td>The online file specification name for a file or directory accessible by the Product Server. The keyword can be specified in long form as <i>ONLINE_FILE_SPECIFICATION_NAME</i>. This keyword is required.</td></tr>
+        <tr><td>RT</td><td>The return type specifies how the file or directory will be returned to the client from the Product Server. The keyword can be specified in long form as <i>RETURN_TYPE</i>. The table below details the valid value list for this keyword. This keyword is required.</td></tr>
+      </table>
+
+      <p>The keyword query expression must be properly encoded by the rules of Uniform Resource Identifiers whether they're part of the URL in an HTTP GET request or transmitted separately in an HTTP POST request. In general, this means that characters spaces and equals signs in query expressions need to be properly escaped. Most browsers and HTTP libraries will happily relax these rules, though, especially in cases where there is no ambiguity. For Product Server queries, this means changing your spaces to <i>+</i>'s and your equals signs to <i>%3D</i>'s. The following example of a keyword query expression details the difference between an unencoded and encoded query:
+      </p>
+
+      <source>
+OFSN = &lt;online-file-specification-name&gt; AND RT = &lt;return-type&gt;
+
+  properly encoded request:
+
+OFSN+%3D+&lt;online-file-specification-name&gt;+AND+RT+%3D+&lt;return-type&gt;
+      </source>
+
+      <p>The following table details the valid values for the return type keyword:
+      </p>
+
+      <table>
+        <tr><th>Return Type</th><th>Description</th></tr>
+        <tr><td>DIRFILELIST</td><td>Returns an XML document containing all of the filenames (and only the files, not directories) and their sizes, recursing into subdirectories.</td></tr>
+        <tr><td>DIRFILELIST1</td><td>Identical to <i>DIRFILELIST</i> except that it does not recurse into subdirectories.</td></tr>
+        <tr><td>DIRLIST</td><td>Returns an XML document with directory names (and only directory names) and total size of files in each directory starting in the requested directory and traversing into the subdirectories.</td></tr>
+        <tr><td>DIRLIST1</td><td>Identical to <i>DIRLIST</i> but does not recursively descend into subdirectories.</td></tr>
+        <tr><td>FILELIST</td><td>Returns an XML document naming the requested file and also giving its size.</td></tr>
+        <tr><td>FILELISTZIP</td><td>Similar to <i>FILELIST</i> except that it tells what the size of the requested file would be if compressed into a ZIP archive.</td></tr>
+        <tr><td>PDS_FILELIST</td><td>Returns a file listing of the requested PDS label file and its references in XML format. This is similar to <i>FILELIST</i> but instead of giving the size of the requested file, it parses the requested file as a PDS label and gives the sizes of all referenced files.</td></tr>
+        <tr><td>PDS_FILELISTZIP</td><td>Returns an XML document with the size of the ZIP archive that would be downloaded with <i>PDS_ZIP</i> but not if you expanded the archive.</td></tr>
+        <tr><td>PDS_JPEG</td><td>Returns the PDS-format image at the given <i>OFSN</i>, converted into the JPEG/JFIF image format.</td></tr>
+        <tr><td>PDS_JPEG_SIZE</td><td>Returns an XML document with the size of the JPEG file that would be generated by the corresponding <i>PDS_JPEG</i> query.</td></tr>
+        <tr><td>PDS_LABEL</td><td>Returns a plain text (MIME type text/plain) representation of the PDS label specified in the <i>OFSN</i>.</td></tr>
+        <tr><td>PDS_ZIP</td><td>Returns the PDS label and its references in a ZIP file.</td></tr>
+        <tr><td>PDS_ZIPD</td><td>Returns a ZIP archive of all of the files and directories under the given <i>OFSN</i>, which should be a directory.</td></tr>
+        <tr><td>PDS_ZIPD_SIZE</td><td>Returns an XML document with the size of the ZIP archive that would be generated by the corresponding <i>PDS_ZIPD</i> query.</td></tr>
+        <tr><td>PDS_ZIPN</td><td>Returns a ZIP archive containing the requested file and all of the files that it references.</td></tr>
+        <tr><td>PDS_ZIPN_SIZE</td><td>Returns an XML document with the size of the ZIP archive that would be generated by the corresponding <i>PDS_ZIPN</i> query.</td></tr>
+        <tr><td>PDS_ZIPN_TES</td><td>Returns a ZIP archive that contains all files matching the AAAnnnnn format in the same directory as the requested <i>OFSN</i>, and all of their referenced files.</td></tr>
+        <tr><td>PDS_ZIPN_TES_SIZE</td><td>Returns an XML document with the size of the ZIP archive that would be generated by the corresponding <i>PDS_ZIPN_TES</i> query.</td></tr>
+        <tr><td>PDS_ZIP_SIZE</td><td>Returns the total size of the PDS label file and its references in XML format if you were to download the product with <i>PDS_ZIP</i> and unzip the archive.</td></tr>
+        <tr><td>RAW</td><td>Returns the requested file without any modification (MIME type application/octet-stream).</td></tr>
+        <tr><td>RAW_SIZE</td><td>Returns an XML document with the size of the raw file that would be returned by the corresponding <i>RAW</i> query.</td></tr>
+      </table>
+
+      <p>The following query requests a directory listing from the <i>data</i> sub-directory found under the Product Server's root directory (specified by the <i>jpl.pds.server.FileQueryHandler.productDir</i> property during configuration):
+      </p>
+
+      <source>
+% curl -X GET -o product.out -v \
+http://localhost:8080/pds/prod?q=OFSN+%3D+data/+AND+RT+%3D+DIRLIST1
+      </source>
+    </section>
+  </body>
+</document>
