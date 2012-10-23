@@ -33,9 +33,7 @@ import org.xml.sax.SAXException;
  * Parses a document for text search and creates a Lucene document.
  * 
  * @author pramirez
- * @modifiedby Jordan Padams
- * @modifieddate 05/04/09
- * @version $Revision$
+ * @author jpadams
  * 
  */
 public class DocumentParser {
@@ -134,7 +132,7 @@ public class DocumentParser {
 					// Now UNK/N/A/UNKNOWN etc are handled in date conversion
 					if (name.equals("title")
 							&& Arrays.asList(Constants.VALID_UNK_VALUES)
-									.contains(value.toUpperCase())) {
+									.contains(value)) {
 						invalidDoc = true;
 					} else if (name.endsWith("date") || name.endsWith("time")) {
 						// System.out.println(name + " - " + value);

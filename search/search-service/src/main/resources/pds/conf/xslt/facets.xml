@@ -2,10 +2,12 @@
 
 <facets>
   <facet name="facet class" caption="Type" />
+  <facet name="facet agency" caption="Agency" />
   <facet name="facet target" caption="Target" />
   <facet name="facet mission" caption="Mission" />
   <facet name="facet instrument" caption="Instrument" />
 
+  <category name="agency" caption="Agency" />
   <category name="dataset" caption="Data Set" />
   <category name="instrumenthost" caption="Instrument Host" />
   <category name="instrument" caption="Instrument" />

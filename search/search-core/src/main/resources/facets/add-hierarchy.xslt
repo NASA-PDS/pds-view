@@ -37,6 +37,11 @@
     <xsl:copy-of select="." />
     <field name="facet_class"><xsl:value-of select="concat('1,',.)" /></field>
   </xsl:template>
+  
+  <xsl:template match="field[@name = 'agency_name']">
+    <xsl:copy-of select="." />
+    <field name="facet_agency"><xsl:value-of select="concat('1,',.)" /></field>
+  </xsl:template>
 
   <xsl:template match="field[@name = 'mission_name']">
     <xsl:copy-of select="." />
