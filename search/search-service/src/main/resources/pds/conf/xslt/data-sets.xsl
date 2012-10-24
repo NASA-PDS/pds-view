@@ -272,7 +272,7 @@
   <xsl:otherwise>
     <xsl:variable name="desc"><xsl:value-of select="str[@name='description']" /></xsl:variable>
     <xsl:choose>
-      <xsl:when test="$desc = ''">
+      <xsl:when test="$desc = '' or $desc = 'N/A'">
         <xsl:value-of select="concat('Information about the ',str[@name='data_set_id'],' data set')" />
       </xsl:when>
       <xsl:otherwise>
