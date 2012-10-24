@@ -17,9 +17,9 @@ fi
 
 UPDATE_URL="${SEARCH_SERVICE_URL}/update"
 
-./xslt $SEARCH_HOME ../facets/search-tools.xml ../facets/add-hierarchy.xslt $SEARCH_HOME/index/search-tools.hierarchy.xml
 
-curl "$UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary @$SEARCH_HOME/index/search-tools.hierarchy.xml
+# Delete all existing documents.
+curl "$UPDATE_URL" -H "Content-Type: application/xml" --silent --data-binary '<delete><query>*:*</query></delete>'
 
 #Backup existing solr index. This currently is in the wrong place and will need updating
 if [ -d $SEARCH_HOME/data_old ]
@@ -33,8 +33,10 @@ then
   cp -rp $SEARCH_HOME/data $SEARCH_HOME/data_old
 fi
 
-# Delete all existing documents.
-curl "$UPDATE_URL" -H "Content-Type: application/xml" --silent --data-binary '<delete><query>*:*</query></delete>'
+# Push search tools metadata to solr
+./xslt $SEARCH_HOME ../facets/search-tools.xml ../facets/add-hierarchy.xslt $SEARCH_HOME/index/search-tools.hierarchy.xml
+
+curl "$UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary @$SEARCH_HOME/index/search-tools.hierarchy.xml
 
 find $SEARCH_HOME/index/solr_index.xml.*
 for solrIndex in `find $SEARCH_HOME/index/solr_index.xml.*`; do

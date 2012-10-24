@@ -10,6 +10,7 @@
   <xsl:output media-type="text/html" omit-xml-declaration="yes" encoding="ISO-8859-1" indent="yes" />
 
   <xsl:param name="SOLR_HOME" select="." />
+  <xsl:variable name="numTools" as="xs:integer">5</xsl:variable>
 
   <xsl:variable name="title">PDS: Search Results</xsl:variable>
   <xsl:variable name="ds_result_range">
@@ -111,6 +112,19 @@
     </xsl:choose>
   </xsl:function>
 
+  <xsl:function name="pds:description" as="xs:string">
+    <xsl:param name="desc"  />
+    <xsl:param name="title" />
+    <xsl:choose>
+      <xsl:when test="not($desc) or $desc = 'N/A'">
+        <xsl:value-of select="concat('Information about ', $title)" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="replace(replace($desc,'&amp;lt;br /&amp;gt;',' '), '&amp;amp;', '&amp;')" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+
   <xsl:function name="pds:range" as="xs:integer*">
     <xsl:param name="from" as="xs:integer" />
     <xsl:param name="to" as="xs:integer" />
@@ -172,12 +186,16 @@
         (<xsl:value-of select="$ds_result_time" /> seconds)
     </p>
     
-    <xsl:if test="response/result/doc[str[@name='resClass']='ArchiveInfo']">
+    	<xsl:if test="response/result/doc[str[@name='resClass']='ArchiveInfo']">
       <div style="margin-top: 1em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Archive Information</div>
       <p style="margin-top: .5em; margin-bottom: .5em;">These web pages provide detailed information for the matching investigations. If no page looks appropriate, you can browse the matching search tools and data sets, below.</p>
       <ul class="results">
         <xsl:apply-templates select="response/result/doc[str[@name='resClass']='ArchiveInfo']"/>
       </ul>
+
+      <xsl:if test="count(response/result/doc[str[@name='resClass']='ArchiveInfo']) > 2">
+        <div class="more-info"><a class="info-button">More...</a></div>
+      </xsl:if>
     </xsl:if>
 
     <xsl:if test="response/result/doc[str[@name='resClass']='searchtool']">
@@ -186,6 +204,10 @@
       <ul class="results">
         <xsl:apply-templates select="response/result/doc[str[@name='resClass']='searchtool']"/>
       </ul>
+      
+      <xsl:if test="count(response/result/doc[str[@name='resClass']='searchtool']) > 2">
+        <div class="more-tools"><a class="tools-button">More...</a></div>
+      </xsl:if>
     </xsl:if>
 
       <ul class="results" style="padding-top: 1em;">
@@ -244,54 +266,90 @@
 
   </xsl:template>
   
-  <xsl:template match="doc">
-<xsl:variable name="ds_name"><xsl:value-of select="str[@name='title']" /></xsl:variable>
-    <li class="result">
-<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='resClass']))" />: </strong>
-<xsl:choose>
-  <xsl:when test="str[@name='resClass'] = 'searchtool'">
-    <a href="{(str|arr)[@name='resource_link']}"><xsl:value-of select="$ds_name" /></a><br />
-  </xsl:when>
-  <xsl:otherwise>
-    <a href="{str[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a><br />
-  </xsl:otherwise>
-</xsl:choose>
-<xsl:choose>
-  <xsl:when test="str[@name='resClass'] = 'Instrument'">
-    <xsl:value-of select="concat('Information about the ',str[@name='title'],' instrument')" />
-  </xsl:when>
-  <xsl:when test="str[@name='resClass'] = 'InstrumentHost'">
-    <xsl:value-of select="concat('Information about the ',str[@name='title'],' instrument host')" />
-  </xsl:when>
-  <xsl:when test="str[@name='resClass'] = 'Mission'">
-    <xsl:value-of select="concat('Information about the ',str[@name='title'],' mission')" />
-  </xsl:when>
-  <xsl:when test="str[@name='resClass'] = 'Target'">
-    <xsl:value-of select="concat('Information about the target ',str[@name='title'])" />
-  </xsl:when>
-  <xsl:otherwise>
-    <xsl:variable name="desc"><xsl:value-of select="str[@name='description']" /></xsl:variable>
-    <xsl:choose>
-      <xsl:when test="$desc = '' or $desc = 'N/A'">
-        <xsl:value-of select="concat('Information about the ',str[@name='data_set_id'],' data set')" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="replace(replace(str[@name='description'],'&amp;lt;br /&amp;gt;',' '), '&amp;amp;', '&amp;')" />
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:otherwise>
-</xsl:choose>
-<xsl:if test="str[@name='resClass'] = 'DataSet'">
-<br />
-<span style="font-size: 90%; color: rgb(64, 64, 64);">
-<xsl:value-of select="fn:upper-case((arr|str)[@name='mission_name'])" />
--
-<xsl:value-of select="fn:upper-case(str[@name='data_set_id'])" />
-<xsl:value-of select="if (str[@name='start_time']) then concat(' - starting ',str[@name='start_time']) else if ((arr|str)[@name='mission_start_date']) then concat(' - starting ',(arr|str)[@name='mission_start_date']) else ''" />
-</span>
-</xsl:if>
-    </li>
-  </xsl:template>
+	<xsl:template match="doc">
+		<xsl:variable name="ds_name">
+			<xsl:value-of select="str[@name='title']" />
+		</xsl:variable>
+		<!-- li class="result"> <strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='resClass']))" 
+			/>: </strong -->
+		<xsl:choose>
+			<xsl:when test="str[@name='resClass'] = 'searchtool'">
+				<xsl:choose>
+					<xsl:when test="position() > 2">
+						<li class="result hidden tool">
+							<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='resClass']))" />:</strong>
+							<a href="{(str|arr)[@name='resource_link']}"><xsl:value-of select="$ds_name" /></a>
+							<br />
+							<xsl:value-of select="pds:description(str[@name='description'],str[@name='title'])" />
+						</li>
+					</xsl:when>
+					<xsl:otherwise>
+						<li class="result">
+							<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='resClass']))" />:</strong>
+							<a href="{(str|arr)[@name='resource_link']}"><xsl:value-of select="$ds_name" /></a>
+							<br />
+							<xsl:value-of select="pds:description(str[@name='description'],str[@name='title'])" />
+						</li>
+						</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="str[@name='resClass'] = 'ArchiveInfo'">
+				<xsl:choose>
+					<xsl:when test="position() > 2">
+						<li class="result hidden info">
+							<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='resClass']))" />:</strong>
+							<a href="{(str|arr)[@name='resource_link']}"><xsl:value-of select="$ds_name" /></a>
+							<br />
+							<xsl:value-of select="pds:description(str[@name='description'],str[@name='title'])" />
+						</li>
+					</xsl:when>
+					<xsl:otherwise>
+						<li class="result">
+							<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='resClass']))" />:</strong>
+							<a href="{(str|arr)[@name='resource_link']}"><xsl:value-of select="$ds_name" /></a>
+							<br />
+							<xsl:value-of select="pds:description(str[@name='description'],str[@name='title'])" />
+						</li>
+						</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:otherwise>
+				<li class="result">
+					<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='resClass']))" />:</strong>
+					<a href="{str[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
+					<br />
+
+					<xsl:choose>
+						<xsl:when test="str[@name='resClass'] = 'Instrument'">
+							<xsl:value-of select="concat('Information about the ',str[@name='title'],' instrument')" />
+						</xsl:when>
+						<xsl:when test="str[@name='resClass'] = 'InstrumentHost'">
+							<xsl:value-of select="concat('Information about the ',str[@name='title'],' instrument host')" />
+						</xsl:when>
+						<xsl:when test="str[@name='resClass'] = 'Mission'">
+							<xsl:value-of select="concat('Information about the ',str[@name='title'],' mission')" />
+						</xsl:when>
+						<xsl:when test="str[@name='resClass'] = 'Target'">
+							<xsl:value-of select="concat('Information about the target ',str[@name='title'])" />
+						</xsl:when>
+						<xsl:when test="str[@name='resClass'] = 'DataSet'">
+							<xsl:value-of select="pds:description(str[@name='description'],str[@name='data_set_id'])" />
+							<br />
+							<span style="font-size: 90%; color: rgb(64, 64, 64);">
+								<xsl:value-of select="fn:upper-case((arr|str)[@name='mission_name'])" />
+								-
+								<xsl:value-of select="fn:upper-case(str[@name='data_set_id'])" />
+								<xsl:value-of select="if (str[@name='start_time']) then concat(' - starting ',str[@name='start_time']) else if ((arr|str)[@name='mission_start_date']) then concat(' - starting ',(arr|str)[@name='mission_start_date']) else ''" />
+							</span>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="pds:description(str[@name='description'],str[@name='title'])" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</li>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 
   <xsl:template match="lst[@name='params'][*[@name='fq']]">
     <div class="sidebarSection">

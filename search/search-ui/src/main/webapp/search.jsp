@@ -54,6 +54,29 @@ $(function() {
       $('.output').html(data);
       //alert('Load was performed.');
     });
+
+    $('div').on('click', 'a.tools-button', function() {
+        $('.tool').slideToggle('fast', function() {
+          if($('.tool').is(":visible")) {
+            $('a.tools-button').text("Hide");
+          } else {
+            $('a.tools-button').text("More...");
+          }
+        });
+
+    });
+
+    $('div').on('click', 'a.info-button', function() {
+        $('.info').slideToggle('fast', function() {
+          if($('.info').is(":visible")) {
+            $('a.info-button').text("Hide");
+          } else {
+            $('a.info-button').text("More...");
+          }
+        });
+
+    });
+
 });
 </script>
 
