@@ -146,8 +146,7 @@ public class ProductClass {
 		this.searchFields = new SearchFields(this.classFilename);
 
 		try {
-			List<ExtrinsicObject> extList = getObjectTypeExtrinsics(this.searchFields
-					.getObjectType());
+			List<ExtrinsicObject> extList = getObjectTypeExtrinsics();
 			
 			for (ExtrinsicObject extObj : extList) {
 				clearMaps();
@@ -291,28 +290,34 @@ public class ProductClass {
 	 * @return				list of ExtrinsicObject for given objectType
 	 * @throws Exception	thrown if there are issues with the RegistryClient
 	 */
-	private List<ExtrinsicObject> getObjectTypeExtrinsics(String objectType)
+	private List<ExtrinsicObject> getObjectTypeExtrinsics()
 			throws Exception {
 		// Build the filter
+		//ExtrinsicFilter filter;
+		debug("----- " + this.searchFields.getObjectName() + " -----");
 		ExtrinsicFilter filter = new ExtrinsicFilter.Builder().objectType(
-				objectType).build();
+				this.searchFields.getObjectType()).name(this.searchFields.getObjectName()).build();
+/*		ExtrinsicFilter filter = new ExtrinsicFilter.Builder().objectType(
+				this.searchFields.getObjectType()).build();*/
 
 		// Create the query
 		RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
 				.filter(filter).build();
+		
+		List<ExtrinsicObject> results = null;
 		try {
 			RegistryClient client = new RegistryClient(this.registryUrl);
 			// securityContext, user, password);
 
-			List<ExtrinsicObject> results = new ArrayList<ExtrinsicObject>();
+			results = new ArrayList<ExtrinsicObject>();
 			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1,
 					this.queryMax);
 
 			// Examine the results of the query to grab the latest product for
 			// each ExtrinsicObject
-			String lid;
-			List<String> lidList = new ArrayList<String>();
 			if (pr.getNumFound() != 0) {
+				List<String> lidList = new ArrayList<String>();
+				String lid;
 				for (ExtrinsicObject extrinsic : pr.getResults()) {
 					lid = extrinsic.getLid();
 					debug("\n\n----- " + lid + " -----");
@@ -325,6 +330,7 @@ public class ProductClass {
 						lidList.add(lid);
 					}
 				}
+				lidList.clear();
 				return results;
 			} else {
 				return pr.getResults();
@@ -376,11 +382,12 @@ public class ProductClass {
 		// Create the query
 		RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
 				.filter(filter).build();
+		List<ExtrinsicObject> results = null;
 		try {
 			RegistryClient client = new RegistryClient(this.registryUrl);
 			// securityContext, user, password);
 
-			List<ExtrinsicObject> results = new ArrayList<ExtrinsicObject>();
+			results = new ArrayList<ExtrinsicObject>();
 			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1,
 					this.queryMax);
 

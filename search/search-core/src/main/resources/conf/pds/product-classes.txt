@@ -3,4 +3,4 @@ registry.extractor.Target = targetconfig.xml
 registry.extractor.Instrument = instrumentconfig.xml
 registry.extractor.InstrumentHost = instrumenthostconfig.xml
 registry.extractor.Mission = missionconfig.xml
-#registry.extractor.MissionPage = miissionpageconfig.xml
+registry.extractor.ArchiveInfo = archiveinfoconfig.xml

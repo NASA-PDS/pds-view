@@ -42,10 +42,10 @@ public class SearchFields {
 					.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
-			doc = docBuilder.parse(new File(filename));
+			this.doc = docBuilder.parse(new File(filename));
 
 			// normalize text representation
-			doc.getDocumentElement().normalize();
+			this.doc.getDocumentElement().normalize();
 
 			setAttrInfo();
 		} catch (SAXParseException e) {
@@ -64,13 +64,13 @@ public class SearchFields {
 		String name;
 		String index;
 
-		NodeList columnList = doc.getElementsByTagName("column");
+		NodeList columnList = this.doc.getElementsByTagName("column");
 
-		attrNames = new ArrayList();
-		attrTypes = new ArrayList();
-		attrValues = new ArrayList();
+		this.attrNames = new ArrayList();
+		this.attrTypes = new ArrayList();
+		this.attrValues = new ArrayList();
 
-		totalColumns = columnList.getLength();
+		this.totalColumns = columnList.getLength();
 		log.fine("Total no of columns : " + totalColumns);
 
 		try {
@@ -82,13 +82,13 @@ public class SearchFields {
 					// its appropriate ArrayList.
 					Element columnElement = (Element) columnNode;
 
-					attrNames.add((columnElement.getElementsByTagName("name")
+					this.attrNames.add((columnElement.getElementsByTagName("name")
 							.item(0).getChildNodes().item(0)).getNodeValue()
 							.trim());
-					attrTypes.add((columnElement.getElementsByTagName("type")
+					this.attrTypes.add((columnElement.getElementsByTagName("type")
 							.item(0).getChildNodes().item(0)).getNodeValue()
 							.trim());
-					attrValues.add((columnElement.getElementsByTagName("value")
+					this.attrValues.add((columnElement.getElementsByTagName("value")
 							.item(0).getChildNodes().item(0)).getNodeValue()
 							.trim());
 				}
@@ -108,14 +108,14 @@ public class SearchFields {
 	 */
 	@Deprecated
 	public String getQuery() {
-		return (doc.getElementsByTagName("query").item(0).getChildNodes()
+		return (this.doc.getElementsByTagName("query").item(0).getChildNodes()
 				.item(0)).getNodeValue().trim();
 	}
 
 	public List getAssociations() {
 		String associationType;
 		List assocList = new ArrayList();
-		NodeList assocNodes = doc.getElementsByTagName("association");
+		NodeList assocNodes = this.doc.getElementsByTagName("association");
 		for (int i = 0; i < assocNodes.getLength(); i++) {
 			associationType = assocNodes.item(i).getChildNodes().item(0)
 					.getNodeValue().trim();
@@ -125,8 +125,17 @@ public class SearchFields {
 	}
 
 	public String getObjectType() {
-		return (doc.getElementsByTagName("object_type").item(0).getChildNodes()
+		return (this.doc.getElementsByTagName("object_type").item(0).getChildNodes()
 				.item(0)).getNodeValue().trim();
+	}
+	
+	public String getObjectName() {
+		if (this.doc.getElementsByTagName("object_name").item(0) != null) {
+			return (this.doc.getElementsByTagName("object_name").item(0).getChildNodes()
+					.item(0)).getNodeValue().trim();
+		} else {
+			return "*";
+		}
 	}
 
 	public String getName(int column) {

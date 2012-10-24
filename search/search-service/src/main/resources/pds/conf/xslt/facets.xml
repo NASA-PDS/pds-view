@@ -14,4 +14,5 @@
   <category name="mission" caption="Mission" />
   <category name="searchtool" caption="Search Tool" />
   <category name="target" caption="Target" />
+  <category name="archiveinfo" caption="Resource" />
 </facets>

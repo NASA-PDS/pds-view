@@ -584,6 +584,8 @@
    <field name="resource_class" type="text_lc" indexed="true" stored="true" />
    <field name="resource_id" type="string" indexed="true" stored="true" multiValued="true" />
    <field name="resource_link" type="string" indexed="false" stored="true" multiValued="true"/>
+   <field name="resource_name" type="text_lc" indexed="true" stored="true" />
+   <field name="resource_description" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="search_engine_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="start_time" type="date" indexed="true" stored="true" />
    <field name="stop_time" type="date" indexed="true" stored="true" />

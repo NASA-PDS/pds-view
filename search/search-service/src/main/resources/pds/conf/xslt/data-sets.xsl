@@ -171,6 +171,14 @@
         </strong>
         (<xsl:value-of select="$ds_result_time" /> seconds)
     </p>
+    
+    <xsl:if test="response/result/doc[str[@name='resClass']='ArchiveInfo']">
+      <div style="margin-top: 1em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Archive Information</div>
+      <p style="margin-top: .5em; margin-bottom: .5em;">These web pages provide detailed information for the matching investigations. If no page looks appropriate, you can browse the matching search tools and data sets, below.</p>
+      <ul class="results">
+        <xsl:apply-templates select="response/result/doc[str[@name='resClass']='ArchiveInfo']"/>
+      </ul>
+    </xsl:if>
 
     <xsl:if test="response/result/doc[str[@name='resClass']='searchtool']">
       <div style="margin-top: 1em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Search Tools</div>
@@ -182,7 +190,7 @@
 
       <ul class="results" style="padding-top: 1em;">
       <div style="margin-top: 1em; margin-bottom: .5em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Data Sets and Information</div>
-        <xsl:apply-templates select="response/result/doc[str[@name='resClass']!='searchtool']"/>
+        <xsl:apply-templates select="response/result/doc[str[@name='resClass']!='ArchiveInfo' and str[@name='resClass']!='searchtool']"/>
       </ul>
 
       <xsl:if test="response/result/@numFound &gt; count(response/result/doc)">
@@ -203,7 +211,6 @@
 	  </xsl:for-each>
 	</p>
       </xsl:if>
-
   </xsl:when>
   <xsl:when test="response/str[@name='exception']">
     <p><strong>There is an error in your search: </strong><xsl:value-of select="response/str[@name='exception']" /></p>
