@@ -30,6 +30,12 @@
       <action dev="jpadams" type="add" issue="PDS-119">
 	Modified XSLT to newly include Archive Information data at top of results list.
       </action>
+      <action dev="jpadams" type="add">
+	Added sample of a solr index that has been generated using the current version of the search core.  Ran search core with a maximum of 5 context products queried per product class.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-120">
+	Updated data-sets.xsl to include 'More' link and hide Archive Information or Search Tools when more than 2 are returned in a query.
+      </action>
     </release>
 
     <release version="1.0.0" date="2012-09-30" description="This release of the Search Service is a component of the integrated release 3.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
