@@ -72,11 +72,6 @@
     <value>investigation_ref.mission_stop_date</value>
   </column>
   <column>
-    <name>mission_stop_date</name>
-    <type>association</type>
-    <value>investigation_ref.mission_stop_date</value>
-  </column>
-  <column>
     <name>resource_class</name>
     <type>out</type>
     <value>Resource_Description</value>

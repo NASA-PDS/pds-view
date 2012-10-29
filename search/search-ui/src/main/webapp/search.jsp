@@ -1,14 +1,41 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en"><!-- InstanceBegin template="/Templates/jsp.dwt" codeOutsideHTMLIsLocked="false" -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!-- InstanceBegin template="/Templates/jsp.dwt" codeOutsideHTMLIsLocked="false" -->
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!--  %@ page language="java" session="true" isThreadSafe="true" 
+<%@ page language="java" session="true" isThreadSafe="true" 
 info="PDS Search" isErrorPage="false"
 contentType="text/html; charset=ISO-8859-1" 
-import="javax.servlet.http.*, jpl.pds.util.*, jpl.pds.beans.*, java.sql.*, java.util.*, java.io.*" %-->
+import="javax.servlet.http.*, jpl.pds.util.*, jpl.pds.beans.*, java.sql.*, java.util.*, java.io.*" %>
 <%
 String pdshome = application.getInitParameter("pdshome.url");
 String contextPath = request.getContextPath() + "/";
+
+String qString = request.getParameter("q");
+String query = "", newQString = "";
+if (qString == null) {
+  response.sendRedirect("index.jsp");
+  return;
+}
+
+if (qString.equals("")) {
+  newQString = qString + "-archive-status%3ASUPERSEDED";
+} else {
+  newQString = qString + "%20AND%20-archive-status%3ASUPERSEDED";
+}
+
+query = "";
+Map<String, String[]> params = request.getParameterMap();
+for (String name : params.keySet()) {
+  if ( name.equals("q") && !params.get(name)[0].contains("archive-status")) {
+    query += name + "=" + newQString + "&";
+  } else {
+    for (String value : Arrays.asList(params.get(name))) {
+      query += name + "=" + value + "&";
+    }
+  }
+}
+
 %>
 
 <head>
@@ -23,25 +50,6 @@ String contextPath = request.getContextPath() + "/";
 <!-- InstanceParam name="standard_sidebar" type="boolean" value="false" -->
 <!-- InstanceParam name="standard_page_content" type="boolean" value="false" -->
 <!-- InstanceParam name="custom_page_class" type="text" value="sidebar" -->
-</head>
-
-<%
-String qString = request.getParameter("q");
-String query = "", newQString = "";
-if (qString == null) {
-  response.sendRedirect("index.jsp");
-  return;
-}
-
-if (qString.equals("")) {
-  newQString = qString + "-archive-status%3ASUPERSEDED";
-} else {
-  newQString = qString + "%20AND%20-archive-status%3ASUPERSEDED";
-}
-  query = request.getQueryString().replace("q="+qString, "q="+newQString);
-
-%>
-
 
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 
@@ -49,7 +57,7 @@ if (qString.equals("")) {
 $(function() {
     //var query = window.location.href.slice(window.location.href.indexOf('?') + 1).split('@@');
     var query = '<%= query %>';
-    //alert(query);
+    alert("Query: " + query);
     $.get('/search-service/pds/search?' + query, function(data) {
       $('.output').html(data);
       //alert('Load was performed.');
@@ -80,7 +88,7 @@ $(function() {
 });
 </script>
 
-
+</head>
 
 <body class="fullWidth  menu_data menu_item_data_data_search sidebar">
 <!--[if IE]>
