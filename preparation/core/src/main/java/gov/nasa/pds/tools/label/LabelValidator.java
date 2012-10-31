@@ -307,7 +307,7 @@ public class LabelValidator {
 
   public static void main(String[] args) throws Exception {
     LabelValidator lv = new LabelValidator();
-    lv.setModelVersion("foo");
+    lv.setCatalogs(new String[]{args[1]});
     ExceptionContainer container = new ExceptionContainer();
     lv.validate(container, new File(args[0]));
     for (LabelException ex : container.getExceptions()) {
