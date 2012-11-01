@@ -6,7 +6,7 @@
 <%@ page language="java" session="true" isThreadSafe="true" 
 info="PDS Search" isErrorPage="false"
 contentType="text/html; charset=ISO-8859-1" 
-import="javax.servlet.http.*, jpl.pds.util.*, jpl.pds.beans.*, java.sql.*, java.util.*, java.io.*" %>
+import="java.sql.*, java.util.*, java.io.*" %>
 <%
 String pdshome = application.getInitParameter("pdshome.url");
 String contextPath = request.getContextPath() + "/";
@@ -57,7 +57,6 @@ for (String name : params.keySet()) {
 $(function() {
     //var query = window.location.href.slice(window.location.href.indexOf('?') + 1).split('@@');
     var query = '<%= query %>';
-    alert("Query: " + query);
     $.get('/search-service/pds/search?' + query, function(data) {
       $('.output').html(data);
       //alert('Load was performed.');
