@@ -21,9 +21,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 /**
  * This class creates Lucene index for ingestion into Solr
@@ -59,7 +63,7 @@ public class SolrIndexer {
 		totalIndexDocCount = 0;
 
 		searchServiceIndexHome = args[0];
-		backUpIndex();
+		removePreviousIndex();
 
 		setSolrIndexWriter();
 		System.out.println("Index Docs: " + args[1]);
@@ -149,11 +153,16 @@ public class SolrIndexer {
 	 * 
 	 * @throws IOException
 	 */
-	private static void backUpIndex() 
+	private static void removePreviousIndex() 
 			throws IOException {
-		File backUpDir = new File(searchServiceIndexHome, "backup_solr_index");
+		List files = new ArrayList(FileUtils.listFiles(new File(searchServiceIndexHome), new WildcardFileFilter("solr_index.xml.*"), null));
+		for (Object file : files) {
+			FileUtils.forceDelete((File)file);
+		}
+		/*File pastIndex = new File(searchServiceIndexHome, "solr_index.xml.2");
+		System.out.println(pastIndex.getAbsolutePath());
 		try {
-			FileUtils.forceDelete(backUpDir);
-		} catch (IOException e) { /* Thrown if backUpDir DNE. */ }
+			FileUtils.forceDelete(pastIndex);
+		} catch (IOException e) { /* Thrown if backUpDir DNE. */ //}
 	}
 }
