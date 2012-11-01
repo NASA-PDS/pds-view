@@ -4,7 +4,14 @@
                 xmlns:html="http://www.w3.org/1999/xhtml"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:fn="http://www.w3.org/2005/xpath-functions"
-                exclude-result-prefixes="html xsl fn">
+				xmlns:pds="http://pds.nasa.gov/"
+				xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                exclude-result-prefixes="html xsl fn pds xs">
+
+  <!-- PDS-128 - jpadams - 11/01/12
+  		Modified to fix issue with adding hierarchy to search-tools.xml, and possible target/instrument hierarchies
+  		Should remove lines labeled 'PDS-128 REMOVE' and uncomment line labeled 'PDS-128 UNCOMMENT' in order to return
+  		XSLT back to original state -->
 
   <xsl:output method="xml" indent="yes" encoding="UTF-8" />
 
@@ -12,6 +19,13 @@
   <xsl:variable name="target_types" select="document('target-hierarchy.xml')" />
 
   <xsl:key name="category" match="category" use="@name" />
+
+  <xsl:function name="pds:clean" as="xs:string">
+    <xsl:param name="text" as="xs:string" />
+
+    <xsl:value-of select="upper-case(replace($text,'_',' '))" />
+
+  </xsl:function>
 
   <xsl:template match="/">
     <add>
@@ -44,12 +58,24 @@
   </xsl:template>
 
   <xsl:template match="field[@name = 'mission_name']">
-    <xsl:copy-of select="." />
+    <!--xsl:copy-of select="." /-->		<!--  PDS-128 UNCOMMENT -->
+    <field name="mission_name"><xsl:value-of select="pds:clean(.)" /></field>
     <field name="facet_mission"><xsl:value-of select="concat('1,',.)" /></field>
   </xsl:template>
 
+  <!-- PDS-128 REMOVE -->
+  <xsl:template match="field[@name = 'data_set_name']">
+    <field name="data_set_name"><xsl:value-of select="pds:clean(.)" /></field>
+  </xsl:template>
+
+  <!-- PDS-128 REMOVE -->
+  <xsl:template match="field[@name = 'instrument_type']">
+    <field name="instrument_type"><xsl:value-of select="pds:clean(.)" /></field>
+  </xsl:template>
+
   <xsl:template match="field[@name = 'instrument_name']">
-    <xsl:copy-of select="." />
+    <!--xsl:copy-of select="." /-->		<!--  PDS-128 UNCOMMENT -->
+    <field name="instrument_name"><xsl:value-of select="pds:clean(.)" /></field>
 
     <!-- Now add our instrument type hierarchy. -->
     <xsl:call-template name="show-hierarchy">
@@ -59,8 +85,24 @@
     </xsl:call-template>
   </xsl:template>
 
+  <!-- PDS-128 REMOVE -->
+  <xsl:template match="field[@name = 'instrument_host_id']">
+    <field name="instrument_host_id"><xsl:value-of select="pds:clean(.)" /></field>
+  </xsl:template>
+
+  <!-- PDS-128 REMOVE -->
+  <xsl:template match="field[@name = 'instrument_id']">
+    <field name="instrument_id"><xsl:value-of select="pds:clean(.)" /></field>
+  </xsl:template>
+
+  <!-- PDS-128 REMOVE -->
+  <xsl:template match="field[@name = 'target_type']">
+    <field name="target_type"><xsl:value-of select="pds:clean(.)" /></field>
+  </xsl:template>
+
   <xsl:template match="field[@name = 'target_name']">
-    <xsl:copy-of select="." />
+    <!--xsl:copy-of select="." /-->		<!--  PDS-128 UNCOMMENT -->
+    <field name="target_name"><xsl:value-of select="pds:clean(.)" /></field>
 
     <!-- Now add our target type hierarchy. -->
     <xsl:call-template name="show-hierarchy">
