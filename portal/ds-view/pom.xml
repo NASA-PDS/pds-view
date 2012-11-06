@@ -183,6 +183,11 @@
        <name>javax sql maven repository</name>
        <url>http://download.java.net/maven/2/</url>
     </repository>
+    <repository>
+       <id>javax-repo2</id>
+       <name>javax servlet maven repository</name>
+       <url>http://repo1.maven.org/maven2/</url>
+    </repository>
   </repositories>
 
   <dependencies>
@@ -202,18 +207,18 @@
       <!--scope>system</scope-->
       <!--systemPath>${basedir}/lib/eda.jar</systemPath-->
     </dependency>
-    <dependency>
+    <!--dependency>
       <groupId>javax</groupId>
       <artifactId>servlet</artifactId>
       <version>2.3</version>
-      <scope>system</scope>
+      <scope>compile</scope>
       <systemPath>${basedir}/lib/servlet-2_3.jar</systemPath>
-    </dependency>
-    <!--dependency>
+    </dependency-->
+    <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
-      <version>2.5</version>
-    </dependency-->
+      <version>2.3</version>
+    </dependency>
     <!--dependency>
       <groupId>javax.naming</groupId>
       <artifactId>jndi</artifactId>
