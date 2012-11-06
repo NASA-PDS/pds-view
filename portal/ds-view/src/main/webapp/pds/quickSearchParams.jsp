@@ -8,7 +8,7 @@
            <td valign="top" colspan=2><nobr>
              <select name="msnname" onChange="selectionChanged=true;" size="6" multiple WIDTH="400" style="width=400px"> <%=opts[MSNNAME]%>
              </select>
-             <a href="javascript:applyMultiSelect( document.postForm.msnname)"><img src="/pds/images/btn_filter.gif" border=0 alt="Filter"></a>&nbsp;Filter</nobr><BR>
+             <a href="javascript:applyMultiSelect( document.postForm.msnname)"><img src="/ds-view/pds/images/btn_filter.gif" border=0 alt="Filter"></a>&nbsp;Filter</nobr><BR>
            </td>
         </tr>
         <tr>
@@ -52,7 +52,7 @@
             <td valign="TOP"><nobr>
                <select name="instname" onChange="selectionChanged=true;" size="6" multiple WIDTH="375" style="width="375"> <%=opts[INSTNAME]%> </select>
 
-               <a href="javascript:applyMultiSelect( document.postForm.instname)"><img src="/pds/images/btn_filter.gif" border=0 alt="Filter"></a>&nbsp;Filter<BR>
+               <a href="javascript:applyMultiSelect( document.postForm.instname)"><img src="/ds-view/pds/images/btn_filter.gif" border=0 alt="Filter"></a>&nbsp;Filter<BR>
             </td>
            <td valign="top"> <select id="insttype" name="insttype" onchange="changeSearchSpec()"> <%=opts[INSTTYPE]%> </select> <BR> 
            </td>

@@ -8,19 +8,19 @@ window.open(newpage,'window2','toolbar=0,location=1,directories=0,status=0,menub
 
 function submitQuick()
 {
-	document.postForm.action = "/pds/index.jsp";
+	document.postForm.action = "/ds-view/pds/index.jsp";
 	document.postForm.submit();
 }
 
 function submitAdvanced()
 {
-    document.postForm.action = "/pds/advanced.jsp";
+    document.postForm.action = "/ds-view/pds/advanced.jsp";
     document.postForm.submit();
 }
 
 function submitPower()
 {
-    document.postForm.action = "/pds/power.jsp";
+    document.postForm.action = "/ds-view/pds/power.jsp";
     document.postForm.submit();
 }
 
@@ -97,9 +97,9 @@ function switchPage( idx)
   }
   else {
     // page not called with parameters, just load new page
-    if (idx==0) window.location.href = '/pds/index.jsp';
-    else if (idx==1) window.location.href = '/pds/advanced.jsp';
-    else if (idx==2) window.location.href = '/pds/power.jsp';
+    if (idx==0) window.location.href = '/ds-view/pds/index.jsp';
+    else if (idx==1) window.location.href = '/ds-view/pds/advanced.jsp';
+    else if (idx==2) window.location.href = '/ds-view/pds/power.jsp';
     else window.location.href = '/search/index.jsp';
   }
 }
@@ -131,13 +131,13 @@ function trim( str)
    var preloadFlag = false;
    function preloadImages() {
    	if (document.images) {
-		nav_home_over = newImage("/pds/images/nav_home_on.gif");
-		nav_dataservices_over = newImage("/pds/images/nav_dataservices_on.gif");
-		nav_tools_over = newImage("/pds/images/nav_tools_on.gif");
-		nav_documents_over = newImage("/pds/images/nav_documents_on.gif");
-		nav_relatedsites_over = newImage("/pds/images/nav_relatedsites_on.gif");
-		nav_aboutpds_over = newImage("/pds/images/nav_aboutpds_on.gif");
-		nav_sitemap_over = newImage("/pds/images/nav_sitemap_on.gif");
+		nav_home_over = newImage("/ds-view/pds/images/nav_home_on.gif");
+		nav_dataservices_over = newImage("/ds-view/pds/images/nav_dataservices_on.gif");
+		nav_tools_over = newImage("/ds-view/pds/images/nav_tools_on.gif");
+		nav_documents_over = newImage("/ds-view/pds/images/nav_documents_on.gif");
+		nav_relatedsites_over = newImage("/ds-view/pds/images/nav_relatedsites_on.gif");
+		nav_aboutpds_over = newImage("/ds-view/pds/images/nav_aboutpds_on.gif");
+		nav_sitemap_over = newImage("/ds-view/pds/images/nav_sitemap_on.gif");
    		preloadFlag = true;
    	}
    }

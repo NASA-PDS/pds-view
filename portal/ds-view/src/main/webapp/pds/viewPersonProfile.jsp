@@ -7,7 +7,7 @@
    <title>PDS Person Profile</title>
    <META  NAME="keywords"  CONTENT="Planetary Data System">
    <META  NAME="description" CONTENT="This website serves as a mechanism for displaying the PDS user information.">
-   <link href="<%=pdshome%>css/pds_style.css" rel="stylesheet" type="text/css">
+   <link href="/ds-view/pds/css/pds_style.css" rel="stylesheet" type="text/css">
    <%@ page language="java" session="true" isThreadSafe="true" info="PDS Search" 
             isErrorPage="false" contentType="text/html; charset=ISO-8859-1" 
             import="gov.nasa.pds.registry.model.ExtrinsicObject, gov.nasa.pds.dsview.registry.Constants, 
@@ -40,11 +40,21 @@ public String cleanParam(String str) {
 }
 %>
 
-<body BGCOLOR="#000000">
-<table align="center" bgColor="#FFFFFF" BORDER="0" CELLPADDING="10" CELLSPACING="0">
+<body class="home menu_home menu_item_ ">
+
+   <%@ include file="/pds/header.html" %>
+   <%@ include file="/pds/main_menu.html" %>
+
+   <div id="submenu">
+   <div class="clear"></div>
+   </div>
+
+<!-- Main content -->
+<div id="content">
+   <div style="border-top: 1px solid_white;">
+   <table align="center" bgColor="#FFFFFF" BORDER="0" CELLPADDING="10" CELLSPACING="0">
    <tr>
       <td>
-         <%@ include file="/pds/pds_header.html" %>
          <table width="760" border="0" cellspacing="3" cellpadding="2">
             <tr valign="TOP">
                <td valign="TOP" colspan="2" class="pageTitle">
@@ -110,12 +120,15 @@ else {
       } // for loop
    } // end else personObj!=null
 } // if PDS_USER_ID is specified
-%>
-         <%@ include file="/pds/footer.html" %>
+%>        
          </table>
       </td>
    </tr>
 </TABLE>
+</div>
+</div>
+
+<%@ include file="/pds/footer.html" %>
 
 </BODY>
 </HTML>

@@ -45,7 +45,7 @@
   -->
   <servlet>
     <servlet-name>query</servlet-name>
-    <servlet-class>jpl.pds.servlets.QueryServlet</servlet-class>
+    <servlet-class>gov.nasa.pds.dsview.servlets.RegistryQueryServlet</servlet-class>
   </servlet>
 
   <!-- The upload servlet is used for system performance testing.
@@ -66,7 +66,8 @@
   <!-- /query => the query serlvet -->
   <servlet-mapping>
     <servlet-name>query</servlet-name>
-    <url-pattern>/q</url-pattern>
+    <!--url-pattern>/servlet/gov.nasa.pds.dsview.servlets.RegistryQueryServlet</url-pattern-->
+    <url-pattern>/RegistryQueryServlet</url-pattern>
   </servlet-mapping>
 
   <!-- /query => Yes, that's the way Steve wanted to address
@@ -76,4 +77,6 @@
     <servlet-name>switcher</servlet-name>
     <url-pattern>/query</url-pattern>
   </servlet-mapping>
+  
+  
 </web-app>

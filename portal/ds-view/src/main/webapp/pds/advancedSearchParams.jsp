@@ -18,22 +18,18 @@
           <TR vAlign=top>
              <TD bgColor=#efefef vAlign=top>
                 <INPUT id="strttime" name="strttime" size=24 
-                  value="<%=jpl.pds.util.DisplayOptions.displayInput(request, searchBean.getPDSKeyword("strttime"), "strttime", "YYYY-MM-DD")%>"><BR></TD>
+                  value="<%=jpl.pds.util.DisplayOptions.displayInput(request, "Start Date", "strttime", "YYYY-MM-DD")%>">
+                  <BR></TD>
              <TD bgColor=#efefef vAlign=top>
                 <INPUT id="stoptime" name="stoptime" size=24
-                  value="<%=jpl.pds.util.DisplayOptions.displayInput(request, searchBean.getPDSKeyword("stoptime"), "stoptime", "YYYY-MM-DD")%>"><BR></TD>
+                  value="<%=jpl.pds.util.DisplayOptions.displayInput(request, "Stop Date", "stoptime", "YYYY-MM-DD")%>">
+                  <BR></TD>
           </TR>
 	  <tr>
              <td valign="TOP" colspan="2">
 	        <IMG align=middle alt=Space border=0 height=2 hspace=0 src="/pds/images/space.jpg" width=760></td>
           </tr>
 	  <TR vAlign=top>
-             <TD bgColor=#efefef vAlign=top>
-               <a href="javascript:popup('glossary.html#dataobjtype')">
-                <FONT color=#000033 face=verdana size=2><B><u>Data Type:</u></B></FONT>&nbsp;&nbsp;
-               </a><BR>
-            </TD>
-
             <TD bgColor=#efefef vAlign=top>
                <a href="javascript:popup('glossary.html#dsid')">
                  <FONT color=#000033 face=verdana size=2><B><u>Data Set ID:</u></B></FONT>&nbsp;&nbsp;
@@ -43,11 +39,9 @@
 
           <TR vAlign=top>
             <TD bgColor=#efefef vAlign=top>
-	       <select id="dataobjtype" name="dataobjtype"><%=opts[DATAOBJTYPE]%></select><br></td>
-            <TD bgColor=#efefef vAlign=top>
                <SELECT id=dsid name=dsid><%=opts[DSID]%></SELECT><BR></TD>
           </TR>
-
+          
           <tr>
             <td valign="TOP" colspan="2">
 	       <IMG align=middle alt=Space border=0 height=2 hspace=0 src="/pds/images/space.jpg" width=760></td>

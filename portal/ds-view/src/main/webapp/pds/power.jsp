@@ -1,15 +1,13 @@
 <%
-String pdshome = "";
-pdshome = application.getInitParameter("pdshome.url");
+   String pdshome = application.getInitParameter("pdshome.url");
+   String searchUrl = application.getInitParameter("search.url");
 %>
 <HTML><HEAD><TITLE>Planetary Data System: Data Set Search</TITLE>
 <META content="Planetary Data System" name=keywords>
 <META content="This website serves as a mechanism for searching the PDS planetary archives." name=description>
-<link href="<%=pdshome%>css/pds_style.css" rel="stylesheet" type="text/css">
+<link href="/ds-view/pds/css/pds_style.css" rel="stylesheet" type="text/css">
 <%@ page language="java" session="true" isThreadSafe="true" info="PDS Search" isErrorPage="false"
 contentType="text/html; charset=ISO-8859-1" import="javax.servlet.http.*, jpl.pds.util.*, jpl.pds.beans.*, java.io.*, java.sql.*, java.util.*" %>
-<jsp:useBean class="jpl.pds.beans.SearchBean" id="searchBean" scope="session" />
-<jsp:useBean class="jpl.pds.beans.GetSearchParams" id="paramBean" scope="session" />
 
 <script language="JavaScript"
 src="<%=pdshome%>js/lastMod.js"></script>
@@ -86,7 +84,7 @@ function changeSearchSpec()
        }
     }
 
-  frm.action = '/pds/power.jsp';
+  frm.action = '/ds-view/pds/power.jsp';
   frm.onSubmit = '';
 //  frm.method = 'get';
   frm.submit();
@@ -97,12 +95,23 @@ function changeSearchSpec()
 
 </HEAD>
 
-<BODY bgcolor="#000000" onLoad="preloadImages();">
+<body class="home menu_home menu_item_ ">
+
+   <%@ include file="/pds/header.html" %>
+   <%@ include file="/pds/main_menu.html" %>
+
+   <div id="submenu">
+   <div class="clear"></div>
+   </div>
+
+<!-- Main content -->
+<div id="content">
+   <div style="border-top: 1px solid_white;">
 
 <%-- Save the request URI in the user's session so we know to take him back here from the results page --%>
 <% request.getSession(true).setAttribute("requestURI", request.getRequestURI()); %>
 
-<FORM action=/servlet/jpl.pds.servlets.QueryServlet id=postForm method=post name=postForm onSubmit="return validateSearchParams()">
+<FORM action=/ds-view/RegistryQueryServlet id=postForm method=post name=postForm onSubmit="return validateSearchParams()">
 <input type=hidden name=targnamechoices value="(<%=opts[TARGNAMES]%>)">
 <input type=hidden name=hasParams value="<%=((request.getParameterValues("targname")!=null)?"1":"0")%>">
 <input type="hidden" name="msntext"  value=""/>
@@ -191,11 +200,9 @@ function changeSearchSpec()
 <table align="center" bgColor="#FFFFFF" BORDER="0" CELLPADDING="10" CELLSPACING="0">
   <tr>
     <td>
-      <%@ include file="/pds/pds_header.html" %>
-
       <table width="760" border="0" cellspacing="0" cellpadding="0">
        <tr>
-        <td><img src="/pds/images/spacer.gif" width="5" height="5" border="0">
+        <td><img src="/ds-view/pds/images/spacer.gif" width="5" height="5" border="0">
         </td>
        </tr>
        <tr>
@@ -214,7 +221,7 @@ nt>
                           </td>
                           <td align=right color="#6F4D0E" valign=center>
                             <A href="javascript:openWindow('data_search_help.jsp', 'Result',550,500)">
-                            <IMG SRC="/pds/images/btn_help.gif" BORDER=0></A>
+                            <IMG SRC="/ds-view/pds/images/btn_help.gif" BORDER=0></A>
                           </td>
                         </tr>
                       </table>
@@ -222,13 +229,13 @@ nt>
                    </tr>
 
 		   <tr>
-		    <td><img src="/pds/images/gray.gif" width="760" height="1" alt="" border="0"></td>
+		    <td><img src="/ds-view/pds/images/gray.gif" width="760" height="1" alt="" border="0"></td>
 		   </tr>
                    <tr>
                      <td>
                         <FONT FACE="verdana" size="2">
                         <ul>
-                                <li>Please click on one or more parameters, then hit the Filter icon <img src="/pds/images/btn_filter.gif" border=0 alt="Filter">&nbsp;<A href="javascript:openWindow('data_search_help.jsp', 'Result',550,500)">to narrow your search.</A></li>
+                                <li>Please click on one or more parameters, then hit the Filter icon <img src="/ds-view/pds/images/btn_filter.gif" border=0 alt="Filter">&nbsp;<A href="javascript:openWindow('data_search_help.jsp', 'Result',550,500)">to narrow your search.</A></li>
                                 <li>Click on parameter title for more information.</li>
                                 <li><A href="javascript:openWindow('data_search_help.jsp', 'Result',550,500)">Select one or more parameters</A> from below, then hit Go!</li>
                         </ul>
@@ -236,14 +243,14 @@ nt>
                      </td>
                    </tr>
 	           <tr>
-	            <td><img src="/pds/images/spacer.gif" width="5" height="5" border="0"></td>
+	            <td><img src="/ds-view/pds/images/spacer.gif" width="5" height="5" border="0"></td>
 	           </tr>
 
                    <tr bgcolor="#123261">
                             <td align="right" valign="center" height=22>
-                              <A href="/pds/power.jsp"><IMG SRC="/pds/images/btn_reset.gif" BORDER=0></A>
+                              <A href="/ds-view/pds/power.jsp"><IMG SRC="/ds-view/pds/images/btn_reset.gif" BORDER=0></A>
                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              <INPUT alt="Go Button" border=0 src="/pds/images/btn_go.gif" type=image>
+                              <INPUT alt="Go Button" border=0 src="/ds-view/pds/images/btn_go.gif" type=image>
                                &nbsp;&nbsp;
                             </td>
                    </tr>
@@ -273,9 +280,9 @@ nt>
                                color="#FFFFFF"><b>&nbsp;Text Search</b></font></a>&nbsp;&nbsp; -->
                             </td>
                             <td align="right" valign="center" height=22>
-                              <A href="/pds/power.jsp"><IMG SRC="/pds/images/btn_reset.gif" BORDER=0></A>
+                              <A href="/ds-view/pds/power.jsp"><IMG SRC="/ds-view/pds/images/btn_reset.gif" BORDER=0></A>
                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              <INPUT alt="Go Button" border=0 src="/pds/images/btn_go.gif" type=image>
+                              <INPUT alt="Go Button" border=0 src="/ds-view/pds/images/btn_go.gif" type=image>
                                &nbsp;&nbsp;
                             </td>
 
@@ -289,18 +296,22 @@ nt>
                 </td>
 	     </tr>
 	     <tr>
-	       <td><img src="/pds/images/spacer.gif" width="5" height="5" border="0"></td>
-	     </tr>
-           </td>
-	</table>
+	       <td><img src="/ds-view/pds/images/spacer.gif" width="5" height="5" border="0"></td>
+	                 </tr>
+	              </table>
+               </td>
+            </tr>
+	     </table>
+         <%@ include file="/pds/ds_footer.html" %> 
 
-        <%@ include file="/pds/ds_footer.html" %> 
-
-        <%@ include file="/pds/footer.html" %>
-    </td>
-  </tr>
+      </td>
+   </tr>
 </table>
-</FORM>
+</form>
+</div>
+</div>
+<%@ include file="/pds/footer.html" %>
+
 <%@ include file="/pds/ds_map.html" %>
 </BODY>
 </HTML>

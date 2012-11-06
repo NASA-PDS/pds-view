@@ -93,7 +93,7 @@ String queryString = (request.getSession().getAttribute("queryString") != null ?
 
 String orgSearch = (request.getSession().getAttribute("requestURI") != null ? 
                      (String)request.getSession().getAttribute("requestURI") : 
-	             "/pds/index.jsp");
+	             "/ds-view/pds/index.jsp");
 
 %>
 

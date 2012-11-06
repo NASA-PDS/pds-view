@@ -169,19 +169,19 @@ public class SearchRegistry {
 	*/
 	
 	/* 
-	 * Get a latest extrinsic object with given lid
-	 * 
-	 */
-	public ExtrinsicObject getExtrinsic(String lid)  {
-		ExtrinsicObject aProduct = null;
-		try {
-			client.setMediaType("application/xml");
-			aProduct = client.getLatestObject(lid, ExtrinsicObject.class);
-		} catch (RegistryServiceException rse) {
-			rse.printStackTrace();
-		}
-		return aProduct;
-	}
+     * Get a latest extrinsic object with given lid
+     * 
+     */
+    public ExtrinsicObject getExtrinsic(String lid)  {
+        ExtrinsicObject aProduct = null;
+        try {
+            client.setMediaType("application/xml");
+            aProduct = client.getLatestObject(lid, ExtrinsicObject.class);
+        } catch (RegistryServiceException rse) {
+            rse.printStackTrace();
+        }
+        return aProduct;
+    }
 	
 	/**
 	 * Retrieve an extrinsic object from the registry

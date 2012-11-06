@@ -8,10 +8,9 @@
   in an include file isolates it somewhat from the display code.
 --%>
 
-<%@ page import="javax.naming.*,javax.sql.*" %>
+<%@ page import="javax.naming.*,javax.sql.*, gov.nasa.pds.dsview.registry.GetSearchParams" %>
 
 <%!
-
   // simple critertia
   final int MSNNAME  = 0;
   final int TARGNAME = 1;
@@ -29,7 +28,7 @@
 
   // capitalize first letter in sentence, lower case all others
 
-  static String dontDisplay = "|UNKNOWN|UNK|NA|N/A|";
+  static String dontDisplay = "|UNKNOWN|UNK|NA|N/A|unk|unknown|null|na|n/a|";
 
   int c, j = 0; // generic counter
 
@@ -85,34 +84,22 @@ static String[] multiValueCriteria =
    // advanced params follow
    "hi.insthostname"};
 
-static String queryStr = 
-" FROM dsinfo di, dshost dh, hostinfo hi, instinfo ii," +
-"     dstarg dt, dsmsn dm, dsnode dn," +
-"     targetinfo ti, resds rd, resinfo ri, dsnssdc dsns" +
-" WHERE upper(ri.resclass) LIKE '%BROWSERP%'" +
-" and dh.dsid = di.dsid" +
-" and dh.insthostid = hi.insthostid" +
-" and dh.insthostid = ii.insthostid" +
-" and dh.instid = ii.instid" +
-" and dt.dsid = di.dsid" +
-" and dt.targname = ti.targname" +
-" and dn.dscolldsid = di.dsid" +
-" and dsns.dscolldsid = di.dsid" +
-" and dm.dsid = di.dsid" +
-" and di.dsid = rd.dsid" +
-" and rd.resourceid = ri.resourceid" ;
 
 String getMultiValues(HttpServletRequest req, String param, int len) {
   String paramname;
+  String formname="";
   int i;
+  
   if ((i=param.indexOf("."))>=0) paramname=param.substring(i+1);
   else paramname = param;
 
+System.out.println("in MultiValues   paramname = " + paramname);
   StringBuffer query = new StringBuffer("");
   if (req.getParameterValues(paramname) != null &&
       ! req.getParameterValues(paramname)[0].equalsIgnoreCase("ALL")) {
     String[] list = req.getParameterValues(paramname);
-    query.append(" AND (");
+   
+    //query.append(" AND ");
     for (i=0; i<list.length; i++) {
       String d = list[i].toUpperCase(); 
       if (paramname.equals("msnname")) {
@@ -129,10 +116,19 @@ String getMultiValues(HttpServletRequest req, String param, int len) {
         query.append(" OR ");
       }
       d = escape(d);
-      query.append("upper("+param + ") = '" + d  + "'");
+         
+      if (paramname.equals("msnname"))
+        formname="mission";
+      else if (paramname.equals("instname"))
+        formname="instrument";
+      else if (paramname.equals("insthostname"))
+        formname="instrument_host_name";
+         
+      query.append(formname + ":" + d);
     }
-    query.append(") ");
+    
   }
+  
   return query.toString();
 }
 
@@ -146,49 +142,34 @@ boolean defaultSingleValue( HttpServletRequest req, String param) {
 String getSingleValue(HttpServletRequest req, String param, int len) {
   String paramname;
   int i;
+  StringBuffer query = new StringBuffer("");
   if ((i=param.indexOf("."))>=0) paramname=param.substring(i+1);
   else paramname = param;
-
-  // hard code in for targname=all for now
-/*  if (paramname.equals("targname") &&
-     req.getParameterValues(paramname)[0].equalsIgnoreCase("ALL") &&
-     req.getParameterValues("targnamechoices")!=null)
-    return( " AND upper(ti.targname) in "+req.getParameterValues("targnamechoices")[0]+" ");
-  else
-  */
 
   if (!defaultSingleValue( req, paramname)) {
     String pstring = req.getParameterValues(paramname)[0].toUpperCase();
     pstring = escape(pstring);
-    return(" AND "+ "upper("+param +") = '" + pstring + "'");
+    
+    System.out.println("paramname = " + paramname);
+    
+    if (paramname.equalsIgnoreCase("targname"))
+      query.append(" AND " + "target:" + pstring);
+    else if (paramname.equals("targtype"))
+      query.append(" AND " + "target_type:" + pstring);
+    else if (paramname.equals("insttype"))
+      query.append(" AND " + "instrument_type:" + pstring);   
+    else if (paramname.equals("dsid")) {
+      //pstring = pstring.replaceAll("/", "-");
+      query.append(" AND " + "data_set_id:" + pstring);
+    }
+    else if (paramname.equals("dsname"))
+      query.append(" AND " + "data_set_name:" + pstring);
+    else if (paramname.equals("insthosttype"))
+      query.append(" AND " + "instrument_host_type:" + pstring);
   }
-  else
-    return "";
+  
+  return query.toString();
 }
-
-/*
-
-advanced query:
-
-SELECT dm.msnname, ti.targname, ti.targtype, ii.instname, ii.insttype,
-       hi.insthostname, hi.insthosttype, di.dataobjtype, di.dsid, di.dsname
-FROM dsinfo di, dshost dh, hostinfo hi, instinfo ii,
-     dstarg dt, dsmsn dm, dsnode dn,
-     targetinfo ti, resds rd, resinfo ri, dsnssdc dsns
-WHERE upper(ri.resclass) LIKE '%BROWSERP%'
- and dh.dsid = di.dsid
- and dh.insthostid = hi.insthostid
- and dh.insthostid = ii.insthostid
- and dh.instid = ii.instid
- and dt.dsid = di.dsid
- and dt.targname = ti.targname
- and dn.dscolldsid = di.dsid
- and dsns.dscolldsid = di.dsid
- and dm.dsid = di.dsid
- and di.dsid = rd.dsid
- and rd.resourceid = ri.resourceid
-
-*/
 
 String constructQuery(HttpServletRequest req, boolean advanced)
     throws ServletException, IOException
@@ -199,22 +180,20 @@ String constructQuery(HttpServletRequest req, boolean advanced)
   int L = (advanced) ? 7 : 3;
   for (int i=0; i<L; i++) {
     query.append(getSingleValue(req, singleValueCriteria[i], query.length()));
-  }
+  }  
+  System.out.println("singleValue query = " + query.toString());
 
+  if (query.toString().length()>0) 
+     query.append(" AND ");
+     
   L = (advanced) ? 3 : 2;
   for (int i=0; i<L; i++) {
     query.append(getMultiValues(req, multiValueCriteria[i], query.length()));
   }
-
+  System.out.println("multiValue query = " + query.toString());
+    
   if (query.length()>0)
-    return
-      "SELECT distinct dm.msnname, ti.targname, ti.targtype, "+
-			"ii.instname, ii.insttype " +
-      ((advanced) ? ", di.dataobjtype, di.dsid, di.dsname, "+
-                    "hi.insthostname, hi.insthosttype "
-                   : "") +
-      queryStr + // FROM clause and join clause
-      query.toString();
+    return query.toString();
        
   else return "";
 }
@@ -224,13 +203,8 @@ static String[] idxToName =
     "dataobjtype", "dsid", "dsname", "insthostname", "insthosttype",
     "archivestat", "nodename" };
 
-/*
- return " selected" if param=value is in req, "" otherwise
- used to pre-select options in a SELECT box that the user previously selected
-*/
 String isSelected( HttpServletRequest req, String param, String value)
 {
-
   if (req.getParameterValues(param)!=null) {
     for( int i=0; i<req.getParameterValues(param).length; i++) {
       String pv=req.getParameterValues(param)[i];
@@ -253,59 +227,49 @@ String isSelected( HttpServletRequest req, String param, String value)
 
 String getSearchParams(
      HttpServletRequest req, String query,
-     String[] opts, boolean advanced) {
+     String[] opts, boolean advanced, String searchUrl) {
 
   String r = "";
   int numcolumns = (advanced) ? 10 : 5;
   int g=0;  // generic counter
   List alias = null;
   ArrayList text_list, dbname_list=null;
-
   List[] optLists = new ArrayList[numcolumns];
- 
-  //get database server and database from db.xml
-  //String dbserver = getServletConfig().getServletContext().getInitParameter("dbserver");
-  //String db = getServletConfig().getServletContext().getInitParameter("db");
-  //String dblogin = getServletConfig().getServletContext().getInitParameter("dblogin");
 
   // each parameter gets an ArrayList
-  for (int i=0; i<optLists.length; i++) optLists[i] = new ArrayList();
+  for (int i=0; i<optLists.length; i++) 
+  	optLists[i] = new ArrayList();
   
   try
   {
     long time0 = System.currentTimeMillis();
-    //create connection to database
-	 javax.naming.Context init = new javax.naming.InitialContext();
-	 javax.naming.Context env = (Context)init.lookup("java:comp/env");
-	 DataSource ds = (DataSource) env.lookup("jdbc/pdsprofile");
-	 Connection connection = ds.getConnection();
-	 Statement statement = connection.createStatement();
 
-    /*
-    Class.forName("com.sybase.jdbc2.jdbc.SybDriver");
-    Connection connection = DriverManager.getConnection("jdbc:sybase::Tds:" + dbserver + db + "?user=" + dblogin + "&password=" + dblogin);
-	//"jdbc:sybase::Tds:" + dbserver + db,
-                //dblogin, dblogin);
-    java.sql.Statement statement = connection.createStatement();
-    */
-
-    System.err.println("====== context sensitive query : " + query);
-    ResultSet rs = statement.executeQuery( query);
-  
-    time0 = System.currentTimeMillis();
-    while (rs.next()) {
-      for (int i=0; i<numcolumns; i++) {
+    GetSearchParams paramBean = new GetSearchParams(searchUrl);
+    
+  	//paramBean.getParams(query);
+  	/*
+  	for (int i=0; i<numcolumns; i++) {
         List l = optLists [i];
         String s = rs.getString(i+1);
         if (dontDisplay.indexOf("|"+s+"|")<0 && ! l.contains(s)) {
           l.add(s);
         }
       }
-    }
-    rs.close();
-    statement.close();
-    connection.close();
+    */
+    /*
+    String [] instname = paramBean.getInstrumentName();
+    for (int i=0; i<instname.length; i++) {
+               String s = instname[i];
+               if (!opts[INSTNAME].equals("")) opts[INSTNAME] += "\t";
+               opts[INSTNAME] += "<option value=\""+s+"\""
+                     +isSelected( req, idxToName[3], s)+">"
+                     + s;
+     
+     } //for
+    //opts[INSTNAME] = paramBean.getInstrumentName();
+    */
     
+ /*   
     // loop through all columns
     for (int i=0; i<optLists.length; i++) {
         List l = optLists [i];
@@ -314,14 +278,7 @@ String getSearchParams(
         dbname_list = new ArrayList();
         String [] msntext=req.getParameterValues("msntext");
         String [] msnparams=req.getParameterValues("msnname");
-        /*
-         if mission name is passed in either through the 
-         web form interface or direct URL request, 
-         we construct an alias list list
-         This list is to be compared to the actual db msnname result
-         while building the Missions selection list to be return and display
-         on non-first page selection form
-        */
+      
         if (msntext!=null) { // form interface
            alias = new ArrayList();
 
@@ -418,7 +375,7 @@ String getSearchParams(
        if (alias!=null) alias.clear();
 
     } //for - to go over all columns
-
+*/
    }
    catch (Exception e) {
       if (alias!=null) alias.clear();
@@ -438,6 +395,8 @@ String getSearchParams(
 
   final String all_opt = "<option value=ALL selected>All\n";
 
+System.out.println("request.getRequestURI() = " + request.getRequestURI());
+
   boolean power = request.getRequestURI().indexOf("power.jsp")>=0;
   boolean advanced = power || (request.getRequestURI().indexOf("advanced.jsp")>=0);
 
@@ -452,15 +411,39 @@ String getSearchParams(
   // targname!=null means page called with params
   if (advWithParams) {
     q = constructQuery( request, true);
+    System.out.println("in searchParamsJSP.jsp....advWithParams....q = " + q);
   }
   else
-  if (request.getParameterValues("targname")!=null) {
-    q = constructQuery( request, advanced);
-  }
+	if (request.getParameterValues("targname")!=null) {
+      q = constructQuery( request, advanced);
+      System.out.println("in searchParamsJSP.jsp....else....q = " + q);
+    }
 
+
+  // populate list of attribute's value
+  GetSearchParams paramBean = new GetSearchParams(searchUrl);
+  paramBean.getParams();
+  
   // if index.jsp called with no parameters,
   // or if query is empty for some reason, then get all default values
   if (q.equals("")) {
+    opts[MSNNAME]  = jpl.pds.util.DisplayOptions.displayValList(request, "MISSION_NAME", "msnname", paramBean.getMissionName());
+    opts[TARGNAME] = jpl.pds.util.DisplayOptions.displayValList(request, "TARGET_NAME", "targname", paramBean.getTargetName());
+    opts[TARGTYPE] = jpl.pds.util.DisplayOptions.displayValList(request, "TARGET_TYPE", "targtype", paramBean.getTargetType());
+    opts[INSTNAME] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_NAME", "instname", paramBean.getInstrumentName());
+    opts[INSTTYPE] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_TYPE", "insttype", paramBean.getInstrumentType());
+    opts[DATAOBJTYPE]  = jpl.pds.util.DisplayOptions.displayValList(request, "DATA_OBJECT_TYPE", "dataobjtype", paramBean.getDataObjectType());
+    opts[DSID]         = jpl.pds.util.DisplayOptions.displayValList(request, "DATA_SET_ID", "dsid", paramBean.getDatasetId());
+    opts[DSNAME]       = jpl.pds.util.DisplayOptions.displayValList(request, "DATA_SET_NAME", "dsname", paramBean.getDatasetName());
+    opts[INSTHOSTNAME] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_HOST_NAME", "insthostname", paramBean.getInstrumentHostName());
+    opts[INSTHOSTTYPE] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_HOST_TYPE", "insthosttype", paramBean.getInstrumentHostType());
+    opts[TARGNAMES] = "";
+    for (int i=1; i<paramBean.getTargetName().length; i++) {
+      if (!opts[TARGNAMES].equals("")) opts[TARGNAMES] += ",";
+      opts[TARGNAMES] += "'"+paramBean.getTargetName()[i].toUpperCase() +"'";
+    }
+  
+  /*
     opts[MSNNAME]  = jpl.pds.util.DisplayOptions.displayValList(request, searchBean.getPDSKeyword("msnname"), "msnname", paramBean.getMissionNamePair());
     opts[TARGNAME] = jpl.pds.util.DisplayOptions.displayValList(request, searchBean.getPDSKeyword("targname"), "targname", paramBean.getTargetName());
     opts[TARGTYPE] = jpl.pds.util.DisplayOptions.displayValList(request, searchBean.getPDSKeyword("targtype"), "targtype", paramBean.getTargetType());
@@ -476,6 +459,7 @@ String getSearchParams(
       if (!opts[TARGNAMES].equals("")) opts[TARGNAMES] += ",";
       opts[TARGNAMES] += "'"+paramBean.getTargetName()[i].toUpperCase() +"'";
     }
+    */
   }
   // else user changed some search specs, 
   // we need to construct search parameters to match
@@ -492,8 +476,32 @@ String getSearchParams(
       if (defaultSingleValue(request,"insthosttype")) opts[INSTHOSTTYPE] = all_opt;
     }
     */
-
-    r = getSearchParams( request, q, opts, advanced);
+System.out.println("*****************************************");
+System.out.println("before calling getSearchParams method...");
+System.out.println("q = " + q);
+    r = getSearchParams( request, q, opts, advanced, searchUrl);
+    paramBean.initialize();
+    paramBean.getParams(q);
+    
+    opts[MSNNAME]  = jpl.pds.util.DisplayOptions.displayValList(request, "MISSION_NAME", "msnname", paramBean.getMissionName());
+    opts[TARGNAME] = jpl.pds.util.DisplayOptions.displayValList(request, "TARGET_NAME", "targname", paramBean.getTargetName());
+    opts[TARGTYPE] = jpl.pds.util.DisplayOptions.displayValList(request, "TARGET_TYPE", "targtype", paramBean.getTargetType());
+    opts[INSTNAME] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_NAME", "instname", paramBean.getInstrumentName());
+    opts[INSTTYPE] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_TYPE", "insttype", paramBean.getInstrumentType());
+    opts[DATAOBJTYPE]  = jpl.pds.util.DisplayOptions.displayValList(request, "DATA_OBJECT_TYPE", "dataobjtype", paramBean.getDataObjectType());
+    opts[DSID]         = jpl.pds.util.DisplayOptions.displayValList(request, "DATA_SET_ID", "dsid", paramBean.getDatasetId());
+    opts[DSNAME]       = jpl.pds.util.DisplayOptions.displayValList(request, "DATA_SET_NAME", "dsname", paramBean.getDatasetName());
+    opts[INSTHOSTNAME] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_HOST_NAME", "insthostname", paramBean.getInstrumentHostName());
+    opts[INSTHOSTTYPE] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_HOST_TYPE", "insthosttype", paramBean.getInstrumentHostType());
+    opts[TARGNAMES] = "";
+    for (int i=1; i<paramBean.getTargetName().length; i++) {
+      if (!opts[TARGNAMES].equals("")) opts[TARGNAMES] += ",";
+      opts[TARGNAMES] += "'"+paramBean.getTargetName()[i].toUpperCase() +"'";
+    }
+    
+    
+    
+    /*
     // if a single value param has more than one options, then add "All" option;
     if (opts[TARGNAME].indexOf("\t")>=0) opts[TARGNAME] = all_opt + opts[TARGNAME];
     if (opts[TARGTYPE].indexOf("\t")>=0) opts[TARGTYPE] = all_opt + opts[TARGTYPE];
@@ -504,5 +512,6 @@ String getSearchParams(
         if (opts[DSNAME].indexOf("\t")>=0) opts[DSNAME] = all_opt + opts[DSNAME];
         if (opts[INSTHOSTTYPE].indexOf("\t")>=0) opts[INSTHOSTTYPE] = all_opt + opts[INSTHOSTTYPE];
     }
+    */
   }
 %>

@@ -1,35 +1,43 @@
 <%
-String pdshome = "";
-pdshome = application.getInitParameter("pdshome.url");
+   String pdshome = application.getInitParameter("pdshome.url");
+   String registryUrl = application.getInitParameter("registry.url");
+   String searchUrl = application.getInitParameter("search.url");
 %>
 <html>
 <head>
-<title>PDS Data Set Search Results</title>
-<META  NAME="keywords"  CONTENT="Planetary Data System">
+   <title>PDS Data Set Search Results</title>
+   <META  NAME="keywords"  CONTENT="Planetary Data System">
+   <META  NAME="description" CONTENT="This website serves as a mechanism for searching the PDS planetary archives.">
+   <link href="/ds-view/pds/css/pds_style.css" rel="stylesheet" type="text/css">
 
-<META  NAME="description" CONTENT="This website serves as a mechanism for searching the PDS plane
-tary archives.">
-<link href="<%=pdshome%>css/pds_style.css" rel="stylesheet" type="text/css">
+   <%@ page language="java" session="true" isThreadSafe="true" info="PDS Search" 
+            isErrorPage="false" contentType="text/html; charset=ISO-8859-1" 
+            import="gov.nasa.pds.dsview.registry.GetSearchParams, gov.nasa.pds.dsview.registry.SearchRegistry, 
+                    gov.nasa.pds.registry.model.ExtrinsicObject, java.util.*, java.net.*, java.io.*" %>
 
-<%@ page language="java" session="true" isThreadSafe="true" info="PDS Search" isErrorPage="false" contentType="text/html; charset=ISO-8859-1" import="jpl.pds.beans.SearchBean, jpl.pds.beans.DatasetResource, jpl.eda.xmlquery.Result , jpl.eda.profile.*, java.util.*, java.net.*, java.io.*" %>
+   <script language="JavaScript"
+           src="<%=pdshome%>js/popWindow.js"></script>
 
-<script language="JavaScript"
-src="<%=pdshome%>js/popWindow.js"></script>
-
-<SCRIPT LANGUAGE="JavaScript">
-<%@ include file="/pds/utils.js"%>
-</SCRIPT>
+   <SCRIPT LANGUAGE="JavaScript">
+      <%@ include file="/pds/utils.js"%>
+   </SCRIPT>
 </head>
 
-<body onLoad="preloadImages();">
+<body class="home menu_home menu_item_ ">
 
-<jsp:useBean class="jpl.pds.beans.SearchBean" id="searchBean" scope="session"/>
-<% System.err.println("=== SearchBean in result.jsp is " + System.identityHashCode(searchBean)); %>
+   <%@ include file="/pds/header.html" %>
+   <%@ include file="/pds/main_menu.html" %>
+
+   <div id="submenu">
+   <div class="clear"></div>
+   </div>
+
+<!-- Main content -->
+<div id="content">
+   <div style="border-top: 1px solid_white;">
 
 <%! 
 String constructURL (String url, String queryString, String dsdesc) {
-
-
   try {
    URL aURL = new URL(url);
    String filename = aURL.getFile();
@@ -88,36 +96,59 @@ String constructURL (String url, String queryString, String dsdesc) {
 
 <%-- Get the subset of results to be displayed for this invocation --%>
 <%
-int rowsFetch = 25;
-int curPage;
-int listsize = searchBean.getSearchResultsSize();
-int totalPage = (int) Math.ceil((double)listsize/(double)rowsFetch);
-
-
-System.err.println("List size from results.jsp = " + listsize);
-
-
-if (request.getParameterValues("pageNo") == null) {
-   curPage = 0;
-} else {
-   curPage = Integer.parseInt(request.getParameterValues("pageNo")[0]);
-}
-
-int startRow = (curPage * rowsFetch) + 1;
-List curList = null;
-Map resourceMap = null;
-if (listsize > 0) {
-   curList = searchBean.getSearchResultList(startRow,rowsFetch);
-   if (curList != null && curList.size() > 0) {
-      resourceMap = searchBean.getResourceProfiles(curList);
-   }
-}
 
 String queryString = (request.getSession().getAttribute("queryString") != null ?
                       (String)request.getSession().getAttribute("queryString") : "");
 
 String userQueryString = (request.getSession().getAttribute("message") != null ?
                       (String)request.getSession().getAttribute("message") : "");
+                      
+System.out.println("in results.jsp...queryString = " + queryString);
+//out.println("in results.jsp...queryString = " + queryString);
+                      
+GetSearchParams sparms = new GetSearchParams(searchUrl);
+if (queryString!=null)
+   sparms.getSearchResult(queryString);
+	
+SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
+
+int listsize = sparms.getDSSize();
+//System.err.println("List size from results.jsp = " + listsize);
+
+int rowsFetch = 25;
+int curPage;
+int totalPage = (int) Math.ceil((double)listsize/(double)rowsFetch);
+
+if (request.getParameterValues("pageNo") == null) {
+   curPage = 0;
+} else {
+   curPage = Integer.parseInt(request.getParameterValues("pageNo")[0]);
+}
+int startRow = (curPage * rowsFetch);
+
+//out.println("curPage = " + curPage + "<br>startRow = " + startRow + "<br>");
+
+List<String> curList = null;
+Map resourceMap = null;
+
+if (listsize > 0) {
+   // need to modify this with small size
+   // recalculate for rowsFetch when the size is smaller than 25
+   if (startRow+rowsFetch>listsize) {
+      rowsFetch = listsize-startRow;
+      //out.println("rowsFetch = " + rowsFetch);
+   }
+   curList = sparms.getDsLists(startRow, startRow+rowsFetch);
+   
+   //out.println("curList size = " + curList.size());
+   
+   //curList = searchBean.getSearchResultList(startRow,rowsFetch);
+   //if (curList != null && curList.size() > 0) {
+   //   resourceMap = searchBean.getResourceProfiles(curList);
+   //}
+}
+
+//out.println("queryString = " + queryString);
 
 String title = "Search Results";
 if (queryString.indexOf("MISSION_STOP_DATE=UNK") > -1) {
@@ -125,86 +156,70 @@ if (queryString.indexOf("MISSION_STOP_DATE=UNK") > -1) {
    title =  "Active Mission Data Sets";
    queryString = "";
 }
+
 String orgSearch = (request.getSession().getAttribute("requestURI") != null ? 
                      (String)request.getSession().getAttribute("requestURI") : 
-	             "/pds/index.jsp");
-// replace blank with underscore because Atlas cannot handle blank
-
+	             "/ds-view/pds/index.jsp");
 
 if (! queryString.equals("")) {
     //queryString = queryString.replace('+','_');
-queryString = queryString.trim();
-queryString = java.net.URLEncoder.encode(queryString);
+	queryString = queryString.trim();
+	queryString = java.net.URLEncoder.encode(queryString);
 }
-
 %>
 
 <table align="center" bgColor="#FFFFFF" BORDER="0" CELLPADDING="10" CELLSPACING="0">
-  <tr>
-    <td>
-      <%@ include file="/pds/pds_header.html" %>
-
-      <table width="760" border="0" cellspacing="2" cellpadding="2">
-       <tr>
-                     <td colspan=5>
-                      <table border="0" cellpadding="0" cellspacing="0" width="760">
-                        <tr>
-                          <td class="pageTitle" align=left><font color="#6F4D0E"><b><%=title%></b>&nbsp;(<%= listsize%> data sets found)</font>
-                          </td>
-                          <td align=right valign=center color="#6F4D0E">
-                            <A href="javascript:openWindow('/pds/search_result_help.html', 'Result',550,500)"> <IMG SRC="/pds/images/btn_help.gif" BORDER=0></A>
-                          </td>
-                        </tr>
-                      </table>
-                     </td>
-	</tr>
-        <tr><td>&nbsp;</td></tr>
-	<tr valign="TOP">
-		<td valign="TOP" bgcolor="#003366" align="center" width="200">
-			<FONT size="2" color="#FFFFFF"><b>Data Set</b></font>
-		</td>
-                <td valign="TOP" bgcolor="#003366" align="center" width="50">
-                        <FONT size="2" color="#FFFFFF"><b>Instrument<br>Host</b></font>
-                </td>
-		<td valign="TOP" bgcolor="#003366" align="center" width="200">
-			<FONT size="2" color="#FFFFFF"><b>Information About<br>the Data Set</b></font>
-		</td>
-		<td valign="TOP" bgcolor="#003366" align="center" width="150">
-			<FONT size="2" color="#FFFFFF"><b>Data Products &amp;<br>Related Files</b></font>
-		</td>
-		<td valign="TOP" bgcolor="#003366" align="center" width="200">
-			<FONT size="2" color="#FFFFFF"><b>Other Resources</b></font>
-		</td>
-	</tr>
-
-       <% if (curList == null) { %>
-	<tr valign="TOP">
-         <td valign="TOP" colspan="5">
-          <font color="#FFFFFF" size="2"><b>No data sets found matching your search criteria:<br> <%=userQueryString%></b></font></td>
-	</tr>
-       <% } else { 
-        // Loop through the profile results list 
+   <tr>
+      <td>
+         <table width="760" border="0" cellspacing="2" cellpadding="2">
+            <tr>
+               <td colspan=5>
+                  <table border="0" cellpadding="0" cellspacing="0" width="760">
+                     <tr>
+                        <td class="pageTitle" align=left><font color="#6F4D0E"><b><%=title%></b>&nbsp;(<%= listsize%> data sets found)</font>
+                        </td>
+                        <td align=right valign=center color="#6F4D0E">
+                           <A href="javascript:openWindow('/pds/search_result_help.html', 'Result',550,500)"> <IMG SRC="/ds-view/pds/images/btn_help.gif" BORDER=0></A>
+                        </td>
+                     </tr>
+                  </table>
+               </td>
+	        </tr>
+            <tr><td>&nbsp;</td></tr>
+            <!-- HEADER of TABLE -->
+	        <tr valign="TOP">
+		       <td valign="TOP" bgcolor="#003366" align="center" width="200">
+			      <FONT size="2" color="#FFFFFF"><b>Data Set</b></font>
+		       </td>
+               <td valign="TOP" bgcolor="#003366" align="center" width="50">
+                  <FONT size="2" color="#FFFFFF"><b>Instrument<br>Host</b></font>
+               </td>
+		       <td valign="TOP" bgcolor="#003366" align="center" width="200">
+			      <FONT size="2" color="#FFFFFF"><b>Information About<br>the Data Set</b></font>
+		       </td>
+		       <td valign="TOP" bgcolor="#003366" align="center" width="150">
+			      <FONT size="2" color="#FFFFFF"><b>Data Products &amp;<br>Related Files</b></font>
+		       </td>
+		       <td valign="TOP" bgcolor="#003366" align="center" width="200">
+			      <FONT size="2" color="#FFFFFF"><b>Other Resources</b></font>
+		       </td>
+	        </tr>
+   <% if (curList == null) { %>
+            <tr valign="TOP">
+               <td valign="TOP" colspan="5">
+                  <font color="#FFFFFF" size="2"><b>No data sets found matching your search criteria:<br> <%=userQueryString%></b></font></td>
+	        </tr>
+   <% } else { 
+           // Loop through the profile results list 
            int c=1;
            for (Iterator i = curList.iterator(); i.hasNext(); c++) {
-              Profile profile = (Profile) i.next();
-              Map elements = profile.getProfileElements();
-              ProfileElement pe = null;
-              String dsdesc = "";
- 	      if (elements.containsKey("DATA_SET_TERSE_DESCRIPTION")) {
-                 pe = (ProfileElement)elements.get("DATA_SET_TERSE_DESCRIPTION");
-                 // data set should only have 1 description
-                 for (Iterator e = pe.getValues().iterator(); e.hasNext();) {
-                    dsdesc = (String)e.next();
-                 }
-              }
-	      String dsname = "";
-	      if (elements.containsKey("DATA_SET_NAME")) {
-                  pe = (ProfileElement)elements.get("DATA_SET_NAME");
-                  for (Iterator e = pe.getValues().iterator(); e.hasNext();) {
-                       dsname = (String)e.next();
-                  }
-              }   
-
+              String dsid = (String)i.next();
+              String tmpDsid = dsid.replaceAll("/", "-");
+              ExtrinsicObject dsObj = searchRegistry.getExtrinsic("urn:nasa:pds:data_set."+tmpDsid);
+                         
+              String dsdesc = searchRegistry.getSlotValues(dsObj, "data_set_terse_description").get(0);             
+ 	          String dsname = searchRegistry.getSlotValues(dsObj, "data_set_name").get(0);
+ 	          
               // display data_set_name if description is null
               if (dsdesc.equals("") || dsdesc.equalsIgnoreCase("NULL") ||
                   dsdesc.equalsIgnoreCase("N/A") || dsdesc.equalsIgnoreCase("NA") ||
@@ -212,97 +227,78 @@ queryString = java.net.URLEncoder.encode(queryString);
                   dsdesc = dsname;
               }
 
-              String dsid = "";
-              if (elements.containsKey("DATA_SET_ID")) {
-                pe = (ProfileElement)elements.get("DATA_SET_ID");
-                for (Iterator e = pe.getValues().iterator(); e.hasNext();) {
-                   dsid = (String)e.next();
-                } 
-              } 
-
               String instname= "";
-	      String instid = "";
-              if (elements.containsKey("INSTRUMENT_HOST_ID")) {
-                pe = (ProfileElement)elements.get("INSTRUMENT_HOST_ID");
-                for (Iterator e = pe.getValues().iterator(); e.hasNext();) {
-                   instid = (String)e.next();
-                } 
-              }
+	          String instid = "";
+              List<String> svalues = searchRegistry.getSlotValues(dsObj, "instrument_host_ref");     	 
+		      for (int j=0; j<svalues.size(); j++) {
+		         String aValue = (String) svalues.get(j);
+		    	 String insthostlid = aValue.substring(0, aValue.indexOf("::"));
+		    	 ExtrinsicObject insthostObj = searchRegistry.getExtrinsic(insthostlid);
+		    	 instid = searchRegistry.getSlotValues(insthostObj, "instrument_host_id").get(0).toUpperCase();
+		    	 instname = searchRegistry.getSlotValues(insthostObj, "instrument_host_name").get(0);
+		      }
  
-              String profileURL = "/pds/viewDataset.jsp?dsid=" + 
-                                  URLEncoder.encode(dsid, "UTF-8");
-	/*
-              for (Iterator e= profile.getResourceAttributes().getResLocations().iterator(); e.hasNext();) {
-                 resLocURL = (String)e.next();
-              }
-              if (resLocURL.equalsIgnoreCase("TBD") || resLocURL.equalsIgnoreCase("NA") ||
-                  resLocURL.equalsIgnoreCase("N/A")) {
-                  resLocURL = "";
-              }
-	*/
+ 			  //String tmpDsid = dsid.replaceAll("/", "-");
+              String profileURL = "/ds-view/pds/viewDataset.jsp?dsid=" + 
+                                  URLEncoder.encode(tmpDsid, "UTF-8");
+	
               String resLocURL = "";
-              if (elements.containsKey("RESOURCE_LINK")) {
-                pe = (ProfileElement)elements.get("RESOURCE_LINK");
-                for (Iterator e = pe.getValues().iterator(); e.hasNext();) {
-                   resLocURL = (String)e.next();
-                } 
-              }
               String resName = "";
-              if (elements.containsKey("RESOURCE_NAME")) {
-                pe = (ProfileElement)elements.get("RESOURCE_NAME");
-                for (Iterator e = pe.getValues().iterator(); e.hasNext();) {
-                   resName = (String)e.next();
-                }  
-              }
+            
+              List<String> rvalues = searchRegistry.getResourceRefs(dsObj);
+		      String refLid = rvalues.get(0);
+		      refLid = refLid.substring(0, refLid.indexOf("::"));
+		      ExtrinsicObject resource = searchRegistry.getExtrinsic(refLid);
+		      resName = searchRegistry.getSlotValues(resource, "resource_name").get(0);
+		    	 resLocURL = searchRegistry.getSlotValues(resource, "resource_url").get(0); 
+		    	//System.out.println("resource_name = " + resName);
+		    	//System.out.println("resource_url = " + resLocURL);
+              
               %>
  
-	<tr valign="top">
-		<td valign="TOP" align="left" width="200" bgcolor="#EFEFEF">
-			<%= c+(curPage*25)%>.&nbsp;<%=dsdesc%>
-		</td>
+ 			<!-- RESULTS -->
+            <tr valign="top">
+		       <td valign="TOP" align="left" width="200" bgcolor="#EFEFEF">
+			      <%= c+(curPage*25)%>.&nbsp;<%=dsdesc%>
+		       </td>
 
-                <td valign="center" align="center" bgcolor="#EFEFEF" width="50">
+               <td valign="center" align="center" bgcolor="#EFEFEF" width="50">
                   <%=instid%>
-                </td>
+               </td>
 
-		<td valign="center" bgcolor="#EFEFEF" align="center" width="200">
-                   <% if (orgSearch.indexOf("/pds/power.jsp") > -1) { %>
-			<a href="<%=profileURL%>"><%=dsid%></a>
-                   <% } else { %>
-			<a href="<%=profileURL%>">View Information for</a><br>
-                           <%=dsid%>
-                   <% } %>
-		</td>
+		       <td valign="center" bgcolor="#EFEFEF" align="center" width="200">
+            <% if (orgSearch.indexOf("/pds/power.jsp") > -1) { %>
+			      <a href="<%=profileURL%>"><%=dsid%></a>
+            <% } else { %>
+			      <a href="<%=profileURL%>">View Information for</a><br><%=dsid%>
+            <% } %>
+		       </td>
 
-		<td valign="center" bgcolor="#EFEFEF" align="center" width="150">
-                   <% if (! resLocURL.equals("") && ! resLocURL.equalsIgnoreCase("OFFLINE")) { %>
-			<a href="<%=constructURL(resLocURL, queryString, "")%>" target="_blank">
-			Search for Products<br>with <%=resName%></a>
-                   <% } else { %>
-                        <%=resLocURL%>
-                   <% } %>
-		</td>
-		<td valign="center" bgcolor="#EFEFEF" align="center" width="200">
-			<ultype="disc">
-                  <%  // find the resource profiles for this data set from the resource map
-                      if (resourceMap != null && resourceMap.containsKey(dsid)) {
-                        List list = (List)resourceMap.get(dsid);
-                        for (int l=0; l<list.size(); l++) {
-                          String resname = ((DatasetResource)list.get(l)).getResourceName();
-                          String reslink = ((DatasetResource)list.get(l)).getResourceLink(); %>
-			<li><a href=<%=constructURL(reslink, queryString, "")%> target="_new"><%=resname%></a><br>
-                  <%    }
-                      } else { %>
-                        &nbsp;
-                  <%  } %>
-		</td>
-	</tr>
-    <%  } %>
-    <%} %>
+		       <td valign="center" bgcolor="#EFEFEF" align="center" width="150">
+		          <a href="<%=constructURL(resLocURL, queryString, "")%>" target="_blank">
+                  Search for Products<br>with <%=resName%></a>
+		       </td>
+		       <td valign="center" bgcolor="#EFEFEF" align="center" width="200">
+			      <ultype="disc">       
+			      <% 
+			         for (int j=1; j<rvalues.size(); j++) {
+			            refLid = rvalues.get(j);
+			            refLid = refLid.substring(0, refLid.indexOf("::"));
+		    	        resource = searchRegistry.getExtrinsic(refLid);
+		    	        resName = searchRegistry.getSlotValues(resource, "resource_name").get(0);
+		    	        resLocURL = searchRegistry.getSlotValues(resource, "resource_url").get(0);    		    	      
+		    	   %>
+			      <li><a href=<%=constructURL(resLocURL, queryString, "")%> target="_new"><%=resName%></a><br>
+			      <% } %>
+		       </td>
+            </tr>
+    <% } // end for %>         
+   <%} // end else %>
+         <!--/table-->
+   
 <%-- Result Page Navigation --%>
-
-<tr valign="TOP">
-<td valign="TOP" colspan="5" align=center>
+            <tr valign="TOP">
+               <td valign="TOP" colspan="5" align=center>
 <% if (listsize > 0) { %>
 Page&nbsp;
 <%
@@ -311,28 +307,30 @@ for(int k=1; k<=totalPage;k++) {
    if (k==curPage+1) { %>
        <%=k%>&nbsp;&nbsp;
 <% } else { %>
-   <a href="/pds/results.jsp?pageNo=<%=k-1%>"><%= k%></a>&nbsp;&nbsp;
+   <a href="/ds-view/pds/results.jsp?pageNo=<%=k-1%>"><%= k%></a>&nbsp;&nbsp;
 <% }
 }
 
 // is there a previous page?
 if (curPage > 0) { %>
-<A href="/pds/results.jsp?pageNo=<%=curPage-1%>">Previous</A>&nbsp;&nbsp;
+<A href="/ds-view/pds/results.jsp?pageNo=<%=curPage-1%>">Previous</A>&nbsp;&nbsp;
 <% } 
 // is there a next page?
 if (curPage+1 < totalPage) { %>
-<A href="/pds/results.jsp?pageNo=<%=curPage+1%>">Next</A>&nbsp;&nbsp;
+<A href="/ds-view/pds/results.jsp?pageNo=<%=curPage+1%>">Next</A>&nbsp;&nbsp;
 <% } %>
 &nbsp; | &nbsp;<A href="<%=orgSearch%>">New Search</A>
-</td>
-
-	     </tr>
-           </td>
-        <%@ include file="/pds/footer.html" %>
-	</table>
-
-    </td>
-  </tr>
+               </td>
+             </tr>
+            </td>            
+         </table>
+      </td>
+   </tr>
 </table>
+</div>
+</div>
+<%@ include file="/pds/footer.html" %>
+
+<%@ include file="/pds/ds_map.html" %>
 </body>
 </html>

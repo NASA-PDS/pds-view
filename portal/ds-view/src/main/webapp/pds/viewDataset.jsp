@@ -2,13 +2,14 @@
    String pdshome = application.getInitParameter("pdshome.url");
    String registryUrl = application.getInitParameter("registry.url");
 %>
-<html>
+<HTML>
 <head>
    <title>PDS Data Set Profile</title>
    <META  NAME="keywords"  CONTENT="Planetary Data System">
    <META  NAME="description" CONTENT="This website serves as a mechanism for searching the PDS planetary archives.">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
    
-   <link href="<%=pdshome%>css/pds_style.css" rel="stylesheet" type="text/css">
+   <link href="/ds-view/pds/css/pds_style.css" rel="stylesheet" type="text/css">
 
    <%@page language="java" session="true" isThreadSafe="true" info="PDS Search" isErrorPage="false" 
            contentType="text/html; charset=ISO-8859-1"
@@ -19,12 +20,22 @@
    </SCRIPT>
 </head>
 
-<body onLoad="preloadImages();">
-   <table align="center" bgColor="#FFFFFF" BORDER="0" CELLPADDING="10" CELLSPACING="0">
+<!--body onLoad="preloadImages();"-->
+<body class="home menu_home menu_item_ ">
+   
+   <%@ include file="/pds/header.html" %>
+   <%@ include file="/pds/main_menu.html" %>
+   
+   <div id="submenu">   
+   <div class="clear"></div>
+   </div>
+   
+<!-- Main content -->
+<div id="content">
+   <div style="border-top: 1px solid_white;">
+   <table align="center" bgColor="#FFFFFF" border="0" CELLPADDING="10" CELLSPACING="0">
      <tr>
-       <td>
-          <%@ include file="/pds/pds_header.html" %>
-
+       <td>    
 <%!
 String constructURL (String url, String dsid) {
    try {
@@ -127,15 +138,16 @@ while (names.hasMoreElements()) {
    }
 }
 %>
-   <table width="760" border="0" cellspacing="3" cellpadding="2">
+   
+<%      
+if (dsid.length() == 0) {
+%>
+   <table align="center" width="760" border="0" cellspacing="3" cellpadding="10">
       <tr valign="TOP">
          <td valign="TOP" colspan="2" class="pageTitle">
             <br><FONT color="#6F4D0E"><b>Dataset Information</b></font><br><br>
          </td>
       </tr>
-<%      
-if (dsid.length() == 0) {
-%>
       <tr valign="TOP">
          <td bgcolor="#F0EFEF" width=200 valign=top>
             Please specify a <b>dsid</b> or <b>Identifier</b>
@@ -156,11 +168,18 @@ else {
    dsid = dsid.toUpperCase();
    dsid_lower = dsid.toLowerCase();
 
+   String tmpDsid = dsid.replaceAll("/", "-");
    //out.println("dsid = " + dsid + "    dsid_lower = " + dsid_lower);
-   ExtrinsicObject product = searchRegistry.getExtrinsic("urn:nasa:pds:data_set."+dsid);
+   ExtrinsicObject product = searchRegistry.getExtrinsic("urn:nasa:pds:data_set."+tmpDsid);
 
    if (product==null) {
 %>
+   <table align="center" width="760" border="0" cellspacing="3" cellpadding="10">
+      <tr valign="TOP">
+         <td valign="TOP" colspan="2" class="pageTitle">
+            <br><FONT color="#6F4D0E"><b>Dataset Information</b></font><br><br>
+         </td>
+      </tr>
       <tr valign="TOP">
          <td bgcolor="#F0EFEF" width=200 valign=top>
             Information not found for dsid <b><%=dsid%></b>. Please verify the value.
@@ -177,16 +196,16 @@ else {
       //adding target type value so that we know where to link the user 
       //for target information  ArrayList targetType = new ArrayList(); ?????
 %>
-   <table width="760" border="0" cellspacing="0" cellpadding="0">
+   <table align="center" padding="18px" width="760" border="0" cellspacing="0" cellpadding="10">
       <tr>
          <td><img src="<%=pdshome%>images/spacer.gif" width="5" height="5" border="0"></td>
 	  </tr>
 	  <tr>
-	     <td valign="top"><table width="578" border="0" cellspacing="0" cellpadding="0">
-	        <tr>
-	           <td>
+	     <td valign="top">
+	        <table width="578" border="0" cellspacing="0" cellpadding="10">
+
 	              <!-- main content begin -->
-	              <table border="0" cellpadding="0" cellspacing="0">
+	              <table border="0" cellpadding="10" cellspacing="0">
 	                 <tr>
 	                    <td class="pageTitle">
 	                       <font color="#6F4D0E">
@@ -198,12 +217,12 @@ else {
 	                    </td>
 	                 </tr>
 	                 <tr>
-	                    <td><img src="<%=pdshome%>images/gray.gif" width="760" height="1" alt="" border="0"></td>
+	                    <td><img src="<%=pdshome%>images/gray.gif"  height="1" alt="" border="0"></td>
 	                 </tr>
 	              </table>
                   <br>
                   
-                  <table width="100%" border="0" cellspacing="1" cellpadding="2">
+                  <table width="100%" border="0" cellspacing="1" cellpadding="10">
                      <tr bgcolor="#efefef">
                         <td colspan=2>&nbsp;</td>
                      </tr>
@@ -344,21 +363,26 @@ else {
                                  resname = searchRegistry.getSlotValues(resource, "resource_name").get(0);
                                  reslink = searchRegistry.getSlotValues(resource, "resource_url").get(0); 
                               %>
-                              <a href=<%=constructURL(reslink, dsid)%> target="_new"><%=resname%></a><br>
+                              <a href="<%=constructURL(reslink, dsid)%>" target="_new"><%=resname%></a><br>
                          <%   }
                            } %>
                         </td>
                      </tr>
+                  </table>
+               </td>
+            </tr>
 <%
 	} // if matching product is found in the registry
 } // if dsid is specified   
-%>
-
-               <%@ include file="/pds/footer.html" %>
+%>             
             </table>
-         </td>
+         </td>         
       </tr>
    </table>
+   </div>
+</div>
+
+<%@ include file="/pds/footer.html" %>
 
 </BODY>
 </HTML>

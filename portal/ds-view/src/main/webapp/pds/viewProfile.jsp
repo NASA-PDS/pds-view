@@ -7,7 +7,7 @@
    <title>PDS Data Set Profile</title>
    <META  NAME="keywords"  CONTENT="Planetary Data System">
    <META  NAME="description" CONTENT="This website serves as a mechanism for searching the PDS planetary archives.">
-   <link href="<%=pdshome%>css/pds_style.css" rel="stylesheet" type="text/css">
+   <link href="/ds-view/pds/css/pds_style.css" rel="stylesheet" type="text/css">
    <%@ page language="java" session="true" isThreadSafe="true" info="PDS Search" 
             isErrorPage="false" contentType="text/html; charset=ISO-8859-1" 
             import="gov.nasa.pds.registry.model.ExtrinsicObject, gov.nasa.pds.dsview.registry.Constants, 
@@ -17,7 +17,6 @@
    </SCRIPT>
 </head>
 
-<body BGCOLOR="#000000">
 <%!
 String constructURL (String url, String dsid) {
    try {
@@ -71,11 +70,21 @@ public String cleanParam(String str) {
 }
 %>
 
-<table align="center" bgColor="#FFFFFF" BORDER="0" CELLPADDING="10" CELLSPACING="0">
+<body class="home menu_home menu_item_ ">
+
+   <%@ include file="/pds/header.html" %>
+   <%@ include file="/pds/main_menu.html" %>
+
+   <div id="submenu">
+   <div class="clear"></div>
+   </div>
+
+<!-- Main content -->
+<div id="content">
+   <div style="border-top: 1px solid_white;">
+   <table align="center" bgColor="#FFFFFF" BORDER="0" CELLPADDING="10" CELLSPACING="0">
    <tr>
       <td>
-         <%@ include file="/pds/pds_header.html" %>
-
          <table width="760" border="0" cellspacing="3" cellpadding="2">
 		    <tr valign="TOP">
                <td valign="TOP" colspan="2" class="pageTitle">
@@ -96,8 +105,9 @@ else {
    String dsid = request.getParameter("dsid");
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
 
+   String tmpDsid = dsid.replaceAll("/", "-");
    //out.println("dsid = " + dsid + "    dsid_lower = " + dsid_lower);
-   ExtrinsicObject dsObj = searchRegistry.getExtrinsic("urn:nasa:pds:data_set."+dsid);
+   ExtrinsicObject dsObj = searchRegistry.getExtrinsic("urn:nasa:pds:data_set."+tmpDsid);
    //out.println("<br>citation = " + searchRegistry.getSlotValues(product, "data_set_citation_text").toString());
  
    if (dsObj==null) { 
@@ -256,13 +266,16 @@ else {
        } // for loop
    } // else
 }
-         %>
-         
-            <%@ include file="/pds/footer.html" %>
+         %>            
          </table>
       </td>
    </tr>
 </table>
+</div>
+</div>
+
+<%@ include file="/pds/footer.html" %>
+
 </BODY>
 </HTML>
 
