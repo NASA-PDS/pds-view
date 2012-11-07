@@ -95,15 +95,26 @@ function changeSearchSpec()
 <%@ include file="/pds/searchParamsJSP.jsp" %>
 </head>
 
-<body class="home menu_home menu_item_ ">
+<body class="menu_data menu_item_data_data_search ">
 
    <%@ include file="/pds/header.html" %>
    <%@ include file="/pds/main_menu.html" %>
 
    <div id="submenu">
+   <div id="submenu_data">
+   <h2 class="nonvisual">Menu: PDS data</h2>
+   <ul>
+      <li id="data_data_search"><a href="http://pds.jpl.nasa.gov/tools/data-search/">Data Search</a></li>
+      <li id="data_text_search"><a href="http://pds.jpl.nasa.gov/tools/text-search/">Text Search</a></li>
+      <li><a href="/ds-view/pds/index.jsp">Form Search</a></li>
+      <li id="data_how_to_search"><a href="http://pds.jpl.nasa.gov/data/how-to-search.shtml">How to Search</a></li>
+      <li id="data_data_set_status"><a href="http://pds.jpl.nasa.gov/tools/dsstatus/">Data Set Status</a></li>
+      <li id="data_release_summary"><a href="http://pds.jpl.nasa.gov/tools/subscription_service/SS-Release.shtml">Data Release Summary</a></li>
+   </ul>
+   </div>
    <div class="clear"></div>
    </div>
-
+   
 <!-- Main content -->
 <div id="content">
    <div style="border-top: 1px solid_white;">
@@ -121,7 +132,7 @@ END DEBUG CODE
 --%>
 
 <p>
-<FORM action=/ds-view/RegistryQueryServlet method=post name=postForm onSubmit="return validateSearchParams()"-->
+<FORM action=/ds-view/RegistryQueryServlet method=post name=postForm onSubmit="return validateSearchParams()">
 <!--FORM action=/ds-view/q method=post name=postForm onSubmit="return validateSearchParams()"-->
 
 <input type=hidden name=targnamechoices value="(<%=opts[TARGNAMES]%>)">

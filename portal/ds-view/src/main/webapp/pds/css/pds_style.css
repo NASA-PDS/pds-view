@@ -1,10 +1,20 @@
-body {background-color:#000000;}
-body, table, td, form, input, select, h1, h2, h3, h4, h5, h6, pre {font-family:Arial; font-size:13px; color:#000000;}
+/*body {background-color:#000000;} */
+
+body {
+    font-size: 75%;
+    background: transparent;
+}
+
+body, table, td, form, input, select, h1, h2, h3, h4, h5, h6 {font-family:Arial; font-size:13px; color:#000000;}
 /* Netscape 4 font-size fix */
 html body, html table, html td, html input, html select, html h1, html h2, html h3, html h4, html h5, html h6 {font-size:11px;}
 h1, h2, h3, h4, h5, h6 {font-weight:bold;}
 form {margin:0px; padding:0px;}
 
+pre, tt {
+	font-family:courier;
+	font-size:11px;
+}
 /* Modified to make default link behave like featureLnk */
 a {color:#006699;text-decoration:none;}
 a:hover {text-decoration:underline;}
@@ -66,15 +76,6 @@ hr {
     margin-bottom: 1em;
 }
 
-/*
-th, td {
-    text-align: left;
-    vertical-align: top;
-	padding-left: .5em;
-	padding-right: .5em;
-}
-*/
-
 .hidden {
     display: none;
 }
@@ -85,12 +86,6 @@ th, td {
 
 .clear {
     clear: both;
-}
-
-body {
-    /*font-size: 75%;*/
-    font-size: 12px;
-    background: transparent;
 }
 
 h1 {
@@ -523,44 +518,8 @@ ol {
     line-height: 1em;
 }
 
-table.description th, table.description td {
-    width: 37em;
-    border: none;
-    padding: .7em 0em .7em 1em;
-}
-
-table.description th.term, table.description td.term {
-    width: 12em;
-    padding: .7em 1em .7em 0em;
-}
-
-th.width1, td.width1 {
-    width: 11em;
-    padding: .7em 1em;
-}
-
-th.width2, td.width2 {
-    width: 24em;
-    padding: .7em 1em;
-}
-
 .linkList a {
     display: block;
-}
-
-table.nameValue th {
-    padding-right: 2em;
-}
-
-table.nameValue th, table.nameValue td {
-    padding-bottom: .5em;
-}
-
-/*
- * Styles for candystriped tables and results.
- */
-.even, .even td {
-  background: #e6eef2;
 }
 
 /*
