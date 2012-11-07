@@ -138,7 +138,7 @@ else {
                 val = slotValues.get(0);
                 //val = val.replaceAll("            ", "  ");
              %>
-                  <pre><tt><%=val%></tt><pre>
+                  <pre><tt><%=val%></tt></pre>
              <%
              }
              else {
@@ -210,10 +210,11 @@ else {
          	    refLid = refLid.substring(0, refLid.indexOf("::"));
          	    //out.println("refLid = " + refLid + "<br>");
          	    ExtrinsicObject resource1 = searchRegistry.getExtrinsic(refLid);
-         		String resname, reslink;
-                if (tmpValue.equals("resource_link")) {
-         	       //resname = searchRegistry.getSlotValues(resource1, "resource_name").get(0);
-         	       reslink = searchRegistry.getSlotValues(resource1, "resource_url").get(0);
+         	    if (resource1!=null) {
+         			String resname, reslink;
+                	if (tmpValue.equals("resource_link")) {
+         	       	//resname = searchRegistry.getSlotValues(resource1, "resource_name").get(0);
+         	       	reslink = searchRegistry.getSlotValues(resource1, "resource_url").get(0);
          	       %>
          		   <a href=<%=constructURL(reslink, dsid)%> target="_new"><%=reslink%></a> 
          		<%
@@ -233,6 +234,7 @@ else {
          			  <%
          		   } // end for
          	    } // end else
+         	    } // end if resource!=null
              } // end resource_link
              else if (tmpValue.startsWith("node_name")) {
                 List<String> svalues = searchRegistry.getSlotValues(dsObj, "node_ref");     	 
@@ -251,11 +253,16 @@ else {
     	 		   String aValue = (String) svalues.get(j);
     	   		   String lid = aValue.substring(0, aValue.indexOf("::"));
     	    	   ExtrinsicObject nodeObj = searchRegistry.getExtrinsic(lid);
-    	    	   String tmpVal = searchRegistry.getSlotValues(nodeObj, "node_to_data_archivist").get(0);
-    	    	   String personLid = tmpVal.substring(0, tmpVal.indexOf("::"));
-    	    	   ExtrinsicObject personObj = searchRegistry.getExtrinsic(personLid);
-    	           String tmpVal2 = searchRegistry.getSlotValues(personObj, tmpValue).get(0).toUpperCase();
-    	    	   out.println(tmpVal2 + "<br>");
+    	    	   if (nodeObj!=null) {
+    	    	      List<String> svalues2 = searchRegistry.getSlotValues(nodeObj, "node_to_data_archivist");
+    	    	      if (svalues2!=null)  {
+    	    	   	     String tmpVal = svalues2.get(0);
+    	    	   	  	 String personLid = tmpVal.substring(0, tmpVal.indexOf("::"));
+    	    	   	  	 ExtrinsicObject personObj = searchRegistry.getExtrinsic(personLid);
+    	           	     String tmpVal2 = searchRegistry.getSlotValues(personObj, tmpValue).get(0).toUpperCase();
+    	    	  	     out.println(tmpVal2 + "<br>");
+    	    	      }
+    	    	   }
     	        }
              }
           }   

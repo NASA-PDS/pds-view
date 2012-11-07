@@ -107,7 +107,7 @@ else {
                val = slotValues.get(0);
                //val = val.replaceAll("            ", "  ");
                %>
-                  <pre><tt><%=val%></tt><pre>
+                  <pre><tt><%=val%></tt></pre>
             <%
             }
             else {
@@ -125,12 +125,14 @@ else {
          	      //out.println("refLid = " + refLid + "<br>");
          	      
          	      ExtrinsicObject resource1 = searchRegistry.getExtrinsic(refLid);
-         	      String resname, reslink;
-                  if (tmpValue.equals("resource_link")) {
-         	         //resname = searchRegistry.getSlotValues(resource1, "resource_name").get(0);
-         	         reslink = searchRegistry.getSlotValues(resource1, "resource_url").get(0);
-         	         out.println(reslink);
-         	      }       
+         	      if (resource1!=null) {
+         	      	String resname, reslink;
+                  	if (tmpValue.equals("resource_link")) {
+         	        	 //resname = searchRegistry.getSlotValues(resource1, "resource_name").get(0);
+         	         	reslink = searchRegistry.getSlotValues(resource1, "resource_url").get(0);
+         	         	out.println(reslink);
+         	      	}     
+         	      }  
          	   }     	                
             }
          }
