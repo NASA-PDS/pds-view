@@ -198,7 +198,7 @@ else {
 %>
    <table align="center" padding="18px" width="760" border="0" cellspacing="0" cellpadding="10">
       <tr>
-         <td><img src="<%=pdshome%>images/spacer.gif" width="5" height="5" border="0"></td>
+         <td><img src="/ds-view/pds/images/spacer.gif" width="5" height="5" border="0"></td>
 	  </tr>
 	  <tr>
 	     <td valign="top">
@@ -217,7 +217,7 @@ else {
 	                    </td>
 	                 </tr>
 	                 <tr>
-	                    <td><img src="<%=pdshome%>images/gray.gif"  height="1" alt="" border="0"></td>
+	                    <td><img src="<%=pdshome%>images/gray.gif"  height="1" width="100%" alt="" border="0"></td>
 	                 </tr>
 	              </table>
                   <br>
