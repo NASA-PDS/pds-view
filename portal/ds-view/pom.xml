@@ -31,7 +31,7 @@
 
   <name>Data Set View</name>
   <description>
-    TBD
+    The Data Set View component is a web application that serves as the browse interface for context products.
   </description>
   <url>http://pds-cm.jpl.nasa.gov/2010/portal/ds-view/</url>
 
@@ -173,16 +173,6 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
-    <!--repository>
-       <id>oodt-repo</id>
-       <name>OODT Private Maven Repository</name>
-       <url>http://oodt.jpl.nasa.gov/download/private</url>
-    </repository-->
-    <repository>
-       <id>javax-repo</id>
-       <name>javax sql maven repository</name>
-       <url>http://download.java.net/maven/2/</url>
-    </repository>
     <repository>
        <id>javax-repo2</id>
        <name>javax servlet maven repository</name>
@@ -191,31 +181,22 @@
   </repositories>
 
   <dependencies>
-    <!--dependency>
-      <groupId>com</groupId>
-      <artifactId>sybase</artifactId>
-      <version>2</version>
-      <scope>system</scope>
-      <systemPath>${basedir}/lib/jconn2.jar</systemPath>
-    </dependency-->
-    <dependency>
-      <groupId>jpl</groupId>
-      <artifactId>eda</artifactId>
-      <version>1.0</version>
-      <!--scope>compile</scope-->
-      <!--version>???</version-->
-      <!--scope>system</scope-->
-      <!--systemPath>${basedir}/lib/eda.jar</systemPath-->
-    </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
       <version>2.3</version>
     </dependency>
     <dependency>
+      <groupId>jpl</groupId>
+      <artifactId>eda</artifactId>
+      <version>ds-view</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/eda.jar</systemPath>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>???</version>
+      <version>ds-view</version>
       <scope>system</scope>
       <systemPath>${basedir}/lib/junit.jar</systemPath>
     </dependency>
