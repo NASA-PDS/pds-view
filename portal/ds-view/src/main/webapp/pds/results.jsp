@@ -119,7 +119,7 @@ int rowsFetch = 25;
 int curPage;
 int totalPage = (int) Math.ceil((double)listsize/(double)rowsFetch);
 
-if (request.getParameterValues("pageNo") == null) {
+if (request.getParameterValues("pageNo") == null) {              
    curPage = 0;
 } else {
    curPage = Integer.parseInt(request.getParameterValues("pageNo")[0]);

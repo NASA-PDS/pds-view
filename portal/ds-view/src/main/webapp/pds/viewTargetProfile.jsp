@@ -122,16 +122,15 @@ else {
                if (rvalues != null) {
      	          String refLid = rvalues.get(0);
          	      refLid = refLid.substring(0, refLid.indexOf("::"));
-         	      out.println("refLid = " + refLid + "<br>");
-         	      /*
+         	      //out.println("refLid = " + refLid + "<br>");
+         	      
          	      ExtrinsicObject resource1 = searchRegistry.getExtrinsic(refLid);
          	      String resname, reslink;
                   if (tmpValue.equals("resource_link")) {
          	         //resname = searchRegistry.getSlotValues(resource1, "resource_name").get(0);
          	         reslink = searchRegistry.getSlotValues(resource1, "resource_url").get(0);
          	         out.println(reslink);
-         	      } 
-         	      */       
+         	      }       
          	   }     	                
             }
          }
