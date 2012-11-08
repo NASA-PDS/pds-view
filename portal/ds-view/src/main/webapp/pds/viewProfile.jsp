@@ -136,7 +136,7 @@ else {
        for (java.util.Map.Entry<String, String> entry: Constants.dsPds3ToRegistry.entrySet()) {
           String key = entry.getKey();
 	      String tmpValue = entry.getValue();
-	       out.println("key = " + key + "   tmpValue = " + tmpValue);
+	      //out.println("key = " + key + "   tmpValue = " + tmpValue);
           %>
             <TR>
                <td bgcolor="#F0EFEF" width=200 valign=top><%=key%></td> 
