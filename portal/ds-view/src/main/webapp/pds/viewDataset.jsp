@@ -155,7 +155,7 @@ if (dsid.length() == 0) {
    <table align="center" width="760" border="0" cellspacing="3" cellpadding="10">
       <tr valign="TOP">
          <td valign="TOP" colspan="2" class="pageTitle">
-            <br><FONT color="#6F4D0E"><b>Dataset Information</b></font><br><br>
+            <br><b>Dataset Information</b><br><br>
          </td>
       </tr>
       <tr valign="TOP">
@@ -187,7 +187,7 @@ else {
    <table align="center" width="760" border="0" cellspacing="3" cellpadding="10">
       <tr valign="TOP">
          <td valign="TOP" colspan="2" class="pageTitle">
-            <br><FONT color="#6F4D0E"><b>Dataset Information</b></font><br><br>
+            <br><b>Dataset Information</b><br><br>
          </td>
       </tr>
       <tr valign="TOP">
@@ -217,13 +217,11 @@ else {
 	              <!-- main content begin -->
 	              <table border="0" cellpadding="10" cellspacing="0">
 	                 <tr>
-	                    <td class="pageTitle">
-	                       <font color="#6F4D0E">
+	                    <td class="pageTitle">	                    
 	                       <%
 	                       if (searchRegistry.getSlotValues(product, "data_set_terse_description")!=null) {
 	                          out.println(searchRegistry.getSlotValues(product, "data_set_terse_description").get(0));
 	                       }%>
-	                       </font>
 	                    </td>
 	                 </tr>
 	                 <tr>

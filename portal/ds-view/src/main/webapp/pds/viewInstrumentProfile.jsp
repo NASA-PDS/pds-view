@@ -71,7 +71,7 @@ public String cleanParam(String str) {
          <table width="760" border="0" cellspacing="3" cellpadding="2">
             <tr valign="TOP">
                <td valign="TOP" colspan="2" class="pageTitle">
-                  <br><FONT color="#6F4D0E"><b>Instrument Information</b></font><br><br>
+                  <br><b>Instrument Information</b><br><br>
                </td>
             </tr>
             

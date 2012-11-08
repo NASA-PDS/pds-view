@@ -187,7 +187,7 @@ if (! queryString.equals("")) {
                <td colspan=5>
                   <table border="0" cellpadding="0" cellspacing="0" width="760">
                      <tr>
-                        <td class="pageTitle" align=left><font color="#6F4D0E"><b><%=title%></b>&nbsp;(<%= listsize%> data sets found)</font>
+                        <td class="pageTitle" align=left><b><%=title%></b>&nbsp;(<%= listsize%> data sets found)
                         </td>
                         <td align=right valign=center color="#6F4D0E">
                            <A href="javascript:openWindow('/pds/search_result_help.html', 'Result',550,500)"> <IMG SRC="/ds-view/pds/images/btn_help.gif" BORDER=0></A>

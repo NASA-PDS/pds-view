@@ -683,10 +683,6 @@ a.navLnkRed {color: #FF3333; line-height: 18px;}
 a.navLnkWhite {color: #FFFFFF; line-height: 18px;}
 a.navLnkGreen {color: #408040; line-height: 18px;}
 
-/*
-.pageTitle {font-size: 18px; color: #993300; font-weight: bold;} 
-*/
-
 /* Capitalize search refinement facet values.
  * (They are <a> tags with the given class.)
  */
