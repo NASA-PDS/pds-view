@@ -155,7 +155,7 @@ if (dsid.length() == 0) {
    <table align="center" width="760" border="0" cellspacing="3" cellpadding="10">
       <tr valign="TOP">
          <td valign="TOP" colspan="2" class="pageTitle">
-            <br><b>Dataset Information</b><br><br>
+            <b>Dataset Information</b><br/>
          </td>
       </tr>
       <tr valign="TOP">
