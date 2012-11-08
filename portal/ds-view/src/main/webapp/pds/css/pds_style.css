@@ -1,7 +1,6 @@
 /*body {background-color:#000000;} */
 
 body {
-    font-size: 75%;
     background: transparent;
 }
 
@@ -33,8 +32,11 @@ a:hover {text-decoration:underline;}
 .navLnkWhite {color:#FFFFFF; line-height:18px;}
 .navLnkGreen {color:#408040; line-height:18px;}
 .credits {color:#cccccc;}
+/*
 .pageTitle {font-size:18px; color:#003399; font-weight:bold;}
 .pageTitleSub {font-size:13px; color:#006699; font-weight:bold;}
+*/
+.pageTitle {font-size: 22px; color: #000000; font-weight: bold;}
 .formLabel {color:#003399; font-weight:bold;}
 
 /* Default blue color scheme */
@@ -681,7 +683,9 @@ a.navLnkRed {color: #FF3333; line-height: 18px;}
 a.navLnkWhite {color: #FFFFFF; line-height: 18px;}
 a.navLnkGreen {color: #408040; line-height: 18px;}
 
-.pageTitle {font-size: 18px; color: #993300; font-weight: bold;}
+/*
+.pageTitle {font-size: 18px; color: #993300; font-weight: bold;} 
+*/
 
 /* Capitalize search refinement facet values.
  * (They are <a> tags with the given class.)

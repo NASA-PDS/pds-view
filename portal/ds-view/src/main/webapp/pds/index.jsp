@@ -218,7 +218,6 @@ END DEBUG CODE
 <input type="hidden" name="msntext"  value=""/>
 <input type="hidden" name="msntext"  value=""/>
 
-
 <table align="center" bgColor="#FFFFFF" BORDER="0" CELLPADDING="10" CELLSPACING="0">
    <tr>
       <td>
@@ -238,9 +237,9 @@ END DEBUG CODE
 		                   <table border="0" cellpadding="0" cellspacing="0">
 		                      <tr>
                                  <td>
-                                    <table border="0" cellpadding="0" cellspacing="0" width="760">
-                                       <tr>
-	                                      <td class="pageTitle" align=left><font color="#6F4D0E">Data Set Search</font>
+                                    <table border="0" cellpadding="5" cellspacing="0" width="760">
+                                       <tr>                                      
+	                                      <td class="pageTitle" align=left>Data Set Search
                                           </td>
                                           <td align=right valign=center color="#6F4D0E">
                                              <A href="javascript:openWindow('data_search_help.jsp', 'Result',550,500)">
