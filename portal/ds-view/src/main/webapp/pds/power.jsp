@@ -216,8 +216,7 @@ function changeSearchSpec()
                      <td>
                       <table border="0" cellpadding="0" cellspacing="0" width="760">
                         <tr>
-                          <td class="pageTitle" align=left><font color="#6F4D0E">Data Set Power Search</fo
-nt>
+                          <td class="pageTitle" align=left>Data Set Power Search
                           </td>
                           <td align=right color="#6F4D0E" valign=center>
                             <A href="javascript:openWindow('data_search_help.jsp', 'Result',550,500)">
