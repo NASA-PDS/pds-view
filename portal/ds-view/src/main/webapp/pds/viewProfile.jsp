@@ -136,7 +136,7 @@ else {
        for (java.util.Map.Entry<String, String> entry: Constants.dsPds3ToRegistry.entrySet()) {
           String key = entry.getKey();
 	      String tmpValue = entry.getValue();
-	       //out.println("key = " + key + "   tmpValue = " + tmpValue);
+	       out.println("key = " + key + "   tmpValue = " + tmpValue);
           %>
             <TR>
                <td bgcolor="#F0EFEF" width=200 valign=top><%=key%></td> 
@@ -144,6 +144,7 @@ else {
           <% 
           String val = "";
           List<String> slotValues = searchRegistry.getSlotValues(dsObj, tmpValue);
+          
           if (slotValues!=null) {
              if (tmpValue.equals("data_set_description") ||
                  tmpValue.equals("data_set_confidence_level_note")) {                      
@@ -249,32 +250,38 @@ else {
          	    } // end if resource!=null
              } // end resource_link
              else if (tmpValue.startsWith("node_name")) {
-                List<String> svalues = searchRegistry.getSlotValues(dsObj, "node_ref");     	 
-    	 	    for (int j=0; j<svalues.size(); j++) {
-    	 		   String aValue = (String) svalues.get(j);
-    	   		   String lid = aValue.substring(0, aValue.indexOf("::"));
-    	    	   ExtrinsicObject nodeObj = searchRegistry.getExtrinsic(lid);
-    	    	   val = searchRegistry.getSlotValues(nodeObj, tmpValue).get(0).toUpperCase();
-    	    	   out.println(val + "<br>");
+                List<String> svalues = searchRegistry.getSlotValues(dsObj, "node_ref");    
+                if (svalues!=null) { 	 
+    	 	       for (int j=0; j<svalues.size(); j++) {
+    	 		      String aValue = (String) svalues.get(j);
+    	   		      String lid = aValue.substring(0, aValue.indexOf("::"));
+    	    	      ExtrinsicObject nodeObj = searchRegistry.getExtrinsic(lid);
+    	    	      if (nodeObj!=null) {
+    	    	         val = searchRegistry.getSlotValues(nodeObj, tmpValue).get(0).toUpperCase();
+    	    	         out.println(val + "<br>");
+    	    	      }
+    	           }
     	        }
              }
                          
              if (key.equals("TELEPHONE_NUMBER")) {
-                List<String> svalues = searchRegistry.getSlotValues(dsObj, "node_ref");     	 
-    	 	    for (int j=0; j<svalues.size(); j++) {
-    	 		   String aValue = (String) svalues.get(j);
-    	   		   String lid = aValue.substring(0, aValue.indexOf("::"));
-    	    	   ExtrinsicObject nodeObj = searchRegistry.getExtrinsic(lid);
-    	    	   if (nodeObj!=null) {
-    	    	      List<String> svalues2 = searchRegistry.getSlotValues(nodeObj, "node_to_data_archivist");
-    	    	      if (svalues2!=null)  {
-    	    	   	     String tmpVal = svalues2.get(0);
-    	    	   	  	 String personLid = tmpVal.substring(0, tmpVal.indexOf("::"));
-    	    	   	  	 ExtrinsicObject personObj = searchRegistry.getExtrinsic(personLid);
-    	           	     String tmpVal2 = searchRegistry.getSlotValues(personObj, tmpValue).get(0).toUpperCase();
-    	    	  	     out.println(tmpVal2 + "<br>");
+                List<String> svalues = searchRegistry.getSlotValues(dsObj, "node_ref");     
+                if (svalues!=null) {	 
+    	 	       for (int j=0; j<svalues.size(); j++) {
+    	 		      String aValue = (String) svalues.get(j);
+    	   		      String lid = aValue.substring(0, aValue.indexOf("::"));
+    	    	      ExtrinsicObject nodeObj = searchRegistry.getExtrinsic(lid);
+    	    	      if (nodeObj!=null) {
+    	    	         List<String> svalues2 = searchRegistry.getSlotValues(nodeObj, "node_to_data_archivist");
+    	    	         if (svalues2!=null)  {
+    	    	   	        String tmpVal = svalues2.get(0);
+    	    	   	  	    String personLid = tmpVal.substring(0, tmpVal.indexOf("::"));
+    	    	   	  	    ExtrinsicObject personObj = searchRegistry.getExtrinsic(personLid);
+    	           	        String tmpVal2 = searchRegistry.getSlotValues(personObj, tmpValue).get(0).toUpperCase();
+    	    	  	        out.println(tmpVal2 + "<br>");
+    	    	         }
     	    	      }
-    	    	   }
+    	           }
     	        }
              }
           }   
