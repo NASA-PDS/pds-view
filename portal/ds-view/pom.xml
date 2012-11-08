@@ -124,6 +124,7 @@
               <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
             </manifest>
           </archive>
+          <packagingExcludes>WEB-INF/lib/servlet-api-*.jar</packagingExcludes>
         </configuration>
       </plugin>
       <plugin>
