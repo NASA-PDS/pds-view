@@ -38,7 +38,7 @@
   <column>
     <name>resLocation</name>
     <type>substring</type>
-    <value>http://starbrite.jpl.nasa.gov/pds/viewTargetProfile.jsp?TARGET_NAME={target_name}</value>
+    <value>http://pds.nasa.gov/ds-view/pds/viewTargetProfile.jsp?TARGET_NAME={target_name}</value>
   </column>
   <column>
     <name>language</name>

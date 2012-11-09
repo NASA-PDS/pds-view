@@ -43,7 +43,7 @@
   <column>
     <name>resLocation</name>
     <type>substring</type>
-    <value>http://starbrite.jpl.nasa.gov/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID={instrument_id}&amp;INSTRUMENT_HOST_ID={instrument_host_ref.instrument_host_id}</value>
+    <value>http://pds.nasa.gov/ds-view/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID={instrument_id}&amp;INSTRUMENT_HOST_ID={instrument_host_ref.instrument_host_id}</value>
   </column>
   <column>
     <name>instrument_host_id</name>

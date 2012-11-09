@@ -43,7 +43,7 @@
   <column>
     <name>resLocation</name>
     <type>substring</type>
-    <value>http://starbrite.jpl.nasa.gov/pds/viewDataset.jsp?dsid={data_set_id}</value>
+    <value>http://pds.nasa.gov/ds-view/pds/viewDataset.jsp?dsid={data_set_id}</value>
   </column>
   <column>
     <name>nssdc_data_set_id</name>

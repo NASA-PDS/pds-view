@@ -43,7 +43,7 @@
   <column>
     <name>resLocation</name>
     <type>substring</type>
-    <value>http://starbrite.jpl.nasa.gov/pds/viewMissionProfile.jsp?MISSION_NAME={mission_name}</value>
+    <value>http://pds.nasa.gov/ds-view/pds/viewMissionProfile.jsp?MISSION_NAME={mission_name}</value>
   </column>
   <column>
     <name>mission_name</name>
