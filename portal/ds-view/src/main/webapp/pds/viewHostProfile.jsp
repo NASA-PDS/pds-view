@@ -4,7 +4,7 @@
 %>
 <html>
 <head>
-   <title>PDS Host Profile</title>
+   <title>PDS: Instrument Host Information</title>
    <META  NAME="keywords"  CONTENT="Planetary Data System">
    <META  NAME="description" CONTENT="This website serves as a mechanism for searching the PDS planetary archives.">
    
@@ -49,10 +49,9 @@ public String cleanParam(String str) {
 
    <div id="submenu">
    <div id="submenu_data">
-   <h2 class="nonvisual">Menu: PDS data</h2>
+   <h2 class="nonvisual">Menu: PDS Data</h2>
    <ul>
       <li id="data_data_search"><a href="http://pds.jpl.nasa.gov/tools/data-search/">Data Search</a></li>
-      <li id="data_text_search"><a href="http://pds.jpl.nasa.gov/tools/text-search/">Text Search</a></li>
       <li><a href="/ds-view/pds/index.jsp">Form Search</a></li>
       <li id="data_how_to_search"><a href="http://pds.jpl.nasa.gov/data/how-to-search.shtml">How to Search</a></li>
       <li id="data_data_set_status"><a href="http://pds.jpl.nasa.gov/tools/dsstatus/">Data Set Status</a></li>
@@ -71,7 +70,7 @@ public String cleanParam(String str) {
          <table width="760" border="0" cellspacing="3" cellpadding="2">
             <tr valign="TOP">
                <td valign="TOP" colspan="2" class="pageTitle">
-                  <b>Host Information</b><br/>
+                  <b>Instrument Host Information</b><br/>
                </td>
             </tr>
 
