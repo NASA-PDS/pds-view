@@ -298,7 +298,7 @@
 					<xsl:when test="position() > 2">
 						<li class="result hidden info">
 							<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='resClass']))" />:</strong>
-							<a href="{(str|arr)[@name='resource_link']}"><xsl:value-of select="$ds_name" /></a>
+							<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
 							<br />
 							<xsl:value-of select="pds:description(str[@name='description'],str[@name='title'])" />
 						</li>
@@ -306,7 +306,7 @@
 					<xsl:otherwise>
 						<li class="result">
 							<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='resClass']))" />:</strong>
-							<a href="{(str|arr)[@name='resource_link']}"><xsl:value-of select="$ds_name" /></a>
+							<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
 							<br />
 							<xsl:value-of select="pds:description(str[@name='description'],str[@name='title'])" />
 						</li>
