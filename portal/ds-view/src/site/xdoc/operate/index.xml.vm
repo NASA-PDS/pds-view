@@ -24,7 +24,7 @@
 
   <body>
     <section name="Operation">
-      <p>TBD
+      <p>This document describes how to operate the Data Set View software contained in the <i>${project.artifactId}</i> package. The Data Set View software is a web application that serves as the browse interface for context products. Links to the interfaces that make up this web application are returned from the Search Service in response to search requests. More detail regarding the these interface will be provided at a later date.
       </p>
     </section>
   </body>
