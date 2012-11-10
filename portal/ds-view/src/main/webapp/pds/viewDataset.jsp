@@ -186,7 +186,7 @@ else {
    <table align="center" width="760" border="0" cellspacing="3" cellpadding="10">
       <tr valign="TOP">
          <td valign="TOP" colspan="2" class="pageTitle">
-            <br><b>Dataset Information</b><br><br>
+            <b>Data Set Information</b><br/>
          </td>
       </tr>
       <tr valign="TOP">
@@ -261,7 +261,7 @@ else {
                      </tr>
 
                      <tr bgcolor="#E7EEF9">
-                        <td>Data set abstract</td>
+                        <td>Data Set Abstract</td>
                         <td><%=searchRegistry.getSlotValues(product, "data_set_abstract_description").get(0)%></td>
                      </tr>
 
@@ -293,7 +293,7 @@ else {
                      </tr>
 
                      <tr bgcolor="#E7EEF9">
-                        <td>Dataset Information</td>
+                        <td>Data Set Information</td>
                         <td><a href="/ds-view/pds/viewProfile.jsp?dsid=<%=dsid%>" target="_blank"><%=dsid%></a></td>
                      </tr>
 
