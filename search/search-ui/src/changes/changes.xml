@@ -23,15 +23,15 @@
   </properties>
 
   <body>
-    <release version="1.1.0" date="TBD" description="This release of the Search User Interface is a component of the integrated release 3.1.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+    <release version="1.1.0" date="2012-11-09" description="This release of the Search User Interface is a component of the PDS 2010 System. This is an operational release supporting the deployment of the system at the Engineering Node.">
+      <action dev="jpadams" type="update" issue="PDS-120">
+        Updated search.jsp with javascript to hide/show hidden Search Tools/Archive Information.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-120">
+        Modified main.css to clean up the new UI features.
+      </action>
       <action dev="jpadams" type="update" issue="PDS-126">
-	Update search.jsp to correct bug with appending archive-status to query string when query string has a space in it.
-      </action>
-      <action dev="jpadams" type="update" issue="PDS-120">
-	Updated search.jsp with javascript to hide/show hidden Search Tools/Archive Information.
-      </action>
-      <action dev="jpadams" type="update" issue="PDS-120">
-	Modified main.css to clean up the new UI features.
+        Update search.jsp to correct bug with appending archive-status to query string when query string has a space in it.
       </action>
     </release>
 

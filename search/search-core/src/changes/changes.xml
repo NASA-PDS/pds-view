@@ -23,21 +23,21 @@
   </properties>
   
   <body>
-    <release version="1.1.0" date="TBD" description="This release of the Search Core is a component of the integrated release 3.1.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+    <release version="1.1.0" date="2012-11-09" description="This release of the Search Core is a component of the PDS 2010 System. This is an operational release supporting the deployment of the system at the Engineering Node.">
       <action dev="jpadams" type="add" issue="PDS-119">
-	Created new Archive Information configuration file to include mission resources in search results.
-      </action>
-      <action dev="jpadams" type="update" issue="PDS-121">
-	Updated hierarchy to include new agency facet.
-      </action>
-      <action dev="jpadams" type="update" issue="PDS-121">
-	Updated data set config to include new agency_name field.
+        Created new Archive Information configuration file to include mission resources in search results.
       </action>
       <action dev="jpadams" type="update" issue="PDS-119">
-	Updated ProductClass and SearchField classes to include handling of a name-based query of the registry in order to return Archive Information.
+        Updated ProductClass and SearchField classes to include handling of a name-based query of the registry in order to return Archive Information.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-121">
+        Updated hierarchy to include new agency facet.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-121">
+        Updated data set config to include new agency_name field.
       </action>
       <action dev="jpadams" type="update">
-	Fixed bug in solr-post script where the search tools were not being included in the index.
+        Fixed bug in solr-post script where the search tools were not being included in the index.
       </action>
     </release>
 
