@@ -8,7 +8,7 @@ window.open(newpage,'window2','toolbar=0,location=1,directories=0,status=0,menub
 
 function submitQuick()
 {
-	document.postForm.action = "/ds-view/pds/index.jsp";
+	document.postForm.action = "/ds-view/pds/quick.jsp";
 	document.postForm.submit();
 }
 
@@ -21,12 +21,6 @@ function submitAdvanced()
 function submitPower()
 {
     document.postForm.action = "/ds-view/pds/power.jsp";
-    document.postForm.submit();
-}
-
-function submitText()
-{
-    document.postForm.action  = '/search/index.jsp';
     document.postForm.submit();
 }
 
@@ -97,10 +91,10 @@ function switchPage( idx)
   }
   else {
     // page not called with parameters, just load new page
-    if (idx==0) window.location.href = '/ds-view/pds/index.jsp';
+    if (idx==0) window.location.href = '/ds-view/pds/quick.jsp';
     else if (idx==1) window.location.href = '/ds-view/pds/advanced.jsp';
     else if (idx==2) window.location.href = '/ds-view/pds/power.jsp';
-    else window.location.href = '/search/index.jsp';
+    else window.location.href = '/ds-view/pds/index.jsp';
   }
 }
 

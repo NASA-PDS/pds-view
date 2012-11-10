@@ -86,7 +86,7 @@ function changeSearchSpec()
       }
    }
 
-   frm.action = '/ds-view/pds/index.jsp';
+   frm.action = '/ds-view/pds/quick.jsp';
    frm.onSubmit = '';
    //  frm.method = 'get';
    frm.submit();
@@ -272,7 +272,7 @@ END DEBUG CODE
                    
                               <tr bgcolor="#123261">
                                  <td align="right" valign="center" height=22>
-                                    <A href="/ds-view/pds/index.jsp"><IMG SRC="/ds-view/pds/images/btn_reset.gif" BORDER=0></A>
+                                    <A href="/ds-view/pds/quick.jsp"><IMG SRC="/ds-view/pds/images/btn_reset.gif" BORDER=0></A>
                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <INPUT alt="Go Button" border=0 src="/ds-view/pds/images/btn_go.gif" type=image>
                                &nbsp;&nbsp;
@@ -302,7 +302,7 @@ END DEBUG CODE
                                                 color="#FFFFFF"><b>&nbsp;Text Search</b></font></a>-->
                                           </td>
                                           <td align="right" valign="center" height=22>
-                                             <A href="/ds-view/pds/index.jsp"><IMG SRC="/ds-view/pds/images/btn_reset.gif" BORDER=0></A>
+                                             <A href="/ds-view/pds/quick.jsp"><IMG SRC="/ds-view/pds/images/btn_reset.gif" BORDER=0></A>
                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                              <INPUT alt="Go Button" border=0 src="/ds-view/pds/images/btn_go.gif" type=image>
                                &nbsp;&nbsp;

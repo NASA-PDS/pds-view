@@ -289,8 +289,6 @@ q=/<%=q%>/
                               <a href="javascript:switchPage(2)"><font face="verdana" size="2" 
                                color="#FFFFFF"><b>&nbsp;Power Search</b></font></a>&nbsp;&nbsp;
                                <font color="#FFFFFF"></font>&nbsp;&nbsp
-                              <!--<a href="javascript:switchPage(3)"><font face="verdana" size="2" 
-                               color="#FFFFFF"><b>&nbsp;Text Search</b></font></a> -->
                             </td>
                             <td align="right" valign="center" height=22>
                               <A href="/ds-view/pds/advanced.jsp"><IMG SRC="/ds-view/pds/images/btn_reset.gif" BORDER=0></A>

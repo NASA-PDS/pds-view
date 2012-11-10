@@ -275,8 +275,6 @@ function changeSearchSpec()
                               <a href="javascript:switchPage(1)"><font face="verdana" size="2" 
                                color="#FFFFFF"><b>&nbsp;Advanced Search</b></font></a>
                                <font color="#FFFFFF"></font>&nbsp;&nbsp
-                             <!-- <a href="javascript:switchPage(3)"><font face="verdana" size="2" 
-                               color="#FFFFFF"><b>&nbsp;Text Search</b></font></a>&nbsp;&nbsp; -->
                             </td>
                             <td align="right" valign="center" height=22>
                               <A href="/ds-view/pds/power.jsp"><IMG SRC="/ds-view/pds/images/btn_reset.gif" BORDER=0></A>
