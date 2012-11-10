@@ -4,7 +4,7 @@
 %>
 <HTML>
 <HEAD>
-   <TITLE>Planetary Data System: Data Set Search</TITLE>
+   <TITLE>PDS: Data Set Advanced Search</TITLE>
    <META content="Planetary Data System" name=keywords>
    <META content="This website serves as a mechanism for searching the PDS planetary archives." name=description>
    <link href="/ds-view/pds/css/pds_style.css" rel="stylesheet" type="text/css">

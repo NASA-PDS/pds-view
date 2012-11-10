@@ -5,7 +5,7 @@
 %>
 <html>
 <head>
-   <title>PDS: Quick Search</title>
+   <title>PDS: Data Set Quick Search</title>
    <META  NAME="keywords"  CONTENT="Planetary Data System">
    <META  NAME="description" CONTENT="This website serves as a mechanism for searching the PDS planetary archives.">
    <link href="/ds-view/pds/css/pds_style.css" rel="stylesheet" type="text/css">
@@ -238,7 +238,7 @@ END DEBUG CODE
                                  <td>
                                     <table border="0" cellpadding="5" cellspacing="0" width="760">
                                        <tr>                                      
-	                                      <td class="pageTitle" align=left>Data Set Search
+	                                      <td class="pageTitle" align=left>Data Set Quick Search
                                           </td>
                                           <td align=right valign=center color="#6F4D0E">
                                              <A href="javascript:openWindow('data_search_help.jsp', 'Result',550,500)">
