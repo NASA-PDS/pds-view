@@ -22,7 +22,7 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
-    <release version="1.0.0" date="TBD" description="TBD">
+    <release version="1.0.0" date="2012-11-09" description="This release of Product Query is a component of the PDS 2010 System. This is an operational release supporting the deployment of the system at the Engineering Node.">
       <action dev="shardman" type="add">
          Created the package based on the 3.0.11 release of the OODT Grid Product Server. The Product Servlet and associated classes were modified to remove dependencies on the early OODT infrastructure like the RMI Registry. This servlet, referenced at http://starbrite.jpl.nasa.gov/prod, was previously included in the Data Set View suite of web applications.
       </action>

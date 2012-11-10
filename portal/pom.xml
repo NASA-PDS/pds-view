@@ -30,7 +30,7 @@
 
   <name>Portal</name>
   <description>
-    The Portal component provides ...
+    The Portal component provides functionality for interfacing with the PDS infrastructure. This project consists of a suite of web applications hosted in the PDS web space.
   </description>
   <url>http://pds-cm.jpl.nasa.gov/2010/portal/</url>
 

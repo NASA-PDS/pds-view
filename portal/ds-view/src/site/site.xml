@@ -30,11 +30,11 @@
 
   <body>
     <links>
-      <item name="DS View" href="http://pds-cm.jpl.nasa.gov/ds-view/index.html" />
+      <item name="DS View" href="http://pds-cm.jpl.nasa.gov/portal/ds-view/index.html" />
     </links>
 
     <menu name="Software Documentation">
-      <item name="About DS View" href="index.html"/>
+      <item name="About Data Set View" href="index.html"/>
       <item name="Installation" href="install/index.html"/>
       <item name="Operation" href="operate/index.html"/>
     </menu>

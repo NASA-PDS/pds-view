@@ -22,7 +22,13 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
-    <release version="2.0.0" date="TBD" description="TBD">
+    <release version="2.0.0" date="2012-11-09" description="This release of Data Set View is a component of the PDS 2010 System. This is an operational release supporting the deployment of the system at the Engineering Node.">
+      <action dev="shardman" type="add">
+        Created this new project based on the old Data Set View web application that relied on the PDS-D infrastructure.
+      </action>
+      <action dev="hyunlee" type="update">
+        Converted the query interfaces to query the PDS4 Registry and Search Services instead of the Profile Servers and Catalog Database for context product information.
+      </action>
     </release>
 
     <release version="1.0.8 and previous" date="2003-06-26" description="The entries below represent the change log for Data Set View over time and associated with a specific version.">
