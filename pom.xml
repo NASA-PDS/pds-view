@@ -38,6 +38,7 @@
 
   <modules>
     <module>ingest</module>
+    <module>portal</module>
     <module>preparation</module>
     <module>registry</module>
     <module>report</module>
