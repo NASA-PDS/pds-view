@@ -24,6 +24,12 @@
 
   <body>
     <release version="1.2.0" date="TBD" description="TBD">
+      <action dev="jpadams" type="update">
+        Updated search.jsp to use relative path for search-service. Assumes search-ui and search-service are on same level in Tomcat.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-132">
+        Updated module documentation to handle more potential errors from installation.
+      </action>
     </release>
 
     <release version="1.1.0" date="2012-11-09" description="This release of the Search User Interface is a component of the PDS 2010 System. This is an operational release supporting the deployment of the system at the Engineering Node.">

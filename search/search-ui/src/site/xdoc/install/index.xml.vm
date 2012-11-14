@@ -32,6 +32,7 @@
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+        <li><a href="#Deploying_the_Extras">Deploying the Extras</a></li>
       </ul>
     </section>
 
@@ -96,6 +97,10 @@ or
           <p>This directory contains a local web site with the Search User Interface documentation, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
           </p>
         </li>
+        <li><b>extras/</b><br/>
+          <p>This directory contains the css, images, javascript, and server-side include files used to build the user interface to match that provided on the PDS Engineering website.
+          </p>
+	</li>
       </ul>
     </section>
 
@@ -106,8 +111,9 @@ or
 &lt;Context docBase="/usr/local/search-ui/search-ui.war" crossContext="true"&gt;
 &lt;/Context&gt;
       </source>
-
-      <p>The Search User Interface also depends on several other directories from the PDS Website that include images, Javascript, CSS, and server-side include files that are in the <i>includes</i> in Search UI package.  This contains the following directories:
+    </section>
+    <section name="Deploying the Extras">
+      <p>The Search User Interface also depends on several other directories from the PDS Website that include images, Javascript, CSS, and server-side include files that are in the <i>extras</i> directory in Search UI package.  This contains the following directories:
       </p>
 
       <ul>
@@ -118,9 +124,39 @@ or
 	<li>scripts</li>
       </ul>
 
-      <p>Move these directories into the $TOMCAT_HOME/webapps directory.</p>
+      <p>If these directories are not in the <i>$TOMCAT_HOME/webapps</i> directory, create the following Tomcat context files in <i>$TOMCAT_HOME/conf/Catalina/localhost</i> to include these directories:</p>
+
+      <ul>
+	<li>css.xml
+	  <source>
+&lt;Context docBase="/usr/local/search-ui/extras/css" &gt;&lt;/Context&gt;
+	  </source>
+	</li>
+	<li>images.xml
+	  <source>
+&lt;Context docBase="/usr/local/search-ui/extras/images" &gt;&lt;/Context&gt;
+	  </source>
+	</li>
+	<li>include.xml
+	  <source>
+&lt;Context docBase="/usr/local/search-ui/extras/include" &gt;&lt;/Context&gt;
+	  </source>
+	</li>
+	<li>js.xml
+	  <source>
+&lt;Context docBase="/usr/local/search-ui/extras/js" &gt;&lt;/Context&gt;
+	  </source>
+	</li>
+	<li>scripts.xml
+	  <source>
+&lt;Context docBase="/usr/local/search-ui/extras/scripts" &gt;&lt;/Context&gt;
+	  </source>
+	</li>
+      </ul>
+
+      <p>An alternative solution is to move all of the directories into the $TOMCAT_HOME/webapps directory.</p>
       
-      <p>Restart Tomcat.</p>
+      <p>Restart Tomcat to ensure the changes take effect.</p>
     </section>
 
   </body>

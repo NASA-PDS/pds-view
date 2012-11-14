@@ -57,7 +57,7 @@ for (String name : params.keySet()) {
 $(function() {
     //var query = window.location.href.slice(window.location.href.indexOf('?') + 1).split('@@');
     var query = '<%= query %>';
-    $.get('/search-service/pds/search?' + query, function(data) {
+    $.get('../search-service/pds/search?' + query, function(data) {
       $('.output').html(data);
       //alert('Load was performed.');
     });
