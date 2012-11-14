@@ -1,0 +1,62 @@
+#! /bin/bash
+
+####################################################################
+#
+# ops-index
+#
+# Script to copy a previously generated index to an operational
+# machine in order to post to local Solr instance.
+#
+# $Id$
+#
+####################################################################
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+source ${DIR}/env-vars
+
+if [ $# -ge 4 ]; then
+    SEARCH_HOME=${1}
+    SEARCH_SERVICE_URL=${2}
+    SOURCE=${3}
+    SOURCE_USER=${4}
+    SOURCE_PATH=${5}	
+elif [ "${SEARCH_HOME}" == "" ] || [ "${SEARCH_SERVICE_URL}" == "" ] || [ "${SOURCE}" == "" ] || [ "${SOURCE_USER}" == "" ]; then
+    echo
+    echo "Usage: `basename $0` <search-home> <source> <source-user> [<source-path>]"
+    echo "    or specify variables in ${DIR}/env-vars"
+    echo
+    exit 1
+fi
+
+# If SOURCE_PATH is not specified, default to SEARCH_HOME/index
+if [ "${SOURCE_PATH}" == "" ]; then
+	SOURCE_PATH=${SEARCH_HOME}/index
+fi
+
+echo
+echo "--------------------------------------------------------------"
+echo "--------------------------------------------------------------"
+echo " Running script to rsync generated index from ${SOURCE}"
+echo "--------------------------------------------------------------"
+echo "--------------------------------------------------------------"
+
+echo
+echo "Removing old solr_index.xml.*, if exists."
+find ${SEARCH_HOME}/index/solr_index.xml.*
+rm -fr ${SEARCH_HOME}/index/solr_index.xml.*
+
+echo
+echo "Make index directory if it does not exist"
+mkdir -p ${SEARCH_HOME}/index/
+echo
+
+sleep 2
+
+echo "rsyncing solr_index.xml files from ${SOURCE} to ${SEARCH_HOME}"
+echo "rsync -zvr ${SOURCE_USER}@${SOURCE}:${SOURCE_PATH}/solr_index.xml.* ${SEARCH_HOME}/index"
+rsync -zvr ${SOURCE_USER}@${SOURCE}:${SOURCE_PATH}/solr_index.xml.* ${SEARCH_HOME}/index
+
+solr-post ${SEARCH_HOME} ${SEARCH_SERVICE_URL}
+
+exit 0

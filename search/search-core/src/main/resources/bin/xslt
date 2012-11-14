@@ -1,38 +1,47 @@
-#! /bin/bash
+#!/bin/bash
+
+####################################################################
+#
+# xslt
+#
+# Script to add faceting hierarchies to the Lucene indexed data
+# using Saxon and XSLT.
+#
+# $Id$
+#
+####################################################################
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+source ${DIR}/env-vars
+
+if [ $# -eq 4 ]; then
+    INPUT=${1}
+    STYLESHEET=${2}
+    OUTPUT=${3}
+    SEARCH_HOME=${4}
+elif [ "${SEARCH_HOME}" == "" ]; then
+    echo
+    echo "Usage: `basename $0` <input-xml> <stylesheet> <output> <search-home>"
+    echo "    or specify variables in ${DIR}/env-vars"
+    echo
+    exit 1
+fi
 
 echo
 echo "Running XSLT transformation..."
 echo
 
-if [ "$1" != "" ]; then
-    SEARCH_HOME=${1}
-else
-    echo
-    echo "SEARCH_HOME must be specified via command-line:  ./xslt <search-home>"
-    echo
-    exit 0
-fi
-
-SEARCH_HOME=$1
 echo $SEARCH_HOME
 export SAXON_LIB=$SEARCH_HOME/../lib
 CLASSPATH=`echo $SAXON_LIB/*.jar | sed -e 's/ /:/g'`
 
-if [ $# -lt 2 ]; then
-  echo "usage: $0 xmlFile stylesheet [outFile]"
-  exit 1
-fi
 
-shift
-IN="-s:$1"
-STYLESHEET="-xsl:$2"
-shift 2
+INPUT="-s:${INPUT}"
+STYLESHEET="-xsl:${STYLESHEET}"
+OUTPUT="-o:${OUTPUT}"
 
-if [ $# -lt 1 ]; then
-  java -jar $SAXON_LIB/saxon-9.jar "$IN" "$STYLESHEET"
-else
-  OUT="-o:$1"
-  shift
-  echo "java -Xmx256m -jar $SAXON_LIB/saxon-9.jar \"$IN\" \"$STYLESHEET\" \"$OUT\" \"$@\""
-  java -Xmx256m -jar $SAXON_LIB/saxon-9.jar "$IN" "$STYLESHEET" "$OUT" "$@"
-fi
+echo "java -Xmx256m -jar ${SAXON_LIB}/saxon-9.jar \"${INPUT}\" \"${STYLESHEET}\" \"${OUTPUT}\""
+java -Xmx256m -jar ${SAXON_LIB}/saxon-9.jar "${INPUT}" "${STYLESHEET}" "${OUTPUT}"
+
+exit 0

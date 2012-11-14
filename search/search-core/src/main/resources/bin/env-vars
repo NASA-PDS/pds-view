@@ -1,0 +1,27 @@
+####################################################################################
+
+# The path for the home directory of local instance of search service.
+SEARCH_HOME=/usr/local/search-service/pds
+
+# URL of the Search Service instance.
+SEARCH_SERVICE_URL=http://localhost:8080/search-service
+
+# URL of the Registry Service instance.
+REGISTRY_URL=http://localhost:8080/registry
+
+####################################################################################
+
+## The following global variables are for copying the index to operational machines.
+## Not required for all installations
+
+# Source machine name to where initial index was generated
+SOURCE=pdsbeta.jpl.nasa.gov
+
+# Username to connect source machine
+SOURCE_USER=root
+
+# Optional variable. Path on source machine to directory containing solr_index.xml.* .
+# Defaults to SEARCH_HOME/index
+SOURCE_PATH=
+
+####################################################################################

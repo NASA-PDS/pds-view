@@ -1,54 +1,70 @@
 #!/bin/bash
 
-echo
-echo "Posting data index to SOLR..."
-echo
+####################################################################
+#
+# solr-post
+#
+# Script to post data to the search-service using cUrl.
+#
+# $Id$
+#
+####################################################################
 
-if [ "$1" != "" ] && [ "$2" != "" ]; then
-    SEARCH_HOME=${1}
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+source ${DIR}/env-vars
+
+if [ $# -eq 2 ]; then
+    SEARCH_HOME=${1}	
     SEARCH_SERVICE_URL=${2}
-else
+elif [ "${SEARCH_HOME}" == "" ] || [ "${SEARCH_SERVICE_URL}" == "" ]; then
     echo
-    echo "SEARCH_HOME and SEARCH_SERVICE_URL  must be specified via command-line:"
-    echo "    ./solr-post <search-service-home> <search-service-url>"
+    echo "Usage: `basename $0` <search-home> <search-service-url>"
+    echo "    or specify variables in ${DIR}/env-vars"
     echo
-    exit 0
+    exit
 fi
+
+echo
+echo "-----------------------------------------------------"
+echo "-----------------------------------------------------"
+echo "Posting index to SOLR"
+echo "-----------------------------------------------------"
+echo "-----------------------------------------------------"
+echo
 
 UPDATE_URL="${SEARCH_SERVICE_URL}/update"
 
-
 # Delete all existing documents.
-curl "$UPDATE_URL" -H "Content-Type: application/xml" --silent --data-binary '<delete><query>*:*</query></delete>'
+curl "${UPDATE_URL}" -H "Content-Type: application/xml" --silent --data-binary '<delete><query>*:*</query></delete>'
 
-#Backup existing solr index. This currently is in the wrong place and will need updating
-if [ -d $SEARCH_HOME/data_old ]
-then
-  echo "Removing '$SEARCH_HOME/data_old'"
-  rm -rf $SEARCH_HOME/data_old
+# Backup existing solr data directory.
+if [ -d ${SEARCH_HOME}/data_old ]; then
+  echo "Removing '${SEARCH_HOME}/data_old'"
+  rm -rf ${SEARCH_HOME}/data_old
 fi
-if [ -d $SEARCH_HOME/data ]
-then
-  echo "Backing up '$SEARCH_HOME/data' to '$SEARCH_HOME/data_old"
-  cp -rp $SEARCH_HOME/data $SEARCH_HOME/data_old
+if [ -d ${SEARCH_HOME}/data ]; then
+  echo "Backing up '${SEARCH_HOME}/data' to '${SEARCH_HOME}/data_old"
+  cp -rp ${SEARCH_HOME}/data ${SEARCH_HOME}/data_old
 fi
 
-# Push search tools metadata to solr
-./xslt $SEARCH_HOME ../facets/search-tools.xml ../facets/add-hierarchy.xslt $SEARCH_HOME/index/search-tools.hierarchy.xml
+# Generated Solr index with faceting hierarchy using XSLT
+xslt ${DIR}/../facets/search-tools.xml ${DIR}/../facets/add-hierarchy.xslt $SEARCH_HOME/index/search-tools.hierarchy.xml ${SEARCH_HOME}
 
-curl "$UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary @$SEARCH_HOME/index/search-tools.hierarchy.xml
+# Post search tools metadata to Solr
+curl "${UPDATE_URL}" -H "Content-Type: application/xml" --silent --request POST --data-binary @${SEARCH_HOME}/index/search-tools.hierarchy.xml
 
-find $SEARCH_HOME/index/solr_index.xml.*
-for solrIndex in `find $SEARCH_HOME/index/solr_index.xml.*`; do
+find ${SEARCH_HOME}/index/solr_index.xml.*
+for solrIndex in `find ${SEARCH_HOME}/index/solr_index.xml.*`; do
     indexNum=`echo $solrIndex | gawk -F. '{print $NF}'`
-    ./xslt $SEARCH_HOME $solrIndex ../facets/add-hierarchy.xslt $SEARCH_HOME/index/solr-index.hierarchy.xml.$indexNum
+    xslt $solrIndex ${DIR}/../facets/add-hierarchy.xslt ${SEARCH_HOME}/index/solr-index.hierarchy.xml.$indexNum ${SEARCH_HOME}
 
-# Push new index data
-    curl "$UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary @$SEARCH_HOME/index/solr-index.hierarchy.xml.$indexNum
+    # Push new index data
+    curl "${UPDATE_URL}" -H "Content-Type: application/xml" --silent --request POST --data-binary @${SEARCH_HOME}/index/solr-index.hierarchy.xml.$indexNum
 
 done
 
 # Commit the changes
-curl "$UPDATE_URL" -H "Content-Type: application/xml" --silent --request POST --data-binary '<commit />'
+curl "${UPDATE_URL}" -H "Content-Type: application/xml" --silent --request POST --data-binary '<commit />'
 
 exit 0

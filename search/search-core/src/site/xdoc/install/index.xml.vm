@@ -94,7 +94,7 @@ or
           </p>
         </li>
         <li><b>bin/</b><br/>
-          <p>This directory contains batch and shell scripts for executing the tool.
+          <p>This directory contains batch and shell scripts for executing the tool and posting data to the Search Service.
           </p>
         </li>
         <li><b>conf/</b><br/>

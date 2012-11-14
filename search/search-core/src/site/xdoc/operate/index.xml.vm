@@ -76,11 +76,11 @@
 % search-core -H &lt;SEARCH_HOME&gt; -r &lt;REGISTRY_URL&gt; [options]
         </source>
 
-	<p>Since we are running the Search Core with the Search Service, SEARCH_HOME = $SEARCH_SERVICE_HOME/pds.  The 'pds' appended to the SEARCH_SERVICE_HOME represents the specific instance of Solr we want to apply this index.  The following demonstrates how to run the Search Core with a SEARCH_SERVICE_HOME=/usr/local/search-service and REGISTRY_URL=http://pdsdev.jpl.nasa.gov:8080/registry:
+	<p>Since we are running the Search Core with the Search Service, SEARCH_HOME = $SEARCH_SERVICE_HOME/pds.  The 'pds' appended to the SEARCH_SERVICE_HOME represents the specific instance of Solr we want to apply this index.  The following demonstrates how to run the Search Core with a SEARCH_SERVICE_HOME=/usr/local/search-service and REGISTRY_URL=http://localhost:8080/registry:
 	</p>
 
         <source>
-% search-core -H /usr/local/search-service/pds -r http://pdsdev.jpl.nasa.gov:8080/registry
+% search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry
         </source>
 
 	<p>By default, the command above runs all components of the Search Core software and produces a Solr index from the Registry Service data.  The solr_index.xml file(s) will appear in the $SEARCH_SERVICE_HOME/pds/index directory.  To run each component separately, they must be completed in the following order:</p>
@@ -89,13 +89,13 @@
 	  <li>
 	    <p>The following command will run the Search Core with a SEARCH_SERVICE_HOME=/usr/local/search-service and only run the Registry Extractor component to generate XML index documents for each Registry context product type in the directory /usr/local/search-service/pds/registry-data/&lt;object-type&gt;/:</p>
 	    <source>
-% search-core -e -H /usr/local/search-service/pds -r http://pdsdev.jpl.nasa.gov:8080/registry
+% search-core -e -H /usr/local/search-service/pds -r http://localhost:8080/registry
 	    </source>
 	  </li>
 	  <li>
 	    <p>The following command will run the Search Core with a SEARCH_SERVICE_HOME=/usr/local/search-service and only run the Solr Indexer component, which parses the XML documents produced by the Registry Extractor, and generates Solr indexes located in /usr/local/search-service/pds/index :</p>
 	    <source>
-% search-core -i -H /usr/local/search-service/pds -r http://pdsdev.jpl.nasa.gov:8080/registry
+% search-core -i -H /usr/local/search-service/pds -r http://localhost:8080/registry
 	    </source>
 	  </li>
 	</ol>
@@ -104,7 +104,7 @@
         </p>
 
         <source>
-% search-core -H /usr/local/search-service/pds -r http://pdsdev.jpl.nasa.gov:8080/registry -m 100
+% search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry -m 100
         </source>
 
         <p>The following command demonstrates how to specify a SEARCH_HOME and REGISTRY_URL via a Search Core properties file:
@@ -118,7 +118,7 @@
 
 	<source>
 search.core.search-home = /usr/local/search-service/pds
-search.core.registry-url = http://pdsdev.jpl.nasa.gov:8080/registry
+search.core.registry-url = http://localhost:8080/registry
 search.core.config-home = /usr/local/search-core/conf/pds
 	 </source>
 
@@ -126,7 +126,7 @@ search.core.config-home = /usr/local/search-core/conf/pds
         </p>
 
 	<source>
-% search-core -H /usr/local/search-service/pds -r http://pdsdev.jpl.nasa.gov:8080/registry http://pdsdev.jpl.nasa.gov:8080/registry-psa
+% search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry http://localhost:8080/registry-psa
 	</source>
 
 	<p>The following command demonstrates how to specify multiple Search Core property files:
@@ -151,7 +151,7 @@ search.core.config-home = /usr/local/search-core/conf/pds
       </p>
 
       <source>
-./solr-post &lt;SEARCH_HOME&gt; &lt;SEARCH_SERVICE_URL&gt;
+% $SEARCH_CORE_HOME/solr-post &lt;SEARCH_HOME&gt; &lt;SEARCH_SERVICE_URL&gt;
       </source>
 
       <p>
@@ -159,35 +159,112 @@ search.core.config-home = /usr/local/search-core/conf/pds
       </p>
 
       <source>
-./solr-post /usr/local/search-service/pds http://pdsdev.jpl.nasa.gov:8080/search-service/pds
+% $SEARCH_CORE_HOME/solr-post /usr/local/search-service/pds http://localhost:8080/search-service/pds
       </source>
     </section>
-    <section name="Basic Search Process">
-      <p>The initial-index shell script is included in the package in an effort to streamline the process by running both the Search Core to produce the index, and the solr-post script to post the data to the Solr application.  Go to the SEARCH_CORE_HOME/bin directory to run the script as follows:
+    <section name="Basic Search Script">
+      <p>The initial-index shell script is included in the package in an effort to streamline the process by running the Search Core to produce the index, and the solr-post script to post the data to the Solr application.  Go to the $SEARCH_CORE_HOME/bin directory to update the environment variables and run the script:
       </p>
 
-      <p><b>Assumptions.</b>  The initial-index script is intended only for those installations that only use 1 registry and the default configuration found in $SEARCH_CORE_HOME/conf/pds .
+      <p><b>Assumptions.</b>  The initial-index script is intended only for those installations that only use 1 registry and the default extractor configuration found in $SEARCH_CORE_HOME/conf/pds/product-classes.properties.
       </p>
+      
+      <subsection name="Using Environment Variables">
+	<ul>
+	  <li>Update <i>$SEARCH_CORE_HOME/bin/env-vars</i> with, <b>at minimum</b>, the following information:
+	    <ul>
+	      <li>SEARCH_HOME - The path for the home directory of local instance of search service.</li>
+	      <li>SEARCH_SERVICE_URL - URL of the Search Service instance.</li>
+	      <li>REGISTRY_URL - URL of the Registry Service instance.</li>
+	    </ul>
+	  </li>
+	  <li>Run the initial-index script:
+	    <source>
+% $SEARCH_CORE_HOME/initial-index
+	    </source>
+	  </li>
+	</ul>
+      </subsection>
 
-      <source>
-% ./initial-index &lt;SEARCH_HOME&gt; &lt;SEARCH_SERVICE_URL&gt; &lt;REGISTRY_URL&gt;
-      </source>
+      <subsection name="Using Command-Line Arguments">
+	<p>The initial-index script can also be run using command-line arguments in lieu of updating <i>env-var</i>:</p>
+	<source>
+% $SEARCH_CORE_HOME/initial-index &lt;SEARCH_HOME&gt; &lt;SEARCH_SERVICE_URL&gt; &lt;REGISTRY_URL&gt;
+	</source>
 
-      <p>For example:</p>
+	<p>For example:</p>
 
-      <source>
-% ./initial-index /usr/local/search-service/pds http://pdsdev.jpl.nasa.gov:8080/search-service/pds http://pdsdev.jpl.nasa.gov:8080/registry
-      </source>
+	<source>
+% $SEARCH_CORE_HOME/initial-index /usr/local/search-service/pds http://localhost:8080/search-service/pds http://localhost:8080/registry
+	</source>
+      </subsection>
 
-      <p>Once this script completes, the data should be available through the Search Service interface.</p>
+      <subsection name="Test Search Service">
+      <p>Once this script completes, the data should be available through the Search Service interface. Go to <a href="http://localhost:8080/search-service/pds/search/?q=*:*">http://localhost:8080/search-service/pds/search/?q=*:*</a> to verify data is available (modify domain and port as needed).  See the <a href="../../search-service/operate">Search Service - Operate</a> page for more information on how to query data.</p>
+      </subsection>
 
       <p><i>Note: To further streamline the process, the command-line arguments can be removed from the initial-index script, and the search-core line can modified according to your specific needs.</i>
       </p>
     </section>
+    
+    <section name="Post To Operations">
+      <p>Some installations require building an index to be replicated between multiple secured machines.  Secured machines, meaning POSTing data remotely is forbidden.  Instead of generating a new index on each machine, the <i>$SEARCH_CORE_HOME/bin/ops-index</i> script was developed to <a href="http://rsync.samba.org/">rsync</a> a previously generated index from a remote machine and POST the data to a local Search Service installation.  The following describes the how to use the script:</p>
 
-    <section name="PDS Search Process">
-      <p>See Basic Search Process.
-      </p>
+      <subsection name="Using Environment Variables">
+	<ul>
+	  <li>Update <i>$SEARCH_CORE_HOME/bin/env-vars</i> with, <b>at minimum</b>, the following information:
+	    <ul>
+	      <li>SEARCH_HOME - The path for the home directory of local instance of search service.</li>
+	      <li>SEARCH_SERVICE_URL - URL of the Search Service instance.</li>
+	      <li>SOURCE - Source machine name where initial index was generated</li>
+	      <li>SOURCE_USER - Username to connect source machine</li>
+	      <li>SOURCE_PATH - Optional variable. Path on source machine to directory containing solr_index.xml.* .  Defaults to SEARCH_HOME/index</li>
+	    </ul>
+	  </li>
+	  <li>Run the <i>ops-index</i> script:
+	    <source>
+% $SEARCH_CORE_HOME/ops-index
+	    </source>
+	  </li>
+	</ul>
+      </subsection>
+
+      <subsection name="Using Command-Line Arguments">
+	<p>The ops-index script can also be run using command-line arguments in lieu of updating <i>env-vars</i>:</p>
+	<source>
+% $SEARCH_CORE_HOME/ops-index &lt;SEARCH_HOME&gt; &lt;SEARCH_SERVICE_URL&gt; &lt;SOURCE&gt; &lt;SOURCE_USER&gt; [&lt;SOURCE_PATH&gt;]
+	</source>
+
+	<p>For example:</p>
+
+	<source>
+% ./ops-index /usr/local/search-service/pds http://localhost:8080/search-service/pds pdsbeta.jpl.nasa.gov root
+	</source>
+      </subsection>
+
+      <subsection name="Test Search Service">
+      <p>Once this script completes, the data should be available through the Search Service interface. Go to <a href="http://localhost:8080/search-service/pds/search/?q=*:*">http://localhost:8080/search-service/pds/search/?q=*:*</a> to verify data is available (modify domain and port as needed).  See the <a href="../../search-service/operate">Search Service - Operate</a> page for more information on how to query data.</p>
+      </subsection>
+    </section>
+
+    <section name="Common Errors">
+      <subsection name="Error running Registry Extractor">
+	<p>This error arises when there is an error connecting with the Registry.  The following are potential mitigation strategies:</p>
+	<ul>
+	  <li>Verify the Registry URL specified is correct and accessible.</li>
+	  <li>Verify the Registry is populated with data by going to $REGISTRY_URL/report.  See <a href="../../../registry">Registry Documentation</a> for more information.</li>
+	</ul>
+      </subsection>
+      <subsection name="501 Method Not Implemented">
+	<p>This error occurs when using <i>solr-post</i> script and the HTTP POST method to ingest data into Solr.  This usually means that the Search Service URL specified is either incorrect or attempting to access a port that is not open to the HTTP POST method.  The following are potential mitigation strategies:</p>
+	<ul>
+	  <li>Verify Search Service URL is correct by navigating to the page.  The Solr Welcome screen should appear.</li>
+	  <li>Try changing the URL to access the localhost or an intranet-only accessible port (i.e. 8080).  Often servers do not allow the HTTP POST method through port 80 when accessing Tomcat.  For instance, if the Search Service URL used is http://my-host/search-service, try http://localhost:8080/search-service or http://my-host:8080/search-service (ports will differ according to Tomcat installation).</li>
+	</ul>
+      </subsection>
+      <subsection name="search-core: command not found">
+	<p>This error occurs when the system cannot find the <i>search-core</i> script in the PATH.  See <a href="../install">Installation Instructions</a> for more information on adding the <i>search-core</i> to the PATH.</p>
+      </subsection>
     </section>
   </body>
 </document>
