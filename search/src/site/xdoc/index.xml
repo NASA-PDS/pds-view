@@ -33,10 +33,11 @@
     </section>
 
     <section name="Recommended Installation">
-      The recommended installation ordering of the Search components is:
+      The recommended ordering for installing the Search Service components is:
       <ol>
-	<li>Search Service</li>
-	<li>Search Core</li>
+	<li><a href="./search-service">Search Service</a></li>
+	<li><a href="./search-core">Search Core</a></li>
+	<li><a href="./search-ui">Search UI</a> (optional)</li>
       </ol>
     </section>
   </body>

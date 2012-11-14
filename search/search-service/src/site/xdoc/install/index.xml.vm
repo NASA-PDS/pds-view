@@ -33,6 +33,7 @@
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+        <li><a href="#Common_Errors">Common Errors</a></li>
       </ul>
     </section>
 
@@ -96,7 +97,7 @@ or
     </section>
 
     <section name="Deploying the Application">
-      <p>The Search Service is the Solr configuration along with the Java extensions written to support PDS Search Protocol and PDAP Handler. In order to deploy Solr with the Search Service configuration, please complete the following procedure:
+      <p>The Search Service includes the configuration for Solr as well as the Java extensions written to support the PDS Search Protocol and PDAP Handler. In order to deploy Solr with the Search Service configuration, please complete the following procedure:
       </p>
 
       <subsection name="Initial Installation">
@@ -111,16 +112,14 @@ ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${projec
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context docBase="/usr/local/${project.artifactId}/solr.war" debug="0" crossContext="true"&gt;
   &lt;Environment name="solr/home" type="java.lang.String" value="/usr/local/${project.artifactId}" override="true" /&gt;
-  &lt;Environment name="javax/xml/transform/TransformerFactory" type="java.lang.String" value="net/sf/saxon/TransformerFactoryImpl" override="true"/&gt;
+  &lt;Parameter name="javax.xml.transform.TransformerFactory" type="java.lang.String" value="net.sf.saxon.TransformerFactoryImpl" override="true"/&gt;
+  &lt;Loader className="org.apache.catalina.loader.VirtualWebappLoader" virtualClasspath="/usr/local/${project.artifactId}/lib/saxon-9.jar"/&gt;
 &lt;/Context&gt;
 	    </source>
 	  </li>
 	  <li>Modify $TOMCAT_HOME/bin/catalina.sh (or /etc/init.d/tomcat) by inserting the following into the top of the document in order to set the following environment variables:
 	    <source>
 CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.pds.home=/usr/local/${project.artifactId}"
-CATALINA_OPTS="${CATALINA_OPTS} -Djavax.xml.transform.TransformerFactory=net.sf.saxon.TransformerFactoryImpl"
-
-CLASSPATH="${CLASSPATH}:/usr/local/${project.artifactId}-${project.version}/lib/saxon-9.jar"
 	    </source>
 	  </li>
 	  <li>Restart Tomcat server</li>
@@ -139,7 +138,22 @@ ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${projec
 	  <li>Restart Tomcat server</li>
 	  <li>Test installation by going to http://localhost:8080/${project.artifactId}/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
 	</ol>
+	
       </subsection>
     </section>
+    <section name="Common Errors">
+      <subsection name="HTTP 404 - Requested Resource Not Available">
+	<p>This error means the application failed to install correctly.  The following are potential mitigation strategies:</p>
+	<ul>
+	  <li>Verify domain and port are correct for the local Tomcat installation.</li>
+	  <li>Verify paths denoted for $TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml and CATALINA_OPTS are correct.</li>
+	  <li>View $TOMCAT_HOME/logs/catalina.<i>current-date</i>.log for information on potential causes of the failed deployment.</li>
+	</ul>
+      </subsection>
+      <subsection name="Other Errors">
+	<p>For other errors that arise while testing the installation, see the <a href="../operate/index.html#Common_Errors">Operate - Common Errors</a></p>
+      </subsection>
+    </section>
+      
   </body>
 </document>
