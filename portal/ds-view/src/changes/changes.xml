@@ -22,7 +22,13 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
+    <release version="2.1.0" date="TBD" description="TBD">
+    </release>
+
     <release version="2.0.1" date="2012-11-14" description="This release of Data Set View is a component of the PDS 2010 System. This is an operational release supporting the deployment of the system at the Engineering Node and includes updates for issues discovered during deployment.">
+      <action dev="shardman" type="update">
+        Updated the Installation document to include details on configuration of the component.
+      </action>
       <action dev="shardman" type="remove">
         Removed an unnecessary class and context file, the latter was causing problems in the operational environment.
       </action>
