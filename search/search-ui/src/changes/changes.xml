@@ -19,16 +19,16 @@
 <document>
   <properties>
     <title>Release Changes</title>
-    <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
+    <author email="Jordan.Padams@jpl.nasa.gov">Jordan Padams</author>
   </properties>
 
   <body>
-    <release version="1.2.0" date="TBD" description="TBD">
-      <action dev="jpadams" type="update">
-        Updated search.jsp to use relative path for search-service. Assumes search-ui and search-service are on same level in Tomcat.
-      </action>
+    <release version="1.1.1" date="2012-11-14" description="This release of the Search Core is a component of the PDS 2010 System. This is an operational release supporting the deployment of the system at the Engineering Node and includes updates for issues discovered during deployment.">
       <action dev="jpadams" type="update" issue="PDS-132">
         Updated module documentation to handle more potential errors from installation.
+      </action>
+      <action dev="jpadams" type="update">
+        Updated search.jsp to use relative path for search-service. Assumes search-ui and search-service are on same level in Tomcat.
       </action>
     </release>
 

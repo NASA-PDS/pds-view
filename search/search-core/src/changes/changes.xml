@@ -23,18 +23,18 @@
   </properties>
   
   <body>
-    <release version="1.2.0" date="TBD" description="TBD">
+    <release version="1.1.1" date="2012-11-14" description="This release of the Search Core is a component of the PDS 2010 System. This is an operational release supporting the deployment of the system at the Engineering Node and includes updates for issues discovered during deployment.">
       <action dev="jpadams" type="add">
-	Created ops-index script to rsync data from remote machine in order for operational use.
+        Created ops-index script to rsync data from remote machine in order for operational use.
       </action>
       <action dev="jpadams" type="add">
-	Created env-vars scripts to allow for specification of all environment variables. Minimizes potential human error.
-      </action>
-      <action dev="jpadams" type="update">
-	Updated in-line documentation in all core Bash scripts for running the index.
+        Created env-vars scripts to allow for specification of all environment variables. Minimizes potential human error.
       </action>
       <action dev="jpadams" type="update" issue="PDS-132">
         Updated module documentation to handle more potential errors from installation.
+      </action>
+      <action dev="jpadams" type="update">
+        Updated in-line documentation in all core Bash scripts for running the index.
       </action>
     </release>
 
