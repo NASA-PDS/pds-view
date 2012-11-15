@@ -37,6 +37,10 @@ echo "Copying the Ingest packages to the package directory."
 cp ../../ingest/catalog/target/catalog*bin* .
 cp ../../ingest/harvest/target/harvest*bin* .
 
+echo "Copying the Portal packages to the package directory."
+cp ../../portal/ds-view/target/ds-view*bin* .
+cp ../../portal/product-query/target/product-query*bin* .
+
 echo "Copying the Report packages to the package directory."
 cp ../../report/rs-update/target/rs-update*bin* .
 cp ../../report/profile-setup/target/profile-setup*bin* .

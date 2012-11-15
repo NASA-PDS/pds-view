@@ -65,6 +65,16 @@ mvn site
 mvn deploy
 cd ../..
 
+cd portal
+mvn deploy --non-recursive
+cd ds-view
+mvn site
+mvn deploy
+cd ../product-query
+mvn site
+mvn deploy
+cd ../..
+
 cd report
 mvn deploy --non-recursive
 cd rs-update
