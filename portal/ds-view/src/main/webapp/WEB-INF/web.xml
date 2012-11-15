@@ -8,22 +8,24 @@
        is given as a request parameter (resclass=data.granule, for
        example).  All other parameters get passed to the web resource.
   -->
-	
-	<context-param>
-		<param-name>pdshome.url</param-name>
-		<param-value>http://pds.jpl.nasa.gov/</param-value>
-	</context-param>
-	
-	<context-param>
-	    <param-name>registry.url</param-name>
-	    <param-value>http://pdsdev.jpl.nasa.gov:8080/registry</param-value>	   
-	</context-param>
-	
-	<!-- search service access url -->
-	<context-param>
-	    <param-name>search.url</param-name>
-	    <param-value>http://pdsdev.jpl.nasa.gov:8080/search-service/pds/</param-value>
-	</context-param>
+
+  <!-- PDS Web Site -->
+  <context-param>
+    <param-name>pdshome.url</param-name>
+    <param-value>http://pds.jpl.nasa.gov/</param-value>
+  </context-param>
+
+  <!-- Registry Service base URL -->
+  <context-param>
+      <param-name>registry.url</param-name>
+      <param-value>http://pdsops.jpl.nasa.gov/registry</param-value>
+  </context-param>
+
+  <!-- Search Service base URL -->
+  <context-param>
+      <param-name>search.url</param-name>
+      <param-value>http://pdsops.jpl.nasa.gov/search-service/pds</param-value>
+  </context-param>
 
   <servlet>
     <servlet-name>switcher</servlet-name>

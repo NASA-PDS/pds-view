@@ -31,6 +31,7 @@
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+        <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
       </ul>
     </section>
 
@@ -100,6 +101,44 @@ or
 
     <section name="Deploying the Application">
       <p>The Data Set View web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory within the Tomcat installation or installed via the Manager interface. Once this step is complete, the application is ready for operation.
+      </p>
+    </section>
+
+    <section name="Configuring the Application">
+      <p>The Data Set View web application provides the following parameters for configuration:
+      </p>
+
+      <table>
+        <tr><th>Parameter</th><th>Description</th></tr>
+        <tr><td>pdshome.url</td><td>The URL for the PDS web site. The value defaults to "http://pds.jpl.nasa.gov/".</td></tr>
+        <tr><td>registry.url</td><td>The base URL for the Registry Service. The value defaults to "http://pdsops.jpl.nasa.gov/registry".</td></tr>
+        <tr><td>search.url</td><td>The base URL for the Search Service. The value defaults to "http://pdsops.jpl.nasa.gov/search-service/pds".</td></tr>
+      </table>
+
+      <p>To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/ds-view/WEB-INF</i> directory. The following block contains the parameters:
+      </p>
+
+      <source>
+  &lt;!-- PDS Web Site --&gt;
+  &lt;context-param&gt;
+    &lt;param-name&gt;pdshome.url&lt;/param-name&gt;
+    &lt;param-value&gt;http://pds.jpl.nasa.gov/&lt;/param-value&gt;
+  &lt;/context-param&gt;
+
+  &lt;!-- Registry Service base URL --&gt;
+  &lt;context-param&gt;
+      &lt;param-name&gt;registry.url&lt;/param-name&gt;
+      &lt;param-value&gt;http://pdsops.jpl.nasa.gov/registry&lt;/param-value&gt;
+  &lt;/context-param&gt;
+
+  &lt;!-- Search Service base URL --&gt;
+  &lt;context-param&gt;
+      &lt;param-name&gt;search.url&lt;/param-name&gt;
+      &lt;param-value&gt;http://pdsops.jpl.nasa.gov/search-service/pds&lt;/param-value&gt;
+  &lt;/context-param&gt;
+      </source>
+
+      <p>The above values should be modified for the target environment.
       </p>
     </section>
   </body>
