@@ -18,8 +18,8 @@
 
 <project name="Data Set View">
   <bannerLeft>
-    <src>images/pds_logo.jpg</src>
-    <href>http://pds-cm.jpl.nasa.gov/</href>
+    <src>images/pds4_logo.jpg</src>
+    <href>http://pds-cm.jpl.nasa.gov/2010</href>
   </bannerLeft>
 
   <bannerRight>
