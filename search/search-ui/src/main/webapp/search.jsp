@@ -18,6 +18,13 @@ if (qString == null) {
   return;
 }
 
+// Remove specific parameter included from PDS Header Search
+List<String> ignoredParams = new ArrayList<String>();
+ignoredParams.add("in");
+ignoredParams.add("words");
+ignoredParams.add("search_scope");
+
+
 if (qString.equals("")) {
   newQString = qString + "-archive-status%3ASUPERSEDED";
 } else {
@@ -29,7 +36,7 @@ Map<String, String[]> params = request.getParameterMap();
 for (String name : params.keySet()) {
   if ( name.equals("q") && !params.get(name)[0].contains("archive-status")) {
     query += name + "=" + newQString + "&";
-  } else {
+  } else if (!ignoredParams.contains(name)) {
     for (String value : Arrays.asList(params.get(name))) {
       query += name + "=" + value + "&";
     }
