@@ -6,7 +6,7 @@
 <%@ page language="java" session="true" isThreadSafe="true" 
 info="PDS Search" isErrorPage="false"
 contentType="text/html; charset=ISO-8859-1" 
-import="java.sql.*, java.util.*, java.io.*" %>
+import="java.net.*, java.util.*, java.io.*" %>
 <%
 String pdshome = application.getInitParameter("pdshome.url");
 String contextPath = request.getContextPath() + "/";
@@ -35,10 +35,10 @@ query = "";
 Map<String, String[]> params = request.getParameterMap();
 for (String name : params.keySet()) {
   if ( name.equals("q") && !params.get(name)[0].contains("archive-status")) {
-    query += name + "=" + newQString + "&";
+    query += name + "=" + URLEncoder.encode(newQString) + "&";
   } else if (!ignoredParams.contains(name)) {
     for (String value : Arrays.asList(params.get(name))) {
-      query += name + "=" + value + "&";
+      query += name + "=" + URLEncoder.encode(value) + "&";
     }
   }
 }
