@@ -26,9 +26,9 @@ ignoredParams.add("search_scope");
 
 
 if (qString.equals("")) {
-  newQString = qString + "-archive-status%3ASUPERSEDED";
+  newQString = qString + "-archive-status:SUPERSEDED";
 } else {
-  newQString = qString + "%20AND%20-archive-status%3ASUPERSEDED";
+  newQString = qString + " AND -archive-status:SUPERSEDED";
 }
 
 query = "";
