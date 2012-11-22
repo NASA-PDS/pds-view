@@ -316,7 +316,7 @@
 			<xsl:otherwise>
 				<li class="result">
 					<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='resClass']))" />:</strong>
-					<a href="{str[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
+					<a href="{replace(str[@name='resLocation'], '&amp;amp;', '&amp;')}"><xsl:value-of select="$ds_name" /></a>
 					<br />
 
 					<xsl:choose>
