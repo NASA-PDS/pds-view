@@ -262,8 +262,11 @@ p:home="http://node.nasa.gov/registry"/&gt;
         </source>
       </subsection>
 
+      <p>If either the database configuration or home configuration were changed above in the deployed application directory under the <i>$TOMCAT_HOME</i> directory, the Registry Service application must be stopped and started for these changes to take effect. This can be accomplished by restarting the Tomcat Server. Alternatively, if the Tomcat Manager interface was utilized for the deployment, find the Registry Service entry in the Manager interface, select the associated <i>Stop</i> button followed by a selection of the associated <i>Start</i> button to stop and then start the application, respectively.
+      </p>
+
       <subsection name="Object Type Configuration">
-        <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of objects types corresponds with the types of products that a given instance of the Registry Service will support. The <i>registry-config</i> and <i>registry-config.bat</i> scripts default to a Registry Service URL location of <i>http://localhost:8080/registry</i>. If necessary, modify the appropriate script for the local environment so that it corresponds with the URL location of the target installation. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface. Execute the script from the <i>bin</i> directory in order to register the full set of object types:
+        <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of object types corresponds with the types of products that a given instance of the Registry Service will support. The <i>registry-config</i> and <i>registry-config.bat</i> scripts default to a Registry Service URL location of <i>http://localhost:8080/registry</i>. If necessary, modify the appropriate script for the local environment so that it corresponds with the URL location of the target installation. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface. Execute the script from the <i>bin</i> directory in order to register the full set of object types:
         </p>
 
         <source>
@@ -343,7 +346,7 @@ serverStarted='2011-08-28T12:45:43.514-07:00' status='OK'/&gt;
 
       <source>
 % cd /path/to/registrydb/home
-% rm -rf RegistryDB derby.log
+% rm -rf registry derby.log
       </source>
 
       <p>For a MySQL database instance, execute the following to delete the database from the database server: 
