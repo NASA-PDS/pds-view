@@ -73,7 +73,7 @@ public class RegistryUI implements EntryPoint, HistoryListener {
 	public static final int PAGE_SIZE1 = 20;
 	public static final int PAGE_SIZE2 = 50;
 	public static final int PAGE_SIZE3 = 100;
-	public static final int FETCH_ROW_SIZE = 50;
+	public static final int FETCH_ROW_SIZE = 100;
 	
 	public static Logger logger = Logger.getLogger("registry-ui");
 	

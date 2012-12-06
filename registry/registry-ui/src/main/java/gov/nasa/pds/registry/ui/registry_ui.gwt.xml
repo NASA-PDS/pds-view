@@ -20,11 +20,16 @@
   <inherits name='com.google.gwt.logging.Logging'/>
   <set-property name='gwt.logging.logLevel' value='FINEST'/>
   <set-property name='gwt.logging.enabled' value='TRUE'/>
-  <set-property name='gwt.logging.consoleHandler' value='DISABLED'/>
+  <!-- Logs to the popup which appears in the upper left hand corner -->
   <set-property name='gwt.logging.popupHandler' value='DISABLED'/>
-  <!--set-property name='gwt.logging.systemHandler' value='ENABLED'/-->
-  <set-property name='gwt.logging.firebugHandler' value='ENABLED'/>
+  <!-- Logs to the javascript console, which is used by Firebug Lite(for IE), Safari and Chrome(?) -->
+  <set-property name='gwt.logging.consoleHandler' value='DISABLED'/>
+  <!-- Logs to stdout These messages can only be seen in Development Mode -->
+  <set-property name='gwt.logging.systemHandler' value='DISABLED'/>
+  <!-- Logs to Firebug -->
+  <set-property name='gwt.logging.firebugHandler' value='DISABLED'/>
   <!-- logged by client side code to be stored on the server side -->
+  <!-- This handler will send log messages to the server, where they will be logged using the server side logging mechanism -->
   <set-property name='gwt.logging.simpleRemoteHandler' value='DISABLED'/>
   
   <!-- for cookies -->

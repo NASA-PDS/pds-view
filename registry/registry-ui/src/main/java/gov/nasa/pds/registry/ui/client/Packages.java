@@ -280,13 +280,7 @@ public class Packages extends Tab {
 		InputContainer statusInputWrap = new InputContainer("Status",
 				statusInput);
 		inputTable.add(statusInputWrap);
-				
-		final Button refreshButton = new Button("Refresh");
-		refreshButton.setWidth("60px");
-		refreshButton.setStyleName("buttonwrapper");
-		InputContainer refreshButtonWrap = new InputContainer(null, refreshButton);
-		inputTable.add(refreshButtonWrap);
-
+			
 		// create button for doing an update
 		final Button updateButton = new Button("Update Status");
 		//updateButton.setWidth("60px");
@@ -299,19 +293,6 @@ public class Packages extends Tab {
 		deleteButton.setStyleName("buttonwrapper");
 		InputContainer deleteButtonWrap = new InputContainer(null, deleteButton);
 		inputTable.add(deleteButtonWrap);
-			
-		// add handler to leverage the update button
-		// TODO: determine if there is a form widget that's better to use here,
-		// not sure this is reasonable as we're not doing a real submit, it's
-		// triggering a javascript event that is integral to the behavior of the
-		// scroll table
-		
-		refreshButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				get().refreshTable();
-			}
-		});
 		
 		updateButton.addClickHandler(new ClickHandler() {
 			@Override

@@ -35,7 +35,7 @@ import com.google.gwt.gen2.table.client.TableDefinition;
 import com.google.gwt.gen2.table.client.AbstractScrollTable.SortPolicy;
 import com.google.gwt.gen2.table.client.SelectionGrid.SelectionPolicy;
 import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
-import com.google.gwt.gen2.table.client.ListCellEditor;
+//import com.google.gwt.gen2.table.client.ListCellEditor;
 
 import com.google.gwt.gen2.table.event.client.PageCountChangeEvent;
 import com.google.gwt.gen2.table.event.client.PageCountChangeHandler;
@@ -167,7 +167,7 @@ public class Products extends Tab {
 
 	protected HTML recordCountContainer = new HTML("");
 	
-	private int recordCount;
+	//private int recordCount;
 	
 	/**
 	 * Components for filtering 
@@ -314,7 +314,6 @@ public class Products extends Tab {
 				get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
 			}
 		});
-	
 		onModuleLoaded();
 	}
 
@@ -346,6 +345,7 @@ public class Products extends Tab {
 		// add title to scroll table
 		this.scrollPanel.add(new HTML(
 				"<div class=\"title\">Product Registry</div>"));
+		logger.log(Level.FINEST, "initLayout method...");
 	}
 
 	/**
@@ -422,6 +422,8 @@ public class Products extends Tab {
 		// add the close handler that de-selects the row that was used to
 		// trigger the "show" of the dialog
 		this.productDetailsBox.addCloseHandler(dialogCloseHandler);
+		
+		logger.log(Level.FINEST, "initProductDetailPopup....");
 	}
 
 	/**
@@ -481,6 +483,8 @@ public class Products extends Tab {
 		// add the close handler that de-selects the row that was used to
 		// trigger the "show" of the dialog
 		this.associationDetailsBox.addCloseHandler(dialogCloseHandler);
+
+		logger.log(Level.FINEST, "initAssociationDetailPopup...");
 	}
 
 	/**
@@ -511,7 +515,6 @@ public class Products extends Tab {
 		inputTable.add(nameInputWrap);
 
 		// create dropdown input for object type
-		// TODO: list should be exhaustive, get from enum or build process?
 		objectsInput.setName("objectType");
 		objectsInput.addItem("Any Object Type", "-1");
 		for (int i=0; i<Constants.objectTypes.length; i++) {
@@ -522,9 +525,6 @@ public class Products extends Tab {
 		inputTable.add(objectsInputWrap);
 
 		// create dropdown input for status type
-		//final ListBox statusInput = new ListBox(false);
-		// TODO: comes from enum ObjectStatus so iterate over values? or is
-		// order more important?
 		statusInput.setName("statusType");
 		statusInput.addItem("Any Status", "-1");
 		for (int i=0; i<Constants.status.length; i++) {
@@ -540,7 +540,6 @@ public class Products extends Tab {
 		InputContainer refreshButtonWrap = new InputContainer(null, refreshButton);
 		inputTable.add(refreshButtonWrap);
 
-		//final Button clearButton = new Button("Clear");
 		//clearButton.setWidth("50px");
 		clearButton.setStyleName("buttonwrapper");
 		InputContainer clearButtonWrap = new InputContainer(null, clearButton);
@@ -559,11 +558,7 @@ public class Products extends Tab {
 		InputContainer deleteButtonWrap = new InputContainer(null, deleteButton);
 		inputTable.add(deleteButtonWrap);
 				
-		// add handler to leverage the update button
-		// TODO: determine if there is a form widget that's better to use here,
-		// not sure this is reasonable as we're not doing a real submit, it's
-		// triggering a javascript event that is integral to the behavior of the
-		// scroll table
+		// add handler to leverage the refresh button
 		refreshButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -574,12 +569,7 @@ public class Products extends Tab {
 		clearButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				guidInput.setText("");
-				lidInput.setText("");
-				nameInput.setText("");
-				objectsInput.setSelectedIndex(0);
-				statusInput.setSelectedIndex(0);
-				
+				get().initializeInputs();				
 				get().getTableModel().clearFilters();
 				
 				// go back to first page and force update
@@ -592,7 +582,8 @@ public class Products extends Tab {
 			public void onClick(ClickEvent event) {
 				Set<Integer> selectedRows = get().getDataTable().getSelectedRows();
 				logger.log(Level.FINEST, "size of selected rows = " + selectedRows.size());			
-				logger.log(Level.FINEST, "selected index = " + statusInput.getSelectedIndex() + "    selected status = " + statusInput.getItemText(statusInput.getSelectedIndex()));
+				logger.log(Level.FINEST, "selected index = " + statusInput.getSelectedIndex() +
+						"    selected status = " + statusInput.getItemText(statusInput.getSelectedIndex()));
 				
 				if (statusInput.getSelectedIndex()==0 || selectedRows.size()==0) {
 					Window.alert("Please choose the Status and/or select product(s) to update.");
@@ -669,25 +660,39 @@ public class Products extends Tab {
 					}
 				}
 			}
-		});			
+		});		
+		
+		logger.log(Level.FINEST, "initFilterOptions..");
 	}
 
 	protected void reloadData() {
 		get().getCachedTableModel().clearCache();
 		get().getTableModel().setRowCount(RegistryUI.PAGE_SIZE1);
 		get().getPagingScrollTable().redraw();
+		
+		logger.log(Level.FINEST, "reloadData...");
+	}
+	
+	protected void initializeInputs() {
+		guidInput.setText("");
+		lidInput.setText("");
+		nameInput.setText("");
+		objectsInput.setSelectedIndex(0);
+		statusInput.setSelectedIndex(0);
 	}
 	
 	private void refreshTable() {
 		// clear cache as data will be invalid after filter
 		get().getCachedTableModel().clearCache();
 
+		//get().initializeInputs();
+		
 		// get table model that holds filters
 		ProductTableModel tablemodel = get().getTableModel();
 
 		// clear old filters
 		tablemodel.clearFilters();
-
+		
 		// get values from input
 		// guid
 		String guid = guidInput.getValue();
@@ -710,21 +715,23 @@ public class Products extends Tab {
 		// object type
 		String objectType = objectsInput.getValue(objectsInput
 				.getSelectedIndex());
+		logger.log(Level.FINEST, "objectType = " + objectType);
 		// set object type filter if set to something specific
 		if (!objectType.equals("-1")) {
 			tablemodel.addFilter("objectType", objectType);
-		}
+		} 
 
 		// status
 		String status = statusInput.getValue(statusInput
 				.getSelectedIndex());
+		logger.log(Level.FINEST, "status = " + status);
 		// set status if set to something specific
 		if (!status.equals("-1")) {
 			tablemodel.addFilter("status", status);
-		}
-
-		// go back to first page and force update
-		get().getPagingScrollTable().gotoPage(0, true);
+		} 
+		
+		get().reloadData();		
+		logger.log(Level.FINEST, "refreshTable.....");
 	}
 
 	/**
@@ -812,6 +819,8 @@ public class Products extends Tab {
 		// add a formatter
 		final FlexCellFormatter formatter = this.layout.getFlexCellFormatter();
 		formatter.setWidth(1, 0, "100%");
+		
+		logger.log(Level.FINEST, "initTable....");
 	}
 
 	private void initAssociationTable() {
@@ -932,6 +941,8 @@ public class Products extends Tab {
 						get().associationCloseButton.setFocus(true);
 					}
 				});
+		
+		logger.log(Level.FINEST, "initAssociationTable....");
 	}
 	
 	public void getProductDetail(int rowIndex) {
@@ -1110,6 +1121,9 @@ public class Products extends Tab {
 		this.pagingPanel.add(showRecordsInput);
 		
 		this.layout.setWidget(2, 0, this.pagingPanel);
+		
+		//logger.log(Level.FINEST, "Current page box value = " + pagingOptions.getPageCount());
+		logger.log(Level.FINEST, "initPaging...");
 	}
 
 	/**
@@ -1117,8 +1131,10 @@ public class Products extends Tab {
 	 */
 	protected void onModuleLoaded() {
 		// set page to first page, triggering call for data
-		this.cachedTableModel.clearCache();
-		this.pagingScrollTable.gotoFirstPage();
+		//this.cachedTableModel.clearCache();
+		get().getPagingScrollTable().gotoFirstPage();
+		
+		logger.log(Level.FINEST, "onModuleLoaded...");
 	}
 
 	/**
@@ -1288,5 +1304,6 @@ public class Products extends Tab {
 	}
 	
 	public void onShow() {	
+		onModuleLoaded();
 	}
 }
