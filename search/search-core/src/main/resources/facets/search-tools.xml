@@ -760,7 +760,7 @@
     <field name="instrument_host_id">MGS</field>
     <field name="instrument_host_id">MRO</field>
     <field name="instrument_host_id">ODY</field>
-    <field name="instrument_host_id">VO1
+    <field name="instrument_host_id">VO1</field>
     <field name="instrument_host_id">VO2</field>
     <field name="instrument_id">CRISM</field>
     <field name="instrument_id">CTX</field>
