@@ -66,7 +66,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       </subsection>
 
       <subsection name="cURL Utility">
-        <p>Although it is generally a useful tool for interacting with the Registry Service, the <a href="http://curl.haxx.se/" target="_blank">cURL</a> command-line application is required by the <i>RegistryConfig</i> script for populating the service with the supported object types. See the <a href="#Configuration">Configuration</a> section for more information on configuring the service. If <i>cURL</i> is not installed on the local machine but <i>Wget</i> is, see the <a href="../operate/index-wget.html">Using Wget</a> section for converting <i>cURL</i> commands to <i>Wget</i> commands. If viewing this document in PDF form, see the appendix for details.
+        <p>Although it is generally a useful tool for interacting with the Registry Service, the <a href="http://curl.haxx.se/" target="_blank">cURL</a> command-line application is required by the <i>RegistryConfig</i> script for populating the service with the supported object types. See the <a href="#Configuring_the_Application">Configuration</a> section for more information on configuring the service. If <i>cURL</i> is not installed on the local machine but <i>Wget</i> is, see the <a href="../operate/index-wget.html">Using Wget</a> section for converting <i>cURL</i> commands to <i>Wget</i> commands.
         </p>
       </subsection>
 
