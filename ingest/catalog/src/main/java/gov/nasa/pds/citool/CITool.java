@@ -207,67 +207,73 @@ public class CITool {
         }
 
         try {
-            if (toolMode.equals(Mode.COMPARE)) {
-                if (targets.size() == 2) {
-                    oldTarget = targets.get(0);
-                    newTarget = targets.get(1);
-                    //Check for valid targets
-                    oldTarget.toURL().openStream().close();
-                    newTarget.toURL().openStream().close();
-                } else {
-                    throw new InvalidOptionException("2 Targets must be "
-                            + "specified when running in compare mode");
-                }
-            } else if (toolMode.equals((Mode.INGEST))) {
-            	// pds.registry & pds.security.keystore system properties are required.
-                // username and password are required for ingest mode
-                if (targets.size() == 1) {
-                    target = targets.get(0);
-                } else {
-                    throw new InvalidOptionException("No target specified.");
-                }
-                registryUrl = System.getProperty("pds.registry");
-                if (registryUrl == null) {
-                	throw new Exception("\'pds.registry\' java property is not set.");
-                }               
-                keystore = System.getProperty("pds.security.keystore");
-                if ((username!=null) && (password!=null) && registryUrl.startsWith("https")) {
-                	if (keystore == null) {
-                		throw new Exception("\'pds.security.keystore\' java property not set.");
-                	}
-                	else {
-                		if (!new File(keystore).exists()) {
-                			throw new Exception("Keystore file does not exist: " + keystore);
-                		}
-                		
-                		if (keystore_pass == null)
-                			keystore_pass = KEYSTORE_PASSWORD;
-                		securityContext = new SecurityContext(keystore, keystore_pass,
-                				keystore, keystore_pass);
-                	}
-                }
-                if (transportUrl==null || storageUrl==null)
-                	throw new InvalidOptionException("-s/-T must be specified "
-                			+ "when running in ingest mode.");
-            } else if (toolMode.equals(Mode.VALIDATE)) {
-                if (dictionaries.isEmpty()) {
-                    throw new InvalidOptionException("-d must be specified "
-                            + "when running in validate mode.");
-                }
-                if (targets.size() == 0) {
-                   throw new InvalidOptionException("No target specified.");
-                } else if (targets.size() == 1) {
-                    target = targets.get(0);
-                } else {
-                    throw new InvalidOptionException("Only 1 target should be specified.");
-                }
-                if (allrefs != null) {
-                    allrefs.openStream().close();
-                }
-            } else {
-                throw new InvalidOptionException("No mode specified. 'm' "
+        	if (toolMode == null) {
+        		throw new InvalidOptionException("No mode specified. 'm' "
                         + "flag must be specified.");
-            }
+        	} 
+        	else {
+        		if (toolMode.equals(Mode.COMPARE)) {
+        			if (targets.size() == 2) {
+        				oldTarget = targets.get(0);
+        				newTarget = targets.get(1);
+        				//Check for valid targets
+        				oldTarget.toURL().openStream().close();
+        				newTarget.toURL().openStream().close();
+        			} else {
+        				throw new InvalidOptionException("2 Targets must be "
+        						+ "specified when running in compare mode");
+        			}
+        		} else if (toolMode.equals((Mode.INGEST))) {
+        			// pds.registry & pds.security.keystore system properties are required.
+        			// username and password are required for ingest mode
+        			if (targets.size() == 1) {
+        				target = targets.get(0);
+        			} else {
+        				throw new InvalidOptionException("No target specified.");
+        			}
+        			registryUrl = System.getProperty("pds.registry");
+        			if (registryUrl == null) {
+        				throw new Exception("\'pds.registry\' java property is not set.");
+        			}               
+        			keystore = System.getProperty("pds.security.keystore");
+        			if ((username!=null) && (password!=null) && registryUrl.startsWith("https")) {
+        				if (keystore == null) {
+        					throw new Exception("\'pds.security.keystore\' java property not set.");
+        				}
+        				else {
+        					if (!new File(keystore).exists()) {
+        						throw new Exception("Keystore file does not exist: " + keystore);
+        					}
+
+        					if (keystore_pass == null)
+        						keystore_pass = KEYSTORE_PASSWORD;
+        					securityContext = new SecurityContext(keystore, keystore_pass,
+        							keystore, keystore_pass);
+        				}
+        			}
+        			if (transportUrl==null || storageUrl==null)
+        				throw new InvalidOptionException("-s/-T must be specified "
+        						+ "when running in ingest mode.");
+        		} else if (toolMode.equals(Mode.VALIDATE)) {
+        			if (dictionaries.isEmpty()) {
+        				throw new InvalidOptionException("-d must be specified "
+        						+ "when running in validate mode.");
+        			}
+        			if (targets.size() == 0) {
+        				throw new InvalidOptionException("No target specified.");
+        			} else if (targets.size() == 1) {
+        				target = targets.get(0);
+        			} else {
+        				throw new InvalidOptionException("Only 1 target should be specified.");
+        			}
+        			if (allrefs != null) {
+        				allrefs.openStream().close();
+        			}
+        		} else {
+        			throw new InvalidOptionException("No mode specified. 'm' "
+        					+ "flag must be specified.");
+        		}
+        	}
             setupReport();
             printReportHeader();
         } catch(MalformedURLException mu) {
