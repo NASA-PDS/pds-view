@@ -24,6 +24,18 @@
 
   <body>
     <release version="0.1.0" date="TBD" description="TBD">
+      <action dev="mcayanan" type="add">
+        Added the capability to register data sets from the PSA Registry.
+      </action>
+      <action dev="mcayanan" type="add">
+        Added support for handling of multiple values given in the TARGET_NAME, INSTRUMENT_NAME, and INSTRUMENT_ID fields in the PSA Registry.
+      </action>
+      <action dev="mcayanan" type="add">
+        Added support for registering associated resource products for every product registration.
+      </action>
+      <action dev="mcayanan" type="fix" issue="PDS-93">
+        Fixed to replace illegal URN characters with '-' characters in the data set ID when forming the logical identifier.
+      </action>
     </release>
   </body>
 </document>
