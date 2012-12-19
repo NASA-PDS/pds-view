@@ -137,9 +137,23 @@ public class HarvesterPdap {
         while (rseq.next()) {
           Metadata datasetMet = new Metadata();
           for (int i = 0; i < table.getColumnCount(); i++) {
+            String columnName = table.getColumnInfo(i).getUCD();
             if (rseq.getCell(i) != null) {
-              datasetMet.addMetadata(table.getColumnInfo(i).getUCD(),
-                  rseq.getCell(i).toString());
+              String cell = rseq.getCell(i).toString();
+              log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "Extracted Key: "
+                  + columnName));
+              log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "Extracted Value: "
+                  + cell));
+              if (columnName.equals("TARGET_NAME")
+                  || columnName.equals("INSTRUMENT_NAME")
+                  || columnName.equals("INSTRUMENT_ID")) {
+                String[] tokens = (cell + ",").split(",");
+                for (String token : Arrays.asList(tokens)) {
+                  datasetMet.addMetadata(columnName, token.trim());
+                }
+              } else {
+                datasetMet.addMetadata(columnName, cell);
+              }
             }
           }
           String datasetId = datasetMet.getMetadata("DATA_SET_ID");
@@ -283,7 +297,11 @@ public class HarvesterPdap {
     elementsToGetCopy.addAll(elementsToGet);
     for (String element : elementsToGet) {
       if (datasetMet.containsKey(element)) {
-        extrinsicMet.addMetadata(element, datasetMet.getMetadata(element));
+        if (datasetMet.isMultiValued(element)) {
+          extrinsicMet.addMetadata(element, datasetMet.getAllMetadata(element));
+        } else {
+          extrinsicMet.addMetadata(element, datasetMet.getMetadata(element));
+        }
         elementsToGetCopy.remove(element);
       }
     }
