@@ -101,7 +101,7 @@ else {
    lid = request.getParameter("Identifier");
    lid = lid.toUpperCase();
    // just for testing...
-   lid = "urn:nasa:pds:node." + lid;
+   lid = "urn:nasa:pds:context_pds3:node:node." + lid;
    out.println("lid = " + lid);
 
    // TODO: if the Identifier contains invalid chars...need to replace or throws exceptions - need to look the harvest tool

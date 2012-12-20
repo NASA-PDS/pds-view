@@ -94,7 +94,7 @@ else {
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);   
    //out.println("instrumentId = " + instrumentId +  "instrument_host_id = " + request.getParameter("INSTRUMENT_HOST_ID"));
 
-   String instLid = "urn:nasa:pds:instrument." + instrumentId;
+   String instLid = "urn:nasa:pds:context_pds3:instrument:instrument." + instrumentId;
    
    // INSTRUMENT_HOST_ID is optional
    if (cleanParam(request.getParameter("INSTRUMENT_HOST_ID")) != null) {

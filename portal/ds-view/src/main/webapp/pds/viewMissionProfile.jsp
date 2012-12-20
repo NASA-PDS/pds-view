@@ -86,7 +86,7 @@ else {
    String missionName = request.getParameter("MISSION_NAME");
    missionName = missionName.toUpperCase();
 
-   String missionLid = "urn:nasa:pds:mission." + missionName;
+   String missionLid = "urn:nasa:pds:context_pds3:investigation:mission." + missionName;
    missionLid = missionLid.replace(' ', '_');
    
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);

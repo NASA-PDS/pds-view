@@ -7,7 +7,7 @@
 <META content="This website serves as a mechanism for searching the PDS planetary archives." name=description>
 <link href="/ds-view/pds/css/pds_style.css" rel="stylesheet" type="text/css">
 <%@ page language="java" session="true" isThreadSafe="true" info="PDS Search" isErrorPage="false"
-contentType="text/html; charset=ISO-8859-1" import="javax.servlet.http.*, jpl.pds.util.*, jpl.pds.beans.*, java.io.*, java.sql.*, java.util.*" %>
+contentType="text/html; charset=ISO-8859-1" import="javax.servlet.http.*, java.io.*, java.sql.*, java.util.*" %>
 
 <script language="JavaScript"
 src="<%=pdshome%>js/lastMod.js"></script>
@@ -99,10 +99,7 @@ function changeSearchSpec()
 
    <%@ include file="/pds/header.html" %>
    <%@ include file="/pds/main_menu.html" %>
-
-   <div id="submenu">
-   <div class="clear"></div>
-   </div>
+   <%@ include file="/pds/data_menu.html" %>
 
 <!-- Main content -->
 <div id="content">

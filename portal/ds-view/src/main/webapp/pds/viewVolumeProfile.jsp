@@ -96,7 +96,7 @@ else {
    }
    
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
-   String volumeLid = "urn:nasa:pds:volume." + volumeId;
+   String volumeLid = "urn:nasa:pds:context_pds3:volume:volume." + volumeId;
 
    ExtrinsicObject volumeObj = null;
    if (volumeSetId == null) {

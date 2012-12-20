@@ -24,8 +24,9 @@
 
    <%@ include file="/pds/header.html" %>
    <%@ include file="/pds/main_menu.html" %>
+   <%@ include file="/pds/data_menu.html" %>
 
-   <div id="submenu">
+   <!--div id="submenu">
    <div id="submenu_data">
    <h2 class="nonvisual">Menu: PDS Data</h2>
    <ul>
@@ -37,7 +38,7 @@
    </ul>
    </div>
    <div class="clear"></div>
-   </div>
+   </div-->
 
 <!-- Main content -->
 <div id="content">
@@ -179,7 +180,7 @@ else {
 
    String tmpDsid = dsid.replaceAll("%2F", "-");
    //out.println("dsid = " + dsid + "    dsid_lower = " + dsid_lower);
-   ExtrinsicObject product = searchRegistry.getExtrinsic("urn:nasa:pds:data_set."+tmpDsid);
+   ExtrinsicObject product = searchRegistry.getExtrinsic("urn:nasa:pds:context_pds3:data_set:data_set."+tmpDsid);
 
    if (product==null) {
 %>

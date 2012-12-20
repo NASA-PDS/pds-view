@@ -225,7 +225,7 @@ if (! queryString.equals("")) {
            for (Iterator i = curList.iterator(); i.hasNext(); c++) {
               String dsid = (String)i.next();
               String tmpDsid = dsid.replaceAll("/", "-");
-              ExtrinsicObject dsObj = searchRegistry.getExtrinsic("urn:nasa:pds:data_set."+tmpDsid);
+              ExtrinsicObject dsObj = searchRegistry.getExtrinsic("urn:nasa:pds:context_pds3:data_set:data_set."+tmpDsid);
                          
               String dsdesc = searchRegistry.getSlotValues(dsObj, "data_set_terse_description").get(0);             
  	          String dsname = searchRegistry.getSlotValues(dsObj, "data_set_name").get(0);

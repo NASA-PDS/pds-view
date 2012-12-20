@@ -46,8 +46,9 @@ public String cleanParam(String str) {
 
    <%@ include file="/pds/header.html" %>
    <%@ include file="/pds/main_menu.html" %>
+   <%@ include file="/pds/data_menu.html" %>
 
-   <div id="submenu">
+   <!--div id="submenu">
    <div id="submenu_data">
    <h2 class="nonvisual">Menu: PDS Data</h2>
    <ul>
@@ -59,7 +60,7 @@ public String cleanParam(String str) {
    </ul>
    </div>
    <div class="clear"></div>
-   </div>
+   </div-->
 
 <!-- Main content -->
 <div id="content">
@@ -88,7 +89,7 @@ else {
    String hostId = request.getParameter("INSTRUMENT_HOST_ID");
    hostId = hostId.toUpperCase();
 
-   String hostLid = "urn:nasa:pds:instrument_host." + hostId;
+   String hostLid = "urn:nasa:pds:context_pds3:instrument_host:instrument_host." + hostId;
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
    ExtrinsicObject hostObj = searchRegistry.getExtrinsic(hostLid);
    

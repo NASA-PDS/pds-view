@@ -86,7 +86,7 @@ else {
    targetId = targetId.toUpperCase();
 
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
-   String targetLid = "urn:nasa:pds:target." + targetId;
+   String targetLid = "urn:nasa:pds:context_pds3:target:target." + targetId;
    
    //out.println("targetLid = " + targetLid);
    ExtrinsicObject targetObj = searchRegistry.getExtrinsic(targetLid);
