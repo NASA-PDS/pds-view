@@ -85,7 +85,8 @@ if (cleanParam(request.getParameter("MISSION_NAME"))==null) {
 else {
    String missionName = request.getParameter("MISSION_NAME");
    missionName = missionName.toUpperCase();
-
+   missionName = missionName.replace('/', '-');
+   
    String missionLid = "urn:nasa:pds:context_pds3:investigation:mission." + missionName;
    missionLid = missionLid.replace(' ', '_');
    
