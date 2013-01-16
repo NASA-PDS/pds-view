@@ -201,7 +201,7 @@ else {
    else { 
    
       // for debugging, should comment out this if block  
-      //out.println("<br>guid = " + product.getGuid());
+      out.println("<br>guid = " + product.getGuid());
       
       //adding target type value so that we know where to link the user 
       //for target information  ArrayList targetType = new ArrayList(); ?????
@@ -245,19 +245,27 @@ else {
                         <td>
     	                   <%
     		               List<String> rvalues = searchRegistry.getResourceRefs(product);
-    		               String resname, reslink;
+    		               String resname="", reslink="";
        	                   String refLid = rvalues.get(0);
        	                   if (refLid!=null) {
                     	      refLid = refLid.substring(0, refLid.indexOf("::"));
-         	                  ExtrinsicObject resource1 = searchRegistry.getExtrinsic(refLid);
-         
-         	                  resname = searchRegistry.getSlotValues(resource1, "resource_name").get(0);
-         	                  reslink = searchRegistry.getSlotValues(resource1, "resource_url").get(0); 
-         	               
+         	                  ExtrinsicObject resource1 = searchRegistry.getExtrinsic(refLid);   
+         	                  if (resource1!=null) {  
+         	                     resname = searchRegistry.getSlotValues(resource1, "resource_name").get(0);
+                                 reslink = searchRegistry.getSlotValues(resource1, "resource_url").get(0);
+                                 /*    
+                                 List<String> results = searchRegistry.getSlotValues(resource1, "resource_name");
+                                 if (results.size()>0)
+                                    resname = results.get(0);
+                                 results = searchRegistry.getSlotValues(resource1, "resource_url");
+                                 if (results.size()>0)
+                                    reslink = results.get(0);    
+                                 */      	                        	               
                            %>
                            <a href=<%=constructURL(reslink, dsid)%> target="_new">Search for Products with the <%=resname%></a> 
                            <%
-                           } %>   
+                             } // end if (resource1!=null)
+                           }%>   
                         </td>
                      </tr>
 
@@ -286,7 +294,8 @@ else {
     	       	              String lid = tmpValue.substring(0, tmpValue.indexOf("::"));
     	       	              ExtrinsicObject msnObj = searchRegistry.getExtrinsic(lid);
     	       	              //out.println(searchRegistry.getSlotValues(msnObj, "mission_name").get(0).toUpperCase() + "<br>");
-    	       	              val = searchRegistry.getSlotValues(msnObj, "mission_name").get(0).toUpperCase(); 
+    	       	              if (msnObj!=null) 
+    	       	              	val = searchRegistry.getSlotValues(msnObj, "mission_name").get(0).toUpperCase(); 
     	       	           %>
     	       	           <a href="/ds-view/pds/viewMissionProfile.jsp?MISSION_NAME=<%=val%>" target="_blank"><%=val%></a><br>  	       	
                          <%} // end for   %>
@@ -311,7 +320,8 @@ else {
     	   	                  String lid = tmpValue.substring(0, tmpValue.indexOf("::"));
     	                      ExtrinsicObject insthostObj = searchRegistry.getExtrinsic(lid);
     	                      //out.println(searchRegistry.getSlotValues(insthostObj, "instrument_host_name").get(0).toUpperCase() + "<br>"); 
-    	                      val = searchRegistry.getSlotValues(insthostObj, "instrument_host_id").get(0).toUpperCase();
+ 							  if (insthostObj!=null) 
+    	                         val = searchRegistry.getSlotValues(insthostObj, "instrument_host_id").get(0).toUpperCase();
     	                   %>
     	                   <a href="/ds-view/pds/viewHostProfile.jsp?INSTRUMENT_HOST_ID=<%=val%>" target="_blank"><%=val%></a><br>  	       	
                          <%} // end for %>    	
@@ -329,7 +339,8 @@ else {
     	   		              //out.println("lid = " + lid);
     	    	              ExtrinsicObject instObj = searchRegistry.getExtrinsic(lid);
     	    	              //out.println(searchRegistry.getSlotValues(instObj, "instrument_id").get(0).toUpperCase() + "<br>");
-    	                      val = searchRegistry.getSlotValues(instObj, "instrument_id").get(0).toUpperCase(); 
+    	    	              if (instObj!=null) 
+    	                         val = searchRegistry.getSlotValues(instObj, "instrument_id").get(0).toUpperCase(); 
     	                   %>
     	                   <a href="/ds-view/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID=<%=val%>" target="_blank"><%=val%></a><br>  	       	
                          <%}  // end for %>    	
@@ -347,7 +358,8 @@ else {
     	   		              String lid = tmpValue.substring(0, tmpValue.indexOf("::"));
     	   		              //out.println("lid = " + lid);
     	    	              ExtrinsicObject targetObj = searchRegistry.getExtrinsic(lid);
-    	    	              val = searchRegistry.getSlotValues(targetObj, "target_name").get(0).toUpperCase();
+    	    	              if (targetObj!=null) 
+    	    	                 val = searchRegistry.getSlotValues(targetObj, "target_name").get(0).toUpperCase();
     	    	              //out.println(searchRegistry.getSlotValues(targetObj, "target_name").get(0).toUpperCase() + "<br>");
     	    	           %>
     	    	           <a href="/ds-view/pds/viewTargetProfile.jsp?TARGET_NAME=<%=val%>" target="_blank"><%=val%></a><br>
@@ -368,11 +380,21 @@ else {
                                  ExtrinsicObject resource = searchRegistry.getExtrinsic(refLid);
                                  //out.println("resource_name = " + searchRegistry.getSlotValues(resource, "resource_name").get(0) + "<br>");
                                  //out.println("resource_url = " + searchRegistry.getSlotValues(resource, "resource_url").get(0) + "<br>");
-                                 resname = searchRegistry.getSlotValues(resource, "resource_name").get(0);
-                                 reslink = searchRegistry.getSlotValues(resource, "resource_url").get(0); 
+                                 if (resource!=null) {
+                                 /*
+                                 	List<String> results = searchRegistry.getSlotValues(resource, "resource_name");
+                                 	if (results.size()>0)
+                                 		resname = results.get(0);
+                                 	results = searchRegistry.getSlotValues(resource, "resource_url");
+                                 	if (results.size()>0)
+                                 		reslink = results.get(0); 
+                                 */
+                                    resname = searchRegistry.getSlotValues(resource, "resource_name").get(0);
+                                    reslink = searchRegistry.getSlotValues(resource, "resource_url").get(0);
                               %>
                               <a href="<%=constructURL(reslink, dsid)%>" target="_new"><%=resname%></a><br>
-                         <%   }
+                         <%      }
+                              }
                            } %>
                         </td>
                      </tr>

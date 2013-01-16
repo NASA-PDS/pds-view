@@ -165,14 +165,16 @@ else {
                 String lid = msnValue.substring(0, msnValue.indexOf("::"));
     	       	ExtrinsicObject msnObj = searchRegistry.getExtrinsic(lid);   	       		       	
     	        //out.println(searchRegistry.getSlotValues(msnObj, tmpValue).get(0).toUpperCase() + "<br>"); 
-    	       	val = searchRegistry.getSlotValues(msnObj, tmpValue).get(0).toUpperCase();	
-    	       	if (tmpValue.equals("mission_name")) { 
+    	        if (msnObj!=null) {
+    	       	   val = searchRegistry.getSlotValues(msnObj, tmpValue).get(0).toUpperCase();	
+    	       	   if (tmpValue.equals("mission_name")) { 
     	       	%>
     	       	   <a href="/ds-view/pds/viewMissionProfile.jsp?MISSION_NAME=<%=val%>" target="_blank"><%=val%></a><br> 
     	       	<%
-    	       	}
-    	       	else {
-    	       	   out.println(val+ "<br>");
+    	       	   }
+    	       	   else {
+    	       	      out.println(val+ "<br>");
+    	       	   }
     	       	}
              } 
              else if (tmpValue.startsWith("instrument_host_")) {
@@ -181,14 +183,16 @@ else {
     	 		   String aValue = (String) svalues.get(j);
     	   	       String lid = aValue.substring(0, aValue.indexOf("::"));
     	    	   ExtrinsicObject insthostObj = searchRegistry.getExtrinsic(lid);
-    	    	   val = searchRegistry.getSlotValues(insthostObj, tmpValue).get(0).toUpperCase();
-    	    	   if (tmpValue.equals("instrument_host_id")) {
+    	    	   if (insthostObj!=null) {
+    	    	      val = searchRegistry.getSlotValues(insthostObj, tmpValue).get(0).toUpperCase();
+    	    	      if (tmpValue.equals("instrument_host_id")) {
     	    	   %>
     	    	   <a href="/ds-view/pds/viewHostProfile.jsp?INSTRUMENT_HOST_ID=<%=val%>" target="_blank"><%=val%></a><br> 
     	    	   <%
-    	    	   }	
-    	    	   else {
-    	              out.println(val + "<br>");
+    	    	      }	
+    	    	      else {
+    	                 out.println(val + "<br>");
+    	              }
     	           }
     	        }
              }
@@ -198,22 +202,25 @@ else {
     	 		   String aValue = (String) svalues.get(j);
     	   		   String lid = aValue.substring(0, aValue.indexOf("::"));
     	    	   ExtrinsicObject instObj = searchRegistry.getExtrinsic(lid);
-    	    	   val = searchRegistry.getSlotValues(instObj, tmpValue).get(0).toUpperCase();
-    	    	   if (tmpValue.equals("instrument_id")) {
+    	    	   if (instObj!=null) {
+    	    	      val = searchRegistry.getSlotValues(instObj, tmpValue).get(0).toUpperCase();
+    	    	      if (tmpValue.equals("instrument_id")) {
     	    	   %>
     	    	   <a href="/ds-view/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID=<%=val%>" target="_blank"><%=val%></a><br>
     	    	   <%
-    	    	   }
-    	    	   else {
-    	        	  out.println(val + "<br>");
-    	           }
+    	    	      }
+    	    	      else {
+    	        	     out.println(val + "<br>");
+    	              }
+    	           } // end if (instObj!=null)
     	        }
              }
              else if (tmpValue.startsWith("target_")) {
                 String targetValue = searchRegistry.getTargetName(dsObj).get(0);
                 String lid = targetValue.substring(0, targetValue.indexOf("::"));
-    	       	ExtrinsicObject targetObj = searchRegistry.getExtrinsic(lid);   	       		       	
-    	       	out.println(searchRegistry.getSlotValues(targetObj, tmpValue).get(0).toUpperCase() + "<br>"); 	
+    	       	ExtrinsicObject targetObj = searchRegistry.getExtrinsic(lid);   	
+    	       	if (targetObj!=null)        		       	
+    	           out.println(searchRegistry.getSlotValues(targetObj, tmpValue).get(0).toUpperCase() + "<br>"); 	
              }
              else if (tmpValue.equals("resource_link") ||
                       tmpValue.equals("resources")) {
@@ -223,7 +230,7 @@ else {
          	    //out.println("refLid = " + refLid + "<br>");
          	    ExtrinsicObject resource1 = searchRegistry.getExtrinsic(refLid);
          	    if (resource1!=null) {
-         			String resname, reslink;
+         			String resname="", reslink="";
                 	if (tmpValue.equals("resource_link")) {
          	       	//resname = searchRegistry.getSlotValues(resource1, "resource_name").get(0);
          	       	reslink = searchRegistry.getSlotValues(resource1, "resource_url").get(0);
@@ -239,8 +246,10 @@ else {
          			  ExtrinsicObject resource = searchRegistry.getExtrinsic(refLid);
          			  //out.println("resource_name = " + searchRegistry.getSlotValues(resource, "resource_name").get(0) + "<br>");
          			  //out.println("resource_url = " + searchRegistry.getSlotValues(resource, "resource_url").get(0) + "<br>");
-         			  resname = searchRegistry.getSlotValues(resource, "resource_name").get(0);
-         			  reslink = searchRegistry.getSlotValues(resource, "resource_url").get(0); 
+         			  if (resource!=null) {
+         			     resname = searchRegistry.getSlotValues(resource, "resource_name").get(0);
+         			     reslink = searchRegistry.getSlotValues(resource, "resource_url").get(0); 
+         			  }
          		      %>
          			  <li><a href=<%=constructURL(reslink, dsid)%> target="_new"><%=resname%></a><br>
          			  <%
@@ -276,8 +285,10 @@ else {
     	    	   	        String tmpVal = svalues2.get(0);
     	    	   	  	    String personLid = tmpVal.substring(0, tmpVal.indexOf("::"));
     	    	   	  	    ExtrinsicObject personObj = searchRegistry.getExtrinsic(personLid);
-    	           	        String tmpVal2 = searchRegistry.getSlotValues(personObj, tmpValue).get(0).toUpperCase();
-    	    	  	        out.println(tmpVal2 + "<br>");
+    	    	   	  	    if (personObj!=null) {
+    	           	           String tmpVal2 = searchRegistry.getSlotValues(personObj, tmpValue).get(0).toUpperCase();
+    	    	  	           out.println(tmpVal2 + "<br>");
+    	    	  	        }
     	    	         }
     	    	      }
     	           }
