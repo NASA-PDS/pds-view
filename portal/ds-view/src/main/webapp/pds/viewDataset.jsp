@@ -201,7 +201,7 @@ else {
    else { 
    
       // for debugging, should comment out this if block  
-      out.println("<br>guid = " + product.getGuid());
+      //out.println("<br>guid = " + product.getGuid());
       
       //adding target type value so that we know where to link the user 
       //for target information  ArrayList targetType = new ArrayList(); ?????
@@ -381,14 +381,6 @@ else {
                                  //out.println("resource_name = " + searchRegistry.getSlotValues(resource, "resource_name").get(0) + "<br>");
                                  //out.println("resource_url = " + searchRegistry.getSlotValues(resource, "resource_url").get(0) + "<br>");
                                  if (resource!=null) {
-                                 /*
-                                 	List<String> results = searchRegistry.getSlotValues(resource, "resource_name");
-                                 	if (results.size()>0)
-                                 		resname = results.get(0);
-                                 	results = searchRegistry.getSlotValues(resource, "resource_url");
-                                 	if (results.size()>0)
-                                 		reslink = results.get(0); 
-                                 */
                                     resname = searchRegistry.getSlotValues(resource, "resource_name").get(0);
                                     reslink = searchRegistry.getSlotValues(resource, "resource_url").get(0);
                               %>
