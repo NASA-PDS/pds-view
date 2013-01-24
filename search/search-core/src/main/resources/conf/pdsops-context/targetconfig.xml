@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product>
+	<object_type>Product_Target_PDS3</object_type>
+	
+	<!-- Fields displayed in default Search Service results -->
+	<field>
+		<name>identifier</name>
+		<type>attribute</type>
+		<value>lid</value>
+	</field>
+	<field>
+		<name>title</name>
+		<type>attribute</type>
+		<value>name</value>
+	</field>
+	<field>
+		<name>description</name>
+		<type>slot</type>
+		<value>target_description</value>
+	</field>
+	<field>
+		<name>resLocation</name>
+		<type>substring</type>
+		<value>http://pds.nasa.gov/ds-view/pds/viewTargetProfile.jsp?TARGET_NAME={target_name}
+		</value>
+	</field>
+	
+	<!-- Product-specific fields -->
+	<field>
+		<name>primary_body_name</name>
+		<type>slot</type>
+		<value>target_primary_body_name</value>
+	</field>
+	<field>
+		<name>target_desc</name>
+		<type>slot</type>
+		<value>target_description</value>
+	</field>
+	<field>
+		<name>target_name</name>
+		<type>slot</type>
+		<value>target_name</value>
+	</field>
+	<field>
+		<name>target_type</name>
+		<type>slot</type>
+		<value>target_type</value>
+	</field>
+	
+	<!-- Included from old search, leave in for now -->
+	<field>
+		<name>format</name>
+		<type>out</type>
+		<value>XML</value>
+	</field>
+	<field>
+		<name>resContext</name>
+		<type>out</type>
+		<value>NASA.PDS</value>
+	</field>
+	<field>
+		<name>language</name>
+		<type>out</type>
+		<value>en</value>
+	</field>
+	<field>
+		<name>resClass</name>
+		<type>out</type>
+		<value>metadata.target</value>
+	</field>
+	<field>
+		<name>resource_class</name>
+		<type>out</type>
+		<value>Target_Description</value>
+	</field>
+</product>
