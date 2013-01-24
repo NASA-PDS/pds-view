@@ -15,10 +15,13 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source ${DIR}/env-vars
 
+PSA_FLAG=0
+
 if [ $# -eq 3 ]; then
     SEARCH_HOME=${1}	
     SEARCH_SERVICE_URL=${2}
     REGISTRY_URL=${3}
+	PSA_FLAG=${4}
 elif [ "${SEARCH_HOME}" == "" ] || [ "${SEARCH_SERVICE_URL}" == "" ] || [ "${REGISTRY_URL}" == "" ]; then
     echo
     echo "Usage: `basename $0` <search-home> <search-service-url> <registry-url>"

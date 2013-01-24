@@ -9,13 +9,16 @@ SEARCH_SERVICE_URL=http://localhost:8080/search-service
 # URL of the Registry Service instance.
 REGISTRY_URL=http://localhost:8080/registry
 
+# Flag to include PSA Data in index
+PSA_FLAG=0
+
 ####################################################################################
 
-## The following global variables are for copying the index to operational machines.
+## The following global variables are for copying the index between operational machines
 ## Not required for all installations
 
 # Source machine name to where initial index was generated
-SOURCE=pdsbeta.jpl.nasa.gov
+SOURCE=pdssrv2.jpl.nasa.gov
 
 # Username to connect source machine
 SOURCE_USER=root
