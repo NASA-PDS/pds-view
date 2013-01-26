@@ -545,9 +545,18 @@
    <field name="identifier" type="string" indexed="true" stored="true" required="true" />
    
    <field name="abstract_text" type="text" indexed="false" stored="true" />
+   <field name="agency_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="archive_status" type="text_lc" indexed="true" stored="true" />
+   <field name="bundle_type" type="text" indexed="true" stored="true" multiValued="false" />
+   <field name="bundle_description" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="citation_author_list" type="text" indexed="false" stored="true" multiValued="false" />
    <field name="citation_desc" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="citation_editor_list" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="citation_publication_year" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="collection_name" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="collection_type" type="text" indexed="true" stored="true" multiValued="true" />
    <field name="confidence_level_note" type="text" indexed="false" stored="true" />
+   <field name="data_class" type="text_lc" indexed="true" stored="true" multiValued="false" />
    <field name="data_object_type" type="text_lc" indexed="true" stored="true" multiValued="true"/>
    <field name="data_set_desc" type="text" indexed="false" stored="true" />
    <field name="data_set_id" type="text_lc" indexed="true" stored="true" />
@@ -557,14 +566,25 @@
    <field name="description" type="text" indexed="false" stored="true" />
    <field name="format" type="string" indexed="false" stored="true" />
    <field name="full_name" type="text" indexed="true" stored="true" />
-   <field name="host_desc" type="text" indexed="false" stored="true" />
    <field name="instrument_desc" type="text" indexed="false" stored="true" />
    <field name="instrument_host_id" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_host_desc" type="text" indexed="false" stored="true" />
+   <field name="instrument_host_naif_id" type="text_lc" indexed="false" stored="true" multiValued="false" />
    <field name="instrument_host_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_host_serial_number" type="text" indexed="false" stored="true" multiValued="false" />
    <field name="instrument_host_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_host_version_id" type="text_lc" indexed="false" stored="true" multiValued="false" />
    <field name="instrument_id" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_model_id" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="instrument_naif_id" type="text" indexed="false" stored="true" multiValued="false" />
    <field name="instrument_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_serial_number" type="text" indexed="false" stored="true" multiValued="false" />
    <field name="instrument_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="investigation_description" type="text" indexed="true" stored="true" multiValued="false" />
+   <field name="investigation_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="investigation_start_date" type="date" indexed="true" stored="true" multiValued="false" />
+   <field name="investigation_stop_date" type="date" indexed="true" stored="true" multiValued="false" />
+   <field name="investigation_type" type="text_lc" indexed="true" stored="true" multiValued="false" />
    <field name="language" type="text_lc" indexed="false" stored="true" />
    <field name="mission_desc" type="text" indexed="false" stored="false" />
    <field name="mission_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
@@ -574,6 +594,19 @@
    <field name="mission_stop_date" type="string" indexed="true" stored="true" multiValued="true" />
    <field name="node_id" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="nssdc_data_set_id" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="observation_local_mean_solar_time" type="date" indexed="false" stored="true" multiValued="false" />
+   <field name="observation_local_true_solar_time" type="date" indexed="false" stored="true" multiValued="false" />
+   <field name="observation_solar_longitude" type="float" indexed="false" stored="true" multiValued="false" />
+   <field name="observation_start_date_time" type="date" indexed="true" stored="true" multiValued="false" />
+   <field name="observation_stop_date_time" type="date" indexed="true" stored="true" multiValued="false" />
+   <field name="observing_system_name" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="observing_system_component_name" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="pds_model_version" type="text" indexed="true" stored="true" multiValued="false" />
+   <field name="primary_result_data_regime" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="primary_result_description" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="primary_result_processing_level_id" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="primary_result_purpose" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="primary_result_type" type="text" indexed="false" stored="true" multiValued="false" />
    <field name="primary_body_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="publisher" type="text" indexed="true" stored="true" />
    <field name="reference_description" type="text" indexed="false" stored="true" multiValued="true" />
@@ -594,8 +627,9 @@
    <field name="target_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="telephone_number" type="string" indexed="false" stored="true" />
    <field name="title" type="text" indexed="true" stored="true" />
+   <field name="version_name" type="text" indexed="false" stored="true" multiValued="false" />
+   
    <field name="observing-system" type="text_lc" indexed="true" stored="false" multiValued="true" />
-   <field name="agency_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
    
    <!-- A few aliases of the fields above, filled in via copyField, below -->
    <field name="target" type="text_lc" indexed="true" stored="false" multiValued="true" />
@@ -721,7 +755,7 @@
   <copyField source="description" dest="text" />
   <copyField source="data_set_id" dest="text" />
   <copyField source="data_set_desc" dest="text" />
-  <copyField source="host_desc" dest="text" />
+  <copyField source="instrument_host_desc" dest="text" />
   <copyField source="instrument_host_name" dest="text" />
   <copyField source="instrument_host_id" dest="text" />
   <copyField source="instrument_id" dest="text" />

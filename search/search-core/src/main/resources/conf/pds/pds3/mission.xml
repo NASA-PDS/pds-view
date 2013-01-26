@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <product>
-	<object_type>Product_Instrument_PDS3</object_type>
+	<object_type>Product_Mission_PDS3</object_type>
 	
 	<!-- Fields displayed in default Search Service results -->
 	<field>
@@ -16,40 +16,49 @@
 	<field>
 		<name>description</name>
 		<type>slot</type>
-		<value>instrument_description</value>
+		<value>mission_description</value>
 	</field>
 	<field>
 		<name>resLocation</name>
 		<type>substring</type>
-		<value>http://pds.nasa.gov/ds-view/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID={instrument_id}&amp;INSTRUMENT_HOST_ID={instrument_host_ref.instrument_host_id}
-		</value>
+		<value>http://pds.nasa.gov/ds-view/pds/viewMissionProfile.jsp?MISSION_NAME={mission_name}</value>
 	</field>
 	
 	<!-- Product-specific fields -->
 	<field>
-		<name>instrument_host_id</name>
-		<type>association</type>
-		<value>instrument_host_ref.instrument_host_id</value>
+		<name>mission_name</name>
+		<type>slot</type>
+		<value>mission_name</value>
 	</field>
 	<field>
-		<name>instrument_id</name>
+		<name>mission_name_or_alias</name>
 		<type>slot</type>
-		<value>instrument_id</value>
+		<value>alternate_title</value>
 	</field>
 	<field>
-		<name>instrument_name</name>
+		<name>mission_start_date</name>
 		<type>slot</type>
-		<value>instrument_name</value>
+		<value>mission_start_date</value>
 	</field>
 	<field>
-		<name>instrument_type</name>
+		<name>mission_stop_date</name>
 		<type>slot</type>
-		<value>instrument_type</value>
+		<value>mission_stop_date</value>
 	</field>
 	<field>
-		<name>instrument_desc</name>
+		<name>mission_desc</name>
 		<type>slot</type>
-		<value>instrument_description</value>
+		<value>mission_description</value>
+	</field>
+	<field>
+		<name>mission_objectives_summary</name>
+		<type>slot</type>
+		<value>mission_objectives_summary</value>
+	</field>
+	<field>
+		<name>pds_model_version</name>
+		<type>out</type>
+		<value>PDS3</value>
 	</field>
 	
 	<!-- Included from old search, leave in for now -->
@@ -76,11 +85,12 @@
 	<field>
 		<name>resClass</name>
 		<type>out</type>
-		<value>metadata.instrument</value>
+		<value>metadata.mission</value>
 	</field>
+
 	<field>
 		<name>resource_class</name>
 		<type>out</type>
-		<value>Instrument_Description</value>
+		<value>Mission_Description</value>
 	</field>
 </product>

@@ -31,8 +31,7 @@
       <ul>
         <li><a href="#Tool_Execution">Tool Execution</a></li>
 	<li><a href="#Solr_Ingestion">Solr Ingestion</a></li>
-	<li><a href="#Basic_Search_Process">Basic Search Process</a></li>
-	<li><a href="#PDS_Search_Process">PDS Search Process</a></li>
+	<li><a href="#Basic_Index_Generation">Basic Index Generation</a></li>
         <li><a href="#Common_Errors">Common Errors</a></li>
       </ul>
 
@@ -162,7 +161,7 @@ search.core.config-home = /usr/local/search-core/conf/pds
 % $SEARCH_CORE_HOME/solr-post /usr/local/search-service/pds http://localhost:8080/search-service/pds
       </source>
     </section>
-    <section name="Basic Search Script">
+    <section name="Basic Index Generation">
       <p>The initial-index shell script is included in the package in an effort to streamline the process by running the Search Core to produce the index, and the solr-post script to post the data to the Solr application.  Go to the $SEARCH_CORE_HOME/bin directory to update the environment variables and run the script:
       </p>
 

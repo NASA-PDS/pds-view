@@ -35,7 +35,7 @@ public class EndToEndTestPDSSearchCore extends TestCase {
      */
     public void testPDSEndToEnd() {
     	try {
-	    	String[] args = { "-r", TestConstants.PDS_REGISTRY_URL, 
+	    	String[] args = { "-r", TestConstants.PDS3_REGISTRY_URL, 
 	    			"-H", System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-m", "5",
 	    			"-c", System.getProperty("user.dir") + "/" + TestConstants.CONFIG_DIR_RELATIVE + "pds", };

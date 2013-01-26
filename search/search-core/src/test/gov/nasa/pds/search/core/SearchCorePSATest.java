@@ -27,10 +27,10 @@ public class SearchCorePSATest  extends TestCase {
      */
     public void testExtractorRelative() {
     	try {
-	    	String[] args = { "-r", TestConstants.PDS_REGISTRY_URL, 
+	    	String[] args = { "-r", TestConstants.PSA_REGISTRY_URL, 
 	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-m", "5", 
-	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds", };
+	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "psa/pds3", };
 	    	SearchCoreLauncher.main(args);
 		} catch (Exception e) {
 			fail("Registry Extractor with Relative Paths failed: " + e.getMessage());

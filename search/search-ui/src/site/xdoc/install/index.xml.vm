@@ -108,6 +108,7 @@ or
       <p>The Search User Interface web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, we need to set the application to allow for cross-context so it can use the various server-side includes.  We can do this by creating <i>$TOMCAT_HOME/conf/Catalina/localhost/search-ui.xml</i> containing the following text:
       </p>
       <source>
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context docBase="/usr/local/search-ui/search-ui.war" crossContext="true"&gt;
 &lt;/Context&gt;
       </source>

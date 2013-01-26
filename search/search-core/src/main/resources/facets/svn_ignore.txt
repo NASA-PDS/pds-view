@@ -1,4 +1,0 @@
-solr_index.xml_old
-search-tools.hierarchy.xml
-solr-index.hierarchy.xml
-solr_index.xml

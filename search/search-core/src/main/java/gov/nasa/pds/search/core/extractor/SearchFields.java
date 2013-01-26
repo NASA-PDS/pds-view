@@ -64,7 +64,7 @@ public class SearchFields {
 		String name;
 		String index;
 
-		NodeList columnList = this.doc.getElementsByTagName("column");
+		NodeList columnList = this.doc.getElementsByTagName("field");
 
 		this.attrNames = new ArrayList();
 		this.attrTypes = new ArrayList();

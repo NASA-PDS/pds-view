@@ -126,14 +126,14 @@ CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.pds.home=/usr/local/${project.artifactId}
 	  <li>Test installation by going to http://localhost:8080/${project.artifactId}/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
 	</ol>
       </subsection>
-      <subsection name="Upgrade To Newer Version">
+      <subsection name="Upgrade To New Version">
 	<ol>
 	  <li>Shutdown Tomcat.</li>
 	  <li>Change Search Service symbolic link to new location:
 	    <source>
 rm /usr/local/${project.artifactId}
 
-ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project-version}
+ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
 	    </source>
 	  </li>
 	  <li>Start Tomcat server.</li>

@@ -41,9 +41,14 @@
 		<value>instrument_host_type</value>
 	</field>
 	<field>
-		<name>host_desc</name>
+		<name>instrument_host_desc</name>
 		<type>slot</type>
 		<value>instrument_host_description</value>
+	</field>
+	<field>
+		<name>pds_model_version</name>
+		<type>out</type>
+		<value>PDS3</value>
 	</field>
 	
 	<!-- Included from old search, leave in for now -->

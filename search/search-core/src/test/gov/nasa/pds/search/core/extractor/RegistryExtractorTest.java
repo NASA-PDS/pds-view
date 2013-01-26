@@ -15,7 +15,7 @@ public class RegistryExtractorTest extends TestCase {
      */
     public void testExtractorAbsolute() {
     	try {
-	    	String[] args = { "-r", TestConstants.PDS_REGISTRY_URL, 
+	    	String[] args = { "-r", TestConstants.PDS3_REGISTRY_URL, 
 	    			"-H", System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-e", 
 	    			"-m", "5", 

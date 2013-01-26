@@ -32,8 +32,11 @@ public final class TestConstants {
 	/** Relative Search Service Directory Path for testing locally **/
 	public static final String SEARCH_HOME_RELATIVE="./target/test";
 	
-	/** PDS Registry URL used for testing purposes **/
-	public static final String PDS_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry";
+	/** Registry URL for PDS3 Context Products used for testing purposes **/
+	public static final String PDS3_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry";
+	
+	/** Registry URL for PDS4 Products used for testing purposes **/
+	public static final String PDS4_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry-phx";
 	
 	/** PSA Registry URL used for testing purposes **/
 	public static final String PSA_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry-psa";

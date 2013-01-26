@@ -84,7 +84,7 @@ public class SearchCoreLauncherTest extends TestCase {
 	@Ignore
     public void testExtractorAbsolute() {
     	try {
-	    	String[] args = { "-r", TestConstants.PDS_REGISTRY_URL, 
+	    	String[] args = { "-r", TestConstants.PDS3_REGISTRY_URL, 
 	    			"-H", System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-e", 
 	    			"-m", "5", 
@@ -102,7 +102,7 @@ public class SearchCoreLauncherTest extends TestCase {
     @Ignore
     public void testExtractorRelative() {
     	try {
-	    	String[] args = { "-r", TestConstants.PDS_REGISTRY_URL, 
+	    	String[] args = { "-r", TestConstants.PDS3_REGISTRY_URL, 
 	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-e", 
 	    			"-m", "5", 
@@ -122,7 +122,7 @@ public class SearchCoreLauncherTest extends TestCase {
 			
 			PrintWriter writer = new PrintWriter(tempFile);
 	    	writer.write("search.core.search-home = " + TestConstants.SEARCH_HOME_RELATIVE + "\n"
-	    			+ "search.core.registry-url = " + TestConstants.PDS_REGISTRY_URL + "\n"
+	    			+ "search.core.registry-url = " + TestConstants.PDS3_REGISTRY_URL + "\n"
 	    			+ "search.core.config-home = "+ TestConstants.CONFIG_DIR_RELATIVE + "pds");
 	    	writer.flush();
 	    	writer.close();
