@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011-2012, by the California Institute of Technology.
+  Copyright 2011-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -37,7 +37,7 @@
     </section>
 
     <section name="Download">
-      <p>As of the writing of this document the current version of Tomcat is <i>7.0.30</i>. New releases are made available periodically, with the latest version of <i>7.0.X</i> available from the <a herf="http://tomcat.apache.org/download-70.cgi" target="_blank">Apache Tomcat 7 Downloads</a> page. Avoid version <i>7.0.29</i>, there is a bug in this version causing an error when loading the Registry Service. The download page has several binary distributions to choose from:
+      <p>As of the writing of this document the current version of Tomcat is <i>7.0.35</i>. New releases are made available periodically, with the latest version of <i>7.0.X</i> available from the <a herf="http://tomcat.apache.org/download-70.cgi" target="_blank">Apache Tomcat 7 Downloads</a> page. Avoid version <i>7.0.29</i>, there is a bug in this version causing an error when loading the Registry Service. The download page has several binary distributions to choose from:
       </p>
 
       <center>
@@ -62,18 +62,19 @@
       <p>The symbolic link will be useful when upgrading to future versions, minimizing the number path changes to be made in startup scripts. There are a number of configuration options that can be made to a Tomcat deployment but the software will pretty much run out of the box. Extensive documentation with respect to configuration options is available from the <a href="http://tomcat.apache.org/tomcat-7.0-doc/" target="_blank">Apache Documentation 7 Documentation Index</a> page. That said, there are a couple of common configuration changes like changing the port number that the server listens to and enabling access to the Manager interface that this document will cover.
       </p>
 
-      <p>By default, Tomcat comes configured to listen for requests on port <i>8080</i>. This is actually a very common test port for various web server applications and may conflict with an existing application running in the local environment. To change the port number, execute the following commands to edit the <i>server.xml</i> configuration file (the example uses <i>vi</i>, but any editor will suffice):
-      </p>
+      <subsection name="Port Configuration">
+        <p>By default, Tomcat comes configured to listen for requests on port <i>8080</i>. This is actually a very common test port for various web server applications and may conflict with an existing application running in the local environment. To change the port number, execute the following commands to edit the <i>server.xml</i> configuration file (the example uses <i>vi</i>, but any editor will suffice):
+        </p>
 
-      <source>
+        <source>
 % cd /usr/local/tomcat/conf
 % vi server.xml
-      </source>
+        </source>
 
-      <p>A search for <i>8080</i> should discover the following block of XML statements:
-      </p>
+        <p>A search for <i>8080</i> should discover the following block of XML statements:
+        </p>
 
-      <source>
+        <source>
 &lt;Server port="8005" shutdown="SHUTDOWN"&gt;
   ...
     &lt;Connector port="8080" protocol="HTTP/1.1"
@@ -85,39 +86,66 @@
               redirectPort="8443" /&gt;
   ...
 &lt;/Server&gt;
-      </source>
+        </source>
 
-      <p>In general, ports <i>1023</i> and below are commonly reserved by the system and require <i>root</i> user privileges to access. Ports <i>1024</i> through <i>49151</i> are sporadically used by applications registered with IANA. If the need is for another available port, than ports in the <i>9000</i> range are commonly available without conflict in most environments. The following three scenarios will help guide the port selection:
-      </p>
+        <p>In general, ports <i>1023</i> and below are commonly reserved by the system and require <i>root</i> user privileges to access. Ports <i>1024</i> through <i>49151</i> are sporadically used by applications registered with IANA. If the need is for another available port, than ports in the <i>9000</i> range are commonly available without conflict in most environments. The following three scenarios will help guide the port selection:
+        </p>
 
-      <ul>
-        <li>To avoid a conflict with another application listening on port <i>8080</i>, try changing the port to <i>8090</i>, otherwise <i>9000</i> and above are usually unused.</li>
-        <li>If running multiple Tomcat servers, than <i>8090</i> is still a good alternative but the <i>shutdown</i> and <i>redirect</i> ports also need to be modified so that they do not conflict with the other Tomcat server.</li>
-        <li>If this Tomcat server is intended to respond to operational requests, then the port should be changed to <i>80</i> along with changing the <i>redirect</i> port to <i>443</i>. The alternative to having Tomcat listen on port <i>80</i> is to have another web server (e.g., Apache HTTP Server, Microsoft IIS, etc.) listen on that port and have it redirect requests to the Tomcat server at port <i>8080</i>. This type of configuration is covered in the Tomcat documentation and should also be covered in the documentation for the other web server.</li>
-      </ul>
+        <ul>
+          <li>To avoid a conflict with another application listening on port <i>8080</i>, try changing the port to <i>8090</i>, otherwise <i>9000</i> and above are usually unused.</li>
+          <li>If running multiple Tomcat servers, than <i>8090</i> is still a good alternative but the <i>shutdown</i> and <i>redirect</i> ports also need to be modified so that they do not conflict with the other Tomcat server.</li>
+          <li>If this Tomcat server is intended to respond to operational requests, then the port should be changed to <i>80</i> along with changing the <i>redirect</i> port to <i>443</i>. The alternative to having Tomcat listen on port <i>80</i> is to have another web server (e.g., Apache HTTP Server, Microsoft IIS, etc.) listen on that port and have it redirect requests to the Tomcat server at port <i>8080</i>. This type of configuration is covered in the Tomcat documentation and should also be covered in the documentation for the other web server.</li>
+        </ul>
+      </subsection>
 
-      <p>Another common configuration change involves enabling the Manager interface. The Manager interface is not necessary to run Tomcat but it is nice for viewing status and deploying applications. In order to enable the interface, an account must be specified in the Tomcat users configuration file with the appropriate role. Execute the following commands to edit the <i>tomcat-users.xml</i> configuration file:
-      </p>
+      <subsection name="Manager Interface Configuration">
+        <p>Another common configuration change involves enabling the Manager interface. The Manager interface is not necessary to run Tomcat but it is nice for viewing status and deploying applications. In order to enable the interface, an account must be specified in the Tomcat users configuration file with the appropriate role. Execute the following commands to edit the <i>tomcat-users.xml</i> configuration file:
+        </p>
 
-      <source>
+        <source>
 % cd /usr/local/tomcat/conf
 % vi tomcat-users.xml
-      </source>
+        </source>
 
-      <p>Add the two XML statements listed below within the &lt;tomcat-users&gt; block.
-      </p>
+        <p>Add the two XML statements listed below within the &lt;tomcat-users&gt; block.
+        </p>
 
-      <source>
+        <source>
 &lt;tomcat-users&gt;
   ...
   &lt;role rolename="manager-gui"/&gt;
   &lt;user username="&lt;username&gt;" password="&lt;password&gt;" roles="manager-gui"/&gt;
   ...
 &lt;/tomcat-users&gt;
-      </source>
+        </source>
 
-      <p>The first statement defines the <i>manager-gui</i> role and the second statement defines a user with that role. Replace the &lt;username&gt; and &lt;password&gt; in the second statement with desired values for the local environment. This document discusses using the Manager interface in the <a href="#Deploy_Application">Deploy Application</a> section below.
-      </p>
+        <p>The first statement defines the <i>manager-gui</i> role and the second statement defines a user with that role. Replace the &lt;username&gt; and &lt;password&gt; in the second statement with desired values for the local environment. This document discusses using the Manager interface in the <a href="#Deploy_Application">Deploy Application</a> section below.
+        </p>
+      </subsection>
+
+      <subsection name="Environment Configuration">
+        <p>The Tomcat application server allows environment-specific variables to be set and utilized by the server. This is accomplished by creating a file named <i>setenv.sh</i> in the <i>/usr/local/tomcat/bin</i> directory. This file will be sourced by the startup script specified in the <a href="#Launch_Tomcat">Launch Tomcat</a> section below. To adjust the memory settings for Tomcat, the contents of the file should look something like the following:
+        </p>
+
+        <source>
+#!/bin/sh
+CATALINA_OPTS="-Xms256m -Xmx2048m"
+        </source>
+
+        <p>Note: For Red Hat RPM installations, the environment variables can be specified in the <i>/etc/tomcatX/tomcatX.conf</i> file where <i>X</i> is the major version of Tomcat. Although the environment configuration is not limited to the following variables, these two are the most common:
+        </p>
+
+        <ul>
+          <li>CATALINA_OPTS<br/>
+            <p>This environment variable allows the user to pass in application-specific Java properties to the applications that are deployed on the Tomcat server. In the example above, the initial and maximum memory settings for Tomcat are specified. Although exhaustive testing has not been performed, these settings have worked well in a number of environments. The location of the Derby database for the Registry Service may also be specified in this variable with the <i>derby.system.home</i> property. This property is described in more detail in the <a href="../registry/registry-service/install/index.html">Installation</a> document for the Registry Service.
+            </p>
+          </li>
+          <li>JAVA_HOME<br/>
+            <p>In most environments there will be one Java installation and this variable should reference the root directory of that installation (i.e., JAVA_HOME=/usr/local/java). Because Tomcat 7 and the PDS software require Java 1.6, it may have been required to install this version of Java while version 1.5 was already installed in the local environment. By referencing the Java 1.6 installation with this variable in the <i>setenv.sh</i> script, it allows the rest of the local environment to utilize the Java 1.5 installation.
+            </p>
+          </li>
+        </ul>
+      </subsection>
     </section>
 
     <section name="Launch Tomcat">
@@ -129,32 +157,7 @@
 % ./startup.sh
       </source>
 
-      <p>If launching the Tomcat server automatically upon system startup is desired, the <a href="http://tomcat.apache.org/tomcat-7.0-doc/setup.html" target="_blank">Tomcat Setup</a> portion of the Tomcat documentation provides details on setting this up. Alternatively, consult your system administrator for standard mechanisms of accomplishing this in the local environment. Another useful method for launching the Tomcat server is to create a separate script where specific environment variables can be set for use by Tomcat. The following is an example of such a script:
-      </p>
-
-      <source>
-#!/bin/sh
-export CATALINA_HOME=/usr/local/tomcat
-export CATALINA_OPTS="-Dderby.system.home=/usr/local/derby"
-export JAVA_HOME=/usr/local/java
-$CATALINA_HOME/bin/startup.sh
-      </source>
-
-      <p>The above script can be run from anywhere on the system because it defines the location of the Tomcat software and calls the same startup script that was demonstrated above. This script also defines a Java property and the Java home directory:
-      </p>
-
-      <ul>
-        <li>CATALINA_OPTS<br/>
-          <p>This environment variable allows the user to pass in application-specific Java properties to the applications that are deployed on the Tomcat server. In the example above, the location of the Derby database for the Registry Service is specified. This property is described in more detail in the <a href="../registry/registry-service/install/index.html">Installation</a> document for the Registry Service.
-          </p>
-        </li>
-        <li>JAVA_HOME<br/>
-          <p>In most environments there will be one Java installation and this variable should reference the root directory of that installation. Because Tomcat 7 and the PDS software require Java 1.6, it may have been required to install this version of Java while version 1.5 was already installed in the local environment. By referencing the Java 1.6 installation with this variable in a separate startup script, it allows the rest of the local environment to utilize the Java 1.5 installation.
-          </p>
-        </li>
-      </ul>
-
-      <p>Once the Tomcat server has been launched by one of the methods above, the server should be accessible via the following URL: <i>http://localhost:8080/</i>. This assumes the listening port was not changed during the configuration. Accessing this URL from the desired web browser, should produce the following display:
+      <p>If launching the Tomcat server automatically upon system startup is desired, the <a href="http://tomcat.apache.org/tomcat-7.0-doc/setup.html" target="_blank">Tomcat Setup</a> portion of the Tomcat documentation provides details on setting this up. Alternatively, consult your system administrator for standard mechanisms of accomplishing this in the local environment. Once the Tomcat server has been launched by one of the methods above, the server should be accessible via the following URL: <i>http://localhost:8080/</i>. This assumes the listening port was not changed during the configuration. Accessing this URL from the desired web browser, should produce the following display:
       </p>
 
       <center>
