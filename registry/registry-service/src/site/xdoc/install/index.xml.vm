@@ -212,7 +212,7 @@ javax.servlet.ServletException: java.lang.OutOfMemoryError: PermGen space
 CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
         </source>
         
-        <p>Note: The "derby.system.home" should point to the parent directory which contains the registry database (i.e. the parent directory of the "registry" directory). See the <a href="../../release/index-tomcat.html">Tomcat Deployment</a> document for details on specifying the <i>CATALINA_OPTS</i> environment variable. The <i>CATALINA_OPTS</i> environment variable is loaded from the Tomcat startup scripts. The Tomcat server will need to be restarted for this configuration to take effect.
+        <p>Note: The "derby.system.home" should point to the parent directory which contains the registry database (i.e. the parent directory of the "registry" directory). See the <a href="../../../release/index-tomcat.html#Environment_Configuration">Tomcat Deployment</a> document for details on specifying the <i>CATALINA_OPTS</i> environment variable. The <i>CATALINA_OPTS</i> environment variable is loaded from the Tomcat startup scripts. The Tomcat server will need to be restarted for this configuration to take effect.
         </p>
 
         <p>The backend database can be changed from Derby to another database provider. As of the current release, <a href="http://www.mysql.com/" target="_blank">MySQL</a> is the only other supported database solution. To modify the configuration, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. The following line:
