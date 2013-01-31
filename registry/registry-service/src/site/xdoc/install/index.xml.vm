@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2012, by the California Institute of Technology.
+  Copyright 2010-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -144,10 +144,10 @@ ij> run 'conf/derby-registry-schema.ddl';
 ij> exit;
         </source>
 
-        <p>The <i>registry</i> directory, which is the Derby database, will now be present in the current working directory. The path to this directory can be specified in the <a href="#Database_Configuration">Configuration</a> section. Note: Feel free to move this <i>registry</i> directory to anywhere on disk that is accessible by Tomcat and configured below.
-        </p>   
+        <p>The <i>registry</i> directory, which is the Derby database, will now be present in the current working directory. The path to this directory can be specified in the <a href="#Database_Configuration">Configuration</a> section. Note: Feel free to move this <i>registry</i> directory to anywhere on disk that is accessible by Tomcat and configured below. In addition, if the Tomcat server is not running as the <i>root</i> user, the <i>registry</i> directory containing the Derby database (wherever it is located) must be owned by the same user account that is utilized to run the Tomcat server.
+        </p>
       </subsection>
-      
+
       <subsection name="MySQL">
         <p>If choosing to utilize an existing MySQL database server, perform the commands below. If installing a new instance of MySQL, consult the local system administrator for installation of this software. For the do-it-yourself crowd, the MySQL software can be downloaded from the <a href="http://www.mysql.com/downloads/mysql/" target="_blank">MySQL Community Server Download</a> page. Choose the appropriate package (version 5.5.X) for the target environment. Once the installation is complete, perform the commands below to create the database and install the registry schema:
         </p>
@@ -169,8 +169,17 @@ ij> exit;
     </section>
 
     <section name="Deploying the Application">
-      <p>The Registry Service web application is packaged as a WAR file (<i>registry.war</i>) and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>$TOMCAT_HOME/webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation. Verify a successful installation by executing the command from the <a href="../operate/index.html#Ping">Ping</a> section of the Operation document.
+      <p>The Registry Service web application is packaged as a WAR file (<i>registry.war</i>) and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>$TOMCAT_HOME/webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation. Verify a successful installation by executing the following command:
       </p>
+
+      <source>
+% curl -X GET -H "Accept:application/xml" -v \
+http://localhost:8080/registry/
+      </source>
+
+      <p>The above command will return the list of links to the service's endpoints and an HTTP status of 200. From a web browser, the command returns a welcome message. Make sure to include the trailing slash on the above command.
+      </p>
+
 
       <p>When deploying the application via the Tomcat Manager interface, users have occasionally encountered a situation where the application appears to hang or generates the following stack trace:
       </p>
@@ -196,16 +205,14 @@ javax.servlet.ServletException: java.lang.OutOfMemoryError: PermGen space
       </p>
       
       <subsection name="Database Configuration">
-        <p>By default, the Registry Service comes packaged with and configured to utilize Derby as the backend database. The Derby database home directory will default to the current working directory where the Tomcat server was launched. To permanently set the home directory of the database, add the following to the <i>CATALINA_OPTS</i> environment variable:
+        <p>By default, the Registry Service comes packaged with and configured to utilize Derby as the backend database. The Derby database home directory will default to the current working directory where the Tomcat server was launched. To permanently set the home directory of the database, add the following property to the <i>CATALINA_OPTS</i> environment variable:
         </p>
 
         <source>
 CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
         </source>
         
-        <p>Note: The "derby.system.home" should point to the parent directory which contains the registry database (i.e. the parent directory of the "registry" directory).</p>
-
-        <p>The <i>CATALINA_OPTS</i> environment variable is loaded from the Tomcat startup scripts. The Tomcat server will need to be restarted for this configuration to take effect.
+        <p>Note: The "derby.system.home" should point to the parent directory which contains the registry database (i.e. the parent directory of the "registry" directory). See the <a href="../../release/index-tomcat.html">Tomcat Deployment</a> document for details on specifying the <i>CATALINA_OPTS</i> environment variable. The <i>CATALINA_OPTS</i> environment variable is loaded from the Tomcat startup scripts. The Tomcat server will need to be restarted for this configuration to take effect.
         </p>
 
         <p>The backend database can be changed from Derby to another database provider. As of the current release, <a href="http://www.mysql.com/" target="_blank">MySQL</a> is the only other supported database solution. To modify the configuration, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. The following line:
