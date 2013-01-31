@@ -160,12 +160,21 @@ ij> exit;
 % mysql -u root -p -D registry &lt; conf/mysql-registry-schema.ddl
         </source>
       </subsection>
-<!--
+
       <subsection name="PostgreSQL">
-        <p>
+        <p>If choosing to utilize an existing PostgreSQL database server, perform the commands below. If installing a new instance of PostgreSQL, consult the local system administrator for installation of this software. For the do-it-yourself crowd, the PostgreSQL software can be downloaded from the <a href="http://www.postgresql.org/download/" target="_blank">PostgreSQL Download</a> page. Choose the appropriate package (version 9.X) for the target environment. Once the installation is complete, perform the commands below to create the database and install the registry schema:
         </p>
+
+        <source>
+% cd ${project.artifactId}-${project.version}
+% psql -U postgres
+postgres=# CREATE USER registry WITH password 'p@ssw0rd';
+postgres=# CREATE DATABASE registry WITH OWNER registry;
+postgres=# \c registry registry
+postgres=# \i conf/postgres-registry-schema.ddl
+postgres=# \q
+        </source>
       </subsection>
--->
     </section>
 
     <section name="Deploying the Application">
@@ -205,53 +214,87 @@ javax.servlet.ServletException: java.lang.OutOfMemoryError: PermGen space
       </p>
       
       <subsection name="Database Configuration">
-        <p>By default, the Registry Service comes packaged with and configured to utilize Derby as the backend database. The Derby database home directory will default to the current working directory where the Tomcat server was launched. To permanently set the home directory of the database, add the following property to the <i>CATALINA_OPTS</i> environment variable:
+        <p>The following is a set of instructions for configuring the Registry Service to access an existing database that are dependent on the database server to be used in the current environment.
         </p>
 
-        <source>
+        <subsection name="Derby">
+          <p>By default, the Registry Service comes packaged with and configured to utilize Derby as the backend database. The Derby database home directory will default to the current working directory where the Tomcat server was launched. To permanently set the home directory of the database, add the following property to the <i>CATALINA_OPTS</i> environment variable:
+          </p>
+
+          <source>
 CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
-        </source>
+          </source>
         
-        <p>Note: The "derby.system.home" should point to the parent directory which contains the registry database (i.e. the parent directory of the "registry" directory). See the <a href="../../../release/index-tomcat.html#Environment_Configuration">Tomcat Deployment</a> document for details on specifying the <i>CATALINA_OPTS</i> environment variable. The <i>CATALINA_OPTS</i> environment variable is loaded from the Tomcat startup scripts. The Tomcat server will need to be restarted for this configuration to take effect.
-        </p>
+          <p>Note: The "derby.system.home" should point to the parent directory which contains the registry database (i.e. the parent directory of the "registry" directory). See the <a href="../../../release/index-tomcat.html#Environment_Configuration">Tomcat Deployment</a> document for details on specifying the <i>CATALINA_OPTS</i> environment variable. The <i>CATALINA_OPTS</i> environment variable is loaded from the Tomcat startup scripts. The Tomcat server will need to be restarted for this configuration to take effect.
+          </p>
+        </subsection>
 
-        <p>The backend database can be changed from Derby to another database provider. As of the current release, <a href="http://www.mysql.com/" target="_blank">MySQL</a> is the only other supported database solution. To modify the configuration, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. The following line:
-        </p>
+        <subsection name="MySQL">
+          <p>The backend database can be changed from Derby to MySQL. To modify the configuration, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. The following line:
+          </p>
 
-        <source>
+          <source>
 &lt;context:property-placeholder location="classpath:derby.properties"/&gt;
 
   should be changed to:
 
 &lt;context:property-placeholder location="classpath:mysql.properties"/&gt;
-        </source>
+          </source>
 
-        <p>The default configuration assumes that you have MySQL installed with a database named <i>registry</i> and will use a default user name and password as specified below. If you want to change the URL, database name, user name, and/or password you will need to edit the <i>mysql.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. The following lines pertain to the default configuration:
-        </p>
+          <p>The default configuration assumes that you have MySQL installed with a database named <i>registry</i> and will use a default user name and password as specified below. If you want to change the URL, database name, user name, and/or password you will need to edit the <i>mysql.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. The following lines pertain to the default configuration:
+          </p>
 
-        <source>
+          <source>
 javax.persistence.jdbc.url=jdbc:mysql://localhost:3306/registry
 javax.persistence.jdbc.user=registry
 javax.persistence.jdbc.password=p@ssw0rd
-        </source>
+          </source>
 
-        <p>Additionally, if you are using a version of MySQL older than 5.x you will need to change the dialect. To do this simply add a "#" before the first hibernate.dialect entry and remove the "#" from the second entry.
-        </p>
+          <p>Additionally, if you are using a version of MySQL older than 5.x you will need to change the dialect. To do this simply add a "#" before the first hibernate.dialect entry and remove the "#" from the second entry.
+          </p>
 
-        <p>Before:</p>
-        <source>
+          <p>Before:</p>
+          <source>
 # For use with MySQL 5+
 hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
 # For use with older versions of MySQL. See hibernate documentation.
 #hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
-        </source>
-        <p>After:</p>
-        <source>
+          </source>
+          <p>After:</p>
+          <source>
 # For use with MySQL 5+
 #hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
 # For use with older versions of MySQL. See hibernate documentation.
 hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
-        </source>
+          </source>
+        </subsection>
+
+        <subsection name="PostgreSQL">
+          <p>The backend database can be changed from Derby to PostgreSQL. To modify the configuration, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. The following line:
+          </p>
+
+          <source>
+&lt;context:property-placeholder location="classpath:derby.properties"/&gt;
+
+  should be changed to:
+
+&lt;context:property-placeholder location="classpath:postgres.properties"/&gt;
+          </source>
+
+          <p>The default configuration assumes that you have PostgreSQL installed with a database named <i>registry</i> and will use a default user name and password as specified below. If you want to change the URL, database name, user name, and/or password you will need to edit the <i>postgres.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. The following lines pertain to the default configuration:
+          </p>
+
+          <source>
+javax.persistence.jdbc.url=jdbc:postgresql://localhost:5432/registry
+javax.persistence.jdbc.user=registry
+javax.persistence.jdbc.password=p@ssw0rd
+javax.persistence.jdbc.driver=org.postgresql.Driver
+hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+hibernate.hbm2ddl.auto=validate
+jpa.database=POSTGRESQL
+jpa.showSql=false
+          </source>
+        </subsection>
       </subsection>
 
       <subsection name="Home Configuration">
