@@ -583,15 +583,6 @@ public class RegistryServiceImpl implements RegistryService {
     if (registryObject.getLid() == null) {
       registryObject.setLid(idGenerator.getGuid());
     }
-    // Check to see if object with same lid already exists
-    if (metadataStore.hasRegistryObjectVersions(registryObject.getLid(),
-        registryObject.getClass())) {
-      throw new RegistryServiceException(
-          "Registry object with global unique id " + registryObject.getGuid()
-              + " logical id " + registryObject.getLid() + " version name "
-              + registryObject.getVersionName() + " already exists.",
-          ExceptionType.EXISTING_OBJECT);
-    }
     registryObject.setStatus(ObjectStatus.Submitted);
     this.validateObject(registryObject);
     metadataStore.saveRegistryObject(registryObject);
