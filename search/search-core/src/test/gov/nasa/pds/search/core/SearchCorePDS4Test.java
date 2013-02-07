@@ -25,13 +25,25 @@ import org.junit.Ignore;
 
 public class SearchCorePDS4Test extends TestCase {
 
+	/** Registry URL for PDS4 Products used for testing purposes **/
+	public static final String PDS4_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry-phx";
+	
+	/** Search Service Solr URL **/
+	public static final String SOLR_SERVER_URL="http://pdsdev.jpl.nasa.gov:8080/search-service/pds";
+	
+	/** Relative Search Service Directory Path for testing locally **/
+	public static final String SEARCH_HOME_RELATIVE="./target/test";
+	
+	/** Relative Config Directory Path for testing locally **/
+	public static final String CONFIG_DIR_RELATIVE="./src/main/resources/conf/";
+	
 	@Before public void setUp() {
-		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
+		File testDir = new File(System.getProperty("user.dir") + "/" + SEARCH_HOME_RELATIVE);
 		testDir.mkdirs();
 	}
 	
 	@After public void tearDown() {
-		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
+		File testDir = new File(System.getProperty("user.dir") + "/" + SEARCH_HOME_RELATIVE);
 		testDir.delete();
 	}
 	
@@ -41,10 +53,10 @@ public class SearchCorePDS4Test extends TestCase {
      */
     public void testCorePDS4() {
     	try {
-	    	String[] args = { "-r", TestConstants.PDS4_REGISTRY_URL, 
-	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
+	    	String[] args = { "-r", PDS4_REGISTRY_URL, 
+	    			"-H", SEARCH_HOME_RELATIVE, 
 	    			"-m", "5", 
-	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds4", };
+	    			"-c", CONFIG_DIR_RELATIVE + "pds/pds4", };
 	    	SearchCoreLauncher.main(args);
 		} catch (Exception e) {
 			fail("Search Core for PDS4 Products failed: " + e.getMessage());

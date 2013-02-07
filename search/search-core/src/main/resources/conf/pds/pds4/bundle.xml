@@ -116,6 +116,11 @@
 		<value>investigation_name</value>
 	</field>
 	<field>
+		<name>investigation_ref</name>
+		<type>slot</type>
+		<value>investigation_ref</value>
+	</field>
+	<field>
 		<name>observing_system_name</name>
 		<type>slot</type>
 		<value>observing_system_name</value>
@@ -128,12 +133,27 @@
 	<field>
 		<name>target_name</name>
 		<type>slot</type>
-		<value>slot</value>
+		<value>target_name</value>
+	</field>
+	<field>
+		<name>target_ref</name>
+		<type>slot</type>
+		<value>target_ref</value>
+	</field>
+	<field>
+		<name>collection_type</name>
+		<type>slot</type>
+		<value>collection_type</value>
 	</field>
 	<field>
 		<name>collection_name</name>
 		<type>association</type>
 		<value>collection_ref.name</value>
+	</field>
+	<field>
+		<name>collection_ref</name>
+		<type>slot</type>
+		<value>collection_ref</value>
 	</field>
 	<field>
 		<name>pds_model_version</name>

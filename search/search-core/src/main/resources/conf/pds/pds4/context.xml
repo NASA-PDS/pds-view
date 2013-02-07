@@ -61,6 +61,11 @@
 		<value>instrument_serial_number</value>
 	</field>
 	<field>
+		<name>instrument_host_ref</name>
+		<type>slot</type>
+		<value>instrument_host_ref</value>
+	</field>
+	<field>
 		<name>instrument_host_name</name>
 		<type>slot</type>
 		<value>instrument_host_name</value>
@@ -89,6 +94,16 @@
 		<name>instrument_host_serial_number</name>
 		<type>slot</type>
 		<value>instrument_host_serial_number</value>
+	</field>
+	<field>
+		<name>investigation_ref</name>
+		<type>slot</type>
+		<value>investigation_ref</value>
+	</field>
+	<field>
+		<name>target_ref</name>
+		<type>slot</type>
+		<value>target_ref</value>
 	</field>
 	<field>
 		<name>investigation_name</name>

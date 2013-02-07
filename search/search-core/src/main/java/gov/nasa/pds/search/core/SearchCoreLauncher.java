@@ -49,7 +49,7 @@ import org.apache.commons.cli.ParseException;
 public class SearchCoreLauncher {
 
 	/** Default PDS Config File Path, if not is specified. **/
-	private static final String PDS_CONFIG_PATH = "/conf/pds";
+	private static final String PDS3_CONFIG_PATH = "/conf/pds/pds3";
 
 	/** 
 	 * Search Environment Variable to use if not specified via CLI.
@@ -377,7 +377,7 @@ public class SearchCoreLauncher {
 	public final void setDefaultConfigHome() {
 		this.configHomeList
 				.add((new File(System.getProperty("java.class.path")))
-						.getParentFile().getParent() + PDS_CONFIG_PATH);
+						.getParentFile().getParent() + PDS3_CONFIG_PATH);
 	}
 
 	/**

@@ -9,9 +9,6 @@ SEARCH_SERVICE_URL=http://localhost:8080/search-service
 # URL of the Registry Service instance.
 REGISTRY_URL=http://localhost:8080/registry
 
-# Flag to include PSA Data in index
-PSA_FLAG=0
-
 ####################################################################################
 
 ## The following global variables are for copying the index between operational machines
