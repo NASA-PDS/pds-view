@@ -95,8 +95,7 @@ public class SearchFields {
 			}
 		} catch (NullPointerException e) {
 			e.printStackTrace();
-			System.err
-					.println("Error: A tag in class XML file contains no text node.");
+			System.err.println("Error: A tag in class XML file contains no text node.");
 		}
 	}
 

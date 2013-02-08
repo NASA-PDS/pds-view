@@ -16,7 +16,7 @@ public final class Constants {
 	public static final int QUERY_MAX = 999999999;
 
 	/** Attribute for version of a product. **/
-	public static final String PRODUCT_VERSION = "version_id";
+	public static final String VERSION_ID_SLOT = "version_id";
 
 	/** Run Log File Name. **/
 	public static final String LOG_FNAME = "run.log";

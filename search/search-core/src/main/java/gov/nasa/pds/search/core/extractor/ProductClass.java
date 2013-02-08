@@ -216,6 +216,8 @@ public class ProductClass {
 				currType = this.searchFields.getType(i);
 				currVal = this.searchFields.getValue(i);
 
+				valArray = new ArrayList<String>();
+				
 				if (currType.equals(MappingTypes.OUTPUT)) {
 					valArray = new ArrayList<String>();
 					valArray.add(currVal);
@@ -227,20 +229,17 @@ public class ProductClass {
 					// very similar code is being replicated in the
 					// RegistrySlots class
 				} else if (currType.equals(MappingTypes.ATTRIBUTE)) {
-
-					valArray = new ArrayList<String>();
 					valArray.add(RegistryAttributes.getAttributeValue(currVal,
 							extObject));
 					this.finalVals.put(currName, valArray);
 				} else if (currType.equals(MappingTypes.SLOT)) {
-					valArray = new ArrayList<String>();
 					String tval;
 					try {
 						for (String value : extObject.getSlot(currVal)
 								.getValues()) {
 							tval = remNull(value);
 							// tval1 = tval1.trim();
-							valArray.add(cleanText(tval));
+							valArray.add(cleanText(checkRef(tval, currVal)));
 						}
 					} catch (NullPointerException e) {
 						recordMissingSlot(extObject, currVal);
@@ -248,7 +247,6 @@ public class ProductClass {
 					this.finalVals.put(currName, valArray);
 				} else if (currType.equals(MappingTypes.ASSOCIATION)) {
 					String[] values = currVal.split("\\.");
-					valArray = new ArrayList<String>();
 
 					String assocType = values[0];
 
@@ -265,7 +263,7 @@ public class ProductClass {
 					this.finalVals.put(currName, valArray);
 				} else {
 					throw new InvalidProductClassException(
-							"Unknown Mapping Type - "
+							"Unknown Mapping Type in Search Core Config - "
 									+ currType
 									+ ".  Please use mapping types designated in API.");
 				}
@@ -297,8 +295,6 @@ public class ProductClass {
 		debug("----- " + this.searchFields.getObjectName() + " -----");
 		ExtrinsicFilter filter = new ExtrinsicFilter.Builder().objectType(
 				this.searchFields.getObjectType()).name(this.searchFields.getObjectName()).build();
-/*		ExtrinsicFilter filter = new ExtrinsicFilter.Builder().objectType(
-				this.searchFields.getObjectType()).build();*/
 
 		// Create the query
 		RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
@@ -307,7 +303,6 @@ public class ProductClass {
 		List<ExtrinsicObject> results = null;
 		try {
 			RegistryClient client = new RegistryClient(this.registryUrl);
-			// securityContext, user, password);
 
 			results = new ArrayList<ExtrinsicObject>();
 			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1,
@@ -373,48 +368,54 @@ public class ProductClass {
 
 			this.log.warning("***** BAD LIDVID - " + assocLid + " -- "
 					+ version);
-		} else {
+		}/* else {
 			version = "1.0";
-		}
+		}*/
 
-		filter = new ExtrinsicFilter.Builder().lid(assocLid).build();
-
-		// Create the query
-		RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
-				.filter(filter).build();
-		List<ExtrinsicObject> results = null;
 		try {
+			List<ExtrinsicObject> results = null;
 			RegistryClient client = new RegistryClient(this.registryUrl);
 			// securityContext, user, password);
 
 			results = new ArrayList<ExtrinsicObject>();
-			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1,
-					this.queryMax);
+			
 
-			// Examine the results of the query
-			// Looping through the associated extrinsic objects
-			// Since we need to search through the slots for the version id,
-			// COULD create RegistrySlots object because that is what is of
-			// interest to us.
-			// So we wouldn't have to loop through the slots twice.
-			// But we would then have to store a map that we may just throw
-			// away.
-			Slot versionIdSlot = null;
-			if (pr.getNumFound() != 0) {
-				for (ExtrinsicObject extrinsic : pr.getResults()) {
-					// Product version should only have 1 value, check if it is
-					// the version we want
-					versionIdSlot = extrinsic
-							.getSlot(Constants.PRODUCT_VERSION);
+			if (version != null) {
+				filter = new ExtrinsicFilter.Builder().lid(assocLid).build();
 
-					if (versionIdSlot != null) {
-						if (versionIdSlot.getValues().get(0).equals(version)) {
-							debug("Adding associated extrinsic - "
-									+ extrinsic.getLid());
-							results.add(extrinsic);
+				// Create the query
+				RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
+						.filter(filter).build();
+				PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1, this.queryMax);
+				 
+				// Examine the results of the query
+				// Looping through the associated extrinsic objects
+				// Since we need to search through the slots for the version id,
+				// COULD create RegistrySlots object because that is what is of
+				// interest to us.
+				// So we wouldn't have to loop through the slots twice.
+				// But we would then have to store a map that we may just throw
+				// away.
+				Slot versionIdSlot = null;
+				if (pr.getNumFound() != 0) {
+					for (ExtrinsicObject extrinsic : pr.getResults()) {
+						// Product version should only have 1 value, check if it is
+						// the version we want
+						versionIdSlot = extrinsic.getSlot(Constants.VERSION_ID_SLOT);
+
+						if (versionIdSlot != null) {
+							if (versionIdSlot.getValues().get(0).equals(version)) {
+								debug("Adding associated extrinsic - "
+										+ extrinsic.getLid());
+								results.add(extrinsic);
+							}
 						}
 					}
 				}
+			} else {
+				 ExtrinsicObject extrinsic = client.getLatestObject(assocLid, ExtrinsicObject.class);
+				 debug("Adding associated extrinsic - " + extrinsic.getLid());
+				 results.add(extrinsic);
 			}
 
 			return results;
@@ -442,8 +443,7 @@ public class ProductClass {
 		if (setAssociation(assocType, extObject)) { // Add association type to
 													// association map (if
 													// needed)
-			for (ExtrinsicObject assocExtObj : this.associationMap
-					.get(assocType)) { // Iterate through the associations for
+			for (ExtrinsicObject assocExtObj : this.associationMap.get(assocType)) { // Iterate through the associations for
 										// the given association type
 				
 				// If slotName is not an attribute in the registry, search the ExtrinsicObject slots
@@ -516,8 +516,9 @@ public class ProductClass {
 					throws Exception {
 
 		Slot assocObjSlot = extObject.getSlot(assocType);
-		List<ExtrinsicObject> assocExtObjList = new ArrayList<ExtrinsicObject>();
 
+		List<ExtrinsicObject> assocExtObjList = new ArrayList<ExtrinsicObject>();
+		
 		// Get list of associations for specific association type
 		// for (Association association : (List<Association>) assocResponse
 		if (assocObjSlot != null) {
@@ -535,7 +536,6 @@ public class ProductClass {
 		} else {
 			recordMissingSlot(extObject, assocType);
 		}
-
 		return assocExtObjList;
 	}
 
@@ -643,6 +643,29 @@ public class ProductClass {
 		}
 		return str;
 	}
+	
+	/**
+	 * Check if the value comes from an association field (*_ref).
+	 * If so, need to verify it is a lidvid otherwise query registry
+	 * for version number to append to lid.
+	 * 
+	 * @param value
+	 * @param registryRef
+	 * @return
+	 * @throws RegistryClientException 
+	 * @throws RegistryServiceException 
+	 */
+	private String checkRef(String value, String registryRef) throws RegistryClientException, RegistryServiceException {
+		if (registryRef.contains("_ref")) {
+			if (!value.contains("::")) {
+				RegistryClient client = new RegistryClient(this.registryUrl);
+				String version = client.getLatestObject(value, ExtrinsicObject.class).getSlot(Constants.VERSION_ID_SLOT).getValues().get(0);
+				value += "::" + version;
+			}
+		}
+		
+		return value;
+	}
 
 	/**
 	 * Removes extra whitespace and line breaks from the description-like fields
@@ -651,7 +674,8 @@ public class ProductClass {
 	 * @return
 	 */
 	private String cleanText(String text) {
-		return text.trim().replace("\n", "<br />").replaceAll("    *", "   ");
+		return text;
+		//return text.trim().replace("\n", "<br />").replaceAll("    *", "   ");
 	}
 
 	/**

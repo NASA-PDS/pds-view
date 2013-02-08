@@ -9,9 +9,9 @@
 		<value>lid</value>
 	</field>
 	<field>
-		<name>version_name</name>
-		<type>attribute</type>
-		<value>versionName</value>
+		<name>version_id</name>
+		<type>slot</type>
+		<value>version_id</value>
 	</field>
 	<field>
 		<name>title</name>
