@@ -580,6 +580,7 @@
    <field name="instrument_model_id" type="text" indexed="false" stored="true" multiValued="false" />
    <field name="instrument_naif_id" type="text" indexed="false" stored="true" multiValued="false" />
    <field name="instrument_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_ref" type="text" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_serial_number" type="text" indexed="false" stored="true" multiValued="false" />
    <field name="instrument_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="investigation_description" type="text" indexed="true" stored="true" multiValued="false" />
@@ -631,7 +632,7 @@
    <field name="target_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="telephone_number" type="string" indexed="false" stored="true" />
    <field name="title" type="text" indexed="true" stored="true" />
-   <field name="version_name" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="version_id" type="text" indexed="false" stored="true" multiValued="false" />
    
    <field name="observing-system" type="text_lc" indexed="true" stored="false" multiValued="true" />
    
