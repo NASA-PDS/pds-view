@@ -26,20 +26,6 @@
    <%@ include file="/pds/main_menu.html" %>
    <%@ include file="/pds/data_menu.html" %>
 
-   <!--div id="submenu">
-   <div id="submenu_data">
-   <h2 class="nonvisual">Menu: PDS Data</h2>
-   <ul>
-      <li id="data_data_search"><a href="http://pds.jpl.nasa.gov/tools/data-search/">Data Search</a></li>
-      <li><a href="/ds-view/pds/index.jsp">Form Search</a></li>
-      <li id="data_how_to_search"><a href="http://pds.jpl.nasa.gov/data/how-to-search.shtml">How to Search</a></li>
-      <li id="data_data_set_status"><a href="http://pds.jpl.nasa.gov/tools/dsstatus/">Data Set Status</a></li>
-      <li id="data_release_summary"><a href="http://pds.jpl.nasa.gov/tools/subscription_service/SS-Release.shtml">Data Release Summary</a></li>
-   </ul>
-   </div>
-   <div class="clear"></div>
-   </div-->
-
 <!-- Main content -->
 <div id="content">
    <div style="border-top: 1px solid_white;">
@@ -289,16 +275,21 @@ else {
                            <%
                            List<String> mvalues = searchRegistry.getMissionName(product);
                            String val = "";
-    	                   for (int i=0; i<mvalues.size(); i++) {
-    	   		              String tmpValue = (String) mvalues.get(i);
-    	       	              String lid = tmpValue.substring(0, tmpValue.indexOf("::"));
-    	       	              ExtrinsicObject msnObj = searchRegistry.getExtrinsic(lid);
-    	       	              //out.println(searchRegistry.getSlotValues(msnObj, "mission_name").get(0).toUpperCase() + "<br>");
-    	       	              if (msnObj!=null) 
-    	       	              	val = searchRegistry.getSlotValues(msnObj, "mission_name").get(0).toUpperCase(); 
+                           if (mvalues!=null) {
+    	                      for (int i=0; i<mvalues.size(); i++) {
+    	   		                 String tmpValue = (String) mvalues.get(i);
+    	       	                 String lid = tmpValue.substring(0, tmpValue.indexOf("::"));
+    	       	                 ExtrinsicObject msnObj = searchRegistry.getExtrinsic(lid);
+    	       	                 //out.println(searchRegistry.getSlotValues(msnObj, "mission_name").get(0).toUpperCase() + "<br>");
+    	       	                 if (msnObj!=null) 
+    	       	              	   val = searchRegistry.getSlotValues(msnObj, "mission_name").get(0).toUpperCase(); 
     	       	           %>
     	       	           <a href="/ds-view/pds/viewMissionProfile.jsp?MISSION_NAME=<%=val%>" target="_blank"><%=val%></a><br>  	       	
-                         <%} // end for   %>
+                         <%   } // end for
+                           } // end if
+                           else 
+                              out.println(val);
+                          %>
                         </td>
                      </tr>
 
@@ -313,7 +304,7 @@ else {
                            <%
     	                   List<String> svalues = searchRegistry.getSlotValues(product, "instrument_host_ref");
                            //need to test this later after solving problem on pdsdev with INSTRUMENT_HOST_NAME
-    	 
+    	                   if (svalues!=null) {
     	                   // should be alternate_id??? can't find this (ask Sean) 
     	                   for (int i=0; i<svalues.size(); i++) {
     	 	                  String tmpValue = (String) svalues.get(i);
@@ -324,7 +315,11 @@ else {
     	                         val = searchRegistry.getSlotValues(insthostObj, "instrument_host_id").get(0).toUpperCase();
     	                   %>
     	                   <a href="/ds-view/pds/viewHostProfile.jsp?INSTRUMENT_HOST_ID=<%=val%>" target="_blank"><%=val%></a><br>  	       	
-                         <%} // end for %>    	
+                         <%} // end for 
+                           } // end if
+                           else 
+                              out.println(val);
+                         %>    	
                         </td>
                      </tr>
 
@@ -333,6 +328,7 @@ else {
                         <td>
     	                   <%
        		               svalues =searchRegistry.getSlotValues(product, "instrument_ref");
+       		               if (svalues!=null && svalues.size()>0) {
     	 	               for (int i=0; i<svalues.size(); i++) {
     	 		              String tmpValue = (String) svalues.get(i);
     	   		              String lid = tmpValue.substring(0, tmpValue.indexOf("::"));
@@ -343,7 +339,11 @@ else {
     	                         val = searchRegistry.getSlotValues(instObj, "instrument_id").get(0).toUpperCase(); 
     	                   %>
     	                   <a href="/ds-view/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID=<%=val%>" target="_blank"><%=val%></a><br>  	       	
-                         <%}  // end for %>    	
+                         <%}  // end for 
+                           } // end if
+                           else 
+                              out.println(val);
+                         %>    	
     	                </td>
                      </tr>
   
@@ -353,6 +353,7 @@ else {
                         <td>
                            <%
     		               svalues =searchRegistry.getSlotValues(product, "target_ref");
+    		               if (svalues!=null && svalues.size()>0) {
     	 	               for (int i=0; i<svalues.size(); i++) {
     	 		              String tmpValue = (String) svalues.get(i);
     	   		              String lid = tmpValue.substring(0, tmpValue.indexOf("::"));
@@ -363,7 +364,10 @@ else {
     	    	              //out.println(searchRegistry.getSlotValues(targetObj, "target_name").get(0).toUpperCase() + "<br>");
     	    	           %>
     	    	           <a href="/ds-view/pds/viewTargetProfile.jsp?TARGET_NAME=<%=val%>" target="_blank"><%=val%></a><br>
-    	                 <%}
+    	                 <%} // end for
+    	                   } // end if
+    	                   else 
+    	                      out.println(val);
     	                   %>
                         </td>
                      </tr>
