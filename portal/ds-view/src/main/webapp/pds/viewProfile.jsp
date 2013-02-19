@@ -74,20 +74,7 @@ public String cleanParam(String str) {
 
    <%@ include file="/pds/header.html" %>
    <%@ include file="/pds/main_menu.html" %>
-
-   <div id="submenu">
-   <div id="submenu_data">
-   <h2 class="nonvisual">Menu: PDS Data</h2>
-   <ul>
-      <li id="data_data_search"><a href="http://pds.jpl.nasa.gov/tools/data-search/">Data Search</a></li>
-      <li><a href="/ds-view/pds/index.jsp">Form Search</a></li>
-      <li id="data_how_to_search"><a href="http://pds.jpl.nasa.gov/data/how-to-search.shtml">How to Search</a></li>
-      <li id="data_data_set_status"><a href="http://pds.jpl.nasa.gov/tools/dsstatus/">Data Set Status</a></li>
-      <li id="data_release_summary"><a href="http://pds.jpl.nasa.gov/tools/subscription_service/SS-Release.shtml">Data Release Summary</a></li>
-   </ul>
-   </div>
-   <div class="clear"></div>
-   </div>
+   <%@ include file="/pds/data_menu.html" %>
 
 <!-- Main content -->
 <div id="content">
@@ -161,21 +148,25 @@ else {
           } // end if (slotValues!=null)
           else {
              if (tmpValue.startsWith("mission_")) {
-                String msnValue = searchRegistry.getMissionName(dsObj).get(0);
-                String lid = msnValue.substring(0, msnValue.indexOf("::"));
-    	       	ExtrinsicObject msnObj = searchRegistry.getExtrinsic(lid);   	       		       	
-    	        //out.println(searchRegistry.getSlotValues(msnObj, tmpValue).get(0).toUpperCase() + "<br>"); 
-    	        if (msnObj!=null) {
-    	       	   val = searchRegistry.getSlotValues(msnObj, tmpValue).get(0).toUpperCase();	
-    	       	   if (tmpValue.equals("mission_name")) { 
+                if (searchRegistry.getMissionName(dsObj)!=null) {
+                	String msnValue = searchRegistry.getMissionName(dsObj).get(0);
+                	String lid = msnValue.substring(0, msnValue.indexOf("::"));
+    	       		ExtrinsicObject msnObj = searchRegistry.getExtrinsic(lid);   	       		       	
+    	        	//out.println(searchRegistry.getSlotValues(msnObj, tmpValue).get(0).toUpperCase() + "<br>"); 
+    	        	if (msnObj!=null) {
+    	       	   		val = searchRegistry.getSlotValues(msnObj, tmpValue).get(0).toUpperCase();	
+    	       	   		if (tmpValue.equals("mission_name")) { 
     	       	%>
     	       	   <a href="/ds-view/pds/viewMissionProfile.jsp?MISSION_NAME=<%=val%>" target="_blank"><%=val%></a><br> 
     	       	<%
-    	       	   }
-    	       	   else {
-    	       	      out.println(val+ "<br>");
-    	       	   }
+    	       	   		}
+    	       	   		else {
+    	       	      		out.println(val+ "<br>");
+    	       	   		}
+    	       		}
     	       	}
+    	       	else
+    	       	   out.println(val+"<br>");
              } 
              else if (tmpValue.startsWith("instrument_host_")) {
                 List<String> svalues = searchRegistry.getSlotValues(dsObj, "instrument_host_ref");     	 
@@ -216,11 +207,15 @@ else {
     	        }
              }
              else if (tmpValue.startsWith("target_")) {
-                String targetValue = searchRegistry.getTargetName(dsObj).get(0);
-                String lid = targetValue.substring(0, targetValue.indexOf("::"));
-    	       	ExtrinsicObject targetObj = searchRegistry.getExtrinsic(lid);   	
-    	       	if (targetObj!=null)        		       	
-    	           out.println(searchRegistry.getSlotValues(targetObj, tmpValue).get(0).toUpperCase() + "<br>"); 	
+                if (searchRegistry.getTargetName(dsObj)!=null) {
+                   String targetValue = searchRegistry.getTargetName(dsObj).get(0);
+                   String lid = targetValue.substring(0, targetValue.indexOf("::"));
+    	       	   ExtrinsicObject targetObj = searchRegistry.getExtrinsic(lid);   	
+    	       	   if (targetObj!=null)        		       	
+    	              out.println(searchRegistry.getSlotValues(targetObj, tmpValue).get(0).toUpperCase() + "<br>"); 
+    	        }
+    	        else 
+    	           out.println(val + "<br>");	
              }
              else if (tmpValue.equals("resource_link") ||
                       tmpValue.equals("resources")) {
