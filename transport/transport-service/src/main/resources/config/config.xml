@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://oodt.jpl.nasa.gov/web-grid/ns/" https="false" localhost="false" password="aGFuYWxlaQ==">
+
+    <server className="org.apache.oodt.product.handlers.ofsn.OFSNFileHandler" type="product"/>
+
+    <properties xml:space="preserve">
+
+        <property key="org.apache.oodt.product.handlers.ofsn.computeFileSize">true</property>
+        <property key="org.apache.oodt.product.handlers.ofsn.computeDirSize">true</property>
+        <property key="org.apache.oodt.product.handlers.ofsn.xmlConfigFilePath">/usr/local/pds/transport-service/config/ofsn-ps.xml</property>
+        <property key="org.apache.oodt.xmlquery.blockSize">100000</property>
+
+    </properties>
+</configuration>

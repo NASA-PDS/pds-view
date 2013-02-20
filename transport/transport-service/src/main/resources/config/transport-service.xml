@@ -1,0 +1,9 @@
+<Context path="/transport-service" docBase="/usr/local/pds/transport-service/web-grid.war">
+
+   <Parameter name="org.apache.oodt.grid.GridServlet.config" 
+                   value="/usr/local/pds/transport-service/config/config.xml"/>
+
+   <Loader className="org.apache.catalina.loader.VirtualWebappLoader"
+           virtualClasspath="/usr/local/pds/transport-service/lib/*.jar" />
+
+</Context>
