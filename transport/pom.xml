@@ -37,6 +37,7 @@
 
   <modules>
     <module>cas-product</module>
+    <module>transport-service</module>
   </modules>
 
   <licenses>

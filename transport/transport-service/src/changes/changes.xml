@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2011-2012, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id: changes.xml 11180 2012-11-15 19:09:07Z shardman $
+-->
+
+<document>
+  <properties>
+    <title>Release Changes</title><author>Luca Cinquini</author>
+  </properties>
+
+  <body>
+  
+    <release version="0.0.0" date="2013-02-19" description="First draft pre-alpha release.">
+      <action dev="luca" type="add" issue="PDS-146">
+        Initial check-in of transport-service module.
+      </action>
+    </release>
+
+  </body>
+</document>
