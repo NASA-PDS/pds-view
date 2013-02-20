@@ -1,4 +1,4 @@
-// Copyright 2006-2012, by the California Institute of Technology.
+// Copyright 2006-2013, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -18,10 +18,10 @@ public class Constants {
   public static final String PRODUCT_VERSION = "version_id";
 
   /** The LID prefix for a data set. */
-  public static final String LID_PREFIX = "urn:nasa:pds:data_set";
+  public static final String LID_PREFIX = "urn:nasa:pds:context_pds3:data_set:data_set";
 
   /** The LID prefix for a resource. */
-  public static final String RESOURCE_PREFIX = "urn:nasa:pds:resource";
+  public static final String RESOURCE_PREFIX = "urn:nasa:pds:context_pds3:resource:resource";
 
   /** The data set product class. */
   public static final String DATA_SET_PRODUCT_CLASS = "Product_Data_Set_PDS3";

@@ -246,7 +246,7 @@ public class HarvesterPdap {
    * @return The logical identifier.
    */
   private String createLid(String prefix, String datasetId) {
-    String lid = prefix + ":" + datasetId;
+    String lid = prefix + "." + datasetId;
     String conformingLid = lid.replaceAll(Constants.URN_ILLEGAL_CHARACTERS, "-");
     if (!conformingLid.equals(lid)) {
       log.log(new ToolsLogRecord(ToolsLevel.WARNING, "Dataset ID contains "
@@ -356,7 +356,7 @@ public class HarvesterPdap {
     slots.add(new Slot(Constants.PRODUCT_VERSION, Arrays.asList(
         new String[]{"1.0"})));
     slots.add(new Slot("resource_ref", Arrays.asList(
-        new String[]{Constants.RESOURCE_PREFIX + "." + datasetId})));
+        new String[]{createLid(Constants.RESOURCE_PREFIX, datasetId)})));
     slots.add(new Slot("modification_date", Arrays.asList(
         new String[]{Utility.getDate()})));
     // Register static metadata as slots
