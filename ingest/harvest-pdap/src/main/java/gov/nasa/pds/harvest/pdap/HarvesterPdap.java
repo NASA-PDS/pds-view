@@ -185,7 +185,7 @@ public class HarvesterPdap {
               continue;
             }
             try {
-              String resourceLid = Constants.RESOURCE_PREFIX + "." + datasetId;
+              String resourceLid = createLid(Constants.RESOURCE_PREFIX, datasetId);
               String resourceLidvid = resourceLid + "::1.0";
               if (registryService.hasProduct(resourceLid, "1.0")) {
                 log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
