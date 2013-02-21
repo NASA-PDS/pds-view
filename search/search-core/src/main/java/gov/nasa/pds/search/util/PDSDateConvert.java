@@ -22,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * The DateTimeConverter class is necessary to convert PDS4-compliant date/time
@@ -66,9 +67,10 @@ public class PDSDateConvert {
 	 */
 	public static String convert(String name, String input) throws Exception {
 		SimpleDateFormat newFrmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
-		String datetime = input.toUpperCase().replaceAll("Z", "")
-				.replace("PROCESSING__", "");
+		newFrmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+		newFrmt.setLenient(false);
+		String datetime = input.toUpperCase().replaceAll("Z", "").replace("PROCESSING__", "");
+		
 
 		// String to hold negative sign if datetime starts with a "-" ,
 		// designating BC
