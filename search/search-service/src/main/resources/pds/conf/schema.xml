@@ -604,7 +604,7 @@
    <field name="observation_start_date_time" type="date" indexed="true" stored="true" multiValued="false" />
    <field name="observation_stop_date_time" type="date" indexed="true" stored="true" multiValued="false" />
    <field name="observing_system_name" type="text" indexed="true" stored="true" multiValued="true" />
-   <field name="observing_system_component_name" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="observing_system_component" type="text" indexed="true" stored="true" multiValued="true" />
    <field name="pds_model_version" type="text" indexed="true" stored="true" multiValued="false" />
    <field name="primary_result_data_regime" type="text" indexed="false" stored="true" multiValued="true" />
    <field name="primary_result_description" type="text" indexed="false" stored="true" multiValued="false" />
@@ -634,14 +634,13 @@
    <field name="title" type="text" indexed="true" stored="true" />
    <field name="version_id" type="text" indexed="false" stored="true" multiValued="false" />
    
-   <field name="observing-system" type="text_lc" indexed="true" stored="false" multiValued="true" />
-   
    <!-- A few aliases of the fields above, filled in via copyField, below -->
    <field name="target" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="instrument" type="text" indexed="true" stored="false" multiValued="true" />
    <field name="agency" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="mission" type="text" indexed="true" stored="false" multiValued="true" />
    <field name="investigation" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="observing-system" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="person" type="text" indexed="true" stored="false" multiValued="true" />
    <field name="product-class" type="string" indexed="true" stored="false" />
    <field name="stop-time" type="date" indexed="true" stored="false" />
@@ -756,7 +755,7 @@
   <!-- copyField commands copy one field to another at the time a document
     is added to the index.  It's used either to index the same field differently,
     or to add multiple fields to the same field for easier/faster searching.  -->
-  <copyField source="title" dest="text" />
+  <copyField source="agency_name" dest="text" />
   <copyField source="description" dest="text" />
   <copyField source="data_set_id" dest="text" />
   <copyField source="data_set_desc" dest="text" />
@@ -769,8 +768,9 @@
   <copyField source="mission_desc" dest="text" />
   <copyField source="mission_name" dest="text" />
   <copyField source="mission_name_or_alias" dest="text" />
+  <copyField source="observing_system_name" dest="text" />
   <copyField source="target_name" dest="text" />
-  <copyField source="agency_name" dest="text" />
+  <copyField source="title" dest="text" />
   
   <!-- Now a few indexed aliases -->
   <copyField source="target_name" dest="target" />
@@ -779,6 +779,7 @@
   <copyField source="instrument_name" dest="instrument" />
   <copyField source="instrument_id" dest="instrument" />
   <copyField source="mission_name" dest="investigation" />
+  <copyField source="observing_system_name" dest="observing-system" />
   <copyField source="full_name" dest="person" />
   <copyField source="resClass" dest="product-class" />
   <copyField source="stop_time" dest="stop-time" />

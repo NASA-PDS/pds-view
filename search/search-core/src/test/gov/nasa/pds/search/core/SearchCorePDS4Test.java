@@ -13,7 +13,6 @@
 //	'$'Id
 //
 package gov.nasa.pds.search.core;
-import gov.nasa.pds.search.core.constants.TestConstants;
 
 import java.io.File;
 
@@ -29,7 +28,7 @@ public class SearchCorePDS4Test extends TestCase {
 	public static final String PDS4_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry-phx";
 	
 	/** Search Service Solr URL **/
-	public static final String SOLR_SERVER_URL="http://pdsdev.jpl.nasa.gov:8080/search-service/pds";
+	public static final String SOLR_SERVER_URL="http://localhost:8080/search-service/pds";
 	
 	/** Relative Search Service Directory Path for testing locally **/
 	public static final String SEARCH_HOME_RELATIVE="./target/test";

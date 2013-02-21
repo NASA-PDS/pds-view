@@ -24,7 +24,7 @@ public class SearchCorePDS3Test extends TestCase {
 	
     /**
      * Test End-To-End with PDS Data, relative paths and max query = 5
-     * @throws Exception 
+     * @throws Exception
      */
     public void testExtractorRelative() {
     	try {

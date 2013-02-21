@@ -116,9 +116,9 @@
 		<value>observing_system_name</value>
 	</field>
 	<field>
-		<name>observing_system_component_name</name>
+		<name>observing_system_component</name>
 		<type>slot</type>
-		<value>observing_system_component_name</value>
+		<value>observing_system_component</value>
 	</field>
 	<field>
 		<name>target_name</name>

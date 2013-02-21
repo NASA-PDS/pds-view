@@ -126,9 +126,9 @@
 		<value>observing_system_name</value>
 	</field>
 	<field>
-		<name>observing_system_component_name</name>
+		<name>observing_system_component</name>
 		<type>slot</type>
-		<value>observing_system_component_name</value>
+		<value>observing_system_component</value>
 	</field>
 	<field>
 		<name>target_name</name>
@@ -144,11 +144,6 @@
 		<name>collection_type</name>
 		<type>slot</type>
 		<value>collection_type</value>
-	</field>
-	<field>
-		<name>collection_name</name>
-		<type>association</type>
-		<value>collection_ref.name</value>
 	</field>
 	<field>
 		<name>collection_ref</name>

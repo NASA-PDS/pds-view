@@ -1,2 +1,2 @@
-registry.extractor.DataSet = psa_dataset.xml
+registry.extractor.DataSet = psa-dataset.xml
 

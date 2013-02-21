@@ -142,10 +142,12 @@ public class PDSSearchProtocol extends StandardRequestHandler {
       if (queryString.length() != 0) {
         queryString.append(" ");
       }
+      //queryString.append("(");
       queryString.append(request.getOriginalParams().getParams(QUERY_PARAM)[0]);
+      //queryString.append(")");
     }
 
-    // If there is a query pass it on to Solr as the q param
+    // If there is a query pass it onto Solr as the q param
     if (queryString.length() > 0) {
       pdsParams.remove("q");
       pdsParams.add("q", queryString.toString());

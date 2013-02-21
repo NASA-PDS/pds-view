@@ -59,11 +59,7 @@ public class SearchFields {
 		}
 	}
 
-	private void setAttrInfo() {
-		String tValue;
-		String name;
-		String index;
-
+	private void setAttrInfo() throws ProductClassException {
 		NodeList columnList = this.doc.getElementsByTagName("field");
 
 		this.attrNames = new ArrayList();
@@ -94,8 +90,7 @@ public class SearchFields {
 				}
 			}
 		} catch (NullPointerException e) {
-			e.printStackTrace();
-			System.err.println("Error: A tag in class XML file contains no text node.");
+			throw new ProductClassException("Error: A tag in class XML file contains no text node.");
 		}
 	}
 

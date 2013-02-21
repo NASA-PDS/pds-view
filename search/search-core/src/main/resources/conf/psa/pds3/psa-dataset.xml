@@ -117,7 +117,7 @@
 	<field>
 		<name>data_set_terse_desc</name>
 		<type>out</type>
-		<value></value>
+		<value>UNK</value>
 	</field>
 	<field>
 		<name>data_set_id</name>

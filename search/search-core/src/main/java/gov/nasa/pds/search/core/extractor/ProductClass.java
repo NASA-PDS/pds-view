@@ -49,7 +49,7 @@ public class ProductClass {
 	private static final int OUT_SEQ_START = 10000;
 
 	/** Turns debugger on/off for this class */
-	private boolean debug = false;
+	private boolean debug = true;
 
 	/** Product class name **/
 	private String classname;
@@ -368,16 +368,12 @@ public class ProductClass {
 
 			this.log.warning("***** BAD LIDVID - " + assocLid + " -- "
 					+ version);
-		}/* else {
-			version = "1.0";
-		}*/
-
+		}
+		
+		List<ExtrinsicObject> results = new ArrayList<ExtrinsicObject>();
 		try {
-			List<ExtrinsicObject> results = null;
 			RegistryClient client = new RegistryClient(this.registryUrl);
 			// securityContext, user, password);
-
-			results = new ArrayList<ExtrinsicObject>();
 			
 
 			if (version != null) {
@@ -413,18 +409,16 @@ public class ProductClass {
 					}
 				}
 			} else {
-				 ExtrinsicObject extrinsic = client.getLatestObject(assocLid, ExtrinsicObject.class);
-				 debug("Adding associated extrinsic - " + extrinsic.getLid());
-				 results.add(extrinsic);
+				ExtrinsicObject extrinsic = client.getLatestObject(assocLid, ExtrinsicObject.class);
+				debug("Adding associated extrinsic - " + extrinsic.getLid());
+				results.add(extrinsic); 	
 			}
-
-			return results;
 		} catch (RegistryServiceException rse) {
-			// Ignore. Nothing found.
+			debug("LID not found: " + assocLid);
 		} catch (RegistryClientException rce) {
 			throw new Exception(rce.getMessage());
 		}
-		return null;
+		return results;
 	}
 
 	/**
@@ -632,10 +626,7 @@ public class ProductClass {
 							extObject).get(0);
 				}
 
-				str = str.replace('#', '&').replace(
-						"{" + key + "}",
-						URLEncoder
-								.encode(((tval == null) ? "" : tval), "UTF-8"));
+				str = str.replace('#', '&').replace("{" + key + "}",URLEncoder.encode(((tval == null) ? "" : tval), "UTF-8"));
 			}
 		} catch (NullPointerException e) { // Associated Extrinsic Object does
 											// not have the slot requested
@@ -655,12 +646,16 @@ public class ProductClass {
 	 * @throws RegistryClientException 
 	 * @throws RegistryServiceException 
 	 */
-	private String checkRef(String value, String registryRef) throws RegistryClientException, RegistryServiceException {
+	private String checkRef(String value, String registryRef) throws RegistryClientException {
 		if (registryRef.contains("_ref")) {
-			if (!value.contains("::")) {
-				RegistryClient client = new RegistryClient(this.registryUrl);
-				String version = client.getLatestObject(value, ExtrinsicObject.class).getSlot(Constants.VERSION_ID_SLOT).getValues().get(0);
-				value += "::" + version;
+			try {
+				if (!value.contains("::")) {
+					RegistryClient client = new RegistryClient(this.registryUrl);
+					String version = client.getLatestObject(value, ExtrinsicObject.class).getSlot(Constants.VERSION_ID_SLOT).getValues().get(0);
+					value += "::" + version;
+				}
+			} catch (RegistryServiceException e) {	// Case when association is not found, append version 1.0
+				// If ref isn't found, do not append a version.
 			}
 		}
 		
