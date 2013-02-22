@@ -14,6 +14,8 @@
 //
 package gov.nasa.pds.search.core;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 
 import junit.framework.TestCase;
@@ -21,8 +23,9 @@ import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 
-public class SearchCorePDS4Test extends TestCase {
+public class SearchCorePDS4Test{
 
 	/** Registry URL for PDS4 Products used for testing purposes **/
 	public static final String PDS4_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry-phx";
@@ -50,9 +53,10 @@ public class SearchCorePDS4Test extends TestCase {
      * Test End-To-End with PDS Data, relative paths and max query = 5
      * @throws Exception 
      */
+	@Test
     public void testCorePDS4() {
     	try {
-	    	String[] args = { "-r", PDS4_REGISTRY_URL, 
+	    	String[] args = { "-d", "-r", PDS4_REGISTRY_URL, 
 	    			"-H", SEARCH_HOME_RELATIVE, 
 	    			"-m", "5", 
 	    			"-c", CONFIG_DIR_RELATIVE + "pds/pds4", };

@@ -1,19 +1,18 @@
 package gov.nasa.pds.search.core;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 
 import gov.nasa.pds.search.core.SearchCoreLauncher;
 import gov.nasa.pds.search.core.constants.TestConstants;
-
-//JUnit imports
-import junit.framework.TestCase;
 
 /**
  * Tests SearchCoreLauncher CLI for proper behavior
@@ -21,7 +20,7 @@ import junit.framework.TestCase;
  * @author jpadams
  *
  */
-public class SearchCoreLauncherTest extends TestCase {
+public class SearchCoreLauncherTest {
 	
 	@Before public void setUp() {
 		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
@@ -54,7 +53,7 @@ public class SearchCoreLauncherTest extends TestCase {
 	    String[] args = { "-H", TestConstants.SEARCH_HOME_RELATIVE, 
 	    		"-e", 
 	    		"-m", "5", 
-	    		"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds" };
+	    		"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3" };
 	    try {
 	    	SearchCoreLauncher.main(args);
 	    	fail("Allows for registry not specified");
@@ -69,7 +68,7 @@ public class SearchCoreLauncherTest extends TestCase {
         String[] args = { "-H", TestConstants.SEARCH_HOME_RELATIVE, 
         		"-e", 
         		"-m", "5", 
-        		"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds", 
+        		"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3", 
         		"-x" };
         try {
         	SearchCoreLauncher.main(args);
@@ -88,7 +87,7 @@ public class SearchCoreLauncherTest extends TestCase {
 	    			"-H", System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-e", 
 	    			"-m", "5", 
-	    			"-c", System.getProperty("user.dir") + "/" + TestConstants.CONFIG_DIR_RELATIVE + "pds", };
+	    			"-c", System.getProperty("user.dir") + "/" + TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3", };
 	    	SearchCoreLauncher.main(args);
     	} catch (Exception e) {
     		fail("Registry Extractor with Absolute Paths failed: " + e.getMessage());
@@ -106,7 +105,7 @@ public class SearchCoreLauncherTest extends TestCase {
 	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-e", 
 	    			"-m", "5", 
-	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds", };
+	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3", };
 	    	SearchCoreLauncher.main(args);
 		} catch (Exception e) {
 			fail("Registry Extractor with Relative Paths failed: " + e.getMessage());
@@ -116,6 +115,7 @@ public class SearchCoreLauncherTest extends TestCase {
     /**
      * Test SearchCoreLauncher with a Search Core properties file.
      */
+    @Test
     public void testProps() {
 		try {
 			File tempFile = new File(TestConstants.SEARCH_HOME_RELATIVE + "/temp_props.properties");
@@ -123,19 +123,18 @@ public class SearchCoreLauncherTest extends TestCase {
 			PrintWriter writer = new PrintWriter(tempFile);
 	    	writer.write("search.core.search-home = " + TestConstants.SEARCH_HOME_RELATIVE + "\n"
 	    			+ "search.core.registry-url = " + TestConstants.PDS3_REGISTRY_URL + "\n"
-	    			+ "search.core.config-home = "+ TestConstants.CONFIG_DIR_RELATIVE + "pds");
+	    			+ "search.core.config-home = "+ TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3");
 	    	writer.flush();
 	    	writer.close();
 	    	
-	    	String[] args = { "-p", tempFile.getAbsolutePath(), 
+	    	String[] args = { "-d", "-p", tempFile.getAbsolutePath(), 
 	    			"-m", "1" 
 	    			};
 	    	SearchCoreLauncher.main(args);
 	    	
 	    	FileUtils.forceDelete(new File(TestConstants.SEARCH_HOME_RELATIVE + "/temp_props.properties"));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail(e.getCause() + " - " + e.getMessage());
 		}
     	
     }

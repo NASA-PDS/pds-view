@@ -1,5 +1,6 @@
 package gov.nasa.pds.search.core;
 
+import static org.junit.Assert.*;
 import gov.nasa.pds.search.core.constants.TestConstants;
 
 import java.io.File;
@@ -9,8 +10,9 @@ import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 
-public class SearchCorePDS3Test extends TestCase {
+public class SearchCorePDS3Test{
 
 	@Before public void setUp() {
 		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
@@ -26,9 +28,10 @@ public class SearchCorePDS3Test extends TestCase {
      * Test End-To-End with PDS Data, relative paths and max query = 5
      * @throws Exception
      */
+	@Test
     public void testExtractorRelative() {
     	try {
-	    	String[] args = { "-r", TestConstants.PDS3_REGISTRY_URL, 
+	    	String[] args = { "-d", "-r", TestConstants.PDS3_REGISTRY_URL, 
 	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-m", "5", 
 	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3", };

@@ -21,6 +21,7 @@ import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.extractor.RegistryExtractor;
 import gov.nasa.pds.search.core.indexer.pds.Indexer;
 import gov.nasa.pds.search.core.indexer.solr.SolrIndexer;
+import gov.nasa.pds.search.util.Debugger;
 import gov.nasa.pds.search.util.PropertiesUtil;
 import gov.nasa.pds.search.util.ToolInfo;
 
@@ -78,9 +79,6 @@ public class SearchCoreLauncher {
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#SOLR **/
 	private boolean solrFlag;
 
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#DEBUG **/
-	private boolean debug;
-
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#CLEAN **/
 	private boolean clean;
 
@@ -109,7 +107,6 @@ public class SearchCoreLauncher {
 		this.allFlag = true;
 		this.extractorFlag = false;
 		this.solrFlag = false;
-		this.debug = false;
 		this.clean = true;
 
 		this.queryMax = -1;
@@ -119,6 +116,8 @@ public class SearchCoreLauncher {
 		this.registryUrlList = new ArrayList<String>();
 		this.configHomeList = new ArrayList<String>();
 		this.propsFilesList = new ArrayList<File>();
+		
+		Debugger.debugFlag = false; 
 	}
 
 	/**
@@ -191,7 +190,10 @@ public class SearchCoreLauncher {
 				this.solrFlag = true;
 				this.allFlag = false;
 			} else if (o.getOpt().equals(Flag.DEBUG.getShortName())) {
-				this.debug = true;
+				Debugger.debugFlag = true;
+				Debugger.debug("-------------------------------");
+				Debugger.debug("---- RUNNING IN DEBUG MODE ----");
+				Debugger.debug("-------------------------------");
 			} else if (o.getOpt().equals(Flag.REGISTRY.getShortName())) {
 				this.registryUrlList = o.getValuesList();
 			} else if (o.getOpt().equals(Flag.SEARCH_HOME.getShortName())) {

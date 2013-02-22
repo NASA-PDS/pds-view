@@ -38,7 +38,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
  */
 public class SolrIndexer {
 
-	private static final int INDEX_DOC_THRESHOLD = 2000;
+	private static final int INDEX_DOC_THRESHOLD = 1000;
 
 	private static int totalIndexDocCount;
 	private static String searchServiceIndexHome;

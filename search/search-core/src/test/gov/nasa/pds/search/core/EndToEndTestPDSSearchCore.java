@@ -35,10 +35,10 @@ public class EndToEndTestPDSSearchCore extends TestCase {
      */
     public void testPDSEndToEnd() {
     	try {
-	    	String[] args = { "-r", TestConstants.PDS3_REGISTRY_URL, 
+	    	String[] args = { "-d", "-r", TestConstants.PDS3_REGISTRY_URL, 
 	    			"-H", System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-m", "5",
-	    			"-c", System.getProperty("user.dir") + "/" + TestConstants.CONFIG_DIR_RELATIVE + "pds", };
+	    			"-c", System.getProperty("user.dir") + "/" + TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3", };
 	    	SearchCoreLauncher.main(args);
     	} catch (Exception e) {
     		fail("Registry Extractor with Absolute Paths failed: " + e.getMessage());

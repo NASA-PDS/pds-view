@@ -7,6 +7,7 @@
 package gov.nasa.pds.search.core.indexer.solr;
 
 import gov.nasa.pds.search.core.constants.Constants;
+import gov.nasa.pds.search.util.InvalidDatetimeException;
 import gov.nasa.pds.search.util.PDSDateConvert;
 
 import java.io.File;
@@ -101,8 +102,7 @@ public class DocumentParser {
 	 *         ready for SOLR.
 	 * @throws ParseException
 	 */
-	private static StringBuffer retrieveMetadata(org.w3c.dom.Document document)
-			throws Exception {
+	private static StringBuffer retrieveMetadata(org.w3c.dom.Document document) {
 		StringBuffer indexDoc = new StringBuffer();
 		Element root = document.getDocumentElement();
 		NodeList children = root.getChildNodes();
@@ -135,10 +135,12 @@ public class DocumentParser {
 									.contains(value)) {
 						invalidDoc = true;
 					} else if (name.endsWith("date") || name.endsWith("time")) {
-						// System.out.println(name + " - " + value);
-						value = PDSDateConvert.convert(name, value);
-						// System.out.println("CONVERTED " + name + " - " +
-						// value);
+						try {
+							value = PDSDateConvert.convert(name, value);
+						} catch (InvalidDatetimeException e) {
+							System.err.println(e.getMessage() + " - " + name);
+							value = PDSDateConvert.getDefaultTime(name);
+						}
 
 						appendStr = "<field name=\"" + name + "\">" + value
 								+ "</field>\n";

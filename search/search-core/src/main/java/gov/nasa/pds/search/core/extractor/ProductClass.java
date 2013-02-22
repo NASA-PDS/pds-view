@@ -26,6 +26,7 @@ import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.extractor.registry.MappingTypes;
 import gov.nasa.pds.search.core.extractor.registry.RegistryAttributes;
+import gov.nasa.pds.search.util.Debugger;
 import gov.nasa.pds.search.util.XMLWriter;
 
 import java.io.File;
@@ -47,9 +48,6 @@ public class ProductClass {
 
 	/** Default start number to be appended to output files */
 	private static final int OUT_SEQ_START = 10000;
-
-	/** Turns debugger on/off for this class */
-	private boolean debug = true;
 
 	/** Product class name **/
 	private String classname;
@@ -141,7 +139,7 @@ public class ProductClass {
 		int outSeqNum = getOutputSeqNumber(outputDir);
 		// int outSeqNum = OUT_SEQ_START;
 
-		debug("Starting with outSeqNum: " + outSeqNum);
+		Debugger.debug("Starting with outSeqNum: " + outSeqNum);
 
 		this.searchFields = new SearchFields(this.classFilename);
 
@@ -160,7 +158,7 @@ public class ProductClass {
 						outSeqNum, this.classname);
 				writer.write();
 
-				debug("----- Finished for " + extObj.getLid() + " -----\n\n");
+				Debugger.debug("----- Finished for " + extObj.getLid() + " -----\n\n");
 			}
 
 			displayWarnings();
@@ -250,7 +248,7 @@ public class ProductClass {
 
 					String assocType = values[0];
 
-					debug("Getting associations for " + extObject.getLid()
+					Debugger.debug("Getting associations for " + extObject.getLid()
 							+ " - " + currVal);
 					this.finalVals.put(
 							currName,
@@ -292,7 +290,7 @@ public class ProductClass {
 			throws Exception {
 		// Build the filter
 		//ExtrinsicFilter filter;
-		debug("----- " + this.searchFields.getObjectName() + " -----");
+		Debugger.debug("----- " + this.searchFields.getObjectName() + " -----");
 		ExtrinsicFilter filter = new ExtrinsicFilter.Builder().objectType(
 				this.searchFields.getObjectType()).name(this.searchFields.getObjectName()).build();
 
@@ -315,7 +313,7 @@ public class ProductClass {
 				String lid;
 				for (ExtrinsicObject extrinsic : pr.getResults()) {
 					lid = extrinsic.getLid();
-					debug("\n\n----- " + lid + " -----");
+					Debugger.debug("\n\n----- " + lid + " -----");
 
 					// Use list to verify we haven't already included this
 					// product in the results
@@ -356,7 +354,7 @@ public class ProductClass {
 		List<String> lidList = Arrays.asList(lidvid.split("::"));
 		assocLid = lidList.get(0);
 
-		debug("Associated LID: " + assocLid);
+		Debugger.debug("Associated LID: " + assocLid);
 
 		if (lidList.size() > 1) {
 			version = lidList.get(1);
@@ -401,7 +399,7 @@ public class ProductClass {
 
 						if (versionIdSlot != null) {
 							if (versionIdSlot.getValues().get(0).equals(version)) {
-								debug("Adding associated extrinsic - "
+								Debugger.debug("Adding associated extrinsic - "
 										+ extrinsic.getLid());
 								results.add(extrinsic);
 							}
@@ -410,11 +408,11 @@ public class ProductClass {
 				}
 			} else {
 				ExtrinsicObject extrinsic = client.getLatestObject(assocLid, ExtrinsicObject.class);
-				debug("Adding associated extrinsic - " + extrinsic.getLid());
+				Debugger.debug("Adding associated extrinsic - " + extrinsic.getLid());
 				results.add(extrinsic); 	
 			}
 		} catch (RegistryServiceException rse) {
-			debug("LID not found: " + assocLid);
+			Debugger.debug("LID not found: " + assocLid);
 		} catch (RegistryClientException rce) {
 			throw new Exception(rce.getMessage());
 		}
@@ -517,7 +515,7 @@ public class ProductClass {
 		// for (Association association : (List<Association>) assocResponse
 		if (assocObjSlot != null) {
 			for (String assocLidVid : assocObjSlot.getValues()) {
-				debug("Associated lidvid - " + assocLidVid);
+				Debugger.debug("Associated lidvid - " + assocLidVid);
 				List<ExtrinsicObject> extList = getAssociatedExtrinsics(assocLidVid);
 
 				if (extList.size() != 0) {
@@ -681,17 +679,6 @@ public class ProductClass {
 			return "UNK";
 		}
 		return s1;
-	}
-
-	/**
-	 * Simple debug class to help track a lot of the functionality
-	 * 
-	 * @param msg
-	 */
-	private void debug(String msg) {
-		if (this.debug) {
-			System.out.println(msg);
-		}
 	}
 
 }

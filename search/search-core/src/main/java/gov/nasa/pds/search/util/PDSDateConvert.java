@@ -1,4 +1,4 @@
-//	Copyright 2009-2012, by the California Institute of Technology.
+//	Copyright 2009-2013, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -65,11 +65,11 @@ public class PDSDateConvert {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static String convert(String name, String input) throws Exception {
+	public static String convert(String name, String input) throws InvalidDatetimeException {
 		SimpleDateFormat newFrmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		newFrmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+		//newFrmt.setTimeZone(TimeZone.getTimeZone("GMT"));
 		newFrmt.setLenient(false);
-		String datetime = input.toUpperCase().replaceAll("Z", "").replace("PROCESSING__", "");
+		String datetime = input.toUpperCase().replaceAll("Z", ""); //.replace("PROCESSING__", "");
 		
 
 		// String to hold negative sign if datetime starts with a "-" ,
@@ -86,8 +86,9 @@ public class PDSDateConvert {
 			return getDefaultTime(name);
 		} else if (datetime.equals("TBD") || datetime.equals("NOT_APPLICABLE")
 				|| datetime.matches("[A-Z]*")) {
-			recordInvalidDate(datetime);
-			return getDefaultTime(name);
+			throw new InvalidDatetimeException("Invalid datetime value: " + datetime);
+			//recordInvalidDate(datetime);
+			//return getDefaultTime(name);
 		} else if (datetime.contains("_")) { // TODO Should we replace this or
 												// throw error?
 			// recordInvalidDate(datetime);
@@ -108,12 +109,14 @@ public class PDSDateConvert {
 					return prefix
 							+ newFrmt.format(parseDate(strFrmt, datetime))
 							+ milliseconds;
-				} catch (ParseException e) { /* Ignore then parse fails */
+				} catch (ParseException e) {
+					 /* Ignore parse failures */
 				}
 			}
 		} else {
 			Date outputDate = null;
 			int dtLength = datetime.length();
+			try {
 			if (dtLength == POS_YMD_FORMAT.length()
 					|| dtLength == POS_YMD_FORMAT.length() - 1) {
 				outputDate = parseDate(POS_YMD_FORMAT, datetime);
@@ -124,6 +127,9 @@ public class PDSDateConvert {
 			} else if (dtLength == POS_Y_FORMAT.length()) {
 				outputDate = parseDate(POS_Y_FORMAT, datetime);
 			}
+			} catch (ParseException e) {
+				throw new InvalidDatetimeException("Unknown date format for datetime: " + datetime);
+			}
 
 			if (outputDate != null) {
 				return prefix + newFrmt.format(outputDate) + milliseconds;
@@ -133,9 +139,8 @@ public class PDSDateConvert {
 		// Remaining formats are invalid or not captured
 
 		// TODO Throw error instead of returning default
-		recordInvalidDate(input);
-		// throw new Exception("Bad Date Value: " + input);
-		return getDefaultTime(name);
+		//recordInvalidDate(input);
+		throw new InvalidDatetimeException("Unknown date format for datetime: " + datetime);
 	}
 
 	/**
@@ -182,15 +187,6 @@ public class PDSDateConvert {
 	}
 
 	/**
-	 * Capture Invalid Dates
-	 * 
-	 * @param datetime
-	 */
-	private static void recordInvalidDate(String datetime) {
-		System.out.println("Ignoring Invalid Date Value: " + datetime);
-	}
-
-	/**
 	 * Get a default time depending on the name of the field. "start" fields
 	 * will receive an "early" default, while remaining fields will receive a
 	 * default in the future.
@@ -198,7 +194,7 @@ public class PDSDateConvert {
 	 * @param name
 	 * @return
 	 */
-	private static String getDefaultTime(String name) {
+	public static String getDefaultTime(String name) {
 		if (name.toLowerCase().contains("start")) {
 			return Constants.DEFAULT_STARTTIME;
 		} else {

@@ -1,24 +1,28 @@
 package gov.nasa.pds.search.core.util;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
+import junit.framework.Assert;
+
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
 import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.constants.TestConstants;
 import gov.nasa.pds.search.util.PDSDateConvert;
-import junit.framework.TestCase;
 
 /**
  * Test PDSDateConvert to verify expected output is being produced
  * @author jpadams
  * 
  */
-public class PDSDateConvertTest extends TestCase {
+public class PDSDateConvertTest {
 	
 	/** Maps possible input to expected output */
 	private Map<String, String> timeMap;
@@ -26,10 +30,11 @@ public class PDSDateConvertTest extends TestCase {
 	/**
 	 * Set up map of possible inputs and correct output for testing
 	 */
-	@Before final public void setUp() {
+	@Before
+	final public void setUp() {
 		this.timeMap = new HashMap<String, String>();
-		this.timeMap.put("processing__unk", Constants.DEFAULT_STOPTIME);
-		this.timeMap.put("processing__1988-08-01", "1988-08-01T00:00:00.000Z");
+		//this.timeMap.put("processing__unk", Constants.DEFAULT_STOPTIME);
+		//this.timeMap.put("processing__1988-08-01", "1988-08-01T00:00:00.000Z");
 		this.timeMap.put("1999", "1999-01-01T00:00:00.000Z");
 		this.timeMap.put("2000-03", "2000-03-01T00:00:00.000Z");
 		this.timeMap.put("2000-003", "2000-01-03T00:00:00.000Z");
@@ -89,25 +94,30 @@ public class PDSDateConvertTest extends TestCase {
 	/**
 	 * Clear the time map
 	 */
-	@After final public void tearDown() {
+	@After
+	final public void tearDown() {
 		this.timeMap.clear();
 	}
 	
 	/**
 	 * Loop through the time map and verify code is producing expected values
 	 */
+	@Test
 	public void testPDSDateConvertValid() {
 		
 		// Test Valid Values
 		try {
 			for (String inputDateTime : this.timeMap.keySet()) {
 				String outputDateTime = PDSDateConvert.convert("test", inputDateTime);
-				if (!outputDateTime.equals(this.timeMap.get(inputDateTime))) {
+				System.out.println("\n  Input   - " + inputDateTime 
+							+ "\n  Output  - " + outputDateTime);
+				/*if (!outputDateTime.equals(this.timeMap.get(inputDateTime))) {
 					fail("Invalid conversion."
 							+ "\n  Input   - " + inputDateTime 
 							+ "\n  Output  - " + outputDateTime
-							+ "\n  Correct - " + this.timeMap.get(inputDateTime));
-				}
+							+ "\n  Expected - " + this.timeMap.get(inputDateTime));
+				}*/
+				assertEquals(outputDateTime, this.timeMap.get(inputDateTime));
 			}
 		} catch (Exception e) {
 			fail("Exception: " + e.getMessage());
