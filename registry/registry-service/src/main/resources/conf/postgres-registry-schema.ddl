@@ -16,7 +16,8 @@
         associationType varchar(255),
         sourceObject varchar(255),
         targetObject varchar(255),
-        primary key (guid)
+        primary key (guid),
+        unique (lid, versionName)
     );
 
     create table Association_Classification (
@@ -53,7 +54,8 @@
         requestId varchar(255),
         timestamp timestamp,
         userid varchar(255),
-        primary key (guid)
+        primary key (guid),
+        unique (lid, versionName)
     );
 
     create table AuditableEvent_Classification (
@@ -90,7 +92,8 @@
         classificiationNode varchar(255),
         classifiedObject varchar(255),
         nodeRepresentation varchar(255),
-        primary key (guid)
+        primary key (guid),
+        unique (lid, versionName)
     );
 
     create table ClassificationNode (
@@ -105,7 +108,8 @@
         code varchar(255),
         parent varchar(255),
         path varchar(255),
-        primary key (guid)
+        primary key (guid),
+        unique (lid, versionName)
     );
 
     create table ClassificationNode_Classification (
@@ -140,7 +144,8 @@
         versionName varchar(255),
         isInternal bool,
         nodeType int4,
-        primary key (guid)
+        primary key (guid),
+        unique (lid, versionName)
     );
 
     create table ClassificationScheme_Classification (
@@ -197,7 +202,8 @@
         identificationScheme varchar(255),
         registryObject varchar(255),
         value varchar(255),
-        primary key (guid)
+        primary key (guid),
+        unique (lid, versionName)
     );
 
     create table ExternalIdentifier_Classification (
@@ -231,7 +237,8 @@
         status int4,
         versionName varchar(255),
         externalURI bytea,
-        primary key (guid)
+        primary key (guid),
+        unique (lid, versionName)
     );
 
     create table ExternalLink_Classification (
@@ -266,7 +273,8 @@
         versionName varchar(255),
         contentVersion varchar(255),
         mimeType varchar(255),
-        primary key (guid)
+        primary key (guid),
+        unique (lid, versionName)
     );
 
     create table ExtrinsicObject_Classification (
@@ -299,7 +307,8 @@
         objectType varchar(255),
         status int4,
         versionName varchar(255),
-        primary key (guid)
+        primary key (guid),
+        unique (lid, versionName)
     );
 
     create table RegistryPackage_Classification (
@@ -332,7 +341,8 @@
         objectType varchar(255),
         status int4,
         versionName varchar(255),
-        primary key (guid)
+        primary key (guid),
+        unique (lid, versionName)
     );
 
     create table ServiceBinding (
@@ -347,7 +357,8 @@
         accessURI varchar(255),
         service varchar(255),
         targetBinding varchar(255),
-        primary key (guid)
+        primary key (guid),
+        unique (lid, versionName)
     );
 
     create table ServiceBinding_Classification (
@@ -430,7 +441,8 @@
         serviceBinding varchar(255),
         specificationObject varchar(255),
         use_desc text,
-        primary key (guid)
+        primary key (guid),
+        unique (lid, versionName)
     );
 
     create table SpecificationLink_Classification (
