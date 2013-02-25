@@ -105,6 +105,8 @@ public class RegistryServiceImpl implements RegistryService {
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat(
       "yyyy-MM-dd'T'HH:mm:ss");
 
+  private HashMap<String, ClassificationNode> objectTypeCache = null;
+
   /*
    * (non-Javadoc)
    * 
@@ -271,7 +273,15 @@ public class RegistryServiceImpl implements RegistryService {
     }
     registryObject.setSlots(newSlots);
     this.validateObject(registryObject);
-    metadataStore.saveRegistryObject(registryObject);
+    // Constraints can throw a persistence exception
+    try {
+      metadataStore.saveRegistryObject(registryObject);
+    } catch (javax.persistence.PersistenceException pe) {
+      throw new RegistryServiceException("Registry object with logical id "
+          + referencedObject.getLid() + " and version name "
+          + referencedObject.getVersionName() + " already exists.",
+          ExceptionType.EXISTING_OBJECT);
+    }
     this.createAuditableEvent("versionObject " + referencedObject.getGuid()
         + " " + registryObject.getGuid(), user, EventType.Versioned, registryObject.getGuid(),
         registryObject.getClass());
@@ -585,7 +595,16 @@ public class RegistryServiceImpl implements RegistryService {
     }
     registryObject.setStatus(ObjectStatus.Submitted);
     this.validateObject(registryObject);
-    metadataStore.saveRegistryObject(registryObject);
+    
+    // Constraints can throw a persistence exception
+    try {
+      metadataStore.saveRegistryObject(registryObject);
+    } catch (javax.persistence.PersistenceException pe) {
+      throw new RegistryServiceException("Registry object with logical id "
+          + registryObject.getLid() + " and version name "
+          + registryObject.getVersionName() + " already exists.",
+          ExceptionType.EXISTING_OBJECT);
+    }
 
     if (packageId == null) {
       this.createAuditableEvent("publishObject " + registryObject.getGuid(),
@@ -646,18 +665,9 @@ public class RegistryServiceImpl implements RegistryService {
 
   private void validateObject(RegistryObject registryObject)
       throws RegistryServiceException {
-    // Check to see if object already exists
-    if (metadataStore.hasRegistryObject(registryObject.getLid(), registryObject
-        .getVersionName(), registryObject.getClass())) {
-      throw new RegistryServiceException("Registry object with logical id "
-          + registryObject.getLid() + " and version id "
-          + registryObject.getVersionName() + " already exists.",
-          ExceptionType.EXISTING_OBJECT);
-    }
     // Check object type
-    if (!metadataStore.hasClassificationNode(OBJECT_TYPE_SCHEME, registryObject
-        .getObjectType())
-        && !CORE_OBJECT_TYPES.contains(registryObject.getObjectType())) {
+    if (!validObjectType(registryObject
+        .getObjectType())) {
       throw new RegistryServiceException("Not a valid object type \""
           + registryObject.getObjectType() + "\"",
           ExceptionType.INVALID_REQUEST);
@@ -672,6 +682,24 @@ public class RegistryServiceImpl implements RegistryService {
     } else if (registryObject instanceof Service) {
       this.validateService((Service) registryObject);
     }
+  }
+  
+  private synchronized void loadObjectTypes() {
+    if (objectTypeCache == null) {
+      objectTypeCache = new HashMap<String, ClassificationNode>();
+      List<ClassificationNode> nodes  = metadataStore.getClassificationNodes(OBJECT_TYPE_SCHEME);
+      for (ClassificationNode node : nodes) {
+        objectTypeCache.put(node.getCode(), node);
+      }
+    }
+  }
+
+  private boolean validObjectType(String objectType) {
+    loadObjectTypes();
+    if (objectTypeCache.containsKey(objectType) || CORE_OBJECT_TYPES.contains(objectType)) {
+      return true;
+    }
+    return false;
   }
 
   private void validateExtrinsic(ExtrinsicObject object) {

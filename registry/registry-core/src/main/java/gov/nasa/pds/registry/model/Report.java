@@ -53,7 +53,7 @@ public class Report {
   private long packages;
   
   @XmlAttribute
-  private String registryVersion = "1.3.0";
+  private String registryVersion = "1.4.0";
 
   public Report() {
     serverStarted = new Date();
