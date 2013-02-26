@@ -39,8 +39,8 @@ if [ ! -f ${LIB_DIR}/catalog-*.jar ]; then
 fi
 
 if [ ! -f ${KEYSTORE} ]; then
-    echo "Cannot find keystore file: ${KEYSTORE}"
-    exit 1
+    echo "WARNING: Cannot find keystore file: ${KEYSTORE}."
+    #exit 1
 fi
 
 # Finds the jar file in LIB_DIR and sets it to CATALOG_JAR.

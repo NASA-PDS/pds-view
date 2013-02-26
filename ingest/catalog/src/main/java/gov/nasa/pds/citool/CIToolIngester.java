@@ -294,6 +294,12 @@ public class CIToolIngester {
 			for (String aFile : requiredFiles) {
 				if (storageAvailable) {
 					Product aProduct = getProductFromStorageService(aFile);
+					if (aProduct==null) {
+						System.err.println("Error: Catalog file (" + aFile + ") is missing in the archive volume and " + "" +
+								"can't get it from the storage service.");
+						System.exit(1);	
+					}
+				
 					productId = aProduct.getProductId();
 
 					// need to get a transport URL from the users
@@ -376,7 +382,7 @@ public class CIToolIngester {
     			else {
     				values = new ArrayList<String>();
     			}
-    			values.add(Constants.LID_PREFIX+"mission."+lidValue);
+    			values.add(Constants.LID_PREFIX+"investigation:mission."+lidValue);
     			refs.put(Constants.HAS_MISSION, values);
 
     			String key = "TARGET_NAME";
@@ -390,14 +396,14 @@ public class CIToolIngester {
     				List<String> tmpValues = md.getAllMetadata(key);
     				for (String aVal: tmpValues) {
     					lidValue = aVal;
-    					if (!valueExists(Constants.LID_PREFIX+"target."+lidValue, values))
-    						values.add(Constants.LID_PREFIX+"target."+lidValue);
+    					if (!valueExists(Constants.LID_PREFIX+"target:target."+lidValue, values))
+    						values.add(Constants.LID_PREFIX+"target:target."+lidValue);
     				}
     			}
     			else {
     				lidValue = md.getMetadata(key);
-    				if (!valueExists(Constants.LID_PREFIX+"target."+lidValue, values))
-    					values.add(Constants.LID_PREFIX+"target."+lidValue);              
+    				if (!valueExists(Constants.LID_PREFIX+"target:target."+lidValue, values))
+    					values.add(Constants.LID_PREFIX+"target:target."+lidValue);              
     			}
     			refs.put(Constants.HAS_TARGET, values);
     			
@@ -412,14 +418,14 @@ public class CIToolIngester {
     				List<String> tmpValues = md.getAllMetadata(key);
     				for (String aVal: tmpValues) {
     					lidValue = aVal;
-    					if (!valueExists(Constants.LID_PREFIX+"instrument_host."+lidValue, values))
-    						values.add(Constants.LID_PREFIX+"instrument_host."+lidValue);
+    					if (!valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
+    						values.add(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue);
     				}
     			}
     			else {
     				lidValue = md.getMetadata(key);
-    				if (!valueExists(Constants.LID_PREFIX+"instrument_host."+lidValue, values))
-    					values.add(Constants.LID_PREFIX+"instrument_host."+lidValue);              
+    				if (!valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
+    					values.add(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue);              
     			}
     			refs.put(Constants.HAS_INSTHOST, values);
     		}
@@ -435,8 +441,8 @@ public class CIToolIngester {
     			else {
     				values = new ArrayList<String>();
     			}
-    			if (!valueExists(Constants.LID_PREFIX+"data_set."+lidValue, values)) {
-    				values.add(Constants.LID_PREFIX+"data_set."+lidValue);
+    			if (!valueExists(Constants.LID_PREFIX+"data_set:data_set."+lidValue, values)) {
+    				values.add(Constants.LID_PREFIX+"data_set:data_set."+lidValue);
     			}
     			refs.put(Constants.HAS_DATASET, values);
     			
@@ -451,7 +457,7 @@ public class CIToolIngester {
     			else {
     				values = new ArrayList<String>();
     			}
-    			values.add(Constants.LID_PREFIX+"instrument."+lidValue+"__"+hostId);
+    			values.add(Constants.LID_PREFIX+"instrument:instrument."+lidValue+"__"+hostId);
     			refs.put(Constants.HAS_INST, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.INSTHOST_OBJ)) {
@@ -462,8 +468,8 @@ public class CIToolIngester {
     			else {
     				values = new ArrayList<String>();
     			}
-    			if (!valueExists(Constants.LID_PREFIX+"instrument_host."+lidValue, values))
-    				values.add(Constants.LID_PREFIX+"instrument_host."+lidValue);
+    			if (!valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
+    				values.add(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue);
     			refs.put(Constants.HAS_INSTHOST, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.TARGET_OBJ)) {
@@ -474,8 +480,8 @@ public class CIToolIngester {
     			else {
     				values = new ArrayList<String>();
     			}
-    			if (!valueExists(Constants.LID_PREFIX+"target."+lidValue, values))
-    				values.add(Constants.LID_PREFIX+"target."+lidValue);
+    			if (!valueExists(Constants.LID_PREFIX+"target:target."+lidValue, values))
+    				values.add(Constants.LID_PREFIX+"target:target."+lidValue);
     			refs.put(Constants.HAS_TARGET, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.RESOURCE_OBJ)) {
@@ -489,7 +495,7 @@ public class CIToolIngester {
     			else {
     				values = new ArrayList<String>();
     			}
-    			values.add(Constants.LID_PREFIX+"resource."+lidValue);
+    			values.add(Constants.LID_PREFIX+"resource:resource."+lidValue);
     			refs.put(Constants.HAS_RESOURCE, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.VOLUME_OBJ)) {
@@ -513,8 +519,8 @@ public class CIToolIngester {
     	    				lidValue = lidValue.replace('/', '-');
     	    			}
     					// shouldn't add if the value is already exists in the list
-    					if (!valueExists(Constants.LID_PREFIX+"data_set."+lidValue, values)) {
-    						values.add(Constants.LID_PREFIX+"data_set."+lidValue);
+    					if (!valueExists(Constants.LID_PREFIX+"data_set:data_set."+lidValue, values)) {
+    						values.add(Constants.LID_PREFIX+"data_set:data_set."+lidValue);
     					}
     				}
     			}
@@ -523,8 +529,8 @@ public class CIToolIngester {
     				if (lidValue.contains("/")) {
 	    				lidValue = lidValue.replace('/', '-');
 	    			}
-    				if (!valueExists(Constants.LID_PREFIX+"data_set."+lidValue, values)) {
-    					values.add(Constants.LID_PREFIX+"data_set."+lidValue);         
+    				if (!valueExists(Constants.LID_PREFIX+"data_set:data_set."+lidValue, values)) {
+    					values.add(Constants.LID_PREFIX+"data_set:data_set."+lidValue);         
     				}
     			}
     			refs.put(Constants.HAS_DATASET, values);

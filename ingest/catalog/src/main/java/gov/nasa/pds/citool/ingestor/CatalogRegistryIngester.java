@@ -409,7 +409,7 @@ public class CatalogRegistryIngester {
 		List<String> values = new ArrayList<String>();
 		/*
 		//this may slow down the processing 
-		String tmpLidVid = Constants.LID_PREFIX + "node." + value;
+		String tmpLidVid = Constants.LID_PREFIX + "node:node." + value;
 		if (getExtrinsic(tmpLidVid)!=null) {
 			tmpLidVid += "::" + getExtrinsic(tmpLidVid).getVersionName();
 		*/
@@ -465,27 +465,27 @@ public class CatalogRegistryIngester {
 				// need to replace empty space with _
 				if (value.contains(" "))
     				value = value.replace(' ', '_');
-				productLid = Constants.LID_PREFIX+"mission."+value;
+				productLid = Constants.LID_PREFIX+"investigation:mission."+value;
 				product.setLid(productLid);
 				product.setObjectType(Constants.MISSION_PROD);
 				product.setName(value);	
 			}
 			else if (objType.equalsIgnoreCase(Constants.TARGET_OBJ) && key.equals("TARGET_NAME")) {
 				// may need to replace " " to "_" ????
-				productLid = Constants.LID_PREFIX+"target."+value;
+				productLid = Constants.LID_PREFIX+"target:target."+value;
 				product.setLid(productLid);
 				product.setObjectType(Constants.TARGET_PROD);
 				product.setName(value);
 			}
 			else if (objType.equalsIgnoreCase(Constants.INST_OBJ) && key.equals("INSTRUMENT_ID")) {
 				String instHostId = md.getMetadata("INSTRUMENT_HOST_ID");
-				productLid = Constants.LID_PREFIX+"instrument."+value+"__" + instHostId;
+				productLid = Constants.LID_PREFIX+"instrument:instrument."+value+"__" + instHostId;
 				product.setLid(productLid);
 				product.setObjectType(Constants.INST_PROD);
 				product.setName(md.getMetadata("INSTRUMENT_NAME") + " for " + instHostId);
 			}
 			else if (objType.equalsIgnoreCase(Constants.INSTHOST_OBJ) && key.equals("INSTRUMENT_HOST_ID")) {
-				productLid = Constants.LID_PREFIX+"instrument_host."+value;
+				productLid = Constants.LID_PREFIX+"instrument_host:instrument_host."+value;
 				product.setLid(productLid);
 				product.setObjectType(Constants.INSTHOST_PROD);
 				product.setName(md.getMetadata("INSTRUMENT_HOST_NAME"));
@@ -496,7 +496,7 @@ public class CatalogRegistryIngester {
 				String tmpValue = null; 
 				if (value.contains("/"))
     				tmpValue = value.replace('/', '-');
-				productLid = Constants.LID_PREFIX+"data_set."+tmpValue;
+				productLid = Constants.LID_PREFIX+"data_set:data_set."+tmpValue;
 				product.setLid(productLid);
 				product.setObjectType(Constants.DS_PROD);
 			}
@@ -504,14 +504,14 @@ public class CatalogRegistryIngester {
 				///??? value should be "<DATA_SET_ID>__<RESOURCE_ID>????
 				if (value.contains("/"))
     				value = value.replace('/', '-');
-				productLid = Constants.LID_PREFIX+"resource."+value;
+				productLid = Constants.LID_PREFIX+"resource:resource."+value;
 				product.setLid(productLid);
 				product.setObjectType(Constants.RESOURCE_PROD);
 				product.setName(value); //need to get from RESOURCE_NAME????
 			}
 			else if (objType.equalsIgnoreCase(Constants.VOLUME_OBJ) && key.equals("VOLUME_ID")) {
 				String volumeSetId = md.getMetadata("VOLUME_SET_ID");
-				productLid = Constants.LID_PREFIX+"volume."+value+"__" + volumeSetId;
+				productLid = Constants.LID_PREFIX+"volume:volume."+value+"__" + volumeSetId;
 				product.setLid(productLid);
 				product.setObjectType(Constants.VOLUME_PROD);
 				product.setName(value);
@@ -519,7 +519,7 @@ public class CatalogRegistryIngester {
 			// how to handle multiple PERSONNEL objects????
 			/*
 			else if (objType.equalsIgnoreCase("PERSONNEL") && key.equals("PDS_USER_ID")) {
-				product.setLid(Constants.LID_PREFIX+"personnel."+value);
+				product.setLid(Constants.LID_PREFIX+"personnel:personnel."+value);
 				product.setObjectType(Constants.PERSON_PROD);
 				product.setName(value);
 			}
@@ -558,7 +558,7 @@ public class CatalogRegistryIngester {
 
 			// create "has_node" slot value
 			if (key.equals("CURATING_NODE_ID")) {
-				String tmpLidVid = Constants.LID_PREFIX + "node." + value;
+				String tmpLidVid = Constants.LID_PREFIX + "node:node." + value;
 				if (getExtrinsic(tmpLidVid) != null) {
 					tmpLidVid += "::" + getExtrinsic(tmpLidVid).getVersionName();
 					slots.add(new Slot(Constants.HAS_NODE, Arrays
