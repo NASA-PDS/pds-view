@@ -18,8 +18,7 @@
 
 <cas:producttypes xmlns:cas="http://oodt.jpl.nasa.gov/1.0/cas">
   <type id="urn:pds:CatalogFile" name="CatalogFile">
-    <repository path="file://[FILEMGR_HOME]/archive/CatalogFile"/>
-    <versioner class="org.apache.oodt.cas.filemgr.versioning.BasicVersioner"/>
+    <repository path="file://[FILEMGR_HOME]/archive/CatalogFile/[REPO_PATH]"/>
     <description>The product type for ingesting Catalog files.</description>
     <metadata>
       <keyval>
