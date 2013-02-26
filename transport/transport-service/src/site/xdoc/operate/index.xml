@@ -19,65 +19,32 @@
 <document>
   <properties>
     <title>Operation</title>
-    <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
-    <author email="Jordan.Padams@jpl.nasa.gov">Jordan Padams</author>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+	<author email="Michael.d.Cayanan@jpl.nasa.gov">Michael Caynan</author>
+	<author email="Luca.Cinquini@jpl.nasa.gov">Luca Cinquini</author>
   </properties>
 
   <body>
     <section name="Operation">
-      <p>The Search Service tool operates as a standalone web application on a Tomcat server.  Once it is deployed, operations include modifying the configuration and leveraging the PDS and PDAP protocols to query data and metadata that has been extracted from the Registry (see the <a href="../../search-core">Search Core</a> for more information).  The following topics will be covered below:
+      <p>The Transport Service tool operates as a standalone web application on a Tomcat server.  
+      Typically, it is invoked from hyperlinks that are embedded in the results returned by the Search Service, 
+      which may be running within the same Tomcat server or on a different server and host.
+      <br/>
+      The following topics will be covered below:
       </p>
       <ul>
         <li><a href="#Configuration">Configuration</a></li>
-        <li><a href="#Search_Protocols">Search Protocols</a></li>
-        <li><a href="#Common_Errors">Common Errors</a></li>
+        <li><a href="#Common_Errors">Common Problems</a></li>
       </ul>
     </section>
 
     <section name="Configuration">
-	See the <a href="http://lucene.apache.org/solr/">Apache Solr website</a> and <a href="http://wiki.apache.org/solr/">wiki</a> for more information on configuring Apache Solr.  More Search Service configuration changes TBD.
-    </section>
-
-    <section name="Search Protocols">
-      <subsection name="PDS Search Protocol">
-	<p>See the <a href="../../docs/pds2010_pds_search_protocol.pdf">PDS Search Protocol Document</a> for more information on querying the Search Service for PDS data and metadata.</p>
-      </subsection>
-      <subsection name="PDAP Protocol">
-	TBD
-      </subsection>
+		To serve products from a real production directory, you must edit the file <i>$PDS_HOME/config/ofsn-ps.xml</i>
+		and change the value of the "productRoot" attribute to the top-level directory containing your products.
     </section>
 
     <section name="Common Errors">
-      <subsection name="org.xml.sax.SAXParseException: A pseudo attribute name is expected.">
-	<p>This error usually means there is a typo in the Search Service Tomcat context file.  More specifically, make sure the first line in <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> matches this exactly:
-        </p>
-        <source>
-&lt;?xml version="1.0" encoding="utf-8" ?&gt;
-        </source>
-	See <a href="../install/index.html#Deploying_the_Application">Deploying the Application</a> in the Install Guide for more information on creating this file.
-      </subsection>
-      <subsection name="Provider net.sf.saxon.TransformerFactoryImpl not found">
-        <p>This error occurs when the saxon-9.jar is not in the classpath.  The following are mitigation strategies:</p>
-	<ul>
-	  <li>Verify the following line is in <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i>:
-	    <source>
-&lt;Loader className="org.apache.catalina.loader.VirtualWebappLoader" virtualClasspath="/usr/local/${project.artifactId}/lib/saxon-9.jar"/&gt;
-	    </source>
-	    See <a href="../install/index.html#Deploying_the_Application">Deploying the Application</a> in the Install Guide for more information on creating this file.
-	  </li>
-	  <li>Verify the path specified for virtualClasspath actually exists.</li>
-	</ul>
-      </subsection>
-      <subsection name="XSLT transformation error java.io.IOException: XSLT transformation error">
-        <p>This error occurs when the CATALINA_OPTS environment variable is not properly set, or set multiple times in /usr/local/tomcat/catalina.sh (or /etc/init.d):</p>
-        <source>
-export CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.pds.home=/usr/local/${project.artifactId}"
-        </source>
-      </subsection>
-      <subsection name="All Searches Return 0 Results">
-	<p>This error occurs when the Search Service is not populated with data.  See the <a href="../../search-core">Search Core</a> for information on populating the Search Service.</p>
-      </subsection>
+		TBD
     </section>
 
   </body>
