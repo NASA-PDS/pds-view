@@ -47,7 +47,7 @@ public class Constants {
     	  msnPds3ToRegistry.put("MISSION_DESCRIPTION", "mission_description");
     	  msnPds3ToRegistry.put("MISSION_OBJECTIVES_SUMMARY", "mission_objectives_summary");
     	  msnPds3ToRegistry.put("REFERENCE_DESCRIPTION", "external_reference_description");
-      }
+      }    	      
           
     public static final Map<String, String> dsPds3ToRegistry = 
       new LinkedHashMap<String, String>();     
@@ -134,4 +134,110 @@ public class Constants {
    		  //volumePds3ToRegistry.put("LABEL_REV_NOTE", "label_rev_note"
       }
       
+    public static final Map<String, String> bundlePds4ToRegistry = 
+      new LinkedHashMap<String, String>();
+      static {
+    	  bundlePds4ToRegistry.put("IDENTIFIER", "identifier");
+    	  bundlePds4ToRegistry.put("NAME", "title");
+    	  bundlePds4ToRegistry.put("TYPE", "bundle_type");
+    	  bundlePds4ToRegistry.put("DESCRIPTION", "bundle_description");
+      }
+    
+	public static final Map<String, String> bundlePds4ToSearch = new LinkedHashMap<String, String>();
+	static {
+		bundlePds4ToSearch.put("IDENTIFIER", "identifier");
+		bundlePds4ToSearch.put("NAME", "title");
+		bundlePds4ToSearch.put("TYPE", "bundle_type");
+		bundlePds4ToSearch.put("DESCRIPTION", "resource_class");
+	}
+    	      
+    public static final Map<String, String> bundleCitationPds4ToRegistry =
+      new LinkedHashMap<String, String>();
+      static {
+          bundleCitationPds4ToRegistry.put("AUTHOR LIST", "citation_author_list");
+	      bundleCitationPds4ToRegistry.put("EDITOR LIST", "citation_editor_list");
+	      bundleCitationPds4ToRegistry.put("PUBLICATION YEAR", "citation_publication_year");
+	      bundleCitationPds4ToRegistry.put("DESCRIPTION", "citation_description");
+      }
+      
+	public static final Map<String, String> bundleContextPds4ToRegistry = 
+	  new LinkedHashMap<String, String>();
+	  static {
+		  bundleContextPds4ToRegistry.put("START DATE TIME", "observation_start_date_time");
+    	  bundleContextPds4ToRegistry.put("STOP DATE_TIME", "observation_stop_date_time");
+    	  bundleContextPds4ToRegistry.put("LOCAL MEAN SOLAR TIME", "observation_local_mean_solar_time");
+    	  bundleContextPds4ToRegistry.put("LOCAL TRUE SOLAR TIME", "observation_local_true_solar_time");
+    	  bundleContextPds4ToRegistry.put("SOLAR LONGITUDE", "observation_solar_longitude");
+    	  bundleContextPds4ToRegistry.put("PRIMARY RESULT TYPE", "primary_result_type");
+    	  bundleContextPds4ToRegistry.put("PRIMARY RESULT PURPOSE", "primary_result_purpose");
+    	  bundleContextPds4ToRegistry.put("PRIMARY RESULT DATA REGIME", "primary_result_data_regime");
+    	  bundleContextPds4ToRegistry.put("PRIMARY RESULT DESCRIPTION", "primary_result_description");
+    	  bundleContextPds4ToRegistry.put("PRIMARY RESULT PROCESSING LEVEL", "primary_result_processing_level_id");
+    	  bundleContextPds4ToRegistry.put("INVESTIGATION NAME", "investigation_name");
+    	  //bundleContextPds4ToRegistry.put("INVESTIGATION NAME", "investigation_ref");
+    	  bundleContextPds4ToRegistry.put("OBSERVING SYSTEM NAME", "observing_system_name");
+    	  bundleContextPds4ToRegistry.put("OBSERVING SYSTEM COMPONENT NAME", "observing_system_component_name");
+    	  bundleContextPds4ToRegistry.put("TARGET NAME", "target_name");
+    	  //bundleContextPds4ToRegistry.put("TARGET NAME", "target_ref");
+	  }
+     
+    public static final Map<String, String> collectionPds4ToRegistry = 
+      new LinkedHashMap<String, String>();
+      static {
+    	  collectionPds4ToRegistry.put("IDENTIFIER", "identifier");
+    	  collectionPds4ToRegistry.put("NAME", "title");
+    	  collectionPds4ToRegistry.put("TYPE", "collection_type");    	  
+      }
+      
+	public static final Map<String, String> collectionPds4ToSearch = new LinkedHashMap<String, String>();
+	static {
+		collectionPds4ToSearch.put("IDENTIFIER", "identifier");
+		collectionPds4ToSearch.put("NAME", "title");
+		collectionPds4ToSearch.put("TYPE", "collection_type");
+	}
+	
+	public static final Map<String, String> targetPds4ToRegistry =
+			new LinkedHashMap<String, String>();	
+	static {
+		targetPds4ToRegistry.put("IDENTIFIER", "identifier");
+		targetPds4ToRegistry.put("NAME", "title");
+		targetPds4ToRegistry.put("TYPE" , "target_type");
+		targetPds4ToRegistry.put("DESCRIPTION", "target_description");
+		targetPds4ToRegistry.put("REFERENCES", "external_reference_description");
+	}
+	  
+	public static final Map<String, String> msnPds4ToRegistry = new LinkedHashMap<String, String>();
+	static {
+		msnPds4ToRegistry.put("IDENTIFIER", "identifier");
+		msnPds4ToRegistry.put("NAME", "investigation_name");
+		msnPds4ToRegistry.put("TYPE", "investigation_type");
+		msnPds4ToRegistry.put("DESCRIPTION", "investigation_description");
+		msnPds4ToRegistry.put("START DATE", "investigation_start_date");
+		msnPds4ToRegistry.put("STOP DATE", "investigation_stop_date");
+		msnPds4ToRegistry.put("REFERENCES", "external_reference_description");
+	}
+
+	public static final Map<String, String> instCtxPds4ToSearch = new LinkedHashMap<String, String>();
+	static {
+		instCtxPds4ToSearch.put("IDENTIFIER", "identifier");
+		instCtxPds4ToSearch.put("NAME", "instrument_name");
+		instCtxPds4ToSearch.put("TYPE", "instrument_type");
+		instCtxPds4ToSearch.put("DESCRIPTION", "instrument_desc");
+		instCtxPds4ToSearch.put("MODEL IDENTIFIER", "instrument_model_id");
+		instCtxPds4ToSearch.put("NAIF INSTRUMENT IDENTIFIER", "instrument_naif_id");
+		instCtxPds4ToSearch.put("SERIAL NUMBER", "instrument_serial_number");
+		instCtxPds4ToSearch.put("REFERENCES", "external_reference_description");
+	}
+	
+	public static final Map<String, String> instHostCtxPds4ToSearch = new LinkedHashMap<String, String>();
+	static {
+		instHostCtxPds4ToSearch.put("IDENTIFIER", "identifier");
+		instHostCtxPds4ToSearch.put("NAME", "instrument_host_name");
+		instHostCtxPds4ToSearch.put("VERSION IDENTIFIER", "instrument_host_version_id");
+		instHostCtxPds4ToSearch.put("TYPE", "instrument_host_type");
+		instHostCtxPds4ToSearch.put("DESCRIPTION", "instrument_host_desc");
+		instHostCtxPds4ToSearch.put("NAIF INSTRUMENT IDENTIFIER", "instrument_host_naif_id");
+		instHostCtxPds4ToSearch.put("SERIAL NUMBER", "instrument_host_serial_number");
+		instHostCtxPds4ToSearch.put("REFERENCES", "external_reference_description");
+	}
 }
