@@ -605,6 +605,14 @@ public class RegistryServiceImpl implements RegistryService {
           + registryObject.getVersionName() + " already exists.",
           ExceptionType.EXISTING_OBJECT);
     }
+    
+    // If this is a classification node that belongs to the object type 
+    // classification scheme add it to the cache
+    if (registryObject instanceof ClassificationNode) {
+      ClassificationNode node = (ClassificationNode) registryObject;
+      node.getPath().contains(OBJECT_TYPE_SCHEME);
+      objectTypeCache.put(node.getCode(), node);
+    }
 
     if (packageId == null) {
       this.createAuditableEvent("publishObject " + registryObject.getGuid(),
