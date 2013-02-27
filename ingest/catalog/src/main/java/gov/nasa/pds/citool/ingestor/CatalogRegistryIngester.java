@@ -6,7 +6,7 @@
 // This software is subject to U. S. export control laws and regulations
 // (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
 // is subject to U.S. export control laws and regulations, the recipient has
-// the responsibility to obtain export licenses or other export authority as
+// the responsibility to obtain xport licenses or other export authority as
 // may be required before exporting such information to foreign countries or
 // providing access to foreign nationals.
 //
@@ -493,10 +493,9 @@ public class CatalogRegistryIngester {
 			else if (objType.equalsIgnoreCase(Constants.DATASET_OBJ) && key.equals("DATA_SET_ID")) {
 				value = md.getMetadata(key);
 				product.setName(md.getMetadata("DATA_SET_NAME"));	
-				String tmpValue = null; 
 				if (value.contains("/"))
-    				tmpValue = value.replace('/', '-');
-				productLid = Constants.LID_PREFIX+"data_set:data_set."+tmpValue;
+    				value = value.replace('/', '-');
+				productLid = Constants.LID_PREFIX+"data_set:data_set."+value;
 				product.setLid(productLid);
 				product.setObjectType(Constants.DS_PROD);
 			}

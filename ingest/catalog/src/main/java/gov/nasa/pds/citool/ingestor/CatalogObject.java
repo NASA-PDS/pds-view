@@ -58,14 +58,7 @@ import org.apache.oodt.cas.metadata.Metadata;
  * @author hlee
  */
 public class CatalogObject {
-/*
-	private final static String[] CAT_OBJ_TYPES = { "MISSION",
-			"INSTRUMENT_HOST", "INSTRUMENT", "DATA_SET", "REFERENCE",
-			"PERSONNEL", "DATA_SET_COLLECTION", "INVENTORY", "SOFTWARE",
-			"TARGET", "VOLUME", "NSSDC_DATA_SET_ID", "NSSDCDSID",
-			"DIS_DATA_SET", "DATA_SET_RELEASE", "DATA_SET_HOUSEKEEPING",
-			"RESOURCE", "ELEMENT_DEFINITION", "OBJECT_DEFINITION" };
-*/
+
 	private final static String[] CAT_OBJ_TYPES = { "MISSION",
 		"INSTRUMENT_HOST", "INSTRUMENT", "DATA_SET", "REFERENCE",
 		"PERSONNEL", "TARGET", "VOLUME" };
@@ -81,9 +74,7 @@ public class CatalogObject {
 	private String _filename;
 	private float _version;
 	private ExtrinsicObject _product;
-	//private List<PointerCatalog> _pointers;
 	private Metadata _metadata;
-	//private Map<String, String> _refInfo;
 	
 	public CatalogObject(IngestReport report) {
 		this._report = report;
@@ -167,10 +158,6 @@ public class CatalogObject {
 		return this._pointerFiles;
 	}
 	
-	//public Map<String, String> getRefInfo() {
-	//	return this._refInfo;
-	//}
-	
 	public ExtrinsicObject getExtrinsicObject() {
 		return this._product;
 	}
@@ -195,13 +182,10 @@ public class CatalogObject {
 
 		// first level catalog object
 		for (ObjectStatement objSmt : objList) {
-			//System.out.println("CATALOG object type = " + objType);
 			if (objType.equalsIgnoreCase("VOLUME")) {
-				//List<ObjectStatement> objList2 = objSmt.getObjects("CATALOG");
 				List<ObjectStatement> objList2 = objSmt.getObjects();
 								
 				for (ObjectStatement objSmt2: objList2) {
-					//System.out.println("object name = " + objSmt2.getIdentifier());
 					
 					// how to handle multiple CATALOG objects???? or DATA_PRODUCER
 					if (objSmt2.getIdentifier().toString().equalsIgnoreCase("CATALOG")) {
@@ -209,22 +193,12 @@ public class CatalogObject {
 						_pointerFiles = new ArrayList<String>();
 						for (PointerStatement ptSmt : ptList) {
 							if (ptSmt.hasMultipleReferences()) {
-								//if (!ptSmt.getIdentifier().toString().equalsIgnoreCase("REFERENCE_CATALOG")
-								//		&& !ptSmt.getIdentifier().toString().equalsIgnoreCase("PERSONNEL_CATALOG")) {
 								List<FileReference> refFiles = ptSmt.getFileRefs();
 								for (FileReference fileRef : refFiles) {
 									_pointerFiles.add(fileRef.getPath());
-									//System.out.println("pointer file = " + fileRef.getPath());
 								}
-								//}
 							} else {
-								// Don't add REFERENCE_CATALOG or PERSONNEL_CATALOG
-								// references
-								//if (!ptSmt.getIdentifier().toString().equalsIgnoreCase("REFERENCE_CATALOG")
-								//		&& !ptSmt.getIdentifier().toString().equalsIgnoreCase("PERSONNEL_CATALOG")) {
 								_pointerFiles.add(ptSmt.getValue().toString());
-								//System.out.println("pointer file = " + ptSmt.getValue());
-								//}
 							}
 						}
 					}
@@ -235,7 +209,6 @@ public class CatalogObject {
 			String keyDesc = null;
 			for (AttributeStatement attrSmt : attrList) {
 				pdsLabelMap.put(attrSmt.getElementIdentifier(), attrSmt);
-				//System.out.println(attrSmt.getElementIdentifier() + " = " + attrSmt.getValue().toString());
 				
 				// multivalues
 				if (attrSmt.getValue() instanceof Set) {
@@ -246,7 +219,6 @@ public class CatalogObject {
 				}
 				else {
 					_metadata.addMetadata(attrSmt.getElementIdentifier(), attrSmt.getValue().toString());
-					//System.out.println(attrSmt.getElementIdentifier() + " is added into the metadata...");
 				    if (attrSmt.getElementIdentifier().equals("REFERENCE_KEY_ID"))
 				    	keyId = attrSmt.getValue().toString();
 				    
@@ -264,12 +236,11 @@ public class CatalogObject {
 					List<AttributeStatement> objAttr = smt2.getAttributes();
 					lblMap = new HashMap<String, AttributeStatement>(pdsLabelMap);
 
-					//System.out.println("2nd object name = " + smt2.getIdentifier());
 					// TODO: how to handle same keywords in different
 					// object?????
 					for (AttributeStatement attrSmt : objAttr) {
 						lblMap.put(attrSmt.getElementIdentifier(), attrSmt);
-						//System.out.println(attrSmt.getElementIdentifier() + " = " + attrSmt.getValue().toString());
+				
 						if (attrSmt.getValue() instanceof Set) {
 							List<String> valueList = getValueList(attrSmt.getValue());
 							for (int i=0; i<valueList.size(); i++) {
@@ -285,10 +256,8 @@ public class CatalogObject {
 					List<ObjectStatement> objList3 = smt2.getObjects();
 					for (ObjectStatement smt3 : objList3) {
 						List<AttributeStatement> objAttr2 = smt3.getAttributes();
-						//System.out.println("3rd object name = " + smt3.getIdentifier());
 						for (AttributeStatement attrSmt2 : objAttr2) {
 							lblMap.put(attrSmt2.getElementIdentifier(), attrSmt2);
-							//System.out.println(attrSmt2.getElementIdentifier() + " = " + attrSmt2.getValue().toString());
 							if (attrSmt2.getValue() instanceof Set) {
 								List<String> valueList = getValueList(attrSmt2.getValue());
 								for (int i=0; i<valueList.size(); i++) {
@@ -301,8 +270,7 @@ public class CatalogObject {
 					}
 
 					// if there is no object nested third times, just copy from
-					// the
-					// top level obejct
+					// the top level obejct
 					if (lblMap == null)
 						lblMap = new HashMap<String, AttributeStatement>(pdsLabelMap);
 
@@ -310,9 +278,6 @@ public class CatalogObject {
 				}
 			}
 		}
-		
-		//if (CIToolIngester.refInfo.size()>0) 
-		//	System.out.println("refInfo = " + CIToolIngester.refInfo.toString());
 		
 		return pdsLabelMap;
 	}
@@ -371,14 +336,11 @@ public class CatalogObject {
 			List<ObjectStatement> objLists = label.getObjects();
 			for (Iterator i=objLists.iterator(); i.hasNext();) {
 				ObjectStatement objSmt = (ObjectStatement) i.next();
-				//System.out.println("object = " + objSmt.getIdentifier());
 				isValid = isValidCatalogFile(objSmt.getIdentifier().toString());
-				//System.out.println("isValidCatalogFile = " + isValidCatalogFile(objSmt.getIdentifier().toString()));
 			}
 
 			if (isValid) {			
-				List<ObjectStatement> objList = object2List(label);			
-				//System.out.println("catalog object type = " + _catObjType);			
+				List<ObjectStatement> objList = object2List(label);					
 				_pdsLabelMap = getCatalogObj(objList, _pdsLabelMap);
 			}	
 			

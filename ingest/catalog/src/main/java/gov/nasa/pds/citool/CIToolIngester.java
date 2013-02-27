@@ -324,7 +324,6 @@ public class CIToolIngester {
 					else {
 						// PDS-88 jira issue ???? ToDo: Check this part again...
 						// how to handle this case...(when there is no catalog file exist on the storage server?????)
-						//System.err.println("This URL is not accessble. status code = " + conn.getResponseCode());
 						System.err.println("Error: Catalog file (" + aFile + ") is missing in the archive volume and " + "" +
 								"can't get it from the storage service.");
 						System.exit(1);					
@@ -332,7 +331,6 @@ public class CIToolIngester {
 				} else {
 					// PDS-88 jira issue
 					// how to handle this case...(when there is no catalog file exist on the storage server?????)
-					//System.err.println("This URL is not accessble. status code = " + conn.getResponseCode());
 					System.err.println("Error: Catalog file (" + aFile + ") is missing in the archive volume and " + "" +
 							"can't get it from the storage service.");
 					System.exit(1);	
@@ -577,7 +575,6 @@ public class CIToolIngester {
         resolver.setBaseURI(ManualPathResolver.getBaseURI(uri));
         //Parser must have "parser.pointers" set to false
         DefaultLabelParser parser = new DefaultLabelParser(false, true, resolver);
-        //DefaultLabelParser parser = new DefaultLabelParser(true, true, resolver);
         Label label = null;
         try {
             label = parser.parseLabel(url);
