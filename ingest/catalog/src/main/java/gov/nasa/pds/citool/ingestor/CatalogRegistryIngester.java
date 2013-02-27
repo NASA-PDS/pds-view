@@ -462,13 +462,13 @@ public class CatalogRegistryIngester {
 			List<String> values = new ArrayList<String>();
 		
 			if (objType.equalsIgnoreCase(Constants.MISSION_OBJ) && key.equals("MISSION_NAME")) {
+				product.setName(value);	
 				// need to replace empty space with _
 				if (value.contains(" "))
     				value = value.replace(' ', '_');
 				productLid = Constants.LID_PREFIX+"investigation:mission."+value;
 				product.setLid(productLid);
-				product.setObjectType(Constants.MISSION_PROD);
-				product.setName(value);	
+				product.setObjectType(Constants.MISSION_PROD);				
 			}
 			else if (objType.equalsIgnoreCase(Constants.TARGET_OBJ) && key.equals("TARGET_NAME")) {
 				// may need to replace " " to "_" ????
