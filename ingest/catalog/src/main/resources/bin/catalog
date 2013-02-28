@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright 2009-2012, by the California Institute of Technology.
+# Copyright 2009-2013, by the California Institute of Technology.
 # ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 # Any commercial use must be negotiated with the Office of Technology Transfer
 # at the California Institute of Technology.
@@ -39,8 +39,8 @@ if [ ! -f ${LIB_DIR}/catalog-*.jar ]; then
 fi
 
 if [ ! -f ${KEYSTORE} ]; then
-    echo "WARNING: Cannot find keystore file: ${KEYSTORE}."
-    #exit 1
+    echo "Cannot find keystore file: ${KEYSTORE}."
+    exit 1
 fi
 
 # Finds the jar file in LIB_DIR and sets it to CATALOG_JAR.
