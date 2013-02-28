@@ -413,24 +413,24 @@ http://localhost:8080/registry/report
     </section>
 
     <section name="Controlled Access">
-      <p>A given instance of the Registry Service may be configured to control access to specific URLs utilizing the software of the Security Service. If this is the case, the <i>curl</i> application can be used to obtain an authentication cookie as follows:
+      <p>A given instance of the Registry Service may be configured to control access to specific URLs utilizing the software of the Security Service or other local mechanism. If this is the case, the <i>curl</i> application can be used to obtain an authentication cookie as follows:
       </p>
 
       <source>
-% curl -X POST -H "Content-type:application/xml" -v -d @new_product.xml \
-https://localhost:8443/registry/extrinsics -u username:password \
--k -c tomcat_cookie.txt
+% curl -X GET -H "Accept:application/xml" -v \
+https://localhost:8080/registry/ -u username:password -k -c cookie.txt
       </source>
 
-      <p>The cookie file <i>tomcat_cookie.txt</i> can then be passed to the next <i>curl</i> command: 
+      <p>The cookie file <i>cookie.txt</i> can then be passed to the next <i>curl</i> command: 
       </p>
 
       <source>
-% curl -X DELETE -H "Content-type:application/xml" -v -d @new_product_v2.xml \
-https://localhost:8443/registry/extrinsics/1234v1.0 -k -b tomcat_cookie.txt
+% curl -X DELETE -v \
+https://localhost:8080/registry/extrinsics/&lt;guid&gt; \
+-u username:password -k -b cookie.txt
       </source>
 
-      <p>The example above also applies to a <i>DELETE</i> request.
+      <p>The example above also applies to <i>PUT</i> and <i>POST</i> requests.
       </p>
     </section>
   </body>
