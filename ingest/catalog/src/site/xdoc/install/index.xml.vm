@@ -99,6 +99,10 @@ or
         <li><b>lib/</b><br/>
           <p>This directory contains the dependent jar files for the tool along with the executable jar file (${project.artifactId}-${project.version}.jar) containing the Catalog Tool software.
           </p>
+        <li><b>keystore/</b><br/>
+          <p>This directory contains the keystore file needed for Catalog to support product registration to a secured instance of the Registry Service.
+          </p>
+        </li>
         </li>
       </ul>
     </section>
