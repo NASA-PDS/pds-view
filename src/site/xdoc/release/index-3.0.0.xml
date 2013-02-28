@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2012, by the California Institute of Technology.
+  Copyright 2012-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -219,11 +219,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
             </p>
           </li>
           <li><b>Registry Service</b><br/>
-<!--
-            <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. For this release, the registry is populated with the PDS4 context products migrated from the PDS3 central catalog database. The web-based endpoint for this service is <a href="http://pdsops2.jpl.nasa.gov/services/registry/" target="_blank">http://pdsops2.jpl.nasa.gov/services/registry/</a>.
-            </p>
--->
-            <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. For this release, the registry is populated with the PDS4 context products migrated from the PDS3 central catalog database.
+            <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. For this release, the registry is populated with the PDS4 context products migrated from the PDS3 central catalog database. The web-based endpoint for this service is <a href="http://pds.nasa.gov/services/registry/" target="_blank">http://pds.nasa.gov/services/registry/</a>.
             </p>
           </li>
           <li><b>Registry User Interface</b><br/>
@@ -235,15 +231,15 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
             </p>
           </li>
           <li><b>Search Service</b><br/>
-            <p>The Search Service provides functionality for accepting queries from data consumers for registered products and includes functionality for retrieving search results. This component acts as the interface to the Registry Service for the data consumer.
+            <p>The Search Service provides functionality for accepting queries from data consumers for registered products and includes functionality for retrieving search results. This component acts as the interface to the Registry Service for the data consumer. The web-based endpoint for this service is <a href="http://pds.nasa.gov/services/search/" target="_blank">http://pds.nasa.gov/services/search/</a>.
+            </p>
+          </li>
+          <li><b>Search User Interface</b><br />
+            <p>The Search User Interface software serves as the user interface for the Search Service on the PDS website. The web-based endpoint for this application is <a href="http://pds.nasa.gov/tools/data-search/" target="_blank">http://pds.nasa.gov/tools/data-search/</a>.
             </p>
           </li>
           <li><b>Report Service</b><br/>
-<!--
-            <p>The Report Service provides the capability for capturing and reporting metrics. With this release and the previous release, this service is undergoing testing of configurations and features with a set of metrics from the Engineering Node and the Imaging Node at JPL. This service is not yet available to the user community. The web-based endpoint for this service is <a href="http://pdsops.jpl.nasa.gov/services/report/" target="_blank">http://pdsops.jpl.nasa.gov/services/report/</a>.
-            </p>
--->
-            <p>The Report Service provides the capability for capturing and reporting metrics. With this release and the previous release, this service is undergoing testing of configurations and features with a set of metrics from the Engineering Node and the Imaging Node at JPL. This service is not yet available to the user community.
+            <p>The Report Service provides the capability for capturing and reporting metrics. With this release and the previous release, this service is undergoing testing of configurations and features with a set of metrics from the Engineering Node and the Imaging Node at JPL. This service is not yet available to the user community. The web-based endpoint for this service is <a href="http://pds.nasa.gov/services/report/" target="_blank">http://pds.nasa.gov/services/report/</a>.
             </p>
           </li>
           <li><b>Security Service</b><br/>
