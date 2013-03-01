@@ -78,14 +78,7 @@ public String cleanParam(String str) {
    <%
       }
       else{ 
-         //for (ExtrinsicObject bundleObj: bundleObjs) {
-         for (SolrDocument doc: bundleObjs) {
- /*        
-            for (Map.Entry<String, Object> entry : doc.entrySet()) {
-					out.println("Key = " + entry.getKey()
-							+ "    Value = " + entry.getValue());
-				}
-*/				
+         for (SolrDocument doc: bundleObjs) {			
 		    Collection<Object> values = doc.getFieldValues("identifier");
 		    //out.println("vales.size() = " + values.size());
 		    for (Object value: values) {
@@ -329,6 +322,7 @@ public String cleanParam(String str) {
           }   // end for
       } // end if (anyContextValue)
       
+      String linkVal = "";
       if (anyCollectionValue) {
       %>
       <tr>
@@ -384,6 +378,7 @@ public String cleanParam(String str) {
            		  }
            	   }
            	   
+           	   if (dataCollection.size()>0) {
            		  %>
                <TR>
                   <td bgcolor="#F0EFEF" width=215 valign=top>Data Collection</td> 
@@ -394,14 +389,24 @@ public String cleanParam(String str) {
 		             String val = dataCollection.get(i);
 		             if (val.contains("::"))
     	                val = val.substring(0, val.indexOf("::")); 
+    	                
+    	              SolrDocument collDoc = pds4Search.getContext(val);
+    	              if (collDoc!=null && pds4Search.getValues(collDoc, "title")!=null) {
+    	                 linkVal = pds4Search.getValues(collDoc, "title").get(0);
 		             %>
-    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=val%></a><br>
+    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=linkVal%></a><br>
     	             <%	
+    	             }
+    	             else 
+    	                out.println(val);
            		  }
-           		  
            		  %>
            		  </td>
            	   </TR>
+           	   <%
+           	    }
+           		if (docCollection.size()>0) {
+           		%>
                <TR>
                   <td bgcolor="#F0EFEF" width=215 valign=top>Document Collection</td> 
                   <td bgcolor="#F0EFEF" valign=top>
@@ -411,14 +416,24 @@ public String cleanParam(String str) {
 		             String val = docCollection.get(i);
 		             if (val.contains("::"))
     	                val = val.substring(0, val.indexOf("::")); 
-		          %>
-    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=val%></a><br>
-    	          <%	
-           		  }
-           		  
+		          
+		          		SolrDocument collDoc = pds4Search.getContext(val);
+    	                if (collDoc!=null && pds4Search.getValues(collDoc, "title")!=null) {
+    	                   linkVal = pds4Search.getValues(collDoc, "title").get(0);
+		               %>
+    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=linkVal%></a><br>
+    	             <%	
+    	             }
+    	             else 
+    	                out.println(val);	
+           		  }        		  
            		  %>
            		  </td>
            		</TR>
+           		<%
+           		}
+           		if (ctxCollection.size()>0) {
+           		%>
            		<TR>
                   <td bgcolor="#F0EFEF" width=215 valign=top>Context Collection</td> 
                   <td bgcolor="#F0EFEF" valign=top>
@@ -428,14 +443,24 @@ public String cleanParam(String str) {
 		             String val = ctxCollection.get(i);
 		             if (val.contains("::"))
     	                val = val.substring(0, val.indexOf("::")); 
-		          %>
-    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=val%></a><br>
-    	          <%	
-           		  }
-           		  
+		          		
+		          		SolrDocument collDoc = pds4Search.getContext(val);
+    	                if (collDoc!=null && pds4Search.getValues(collDoc, "title")!=null) {
+    	                   linkVal = pds4Search.getValues(collDoc, "title").get(0);
+		               %>
+    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=linkVal%></a><br>
+    	             <%	
+    	             }
+    	             else 
+    	                out.println(val);	
+           		  }          		  
            		  %>
            		  </td>
            		</TR>
+           		<%
+           		}
+           		if (browseCollection.size()>0) {
+           		%>
            		<TR>
                   <td bgcolor="#F0EFEF" width=215 valign=top>Browse Collection</td> 
                   <td bgcolor="#F0EFEF" valign=top>
@@ -445,14 +470,23 @@ public String cleanParam(String str) {
 		             String val = browseCollection.get(i);
 		             if (val.contains("::"))
     	                val = val.substring(0, val.indexOf("::")); 
-		          %>
-    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=val%></a><br>
-    	          <%	
-           		  }
-           		  
+		          		SolrDocument collDoc = pds4Search.getContext(val);
+    	                if (collDoc!=null && pds4Search.getValues(collDoc, "title")!=null) {
+    	                   linkVal = pds4Search.getValues(collDoc, "title").get(0);
+		               %>
+    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=linkVal%></a><br>
+    	             <%	
+    	             }
+    	             else 
+    	                out.println(val);	
+           		  }              		  
            		  %>
            		  </td>
            		</TR>
+           		<%
+           		}
+           		if (calibCollection.size()>0) {
+           		%>
            		<TR>
                   <td bgcolor="#F0EFEF" width=215 valign=top>Calibration Collection</td> 
                   <td bgcolor="#F0EFEF" valign=top>
@@ -462,14 +496,23 @@ public String cleanParam(String str) {
 		             String val = calibCollection.get(i);
 		             if (val.contains("::"))
     	                val = val.substring(0, val.indexOf("::")); 
-		          %>
-    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=val%></a><br>
-    	          <%	
-           		  }
-           		  
+		          		          		SolrDocument collDoc = pds4Search.getContext(val);
+    	                if (collDoc!=null && pds4Search.getValues(collDoc, "title")!=null) {
+    	                   linkVal = pds4Search.getValues(collDoc, "title").get(0);
+		               %>
+    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=linkVal%></a><br>
+    	             <%	
+    	             }
+    	             else 
+    	                out.println(val);	
+           		  }    
            		  %>
            		  </td>
            		</TR>
+           		<%
+           		}
+           		if (geomCollection.size()>0) {
+           		%>
            		<TR>
                   <td bgcolor="#F0EFEF" width=215 valign=top>Geometry Collection</td> 
                   <td bgcolor="#F0EFEF" valign=top>
@@ -479,14 +522,23 @@ public String cleanParam(String str) {
 		             String val = geomCollection.get(i);
 		             if (val.contains("::"))
     	                val = val.substring(0, val.indexOf("::")); 
-		          %>
-    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=val%></a><br>
-    	          <%	
-           		  }
-           		  
+		          		          		SolrDocument collDoc = pds4Search.getContext(val);
+    	                if (collDoc!=null && pds4Search.getValues(collDoc, "title")!=null) {
+    	                   linkVal = pds4Search.getValues(collDoc, "title").get(0);
+		               %>
+    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=linkVal%></a><br>
+    	             <%	
+    	             }
+    	             else 
+    	                out.println(val);	
+           		  }    
            		  %>
            		  </td>
            		</TR>
+           		<%
+           		}
+           		if (spiceCollection.size()>0) {
+           		%>
            		<TR>
                   <td bgcolor="#F0EFEF" width=215 valign=top>SPICE Kernel Collection</td> 
                   <td bgcolor="#F0EFEF" valign=top>
@@ -496,14 +548,23 @@ public String cleanParam(String str) {
 		             String val = spiceCollection.get(i);
 		             if (val.contains("::"))
     	                val = val.substring(0, val.indexOf("::")); 
-		          %>
-    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=val%></a><br>
-    	          <%	
-           		  }
-           		  
+		          		          		SolrDocument collDoc = pds4Search.getContext(val);
+    	                if (collDoc!=null && pds4Search.getValues(collDoc, "title")!=null) {
+    	                   linkVal = pds4Search.getValues(collDoc, "title").get(0);
+		               %>
+    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=linkVal%></a><br>
+    	             <%	
+    	             }
+    	             else 
+    	                out.println(val);	
+           		  }    
            		  %>
            		  </td>
            		</TR>
+           		<%
+           		}
+           		if (xmlCollection.size()>0) {
+           		%>
            		<TR>
                   <td bgcolor="#F0EFEF" width=215 valign=top>XML Schema Collection</td> 
                   <td bgcolor="#F0EFEF" valign=top>
@@ -513,14 +574,23 @@ public String cleanParam(String str) {
 		             String val = xmlCollection.get(i);
 		             if (val.contains("::"))
     	                val = val.substring(0, val.indexOf("::")); 
-		          %>
-    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=val%></a><br>
-    	          <%	
-           		  }
-           		  
+		          		          		SolrDocument collDoc = pds4Search.getContext(val);
+    	                if (collDoc!=null && pds4Search.getValues(collDoc, "title")!=null) {
+    	                   linkVal = pds4Search.getValues(collDoc, "title").get(0);
+		               %>
+    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=linkVal%></a><br>
+    	             <%	
+    	             }
+    	             else 
+    	                out.println(val);	
+           		  }    
            		  %>
            		  </td>
            		</TR>
+           		<%
+           		}
+           		if (miscCollection.size()>0) {
+           		%>
            		<TR>
                   <td bgcolor="#F0EFEF" width=215 valign=top>Miscellaneous Collection</td> 
                   <td bgcolor="#F0EFEF" valign=top>
@@ -530,15 +600,21 @@ public String cleanParam(String str) {
 		             String val = miscCollection.get(i);
 		             if (val.contains("::"))
     	                val = val.substring(0, val.indexOf("::")); 
-		          %>
-    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=val%></a><br>
-    	          <%	
-           		  }
-           		  
+		          		          		SolrDocument collDoc = pds4Search.getContext(val);
+    	                if (collDoc!=null && pds4Search.getValues(collDoc, "title")!=null) {
+    	                   linkVal = pds4Search.getValues(collDoc, "title").get(0);
+		               %>
+    	    	   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=linkVal%></a><br>
+    	             <%	
+    	             }
+    	             else 
+    	                out.println(val);	
+           		  }    
            		  %>
            		  </td>
            		</TR>
            		  <%
+           		  }
              } // end if (collVals!=null)
          } // end if (anyCollectionValue)            
       } // end else 

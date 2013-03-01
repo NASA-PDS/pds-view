@@ -18,38 +18,6 @@
 </head>
 
 <%!
-String constructURL (String url, String dsid) {
-   try {
-      URL aURL = new URL(url);
-      String filename = aURL.getFile();
-
-      // don't pass any params to reslink that ends with /
-      if (filename.endsWith("/")) {
-         return url;
-      }
-
-      // per Pam Woncik 03/12/03 - if the URL contains "pdsimg" or "pdsimage" (ie. Atlas browsers),
-      // don't append the query string
-      if (url.indexOf("pdsimg") > 0 || url.indexOf("pdsimage") > 0 ||
-         url.indexOf("pds-imaging")>0 ) {
-         return url;
-      }
-
-      int pos = filename.indexOf('?');
-      String browserURL = url;
-      if (pos > 0) {
-         browserURL += "&DATA_SET_ID=" + dsid;
-      } else {
-         browserURL += "?DATA_SET_ID=" + dsid;
-      }
-
-      return browserURL;
-   } catch (java.net.MalformedURLException e) {
-      e.printStackTrace();
-      return url;
-   }
-}
-
 /**
  * Null out the parameter value if any of the bad characters are present
  * that facilitate Cross-Site Scripting and Blind SQL Injection.
@@ -217,41 +185,26 @@ else {
     	        else 
     	           out.println(val + "<br>");	
              }
-             else if (tmpValue.equals("resource_link") ||
-                      tmpValue.equals("resources")) {
+             else if (tmpValue.equals("resources")) {
                 List<String> rvalues = searchRegistry.getResourceRefs(dsObj);
-     	        String refLid = rvalues.get(0);
-         	    refLid = refLid.substring(0, refLid.indexOf("::"));
-         	    //out.println("refLid = " + refLid + "<br>");
-         	    ExtrinsicObject resource1 = searchRegistry.getExtrinsic(refLid);
-         	    if (resource1!=null) {
-         			String resname="", reslink="";
-                	if (tmpValue.equals("resource_link")) {
-         	       	//resname = searchRegistry.getSlotValues(resource1, "resource_name").get(0);
-         	       	reslink = searchRegistry.getSlotValues(resource1, "resource_url").get(0);
-         	       %>
-         		   <a href=<%=constructURL(reslink, dsid)%> target="_new"><%=reslink%></a> 
-         		<%
-         	    } 
-         	    else {
-         	       for (int j=1; j<rvalues.size(); j++) {
-         		      //out.println(rvalues.get(j) + "<br>");
-         			  refLid = rvalues.get(j);
-         			  refLid = refLid.substring(0, refLid.indexOf("::"));
-         			  ExtrinsicObject resource = searchRegistry.getExtrinsic(refLid);
-         			  //out.println("resource_name = " + searchRegistry.getSlotValues(resource, "resource_name").get(0) + "<br>");
-         			  //out.println("resource_url = " + searchRegistry.getSlotValues(resource, "resource_url").get(0) + "<br>");
-         			  if (resource!=null) {
-         			     resname = searchRegistry.getSlotValues(resource, "resource_name").get(0);
-         			     reslink = searchRegistry.getSlotValues(resource, "resource_url").get(0); 
-         			  }
-         		      %>
-         			  <li><a href=<%=constructURL(reslink, dsid)%> target="_new"><%=resname%></a><br>
-         			  <%
-         		   } // end for
-         	    } // end else
-         	    } // end if resource!=null
-             } // end resource_link
+     	        String refLid = "";
+         	    String resname="", reslink="";
+         	    for (int j=0; j<rvalues.size(); j++) {
+         		   //out.println(rvalues.get(j) + "<br>");
+         		   refLid = rvalues.get(j);
+         		   refLid = refLid.substring(0, refLid.indexOf("::"));
+         		   ExtrinsicObject resource = searchRegistry.getExtrinsic(refLid);
+         		   //out.println("resource_name = " + searchRegistry.getSlotValues(resource, "resource_name").get(0) + "<br>");
+         		   //out.println("resource_url = " + searchRegistry.getSlotValues(resource, "resource_url").get(0) + "<br>");
+         		   if (resource!=null) {
+         		      resname = searchRegistry.getSlotValues(resource, "resource_name").get(0);
+         			  reslink = searchRegistry.getSlotValues(resource, "resource_url").get(0); 
+         		   }
+         		   %>
+         		   <li><a href=<%=reslink%> target="_new"><%=resname%></a><br>
+         		   <%
+         		} // end for
+             } // end resources
              else if (tmpValue.startsWith("node_name")) {
                 List<String> svalues = searchRegistry.getSlotValues(dsObj, "node_ref");    
                 if (svalues!=null) { 	 

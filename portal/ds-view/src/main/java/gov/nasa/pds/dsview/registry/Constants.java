@@ -58,8 +58,6 @@ public class Constants {
     	  dsPds3ToRegistry.put("DATA_SET_TERSE_DESCRIPTION", "data_set_terse_description");
     	  dsPds3ToRegistry.put("DATASET_DESCRIPTION", "data_set_description");
     	  dsPds3ToRegistry.put("DATA_SET_RELEASE_DATE", "data_set_release_date");
-    	  dsPds3ToRegistry.put("RESOURCE_LINK", "resource_link");
-    	  //dsPds3ToRegistry.put("DATA_OBJECT_TYPE", "data_object_type");
     	  dsPds3ToRegistry.put("START_TIME", "data_set_start_date_time");
     	  dsPds3ToRegistry.put("STOP_TIME", "data_set_stop_date_time");
     	  dsPds3ToRegistry.put("MISSION_NAME", "mission_name");
@@ -148,7 +146,8 @@ public class Constants {
 		bundlePds4ToSearch.put("IDENTIFIER", "identifier");
 		bundlePds4ToSearch.put("NAME", "title");
 		bundlePds4ToSearch.put("TYPE", "bundle_type");
-		bundlePds4ToSearch.put("DESCRIPTION", "resource_class");
+		bundlePds4ToSearch.put("DESCRIPTION", "bundle_description");
+		//bundlePds4ToSearch.put("DESCRIPTION", "resource_class");
 	}
     	      
     public static final Map<String, String> bundleCitationPds4ToRegistry =
@@ -157,9 +156,9 @@ public class Constants {
           bundleCitationPds4ToRegistry.put("AUTHOR LIST", "citation_author_list");
 	      bundleCitationPds4ToRegistry.put("EDITOR LIST", "citation_editor_list");
 	      bundleCitationPds4ToRegistry.put("PUBLICATION YEAR", "citation_publication_year");
-	      bundleCitationPds4ToRegistry.put("DESCRIPTION", "citation_description");
+	      bundleCitationPds4ToRegistry.put("DESCRIPTION", "citation_desc");
       }
-      
+       
 	public static final Map<String, String> bundleContextPds4ToRegistry = 
 	  new LinkedHashMap<String, String>();
 	  static {
@@ -194,6 +193,7 @@ public class Constants {
 		collectionPds4ToSearch.put("IDENTIFIER", "identifier");
 		collectionPds4ToSearch.put("NAME", "title");
 		collectionPds4ToSearch.put("TYPE", "collection_type");
+		collectionPds4ToSearch.put("DESCRIPTION", "modification_description");
 	}
 	
 	public static final Map<String, String> targetPds4ToRegistry =

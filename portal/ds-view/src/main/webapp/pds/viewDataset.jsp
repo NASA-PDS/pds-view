@@ -33,46 +33,6 @@
      <tr>
        <td>    
 <%!
-String constructURL (String url, String dsid) {
-   try {
-      URL aURL = new URL(url);
-      String filename = aURL.getFile();
-
-      // do not pass any params to reslink that ends with /
-      if (filename.endsWith("/")) {
-         return url;
-      }
-   
-      //added for NAIF ftp site - added 02.07.05 - was not working with dsid being appended to url
-      if (url.indexOf("ftp://naif") != -1) {
-         return url;
-      }
-
-      // per Pam Woncik 03/12/03 - if the URL contains "pdsimg" or "pdsimage" (ie. Atlas browsers),
-      // don not append the query string
-      if (url.indexOf("pdsimg") > 0 || url.indexOf("pdsimage") > 0 ||
-         url.indexOf("pds-imaging")>0 ) {
-         return url;
-      }
-
-      int pos = filename.indexOf('?');
-      String browserURL = url;
-      if (pos > 0) {
-         browserURL += "&DATA_SET_ID=" + dsid;
-      } 
-      else {
-         browserURL += "?DATA_SET_ID=" + dsid;
-      }
-
-      return browserURL;
-
-   } catch (java.net.MalformedURLException e) {
-      e.printStackTrace();
-      return url;
-   }
-} // end of constructURL method
-
-
 String fixQuery(String q) {
    String[] entity = {"&","<",">","\"","'","\\"};
    String[] replace = {"&amp;","&lt;","&gt;","&quot;","&#x27;","&#x2F","_"};
@@ -227,35 +187,6 @@ else {
                      </tr>
 
                      <tr bgcolor="#E7EEF9">
-                        <td>Access/Download Data Set</td>
-                        <td>
-    	                   <%
-    		               List<String> rvalues = searchRegistry.getResourceRefs(product);
-    		               String resname="", reslink="";
-       	                   String refLid = rvalues.get(0);
-       	                   if (refLid!=null) {
-                    	      refLid = refLid.substring(0, refLid.indexOf("::"));
-         	                  ExtrinsicObject resource1 = searchRegistry.getExtrinsic(refLid);   
-         	                  if (resource1!=null) {  
-         	                     resname = searchRegistry.getSlotValues(resource1, "resource_name").get(0);
-                                 reslink = searchRegistry.getSlotValues(resource1, "resource_url").get(0);
-                                 /*    
-                                 List<String> results = searchRegistry.getSlotValues(resource1, "resource_name");
-                                 if (results.size()>0)
-                                    resname = results.get(0);
-                                 results = searchRegistry.getSlotValues(resource1, "resource_url");
-                                 if (results.size()>0)
-                                    reslink = results.get(0);    
-                                 */      	                        	               
-                           %>
-                           <a href=<%=constructURL(reslink, dsid)%> target="_new">Search for Products with the <%=resname%></a> 
-                           <%
-                             } // end if (resource1!=null)
-                           }%>   
-                        </td>
-                     </tr>
-
-                     <tr bgcolor="#E7EEF9">
                         <td>Data Set Abstract</td>
                         <td><%=searchRegistry.getSlotValues(product, "data_set_abstract_description").get(0)%></td>
                      </tr>
@@ -373,10 +304,13 @@ else {
                      </tr>
 
                      <tr bgcolor="#E7EEF9">
-                        <td>Other Resources</td>
+                        <td>Resources</td>
                         <td>
                            <% 
-                           for (int i=1; i<rvalues.size(); i++) {
+                           List<String> rvalues = searchRegistry.getResourceRefs(product);
+                           String resname="", reslink="";
+                           String refLid = "";
+                           for (int i=0; i<rvalues.size(); i++) {
                               //out.println(rvalues.get(i) + "<br>");
                               refLid = rvalues.get(i);
                               if (refLid!=null) {
@@ -388,7 +322,7 @@ else {
                                     resname = searchRegistry.getSlotValues(resource, "resource_name").get(0);
                                     reslink = searchRegistry.getSlotValues(resource, "resource_url").get(0);
                               %>
-                              <a href="<%=constructURL(reslink, dsid)%>" target="_new"><%=resname%></a><br>
+                              <a href="<%=reslink%>" target="_new"><%=resname%></a><br>
                          <%      }
                               }
                            } %>
