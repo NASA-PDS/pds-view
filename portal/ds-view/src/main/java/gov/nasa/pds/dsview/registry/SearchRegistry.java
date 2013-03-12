@@ -28,7 +28,6 @@ public class SearchRegistry {
 	 */
 	public SearchRegistry(String registryURL) {		
 		try {
-			//initialize();
 			client = new RegistryClient(registryURL, null, null, null);
 		} catch (RegistryClientException rce) {
 			System.err.println("RegistryClientException occurred..." + rce.getMessage());
@@ -45,7 +44,6 @@ public class SearchRegistry {
 	public SearchRegistry(String registryURL, SecurityContext securityContext,
 			String username, String password) {
 		try {
-			//initialize();
 			client = new RegistryClient(registryURL, securityContext, username, password);
 		} catch (RegistryClientException rce) {
 			System.err.println("RegistryClientException occurred..." + rce.getMessage());
@@ -53,9 +51,6 @@ public class SearchRegistry {
 	}
 	
 	public List<String> getResourceRefs(ExtrinsicObject extObj) {
-		//if (extObj==null) return null;
-		//List<String> resourceRefs = new ArrayList<String>();
-				
 		for (Slot slot : extObj.getSlots()) {
 			if (slot.getName().equals("resource_ref")) {
 				return slot.getValues();
@@ -92,32 +87,8 @@ public class SearchRegistry {
 		return null;
 	}
 	
-	/*
-	public ExtrinsicObject getProxyProducts(String identifier) {
-		//RegistryQuery.Builder<ExtrinsicFilter> queryBuilder = new RegistryQuery.Builder<ExtrinsicFilter>();
-	    //Map<String, String> filters = new HashMap<String, String>();
-	    
-	    // need to ask to Sean about the identifier???
-		ExtrinsicFilter filter = new ExtrinsicFilter.Builder().objectType("Product_Proxy_PDS3").lid(identifier).build();
-		
-		RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>().filter(filter).build();
-		
-		try {
-			PagedResponse<ExtrisicObject> pr = client.getExtrinsic(query, null, null);
-			if (pr.getNumFound()==0) {
-				return null;
-			}
-			else {
-				return pr.getResults();
-			}
-		}    
-	}
-	*/
-	
 	public List<ExtrinsicObject> getObjects(String lid, String objectType) {
 		ExtrinsicFilter.Builder filterBuilder = new ExtrinsicFilter.Builder();
-		//RegistryQuery.Builder<ExtrinsicFilter> queryBuilder = new RegistryQuery.Builder<ExtrinsicFilter>();
-		
 		if (lid!=null)
 			filterBuilder.lid(lid);
 		
@@ -125,48 +96,30 @@ public class SearchRegistry {
 		    filterBuilder.objectType(objectType);
 		    
 		ExtrinsicFilter filter = filterBuilder.build();
-		//queryBuilder.filter(filter);
 		
 		RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>().filter(filter).build();
 		
 		try {
+			List<ExtrinsicObject> objs = new ArrayList<ExtrinsicObject>();
 			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1, 10);
 			if (pr.getNumFound()==0) {
 				return null;
 			}
 			else {
-				return pr.getResults();			
+				for (ExtrinsicObject extObj: pr.getResults()) {
+					ExtrinsicObject tmpObj = getExtrinsic(extObj.getLid());
+					// returns only latest products
+					if (extObj.getLid().equalsIgnoreCase(tmpObj.getLid()) &&
+					    extObj.getVersionName().equalsIgnoreCase(tmpObj.getVersionName()))
+					   objs.add(extObj);
+				}
+				return objs;		
 			}
 		} catch (RegistryServiceException rse) {
 		    rse.printStackTrace();
 		    return null;
 		}
-		//return null;
 	}
-	
-	/**
-	   * Determines whether a product is already in the registry.
-	   *
-	   * @param lid The PDS4 logical identifier.
-	   *
-	   * @return 'true' if the logical identifier was found in the registry.
-	   * 'false' otherwise.
-	   *
-	   * @throws RegistryClientException exception ignored.
-	**/
-	/*
-	public boolean productExists(String lid) throws RegistryClientException {
-		try {
-			client.setMediaType("application/xml");
-			latestProduct = client.getLatestObject(lid,ExtrinsicObject.class);
-			return true;
-		} catch (RegistryServiceException re) {
-			// Do nothing
-			//re.printStackTrace();
-		}
-		return false;
-	}
-	*/
 	
 	/* 
      * Get a latest extrinsic object with given lid
@@ -182,35 +135,4 @@ public class SearchRegistry {
         }
         return aProduct;
     }
-	
-	/**
-	 * Retrieve an extrinsic object from the registry
-	 * @param lid The PDS4 logical identifier
-	 * @param version The versionName
-	 * 
-	 * @return an extrinsic object
-	 */
-	/*
-	public ExtrinsicObject getExtrinsic(String lid, String version) {
-		//throws IngestException {
-		ExtrinsicObject result = null;
-		ExtrinsicFilter filter = new ExtrinsicFilter.Builder().lid(lid).versionName(version).build();
-		RegistryQuery<ExtrinsicFilter> query = new RegistryQuery
-			.Builder<ExtrinsicFilter>().filter(filter).build();
-		try {
-			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query,null, null);
-			if (pr.getNumFound() != 0) {
-				// it shoudl find only one
-				for (ExtrinsicObject extrinsic : pr.getResults()) {					
-					//System.out.println("found an extrinsic object...." + lid + "    version = " + version);					
-					result = extrinsic;		
-					//System.out.println("result...lid = " + result.getLid() + "    guid = " + result.getGuid());
-				}
-			}
-		} catch (RegistryServiceException rse) {
-			rse.printStackTrace();
-		}
-		return result;
-	}
-	*/
 }
