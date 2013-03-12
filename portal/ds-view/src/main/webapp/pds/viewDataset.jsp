@@ -209,8 +209,9 @@ else {
                            String val = "";
                            if (mvalues!=null) {
     	                      for (int i=0; i<mvalues.size(); i++) {
-    	   		                 String tmpValue = (String) mvalues.get(i);
-    	       	                 String lid = tmpValue.substring(0, tmpValue.indexOf("::"));
+    	   		                 String lid = (String) mvalues.get(i);
+    	   		                 if (lid.indexOf("::")!=-1) 
+    	       	                    lid = lid.substring(0, lid.indexOf("::"));
     	       	                 ExtrinsicObject msnObj = searchRegistry.getExtrinsic(lid);
     	       	                 //out.println(searchRegistry.getSlotValues(msnObj, "mission_name").get(0).toUpperCase() + "<br>");
     	       	                 if (msnObj!=null) 
@@ -239,8 +240,9 @@ else {
     	                   if (svalues!=null) {
     	                   // should be alternate_id??? can't find this (ask Sean) 
     	                   for (int i=0; i<svalues.size(); i++) {
-    	 	                  String tmpValue = (String) svalues.get(i);
-    	   	                  String lid = tmpValue.substring(0, tmpValue.indexOf("::"));
+    	 	                  String lid = (String) svalues.get(i);
+    	   	                  if (lid.indexOf("::")!=-1) 
+    	       	                    lid = lid.substring(0, lid.indexOf("::"));
     	                      ExtrinsicObject insthostObj = searchRegistry.getExtrinsic(lid);
     	                      //out.println(searchRegistry.getSlotValues(insthostObj, "instrument_host_name").get(0).toUpperCase() + "<br>"); 
  							  if (insthostObj!=null) 
@@ -262,8 +264,9 @@ else {
        		               svalues =searchRegistry.getSlotValues(product, "instrument_ref");
        		               if (svalues!=null && svalues.size()>0) {
     	 	               for (int i=0; i<svalues.size(); i++) {
-    	 		              String tmpValue = (String) svalues.get(i);
-    	   		              String lid = tmpValue.substring(0, tmpValue.indexOf("::"));
+    	 		              String lid = (String) svalues.get(i);
+    	   		              if (lid.indexOf("::")!=-1) 
+    	       	                    lid = lid.substring(0, lid.indexOf("::"));
     	   		              //out.println("lid = " + lid);
     	    	              ExtrinsicObject instObj = searchRegistry.getExtrinsic(lid);
     	    	              //out.println(searchRegistry.getSlotValues(instObj, "instrument_id").get(0).toUpperCase() + "<br>");
@@ -287,8 +290,9 @@ else {
     		               svalues =searchRegistry.getSlotValues(product, "target_ref");
     		               if (svalues!=null && svalues.size()>0) {
     	 	               for (int i=0; i<svalues.size(); i++) {
-    	 		              String tmpValue = (String) svalues.get(i);
-    	   		              String lid = tmpValue.substring(0, tmpValue.indexOf("::"));
+    	 		              String lid = (String) svalues.get(i);
+    	 		              if (lid.indexOf("::")!=-1) 
+    	       	                    lid = lid.substring(0, lid.indexOf("::"));
     	   		              //out.println("lid = " + lid);
     	    	              ExtrinsicObject targetObj = searchRegistry.getExtrinsic(lid);
     	    	              if (targetObj!=null) 
@@ -316,7 +320,9 @@ else {
                                  //out.println(rvalues.get(i) + "<br>");
                                  refLid = rvalues.get(i);
                                  if (refLid!=null) {
-                                    refLid = refLid.substring(0, refLid.indexOf("::"));
+                                    if (refLid.indexOf("::")!=-1) {
+                                       refLid = refLid.substring(0, refLid.indexOf("::"));
+                                    }
                                     ExtrinsicObject resource = searchRegistry.getExtrinsic(refLid);
                                     //out.println("resource_name = " + searchRegistry.getSlotValues(resource, "resource_name").get(0) + "<br>");
                                     //out.println("resource_url = " + searchRegistry.getSlotValues(resource, "resource_url").get(0) + "<br>");
