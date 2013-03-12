@@ -120,13 +120,14 @@ else {
 
    // TODO: should get registryUrl from the properties file or env variable.
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
-
-   dsid = dsid.toUpperCase();
-   dsid = dsid.replaceAll("%2F", "-");
-   //dsid_lower = dsid.toLowerCase();
   
-   out.println("dsid = " + dsid);
-   ExtrinsicObject product = searchRegistry.getExtrinsic("urn:nasa:pds:context_pds3:data_set:data_set."+dsid);
+   dsid = dsid.toUpperCase();
+   dsid = dsid.replaceAll("%2F", "/");
+
+   String tmpDsid = dsid.replaceAll("%2F", "-");
+   tmpDsid = tmpDsid.replaceAll("/", "-");
+   //out.println("dsid = " + dsid + "    dsid_lower = " + dsid_lower);
+   ExtrinsicObject product = searchRegistry.getExtrinsic("urn:nasa:pds:context_pds3:data_set:data_set."+tmpDsid);
 
    if (product==null) {
 %>
