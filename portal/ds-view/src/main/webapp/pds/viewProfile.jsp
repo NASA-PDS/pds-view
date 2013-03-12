@@ -189,21 +189,23 @@ else {
                 List<String> rvalues = searchRegistry.getResourceRefs(dsObj);
      	        String refLid = "";
          	    String resname="", reslink="";
-         	    for (int j=0; j<rvalues.size(); j++) {
-         		   //out.println(rvalues.get(j) + "<br>");
-         		   refLid = rvalues.get(j);
-         		   refLid = refLid.substring(0, refLid.indexOf("::"));
-         		   ExtrinsicObject resource = searchRegistry.getExtrinsic(refLid);
-         		   //out.println("resource_name = " + searchRegistry.getSlotValues(resource, "resource_name").get(0) + "<br>");
-         		   //out.println("resource_url = " + searchRegistry.getSlotValues(resource, "resource_url").get(0) + "<br>");
-         		   if (resource!=null) {
-         		      resname = searchRegistry.getSlotValues(resource, "resource_name").get(0);
-         			  reslink = searchRegistry.getSlotValues(resource, "resource_url").get(0); 
-         		   }
+         	    if (rvalues!=null) {
+         	       for (int j=0; j<rvalues.size(); j++) {
+         		      //out.println(rvalues.get(j) + "<br>");
+         		      refLid = rvalues.get(j);
+         		      refLid = refLid.substring(0, refLid.indexOf("::"));
+         		      ExtrinsicObject resource = searchRegistry.getExtrinsic(refLid);
+         		      //out.println("resource_name = " + searchRegistry.getSlotValues(resource, "resource_name").get(0) + "<br>");
+         		      //out.println("resource_url = " + searchRegistry.getSlotValues(resource, "resource_url").get(0) + "<br>");
+         		      if (resource!=null) {
+         		         resname = searchRegistry.getSlotValues(resource, "resource_name").get(0);
+         			     reslink = searchRegistry.getSlotValues(resource, "resource_url").get(0); 
+         		      }
          		   %>
          		   <li><a href=<%=reslink%> target="_new"><%=resname%></a><br>
          		   <%
          		} // end for
+         		} // end if
              } // end resources
              else if (tmpValue.startsWith("node_name")) {
                 List<String> svalues = searchRegistry.getSlotValues(dsObj, "node_ref");    
