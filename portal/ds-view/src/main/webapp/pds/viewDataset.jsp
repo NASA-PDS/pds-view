@@ -65,7 +65,7 @@ String[] displayedElements = {"DATA_SET_NAME", "DATA_SET_ID", "NSSDC_DATA_SET_ID
 
 Enumeration names = request.getParameterNames();
 String dsid = "";
-String dsid_lower = "";
+//String dsid_lower = "";
 String volume = "";
 String ancillary  = "";
 String nodename = "";
@@ -122,11 +122,11 @@ else {
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
 
    dsid = dsid.toUpperCase();
-   dsid_lower = dsid.toLowerCase();
-
-   String tmpDsid = dsid.replaceAll("%2F", "-");
-   //out.println("dsid = " + dsid + "    dsid_lower = " + dsid_lower);
-   ExtrinsicObject product = searchRegistry.getExtrinsic("urn:nasa:pds:context_pds3:data_set:data_set."+tmpDsid);
+   dsid = dsid.replaceAll("%2F", "-");
+   //dsid_lower = dsid.toLowerCase();
+  
+   out.println("dsid = " + dsid);
+   ExtrinsicObject product = searchRegistry.getExtrinsic("urn:nasa:pds:context_pds3:data_set:data_set."+dsid);
 
    if (product==null) {
 %>
