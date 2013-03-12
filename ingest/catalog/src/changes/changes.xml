@@ -24,6 +24,12 @@
 
   <body>
     <release version="1.5.0" date="TBD" description="This release of the Catalog Tool is a component of the integrated release 3.1.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+      <action dev="hyunlee" type="add">
+        Added to support DATA_SET_HOUSEKEEPING catalog object. 
+      </action>
+      <action dev="hyunlee" type="add">
+        Added to support DATA_SET_RELEASE catalog object.
+      </action>
       <action dev="hyunlee" type="fix" issue="PDS-123">
         Corrected bad output message when executing without mode selection. 
       </action>    

@@ -61,7 +61,7 @@ public class CatalogObject {
 
 	private final static String[] CAT_OBJ_TYPES = { "MISSION",
 		"INSTRUMENT_HOST", "INSTRUMENT", "DATA_SET", "REFERENCE",
-		"PERSONNEL", "TARGET", "VOLUME" };
+		"PERSONNEL", "TARGET", "VOLUME", "DATA_SET_HOUSEKEEPING", "DATA_SET_RELEASE" };
 		
 	private String _catObjType;
 	private boolean _isLocal;
@@ -75,6 +75,7 @@ public class CatalogObject {
 	private float _version;
 	private ExtrinsicObject _product;
 	private Metadata _metadata;
+	private List<ObjectStatement> _resrcObjs = null;
 	
 	public CatalogObject(IngestReport report) {
 		this._report = report;
@@ -166,6 +167,10 @@ public class CatalogObject {
 		this._product = product;
 	}
 	
+	public List<ObjectStatement> getResrcObjs() {
+		return this._resrcObjs;
+	}
+	
 	/**
 	 * Gets the catalog object from the LIST, sets to hash map 
 	 *
@@ -182,11 +187,11 @@ public class CatalogObject {
 
 		// first level catalog object
 		for (ObjectStatement objSmt : objList) {
+			//System.out.println("CATALOG object type = " + objType);
 			if (objType.equalsIgnoreCase("VOLUME")) {
 				List<ObjectStatement> objList2 = objSmt.getObjects();
 								
-				for (ObjectStatement objSmt2: objList2) {
-					
+				for (ObjectStatement objSmt2: objList2) {	
 					// how to handle multiple CATALOG objects???? or DATA_PRODUCER
 					if (objSmt2.getIdentifier().toString().equalsIgnoreCase("CATALOG")) {
 						List<PointerStatement> ptList = ((ObjectStatement) objList2.get(0)).getPointers();
@@ -209,6 +214,7 @@ public class CatalogObject {
 			String keyDesc = null;
 			for (AttributeStatement attrSmt : attrList) {
 				pdsLabelMap.put(attrSmt.getElementIdentifier(), attrSmt);
+				//System.out.println(attrSmt.getElementIdentifier() + " = " + attrSmt.getValue().toString());
 				
 				// multivalues
 				if (attrSmt.getValue() instanceof Set) {
@@ -219,6 +225,7 @@ public class CatalogObject {
 				}
 				else {
 					_metadata.addMetadata(attrSmt.getElementIdentifier(), attrSmt.getValue().toString());
+					//System.out.println(attrSmt.getElementIdentifier() + " is added into the metadata...");
 				    if (attrSmt.getElementIdentifier().equals("REFERENCE_KEY_ID"))
 				    	keyId = attrSmt.getValue().toString();
 				    
@@ -230,17 +237,26 @@ public class CatalogObject {
 				CIToolIngester.refInfo.put(keyId, keyDesc);
 
 			if (!objType.equalsIgnoreCase("VOLUME")) {
+				// add to _resrcObjs so that it can be created as Product_Context type
+				if (objType.equalsIgnoreCase("DATA_SET_HOUSEKEEPING"))
+					_resrcObjs = new ArrayList<ObjectStatement>();
+				
 				// second nested level
 				List<ObjectStatement> objList2 = objSmt.getObjects();
 				for (ObjectStatement smt2 : objList2) {
 					List<AttributeStatement> objAttr = smt2.getAttributes();
 					lblMap = new HashMap<String, AttributeStatement>(pdsLabelMap);
-
+					
+					//System.out.println("2nd object name = " + smt2.getIdentifier());
+					if (objType.equalsIgnoreCase("DATA_SET_HOUSEKEEPING") &&
+						smt2.getIdentifier().toString().equals("RESOURCE_INFORMATION")) {
+						_resrcObjs.add(smt2);
+					}
 					// TODO: how to handle same keywords in different
 					// object?????
 					for (AttributeStatement attrSmt : objAttr) {
 						lblMap.put(attrSmt.getElementIdentifier(), attrSmt);
-				
+						
 						if (attrSmt.getValue() instanceof Set) {
 							List<String> valueList = getValueList(attrSmt.getValue());
 							for (int i=0; i<valueList.size(); i++) {
@@ -248,16 +264,18 @@ public class CatalogObject {
 							}
 						}
 						else 
-							_metadata.addMetadata(attrSmt.getElementIdentifier(), attrSmt.getValue().toString());
-						
+							_metadata.addMetadata(attrSmt.getElementIdentifier(), attrSmt.getValue().toString());					
 					}
 
 					// third nested level
 					List<ObjectStatement> objList3 = smt2.getObjects();
 					for (ObjectStatement smt3 : objList3) {
 						List<AttributeStatement> objAttr2 = smt3.getAttributes();
+						//System.out.println("3rd object name = " + smt3.getIdentifier());
 						for (AttributeStatement attrSmt2 : objAttr2) {
 							lblMap.put(attrSmt2.getElementIdentifier(), attrSmt2);
+							//System.out.println(attrSmt2.getElementIdentifier() + " = " + attrSmt2.getValue().toString());
+							
 							if (attrSmt2.getValue() instanceof Set) {
 								List<String> valueList = getValueList(attrSmt2.getValue());
 								for (int i=0; i<valueList.size(); i++) {
@@ -356,7 +374,7 @@ public class CatalogObject {
 	 * @return list of string value if the given value is multivalued (surrounding within { ... })
 	 * 	otherwise, null value is returned.
 	 */
-	private List<String> getValueList(Value value) {
+	public static List<String> getValueList(Value value) {
 
 		List<String> valueList = new ArrayList<String>();
 		if (value instanceof Set) {			

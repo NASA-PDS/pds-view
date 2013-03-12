@@ -46,6 +46,8 @@ public class Constants {
     
     public static final String RESOURCE_PROD = "Product_Resource";
     
+    public static final String CONTEXT_PROD = "Product_Context";
+    
     public static final String MISSION_OBJ = "MISSION";
     
     public static final String DATASET_OBJ = "DATA_SET";
@@ -57,6 +59,10 @@ public class Constants {
     public static final String TARGET_OBJ = "TARGET";
     
     public static final String RESOURCE_OBJ = "RESOURCE";
+    
+    public static final String HK_OBJ = "DATA_SET_HOUSEKEEPING";
+    
+    public static final String RELEASE_OBJ = "DATA_SET_RELEASE";
     
     public static final String VOLUME_OBJ = "VOLUME";
     
@@ -100,6 +106,7 @@ public class Constants {
         pds3ToPds4Map.put("PUBLICATION_DATE", "volume_publication_date");
         pds3ToPds4Map.put("DESCRIPTION", "volume_description");
         pds3ToPds4Map.put("MISSION_ALIAS_NAME", "alternate_title");
+        pds3ToPds4Map.put("RESOURCE_LINK", "resource_url");
         //pds3ToPds4Map.put("INSTRUMENT_HOST_DESC", "instrument_host_description");
       } 
 }

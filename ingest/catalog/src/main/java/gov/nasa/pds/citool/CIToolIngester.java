@@ -154,14 +154,15 @@ public class CIToolIngester {
     	catIngester.createRegistryPackage();
     	
     	// publish extrinsic products and fileobject products 
-    	/* don't ingest for testing... uncomment it out for actual ingestion..... */    	
+    	/* don't ingest for testing... uncomment it out for actual ingestion..... */     	
     	for (CatalogObject obj: catObjs) {	
     		if (obj.getIsLocal()) {
     			catIngester.ingest(obj);  // ingest extrinsic & file object	
     			catIngester.updateProduct(obj, refs);  // update extrinsic object with associations
     			report.record(obj.getLabel().getLabelURI(), obj.getLabel().getProblems());
-    		}
+    		}    		
        	} 
+       	
    	
     }
  
@@ -185,8 +186,6 @@ public class CIToolIngester {
 					isVolumeCatalog = true;
 				}
 				catObjs.add(catObj);
-				
-				//if (catObj.getCatObjType().equalsIgnoreCase("REFERENCE"))
 			}
 			else {
 				LabelParserException lp = new LabelParserException(
@@ -211,11 +210,11 @@ public class CIToolIngester {
 		
 			// need to find the file on the local system before trying to get from the file manager
 			String completeFilename = basePath + File.separator + "catalog" + File.separator + ptrFile.toLowerCase();
-            //System.out.println("completeFilename = " + completeFilename);
 			File aFile = new File(completeFilename);
 			try {
 				// check whether this reference file is already in the label list
-				if (!findLabel(ptrFile)) {
+				if (!findLabel(ptrFile)) {					
+					// TODO: may refactor this part ???
 					if (aFile.exists()) {	
 						CatalogObject catObj = new CatalogObject(this.report);
 						Label tmpLbl = parse(aFile.toURL());
@@ -223,6 +222,9 @@ public class CIToolIngester {
 							catObj.processLabel(tmpLbl);
 							catObj.setIsLocal(true);
 							catObjs.add(catObj);
+							if (catObj.getCatObjType().equalsIgnoreCase(Constants.RELEASE_OBJ)) {
+								catIngester.setArchiveStatus(catObj.getMetadata().getMetadata("ARCHIVE_STATUS"));
+							}
 						}
 						else {
 							System.err.println("\n" + aFile.toURL() + " is NULL so it can't be processed. Please check the file.\n");
@@ -239,6 +241,9 @@ public class CIToolIngester {
 								catObj.processLabel(tmpLbl);
 								catObj.setIsLocal(true);
 								catObjs.add(catObj);
+								if (catObj.getCatObjType().equalsIgnoreCase(Constants.RELEASE_OBJ)) {
+									catIngester.setArchiveStatus(catObj.getMetadata().getMetadata("ARCHIVE_STATUS"));
+								}										
 							}
 							else {
 								System.err.println("\n" + aFile.toURL() + " is NULL so it can't be processed. Please check the file.\n");
@@ -298,8 +303,7 @@ public class CIToolIngester {
 						System.err.println("Error: Catalog file (" + aFile + ") is missing in the archive volume and " + "" +
 								"can't get it from the storage service.");
 						System.exit(1);	
-					}
-				
+					}				
 					productId = aProduct.getProductId();
 
 					// need to get a transport URL from the users
@@ -390,6 +394,7 @@ public class CIToolIngester {
     			else {
     				values = new ArrayList<String>();
     			}
+    			
     			if (md.isMultiValued(key)) {
     				List<String> tmpValues = md.getAllMetadata(key);
     				for (String aVal: tmpValues) {
@@ -403,6 +408,7 @@ public class CIToolIngester {
     				if (!valueExists(Constants.LID_PREFIX+"target:target."+lidValue, values))
     					values.add(Constants.LID_PREFIX+"target:target."+lidValue);              
     			}
+    			
     			refs.put(Constants.HAS_TARGET, values);
     			
     			key = "INSTRUMENT_HOST_ID";
@@ -439,11 +445,36 @@ public class CIToolIngester {
     			else {
     				values = new ArrayList<String>();
     			}
+    			
     			if (!valueExists(Constants.LID_PREFIX+"data_set:data_set."+lidValue, values)) {
     				values.add(Constants.LID_PREFIX+"data_set:data_set."+lidValue);
     			}
+    			
     			refs.put(Constants.HAS_DATASET, values);
     			
+    			String key = "CURATING_NODE_ID";
+    			if (md.containsKey(key)) {
+    				if (refs.get(Constants.HAS_NODE)!=null) {
+    					values = refs.get(Constants.HAS_NODE);
+    				}
+    				else {
+    					values = new ArrayList<String>();
+    				}
+    				if (md.isMultiValued(key)) {
+    					List<String> tmpValues = md.getAllMetadata(key);
+    					for (String aVal: tmpValues) {
+    						lidValue = aVal;
+    						if (!valueExists(Constants.LID_PREFIX+"node:node."+lidValue, values))
+    							values.add(Constants.LID_PREFIX+"node:node."+lidValue);
+    					}
+    				}
+    				else {
+    					lidValue = md.getMetadata(key);
+    					if (!valueExists(Constants.LID_PREFIX+"node:node."+lidValue, values))
+    						values.add(Constants.LID_PREFIX+"node:node."+lidValue);              
+    				}
+    				refs.put(Constants.HAS_NODE, values);      
+    			}
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.INST_OBJ)) {
     			lidValue = pdsLbl.get("INSTRUMENT_ID").getValue().toString();
@@ -482,19 +513,60 @@ public class CIToolIngester {
     				values.add(Constants.LID_PREFIX+"target:target."+lidValue);
     			refs.put(Constants.HAS_TARGET, values);
     		}
-    		else if (catObjType.equalsIgnoreCase(Constants.RESOURCE_OBJ)) {
-    			lidValue = pdsLbl.get("RESOURCE_ID").getValue().toString();
-    			if (lidValue.contains("/"))
-    				lidValue = lidValue.replace('/', '-');
-    			// where to get a data set id ????  			
+    		else if (catObjType.equalsIgnoreCase(Constants.RESOURCE_OBJ) || 
+    				 catObjType.equalsIgnoreCase(Constants.HK_OBJ)) {	
     			if (refs.get(Constants.HAS_RESOURCE)!=null) {
     				values = refs.get(Constants.HAS_RESOURCE);
     			}
     			else {
     				values = new ArrayList<String>();
     			}
-    			values.add(Constants.LID_PREFIX+"resource:resource."+lidValue);
-    			refs.put(Constants.HAS_RESOURCE, values);
+    			
+    			String dsId = pdsLbl.get("DATA_SET_ID").getValue().toString();   			
+    			String key = "RESOURCE_ID";
+    			if (md.isMultiValued(key)) {
+    				List<String> tmpValues = md.getAllMetadata(key);    				
+    				for (String aVal: tmpValues) {
+    					lidValue = aVal;
+    					if (lidValue.contains("/"))
+    	    				lidValue = lidValue.replace('/', '-');
+    					
+    					lidValue = dsId + "__" + lidValue; 
+    					if (!valueExists(Constants.LID_PREFIX+"resource:resource."+lidValue, values))
+    						values.add(Constants.LID_PREFIX+"resource:resource."+lidValue);
+    				}
+    			}
+    			else {
+    				lidValue = md.getMetadata(key);
+    				if (lidValue.contains("/"))
+        				lidValue = lidValue.replace('/', '-');
+    				lidValue = dsId + "__" + lidValue;
+    				if (!valueExists(Constants.LID_PREFIX+"resource:resource."+lidValue, values))
+						values.add(Constants.LID_PREFIX+"resource:resource."+lidValue);
+    			}
+    			refs.put(Constants.HAS_RESOURCE, values);   
+    			
+    			key = "CURATING_NODE_ID";
+    			if (md.containsKey(key)) {
+					if (refs.get(Constants.HAS_NODE) != null) {
+						values = refs.get(Constants.HAS_NODE);
+					} else {
+						values = new ArrayList<String>();
+					}
+					if (md.isMultiValued(key)) {
+						List<String> tmpValues = md.getAllMetadata(key);
+						for (String aVal : tmpValues) {
+							lidValue = aVal;
+							if (!valueExists(Constants.LID_PREFIX + "node:node." + lidValue, values))
+								values.add(Constants.LID_PREFIX + "node:node." + lidValue);
+						}
+					} else {
+						lidValue = md.getMetadata(key);
+						if (!valueExists(Constants.LID_PREFIX + "node:node." + lidValue, values))
+							values.add(Constants.LID_PREFIX + "node:node." + lidValue);
+					}
+					refs.put(Constants.HAS_NODE, values);  
+    			}
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.VOLUME_OBJ)) {
     			lidValue = pdsLbl.get("VOLUME_ID").getValue().toString();
