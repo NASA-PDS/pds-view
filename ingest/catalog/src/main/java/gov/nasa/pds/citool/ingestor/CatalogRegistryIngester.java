@@ -472,8 +472,24 @@ public class CatalogRegistryIngester {
 			if (refs.get(Constants.HAS_INST)!=null)
 				slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));
 			// how to get this version properly for each resource?????
-			if (refs.get(Constants.HAS_RESOURCE)!=null)
-				slots.add(new Slot(Constants.HAS_RESOURCE, getRefValues(version, Constants.HAS_RESOURCE, refs)));	
+			// should only add same dataset id
+			if (refs.get(Constants.HAS_RESOURCE)!=null) {
+				Map<String, List<String>> resrcRefs = new HashMap<String, List<String>>();
+				List<String> values = new ArrayList<String>();
+				for (String aValue: refs.get(Constants.HAS_RESOURCE)) {
+					String tmpLid = aValue;
+					String tmpDsid = catObj.getMetadata().getMetadata("DATA_SET_ID");
+					if (tmpDsid.contains("/"))
+						tmpDsid = tmpDsid.replace("/", "-");
+					if (tmpLid.contains(tmpDsid))
+						values.add(aValue);
+					//System.out.println("tmpDsid = " + tmpDsid + "    resrcLid = " + tmpLid);
+				}
+			    if (values.size()>0) {
+			    	resrcRefs.put(Constants.HAS_RESOURCE, values);
+			    	slots.add(new Slot(Constants.HAS_RESOURCE, getRefValues(version, Constants.HAS_RESOURCE, resrcRefs)));	
+			    }
+			}
 			if (refs.get(Constants.HAS_NODE)!=null)
 				slots.add(new Slot(Constants.HAS_NODE, getRefValues(version, Constants.HAS_NODE, refs)));
 		}
@@ -506,7 +522,8 @@ public class CatalogRegistryIngester {
 		}  
 	}
 		
-	private List<String> getRefValues(String version, String associationType, Map<String, List<String>> allRefs) {	
+	private List<String> getRefValues(String version, String associationType, 
+			Map<String, List<String>> allRefs) {	
 		//should ge a version independently...how????
 		List<String> values = new ArrayList<String>();
 		/*
@@ -591,10 +608,10 @@ public class CatalogRegistryIngester {
 				String tmpVer = "";
 				if (getExtrinsic(tmpLid)!=null) {
 					tmpVer = getExtrinsic(tmpLid).getVersionName();
-				    values.add(aValue+"::" + tmpVer);
+					values.add(aValue+"::" + tmpVer);
 				}
 				else {
-				    values.add(aValue);
+					values.add(aValue);
 				}
 			}
 		}
@@ -712,10 +729,6 @@ public class CatalogRegistryIngester {
 				    // DataSet release object take preference.
 					value = this.archiveStatus;
 				}
-				else {
-			    	key = "ARCHIVE_STATUS";
-			    	value = this.archiveStatus;
-			    }
 			}
 			
 			if (md.isMultiValued(key)) {
@@ -733,12 +746,20 @@ public class CatalogRegistryIngester {
 				values.add(value);
 			}
 
-			if (getKey(key) != null)
+			if (getKey(key) != null) {
 				slots.add(new Slot(getKey(key), values));
+				//System.out.println("----key = " + key + "    values = " + values.toString() + "   added to the slot");
+			}
 
 			// need to add this one for alternate_id for MISSION object
 			if (key.equals("MISSION_ALIAS_NAME"))
 				slots.add(new Slot("alternate_id", values));
+		}
+		
+		if (objType.equalsIgnoreCase(Constants.DATASET_OBJ) && this.archiveStatus!=null) {
+			if (!md.containsKey("ARCHIVE_STATUS")) {
+		    	slots.add(new Slot(getKey("ARCHIVE_STATUS"), Arrays.asList(new String[] { this.archiveStatus })));
+		    }
 		}
 		
 		List<String> tmpVals = new ArrayList<String>();
@@ -813,6 +834,8 @@ public class CatalogRegistryIngester {
 				String dsId = md.getMetadata("DATA_SET_ID");
 				product.setName(value);	
 				productLid = Constants.LID_PREFIX+"resource:resource."+dsId + "__" + value;
+				if (productLid.contains("/"))
+					productLid = productLid.replace('/', '-');
 				product.setLid(productLid);
 				product.setObjectType(Constants.CONTEXT_PROD);		
 			}	
@@ -839,7 +862,7 @@ public class CatalogRegistryIngester {
 		slots.add(new Slot("modification_date", tmpVals));
 		slots.add(new Slot("modification_version_id", Arrays.asList(new String[] {"1.0"})));
 		slots.add(new Slot("data_class", Arrays.asList(new String[] {"Resource"})));
-		slots.add(new Slot("resource_type", Arrays.asList(new String[] {"Information.Resource"})));
+		slots.add(new Slot("resource_type", Arrays.asList(new String[] {"Information.Science_Portal"})));
 		
 		product.setSlots(slots);	
 

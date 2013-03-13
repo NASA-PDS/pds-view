@@ -158,12 +158,15 @@ public class CIToolIngester {
     	for (CatalogObject obj: catObjs) {	
     		if (obj.getIsLocal()) {
     			catIngester.ingest(obj);  // ingest extrinsic & file object	
-    			catIngester.updateProduct(obj, refs);  // update extrinsic object with associations
     			report.record(obj.getLabel().getLabelURI(), obj.getLabel().getProblems());
     		}    		
        	} 
        	
-   	
+    	//Call updateProduct after ingestion to get correct versionNumber
+    	for (CatalogObject obj: catObjs) {
+    		if (obj.getIsLocal()) 
+    			catIngester.updateProduct(obj, refs); // update extrinsic object with associations
+    	} 	
     }
  
     private void convertToCatalogObject() {
@@ -522,25 +525,23 @@ public class CIToolIngester {
     				values = new ArrayList<String>();
     			}
     			
-    			String dsId = pdsLbl.get("DATA_SET_ID").getValue().toString();   			
+    			String dsId = pdsLbl.get("DATA_SET_ID").getValue().toString();   
     			String key = "RESOURCE_ID";
     			if (md.isMultiValued(key)) {
     				List<String> tmpValues = md.getAllMetadata(key);    				
-    				for (String aVal: tmpValues) {
-    					lidValue = aVal;
+    				for (String aVal: tmpValues) {				
+    					lidValue = dsId + "__" + aVal; 
     					if (lidValue.contains("/"))
     	    				lidValue = lidValue.replace('/', '-');
-    					
-    					lidValue = dsId + "__" + lidValue; 
     					if (!valueExists(Constants.LID_PREFIX+"resource:resource."+lidValue, values))
     						values.add(Constants.LID_PREFIX+"resource:resource."+lidValue);
     				}
     			}
     			else {
     				lidValue = md.getMetadata(key);
-    				if (lidValue.contains("/"))
-        				lidValue = lidValue.replace('/', '-');
     				lidValue = dsId + "__" + lidValue;
+    				if (lidValue.contains("/"))
+        				lidValue = lidValue.replace('/', '-');    				
     				if (!valueExists(Constants.LID_PREFIX+"resource:resource."+lidValue, values))
 						values.add(Constants.LID_PREFIX+"resource:resource."+lidValue);
     			}
