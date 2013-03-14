@@ -23,6 +23,12 @@
   </properties>
   <body>
     <release version="2.1.0" date="TBD" description="TBD">
+      <action dev="hyunlee" type="add">
+        Added displaying PDS4 products (Bundle, Collection, and Context: Target, Mission, InstrumentHost, Instrument).
+      </action>
+      <action dev="hyunlee" type="update">
+        Modified viewDataset.jsp & viewProfile.jsp to display all resource information in the RESOURCES.
+      </action>
     </release>
 
     <release version="2.0.1" date="2012-11-14" description="This release of Data Set View is a component of the PDS 2010 System. This is an operational release supporting the deployment of the system at the Engineering Node and includes updates for issues discovered during deployment.">
