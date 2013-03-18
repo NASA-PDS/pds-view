@@ -33,22 +33,24 @@
      <tr>
        <td>    
 <%!
-String fixQuery(String q) {
-   String[] entity = {"&","<",">","\"","'","\\"};
-   String[] replace = {"&amp;","&lt;","&gt;","&quot;","&#x27;","&#x2F","_"};
+  /**
+   * Null out the parameter value if any of the bad characters are present
+   * that facilitate Cross-Site Scripting and Blind SQL Injection.
+   */
+  public String cleanParam(String str) {
+    char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
+    String decodedStr = "";
 
-   String query = "", next="";
-
-   for (int i=0; i<q.length(); i++) {
-      next = String.valueOf(q.charAt(i));
-      for (int j=0; j<entity.length; j++)
-         if (next.equals(entity[j]))
-            next = replace[j];
-
-      query += next;
-   }
-   return query;
-} // end of fixQuey method
+    if (str != null) {
+      decodedStr = URLDecoder.decode(str);
+      for(int i = 0; i < badChars.length; i++) {
+        if (decodedStr.indexOf(badChars[i]) >= 0) {
+          return "";
+        }
+      }
+    }
+    return decodedStr;
+  }
 %>
 
 <%
@@ -74,23 +76,23 @@ String localdsid =  "";
 while (names.hasMoreElements()) {
    String param = (String) names.nextElement();
    if (param.equals("volume")) {
-      volume = URLEncoder.encode(request.getParameter("volume"),"UTF-8");
+      volume = cleanParam(request.getParameter("volume"));
    } else if (param.equals("nodename")) {
-      nodename = URLEncoder.encode(request.getParameter("nodename"),"UTF-8");
+      nodename = cleanParam(request.getParameter("nodename"));
    } else if (param.equals("ancillary")) {
-      ancillary = URLEncoder.encode(request.getParameter("ancillary"),"UTF-8");
+      ancillary = cleanParam(request.getParameter("ancillary"));
    } else if (param.equals("psclass")) {
-      psclass = URLEncoder.encode(request.getParameter("psclass"),"UTF-8");
+      psclass = cleanParam(request.getParameter("psclass"));
    } else if (param.equals("localdsid")) {
-      localdsid = URLEncoder.encode(request.getParameter("localdsid"),"UTF-8");
+      localdsid = cleanParam(request.getParameter("localdsid"));
    } else if (param.equals("datasetid")) {
-      dsid = URLEncoder.encode(request.getParameter("datasetid"),"UTF-8");
+      dsid = cleanParam(request.getParameter("datasetid"));
    } else if (param.equals("dsid")) {
-      dsid = URLEncoder.encode(request.getParameter("dsid"),"UTF-8");
+      dsid = cleanParam(request.getParameter("dsid"));
    } else if (param.equals("Identifier")) {
-      dsid = URLEncoder.encode(request.getParameter("Identifier"),"UTF-8");
+      dsid = cleanParam(request.getParameter("Identifier"));
    } else if (param.equals("identifier")) {
-      dsid = URLEncoder.encode(request.getParameter("identifier"),"UTF-8");
+      dsid = cleanParam(request.getParameter("identifier"));
    }
 }
 %>
@@ -106,7 +108,7 @@ if (dsid.length() == 0) {
       </tr>
       <tr valign="TOP">
          <td bgcolor="#F0EFEF" width=200 valign=top>
-            Please specify a <b>dsid</b> or <b>Identifier</b>
+            Please specify a valid <b>dsid</b> or <b>Identifier</b>.
          </td>
       </tr>
     </table>
@@ -139,7 +141,7 @@ else {
       </tr>
       <tr valign="TOP">
          <td bgcolor="#F0EFEF" width=200 valign=top>
-            Information not found for dsid <b><%=dsid%></b>. Please verify the value.
+            Please specify a valid <b>dsid</b> or <b>Identifier</b>.
          </td> 
       </tr>
    </table>

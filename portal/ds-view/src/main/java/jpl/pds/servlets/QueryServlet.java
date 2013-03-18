@@ -26,6 +26,7 @@ package jpl.pds.servlets;
 import java.util.*;
 import java.text.*;
 import java.io.*;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -58,7 +59,6 @@ public class QueryServlet extends HttpServlet {
 
 		// Get the SearchBean to execute the profile search.
 		// Save the bean as an attribute and forward the request.
-
 		try
 		{
 			SearchBean searchBean = (SearchBean) req.getSession().getAttribute("searchBean");
@@ -87,13 +87,6 @@ public class QueryServlet extends HttpServlet {
 
 	}
 
-	String validateUserInputs(HttpServletRequest req, HttpServletResponse res)
-                        throws ServletException, IOException
-	{
-		// assume the user knows what he's doing for now.
-		return "";
-	}
-
 	static String[] singleValueCriteria = {"targname", "targtype", "dataobjtype", "dsname",
 		"dsid", "strttime", "stoptime", "insttype", "insthosttype",
 		"archivestat", "nodename", "defullname", "msnstopdate",
@@ -104,6 +97,50 @@ public class QueryServlet extends HttpServlet {
 		"onlineid", "reslink", "resname", "volumeid", "volumename"};
 
 	static String[] multiValueCriteria = {"msnname", "instname", "insthostname"};
+
+  /*
+  ** Validate the user supplied parameters by nulling out the parameter value 
+  ** if any of the bad characters are present that facilitate Cross-Site 
+  ** Scripting and Blind SQL Injection.
+  */
+  String validateUserInputs(HttpServletRequest req, HttpServletResponse res)
+                            throws ServletException, IOException
+  {
+    char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
+    String decodedStr = null;
+
+    // Check the single valued parameters first.
+    for (int i=0; i<singleValueCriteria.length; i++) {
+      String str = req.getParameter(singleValueCriteria[i]);
+      if (str != null) {
+        decodedStr = URLDecoder.decode(str);
+        for (int j=0; j<badChars.length; j++) {
+          if (decodedStr.indexOf(badChars[j]) >= 0) {
+            return "Invalid parameter value supplied.";
+          }
+        }
+      }
+    }
+
+    // Check the multi-valued parameters second.
+    for (int i=0; i<multiValueCriteria.length; i++) {
+      String[] list = req.getParameterValues(multiValueCriteria[i]);
+      if (list != null) {
+        for (int j=0; j<list.length; j++) {
+          String str = list[j];
+          if (str != null) {
+            decodedStr = URLDecoder.decode(str);
+            for (int k=0; k<badChars.length; k++) {
+              if (decodedStr.indexOf(badChars[k]) >= 0) {
+                return "Invalid parameter value supplied.";
+              }
+            }
+          }
+        }
+      }
+    }
+    return "";
+  }
 
 	/*
 	** Construct the HTML style query string with PDS keywords

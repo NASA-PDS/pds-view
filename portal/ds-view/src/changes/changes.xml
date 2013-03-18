@@ -27,7 +27,10 @@
         Added displaying PDS4 products (Bundle, Collection, and Context: Target, Mission, InstrumentHost, Instrument).
       </action>
       <action dev="hyunlee" type="update">
-        Modified viewDataset.jsp & viewProfile.jsp to display all resource information in the RESOURCES.
+        Modified viewDataset.jsp and viewProfile.jsp to display all resource information in the RESOURCES.
+      </action>
+      <action dev="shardman" type="update">
+        Updated the QueryServlet and viewDataset.jsp interfaces to thwart Cross Site Scripting and Blind SQL Injection attacks.
       </action>
     </release>
 
@@ -744,40 +747,6 @@
       </action>
       <action dev="thuytran" type="update">
         2002-06-28 - /home/oodt/cvs/pds/src/www/apps/apps/pds/paramsList.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/results.jsp, /home/oodt/cvs/pds/src/www/apps/apps/pds/utils.js: Update values for the GUI pull downs and selection boxes
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
-      </action>
-      <action dev="" type="update">
       </action>
     </release>
   </body>
