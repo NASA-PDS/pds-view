@@ -41,18 +41,19 @@ ov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
 	</p>
       </subsection>
       <subsection name="Registry Extractor">
-        <p>This component uses the Registry Core and XML configuration files to build XML documents on a per product basis.  The following context products are queried through this software from the Registry Service:
+        <p>This component uses the Registry Core and XML configuration files to build XML documents on a per product basis.  The following context products have been tested through this software from the Registry Service:
         </p>
         <ul>
-          <li>PDS3 Data Set</li>
-          <li>PDS3 Target</li>
-          <li>PDS3 Instrument</li>
-          <li>PDS3 Instrument Host</li>
-          <li>PDS3 Mission</li>
-          <li>Node Context</li>
-          <li>Archive Information Context</li>
+          <li>Product_Data_Set_PDS3</li>
+          <li>Product_Target_PDS3</li>
+          <li>Product_Instrument_PDS3</li>
+          <li>Product_Instrument_Host_PDS3</li>
+          <li>Product_Mission_PDS3</li>
+          <li>Product_Context</li>
+          <li>Product_Bundle</li>
+          <li>Product_Collection</li>
         </ul>
-	<p>The purpose for these files is they will be combined using the Solr Indexer component to form a Lucene index.
+	<p>These generated XML files will be placed in a $SEARCH_HOME/registry-data directory. These will be combined using the Solr Indexer component to form a Lucene index.
 	</p>
       </subsection>
       <subsection name="Solr Indexer">

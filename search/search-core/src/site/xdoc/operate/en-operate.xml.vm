@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2010-2012, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>EN Operation</title>
+    <author email="Jordan.H.Padams@jpl.nasa.gov">Jordan Padams</author>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Engineering Node Operation">
+      <p>This document describes how to operate the Search Core software, specifically for the 
+      <a href="../install/en-install.html">Engineering Node installation</a>. The following topics can be found in this document:
+      </p>
+
+      <ul>
+        <li><a href="#PDS_EN_Index_Generation">PDS EN Index Generation</a></li>
+        <li><a href="#Common_Errors">Common Errors</a></li>
+      </ul>
+     </section>
+     <section name="PDS EN Index Generation">
+      <p>This procedure details the PDS Engineering-specific procedure for generating the Solr Index and posting to all operational machines.</p>
+	<ul>
+	  <li>Log onto pdssrv2.</li>
+	  <li>If needed, update <i>$SEARCH_CORE_HOME/bin/env-vars</i> with, the following information:
+	    <ul>
+	      <li>SEARCH_HOME=/usr/local/search-service/pds</li>
+	      <li>SEARCH_SERVICE_URL=http://localhost/search-service</li>
+	      <li>REGISTRY_URL=http://localhost/registry</li>
+	    </ul>
+	  </li>
+	  <li>As pds user, run the initial-index-pdsen script, substituting today's date for <i>&lt;date&gt;</i>:
+	    <source>
+% sudo su pds
+% initial-index-pdsen &> index_&lt;date&gt;.log
+	    </source>
+	  </li>
+	</ul>
+
+      <subsection name="Test Search Service">
+      <p>Once this script completes, the data should be available through the Search Service interface. Go to <a href="http://localhost:8080/search-service/pds/search/?q=*:*">http://localhost:8080/search-service/pds/search/?q=*:*</a> to verify data is available (modify domain and port as needed).  See the <a href="../../search-service/operate">Search Service - Operate</a> page for more information on how to query data.</p>
+      </subsection>
+
+      <p><i>Note: To further streamline the process, the command-line arguments can be removed from the initial-index script, and the search-core line can modified according to your specific needs.</i>
+      </p>
+    </section>
+    <section name="Common Errors">
+    	<p>See <a href="./index.html#Common_Errors">Generic Operation Common Errors</a>
+    	</p>
+    </section>
+  </body>
+</document>

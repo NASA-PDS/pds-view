@@ -33,6 +33,7 @@
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+	<li><a href="#Security">Security</a></li>
         <li><a href="#Common_Errors">Common Errors</a></li>
       </ul>
     </section>
@@ -60,7 +61,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       </subsection>
 
       <subsection name="Java Application Server">
-        <p>The Registry Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Apache Tomcat software can be downloaded from the <a href="http://tomcat.apache.org/" target="_blank">Apache Tomcat</a> page. Choose the version to download (6.0 or 7.0) from the menu on the left.
+        <p>The Search Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Apache Tomcat software can be downloaded from the <a href="http://tomcat.apache.org/" target="_blank">Apache Tomcat</a> page. Choose the version to download (6.0 or 7.0) from the menu on the left.
         </p>
       </subsection>
     </section>
@@ -81,24 +82,42 @@ or
       </p>
 
       <ul>
-        <li><b>README.txt</b><br/>
-          <p>A README file directing the user to the available documentation for the project.
-          </p>
-        </li>
         <li><b>LICENSE.txt</b><br/>
           <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
+          </p>
+        </li>
+        <li><b>README.txt</b><br/>
+          <p>A README file directing the user to the available documentation for the project.
           </p>
         </li>
         <li><b>doc/</b><br/>
           <p>This directory contains a local web site with the Search Service documentation, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
           </p>
         </li>
+	<li><b>experimental/</b><br />
+	  <p>This directory contains the configuration for the experimental core for Solr. This directory is intended for development and testing purposes only, and can be ignored.</p>
+	</li>
+	<li><b>lib/</b><br />
+	  <p>This directory contains the the jars used by the Solr software.</p>
+	</li>
+	<li><b>pds/</b><br />
+	  <p>This directory contains the configuration for the Solr core for the PDS Search.  This directory path is the SEARCH_HOME referenced in the <a href="../../search-core/operate/index.html">Search Core Operation documentation</a>
+	  </p>
+	</li>
+	<li><b>solr.war</b><br />
+	  <p>This WAR file is the Solr software application to be deployed to Tomcat.</p>
+	</li>
+	<li><b>solr.xml</b><br />
+	  <p>This XML file provides the basic, initial configuration for the Solr software.</p>
+	</li>
       </ul>
     </section>
 
     <section name="Deploying the Application">
       <p>The Search Service includes the configuration for Solr as well as the Java extensions written to support the PDS Search Protocol and PDAP Handler. In order to deploy Solr with the Search Service configuration, please complete the following procedure:
       </p>
+
+      <p><i>See <a href="./en-deploy.html">Engineering Node Deployment documentation</a> for EN-specific deployment instructions.</i></p>
 
       <subsection name="Initial Installation">
 	<ol>
@@ -107,7 +126,7 @@ or
 ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
 	    </source>
 	  </li>
-	  <li>Create a Tomcat context file <i>${project.artifactId}.xml</i> to refer to the Solr war (found in the $SEARCH_SERVICE_HOME directory) and place it in the <i>$TOMCAT_HOME/conf/Catalina/localhost</i> directory.  The <i>${project.artifactId}.xml</i> file should look something like this:
+	  <li>Create a Tomcat context file <i>${project.artifactId}.xml</i> to refer to the Solr WAR file (found in the $SEARCH_SERVICE_HOME directory) and place it in the <i>$TOMCAT_HOME/conf/Catalina/localhost</i> directory.  The <i>${project.artifactId}.xml</i> file should look something like this, with the paths modifed as needed:
 	    <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context docBase="/usr/local/${project.artifactId}/solr.war" debug="0" crossContext="true"&gt;
@@ -141,6 +160,26 @@ ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${projec
 	</ol>
       </subsection>
     </section>
+
+    <section name="Security">
+      <p>The Solr software includes a URL endpoint to update the index.  This introduces a security vulnerability by allowing someone to modify the index without securing it.  The preferred method of security is to only allow updates to come from the local machine (localhost).  To do so, open the Apache Tomcat configuration file. <i>$TOMCAT_HOME/conf/server.xml</i>, for editing, and find the Host section in the document that looks similar to the following:</p>
+      <source>
+      &lt;Host name="localhost"  appBase="webapps"
+            unpackWARs="true" autoDeploy="true"&gt;
+        .
+        .
+        .
+      &lt;/Host&gt;
+      </source>
+      <p>Within this section, add the following code, which should be modified according to your specific installation.  The following assumes that the Search Service software is located at the Tomcat base level directory (i.e. http://localhost/search-service):</p>
+      <source>
+    	&lt;Context path="/search-service/pds/update" docBase="" &gt;
+          &lt;Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="127.0.0.1" /&gt;
+        &lt;/Context&gt;
+      </source>
+      <p>The IP address 127.0.0.1 represents the localhost IP address.  This can be modified to be any IP address of the machine you would like to have update access to the Search Service.</p>
+    </section>
+
     <section name="Common Errors">
       <subsection name="HTTP 404 - Requested Resource Not Available">
 	<p>This error means the application failed to install correctly.  The following are potential mitigation strategies:</p>

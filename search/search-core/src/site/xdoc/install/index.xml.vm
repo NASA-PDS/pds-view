@@ -107,7 +107,7 @@ or
           </p>
         </li>
         <li><b>facets/</b><br/>
-          <p>This directory contains XSLT and XML files used to provide specific formatting (faceting) to the index.
+          <p>This directory contains XSLT and XML files used to provide specific formatting and faceting to the index.
           </p>
         </li>
         <li><b>lib/</b><br/>
@@ -118,18 +118,19 @@ or
     </section>
 
     <section name="Configuring the Environment">
-      <p>In order to execute the Search Core, the local environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.
+      <p>In order to execute the Search Core, the local environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.</p>
+      <p>See the <a href="./en-install.html">Engineering Node installation</a> for EN-specific configuration instructions..
       </p>
 
       <subsection name="UNIX-Based Environment">
-        <p>This section details the environment setup for UNIX-based machines.  First, a symbolic link should be made to the Search Core installation directory.  This will provide a means to easily upgrade software in the future.</p>
+        <p>This section details the environment setup for UNIX-based machines.  First, a symbolic link should be made to the Search Core installation directory.  This will provide a means to easily run the software, as well as upgrade software in the future.</p>
 
 	<p>The following command demonstrates how to create a symbolic link:</p>
 	<source>
 % ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
 	</source>
 
-	<p>The binary distribution includes a couple shell scripts that must be executed from the command-line. Setting the <i>PATH</i> environment variable to the location of the scripts, enables the shell scripts to be executed from any location on the local machine.
+	<p>The binary distribution includes shell scripts that must be executed from the command-line. Setting the <i>PATH</i> environment variable to the location of the scripts, enables the shell scripts to be executed from any location on the local machine.
         </p>
 
         <p>The following command demonstrates how to set the <i>PATH</i> environment variable (in Bourne shell), by appending to its current setting:
@@ -205,13 +206,13 @@ set SEARCH_CORE_HOME=C:\Program Files\\${project.artifactId}-${project.version}
 	<li>Modify the following:
 	  <source>
 # Change this line:
-search-core -H $SEARCH_HOME -r $REGISTRY_URL
+${project.artifactId} -H $SEARCH_HOME -r $REGISTRY_URL
 
 # To:
-search-core -H $SEARCH_HOME -r $REGISTRY_URL -m 5
+${project.artifactId} -H $SEARCH_HOME -r $REGISTRY_URL -m 5
 	  </source>
 	</li>
-	<li>See the <a href="../operate/index.html#Basic_Index_Generation">Basic Index Generation</a> section of the <a href="../operate">Operation Guide</a> for the procedure to run the script and see the results in the Search Service.</li>
+	<li>Go to <a href="../operate/index.html#Basic_Index_Generation">Basic Index Generation</a> section of the <a href="../operate">Operation Guide</a> for the procedure to run the script and see the results in the Search Service.</li>
       </ol>
     </section>
 

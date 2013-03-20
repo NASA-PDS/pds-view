@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2011-2012, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology
+  Transfer at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>EN Installation</title>
+    <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
+    <author email="Jordan.H.Padams@jpl.nasa.gov">Jordan Padams</author>
+  </properties>
+
+  <body>
+    <section name="Engineering Node Installation">
+      <p>This document describes the environment configuration for the Search Core command-line tool contained in the <i>${project.artifactId}</i> package, specific to the Engineering Node environment.  For more generic installation instructions, see the <a href="./index.html">Install Guide</a>.  The following topics can be found in this section:
+      </p>
+
+      <ul>
+        <li><a href="#System_Configuration">System Configuration</a></li>
+        <li><a href="#Configuring_the_Environment">Configuring the Environment</a></li>
+      </ul>
+    </section>
+    
+    <section name="System Configuration">
+      <p>The following table lists the machines that require the installation of the Search Core software.  The <a href="#Configuring_the_Environment">Configuring the Environment</a> section of this document should only be performed on the machines in this table:</p>
+      <table style="width: 500px;">
+	<tr><th>Machine Name</th><th>Type</th></tr>
+	<tr><td>pdsbeta</td><td>Development</td></tr>
+	<tr><td>pdssrv2</td><td>Operations</td></tr>
+      </table>
+    </section>
+    
+    <section name="Configuring the Environment">
+      <p>In order to execute the Search Core, the local environment must first be configured appropriately. This section describes how to setup the user environment on the Engineering Node Unix-based machines.
+      </p>
+
+        <p>This section details the environment setup for UNIX-based machines.  First, a symbolic link should be made to the Search Core installation directory.  This will provide a means to easily run the software, as well as upgrade software in the future.</p>
+
+        <p>The following command demonstrates how to create a symbolic link (<i>requires root access</i>):</p>
+        <source>
+% ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
+        </source>
+
+	<p>If a symbolic link already exists at /usr/local/${project.artifactId}, simply remove it and recreate it with the new version of the software using the line above.</p>
+
+	<p>The <i>pds4</i> user will be the owner of the the software so that it can be run without root access.  The following command needs to be run to change the owner of the software (<i>requires root access</i>):</p>
+	<source>
+% chown -R pds4 /usr/local/${project.artifactId}
+	</source>
+
+	<p>The remaining environment configurations should be performed as the <i>pds4</i> user:</p>
+	<source>
+% sudo su pds4
+	</source>
+
+        <p>The binary distribution includes shell scripts that must be executed from the command-line. Setting the <i>PATH</i> environment variable to the location of the scripts, enables the shell scripts to be executed from any location on the local machine.
+        </p>
+
+        <p>The following command demonstrates how to set the <i>PATH</i> environment variable (in Bourne shell), by appending to its current setting:
+        </p>
+
+        <source>
+% export PATH=${PATH}:/usr/local/${project.artifactId}/bin
+        </source>
+
+        <p>In addition, the shell scripts require that the <i>JAVA_HOME</i> environment variable be set to the appropriate location of the Java installation on the local machine. The following command demonstrates how to set the <i>JAVA_HOME</i> environment variable:
+        </p>
+
+        <source>
+% export JAVA_HOME=/path/to/java/home
+        </source>
+
+        <p>The system administrator for the local machine may need to be consulted for this location. The path specified should have a <i>bin</i> sub-directory that contains the <i>java</i> executable. This variable may also be defined within the scripts. Edit the scripts (files without the .bat extension) and change the line in the example above to represent the local Java installation.
+        </p>
+
+	<p>Lastly, the <i>/usr/local/${project.artifactId}/bin/env-vars</i> file must be updated for the <i>Operations machine only</i>.  On pdssrv2, this file should look as follows:</p>
+	
+	<source>
+####################################################################################
+
+# The path for the home directory of local instance of search service.
+SEARCH_HOME=/usr/local/search-service/pds
+
+# URL of the Search Service instance.
+SEARCH_SERVICE_URL=http://localhost/search-service
+
+# URL of the Registry Service instance.
+REGISTRY_URL=http://localhost/registry
+
+####################################################################################
+
+## The following global variables are for copying the index between operational machines
+## Not required for all installations
+
+# Source machine name to where initial index was generated
+SOURCE=pdssrv2.jpl.nasa.gov
+
+# Username to connect source machine
+SOURCE_USER=pds4
+
+# Optional variable. Path on source machine to directory containing solr_index.xml.* .
+# Defaults to SEARCH_HOME/index
+SOURCE_PATH=
+
+####################################################################################
+</source>
+
+	<p>Note the <i>8080</i> was removed from the SEARCH_SERVICE_URL and REGISTRY_URL.</p>
+    </section>
+
+  </body>
+</document>
