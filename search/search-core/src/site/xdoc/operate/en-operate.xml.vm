@@ -48,7 +48,7 @@
 	  <li>As pds user, run the initial-index-pdsen script, substituting today's date for <i>&lt;date&gt;</i>:
 	    <source>
 % sudo su pds
-% initial-index-pdsen &> index_&lt;date&gt;.log
+% initial-index-pdsen &amp;> index_&lt;date&gt;.log
 	    </source>
 	  </li>
 	</ul>
