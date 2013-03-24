@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>storage</artifactId>
-  <version>0.0.0</version>
+  <version>0.4.0</version>
   <packaging>pom</packaging>
 
   <name>Storage</name>
@@ -36,6 +36,7 @@
   <url>http://pds-cm.jpl.nasa.gov/2010/storage/</url>
 
   <modules>
+    <module>product-service</module>
     <module>storage-service</module>
   </modules>
 

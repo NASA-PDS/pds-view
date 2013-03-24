@@ -20,20 +20,19 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
-    <artifactId>transport</artifactId>
-    <version>0.0.0</version>
+    <artifactId>storage</artifactId>
+    <version>0.4.0</version>
   </parent>
 
-  <groupId>gov.nasa.pds.2010.transport</groupId>
-  <artifactId>cas-product</artifactId>
-  <version>0.2.0</version>
+  <groupId>gov.nasa.pds.2010.storage</groupId>
+  <artifactId>product-service</artifactId>
   <packaging>war</packaging>
 
   <name>Product Service</name>
   <description>
     The Product Service provides functionality for transporting files from a Storage Service data repository. The functionality for this service is satisfied by the Apache OODT CAS Product Server.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/transport/cas-product/</url>
+  <url>http://pds-cm.jpl.nasa.gov/2010/storage/product-service/</url>
 
   <licenses>
     <license>

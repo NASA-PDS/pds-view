@@ -7,7 +7,7 @@ for launching the service.
 
 The software can be packaged with the "mvn package" command. The 
 documentation including release notes, installation and operation of the 
-software should be online at http://pds-cm.jpl.nasa.gov/2010/storage/. 
+software should be online at http://pds-cm.jpl.nasa.gov/2010/storage/storage-service. 
 If it is not accessible, you can execute the "mvn site:run" command and 
 view the documentation locally at http://localhost:8080.
 
