@@ -36,8 +36,7 @@
   <url>http://pds-cm.jpl.nasa.gov/2010/transport/</url>
 
   <modules>
-    <module>cas-product</module>
-    <module>web-grid</module>
+    <module>transport-service</module>
   </modules>
 
   <licenses>
