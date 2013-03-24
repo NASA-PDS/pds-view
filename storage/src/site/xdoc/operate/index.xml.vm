@@ -61,7 +61,7 @@ INFO: File Manager started by user
         <tr><td>status</td><td>Determine whether the service is running.</td></tr>
       </table>
 
-      <p>When the Storage Service is started for the first time, it creates the <i>logs</i> and <i>run</i> directories under the the installation directory to hold the log and pid files, respectively. When the first product is ingested, it creates the <i>catalog</i> directory to hold the Lucene-based catalog. If the product type is defined to move the product to a local repository, then it creates the <i>archive</i> directory to hold this repository.
+      <p>When the Storage Service is started for the first time, it creates the <i>logs</i> and <i>run</i> directories under the installation directory to hold the log and pid files, respectively. When the first product is ingested, it creates the <i>catalog</i> directory to hold the Lucene-based catalog. If the product type is defined to move the product to a local repository, then it creates the <i>archive</i> directory to hold this repository.
       </p>
     </section>
 

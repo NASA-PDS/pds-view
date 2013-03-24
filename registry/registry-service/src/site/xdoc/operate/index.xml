@@ -430,7 +430,7 @@ https://localhost:8080/registry/extrinsics/&lt;guid&gt; \
 -u username:password -k -b cookie.txt
       </source>
 
-      <p>The example above also applies to <i>PUT</i> and <i>POST</i> requests.
+      <p>The example above also applies to <i>PUT</i> and <i>POST</i> requests. If HTTPS has not been configured on the local system, use "http" instead of "https" in the commands above.
       </p>
     </section>
   </body>
