@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2012, by the California Institute of Technology.
+  Copyright 2010-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -23,19 +23,19 @@
   </properties>
 
   <body>
-    <release version="1.4.0" date="TBD" description="This release of the Registry Core is a component of the integrated release 3.1.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+    <release version="1.4.0" date="2013-03-31" description="This release of the Registry Core is a component of the integrated release 3.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="pramirez" issue="PDS-147" type="fix">
         Addressed performance issues with publishing and versioning objects.
       </action>
     </release>
 
-    <release version="1.3.0" date="2012-09-30" description="This release of the Registry Core is a component of the integrated release 3.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+    <release version="1.3.0" date="2012-09-30" description="This release of the Registry Core is a component of the integrated release 3.0.0 of the PDS4 System. This is an operational release of the system components to date.">
         <action dev="pramirez" type="fix" issue="PDS-62">
             Handle '_' characters when applying filters on registry object. Previously the underscore acted inappropriately as a single character wildcard.
         </action>
     </release>
 
-    <release version="1.2.0" date="2012-06-11" description="This release of the Registry Core is a component of the integrated release 2.2.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+    <release version="1.2.0" date="2012-06-11" description="This release of the Registry Core is a component of the integrated release 2.2.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="pramirez" type="add" issue="PDS-59">
         Provided a RegistryClient method for deleting registry objects. 
       </action>
@@ -62,7 +62,7 @@
       </action>
     </release>
 
-    <release version="1.1.0" date="2012-01-31" description="This release of the Registry Core is a component of the integrated release 2.1.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+    <release version="1.1.0" date="2012-01-31" description="This release of the Registry Core is a component of the integrated release 2.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="pramirez" type="update" issue="PDS-41">
         Allow filtering by status.
       </action>
@@ -74,7 +74,7 @@
       </action>
     </release>
 
-    <release version="1.0.0" date="2011-11-09" description="This release of the Registry Core is a component of the integrated release 2.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+    <release version="1.0.0" date="2011-11-09" description="This release of the Registry Core is a component of the integrated release 2.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="pramirez" type="add">
         Added support for PostgreSQL.
       </action>
@@ -86,7 +86,7 @@
       </action>
     </release>
 
-    <release version="0.2.0" date="2011-08-29" description="This release of the Registry Core is a component of the integrated release 1.2.0 of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date.">
+    <release version="0.2.0" date="2011-08-29" description="This release of the Registry Core is a component of the integrated release 1.2.0 of the PDS4 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date.">
       <action dev="pramirez" type="add" issue="PDS-14">
         Support to do package level operations such as delete and update status. In addition, allows for items to be published into a package.
       </action>
@@ -110,7 +110,7 @@
       </action>
     </release>
 
-    <release version="0.1.0" date="2011-03-25" description="This release of the Registry Core is a component of the integrated release 1.1.0 of the PDS 2010 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date.">
+    <release version="0.1.0" date="2011-03-25" description="This release of the Registry Core is a component of the integrated release 1.1.0 of the PDS4 System. This release is intended as a prototype release in support of the assessment of the PDS4 standards and the system components to date.">
       <action dev="pramirez" type="add" issue="PDS-3">
         Ability to page through all services.
       </action>

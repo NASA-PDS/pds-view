@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!--
-  Copyright 2011-2012, by the California Institute of Technology.
+  Copyright 2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -13,7 +13,7 @@
   may be required before exporting such information to foreign countries or
   providing access to foreign nationals.
 
-  $Id: pom.xml 11180 2012-11-15 19:09:07Z shardman $
+  $Id:$
 -->
 
 <project>
@@ -27,11 +27,12 @@
 
   <groupId>gov.nasa.pds.2010.transport</groupId>
   <artifactId>transport-service</artifactId>
+  <version>0.1.0</version>
   <packaging>jar</packaging>
 
   <name>Transport Service</name>
   <description>
-   The PDS Transport Service module contains functionality for downloading and transforming PDS products.
+    The Transport Service provides functionality for transporting and transforming PDS products. The functionality for this service is satisfied by the Apache OODT Web Grid Product Server. It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
   </description>
   <url>http://pds-cm.jpl.nasa.gov/2010/transport/transport-service</url>
 
@@ -54,15 +55,6 @@
       </roles>
     </developer>
     <developer>
-      <name>Michael Caynan</name>
-      <id>cayanan</id>
-      <email>michael.d.cayanan@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>   
-    <developer>
       <name>Luca Cinquini</name>
       <id>luca</id>
       <email>luca.cinquini@jpl.nasa.gov</email>
@@ -76,26 +68,6 @@
   <build>
     <resources/>
     <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>buildnumber-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>create</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
-          <items>
-            <item>timestamp</item>
-          </items>
-          <doCheck>false</doCheck>
-          <doUpdate>false</doUpdate>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>

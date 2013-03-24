@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2012, by the California Institute of Technology.
+  Copyright 2012-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -22,7 +22,7 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
-    <release version="2.1.0" date="TBD" description="TBD">
+    <release version="2.1.0" date="2013-03-31" description="This release of Data Set View is a component of the integrated release 3.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" type="add">
         Added displaying PDS4 products (Bundle, Collection, and Context: Target, Mission, InstrumentHost, Instrument).
       </action>
@@ -34,7 +34,7 @@
       </action>
     </release>
 
-    <release version="2.0.1" date="2012-11-14" description="This release of Data Set View is a component of the PDS 2010 System. This is an operational release supporting the deployment of the system at the Engineering Node and includes updates for issues discovered during deployment.">
+    <release version="2.0.1" date="2012-11-14" description="This release of Data Set View is a component of the PDS4 System. This is an operational release supporting the deployment of the system at the Engineering Node and includes updates for issues discovered during deployment.">
       <action dev="shardman" type="update">
         Updated the Installation document to include details on configuration of the component.
       </action>
@@ -43,7 +43,7 @@
       </action>
     </release>
 
-    <release version="2.0.0" date="2012-11-09" description="This release of Data Set View is a component of the PDS 2010 System. This is an operational release supporting the deployment of the system at the Engineering Node.">
+    <release version="2.0.0" date="2012-11-09" description="This release of Data Set View is a component of the PDS4 System. This is an operational release supporting the deployment of the system at the Engineering Node.">
       <action dev="shardman" type="add">
         Created this new project based on the old Data Set View web application that relied on the PDS-D infrastructure.
       </action>

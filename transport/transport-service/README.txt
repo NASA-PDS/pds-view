@@ -1,4 +1,5 @@
-Transport Service package includes the web-grid war file, the PDS and third party jar libraries, and the PDS configuration files.
+Transport Service package includes the web-grid war file, the PDS and third 
+party jar libraries, and the PDS configuration files.
 
 The software can be compiled with the "mvn compile".
 The documentation including release notes, installation and operation of the 

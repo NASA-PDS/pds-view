@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011-2012, by the California Institute of Technology.
+  Copyright 2011-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -23,16 +23,16 @@
   </properties>
 
   <body>
-    <release version="1.4.0" date="TBD" description="This release of the Registry Client is a component of the integrated release 3.1.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+    <release version="1.4.0" date="2013-03-31" description="This release of the Registry Client is a component of the integrated release 3.1.0 of the PDS4 System. This is an operational release of the system components to date.">
     </release>
 
-    <release version="1.3.0" date="2012-09-30" description="This release of the Registry Client is a component of the integrated release 3.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+    <release version="1.3.0" date="2012-09-30" description="This release of the Registry Client is a component of the integrated release 3.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="kelly" type="update">
         Minor updates related to packaging of the software.
       </action>
     </release>
 
-    <release version="1.2.0" date="2012-06-11" description="This release of the Registry Client is a component of the integrated release 2.2.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+    <release version="1.2.0" date="2012-06-11" description="This release of the Registry Client is a component of the integrated release 2.2.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="kelly" type="update">
         This release makes the client API compatible with the 1.2.0 release of the Registry Service. In particular, it fixes the integration of the
 Maven-provided project information with Python's Distribute-supplied project metadata.
@@ -42,10 +42,10 @@ Maven-provided project information with Python's Distribute-supplied project met
       </action>
     </release>
 
-    <release version="1.1.0" date="2012-01-31" description="This release of the Registry Client is a component of the integrated release 2.1.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+    <release version="1.1.0" date="2012-01-31" description="This release of the Registry Client is a component of the integrated release 2.1.0 of the PDS4 System. This is an operational release of the system components to date.">
     </release>
 
-    <release version="1.0.0" date="2011-11-09" description="This release of the Registry Client is a component of the integrated release 2.0.0 of the PDS 2010 System. This is an operational release of the system components to date.">
+    <release version="1.0.0" date="2011-11-09" description="This release of the Registry Client is a component of the integrated release 2.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="kelly" type="add">
         Initial release of the Python-based interface to the Registry Service.
       </action>

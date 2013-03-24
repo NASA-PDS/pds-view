@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2011, by the California Institute of Technology.
+  Copyright 2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -12,45 +12,35 @@
   may be required before exporting such information to foreign countries or 
   providing access to foreign nationals.
 
-  $Id: index.xml 10990 2012-09-28 09:00:47Z jpadams $
+  $Id:$
 -->
 
 <document>
   <properties>
-    <title>About Transport Service</title>   
-    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author> 
-	<author email="Michael.d.Cayanan@jpl.nasa.gov">Michael Caynan</author>
-	<author email="Luca.Cinquini@jpl.nasa.gov">Luca Cinquini</author>
+    <title>About Transport Service</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+    <author email="Luca.Cinquini@jpl.nasa.gov">Luca Cinquini</author>
   </properties>
   
   <body>
     <section name="About Transport Service">
-      
       <p>
-      	The Transport Service provides the capability to access, download and transform PDS products. 
-      	It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
+        The Transport Service provides functionality for transporting and transforming PDS products. The functionality for this service is satisfied by the Apache OODT Web Grid Product Server. It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
       </p>
-      
+
       <p>
-      	The Transport Service is composed by the following components (top to bottom):
-	  	<ul>
-			<li>The Apache OODT Web Grid servlet, 
-				which provides a general-purpose web container for answering transport requests formulated as HTTP/GET.</li>
-				
-			<li>The Apache OODT Product Server, which routes each transport request to a PDS-specific OFSN (Online File Specification Name) Handler. 
-			    The PDS OFSN Handlers contain functionality for delivering data products to web clients by invoking the appropriate
-			    product transformation.</li>
-			
-			<li>The PDS Transformation Services, which provide a general utility for invoking image transformations of different types.</li>
-			
-			<li>The suite of back-end image transformation libraries.</li>
-	  	</ul>
-	  </p>
-      
-      <p>
-      	Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
+        The Transport Service is composed by the following components (top to bottom):
+        <ul>
+          <li>The Apache OODT Web Grid servlet, which provides a general-purpose web container for answering transport requests formulated as HTTP/GET.</li>
+          <li>The Apache OODT Product Server, which routes each transport request to a PDS-specific OFSN (Online File Specification Name) Handler. The PDS OFSN Handlers contain functionality for delivering data products to web clients by invoking the appropriate product transformation.</li>
+          <li>The PDS Transformation Services, which provide a general utility for invoking image transformations of different types.</li>
+          <li>The suite of back-end image transformation libraries.</li>
+        </ul>
       </p>
-    
+
+      <p>
+        Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
+      </p>
     </section>
   </body>
 </document>

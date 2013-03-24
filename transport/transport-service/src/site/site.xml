@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2011-2012, by the California Institute of Technology.
+  Copyright 2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -13,7 +13,7 @@
   may be required before exporting such information to foreign countries or 
   providing access to foreign nationals.
 
-  $Id: site.xml 10029 2012-01-30 05:00:58Z shardman $
+  $Id:$
 -->
 
 <project name="Transport Service">
@@ -30,7 +30,7 @@
 
   <body>
     <links>
-      <item name="Transport Service" href="http://pds-cm.jpl.nasa.gov/2010/transport/transport-service/index.html" />
+      <item name="Product Service" href="http://pds-cm.jpl.nasa.gov/2010/transport/transport-service/index.html" />
     </links>
 
     <menu name="Software Documentation">
