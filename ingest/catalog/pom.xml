@@ -281,9 +281,10 @@
       </exclusions>
     </dependency>
     <dependency>
-       <groupId>gov.nasa.pds.2010</groupId>
-       <artifactId>storage</artifactId>
-       <version>0.3.0</version>
+      <groupId>gov.nasa.pds.2010.storage</groupId>
+      <artifactId>storage-service</artifactId>
+      <version>0.4.0</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>gov.nasa.pds.2010.registry</groupId>
@@ -319,6 +320,7 @@
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
       <version>3.2</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
