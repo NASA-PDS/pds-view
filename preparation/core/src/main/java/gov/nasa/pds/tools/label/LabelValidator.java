@@ -1,21 +1,25 @@
 //	Copyright 2009-2010, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
-//	Any commercial use must be negotiated with the Office of Technology 
+//	Any commercial use must be negotiated with the Office of Technology
 //	Transfer at the California Institute of Technology.
-//	
-//	This software is subject to U. S. export control laws and regulations 
-//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
-//	is subject to U.S. export control laws and regulations, the recipient has 
-//	the responsibility to obtain export licenses or other export authority as 
-//	may be required before exporting such information to foreign countries or 
+//
+//	This software is subject to U. S. export control laws and regulations
+//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+//	is subject to U.S. export control laws and regulations, the recipient has
+//	the responsibility to obtain export licenses or other export authority as
+//	may be required before exporting such information to foreign countries or
 //	providing access to foreign nationals.
-//	
+//
 //	$Id$
 //
 
 package gov.nasa.pds.tools.label;
 
+import gov.nasa.pds.tools.label.validate.DocumentValidator;
+import gov.nasa.pds.tools.label.validate.ExternalValidator;
+import gov.nasa.pds.tools.label.validate.FileReferenceValidator;
 import gov.nasa.pds.tools.util.VersionInfo;
+import gov.nasa.pds.tools.util.XMLErrorListener;
 import gov.nasa.pds.tools.util.XslURIResolver;
 
 import java.io.File;
@@ -40,6 +44,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import net.sf.saxon.Configuration;
+import net.sf.saxon.event.ParseOptions;
+import net.sf.saxon.om.DocumentInfo;
+import net.sf.saxon.trans.XPathException;
+import net.sf.saxon.xpath.XPathEvaluator;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -49,9 +59,9 @@ import org.xml.sax.SAXException;
 /**
  * This class is responsible for providing utility functions for validating PDS
  * XML Labels.
- * 
+ *
  * @author pramirez
- * 
+ *
  */
 public class LabelValidator {
   private Map<String, Boolean> configurations = new HashMap<String, Boolean>();
@@ -63,16 +73,23 @@ public class LabelValidator {
   private XMLCatalogResolver resolver;
   public static final String SCHEMA_CHECK = "gov.nasa.pds.tools.label.SchemaCheck";
   public static final String SCHEMATRON_CHECK = "gov.nasa.pds.tools.label.SchematronCheck";
+  public static final String FILE_REF_CHECK = "gov.nasa.pds.tools.label.fileReferenceCheck";
+
+  public List<ExternalValidator> externalValidators;
+  public List<DocumentValidator> documentValidators;
 
   public LabelValidator() {
     this.configurations.put(SCHEMA_CHECK, true);
     this.configurations.put(SCHEMATRON_CHECK, true);
+    this.configurations.put(FILE_REF_CHECK, true);
     modelVersion = VersionInfo.getDefaultModelVersion();
     cachedValidator = null;
     cachedSchematron = new ArrayList<Transformer>();
     userSchemaFiles = null;
     userSchematronFiles = null;
     resolver = null;
+    externalValidators = new ArrayList<ExternalValidator>();
+    documentValidators = new ArrayList<DocumentValidator>();
   }
 
   public void setSchema(String[] schemaFiles) throws SAXException {
@@ -113,7 +130,7 @@ public class LabelValidator {
 
   /**
    * Currently this method only validates the label against schema constraints
-   * 
+   *
    * @param container
    *          to store output messages in
    * @param labelFile
@@ -260,11 +277,38 @@ public class LabelValidator {
         }
       }
     }
+    // Add the File Reference Validator to the list of External Validators
+    // if the flag was set to 'true'
+    if (getConfiguration(FILE_REF_CHECK)) {
+      externalValidators.add(new FileReferenceValidator());
+    }
+    if (!externalValidators.isEmpty()) {
+      // Perform any other additional checks that were added
+      for(ExternalValidator ev : externalValidators) {
+        ev.validate(container, labelFile);
+      }
+    }
+    // Perform any additional checks that were added
+    if (!documentValidators.isEmpty()) {
+      DocumentInfo xml = parse(new StreamSource(labelFile));
+      for (DocumentValidator dv : documentValidators) {
+        dv.validate(container, xml);
+      }
+    }
   }
 
   public void validate(File labelFile) throws SAXException, IOException,
       ParserConfigurationException, TransformerException {
     validate(null, labelFile);
+  }
+
+  private DocumentInfo parse(StreamSource source) throws XPathException {
+    XPathEvaluator xpath = new XPathEvaluator();
+    Configuration configuration = xpath.getConfiguration();
+    configuration.setLineNumbering(true);
+    ParseOptions options = new ParseOptions();
+    options.setErrorListener(new XMLErrorListener());
+    return configuration.buildDocument(source);
   }
 
   public String getModelVersion() {
@@ -303,6 +347,14 @@ public class LabelValidator {
 
   public void setConfiguration(String key, Boolean value) {
     this.configurations.put(key, value);
+  }
+
+  public void addValidator(ExternalValidator validator) {
+    this.externalValidators.add(validator);
+  }
+
+  public void addValidator(DocumentValidator validator) {
+    this.documentValidators.add(validator);
   }
 
   public static void main(String[] args) throws Exception {
