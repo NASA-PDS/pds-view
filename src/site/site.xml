@@ -29,7 +29,7 @@
 
   <body>
     <links>
-      <item name="PDS 2010" href="http://pds-cm.jpl.nasa.gov/pds4/index.html" />
+      <item name="PDS4" href="http://pds-cm.jpl.nasa.gov/pds4/index.html" />
     </links>
 
     <menu name="Documentation">
