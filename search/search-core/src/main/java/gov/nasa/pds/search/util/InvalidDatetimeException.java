@@ -10,7 +10,7 @@
 //	may be required before exporting such information to foreign countries or 
 //	providing access to foreign nationals.
 //	
-//	'$'Id
+//	$Id$
 //
 package gov.nasa.pds.search.util;
 

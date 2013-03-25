@@ -10,7 +10,7 @@
 //	may be required before exporting such information to foreign countries or 
 //	providing access to foreign nationals.
 //	
-//	$Id
+//	$Id$
 //
 package gov.nasa.pds.search.util;
 
@@ -131,8 +131,8 @@ public class XMLWriter {
 		tValue = value.trim();
 
 		// Previous method used to encode only select HTML entities
-		tName = repAllCharWStr(tName);
-		tValue = repAllCharWStr(tValue);
+		//tName = repAllCharWStr(tName);
+		//tValue = repAllCharWStr(tValue);
 
 		Element element = doc.createElement(tName);
 		classElement.appendChild(element);
@@ -145,7 +145,7 @@ public class XMLWriter {
 	 * Replace HTML entities & with &amp;, < with &lt;, > with &gt;, and " with
 	 * &quot;
 	 */
-	public String repAllCharWStr(String s1) {
+	/*public String repAllCharWStr(String s1) {
 		String s2;
 
 		s2 = repCharWStr(remNull(s1), '&', "&amp;");
@@ -153,7 +153,7 @@ public class XMLWriter {
 		s2 = repCharWStr(s2, '>', "&gt;");
 		s2 = repCharWStr(s2, '\"', "&quot;");
 		return s2;
-	}
+	}*/
 
 	/**
 	 * Remove String Nulls

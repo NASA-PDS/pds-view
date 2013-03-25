@@ -1,4 +1,4 @@
-//	Copyright 2009-2012, by the California Institute of Technology.
+//	Copyright 2009-2013, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -10,7 +10,7 @@
 //	may be required before exporting such information to foreign countries or 
 //	providing access to foreign nationals.
 //	
-//	'$'Id
+//	$Id$
 //
 package gov.nasa.pds.search.util;
 
