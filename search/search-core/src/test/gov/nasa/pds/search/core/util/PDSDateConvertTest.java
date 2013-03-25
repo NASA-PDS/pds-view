@@ -1,13 +1,11 @@
 package gov.nasa.pds.search.core.util;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;

@@ -1,18 +1,23 @@
 package gov.nasa.pds.search.core.extractor;
 
-import org.junit.Ignore;
+import static org.junit.Assert.*;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import gov.nasa.pds.search.core.SearchCoreLauncher;
 import gov.nasa.pds.search.core.constants.TestConstants;
 
 @Ignore
-public class RegistryExtractorTest extends TestCase {
+public class RegistryExtractorTest {
 
     /**
      * Test Registry Extractor with absolute paths and max query = 5
      * @throws Exception 
      */
+	@Test
     public void testExtractorAbsolute() {
     	try {
 	    	String[] args = { "-r", TestConstants.PDS3_REGISTRY_URL, 

@@ -14,12 +14,14 @@ import org.junit.Test;
 
 public class SearchCorePDS3Test{
 
-	@Before public void setUp() {
+	@Before
+	public void setUp() {
 		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
 		testDir.mkdirs();
 	}
 	
-	@After public void tearDown() {
+	@After
+	public void tearDown() {
 		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
 		testDir.delete();
 	}

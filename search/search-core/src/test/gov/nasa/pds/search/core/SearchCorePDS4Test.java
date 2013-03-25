@@ -39,12 +39,14 @@ public class SearchCorePDS4Test{
 	/** Relative Config Directory Path for testing locally **/
 	public static final String CONFIG_DIR_RELATIVE="./src/main/resources/conf/";
 	
-	@Before public void setUp() {
+	@Before
+	public void setUp() {
 		File testDir = new File(System.getProperty("user.dir") + "/" + SEARCH_HOME_RELATIVE);
 		testDir.mkdirs();
 	}
 	
-	@After public void tearDown() {
+	@After
+	public void tearDown() {
 		File testDir = new File(System.getProperty("user.dir") + "/" + SEARCH_HOME_RELATIVE);
 		testDir.delete();
 	}
