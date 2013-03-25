@@ -114,7 +114,7 @@ public class FileReferenceValidator implements ExternalValidator {
                 if (!fileRef.getCanonicalPath().endsWith(fileRef.getName())) {
                   container.addException(new LabelException(
                       ExceptionType.WARNING,
-                      "File reference'" + labelFile
+                      "File reference'" + fileRef.toString()
                       + "' exists but the case doesn't match.",
                       labelFile.toString(),
                       labelFile.toString(),
@@ -140,7 +140,8 @@ public class FileReferenceValidator implements ExternalValidator {
                     problems.add(new LabelException(ExceptionType.ERROR,
                         "Generated checksum '" + generatedChecksum
                         + "' does not match supplied checksum '" + checksum
-                        + "' in the product label",
+                        + "' in the product label for the following file reference: "
+                        + fileRef.toString(),
                         labelFile.toString(),
                         labelFile.toString(),
                         new Integer(fileObject.getLineNumber()),
