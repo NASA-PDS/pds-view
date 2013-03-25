@@ -34,7 +34,7 @@
   <description>
     The Registry Core is a software library for accessing the Registry Service.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/registry/registry-core/</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/registry/registry-core/</url>
 
   <licenses>
     <license>

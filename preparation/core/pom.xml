@@ -34,7 +34,7 @@
   <description>
     The Core Library contains a software library with functionality for product label design, generation, transformation and validation as well as package formation.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/preparation/core/</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/preparation/core/</url>
 
   <licenses>
     <license>

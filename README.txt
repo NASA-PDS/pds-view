@@ -1,7 +1,7 @@
-The PDS 2010 project contains the web site that serves as the entry point 
-for the PDS 2010 effort. It also includes the POM that should be inherited 
-by all of the 2010 projects. The site should be online at 
-http://pds-cm.jpl.nasa.gov/2010/. If it is not accessible, you can execute 
+The PDS4 project contains the web site that serves as the entry point 
+for the PDS4 effort. It also includes the POM that should be inherited 
+by all of the PDS4 projects. The site should be online at 
+http://pds-cm.jpl.nasa.gov/pds4/. If it is not accessible, you can execute 
 the "mvn site:run" command and view the documentation locally at 
 http://localhost:8080.
 

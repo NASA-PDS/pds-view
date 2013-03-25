@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2012, by the California Institute of Technology.
+  Copyright 2012-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -40,7 +40,7 @@
   <description>
     The Ingest component provides functionality for ingesting products with the Registry. This project consists of a suite of tools for ingesting PDS3 Catalog Files, PDS3 Data Sets and PDS4 Products with the Registry Service.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/ingest/</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/ingest/</url>
 
   <modules>
     <module>catalog</module>

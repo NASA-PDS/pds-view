@@ -33,7 +33,7 @@
   <description>
     The Catalog Tool provides functionality for ingesting PDS3 catalog files into the the PDS4 infrastructure including the Registry and Storage Services.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/ingest/catalog/</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/ingest/catalog/</url>
 
   <licenses>
     <license>

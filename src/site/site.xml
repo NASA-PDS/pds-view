@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -15,25 +15,25 @@
   $Id$
 -->
 
-<project name="PDS 2010">
+<project name="PDS4">
   <bannerLeft>
-    <src>images/pds4_logo.jpg</src>
-    <href>http://pds-cm.jpl.nasa.gov/2010/</href>
+    <src>images/pds4_logo.png</src>
+    <href>http://pds-cm.jpl.nasa.gov/pds4/</href>
   </bannerLeft>
 
   <bannerRight>
-    <name>PDS 2010</name>
+    <name>PDS4</name>
   </bannerRight>
 
   <version position="none"/>
 
   <body>
     <links>
-      <item name="PDS 2010" href="http://pds-cm.jpl.nasa.gov/2010/index.html" />
+      <item name="PDS 2010" href="http://pds-cm.jpl.nasa.gov/pds4/index.html" />
     </links>
 
     <menu name="Documentation">
-      <item name="About PDS 2010" href="index.html"/>
+      <item name="About PDS4" href="index.html"/>
       <item name="System Architecture (pdf)" href="docs/pds2010_system_arch_spec.pdf"/>
       <item name="System Requirements (pdf)" href="docs/pds2010_system_reqs.pdf"/>
       <item name="System Releases" href="release/index.html"/>

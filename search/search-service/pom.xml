@@ -32,7 +32,7 @@
   <description>
     The Search Service provides the default configuration for search. It requires installation of the Solr WAR distribution with a reference to the home directory this package creates. 
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/search/search-service</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/search/search-service</url>
 
   <licenses>
     <license>

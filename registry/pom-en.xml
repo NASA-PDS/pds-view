@@ -40,7 +40,7 @@
   <description>
     The Registry component provides functionality for tracking, auditing, locating, and maintaining artifacts within the system. These artifacts can range from data files and label files, schemas, dictionary definitions for objects and elements, services, etc.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/registry/</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/registry/</url>
 
   <licenses>
     <license>

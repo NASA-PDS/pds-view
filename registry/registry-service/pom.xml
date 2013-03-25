@@ -32,7 +32,7 @@
   <description>
     The Registry Service provides functionality for tracking, auditing, locating, and maintaining artifacts within the system. The service provides a REST-based interface for interacting with the service.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/registry/registry-service/</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/registry/registry-service/</url>
 
   <licenses>
     <license>

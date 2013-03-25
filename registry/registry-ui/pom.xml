@@ -32,7 +32,7 @@
   <description>
     The Registry User Interface software serves as the web-based interface for the Registry Service.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/registry/registry-ui/</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/registry/registry-ui/</url>
 
   <licenses>
     <license>

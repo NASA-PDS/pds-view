@@ -32,7 +32,7 @@
   <description>
     The Profile Setup software provides a web interface to set up a new, basic profile for the Report Service. It also provides functionality to manage the transfer of remote logs for Apache, Tomcat, and FTP to the Engineering Node to be used by the service. Transferring the logs to the Engineering Node provides the PDS Discipline Nodes with an extra backup of the logs, as well as a more stable and secure way for the Report Service to calculate the metrics from them.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/report/profile-setup</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/report/profile-setup</url>
 
   <licenses>
     <license>

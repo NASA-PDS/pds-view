@@ -33,7 +33,7 @@
   <description>
     The Data Set View component is a web application that serves as the browse interface for context products.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/portal/ds-view/</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/portal/ds-view/</url>
 
   <licenses>
     <license>

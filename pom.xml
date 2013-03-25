@@ -28,11 +28,11 @@
   <version>0.0.0</version>
   <packaging>pom</packaging>
 
-  <name>PDS 2010</name>
+  <name>PDS4</name>
   <description>
-    This project provides documentation for the PDS 2010 effort and contains the PDS 2010 parent Project Object Model (POM).
+    This project provides documentation for the PDS4 effort and contains the PDS4 parent Project Object Model (POM).
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/</url>
 
   <inceptionYear>2010</inceptionYear>
 
@@ -58,7 +58,7 @@
         <role>Development Lead</role>
         <role>System Design Working Group Member</role>
       </roles>
-    </developer>   
+    </developer>
     <developer>
       <name>Michael Cayanan</name>
       <id>mcayanan</id>

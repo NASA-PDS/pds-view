@@ -34,7 +34,7 @@
   <description>
     The Transport Service provides functionality for transporting and transforming PDS products. The functionality for this service is satisfied by the Apache OODT Web Grid Product Server. It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/transport/transport-service</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/transport/transport-service</url>
 
   <licenses>
     <license>

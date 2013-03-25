@@ -33,7 +33,7 @@
   <description>
     The Storage component provides functionality for managing the data repository. This includes movement of data files in and out of the repository. The functionality for this service is satisfied by the Apache OODT File Manager.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/storage/</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/storage/</url>
 
   <modules>
     <module>product-service</module>

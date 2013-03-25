@@ -1,7 +1,7 @@
 The Storage project contains the web site that serves as the entry 
 point for the storage components. It also includes the POM that should be 
 inherited by all of the storage projects. The site should be online at 
-http://pds-cm.jpl.nasa.gov/2010/storage/. If it is not accessible, you 
+http://pds-cm.jpl.nasa.gov/pds4/storage/. If it is not accessible, you 
 can execute the "mvn site:run" command and view the documentation locally at 
 http://localhost:8080.
 

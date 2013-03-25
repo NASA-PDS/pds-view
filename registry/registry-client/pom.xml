@@ -31,7 +31,7 @@
   <description>
     The Registry Client is a Python-based API for accessing the Registry Service.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/registry/registry-client/</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/registry/registry-client/</url>
 
   <licenses>
     <license>

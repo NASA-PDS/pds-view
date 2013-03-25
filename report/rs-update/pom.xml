@@ -32,7 +32,7 @@
   <description>
     The Update Tool provides a command-line application for transferring node logs from remote locations and for updating the Sawmill database for the associated profiles. This software also provides the core functionality for the Profile Setup web application.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/report/rs-update</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/report/rs-update</url>
 
   <licenses>
     <license>

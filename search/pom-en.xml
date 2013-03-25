@@ -40,7 +40,7 @@
   <description>
     The Search component provides functionality for accepting queries from data consumers for registered products and includes functionality for retrieving search results. This component acts as the interface to the Registry Service for the data consumer. The service itself will consist of indexed metadata utilizing common facets to facilitate search across the Nodes along with Node-specific facets utilized by Node-specific search applications.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/search/</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/search/</url>
 
   <licenses>
     <license>

@@ -32,7 +32,7 @@
   <description>
     The Product Service provides functionality for transporting files from a Storage Service data repository. The functionality for this service is satisfied by the Apache OODT CAS Product Server.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/2010/storage/product-service/</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/storage/product-service/</url>
 
   <licenses>
     <license>

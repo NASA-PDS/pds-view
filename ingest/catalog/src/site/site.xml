@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2009-2012, by the California Institute of Technology.
+  Copyright 2009-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -18,7 +18,7 @@
 
 <project name="Catalog Tool">
   <bannerLeft>
-    <src>images/pds_logo.jpg</src>
+    <src>images/pds4_logo.png</src>
     <href>http://pds-cm.jpl.nasa.gov/</href>
   </bannerLeft>
 
@@ -30,7 +30,7 @@
 
   <body>
     <links>
-      <item name="Catalog Tool" href="http://pds-cm.jpl.nasa.gov/2010/ingest/catalog/index.html" />
+      <item name="Catalog Tool" href="http://pds-cm.jpl.nasa.gov/pds4/ingest/catalog/index.html" />
     </links>
 
     <menu name="Software Documentation">
