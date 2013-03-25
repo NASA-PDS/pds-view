@@ -396,23 +396,22 @@ public class CIToolIngester {
     			}
     			else {
     				values = new ArrayList<String>();
+    			} 
+    			if (md.containsKey(key)) {
+					if (md.isMultiValued(key)) {
+						List<String> tmpValues = md.getAllMetadata(key);
+						for (String aVal : tmpValues) {
+							lidValue = aVal;
+							if (!valueExists(Constants.LID_PREFIX + "target:target." + lidValue, values))
+								values.add(Constants.LID_PREFIX + "target:target." + lidValue);
+						}
+					} else {
+						lidValue = md.getMetadata(key);
+						if (!valueExists(Constants.LID_PREFIX + "target:target." + lidValue, values))
+							values.add(Constants.LID_PREFIX + "target:target." + lidValue);
+					}
+					refs.put(Constants.HAS_TARGET, values);
     			}
-    			
-    			if (md.isMultiValued(key)) {
-    				List<String> tmpValues = md.getAllMetadata(key);
-    				for (String aVal: tmpValues) {
-    					lidValue = aVal;
-    					if (!valueExists(Constants.LID_PREFIX+"target:target."+lidValue, values))
-    						values.add(Constants.LID_PREFIX+"target:target."+lidValue);
-    				}
-    			}
-    			else {
-    				lidValue = md.getMetadata(key);
-    				if (!valueExists(Constants.LID_PREFIX+"target:target."+lidValue, values))
-    					values.add(Constants.LID_PREFIX+"target:target."+lidValue);              
-    			}
-    			
-    			refs.put(Constants.HAS_TARGET, values);
     			
     			key = "INSTRUMENT_HOST_ID";
     			if (refs.get(Constants.HAS_INSTHOST)!=null) {
@@ -421,20 +420,22 @@ public class CIToolIngester {
     			else {
     				values = new ArrayList<String>();
     			}
-    			if (md.isMultiValued(key)) {
-    				List<String> tmpValues = md.getAllMetadata(key);
-    				for (String aVal: tmpValues) {
-    					lidValue = aVal;
-    					if (!valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
-    						values.add(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue);
+    			if (md.containsKey(key)) {
+    				if (md.isMultiValued(key)) {
+    					List<String> tmpValues = md.getAllMetadata(key);
+    					for (String aVal: tmpValues) {
+    						lidValue = aVal;
+    						if (!valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
+    							values.add(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue);
+    					}
     				}
+    				else {
+    					lidValue = md.getMetadata(key);
+    					if (!valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
+    						values.add(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue);              
+    				}
+    				refs.put(Constants.HAS_INSTHOST, values);
     			}
-    			else {
-    				lidValue = md.getMetadata(key);
-    				if (!valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
-    					values.add(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue);              
-    			}
-    			refs.put(Constants.HAS_INSTHOST, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.DATASET_OBJ)) {
     			lidValue = pdsLbl.get("DATA_SET_ID").getValue().toString();
@@ -477,6 +478,32 @@ public class CIToolIngester {
     						values.add(Constants.LID_PREFIX+"node:node."+lidValue);              
     				}
     				refs.put(Constants.HAS_NODE, values);      
+    			}
+    			
+    			key = "TARGET_NAME";
+    			if (refs.get(Constants.HAS_TARGET)!=null) {
+    				values = refs.get(Constants.HAS_TARGET);
+    			}
+    			else {
+    				values = new ArrayList<String>();
+    			}
+ 
+    			if (md.containsKey(key)) {
+    				if (md.isMultiValued(key)) {
+    					List<String> tmpValues = md.getAllMetadata(key);
+    					for (String aVal: tmpValues) {
+    						lidValue = aVal;
+    						if (!valueExists(Constants.LID_PREFIX+"target:target."+lidValue, values))
+    							values.add(Constants.LID_PREFIX+"target:target."+lidValue);
+    					}
+    				}
+    				else {
+    					lidValue = md.getMetadata(key);
+    					if (!valueExists(Constants.LID_PREFIX+"target:target."+lidValue, values))
+    						values.add(Constants.LID_PREFIX+"target:target."+lidValue);              
+    				}
+
+    				refs.put(Constants.HAS_TARGET, values);
     			}
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.INST_OBJ)) {
@@ -527,25 +554,27 @@ public class CIToolIngester {
     			
     			String dsId = pdsLbl.get("DATA_SET_ID").getValue().toString();   
     			String key = "RESOURCE_ID";
-    			if (md.isMultiValued(key)) {
-    				List<String> tmpValues = md.getAllMetadata(key);    				
-    				for (String aVal: tmpValues) {				
-    					lidValue = dsId + "__" + aVal; 
+    			if (md.containsKey(key)) {
+    				if (md.isMultiValued(key)) {
+    					List<String> tmpValues = md.getAllMetadata(key);    				
+    					for (String aVal: tmpValues) {				
+    						lidValue = dsId + "__" + aVal; 
+    						if (lidValue.contains("/"))
+    							lidValue = lidValue.replace('/', '-');
+    						if (!valueExists(Constants.LID_PREFIX+"resource:resource."+lidValue, values))
+    							values.add(Constants.LID_PREFIX+"resource:resource."+lidValue);
+    					}
+    				}
+    				else {
+    					lidValue = md.getMetadata(key);
+    					lidValue = dsId + "__" + lidValue;
     					if (lidValue.contains("/"))
-    	    				lidValue = lidValue.replace('/', '-');
+    						lidValue = lidValue.replace('/', '-');    				
     					if (!valueExists(Constants.LID_PREFIX+"resource:resource."+lidValue, values))
     						values.add(Constants.LID_PREFIX+"resource:resource."+lidValue);
     				}
+    				refs.put(Constants.HAS_RESOURCE, values);   
     			}
-    			else {
-    				lidValue = md.getMetadata(key);
-    				lidValue = dsId + "__" + lidValue;
-    				if (lidValue.contains("/"))
-        				lidValue = lidValue.replace('/', '-');    				
-    				if (!valueExists(Constants.LID_PREFIX+"resource:resource."+lidValue, values))
-						values.add(Constants.LID_PREFIX+"resource:resource."+lidValue);
-    			}
-    			refs.put(Constants.HAS_RESOURCE, values);   
     			
     			key = "CURATING_NODE_ID";
     			if (md.containsKey(key)) {

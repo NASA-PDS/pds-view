@@ -467,6 +467,8 @@ public class CatalogRegistryIngester {
 		else if (catObjType.equalsIgnoreCase(Constants.DATASET_OBJ)) {
 			if (refs.get(Constants.HAS_MISSION)!=null)
 				slots.add(new Slot(Constants.HAS_MISSION, getRefValues(version, Constants.HAS_MISSION, refs)));
+			if (refs.get(Constants.HAS_TARGET)!=null)
+				slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs)));
 			if (refs.get(Constants.HAS_INSTHOST)!=null)
 				slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
 			if (refs.get(Constants.HAS_INST)!=null)
@@ -690,6 +692,7 @@ public class CatalogRegistryIngester {
 				product.setLid(productLid);
 				product.setObjectType(Constants.DS_PROD);
 			}
+			/*
 			else if (objType.equalsIgnoreCase(Constants.RESOURCE_OBJ) && key.equals("RESOURCE_ID")) {
 				///??? value should be "<DATA_SET_ID>__<RESOURCE_ID>????
 				if (value.contains("/"))
@@ -699,6 +702,7 @@ public class CatalogRegistryIngester {
 				product.setObjectType(Constants.RESOURCE_PROD);
 				product.setName(value); //need to get from RESOURCE_NAME????
 			}
+			*/
 			else if (objType.equalsIgnoreCase(Constants.VOLUME_OBJ) && key.equals("VOLUME_ID")) {
 				String volumeSetId = md.getMetadata("VOLUME_SET_ID");
 				productLid = Constants.LID_PREFIX+"volume:volume."+value+"__" + volumeSetId;
@@ -831,8 +835,9 @@ public class CatalogRegistryIngester {
 			List<String> values = new ArrayList<String>();
 
 			if (key.equals("RESOURCE_ID")) {
+				// need to use RESOURCE_NAME for the name
+				product.setName(md.getMetadata("RESOURCE_NAME"));
 				String dsId = md.getMetadata("DATA_SET_ID");
-				product.setName(value);	
 				productLid = Constants.LID_PREFIX+"resource:resource."+dsId + "__" + value;
 				if (productLid.contains("/"))
 					productLid = productLid.replace('/', '-');
