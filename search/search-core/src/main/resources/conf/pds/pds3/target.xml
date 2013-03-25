@@ -32,7 +32,7 @@
 		<value>target_primary_body_name</value>
 	</field>
 	<field>
-		<name>target_desc</name>
+		<name>target_description</name>
 		<type>slot</type>
 		<value>target_description</value>
 	</field>

@@ -44,7 +44,7 @@ if [ "${PSA_FLAG}" == "1" ]; then
 fi
 
 if [ "${PDS4_FLAG}" == "1" ]; then
-    echo "  With PDS4 Products"
+    echo " With PDS4 Products"
     arguments="${arguments} ${DIR}/../conf/pds/pds4/core.properties"
 fi
 

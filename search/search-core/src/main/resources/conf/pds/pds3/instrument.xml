@@ -47,7 +47,7 @@
 		<value>instrument_type</value>
 	</field>
 	<field>
-		<name>instrument_desc</name>
+		<name>instrument_description</name>
 		<type>slot</type>
 		<value>instrument_description</value>
 	</field>

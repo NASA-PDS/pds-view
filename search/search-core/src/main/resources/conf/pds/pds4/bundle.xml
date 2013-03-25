@@ -56,7 +56,7 @@
 		<value>citation_publication_year</value>
 	</field>
 	<field>
-		<name>citation_desc</name>
+		<name>citation_description</name>
 		<type>slot</type>
 		<value>citation_description</value>
 	</field>
@@ -126,9 +126,24 @@
 		<value>observing_system_name</value>
 	</field>
 	<field>
-		<name>observing_system_component</name>
+		<name>observing_system_component_name</name>
 		<type>slot</type>
-		<value>observing_system_component</value>
+		<value>observing_system_component_name</value>
+	</field>
+	<field>
+		<name>observing_system_component_type</name>
+		<type>slot</type>
+		<value>observing_system_component_type</value>
+	</field>
+	<field>
+		<name>instrument_ref</name>
+		<type>slot</type>
+		<value>instrument_ref</value>
+	</field>
+	<field>
+		<name>instrument_host_ref</name>
+		<type>slot</type>
+		<value>instrument_host_ref</value>
 	</field>
 	<field>
 		<name>target_name</name>
@@ -141,9 +156,14 @@
 		<value>target_ref</value>
 	</field>
 	<field>
+		<name>collection_name</name>
+		<type>association</type>
+		<value>collection_ref.collection_name</value>
+	</field>
+	<field>
 		<name>collection_type</name>
-		<type>slot</type>
-		<value>collection_type</value>
+		<type>association</type>
+		<value>collection_ref.collection_type</value>
 	</field>
 	<field>
 		<name>collection_ref</name>

@@ -26,32 +26,32 @@
 	
 	<!-- Product-specific fields -->
 	<field>
-		<name>mission_name</name>
+		<name>investigation_name</name>
 		<type>slot</type>
 		<value>mission_name</value>
 	</field>
 	<field>
-		<name>mission_name_or_alias</name>
+		<name>investigation_name_or_alias</name>
 		<type>slot</type>
 		<value>alternate_title</value>
 	</field>
 	<field>
-		<name>mission_start_date</name>
+		<name>investigation_start_date</name>
 		<type>slot</type>
 		<value>mission_start_date</value>
 	</field>
 	<field>
-		<name>mission_stop_date</name>
+		<name>investigation_stop_date</name>
 		<type>slot</type>
 		<value>mission_stop_date</value>
 	</field>
 	<field>
-		<name>mission_desc</name>
+		<name>investigation_description</name>
 		<type>slot</type>
 		<value>mission_description</value>
 	</field>
 	<field>
-		<name>mission_objectives_summary</name>
+		<name>investigation_objectives_summary</name>
 		<type>slot</type>
 		<value>mission_objectives_summary</value>
 	</field>
@@ -85,12 +85,12 @@
 	<field>
 		<name>resClass</name>
 		<type>out</type>
-		<value>metadata.mission</value>
+		<value>metadata.investigation</value>
 	</field>
 
 	<field>
 		<name>resource_class</name>
 		<type>out</type>
-		<value>Mission_Description</value>
+		<value>Investigation_Description</value>
 	</field>
 </product>

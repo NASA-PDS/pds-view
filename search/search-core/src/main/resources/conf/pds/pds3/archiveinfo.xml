@@ -37,17 +37,17 @@
 		<value>resource_description</value>
 	</field>
 	<field>
-		<name>mission_name</name>
+		<name>investigation_name</name>
 		<type>association</type>
 		<value>investigation_ref.mission_name</value>
 	</field>
 	<field>
-		<name>mission_start_date</name>
+		<name>investigation_start_date</name>
 		<type>association</type>
 		<value>investigation_ref.mission_start_date</value>
 	</field>
 	<field>
-		<name>mission_stop_date</name>
+		<name>investigation_stop_date</name>
 		<type>association</type>
 		<value>investigation_ref.mission_stop_date</value>
 	</field>

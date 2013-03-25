@@ -41,7 +41,7 @@
 		<value>instrument_type</value>
 	</field>
 	<field>
-		<name>instrument_desc</name>
+		<name>instrument_description</name>
 		<type>slot</type>
 		<value>instrument_description</value>
 	</field>
@@ -81,7 +81,7 @@
 		<value>instrument_host_type</value>
 	</field>
 	<field>
-		<name>instrument_host_desc</name>
+		<name>instrument_host_description</name>
 		<type>slot</type>
 		<value>instrument_host_description</value>
 	</field>
@@ -134,6 +134,16 @@
 		<name>pds_model_version</name>
 		<type>out</type>
 		<value>PDS4</value>
+	</field>
+	<field>
+		<name>modification_date</name>
+		<type>slot</type>
+		<value>modification_date</value>
+	</field>
+	<field>
+		<name>modification_description</name>
+		<type>slot</type>
+		<value>modification_description</value>
 	</field>
 	
 	<!-- Included from old search, leave in for now -->

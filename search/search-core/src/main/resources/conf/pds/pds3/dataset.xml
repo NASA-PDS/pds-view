@@ -24,17 +24,17 @@
 		<value>http://pds.nasa.gov/ds-view/pds/viewDataset.jsp?dsid={data_set_id}</value>
 	</field>
 	<field>
-		<name>mission_name</name>
+		<name>investigation_name</name>
 		<type>association</type>
 		<value>investigation_ref.mission_name</value>
 	</field>
 	<field>
-		<name>mission_start_date</name>
+		<name>investigation_start_date</name>
 		<type>association</type>
 		<value>investigation_ref.mission_start_date</value>
 	</field>
 	<field>
-		<name>mission_stop_date</name>
+		<name>investigation_stop_date</name>
 		<type>association</type>
 		<value>investigation_ref.mission_stop_date</value>
 	</field>
@@ -111,7 +111,7 @@
 		<value>objectType</value>
 	</field>
 	<field>
-		<name>data_set_terse_desc</name>
+		<name>data_set_terse_description</name>
 		<type>slot</type>
 		<value>data_set_terse_description</value>
 	</field>
@@ -121,7 +121,7 @@
 		<value>data_set_id</value>
 	</field>
 	<field>
-		<name>citation_desc</name>
+		<name>citation_description</name>
 		<type>slot</type>
 		<value>data_set_citation_text</value>
 	</field>
@@ -141,7 +141,7 @@
 		<value>resource_ref.lid</value>
 	</field>
 	<field>
-		<name>data_set_desc</name>
+		<name>data_set_description</name>
 		<type>slot</type>
 		<value>data_set_description</value>
 	</field>

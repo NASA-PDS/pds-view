@@ -41,7 +41,7 @@
 		<value>instrument_host_type</value>
 	</field>
 	<field>
-		<name>instrument_host_desc</name>
+		<name>instrument_host_description</name>
 		<type>slot</type>
 		<value>instrument_host_description</value>
 	</field>
