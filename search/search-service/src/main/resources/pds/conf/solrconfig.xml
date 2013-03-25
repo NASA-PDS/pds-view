@@ -715,12 +715,12 @@
 	   <str name="facet.field">facet_agency</str>
        <str name="facet.field">facet_class</str>
        <str name="facet.field">facet_target</str>
-       <str name="facet.field">facet_mission</str>
+       <str name="facet.field">facet_investigation</str>
        <str name="facet.field">facet_instrument</str>
 	   <str name="f.facet_agency.facet.prefix">1,</str>
        <str name="f.facet_class.facet.prefix">1,</str>
        <str name="f.facet_target.facet.prefix">1,</str>
-       <str name="f.facet_mission.facet.prefix">1,</str>
+       <str name="f.facet_investigation.facet.prefix">1,</str>
        <str name="f.facet_instrument.facet.prefix">1,</str>
 
        <!--
@@ -775,12 +775,12 @@
        <str name="facet.field">facet_agency</str>
        <str name="facet.field">facet_class</str>
        <str name="facet.field">facet_target</str>
-       <str name="facet.field">facet_mission</str>
+       <str name="facet.field">facet_investigation</str>
        <str name="facet.field">facet_instrument</str>
        <str name="f.facet_agency.facet.prefix">1,</str>
        <str name="f.facet_class.facet.prefix">1,</str>
        <str name="f.facet_target.facet.prefix">1,</str>
-       <str name="f.facet_mission.facet.prefix">1,</str>
+       <str name="f.facet_investigation.facet.prefix">1,</str>
        <str name="f.facet_instrument.facet.prefix">1,</str>
       
       <!--

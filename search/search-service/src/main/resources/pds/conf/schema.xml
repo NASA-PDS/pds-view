@@ -550,7 +550,7 @@
    <field name="bundle_type" type="text" indexed="true" stored="true" multiValued="false" />
    <field name="bundle_description" type="text" indexed="false" stored="true" multiValued="false" />
    <field name="citation_author_list" type="text" indexed="false" stored="true" multiValued="false" />
-   <field name="citation_desc" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="citation_description" type="text" indexed="false" stored="true" multiValued="true" />
    <field name="citation_editor_list" type="text" indexed="false" stored="true" multiValued="false" />
    <field name="citation_publication_year" type="text" indexed="false" stored="true" multiValued="false" />
    <field name="collection_name" type="text" indexed="true" stored="true" multiValued="true" />
@@ -559,17 +559,17 @@
    <field name="confidence_level_note" type="text" indexed="false" stored="true" />
    <field name="data_class" type="text_lc" indexed="true" stored="true" multiValued="false" />
    <field name="data_object_type" type="text_lc" indexed="true" stored="true" multiValued="true"/>
-   <field name="data_set_desc" type="text" indexed="false" stored="true" />
+   <field name="data_set_description" type="text" indexed="false" stored="true" />
    <field name="data_set_id" type="text_lc" indexed="true" stored="true" />
    <field name="data_set_name" type="text" indexed="true" stored="true" multiValued="true" />
    <field name="data_set_release_date" type="string" indexed="true" stored="true" />
-   <field name="data_set_terse_desc" type="text" indexed="true" stored="true" />
+   <field name="data_set_terse_description" type="text" indexed="true" stored="true" />
    <field name="description" type="text" indexed="false" stored="true" />
    <field name="format" type="string" indexed="false" stored="true" />
    <field name="full_name" type="text" indexed="true" stored="true" />
-   <field name="instrument_desc" type="text" indexed="false" stored="true" />
+   <field name="instrument_description" type="text" indexed="false" stored="true" />
    <field name="instrument_host_id" type="text_lc" indexed="true" stored="true" multiValued="true" />
-   <field name="instrument_host_desc" type="text" indexed="false" stored="true" />
+   <field name="instrument_host_description" type="text" indexed="false" stored="true" />
    <field name="instrument_host_naif_id" type="text_lc" indexed="false" stored="true" multiValued="false" />
    <field name="instrument_host_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_host_ref" type="text" indexed="false" stored="true" multiValued="true" />
@@ -585,17 +585,22 @@
    <field name="instrument_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="investigation_description" type="text" indexed="true" stored="true" multiValued="false" />
    <field name="investigation_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="investigation_name_or_alias" type="text_lc" indexed="false" stored="true" />
+   <field name="investigation_objectives_summary" type="text" indexed="false" stored="true" />
    <field name="investigation_ref" type="text" indexed="false" stored="true" multiValued="true" />
-   <field name="investigation_start_date" type="date" indexed="true" stored="true" multiValued="false" />
-   <field name="investigation_stop_date" type="date" indexed="true" stored="true" multiValued="false" />
+   <field name="investigation_start_date" type="date" indexed="true" stored="true" multiValued="true" />
+   <field name="investigation_stop_date" type="date" indexed="true" stored="true" multiValued="true" />
    <field name="investigation_type" type="text_lc" indexed="true" stored="true" multiValued="false" />
    <field name="language" type="text_lc" indexed="false" stored="true" />
-   <field name="mission_desc" type="text" indexed="false" stored="false" />
+   <!-- Removed all references to mission to meet new pds4 defintion, can probably remove once validated -->
+   <!-- field name="mission_description" type="text" indexed="false" stored="false" />
    <field name="mission_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="mission_name_or_alias" type="text_lc" indexed="false" stored="true" />
    <field name="mission_objectives_summary" type="text" indexed="false" stored="true" />
    <field name="mission_start_date" type="string" indexed="true" stored="true" multiValued="true" />
-   <field name="mission_stop_date" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="mission_stop_date" type="string" indexed="true" stored="true" multiValued="true" /-->
+   <field name="modification_date" type="date" indexed="false" stored="true" multiValued="false" />
+   <field name="modification_description" type="string" indexed="false" stored="true" multiValued="false" />
    <field name="node_id" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="nssdc_data_set_id" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="observation_local_mean_solar_time" type="date" indexed="false" stored="true" multiValued="false" />
@@ -604,7 +609,8 @@
    <field name="observation_start_date_time" type="date" indexed="true" stored="true" multiValued="false" />
    <field name="observation_stop_date_time" type="date" indexed="true" stored="true" multiValued="false" />
    <field name="observing_system_name" type="text" indexed="true" stored="true" multiValued="true" />
-   <field name="observing_system_component" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="observing_system_component_name" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="observing_system_component_type" type="text" indexed="true" stored="true" multiValued="true" />
    <field name="pds_model_version" type="text" indexed="true" stored="true" multiValued="false" />
    <field name="primary_result_data_regime" type="text" indexed="false" stored="true" multiValued="true" />
    <field name="primary_result_description" type="text" indexed="false" stored="true" multiValued="false" />
@@ -626,7 +632,7 @@
    <field name="search_engine_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="start_time" type="date" indexed="true" stored="true" />
    <field name="stop_time" type="date" indexed="true" stored="true" />
-   <field name="target_desc" type="text" indexed="false" stored="true" />
+   <field name="target_description" type="text" indexed="false" stored="true" />
    <field name="target_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="target_ref" type="text" indexed="false" stored="true" multiValued="true" />
    <field name="target_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
@@ -638,7 +644,7 @@
    <field name="target" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="instrument" type="text" indexed="true" stored="false" multiValued="true" />
    <field name="agency" type="text_lc" indexed="true" stored="false" multiValued="true" />
-   <field name="mission" type="text" indexed="true" stored="false" multiValued="true" />
+   <!--field name="mission" type="text" indexed="true" stored="false" multiValued="true" /-->
    <field name="investigation" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="observing-system" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="person" type="text" indexed="true" stored="false" multiValued="true" />
@@ -656,13 +662,13 @@
    <field name="facet_class" type="string_lc" indexed="true" stored="false" multiValued="false" />
    <field name="facet_target" type="string_lc" indexed="true" stored="false" multiValued="true" />
    <field name="facet_instrument" type="string_lc" indexed="true" stored="false" multiValued="true" />
-   <field name="facet_mission" type="string_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="facet_investigation" type="string_lc" indexed="true" stored="false" multiValued="true" />
    
    <!-- Also create a field for facet terms used by the spell checker -->
    <field name="spell" type="text_lc" indexed="true" stored="false" multiValued="true" />
    
    <!-- Faceting fields for form based search -->
-   <field name="form-mission" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="form-investigation" type="string" indexed="true" stored="true" multiValued="true" />
    <field name="form-target" type="string" indexed="true" stored="true" multiValued="true" />
    <field name="form-target-type" type="string" indexed="true" stored="true" multiValued="true" /> 
    <field name="form-instrument" type="string" indexed="true" stored="true" multiValued="true" /> 
@@ -758,16 +764,16 @@
   <copyField source="agency_name" dest="text" />
   <copyField source="description" dest="text" />
   <copyField source="data_set_id" dest="text" />
-  <copyField source="data_set_desc" dest="text" />
-  <copyField source="instrument_host_desc" dest="text" />
+  <copyField source="data_set_description" dest="text" />
+  <copyField source="instrument_host_description" dest="text" />
   <copyField source="instrument_host_name" dest="text" />
   <copyField source="instrument_host_id" dest="text" />
   <copyField source="instrument_id" dest="text" />
-  <copyField source="instrument_desc" dest="text" />
+  <copyField source="instrument_description" dest="text" />
   <copyField source="instrument_name" dest="text" />
-  <copyField source="mission_desc" dest="text" />
+  <!--copyField source="mission_description" dest="text" />
   <copyField source="mission_name" dest="text" />
-  <copyField source="mission_name_or_alias" dest="text" />
+  <copyField source="mission_name_or_alias" dest="text" /-->
   <copyField source="observing_system_name" dest="text" />
   <copyField source="target_name" dest="text" />
   <copyField source="title" dest="text" />
@@ -775,10 +781,10 @@
   <!-- Now a few indexed aliases -->
   <copyField source="target_name" dest="target" />
   <copyField source="agency_name" dest="agency" />
-  <copyField source="mission_name" dest="mission" />
+  <!--copyField source="mission_name" dest="mission" /-->
   <copyField source="instrument_name" dest="instrument" />
   <copyField source="instrument_id" dest="instrument" />
-  <copyField source="mission_name" dest="investigation" />
+  <copyField source="investigation_name" dest="investigation" />
   <copyField source="observing_system_name" dest="observing-system" />
   <copyField source="full_name" dest="person" />
   <copyField source="resClass" dest="product-class" />
@@ -793,12 +799,12 @@
   <!-- And the spell-check field -->
   <copyField source="target_name" dest="spell" />
   <copyField source="agency_name" dest="spell" />  
-  <copyField source="mission_name" dest="spell" />
+  <copyField source="investigation_name" dest="spell" />
   <copyField source="instrument_name" dest="spell" />
   <copyField source="instrument_host_name" dest="spell" />
     
   <!-- Form-based search support -->
-  <copyField source="mission_name" dest="form-mission" />
+  <copyField source="investigation_name" dest="form-investigation" />
   <copyField source="target_name" dest="form-target" />
   <copyField source="target_type" dest="form-target-type" />
   <copyField source="instrument_name" dest="form-instrument" />

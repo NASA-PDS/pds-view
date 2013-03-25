@@ -251,7 +251,7 @@
   <ul>
     <li>Use quotation marks to specify that words much occur in a phrase, like <strong>&quot;mars express&quot;</strong></li>
     <li>Match against search fields like this: <strong>target:mars</strong></li>
-    <li>Fields you can match against: target, instrument, mission, instrument_type</li>
+    <li>Fields you can match against: target, instrument, investigation, instrument_type</li>
 
  </ul>
 
@@ -326,8 +326,8 @@
 						<xsl:when test="str[@name='resClass'] = 'InstrumentHost'">
 							<xsl:value-of select="concat('Information about the ',str[@name='title'],' instrument host')" />
 						</xsl:when>
-						<xsl:when test="str[@name='resClass'] = 'Mission'">
-							<xsl:value-of select="concat('Information about the ',str[@name='title'],' mission')" />
+						<xsl:when test="str[@name='resClass'] = 'Investigation'">
+							<xsl:value-of select="concat('Information about the ',str[@name='title'],' investigation')" />
 						</xsl:when>
 						<xsl:when test="str[@name='resClass'] = 'Target'">
 							<xsl:value-of select="concat('Information about the target ',str[@name='title'])" />
@@ -336,10 +336,10 @@
 							<xsl:value-of select="pds:description(str[@name='description'],str[@name='data_set_id'])" />
 							<br />
 							<span style="font-size: 90%; color: rgb(64, 64, 64);">
-								<xsl:value-of select="fn:upper-case((arr|str)[@name='mission_name'])" />
+								<xsl:value-of select="fn:upper-case((arr|str)[@name='investigation_name'])" />
 								-
 								<xsl:value-of select="fn:upper-case(str[@name='data_set_id'])" />
-								<xsl:value-of select="if (str[@name='start_time']) then concat(' - starting ',str[@name='start_time']) else if ((arr|str)[@name='mission_start_date']) then concat(' - starting ',(arr|str)[@name='mission_start_date']) else ''" />
+								<xsl:value-of select="if (str[@name='start_time']) then concat(' - starting ',str[@name='start_time']) else if ((arr|str)[@name='investigation_start_date']) then concat(' - starting ',(arr|str)[@name='investigation_start_date']) else ''" />
 							</span>
 						</xsl:when>
 						<xsl:otherwise>
