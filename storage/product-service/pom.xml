@@ -68,7 +68,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <warName>${artifactId}</warName>
+          <warName>product</warName>
           <archive>
             <manifest>
               <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>

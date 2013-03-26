@@ -30,7 +30,7 @@
 
   <body>
     <links>
-      <item name="Storage" href="http://pds-cm.jpl.nasa.gov/pds4/storage/storage-service/index.html" />
+      <item name="Storage Service" href="http://pds-cm.jpl.nasa.gov/pds4/storage/storage-service/index.html" />
     </links>
 
     <menu name="Software Documentation">
