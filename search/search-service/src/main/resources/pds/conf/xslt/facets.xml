@@ -6,13 +6,16 @@
   <facet name="facet target" caption="Target" />
   <facet name="facet investigation" caption="Investigation" />
   <facet name="facet instrument" caption="Instrument" />
+  <facet name="facet pds model version" caption="Model Version" />
 
   <category name="agency" caption="Agency" />
+  <category name="bundle" caption="Bundle" />
+  <category name="collection" caption="Collection" />
+  <category name="context" caption="PDS4 Context" />
   <category name="dataset" caption="Data Set" />
   <category name="instrumenthost" caption="Instrument Host" />
   <category name="instrument" caption="Instrument" />
   <category name="investigation" caption="Investigation" />
   <category name="searchtool" caption="Search Tool" />
   <category name="target" caption="Target" />
-  <category name="archiveinfo" caption="Resource" />
 </facets>

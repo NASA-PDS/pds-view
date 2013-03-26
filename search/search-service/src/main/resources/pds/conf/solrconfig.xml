@@ -717,11 +717,13 @@
        <str name="facet.field">facet_target</str>
        <str name="facet.field">facet_investigation</str>
        <str name="facet.field">facet_instrument</str>
+       <str name="facet.field">facet_pds_model_version</str>
 	   <str name="f.facet_agency.facet.prefix">1,</str>
        <str name="f.facet_class.facet.prefix">1,</str>
        <str name="f.facet_target.facet.prefix">1,</str>
        <str name="f.facet_investigation.facet.prefix">1,</str>
        <str name="f.facet_instrument.facet.prefix">1,</str>
+       <str name="f.facet_pds_model_version.facet.prefix">1,</str>
 
        <!--
        <str name="mlt.qf">
@@ -777,11 +779,13 @@
        <str name="facet.field">facet_target</str>
        <str name="facet.field">facet_investigation</str>
        <str name="facet.field">facet_instrument</str>
+       <str name="facet.field">facet_pds_model_version</str>
        <str name="f.facet_agency.facet.prefix">1,</str>
        <str name="f.facet_class.facet.prefix">1,</str>
        <str name="f.facet_target.facet.prefix">1,</str>
        <str name="f.facet_investigation.facet.prefix">1,</str>
        <str name="f.facet_instrument.facet.prefix">1,</str>
+       <str name="f.facet_pds_model_version.facet.prefix">1,</str>
       
       <!--
         <str name="mlt.qf">

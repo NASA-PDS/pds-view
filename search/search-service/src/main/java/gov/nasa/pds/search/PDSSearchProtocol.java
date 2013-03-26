@@ -82,8 +82,6 @@ public class PDSSearchProtocol extends StandardRequestHandler {
 				queryString.append(" AND ");
 			}
 		}
-
-		this.LOG.info("Multi-param Query String pre-clean: " + queryString.toString());
 		
 		// Remove the last AND
 		if (queryString.length() != 0) {
@@ -140,8 +138,7 @@ public class PDSSearchProtocol extends StandardRequestHandler {
 				queryString.append(" ");
 			}
 			
-			// If query parameter contains and OR|AND then surround in parentheses
-			this.LOG.info("q value in lower case: " + request.getOriginalParams().getParams(QUERY_PARAM)[0].toLowerCase());
+			// If query parameter contains OR then surround in parentheses
 			if (request.getOriginalParams().getParams(QUERY_PARAM)[0].toLowerCase().matches("[^\\(]* or [^\\)]*")) {
 				queryString.append("(");
 				queryString.append(request.getOriginalParams().getParams(QUERY_PARAM)[0]);
