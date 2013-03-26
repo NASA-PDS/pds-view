@@ -187,12 +187,4 @@ public class XMLWriter {
 		return sbuff2.toString();
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

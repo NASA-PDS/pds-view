@@ -26,17 +26,17 @@
 		<value>resource_ref.resource_url</value>
 	</field>
 	<field>
-		<name>mission_name</name>
+		<name>investigation_name</name>
 		<type>slot</type>
 		<value>psa_mission_name</value>
 	</field>
 	<field>
-		<name>mission_start_date</name>
+		<name>investigation_start_date</name>
 		<type>slot</type>
 		<value>data_set_start_time</value>
 	</field>
 	<field>
-		<name>mission_stop_date</name>
+		<name>investigation_stop_date</name>
 		<type>slot</type>
 		<value>data_set_stop_time</value>
 	</field>
@@ -115,7 +115,7 @@
 		<value>objectType</value>
 	</field>
 	<field>
-		<name>data_set_terse_desc</name>
+		<name>data_set_terse_description</name>
 		<type>out</type>
 		<value>UNK</value>
 	</field>
@@ -125,7 +125,7 @@
 		<value>data_set_id</value>
 	</field>
 	<field>
-		<name>citation_desc</name>
+		<name>citation_description</name>
 		<type>slot</type>
 		<value>data_set_citation_text</value>
 	</field>
@@ -145,7 +145,7 @@
 		<value>resource_ref.lid</value>
 	</field>
 	<field>
-		<name>data_set_desc</name>
+		<name>data_set_description</name>
 		<type>slot</type>
 		<value>data_set_desc</value>
 	</field>
