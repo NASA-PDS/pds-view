@@ -187,6 +187,12 @@
       <type>war</type>
       <scope>runtime</scope>
     </dependency>
+	<dependency>
+	  <groupId>org.apache.solr</groupId>
+	  <artifactId>solr-velocity</artifactId>
+	  <version>3.6.0</version>
+	  <scope>runtime</scope>
+	</dependency>
   </dependencies>
 
   <!-- Project Information and Reports inherited from parent. -->

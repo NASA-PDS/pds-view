@@ -16,6 +16,8 @@
 package gov.nasa.pds.search;
 
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.handler.StandardRequestHandler;
@@ -51,9 +53,6 @@ public class PDSSearchProtocol extends StandardRequestHandler {
 		
 		/** Query string that will be returned as response **/
 		StringBuilder queryString = new StringBuilder();
-
-		/** Count used to track the number of parameters specified in request **/
-		int multiParamCount = 0;
 		
 		int start = 0;
 		
@@ -81,8 +80,6 @@ public class PDSSearchProtocol extends StandardRequestHandler {
 					queryString.append(")");
 				}
 				queryString.append(" AND ");
-				
-				multiParamCount++;
 			}
 		}
 
@@ -90,23 +87,8 @@ public class PDSSearchProtocol extends StandardRequestHandler {
 		
 		// Remove the last AND
 		if (queryString.length() != 0) {
-			if (multiParamCount == 1) { // Need to potentially remove parens from OR statement
-				this.LOG.info("Removing extra AND and ( ) from query string");
-				
-				queryString.delete(queryString.length() - 5, queryString.length());
-				
-				if (queryString.indexOf("(") != -1) {
-					queryString.deleteCharAt(queryString.indexOf(")"));
-					queryString.deleteCharAt(queryString.indexOf("("));
-				}
-				
-			} else {
-				this.LOG.info("Removing extra AND");
-				queryString.delete(queryString.length() - 5, queryString.length());
-			}
+			queryString.delete(queryString.length() - 5, queryString.length());
 		}
-		
-		this.LOG.info("Multi-param Query String post-clean: " + queryString.toString());
 
 		// Handle start time
 		if (request.getOriginalParams().getParams(START_TIME_PARAM) != null) {
@@ -129,9 +111,6 @@ public class PDSSearchProtocol extends StandardRequestHandler {
 			queryString.append(STOP_TIME_PARAM);
 			queryString.append(":");
 			queryString.append(request.getOriginalParams().getParams(STOP_TIME_PARAM)[0]);
-
-			// Increment parameter counter
-			//andParamCount++;
 		}
 
 		if (request.getOriginalParams().getParams(ARCHIVE_STATUS_PARAM) != null) {
@@ -160,7 +139,16 @@ public class PDSSearchProtocol extends StandardRequestHandler {
 			if (queryString.length() != 0) {
 				queryString.append(" ");
 			}
-			queryString.append(request.getOriginalParams().getParams(QUERY_PARAM)[0]);
+			
+			// If query parameter contains and OR|AND then surround in parentheses
+			this.LOG.info("q value in lower case: " + request.getOriginalParams().getParams(QUERY_PARAM)[0].toLowerCase());
+			if (request.getOriginalParams().getParams(QUERY_PARAM)[0].toLowerCase().matches("[^\\(]* or [^\\)]*")) {
+				queryString.append("(");
+				queryString.append(request.getOriginalParams().getParams(QUERY_PARAM)[0]);
+				queryString.append(")");
+			} else {
+				queryString.append(request.getOriginalParams().getParams(QUERY_PARAM)[0]);
+			}
 		}
 
 		// If there is a query pass it onto Solr as the q param
@@ -192,5 +180,5 @@ public class PDSSearchProtocol extends StandardRequestHandler {
 
 		super.handleRequestBody(request, response);
 	}
-
+	
 }

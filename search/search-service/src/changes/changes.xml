@@ -24,6 +24,12 @@
 
   <body>
     <release version="1.2.0" date="2013-03-31" description="This release of the Search Core is a component of the integrated release 3.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="jpadams" type="update" issue="PDS-152">
+	Updated and tested PDSSearchProtocol to work with the protocol parameters. Solr does not seem to like extra parentheses, which were causing terms to be lost in the query.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-152">
+	Updated Solr schema.xml to reflect more of the mappings noted in the search protocol document.
+      </action>
     </release>
 
     <release version="1.1.1" date="2012-11-14" description="This release of the Search Core is a component of the PDS4 System. This is an operational release supporting the deployment of the system at the Engineering Node and includes updates for issues discovered during deployment.">

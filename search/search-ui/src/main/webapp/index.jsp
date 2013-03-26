@@ -62,7 +62,7 @@ String contextPath = request.getContextPath() + "/";
 <h1><a name="mainContent"></a><!-- InstanceBeginEditable name="pageTitle" -->Data Search<!-- InstanceEndEditable --></h1>
 <div>
 <!-- InstanceBeginEditable name="content" -->
-<form action="search.jsp" method="GET">
+<form action="search.jsp" method="get">
   <input type="text" name="q" size="60" /><input type="submit" value="Search" />
 </form>
 <p style="margin-top: 2em; margin-bottom: .5em;">Begin your search with one of the quick searches on the left, or try any of the following:</p>
@@ -79,7 +79,7 @@ String contextPath = request.getContextPath() + "/";
     <li>Use quotation marks to bind words that occur together, e.g. <strong>&quot;mars express&quot;</strong></li>
     <li>Specifying a search field before the word to search, e.g. <strong>target:mars</strong></li>
       <ul>
-	<li>The legal search fields are <strong>target:</strong>, <strong>instrument:</strong>, <strong>mission:</strong>, <strong>instrument_type:</strong></li>
+	<li>The legal search fields are <strong>target:</strong>, <strong>instrument:</strong>, <strong>investigation:</strong>, <strong>instrument_type:</strong></li>
       </ul>
     <li>Inserting logical operator <strong>OR</strong> or <strong>AND</strong>, e.g. <strong>target:uranus OR target:neptune</strong></li>
  </ul>
