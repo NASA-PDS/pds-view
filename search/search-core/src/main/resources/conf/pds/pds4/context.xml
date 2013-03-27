@@ -26,6 +26,16 @@
 
 	<!-- Product-specific fields -->
 	<field>
+		<name>alternate_id</name>
+		<type>slot</type>
+		<value>alternate_id</value>
+	</field>
+	<field>
+		<name>alternate_title</name>
+		<type>slot</type>
+		<value>alternate_title</value>
+	</field>
+	<field>
 		<name>data_class</name>
 		<type>slot</type>
 		<value>data_class</value>

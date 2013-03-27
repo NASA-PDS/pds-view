@@ -52,15 +52,19 @@
     <field name="facet_class"><xsl:value-of select="concat('1,',.)" /></field>
   </xsl:template>
   
+  <xsl:template match="field[@name = 'pds_model_version']">
+    <field name="facet_pds_model_version"><xsl:value-of select="concat('1,',.)" /></field>
+  </xsl:template>
+  
   <xsl:template match="field[@name = 'agency_name']">
     <xsl:copy-of select="." />
     <field name="facet_agency"><xsl:value-of select="concat('1,',.)" /></field>
   </xsl:template>
 
-  <xsl:template match="field[@name = 'mission_name']">
+  <xsl:template match="field[@name = 'investigation_name']">
     <!--xsl:copy-of select="." /-->		<!--  PDS-128 UNCOMMENT -->
-    <field name="mission_name"><xsl:value-of select="pds:clean(.)" /></field>
-    <field name="facet_mission"><xsl:value-of select="concat('1,',.)" /></field>
+    <field name="investigation_name"><xsl:value-of select="pds:clean(.)" /></field>
+    <field name="facet_investigation"><xsl:value-of select="concat('1,',.)" /></field>
   </xsl:template>
 
   <!-- PDS-128 REMOVE -->

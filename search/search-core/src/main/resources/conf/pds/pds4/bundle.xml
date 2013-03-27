@@ -31,6 +31,11 @@
 
 	<!-- Product-specific fields -->
 	<field>
+		<name>alternate_id</name>
+		<type>slot</type>
+		<value>alternate_id</value>
+	</field>
+	<field>
 		<name>bundle_type</name>
 		<type>slot</type>
 		<value>bundle_type</value>

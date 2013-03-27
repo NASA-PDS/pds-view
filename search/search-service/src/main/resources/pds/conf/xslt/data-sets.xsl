@@ -116,7 +116,7 @@
     <xsl:param name="desc"  />
     <xsl:param name="title" />
     <xsl:choose>
-      <xsl:when test="not($desc) or $desc = 'N/A'">
+      <xsl:when test="not($desc) or $desc = 'N/A' or $desc = 'UNK'">
         <xsl:value-of select="concat('Information about ', $title)" />
       </xsl:when>
       <xsl:otherwise>
@@ -165,7 +165,7 @@
       <div>
 
 
-    <form class="search_form" method="GET">
+    <form class="search_form" method="get">
     <div id="IEBug">
       <p><input type="text" size="60" name="q" value="{replace(replace(replace(replace($searchString,'-archive-status:SUPERSEDED',''), ' AND $',''), '\(',''), '\)','')}" />
 	<input type="submit" value="Search" />&#160;<a style="position: relative; top: .4em; font-size: 90%;" href="index.jsp">New Search</a></p>

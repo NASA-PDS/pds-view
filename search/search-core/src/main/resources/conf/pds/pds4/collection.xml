@@ -21,7 +21,7 @@
 	<field>
 		<name>description</name>
 		<type>out</type>
-		<value>UNK</value>
+		<value>citation_description</value>
 	</field>
 	<field>
 		<name>resLocation</name>
@@ -30,6 +30,11 @@
 	</field>
 
 	<!-- Product-specific fields -->
+	<field>
+		<name>alternate_id</name>
+		<type>slot</type>
+		<value>alternate_id</value>
+	</field>
 	<field>
 		<name>collection_type</name>
 		<type>slot</type>
