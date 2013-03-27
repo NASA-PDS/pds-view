@@ -39,15 +39,25 @@
     <section name="System Configuration">
       <subsection name="Machine Information">
       <p>The following table describes the machines that require the installation of the Search Service, the purpose for the machine, and the URL with port for the Search Service once installation has been completed:</p>
-      <table style="width: 600px">
+      <table style="width: 700px">
 	<tr><th>Machine Name</th><th>Purpose</th><th>Search Service URL</th></tr>
 	<tr><td>pdsbeta</td><td>Development/Test</td><td>http://pdsbeta:8080/${project.artifactId}</td></tr>
-	<tr><td>pdssrv1</td><td>Operations</td><td>http://pdssrv1/${project.artifactId}</td></tr>
-	<tr><td>pdssrv2</td><td>Operations</td><td>http://pdssrv2/${project.artifactId}</td></tr>
+	<tr><td>pdsweb1</td><td>Website Operations</td><td>http://pdsweb1/${project.artifactId}</td></tr>
+	<tr><td>pdsweb2</td><td>Website Operations</td><td>http://pdsweb1/${project.artifactId}</td></tr>
+	<tr><td>pdssrv1</td><td>Search Service Operations</td><td>http://pdssrv1/${project.artifactId}</td></tr>
+	<tr><td>pdssrv2</td><td>Search Service Operations</td><td>http://pdssrv2/${project.artifactId}</td></tr>
       </table>
       </subsection>
-
-    <subsection name="Security">
+      <subsection name="Operationss Apache Configuration">
+	<p>The following configuration needs to be completed on all <strong>Website Operations</strong> machines in order to properly map the URLs to the Search Service Operations.  Open the Apache httpd.conf file and add the following:</p>
+	<source>
+ProxyPass /tools/search-service/ http://pdsops.jpl.nasa.gov/search-service/
+ProxyPass /tools/search-service http://pdsops.jpl.nasa.gov/search-service/
+ProxyPassReverse /tools/search-service/ http://pdsops.jpl.nasa.gov/search-service/
+ProxyPassReverse /tools/search-service http://pdsops.jpl.nasa.gov/search-service/
+	</source>
+      </subsection>
+      <subsection name="Security">
       <p>Changes need to be made to Apache Tomcat configuration in order to properly secure the application.  The following configuration needs to be added to the Host section of the <i>$TOMCAT_HOME/conf/server.xml</i> file on all machines:</p>
 
       <source>

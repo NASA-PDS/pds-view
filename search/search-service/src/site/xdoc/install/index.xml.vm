@@ -126,7 +126,7 @@ or
 ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
 	    </source>
 	  </li>
-	  <li>Create a Tomcat context file <i>${project.artifactId}.xml</i> to refer to the Solr WAR file (found in the $SEARCH_SERVICE_HOME directory) and place it in the <i>$TOMCAT_HOME/conf/Catalina/localhost</i> directory.  The <i>${project.artifactId}.xml</i> file should look something like this, with the paths modifed as needed:
+	  <li>Create a Tomcat context file <i>${project.artifactId}.xml</i> to refer to the Solr WAR file (found in the $SEARCH_SERVICE_HOME directory) and place it in the <i>$TOMCAT_HOME/conf/Catalina/{hostname}</i> directory.  The <i>${project.artifactId}.xml</i> file should look something like this, with the paths modifed as needed:
 	    <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context docBase="/usr/local/${project.artifactId}/solr.war" debug="0" crossContext="true"&gt;
