@@ -648,7 +648,7 @@
    <field name="observing-system" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="person" type="text" indexed="true" stored="false" multiValued="true" />
    <field name="product-class" type="string" indexed="true" stored="false" />
-   <field name="start-time" type="date" indexed="true" stored="false" multiValu="true"/>
+   <field name="start-time" type="date" indexed="true" stored="false" multiValued="true"/>
    <field name="stop-time" type="date" indexed="true" stored="false" multiValued="true"/>
    <field name="target" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="target-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
