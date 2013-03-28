@@ -546,8 +546,8 @@
    
    <field name="abstract_text" type="text" indexed="false" stored="true" />
    <field name="agency_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
-   <field name="alternate_id" type="text" indexed="false" stored="true" />
-   <field name="alternate_title" type="text" indexed="false" stored="true" />
+   <field name="alternate_id" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="alternate_title" type="text" indexed="false" stored="true" multiValued="true" />
    <field name="archive_status" type="text_lc" indexed="true" stored="true" />
    <field name="bundle_type" type="text" indexed="true" stored="true" multiValued="false" />
    <field name="bundle_description" type="text" indexed="false" stored="true" multiValued="false" />
