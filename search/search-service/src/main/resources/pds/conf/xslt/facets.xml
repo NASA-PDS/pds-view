@@ -9,16 +9,10 @@
   <facet name="facet pds model version" caption="Model Version" />
 
   <category name="agency" caption="Agency" />
-<<<<<<< .mine
   <category name="archiveinfo" caption="Resource" />
   <category name="bundle" caption="Bundle" />
   <category name="collection" caption="Collection" />
   <category name="context" caption="PDS4 Context" />
-=======
-  <category name="bundle" caption="Bundle" />
-  <category name="collection" caption="Collection" />
-  <category name="context" caption="PDS4 Context" />
->>>>>>> .r11499
   <category name="dataset" caption="Data Set" />
   <category name="instrumenthost" caption="Instrument Host" />
   <category name="instrument" caption="Instrument" />
