@@ -21,7 +21,7 @@
 	<field>
 		<name>description</name>
 		<type>slot</type>
-		<value>bundle_description</value>
+		<value>citation_description</value>
 	</field>
 	<field>
 		<name>resLocation</name>

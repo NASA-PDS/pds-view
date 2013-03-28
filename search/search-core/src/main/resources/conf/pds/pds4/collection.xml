@@ -20,7 +20,7 @@
 	</field>
 	<field>
 		<name>description</name>
-		<type>out</type>
+		<type>slot</type>
 		<value>citation_description</value>
 	</field>
 	<field>
