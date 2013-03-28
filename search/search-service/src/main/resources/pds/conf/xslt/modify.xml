@@ -46,4 +46,6 @@
   <category name="cassini-huygens" modified="Cassini-Huygens"/>
   <category name="nasa" modified="NASA"/>
   <category name="esa" modified="ESA"/>
+  <category name="pds3" modified="PDS3"/>
+  <category name="pds4" modified="PDS4"/>
 </categories>
