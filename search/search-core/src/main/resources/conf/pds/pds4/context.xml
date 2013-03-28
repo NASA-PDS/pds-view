@@ -30,11 +30,11 @@
 		<type>slot</type>
 		<value>alternate_id</value>
 	</field>
-	<field>
+	<!--field>
 		<name>alternate_title</name>
 		<type>slot</type>
 		<value>alternate_title</value>
-	</field>
+	</field-->
 	<field>
 		<name>data_class</name>
 		<type>slot</type>
