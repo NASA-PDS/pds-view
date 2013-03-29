@@ -155,6 +155,8 @@
 		<type>out</type>
 		<value>Data_Set_Description</value>
 	</field>
+
+	<!-- Hard-coded defaults that need to be refactored -->
 	<field>
 		<name>agency_name</name>
 		<type>out</type>
@@ -163,7 +165,7 @@
 	<field>
 		<name>pds_model_version</name>
 		<type>out</type>
-		<value>PDS3</value>
+		<value>pds3</value>
 	</field>
 	
 	<!-- Included from old search, leave in for now -->

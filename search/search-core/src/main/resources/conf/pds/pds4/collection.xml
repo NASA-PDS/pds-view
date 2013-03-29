@@ -55,6 +55,11 @@
 		<type>slot</type>
 		<value>citation_publication_year</value>
 	</field>
+        <field>
+                <name>citation_keyword</name>
+                <type>slot</type>
+                <value>citation_keyword</value>
+        </field>
 	<field>
 		<name>citation_description</name>
 		<type>slot</type>
@@ -156,11 +161,6 @@
 		<value>target_ref</value>
 	</field>
 	<field>
-		<name>pds_model_version</name>
-		<type>out</type>
-		<value>PDS4</value>
-	</field>
-	<field>
 		<name>modification_date</name>
 		<type>slot</type>
 		<value>modification_date</value>
@@ -169,6 +169,18 @@
 		<name>modification_description</name>
 		<type>slot</type>
 		<value>modification_description</value>
+	</field>
+	
+	<!-- Hard-coded defaults that need to be refactored -->
+	<field>
+		<name>agency_name</name>
+		<type>out</type>
+		<value>nasa</value>
+	</field>
+	<field>
+		<name>pds_model_version</name>
+		<type>out</type>
+		<value>pds3</value>
 	</field>
 	
 	<!-- Included from old search, leave in for now -->
