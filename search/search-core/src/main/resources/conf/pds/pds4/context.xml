@@ -165,7 +165,7 @@
 	<field>
 		<name>pds_model_version</name>
 		<type>out</type>
-		<value>pds3</value>
+		<value>pds4</value>
 	</field>
 	
 	<!-- Included from old search, leave in for now -->
