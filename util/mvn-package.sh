@@ -51,7 +51,7 @@ cd ../..
 
 cd storage
 mvn --non-recursive install clean
-cd search-service
+cd storage-service
 mvn install clean
 cd ../..
 

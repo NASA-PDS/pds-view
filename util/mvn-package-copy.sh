@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2012, by the California Institute of Technology. 
+# Copyright 2012-2013, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -51,10 +51,11 @@ cp ../../search/search-service/target/search-service*bin* .
 cp ../../search/search-ui/target/search-ui*bin* .
 
 echo "Copying the Storage packages to the package directory."
-cp ../../storage/target/storage*bin* .
+cp ../../storage/product-service/target/product-service*bin* .
+cp ../../storage/storage-service/target/storage-service*bin* .
 
 echo "Copying the Transport packages to the package directory."
-cp ../../transport/cas-product/target/cas-product*bin* .
+cp ../../transport/transport-service/target/transport-service*bin* .
 
 # Create the package of packages
 

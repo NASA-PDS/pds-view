@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2010-2012, by the California Institute of Technology. 
+# Copyright 2010-2013, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -99,12 +99,17 @@ mvn deploy
 cd ../..
 
 cd storage
+mvn deploy --non-recursive
+cd product-service
 mvn site
 mvn deploy
-cd ..
+cd ../storage-service
+mvn site
+mvn deploy
+cd ../..
 
 cd transport
 mvn deploy --non-recursive
-cd cas-product
+cd transport-service
 mvn site
 mvn deploy
