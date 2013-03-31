@@ -59,7 +59,8 @@
       </p>
 
       <ul>
-        <li>NASA Planetary Data System (PDS) 2010 System Build I Test Plan</li>
+        <li>NASA Planetary Data System PDS4 System Build 3b Test Plan</li>
+        <li>NASA Planetary Data System PDS4 System Build 3b Test Procedures &amp; Report</li>
       </ul>
     </section>
 
@@ -72,15 +73,7 @@
         </p>
 
         <ul>
-          <li>PDS4 Tools was added providing support for accessing PDS4 data objects including selected transformations to common formats.
-          </li>
-          <li>Transform Tool was added providing support for transforming PDS3 and PDS4 product labels and product data into common formats.
-          </li>
-          <li>Search User Interface was added providing a deployable graphical user interface for the Search Service.
-          </li>
-          <li>Harvest Tool added support for comparing generated checksums with a supplied checksum manifest file.
-          </li>
-          <li>Search Service added support for the Planetary Data Access Protocol (PDAP) as well as support for returning results in a VOTable structure.
+          <li>Search was modified to add support for discovering and viewing Bundle and Collection information.
           </li>
         </ul>
       </subsection>
@@ -90,11 +83,13 @@
         </p>
 
         <ul>
-          <li>Validate Tool was modified to include the latest XML Schema and Schematron files (v03) generated from the PDS4 data model.
+          <li>Validate Tool was modified to include the latest XML Schema and Schematron files (0310b) generated from the PDS4 data model.
           </li>
-          <li>Harvest Tool, Catalog Tool and Search Service were modified to keep pace with changes occurring in the PDS4 data model.
+          <li>Harvest Tool, Catalog Tool and Search were modified to keep pace with changes occurring in the PDS4 data model for this release.
           </li>
-          <li>Search Service was modified to better organize the service, separating index generation functionality from search handling functionality. The service was also modified to better handle PDS4 date fields.
+          <li>Harvest Tool was modified to better support PDS3 data set registration via the Product_Proxy_PDS3 product along with improvements for including and excluding target directories.
+          </li>
+          <li>Modified the Tomcat Deployment and Registry documentation adding details for securing access to the services.
           </li>
         </ul>
       </subsection>
@@ -104,9 +99,9 @@
         </p>
 
         <ul>
-          <li>Validate Tool was modified to correct an issue that caused Schematron files to not be loaded internally when user supplied XML Schema file(s) were given.
+          <li>Registry Service was modified to address performance issues with publishing and versioning objects.
           </li>
-          <li>Registry Service was modified to correct an issue where an underscore character was acting as a single character wildcard causing queries to incorrectly find matches.
+          <li>Search Service was modified to address inconsistent results when specifying more than one term or parameter in the search criteria.
           </li>
         </ul>
       </subsection>
@@ -117,9 +112,9 @@
       </p>
 
       <ul>
+        <li>Need to update PDS4 Tools to keep pace with changes occurring in the PDS4 data model for this release.
+        <li>Correct an issue with the Registry Service where the replication capability is not functioning correctly.
         <li>Upgrade miscellaneous portal interfaces to remove the dependence on the PDS3 catalog database.
-        </li>
-        <li>Need to review use cases for the Catalog Tool and update the software accordingly.
         </li>
       </ul>
     </section>
@@ -159,29 +154,29 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       <ul>
         <li><a href="../ingest/index.html">Ingest</a></li>
         <ul>
-          <li><a href="../ingest/catalog/index.html">Catalog Tool</a> - 1.4.0</li>
-          <li><a href="../ingest/harvest/index.html">Harvest Tool</a> - 1.3.0</li>
+          <li><a href="../ingest/catalog/index.html">Catalog Tool</a> - 1.5.0</li>
+          <li><a href="../ingest/harvest/index.html">Harvest Tool</a> - 1.4.0</li>
         </ul>
         <li><a href="../preparation/index.html">Preparation Tools</a></li>
         <ul>
-          <li><a href="../preparation/core/index.html">Core Library</a> - 1.2.0</li>
+          <li><a href="../preparation/core/index.html">Core Library</a> - 1.3.0</li>
           <li><a href="../preparation/design/index.html">Design Tool</a> - 0.4.0</li>
-          <li><a href="../preparation/generate/index.html">Generate Tool</a> - 0.5.0</li>
+          <li><a href="../preparation/generate/index.html">Generate Tool</a> - 0.6.0</li>
           <li><a href="../preparation/pds4-tools/index.html">PDS4 Tools</a> - 0.1.0</li>
-          <li><a href="../preparation/transform/index.html">Transform Tool</a> - 0.1.0</li>
-          <li><a href="../preparation/validate/index.html">Validate Tool</a> - 1.2.0</li>
+          <li><a href="../preparation/transform/index.html">Transform Tool</a> - 0.2.0</li>
+          <li><a href="../preparation/validate/index.html">Validate Tool</a> - 1.3.0</li>
         </ul>
         <li><a href="../registry/index.html">Registry</a></li>
         <ul>
-          <li><a href="../registry/registry-service/index.html">Registry Service</a> - 1.3.0</li>
-          <li><a href="../registry/registry-ui/index.html">Registry User Interface</a> - 1.3.0</li>
+          <li><a href="../registry/registry-service/index.html">Registry Service</a> - 1.4.0</li>
+          <li><a href="../registry/registry-ui/index.html">Registry User Interface</a> - 1.4.0</li>
         </ul>
         <li><a href="../report/index.html">Report Service</a> - 1.3.0</li>
-        <li><a href="../search/index.html">Search Service</a> (Updated on 11/9/12)</li>
+        <li><a href="../search/index.html">Search Service</a></li>
         <ul>
-          <li><a href="../search/search-core/index.html">Search Core</a> - 1.1.0</li>
-          <li><a href="../search/search-service/index.html">Search Service</a> - 1.1.0</li>
-          <li><a href="../search/search-ui/index.html">Search User Interface</a> - 1.1.0</li>
+          <li><a href="../search/search-core/index.html">Search Core</a> - 1.2.0</li>
+          <li><a href="../search/search-service/index.html">Search Service</a> - 1.2.0</li>
+          <li><a href="../search/search-ui/index.html">Search User Interface</a> - 1.2.0</li>
         </ul>
         <li><a href="../security/index.html">Security Service</a> - 1.2.0</li>
       </ul>
