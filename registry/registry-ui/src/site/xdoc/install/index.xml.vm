@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2012, by the California Institute of Technology.
+  Copyright 2010-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -32,7 +32,8 @@
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
-        <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
+        <li><a href="#General_Configuration">General Configuration</a></li>
+        <li><a href="#Secure_Configuration">Secure Configuration</a></li>
       </ul>
     </section>
 
@@ -59,7 +60,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       </subsection>
 
       <subsection name="Java Application Server">
-        <p>The Registry User Interface requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Apache Tomcat software can be downloaded from the <a href="http://tomcat.apache.org/" target="_blank">Apache Tomcat</a> page. Choose the version to download (6.0 or 7.0) from the menu on the left.
+        <p>The Registry User Interface requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details.
         </p>
       </subsection>
     </section>
@@ -105,7 +106,7 @@ or
       </p>
     </section>
 
-    <section name="Configuring the Application">
+    <section name="General Configuration">
       <p>By default, the Registry User Interface comes configured to access the Registry Service at the specific endpoint <i>http://localhost:8080/registry</i>. This should be modified to represent the endpoint of the Registry Service target installation. To modify the configuration, edit the <i>application.properties</i> file located in the <i>$TOMCAT_HOME/webapps/${project.artifactId}/WEB-INF/classes</i> directory. Modify the following line with the new endpoint:
       </p>
 
@@ -117,7 +118,42 @@ service.endpoint=http\://localhost\:8080/registry/
 service.endpoint=http\://node.nasa.gov/registry/
       </source>
 
-      <p>The Apache Tomcat server must be restarted for this change to take effect.
+      <p>If the configuration was changed above, the Registry User Interface application must be stopped and started for these changes to take effect. This can be accomplished by restarting the Tomcat Server. Alternatively, if the Tomcat Manager interface was utilized for the deployment, find the Registry Service entry in the Manager interface, select the associated <i>Stop</i> button followed by a selection of the associated <i>Start</i> button to stop and then start the application, respectively.
+      </p>
+    </section>
+
+    <section name="Secure Configuration">
+      <p>The following steps configure the Registry User Interface for secure access within the Tomcat Server. See the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for details on securing the Tomcat Server to support the application configuration that follows. To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-ui/WEB-INF</i> directory. Add the following blocks of XML to the end of the file:
+      </p>
+
+      <source>
+&lt;web-app&gt;
+  ...
+  &lt;security-constraint&gt;
+    &lt;web-resource-collection&gt;
+      &lt;web-resource-name&gt;Registry User Interface&lt;/web-resource-name&gt;
+      &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/web-resource-collection&gt;
+    &lt;auth-constraint&gt;
+      &lt;role-name&gt;{node}-admin&lt;/role-name&gt;
+    &lt;/auth-constraint&gt;
+    &lt;user-data-constraint&gt;
+      &lt;transport-guarantee&gt;NONE&lt;/transport-guarantee&gt;
+    &lt;/user-data-constraint&gt;
+  &lt;/security-constraint&gt;
+
+  &lt;login-config&gt;
+     &lt;auth-method&gt;BASIC&lt;/auth-method&gt;
+     &lt;realm-name&gt;Tomcat User Manager&lt;/realm-name&gt;
+  &lt;/login-config&gt;
+
+  &lt;security-role&gt;
+     &lt;role-name&gt;{node}-admin&lt;/role-name&gt;
+  &lt;/security-role&gt;
+&lt;/web-app&gt;
+      </source>
+
+      <p>The configuration above restricts access to the entire application. In addition, it sets up the security role that was configured during the Tomcat Server installation. If the configuration was changed above, the Tomcat Server must be restarted.
       </p>
     </section>
   </body>

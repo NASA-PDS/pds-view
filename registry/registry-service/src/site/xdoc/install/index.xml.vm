@@ -33,7 +33,8 @@
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Database">Deploying the Database</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
-        <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
+        <li><a href="#General_Configuration">General Configuration</a></li>
+        <li><a href="#Secure_Configuration">Secure Configuration</a></li>
         <li><a href="#Deleting_the_Database">Deleting the Database</a></li>
       </ul>
     </section>
@@ -61,7 +62,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       </subsection>
 
       <subsection name="Java Application Server">
-        <p>The Registry Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Avoid version 7.0.29, there is a bug in this version causing an error when loading the Registry Service. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Apache Tomcat software can be downloaded from the <a href="http://tomcat.apache.org/" target="_blank">Apache Tomcat</a> page. Choose the version to download (6.0 or 7.0) from the menu on the left.
+        <p>The Registry Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Avoid version 7.0.29, there is a bug in this version causing an error when loading the Registry Service. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details.
         </p>
       </subsection>
 
@@ -209,7 +210,7 @@ javax.servlet.ServletException: java.lang.OutOfMemoryError: PermGen space
       </p>
     </section>
 
-    <section name="Configuring the Application">
+    <section name="General Configuration">
       <p>The following steps configure the Registry Service for the target installation and ready the service for operation.
       </p>
       
@@ -388,6 +389,55 @@ classificationNodes='76' classificationSchemes='2' services='0' extrinsics='0' a
 serverStarted='2011-08-28T12:45:43.514-07:00' status='OK'/&gt;
         </source>
       </subsection>
+    </section>
+
+    <section name="Secure Configuration">
+      <p>The following steps configure the Registry Service for secure access within the Tomcat Server. See the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for details on securing the Tomcat Server to support the application configuration that follows. To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF</i> directory. Add the following blocks of XML to the end of the file:
+      </p>
+
+      <source>
+&lt;web-app&gt;
+  ...
+  &lt;security-constraint&gt;
+    &lt;web-resource-collection&gt;
+      &lt;web-resource-name&gt;Registry Service&lt;/web-resource-name&gt;
+      &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+      &lt;http-method&gt;DELETE&lt;/http-method&gt;
+      &lt;http-method&gt;POST&lt;/http-method&gt;
+      &lt;http-method&gt;PUT&lt;/http-method&gt;
+    &lt;/web-resource-collection&gt;
+    &lt;auth-constraint&gt;
+      &lt;role-name&gt;{node}-admin&lt;/role-name&gt;
+    &lt;/auth-constraint&gt;
+    &lt;user-data-constraint&gt;
+      &lt;transport-guarantee&gt;CONFIDENTIAL&lt;/transport-guarantee&gt;
+    &lt;/user-data-constraint&gt;
+  &lt;/security-constraint&gt;
+
+  &lt;login-config&gt;
+     &lt;auth-method&gt;BASIC&lt;/auth-method&gt;
+     &lt;realm-name&gt;Tomcat User Manager&lt;/realm-name&gt;
+  &lt;/login-config&gt;
+
+  &lt;security-role&gt;
+     &lt;role-name&gt;{node}-admin&lt;/role-name&gt;
+  &lt;/security-role&gt;
+&lt;/web-app&gt;
+      </source>
+
+      <p>The configuration above allows public access to the HTTP <i>GET</i> method but restricts access to the <i>DELETE</i>, <i>POST</i> and <i>PUT</i> methods. In addition, it sets up the security role that was configured during the Tomcat Server installation and forces a switch from <i>http</i> to <i>https</i>, using the secure protocol as follows:
+      </p>
+
+      <source>
+http://localhost:8080/registry/extrinsics
+
+  will be automatically redirected to:
+
+https://localhost:8443/registry/extrinsics
+      </source>
+
+      <p>The configuration above restricts access to the entire application. In addition, it sets up the security role that was configured during the Tomcat Server installation. If the configuration was changed above, the Tomcat Server must be restarted.
+      </p>
     </section>
 
     <section name="Deleting the Database">

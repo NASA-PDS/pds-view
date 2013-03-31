@@ -29,7 +29,9 @@
 
       <ul>
         <li><a href="#Download">Download</a></li>
-        <li><a href="#Install_and_Configure">Install and Configure</a></li>
+        <li><a href="#Installation">Installation</a></li>
+        <li><a href="#General_Configuration">General Configuration</a></li>
+        <li><a href="#Secure_Configuration">Secure Configuration</a></li>
         <li><a href="#Launch_Tomcat">Launch Tomcat</a></li>
         <li><a href="#Deploy_Application">Deploy Application</a></li>
         <li><a href="#Shutdown_Tomcat">Shutdown Tomcat</a></li>
@@ -37,7 +39,7 @@
     </section>
 
     <section name="Download">
-      <p>As of the writing of this document the current version of Tomcat is <i>7.0.35</i>. New releases are made available periodically, with the latest version of <i>7.0.X</i> available from the <a herf="http://tomcat.apache.org/download-70.cgi" target="_blank">Apache Tomcat 7 Downloads</a> page. Avoid version <i>7.0.29</i>, there is a bug in this version causing an error when loading the Registry Service. The download page has several binary distributions to choose from:
+      <p>As of the writing of this document the current version of Tomcat is <i>7.0.39</i>. New releases are made available periodically, with the latest version of <i>7.0.X</i> available from the <a herf="http://tomcat.apache.org/download-70.cgi" target="_blank">Apache Tomcat 7 Downloads</a> page. Avoid version <i>7.0.29</i>, there is a bug in this version causing an error when loading the Registry Service. The download page has several binary distributions to choose from:
       </p>
 
       <center>
@@ -59,7 +61,12 @@
 % ln -s apache-tomcat-7.0.X tomcat
       </source>
 
-      <p>The symbolic link will be useful when upgrading to future versions, minimizing the number path changes to be made in startup scripts. There are a number of configuration options that can be made to a Tomcat deployment but the software will pretty much run out of the box. Extensive documentation with respect to configuration options is available from the <a href="http://tomcat.apache.org/tomcat-7.0-doc/" target="_blank">Apache Documentation 7 Documentation Index</a> page. That said, there are a couple of common configuration changes like changing the port number that the server listens to and enabling access to the Manager interface that this document will cover.
+      <p>The symbolic link will be useful when upgrading to future versions, minimizing the number path changes to be made in startup scripts. There are a number of configuration options that can be made to a Tomcat deployment but the software will pretty much run out of the box. Extensive documentation with respect to configuration options is available from the <a href="http://tomcat.apache.org/tomcat-7.0-doc/" target="_blank">Apache Documentation 7 Documentation Index</a> page. That said, this document will cover general and secure configuration for a PDS installation below.
+      </p>
+    </section>
+
+    <section name="General Configuration">
+      <p>General configuration consists of modifying the port number that the server listens to and enabling access to the Manager interface.
       </p>
 
       <subsection name="Port Configuration">
@@ -77,14 +84,13 @@
         <source>
 &lt;Server port="8005" shutdown="SHUTDOWN"&gt;
   ...
+  &lt;Service name="Catalina"&gt;
+    ...
     &lt;Connector port="8080" protocol="HTTP/1.1"
                connectionTimeout="20000"
                redirectPort="8443" /&gt;
-    &lt;Connector executor="tomcatThreadPool"
-               port="8080" protocol="HTTP/1.1"
-               connectionTimeout="20000"
-              redirectPort="8443" /&gt;
-  ...
+    ...
+  &lt;/Service&gt;
 &lt;/Server&gt;
         </source>
 
@@ -145,6 +151,104 @@ CATALINA_OPTS="-Xms256m -Xmx2048m"
             </p>
           </li>
         </ul>
+      </subsection>
+    </section>
+
+    <section name="Secure Configuration">
+      <p>If the local installation requires secure access, then follow the instructions in this section to secure the installation.
+      </p>
+
+      <subsection name="Certificate Generation">
+        <p>Although a certificate can be purchased from a well-known <i>Certificate Authority(CA)</i> such as VeriSign or Thawte, this section will detail generating a self-signed certificate. Execute the following command to generate a self-signed certificate for the Tomcat Server:
+        </p>
+
+        <source>
+% $JAVA_HOME/bin/keytool -genkey -alias &lt;virtual-host-name&gt; -keyalg RSA \
+-keystore /usr/local/tomcat/.keystore
+        </source> 
+
+        <p>The &lt;virtual-host-name&gt; parameter above should be the name of the machine where the Tomcat Server will be accessed. The password entered in the first password prompt will be the password for the keystore where your server certificate is stored. The <i>keytool</i> command will prompt for additional information. The following is an example of executing the <i>keytool</i> command in the EN environment:
+        </p>
+
+        <source>
+Enter keystore password:  &lt;password&gt;
+Re-enter new password: &lt;password&gt;
+What is your first and last name?
+  [Unknown]:  Sean Hardman
+What is the name of your organizational unit?
+  [Unknown]:  Engineering Node
+What is the name of your organization?
+  [Unknown]:  Planetary Data System
+What is the name of your City or Locality?
+  [Unknown]:  Pasadena
+What is the name of your State or Province?
+  [Unknown]:  California
+What is the two-letter country code for this unit?
+  [Unknown]:  US
+Is CN=Sean Hardman, OU=Engineering Node, O=Planetary Data System, L=Pasadena, ST=California, C=US correct?
+  [no]:  yes
+
+Enter key password for &lt;pdsops.jpl.nasa.gov&gt;
+  (RETURN if same as keystore password):  
+        </source> 
+
+        <p>Although the above is informational, it will help browser clients identify the source of the certificate.
+        </p>
+      </subsection>
+        
+      <subsection name="SSL Configuration">
+        <p>After generating the server certificate, configure the Tomcat Server to enable Secure Sockets Layer (SSL) access. Execute the following commands to edit the <i>server.xml</i> configuration file (the example uses <i>vi</i>, but any editor will suffice):
+        </p> 
+
+        <source>
+% cd /usr/local/tomcat/conf
+% vi server.xml
+        </source>
+
+        <p>Configure the Tomcat Server to listen on the port 8443, with an SSL transport. Make sure the following block is not commented out and add the <i>keystoreFile</i> and <i>keystorePass</i> attributes as follows:
+        </p> 
+ 
+        <source>
+&lt;Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"
+          maxThreads="150" scheme="https" secure="true"
+          clientAuth="false" sslProtocol="TLS" 
+          keystoreFile="/usr/local/tomcat/.keystore"
+          keystorePass="&lt;password&gt;"/&gt;
+        </source> 
+
+        <p>The <i>&lt;password&gt;</i> value should be the password that was entered above during the certificate generation step. To enable the single sign on feature of the Tomcat server, make sure following element is not commented out:
+        </p>
+
+        <source>
+&lt;Valve class="org.apache.catalina.authenticator.SingleSignOn"/&gt;
+        </source>
+
+        <p>Additional configuration is required for each deployed application (e.g., Registry Service) to take advantage of secure access via SSL. See the Installation documents for each of those services.
+      </subsection>
+
+      <subsection name="User Configuration">
+        <p>Setup user accounts for accessing the secure Tomcat Server. These accounts must be specified in the Tomcat users configuration file with the appropriate role. Execute the following commands to edit the <i>tomcat-users.xml</i> configuration file:
+        </p>
+
+        <source>
+% cd /usr/local/tomcat/conf
+% vi tomcat-users.xml
+        </source>
+
+        <p>Add the two XML statements listed below within the &lt;tomcat-users&gt; block.
+        </p>
+
+        <source>
+&lt;tomcat-users&gt;
+  ...
+  &lt;role rolename="{node}-admin"/&gt;
+  &lt;user username="&lt;username&gt;" password="&lt;password&gt;" roles="{node}-admin"/&gt;
+  ...
+&lt;/tomcat-users&gt;
+        </source>
+
+        <p>The first statement defines the <i>{node}-admin</i> role and the second statement defines a user with that role. Replace the <i>{node}</i> portion of the role with your PDS Node abbreviation (e.g., atm, en, geo, img, naif, ppi, rings, rs, sbn). Replace the &lt;username&gt; and &lt;password&gt; in the second statement with the desired account for the local environment.
+        </p>
       </subsection>
     </section>
 
