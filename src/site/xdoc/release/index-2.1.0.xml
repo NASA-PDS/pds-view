@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2012, by the California Institute of Technology.
+  Copyright 2012-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -24,7 +24,7 @@
 
   <body>
     <section name="Release Description 2.1.0">
-      <p>This release of the PDS 2010 System represents Build 2b and is intended as an operational release of the system components to date. The following sections can be found in this document:
+      <p>This release of the PDS4 System represents Build 2b and is intended as an operational release of the system components to date. The following sections can be found in this document:
       </p>
 
       <ul>
