@@ -113,7 +113,11 @@
 
       <ul>
         <li>Need to update PDS4 Tools to keep pace with changes occurring in the PDS4 data model for this release.
+        </li>
         <li>Correct an issue with the Registry Service where the replication capability is not functioning correctly.
+        </li>
+        <li>Need to update the Registry User Interface to work properly with a secured instance of the Registry Service.
+        </li>
         <li>Upgrade miscellaneous portal interfaces to remove the dependence on the PDS3 catalog database.
         </li>
       </ul>

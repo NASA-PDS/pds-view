@@ -224,6 +224,7 @@ Enter key password for &lt;pdsops.jpl.nasa.gov&gt;
         </source>
 
         <p>Additional configuration is required for each deployed application (e.g., Registry Service) to take advantage of secure access via SSL. See the Installation documents for each of those services.
+        </p>
       </subsection>
 
       <subsection name="User Configuration">
