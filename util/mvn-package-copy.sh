@@ -22,6 +22,14 @@ cd target/packages
 
 # Selectively copy the artifacts.
 
+echo "Copying the Ingest packages to the package directory."
+cp ../../ingest/catalog/target/catalog*bin* .
+cp ../../ingest/harvest/target/harvest*bin* .
+
+echo "Copying the Portal packages to the package directory."
+cp ../../portal/ds-view/target/ds-view*bin* .
+cp ../../portal/product-query/target/product-query*bin* .
+
 echo "Copying the Preparation packages to the package directory."
 cp ../../preparation/core/target/core*bin* .
 cp ../../preparation/generate/target/generate*bin* .
@@ -32,14 +40,6 @@ echo "Copying the Registry packages to the package directory."
 cp ../../registry/registry-core/target/registry-core*bin* .
 cp ../../registry/registry-service/target/registry-service*bin* .
 cp ../../registry/registry-ui/target/registry-ui*bin* .
-
-echo "Copying the Ingest packages to the package directory."
-cp ../../ingest/catalog/target/catalog*bin* .
-cp ../../ingest/harvest/target/harvest*bin* .
-
-echo "Copying the Portal packages to the package directory."
-cp ../../portal/ds-view/target/ds-view*bin* .
-cp ../../portal/product-query/target/product-query*bin* .
 
 echo "Copying the Report packages to the package directory."
 cp ../../report/rs-update/target/rs-update*bin* .

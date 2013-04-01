@@ -55,6 +55,16 @@ mvn site
 mvn deploy
 cd ../..
 
+cd storage
+mvn deploy --non-recursive
+cd product-service
+mvn site
+mvn deploy
+cd ../storage-service
+mvn site
+mvn deploy
+cd ../..
+
 cd ingest
 mvn deploy --non-recursive
 cd catalog
@@ -94,16 +104,6 @@ cd ../search-service
 mvn site
 mvn deploy
 cd ../search-ui
-mvn site
-mvn deploy
-cd ../..
-
-cd storage
-mvn deploy --non-recursive
-cd product-service
-mvn site
-mvn deploy
-cd ../storage-service
 mvn site
 mvn deploy
 cd ../..
