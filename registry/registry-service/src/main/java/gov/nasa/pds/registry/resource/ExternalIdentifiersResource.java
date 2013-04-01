@@ -85,7 +85,7 @@ public class ExternalIdentifiersResource {
     // TODO: Change to add user
     try {
       String guid = (packageGuid == null) ? registryService.publishObject(
-          "Unkown", identifier) : registryService.publishObject("Unkown",
+          "Unknown", identifier) : registryService.publishObject("Unknown",
           identifier, packageGuid);
       return Response.created(
           ExternalIdentifiersResource.getIdentifierUri(

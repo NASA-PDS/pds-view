@@ -84,7 +84,7 @@ public class ClassificationsResource {
     // TODO: Change to add user
     try {
       String guid = (packageGuid == null) ? registryService.publishObject(
-          "Unkown", classification) : registryService.publishObject("Unkown",
+          "Unknown", classification) : registryService.publishObject("Unknown",
           classification, packageGuid);
       return Response.created(
           ClassificationsResource.getClassificationUri(

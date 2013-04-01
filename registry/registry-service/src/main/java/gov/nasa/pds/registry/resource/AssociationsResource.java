@@ -143,7 +143,7 @@ public class AssociationsResource {
     // TODO: Change to add user
     try {
       String guid = (packageGuid == null) ? registryService.publishObject(
-          "Unkown", association) : registryService.publishObject("Unkown",
+          "Unknown", association) : registryService.publishObject("Unknown",
           association, packageGuid);
       return Response.created(
           AssociationsResource.getAssociationUri(registryService
