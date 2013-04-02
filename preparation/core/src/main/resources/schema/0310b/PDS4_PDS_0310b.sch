@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!-- PDS4 Schematron for PDS4_0.3.1.0.b  Fri Mar 22 15:24:08 PDT 2013 -->
+  <!-- PDS4 Schematron for PDS4_0.3.1.0.b  Thu Mar 28 17:40:25 PDT 2013 -->
   <!-- Generated from the PDS4 Information Model V0.3.1.0.b -->
   <!-- *** This PDS4 schematron file is a preliminary deliverable. *** -->
   <!-- *** It is being made available for review and testing. *** -->
@@ -38,12 +38,6 @@
         The attribute pds:encoding_type must be equal to one of the following values 'Binary', 'Character'.</sch:assert>
       <sch:assert test="if (pds:axis_index_order) then pds:axis_index_order = ('Last Index Fastest') else true()">
         The attribute pds:axis_index_order must be equal to the value 'Last Index Fastest'.</sch:assert>
-    </sch:rule>
-  </sch:pattern>
-  <sch:pattern>
-    <sch:rule context="pds:Array/pds:offset">
-      <sch:assert test="@unit = ('byte')">
-        The attribute @unit must be equal to one of the following values 'byte'.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
@@ -281,18 +275,6 @@
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
-    <sch:rule context="pds:Encoded_Byte_Stream/pds:object_length">
-      <sch:assert test="@unit = ('byte')">
-        The attribute @unit must be equal to one of the following values 'byte'.</sch:assert>
-    </sch:rule>
-  </sch:pattern>
-  <sch:pattern>
-    <sch:rule context="pds:Encoded_Byte_Stream/pds:offset">
-      <sch:assert test="@unit = ('byte')">
-        The attribute @unit must be equal to one of the following values 'byte'.</sch:assert>
-    </sch:rule>
-  </sch:pattern>
-  <sch:pattern>
     <sch:rule context="pds:Encoded_Header">
       <sch:assert test="if (pds:encoding_standard_id) then pds:encoding_standard_id = ('TIFF') else true()">
         The attribute pds:encoding_standard_id must be equal to the value 'TIFF'.</sch:assert>
@@ -321,18 +303,6 @@
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
-    <sch:rule context="pds:Field_Binary/pds:field_length">
-      <sch:assert test="@unit = ('byte')">
-        The attribute @unit must be equal to one of the following values 'byte'.</sch:assert>
-    </sch:rule>
-  </sch:pattern>
-  <sch:pattern>
-    <sch:rule context="pds:Field_Binary/pds:field_location">
-      <sch:assert test="@unit = ('byte')">
-        The attribute @unit must be equal to one of the following values 'byte'.</sch:assert>
-    </sch:rule>
-  </sch:pattern>
-  <sch:pattern>
     <sch:rule context="pds:Field_Bit">
       <sch:assert test="if (pds:data_type) then pds:data_type = ('SignedBitString', 'UnsignedBitString') else true()">
         The attribute pds:data_type must be equal to one of the following values 'SignedBitString', 'UnsignedBitString'.</sch:assert>
@@ -345,39 +315,15 @@
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
-    <sch:rule context="pds:Field_Character/pds:field_length">
-      <sch:assert test="@unit = ('byte')">
-        The attribute @unit must be equal to one of the following values 'byte'.</sch:assert>
-    </sch:rule>
-  </sch:pattern>
-  <sch:pattern>
-    <sch:rule context="pds:Field_Character/pds:field_location">
-      <sch:assert test="@unit = ('byte')">
-        The attribute @unit must be equal to one of the following values 'byte'.</sch:assert>
-    </sch:rule>
-  </sch:pattern>
-  <sch:pattern>
     <sch:rule context="pds:Field_Delimited">
       <sch:assert test="if (pds:data_type) then pds:data_type = ('ASCII_AnyURI', 'ASCII_Boolean', 'ASCII_DOI', 'ASCII_Date', 'ASCII_Date_DOY', 'ASCII_Date_Time', 'ASCII_Date_Time_DOY', 'ASCII_Date_Time_UTC', 'ASCII_Date_Time_YMD', 'ASCII_Date_YMD', 'ASCII_Directory_Path_Name', 'ASCII_File_Name', 'ASCII_File_Specification_Name', 'ASCII_Integer', 'ASCII_LID', 'ASCII_LIDVID', 'ASCII_LIDVID_LID', 'ASCII_MD5_Checksum', 'ASCII_NonNegative_Integer', 'ASCII_Numeric_Base16', 'ASCII_Numeric_Base2', 'ASCII_Numeric_Base8', 'ASCII_Real', 'ASCII_String', 'ASCII_Time', 'ASCII_VID', 'UTF8_String') else true()">
         The attribute pds:data_type must be equal to one of the following values 'ASCII_AnyURI', 'ASCII_Boolean', 'ASCII_DOI', 'ASCII_Date', 'ASCII_Date_DOY', 'ASCII_Date_Time', 'ASCII_Date_Time_DOY', 'ASCII_Date_Time_UTC', 'ASCII_Date_Time_YMD', 'ASCII_Date_YMD', 'ASCII_Directory_Path_Name', 'ASCII_File_Name', 'ASCII_File_Specification_Name', 'ASCII_Integer', 'ASCII_LID', 'ASCII_LIDVID', 'ASCII_LIDVID_LID', 'ASCII_MD5_Checksum', 'ASCII_NonNegative_Integer', 'ASCII_Numeric_Base16', 'ASCII_Numeric_Base2', 'ASCII_Numeric_Base8', 'ASCII_Real', 'ASCII_String', 'ASCII_Time', 'ASCII_VID', 'UTF8_String'.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
-    <sch:rule context="pds:Field_Delimited/pds:maximum_field_length">
-      <sch:assert test="@unit = ('byte')">
-        The attribute @unit must be equal to one of the following values 'byte'.</sch:assert>
-    </sch:rule>
-  </sch:pattern>
-  <sch:pattern>
     <sch:rule context="pds:Header">
       <sch:assert test="if (pds:parsing_standard_id) then pds:parsing_standard_id = ('7-Bit ASCII', 'FITS 3.0', 'ISIS2', 'ISIS3', 'PDS DSV 1', 'PDS ODL 2', 'PDS3', 'Pre-PDS3', 'UTF-8', 'VICAR1', 'VICAR2') else true()">
         The attribute pds:parsing_standard_id must be equal to one of the following values '7-Bit ASCII', 'FITS 3.0', 'ISIS2', 'ISIS3', 'PDS DSV 1', 'PDS ODL 2', 'PDS3', 'Pre-PDS3', 'UTF-8', 'VICAR1', 'VICAR2'.</sch:assert>
-    </sch:rule>
-  </sch:pattern>
-  <sch:pattern>
-    <sch:rule context="pds:Header/pds:object_length">
-      <sch:assert test="@unit = ('byte')">
-        The attribute @unit must be equal to one of the following values 'byte'.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
@@ -554,8 +500,8 @@
   </sch:pattern>
   <sch:pattern>
     <sch:rule context="pds:Product_Bundle/pds:Reference_List/pds:Internal_Reference">
-      <sch:assert test="every $ref in (pds:reference_type) satisfies $ref = ('bundle_to_errata', 'bundle_to_document')">
-        The attribute reference_type must be set to one of the following values 'bundle_to_errata', 'bundle_to_document'.</sch:assert>
+      <sch:assert test="every $ref in (pds:reference_type) satisfies $ref = ('bundle_to_errata', 'bundle_to_document', 'bundle_to_investigation', 'bundle_to_instrument', 'bundle_to_instrument_host', 'bundle_to_target', 'bundle_to_associate')">
+        The attribute reference_type must be set to one of the following values 'bundle_to_errata', 'bundle_to_document', 'bundle_to_investigation', 'bundle_to_instrument', 'bundle_to_instrument_host', 'bundle_to_target', 'bundle_to_associate'.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
@@ -574,8 +520,8 @@
   </sch:pattern>
   <sch:pattern>
     <sch:rule context="pds:Product_Collection/pds:Reference_List/pds:Internal_Reference">
-      <sch:assert test="every $ref in (pds:reference_type) satisfies $ref = ('collection_to_resource', 'collection_to_associate', 'collection_to_calibration', 'collection_to_geometry', 'collection_to_spice_kernel', 'collection_curated_by_node', 'collection_to_document', 'collection_to_browse', 'collection_to_context', 'collection_to_data', 'collection_to_schema', 'collection_to_errata', 'collection_to_bundle', 'collection_to_personnel')">
-        The attribute reference_type must be set to one of the following values 'collection_to_resource', 'collection_to_associate', 'collection_to_calibration', 'collection_to_geometry', 'collection_to_spice_kernel', 'collection_curated_by_node', 'collection_to_document', 'collection_to_browse', 'collection_to_context', 'collection_to_data', 'collection_to_schema', 'collection_to_errata', 'collection_to_bundle', 'collection_to_personnel'.</sch:assert>
+      <sch:assert test="every $ref in (pds:reference_type) satisfies $ref = ('collection_to_resource', 'collection_to_associate', 'collection_to_calibration', 'collection_to_geometry', 'collection_to_spice_kernel', 'collection_curated_by_node', 'collection_to_document', 'collection_to_browse', 'collection_to_context', 'collection_to_data', 'collection_to_schema', 'collection_to_errata', 'collection_to_bundle', 'collection_to_personnel', 'collection_to_investigation', 'collection_to_instrument', 'collection_to_instrument_host', 'collection_to_target', 'collection_to_associate')">
+        The attribute reference_type must be set to one of the following values 'collection_to_resource', 'collection_to_associate', 'collection_to_calibration', 'collection_to_geometry', 'collection_to_spice_kernel', 'collection_curated_by_node', 'collection_to_document', 'collection_to_browse', 'collection_to_context', 'collection_to_data', 'collection_to_schema', 'collection_to_errata', 'collection_to_bundle', 'collection_to_personnel', 'collection_to_investigation', 'collection_to_instrument', 'collection_to_instrument_host', 'collection_to_target', 'collection_to_associate'.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
@@ -761,30 +707,6 @@
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
-    <sch:rule context="pds:Telescope/pds:altitude">
-      <sch:assert test="@unit = ('AU', 'Angstrom', 'cm', 'km', 'm', 'micrometer', 'mm', 'nm')">
-        The attribute @unit must be equal to one of the following values 'AU', 'Angstrom', 'cm', 'km', 'm', 'micrometer', 'mm', 'nm'.</sch:assert>
-    </sch:rule>
-  </sch:pattern>
-  <sch:pattern>
-    <sch:rule context="pds:Telescope/pds:aperture">
-      <sch:assert test="@unit = ('AU', 'Angstrom', 'cm', 'km', 'm', 'micrometer', 'mm', 'nm')">
-        The attribute @unit must be equal to one of the following values 'AU', 'Angstrom', 'cm', 'km', 'm', 'micrometer', 'mm', 'nm'.</sch:assert>
-    </sch:rule>
-  </sch:pattern>
-  <sch:pattern>
-    <sch:rule context="pds:Telescope/pds:telescope_latitude">
-      <sch:assert test="@unit = ('arcmin', 'arcsec', 'deg', 'hr', 'mrad', 'rad')">
-        The attribute @unit must be equal to one of the following values 'arcmin', 'arcsec', 'deg', 'hr', 'mrad', 'rad'.</sch:assert>
-    </sch:rule>
-  </sch:pattern>
-  <sch:pattern>
-    <sch:rule context="pds:Telescope/pds:telescope_longitude">
-      <sch:assert test="@unit = ('arcmin', 'arcsec', 'deg', 'hr', 'mrad', 'rad')">
-        The attribute @unit must be equal to one of the following values 'arcmin', 'arcsec', 'deg', 'hr', 'mrad', 'rad'.</sch:assert>
-    </sch:rule>
-  </sch:pattern>
-  <sch:pattern>
     <sch:rule context="pds:Terminological_Entry">
       <sch:assert test="if (pds:language) then pds:language = ('English', 'Russian') else true()">
         The attribute pds:language must be equal to one of the following values 'English', 'Russian'.</sch:assert>
@@ -812,10 +734,10 @@
   </sch:pattern>
   <sch:pattern>
     <sch:rule context="pds:Vector">
-      <sch:assert test="if (pds:type) then pds:type = ('Acceleration', 'Pointing', 'Position', 'Velocity') else true()">
-        The attribute pds:type must be equal to one of the following values 'Acceleration', 'Pointing', 'Position', 'Velocity'.</sch:assert>
       <sch:assert test="if (pds:data_type) then pds:data_type = ('ASCII_Real') else true()">
         The attribute pds:data_type must be equal to the value 'ASCII_Real'.</sch:assert>
+      <sch:assert test="if (pds:type) then pds:type = ('Acceleration', 'Pointing', 'Position', 'Velocity') else true()">
+        The attribute pds:type must be equal to one of the following values 'Acceleration', 'Pointing', 'Position', 'Velocity'.</sch:assert>
       <sch:assert test="if (pds:reference_frame_id) then pds:reference_frame_id = ('ICRF', 'MOON_ME_DE421') else true()">
         The attribute pds:reference_frame_id must be equal to one of the following values 'ICRF', 'MOON_ME_DE421'.</sch:assert>
     </sch:rule>
