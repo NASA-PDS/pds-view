@@ -23,21 +23,24 @@
   </properties>
   
   <body>
+    <release version="1.3.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.2.0" date="2013-03-31" description="This release of the Search Core is a component of the integrated release 3.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="add" issue="PDS-138">
-	Created Search Service config files for Bundle, Collection, and Context PDS4 products.
+        Created Search Service config files for Bundle, Collection, and Context PDS4 products.
       </action>
       <action dev="jpadams" type="update">
-	Updated config file directories to reflect future installations (pds/pds3, pds/pds4, psa/pds3).
+        Updated config file directories to reflect future installations (pds/pds3, pds/pds4, psa/pds3).
       </action>
       <action dev="jpadams" type="update">
-	Updated PDS3 product configurations to remove all search fields named mission_* with investigation_* to meet with PDS4 model.
+        Updated PDS3 product configurations to remove all search fields named mission_* with investigation_* to meet with PDS4 model.
       </action>
       <action dev="jpadams" type="update">
-	Updated unit test classes to reflect changes in config file directories.
+        Updated unit test classes to reflect changes in config file directories.
       </action>
       <action dev="jpadams" type="add">
-	Created initial-index-pdsen script that will create index specific to PDS Engineering node, including flags for PDS3, PDS4, and PSA data products.
+        Created initial-index-pdsen script that will create index specific to PDS Engineering node, including flags for PDS3, PDS4, and PSA data products.
       </action>
     </release>
 

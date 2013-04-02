@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="1.4.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.3.0" date="2012-09-30" description="This release of the Update Tool is a component of the integrated releases 3.0.0 and 3.1.0 of the PDS4 System. This is an operational release of the system components to date.">
     </release>
 

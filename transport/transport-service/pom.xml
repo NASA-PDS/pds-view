@@ -27,7 +27,7 @@
 
   <groupId>gov.nasa.pds.2010.transport</groupId>
   <artifactId>transport-service</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0-dev</version>
   <packaging>jar</packaging>
 
   <name>Transport Service</name>
