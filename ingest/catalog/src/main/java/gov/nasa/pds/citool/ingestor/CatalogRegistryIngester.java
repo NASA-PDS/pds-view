@@ -663,11 +663,14 @@ public class CatalogRegistryIngester {
 				product.setObjectType(Constants.MISSION_PROD);				
 			}
 			else if (objType.equalsIgnoreCase(Constants.TARGET_OBJ) && key.equals("TARGET_NAME")) {
-				// may need to replace " " to "_" ????
-				productLid = Constants.LID_PREFIX+"target:target."+value;
-				product.setLid(productLid);
-				product.setObjectType(Constants.TARGET_PROD);
 				product.setName(value);
+				// need to replace empty space with _ for the lid
+				String tmpValue = value;
+				if (value.contains(" "))
+    				tmpValue = value.replace(' ', '_');	
+				productLid = Constants.LID_PREFIX+"target:target."+tmpValue;
+				product.setLid(productLid);
+				product.setObjectType(Constants.TARGET_PROD);				
 			}
 			else if (objType.equalsIgnoreCase(Constants.INST_OBJ) && key.equals("INSTRUMENT_ID")) {
 				String instHostId = md.getMetadata("INSTRUMENT_HOST_ID");
