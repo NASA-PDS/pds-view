@@ -132,7 +132,7 @@
       <field name="target_name">earth</field>
       <field name="target_name">moon</field>
       <field name="target_name">sky</field>
-      <field name="resource_link">http://pds-imaging.jpl.nasa.gov/cgi-bin/Clem/jpl_clsearch.pl</field>
+      <field name="resource_link">http://pds-imaging.jpl.nasa.gov/search/clementine</field>
       <field name="description">Use the Planetary Atlas to search for images from the Clementine mission to Earth's moon.</field>
       <field name="data_set_name">CLEMENTINE UVVIS DIGITAL IMAGE MODEL</field>
       <field name="data_set_name">CLEMENTINE BASEMAP MOSAIC</field>
