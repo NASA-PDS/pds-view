@@ -48,6 +48,9 @@ public class ProductClass {
 
 	/** Default start number to be appended to output files */
 	private static final int OUT_SEQ_START = 10000;
+	
+	/** In order to scale for very large registry products, need to page the registry output **/
+	private static final int QUERY_PAGE_MAX = 500;
 
 	/** Product class name **/
 	private String classname;
@@ -303,31 +306,46 @@ public class ProductClass {
 			RegistryClient client = new RegistryClient(this.registryUrl);
 
 			results = new ArrayList<ExtrinsicObject>();
-			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1,
-					this.queryMax);
+			
+			PagedResponse<ExtrinsicObject> pr;
+			
+			int pageLength = Math.min(this.queryMax, QUERY_PAGE_MAX);
 
-			// Examine the results of the query to grab the latest product for
-			// each ExtrinsicObject
-			if (pr.getNumFound() != 0) {
-				List<String> lidList = new ArrayList<String>();
-				String lid;
-				for (ExtrinsicObject extrinsic : pr.getResults()) {
-					lid = extrinsic.getLid();
-					Debugger.debug("\n\n----- " + lid + " -----");
-
-					// Use list to verify we haven't already included this
-					// product in the results
-					if (!lidList.contains(lid) && lid != null) {
-						results.add(client.getLatestObject(lid,
-								ExtrinsicObject.class));
-						lidList.add(lid);
-					}
+			for (int start=1; start<this.queryMax+pageLength; start+=pageLength) {
+				Debugger.debug("start: " + start + ", queryPageMax: " + QUERY_PAGE_MAX + ", pageLength: " + pageLength);
+				
+				if (start+pageLength > this.queryMax) {
+					pr = client.getExtrinsics(query, start, this.queryMax-start+1);
+				} else {
+					pr = client.getExtrinsics(query, start, pageLength);
 				}
-				lidList.clear();
-				return results;
-			} else {
-				return pr.getResults();
+				
+				// Examine the results of the query to grab the latest product for
+				// each ExtrinsicObject
+				//if (pr.getNumFound() != 0 ) {
+				if (pr.getResults().size() != 0 ) {
+					List<String> lidList = new ArrayList<String>();
+					String lid;
+					for (ExtrinsicObject extrinsic : pr.getResults()) {
+						lid = extrinsic.getLid();
+						Debugger.debug("\n\n----- " + lid + " -----");
+	
+						// Use list to verify we haven't already included this
+						// product in the results
+						if (!lidList.contains(lid) && lid != null) {
+							results.add(client.getLatestObject(lid,
+									ExtrinsicObject.class));
+							lidList.add(lid);
+						}
+					}
+					lidList.clear();
+				} else {
+					Debugger.debug("\n\n No More Results Found \n\n");
+					results.addAll(pr.getResults());
+					break;
+				}
 			}
+			return results;
 		} catch (RegistryServiceException rse) {
 			// Ignore. Nothing found.
 		} catch (RegistryClientException rce) {
