@@ -50,7 +50,7 @@
 
         <p>The following command demonstrates how to create a symbolic link (<i>requires root access</i>):</p>
         <source>
-% ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
+% ln -s /usr/local/${project.artifactId}-${project.version} /usr/local/${project.artifactId}
         </source>
 
 	<p>If a symbolic link already exists at /usr/local/${project.artifactId}, simply remove it and recreate it with the new version of the software using the line above.</p>

@@ -31,38 +31,76 @@
 
       <ul>
         <li><a href="#PDS_EN_Index_Generation">PDS EN Index Generation</a></li>
+	<ul>
+	  <li><a href="#Dev_Index_Generation">Dev Index Generation</a></li>
+	  <li><a href="#Ops_Index_Generation">Ops Index Generation</a></li>
+	</ul>
+        <li><a href="#Test_Search_Service">Test Search Service</a></li>
         <li><a href="#Common_Errors">Common Errors</a></li>
       </ul>
-     </section>
-     <section name="PDS EN Index Generation">
-      <p>This procedure details the PDS Engineering-specific procedure for generating the Solr Index and posting to all operational machines.</p>
+    </section>
+
+    <section name="PDS EN Index Generation">
+      <p>This procedure details the PDS Engineering-specific procedure for generating the Solr Index and posting to development and operations machines.</p>
+      <subsection name="Dev Index Generation">
 	<ul>
-	  <li>Log onto pdssrv2.</li>
-	  <li>If needed, update <i>$SEARCH_CORE_HOME/bin/env-vars</i> with, the following information:
-	    <ul>
-	      <li>SEARCH_HOME=/usr/local/search-service/pds</li>
-	      <li>SEARCH_SERVICE_URL=http://localhost/search-service</li>
-	      <li>REGISTRY_URL=http://localhost/registry</li>
-	    </ul>
-	  </li>
-	  <li>As pds user, run the initial-index-pdsen script, substituting today's date for <i>&lt;date&gt;</i>:
+	  <li>Log onto <b>pdsbeta</b>.</li>
+	  <li>sudo su to pds4 user and change to the pds4 user's home directory:
 	    <source>
-% sudo su pds
-% initial-index-pdsen &amp;> index_&lt;date&gt;.log
+% sudo su pds4
+% cd ~
 	    </source>
 	  </li>
+	  <li>Run the initial-index-pdsen script, substituting today's date for <i>&lt;date&gt;</i>:
+	    <source>
+% initial-index-pdsen > index_&lt;date&gt;.log
+	    </source>
+	  </li>
+	  <li>Send log to Jordan Padams for analysis.</li>
 	</ul>
+      </subsection>
 
-      <subsection name="Test Search Service">
-      <p>Once this script completes, the data should be available through the Search Service interface. Go to <a href="http://localhost:8080/search-service/pds/search/?q=*:*">http://localhost:8080/search-service/pds/search/?q=*:*</a> to verify data is available (modify domain and port as needed).  See the <a href="../../search-service/operate">Search Service - Operate</a> page for more information on how to query data.</p>
+      <subsection name="Ops Index Generation">
+	<p>This procedure details the PDS Engineering-specific procedure for generating the Solr Index and posting to all operational machines.</p>
+	<ul>
+	  <li>Log onto pdssrv2.</li>
+	  <li><i>If new installation/upgrade</i>, update <i>$SEARCH_CORE_HOME/conf/pds/pds3/core.properties</i> with the following:
+	    <ul>
+	      <li>search.core.search-home = /usr/local/search-service/pds</li>
+	      <li>search.core.registry-url = http://localhost/registry</li>
+	      <li>search.core.config-home = /usr/local/search-core/conf/pds/pds3</li>
+	    </ul>
+	  </li>
+	  <li>sudo su to pds4 user and change to the pds4 user's home directory:
+	    <source>
+% sudo su pds4
+% cd ~
+	    </source>
+	  </li>
+	  <li>Run the initial-index-pdsen script, substituting today's date for <i>&lt;date&gt;</i>:
+	    <source>
+% initial-index-pdsen > index_&lt;date&gt;.log
+	    </source>
+	  </li>
+	  <li>Send log to Jordan Padams for analysis.</li>
+	</ul>
       </subsection>
 
       <p><i>Note: To further streamline the process, the command-line arguments can be removed from the initial-index script, and the search-core line can modified according to your specific needs.</i>
       </p>
     </section>
+
+    <section name="Test Search Service">
+      <p>Once this script completes, the data should be available through the Search Service interface:</p>
+      <ul>
+	<li>Go to <a href="http://localhost:8080/search-service/pds/search/?q=*:*">http://localhost:8080/search-service/pds/search/?q=*:*</a>. (adjust localhost to be pdsbeta/pdssrv1/pdssrv2 as applicable).</li>
+	<li>To verify search-core worked correctly, the number of results should be in the 1000s.</li>
+      </ul>
+      <p>See the <a href="../../search-service/operate">Search Service - Operate</a> page for more information on how to query data.</p>
+    </section>
     <section name="Common Errors">
-    	<p>See <a href="./index.html#Common_Errors">Generic Operation Common Errors</a>
-    	</p>
+      <p>See <a href="./index.html#Common_Errors">Generic Operation Common Errors</a>
+      </p>
     </section>
   </body>
 </document>
