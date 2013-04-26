@@ -38,6 +38,7 @@
       <table style="width: 500px;">
 	<tr><th>Machine Name</th><th>Type</th></tr>
 	<tr><td>pdsbeta</td><td>Development</td></tr>
+	<tr><td>pdssrv1</td><td>Operations</td></tr>
 	<tr><td>pdssrv2</td><td>Operations</td></tr>
       </table>
     </section>
@@ -85,20 +86,21 @@
         <p>The system administrator for the local machine may need to be consulted for this location. The path specified should have a <i>bin</i> sub-directory that contains the <i>java</i> executable. This variable may also be defined within the scripts. Edit the scripts (files without the .bat extension) and change the line in the example above to represent the local Java installation.
         </p>
 
-	<p>Lastly, the <i>/usr/local/${project.artifactId}/bin/env-vars</i> file must be updated for the <i>Operations machine only</i>.  On pdssrv2, this file should look as follows:</p>
-	
-	<source>
-####################################################################################
-
-# The path for the home directory of local instance of search service.
-SEARCH_HOME=/usr/local/search-service/pds
-
-# URL of the Search Service instance.
-SEARCH_SERVICE_URL=http://localhost/search-service
-
-# URL of the Registry Service instance.
-REGISTRY_URL=http://localhost/registry
-
+	<subsection name="Ops-specific Configurations">
+	  <p>Lastly, the Operations machines need specific configurations for each machine in order to properly create the index and distribute it to the other machines as needed.</p>
+	  <ul>
+	    <li>On <i><b>pdssrv2</b></i>, the file <i>/usr/local/${project.artifactId}/conf/pds/pds3/core.properties</i> needs to be updated to look as follows:
+              <source>
+search.core.search-home = /usr/local/search-service/pds
+search.core.registry-url = http://localhost/registry
+search.core.config-home = /usr/local/search-core/conf/pds/pds3
+	      </source>
+	    </li>
+	    <li>On <i><b>pdssrv1</b></i>, the file <i>/usr/local/${project.artifactId}/bin/env-vars</i> needs to updated as follows:
+	    <source>
+.
+.
+.
 ####################################################################################
 
 ## The following global variables are for copying the index between operational machines
@@ -108,14 +110,17 @@ REGISTRY_URL=http://localhost/registry
 SOURCE=pdssrv2.jpl.nasa.gov
 
 # Username to connect source machine
-SOURCE_USER=pds4
+SOURCE_USER=root
 
 # Optional variable. Path on source machine to directory containing solr_index.xml.* .
 # Defaults to SEARCH_HOME/index
 SOURCE_PATH=
 
 ####################################################################################
-</source>
+	    </source>
+	    </li>
+	  </ul>
+	</subsection>
 
 	<p>Note the <i>8080</i> was removed from the SEARCH_SERVICE_URL and REGISTRY_URL.</p>
     </section>

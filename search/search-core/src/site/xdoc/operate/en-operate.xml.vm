@@ -53,7 +53,7 @@
 	  </li>
 	  <li>Run the initial-index-pdsen script, substituting today's date for <i>&lt;date&gt;</i>:
 	    <source>
-% initial-index-pdsen > index_&lt;date&gt;.log
+% initial-index-pdsen &gt; index_&lt;date&gt;.log
 	    </source>
 	  </li>
 	  <li>Send log to Jordan Padams for analysis.</li>
@@ -63,14 +63,7 @@
       <subsection name="Ops Index Generation">
 	<p>This procedure details the PDS Engineering-specific procedure for generating the Solr Index and posting to all operational machines.</p>
 	<ul>
-	  <li>Log onto pdssrv2.</li>
-	  <li><i>If new installation/upgrade</i>, update <i>$SEARCH_CORE_HOME/conf/pds/pds3/core.properties</i> with the following:
-	    <ul>
-	      <li>search.core.search-home = /usr/local/search-service/pds</li>
-	      <li>search.core.registry-url = http://localhost/registry</li>
-	      <li>search.core.config-home = /usr/local/search-core/conf/pds/pds3</li>
-	    </ul>
-	  </li>
+	  <li>Log onto <b>pdssrv2</b>.</li>
 	  <li>sudo su to pds4 user and change to the pds4 user's home directory:
 	    <source>
 % sudo su pds4
@@ -79,15 +72,26 @@
 	  </li>
 	  <li>Run the initial-index-pdsen script, substituting today's date for <i>&lt;date&gt;</i>:
 	    <source>
-% initial-index-pdsen > index_&lt;date&gt;.log
+% initial-index-pdsen &gt; index_&lt;date&gt;.log
 	    </source>
 	  </li>
-	  <li>Send log to Jordan Padams for analysis.</li>
+	  <li>Log out of <b>pdssrv2</b>.</li>
+	  <li>Send log file to Jordan Padams for analysis.</li>
+	  <li>Log onto <b>pdssrv1</b>.</li>
+	  <li>sudo su to pds4 user and change to the pds4 user's home directory:
+            <source>
+% sudo su pds4
+% cd ~
+            </source>
+          </li>
+	  <li>Run <i>ops-index</i> script:
+	    <source>
+% ops-index
+Password: &lt;&lt;&lt;ENTER PDSSRV2 ROOT PASSWORD&gt;&gt;&gt;
+	    </source>
+	  </li>
 	</ul>
       </subsection>
-
-      <p><i>Note: To further streamline the process, the command-line arguments can be removed from the initial-index script, and the search-core line can modified according to your specific needs.</i>
-      </p>
     </section>
 
     <section name="Test Search Service">
