@@ -51,9 +51,9 @@
 % cd ~
 	    </source>
 	  </li>
-	  <li>Run the initial-index-pdsen script, substituting today's date for <i>&lt;date&gt;</i>:
+	  <li>Run the initial-index-pdsen script, substituting today's date for <i>&lt;date&gt;</i> (Format: YYYYMMDD):
 	    <source>
-% initial-index-pdsen &gt; index_&lt;date&gt;.log
+% initial-index-pdsen &gt;&amp; index_&lt;date&gt;.log
 	    </source>
 	  </li>
 	  <li>Send log to Jordan Padams for analysis.</li>
@@ -72,7 +72,7 @@
 	  </li>
 	  <li>Run the initial-index-pdsen script, substituting today's date for <i>&lt;date&gt;</i>:
 	    <source>
-% initial-index-pdsen &gt; index_&lt;date&gt;.log
+% initial-index-pdsen &gt;&amp; index_&lt;date&gt;.log
 	    </source>
 	  </li>
 	  <li>Log out of <b>pdssrv2</b>.</li>
