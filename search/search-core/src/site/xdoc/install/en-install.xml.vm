@@ -89,7 +89,7 @@
 	<subsection name="Ops-specific Configurations">
 	  <p>Lastly, the Operations machines need specific configurations for each machine in order to properly create the index and distribute it to the other machines as needed.</p>
 	  <ul>
-	    <li>On <i><b>pdssrv1</b></i>:</li>
+	    <li>On <i><b>pdssrv1</b></i>:
 	    <ul>
 	    	<li>Update <i>/usr/local/${project.artifactId}/conf/pds/pds3/core.properties</i> as follows:
           		<source>
@@ -101,6 +101,9 @@ search.core.config-home = /usr/local/search-core/conf/pds/pds3
 	      	<li>Verify SEARCH_SERVICE_URL environment variable in the <i>/usr/local/${project.artifactId}/bin/env-vars file matches the location of the Search Service on the server.  Currently this should be set as follows:
 	      		<source>
 SEARCH_SERVICE_URL=http://localhost:8080/search-service
+				</source>
+			</li>
+		</ul>
 	    </li>
 	    
 	    <li>On <i><b>pdssrv2</b></i>, the file <i>/usr/local/${project.artifactId}/bin/env-vars</i> needs to updated as follows:
