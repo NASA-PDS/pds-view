@@ -14,7 +14,7 @@ REGISTRY_URL=http://localhost:8080/registry
 ## The following global variables are for copying the index between operational machines
 ## Not required for all installations
 
-# Source machine name to where initial index was generated
+# Source machine name where initial index was generated
 SOURCE=pdssrv2.jpl.nasa.gov
 
 # Username to connect source machine

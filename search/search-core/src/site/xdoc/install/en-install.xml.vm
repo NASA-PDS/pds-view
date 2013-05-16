@@ -89,14 +89,21 @@
 	<subsection name="Ops-specific Configurations">
 	  <p>Lastly, the Operations machines need specific configurations for each machine in order to properly create the index and distribute it to the other machines as needed.</p>
 	  <ul>
-	    <li>On <i><b>pdssrv2</b></i>, the file <i>/usr/local/${project.artifactId}/conf/pds/pds3/core.properties</i> needs to be updated to look as follows:
-              <source>
+	    <li>On <i><b>pdssrv1</b></i>:</li>
+	    <ul>
+	    	<li>Update <i>/usr/local/${project.artifactId}/conf/pds/pds3/core.properties</i> as follows:
+          		<source>
 search.core.search-home = /usr/local/search-service/pds
-search.core.registry-url = http://localhost/registry
+search.core.registry-url = http://localhost:8080/registry
 search.core.config-home = /usr/local/search-core/conf/pds/pds3
-	      </source>
+	      		</source>
+	      	</li>
+	      	<li>Verify SEARCH_SERVICE_URL environment variable in the <i>/usr/local/${project.artifactId}/bin/env-vars file matches the location of the Search Service on the server.  Currently this should be set as follows:
+	      		<source>
+SEARCH_SERVICE_URL=http://localhost:8080/search-service
 	    </li>
-	    <li>On <i><b>pdssrv1</b></i>, the file <i>/usr/local/${project.artifactId}/bin/env-vars</i> needs to updated as follows:
+	    
+	    <li>On <i><b>pdssrv2</b></i>, the file <i>/usr/local/${project.artifactId}/bin/env-vars</i> needs to updated as follows:
 	    <source>
 .
 .
@@ -106,8 +113,8 @@ search.core.config-home = /usr/local/search-core/conf/pds/pds3
 ## The following global variables are for copying the index between operational machines
 ## Not required for all installations
 
-# Source machine name to where initial index was generated
-SOURCE=pdssrv2.jpl.nasa.gov
+# Source machine name where initial index was generated
+SOURCE=pdssrv1.jpl.nasa.gov
 
 # Username to connect source machine
 SOURCE_USER=root
