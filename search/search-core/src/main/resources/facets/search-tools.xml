@@ -132,7 +132,7 @@
       <field name="target_name">earth</field>
       <field name="target_name">moon</field>
       <field name="target_name">sky</field>
-      <field name="resource_link">http://pds-imaging.jpl.nasa.gov/search/clementine</field>
+      <field name="resource_link">http://pds-imaging.jpl.nasa.gov/search/clementine/</field>
       <field name="description">Use the Planetary Atlas to search for images from the Clementine mission to Earth's moon.</field>
       <field name="data_set_name">CLEMENTINE UVVIS DIGITAL IMAGE MODEL</field>
       <field name="data_set_name">CLEMENTINE BASEMAP MOSAIC</field>
@@ -422,7 +422,7 @@
       <field name="identifier">SearchTool_Viking Lander Image Search</field>
       <field name="investigation_name">viking</field>
       <field name="target_name">mars</field>
-      <field name="resource_link">http://pds-imaging.jpl.nasa.gov/vikingl/vl_images.html</field>
+      <field name="resource_link">http://pds-imaging.jpl.nasa.gov/search/viking_lander/</field>
       <field name="description">Use the Planetary Atlas to search for images from the Viking Landers to Mars.</field>
       <field name="data_set_name">vl1/vl2_mars_lcs_derived_atmospheric_optical_depth_v1.0</field>
       <field name="data_set_name">vl1/vl2_mars_lcs_experiment_data_record_v1.0</field>
@@ -454,7 +454,7 @@
       <field name="target_name">phobos</field>
       <field name="target_name">deimos</field>
       <field name="target_name">start</field>
-      <field name="resource_link">http://pds-imaging.jpl.nasa.gov/cgi-bin/Atlas/search.pl?INSTRUMENT_HOST_NAME=VIKING_ORBITER</field>
+      <field name="resource_link">http://pds-imaging.jpl.nasa.gov/search/viking_orbiter/</field>
       <field name="description">Use the Planetary Atlas to search for images from the Viking Orbiters of Mars, Deimos and Phobos.</field>
       <field name="data_set_name">vo1/vo2_mars_visual_imaging_ss_exprmnt_data_rec_browse_v2.0</field>
       <field name="data_set_name">vo1/vo2_mars_visual_imaging_ss_exprmnt_data_record_v2.0</field>
