@@ -18,10 +18,10 @@
   <productMetadata>
     <staticMetadata>
        <slot name="information_model_version">
-         <value>0.3.1.0.a</value>
+         <value>1.0.0.0</value>
        </slot>
       <slot name="node_ref">
-        <value>urn:nasa:pds:context_pds3:node:node.PSA</value>
+        <value>urn:nasa:pds:context_pds3:node:node.psa</value>
       </slot>
     </staticMetadata>
     <dynamicMetadata>
