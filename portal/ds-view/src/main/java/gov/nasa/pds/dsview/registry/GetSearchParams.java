@@ -370,7 +370,7 @@ public class GetSearchParams {
 		    
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.exit(-1);
+			//System.exit(-1);
 		}
 	}
 	
@@ -460,7 +460,7 @@ public class GetSearchParams {
 		    
     	} catch (Exception e) {
     		e.printStackTrace();
-    		System.exit(-1);
+    		//System.exit(-1);
     	}
     }
     
@@ -510,7 +510,7 @@ public class GetSearchParams {
 		    }
     	} catch (Exception e) {
     		e.printStackTrace();
-    		System.exit(-1);
+    		//System.exit(-1);
     	}
     }
     
