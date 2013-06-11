@@ -290,6 +290,8 @@ public class CatalogRegistryIngester {
 			// don't ingest if the catalog object is PERSONNEL or REFERENCE
 			if (catObj.getCatObjType().equalsIgnoreCase("PERSONNEL")
 					|| catObj.getCatObjType().equalsIgnoreCase("REFERENCE")
+					|| catObj.getCatObjType().equalsIgnoreCase("TARGET")
+					|| catObj.getCatObjType().equalsIgnoreCase("SOFTWARE")
 	                || catObj.getCatObjType().equalsIgnoreCase("DATA_SET_RELEASE")) {
 				// TODO: need to add warning problemtype instead of using INVALID_LABEL
 				lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null,
@@ -461,18 +463,24 @@ public class CatalogRegistryIngester {
 		else if (catObjType.equalsIgnoreCase(Constants.INST_OBJ)) {
 			if (refs.get(Constants.HAS_INSTHOST)!=null)
 				slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
-			if (refs.get(Constants.HAS_DATASET)!=null)
-				slots.add(new Slot(Constants.HAS_DATASET, getRefValues(version, Constants.HAS_DATASET, refs)));
+			if (refs.get(Constants.HAS_DATASET)!=null) {
+				// need to find proper catObj with given INSTRUMENT_ID
+				CatalogObject dsObj = getDSCatalogObject("INSTRUMENT_ID", catObj.getMetadata().getMetadata("INSTRUMENT_ID"));
+				if (dsObj!=null) 
+					slots.add(new Slot(Constants.HAS_DATASET, getRefValues(version, Constants.HAS_DATASET, refs, dsObj)));
+			}
 		}
 		else if (catObjType.equalsIgnoreCase(Constants.DATASET_OBJ)) {
 			if (refs.get(Constants.HAS_MISSION)!=null)
-				slots.add(new Slot(Constants.HAS_MISSION, getRefValues(version, Constants.HAS_MISSION, refs)));
+				slots.add(new Slot(Constants.HAS_MISSION, getRefValues(version, Constants.HAS_MISSION, refs, catObj)));
 			if (refs.get(Constants.HAS_TARGET)!=null)
-				slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs)));
+				slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs, catObj)));
 			if (refs.get(Constants.HAS_INSTHOST)!=null)
-				slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
-			if (refs.get(Constants.HAS_INST)!=null)
-				slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));
+				slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs, catObj)));
+			if (refs.get(Constants.HAS_INST)!=null) {
+				// need to add only available instrument in the data set catalog file
+				slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs, catObj)));
+			}
 			// how to get this version properly for each resource?????
 			// should only add same dataset id
 			if (refs.get(Constants.HAS_RESOURCE)!=null) {
@@ -522,6 +530,20 @@ public class CatalogRegistryIngester {
         	catObj.getLabel().addProblem(lp);
         	failCount++;
 		}  
+	}
+	
+	private CatalogObject getDSCatalogObject(String keyToLook, String valueToFind) {
+		for (CatalogObject catObj: CIToolIngester.catObjs) {
+			if (catObj.getCatObjType().equalsIgnoreCase(Constants.DATASET_OBJ)) {
+				String instId = catObj.getMetadata().getMetadata(keyToLook);
+				//System.out.println("keyToLook = " + keyToLook + "    valueToFind = " + valueToFind);
+				if (instId.equalsIgnoreCase(valueToFind)) {
+					//System.out.println("Found a match.....keyToLook = " + keyToLook + "    valueToFind = " + valueToFind);
+					return catObj;
+				}
+			}	
+		}
+		return null;
 	}
 		
 	private List<String> getRefValues(String version, String associationType, 
@@ -630,6 +652,103 @@ public class CatalogRegistryIngester {
 				}
 			}
 		}
+		//System.out.println("values = " + values.toString());
+		return values;
+	}
+
+	private List<String> getRefValues(String version, String associationType, 
+			Map<String, List<String>> allRefs, CatalogObject catObj) {	
+		List<String> values = new ArrayList<String>();
+		if (associationType==Constants.HAS_MISSION) {
+			String missionName = catObj.getPdsLabelMap().get("MISSION_NAME").getValue().toString().toLowerCase();
+			if (missionName.contains(" "))
+				missionName = missionName.replace(' ',  '_');
+			for (String aValue: allRefs.get(Constants.HAS_MISSION)) {
+				//values.add(aValue+"::" + version);
+				String tmpLid = aValue;
+				if (tmpLid.contains(missionName)) {
+					String tmpVer = "";
+					if (getExtrinsic(tmpLid)!=null) {
+						tmpVer = getExtrinsic(tmpLid).getVersionName();
+						values.add(aValue+"::" + tmpVer);
+					}
+					else {
+						values.add(aValue);
+					}	
+				}
+			}			
+		}
+		else if (associationType==Constants.HAS_INSTHOST) {
+			String instHostId = catObj.getPdsLabelMap().get("INSTRUMENT_HOST_ID").getValue().toString().toLowerCase();
+			for (String aValue: allRefs.get(Constants.HAS_INSTHOST)) {
+				String tmpLid = aValue;
+				if (tmpLid.contains(instHostId)) {
+					String tmpVer = "";
+					if (getExtrinsic(tmpLid)!=null) {
+						tmpVer = getExtrinsic(tmpLid).getVersionName();
+						values.add(aValue+"::" + tmpVer);
+					}
+					else {
+						values.add(aValue);
+					}	
+				}
+			}
+		}
+		else if (associationType==Constants.HAS_INST) {
+			String instId = catObj.getPdsLabelMap().get("INSTRUMENT_ID").getValue().toString().toLowerCase();
+			for (String aValue: allRefs.get(Constants.HAS_INST)) {
+				String tmpLid = aValue;
+				if (tmpLid.contains(instId)) {
+					//System.out.println("tmpLid = " + tmpLid + "   instId = " + instId);
+					String tmpVer = "";
+					if (getExtrinsic(tmpLid)!=null) {
+						tmpVer = getExtrinsic(tmpLid).getVersionName();
+						values.add(aValue+"::" + tmpVer);
+					}
+					else {
+						values.add(aValue);
+					}
+				}
+			}
+		}
+		else if (associationType==Constants.HAS_TARGET) {
+			String targetName = catObj.getPdsLabelMap().get("TARGET_NAME").getValue().toString().toLowerCase();
+			if (targetName.contains(" "))
+				targetName = targetName.replace(' ',  '_');
+			for (String aValue: allRefs.get(Constants.HAS_TARGET)) {
+				String tmpLid = aValue;
+				//System.out.println("tmpLid = " + tmpLid);
+				if (tmpLid.contains(targetName)) {
+					String tmpVer = "";
+					if (getExtrinsic(tmpLid)!=null) {
+						tmpVer = getExtrinsic(tmpLid).getVersionName();
+						values.add(aValue+"::" + tmpVer);
+					}
+					else {
+						values.add(aValue);
+					}				
+				}
+			}
+		}
+		else if (associationType==Constants.HAS_DATASET) {
+			String dsId = catObj.getPdsLabelMap().get("DATA_SET_ID").getValue().toString().toLowerCase();
+			if (dsId.contains("/")) {
+				dsId = dsId.replace('/', '-');
+			}
+			for (String aValue: allRefs.get(Constants.HAS_DATASET)) {
+				String tmpLid = aValue;				
+				if (tmpLid.contains(dsId)) {
+					String tmpVer = "";
+					if (getExtrinsic(tmpLid)!=null) {
+						tmpVer = getExtrinsic(tmpLid).getVersionName();
+						values.add(aValue+"::" + tmpVer);
+					}
+					else {
+						values.add(aValue);
+					}	
+				}
+			}
+		}
 		return values;
 	}
 	
@@ -659,31 +778,40 @@ public class CatalogRegistryIngester {
 				if (value.contains(" "))
     				tmpValue = value.replace(' ', '_');	
 				productLid = Constants.LID_PREFIX+"investigation:mission."+tmpValue;
+				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
-				product.setObjectType(Constants.MISSION_PROD);				
+				product.setObjectType(Constants.MISSION_PROD);			
+				slots.add(new Slot(getKey("product_class"), Arrays.asList(new String[] { Constants.MISSION_PROD })));
 			}
 			else if (objType.equalsIgnoreCase(Constants.TARGET_OBJ) && key.equals("TARGET_NAME")) {
 				product.setName(value);
 				// need to replace empty space with _ for the lid
 				String tmpValue = value;
-				if (value.contains(" "))
-    				tmpValue = value.replace(' ', '_');	
-				productLid = Constants.LID_PREFIX+"target:target."+tmpValue;
+				String targetType = md.getMetadata("TARGET_TYPE");	
+				productLid = Constants.LID_PREFIX+"target:" +targetType + "."+tmpValue;
+				if (productLid.contains(" "))
+					productLid = productLid.replace(' ',  '_');
+				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
-				product.setObjectType(Constants.TARGET_PROD);				
+				product.setObjectType(Constants.TARGET_PROD);		
+				slots.add(new Slot(getKey("product_class"), Arrays.asList(new String[] { Constants.TARGET_PROD })));
 			}
 			else if (objType.equalsIgnoreCase(Constants.INST_OBJ) && key.equals("INSTRUMENT_ID")) {
 				String instHostId = md.getMetadata("INSTRUMENT_HOST_ID");
 				productLid = Constants.LID_PREFIX+"instrument:instrument."+value+"__" + instHostId;
+				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
 				product.setObjectType(Constants.INST_PROD);
 				product.setName(md.getMetadata("INSTRUMENT_NAME") + " for " + instHostId);
+				slots.add(new Slot(getKey("product_class"), Arrays.asList(new String[] { Constants.INST_PROD })));
 			}
 			else if (objType.equalsIgnoreCase(Constants.INSTHOST_OBJ) && key.equals("INSTRUMENT_HOST_ID")) {
 				productLid = Constants.LID_PREFIX+"instrument_host:instrument_host."+value;
+				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
 				product.setObjectType(Constants.INSTHOST_PROD);
 				product.setName(md.getMetadata("INSTRUMENT_HOST_NAME"));
+				slots.add(new Slot(getKey("product_class"), Arrays.asList(new String[] { Constants.INSTHOST_PROD })));
 			}
 			else if (objType.equalsIgnoreCase(Constants.DATASET_OBJ) && key.equals("DATA_SET_ID")) {
 				value = md.getMetadata(key);
@@ -692,8 +820,10 @@ public class CatalogRegistryIngester {
 				if (value.contains("/"))
     				tmpValue = value.replace('/', '-');
 				productLid = Constants.LID_PREFIX+"data_set:data_set."+tmpValue;
+				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
 				product.setObjectType(Constants.DS_PROD);
+				slots.add(new Slot(getKey("product_class"), Arrays.asList(new String[] { Constants.DS_PROD })));
 			}
 			/*
 			else if (objType.equalsIgnoreCase(Constants.RESOURCE_OBJ) && key.equals("RESOURCE_ID")) {
@@ -709,9 +839,11 @@ public class CatalogRegistryIngester {
 			else if (objType.equalsIgnoreCase(Constants.VOLUME_OBJ) && key.equals("VOLUME_ID")) {
 				String volumeSetId = md.getMetadata("VOLUME_SET_ID");
 				productLid = Constants.LID_PREFIX+"volume:volume."+value+"__" + volumeSetId;
+				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
 				product.setObjectType(Constants.VOLUME_PROD);
 				product.setName(value);
+				slots.add(new Slot(getKey("product_class"), Arrays.asList(new String[] { Constants.VOLUME_PROD })));
 			}
 			// how to handle multiple PERSONNEL objects????
 			/*
@@ -773,6 +905,7 @@ public class CatalogRegistryIngester {
 		tmpVals.add(catObj.getFileObject().getCreationDateTime());
 		slots.add(new Slot("modification_date", tmpVals));
 		slots.add(new Slot("modification_version_id", Arrays.asList(new String[] {"1.0"})));
+		slots.add(new Slot("information_model_version", Arrays.asList(new String[] {"1.0.0.0"})));
 		product.setSlots(slots);	
 
 		return product;
@@ -789,14 +922,18 @@ public class CatalogRegistryIngester {
 		throws  RegistryServiceException {
 		ExtrinsicObject product = new ExtrinsicObject();
 		Set<Slot> slots = new HashSet<Slot>();
-		
+		String tmpLid = "";
 		// for PERSONNEL & REFERENCE object
 		if (this.product.getLid()==null) {
 			// how to distinguish (personnel and reference????)
-			product.setLid(Constants.LID_PREFIX + storageProductName + ":" + fileObject.getName());
+			tmpLid = Constants.LID_PREFIX + storageProductName + ":" + fileObject.getName();
+			//product.setLid(Constants.LID_PREFIX + storageProductName + ":" + fileObject.getName());
 		}
-		else 
-			product.setLid(this.product.getLid() + ":" + fileObject.getName());
+		else {
+			//product.setLid(this.product.getLid() + ":" + fileObject.getName());
+			tmpLid = this.product.getLid() + ":" + fileObject.getName();
+		}
+		product.setLid(tmpLid.toLowerCase());
 		product.setObjectType(Constants.FILE_PROD);
 		product.setName(FilenameUtils.getBaseName(fileObject.getName()));
 		
@@ -844,6 +981,7 @@ public class CatalogRegistryIngester {
 				productLid = Constants.LID_PREFIX+"resource:resource."+dsId + "__" + value;
 				if (productLid.contains("/"))
 					productLid = productLid.replace('/', '-');
+				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
 				product.setObjectType(Constants.CONTEXT_PROD);		
 			}	

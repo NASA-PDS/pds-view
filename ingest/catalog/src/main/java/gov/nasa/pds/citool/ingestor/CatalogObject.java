@@ -61,7 +61,7 @@ public class CatalogObject {
 
 	private final static String[] CAT_OBJ_TYPES = { "MISSION",
 		"INSTRUMENT_HOST", "INSTRUMENT", "DATA_SET", "REFERENCE",
-		"PERSONNEL", "TARGET", "VOLUME", "DATA_SET_HOUSEKEEPING", "DATA_SET_RELEASE" };
+		"PERSONNEL", "TARGET", "VOLUME", "DATA_SET_HOUSEKEEPING", "DATA_SET_RELEASE", "SOFTWARE" };
 		
 	private String _catObjType;
 	private boolean _isLocal;
@@ -76,6 +76,7 @@ public class CatalogObject {
 	private ExtrinsicObject _product;
 	private Metadata _metadata;
 	private List<ObjectStatement> _resrcObjs = null;
+	private Map<String, String> _targetInfos;
 	
 	public CatalogObject(IngestReport report) {
 		this._report = report;
@@ -98,6 +99,10 @@ public class CatalogObject {
 		return this._label;
 	}
 
+	public Map<String, String> getTargetInfos() {
+		return _targetInfos;
+	}
+	
 	public String getCatObjType() {
 		return _catObjType;
 	}
@@ -256,6 +261,13 @@ public class CatalogObject {
 					// object?????
 					for (AttributeStatement attrSmt : objAttr) {
 						lblMap.put(attrSmt.getElementIdentifier(), attrSmt);
+					
+						//System.out.println("attrSmt.getElementIdentifier() = " + attrSmt.getElementIdentifier());
+						if (attrSmt.getElementIdentifier().toString().equals("TARGET_TYPE")) {
+							String targetName = objSmt.getAttribute("TARGET_NAME").getValue().toString();
+							//System.out.println("target type = " + attrSmt.getValue() + "  target name = " + targetName);
+							_targetInfos.put(targetName, attrSmt.getValue().toString());
+						}
 						
 						if (attrSmt.getValue() instanceof Set) {
 							List<String> valueList = getValueList(attrSmt.getValue());
@@ -345,6 +357,7 @@ public class CatalogObject {
 			
 			List<AttributeStatement> attrList = label.getAttributes();
 			_pdsLabelMap = new HashMap<String, AttributeStatement>();
+			_targetInfos = new HashMap<String, String>();
 			for (Iterator i = attrList.iterator(); i.hasNext();) {
 				AttributeStatement attrSmt = (AttributeStatement) i.next();
 				_pdsLabelMap.put(attrSmt.getElementIdentifier(), attrSmt);
