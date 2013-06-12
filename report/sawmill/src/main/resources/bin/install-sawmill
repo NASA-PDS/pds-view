@@ -1,0 +1,59 @@
+#!/usr/bin/bash
+
+# This is a utility script for removing the Sawmill default configuration
+# and replacing it with the PDS Engineering configuration specified
+# in the Report Service subversion repo
+
+SVN_URL=http://starcell.jpl.nasa.gov/repo/2010/trunk/report/sawmill/src/main/resources/LogAnalysisInfo/
+
+if [ $# -ne 1 ]; then || [[ "$1" =~ "/LogAnalysisInfo\/*$" ]]; then
+    echo "Usage: upgrade-sawmill <install-dir>"
+    echo "   <install-dir>: the pathname of the LogAnalysisInfo directory in the new Sawmill installation"
+    echo
+    echo
+    exit
+}
+
+newlai = $1/
+
+echo
+echo "Removing all of the default configurations."
+
+echo "rm -fr ${newlai}/users.cfg"
+rm -fr ${newlai}/users.cfg
+
+echo"rm -fr ${newlai}/licenses.cfg"
+rm -fr ${newlai}/licenses.cfg
+
+echo"rm -fr ${newlai}/schedule.cfg"
+rm -fr ${newlai}/schedule.cfg
+
+echo "rm -fr ${newlai}/system.cfg"
+rm -fr ${newlai}/system.cfg
+
+echo"rm -fr ${newlai}/preferences.cfg"
+rm -fr ${newlai}/preferences.cfg
+
+echo"rm -fr ${newlai}/roles_enterprise.cfg"
+rm -fr ${newlai}/roles_enterprise.cfg
+
+echo"rm -fr ${newlai}/roles_standard.cfg"
+rm -fr ${newlai}/roles_standard.cfg
+
+echo"rm -fr ${newlai}/profiles"
+rm -fr ${newlai}/profiles
+
+echo"rm -fr ${newlai}/rewrite_rules"
+rm -fr ${newlai}/rewrite_rules
+
+echo"rm -fr ${newlai}/users_cache"
+rm -fr ${newlai}/users_cache
+
+echo"rm -fr ${newlai}/Databases"
+rm -fr ${newlai}/Databases
+
+echo
+echo
+echo "Checking out PDS Engineering-specific configurations"
+echo "svn co $SVN_URL ${newlai}"
+svn co $SVN_URL ${newlai}

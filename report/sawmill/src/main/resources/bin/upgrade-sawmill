@@ -1,0 +1,72 @@
+#!/usr/bin/bash
+
+# This is a utility script for updating an old LogAnalysisInfo from a new one
+# (during an update).  Run this script, and provide the pathnames of the old
+# and new LogAnalysisInfo directories, and it will copy everything over.
+# It will not modify the old LogAnalysisInfo directory.
+
+function usage () {
+    echo "Usage: upgrade-sawmill {old-LogAnalysisInfo} {new-LogAnalysisInfo}"
+    echo
+    echo "  {old-LogAnalysisInfo}: the pathname of the old LogAnalysisInfo directory"
+    echo "  {new-LogAnalysisInfo}: the pathname of the new LogAnalysisInfo directory"
+    echo
+    exit
+}
+
+function
+
+
+if [ $# -ne 2 ] || [[ "$1" != "*LogAnalysisInfo\/*$" ]] || [[ "$2" != "*LogAnalysisInfo\/*$" ]]; then
+    temp=`usage`
+fi
+
+oldlai = $1
+newlai = $2
+
+if [ ! -d $oldlai ] || [ ! -d $oldlai ] ; then
+    temp=`usage`
+fi
+
+
+echo "Updating $newlai from the contents of $oldlai\n"
+
+echo "cp ${oldlai}users.cfg ${newlai}users.cfg"
+cp ${oldlai}users.cfg ${newlai}users.cfg
+
+echo "cp ${oldlai}licenses.cfg ${newlai}licenses.cfg"
+cp ${oldlai}licenses.cfg ${newlai}licenses.cfg
+
+echo "cp ${oldlai}schedule.cfg ${newlai}schedule.cfg"
+cp ${oldlai}schedule.cfg ${newlai}schedule.cfg
+
+echo "cp ${oldlai}system.cfg ${newlai}system.cfg"
+cp ${oldlai}system.cfg ${newlai}system.cfg
+
+echo "cp ${oldlai}preferences.cfg ${newlai}preferences.cfg"
+cp ${oldlai}preferences.cfg ${newlai}preferences.cfg
+
+echo "cp ${oldlai}roles_enterprise.cfg ${newlai}roles_enterprise.cfg"
+cp ${oldlai}roles_enterprise.cfg ${newlai}roles_enterprise.cfg
+
+echo "cp ${oldlai}roles_standard.cfg ${newlai}roles_standard.cfg"
+cp ${oldlai}roles_standard.cfg ${newlai}roles_standard.cfg
+
+echo "cp -r ${oldlai}profiles/* ${newlai}profiles"
+cp ${oldlai}profiles/* ${newlai}profiles
+
+echo "cp ${oldlai}rewrite_rules/* ${newlai}rewrite_rules"
+cp ${oldlai}rewrite_rules/* ${newlai}rewrite_rules
+
+echo "cp -r ${oldlai}users_cache ${newlai}users_cache"
+cp -r ${oldlai}users_cache ${newlai}users_cache
+
+echo "cp -r ${oldlai}Databases ${newlai}Databases"
+cp -r ${oldlai}Databases ${newlai}Databases
+
+echo "cp -r ${oldlai}.svn ${newlai}"
+cp ${oldlai}.svn ${newlai}
+
+# Configure Sawmill LDAP to work with Security Service
+echo "mkdir ${newlai}/login_plugins"
+echo "cp -r ${oldlai}/login_plugins/ldap_with_groups.cfg ${newlai}/login_plugins"
