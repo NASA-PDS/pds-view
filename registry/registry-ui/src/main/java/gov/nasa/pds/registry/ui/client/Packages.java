@@ -132,6 +132,12 @@ public class Packages extends Tab {
 	 */
 	protected Button closeButton;
 	
+	private final Button updateButton = new Button("Update Status");
+    private final Button refreshButton = new Button("Refresh");
+    private final Button deleteButton = new Button("Delete");
+
+    private int totalCount = 0;
+	
 	/**
      * The {@link PackageTableModel}.
      */
@@ -191,7 +197,7 @@ public class Packages extends Tab {
 	/**
 	 * @return the cached table model
 	 */
-	public CachedTableModel getCachedTableModel() {
+	public CachedTableModel<ViewRegistryPackage> getCachedTableModel() {
 		return this.cachedTableModel;
 	}
 	
@@ -281,18 +287,30 @@ public class Packages extends Tab {
 				statusInput);
 		inputTable.add(statusInputWrap);
 			
-		// create button for doing an update
-		final Button updateButton = new Button("Update Status");
-		//updateButton.setWidth("60px");
-		updateButton.setStyleName("buttonwrapper");
-		InputContainer updateButtonWrap = new InputContainer(null, updateButton);
-		inputTable.add(updateButtonWrap);
+		// create button for doing refresh the table
+        refreshButton.setStyleName("buttonwrapper");
+        InputContainer refreshButtonWrap = new InputContainer(null, refreshButton);
+        inputTable.add(refreshButtonWrap);
 
-		final Button deleteButton = new Button("Delete");
-		deleteButton.setWidth("57px");
-		deleteButton.setStyleName("buttonwrapper");
-		InputContainer deleteButtonWrap = new InputContainer(null, deleteButton);
-		inputTable.add(deleteButtonWrap);
+        // create button for doing an update
+        updateButton.setStyleName("buttonwrapper");
+        InputContainer updateButtonWrap = new InputContainer(null, updateButton);
+        inputTable.add(updateButtonWrap);
+
+        deleteButton.setWidth("57px");
+        deleteButton.setStyleName("buttonwrapper");
+        InputContainer deleteButtonWrap = new InputContainer(null, deleteButton);
+        inputTable.add(deleteButtonWrap);
+
+        // add handler to leverage the refresh button
+        refreshButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                //get().getPagingScrollTable().getDataTable().deselectAllRows();
+                get().reloadData();
+                get().refreshTable();
+            }
+        });
 		
 		updateButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -388,21 +406,19 @@ public class Packages extends Tab {
 	}
 
 	protected void reloadData() {
-		get().cachedTableModel.clearCache();
-		get().getTableModel().setRowCount(RegistryUI.PAGE_SIZE1);
-		get().getPagingScrollTable().redraw();
-	}
-    
-	private void refreshTable() {
-		// clear cache as data will be invalid after filter
-		get().getCachedTableModel().clearCache();
+        get().getCachedTableModel().clearCache();
+        get().getTableModel().setRowCount(RegistryUI.PAGE_SIZE1);
+        get().getPagingScrollTable().redraw();
+        totalCount = get().getDataTable().getRowCount();
 
-		// get table model that holds filters
-		PackageTableModel tablemodel = get().getTableModel();
+        get().recordCountContainer.setHTML("<div class=\"recordCount\">Total Records: " + totalCount + "</div>");
+    }
 
-		// go back to first page and force update
-		get().getPagingScrollTable().gotoPage(0, true);
-	}
+    private void refreshTable() {
+        // clear cache as data will be invalid after filter
+        get().getCachedTableModel().clearCache();
+        get().reloadData();
+    }
 	
     /**
 	 * Initialize scroll table and behaviors.
