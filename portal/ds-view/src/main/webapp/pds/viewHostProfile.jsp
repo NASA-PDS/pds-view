@@ -89,7 +89,7 @@ else {
    String hostId = request.getParameter("INSTRUMENT_HOST_ID");
    hostId = hostId.toUpperCase();
 
-   String hostLid = "urn:nasa:pds:context_pds3:instrument_host:instrument_host." + hostId;
+   String hostLid = "urn:nasa:pds:context_pds3:instrument_host:instrument_host." + hostId.toLowerCase();
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
    ExtrinsicObject hostObj = searchRegistry.getExtrinsic(hostLid);
    

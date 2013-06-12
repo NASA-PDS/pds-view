@@ -89,7 +89,7 @@ else {
    nodeId = nodeId.toUpperCase();
    
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
-   String nodeLid = "urn:nasa:pds:context_pds3:node:node." + nodeId;
+   String nodeLid = "urn:nasa:pds:context_pds3:node:node." + nodeId.toLowerCase();
    ExtrinsicObject nodeObj = searchRegistry.getExtrinsic(nodeLid);
    
    if (nodeObj==null) { 

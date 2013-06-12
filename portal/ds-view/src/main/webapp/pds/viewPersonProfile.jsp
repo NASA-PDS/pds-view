@@ -87,7 +87,7 @@ else {
    pdsUserId = pdsUserId.toUpperCase();
    
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
-   String personLid = "urn:nasa:pds:context_pds3:personnel:personnel." + pdsUserId;
+   String personLid = "urn:nasa:pds:context_pds3:personnel:personnel." + pdsUserId.toLowerCase();
    ExtrinsicObject personObj = searchRegistry.getExtrinsic(personLid);
   
    if (personObj==null) { 

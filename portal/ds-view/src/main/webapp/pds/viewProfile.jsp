@@ -72,7 +72,7 @@ else {
 
    String tmpDsid = dsid.replaceAll("/", "-");
    //out.println("dsid = " + dsid + "    dsid_lower = " + dsid_lower);
-   ExtrinsicObject dsObj = searchRegistry.getExtrinsic("urn:nasa:pds:context_pds3:data_set:data_set."+tmpDsid);
+   ExtrinsicObject dsObj = searchRegistry.getExtrinsic("urn:nasa:pds:context_pds3:data_set:data_set."+tmpDsid.toLowerCase());
    //out.println("<br>citation = " + searchRegistry.getSlotValues(product, "data_set_citation_text").toString());
  
    if (dsObj==null) { 

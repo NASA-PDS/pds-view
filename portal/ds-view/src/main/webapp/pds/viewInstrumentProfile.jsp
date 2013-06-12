@@ -82,6 +82,7 @@ else {
    //out.println("instrumentId = " + instrumentId +  "instrument_host_id = " + request.getParameter("INSTRUMENT_HOST_ID"));
 
    String instLid = "urn:nasa:pds:context_pds3:instrument:instrument." + instrumentId;
+   instLid = instLid.toLowerCase();
    
    // INSTRUMENT_HOST_ID is optional
    if (cleanParam(request.getParameter("INSTRUMENT_HOST_ID")) != null) {
@@ -136,6 +137,7 @@ else {
    } // end instrumentHostId = null
    else { // instrumentHostId!=null
       instLid += "__" + instrumentHostId;
+      instLid = instLid.toLowerCase();
       //out.println("instLid = " + instLid);
       ExtrinsicObject instObj = searchRegistry.getExtrinsic(instLid);
    

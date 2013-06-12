@@ -128,6 +128,7 @@ else {
 
    String tmpDsid = dsid.replaceAll("%2F", "-");
    tmpDsid = tmpDsid.replaceAll("/", "-");
+   tmpDsid = tmpDsid.toLowerCase();
    //out.println("dsid = " + dsid + "    dsid_lower = " + dsid_lower);
    ExtrinsicObject product = searchRegistry.getExtrinsic("urn:nasa:pds:context_pds3:data_set:data_set."+tmpDsid);
 

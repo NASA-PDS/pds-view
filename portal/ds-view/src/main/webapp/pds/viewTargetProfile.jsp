@@ -86,10 +86,13 @@ else {
    targetId = targetId.toUpperCase();
 
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
-   String targetLid = "urn:nasa:pds:context_pds3:target:target." + targetId;
+   String targetLid = "urn:nasa:pds:context_pds3:target:*." + targetId.toLowerCase();
+   List<ExtrinsicObject> targetObjs = searchRegistry.getObjects(targetLid, "Product_Target_PDS3");
    
-   //out.println("targetLid = " + targetLid);
-   ExtrinsicObject targetObj = searchRegistry.getExtrinsic(targetLid);
+   //out.println("targetLid = " + targetLid + "    targetObjs.size() = " + targetObjs.size());
+   ExtrinsicObject targetObj = null;
+   if (targetObjs.size()>0) 
+      targetObj = targetObjs.get(0);
 
    if (targetObj==null) { 
    %>
