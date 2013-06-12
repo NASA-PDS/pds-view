@@ -149,4 +149,14 @@ public class Utility {
         }
         return message;
     }
+    
+    public static String replaceChars(String strToReplace) {		
+		if (strToReplace.contains(" "))
+			strToReplace = strToReplace.replace(' ',  '_');
+		
+		if (strToReplace.contains("/")) 
+			strToReplace = strToReplace.replace('/', '-');
+		
+		return strToReplace;
+	}
 }

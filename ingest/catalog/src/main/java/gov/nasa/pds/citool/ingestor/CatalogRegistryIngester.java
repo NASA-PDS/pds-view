@@ -17,6 +17,7 @@ import gov.nasa.pds.citool.ingestor.Constants;
 import gov.nasa.pds.citool.ingestor.Reference;
 import gov.nasa.pds.citool.file.FileObject;
 import gov.nasa.pds.citool.CIToolIngester;
+import gov.nasa.pds.citool.util.Utility;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.exception.RegistryClientException;
@@ -449,36 +450,41 @@ public class CatalogRegistryIngester {
 				slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
 			if (refs.get(Constants.HAS_INST)!=null)
 				slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));
-			if (refs.get(Constants.HAS_TARGET)!=null)
-				slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs)));
+			if (CIToolIngester.targetAvailable) {
+				if (refs.get(Constants.HAS_TARGET)!=null)
+					slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs)));
+			}
 		}
 		else if (catObjType.equalsIgnoreCase(Constants.INSTHOST_OBJ)) {
 			if (refs.get(Constants.HAS_MISSION)!=null)
 				slots.add(new Slot(Constants.HAS_MISSION, getRefValues(version, Constants.HAS_MISSION, refs)));
 			if (refs.get(Constants.HAS_INST)!=null)
 				slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));
-			if (refs.get(Constants.HAS_TARGET)!=null)
-				slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs)));
+			if (CIToolIngester.targetAvailable) {
+				if (refs.get(Constants.HAS_TARGET)!=null)
+					slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs)));
+			}
 		}
 		else if (catObjType.equalsIgnoreCase(Constants.INST_OBJ)) {
 			if (refs.get(Constants.HAS_INSTHOST)!=null)
 				slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
 			if (refs.get(Constants.HAS_DATASET)!=null) {
-				// need to find proper catObj with given INSTRUMENT_ID
-				CatalogObject dsObj = getDSCatalogObject("INSTRUMENT_ID", catObj.getMetadata().getMetadata("INSTRUMENT_ID"));
-				if (dsObj!=null) 
-					slots.add(new Slot(Constants.HAS_DATASET, getRefValues(version, Constants.HAS_DATASET, refs, dsObj)));
+				// need to find proper dataset catalog object with given INSTRUMENT_ID
+				Map<String, List<String>> dsRefs = getDSRefs("INSTRUMENT_ID", catObj.getMetadata().getMetadata("INSTRUMENT_ID"));
+				slots.add(new Slot(Constants.HAS_DATASET, getRefValues(version, Constants.HAS_DATASET, dsRefs)));
 			}
 		}
 		else if (catObjType.equalsIgnoreCase(Constants.DATASET_OBJ)) {
+			// need to add only available instrument in the data set catalog file
 			if (refs.get(Constants.HAS_MISSION)!=null)
 				slots.add(new Slot(Constants.HAS_MISSION, getRefValues(version, Constants.HAS_MISSION, refs, catObj)));
-			if (refs.get(Constants.HAS_TARGET)!=null)
-				slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs, catObj)));
+			if (CIToolIngester.targetAvailable) {
+				if (refs.get(Constants.HAS_TARGET)!=null)
+					slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs, catObj)));
+			}
 			if (refs.get(Constants.HAS_INSTHOST)!=null)
 				slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs, catObj)));
 			if (refs.get(Constants.HAS_INST)!=null) {
-				// need to add only available instrument in the data set catalog file
 				slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs, catObj)));
 			}
 			// how to get this version properly for each resource?????
@@ -489,11 +495,10 @@ public class CatalogRegistryIngester {
 				for (String aValue: refs.get(Constants.HAS_RESOURCE)) {
 					String tmpLid = aValue;
 					String tmpDsid = catObj.getMetadata().getMetadata("DATA_SET_ID");
-					if (tmpDsid.contains("/"))
-						tmpDsid = tmpDsid.replace("/", "-");
+					tmpDsid = Utility.replaceChars(tmpDsid);
+
 					if (tmpLid.contains(tmpDsid))
 						values.add(aValue);
-					//System.out.println("tmpDsid = " + tmpDsid + "    resrcLid = " + tmpLid);
 				}
 			    if (values.size()>0) {
 			    	resrcRefs.put(Constants.HAS_RESOURCE, values);
@@ -532,222 +537,115 @@ public class CatalogRegistryIngester {
 		}  
 	}
 	
-	private CatalogObject getDSCatalogObject(String keyToLook, String valueToFind) {
+	private Map<String, List<String>> getDSRefs(String keyToLook, String valueToFind) {
+		Map<String, List<String>> dsRefs = new HashMap<String, List<String>>();
+		List<String> values = new ArrayList<String>();
 		for (CatalogObject catObj: CIToolIngester.catObjs) {
 			if (catObj.getCatObjType().equalsIgnoreCase(Constants.DATASET_OBJ)) {
-				String instId = catObj.getMetadata().getMetadata(keyToLook);
-				//System.out.println("keyToLook = " + keyToLook + "    valueToFind = " + valueToFind);
-				if (instId.equalsIgnoreCase(valueToFind)) {
-					//System.out.println("Found a match.....keyToLook = " + keyToLook + "    valueToFind = " + valueToFind);
-					return catObj;
+				Metadata md = catObj.getMetadata();				
+				if (md.isMultiValued(keyToLook)) {
+					List<String> tmpValues = md.getAllMetadata(keyToLook);
+					for (String instId: tmpValues) {					
+						if (instId.equalsIgnoreCase(valueToFind)) {
+							String dsId = md.getMetadata("DATA_SET_ID");
+							dsId = Utility.replaceChars(dsId);
+			    			dsId = dsId.toLowerCase();
+							values.add(Constants.LID_PREFIX+"data_set:data_set."+dsId);				
+						}
+					}
+				}
+				else {
+					String instId = md.getMetadata(keyToLook);
+					if (instId.equalsIgnoreCase(valueToFind)) {
+						String dsId = md.getMetadata("DATA_SET_ID");
+						dsId = Utility.replaceChars(dsId);
+		    			dsId = dsId.toLowerCase();
+						values.add(Constants.LID_PREFIX+"data_set:data_set."+dsId);		
+					}
 				}
 			}	
 		}
-		return null;
+		dsRefs.put(Constants.HAS_DATASET, values);
+		
+		return dsRefs;
 	}
 		
 	private List<String> getRefValues(String version, String associationType, 
 			Map<String, List<String>> allRefs) {	
-		//should ge a version independently...how????
 		List<String> values = new ArrayList<String>();
-		/*
-		//this may slow down the processing 
-		String tmpLidVid = Constants.LID_PREFIX + "node:node." + value;
-		if (getExtrinsic(tmpLidVid)!=null) {
-			tmpLidVid += "::" + getExtrinsic(tmpLidVid).getVersionName();
-		*/		
-		if (associationType==Constants.HAS_MISSION) {
-			for (String aValue: allRefs.get(Constants.HAS_MISSION)) {
-				//values.add(aValue+"::" + version);
-				String tmpLid = aValue;
-				String tmpVer = "";
-				if (getExtrinsic(tmpLid)!=null) {
-					tmpVer = getExtrinsic(tmpLid).getVersionName();
-				    values.add(aValue+"::" + tmpVer);
-				}
-				else {
-				    values.add(aValue);
-				}	
-			}			
-		}
-		else if (associationType==Constants.HAS_INSTHOST) {
-			for (String aValue: allRefs.get(Constants.HAS_INSTHOST)) {
-				//values.add(aValue+"::" + version);
-				String tmpLid = aValue;
-				String tmpVer = "";
-				if (getExtrinsic(tmpLid)!=null) {
-					tmpVer = getExtrinsic(tmpLid).getVersionName();
-				    values.add(aValue+"::" + tmpVer);
-				}
-				else {
-				    values.add(aValue);
-				}	
+		for (String aValue: allRefs.get(associationType)) {
+			String tmpLid = aValue;
+			String tmpVer = "";
+			if (getExtrinsic(tmpLid)!=null) {
+				tmpVer = getExtrinsic(tmpLid).getVersionName();
+			    values.add(aValue+"::" + tmpVer);
 			}
+			else {
+			    values.add(aValue);
+			}	
 		}
-		else if (associationType==Constants.HAS_INST) {
-			for (String aValue: allRefs.get(Constants.HAS_INST)) {
-				//values.add(aValue+"::" + version);
-				String tmpLid = aValue;
-				String tmpVer = "";
-				if (getExtrinsic(tmpLid)!=null) {
-					tmpVer = getExtrinsic(tmpLid).getVersionName();
-				    values.add(aValue+"::" + tmpVer);
+		return values;
+	}
+	
+	private List<String> getRefs(String key, String associationType, Map<String, List<String>> allRefs, Metadata md) {
+		List<String> values = new ArrayList<String>();
+		if (md.isMultiValued(key)) {
+			List<String> tmpValues = md.getAllMetadata(key);			
+			for (String keyToMatch: tmpValues) {					
+				keyToMatch= Utility.replaceChars(keyToMatch);
+	
+				for (String aValue: allRefs.get(associationType)) {
+					if (aValue.contains(keyToMatch.toLowerCase())) {
+						String tmpVer = "";
+						if (getExtrinsic(aValue)!=null) {
+							tmpVer = getExtrinsic(aValue).getVersionName();
+							values.add(aValue+"::" + tmpVer);
+						}
+						else {
+							values.add(aValue);
+						}
+					}
 				}
-				else {
-				    values.add(aValue);
-				}	
 			}
-		}
-		else if (associationType==Constants.HAS_TARGET) {
-			for (String aValue: allRefs.get(Constants.HAS_TARGET)) {
-				//values.add(aValue+"::" + version);
-				String tmpLid = aValue;
-				String tmpVer = "";
-				if (getExtrinsic(tmpLid)!=null) {
-					tmpVer = getExtrinsic(tmpLid).getVersionName();
-				    values.add(aValue+"::" + tmpVer);
-				}
-				else {
-				    values.add(aValue);
-				}				
-			}
-		}
-		else if (associationType==Constants.HAS_DATASET) {
-			for (String aValue: allRefs.get(Constants.HAS_DATASET)) {
-				//values.add(aValue+"::" + version);
-				String tmpLid = aValue;
-				String tmpVer = "";
-				if (getExtrinsic(tmpLid)!=null) {
-					tmpVer = getExtrinsic(tmpLid).getVersionName();
-				    values.add(aValue+"::" + tmpVer);
-				}
-				else {
-				    values.add(aValue);
-				}	
-			}
-		}
-		else if (associationType==Constants.HAS_RESOURCE) {
-			for (String aValue: allRefs.get(Constants.HAS_RESOURCE)) {
-				String tmpLid = aValue;
-				String tmpVer = "";
-				if (getExtrinsic(tmpLid)!=null) {
-					tmpVer = getExtrinsic(tmpLid).getVersionName();
-					values.add(aValue+"::" + tmpVer);
-				}
-				else {
-					values.add(aValue);
+		} else {
+			String keyToMatch = md.getMetadata(key);
+			keyToMatch= Utility.replaceChars(keyToMatch);
+			
+			for (String aValue: allRefs.get(associationType)) {
+				if (aValue.contains(keyToMatch.toLowerCase())) {
+					String tmpVer = "";
+					if (getExtrinsic(aValue)!=null) {
+						tmpVer = getExtrinsic(aValue).getVersionName();
+						values.add(aValue+"::" + tmpVer);
+					}
+					else {
+						values.add(aValue);
+					}
 				}
 			}
 		}
-		else if (associationType==Constants.HAS_NODE) {
-			for (String aValue: allRefs.get(Constants.HAS_NODE)) {
-				String tmpLid = aValue;
-				String tmpVer = "";
-				if (getExtrinsic(tmpLid)!=null) {
-					tmpVer = getExtrinsic(tmpLid).getVersionName();
-				    values.add(aValue+"::" + tmpVer);
-				}
-				else {
-				    values.add(aValue);
-				}
-			}
-		}
-		//System.out.println("values = " + values.toString());
 		return values;
 	}
 
 	private List<String> getRefValues(String version, String associationType, 
 			Map<String, List<String>> allRefs, CatalogObject catObj) {	
 		List<String> values = new ArrayList<String>();
+		Metadata md = catObj.getMetadata();
 		if (associationType==Constants.HAS_MISSION) {
-			String missionName = catObj.getPdsLabelMap().get("MISSION_NAME").getValue().toString().toLowerCase();
-			if (missionName.contains(" "))
-				missionName = missionName.replace(' ',  '_');
-			for (String aValue: allRefs.get(Constants.HAS_MISSION)) {
-				//values.add(aValue+"::" + version);
-				String tmpLid = aValue;
-				if (tmpLid.contains(missionName)) {
-					String tmpVer = "";
-					if (getExtrinsic(tmpLid)!=null) {
-						tmpVer = getExtrinsic(tmpLid).getVersionName();
-						values.add(aValue+"::" + tmpVer);
-					}
-					else {
-						values.add(aValue);
-					}	
-				}
-			}			
+			return getRefs("MISSION_NAME", associationType, allRefs, md);
 		}
 		else if (associationType==Constants.HAS_INSTHOST) {
-			String instHostId = catObj.getPdsLabelMap().get("INSTRUMENT_HOST_ID").getValue().toString().toLowerCase();
-			for (String aValue: allRefs.get(Constants.HAS_INSTHOST)) {
-				String tmpLid = aValue;
-				if (tmpLid.contains(instHostId)) {
-					String tmpVer = "";
-					if (getExtrinsic(tmpLid)!=null) {
-						tmpVer = getExtrinsic(tmpLid).getVersionName();
-						values.add(aValue+"::" + tmpVer);
-					}
-					else {
-						values.add(aValue);
-					}	
-				}
-			}
+			return getRefs("INSTRUMENT_HOST_ID", associationType, allRefs, md);
 		}
 		else if (associationType==Constants.HAS_INST) {
-			String instId = catObj.getPdsLabelMap().get("INSTRUMENT_ID").getValue().toString().toLowerCase();
-			for (String aValue: allRefs.get(Constants.HAS_INST)) {
-				String tmpLid = aValue;
-				if (tmpLid.contains(instId)) {
-					//System.out.println("tmpLid = " + tmpLid + "   instId = " + instId);
-					String tmpVer = "";
-					if (getExtrinsic(tmpLid)!=null) {
-						tmpVer = getExtrinsic(tmpLid).getVersionName();
-						values.add(aValue+"::" + tmpVer);
-					}
-					else {
-						values.add(aValue);
-					}
-				}
-			}
+			//System.out.println("DATASET reference info...for INSTRUMENT");
+			return getRefs("INSTRUMENT_ID", associationType, allRefs, md);
 		}
 		else if (associationType==Constants.HAS_TARGET) {
-			String targetName = catObj.getPdsLabelMap().get("TARGET_NAME").getValue().toString().toLowerCase();
-			if (targetName.contains(" "))
-				targetName = targetName.replace(' ',  '_');
-			for (String aValue: allRefs.get(Constants.HAS_TARGET)) {
-				String tmpLid = aValue;
-				//System.out.println("tmpLid = " + tmpLid);
-				if (tmpLid.contains(targetName)) {
-					String tmpVer = "";
-					if (getExtrinsic(tmpLid)!=null) {
-						tmpVer = getExtrinsic(tmpLid).getVersionName();
-						values.add(aValue+"::" + tmpVer);
-					}
-					else {
-						values.add(aValue);
-					}				
-				}
-			}
+			return getRefs("TARGET_NAME", associationType, allRefs, md);
 		}
 		else if (associationType==Constants.HAS_DATASET) {
-			String dsId = catObj.getPdsLabelMap().get("DATA_SET_ID").getValue().toString().toLowerCase();
-			if (dsId.contains("/")) {
-				dsId = dsId.replace('/', '-');
-			}
-			for (String aValue: allRefs.get(Constants.HAS_DATASET)) {
-				String tmpLid = aValue;				
-				if (tmpLid.contains(dsId)) {
-					String tmpVer = "";
-					if (getExtrinsic(tmpLid)!=null) {
-						tmpVer = getExtrinsic(tmpLid).getVersionName();
-						values.add(aValue+"::" + tmpVer);
-					}
-					else {
-						values.add(aValue);
-					}	
-				}
-			}
+			return getRefs("DATA_SET_ID", associationType, allRefs, md);
 		}
 		return values;
 	}
@@ -775,8 +673,9 @@ public class CatalogRegistryIngester {
 				product.setName(value);	
 				String tmpValue = value;
 				// need to replace empty space with _ for the lid
-				if (value.contains(" "))
-    				tmpValue = value.replace(' ', '_');	
+				//if (value.contains(" "))
+    			//	tmpValue = value.replace(' ', '_');	
+				tmpValue = Utility.replaceChars(value);
 				productLid = Constants.LID_PREFIX+"investigation:mission."+tmpValue;
 				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
@@ -789,8 +688,9 @@ public class CatalogRegistryIngester {
 				String tmpValue = value;
 				String targetType = md.getMetadata("TARGET_TYPE");	
 				productLid = Constants.LID_PREFIX+"target:" +targetType + "."+tmpValue;
-				if (productLid.contains(" "))
-					productLid = productLid.replace(' ',  '_');
+				//if (productLid.contains(" "))
+				//	productLid = productLid.replace(' ',  '_');
+				productLid = Utility.replaceChars(productLid);
 				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
 				product.setObjectType(Constants.TARGET_PROD);		
@@ -817,8 +717,9 @@ public class CatalogRegistryIngester {
 				value = md.getMetadata(key);
 				String tmpValue = value;
 				product.setName(md.getMetadata("DATA_SET_NAME"));	
-				if (value.contains("/"))
-    				tmpValue = value.replace('/', '-');
+				//if (value.contains("/"))
+    			//	tmpValue = value.replace('/', '-');
+				tmpValue = Utility.replaceChars(value);
 				productLid = Constants.LID_PREFIX+"data_set:data_set."+tmpValue;
 				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
@@ -855,12 +756,14 @@ public class CatalogRegistryIngester {
 	        */
 			
 			// don't add these as slot values
+			/*
 			if (key.equals("TARGET_NAME"))
 				continue;
 			if (objType.equalsIgnoreCase(Constants.VOLUME_OBJ) && key.equals("DATA_SET_ID"))
 				continue;
 			if (objType.equalsIgnoreCase(Constants.MISSION_OBJ) && key.equals("INSTRUMENT_HOST_ID"))
 				continue;
+			*/
 			
 			if (objType.equalsIgnoreCase(Constants.DATASET_OBJ) && this.archiveStatus!=null) {
 				if (key.equals("ARCHIVE_STATUS")) {
@@ -979,8 +882,9 @@ public class CatalogRegistryIngester {
 				product.setName(md.getMetadata("RESOURCE_NAME"));
 				String dsId = md.getMetadata("DATA_SET_ID");
 				productLid = Constants.LID_PREFIX+"resource:resource."+dsId + "__" + value;
-				if (productLid.contains("/"))
-					productLid = productLid.replace('/', '-');
+				//if (productLid.contains("/"))
+				//	productLid = productLid.replace('/', '-');
+				productLid = Utility.replaceChars(productLid);
 				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
 				product.setObjectType(Constants.CONTEXT_PROD);		

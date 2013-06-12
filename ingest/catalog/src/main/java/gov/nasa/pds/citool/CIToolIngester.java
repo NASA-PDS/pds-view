@@ -20,6 +20,7 @@ import gov.nasa.pds.citool.ingestor.CatalogRegistryIngester;
 import gov.nasa.pds.citool.ingestor.Reference;
 import gov.nasa.pds.citool.report.IngestReport;
 import gov.nasa.pds.citool.target.Target;
+import gov.nasa.pds.citool.util.Utility;
 
 import gov.nasa.pds.tools.LabelParserException;
 import gov.nasa.pds.tools.constants.Constants.ProblemType;
@@ -73,7 +74,8 @@ public class CIToolIngester {
     public static Map<String, String> refInfo;
     
     private boolean storageAvailable = false;
-
+    public static boolean targetAvailable = false;
+    
     public CIToolIngester(IngestReport report) {
         this.report = report;
     }
@@ -181,6 +183,7 @@ public class CIToolIngester {
 			//System.out.println("lbl.getLabelURI() = " + lbl.getLabelURI());
 			CatalogObject catObj = new CatalogObject(this.report);
 			boolean validFile = catObj.processLabel(lbl);
+			//System.out.println("catObj.getCatObjType() = " + catObj.getCatObjType() +  "    validFile = " + validFile);
 			if (validFile) {
 				if (catObj.getCatObjType().equalsIgnoreCase("VOLUME")) {
 					pointerFiles = catObj.getPointerFiles();
@@ -378,9 +381,10 @@ public class CIToolIngester {
     		Metadata md = tmpCatObj.getMetadata();
     		if (catObjType.equalsIgnoreCase(Constants.MISSION_OBJ)) {
     			lidValue = pdsLbl.get("MISSION_NAME").getValue().toString();
-    			if (lidValue.contains(" ")) {
-    				lidValue = lidValue.replace(' ', '_');
-    			}
+//    			if (lidValue.contains(" ")) {
+//    				lidValue = lidValue.replace(' ', '_');
+//    			}
+    			lidValue = Utility.replaceChars(lidValue);
     			lidValue = lidValue.toLowerCase();
     			if (refs.get(Constants.HAS_MISSION)!=null) {
     				values = refs.get(Constants.HAS_MISSION);
@@ -409,9 +413,10 @@ public class CIToolIngester {
 							lidValue = aVal;
 							targetType = getTargetType(lidValue);
 							lidValue = targetType + "." + lidValue;
-							if (lidValue.contains(" ")) {
-			    				lidValue = lidValue.replace(' ', '_');
-			    			}
+//							if (lidValue.contains(" ")) {
+//			    				lidValue = lidValue.replace(' ', '_');
+//			    			}
+							lidValue = Utility.replaceChars(lidValue);
 							lidValue = lidValue.toLowerCase();
 							if (!valueExists(Constants.LID_PREFIX + "target:" + lidValue, values))
 								values.add(Constants.LID_PREFIX + "target:" + lidValue);
@@ -420,9 +425,10 @@ public class CIToolIngester {
 						lidValue = md.getMetadata(key);
 						targetType = getTargetType(lidValue);
 						lidValue = targetType + "." + lidValue;
-						if (lidValue.contains(" ")) {
-		    				lidValue = lidValue.replace(' ', '_');
-		    			}						
+//						if (lidValue.contains(" ")) {
+//		    				lidValue = lidValue.replace(' ', '_');
+//		    			}			
+						lidValue = Utility.replaceChars(lidValue);
 						lidValue = lidValue.toLowerCase();
 						if (!valueExists(Constants.LID_PREFIX + "target:" + lidValue, values))
 							values.add(Constants.LID_PREFIX + "target:" + lidValue);
@@ -458,9 +464,10 @@ public class CIToolIngester {
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.DATASET_OBJ)) {
     			lidValue = pdsLbl.get("DATA_SET_ID").getValue().toString();
-    			if (lidValue.contains("/")) {
-    				lidValue = lidValue.replace('/', '-');
-    			}
+//    			if (lidValue.contains("/")) {
+//    				lidValue = lidValue.replace('/', '-');
+//    			}
+    			lidValue = Utility.replaceChars(lidValue);
     			lidValue = lidValue.toLowerCase();
     			
     			if (refs.get(Constants.HAS_DATASET)!=null) {
@@ -517,9 +524,10 @@ public class CIToolIngester {
     						lidValue = aVal;
     						targetType = getTargetType(lidValue);   						
     						lidValue = targetType + "." + lidValue;
-    						if (lidValue.contains(" ")) {
-    		    				lidValue = lidValue.replace(' ', '_');
-    		    			}					
+//    						if (lidValue.contains(" ")) {
+//    		    				lidValue = lidValue.replace(' ', '_');
+//    		    			}	
+    						lidValue = Utility.replaceChars(lidValue);
     						lidValue = lidValue.toLowerCase();
     						if (!valueExists(Constants.LID_PREFIX+"target:" +lidValue, values))
     							values.add(Constants.LID_PREFIX+"target:" + lidValue);
@@ -529,9 +537,10 @@ public class CIToolIngester {
     					lidValue = md.getMetadata(key);
     					targetType = getTargetType(lidValue);
     					lidValue = targetType + "." + lidValue;
-    					if (lidValue.contains(" ")) {
-    	    				lidValue = lidValue.replace(' ', '_');
-    	    			}
+//    					if (lidValue.contains(" ")) {
+//    	    				lidValue = lidValue.replace(' ', '_');
+//    	    			}
+    					lidValue = Utility.replaceChars(lidValue);
     					lidValue = lidValue.toLowerCase();
     					if (!valueExists(Constants.LID_PREFIX+"target:" + lidValue, values))
     						values.add(Constants.LID_PREFIX+"target:" + lidValue);              
@@ -569,21 +578,24 @@ public class CIToolIngester {
     			refs.put(Constants.HAS_INSTHOST, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.TARGET_OBJ)) {
+    			//System.out.println("CatlogObject...TARGET catalog object...targetAvailable = " + targetAvailable);
+    			this.targetAvailable = true;
+    			
     			lidValue = pdsLbl.get("TARGET_NAME").getValue().toString();
     			String targetType = getTargetType(lidValue);
     			lidValue = targetType + "." + lidValue;
-    			if (lidValue.contains(" ")) {
-    				lidValue = lidValue.replace(' ', '_');
-    			}
-    			
+//    			if (lidValue.contains(" ")) {
+//    				lidValue = lidValue.replace(' ', '_');
+//    			}
+    			lidValue = Utility.replaceChars(lidValue);
+    			lidValue = lidValue.toLowerCase();
     			if (refs.get(Constants.HAS_TARGET)!=null) {
     				values = refs.get(Constants.HAS_TARGET);
     			}
     			else {
     				values = new ArrayList<String>();
     			}
-    			
-    			lidValue = lidValue.toLowerCase();
+    			 			
     			if (!valueExists(Constants.LID_PREFIX+"target:" + lidValue, values))
     				values.add(Constants.LID_PREFIX+"target:" + lidValue);
     			refs.put(Constants.HAS_TARGET, values);
@@ -604,8 +616,9 @@ public class CIToolIngester {
     					List<String> tmpValues = md.getAllMetadata(key);    				
     					for (String aVal: tmpValues) {				
     						lidValue = dsId + "__" + aVal; 
-    						if (lidValue.contains("/"))
-    							lidValue = lidValue.replace('/', '-');
+//    						if (lidValue.contains("/"))
+//    							lidValue = lidValue.replace('/', '-');
+    						lidValue = Utility.replaceChars(lidValue);
     						lidValue = lidValue.toLowerCase();
     						if (!valueExists(Constants.LID_PREFIX+"resource:resource."+lidValue, values))
     							values.add(Constants.LID_PREFIX+"resource:resource."+lidValue);
@@ -614,8 +627,9 @@ public class CIToolIngester {
     				else {
     					lidValue = md.getMetadata(key);
     					lidValue = dsId + "__" + lidValue;
-    					if (lidValue.contains("/"))
-    						lidValue = lidValue.replace('/', '-');  
+//    					if (lidValue.contains("/"))
+//    						lidValue = lidValue.replace('/', '-');  
+    					lidValue = Utility.replaceChars(lidValue);
     					lidValue = lidValue.toLowerCase();
     					if (!valueExists(Constants.LID_PREFIX+"resource:resource."+lidValue, values))
     						values.add(Constants.LID_PREFIX+"resource:resource."+lidValue);
@@ -652,9 +666,10 @@ public class CIToolIngester {
     			storageProductName = lidValue;
     			
     			String key = "DATA_SET_ID";
-    			if (key.contains("/")) {
-    				key = key.replace('/', '-');
-    			}  
+//    			if (key.contains("/")) {
+//    				key = key.replace('/', '-');
+//    			}  
+    			key = Utility.replaceChars(key);
     			if (refs.get(Constants.HAS_DATASET)!=null)
     				values = refs.get(Constants.HAS_DATASET);
     			else
@@ -664,9 +679,10 @@ public class CIToolIngester {
     				List<String> tmpValues = md.getAllMetadata(key);
     				for (String aVal: tmpValues) {
     					lidValue = aVal;
-    					if (lidValue.contains("/")) {
-    	    				lidValue = lidValue.replace('/', '-');
-    	    			}
+//    					if (lidValue.contains("/")) {
+//    	    				lidValue = lidValue.replace('/', '-');
+//    	    			}
+    					lidValue = Utility.replaceChars(lidValue);
     					lidValue = lidValue.toLowerCase();
     					// shouldn't add if the value is already exists in the list
     					if (!valueExists(Constants.LID_PREFIX+"data_set:data_set."+lidValue, values)) {
@@ -676,9 +692,10 @@ public class CIToolIngester {
     			}
     			else {
     				lidValue = md.getMetadata(key);
-    				if (lidValue.contains("/")) {
-	    				lidValue = lidValue.replace('/', '-');
-	    			}
+//    				if (lidValue.contains("/")) {
+//	    				lidValue = lidValue.replace('/', '-');
+//	    			}
+    				lidValue = Utility.replaceChars(lidValue);
     				lidValue = lidValue.toLowerCase();
     				if (!valueExists(Constants.LID_PREFIX+"data_set:data_set."+lidValue, values)) {
     					values.add(Constants.LID_PREFIX+"data_set:data_set."+lidValue);         
