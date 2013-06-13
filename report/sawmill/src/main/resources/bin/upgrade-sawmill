@@ -6,22 +6,20 @@
 # It will not modify the old LogAnalysisInfo directory.
 
 usage () {
-    echo
-    echo "Usage: upgrade-sawmill {old-LogAnalysisInfo} {new-LogAnalysisInfo}"
-    echo
-    echo "  {old-LogAnalysisInfo}: the pathname of the old LogAnalysisInfo directory"
-    echo "  {new-LogAnalysisInfo}: the pathname of the new LogAnalysisInfo directory"
-    echo
+    echo "\nUsage: upgrade-sawmill <new-LogAnalysisInfo>"
+    echo "\n  <new-LogAnalysisInfo>: the pathname of the new LogAnalysisInfo directory\n\n"
     exit
 }
 
-
-if [ $# -ne 2 ] || [[ "$1" != *LogAnalysisInfo ]] || [[ "$2" != *LogAnalysisInfo ]]; then
+if [ $# -ne 1 ] || [[ "$1" != *LogAnalysisInfo ]]; then
     usage
 fi
 
-oldlai=$1
-newlai=$2
+newlai=${1}
+oldlai=/report_service/LogAnalysisInfo
+oldconfig=/report_service/LogAnalysisInfo/old_config
+
+today=`date +"%Y%m%d"`
 
 if [ ! -d $oldlai ] || [ ! -d $newlai ] ; then
     echo
@@ -29,7 +27,7 @@ if [ ! -d $oldlai ] || [ ! -d $newlai ] ; then
     usage
 fi
 
-echo "Updating $newlai from the contents of $oldlai\n"
+echo "Updating $newlai from the contents of ${oldlai} \n"
 
 echo "cp ${oldlai}/users.cfg ${newlai}/users.cfg"
 cp ${oldlai}/users.cfg ${newlai}/users.cfg
@@ -64,11 +62,23 @@ cp -r ${oldlai}/users_cache ${newlai}/users_cache
 echo "cp -r ${oldlai}/Databases ${newlai}/Databases"
 cp -r ${oldlai}/Databases ${newlai}/Databases
 
+echo "\n\nCopying PDS Engineering-specific configurations."
 echo "cp -r ${oldlai}/.svn ${newlai}"
 cp -r ${oldlai}/.svn ${newlai}
 
 echo "cp -r ${oldlai}/login_plugins ${newlai}"
 cp -r ${oldlai}/login_plugins ${newlai}
 
+echo "\n\nBackup old LogAnalysisInfo"
+echo "mv ${oldlai} ${oldconfig}/LogAnalysisInfo_pre${today}"
+mv ${oldlai} ${oldconfig}/LogAnalysisInfo_pre${today}
+
+echo "\n\nMove new LogAnalysisInfo to mounted drive to support load balancing."
+echo "mv ${newlai} ${oldlai}"
+mv ${newlai} ${oldlai}
+
+echo "\n\nLink to LogAnalyisInfo on mounted drive."
+echo "ln -s ${oldlai} ${newlai}"
+ln -s ${oldlai} ${newlai}
 
 exit 0
