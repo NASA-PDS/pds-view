@@ -497,7 +497,7 @@ public class CatalogRegistryIngester {
 					String tmpDsid = catObj.getMetadata().getMetadata("DATA_SET_ID");
 					tmpDsid = Utility.replaceChars(tmpDsid);
 
-					if (tmpLid.contains(tmpDsid))
+					if (tmpLid.contains(tmpDsid.toLowerCase()))
 						values.add(aValue);
 				}
 			    if (values.size()>0) {
@@ -671,10 +671,7 @@ public class CatalogRegistryIngester {
 		
 			if (objType.equalsIgnoreCase(Constants.MISSION_OBJ) && key.equals("MISSION_NAME")) {
 				product.setName(value);	
-				String tmpValue = value;
-				// need to replace empty space with _ for the lid
-				//if (value.contains(" "))
-    			//	tmpValue = value.replace(' ', '_');	
+				String tmpValue = value;	
 				tmpValue = Utility.replaceChars(value);
 				productLid = Constants.LID_PREFIX+"investigation:mission."+tmpValue;
 				productLid = productLid.toLowerCase();
@@ -688,8 +685,6 @@ public class CatalogRegistryIngester {
 				String tmpValue = value;
 				String targetType = md.getMetadata("TARGET_TYPE");	
 				productLid = Constants.LID_PREFIX+"target:" +targetType + "."+tmpValue;
-				//if (productLid.contains(" "))
-				//	productLid = productLid.replace(' ',  '_');
 				productLid = Utility.replaceChars(productLid);
 				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
@@ -717,8 +712,6 @@ public class CatalogRegistryIngester {
 				value = md.getMetadata(key);
 				String tmpValue = value;
 				product.setName(md.getMetadata("DATA_SET_NAME"));	
-				//if (value.contains("/"))
-    			//	tmpValue = value.replace('/', '-');
 				tmpValue = Utility.replaceChars(value);
 				productLid = Constants.LID_PREFIX+"data_set:data_set."+tmpValue;
 				productLid = productLid.toLowerCase();
@@ -879,11 +872,10 @@ public class CatalogRegistryIngester {
 
 			if (key.equals("RESOURCE_ID")) {
 				// need to use RESOURCE_NAME for the name
-				product.setName(md.getMetadata("RESOURCE_NAME"));
+				//product.setName(md.getMetadata("RESOURCE_NAME"));
+				product.setName(resrcObj.getAttribute("RESOURCE_NAME").getValue().toString());
 				String dsId = md.getMetadata("DATA_SET_ID");
 				productLid = Constants.LID_PREFIX+"resource:resource."+dsId + "__" + value;
-				//if (productLid.contains("/"))
-				//	productLid = productLid.replace('/', '-');
 				productLid = Utility.replaceChars(productLid);
 				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
