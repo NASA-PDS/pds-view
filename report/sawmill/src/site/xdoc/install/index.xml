@@ -25,29 +25,21 @@
 
   <body>
     <section name="Installation">
-      <p>This document describes how to install the <a href="http://www.sawmill.net/" target="_blank">Sawmill</a> software package. This package serves as the majority of the Report Service for the PDS 2010 system. The following topics can be found in this document:
+      <p>This document describes how to install the <a href="http://www.sawmill.net/" target="_blank">Sawmill</a> software package for versions 8.5+.  This software is the main component of the Report Service for the PDS 2010 system. The following topics can be found in this document:
       </p>
 
       <ul>
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Software_Installation">Software Installation</a></li>
-        <li><a href="#Software_Upgrade">Software Upgrade</a></li>
       </ul>
     </section>
 
     <section name="System Requirements">
-      <p>The software that makes up this project consists of a commercial package that is available for download and installation. This installation guide pertains to the Sawmill software version 8.5.1. If installing the package in <a href="#Web_Server_Mode_Installation">Web Server Mode</a>, there are no further system requirements. If installing the package in <a href="#CGI_Mode_Installation">CGI Mode</a>, the following software is required to be installed on the host machine:
+      <p>This software will be installed with its own standalone web server, so there is no additional installations required.  However, there are some general memory, CPU, and disk space requirements outlined in the <a href="http://www.sawmill.net/cgi-bin/sawmill8/docs/sawmill.cgi?dp+docs.faq.entry+webvars.entry+systemrequirements+webvars.username+samples+webvars.password+sawmill">Sawmill documentation</a>.
       </p>
-
-      <ul>
-        <li>Sun Java Standard Edition (J2SE) 1.6.X</li>
-        <li>Apache Tomcat 6.0.20</li>
-      </ul>
     </section>
 
     <section name="Software Installation">
-      <p>This section details the download and installation of the Sawmill software package. The preferred method of installation is <a href="#CGI_Mode_Installation">CGI Mode</a> until a dedicated machine is procured for this service.  In the future, the <a href="#Web_Server_Mode_Installation">Web Server Mode</a> installation will be the best approach.
-      </p>
 
       <subsection name="Download Software">
         <p>This section details how to download the software package from the Sawmill web site.
@@ -56,135 +48,71 @@
         <ol>
           <li>Go to <a href="http://www.sawmill.net/downloads.html">http://www.sawmill.net/downloads.html</a>.</li>
           <li>Select the <i>Proceed</i> button (the form fields are optional).</li>
-          <li>Select the desired version from the drop-down box, and select the <i>Proceed</i> button ("production (x.x.x)" preferred).</li>
+          <li>Select the desired version from the drop-down box, and select the <i>Proceed</i> button (latest and greatest preferred).</li>
           <li>Select the appropriate operating system for the host machine, and select the <i>Proceed</i> button.</li>
           <li>Select the appropriate hardware for the host machine, and select the <i>Proceed</i> button.</li>
           <li>The download will begin automatically.</li>
           <li>Verify that the <i>Operating System</i> and <i>Hardware Architecture</i> noted at the top of the page match that of the host machine.</li>
-          <li>Once the download completes, copy the compressed Sawmill download file (.tar.gz) from the download location to the desired host machine.</li>
-        </ol>
-      </subsection>
-
-      <subsection name="CGI Mode Installation">
-        <p>This section details the CGI mode installation. In CGI mode, Sawmill runs as a CGI program under another web server. The instructions that follow specify this installation for an Apache Tomcat application server.
-        </p>
-
-        <ol>
-          <li>Log onto the host machine with root privileges.</li>
-          <li>Configure Apache Tomcat to support CGI binary executables.</li>
-          <ul>
-            <li>a. Add the following XML blocks to Servlet Definition and Servlet Mappings sections of <i>$CATALINA_HOME/conf/web.xml</i>:</li>
-      <br /><i>Note</i>: These XML blocks are already included in the default Tomcat web.xml and only need to be uncommented. If so, be sure to add the <i>executable</i> parameter in the Servlet Definition):
-            <source>
-&lt;!-- ================== Built In Servlet Definitions ==================== --&gt;
-&lt;servlet&gt;
-  &lt;servlet-name&gt;cgi&lt;/servlet-name&gt;
-  &lt;servlet-class&gt;org.apache.catalina.servlets.CGIServlet&lt;/servlet-class&gt;
-  &lt;init-param&gt;
-    &lt;param-name&gt;debug&lt;/param-name&gt;
-    &lt;param-value&gt;0&lt;/param-value&gt;
-  &lt;/init-param&gt;
-  &lt;init-param&gt;
-    &lt;param-name&gt;cgiPathPrefix&lt;/param-name&gt;
-    &lt;param-value&gt;WEB-INF/cgi&lt;/param-value&gt;
-  &lt;/init-param&gt;
-  &lt;init-param&gt;
-    &lt;param-name&gt;executable&lt;/param-name&gt;
-    &lt;param-value&gt;&lt;/param-value&gt;
-  &lt;/init-param&gt;
-  &lt;load-on-startup&gt;5&lt;/load-on-startup&gt;
-&lt;/servlet&gt;
-
-&lt;!-- ================ Built In Servlet Mappings ========================= --&gt;
-&lt;servlet-mapping&gt;
-    &lt;servlet-name&gt;cgi&lt;/servlet-name&gt;
-    &lt;url-pattern&gt;/cgi-bin/*&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;
-            </source>
-            <li>b. Set attribute privileged="true" for the Context element in <i>$CATALINA_HOME/conf/context.xml</i>.</li>
-            <source>
-&lt;Context privileged="true"&gt;
-  .
-  .
-  .
-&lt;/Context&gt;
-            </source>
-            <li>c. Create a <i>cgi</i> directory, if one does not already exist:</li>
-            <source>
-% mkdir $CATALINA_HOME/webapps/ROOT/WEB-INF/cgi
-            </source>
-      Note that the directory name, <i>cgi</i>, matches the &lt;servlet-name&gt; specified in the Servlet Definition from step 2a.
-          </ul>
-          <li>Navigate to the directory where the Sawmill compressed package was copied, and enter the following command from the command line:
-            <source>
-% gunzip -c (sawmill.tar.gz) | tar xf -
-            </source>
-            <p>A <i>sawmill</i> directory is created.</p>
-          </li>
-          <li>Move this directory to an arbitrary directory of your choice, $NEW_HOME , making SAWMILL_HOME=$NEW_HOME/sawmill.  (<i>For the current PDS Engineering installation, SAWMILL_HOME=/pds4/report-service/&lt;machine-name&gt;/sawmill</i>)
-          </li>
-    
-          <li>Make the sawmill executable into a cgi script by appending .cgi:
-            <source>
-% mv $SAWMILL_HOME/sawmill $SAWMILL_HOME/sawmill.cgi
-            </source>
-          </li>
-          <li>
-            Create a symbolic link to this CGI script from the <i>cgi</i> directory in step 2c:
-            <source>
-              ln -s $SAWMILL_HOME/sawmill.cgi $CATALINA_HOME/webapps/ROOT/WEB-INF/cgi/sawmill.cgi
-            </source>
-          </li>
-          <li>Open a web browser, and navigate to the URL <i>http://(yourserver)/cgi-bin/sawmill.cgi</i> .</li>
-          <li>Enter <i>License Key</i> when prompted (if applicable).</li>
-          <li>Proceed through the steps to create an admin username and password.</li>
         </ol>
       </subsection>
 
       <subsection name="Web Server Mode Installation">
-        <p>This section details the web server mode installation. In web server mode, Sawmill runs its own web server, and serves statistics using it.
+        <p>This section details the web server mode installation where Sawmill runs on its own standalone web server.
         </p>
 
+	<p><i>The following procedure needs to be completed for <b><u>all</u></b> machines listed in the following table:</i></p>
+	
+	<table style="width:400px;">
+	  <tr><th>Machine Name</th><th>Purpose</th></tr>
+	  <tr><td>pdsrpt1</td><td>operations</td></tr>
+	  <tr><td>pdsrpt2</td><td>operations</td></tr>
+	</table>
+
         <ol>
-          <li>Log onto the host machine.</li>
-          <li>Navigate to the directory where the Sawmill compressed package was copied, and enter the following command from the command line:
+          <li>Log onto the machine.</li>
+	  <li>sudo su pds</li>
+	  <li>Place the Sawmill tar in the /home/pds directory</li>
+          <li>Navigate to /home/pds and enter the following command from the command line:
             <source>
 % gunzip -c (sawmill.tar.gz) | tar xf -
             </source>
-            <p>A directory called <i>sawmill</i> is created containing the Sawmill executable file (sawmill) and a few other files.
+            <p>A directory called <i>sawmill</i> is created containing the software and configuration.
             </p>
           </li>
+	  <li>Move the directory to a more version-specific location so it is maintained:
+	    <source>
+% mv sawmill sawmill8.6.3.1
+	    </source>
+	  </li>
+	  <li>Run <a href="http://starcell.jpl.nasa.gov/repo/2010/trunk/report/sawmill/src/main/resources/bin/install-sawmill">install-sawmill</a> to remove the Sawmill default configurations and checkout the PDS Engineering-specific configurations from the repository.
+	    <source>
+# Usage: install-sawmill &lt;install-dir&gt;
+./install-sawmill /home/pds/sawmill8.6.1.3/LogAnalysisInfo
+	    </source>
+	  </li>
           <li>To run Sawmill, execute the following commands:
             <source>
-cd sawmill
-./sawmill &amp;
+cd /home/pds/sawmill8.6.3.1
+nohup ./sawmill -ws t -v e > ~/sawmill_&lt;current_date_in_YYYYMMDD_formate&gt;.log 2>&amp;1&amp;
             </source>
-            <p>Leave off <i>&amp;</i> if you prefer to not run Sawmill in the background.
-            </p>
+	    <p><i>Note: Be sure to modify this command, as needed for shell, to ensure Sawmill runs as a daemon process and output is redirected into .</i>
+	    </p>
           </li>
-          <li>Open a web browser, and navigate to the URL displayed when Sawmill was executed (will not be running on port 80).</li>
-          <li>Enter <i>License Key</i> when prompted.</li>
-          <li>Proceed through the steps to create an admin username and password.</li>
+	  <li>Update $APACHE_HOME/conf/httpd.conf as follows in order to redirect the URL to the Sawmill installation:
+	    <source>
+ProxyPass / http://localhost.jpl.nasa.gov:8988/
+ProxyPassReverse / http://localhost.jpl.nasa.gov:8988/
+
+ProxyPass /picts/ http://localhost.jpl.nasa.gov:8988/picts/
+ProxyPassReverse /picts/ http://localhost.jpl.nasa.gov:8988/picts/
+	    </source>
+	  </li>
+	  <li>Restart Apache.</li>
+          <li>Open a web browser and go to http://&lt;machine-name&gt;/ to open Sawmill.</li>
+          <li>Verify you can login using your PDS username and password.</li>
         </ol>
       </subsection>
-    </section>
 
-    <section name="Software Upgrade">
-      <p>All upgrades for the current license version are free.  For instance, a license purchase for Sawmill version 8 covers all 8.x.x upgrades.  The following steps should be performed to complete an upgrade of the Sawmill software:
-        <ol>
-          <li>Follow <a href="#Download_Software">Download Software</a> instructions above.</li>
-          <li>Untar the new version of Sawmill to a directory $INSTALL_DIR .</li>
-          <li>Run the upgrade-sawmill script (currently found at /pds4/report-service on pdsdev/pdsops and in <a href="http://starcell.jpl.nasa.gov/repo/2010/trunk/report/sawmill/src/main/resources/upgrade-sawmill">Subversion</a>) :
-            <source>
-      # ./upgrade-sawmill &lt;install-dir&gt; &lt;sawmill-base-dir&gt;
-
-      ./upgrade-sawmill $INSTALL_DIR /pds4/report-service/
-                  </source>
-            &lt;sawmill-base-dir&gt; should be a directory that contains <i>pdsdev</i> and <i>pdsops</i> subdirectories.
-          </li>
-          <li>Go to web interface and verify profiles and data are sufficiently migrated.</li>
-        </ol>
-      </p>
     </section>
   </body>
 </document>
