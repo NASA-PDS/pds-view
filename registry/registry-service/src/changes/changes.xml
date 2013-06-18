@@ -24,6 +24,10 @@
 
   <body>
     <release version="1.5.0" date="TBD" description="TBD">
+      <action dev="pramirez" issue="PDS-174">
+        Address random database connection issues by using connection pooling.
+      </action>
+    </release>
 
     <release version="1.4.0" date="2013-03-31" description="This release of the Registry Service is a component of the integrated release 3.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="pramirez" issue="PDS-147" type="fix">
