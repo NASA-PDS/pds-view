@@ -35,7 +35,7 @@
     </section>
 
       <section name="Download Software">
-        <p>See <a href="../install/index.xml#Download_Software">Download Software</a> section of Installation for instructions on downloading the software.
+        <p>See <a href="../install/index.html#Download_Software">Download Software</a> section of Installation for instructions on downloading the software.
         </p>
       </section>
 
@@ -43,7 +43,7 @@
         <p>This section describes the procedure for upgrading a previously installed version of Sawmill to a newer version.
         </p>
 
-	<table>
+	<table style="width:400px;">
 	  <tr><th>Machine Name</th><th>Purpose</th></tr>
 	  <tr><td>pdsrpt1</td><td>operations</td></tr>
 	  <tr><td>pdsrpt2</td><td>operations</td></tr>
@@ -53,7 +53,11 @@
 
         <ol>
           <li>Log onto the pdsrpt1.</li>
-	  <li>sudo su pds</li>
+	  <li>Change to the pds user:
+	    <source>
+% sudo su pds
+	  </source>
+	  </li>
 	  <li>Place the downloaded Sawmill tar in the /home/pds directory</li>
           <li>Navigate to /home/pds and enter the following command from the command line:
             <source>
@@ -67,17 +71,24 @@
 % mv sawmill sawmill8.6.3.1
 	    </source>
 	  </li>
-	  <li>Run <a href="http://starcell.jpl.nasa.gov/repo/2010/trunk/report/sawmill/src/main/resources/bin/upgrade-sawmill">upgrade-sawmill</a> to remove the Sawmill default configurations and copy the PDS Engineering-specific configurations from the old installation.
+          <li><p>Recreate a new symbolic link to the current installation:</p>
+            <source>
+% rm /usr/local/report/sawmill
+% ln -s /home/pds/sawmill8.6.3.1 /usr/local/report/sawmill
+            </source>
+          </li>
+	  <li><p>Run <a href="http://starcell.jpl.nasa.gov/repo/2010/trunk/report/sawmill/src/main/resources/bin/upgrade-sawmill">upgrade-sawmill</a> to remove the Sawmill default configurations and copy the PDS Engineering-specific configurations from the old installation.</p>
 	    <source>
 # Usage: upgrade-sawmill &lt;new-LogAnalysisInfo&gt;
-./upgrade-sawmill /home/pds/sawmill8.6.1.3/LogAnalysisInfo
+#  - &lt;new-LogAnalysisInfo&gt; - the LogAnalysisInfo directory within the new installation
+./upgrade-sawmill /usr/local/report/sawmill/LogAnalysisInfo
 	    </source>
-	    <p><b>Note: This assumes <i>/report_service/LogAnalysisInfo</i> is home to current installation's LogAnalysisInfo.  Update the script if needed.</b></p>
+	    <p><b>Note: This assumes <i>/usr/local/report/LogAnalysisInfo</i> is home to current installation's LogAnalysisInfo.  Update the script if needed.</b></p>
 	  </li>
           <li>To run Sawmill, execute the following commands:
             <source>
-cd /home/pds/sawmill8.6.3.1
-nohup ./sawmill -ws t -v e > ~/sawmill_&lt;current_date_in_YYYYMMDD_formate&gt;.log 2>&amp;1&amp;
+cd /usr/local/report/sawmill
+nohup ./sawmill -ws t -v e > /usr/local/report/sawmill/sawmill_logs/&lt;current_date_in_YYYYMMDD_formate&gt;.log 2>&amp;1&amp;
             </source>
 	    <p><i>Note: Be sure to modify this command, as needed for the shell being used, to ensure Sawmill runs as a daemon process and output is redirected into .</i>
 	    </p>
@@ -86,8 +97,8 @@ nohup ./sawmill -ws t -v e > ~/sawmill_&lt;current_date_in_YYYYMMDD_formate&gt;.
 	  <li>Complete steps 1-5 from above on pdsrpt2</li>
 	  <li><p>Perform the following in the bash shell:</p>
 	    <source>
-rm -fr /home/pds/sawmill8.6.1.3/LogAnalysisInfo
-ln -s /report_service/LogAnalysisInfo /home/pds/sawmill8.6.1.3/LogAnalysisInfo
+rm -fr /usr/local/report/sawmill/LogAnalysisInfo
+ln -s /usr/local/report/LogAnalysisInfo /usr/local/report/sawmill/LogAnalysisInfo
 	    </source>
 	    <p><i>Note: Modify directories as needed to reflect actual installation directories.</i></p>
 	    </li>

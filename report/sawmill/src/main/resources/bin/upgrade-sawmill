@@ -17,7 +17,7 @@ fi
 
 newlai=${1}
 oldlai=/report_service/LogAnalysisInfo
-oldconfig=/report_service/LogAnalysisInfo/old_config
+oldconfig=/usr/local/report/old_config
 
 today=`date +"%Y%m%d"`
 
