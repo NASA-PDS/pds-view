@@ -80,8 +80,6 @@
       <subsection name="Web Server Mode Installation">
         <p>This section details the web server mode installation where Sawmill runs on its own standalone web server.
         </p>
-
-	<p><i>The following procedure needs to be completed for <b><u>all</u></b> machines listed in the following table:</i></p>
 	
 	<table style="width:400px;">
 	  <tr><th>Machine Name</th><th>Purpose</th></tr>
@@ -89,8 +87,10 @@
 	  <tr><td>pdsrpt2</td><td>operations</td></tr>
 	</table>
 
+        <p><i>Note: The following procedure needs to be completed for <b><u>pdsrpt1</u></b> only.  The instructions will explicitly denote instructions for upgrading pdsrpt2.</i></p>
+
         <ol>
-          <li>Log onto the machine.</li>
+          <li>Log onto pdsrpt1.</li>
 	  <li>Change to pds user:
 	    <source>
 % sudo su pds
@@ -126,7 +126,7 @@
 cd /usr/local/report/sawmill
 nohup ./sawmill -ws t -v e > /usr/local/report/sawmill/sawmill_logs/&lt;current_date_in_YYYYMMDD_formate&gt;.log 2>&amp;1&amp;
             </source>
-	    <p><i>Note: Be sure to modify this command, as needed for shell, to ensure Sawmill runs as a daemon process and output is redirected into .</i>
+	    <p><i>Note: This command works in Bash shell. Modify accordingly for other shells.</i>
 	    </p>
           </li>
 	  <li>Update $APACHE_HOME/conf/httpd.conf as follows in order to redirect the URL to the Sawmill installation:
@@ -138,6 +138,16 @@ ProxyPass /picts/ http://localhost.jpl.nasa.gov:8988/picts/
 ProxyPassReverse /picts/ http://localhost.jpl.nasa.gov:8988/picts/
 	    </source>
 	  </li>
+          <li>Log onto pdsrpt2</li>
+          <li>Complete steps 1-6 from above on pdsrpt2</li>
+          <li><p>Perform the following in the bash shell:</p>
+            <source>
+rm -fr /usr/local/report/sawmill/LogAnalysisInfo
+ln -s /usr/local/report/LogAnalysisInfo /usr/local/report/sawmill/LogAnalysisInfo
+            </source>
+            <p><i>Note: Modify directories as needed to reflect actual installation directories.</i></p>
+            </li>
+          <li>Complete step 7 and 8 from above on pdsrpt2.</li>
 	  <li>Restart Apache.</li>
           <li>Open a web browser and go to http://&lt;machine-name&gt;/ to open Sawmill.</li>
           <li>Verify you can login using your PDS username and password.</li>

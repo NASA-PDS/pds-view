@@ -83,7 +83,7 @@
 #  - &lt;new-LogAnalysisInfo&gt; - the LogAnalysisInfo directory within the new installation
 ./upgrade-sawmill /usr/local/report/sawmill/LogAnalysisInfo
 	    </source>
-	    <p><b>Note: This assumes <i>/usr/local/report/LogAnalysisInfo</i> is home to current installation's LogAnalysisInfo.  Update the script if needed.</b></p>
+	    <p><b>Note: This assumes <i>/report_service/LogAnalysisInfo</i> is home to load balanced LogAnalysisInfo config.  Update the script if needed.</b></p>
 	  </li>
           <li>To run Sawmill, execute the following commands:
             <source>
@@ -94,7 +94,7 @@ nohup ./sawmill -ws t -v e > /usr/local/report/sawmill/sawmill_logs/&lt;current_
 	    </p>
           </li>
 	  <li>Log onto pdsrpt2</li>
-	  <li>Complete steps 1-5 from above on pdsrpt2</li>
+	  <li>Complete steps 1-6 from above on pdsrpt2</li>
 	  <li><p>Perform the following in the bash shell:</p>
 	    <source>
 rm -fr /usr/local/report/sawmill/LogAnalysisInfo
@@ -102,7 +102,7 @@ ln -s /usr/local/report/LogAnalysisInfo /usr/local/report/sawmill/LogAnalysisInf
 	    </source>
 	    <p><i>Note: Modify directories as needed to reflect actual installation directories.</i></p>
 	    </li>
-	  <li>Complete step 7 from above on pdsrpt2.</li>
+	  <li>Complete step 8 from above on pdsrpt2.</li>
           <li>Open a web browser and go to http://pdsrpt.jpl.nasa.gov/ to open Sawmill.</li>
           <li>Verify you can login using your PDS username and password.</li>
 	  <li>Verify profiles appear as expected.</li>
