@@ -116,15 +116,16 @@
 	  </li>
 	  <li><p>Run <a href="http://starcell.jpl.nasa.gov/repo/2010/trunk/report/sawmill/src/main/resources/bin/install-sawmill">install-sawmill</a> to remove the Sawmill default configurations and checkout the PDS Engineering-specific configurations from the repository.</p>
 	    <source>
-# Usage: install-sawmill &lt;new-LogAnalysisInfo&gt;
-#  - &lt;new-LogAnalysisInfo&gt; - the LogAnalysisInfo directory within the new installation
-./install-sawmill /usr/local/report/sawmill/LogAnalysisInfo
+% # Usage: install-sawmill &lt;new-LogAnalysisInfo&gt;
+% #  - &lt;new-LogAnalysisInfo&gt; - the LogAnalysisInfo directory within the new installation
+% 
+% ./install-sawmill /usr/local/report/sawmill/LogAnalysisInfo
 	    </source>
 	  </li>
           <li>To run Sawmill, execute the following commands:
             <source>
-cd /usr/local/report/sawmill
-nohup ./sawmill -ws t -v e > /usr/local/report/sawmill/sawmill_logs/&lt;current_date_in_YYYYMMDD_formate&gt;.log 2>&amp;1&amp;
+% cd /usr/local/report/sawmill
+% nohup ./sawmill -ws t -v e > /usr/local/reportsawmill_logs/&lt;current_date_in_YYYYMMDD_formate&gt;.log 2>&amp;1&amp;
             </source>
 	    <p><i>Note: This command works in Bash shell. Modify accordingly for other shells.</i>
 	    </p>
@@ -142,8 +143,8 @@ ProxyPassReverse /picts/ http://localhost.jpl.nasa.gov:8988/picts/
           <li>Complete steps 1-6 from above on pdsrpt2</li>
           <li><p>Perform the following in the bash shell:</p>
             <source>
-rm -fr /usr/local/report/sawmill/LogAnalysisInfo
-ln -s /usr/local/report/LogAnalysisInfo /usr/local/report/sawmill/LogAnalysisInfo
+% rm -fr /usr/local/report/sawmill/LogAnalysisInfo
+% ln -s /usr/local/report/LogAnalysisInfo /usr/local/report/sawmill/LogAnalysisInfo
             </source>
             <p><i>Note: Modify directories as needed to reflect actual installation directories.</i></p>
             </li>

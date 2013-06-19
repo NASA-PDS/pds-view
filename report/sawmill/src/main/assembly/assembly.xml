@@ -29,6 +29,21 @@
 
   <fileSets>
     <fileSet>
+      <directory>src/main/resources/bin</directory>
+      <outputDirectory>bin</outputDirectory>
+      <includes>
+        <include>*</include>
+      </includes>
+      <fileMode>755</fileMode>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/resources/LogAnalysisInfo</directory>
+      <outputDirectory>LogAnalysisInfo/</outputDirectory>
+      <includes>
+        <include>**</include>
+      </includes>
+    </fileSet>
+    <fileSet>
       <directory>target/site</directory>
       <outputDirectory>doc</outputDirectory>
     </fileSet>

@@ -56,7 +56,7 @@
 	  <li>Change to the pds user:
 	    <source>
 % sudo su pds
-	  </source>
+	    </source>
 	  </li>
 	  <li>Place the downloaded Sawmill tar in the /home/pds directory</li>
           <li>Navigate to /home/pds and enter the following command from the command line:
@@ -71,6 +71,11 @@
 % mv sawmill sawmill8.6.3.1
 	    </source>
 	  </li>
+	  <li><p>Kill all running sawmill processes.</p>
+	    <source>
+% killall sawmill
+	    </source>
+	  </li>
           <li><p>Recreate a new symbolic link to the current installation:</p>
             <source>
 % rm /usr/local/report/sawmill
@@ -79,16 +84,17 @@
           </li>
 	  <li><p>Run <a href="http://starcell.jpl.nasa.gov/repo/2010/trunk/report/sawmill/src/main/resources/bin/upgrade-sawmill">upgrade-sawmill</a> to remove the Sawmill default configurations and copy the PDS Engineering-specific configurations from the old installation.</p>
 	    <source>
-# Usage: upgrade-sawmill &lt;new-LogAnalysisInfo&gt;
-#  - &lt;new-LogAnalysisInfo&gt; - the LogAnalysisInfo directory within the new installation
-./upgrade-sawmill /usr/local/report/sawmill/LogAnalysisInfo
+% # Usage: upgrade-sawmill &lt;new-LogAnalysisInfo&gt;
+% #  - &lt;new-LogAnalysisInfo&gt; - the LogAnalysisInfo directory within the new installation
+%
+% ./upgrade-sawmill /usr/local/report/sawmill/LogAnalysisInfo
 	    </source>
 	    <p><b>Note: This assumes <i>/report_service/LogAnalysisInfo</i> is home to load balanced LogAnalysisInfo config.  Update the script if needed.</b></p>
 	  </li>
           <li>To run Sawmill, execute the following commands:
             <source>
-cd /usr/local/report/sawmill
-nohup ./sawmill -ws t -v e > /usr/local/report/sawmill/sawmill_logs/&lt;current_date_in_YYYYMMDD_formate&gt;.log 2>&amp;1&amp;
+% cd /usr/local/report/sawmill
+% nohup ./sawmill -ws t -v e > /usr/local/report/sawmill_logs/&lt;current_date_in_YYYYMMDD_formate&gt;.log 2>&amp;1&amp;
             </source>
 	    <p><i>Note: Be sure to modify this command, as needed for the shell being used, to ensure Sawmill runs as a daemon process and output is redirected into .</i>
 	    </p>
@@ -97,16 +103,16 @@ nohup ./sawmill -ws t -v e > /usr/local/report/sawmill/sawmill_logs/&lt;current_
 	  <li>Complete steps 1-6 from above on pdsrpt2</li>
 	  <li><p>Perform the following in the bash shell:</p>
 	    <source>
-rm -fr /usr/local/report/sawmill/LogAnalysisInfo
-ln -s /usr/local/report/LogAnalysisInfo /usr/local/report/sawmill/LogAnalysisInfo
+% rm -fr /usr/local/report/sawmill/LogAnalysisInfo
+% ln -s /usr/local/report/LogAnalysisInfo /usr/local/report/sawmill/LogAnalysisInfo
 	    </source>
 	    <p><i>Note: Modify directories as needed to reflect actual installation directories.</i></p>
-	    </li>
+	  </li>
 	  <li>Complete step 8 from above on pdsrpt2.</li>
           <li>Open a web browser and go to http://pdsrpt.jpl.nasa.gov/ to open Sawmill.</li>
           <li>Verify you can login using your PDS username and password.</li>
 	  <li>Verify profiles appear as expected.</li>
-        </ol>
+          </ol>
       </section>
 
   </body>
