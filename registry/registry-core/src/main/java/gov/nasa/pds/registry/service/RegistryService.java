@@ -499,11 +499,13 @@ public interface RegistryService {
    *          time to constrain which registry objects are relevant to
    *          replicate. This time is inclusive. If set to null all will be
    *          pulled.
+   * @param objectType
+   * 					to filter out registry objects that should be replicated.
    * @throws RegistryServiceException
    *           if another replication is already taking place
    */
   public void performReplication(String user, String registryUrl,
-      Date lastModified) throws RegistryServiceException;
+      Date lastModified, String objectType) throws RegistryServiceException;
 
   /**
    * Get the inform about the current replication event.

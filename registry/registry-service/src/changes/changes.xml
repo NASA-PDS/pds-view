@@ -24,7 +24,13 @@
 
   <body>
     <release version="1.5.0" date="TBD" description="TBD">
-      <action dev="pramirez" issue="PDS-174">
+      <action dev="pramirez" issue="PDS-176" type="fix">
+        Allow for replication by object type. 
+      </action>
+      <action dev="pramirez" issue="PDS-175" type="fix">
+        Fix replication for items that contained slots. 
+      </action>
+      <action dev="pramirez" issue="PDS-174" type="fix">
         Address random database connection issues by using connection pooling.
       </action>
     </release>
