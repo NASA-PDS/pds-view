@@ -71,14 +71,15 @@ public class ReplicationResource {
   @POST
   public Response performReplication(
       @QueryParam("registryUrl") String registryUrl,
-      @QueryParam("lastModified") DateParam lastModified) {
+      @QueryParam("lastModified") DateParam lastModified,
+      @QueryParam("objectType") String objectType) {
     if (registryUrl == null) {
       throw new WebApplicationException(Response.status(Status.BAD_REQUEST)
           .entity("registryUrl was not set").build());
     }
     try {
       registryService.performReplication("Unknown", registryUrl,
-          (lastModified == null) ? null : lastModified.getDate());
+          (lastModified == null) ? null : lastModified.getDate(), objectType);
       return Response.created(
           uriInfo.getBaseUriBuilder().clone().path(RegistryResource.class)
               .path(RegistryResource.class, "getReplicationResource").path(
