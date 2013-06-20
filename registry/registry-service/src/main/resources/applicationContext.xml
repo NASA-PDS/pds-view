@@ -67,6 +67,18 @@
 			<util:map>
 				<entry key="hibernate.dialect" value="${hibernate.dialect}"/>
 				<entry key="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}"/>
+				<entry key="hibernate.connection.provider_class" value="org.hibernate.connection.C3P0ConnectionProvider"/>
+				<entry key="hibernate.connection.driver_class" value="${javax.persistence.jdbc.driver}"/>
+                <entry key="hibernate.connection.url" value="${javax.persistence.jdbc.url}"/>
+                <entry key="hibernate.connection.username" value="${javax.persistence.jdbc.user}"/>
+                <entry key="hibernate.connection.password" value="${javax.persistence.jdbc.password}"/>
+                <entry key="hibernate.c3p0.maxSize" value="20"/>
+                <entry key="hibernate.c3p0.minSize" value="5"/>
+                <entry key="hibernate.c3p0.acquireIncrement" value="1"/>
+                <entry key="hibernate.c3p0.idleTestPeriod" value="300"/>
+                <entry key="hibernate.c3p0.maxStatements" value="50"/>
+                <entry key="hibernate.c3p0.timeout" value="1800"/>
+                <entry key="hibernate.c3p0.checkoutTimeout" value="0"/>
 			</util:map>
 		</property>
 	</bean>
@@ -75,16 +87,6 @@
 	<util:map id="jpaProperties">
 		<entry key="hibernate.dialect" value="${hibernate.dialect}"/>
 		<entry key="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}"/>
-		<!-- Fix connection problems -->
-		<entry key="hibernate.connection.provider_class" value="org.hibernate.connection.C3P0ConnectionProvider"/>
-		<entry key="c3p0.Acquire_Increment" value="1"/> 
-		<entry key="c3p0.IdleConnectionTestPeriod" value="100"/> 
-		<entry key="c3p0.MaxPoolSize" value="100"/> 
-		<entry key="c3p0.MaxStatements" value="0"/> 
-		<entry key="c3p0.MinPoolSize" value="10"/> 
-		<entry key="c3p0.timeout" value="10000"/> 
-		<entry key="hibernate.session_factory_name" value="HibernateSessionFactory"/>
-		<!-- End fix -->
 	</util:map>
 	
 	<bean id="jpaAdapter"
