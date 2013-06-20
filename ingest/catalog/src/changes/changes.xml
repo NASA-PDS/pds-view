@@ -23,19 +23,13 @@
   </properties>
 
   <body>
-    <release version="1.6.0" date="2013-06-11" description="TBD">
+    <release version="1.5.1" date="2013-06-21" description="This release of the Catalog Tool is a component of the integrated release 3.1.1 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="hyunlee" type="update" issue="PDS-170">
+         Added two slots (product_class and information_model_version) to each product that the Catalog Tool registers. Also modified to generate all URNs in lowercase and to generate the Target URN as follows: urn:nasa:pds:context_pds3:target:&lt;target_type&gt;.&lt;target_name&gt;.
+      </action>
       <action dev="hyunlee" type="fix" issue="PDS-171">
-         Corrected the tool to crash when a software catalog file is referenced in the VOLDESC.CAT.
-      </action>    
-      <action dev="hyunlee" type="fix" issue="PDS-170">
-         Added two slots (product_class and information_model_version) to each product that the Catalog Tool registers.
+         Corrected the tool to not crash when a software catalog file is referenced in the VOLDESC.CAT.
       </action>
-      <action dev="hyunlee" type="fix" issue="PDS-170">
-         Modified to generate all URNs in lowercase.
-      </action>
-      <action dev="hyunlee" type="fix" issue="PDS-170">
-         Modifed to generate the Target URN as follows: urn:nasa:pds:context_pds3:target:&lt;target_type&gt;.&lt;target_name&gt;.
-      </action>     
     </release>
 
     <release version="1.5.0" date="2013-03-31" description="This release of the Catalog Tool is a component of the integrated release 3.1.0 of the PDS4 System. This is an operational release of the system components to date.">
