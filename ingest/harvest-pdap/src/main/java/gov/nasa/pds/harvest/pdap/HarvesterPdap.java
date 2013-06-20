@@ -247,6 +247,7 @@ public class HarvesterPdap {
    */
   private String createLid(String prefix, String datasetId) {
     String lid = prefix + "." + datasetId;
+    lid = lid.toLowerCase();
     String conformingLid = lid.replaceAll(Constants.URN_ILLEGAL_CHARACTERS, "-");
     if (!conformingLid.equals(lid)) {
       log.log(new ToolsLogRecord(ToolsLevel.WARNING, "Dataset ID contains "
