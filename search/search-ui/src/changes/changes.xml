@@ -23,15 +23,15 @@
   </properties>
 
   <body>
-    <release version="1.3.0" date="TBD" description="TBD">
+    <release version="1.2.1" date="2013-06-21" description="This release of the Search Core is a component of the integrated release 3.1.1 of the PDS4 System. This is an operational release of the system components to date.">
     </release>
 
     <release version="1.2.0" date="2013-03-31" description="This release of the Search User Interface is a component of the integrated release 3.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="update">
-	Updated index.jsp to reflect change from 'mission' to 'investigation'.
+        Updated index.jsp to reflect change from 'mission' to 'investigation'.
       </action>
       <action dev="jpadams" type="update">
-	Updated search.jsp to append parentheses when an 'OR' is used in the query string.
+        Updated search.jsp to append parentheses when an 'OR' is used in the query string.
       </action>
     </release>
 

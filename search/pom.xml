@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>search</artifactId>
-  <version>1.3.0-dev</version>
+  <version>1.2.1</version>
   <packaging>pom</packaging>
 
   <name>Search</name>
