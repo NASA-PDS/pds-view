@@ -1,0 +1,209 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.72em;
+	background-color: White;
+	color: Black;
+}
+
+body, div, table, form, input, img, ul, li {
+	padding: 0;
+	margin: 0;
+}
+
+td {
+	white-space: nowrap;
+}
+
+p {
+	font-size:  1.0em;
+}
+
+h1, h2, h3, h4, h5, p {
+	padding: 0;
+	margin: 0.5em 0;
+}
+
+h1 {
+	font-size: 1.6em;
+}
+
+h2 {
+	font-size: 1.4em;
+}
+
+h3 {
+	font-size: 1.3em;
+}
+
+h4 {
+	font-size: 1.2em;
+}
+
+h5 {
+	font-size: 1.1em;
+}
+
+img {
+	border: none;
+}
+
+hr {
+	border: 0;
+	height: 1px;
+	color: #CCC3D1;
+	background-color: #CCC3D1;
+}
+
+.right {
+	text-align: right;
+}
+
+a:link,
+a:visited,
+a:hover {
+	color: #0000CD;
+}
+
+div.top-bar {
+	background: -moz-linear-gradient(center top , #D2DBE5, #E9EDF2) repeat scroll 0 0 transparent;
+    border-bottom: 1px solid #D2DBE5;
+    margin:0;
+    padding: 10px 0 25px 10px;
+}
+
+div.top-bar h1 {
+	color: #000099;
+	text-variant: small-caps;
+	margin:0;
+    padding:0;
+}
+
+div.form-section {
+	background-color: #F7F7F7;
+	padding: 10px;
+	border: 1px solid #CCCCCC;
+}
+
+#main-content {
+	width: 400px;
+	text-align: left;
+	margin: 70px auto;
+	display: block;
+}
+
+h2.title{
+	padding: 0;
+	margin: 25px 0 0 0;
+	color: #969696;
+	font-size: 1.4em;
+}
+
+p.transfer-text {
+	color: #4B4B4B;
+	padding:2px 0 7px 2px;
+	margin: 0;
+}
+
+div.form-row {
+	margin: 5px;
+}
+
+div.button-row {
+	width: 100%;
+	text-align: center;
+}
+
+div.label {
+	float: left;
+    text-align: right;
+    margin-right: 2px;
+    width: 100px;
+}
+
+div.form-section .label {
+	line-height: 20px;
+    vertical-align: middle;
+}
+
+.set-info, #name, #profile {
+	width: 200px;
+}
+
+.modal-section {
+	display:none;
+	padding: 10px;
+}
+
+div.modal-section .label {
+	font-weight: bold;
+	float: left;
+    text-align: right;
+    margin-right: 2px;
+    width: 100px;
+}
+
+div.modal-section .form-row {
+	margin: 25px;
+	text-align:left;
+	width: 100%;
+}
+
+.file-list {
+	margin-left:102px;
+}
+
+.hidden-files {
+	display: none;
+}
+
+.log-set-header {
+	font-variant: small-caps;
+	font-weight:bold;
+	font-size:125%;
+	text-align: center;
+	width:100%;
+}
+
+.form-row .ui-icon {
+	float: right;
+	margin-right: 40px;
+}
+
+.form-row .add-log {
+	float: left;
+	margin-left: 10px;
+	margin-right: 5px;
+	line-height: 50px;
+	vertical-align: top;
+}
+
+div.add-log-section {
+	padding: 3px;
+}
+
+.add-log-section p {
+	text-decoration: none;
+	line-height: 16px;
+	vertical-align: middle;
+}
+
+.form-row .log-header {
+	font-weight: bold;
+	text-align: center;
+}
+
+.add-log-section {
+	cursor: pointer;
+}
+
+.highlight-text {
+	color: blue;
+}
+
+.remove-icon {
+	width: 15px;
+	position: relative; 
+	float: right; 
+	margin-right: 5px;
+	cursor: pointer;
+}
