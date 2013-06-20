@@ -125,7 +125,7 @@
           <li>To run Sawmill, execute the following commands:
             <source>
 % cd /usr/local/report/sawmill
-% nohup ./sawmill -ws t -v e > /usr/local/reportsawmill_logs/&lt;current_date_in_YYYYMMDD_formate&gt;.log 2>&amp;1&amp;
+% nohup ./sawmill -ws t -v e > /usr/local/report/sawmill_logs/&lt;current_date_in_YYYYMMDD_formate&gt;.log 2>&amp;1&amp;
             </source>
 	    <p><i>Note: This command works in Bash shell. Modify accordingly for other shells.</i>
 	    </p>

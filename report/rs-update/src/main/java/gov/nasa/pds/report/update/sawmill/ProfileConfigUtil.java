@@ -1,3 +1,18 @@
+//	Copyright 2013, by the California Institute of Technology.
+//	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+//	Any commercial use must be negotiated with the Office of Technology 
+//	Transfer at the California Institute of Technology.
+//	
+//	This software is subject to U. S. export control laws and regulations 
+//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+//	is subject to U.S. export control laws and regulations, the recipient has 
+//	the responsibility to obtain export licenses or other export authority as 
+//	may be required before exporting such information to foreign countries or 
+//	providing access to foreign nationals.
+//	
+//	$Id$
+//
+
 package gov.nasa.pds.report.update.sawmill;
 
 import gov.nasa.pds.report.update.model.LogPath;
@@ -16,7 +31,7 @@ import org.apache.commons.io.FileUtils;
  * 
  */
 public class ProfileConfigUtil {
-	private static final String DEFAULT_CFG = "default.cfg";
+	private static final String DEFAULT_CFG = "default_profile.cfg";
 
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	private File baseCfg;
@@ -26,23 +41,6 @@ public class ProfileConfigUtil {
 
 	private String sourcesTxt;
 	private String pathname0;
-
-	/*
-	 * public ProfileConfigUtil(final LogPath logPath, final String localPath,
-	 * final String name) throws IOException { EnvProperties env = new
-	 * EnvProperties(localPath); this.sourcesTxt = ""; //this.logPath =
-	 * env.getSawmillLogHome() + "/" + logDest;
-	 * 
-	 * this.logPath = logPath; this.logPath.setLogHome(env.getSawmillLogHome());
-	 * 
-	 * this.profileName = name;
-	 * 
-	 * this.baseCfg = new File(localPath + "/default.cfg");
-	 * 
-	 * this.outputCfg = new File(env.getSawmillProfileHome() + '/' +
-	 * this.profileName.replace('-', '_') + ".cfg"); //Must replace all dashes
-	 * from profile name, otherwise Sawmill will fail }
-	 */
 
 	public ProfileConfigUtil(final LogPath logPath, final String localPath,
 			final String profileHome, final String profileName)

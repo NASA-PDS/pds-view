@@ -1,4 +1,4 @@
-// Copyright 2006-2010, by the California Institute of Technology.
+// Copyright 2013, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -11,6 +11,7 @@
 // providing access to foreign nationals.
 //
 // $Id$
+
 package gov.nasa.pds.report.update.cli.options;
 
 import org.apache.commons.cli.Options;

@@ -1,3 +1,18 @@
+//	Copyright 2013, by the California Institute of Technology.
+//	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+//	Any commercial use must be negotiated with the Office of Technology 
+//	Transfer at the California Institute of Technology.
+//	
+//	This software is subject to U. S. export control laws and regulations 
+//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+//	is subject to U.S. export control laws and regulations, the recipient has 
+//	the responsibility to obtain export licenses or other export authority as 
+//	may be required before exporting such information to foreign countries or 
+//	providing access to foreign nationals.
+//	
+//	$Id$
+//
+
 package gov.nasa.pds.report.update.sawmill;
 
 import gov.nasa.pds.report.update.RSUpdateException;
@@ -9,21 +24,6 @@ import java.util.logging.Logger;
 
 public class SawmillDB {
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
-
-	// private String profileName;
-	// private String dbOption;
-	// private String sawHome;
-
-	/**
-	 * Constructor for web interface where environment is already defined
-	 * 
-	 * @param env
-	 * @param profileName
-	 * @param isNewProfile
-	 * @throws IOException
-	 */
-	public SawmillDB() throws IOException {
-	}
 
 	private String getDbOption(boolean isNew) {
 		if (isNew) {
@@ -41,9 +41,9 @@ public class SawmillDB {
 		Runtime rt = Runtime.getRuntime();
 		Process pr = null;
 		try {
-			this.LOG.info("Executing: " + sawmillHome + "/sawmill.cgi -p "
+			this.LOG.info("Executing: " + sawmillHome + "/sawmill -p "
 					+ profileName + " -a " + dbOption);
-			pr = rt.exec(sawmillHome + "/sawmill.cgi -p " + profileName
+			pr = rt.exec(sawmillHome + "/sawmill -p " + profileName
 					+ " -a " + dbOption);
 
 			input = new BufferedReader(new InputStreamReader(pr
@@ -52,7 +52,7 @@ public class SawmillDB {
 			while ((line = input.readLine()) != null) {
 				if (line.contains("Error")) {
 					throw new RSUpdateException(
-							"Error while running sawmill.cgi.");
+							"Error while running sawmill software.");
 				}
 				this.LOG.info(line);
 			}
