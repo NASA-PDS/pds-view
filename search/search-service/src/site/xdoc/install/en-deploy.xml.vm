@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011-2012, by the California Institute of Technology.
+  Copyright 2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -39,98 +39,109 @@
     <section name="System Configuration">
       <subsection name="Machine Information">
       <p>The following table describes the machines that require the installation of the Search Service, the purpose for the machine, and the URL with port for the Search Service once installation has been completed:</p>
-      <table style="width: 700px">
-	<tr><th>Machine Name</th><th>Purpose</th><th>Search Service URL</th></tr>
-	<tr><td>pdsbeta</td><td>Development/Test</td><td>http://pdsbeta:8080/${project.artifactId}</td></tr>
-	<tr><td>pdsweb1</td><td>Website Operations</td><td>http://pdsweb1/${project.artifactId}</td></tr>
-	<tr><td>pdsweb2</td><td>Website Operations</td><td>http://pdsweb1/${project.artifactId}</td></tr>
-	<tr><td>pdssrv1</td><td>Search Service Operations</td><td>http://pdssrv1/${project.artifactId}</td></tr>
-	<tr><td>pdssrv2</td><td>Search Service Operations</td><td>http://pdssrv2/${project.artifactId}</td></tr>
+      <table>
+        <tr><th>Machine Name</th><th>Purpose</th><th>Search Service URL</th></tr>
+        <tr><td>pdsbeta</td><td>Development/Test</td><td>http://pdsbeta:8080/${project.artifactId}</td></tr>
+        <tr><td>pdsweb1</td><td>Website Operations</td><td>http://pdsweb1/${project.artifactId}</td></tr>
+        <tr><td>pdsweb2</td><td>Website Operations</td><td>http://pdsweb1/${project.artifactId}</td></tr>
+        <tr><td>pdssrv1</td><td>Search Service Operations</td><td>http://pdssrv1/${project.artifactId}</td></tr>
+        <tr><td>pdssrv2</td><td>Search Service Operations</td><td>http://pdssrv2/${project.artifactId}</td></tr>
       </table>
       </subsection>
+
       <subsection name="Operationss Apache Configuration">
-	<p>The following configuration needs to be completed on all <strong>Website Operations</strong> machines in order to properly map the URLs to the Search Service Operations.  Open the Apache httpd.conf file and add the following:</p>
-	<source>
+        <p>The following configuration needs to be completed on all <strong>Website Operations</strong> machines in order to properly map the URLs to the Search Service Operations.  Open the Apache httpd.conf file and add the following:</p>
+
+        <source>
 ProxyPass /tools/search-service/ http://pdsops.jpl.nasa.gov/search-service/
 ProxyPass /tools/search-service http://pdsops.jpl.nasa.gov/search-service/
 ProxyPassReverse /tools/search-service/ http://pdsops.jpl.nasa.gov/search-service/
 ProxyPassReverse /tools/search-service http://pdsops.jpl.nasa.gov/search-service/
-	</source>
-      </subsection>
-      <subsection name="Security">
-      <p>Changes need to be made to Apache Tomcat configuration in order to properly secure the application.  The following configuration needs to be added to the Host section of the <i>$TOMCAT_HOME/conf/server.xml</i> file on all machines:</p>
+        </source>
 
-      <source>
-      &lt;Host name="localhost"  appBase="webapps"
-            unpackWARs="true" autoDeploy="true"&gt;
-        .
-        .
-        .
-        &lt;Context path="/search-service/pds/update" docBase="" &gt;
-          &lt;Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="127.0.0.1" /&gt;
-        &lt;/Context&gt;
-      &lt;/Host&gt;
-      </source>
-    </subsection>
+      </subsection>
+
+      <subsection name="Security">
+        <p>Changes need to be made to Apache Tomcat configuration in order to properly secure the application.  The following configuration needs to be added to the Host section of the <i>$TOMCAT_HOME/conf/server.xml</i> file on all machines:</p>
+
+        <source>
+&lt;Host name="localhost"  appBase="webapps"
+      unpackWARs="true" autoDeploy="true"&gt;
+  .
+  .
+  .
+  &lt;Context path="/search-service/pds/update" docBase="" &gt;
+    &lt;Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="127.0.0.1" /&gt;
+  &lt;/Context&gt;
+&lt;/Host&gt;
+        </source>
+      </subsection>
     </section>
 
     <section name="Deploying the Application">
       <p>The following section details the deployment procedures for the Initial Installation and Upgrade of the Search Service software of the PDS Engineering machines noted above.</p>
 
       <subsection name="Initial Installation">
-	<ol>
-	  <li>Create a symbolic link to the Search Service installation directory to provide an easier method of upgrade in the future.  The following demonstrates how to create this symbolic link (<i>requires root access</i>):
-	    <source>
+        <ol>
+          <li>Create a symbolic link to the Search Service installation directory to provide an easier method of upgrade in the future.  The following demonstrates how to create this symbolic link (<i>requires root access</i>):
+            <source>
 ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
-	    </source>
-	  </li>
-	  <li><p>Change the owner of all the Search Service configuration, software, and documentation to the <i>pds4</i> user (<i>requires root access</i>):</p>
-	    <source>
-% chown -R pds4 /usr/local/${project.artifactId}
-	    </source>
-	  </li>
-	  <li><p>Create a Tomcat context file <i>${project.artifactId}.xml</i> to refer to the Solr WAR file (found in the $SEARCH_SERVICE_HOME directory) and place it in the <i>$TOMCAT_HOME/conf/Catalina/localhost</i> directory.  The <i>${project.artifactId}.xml</i> file should look as follows:</p>
-	    <source>
-&lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;Context docBase="/usr/local/${project.artifactId}/solr.war" debug="0" crossContext="true"&gt;
-  &lt;Environment name="solr/home" type="java.lang.String" value="/usr/local/${project.artifactId}" override="true" /&gt;
-  &lt;Parameter name="javax.xml.transform.TransformerFactory" type="java.lang.String" value="net.sf.saxon.TransformerFactoryImpl" override="true"/&gt;
-  &lt;Loader className="org.apache.catalina.loader.VirtualWebappLoader" virtualClasspath="/usr/local/${project.artifactId}/lib/saxon-9.jar"/&gt;
-&lt;/Context&gt;
-	    </source>
-	  </li>
-	  <li>Modify <i>/etc/init.d/tomcat7</i> by inserting the following into the top of the document in order to set the following environment variables.  <b>Verify this value is not reset elsewhere in the script.</b>
-	    <source>
-CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.pds.home=/usr/local/${project.artifactId}"
-	    </source>
-	  </li>
-	  <li>Restart Tomcat server</li>
-	  <li>Test installation by going to http://localhost:8080/${project.artifactId}/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
-	</ol>
-      </subsection>
-      <subsection name="Upgrade To New Version">
-	<ol>
-	  <li>Shutdown Tomcat.</li>
-	  <li>Change Search Service symbolic link to new location:
-	    <source>
-rm /usr/local/${project.artifactId}
-
-ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
-	    </source>
-	  </li>
+            </source>
+          </li>
           <li><p>Change the owner of all the Search Service configuration, software, and documentation to the <i>pds4</i> user (<i>requires root access</i>):</p>
             <source>
 % chown -R pds4 /usr/local/${project.artifactId}
             </source>
           </li>
-	  <li>Start Tomcat server.</li>
-	  <li>Test installation by going to the URLs noted in the table in <a href="#System_Configuration">System Configuration</a> above.</li>
-	</ol>
+          <li><p>Create a Tomcat context file <i>${project.artifactId}.xml</i> to refer to the Solr WAR file (found in the $SEARCH_SERVICE_HOME directory) and place it in the <i>$TOMCAT_HOME/conf/Catalina/localhost</i> directory.  The <i>${project.artifactId}.xml</i> file should look as follows:</p>
+
+            <source>
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;Context docBase="/usr/local/${project.artifactId}/solr.war" debug="0" 
+      crossContext="true"&gt;
+  &lt;Environment name="solr/home" type="java.lang.String" 
+        value="/usr/local/${project.artifactId}" override="true" /&gt;
+  &lt;Parameter name="javax.xml.transform.TransformerFactory" 
+        type="java.lang.String" value="net.sf.saxon.TransformerFactoryImpl" 
+        override="true"/&gt;
+  &lt;Loader className="org.apache.catalina.loader.VirtualWebappLoader" 
+        virtualClasspath="/usr/local/${project.artifactId}/lib/saxon-9.jar"/&gt;
+&lt;/Context&gt;
+            </source>
+          </li>
+          <li>Modify <i>/etc/init.d/tomcat7</i> by inserting the following into the top of the document in order to set the following environment variables.  <b>Verify this value is not reset elsewhere in the script.</b>
+            <source>
+CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.pds.home=/usr/local/${project.artifactId}"
+            </source>
+          </li>
+          <li>Restart Tomcat server</li>
+          <li>Test installation by going to http://localhost:8080/${project.artifactId}/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
+        </ol>
+      </subsection>
+
+      <subsection name="Upgrade To New Version">
+        <ol>
+          <li>Shutdown Tomcat.</li>
+          <li>Change Search Service symbolic link to new location:
+            <source>
+rm /usr/local/${project.artifactId}
+
+ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
+            </source>
+          </li>
+          <li><p>Change the owner of all the Search Service configuration, software, and documentation to the <i>pds4</i> user (<i>requires root access</i>):</p>
+            <source>
+% chown -R pds4 /usr/local/${project.artifactId}
+            </source>
+          </li>
+          <li>Start Tomcat server.</li>
+          <li>Test installation by going to the URLs noted in the table in <a href="#System_Configuration">System Configuration</a> above.</li>
+        </ol>
       </subsection>
     </section>
+
     <section name="Common Errors">
       <p>See the <a href="./index.html#Common_Errors">Installation Common Errors</a></p>
     </section>
-      
   </body>
 </document>

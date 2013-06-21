@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011-2012, by the California Institute of Technology.
+  Copyright 2011-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -36,49 +36,58 @@
     </section>
 
     <section name="Configuration">
-	See the <a href="http://lucene.apache.org/solr/">Apache Solr website</a> and <a href="http://wiki.apache.org/solr/">wiki</a> for more information on configuring Apache Solr.  More Search Service configuration changes TBD.
+      <p>See the <a href="http://lucene.apache.org/solr/">Apache Solr website</a> and <a href="http://wiki.apache.org/solr/">wiki</a> for more information on configuring Apache Solr.  More Search Service configuration changes TBD.
+      </p>
     </section>
 
     <section name="Search Protocols">
       <subsection name="PDS Search Protocol">
-	<p>See the <a href="../../docs/pds2010_pds_search_protocol.pdf">PDS Search Protocol Document</a> for more information on querying the Search Service for PDS data and metadata.</p>
+        <p>See the <a href="../../docs/pds2010_pds_search_protocol.pdf">PDS Search Protocol Document</a> for more information on querying the Search Service for PDS data and metadata.
+        </p>
       </subsection>
+
       <subsection name="PDAP Protocol">
-	TBD
+        <p>TBD
+        </p>
       </subsection>
     </section>
 
     <section name="Common Errors">
       <subsection name="org.xml.sax.SAXParseException: A pseudo attribute name is expected.">
-	<p>This error usually means there is a typo in the Search Service Tomcat context file.  More specifically, make sure the first line in <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> matches this exactly:
+        <p>This error usually means there is a typo in the Search Service Tomcat context file.  More specifically, make sure the first line in <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> matches this exactly:
         </p>
         <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
         </source>
-	See <a href="../install/index.html#Deploying_the_Application">Deploying the Application</a> in the Install Guide for more information on creating this file.
+        <p>See <a href="../install/index.html#Deploying_the_Application">Deploying the Application</a> in the Install Guide for more information on creating this file.
+        </p>
       </subsection>
+
       <subsection name="Provider net.sf.saxon.TransformerFactoryImpl not found">
         <p>This error occurs when the saxon-9.jar is not in the classpath.  The following are mitigation strategies:</p>
-	<ul>
-	  <li>Verify the following line is in <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i>:
-	    <source>
-&lt;Loader className="org.apache.catalina.loader.VirtualWebappLoader" virtualClasspath="/usr/local/${project.artifactId}/lib/saxon-9.jar"/&gt;
-	    </source>
-	    See <a href="../install/index.html#Deploying_the_Application">Deploying the Application</a> in the Install Guide for more information on creating this file.
-	  </li>
-	  <li>Verify the path specified for virtualClasspath actually exists.</li>
-	</ul>
+        <ul>
+          <li>Verify the following line is in <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i>:
+            <source>
+&lt;Loader className="org.apache.catalina.loader.VirtualWebappLoader" 
+    virtualClasspath="/usr/local/${project.artifactId}/lib/saxon-9.jar"/&gt;
+            </source>
+            <p>See <a href="../install/index.html#Deploying_the_Application">Deploying the Application</a> in the Install Guide for more information on creating this file.
+            </p>
+          </li>
+          <li>Verify the path specified for virtualClasspath actually exists.</li>
+        </ul>
       </subsection>
+
       <subsection name="XSLT transformation error java.io.IOException: XSLT transformation error">
         <p>This error occurs when the CATALINA_OPTS environment variable is not properly set, or set multiple times in /usr/local/tomcat/catalina.sh (or /etc/init.d):</p>
         <source>
 export CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.pds.home=/usr/local/${project.artifactId}"
         </source>
       </subsection>
+
       <subsection name="All Searches Return 0 Results">
-	<p>This error occurs when the Search Service is not populated with data.  See the <a href="../../search-core">Search Core</a> for information on populating the Search Service.</p>
+        <p>This error occurs when the Search Service is not populated with data.  See the <a href="../../search-core">Search Core</a> for information on populating the Search Service.</p>
       </subsection>
     </section>
-
   </body>
 </document>

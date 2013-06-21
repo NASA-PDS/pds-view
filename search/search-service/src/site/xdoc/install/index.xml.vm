@@ -33,7 +33,7 @@
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
-	<li><a href="#Security">Security</a></li>
+        <li><a href="#Security">Security</a></li>
         <li><a href="#Common_Errors">Common Errors</a></li>
       </ul>
     </section>
@@ -65,6 +65,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
         </p>
       </subsection>
     </section>
+
     <section name="Unpacking the Package">
       <p>Download the <i>${project.artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/search/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. The installation directory may vary from environment to environment but in UNIX-based environments it is typical to install software packages in the <i>/usr/local</i> directory and in Windows-based environments it is typical to install software packages in the <i>C:\Program Files</i> directory. Unpack the selected binary distribution file with one of the following commands:
       </p>
@@ -94,22 +95,22 @@ or
           <p>This directory contains a local web site with the Search Service documentation, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
           </p>
         </li>
-	<li><b>experimental/</b><br />
-	  <p>This directory contains the configuration for the experimental core for Solr. This directory is intended for development and testing purposes only, and can be ignored.</p>
-	</li>
-	<li><b>lib/</b><br />
-	  <p>This directory contains the the jars used by the Solr software.</p>
-	</li>
-	<li><b>pds/</b><br />
-	  <p>This directory contains the configuration for the Solr core for the PDS Search.  This directory path is the SEARCH_HOME referenced in the <a href="../../search-core/operate/index.html">Search Core Operation documentation</a>
-	  </p>
-	</li>
-	<li><b>solr.war</b><br />
-	  <p>This WAR file is the Solr software application to be deployed to Tomcat.</p>
-	</li>
-	<li><b>solr.xml</b><br />
-	  <p>This XML file provides the basic, initial configuration for the Solr software.</p>
-	</li>
+        <li><b>experimental/</b><br />
+          <p>This directory contains the configuration for the experimental core for Solr. This directory is intended for development and testing purposes only, and can be ignored.</p>
+        </li>
+        <li><b>lib/</b><br />
+          <p>This directory contains the the jars used by the Solr software.</p>
+        </li>
+        <li><b>pds/</b><br />
+          <p>This directory contains the configuration for the Solr core for the PDS Search.  This directory path is the SEARCH_HOME referenced in the <a href="../../search-core/operate/index.html">Search Core Operation documentation</a>
+          </p>
+        </li>
+        <li><b>solr.war</b><br />
+          <p>This WAR file is the Solr software application to be deployed to Tomcat.</p>
+        </li>
+        <li><b>solr.xml</b><br />
+          <p>This XML file provides the basic, initial configuration for the Solr software.</p>
+        </li>
       </ul>
     </section>
 
@@ -120,79 +121,84 @@ or
       <p><i>See <a href="./en-deploy.html">Engineering Node Deployment documentation</a> for EN-specific deployment instructions.</i></p>
 
       <subsection name="Initial Installation">
-	<ol>
-	  <li>Create a symbolic link to the Search Service installation directory to provide an easier method of upgrade in the future.  The following demonstrates how to create this symbolic link:
-	    <source>
+        <ol>
+          <li>Create a symbolic link to the Search Service installation directory to provide an easier method of upgrade in the future.  The following demonstrates how to create this symbolic link:
+            <source>
 ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
-	    </source>
-	  </li>
-	  <li>Create a Tomcat context file <i>${project.artifactId}.xml</i> to refer to the Solr WAR file (found in the $SEARCH_SERVICE_HOME directory) and place it in the <i>$TOMCAT_HOME/conf/Catalina/{hostname}</i> directory.  The <i>${project.artifactId}.xml</i> file should look something like this, with the paths modifed as needed:
-	    <source>
+            </source>
+          </li>
+          <li>Create a Tomcat context file <i>${project.artifactId}.xml</i> to refer to the Solr WAR file (found in the $SEARCH_SERVICE_HOME directory) and place it in the <i>$TOMCAT_HOME/conf/Catalina/{hostname}</i> directory.  The <i>${project.artifactId}.xml</i> file should look something like this, with the paths modifed as needed:
+            <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;Context docBase="/usr/local/${project.artifactId}/solr.war" debug="0" crossContext="true"&gt;
-  &lt;Environment name="solr/home" type="java.lang.String" value="/usr/local/${project.artifactId}" override="true" /&gt;
-  &lt;Parameter name="javax.xml.transform.TransformerFactory" type="java.lang.String" value="net.sf.saxon.TransformerFactoryImpl" override="true"/&gt;
-  &lt;Loader className="org.apache.catalina.loader.VirtualWebappLoader" virtualClasspath="/usr/local/${project.artifactId}/lib/saxon-9.jar"/&gt;
+&lt;Context docBase="/usr/local/${project.artifactId}/solr.war" debug="0" 
+      crossContext="true"&gt;
+  &lt;Environment name="solr/home" type="java.lang.String" 
+        value="/usr/local/${project.artifactId}" override="true" /&gt;
+  &lt;Parameter name="javax.xml.transform.TransformerFactory" type="java.lang.String" 
+        value="net.sf.saxon.TransformerFactoryImpl" override="true"/&gt;
+  &lt;Loader className="org.apache.catalina.loader.VirtualWebappLoader"
+        virtualClasspath="/usr/local/${project.artifactId}/lib/saxon-9.jar"/&gt;
 &lt;/Context&gt;
-	    </source>
-	  </li>
-	  <li>Modify $TOMCAT_HOME/bin/catalina.sh (or /etc/init.d/tomcat) by inserting the following into the top of the document in order to set the following environment variables:
-	    <source>
+            </source>
+          </li>
+          <li>Modify <i>$TOMCAT_HOME/bin/catalina.sh</i> (or /etc/init.d/tomcat) by inserting the following into the top of the document in order to set the following environment variables:
+            <source>
 CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.pds.home=/usr/local/${project.artifactId}"
-	    </source>
-	  </li>
-	  <li>Restart Tomcat server</li>
-	  <li>Test installation by going to http://localhost:8080/${project.artifactId}/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
-	</ol>
+            </source>
+          </li>
+          <li>Restart Tomcat server</li>
+          <li>Test installation by going to http://localhost:8080/${project.artifactId}/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
+        </ol>
       </subsection>
+
       <subsection name="Upgrade To New Version">
-	<ol>
-	  <li>Shutdown Tomcat.</li>
-	  <li>Change Search Service symbolic link to new location:
-	    <source>
+        <ol>
+          <li>Shutdown Tomcat.</li>
+          <li>Change Search Service symbolic link to new location:
+            <source>
 rm /usr/local/${project.artifactId}
 
 ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
-	    </source>
-	  </li>
-	  <li>Start Tomcat server.</li>
-	  <li>Test installation by going to http://localhost:8080/${project.artifactId}/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
-	</ol>
+            </source>
+          </li>
+          <li>Start Tomcat server.</li>
+          <li>Test installation by going to http://localhost:8080/${project.artifactId}/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
+        </ol>
       </subsection>
     </section>
 
     <section name="Security">
       <p>The Solr software includes a URL endpoint to update the index.  This introduces a security vulnerability by allowing someone to modify the index without securing it.  The preferred method of security is to only allow updates to come from the local machine (localhost).  To do so, open the Apache Tomcat configuration file. <i>$TOMCAT_HOME/conf/server.xml</i>, for editing, and find the Host section in the document that looks similar to the following:</p>
       <source>
-      &lt;Host name="localhost"  appBase="webapps"
-            unpackWARs="true" autoDeploy="true"&gt;
-        .
-        .
-        .
-      &lt;/Host&gt;
+&lt;Host name="localhost"  appBase="webapps"
+      unpackWARs="true" autoDeploy="true"&gt;
+  .
+  .
+  .
+&lt;/Host&gt;
       </source>
       <p>Within this section, add the following code, which should be modified according to your specific installation.  The following assumes that the Search Service software is located at the Tomcat base level directory (i.e. http://localhost/search-service):</p>
       <source>
-    	&lt;Context path="/search-service/pds/update" docBase="" &gt;
-          &lt;Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="127.0.0.1" /&gt;
-        &lt;/Context&gt;
+&lt;Context path="/search-service/pds/update" docBase="" &gt;
+    &lt;Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="127.0.0.1" /&gt;
+&lt;/Context&gt;
       </source>
       <p>The IP address 127.0.0.1 represents the localhost IP address.  This can be modified to be any IP address of the machine you would like to have update access to the Search Service.</p>
     </section>
 
     <section name="Common Errors">
       <subsection name="HTTP 404 - Requested Resource Not Available">
-	<p>This error means the application failed to install correctly.  The following are potential mitigation strategies:</p>
-	<ul>
-	  <li>Verify domain and port are correct for the local Tomcat installation.</li>
-	  <li>Verify paths denoted for $TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml and CATALINA_OPTS are correct.</li>
-	  <li>View $TOMCAT_HOME/logs/catalina.<i>current-date</i>.log for information on potential causes of the failed deployment.</li>
-	</ul>
+        <p>This error means the application failed to install correctly.  The following are potential mitigation strategies:</p>
+        <ul>
+          <li>Verify domain and port are correct for the local Tomcat installation.</li>
+          <li>Verify paths denoted for $TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml and CATALINA_OPTS are correct.</li>
+          <li>View $TOMCAT_HOME/logs/catalina.<i>current-date</i>.log for information on potential causes of the failed deployment.</li>
+        </ul>
       </subsection>
+
       <subsection name="Other Errors">
-	<p>For other errors that arise while testing the installation, see the <a href="../operate/index.html#Common_Errors">Operate - Common Errors</a></p>
+        <p>For other errors that arise while testing the installation, see the <a href="../operate/index.html#Common_Errors">Operate - Common Errors</a></p>
       </subsection>
     </section>
-      
   </body>
 </document>
