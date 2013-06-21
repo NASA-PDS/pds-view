@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2011-2012, by the California Institute of Technology.
+  Copyright 2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -98,8 +98,8 @@ search.core.registry-url = http://localhost:8080/registry
 search.core.config-home = /usr/local/search-core/conf/pds/pds3
 	      		</source>
 	      	</li>
-	      	<li>Verify SEARCH_SERVICE_URL environment variable in the <i>/usr/local/${project.artifactId}/bin/env-vars file matches the location of the Search Service on the server.  Currently this should be set as follows:
-	      		<source>
+	      	<li>Verify SEARCH_SERVICE_URL environment variable in the <i>/usr/local/${project.artifactId}/bin/env-vars</i> file matches the location of the Search Service on the server.  Currently this should be set as follows:
+	      <source>
 SEARCH_SERVICE_URL=http://localhost:8080/search-service
 				</source>
 			</li>
