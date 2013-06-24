@@ -31,11 +31,11 @@
       <ul>
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
+        <li><a href="#Upgrade_an_Existing_Installation">Upgrade an Existing Installation</a></li>
         <li><a href="#Deploying_the_Database">Deploying the Database</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
         <li><a href="#General_Configuration">General Configuration</a></li>
         <li><a href="#Secure_Configuration">Secure Configuration</a></li>
-        <li><a href="#Deleting_the_Database">Deleting the Database</a></li>
       </ul>
     </section>
 
@@ -128,7 +128,94 @@ or
         </li>
       </ul>
     </section>
-    
+
+    <section name="Upgrade an Existing Installation">
+      <p>If this installation is an upgrade of an existing installation, then a determination as to whether to keep the existing database needs to be made.
+      </p>
+
+      <subsection name="Keep Existing Database">
+        <p>If the database is to be carried over to the upgraded installation, then the <a href="#Deploying_the_Database">Deploying the Database</a> section of this document should be skipped over but the following sections should be exercised as they would for a new installation with the exception that the configuration for the existing installation should be replicated in the upgrade:
+        </p>
+
+        <ul>
+          <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+          <li><a href="#General_Configuration">General Configuration</a></li>
+          <li><a href="#Secure_Configuration">Secure Configuration</a></li>
+        </ul>
+
+        <p>If the existing installation is version 1.3.0, then the database needs to be updated. The following is a set of instructions for creating the database and installing the registry schema that are dependent on the database server to be used in the current environment.
+        </p>
+
+        <p>For a Derby database instance, execute the following commands to update the database to version 1.4.0 and beyond:
+        </p>
+
+        <source>
+% cd ${project.artifactId}-${project.version}
+% java -Djava.ext.dirs=lib/ org.apache.derby.tools.ij
+ij> connect 'jdbc:derby:registry;user=registry';
+ij> run 'conf/registry-schema-upgrade-1.4.0.ddl';
+ij> exit;
+        </source>
+
+        <p>For a MySQL database, execute the following commands to update the MySQL database to version 1.4.0 and beyond:
+        </p>
+
+        <source>
+% cd ${project.artifactId}-${project.version}
+% mysql -u root -p -D registry &lt; conf/registry-schema-upgrade-1.4.0.ddl
+        </source>
+
+        <p>For a PostgreSQL database, execute the following commands to update the PostgreSQL database to version 1.4.0 and beyond:
+        </p>
+
+        <source>
+% cd ${project.artifactId}-${project.version}
+% psql -U postgres
+postgres=# \c registry registry
+postgres=# \i conf/registry-schema-upgrade-1.4.0.ddl
+postgres=# \q
+        </source>
+      </subsection>
+
+      <subsection name="Delete Existing Database">
+        <p>If the determination was to not keep the existing database, then the database can be deleted. Prior to deleting the database, shutdown the Tomcat server. The following is a set of instructions for deleting the database that are dependent on the database server used in the current environment.
+        </p>
+
+        <p>For a Derby database instance, execute the following to delete the database (the path was specified in the <a href="#Database_Configuration">Configuration</a> section):
+        </p>
+
+        <source>
+% cd /path/to/registrydb/home
+% rm -rf registry derby.log
+        </source>
+
+        <p>For a MySQL database instance, execute the following to delete the database from the database server: 
+        </p>
+
+        <source>
+% mysqladmin -u root -p drop registry
+        </source>
+
+        <p>For a PostgreSQL database instance, execute the following to delete the database from the database server: 
+        </p>
+
+        <source>
+% psql -U postgres
+postgres=# drop database registry
+postgres=# \q
+        </source>
+
+        <p>Once the database has been deleted, see the <a href="#Deploying_the_Database">Deploying the Database</a> section for instructions on how to create a new database and install the registry schema. When the new database is in place, restart the Tomcat server. The following sections should then be exercised as they would for a new installation with the exception that the configuration for the existing installation should be replicated in the upgrade:
+        </p>
+
+        <ul>
+          <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+          <li><a href="#General_Configuration">General Configuration</a></li>
+          <li><a href="#Secure_Configuration">Secure Configuration</a></li>
+        </ul>
+      </subsection>
+    </section>
+
     <section name="Deploying the Database">
       <p>If this is the first time the Registry Service has been installed, then a new registry database must be deployed. If you already have an existing registry database, see down to the <a href="#Database_Configuration">Configuration</a> section for instructions on how to configure the Registry Service to access the existing database. The following is a set of instructions for creating the database and installing the registry schema that are dependent on the database server to be used in the current environment.
       </p>
@@ -437,26 +524,6 @@ https://localhost:8443/registry/extrinsics
       </source>
 
       <p>The configuration above restricts access to the entire application. In addition, it sets up the security role that was configured during the Tomcat Server installation. If the configuration was changed above, the Tomcat Server must be restarted.
-      </p>
-    </section>
-
-    <section name="Deleting the Database">
-      <p>An existing registry database can be deleted for testing purposes or if installing a new instance of the Registry Service. Prior to deleting the database, shutdown the Tomcat server. The following is a set of instructions for deleting the database that are dependent on the database server used in the current environment. For a Derby database instance, execute the following to delete the database (the path was specified in the <a href="#Database_Configuration">Configuration</a> section):
-      </p>
-
-      <source>
-% cd /path/to/registrydb/home
-% rm -rf registry derby.log
-      </source>
-
-      <p>For a MySQL database instance, execute the following to delete the database from the database server: 
-      </p>
-
-      <source>
-% mysqladmin -u root -p drop registry
-      </source>
-
-      <p>Once the database has been deleted, see the <a href="#Deploying_the_Database">Deploying the Database</a> section for instructions on how to create a new database and install the registry schema. When the new database is in place, restart the Tomcat server.
       </p>
     </section>
   </body>
