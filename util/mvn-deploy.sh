@@ -90,7 +90,7 @@ mvn deploy --non-recursive
 cd rs-update
 mvn site
 mvn deploy
-cd ../profile-setup
+cd ../profile-manager
 mvn site
 mvn deploy
 cd ../..
@@ -98,8 +98,8 @@ cd ../..
 cd search
 mvn deploy --non-recursive
 cd search-core
-mvn site
-mvn deploy
+mvn -Dmaven.test.skip=true site
+mvn -Dmaven.test.skip=true deploy
 cd ../search-service
 mvn site
 mvn deploy

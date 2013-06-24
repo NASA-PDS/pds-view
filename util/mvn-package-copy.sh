@@ -43,7 +43,7 @@ cp ../../registry/registry-ui/target/registry-ui*bin* .
 
 echo "Copying the Report packages to the package directory."
 cp ../../report/rs-update/target/rs-update*bin* .
-cp ../../report/profile-setup/target/profile-setup*bin* .
+cp ../../report/profile-manager/target/profile-manager*bin* .
 
 echo "Copying the Search packages to the package directory."
 cp ../../search/search-core/target/search-core*bin* .
