@@ -453,7 +453,7 @@ https://localhost:8443/registry/extrinsics
       </p>
 
       <source>
-% mysqladmin -uroot -p drop registry
+% mysqladmin -u root -p drop registry
       </source>
 
       <p>Once the database has been deleted, see the <a href="#Deploying_the_Database">Deploying the Database</a> section for instructions on how to create a new database and install the registry schema. When the new database is in place, restart the Tomcat server.
