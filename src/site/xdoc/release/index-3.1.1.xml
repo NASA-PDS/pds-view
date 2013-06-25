@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2013, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology 
+  Transfer at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Release Description 3.1.1</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Release Description 3.1.1">
+      <p>This release of the PDS4 System represents a point build of Build 3b and is intended as an operational release of the system components to date. The following sections can be found in this document:
+      </p>
+
+      <ul>
+        <li><a href="#Reference_Documents">Reference Documents</a></li>
+        <li><a href="#Capabilities">Capabilities</a></li>
+        <li><a href="#Liens">Liens</a></li>
+        <li><a href="#System_Requirements">System Requirements</a></li>
+        <li><a href="#InstallationOperation">Installation/Operation</a></li>
+      </ul>
+    </section>
+
+    <section name="Reference Documents">
+      <p>This section details the controlling and applicable documents referenced for this release. The controlling documents are as follows:
+      </p>
+
+      <ul>
+        <li>Planetary Data System (PDS) Level 1, 2 and 3 Requirements, March 26, 2010.</li>
+        <li>Planetary Data System (PDS) 2010 Project Plan, February 2010.</li>
+        <li>Planetary Data System (PDS) 2010 System Architecture Specification, Version 1.2, May 25, 2011.</li>
+        <li>Planetary Data System (PDS) 2010 Operations Concept, February 2010.</li>
+        <li>Planetary Data System (PDS) General System Software Requirements Document (SRD), Version 1.0, June 11, 2011.</li>
+        <li>Planetary Data System (PDS) Harvest Tool Software Requirements and Design Document (SRD/SDD), Version 1.0, June 12, 2011.</li>
+        <li>Planetary Data System (PDS) Preparation Tools Software Requirements and Design Document (SRD/SDD), Version 0.1, October 6, 2010.</li>
+        <li>Planetary Data System (PDS) Registry Service Software Requirements and Design Document (SRD/SDD), Version 1.0, June 12, 2011.</li>
+        <li>Planetary Data System (PDS) Report Service Software Requirements and Design Document (SRD/SDD), Version 1.0, June 12, 2011.</li>
+        <li>Planetary Data System (PDS) Search Service Software Requirements and Design Document (SRD/SDD), Version 0.4, June 12, 2011.</li>
+        <li>Planetary Data System (PDS) Search Protocol, Version 0.2, May 23, 2012.</li>
+        <li>Planetary Data System (PDS) Security Service Software Requirements and Design Document (SRD/SDD), Version 1.0, June 11, 2011.</li>
+      </ul>
+
+      <p>The applicable documents are as follows:
+      </p>
+
+      <ul>
+        <li>NASA Planetary Data System PDS4 System Build 3b Test Plan</li>
+        <li>NASA Planetary Data System PDS4 System Build 3b Test Procedures &amp; Report</li>
+      </ul>
+    </section>
+
+    <section name="Capabilities">
+      <p>This section details the new, modified and corrected capabilities that comprise this release. They are summarized here for a system-level view. A more detailed list of capabilities can be found in the change logs for each component.
+      </p>
+
+      <subsection name="New Capabilities">
+        <p>There are no new capabilities for this release.
+        </p>
+      </subsection>
+
+      <subsection name="Modified Capabilities">
+        <p>The following capabilities have been modified for this release:
+        </p>
+
+        <ul>
+          <li>Validate Tool was modified to include the latest XML Schema and Schematron files (1000) generated from the PDS4 data model.
+          </li>
+          <li>Harvest Tool and Catalog Tool were modified to keep pace with changes occurring in the PDS4 data model for this release.
+          </li>
+          <li>Search Service was modified to provide an Engineering Node specific installation document as well as being built against the upgraded version of the registry-core component.
+          </li>
+        </ul>
+      </subsection>
+
+      <subsection name="Corrected Capabilities">
+        <p>The following capabilities were corrected in this release:
+        </p>
+
+        <ul>
+          <li>Registry Service was modified to address the issue with the replication capability.
+          </li>
+        </ul>
+      </subsection>
+    </section>
+
+    <section name="Liens">
+      <p>This section details the liens against the capabilities that have yet to be implemented or are partially implemented. They are summarized here for a system-level view. A more detailed list of liens can be found in the release notes for each component.
+      </p>
+
+      <ul>
+        <li>Need to update PDS4 Tools to keep pace with changes occurring in the PDS4 data model for this release.
+        </li>
+        <li>Need to update the Registry User Interface to work properly with a secured instance of the Registry Service.
+        </li>
+        <li>Upgrade miscellaneous portal interfaces to remove the dependence on the PDS3 catalog database.
+        </li>
+      </ul>
+    </section>
+
+    <section name="System Requirements">
+      <p>This section details the system requirements for installing and operating the software. Specific system requirements for each component in this release can be found in their respective Installation documents.
+      </p>
+
+      <subsection name="Java Runtime Environment">
+        <p>The custom software contained in this release was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically developed under Java version 1.6 and has only been tested with this version. The following commands test the local Java installation in a UNIX-based environment:
+        </p>
+
+        <source>
+% which java
+/usr/bin/java
+
+% java -version
+java version "1.6.0_26"
+Java(TM) SE Runtime Environment (build 1.6.0_26-b03-384-10M3425)
+Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
+        </source>
+
+        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.6, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The software package of choice is the Java Standard Edition (SE) 6, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
+        </p>
+      </subsection>
+
+      <subsection name="Java Application Server">
+        <p>The other main system requirement pertains to providing a Java application server for hosting certain components (Registry Service and Registry User Interface). The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Avoid version 7.0.29, there is a bug in this version causing an error when loading the Registry Service. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Apache Tomcat software can be downloaded from the <a href="http://tomcat.apache.org/" target="_blank">Apache Tomcat</a> page. Choose the version to download (6.0.X or 7.0.X) from the menu on the left. Details on downloading, installing and configuring an Apache Tomcat server can be found in the <a href="index-tomcat.html">Tomcat Deployment</a> document.
+        </p>
+      </subsection>
+    </section>
+
+    <section name="Installation/Operation">
+      <p>This section details the installation and operation of the software in this release. This release is intended for deployment in the Engineering Node operations environment with certain components deployed in the environments of participating Nodes. Details regarding the release for each of these components, including installation of the packages and operation of the associated software, can be found in the documentation for each component. This release is comprised of the following components:
+      </p>
+
+      <ul>
+        <li><a href="../ingest/index.html">Ingest</a></li>
+        <ul>
+          <li><a href="../ingest/catalog/index.html">Catalog Tool</a> - 1.5.1</li>
+          <li><a href="../ingest/harvest/index.html">Harvest Tool</a> - 1.4.1</li>
+        </ul>
+        <li><a href="../preparation/index.html">Preparation Tools</a></li>
+        <ul>
+          <li><a href="../preparation/core/index.html">Core Library</a> - 1.3.1</li>
+          <li><a href="../preparation/design/index.html">Design Tool</a> - 0.4.0</li>
+          <li><a href="../preparation/generate/index.html">Generate Tool</a> - 0.6.0</li>
+          <li><a href="../preparation/pds4-tools/index.html">PDS4 Tools</a> - 0.1.0</li>
+          <li><a href="../preparation/transform/index.html">Transform Tool</a> - 0.2.0</li>
+          <li><a href="../preparation/validate/index.html">Validate Tool</a> - 1.3.1</li>
+        </ul>
+        <li><a href="../registry/index.html">Registry</a></li>
+        <ul>
+          <li><a href="../registry/registry-service/index.html">Registry Service</a> - 1.4.1</li>
+          <li><a href="../registry/registry-ui/index.html">Registry User Interface</a> - 1.4.1</li>
+        </ul>
+        <li><a href="../report/index.html">Report Service</a> - 1.3.0</li>
+        <li><a href="../search/index.html">Search Service</a></li>
+        <ul>
+          <li><a href="../search/search-core/index.html">Search Core</a> - 1.2.1</li>
+          <li><a href="../search/search-service/index.html">Search Service</a> - 1.2.1</li>
+          <li><a href="../search/search-ui/index.html">Search User Interface</a> - 1.2.1</li>
+        </ul>
+        <li><a href="../security/index.html">Security Service</a> - 1.2.0</li>
+      </ul>
+
+      <p>Not all of the above components are required for a given installation of the software for this release. The following sections detail typical deployment scenarios for the Engineering Node and the Discipline Nodes, respectively.
+      </p>
+
+      <subsection name="Engineering Node Environment">
+        <p>This section details deployment to the Engineering Node operations environment. The following diagram details the deployment of the major components of this release and gives a very high-level view of the interfaces between the components and system resources:
+        </p>
+
+        <center>
+          <a href="../images/en-deploy-3.0.0.jpg" target="_blank"><img alt="EN Deployment" src="../images/en-deploy-3.0.0-scale.jpg" border="1" /></a><br/>
+          Click the image for a larger version.
+        </center>
+
+        <p>The following diagram depicts the EN system flow, starting with central catalog migration, data product registration and finishing up with search index generation:
+        </p>
+
+        <center>
+          <a href="../images/en-system-flow-2.2.0.jpg" target="_blank"><img alt="EN System Flow" src="../images/en-system-flow-2.2.0-scale.jpg" border="1" /></a><br/>
+          Click the image for a larger version.
+        </center>
+
+        <p>The components depicted above serve as the operational deployment of this release for the Engineering Node. The main purpose of this deployment is to begin side-by-side operations with the existing system and the Engineering Node.
+        </p>
+
+        <ul>
+          <li><b>Catalog Tool</b><br/>
+            <p>The Catalog Tool provides the means for registering PDS3 catalog files with the Registry Service. This tool provides functionality for comparing, validating and ingesting a catalog submission.
+            </p>
+          </li>
+          <li><b>Harvest Tool</b><br/>
+            <p>The Harvest Tool provides the means for registering products with the Registry Service. This tool reads a PDS4 product label, extracts specified metadata and registers the product with the registry. This tool allows the user to register a batch of products and generates a summary report.
+            </p>
+          </li>
+          <li><b>Registry Service</b><br/>
+            <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. For this release, the registry is populated with the PDS4 context products migrated from the PDS3 central catalog database. The web-based endpoint for this service is <a href="http://pds.nasa.gov/services/registry/" target="_blank">http://pds.nasa.gov/services/registry/</a>.
+            </p>
+          </li>
+          <li><b>Registry User Interface</b><br/>
+<!--
+            <p>The Registry User Interface provides a simple viewing capability of the contents of the associated Registry Service. It is intended to offer visual verification of successful registration of products. The web-based endpoint for this application is <a href="http://pdsops2.jpl.nasa.gov/services/registry-ui/" target="_blank">http://pdsops2.jpl.nasa.gov/services/registry-ui/</a>.
+            </p>
+-->
+            <p>The Registry User Interface provides a simple viewing capability of the contents of the associated Registry Service. It is intended to offer visual verification of successful registration of products as well as the ability to update the status for registered products.
+            </p>
+          </li>
+          <li><b>Search Service</b><br/>
+            <p>The Search Service provides functionality for accepting queries from data consumers for registered products and includes functionality for retrieving search results. This component acts as the interface to the Registry Service for the data consumer. The web-based endpoint for this service is <a href="http://pds.nasa.gov/services/search/" target="_blank">http://pds.nasa.gov/services/search/</a>.
+            </p>
+          </li>
+          <li><b>Search User Interface</b><br />
+            <p>The Search User Interface software serves as the user interface for the Search Service on the PDS website. The web-based endpoint for this application is <a href="http://pds.nasa.gov/tools/data-search/" target="_blank">http://pds.nasa.gov/tools/data-search/</a>.
+            </p>
+          </li>
+          <li><b>Report Service</b><br/>
+            <p>The Report Service provides the capability for capturing and reporting metrics. With this release and the previous release, this service is undergoing testing of configurations and features with a set of metrics from the Engineering Node and the Imaging Node at JPL. This service is not yet available to the user community. The web-based endpoint for this service is <a href="http://pds.nasa.gov/services/report/" target="_blank">http://pds.nasa.gov/services/report/</a>.
+            </p>
+          </li>
+          <li><b>Security Service</b><br/>
+            <p>The Security Service provides authentication and authorization functions for the system. This service is satisfied with an open source directory service. The directory service is populated with the PDS personnel list extracted from the PDS3 central catalog database. The application server hosting the Registry Service and Registry User Interface is configured to restrict access to certain URLs and to forward those requests to this service for authentication and authorization.
+            </p>
+          </li>
+        </ul>
+      </subsection>
+
+      <subsection name="Discipline Node Environment">
+        <p>This section details the deployment to a Discipline Node environment. The Nodes are asked to download, install and exercise the software that makes up this release. The following diagram details an example deployment of selected components:
+        </p>
+
+        <center>
+          <a href="../images/dn-deploy-3.0.0.jpg" target="_blank"><img alt="DN Deployment" src="../images/dn-deploy-3.0.0-scale.jpg" border="1" /></a><br/>
+          Click the image for a larger version.
+        </center>
+
+        <p>The selected components depicted above are intended to aid the Nodes in their PDS3 to PDS4 conversion exercises. The following diagram depicts a normalized system flow, starting with schema design, continuing onto data product label generation and validation and finishing up with data product registration:
+        </p>
+
+        <center>
+          <a href="../images/dn-system-flow-3.0.0.jpg" target="_blank"><img alt="DN System Flow" src="../images/dn-system-flow-3.0.0-scale.jpg" border="1" /></a><br/>
+          Click the image for a larger version.
+        </center>
+
+        <p>This diagram identifies where the system components come into play within the system flow. These components and the ones depicted in the deployment diagram, are described in more detail with respect to how the components can be utilized in the PDS3 to PDS4 conversion exercises with an eye towards using these components in operations:
+        </p>
+
+        <ul>
+          <li><b>Design Tool</b><br/>
+            <p>The Design Tool is intended to aid users in the development of their data product label schemas. This release identifies two off-the-shelf products (Oxygen and Eclipse) that are available for this purpose. The provided documentation guides the user with respect to the download, installation and operation of each of these products.
+            </p>
+          </li>
+          <li><b>Generate Tool</b><br/>
+            <p>The Generate Tool is intended to aid users in the generation of their data product labels. This tool was developed by the Imaging Node at JPL and provides a command-line interface for generating PDS4 Labels from either a PDS3 Label or a PDS-specific DOM object.
+            </p>
+          </li>
+          <li><b>Validate Tool</b><br/>
+            <p>The Validate Tool comes pre-packaged with the latest version of the generic schemas generated from the data model. The tool allows the user to validate collections of products or single products against the associated generic schema. Specific schemas can be passed into the tool to enable a more detailed validation check. Although the Design Tools listed above provide a file-by-file validation capability, this tool allows the user to validate a batch of products and generates a summary report.
+            </p>
+          </li>
+          <li><b>Transform Tool / PDS4 Tools</b><br/>
+            <p>The Transform Tool and the PDS4 Tools library comprise the initial release of the product transformation capability. The Transform Tool provides a command-line interface to a subset of the functions offered by the PDS4 Tools library. In addition, the PDS4 Tools library provides functionality for accessing PDS4 data objects. The functionality of both of these components will be expanded in future releases.
+            </p>
+          </li>
+          <li><b>Harvest Tool</b><br/>
+            <p>The Harvest Tool provides the means for registering products with the Registry Service. This tool reads a PDS4 product label, extracts specified metadata and registers the product with the registry. This tool allows the user to register a batch of products and generates a summary report.
+            </p>
+          </li>
+          <li><b>Registry Service</b><br/>
+            <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. Ultimately, all products (including PDS3 products) will be registered and tracked with the Registry Service. For this release, users are asked to install and configure a local instance of the service in order to exercise this procedure. Additionally if the user is participating in the PDS3 to PDS4 conversion exercises, the resulting products or collections of products can be registered with their local registry instance.
+            </p>
+          </li>
+          <li><b>Registry User Interface</b><br/>
+            <p>The Registry User Interface provides a simple viewing capability of the contents of the associated Registry Service. It is intended to offer visual verification of successful registration of products as well as the ability to update the status for registered products.
+            </p>
+          </li>
+        </ul>
+
+        <p>Although the Design and Generate Tools are included with this release, we have not included them in the installation procedure because they may not pertain to every Discipline Node. This procedure will focus on installing the Registry Service, Registry User Interface, Harvest Tool and Validate Tool. The example commands below assume the software is installed in the user's home directory, indicated by the <i>$HOME</i> environment variable. If this is not the case or if this variable is not defined, the absolute path should be used instead of the variable. Some of the commands below have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution. Perform the following steps to download, install, configure and test the software in the Node's local environment:
+        </p>
+
+        <ol>
+          <li><b>Verify System Requirements</b><br/>
+            <p>As specified in the <a href="#System_Requirements">System Requirements</a> section above, the software requires Java and a Java Application Server to be installed and accessible. These installations should be verified before proceeding to the next step.
+            </p>
+            <p>Although we have specified Java 1.6 and Tomcat 6.0.X or 7.0.X, if a Node has Java 1.7 or another Java Application Server (e.g, Glassfish, Jetty, etc.) installed, we would be very interested in how the software functions in these environments. Feel free to install the software in these environments and let the EN development team know if there are any issues.
+            </p>
+          </li>
+          <li><b>Install Registry Service</b><br/>
+            <p>The next step is to install the Registry Service. The <a href="../registry/registry-service/install/index.html">Installation</a> document for the Registry Service provides the details for downloading, installing and configuring the software. By default, the Registry Service comes packaged with and configured to utilize Apache Derby as the backend database for storing registered content. This database is expected to be located in the directory where the Tomcat server is launched, by default. The Installation document describes how to change this location as well as how to use MySQL as the backend database instead of Derby. If a Node has another database server that they would like to use as the backend, please contact the EN development team for help with the configuration.
+            </p>
+            <p>If there was a previous installation of the Registry Service, the application should be un-deployed from the application server followed by removal of the Derby database directory named <i>RegistryDb</i> or <i>registry</i>, depending the version installed, and the <i>derby.log</i> file prior to installing the new version. Future versions of the software will be backward compatible with the previous database facilitating seamless upgrades of the service.
+            </p>
+          </li>
+          <li><b>Install Registry User Interface</b><br/>
+            <p>The next step is to install the Registry User Interface. The <a href="../registry/registry-ui/install/index.html">Installation</a> document for the Registry User Interface provides the details for downloading, installing and configuring the software.
+            </p>
+          </li>
+          <li><b>Install Harvest Tool</b><br/>
+            <p>The next step is to install the Harvest Tool. The <a href="../ingest/harvest/install/index.html">Installation</a> document for the Harvest Tool provides the details for downloading and installing the software.
+            </p>
+          </li>
+          <li><b>Install Validate Tool</b><br/>
+            <p>The next step is to install the Validate Tool. The <a href="../preparation/validate/install/index.html">Installation</a> document for the Validate Tool provides the details for downloading and installing the software.
+            </p>
+          </li>
+        </ol>
+
+        <p>Now that the software is installed, it can be exercised with a local bundle prepared by the Node or with the Example Bundle available from the EN. The following steps detail exercising of the software with the example bundle:
+        </p>
+
+        <ol>
+          <li><b>Download Example Bundle</b><br/>
+            <p>The bundle can be downloaded from the <a href="http://pds.nasa.gov/repository/pds4/examples/dph_examples_1000/zip_VG2PLS_archive.zip">PDS4 Repository</a>. Unzipping the package results in a directory named <i>zip_VG2PLS_archive</i>.
+            </p>
+          </li>
+          <li><b>Validate Example Bundle</b><br/>
+            <p>The next step exercises the Validate Tool by validating the example bundle. The <a href="../preparation/validate/operate/index.html">Operation</a> document for the Validate Tool provides the details for executing the software. Execute the Validate Tool against the example bundle with the following commands:
+            </p>
+            <source>
+% cd $HOME/validate-1.3.1/bin
+% ./validate -t $HOME/zip_VG2PLS_archive -e "*.xml"
+            </source>
+            <p>The above run results in one validation failure due to not specifying the local data dictionary schema for the example bundle. The schemas can be specified on the command-line as follows:
+            </p>
+            <source>
+% ./validate -t $HOME/zip_VG2PLS_archive -e "*.xml" \
+  -x $HOME/zip_VG2PLS_archive/schemas/PDS4_OPS_1000.xsd \
+     $HOME/zip_VG2PLS_archive/local_dictionaries/dph_example_dict_1000.xsd
+            </source>
+            <p>The above run results in a successful validation. Note that the master schema (PDS4_OPS_1000.xsd) was also passed on the command-line because passing any schema on the command-line overrides the schemas provided with the tool.
+            </p>
+          </li>
+          <li><b>Register Example Bundle</b><br/>
+            <p>The next step exercises the Harvest Tool and Registry Service by registering the contents of the example bundle. The <a href="../ingest/harvest/operate/index.html">Operation</a> document for the Harvest Tool provides the details for executing the software. A configuration file (<i>harvest-policy-example.xml</i>) for registering the example bundle can be found in the <i>examples</i> directory of the Harvest Tool distribution package. Depending on the location of the example bundle in the local environment, the file and path specifications in the configuration file will likely need to be updated for the example bundle location in the local environment. Execute the Harvest Tool against the example bundle with the following commands:
+            </p>
+            <source>
+% cd $HOME/harvest-1.4.1/bin
+% ./harvest -c ../examples/harvest-policy-example.xml
+            </source>
+            <p>The above run will result in one error due to a duplicate logical identifier and a few warnings pertaining to references for products that were not found in the local registry. The rest of the products should get registered successfully. The summary should look something like the following:
+            </p>
+            <source>
+...
+Summary:
+
+15 of 15 file(s) processed, 3 other file(s) skipped
+1 error(s), 8 warning(s)
+
+14 of 15 products registered.
+83 of 83 ancillary products registered.
+
+Product Types Registered:
+2 Product_Document
+1 Product_Mission_PDS3
+1 Product_Browse
+1 Product_Observational
+2 Product_File_Text
+1 Product_XML_Schema
+1 Product_Bundle
+83 Product_File_Repository
+5 Product_Collection
+
+97 of 97 associations registered.
+
+End of Log
+            </source>
+          </li>
+          <li><b>View Registry Contents</b><br/>
+            <p>The next step verifies that the registered content from the previous step can be viewed via the Registry Service REST-based API and the Registry User Interface. The <a href="../registry/registry-service/operate/index.html">Operation</a> document for the Registry Service provides the details for interfacing with the service via the REST-based API. Assuming a default installation, the Registry Service should be accessible via the following URL: <i>http://localhost:8080/registry/</i>. Accessing the <i>report</i> endpoint (append report to the URL) from the desired web browser (some browsers display XML better than others), should produce the following output:
+            </p>
+            <source>
+&lt;ns2:report xmlns:ns2="http://registry.pds.nasa.gov" registryVersion="1.4.1" 
+packages="5" classificationNodes="66" classificationSchemes="2" services="0" 
+extrinsics="97" associations="359" 
+serverStarted="2012-11-12T09:40:15.854-08:00" status="OK"/&gt;
+            </source>
+            <p>The above report shows 97 extrinsics (PDS products) registered which corresponds with the Harvest Tool summary. The number of associations registered is a little harder to verify because there were already some associations in the registry from the configuration step. Feel free to try out some of the other endpoints (e.g. extrinsics) detailed in the <a href="../registry/registry-service/operate/index.html#Query_Artifacts">Query Artifacts</a> section of the Operations document.
+            </p>
+            <p>Assuming a default installation, the Registry User Interface should be accessible via the following URL: <i>http://localhost:8080/registry-ui/</i>. Accessing this URL from the desired web browser, should produce the following display:
+            </p>
+            <center>
+              <a href="../images/registry-ui-main-1.3.0.jpg" target="_blank"><img alt="Registry User Interface" src="../images/registry-ui-main-1.3.0-scale.jpg" border="1" /></a><br/>
+              Click the image for a larger version.
+            </center>
+            <p>If an "RPC Failure" message appears near the bottom of the screen, this is most likely the result of the Registry Service URL not being configured correctly. The <a href="../registry/registry-ui/install/index.html">Installation</a> document for the Registry User Interface specifies how to modify the appropriate configuration file to correct this situation.
+            </p>
+          </li>
+        </ol>
+
+        <p>The above steps exercise the core components of the system but are not exhaustive by any measure with respect to testing the software, but they will verify that the software can be installed and executed in the various Node environments. Some Nodes are actively working on generating PDS4 bundles and collections. If a Node would like to attempt to register those products with their local registry the EN would be glad to assist in this effort. In addition, the Harvest Tool supports registering a PDS3 Data Set with the Registry Service. An example configuration file (<i>harvest-policy-pds3.xml</i>) for registering PDS3 Data Sets can be found in the <i>examples</i> directory of the Harvest Tool distribution package. When registering a PDS3 Data Set, the Harvest Tool creates an in-memory proxy label for each product and registers it with the Registry Service. Although not sufficient for PDS4 migration, it does provide a tracking mechanism for PDS3 Data Sets until they can be migrated to PDS4.
+        </p>
+
+        <p>In addition to the exercises above, the Nodes are encouraged to exercise the Generate Tool, Transform Tool and PDS4 Tools components. See the corresponding Installation and Operation documents for details.
+        </p>
+      </subsection>
+    </section>
+  </body>
+</document>
