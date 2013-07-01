@@ -381,9 +381,6 @@ public class CIToolIngester {
     		Metadata md = tmpCatObj.getMetadata();
     		if (catObjType.equalsIgnoreCase(Constants.MISSION_OBJ)) {
     			lidValue = pdsLbl.get("MISSION_NAME").getValue().toString();
-//    			if (lidValue.contains(" ")) {
-//    				lidValue = lidValue.replace(' ', '_');
-//    			}
     			lidValue = Utility.replaceChars(lidValue);
     			lidValue = lidValue.toLowerCase();
     			if (refs.get(Constants.HAS_MISSION)!=null) {
@@ -403,7 +400,7 @@ public class CIToolIngester {
     				values = new ArrayList<String>();
     			} 
 
-    			// TODO TODO how to get target_type is there is no target
+    			// TODO TODO how to get target_type if there is no target
     			//String targetType = md.getMetadata("TARGET_TYPE");
     			String targetType = "target";
     			if (md.containsKey(key)) {
@@ -413,9 +410,6 @@ public class CIToolIngester {
 							lidValue = aVal;
 							targetType = getTargetType(lidValue);
 							lidValue = targetType + "." + lidValue;
-//							if (lidValue.contains(" ")) {
-//			    				lidValue = lidValue.replace(' ', '_');
-//			    			}
 							lidValue = Utility.replaceChars(lidValue);
 							lidValue = lidValue.toLowerCase();
 							if (!valueExists(Constants.LID_PREFIX + "target:" + lidValue, values))
@@ -424,10 +418,7 @@ public class CIToolIngester {
 					} else {
 						lidValue = md.getMetadata(key);
 						targetType = getTargetType(lidValue);
-						lidValue = targetType + "." + lidValue;
-//						if (lidValue.contains(" ")) {
-//		    				lidValue = lidValue.replace(' ', '_');
-//		    			}			
+						lidValue = targetType + "." + lidValue;		
 						lidValue = Utility.replaceChars(lidValue);
 						lidValue = lidValue.toLowerCase();
 						if (!valueExists(Constants.LID_PREFIX + "target:" + lidValue, values))
@@ -464,9 +455,6 @@ public class CIToolIngester {
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.DATASET_OBJ)) {
     			lidValue = pdsLbl.get("DATA_SET_ID").getValue().toString();
-//    			if (lidValue.contains("/")) {
-//    				lidValue = lidValue.replace('/', '-');
-//    			}
     			lidValue = Utility.replaceChars(lidValue);
     			lidValue = lidValue.toLowerCase();
     			
@@ -523,10 +511,7 @@ public class CIToolIngester {
     					for (String aVal: tmpValues) {
     						lidValue = aVal;
     						targetType = getTargetType(lidValue);   						
-    						lidValue = targetType + "." + lidValue;
-//    						if (lidValue.contains(" ")) {
-//    		    				lidValue = lidValue.replace(' ', '_');
-//    		    			}	
+    						lidValue = targetType + "." + lidValue;	
     						lidValue = Utility.replaceChars(lidValue);
     						lidValue = lidValue.toLowerCase();
     						if (!valueExists(Constants.LID_PREFIX+"target:" +lidValue, values))
@@ -537,9 +522,6 @@ public class CIToolIngester {
     					lidValue = md.getMetadata(key);
     					targetType = getTargetType(lidValue);
     					lidValue = targetType + "." + lidValue;
-//    					if (lidValue.contains(" ")) {
-//    	    				lidValue = lidValue.replace(' ', '_');
-//    	    			}
     					lidValue = Utility.replaceChars(lidValue);
     					lidValue = lidValue.toLowerCase();
     					if (!valueExists(Constants.LID_PREFIX+"target:" + lidValue, values))
@@ -584,9 +566,6 @@ public class CIToolIngester {
     			lidValue = pdsLbl.get("TARGET_NAME").getValue().toString();
     			String targetType = getTargetType(lidValue);
     			lidValue = targetType + "." + lidValue;
-//    			if (lidValue.contains(" ")) {
-//    				lidValue = lidValue.replace(' ', '_');
-//    			}
     			lidValue = Utility.replaceChars(lidValue);
     			lidValue = lidValue.toLowerCase();
     			if (refs.get(Constants.HAS_TARGET)!=null) {
@@ -616,8 +595,6 @@ public class CIToolIngester {
     					List<String> tmpValues = md.getAllMetadata(key);    				
     					for (String aVal: tmpValues) {				
     						lidValue = dsId + "__" + aVal; 
-//    						if (lidValue.contains("/"))
-//    							lidValue = lidValue.replace('/', '-');
     						lidValue = Utility.replaceChars(lidValue);
     						lidValue = lidValue.toLowerCase();
     						if (!valueExists(Constants.LID_PREFIX+"resource:resource."+lidValue, values))
@@ -627,8 +604,6 @@ public class CIToolIngester {
     				else {
     					lidValue = md.getMetadata(key);
     					lidValue = dsId + "__" + lidValue;
-//    					if (lidValue.contains("/"))
-//    						lidValue = lidValue.replace('/', '-');  
     					lidValue = Utility.replaceChars(lidValue);
     					lidValue = lidValue.toLowerCase();
     					if (!valueExists(Constants.LID_PREFIX+"resource:resource."+lidValue, values))
@@ -665,10 +640,7 @@ public class CIToolIngester {
     			lidValue = pdsLbl.get("VOLUME_ID").getValue().toString();
     			storageProductName = lidValue;
     			
-    			String key = "DATA_SET_ID";
-//    			if (key.contains("/")) {
-//    				key = key.replace('/', '-');
-//    			}  
+    			String key = "DATA_SET_ID";  
     			key = Utility.replaceChars(key);
     			if (refs.get(Constants.HAS_DATASET)!=null)
     				values = refs.get(Constants.HAS_DATASET);
@@ -679,9 +651,6 @@ public class CIToolIngester {
     				List<String> tmpValues = md.getAllMetadata(key);
     				for (String aVal: tmpValues) {
     					lidValue = aVal;
-//    					if (lidValue.contains("/")) {
-//    	    				lidValue = lidValue.replace('/', '-');
-//    	    			}
     					lidValue = Utility.replaceChars(lidValue);
     					lidValue = lidValue.toLowerCase();
     					// shouldn't add if the value is already exists in the list
@@ -692,9 +661,6 @@ public class CIToolIngester {
     			}
     			else {
     				lidValue = md.getMetadata(key);
-//    				if (lidValue.contains("/")) {
-//	    				lidValue = lidValue.replace('/', '-');
-//	    			}
     				lidValue = Utility.replaceChars(lidValue);
     				lidValue = lidValue.toLowerCase();
     				if (!valueExists(Constants.LID_PREFIX+"data_set:data_set."+lidValue, values)) {
@@ -707,23 +673,26 @@ public class CIToolIngester {
     	return refs;
     }
     
-    public Map<String, String> getTargetInfos() {
+    public Map<String, String> getTargetInfos(String targetName) {
     	for (CatalogObject catObj: catObjs) {
     		if (catObj.getCatObjType().equalsIgnoreCase(Constants.TARGET_OBJ))
-    			return catObj.getTargetInfos();
+    			if (catObj.getMetadata().getMetadata("TARGET_NAME").equalsIgnoreCase(targetName)) {  				
+    				return catObj.getTargetInfos();
+    			}
     	}
     	return null;
     }
     
     private String getTargetType(String targetName) {
-    	Map<String, String> targetInfos = getTargetInfos();
-    	//System.out.println("target info = " + targetInfos.toString());
+    	Map<String, String> targetInfos = getTargetInfos(targetName);
     	String targetType = "target";
     	if (targetInfos!=null) {
 			targetType = targetInfos.get(targetName);
 			if (targetType==null)
 				targetType = "target";
     	}
+    	//System.out.println("targetName = " + targetName + "    target info = " + targetInfos.toString() 
+    	//		+ "     target Type = " + targetType);
     	return targetType;
     }
      
