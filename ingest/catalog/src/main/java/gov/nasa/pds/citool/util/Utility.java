@@ -157,6 +157,12 @@ public class Utility {
 		if (strToReplace.contains("/")) 
 			strToReplace = strToReplace.replace('/', '-');
 		
+		if (strToReplace.contains("("))
+			strToReplace = strToReplace.replaceAll("\\(", "");
+		
+		if (strToReplace.contains(")"))
+			strToReplace = strToReplace.replaceAll("\\)", "");
+		
 		return strToReplace;
 	}
 }
