@@ -467,7 +467,7 @@ public class CatalogRegistryIngester {
 		}
 		else if (catObjType.equalsIgnoreCase(Constants.INST_OBJ)) {
 			if (refs.get(Constants.HAS_INSTHOST)!=null)
-				slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
+				slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs, catObj)));
 			if (refs.get(Constants.HAS_DATASET)!=null) {
 				// need to find proper dataset catalog object with given INSTRUMENT_ID
 				Map<String, List<String>> dsRefs = getDSRefs("INSTRUMENT_ID", catObj.getMetadata().getMetadata("INSTRUMENT_ID"));
@@ -482,8 +482,9 @@ public class CatalogRegistryIngester {
 				if (refs.get(Constants.HAS_TARGET)!=null)
 					slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs, catObj)));
 			}
-			if (refs.get(Constants.HAS_INSTHOST)!=null)
+			if (refs.get(Constants.HAS_INSTHOST)!=null) {
 				slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs, catObj)));
+			}
 			if (refs.get(Constants.HAS_INST)!=null) {
 				slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs, catObj)));
 			}
@@ -509,7 +510,6 @@ public class CatalogRegistryIngester {
 				slots.add(new Slot(Constants.HAS_NODE, getRefValues(version, Constants.HAS_NODE, refs)));
 		}
 		else if (catObjType.equalsIgnoreCase(Constants.TARGET_OBJ)) {
-			//slots.add(new Slot(Constants.HAS_RESOURCE, getRefValues(version, Constants.HAS_RESOURCE, refs)));
 			if (refs.get(Constants.HAS_MISSION)!=null)
 				slots.add(new Slot(Constants.HAS_MISSION, getRefValues(version, Constants.HAS_MISSION, refs)));
 			if (refs.get(Constants.HAS_INSTHOST)!=null)
@@ -587,8 +587,9 @@ public class CatalogRegistryIngester {
 		return values;
 	}
 	
-	private List<String> getRefs(String key, String associationType, Map<String, List<String>> allRefs, Metadata md) {
+	private List<String> getRefs(String key, String associationType, Map<String, List<String>> allRefs, CatalogObject catObj) {
 		List<String> values = new ArrayList<String>();
+		Metadata md = catObj.getMetadata();
 		if (md.isMultiValued(key)) {
 			List<String> tmpValues = md.getAllMetadata(key);			
 			for (String keyToMatch: tmpValues) {					
@@ -602,12 +603,14 @@ public class CatalogRegistryIngester {
 							values.add(aValue+"::" + tmpVer);
 						}
 						else {
-							values.add(aValue);
+							if (catObj.getCatObjType().equalsIgnoreCase("mission"))
+								values.add(aValue);
 						}
 					}
 				}
 			}
-		} else {
+		} 
+		else {
 			String keyToMatch = md.getMetadata(key);
 			keyToMatch= Utility.replaceChars(keyToMatch);
 			
@@ -619,7 +622,8 @@ public class CatalogRegistryIngester {
 						values.add(aValue+"::" + tmpVer);
 					}
 					else {
-						values.add(aValue);
+						if (catObj.getCatObjType().equalsIgnoreCase("mission"))
+							values.add(aValue);
 					}
 				}
 			}
@@ -630,22 +634,20 @@ public class CatalogRegistryIngester {
 	private List<String> getRefValues(String version, String associationType, 
 			Map<String, List<String>> allRefs, CatalogObject catObj) {	
 		List<String> values = new ArrayList<String>();
-		Metadata md = catObj.getMetadata();
 		if (associationType==Constants.HAS_MISSION) {
-			return getRefs("MISSION_NAME", associationType, allRefs, md);
+			return getRefs("MISSION_NAME", associationType, allRefs, catObj);
 		}
 		else if (associationType==Constants.HAS_INSTHOST) {
-			return getRefs("INSTRUMENT_HOST_ID", associationType, allRefs, md);
+			return getRefs("INSTRUMENT_HOST_ID", associationType, allRefs, catObj);
 		}
 		else if (associationType==Constants.HAS_INST) {
-			//System.out.println("DATASET reference info...for INSTRUMENT");
-			return getRefs("INSTRUMENT_ID", associationType, allRefs, md);
+			return getRefs("INSTRUMENT_ID", associationType, allRefs, catObj);
 		}
 		else if (associationType==Constants.HAS_TARGET) {
-			return getRefs("TARGET_NAME", associationType, allRefs, md);
+			return getRefs("TARGET_NAME", associationType, allRefs, catObj);
 		}
 		else if (associationType==Constants.HAS_DATASET) {
-			return getRefs("DATA_SET_ID", associationType, allRefs, md);
+			return getRefs("DATA_SET_ID", associationType, allRefs, catObj);
 		}
 		return values;
 	}
@@ -719,17 +721,6 @@ public class CatalogRegistryIngester {
 				product.setObjectType(Constants.DS_PROD);
 				slots.add(new Slot(getKey("product_class"), Arrays.asList(new String[] { Constants.DS_PROD })));
 			}
-			/*
-			else if (objType.equalsIgnoreCase(Constants.RESOURCE_OBJ) && key.equals("RESOURCE_ID")) {
-				///??? value should be "<DATA_SET_ID>__<RESOURCE_ID>????
-				if (value.contains("/"))
-    				value = value.replace('/', '-');
-				productLid = Constants.LID_PREFIX+"resource:resource."+value;
-				product.setLid(productLid);
-				product.setObjectType(Constants.RESOURCE_PROD);
-				product.setName(value); //need to get from RESOURCE_NAME????
-			}
-			*/
 			else if (objType.equalsIgnoreCase(Constants.VOLUME_OBJ) && key.equals("VOLUME_ID")) {
 				String volumeSetId = md.getMetadata("VOLUME_SET_ID");
 				productLid = Constants.LID_PREFIX+"volume:volume."+value+"__" + volumeSetId;
@@ -783,7 +774,6 @@ public class CatalogRegistryIngester {
 
 			if (getKey(key) != null) {
 				slots.add(new Slot(getKey(key), values));
-				//System.out.println("----key = " + key + "    values = " + values.toString() + "   added to the slot");
 			}
 
 			// need to add this one for alternate_id for MISSION object
@@ -823,10 +813,8 @@ public class CatalogRegistryIngester {
 		if (this.product.getLid()==null) {
 			// how to distinguish (personnel and reference????)
 			tmpLid = Constants.LID_PREFIX + storageProductName + ":" + fileObject.getName();
-			//product.setLid(Constants.LID_PREFIX + storageProductName + ":" + fileObject.getName());
 		}
 		else {
-			//product.setLid(this.product.getLid() + ":" + fileObject.getName());
 			tmpLid = this.product.getLid() + ":" + fileObject.getName();
 		}
 		product.setLid(tmpLid.toLowerCase());
@@ -864,6 +852,9 @@ public class CatalogRegistryIngester {
 		String productLid = null;
 		Metadata md = catObj.getMetadata();
 		
+		slots.add(new Slot(getKey("LABEL_REVISION_NOTE"), 
+				Arrays.asList(new String[] { md.getMetadata("LABEL_REVISION_NOTE") })));
+		
 		List<AttributeStatement> objAttr = resrcObj.getAttributes();
 		for (AttributeStatement attrSmt : objAttr) {
 			String key = attrSmt.getElementIdentifier().toString();
@@ -872,7 +863,6 @@ public class CatalogRegistryIngester {
 
 			if (key.equals("RESOURCE_ID")) {
 				// need to use RESOURCE_NAME for the name
-				//product.setName(md.getMetadata("RESOURCE_NAME"));
 				product.setName(resrcObj.getAttribute("RESOURCE_NAME").getValue().toString());
 				String dsId = md.getMetadata("DATA_SET_ID");
 				productLid = Constants.LID_PREFIX+"resource:resource."+dsId + "__" + value;
