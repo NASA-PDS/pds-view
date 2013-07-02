@@ -530,6 +530,32 @@ public class CIToolIngester {
 
     				refs.put(Constants.HAS_TARGET, values);
     			}
+    			
+    			key = "INSTRUMENT_HOST_ID";
+    			if (refs.get(Constants.HAS_INSTHOST)!=null) {
+    				values = refs.get(Constants.HAS_INSTHOST);
+    			}
+    			else {
+    				values = new ArrayList<String>();
+    			}
+    			if (md.containsKey(key)) {
+    				if (md.isMultiValued(key)) {
+    					List<String> tmpValues = md.getAllMetadata(key);
+    					for (String aVal: tmpValues) {
+    						lidValue = aVal;
+    						lidValue = lidValue.toLowerCase();
+    						if (!valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
+    							values.add(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue);
+    					}
+    				}
+    				else {
+    					lidValue = md.getMetadata(key);
+    					lidValue = lidValue.toLowerCase();
+    					if (!valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
+    						values.add(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue);              
+    				}
+    				refs.put(Constants.HAS_INSTHOST, values);
+    			}
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.INST_OBJ)) {
     			lidValue = pdsLbl.get("INSTRUMENT_ID").getValue().toString();
@@ -690,9 +716,14 @@ public class CIToolIngester {
 			targetType = targetInfos.get(targetName);
 			if (targetType==null)
 				targetType = "target";
+			else {
+				if (targetType.equalsIgnoreCase("n/a"))
+					targetType = "unk";
+				if (targetType.toLowerCase().startsWith("unk")) 
+					targetType = "unk";
+			}
     	}
-    	//System.out.println("targetName = " + targetName + "    target info = " + targetInfos.toString() 
-    	//		+ "     target Type = " + targetType);
+
     	return targetType;
     }
      
