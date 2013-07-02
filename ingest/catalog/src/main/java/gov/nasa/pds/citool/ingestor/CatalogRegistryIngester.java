@@ -603,7 +603,10 @@ public class CatalogRegistryIngester {
 							values.add(aValue+"::" + tmpVer);
 						}
 						else {
-							if (catObj.getCatObjType().equalsIgnoreCase("mission"))
+							//don't add all instrument_host_ref for instrument and data_set objects.
+							if (!(key.equalsIgnoreCase("instrument_host_id") && 
+								 (catObj.getCatObjType().equalsIgnoreCase("instrument") ||
+								  catObj.getCatObjType().equalsIgnoreCase("data_set"))))
 								values.add(aValue);
 						}
 					}
@@ -622,7 +625,9 @@ public class CatalogRegistryIngester {
 						values.add(aValue+"::" + tmpVer);
 					}
 					else {
-						if (catObj.getCatObjType().equalsIgnoreCase("mission"))
+						if (!(key.equalsIgnoreCase("instrument_host_id") && 
+						      (catObj.getCatObjType().equalsIgnoreCase("instrument") ||
+							   catObj.getCatObjType().equalsIgnoreCase("data_set"))))
 							values.add(aValue);
 					}
 				}
