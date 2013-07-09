@@ -24,6 +24,27 @@
   
   <body>
     <release version="1.3.0" date="TBD" description="TBD">
+      <action dev="jpadams" type="update">
+Removed Indexer and ProfileParser classes that have been deprecated from use and no longer have a use. Updated Launcher to remove reference to these classes.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-173">
+	Completed patch for use with Solr 4, including updates to pom dependencies and Indexer.java.
+      </action>
+      <action dev="jpadams" type="update">
+	Cleaned up assembly.xml to use correct syntax for recursive include.
+      </action>
+      <action dev="jpadams" type="update">
+	Updated SearchCorePDS3Test to run against only 5 data sets instead of 1000 to improve deployment performance.
+      </action>
+      <action dev="jpadams" type="update">
+	Updated solr-post script to use awk instead of gawk for systems that do not have gawk installed.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-177">
+	Updated PDS config files to point to relative instead of absolute URL to resolve issue with domain specificity.
+      </action>
+      <action dev="jpadams" type="update">
+	Updated OPUS description in search-tools.xml.
+      </action>
     </release>
 
     <release version="1.2.1" date="2013-06-21" description="This release of the Search Core is a component of the integrated release 3.1.1 of the PDS4 System. This is an operational release of the system components to date.">
