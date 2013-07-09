@@ -35,7 +35,7 @@ public class SearchCorePDS3Test{
     	try {
 	    	String[] args = { "-d", "-r", TestConstants.PDS3_REGISTRY_URL, 
 	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
-	    			"-m", "1000", 
+	    			"-m", "5", 
 	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3", };
 	    	SearchCoreLauncher.main(args);
 		} catch (Exception e) {
