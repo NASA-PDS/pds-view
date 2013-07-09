@@ -21,7 +21,7 @@
 	<field>
 		<name>resLocation</name>
 		<type>substring</type>
-		<value>http://pds.nasa.gov/ds-view/pds/viewDataset.jsp?dsid={data_set_id}</value>
+		<value>/ds-view/pds/viewDataset.jsp?dsid={data_set_id}</value>
 	</field>
 	<field>
 		<name>investigation_name</name>

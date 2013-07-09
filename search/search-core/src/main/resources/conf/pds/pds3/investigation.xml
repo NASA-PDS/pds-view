@@ -21,7 +21,7 @@
 	<field>
 		<name>resLocation</name>
 		<type>substring</type>
-		<value>http://pds.nasa.gov/ds-view/pds/viewMissionProfile.jsp?MISSION_NAME={mission_name}</value>
+		<value>/ds-view/pds/viewMissionProfile.jsp?MISSION_NAME={mission_name}</value>
 	</field>
 	
 	<!-- Product-specific fields -->

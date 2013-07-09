@@ -21,7 +21,7 @@
 	<field>
 		<name>resLocation</name>
 		<type>substring</type>
-		<value>http://pds.nasa.gov/ds-view/pds/viewHostProfile.jsp?INSTRUMENT_HOST_ID={instrument_host_id}</value>
+		<value>/ds-view/pds/viewHostProfile.jsp?INSTRUMENT_HOST_ID={instrument_host_id}</value>
 	</field>
 	
 	<!-- Product-specific fields -->

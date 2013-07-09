@@ -21,7 +21,7 @@
 	<field>
 		<name>resLocation</name>
 		<type>substring</type>
-		<value>http://pds.nasa.gov/ds-view/pds/viewTargetProfile.jsp?TARGET_NAME={target_name}
+		<value>/ds-view/pds/viewTargetProfile.jsp?TARGET_NAME={target_name}
 		</value>
 	</field>
 	
