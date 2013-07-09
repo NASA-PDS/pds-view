@@ -16,9 +16,9 @@ import java.util.logging.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.Version;
 
@@ -44,8 +44,8 @@ public class Indexer {
 		try {
 			// IndexWriter writer = new IndexWriter(new File(args[0],
 			// "catalog_index"), new StandardAnalyzer(), true);
-			IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_34,
-					new StandardAnalyzer(Version.LUCENE_34));
+			IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_43,
+					new StandardAnalyzer(Version.LUCENE_43));
 			IndexWriter writer = new IndexWriter(new SimpleFSDirectory(
 					new File(args[0], "catalog_index")), config);
 			Properties weights = new Properties();
@@ -56,7 +56,7 @@ public class Indexer {
 
 			indexDocs(writer, new File(args[1]), weights);
 
-			writer.optimize();
+			writer.forceMerge(1); // replaces writer.optimize();
 			writer.close();
 
 			Date end = new Date();
@@ -100,17 +100,19 @@ public class Indexer {
 
 				// Set document weight
 				// Field resClass = doc.getField("resClass");
-				Field resClass = (Field) doc.getFieldable("resClass");
-				doc.setBoost(Float.parseFloat(weights.getProperty("document."
-						+ resClass.stringValue(), "1.0")));
+				IndexableField resClass = (Field) doc.getField("resClass");
+				// FIXME
+				//doc.setBoost(Float.parseFloat(weights.getProperty("document."
+				//		+ resClass.stringValue(), "1.0")));
 
 				// Set field weights
 				// for (Enumeration e = doc.fields(); e.hasMoreElements();) {
 				// Field field = (Field) e.nextElement();
-				for (Fieldable field : doc.getFields()) {
+				for (IndexableField field : doc.getFields()) {
 					float weight = Float.parseFloat(weights.getProperty(
 							"field." + field.name(), "1.0"));
-					field.setBoost(weight);
+					// FIXME
+					//field.setBoost(weight);
 				}
 				writer.addDocument(doc);
 			}
