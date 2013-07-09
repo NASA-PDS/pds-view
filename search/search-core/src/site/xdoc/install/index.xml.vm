@@ -127,7 +127,7 @@ or
 
 	<p>The following command demonstrates how to create a symbolic link:</p>
 	<source>
-% ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
+% ln -s /usr/local/${project.artifactId}-${project.version} /usr/local/${project.artifactId}
 	</source>
 
 	<p>The binary distribution includes shell scripts that must be executed from the command-line. Setting the <i>PATH</i> environment variable to the location of the scripts, enables the shell scripts to be executed from any location on the local machine.

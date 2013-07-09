@@ -63,7 +63,7 @@
       <subsection name="Ops Index Generation">
 	<p>This procedure details the PDS Engineering-specific procedure for generating the Solr Index and posting to all operational machines.</p>
 	<ul>
-	  <li>Log onto <b>pdssrv2</b>.</li>
+	  <li>Log onto <b>pdssrv1</b>.</li>
 	  <li>sudo su to pds4 user and change to the pds4 user's home directory:
 	    <source>
 % sudo su pds4
@@ -75,9 +75,9 @@
 % initial-index-pdsen &gt;&amp; index_&lt;date&gt;.log
 	    </source>
 	  </li>
-	  <li>Log out of <b>pdssrv2</b>.</li>
+	  <li>Log out of <b>pdssrv1</b>.</li>
 	  <li>Send log file to Jordan Padams for analysis.</li>
-	  <li>Log onto <b>pdssrv1</b>.</li>
+	  <li>Log onto <b>pdssrv2</b>.</li>
 	  <li>sudo su to pds4 user and change to the pds4 user's home directory:
             <source>
 % sudo su pds4

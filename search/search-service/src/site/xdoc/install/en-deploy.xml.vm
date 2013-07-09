@@ -49,7 +49,7 @@
       </table>
       </subsection>
 
-      <subsection name="Operationss Apache Configuration">
+      <subsection name="Operations Apache Configuration">
         <p>The following configuration needs to be completed on all <strong>Website Operations</strong> machines in order to properly map the URLs to the Search Service Operations.  Open the Apache httpd.conf file and add the following:</p>
 
         <source>
@@ -109,10 +109,11 @@ ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${projec
 &lt;/Context&gt;
             </source>
           </li>
-          <li>Modify <i>/etc/init.d/tomcat7</i> by inserting the following into the top of the document in order to set the following environment variables.  <b>Verify this value is not reset elsewhere in the script.</b>
+          <li><p>Append to the <i>CATALINA_OPTS</i> environment variable by adding the following line to the <i>$TOMCAT_HOME/bin/setenv.sh</i> script:</p>
             <source>
 CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.pds.home=/usr/local/${project.artifactId}"
             </source>
+            <p>For more information on the <i>$TOMCAT_HOME/bin/setenv.sh</i> script, see the General Configuration section of the <a href="../../../release/index-tomcat.html#General_Configuration">Tomcat Deployment</a> document.</p>
           </li>
           <li>Restart Tomcat server</li>
           <li>Test installation by going to http://localhost:8080/${project.artifactId}/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>

@@ -33,6 +33,9 @@
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+	<ul>
+          <li><a href="./en-deploy.html">Engineering Node Deployment</a></li>
+	</ul>
         <li><a href="#Security">Security</a></li>
         <li><a href="#Common_Errors">Common Errors</a></li>
       </ul>
@@ -124,7 +127,7 @@ or
         <ol>
           <li>Create a symbolic link to the Search Service installation directory to provide an easier method of upgrade in the future.  The following demonstrates how to create this symbolic link:
             <source>
-ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
+ln -s /usr/local/${project.artifactId}-${project.version} /usr/local/${project.artifactId}
             </source>
           </li>
           <li>Create a Tomcat context file <i>${project.artifactId}.xml</i> to refer to the Solr WAR file (found in the $SEARCH_SERVICE_HOME directory) and place it in the <i>$TOMCAT_HOME/conf/Catalina/{hostname}</i> directory.  The <i>${project.artifactId}.xml</i> file should look something like this, with the paths modifed as needed:
@@ -141,10 +144,11 @@ ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${projec
 &lt;/Context&gt;
             </source>
           </li>
-          <li>Modify <i>$TOMCAT_HOME/bin/catalina.sh</i> (or /etc/init.d/tomcat) by inserting the following into the top of the document in order to set the following environment variables:
+          <li><p>Append to the <i>CATALINA_OPTS</i> environment variable by adding the following line to the <i>$TOMCAT_HOME/bin/setenv.sh</i> script:</p>
             <source>
 CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.pds.home=/usr/local/${project.artifactId}"
             </source>
+	    <p>For more information on the <i>$TOMCAT_HOME/bin/setenv.sh</i> script, see the General Configuration section of the <a href="../../../release/index-tomcat.html#General_Configuration">Tomcat Deployment</a> document.</p>
           </li>
           <li>Restart Tomcat server</li>
           <li>Test installation by going to http://localhost:8080/${project.artifactId}/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
@@ -158,7 +162,7 @@ CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.pds.home=/usr/local/${project.artifactId}
             <source>
 rm /usr/local/${project.artifactId}
 
-ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
+ln -s /usr/local/${project.artifactId}-${project.version} /usr/local/${project.artifactId}
             </source>
           </li>
           <li>Start Tomcat server.</li>
