@@ -7,7 +7,7 @@ import javax.xml.transform.Transformer;
 import org.apache.solr.request.SolrQueryRequest;
 
 public class XSLTResponseWriter extends
-		org.apache.solr.request.XSLTResponseWriter {
+		org.apache.solr.response.XSLTResponseWriter {
 
 	public final static String SOLR_HOME_PARAMETER = "SOLR_HOME";
 

@@ -93,25 +93,30 @@ ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${projec
 % chown -R pds4 /usr/local/${project.artifactId}
             </source>
           </li>
-          <li><p>Create a Tomcat context file <i>${project.artifactId}.xml</i> to refer to the Solr WAR file (found in the $SEARCH_SERVICE_HOME directory) and place it in the <i>$TOMCAT_HOME/conf/Catalina/localhost</i> directory.  The <i>${project.artifactId}.xml</i> file should look as follows:</p>
-
+          <li>Create a Tomcat context file <i>${project.artifactId}.xml</i> to refer to the Solr WA\
+R file (found in the $SEARCH_SERVICE_HOME directory) and place it in the <i>$TOMCAT_HOME/conf/Catal\
+ina/{hostname}</i> directory.  The <i>${project.artifactId}.xml</i> file should look something like\
+ this, with the paths modifed as needed:
             <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;Context docBase="/usr/local/${project.artifactId}/solr.war" debug="0" 
+&lt;Context docBase="/usr/local/${project.artifactId}/solr.war" debug="0"
       crossContext="true"&gt;
-  &lt;Environment name="solr/home" type="java.lang.String" 
-        value="/usr/local/${project.artifactId}" override="true" /&gt;
-  &lt;Parameter name="javax.xml.transform.TransformerFactory" 
-        type="java.lang.String" value="net.sf.saxon.TransformerFactoryImpl" 
-        override="true"/&gt;
-  &lt;Loader className="org.apache.catalina.loader.VirtualWebappLoader" 
-        virtualClasspath="/usr/local/${project.artifactId}/lib/saxon-9.jar"/&gt;
+  &lt;Environment name="solr/home" type="java.lang.String"
+value="/usr/local/${project.artifactId}" override="true" /&gt;
+  &lt;Parameter name="javax.xml.transform.TransformerFactory" type="java.lang.String"
+        value="net.sf.saxon.TransformerFactoryImpl" override="true"/&gt;
+  &lt;Loader className="org.apache.catalina.loader.VirtualWebappLoader"
+virtualClasspath="/usr/local/${project.artifactId}/lib/*.jar;/usr/local/pds/search-service/\
+log4j.properties"/&gt;
 &lt;/Context&gt;
             </source>
           </li>
-          <li><p>Append to the <i>CATALINA_OPTS</i> environment variable by adding the following line to the <i>$TOMCAT_HOME/bin/setenv.sh</i> script:</p>
+          <li><p>Append to the <i>CATALINA_OPTS</i> and <i>JAVA_OPTS</i> environment variables by adding the following line to the <i>$TOMCAT_HOME/bin/setenv.sh</i> script:</p>
             <source>
 CATALINA_OPTS="${CATALINA_OPTS} -Dsolr.pds.home=/usr/local/${project.artifactId}"
+
+JAVA_OPTS="${JAVA_OPTS} -Dlog4j.configuration=file:///usr/local/${project.artifactId}/log4j.properties"
+JAVA_OPTS="${JAVA_OPTS} -Dlog4j.debug=true"
             </source>
             <p>For more information on the <i>$TOMCAT_HOME/bin/setenv.sh</i> script, see the General Configuration section of the <a href="../../../release/index-tomcat.html#General_Configuration">Tomcat Deployment</a> document.</p>
           </li>

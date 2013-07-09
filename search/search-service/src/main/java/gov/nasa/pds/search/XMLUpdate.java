@@ -3,9 +3,8 @@ package gov.nasa.pds.search;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
-import org.apache.solr.core.SolrCore;
+import org.apache.solr.core.CoreContainer;
 
 /** Implements a command-line tools to perform database updates. */
 public class XMLUpdate {
@@ -29,9 +28,11 @@ public class XMLUpdate {
 	}
 
 	protected int doUpdate(FileReader reader) {
-		SolrCore core = SolrCore.getSolrCore();
-		SolrServer server = new EmbeddedSolrServer(core);
 		try {
+			// NOTE: env "solr.solr.home" must be set or passed as JVM argument
+			CoreContainer.Initializer initializer = new CoreContainer.Initializer();
+			CoreContainer coreContainer = initializer.initialize();
+			EmbeddedSolrServer server = new EmbeddedSolrServer(coreContainer, "");
 			return 0;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

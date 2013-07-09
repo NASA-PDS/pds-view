@@ -277,6 +277,54 @@
         <filter class="solr.PorterStemFilterFactory"/>
       </analyzer>
     </fieldType>
+    
+    <!-- Backwards compatible type -->
+    <fieldType name="text" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <!-- in this example, we will only use synonyms at query time
+          <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
+        -->
+        <!-- Case insensitive stop word removal.
+          enablePositionIncrements=true ensures that a 'gap' is left to
+          allow for accurate phrase queries.
+        -->
+        <filter class="solr.StopFilterFactory"
+          ignoreCase="true"
+          words="stopwords.txt"
+          enablePositionIncrements="true"
+        />
+        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" splitOnCaseChange="1"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.PorterStemFilterFactory" />
+        <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
+        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0" splitOnCaseChange="1"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.PorterStemFilterFactory" />
+        <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+    </fieldType>
+    
+    <!-- Backwards compatibility. A text field that only splits on whitespace, buts converts to lower case -->
+    <fieldType name="text_lc" class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
+    
+    <!-- Backwards compatibility.  A keyword field that converts to lower case, for easier matching -->
+    <fieldType name="string_lc" class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
 
     <!-- A text field with defaults appropriate for English, plus
 	 aggressive word-splitting and autophrase features enabled.
@@ -493,23 +541,165 @@
      default: a value that should be used if no value is specified
        when adding a document.
    -->
+   
+   <field name="identifier" type="string" indexed="true" stored="true" required="true" />
+   <field name="_version_" type="long" indexed="true" stored="true"/>
+   
+   <field name="abstract_text" type="text" indexed="false" stored="true" />
+   <field name="agency_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="alternate_id" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="alternate_title" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="archive_status" type="text_lc" indexed="true" stored="true" />
+   <field name="bundle_type" type="text" indexed="true" stored="true" multiValued="false" />
+   <field name="bundle_description" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="citation_author_list" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="citation_description" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="citation_editor_list" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="citation_keyword" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="citation_publication_year" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="collection_name" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="collection_ref" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="collection_type" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="confidence_level_note" type="text" indexed="false" stored="true" />
+   <field name="data_class" type="text_lc" indexed="true" stored="true" multiValued="false" />
+   <field name="data_object_type" type="text_lc" indexed="true" stored="true" multiValued="true"/>
+   <field name="data_set_description" type="text" indexed="false" stored="true" />
+   <field name="data_set_id" type="text_lc" indexed="true" stored="true" />
+   <field name="data_set_name" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="data_set_release_date" type="string" indexed="true" stored="true" />
+   <field name="data_set_terse_description" type="text" indexed="true" stored="true" />
+   <field name="description" type="text" indexed="false" stored="true" />
+   <field name="format" type="string" indexed="false" stored="true" />
+   <field name="full_name" type="text" indexed="true" stored="true" />
+   <field name="person_name" type="text" indexed="true" stored="true" />
+   <field name="instrument_description" type="text" indexed="false" stored="true" />
+   <field name="instrument_host_id" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_host_description" type="text" indexed="false" stored="true" />
+   <field name="instrument_host_naif_id" type="text_lc" indexed="false" stored="true" multiValued="false" />
+   <field name="instrument_host_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_host_ref" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="instrument_host_serial_number" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="instrument_host_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_host_version_id" type="text_lc" indexed="false" stored="true" multiValued="false" />
+   <field name="instrument_id" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_model_id" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="instrument_naif_id" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="instrument_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_ref" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_serial_number" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="instrument_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="investigation_description" type="text" indexed="true" stored="true" multiValued="false" />
+   <field name="investigation_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="investigation_name_or_alias" type="text_lc" indexed="false" stored="true" />
+   <field name="investigation_objectives_summary" type="text" indexed="false" stored="true" />
+   <field name="investigation_ref" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="investigation_start_date" type="date" indexed="true" stored="true" multiValued="true" />
+   <field name="investigation_stop_date" type="date" indexed="true" stored="true" multiValued="true" />
+   <field name="investigation_type" type="text_lc" indexed="true" stored="true" multiValued="false" />
+   <field name="language" type="text_lc" indexed="false" stored="true" />
+   <field name="modification_date" type="date" indexed="false" stored="true" multiValued="false" />
+   <field name="modification_description" type="string" indexed="false" stored="true" multiValued="false" />
+   <field name="node_id" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="nssdc_data_set_id" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="observation_local_mean_solar_time" type="date" indexed="false" stored="true" multiValued="false" />
+   <field name="observation_local_true_solar_time" type="date" indexed="false" stored="true" multiValued="false" />
+   <field name="observation_solar_longitude" type="float" indexed="false" stored="true" multiValued="false" />
+   <field name="observation_start_date_time" type="date" indexed="true" stored="true" multiValued="false" />
+   <field name="observation_stop_date_time" type="date" indexed="true" stored="true" multiValued="false" />
+   <field name="observing_system_name" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="observing_system_component_name" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="observing_system_component_type" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="pds_model_version" type="text" indexed="true" stored="true" multiValued="false" />
+   <field name="primary_result_data_regime" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="primary_result_description" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="primary_result_processing_level_id" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="primary_result_purpose" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="primary_result_type" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="primary_body_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="publisher" type="text" indexed="true" stored="true" />
+   <field name="reference_description" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="resClass" type="string" indexed="true" stored="true" />
+   <field name="resContext" type="string" indexed="false" stored="true" />
+   <field name="resLocation" type="string" indexed="false" stored="true" multiValued="true" />
+   <field name="resource" type="string" indexed="false" stored="true" multiValued="true" />
+   <field name="resource_class" type="text_lc" indexed="true" stored="true" />
+   <field name="resource_id" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="resource_link" type="string" indexed="false" stored="true" multiValued="true"/>
+   <field name="resource_name" type="text_lc" indexed="true" stored="true" />
+   <field name="resource_description" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="search_engine_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="start_time" type="date" indexed="true" stored="true" />
+   <field name="stop_time" type="date" indexed="true" stored="true" />
+   <field name="target_description" type="text" indexed="false" stored="true" />
+   <field name="target_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="target_ref" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="target_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="telephone_number" type="string" indexed="false" stored="true" />
+   <field name="title" type="text" indexed="true" stored="true" />
+   <field name="version_id" type="text" indexed="false" stored="true" multiValued="false" />
+   
+   <!-- A few aliases of the fields above, filled in via copyField, below -->
+   <field name="agency" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="archive-status" type="text_lc" indexed="true" stored="false" />
+   <field name="instrument" type="text" indexed="true" stored="false" multiValued="true" />
+   <field name="instrument-host" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="instrument-host-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="instrument-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="investigation" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="observing-system" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="person" type="text" indexed="true" stored="false" multiValued="true" />
+   <field name="product-class" type="string" indexed="true" stored="false" />
+   <field name="start-time" type="date" indexed="true" stored="false" multiValued="true"/>
+   <field name="stop-time" type="date" indexed="true" stored="false" multiValued="true"/>
+   <field name="target" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="target-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="term" type="text" indexed="true" stored="false" multiValued="true" />
 
-   <field name="id" type="string" indexed="true" stored="true" required="true" /> 
+   
+   <!-- And the faceting fields -->
+   <field name="facet_agency" type="string_lc" indexed="true" stored="false" multiValued="false" />
+   <field name="facet_class" type="string_lc" indexed="true" stored="false" multiValued="false" />
+   <field name="facet_instrument" type="string_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="facet_investigation" type="string_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="facet_target" type="string_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="facet_pds_model_version" type="string_lc" indexed="true" stored="false" multiValued="true" />
+   
+   <!-- Also create a field for facet terms used by the spell checker -->
+   <field name="spell" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   
+   <!-- Faceting fields for form based search -->
+   <field name="form-agency" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="form-archive-status" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="form-data-object-type" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="form-data-set-name" type="string" indexed="true" stored="true" multiValued="true" />    
+   <field name="form-data-set-id" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="form-instrument" type="string" indexed="true" stored="true" multiValued="true" /> 
+   <field name="form-instrument-host" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="form-instrument-host-type" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="form-instrument-type" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="form-investigation" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="form-node-name" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="form-target" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="form-target-type" type="string" indexed="true" stored="true" multiValued="true" />
+   
+   <!--
+   <field name="id" type="string" indexed="true" stored="true" required="true" />
+   -->
 
    <!-- catchall field, containing all other searchable text fields (implemented
-        via copyField further on in this schema  -->
+   via copyField further on in this schema  -->
+   
    <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
-
+   
    <!-- catchall text field that indexes tokens both normally and in reverse for efficient
-        leading wildcard queries. -->
+   leading wildcard queries. -->
+   <!--
    <field name="text_rev" type="text_general_rev" indexed="true" stored="false" multiValued="true"/>
-
+   -->
    <!-- Uncommenting the following will create a "timestamp" field using
         a default value of "NOW" to indicate when each document was indexed.
      -->
-   <!--
    <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
-     -->
    
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
@@ -559,13 +749,96 @@
  <!-- Field to use to determine and enforce document uniqueness. 
       Unless this field is marked with required="false", it will be a required field
    -->
- <uniqueKey>id</uniqueKey>
+ <uniqueKey>identifier</uniqueKey>
 
  <!-- field for the QueryParser to use when an explicit fieldname is absent -->
  <defaultSearchField>text</defaultSearchField>
 
  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
- <solrQueryParser defaultOperator="OR"/>
+ <solrQueryParser defaultOperator="AND"/>
+ 
+ 
+  <!-- copyField commands copy one field to another at the time a document
+    is added to the index.  It's used either to index the same field differently,
+    or to add multiple fields to the same field for easier/faster searching.  -->
+  <copyField source="agency_name" dest="text" />
+  <copyField source="alternate_id" dest="text" />
+  <copyField source="alternate_title" dest="text" />
+  <copyField source="citation_author_list" dest="text" />
+  <copyField source="citation_editor_list" dest="text" />
+  <copyField source="description" dest="text" />
+  <copyField source="data_set_id" dest="text" />
+  <copyField source="data_set_description" dest="text" />
+  <copyField source="full_name" dest="text" />
+  <copyField source="instrument_host_description" dest="text" />
+  <copyField source="instrument_host_name" dest="text" />
+  <copyField source="instrument_host_id" dest="text" />
+  <copyField source="instrument_id" dest="text" />
+  <copyField source="instrument_description" dest="text" />
+  <copyField source="instrument_name" dest="text" />
+  <copyField source="investigation_name" dest="text" />
+  <copyField source="investigation_start_date" dest="text" />
+  <copyField source="investigation_stop_date" dest="text" />
+  <copyField source="citation_keyword" dest="text" />
+  <copyField source="observing_system_name" dest="text" />
+  <copyField source="person_name" dest="text" />
+  <copyField source="target_name" dest="text" />
+  <copyField source="title" dest="text" />
+  
+  <!-- Now a few indexed aliases -->
+  <copyField source="agency_name" dest="agency" />
+  <copyField source="archive_status" dest="archive-status" />
+  <!--copyField source="alternate_id" dest="identifier" /-->
+  <copyField source="instrument_name" dest="instrument" />
+  <copyField source="instrument_id" dest="instrument" />
+  <copyField source="title" dest="instrument" />
+  <copyField source="alternate_title" dest="instrument" />
+  <copyField source="instrument_type" dest="instrument-type" />
+  <copyField source="instrument_host_name" dest="instrument-host" />
+  <copyField source="title" dest="instrument-host" />
+  <copyField source="alternate_title" dest="instrument-host" />
+  <copyField source="instrument_host_type" dest="instrument-host-type" />
+  <copyField source="investigation_name" dest="investigation" />
+  <copyField source="title" dest="investigation" />
+  <copyField source="alternate_title" dest="investigation" />  
+  <copyField source="observing_system_name" dest="observing-system" />
+  <copyField source="citation_author_list" dest="person" />
+  <copyField source="citation_editor_list" dest="person" />
+  <copyField source="full_name" dest="person" />
+  <copyField source="person_name" dest="person" />
+  <copyField source="title" dest="person" />
+  <copyField source="alternate_title" dest="person" />
+  <copyField source="resClass" dest="product-class" />
+  <copyField source="investigation_start_date" dest="start-time" />
+  <copyField source="start_time" dest="start-time" />
+  <copyField source="investigation_stop_date" dest="stop-time" />
+  <copyField source="stop_time" dest="stop-time" />
+  <copyField source="target_name" dest="target" />
+  <copyField source="target_type" dest="target-type" />
+  <copyField source="citation_keyword" dest="term" />
+  <copyField source="alternate_title" dest="title" />
+  
+  <!-- And the spell-check field -->
+  <copyField source="target_name" dest="spell" />
+  <copyField source="agency_name" dest="spell" />  
+  <copyField source="investigation_name" dest="spell" />
+  <copyField source="instrument_name" dest="spell" />
+  <copyField source="instrument_host_name" dest="spell" />
+    
+  <!-- Form-based search support -->
+  <copyField source="investigation_name" dest="form-investigation" />
+  <copyField source="target_name" dest="form-target" />
+  <copyField source="target_type" dest="form-target-type" />
+  <copyField source="instrument_name" dest="form-instrument" />
+  <copyField source="instrument_type" dest="form-instrument-type" />
+  <copyField source="instrument_host_name" dest="form-instrument-host" />
+  <copyField source="agency_name" dest="form-agency" />
+  <copyField source="data_set_name" dest="form-data-set-name" />
+  <copyField source="data_set_id" dest="form-data-set-id" />
+  <copyField source="data_object_type" dest="form-data-object-type" />
+  <copyField source="instrument_host_type" dest="form-instrument-host-type" />
+  <copyField source="node_id" dest="form-node-name" />
+  <copyField source="archive_status" dest="form-archive-status" />
 	
  <!-- Similarity is the scoring routine for each document vs. a query.
       A custom similarity may be specified here, but the default is fine
