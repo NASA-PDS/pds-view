@@ -545,7 +545,7 @@
       <field name="target_name">uranus</field>
       <field name="target_name">neptune</field>
       <field name="resource_link">http://pds-rings.seti.org/search/</field>
-      <field name="description">Search for images and spectra from the Cassini, Galileo, New Horizons, and Voyager missions with the multi-mission search tool at the PDS Rings Node.</field>
+      <field name="description">Use OPUS to search for images and spectra from the Cassini, Galileo, New Horizons, and Voyager missions. Now with enhanced geometric metadata for Cassini ISS, UVIS, and VIMS Saturn data. This enables surface search constraints for the planet, satellites and rings (e.g., latitudes and longitudes), expanded sets of viewing and illumination constraints, and incorporates comprehensive 'in the field of view' target lists for Cassini ISS and VIMS.</field>
       <field name="data_set_name">VG1/VG2 JUPITER IMAGING SCIENCE SUBSYSTEM EDITED EDR V3.0</field>
       <field name="data_set_name">VG1/VG2 SATURN IMAGING SCIENCE SUBSYSTEM EDITED EDR V2.0</field>
       <field name="data_set_name">VG2 URANUS IMAGING SCIENCE SUBSYSTEM EDITED EDR V1.0</field>
