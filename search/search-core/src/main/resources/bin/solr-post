@@ -56,7 +56,7 @@ curl "${UPDATE_URL}" -H "Content-Type: application/xml" --silent --request POST 
 
 find ${SEARCH_HOME}/index/solr_index.xml.*
 for solrIndex in `find ${SEARCH_HOME}/index/solr_index.xml.*`; do
-    indexNum=`echo $solrIndex | gawk -F. '{print $NF}'`
+    indexNum=`echo $solrIndex | awk -F. '{print $NF}'`
     xslt $solrIndex ${DIR}/../facets/add-hierarchy.xslt ${SEARCH_HOME}/index/solr-index.hierarchy.xml.$indexNum ${SEARCH_HOME}
 
     # Push new index data
