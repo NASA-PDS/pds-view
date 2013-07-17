@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2012, by the California Institute of Technology.
+  Copyright 2012-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -30,6 +30,8 @@
 
       <ul>
         <li><a href="#Tool_Execution">Tool Execution</a></li>
+        <li><a href="#Policy_File">Policy File</a></li>
+        <li><a href="#Report_Format">Report Format</a></li>
       </ul>
 
       <p>Note: The command-line examples in this section have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution.
@@ -46,24 +48,203 @@
 
         <table>
           <tr><th>Command-Line Option</th><th>Description</th></tr>
+          <tr><td>-c, --config</td><td>Specify a policy configuration file to set the tool behavior. (This flag is required)</td></tr>
           <tr><td>-u, --username</td><td>Specify a username for authentication with the PDS Security Service.</td></tr>
           <tr><td>-p, --password</td><td>Specify a password associated with the username.</td></tr>
           <tr><td>-k, --keystore-pass</td><td>Specify a keystore password associated with the keystore file being passed into the tool.</td></tr>
           <tr><td>-l, --log-file</td><td>Specify a log file name. Default is standard out.</td></tr>
           <tr><td>-v, --verbose</td><td>Specify the message severity level and above to include in the log (0=Debug, 1=Info, 2=Warning, 3=Error). Default is Info and above (level 1).</td></tr>
-          <tr><td>-e, --regexp</td><td>Specify file patterns to look for when registering products from a target directory.</td></tr>
-          <tr><td>-D, --pds3-directory</td><td>Specify a target directory to register PDS3 products.</td></tr>
-          <tr><td>-P, --port</td><td>Specify a port number to use if running the tool in persistence mode. See the <a href="#Persistence_Mode">Persistence Mode</a> section for more details.</td></tr>
-          <tr><td>-w, --wait</td><td>Specify the time, in seconds, to wait in between the crawls if running the tool in persistence mode. See the <a href="#Persistence_Mode">Persistence Mode</a> section for more details.</td></tr>
           <tr><td>-V, --version</td><td>Display the release number and copyright information.</td></tr>
           <tr><td>-h, --help</td><td>Display <i>harvest</i> usage.</td></tr>
         </table>
       </subsection>
 
-      <subsection name="Execute Harvest Tool">
-        <p>TBD
+      <subsection name="Execute Harvest-PDAP Tool">
+        <p>The Harvest-PDAP Tool operates with a policy fie to register product metadata. Details on host to create this policy file can be found in the <a href="#Policy_File">Policy File</a> section.
         </p>
+
+        <p>This section demonstrates some of the ways that the tool can be executed:
+        </p>
+
+        <ul>
+          <li>Registering Products from a Configured Source</li>
+          <li>Registering Products to a Secured Registry Instance</li>
+        </ul>
+
+        <p><b><i>Registering Products from a Configured Source</i></b></p>
+
+        <p>The following command demonstrates how to register products to a non-secured registry instance from a source specified in the policy file and to direct the output to a log file:
+        </p>
+
+        <source>
+% harvest-pdap -c policy.xml -l output.log
+        </source>
+
+        <p><b><i>Registering Products to a Secured Registry Instance</i></b></p>
+
+        <p>The following command demonstrates the previous scenario but registering products to a secured registry instance:
+        </p>
+
+        <source>
+% harvest-pdap -c policy.xml -u {username} -p {password} -k {keystorePassword} \
+-l output.log
+        </source>
       </subsection>
-   </section>
+    </section>
+
+    <section name="Policy File">
+      <p>The Harvest-PDAP policy file is an XML-based configuration file that the tool uses to find products and register their metadata. This section details how to setup the policy file to do PDS product registration. The following is an example of a policy file to perform registration of ESA/PSA products:
+      </p>
+
+      <source>
+&lt;policy&gt;
+   &lt;pdsRegistry url="http://localhost:8080/registry"&gt;
+     &lt;packageName&gt;Harvest-PDAP Package&lt;/packageName&gt;
+     &lt;packageDescription&gt;
+       This is a run that includes registration of products from the PSA.
+     &lt;/packageDescription&gt;
+   &lt;/pdsRegistry&gt;
+   &lt;pdapServices&gt;
+     &lt;!-- Currently, the only valid value for 'agency' is 'esa'. --&gt;
+     &lt;pdapService agency="esa" url="http://psa.esac.esa.int:8000"/&gt;
+   &lt;/pdapServices&gt;
+   &lt;productMetadata&gt;
+     &lt;!--
+       All context product metadata definitions are captured in the 
+       global policy. 
+     --&gt;
+   &lt;/productMetadata&gt;
+   &lt;resourceMetadata&gt;
+     &lt;title&gt;The Planetary Science Archive METADATA Query Service&lt;/title&gt;
+     &lt;type&gt;System.Browse&lt;/type&gt;
+     &lt;slot name="resource_name"&gt;
+       &lt;value&gt;The Planetary Science Archive METADATA Query Service&lt;/value&gt;
+     &lt;/slot&gt;
+     &lt;slot name="resource_description"&gt;
+       &lt;value&gt;The Planetary Science Archive METADATA Query Service&lt;/value&gt;
+     &lt;/slot&gt;
+   &lt;/resourceMetadata&gt;
+&lt;/policy&gt;
+      </source>
+
+      <p>The policy file is made up of the following complex type elements: <i>pdsRegistry</i>, <i>pdapServices</i>, <i>productMetadata</i> and <i>resourceMetadata</i>.
+      </p>
+
+      <p><b><i>pdsRegistry</i></b></p>
+
+      <p>Each time the Harvest Tool runs, it creates a package in the registry to group the product registrations together. Specify this element to give a registry package a name and/or description. A required attribute of the <i>pdsRegistry</i> element named <i>url</i>, must be populated to specify the endpoint of the Registry Service. The following table describes the child elements that are allowed:
+      </p>
+
+      <table>
+        <tr><th>Element Name</th><th>Description</th></tr>
+        <tr><td>packageName</td><td>Specify a package name. If this element is not specified, the default is to create a package with the name <i>Harvest-Package_&lt;current datetimestamp&gt;</i>.</td></tr>
+        <tr><td>packageDescription</td><td>Specify a package description. If this element is not specified, the default is to create a description that lists the targets that were specified in the policy config file.</td></tr>
+      </table>
+
+      <p><b><i>pdapServices</i></b></p>
+
+      <p>Specify this element to indicate the PDAP service endpoint for accessing product metadata for registration with the Registry Service. The following table describes the child elements that are allowed:
+      </p>
+
+      <table>
+        <tr><th>Element Name</th><th>Description</th></tr>
+        <tr><td>pdapService</td><td>Specify the PDAP service endpoint by populating the two required attributes. The attributes are named <i>agency</i> and <i>url</i>. The only valid value for <i>agency</i> at this time is "esa" with the corresponding <i>url</i> value of "http://psa.esac.esa.int:8000".</td></tr>
+      </table>
+
+      <p><b><i>productMetadata</i></b></p>
+
+      <p>Specify this element to include additional metadata in the form of registry slots for every product. The following table describes the child elements that are allowed:
+      </p>
+
+      <table>
+        <tr><th>Element Name</th><th>Description</th></tr>
+        <tr><td>staticMetadata</td><td>Specify static metadata for every product.</td></tr>
+        <tr><td>dynamicMetadata</td><td>Specify dynamic metadata for every product.</td></tr>
+      </table>
+
+      <p><b><i>staticMetadata</i></b></p>
+
+      <p>Specify this element to include static metadata for every product. The following table describes the child elements that are allowed:
+      </p>
+
+      <table>
+        <tr><th>Element Name</th><th>Description</th></tr>
+        <tr><td>slot</td><td>This element contains a required <i>name</i> attribute to specify the name of the slot to use in the registry. The <i>value</i> child element specifies the slot value. This child element may be repeated multiple times to indicate multiple values.</td></tr>
+      </table>
+
+      <p><b><i>dynamicMetadata</i></b></p>
+
+      <p>Specify this element to include dynamic metadata for every product. The following table describes the child elements that are allowed:
+      </p>
+
+      <table>
+        <tr><th>Element Name</th><th>Description</th></tr>
+        <tr><td>element</td><td>This element contains a required <i>name</i> attribute to specify the keyword in the target metadata. The <i>slotName</i> child element specifies the slot name to populate with the value from the keyword. This child element may be repeated multiple times to indicate multiple slots.</td></tr>
+      </table>
+
+      <p><b><i>resourceMetadata</i></b></p>
+
+      <p>Specify this element to include metadata for every resource product. A corresponding resource product is registered for every data set product registered. The following table describes the child elements that are allowed:
+      </p>
+
+      <table>
+        <tr><th>Element Name</th><th>Description</th></tr>
+        <tr><td>title</td><td>Specify a title for the resource product.</td></tr>
+        <tr><td>type</td><td>Specify the type of resource product. The most common value is "System.Browse".</td></tr>
+        <tr><td>slot</td><td>Specify additional metadata for the resource product. This element contains a required <i>name</i> attribute to specify the name of the slot to use in the registry. The <i>value</i> child element specifies the slot value. This child element may be repeated multiple times to indicate multiple values.</td></tr>
+      </table>
+    </section>
+
+    <section name="Report Format">
+     <p>This section describes the contents of the Harvest-PDAP Tool report. At this time, the tool only outputs a series of log messages. The log will report the success or failure of a discovered product attempting to be registered. A log consists of a severity level, file name, and a message. The following is an example of some of the log messages that can be expected from the Harvest Tool:
+      </p>
+
+      <source>
+PDS Harvest-PDAP Tool Log
+
+Version                     Version 0.1.1
+Time                        Sun, Jun 09 2013 at 01:40:00 PM
+Severity Level              INFO
+PDAP Target(s)              [http://psa.esac.esa.int:8000]
+Registry Location           http://localhost:8080/registry-psa
+Registry Package Name       Harvest-PDAP Package
+Registration Package GUID   urn:uuid:c554631c-a353-4b0f-9643-4796a921d523
+
+INFO:   Connecting to PDAP Service: http://psa.esac.esa.int:8000
+** AdaptiveByteStore default memory limit = 986M * 0.125 = 123M **
+** malloc 2778306 bytes **
+INFO:   [AIRUB-C-PHOTOCAM-2-EDR-HALLEY-1986-V1.0] \
+Processing dataset.
+INFO:   [AIRUB-C-PHOTOCAM-2-EDR-HALLEY-1986-V1.0] \
+Additional metadata needed. Getting dataset catalog file.
+INFO:   [AIRUB-C-PHOTOCAM-2-EDR-HALLEY-1986-V1.0] \
+Retrieving VOLDESC.CAT to look up the data set catalog file name.
+INFO:   [AIRUB-C-PHOTOCAM-2-EDR-HALLEY-1986-V1.0] \
+Retrieving catalog file: DATASET.CAT
+SUCCESS:   [AIRUB-C-PHOTOCAM-2-EDR-HALLEY-1986-V1.0] \
+Successfully ingested product: \
+urn:nasa:pds:...AIRUB-C-PHOTOCAM-2-EDR-HALLEY-1986-V1.0::1.0
+INFO:   [AIRUB-C-PHOTOCAM-2-EDR-HALLEY-1986-V1.0] \
+Product guid is urn:uuid:e7bba690-c946-4a80-b911-2a3a47fdde14
+SUCCESS:   [AIRUB-C-PHOTOCAM-2-EDR-HALLEY-1986-V1.0] \
+Successfully ingested product: \
+urn:nasa:pds:...AIRUB-C-PHOTOCAM-2-EDR-HALLEY-1986-V1.0::1.0
+INFO:   [AIRUB-C-PHOTOCAM-2-EDR-HALLEY-1986-V1.0] \
+Product guid is urn:uuid:5147a7a6-dced-4402-8dd7-0b401c56b1f3
+
+...
+
+Summary:
+
+2712 dataset(s) processed
+64 error(s), 7290 warning(s)
+
+2712 of 2712 datasets registered.
+
+2712 of 2712 resources registered.
+
+End of Log
+      </source>
+    </section>
   </body>
 </document>
