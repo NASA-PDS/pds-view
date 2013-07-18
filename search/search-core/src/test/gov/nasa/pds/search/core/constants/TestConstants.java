@@ -37,7 +37,7 @@ public final class TestConstants {
 	public static final String PDS3_REGISTRY_URL="http://pdsbeta.jpl.nasa.gov:8080/registry";
 	
 	/** PSA Registry URL used for testing purposes **/
-	public static final String PSA_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry-psa";
+	public static final String PSA_REGISTRY_URL="http://ipda.jpl.nasa.gov/registry";
 	
 	/** Search Service Solr URL **/
 	public static final String SOLR_SERVER_URL="http://pdsdev.jpl.nasa.gov:8080/search-service/pds";
