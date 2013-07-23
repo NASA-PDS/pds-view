@@ -153,7 +153,7 @@ or
 % cd ${project.artifactId}-${project.version}
 % java -Djava.ext.dirs=lib/ org.apache.derby.tools.ij
 ij> connect 'jdbc:derby:registry;user=registry';
-ij> run 'conf/registry-schema-upgrade-1.4.0.ddl';
+ij> run 'conf/registry-schema-upgrade-1.3.0.ddl';
 ij> exit;
         </source>
 
@@ -162,7 +162,7 @@ ij> exit;
 
         <source>
 % cd ${project.artifactId}-${project.version}
-% mysql -u root -p -D registry &lt; conf/registry-schema-upgrade-1.4.0.ddl
+% mysql -u root -p -D registry &lt; conf/registry-schema-upgrade-1.3.0.ddl
         </source>
 
         <p>For a PostgreSQL database, execute the following commands to update the PostgreSQL database to version 1.4.0 and beyond:
@@ -172,7 +172,7 @@ ij> exit;
 % cd ${project.artifactId}-${project.version}
 % psql -U postgres
 postgres=# \c registry registry
-postgres=# \i conf/registry-schema-upgrade-1.4.0.ddl
+postgres=# \i conf/registry-schema-upgrade-1.3.0.ddl
 postgres=# \q
         </source>
       </subsection>
@@ -283,14 +283,14 @@ http://localhost:8080/registry/
 
       <source>
 javax.servlet.ServletException: java.lang.OutOfMemoryError: PermGen space
-  com.sun.jersey.spi.container.servlet.WebComponent.service(WebComponent.java:424)
-  com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:497)
-  com.sun.jersey.spi.container.servlet.ServletContainer.doFilter(ServletContainer.java:855)
-  com.sun.jersey.spi.container.servlet.ServletContainer.doFilter(ServletContainer.java:828)
-  com.sun.jersey.spi.container.servlet.ServletContainer.doFilter(ServletContainer.java:789)
+  com.sun.jersey.spi.container...WebComponent.service(WebComponent.java:424)
+  com.sun.jersey.spi.container...ServletContainer.service(ServletContainer.java:497)
+  com.sun.jersey.spi.container...ServletContainer.doFilter(ServletContainer.java:855)
+  com.sun.jersey.spi.container...ServletContainer.doFilter(ServletContainer.java:828)
+  com.sun.jersey.spi.container...ServletContainer.doFilter(ServletContainer.java:789)
   org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal
   (OpenEntityManagerInViewFilter.java:113)
-  org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:76)
+  org.springframework.web...OncePerRequestFilter.doFilter(OncePerRequestFilter.java:76)
       </source>
 
       <p>If the above situation occurs, stop and restart the Tomcat server to clear the problem.
@@ -390,12 +390,14 @@ jpa.showSql=false
         </p>
 
         <source>
-&lt;bean id="idGenerator" class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
+&lt;bean id="idGenerator" 
+class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
 p:home="http://localhost:8080/registry"/&gt;
 
   should be changed to (if hosted at node.nasa.gov on port 80):
 
-&lt;bean id="idGenerator" class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
+&lt;bean id="idGenerator" 
+class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
 p:home="http://node.nasa.gov/registry"/&gt;
         </source>
       </subsection>
@@ -421,7 +423,7 @@ p:home="http://node.nasa.gov/registry"/&gt;
 * Connected to localhost (::1) port 8080 (#0)
 &gt; POST /registry/configure?name=Core+Objects&amp;\
 description=This+configures+the+core+set+of+registry+objects HTTP/1.1
-&gt; User-Agent: curl/7.19.7 (universal-apple-darwin10.0) libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3
+&gt; User-Agent: curl/7.19.7 ... libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3
 &gt; Host: localhost:8080
 &gt; Accept: */*
 &gt; Content-type:application/xml
@@ -446,7 +448,7 @@ urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
 * Connected to localhost (::1) port 8080 (#0)
 &gt; POST /registry/configure?name=PDS+Objects&amp;\
 description=This+configures+PDS+object+types HTTP/1.1
-&gt; User-Agent: curl/7.19.7 (universal-apple-darwin10.0) libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3
+&gt; User-Agent: curl/7.19.7 ... libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3
 &gt; Host: localhost:8080
 &gt; Accept: */*
 &gt; Content-type:application/xml
@@ -471,9 +473,9 @@ urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
         </p>
 
         <source>
-&lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='${project.version}' packages='4' 
-classificationNodes='76' classificationSchemes='2' services='0' extrinsics='0' associations='78' 
-serverStarted='2011-08-28T12:45:43.514-07:00' status='OK'/&gt;
+&lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='${project.version}' 
+packages='4' classificationNodes='76' classificationSchemes='2' services='0' extrinsics='0' 
+associations='78' serverStarted='2011-08-28T12:45:43.514-07:00' status='OK'/&gt;
         </source>
       </subsection>
     </section>
