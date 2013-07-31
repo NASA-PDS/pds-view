@@ -30,16 +30,20 @@ public String cleanParam(String str) {
    char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
    String decodedStr = null;
 
-   if (str != null) {
-      decodedStr = URLDecoder.decode(str);
-      for(int i = 0; i < badChars.length; i++) {
-         if (decodedStr.indexOf(badChars[i]) >= 0) {
-            return null;
+   try {
+     if (str != null) {
+        decodedStr = URLDecoder.decode(str);
+        for(int i = 0; i < badChars.length; i++) {
+           if (decodedStr.indexOf(badChars[i]) >= 0) {
+              return null;
+           }
          }
-      }
+     }
+   } catch (IllegalArgumentException e) {
+      return null;
    }
    return decodedStr;
-} // end of cleanParam method
+}
 %>
 
 <body class="menu_data menu_item_data_data_search ">

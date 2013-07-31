@@ -34,20 +34,24 @@
        <td>    
 <%!
   /**
-   * Null out the parameter value if any of the bad characters are present
+   * Blank out the parameter value if any of the bad characters are present
    * that facilitate Cross-Site Scripting and Blind SQL Injection.
    */
   public String cleanParam(String str) {
     char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
     String decodedStr = "";
 
-    if (str != null) {
-      decodedStr = URLDecoder.decode(str);
-      for(int i = 0; i < badChars.length; i++) {
-        if (decodedStr.indexOf(badChars[i]) >= 0) {
-          return "";
+    try {
+      if (str != null) {
+        decodedStr = URLDecoder.decode(str);
+        for(int i = 0; i < badChars.length; i++) {
+          if (decodedStr.indexOf(badChars[i]) >= 0) {
+            return "";
+          }
         }
       }
+    } catch (IllegalArgumentException e) {
+      return "";
     }
     return decodedStr;
   }
