@@ -13,7 +13,7 @@
                contentType="text/html; charset=ISO-8859-1" 
                import="gov.nasa.pds.dsview.registry.PDS4Search, gov.nasa.pds.dsview.registry.Constants, 
                        org.apache.solr.common.SolrDocument, org.apache.solr.common.SolrDocumentList,
-                       java.util.*, java.net.*, java.io.*, java.net.URLDecoder"
+                       java.util.*, java.net.*, java.io.*, java.lang.*"
       %>
 
       <SCRIPT LANGUAGE="JavaScript">

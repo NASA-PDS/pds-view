@@ -11,7 +11,7 @@
    <%@ page language="java" session="true" isThreadSafe="true" info="PDS Search" 
             isErrorPage="false" contentType="text/html; charset=ISO-8859-1" 
             import="gov.nasa.pds.registry.model.ExtrinsicObject, gov.nasa.pds.dsview.registry.Constants, 
-                    java.util.*, java.net.*, java.io.*, java.net.URLDecoder"
+                    java.util.*, java.net.*, java.io.*, java.lang.*"
    %>
 
    <SCRIPT LANGUAGE="JavaScript">
