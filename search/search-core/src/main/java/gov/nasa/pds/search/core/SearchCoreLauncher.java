@@ -19,7 +19,6 @@ import gov.nasa.pds.search.core.cli.options.Flag;
 import gov.nasa.pds.search.core.cli.options.InvalidOptionException;
 import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.extractor.RegistryExtractor;
-import gov.nasa.pds.search.core.indexer.pds.Indexer;
 import gov.nasa.pds.search.core.indexer.solr.SolrIndexer;
 import gov.nasa.pds.search.util.Debugger;
 import gov.nasa.pds.search.util.PropertiesUtil;
@@ -450,19 +449,6 @@ public class SearchCoreLauncher {
 		String[] args = { this.searchHome.getAbsolutePath() + "/index",
 				this.searchHome.getAbsolutePath() + "/registry-data" };
 		SolrIndexer.main(args);
-	}
-
-	/**
-	 * Runs the PDS Indexer component.
-	 * 
-	 * @throws IOException
-	 */
-	@Deprecated private void runIndexer() throws IOException {
-		this.log.info("\nRunning Indexer to create new CATALOG_INDEX...\n");
-		String[] args = { this.searchHome.getAbsolutePath(),
-				this.searchHome.getAbsolutePath() + "/tse/extract" };
-		Indexer.main(args);
-
 	}
 
 	/**
