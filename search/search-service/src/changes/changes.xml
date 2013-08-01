@@ -24,8 +24,26 @@
 
   <body>
     <release version="1.3.0" date="TBD" description="TBD">
+      <action dev="jpadams" type="add" issue="PDS-173">
+	Added log4j.properties and zoo.cfg files for Solr 4 patch.
+      </action>
       <action dev="jpadams" type="update" issue="PDS-173">
-	Updated solrconfig.xml to reflect
+	Update assembly.xml to include log4j config.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-173">
+Updated XMLUpdate and XSLTResponseWriter to work with updated libraries.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-173">
+	Updated pom with Solr 4 libraries, slf4j, og4j, and commons-logging dependencies.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-173">
+	Updated documentation to include some changes to installation to work with log4j.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-182">
+	Updated solrconfig.xml to include new /filtered endpoint, which will now handle the filtering of superseded data sets, instead of the search UI.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-182">
+	Updated data-sets.xsl to remove all references to archive-status. Functionality has been moved to Solr config.
       </action>
     </release>
 

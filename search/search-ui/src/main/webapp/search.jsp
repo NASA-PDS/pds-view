@@ -26,25 +26,12 @@ ignoredParams.add("words");
 ignoredParams.add("search_scope");
 
 
-if (qString.equals("")) {
-  newQString = qString + "-archive-status:SUPERSEDED";
-} else {
-  if (qString.toLowerCase().matches(".+ or .+")) {
-  	newQString = "(" + qString +")" + " AND -archive-status:SUPERSEDED";
-  } else {
-	newQString = qString + " AND -archive-status:SUPERSEDED";
-  }
-}
-
-// Need to loop through parameters to fine the query string and the parameters to ignore
+// Loop through request params to ignore params that come from search
 // Allows for parameters to be appended to search-service query
 query = "";
 Map<String, String[]> params = request.getParameterMap();
 for (String name : params.keySet()) {
-  // Check if archive-status is already specified as parameter
-  if ( name.equals("q") && !params.get(name)[0].contains("archive-status")) {
-    query += name + "=" + URLEncoder.encode(newQString) + "&";
-  } else if (!ignoredParams.contains(name)) {
+  if (!ignoredParams.contains(name)) {
     for (String value : Arrays.asList(params.get(name))) {
       query += name + "=" + URLEncoder.encode(value) + "&";
     }
@@ -74,7 +61,7 @@ for (String name : params.keySet()) {
 $(function() {
     //var query = window.location.href.slice(window.location.href.indexOf('?') + 1).split('@@');
     var query = '<%= query %>';
-		$.get('../search-service/pds/search?' + query, function(data) {
+		$.get('../search-service/pds/filtered?' + query, function(data) {
 			$('.output').html(data);
 			//alert('Load was performed.');
 		});
