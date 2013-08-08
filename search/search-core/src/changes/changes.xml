@@ -25,7 +25,7 @@
   <body>
     <release version="1.3.0" date="TBD" description="TBD">
       <action dev="jpadams" type="update">
-Removed Indexer and ProfileParser classes that have been deprecated from use and no longer have a use. Updated Launcher to remove reference to these classes.
+	Removed Indexer and ProfileParser classes that have been deprecated from use and no longer have a use. Updated Launcher to remove reference to these classes.
       </action>
       <action dev="jpadams" type="update" issue="PDS-173">
 	Completed patch for use with Solr 4, including updates to pom dependencies and Indexer.java.

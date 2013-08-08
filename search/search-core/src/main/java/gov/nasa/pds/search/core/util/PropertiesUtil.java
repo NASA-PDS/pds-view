@@ -10,10 +10,10 @@
 //	may be required before exporting such information to foreign countries or 
 //	providing access to foreign nationals.
 //	
-//	$Id$
+//	$Id: PropertiesUtil.java 11350 2013-02-22 00:55:41Z jpadams $
 //
 
-package gov.nasa.pds.search.util;
+package gov.nasa.pds.search.core.util;
 
 import java.io.File;
 import java.io.FileInputStream;

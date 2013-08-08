@@ -10,6 +10,7 @@ public final class Constants {
 	 * Default filename for Product Classes properties file that is required in
 	 * config directory.
 	 **/
+	@Deprecated
 	public static final String PC_PROPS = "product-classes.txt";
 
 	/** Default maximum number of queried records to be returned from registry. **/
@@ -30,4 +31,7 @@ public final class Constants {
 	/** Valid PDS4 representation for unknown values. **/
 	public static String[] VALID_UNK_VALUES = { "N/A", "UNK", "NULL",
 			"UNKNOWN", "" };
+	
+	/** Directory name where XML files will be stored after data is extracted from registry **/
+	public static String REGISTRY_DATA_DIR = "registry-data";
 }

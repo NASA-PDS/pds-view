@@ -10,10 +10,10 @@
 //	may be required before exporting such information to foreign countries or 
 //	providing access to foreign nationals.
 //	
-//	$Id$
+//	$Id: PDSDateConvert.java 11350 2013-02-22 00:55:41Z jpadams $
 //
 
-package gov.nasa.pds.search.util;
+package gov.nasa.pds.search.core.util;
 
 import gov.nasa.pds.search.core.constants.Constants;
 

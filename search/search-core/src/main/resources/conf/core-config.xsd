@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- Copyright 2010-2011, by the California Institute of Technology. ALL 
+	RIGHTS RESERVED. United States Government Sponsorship acknowledged. Any commercial 
+	use must be negotiated with the Office of Technology Transfer at the California 
+	Institute of Technology. This software may be subject to U.S. export control 
+	laws. By accepting this software, the user agrees to comply with all applicable 
+	U.S. export laws and regulations. User has the responsibility to obtain export 
+	licenses, or other export authority as may be required before exporting such 
+	information to foreign countries or providing access to foreign persons. 
+	$Id: harvest-policy.xsd 10548 2012-05-23 22:33:06Z mcayanan $ -->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.0">
+
+	<xsd:element name="title" type="xsd:string" />
+	<xsd:element name="registryObjectType" type="xsd:string" />
+	<xsd:element name="registryObjectName" type="xsd:string" />
+	<xsd:element name="registryPath" type="xsd:string" />
+	<xsd:element name="outputString" type="xsd:string" />
+
+	<xsd:attribute name="name" type="xsd:string" />
+	<xsd:attribute name="type" type="dataType" />
+	<xsd:simpleType name="dataType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="required"/>
+	    	<xsd:enumeration value="string"/>
+	    	<xsd:enumeration value="date"/>
+	    	<xsd:enumeration value="integer"/>
+	    	<xsd:enumeration value="float"/>
+	  	</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:element name="specification" type="Specification" />
+	<xsd:complexType name="Specification">
+		<xsd:sequence>
+			<xsd:element ref="title" />
+			<xsd:element ref="registryObjectType" />
+			<xsd:element ref="registryObjectName" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="field" type="Field" />
+	<xsd:complexType name="Field">
+		<xsd:choice>
+			<xsd:element ref="registryPath" />
+			<xsd:element ref="outputString" />
+		</xsd:choice>
+		<xsd:attribute ref="name" use="required" />
+		<xsd:attribute ref="type" use="required" />
+	</xsd:complexType>
+
+<!-- 
+	<xsd:element name="identifier" type="RequiredField" />
+	<xsd:element name="title" type="RequiredField" />
+	<xsd:element name="description" type="RequiredField" />
+	<xsd:element name="resourceLocation" type="RequiredField" />
+	<xsd:complexType name="RequiredField">
+		<xsd:choice>
+			<xsd:element ref="registryPath" />
+			<xsd:element ref="outputString" />
+		</xsd:choice>
+	</xsd:complexType>
+ -->
+
+	<xsd:element name="indexFields" type="IndexField" />
+	<xsd:complexType name="IndexField">
+		<xsd:sequence>
+			<xsd:element ref="field" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="product" type="Product" />
+	<xsd:complexType name="Product">
+		<xsd:sequence>
+			<xsd:element ref="specification" />
+			<xsd:element ref="indexFields" />
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

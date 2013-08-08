@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product>
+	<specification>
+		<title>Target</title>
+		<registryObjectType>Product_Target_PDS3</registryObjectType>
+	</specification>
+	
+	<!-- Fields displayed in default Search Service results -->
+	<indexFields> 
+		<field name="identifier" type="string">
+			<registryPath>lid</registryPath>
+		</field>
+		<field name="title" type="string">
+			<registryPath>name</registryPath>
+		</field>
+		<field name="description" type="string">
+			<registryPath>target_description</registryPath>
+		</field>			
+		<field name="resourceLocation" type="string">
+			<outputString>/ds-view/pds/viewTargetProfile.jsp?TARGET_NAME={target_name}</outputString>
+		</field>
+		<field name="target_name" type="string">
+			<registryPath>target_name</registryPath>
+		</field>
+		<field name="target_primary_body_name" type="string">
+			<registryPath>target_primary_body_name</registryPath>
+		</field>
+	</indexFields>
+</product>

@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.constants.TestConstants;
-import gov.nasa.pds.search.util.PDSDateConvert;
+import gov.nasa.pds.search.core.util.PDSDateConvert;
 
 /**
  * Test PDSDateConvert to verify expected output is being produced

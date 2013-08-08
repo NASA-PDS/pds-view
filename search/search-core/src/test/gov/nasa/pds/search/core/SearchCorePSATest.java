@@ -5,23 +5,33 @@ import static org.junit.Assert.*;
 import java.io.File;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import gov.nasa.pds.search.core.constants.TestConstants;
 import junit.framework.TestCase;
 
+/**
+ * Tests of PSA Data for {@link SearchCoreLauncher}.
+ *
+ * @author jpadams
+ */
+@RunWith(JUnit4.class)
 public class SearchCorePSATest {
 	
-	@Before
-	public void setUp() {
+	@BeforeClass
+	public static void oneTimeSetUp() {
 		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
 		testDir.mkdirs();
 	}
 	
-	@After
-	public void tearDown() {
+	@AfterClass
+	public static void oneTimeTearDown() {
 		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
 		testDir.delete();
 	}

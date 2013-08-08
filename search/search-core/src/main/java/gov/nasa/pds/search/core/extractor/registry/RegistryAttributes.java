@@ -1,9 +1,15 @@
 package gov.nasa.pds.search.core.extractor.registry;
 
 import gov.nasa.pds.registry.model.ExtrinsicObject;
-import gov.nasa.pds.search.core.extractor.InvalidProductClassException;
+import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
+import gov.nasa.pds.search.core.extractor.SolrSchemaField;
+import gov.nasa.pds.search.core.schema.DataType;
 
 import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the values for a given attribute specified in a product class
@@ -13,81 +19,101 @@ import java.util.Arrays;
  * @version $Revision$
  * 
  */
-public class RegistryAttributes {
+public enum RegistryAttributes {
 	/** Attribute for Logical Identifier. **/
-	public static final String LOGICAL_IDENTIFIER = "lid";
+	LOGICAL_IDENTIFIER ("lid") {
+		@Override
+		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
+			return extObj.getLid();
+		}
+	},
 
 	/** Attribute for Product name. **/
-	public static final String NAME = "name";
+	NAME ("name") {
+		@Override
+		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
+			return extObj.getName();
+		}
+	},
 
 	/** Attribute for Object Type. **/
-	public static final String OBJECT_TYPE = "objectType";
+	OBJECT_TYPE ("objectType") {
+		@Override
+		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
+			return extObj.getObjectType();
+		}
+	},
 
 	/** Attribute for MIME Type. **/
-	public static final String MIME_TYPE = "mimeType";
+	MIME_TYPE ("mimeType") {
+		@Override
+		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
+			return extObj.getMimeType();
+		}
+	},
 
 	/** Attribute for Description. **/
-	public static final String DESCRIPTION = "description";
+	DESCRIPTION ("description") {
+		@Override
+		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
+			return extObj.getDescription();
+		}
+	},
 
 	/** Attribute for GUID. **/
-	public static final String GUID = "guid";
+	GUID ("guid") {
+		@Override
+		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
+			return extObj.getGuid();
+		}
+	},
 
 	/** Attribute for Home. **/
-	public static final String HOME = "home";
+	HOME ("home") {
+		@Override
+		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
+			return extObj.getHome();
+		}
+	},
 
 	/** Attribute for Version Name. **/
-	public static final String VERSION_NAME = "versionName";
+	VERSION_NAME ("versionName") {
+		@Override
+		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
+			return extObj.getVersionName();
+		}
+	},
 
 	/** Attribute for Content Version. **/
-	public static final String CONTENT_VERSION = "contentVersion";
-
-	public static final String[] ATTR_LIST = { LOGICAL_IDENTIFIER, NAME,
-			OBJECT_TYPE, MIME_TYPE, DESCRIPTION, GUID, HOME, VERSION_NAME,
-			CONTENT_VERSION };
-
-	/**
-	 * Gets the value of the input attribute from the given Extrinsic object.
-	 * Returns attribute value as a String. Throws InvalidProductClassException
-	 * when attribute is one of known Extrinsic object attributes.
-	 * 
-	 * @param attribute
-	 * @param extObject
-	 * @throws InvalidProductClassException
-	 * @return
-	 */
-	public static String getAttributeValue(String attribute,
-			ExtrinsicObject extObject) throws InvalidProductClassException {
-		if (attribute.equals(LOGICAL_IDENTIFIER)) {
-			return extObject.getLid();
-		} else if (attribute.equals(NAME)) {
-			return extObject.getName();
-		} else if (attribute.equals(DESCRIPTION)) {
-			return extObject.getDescription();
-		} else if (attribute.equals(GUID)) {
-			return extObject.getGuid();
-		} else if (attribute.equals(HOME)) {
-			return extObject.getHome();
-		} else if (attribute.equals(VERSION_NAME)) {
-			return extObject.getVersionName();
-		} else if (attribute.equals(CONTENT_VERSION)) {
-			return extObject.getContentVersion();
-		} else if (attribute.equals(MIME_TYPE)) {
-			return extObject.getMimeType();
-		} else if (attribute.equals(OBJECT_TYPE)) {
-			return extObject.getObjectType();
-		} else {
-			throw new InvalidProductClassException("Attribute '" + attribute
-					+ "' does not exist.");
+	CONTENT_VERSION ("contentVersion") {
+		@Override
+		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
+			return extObj.getContentVersion();
 		}
-	}
+	};
 
-	/**
-	 * Checks if attribute is an attribute in the Registry
-	 * @param attribute
-	 * @return
-	 */
-	public static boolean isAttribute(String attribute) {
-		return Arrays.asList(ATTR_LIST).contains(attribute);
+	private String attributeName;
+    private static final Map<String, RegistryAttributes> lookup = new HashMap<String, RegistryAttributes>();
+
+	static {
+	    for(RegistryAttributes ra : EnumSet.allOf(RegistryAttributes.class))
+	         lookup.put(ra.getAttributeName(), ra);
 	}
+	
+	private RegistryAttributes(String attributeName) {
+		this.attributeName = attributeName;
+	}
+	
+	public String getAttributeName() {
+		return this.attributeName;
+	}
+	
+	public static RegistryAttributes get(String attributeName) {
+		return lookup.get(attributeName);
+	}
+	
+	public abstract String getValueFromExtrinsic(ExtrinsicObject extObj);
+	
+	
 
 }

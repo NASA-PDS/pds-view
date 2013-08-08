@@ -1,4 +1,4 @@
-//	Copyright 2009-2012, by the California Institute of Technology.
+//	Copyright 2009-2013, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -20,9 +20,15 @@ import gov.nasa.pds.search.core.cli.options.InvalidOptionException;
 import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.extractor.RegistryExtractor;
 import gov.nasa.pds.search.core.indexer.solr.SolrIndexer;
-import gov.nasa.pds.search.util.Debugger;
-import gov.nasa.pds.search.util.PropertiesUtil;
-import gov.nasa.pds.search.util.ToolInfo;
+import gov.nasa.pds.search.core.logging.ToolsLevel;
+import gov.nasa.pds.search.core.logging.ToolsLogRecord;
+import gov.nasa.pds.search.core.logging.formatter.SearchCoreFormatter;
+import gov.nasa.pds.search.core.logging.handler.SearchCoreFileHandler;
+import gov.nasa.pds.search.core.logging.handler.SearchCoreStreamHandler;
+import gov.nasa.pds.search.core.util.Debugger;
+import gov.nasa.pds.search.core.util.PropertiesUtil;
+import gov.nasa.pds.search.core.util.ToolInfo;
+import gov.nasa.pds.search.core.util.Utility;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +37,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.cli.CommandLine;
@@ -83,6 +91,9 @@ public class SearchCoreLauncher {
 
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#MAX **/
 	private int queryMax;
+	
+	/** @see gov.nasa.pds.search.core.cli.options.Flag#MAX **/
+	private String logFile;
 
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#SEARCH_HOME **/
 	private File searchHome;
@@ -95,9 +106,12 @@ public class SearchCoreLauncher {
 
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#PROPERTIES **/
 	private List<File> propsFilesList;
+	
+	/** The severity level to set for the tool. */
+	private Level severityLevel;
 
 	/** Logger. **/
-	private Logger log = Logger.getLogger(this.getClass().getName());
+	private static Logger log = Logger.getLogger(SearchCoreLauncher.class.getName());
 
 	/**
 	 * Constructor method to initialize all globals.
@@ -116,9 +130,89 @@ public class SearchCoreLauncher {
 		this.configHomeList = new ArrayList<String>();
 		this.propsFilesList = new ArrayList<File>();
 		
+		this.severityLevel = ToolsLevel.INFO;
+		
 		Debugger.debugFlag = false; 
 	}
 
+	  /**
+	   * Set the verbosity level and above to include in the reporting.
+	   * @param v '1' for info, '2' for warnings, and '3' for errors
+	   * @throws ApplicationException
+	   */
+	  private void setVerbose(int v) throws Exception {
+	    if (v < 0 || v > 3) {
+	      throw new Exception("Invalid value entered for 'v' flag. "
+	          + "Valid values can only be 0, 1, 2, or 3");
+	    }
+	    if (v == 0) {
+	      this.severityLevel = ToolsLevel.DEBUG;
+	    } else if (v == 1) {
+	    	this.severityLevel = ToolsLevel.INFO;
+	    } else if (v == 2) {
+	    	this.severityLevel = ToolsLevel.WARNING;
+	    } else if (v == 3) {
+	    	this.severityLevel = ToolsLevel.SEVERE;
+	    }
+	  }
+
+	  /**
+	   * Logs header information for the log output.
+	   *
+	   */
+	  private void logHeader() {
+	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+	        "PDS Search Core Run Log\n"));
+	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+	        "Version                     " + ToolInfo.getVersion()));
+	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+	        "Time                        " + Utility.getDateTime()));
+	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+	        "Severity Level              " + severityLevel.getName()));
+	    
+	    for (String url : this.registryUrlList) {
+		    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+		    		"Registry URL                " + url));
+	    }
+	    
+	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+	    		"Search Home                 " + this.searchHome));
+	    
+	    for (String configHome : this.configHomeList) {
+	    	log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+	    			"Config Home                 " + configHome));
+	    }
+	    
+	    for (File file : this.propsFilesList) {
+		    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+		    		"Search Core Config          " + file.getAbsolutePath()));
+	    }
+	  }
+	  
+	  /**
+	   * Sets the appropriate handlers for the logging.
+	   *
+	   * @throws IOException If a log file was specified and could not
+	   * be read.
+	   */
+	  private void setLogger() throws IOException {
+	    Logger logger = Logger.getLogger("");
+	    logger.setLevel(Level.ALL);
+	    Handler []handler = logger.getHandlers();
+	    for (int i = 0; i < logger.getHandlers().length; i++) {
+	      logger.removeHandler(handler[i]);
+	    }
+	    if (logFile != null) {
+	      logger.addHandler(new SearchCoreFileHandler(logFile, severityLevel,
+	          new SearchCoreFormatter()));
+	    } else {
+	      logger.addHandler(new SearchCoreStreamHandler(System.out,
+	          severityLevel, new SearchCoreFormatter()));
+	    }
+	    
+	    logHeader();
+	  }
+	
 	/**
 	 * Displays tool usage.
 	 * 
@@ -206,11 +300,11 @@ public class SearchCoreLauncher {
 				}
 
 			} else if (o.getOpt().equals(Flag.CONFIG_HOME.getShortName())) {
-				addConfigHome(o.getValue().trim());
+				this.configHomeList.add(Utility.getAbsolutePath("Config Dir", o.getValue().trim(), true));
 			} else if (o.getOpt().equals(Flag.PROPERTIES.getShortName())) {
 				for (Object value : o.getValuesList()) {
 					this.propsFilesList
-							.add(new File(getAbsolutePath("Properties File",
+							.add(new File(Utility.getAbsolutePath("Properties File",
 									((String) value).trim(), false)));
 				}
 				setProperties(this.propsFilesList);
@@ -238,40 +332,8 @@ public class SearchCoreLauncher {
 		if (this.searchHome == null) {
 			setDefaultSearchHome();
 		}
-	}
-
-	/**
-	 * Method to convert the file path to absolute, if relative, and check if
-	 * file exists.
-	 * 
-	 * @param fileType
-	 *            File type denoted to allow for usable error msgs
-	 * @param filePath
-	 *            Current path given through the command-line
-	 * @param isDir
-	 *            Designates if filePath specified is a directory. False means
-	 *            filePath is a file.
-	 * @return	the absolute path from the input file path
-	 * @throws InvalidOptionException	thrown if directory does not exist
-	 */
-	private String getAbsolutePath(final String fileType,
-			final String filePath, final boolean isDir)
-			throws InvalidOptionException {
-		String finalPath = "";
-		File tFile = new File(filePath);
-		if (!tFile.isAbsolute()) {
-			finalPath = System.getProperty("user.dir") + "/" + filePath;
-		} else {
-			finalPath = filePath;
-		}
-
-		tFile = new File(finalPath);
-		if ((isDir && !tFile.isDirectory()) || (!isDir && !tFile.isFile())) {
-			throw new InvalidOptionException(fileType + " does not exist: "
-					+ filePath);
-		}
-
-		return finalPath;
+		
+		setLogger();
 	}
 
 	/**
@@ -304,7 +366,7 @@ public class SearchCoreLauncher {
 			}
 
 			if (configHome != null) {
-				addConfigHome(configHome);
+				this.configHomeList.add(Utility.getAbsolutePath("Config Dir", configHome, true));
 			} else {
 				throw new InvalidOptionException(
 						"Config home must be specified in properties file - "
@@ -328,9 +390,10 @@ public class SearchCoreLauncher {
 	 *            product_classes.txt and accompanying config files
 	 * @throws InvalidOptionException	thrown if directory does not exist
 	 */
+	@Deprecated
 	public final void addConfigHome(final String configHome)
 			throws InvalidOptionException {
-		this.configHomeList.add(getAbsolutePath("Config Dir", configHome, true));
+		this.configHomeList.add(Utility.getAbsolutePath("Config Dir", configHome, true));
 
 		// Check that the config dir contains the product class properties file
 		if (!Arrays.asList((new File(this.configHomeList.get(0))).list())
@@ -349,7 +412,7 @@ public class SearchCoreLauncher {
 	 */
 	public final void setSearchHome(final String searchHome)
 			throws InvalidOptionException {
-		this.searchHome = new File(getAbsolutePath(
+		this.searchHome = new File(Utility.getAbsolutePath(
 				"Search Home", searchHome, true));
 	}
 
@@ -368,7 +431,7 @@ public class SearchCoreLauncher {
 			path += System.getProperty("file.separator") + "pds";
 		}
 
-		this.searchHome = new File(getAbsolutePath(
+		this.searchHome = new File(Utility.getAbsolutePath(
 				"Search Home", path, true));
 	}
 
@@ -411,16 +474,16 @@ public class SearchCoreLauncher {
 	 * @throws Exception
 	 */
 	private void runRegistryExtractor() throws Exception {
-		RegistryExtractor extractor = new RegistryExtractor(
-				this.searchHome.getAbsolutePath(), this.clean);
+		RegistryExtractor extractor = null;
 		for (int i = 0; i < this.registryUrlList.size(); i++) {
 			this.log.info("\n\tRegistry URL: " + this.registryUrlList.get(i)
 					+ "\n\tSearch Home: "
 					+ this.searchHome.getAbsolutePath()
 					+ "\n\tConfig Home: " + this.configHomeList.get(i));
-			extractor.setRegistryUrl(this.registryUrlList.get(i));
-			extractor.setConfDir(new File(this.configHomeList.get(i)));
-
+			extractor = new RegistryExtractor(
+					this.searchHome.getAbsolutePath(),
+					new File(this.configHomeList.get(i)),
+					this.registryUrlList.get(i), this.clean);
 			if (this.queryMax > -1) {
 				extractor.setQueryMax(this.queryMax);
 			}

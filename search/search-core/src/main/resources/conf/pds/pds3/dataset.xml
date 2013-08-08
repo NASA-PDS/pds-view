@@ -1,174 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <product>
-	<object_type>Product_Data_Set_PDS3</object_type>
+	<specification>
+		<title>DataSet</title>
+		<registryObjectType>Product_Data_Set_PDS3</registryObjectType>
+	</specification>
 	
 	<!-- Fields displayed in default Search Service results -->
-	<field>
-		<name>identifier</name>
-		<type>attribute</type>
-		<value>lid</value>
-	</field>
-	<field>
-		<name>title</name>
-		<type>attribute</type>
-		<value>name</value>
-	</field>
-	<field>
-		<name>description</name>
-		<type>slot</type>
-		<value>data_set_terse_description</value>
-	</field>
-	<field>
-		<name>resLocation</name>
-		<type>substring</type>
-		<value>/ds-view/pds/viewDataset.jsp?dsid={data_set_id}</value>
-	</field>
-	<field>
-		<name>investigation_name</name>
-		<type>association</type>
-		<value>investigation_ref.mission_name</value>
-	</field>
-	<field>
-		<name>investigation_start_date</name>
-		<type>association</type>
-		<value>investigation_ref.mission_start_date</value>
-	</field>
-	<field>
-		<name>investigation_stop_date</name>
-		<type>association</type>
-		<value>investigation_ref.mission_stop_date</value>
-	</field>
-	
-	<!-- Product-specific fields -->
-	<field>
-		<name>nssdc_data_set_id</name>
-		<type>slot</type>
-		<value>data_set_nssdc_collection_id</value>
-	</field>
-	<field>
-		<name>target_type</name>
-		<type>association</type>
-		<value>target_ref.target_type</value>
-	</field>
-	<field>
-		<name>instrument_type</name>
-		<type>association</type>
-		<value>instrument_ref.instrument_type</value>
-	</field>
-	<field>
-		<name>instrument_host_id</name>
-		<type>association</type>
-		<value>instrument_host_ref.instrument_host_id</value>
-	</field>
-	<field>
-		<name>data_set_name</name>
-		<type>slot</type>
-		<value>data_set_name</value>
-	</field>
-	<field>
-		<name>stop_time</name>
-		<type>slot</type>
-		<value>data_set_stop_date_time</value>
-	</field>
-	<field>
-		<name>node_id</name>
-		<type>association</type>
-		<value>node_ref.node_name</value>
-	</field>
-	<field>
-		<name>full_name</name>
-		<type>slot</type>
-		<value>data_set_producer_full_name</value>
-	</field>
-	<field>
-		<name>target_name</name>
-		<type>association</type>
-		<value>target_ref.target_name</value>
-	</field>
-	<field>
-		<name>archive_status</name>
-		<type>slot</type>
-		<value>data_set_archive_status</value>
-	</field>
-	<field>
-		<name>start_time</name>
-		<type>slot</type>
-		<value>data_set_start_date_time</value>
-	</field>
-	<field>
-		<name>data_set_release_date</name>
-		<type>slot</type>
-		<value>data_set_release_date</value>
-	</field>
-	<field>
-		<name>instrument_id</name>
-		<type>association</type>
-		<value>instrument_ref.instrument_id</value>
-	</field>
-	<field>
-		<name>data_object_type</name>
-		<type>attribute</type>
-		<value>objectType</value>
-	</field>
-	<field>
-		<name>data_set_terse_description</name>
-		<type>slot</type>
-		<value>data_set_terse_description</value>
-	</field>
-	<field>
-		<name>data_set_id</name>
-		<type>slot</type>
-		<value>data_set_id</value>
-	</field>
-	<field>
-		<name>citation_description</name>
-		<type>slot</type>
-		<value>data_set_citation_text</value>
-	</field>
-	<field>
-		<name>abstract_text</name>
-		<type>slot</type>
-		<value>data_set_abstract_description</value>
-	</field>
-	<field>
-		<name>instrument_name</name>
-		<type>association</type>
-		<value>instrument_ref.instrument_name</value>
-	</field>
-	<field>
-		<name>resource_id</name>
-		<type>association</type>
-		<value>resource_ref.lid</value>
-	</field>
-	<field>
-		<name>data_set_description</name>
-		<type>slot</type>
-		<value>data_set_description</value>
-	</field>
-	<field>
-		<name>confidence_level_note</name>
-		<type>slot</type>
-		<value>data_set_confidence_level_note</value>
-	</field>
-	<field>
+	<indexFields>
+		<!-- Test required fields -->
+		<field name="identifier" type="required">
+			<registryPath>lid</registryPath>
+		</field>
+		<field name="title" type="required">
+			<registryPath>name</registryPath>
+		</field>
+		<field name="description" type="required">
+			<registryPath>data_set_terse_description</registryPath>
+		</field>
+		<field name="resLocation" type="required">
+			<outputString>/ds-view/pds/viewDataset.jsp?dsid={data_set_id}</outputString>
+		</field>
+		<field name="agency_name" type="string">
+			<registryPath>node_ref.agency_ref.alternate_id</registryPath>
+		</field>
+		<field name="pds_model_version" type="string">
+			<outputString>pds3</outputString>
+		</field>
+		<field name="investigation_name" type="string">
+			<registryPath>investigation_ref.mission_name</registryPath>
+		</field>
+		<field name="investigation_start_date" type="date">
+			<registryPath>investigation_ref.mission_start_date</registryPath>
+		</field>
+		<field name="investigation_stop_date" type="date">
+			<registryPath>investigation_ref.mission_stop_date</registryPath>
+		</field>
+		<field name="nssdc_data_set_id" type="string">
+			<registryPath>data_set_nssdc_collection_id</registryPath>
+		</field>
+		<field name="target_type" type="string">
+			<registryPath>target_ref.target_type</registryPath>
+		</field>
+		<field name="instrument_type" type="string">
+			<registryPath>instrument_ref.instrument_type</registryPath>
+		</field>
+		<field name="instrument_host_id" type="string">
+			<registryPath>instrument_host_ref.instrument_host_id</registryPath>
+		</field>
+		<field name="data_set_name" type="string">
+			<registryPath>data_set_name</registryPath>
+		</field>
+		<field name="stop_time" type="date">
+			<registryPath>data_set_stop_date_time</registryPath>
+		</field>
+		<field name="node_id" type="string">
+			<registryPath>node_ref.node_name</registryPath>
+		</field>
+		<field name="full_name" type="string">
+			<registryPath>data_set_producer_full_name</registryPath>
+		</field>
+		<field name="target_name" type="string">
+			<registryPath>target_ref.target_name</registryPath>
+		</field>
+		<field name="archive_status" type="string">
+			<registryPath>data_set_archive_status</registryPath>
+		</field>
+		<field name="start_time" type="date">
+			<registryPath>data_set_start_date_time</registryPath>
+		</field>
+		<field name="data_set_release_date" type="date">
+			<registryPath>data_set_release_date</registryPath>
+		</field>
+		<field name="instrument_id" type="string">
+			<registryPath>instrument_ref.instrument_id</registryPath>
+		</field>
+		<field name="data_object_type" type="string">
+			<registryPath>objectType</registryPath>
+		</field>
+		<field name="data_set_terse_description" type="string">
+			<registryPath>data_set_terse_description</registryPath>
+		</field>
+		<field name="data_set_id" type="string">
+			<registryPath>data_set_id</registryPath>
+		</field>
+		<field name="citation_description" type="string">
+			<registryPath>data_set_citation_text</registryPath>
+		</field>
+		<field name="abstract_text" type="string">
+			<registryPath>data_set_abstract_description</registryPath>
+		</field>
+		<field name="instrument_name" type="string">
+			<registryPath>instrument_ref.instrument_name</registryPath>
+		</field>
+		<field name="resource_id" type="string">
+			<registryPath>resource_ref.lid</registryPath>
+		</field>
+		<field name="data_set_description" type="string">
+			<registryPath>data_set_description</registryPath>
+		</field>
+		<field name="confidence_level_note" type="string">
+			<registryPath>data_set_confidence_level_note</registryPath>
+		</field>
+	</indexFields>
+	<!-- Included from old search, leave in for now -->
+	<!-- field>
 		<name>resource_class</name>
 		<type>out</type>
 		<value>Data_Set_Description</value>
 	</field>
-
-	<!-- Hard-coded defaults that need to be refactored -->
-	<field>
-		<name>agency_name</name>
-		<type>out</type>
-		<value>nasa</value>
-	</field>
-	<field>
-		<name>pds_model_version</name>
-		<type>out</type>
-		<value>pds3</value>
-	</field>
-	
-	<!-- Included from old search, leave in for now -->
 	<field>
 		<name>format</name>
 		<type>out</type>
@@ -193,5 +132,5 @@
 		<name>resClass</name>
 		<type>out</type>
 		<value>metadata.dataset</value>
-	</field>
+	</field-->
 </product>

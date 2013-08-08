@@ -10,27 +10,18 @@
 //	may be required before exporting such information to foreign countries or 
 //	providing access to foreign nationals.
 //	
-//	$Id$
+//	$Id: InvalidDatetimeException.java 11478 2013-03-25 22:17:42Z jpadams $
 //
-package gov.nasa.pds.search.util;
+package gov.nasa.pds.search.core.util;
 
 /**
- * Simple debug class to help track functions at runtime
- * 
  * @author jpadams
  *
  */
-public class Debugger {
+public class InvalidDatetimeException extends Exception {
+	private static final long serialVersionUID = 1098434569473188595L;
 
-	public static boolean debugFlag;
-	
-	/** Simple output method
-	 * 
-	 *  @param msg
-	 */
-	public static void debug(String msg) {
-		if (debugFlag) {
-			System.out.println(msg);
-		}
+	public InvalidDatetimeException(String message) {
+		super(message);
 	}
 }

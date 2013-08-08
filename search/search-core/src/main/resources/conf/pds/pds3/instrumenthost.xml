@@ -1,65 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <product>
-	<object_type>Product_Instrument_Host_PDS3</object_type>
+	<specification>
+		<title>InstrumentHost</title>
+		<registryObjectType>Product_Instrument_Host_PDS3</registryObjectType>
+	</specification>
 	
 	<!-- Fields displayed in default Search Service results -->
-	<field>
-		<name>identifier</name>
-		<type>attribute</type>
-		<value>lid</value>
-	</field>
-	<field>
-		<name>title</name>
-		<type>attribute</type>
-		<value>name</value>
-	</field>
-	<field>
-		<name>description</name>
-		<type>slot</type>
-		<value>instrument_host_description</value>
-	</field>
-	<field>
-		<name>resLocation</name>
-		<type>substring</type>
-		<value>/ds-view/pds/viewHostProfile.jsp?INSTRUMENT_HOST_ID={instrument_host_id}</value>
-	</field>
-	
-	<!-- Product-specific fields -->
-	<field>
-		<name>instrument_host_id</name>
-		<type>slot</type>
-		<value>instrument_host_id</value>
-	</field>
-	<field>
-		<name>instrument_host_name</name>
-		<type>slot</type>
-		<value>instrument_host_name</value>
-	</field>
-	<field>
-		<name>instrument_host_type</name>
-		<type>slot</type>
-		<value>instrument_host_type</value>
-	</field>
-	<field>
-		<name>instrument_host_description</name>
-		<type>slot</type>
-		<value>instrument_host_description</value>
-	</field>
-
-	<!-- Hard-coded defaults that need to be refactored -->
-	<field>
-		<name>agency_name</name>
-		<type>out</type>
-		<value>nasa</value>
-	</field>
-	<field>
-		<name>pds_model_version</name>
-		<type>out</type>
-		<value>pds3</value>
-	</field>
-	
+	<indexFields>
+		<!-- Test required fields -->
+		<field name="identifier" type="required">
+			<registryPath>lid</registryPath>
+		</field>
+		<field name="title" type="required">
+			<registryPath>name</registryPath>
+		</field>
+		<field name="description" type="required">
+			<registryPath>instrument_host_description</registryPath>
+		</field>
+		<field name="resLocation" type="required">
+			<outputString>/ds-view/pds/viewHostProfile.jsp?INSTRUMENT_HOST_ID={instrument_host_id}</outputString>
+		</field>
+		<field name="agency_name" type="string">
+			<registryPath>instrument_ref.data_set_ref.node_ref.agency_ref.alternate_id</registryPath>
+		</field>
+		<field name="pds_model_version" type="string">
+			<outputString>pds3</outputString>
+		</field>
+		<field name="instrument_host_id" type="string">
+			<registryPath>instrument_host_id</registryPath>
+		</field>
+		<field name="instrument_host_name" type="string">
+			<registryPath>instrument_host_name</registryPath>
+		</field>
+		<field name="instrument_host_type" type="string">
+			<registryPath>instrument_host_type</registryPath>
+		</field>
+		<field name="instrument_host_description" type="string">
+			<registryPath>instrument_host_description</registryPath>
+		</field>
+	</indexFields>
 	<!-- Included from old search, leave in for now -->
-	<field>
+	<!-- field>
 		<name>format</name>
 		<type>out</type>
 		<value>XML</value>
@@ -88,5 +69,5 @@
 		<name>resource_class</name>
 		<type>out</type>
 		<value>Instrument_Host_Description</value>
-	</field>
+	</field -->
 </product>

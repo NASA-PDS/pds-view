@@ -30,8 +30,8 @@ public enum Flag {
 
 	/** Flag to specify a product class configuration directory. */
 	CONFIG_HOME("c", "config-home", "directories", String.class, true,
-			"Specify the product class configuration home directory. Must contain"
-					+ " product-classes.txt. Multiple directories can be specified to accompany" 
+			"Specify the product class configuration home directory."
+					+ "Multiple directories can be specified to accompany" 
 					+ " multiple registries. (Default: $SEARCH_CORE_HOME/conf/pds/)"),
 
 	/** Flag to turn OFF removal of all directories from previous Search Core execution. */
@@ -49,6 +49,10 @@ public enum Flag {
 	/** Flag to display the help. */
 	HELP("h", "help", "Display usage."),
 
+	  /** Flag to output the logging to a file. */
+	  LOG("l", "log-file", "file name", String.class,
+	      "Specify a log file name. Default is standard out."),
+	
 	/** Flag to specify Search Home. */
 	SEARCH_HOME("H", "search-home", "directory", String.class,
 			"Specify the Search Home directory. The tool will output the index files to this"
@@ -74,6 +78,12 @@ public enum Flag {
 	REGISTRY("r", "registry", "urls", String.class, true,
 			"Specify Registry Service instance(s) to query. Multiple registries can be specified."),
 
+  /** Flag to change the severity level of the messaging in the report. */
+  VERBOSE("v", "verbose", "level", int.class, "Specify the severity level "
+      + "and above to include in the log: "
+      + "(0=Debug, 1=Info, 2=Warning, 3=Error). "
+      + "Default is Info and above (level 1)."),
+			
 	/** Flag to display the version. */
 	VERSION("V", "version", "Display application version.");
 
@@ -101,18 +111,9 @@ public enum Flag {
 	static {
 		options = new Options();
 
-		options.addOption(new ToolsOption(HELP));
-		options.addOption(new ToolsOption(VERSION));
-		options.addOption(new ToolsOption(SOLR));
-		options.addOption(new ToolsOption(EXTRACTOR));
-		options.addOption(new ToolsOption(ALL));
-		options.addOption(new ToolsOption(DEBUG));
-		options.addOption(new ToolsOption(REGISTRY));
-		options.addOption(new ToolsOption(SEARCH_HOME));
-		options.addOption(new ToolsOption(MAX));
-		options.addOption(new ToolsOption(CONFIG_HOME));
-		options.addOption(new ToolsOption(CLEAN));
-		options.addOption(new ToolsOption(PROPERTIES));
+		for (Flag flag : values()) {
+			options.addOption(new ToolsOption(flag));
+		}
 	}
 
 	/**

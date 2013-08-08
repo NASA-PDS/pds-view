@@ -1,6 +1,7 @@
 package gov.nasa.pds.search.core.extractor.registry;
 
 import gov.nasa.pds.registry.model.ExtrinsicObject;
+import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.Slot;
 
 import java.util.ArrayList;
@@ -10,14 +11,18 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Extension of Registry Client functionality to specifically address needs of
+ * Extension of {@link gov.nasa.pds.registry.client.RegistryClient} functionality to specifically address needs of
  * the Search Core. This class is used to maintain a map of all the slots for an
  * extrinsic object, as well as maintain a list of all missing slots.
+ * 
+ * This type of functionality can be handled by the {@link gov.nasa.pds.registry.client.RegistryClient}, however,
+ * this class minimizes the number of calls to the registry.
  * 
  * @author jpadams
  * @version $Revision$
  * 
  */
+@Deprecated
 public class ExtrinsicObjectSlots {
 
 	private Map<String, List<String>> slotMap;

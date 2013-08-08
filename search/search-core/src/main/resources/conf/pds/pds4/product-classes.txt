@@ -1,4 +1,0 @@
-registry.extractor.Bundle = bundle.xml
-registry.extractor.Collection = collection.xml
-registry.extractor.Context = context.xml
-

@@ -10,9 +10,9 @@
 //	may be required before exporting such information to foreign countries or 
 //	providing access to foreign nationals.
 //	
-//	$Id$
+//	$Id: XMLWriter.java 11493 2013-03-26 23:53:52Z jpadams $
 //
-package gov.nasa.pds.search.util;
+package gov.nasa.pds.search.core.util;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class XMLWriter {
 	private File basedir;
 	private String filename;
 	private String fname = "";
-	private String fnameprefix = "tse";
+	private String fnameprefix = "core";
 	private String fnameext = "xml";
 
 	private Document doc;
@@ -51,12 +51,12 @@ public class XMLWriter {
 
 	private Logger log = Logger.getLogger(this.getClass().getName());
 
-	public XMLWriter(Map map, File basedir, int seq, String classname) {
+	public XMLWriter(Map map, File basedir, int seq, String productTitle) {
 		try {
 			this.map = map;
 			this.basedir = basedir;
 
-			filename = getFilename(seq, classname);
+			filename = getFilename(seq, productTitle);
 
 			DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
@@ -65,7 +65,7 @@ public class XMLWriter {
 			Element root = doc.createElement("doc");
 			doc.appendChild(root);
 
-			classElement = doc.createElement(classname);
+			classElement = doc.createElement(productTitle);
 			root.appendChild(classElement);
 
 		} catch (Exception e) {
@@ -82,12 +82,17 @@ public class XMLWriter {
 			Iterator iter = set.iterator();
 			while (iter.hasNext()) {
 				name = (String) iter.next();
+				//Debugger.debug("Name: " + name);
 				valArray = (ArrayList) this.map.get(name);
+				if (valArray != null) {
 				for (Iterator i = valArray.iterator(); i.hasNext();) {
 					value = (String) i.next();
 					// log.info("name: "+name);
 					// log.info("value: "+value);
 					addElement(name, value);
+				}
+				} else {
+					addElement(name, "");
 				}
 			}
 

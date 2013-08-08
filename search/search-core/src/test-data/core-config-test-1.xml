@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product>
+	<specification>
+		<title>DataSet</title>
+		<registryObjectType>Product_Data_Set_PDS3</registryObjectType>
+		<registryObjectName>*</registryObjectName>
+	</specification>
+	
+	<!-- Fields displayed in default Search Service results -->
+	<indexFields>
+		<!-- Test required fields -->
+		<field name="identifier" type="required">
+			<registryPath>lid</registryPath>
+		</field>
+		<field name="title" type="required">
+			<registryPath>name</registryPath>
+		</field>
+		<field name="description" type="required">
+			<registryPath>data_set_terse_description</registryPath>
+		</field>
+		
+		<!-- Test substring -->
+		<field name="resourceLocation" type="string">
+			<outputString>/ds-view/pds/viewDataset.jsp?dsid={data_set_id}</outputString>
+		</field>
+
+		<!-- Test association -->
+		<field name="investigation_name" type="string">
+			<registryPath>investigation_ref.mission_name</registryPath>
+		</field>
+
+		<!-- Test association in substring -->
+		<field name="resourceLocation2" type="string">
+			<outputString>/ds-view/pds/viewMissionProfile.jsp?missionName={investigation_ref.mission_name}</outputString>
+		</field>
+
+		<!-- Test date -->
+		<field name="investigation_start_date" type="date">
+			<registryPath>investigation_ref.mission_start_date</registryPath>
+		</field>
+
+		<!-- Test nested association -->
+		<field name="agency_name" type="string">
+			<registryPath>node_ref.agency_ref.alternate_id</registryPath>
+		</field>
+	</indexFields>
+</product>

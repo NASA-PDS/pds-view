@@ -7,8 +7,8 @@
 package gov.nasa.pds.search.core.indexer.solr;
 
 import gov.nasa.pds.search.core.constants.Constants;
-import gov.nasa.pds.search.util.InvalidDatetimeException;
-import gov.nasa.pds.search.util.PDSDateConvert;
+import gov.nasa.pds.search.core.util.InvalidDatetimeException;
+import gov.nasa.pds.search.core.util.PDSDateConvert;
 
 import java.io.File;
 import java.io.FileInputStream;

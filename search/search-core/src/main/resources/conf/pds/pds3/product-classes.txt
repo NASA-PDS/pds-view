@@ -1,6 +1,0 @@
-registry.extractor.DataSet = dataset.xml
-registry.extractor.Target = target.xml
-registry.extractor.Instrument = instrument.xml
-registry.extractor.InstrumentHost = instrumenthost.xml
-registry.extractor.Investigation = investigation.xml
-registry.extractor.ArchiveInfo = archiveinfo.xml

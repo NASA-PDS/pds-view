@@ -24,12 +24,22 @@ import gov.nasa.pds.registry.model.Slot;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.search.core.constants.Constants;
+import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.extractor.registry.MappingTypes;
 import gov.nasa.pds.search.core.extractor.registry.RegistryAttributes;
-import gov.nasa.pds.search.util.Debugger;
-import gov.nasa.pds.search.util.XMLWriter;
+import gov.nasa.pds.search.core.extractor.registry.SearchCoreExtrinsic;
+import gov.nasa.pds.search.core.logging.ToolsLevel;
+import gov.nasa.pds.search.core.logging.ToolsLogRecord;
+import gov.nasa.pds.search.core.schema.CoreConfigReader;
+import gov.nasa.pds.search.core.schema.Field;
+import gov.nasa.pds.search.core.schema.Product;
+import gov.nasa.pds.search.core.stats.SearchCoreStats;
+import gov.nasa.pds.search.core.util.Debugger;
+import gov.nasa.pds.search.core.util.Utility;
+import gov.nasa.pds.search.core.util.XMLWriter;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -38,6 +48,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import javax.xml.bind.JAXBException;
+
+import org.apache.commons.io.FileUtils;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 /**
  * @author pramirez
@@ -53,14 +69,20 @@ public class ProductClass {
 	private static final int QUERY_PAGE_MAX = 500;
 
 	/** Product class name **/
-	private String classname;
+	//private String classname;
 
-	/** User-specified product class config file **/
-	private String classFilename;
+	/** User-specified output directory **/
+	private File outputDir;
 
+	// TODO Refactor to use JAXB bindings
 	/** Collection of all search fields **/
-	private SearchFields searchFields;
+	//private SearchFields searchFields;
+	
+	/** Data Product object from JAXB Bindings **/
+	private Product product;
 
+	// TODO Refactor this to start outputtin to XML immediately.
+	// Some PSA Data has such large description that it kills the buffers
 	/** Map of all values for desired search fields **/
 	private Map<String, List<String>> finalVals;
 	
@@ -68,19 +90,13 @@ public class ProductClass {
 	private String lid;
 
 	/** Output logger **/
-	private Logger log = Logger.getLogger(this.getClass().getName());
+	private static Logger log = Logger.getLogger(ProductClass.class.getName());
 
 	/** PrintWriter for outputting XML files **/
 	private PrintWriter writer;
 
 	/** Map of all associations for the current data product **/
 	private Map<String, List<ExtrinsicObject>> associationMap;
-
-	/** Map of missing slots mapped to the LID **/
-	private Map<String, List<String>> missingSlotsMap;
-
-	/** List of Associations where target extrinsic is not found */
-	private List<String> missingAssocTargets;
 
 	/** The URL of the desired registry to query. **/
 	private String registryUrl;
@@ -97,28 +113,59 @@ public class ProductClass {
 	 * @param registryUrl	URL for registry to query
 	 * @param queryMax		maximum number of queried results
 	 */
-	public ProductClass(PrintWriter writer, String name, String file,
-			String registryUrl, int queryMax) {
-		this.log.fine("In Generic Extractor");
+	public ProductClass(PrintWriter writer, String name, File outputDir,
+			 String registryUrl, int queryMax) {
+	    log.log(new ToolsLogRecord(ToolsLevel.FINE, "Extracting from "
+	    		+ registryUrl));
 
 		this.writer = writer;
 
-		this.classname = name;
-		this.classFilename = file;
+		//this.classname = name;
 		this.registryUrl = registryUrl;
+		
 		if (queryMax > -1) {
 			this.queryMax = queryMax;
 		} else {
 			this.queryMax = Constants.QUERY_MAX;
 		}
 
-		this.missingSlotsMap = new HashMap<String, List<String>>();
-		this.missingAssocTargets = new ArrayList<String>();
+		//this.missingSlotsMap = new HashMap<String, List<String>>();
+		//this.missingAssocTargets = new ArrayList<String>();
 
 		this.finalVals = new HashMap<String, List<String>>();
 		this.associationMap = new HashMap<String, List<ExtrinsicObject>>();
+		
+		this.product = null;
 
-		this.log.fine("Class name: " + classname);
+		//this.log.fine("Class name: " + classname);
+	}
+	
+	public ProductClass(PrintWriter writer, File outputDir,
+			String registryUrl, int queryMax) {
+	    log.log(new ToolsLogRecord(ToolsLevel.FINE, "Extracting from "
+	    		+ registryUrl));
+
+		this.writer = writer;
+		this.outputDir = outputDir;
+
+		//this.classname = name;
+		this.registryUrl = registryUrl;
+		
+		if (queryMax > -1) {
+			this.queryMax = queryMax;
+		} else {
+			this.queryMax = Constants.QUERY_MAX;
+		}
+
+		//this.missingSlotsMap = new HashMap<String, List<String>>();
+		//this.missingAssocTargets = new ArrayList<String>();
+
+		this.finalVals = new HashMap<String, List<String>>();
+		this.associationMap = new HashMap<String, List<ExtrinsicObject>>();
+		
+		this.product = null;
+
+		//this.log.fine("Class name: " + classname);
 	}
 
 	/**
@@ -132,22 +179,47 @@ public class ProductClass {
 	/**
 	 * Driving method for querying data from the registry
 	 * 
-	 * @param outputDir
+	 * @param coreConfig
 	 * @return
 	 * @throws ProductClassException
 	 */
-	public List<String> query(File outputDir) throws ProductClassException {
+	public List<String> query(File coreConfig) throws ProductClassException, SearchCoreFatalException {
 		// log.fine("confdir : " + confDir);
 		List<String> instkeys = new ArrayList<String>();
-		int outSeqNum = getOutputSeqNumber(outputDir);
-		// int outSeqNum = OUT_SEQ_START;
-
-		Debugger.debug("Starting with outSeqNum: " + outSeqNum);
-
-		this.searchFields = new SearchFields(this.classFilename);
-
+		int outSeqNum = 0;
+		
+		//this.searchFields = new SearchFields(this.classFilename);
 		try {
-			List<ExtrinsicObject> extList = getObjectTypeExtrinsics();
+			this.product = CoreConfigReader.unmarshall(coreConfig);
+		} catch (Exception e) {
+		    log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage(),
+		    		coreConfig.getAbsolutePath()));
+			throw new SearchCoreFatalException("Error: Problem parsing " + coreConfig
+					+ "\nStack Trace: " + e.getStackTrace().toString()
+					+ "\nError Message: " + e.getMessage() 
+					+ "\nCause: " + e.getCause().getMessage());
+		}
+			
+			
+		// Create output directory
+		File registryOutputDir = null;
+		try {
+			registryOutputDir = new File(this.outputDir, this.product.getSpecification().getTitle());
+			FileUtils.forceMkdir(registryOutputDir);
+		} catch (IOException e) {
+		    log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage(),
+		    		this.outputDir + this.product.getSpecification().getTitle()));
+		}
+		
+		outSeqNum = getOutputSeqNumber(registryOutputDir);
+	    log.log(new ToolsLogRecord(ToolsLevel.DEBUG,
+	    		"Starting with outSeqNum: " + outSeqNum));
+
+	    // Make sure registry URL works
+	    checkRegistryExists(this.registryUrl);
+	    
+		try {
+			List<ExtrinsicObject> extList = getExtrinsicsByObjectType();
 			
 			for (ExtrinsicObject extObj : extList) {
 				clearMaps();
@@ -157,8 +229,8 @@ public class ProductClass {
 				// Get class properties
 				setColumnProperties(extObj);
 
-				XMLWriter writer = new XMLWriter(this.finalVals, outputDir,
-						outSeqNum, this.classname);
+				XMLWriter writer = new XMLWriter(this.finalVals, this.outputDir,
+						outSeqNum, this.product.getSpecification().getTitle());
 				writer.write();
 
 				Debugger.debug("----- Finished for " + extObj.getLid() + " -----\n\n");
@@ -169,7 +241,7 @@ public class ProductClass {
 			throw new ProductClassException("Exception "
 					+ ex.getClass().getName() + ex.getMessage());
 		}
-
+		instkeys.addAll(this.finalVals.keySet());
 		return instkeys;
 	}
 
@@ -205,14 +277,42 @@ public class ProductClass {
 			throws ProductClassException {
 		try {
 			/* Initialize local variables */
-			String currName, currType, currVal;
+			//String currName, currType, currVal;
+			SearchCoreExtrinsic searchExtrinsic = new SearchCoreExtrinsic(extObject);
+			List<String> valueList;
 
-			List<String> valArray;
-
-			setIdentifiers(extObject);
-
+			setIdentifiers(searchExtrinsic);
+			
+			String value;
+			
 			// Loop through class results beginning from top
-			for (int i = 0; i < this.searchFields.getNumAttr(); i++) {
+			for (Field field : this.product.getIndexFields().getField()) {
+				//TODO uncomment to use suffixes for field names
+				String schemaName = field.getName(); //+ SolrSchemaField.getSuffix(field.getType());
+				
+				// Handle registry path
+				if ((value = field.getRegistryPath()) != null) {
+					this.finalVals.put(schemaName, registryPathHandler(value, searchExtrinsic));
+				} else if ((value = field.getOutputString()) != null) {	// Handle outputString
+					valueList = new ArrayList<String>();
+					valueList.add(checkForSubstring(value, searchExtrinsic));
+					this.finalVals.put(schemaName, valueList);
+				}
+				
+				
+				// Check if field is a slot
+				
+				// Check if field is an association
+				
+				// Else output as is
+				
+				// Substitute into output string if needed
+						
+						
+			}
+			
+			//System.exit(1);
+			/*for (int i = 0; i < this.searchFields.getNumAttr(); i++) {
 				currName = this.searchFields.getName(i);
 				currType = this.searchFields.getType(i);
 				currVal = this.searchFields.getValue(i);
@@ -269,6 +369,7 @@ public class ProductClass {
 									+ ".  Please use mapping types designated in API.");
 				}
 			}
+			*/
 
 			/*
 			 * try { recordMissingSlots(this.slots); } catch
@@ -281,6 +382,57 @@ public class ProductClass {
 					+ ex.getClass().getName() + ex.getMessage());
 		}
 	}
+	
+	private List<String> registryPathHandler(String value, ExtrinsicObject extObj) throws Exception {
+		List<String> slotValueList;
+		String[] pathArray;
+		
+		List<String> valueList = new ArrayList<String>();
+		
+		SearchCoreExtrinsic searchExtrinsic = new SearchCoreExtrinsic(extObj);
+		
+		if ((pathArray = value.split("\\.")).length > 1) {
+			
+			//String assocType = values[0];
+
+			Debugger.debug("Association found. Traversing path - " + extObj.getLid()
+					+ " - " + value);
+			return traverseRegistryPath(Arrays.asList(pathArray), Arrays.asList(extObj));
+		} else if (!(slotValueList = searchExtrinsic.getSlotValues(value)).isEmpty()) {	// Field is a slot
+			Debugger.debug("Getting slot values - " + searchExtrinsic.getLid()
+					+ " - " + value);
+			for (String slotValue : slotValueList) {
+				valueList.add(checkForReference(checkForNull(slotValue), value));
+			}
+			
+			return valueList;
+		} // Else does not matter because the missing slot was recorded in the SearchCoreExtrinsic object
+		
+		return valueList;
+	}
+	
+	private List<String> traverseRegistryPath(List<String> pathList, List<ExtrinsicObject> searchExtrinsicList) throws Exception {
+		//for (int i=0; i < pathArray.length-1; i++) {
+			//slotList = getAssociatedSlotValues(pathArray[i], pathArray[i+1],
+			//		searchExtrinsic);
+		List<String> newPathList = null;
+		if (pathList.size() > 1) {
+			newPathList = new ArrayList<String>();
+			newPathList.addAll(pathList.subList(1, pathList.size()));
+			
+			for (ExtrinsicObject extObj : searchExtrinsicList) {
+				return traverseRegistryPath(newPathList, getAssociationsByReferenceType(extObj, pathList.get(0)));
+			}
+		} else {
+			List<String> slotValueList = new ArrayList<String>();
+			for (ExtrinsicObject extObj : searchExtrinsicList) { 
+				SearchCoreExtrinsic searchExtrinsic = new SearchCoreExtrinsic(extObj);
+				slotValueList.addAll(searchExtrinsic.getSlotValues(pathList.get(0)));
+			}
+			return slotValueList;
+		}
+		return null;
+	}
 
 	/**
 	 * Get the ExtrinsicObjects from the given object type.
@@ -289,13 +441,18 @@ public class ProductClass {
 	 * @return				list of ExtrinsicObject for given objectType
 	 * @throws Exception	thrown if there are issues with the RegistryClient
 	 */
-	private List<ExtrinsicObject> getObjectTypeExtrinsics()
+	private List<ExtrinsicObject> getExtrinsicsByObjectType()
 			throws Exception {
 		// Build the filter
 		//ExtrinsicFilter filter;
-		Debugger.debug("----- " + this.searchFields.getObjectName() + " -----");
-		ExtrinsicFilter filter = new ExtrinsicFilter.Builder().objectType(
-				this.searchFields.getObjectType()).name(this.searchFields.getObjectName()).build();
+		Debugger.debug("----- " + this.product.getSpecification().getRegistryObjectType() + " -----");
+//		ExtrinsicFilter filter = new ExtrinsicFilter.Builder().objectType(
+//				this.searchFields.getObjectType()).name(this.searchFields.getObjectName()).build();
+		
+		ExtrinsicFilter filter = new ExtrinsicFilter.Builder()
+			.objectType(this.product.getSpecification().getRegistryObjectType())
+			.name(this.product.getSpecification().getRegistryObjectName())
+			.build();
 
 		// Create the query
 		RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
@@ -362,7 +519,7 @@ public class ProductClass {
 	 * @return			list of ExtrinsicObjects
 	 * @throws Exception
 	 */
-	private List<ExtrinsicObject> getAssociatedExtrinsics(String lidvid)
+	public List<ExtrinsicObject> getExtrinsicsByLidvid(String lidvid)
 			throws Exception {
 		// Build the filter
 		ExtrinsicFilter filter = null;
@@ -386,6 +543,9 @@ public class ProductClass {
 					+ version);
 		}
 		
+		// TODO This should be refactored to do paging similar to getExtrinsicsByObjectType 
+		// 		Also, this needs to always query ALL extrinsics with this lid in order to
+		//		ensure that the version is found
 		List<ExtrinsicObject> results = new ArrayList<ExtrinsicObject>();
 		try {
 			RegistryClient client = new RegistryClient(this.registryUrl);
@@ -398,7 +558,7 @@ public class ProductClass {
 				// Create the query
 				RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
 						.filter(filter).build();
-				PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1, this.queryMax);
+				PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1, QUERY_PAGE_MAX);
 				 
 				// Examine the results of the query
 				// Looping through the associated extrinsic objects
@@ -414,12 +574,13 @@ public class ProductClass {
 						// Product version should only have 1 value, check if it is
 						// the version we want
 						versionIdSlot = extrinsic.getSlot(Constants.VERSION_ID_SLOT);
-
+						//Debugger.debug("version_id: " + versionIdSlot.getValues().get(0));
 						if (versionIdSlot != null) {
 							if (versionIdSlot.getValues().get(0).equals(version)) {
 								Debugger.debug("Adding associated extrinsic - "
 										+ extrinsic.getLid());
 								results.add(extrinsic);
+								return results;
 							}
 						}
 					}
@@ -427,7 +588,8 @@ public class ProductClass {
 			} else {
 				ExtrinsicObject extrinsic = client.getLatestObject(assocLid, ExtrinsicObject.class);
 				Debugger.debug("Adding associated extrinsic - " + extrinsic.getLid());
-				results.add(extrinsic); 	
+				results.add(extrinsic);
+				return results;
 			}
 		} catch (RegistryServiceException rse) {
 			Debugger.debug("LID not found: " + assocLid);
@@ -446,40 +608,45 @@ public class ProductClass {
 	 * @return
 	 * @throws Exception
 	 */
-	private List<String> getAssociatedSlotValues(String assocType,
-			String slotName, ExtrinsicObject extObject) throws Exception {
+	@Deprecated
+	private List<String> getAssociatedSlotValues(String referenceSlot,
+			String assocSlotName, SearchCoreExtrinsic extObject) throws Exception {
 		String tval;
-		List<String> valArray = new ArrayList<String>();
-		if (setAssociation(assocType, extObject)) { // Add association type to
+		List<String> valueList = new ArrayList<String>();
+		SearchCoreExtrinsic searchExtrinsic;
+		if (setAssociation(referenceSlot, extObject)) { // Add association type to
 													// association map (if
 													// needed)
-			for (ExtrinsicObject assocExtObj : this.associationMap.get(assocType)) { // Iterate through the associations for
+			for (ExtrinsicObject assocExtObj : this.associationMap.get(referenceSlot)) { // Iterate through the associations for
 										// the given association type
+				searchExtrinsic = new SearchCoreExtrinsic(assocExtObj);
+				valueList.addAll(searchExtrinsic.getSlotValues(assocSlotName));
 				
 				// If slotName is not an attribute in the registry, search the ExtrinsicObject slots
-				if (!RegistryAttributes.isAttribute(slotName)) { 
+				//if (!RegistryAttributes.isAttribute(slotName)) {
+				/*if (!RegistryAttributes.isAttribute(assocSlotName)) {
 					try {
-						for (String slotValue : assocExtObj.getSlot(slotName)
+						for (String slotValue : assocExtObj.getSlot(assocSlotName)
 								.getValues()) { // Get the associated object
 												// slot values
-							tval = cleanText(remNull(slotValue));
+							tval = checkForNull(slotValue);
 							if (!valArray.contains(tval)) {
 								valArray.add(tval);
 							}
 						}
 					} catch (NullPointerException e) { // Occurs when no slot is found
-						recordMissingSlot(assocExtObj, slotName);
+						recordMissingSlot(assocExtObj, assocSlotName);
 					}
 				} else {
-					valArray.add(RegistryAttributes.getAttributeValue(slotName,
+					valArray.add(RegistryAttributes.getAttributeValue(assocSlotName,
 							assocExtObj));
-				}
+				}*/
 
 			}
 		} else {
-			valArray.add("UNK");
+			valueList.add("UNK");
 		}
-		return valArray;
+		return valueList;
 	}
 
 	/**
@@ -491,21 +658,21 @@ public class ProductClass {
 	 * @return
 	 * @throws Exception
 	 */
-	private boolean setAssociation(String assocType, ExtrinsicObject extObject)
+	private boolean setAssociation(String assocType, SearchCoreExtrinsic extObject)
 			throws Exception {
 		// TODO We may be able to refactor this and just get the slot values
 		//		for the association type since it is just a slot, and then
 		//		do the rest of this
 		
-		// TODO Create association map class and hold some threshold of
+		// TODO Create association cache class and hold some threshold of
 		// associations for specific assocTypes like node, mission, target
 		if (!this.associationMap.containsKey(assocType)) { 
-			List<ExtrinsicObject> assocExtObjList = getAssociatedObjects(
+			List<ExtrinsicObject> assocExtObjList = getAssociationsByReferenceType(
 					extObject, assocType);
 			if (!assocExtObjList.isEmpty()) {
 				this.associationMap.put(assocType, assocExtObjList);
 			} else {
-				this.missingAssocTargets.add(this.lid + " - " + assocType);
+				SearchCoreStats.addMissingAssociation(extObject.getLid(), assocType);
 				return false;
 			}
 		}
@@ -517,15 +684,15 @@ public class ProductClass {
 	 * Query the associated objects and map the objects to their slots.
 	 * 
 	 * @param guid
-	 * @param assocType
+	 * @param referenceType
 	 * @return
 	 * @throws Exception
 	 */
-	private List<ExtrinsicObject> getAssociatedObjects(
-			ExtrinsicObject extObject, String assocType) 
+	private List<ExtrinsicObject> getAssociationsByReferenceType(
+			ExtrinsicObject extObject, String referenceType) 
 					throws Exception {
 
-		Slot assocObjSlot = extObject.getSlot(assocType);
+		Slot assocObjSlot = extObject.getSlot(referenceType);
 
 		List<ExtrinsicObject> assocExtObjList = new ArrayList<ExtrinsicObject>();
 		
@@ -534,17 +701,16 @@ public class ProductClass {
 		if (assocObjSlot != null) {
 			for (String assocLidVid : assocObjSlot.getValues()) {
 				Debugger.debug("Associated lidvid - " + assocLidVid);
-				List<ExtrinsicObject> extList = getAssociatedExtrinsics(assocLidVid);
+				List<ExtrinsicObject> extList = getExtrinsicsByLidvid(assocLidVid);
 
 				if (extList.size() != 0) {
 					assocExtObjList.addAll(extList);
 				} else {
-					this.missingAssocTargets.add(this.lid + " - " + assocType
-							+ " - " + assocLidVid);
+					SearchCoreStats.addMissingAssociationTarget(extObject.getLid(), assocLidVid);
 				}
 			}
 		} else {
-			recordMissingSlot(extObject, assocType);
+			SearchCoreStats.addMissingSlot(extObject.getLid(), referenceType);
 		}
 		return assocExtObjList;
 	}
@@ -555,7 +721,7 @@ public class ProductClass {
 	 * @param extObject	ExtrinisicObject with a missing slot
 	 * @param slot		slot name that is missing
 	 */
-	private void recordMissingSlot(ExtrinsicObject extObject, String slot) {
+	/*private void recordMissingSlot(ExtrinsicObject extObject, String slot) {
 		List<String> slotList;
 		String objectType = extObject.getObjectType();
 		
@@ -568,7 +734,7 @@ public class ProductClass {
 		}
 		slotList.add(this.lid + " - " + slot);
 		this.missingSlotsMap.put(objectType, slotList);
-	}
+	}*/
 
 	/**
 	 * Display all missing associations and slots
@@ -576,14 +742,14 @@ public class ProductClass {
 	private void displayWarnings() {
 		String out = "";
 
-		if (!this.missingAssocTargets.isEmpty()) {
+		/*if (!this.missingAssocTargets.isEmpty()) {
 			out += "Missing the following Association Targets:\n";
 			for (String missingAssociation : this.missingAssocTargets) {
 				out += missingAssociation + "\n";
 			}
-		}
+		}*/
 
-		if (!this.missingSlotsMap.isEmpty()) {
+		/*if (!this.missingSlotsMap.isEmpty()) {
 			out += "Missing the following Registry Slots:\n";
 			for (String objectType : this.missingSlotsMap.keySet()) {
 				out += "--- " + objectType + " ---\n";
@@ -592,7 +758,7 @@ public class ProductClass {
 				}
 			}
 			out += "\n\n";
-		}
+		}*/
 
 		if (!out.equals("")) {
 			this.writer.println(out);
@@ -619,34 +785,38 @@ public class ProductClass {
 	 * 						to be queried, replaced with the value from the Registry
 	 * @throws Exception
 	 */
-	private String setSubstring(String str, ExtrinsicObject extObject)
+	private String checkForSubstring(String str, SearchCoreExtrinsic extObject)
 			throws Exception {
 		int start, end;
-		String tval = "", key;
+		//String tval = "", 
+		String key;
 
-		try {
-			while (str.contains("{")) {
-				start = str.indexOf("{");
-				end = str.indexOf("}");
-				key = str.substring(start + 1, end);
+		List<String> valueList = new ArrayList<String>();
+		while (str.contains("{")) {
+			start = str.indexOf("{");
+			end = str.indexOf("}");
+			key = str.substring(start + 1, end);
 
-				// TODO ASSUMPTION: These substring slots/associated slots will
-				// only have 1 value - may want to specify multiple values here
-				// instead
-				if (!key.contains(".")) { // If key is not an associated object
-					// Get the first slot value
-					tval = extObject.getSlot(key).getValues().get(0);
-				} else { // Association mapping
-					String[] values = key.split("\\.");
-					tval = getAssociatedSlotValues(values[0], values[1],
-							extObject).get(0);
-				}
-
-				str = str.replace('#', '&').replace("{" + key + "}",URLEncoder.encode(((tval == null) ? "" : tval), "UTF-8"));
+			
+			// TODO ASSUMPTION: These substring slots/associated slots will
+			// only have 1 value - may want to specify multiple values here
+			// instead
+			/*if (!key.contains(".")) { // If key is not an associated object
+				// Get the first slot value
+				tval = extObject.getSlot(key).getValues().get(0);
+			} else { // Association mapping
+				String[] values = key.split("\\.");
+				tval = getAssociatedSlotValues(values[0], values[1],
+						extObject).get(0);
 			}
-		} catch (NullPointerException e) { // Associated Extrinsic Object does
-											// not have the slot requested
-			this.missingAssocTargets.add(this.lid + " - " + str);
+			str = str.replace('#', '&').replace("{" + key + "}",URLEncoder.encode(((tval == null) ? "" : tval), "UTF-8"));
+			*/
+			valueList = registryPathHandler(key, extObject);
+
+			
+			if (valueList != null && valueList.size() > 0) {
+				str = str.replace("{" + key + "}",URLEncoder.encode(valueList.get(0), "UTF-8"));
+			}
 		}
 		return str;
 	}
@@ -662,7 +832,7 @@ public class ProductClass {
 	 * @throws RegistryClientException 
 	 * @throws RegistryServiceException 
 	 */
-	private String checkRef(String value, String registryRef) throws RegistryClientException {
+	private String checkForReference(String value, String registryRef) throws RegistryClientException {
 		if (registryRef.contains("_ref")) {
 			try {
 				if (!value.contains("::")) {
@@ -684,19 +854,71 @@ public class ProductClass {
 	 * @param text
 	 * @return
 	 */
+	@Deprecated
 	private String cleanText(String text) {
-		return text;
-		//return text.trim().replace("\n", "<br />").replaceAll("    *", "   ");
+		return text.trim().replace("\n", "<br />").replaceAll("    *", "   ");
 	}
 
 	/**
 	 * Remove String Nulls
 	 */
-	private String remNull(String s1) {
+	private String checkForNull(String s1) {
 		if (s1 == null) {
 			return "UNK";
 		}
 		return s1;
+	}
+	
+	private String checkRegistryExists(String url) throws ProductClassException {
+		if (Utility.urlExists(url)) {
+			return url;
+		} else {
+		    log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+		    		url + " cannot be found."));
+			throw new ProductClassException(url + " Not Found. Verify Registry Exists.");
+		}
+	}
+
+	/**
+	 * @return the lid
+	 */
+	public String getLid() {
+		return lid;
+	}
+
+	/**
+	 * @param lid the lid to set
+	 */
+	public void setLid(String lid) {
+		this.lid = lid;
+	}
+
+	/**
+	 * @return the registryUrl
+	 */
+	public String getRegistryUrl() {
+		return registryUrl;
+	}
+
+	/**
+	 * @param registryUrl the registryUrl to set
+	 */
+	public void setRegistryUrl(String registryUrl) {
+		this.registryUrl = registryUrl;
+	}
+
+	/**
+	 * @return the queryMax
+	 */
+	public int getQueryMax() {
+		return queryMax;
+	}
+
+	/**
+	 * @param queryMax the queryMax to set
+	 */
+	public void setQueryMax(int queryMax) {
+		this.queryMax = queryMax;
 	}
 
 }

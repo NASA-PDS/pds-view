@@ -10,9 +10,9 @@
 //	may be required before exporting such information to foreign countries or 
 //	providing access to foreign nationals.
 //	
-//	$Id$
+//	$Id: ToolInfo.java 11478 2013-03-25 22:17:42Z jpadams $
 //
-package gov.nasa.pds.search.util;
+package gov.nasa.pds.search.core.util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,13 +28,13 @@ import java.util.Properties;
 public class ToolInfo {
 	public static final String FILE = "search-core.properties";
 
-	public static final String NAME = "search-core.name";
+	public static final String NAME = "search.core.name";
 
-	public static final String VERSION = "search-core.version";
+	public static final String VERSION = "search.core.version";
 
-	public static final String RELEASE_DATE = "search-core.date";
+	public static final String RELEASE_DATE = "search.core.date";
 
-	public static final String COPYRIGHT = "search-core.copyright";
+	public static final String COPYRIGHT = "search.core.copyright";
 
 	private static final Properties props = new Properties();
 
