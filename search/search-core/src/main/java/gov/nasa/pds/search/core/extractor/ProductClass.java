@@ -227,7 +227,7 @@ public class ProductClass {
 			throws ProductClassException {
 		try {
 			/* Initialize local variables */
-			ArrayList<String> valueList;
+			List<String> valueList = new ArrayList<String>();
 			
 			String value;
 			
@@ -238,12 +238,18 @@ public class ProductClass {
 				
 				// Handle registry path
 				if ((value = field.getRegistryPath()) != null) {
-					this.finalVals.put(fieldName, registryPathHandler(value, searchExtrinsic));
+					valueList = registryPathHandler(value, searchExtrinsic);
 				} else if ((value = field.getOutputString()) != null) {	// Handle outputString
 					valueList = new ArrayList<String>();
 					valueList.add(checkForSubstring(value, searchExtrinsic));
 					this.finalVals.put(fieldName, valueList);
-				}				
+				}
+				
+				if (valueList.isEmpty() && field.getDefault() != null) {
+					valueList.add(field.getDefault());
+				}
+				
+				this.finalVals.put(fieldName, valueList);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -303,7 +309,7 @@ public class ProductClass {
 			}
 			return slotValueList;
 		}
-		return null;
+		return new ArrayList<String>();
 	}
 	
 	/**
@@ -326,22 +332,24 @@ public class ProductClass {
 			if (searchExt.slotIsAssociationReference(slotName)) {		// If slot is an association reference
 				if (!searchExt.hasValidAssociationValues()) {		// If associations have values not are not lidvids
 																	// We will have to make the lidvids for them
-					Debugger.debug("-- INVALID ASSOCIATION VALUE FOUND for " + searchExt.getLid() + " - " + slotName);
+					//Debugger.debug("-- INVALID ASSOCIATION VALUE FOUND for " + searchExt.getLid() + " - " + slotName);
 					List<String> newSlotValues = new ArrayList<String>();
 					SearchCoreExtrinsic assocSearchExt;
 					for(String lid : slotValues) {
 						assocSearchExt = this.registryHandler.getExtrinsicByLidvid(lid);
 						if (assocSearchExt != null) {	// if association is found, add the lidvid to slot values
-							Debugger.debug("New slot value: " + assocSearchExt.getLidvid());
+							//Debugger.debug("New slot value: " + assocSearchExt.getLidvid());
 							newSlotValues.add(assocSearchExt.getLidvid());
 						} else {
-							Debugger.debug("Association not found for new slot value, adding lid instead : " + lid);
+							//Debugger.debug("Association not found for new slot value, adding lid instead : " + lid);
 							newSlotValues.add(lid);
 						}
 					}
 					return newSlotValues;
 				}
 			}
+		} else {	// When slot values are null, check the XSD to see if a default is set
+			
 		}
 		return slotValues;
 	}

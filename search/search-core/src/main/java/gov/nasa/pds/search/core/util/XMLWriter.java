@@ -52,13 +52,13 @@ public class XMLWriter {
 
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	
-	private static final String MISSING_VALUE_REPLACEMENT = "UNK";
+	private static final String MISSING_VALUE_REPLACEMENT = "N/A";
 	private static final ArrayList<String> BAD_VALUES_LIST = new ArrayList<String>();
 	
 	static {
 		BAD_VALUES_LIST.add("NULL");
 		BAD_VALUES_LIST.add("");
-		BAD_VALUES_LIST.add("N/A");
+		BAD_VALUES_LIST.add("UNK");
 	}
 
 	public XMLWriter(Map map, File basedir, int seq, String productTitle) {
@@ -86,11 +86,11 @@ public class XMLWriter {
 	public void write() {
 		//String name = "";
 		//String value = "";
-		ArrayList valArray;
+		List valArray;
 		try {
 			Set set = this.map.keySet();
 			for (Object name : set) {
-				valArray = (ArrayList) this.map.get(String.valueOf(name));
+				valArray = (List) this.map.get(String.valueOf(name));
 				if (valArray != null) {
 					for (Object value : valArray) {
 						// log.info("name: "+name);
