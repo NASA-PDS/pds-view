@@ -24,6 +24,36 @@
   
   <body>
     <release version="1.3.0" date="TBD" description="TBD">
+      <action dev="jpadams" type="add">
+	Created new logging and stats classes to maintain the missing slot/associations/etc.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-189">
+	Updated command-line options and property keys to allow for specification of primary and secondary registries; also update XSD to allow for inclusion of 'DataSources' which can then be set with primary/secondary 'priority' and DataSource type (i.e. registry) as well as the option to 'append' the new sources to the current list specified via command-line/property file, or to overwrite. 
+      </action>
+      <action dev="jpadams" type="update">
+	Updated unit tests to reflect changes from PDS-189.
+      </action>
+      <action dev="jpadams" type="update">
+	Leveraged decorator pattern for Extrinsic Objects to allow for extension of the objects that come back from the Registry. Allows for methods like getLidvid, getSlotValues, etc.
+      </action>
+      <action dev="jpadams" type="update">
+	Refactored RegistryAttributes class to be an enum to better handle Registry attributes.
+      </action>
+      <action dev="jpadams" type="update">
+	Updated unit tests to test new classes/methods.
+      </action>
+      <action dev="jpadams" type="update">
+	Updated core configs to work with XSD.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-144">
+	Get all .xml files in the given config directory instead of requiring product-classes.txt to be specified.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-154">
+Allow for unlimited 'jumps' for associations to be specified (i.e. instrument_host_ref.instrument_ref.data_set_ref.node_ref.agengy_ref.alternate_id will get agency).
+      </action>
+      <action dev="jpadams" type="update">
+	Updated software to use XML schema to specify configurations for different products. Introduced core-config.xsd.
+      </action>
       <action dev="jpadams" type="update">
 	Removed Indexer and ProfileParser classes that have been deprecated from use and no longer have a use. Updated Launcher to remove reference to these classes.
       </action>
