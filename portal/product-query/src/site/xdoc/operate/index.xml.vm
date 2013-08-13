@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2012, by the California Institute of Technology.
+  Copyright 2012-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -59,21 +59,45 @@
       <table>
         <tr><th>Parameter</th><th>Description</th></tr>
         <tr><td>object</td><td>The identifier of the Product Server specified as a full URN (i.e., urn:eda:rmi:PDS.CN.Product) or just the name (i.e., PDS.CN.Product). This parameter is required.</td></tr>
-        <tr><td>keywordQuery</td><td>The DIS-Style query string. This parameter is required.</td></tr>
+        <tr><td>keywordQuery</td><td>The DIS-Style query string. This parameter is required. Additional information regarding this protocol can be found at: <a href="http://oodt.jpl.nasa.gov/pds-client/guide/product/" target="_blank">http://oodt.jpl.nasa.gov/pds-client/guide/product/</a>.</td></tr>
         <tr><td>id</td><td>The identifier of the product to return in the case where multiple products match the query criteria. This parameter is optional.</td></tr>
         <tr><td>mimeType</td><td>The desired MIME type of the product to return. This parameter may be specified multiple times to show an in-order preference for MIME types. This parameter is optional.</td></tr>
       </table>
 
-      <p>The The following is an example query:
+      <p>The following is an example query:
       </p>
 
       <source>
 % curl -X GET -o product.out -v \
-http://localhost:8080/prod?object=&lt;object&gt;&amp;keywordQuery=&lt;keywordQuery&gt;
+"http://localhost:8080/prod?object=&lt;object&gt;&amp;keywordQuery=&lt;keywordQuery&gt;"
       </source>
 
-      <p>Note: If the above example generates a <i>302 Moved Temporarily</i> message, an additional "/" is likely required after "/prod" and before the question mark in the example above.
+      <p>Note: If the above example generates a <i>302 Moved Temporarily</i> message, an additional "/" is likely required after "/prod" and before the question mark in the example above. The following is a real query against the Imaging Node's Product Server:
       </p>
+
+      <source>
+% curl -X GET -o product.out -v \
+"http://localhost:8080/prod?object=PDS.Img.Product&amp;\
+keywordQuery=OFSN+%3D+data/+AND+RT+%3D+DIRLIST1"
+      </source>
+
+      <p>The above query should return a directory listing something like the following:
+      </p>
+
+      <source>
+&lt;?xml version="1.0"?&gt;
+&lt;dirResult&gt;
+  &lt;dirEntry&gt;
+    &lt;OFSN&gt;data/mer1-m-pancam-4-linearized-ops-v1.0&lt;/OFSN&gt;
+    &lt;fileSize&gt;0&lt;/fileSize&gt;
+  &lt;/dirEntry&gt;
+  &lt;dirEntry&gt;
+    &lt;OFSN&gt;data/mer1-m-navcam-4-linearized-ops-v1.0&lt;/OFSN&gt;
+    &lt;fileSize&gt;0&lt;/fileSize&gt;
+  &lt;/dirEntry&gt;
+  ...
+&lt;/dirResult&gt;
+      </source>
     </section>
   </body>
 </document>
