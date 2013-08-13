@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <product>
 	<specification>
-		<title>Collection</title>
+		<title>PSADataSet</title>
 		<registryObjectType>Product_Data_Set_PDS3</registryObjectType>
+		<dataSources>
+			<source sourceType="registry" priority="secondary" append="true">
+				<url>http://pdsops.jpl.nasa.gov/registry</url>
+			</source>
+		</dataSources>
 	</specification>
 	
 	<!-- Fields displayed in default Search Service results -->
@@ -19,6 +24,9 @@
 		</field>
 		<field name="resLocation" type="required">
 			<registryPath>resource_ref.resource_url</registryPath>
+		</field>
+		<field name="objectType" type="string">
+			<outputString>objectType</outputString>
 		</field>
 		<field name="agency_name" type="string">
 			<registryPath>node_ref.agency_ref.alternate_id</registryPath>
@@ -57,7 +65,7 @@
 			<registryPath>data_set_stop_time</registryPath>
 		</field>
 		<field name="node_id" type="string">
-			<registryPath>node_ref.node_name</registryPath>
+			<registryPath>node_ref.alternate_id</registryPath>
 		</field>
 		<field name="full_name" type="string">
 			<registryPath>data_set_producer_full_name</registryPath>

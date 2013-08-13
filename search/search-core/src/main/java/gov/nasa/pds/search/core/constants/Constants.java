@@ -10,8 +10,6 @@ public final class Constants {
 	 * Default filename for Product Classes properties file that is required in
 	 * config directory.
 	 **/
-	@Deprecated
-	public static final String PC_PROPS = "product-classes.txt";
 
 	/** Default maximum number of queried records to be returned from registry. **/
 	public static final int QUERY_MAX = 999999999;

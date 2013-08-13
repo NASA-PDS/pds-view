@@ -7,9 +7,13 @@ import java.io.PrintWriter;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import gov.nasa.pds.search.core.SearchCoreLauncher;
 import gov.nasa.pds.search.core.constants.TestConstants;
@@ -20,14 +24,18 @@ import gov.nasa.pds.search.core.constants.TestConstants;
  * @author jpadams
  *
  */
+@RunWith(JUnit4.class)
+@Ignore
 public class SearchCoreLauncherTest {
 	
-	@Before public void setUp() {
+	@BeforeClass 
+	public void setUp() {
 		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
 		testDir.mkdirs();
 	}
 	
-	@After public void tearDown() {
+	@AfterClass
+	public void tearDown() {
 		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
 		testDir.delete();
 	}
@@ -110,33 +118,6 @@ public class SearchCoreLauncherTest {
 		} catch (Exception e) {
 			fail("Registry Extractor with Relative Paths failed: " + e.getMessage());
 		}
-    }
-    
-    /**
-     * Test SearchCoreLauncher with a Search Core properties file.
-     */
-    @Test
-    public void testProps() {
-		try {
-			File tempFile = new File(TestConstants.SEARCH_HOME_RELATIVE + "/temp_props.properties");
-			
-			PrintWriter writer = new PrintWriter(tempFile);
-	    	writer.write("search.core.search-home = " + TestConstants.SEARCH_HOME_RELATIVE + "\n"
-	    			+ "search.core.registry-url = " + TestConstants.PDS3_REGISTRY_URL + "\n"
-	    			+ "search.core.config-home = "+ TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3");
-	    	writer.flush();
-	    	writer.close();
-	    	
-	    	String[] args = { "-d", "-p", tempFile.getAbsolutePath(), 
-	    			"-m", "1" 
-	    			};
-	    	SearchCoreLauncher.main(args);
-	    	
-	    	FileUtils.forceDelete(new File(TestConstants.SEARCH_HOME_RELATIVE + "/temp_props.properties"));
-		} catch (Exception e) {
-			fail(e.getCause() + " - " + e.getMessage());
-		}
-    	
     }
 	
 }

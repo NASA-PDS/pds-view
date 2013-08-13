@@ -18,6 +18,7 @@
 	<xsd:element name="registryObjectName" type="xsd:string" />
 	<xsd:element name="registryPath" type="xsd:string" />
 	<xsd:element name="outputString" type="xsd:string" />
+	<xsd:element name="url" type="xsd:string" />
 
 	<xsd:attribute name="name" type="xsd:string" />
 	<xsd:attribute name="type" type="dataType" />
@@ -30,6 +31,40 @@
 	    	<xsd:enumeration value="float"/>
 	  	</xsd:restriction>
 	</xsd:simpleType>
+	
+	<xsd:attribute name="sourceType" type="sourceType" />
+	<xsd:attribute name="priority" type="sourcePriority" />
+	<xsd:attribute name="append" type="xsd:boolean" />
+	<xsd:simpleType name="sourcePriority">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="primary"/>
+	    	<xsd:enumeration value="secondary"/>
+	  	</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="sourceType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="registry"/>
+	  	</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:element name="dataSources" type="DataSources" />
+	<xsd:complexType name="DataSources">
+		<xsd:sequence>
+			<xsd:element ref="source" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="source" type="DataSource" />
+   	<xsd:complexType name="DataSource">
+		<xsd:sequence>
+			<xsd:element ref="url" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute ref="sourceType" use="required" />
+		<xsd:attribute ref="priority" use="required" />
+		<!-- If append is true, source urls will be appended to dictionary. Else a new dictionary is created -->
+		<xsd:attribute ref="append" use="required" />
+	</xsd:complexType>
 
 	<xsd:element name="specification" type="Specification" />
 	<xsd:complexType name="Specification">
@@ -37,9 +72,11 @@
 			<xsd:element ref="title" />
 			<xsd:element ref="registryObjectType" />
 			<xsd:element ref="registryObjectName" minOccurs="0" />
+			<xsd:element ref="dataSources" minOccurs="0" />
 		</xsd:sequence>
 	</xsd:complexType>
-
+	
+	<xsd:attribute name="default" type="xsd:string" />
 	<xsd:element name="field" type="Field" />
 	<xsd:complexType name="Field">
 		<xsd:choice>
@@ -48,6 +85,7 @@
 		</xsd:choice>
 		<xsd:attribute ref="name" use="required" />
 		<xsd:attribute ref="type" use="required" />
+		<xsd:attribute ref="default" />
 	</xsd:complexType>
 
 <!-- 

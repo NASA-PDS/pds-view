@@ -21,6 +21,9 @@
 		<field name="resLocation" type="required">
 			<registryPath>resource_url</registryPath>
 		</field>
+		<field name="objectType" type="string">
+			<outputString>Product_Context_Archive_Information</outputString>
+		</field>
 		<field name="agency_name" type="string">
 			<registryPath>instrument_ref.data_set_ref.node_ref.agency_ref.alternate_id</registryPath>
 		</field>

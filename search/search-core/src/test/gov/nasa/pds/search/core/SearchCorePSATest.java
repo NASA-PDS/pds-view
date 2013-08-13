@@ -43,7 +43,8 @@ public class SearchCorePSATest {
 	@Test
     public void testExtractorRelative() {
     	try {
-	    	String[] args = { "-d", "-r", TestConstants.PSA_REGISTRY_URL, 
+	    	String[] args = { //"-d", 
+	    			"-r", TestConstants.PSA_REGISTRY_URL, 
 	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-m", "5", 
 	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "psa/pds3", };

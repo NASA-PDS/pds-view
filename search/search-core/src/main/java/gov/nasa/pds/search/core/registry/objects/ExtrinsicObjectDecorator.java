@@ -1,4 +1,4 @@
-package gov.nasa.pds.search.core.extractor.registry;
+package gov.nasa.pds.search.core.registry.objects;
 
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.Slot;

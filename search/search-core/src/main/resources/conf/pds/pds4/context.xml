@@ -3,6 +3,11 @@
 	<specification>
 		<title>Context</title>
 		<registryObjectType>Product_Context</registryObjectType>
+		<dataSources>
+			<source sourceType="registry" priority="primary" append="false">
+				<url>http://pdsdev.jpl.nasa.gov:8080/registry-pds4</url>
+			</source>
+		</dataSources>
 	</specification>
 	
 	<!-- Fields displayed in default Search Service results -->
@@ -19,6 +24,9 @@
 		</field>
 		<field name="resLocation" type="required">
 			<registryPath>accessUrls</registryPath>
+		</field>
+		<field name="objectType" type="string">
+			<registryPath>objectType</registryPath>
 		</field>
 		<field name="agency_name" type="string">
 			<registryPath>node_ref.agency_ref.alternate_id</registryPath>

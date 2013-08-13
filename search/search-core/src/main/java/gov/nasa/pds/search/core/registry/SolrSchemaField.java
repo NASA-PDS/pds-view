@@ -1,4 +1,4 @@
-package gov.nasa.pds.search.core.extractor;
+package gov.nasa.pds.search.core.registry;
 
 import gov.nasa.pds.search.core.schema.DataType;
 import gov.nasa.pds.search.core.schema.Field;

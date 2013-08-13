@@ -20,7 +20,10 @@
 		<field name="resLocation" type="required">
 			<outputString>/ds-view/pds/viewDataset.jsp?dsid={data_set_id}</outputString>
 		</field>
-		<field name="agency_name" type="string">
+		<field name="objectType" type="string">
+			<registryPath>objectType</registryPath>
+		</field>
+		<field name="agency_name" type="string" default="Unknown">
 			<registryPath>node_ref.agency_ref.alternate_id</registryPath>
 		</field>
 		<field name="pds_model_version" type="string">

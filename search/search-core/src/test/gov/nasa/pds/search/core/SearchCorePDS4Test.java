@@ -37,7 +37,6 @@ import org.junit.runners.JUnit4;
  * @author jpadams
  */
 @RunWith(JUnit4.class)
-@Ignore									// Registry is down
 public class SearchCorePDS4Test{
 	
 	/** Search Service Solr URL **/
@@ -68,7 +67,8 @@ public class SearchCorePDS4Test{
 	@Test
     public void testCorePDS4() {
     	try {
-	    	String[] args = { "-d", "-r", TestConstants.PDS4_REGISTRY_URL, 
+	    	String[] args = { //"-d", 
+	    			"-r", TestConstants.PDS4_REGISTRY_URL, 
 	    			"-H", SEARCH_HOME_RELATIVE, 
 	    			"-m", "5", 
 	    			"-c", CONFIG_DIR_RELATIVE + "pds/pds4", };

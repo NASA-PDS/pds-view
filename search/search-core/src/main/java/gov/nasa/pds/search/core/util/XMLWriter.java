@@ -17,6 +17,7 @@ package gov.nasa.pds.search.core.util;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -50,23 +51,32 @@ public class XMLWriter {
 	private Element classElement;
 
 	private Logger log = Logger.getLogger(this.getClass().getName());
+	
+	private static final String MISSING_VALUE_REPLACEMENT = "UNK";
+	private static final ArrayList<String> BAD_VALUES_LIST = new ArrayList<String>();
+	
+	static {
+		BAD_VALUES_LIST.add("NULL");
+		BAD_VALUES_LIST.add("");
+		BAD_VALUES_LIST.add("N/A");
+	}
 
 	public XMLWriter(Map map, File basedir, int seq, String productTitle) {
 		try {
 			this.map = map;
 			this.basedir = basedir;
 
-			filename = getFilename(seq, productTitle);
+			this.filename = getFilename(seq, productTitle);
 
 			DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
-			doc = docBuilder.newDocument();
+			this.doc = docBuilder.newDocument();
 
 			Element root = doc.createElement("doc");
-			doc.appendChild(root);
+			this.doc.appendChild(root);
 
-			classElement = doc.createElement(productTitle);
-			root.appendChild(classElement);
+			this.classElement = doc.createElement(productTitle);
+			root.appendChild(this.classElement);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,25 +84,21 @@ public class XMLWriter {
 	}
 
 	public void write() {
-		String name = "";
-		String value = "";
+		//String name = "";
+		//String value = "";
 		ArrayList valArray;
 		try {
 			Set set = this.map.keySet();
-			Iterator iter = set.iterator();
-			while (iter.hasNext()) {
-				name = (String) iter.next();
-				//Debugger.debug("Name: " + name);
-				valArray = (ArrayList) this.map.get(name);
+			for (Object name : set) {
+				valArray = (ArrayList) this.map.get(String.valueOf(name));
 				if (valArray != null) {
-				for (Iterator i = valArray.iterator(); i.hasNext();) {
-					value = (String) i.next();
-					// log.info("name: "+name);
-					// log.info("value: "+value);
-					addElement(name, value);
-				}
+					for (Object value : valArray) {
+						// log.info("name: "+name);
+						// log.info("value: "+value);
+						addElement(String.valueOf(name), String.valueOf(value));
+					}
 				} else {
-					addElement(name, "");
+					addElement(String.valueOf(name), "");
 				}
 			}
 
@@ -133,7 +139,12 @@ public class XMLWriter {
 		String tName, tValue;
 
 		tName = name.trim();
-		tValue = value.trim();
+		
+		if (BAD_VALUES_LIST.contains(value.toUpperCase())) {
+			tValue = MISSING_VALUE_REPLACEMENT;
+		} else {
+			tValue = value.trim();
+		}
 
 		// Previous method used to encode only select HTML entities
 		//tName = repAllCharWStr(tName);

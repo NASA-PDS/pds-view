@@ -14,40 +14,31 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for dataType.
+ * <p>Java class for sourcePriority.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="dataType">
+ * &lt;simpleType name="sourcePriority">
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="required"/>
- *     &lt;enumeration value="string"/>
- *     &lt;enumeration value="date"/>
- *     &lt;enumeration value="integer"/>
- *     &lt;enumeration value="float"/>
+ *     &lt;enumeration value="primary"/>
+ *     &lt;enumeration value="secondary"/>
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
  * 
  */
-@XmlType(name = "dataType")
+@XmlType(name = "sourcePriority")
 @XmlEnum
-public enum DataType {
+public enum SourcePriority {
 
-    @XmlEnumValue("required")
-    REQUIRED("required"),
-    @XmlEnumValue("string")
-    STRING("string"),
-    @XmlEnumValue("date")
-    DATE("date"),
-    @XmlEnumValue("integer")
-    INTEGER("integer"),
-    @XmlEnumValue("float")
-    FLOAT("float");
+    @XmlEnumValue("primary")
+    PRIMARY("primary"),
+    @XmlEnumValue("secondary")
+    SECONDARY("secondary");
     private final String value;
 
-    DataType(String v) {
+    SourcePriority(String v) {
         value = v;
     }
 
@@ -55,8 +46,8 @@ public enum DataType {
         return value;
     }
 
-    public static DataType fromValue(String v) {
-        for (DataType c: DataType.values()) {
+    public static SourcePriority fromValue(String v) {
+        for (SourcePriority c: SourcePriority.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

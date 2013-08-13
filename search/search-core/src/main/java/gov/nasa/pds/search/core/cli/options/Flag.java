@@ -1,4 +1,4 @@
-//	Copyright 2009-2012, by the California Institute of Technology.
+//	Copyright 2009-2013, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -21,40 +21,94 @@ import org.apache.commons.cli.Options;
 
 /**
  * Describes all the flags used in the CLI
+ * 
  * @author jpadams
- *
+ * 
  */
 public enum Flag {
 	/** Flag to run all components of index. */
 	ALL("a", "all", "Run all components of the Search Core [default]"),
 
 	/** Flag to specify a product class configuration directory. */
-	CONFIG_HOME("c", "config-home", "directories", String.class, true,
+	CONFIG_HOME(
+			"c",
+			"config-home",
+			"directories",
+			String.class,
+			true,
 			"Specify the product class configuration home directory."
-					+ "Multiple directories can be specified to accompany" 
+					+ "Multiple directories can be specified to accompany"
 					+ " multiple registries. (Default: $SEARCH_CORE_HOME/conf/pds/)"),
 
-	/** Flag to turn OFF removal of all directories from previous Search Core execution. */
-	CLEAN("C", "clean-dirs",
+	/**
+	 * Flag to turn OFF removal of all directories from previous Search Core
+	 * execution.
+	 */
+	CLEAN(
+			"C",
+			"clean-dirs",
 			"Removal of all directories from previous Search Core execution output."
 					+ " These directories will still be backed up in the Search Home directory."
 					+ " (Default: True)"),
 
 	/** Flag to run in debug mode. */
-	DEBUG("d", "debug", "Turn on debugger."),
+	DEBUG("d", "debug", "Turn on developer debugger."),
 
 	/** Flag to run the Registry Extractor component. */
-	EXTRACTOR("e", "extractor",	"Execute component to extract data from registry"),
+	EXTRACTOR("e", "extractor",
+			"Execute component to extract data from registry"),
 
 	/** Flag to display the help. */
 	HELP("h", "help", "Display usage."),
 
-	  /** Flag to output the logging to a file. */
-	  LOG("l", "log-file", "file name", String.class,
-	      "Specify a log file name. Default is standard out."),
-	
+	/** Flag to output the logging to a file. */
+	LOG("l", "log-file", "file name", String.class,
+			"Specify a log file name. Default is standard out."),
+			
+	/** Flag to specify query max for registry. */
+	MAX("m", "query-max", "integer", Integer.class,
+			"Specify the maximum number of registry values to be returned from query."
+					+ "(Default: " + Constants.QUERY_MAX + ")"),
+					
+	/** Flag to specify a configuration file. */
+	PROPERTIES(
+			"p",
+			"properties-file",
+			"files",
+			String.class,
+			true,
+			"Specify properties file containing Search Home, Registry URL,"
+					+ " and product class configuration home directory. Multiple"
+					+ " files can be specified."),
+
+	/** Flag to specify at least one Registry URL. */
+	PRIMARY(
+			"r",
+			"primary-registry",
+			"urls",
+			String.class,
+			true,
+			"Specify the primary Registry Service instance(s) to query. "
+					+ "Multiple registries can be specified. These registries will "
+					+ "be used for all queries.  "),
+
+	/** Flag to specify at least one Registry URL. */
+	SECONDARY(
+			"s",
+			"secondary-registry",
+			"urls",
+			String.class,
+			true,
+			"Specify secondary Registry Service instance(s) to query. "
+					+ "Multiple registries can be specified. These registries will "
+					+ "only be used after a query fails against all primary registries."),
+
 	/** Flag to specify Search Home. */
-	SEARCH_HOME("H", "search-home", "directory", String.class,
+	SEARCH_HOME(
+			"H",
+			"search-home",
+			"directory",
+			String.class,
 			"Specify the Search Home directory. The tool will output the index files to this"
 					+ " directory. When using the Search Service, this should be the "
 					+ " $SEARCH_SERVICE_HOME/pds directory"
@@ -63,27 +117,12 @@ public enum Flag {
 	/** Flag to generate a Solr Index. */
 	SOLR("i", "solr-indexer", "Execute component to generate a Solr Index"),
 
-	/** Flag to specify query max for registry. */
-	MAX("m", "query-max", "integer", Integer.class,
-			"Specify the maximum number of registry values to be returned from query." 
-					+ "(Default: " + Constants.QUERY_MAX + ")"),
+	/** Flag to change the severity level of the messaging in the report. */
+	VERBOSE("v", "verbose", "level", int.class, "Specify the severity level "
+			+ "and above to include in the log: "
+			+ "(0=Debug, 1=Info, 2=Warning, 3=Error). "
+			+ "Default is Info and above (level 1)."),
 
-	/** Flag to specify a configuration file. */
-	PROPERTIES("p", "properties-file", "files", String.class, true,
-			"Specify properties file containing Search Home, Registry URL,"
-				+ " and product class configuration home directory. Multiple"
-				+ " files can be specified."),
-
-	/** Flag to specify at least one Registry URL. */
-	REGISTRY("r", "registry", "urls", String.class, true,
-			"Specify Registry Service instance(s) to query. Multiple registries can be specified."),
-
-  /** Flag to change the severity level of the messaging in the report. */
-  VERBOSE("v", "verbose", "level", int.class, "Specify the severity level "
-      + "and above to include in the log: "
-      + "(0=Debug, 1=Info, 2=Warning, 3=Error). "
-      + "Default is Info and above (level 1)."),
-			
 	/** Flag to display the version. */
 	VERSION("V", "version", "Display application version.");
 
@@ -128,9 +167,12 @@ public enum Flag {
 	/**
 	 * Constructor.
 	 * 
-	 * @param shortName		The short name.
-	 * @param longName		The long name.
-	 * @param description	A description of the flag.
+	 * @param shortName
+	 *            The short name.
+	 * @param longName
+	 *            The long name.
+	 * @param description
+	 *            A description of the flag.
 	 */
 	private Flag(final String shortName, final String longName,
 			final String description) {
@@ -140,11 +182,16 @@ public enum Flag {
 	/**
 	 * Constructor for flags that can take arguments.
 	 * 
-	 * @param shortName		The short name.
-	 * @param longName		The long name.
-	 * @param argName		The argument name.
-	 * @param argType		The argument type.
-	 * @param description	A description of the flag.
+	 * @param shortName
+	 *            The short name.
+	 * @param longName
+	 *            The long name.
+	 * @param argName
+	 *            The argument name.
+	 * @param argType
+	 *            The argument type.
+	 * @param description
+	 *            A description of the flag.
 	 */
 	private Flag(final String shortName, final String longName,
 			final String argName, final Object argType,
@@ -160,11 +207,16 @@ public enum Flag {
 	/**
 	 * Constructor for flags that can take arguments.
 	 * 
-	 * @param shortName		The short name.
-	 * @param longName		The long name.
-	 * @param argName		The argument name.
-	 * @param argType		The argument type.
-	 * @param description		A description of the flag.
+	 * @param shortName
+	 *            The short name.
+	 * @param longName
+	 *            The long name.
+	 * @param argName
+	 *            The argument name.
+	 * @param argType
+	 *            The argument type.
+	 * @param description
+	 *            A description of the flag.
 	 */
 	private Flag(final String shortName, final String longName,
 			final String argName, final Object argType, final String description) {

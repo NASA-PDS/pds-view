@@ -1,8 +1,9 @@
-package gov.nasa.pds.search.core.extractor.registry;
+package gov.nasa.pds.search.core.registry.objects;
 
 import gov.nasa.pds.registry.model.ExtrinsicObject;
+import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
-import gov.nasa.pds.search.core.extractor.SolrSchemaField;
+import gov.nasa.pds.search.core.registry.SolrSchemaField;
 import gov.nasa.pds.search.core.schema.DataType;
 
 import java.util.Arrays;
@@ -16,15 +17,20 @@ import java.util.Map;
  * configuration file.
  * 
  * @author jpadams
- * @version $Revision$
+ * @version $Revision: 11832 $
  * 
  */
-public enum RegistryAttributes {
+public enum RegistryAttribute {
 	/** Attribute for Logical Identifier. **/
 	LOGICAL_IDENTIFIER ("lid") {
 		@Override
 		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
 			return extObj.getLid();
+		}
+		
+		@Override
+		public ExtrinsicFilter.Builder appendToFilterBuilder(ExtrinsicFilter.Builder builder, String value) {
+			return builder.lid(value);
 		}
 	},
 
@@ -34,6 +40,11 @@ public enum RegistryAttributes {
 		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
 			return extObj.getName();
 		}
+		
+		@Override
+		public ExtrinsicFilter.Builder appendToFilterBuilder(ExtrinsicFilter.Builder builder, String value) {
+			return builder.name(value);
+		}
 	},
 
 	/** Attribute for Object Type. **/
@@ -41,6 +52,11 @@ public enum RegistryAttributes {
 		@Override
 		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
 			return extObj.getObjectType();
+		}
+		
+		@Override
+		public ExtrinsicFilter.Builder appendToFilterBuilder(ExtrinsicFilter.Builder builder, String value) {
+			return builder.objectType(value);
 		}
 	},
 
@@ -50,6 +66,11 @@ public enum RegistryAttributes {
 		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
 			return extObj.getMimeType();
 		}
+		
+		@Override
+		public ExtrinsicFilter.Builder appendToFilterBuilder(ExtrinsicFilter.Builder builder, String value) {
+			return builder.mimeType(value);
+		}
 	},
 
 	/** Attribute for Description. **/
@@ -57,6 +78,11 @@ public enum RegistryAttributes {
 		@Override
 		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
 			return extObj.getDescription();
+		}
+		
+		@Override
+		public ExtrinsicFilter.Builder appendToFilterBuilder(ExtrinsicFilter.Builder builder, String value) {
+			return null;	// Cannot filter on description
 		}
 	},
 
@@ -66,6 +92,11 @@ public enum RegistryAttributes {
 		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
 			return extObj.getGuid();
 		}
+		
+		@Override
+		public ExtrinsicFilter.Builder appendToFilterBuilder(ExtrinsicFilter.Builder builder, String value) {
+			return builder.guid(value);
+		}
 	},
 
 	/** Attribute for Home. **/
@@ -73,6 +104,11 @@ public enum RegistryAttributes {
 		@Override
 		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
 			return extObj.getHome();
+		}
+		
+		@Override
+		public ExtrinsicFilter.Builder appendToFilterBuilder(ExtrinsicFilter.Builder builder, String value) {
+			return null;	// Not yet implemented by Registry
 		}
 	},
 
@@ -82,6 +118,11 @@ public enum RegistryAttributes {
 		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
 			return extObj.getVersionName();
 		}
+		
+		@Override
+		public ExtrinsicFilter.Builder appendToFilterBuilder(ExtrinsicFilter.Builder builder, String value) {
+			return builder.versionName(value);
+		}
 	},
 
 	/** Attribute for Content Version. **/
@@ -90,17 +131,22 @@ public enum RegistryAttributes {
 		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
 			return extObj.getContentVersion();
 		}
+		
+		@Override
+		public ExtrinsicFilter.Builder appendToFilterBuilder(ExtrinsicFilter.Builder builder, String value) {
+			return builder.contentVersion(value);
+		}
 	};
 
 	private String attributeName;
-    private static final Map<String, RegistryAttributes> lookup = new HashMap<String, RegistryAttributes>();
+    private static final Map<String, RegistryAttribute> lookup = new HashMap<String, RegistryAttribute>();
 
 	static {
-	    for(RegistryAttributes ra : EnumSet.allOf(RegistryAttributes.class))
+	    for(RegistryAttribute ra : EnumSet.allOf(RegistryAttribute.class))
 	         lookup.put(ra.getAttributeName(), ra);
 	}
 	
-	private RegistryAttributes(String attributeName) {
+	private RegistryAttribute(String attributeName) {
 		this.attributeName = attributeName;
 	}
 	
@@ -108,11 +154,13 @@ public enum RegistryAttributes {
 		return this.attributeName;
 	}
 	
-	public static RegistryAttributes get(String attributeName) {
+	public static RegistryAttribute get(String attributeName) {
 		return lookup.get(attributeName);
 	}
 	
 	public abstract String getValueFromExtrinsic(ExtrinsicObject extObj);
+	
+	public abstract ExtrinsicFilter.Builder appendToFilterBuilder(ExtrinsicFilter.Builder builder, String value);
 	
 	
 

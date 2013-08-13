@@ -3,6 +3,11 @@
 	<specification>
 		<title>Collection</title>
 		<registryObjectType>Product_Collection</registryObjectType>
+		<dataSources>
+			<source sourceType="registry" priority="secondary" append="false">
+				<url>http://pdsdev.jpl.nasa.gov:8080/registry-pds4</url>
+			</source>
+		</dataSources>
 	</specification>
 	
 	<!-- Fields displayed in default Search Service results -->
@@ -20,7 +25,10 @@
 		<field name="resLocation" type="required">
 			<registryPath>accessUrls</registryPath>
 		</field>
-		<field name="agency_name" type="string">
+		<field name="objectType" type="string">
+			<registryPath>objectType</registryPath>
+		</field>
+		<field name="agency_name" type="string" default="Unknown">
 			<registryPath>node_ref.agency_ref.alternate_id</registryPath>
 		</field>
 		<field name="pds_model_version" type="string">
@@ -100,6 +108,9 @@
 		</field>
 		<field name="instrument_host_ref" type="string">
 			<registryPath>instrument_host_ref</registryPath>
+		</field>
+		<field name="other_ref" type="string">
+			<registryPath>other_ref</registryPath>
 		</field>
 		<field name="target_name" type="string">
 			<registryPath>target_name</registryPath>

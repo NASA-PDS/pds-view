@@ -17,7 +17,6 @@ package gov.nasa.pds.search.core;
 
 import gov.nasa.pds.search.core.cli.options.Flag;
 import gov.nasa.pds.search.core.cli.options.InvalidOptionException;
-import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.extractor.RegistryExtractor;
 import gov.nasa.pds.search.core.indexer.solr.SolrIndexer;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
@@ -65,6 +64,7 @@ public class SearchCoreLauncher {
 	 */
 	private static final String SEARCH_SERVICE_ENVVAR = "SEARCH_SERVICE_HOME";
 
+	// TODO Should refactor these properties values elsewhere, enum 
 	/** Prefix used in the properties files. **/
 	private static final String PROPS_PREFIX = "search.core";
 	
@@ -75,7 +75,10 @@ public class SearchCoreLauncher {
 	private static final String PROPS_SEARCH_KEY = "search-home";
 	
 	/** Key used in the properties file for the Registry URL **/
-	private static final String PROPS_REGISTRY_KEY = "registry-url";	
+	private static final String PROPS_PRIMARY_REGISTRY_KEY = "primary-registry";
+	
+	/** Key used in the properties file for the Registry URL **/
+	private static final String PROPS_SECONDARY_REGISTRY_KEY = "secondary-registry";
 
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#ALL **/
 	private boolean allFlag;
@@ -92,23 +95,28 @@ public class SearchCoreLauncher {
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#MAX **/
 	private int queryMax;
 	
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#MAX **/
+	/** @see gov.nasa.pds.search.core.cli.options.Flag#LOG **/
 	private String logFile;
 
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#SEARCH_HOME **/
 	private File searchHome;
 
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#REGISTRY **/
-	private List<String> registryUrlList;
-
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#CONFIG_HOME **/
 	private List<String> configHomeList;
+	
+	/** @see gov.nasa.pds.search.core.cli.options.Flag#PRIMARY **/
+	private List<String> primaryRegistries;
+	
+	/** @see gov.nasa.pds.search.core.cli.options.Flag#SECONDARY **/
+	private List<String> secondaryRegistries;
 
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#PROPERTIES **/
 	private List<File> propsFilesList;
 	
 	/** The severity level to set for the tool. */
 	private Level severityLevel;
+	
+	private Map<String, Map<String, String>> propertiesMap;
 
 	/** Logger. **/
 	private static Logger log = Logger.getLogger(SearchCoreLauncher.class.getName());
@@ -126,8 +134,10 @@ public class SearchCoreLauncher {
 
 		this.searchHome = null;
 
-		this.registryUrlList = new ArrayList<String>();
 		this.configHomeList = new ArrayList<String>();
+		this.primaryRegistries = new ArrayList<String>();
+		this.secondaryRegistries = new ArrayList<String>();
+		
 		this.propsFilesList = new ArrayList<File>();
 		
 		this.severityLevel = ToolsLevel.INFO;
@@ -170,7 +180,7 @@ public class SearchCoreLauncher {
 	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
 	        "Severity Level              " + severityLevel.getName()));
 	    
-	    for (String url : this.registryUrlList) {
+	    for (String url : this.primaryRegistries) {
 		    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
 		    		"Registry URL                " + url));
 	    }
@@ -185,7 +195,7 @@ public class SearchCoreLauncher {
 	    
 	    for (File file : this.propsFilesList) {
 		    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
-		    		"Search Core Config          " + file.getAbsolutePath()));
+		    		"Search Core Properties      " + file.getAbsolutePath()));
 	    }
 	  }
 	  
@@ -202,12 +212,12 @@ public class SearchCoreLauncher {
 	    for (int i = 0; i < logger.getHandlers().length; i++) {
 	      logger.removeHandler(handler[i]);
 	    }
-	    if (logFile != null) {
-	      logger.addHandler(new SearchCoreFileHandler(logFile, severityLevel,
+	    if (this.logFile != null) {
+	      logger.addHandler(new SearchCoreFileHandler(this.logFile, this.severityLevel,
 	          new SearchCoreFormatter()));
 	    } else {
 	      logger.addHandler(new SearchCoreStreamHandler(System.out,
-	          severityLevel, new SearchCoreFormatter()));
+	    		  this.severityLevel, new SearchCoreFormatter()));
 	    }
 	    
 	    logHeader();
@@ -221,8 +231,8 @@ public class SearchCoreLauncher {
 		final int maxWidth = 80;
 		final HelpFormatter formatter = new HelpFormatter();
 		formatter.printHelp(maxWidth,
-				"search-core -" + Flag.REGISTRY.getShortName() + " <"
-						+ Flag.REGISTRY.getArgName() + "> [options]", null,
+				"search-core -" + Flag.PRIMARY.getShortName() + " <"
+						+ Flag.PRIMARY.getArgName() + "> [options]", null,
 				Flag.getOptions(), null);
 	}
 
@@ -268,29 +278,25 @@ public class SearchCoreLauncher {
 	public final void query(final CommandLine line) throws Exception {
 		final List<Option> processedOptions = Arrays.asList(line.getOptions());
 		for (final Option o : processedOptions) {
-			if (o.getOpt().equals(Flag.HELP.getShortName())) {
-				displayHelp();
-				System.exit(0);
-			} else if (o.getOpt().equals(Flag.VERSION.getShortName())) {
-				displayVersion();
-				System.exit(0);
-			} else if (o.getOpt().equals(Flag.ALL.getShortName())) {
+			if (o.getOpt().equals(Flag.ALL.getShortName())) {
 				this.allFlag = true;
-			} else if (o.getOpt().equals(Flag.EXTRACTOR.getShortName())) {
-				this.extractorFlag = true;
-				this.allFlag = false;
-			} else if (o.getOpt().equals(Flag.SOLR.getShortName())) {
-				this.solrFlag = true;
-				this.allFlag = false;
+			} else if (o.getOpt().equals(Flag.CLEAN.getShortName())) {
+				this.clean = false;
+			} else if (o.getOpt().equals(Flag.CONFIG_HOME.getShortName())) {
+				this.configHomeList.add(Utility.getAbsolutePath("Config Dir", o.getValue().trim(), true));
 			} else if (o.getOpt().equals(Flag.DEBUG.getShortName())) {
 				Debugger.debugFlag = true;
 				Debugger.debug("-------------------------------");
 				Debugger.debug("---- RUNNING IN DEBUG MODE ----");
 				Debugger.debug("-------------------------------");
-			} else if (o.getOpt().equals(Flag.REGISTRY.getShortName())) {
-				this.registryUrlList = o.getValuesList();
-			} else if (o.getOpt().equals(Flag.SEARCH_HOME.getShortName())) {
-				setSearchHome(o.getValue().trim());
+			} else if (o.getOpt().equals(Flag.EXTRACTOR.getShortName())) {
+				this.extractorFlag = true;
+				this.allFlag = false;
+			} else if (o.getOpt().equals(Flag.HELP.getShortName())) {
+				displayHelp();
+				System.exit(0);
+			} else if (o.getOpt().equals(Flag.HELP.getShortName())) {
+				this.logFile = o.getValue().trim();
 			} else if (o.getOpt().equals(Flag.MAX.getShortName())) {
 				try {
 					this.queryMax = Integer.parseInt(o.getValue());
@@ -298,38 +304,44 @@ public class SearchCoreLauncher {
 					throw new InvalidOptionException(
 							"Query Max value must be an integer value.");
 				}
-
-			} else if (o.getOpt().equals(Flag.CONFIG_HOME.getShortName())) {
-				this.configHomeList.add(Utility.getAbsolutePath("Config Dir", o.getValue().trim(), true));
+			} else if (o.getOpt().equals(Flag.PRIMARY.getShortName())) {
+				this.primaryRegistries = o.getValuesList();
 			} else if (o.getOpt().equals(Flag.PROPERTIES.getShortName())) {
 				for (Object value : o.getValuesList()) {
 					this.propsFilesList
 							.add(new File(Utility.getAbsolutePath("Properties File",
 									((String) value).trim(), false)));
 				}
-				setProperties(this.propsFilesList);
-			} else if (o.getOpt().equals(Flag.CLEAN.getShortName())) {
-				this.clean = false;
-			}
+			} else if (o.getOpt().equals(Flag.SEARCH_HOME.getShortName())) {
+				setSearchHome(o.getValue().trim());
+			} else if (o.getOpt().equals(Flag.SECONDARY.getShortName())) {
+				this.secondaryRegistries = o.getValuesList();
+			} else if (o.getOpt().equals(Flag.SOLR.getShortName())) {
+				this.solrFlag = true;
+				this.allFlag = false;
+			} else if (o.getOpt().equals(Flag.VERBOSE.getShortName())) {
+				try {
+					setVerbose(Integer.parseInt(o.getValue().trim()));
+				} catch (NumberFormatException e) {
+					throw new InvalidOptionException(
+							"Invalid value entered for 'v' flag. "
+									+ "Valid values can only be 0, 1, 2, or 3");
+				}
+			} else if (o.getOpt().equals(Flag.VERSION.getShortName())) {
+				displayVersion();
+				System.exit(0);
+			}  
 		}
 
 		// Check for required values
 
-		// Verify a registry URL was specified
-		if (this.registryUrlList.size() == 0) {
-			throw new InvalidOptionException(
-					"Registry URL must be specified with "
-							+ Flag.REGISTRY.getShortName() + " or "
-							+ Flag.PROPERTIES.getShortName() + " flags.");
-		}
-
 		// Set config directory to pds if not specified
-		if (this.configHomeList.size() == 0) {
+		if (this.configHomeList.isEmpty() && this.propsFilesList.isEmpty()) {
 			setDefaultConfigHome();
 		}
 
 		// Set Search Home if not specified
-		if (this.searchHome == null) {
+		if (this.searchHome == null && this.propsFilesList.isEmpty()) {
 			setDefaultSearchHome();
 		}
 		
@@ -339,68 +351,57 @@ public class SearchCoreLauncher {
 	/**
 	 * Set the properties for a given registry/search-home/etc.
 	 * 
-	 * TODO May want to refactor. Very similar code in
-	 * RegistryExtractor.getProductClassList
 	 * 
 	 * @param propsFileList
 	 * @throws InvalidOptionException	thrown if file does not exist
 	 */
-	public final void setProperties(final List<File> propsFileList)
+	public final void setProperties(final File propsFile)
 			throws InvalidOptionException {
 		Map<String, String> mappings = new HashMap<String, String>();
 
-		String registryUrl, configHome, searchHome;
-		for (File propsFile : propsFileList) {
+		String primaryRegistry, secondaryRegistry, configHome, searchHome;
+		//for (File propsFile : propsFileList) {
 			mappings = PropertiesUtil.getPropertiesMap(propsFile, PROPS_PREFIX);
 			
-			registryUrl = mappings.get(PROPS_REGISTRY_KEY);
+			primaryRegistry = mappings.get(PROPS_PRIMARY_REGISTRY_KEY);
+			secondaryRegistry = mappings.get(PROPS_SECONDARY_REGISTRY_KEY);
 			configHome = mappings.get(PROPS_CONFIG_KEY);
 			searchHome = mappings.get(PROPS_SEARCH_KEY);
 			
-			if (registryUrl != null) {
-				this.registryUrlList.add(registryUrl);
-			} else {
-				throw new InvalidOptionException(
-						"Registry URL must be specified in properties file - "
-								+ propsFile.getAbsolutePath());
+			if (primaryRegistry != null) {
+				this.primaryRegistries.clear();
+				this.primaryRegistries.add(primaryRegistry);
 			}
+			
+			if (secondaryRegistry != null) {
+				this.secondaryRegistries.clear();
+				this.secondaryRegistries.add(secondaryRegistry);
+			} 
 
 			if (configHome != null) {
+				this.configHomeList.clear();
 				this.configHomeList.add(Utility.getAbsolutePath("Config Dir", configHome, true));
-			} else {
+			} else if (this.configHomeList.isEmpty()){
 				throw new InvalidOptionException(
 						"Config home must be specified in properties file - "
-								+ propsFile.getAbsolutePath());
+								+ propsFile.getAbsolutePath()
+								+ " or by using the "
+								+ Flag.CONFIG_HOME.getShortName() + "flag via "
+								+ "the command-line interface.");
 			}
 
 			if (searchHome != null) {
 				setSearchHome(searchHome);
+			} else if (this.searchHome == null) {
+				throw new InvalidOptionException(
+						"Search Home must be specified in properties file - "
+								+ propsFile.getAbsolutePath()
+								+ " or by using the "
+								+ Flag.SEARCH_HOME.getShortName() + "flag via "
+								+ "the command-line interface.");
 			}
-		}
+		//}
 
-	}
-
-	/**
-	 * Performs verification the directory given contains the PC_PROPS file and
-	 * ensures the path is reset to absolute. Refactored into a separate method
-	 * since it is called from 2 places.
-	 * 
-	 * @param configHome
-	 *            A directory path (relative or absolute) that contains the
-	 *            product_classes.txt and accompanying config files
-	 * @throws InvalidOptionException	thrown if directory does not exist
-	 */
-	@Deprecated
-	public final void addConfigHome(final String configHome)
-			throws InvalidOptionException {
-		this.configHomeList.add(Utility.getAbsolutePath("Config Dir", configHome, true));
-
-		// Check that the config dir contains the product class properties file
-		if (!Arrays.asList((new File(this.configHomeList.get(0))).list())
-				.contains(Constants.PC_PROPS)) {
-			throw new InvalidOptionException(Constants.PC_PROPS
-					+ " does not exist in directory " + this.configHomeList);
-		}
 	}
 
 	/**
@@ -451,7 +452,18 @@ public class SearchCoreLauncher {
 
 		if (this.allFlag || this.extractorFlag) {
 			try {
-				runRegistryExtractor();
+				if (this.propsFilesList.isEmpty()) {
+					RegistryExtractor.prepForRun(this.searchHome.getAbsolutePath(), this.clean);
+					
+					runRegistryExtractor();
+				} else {
+					
+					for (File propFile : this.propsFilesList) {
+						setProperties(propFile);
+						RegistryExtractor.prepForRun(this.searchHome.getAbsolutePath(), this.clean);
+						runRegistryExtractor();
+					}
+				}
 			} catch (Exception e) {
 				System.err.println("Error running Registry Extractor.");
 				e.printStackTrace();
@@ -475,22 +487,20 @@ public class SearchCoreLauncher {
 	 */
 	private void runRegistryExtractor() throws Exception {
 		RegistryExtractor extractor = null;
-		for (int i = 0; i < this.registryUrlList.size(); i++) {
-			this.log.info("\n\tRegistry URL: " + this.registryUrlList.get(i)
-					+ "\n\tSearch Home: "
-					+ this.searchHome.getAbsolutePath()
-					+ "\n\tConfig Home: " + this.configHomeList.get(i));
+
+		for (String configHome : this.configHomeList) {
 			extractor = new RegistryExtractor(
 					this.searchHome.getAbsolutePath(),
-					new File(this.configHomeList.get(i)),
-					this.registryUrlList.get(i), this.clean);
+					new File(configHome),
+					this.primaryRegistries, this.secondaryRegistries,
+					this.clean);
+			
 			if (this.queryMax > -1) {
 				extractor.setQueryMax(this.queryMax);
 			}
-
+	
 			extractor.run();
 		}
-		extractor.close();
 	}
 
 	/**
@@ -536,4 +546,5 @@ public class SearchCoreLauncher {
 					+ e.getMessage());
 		}
 	}
+	
 }

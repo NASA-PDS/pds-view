@@ -15,14 +15,15 @@
 package gov.nasa.pds.search.core.util;
 
 /**
- * Simple debug class to help track functions at runtime
+ * Debug class that shows a ton of debug messages. Messages
+ * are way too much for even logger DEBUG level.
  * 
  * @author jpadams
  *
  */
 public class Debugger {
 
-	public static boolean debugFlag;
+	public static boolean debugFlag = false;
 	
 	/** Simple output method
 	 * 
