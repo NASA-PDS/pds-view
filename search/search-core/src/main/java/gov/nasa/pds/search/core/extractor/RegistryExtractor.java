@@ -19,6 +19,8 @@ import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.ToolsLogRecord;
+import gov.nasa.pds.search.core.registry.ProductClass;
+import gov.nasa.pds.search.core.registry.ProductClassException;
 import gov.nasa.pds.search.core.stats.SearchCoreStats;
 
 import java.io.File;
@@ -35,6 +37,9 @@ import org.apache.commons.io.FileUtils;
  * Utilizes XML configuration files to extract data from the Registry Service
  * and create XML files for each Product containing the raw data found in the
  * Registry.
+ * 
+ * TODO This should be refactored a bit using a DataExtractor interface to allow
+ * for extension to other data sources (i.e. databases)
  * 
  * @author jpadams
  */
@@ -92,14 +97,12 @@ public class RegistryExtractor {
 	 * @throws SearchCoreFatalException 
 	 */
 	public final void run() throws Exception {
-        log.log(new ToolsLogRecord(ToolsLevel.DEBUG,
-        		"------- Beginning Registry Data Extraction --------"));
-
 		List uids = null;
 		// Run extract method on each class
 		ProductClass productClass;
 		for (File coreConfig : getCoreConfigs(this.confDir)) {
-	        log.log(new ToolsLogRecord(ToolsLevel.INFO,
+			System.out.println("Processing config: " + coreConfig.getName());
+	        log.log(new ToolsLogRecord(ToolsLevel.DEBUG,
 	        		"Querying with config: " + coreConfig.getAbsolutePath()));
 	
 			// Create new productClass instance for given class.
@@ -109,14 +112,13 @@ public class RegistryExtractor {
 				productClass.setQueryMax(this.queryMax);
 			}
 	
-			SearchCoreStats.localStartTime = new Date();
+			SearchCoreStats.resetStart();
 			uids = productClass.query(coreConfig);
 			SearchCoreStats.recordLocalTime(coreConfig.getName());
 
 	        log.log(new ToolsLogRecord(ToolsLevel.SUCCESS,
-	        		"Completed extraction:  " + coreConfig.getAbsolutePath()));
+	        		"Completed extraction:  " + coreConfig.getName()));
 		}
-		log.log(new ToolsLogRecord(ToolsLevel.INFO, "Total time (ms): " + this.totalTime));
 	}
 
 	/**

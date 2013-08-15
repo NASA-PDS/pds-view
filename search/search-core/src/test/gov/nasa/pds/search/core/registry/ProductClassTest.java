@@ -1,7 +1,7 @@
 /**
  * 
  */
-package gov.nasa.pds.search.core.extractor;
+package gov.nasa.pds.search.core.registry;
 
 import static org.junit.Assert.*;
 import gov.nasa.pds.search.core.constants.Constants;
@@ -10,6 +10,8 @@ import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.formatter.SearchCoreFormatter;
 import gov.nasa.pds.search.core.logging.handler.SearchCoreStreamHandler;
+import gov.nasa.pds.search.core.registry.ProductClass;
+import gov.nasa.pds.search.core.registry.ProductClassException;
 import gov.nasa.pds.search.core.util.Debugger;
 
 import java.io.BufferedWriter;
@@ -48,7 +50,7 @@ public class ProductClassTest {
 	public static void oneTimeSetUp() {
 		TEST_DIR.mkdirs();
 		
-		Debugger.debugFlag = true;
+		//Debugger.debugFlag = true;
     	Logger logger = Logger.getLogger("");
 	    logger.addHandler(new SearchCoreStreamHandler(System.out,
 	    		  ToolsLevel.DEBUG, new SearchCoreFormatter()));

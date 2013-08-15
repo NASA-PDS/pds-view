@@ -1,14 +1,14 @@
 //  Copyright 2012, California Institute of Technology.
 //  ALL RIGHTS RESERVED. U.S. Government sponsorship acknowledged.
 //
-//  $Id$
+//  $Id: ProductClassException.java 10826 2012-07-31 18:53:24Z jpadams $
 //
 
-package gov.nasa.pds.search.core.extractor;
+package gov.nasa.pds.search.core.registry;
 
 /**
  * @author jpadams
- * @version $Revision$
+ * @version $Revision: 10826 $
  * 
  */
 public class ProductClassException extends Exception {

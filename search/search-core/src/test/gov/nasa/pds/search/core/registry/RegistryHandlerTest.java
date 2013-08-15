@@ -4,7 +4,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.constants.TestConstants;
-import gov.nasa.pds.search.core.extractor.ProductClass;
 import gov.nasa.pds.search.core.registry.RegistryHandler;
 import gov.nasa.pds.search.core.util.Debugger;
 

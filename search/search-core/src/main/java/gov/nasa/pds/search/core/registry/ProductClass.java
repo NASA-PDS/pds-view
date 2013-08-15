@@ -10,16 +10,14 @@
 //	may be required before exporting such information to foreign countries or 
 //	providing access to foreign nationals.
 //	
-//	$Id$
+//	$Id: ProductClass.java 11851 2013-08-13 23:19:44Z jpadams $
 
-package gov.nasa.pds.search.core.extractor;
+package gov.nasa.pds.search.core.registry;
 
 import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.ToolsLogRecord;
-import gov.nasa.pds.search.core.registry.RegistryHandler;
-import gov.nasa.pds.search.core.registry.RegistryHandlerException;
 import gov.nasa.pds.search.core.registry.objects.SearchCoreExtrinsic;
 import gov.nasa.pds.search.core.schema.CoreConfigReader;
 import gov.nasa.pds.search.core.schema.DataSource;
@@ -242,7 +240,6 @@ public class ProductClass {
 				} else if ((value = field.getOutputString()) != null) {	// Handle outputString
 					valueList = new ArrayList<String>();
 					valueList.add(checkForSubstring(value, searchExtrinsic));
-					this.finalVals.put(fieldName, valueList);
 				}
 				
 				if (valueList.isEmpty() && field.getDefault() != null) {
@@ -348,9 +345,8 @@ public class ProductClass {
 					return newSlotValues;
 				}
 			}
-		} else {	// When slot values are null, check the XSD to see if a default is set
-			
 		}
+		
 		return slotValues;
 	}
 
@@ -367,19 +363,20 @@ public class ProductClass {
 	 */
 	private String checkForSubstring(String str, SearchCoreExtrinsic extObject)
 			throws Exception {
-		int start, end;
-		//String tval = "", 
+		int start, end; 
 		String key;
 
 		List<String> valueList = new ArrayList<String>();
 		while (str.contains("{")) {
 			start = str.indexOf("{");
-			end = str.indexOf("}");
+			end = str.indexOf("}", start);
 			key = str.substring(start + 1, end);
 
 			valueList = registryPathHandler(key, extObject);			
-			if (valueList != null && valueList.size() > 0) {
+			if (valueList != null && !valueList.isEmpty()) {
 				str = str.replace("{" + key + "}",URLEncoder.encode(valueList.get(0), "UTF-8"));
+			} else {
+				str = str.replace("{" + key + "}", "Unknown");
 			}
 		}
 		return str;

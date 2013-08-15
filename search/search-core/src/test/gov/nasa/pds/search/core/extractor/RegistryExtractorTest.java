@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -17,6 +18,9 @@ import org.junit.runners.JUnit4;
 
 import gov.nasa.pds.search.core.constants.TestConstants;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
+import gov.nasa.pds.search.core.logging.ToolsLevel;
+import gov.nasa.pds.search.core.logging.formatter.SearchCoreFormatter;
+import gov.nasa.pds.search.core.logging.handler.SearchCoreStreamHandler;
 import gov.nasa.pds.search.core.util.Debugger;
 
 /**
@@ -33,13 +37,17 @@ public class RegistryExtractorTest {
 	@BeforeClass
 	public static void oneTimeSetUp() {
 		//Debugger.debugFlag = true;
+		
+    	Logger logger = Logger.getLogger("");
+	    logger.addHandler(new SearchCoreStreamHandler(System.out,
+	    		  ToolsLevel.DEBUG, new SearchCoreFormatter()));
 	}
 	
 	@Before
 	public void setUp() throws SearchCoreFatalException {
 		this.re = new RegistryExtractor(TEST_DIR, new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE), 
 				Arrays.asList(TestConstants.PDS3_REGISTRY_URL), new ArrayList<String>(), true);
-		this.re.setQueryMax(1);
+		this.re.setQueryMax(2);
 	}
 	
 	@Test

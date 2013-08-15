@@ -14,6 +14,7 @@ import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.ToolsLogRecord;
+import gov.nasa.pds.search.core.registry.objects.AssociationCache;
 import gov.nasa.pds.search.core.registry.objects.RegistryAttribute;
 import gov.nasa.pds.search.core.registry.objects.SearchCoreExtrinsic;
 import gov.nasa.pds.search.core.schema.Product;
@@ -66,7 +67,7 @@ public class RegistryHandler {
 	public List<SearchCoreExtrinsic> getExtrinsicsByObjectInfo(
 			String objectType, String objectName) throws Exception
 			 {
-	    log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "----- " + objectType + " -----"));
+	    log.log(new ToolsLogRecord(ToolsLevel.DEBUG, objectType, objectName));
 		
 	    Map<RegistryAttribute, String> map = new HashMap<RegistryAttribute, String>();
 	    map.put(RegistryAttribute.OBJECT_TYPE, objectType);
@@ -151,15 +152,26 @@ public class RegistryHandler {
 		
 		// Get list of associations for specific association type
 		if (assocLidvids != null && !assocLidvids.isEmpty()) {
-			for (String assocLidVid : assocLidvids) {
-				Debugger.debug("Associated lidvid - " + assocLidVid);
+			for (String assocLidvid : assocLidvids) {
+				Debugger.debug("Associated lidvid - " + assocLidvid);
 
-				SearchCoreExtrinsic assocSearchExt = getExtrinsicByLidvid(assocLidVid);
-
+				// Check the cache first
+				SearchCoreExtrinsic assocSearchExt = AssociationCache.get(assocLidvid);
+				
+				if (assocSearchExt == null) {
+					Debugger.debug(assocLidvid + " -  Not in AssociationCache.");
+					assocSearchExt = getExtrinsicByLidvid(assocLidvid);
+				} else {
+					Debugger.debug(assocLidvid + " - ASSOCIATION CACHE WORKED");
+					SearchCoreStats.assocCacheHits++;
+				}
+				
 				if (assocSearchExt != null) {
 					assocSearchExtList.add(assocSearchExt);
+					
+					AssociationCache.push(assocSearchExt);
 				} else {
-					SearchCoreStats.addMissingAssociationTarget(searchExtrinsic.getLid(), assocLidVid);
+					SearchCoreStats.addMissingAssociationTarget(searchExtrinsic.getLid(), assocLidvid);
 				}
 			}
 		} else {

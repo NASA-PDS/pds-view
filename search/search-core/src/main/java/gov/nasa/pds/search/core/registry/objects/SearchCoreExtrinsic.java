@@ -25,9 +25,6 @@ import gov.nasa.pds.search.core.util.Debugger;
  */
 public class SearchCoreExtrinsic extends ExtrinsicObjectDecorator {
 	private static final long serialVersionUID = 2780915859620067707L;
-
-	/** The value to be returned when a slot is not found **/
-	public static final String MISSING_SLOT_VALUE = "UNK";
 	
 	private boolean validAssociationValues;
 	private List<String> invalidAssociations;
@@ -64,7 +61,6 @@ public class SearchCoreExtrinsic extends ExtrinsicObjectDecorator {
 					addInvalidAssociation(slotName);
 				}
 			}
-			
 			return slot.getValues();
 		} else if ((ra = RegistryAttribute.get(slotName)) != null) {
 			return Arrays.asList(ra.getValueFromExtrinsic(super.decoratedExtrinsic));
@@ -79,7 +75,7 @@ public class SearchCoreExtrinsic extends ExtrinsicObjectDecorator {
 		if (versionValues != null) {
 			return super.getLid() + "::" + versionValues.get(0);
 		} else {
-			return null;
+			return super.getLid();
 		}
 	}
 	

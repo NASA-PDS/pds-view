@@ -46,7 +46,6 @@ public class SearchCorePDS3Test {
      * @throws Exception
      */
 	@Test
-	@Ignore
     public void testLauncherPDS3() {
     	try {
 	    	String[] args = { //"-d", 
@@ -86,7 +85,6 @@ public class SearchCorePDS3Test {
      * @throws Exception
      */
 	@Test
-	@Ignore
     public void testLauncherPDS4() {
     	try {
 	    	String[] args = { //"-d", 
@@ -106,7 +104,6 @@ public class SearchCorePDS3Test {
      * Test SearchCoreLauncher with a Search Core properties file.
      */
     @Test
-    @Ignore
     public void testLauncherWithPropertiesFile() {
 		try {
 			File tempFile = new File(TestConstants.SEARCH_HOME_RELATIVE + "/temp_props.properties");
@@ -152,7 +149,9 @@ public class SearchCorePDS3Test {
 			File pds3 = new File(TestConstants.TEST_DIR_RELATIVE + "/properties/pds3-core.properties");
 			File pds4 = new File(TestConstants.TEST_DIR_RELATIVE + "/properties/pds4-core.properties");
 	    	
-	    	String[] args = { "-d", "-v", "0", "-p", pds3.getAbsolutePath(), pds4.getAbsolutePath(), 
+	    	String[] args = { //"-d", 
+	    			"-v", "0", 
+	    			"-p", pds3.getAbsolutePath(), pds4.getAbsolutePath(), 
 	    			"-m", "1" 
 	    			};
 	    	SearchCoreLauncher.main(args);
