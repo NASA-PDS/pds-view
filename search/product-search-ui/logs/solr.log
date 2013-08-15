@@ -1,0 +1,381 @@
+INFO  - 2013-06-26 16:27:35.916; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init()
+INFO  - 2013-06-26 16:27:35.929; org.apache.solr.core.SolrResourceLoader; Using JNDI solr.home: /usr/local/search-service
+INFO  - 2013-06-26 16:27:35.936; org.apache.solr.core.CoreContainer$Initializer; looking for solr config file: /usr/local/search-service/solr.xml
+INFO  - 2013-06-26 16:27:35.938; org.apache.solr.core.CoreContainer; New CoreContainer 1023767301
+INFO  - 2013-06-26 16:27:35.939; org.apache.solr.core.CoreContainer; Loading CoreContainer using Solr Home: '/usr/local/search-service/'
+INFO  - 2013-06-26 16:27:35.939; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/usr/local/search-service/'
+INFO  - 2013-06-26 16:27:35.940; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/commons-logging-1.0.4.jar' to classloader
+INFO  - 2013-06-26 16:27:35.941; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/log4j-1.2.16.jar' to classloader
+INFO  - 2013-06-26 16:27:35.941; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/saxon-9.jar' to classloader
+INFO  - 2013-06-26 16:27:35.941; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/saxon-dom-9.jar' to classloader
+INFO  - 2013-06-26 16:27:35.941; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/search-service-1.3.0-dev.jar' to classloader
+INFO  - 2013-06-26 16:27:35.941; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/slf4j-api-1.6.6.jar' to classloader
+INFO  - 2013-06-26 16:27:35.942; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/slf4j-log4j12-1.6.6.jar' to classloader
+INFO  - 2013-06-26 16:27:35.942; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/solr-velocity-4.3.0.jar' to classloader
+INFO  - 2013-06-26 16:27:36.225; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting socketTimeout to: 0
+INFO  - 2013-06-26 16:27:36.225; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting urlScheme to: http://
+INFO  - 2013-06-26 16:27:36.226; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting connTimeout to: 0
+INFO  - 2013-06-26 16:27:36.226; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxConnectionsPerHost to: 20
+INFO  - 2013-06-26 16:27:36.226; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting corePoolSize to: 0
+INFO  - 2013-06-26 16:27:36.226; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maximumPoolSize to: 2147483647
+INFO  - 2013-06-26 16:27:36.227; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxThreadIdleTime to: 5
+INFO  - 2013-06-26 16:27:36.227; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting sizeOfQueue to: -1
+INFO  - 2013-06-26 16:27:36.227; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting fairnessPolicy to: false
+INFO  - 2013-06-26 16:27:36.233; org.apache.solr.client.solrj.impl.HttpClientUtil; Creating new http client, config:maxConnectionsPerHost=20&maxConnections=10000&socketTimeout=0&connTimeout=0&retry=false
+INFO  - 2013-06-26 16:27:36.383; org.apache.solr.core.CoreContainer; Registering Log Listener
+INFO  - 2013-06-26 16:27:36.397; org.apache.solr.core.CoreContainer; Creating SolrCore 'pds' using instanceDir: /usr/local/search-service/pds
+INFO  - 2013-06-26 16:27:36.397; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/usr/local/search-service/pds/'
+INFO  - 2013-06-26 16:27:36.398; org.apache.solr.core.CoreContainer; Creating SolrCore 'experimental' using instanceDir: /usr/local/search-service/experimental
+INFO  - 2013-06-26 16:27:36.398; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/usr/local/search-service/experimental/'
+INFO  - 2013-06-26 16:27:36.488; org.apache.solr.core.SolrConfig; Using Lucene MatchVersion: LUCENE_43
+INFO  - 2013-06-26 16:27:36.488; org.apache.solr.core.SolrConfig; Using Lucene MatchVersion: LUCENE_43
+INFO  - 2013-06-26 16:27:36.573; org.apache.solr.core.SolrConfig; Loaded SolrConfig: solrconfig.xml
+INFO  - 2013-06-26 16:27:36.573; org.apache.solr.core.SolrConfig; Loaded SolrConfig: solrconfig.xml
+INFO  - 2013-06-26 16:27:36.580; org.apache.solr.schema.IndexSchema; Reading Solr Schema from schema.xml
+INFO  - 2013-06-26 16:27:36.580; org.apache.solr.schema.IndexSchema; Reading Solr Schema from schema.xml
+INFO  - 2013-06-26 16:27:36.628; org.apache.solr.schema.IndexSchema; Schema name=pds
+INFO  - 2013-06-26 16:27:36.628; org.apache.solr.schema.IndexSchema; Schema name=pds
+INFO  - 2013-06-26 16:27:36.892; org.apache.solr.schema.IndexSchema; default search field in schema is text
+INFO  - 2013-06-26 16:27:36.892; org.apache.solr.schema.IndexSchema; default search field in schema is text
+INFO  - 2013-06-26 16:27:36.893; org.apache.solr.schema.IndexSchema; query parser default operator is AND
+INFO  - 2013-06-26 16:27:36.893; org.apache.solr.schema.IndexSchema; query parser default operator is AND
+INFO  - 2013-06-26 16:27:36.894; org.apache.solr.schema.IndexSchema; unique key field: identifier
+INFO  - 2013-06-26 16:27:36.894; org.apache.solr.schema.IndexSchema; unique key field: identifier
+INFO  - 2013-06-26 16:27:36.982; org.apache.solr.core.SolrCore; solr.StandardDirectoryFactory
+INFO  - 2013-06-26 16:27:36.982; org.apache.solr.core.SolrCore; solr.StandardDirectoryFactory
+INFO  - 2013-06-26 16:27:36.989; org.apache.solr.core.SolrCore; [experimental] Opening new SolrCore at /usr/local/search-service/experimental/, dataDir=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/
+INFO  - 2013-06-26 16:27:36.990; org.apache.solr.core.SolrCore; JMX monitoring not detected for core: experimental
+INFO  - 2013-06-26 16:27:36.989; org.apache.solr.core.SolrCore; [pds] Opening new SolrCore at /usr/local/search-service/pds/, dataDir=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/
+INFO  - 2013-06-26 16:27:36.990; org.apache.solr.core.SolrCore; JMX monitoring not detected for core: pds
+INFO  - 2013-06-26 16:27:36.991; org.apache.solr.core.SolrCore; solr.StandardDirectoryFactory
+INFO  - 2013-06-26 16:27:36.991; org.apache.solr.core.SolrCore; solr.StandardDirectoryFactory
+INFO  - 2013-06-26 16:27:37.000; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data
+INFO  - 2013-06-26 16:27:37.000; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data
+INFO  - 2013-06-26 16:27:37.000; org.apache.solr.core.SolrCore; New index directory detected: old=null new=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/index/
+INFO  - 2013-06-26 16:27:37.000; org.apache.solr.core.SolrCore; New index directory detected: old=null new=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/index/
+INFO  - 2013-06-26 16:27:37.001; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/index
+INFO  - 2013-06-26 16:27:37.001; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/index
+INFO  - 2013-06-26 16:27:37.008; org.apache.solr.core.SolrCore; created xslt: gov.nasa.pds.search.XSLTResponseWriter
+INFO  - 2013-06-26 16:27:37.008; org.apache.solr.core.SolrCore; created xslt: gov.nasa.pds.search.XSLTResponseWriter
+INFO  - 2013-06-26 16:27:37.008; org.apache.solr.response.XSLTResponseWriter; xsltCacheLifetimeSeconds=5
+INFO  - 2013-06-26 16:27:37.008; org.apache.solr.response.XSLTResponseWriter; xsltCacheLifetimeSeconds=5
+INFO  - 2013-06-26 16:27:37.074; org.apache.solr.core.RequestHandlers; created /get: solr.RealTimeGetHandler
+INFO  - 2013-06-26 16:27:37.074; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.ReplicationHandler
+INFO  - 2013-06-26 16:27:37.074; org.apache.solr.core.RequestHandlers; created /get: solr.RealTimeGetHandler
+INFO  - 2013-06-26 16:27:37.075; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.ReplicationHandler
+INFO  - 2013-06-26 16:27:37.075; org.apache.solr.core.RequestHandlers; created /replication: solr.ReplicationHandler
+INFO  - 2013-06-26 16:27:37.075; org.apache.solr.core.RequestHandlers; created /replication: solr.ReplicationHandler
+INFO  - 2013-06-26 16:27:37.077; org.apache.solr.core.RequestHandlers; created standard: solr.StandardRequestHandler
+INFO  - 2013-06-26 16:27:37.077; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.FieldAnalysisRequestHandler
+INFO  - 2013-06-26 16:27:37.077; org.apache.solr.core.RequestHandlers; created /analysis/field: solr.FieldAnalysisRequestHandler
+INFO  - 2013-06-26 16:27:37.077; org.apache.solr.core.RequestHandlers; created standard: solr.StandardRequestHandler
+INFO  - 2013-06-26 16:27:37.078; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.FieldAnalysisRequestHandler
+INFO  - 2013-06-26 16:27:37.078; org.apache.solr.core.RequestHandlers; created /analysis/field: solr.FieldAnalysisRequestHandler
+INFO  - 2013-06-26 16:27:37.081; org.apache.solr.core.RequestHandlers; created /update: solr.UpdateRequestHandler
+INFO  - 2013-06-26 16:27:37.081; org.apache.solr.core.RequestHandlers; created /update: solr.UpdateRequestHandler
+INFO  - 2013-06-26 16:27:37.082; org.apache.solr.core.RequestHandlers; created /admin/: org.apache.solr.handler.admin.AdminHandlers
+INFO  - 2013-06-26 16:27:37.082; org.apache.solr.core.RequestHandlers; created /admin/: org.apache.solr.handler.admin.AdminHandlers
+INFO  - 2013-06-26 16:27:37.084; org.apache.solr.core.RequestHandlers; created /admin/ping: solr.PingRequestHandler
+INFO  - 2013-06-26 16:27:37.084; org.apache.solr.core.RequestHandlers; created /admin/ping: solr.PingRequestHandler
+WARN  - 2013-06-26 16:27:37.090; org.apache.solr.core.RequestHandlers; Multiple default requestHandler registered ignoring: org.apache.solr.handler.StandardRequestHandler
+INFO  - 2013-06-26 16:27:37.090; org.apache.solr.core.RequestHandlers; created /solr: solr.SearchHandler
+WARN  - 2013-06-26 16:27:37.090; org.apache.solr.core.RequestHandlers; Multiple default requestHandler registered ignoring: org.apache.solr.handler.StandardRequestHandler
+INFO  - 2013-06-26 16:27:37.091; org.apache.solr.core.RequestHandlers; created /solr: solr.SearchHandler
+INFO  - 2013-06-26 16:27:37.092; org.apache.solr.core.RequestHandlers; created /pdap: gov.nasa.pds.search.PDAPHandler
+INFO  - 2013-06-26 16:27:37.092; org.apache.solr.core.RequestHandlers; created /pdap: gov.nasa.pds.search.PDAPHandler
+INFO  - 2013-06-26 16:27:37.093; org.apache.solr.core.RequestHandlers; created /search: gov.nasa.pds.search.PDSSearchProtocol
+INFO  - 2013-06-26 16:27:37.093; org.apache.solr.core.RequestHandlers; created /search: gov.nasa.pds.search.PDSSearchProtocol
+INFO  - 2013-06-26 16:27:37.107; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-06-26 16:27:37.107; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-06-26 16:27:37.134; org.apache.solr.search.SolrIndexSearcher; Opening Searcher@1c6cc9c main
+INFO  - 2013-06-26 16:27:37.153; org.apache.solr.update.CommitTracker; Hard AutoCommit: disabled
+INFO  - 2013-06-26 16:27:37.154; org.apache.solr.update.CommitTracker; Soft AutoCommit: disabled
+INFO  - 2013-06-26 16:27:37.180; org.apache.solr.core.SolrCore; [experimental] Registered new searcher Searcher@1c6cc9c main{StandardDirectoryReader(segments_1:1319486777553)}
+INFO  - 2013-06-26 16:27:37.180; org.apache.solr.core.CoreContainer; registering core: experimental
+INFO  - 2013-06-26 16:27:37.188; org.apache.solr.search.SolrIndexSearcher; Opening Searcher@749cd006 main
+INFO  - 2013-06-26 16:27:37.197; org.apache.solr.update.CommitTracker; Hard AutoCommit: disabled
+INFO  - 2013-06-26 16:27:37.197; org.apache.solr.update.CommitTracker; Soft AutoCommit: disabled
+INFO  - 2013-06-26 16:27:37.198; org.apache.solr.core.CoreContainer; registering core: pds
+INFO  - 2013-06-26 16:27:37.199; org.apache.solr.core.SolrCore; [pds] Registered new searcher Searcher@749cd006 main{StandardDirectoryReader(segments_2:3 _0(4.3):C59/1)}
+INFO  - 2013-06-26 16:27:37.200; org.apache.solr.servlet.SolrDispatchFilter; user.dir=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-ui/search-ui-1.2.1
+INFO  - 2013-06-26 16:27:37.200; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init() done
+INFO  - 2013-06-26 16:31:24.517; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init()
+INFO  - 2013-06-26 16:31:24.530; org.apache.solr.core.SolrResourceLoader; Using JNDI solr.home: /usr/local/search-service
+INFO  - 2013-06-26 16:31:24.537; org.apache.solr.core.CoreContainer$Initializer; looking for solr config file: /usr/local/search-service/solr.xml
+INFO  - 2013-06-26 16:31:24.539; org.apache.solr.core.CoreContainer; New CoreContainer 1448425944
+INFO  - 2013-06-26 16:31:24.540; org.apache.solr.core.CoreContainer; Loading CoreContainer using Solr Home: '/usr/local/search-service/'
+INFO  - 2013-06-26 16:31:24.540; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/usr/local/search-service/'
+INFO  - 2013-06-26 16:31:24.542; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/commons-logging-1.0.4.jar' to classloader
+INFO  - 2013-06-26 16:31:24.542; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/log4j-1.2.16.jar' to classloader
+INFO  - 2013-06-26 16:31:24.542; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/saxon-9.jar' to classloader
+INFO  - 2013-06-26 16:31:24.542; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/saxon-dom-9.jar' to classloader
+INFO  - 2013-06-26 16:31:24.542; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/search-service-1.3.0-dev.jar' to classloader
+INFO  - 2013-06-26 16:31:24.543; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/slf4j-api-1.6.6.jar' to classloader
+INFO  - 2013-06-26 16:31:24.543; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/slf4j-log4j12-1.6.6.jar' to classloader
+INFO  - 2013-06-26 16:31:24.543; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/solr-velocity-4.3.0.jar' to classloader
+INFO  - 2013-06-26 16:31:24.818; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting socketTimeout to: 0
+INFO  - 2013-06-26 16:31:24.818; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting urlScheme to: http://
+INFO  - 2013-06-26 16:31:24.819; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting connTimeout to: 0
+INFO  - 2013-06-26 16:31:24.819; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxConnectionsPerHost to: 20
+INFO  - 2013-06-26 16:31:24.819; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting corePoolSize to: 0
+INFO  - 2013-06-26 16:31:24.820; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maximumPoolSize to: 2147483647
+INFO  - 2013-06-26 16:31:24.820; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxThreadIdleTime to: 5
+INFO  - 2013-06-26 16:31:24.820; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting sizeOfQueue to: -1
+INFO  - 2013-06-26 16:31:24.820; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting fairnessPolicy to: false
+INFO  - 2013-06-26 16:31:24.826; org.apache.solr.client.solrj.impl.HttpClientUtil; Creating new http client, config:maxConnectionsPerHost=20&maxConnections=10000&socketTimeout=0&connTimeout=0&retry=false
+INFO  - 2013-06-26 16:31:24.987; org.apache.solr.core.CoreContainer; Registering Log Listener
+INFO  - 2013-06-26 16:31:25.001; org.apache.solr.core.CoreContainer; Creating SolrCore 'pds' using instanceDir: /usr/local/search-service/pds
+INFO  - 2013-06-26 16:31:25.001; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/usr/local/search-service/pds/'
+INFO  - 2013-06-26 16:31:25.002; org.apache.solr.core.CoreContainer; Creating SolrCore 'experimental' using instanceDir: /usr/local/search-service/experimental
+INFO  - 2013-06-26 16:31:25.002; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/usr/local/search-service/experimental/'
+INFO  - 2013-06-26 16:31:25.082; org.apache.solr.core.SolrConfig; Using Lucene MatchVersion: LUCENE_43
+INFO  - 2013-06-26 16:31:25.082; org.apache.solr.core.SolrConfig; Using Lucene MatchVersion: LUCENE_43
+INFO  - 2013-06-26 16:31:25.169; org.apache.solr.core.SolrConfig; Loaded SolrConfig: solrconfig.xml
+INFO  - 2013-06-26 16:31:25.169; org.apache.solr.core.SolrConfig; Loaded SolrConfig: solrconfig.xml
+INFO  - 2013-06-26 16:31:25.176; org.apache.solr.schema.IndexSchema; Reading Solr Schema from schema.xml
+INFO  - 2013-06-26 16:31:25.176; org.apache.solr.schema.IndexSchema; Reading Solr Schema from schema.xml
+INFO  - 2013-06-26 16:31:25.223; org.apache.solr.schema.IndexSchema; Schema name=pds
+INFO  - 2013-06-26 16:31:25.227; org.apache.solr.schema.IndexSchema; Schema name=pds
+INFO  - 2013-06-26 16:31:25.486; org.apache.solr.schema.IndexSchema; default search field in schema is text
+INFO  - 2013-06-26 16:31:25.486; org.apache.solr.schema.IndexSchema; default search field in schema is text
+INFO  - 2013-06-26 16:31:25.487; org.apache.solr.schema.IndexSchema; query parser default operator is AND
+INFO  - 2013-06-26 16:31:25.487; org.apache.solr.schema.IndexSchema; query parser default operator is AND
+INFO  - 2013-06-26 16:31:25.488; org.apache.solr.schema.IndexSchema; unique key field: identifier
+INFO  - 2013-06-26 16:31:25.488; org.apache.solr.schema.IndexSchema; unique key field: identifier
+INFO  - 2013-06-26 16:31:25.575; org.apache.solr.core.SolrCore; solr.StandardDirectoryFactory
+INFO  - 2013-06-26 16:31:25.575; org.apache.solr.core.SolrCore; solr.StandardDirectoryFactory
+INFO  - 2013-06-26 16:31:25.582; org.apache.solr.core.SolrCore; [pds] Opening new SolrCore at /usr/local/search-service/pds/, dataDir=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/
+INFO  - 2013-06-26 16:31:25.582; org.apache.solr.core.SolrCore; JMX monitoring not detected for core: pds
+INFO  - 2013-06-26 16:31:25.582; org.apache.solr.core.SolrCore; [experimental] Opening new SolrCore at /usr/local/search-service/experimental/, dataDir=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/
+INFO  - 2013-06-26 16:31:25.583; org.apache.solr.core.SolrCore; JMX monitoring not detected for core: experimental
+INFO  - 2013-06-26 16:31:25.584; org.apache.solr.core.SolrCore; solr.StandardDirectoryFactory
+INFO  - 2013-06-26 16:31:25.584; org.apache.solr.core.SolrCore; solr.StandardDirectoryFactory
+INFO  - 2013-06-26 16:31:25.593; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data
+INFO  - 2013-06-26 16:31:25.593; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data
+INFO  - 2013-06-26 16:31:25.593; org.apache.solr.core.SolrCore; New index directory detected: old=null new=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/index/
+INFO  - 2013-06-26 16:31:25.593; org.apache.solr.core.SolrCore; New index directory detected: old=null new=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/index/
+INFO  - 2013-06-26 16:31:25.593; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/index
+INFO  - 2013-06-26 16:31:25.593; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/index
+INFO  - 2013-06-26 16:31:25.600; org.apache.solr.core.SolrCore; created xslt: gov.nasa.pds.search.XSLTResponseWriter
+INFO  - 2013-06-26 16:31:25.600; org.apache.solr.core.SolrCore; created xslt: gov.nasa.pds.search.XSLTResponseWriter
+INFO  - 2013-06-26 16:31:25.600; org.apache.solr.response.XSLTResponseWriter; xsltCacheLifetimeSeconds=5
+INFO  - 2013-06-26 16:31:25.601; org.apache.solr.response.XSLTResponseWriter; xsltCacheLifetimeSeconds=5
+INFO  - 2013-06-26 16:31:25.667; org.apache.solr.core.RequestHandlers; created /get: solr.RealTimeGetHandler
+INFO  - 2013-06-26 16:31:25.667; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.ReplicationHandler
+INFO  - 2013-06-26 16:31:25.667; org.apache.solr.core.RequestHandlers; created /get: solr.RealTimeGetHandler
+INFO  - 2013-06-26 16:31:25.667; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.ReplicationHandler
+INFO  - 2013-06-26 16:31:25.668; org.apache.solr.core.RequestHandlers; created /replication: solr.ReplicationHandler
+INFO  - 2013-06-26 16:31:25.668; org.apache.solr.core.RequestHandlers; created /replication: solr.ReplicationHandler
+INFO  - 2013-06-26 16:31:25.670; org.apache.solr.core.RequestHandlers; created standard: solr.StandardRequestHandler
+INFO  - 2013-06-26 16:31:25.670; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.FieldAnalysisRequestHandler
+INFO  - 2013-06-26 16:31:25.670; org.apache.solr.core.RequestHandlers; created /analysis/field: solr.FieldAnalysisRequestHandler
+INFO  - 2013-06-26 16:31:25.670; org.apache.solr.core.RequestHandlers; created standard: solr.StandardRequestHandler
+INFO  - 2013-06-26 16:31:25.671; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.FieldAnalysisRequestHandler
+INFO  - 2013-06-26 16:31:25.671; org.apache.solr.core.RequestHandlers; created /analysis/field: solr.FieldAnalysisRequestHandler
+INFO  - 2013-06-26 16:31:25.674; org.apache.solr.core.RequestHandlers; created /update: solr.UpdateRequestHandler
+INFO  - 2013-06-26 16:31:25.674; org.apache.solr.core.RequestHandlers; created /update: solr.UpdateRequestHandler
+INFO  - 2013-06-26 16:31:25.674; org.apache.solr.core.RequestHandlers; created /admin/: org.apache.solr.handler.admin.AdminHandlers
+INFO  - 2013-06-26 16:31:25.674; org.apache.solr.core.RequestHandlers; created /admin/: org.apache.solr.handler.admin.AdminHandlers
+INFO  - 2013-06-26 16:31:25.677; org.apache.solr.core.RequestHandlers; created /admin/ping: solr.PingRequestHandler
+INFO  - 2013-06-26 16:31:25.677; org.apache.solr.core.RequestHandlers; created /admin/ping: solr.PingRequestHandler
+WARN  - 2013-06-26 16:31:25.683; org.apache.solr.core.RequestHandlers; Multiple default requestHandler registered ignoring: org.apache.solr.handler.StandardRequestHandler
+WARN  - 2013-06-26 16:31:25.683; org.apache.solr.core.RequestHandlers; Multiple default requestHandler registered ignoring: org.apache.solr.handler.StandardRequestHandler
+INFO  - 2013-06-26 16:31:25.683; org.apache.solr.core.RequestHandlers; created /solr: solr.SearchHandler
+INFO  - 2013-06-26 16:31:25.683; org.apache.solr.core.RequestHandlers; created /solr: solr.SearchHandler
+INFO  - 2013-06-26 16:31:25.685; org.apache.solr.core.RequestHandlers; created /pdap: gov.nasa.pds.search.PDAPHandler
+INFO  - 2013-06-26 16:31:25.685; org.apache.solr.core.RequestHandlers; created /pdap: gov.nasa.pds.search.PDAPHandler
+INFO  - 2013-06-26 16:31:25.686; org.apache.solr.core.RequestHandlers; created /search: gov.nasa.pds.search.PDSSearchProtocol
+INFO  - 2013-06-26 16:31:25.686; org.apache.solr.core.RequestHandlers; created /search: gov.nasa.pds.search.PDSSearchProtocol
+INFO  - 2013-06-26 16:31:25.700; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-06-26 16:31:25.700; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-06-26 16:31:25.728; org.apache.solr.search.SolrIndexSearcher; Opening Searcher@497b1c02 main
+INFO  - 2013-06-26 16:31:25.750; org.apache.solr.update.CommitTracker; Hard AutoCommit: disabled
+INFO  - 2013-06-26 16:31:25.751; org.apache.solr.update.CommitTracker; Soft AutoCommit: disabled
+INFO  - 2013-06-26 16:31:25.780; org.apache.solr.core.SolrCore; [experimental] Registered new searcher Searcher@497b1c02 main{StandardDirectoryReader(segments_1:1319486777553)}
+INFO  - 2013-06-26 16:31:25.781; org.apache.solr.core.CoreContainer; registering core: experimental
+INFO  - 2013-06-26 16:31:25.785; org.apache.solr.search.SolrIndexSearcher; Opening Searcher@3bd48043 main
+INFO  - 2013-06-26 16:31:25.794; org.apache.solr.update.CommitTracker; Hard AutoCommit: disabled
+INFO  - 2013-06-26 16:31:25.794; org.apache.solr.update.CommitTracker; Soft AutoCommit: disabled
+INFO  - 2013-06-26 16:31:25.795; org.apache.solr.core.CoreContainer; registering core: pds
+INFO  - 2013-06-26 16:31:25.795; org.apache.solr.core.SolrCore; [pds] Registered new searcher Searcher@3bd48043 main{StandardDirectoryReader(segments_2:3 _0(4.3):C59/1)}
+INFO  - 2013-06-26 16:31:25.797; org.apache.solr.servlet.SolrDispatchFilter; user.dir=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-ui/search-ui-1.2.1
+INFO  - 2013-06-26 16:31:25.797; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init() done
+INFO  - 2013-06-26 16:31:26.635; org.apache.solr.core.CoreContainer; Shutting down CoreContainer instance=1448425944
+INFO  - 2013-06-26 16:31:26.646; org.apache.solr.core.SolrCore; [experimental]  CLOSING SolrCore org.apache.solr.core.SolrCore@9826ac5
+INFO  - 2013-06-26 16:31:26.647; org.apache.solr.update.DirectUpdateHandler2; closing DirectUpdateHandler2{commits=0,autocommits=0,soft autocommits=0,optimizes=0,rollbacks=0,expungeDeletes=0,docsPending=0,adds=0,deletesById=0,deletesByQuery=0,errors=0,cumulative_adds=0,cumulative_deletesById=0,cumulative_deletesByQuery=0,cumulative_errors=0}
+INFO  - 2013-06-26 16:31:26.647; org.apache.solr.update.SolrCoreState; Closing SolrCoreState
+INFO  - 2013-06-26 16:31:26.647; org.apache.solr.update.DefaultSolrCoreState; SolrCoreState ref count has reached 0 - closing IndexWriter
+INFO  - 2013-06-26 16:31:26.648; org.apache.solr.update.DefaultSolrCoreState; closing IndexWriter with IndexWriterCloser
+INFO  - 2013-06-26 16:31:26.650; org.apache.solr.core.SolrCore; [experimental] Closing main searcher on request.
+INFO  - 2013-06-26 16:31:26.651; org.apache.solr.core.CachingDirectoryFactory; Closing StandardDirectoryFactory - 2 directories currently being tracked
+INFO  - 2013-06-26 16:31:26.651; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data [CachedDir<<refCount=0;path=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data;done=false>>]
+INFO  - 2013-06-26 16:31:26.652; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data
+INFO  - 2013-06-26 16:31:26.652; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/index [CachedDir<<refCount=0;path=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/index;done=false>>]
+INFO  - 2013-06-26 16:31:26.652; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/index
+INFO  - 2013-06-26 16:31:26.653; org.apache.solr.core.SolrCore; [pds]  CLOSING SolrCore org.apache.solr.core.SolrCore@6fbdea60
+INFO  - 2013-06-26 16:31:26.653; org.apache.solr.update.DirectUpdateHandler2; closing DirectUpdateHandler2{commits=0,autocommits=0,soft autocommits=0,optimizes=0,rollbacks=0,expungeDeletes=0,docsPending=0,adds=0,deletesById=0,deletesByQuery=0,errors=0,cumulative_adds=0,cumulative_deletesById=0,cumulative_deletesByQuery=0,cumulative_errors=0}
+INFO  - 2013-06-26 16:31:26.653; org.apache.solr.update.SolrCoreState; Closing SolrCoreState
+INFO  - 2013-06-26 16:31:26.653; org.apache.solr.update.DefaultSolrCoreState; SolrCoreState ref count has reached 0 - closing IndexWriter
+INFO  - 2013-06-26 16:31:26.653; org.apache.solr.update.DefaultSolrCoreState; closing IndexWriter with IndexWriterCloser
+INFO  - 2013-06-26 16:31:26.654; org.apache.solr.core.SolrCore; [pds] Closing main searcher on request.
+INFO  - 2013-06-26 16:31:26.654; org.apache.solr.core.CachingDirectoryFactory; Closing StandardDirectoryFactory - 2 directories currently being tracked
+INFO  - 2013-06-26 16:31:26.654; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/index [CachedDir<<refCount=0;path=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/index;done=false>>]
+INFO  - 2013-06-26 16:31:26.655; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/index
+INFO  - 2013-06-26 16:31:26.655; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data [CachedDir<<refCount=0;path=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data;done=false>>]
+INFO  - 2013-06-26 16:31:26.655; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data
+INFO  - 2013-06-26 16:32:31.144; org.apache.solr.core.CoreContainer; Shutting down CoreContainer instance=1023767301
+INFO  - 2013-06-26 16:32:31.156; org.apache.solr.core.SolrCore; [experimental]  CLOSING SolrCore org.apache.solr.core.SolrCore@55672313
+INFO  - 2013-06-26 16:32:31.157; org.apache.solr.update.DirectUpdateHandler2; closing DirectUpdateHandler2{commits=0,autocommits=0,soft autocommits=0,optimizes=0,rollbacks=0,expungeDeletes=0,docsPending=0,adds=0,deletesById=0,deletesByQuery=0,errors=0,cumulative_adds=0,cumulative_deletesById=0,cumulative_deletesByQuery=0,cumulative_errors=0}
+INFO  - 2013-06-26 16:32:31.157; org.apache.solr.update.SolrCoreState; Closing SolrCoreState
+INFO  - 2013-06-26 16:32:31.157; org.apache.solr.update.DefaultSolrCoreState; SolrCoreState ref count has reached 0 - closing IndexWriter
+INFO  - 2013-06-26 16:32:31.157; org.apache.solr.update.DefaultSolrCoreState; closing IndexWriter with IndexWriterCloser
+INFO  - 2013-06-26 16:32:31.160; org.apache.solr.core.SolrCore; [experimental] Closing main searcher on request.
+INFO  - 2013-06-26 16:32:31.161; org.apache.solr.core.CachingDirectoryFactory; Closing StandardDirectoryFactory - 2 directories currently being tracked
+INFO  - 2013-06-26 16:32:31.161; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/index [CachedDir<<refCount=0;path=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/index;done=false>>]
+INFO  - 2013-06-26 16:32:31.162; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/index
+INFO  - 2013-06-26 16:32:31.162; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data [CachedDir<<refCount=0;path=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data;done=false>>]
+INFO  - 2013-06-26 16:32:31.162; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data
+INFO  - 2013-06-26 16:32:31.163; org.apache.solr.core.SolrCore; [pds]  CLOSING SolrCore org.apache.solr.core.SolrCore@23137792
+INFO  - 2013-06-26 16:32:31.163; org.apache.solr.update.DirectUpdateHandler2; closing DirectUpdateHandler2{commits=0,autocommits=0,soft autocommits=0,optimizes=0,rollbacks=0,expungeDeletes=0,docsPending=0,adds=0,deletesById=0,deletesByQuery=0,errors=0,cumulative_adds=0,cumulative_deletesById=0,cumulative_deletesByQuery=0,cumulative_errors=0}
+INFO  - 2013-06-26 16:32:31.164; org.apache.solr.update.SolrCoreState; Closing SolrCoreState
+INFO  - 2013-06-26 16:32:31.164; org.apache.solr.update.DefaultSolrCoreState; SolrCoreState ref count has reached 0 - closing IndexWriter
+INFO  - 2013-06-26 16:32:31.164; org.apache.solr.update.DefaultSolrCoreState; closing IndexWriter with IndexWriterCloser
+INFO  - 2013-06-26 16:32:31.164; org.apache.solr.core.SolrCore; [pds] Closing main searcher on request.
+INFO  - 2013-06-26 16:32:31.165; org.apache.solr.core.CachingDirectoryFactory; Closing StandardDirectoryFactory - 2 directories currently being tracked
+INFO  - 2013-06-26 16:32:31.165; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data [CachedDir<<refCount=0;path=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data;done=false>>]
+INFO  - 2013-06-26 16:32:31.165; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data
+INFO  - 2013-06-26 16:32:31.166; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/index [CachedDir<<refCount=0;path=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/index;done=false>>]
+INFO  - 2013-06-26 16:32:31.166; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/index
+INFO  - 2013-06-26 16:32:41.432; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init()
+INFO  - 2013-06-26 16:32:41.445; org.apache.solr.core.SolrResourceLoader; Using JNDI solr.home: /usr/local/search-service
+INFO  - 2013-06-26 16:32:41.455; org.apache.solr.core.CoreContainer$Initializer; looking for solr config file: /usr/local/search-service/solr.xml
+INFO  - 2013-06-26 16:32:41.457; org.apache.solr.core.CoreContainer; New CoreContainer 557485745
+INFO  - 2013-06-26 16:32:41.458; org.apache.solr.core.CoreContainer; Loading CoreContainer using Solr Home: '/usr/local/search-service/'
+INFO  - 2013-06-26 16:32:41.458; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/usr/local/search-service/'
+INFO  - 2013-06-26 16:32:41.459; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/commons-logging-1.0.4.jar' to classloader
+INFO  - 2013-06-26 16:32:41.460; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/log4j-1.2.16.jar' to classloader
+INFO  - 2013-06-26 16:32:41.460; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/saxon-9.jar' to classloader
+INFO  - 2013-06-26 16:32:41.460; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/saxon-dom-9.jar' to classloader
+INFO  - 2013-06-26 16:32:41.460; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/search-service-1.3.0-dev.jar' to classloader
+INFO  - 2013-06-26 16:32:41.460; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/slf4j-api-1.6.6.jar' to classloader
+INFO  - 2013-06-26 16:32:41.461; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/slf4j-log4j12-1.6.6.jar' to classloader
+INFO  - 2013-06-26 16:32:41.461; org.apache.solr.core.SolrResourceLoader; Adding 'file:/usr/local/search-service/lib/solr-velocity-4.3.0.jar' to classloader
+INFO  - 2013-06-26 16:32:41.745; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting socketTimeout to: 0
+INFO  - 2013-06-26 16:32:41.745; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting urlScheme to: http://
+INFO  - 2013-06-26 16:32:41.746; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting connTimeout to: 0
+INFO  - 2013-06-26 16:32:41.746; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxConnectionsPerHost to: 20
+INFO  - 2013-06-26 16:32:41.746; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting corePoolSize to: 0
+INFO  - 2013-06-26 16:32:41.746; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maximumPoolSize to: 2147483647
+INFO  - 2013-06-26 16:32:41.747; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting maxThreadIdleTime to: 5
+INFO  - 2013-06-26 16:32:41.747; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting sizeOfQueue to: -1
+INFO  - 2013-06-26 16:32:41.747; org.apache.solr.handler.component.HttpShardHandlerFactory; Setting fairnessPolicy to: false
+INFO  - 2013-06-26 16:32:41.753; org.apache.solr.client.solrj.impl.HttpClientUtil; Creating new http client, config:maxConnectionsPerHost=20&maxConnections=10000&socketTimeout=0&connTimeout=0&retry=false
+INFO  - 2013-06-26 16:32:41.902; org.apache.solr.core.CoreContainer; Registering Log Listener
+INFO  - 2013-06-26 16:32:41.916; org.apache.solr.core.CoreContainer; Creating SolrCore 'pds' using instanceDir: /usr/local/search-service/pds
+INFO  - 2013-06-26 16:32:41.916; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/usr/local/search-service/pds/'
+INFO  - 2013-06-26 16:32:41.917; org.apache.solr.core.CoreContainer; Creating SolrCore 'experimental' using instanceDir: /usr/local/search-service/experimental
+INFO  - 2013-06-26 16:32:41.917; org.apache.solr.core.SolrResourceLoader; new SolrResourceLoader for directory: '/usr/local/search-service/experimental/'
+INFO  - 2013-06-26 16:32:41.997; org.apache.solr.core.SolrConfig; Using Lucene MatchVersion: LUCENE_43
+INFO  - 2013-06-26 16:32:41.998; org.apache.solr.core.SolrConfig; Using Lucene MatchVersion: LUCENE_43
+INFO  - 2013-06-26 16:32:42.078; org.apache.solr.core.SolrConfig; Loaded SolrConfig: solrconfig.xml
+INFO  - 2013-06-26 16:32:42.078; org.apache.solr.core.SolrConfig; Loaded SolrConfig: solrconfig.xml
+INFO  - 2013-06-26 16:32:42.085; org.apache.solr.schema.IndexSchema; Reading Solr Schema from schema.xml
+INFO  - 2013-06-26 16:32:42.085; org.apache.solr.schema.IndexSchema; Reading Solr Schema from schema.xml
+INFO  - 2013-06-26 16:32:42.130; org.apache.solr.schema.IndexSchema; Schema name=pds
+INFO  - 2013-06-26 16:32:42.131; org.apache.solr.schema.IndexSchema; Schema name=pds
+INFO  - 2013-06-26 16:32:42.397; org.apache.solr.schema.IndexSchema; default search field in schema is text
+INFO  - 2013-06-26 16:32:42.397; org.apache.solr.schema.IndexSchema; default search field in schema is text
+INFO  - 2013-06-26 16:32:42.398; org.apache.solr.schema.IndexSchema; query parser default operator is AND
+INFO  - 2013-06-26 16:32:42.398; org.apache.solr.schema.IndexSchema; query parser default operator is AND
+INFO  - 2013-06-26 16:32:42.399; org.apache.solr.schema.IndexSchema; unique key field: identifier
+INFO  - 2013-06-26 16:32:42.399; org.apache.solr.schema.IndexSchema; unique key field: identifier
+INFO  - 2013-06-26 16:32:42.488; org.apache.solr.core.SolrCore; solr.StandardDirectoryFactory
+INFO  - 2013-06-26 16:32:42.488; org.apache.solr.core.SolrCore; solr.StandardDirectoryFactory
+INFO  - 2013-06-26 16:32:42.495; org.apache.solr.core.SolrCore; [experimental] Opening new SolrCore at /usr/local/search-service/experimental/, dataDir=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/
+INFO  - 2013-06-26 16:32:42.495; org.apache.solr.core.SolrCore; [pds] Opening new SolrCore at /usr/local/search-service/pds/, dataDir=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/
+INFO  - 2013-06-26 16:32:42.495; org.apache.solr.core.SolrCore; JMX monitoring not detected for core: pds
+INFO  - 2013-06-26 16:32:42.495; org.apache.solr.core.SolrCore; JMX monitoring not detected for core: experimental
+INFO  - 2013-06-26 16:32:42.497; org.apache.solr.core.SolrCore; solr.StandardDirectoryFactory
+INFO  - 2013-06-26 16:32:42.497; org.apache.solr.core.SolrCore; solr.StandardDirectoryFactory
+INFO  - 2013-06-26 16:32:42.506; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data
+INFO  - 2013-06-26 16:32:42.506; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data
+INFO  - 2013-06-26 16:32:42.506; org.apache.solr.core.SolrCore; New index directory detected: old=null new=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/index/
+INFO  - 2013-06-26 16:32:42.506; org.apache.solr.core.SolrCore; New index directory detected: old=null new=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/index/
+INFO  - 2013-06-26 16:32:42.507; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/index
+INFO  - 2013-06-26 16:32:42.507; org.apache.solr.core.CachingDirectoryFactory; return new directory for /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/index
+INFO  - 2013-06-26 16:32:42.514; org.apache.solr.core.SolrCore; created xslt: gov.nasa.pds.search.XSLTResponseWriter
+INFO  - 2013-06-26 16:32:42.514; org.apache.solr.core.SolrCore; created xslt: gov.nasa.pds.search.XSLTResponseWriter
+INFO  - 2013-06-26 16:32:42.514; org.apache.solr.response.XSLTResponseWriter; xsltCacheLifetimeSeconds=5
+INFO  - 2013-06-26 16:32:42.514; org.apache.solr.response.XSLTResponseWriter; xsltCacheLifetimeSeconds=5
+INFO  - 2013-06-26 16:32:42.582; org.apache.solr.core.RequestHandlers; created /get: solr.RealTimeGetHandler
+INFO  - 2013-06-26 16:32:42.582; org.apache.solr.core.RequestHandlers; created /get: solr.RealTimeGetHandler
+INFO  - 2013-06-26 16:32:42.583; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.ReplicationHandler
+INFO  - 2013-06-26 16:32:42.582; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.ReplicationHandler
+INFO  - 2013-06-26 16:32:42.583; org.apache.solr.core.RequestHandlers; created /replication: solr.ReplicationHandler
+INFO  - 2013-06-26 16:32:42.583; org.apache.solr.core.RequestHandlers; created /replication: solr.ReplicationHandler
+INFO  - 2013-06-26 16:32:42.585; org.apache.solr.core.RequestHandlers; created standard: solr.StandardRequestHandler
+INFO  - 2013-06-26 16:32:42.585; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.FieldAnalysisRequestHandler
+INFO  - 2013-06-26 16:32:42.586; org.apache.solr.core.RequestHandlers; created /analysis/field: solr.FieldAnalysisRequestHandler
+INFO  - 2013-06-26 16:32:42.586; org.apache.solr.core.RequestHandlers; created standard: solr.StandardRequestHandler
+INFO  - 2013-06-26 16:32:42.586; org.apache.solr.core.RequestHandlers; adding lazy requestHandler: solr.FieldAnalysisRequestHandler
+INFO  - 2013-06-26 16:32:42.586; org.apache.solr.core.RequestHandlers; created /analysis/field: solr.FieldAnalysisRequestHandler
+INFO  - 2013-06-26 16:32:42.589; org.apache.solr.core.RequestHandlers; created /update: solr.UpdateRequestHandler
+INFO  - 2013-06-26 16:32:42.589; org.apache.solr.core.RequestHandlers; created /update: solr.UpdateRequestHandler
+INFO  - 2013-06-26 16:32:42.590; org.apache.solr.core.RequestHandlers; created /admin/: org.apache.solr.handler.admin.AdminHandlers
+INFO  - 2013-06-26 16:32:42.590; org.apache.solr.core.RequestHandlers; created /admin/: org.apache.solr.handler.admin.AdminHandlers
+INFO  - 2013-06-26 16:32:42.592; org.apache.solr.core.RequestHandlers; created /admin/ping: solr.PingRequestHandler
+INFO  - 2013-06-26 16:32:42.593; org.apache.solr.core.RequestHandlers; created /admin/ping: solr.PingRequestHandler
+WARN  - 2013-06-26 16:32:42.598; org.apache.solr.core.RequestHandlers; Multiple default requestHandler registered ignoring: org.apache.solr.handler.StandardRequestHandler
+INFO  - 2013-06-26 16:32:42.599; org.apache.solr.core.RequestHandlers; created /solr: solr.SearchHandler
+WARN  - 2013-06-26 16:32:42.599; org.apache.solr.core.RequestHandlers; Multiple default requestHandler registered ignoring: org.apache.solr.handler.StandardRequestHandler
+INFO  - 2013-06-26 16:32:42.599; org.apache.solr.core.RequestHandlers; created /solr: solr.SearchHandler
+INFO  - 2013-06-26 16:32:42.600; org.apache.solr.core.RequestHandlers; created /pdap: gov.nasa.pds.search.PDAPHandler
+INFO  - 2013-06-26 16:32:42.600; org.apache.solr.core.RequestHandlers; created /pdap: gov.nasa.pds.search.PDAPHandler
+INFO  - 2013-06-26 16:32:42.601; org.apache.solr.core.RequestHandlers; created /search: gov.nasa.pds.search.PDSSearchProtocol
+INFO  - 2013-06-26 16:32:42.601; org.apache.solr.core.RequestHandlers; created /search: gov.nasa.pds.search.PDSSearchProtocol
+INFO  - 2013-06-26 16:32:42.616; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-06-26 16:32:42.616; org.apache.solr.handler.loader.XMLLoader; xsltCacheLifetimeSeconds=60
+INFO  - 2013-06-26 16:32:42.644; org.apache.solr.search.SolrIndexSearcher; Opening Searcher@6cc2060e main
+INFO  - 2013-06-26 16:32:42.666; org.apache.solr.update.CommitTracker; Hard AutoCommit: disabled
+INFO  - 2013-06-26 16:32:42.666; org.apache.solr.update.CommitTracker; Soft AutoCommit: disabled
+INFO  - 2013-06-26 16:32:42.695; org.apache.solr.core.SolrCore; [experimental] Registered new searcher Searcher@6cc2060e main{StandardDirectoryReader(segments_1:1319486777553)}
+INFO  - 2013-06-26 16:32:42.697; org.apache.solr.core.CoreContainer; registering core: experimental
+INFO  - 2013-06-26 16:32:42.700; org.apache.solr.search.SolrIndexSearcher; Opening Searcher@21a722ef main
+INFO  - 2013-06-26 16:32:42.710; org.apache.solr.update.CommitTracker; Hard AutoCommit: disabled
+INFO  - 2013-06-26 16:32:42.710; org.apache.solr.update.CommitTracker; Soft AutoCommit: disabled
+INFO  - 2013-06-26 16:32:42.711; org.apache.solr.core.CoreContainer; registering core: pds
+INFO  - 2013-06-26 16:32:42.711; org.apache.solr.core.SolrCore; [pds] Registered new searcher Searcher@21a722ef main{StandardDirectoryReader(segments_2:3 _0(4.3):C59/1)}
+INFO  - 2013-06-26 16:32:42.713; org.apache.solr.servlet.SolrDispatchFilter; user.dir=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-ui/search-ui-1.2.1
+INFO  - 2013-06-26 16:32:42.713; org.apache.solr.servlet.SolrDispatchFilter; SolrDispatchFilter.init() done
+INFO  - 2013-06-26 16:32:52.256; org.apache.solr.request.UnInvertedField; UnInverted multi-valued field {field=facet_agency,memSize=4432,tindexSize=46,time=2,phase1=2,nTerms=1,bigTerms=1,termInstances=0,uses=0}
+INFO  - 2013-06-26 16:32:52.259; org.apache.solr.request.UnInvertedField; UnInverted multi-valued field {field=facet_class,memSize=5201,tindexSize=53,time=1,phase1=1,nTerms=7,bigTerms=6,termInstances=2,uses=0}
+INFO  - 2013-06-26 16:32:52.278; org.apache.solr.request.UnInvertedField; UnInverted multi-valued field {field=facet_target,memSize=13181,tindexSize=553,time=18,phase1=18,nTerms=2091,bigTerms=15,termInstances=2240,uses=0}
+INFO  - 2013-06-26 16:32:52.280; org.apache.solr.request.UnInvertedField; UnInverted multi-valued field {field=facet_investigation,memSize=4812,tindexSize=59,time=0,phase1=0,nTerms=50,bigTerms=2,termInstances=63,uses=0}
+INFO  - 2013-06-26 16:32:52.284; org.apache.solr.request.UnInvertedField; UnInverted multi-valued field {field=facet_instrument,memSize=5503,tindexSize=99,time=2,phase1=2,nTerms=189,bigTerms=6,termInstances=249,uses=0}
+INFO  - 2013-06-26 16:32:52.285; org.apache.solr.request.UnInvertedField; UnInverted multi-valued field {field=facet_pds_model_version,memSize=4432,tindexSize=46,time=0,phase1=0,nTerms=1,bigTerms=1,termInstances=0,uses=0}
+INFO  - 2013-06-26 16:32:52.286; org.apache.solr.core.SolrCore; [pds] webapp=/search-service path=/search params={q=mars+AND+-archive-status:SUPERSEDED} hits=25 status=0 QTime=109 
+WARN  - 2013-06-26 16:32:52.287; org.apache.solr.util.xslt.TransformerProvider; The TransformerProvider's simplistic XSLT caching mechanism is not appropriate for high load scenarios, unless a single XSLT transform is used and xsltCacheLifetimeSeconds is set to a sufficiently high value.
+INFO  - 2013-06-26 16:33:01.710; org.apache.solr.core.SolrCore; [pds] webapp=/search-service path=/search params={q=*:*+AND+-archive-status:SUPERSEDED} hits=58 status=0 QTime=6 
+INFO  - 2013-06-27 06:50:21.287; org.apache.solr.core.CoreContainer; Shutting down CoreContainer instance=557485745
+INFO  - 2013-06-27 06:50:21.444; org.apache.solr.core.SolrCore; [experimental]  CLOSING SolrCore org.apache.solr.core.SolrCore@333cb1eb
+INFO  - 2013-06-27 06:50:21.444; org.apache.solr.update.DirectUpdateHandler2; closing DirectUpdateHandler2{commits=0,autocommits=0,soft autocommits=0,optimizes=0,rollbacks=0,expungeDeletes=0,docsPending=0,adds=0,deletesById=0,deletesByQuery=0,errors=0,cumulative_adds=0,cumulative_deletesById=0,cumulative_deletesByQuery=0,cumulative_errors=0}
+INFO  - 2013-06-27 06:50:21.445; org.apache.solr.update.SolrCoreState; Closing SolrCoreState
+INFO  - 2013-06-27 06:50:21.445; org.apache.solr.update.DefaultSolrCoreState; SolrCoreState ref count has reached 0 - closing IndexWriter
+INFO  - 2013-06-27 06:50:21.445; org.apache.solr.update.DefaultSolrCoreState; closing IndexWriter with IndexWriterCloser
+INFO  - 2013-06-27 06:50:21.447; org.apache.solr.core.SolrCore; [experimental] Closing main searcher on request.
+INFO  - 2013-06-27 06:50:21.447; org.apache.solr.core.CachingDirectoryFactory; Closing StandardDirectoryFactory - 2 directories currently being tracked
+INFO  - 2013-06-27 06:50:21.448; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/index [CachedDir<<refCount=0;path=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/index;done=false>>]
+INFO  - 2013-06-27 06:50:21.448; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data/index
+INFO  - 2013-06-27 06:50:21.448; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data [CachedDir<<refCount=0;path=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data;done=false>>]
+INFO  - 2013-06-27 06:50:21.448; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/experimental/data
+INFO  - 2013-06-27 06:50:21.449; org.apache.solr.core.SolrCore; [pds]  CLOSING SolrCore org.apache.solr.core.SolrCore@66f34a08
+INFO  - 2013-06-27 06:50:21.449; org.apache.solr.update.DirectUpdateHandler2; closing DirectUpdateHandler2{commits=0,autocommits=0,soft autocommits=0,optimizes=0,rollbacks=0,expungeDeletes=0,docsPending=0,adds=0,deletesById=0,deletesByQuery=0,errors=0,cumulative_adds=0,cumulative_deletesById=0,cumulative_deletesByQuery=0,cumulative_errors=0}
+INFO  - 2013-06-27 06:50:21.449; org.apache.solr.update.SolrCoreState; Closing SolrCoreState
+INFO  - 2013-06-27 06:50:21.449; org.apache.solr.update.DefaultSolrCoreState; SolrCoreState ref count has reached 0 - closing IndexWriter
+INFO  - 2013-06-27 06:50:21.449; org.apache.solr.update.DefaultSolrCoreState; closing IndexWriter with IndexWriterCloser
+INFO  - 2013-06-27 06:50:21.450; org.apache.solr.core.SolrCore; [pds] Closing main searcher on request.
+INFO  - 2013-06-27 06:50:21.450; org.apache.solr.core.CachingDirectoryFactory; Closing StandardDirectoryFactory - 2 directories currently being tracked
+INFO  - 2013-06-27 06:50:21.451; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data [CachedDir<<refCount=0;path=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data;done=false>>]
+INFO  - 2013-06-27 06:50:21.451; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data
+INFO  - 2013-06-27 06:50:21.451; org.apache.solr.core.CachingDirectoryFactory; looking to close /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/index [CachedDir<<refCount=0;path=/Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/index;done=false>>]
+INFO  - 2013-06-27 06:50:21.451; org.apache.solr.core.CachingDirectoryFactory; Closing directory: /Users/jpadams/Documents/workspace/pds4-workspace/search/search-service/search-service-1.3.0-dev/pds/data/index
