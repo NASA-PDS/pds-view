@@ -47,6 +47,7 @@
     <module>search-core</module>
     <module>search-service</module>
     <module>search-ui</module>
+    <module>product-search-ui</module>
   </modules>
 
   <developers>
