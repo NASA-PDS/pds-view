@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <facets>
-  <facet name="facet class" caption="Type" />
+  <facet name="facet object type" caption="Type" />
   <facet name="facet agency" caption="Agency" />
   <facet name="facet target" caption="Target" />
   <facet name="facet investigation" caption="Investigation" />
   <facet name="facet instrument" caption="Instrument" />
   <facet name="facet pds model version" caption="Model Version" />
+  
+  <!-- For Product search faceting -->
+  <facet name="facet primary result purpose" caption="Purpose" />
+  <facet name="facet primary result processing level id" caption="Processing Level" />
 
   <category name="agency" caption="Agency" />
-  <category name="archiveinfo" caption="Resource" />
-  <category name="bundle" caption="Bundle" />
-  <category name="collection" caption="Collection" />
-  <category name="context" caption="PDS4 Context" />
-  <category name="dataset" caption="Data Set" />
-  <category name="instrumenthost" caption="Instrument Host" />
-  <category name="instrument" caption="Instrument" />
-  <category name="investigation" caption="Investigation" />
-  <category name="searchtool" caption="Search Tool" />
-  <category name="target" caption="Target" />
+  <category name="product context archive information" caption="Resource" />
+  <category name="product bundle" caption="Bundle" />
+  <category name="product collection" caption="Collection" />
+  <category name="product context" caption="Context" />
+  <category name="product observational" caption="Observational Product" />
+  <category name="product data set pds3" caption="Data Set" />
+  <category name="product instrument host pds3" caption="Instrument Host" />
+  <category name="product instrument pds3" caption="Instrument" />
+  <category name="product mission pds3" caption="Investigation" />
+  <category name="product target pds3" caption="Target" />
+  <category name="product context search tool" caption="Search Tool" />
 </facets>

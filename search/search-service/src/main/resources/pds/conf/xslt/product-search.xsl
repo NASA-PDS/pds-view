@@ -186,34 +186,21 @@
         </strong>
         (<xsl:value-of select="$ds_result_time" /> seconds)
     </p>
-    
-    	<xsl:if test="response/result/doc[str[@name='objectType']='Product_Context_Archive_Information']">
-      <div style="margin-top: 1em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Archive Information</div>
-      <p style="margin-top: .5em; margin-bottom: .5em;">These web pages provide detailed information for the matching investigations. If no page looks appropriate, you can browse the matching search tools and data sets, below.</p>
-      <ul class="results">
-        <xsl:apply-templates select="response/result/doc[str[@name='objectType']='Product_Context_Archive_Information']"/>
-      </ul>
 
-      <xsl:if test="count(response/result/doc[str[@name='objectType']='Product_Context_Archive_Information']) > 2">
-        <div class="more-info"><a class="info-button">More...</a></div>
-      </xsl:if>
-    </xsl:if>
-
-    <xsl:if test="response/result/doc[str[@name='objectType']='Product_Context_Search_Tool']">
-      <div style="margin-top: 1em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Search Tools</div>
-      <p style="margin-top: .5em; margin-bottom: .5em;">These tools let you search for data products matching your query. This is usually the best way to access the data. If no tool looks appropriate, you can browse the matching data sets, below.</p>
+    <xsl:if test="response/result/doc[str[@name='objectType']='Product_Collection' or str[@name='objectType']='Product_Bundle']">
+      <div style="margin-top: 1em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Bundles and Collections</div>
       <ul class="results">
-        <xsl:apply-templates select="response/result/doc[str[@name='objectType']='Product_Context_Search_Tool']"/>
+        <xsl:apply-templates select="response/result/doc[str[@name='objectType']='Product_Collection' or str[@name='objectType']='Product_Bundle']"/>
       </ul>
       
-      <xsl:if test="count(response/result/doc[str[@name='objectType']='Product_Context_Search_Tool']) > 2">
+      <xsl:if test="count(response/result/doc[str[@name='objectType']='Product_Collection' or str[@name='objectType']='Product_Bundle']) > 2">
         <div class="more-tools"><a class="tools-button">More...</a></div>
       </xsl:if>
     </xsl:if>
 
       <ul class="results" style="padding-top: 1em;">
-      <div style="margin-top: 1em; margin-bottom: .5em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Data Sets and Information</div>
-        <xsl:apply-templates select="response/result/doc[str[@name='objectType']!='Product_Context_Archive_Information' and str[@name='objectType']!='Product_Context_Search_Tool']"/>
+      <div style="margin-top: 1em; margin-bottom: .5em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Products</div>
+        <xsl:apply-templates select="response/result/doc[str[@name='objectType']!='Product_Collection' and str[@name='objectType']!='Product_Bundle']"/>
       </ul>
 
       <xsl:if test="response/result/@numFound &gt; count(response/result/doc)">
@@ -272,30 +259,10 @@
 			<xsl:value-of select="str[@name='title']" />
 		</xsl:variable>
 		<xsl:choose>
-			<xsl:when test="str[@name='objectType'] = 'Product_Context_Search_Tool'">
+			<xsl:when test="str[@name='objectType'] = 'Product_Collection' or str[@name='objectType']='Product_Bundle'">
 				<xsl:choose>
 					<xsl:when test="position() > 2">
 						<li class="result hidden tool">
-							<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='objectType']))" />:</strong>
-							<a href="{(str|arr)[@name='resource_link']}"><xsl:value-of select="$ds_name" /></a>
-							<br />
-							<xsl:value-of select="pds:description((arr|str)[@name='description'],str[@name='title'])" />
-						</li>
-					</xsl:when>
-					<xsl:otherwise>
-						<li class="result">
-							<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='objectType']))" />:</strong>
-							<a href="{(str|arr)[@name='resource_link']}"><xsl:value-of select="$ds_name" /></a>
-							<br />
-							<xsl:value-of select="pds:description((arr|str)[@name='description'],str[@name='title'])" />
-						</li>
-						</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			<xsl:when test="str[@name='objectType'] = 'Product_Context_Archive_Information'">
-				<xsl:choose>
-					<xsl:when test="position() > 2">
-						<li class="result hidden info">
 							<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='objectType']))" />:</strong>
 							<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
 							<br />
@@ -313,38 +280,14 @@
 				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
+
 				<li class="result">
 					<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='objectType']))" />:</strong>
 					<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
 					<br />
-
-					<xsl:choose>
-						<xsl:when test="str[@name='objectType'] = 'Product_Instrument_PDS3'">
-							<xsl:value-of select="concat('Information about the ',str[@name='title'],' instrument')" />
-						</xsl:when>
-						<xsl:when test="str[@name='objectType'] = 'Product_Instrument_Host_PDS3'">
-							<xsl:value-of select="concat('Information about the ',str[@name='title'],' instrument host')" />
-						</xsl:when>
-						<xsl:when test="str[@name='objectType'] = 'Product_Mission_PDS3'">
-							<xsl:value-of select="concat('Information about the ',str[@name='title'],' investigation')" />
-						</xsl:when>
-						<xsl:when test="str[@name='objectType'] = 'Product_Target_PDS3'">
-							<xsl:value-of select="concat('Information about the target ',str[@name='title'])" />
-						</xsl:when>
-						<xsl:when test="str[@name='objectType'] = 'Product_Data_Set_PDS3'">
-							<xsl:value-of select="pds:description((arr|str)[@name='description'],str[@name='data_set_id'])" />
-							<br />
-							<span style="font-size: 90%; color: rgb(64, 64, 64);">
-								<xsl:value-of select="fn:upper-case((arr|str)[@name='investigation_name'])" />
-								-
-								<xsl:value-of select="fn:upper-case(str[@name='data_set_id'])" />
-								<xsl:value-of select="if (date[@name='start_time']) then concat(' - starting ',date[@name='start_time']) else if ((arr|date)[@name='investigation_start_date']) then concat(' - starting ',(arr|date)[@name='investigation_start_date']) else ''" />
-							</span>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="pds:description((arr|str)[@name='description'],str[@name='title'])" />
-						</xsl:otherwise>
-					</xsl:choose>
+							<xsl:value-of select="(arr|str)[@name='data_class']" />
+							-
+							<xsl:value-of select="(arr|str)[@name='file_name']" /><br />
 				</li>
 			</xsl:otherwise>
 		</xsl:choose>
