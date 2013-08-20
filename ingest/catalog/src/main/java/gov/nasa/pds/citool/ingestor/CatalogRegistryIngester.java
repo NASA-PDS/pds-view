@@ -210,34 +210,43 @@ public class CatalogRegistryIngester {
 				catObj.getLabel().addProblem(lp);
 			}
 			else {
-				// ingest to the storage service
-				String productId = storageIngester.ingestToStorage(catObj);
-				if (productId != null) {
-					storageCount++;
-					lp = new LabelParserException(catObj.getLabel().getLabelURI(),
-							null, null, "ingest.text.recordAdded",
-							ProblemType.SUCCEED,
-							"Successfully ingested a catalog file to the storage service. productID - "
-									+ productId);
-					catObj.getLabel().addProblem(lp);
+				if (ingestedProduct) {
+					// ingest to the storage service
+					String productId = storageIngester.ingestToStorage(catObj);
+					if (productId != null) {
+						storageCount++;
+						lp = new LabelParserException(catObj.getLabel().getLabelURI(),
+								null, null, "ingest.text.recordAdded",
+								ProblemType.SUCCEED,
+								"Successfully ingested a catalog file to the storage service. productID - "
+										+ productId);
+						catObj.getLabel().addProblem(lp);
 
-					// sets the storage product id to the file object,
-					// so that it can be added as the slot value for the registry
-					catObj.getFileObject().setStorageServiceProductId(productId);
-					catObj.getFileObject().setAccessUrl(transportURL + productId);
+						// sets the storage product id to the file object,
+						// so that it can be added as the slot value for the registry
+						catObj.getFileObject().setStorageServiceProductId(productId);
+						catObj.getFileObject().setAccessUrl(transportURL + productId);
 
-					// fileobject registration
-					fileExtrinsic.getSlots().add(new Slot("storage_service_productId", 
-							Arrays.asList(new String[] { productId })));
-					fileExtrinsic.getSlots().add(new Slot("access_url", 
-							Arrays.asList(new String[] { transportURL + productId })));
-				}	 
+						// fileobject registration
+						fileExtrinsic.getSlots().add(new Slot("storage_service_productId", 
+								Arrays.asList(new String[] { productId })));
+						fileExtrinsic.getSlots().add(new Slot("access_url", 
+								Arrays.asList(new String[] { transportURL + productId })));
+					}	 
+					else {
+						// TODO: need to create a problem type with warning...
+						lp = new LabelParserException(catObj.getLabel().getLabelURI(),
+								null, null, "ingest.warning.failIngestion",
+								ProblemType.SUCCEED,
+								"Failed ingesting to the storage service.");
+						catObj.getLabel().addProblem(lp);
+					}
+				}
 				else {
-					// TODO: need to create a problem type with warning...
 					lp = new LabelParserException(catObj.getLabel().getLabelURI(),
-							null, null, "ingest.warning.failIngestion",
+							null, null, "ingest.warning.skipFile",
 							ProblemType.SUCCEED,
-							"Failed ingesting to the storage service.");
+							"This file is already deliver to the storsge service. Won't deliver this file.");
 					catObj.getLabel().addProblem(lp);
 				}
 			}
