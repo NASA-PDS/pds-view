@@ -24,6 +24,9 @@
 
   <body>
     <release version="1.6.0" date="TBD" description="TBD">
+        <action dev="hyunlee" type="fix" issue="PDS-163">
+           Corrected the tool to not re-ingest when a catalog file hasn't changed.
+        </action>
     </release>
 
     <release version="1.5.1" date="2013-06-21" description="This release of the Catalog Tool is a component of the integrated release 3.1.1 of the PDS4 System. This is an operational release of the system components to date.">

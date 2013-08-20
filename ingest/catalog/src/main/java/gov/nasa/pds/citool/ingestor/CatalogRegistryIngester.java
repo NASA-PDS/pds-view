@@ -76,6 +76,7 @@ public class CatalogRegistryIngester {
 	private String storageProductName;
 	private String registryPackageGuid;
 	private String archiveStatus = null;
+	private boolean ingestedProduct = false;
 		
 	/**
 	 * Constructor
@@ -165,6 +166,7 @@ public class CatalogRegistryIngester {
 	 * 
 	 */
 	public String ingest(CatalogObject catObj) {
+		this.ingestedProduct = false;
 		// initialize a FileObject for given CatalogObject
 		catObj.setFileObject();
 		String productGuid = "";
@@ -188,7 +190,7 @@ public class CatalogRegistryIngester {
 		String guid = null;	
 		LabelParserException lp = null;
 		ExtrinsicObject fileExtrinsic = null;
-		try {
+		try {		
 			fileExtrinsic = createProduct(catObj.getFileObject());	
 			// retrieve the version info from the registry service so that it can use for the storage service version 
 			if (catObj.getCatObjType().equalsIgnoreCase("PERSONNEL")
@@ -199,7 +201,7 @@ public class CatalogRegistryIngester {
 					catObj.setVersion(1.0f);
 				}			
 			}
-			
+
 			if (storageIngester==null) {
 				lp = new LabelParserException(catObj.getLabel().getLabelURI(),
 						null, null, "ingest.warning.failIngestion",
@@ -218,17 +220,17 @@ public class CatalogRegistryIngester {
 							"Successfully ingested a catalog file to the storage service. productID - "
 									+ productId);
 					catObj.getLabel().addProblem(lp);
-					
+
 					// sets the storage product id to the file object,
 					// so that it can be added as the slot value for the registry
 					catObj.getFileObject().setStorageServiceProductId(productId);
 					catObj.getFileObject().setAccessUrl(transportURL + productId);
-						
+
 					// fileobject registration
 					fileExtrinsic.getSlots().add(new Slot("storage_service_productId", 
-			        			Arrays.asList(new String[] { productId })));
-			        fileExtrinsic.getSlots().add(new Slot("access_url", 
-			        			Arrays.asList(new String[] { transportURL + productId })));
+							Arrays.asList(new String[] { productId })));
+					fileExtrinsic.getSlots().add(new Slot("access_url", 
+							Arrays.asList(new String[] { transportURL + productId })));
 				}	 
 				else {
 					// TODO: need to create a problem type with warning...
@@ -244,8 +246,17 @@ public class CatalogRegistryIngester {
 				client.setRegistrationPackageId(registryPackageGuid);
 			}
 
-			if (productExists(fileExtrinsic.getLid())) {
-				guid = client.versionObject(fileExtrinsic);
+			if (productExists(fileExtrinsic.getLid())) {	
+				if (ingestedProduct) {
+					guid = client.versionObject(fileExtrinsic);	
+				}
+				else {
+					lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null,
+							"ingest.warning.skipFile", ProblemType.SUCCEED,
+							"A File Extrinisic Object already exists in the registry service. Won't ingest this file.");
+					catObj.getLabel().addProblem(lp);
+					return null;
+				}
 			} else {
 				guid = client.publishObject(fileExtrinsic);
 			}
@@ -258,7 +269,7 @@ public class CatalogRegistryIngester {
 			// HAS_FILE is only association type to publish to the Registry Service, 
 			// other association types will be added as Slot
 			Reference ref = new Reference(fileExtrinsic.getLid(), String.valueOf(catObj.getVersion()), Constants.HAS_FILE);
-			publishAssociation(catObj, ref);  		
+			publishAssociation(catObj, ref);  	
 		} catch (RegistryServiceException re) {			
 			lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null, 
         			"ingest.error.failExecution", ProblemType.EXECUTE_FAIL, "ingestFileObject");
@@ -304,14 +315,29 @@ public class CatalogRegistryIngester {
 			this.product = createProduct(catObj);
 			
 			if (productExists(product.getLid())) {
-				guid = client.versionObject(product);				
-				catObj.setVersion(Float.valueOf(latestProduct.getVersionName()).floatValue()+1.0f);
-				this.product.setVersionName(String.valueOf(catObj.getVersion()));
+				// need to check whether the LABEL_REVISION_NOTE is same or not
+				boolean sameProduct = isSame(this.product, latestProduct);				
+				if (sameProduct) {
+					lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null,
+			  				"ingest.warning.skipFile", ProblemType.SUCCEED,
+			  			    "An extrinisic object already exists in the registry service. Won't ingest this file.");
+			  		catObj.getLabel().addProblem(lp);
+			  		this.ingestedProduct = false;
+			  		return null;
+				}
+				else {
+					guid = client.versionObject(product);				
+					catObj.setVersion(Float.valueOf(latestProduct.getVersionName()).floatValue()+1.0f);
+					this.product.setVersionName(String.valueOf(catObj.getVersion()));
+					this.ingestedProduct = true;
+				}
+				
 			}
 			else {
 				guid = client.publishObject(product);
 				catObj.setVersion(1.0f);
 				this.product.setVersionName("1.0");
+				this.ingestedProduct = true;
 			}
 			this.product.setGuid(guid);
 			catObj.setExtrinsicObject(this.product);
@@ -350,6 +376,33 @@ public class CatalogRegistryIngester {
 		return guid;
 	}
 	
+	private String getSlotValues(ExtrinsicObject prod, String key) {
+		Set<Slot> slots = prod.getSlots();
+
+		Iterator setIter = slots.iterator();
+		while (setIter.hasNext()) {
+			Slot tmpSlot = (Slot)setIter.next();
+			if (tmpSlot.getName().equalsIgnoreCase(key)) {				
+				//System.out.println("key = " + tmpSlot.getName() +  "   values = " + tmpSlot.getValues().toString());
+				return Arrays.toString(tmpSlot.getValues().toArray());
+			}
+		}
+		
+		return "";		
+	}
+		
+	private boolean isSame(ExtrinsicObject oldProd, ExtrinsicObject newProd) {
+		String oldProdSlotValues = getSlotValues(oldProd, "modification_description");
+		
+		String newProdSlotValues = getSlotValues(newProd, "modification_description");
+		
+		if (oldProdSlotValues.equals(newProdSlotValues))
+			return true;
+		else 
+			return false;
+	}
+	
+	
 	/**
 	 * Ingest housekeeping extrinsic object(s) to the registry service
 	 * 
@@ -370,9 +423,19 @@ public class CatalogRegistryIngester {
 			
 			for (ObjectStatement resrcObj: catObj.getResrcObjs()) {
 				ExtrinsicObject resrcProduct = createResrcProduct(resrcObj, catObj);
-					
+				
 				if (productExists(resrcProduct.getLid())) {
-					guid = client.versionObject(resrcProduct);				
+					boolean sameProduct = isSame(resrcProduct, getExtrinsic(resrcProduct.getLid()));					
+					if (sameProduct) {
+						lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null,
+				  				"ingest.warning.skipFile", ProblemType.SUCCEED,
+				  			    "An extrinisic object already exists in the registry service. Won't ingest this file.");
+				  		catObj.getLabel().addProblem(lp);
+				  		continue;
+					}
+					else {
+						guid = client.versionObject(resrcProduct);	
+					}
 				}
 				else {
 					guid = client.publishObject(resrcProduct);
@@ -483,7 +546,8 @@ public class CatalogRegistryIngester {
 					slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs, catObj)));
 			}
 			if (refs.get(Constants.HAS_INSTHOST)!=null) {
-				slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs, catObj)));
+				//slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs, catObj)));
+				slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
 			}
 			if (refs.get(Constants.HAS_INST)!=null) {
 				slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs, catObj)));
@@ -590,8 +654,11 @@ public class CatalogRegistryIngester {
 	private List<String> getRefs(String key, String associationType, Map<String, List<String>> allRefs, CatalogObject catObj) {
 		List<String> values = new ArrayList<String>();
 		Metadata md = catObj.getMetadata();
+		
 		if (md.isMultiValued(key)) {
-			List<String> tmpValues = md.getAllMetadata(key);			
+			List<String> tmpValues = md.getAllMetadata(key);	
+			
+			System.out.println("isMultiValued......tmpValues = " + tmpValues.toString());
 			for (String keyToMatch: tmpValues) {					
 				keyToMatch= Utility.replaceChars(keyToMatch);
 	
@@ -622,6 +689,7 @@ public class CatalogRegistryIngester {
 					String tmpVer = "";
 					if (getExtrinsic(aValue)!=null) {
 						tmpVer = getExtrinsic(aValue).getVersionName();
+						//System.out.println("added in ")
 						values.add(aValue+"::" + tmpVer);
 					}
 					else {
