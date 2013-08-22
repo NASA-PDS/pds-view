@@ -42,7 +42,7 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class ProductClassTest {
 
-	private static final File TEST_DIR = new File (System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE + "/" + Constants.REGISTRY_DATA_DIR);
+	private static final File TEST_DIR = new File (System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE + "/" + Constants.SOLR_DOC_DIR);
 	
 	private ProductClass pc;
 	
@@ -79,7 +79,7 @@ public class ProductClassTest {
 			System.out.println("---------------------------------------------");
 			
 			
-			assertFalse(this.pc.query(new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "core-config-test-1.xml")).isEmpty());
+			assertFalse(this.pc.query(new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "config/core-config-test-1.xml")).isEmpty());
 		} catch (ProductClassException e) {
 			e.printStackTrace();
 			fail("Query Test failed. See stack trace.");
@@ -185,7 +185,7 @@ public class ProductClassTest {
 					new ArrayList<String>(),	// primary registry
 					new ArrayList<String>());	// secondary registry
 			
-			assertTrue(this.pc.query(new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "core-config-test-1.xml")).isEmpty());
+			assertTrue(this.pc.query(new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "config/core-config-test-1.xml")).isEmpty());
 		} catch (ProductClassException e) {
 			e.printStackTrace();
 			fail("Query Test failed. See stack trace.");

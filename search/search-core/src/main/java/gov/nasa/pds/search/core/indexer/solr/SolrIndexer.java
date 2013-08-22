@@ -1,4 +1,4 @@
-//	Copyright 2009-2012, by the California Institute of Technology.
+//	Copyright 2009-2013, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -130,7 +130,7 @@ public class SolrIndexer {
 	private static void setSolrIndexWriter() 
 			throws IOException {
 		out = new OutputStreamWriter(new FileOutputStream(
-				searchServiceIndexHome + "/solr_index.xml."
+				searchServiceIndexHome + "/" + Constants.SOLR_INDEX_PREFIX
 						+ (totalIndexDocCount / INDEX_DOC_THRESHOLD)), "UTF-8");
 		out.write("<add>");
 	}
@@ -155,9 +155,9 @@ public class SolrIndexer {
 	 */
 	private static void removePreviousIndex() 
 			throws IOException {
-		List files = new ArrayList(FileUtils.listFiles(new File(searchServiceIndexHome), new WildcardFileFilter("solr_index.xml.*"), null));
-		for (Object file : files) {
-			FileUtils.forceDelete((File)file);
+		List<File> files = new ArrayList<File>(FileUtils.listFiles(new File(searchServiceIndexHome), new WildcardFileFilter("solr_index.xml.*"), null));
+		for (File file : files) {
+			FileUtils.forceDelete(file);
 		}
 		/*File pastIndex = new File(searchServiceIndexHome, "solr_index.xml.2");
 		System.out.println(pastIndex.getAbsolutePath());

@@ -15,7 +15,10 @@
 
 package gov.nasa.pds.search.core.util;
 
+import gov.nasa.pds.search.core.SearchCoreLauncher;
 import gov.nasa.pds.search.core.constants.Constants;
+import gov.nasa.pds.search.core.logging.ToolsLevel;
+import gov.nasa.pds.search.core.logging.ToolsLogRecord;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -23,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.logging.Logger;
 
 /**
  * The DateTimeConverter class is necessary to convert PDS4-compliant date/time
@@ -36,12 +40,15 @@ import java.util.TimeZone;
  * 
  */
 public class PDSDateConvert {
-
+	
 	/** Valid Date Time Formats. **/
 	private static final String[] DATE_TIME_FORMATS = { "yyyyMMddHHmmss",
 			"yyyy-MM-dd'T'HH:mm:ss", "yyyy-DDD'T'HH:mm:ss",
-			"yyyy-MM-dd'T'HH:mm", "yyyy-MM-dd'T'HH", };
+			"yyyy-MM-dd'T'HH:mm", "yyyy-MM-dd'T'HH"};
 
+	/** Positive Year-Month-Day Date Format. **/
+	private static final String TIME_FORMAT = "HH:mm:ss";
+	
 	/** Positive Year-Month-Day Date Format. **/
 	private static final String POS_YMD_FORMAT = "yyyy-MM-dd";
 
@@ -56,6 +63,9 @@ public class PDSDateConvert {
 	
 	/** Maximum number of milliseconds for ISO-8601 */
 	private static final int MAX_NUM_MS = 3;
+	
+	/** Logger. **/
+	private static Logger log = Logger.getLogger(SearchCoreLauncher.class.getName());
 
 	/**
 	 * Converts PDS4-Compliant Datetime Strings into Solr-Compliant Datetime
@@ -84,11 +94,10 @@ public class PDSDateConvert {
 		// a valid unknown, in which case return default
 		if (Arrays.asList(Constants.VALID_UNK_VALUES).contains(datetime)) {
 			return getDefaultTime(name);
-		} else if (datetime.equals("TBD") || datetime.equals("NOT_APPLICABLE")
-				|| datetime.matches("[A-Z]*")) {
-			throw new InvalidDatetimeException("Invalid datetime value: " + datetime);
-			//recordInvalidDate(datetime);
-			//return getDefaultTime(name);
+		} else if (datetime.matches("[A-Z]*")) {
+	        log.log(new ToolsLogRecord(ToolsLevel.WARNING,
+	        		"Potentially invalid datetime value: " + datetime));
+			return datetime;
 		} else if (datetime.contains("_")) { // TODO Should we replace this or
 												// throw error?
 			// recordInvalidDate(datetime);
@@ -113,6 +122,13 @@ public class PDSDateConvert {
 					 /* Ignore parse failures */
 				}
 			}
+		} else if (datetime.contains(":")) {	// Matches time format
+			return datetime;
+			//try {
+			//	return prefix + newFrmt.format(parseDate(TIME_FORMAT, datetime)) + milliseconds;
+			//} catch (ParseException e) {
+				 /* Ignore parse failures */
+			//}
 		} else {
 			Date outputDate = null;
 			int dtLength = datetime.length();

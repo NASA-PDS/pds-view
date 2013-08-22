@@ -95,7 +95,7 @@ or
           </p>
         </li>
         <li><b>bin/</b><br/>
-          <p>This directory contains batch and shell scripts for executing the tool and posting data to the Search Service.
+          <p>This directory contains batch and shell scripts for executing the tool.
           </p>
         </li>
         <li><b>conf/</b><br/>
@@ -104,10 +104,6 @@ or
         </li>
         <li><b>doc/</b><br/>
           <p>This directory contains a local web site with the Search Core documentation, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
-          </p>
-        </li>
-        <li><b>facets/</b><br/>
-          <p>This directory contains XSLT and XML files used to provide specific formatting and faceting to the index.
           </p>
         </li>
         <li><b>lib/</b><br/>
@@ -202,14 +198,9 @@ set SEARCH_CORE_HOME=C:\Program Files\\${project.artifactId}-${project.version}
     <section name="Testing Installation">
       <p>After installing both the Search Service and Search Core, it may be useful to test the installation against a small set of data, rather than the entire Registry (which can take several hours).  The following procedure outlines this process:</p>
       <ol>
-	<li>Open $SEARCH_CORE_HOME/bin/initial-index for editing.</li>
-	<li>Modify the following:
+	<li>Run the Search Core using the <i>-m</i> flag:
 	  <source>
-# Change this line:
-${project.artifactId} -H $SEARCH_HOME -r $REGISTRY_URL
-
-# To:
-${project.artifactId} -H $SEARCH_HOME -r $REGISTRY_URL -m 5
+search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry -m 5
 	  </source>
 	</li>
 	<li>Go to <a href="../operate/index.html#Basic_Index_Generation">Basic Index Generation</a> section of the <a href="../operate">Operation Guide</a> for the procedure to run the script and see the results in the Search Service.</li>

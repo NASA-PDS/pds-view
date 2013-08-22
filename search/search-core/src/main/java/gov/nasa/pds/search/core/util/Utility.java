@@ -16,8 +16,12 @@ package gov.nasa.pds.search.core.util;
 import gov.nasa.pds.search.core.cli.options.InvalidOptionException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.ToolsLogRecord;
+import gov.nasa.pds.search.core.post.SolrPostException;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -25,6 +29,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Logger;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 /**
  * Utility class
@@ -84,12 +97,11 @@ public class Utility {
 	}
 	
 	public static boolean urlExists(final String url) {
+		HttpClient httpclient = new DefaultHttpClient();
 		try {
-			URL u = new URL(url); 
-		    HttpURLConnection huc =  (HttpURLConnection)  u.openConnection(); 
-		    huc.setRequestMethod("GET"); 
-		    huc.connect(); 
-		    if (huc.getResponseCode() != 404) {
+			HttpGet httpget = new HttpGet(url);
+			HttpResponse response = httpclient.execute(httpget);
+		    if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 		    	return true;
 		    } else {
 		    	return false;
@@ -98,6 +110,39 @@ public class Utility {
 		      log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage(),
 		              url + " cannot be found."));
 		      return false;
+		}
+	}
+	
+	public static InputStream execHttpRequest(HttpRequestBase request) throws IOException {
+		InputStream responseStream = null;
+		HttpClient httpclient = new DefaultHttpClient();
+		try {
+
+            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+            String responseBody = httpclient.execute(request, responseHandler);
+			responseStream = new ByteArrayInputStream(responseBody.getBytes());
+			
+	        //HttpResponse response = httpclient.execute(httppost);
+            // Create a response handler
+            
+            //HttpEntity resEntity = response.getEntity();
+	
+	        //System.out.println("----------------------------------------");
+	        //System.out.println(response.getStatusLine());
+	        //if (resEntity != null) {
+	        //    System.out.println("Response content length: " + resEntity.getContentLength());
+	        //    System.out.println("Chunked?: " + resEntity.isChunked());
+	            //System.out.println(IOUtils.toString(resEntity.getContent(), "UTF-8"));
+	        //   System.out.println("Status: " + verify(resEntity.getContent()));
+	        //}
+	        //EntityUtils.consume(resEntity);
+
+			return responseStream;
+		} finally {
+            // When HttpClient instance is no longer needed,
+            // shut down the connection manager to ensure
+            // immediate deallocation of all system resources
+            httpclient.getConnectionManager().shutdown();
 		}
 	}
 }

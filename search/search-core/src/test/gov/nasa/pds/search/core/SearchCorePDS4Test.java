@@ -32,7 +32,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests of PDS4 Data for {@link SearchCoreLauncher}.
+ * Search Core End-to-end Test with PDS4 Data for {@link SearchCoreLauncher}.
  *
  * @author jpadams
  */

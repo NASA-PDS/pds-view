@@ -23,7 +23,7 @@
 			<registryPath>citation_description</registryPath>
 		</field>
 		<field name="resLocation" type="required">
-			<registryPath>accessUrls</registryPath>
+			<outputString>/ds-view/pds/viewContext.jsp?identifier={lid}&amp;version={version_id}</outputString>
 		</field>
 		<field name="objectType" type="string">
 			<registryPath>objectType</registryPath>

@@ -26,10 +26,21 @@ public final class Constants {
 	/** Default stop datetime for UNK/N/A/NULL datetime fields. **/
 	public static final String DEFAULT_STOPTIME = "3000-01-01T00:00:00.000Z";
 
+	public static final String DEFAULT_SERVICE_URL = "http://localhost:8080/search-service";
+	
 	/** Valid PDS4 representation for unknown values. **/
-	public static String[] VALID_UNK_VALUES = { "N/A", "UNK", "NULL",
+	public static final String[] VALID_UNK_VALUES = { "N/A", "UNK", "NULL",
 			"UNKNOWN", "" };
 	
-	/** Directory name where XML files will be stored after data is extracted from registry **/
-	public static String REGISTRY_DATA_DIR = "registry-data";
+	/** Directory name where Solr Documents will be stored after data is extracted from data source **/
+	public static final String SOLR_DOC_DIR = "solr-docs";
+	
+	/** Directory name where Solr Index Documents will be stored after the initial documents are modified
+	 * 	by the SolrIndexer and prepared for posting to the Search Service
+	 */
+	public static final String SOLR_INDEX_DIR = "index";
+	
+	public static final String SOLR_INDEX_PREFIX = "solr_index.xml.";
+	
+	public static final String SEARCH_TOOLS = "search-tools.xml";
 }

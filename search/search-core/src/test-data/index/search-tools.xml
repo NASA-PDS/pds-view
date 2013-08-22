@@ -28,7 +28,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -118,7 +118,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -161,7 +161,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -233,7 +233,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -273,7 +273,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -365,7 +365,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -388,7 +388,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -412,7 +412,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -441,7 +441,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -477,7 +477,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -600,7 +600,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc boost="0.5">
@@ -691,7 +691,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -832,7 +832,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -896,7 +896,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -1082,7 +1082,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -1112,7 +1112,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -1534,7 +1534,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -3531,7 +3531,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc boost="0.5">
@@ -3580,7 +3580,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc boost="0.5">
@@ -3608,7 +3608,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -3753,7 +3753,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -3828,7 +3828,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -3856,7 +3856,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -3888,7 +3888,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -3937,7 +3937,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -3991,7 +3991,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -4018,7 +4018,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -4128,7 +4128,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
       <doc>
@@ -4197,7 +4197,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -4292,7 +4292,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -4318,7 +4318,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
@@ -4369,7 +4369,7 @@
       <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
-      <field name="resClass">searchtool</field>
+      <field name="objectType">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
 </add>

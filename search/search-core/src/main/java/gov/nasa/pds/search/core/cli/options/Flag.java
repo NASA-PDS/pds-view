@@ -70,6 +70,10 @@ public enum Flag {
 			"Specify the maximum number of registry values to be returned from query."
 					+ "(Default: " + Constants.QUERY_MAX + ")"),
 					
+					
+	/** Flag to post the index to the Search Service. */
+	POST("P", "solr-post", "Execute component to post the index to the Search Service."),
+					
 	/** Flag to specify a configuration file. */
 	PROPERTIES(
 			"p",
@@ -78,7 +82,7 @@ public enum Flag {
 			String.class,
 			true,
 			"Specify properties file containing Search Home, Registry URL,"
-					+ " and product class configuration home directory. Multiple"
+					+ " and search core configurations home directory. Multiple"
 					+ " files can be specified."),
 
 	/** Flag to specify at least one Registry URL. */
@@ -94,7 +98,7 @@ public enum Flag {
 
 	/** Flag to specify at least one Registry URL. */
 	SECONDARY(
-			"s",
+			"R",
 			"secondary-registry",
 			"urls",
 			String.class,
@@ -114,6 +118,10 @@ public enum Flag {
 					+ " $SEARCH_SERVICE_HOME/pds directory"
 					+ " (Default: $SEARCH_SERVICE_HOME/pds directory)"),
 
+	/** Flag to generate a Solr Index. */
+	SERVICE_URL("s", "service-url", "url", String.class, "Specify the Search Service URL endpoint."
+			+ "Default: " + Constants.DEFAULT_SERVICE_URL),					
+					
 	/** Flag to generate a Solr Index. */
 	SOLR("i", "solr-indexer", "Execute component to generate a Solr Index"),
 

@@ -45,7 +45,7 @@ public class RegistryExtractorTest {
 	
 	@Before
 	public void setUp() throws SearchCoreFatalException {
-		this.re = new RegistryExtractor(TEST_DIR, new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE), 
+		this.re = new RegistryExtractor(TEST_DIR, new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "config"), 
 				Arrays.asList(TestConstants.PDS3_REGISTRY_URL), new ArrayList<String>(), true);
 		this.re.setQueryMax(2);
 	}
@@ -57,11 +57,11 @@ public class RegistryExtractorTest {
 		System.out.println("---------------------------------------------");
 		// Create list to compare to output from test run
 		List<File> correctList = new ArrayList<File>();
-		correctList.add(new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "core-config-test-1.xml"));
-		correctList.add(new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "core-config-test-2.xml"));
+		correctList.add(new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "config/core-config-test-1.xml"));
+		correctList.add(new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "config/core-config-test-2.xml"));
 		
 		try {
-			List<File> configList = this.re.getCoreConfigs(new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE));
+			List<File> configList = this.re.getCoreConfigs(new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "config"));
 			assertEquals(correctList, configList);
 		} catch (Exception e) {
 			e.printStackTrace();

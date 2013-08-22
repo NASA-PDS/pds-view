@@ -1,4 +1,4 @@
-//	Copyright 2009-2012, by the California Institute of Technology.
+//	Copyright 2009-2013, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -117,7 +117,7 @@ public class RegistryExtractor {
 			SearchCoreStats.recordLocalTime(coreConfig.getName());
 
 	        log.log(new ToolsLogRecord(ToolsLevel.SUCCESS,
-	        		"Completed extraction:  " + coreConfig.getName()));
+	        		"Completed extraction:  " + coreConfig.getName() + "\n"));
 		}
 	}
 
@@ -218,7 +218,7 @@ public class RegistryExtractor {
 	
 				// Back up old registry-data if it exists
 				if (dataDir.isDirectory()) {
-					File backupDir = new File(outDir, Constants.REGISTRY_DATA_DIR + "_old");
+					File backupDir = new File(outDir, Constants.SOLR_DOC_DIR + "_old");
 	
 					if (backupDir.isDirectory()) {
 						FileUtils.deleteDirectory(backupDir);
@@ -245,7 +245,7 @@ public class RegistryExtractor {
 	}
 	
 	public final static File getOutputDataDirectory(String outDir) {
-		return new File(outDir, Constants.REGISTRY_DATA_DIR);
+		return new File(outDir, Constants.SOLR_DOC_DIR);
 	}
 	
 }

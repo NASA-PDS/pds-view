@@ -2,12 +2,16 @@ package gov.nasa.pds.search.core;
 
 import static org.junit.Assert.*;
 import gov.nasa.pds.search.core.constants.TestConstants;
+import gov.nasa.pds.search.core.logging.ToolsLevel;
+import gov.nasa.pds.search.core.logging.formatter.SearchCoreFormatter;
+import gov.nasa.pds.search.core.logging.handler.SearchCoreStreamHandler;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import junit.framework.TestCase;
 
@@ -22,7 +26,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * Tests of PDS3 Data for {@link SearchCoreLauncher}.
+ * Search Core End-to-end Test with PDS3 Data for {@link SearchCoreLauncher}.
  *
  * @author jpadams
  */
@@ -33,6 +37,10 @@ public class SearchCorePDS3Test {
 	public static void oneTimeSetUp() {
 		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
 		testDir.mkdirs();
+		
+		Logger logger = Logger.getLogger("");
+	    logger.addHandler(new SearchCoreStreamHandler(System.out,
+	    		  ToolsLevel.DEBUG, new SearchCoreFormatter()));
 	}
 	
 	/*@AfterClass
@@ -50,7 +58,7 @@ public class SearchCorePDS3Test {
     	try {
 	    	String[] args = { //"-d", 
 	    			"-r", TestConstants.PDS3_REGISTRY_URL,
-	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
+	    			"-H", TestConstants.SEARCH_HOME_RELATIVE,
 	    			"-m", "1", 
 	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3",
 	    			"-v", "0" };
@@ -65,7 +73,7 @@ public class SearchCorePDS3Test {
      * Test End-To-End with PDS Data, relative paths and max query = 5
      * @throws Exception
      */
-	@Ignore
+	@Test
     public void testLauncherWithNoPrimaryRegistries() {
     	try {
 	    	String[] args = { //"-d",

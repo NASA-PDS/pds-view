@@ -41,7 +41,7 @@ ov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
 	</p>
       </subsection>
       <subsection name="Registry Extractor">
-        <p>This component uses the Registry Core and XML configuration files to build XML documents on a per product basis.  The following context products have been tested through this software from the Registry Service:
+        <p>This component uses the Registry Core and XML configuration files to build XML documents on a per product basis.  The following Registry object types have been tested through this software:
         </p>
         <ul>
           <li>Product_Data_Set_PDS3</li>
@@ -52,8 +52,9 @@ ov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
           <li>Product_Context</li>
           <li>Product_Bundle</li>
           <li>Product_Collection</li>
+          <li>Product_Observational</li>
         </ul>
-	<p>These generated XML files will be placed in a $SEARCH_HOME/registry-data directory. These will be combined using the Solr Indexer component to form a Lucene index.
+	<p>These generated XML files will be placed in a $SEARCH_HOME/solr-docs directory and used by the Solr Indexer component to form a Lucene index.  Future iterations of this software will allow this component to be extendable to other data sources (i.e. relational databases).
 	</p>
       </subsection>
       <subsection name="Solr Indexer">
@@ -63,10 +64,7 @@ ov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
       </subsection>
       <subsection name="Solr Post">
 	<p>
-	  This component leverages the index created from the Solr Indexer, XSLT Stylesheets, and XML hierarchy configurations to post data to the Search Service Solr instance.  This functionality is provided by Shell scripts located in the tool's /bin directory.
-	</p>
-	<p>
-	<i>Note: Future enhancements will capture this functionality in the Search Core command-line interface.</i>
+	  This component leverages the index created from the Solr Indexer, XSLT Stylesheets, and XML hierarchy configurations to post data to the Search Service Solr instance.  Once this component completes execution, the newly indexed data is now searchable via the Search Service interface.
 	</p>
       </subsection>
     </section>

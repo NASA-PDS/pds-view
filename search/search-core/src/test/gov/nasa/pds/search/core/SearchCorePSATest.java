@@ -17,7 +17,7 @@ import gov.nasa.pds.search.core.constants.TestConstants;
 import junit.framework.TestCase;
 
 /**
- * Tests of PSA Data for {@link SearchCoreLauncher}.
+ * Search Core End-to-end Test with PSA Data for {@link SearchCoreLauncher}.
  *
  * @author jpadams
  */

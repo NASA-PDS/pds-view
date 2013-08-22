@@ -1,0 +1,1299 @@
+<add><doc>
+<field name="title"><![CDATA[Phoenix Archive Information]]></field>
+<field name="resource_name"><![CDATA[Phoenix Archive Information]]></field>
+<field name="description"><![CDATA[The Phoenix Archive Information page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Phoenix data.]]></field>
+<field name="investigation_name"><![CDATA[PHOENIX]]></field>
+<field name="resource_description"><![CDATA[The Phoenix Archive Information page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Phoenix data.]]></field>
+<field name="resLocation"><![CDATA[http://atmos.nmsu.edu/PDS4BETA/phoenix/phoenix.html]]></field>
+<field name="investigation_stop_date">2008-11-02T00:00:00.000Z</field>
+<field name="pds_model_version"><![CDATA[pds3]]></field>
+<field name="agency_name"><![CDATA[nasa]]></field>
+<field name="objectType"><![CDATA[Product_Context_Archive_Information]]></field>
+<field name="identifier"><![CDATA[urn:nasa:pds:context_pds3:resource:resource.phoenix_archive_information]]></field>
+<field name="investigation_start_date">2008-05-25T00:00:00.000Z</field>
+</doc>
+<doc>
+<field name="instrument_type"><![CDATA[Plasma Analyzer]]></field>
+<field name="citation_description"><![CDATA[Mitchell, D.L., R.P. Lin, M.H. Acuna, Mars Global Surveyor
+            Electron Reflectometer Angular Flux Data, NASA Planetary Data
+            System, MGS-M-ER-4-MAP1/ANGULAR-FLUX-V1.0, 2006.]]></field>
+<field name="data_set_name"><![CDATA[MGS MARS/MOONS MAG/ER MAPPING ER ANGULAR FLUX V1.0]]></field>
+<field name="abstract_text"><![CDATA[This data set consists of calibrated, time-ordered,
+            angle-resolved electron flux data from the Electron Reflectometer
+            (ER) instrument on the Mars Global Surveyor (MGS) spacecraft. The
+            primary data consist of time-series tables with descriptive
+            headers. The data set also includes ancillary data (including
+            geometry), documentation, and browse plots.]]></field>
+<field name="investigation_stop_date">2007-09-30T00:00:00.000Z</field>
+<field name="instrument_name"><![CDATA[ELECTRON REFLECTOMETER]]></field>
+<field name="node_id"><![CDATA[Planetary Plasma Interactions]]></field>
+<field name="nssdc_data_set_id"><![CDATA[N/A]]></field>
+<field name="title"><![CDATA[MGS MARS/MOONS MAG/ER MAPPING ER ANGULAR FLUX V1.0]]></field>
+<field name="data_set_description"><![CDATA[Data Set Overview
+  =================
+    The Mars Global Surveyor (MGS) Electron Reflectometer Angular Data
+    (ERAD) consist of time-ordered series of 100-600-eV electron flux
+    measurements for 16 look directions spanning a 360 x 14 degree field
+    of view.  These data are intended to supplement existing MGS ER
+    data, which cover the entire instrumental energy range (10 eV -
+    20 keV), but are omni-directional.
+ 
+    Separate data files are provided for each of four energy channels,
+    116, 191, 314, and 515 eV (dE/E = 25%).  These energies were chosen
+    because:
+ 
+        1) Electron trajectories are not significantly bent by the
+           spacecraft floating potential at energies > 100 eV.
+ 
+        2) Count rates at energies < 600 eV are typically > 100 times
+           greater than instrument background.
+ 
+        3) Sunlight contamination can be safely neglected in this
+           energy range, except when sunlight directly enters the
+           instrument aperture, which rarely occurs in the mapping
+           configuration.
+ 
+    Each record consists of a time tag (UTC, spacecraft event time) with
+    16 scalars representing measurements of electron energy flux in 16
+    look directions, 16 scalars indicating the uncertainties in those
+    measurements, 1 scalar indicating instrument background, 2 scalars
+    for the magnetic field azimuth and elevation angles in sensor
+    coordinates, and 1 scalar indicating the size of the angular
+    uncertainty cone around the magnetic field direction.  Electron
+    fluxes, uncertainties, and background are in units of electron
+    differential energy flux, eV/(cm^2 sec ster eV).  Angles are in
+    degrees.
+ 
+    The Electron Reflectometer field of view is a 360 x 14 degree fan
+    that is divided into sixteen 22.5 x 14 degree sectors, numbered
+    0 through 15, each with its own counter.  The ER is mounted on the
+    nadir deck of the spacecraft.  Its orientation is shown in the
+    MGS ER mounting description currently located in the DOCUMENT
+    directory of the PDS volume containing these data.  ER azimuth is
+    defined in the ER X-Y plane with zero at the boundary between
+    sectors 0 and 15.  Note that ER coordinates are left handed,
+    so that azimuth increases with sector number.  ER elevation is
+    measured out of the ER X-Y plane.  The field of view extends to
+    +/- 7 degrees elevation.
+ 
+    During the Mapping Phase, as the spacecraft orbits the planet, the
+    ER field of view sweeps out the entire sky (4-pi ster) every 58.5
+    minutes, which is much longer than the integration time per record
+    (2-8 sec, depending on telemetry rate) and much longer than most
+    timescales of interest in Mars' plasma environment.  Thus, the
+    field of view for each data record spans ~12% of the sky.  However,
+    since electrons are constrained to travel along magnetic field
+    lines, it is more important to consider an electron's motion with
+    respect to the magnetic field.
+ 
+    In a uniform field, electrons gyrate around magnetic field lines on
+    helical paths of constant radius (typically a few km) and pitch
+    angle, which is the angle between an electron's velocity and the
+    magnetic field.  With knowledge of the ambient magnetic field
+    direction measured by the MGS Magnetometer (MAG), the ER field of
+    view can be mapped into pitch angle.  In the ER X-Y plane, the
+    relationship between azimuth (az) and pitch angle is:
+ 
+ 
+        cos(Pitch Angle) = cos(az - Baz) * cos(Bel)
+ 
+ 
+    where Baz and Bel are the azimuth and elevation of the magnetic field
+    in ER sensor coordinates.  When Bel = 0, the ER measures the entire
+    pitch angle distribution (0-180 degrees) twice, once for each half of
+    the field of view.  When Bel = 90 degrees, the ER measures only pitch
+    angles of 90 degrees.  All values of Bel are possible, but the ER
+    field of view is oriented in such a way that when the magnetic field
+    has a large radial component (with respect to the planet), Bel is
+    small, and most of the pitch angle distribution is observed.  The
+    magnetic field tends to have a large radial component on the night
+    hemisphere and in the vicinity of crustal magnetic fields.
+ 
+    ER Angular Data is intended to be used in conjunction with ER omni-
+    directional data, MAG data, and spacecraft ephemeris data.  Time tags
+    are provided to synchronize the ERAD with all of these data sets.
+    The electron energy distribution (omni-directional data) contains
+    information about the plasma environment (i.e., whether the
+    spacecraft is in the magnetosheath, magnetotail, or ionosphere).  The
+    MAG data provide the strength and direction of the local magnetic
+    field (from crustal sources or induced by the Mars-solar wind
+    interaction).  The ERAD provide information about the large-scale
+    configuration of the magnetic field -- for example, whether the
+    spacecraft is on a closed crustal magnetic field loop, on an open
+    crustal field line connected to the solar wind, or on a solar wind
+    field line.  Electron reflectometry can be used on open field lines
+    to determine the magnetic field strength at altitudes near the
+    exobase (~180 km) and to probe the atmospheric density between the
+    spacecraft and the exobase.
+ 
+ 
+  Parameters
+  ==========
+    Each Mars Global Surveyor ER angle data file contains a time ordered
+    series of electron differential energy flux measurements at a given
+    energy (ranging from 100-600 eV).  ER data are organized into
+    ''packets'', each of which contains 12, 24, or 48 seconds of data, for
+    high, medium, and low spacecraft telemetry rates, respectively.  Each
+    packet is further subdivided into samples.  There are 6 samples per
+    packet for each of the relevant energy channels, as displayed in the
+    table below, resulting in sample periods of 2, 4, or 8 seconds,
+    depending on telemetry rate.  The time listed for each record is the
+    center of the sampling interval.
+ 
+    The relevant energy channels and sampling intervals are as follows:
+ 
+ 
+        Channel Number        Energy Range     Samples per Packet
+    ---------------------------------------------------------------
+               7              415 - 639   eV           6
+               8              253 - 390   eV           6
+               9              153 - 237   eV           6
+              10               92 - 144   eV           6
+    ---------------------------------------------------------------
+ 
+ 
+    In-flight calibrations are available for each of the pre-mapping
+    mission phases (AB1, SPO1, SPO2, and AB2), and are performed about
+    once per month in the Mapping and Extended phases.  This calibration
+    is used to determine the relative instrumental sensitivity around
+    the FOV to an accuracy of 5-10%.  The sensitivity varies slowly
+    with time primarily because of aging of the microchannel plate (MCP),
+    which is used to amplify the signal from a single electron into an
+    electrical pulse that can be detected on the anode.  This information
+    is taken into account when converting count rates to calibrated
+    electron differential energy fluxes.
+ 
+    The local magnetic field measured by the Magnetometer is rotated
+    into ER sensor coordinates (see the MGS ER mounting description
+    mentioned above) to determine the pitch angle range spanned by each
+    angular sector of the instrument.  The magnetic field direction
+    changes continuously, so the pitch angle map must be determined
+    separately for every data record.
+ 
+ 
+  Processing
+  ==========
+    Processing is carried out at the Space Sciences Laboratory (SSL) of
+    the University of California, Berkeley, (UCB) to convert the raw data
+    to measurements of the electron energy flux eV/(cm^2 s ster eV).
+    Because of the instrument's high dynamic range (six decades), the
+    onboard digital processing unit (DPU) compresses the raw counts in a
+    logarithmic scale. The first step is to decompress the raw counts and
+    construct a three-dimensional data array, where the first dimension
+    is time (6 elements per telemetry packet), the second dimension is
+    direction around the FOV (16 elements), and the third dimension is
+    energy (4 elements).
+ 
+    The data array is converted from raw counts to differential energy
+    flux as follows.  Raw count rate (R) is obtained by dividing the raw
+    counts by the integration time (0.0625 sec per energy step).  The
+    data are next corrected for deadtime.  During the time it takes the
+    instrument to process a single electron (known as the ''deadtime'',
+    which is about 0.5 microsec for the ER), it ignores any other
+    electrons.  The raw count rate is multiplied by the factor 1/(1 -
+    RT), where T is the deadtime, to obtain corrected count rate.  Data
+    values are masked (set to -9.999e-9) when the deadtime correction
+    factor exceeds 1.25.
+ 
+    These data are NOT CORRECTED for instrumental background, which is
+    caused primarily by high energy particles that penetrate the
+    ~2-mm-thick instrument casing and impact the MCP.  Electrons > few
+    MeV and protons > 20 MeV have sufficient energy to do this. (Lower
+    energy particles are also detected if any of the secondaries they
+    produce reach the detector.)  Since these particles bypass the
+    electostatic analyzer section, they produce a count rate that is
+    independent of the instrument's energy sweep, typically dominating
+    the signal in the highest 2-3 energy channels.  During quiet times,
+    the background count rate over the entire anode is 7-10 counts/sec,
+    which translates to 350-500 eV/(cm^2 s ster eV) in the ERAD.  Most of
+    the time, the signal in the highest energy channel (13-20 keV) is
+    dominated by background.  Exceptions to this sometimes occur during
+    bowshock or interplanetary shock crossings (when significant fluxes
+    of >10 keV electrons are present) or during energetic solar events,
+    when bursts of solar energetic particles can increase the flux of
+    penetrating particles by several orders of magnitude.  Assuming that
+    the highest energy channel contains 100% background, the background
+    level for the lower energy channels used in this data set can be
+    estimated as B(E) = B(20 keV), where B(E) is the background level (in
+    units of eV cm-2 s-1 ster-1 eV-1) at energy E.  The background is
+    typically negligible at energies below about 1 keV.  Finally, we divide
+    by the geometric factor (0.02 cm2 ster) to obtain the differential
+    energy flux eV/(cm^2 s ster eV).
+ 
+    In order for the user to calculate pitch angles for each sector and
+    observation, the orientation of the magnetic field with respect to
+    the ER instrument must be supplied.  To accomplish this, the magnetic
+    field vectors recorded by MGS MAG, expressed in a payload coordinate
+    system, are first resampled to the time resolution of the electron
+    observations.  Then, the orientation of the local field vector in
+    azimuth and elevation are recorded, along with an uncertainty.  The
+    ER sectors are numbered 0-15 in a clockwise fashion as viewed from
+    above the ER instrument.  Azimuth is defined from 0-360 degrees, also
+    in a clockwise fashion as viewed from above ER, with 0 degrees
+    located at the boundary between instrument sectors 0 and 15.
+    Elevation is defined between -90 and 90 degrees, with 90 degrees
+    indicating the local magnetic field is orthogonal to the instrument
+    aperture and pointed ''up'' away from the instrument (in the +z
+    direction for the left-handed coordinate system defined by the azimuth
+    angles), 90 degrees pointing ''down'' toward the instrument, and 0
+    degrees indicating that the local magnetic field is in the plane of
+    the instrument aperture. The uncertainty in the local magnetic field
+    vector is supplied as a single angle defining a cone around the
+    nominal vector.  Therefore, the uncertainty for a given observation
+    could be in the azimuth direction or the elevation direction or (most
+    likely) both.
+ 
+    Finally, data for sectors 9 and 10 are supplied as for all other
+    sectors in this data set.  However, in-flight intercalibration
+    indicates that sectors 9 and 10 have significantly higher
+    uncertainties than the other sectors.  Therefore we recommend that
+    sectors 9 and 10 be disregarded in any science analysis using these
+    data.
+ 
+    After processing, data are written to ASCII tables, described below.
+ 
+ 
+  Data
+  ====
+    The ERDR data set consists of four time-ordered tables containing
+    electron fluxes in each of four different instrument energy ranges as
+    a function of instrument sector.  Each table contains 43 columns, as
+    follows:
+ 
+     COLUMN       CONTAINS
+     ------       ----------------------------------------------------
+      1-6         time stamp (yr, day of year, hr, min, sec, msec)
+      7-22        electron energy fluxes for 16 ER sectors
+      23-38       one-sigma error estimates for 16 ER sectors
+      39          estimate of instrument background (energy flux units)
+      40-41       azimuth and elevation of local B-field wrt ER
+      42          angular uncertainty in local B-field direction
+ 
+ 
+    (Note:  The column numbering given here differs from the column
+    numbering in the PDS labels for these data.  This is not a real
+    discrepancy; it reflects the fact that the PDS labels treat the
+    time stamp as a single multi-part column.)
+ 
+    File names in this data set currently follow the format
+ 
+    MyyDddd_PAD_eee.STS
+ 
+    where yy = 2-digit year, ddd = 3-digit day of year, and eee =
+    3-digit energy channel in eV as described under ''Data Set Overview''
+    above.
+ 
+ 
+  Ancillary Data
+  ==============
+    No additional ancillary data is required for use of these data.
+    However, the user may wish to use MAG data and MGS spacecraft
+    ephemeris information in conjunction with this dataset, also
+    available from the PDS.
+ 
+ 
+  Coordinate System
+  =================
+    The data are presented in a coordinate system tied to the ER
+    instrument. Each of the 16 energy fluxes and error bars are
+    associated with a single angular sector of the instrument.  Azimuth
+    and elevation angles necessary to compute pitch angles for each
+    sector are supplied with respect to the instrument, as described in
+    the sections above.
+ 
+ 
+  Software
+  ========
+    No software is provided with this PDS data set.
+ 
+    Data reduction software for the ERAD is written in IDL.
+ 
+    Users are advised that the following line of pseudocode can be used
+    to compute the pitch angle range spanned by each of the ER's 16
+    angular sectors, given the azimuth (Baz) and elevation (Bel) of the
+    ambient magnetic field in sensor coordinates:
+ 
+ 
+               cos(pitch angle) = cos(az - Baz) * cos(Bel)
+ 
+ 
+    where az represents the azimuth range spanned by one of the sectors.
+    For example, to compute the pitch angle range spanned by Sector 0,
+    one would use a range of 0-22.5 degrees for az, together with values
+    of Baz and Bel in sensor coordinates provided for each data record.
+    Note that Baz and Bel vary continuously, so a separate pitch angle
+    map must be computed for each data record.  Also note that the
+    maximum and minimum pitch angles sampled by a given sector need not
+    be at the edges of the sector.  One way to present these data on a
+    plot of energy flux (Y axis) vs. pitch angle (X axis), is to plot
+    horizontal ''error bars'' representing the pitch angles spanned by
+    each sector and vertical error bars for the one-sigma flux
+    uncertainties.
+ 
+  Media/Format
+  ============
+    Currently these data are stored on hard disk at the PDS for online
+    distribution.]]></field>
+<field name="description"><![CDATA[Calibrated time-ordered angle- resolved flux data tables from the
+            Electron Reflectometer instrument on the Mars Global Surveyor
+            spacecraft, collected during the Mapping phase of the mission.]]></field>
+<field name="investigation_name"><![CDATA[MARS GLOBAL SURVEYOR]]></field>
+<field name="instrument_id"><![CDATA[ER]]></field>
+<field name="stop_time">2006-07-18T00:00:00.000Z</field>
+<field name="target_name"><![CDATA[MARS]]></field>
+<field name="pds_model_version"><![CDATA[pds3]]></field>
+<field name="agency_name"><![CDATA[nasa]]></field>
+<field name="investigation_start_date">1994-10-12T00:00:00.000Z</field>
+<field name="instrument_host_id"><![CDATA[MGS]]></field>
+<field name="data_set_terse_description"><![CDATA[Calibrated time-ordered angle- resolved flux data tables from the
+            Electron Reflectometer instrument on the Mars Global Surveyor
+            spacecraft, collected during the Mapping phase of the mission.]]></field>
+<field name="data_object_type"><![CDATA[Product_Data_Set_PDS3]]></field>
+<field name="confidence_level_note"><![CDATA[Confidence Level Overview
+  =========================
+    The ER instrument design is typically used on a rapidly spinning
+    spacecraft (few seconds period), on which the disk-shaped FOV would
+    sweep out the entire sky in a time that is short compared with most
+    timescales of interest.  However, since MGS spins slowly (once per
+    orbit), each data record covers only a small region of the sky.
+    Any application of these data that requires an unbiased average over
+    all look directions (4-pi ster) is NOT RECOMMENDED.  Instead, use
+    the formula above for calculating a separate pitch angle map for
+    each data record.  Complete (0-180 degrees) pitch angle coverage is
+    rarely achieved, but the pitch angle coverage is often sufficient to
+    determine magnetic field topology and to detect loss cones caused by
+    atmospheric absorption of electrons.
+ 
+    The ER is mounted on the spacecraft body, where measurements are
+    susceptible to the following effects:
+ 
+    1. Spacecraft charging: The spacecraft typically charges to several
+       volts positive in sunlight and several tens of volts negative in
+       shadow.  Since electrons have to cross this potential before
+       reaching the ER aperture, the energy scale of the ER is effectively
+       shifted by the amount of the spacecraft potential.  In addition,
+       it is possible for different parts of the spacecraft to charge
+       to different potentials, because of differences in material
+       properties.  Differential charging sets up small-scale electric
+       fields that can bend the trajectories of low energy electrons.
+       At the >100 eV energies used in this data set, these effects are
+       relatively small and can be safely neglected.  For increased
+       confidence, the user may compare pitch angle distributions at
+       100 and 500 eV.
+ 
+    2. Spacecraft photoelectrons: Parts of the spacecraft that are
+       illuminated by the sun will emit photoelectrons.  Most of these
+       spacecraft photoelectrons have energies below ~10 eV, but a
+       small part of the distribution extends up to ~60 eV.  Since
+       parts of the spacecraft are close to the ER field of view, some
+       of these spacecraft photoelectrons can enter the ER aperture
+       and contaminate the measurements.  The flux and angular
+       distribution of spacecraft photoelectrons as seen by the ER
+       depends on the illumination pattern of the spacecraft.  At the
+       >100 eV energies of this data set, spacecraft photoelectron
+       contamination can be safely neglected.
+ 
+    3. Field-of-view blockage:  Parts of the field of view are partially
+       obstructed by the spacecraft.  In the mapping configuration (with
+       the high gain antenna deployed) these obstructions include the -Y
+       solar array gimbal and corners of the spacecraft bus.  To first
+       order, these fixed obstructions are accounted for in the
+       calibration of the ER field of view.  (Sectors that contain an
+       obstruction are assigned a lower effective sensitivity.)
+ 
+    4. Solar energetic particle (SEP) events:  The instrument background
+       is dominated by penetrating particles due to galactic cosmic rays
+       (GCRs) and solar energetic particles (SEPs), which are produced
+       during solar flares and associated coronal mass ejections (CMEs).
+       The GCR background is negligible in the 100-500 eV energy range --
+       the fluxes of ambient electrons dominate by several orders of
+       magnitude.  However, during large solar events (''space weather''),
+       SEPs can increase the background level enough to be significant
+       even in the 100-500 eV range.  The user is cautioned to use the
+       background data provided in this data set to identify SEP events.
+       Large events may prevent the reliable use of these data.
+ 
+ 
+  Review
+  ======
+    The ERAD will be reviewed internally by the MGS MAG/ER team prior to
+    release to the planetary community. The ERAD will also be reviewed
+    by the PDS.
+ 
+ 
+  Data Coverage and Quality
+  =========================
+    ER data are recorded continuously.  Data coverage depends almost
+    entirely on the fraction of the spacecraft telemetry that can be
+    received by the DSN.  The mapping orbit lies close to the ionopause
+    altitude.  Because of spatial and temporal variations in the
+    ionopause, the ER can sample several different plasma environments,
+    including the ionosphere, the magnetosheath, the magnetotail, and
+    closed magnetic field lines anchored to remanent crustal sources.
+    Data quality is best when the spacecraft is within the planet's
+    shadow.  In sunlight, data quality is a function of spacecraft
+    rotation phase, since photoelectron contamination depends on the
+    illumination pattern.  Additionally, pitch angle coverage is
+    controlled by a combination of ER look direction and the local
+    magnetic field direction. In some instances it is possible that the
+    local magnetic field is orthogonal to the ER field of view, so that
+    the pitch angle coverage is limited to a small range around 90 deg.
+    However, a much more typical situation is partial pitch angle
+    coverage, which is often sufficient to establish the topology of
+    the magnetic field and to identify loss cones caused by atmospheric
+    absorption of electrons.  The ER field of view is oriented in such
+    a way that the pitch angle coverage is best whenever there is a
+    large radial component (with respect to the planet) of the ambient
+    magnetic field.  This situation often occurs on the night hemisphere
+    (because of the draped magnetotail) and over strong crustal magnetic
+    fields.
+ 
+ 
+  Limitations
+  ===========
+    The ER is mounted on the spacecraft instrument deck and has a
+    disk-shaped FOV that is orthogonal to the spacecraft XY plane and
+    nearly orthogonal to the spacecraft Y axis.  (There is a 10-degree
+    rotation about the Z axis to minimize spacecraft obstructions in the
+    FOV.)  This 360-degree FOV is divided into 16 angular sectors, each
+    22.5 degrees wide.  Throughout mapping, the ER is in
+    ''fixed-sector'' mode, meaning that these 16 angular sectors
+    remained constant in the spacecraft reference frame, sweeping out
+    the entire sky every 1/2 of an orbit.
+ 
+    Parts of the spacecraft are within the instrument's FOV.  The high
+    gain antenna (HGA), which blocked ~70 degrees of the FOV during
+    aerobraking is not in the FOV during mapping.  Smaller amounts of
+    blockage are caused by attitude control thrusters and the -Y solar
+    array gimbal and yoke assembly.  One effect this has on the
+    measurements is to block ambient electrons from the directions of
+    the obstacles. This is most clearly seen at high energies (> 100
+    eV), which are only slightly deflected by the spacecraft floating
+    potential.  In addition, when these obstacles are illuminated by the
+    sun, they emit photoelectrons up to ~50 eV, which can enter the ER
+    aperture and elevate the counting rate at low energies.  The
+    detailed signature of this effect depends on the illumination
+    pattern as the spacecraft rotates, which is a function of the angles
+    between Earth, Mars, and the Sun.  These angles varied throughout
+    the mapping phase. Photoelectron contamination has not been removed
+    from the data; however, observations that were likely to have been
+    contaminated have not been included in this dataset.  The presence of
+    contamination is readily identified in the low energy channels (< 50
+    eV) by a sharp (nearly discontinuous) increase in counting rate which
+    appears at regular 100-minute intervals.  The contamination
+    disappears as abruptly as it appears.
+ 
+    For a duration of ~4 minutes every 1/2 spacecraft spin (when the
+    spacecraft is illuminated) sunlight can directly enter the ER
+    aperture and scatter inside the instrument, creating secondary
+    electrons.  (Note: the spacecraft spins once per orbit to keep the
+    nadir deck pointed at the planet.)  A tiny fraction of these photons
+    and secondary electrons can scatter down to the anode and create a
+    ''pulse'' of spurious counts.  This sunlight pulse appears at all
+    energies, but is most noticeable from 10 to 80 eV and above 1 keV,
+    outside the range of energies included with this dataset.  Sunlight
+    pulses, therefore, have not been removed from the data.
+ 
+    The instrument's energy scale is referenced to spacecraft ground.
+    In sunlight, spacecraft ground floats a few volts positive relative
+    to the plasma in which the spacecraft is immersed.  Electrons are
+    accelerated by the spacecraft potential before they can enter the ER
+    aperture, thus all energies are shifted upward by a few eV.  In
+    addition to shifting the electron energy, the trajectories of low
+    energy electrons can be significantly bent by electric fields around
+    the spacecraft.  Thus, the energy scale and imaging characteristics
+    are relatively poor at the lowest energies (10-30 eV), becoming much
+    more accurate at the higher energies used in this dataset.]]></field>
+<field name="resource_id"><![CDATA[urn:nasa:pds:context_pds3:resource:resource.mgs-m-er-4-map1-angular-flux-v1.0__browserp_mgs-m-er-4-map1-angular-flux-v1.0]]></field>
+<field name="resource_id"><![CDATA[urn:nasa:pds:context_pds3:resource:resource.mgs-m-er-4-map1-angular-flux-v1.0__pds.mgs.project.website]]></field>
+<field name="data_set_id"><![CDATA[MGS-M-ER-4-MAP1/ANGULAR-FLUX-V1.0]]></field>
+<field name="data_set_release_date">2006-11-14T00:00:00.000Z</field>
+<field name="resLocation"><![CDATA[/ds-view/pds/viewDataset.jsp?dsid=MGS-M-ER-4-MAP1%2FANGULAR-FLUX-V1.0]]></field>
+<field name="archive_status"><![CDATA[ARCHIVED]]></field>
+<field name="start_time">1999-04-02T00:00:00.000Z</field>
+<field name="target_type"><![CDATA[Planet]]></field>
+<field name="objectType"><![CDATA[Product_Data_Set_PDS3]]></field>
+<field name="identifier"><![CDATA[urn:nasa:pds:context_pds3:data_set:data_set.mgs-m-er-4-map1-angular-flux-v1.0]]></field>
+<field name="full_name"><![CDATA[DAVID L. MITCHELL]]></field>
+</doc>
+<doc>
+<field name="instrument_description"><![CDATA[Instrument Overview
+  ===================
+    The Alpha Particle X-Ray Spectrometer (APXS) is part of the Athena
+    payload of the two Mars Exploration Rovers (MER). The APXS sensor
+    head is attached to the turret of the Instrument Deployment Device
+    (IDD) of the rover. The APXS is a very light-weight instrument for
+    determining the major and minor elemental composition of Martian
+    soils, rocks, and other geological materials at the MER landing
+    sites. The sensor head has simply to be docked by the IDD on the
+    surface of the selected sample. X-ray radiation, excited by alpha
+    particles and x-rays of the radioactive sources, is recorded by a
+    high-resolution x-ray detector. The x-ray spectra show elements
+    starting from sodium up to yttrium depending on their
+    concentrations. The backscattered alpha spectra, measured by a ring
+    of detectors, provide additional data on carbon and oxygen. By means
+    of a proper calibration, the elemental concentrations are derived.
+    Together with data from the two other Athena instruments mounted on
+    the IDD, the samples under investigation can be fully characterized.
+    Key APXS objectives are the determination of the chemistry of
+    crustal rocks and soils and the examination of water-related
+    deposits, sediments, or evaporates. Using the rock abrasion tool
+    (RAT) attached to the IDD, issues of weathering can be addressed by
+    measuring natural and abraded surfaces of rocks.
+ 
+    Information in this instrument description is taken from The New
+    Athena Alpha Particle X-Ray Spectrometer (APXS) for the Mars
+    Exploration Rovers mission paper [RIEDERETAL2003]. See this paper
+    for more details.
+ 
+ 
+  Scientific Objectives
+  =====================
+    The chief scientific objective of the APXS is:
+ 
+    1) to determine the major and minor elemental composition of Martian
+    soils, rocks, and other geological materials at the MER landing
+    sites
+ 
+ 
+  Calibration
+  ===========
+    During the calibration campaign in the Max Plank Institute Mainz
+    laboratory many geostandards were measured. These standards are
+    powdered geological samples, whose elemental concentrations are
+    certified by qualified institutions. The two flight instruments
+    containing their flight sources were calibrated using 11
+    validated samples (8 geostandards and 3 meteorites) and a set of
+    oxide and metal standards.
+ 
+    A check of the performance of the instrument after the landing on
+    Mars will be done making use of the internal calibration target on
+    the doors and the Compositional Calibration Target (CCT) that is
+    mounted on the rover chassis in reach of the IDD. The x-ray spectrum
+    of the internal calibration target shows gold, nickel, and copper
+    lines. The target consists of a set of thin layers of gold, Kapton
+    (carbon), and nickel on top of the copper-beryllium body of the
+    doors. Energy calibration, FWHM, and linearity can be checked by
+    evaluation of the copper and gold lines and comparison with
+    pre-launch data.
+ 
+    Contamination of the beryllium entrance window of the x-ray
+    detector will be noticeable by an intensity reduction of the
+    low-energy M lines of gold compared to the L lines. Energy
+    calibration can be checked with the position of the gold peak (a
+    peak and not a step because of the small thickness of the Au layer).
+    The carbon step provides an additional check of consistency.
+ 
+    The CCT consists of a magnetite plate. This target was designed
+    for the needs of the MB, but, it can also be used by the APXS to
+    check its FWHM usually determined for the 6.4-keV line of iron.
+    As the target is mounted on the outside of the rover, it will
+    eventually be covered with dust, but the line shape of the Fe
+    line will not be affected.
+ 
+ 
+  Operational Considerations
+  ==========================
+    There are a few considerations that must be taken into account
+    to acquire the best data possible:
+ 
+    1) To search for trace elements, two to four hours are
+       sufficient for the x-ray mode. The search for carbon requires
+       at least eight hours for the alpha mode as the alpha sensitivity
+       is low. X-ray and alpha mode always operate together.
+ 
+    2) To properly make an APXS measurement, the sensor head has to
+       be correctly 'docked' at the selected sample by the IDD. The
+       nominal APXS docking procedure is the following:
+ 
+      Use images taken by the rover's front cameras: Navcams
+      (navigation cameras) and/or Hazcams (hazard avoidance cameras)
+      to calculate the IDD positioning
+ 
+      Open the doors by pressing the APXS contact ring against the
+      CCT or any other solid surface of the rover
+ 
+      Position the APXS contact ring up against a selected sample
+      area with a positional accuracy of 10 mm and 10 degrees on a
+      target not previously contacted, or 4 mm and 3 degrees for a
+      target previously contacted by any one of the IDD instruments
+ 
+      After data acquisition, the APXS doors are closed by rotating
+      the turret past a roller until the release lever is actuated
+ 
+    3) For touch-and-go operations, optimum resolution for the x-ray
+       detector is obtained at temperatures of 248 K, and the shortest
+       measurement time should be at least 15 minutes
+ 
+ 
+  Detectors
+  =========
+    The sensor head is packaged in a cylindrical enclosure 53 mm in
+    diameter and 84 mm in length and terminates in an insulating flange
+    of 68 mm x 68 mm. The front part facing the sample contains the
+    xray detector, mounted on the axis of the instrument, a cylindrical
+    source holder with six alpha sources, and six rectangular alpha
+    detectors. The coaxial arrangement of sources and detectors for
+    alpha particles and x-rays assures that both detectors 'see' the
+    same intensity distribution across the sample.
+ 
+    Use of a high resolution x-ray detector (silicon drift detector with
+    10 mm^2 active area, a 5 micron thick Be-window and an energy
+    resolution of about 160 eV @ 5.9 keV) permits high quality
+    measurements. The advanced detector versions were provided by KETEK,
+    Munich, Germany.
+ 
+    There is a second group of detectors, identical to the alpha
+    detectors, but not exposed to alpha particles from the sample.These
+    detectors measure the background contribution to alpha spectra due
+    to cosmic radiation at the surface of Mars and high energy gamma
+    background of the Cm sources as well as the Moessbauer source. The
+    field of view for the x rays is delineated by means of a collimator
+    in front of the detector: the collimator is formed by two apertures
+    made from Zr, one immediately in front of the detector and one in
+    the central orifice of the source holder.
+ 
+    The alpha sources (6 pellets) are contained in a source holder that
+    attaches to the sensor head with a spring loaded bayonet-style
+    mechanism. This permits quick and easy exchange of the sources
+    without the need to disassemble the sensor head. The sources are
+    covered with 2.5 micron thick titanium foils, turning them into
+    'quasi-closed' sources (hermetically sealed sources are under
+    development, but were not available for this mission). The foils
+    prevent contamination of samples with source material, emitted from
+    the sources as a result of 'recoil sputtering', and the same time
+    reduce the energy of the alpha particles from 5.80 MeV to 5.17 MeV,
+    thereby avoiding a resonance in the 12C(alpha, alpha')12C reaction
+    at ca. 5.7 MeV (Figure 6). This measure, together with an optimized
+    design of the source-collimator-detector geometry, significantly
+    reduces the background signals from carbon and oxygen in the Martian
+    CO2-atmosphere. Nevertheless, this background signal remains the
+    limiting factor for the determination of carbon in the samples.
+ 
+ 
+  Electronics
+  ===========
+    The main electronics consists of the analog signal conditioning
+    segments (6-pole Gaussian filter amplifiers, threshold
+    discriminators and peak detectors), an analog multiplexer, a 16-bit
+    analog-to-digital converter and an 8-bit microcontroller.
+ 
+    Control logic determines the presence of a relevant signal and
+    generates an interrupt in the microcontroller. To avoid additional
+    noise in the analog signal chain, the microcontroller is kept in
+    idle mode until the analog signal is processed and buffered in the
+    peak detectors. Selection of the appropriate multiplexer input,
+    conversion of the signal amplitude to a digital number and
+    registration of the signal by incrementing the number of counts in
+    the corresponding amplitude channel of the respective detector is
+    then handled by the microcontroller. Conversion time is typically
+    200 microseconds. A digital temperature compensation routine that
+    minimizes the influence of temperature changes during long
+    measurements adds another 100 microseconds. For a mean count rate
+    of 100 Hz, a total dead time of below 5 % is achieved.
+ 
+    The microcontroller is equipped with a watchdog circuit that
+    performs a soft reset in case of an abnormal program flow. The data
+    are stored in 32 Kbyte SRAM that are buffered by a battery located
+    on the main electronics board.
+ 
+    The interface for commanding the instrument and transfer of data
+    consists of an RS 422 serial link. Power is provided to the
+    instrument directly from the board battery (nominally 28 V);
+    voltages required by the electronics (5 V digital, +/-5 V analog
+    and +/-12 V analog) are generated by its own power converter and
+    filters.
+ 
+    The x-ray spectrum is divided into 512 channels. The lower threshold
+    is fixed at ~850 eV. This is sufficient to detect Na at 1040 eV. The
+    upper energy limit is about 16 keV. The spectral range includes the
+    K lines up to Zr and the L and M lines of higher Z elements. It also
+    contains elastic scattered Pu lines at 14.3 keV and 12.6 keV, as
+    well as inelastic scattered peaks. The alpha and background spectra
+    use 256 channels and range up to about 6 MeV.
+ 
+ 
+  Location
+  ========
+    The APXS sensor head is attached to the turret of the Instrument
+    Deployment Device (IDD) of the rover.
+ 
+ 
+  Measured Parameters
+  ===================
+    The APXS measures x-ray radiation and backscattered alpha spectra.
+    These measurements can determine the elemental composition of the
+    target on which it is docked.]]></field>
+<field name="instrument_type"><![CDATA[Spectrometer]]></field>
+<field name="title"><![CDATA[ALPHA PARTICLE X-RAY SPECTROMETER for MER2]]></field>
+<field name="description"><![CDATA[Instrument Overview
+  ===================
+    The Alpha Particle X-Ray Spectrometer (APXS) is part of the Athena
+    payload of the two Mars Exploration Rovers (MER). The APXS sensor
+    head is attached to the turret of the Instrument Deployment Device
+    (IDD) of the rover. The APXS is a very light-weight instrument for
+    determining the major and minor elemental composition of Martian
+    soils, rocks, and other geological materials at the MER landing
+    sites. The sensor head has simply to be docked by the IDD on the
+    surface of the selected sample. X-ray radiation, excited by alpha
+    particles and x-rays of the radioactive sources, is recorded by a
+    high-resolution x-ray detector. The x-ray spectra show elements
+    starting from sodium up to yttrium depending on their
+    concentrations. The backscattered alpha spectra, measured by a ring
+    of detectors, provide additional data on carbon and oxygen. By means
+    of a proper calibration, the elemental concentrations are derived.
+    Together with data from the two other Athena instruments mounted on
+    the IDD, the samples under investigation can be fully characterized.
+    Key APXS objectives are the determination of the chemistry of
+    crustal rocks and soils and the examination of water-related
+    deposits, sediments, or evaporates. Using the rock abrasion tool
+    (RAT) attached to the IDD, issues of weathering can be addressed by
+    measuring natural and abraded surfaces of rocks.
+ 
+    Information in this instrument description is taken from The New
+    Athena Alpha Particle X-Ray Spectrometer (APXS) for the Mars
+    Exploration Rovers mission paper [RIEDERETAL2003]. See this paper
+    for more details.
+ 
+ 
+  Scientific Objectives
+  =====================
+    The chief scientific objective of the APXS is:
+ 
+    1) to determine the major and minor elemental composition of Martian
+    soils, rocks, and other geological materials at the MER landing
+    sites
+ 
+ 
+  Calibration
+  ===========
+    During the calibration campaign in the Max Plank Institute Mainz
+    laboratory many geostandards were measured. These standards are
+    powdered geological samples, whose elemental concentrations are
+    certified by qualified institutions. The two flight instruments
+    containing their flight sources were calibrated using 11
+    validated samples (8 geostandards and 3 meteorites) and a set of
+    oxide and metal standards.
+ 
+    A check of the performance of the instrument after the landing on
+    Mars will be done making use of the internal calibration target on
+    the doors and the Compositional Calibration Target (CCT) that is
+    mounted on the rover chassis in reach of the IDD. The x-ray spectrum
+    of the internal calibration target shows gold, nickel, and copper
+    lines. The target consists of a set of thin layers of gold, Kapton
+    (carbon), and nickel on top of the copper-beryllium body of the
+    doors. Energy calibration, FWHM, and linearity can be checked by
+    evaluation of the copper and gold lines and comparison with
+    pre-launch data.
+ 
+    Contamination of the beryllium entrance window of the x-ray
+    detector will be noticeable by an intensity reduction of the
+    low-energy M lines of gold compared to the L lines. Energy
+    calibration can be checked with the position of the gold peak (a
+    peak and not a step because of the small thickness of the Au layer).
+    The carbon step provides an additional check of consistency.
+ 
+    The CCT consists of a magnetite plate. This target was designed
+    for the needs of the MB, but, it can also be used by the APXS to
+    check its FWHM usually determined for the 6.4-keV line of iron.
+    As the target is mounted on the outside of the rover, it will
+    eventually be covered with dust, but the line shape of the Fe
+    line will not be affected.
+ 
+ 
+  Operational Considerations
+  ==========================
+    There are a few considerations that must be taken into account
+    to acquire the best data possible:
+ 
+    1) To search for trace elements, two to four hours are
+       sufficient for the x-ray mode. The search for carbon requires
+       at least eight hours for the alpha mode as the alpha sensitivity
+       is low. X-ray and alpha mode always operate together.
+ 
+    2) To properly make an APXS measurement, the sensor head has to
+       be correctly 'docked' at the selected sample by the IDD. The
+       nominal APXS docking procedure is the following:
+ 
+      Use images taken by the rover's front cameras: Navcams
+      (navigation cameras) and/or Hazcams (hazard avoidance cameras)
+      to calculate the IDD positioning
+ 
+      Open the doors by pressing the APXS contact ring against the
+      CCT or any other solid surface of the rover
+ 
+      Position the APXS contact ring up against a selected sample
+      area with a positional accuracy of 10 mm and 10 degrees on a
+      target not previously contacted, or 4 mm and 3 degrees for a
+      target previously contacted by any one of the IDD instruments
+ 
+      After data acquisition, the APXS doors are closed by rotating
+      the turret past a roller until the release lever is actuated
+ 
+    3) For touch-and-go operations, optimum resolution for the x-ray
+       detector is obtained at temperatures of 248 K, and the shortest
+       measurement time should be at least 15 minutes
+ 
+ 
+  Detectors
+  =========
+    The sensor head is packaged in a cylindrical enclosure 53 mm in
+    diameter and 84 mm in length and terminates in an insulating flange
+    of 68 mm x 68 mm. The front part facing the sample contains the
+    xray detector, mounted on the axis of the instrument, a cylindrical
+    source holder with six alpha sources, and six rectangular alpha
+    detectors. The coaxial arrangement of sources and detectors for
+    alpha particles and x-rays assures that both detectors 'see' the
+    same intensity distribution across the sample.
+ 
+    Use of a high resolution x-ray detector (silicon drift detector with
+    10 mm^2 active area, a 5 micron thick Be-window and an energy
+    resolution of about 160 eV @ 5.9 keV) permits high quality
+    measurements. The advanced detector versions were provided by KETEK,
+    Munich, Germany.
+ 
+    There is a second group of detectors, identical to the alpha
+    detectors, but not exposed to alpha particles from the sample.These
+    detectors measure the background contribution to alpha spectra due
+    to cosmic radiation at the surface of Mars and high energy gamma
+    background of the Cm sources as well as the Moessbauer source. The
+    field of view for the x rays is delineated by means of a collimator
+    in front of the detector: the collimator is formed by two apertures
+    made from Zr, one immediately in front of the detector and one in
+    the central orifice of the source holder.
+ 
+    The alpha sources (6 pellets) are contained in a source holder that
+    attaches to the sensor head with a spring loaded bayonet-style
+    mechanism. This permits quick and easy exchange of the sources
+    without the need to disassemble the sensor head. The sources are
+    covered with 2.5 micron thick titanium foils, turning them into
+    'quasi-closed' sources (hermetically sealed sources are under
+    development, but were not available for this mission). The foils
+    prevent contamination of samples with source material, emitted from
+    the sources as a result of 'recoil sputtering', and the same time
+    reduce the energy of the alpha particles from 5.80 MeV to 5.17 MeV,
+    thereby avoiding a resonance in the 12C(alpha, alpha')12C reaction
+    at ca. 5.7 MeV (Figure 6). This measure, together with an optimized
+    design of the source-collimator-detector geometry, significantly
+    reduces the background signals from carbon and oxygen in the Martian
+    CO2-atmosphere. Nevertheless, this background signal remains the
+    limiting factor for the determination of carbon in the samples.
+ 
+ 
+  Electronics
+  ===========
+    The main electronics consists of the analog signal conditioning
+    segments (6-pole Gaussian filter amplifiers, threshold
+    discriminators and peak detectors), an analog multiplexer, a 16-bit
+    analog-to-digital converter and an 8-bit microcontroller.
+ 
+    Control logic determines the presence of a relevant signal and
+    generates an interrupt in the microcontroller. To avoid additional
+    noise in the analog signal chain, the microcontroller is kept in
+    idle mode until the analog signal is processed and buffered in the
+    peak detectors. Selection of the appropriate multiplexer input,
+    conversion of the signal amplitude to a digital number and
+    registration of the signal by incrementing the number of counts in
+    the corresponding amplitude channel of the respective detector is
+    then handled by the microcontroller. Conversion time is typically
+    200 microseconds. A digital temperature compensation routine that
+    minimizes the influence of temperature changes during long
+    measurements adds another 100 microseconds. For a mean count rate
+    of 100 Hz, a total dead time of below 5 % is achieved.
+ 
+    The microcontroller is equipped with a watchdog circuit that
+    performs a soft reset in case of an abnormal program flow. The data
+    are stored in 32 Kbyte SRAM that are buffered by a battery located
+    on the main electronics board.
+ 
+    The interface for commanding the instrument and transfer of data
+    consists of an RS 422 serial link. Power is provided to the
+    instrument directly from the board battery (nominally 28 V);
+    voltages required by the electronics (5 V digital, +/-5 V analog
+    and +/-12 V analog) are generated by its own power converter and
+    filters.
+ 
+    The x-ray spectrum is divided into 512 channels. The lower threshold
+    is fixed at ~850 eV. This is sufficient to detect Na at 1040 eV. The
+    upper energy limit is about 16 keV. The spectral range includes the
+    K lines up to Zr and the L and M lines of higher Z elements. It also
+    contains elastic scattered Pu lines at 14.3 keV and 12.6 keV, as
+    well as inelastic scattered peaks. The alpha and background spectra
+    use 256 channels and range up to about 6 MeV.
+ 
+ 
+  Location
+  ========
+    The APXS sensor head is attached to the turret of the Instrument
+    Deployment Device (IDD) of the rover.
+ 
+ 
+  Measured Parameters
+  ===================
+    The APXS measures x-ray radiation and backscattered alpha spectra.
+    These measurements can determine the elemental composition of the
+    target on which it is docked.]]></field>
+<field name="resLocation"><![CDATA[/ds-view/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID=APXS&INSTRUMENT_HOST_ID=MER2]]></field>
+<field name="instrument_id"><![CDATA[APXS]]></field>
+<field name="pds_model_version"><![CDATA[pds3]]></field>
+<field name="agency_name"><![CDATA[nasa]]></field>
+<field name="instrument_name"><![CDATA[ALPHA PARTICLE X-RAY SPECTROMETER]]></field>
+<field name="objectType"><![CDATA[Product_Instrument_PDS3]]></field>
+<field name="identifier"><![CDATA[urn:nasa:pds:context_pds3:instrument:instrument.apxs__mer2]]></field>
+<field name="instrument_host_id"><![CDATA[MER2]]></field>
+</doc>
+<doc>
+<field name="investigation_name_or_alias"><![CDATA[MARINER 10]]></field>
+<field name="investigation_description"><![CDATA[Mission Overview
+  ================
+ 
+    Mariner 10 was the seventh successful launch in the Mariner series
+    and the first spacecraft to use the gravitational pull of one planet
+    (Venus) to reach another (Mercury). The spacecraft flew by Mercury
+    three times in a heliocentric orbit and returned images and data on
+    the planet. Mariner 10 is the only spacecraft to have visited
+    Mercury.
+ 
+    Spacecraft and Subsystems
+ 
+    The spacecraft structure was an eight-sided framework with eight
+    electronics compartments. It measured 1.39 m diagonally and 0.457 m
+    in depth. Two solar panels, each 2.7 m long and 0.97 m wide, were
+    attached at the top, supporting 5.1 sq m of solar cell area. The
+    rocket engine was liquid-fueled, with two sets of reaction jets used
+    to stabilize the spacecraft on three axes. It carried a low-gain
+    omnidirectional antenna, composed of a honeycomb-disk parabolic
+    reflector, 1.37 m in diameter, with focal length 55 cm. Feeds
+    enabled the spacecraft to transmit at S- and X-band frequencies. The
+    spacecraft carried a Canopus star tracker, located on the upper ring
+    structure of the octagonal satellite, and acquisition sun sensors on
+    the tips of the solar panels. The interior of the spacecraft was
+    insulated with multiplayer thermal blankets at top and bottom. A
+    sunshade was deployed after launch to protect the spacecraft on the
+    solar-oriented side.
+ 
+    Instruments on-board the spacecraft measured the atmospheric,
+    surface, and physical characteristics of Mercury and Venus.
+    Experiments included television photography, magnetic field, plasma,
+    infrared radiometry, ultraviolet spectroscopy, and radio science
+    detectors. An experimental X-band, high-frequency transmitter was
+    flown for the first time on this spacecraft.
+ 
+    Mission Profile
+ 
+    Mariner 10 was placed in a parking orbit after launch for
+    approximately 25 minutes, then placed in orbit around the Sun en
+    route to Venus. The orbit direction was opposite to the motion of
+    the Earth around the Sun. Mid-course corrections were made. The
+    spacecraft passed Venus on February 5, 1974, at a distance of 4200
+    km. It crossed the orbit of Mercury on March 29, 1974, at 2046 UT,
+    at a distance of about 703 km from the surface. The TV and UV
+    experiments were turned on the comet Kohoutek while the spacecraft
+    was on the way to Venus. A second encounter with Mercury, when more
+    photographs were taken, occurred on September 21, 1974, at an
+    altitude of about 47,000 km. A third and last Mercury encounter at
+    an altitude of 327 km, with additional photography of about 300
+    photographs and magnetic field measurements occurred on March 16,
+    1975. Engineering tests were continued until March 24, 1975, when
+    the supply of attitude-control gas was depleted and the mission was
+    terminated.
+ 
+    Total research, deployment, launch, and support costs for the
+    Mariner series of spacecraft (Mariners 1 through 10) was
+    approximately $554 million.
+ 
+ 
+  Mission Phases
+  ==============
+ 
+      EARTH VENUS CRUISE
+      ------------------
+      The Earth-Venus cruise period is defined as spanning the time
+      between launch and 3 days before Venus closest approach.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : SOLAR WIND
+      Mission Phase Start Time       : 1973-11-03
+      Mission Phase Stop Time        : 1974-02-01T23:59:59.999Z
+ 
+      VENUS ENCOUNTER
+      ---------------
+      The Venus encounter period is defined as spanning 6 days about
+      Venus closest approach. Closest approach to Venus occurred at
+      1974-02-05 17:01:50 UT.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : VENUS
+      Mission Phase Start Time       : 1974-02-02T00:00:00.000Z
+      Mission Phase Stop Time        : 1974-02-08T23:59:59.999Z
+ 
+      VENUS MERCURY CRUISE
+      --------------------
+      The Venus-Mercury cruise period is defined as spanning the time
+      between 3 days after Venus encouter and 3 days before Mercury
+      closest approach.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : SOLAR WIND
+      Mission Phase Start Time       : 1974-02-09T00:00:00.000Z
+      Mission Phase Stop Time        : 1974-03-26T23:59:59.999Z
+ 
+      MERCURY ENCOUNTER I
+      -------------------
+      The first Mercury encounter period is defined as spanning 6 days
+      about Mercury closest approach. Closest approach to Mercury
+      occurred 1974-03-29 20:46:38 UT at an altitude of 703 km.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : MERCURY
+      Mission Phase Start Time       : 1974-03-27T00:00:00.000Z
+      Mission Phase Stop Time        : 1974-04-02T23:59:59.999Z
+ 
+      MERCURY MERCURY CRUISE I
+      ------------------------
+      The Mercury-Mercury cruise period is defined as spanning the time
+      between 3 days before Mercury Encounter I and 3 days before
+      Mercury Encounter II.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : SOLAR WIND
+      Mission Phase Start Time       : 1974-04-03T00:00:00.000Z
+      Mission Phase Stop Time        : 1974-09-17T23:59:59.999Z
+ 
+      MERCURY ENCOUNTER II
+      --------------------
+      The second Mercury encounter period is defined as spanning 6 days
+      about Mercury closest approach. Closest approach occurred
+      1974-09-21 21:59:00 at an altitude of 47,000 km.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : MERCURY
+      Mission Phase Start Time       : 1974-09-18T00:00:00.000Z
+      Mission Phase Stop Time        : 1974-09-24T23:59:59.999Z
+ 
+      MERCURY MERCURY CRUISE II
+      -------------------------
+      The Mercury-Mercury cruise period is defined as spanning the time
+      between 3 days before Mercury Encounter II and 3 days before
+      Mercury Encounter III.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : SOLAR WIND
+      Mission Phase Start Time       : 1974-09-25T00:00:00.000Z
+      Mission Phase Stop Time        : 1975-03-12T23:59:59.999Z
+ 
+      MERCURY ENCOUNTER III
+      ---------------------
+      The third and last Mercury encounter period is defined as spanning
+      6 days about Mercury closest approcah. Closest approach occurred
+      1975-03-16 22:39:23 at an altitude of 327 km.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : MERCURY
+      Mission Phase Start Time       : 1975-03-13T00:00:00.000Z
+      Mission Phase Stop Time        : 1975-03-19T23:59:59.999Z
+ 
+      END OF MISSION CRUISE
+      ---------------------
+      The end of mission cruise period is defined as spanning the time
+      between 3 days after Mercury Encounter III and when the mission
+      was terminated.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : SOLAR WIND
+      Mission Phase Start Time       : 1975-03-20T00:00:00.000Z
+      Mission Phase Stop Time        : 1975-03-24T23:59:59.999Z
+ 
+  References
+  ==========]]></field>
+<field name="agency_name"><![CDATA[nasa]]></field>
+<field name="pds_model_version"><![CDATA[pds3]]></field>
+<field name="investigation_stop_date">1975-03-24T00:00:00.000Z</field>
+<field name="investigation_start_date">1973-11-03T00:00:00.000Z</field>
+<field name="title"><![CDATA[MARINER 10]]></field>
+<field name="description"><![CDATA[Mission Overview
+  ================
+ 
+    Mariner 10 was the seventh successful launch in the Mariner series
+    and the first spacecraft to use the gravitational pull of one planet
+    (Venus) to reach another (Mercury). The spacecraft flew by Mercury
+    three times in a heliocentric orbit and returned images and data on
+    the planet. Mariner 10 is the only spacecraft to have visited
+    Mercury.
+ 
+    Spacecraft and Subsystems
+ 
+    The spacecraft structure was an eight-sided framework with eight
+    electronics compartments. It measured 1.39 m diagonally and 0.457 m
+    in depth. Two solar panels, each 2.7 m long and 0.97 m wide, were
+    attached at the top, supporting 5.1 sq m of solar cell area. The
+    rocket engine was liquid-fueled, with two sets of reaction jets used
+    to stabilize the spacecraft on three axes. It carried a low-gain
+    omnidirectional antenna, composed of a honeycomb-disk parabolic
+    reflector, 1.37 m in diameter, with focal length 55 cm. Feeds
+    enabled the spacecraft to transmit at S- and X-band frequencies. The
+    spacecraft carried a Canopus star tracker, located on the upper ring
+    structure of the octagonal satellite, and acquisition sun sensors on
+    the tips of the solar panels. The interior of the spacecraft was
+    insulated with multiplayer thermal blankets at top and bottom. A
+    sunshade was deployed after launch to protect the spacecraft on the
+    solar-oriented side.
+ 
+    Instruments on-board the spacecraft measured the atmospheric,
+    surface, and physical characteristics of Mercury and Venus.
+    Experiments included television photography, magnetic field, plasma,
+    infrared radiometry, ultraviolet spectroscopy, and radio science
+    detectors. An experimental X-band, high-frequency transmitter was
+    flown for the first time on this spacecraft.
+ 
+    Mission Profile
+ 
+    Mariner 10 was placed in a parking orbit after launch for
+    approximately 25 minutes, then placed in orbit around the Sun en
+    route to Venus. The orbit direction was opposite to the motion of
+    the Earth around the Sun. Mid-course corrections were made. The
+    spacecraft passed Venus on February 5, 1974, at a distance of 4200
+    km. It crossed the orbit of Mercury on March 29, 1974, at 2046 UT,
+    at a distance of about 703 km from the surface. The TV and UV
+    experiments were turned on the comet Kohoutek while the spacecraft
+    was on the way to Venus. A second encounter with Mercury, when more
+    photographs were taken, occurred on September 21, 1974, at an
+    altitude of about 47,000 km. A third and last Mercury encounter at
+    an altitude of 327 km, with additional photography of about 300
+    photographs and magnetic field measurements occurred on March 16,
+    1975. Engineering tests were continued until March 24, 1975, when
+    the supply of attitude-control gas was depleted and the mission was
+    terminated.
+ 
+    Total research, deployment, launch, and support costs for the
+    Mariner series of spacecraft (Mariners 1 through 10) was
+    approximately $554 million.
+ 
+ 
+  Mission Phases
+  ==============
+ 
+      EARTH VENUS CRUISE
+      ------------------
+      The Earth-Venus cruise period is defined as spanning the time
+      between launch and 3 days before Venus closest approach.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : SOLAR WIND
+      Mission Phase Start Time       : 1973-11-03
+      Mission Phase Stop Time        : 1974-02-01T23:59:59.999Z
+ 
+      VENUS ENCOUNTER
+      ---------------
+      The Venus encounter period is defined as spanning 6 days about
+      Venus closest approach. Closest approach to Venus occurred at
+      1974-02-05 17:01:50 UT.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : VENUS
+      Mission Phase Start Time       : 1974-02-02T00:00:00.000Z
+      Mission Phase Stop Time        : 1974-02-08T23:59:59.999Z
+ 
+      VENUS MERCURY CRUISE
+      --------------------
+      The Venus-Mercury cruise period is defined as spanning the time
+      between 3 days after Venus encouter and 3 days before Mercury
+      closest approach.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : SOLAR WIND
+      Mission Phase Start Time       : 1974-02-09T00:00:00.000Z
+      Mission Phase Stop Time        : 1974-03-26T23:59:59.999Z
+ 
+      MERCURY ENCOUNTER I
+      -------------------
+      The first Mercury encounter period is defined as spanning 6 days
+      about Mercury closest approach. Closest approach to Mercury
+      occurred 1974-03-29 20:46:38 UT at an altitude of 703 km.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : MERCURY
+      Mission Phase Start Time       : 1974-03-27T00:00:00.000Z
+      Mission Phase Stop Time        : 1974-04-02T23:59:59.999Z
+ 
+      MERCURY MERCURY CRUISE I
+      ------------------------
+      The Mercury-Mercury cruise period is defined as spanning the time
+      between 3 days before Mercury Encounter I and 3 days before
+      Mercury Encounter II.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : SOLAR WIND
+      Mission Phase Start Time       : 1974-04-03T00:00:00.000Z
+      Mission Phase Stop Time        : 1974-09-17T23:59:59.999Z
+ 
+      MERCURY ENCOUNTER II
+      --------------------
+      The second Mercury encounter period is defined as spanning 6 days
+      about Mercury closest approach. Closest approach occurred
+      1974-09-21 21:59:00 at an altitude of 47,000 km.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : MERCURY
+      Mission Phase Start Time       : 1974-09-18T00:00:00.000Z
+      Mission Phase Stop Time        : 1974-09-24T23:59:59.999Z
+ 
+      MERCURY MERCURY CRUISE II
+      -------------------------
+      The Mercury-Mercury cruise period is defined as spanning the time
+      between 3 days before Mercury Encounter II and 3 days before
+      Mercury Encounter III.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : SOLAR WIND
+      Mission Phase Start Time       : 1974-09-25T00:00:00.000Z
+      Mission Phase Stop Time        : 1975-03-12T23:59:59.999Z
+ 
+      MERCURY ENCOUNTER III
+      ---------------------
+      The third and last Mercury encounter period is defined as spanning
+      6 days about Mercury closest approcah. Closest approach occurred
+      1975-03-16 22:39:23 at an altitude of 327 km.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : MERCURY
+      Mission Phase Start Time       : 1975-03-13T00:00:00.000Z
+      Mission Phase Stop Time        : 1975-03-19T23:59:59.999Z
+ 
+      END OF MISSION CRUISE
+      ---------------------
+      The end of mission cruise period is defined as spanning the time
+      between 3 days after Mercury Encounter III and when the mission
+      was terminated.
+ 
+      Spacecraft Id                  : M10
+      Target Name                    : SOLAR WIND
+      Mission Phase Start Time       : 1975-03-20T00:00:00.000Z
+      Mission Phase Stop Time        : 1975-03-24T23:59:59.999Z
+ 
+  References
+  ==========]]></field>
+<field name="resLocation"><![CDATA[/ds-view/pds/viewMissionProfile.jsp?MISSION_NAME=MARINER+10]]></field>
+<field name="investigation_name"><![CDATA[MARINER 10]]></field>
+<field name="investigation_objectives_summary"><![CDATA[Mission Objectives Overview
+  ===========================
+ 
+    References
+    ==========]]></field>
+<field name="identifier"><![CDATA[urn:nasa:pds:context_pds3:investigation:mission.mariner_10]]></field>
+<field name="objectType"><![CDATA[Product_Mission_PDS3]]></field>
+</doc>
+<doc>
+<field name="target_description"><![CDATA[ASTEROID]]></field>
+<field name="title"><![CDATA[3085 DONNA]]></field>
+<field name="primary_body_name"><![CDATA[SUN]]></field>
+<field name="target_name"><![CDATA[3085 DONNA]]></field>
+<field name="description"><![CDATA[ASTEROID]]></field>
+<field name="resLocation"><![CDATA[/ds-view/pds/viewTargetProfile.jsp?TARGET_NAME=3085+DONNA]]></field>
+<field name="pds_model_version"><![CDATA[pds3]]></field>
+<field name="agency_name"><![CDATA[nasa]]></field>
+<field name="target_type"><![CDATA[Asteroid]]></field>
+<field name="objectType"><![CDATA[Product_Target_PDS3]]></field>
+<field name="identifier"><![CDATA[urn:nasa:pds:context_pds3:target:asteroid.3085_donna]]></field>
+</doc>
+</add>

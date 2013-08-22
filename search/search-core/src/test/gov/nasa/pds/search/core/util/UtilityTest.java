@@ -18,7 +18,7 @@ public class UtilityTest {
 
 	@Test
 	public void testUrlExists() {
-		String url = "http://espn.com";
+		String url = "http://pdsbeta.jpl.nasa.gov:8080/registry";
 		assertTrue(Utility.urlExists(url));
 	}
 	

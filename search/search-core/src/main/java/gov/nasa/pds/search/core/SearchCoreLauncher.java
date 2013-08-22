@@ -17,6 +17,7 @@ package gov.nasa.pds.search.core;
 
 import gov.nasa.pds.search.core.cli.options.Flag;
 import gov.nasa.pds.search.core.cli.options.InvalidOptionException;
+import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.extractor.RegistryExtractor;
 import gov.nasa.pds.search.core.indexer.solr.SolrIndexer;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
@@ -24,6 +25,8 @@ import gov.nasa.pds.search.core.logging.ToolsLogRecord;
 import gov.nasa.pds.search.core.logging.formatter.SearchCoreFormatter;
 import gov.nasa.pds.search.core.logging.handler.SearchCoreFileHandler;
 import gov.nasa.pds.search.core.logging.handler.SearchCoreStreamHandler;
+import gov.nasa.pds.search.core.post.SolrPost;
+import gov.nasa.pds.search.core.post.SolrPostException;
 import gov.nasa.pds.search.core.util.Debugger;
 import gov.nasa.pds.search.core.util.PropertiesUtil;
 import gov.nasa.pds.search.core.util.ToolInfo;
@@ -71,9 +74,6 @@ public class SearchCoreLauncher {
 	/** Key used in the properties file for the configuration home **/
 	private static final String PROPS_CONFIG_KEY = "config-home";
 	
-	/** Key used in the properties file for the search home **/
-	private static final String PROPS_SEARCH_KEY = "search-home";
-	
 	/** Key used in the properties file for the Registry URL **/
 	private static final String PROPS_PRIMARY_REGISTRY_KEY = "primary-registry";
 	
@@ -83,20 +83,26 @@ public class SearchCoreLauncher {
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#ALL **/
 	private boolean allFlag;
 
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#EXTRACTOR **/
-	private boolean extractorFlag;
-
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#SOLR **/
-	private boolean solrFlag;
-
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#CLEAN **/
 	private boolean clean;
+	
+	/** @see gov.nasa.pds.search.core.cli.options.Flag#EXTRACTOR **/
+	private boolean extractorFlag;
+	
+	/** @see gov.nasa.pds.search.core.cli.options.Flag#SOLR **/
+	private boolean solrFlag;
+	
+	/** @see gov.nasa.pds.search.core.cli.options.Flag#SOLR_POST **/
+	private boolean postFlag;
 
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#MAX **/
 	private int queryMax;
 	
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#LOG **/
 	private String logFile;
+	
+	/** @see gov.nasa.pds.search.core.cli.options.Flag#SERVICE_URL **/
+	private String serviceUrl;
 
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#SEARCH_HOME **/
 	private File searchHome;
@@ -115,8 +121,6 @@ public class SearchCoreLauncher {
 	
 	/** The severity level to set for the tool. */
 	private Level severityLevel;
-	
-	private Map<String, Map<String, String>> propertiesMap;
 
 	/** Logger. **/
 	private static Logger log = Logger.getLogger(SearchCoreLauncher.class.getName());
@@ -126,13 +130,15 @@ public class SearchCoreLauncher {
 	 */
 	public SearchCoreLauncher() {
 		this.allFlag = true;
+		this.clean = true;
 		this.extractorFlag = false;
 		this.solrFlag = false;
-		this.clean = true;
-
+		this.postFlag = false;
+		
 		this.queryMax = -1;
 
 		this.searchHome = null;
+		this.serviceUrl = null;
 
 		this.configHomeList = new ArrayList<String>();
 		this.primaryRegistries = new ArrayList<String>();
@@ -186,7 +192,10 @@ public class SearchCoreLauncher {
 	    }
 	    
 	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
-	    		"Search Home                 " + this.searchHome));
+	    	"Search Home                 " + this.searchHome));
+	    
+	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+	    	"Search Service URL          " + this.serviceUrl));
 	    
 	    for (String configHome : this.configHomeList) {
 	    	log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
@@ -295,7 +304,7 @@ public class SearchCoreLauncher {
 			} else if (o.getOpt().equals(Flag.HELP.getShortName())) {
 				displayHelp();
 				System.exit(0);
-			} else if (o.getOpt().equals(Flag.HELP.getShortName())) {
+			} else if (o.getOpt().equals(Flag.LOG.getShortName())) {
 				this.logFile = o.getValue().trim();
 			} else if (o.getOpt().equals(Flag.MAX.getShortName())) {
 				try {
@@ -312,10 +321,15 @@ public class SearchCoreLauncher {
 							.add(new File(Utility.getAbsolutePath("Properties File",
 									((String) value).trim(), false)));
 				}
+			}  else if (o.getOpt().equals(Flag.POST.getShortName())) {
+				this.postFlag = true;
+				this.allFlag = false;
 			} else if (o.getOpt().equals(Flag.SEARCH_HOME.getShortName())) {
 				setSearchHome(o.getValue().trim());
 			} else if (o.getOpt().equals(Flag.SECONDARY.getShortName())) {
 				this.secondaryRegistries = o.getValuesList();
+			} else if (o.getOpt().equals(Flag.SERVICE_URL.getShortName())) {
+				this.serviceUrl = o.getValue().trim();
 			} else if (o.getOpt().equals(Flag.SOLR.getShortName())) {
 				this.solrFlag = true;
 				this.allFlag = false;
@@ -341,8 +355,13 @@ public class SearchCoreLauncher {
 		}
 
 		// Set Search Home if not specified
-		if (this.searchHome == null && this.propsFilesList.isEmpty()) {
+		if (this.searchHome == null) {
 			setDefaultSearchHome();
+		}
+		
+		// Set Search Service URL if not specified
+		if (this.serviceUrl == null) {
+			setDefaultServiceUrl();
 		}
 		
 		setLogger();
@@ -366,7 +385,7 @@ public class SearchCoreLauncher {
 			primaryRegistry = mappings.get(PROPS_PRIMARY_REGISTRY_KEY);
 			secondaryRegistry = mappings.get(PROPS_SECONDARY_REGISTRY_KEY);
 			configHome = mappings.get(PROPS_CONFIG_KEY);
-			searchHome = mappings.get(PROPS_SEARCH_KEY);
+			//searchHome = mappings.get(PROPS_SEARCH_KEY);
 			
 			if (primaryRegistry != null) {
 				this.primaryRegistries.clear();
@@ -390,7 +409,7 @@ public class SearchCoreLauncher {
 								+ "the command-line interface.");
 			}
 
-			if (searchHome != null) {
+			/*if (searchHome != null) {
 				setSearchHome(searchHome);
 			} else if (this.searchHome == null) {
 				throw new InvalidOptionException(
@@ -399,7 +418,7 @@ public class SearchCoreLauncher {
 								+ " or by using the "
 								+ Flag.SEARCH_HOME.getShortName() + "flag via "
 								+ "the command-line interface.");
-			}
+			}*/
 		//}
 
 	}
@@ -441,8 +460,20 @@ public class SearchCoreLauncher {
 	 */
 	public final void setDefaultConfigHome() {
 		this.configHomeList
-				.add((new File(System.getProperty("java.class.path")))
-						.getParentFile().getParent() + PDS3_CONFIG_PATH);
+				.add(getDefaultConfigHome());
+	}
+	
+	/**
+	 * Returns the default config home for use by setting defaults
+	 * @return
+	 */
+	private final String getDefaultConfigHome() {
+		return new File(System.getProperty("java.class.path"))
+		.getParentFile().getParent() + PDS3_CONFIG_PATH;
+	}
+	
+	public final void setDefaultServiceUrl() {
+		this.serviceUrl = Constants.DEFAULT_SERVICE_URL;
 	}
 
 	/**
@@ -478,6 +509,15 @@ public class SearchCoreLauncher {
 				e.printStackTrace();
 			}
 		}
+		
+		if (this.allFlag || this.postFlag) { //|| this.postFlag) {
+			try {
+				runSolrPost();
+			} catch (Exception e) {
+				System.err.println("Error running Solr Post.");
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -501,6 +541,9 @@ public class SearchCoreLauncher {
 	
 			extractor.run();
 		}
+		
+        log.log(new ToolsLogRecord(ToolsLevel.SUCCESS,
+        		"Completed extracting data from data source.\n"));
 	}
 
 	/**
@@ -511,18 +554,44 @@ public class SearchCoreLauncher {
 	 * @throws Exception
 	 */
 	private void runSolrIndexer() throws IOException, ParseException, Exception {
-		this.log.info("\nRunning Solr Indexer to create new SOLR_INDEX.XML ...\n");
+		log.log(new ToolsLogRecord(ToolsLevel.INFO,
+				"Running Solr Indexer to create new solr documents for indexing ..."));
 
 		File indexDir = new File(this.searchHome.getAbsolutePath()
-				+ "/index");
+				+ "/" + Constants.SOLR_INDEX_DIR);
 		if (!indexDir.isDirectory()) {
 			indexDir.mkdir();
 		}
 
-		String[] args = { this.searchHome.getAbsolutePath() + "/index",
-				this.searchHome.getAbsolutePath() + "/registry-data" };
+		String[] args = { this.searchHome.getAbsolutePath() + "/" + Constants.SOLR_INDEX_DIR,
+				this.searchHome.getAbsolutePath() + "/" + Constants.SOLR_DOC_DIR };
 		SolrIndexer.main(args);
+		
+        log.log(new ToolsLogRecord(ToolsLevel.SUCCESS,
+        		"Completed transforming data into Solr Lucene index\n"));
 	}
+	
+
+	private void runSolrPost() throws SolrPostException {
+		log.log(new ToolsLogRecord(ToolsLevel.INFO,
+				"Running Solr Post to Post Data To Search Service ..."));
+
+		File indexDir = new File(this.searchHome.getAbsolutePath()
+				+ "/" + Constants.SOLR_INDEX_DIR);
+		if (!indexDir.isDirectory()) {
+			throw new SolrPostException("Index directory " + indexDir.getAbsolutePath() + " does not exist.");
+		}
+
+		SolrPost solrPost = new SolrPost(this.serviceUrl);
+		
+		solrPost.clean();	// Remove old index
+		solrPost.postIndex(this.searchHome.getAbsolutePath() + "/" + Constants.SOLR_INDEX_DIR, 
+				Arrays.asList(Constants.SOLR_INDEX_PREFIX, Constants.SEARCH_TOOLS));	// Post the new data
+		
+        log.log(new ToolsLogRecord(ToolsLevel.SUCCESS,
+        		"Completed posting data to the Search Service\n"));
+	}
+
 
 	/**
 	 * Main Method to capture CLI arguments.
