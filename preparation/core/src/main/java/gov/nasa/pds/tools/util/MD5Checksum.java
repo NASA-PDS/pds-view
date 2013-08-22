@@ -14,8 +14,8 @@
 
 package gov.nasa.pds.tools.util;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.security.MessageDigest;
 
 /**
@@ -33,29 +33,29 @@ public class MD5Checksum {
   /**
    * Gets the MD5 checksum value.
    *
-   * @param filename The filename.
+   * @param url The url to the file or resource.
    * @return The MD5 checksum of the given filename.
    *
    * @throws Exception If an error occurred while calculating the checksum.
    */
-  public static String getMD5Checksum(String filename) throws Exception {
-    byte[] b = createChecksum(filename);
+  public static String getMD5Checksum(URL url) throws Exception {
+    byte[] b = createChecksum(url);
     return getHex(b);
   }
 
   /**
    * Creates the checksum.
    *
-   * @param filename The filename.
+   * @param url The url to the file or resource.
    *
    * @return a byte array of the checksum.
    *
    * @throws Exception If an error occurred while calculating the checksum.
    */
-  private static byte[] createChecksum(String filename) throws Exception {
+  private static byte[] createChecksum(URL url) throws Exception {
     InputStream input = null;
     try {
-      input =  new FileInputStream(filename);
+      input =  url.openStream();
       byte[] buffer = new byte[1024];
       MessageDigest md5 = MessageDigest.getInstance("MD5");
       int bytesRead = 0;

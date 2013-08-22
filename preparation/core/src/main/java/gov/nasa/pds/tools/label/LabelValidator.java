@@ -26,6 +26,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -111,7 +113,7 @@ public class LabelValidator {
   private List<StreamSource> loadSchemaSources(String[] schemaFiles) {
     List<StreamSource> sources = new ArrayList<StreamSource>();
     for (String schemaFile : schemaFiles) {
-      sources.add(new StreamSource(new File(schemaFile)));
+      sources.add(new StreamSource(schemaFile));
     }
     return sources;
   }
@@ -128,6 +130,12 @@ public class LabelValidator {
     return sources;
   }
 
+  public synchronized void validate(ExceptionContainer container, File labelFile)
+  throws SAXException, IOException, ParserConfigurationException,
+  TransformerException {
+    validate(container, labelFile.toURI().toURL());
+  }
+
   /**
    * Currently this method only validates the label against schema constraints
    *
@@ -140,7 +148,7 @@ public class LabelValidator {
    * @throws ParserConfigurationException
    * @throws TransformerException
    */
-  public synchronized void validate(ExceptionContainer container, File labelFile)
+  public synchronized void validate(ExceptionContainer container, URL url)
       throws SAXException, IOException, ParserConfigurationException,
       TransformerException {
     // Are we perfoming schema validation?
@@ -199,7 +207,7 @@ public class LabelValidator {
         cachedValidator = validator;
       }
       // Finally validate the file
-      cachedValidator.validate(new StreamSource(labelFile));
+      cachedValidator.validate(new StreamSource(url.openStream()));
     }
     // Validate with any schematron files we have
     if (performsSchematronValidation()) {
@@ -258,8 +266,8 @@ public class LabelValidator {
       for (Transformer schematron : cachedSchematron) {
         StringWriter report = new StringWriter();
         // Apply the rules specified in the schematron file
-        schematron.transform(new StreamSource(labelFile), new StreamResult(
-            report));
+        schematron.transform(new StreamSource(url.openStream()),
+            new StreamResult(report));
         // Output is svrl:schematron-output document
         // Select out svrl:failed-assert nodes and put into exception container
         Document reportDoc = parser.parse(new InputSource(new StringReader(
@@ -270,7 +278,7 @@ public class LabelValidator {
           Node node = nodes.item(i);
           // Add an error for each failed asssert
           container.addException(new LabelException(ExceptionType.ERROR, node
-              .getTextContent().trim(), labelFile.getAbsolutePath(), node
+              .getTextContent().trim(), url.toString(), node
               .getAttributes().getNamedItem("location").getTextContent(), node
               .getAttributes().getNamedItem("test").getTextContent()));
 
@@ -285,12 +293,12 @@ public class LabelValidator {
     if (!externalValidators.isEmpty()) {
       // Perform any other additional checks that were added
       for(ExternalValidator ev : externalValidators) {
-        ev.validate(container, labelFile);
+        ev.validate(container, url);
       }
     }
     // Perform any additional checks that were added
     if (!documentValidators.isEmpty()) {
-      DocumentInfo xml = parse(new StreamSource(labelFile));
+      DocumentInfo xml = parse(new StreamSource(url.openStream()));
       for (DocumentValidator dv : documentValidators) {
         dv.validate(container, xml);
       }

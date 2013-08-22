@@ -14,6 +14,10 @@
 package gov.nasa.pds.tools.util;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,18 +73,22 @@ public class XMLExtractor {
      * @throws XPathExpressionException If an error occurred while setting up
      * the default namespace.
      */
-    public XMLExtractor(File xmlFile) throws XPathException,
+    public XMLExtractor(URL url) throws XPathException,
     XPathExpressionException {
       xpath = new XPathEvaluator();
-      String uri = xmlFile.toURI().toString();
       Configuration configuration = xpath.getConfiguration();
       configuration.setLineNumbering(true);
       ParseOptions options = new ParseOptions();
       options.setErrorListener(new XMLErrorListener());
-      xml = configuration.buildDocument(new SAXSource(new InputSource(uri)),
+      xml = configuration.buildDocument(new SAXSource(new InputSource(url.toString())),
           options);
       String definedNamespace = getValueFromDoc("namespace-uri(/*)");
       xpath.getStaticContext().setDefaultElementNamespace(definedNamespace);
+    }
+
+    public XMLExtractor (File file) throws XPathException,
+    XPathExpressionException, MalformedURLException {
+      this(file.toURI().toURL());
     }
 
     /**
@@ -92,10 +100,11 @@ public class XMLExtractor {
      *  xml file.
      * @throws XPathExpressionException If an error occurred while setting up
      * the default namespace.
+     * @throws MalformedURLException
      */
-    public XMLExtractor (String xmlFile) throws XPathException,
-    XPathExpressionException {
-        this(new File(xmlFile));
+    public XMLExtractor (String url) throws XPathException,
+    XPathExpressionException, MalformedURLException {
+        this(new URL(url));
     }
 
     /**
