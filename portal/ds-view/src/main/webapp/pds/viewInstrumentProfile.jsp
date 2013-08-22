@@ -21,31 +21,6 @@
    </SCRIPT>
 </head>
 
-<%!
-/**
- * Null out the parameter value if any of the bad characters are present
- * that facilitate Cross-Site Scripting and Blind SQL Injection.
- */
-public String cleanParam(String str) {
-   char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
-   String decodedStr = null;
-
-   try {
-     if (str != null) {
-        decodedStr = URLDecoder.decode(str);
-        for(int i = 0; i < badChars.length; i++) {
-           if (decodedStr.indexOf(badChars[i]) >= 0) {
-              return null;
-           }
-         }
-     }
-   } catch (IllegalArgumentException e) {
-      return null;
-   }
-   return decodedStr;
-}
-%>
-
 <body class="menu_data menu_item_data_data_search ">
 
    <%@ include file="/pds/header.html" %>
@@ -66,7 +41,8 @@ public String cleanParam(String str) {
             </tr>
             
 <%
-if (cleanParam(request.getParameter("INSTRUMENT_ID"))==null) {
+String instrumentId = request.getParameter("INSTRUMENT_ID");
+if ((instrumentId == null) || (instrumentId == "")) {
 %>
             <tr valign="TOP">
                <td bgcolor="#F0EFEF" width=200 valign=top>
@@ -78,7 +54,6 @@ if (cleanParam(request.getParameter("INSTRUMENT_ID"))==null) {
 // Instrument id specified. Check if received instrument host id. 
 else {
    String instrumentHostId = null;
-   String instrumentId = request.getParameter("INSTRUMENT_ID");
    instrumentId = instrumentId.toUpperCase();
    boolean instFlag = false;
     
@@ -89,8 +64,8 @@ else {
    instLid = instLid.toLowerCase();
    
    // INSTRUMENT_HOST_ID is optional
-   if (cleanParam(request.getParameter("INSTRUMENT_HOST_ID")) != null) {
-      instrumentHostId = request.getParameter("INSTRUMENT_HOST_ID");
+   instrumentHostId = request.getParameter("INSTRUMENT_HOST_ID");
+   if ((instrumentHostId != null) && (instrumentHostId != "")) {
       instrumentHostId = instrumentHostId.toUpperCase();  
       //out.println("there is an instrument_host_id....instrument_host_id = " + instrumentHostId);
    }

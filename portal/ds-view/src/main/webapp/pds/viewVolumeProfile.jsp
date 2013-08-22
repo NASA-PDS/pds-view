@@ -20,31 +20,6 @@
       </SCRIPT>
 </head>
 
-<%!
-/**
- * Null out the parameter value if any of the bad characters are present
- * that facilitate Cross-Site Scripting and Blind SQL Injection.
- */
-public String cleanParam(String str) {
-   char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
-   String decodedStr = null;
-
-   try {
-     if (str != null) {
-        decodedStr = URLDecoder.decode(str);
-        for(int i = 0; i < badChars.length; i++) {
-           if (decodedStr.indexOf(badChars[i]) >= 0) {
-              return null;
-           }
-         }
-     }
-   } catch (IllegalArgumentException e) {
-      return null;
-   }
-   return decodedStr;
-}
-%>
-
 <body class="menu_data menu_item_data_data_search ">
 
    <%@ include file="/pds/header.html" %>
@@ -78,7 +53,8 @@ public String cleanParam(String str) {
             </tr>
             
 <%
-if (cleanParam(request.getParameter("VOLUME_ID"))==null) {
+String volumeId = request.getParameter("VOLUME_ID");
+if ((volumeId == null) || (volumeId == "")) {
 %>      
             <tr valign="TOP">
                <td bgcolor="#F0EFEF" width=200 valign=top>
@@ -90,20 +66,15 @@ if (cleanParam(request.getParameter("VOLUME_ID"))==null) {
 // Volume id specified. Check if VolumeSet ID is provided
 else {
    String volumeSetId = null;
-   String volumeId = request.getParameter("VOLUME_ID");
-   volumeId = volumeId.toUpperCase();
 
    // can use wildcard for the volume_set_id
-   if (cleanParam(request.getParameter("VOLUME_SET_ID")) != null) {
-      volumeSetId = request.getParameter("VOLUME_SET_ID");
-      volumeSetId = volumeSetId.toUpperCase();
-   }
+   volumeSetId = request.getParameter("VOLUME_SET_ID");
    
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
    String volumeLid = "urn:nasa:pds:context_pds3:volume:volume." + volumeId.toLowerCase();
 
    ExtrinsicObject volumeObj = null;
-   if (volumeSetId == null) {
+   if ((volumeSetId == null) || (volumeSetId == "")) {
       // what to do when there are more than one volume object exists
       List<ExtrinsicObject> volObjs = searchRegistry.getObjects(volumeLid+"*", "Product_Volume*");
       if (volObjs!=null) 

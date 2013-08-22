@@ -21,31 +21,6 @@
       </SCRIPT>
 </head>
 
-<%!
-/**
- * Null out the parameter value if any of the bad characters are present
- * that facilitate Cross-Site Scripting and Blind SQL Injection.
- */
-public String cleanParam(String str) {
-   char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
-   String decodedStr = null;
-
-   try {
-     if (str != null) {
-        decodedStr = URLDecoder.decode(str);
-        for(int i = 0; i < badChars.length; i++) {
-           if (decodedStr.indexOf(badChars[i]) >= 0) {
-              return null;
-           }
-         }
-     }
-   } catch (IllegalArgumentException e) {
-      return null;
-   }
-   return decodedStr;
-}
-%>
-
 <body class="menu_data menu_item_data_data_search ">
 
    <%@ include file="/pds/header.html" %>
@@ -66,9 +41,8 @@ public String cleanParam(String str) {
             </tr>
             
 <%
-
    PDS4Search pds4Search = new PDS4Search(searchUrl);
-   
+
    if (request.getParameter("identifier")==null) {
       SolrDocumentList bundleObjs = pds4Search.getBundles();
    

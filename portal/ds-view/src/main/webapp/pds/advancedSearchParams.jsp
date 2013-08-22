@@ -18,11 +18,11 @@
           <TR vAlign=top>
              <TD bgColor=#efefef vAlign=top>
                 <INPUT id="strttime" name="strttime" size=24 
-                  value="<%=jpl.pds.util.DisplayOptions.displayInput(request, "Start Date", "strttime", "YYYY-MM-DD")%>">
+                  value="<%=gov.nasa.pds.dsview.util.DisplayOptions.displayInput(request, "Start Date", "strttime", "YYYY-MM-DD")%>">
                   <BR></TD>
              <TD bgColor=#efefef vAlign=top>
                 <INPUT id="stoptime" name="stoptime" size=24
-                  value="<%=jpl.pds.util.DisplayOptions.displayInput(request, "Stop Date", "stoptime", "YYYY-MM-DD")%>">
+                  value="<%=gov.nasa.pds.dsview.util.DisplayOptions.displayInput(request, "Stop Date", "stoptime", "YYYY-MM-DD")%>">
                   <BR></TD>
           </TR>
 	  <tr>

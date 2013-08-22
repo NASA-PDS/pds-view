@@ -31,32 +31,7 @@
    <div style="border-top: 1px solid_white;">
    <table align="center" bgColor="#FFFFFF" border="0" CELLPADDING="10" CELLSPACING="0">
      <tr>
-       <td>    
-<%!
-  /**
-   * Blank out the parameter value if any of the bad characters are present
-   * that facilitate Cross-Site Scripting and Blind SQL Injection.
-   */
-  public String cleanParam(String str) {
-    char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
-    String decodedStr = "";
-
-    try {
-      if (str != null) {
-        decodedStr = URLDecoder.decode(str);
-        for(int i = 0; i < badChars.length; i++) {
-          if (decodedStr.indexOf(badChars[i]) >= 0) {
-            return "";
-          }
-        }
-      }
-    } catch (IllegalArgumentException e) {
-      return "";
-    }
-    return decodedStr;
-  }
-%>
-
+       <td>
 <%
 String[] displayedElements = {"DATA_SET_NAME", "DATA_SET_ID", "NSSDC_DATA_SET_ID",
 		"DATA_SET_TERSE_DESCRIPTION", "DATASET_DESCRIPTION",
@@ -80,23 +55,23 @@ String localdsid =  "";
 while (names.hasMoreElements()) {
    String param = (String) names.nextElement();
    if (param.equals("volume")) {
-      volume = cleanParam(request.getParameter("volume"));
+      volume = request.getParameter("volume");
    } else if (param.equals("nodename")) {
-      nodename = cleanParam(request.getParameter("nodename"));
+      nodename = request.getParameter("nodename");
    } else if (param.equals("ancillary")) {
-      ancillary = cleanParam(request.getParameter("ancillary"));
+      ancillary = request.getParameter("ancillary");
    } else if (param.equals("psclass")) {
-      psclass = cleanParam(request.getParameter("psclass"));
+      psclass = request.getParameter("psclass");
    } else if (param.equals("localdsid")) {
-      localdsid = cleanParam(request.getParameter("localdsid"));
+      localdsid = request.getParameter("localdsid");
    } else if (param.equals("datasetid")) {
-      dsid = cleanParam(request.getParameter("datasetid"));
+      dsid = request.getParameter("datasetid");
    } else if (param.equals("dsid")) {
-      dsid = cleanParam(request.getParameter("dsid"));
+      dsid = request.getParameter("dsid");
    } else if (param.equals("Identifier")) {
-      dsid = cleanParam(request.getParameter("Identifier"));
+      dsid = request.getParameter("Identifier");
    } else if (param.equals("identifier")) {
-      dsid = cleanParam(request.getParameter("identifier"));
+      dsid = request.getParameter("identifier");
    }
 }
 %>

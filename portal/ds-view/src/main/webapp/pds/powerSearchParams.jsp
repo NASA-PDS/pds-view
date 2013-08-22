@@ -19,12 +19,12 @@
        <TR vAlign=top>
               <td valign="TOP" >
                  <SELECT id=archivestat name=archivestat>
-                   <%=jpl.pds.util.DisplayOptions.displayValList(request, "Archive Status", "archivestat", paramBean.getArchiveStat())%>
+                   <%=gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "Archive Status", "archivestat", paramBean.getArchiveStat())%>
 	         </SELECT>
               </TD>
               <td valign="TOP" >
                   <SELECT id=nodename name=nodename>
-                    <%=jpl.pds.util.DisplayOptions.displayValList(request, "Curator", "nodename", paramBean.getNodeName())%>
+                    <%=gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "Curator", "nodename", paramBean.getNodeName())%>
                   </SELECT>
               </TD>
        </TR>

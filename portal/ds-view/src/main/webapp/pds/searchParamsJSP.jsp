@@ -427,16 +427,16 @@ System.out.println("request.getRequestURI() = " + request.getRequestURI());
   // if index.jsp called with no parameters,
   // or if query is empty for some reason, then get all default values
   if (q.equals("")) {
-    opts[MSNNAME]  = jpl.pds.util.DisplayOptions.displayValList(request, "MISSION_NAME", "msnname", paramBean.getMissionName());
-    opts[TARGNAME] = jpl.pds.util.DisplayOptions.displayValList(request, "TARGET_NAME", "targname", paramBean.getTargetName());
-    opts[TARGTYPE] = jpl.pds.util.DisplayOptions.displayValList(request, "TARGET_TYPE", "targtype", paramBean.getTargetType());
-    opts[INSTNAME] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_NAME", "instname", paramBean.getInstrumentName());
-    opts[INSTTYPE] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_TYPE", "insttype", paramBean.getInstrumentType());
-    opts[DATAOBJTYPE]  = jpl.pds.util.DisplayOptions.displayValList(request, "DATA_OBJECT_TYPE", "dataobjtype", paramBean.getDataObjectType());
-    opts[DSID]         = jpl.pds.util.DisplayOptions.displayValList(request, "DATA_SET_ID", "dsid", paramBean.getDatasetId());
-    opts[DSNAME]       = jpl.pds.util.DisplayOptions.displayValList(request, "DATA_SET_NAME", "dsname", paramBean.getDatasetName());
-    opts[INSTHOSTNAME] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_HOST_NAME", "insthostname", paramBean.getInstrumentHostName());
-    opts[INSTHOSTTYPE] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_HOST_TYPE", "insthosttype", paramBean.getInstrumentHostType());
+    opts[MSNNAME]  = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "MISSION_NAME", "msnname", paramBean.getMissionName());
+    opts[TARGNAME] = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "TARGET_NAME", "targname", paramBean.getTargetName());
+    opts[TARGTYPE] = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "TARGET_TYPE", "targtype", paramBean.getTargetType());
+    opts[INSTNAME] = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "INSTRUMENT_NAME", "instname", paramBean.getInstrumentName());
+    opts[INSTTYPE] = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "INSTRUMENT_TYPE", "insttype", paramBean.getInstrumentType());
+    opts[DATAOBJTYPE]  = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "DATA_OBJECT_TYPE", "dataobjtype", paramBean.getDataObjectType());
+    opts[DSID]         = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "DATA_SET_ID", "dsid", paramBean.getDatasetId());
+    opts[DSNAME]       = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "DATA_SET_NAME", "dsname", paramBean.getDatasetName());
+    opts[INSTHOSTNAME] = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "INSTRUMENT_HOST_NAME", "insthostname", paramBean.getInstrumentHostName());
+    opts[INSTHOSTTYPE] = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "INSTRUMENT_HOST_TYPE", "insthosttype", paramBean.getInstrumentHostType());
     opts[TARGNAMES] = "";
     for (int i=1; i<paramBean.getTargetName().length; i++) {
       if (!opts[TARGNAMES].equals("")) opts[TARGNAMES] += ",";
@@ -483,16 +483,16 @@ System.out.println("q = " + q);
     paramBean.initialize();
     paramBean.getParams(q);
     
-    opts[MSNNAME]  = jpl.pds.util.DisplayOptions.displayValList(request, "MISSION_NAME", "msnname", paramBean.getMissionName());
-    opts[TARGNAME] = jpl.pds.util.DisplayOptions.displayValList(request, "TARGET_NAME", "targname", paramBean.getTargetName());
-    opts[TARGTYPE] = jpl.pds.util.DisplayOptions.displayValList(request, "TARGET_TYPE", "targtype", paramBean.getTargetType());
-    opts[INSTNAME] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_NAME", "instname", paramBean.getInstrumentName());
-    opts[INSTTYPE] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_TYPE", "insttype", paramBean.getInstrumentType());
-    opts[DATAOBJTYPE]  = jpl.pds.util.DisplayOptions.displayValList(request, "DATA_OBJECT_TYPE", "dataobjtype", paramBean.getDataObjectType());
-    opts[DSID]         = jpl.pds.util.DisplayOptions.displayValList(request, "DATA_SET_ID", "dsid", paramBean.getDatasetId());
-    opts[DSNAME]       = jpl.pds.util.DisplayOptions.displayValList(request, "DATA_SET_NAME", "dsname", paramBean.getDatasetName());
-    opts[INSTHOSTNAME] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_HOST_NAME", "insthostname", paramBean.getInstrumentHostName());
-    opts[INSTHOSTTYPE] = jpl.pds.util.DisplayOptions.displayValList(request, "INSTRUMENT_HOST_TYPE", "insthosttype", paramBean.getInstrumentHostType());
+    opts[MSNNAME]  = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "MISSION_NAME", "msnname", paramBean.getMissionName());
+    opts[TARGNAME] = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "TARGET_NAME", "targname", paramBean.getTargetName());
+    opts[TARGTYPE] = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "TARGET_TYPE", "targtype", paramBean.getTargetType());
+    opts[INSTNAME] = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "INSTRUMENT_NAME", "instname", paramBean.getInstrumentName());
+    opts[INSTTYPE] = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "INSTRUMENT_TYPE", "insttype", paramBean.getInstrumentType());
+    opts[DATAOBJTYPE]  = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "DATA_OBJECT_TYPE", "dataobjtype", paramBean.getDataObjectType());
+    opts[DSID]         = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "DATA_SET_ID", "dsid", paramBean.getDatasetId());
+    opts[DSNAME]       = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "DATA_SET_NAME", "dsname", paramBean.getDatasetName());
+    opts[INSTHOSTNAME] = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "INSTRUMENT_HOST_NAME", "insthostname", paramBean.getInstrumentHostName());
+    opts[INSTHOSTTYPE] = gov.nasa.pds.dsview.util.DisplayOptions.displayValList(request, "INSTRUMENT_HOST_TYPE", "insthosttype", paramBean.getInstrumentHostType());
     opts[TARGNAMES] = "";
     for (int i=1; i<paramBean.getTargetName().length; i++) {
       if (!opts[TARGNAMES].equals("")) opts[TARGNAMES] += ",";

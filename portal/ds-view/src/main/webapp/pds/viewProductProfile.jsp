@@ -31,31 +31,6 @@ String getValue(HttpServletRequest req, String param, int len ) {
 }
 %>
 
-<%!
-/**
- * Null out the parameter value if any of the bad characters are present
- * that facilitate Cross-Site Scripting and Blind SQL Injection.
- */
-public String cleanParam(String str) {
-   char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
-   String decodedStr = null;
-
-   try {
-     if (str != null) {
-        decodedStr = URLDecoder.decode(str);
-        for(int i = 0; i < badChars.length; i++) {
-           if (decodedStr.indexOf(badChars[i]) >= 0) {
-              return null;
-           }
-         }
-     }
-   } catch (IllegalArgumentException e) {
-      return null;
-   }
-   return decodedStr;
-}
-%>
-
 <body class="menu_data menu_item_data_data_search ">
 
    <%@ include file="/pds/header.html" %>
@@ -89,32 +64,29 @@ public String cleanParam(String str) {
             </tr>               
 <%
 // need to query from Product_Proxy_PDS3
-String lid = null;
-if (cleanParam(request.getParameter("Identifier"))==null) {  
+String lid = request.getParameter("identifier");
+if ((lid == null) || (lid == "")) {
 %>
             <tr valign="TOP">
                <td bgcolor="#F0EFEF" width=200 valign=top>
-                  Please specify a <b>dsid</b> or <b>Identifier</b>
+                  Please specify an <b>identifier</b>
                </td>
             </tr>
          </table>
 <%  
 }
 else {
-   
-   lid = request.getParameter("Identifier");
-   lid = lid.toUpperCase();
-   // just for testing...
-   lid = "urn:nasa:pds:context_pds3:node:node." + lid;
-   out.println("lid = " + lid);
+   String tmpLid = lid.replaceAll("/", "-");
+   lid = "urn:nasa:pds:" + tmpLid.toLowerCase();
+   System.out.println("lid = " + lid);
 
    // TODO: if the Identifier contains invalid chars...need to replace or throws exceptions - need to look the harvest tool
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);  
    // it will change to Product_Context for next build
    
-   //List<ExtrinsicObject> masterDSObjs = searchRegistry.getObjects(lid, "Product_Proxy_PDS3");
-   List<ExtrinsicObject> masterDSObjs = searchRegistry.getObjects(lid, "Product_Context");
-   out.println("masterDSObjs = " + masterDSObjs.size());
+   List<ExtrinsicObject> masterDSObjs = searchRegistry.getObjects(lid, "Product_Proxy_PDS3");
+   //List<ExtrinsicObject> masterDSObjs = searchRegistry.getObjects(lid, "Product_Context");
+   //System.out.println("masterDSObjs = " + masterDSObjs.size());
 %>
             <!-- Display profile attributes -->
             <!-- Display resource attributes -->      
@@ -146,7 +118,7 @@ else {
    <!-- need to display all slot values here -->
 <% 
    if (masterDSObjs!=null) {
-      out.println("masterDSObjs.size = " + masterDSObjs.size());
+      System.out.println("masterDSObjs.size = " + masterDSObjs.size());
       
       for (ExtrinsicObject obj: masterDSObjs) { 
          // need to display all slot values      

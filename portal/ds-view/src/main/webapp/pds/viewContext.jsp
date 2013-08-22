@@ -4,7 +4,7 @@
 %>
 <html>
 <head>
-   <title>PDS: PDS4 Product Class Information</title>
+   <title>PDS: Context Information</title>
    <META  NAME="keywords"  CONTENT="Planetary Data System">
    <META  NAME="description" CONTENT="This website serves as a mechanism for searching the PDS planetary archives.">
    <link href="/ds-view/pds/css/pds_style.css" rel="stylesheet" type="text/css">
@@ -20,31 +20,6 @@
    </SCRIPT>
 </head>
 
-<%!
-/**
- * Null out the parameter value if any of the bad characters are present
- * that facilitate Cross-Site Scripting and Blind SQL Injection.
- */
-public String cleanParam(String str) {
-   char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
-   String decodedStr = null;
-
-   try {
-     if (str != null) {
-        decodedStr = URLDecoder.decode(str);
-        for(int i = 0; i < badChars.length; i++) {
-           if (decodedStr.indexOf(badChars[i]) >= 0) {
-              return null;
-           }
-         }
-     }
-   } catch (IllegalArgumentException e) {
-      return null;
-   }
-   return decodedStr;
-}
-%>
-
 <body class="menu_data menu_item_data_data_search ">
 
    <%@ include file="/pds/header.html" %>
@@ -58,9 +33,10 @@ public String cleanParam(String str) {
    <tr>
       <td>
          <table width="760" border="0" cellspacing="3" cellpadding="2">
-                  
+
 <%
-if (cleanParam(request.getParameter("identifier"))==null) {
+String lid = request.getParameter("identifier");
+if ((lid == null) || (lid == "")) {
 %>       
             <tr valign="TOP">
                <td valign="TOP" colspan="2" class="pageTitle">
@@ -75,10 +51,6 @@ if (cleanParam(request.getParameter("identifier"))==null) {
 <%
 }
 else {
-
-   String lid = request.getParameter("identifier");
-   //out.println("lid = " + lid);
-   
    PDS4Search pds4Search = new PDS4Search(searchUrl);
    SolrDocument doc = pds4Search.getContext(lid);
 
