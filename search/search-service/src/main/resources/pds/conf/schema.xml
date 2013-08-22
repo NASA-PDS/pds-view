@@ -546,116 +546,116 @@
    <field name="_version_" type="long" indexed="true" stored="true"/>
    
    <field name="abstract_text" type="text_general" indexed="false" stored="true" multiValued="true" />
-   <field name="agency_name" type="string" indexed="true" stored="true" multiValued="true" />
-   <field name="alternate_id" type="string" indexed="false" stored="true" multiValued="true" />
+   <field name="agency_name" type="string_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="alternate_id" type="string_lc" indexed="false" stored="true" multiValued="true" />
    <field name="alternate_title" type="text_general" indexed="false" stored="true" multiValued="true" />
-   <field name="archive_status" type="string" indexed="true" stored="true" multiValued="false" />
-   <field name="bundle_type" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="archive_status" type="string_lc" indexed="true" stored="true" multiValued="false" />
+   <field name="bundle_type" type="string_lc" indexed="true" stored="true" multiValued="true" />
    <field name="bundle_description" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="citation_author_list" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="citation_description" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="citation_editor_list" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="citation_keyword" type="text" indexed="true" stored="true" multiValued="true" />
    <field name="citation_publication_year" type="text" indexed="false" stored="true" multiValued="true" />
-   <field name="collection_name" type="text" indexed="true" stored="true" multiValued="true" />
-   <field name="collection_ref" type="text" indexed="false" stored="true" multiValued="true" />
-   <field name="collection_type" type="text" indexed="true" stored="true" multiValued="true" />
-   <field name="confidence_level_note" type="text" indexed="false" stored="true" multiValued="true" />
-   <field name="data_class" type="text_lc" indexed="true" stored="true" multiValued="false" />
-   <field name="data_object_type" type="text_lc" indexed="true" stored="true" multiValued="true"/>
-   <field name="data_set_description" type="text" indexed="false" stored="true" multiValued="true" />
-   <field name="data_set_id" type="string" indexed="true" stored="true" multiValued="false" />
-   <field name="data_set_name" type="text" indexed="true" stored="true" multiValued="true" />
-   <field name="data_set_release_date" type="string" indexed="true" stored="true" multiValued="true" />
-   <field name="data_set_terse_description" type="text" indexed="true" stored="true" multiValued="true" />
-   <field name="description" type="text" indexed="false" stored="true" multiValued="true" />
-   <field name="format" type="string" indexed="false" stored="true" multiValued="true" />
-   <field name="full_name" type="text" indexed="true" stored="true" multiValued="true" />
-   <field name="file_name" type="text" indexed="true" stored="true" multiValued="true" />
-   <field name="person_name" type="text" indexed="true" stored="true" multiValued="true" />
-   <field name="instrument_description" type="text" indexed="false" stored="true" multiValued="true" />
-   <field name="instrument_host_id" type="string" indexed="true" stored="true" multiValued="true" />
-   <field name="instrument_host_description" type="text" indexed="false" stored="true" multiValued="true" />
-   <field name="instrument_host_naif_id" type="string" indexed="false" stored="true" multiValued="false" />
-   <field name="instrument_host_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
-   <field name="instrument_host_ref" type="text" indexed="false" stored="true" multiValued="true" />
-   <field name="instrument_host_serial_number" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="collection_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="collection_ref" type="string_lc" indexed="false" stored="true" multiValued="true" />
+   <field name="collection_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="confidence_level_note" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <field name="data_class" type="string_lc" indexed="true" stored="true" multiValued="false" />
+   <field name="data_object_type" type="string_lc" indexed="true" stored="true" multiValued="true"/>
+   <field name="data_set_description" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <field name="data_set_id" type="string_lc" indexed="true" stored="true" multiValued="false" />
+   <field name="data_set_name" type="text_general" indexed="true" stored="true" multiValued="true" />
+   <field name="data_set_release_date" type="string_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="data_set_terse_description" type="text_general" indexed="true" stored="true" multiValued="true" />
+   <field name="description" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <field name="format" type="string_lc" indexed="false" stored="true" multiValued="true" />
+   <field name="full_name" type="text_general" indexed="true" stored="true" multiValued="true" />
+   <field name="file_name" type="string_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="person_name" type="text_general" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_description" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <field name="instrument_host_id" type="string_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_host_description" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <field name="instrument_host_naif_id" type="string_lc" indexed="false" stored="true" multiValued="false" />
+   <field name="instrument_host_name" type="text_general" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_host_ref" type="string_lc" indexed="false" stored="true" multiValued="true" />
+   <field name="instrument_host_serial_number" type="string_lc" indexed="false" stored="true" multiValued="false" />
    <field name="instrument_host_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
-   <field name="instrument_host_version_id" type="string" indexed="false" stored="true" multiValued="false" />
-   <field name="instrument_id" type="string" indexed="true" stored="true" multiValued="true" />
-   <field name="instrument_model_id" type="string" indexed="false" stored="true" multiValued="false" />
-   <field name="instrument_naif_id" type="string" indexed="false" stored="true" multiValued="false" />
-   <field name="instrument_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
-   <field name="instrument_ref" type="text" indexed="true" stored="true" multiValued="true" />
-   <field name="instrument_serial_number" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="instrument_host_version_id" type="string_lc" indexed="false" stored="true" multiValued="false" />
+   <field name="instrument_id" type="string_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_model_id" type="string_lc" indexed="false" stored="true" multiValued="false" />
+   <field name="instrument_naif_id" type="string_lc" indexed="false" stored="true" multiValued="false" />
+   <field name="instrument_name" type="text_general" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_ref" type="string_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_serial_number" type="string_lc" indexed="false" stored="true" multiValued="false" />
    <field name="instrument_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
-   <field name="investigation_description" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="investigation_description" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="investigation_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="investigation_name_or_alias" type="text_lc" indexed="false" stored="true" multiValued="true" />
-   <field name="investigation_objectives_summary" type="text" indexed="false" stored="true" multiValued="true" />
-   <field name="investigation_ref" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="investigation_objectives_summary" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <field name="investigation_ref" type="string_lc" indexed="false" stored="true" multiValued="true" />
    <field name="investigation_start_date" type="date" indexed="true" stored="true" multiValued="true" />
    <field name="investigation_stop_date" type="date" indexed="true" stored="true" multiValued="true" />
    <field name="investigation_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="language" type="text_lc" indexed="false" stored="true" multiValued="true" />
    <field name="modification_date" type="date" indexed="false" stored="true" multiValued="false" />
-   <field name="modification_description" type="string" indexed="false" stored="true" multiValued="true" />
-   <field name="node_id" type="string" indexed="true" stored="true" multiValued="true" />
-   <field name="nssdc_data_set_id" type="string" indexed="true" stored="true" multiValued="true" />
-   <field name="objectType" type="string" indexed="true" stored="true" multiValued="false" />
+   <field name="modification_description" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <field name="node_id" type="string_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="nssdc_data_set_id" type="string_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="objectType" type="string_lc" indexed="true" stored="true" multiValued="false" />
    <field name="observation_local_mean_solar_time" type="date" indexed="false" stored="true" multiValued="false" />
    <field name="observation_local_true_solar_time" type="date" indexed="false" stored="true" multiValued="false" />
    <field name="observation_solar_longitude" type="float" indexed="false" stored="true" multiValued="false" />
    <field name="observation_start_date_time" type="date" indexed="true" stored="true" multiValued="false" />
    <field name="observation_stop_date_time" type="date" indexed="true" stored="true" multiValued="false" />
-   <field name="observing_system_name" type="text" indexed="true" stored="true" multiValued="true" />
-   <field name="observing_system_component_name" type="text" indexed="true" stored="true" multiValued="true" />
-   <field name="observing_system_component_type" type="text" indexed="true" stored="true" multiValued="true" />
+   <field name="observing_system_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="observing_system_component_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="observing_system_component_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="pds_model_version" type="string_lc" indexed="true" stored="true" multiValued="false" />
-   <field name="primary_result_data_regime" type="text" indexed="false" stored="true" multiValued="true" />
-   <field name="primary_result_description" type="text" indexed="false" stored="true" multiValued="true" />
-   <field name="primary_result_processing_level_id" type="string" indexed="false" stored="true" multiValued="false" />
-   <field name="primary_result_purpose" type="text" indexed="false" stored="true" multiValued="false" />
-   <field name="primary_result_type" type="text" indexed="false" stored="true" multiValued="false" />
+   <field name="primary_result_data_regime" type="text_lc" indexed="false" stored="true" multiValued="true" />
+   <field name="primary_result_description" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <field name="primary_result_processing_level_id" type="string_lc" indexed="false" stored="true" multiValued="false" />
+   <field name="primary_result_purpose" type="text_lc" indexed="false" stored="true" multiValued="false" />
+   <field name="primary_result_type" type="text_lc" indexed="false" stored="true" multiValued="false" />
    <field name="primary_body_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
-   <field name="publisher" type="text" indexed="true" stored="true" multiValued="true" />
-   <field name="reference_description" type="text" indexed="false" stored="true" multiValued="true" />
-   <field name="resClass" type="string" indexed="true" stored="true" multiValued="false" />
+   <field name="publisher" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="reference_description" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <field name="resClass" type="string_lc" indexed="true" stored="true" multiValued="false" />
    <field name="resContext" type="string" indexed="false" stored="true" multiValued="false" />
    <field name="resLocation" type="string" indexed="false" stored="true" multiValued="false" />
    <field name="resource" type="string" indexed="false" stored="true" multiValued="true" />
-   <field name="resource_class" type="text_lc" indexed="true" stored="true" multiValued="false" />
+   <field name="resource_class" type="text_general" indexed="true" stored="true" multiValued="false" />
    <field name="resource_id" type="string" indexed="true" stored="true" multiValued="true" />
    <field name="resource_link" type="string" indexed="false" stored="true" multiValued="true"/>
-   <field name="resource_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
-   <field name="resource_description" type="text_lc" indexed="true" stored="true" multiValued="true" />
-   <field name="search_engine_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
+   <field name="resource_name" type="text_general" indexed="true" stored="true" multiValued="true" />
+   <field name="resource_description" type="text_general" indexed="true" stored="true" multiValued="true" />
+   <field name="search_engine_type" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="start_time" type="date" indexed="true" stored="true" multiValued="true" />
    <field name="stop_time" type="date" indexed="true" stored="true" multiValued="true" />
-   <field name="target_description" type="text" indexed="false" stored="true" multiValued="true" />
-   <field name="target_name" type="text_lc" indexed="true" stored="true" multiValued="true" />
-   <field name="target_ref" type="text" indexed="false" stored="true" multiValued="true" />
+   <field name="target_description" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <field name="target_name" type="text_general" indexed="true" stored="true" multiValued="true" />
+   <field name="target_ref" type="string_lc" indexed="false" stored="true" multiValued="true" />
    <field name="target_type" type="text_lc" indexed="true" stored="true" multiValued="true" />
    <field name="telephone_number" type="string" indexed="false" stored="true" multiValued="true" />
-   <field name="title" type="text" indexed="true" stored="true" multiValued="false" />
+   <field name="title" type="text_lc" indexed="true" stored="true" multiValued="false" />
    <field name="version_id" type="string" indexed="false" stored="true" multiValued="false" />
    
    <!-- A few aliases of the fields above, filled in via copyField, below -->
-   <field name="agency" type="text_lc" indexed="true" stored="false" multiValued="true" />
-   <field name="archive-status" type="string" indexed="true" stored="false" multiValued="false" />
-   <field name="instrument" type="text" indexed="true" stored="false" multiValued="true" />
+   <field name="agency" type="string_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="archive-status" type="string_lc" indexed="true" stored="false" multiValued="false" />
+   <field name="instrument" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="instrument-host" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="instrument-host-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="instrument-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="investigation" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="observing-system" type="text_lc" indexed="true" stored="false" multiValued="true" />
-   <field name="person" type="text" indexed="true" stored="false" multiValued="true" />
-   <field name="product-class" type="string" indexed="true" stored="false" />
+   <field name="person" type="text_lc" indexed="true" stored="false" multiValued="true" />
+   <field name="product-class" type="string_lc" indexed="true" stored="false" />
    <field name="start-time" type="date" indexed="true" stored="false" multiValued="true"/>
    <field name="stop-time" type="date" indexed="true" stored="false" multiValued="true"/>
    <field name="target" type="text_lc" indexed="true" stored="false" multiValued="true" />
    <field name="target-type" type="text_lc" indexed="true" stored="false" multiValued="true" />
-   <field name="term" type="text" indexed="true" stored="false" multiValued="true" />
+   <field name="term" type="text_lc" indexed="true" stored="false" multiValued="true" />
 
    
    <!-- And the faceting fields -->
