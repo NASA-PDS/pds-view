@@ -148,7 +148,7 @@ public class Constants {
 		bundlePds4ToSearch.put("NAME", "title");
 		bundlePds4ToSearch.put("TYPE", "bundle_type");
 		bundlePds4ToSearch.put("DESCRIPTION", "bundle_description");
-		//bundlePds4ToSearch.put("DESCRIPTION", "resource_class");
+		bundlePds4ToSearch.put("RESOURCES", "resource_ref");
 	}
     	      
     public static final Map<String, String> bundleCitationPds4ToRegistry =
@@ -195,6 +195,7 @@ public class Constants {
 		collectionPds4ToSearch.put("NAME", "title");
 		collectionPds4ToSearch.put("TYPE", "collection_type");
 		collectionPds4ToSearch.put("DESCRIPTION", "modification_description");
+		collectionPds4ToSearch.put("RESOURCES",  "resource_ref");
 	}
 	
 	public static final Map<String, String> targetPds4ToRegistry =
@@ -241,4 +242,12 @@ public class Constants {
 		instHostCtxPds4ToSearch.put("SERIAL NUMBER", "instrument_host_serial_number");
 		instHostCtxPds4ToSearch.put("REFERENCES", "external_reference_description");
 	}
+	
+	public static final Map<String, String> observationalPds4ToSearch = new LinkedHashMap<String, String>();
+    static {
+        observationalPds4ToSearch.put("IDENTIFIER", "identifier");
+        observationalPds4ToSearch.put("NAME", "title");
+        observationalPds4ToSearch.put("TYPE", "data_class");
+        observationalPds4ToSearch.put("FILE NAME", "file_name");
+    }
 }

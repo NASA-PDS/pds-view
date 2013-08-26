@@ -61,11 +61,11 @@ public class PDS4Search {
 
 		ModifiableSolrParams params = new ModifiableSolrParams();
 
-		params.add("q", "*:*");
-		params.set("indent", "on");
+		params.add("q", "");
 		params.set("wt", "xml");
-		params.set("fq", "facet_class:\"1,collection\"");
-
+		params.set("fq", "facet_object_type:\"1,product_collection\"");
+		//params.set("start", start);
+		
 		System.out.println("params = " + params.toString());
 		QueryResponse response = solr.query(params,
 				org.apache.solr.client.solrj.SolrRequest.METHOD.GET);
@@ -96,16 +96,88 @@ public class PDS4Search {
 
 		ModifiableSolrParams params = new ModifiableSolrParams();
 
-		params.add("q", "*:*");
-		params.set("indent", "on");
+		params.add("q", "");
 		params.set("wt", "xml");
-		params.set("fq", "facet_class:\"1,bundle\"");
-
+		params.set("fq", "facet_object_type:\"1,product_bundle\"");
+		//params.set("start", start);
+		
 		System.out.println("params = " + params.toString());
 		QueryResponse response = solr.query(params,
 				org.apache.solr.client.solrj.SolrRequest.METHOD.GET);
 
 		SolrDocumentList solrResults = response.getResults();
+		Iterator<SolrDocument> itr = solrResults.iterator();
+		int idx = 0;
+		while (itr.hasNext()) {
+			SolrDocument doc = itr.next();
+			System.out.println("*****************  idx = " + (idx++));
+			// System.out.println(doc.toString());
+
+			for (Map.Entry<String, Object> entry : doc.entrySet()) {
+				System.out.println("Key = " + entry.getKey()
+						+ "       Value = " + entry.getValue());
+			}
+		}
+		return solrResults;
+	}
+/*
+	public SolrDocumentList getObservationals() throws MalformedURLException,
+	SolrServerException {
+		SolrServer solr = new CommonsHttpSolrServer(solrServerUrl);
+		
+		ModifiableSolrParams params = new ModifiableSolrParams();
+
+		params.add("q", "");
+		//params.set("indent", "on");
+		params.set("wt", "xml");
+		params.set("fq", "facet_object_type:\"1,product_observational\"");
+
+		System.out.println("params = " + params.toString());
+		QueryResponse response = solr.query(params,
+				org.apache.solr.client.solrj.SolrRequest.METHOD.GET);
+
+		if (response==null) 
+			return null;
+
+		SolrDocumentList solrResults = response.getResults();
+		System.out.println("numFound = " + solrResults.getNumFound());
+
+		Iterator<SolrDocument> itr = solrResults.iterator();
+		int idx = 0;
+		while (itr.hasNext()) {
+			SolrDocument doc = itr.next();
+			System.out.println("*****************  idx = " + (idx++));
+			// System.out.println(doc.toString());
+
+			for (Map.Entry<String, Object> entry : doc.entrySet()) {
+				System.out.println("Key = " + entry.getKey()
+						+ "       Value = " + entry.getValue());
+			}
+		}
+		return solrResults;
+	}
+*/	
+	public SolrDocumentList getObservationals(int start) throws MalformedURLException,
+	SolrServerException {
+		SolrServer solr = new CommonsHttpSolrServer(solrServerUrl);
+		
+		ModifiableSolrParams params = new ModifiableSolrParams();
+
+		params.add("q", "");
+		params.set("wt", "xml");
+		params.set("fq", "facet_object_type:\"1,product_observational\"");
+		params.set("start", start);
+
+		System.out.println("params = " + params.toString());
+		QueryResponse response = solr.query(params,
+				org.apache.solr.client.solrj.SolrRequest.METHOD.GET);
+
+		if (response==null) 
+			return null;
+
+		SolrDocumentList solrResults = response.getResults();
+		System.out.println("numFound = " + solrResults.getNumFound());
+
 		Iterator<SolrDocument> itr = solrResults.iterator();
 		int idx = 0;
 		while (itr.hasNext()) {
@@ -131,7 +203,11 @@ public class PDS4Search {
 		params.set("indent", "on");
 		params.set("wt", "xml");
 		params.set("fq", "facet_class:\"1,context\"");
-
+/*		
+		params.add("q", "");
+		params.set("wt", "xml");
+		params.set("fq", "facet_object_type:\"1,product_collection\"");
+*/
 		System.out.println("params = " + params.toString());
 		QueryResponse response = solr.query(params,
 				org.apache.solr.client.solrj.SolrRequest.METHOD.GET);
@@ -218,7 +294,6 @@ public class PDS4Search {
 		params.add("q", "identifier:"+identifier);
 		params.set("indent", "on");
 		params.set("wt", "xml");
-		//params.set("fq", "facet_class:\"1,context\"");
 
 		System.out.println("params = " + params.toString());
 		QueryResponse response = solr.query(params,
@@ -266,40 +341,7 @@ public class PDS4Search {
 		}
 		return results;		
 	}
-/*
-	public void getSearchResult(String queryStr) {
-		try {
-			SolrServer solr = new CommonsHttpSolrServer(solrServerUrl);
-			ModifiableSolrParams params = new ModifiableSolrParams();
-			QueryResponse qr = new QueryResponse();
-
-			params.set("q", queryStr);
-			params.set("start", 0);
-			params.set("rows", max);
-
-			// System.out.println("params = " + params.toString());
-			qr = solr.query(params,
-					org.apache.solr.client.solrj.SolrRequest.METHOD.GET);
-
-			SolrDocumentList sdl = qr.getResults();
-
-			System.out.println("Found: " + sdl.getNumFound());
-			
-			int idx = 0;
-			dslists = new ArrayList<String>();
-			for (SolrDocument doc : sdl) {
-				for (Map.Entry<String, Object> entry : doc.entrySet()) {
-					System.out.println("Key = " + entry.getKey()
-							+ "    Value = " + entry.getValue());
-				}
-				idx++;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(-1);
-		}
-	}
-*/	
+	
 	/**
 	 * Command line invocation.
 	 * 
