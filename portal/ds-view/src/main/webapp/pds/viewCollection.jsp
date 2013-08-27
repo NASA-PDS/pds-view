@@ -113,6 +113,29 @@
             out.println(pds4Search.getValues(doc, "identifier").get(0));
          else if (key.equals("NAME"))
             out.println(pds4Search.getValues(doc, "title").get(0));
+         else if (key.equals("RESOURCES")) {
+            String resname = "";
+            String reslink = "";
+            List<String> resnames = pds4Search.getValues(doc, "resource_name");
+            if (resnames.size()==1) {
+               resname = pds4Search.getValues(doc, "resource_name").get(0);
+               reslink = pds4Search.getValues(doc, "resource_url").get(0);
+            %>
+            <a href="<%=reslink%>" target="_new"><%=resname%></a><br>
+            <%
+                   
+            } // end if
+            else if (resnames.size()>1) {
+               List<String> reslinks = pds4Search.getValues(doc, "resource_url");
+               for (int i=0; i<resnames.size(); i++) {
+                  resname = resnames.get(i);
+                  reslink = reslinks.get(i);
+                  %>
+                  <a href="<%=reslink%>" target="_new"><%=resname%></a><br>
+                  <%
+               } // end for
+            }
+         }
          else {
             //out.println("tmpValue = " + tmpValue + "<br>");
             List<String> values = pds4Search.getValues(doc, tmpValue);
@@ -120,8 +143,8 @@
                for (int j=0; j<values.size(); j++) {
                     out.println(values.get(j) + "<br>");
 
-                  if (values.size()>1)
-                    out.println("<br>");
+                  //if (values.size()>1)
+                  //  out.println("<br>");
                } // end for
              } // end if (values!=null)
           } // end else
