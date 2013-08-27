@@ -149,6 +149,29 @@ public String cleanParam(String str) {
             out.println(pds4Search.getValues(doc, "identifier").get(0));
          else if (key.equals("NAME"))
             out.println(pds4Search.getValues(doc, "title").get(0));
+         else if (key.equals("FILE NAME")) {
+            String filelink = "";
+            String filename = "";
+            List<String> filenames = pds4Search.getValues(doc, "file_ref_name");
+            if (filenames.size()==1) {
+               filename = pds4Search.getValues(doc, "file_ref_name").get(0);
+               filelink = pds4Search.getValues(doc, "file_ref_url").get(0);
+            %>
+            <a href="<%=filelink%>" target="_new"><%=filename%></a><br>
+            <%
+                   
+            } // end if
+            else if (filenames.size()>1) {
+               List<String> filelinks = pds4Search.getValues(doc, "file_ref_url");
+               for (int i=0; i<filenames.size(); i++) {
+                  filename = filenames.get(i);
+                  filelink = filelinks.get(i);
+                  %>
+                  <a href="<%=filelink%>" target="_new"><%=filename%></a><br>
+                  <%
+               } // end for
+            }
+         }
          else {
             //out.println("tmpValue = " + tmpValue + "<br>");
             List<String> values = pds4Search.getValues(doc, tmpValue);
