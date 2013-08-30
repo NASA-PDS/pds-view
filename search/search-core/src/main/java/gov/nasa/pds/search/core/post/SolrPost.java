@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -271,11 +272,11 @@ public class SolrPost {
         	responseStream = Utility.execHttpRequest(httppost);
         	return verifyStatus(responseStream);
         } catch (IOException e) {
-        	throw new SolrPostException("Error extracting data from " + url + ". Verify connections.");
+        	throw new SolrPostException("Error with " + url + ": " + e.getMessage());
         } finally {
         	try {
 				responseStream.close();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// Ignore exception
 			}
         }
@@ -306,6 +307,11 @@ public class SolrPost {
 			XPath xpath = xPathfactory.newXPath();
 			XPathExpression expr = xpath.compile("/response/lst/int[@name='status']");
 			String status = expr.evaluate(doc);
+			
+			//System.out.println("Status: " + status);
+			StringWriter writer = new StringWriter();
+			IOUtils.copy(responseStream, writer, "UTF-8");
+	        log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "Status: " + status));
 			
 			if (status.equals("0")) {
 				return true;

@@ -3,12 +3,15 @@ package gov.nasa.pds.search.core.schema;
 import static org.junit.Assert.*;
 
 import gov.nasa.pds.search.core.constants.TestConstants;
+import gov.nasa.pds.search.core.test.SearchCoreTest;
+import gov.nasa.pds.search.core.test.SearchCoreTest.SingleTestRule;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -20,17 +23,16 @@ import org.junit.runners.JUnit4;
  * @author jpadams
  */
 @RunWith(JUnit4.class)
-public class CoreConfigReaderTest {
+public class CoreConfigReaderTest extends SearchCoreTest {
 
 	public static final File PDS_CONFIG_PATH = new File(System.getProperty("user.dir") + "/" + TestConstants.CONFIG_DIR_RELATIVE + "pds");
 	public static final File PSA_CONFIG_PATH = new File(System.getProperty("user.dir") + "/" + TestConstants.CONFIG_DIR_RELATIVE + "psa");
 	
+    @Rule
+    public SingleTestRule test = new SingleTestRule("");
 	
     @Test
     public void testUnmarshall() {
-    	System.out.println("-----------------------------------------------------");
-    	System.out.println("--- Testing JAXB with CoreConfigReader.unmarshall ---");
-    	System.out.println("-----------------------------------------------------");
     	try {
     		CoreConfigReader.unmarshall(new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "config/core-config-test-1.xml"));
     	} catch (Exception e) {
@@ -41,9 +43,6 @@ public class CoreConfigReaderTest {
     
     @Test
     public void validateDefaultConfigurations() {
-    	System.out.println("----------------------------------------------");
-    	System.out.println("--- Validating Default Configurations Test ---");
-    	System.out.println("----------------------------------------------");
 		String[] extensions = {"xml"};
 		ArrayList<File> fileList = new ArrayList<File>();
 		fileList.addAll(FileUtils.listFiles(PDS_CONFIG_PATH, extensions, true));

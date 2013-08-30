@@ -76,25 +76,11 @@ public class ProductClass {
 	private int queryMax = Constants.QUERY_MAX;
 
 	/**
-	 * Initialize global variables used throughout
 	 * 
-	 * @param writer		writer for run log
-	 * @param name			class of catalog to be extracted
-	 * @param file			object type XML config file
-	 * @param registryUrl	URL for registry to query
-	 * @param queryMax		maximum number of queried results
+	 * @param outputDir
+	 * @param primaryRegistries
+	 * @param secondaryRegistries
 	 */
-	public ProductClass(String name, File outputDir,
-			 List<String> primaryRegistries, List<String> secondaryRegistries) {
-		
-		this.primaryRegistries = primaryRegistries;
-		this.secondaryRegistries = secondaryRegistries;
-
-		this.finalVals = new HashMap<String, List<String>>();
-		
-		this.product = null;
-	}
-	
 	public ProductClass(File outputDir,
 			List<String> primaryRegistries, List<String> secondaryRegistries) {
 		
@@ -106,13 +92,6 @@ public class ProductClass {
 		this.finalVals = new HashMap<String, List<String>>();
 		
 		this.product = null;
-	}
-
-	/**
-	 * Clears the maps used to store values for the current product class.
-	 */
-	private void clearMaps() {
-		this.finalVals.clear();
 	}
 
 	/**
@@ -131,7 +110,6 @@ public class ProductClass {
 		    log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage(),
 		    		coreConfig.getAbsolutePath()));
 			throw new SearchCoreFatalException("Error: Problem parsing " + coreConfig
-					+ "\nStack Trace: " + e.getStackTrace().toString()
 					+ "\nError Message: " + e.getMessage() 
 					+ "\nCause: " + e.getCause().getMessage());
 		}
@@ -153,8 +131,8 @@ public class ProductClass {
 						this.product.getSpecification().getRegistryObjectName());
 			
 				for (SearchCoreExtrinsic searchExtrinsic : extList) {
-					clearMaps();
-	
+					this.finalVals.clear();
+					
 					outSeqNum++;
 	
 					// Get class properties
@@ -296,7 +274,7 @@ public class ProductClass {
 			
 			for (SearchCoreExtrinsic searchExtrinsic : searchExtrinsicList) {
 					return traverseRegistryPath(newPathList, 
-							this.registryHandler.getAssociationsByReferenceType(
+							this.registryHandler.getAssociatedExtrinsicsByReferenceType(
 									searchExtrinsic, pathList.get(0)));
 			}
 		} else if (pathList.size() == 1 && !searchExtrinsicList.isEmpty()) {	// Let's get some slot values
@@ -415,8 +393,12 @@ public class ProductClass {
 				}
 			}
 		}
-		
-		return new RegistryHandler(primaryRegistries, secondaryRegistries, this.queryMax);
+
+		if (this.product.getSpecification().isCheckAssociations() == null) {
+			return new RegistryHandler(primaryRegistries, secondaryRegistries, this.queryMax, false);
+		} else {
+			return new RegistryHandler(primaryRegistries, secondaryRegistries, this.queryMax, this.product.getSpecification().isCheckAssociations());
+		}
 	}
 
 	/**

@@ -10,7 +10,7 @@ public class AssociationCache {
 
 	private static Logger log = Logger.getLogger(AssociationCache.class.getName());
 	
-	private static final int CACHE_SIZE = 20;
+	private static final int CACHE_SIZE = 50;
 	
 	private static LinkedHashMap<String, SearchCoreExtrinsic> searchExtMap = new LinkedHashMap<String, SearchCoreExtrinsic>();
 	
@@ -48,6 +48,10 @@ public class AssociationCache {
 		Debugger.debug("AssociationCache.get - " + lidvid);
 		
 		return searchExtMap.get(lidvid);
+	}
+	
+	public static void flush() {
+		searchExtMap.clear();
 	}
 	
 	public static void main(String args[]) {

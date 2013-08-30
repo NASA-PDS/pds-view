@@ -27,6 +27,8 @@ public class SearchCoreStats {
 	public static long localStart = System.currentTimeMillis();
 
 	public static long overallTime = 0;
+	
+	public static boolean solrPostSuccess = false;
 
 	public static Map<String, String> runTimesMap = new HashMap<String, String>();
 

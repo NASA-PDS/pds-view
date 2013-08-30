@@ -1,6 +1,11 @@
 package gov.nasa.pds.search.core.registry.objects;
 
+import java.util.Set;
+
+import gov.nasa.pds.registry.model.Classification;
+import gov.nasa.pds.registry.model.ExternalIdentifier;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
+import gov.nasa.pds.registry.model.ObjectStatus;
 import gov.nasa.pds.registry.model.Slot;
 
 /**
@@ -21,6 +26,11 @@ abstract class ExtrinsicObjectDecorator extends ExtrinsicObject {
     }
     
     @Override
+	public String getGuid() {
+		return this.decoratedExtrinsic.getGuid();
+	}
+    
+    @Override
 	public String getLid() {
 		return this.decoratedExtrinsic.getLid();
 	}
@@ -39,4 +49,49 @@ abstract class ExtrinsicObjectDecorator extends ExtrinsicObject {
 	public String getObjectType() {
 		return this.decoratedExtrinsic.getObjectType();
 	}
+    
+    @Override
+    public String getContentVersion() {
+    	return this.decoratedExtrinsic.getContentVersion();
+    }
+    
+    @Override
+    public String getDescription() {
+    	return this.decoratedExtrinsic.getDescription();
+    }
+    
+    @Override
+    public String getHome() {
+    	return this.decoratedExtrinsic.getHome();
+    }
+    
+    @Override
+    public String getMimeType() {
+    	return this.decoratedExtrinsic.getMimeType();
+    }
+    
+    @Override
+    public Set<Slot> getSlots() {
+    	return this.decoratedExtrinsic.getSlots();
+    }
+    
+    @Override
+    public String getVersionName() {
+    	return this.decoratedExtrinsic.getVersionName();
+    }
+    
+    @Override
+    public Set<ExternalIdentifier> getExternalIdentifiers() {
+    	return this.decoratedExtrinsic.getExternalIdentifiers();
+    }
+    
+    @Override
+    public Set<Classification> getClassifications() {
+    	return this.decoratedExtrinsic.getClassifications();
+    }
+    
+    @Override
+    public ObjectStatus getStatus() {
+    	return this.decoratedExtrinsic.getStatus();
+    }
 }

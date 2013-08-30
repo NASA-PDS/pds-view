@@ -94,7 +94,7 @@ public class SearchCoreFormatter extends Formatter {
 	}
 
 	private void processSummary() {
-		if (!SearchCoreStats.missingSlots.isEmpty()) {
+		/*if (!SearchCoreStats.missingSlots.isEmpty()) {
 			this.summary.append(sectionBreak);
 			this.summary.append("Missing Slots:" + lineFeed);
 			for (String key : SearchCoreStats.missingSlots.keySet()) {
@@ -133,7 +133,7 @@ public class SearchCoreFormatter extends Formatter {
 				}
 				this.summary.append(lineFeed);
 			}
-		}
+		}*/
 		this.summary.append(sectionBreak);
 		this.summary.append("The Numbers: " + lineFeed);
 		this.summary.append("-- Number of Warnings: "

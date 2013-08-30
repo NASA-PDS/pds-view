@@ -12,6 +12,8 @@ import gov.nasa.pds.search.core.logging.formatter.SearchCoreFormatter;
 import gov.nasa.pds.search.core.logging.handler.SearchCoreStreamHandler;
 import gov.nasa.pds.search.core.registry.ProductClass;
 import gov.nasa.pds.search.core.registry.ProductClassException;
+import gov.nasa.pds.search.core.test.SearchCoreTest;
+import gov.nasa.pds.search.core.test.SearchCoreTest.SingleTestRule;
 import gov.nasa.pds.search.core.util.Debugger;
 
 import java.io.BufferedWriter;
@@ -29,6 +31,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -40,20 +43,18 @@ import org.junit.runners.JUnit4;
  *
  */
 @RunWith(JUnit4.class)
-public class ProductClassTest {
+public class ProductClassTest extends SearchCoreTest {
 
 	private static final File TEST_DIR = new File (System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE + "/" + Constants.SOLR_DOC_DIR);
 	
 	private ProductClass pc;
 	
+    @Rule
+    public SingleTestRule test = new SingleTestRule("");
+	
 	@BeforeClass
 	public static void oneTimeSetUp() {
 		TEST_DIR.mkdirs();
-		
-		//Debugger.debugFlag = true;
-    	Logger logger = Logger.getLogger("");
-	    logger.addHandler(new SearchCoreStreamHandler(System.out,
-	    		  ToolsLevel.DEBUG, new SearchCoreFormatter()));
 	}
 	
 	/*@AfterClass
@@ -74,11 +75,6 @@ public class ProductClassTest {
 	@Test
 	public void testQuery() throws SearchCoreFatalException {
 		try {			
-			System.out.println("---------------------------------------------");
-			System.out.println("--- Testing query method with Test config ---");
-			System.out.println("---------------------------------------------");
-			
-			
 			assertFalse(this.pc.query(new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "config/core-config-test-1.xml")).isEmpty());
 		} catch (ProductClassException e) {
 			e.printStackTrace();
@@ -89,9 +85,6 @@ public class ProductClassTest {
 	@Test
 	public void testQueryPDS3() throws SearchCoreFatalException {
 		try {			
-			System.out.println("---------------------------------------------------");
-			System.out.println("--- Testing query method with PDS - PDS3 Config ---");
-			System.out.println("---------------------------------------------------");
 			String[] extensions = { "xml" };
 			for (File file : FileUtils.listFiles(new File(System.getProperty("user.dir") + "/" + TestConstants.CONFIG_DIR_RELATIVE + "/pds/pds3/"), extensions, false)) {
 				if (this.pc.query(file).isEmpty()) {
@@ -105,11 +98,9 @@ public class ProductClassTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testQueryPDS4() throws SearchCoreFatalException {
 		try {			
-			System.out.println("---------------------------------------------------");
-			System.out.println("--- Testing query method with PDS - PDS4 Config ---");
-			System.out.println("---------------------------------------------------");
 			String[] extensions = { "xml" };
 			this.pc = new ProductClass(
 					TEST_DIR,
@@ -130,9 +121,6 @@ public class ProductClassTest {
 	@Test
 	public void testQueryPSA() throws SearchCoreFatalException {
 		try {			
-			System.out.println("---------------------------------------------------");
-			System.out.println("--- Testing query method with PSA - PDS3 Config ---");
-			System.out.println("---------------------------------------------------");
 			String[] extensions = { "xml" };
 			this.pc = new ProductClass(
 					TEST_DIR,
@@ -153,9 +141,6 @@ public class ProductClassTest {
 	@Test
 	public void testQueryPSAUsingConfigSpecifiedRegistry() throws SearchCoreFatalException {
 		try {			
-			System.out.println("---------------------------------------------------");
-			System.out.println("--- Testing testQueryPSAUsingConfigSpecifiedRegistry ---");
-			System.out.println("---------------------------------------------------");
 			String[] extensions = { "xml" };
 			this.pc = new ProductClass(
 					TEST_DIR,
@@ -176,10 +161,6 @@ public class ProductClassTest {
 	@Test
 	public void testQueryWithoutPrimaryRegistry() throws SearchCoreFatalException {
 		try {			
-			System.out.println("----------------------------------------------------------------");
-			System.out.println("--- Testing bad query with no primary registries Test config ---");
-			System.out.println("----------------------------------------------------------------");
-			
 			this.pc = new ProductClass(
 					TEST_DIR,
 					new ArrayList<String>(),	// primary registry

@@ -3,7 +3,11 @@ package gov.nasa.pds.search.core;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -11,39 +15,47 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import gov.nasa.pds.search.core.SearchCoreLauncher;
 import gov.nasa.pds.search.core.constants.TestConstants;
+import gov.nasa.pds.search.core.logging.ToolsLevel;
+import gov.nasa.pds.search.core.logging.formatter.SearchCoreFormatter;
+import gov.nasa.pds.search.core.logging.handler.SearchCoreStreamHandler;
+import gov.nasa.pds.search.core.test.SearchCoreTest;
 
 /**
- * Tests SearchCoreLauncher CLI for proper behavior
+ * Tests SearchCoreLauncher CLI for proper behavior. These are some pretty basic tests for
+ * specifying correct arguments.
  * 
  * @author jpadams
  *
  */
 @RunWith(JUnit4.class)
-@Ignore
-public class SearchCoreLauncherTest {
+public class SearchCoreLauncherTest extends SearchCoreTest {
 	
-	@BeforeClass 
-	public void setUp() {
+	@BeforeClass
+	public static void oneTimeSetUp() {
 		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
 		testDir.mkdirs();
 	}
 	
 	@AfterClass
-	public void tearDown() {
+	public static void oneTimeTearDown() throws IOException {
 		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
-		testDir.delete();
+		FileUtils.deleteDirectory(testDir);
 	}
+	
+    @Rule
+    public SingleTestRule test = new SingleTestRule("");
 	
 	/**
 	 * Test arguments are not empty
 	 */
-	@Ignore
+	@Test
 	public void testEmptyArgs() {
 		// Test empty args
         String[] args = { };
@@ -52,49 +64,19 @@ public class SearchCoreLauncherTest {
         	fail("Allows for no arguments.");
         } catch (Exception e) { /* Expected */ }
 	}
-	
-	/**
-	 * Test for missing required arguments
-	 */
-	@Ignore
-	public void testRequiredArgs() {
-	    String[] args = { "-H", TestConstants.SEARCH_HOME_RELATIVE, 
-	    		"-e", 
-	    		"-m", "5", 
-	    		"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3" };
-	    try {
-	    	SearchCoreLauncher.main(args);
-	    	fail("Allows for registry not specified");
-	    } catch (Exception e) { /* Expected */ }
-	}
-	
-	/**
-	 * Test using an invalid argument
-	 */
-	@Ignore
-	public void testInvalidArg() {
-        String[] args = { "-H", TestConstants.SEARCH_HOME_RELATIVE, 
-        		"-e", 
-        		"-m", "5", 
-        		"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3", 
-        		"-x" };
-        try {
-        	SearchCoreLauncher.main(args);
-        	fail("Allows invalid flag.");
-        } catch (Exception e) { /* Expected */ }  
-	}
 
     /**
-     * Test Registry Extractor with absolute paths and max query = 5
+     * Test Registry Extractor with absolute paths and max query = 1
      * @throws Exception 
      */
-	@Ignore
+	@Test
     public void testExtractorAbsolute() {
     	try {
-	    	String[] args = { "-r", TestConstants.PDS3_REGISTRY_URL, 
+	    	String[] args = { "-i", "-e",	// Only run Extractor and Indexer components 
+	    			"-r", TestConstants.PDS3_REGISTRY_URL, 
 	    			"-H", System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-e", 
-	    			"-m", "5", 
+	    			"-m", "1", 
 	    			"-c", System.getProperty("user.dir") + "/" + TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3", };
 	    	SearchCoreLauncher.main(args);
     	} catch (Exception e) {
@@ -103,16 +85,17 @@ public class SearchCoreLauncherTest {
     }
     
     /**
-     * Test Registry Extractor with relative paths and max query = 5
+     * Test Registry Extractor with relative paths and max query = 1
      * @throws Exception 
      */
-    @Ignore
+    @Test
     public void testExtractorRelative() {
     	try {
-	    	String[] args = { "-r", TestConstants.PDS3_REGISTRY_URL, 
+	    	String[] args = { "-i", "-e",	// Only run Extractor and Indexer components 
+	    			"-r", TestConstants.PDS3_REGISTRY_URL, 
 	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-e", 
-	    			"-m", "5", 
+	    			"-m", "1", 
 	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3", };
 	    	SearchCoreLauncher.main(args);
 		} catch (Exception e) {

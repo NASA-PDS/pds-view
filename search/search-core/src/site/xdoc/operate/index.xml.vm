@@ -49,79 +49,135 @@
       <subsection name="Command-Line Options">
         <p>The following table describes the command-line options available:
         </p>
+	<source>
 
-        <table>
-          <tr><th>Command-Line Option</th><th>Description</th></tr>
-          <tr><td>-a,--all</td><td>Run all components of the Search Core [default]</td></tr>
-          <tr><td>-c,--config-home &lt;directories&gt;</td><td>Specify the product class configuration home directory.  Must contain product-classes.txt. Multiple directories can be specified to accompany multiple registries. (Default: $SEARCH_CORE_HOME/conf/pds/)</td></tr>
-          <tr><td>-C,--clean-dirs</td><td>Turn off removal of all directories from previous Search Core execution output. These directories will still be backed up in the Search Home directory. (Default: True)</td></tr>
-          <tr><td>-d,--debug</td><td>Turn on debugger.</td></tr>
-          <tr><td>-e,--extractor</td><td>Execute component to extract data from registry</td></tr>
-          <tr><td>-H,--search-home &lt;directory&gt;</td><td>Specify the Search Home directory. The tool will output the index files to this directory. When using the Search Service, this should be the $SEARCH_SERVICE_HOME/pds directory (Default: $SEARCH_SERVICE_HOME/pds directory)</td></tr>
-          <tr><td>-h,--help</td><td>Display usage.</td></tr>
-          <tr><td>-i,--solr-indexer</td><td>Execute component to generate a Solr Index</td></tr>
-          <tr><td>-m,--query-max &lt;integer&gt;</td><td>Specify the maximum number of registry values to be returned from query. (Default: 999999999)</td></tr>
-          <tr><td>-p,--properties-file &lt;files&gt;</td><td>Specify properties file containing Search Home, Registry URL, and product class configuration home directory. Multiple files can be specified.</td></tr>
-          <tr><td>-r,--registry &lt;urls&gt;</td><td>Specify Registry Service instance to query. Multiple registries can be specified.</td></tr>
-          <tr><td>-V,--version</td><td>Display application version.</td></tr>
-        </table>
+usage: search-core [options]
+
+
+====================================================================================
+Command-line Options--------------Description---------------------------------------
+====================================================================================
+ -a,--all                         Run all components of the Search Core
+                                  [default]
+ -c,--config-home &lt;directories&gt;   Specify the product class configuration home
+                                  directory.Multiple directories can be
+                                  specified to accompany multiple registries.
+                                  (Default: $SEARCH_CORE_HOME/conf/pds/)
+ -C,--clean-dirs                  Removal of all directories from previous
+                                  Search Core execution output. These
+                                  directories will still be backed up in the
+                                  Search Home directory. (Default: True)
+ -d,--debug                       Turn on developer debugger.
+ -e,--extractor                   Execute component to extract data from
+                                  registry
+ -H,--search-home &lt;directory&gt;     Specify the Search Home directory. The tool
+                                  will output the index files to this directory.
+                                  When using the Search Service, this should be
+                                  the  $SEARCH_SERVICE_HOME/pds directory
+                                  (Default: $SEARCH_SERVICE_HOME/pds directory)
+ -h,--help                        Display usage.
+ -i,--solr-indexer                Execute component to generate a Solr Index
+ -l,--log-file &lt;file name&gt;        Specify a log file name. Default is standard
+                                  out.
+ -m,--query-max &lt;integer&gt;         Specify the maximum number of registry values
+                                  to be returned from query.(Default: 999999999)
+ -P,--solr-post                   Execute component to post the index to the
+                                  Search Service.
+ -p,--properties-file &lt;files&gt;     Specify properties file containing Search
+                                  Home, Registry URL, and search core
+                                  configurations home directory. Multiple files
+                                  can be specified.
+ -r,--primary-registry &lt;urls&gt;     Specify the primary Registry Service
+                                  instance(s) to query. Multiple registries can
+                                  be specified. These registries will be used
+                                  for all queries.
+ -R,--secondary-registry &lt;urls&gt;   Specify secondary Registry Service instance(s)
+                                  to query. Multiple registries can be
+                                  specified. These registries will only be used
+                                  after a query fails against all primary
+                                  registries.
+ -s,--service-url &lt;url>           Specify the Search Service URL
+                                  endpoint.Default:
+                                  http://localhost:8080/search-service
+ -v,--verbose &lt;level>             Specify the severity level and above to
+                                  include in the log: (0=Debug, 1=Info,
+                                  2=Warning, 3=Error). Default is Info and above
+                                  (level 1).
+ -V,--version                     Display application version.
+			  </source>
       </subsection>
 
       <subsection name="Execute Search Core Tool">
         <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script.
         </p>
 
-        <p>The Search Core requires, at minimum, a SEARCH_HOME directory and REGISTRY_URL be specified via the command-line.  The following is the format for the command:
+        <p>The Search Core requires, at minimum, a Search Home directory be specified via command-line.  The following is the format for the command:
         </p>
 
         <source>
-% search-core -H &lt;SEARCH_HOME&gt; -r &lt;REGISTRY_URL&gt; [options]
+% search-core -H &lt;search-home&gt; [options]
         </source>
 
-        <p>Since we are running the Search Core with the Search Service, SEARCH_HOME = $SEARCH_SERVICE_HOME/pds.  The 'pds' appended to the SEARCH_SERVICE_HOME represents the specific core of Solr we want to apply this index.  The following demonstrates how to run the Search Core with a SEARCH_SERVICE_HOME=/usr/local/search-service and REGISTRY_URL=http://localhost:8080/registry:
+        <p>Search Home refers to the home directory of the Solr Core we want to generate an index for. With the common Search Service installation, Search Home will be /usr/local/search-service/pds (SEARCH_SERVICE_HOME/pds).  The following demonstrates how to run the Search Core with a SEARCH_SERVICE_HOME=/usr/local/search-service, Primary Registry URL of http://localhost:8080/registry, an output log file of run.log, and config home of /usr/local/search-core/conf/pds/pds3  :
         </p>
 
+        <source>
+% search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry -c /usr/local/search-core/conf/pds/pds3 -l run.log
+        </source>
+
+        <p>By default, the command above runs all components of the Search Core software and produces Solr XML Documents from the Registry Service data.  The Solr XML Documents are files formatted for addition to the Search Service index and will appear in the SEARCH_SERVICE_HOME/pds/index directory.</p>
+
+	<p>The following does not specify a configuration home directory so the default is set to SEARCH_CORE_HOME/conf/pds/pds3 and output the logs to standard out:
+	</p>
         <source>
 % search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry
         </source>
 
-        <p>By default, the command above runs all components of the Search Core software and produces a Solr index from the Registry Service data.  The solr_index.xml file(s) will appear in the $SEARCH_SERVICE_HOME/pds/index directory.  To run each component separately, they must be completed in the following order:
+	<p>The Search Core Tool also provides the capability to run each component separately, however, they must be completed in the following order:
         </p>
 
         <ol>
           <li>
-            <p>The following command will run the Search Core with a SEARCH_SERVICE_HOME=/usr/local/search-service and only run the Registry Extractor component to generate XML index documents for each Registry context product type in the directory /usr/local/search-service/pds/registry-data/&lt;object-type&gt;/:</p>
+            <p>The following command will run the Registry Extractor component of the Search Core to generate temporary XML metadata files for each Registry context product type specified in the conigurations.  By default, the output appears in the directory /usr/local/search-service/pds/registry-data/&lt;object-type&gt;/:</p>
             <source>
 % search-core -e -H /usr/local/search-service/pds -r http://localhost:8080/registry
             </source>
           </li>
           <li>
-            <p>The following command will run the Search Core with a SEARCH_SERVICE_HOME=/usr/local/search-service and only run the Solr Indexer component, which parses the XML documents produced by the Registry Extractor, and generates Solr indexes located in /usr/local/search-service/pds/index :</p>
+            <p>The following command will run the Solr Indexer component of the Search Core to parse the XML metadata files produced by the Registry Extractor, and generate Lucene Solr Documents  located in /usr/local/search-service/pds/index :</p>
             <source>
 % search-core -i -H /usr/local/search-service/pds -r http://localhost:8080/registry
             </source>
           </li>
+
+          <li>
+            <p>The following command will run the Solr Post component of the Search Core to use HTTP Post and HTTP Get to submit the Lucene Solr Documents to the Search Service Solr Index.  The default Search Service URL is http://localhost:8080/search-service/ and assumes the Solr Documents are in /usr/local/search-service/pds/index :</p>
+            <source>
+% search-core -P
+            </source>
+          </li>
         </ol>
 
-        <p>The following command demonstrates how to test the Search Core with a SEARCH_SERVICE_HOME=/usr/local/search-service and only query 100 products for indexing (useful for testing purposes):
+        <p>The following command demonstrates how to test the Search Core with a SEARCH_SERVICE_HOME=/usr/local/search-service and only query 5 products for indexing (useful for testing purposes):
         </p>
 
         <source>
-% search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry -m 100
+% search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry \
+-m 5
         </source>
 
-        <p>The following command demonstrates how to specify a SEARCH_HOME and REGISTRY_URL via a Search Core properties file:
+        <p>The following command demonstrates how to specify a primary registry and configuration home via a Search Core properties file:
         </p>
 
         <source>
-% search-core -p /usr/local/search-core/conf/pds/pds3/core.properties
+% search-core -H /usr/local/search-service/pds \
+-p /usr/local/search-core/conf/pds/pds3/core.properties
         </source>
 
         <p>An example Search Core properties file looks like this:</p>
 
         <source>
-search.core.search-home = /usr/local/search-service/pds
-search.core.registry-url = http://localhost:8080/registry
+search.core.primary-registry = http://localhost:8080/registry
 search.core.config-home = /usr/local/search-core/conf/pds/pds3
         </source>
 
@@ -143,77 +199,49 @@ http://localhost:8080/registry-psa
       </subsection>
     </section>
 
-    <section name="Solr Ingestion">
-      <p>
-  Once the Lucene index has been created using the Search Core command-line tool, we want to ingest the data into the Apache Solr web application so it can be searched.  To do so we use the <i>solr-post</i> shell script using curl and HTTP POST to ingest the data in Solr.  First, in order to run this script, you must go to the $SEARCH_CORE_HOME/bin directory:
-      </p>
-      
-      <p><i>Make sure SEARCH_CORE_HOME is in the PATH prior to completing the following procedure</i></p>
+    <section name="Index Generation Examples">
+        <p>Most users will only require 1 registry and 1 set of configuration files for product classes to include in the index.  Using the default Search Service and Search Core installations specified in the documentation, here is an example of generating an index for a basic installation to generate an index for PDS3 Context Products:</p>
+        <source>
+% search-core -H /usr/local/search-service/pds \
+-p /usr/local/search-core/conf/pds/pds3/core.properties
+        </source>
 
-      <p>The following command demonstrates how to run the script:
-      </p>
+        <p>For PDS4 Product Search:</p>
 
-      <source>
-% solr-post &lt;SEARCH_HOME&gt; &lt;SEARCH_SERVICE_URL&gt;
-      </source>
+        <source>
+% search-core -H /usr/local/search-service/pds \
+-p /usr/local/search-core/conf/pds/pds4/core.properties
+        </source>
 
-      <p>For example:
-      </p>
+        <p>For PSA Context Products:</p>
 
-      <source>
-% $SEARCH_CORE_HOME/solr-post /usr/local/search-service/pds \
-http://localhost:8080/search-service/pds
-      </source>
+        <source>
+% search-core -H /usr/local/search-service/pds \
+-p /usr/local/search-core/conf/psa/pds3/core.properties
+        </source>
+
+        <p>For all available PDS3 and PDS4 data:</p>
+
+        <source>
+% search-core -H /usr/local/search-service/pds \
+-p /usr/local/search-core/conf/pds/pds3/core.properties \
+/usr/local/search-core/conf/psa/pds3/core.properties \
+/usr/local/search-core/conf/pds/pds4/core.properties
+        </source>
+
+	<p>After you run the indexes, <a href="#Did_It_Work?">see if it worked</a>.</p>
     </section>
 
-    <section name="Basic Index Generation">
-      <p>The <i>initial-index</i> shell script is included in the package in an effort to streamline the process by running the Search Core software to produce the index, and the solr-post script to post the data to the Solr application.  Go to the $SEARCH_CORE_HOME/bin directory to update the environment variables ($SEARCH_CORE_HOME/bin/env-vars) and run the script:
+    <section name="Search Core Configurations">
+      <p>Running the Search Core is based around XML configuration files that specify 
       </p>
-
-      <p><b>Assumptions.</b>  The <i>initial-index</i> script is intended only for those installations that use only 1 registry and the default extractor configuration found in <i>$SEARCH_CORE_HOME/conf/pds/pds3/product-classes.txt</i>.
-      </p>
-      
-      <subsection name="Using Environment Variables">
-        <ul>
-          <li>Update <i>$SEARCH_CORE_HOME/bin/env-vars</i> with, <b>at minimum</b>, the following information:
-            <ul>
-              <li>SEARCH_HOME - The path for the home directory of local instance of search service.</li>
-              <li>SEARCH_SERVICE_URL - URL of the Search Service instance.</li>
-              <li>REGISTRY_URL - URL of the Registry Service instance.</li>
-            </ul>
-          </li>
-          <li>Run the initial-index script:
-            <source>
-% $SEARCH_CORE_HOME/initial-index
-            </source>
-          </li>
-        </ul>
-      </subsection>
-
-      <subsection name="Using Command-Line Arguments">
-        <p>The initial-index script can also be run using command-line arguments in lieu of updating <i>env-var</i>:</p>
-        <source>
-% $SEARCH_CORE_HOME/initial-index &lt;SEARCH_HOME&gt; \
-&lt;SEARCH_SERVICE_URL&gt; &lt;REGISTRY_URL&gt;
-        </source>
-
-        <p>For example:</p>
-
-        <source>
-% $SEARCH_CORE_HOME/initial-index /usr/local/search-service/pds \
-http://localhost:8080/search-service/pds http://localhost:8080/registry
-        </source>
-      </subsection>
-
-      <subsection name="Test Search Service">
-        <p>Once this script completes, the data should be available through the Search Service interface. Go to <a href="http://localhost:8080/search-service/pds/search/?q=*:*">http://localhost:8080/search-service/pds/search/?q=*:*</a> to verify data is available (modify domain and port as needed).  See the <a href="../../search-service/operate">Search Service - Operate</a> page for more information on how to query data.
+    </section>
+	
+    <section name="Did It Work?">
+        <p>Once you run the Search Core with all components the data should be available through the Search Service interface. Go to <a href="http://localhost:8080/search-service/pds/search/?q=*:*">http://localhost:8080/search-service/pds/search/?q=*:*</a> to verify data is available (modify domain and port as needed).  See the <a href="../../search-service/operate">Search Service - Operate</a> page for more information on how to query data.
         </p>
-      </subsection>
-
-      <p><i>Note: To further streamline the process, the command-line arguments can be removed from the initial-index script, and the search-core line can modified according to your specific needs.</i>
-      </p>
     </section>
-    
+
     <section name="Post To Operations">
       <p>Some installations require building an index to be replicated between multiple secured machines.  Secured machines, meaning POSTing data remotely is forbidden.  Instead of generating a new index on each machine, the <i>$SEARCH_CORE_HOME/bin/ops-index</i> script was developed to <a href="http://rsync.samba.org/">rsync</a> a previously generated index from a remote machine and POST the data to a local Search Service installation.  The following describes the how to use the script:</p>
 

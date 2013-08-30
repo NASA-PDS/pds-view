@@ -21,6 +21,7 @@ import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.ToolsLogRecord;
 import gov.nasa.pds.search.core.registry.ProductClass;
 import gov.nasa.pds.search.core.registry.ProductClassException;
+import gov.nasa.pds.search.core.registry.objects.AssociationCache;
 import gov.nasa.pds.search.core.stats.SearchCoreStats;
 
 import java.io.File;
@@ -63,24 +64,21 @@ public class RegistryExtractor {
 	private List<String> primaryRegistries;
 	
 	private List<String> backupRegistries;
-	
-	/** Total time to run each product class query. **/
-	private long totalTime;
 
 	/**
 	 * Object initializer method with an output directory and clean boolean
 	 * parameter specified.
-	 * 
 	 * @param outDir
-	 * @param clean
-	 * @throws ProductClassException	thrown when directories cannot be created
+	 * @param confDir
+	 * @param primaryRegistries
+	 * @param backupRegistries
+	 * @throws SearchCoreFatalException
 	 */
 	public RegistryExtractor(String outDir, File confDir, 
-			List<String> primaryRegistries, List<String> backupRegistries, boolean clean)
+			List<String> primaryRegistries, List<String> backupRegistries)
 			throws SearchCoreFatalException {
 		this.confDir = confDir;
 		this.queryMax = -1;
-		this.totalTime = 0;
 		
 		this.primaryRegistries = primaryRegistries;
 		this.backupRegistries = backupRegistries;
@@ -118,6 +116,8 @@ public class RegistryExtractor {
 
 	        log.log(new ToolsLogRecord(ToolsLevel.SUCCESS,
 	        		"Completed extraction:  " + coreConfig.getName() + "\n"));
+	        
+	        AssociationCache.flush();
 		}
 	}
 

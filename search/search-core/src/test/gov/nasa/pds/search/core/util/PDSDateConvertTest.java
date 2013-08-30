@@ -17,6 +17,7 @@ import org.junit.runners.JUnit4;
 
 import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.constants.TestConstants;
+import gov.nasa.pds.search.core.test.SearchCoreTest;
 import gov.nasa.pds.search.core.util.PDSDateConvert;
 
 /**
@@ -25,7 +26,7 @@ import gov.nasa.pds.search.core.util.PDSDateConvert;
  * 
  */
 @RunWith(JUnit4.class)
-public class PDSDateConvertTest {
+public class PDSDateConvertTest extends SearchCoreTest {
 	
 	/** Maps possible input to expected output */
 	private static Map<String, String> timeMap;
@@ -94,8 +95,8 @@ public class PDSDateConvertTest {
 		timeMap.put("-2008-01-01T23:01:01.9999Z", "-2008-01-01T23:01:01.999Z");
 		
 		// HH:mm:ss valid values 
-		timeMap.put("12:12:59", "1970-01-01T12:12:59.000Z");
-		timeMap.put("15:02:28", "1970-01-01T15:02:28.000Z");
+		timeMap.put("12:12:59", "12:12:59");
+		timeMap.put("15:02:28", "15:02:28");
 	}
 	
 	/**

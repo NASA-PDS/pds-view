@@ -1,6 +1,7 @@
 package gov.nasa.pds.search.core.util;
 
 import static org.junit.Assert.*;
+import gov.nasa.pds.search.core.test.SearchCoreTest;
 import gov.nasa.pds.search.core.util.Utility;
 
 import org.junit.Test;
@@ -14,7 +15,7 @@ import org.junit.runners.JUnit4;
  *
  */
 @RunWith(JUnit4.class)
-public class UtilityTest {
+public class UtilityTest extends SearchCoreTest {
 
 	@Test
 	public void testUrlExists() {

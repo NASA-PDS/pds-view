@@ -3,21 +3,20 @@ package gov.nasa.pds.search.core.registry;
 import gov.nasa.pds.registry.client.RegistryClient;
 import gov.nasa.pds.registry.exception.RegistryClientException;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
+import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.PagedResponse;
-import gov.nasa.pds.registry.model.Slot;
+import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.search.core.cli.options.Flag;
-import gov.nasa.pds.search.core.cli.options.InvalidOptionException;
 import gov.nasa.pds.search.core.constants.Constants;
-import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.ToolsLogRecord;
 import gov.nasa.pds.search.core.registry.objects.AssociationCache;
-import gov.nasa.pds.search.core.registry.objects.RegistryAttribute;
+import gov.nasa.pds.search.core.registry.objects.AssociationRegistryAttribute;
+import gov.nasa.pds.search.core.registry.objects.ExtrinsicRegistryAttribute;
 import gov.nasa.pds.search.core.registry.objects.SearchCoreExtrinsic;
-import gov.nasa.pds.search.core.schema.Product;
 import gov.nasa.pds.search.core.stats.SearchCoreStats;
 import gov.nasa.pds.search.core.util.Debugger;
 import gov.nasa.pds.search.core.util.Utility;
@@ -29,16 +28,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-//TODO Class that will take a lot of the registry related code from the registryExtractor
+/**
+ * Class to handle the communication with the Registry Service
+ * 
+ * @author jpadams
+ *
+ */
 public class RegistryHandler {
 
 	/** Output logger **/
 	private static Logger log = Logger.getLogger(RegistryHandler.class.getName());
 	
 	/** In order to scale for very large registry products, need to page the registry output **/
-	private static final int QUERY_PAGE_MAX = 500;
+	private static final int QUERY_PAGE_MAX = 100;
 	
 	private int queryMax = Constants.QUERY_MAX;
+	
+	private boolean checkAssociations;
 	
 	private List<String> primaryRegistries;
 	
@@ -48,11 +54,18 @@ public class RegistryHandler {
 	
 	public RegistryHandler(List<String> primaryRegistries, List<String> secondaryRegistries,
 			int queryMax) {
+		this(primaryRegistries, secondaryRegistries, queryMax, false);
+	}
+	
+	public RegistryHandler(List<String> primaryRegistries, List<String> secondaryRegistries,
+			int queryMax, boolean checkAssociations) {
 		this.primaryRegistries = new ArrayList<String>(primaryRegistries);
 		this.secondaryRegistries = new ArrayList<String>(secondaryRegistries);
 		
 		this.allRegistries = new ArrayList<String>();
 		this.queryMax = queryMax;
+		
+		this.checkAssociations = checkAssociations;
 
 		resetAllRegistries();
 	}
@@ -69,11 +82,12 @@ public class RegistryHandler {
 			 {
 	    log.log(new ToolsLogRecord(ToolsLevel.DEBUG, objectType, objectName));
 		
-	    Map<RegistryAttribute, String> map = new HashMap<RegistryAttribute, String>();
-	    map.put(RegistryAttribute.OBJECT_TYPE, objectType);
-	    map.put(RegistryAttribute.NAME, objectName);
+	    Map<ExtrinsicRegistryAttribute, String> map = new HashMap<ExtrinsicRegistryAttribute, String>();
+	    map.put(ExtrinsicRegistryAttribute.OBJECT_TYPE, objectType);
+	    map.put(ExtrinsicRegistryAttribute.NAME, objectName);
 	    
 	    List<SearchCoreExtrinsic> extList = new ArrayList<SearchCoreExtrinsic>();
+	    
 	    for (String registryUrl : this.primaryRegistries) {
 	    	try {
 			 extList.addAll(SearchCoreExtrinsic.asSearchCoreExtrinsics(
@@ -119,12 +133,37 @@ public class RegistryHandler {
 					+ version);
 		}
 		
-	    Map<RegistryAttribute, String> map = new HashMap<RegistryAttribute, String>();
-	    map.put(RegistryAttribute.LOGICAL_IDENTIFIER, lid);
+	    Map<ExtrinsicRegistryAttribute, String> map = new HashMap<ExtrinsicRegistryAttribute, String>();
+	    map.put(ExtrinsicRegistryAttribute.LOGICAL_IDENTIFIER, lid);
 	    
 	    List<ExtrinsicObject> extList = new ArrayList<ExtrinsicObject>();
 	    for (String registryUrl : this.allRegistries) {
 	    	extList = getExtrinsics(registryUrl, map, version, Constants.QUERY_MAX);
+	    	if (extList != null && !extList.isEmpty()) {
+	    		return new SearchCoreExtrinsic(extList.get(0));		// We know it will only return one object because
+	    															// it either queries for latest object or the specific
+	    															// version we specify
+	    	}
+	    }
+	    return null;
+	}
+	
+	/**
+	 * Get the ExtrinsicObjects associated with the current object
+	 * being queried.
+	 * 
+	 * @param lidvid	identifies the ExtrinsicObject list to be queried for
+	 * @return			list of ExtrinsicObjects
+	 * @throws Exception
+	 */
+	public SearchCoreExtrinsic getExtrinsicByGuid(String guid)
+			throws Exception {
+	    Map<ExtrinsicRegistryAttribute, String> map = new HashMap<ExtrinsicRegistryAttribute, String>();
+	    map.put(ExtrinsicRegistryAttribute.GUID, guid);
+	    
+	    List<ExtrinsicObject> extList = new ArrayList<ExtrinsicObject>();
+	    for (String registryUrl : this.allRegistries) {
+	    	extList = getExtrinsics(registryUrl, map, null, Constants.QUERY_MAX);
 	    	if (extList != null && !extList.isEmpty()) {
 	    		return new SearchCoreExtrinsic(extList.get(0));		// We know it will only return one object because
 	    															// it either queries for latest object or the specific
@@ -142,22 +181,24 @@ public class RegistryHandler {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<SearchCoreExtrinsic> getAssociationsByReferenceType(
+	public List<SearchCoreExtrinsic> getAssociatedExtrinsicsByReferenceType(
 			SearchCoreExtrinsic searchExtrinsic, String referenceType) 
 					throws Exception {
 
 		List<String> assocLidvids = searchExtrinsic.getSlotValues(referenceType);
 
 		List<SearchCoreExtrinsic> assocSearchExtList = new ArrayList<SearchCoreExtrinsic>();
+		SearchCoreExtrinsic assocSearchExt = null;
 		
 		// Get list of associations for specific association type
 		if (assocLidvids != null && !assocLidvids.isEmpty()) {
 			for (String assocLidvid : assocLidvids) {
 				Debugger.debug("Associated lidvid - " + assocLidvid);
 
-				// Check the cache first
-				SearchCoreExtrinsic assocSearchExt = AssociationCache.get(assocLidvid);
+				// First, check the cache
+				assocSearchExt = AssociationCache.get(assocLidvid);
 				
+				// Second, query for the Extrinsic by the lidvid
 				if (assocSearchExt == null) {
 					Debugger.debug(assocLidvid + " -  Not in AssociationCache.");
 					assocSearchExt = getExtrinsicByLidvid(assocLidvid);
@@ -166,6 +207,7 @@ public class RegistryHandler {
 					SearchCoreStats.assocCacheHits++;
 				}
 				
+				// Finally, either add it to the list, or throw it in the garbage log
 				if (assocSearchExt != null) {
 					assocSearchExtList.add(assocSearchExt);
 					
@@ -174,18 +216,74 @@ public class RegistryHandler {
 					SearchCoreStats.addMissingAssociationTarget(searchExtrinsic.getLid(), assocLidvid);
 				}
 			}
-		} else {
-			SearchCoreStats.addMissingSlot(searchExtrinsic.getLid(), referenceType);
+		} else {	// We still have a shot, let's check for Association objects
+			if (this.checkAssociations) {
+				log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "Couldn't find reference. Checking Association objects."));
+				assocSearchExtList = getAssociationsBySourceObject(searchExtrinsic, referenceType);
+			
+			// TODO Could also check Target Objects, but not needed right now
+			}
+			
+			// The association didn't want to be found
+			if (assocSearchExtList == null || assocSearchExtList.isEmpty()) {
+				SearchCoreStats.addMissingSlot(searchExtrinsic.getLid(), referenceType);
+			}
 		}
+		
 		return assocSearchExtList;
 	}
 	
-	private List<ExtrinsicObject> getExtrinsics(String registryUrl, Map<RegistryAttribute, String> regAttrValMap, String version, int queryMax) throws Exception
+	/**
+	 * Query the association objects by the Extrinsic's guid.
+	 * 
+	 * @param guid
+	 * @param referenceType
+	 * @return
+	 * @throws Exception
+	 */
+	public List<SearchCoreExtrinsic> getAssociationsBySourceObject(
+			SearchCoreExtrinsic searchExtrinsic, String associationType) 
+					throws Exception {
+
+		Debugger.debug("Source Object GUID: " + searchExtrinsic.getGuid());
+		
+	    Map<AssociationRegistryAttribute, String> map = new HashMap<AssociationRegistryAttribute, String>();
+	    map.put(AssociationRegistryAttribute.SOURCE_OBJECT, searchExtrinsic.getGuid());
+	    map.put(AssociationRegistryAttribute.ASSOCIATION_TYPE, associationType);
+	    
+	    List<Association> associationList = new ArrayList<Association>();
+	    
+	    for (String registryUrl : this.allRegistries) {
+	    	associationList.addAll(getAssociations(registryUrl, map));
+	    }
+	    
+	    List<SearchCoreExtrinsic> searchExtList = new ArrayList<SearchCoreExtrinsic>();
+	    for (Association association : associationList) {
+	    	searchExtList.add(getExtrinsicByGuid(association.getTargetObject()));
+	    }
+	    
+	    return searchExtList;
+	    
+	    
+	    /*
+	    List<ExtrinsicObject> extList = new ArrayList<ExtrinsicObject>();
+	    for (String registryUrl : this.allRegistries) {
+	    	extList = getAssociations(registryUrl, map, version, Constants.QUERY_MAX);
+	    	if (extList != null && !extList.isEmpty()) {
+	    		return new SearchCoreExtrinsic(extList.get(0));		// We know it will only return one object because
+	    															// it either queries for latest object or the specific
+	    															// version we specify
+	    	}
+	    }
+	    */
+	}
+	
+	private List<ExtrinsicObject> getExtrinsics(String registryUrl, Map<ExtrinsicRegistryAttribute, String> regAttrValMap, String version, int queryMax) throws Exception
 			 {
 		
 		ExtrinsicFilter.Builder builder = new ExtrinsicFilter.Builder();
 	    
-	    for (RegistryAttribute attribute : regAttrValMap.keySet()) {
+	    for (ExtrinsicRegistryAttribute attribute : regAttrValMap.keySet()) {
 	    	attribute.appendToFilterBuilder(builder, regAttrValMap.get(attribute));
 	    }
 	    
@@ -199,9 +297,8 @@ public class RegistryHandler {
 		try {
 			if (registryExists(registryUrl)) {
 				RegistryClient client = new RegistryClient(registryUrl);
-	
-				results = new ArrayList<ExtrinsicObject>();
 				
+				results = new ArrayList<ExtrinsicObject>();
 				PagedResponse<ExtrinsicObject> pr;
 				
 				int pageLength = Math.min(queryMax, QUERY_PAGE_MAX);
@@ -252,13 +349,75 @@ public class RegistryHandler {
 								}
 							}
 						}
-						lidList.clear();
+						
+						lidList = null;
 					} else {
 						Debugger.debug("\n\n No More Results Found \n\n");
 						results.addAll(pr.getResults());
 						break;
 					}
 				}
+				
+				return results;
+			}
+		} catch (RegistryServiceException rse) {
+			// Ignore. Nothing found.
+		} catch (RegistryClientException rce) {
+			throw new Exception(rce.getMessage());
+		}
+		return null;
+	}
+	
+	private List<Association> getAssociations(String registryUrl, Map<AssociationRegistryAttribute, String> regAttrValMap) throws Exception {
+		int queryMax =  Constants.QUERY_MAX;
+		AssociationFilter.Builder builder = new AssociationFilter.Builder();
+
+		for (AssociationRegistryAttribute attribute : regAttrValMap.keySet()) {
+			attribute.appendToFilterBuilder(builder, regAttrValMap.get(attribute));
+		}
+
+		AssociationFilter filter = builder.build();
+
+		// Create the query
+		RegistryQuery<AssociationFilter> query = new RegistryQuery.Builder<AssociationFilter>()
+				.filter(filter).build();
+
+		List<Association> results = null;
+		try {
+			if (registryExists(registryUrl)) {
+				RegistryClient client = new RegistryClient(registryUrl);
+
+				results = new ArrayList<Association>();
+
+				PagedResponse<Association> pr;
+
+				int pageLength = Math.min(queryMax, QUERY_PAGE_MAX);
+
+				// TODO Refactor this loop. It goes around one extra time to check for results before it breaks.
+				for (int start=1; start<queryMax+pageLength; start+=pageLength) {
+					Debugger.debug("start: " + start + ", queryPageMax: " + QUERY_PAGE_MAX + ", startingPageLength: " + pageLength);
+
+					if (start+pageLength > queryMax) {
+						pr = client.getAssociations(query, start, queryMax-start+1);
+					} else {
+						pr = client.getAssociations(query, start, pageLength);
+					}
+
+					// Examine the results of the query to grab the latest product for
+					// each ExtrinsicObject
+					//if (pr.getNumFound() != 0 ) {
+					if (pr.getResults().size() != 0 ) {
+						for (Association association : pr.getResults()) {
+							results.add(association);
+							Debugger.debug(association.getTargetObject());
+						}
+					} else {
+						Debugger.debug("\n\n No More Results Found \n\n");
+						results.addAll(pr.getResults());
+						break;
+					}
+				}
+				
 				return results;
 			}
 		} catch (RegistryServiceException rse) {
@@ -342,6 +501,7 @@ public class RegistryHandler {
 	 */
 	public void setPrimaryRegistries(List<String> primaryRegistries) {
 		this.primaryRegistries = primaryRegistries;
+		resetAllRegistries();
 	}
 	
 	/**
@@ -366,6 +526,8 @@ public class RegistryHandler {
 	 */
 	public void setSecondaryRegistries(List<String> secondaryRegistries) {
 		this.secondaryRegistries = secondaryRegistries;
+		
+		resetAllRegistries();
 	}
 	
 	/**
@@ -404,6 +566,10 @@ public class RegistryHandler {
 		} else {
 			return true;
 		}
+	}
+	
+	public void setCheckAssociations(boolean checkAssociations) {
+		this.checkAssociations = checkAssociations;
 	}
 	
 	

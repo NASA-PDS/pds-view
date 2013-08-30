@@ -84,42 +84,6 @@
 
       <p>The system administrator for the local machine may need to be consulted for this location. The path specified should have a <i>bin</i> sub-directory that contains the <i>java</i> executable. This variable may also be defined within the scripts. Edit the scripts (files without the .bat extension) and change the line in the example above to represent the local Java installation.
       </p>
-
-      <subsection name="Ops-specific Configurations">
-        <p>Lastly, the Operations machines need specific configurations for each machine in order to properly create the index and distribute it to the other machines as needed.</p>
-        <ul>
-          <li>On <i><b>pdssrv1</b></i>:
-          <ul>
-            <li>Update <i>/usr/local/${project.artifactId}/conf/pds/pds3/core.properties</i> as follows:
-              <source>
-search.core.search-home = /usr/local/search-service/pds
-search.core.registry-url = http://localhost:8080/registry
-search.core.config-home = /usr/local/search-core/conf/pds/pds3
-              </source>
-            </li>
-            <li>Verify SEARCH_SERVICE_URL environment variable in the <i>/usr/local/${project.artifactId}/bin/env-vars</i> file matches the location of the Search Service on the server.  Currently this should be set as follows:
-              <source>
-SEARCH_SERVICE_URL=http://localhost:8080/search-service
-              </source>
-            </li>
-          </ul>
-          </li>
-      
-          <li>On <i><b>pdssrv2</b></i>, the file <i>/usr/local/${project.artifactId}/bin/env-vars</i> needs to updated as follows (comments removed):
-          <source>
-...
-
-SOURCE=pdssrv1.jpl.nasa.gov
-
-SOURCE_USER=root
-
-SOURCE_PATH=
-          </source>
-          </li>
-        </ul>
-      </subsection>
-
-      <p>Note the <i>8080</i> was removed from the SEARCH_SERVICE_URL and REGISTRY_URL.</p>
     </section>
   </body>
 </document>

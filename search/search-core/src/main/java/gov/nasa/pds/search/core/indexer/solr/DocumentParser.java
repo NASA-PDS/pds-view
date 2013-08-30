@@ -16,6 +16,9 @@
 package gov.nasa.pds.search.core.indexer.solr;
 
 import gov.nasa.pds.search.core.constants.Constants;
+import gov.nasa.pds.search.core.extractor.RegistryExtractor;
+import gov.nasa.pds.search.core.logging.ToolsLevel;
+import gov.nasa.pds.search.core.logging.ToolsLogRecord;
 import gov.nasa.pds.search.core.util.InvalidDatetimeException;
 import gov.nasa.pds.search.core.util.PDSDateConvert;
 
@@ -47,8 +50,9 @@ import org.xml.sax.SAXException;
  * 
  */
 public class DocumentParser {
-	private static Logger LOG = Logger
-			.getLogger(DocumentParser.class.getName());
+
+	/** Standard output logger. **/
+	private static Logger log = Logger.getLogger(RegistryExtractor.class.getName());
 
 	/**
 	 * Creates the document object a parses out all of the data from each
@@ -124,7 +128,7 @@ public class DocumentParser {
 			Node catalogItem = children.item(1);
 			resClass = catalogItem.getLocalName();
 			resClass = resClass.replaceAll("_", "");
-			LOG.fine("resClass: " + resClass);
+			log.fine("resClass: " + resClass);
 			children = catalogItem.getChildNodes();
 			for (int i = 1; i < children.getLength(); i++) {
 				Node child = children.item(i);
@@ -133,8 +137,8 @@ public class DocumentParser {
 					String name = child.getLocalName();
 					String value = child.getTextContent();
 
-					LOG.fine("name: " + name);
-					LOG.fine("value: " + value);
+					log.fine("name: " + name);
+					log.fine("value: " + value);
 
 					// Slightly changed functionality from original document
 					// parser
@@ -147,7 +151,8 @@ public class DocumentParser {
 						try {
 							value = PDSDateConvert.convert(name, value);
 						} catch (InvalidDatetimeException e) {
-							System.err.println(e.getMessage() + " - " + name);
+					        log.log(new ToolsLogRecord(ToolsLevel.WARNING,
+					        		e.getMessage() + " - " + name));
 							value = PDSDateConvert.getDefaultTime(name);
 						}
 

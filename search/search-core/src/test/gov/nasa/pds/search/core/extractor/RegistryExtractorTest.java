@@ -12,6 +12,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -21,6 +22,8 @@ import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.formatter.SearchCoreFormatter;
 import gov.nasa.pds.search.core.logging.handler.SearchCoreStreamHandler;
+import gov.nasa.pds.search.core.test.SearchCoreTest;
+import gov.nasa.pds.search.core.test.SearchCoreTest.SingleTestRule;
 import gov.nasa.pds.search.core.util.Debugger;
 
 /**
@@ -29,24 +32,19 @@ import gov.nasa.pds.search.core.util.Debugger;
  * @author jpadams
  */
 @RunWith(JUnit4.class)
-public class RegistryExtractorTest {
+public class RegistryExtractorTest extends SearchCoreTest {
 	
 	private static final String TEST_DIR = System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE;
 	private RegistryExtractor re;
 	
-	@BeforeClass
-	public static void oneTimeSetUp() {
-		//Debugger.debugFlag = true;
-		
-    	Logger logger = Logger.getLogger("");
-	    logger.addHandler(new SearchCoreStreamHandler(System.out,
-	    		  ToolsLevel.DEBUG, new SearchCoreFormatter()));
-	}
+    @Rule
+    public SingleTestRule test = new SingleTestRule("");
 	
 	@Before
 	public void setUp() throws SearchCoreFatalException {
+		RegistryExtractor.prepForRun(TEST_DIR, true);
 		this.re = new RegistryExtractor(TEST_DIR, new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "config"), 
-				Arrays.asList(TestConstants.PDS3_REGISTRY_URL), new ArrayList<String>(), true);
+				Arrays.asList(TestConstants.PDS3_REGISTRY_URL), new ArrayList<String>());
 		this.re.setQueryMax(2);
 	}
 	

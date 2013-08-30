@@ -206,6 +206,9 @@ public class SearchCoreLauncher {
 		    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
 		    		"Search Core Properties      " + file.getAbsolutePath()));
 	    }
+	    
+	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+	    		"\n\n"));
 	  }
 	  
 	  /**
@@ -240,8 +243,7 @@ public class SearchCoreLauncher {
 		final int maxWidth = 80;
 		final HelpFormatter formatter = new HelpFormatter();
 		formatter.printHelp(maxWidth,
-				"search-core -" + Flag.PRIMARY.getShortName() + " <"
-						+ Flag.PRIMARY.getArgName() + "> [options]", null,
+				"search-core [options]", null,
 				Flag.getOptions(), null);
 	}
 
@@ -295,9 +297,9 @@ public class SearchCoreLauncher {
 				this.configHomeList.add(Utility.getAbsolutePath("Config Dir", o.getValue().trim(), true));
 			} else if (o.getOpt().equals(Flag.DEBUG.getShortName())) {
 				Debugger.debugFlag = true;
-				Debugger.debug("-------------------------------");
-				Debugger.debug("---- RUNNING IN DEBUG MODE ----");
-				Debugger.debug("-------------------------------");
+				Debugger.debug("-----------------------------------------");
+				Debugger.debug("---- RUNNING IN DEVELOPER DEBUG MODE ----");
+				Debugger.debug("-----------------------------------------");
 			} else if (o.getOpt().equals(Flag.EXTRACTOR.getShortName())) {
 				this.extractorFlag = true;
 				this.allFlag = false;
@@ -344,7 +346,9 @@ public class SearchCoreLauncher {
 			} else if (o.getOpt().equals(Flag.VERSION.getShortName())) {
 				displayVersion();
 				System.exit(0);
-			}  
+			} else {
+				
+			}
 		}
 
 		// Check for required values
@@ -378,7 +382,7 @@ public class SearchCoreLauncher {
 			throws InvalidOptionException {
 		Map<String, String> mappings = new HashMap<String, String>();
 
-		String primaryRegistry, secondaryRegistry, configHome, searchHome;
+		String primaryRegistry, secondaryRegistry, configHome;
 		//for (File propsFile : propsFileList) {
 			mappings = PropertiesUtil.getPropertiesMap(propsFile, PROPS_PREFIX);
 			
@@ -446,7 +450,7 @@ public class SearchCoreLauncher {
 		String path = System.getenv(SEARCH_SERVICE_ENVVAR);
 
 		if (path == null) {
-			path = System.getProperty("user.dir");
+			path = Constants.DEFAULT_SEARCH_HOME;
 		} else {
 			path += System.getProperty("file.separator") + "pds";
 		}
@@ -480,7 +484,6 @@ public class SearchCoreLauncher {
 	 * Execute Search Core components depending on the flags specified.
 	 */
 	public final void execute() {
-
 		if (this.allFlag || this.extractorFlag) {
 			try {
 				if (this.propsFilesList.isEmpty()) {
@@ -496,7 +499,8 @@ public class SearchCoreLauncher {
 					}
 				}
 			} catch (Exception e) {
-				System.err.println("Error running Registry Extractor.");
+				log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+						"Error running Registry Extractor."));
 				e.printStackTrace();
 			}
 		}
@@ -505,16 +509,18 @@ public class SearchCoreLauncher {
 			try {
 				runSolrIndexer();
 			} catch (Exception e) {
-				System.err.println("Error running Solr Indexer.");
+				log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+						"Error running Solr Indexer."));
 				e.printStackTrace();
 			}
 		}
 		
-		if (this.allFlag || this.postFlag) { //|| this.postFlag) {
+		if (this.allFlag || this.postFlag) {
 			try {
 				runSolrPost();
 			} catch (Exception e) {
-				System.err.println("Error running Solr Post.");
+				log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+						"Error running Solr Post."));
 				e.printStackTrace();
 			}
 		}
@@ -532,8 +538,8 @@ public class SearchCoreLauncher {
 			extractor = new RegistryExtractor(
 					this.searchHome.getAbsolutePath(),
 					new File(configHome),
-					this.primaryRegistries, this.secondaryRegistries,
-					this.clean);
+					this.primaryRegistries,
+					this.secondaryRegistries);
 			
 			if (this.queryMax > -1) {
 				extractor.setQueryMax(this.queryMax);

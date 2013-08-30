@@ -3,11 +3,7 @@
 	<specification>
 		<title>Observational</title>
 		<registryObjectType>Product_Observational</registryObjectType>
-		<dataSources>
-			<source sourceType="registry" priority="secondary" append="false">
-				<url>http://pdsdev.jpl.nasa.gov:8080/registry-pds4</url>
-			</source>
-		</dataSources>
+		<checkAssociations>true</checkAssociations>
 	</specification>
 	
 	<!-- Fields displayed in default Search Service results -->
@@ -86,7 +82,7 @@
 			<registryPath>primary_result_description</registryPath>
 		</field>
 		<field name="primary_result_processing_level_id" type="string">
-			<registryPath>primary_result_processing_level_id</registryPath>
+			<registryPath>primary_result_reduction_level</registryPath>
 		</field>
 		<field name="investigation_name" type="string">
 			<registryPath>investigation_name</registryPath>
@@ -105,6 +101,9 @@
 		</field>
 		<field name="instrument_ref" type="string">
 			<registryPath>instrument_ref</registryPath>
+		</field>
+		<field name="instrument_name" type="string">
+			<registryPath>instrument_ref.instrument_name</registryPath>
 		</field>
 		<field name="instrument_host_ref" type="string">
 			<registryPath>instrument_host_ref</registryPath>
@@ -130,6 +129,12 @@
 		<field name="data_class" type="string">
 			<registryPath>data_class</registryPath>
 		</field>
+		<field name="file_ref_name" type="string">
+			<registryPath>file_ref.file_name</registryPath>
+		</field>
+		<field name="file_ref_url" type="string">
+			<registryPath>file_ref.access_url</registryPath>
+		</field>		
 	</indexFields>
 	
 	<!-- Included from old search, leave in for now -->

@@ -1,16 +1,23 @@
 package gov.nasa.pds.search.core.indexer.solr;
 
+import static org.junit.Assert.*;
 import gov.nasa.pds.search.core.constants.TestConstants;
 import gov.nasa.pds.search.core.indexer.solr.SolrIndexer;
+import gov.nasa.pds.search.core.test.SearchCoreTest;
 
 import java.io.File;
 
 import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import junit.framework.TestCase;
 
-public class SolrIndexerTest extends TestCase {
-
+@RunWith(JUnit4.class)
+public class SolrIndexerTest extends SearchCoreTest {
+	
+	@Test
 	public void testSolrIndexer() {
 		try {
 			File indexDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE + "/index");

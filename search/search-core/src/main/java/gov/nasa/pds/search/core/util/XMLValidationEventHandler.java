@@ -21,7 +21,7 @@ public class XMLValidationEventHandler implements ValidationEventHandler {
             XMLValidationEventHandler.class.getName());
 
     public boolean handleEvent(ValidationEvent event) {
-        Level level = null;
+        Level level = ToolsLevel.ALL;
         if(event.getSeverity() == ValidationEvent.ERROR
                 || event.getSeverity() == ValidationEvent.FATAL_ERROR) {
             level = ToolsLevel.SEVERE;

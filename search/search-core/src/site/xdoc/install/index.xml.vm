@@ -203,7 +203,7 @@ set SEARCH_CORE_HOME=C:\Program Files\\${project.artifactId}-${project.version}
 search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry -m 5
 	  </source>
 	</li>
-	<li>Go to <a href="../operate/index.html#Basic_Index_Generation">Basic Index Generation</a> section of the <a href="../operate">Operation Guide</a> for the procedure to run the script and see the results in the Search Service.</li>
+	<li>Go to <a href="../operate/index.html#Basic_Index_Generation">Basic Index Generation</a> section of the <a href="../operate/index.html">Operation Guide</a> for the procedure to run the script and see the results in the Search Service.</li>
       </ol>
     </section>
 

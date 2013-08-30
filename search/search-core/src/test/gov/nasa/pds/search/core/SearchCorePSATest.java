@@ -3,7 +3,9 @@ package gov.nasa.pds.search.core;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -30,28 +32,30 @@ public class SearchCorePSATest {
 		testDir.mkdirs();
 	}
 	
-	@AfterClass
-	public static void oneTimeTearDown() {
+	/*@AfterClass
+	public static void oneTimeTearDown() throws IOException {
 		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
-		testDir.delete();
-	}
+		FileUtils.deleteDirectory(testDir);
+	}*/
 	
     /**
-     * Test End-To-End with PSA Data, relative paths and max query = 5
-     * @throws Exception 
+     * Test End-To-End with PSA Data
+     * @throws Exception
      */
 	@Test
-    public void testExtractorRelative() {
+	//@Ignore
+    public void testLauncherPSA() {
     	try {
-	    	String[] args = { //"-d", 
-	    			"-r", TestConstants.PSA_REGISTRY_URL, 
+	    	String[] args = { "-i", "-e",	// Only run Extractor and Indexer components
+	    			"-r", TestConstants.PSA_REGISTRY_URL,
 	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-m", "5", 
-	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "psa/pds3", };
+	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "psa/pds3",
+	    			"-v", "0" };
 	    	SearchCoreLauncher.main(args);
 		} catch (Exception e) {
+			e.printStackTrace();
 			fail("Registry Extractor with Relative Paths failed: " + e.getMessage());
 		}
     }
-
 }

@@ -5,7 +5,7 @@
 		<registryObjectType>Product_Context</registryObjectType>
 		<dataSources>
 			<source sourceType="registry" priority="primary" append="false">
-				<url>http://pdsdev.jpl.nasa.gov:8080/registry-pds4</url>
+				<url>http://localhost:8080/registry-pds4</url>
 			</source>
 		</dataSources>
 	</specification>

@@ -3,11 +3,6 @@
 	<specification>
 		<title>Collection</title>
 		<registryObjectType>Product_Collection</registryObjectType>
-		<dataSources>
-			<source sourceType="registry" priority="secondary" append="false">
-				<url>http://pdsdev.jpl.nasa.gov:8080/registry-pds4</url>
-			</source>
-		</dataSources>
 	</specification>
 	
 	<!-- Fields displayed in default Search Service results -->
@@ -86,7 +81,7 @@
 			<registryPath>primary_result_description</registryPath>
 		</field>
 		<field name="primary_result_processing_level_id" type="string">
-			<registryPath>primary_result_processing_level_id</registryPath>
+			<registryPath>primary_result_reduction_level</registryPath>
 		</field>
 		<field name="investigation_name" type="string">
 			<registryPath>investigation_name</registryPath>
@@ -106,6 +101,9 @@
 		<field name="instrument_ref" type="string">
 			<registryPath>instrument_ref</registryPath>
 		</field>
+		<field name="instrument_name" type="string">
+			<registryPath>instrument_ref.instrument_name</registryPath>
+		</field>
 		<field name="instrument_host_ref" type="string">
 			<registryPath>instrument_host_ref</registryPath>
 		</field>
@@ -123,6 +121,15 @@
 		</field>
 		<field name="modification_description" type="string">
 			<registryPath>modification_description</registryPath>
+		</field>
+		<field name="resource_ref" type="string">
+			<registryPath>resource_ref</registryPath>
+		</field>
+		<field name="resource_url" type="string">
+			<registryPath>resource_ref.resource_url</registryPath>
+		</field>
+		<field name="resource_name" type="string">
+			<registryPath>resource_ref.resource_name</registryPath>
 		</field>
 	</indexFields>
 	

@@ -16,6 +16,9 @@
 package gov.nasa.pds.search.core.indexer.solr;
 
 import gov.nasa.pds.search.core.constants.Constants;
+import gov.nasa.pds.search.core.extractor.RegistryExtractor;
+import gov.nasa.pds.search.core.logging.ToolsLevel;
+import gov.nasa.pds.search.core.logging.ToolsLogRecord;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
@@ -38,6 +42,9 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
  */
 public class SolrIndexer {
 
+	/** Standard output logger. **/
+	private static Logger log = Logger.getLogger(RegistryExtractor.class.getName());
+	
 	private static final int INDEX_DOC_THRESHOLD = 1000;
 
 	private static int totalIndexDocCount;
@@ -59,21 +66,24 @@ public class SolrIndexer {
 			System.exit(1);
 		}
 
-		Date start = new Date();
+		//Date start = new Date();
 		totalIndexDocCount = 0;
 
 		searchServiceIndexHome = args[0];
 		removePreviousIndex();
 
 		setSolrIndexWriter();
-		System.out.println("Index Docs: " + args[1]);
+		
+        log.log(new ToolsLogRecord(ToolsLevel.DEBUG,
+        		"Looking for Solr Docs in " + args[1]));
+        
 		indexDocs(new File(args[1]));
 
 		closeSolrIndexWriter();
-		Date end = new Date();
+		//Date end = new Date();
 
-		System.out.print(end.getTime() - start.getTime());
-		System.out.println(" total milliseconds");
+		//System.out.print(end.getTime() - start.getTime());
+		//System.out.println(" total milliseconds");
 	}
 
 	/**
@@ -155,7 +165,7 @@ public class SolrIndexer {
 	 */
 	private static void removePreviousIndex() 
 			throws IOException {
-		List<File> files = new ArrayList<File>(FileUtils.listFiles(new File(searchServiceIndexHome), new WildcardFileFilter("solr_index.xml.*"), null));
+		List<File> files = new ArrayList<File>(FileUtils.listFiles(new File(searchServiceIndexHome), new WildcardFileFilter(Constants.SOLR_INDEX_PREFIX + "*"), null));
 		for (File file : files) {
 			FileUtils.forceDelete(file);
 		}

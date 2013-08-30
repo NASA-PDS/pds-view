@@ -5,6 +5,8 @@ import gov.nasa.pds.search.core.constants.TestConstants;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.formatter.SearchCoreFormatter;
 import gov.nasa.pds.search.core.logging.handler.SearchCoreStreamHandler;
+import gov.nasa.pds.search.core.test.SearchCoreTest;
+import gov.nasa.pds.search.core.test.SearchCoreTest.SingleTestRule;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +23,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -31,16 +34,12 @@ import org.junit.runners.JUnit4;
  * @author jpadams
  */
 @RunWith(JUnit4.class)
-public class SearchCorePDS3Test {
+public class SearchCorePDS3Test extends SearchCoreTest {
 
 	@BeforeClass
 	public static void oneTimeSetUp() {
 		File testDir = new File(System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE);
 		testDir.mkdirs();
-		
-		Logger logger = Logger.getLogger("");
-	    logger.addHandler(new SearchCoreStreamHandler(System.out,
-	    		  ToolsLevel.DEBUG, new SearchCoreFormatter()));
 	}
 	
 	/*@AfterClass
@@ -49,14 +48,42 @@ public class SearchCorePDS3Test {
 		FileUtils.deleteDirectory(testDir);
 	}*/
 	
+    @Rule
+    public SingleTestRule test = new SingleTestRule("");
+
     /**
-     * Test End-To-End with PDS Data, relative paths and max query = 5
+     * Test End-To-End with PDS Data. Includes Solr Post.
+     * Test is ignored by default since SolrPost requires
+     * a localhost search service
+     * @throws Exception
+     */
+	@Test
+	@Ignore
+    public void testSearchCoreEndToEnd() {
+    	try {
+	    	String[] args = {  
+	    			"-r", TestConstants.PDS3_REGISTRY_URL,
+	    			"-H", TestConstants.SEARCH_HOME_RELATIVE,
+	    			"-m", "1", 
+	    			"-p", TestConstants.TEST_DIR_RELATIVE + "/properties/pds3-core.properties",
+	    			TestConstants.TEST_DIR_RELATIVE + "/properties/pds4-core.properties",
+	    			TestConstants.TEST_DIR_RELATIVE + "/properties/psa-core.properties",
+	    			"-v", "0" };
+	    	SearchCoreLauncher.main(args);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("Registry Extractor with Relative Paths failed: " + e.getMessage());
+		}
+    }
+	
+    /**
+     * Test launcher PDS Data. Excludes Solr Post (requires localhost Search Service)
      * @throws Exception
      */
 	@Test
     public void testLauncherPDS3() {
     	try {
-	    	String[] args = { //"-d", 
+	    	String[] args = { "-i", "-e",	// Only run Extractor and Indexer components
 	    			"-r", TestConstants.PDS3_REGISTRY_URL,
 	    			"-H", TestConstants.SEARCH_HOME_RELATIVE,
 	    			"-m", "1", 
@@ -76,30 +103,10 @@ public class SearchCorePDS3Test {
 	@Test
     public void testLauncherWithNoPrimaryRegistries() {
     	try {
-	    	String[] args = { //"-d",
+	    	String[] args = { "-i", "-e",	// Only run Extractor and Indexer components
 	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-m", "1", 
-	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "psa/pds3",
-	    			"-v", "0" };
-	    	SearchCoreLauncher.main(args);
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail("Registry Extractor with Relative Paths failed: " + e.getMessage());
-		}
-    }
-	
-    /**
-     * Test End-To-End with PDS Data, relative paths and max query = 5
-     * @throws Exception
-     */
-	@Test
-    public void testLauncherPDS4() {
-    	try {
-	    	String[] args = { //"-d", 
-	    			"-r", TestConstants.PDS4_ATM_REGISTRY_URL,
-	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
-	    			"-m", "1", 
-	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds4",
+	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3",
 	    			"-v", "0" };
 	    	SearchCoreLauncher.main(args);
 		} catch (Exception e) {
@@ -117,14 +124,16 @@ public class SearchCorePDS3Test {
 			File tempFile = new File(TestConstants.SEARCH_HOME_RELATIVE + "/temp_props.properties");
 			
 			PrintWriter writer = new PrintWriter(tempFile);
-	    	writer.write("search.core.search-home = " + System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE + "\n"
-	    			+ "search.core.primary-registry = " + TestConstants.PDS3_REGISTRY_URL + "\n"
+	    	writer.write("search.core.primary-registry = " + TestConstants.PDS3_REGISTRY_URL + "\n"
 	    			//+ "search.core.secondary-registry = " + TestConstants.PDS4_REGISTRY_URL + "\n"
 	    			+ "search.core.config-home = "+ System.getProperty("user.dir") + "/" + TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3");
 	    	writer.flush();
 	    	writer.close();
 	    	
-	    	String[] args = { "-d", "-v", "0", "-p", tempFile.getAbsolutePath(), 
+	    	String[] args = { "-i", "-e",	// Only run Extractor and Indexer components
+	    			"-v", "0", 
+	    			"-p", tempFile.getAbsolutePath(), 
+	    			"-H", TestConstants.SEARCH_HOME_RELATIVE,
 	    			"-m", "1" 
 	    			};
 	    	SearchCoreLauncher.main(args);
@@ -157,10 +166,11 @@ public class SearchCorePDS3Test {
 			File pds3 = new File(TestConstants.TEST_DIR_RELATIVE + "/properties/pds3-core.properties");
 			File pds4 = new File(TestConstants.TEST_DIR_RELATIVE + "/properties/pds4-core.properties");
 	    	
-	    	String[] args = { //"-d", 
+	    	String[] args = { "-i", "-e",	// Only run Extractor and Indexer components
 	    			"-v", "0", 
-	    			"-p", pds3.getAbsolutePath(), pds4.getAbsolutePath(), 
-	    			"-m", "1" 
+	    			"-p", pds3.getAbsolutePath(), pds4.getAbsolutePath(),
+	    			"-H", TestConstants.SEARCH_HOME_RELATIVE,
+	    			"-m", "1"
 	    			};
 	    	SearchCoreLauncher.main(args);
 	    	

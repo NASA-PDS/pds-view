@@ -5,6 +5,9 @@ import static org.junit.Assert.fail;
 import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.constants.TestConstants;
 import gov.nasa.pds.search.core.registry.RegistryHandler;
+import gov.nasa.pds.search.core.registry.objects.SearchCoreExtrinsic;
+import gov.nasa.pds.search.core.test.SearchCoreTest;
+import gov.nasa.pds.search.core.test.SearchCoreTest.SingleTestRule;
 import gov.nasa.pds.search.core.util.Debugger;
 
 import java.io.BufferedWriter;
@@ -14,19 +17,24 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public class RegistryHandlerTest {
+public class RegistryHandlerTest extends SearchCoreTest {
 
 	private static final File TEST_DIR = new File (System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE + "/" + Constants.SOLR_DOC_DIR);
 	private RegistryHandler handler;
+	
+    @Rule
+    public SingleTestRule test = new SingleTestRule("");
 	
 	@BeforeClass
 	public static void oneTimeSetUp() {
@@ -42,10 +50,6 @@ public class RegistryHandlerTest {
 
 	@Test
 	public void testGetExtrinsicsByObjectInfo() {
-		System.out.println("------------------------------------------------");
-		System.out.println("--- Testing GetExtrinsicsByObjectInfo method ---");
-		System.out.println("------------------------------------------------");
-		
 		String objectType = "Product_Data_Set_PDS3";
 		String objectName = "*";
 		
@@ -61,10 +65,6 @@ public class RegistryHandlerTest {
 	@Test
 	public void testGetExtrinsicsByLidvid() {
 		try {
-			System.out.println("--------------------------------------------");
-			System.out.println("--- Testing getExtrinsicsByLidvid method ---");
-			System.out.println("--------------------------------------------");
-			
 			String lidvid = "urn:nasa:pds:context_pds3:instrument:instrument.mri__dif::8.0";
 			
 			assertFalse(this.handler.getExtrinsicByLidvid(lidvid) == null);
@@ -77,10 +77,6 @@ public class RegistryHandlerTest {
 	@Test
 	public void testGetExtrinsicsByLidvidWithSecondaryRegistries() {
 		try {
-			System.out.println("--------------------------------------------------------");
-			System.out.println("--- GetExtrinsicsByLidvidWithSecondaryRegistries method ---");
-			System.out.println("--------------------------------------------------------");
-			
 			this.handler.setPrimaryRegistries(Arrays.asList(TestConstants.PSA_REGISTRY_URL));
 			this.handler.setSecondaryRegistries(Arrays.asList(TestConstants.PDS3_REGISTRY_URL));
 			
@@ -89,6 +85,25 @@ public class RegistryHandlerTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("GetExtrinsicsByLidvidWithSecondaryRegistries Test failed. See stack trace.");
+		}
+	}
+	
+	@Test
+	public void testGetAssociations() {
+		try {
+			Debugger.debugFlag = true;
+			String lidvid = "urn:nasa:pds:phx_met:reduced:MS107RMH_00905704961_1C6EM1::1.0";
+			
+			this.handler.addPrimaryRegistry(TestConstants.PDS4_ATM_REGISTRY_URL);
+			SearchCoreExtrinsic ext = this.handler.getExtrinsicByLidvid(lidvid);
+			List<SearchCoreExtrinsic> searchExtList = this.handler.getAssociationsBySourceObject(ext, "file_ref");
+			for (SearchCoreExtrinsic sce : searchExtList) {
+				System.out.println("file_name: " + sce.getSlotValues("file_name").get(0));
+				System.out.println("access_url: " + sce.getSlotValues("access_url").get(0));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("testGetAssociations failed. See stack trace.");
 		}
 	}
 }

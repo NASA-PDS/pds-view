@@ -38,7 +38,7 @@ public enum Flag {
 			true,
 			"Specify the product class configuration home directory."
 					+ "Multiple directories can be specified to accompany"
-					+ " multiple registries. (Default: $SEARCH_CORE_HOME/conf/pds/)"),
+					+ " multiple registries. (Default: $SEARCH_CORE_HOME/conf)"),
 
 	/**
 	 * Flag to turn OFF removal of all directories from previous Search Core
@@ -113,10 +113,9 @@ public enum Flag {
 			"search-home",
 			"directory",
 			String.class,
-			"Specify the Search Home directory. The tool will output the index files to this"
-					+ " directory. When using the Search Service, this should be the "
-					+ " $SEARCH_SERVICE_HOME/pds directory"
-					+ " (Default: $SEARCH_SERVICE_HOME/pds directory)"),
+			"Specify the the directory for the Search Service core to add the index. "
+					+ "For the PDS core, this value should be $SEARCH_SERVICE_HOME/pds. "
+					+ "(Default: /usr/local/search-service/pds directory)"),
 
 	/** Flag to generate a Solr Index. */
 	SERVICE_URL("s", "service-url", "url", String.class, "Specify the Search Service URL endpoint."
