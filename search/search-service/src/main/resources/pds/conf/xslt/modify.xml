@@ -48,4 +48,9 @@
   <category name="esa" modified="ESA"/>
   <category name="pds3" modified="PDS3"/>
   <category name="pds4" modified="PDS4"/>
+  <category name="met" modified="MET"/>
+  <category name="lidar" modified="LIDAR"/>
+  <category name="ase" modified="ASE"/>
+  <category name="ssi" modified="SSI"/>
+  <category name="telltale" modified="TELLTALE"/>
 </categories>

@@ -86,6 +86,28 @@
     <field name="instrument_id"><xsl:value-of select="pds:clean(.)" /></field>
   </xsl:template>
   
+  <xsl:template match="field[@name = 'observing_system_component_type'] ">
+  	<xsl:copy-of select="." />
+	<xsl:variable name="type" as="xs:string">
+	  <xsl:value-of select="lower-case(.)" />
+	</xsl:variable>
+	<xsl:variable name="index" as="xs:integer">
+		<xsl:value-of select="count(preceding-sibling::field[@name = 'observing_system_component_type']) + 1"/>
+	</xsl:variable>
+	<xsl:variable name="name" as="xs:string">
+		<xsl:value-of select="../field[@name = 'observing_system_component_name'][$index]" />
+	</xsl:variable>
+	
+  	<xsl:choose>
+	    <xsl:when test="$type = 'instrument'">
+	    	<field name="facet_instrument"><xsl:value-of select="concat('1,',$name)" /></field>
+	    </xsl:when>
+	    <xsl:when test="$type = 'spacecraft'">
+	    	<field name="facet_investigation"><xsl:value-of select="concat('1,',$name)" /></field>
+	    </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+  
   <xsl:template match="field[@name = 'primary_result_purpose']">
     <field name="primary_result_purpose"><xsl:value-of select="pds:clean(.)" /></field>
     <field name="facet_primary_result_purpose"><xsl:value-of select="concat('1,',.)" /></field>

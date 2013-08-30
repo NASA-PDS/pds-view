@@ -16,7 +16,6 @@
 	<str name="facet.field">facet_target</str>
 	<str name="facet.field">facet_investigation</str>
 	<str name="facet.field">facet_instrument</str>
-	<str name="facet.field">facet_investigation</str>
 	<str name="facet.field">facet_primary_result_purpose</str>
 	<str name="facet.field">facet_primary_result_processing_level_id</str>
 	<str name="f.facet_pds_model_version.facet.prefix">1,</str>
