@@ -33,8 +33,8 @@
 
     <menu name="Software Documentation">
       <item name="About Search" href="index.html"/>
-      <item name="Design (pdf)" href="docs/pds2010_search_design.pdf"/>
-      <item name="Protocol (pdf)" href="docs/pds2010_pds_search_protocol.pdf"/>
+      <item name="Design (pdf)" href="docs/pds4_search_design.pdf"/>
+      <item name="Protocol (pdf)" href="docs/pds4_pds_search_protocol.pdf"/>
     </menu>
 
     <menu ref="modules"/>

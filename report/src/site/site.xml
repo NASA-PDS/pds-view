@@ -33,7 +33,7 @@
 
     <menu name="Software Documentation">
       <item name="About Report" href="index.html"/>
-      <item name="Design (pdf)" href="docs/pds2010_report_design.pdf"/>
+      <item name="Design (pdf)" href="docs/pds4_report_design.pdf"/>
       <item name="Operation" href="operate/index.html"/>
     </menu>
 

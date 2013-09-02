@@ -35,7 +35,7 @@
 
     <menu name="Software Documentation">
       <item name="About Preparation Tools" href="index.html"/>
-      <item name="Design (pdf)" href="docs/pds2010_preparation_design.pdf"/>
+      <item name="Design (pdf)" href="docs/pds4_preparation_design.pdf"/>
     </menu>
 
     <menu ref="modules"/>

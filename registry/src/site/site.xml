@@ -33,7 +33,7 @@
 
     <menu name="Software Documentation">
       <item name="About Registry" href="index.html"/>
-      <item name="Design (pdf)" href="docs/pds2010_registry_design.pdf"/>
+      <item name="Design (pdf)" href="docs/pds4_registry_design.pdf"/>
     </menu>
 
     <menu ref="modules"/>

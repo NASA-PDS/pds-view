@@ -34,8 +34,8 @@
 
     <menu name="Documentation">
       <item name="About PDS4" href="index.html"/>
-      <item name="System Architecture (pdf)" href="docs/pds2010_system_arch_spec.pdf"/>
-      <item name="System Requirements (pdf)" href="docs/pds2010_system_reqs.pdf"/>
+      <item name="System Architecture (pdf)" href="docs/pds4_system_arch_spec.pdf"/>
+      <item name="System Requirements (pdf)" href="docs/pds4_system_reqs.pdf"/>
       <item name="System Releases" href="release/index.html"/>
     </menu>
 
