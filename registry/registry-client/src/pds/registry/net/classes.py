@@ -196,10 +196,7 @@ class PDSRegistryClient(object):
             if 'Service' != answer.get('objectType', None): return None
             return self._createService(answer)
         except HTTPError, ex:
-            # TODO: We should return None in the case of a 404, but the PDS Registry Service currently
-            # returns 500 for not found.  When https://oodt.jpl.nasa.gov/jira/browse/PDS-29 is
-            # fixed, fix this below:
-            if ex.code in (httplib.INTERNAL_SERVER_ERROR, httplib.NOT_FOUND):
+            if ex.code == httplib.NOT_FOUND:
                 return None
             else:
                 raise ex
