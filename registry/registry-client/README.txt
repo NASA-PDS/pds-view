@@ -25,5 +25,5 @@ instructions, license, and history of changes.
     California Institute of Technology
 
 .. Copyright:
-    Copyright 2011-2012 California Institute of Technology. ALL RIGHTS
+    Copyright 2011-2013 California Institute of Technology. ALL RIGHTS
     RESERVED.  U.S. Government sponsorship acknowledged.
