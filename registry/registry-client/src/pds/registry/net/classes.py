@@ -22,7 +22,7 @@ class PDSRegistryClient(object):
         self.url = url
     def _callServer(self, path='', params=None, json=None, method='GET'):
         ''''''
-        url = self.url + path + (params and u'?' + urlencode(params) or u'')
+        url = self.url + path + (u'?' + urlencode(params) if params else u'')
         request = Request(url, data=None, headers=_standardHeaders)
         request.get_method = lambda: method
         if json:
@@ -31,7 +31,7 @@ class PDSRegistryClient(object):
             request.add_header(u'Content-type', 'application/json')
             request.add_header(u'Content-length', unicode(len(json)))
         with closing(urlopen(request)) as f:
-            return method == 'GET' and anyjson.deserialize(f.read()) or None
+            return anyjson.deserialize(f.read()) if method == 'GET' else None
     def _createSlots(self, s):
         '''Create a set of Slots from the given post-JSON-quantized sequence ``s``.'''
         return set([Slot(i['name'], i['values'], i.get('slotType', None)) for i in s])
