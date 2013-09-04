@@ -105,6 +105,7 @@ class RegistryObject(Identifiable):
     SERVICE = 'Service'
     SERVICE_BINDING = 'ServiceBinding'
     SPECIFICATION_LINK = 'SpecificationLink'
+    EXTRINSIC_OBJECT = 'ExtrinsicObject'
     def __init__(
         self, guid, lid,
         home=None, slots=None, name=None, objectType=None, status=None, description=None, versionName=None
@@ -125,6 +126,19 @@ class RegistryObject(Identifiable):
         '''Object type, immutable'''
         return self._objectType
 
+
+class ExtrinsicObject(RegistryObject):
+    '''The ExtrinsicObject class is the primary metadata class for a RepositoryItem.'''
+    def __init__(
+        self, guid, lid,
+        home=None, slots=None, name=None, status=None, description=None, versionName=None,
+        contentVersion=None, mimeType=None
+    ):
+        super(ExtrinsicObject, self).__init__(
+            guid, lid, home, slots, name, RegistryObject.EXTRINSIC_OBJECT, status, description, versionName
+        )
+        self.contentVersion, self.mimeType = contentVersion, mimeType
+    
 
 class Service(RegistryObject):
     '''Service instances describe services, such as web services.'''
