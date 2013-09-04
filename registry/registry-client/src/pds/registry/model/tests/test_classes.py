@@ -5,8 +5,15 @@
 '''PDS Registry Client: tests for information model classes.'''
 
 import unittest
-from pds.registry.model.classes import Identifiable, Slot, RegistryObject
-from pds.registry.model.classes import Service, ServiceBinding, SpecificationLink
+from pds.registry.model.classes import (
+    ExtrinsicObject,
+    Identifiable,
+    RegistryObject,
+    Service,
+    ServiceBinding,
+    Slot,
+    SpecificationLink,
+)
 
 class IdentifiableTest(unittest.TestCase):
     '''Test case for the Identifiable class.'''
@@ -125,6 +132,23 @@ class _RegistryObjectTestCase(unittest.TestCase):
         self.assertEquals(self._getObjectType(), instance.objectType)
 
 
+class ExtrinsicObjectTest(_RegistryObjectTestCase):
+    '''Test case for the ExtrinsicObject class.'''
+    def _createInstance(self):
+        return ExtrinsicObject(
+            guid='567', lid='urn:pds:extrinsic1', home=u'http://home.com/', slots=set(), name=u'Cheese Log', status='submitted',
+            description=u'A test extrinsic object—and still no need to panic.', versionName='1.0',
+            contentVersion='1.0', mimeType='x-application/cheese'
+        )
+    def _getObjectType(self):
+        return 'ExtrinsicObject'
+    def testAttributes(self):
+        '''See to it that our additional attributes are set the way we like'''
+        a = self._createInstance()
+        self.assertEquals('1.0', a.contentVersion)
+        self.assertEquals('x-application/cheese', a.mimeType)
+
+
 class ServiceTest(_RegistryObjectTestCase):
     '''Test case for the Service class.'''
     def _createInstance(self):
@@ -206,6 +230,7 @@ def test_suite():
         unittest.makeSuite(ServiceTest),
         unittest.makeSuite(ServiceBindingTest),
         unittest.makeSuite(SpecificationLinkTest),
+        unittest.makeSuite(ExtrinsicObjectTest),
     ])
 
 
