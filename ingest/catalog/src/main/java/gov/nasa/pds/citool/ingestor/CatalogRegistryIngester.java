@@ -206,7 +206,7 @@ public class CatalogRegistryIngester {
 				lp = new LabelParserException(catObj.getLabel().getLabelURI(),
 						null, null, "ingest.warning.failIngestion",
 						ProblemType.SUCCEED,
-						"Failed ingesting to the storage service.");
+						"Failed delivering to the storage service.");
 				catObj.getLabel().addProblem(lp);
 			}
 			else {
@@ -218,7 +218,7 @@ public class CatalogRegistryIngester {
 						lp = new LabelParserException(catObj.getLabel().getLabelURI(),
 								null, null, "ingest.text.recordAdded",
 								ProblemType.SUCCEED,
-								"Successfully ingested a catalog file to the storage service. productID - "
+								"Successfully delivered a catalog file to the storage service. productID - "
 										+ productId);
 						catObj.getLabel().addProblem(lp);
 
@@ -238,7 +238,7 @@ public class CatalogRegistryIngester {
 						lp = new LabelParserException(catObj.getLabel().getLabelURI(),
 								null, null, "ingest.warning.failIngestion",
 								ProblemType.SUCCEED,
-								"Failed ingesting to the storage service.");
+								"Failed delivering to the storage service.");
 						catObj.getLabel().addProblem(lp);
 					}
 				}
@@ -246,7 +246,7 @@ public class CatalogRegistryIngester {
 					lp = new LabelParserException(catObj.getLabel().getLabelURI(),
 							null, null, "ingest.warning.skipFile",
 							ProblemType.SUCCEED,
-							"This file is already deliver to the storsge service. Won't deliver this file.");
+							"File is already delivered to the storage service. Won't deliver this file.");
 					catObj.getLabel().addProblem(lp);
 				}
 			}
@@ -262,7 +262,7 @@ public class CatalogRegistryIngester {
 				else {
 					lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null,
 							"ingest.warning.skipFile", ProblemType.SUCCEED,
-							"A File Extrinisic Object already exists in the registry service. Won't ingest this file.");
+							"File object already exists in the registry. Won't ingest this file object.");
 					catObj.getLabel().addProblem(lp);
 					return null;
 				}
@@ -317,8 +317,9 @@ public class CatalogRegistryIngester {
 				// TODO: need to add warning problemtype instead of using INVALID_LABEL
 				lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null,
                         "ingest.warning.skipFile",
-                        ProblemType.INVALID_LABEL_WARNING, "This file is not required to ingest into the registry service.");
+                        ProblemType.INVALID_LABEL_WARNING, "This file is not required to ingest into the registry.");
 				catObj.getLabel().addProblem(lp);
+				this.ingestedProduct = true;
 				return null;		
 			}
 			this.product = createProduct(catObj);
@@ -329,9 +330,10 @@ public class CatalogRegistryIngester {
 				if (sameProduct) {
 					lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null,
 			  				"ingest.warning.skipFile", ProblemType.SUCCEED,
-			  			    "An extrinisic object already exists in the registry service. Won't ingest this file.");
+			  			    "Extrinsic object already exists in the registry. Won't ingest this extrinsic object.");
 			  		catObj.getLabel().addProblem(lp);
 			  		this.ingestedProduct = false;
+			  		//isIngestRequired = false;
 			  		return null;
 				}
 				else {
@@ -428,27 +430,31 @@ public class CatalogRegistryIngester {
 			
 			if (!this.registryPackageGuid.isEmpty()) {
 				client.setRegistrationPackageId(registryPackageGuid);
-			}					
+			}	
 			
 			for (ObjectStatement resrcObj: catObj.getResrcObjs()) {
 				ExtrinsicObject resrcProduct = createResrcProduct(resrcObj, catObj);
+				String resrcID = getSlotValues(resrcProduct, "resource_id");
 				
 				if (productExists(resrcProduct.getLid())) {
 					boolean sameProduct = isSame(resrcProduct, getExtrinsic(resrcProduct.getLid()));					
 					if (sameProduct) {
 						lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null,
 				  				"ingest.warning.skipFile", ProblemType.SUCCEED,
-				  			    "An extrinisic object already exists in the registry service. Won't ingest this file.");
+				  			    "RESOURCE_INFORMATION already exists in the registry. Won't ingest " + resrcID + ".");
 				  		catObj.getLabel().addProblem(lp);
+				  		this.ingestedProduct = false;
 				  		continue;
 					}
 					else {
 						guid = client.versionObject(resrcProduct);	
+						this.ingestedProduct = true;
 					}
 				}
 				else {
 					guid = client.publishObject(resrcProduct);
 					//catObj.setVersion(1.0f);
+					this.ingestedProduct = true;
 				}
 				resrcProduct.setGuid(guid);
 			
@@ -667,7 +673,7 @@ public class CatalogRegistryIngester {
 		if (md.isMultiValued(key)) {
 			List<String> tmpValues = md.getAllMetadata(key);	
 			
-			System.out.println("isMultiValued......tmpValues = " + tmpValues.toString());
+			//System.out.println("isMultiValued......tmpValues = " + tmpValues.toString());
 			for (String keyToMatch: tmpValues) {					
 				keyToMatch= Utility.replaceChars(keyToMatch);
 	
@@ -820,16 +826,6 @@ public class CatalogRegistryIngester {
 				product.setName(value);
 			}
 	        */
-			
-			// don't add these as slot values
-			/*
-			if (key.equals("TARGET_NAME"))
-				continue;
-			if (objType.equalsIgnoreCase(Constants.VOLUME_OBJ) && key.equals("DATA_SET_ID"))
-				continue;
-			if (objType.equalsIgnoreCase(Constants.MISSION_OBJ) && key.equals("INSTRUMENT_HOST_ID"))
-				continue;
-			*/
 			
 			if (objType.equalsIgnoreCase(Constants.DATASET_OBJ) && this.archiveStatus!=null) {
 				if (key.equals("ARCHIVE_STATUS")) {
