@@ -5,7 +5,7 @@
 '''PDS Registry network communication classes'''
 
 from contextlib import closing
-from pds.registry.model.classes import Service, ServiceBinding, SpecificationLink, Slot
+from pds.registry.model.classes import Service, ServiceBinding, SpecificationLink, Slot, ExtrinsicObject
 from urllib import urlencode
 from urllib2 import Request, urlopen, HTTPError
 import anyjson, httplib
@@ -69,6 +69,21 @@ class PDSRegistryClient(object):
             specificationLinks=self._createSpecificationLinks(d['guid'], d.get('specificationLinks', [])),
             targetBinding=d.get('targetBinding', None)
         ) for d in s])
+    def _createExtrinsic(self, d):
+        '''Create an extrinsic from a post-JSON-quantized dictionary ``d``.'''
+        return ExtrinsicObject(
+            contentVersion=d.get('contentVersion', None),
+            description=d.get('description', None),
+            guid=d['guid'],
+            home=d['home'],
+            lid=d['lid'],
+            mimeType=d.get('mimeType', None),
+            name=d['name'],
+            objectType=d.get('objectType', None),
+            slots=self._createSlots(d.get('slots', [])),
+            status=d.get('status', None),
+            versionName=d.get('versionName', None),
+        )
     def _createService(self, d):
         '''Create a service from a post-JSON-quantized dictionary ``d``.'''
         if 'objectType' not in d: raise ValueError('No "objectType"')
@@ -120,6 +135,20 @@ class PDSRegistryClient(object):
             'specificationLinks':   self._mapSpecificationLinks(i.specificationLinks),
             'versionName':          i.versionName,
         } for i in bindings]
+    def _serializeExtrinsic(self, extrinsic):
+        '''Serialize an ExtrinsicObject into JSON.'''
+        return anyjson.serialize({
+            'contentVersion':   extrinsic.contentVersion,
+            'description':      extrinsic.description,
+            'guid':             extrinsic.guid,
+            'home':             extrinsic.home,
+            'lid':              extrinsic.lid,
+            'mimeType':         extrinsic.mimeType,
+            'name':             extrinsic.name,
+            'objectType':       extrinsic.objectType,
+            'slots':            self._mapSlots(extrinsic.slots),
+            'versionName':      extrinsic.versionName,
+        })
     def _serializeService(self, service):
         '''Serialize a Service into JSON.'''
         return anyjson.serialize({
@@ -152,6 +181,25 @@ class PDSRegistryClient(object):
         '''
         answer = self._callServer('/services', dict(start=start+1, rows=rows)) # Why is it one-based indexing? Lame.
         return [self._createService(i) for i in answer.get('results', [])]
+    def getExtrinsics(self, start=0, rows=20):
+        '''Retrieve extrinsics registered with the registry service, starting at index ``start`` in the
+        services list and retrieving no more than ``rows`` worth.
+        
+        >>> import pds.registry.net.tests.base
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> extrinsics = rs.getExtrinsics()
+        >>> len(extrinsics)
+        3
+        >>> extrinsics[0].guid, extrinsics[1].guid, extrinsics[2].guid
+        (u'egg-1.0', u'spam-1.0', u'bacon-1.0')
+        >>> extrinsics = rs.getExtrinsics(1, 1)
+        >>> len(extrinsics)
+        1
+        >>> extrinsics[0].guid
+        u'spam-1.0'
+        '''
+        answer = self._callServer('/extrinsics', dict(start=start+1, rows=rows)) # Why is it one-based indexing? Lame.
+        return [self._createExtrinsic(i) for i in answer.get('results', [])]
     def getService(self, guid):
         '''Retrieve a service with a known ``guid``, or None if ``guid`` is not found.
         
@@ -200,6 +248,78 @@ class PDSRegistryClient(object):
                 return None
             else:
                 raise ex
+    def getExtrinsicByLID(self, lid, earliest=False):
+        '''Retrieve an extrinsic by its logical identifier, ``lid``; by default the latest version
+        is returned, if found.  To get the earliest version, set ``earliest`` to True.
+        
+        >>> import pds.registry.net.tests.base
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> ext = rs.getExtrinsicByLID('egg')
+        >>> ext.guid, ext.home, ext.lid
+        (u'egg-1.0', u'http://localhost:5634/registry', u'egg')
+        >>> ext.versionName, ext.objectType
+        (u'1.0', u'Product')
+        >>> ext.name, ext.description
+        (u'Egg v1.0', u'You usually have egg with bacon or with spam.')
+        >>> ext.contentVersion, ext.mimeType
+        (u'88.88', u'x-application/albumin')
+        >>> len(ext.slots)
+        2
+        >>> slots = list(ext.slots); slots.sort(); [(i.name, i.values) for i in slots]
+        [(u'preparation', [u'scrambled', u'poached']), (u'seasoning', [u'salt', u'pepper', u'hot sauce'])]
+        >>> ext2 = rs.getExtrinsicByLID('egg', earliest=True)
+        >>> ext == ext2
+        True
+        >>> unknown = rs.getExtrinsicByLID('non-exisitent')
+        >>> unknown is None
+        True
+        '''
+        try:
+            # Registry Service is bizarrely inconsistent.  Retrieving an extrinsic by guid, or by lid/earliest,
+            # or by lid/latest, gives back a JSON dict that represents the extrinsic.  However, retrieving just
+            # by lid (without /earliest or /latest) returns a JSON dict with 'start' set to null, "numFound" set
+            # to null, and a one-item sequence "results" that contains the extrinsic.
+            if earliest:
+                answer = self._callServer(u'/extrinsics/logicals/{}/earliest'.format(lid))
+            else:
+                answer = self._callServer(u'/extrinsics/logicals/{}'.format(lid))
+                answer = answer['results'][0]
+            return self._createExtrinsic(answer)
+        except HTTPError, ex:
+            if ex.code == httplib.NOT_FOUND:
+                return None
+            else:
+                raise ex
+    def getExtrinsic(self, guid):
+        '''Retrieve an extrinsic with a known ``guid``, or None if ``guid`` is not found.
+        
+        >>> import pds.registry.net.tests.base
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> ext = rs.getExtrinsic('egg-1.0')
+        >>> ext.guid, ext.home, ext.lid
+        (u'egg-1.0', u'http://localhost:5634/registry', u'egg')
+        >>> ext.versionName, ext.objectType
+        (u'1.0', u'Product')
+        >>> ext.name, ext.description
+        (u'Egg v1.0', u'You usually have egg with bacon or with spam.')
+        >>> ext.contentVersion, ext.mimeType
+        (u'88.88', u'x-application/albumin')
+        >>> len(ext.slots)
+        2
+        >>> slots = list(ext.slots); slots.sort(); [(i.name, i.values) for i in slots]
+        [(u'preparation', [u'scrambled', u'poached']), (u'seasoning', [u'salt', u'pepper', u'hot sauce'])]
+        >>> unknown = rs.getExtrinsic('non-exisitent-1.0')
+        >>> unknown is None
+        True
+        '''
+        try:
+            answer = self._callServer('/extrinsics/%s' % guid)
+            return self._createExtrinsic(answer)
+        except HTTPError, ex:
+            if ex.code == httplib.NOT_FOUND:
+                return None
+            else:
+                raise ex
     def putService(self, service):
         '''Send Service ``service`` into the Registry.
         
@@ -219,6 +339,26 @@ class PDSRegistryClient(object):
             self._callServer('/services/%s' % service.guid, params=None, json=json, method='PUT')
         else:
             self._callServer('/services', params=None, json=json, method='POST')
+    def putExtrinsic(self, extrinsic):
+        '''Send ExtrinsicObject ``extrinsic`` into the Registry.
+        
+        >>> import pds.registry.net.tests.base
+        >>> from pds.registry.model.classes import ExtrinsicObject
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> ext = ExtrinsicObject(u'egg-1.0', u'egg', u'testscheme:/rs', set(), u'New Egg', u'Approved', u'Freshly laid', u'1.0',
+        ... u'79.99', u'x-application/breakfast')
+        >>> rs.putExtrinsic(ext)
+        >>> ext = ExtrinsicObject(u'spam-1.0', u'spam', u'testscheme:/rs', set(), u'Spam')
+        >>> rs.putExtrinsic(ext)
+        '''
+        # If the extrinsic doesn't exist, POST it to /extrinsics; but if it does exist, POST
+        # it to the existing /extrinsics/logicals/lid path. FIXME: Yes, there is a race here.
+        json = self._serializeExtrinsic(extrinsic)
+        existing = self.getExtrinsicByLID(extrinsic.lid)
+        if existing:
+            self._callServer(u'/extrinsics/logicals/{}'.format(extrinsic.lid), params=None, json=json, method='POST')
+        else:
+            self._callServer(u'/extrinsics', params=None, json=json, method='POST')
     def deleteService(self, serviceGUID):
         '''Delete the service with UUID ``serviceGUID`` from the Registry.
         
@@ -227,6 +367,18 @@ class PDSRegistryClient(object):
         >>> rs.deleteService('urn:sk:radio:lush')
         '''
         self._callServer('/services/%s' % serviceGUID, params=None, json=None, method='DELETE')
+    def deleteExtrinsic(self, extrinsicGUID):
+        '''Delete the extrinsic with UUID ``extrinsicGUID`` from the Registry.
+        
+        >>> import pds.registry.net.tests.base
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> rs.deleteExtrinsic('egg-1.0')
+        '''
+        self._callServer('/extrinsics/%s' % extrinsicGUID, params=None, json=None, method='DELETE')
+
+        
+
+
 
 # Demonstration with actual PDS Registry Service:
 def main():
