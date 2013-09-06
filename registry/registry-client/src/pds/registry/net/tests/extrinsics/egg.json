@@ -1,0 +1,73 @@
+{
+  
+    "mimeType": "x-application/albumin",
+  
+    "contentVersion": "88.88",
+  
+    "name": "Egg v1.0",
+  
+    "objectType": "Product",
+  
+    "description": "You usually have egg with bacon or with spam.",
+  
+    "status": "Submitted",
+  
+    "classifications": [
+    
+  ],
+  
+    "externalIdentifiers": [
+    
+  ],
+  
+    "lid": "egg",
+  
+    "versionName": "1.0",
+  
+    "home": "http://localhost:5634/registry",
+  
+    "guid": "egg-1.0",
+  
+    "slots": [
+    
+        {
+      
+            "name": "seasoning",
+      
+            "id": 145,
+      
+            "values": [
+        
+                "salt",
+        
+                "pepper",
+        
+                "hot sauce"
+            
+      ],
+      
+            "slotType": null
+        
+    },
+    
+        {
+      
+            "name": "preparation",
+      
+            "id": 146,
+      
+            "values": [
+        
+                "scrambled",
+        
+                "poached"
+            
+      ],
+      
+            "slotType": null
+        
+    }
+    
+  ]
+
+}
