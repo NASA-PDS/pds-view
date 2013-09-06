@@ -24,6 +24,12 @@
 
   <body>
     <release version="1.5.0" date="TBD" description="TBD">
+        <action dev='kelly' type='update'>
+    	    Remove workaround for registry service emitting HTTP 500 for "not
+    	    found" instead of 404 (PDS-29).  Add implementation for
+    	    ExtrinsicObject in model and in net.  Replaced old "A and B or C"
+    	    expressions with safer "B if A else C" expressions.
+        </action>
     </release>
 
     <release version="1.4.1" date="2013-06-21" description="This release of the Registry Client is a component of the integrated release 3.1.1 of the PDS4 System. This is an operational release of the system components to date.">
