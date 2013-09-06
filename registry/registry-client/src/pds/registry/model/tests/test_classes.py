@@ -147,6 +147,14 @@ class ExtrinsicObjectTest(_RegistryObjectTestCase):
         a = self._createInstance()
         self.assertEquals('1.0', a.contentVersion)
         self.assertEquals('x-application/cheese', a.mimeType)
+        # ExtrinsicObjects are apparently special in that their objectType can be anything, not necessarily "ExtrinsicObject"
+        self.assertEquals('ExtrinsicObject', a.objectType)
+        b = ExtrinsicObject(
+            guid='678', lid='urn:pds:extrinsic2', home=u'http://home.com/', slots=set(), name=u'Cheese Ball', status='submitted',
+            description=u'A test extrinsic object! Stop panicking!', versionName='1.0', contentVersion='1.0',
+            mimeType='x-application/cheese', objectType='Product'
+        )
+        self.assertEquals('Product', b.objectType)
 
 
 class ServiceTest(_RegistryObjectTestCase):
