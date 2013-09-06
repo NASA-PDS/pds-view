@@ -5,8 +5,8 @@ What follows is a history of changes from release to release, along with
 issues addressed and new features in each release.
 
 
-1.5.0 - TBD
------------
+1.5.0 - Extrinsics
+------------------
 
 * Remove workaround for registry service emitting HTTP 500 for "not found"
   instead of 404.  (PDS-29)
