@@ -38,7 +38,7 @@ if os.path.isfile(parentPOM):
     pomDoc = xml.dom.minidom.parse(os.path.join(os.path.dirname(__file__), '..', 'pom.xml'))
     _version = _valueFor('version', 'project', pomDoc)
 else:
-    _version = '1.2.0'
+    _version = '1.5.0'
 
 
 # Package data
