@@ -4,5 +4,5 @@
 
 '''PDS Registry Client: ebXML information model.'''
 
-from classes import Slot, Service, ServiceBinding, SpecificationLink
+from classes import Slot, Service, ServiceBinding, SpecificationLink, ExtrinsicObject
 from functions import areServicesIdentical
