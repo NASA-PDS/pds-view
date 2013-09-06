@@ -132,10 +132,11 @@ class ExtrinsicObject(RegistryObject):
     def __init__(
         self, guid, lid,
         home=None, slots=None, name=None, status=None, description=None, versionName=None,
-        contentVersion=None, mimeType=None
+        contentVersion=None, mimeType=None, objectType=None
     ):
         super(ExtrinsicObject, self).__init__(
-            guid, lid, home, slots, name, RegistryObject.EXTRINSIC_OBJECT, status, description, versionName
+            guid, lid, home, slots, name, objectType if objectType is not None else RegistryObject.EXTRINSIC_OBJECT, status,
+            description, versionName
         )
         self.contentVersion, self.mimeType = contentVersion, mimeType
     
