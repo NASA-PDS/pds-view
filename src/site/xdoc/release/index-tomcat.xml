@@ -135,7 +135,7 @@
 
         <source>
 #!/bin/sh
-CATALINA_OPTS="-Xms256m -Xmx2048m"
+CATALINA_OPTS="-Xms256m -Xmx2048m -XX:MaxPermSize=256m"
         </source>
 
         <p>Note: For Red Hat RPM installations, the environment variables can be specified in the <i>/etc/tomcatX/tomcatX.conf</i> file where <i>X</i> is the major version of Tomcat. Although the environment configuration is not limited to the following variables, these two are the most common:
