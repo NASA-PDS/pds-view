@@ -33,7 +33,7 @@ Map<String, String[]> params = request.getParameterMap();
 for (String name : params.keySet()) {
   if (!ignoredParams.contains(name)) {
     for (String value : Arrays.asList(params.get(name))) {
-      query += name + "=" + URLEncoder.encode(value) + "&";
+      query += name + "=" + URLEncoder.encode(value, "UTF-8")+ "&";
     }
   }
 }
@@ -61,11 +61,11 @@ for (String name : params.keySet()) {
 $(function() {
     //var query = window.location.href.slice(window.location.href.indexOf('?') + 1).split('@@');
     var query = '<%= query %>';
-		$.get('../search-service/pds/filtered?' + query, function(data) {
+		$.get('../search-service/pds/archive-filter?' + query, function(data) {
 			$('.output').html(data);
 			//alert('Load was performed.');
 		});
-
+	
 		$('div').on('click', 'a.tools-button', function() {
 			$('.tool').slideToggle('fast', function() {
 				if ($('.tool').is(":visible")) {
