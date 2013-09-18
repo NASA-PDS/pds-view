@@ -46,7 +46,7 @@ public final class TestConstants {
 	public static final String PDS4_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry-pds4";
 	
 	/** PSA Registry URL used for testing purposes **/
-	public static final String PSA_REGISTRY_URL="http://ipda.jpl.nasa.gov/registry";
+	public static final String PSA_REGISTRY_URL="http://planetarydata.org/registry";
 	//public static final String PSA_REGISTRY_URL="http:/pdsdev.jpl.nasa.gov:8080/registry-psa";
 	
 	/** Search Service Solr URL **/
