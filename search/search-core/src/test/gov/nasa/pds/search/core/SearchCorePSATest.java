@@ -43,13 +43,12 @@ public class SearchCorePSATest {
      * @throws Exception
      */
 	@Test
-	//@Ignore
     public void testLauncherPSA() {
     	try {
-	    	String[] args = { "-i", "-e",	// Only run Extractor and Indexer components
+	    	String[] args = { "-d", "-i", "-e",	// Only run Extractor and Indexer components
 	    			"-r", TestConstants.PSA_REGISTRY_URL,
 	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
-	    			"-m", "5", 
+	    			//"-m", "5", 
 	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "psa/pds3",
 	    			"-v", "0" };
 	    	SearchCoreLauncher.main(args);

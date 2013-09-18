@@ -78,7 +78,7 @@ public class SearchCoreStats {
 		badRegistries.add(registryUrl);
 	}
 
-	public static void recordLocalTime(String config) throws ParseException {
+	public static void recordLocalTime(String config) {
 		long elapsed = System.currentTimeMillis() - localStart;
 		overallTime += elapsed;
 

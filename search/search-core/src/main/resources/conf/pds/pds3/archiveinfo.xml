@@ -2,8 +2,16 @@
 <product>
 	<specification>
 		<title>ArchiveInfo</title>
-		<registryObjectType>Product_Context</registryObjectType>
-		<registryObjectName>*Archive Information</registryObjectName>
+		<!-- registryObjectType>Product_Context</registryObjectType>
+		<registryObjectName>*Archive Information</registryObjectName -->
+		<query>
+			<registryPath>objectType</registryPath>
+			<value>Product_Context</value>
+		</query>
+		<query operator="AND">
+			<registryPath>name</registryPath>
+			<value>*Archive Information</value>
+		</query>
 	</specification>
 	
 	<!-- Fields displayed in default Search Service results -->

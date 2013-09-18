@@ -4,17 +4,17 @@
 // $Id: InvalidProductClassException.java 10821 2012-07-26 23:57:12Z jpadams $ 
 //
 
-package gov.nasa.pds.search.core.exception;
+package gov.nasa.pds.search.core.indexer.solr;
 
 /**
  * @author pramirez
  * @version $Revision: 10821 $
  * 
  */
-public class SearchCoreFatalException extends Exception {
+public class IndexerException extends Exception {
 	private static final long serialVersionUID = 5947032886827182399L;
 
-	public SearchCoreFatalException(String message) {
+	public IndexerException(String message) {
 		super(message);
 	}
 

@@ -20,6 +20,7 @@
 	<xsd:element name="outputString" type="xsd:string" />
 	<xsd:element name="title" type="xsd:string" />
 	<xsd:element name="url" type="xsd:string" />
+	<xsd:element name="value" type="xsd:string" />
 
 	<xsd:attribute name="name" type="xsd:string" />
 	<xsd:attribute name="type" type="dataType" />
@@ -33,9 +34,7 @@
 	  	</xsd:restriction>
 	</xsd:simpleType>
 	
-	<xsd:attribute name="sourceType" type="sourceType" />
 	<xsd:attribute name="priority" type="sourcePriority" />
-	<xsd:attribute name="append" type="xsd:boolean" />
 	<xsd:simpleType name="sourcePriority">
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="primary"/>
@@ -43,9 +42,21 @@
 	  	</xsd:restriction>
 	</xsd:simpleType>
 	
+	<!-- Currently, registry is only support sourceType -->
+	<xsd:attribute name="sourceType" type="sourceType" />
 	<xsd:simpleType name="sourceType">
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="registry"/>
+	  	</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:attribute name="operator" type="CompareOperator" />
+	<xsd:simpleType name="CompareOperator">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AND"/>
+			<xsd:enumeration value="OR"/>
+			<xsd:enumeration value="and"/>
+			<xsd:enumeration value="or"/>
 	  	</xsd:restriction>
 	</xsd:simpleType>
 	
@@ -56,6 +67,16 @@
 		</xsd:sequence>
 	</xsd:complexType>
 	
+	<xsd:element name="query" type ="Query" />
+	<xsd:complexType name="Query">
+		<xsd:sequence>
+			<xsd:element ref="registryPath" />
+			<xsd:element ref="value" />
+		</xsd:sequence>
+		<xsd:attribute ref="operator" />
+	</xsd:complexType>
+	
+	<xsd:attribute name="append" type="xsd:boolean" />
 	<xsd:element name="source" type="DataSource" />
    	<xsd:complexType name="DataSource">
 		<xsd:sequence>
@@ -71,8 +92,9 @@
 	<xsd:complexType name="Specification">
 		<xsd:sequence>
 			<xsd:element ref="title" />
-			<xsd:element ref="registryObjectType" />
-			<xsd:element ref="registryObjectName" minOccurs="0" />
+			<!-- xsd:element ref="registryObjectType" />
+			<xsd:element ref="registryObjectName" minOccurs="0" /-->
+			<xsd:element ref="query" maxOccurs="unbounded" />
 			<xsd:element ref="dataSources" minOccurs="0" />
 			<xsd:element ref="checkAssociations" minOccurs="0" />
 		</xsd:sequence>

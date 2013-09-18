@@ -484,18 +484,25 @@ public class SearchCoreLauncher {
 	 * Execute Search Core components depending on the flags specified.
 	 */
 	public final void execute() {
+		SearchCore core = new SearchCore(this.searchHome, this.configHomeList);
 		if (this.allFlag || this.extractorFlag) {
 			try {
 				if (this.propsFilesList.isEmpty()) {
-					RegistryExtractor.prepForRun(this.searchHome.getAbsolutePath(), this.clean);
+					//RegistryExtractor.prepForRun(this.searchHome.getAbsolutePath(), this.clean);
 					
-					runRegistryExtractor();
+					//runRegistryExtractor();
+					core.runRegistryExtractor(this.primaryRegistries, this.secondaryRegistries,
+							this.queryMax, this.clean);
 				} else {
 					
 					for (File propFile : this.propsFilesList) {
 						setProperties(propFile);
-						RegistryExtractor.prepForRun(this.searchHome.getAbsolutePath(), this.clean);
-						runRegistryExtractor();
+						core.setConfigHomeList(this.configHomeList);
+						core.runRegistryExtractor(this.primaryRegistries, this.secondaryRegistries,
+								this.queryMax, this.clean);
+						
+						//RegistryExtractor.prepForRun(this.searchHome.getAbsolutePath(), this.clean);
+						//runRegistryExtractor();
 					}
 				}
 			} catch (Exception e) {
@@ -507,7 +514,7 @@ public class SearchCoreLauncher {
 
 		if (this.allFlag || this.solrFlag) {
 			try {
-				runSolrIndexer();
+				core.runSolrIndexer();
 			} catch (Exception e) {
 				log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
 						"Error running Solr Indexer."));
@@ -517,7 +524,7 @@ public class SearchCoreLauncher {
 		
 		if (this.allFlag || this.postFlag) {
 			try {
-				runSolrPost();
+				core.runSolrPost(this.serviceUrl);
 			} catch (Exception e) {
 				log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
 						"Error running Solr Post."));
@@ -531,7 +538,7 @@ public class SearchCoreLauncher {
 	 * 
 	 * @throws Exception
 	 */
-	private void runRegistryExtractor() throws Exception {
+	/*private void runRegistryExtractor() throws Exception {
 		RegistryExtractor extractor = null;
 
 		for (String configHome : this.configHomeList) {
@@ -541,62 +548,14 @@ public class SearchCoreLauncher {
 					this.primaryRegistries,
 					this.secondaryRegistries);
 			
-			if (this.queryMax > -1) {
-				extractor.setQueryMax(this.queryMax);
-			}
+
 	
 			extractor.run();
 		}
 		
         log.log(new ToolsLogRecord(ToolsLevel.SUCCESS,
         		"Completed extracting data from data source.\n"));
-	}
-
-	/**
-	 * Runs the SolrIndexer component.
-	 * 
-	 * @throws IOException
-	 * @throws ParseException
-	 * @throws Exception
-	 */
-	private void runSolrIndexer() throws IOException, ParseException, Exception {
-		log.log(new ToolsLogRecord(ToolsLevel.INFO,
-				"Running Solr Indexer to create new solr documents for indexing ..."));
-
-		File indexDir = new File(this.searchHome.getAbsolutePath()
-				+ "/" + Constants.SOLR_INDEX_DIR);
-		if (!indexDir.isDirectory()) {
-			indexDir.mkdir();
-		}
-
-		String[] args = { this.searchHome.getAbsolutePath() + "/" + Constants.SOLR_INDEX_DIR,
-				this.searchHome.getAbsolutePath() + "/" + Constants.SOLR_DOC_DIR };
-		SolrIndexer.main(args);
-		
-        log.log(new ToolsLogRecord(ToolsLevel.SUCCESS,
-        		"Completed transforming data into Solr Lucene index\n"));
-	}
-	
-
-	private void runSolrPost() throws SolrPostException {
-		log.log(new ToolsLogRecord(ToolsLevel.INFO,
-				"Running Solr Post to Post Data To Search Service ..."));
-
-		File indexDir = new File(this.searchHome.getAbsolutePath()
-				+ "/" + Constants.SOLR_INDEX_DIR);
-		if (!indexDir.isDirectory()) {
-			throw new SolrPostException("Index directory " + indexDir.getAbsolutePath() + " does not exist.");
-		}
-
-		SolrPost solrPost = new SolrPost(this.serviceUrl);
-		
-		solrPost.clean();	// Remove old index
-		solrPost.postIndex(this.searchHome.getAbsolutePath() + "/" + Constants.SOLR_INDEX_DIR, 
-				Arrays.asList(Constants.SOLR_INDEX_PREFIX, Constants.SEARCH_TOOLS));	// Post the new data
-		
-        log.log(new ToolsLogRecord(ToolsLevel.SUCCESS,
-        		"Completed posting data to the Search Service\n"));
-	}
+	}*/
 
 
 	/**

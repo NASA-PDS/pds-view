@@ -2,7 +2,10 @@
 <product>
 	<specification>
 		<title>Observational</title>
-		<registryObjectType>Product_Observational</registryObjectType>
+		<query>
+			<registryPath>objectType</registryPath>
+			<value>Product_Observational</value>
+		</query>
 		<checkAssociations>true</checkAssociations>
 	</specification>
 	

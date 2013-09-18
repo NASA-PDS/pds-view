@@ -1,17 +1,38 @@
+//	Copyright 2013, by the California Institute of Technology.
+//	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+//	Any commercial use must be negotiated with the Office of Technology 
+//	Transfer at the California Institute of Technology.
+//	
+//	This software is subject to U. S. export control laws and regulations 
+//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+//	is subject to U.S. export control laws and regulations, the recipient has 
+//	the responsibility to obtain export licenses or other export authority as 
+//	may be required before exporting such information to foreign countries or 
+//	providing access to foreign nationals.
+//	
+//	$Id$
+//
 package gov.nasa.pds.search.core.registry.objects;
 
 import gov.nasa.pds.search.core.util.Debugger;
 
 import java.util.LinkedHashMap;
-import java.util.logging.Logger;
 
-
+/**
+ * Maintains a cache of associated SearchCoreExtrinsic objects
+ * for easy access during reference queries. This improves performance
+ * by minimizing queries to the Registry Client
+ * 
+ * @author jpadams
+ */
 public class AssociationCache {
-
-	private static Logger log = Logger.getLogger(AssociationCache.class.getName());
 	
-	private static final int CACHE_SIZE = 50;
+	/** Defined size for number of objects in map of SearchCoreExtrinsic objects **/
+	private static final int CACHE_SIZE = 100;
 	
+	/** Map of lidvid to SearchCoreExtrinsic object for easy retrieval.
+	 *  Used LinkedHashMap to maintain ordering for easy push/pop from cache
+	 */
 	private static LinkedHashMap<String, SearchCoreExtrinsic> searchExtMap = new LinkedHashMap<String, SearchCoreExtrinsic>();
 	
 	/**
@@ -44,16 +65,26 @@ public class AssociationCache {
 		searchExtMap.remove(key);
 	}
 	
+	/**
+	 * Get the object by lidvid
+	 * @param lidvid
+	 * @return
+	 */
 	public static SearchCoreExtrinsic get(String lidvid) {
-		Debugger.debug("AssociationCache.get - " + lidvid);
-		
 		return searchExtMap.get(lidvid);
 	}
 	
+	/**
+	 * Clear out the cache
+	 */
 	public static void flush() {
 		searchExtMap.clear();
 	}
 	
+	/**
+	 * Main method used for testing
+	 * @param args
+	 */
 	public static void main(String args[]) {
 		LinkedHashMap<String, String> test = new LinkedHashMap<String, String>();
 		test.put("1", "a");

@@ -233,8 +233,42 @@ http://localhost:8080/registry-psa
     </section>
 
     <section name="Search Core Configurations">
-      <p>Running the Search Core is based around XML configuration files that specify 
+      <p>Running the Search Core is based around XML configuration files that must include query information, data source specifications, and the fields to be included in the index.  The following sections will outline the basic schema for creating a configuration file.  Once a configuration file has been created, you can specify its location using the -c command-line option or in the properties file.
       </p>
+      <subsection name="Layout">
+	<source>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;product&gt;
+  &lt;specification&gt;
+    &lt;title&gt;DataSet&lt;/title&gt;
+    &lt;registryObjectType&gt;Product_Data_Set_PDS3&lt;/registryObjectType&gt;
+    &lt;/specification&gt;
+  
+  <!-- Fields displayed in default Search Service results -->
+  &lt;indexFields&gt;
+    <!-- Test required fields -->
+    &lt;field name="identifier" type="required"&gt;
+      &lt;registryPath&gt;lid&lt;/registryPath&gt;
+      &lt;/field&gt;
+    &lt;field name="title" type="required"&gt;
+      &lt;registryPath&gt;name&lt;/registryPath&gt;
+      &lt;/field&gt;
+    &lt;field name="description" type="required"&gt;
+      &lt;registryPath&gt;data_set_terse_description&lt;/registryPath&gt;
+      &lt;/field&gt;
+    &lt;field name="resLocation" type="required"&gt;
+      &lt;outputString&gt;/ds-view/pds/viewDataset.jsp?dsid={data_set_id}&lt;/outputString&gt;
+      &lt;/field&gt;
+    &lt;field name="objectType" type="string"&gt;
+      &lt;registryPath&gt;objectType&lt;/registryPath&gt;
+      &lt;/field&gt;
+    &lt;field name="agency_name" type="string" default="Unknown"&gt;
+      &lt;registryPath&gt;node_ref.agency_ref.alternate_id&lt;/registryPath&gt;
+    &lt;/field&gt;
+  &lt;/indexFields&gt;
+&lt;/product&gt;
+	</source>
+      </subsection>
     </section>
 	
     <section name="Did It Work?">

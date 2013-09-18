@@ -75,8 +75,8 @@ public class SearchCorePDS4Test extends SearchCoreTest {
 	    	String[] args = { "-i", "-e",	// Only run Extractor and Indexer components
 	    			"-r", TestConstants.PDS4_ATM_REGISTRY_URL,
 	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
-	    			"-m", "1", 
-	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds4",
+	    			"-m", "5", 
+	    			"-c", TestConstants.TEST_DIR_RELATIVE+ "pds4-config",
 	    			"-v", "0" };
 	    	SearchCoreLauncher.main(args);
 		} catch (Exception e) {
@@ -94,7 +94,7 @@ public class SearchCorePDS4Test extends SearchCoreTest {
     	try {
 	    	String[] args = { "-r", TestConstants.PDS4_ATM_REGISTRY_URL,
 	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
-	    			"-m", "1", 
+	    			"-m", "5", 
 	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds4",
 	    			"-v", "0" };
 	    	SearchCoreLauncher.main(args);

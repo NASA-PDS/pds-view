@@ -2,7 +2,10 @@
 <product>
 	<specification>
 		<title>Context</title>
-		<registryObjectType>Product_Context</registryObjectType>
+		<query>
+			<registryPath>objectType</registryPath>
+			<value>Product_Context</value>
+		</query>
 		<dataSources>
 			<source sourceType="registry" priority="primary" append="false">
 				<url>http://localhost:8080/registry-pds4</url>

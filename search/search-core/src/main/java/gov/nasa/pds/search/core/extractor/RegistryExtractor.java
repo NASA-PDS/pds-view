@@ -16,6 +16,7 @@
 package gov.nasa.pds.search.core.extractor;
 
 import gov.nasa.pds.search.core.constants.Constants;
+import gov.nasa.pds.search.core.exception.SearchCoreException;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.ToolsLogRecord;
@@ -44,15 +45,15 @@ import org.apache.commons.io.FileUtils;
  * 
  * @author jpadams
  */
-public class RegistryExtractor {
-	/** Flag to ensure the directory prep method is only run once **/
-	private static boolean prep = false;
+public class RegistryExtractor implements DataExtractor {
 
+	private final static String DEFAULT_OUTPUT_DIR = "/tmp";
+	
 	/** Directory containing the product class configuration files. **/
 	private File confDir;
 
 	/** Directory created to hold the output Product Class data. **/
-	private File dataDir;
+	private File outputDir;
 	
 	/** Standard output logger. **/
 	private static Logger log = Logger.getLogger(RegistryExtractor.class.getName());
@@ -63,27 +64,36 @@ public class RegistryExtractor {
 	/** List of Registry URLs. **/
 	private List<String> primaryRegistries;
 	
-	private List<String> backupRegistries;
+	/** List of Secondary Registry URLs. **/
+	private List<String> secondaryRegistries;
 
 	/**
-	 * Object initializer method with an output directory and clean boolean
-	 * parameter specified.
+	 * Constructor for registry extractor class, including output directory
+	 * and the registry to query against.
 	 * @param outDir
 	 * @param confDir
 	 * @param primaryRegistries
-	 * @param backupRegistries
+	 * @param secondaryRegistries
 	 * @throws SearchCoreFatalException
 	 */
-	public RegistryExtractor(String outDir, File confDir, 
-			List<String> primaryRegistries, List<String> backupRegistries)
+	public RegistryExtractor(File confDir, List<String> primaryRegistries, 
+			List<String> secondaryRegistries, File outputDir)
 			throws SearchCoreFatalException {
 		this.confDir = confDir;
 		this.queryMax = -1;
 		
 		this.primaryRegistries = primaryRegistries;
-		this.backupRegistries = backupRegistries;
+		this.secondaryRegistries = secondaryRegistries;
 
-		this.dataDir = getOutputDataDirectory(outDir);
+		this.outputDir = outputDir;
+	}
+	
+	public RegistryExtractor(File confDir, List<String> primaryRegistries, 
+			List<String> secondaryRegistries)
+			throws SearchCoreFatalException {		
+		this(confDir, primaryRegistries, secondaryRegistries, 
+				new File(new File(System.getProperty("java.class.path"))
+				.getParentFile().getParent()));
 	}
 
 	/**
@@ -94,9 +104,10 @@ public class RegistryExtractor {
 	 * @throws IOException 				thrown if files cannot be created
 	 * @throws SearchCoreFatalException 
 	 */
-	public final void run() throws Exception {
+	public void run() throws SearchCoreException {
 		List uids = null;
 		// Run extract method on each class
+		try {
 		ProductClass productClass;
 		for (File coreConfig : getCoreConfigs(this.confDir)) {
 			System.out.println("Processing config: " + coreConfig.getName());
@@ -104,7 +115,7 @@ public class RegistryExtractor {
 	        		"Querying with config: " + coreConfig.getAbsolutePath()));
 	
 			// Create new productClass instance for given class.
-			productClass = new ProductClass(this.dataDir, this.primaryRegistries, this.backupRegistries);
+			productClass = new ProductClass(this.outputDir, this.primaryRegistries, this.secondaryRegistries);
 			
 			if (this.queryMax > 0) {
 				productClass.setQueryMax(this.queryMax);
@@ -119,6 +130,13 @@ public class RegistryExtractor {
 	        
 	        AssociationCache.flush();
 		}
+		} catch (ProductClassException e) {
+			e.printStackTrace();
+			throw new SearchCoreException("Problems in ProductClass object:" + e.getMessage());
+		} catch (SearchCoreFatalException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 
 	/**
@@ -128,13 +146,13 @@ public class RegistryExtractor {
 	 * @throws ProductClassException	thrown when error loading properties file
 	 * @return	list of product class properties
 	 */
-	public List<File> getCoreConfigs(File configDir) throws ProductClassException {	
+	public List<File> getCoreConfigs(File configDir) throws SearchCoreException {	
 		if (configDir.isDirectory()) {
 			return new ArrayList<File>(FileUtils.listFiles(configDir, new String[] {"xml"}, true));
 		} else if (configDir.isFile()) {
 			return Arrays.asList(configDir);
 		} else {
-			throw new ProductClassException (configDir.getAbsolutePath() + " does not exist.");
+			throw new SearchCoreException (configDir.getAbsolutePath() + " does not exist.");
 		}
 	}
 
@@ -142,7 +160,7 @@ public class RegistryExtractor {
 	 * @return the confDir
 	 */
 	public final File getConfDir() {
-		return confDir;
+		return this.confDir;
 	}
 
 	/**
@@ -157,7 +175,7 @@ public class RegistryExtractor {
 	 * @return the queryMax
 	 */
 	public final int getQueryMax() {
-		return queryMax;
+		return this.queryMax;
 	}
 
 	/**
@@ -172,7 +190,7 @@ public class RegistryExtractor {
 	 * @return the primaryRegistries
 	 */
 	public List<String> getPrimaryRegistries() {
-		return primaryRegistries;
+		return this.primaryRegistries;
 	}
 
 	/**
@@ -183,69 +201,31 @@ public class RegistryExtractor {
 	}
 
 	/**
-	 * @return the backupRegistries
+	 * @return the secondaryRegistries
 	 */
-	public List<String> getBackupRegistries() {
-		return backupRegistries;
+	public List<String> getSecondaryRegistries() {
+		return this.secondaryRegistries;
 	}
 
 	/**
-	 * @param backupRegistries the backupRegistries to set
+	 * @param secondaryRegistries the backupRegistries to set
 	 */
-	public void setBackupRegistries(List<String> backupRegistries) {
-		this.backupRegistries = backupRegistries;
+	public void setSecondaryRegistries(List<String> secondaryRegistries) {
+		this.secondaryRegistries = secondaryRegistries;
 	}
-	
+
 	/**
-	 * Create the output directory for the Registry Extractor data.
-	 * 
-	 * @param outDir	The base directory where the registry-data directory is
-	 *            		created.
-	 * @param clean		Boolean parameter used to determine whether or not the
-	 *            		previous run data should be removed. This is used in case user
-	 *            		decides to append to previous runs data.
-	 * @throws ProductClassException	thrown when directories cannot be created
+	 * @return the outputDir
 	 */
-	public static void prepForRun(String outDir, boolean clean)
-			throws SearchCoreFatalException {
-		if (!prep) {
-			File dataDir = getOutputDataDirectory(outDir);
-			try {
-			    log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "Creating directory "
-			    		+ outDir));
-				// Create registry directory to hold XML files containing desired
-				// registry data
-	
-				// Back up old registry-data if it exists
-				if (dataDir.isDirectory()) {
-					File backupDir = new File(outDir, Constants.SOLR_DOC_DIR + "_old");
-	
-					if (backupDir.isDirectory()) {
-						FileUtils.deleteDirectory(backupDir);
-					}
-	
-					// Remove dataDir if clean flag is true
-					if (clean) {
-						FileUtils.moveDirectory(dataDir, backupDir);
-					} else {
-						FileUtils.copyDirectory(dataDir, backupDir);
-					}
-				}
-	
-				FileUtils.forceMkdir(dataDir);
-	
-			} catch (IOException e) {
-			      log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage(),
-			              outDir));
-				throw new SearchCoreFatalException("Could not setup directories in "
-						+ dataDir.getAbsolutePath());
-			}
-			prep = true;
-		}
+	public File getOutputDir() {
+		return outputDir;
 	}
-	
-	public final static File getOutputDataDirectory(String outDir) {
-		return new File(outDir, Constants.SOLR_DOC_DIR);
+
+	/**
+	 * @param outputDir the outputDir to set
+	 */
+	public void setOutputDir(File outputDir) {
+		this.outputDir = outputDir;
 	}
 	
 }

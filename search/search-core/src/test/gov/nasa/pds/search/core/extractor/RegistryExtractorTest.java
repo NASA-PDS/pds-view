@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.constants.TestConstants;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
@@ -41,11 +42,15 @@ public class RegistryExtractorTest extends SearchCoreTest {
     public SingleTestRule test = new SingleTestRule("");
 	
 	@Before
-	public void setUp() throws SearchCoreFatalException {
-		RegistryExtractor.prepForRun(TEST_DIR, true);
-		this.re = new RegistryExtractor(TEST_DIR, new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "config"), 
-				Arrays.asList(TestConstants.PDS3_REGISTRY_URL), new ArrayList<String>());
-		this.re.setQueryMax(2);
+	public void setUp() {
+		try {
+			this.re = new RegistryExtractor(new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "config"), 
+					Arrays.asList(TestConstants.PDS3_REGISTRY_URL), new ArrayList<String>());
+			this.re.setOutputDir((new File(TEST_DIR, Constants.SOLR_DOC_DIR)));
+			this.re.setQueryMax(2);
+		} catch (Exception e) {
+			fail("Setup failed." + e.getMessage());
+		}
 	}
 	
 	@Test
@@ -95,6 +100,7 @@ public class RegistryExtractorTest extends SearchCoreTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testRunPDS4() {
 		System.out.println("-----------------------------------------------");
 		System.out.println("--- Test run method with PDS - PDS4 Configs ---");

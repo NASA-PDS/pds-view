@@ -1,11 +1,13 @@
 package gov.nasa.pds.search.core.registry;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.constants.TestConstants;
 import gov.nasa.pds.search.core.registry.RegistryHandler;
 import gov.nasa.pds.search.core.registry.objects.SearchCoreExtrinsic;
+import gov.nasa.pds.search.core.schema.Query;
 import gov.nasa.pds.search.core.test.SearchCoreTest;
 import gov.nasa.pds.search.core.test.SearchCoreTest.SingleTestRule;
 import gov.nasa.pds.search.core.util.Debugger;
@@ -30,6 +32,7 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class RegistryHandlerTest extends SearchCoreTest {
 
+	private static final int NUM_ARCHIVE_INFO = 2;
 	private static final File TEST_DIR = new File (System.getProperty("user.dir") + "/" + TestConstants.SEARCH_HOME_RELATIVE + "/" + Constants.SOLR_DOC_DIR);
 	private RegistryHandler handler;
 	
@@ -38,7 +41,7 @@ public class RegistryHandlerTest extends SearchCoreTest {
 	
 	@BeforeClass
 	public static void oneTimeSetUp() {
-		//Debugger.debugFlag = true;
+		Debugger.debugFlag = true;
 	}
 	
 	@Before
@@ -50,12 +53,45 @@ public class RegistryHandlerTest extends SearchCoreTest {
 
 	@Test
 	public void testGetExtrinsicsByObjectInfo() {
-		String objectType = "Product_Data_Set_PDS3";
-		String objectName = "*";
+		//this.handler.setQueryMax(Constants.QUERY_MAX);
+		List<Query> queryList = new ArrayList<Query>();
+		Query queryParam = new Query();
+		
+		queryParam.setRegistryPath("objectType");
+		queryParam.setValue("Product_Data_Set_PDS3");
+		queryList.add(queryParam);
+		
+		queryParam = new Query();
+		queryParam.setRegistryPath("name");
+		queryParam.setValue("*");
+		queryList.add(queryParam);
 		
 		try {
-			assertFalse(this.handler.getExtrinsicsByObjectInfo(
-					objectType, objectName).isEmpty());
+			assertEquals(this.handler.getExtrinsicsByQuery(
+					queryList).next().size(), 5);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("GetExtrinsicsByObjectInfo Test Failed. See stack trace.");
+		}
+	}
+	
+	@Test
+	public void testGetExtrinsicsByArchiveInfo() {
+		List<Query> queryList = new ArrayList<Query>();
+		Query queryParam = new Query();
+		
+		queryParam.setRegistryPath("objectType");
+		queryParam.setValue("Product_Context");
+		queryList.add(queryParam);
+		
+		queryParam = new Query();
+		queryParam.setRegistryPath("name");
+		queryParam.setValue("*Archive Information");
+		queryList.add(queryParam);
+		
+		try {
+			assertEquals(this.handler.getExtrinsicsByQuery(
+					queryList).next().size(), NUM_ARCHIVE_INFO);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("GetExtrinsicsByObjectInfo Test Failed. See stack trace.");
@@ -95,6 +131,7 @@ public class RegistryHandlerTest extends SearchCoreTest {
 			String lidvid = "urn:nasa:pds:phx_met:reduced:MS107RMH_00905704961_1C6EM1::1.0";
 			
 			this.handler.addPrimaryRegistry(TestConstants.PDS4_ATM_REGISTRY_URL);
+			this.handler.setCheckAssociations(true);
 			SearchCoreExtrinsic ext = this.handler.getExtrinsicByLidvid(lidvid);
 			List<SearchCoreExtrinsic> searchExtList = this.handler.getAssociationsBySourceObject(ext, "file_ref");
 			for (SearchCoreExtrinsic sce : searchExtList) {

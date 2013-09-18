@@ -2,7 +2,10 @@
 <product>
 	<specification>
 		<title>Target</title>
-		<registryObjectType>Product_Target_PDS3</registryObjectType>
+		<query>
+			<registryPath>objectType</registryPath>
+			<value>Product_Target_PDS3</value>
+		</query>
 	</specification>
 	
 	<!-- Fields displayed in default Search Service results -->

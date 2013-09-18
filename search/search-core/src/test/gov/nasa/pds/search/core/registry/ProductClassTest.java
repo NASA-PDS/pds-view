@@ -50,11 +50,12 @@ public class ProductClassTest extends SearchCoreTest {
 	private ProductClass pc;
 	
     @Rule
-    public SingleTestRule test = new SingleTestRule("");
+    public SingleTestRule test = new SingleTestRule("testQueryPDS4");
 	
 	@BeforeClass
-	public static void oneTimeSetUp() {
-		TEST_DIR.mkdirs();
+	public static void oneTimeSetUp() throws IOException {
+		FileUtils.forceMkdir(TEST_DIR);
+		Debugger.debugFlag = true;
 	}
 	
 	/*@AfterClass
@@ -98,7 +99,6 @@ public class ProductClassTest extends SearchCoreTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testQueryPDS4() throws SearchCoreFatalException {
 		try {			
 			String[] extensions = { "xml" };
@@ -107,7 +107,7 @@ public class ProductClassTest extends SearchCoreTest {
 					Arrays.asList(TestConstants.PDS4_ATM_REGISTRY_URL),	// primary registry
 					Arrays.asList(TestConstants.PDS4_REGISTRY_URL));	// secondary registry
 			this.pc.setQueryMax(1);
-			for (File file : FileUtils.listFiles(new File(System.getProperty("user.dir") + "/" + TestConstants.CONFIG_DIR_RELATIVE + "/pds/pds4/"), extensions, false)) {
+			for (File file : FileUtils.listFiles(new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "/pds4-config/"), extensions, false)) {
 				if (this.pc.query(file).isEmpty()) {
 					fail("Test failed - Config returned empty list of Extrinsics: " + file.getAbsolutePath());
 				}
@@ -165,6 +165,7 @@ public class ProductClassTest extends SearchCoreTest {
 					TEST_DIR,
 					new ArrayList<String>(),	// primary registry
 					new ArrayList<String>());	// secondary registry
+			this.pc.setQueryMax(1);
 			
 			assertTrue(this.pc.query(new File(System.getProperty("user.dir") + "/" + TestConstants.TEST_DIR_RELATIVE + "config/core-config-test-1.xml")).isEmpty());
 		} catch (ProductClassException e) {

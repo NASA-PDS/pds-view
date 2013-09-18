@@ -2,7 +2,10 @@
 <product>
 	<specification>
 		<title>InstrumentHost</title>
-		<registryObjectType>Product_Instrument_Host_PDS3</registryObjectType>
+		<query>
+			<registryPath>objectType</registryPath>
+			<value>Product_Instrument_Host_PDS3</value>
+		</query>
 	</specification>
 	
 	<!-- Fields displayed in default Search Service results -->

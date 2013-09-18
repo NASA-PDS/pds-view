@@ -58,7 +58,7 @@ public class SolrIndexer {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public static void main(String[] args) throws IOException, Exception {
+	public static void main(String[] args) throws IndexerException {
 		String usage = "java " + SolrIndexer.class
 				+ " <output_directory> <crawl_directory>";
 		if (args.length > 2) {
@@ -70,6 +70,8 @@ public class SolrIndexer {
 		totalIndexDocCount = 0;
 
 		searchServiceIndexHome = args[0];
+		
+		try {
 		removePreviousIndex();
 
 		setSolrIndexWriter();
@@ -80,6 +82,12 @@ public class SolrIndexer {
 		indexDocs(new File(args[1]));
 
 		closeSolrIndexWriter();
+		} catch (IOException e) {
+			throw new IndexerException("Error with output stream writer. Check permissions on directory."
+					+ e.getMessage());
+		} catch (Exception e) {
+			throw new IndexerException("Error generating Solr Index documents in " + args[1]);
+		}
 		//Date end = new Date();
 
 		//System.out.print(end.getTime() - start.getTime());

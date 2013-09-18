@@ -11,10 +11,10 @@ package gov.nasa.pds.search.core.exception;
  * @version $Revision: 10821 $
  * 
  */
-public class SearchCoreFatalException extends Exception {
+public class SearchCoreException extends Exception {
 	private static final long serialVersionUID = 5947032886827182399L;
 
-	public SearchCoreFatalException(String message) {
+	public SearchCoreException(String message) {
 		super(message);
 	}
 

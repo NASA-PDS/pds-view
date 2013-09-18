@@ -2,7 +2,10 @@
 <product>
 	<specification>
 		<title>Bundle</title>
-		<registryObjectType>Product_Bundle</registryObjectType>
+		<query>
+			<registryPath>objectType</registryPath>
+			<value>Product_Bundle</value>
+		</query>
 	</specification>
 	
 	<!-- Fields displayed in default Search Service results -->

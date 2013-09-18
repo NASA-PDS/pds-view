@@ -126,25 +126,32 @@ public class ProductClass {
 		XMLWriter writer;
 		try {
 			if (this.registryHandler.doPrimaryRegistriesExist()) {
-				List<SearchCoreExtrinsic> extList = this.registryHandler.getExtrinsicsByObjectInfo(
-						this.product.getSpecification().getRegistryObjectType(),
-						this.product.getSpecification().getRegistryObjectName());
-			
-				for (SearchCoreExtrinsic searchExtrinsic : extList) {
-					this.finalVals.clear();
-					
-					outSeqNum++;
-	
-					// Get class properties
-					setFieldValues(searchExtrinsic);
-	
-					writer = new XMLWriter(this.finalVals, registryOutputDir,
-							outSeqNum, this.product.getSpecification().getTitle());
-					writer.write();
-					
-					instkeys.add(searchExtrinsic.getLid());
-				    log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "Completed: " + searchExtrinsic.getLid()));
-				    SearchCoreStats.numProducts++;
+				//List<SearchCoreExtrinsic> extList = this.registryHandler.getExtrinsicsByQuery(
+				//		this.product.getSpecification().getQuery());
+				
+				//List<SearchCoreExtrinsic> extList = this.registryHandler.getExtrinsicsByQuery(
+				//		this.product.getSpecification().getQuery());
+				
+				List<SearchCoreExtrinsic> extList;
+				RegistryResults results = this.registryHandler.getExtrinsicsByQuery(
+								this.product.getSpecification().getQuery());
+				while (!(extList = results.next()).isEmpty()) {
+					for (SearchCoreExtrinsic searchExtrinsic : extList) {
+						this.finalVals.clear();
+						
+						outSeqNum++;
+		
+						// Get class properties
+						setFieldValues(searchExtrinsic);
+		
+						writer = new XMLWriter(this.finalVals, registryOutputDir,
+								outSeqNum, this.product.getSpecification().getTitle());
+						writer.write();
+						
+						instkeys.add(searchExtrinsic.getLid());
+					    log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "Completed: " + searchExtrinsic.getLid()));
+					    SearchCoreStats.numProducts++;
+					}
 				}
 			}
 		} catch (RegistryHandlerException e) {

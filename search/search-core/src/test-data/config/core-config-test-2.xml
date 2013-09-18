@@ -1,29 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <product>
 	<specification>
-		<title>Target</title>
-		<registryObjectType>Product_Target_PDS3</registryObjectType>
+		<title>Observational</title>
+		<query>
+			<registryPath>objectType</registryPath>
+			<value>Product_Observational</value>
+		</query>
+		<checkAssociations>true</checkAssociations>
 	</specification>
 	
 	<!-- Fields displayed in default Search Service results -->
-	<indexFields> 
-		<field name="identifier" type="string">
+	<indexFields>
+		<!-- Test required fields -->
+		<field name="identifier" type="required">
 			<registryPath>lid</registryPath>
 		</field>
-		<field name="title" type="string">
+		<field name="title" type="required">
 			<registryPath>name</registryPath>
 		</field>
-		<field name="description" type="string">
-			<registryPath>target_description</registryPath>
-		</field>			
-		<field name="resourceLocation" type="string">
-			<outputString>/ds-view/pds/viewTargetProfile.jsp?TARGET_NAME={target_name}</outputString>
+		<field name="description" type="required">
+			<registryPath>citation_description</registryPath>
+		</field>
+		<field name="resLocation" type="required">
+			<outputString>/ds-view/pds/viewProduct.jsp?identifier={lid}&amp;version={version_id}</outputString>
+		</field>
+		<field name="objectType" type="string">
+			<registryPath>objectType</registryPath>
+		</field>
+		<field name="agency_name" type="string">
+			<registryPath>node_ref.agency_ref.alternate_id</registryPath>
+		</field>
+		<field name="pds_model_version" type="string">
+			<outputString>pds4</outputString>
+		</field>
+		<field name="version_id" type="string">
+			<registryPath>version_id</registryPath>
+		</field>
+		<field name="alternate_id" type="string">
+			<registryPath>alternate_id</registryPath>
+		</field>
+		<field name="collection_type" type="string">
+			<registryPath>collection_type</registryPath>
+		</field>
+		<field name="citation_author_list" type="string">
+			<registryPath>citation_author_list</registryPath>
+		</field>
+		<field name="citation_editor_list" type="string">
+			<registryPath>citation_editor_list</registryPath>
+		</field>
+		<field name="citation_publication_year" type="string">
+			<registryPath>citation_publication_year</registryPath>
+		</field>
+		<field name="citation_keyword" type="string">
+			<registryPath>citation_keyword</registryPath>
+		</field>
+		<field name="citation_description" type="string">
+			<registryPath>citation_description</registryPath>
+		</field>
+		<field name="observation_start_date_time" type="date">
+			<registryPath>observation_start_date_time</registryPath>
+		</field>
+		<field name="observation_stop_date_time" type="date">
+			<registryPath>observation_stop_date_time</registryPath>
+		</field>
+		<field name="observation_local_mean_solar_time" type="date">
+			<registryPath>observation_local_mean_solar_time</registryPath>
+		</field>
+		<field name="observation_local_true_solar_time" type="date">
+			<registryPath>observation_local_true_solar_time</registryPath>
+		</field>
+		<field name="observation_solar_longitude" type="string">
+			<registryPath>observation_solar_longitude</registryPath>
+		</field>
+		<field name="primary_result_type" type="string">
+			<registryPath>primary_result_type</registryPath>
+		</field>
+		<field name="primary_result_purpose" type="string">
+			<registryPath>primary_result_purpose</registryPath>
+		</field>
+		<field name="primary_result_data_regime" type="string">
+			<registryPath>primary_result_data_regime</registryPath>
+		</field>
+		<field name="primary_result_description" type="string">
+			<registryPath>primary_result_description</registryPath>
+		</field>
+		<field name="primary_result_processing_level_id" type="string">
+			<registryPath>primary_result_reduction_level</registryPath>
+		</field>
+		<field name="investigation_name" type="string">
+			<registryPath>investigation_name</registryPath>
+		</field>
+		<field name="investigation_ref" type="string">
+			<registryPath>investigation_ref</registryPath>
+		</field>
+		<field name="observing_system_name" type="string">
+			<registryPath>observing_system_name</registryPath>
+		</field>
+		<field name="observing_system_component_name" type="string">
+			<registryPath>observing_system_component_name</registryPath>
+		</field>
+		<field name="observing_system_component_type" type="string">
+			<registryPath>observing_system_component_type</registryPath>
+		</field>
+		<field name="instrument_ref" type="string">
+			<registryPath>instrument_ref</registryPath>
+		</field>
+		<field name="instrument_name" type="string">
+			<registryPath>instrument_ref.instrument_name</registryPath>
+		</field>
+		<field name="instrument_host_ref" type="string">
+			<registryPath>instrument_host_ref</registryPath>
+		</field>
+		<field name="other_ref" type="string">
+			<registryPath>other_ref</registryPath>
 		</field>
 		<field name="target_name" type="string">
 			<registryPath>target_name</registryPath>
 		</field>
-		<field name="target_primary_body_name" type="string">
-			<registryPath>target_primary_body_name</registryPath>
+		<field name="target_ref" type="string">
+			<registryPath>target_ref</registryPath>
 		</field>
+		<field name="modification_date" type="date">
+			<registryPath>modification_date</registryPath>
+		</field>
+		<field name="modification_description" type="string">
+			<registryPath>modification_description</registryPath>
+		</field>
+		<field name="file_name" type="string">
+			<registryPath>file_name</registryPath>
+		</field>
+		<field name="data_class" type="string">
+			<registryPath>data_class</registryPath>
+		</field>
+		<field name="file_ref_name" type="string">
+			<registryPath>file_ref.file_name</registryPath>
+		</field>
+		<field name="file_ref_url" type="string">
+			<registryPath>file_ref.access_url</registryPath>
+		</field>		
 	</indexFields>
+	
+	<!-- Included from old search, leave in for now -->
+	<!-- field>
+		<name>format</name>
+		<type>out</type>
+		<value>XML</value>
+	</field>
+	<field>
+		<name>publisher</name>
+		<type>out</type>
+		<value>NASA.PDS</value>
+	</field>
+	<field>
+		<name>language</name>
+		<type>out</type>
+		<value>en</value>
+	</field>
+	<field>
+		<name>resContext</name>
+		<type>out</type>
+		<value>NASA.PDS</value>
+	</field>
+	<field>
+		<name>resClass</name>
+		<type>out</type>
+		<value>metadata.collection</value>
+	</field>
+	<field>
+		<name>resource_class</name>
+		<type>out</type>
+		<value>Collection_Description</value>
+	</field-->
 </product>
