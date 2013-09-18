@@ -19,12 +19,14 @@ String contextPath = request.getContextPath() + "/";
 <!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
 <!-- InstanceParam name="menu_section" type="text" value="data" -->
 <!-- InstanceParam name="menu_item" type="text" value="data_data_search" -->
+<!-- InstanceParam name="left_sidebar" type="boolean" value="true" -->
+<!-- InstanceParam name="standard_sidebar" type="boolean" value="true" -->
 <!-- InstanceParam name="standard_page_content" type="boolean" value="true" -->
 <!-- InstanceParam name="custom_page_class" type="text" value="" -->
 </head>
 
 
-<body class="menu_data menu_item_data_data_search ">
+<body class="sidebar  menu_data menu_item_data_data_search ">
 <!--[if IE]>
 <div id="IE">
 <![endif]--> 
@@ -42,6 +44,17 @@ String contextPath = request.getContextPath() + "/";
 <!-- <ul id="submenu_standards"><li>&nbsp;</li></ul> -->
 
 <div class="clear"></div>
+</div>
+
+<!-- Sidebar -->
+
+<div id="sidebar">
+
+<c:import url="/standard_sidebar.html" context="/include" />
+
+
+  <!-- InstanceBeginEditable name="leftSidebar" -->
+  <!-- InstanceEndEditable -->
 </div>
 
 <!-- Main content -->
