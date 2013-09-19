@@ -117,24 +117,26 @@
             String resname = "";
             String reslink = "";
             List<String> resnames = pds4Search.getValues(doc, "resource_name");
-            if (resnames.size()==1) {
-               resname = pds4Search.getValues(doc, "resource_name").get(0);
-               reslink = pds4Search.getValues(doc, "resource_url").get(0);
-            %>
-            <a href="<%=reslink%>" target="_new"><%=resname%></a><br>
-            <%
-                   
-            } // end if
-            else if (resnames.size()>1) {
-               List<String> reslinks = pds4Search.getValues(doc, "resource_url");
-               for (int i=0; i<resnames.size(); i++) {
-                  resname = resnames.get(i);
-                  reslink = reslinks.get(i);
-                  %>
-                  <a href="<%=reslink%>" target="_new"><%=resname%></a><br>
-                  <%
-               } // end for
-            }
+            if (resnames!=null) {
+               if (resnames.size()==1) {
+                  resname = pds4Search.getValues(doc, "resource_name").get(0);
+                  if (pds4Search.getValues(doc, "resource_url")!=null)
+                     reslink = pds4Search.getValues(doc, "resource_url").get(0);
+               %>
+               <a href="<%=reslink%>" target="_new"><%=resname%></a><br>
+               <%    
+               } // end if
+               else if (resnames.size()>1) {
+                  List<String> reslinks = pds4Search.getValues(doc, "resource_url");
+                  for (int i=0; i<resnames.size(); i++) {
+                     resname = resnames.get(i);
+                     reslink = reslinks.get(i);
+                     %>
+                     <a href="<%=reslink%>" target="_new"><%=resname%></a><br>
+                     <%
+                  } // end for
+               }
+            } // end if (resnames!=null)
          }
          else {
             //out.println("tmpValue = " + tmpValue + "<br>");
