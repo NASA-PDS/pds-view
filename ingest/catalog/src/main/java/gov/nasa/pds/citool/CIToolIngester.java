@@ -399,7 +399,7 @@ public class CIToolIngester {
     			else {
     				values = new ArrayList<String>();
     			} 
-
+    			
     			// TODO TODO how to get target_type if there is no target
     			//String targetType = md.getMetadata("TARGET_TYPE");
     			String targetType = "target";
@@ -412,7 +412,7 @@ public class CIToolIngester {
 							lidValue = targetType + "." + lidValue;
 							lidValue = Utility.replaceChars(lidValue);
 							lidValue = lidValue.toLowerCase();
-							if (!valueExists(Constants.LID_PREFIX + "target:" + lidValue, values))
+							if (!Utility.valueExists(Constants.LID_PREFIX + "target:" + lidValue, values))
 								values.add(Constants.LID_PREFIX + "target:" + lidValue);
 						}
 					} else {
@@ -421,7 +421,7 @@ public class CIToolIngester {
 						lidValue = targetType + "." + lidValue;		
 						lidValue = Utility.replaceChars(lidValue);
 						lidValue = lidValue.toLowerCase();
-						if (!valueExists(Constants.LID_PREFIX + "target:" + lidValue, values))
+						if (!Utility.valueExists(Constants.LID_PREFIX + "target:" + lidValue, values))
 							values.add(Constants.LID_PREFIX + "target:" + lidValue);
 					}
 					refs.put(Constants.HAS_TARGET, values);
@@ -440,14 +440,14 @@ public class CIToolIngester {
     					for (String aVal: tmpValues) {
     						lidValue = aVal;
     						lidValue = lidValue.toLowerCase();
-    						if (!valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
+    						if (!Utility.valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
     							values.add(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue);
     					}
     				}
     				else {
     					lidValue = md.getMetadata(key);
     					lidValue = lidValue.toLowerCase();
-    					if (!valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
+    					if (!Utility.valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
     						values.add(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue);              
     				}
     				refs.put(Constants.HAS_INSTHOST, values);
@@ -465,7 +465,7 @@ public class CIToolIngester {
     				values = new ArrayList<String>();
     			}
     			
-    			if (!valueExists(Constants.LID_PREFIX+"data_set:data_set."+lidValue, values)) {
+    			if (!Utility.valueExists(Constants.LID_PREFIX+"data_set:data_set."+lidValue, values)) {
     				values.add(Constants.LID_PREFIX+"data_set:data_set."+lidValue);
     			}
     			
@@ -484,14 +484,14 @@ public class CIToolIngester {
     					for (String aVal: tmpValues) {
     						lidValue = aVal;
     						lidValue = lidValue.toLowerCase();
-    						if (!valueExists(Constants.LID_PREFIX+"node:node."+lidValue, values))
+    						if (!Utility.valueExists(Constants.LID_PREFIX+"node:node."+lidValue, values))
     							values.add(Constants.LID_PREFIX+"node:node."+lidValue);
     					}
     				}
     				else {
     					lidValue = md.getMetadata(key);
     					lidValue = lidValue.toLowerCase();
-    					if (!valueExists(Constants.LID_PREFIX+"node:node."+lidValue, values))
+    					if (!Utility.valueExists(Constants.LID_PREFIX+"node:node."+lidValue, values))
     						values.add(Constants.LID_PREFIX+"node:node."+lidValue);              
     				}
     				refs.put(Constants.HAS_NODE, values);      
@@ -514,8 +514,10 @@ public class CIToolIngester {
     						lidValue = targetType + "." + lidValue;	
     						lidValue = Utility.replaceChars(lidValue);
     						lidValue = lidValue.toLowerCase();
-    						if (!valueExists(Constants.LID_PREFIX+"target:" +lidValue, values))
+    						if (!Utility.valueExists(Constants.LID_PREFIX+"target:" +lidValue, values)) {
     							values.add(Constants.LID_PREFIX+"target:" + lidValue);
+    							//System.out.println("DATASET target = " + Constants.LID_PREFIX+"target:" + lidValue);
+    						}
     					}
     				}
     				else {
@@ -524,8 +526,10 @@ public class CIToolIngester {
     					lidValue = targetType + "." + lidValue;
     					lidValue = Utility.replaceChars(lidValue);
     					lidValue = lidValue.toLowerCase();
-    					if (!valueExists(Constants.LID_PREFIX+"target:" + lidValue, values))
-    						values.add(Constants.LID_PREFIX+"target:" + lidValue);              
+    					if (!Utility.valueExists(Constants.LID_PREFIX+"target:" + lidValue, values)) {
+    						values.add(Constants.LID_PREFIX+"target:" + lidValue);     
+    						//System.out.println("DATASET single target = " + Constants.LID_PREFIX+"target:" + lidValue);
+    					}
     				}
 
     				refs.put(Constants.HAS_TARGET, values);
@@ -544,14 +548,14 @@ public class CIToolIngester {
     					for (String aVal: tmpValues) {
     						lidValue = aVal;
     						lidValue = lidValue.toLowerCase();
-    						if (!valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
+    						if (!Utility.valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
     							values.add(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue);
     					}
     				}
     				else {
     					lidValue = md.getMetadata(key);
     					lidValue = lidValue.toLowerCase();
-    					if (!valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
+    					if (!Utility.valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
     						values.add(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue);              
     				}
     				refs.put(Constants.HAS_INSTHOST, values);
@@ -581,12 +585,11 @@ public class CIToolIngester {
     			else {
     				values = new ArrayList<String>();
     			}
-    			if (!valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
+    			if (!Utility.valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
     				values.add(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue);
     			refs.put(Constants.HAS_INSTHOST, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.TARGET_OBJ)) {
-    			//System.out.println("CatlogObject...TARGET catalog object...targetAvailable = " + targetAvailable);
     			this.targetAvailable = true;
     			
     			lidValue = pdsLbl.get("TARGET_NAME").getValue().toString();
@@ -601,8 +604,9 @@ public class CIToolIngester {
     				values = new ArrayList<String>();
     			}
     			 			
-    			if (!valueExists(Constants.LID_PREFIX+"target:" + lidValue, values))
+    			if (!Utility.valueExists(Constants.LID_PREFIX+"target:" + lidValue, values)) {
     				values.add(Constants.LID_PREFIX+"target:" + lidValue);
+    			}
     			refs.put(Constants.HAS_TARGET, values);
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.RESOURCE_OBJ) || 
@@ -623,7 +627,7 @@ public class CIToolIngester {
     						lidValue = dsId + "__" + aVal; 
     						lidValue = Utility.replaceChars(lidValue);
     						lidValue = lidValue.toLowerCase();
-    						if (!valueExists(Constants.LID_PREFIX+"resource:resource."+lidValue, values))
+    						if (!Utility.valueExists(Constants.LID_PREFIX+"resource:resource."+lidValue, values))
     							values.add(Constants.LID_PREFIX+"resource:resource."+lidValue);
     					}
     				}
@@ -632,7 +636,7 @@ public class CIToolIngester {
     					lidValue = dsId + "__" + lidValue;
     					lidValue = Utility.replaceChars(lidValue);
     					lidValue = lidValue.toLowerCase();
-    					if (!valueExists(Constants.LID_PREFIX+"resource:resource."+lidValue, values))
+    					if (!Utility.valueExists(Constants.LID_PREFIX+"resource:resource."+lidValue, values))
     						values.add(Constants.LID_PREFIX+"resource:resource."+lidValue);
     				}
     				refs.put(Constants.HAS_RESOURCE, values);   
@@ -650,13 +654,13 @@ public class CIToolIngester {
 						for (String aVal : tmpValues) {
 							lidValue = aVal;
 							lidValue = lidValue.toLowerCase();
-							if (!valueExists(Constants.LID_PREFIX + "node:node." + lidValue, values))
+							if (!Utility.valueExists(Constants.LID_PREFIX + "node:node." + lidValue, values))
 								values.add(Constants.LID_PREFIX + "node:node." + lidValue);
 						}
 					} else {
 						lidValue = md.getMetadata(key);
 						lidValue = lidValue.toLowerCase();
-						if (!valueExists(Constants.LID_PREFIX + "node:node." + lidValue, values))
+						if (!Utility.valueExists(Constants.LID_PREFIX + "node:node." + lidValue, values))
 							values.add(Constants.LID_PREFIX + "node:node." + lidValue);
 					}
 					refs.put(Constants.HAS_NODE, values);  
@@ -680,7 +684,7 @@ public class CIToolIngester {
     					lidValue = Utility.replaceChars(lidValue);
     					lidValue = lidValue.toLowerCase();
     					// shouldn't add if the value is already exists in the list
-    					if (!valueExists(Constants.LID_PREFIX+"data_set:data_set."+lidValue, values)) {
+    					if (!Utility.valueExists(Constants.LID_PREFIX+"data_set:data_set."+lidValue, values)) {
     						values.add(Constants.LID_PREFIX+"data_set:data_set."+lidValue);
     					}
     				}
@@ -689,7 +693,7 @@ public class CIToolIngester {
     				lidValue = md.getMetadata(key);
     				lidValue = Utility.replaceChars(lidValue);
     				lidValue = lidValue.toLowerCase();
-    				if (!valueExists(Constants.LID_PREFIX+"data_set:data_set."+lidValue, values)) {
+    				if (!Utility.valueExists(Constants.LID_PREFIX+"data_set:data_set."+lidValue, values)) {
     					values.add(Constants.LID_PREFIX+"data_set:data_set."+lidValue);         
     				}
     			}
@@ -726,16 +730,7 @@ public class CIToolIngester {
 
     	return targetType;
     }
-     
-    private boolean valueExists(String value, List<String> lists) {
-    	for (String listVal: lists) {
-    		if (listVal.equalsIgnoreCase(value)) {
-    			return true;
-    		}
-    	}
-    	return false;
-    }
-
+ 
     /**
      * Ingest catalog files from the given directories.
      *

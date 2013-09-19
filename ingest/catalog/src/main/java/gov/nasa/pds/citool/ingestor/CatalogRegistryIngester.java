@@ -394,7 +394,6 @@ public class CatalogRegistryIngester {
 		while (setIter.hasNext()) {
 			Slot tmpSlot = (Slot)setIter.next();
 			if (tmpSlot.getName().equalsIgnoreCase(key)) {				
-				//System.out.println("key = " + tmpSlot.getName() +  "   values = " + tmpSlot.getValues().toString());
 				return Arrays.toString(tmpSlot.getValues().toArray());
 			}
 		}
@@ -475,22 +474,17 @@ public class CatalogRegistryIngester {
         	lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null, 
         			"ingest.error.failExecution", ProblemType.EXECUTE_FAIL, "ingestExtrinsicObject");
         	catObj.getLabel().addProblem(lp);
-        	// should be faiCount += i ????
         	failCount++;
-        	//re.printStackTrace();
-        	
   		} catch (RegistryClientException rce) {
   			lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null, 
         			"ingest.error.failExecution", ProblemType.EXECUTE_FAIL, "ingestExtrinsicObject");
         	catObj.getLabel().addProblem(lp);
         	failCount++;
-        	//rce.printStackTrace();
   		} catch (Exception e) {
   			lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null, 
         			"ingest.error.failExecution", ProblemType.EXECUTE_FAIL, "ingestExtrinsicObject");
         	catObj.getLabel().addProblem(lp);
         	failCount++;
-        	//e.printStackTrace();
   		}
 		return i;
 	}
@@ -529,8 +523,10 @@ public class CatalogRegistryIngester {
 			if (refs.get(Constants.HAS_INST)!=null)
 				slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));
 			if (CIToolIngester.targetAvailable) {
-				if (refs.get(Constants.HAS_TARGET)!=null)
-					slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs)));
+				if (refs.get(Constants.HAS_TARGET)!=null) {
+					//slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs)));
+				    slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs, catObj)));
+				}
 			}
 		}
 		else if (catObjType.equalsIgnoreCase(Constants.INSTHOST_OBJ)) {
@@ -557,11 +553,11 @@ public class CatalogRegistryIngester {
 			if (refs.get(Constants.HAS_MISSION)!=null)
 				slots.add(new Slot(Constants.HAS_MISSION, getRefValues(version, Constants.HAS_MISSION, refs, catObj)));
 			if (CIToolIngester.targetAvailable) {
-				if (refs.get(Constants.HAS_TARGET)!=null)
+				if (refs.get(Constants.HAS_TARGET)!=null) {
 					slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs, catObj)));
+				}
 			}
 			if (refs.get(Constants.HAS_INSTHOST)!=null) {
-				//slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs, catObj)));
 				slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
 			}
 			if (refs.get(Constants.HAS_INST)!=null) {
@@ -628,8 +624,11 @@ public class CatalogRegistryIngester {
 						if (instId.equalsIgnoreCase(valueToFind)) {
 							String dsId = md.getMetadata("DATA_SET_ID");
 							dsId = Utility.replaceChars(dsId);
-			    			dsId = dsId.toLowerCase();
-							values.add(Constants.LID_PREFIX+"data_set:data_set."+dsId);				
+			    			dsId = dsId.toLowerCase(); 
+			    			String dsLid = Constants.LID_PREFIX+"data_set:data_set."+dsId;
+			    			if (!Utility.valueExists(dsLid, values)) {
+								values.add(dsLid);
+			    			}
 						}
 					}
 				}
@@ -639,7 +638,10 @@ public class CatalogRegistryIngester {
 						String dsId = md.getMetadata("DATA_SET_ID");
 						dsId = Utility.replaceChars(dsId);
 		    			dsId = dsId.toLowerCase();
-						values.add(Constants.LID_PREFIX+"data_set:data_set."+dsId);		
+		    			String dsLid = Constants.LID_PREFIX+"data_set:data_set."+dsId;
+		    			if (!Utility.valueExists(dsLid, values)) {
+							values.add(dsLid);
+		    			}
 					}
 				}
 			}	
@@ -657,10 +659,14 @@ public class CatalogRegistryIngester {
 			String tmpVer = "";
 			if (getExtrinsic(tmpLid)!=null) {
 				tmpVer = getExtrinsic(tmpLid).getVersionName();
-			    values.add(aValue+"::" + tmpVer);
+				if (!Utility.valueExists(aValue+"::"+tmpVer, values)) {
+					values.add(aValue+"::" + tmpVer);
+				}
 			}
 			else {
-			    values.add(aValue);
+				if (!Utility.valueExists(aValue, values)) {
+					values.add(aValue);
+				}
 			}	
 		}
 		return values;
@@ -673,45 +679,59 @@ public class CatalogRegistryIngester {
 		if (md.isMultiValued(key)) {
 			List<String> tmpValues = md.getAllMetadata(key);	
 			
-			//System.out.println("isMultiValued......tmpValues = " + tmpValues.toString());
-			for (String keyToMatch: tmpValues) {					
-				keyToMatch= Utility.replaceChars(keyToMatch);
-	
-				for (String aValue: allRefs.get(associationType)) {
-					if (aValue.contains(keyToMatch.toLowerCase())) {
-						String tmpVer = "";
-						if (getExtrinsic(aValue)!=null) {
-							tmpVer = getExtrinsic(aValue).getVersionName();
-							values.add(aValue+"::" + tmpVer);
-						}
-						else {
-							//don't add all instrument_host_ref for instrument and data_set objects.
-							if (!(key.equalsIgnoreCase("instrument_host_id") && 
-								 (catObj.getCatObjType().equalsIgnoreCase("instrument") ||
-								  catObj.getCatObjType().equalsIgnoreCase("data_set"))))
-								values.add(aValue);
-						}
-					}
-				}
+			for (String valueToMatch: tmpValues) {
+				valueToMatch= Utility.replaceChars(valueToMatch);
+				
+				values.addAll(getRefsList(key, valueToMatch, allRefs, associationType, catObj));
 			}
 		} 
 		else {
-			String keyToMatch = md.getMetadata(key);
-			keyToMatch= Utility.replaceChars(keyToMatch);
-			
-			for (String aValue: allRefs.get(associationType)) {
-				if (aValue.contains(keyToMatch.toLowerCase())) {
+			String valueToMatch = md.getMetadata(key);
+			valueToMatch= Utility.replaceChars(valueToMatch);
+		
+			values = getRefsList(key, valueToMatch, allRefs, associationType, catObj);
+		}
+		return values;
+	}
+	
+	private List<String> getRefsList(String key, String valueToMatch, Map<String, List<String>> allRefs, 
+			String associationType, CatalogObject catObj) {
+		List<String> values = new ArrayList<String>();
+		for (String aValue: allRefs.get(associationType)) {		
+			if (key.equalsIgnoreCase("TARGET_NAME")) {
+				if (aValue.endsWith(valueToMatch.toLowerCase())) {
 					String tmpVer = "";
 					if (getExtrinsic(aValue)!=null) {
 						tmpVer = getExtrinsic(aValue).getVersionName();
-						//System.out.println("added in ")
-						values.add(aValue+"::" + tmpVer);
+						if (!Utility.valueExists(aValue+"::"+tmpVer, values)) {
+							values.add(aValue+"::" + tmpVer);
+						}
 					}
 					else {
+						if (!Utility.valueExists(aValue, values)) {
+							values.add(aValue); 
+						}
+					}
+				}						
+			}
+			else {
+				if (aValue.contains(valueToMatch.toLowerCase())) {
+					String tmpVer = "";
+					if (getExtrinsic(aValue)!=null) {
+						tmpVer = getExtrinsic(aValue).getVersionName();
+						if (!Utility.valueExists(aValue+"::"+tmpVer, values)) {
+							values.add(aValue+"::" + tmpVer);
+						}
+					}
+					else {
+						//don't add all instrument_host_ref for instrument and data_set objects.
 						if (!(key.equalsIgnoreCase("instrument_host_id") && 
-						      (catObj.getCatObjType().equalsIgnoreCase("instrument") ||
-							   catObj.getCatObjType().equalsIgnoreCase("data_set"))))
-							values.add(aValue);
+								(catObj.getCatObjType().equalsIgnoreCase("instrument") ||
+										catObj.getCatObjType().equalsIgnoreCase("data_set")))) {
+							if (!Utility.valueExists(aValue, values)) {
+								values.add(aValue); 
+							}
+						}
 					}
 				}
 			}

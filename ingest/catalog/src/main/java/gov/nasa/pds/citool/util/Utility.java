@@ -165,4 +165,13 @@ public class Utility {
 		
 		return strToReplace;
 	}
+    
+    public static boolean valueExists(String value, List<String> lists) {
+    	for (String listVal: lists) {
+    		if (listVal.equalsIgnoreCase(value)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 }

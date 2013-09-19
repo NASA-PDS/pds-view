@@ -119,8 +119,7 @@ public class StorageIngester {
 		prodMet.addMetadata("Version", String.valueOf(catObj.getVersion()));
 		
 		try {
-			//productId = fmClient.ingestProduct(prod, prodMet, false);
-			productId = fmClient.ingestProduct(prod, prodMet, true);
+			productId = fmClient.ingestProduct(prod, prodMet, true);		
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
