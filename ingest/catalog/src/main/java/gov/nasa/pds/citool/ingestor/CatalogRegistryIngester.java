@@ -393,8 +393,19 @@ public class CatalogRegistryIngester {
 		Iterator setIter = slots.iterator();
 		while (setIter.hasNext()) {
 			Slot tmpSlot = (Slot)setIter.next();
-			if (tmpSlot.getName().equalsIgnoreCase(key)) {				
-				return Arrays.toString(tmpSlot.getValues().toArray());
+			if (tmpSlot.getName().equalsIgnoreCase(key)) {		
+				List<String> tmpValues = tmpSlot.getValues();
+				if (tmpValues!=null && tmpValues.size()>0) {
+					if (tmpValues.size()==1)
+						return tmpValues.get(0);
+					else {
+						// TODO TODO TODO: should grab each component and trim it and
+						// return as a long string??? or array of string????
+						return Arrays.toString(tmpValues.toArray());
+					}
+				}
+				else 
+					return "";
 			}
 		}
 		
@@ -402,11 +413,10 @@ public class CatalogRegistryIngester {
 	}
 		
 	private boolean isSame(ExtrinsicObject oldProd, ExtrinsicObject newProd) {
-		String oldProdSlotValues = getSlotValues(oldProd, "modification_description");
-		
+		String oldProdSlotValues = getSlotValues(oldProd, "modification_description");	
 		String newProdSlotValues = getSlotValues(newProd, "modification_description");
 		
-		if (oldProdSlotValues.equals(newProdSlotValues))
+		if (oldProdSlotValues.trim().equals(newProdSlotValues.trim()))
 			return true;
 		else 
 			return false;
