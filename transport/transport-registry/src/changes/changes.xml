@@ -25,7 +25,7 @@
   <body>
     <release version="0.1.0" date="TBD" description="TBD">
       <action dev="shardman" type="add">
-        TBD
+        Initial revision of this implementation of the Transport Service based on the Apache OODT Web Grid Product Server and includes a handler for interfacing with the Registry Service.
       </action>
     </release>
   </body>
