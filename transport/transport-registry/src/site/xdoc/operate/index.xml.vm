@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+  Copyright 2013, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology 
+  Transfer at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations 
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+  is subject to U.S. export control laws and regulations, the recipient has 
+  the responsibility to obtain export licenses or other export authority as 
+  may be required before exporting such information to foreign countries or 
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Operation</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Operation">
+      <p>This document describes how to operate the Transport Service software contained in the <i>${project.artifactId}</i> package. The Transport Service software is a web application for retrieving product files from the the Product Servers that are located at the various Discipline Nodes. The following topics can be found in this section:
+      </p>
+
+      <ul>
+        <li><a href="#Interface">Interface</a></li>
+        <li><a href="#Product_Retrieval">Product Retrieval</a></li>
+      </ul>
+    </section>
+
+    <section name="Interface">
+      <p>The Transport Service provides a REST-based interface accessible via HTTP for interacting with the service. Because the REST-based interface operates over HTTP, there are several options for interacting with the Transport Service:
+      </p>
+
+      <ul>
+        <li>Web Browser<br/>
+          <p>Any standard web browser (e.g., Firefox, Safari, Internet Explorer, etc.) will allow interaction with the service.
+          </p>
+        </li>
+        <li>cURL<br/>
+          <p>The <a href="http://curl.haxx.se/" target="_blank">cURL</a> utility offers the most flexible means for interacting with the application. The utility comes installed on most UNIX-based platforms and is available for download for the Windows platform. The examples in the sections that follow utilize <i>cURL</i> to interact with the application. If <i>cURL</i> is not installed on the local machine but <i>Wget</i> is, see the <a href="index-wget.html">Using Wget</a> section for converting <i>cURL</i> commands to <i>Wget</i> commands.
+          </p>
+        </li>
+      </ul>
+
+      <p>The examples below use <i>http://localhost:8080</i> as the default base end point for the service.
+      </p>
+    </section>
+
+    <section name="Product Retrieval">
+      <p>The Transport Service web application provides functionality for querying the Registry Service for a product or products and retrieving the associated files. The following table details the parameter available:
+      </p>
+
+      <table>
+        <tr><th>HTTP Parameter</th><th>Description</th></tr>
+        <tr><td>q</td><td>The DIS-Style query string. This parameter is required. Additional information regarding the DIS-Style query format can be found at the <a href="http://oodt.apache.org/components/maven/xmlquery/disquery/" target="_blank">Apache OODT DIS-Style Query</a> page.</td></tr>
+      </table>
+
+      <p>The Transport Service accepts the following parameters in DIS-Style format for the parameter above:
+      </p>
+
+      <table>
+        <tr><th>DIS Query Parameter</th><th>Description</th></tr>
+        <tr><td>identifier</td><td>The identifier for the product to be retrieved in the form of a PDS logical identifier (LID) or the LID and the version identifier (LIDVID). This parameter is required and may be specified more than once. Due to the 5000 character limit for HTTP POST commands, a safe maximum of specified identifiers is around 50.</td></tr>
+        <tr><td>package</td><td>The package type to be returned from the Transport Service. The valid values are <i>ZIP</i> and <i>TGZ</i>. The default value is <i>ZIP</i>. This parameter is optional.</td></tr>
+      </table>
+
+      <p>The following is an example query:
+      </p>
+
+      <source>
+% curl -X GET -o package.zip -v \
+http://localhost:8080/transport/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;
+      </source>
+
+      <p>Assuming the LID or LIDVID was specified correctly, the above query should return a ZIP package containing the products associated with the specified product. The following is an example query that will return a TAR/GZIP package:
+      </p>
+
+      <source>
+% curl -X GET -o package.tar.gz -v \
+http://localhost:8080/transport/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;\
++AND+package+EQ+TGZ
+      </source>
+    </section>
+  </body>
+</document>
