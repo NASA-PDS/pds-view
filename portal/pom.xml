@@ -36,7 +36,6 @@
 
   <modules>
     <module>ds-view</module>
-    <module>product-query</module>
   </modules>
 
   <repositories>

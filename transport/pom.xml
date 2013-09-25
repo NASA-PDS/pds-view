@@ -37,6 +37,7 @@
 
   <modules>
     <module>transport-ofsn</module>
+    <module>transport-proxy</module>
     <module>transport-registry</module>
   </modules>
 
