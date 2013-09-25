@@ -36,7 +36,8 @@
   <url>http://pds-cm.jpl.nasa.gov/pds4/transport/</url>
 
   <modules>
-    <module>transport-service</module>
+    <module>transport-ofsn</module>
+    <module>transport-registry</module>
   </modules>
 
   <licenses>
@@ -58,25 +59,6 @@
       </roles>
     </developer>
   </developers>
-
-  <contributors>
-    <contributor>
-      <name>Steve Hughes</name>
-      <email>John.S.Hughes@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>System Engineering Lead</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Ron Joyner</name>
-      <email>Ronald.Joyner@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>System Engineer</role>
-      </roles>
-    </contributor>
-  </contributors>
 
   <repositories>
     <!-- Hosts the PDS and OODT artifacts. -->
