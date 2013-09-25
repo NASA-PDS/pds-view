@@ -30,7 +30,7 @@
   <version>0.1.0-dev</version>
   <packaging>war</packaging>
 
-  <name>Transport Service - Registry</name>
+  <name>Transport Service (Registry)</name>
   <description>
     The Transport Service provides functionality for transporting and transforming PDS products. The core functionality for this service is satisfied by the Apache OODT Web Grid Product Server and includes a handler for interfacing with the Registry Service. It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
   </description>

@@ -16,7 +16,7 @@
   $Id$
 -->
 
-<project name="Transport Service">
+<project name="Transport Service (Registry)">
   <bannerLeft>
     <src>images/pds4_logo.png</src>
     <href>http://pds-cm.jpl.nasa.gov/pds4/</href>
@@ -30,7 +30,7 @@
 
   <body>
     <links>
-      <item name="Transport Service" href="http://pds-cm.jpl.nasa.gov/pds4/transport/transport-service/index.html" />
+      <item name="Transport Service" href="http://pds-cm.jpl.nasa.gov/pds4/transport/transport-registry/index.html" />
     </links>
 
     <menu name="Software Documentation">

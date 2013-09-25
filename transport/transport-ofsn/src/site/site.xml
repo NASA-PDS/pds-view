@@ -16,21 +16,21 @@
   $Id:$
 -->
 
-<project name="Transport Service">
+<project name="Transport Service (OFSN)">
   <bannerLeft>
-    <src>images/pds4_logo.jpg</src>
+    <src>images/pds4_logo.png</src>
     <href>http://pds-cm.jpl.nasa.gov/pds4/</href>
   </bannerLeft>
 
   <bannerRight>
-    <name>Transport Service</name>
+    <name>Transport Service (OFSN)</name>
   </bannerRight>
 
   <version/>
 
   <body>
     <links>
-      <item name="Transport Service" href="http://pds-cm.jpl.nasa.gov/pds4/transport/transport-service/index.html" />
+      <item name="Transport Service" href="http://pds-cm.jpl.nasa.gov/pds4/transport/transport-ofsn/index.html" />
     </links>
 
     <menu name="Software Documentation">
