@@ -16,32 +16,32 @@
   $Id$
 -->
 
-<project name="Product Query">
+<project name="Transport Proxy">
   <bannerLeft>
     <src>images/pds4_logo.png</src>
     <href>http://pds-cm.jpl.nasa.gov/pds4</href>
   </bannerLeft>
 
   <bannerRight>
-    <name>Product Query</name>
+    <name>Transport Proxy</name>
   </bannerRight>
 
   <version/>
 
   <body>
     <links>
-      <item name="Product Query" href="http://pds-cm.jpl.nasa.gov/pds4/portal/product-query/index.html" />
+      <item name="Transport Proxy" href="http://pds-cm.jpl.nasa.gov/pds4/transport/transport-proxy/index.html" />
     </links>
 
     <menu name="Software Documentation">
-      <item name="About Product Query" href="index.html"/>
+      <item name="About Transport Proxy" href="index.html"/>
       <item name="Installation" href="install/index.html"/>
       <item name="Operation" href="operate/index.html"/>
     </menu>
 
     <menu name="Download">
-      <item name="Binary Package (tar.gz)" href="http://pds-cm.jpl.nasa.gov/maven2/gov/nasa/pds/2010/portal/${project.artifactId}/${project.version}/${project.artifactId}-${project.version}-bin.tar.gz"/>
-      <item name="Binary Package (zip)" href="http://pds-cm.jpl.nasa.gov/maven2/gov/nasa/pds/2010/portal/${project.artifactId}/${project.version}/${project.artifactId}-${project.version}-bin.zip"/>
+      <item name="Binary Package (tar.gz)" href="ftp://pds.nasa.gov/pub/toplevel/2010/transport/${project.artifactId}-${project.version}-bin.tar.gz"/>
+      <item name="Binary Package (zip)" href="ftp://pds.nasa.gov/pub/toplevel/2010/transport/${project.artifactId}-${project.version}-bin.zip"/>
     </menu>
 
     <menu ref="reports"/>

@@ -24,7 +24,7 @@
 
   <body>
     <section name="Operation">
-      <p>This document describes how to operate the Product Query software contained in the <i>${project.artifactId}</i> package. The Product Query software is a web application for retrieving product files from the the Product Servers that are located at the various Discipline Nodes. The following topics can be found in this section:
+      <p>This document describes how to operate the Transport Proxy software contained in the <i>${project.artifactId}</i> package. The Transport Proxy software is a web application for retrieving product files from the the Transport Services that are located at the various Discipline Nodes. The following topics can be found in this section:
       </p>
 
       <ul>
@@ -34,7 +34,7 @@
     </section>
 
     <section name="Interface">
-      <p>The Product Query provides a REST-based interface accessible via HTTP for interacting with the service. Because the REST-based interface operates over HTTP, there are several options for interacting with the Product Service:
+      <p>The Transport Proxy provides a REST-based interface accessible via HTTP for interacting with the service. Because the REST-based interface operates over HTTP, there are several options for interacting with the Transport Proxy:
       </p>
 
       <ul>
@@ -48,18 +48,18 @@
         </li>
       </ul>
 
-      <p>The examples below use <i>http://localhost:8080</i> as the default base endpoint for the service.
+      <p>The examples below use <i>http://localhost:8080</i> as the default base end point for the service.
       </p>
     </section>
 
     <section name="Product Query">
-      <p>The Product Query web application provides functionality for retrieving directory listings and files from a Product Server instance. The following table details the parameters available:
+      <p>The Transport Proxy web application provides functionality for retrieving directory listings and files from a Transport Service instance. The following table details the parameters available:
       </p>
 
       <table>
         <tr><th>Parameter</th><th>Description</th></tr>
-        <tr><td>object</td><td>The identifier of the Product Server specified as a full URN (i.e., urn:eda:rmi:PDS.CN.Product) or just the name (i.e., PDS.CN.Product). This parameter is required.</td></tr>
-        <tr><td>keywordQuery</td><td>The DIS-Style query string. This parameter is required. Additional information regarding this protocol can be found at: <a href="http://oodt.jpl.nasa.gov/pds-client/guide/product/" target="_blank">http://oodt.jpl.nasa.gov/pds-client/guide/product/</a>.</td></tr>
+        <tr><td>object</td><td>The identifier of the Transport Service specified as a full URN (i.e., urn:eda:rmi:PDS.CN.Product) or just the name (i.e., PDS.CN.Product). This parameter is required.</td></tr>
+        <tr><td>keywordQuery</td><td>The DIS-Style query string. This parameter is required. Additional information regarding the DIS-Style query format can be found at the <a href="http://oodt.apache.org/components/maven/xmlquery/disquery/" target="_blank">Apache OODT DIS-Style Query</a> page.</td></tr>
         <tr><td>id</td><td>The identifier of the product to return in the case where multiple products match the query criteria. This parameter is optional.</td></tr>
         <tr><td>mimeType</td><td>The desired MIME type of the product to return. This parameter may be specified multiple times to show an in-order preference for MIME types. This parameter is optional.</td></tr>
       </table>
@@ -68,36 +68,30 @@
       </p>
 
       <source>
-% curl -X GET -o product.out -v \
+% curl -X GET -o results.out -v \
 "http://localhost:8080/prod?object=&lt;object&gt;&amp;keywordQuery=&lt;keywordQuery&gt;"
       </source>
 
-      <p>Note: If the above example generates a <i>302 Moved Temporarily</i> message, an additional "/" is likely required after "/prod" and before the question mark in the example above. The following is a real query against the Imaging Node's Product Server:
+      <p>Note: If the above example generates a <i>302 Moved Temporarily</i> message, an additional "/" is likely required after "/prod" and before the question mark in the example above. The following is an example query for the OFSN implementation of the Transport Service:
       </p>
 
       <source>
-% curl -X GET -o product.out -v \
+% curl -X GET -v \
 "http://localhost:8080/prod?object=PDS.Img.Product&amp;\
-keywordQuery=OFSN+%3D+data/+AND+RT+%3D+DIRLIST1"
+keywordQuery=OFSN+EQ+data/+AND+RT+EQ+DIRLIST1"
       </source>
 
-      <p>The above query should return a directory listing something like the following:
+      <p>The above query should return a directory listing. The following is an example query for the Registry Service implementation of the Transport Service:
       </p>
 
       <source>
-&lt;?xml version="1.0"?&gt;
-&lt;dirResult&gt;
-  &lt;dirEntry&gt;
-    &lt;OFSN&gt;data/mer1-m-pancam-4-linearized-ops-v1.0&lt;/OFSN&gt;
-    &lt;fileSize&gt;0&lt;/fileSize&gt;
-  &lt;/dirEntry&gt;
-  &lt;dirEntry&gt;
-    &lt;OFSN&gt;data/mer1-m-navcam-4-linearized-ops-v1.0&lt;/OFSN&gt;
-    &lt;fileSize&gt;0&lt;/fileSize&gt;
-  &lt;/dirEntry&gt;
-  ...
-&lt;/dirResult&gt;
+% curl -X GET -o package.zip -v \
+http://localhost:8080/prod?object=PDS.Atmos.Transport&amp;\
+keywordQuery=identifier+EQ+&lt;LID|LIDVID&gt;
       </source>
+
+      <p>Assuming the LID or LIDVID was specified correctly, the above query should return a ZIP package containing the products associated with the specified product. See the respective Operation documents for the Transport Services for more details regarding supported queries.
+      </p>
     </section>
   </body>
 </document>

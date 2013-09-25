@@ -20,20 +20,20 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
-    <artifactId>portal</artifactId>
+    <artifactId>transport</artifactId>
     <version>0.0.0</version>
   </parent>
 
-  <groupId>gov.nasa.pds.2010.portal</groupId>
-  <artifactId>product-query</artifactId>
+  <groupId>gov.nasa.pds.2010.transport</groupId>
+  <artifactId>transport-proxy</artifactId>
   <version>1.1.0-dev</version>
   <packaging>war</packaging>
 
-  <name>Product Query</name>
+  <name>Transport Proxy</name>
   <description>
-    The Product Query component is a web application that serves as the name resolver for the Product Servers that are located at the various Discipline Nodes. Although the web application can be installed anywhere, its legacy endpoint is at http://starbrite.jpl.nasa.gov/prod/.
+    The Transport Proxy component is a web application that serves as the name resolver for the Transport Services that are located at the various Discipline Nodes. Although the web application can be installed anywhere, its legacy end point is at http://starbrite.jpl.nasa.gov/prod/.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/portal/product-query/</url>
+  <url>http://pds-cm.jpl.nasa.gov/pds4/transport/transport-proxy/</url>
 
   <licenses>
     <license>
@@ -67,15 +67,6 @@
       <id>jerry</id>
       <email>Gerald.A.Crichton@jpl.nasa.gov</email>
       <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Former Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Sean Kelly</name>
-      <id>kelly</id>
-      <email>Sean.Kelly@jpl.nasa.gov</email>
-      <organization>Independent Consultant</organization>
       <roles>
         <role>Former Developer</role>
       </roles>

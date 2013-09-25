@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2012, by the California Institute of Technology.
+  Copyright 2012-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -18,13 +18,13 @@
 
 <document>
   <properties>
-    <title>About Product Query</title>
+    <title>About Transport Proxy</title>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
-    <section name="About Product Query">
-      <p>The Product Query component is a web application that serves as the name resolver for the Product Servers that are located at the various Discipline Nodes. Although the web application can be installed anywhere, its legacy endpoint is at <a href="http://starbrite.jpl.nasa.gov/prod" target="_blank">http://starbrite.jpl.nasa.gov/prod</a>.
+    <section name="About Transport Proxy">
+      <p>The Transport Proxy component is a web application that serves as the name resolver for the Transport Services that are located at the various Discipline Nodes. Although the web application can be installed anywhere, its legacy end point is at <a href="http://starbrite.jpl.nasa.gov/prod" target="_blank">http://starbrite.jpl.nasa.gov/prod</a>.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
