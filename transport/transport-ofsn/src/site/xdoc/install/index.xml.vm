@@ -146,11 +146,11 @@ or
           <li>
             Deploy the web-grid.war file to your existing Tomcat installation through a context file.
             <source>
-  % cd $PDS_HOME/transport-service
-  % cp config/transport-service.xml $CATALINA_HOME/conf/Catalina/localhost/transport-service.xml
+% cd $PDS_HOME/transport-service
+% cp config/transport-service.xml $CATALINA_HOME/conf/Catalina/localhost/transport-service.xml
             </source>
           </li>
-        
+
           <li>Insert your specific installation location for $PDS_HOME, if different than "/usr/local/pds". 
             The following three files must be edited:
             <br/>&nbsp;
@@ -196,6 +196,13 @@ or
           </li>
         </ol>
       </subsection>
+
+      <subsection name="Configure for Operations">
+        <p>
+          To serve products from a real production directory, you must edit the configuration file <i>$PDS_HOME/config/ofsn-ps.xml</i> and change the value of the <i>productRoot</i> attribute to the top-level directory containing your products.
+        </p>
+      </subsection>
+
       <!--
       <subsection name="Upgrade To A New Version">
     &nbsp;
@@ -209,7 +216,7 @@ or
           First of all, you should test that the Transport Service web application is up and running. 
           To do so, type the following URL in your browser:
           <source>
-http://localhost:8080/transport-service/          
+http://localhost:8080/transport-service/
           </source>
           The above URL assumes that your Tomcat is running on the default port 8080 on localhost - if not, please adjust the URL accordingly.
           You should see a simple introductory page with a few links.
@@ -221,7 +228,7 @@ http://localhost:8080/transport-service/
           <i>$PDS_HOME/transport_service/testdata</i> (referenced as "productRoot" in the file ofsn-ps.xml). 
           You can test your installation by accessing the following URL:
           <source>
-http://localhost:8080/transport-service/prod?q=OFSN=/i943630r.xml+AND+RT%3DPDS4_TO_JPG        
+http://localhost:8080/transport-service/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_JPG
           </source>
           If you see a JPG image, your installation was successful! If not, please look into the Tomcat logs for any error messages.
           <br/>&nbsp;
