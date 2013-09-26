@@ -27,7 +27,7 @@
       <p>Although <a href="http://curl.haxx.se/" target="_blank">cURL</a> is the command-line application of choice for interacting with the Transport Service software, some machines may only have <a href="http://www.gnu.org/s/wget/" target="_blank">Wget</a> installed or some users may prefer <i>Wget</i> over <i>cURL</i>. The functionality of each application is essentially the same. This document describes the differences between the two applications.
       </p>
 
-      <p>The following command provides an example of using <i>cURL</i> to retrieve a product from the Transpot Service application:
+      <p>The following command provides an example of using <i>cURL</i> to retrieve a product from the Transport Service application:
       </p>
 
       <source>
