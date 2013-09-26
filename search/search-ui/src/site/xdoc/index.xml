@@ -24,7 +24,10 @@
 
   <body>
     <section name="About Search User Interface">
-      <p>The Search User Interface software serves as the user interface for the Search Service on the PDS website.
+      <p>The Search User Interface software serves as the user interface for searching for PDS3 products through the <i>archive-filter</i> endpoint of the Search Service.  See the <a href="../search-service/index.html">Search Service Documentation</a> for more information on the search functionality and protocol.
+      </p>
+      <p style="text-align:center;">
+	<img height="600"src="../images/search-ui.png" />
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.

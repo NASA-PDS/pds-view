@@ -25,7 +25,7 @@
 
   <body>
     <section name="Operation">
-      <p>The Search UI is a web interface intended to provide a more user-friendly view of the Search Service.  See the <a href="../../search-service">Search Service Documentation</a> for more information on searching PDS data.
+      <p>The Search UI is a web interface intended to provide a more user-friendly view of the Search Service.  See the <a href="../../search-service">Search Service Documentation</a> for more information on searching PDS data and using the PDS Search Protocol.y
       </p>
     </section>
     <section name="Common Errors">
