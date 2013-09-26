@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2012, by the California Institute of Technology.
+  Copyright 2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -16,15 +16,14 @@
   $Id$
 -->
 
-<assembly xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-  http://maven.apache.org/xsd/assembly-1.0.0.xsd">
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+          http://maven.apache.org/xsd/assembly-1.1.0.xsd">
   
   <id>bin</id>
 
   <formats>
-    <format>tar.gz</format>
     <format>zip</format>
   </formats>
 
@@ -47,12 +46,14 @@
       <source>LICENSE.txt</source>
       <outputDirectory>/</outputDirectory>
       <fileMode>644</fileMode>
+      <lineEnding>crlf</lineEnding>
     </file>
     <file>
-      <source>README-PACKAGE.txt</source>
+      <source>README.txt</source>
       <outputDirectory>/</outputDirectory>
       <destName>README.txt</destName>
       <fileMode>644</fileMode>
+      <lineEnding>crlf</lineEnding>
       <filtered>true</filtered>
     </file>
   </files>
