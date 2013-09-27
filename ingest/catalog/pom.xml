@@ -229,12 +229,6 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
-    <!-- Hosts the Apache OODT artifacts. -->
-    <repository>
-      <id>apache-repo</id>
-      <name>Apache Repository</name>
-      <url>https://repository.apache.org/content/repositories/releases</url>
-    </repository>
   </repositories>
 
   <dependencies>
@@ -259,7 +253,7 @@
     <dependency>
       <groupId>gov.nasa.pds</groupId>
       <artifactId>product-tools</artifactId>
-      <version>3.2.0</version>
+      <version>3.3.0</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>
@@ -271,7 +265,7 @@
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>cas-filemgr</artifactId>
-      <version>0.3</version>
+      <version>0.6</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>
@@ -283,7 +277,7 @@
     <dependency>
       <groupId>gov.nasa.pds.2010.storage</groupId>
       <artifactId>storage-service</artifactId>
-      <version>0.4.0</version>
+      <version>0.5.0-dev</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
