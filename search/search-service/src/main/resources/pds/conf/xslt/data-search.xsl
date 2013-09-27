@@ -332,12 +332,12 @@
 							<xsl:value-of select="concat('Information about the target ',str[@name='title'])" />
 						</xsl:when>
 						<xsl:when test="str[@name='objectType'] = 'Product_Data_Set_PDS3'">
-							<xsl:value-of select="pds:description((arr|str)[@name='description'],str[@name='data_set_id'])" />
+							<xsl:value-of select="pds:description((arr|str)[@name='description'],(arr|str)[@name='data_set_id'])" />
 							<br />
 							<span style="font-size: 90%; color: rgb(64, 64, 64);">
 								<xsl:value-of select="fn:upper-case((arr|str)[@name='investigation_name'])" />
 								-
-								<xsl:value-of select="fn:upper-case(str[@name='data_set_id'])" />
+								<xsl:value-of select="fn:upper-case((arr|str)[@name='data_set_id'])" />
 								<xsl:value-of select="if (date[@name='start_time']) then concat(' - starting ',date[@name='start_time']) else if ((arr|date)[@name='investigation_start_date']) then concat(' - starting ',(arr|date)[@name='investigation_start_date']) else ''" />
 							</span>
 						</xsl:when>
