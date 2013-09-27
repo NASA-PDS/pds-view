@@ -168,17 +168,15 @@ public class Constants {
     	  bundleContextPds4ToRegistry.put("LOCAL MEAN SOLAR TIME", "observation_local_mean_solar_time");
     	  bundleContextPds4ToRegistry.put("LOCAL TRUE SOLAR TIME", "observation_local_true_solar_time");
     	  bundleContextPds4ToRegistry.put("SOLAR LONGITUDE", "observation_solar_longitude");
-    	  bundleContextPds4ToRegistry.put("PRIMARY RESULT TYPE", "primary_result_type");
+ /*   	  bundleContextPds4ToRegistry.put("PRIMARY RESULT TYPE", "primary_result_type");
     	  bundleContextPds4ToRegistry.put("PRIMARY RESULT PURPOSE", "primary_result_purpose");
     	  bundleContextPds4ToRegistry.put("PRIMARY RESULT DATA REGIME", "primary_result_data_regime");
     	  bundleContextPds4ToRegistry.put("PRIMARY RESULT DESCRIPTION", "primary_result_description");
     	  bundleContextPds4ToRegistry.put("PRIMARY RESULT PROCESSING LEVEL", "primary_result_processing_level_id");
-    	  bundleContextPds4ToRegistry.put("INVESTIGATION NAME", "investigation_name");
-    	  //bundleContextPds4ToRegistry.put("INVESTIGATION NAME", "investigation_ref");
+*/    	  bundleContextPds4ToRegistry.put("INVESTIGATION NAME", "investigation_name");
     	  bundleContextPds4ToRegistry.put("OBSERVING SYSTEM NAME", "observing_system_name");
     	  bundleContextPds4ToRegistry.put("OBSERVING SYSTEM COMPONENT NAME", "observing_system_component_name");
     	  bundleContextPds4ToRegistry.put("TARGET NAME", "target_name");
-    	  //bundleContextPds4ToRegistry.put("TARGET NAME", "target_ref");
 	  }
      
     public static final Map<String, String> collectionPds4ToRegistry = 
