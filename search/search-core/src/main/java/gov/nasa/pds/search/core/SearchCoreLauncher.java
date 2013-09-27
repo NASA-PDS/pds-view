@@ -383,48 +383,33 @@ public class SearchCoreLauncher {
 		Map<String, String> mappings = new HashMap<String, String>();
 
 		String primaryRegistry, secondaryRegistry, configHome;
-		//for (File propsFile : propsFileList) {
-			mappings = PropertiesUtil.getPropertiesMap(propsFile, PROPS_PREFIX);
-			
-			primaryRegistry = mappings.get(PROPS_PRIMARY_REGISTRY_KEY);
-			secondaryRegistry = mappings.get(PROPS_SECONDARY_REGISTRY_KEY);
-			configHome = mappings.get(PROPS_CONFIG_KEY);
-			//searchHome = mappings.get(PROPS_SEARCH_KEY);
-			
-			if (primaryRegistry != null) {
-				this.primaryRegistries.clear();
-				this.primaryRegistries.add(primaryRegistry);
-			}
-			
-			if (secondaryRegistry != null) {
-				this.secondaryRegistries.clear();
-				this.secondaryRegistries.add(secondaryRegistry);
-			} 
+		mappings = PropertiesUtil.getPropertiesMap(propsFile, PROPS_PREFIX);
+		
+		primaryRegistry = mappings.get(PROPS_PRIMARY_REGISTRY_KEY);
+		secondaryRegistry = mappings.get(PROPS_SECONDARY_REGISTRY_KEY);
+		configHome = mappings.get(PROPS_CONFIG_KEY);
+		
+		if (primaryRegistry != null) {
+			this.primaryRegistries.clear();
+			this.primaryRegistries.add(primaryRegistry);
+		}
+		
+		if (secondaryRegistry != null) {
+			this.secondaryRegistries.clear();
+			this.secondaryRegistries.add(secondaryRegistry);
+		} 
 
-			if (configHome != null) {
-				this.configHomeList.clear();
-				this.configHomeList.add(Utility.getAbsolutePath("Config Dir", configHome, true));
-			} else if (this.configHomeList.isEmpty()){
-				throw new InvalidOptionException(
-						"Config home must be specified in properties file - "
-								+ propsFile.getAbsolutePath()
-								+ " or by using the "
-								+ Flag.CONFIG_HOME.getShortName() + "flag via "
-								+ "the command-line interface.");
-			}
-
-			/*if (searchHome != null) {
-				setSearchHome(searchHome);
-			} else if (this.searchHome == null) {
-				throw new InvalidOptionException(
-						"Search Home must be specified in properties file - "
-								+ propsFile.getAbsolutePath()
-								+ " or by using the "
-								+ Flag.SEARCH_HOME.getShortName() + "flag via "
-								+ "the command-line interface.");
-			}*/
-		//}
-
+		if (configHome != null) {
+			this.configHomeList.clear();
+			this.configHomeList.add(Utility.getAbsolutePath("Config Dir", configHome, true));
+		} else if (this.configHomeList.isEmpty()){
+			throw new InvalidOptionException(
+					"Config home must be specified in properties file - "
+							+ propsFile.getAbsolutePath()
+							+ " or by using the "
+							+ Flag.CONFIG_HOME.getShortName() + "flag via "
+							+ "the command-line interface.");
+		}
 	}
 
 	/**
@@ -507,7 +492,7 @@ public class SearchCoreLauncher {
 				}
 			} catch (Exception e) {
 				log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
-						"Error running Registry Extractor."));
+						"Error running Registry Extractor: " + e.getMessage()));
 				e.printStackTrace();
 			}
 		}
@@ -517,7 +502,7 @@ public class SearchCoreLauncher {
 				core.runSolrIndexer();
 			} catch (Exception e) {
 				log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
-						"Error running Solr Indexer."));
+						"Error running Solr Indexer: " + e.getMessage()));
 				e.printStackTrace();
 			}
 		}
@@ -527,35 +512,11 @@ public class SearchCoreLauncher {
 				core.runSolrPost(this.serviceUrl);
 			} catch (Exception e) {
 				log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
-						"Error running Solr Post."));
+						"Error running Solr Post: " + e.getMessage()));
 				e.printStackTrace();
 			}
 		}
 	}
-
-	/**
-	 * Runs the Registry Extractor component.
-	 * 
-	 * @throws Exception
-	 */
-	/*private void runRegistryExtractor() throws Exception {
-		RegistryExtractor extractor = null;
-
-		for (String configHome : this.configHomeList) {
-			extractor = new RegistryExtractor(
-					this.searchHome.getAbsolutePath(),
-					new File(configHome),
-					this.primaryRegistries,
-					this.secondaryRegistries);
-			
-
-	
-			extractor.run();
-		}
-		
-        log.log(new ToolsLogRecord(ToolsLevel.SUCCESS,
-        		"Completed extracting data from data source.\n"));
-	}*/
 
 
 	/**

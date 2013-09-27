@@ -10,7 +10,7 @@
 //	may be required before exporting such information to foreign countries or 
 //	providing access to foreign nationals.
 //	
-//	$Id$
+//	$Id: SearchCoreLauncher.java 12098 2013-09-18 15:53:49Z jpadams $
 //
 package gov.nasa.pds.search.core.registry.objects;
 

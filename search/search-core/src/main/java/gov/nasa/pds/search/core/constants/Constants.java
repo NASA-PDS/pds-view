@@ -9,9 +9,6 @@ public final class Constants {
 	
 	/** Default maximum number of queried records to be returned from registry. **/
 	public static final int QUERY_MAX = 999999999;
-	
-	/** In order to scale for very large registry products, need to page the registry output **/
-	public static final int QUERY_PAGE_MAX = 100;
 
 	/** Attribute for version of a product. **/
 	public static final String VERSION_ID_SLOT = "version_id";

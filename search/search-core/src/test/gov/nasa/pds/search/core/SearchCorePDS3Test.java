@@ -58,7 +58,7 @@ public class SearchCorePDS3Test extends SearchCoreTest {
      * @throws Exception
      */
 	@Test
-	@Ignore
+	//@Ignore
     public void testSearchCoreEndToEnd() {
     	try {
 	    	String[] args = {  

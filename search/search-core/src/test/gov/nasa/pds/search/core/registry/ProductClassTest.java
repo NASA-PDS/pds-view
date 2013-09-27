@@ -50,7 +50,7 @@ public class ProductClassTest extends SearchCoreTest {
 	private ProductClass pc;
 	
     @Rule
-    public SingleTestRule test = new SingleTestRule("testQueryPDS4");
+    public SingleTestRule test = new SingleTestRule("");
 	
 	@BeforeClass
 	public static void oneTimeSetUp() throws IOException {

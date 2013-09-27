@@ -15,7 +15,6 @@
 
 package gov.nasa.pds.search.core.extractor;
 
-import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.exception.SearchCoreException;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
@@ -26,10 +25,8 @@ import gov.nasa.pds.search.core.registry.objects.AssociationCache;
 import gov.nasa.pds.search.core.stats.SearchCoreStats;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -38,7 +35,7 @@ import org.apache.commons.io.FileUtils;
 /**
  * Utilizes XML configuration files to extract data from the Registry Service
  * and create XML files for each Product containing the raw data found in the
- * Registry.
+ * <code>RegistryService</code>.
  * 
  * TODO This should be refactored a bit using a DataExtractor interface to allow
  * for extension to other data sources (i.e. databases)
@@ -46,13 +43,11 @@ import org.apache.commons.io.FileUtils;
  * @author jpadams
  */
 public class RegistryExtractor implements DataExtractor {
-
-	private final static String DEFAULT_OUTPUT_DIR = "/tmp";
 	
 	/** Directory containing the product class configuration files. **/
 	private File confDir;
 
-	/** Directory created to hold the output Product Class data. **/
+	/** Directory created to hold the output <code>ProductClass</code> data. **/
 	private File outputDir;
 	
 	/** Standard output logger. **/
@@ -68,7 +63,7 @@ public class RegistryExtractor implements DataExtractor {
 	private List<String> secondaryRegistries;
 
 	/**
-	 * Constructor for registry extractor class, including output directory
+	 * Primary Constructor for <code>RegistryExtractor</code> class, including output directory
 	 * and the registry to query against.
 	 * @param outDir
 	 * @param confDir
@@ -88,6 +83,15 @@ public class RegistryExtractor implements DataExtractor {
 		this.outputDir = outputDir;
 	}
 	
+	/**
+	 * Constructor used when an output directory is not specified and needs to be
+	 * found using the <code>java.class.path</code>
+	 * 
+	 * @param confDir
+	 * @param primaryRegistries
+	 * @param secondaryRegistries
+	 * @throws SearchCoreFatalException
+	 */
 	public RegistryExtractor(File confDir, List<String> primaryRegistries, 
 			List<String> secondaryRegistries)
 			throws SearchCoreFatalException {		
@@ -97,12 +101,7 @@ public class RegistryExtractor implements DataExtractor {
 	}
 
 	/**
-	 * Driver method for extraction of data for all classes to be included in
-	 * catalog.
-	 * 
-	 * @throws ProductClassException	thrown if error found during registry queries
-	 * @throws IOException 				thrown if files cannot be created
-	 * @throws SearchCoreFatalException 
+	 * @see DataExtractor#run()
 	 */
 	public void run() throws SearchCoreException {
 		List uids = null;
@@ -131,7 +130,7 @@ public class RegistryExtractor implements DataExtractor {
 	        AssociationCache.flush();
 		}
 		} catch (ProductClassException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw new SearchCoreException("Problems in ProductClass object:" + e.getMessage());
 		} catch (SearchCoreFatalException e) {
 			e.printStackTrace();
@@ -140,11 +139,7 @@ public class RegistryExtractor implements DataExtractor {
 	}
 
 	/**
-	 * Return the set of product classes to be parsed, as denoted in the
-	 * product-classes.txt configuration file.
-	 * 
-	 * @throws ProductClassException	thrown when error loading properties file
-	 * @return	list of product class properties
+	 * @see DataExtractor#getCoreConfigs(File)
 	 */
 	public List<File> getCoreConfigs(File configDir) throws SearchCoreException {	
 		if (configDir.isDirectory()) {
@@ -157,30 +152,28 @@ public class RegistryExtractor implements DataExtractor {
 	}
 
 	/**
-	 * @return the confDir
+	 * @see DataExtractor#getConfDir()
 	 */
 	public final File getConfDir() {
 		return this.confDir;
 	}
 
 	/**
-	 * @param confDir
-	 *            the confDir to set
+	 * @see DataExtractor#setConfDir(File)
 	 */
 	public final void setConfDir(File confDir) {
 		this.confDir = confDir;
 	}
 
 	/**
-	 * @return the queryMax
+	 * @see DataExtractor#getQueryMax()
 	 */
 	public final int getQueryMax() {
 		return this.queryMax;
 	}
 
 	/**
-	 * @param queryMax
-	 *            the queryMax to set
+	 * @see DataExtractor#setQueryMax(int)
 	 */
 	public final void setQueryMax(int queryMax) {
 		this.queryMax = queryMax;

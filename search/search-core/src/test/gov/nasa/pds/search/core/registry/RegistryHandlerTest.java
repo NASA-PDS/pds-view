@@ -29,6 +29,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+/**
+ * Tests for {@link RegistryHandler}
+ * 
+ * @author jpadams
+ *
+ */
 @RunWith(JUnit4.class)
 public class RegistryHandlerTest extends SearchCoreTest {
 
@@ -67,8 +73,10 @@ public class RegistryHandlerTest extends SearchCoreTest {
 		queryList.add(queryParam);
 		
 		try {
-			assertEquals(this.handler.getExtrinsicsByQuery(
-					queryList).next().size(), 5);
+			RegistryResults results = this.handler.getExtrinsicsByQuery(
+					queryList);
+			results.nextPage();
+			assertEquals(results.getResultObjects().size(), 5);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("GetExtrinsicsByObjectInfo Test Failed. See stack trace.");
@@ -90,8 +98,10 @@ public class RegistryHandlerTest extends SearchCoreTest {
 		queryList.add(queryParam);
 		
 		try {
-			assertEquals(this.handler.getExtrinsicsByQuery(
-					queryList).next().size(), NUM_ARCHIVE_INFO);
+			RegistryResults results = this.handler.getExtrinsicsByQuery(
+					queryList);
+			results.nextPage();
+			assertEquals(results.getResultObjects().size(), NUM_ARCHIVE_INFO);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("GetExtrinsicsByObjectInfo Test Failed. See stack trace.");

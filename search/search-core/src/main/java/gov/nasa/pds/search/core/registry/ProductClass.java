@@ -14,6 +14,7 @@
 
 package gov.nasa.pds.search.core.registry;
 
+import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
@@ -56,10 +57,6 @@ public class ProductClass {
 	/** Data Product object from JAXB Bindings **/
 	private Product product;
 
-	// TODO Refactor this to start outputting to XML immediately.
-	// Some PSA Data has such large description that it kills the buffers
-	/** Map of all values for desired search fields **/
-	private Map<String, List<String>> finalVals;
 
 	/** Output logger **/
 	private static Logger log = Logger.getLogger(ProductClass.class.getName());
@@ -88,8 +85,6 @@ public class ProductClass {
 		
 		this.primaryRegistries = primaryRegistries;
 		this.secondaryRegistries = secondaryRegistries;
-
-		this.finalVals = new HashMap<String, List<String>>();
 		
 		this.product = null;
 	}
@@ -126,25 +121,30 @@ public class ProductClass {
 		XMLWriter writer;
 		try {
 			if (this.registryHandler.doPrimaryRegistriesExist()) {
-				//List<SearchCoreExtrinsic> extList = this.registryHandler.getExtrinsicsByQuery(
-				//		this.product.getSpecification().getQuery());
+				// Map of field -> value
+				Map<String, List<String>> fieldMap = new HashMap<String, List<String>>();
 				
-				//List<SearchCoreExtrinsic> extList = this.registryHandler.getExtrinsicsByQuery(
-				//		this.product.getSpecification().getQuery());
+				List<Object> extList;
 				
-				List<SearchCoreExtrinsic> extList;
+				// Get the RegistryResults object, which handles looping through results
 				RegistryResults results = this.registryHandler.getExtrinsicsByQuery(
 								this.product.getSpecification().getQuery());
-				while (!(extList = results.next()).isEmpty()) {
-					for (SearchCoreExtrinsic searchExtrinsic : extList) {
-						this.finalVals.clear();
+				
+				SearchCoreExtrinsic searchExtrinsic;
+				
+				while (results.nextPage()) {
+					extList = results.getResultObjects();
+					for (Object obj : extList) {
+						searchExtrinsic = new SearchCoreExtrinsic((ExtrinsicObject) obj);
+						
+						fieldMap.clear();
 						
 						outSeqNum++;
 		
 						// Get class properties
-						setFieldValues(searchExtrinsic);
+						fieldMap.putAll(setFieldValues(searchExtrinsic));
 		
-						writer = new XMLWriter(this.finalVals, registryOutputDir,
+						writer = new XMLWriter(fieldMap, registryOutputDir,
 								outSeqNum, this.product.getSpecification().getTitle());
 						writer.write();
 						
@@ -155,12 +155,11 @@ public class ProductClass {
 				}
 			}
 		} catch (RegistryHandlerException e) {
-		    log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage() 
+		    log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getClass().getName() + ": " + e.getMessage() + ".\n" 
 		    		+ " Check Registry connections and configuration - ",
 		    		coreConfig.getAbsolutePath()));
 		} catch (Exception e) {
-			throw new ProductClassException("Exception: "
-					+ e.getClass().getName() + ": " + e.getMessage());
+			throw new ProductClassException(e.getClass().getName() + ": " + e.getMessage());
 		}
 		return instkeys;
 	}
@@ -181,6 +180,11 @@ public class ProductClass {
 		}
 	}
 	
+	/**
+	 * Create output directory for XML files
+	 * @return
+	 * @throws SearchCoreFatalException
+	 */
 	private File createOutputDirectory() throws SearchCoreFatalException {
 		try {
 			File registryOutputDir = new File(this.outputDir, this.product.getSpecification().getTitle());
@@ -206,9 +210,11 @@ public class ProductClass {
 	 * @throws ProductClassException	any errors throughout the querying of registry and
 	 * 									managing the data
 	 */
-	private void setFieldValues(SearchCoreExtrinsic searchExtrinsic)
+	private Map<String, List<String>> setFieldValues(SearchCoreExtrinsic searchExtrinsic)
 			throws ProductClassException {
 		try {
+			Map<String, List<String>> fieldMap = new HashMap<String, List<String>>();
+			
 			/* Initialize local variables */
 			List<String> valueList = new ArrayList<String>();
 			
@@ -231,8 +237,10 @@ public class ProductClass {
 					valueList.add(field.getDefault());
 				}
 				
-				this.finalVals.put(fieldName, valueList);
+				fieldMap.put(fieldName, valueList);
 			}
+			
+			return fieldMap;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			throw new ProductClassException("Exception "

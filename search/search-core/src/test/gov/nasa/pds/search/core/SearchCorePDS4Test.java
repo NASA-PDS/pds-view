@@ -95,7 +95,7 @@ public class SearchCorePDS4Test extends SearchCoreTest {
 	    	String[] args = { "-r", TestConstants.PDS4_ATM_REGISTRY_URL,
 	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
 	    			"-m", "5", 
-	    			"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds4",
+	    			"-c", TestConstants.TEST_DIR_RELATIVE+ "pds4-config",
 	    			"-v", "0" };
 	    	SearchCoreLauncher.main(args);
 		} catch (Exception e) {
