@@ -25,7 +25,7 @@
 
   <body>
     <section name="Operation">
-      <p>The Search UI is a web interface intended to provide a more user-friendly view of the Search Service.  See the <a href="../../search-service">Search Service Documentation</a> for more information on searching PDS data.
+      <p>The Product Search UI is a web interface intended to provide a more user-friendly view of the Search Service.  See the <a href="../../search-service">Search Service Documentation</a> for more information on searching PDS data.
       </p>
     </section>
     <section name="Common Errors">
@@ -33,11 +33,11 @@
 	<p>There are 2 known reasons for this error:</p>
 	<ul>
 	  <li><i>The Search Service is not installed correctly.</i>  Go to the local Search Service and verify it contains data and is functioning properly.  See the <a href="../../search-service/operate">Search Service - Operate</a> documentation for more information on testing the Search Service.</li>
-	  <li><i>The Search Service is not installed at the same level as Search UI.</i>  The Search UI assumes the Search Service is installed at the same level of the web directory structure for the server.  For instance, if the Search UI URL is <i>http://localhost:8080/search-ui</i>, it expects the Search Service to be at <i>http://localhost:8080/search-service</i>.  If it is installed at another location, modify <i>$TOMCAT_HOME/webapps/search-ui/search.jsp</i> accordingly.</li>
+	  <li><i>The Search Service is not installed at the same level as Product Search UI.</i>  The Product Search UI assumes the Search Service is installed at the same level of the web directory structure for the server.  For instance, if the Product Search UI URL is <i>http://localhost:8080/${project.artifactId}</i>, it expects the Search Service to be at <i>http://localhost:8080/search-service</i>.  If it is installed at another location, modify <i>$TOMCAT_HOME/webapps/${project.artifactId}/search.jsp</i> accordingly.</li>
 	</ul>
       </subsection>
       <subsection name="Missing Images/Formatting/Functionality">
-	<p>This occurs when the Search UI cannot find the css/images/include/js/scripts directories.  See the <a href="../install/index.html#Deploying_the_Extras">Installation Guide</a> for more information on deploying the extras.</p>
+	<p>This occurs when the Product Search UI cannot find the css/images/include/js/scripts directories.  See the <a href="../install/index.html#Deploying_the_Extras">Installation Guide</a> for more information on deploying the extras.</p>
       </subsection>
     </section>
   </body>

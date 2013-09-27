@@ -27,10 +27,12 @@
       <action dev="jpadams" type="add" issue="PDS-191">
 	Copied search-ui package to make this product-search-ui package.  Updated pom, assembly, etc. As needed
       </action>
-      <action dev="jpadams" type="upate" issue="PDS-191">
+      <action dev="jpadams" type="update" issue="PDS-191">
 	Updated search.jsp to reference product search endpoint
       </action>
-
+      <action dev="jpadams" type="update" issue="PDS-197">
+	Update docs to be specific to product-search-ui. Also added diagram detailing how the product search ui communicates with the Search Service.
+      </action>
     </release>
   </body>
 </document>
