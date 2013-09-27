@@ -72,6 +72,7 @@
 		<field name="observation_solar_longitude" type="string">
 			<registryPath>observation_solar_longitude</registryPath>
 		</field>
+<!--
 		<field name="primary_result_type" type="string">
 			<registryPath>primary_result_type</registryPath>
 		</field>
@@ -87,6 +88,7 @@
 		<field name="primary_result_processing_level_id" type="string">
 			<registryPath>primary_result_reduction_level</registryPath>
 		</field>
+-->
 		<field name="investigation_name" type="string">
 			<registryPath>investigation_name</registryPath>
 		</field>
