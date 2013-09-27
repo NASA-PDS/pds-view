@@ -108,9 +108,9 @@ or
       <p>The Search User Interface web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. There are two options for deploying the WAR file:</p>
 	<subsection name="Copy WAR To webapps directory">
 	  <ol>
-	    <li>Locate the WAR file (search-ui.war) in the Search UI package.</li>
+	    <li>Locate the WAR file (${project.artifactId}.war) in the Search UI package.</li>
 	    <li>Copy this file to the <i>$TOMCAT_HOME/webapps</i> directory.</li>
-	    <li>Create an XML context file, <i>$TOMCAT_HOME/conf/Catalina/localhost/search-ui.xml</i> containing the following:
+	    <li>Create an XML context file, <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> containing the following:
 	      <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context crossContext="true"&gt;
@@ -121,17 +121,18 @@ or
 	  </ol>
 	</subsection>
 	<subsection name="Create Context File To Point To WAR">
-	  <ol>
-	    <li>Assuming Search UI WAR and accompanying directories are located at <i>/usr/local/search-ui</i> (if not, substitute the directory location as needed), we need to set the application to allow for cross-context so it can use the various server-side includes.  We can do this by creating <i>$TOMCAT_HOME/conf/Catalina/localhost/search-ui.xml</i> containing the following text:
-      </p>
-      <source>
+	  <p>
+	    Assuming Search UI WAR and accompanying directories are located at <i>/usr/local/${project.artifactId}</i> (if not, substitute the directory location as needed), we need to set the application to allow for cross-context so it can use the various server-side includes.  We can do this by creating <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> containing the following text:
+	  </p>
+	  <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;Context docBase="/usr/local/search-ui/search-ui.war" crossContext="true"&gt;
+&lt;Context docBase="/usr/local/${project.artifactId}/${project.artifactId}.war" crossContext="true"&gt;
 &lt;/Context&gt;
-      </source>
+	  </source>
+	</subsection>
     </section>
     <section name="Deploying the Extras">
-      <p>The Search User Interface also depends on several other directories from the PDS Website that include images, Javascript, CSS, and server-side include files that are in the <i>extras</i> directory in Search UI package (i.e. /usr/local/search-ui/extras).  This contains the following directories:
+      <p>The Search User Interface also depends on several other directories from the PDS Website that include images, Javascript, CSS, and server-side include files that are in the <i>extras</i> directory in Search UI package (i.e. /usr/local/${project.artifactId}/extras).  This contains the following directories:
       </p>
       
       <ul>
@@ -153,36 +154,36 @@ or
 	<li>css.xml
 	  <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;Context docBase="/usr/local/search-ui/extras/css" &gt;&lt;/Context&gt;
+&lt;Context docBase="/usr/local/${project.artifactId}/extras/css" &gt;&lt;/Context&gt;
 	  </source>
 	</li>
 	<li>images.xml
 	  <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;Context docBase="/usr/local/search-ui/extras/images" &gt;&lt;/Context&gt;
+&lt;Context docBase="/usr/local/${project.artifactId}/extras/images" &gt;&lt;/Context&gt;
 	  </source>
 	</li>
 	<li>include.xml
 	  <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;Context docBase="/usr/local/search-ui/extras/include" &gt;&lt;/Context&gt;
+&lt;Context docBase="/usr/local/${project.artifactId}/extras/include" &gt;&lt;/Context&gt;
 	  </source>
 	</li>
 	<li>js.xml
 	  <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;Context docBase="/usr/local/search-ui/extras/js" &gt;&lt;/Context&gt;
+&lt;Context docBase="/usr/local/${project.artifactId}/extras/js" &gt;&lt;/Context&gt;
 	  </source>
 	</li>
 	<li>scripts.xml
 	  <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;Context docBase="/usr/local/search-ui/extras/scripts" &gt;&lt;/Context&gt;
+&lt;Context docBase="/usr/local/${project.artifactId}/extras/scripts" &gt;&lt;/Context&gt;
 	  </source>
 	</li>
       </ul>
 
-      <p>An alternative solution is to move all of the directories into the $TOMCAT_HOME/webapps directory: (assumes Search UI software and directories are at /usr/local/search-ui)</p>
+      <p>An alternative solution is to move all of the directories into the $TOMCAT_HOME/webapps directory: (assumes Search UI software and directories are at /usr/local/${project.artifactId})</p>
       <p><b>Unix Environment</b></p>
       <source>
 $ mv extras/* $TOMCAT_HOME/webapps
