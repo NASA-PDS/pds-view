@@ -20,6 +20,7 @@
   <properties>
     <title>Release Changes</title>
     <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
+    <author email="Jordan.H.Padams@jpl.nasa.gov">Jordan Padams</author>
   </properties>
 
   <body>
@@ -44,6 +45,9 @@ Updated XMLUpdate and XSLTResponseWriter to work with updated libraries.
       </action>
       <action dev="jpadams" type="update" issue="PDS-182">
 	Updated data-sets.xsl to remove all references to archive-status. Functionality has been moved to Solr config.
+      </action>
+      <action dev="jpadams" type="update">
+	Updated documentation to include information updating the Search Service configuration.
       </action>
     </release>
 
