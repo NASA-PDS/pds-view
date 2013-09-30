@@ -23,13 +23,13 @@
   </properties>
 
   <body>
-    <release version="1.6.0" date="TBD" description="TBD">
-        <action dev="hyunlee" type="fix" issue="PDS-163">
-           Corrected the tool to not re-ingest when a catalog file hasn't changed.
-        </action>
-        <action dev="hyunlee" type="fix">
-           Corrected the target_ref slot was getting populated twice. 
-        </action>
+    <release version="1.6.0" date="2013-09-30" description="This release of the Catalog Tool is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="hyunlee" type="fix" issue="PDS-163">
+        Corrected the tool to not re-ingest when a catalog file hasn't changed.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Corrected the target_ref slot was getting populated twice.
+      </action>
     </release>
 
     <release version="1.5.1" date="2013-06-21" description="This release of the Catalog Tool is a component of the integrated release 3.1.1 of the PDS4 System. This is an operational release of the system components to date.">
@@ -42,14 +42,14 @@
     </release>
 
     <release version="1.5.0" date="2013-03-31" description="This release of the Catalog Tool is a component of the integrated release 3.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="hyunlee" type="fix" issue="PDS-123">
+        Corrected bad output message when executing without mode selection.
+      </action>
       <action dev="hyunlee" type="add">
         Added to support for the DATA_SET_HOUSEKEEPING catalog object.
       </action>
       <action dev="hyunlee" type="add">
         Added to support for the DATA_SET_RELEASE catalog object.
-      </action>
-      <action dev="hyunlee" type="fix" issue="PDS-123">
-        Corrected bad output message when executing without mode selection.
       </action>
     </release>
 
