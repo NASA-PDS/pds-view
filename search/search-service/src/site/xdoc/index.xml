@@ -33,6 +33,12 @@
 	<li>PDAP Handler</li>
       </ul>
 
+      <p>The following image describes the endpoints available through the Search Service:</p>
+
+      <p>
+	<a href="../images/search-service-endpoints.png"><img width="100%" src="../images/search-service-endpoints.png" /></a>
+      </p>
+
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
       </p>
     </section>
