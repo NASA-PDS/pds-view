@@ -15,6 +15,7 @@
 
 package gov.nasa.pds.registry.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -99,6 +100,7 @@ public class AuditableEvent extends RegistryObject {
   public AuditableEvent() {
      this.setObjectType(AuditableEvent.class.getSimpleName());
      this.timestamp = new Date();
+     this.affectedObjects = new ArrayList<String>();
   }
 
   public AuditableEvent(EventType eventType, List<String> affectedObjects,
