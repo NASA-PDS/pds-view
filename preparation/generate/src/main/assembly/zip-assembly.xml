@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!--
-  Copyright 2012-2013, by the California Institute of Technology.
+  Copyright 2011-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -35,26 +35,56 @@
       </includes>
     </fileSet>
     <fileSet>
-      <directory>src/main/bin</directory>
+      <directory>src/main/resources/bin</directory>
       <outputDirectory>bin</outputDirectory>
       <includes>
-        <include>transform</include>
-        <include>transform.bat</include>
+        <include>generate</include>
+        <include>generate.bat</include>
       </includes>
       <fileMode>755</fileMode>
       <lineEnding>keep</lineEnding>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/resources/examples/example1</directory>
+      <outputDirectory>examples/example1</outputDirectory>
+      <includes>
+        <include>*</include>
+      </includes>
+      <fileMode>644</fileMode>
+      <lineEnding>crlf</lineEnding>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/resources/examples/example2</directory>
+      <outputDirectory>examples/example2</outputDirectory>
+      <includes>
+        <include>*</include>
+      </includes>
+      <fileMode>644</fileMode>
+      <lineEnding>crlf</lineEnding>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/resources/examples/mpf_example</directory>
+      <outputDirectory>examples/mpf_example</outputDirectory>
+      <includes>
+        <include>*</include>
+      </includes>
+      <fileMode>644</fileMode>
+      <lineEnding>crlf</lineEnding>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/resources/conf</directory>
+      <outputDirectory>conf</outputDirectory>
+      <includes>
+        <include>*.xml</include>
+      </includes>
+      <fileMode>644</fileMode>
+      <lineEnding>crlf</lineEnding>
     </fileSet>
     <fileSet>
       <directory>target/site</directory>
       <outputDirectory>doc</outputDirectory>
       <fileMode>644</fileMode>
       <lineEnding>keep</lineEnding>
-    </fileSet>
-    <fileSet>
-      <directory>src/main/resources/examples</directory>
-      <outputDirectory>examples</outputDirectory>
-      <fileMode>644</fileMode>
-      <lineEnding>crlf</lineEnding>
     </fileSet>
   </fileSets>
 
