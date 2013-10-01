@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2013, by the California Institute of Technology.
+  Copyright 2009-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -29,10 +29,11 @@
 
   <fileSets>
     <fileSet>
-      <directory>src/main/resources</directory>
-      <outputDirectory>conf</outputDirectory>
-      <fileMode>644</fileMode>
-      <lineEnding>crlf</lineEnding>
+      <directory>target</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>*.war</include>
+      </includes>
     </fileSet>
     <fileSet>
       <directory>target/site</directory>
@@ -55,18 +56,7 @@
       <destName>README.txt</destName>
       <fileMode>644</fileMode>
       <lineEnding>crlf</lineEnding>
+      <filtered>true</filtered>
     </file>
   </files>
-
-  <dependencySets>
-    <dependencySet>
-      <outputDirectory>lib</outputDirectory>
-      <excludes>
-        <exclude>javax.servlet:servlet-api</exclude>
-      </excludes>
-      <unpack>false</unpack>
-      <scope>runtime</scope>
-      <useProjectArtifact>true</useProjectArtifact>
-    </dependencySet>
-  </dependencySets>
 </assembly>

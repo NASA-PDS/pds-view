@@ -22,15 +22,15 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
-    <release version="2.2.0" date="TBD" description="TBD">
-      <action dev="shardman" type="update">
-        Cleaned up the project by deleting all of the unused code. Also cleaned up the web.xml file to better represent the end points of the project. Also removed all of the parameter cleaning code since that is now handled by the filter project.
+    <release version="2.2.0" date="2013-09-30" description="This release of Data Set View is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="hyunlee" type="add">
+        Added viewProduct.jsp to display the Observational Product type.
       </action>
       <action dev="hyunlee" type="update">
         Added displaying "RESOURCES" in viewBundle.jsp and viewCollection.jsp.
       </action>
-      <action dev="hyunlee" type="add">
-        Added viewProduct.jsp to display the Observational Product type.
+      <action dev="shardman" type="update">
+        Cleaned up the project by deleting all of the unused code. Also cleaned up the web.xml file to better represent the end points of the project. Also removed all of the parameter cleaning code since that is now handled by the filter project.
       </action>
     </release>
 

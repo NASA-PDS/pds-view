@@ -36,6 +36,7 @@
 
   <modules>
     <module>ds-view</module>
+    <module>filter</module>
   </modules>
 
   <repositories>
