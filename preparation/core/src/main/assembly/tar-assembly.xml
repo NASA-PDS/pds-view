@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -24,7 +24,6 @@
 
   <formats>
     <format>tar.gz</format>
-    <format>zip</format>
   </formats>
 
   <fileSets>
@@ -42,6 +41,8 @@
     <fileSet>
       <directory>src/main/resources/schema</directory>
       <outputDirectory>schema</outputDirectory>
+      <fileMode>644</fileMode>
+      <lineEnding>unix</lineEnding>
     </fileSet>
   </fileSets>
 
@@ -50,12 +51,14 @@
       <source>LICENSE.txt</source>
       <outputDirectory>/</outputDirectory>
       <fileMode>644</fileMode>
+      <lineEnding>unix</lineEnding>
     </file>
     <file>
       <source>README-PACKAGE.txt</source>
       <outputDirectory>/</outputDirectory>
       <destName>README.txt</destName>
       <fileMode>644</fileMode>
+      <lineEnding>unix</lineEnding>
       <filtered>true</filtered>
     </file>
   </files>
