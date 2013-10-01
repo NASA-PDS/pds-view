@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!-- PDS4 Schematron for Name Space Id:pds  Version:1.1.0.0 - Mon Sep 30 09:06:19 PDT 2013 -->
+  <!-- PDS4 Schematron for Name Space Id:pds  Version:1.1.0.0 - Tue Oct 01 08:24:06 PDT 2013 -->
   <!-- Generated from the PDS4 Information Model Version 1.1.0.0 - System Build 4a -->
   <!-- *** This PDS4 schematron file is an operational deliverable. *** -->
 <sch:schema xmlns:sch="http://purl.oclc.org/dsdl/schematron" queryBinding="xslt2">
@@ -70,17 +70,17 @@
   <sch:pattern>
     <sch:rule context="pds:Array_2D_Image/pds:Axis_Array[1]">
       <sch:assert test="pds:axis_name = ('Line', 'Sample')">
-        The name of the first axis of an Array_2d_Image must be set to either Line or Sample.</sch:assert>
+        The name of the first axis of an Array_2D_Image must be set to either Line or Sample.</sch:assert>
       <sch:assert test="pds:sequence_number eq '1'">
-        The sequence number of the first axis of an Array_2d_Image must be set to 1.</sch:assert>
+        The sequence number of the first axis of an Array_2D_Image must be set to 1.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
     <sch:rule context="pds:Array_2D_Image/pds:Axis_Array[2]">
       <sch:assert test="pds:axis_name = ('Line', 'Sample')">
-        The name of the second axis of an Array_2d_Image must be set to either Line or Sample.</sch:assert>
+        The name of the second axis of an Array_2D_Image must be set to either Line or Sample.</sch:assert>
       <sch:assert test="pds:sequence_number eq '2'">
-        The sequence number of the second axis of an Array_2d_Image must be set to 2.</sch:assert>
+        The sequence number of the second axis of an Array_2D_Image must be set to 2.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
@@ -407,14 +407,10 @@
   </sch:pattern>
   <sch:pattern>
     <sch:rule context="pds:Instrument_Host">
-      <sch:assert test="if (pds:type) then pds:type = ('Earth-based', 'Lander', 'Rover', 'Spacecraft') else true()">
-        The attribute pds:type must be equal to one of the following values 'Earth-based', 'Lander', 'Rover', 'Spacecraft'.</sch:assert>
-    </sch:rule>
-  </sch:pattern>
-  <sch:pattern>
-    <sch:rule context="pds:Instrument_Host/pds:type">
       <sch:assert test="pds:type != 'Earth Based'">
         The value Earth Based for attribute Instrument_Host.type is deprecated and should not be used.</sch:assert>
+      <sch:assert test="if (pds:type) then pds:type = ('Earth-based', 'Lander', 'Rover', 'Spacecraft') else true()">
+        The attribute pds:type must be equal to one of the following values 'Earth-based', 'Lander', 'Rover', 'Spacecraft'.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
@@ -527,6 +523,8 @@
   </sch:pattern>
   <sch:pattern>
     <sch:rule context="pds:Primary_Result_Summary/pds:Science_Facets">
+      <sch:assert test="if (pds:discipline_name) then pds:discipline_name = ('Atmospheres', 'Fields', 'Flux Measurements', 'Imaging', 'Particles', 'Ring-Moon Systems', 'Small Bodies', 'Spectroscopy') else true()">
+        The attribute pds:discipline_name must be equal to one of the following values 'Atmospheres', 'Fields', 'Flux Measurements', 'Imaging', 'Particles', 'Ring-Moon Systems', 'Small Bodies', 'Spectroscopy'.</sch:assert>
       <sch:assert test="if (pds:discipline_name and pds:facet1 and (pds:discipline_name eq 'Atmospheres')) then pds:facet1 = ('Structure', 'Meteorology') else true()">
         If the attribute pds:discipline_name equals Atmospheres then if present pds:facet1 must be equal to one of the following values 'Structure', 'Meteorology'.</sch:assert>
       <sch:assert test="if (pds:discipline_name and pds:facet1 and (pds:discipline_name eq 'Fields')) then pds:facet1 = ('Electric', 'Magnetic') else true()">
@@ -547,12 +545,20 @@
         If the attribute pds:discipline_name equals Small Bodies then if present pds:facet1 must be equal to one of the following values 'Dynamical Properties', 'Lightcurve', 'Meteoritics', 'Physical Properties', 'Production Rates', 'Shape Model', 'Taxonomy', 'Dust Study', 'Historical Reference', 'Gas Study'.</sch:assert>
       <sch:assert test="if (pds:discipline_name and pds:facet1 and (pds:discipline_name eq 'Spectroscopy')) then pds:facet1 = ('2D', 'Linear', 'Spectral Cube', 'Spectral Image', 'Tabulated') else true()">
         If the attribute pds:discipline_name equals Spectroscopy then if present pds:facet1 must be equal to one of the following values '2D', 'Linear', 'Spectral Cube', 'Spectral Image', 'Tabulated'.</sch:assert>
-      <sch:assert test="if (pds:discipline_name) then pds:discipline_name = ('Atmospheres', 'Fields', 'Flux Measurements', 'Imaging', 'Particles', 'Ring-Moon Systems', 'Small Bodies', 'Spectroscopy') else true()">
-        The attribute pds:discipline_name must be equal to one of the following values 'Atmospheres', 'Fields', 'Flux Measurements', 'Imaging', 'Particles', 'Ring-Moon Systems', 'Small Bodies', 'Spectroscopy'.</sch:assert>
-      <sch:assert test="if (pds:subfacet1) then pds:facet1 else true()">
-        If the attribute pds:subfacet1 exists then pds:facet1 must also exist</sch:assert>
-      <sch:assert test="if (pds:subfacet2) then pds:facet2 else true()">
-        If the attribute pds:subfacet2 exists then pds:facet2 must also exist</sch:assert>
+      <sch:assert test="if (pds:discipline_name and pds:facet2) then pds:discipline_name = ('Fields', 'Particles') else true()">
+        Facet2 is allowed only when pds:discipline_name is one of the following 'Fields', 'Particles'.</sch:assert>
+    </sch:rule>
+  </sch:pattern>
+  <sch:pattern>
+    <sch:rule context="pds:Primary_Result_Summary/pds:Science_Facets/pds:subfacet1">
+      <sch:assert test="name() = 'pds:Primary_Result_Summary/pds:Science_Facets/pds:subfacet1'">
+        pds:subfacet1 should not be used. No values have been provided.</sch:assert>
+    </sch:rule>
+  </sch:pattern>
+  <sch:pattern>
+    <sch:rule context="pds:Primary_Result_Summary/pds:Science_Facets/pds:subfacet2">
+      <sch:assert test="name() = 'pds:Primary_Result_Summary/pds:Science_Facets/pds:subfacet2'">
+        pds:subfacet2 should not be used. No values have been provided.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
