@@ -58,7 +58,8 @@
 
       <table>
         <tr><th>HTTP Parameter</th><th>Description</th></tr>
-        <tr><td>q</td><td>The DIS-Style query string. This parameter is required. Additional information regarding the DIS-Style query format can be found at the <a href="http://oodt.apache.org/components/maven/xmlquery/disquery/" target="_blank">Apache OODT DIS-Style Query</a> page.</td></tr>
+        <tr><td>q</td><td>The DIS-Style query expression identifying the product (or set of files) to retrieve from the Transport Service. This is the preferred parameter for querying the Transport Service and is required if the <i>xmlq</i> parameter is not specified. Additional information regarding the DIS-Style query format can be found at the <a href="http://oodt.apache.org/components/maven/xmlquery/disquery/" target="_blank">Apache OODT DIS-Style Query</a> page.</td></tr>
+        <tr><td>xmlq</td><td>The XML query expression identifying the product (or set of files) to retrieve from the Transport Service. The details for the format of this query expression will not be covered here. Although supported, the <i>q</i> parameter is preferred and is utilized by all existing client interfaces. This parameter is required if the <i>q</i> parameter is not specified.</td></tr>
       </table>
 
       <p>The Transport Service accepts the following parameters in DIS-Style format for the parameter above:

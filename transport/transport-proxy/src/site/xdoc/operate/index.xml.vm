@@ -59,7 +59,7 @@
       <table>
         <tr><th>Parameter</th><th>Description</th></tr>
         <tr><td>object</td><td>The identifier of the Transport Service specified as a full URN (i.e., urn:eda:rmi:PDS.CN.Product) or just the name (i.e., PDS.CN.Product). This parameter is required.</td></tr>
-        <tr><td>keywordQuery</td><td>The DIS-Style query string. This parameter is required. Additional information regarding the DIS-Style query format can be found at the <a href="http://oodt.apache.org/components/maven/xmlquery/disquery/" target="_blank">Apache OODT DIS-Style Query</a> page.</td></tr>
+        <tr><td>keywordQuery</td><td>The DIS-Style query expression identifying the product (or set of files) to retrieve from the Transport Service. This parameter is required. Additional information regarding the DIS-Style query format can be found at the <a href="http://oodt.apache.org/components/maven/xmlquery/disquery/" target="_blank">Apache OODT DIS-Style Query</a> page.</td></tr>
         <tr><td>id</td><td>The identifier of the product to return in the case where multiple products match the query criteria. This parameter is optional.</td></tr>
         <tr><td>mimeType</td><td>The desired MIME type of the product to return. This parameter may be specified multiple times to show an in-order preference for MIME types. This parameter is optional.</td></tr>
       </table>
