@@ -23,18 +23,18 @@
   </properties>
 
   <body>
-    <release version="1.3.0" date="TBD" description="TBD">
+    <release version="1.3.0" date="2013-09-30" description="This release of the Search Core is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="jpadams" type="update" issue="PDS-122">
+        Updated docs  to be more explicit in how/where to move extras directories.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-158">
+        Updated docs to include XML definition in context files.
+      </action>
       <action dev="jpadams" type="update" issue="PDS-182">
         Updated search.jsp to remove references to archive-status and change search-service endpoint to query against (now /filtered). Functionality was moved to Solr config.
       </action>
-      <action dev="jpadams" type="update" issue="PDS-158">
-	Updated docs to include XML definition in context files.
-      </action>
-      <action dev="jpadams" type="update" issue="PDS-122">
-	Updated docs  to be more explicit in how/where to move extras directories.
-      </action>
       <action dev="jpadams" type="update">
-	Enhanced docs by including diagram of architecture and how the software interacts with the search service.
+        Enhanced docs by including diagram of architecture and how the software interacts with the search service.
       </action>
     </release>
 

@@ -30,7 +30,7 @@
 
   <name>Search User Interface</name>
   <description>
-    The Search User Interface software serves as the web-based interface for the Search Service.
+    The Search User Interface software serves as the user interface for searching for PDS3 and PDS4 catalog products through the archive-filter end point of the Search Service.
   </description>
   <url>http://pds-cm.jpl.nasa.gov/pds4/search/search-ui/</url>
 

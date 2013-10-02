@@ -17,18 +17,18 @@
 
 <document>
   <properties>
-    <title>About Product Search UI</title>
+    <title>About Product Search User Interface</title>
     <author email="Jordan.H.Padams@jpl.nasa.gov">Jordan Padams</author>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
-    <section name="About Product Search UI">
-      <p>The Product Search UI software serves as the user interface for searching for PDS4 products through the <i>product-search</i> endpoint of the Search Service. See the <a href="../search-service/index.html">Search Service</a> documentation for more information on the search functionality and protocol.
+    <section name="About Product Search User Interface">
+      <p>The Product Search User Interface software serves as the user interface for searching for PDS4 products through the <i>product-search</i> end point of the Search Service. See the <a href="../search-service/index.html">Search Service</a> documentation for more information on the search functionality and protocol.
       </p>
 
       <p style="text-align:center;">
-        <img height="600"src="../images/product-search-ui.png" />
+        <img alt="Product Search UI Interfaces" src="images/product-search-ui.png" />
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.

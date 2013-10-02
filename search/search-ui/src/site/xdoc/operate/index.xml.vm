@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -25,19 +25,20 @@
 
   <body>
     <section name="Operation">
-      <p>The Search UI is a web interface intended to provide a more user-friendly view of the Search Service.  See the <a href="../../search-service">Search Service Documentation</a> for more information on searching PDS data and using the PDS Search Protocol.y
+      <p>The Search User Interface is a web interface intended to provide a more user-friendly view of the Search Service.  See the <a href="../../search-service">Search Service</a> documentation for more information on searching PDS data and using the PDS Search Protocol.
       </p>
     </section>
     <section name="Common Errors">
       <subsection name="Search Returns Blank Screen">
-	<p>There are 2 known reasons for this error:</p>
-	<ul>
-	  <li><i>The Search Service is not installed correctly.</i>  Go to the local Search Service and verify it contains data and is functioning properly.  See the <a href="../../search-service/operate">Search Service - Operate</a> documentation for more information on testing the Search Service.</li>
-	  <li><i>The Search Service is not installed at the same level as Search UI.</i>  The Search UI assumes the Search Service is installed at the same level of the web directory structure for the server.  For instance, if the Search UI URL is <i>http://localhost:8080/search-ui</i>, it expects the Search Service to be at <i>http://localhost:8080/search-service</i>.  If it is installed at another location, modify <i>$TOMCAT_HOME/webapps/search-ui/search.jsp</i> accordingly.</li>
-	</ul>
+        <p>There are 2 known reasons for this error:</p>
+        <ul>
+          <li><i>The Search Service is not installed correctly.</i>  Go to the local Search Service and verify it contains data and is functioning properly.  See the <a href="../../search-service/operate">Search Service - Operate</a> documentation for more information on testing the Search Service.</li>
+          <li><i>The Search Service is not installed at the same level as Search UI.</i>  The Search UI assumes the Search Service is installed at the same level of the web directory structure for the server.  For instance, if the Search UI URL is <i>http://localhost:8080/search-ui</i>, it expects the Search Service to be at <i>http://localhost:8080/search-service</i>.  If it is installed at another location, modify <i>$TOMCAT_HOME/webapps/search-ui/search.jsp</i> accordingly.</li>
+        </ul>
       </subsection>
+
       <subsection name="Missing Images/Formatting/Functionality">
-	<p>This occurs when the Search UI cannot find the css/images/include/js/scripts directories.  See the <a href="../install/index.html#Deploying_the_Extras">Installation Guide</a> for more information on deploying the extras.</p>
+        <p>This occurs when the Search UI cannot find the css/images/include/js/scripts directories.  See the <a href="../install/index.html#Deploying_the_Extras">Installation Guide</a> for more information on deploying the extras.</p>
       </subsection>
     </section>
   </body>

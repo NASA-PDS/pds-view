@@ -64,9 +64,9 @@
 usage: search-core [options]
 
 
-====================================================================================
+===========================================================
 Command-line Options--------------Description---------------------------------------
-====================================================================================
+===========================================================
  -a,--all                         Run all components of the Search Core
                                   [default]
  -c,--config-home &lt;directories&gt;   Specify the product class configuration home
@@ -132,7 +132,8 @@ Command-line Options--------------Description-----------------------------------
         </p>
 
         <source>
-% search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry -c /usr/local/search-core/conf/pds/pds3 -l run.log
+% search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry \
+-c /usr/local/search-core/conf/pds/pds3 -l run.log
         </source>
 
         <p>By default, the command above runs all components of the Search Core software and produces Solr XML Documents from the Registry Service data.  The Solr XML Documents are files formatted for addition to the Search Service index and will appear in the SEARCH_SERVICE_HOME/pds/index directory.</p>
@@ -148,7 +149,7 @@ Command-line Options--------------Description-----------------------------------
 
         <ol>
           <li>
-            <p>The following command will run the Registry Extractor component of the Search Core to generate temporary XML metadata files for each Registry context product type specified in the conigurations.  By default, the output appears in the directory /usr/local/search-service/pds/registry-data/&lt;object-type&gt;/:</p>
+            <p>The following command will run the Registry Extractor component of the Search Core to generate temporary XML metadata files for each Registry context product type specified in the configurations.  By default, the output appears in the directory /usr/local/search-service/pds/registry-data/&lt;object-type&gt;/:</p>
             <source>
 % search-core -e -H /usr/local/search-service/pds -r http://localhost:8080/registry
             </source>

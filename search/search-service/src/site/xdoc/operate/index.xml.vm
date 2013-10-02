@@ -31,11 +31,11 @@
       <ul>
         <li><a href="#Admin_Interface">Admin Interface</a></li>
         <li><a href="#Configuration">Configuration</a></li>
-	<ul>
-	  <li><a href="#Add_A_Facet">Add A Facet</a></li>
-	  <li><a href="#Update_Output_Format">Update Output Format</a></li>
-	  <li><a href="#Add_Field_To_Schema">Add Field To Schema</a></li>
-	</ul>
+        <ul>
+          <li><a href="#Add_A_Facet">Add A Facet</a></li>
+          <li><a href="#Update_Output_Format">Update Output Format</a></li>
+          <li><a href="#Add_Field_To_Schema">Add Field To Schema</a></li>
+        </ul>
         <li><a href="#Search_Protocols">Search Protocols</a></li>
         <li><a href="#Common_Errors">Common Errors</a></li>
       </ul>
@@ -43,57 +43,62 @@
 
     <section name="Admin Interface">
       <p>The Admin Interface screen can be viewed from http://localhost:8080/search-service (or <a href="http://pdsops.jpl.nasa.gov/search-service">http://pdsops.jpl.nasa.gov//search-service</a>).  For the PDS core, go to http://localhost:8080/search-service/#/pds.  Go to <a href="http://searchhub.org/2013/01/22/lucenesolr-4-management-administrative-user-interface/">http://searchhub.org/2013/01/22/lucenesolr-4-management-administrative-user-interface/</a> and/or <a href="https://cwiki.apache.org/confluence/display/solr/Using+the+Solr+Administration+User+Interface">https://cwiki.apache.org/confluence/display/solr/Using+the+Solr+Administration+User+Interface</a> for more information on the various capabilities of the interface.</p>
-      <p>From the query page, you can perform various queries against the available <a href="../../images/search-service-endpoints.png">endpoints</a>.  You can find out about what the query parameters mean at <a href="http://wiki.apache.org/solr/CommonQueryParameters">http://wiki.apache.org/solr/CommonQueryParameters</a>.  The most useful of these being the <i>wt</i> parameter.  When this is set <i>wt=xslt</i> you can view the output as it is queried from the Search UI and Product Search UI.</p>
+      <p>From the query page, you can perform various queries against the available <a href="../../images/search-service-endpoints.png">end points</a>.  You can find out about what the query parameters mean at <a href="http://wiki.apache.org/solr/CommonQueryParameters">http://wiki.apache.org/solr/CommonQueryParameters</a>.  The most useful of these being the <i>wt</i> parameter.  When this is set <i>wt=xslt</i> you can view the output as it is queried from the Search UI and Product Search UI.</p>
     </section>
 
     <section name="Configuration">
       <p>See the <a href="http://lucene.apache.org/solr/">Apache Solr website</a> and <a href="http://wiki.apache.org/solr/">wiki</a> for more information on configuring Apache Solr.  More Search Service configuration changes TBD.
       </p>
+
       <subsection name="Add A Facet">
-	<p>The following steps will allow a new facet to be added to the search service output.  The facets are the categories in the left sidebar of the Search UI that provide a means for browsing through the data.  The name for the facet should not yet be a field in the schema, because a new field specifically dedicated to the faceting will be created.  For instance, if you wanted to facet on <i>agency_name</i>, we will create a facet named <i>facet_agency</i>.  These steps assume that the Search Service was installed at /usr/local/search-service.  If not, substitute the installation directory as needed.  For the following example, we will be creating a facet on the <i>node_id</i> field.</p>
-	<ol>
-	  <li><p>Add the following to /usr/local/search-service/pds/conf/xslt/facets.xml:</p>
-	    <source>
-  &lt;facet name="facet node" caption="Node" /&gt;
+        <p>The following steps will allow a new facet to be added to the search service output.  The facets are the categories in the left sidebar of the Search UI that provide a means for browsing through the data.  The name for the facet should not yet be a field in the schema, because a new field specifically dedicated to the faceting will be created.  For instance, if you wanted to facet on <i>agency_name</i>, we will create a facet named <i>facet_agency</i>.  These steps assume that the Search Service was installed at /usr/local/search-service.  If not, substitute the installation directory as needed.  For the following example, we will be creating a facet on the <i>node_id</i> field.</p>
+        <ol>
+          <li><p>Add the following to /usr/local/search-service/pds/conf/xslt/facets.xml:</p>
+            <source>
+&lt;facet name="facet node" caption="Node" /&gt;
 
-  &lt;facet name="node id" caption="Node" /&gt;
-	    </source>
-	  </li>
-	  <li><p>Update /usr/local/search-service/pds/conf/xslt/add-hierarchy.xsl:</p>
-	    <source>
-  &lt;xsl:template match="field[@name = 'node_id']"&gt;
-    &lt;xsl:copy-of select="." &gt;
-    &lt;field name="facet_node_id"&gt;&lt;xsl:value-of select="concat('1,',.)" /&gt;&lt;/field&gt;
-  &lt;/xsl:template&gt;
-	    </source>
-	  </li>
-	  <li><p>Update /usr/local/search-service/pds/conf/solrconfig_defaults.xml:</p>
-	    <source>
-        &lt;str name="facet.field"&gt;facet_node_id&lt;/str&gt;
+&lt;facet name="node id" caption="Node" /&gt;
+            </source>
+          </li>
+          <li><p>Update /usr/local/search-service/pds/conf/xslt/add-hierarchy.xsl:</p>
+            <source>
+&lt;xsl:template match="field[@name = 'node_id']"&gt;
+  &lt;xsl:copy-of select="." &gt;
+  &lt;field name="facet_node_id"&gt;&lt;xsl:value-of select="concat('1,',.)" /&gt;&lt;/field&gt;
+&lt;/xsl:template&gt;
+            </source>
+          </li>
+          <li><p>Update /usr/local/search-service/pds/conf/solrconfig_defaults.xml:</p>
+            <source>
+&lt;str name="facet.field"&gt;facet_node_id&lt;/str&gt;
 
-        &lt;str name="f.facet_node_id.facet.prefix"&gt;1,&lt;/str&gt;
-	    </source>
-	  </li>
-	  <li><p>Update /usr/local/search-service/pds/conf/schema.xml by finding the area where facet fields are being declared (search for facet_) and adding the following:</p>
-	    <source>
-   &lt;field name="facet_node" type="string_lc" indexed="true" stored="false" multiValued="false" /&gt;
-	    </source>
-	  </li>
-	  <li>Restart Tomcat</li>
-	</ol>
+&lt;str name="f.facet_node_id.facet.prefix"&gt;1,&lt;/str&gt;
+            </source>
+          </li>
+          <li><p>Update /usr/local/search-service/pds/conf/schema.xml by finding the area where facet fields are being declared (search for facet_) and adding the following:</p>
+            <source>
+&lt;field name="facet_node" type="string_lc" indexed="true" stored="false" \
+  multiValued="false" /&gt;
+            </source>
+          </li>
+          <li>Restart Tomcat</li>
+        </ol>
       </subsection>
+
       <subsection name="Update Output Format">
-	<ul>
-	  <li>To update the output queried through the Search UI (<i>archive-filter</i> endpoint), make updates to <i>/usr/local/search-service/pds/conf/xslt/data-search.xsl</i>.</li>
-	  <li>To update the output queried through the Product Search UI (<i>product-search</i> endpoint), make updates to <i>/usr/local/search-service/pds/conf/xslt/product-search.xsl</i>.</li>
-	</ul>
+        <ul>
+          <li>To update the output queried through the Search UI (<i>archive-filter</i> endpoint), make updates to <i>/usr/local/search-service/pds/conf/xslt/data-search.xsl</i>.</li>
+          <li>To update the output queried through the Product Search UI (<i>product-search</i> endpoint), make updates to <i>/usr/local/search-service/pds/conf/xslt/product-search.xsl</i>.</li>
+        </ul>
       </subsection>
+
       <subsection name="Add Field To Schema">
-	<p>Update /usr/local/search-service/pds/conf/schema.xml.  This example will add the field <i>my_field</i>:</p>
-	<source>
-   &lt;field name="my_field" type="text_general" indexed="true" stored="false" multiValued="false" /&gt;
-	</source>
-	<p>See the <a href="http://wiki.apache.org/solr/SchemaXml">Solr Documentation</a> for more information on update the Solr schema.</p>
+        <p>Update /usr/local/search-service/pds/conf/schema.xml.  This example will add the field <i>my_field</i>:</p>
+        <source>
+&lt;field name="my_field" type="text_general" indexed="true" stored="false" \
+multiValued="false" /&gt;
+        </source>
+        <p>See the <a href="http://wiki.apache.org/solr/SchemaXml">Solr Documentation</a> for more information on update the Solr schema.</p>
       </subsection>
     </section>
 
