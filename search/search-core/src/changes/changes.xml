@@ -35,9 +35,9 @@
       </action>
       <action dev="jpadams" type="update" issue="PDS-177">
         Updated PDS config files to point to relative instead of absolute URL to resolve issue with domain specificity.
+      </action>
       <action dev="jpadams" type="update" issue="PDS-189">
         Updated command-line options and property keys to allow for specification of primary and secondary registries; also update XSD to allow for inclusion of 'DataSources' which can then be set with primary/secondary 'priority' and DataSource type (i.e. registry) as well as the option to 'append' the new sources to the current list specified via command-line/property file, or to overwrite. 
-      </action>
       </action>
       <action dev="jpadams" type="add">
         Created new logging and stats classes to maintain the missing slot/associations/etc.
