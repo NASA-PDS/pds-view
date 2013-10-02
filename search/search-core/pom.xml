@@ -99,6 +99,17 @@
           </archive>
         </configuration>
       </plugin>
+      <!--
+        Skip the unit tests in production since they are environment
+        dependent at this point in time.
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -165,16 +176,16 @@
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
-	<dependency>
-		<groupId>org.apache.lucene</groupId>
-		<artifactId>lucene-core</artifactId>
-		<version>4.3.0</version>
+  <dependency>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-core</artifactId>
+    <version>4.3.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
-		<groupId>org.apache.lucene</groupId>
-		<artifactId>lucene-analyzers-common</artifactId>
-		<version>4.3.0</version>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-analyzers-common</artifactId>
+    <version>4.3.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
