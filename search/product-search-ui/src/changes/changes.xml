@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011-2013, by the California Institute of Technology.
+  Copyright 2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -23,15 +23,15 @@
   </properties>
 
   <body>
-    <release version="1.3.0" date="TBD" description="TBD">
+    <release version="1.3.0" date="2013-09-30" description="This release of the Product Search User Interface is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="add" issue="PDS-191">
-	Copied search-ui package to make this product-search-ui package.  Updated pom, assembly, etc. As needed
+        Copied search-ui package to make this product-search-ui package. Updated pom, assembly, etc. As needed.
       </action>
       <action dev="jpadams" type="update" issue="PDS-191">
-	Updated search.jsp to reference product search endpoint
+        Updated search.jsp to reference product search end point.
       </action>
       <action dev="jpadams" type="update" issue="PDS-197">
-	Update docs to be specific to product-search-ui. Also added diagram detailing how the product search ui communicates with the Search Service.
+        Update the documentation to be specific to product-search-ui. Also added diagram detailing how the interface communicates with the Search Service.
       </action>
     </release>
   </body>

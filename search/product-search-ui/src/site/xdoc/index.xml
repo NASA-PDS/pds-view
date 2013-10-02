@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -24,10 +24,11 @@
 
   <body>
     <section name="About Product Search UI">
-      <p>The Product Search UI software serves as the user interface for searching for PDS4 products through the <i>product-search</i> endpoint of the Search Service.  See the <a href="../search-service/index.html">Search Service Documentation</a> for more information on the search functionality and protocol.
+      <p>The Product Search UI software serves as the user interface for searching for PDS4 products through the <i>product-search</i> endpoint of the Search Service. See the <a href="../search-service/index.html">Search Service</a> documentation for more information on the search functionality and protocol.
       </p>
+
       <p style="text-align:center;">
-	<img height="600"src="../images/product-search-ui.png" />
+        <img height="600"src="../images/product-search-ui.png" />
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.

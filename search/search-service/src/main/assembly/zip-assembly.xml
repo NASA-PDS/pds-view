@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+  Copyright 2010-2013, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology 
+  Transfer at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations 
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+  is subject to U.S. export control laws and regulations, the recipient has 
+  the responsibility to obtain export licenses or other export authority as 
+  may be required before exporting such information to foreign countries or 
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+  http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+  <id>bin</id>
+
+  <formats>
+    <format>zip</format>
+  </formats>
+
+  <fileSets>
+    <fileSet>
+      <directory>target</directory>
+      <outputDirectory>lib</outputDirectory>
+      <includes>
+        <include>*.jar</include>
+      </includes>
+      <fileMode>644</fileMode>
+      <lineEnding>keep</lineEnding>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/resources</directory>
+      <excludes>
+        <exclude>pds/bin/*</exclude>
+      </excludes>
+      <outputDirectory>/</outputDirectory>
+      <fileMode>644</fileMode>
+      <lineEnding>crlf</lineEnding>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/resources</directory>
+      <includes>
+        <include>pds/bin/*</include>
+      </includes>
+      <outputDirectory>/</outputDirectory>
+      <fileMode>755</fileMode>
+      <lineEnding>keep</lineEnding>
+    </fileSet>
+    <fileSet>
+      <directory>target/site</directory>
+      <outputDirectory>doc</outputDirectory>
+      <fileMode>644</fileMode>
+      <lineEnding>keep</lineEnding>
+    </fileSet>
+  </fileSets>
+
+  <files>
+    <file>
+      <source>LICENSE.txt</source>
+      <outputDirectory>/</outputDirectory>
+      <fileMode>644</fileMode>
+      <lineEnding>crlf</lineEnding>
+    </file>
+    <file>
+      <source>README-PACKAGE.txt</source>
+      <outputDirectory>/</outputDirectory>
+      <destName>README.txt</destName>
+      <fileMode>644</fileMode>
+      <lineEnding>crlf</lineEnding>
+      <filtered>true</filtered>
+    </file>
+  </files>
+
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory>lib</outputDirectory>
+      <includes>
+        <include>net.sf.saxon:saxon</include>
+        <include>net.sf.saxon:saxon-dom</include>
+        <include>org.apache.solr:solr-velocity</include>
+        <include>org.slf4j:slf4j-api</include>
+        <include>org.slf4j:slf4j-log4j12</include>
+        <include>log4j:log4j</include>
+        <include>commons-logging:commons-logging</include>
+      </includes>
+    </dependencySet>
+    <dependencySet>
+      <outputDirectory>./</outputDirectory>
+      <includes>
+        <include>org.apache.solr:solr</include>
+      </includes>
+      <outputFileNameMapping>${artifact.artifactId}.war</outputFileNameMapping>
+    </dependencySet>
+    <!--dependencySet>
+      <outputDirectory>lib</outputDirectory>
+      <unpack>false</unpack>
+      <useProjectArtifact>false</useProjectArtifact>
+      <useTransitiveDependencies>false</useTransitiveDependencies>
+      <unpackOptions/>
+    </dependencySet-->
+  </dependencySets>
+
+</assembly>

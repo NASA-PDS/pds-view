@@ -21,7 +21,7 @@
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
     <artifactId>search</artifactId>
-    <version>1.3.0-dev</version>
+    <version>1.3.0</version>
   </parent>
 
   <groupId>gov.nasa.pds.2010.search</groupId>
@@ -91,11 +91,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptors>
-            <descriptor>src/main/assembly/assembly.xml</descriptor>
-          </descriptors>
-        </configuration>
         <executions>
           <execution>
             <id>bin-release</id>
@@ -103,9 +98,15 @@
             <goals>
               <goal>single</goal>
             </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/tar-assembly.xml</descriptor>
+                <descriptor>src/main/assembly/zip-assembly.xml</descriptor>
+              </descriptors>
+            </configuration>
           </execution>
         </executions>
-      </plugin>   
+      </plugin>
       <!-- 
         Configuration for deploying to a local Tomcat server. Provide the 
         username and password for the Manager interface in your settings.xml.

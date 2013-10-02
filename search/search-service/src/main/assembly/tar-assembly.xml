@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -24,7 +24,6 @@
 
   <formats>
     <format>tar.gz</format>
-    <format>zip</format>
   </formats>
 
   <fileSets>
@@ -34,26 +33,33 @@
       <includes>
         <include>*.jar</include>
       </includes>
+      <fileMode>644</fileMode>
+      <lineEnding>keep</lineEnding>
     </fileSet>
     <fileSet>
       <directory>src/main/resources</directory>
       <excludes>
-	<exclude>pds/bin/*</exclude>
+        <exclude>pds/bin/*</exclude>
       </excludes>
       <outputDirectory>/</outputDirectory>
+      <fileMode>644</fileMode>
+      <lineEnding>unix</lineEnding>
     </fileSet>
     <fileSet>
       <directory>src/main/resources</directory>
       <includes>
-	<include>pds/bin/*</include>
+        <include>pds/bin/*</include>
       </includes>
-      <fileMode>755</fileMode>
       <outputDirectory>/</outputDirectory>
+      <fileMode>755</fileMode>
+      <lineEnding>keep</lineEnding>
     </fileSet>
     <fileSet>
       <directory>target/site</directory>
       <outputDirectory>doc</outputDirectory>
     </fileSet>
+      <fileMode>644</fileMode>
+      <lineEnding>keep</lineEnding>
   </fileSets>
 
   <files>
@@ -61,12 +67,14 @@
       <source>LICENSE.txt</source>
       <outputDirectory>/</outputDirectory>
       <fileMode>644</fileMode>
+      <lineEnding>unix</lineEnding>
     </file>
     <file>
       <source>README-PACKAGE.txt</source>
       <outputDirectory>/</outputDirectory>
       <destName>README.txt</destName>
       <fileMode>644</fileMode>
+      <lineEnding>unix</lineEnding>
       <filtered>true</filtered>
     </file>
   </files>

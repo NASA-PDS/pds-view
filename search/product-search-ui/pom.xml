@@ -28,9 +28,9 @@
   <artifactId>product-search-ui</artifactId>
   <packaging>war</packaging>
 
-  <name>Search User Interface</name>
+  <name>Product Search User Interface</name>
   <description>
-    The Search User Interface software serves as the web-based interface for the Search Service.
+    The Product Search User Interface software serves as the web-based interface for the Search Service.
   </description>
   <url>http://pds-cm.jpl.nasa.gov/pds4/search/product-search-ui/</url>
 
@@ -91,11 +91,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptors>
-            <descriptor>src/main/assembly/assembly.xml</descriptor>
-          </descriptors>
-        </configuration>
         <executions>
           <execution>
             <id>bin-release</id>
@@ -103,9 +98,15 @@
             <goals>
               <goal>single</goal>
             </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/tar-assembly.xml</descriptor>
+                <descriptor>src/main/assembly/zip-assembly.xml</descriptor>
+              </descriptors>
+            </configuration>
           </execution>
         </executions>
-      </plugin>   
+      </plugin>
       <!-- 
         Configuration for deploying to a local Tomcat server. Provide the 
         username and password for the Manager interface in your settings.xml.
