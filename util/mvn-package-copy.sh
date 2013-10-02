@@ -25,15 +25,17 @@ cd target/packages
 echo "Copying the Ingest packages to the package directory."
 cp ../../ingest/catalog/target/catalog*bin* .
 cp ../../ingest/harvest/target/harvest*bin* .
+cp ../../ingest/harvest-pdap/target/harvest-pdap*bin* .
 
 echo "Copying the Portal packages to the package directory."
 cp ../../portal/ds-view/target/ds-view*bin* .
-cp ../../portal/product-query/target/product-query*bin* .
+cp ../../portal/filter/target/filter*bin* .
 
 echo "Copying the Preparation packages to the package directory."
 cp ../../preparation/core/target/core*bin* .
 cp ../../preparation/generate/target/generate*bin* .
-cp ../../preparation/transform/target/transform*bin* .
+cp ../../preparation/pds4-tools/package/target/pds4-tools*bin* .
+cp ../../../preparation/transform/target/transform*bin* .
 cp ../../preparation/validate/target/validate*bin* .
 
 echo "Copying the Registry packages to the package directory."
@@ -42,10 +44,11 @@ cp ../../registry/registry-service/target/registry-service*bin* .
 cp ../../registry/registry-ui/target/registry-ui*bin* .
 
 echo "Copying the Report packages to the package directory."
-cp ../../report/rs-update/target/rs-update*bin* .
 cp ../../report/profile-manager/target/profile-manager*bin* .
+cp ../../report/rs-update/target/rs-update*bin* .
 
 echo "Copying the Search packages to the package directory."
+cp ../../search/product-search-ui/target/product-search-ui*bin* .
 cp ../../search/search-core/target/search-core*bin* .
 cp ../../search/search-service/target/search-service*bin* .
 cp ../../search/search-ui/target/search-ui*bin* .
@@ -55,7 +58,9 @@ cp ../../storage/product-service/target/product-service*bin* .
 cp ../../storage/storage-service/target/storage-service*bin* .
 
 echo "Copying the Transport packages to the package directory."
-cp ../../transport/transport-service/target/transport-service*bin* .
+cp ../../transport/transport-ofsn/target/transport-ofsn*bin* .
+cp ../../transport/transport-proxy/target/transport-proxy*bin* .
+cp ../../transport/transport-registry/target/transport-registry*bin* .
 
 # Create the package of packages
 

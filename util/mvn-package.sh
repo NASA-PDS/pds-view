@@ -24,7 +24,7 @@ mvn --non-recursive install clean
 cd core
 mvn install clean
 cd ../pds4-tools/superpom
-mvn -Dmaven.test.skip=true clean install clean
+mvn clean install clean
 cd ../package
 mvn clean install clean
 cd ../../transform
@@ -46,7 +46,7 @@ cd ../..
 cd search
 mvn --non-recursive install clean
 cd search-core
-mvn -Dmaven.test.skip=true install clean
+mvn install clean
 cd ../..
 
 cd storage

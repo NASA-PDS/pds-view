@@ -73,6 +73,9 @@ mvn deploy
 cd ../harvest
 mvn site
 mvn deploy
+cd ../harvest-pdap
+mvn site
+mvn deploy
 cd ../..
 
 cd portal
@@ -80,7 +83,7 @@ mvn deploy --non-recursive
 cd ds-view
 mvn site
 mvn deploy
-cd ../product-query
+cd ../filter
 mvn site
 mvn deploy
 cd ../..
@@ -98,8 +101,11 @@ cd ../..
 cd search
 mvn deploy --non-recursive
 cd search-core
-mvn -Dmaven.test.skip=true site
-mvn -Dmaven.test.skip=true deploy
+mvn site
+mvn deploy
+cd ../product-search-ui
+mvn site
+mvn deploy
 cd ../search-service
 mvn site
 mvn deploy
@@ -110,6 +116,13 @@ cd ../..
 
 cd transport
 mvn deploy --non-recursive
-cd transport-service
+cd transport-ofsn
 mvn site
 mvn deploy
+cd ../transport-proxy
+mvn site
+mvn deploy
+cd ../transport-registry
+mvn site
+mvn deploy
+../..

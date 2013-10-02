@@ -22,7 +22,6 @@
     <groupId>gov.nasa.pds</groupId>
     <artifactId>2010</artifactId>
     <version>0.0.0</version>
-    <relativePath>../pom-en.xml</relativePath>
   </parent>
 
   <groupId>gov.nasa.pds.2010</groupId>
