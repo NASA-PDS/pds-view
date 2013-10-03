@@ -185,7 +185,8 @@ What is the name of your State or Province?
   [Unknown]:  California
 What is the two-letter country code for this unit?
   [Unknown]:  US
-Is CN=Sean Hardman, OU=Engineering Node, O=Planetary Data System, L=Pasadena, ST=California, C=US correct?
+Is CN=Sean Hardman, OU=Engineering Node, O=Planetary Data System, \
+L=Pasadena, ST=California, C=US correct?
   [no]:  yes
 
 Enter key password for &lt;pdsops.jpl.nasa.gov&gt;

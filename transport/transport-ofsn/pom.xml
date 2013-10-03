@@ -27,7 +27,7 @@
 
   <groupId>gov.nasa.pds.2010.transport</groupId>
   <artifactId>transport-ofsn</artifactId>
-  <version>0.2.0-dev</version>
+  <version>0.2.0</version>
   <packaging>jar</packaging>
 
   <name>Transport Service (OFSN)</name>

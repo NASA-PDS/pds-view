@@ -23,7 +23,7 @@
   </properties>
 
   <body>
-    <release version="0.1.0" date="TBD" description="TBD">
+    <release version="0.1.0" date="2013-09-30" description="This release of the Transport Service is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="shardman" type="add">
         Initial revision of this implementation of the Transport Service based on the Apache OODT Web Grid Product Server and includes a handler for interfacing with the Registry Service.
       </action>
