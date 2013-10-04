@@ -144,6 +144,14 @@ echo "Deploying Security component site to the deployment directory."
 mkdir -p $1/security
 cp -r security/target/site/* $1/security
 
+echo "Deploying Storage component site to the deployment directory."
+mkdir -p $1/storage
+cp -r storage/target/site/* $1/storage
+mkdir -p $1/storage/product-service
+cp -r storage/product-service/target/site/* $1/storage/product-service
+mkdir -p $1/storage/storage-service
+cp -r storage/storage-service/target/site/* $1/storage/storage-service
+
 echo "Deploying Transport component site to the deployment directory."
 mkdir -p $1/transport
 cp -r transport/target/site/* $1/transport

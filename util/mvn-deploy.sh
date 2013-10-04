@@ -125,4 +125,4 @@ mvn deploy
 cd ../transport-registry
 mvn site
 mvn deploy
-../..
+cd ../..

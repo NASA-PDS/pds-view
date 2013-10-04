@@ -34,8 +34,8 @@ cp ../../portal/filter/target/filter*bin* .
 echo "Copying the Preparation packages to the package directory."
 cp ../../preparation/core/target/core*bin* .
 cp ../../preparation/generate/target/generate*bin* .
-cp ../../preparation/pds4-tools/package/target/pds4-tools*bin* .
-cp ../../../preparation/transform/target/transform*bin* .
+cp ../../preparation/pds4-tools/package/target/pds4-tools* .
+cp ../../preparation/transform/target/transform*bin* .
 cp ../../preparation/validate/target/validate*bin* .
 
 echo "Copying the Registry packages to the package directory."

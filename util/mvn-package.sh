@@ -27,6 +27,7 @@ cd ../pds4-tools/superpom
 mvn clean install clean
 cd ../package
 mvn clean install clean
+mvn package
 cd ../../transform
 mvn install clean
 cd ../..
