@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010.portal</groupId>
   <artifactId>ds-view</artifactId>
-  <version>2.2.0</version>
+  <version>${ds-view-version}</version>
   <packaging>war</packaging>
 
   <name>Data Set View</name>
@@ -186,7 +186,7 @@
     <dependency>
       <groupId>gov.nasa.pds.2010.registry</groupId>
       <artifactId>registry-core</artifactId>
-      <version>1.4.1</version>
+      <version>${registry-version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

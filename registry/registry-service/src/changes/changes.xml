@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="1.6.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.5.0" date="2013-09-30" description="This release of the Registry Service is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="pramirez" issue="PDS-175" type="fix">
         Fix replication issue that was causing a null pointer exception. Inherited from registry-core.

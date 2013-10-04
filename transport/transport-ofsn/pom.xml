@@ -27,7 +27,7 @@
 
   <groupId>gov.nasa.pds.2010.transport</groupId>
   <artifactId>transport-ofsn</artifactId>
-  <version>0.2.0</version>
+  <version>${transport-ofsn-version}</version>
   <packaging>jar</packaging>
 
   <name>Transport Service (OFSN)</name>
@@ -199,7 +199,7 @@
     <dependency>
       <groupId>gov.nasa.pds.2010.preparation</groupId>
       <artifactId>transform</artifactId>
-      <version>0.1.0</version>
+      <version>${transform-version}</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>

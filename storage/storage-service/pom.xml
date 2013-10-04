@@ -21,7 +21,7 @@
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
     <artifactId>storage</artifactId>
-    <version>0.5.0</version>
+    <version>${storage-version}</version>
   </parent>
 
   <groupId>gov.nasa.pds.2010.storage</groupId>
@@ -158,7 +158,7 @@
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>cas-filemgr</artifactId>
-      <version>0.6</version>
+      <version>${oodt-version}</version>
     </dependency>
   </dependencies>
 

@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="1.4.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.3.0" date="2013-09-30" description="This release of the Search Core is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="update" issue="PDS-173">
         Added log4j.properties and zoo.cfg files for Solr 4 patch. Updated assembly.xml to include log4j config. Updated XMLUpdate and XSLTResponseWriter to work with updated libraries. Updated pom with Solr 4 libraries, slf4j, og4j, and commons-logging dependencies. Updated documentation to include some changes to installation to work with log4j.

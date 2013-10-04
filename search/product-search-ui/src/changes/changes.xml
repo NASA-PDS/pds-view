@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="1.4.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.3.0" date="2013-09-30" description="This release of the Product Search User Interface is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="add" issue="PDS-191">
         Copied search-ui package to make this product-search-ui package. Updated pom, assembly, etc. As needed.
