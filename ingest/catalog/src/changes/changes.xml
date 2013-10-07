@@ -72,7 +72,7 @@
       <action dev="hyunlee" type="update">
         Updated the reference type mapping.
       </action>
-      <action dev="hyunlee" type="update">
+      <action dev="hyunlee" type="update" issue="PDS-52">
         Updated to accept VOLDESC.CATs with multiple values for *_CATALOG.
       </action>
     </release>
