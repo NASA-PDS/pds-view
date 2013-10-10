@@ -194,6 +194,7 @@ public class CatalogRegistryIngester {
 			fileExtrinsic = createProduct(catObj.getFileObject());	
 			// retrieve the version info from the registry service so that it can use for the storage service version 
 			if (catObj.getCatObjType().equalsIgnoreCase("PERSONNEL")
+					//|| catObj.getCatObjType().equalsIgnoreCase("DATA_SET_MAP_PROJECTION")
 					|| catObj.getCatObjType().equalsIgnoreCase("REFERENCE")) {
 				if (productExists(fileExtrinsic.getLid())) {
 					catObj.setVersion(Float.valueOf(latestProduct.getVersionName()).floatValue()+1.0f);
@@ -313,6 +314,7 @@ public class CatalogRegistryIngester {
 					|| catObj.getCatObjType().equalsIgnoreCase("REFERENCE")
 					|| catObj.getCatObjType().equalsIgnoreCase("TARGET")
 					|| catObj.getCatObjType().equalsIgnoreCase("SOFTWARE")
+					|| catObj.getCatObjType().equalsIgnoreCase("DATA_SET_MAP_PROJECTION")
 	                || catObj.getCatObjType().equalsIgnoreCase("DATA_SET_RELEASE")) {
 				// TODO: need to add warning problemtype instead of using INVALID_LABEL
 				lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null,
@@ -407,8 +409,7 @@ public class CatalogRegistryIngester {
 				else 
 					return "";
 			}
-		}
-		
+		}		
 		return "";		
 	}
 		
@@ -534,7 +535,6 @@ public class CatalogRegistryIngester {
 				slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs)));
 			if (CIToolIngester.targetAvailable) {
 				if (refs.get(Constants.HAS_TARGET)!=null) {
-					//slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs)));
 				    slots.add(new Slot(Constants.HAS_TARGET, getRefValues("1.0", Constants.HAS_TARGET, refs, catObj)));
 				}
 			}
@@ -568,7 +568,7 @@ public class CatalogRegistryIngester {
 				}
 			}
 			if (refs.get(Constants.HAS_INSTHOST)!=null) {
-				slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs)));
+				slots.add(new Slot(Constants.HAS_INSTHOST, getRefValues(version, Constants.HAS_INSTHOST, refs, catObj)));
 			}
 			if (refs.get(Constants.HAS_INST)!=null) {
 				slots.add(new Slot(Constants.HAS_INST, getRefValues(version, Constants.HAS_INST, refs, catObj)));
@@ -666,6 +666,7 @@ public class CatalogRegistryIngester {
 		List<String> values = new ArrayList<String>();
 		for (String aValue: allRefs.get(associationType)) {
 			String tmpLid = aValue;
+			//System.out.println("tmpLid = " + tmpLid);
 			String tmpVer = "";
 			if (getExtrinsic(tmpLid)!=null) {
 				tmpVer = getExtrinsic(tmpLid).getVersionName();
@@ -690,15 +691,15 @@ public class CatalogRegistryIngester {
 			List<String> tmpValues = md.getAllMetadata(key);	
 			
 			for (String valueToMatch: tmpValues) {
-				valueToMatch= Utility.replaceChars(valueToMatch);
-				
+				valueToMatch = Utility.collapse(valueToMatch);
+				valueToMatch = Utility.replaceChars(valueToMatch);
 				values.addAll(getRefsList(key, valueToMatch, allRefs, associationType, catObj));
 			}
 		} 
 		else {
 			String valueToMatch = md.getMetadata(key);
-			valueToMatch= Utility.replaceChars(valueToMatch);
-		
+			valueToMatch = Utility.collapse(valueToMatch);
+			valueToMatch = Utility.replaceChars(valueToMatch);
 			values = getRefsList(key, valueToMatch, allRefs, associationType, catObj);
 		}
 		return values;
@@ -707,9 +708,13 @@ public class CatalogRegistryIngester {
 	private List<String> getRefsList(String key, String valueToMatch, Map<String, List<String>> allRefs, 
 			String associationType, CatalogObject catObj) {
 		List<String> values = new ArrayList<String>();
+		String valueToCompare = "";
 		for (String aValue: allRefs.get(associationType)) {		
 			if (key.equalsIgnoreCase("TARGET_NAME")) {
-				if (aValue.endsWith(valueToMatch.toLowerCase())) {
+				valueToCompare = aValue.substring(aValue.lastIndexOf(".")+1);
+				
+				//if (aValue.endsWith(valueToMatch.toLowerCase())) {
+				if (valueToCompare.equalsIgnoreCase(valueToMatch.toLowerCase())) {
 					String tmpVer = "";
 					if (getExtrinsic(aValue)!=null) {
 						tmpVer = getExtrinsic(aValue).getVersionName();
@@ -725,6 +730,7 @@ public class CatalogRegistryIngester {
 				}						
 			}
 			else {
+				//System.out.println("aValue = " + aValue + "    valueToMatch = " + valueToMatch);
 				if (aValue.contains(valueToMatch.toLowerCase())) {
 					String tmpVer = "";
 					if (getExtrinsic(aValue)!=null) {
@@ -749,6 +755,7 @@ public class CatalogRegistryIngester {
 		return values;
 	}
 
+    // only retrieve the list from the same catalog object
 	private List<String> getRefValues(String version, String associationType, 
 			Map<String, List<String>> allRefs, CatalogObject catObj) {	
 		List<String> values = new ArrayList<String>();
@@ -786,10 +793,11 @@ public class CatalogRegistryIngester {
 		
 		Metadata md = catObj.getMetadata();
 		for (String key: md.getKeys()) {
-			String value = md.getMetadata(key);;
+			String value = md.getMetadata(key).trim();
 			List<String> values = new ArrayList<String>();
 		
 			if (objType.equalsIgnoreCase(Constants.MISSION_OBJ) && key.equals("MISSION_NAME")) {
+				value = Utility.collapse(value);
 				product.setName(value);	
 				String tmpValue = value;	
 				tmpValue = Utility.replaceChars(value);
@@ -800,6 +808,7 @@ public class CatalogRegistryIngester {
 				slots.add(new Slot(getKey("product_class"), Arrays.asList(new String[] { Constants.MISSION_PROD })));
 			}
 			else if (objType.equalsIgnoreCase(Constants.TARGET_OBJ) && key.equals("TARGET_NAME")) {
+				value = Utility.collapse(value);
 				product.setName(value);
 				// need to replace empty space with _ for the lid
 				String tmpValue = value;
@@ -812,7 +821,9 @@ public class CatalogRegistryIngester {
 				slots.add(new Slot(getKey("product_class"), Arrays.asList(new String[] { Constants.TARGET_PROD })));
 			}
 			else if (objType.equalsIgnoreCase(Constants.INST_OBJ) && key.equals("INSTRUMENT_ID")) {
+				value = Utility.collapse(value);
 				String instHostId = md.getMetadata("INSTRUMENT_HOST_ID");
+				instHostId = Utility.collapse(instHostId);
 				productLid = Constants.LID_PREFIX+"instrument:instrument."+value+"__" + instHostId;
 				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
@@ -821,6 +832,7 @@ public class CatalogRegistryIngester {
 				slots.add(new Slot(getKey("product_class"), Arrays.asList(new String[] { Constants.INST_PROD })));
 			}
 			else if (objType.equalsIgnoreCase(Constants.INSTHOST_OBJ) && key.equals("INSTRUMENT_HOST_ID")) {
+				value = Utility.collapse(value);
 				productLid = Constants.LID_PREFIX+"instrument_host:instrument_host."+value;
 				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
@@ -830,6 +842,7 @@ public class CatalogRegistryIngester {
 			}
 			else if (objType.equalsIgnoreCase(Constants.DATASET_OBJ) && key.equals("DATA_SET_ID")) {
 				value = md.getMetadata(key);
+				value = Utility.collapse(value);
 				String tmpValue = value;
 				product.setName(md.getMetadata("DATA_SET_NAME"));	
 				tmpValue = Utility.replaceChars(value);
@@ -840,7 +853,9 @@ public class CatalogRegistryIngester {
 				slots.add(new Slot(getKey("product_class"), Arrays.asList(new String[] { Constants.DS_PROD })));
 			}
 			else if (objType.equalsIgnoreCase(Constants.VOLUME_OBJ) && key.equals("VOLUME_ID")) {
+				value = Utility.collapse(value);
 				String volumeSetId = md.getMetadata("VOLUME_SET_ID");
+				volumeSetId = Utility.collapse(volumeSetId);
 				productLid = Constants.LID_PREFIX+"volume:volume."+value+"__" + volumeSetId;
 				productLid = productLid.toLowerCase();
 				product.setLid(productLid);

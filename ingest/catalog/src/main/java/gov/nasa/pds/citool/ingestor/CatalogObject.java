@@ -61,7 +61,8 @@ public class CatalogObject {
 
 	private final static String[] CAT_OBJ_TYPES = { "MISSION",
 		"INSTRUMENT_HOST", "INSTRUMENT", "DATA_SET", "REFERENCE",
-		"PERSONNEL", "TARGET", "VOLUME", "DATA_SET_HOUSEKEEPING", "DATA_SET_RELEASE", "SOFTWARE" };
+		"PERSONNEL", "TARGET", "VOLUME", "DATA_SET_HOUSEKEEPING", 
+		"DATA_SET_RELEASE", "SOFTWARE", "DATA_SET_MAP_PROJECTION" };
 		
 	private String _catObjType;
 	private boolean _isLocal;
@@ -331,6 +332,7 @@ public class CatalogObject {
 
 	private boolean isValidCatalogFile(String objType) {
 		for (int i=0; i<CAT_OBJ_TYPES.length; i++) {
+			//System.out.println("objectType = " + objType);
 			if (CAT_OBJ_TYPES[i].equals(objType)) {
 				return true;
 			}
@@ -371,12 +373,16 @@ public class CatalogObject {
 			}
 
 			if (isValid) {			
-				List<ObjectStatement> objList = object2List(label);					
-				_pdsLabelMap = getCatalogObj(objList, _pdsLabelMap);
+				List<ObjectStatement> objList = object2List(label);		
+				//System.out.println("objList = " + objList.toString());
+				if (objList!=null) {			
+					_pdsLabelMap = getCatalogObj(objList, _pdsLabelMap);
+				}
 			}	
-			
 		} catch (MalformedURLException mue) {
 			mue.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return isValid;
 	}

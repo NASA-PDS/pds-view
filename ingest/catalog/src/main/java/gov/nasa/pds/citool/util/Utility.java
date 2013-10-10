@@ -81,6 +81,62 @@ public class Utility {
 
         return filteredValue;
     }
+    
+    /**
+     * Method to remove extra spaces from the string specified by the string attributes.  
+     * It returns the collapsed string without any additional spaces at the beginning
+     * of the string and '\r\n' characters.
+     * 
+     * Example (orignal line): OBJECT = "THIS LINE       IS BAD"
+     * 	          (collapsed): OBJECT = "THIS LINE IS BAD"
+     */
+    public static String collapse(String source) {
+    	// remove '\r', leading whitespaces, and replace multiple whitespaces with single blank	
+    	String outStr = itrim(ltrim(source));
+    	outStr = outStr.replaceAll("\r\n", " ");
+    	outStr = rtrim(outStr);
+    	return outStr;
+    }
+    
+    /**
+     * Replace multiple whitespaces between words with single blank
+     */
+    public static String itrim(String source) {
+    	return source.replaceAll("\\b\\s{2,}\\b", " ");		
+    }
+    
+    /**
+     * Trim the string of any spaces on the left end (ie., leading spaces removed)
+     * Remove leading spaces for each line when there is multiple lines of string
+     */
+    public static String ltrim(String source) {
+    	String tmpStr = source.trim();
+    	
+    	String outStr = "";
+    	if (tmpStr.contains("\r\n")) {
+    		// remove leading whitespace from each line
+    		String[] inStr = tmpStr.split("\n");
+    		for (int i=0; i<inStr.length; i++) {
+    			if (inStr[i].length()==1)
+    				outStr += inStr[i];    
+    			else
+    				outStr += inStr[i].replaceAll("^\\s+", "");
+    			
+    			if (i!=(inStr.length-1))
+    				outStr += "\n";
+    		}
+    	} 
+    	else 
+    		outStr = tmpStr;
+    	return outStr;
+    }
+    	
+    /**
+     * Trim the string of any spaces on the right end (ie., trailing spaces removed)
+     */
+    public static String rtrim(String source) {
+    	return source.replaceAll("\\s+$", "");
+    }
 
     /**
      * Determines whether a value is null as defined by the PDS.
