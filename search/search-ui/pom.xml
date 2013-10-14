@@ -21,7 +21,7 @@
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
     <artifactId>search</artifactId>
-    <version>${search-version}</version>
+    <version>1.4.0-dev</version>
   </parent>
 
   <groupId>gov.nasa.pds.2010.search</groupId>

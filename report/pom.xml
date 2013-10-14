@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>report</artifactId>
-  <version>${report-version}</version>
+  <version>1.5.0-dev</version>
   <packaging>pom</packaging>
 
   <name>Report</name>

@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>registry</artifactId>
-  <version>${registry-version}</version>
+  <version>1.6.0-dev</version>
   <packaging>pom</packaging>
 
   <name>Registry</name>

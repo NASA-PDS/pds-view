@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>storage</artifactId>
-  <version>${storage-version}</version>
+  <version>0.6.0-dev</version>
   <packaging>pom</packaging>
 
   <name>Storage</name>

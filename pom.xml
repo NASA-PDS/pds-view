@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2010-2012, by the California Institute of Technology.
+  Copyright 2010-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -49,30 +49,13 @@
   </modules>
 
   <properties>
-    <!-- Ingest Versions -->
-    <catalog-version>1.7.0-dev</catalog-version>
-    <harvest-version>1.6.0-dev</harvest-version>
-    <harvest-pdap-version>0.3.0-dev</harvest-pdap-version>
-    <!-- Portal Versions -->
-    <ds-view-version>2.3.0-dev</ds-view-version>
-    <filter-version>0.2.0-dev</filter-version>
-    <!-- Preparation Versions -->
+    <!-- Internal Dependency Version -->
     <core-version>1.5.0-dev</core-version>
-    <design-version>0.5.0-dev</design-version>
-    <generate-version>0.7.0-dev</generate-version>
     <pds4-tools-version>0.2.0</pds4-tools-version>
     <transform-version>0.3.0-dev</transform-version>
-    <validate-version>1.5.0-dev</validate-version>
-    <!-- Registry, Report, Search, Security and Storage Versions -->
     <registry-version>1.6.0-dev</registry-version>
-    <report-version>1.5.0-dev</report-version>
     <search-version>1.4.0-dev</search-version>
-    <security-version>1.3.0-dev</security-version>
     <storage-version>0.6.0-dev</storage-version>
-    <!-- Transport Versions -->
-    <transport-ofsn-version>0.3.0-dev</transport-ofsn-version>
-    <transport-proxy-version>1.2.0-dev</transport-proxy-version>
-    <transport-registry-version>0.2.0-dev</transport-registry-version>
     <!-- External Dependency Versions -->
     <oodt-version>0.6</oodt-version>
     <product-tools-version>3.3.0</product-tools-version>
@@ -207,7 +190,30 @@
   </contributors>
 
   <!-- Build inherited from parent. -->
-  <build/>
+  <build>
+    <plugins>
+      <!--
+      <plugin>
+        <inherited>false</inherited>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>initialize</phase>
+            <goals>
+              <goal>read-project-properties</goal>
+            </goals>
+            <configuration>
+              <files>
+                <file>${basedir}/project.properties</file>
+              </files>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      -->
+    </plugins>
+  </build>
 
   <repositories>
     <!-- Hosts the PDS and OODT artifacts. -->
