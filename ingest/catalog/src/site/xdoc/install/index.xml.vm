@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2009-2012, by the California Institute of Technology.
+  Copyright 2009-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -40,7 +40,7 @@
       </p>
 
       <subsection name="Java Runtime Environment">
-        <p>The Product Service was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically developed under Java version 1.6 and has only been tested with this version. The following commands test the local Java installation in a UNIX-based environment:
+        <p>The Catalog Tool was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically developed under Java version 1.6 and has only been tested with this version. The following commands test the local Java installation in a UNIX-based environment:
         </p>
 
         <source>
@@ -59,6 +59,11 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
 
       <subsection name="Data Dictionary Requirement">
         <p>Release <i>1r64</i> or later of the Planetary Science Data Dictionary (PSDD) is required for the tool to function properly. Release <i>1r66</i> of the PSDD supports the validation of explicit FILE objects. The latest version of the PDS data dictionary can be retrieved from the <a href="http://pds.nasa.gov/tools/dictionary.shtml" target="_blank">PDS Data Dictionary</a> web page.
+        </p>
+      </subsection>
+
+      <subsection name="PDS4 Services">
+        <p>In order to perform the ingestion function, the Catalog Tool requires installation of and access to the Storage, Product and Registry Services. See their respective Installation documents for details on installing these services in the target environment.
         </p>
       </subsection>
     </section>
@@ -108,7 +113,7 @@ or
     </section>
 
     <section name="Configuring the Tool">
-      <p>By default, the Catalog Tool comes configured to access the Registry Service at the specific endpoint <i>http://localhost:8080/registry</i>. This should be modified to represent the endpoint of the Registry Service target installation. To change the endpoint, the <i>catalog</i> script should be modified as follows:
+      <p>By default, the Catalog Tool comes configured to access the Registry Service at the specific end point <i>http://localhost:8080/registry</i>. This should be modified to represent the end point of the Registry Service target installation. To change the end point, the <i>catalog</i> script should be modified as follows:
       </p>
 
       <source>
@@ -121,7 +126,7 @@ ${JAVA_HOME}/bin/java -Dpds.registry="http://node.nasa.gov/registry" \
 -Dpds.security.keystore="${KEYSTORE}" -jar ${CATALOG_JAR} "$@"
       </source>
 
-      <p>To change the endpoint for Windows, the <i>catalog.bat</i> script should be modified as follows:
+      <p>To change the end point for Windows, the <i>catalog.bat</i> script should be modified as follows:
       </p>
 
       <source>

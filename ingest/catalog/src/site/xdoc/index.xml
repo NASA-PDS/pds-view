@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2009-2012, by the California Institute of Technology.
+  Copyright 2009-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -24,7 +24,7 @@
 
   <body>
     <section name="About Catalog Tool">
-      <p>The Catalog Tool provides functionality for ingesting PDS3 catalog files into the the PDS4 infrastructure including the Registry and Storage Services. Catalog Tool offers three functions:
+      <p>The Catalog Tool provides functionality for ingesting PDS3 catalog files into the the PDS4 infrastructure (Registry Service). Catalog Tool offers three functions:
       </p>
 
       <ul>
@@ -38,6 +38,16 @@
           <p>The ingestion function is intended for the Engineering Node Operator to ingest the current submission into the PDS Registry Service.</p>
         </li>
       </ul>
+
+      <p>The following diagram details the interfaces for the Catalog Tool when installed in the Engineering Node environment and supporting ingestion into the PDS4 infrastructure:
+      </p>
+
+      <center>
+        <img alt="Catalog Tool Interfaces" src="../images/catalog_interfaces.jpg"/>
+      </center>
+
+      <p>The Catalog Tool utilizes the Storage and Product Services for ingesting and retrieving catalog files. Once the tool has determined which catalog files have been updated, the resulting PDS4 products are registered with the Registry Service.
+      </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
       </p>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2009-2012, by the California Institute of Technology.
+  Copyright 2009-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -47,7 +47,7 @@
         <li><a href="#Tool_Execution">Tool Execution</a></li>
         <li><a href="#Report_Formats">Report Formats</a></li>
       </ul>
-    
+
       <p>Note: The command-line examples in this section have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution.
       </p>
     </section>
@@ -55,16 +55,16 @@
     <section name="Tool Execution">
       <p>Catalog Tool can be executed in various ways. This section describes how to run the tool, as well as its behaviors and caveats.
       </p>
-      
+
       <subsection name="Command-Line Options">
         <p>Catalog Tool can be run in three modes: compare, validate and ingest. The following tables describe the command-line options available when each mode is enabled.
         </p>
-        
+
         <p><b>Compare Mode</b></p>
-        
+
         <p>Setting the <i>m</i> option with <i>compare</i> will enable the tool to run in compare mode. In the compare mode, the following options are valid:
         </p>
-        
+
         <table>
           <thead>
             <tr>
@@ -106,7 +106,7 @@
             <tr>
               <td>-c, --config &lt;file&gt;</td>
               <td>Specify a configuration file to set the default values.</td>
-            </tr>            
+            </tr>
             <tr>
               <td>-h, --help
               </td>
@@ -121,12 +121,12 @@
             </tr> 
           </tbody>
         </table>
-        
+
         <p><b>Validate Mode</b></p>
-        
+
         <p>Setting the <i>m</i> option with <i>validate</i> will enable the tool to run in validate mode. In the validate mode, the following options are valid:
         </p>
-        
+
         <table>
           <thead>
             <tr>
@@ -158,7 +158,7 @@
               </td>
               <td>Enable aliasing. Allows the tool to properly handle object and element names defined as aliases in the Planetary Science Data Dictionary.
               </td>
-            </tr>            
+            </tr>
             <tr>
               <td>-A, --allrefs &lt;allrefs file&gt;
               </td>
@@ -192,7 +192,7 @@
             <tr>
               <td>-c, --config &lt;file&gt;</td>
               <td>Specify a configuration file to set the default values.</td>
-            </tr>            
+            </tr>
             <tr>
               <td>-h, --help</td>
               <td>Display Catalog Tool usage.</td>
@@ -200,15 +200,15 @@
             <tr>
               <td>-V, --version</td>
               <td>Display Catalog Tool version.</td>
-            </tr>            
+            </tr>
           </tbody>
         </table>
 
         <p><b>Ingest Mode</b></p>
-        
+
         <p>Setting the <i>m</i> option with <i>ingest</i> will enable the tool to run in ingest mode. In the ingest mode, the following options are valid:
         </p>
-        
+
         <table>
           <thead>
             <tr>
@@ -240,21 +240,21 @@
               </td>
               <td>Specify a password associated with the username.
               </td>
-            </tr>    
+            </tr>
             <tr>
-              <td>-s, --serverUrl &lt;server URL&gt;</td>
+              <td>-s, --serverUrl &lt;URL&gt;</td>
               <td>Specify the URL to the PDS Storage Service.</td>
             </tr>
             <tr>
-              <td>-T, --transportUrl &lt;transport URL&gt;</td>
-              <td>Specify the URL to the PDS Transport Service.</td>
-            </tr>        
+              <td>-T, --transportUrl &lt;URL&gt;</td>
+              <td>Specify the URL to the PDS Product Service.</td>
+            </tr>
             <tr>
               <td>-r, --report-file &lt;file&gt;
               </td>
               <td>Specify the report file name. Default is standard out.
               </td>
-            </tr>         	
+            </tr>
             <tr>
               <td>-v, --verbose &lt;1|2|3&gt;
               </td>
@@ -264,13 +264,13 @@
             <tr>
               <td>-k, --keypass &lt;keystore password&gt;
               </td>
-              <td>Specify a password of the keystore file. 
+              <td>Specify a password of the keystore file.
               </td>
             </tr>
             <tr>
               <td>-c, --config &lt;file&gt;</td>
               <td>Specify a configuration file to set the default values.</td>
-            </tr>            
+            </tr>
             <tr>
               <td>-h, --help
               </td>
@@ -286,21 +286,21 @@
           </tbody>
         </table>
       </subsection>
-        
+
       <subsection name="Execute Catalog Tool">
         <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script. Alternate methods for executing the tool can be found in the <a href="#Tool_Setup">Tool Setup</a> section.
         </p>
-        
+
         <p><b>Compare Mode</b></p>
-          
+
         <p>In compare mode, the tool can be executed as follows:
         </p>
-          
+
         <ul>
           <li>Comparing Two Catalog Files<br/>
             <p>The following command demonstrates how to compare a source catalog file <i>$HOME/DIR1/DATASET.CAT</i> with a target catalog file <i>$HOME/DIR2/DATASET.CAT</i>: 
             </p>
-          
+
             <source>
 % catalog $HOME/DIR1/DATASET.CAT, $HOME/DIR2/DATASET.CAT -m compare
             </source>
@@ -308,34 +308,34 @@
           <li>Comparing Two Catalog Directories<br/>
             <p>The following command demonstrates how to compare a source directory, <i>$HOME/DIR1</i>, containing a set of catalog files with a target directory, <i>$HOME/DIR2</i>, containing another set of catalog files.
             </p>
-          
+
             <source>
 % catalog $HOME/DIR1, $HOME/DIR2 -m compare
             </source>
-          
+
             <p>In this example, the tool will look for files with matching file names between the source and target directory before doing a comparison. So, if a <i>DATASET.CAT</i> file is found in directory <i>$HOME/DIR1</i>, a <i>DATASET.CAT</i> file needs to be found in directory <i>$HOME/DIR2</i>, and so forth.
             </p>
           </li>
           <li>Writing a Compare Report to File<br/>
             <p>In the first two examples above, the output report is written to standard out. The following command demonstrates how to write the report to a file named <i>report.txt</i>: 
             </p>
-        
+
             <source>
 % catalog $HOME/DIR1/DATASET.CAT, $HOME/DIR2/DATASET.CAT -m compare -r report.txt
             </source>
           </li> 
-        </ul>  
+        </ul> 
           
         <p><b>Validate Mode</b></p>
-        
+
         <p>In validate mode, the tool can be executed as follows:
         </p>
-        
+
         <ul>
           <li>Validate a Single Catalog File<br/>
             <p>The following command demonstrates how to validate a single catalog file <i>DATASET.CAT</i> against a data dictionary <i>pdsdd.full</i>:
             </p>
-        
+
             <source>
 % catalog DATASET.CAT -m validate -d pdsdd.full
             </source>
@@ -343,87 +343,89 @@
           <li>Validate a Directory of Catalog Files<br/>
             <p>The following command demonstrates how to validate a directory <i>$HOME/DIR</i> containing a set of catalog files against a data dictionary <i>pdsdd.full</i>:
             </p>
-        
+
             <source>
 % catalog $HOME/DIR -m validate -d pdsdd.full
-            </source>          
+            </source>
           </li>
-          
+
           <li>Checking for Referenced Files in Different Locations
             <p>If a catalog file contains a pointer statement that references a file, the tool will always assume it is in the same location as the catalog file. If it cannot be found there, then the tool will look for that referenced file in the paths specified by the include directories option.
             </p>
-            
+
             <p>The following command demonstrates the validation of a catalog file that contains pointer statements to files located in a directory called <i>CATALOG</i>:
             </p>
-            
+
             <source>
 % catalog VOLDESC.CAT -m validate -d pdsdd.full -I $HOME/CATALOG
             </source>
           </li>
-          
+
           <li>Perform Referential Integrity Check with the Allrefs File<br/>
             <p>The allrefs dictionary support file ensures that the reference citations in the <i>REFS.CAT</i> file are consistent with what is currently in the PDS database.
             </p>
-        
+
             <p>The following command demonstrates how to specify an allrefs dictionary support file, <i>allrefs.out</i>, to validate and do a complete referential integrity check on references from a set of catalog files in a directory <i>$HOME/DIR</i>.
             </p>
-        
+
             <source>
-% catalog $HOME/DIR -m validate -d pdsdd.full -A allrefs.out        
-            </source>          
+% catalog $HOME/DIR -m validate -d pdsdd.full -A allrefs.out
+            </source>
           </li>
           <li>Writing the Validation Report to File<br/>
             <p>The following command demonstrates how to write a validation report to a file named <i>report.txt</i>:
             </p>
-            
+
             <source>
-% catalog $HOME/DIR -m validate -d pdsdd.full -A allrefs.out -r report.txt           
+% catalog $HOME/DIR -m validate -d pdsdd.full -A allrefs.out -r report.txt
             </source>
           </li>
         </ul>
 
         <p><b>Ingest Mode</b></p>
-        
+
         <p>In ingest mode, the tool can be executed as follows:
         </p>
-        
+
         <ul>
           <li>Ingest with a VOLUME Catalog File<br/>
-            <p>The following command demonstrates how to ingest a VOLUME catalog file <i>voldesc.cat</i> as a user <i>tempuser</i> with a password <i>temppass</i> using the storage service on <i>http://pdsdev.jpl.nasa.gov:9000</i> and the transport service on <i>http://pdsdev.jpl.nasa.gov:8080</i>.
+            <p>The following command demonstrates how to ingest a VOLUME catalog file <i>voldesc.cat</i> as a user <i>tempuser</i> with a password <i>temppass</i> using the storage service on <i>http://pdsdev.jpl.nasa.gov:9000</i> and the product service on <i>http://pdsdev.jpl.nasa.gov:8080/product</i>.
             </p>
-        
+
             <source>
-% catalog voldesc.cat -m ingest -u tempuser -p temppass -s http://pdsdev.jpl.nasa.gov:9000 -T http://pdsdev.jpl.nasa.gov:8080
-		        </source>          
+% catalog voldesc.cat -m ingest -u tempuser -p temppass \
+-s http://pdsdev.jpl.nasa.gov:9000 -T http://pdsdev.jpl.nasa.gov:8080/product
+            </source>
           </li>
-          
+
           <li>Ingest a Directory of archive volume<br/>
             <p>The following command demonstrates how to ingest a directory <i>$HOME/DIR</i> containing a set of catalog files as a user <i>tempuser</i> with a password <i>temppass</i> using the storage service on <i>http://pdsdev.jpl.nasa.gov:9000</i> and the transport service on <i>http://pdsdev.jpl.nasa.gov:8080</i>.
             </p>
-        
+
             <source>
-% catalog $HOME/DIR -m ingest -u tempuser -p temppass -s http://pdsdev.jpl.nasa.gov:9000 -T http://pdsdev.jpl.nasa.gov:8080
-            </source>          
+% catalog $HOME/DIR -m ingest -u tempuser -p temppass \
+-s http://pdsdev.jpl.nasa.gov:9000 -T http://pdsdev.jpl.nasa.gov:8080/product
+            </source>
           </li>
         </ul>
-        
+
         <p><b>Changing Tool Behaviors Using a Configuration File</b></p>
-        
+
         <p>A configuration file can be passed to the tool to change its default behaviors. This provides a way to use the tool with a single option. For more details on how to setup the configuration file see the <a href="#Using_a_Configuration_File">Using a Configuration File</a> section.
         </p>
 
         <p>The following command demonstrates how to run the tool using a configuration file:
         </p>
-        
+
         <source>
 % catalog -c config.cfg
-        </source>          
+        </source>
       </subsection>
-      
+
       <subsection name="Using a Configuration File">
         <p>A configuration file is used to set the default behaviors of the tool. It consists of a text file made up of keyword/value pairs. The configuration file follows the syntax of the stream parsed by the Java Properties.load(java.io.InputStream) method. The following rules apply to the content of configuration files:
         </p>
-        
+
         <ul>
           <li>Blank lines and lines which begin with the hash character "#" are ignored.
           </li>
@@ -434,11 +436,11 @@
           <li>Since backslashes (\) have special meanings in a configuration file, keyword values that contain this character will not be interpreted properly by Catalog Tool even if it is surrounded by quotes. A common example would be a Windows path name (e.g. c:\VTT_EN_1-1\target). Use the forward slash character instead (c:/VTT_EN_1-1/target) or escape the backslash character (c:\\VTT_EN_1-1\\target).
           </li>
         </ul>
-        
+
         <p>Note: Any option specified on the command-line takes precedence over any equivalent settings placed in the configuration file.
         </p>
-            
-        <p>The following table contains valid keywords that can be specified in the configuration file when running in compare mode:</p>      
+
+        <p>The following table contains valid keywords that can be specified in the configuration file when running in compare mode:</p>
 
         <table>
           <thead>
@@ -454,34 +456,34 @@
               <td>-m</td>
               <td>Specify <i>compare</i> to run the tool in compare mode.</td>
             </tr>
-                      
+
             <tr>
               <td>citool.targets</td>
               <td>-t</td>
               <td>Specify two targets (catalog files, directories, and/or URLs) to compare.</td>
             </tr>
-                        
+
             <tr>
               <td>citool.report</td>
               <td>-r</td>
               <td>Specify the report file name. Do not specify this property key if writing to standard out.</td>
             </tr>
-            
+
             <tr>
               <td>citool.recurse</td>
               <td>-L</td>
               <td>Set to 'false' to disable directory recursion on a target directory. Set to 'true' otherwise or do not specify this property key.</td>
             </tr>
-            
+
             <tr>
               <td>citool.verbose</td>
               <td>-v</td>
               <td>Specify the severity level and above to include in the report (1=info, 2=warning, 3=error). Default is warnings and above (level 2).</td>
-            </tr>           
+            </tr>
           </tbody>
         </table>
 
-        <p>The following table contains valid keywords that can be specified in the configuration file when running in validate mode:</p>      
+        <p>The following table contains valid keywords that can be specified in the configuration file when running in validate mode:</p>
 
         <table>
           <thead>
@@ -497,13 +499,13 @@
               <td>-m</td>
               <td>Specify <i>validate</i> to run the tool in validate mode.</td>
             </tr>
-                      
+
             <tr>
               <td>citool.targets</td>
               <td>-t</td>
               <td>Specify a target (catalog file, directory, or URL) to validate.</td>
             </tr>
-                        
+
             <tr>
               <td>citool.dictionaries</td>
               <td>-d</td>
@@ -539,16 +541,16 @@
               <td>-r</td>
               <td>Specify the report file name. Do not specify this property key if writing to standard out.</td>
             </tr>
-            
+
             <tr>
               <td>citool.verbose</td>
               <td>-v</td>
               <td>Specify the severity level and above to include in the report (1=info, 2=warning, 3=error). Default is warnings and above (level 2).</td>
-            </tr>           
+            </tr>
           </tbody>
-        </table>   
+        </table>
 
-        <p>The following table contains valid keywords that can be specified in the configuration file when running in ingest mode:</p>      
+        <p>The following table contains valid keywords that can be specified in the configuration file when running in ingest mode:</p>
 
         <table>
           <thead>
@@ -564,13 +566,13 @@
               <td>-m</td>
               <td>Specify <i>ingest</i> to run the tool in ingest mode.</td>
             </tr>
-                      
+
             <tr>
               <td>citool.targets</td>
               <td>-t</td>
               <td>Specify targets (catalog files, directories, and URLs) to ingest.</td>
             </tr>
-                        
+
             <tr>
               <td>citool.user</td>
               <td>-u</td>
@@ -583,24 +585,24 @@
               <td>Specify the password associated with the username.</td>
             </tr>
 
-			<tr>
-			  <td>citool.serverUrl</td>
-			  <td>-s</td>
-			  <td>Specify the URL to the Storage Service.</td>
-			</tr>
-			
-			<tr>
-			  <td>citool.transportUrl</td>
-			  <td>-T</td>
-			  <td>Specify the URL to the Transport Service.</td>
-			</tr>
+            <tr>
+              <td>citool.serverUrl</td>
+              <td>-s</td>
+              <td>Specify the URL to the Storage Service.</td>
+            </tr>
 
-			<tr>
-			  <td>citool.keypass</td>
-			  <td>-k</td>
-			  <td>Specify a password of the keystore file.</td>
-			</tr>
-			
+            <tr>
+              <td>citool.transportUrl</td>
+              <td>-T</td>
+              <td>Specify the URL to the Product Service.</td>
+            </tr>
+
+            <tr>
+              <td>citool.keypass</td>
+              <td>-k</td>
+              <td>Specify a password of the keystore file.</td>
+            </tr>
+
             <tr>
               <td>citool.report</td>
               <td>-r</td>
@@ -617,32 +619,32 @@
               <td>citool.verbose</td>
               <td>-v</td>
               <td>Specify the severity level and above to include in the report (1=info, 2=warning, 3=error). Default is warnings and above (level 2).</td>
-            </tr>           
+            </tr>
           </tbody>
-        </table>  
-             
+        </table>
+
         <p>The following example demonstrates how to set a configuration file:
         </p>
-        
+
         <source>
-# This is a Catalog Tool configuration file          
+# This is a Catalog Tool configuration file
 
 citool.mode         = validate
 citool.targets      = ./TEST_DIR
 citool.report       = report.txt
 citool.dictionaries = pdsdd.full
         </source>
-        
+
         <p>This is equivalent to running the tool with the following option options:
         </p>
-        
+
         <source>
 -t ./TEST_DIR -m validate -r report.txt -d pdsdd.full
         </source>
-        
+
         <p>The following example demonstrates how to set a configuration file with multiple values for a property key:
         </p>
-        
+
         <source>
 # This is a Catalog Tool configuration file with multiple values
 
@@ -650,16 +652,16 @@ citool.mode         = compare
 citool.targets      = DIR
 citool.dictionaries = pdsdd.full, localdd.full
         </source>
-        
+
         <p>This is equivalent to running the tool with the following options:
         </p>
-        
+
         <source>
 -t DIR -m compare -d pdsdd.full, localdd.full
         </source>
-        
+
         <p>The following example demonstrates how to set a configuration file with multiple values that span across multiple lines:
-        </p>        
+        </p>
 
         <source>
 # This is a Catalog Tool configuration file with multiple values
@@ -669,28 +671,28 @@ citool.targets      = DIR
 citool.dictionaries = pdsdd.full, \
                       localdd.full
         </source>
-        
+
         <p>The following example demonstrates how to override a setting in the configuration file.
         </p>
-        
+
         <p>Suppose the configuration file <i>config.cfg</i> is defined as follows:
         </p>
-        
+
         <source>
-# This is a Catalog Tool configuration file          
+# This is a Catalog Tool configuration file
 
 citool.mode         = validate
 citool.targets      = ./TEST_DIR
 citool.dictionaries = pdsdd.full
         </source>
-        
+
         <p>To use another dictionary instead like <i>mypdsdd.full</i>, then the following command demonstrates how to perform this behavior change:
         </p>
-        
+
         <source>
 % catalog -c config.cfg -d mypdsdd.full
         </source>
-      </subsection>            
+      </subsection>
     </section>
 
     <section name="Report Formats">
@@ -704,7 +706,7 @@ citool.dictionaries = pdsdd.full
         <p>In a <a href="reports/index-compare.html">compare</a> report, the location, severity, and textual representation of the differences between a source and target catalog file are shown. The differences being reported are about the target catalog file with respect to the source. A 'SAME' or 'DIFFERENT' keyword is displayed next to each target to indicate when a target file is identical or different, respectively, against its source.
         </p>
       </subsection>
-      
+
       <subsection name="Validate Report">
         <p>In a <a href="reports/index-validate.html">validate</a> report, the location, severity, and textual description of each detected anomaly is reported. A 'PASS', 'FAIL', or 'SKIP' keyword is displayed next to each file to indicate when a file has passed, failed, or skipped PDS validation, respectively. In addition, anomalies against the referential integrity of the catalog files are reported.
         </p>
