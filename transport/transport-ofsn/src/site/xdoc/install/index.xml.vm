@@ -78,7 +78,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
 % cd $PDS_HOME
 % unzip ${project.artifactId}-${project.version}-bin.zip
 or
-% tar xzvf ${project.artifactId}-${project.version}-bin.tar.gz
+% tar -xzvf ${project.artifactId}-${project.version}-bin.tar.gz
 % ln -s ./${project.artifactId}-${project.version} ./transport-service
 % cd transport-service
         </source>
