@@ -20,6 +20,8 @@ import org.junit.Ignore;
 /**
  * 
  * @author jpadams
+ * @version $Revision$
+ * 
  */
 @Ignore
 public final class TestConstants {
