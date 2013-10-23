@@ -15,11 +15,13 @@
 package gov.nasa.pds.search.core.registry;
 
 import gov.nasa.pds.registry.model.ExtrinsicObject;
-import gov.nasa.pds.search.core.constants.Constants;
+import gov.nasa.pds.registry.util.ExtendedExtrinsicObject;
+import gov.nasa.pds.registry.util.RegistryHandler;
+import gov.nasa.pds.registry.util.RegistryHandlerException;
+import gov.nasa.pds.registry.util.RegistryResults;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.ToolsLogRecord;
-import gov.nasa.pds.search.core.registry.objects.SearchCoreExtrinsic;
 import gov.nasa.pds.search.core.schema.CoreConfigReader;
 import gov.nasa.pds.search.core.schema.DataSource;
 import gov.nasa.pds.search.core.schema.Field;
@@ -28,6 +30,7 @@ import gov.nasa.pds.search.core.schema.SourcePriority;
 import gov.nasa.pds.search.core.schema.SourceType;
 import gov.nasa.pds.search.core.stats.SearchCoreStats;
 import gov.nasa.pds.search.core.util.Debugger;
+import gov.nasa.pds.search.core.util.Utility;
 import gov.nasa.pds.search.core.util.XMLWriter;
 
 import java.io.File;
@@ -70,7 +73,7 @@ public class ProductClass {
 	/** The registry handler being used for the specific product class **/
 	private RegistryHandler registryHandler;
 	
-	private int queryMax = Constants.QUERY_MAX;
+	private int queryMax = 9999999;
 
 	/**
 	 * 
@@ -128,14 +131,14 @@ public class ProductClass {
 				
 				// Get the RegistryResults object, which handles looping through results
 				RegistryResults results = this.registryHandler.getExtrinsicsByQuery(
-								this.product.getSpecification().getQuery());
+								Utility.getQueryMap(this.product.getSpecification().getQuery()));
 				
-				SearchCoreExtrinsic searchExtrinsic;
+				ExtendedExtrinsicObject searchExtrinsic;
 				
 				while (results.nextPage()) {
 					extList = results.getResultObjects();
 					for (Object obj : extList) {
-						searchExtrinsic = new SearchCoreExtrinsic((ExtrinsicObject) obj);
+						searchExtrinsic = new ExtendedExtrinsicObject((ExtrinsicObject) obj);
 						
 						fieldMap.clear();
 						
@@ -210,7 +213,7 @@ public class ProductClass {
 	 * @throws ProductClassException	any errors throughout the querying of registry and
 	 * 									managing the data
 	 */
-	private Map<String, List<String>> setFieldValues(SearchCoreExtrinsic searchExtrinsic)
+	private Map<String, List<String>> setFieldValues(ExtendedExtrinsicObject searchExtrinsic)
 			throws ProductClassException {
 		try {
 			Map<String, List<String>> fieldMap = new HashMap<String, List<String>>();
@@ -258,7 +261,7 @@ public class ProductClass {
 	 * @return
 	 * @throws Exception
 	 */
-	private List<String> registryPathHandler(String registryPath, SearchCoreExtrinsic searchExtrinsic) throws Exception {
+	private List<String> registryPathHandler(String registryPath, ExtendedExtrinsicObject searchExtrinsic) throws Exception {
 		String[] pathArray;
 		
 		if ((pathArray = registryPath.split("\\.")).length > 1) {
@@ -281,20 +284,20 @@ public class ProductClass {
 	 * @return
 	 * @throws Exception
 	 */
-	private List<String> traverseRegistryPath(List<String> pathList, List<SearchCoreExtrinsic> searchExtrinsicList) throws Exception {
+	private List<String> traverseRegistryPath(List<String> pathList, List<ExtendedExtrinsicObject> searchExtrinsicList) throws Exception {
 		ArrayList<String> newPathList = null;
 		if (pathList.size() > 1 && !searchExtrinsicList.isEmpty()) {
 			newPathList = new ArrayList<String>();
 			newPathList.addAll(pathList.subList(1, pathList.size()));
 			
-			for (SearchCoreExtrinsic searchExtrinsic : searchExtrinsicList) {
+			for (ExtendedExtrinsicObject searchExtrinsic : searchExtrinsicList) {
 					return traverseRegistryPath(newPathList, 
 							this.registryHandler.getAssociatedExtrinsicsByReferenceType(
 									searchExtrinsic, pathList.get(0)));
 			}
 		} else if (pathList.size() == 1 && !searchExtrinsicList.isEmpty()) {	// Let's get some slot values
 			List<String> slotValueList = new ArrayList<String>();
-			for (SearchCoreExtrinsic searchExtrinsic : searchExtrinsicList) {
+			for (ExtendedExtrinsicObject searchExtrinsic : searchExtrinsicList) {
 				slotValueList.addAll(getValidSlotValues(searchExtrinsic, pathList.get(0)));
 			}
 			return slotValueList;
@@ -315,7 +318,7 @@ public class ProductClass {
 	 * @return
 	 * @throws Exception
 	 */
-	private List<String> getValidSlotValues(SearchCoreExtrinsic searchExt, String slotName) throws Exception {
+	private List<String> getValidSlotValues(ExtendedExtrinsicObject searchExt, String slotName) throws Exception {
 		List<String> slotValues = new ArrayList<String>();
 		if (searchExt.getSlotValues(slotName) != null) {
 			slotValues.addAll(searchExt.getSlotValues(slotName));
@@ -324,7 +327,7 @@ public class ProductClass {
 																	// We will have to make the lidvids for them
 					//Debugger.debug("-- INVALID ASSOCIATION VALUE FOUND for " + searchExt.getLid() + " - " + slotName);
 					List<String> newSlotValues = new ArrayList<String>();
-					SearchCoreExtrinsic assocSearchExt;
+					ExtendedExtrinsicObject assocSearchExt;
 					for(String lid : slotValues) {
 						assocSearchExt = this.registryHandler.getExtrinsicByLidvid(lid);
 						if (assocSearchExt != null) {	// if association is found, add the lidvid to slot values
@@ -354,7 +357,7 @@ public class ProductClass {
 	 * 						to be queried, replaced with the value from the Registry
 	 * @throws Exception
 	 */
-	private String checkForSubstring(String str, SearchCoreExtrinsic extObject)
+	private String checkForSubstring(String str, ExtendedExtrinsicObject extObject)
 			throws Exception {
 		int start, end; 
 		String key;

@@ -8,7 +8,7 @@
 		</query>
 		<dataSources>
 			<source sourceType="registry" priority="secondary" append="true">
-				<url>http://pdsops.jpl.nasa.gov/registry</url>
+				<url>https://pdsops.jpl.nasa.gov/registry/</url>
 			</source>
 		</dataSources>
 	</specification>

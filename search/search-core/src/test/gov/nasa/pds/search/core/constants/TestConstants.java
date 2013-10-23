@@ -24,32 +24,34 @@ import org.junit.Ignore;
 @Ignore
 public final class TestConstants {
 	/** Relative Test Data Directory Path for testing locally **/
-	public static final String TEST_DIR_RELATIVE="./src/test-data/";
-	
+	public static final String TEST_DIR_RELATIVE = "./src/test-data/";
+
 	/** Relative Config Directory Path for testing locally **/
-	public static final String CONFIG_DIR_RELATIVE="./src/main/resources/conf/";
-	
+	public static final String CONFIG_DIR_RELATIVE = "./src/main/resources/conf/";
+
 	/** Relative Facet Directory Path for testing locally **/
-	public static final String FACET_DIR_RELATIVE="./src/main/resources/facets/";
-	
+	public static final String FACET_DIR_RELATIVE = "./src/main/resources/facets/";
+
 	/** Relative Search Service Directory Path for testing locally **/
-	public static final String SEARCH_HOME_RELATIVE="./target/test";
-	
+	public static final String SEARCH_HOME_RELATIVE = "./target/test";
+
 	/** Registry URL for PDS3 Context Products used for testing purposes **/
-	//public static final String PDS3_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry";
-	public static final String PDS3_REGISTRY_URL="http://pdsbeta.jpl.nasa.gov:8080/registry";
-	
+	// public static final String
+	// PDS3_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry";
+	public static final String PDS3_REGISTRY_URL = "http://pdsbeta.jpl.nasa.gov:8080/registry";
+
 	/** Registry URL for PDS4 Products used for testing purposes **/
-	public static final String PDS4_ATM_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry-atm";
-	
+	public static final String PDS4_ATM_REGISTRY_URL = "http://pdsdev.jpl.nasa.gov:8080/registry-atm";
+
 	/** Registry URL for PDS4 Products used for testing purposes **/
-	public static final String PDS4_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry-pds4";
-	
+	public static final String PDS4_REGISTRY_URL = "http://pdsdev.jpl.nasa.gov:8080/registry-pds4";
+
 	/** PSA Registry URL used for testing purposes **/
-	public static final String PSA_REGISTRY_URL="http://planetarydata.org/registry";
-	//public static final String PSA_REGISTRY_URL="http:/pdsdev.jpl.nasa.gov:8080/registry-psa";
-	
+	public static final String PSA_REGISTRY_URL = "http://planetarydata.org/registry";
+	// public static final String
+	// PSA_REGISTRY_URL="http:/pdsdev.jpl.nasa.gov:8080/registry-psa";
+
 	/** Search Service Solr URL **/
-	public static final String SOLR_SERVER_URL="http://pdsdev.jpl.nasa.gov:8080/search-service/pds";
-	
+	public static final String SOLR_SERVER_URL = "http://pdsdev.jpl.nasa.gov:8080/search-service/pds";
+
 }

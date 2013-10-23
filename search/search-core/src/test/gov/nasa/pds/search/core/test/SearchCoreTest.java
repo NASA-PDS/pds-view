@@ -18,55 +18,59 @@ import org.junit.runners.model.Statement;
 /**
  * 
  * @author jpadams
- *
+ * 
  */
 @RunWith(JUnit4.class)
 @Ignore
 public class SearchCoreTest {
 
 	/** Logger for test classes **/
-	protected static Logger log = Logger.getLogger(SearchCoreTest.class.getName());
-	
+	protected static Logger log = Logger.getLogger(SearchCoreTest.class
+			.getName());
+
 	static {
 		log.addHandler(new SearchCoreStreamHandler(System.out,
-	    		  ToolsLevel.DEBUG, new SearchCoreFormatter()));
+				ToolsLevel.DEBUG, new SearchCoreFormatter()));
 	}
-	
+
 	/**
-	 * JUnit Test Rules to print headers for each test 
+	 * JUnit Test Rules to print headers for each test
 	 */
 	@Rule
 	public MethodRule watchman = new TestWatchman() {
 		public void starting(FrameworkMethod method) {
-			System.err.println("\n\n------------ Starting test: " + method.getName()
-					+ " ------------");
+			System.err.println("\n\n------------ Starting test: "
+					+ method.getName() + " ------------");
 		}
 	};
-	
+
 	/**
-	 * Custom rule to allow for performing one unit test at a time. Helpful
-	 * when a test is failing.
+	 * Custom rule to allow for performing one unit test at a time. Helpful when
+	 * a test is failing.
 	 * 
 	 * @author jpadams
-	 *
+	 * 
 	 */
 	public class SingleTestRule implements MethodRule {
-	    private String applyMethod;
-	    public SingleTestRule(String applyMethod) {
-	        this.applyMethod = applyMethod;
-	    }
-	    @Override
-	    public Statement apply(final Statement statement, final FrameworkMethod method, final Object target) {
-	        return new Statement() {
-	            @Override
-	            public void evaluate() throws Throwable {
-	                if (applyMethod.equals(method.getName())) {
-	                    statement.evaluate();
-	                } else if (applyMethod.equals("")) {
-	                	statement.evaluate();
-	                }
-	            }
-	        };
-	    }
+		private String applyMethod;
+
+		public SingleTestRule(String applyMethod) {
+			this.applyMethod = applyMethod;
+		}
+
+		@Override
+		public Statement apply(final Statement statement,
+				final FrameworkMethod method, final Object target) {
+			return new Statement() {
+				@Override
+				public void evaluate() throws Throwable {
+					if (applyMethod.equals(method.getName())) {
+						statement.evaluate();
+					} else if (applyMethod.equals("")) {
+						statement.evaluate();
+					}
+				}
+			};
+		}
 	}
 }

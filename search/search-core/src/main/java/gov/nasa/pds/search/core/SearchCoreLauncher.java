@@ -18,15 +18,11 @@ package gov.nasa.pds.search.core;
 import gov.nasa.pds.search.core.cli.options.Flag;
 import gov.nasa.pds.search.core.cli.options.InvalidOptionException;
 import gov.nasa.pds.search.core.constants.Constants;
-import gov.nasa.pds.search.core.extractor.RegistryExtractor;
-import gov.nasa.pds.search.core.indexer.solr.SolrIndexer;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.ToolsLogRecord;
 import gov.nasa.pds.search.core.logging.formatter.SearchCoreFormatter;
 import gov.nasa.pds.search.core.logging.handler.SearchCoreFileHandler;
 import gov.nasa.pds.search.core.logging.handler.SearchCoreStreamHandler;
-import gov.nasa.pds.search.core.post.SolrPost;
-import gov.nasa.pds.search.core.post.SolrPostException;
 import gov.nasa.pds.search.core.util.Debugger;
 import gov.nasa.pds.search.core.util.PropertiesUtil;
 import gov.nasa.pds.search.core.util.ToolInfo;
@@ -49,6 +45,7 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.ParseException;
+import org.omg.CORBA.portable.ApplicationException;
 
 /**
  * CLI the Search Core Tool.

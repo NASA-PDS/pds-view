@@ -15,13 +15,13 @@
 
 package gov.nasa.pds.search.core.extractor;
 
+import gov.nasa.pds.registry.util.AssociationCache;
 import gov.nasa.pds.search.core.exception.SearchCoreException;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.ToolsLogRecord;
 import gov.nasa.pds.search.core.registry.ProductClass;
 import gov.nasa.pds.search.core.registry.ProductClassException;
-import gov.nasa.pds.search.core.registry.objects.AssociationCache;
 import gov.nasa.pds.search.core.stats.SearchCoreStats;
 
 import java.io.File;

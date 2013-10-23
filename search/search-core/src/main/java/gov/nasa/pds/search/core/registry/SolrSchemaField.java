@@ -2,11 +2,8 @@ package gov.nasa.pds.search.core.registry;
 
 import gov.nasa.pds.search.core.schema.DataType;
 import gov.nasa.pds.search.core.schema.Field;
-import gov.nasa.pds.search.core.schema.Product;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

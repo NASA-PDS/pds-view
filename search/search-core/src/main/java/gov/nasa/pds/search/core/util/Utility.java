@@ -16,18 +16,18 @@ package gov.nasa.pds.search.core.util;
 import gov.nasa.pds.search.core.cli.options.InvalidOptionException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.ToolsLogRecord;
-import gov.nasa.pds.search.core.post.SolrPostException;
+import gov.nasa.pds.search.core.schema.Query;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.apache.http.HttpResponse;
@@ -144,5 +144,14 @@ public class Utility {
             // immediate deallocation of all system resources
             httpclient.getConnectionManager().shutdown();
 		}
+	}
+	
+	public static Map<String, String> getQueryMap (List<Query> queryList) {
+		Map<String, String> queryMap = new HashMap<String, String>();
+		for (Query query : queryList) {
+			queryMap.put(query.getRegistryPath(), query.getValue());
+		}
+		
+		return queryMap;
 	}
 }

@@ -17,10 +17,6 @@ import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.ToolsLogRecord;
 import gov.nasa.pds.search.core.stats.SearchCoreStats;
 
-import java.io.File;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;

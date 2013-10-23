@@ -1,8 +1,7 @@
 package gov.nasa.pds.search.core.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import gov.nasa.pds.search.core.test.SearchCoreTest;
-import gov.nasa.pds.search.core.util.Utility;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +11,7 @@ import org.junit.runners.JUnit4;
  * Tests for {@link Utility}
  * 
  * @author jpadams
- *
+ * 
  */
 @RunWith(JUnit4.class)
 public class UtilityTest extends SearchCoreTest {
@@ -22,5 +21,5 @@ public class UtilityTest extends SearchCoreTest {
 		String url = "http://pdsbeta.jpl.nasa.gov:8080/registry";
 		assertTrue(Utility.urlExists(url));
 	}
-	
+
 }

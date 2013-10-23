@@ -14,94 +14,88 @@
 //
 package gov.nasa.pds.search.core;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.fail;
 import gov.nasa.pds.search.core.constants.TestConstants;
 import gov.nasa.pds.search.core.test.SearchCoreTest;
-import gov.nasa.pds.search.core.test.SearchCoreTest.SingleTestRule;
 
 import java.io.File;
-import java.io.IOException;
 
-import junit.framework.TestCase;
-
-import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
  * Search Core End-to-end Test with PDS4 Data for {@link SearchCoreLauncher}.
- *
+ * 
  * @author jpadams
  */
 @RunWith(JUnit4.class)
 public class SearchCorePDS4Test extends SearchCoreTest {
-	
+
 	/** Search Service Solr URL **/
-	public static final String SOLR_SERVER_URL="http://localhost:8080/search-service/pds";
-	
+	public static final String SOLR_SERVER_URL = "http://localhost:8080/search-service/pds";
+
 	/** Relative Search Service Directory Path for testing locally **/
-	public static final String SEARCH_HOME_RELATIVE="./target/test";
-	
+	public static final String SEARCH_HOME_RELATIVE = "./target/test";
+
 	/** Relative Config Directory Path for testing locally **/
-	public static final String CONFIG_DIR_RELATIVE="./src/main/resources/conf/";
-	
+	public static final String CONFIG_DIR_RELATIVE = "./src/main/resources/conf/";
+
 	@BeforeClass
 	public static void oneTimeSetUp() {
-		File testDir = new File(System.getProperty("user.dir") + "/" + SEARCH_HOME_RELATIVE);
+		File testDir = new File(System.getProperty("user.dir") + "/"
+				+ SEARCH_HOME_RELATIVE);
 		testDir.mkdirs();
 	}
-	
-	/*@AfterClass
-	public static void oneTimeTearDown() throws IOException {
-		File testDir = new File(System.getProperty("user.dir") + "/" + SEARCH_HOME_RELATIVE);
-		FileUtils.deleteDirectory(testDir);
-	}*/
-	
-    /**
-     * Test End-To-End with PDS Data, relative paths and max query = 5
-     * @throws Exception
-     */
+
+	/*
+	 * @AfterClass public static void oneTimeTearDown() throws IOException {
+	 * File testDir = new File(System.getProperty("user.dir") + "/" +
+	 * SEARCH_HOME_RELATIVE); FileUtils.deleteDirectory(testDir); }
+	 */
+
+	/**
+	 * Test End-To-End with PDS Data, relative paths and max query = 5
+	 * 
+	 * @throws Exception
+	 */
 	@Test
-    public void testLauncherPDS4() {
-    	try {
-	    	String[] args = { "-i", "-e",	// Only run Extractor and Indexer components
-	    			"-r", TestConstants.PDS4_ATM_REGISTRY_URL,
-	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
-	    			"-m", "5", 
-	    			"-c", TestConstants.TEST_DIR_RELATIVE+ "pds4-config",
-	    			"-v", "0" };
-	    	SearchCoreLauncher.main(args);
+	public void testLauncherPDS4() {
+		try {
+			String[] args = {
+					"-i",
+					"-e", // Only run Extractor and Indexer components
+					"-r", TestConstants.PDS4_ATM_REGISTRY_URL, "-H",
+					TestConstants.SEARCH_HOME_RELATIVE, "-m", "5", "-c",
+					TestConstants.TEST_DIR_RELATIVE + "pds4-config", "-v", "0" };
+			SearchCoreLauncher.main(args);
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail("Registry Extractor with Relative Paths failed: " + e.getMessage());
+			fail("Registry Extractor with Relative Paths failed: "
+					+ e.getMessage());
 		}
-    }
-    /**
-     * Test End-To-End with PDS Data, including Solr Post
-     * @throws Exception
-     */
+	}
+
+	/**
+	 * Test End-To-End with PDS Data, including Solr Post
+	 * 
+	 * @throws Exception
+	 */
 	@Test
 	@Ignore
-    public void testLauncherPDS4WithSolrPost() {
-    	try {
-	    	String[] args = { "-r", TestConstants.PDS4_ATM_REGISTRY_URL,
-	    			"-H", TestConstants.SEARCH_HOME_RELATIVE, 
-	    			"-m", "5", 
-	    			"-c", TestConstants.TEST_DIR_RELATIVE+ "pds4-config",
-	    			"-v", "0" };
-	    	SearchCoreLauncher.main(args);
+	public void testLauncherPDS4WithSolrPost() {
+		try {
+			String[] args = { "-r", TestConstants.PDS4_ATM_REGISTRY_URL, "-H",
+					TestConstants.SEARCH_HOME_RELATIVE, "-m", "5", "-c",
+					TestConstants.TEST_DIR_RELATIVE + "pds4-config", "-v", "0" };
+			SearchCoreLauncher.main(args);
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail("Registry Extractor with Relative Paths failed: " + e.getMessage());
+			fail("Registry Extractor with Relative Paths failed: "
+					+ e.getMessage());
 		}
-    }
-	
+	}
+
 }

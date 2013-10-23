@@ -67,8 +67,7 @@ public enum Flag {
 			
 	/** Flag to specify query max for registry. */
 	MAX("m", "query-max", "integer", Integer.class,
-			"Specify the maximum number of registry values to be returned from query."
-					+ "(Default: " + Constants.QUERY_MAX + ")"),
+			"Specify the maximum number of registry values to be returned from query."),
 					
 					
 	/** Flag to post the index to the Search Service. */

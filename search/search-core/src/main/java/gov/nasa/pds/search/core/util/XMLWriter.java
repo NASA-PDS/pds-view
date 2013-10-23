@@ -16,7 +16,6 @@ package gov.nasa.pds.search.core.util;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -43,7 +42,6 @@ public class XMLWriter {
 	private Map map;
 	private File basedir;
 	private String filename;
-	private String fname = "";
 	private String fnameprefix = "core";
 	private String fnameext = "xml";
 
