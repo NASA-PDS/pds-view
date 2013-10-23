@@ -133,16 +133,22 @@ FIXME: Change XML namespace URI for oodt prefix?
     The FILELIST type returns an XML file naming the requested file and also
     giving its size.   
    -->
-  <handler name="FILE_LIST" type="listing"
+  <handler name="FILELIST" type="listing"
        class="org.apache.oodt.product.handlers.ofsn.SingleFileListHandler"/>
+
+   <!-- 
+    The FILE_LIST type is an alias for FILELIST (processed by the same handler).
+   -->
+  <handler name="FILE_LIST" type="listing"
+           class="org.apache.oodt.product.handlers.ofsn.SingleFileListHandler"/>
     
  
   <!-- 
     The FILELISTZIP is similar to FILELIST except that it tells what the size
     of the requested file would be if compressed into a ZIP archive.  
   -->   
-  <handler name="FILE_LIST_ZIP" type="listing"
-       class="org.apache.oodt.product.handlers.ofsn.SingleZipFileListHandler">
+  <handler name="FILELISTZIP" type="listing"
+           class="org.apache.oodt.product.handlers.ofsn.SingleZipFileListHandler">
        
        <!-- 
         Optional attributes:
@@ -150,6 +156,14 @@ FIXME: Change XML namespace URI for oodt prefix?
           files, e.g., by a listing or get handler. By default, if not specified, it defaults to /tmp
        
         -->
+       <property name="cacheDirRoot" value="/tmp"/>       
+  </handler>
+  
+  <!-- 
+    The FILE_LIST_ZIP is an alias for FILELISTZIP (processed by the same handler, accepts the same optional attributes). 
+  -->   
+  <handler name="FILE_LIST_ZIP" type="listing"
+           class="org.apache.oodt.product.handlers.ofsn.SingleZipFileListHandler">
        <property name="cacheDirRoot" value="/tmp"/>       
   </handler>
 
