@@ -42,6 +42,7 @@
       <outputDirectory>/testdata</outputDirectory>
       <includes>
         <include>*</include>
+        <include>*/*</include>
       </includes>
     </fileSet>
     <fileSet>
