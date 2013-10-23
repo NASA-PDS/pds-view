@@ -91,17 +91,38 @@ OFSN EQ &lt;online-file-specification-name&gt; AND RT EQ &lt;return-type&gt;
 OFSN+EQ+&lt;online-file-specification-name&gt;+AND+RT+EQ+&lt;return-type&gt;
       </source>
 
-      <p>The following table details the valid values for the return type keyword:
+      <p>The following table details the valid values for the return type keyword. 
+         The examples provided assume the existence of a transport-service application deployed within a local Tomcat container running on port 8080.
       </p>
 
       <table>
         <tr><th>Return Type</th><th>Description</th></tr>
-        <tr><td>DIRFILELIST</td><td>Returns an XML document containing all of the filenames (and only the files, not directories) and their sizes, recursing into subdirectories.</td></tr>
-        <tr><td>DIRFILELIST1</td><td>Identical to <i>DIRFILELIST</i> except that it does not recurse into subdirectories.</td></tr>
-        <tr><td>DIRLIST</td><td>Returns an XML document with directory names (and only directory names) and total size of files in each directory starting in the requested directory and traversing into the subdirectories.</td></tr>
+        <tr><td>DIRFILELIST</td>
+            <td>Returns an XML document containing all of the filenames (and only the files, not directories) and their sizes, recursing into subdirectories.
+                <br/>
+                Example request: 
+                <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST</a>
+            </td>
+        </tr>
+        <tr>
+        	<td>DIRFILELIST1</td><td>Identical to <i>DIRFILELIST</i> except that it does not recurse into subdirectories.
+        	    <br/>
+        	    Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST1">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST1</a>
+        	</td>      	
+        </tr>
+        <tr>
+        	<td>DIRLIST</td>
+        	<td>Returns an XML document with directory names (and only directory names) and total size of files in each directory starting in the requested directory and traversing into the subdirectories.
+        	    <br/>
+        	    Example request: 
+        	    <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST</a>
+        	</td>
+        </tr>
         <tr>
           <td>DIRLIST1</td>
-          <td>Identical to <i>DIRLIST</i> but does not recursively descend into subdirectories. An example response looks like:
+          <td>Identical to <i>DIRLIST</i> but does not recursively descend into subdirectories. 
+          	  <br/>Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST1">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST</a>
+              <br/>Example response:
             <source>
 &lt;?xml version="1.0"?&gt;
 &lt;!DOCTYPE dirresult PUBLIC "-//JPL/DTD OODT dirresult 1.0//EN"
@@ -125,7 +146,11 @@ OFSN+EQ+&lt;online-file-specification-name&gt;+AND+RT+EQ+&lt;return-type&gt;
         </tr>
         <tr>
           <td>FILELIST</td>
-          <td>Returns an XML document naming the requested file and also giving its size. An example response looks like:
+          <td>Returns an XML document naming the requested file and also giving its size.
+              <br/>
+              Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILELIST">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILELIST</a>
+              <br/>
+              Example response:
             <source>
 &lt;?xml version="1.0"?&gt;
 &lt;!DOCTYPE dirresult PUBLIC "-//JPL/DTD OODT dirresult 1.0//EN"
@@ -138,6 +163,14 @@ OFSN+EQ+&lt;online-file-specification-name&gt;+AND+RT+EQ+&lt;return-type&gt;
 &lt;/dirResult&gt;
             </source>
           </td>
+        </tr>
+        <tr>
+        	<td>FILE_LIST</td>
+        	<td>An alias for FILELIST.
+        	    <br/>
+        	    Example request: 
+        	    <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILE_LIST">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILE_LIST</a>
+        	</td>
         </tr>
         <tr><td>FILELISTZIP</td><td>Similar to <i>FILELIST</i> except that it tells what the size of the requested file would be if compressed into a ZIP archive.</td></tr>
         <tr><td>PDS_FILELIST</td><td>Returns a file listing of the requested PDS label file and its references in XML format. This is similar to <i>FILELIST</i> but instead of giving the size of the requested file, it parses the requested file as a PDS label and gives the sizes of all referenced files.</td></tr>
