@@ -24,7 +24,7 @@ import org.junit.Ignore;
 @Ignore
 public final class TestConstants {
 	/** Relative Test Data Directory Path for testing locally **/
-	public static final String TEST_DIR_RELATIVE = "./src/test-data/";
+	public static final String TEST_DIR_RELATIVE = "./src/test/test-data/";
 
 	/** Relative Config Directory Path for testing locally **/
 	public static final String CONFIG_DIR_RELATIVE = "./src/main/resources/conf/";
