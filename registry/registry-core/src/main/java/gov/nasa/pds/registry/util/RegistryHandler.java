@@ -45,7 +45,7 @@ public class RegistryHandler {
 	/** Output logger **/
 	private static Logger log = Logger.getLogger(RegistryHandler.class.getName());
 	
-	private static final int DFLT_QUERY_MAX = 999999999;
+	public static final int DFLT_QUERY_MAX = 999999999;
 	
 	private int queryMax = DFLT_QUERY_MAX;
 	
