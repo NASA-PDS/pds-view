@@ -14,6 +14,9 @@
 
 package gov.nasa.pds.transport;
 
+import gov.nasa.pds.registry.util.ExtendedExtrinsicObject;
+import gov.nasa.pds.registry.util.RegistryHandler;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,10 +43,6 @@ import org.apache.oodt.xmlquery.QueryElement;
 import org.apache.oodt.xmlquery.XMLQuery;
 import org.apache.tika.Tika;
 
-import gov.nasa.pds.search.core.constants.Constants;
-import gov.nasa.pds.search.core.registry.RegistryHandler;
-import gov.nasa.pds.search.core.registry.objects.SearchCoreExtrinsic;
-
 /**
  * This Apache OODT Product Server handler accepts a query containing one
  * or more Registry Service identifiers, queries the Registry Service for 
@@ -54,7 +53,7 @@ import gov.nasa.pds.search.core.registry.objects.SearchCoreExtrinsic;
  * @version $Revision$
  */
 public class RegistryProductHandler implements LargeProductQueryHandler {
-
+	
   /**
    * Run a query.
    *
@@ -74,7 +73,7 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
     ArrayList<String> primaryRegistries = new ArrayList<String>();
     primaryRegistries.add(registryUrl);
     ArrayList<String> secondaryRegistries = new ArrayList<String>();
-    RegistryHandler registryHandler = new RegistryHandler(primaryRegistries, secondaryRegistries, Constants.QUERY_MAX, false);
+    RegistryHandler registryHandler = new RegistryHandler(primaryRegistries, secondaryRegistries, RegistryHandler.DFLT_QUERY_MAX, false);
 
     // Get the package format if specified in the query.
     String archivePackage = extractFieldFromQuery(q, "package");
@@ -93,12 +92,12 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
       try {
         // Search for the requested product and get the associated 
         // Product_File_Repository products that have the file information.
-        SearchCoreExtrinsic extrinsic = registryHandler.getExtrinsicByLidvid(identifier);
-        List<SearchCoreExtrinsic> fileRefList = registryHandler.getAssociationsBySourceObject(extrinsic, "file_ref");
+    	ExtendedExtrinsicObject extrinsic = registryHandler.getExtrinsicByLidvid(identifier);
+        List<ExtendedExtrinsicObject> fileRefList = registryHandler.getAssociationsBySourceObject(extrinsic, "file_ref");
 
         // Get the file information for each associated file product and add
         // it to the list of files.
-        for (SearchCoreExtrinsic fileRef : fileRefList) {
+        for (ExtendedExtrinsicObject fileRef : fileRefList) {
           List<String> fileLocation = fileRef.getSlotValues("file_location");
           List<String> fileName = fileRef.getSlotValues("file_name");
           files.add(new File(fileLocation.get(0), fileName.get(0)));
