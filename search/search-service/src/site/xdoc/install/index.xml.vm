@@ -142,7 +142,7 @@ ln -s /usr/local/${project.artifactId}-${project.version} /usr/local/${project.a
         override="true"/&gt;
   &lt;Loader className="org.apache.catalina.loader.VirtualWebappLoader"
         virtualClasspath="/usr/local/${project.artifactId}/lib/*.jar;\
-        /usr/local/pds/search-service/log4j.properties"/&gt;
+        /usr/local/search-service/log4j.properties"/&gt;
 &lt;/Context&gt;
             </source>
           </li>
@@ -169,7 +169,7 @@ JAVA_OPTS="${JAVA_OPTS} -Dlog4j.debug=true"
             <source>
 rm /usr/local/${project.artifactId}
 
-ln -s /usr/local/${project.artifactId}-${project.version} /usr/local/${project.artifactId}
+ln -s /usr/local/${project.artifactId}-x.x.x /usr/local/${project.artifactId}
             </source>
           </li>
           <li>Start Tomcat server.</li>

@@ -85,7 +85,7 @@ ProxyPassReverse /tools/search-service http://pdsops.jpl.nasa.gov/search-service
         <ol>
           <li>Create a symbolic link to the Search Service installation directory to provide an easier method of upgrade in the future.  The following demonstrates how to create this symbolic link (<i>requires root access</i>):
             <source>
-ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
+ln -s /usr/local/${project.artifactId}-${project.version} /usr/local/${project.artifactId}
             </source>
           </li>
           <li><p>Change the owner of all the Search Service configuration, software, and documentation to the <i>pds4</i> user (<i>requires root access</i>):</p>
@@ -106,7 +106,7 @@ value="/usr/local/${project.artifactId}" override="true" /&gt;
   &lt;Parameter name="javax.xml.transform.TransformerFactory" type="java.lang.String"
         value="net.sf.saxon.TransformerFactoryImpl" override="true"/&gt;
   &lt;Loader className="org.apache.catalina.loader.VirtualWebappLoader"
-virtualClasspath="/usr/local/${project.artifactId}/lib/*.jar;/usr/local/pds/search-service/\
+virtualClasspath="/usr/local/${project.artifactId}/lib/*.jar;/usr/local/search-service/\
 log4j.properties"/&gt;
 &lt;/Context&gt;
             </source>
@@ -132,7 +132,7 @@ JAVA_OPTS="${JAVA_OPTS} -Dlog4j.debug=true"
             <source>
 rm /usr/local/${project.artifactId}
 
-ln -s /usr/local/${project.artifactId} /usr/local/${project.artifactId}-${project.version}
+ln -s /usr/local/${project.artifactId}-x.x.x /usr/local/${project.artifactId}
             </source>
           </li>
           <li><p>Change the owner of all the Search Service configuration, software, and documentation to the <i>pds4</i> user (<i>requires root access</i>):</p>
