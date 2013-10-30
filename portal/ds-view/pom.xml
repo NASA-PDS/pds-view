@@ -42,6 +42,19 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  
+  <properties>
+    <!-- These properties support the application. -->
+    <jersey-version>1.4</jersey-version>
+    <!--junit-version>4.8.1</junit-version>
+    <xerces-version>2.10.0</xerces-version>
+    <jaxb-version>2.2</jaxb-version>
+    <woodstox-version>3.2.3</woodstox-version>
+    <spring.version>3.0.2.RELEASE</spring.version>
+    <commons-dbcp.version>1.2.2</commons-dbcp.version>
+    <commons-logging.version>1.0.4</commons-logging.version>
+    <log4j.version>1.2.15</log4j.version-->
+  </properties>
 
   <developers>
     <developer>
@@ -188,6 +201,27 @@
       <artifactId>registry-core</artifactId>
       <version>${registry-version}</version>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>ejb3-persistence</artifactId>
+      <version>3.3.2.Beta1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-client</artifactId>
+      <version>${jersey-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-json</artifactId>
+      <version>${jersey-version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.sun.xml.bind</groupId>
+          <artifactId>jaxb-impl</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.solr</groupId>

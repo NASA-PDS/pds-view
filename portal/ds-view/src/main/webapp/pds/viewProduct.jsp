@@ -128,22 +128,30 @@
             String filelink = "";
             String filename = "";
             List<String> filenames = pds4Search.getValues(doc, "file_ref_name");
-            if (filenames.size()==1) {
+            if (filenames!=null && filenames.size()==1) {
                filename = pds4Search.getValues(doc, "file_ref_name").get(0);
-               filelink = pds4Search.getValues(doc, "file_ref_url").get(0);
+               // make sure it's not NULL
+               if (pds4Search.getValues(doc, "file_ref_url")!=null) {
+                  filelink = pds4Search.getValues(doc, "file_ref_url").get(0);
             %>
             <a href="<%=filelink%>" target="_new"><%=filename%></a><br>
             <%
-                   
+               }
+               else 
+                  out.println(filename);
             } // end if
             else if (filenames.size()>1) {
                List<String> filelinks = pds4Search.getValues(doc, "file_ref_url");
                for (int i=0; i<filenames.size(); i++) {
                   filename = filenames.get(i);
-                  filelink = filelinks.get(i);
+                  if (filelinks!=null) {
+                     filelink = filelinks.get(i);
                   %>
                   <a href="<%=filelink%>" target="_new"><%=filename%></a><br>
                   <%
+                  }
+                  else 
+                     out.println(filename);
                } // end for
             }
          }

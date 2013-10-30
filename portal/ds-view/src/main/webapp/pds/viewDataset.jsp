@@ -108,7 +108,7 @@ else {
    String tmpDsid = dsid.replaceAll("%2F", "-");
    tmpDsid = tmpDsid.replaceAll("/", "-");
    tmpDsid = tmpDsid.toLowerCase();
-   //out.println("dsid = " + dsid + "    dsid_lower = " + dsid_lower);
+   //out.println("dsid = " + dsid + "    dsid_lower = " + tmpDsid);
    ExtrinsicObject product = searchRegistry.getExtrinsic("urn:nasa:pds:context_pds3:data_set:data_set."+tmpDsid);
 
    if (product==null) {
@@ -172,6 +172,36 @@ else {
                      <tr bgcolor="#E7EEF9">
                         <td>Data Set Abstract</td>
                         <td><%=searchRegistry.getSlotValues(product, "data_set_abstract_description").get(0)%></td>
+                     </tr>
+                     
+                     <tr bgcolor="#E7EEF9">
+                        <td>Search/Access Data</td>
+                        <td>
+                           <% 
+                           List<String> rvalues = searchRegistry.getResourceRefs(product);
+                           String resname="", reslink="";
+                           String refLid = "";
+                           if (rvalues !=null) {
+                              for (int i=0; i<rvalues.size(); i++) {
+                                 //out.println(rvalues.get(i) + "<br>");
+                                 refLid = rvalues.get(i);
+                                 if (refLid!=null) {
+                                    if (refLid.indexOf("::")!=-1) {
+                                       refLid = refLid.substring(0, refLid.indexOf("::"));
+                                    }
+                                    ExtrinsicObject resource = searchRegistry.getExtrinsic(refLid);
+                                    //out.println("resource_name = " + searchRegistry.getSlotValues(resource, "resource_name").get(0) + "<br>");
+                                    //out.println("resource_url = " + searchRegistry.getSlotValues(resource, "resource_url").get(0) + "<br>");
+                                    if (resource!=null) {
+                                       resname = searchRegistry.getSlotValues(resource, "resource_name").get(0);
+                                       reslink = searchRegistry.getSlotValues(resource, "resource_url").get(0);
+                              %>
+                              <li><a href="<%=reslink%>" target="_new"><%=resname%></a><br>
+                         <%         }
+                                 }
+                              } 
+                           }%>
+                        </td>
                      </tr>
 
                      <tr>
@@ -287,36 +317,6 @@ else {
     	                   else 
     	                      out.println(val);
     	                   %>
-                        </td>
-                     </tr>
-
-                     <tr bgcolor="#E7EEF9">
-                        <td>Resources</td>
-                        <td>
-                           <% 
-                           List<String> rvalues = searchRegistry.getResourceRefs(product);
-                           String resname="", reslink="";
-                           String refLid = "";
-                           if (rvalues !=null) {
-                              for (int i=0; i<rvalues.size(); i++) {
-                                 //out.println(rvalues.get(i) + "<br>");
-                                 refLid = rvalues.get(i);
-                                 if (refLid!=null) {
-                                    if (refLid.indexOf("::")!=-1) {
-                                       refLid = refLid.substring(0, refLid.indexOf("::"));
-                                    }
-                                    ExtrinsicObject resource = searchRegistry.getExtrinsic(refLid);
-                                    //out.println("resource_name = " + searchRegistry.getSlotValues(resource, "resource_name").get(0) + "<br>");
-                                    //out.println("resource_url = " + searchRegistry.getSlotValues(resource, "resource_url").get(0) + "<br>");
-                                    if (resource!=null) {
-                                       resname = searchRegistry.getSlotValues(resource, "resource_name").get(0);
-                                       reslink = searchRegistry.getSlotValues(resource, "resource_url").get(0);
-                              %>
-                              <a href="<%=reslink%>" target="_new"><%=resname%></a><br>
-                         <%         }
-                                 }
-                              } 
-                           }%>
                         </td>
                      </tr>
                   </table>
