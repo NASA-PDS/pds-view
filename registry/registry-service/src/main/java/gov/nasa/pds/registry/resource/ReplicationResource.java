@@ -16,6 +16,7 @@
 package gov.nasa.pds.registry.resource;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
+import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.model.ReplicationReport;
 import gov.nasa.pds.registry.service.RegistryService;
 import gov.nasa.pds.registry.util.DateParam;
@@ -65,6 +66,13 @@ public class ReplicationResource {
    *          time to constrain which registry objects are relevant to
    *          replicate. This time is inclusive. If set to null all will be
    *          pulled.
+   * @param objectType 
+   *          to replicate, all others will be ignored.
+   * @param packageGuid
+   *          identifier for the package which all replicated items will be
+   *          associated with.
+   * @param packageName
+   *          used for the replication package
    * @return an HTTP response that indicates an error or location of the report
    *         for this replication request.
    */
@@ -72,14 +80,23 @@ public class ReplicationResource {
   public Response performReplication(
       @QueryParam("registryUrl") String registryUrl,
       @QueryParam("lastModified") DateParam lastModified,
-      @QueryParam("objectType") String objectType) {
+      @QueryParam("objectType") String objectType,
+      @QueryParam("packageGuid") String packageGuid,
+      @QueryParam("packageName") String packageName) {
     if (registryUrl == null) {
       throw new WebApplicationException(Response.status(Status.BAD_REQUEST)
           .entity("registryUrl was not set").build());
     }
     try {
+      RegistryPackage replicationPackage = new RegistryPackage();
+      replicationPackage.setGuid(packageGuid);
+      replicationPackage.setName(packageName);
+      replicationPackage.setDescription("Replication of " + registryUrl + 
+      		" with last modified [" + lastModified + "] and object type [" + 
+      		objectType + "].");
       registryService.performReplication("Unknown", registryUrl,
-          (lastModified == null) ? null : lastModified.getDate(), objectType);
+          (lastModified == null) ? null : lastModified.getDate(), objectType, 
+          		replicationPackage);
       return Response.created(
           uriInfo.getBaseUriBuilder().clone().path(RegistryResource.class)
               .path(RegistryResource.class, "getReplicationResource").path(

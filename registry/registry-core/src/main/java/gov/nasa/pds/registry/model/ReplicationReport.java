@@ -54,6 +54,9 @@ public class ReplicationReport implements Serializable {
 
   @XmlAttribute
   private String registryUrl;
+  
+  @XmlAttribute
+  private String packageGuid;
 
   @XmlElement(name = "skippedEvent", namespace = "http://registry.pds.nasa.gov")
   private List<String> skippedEvents;
@@ -64,7 +67,7 @@ public class ReplicationReport implements Serializable {
   public ReplicationReport() {
     super();
     started = new Date();
-    lastModified = new Date();
+    lastModified = null;
     status = ReplicationStatus.RUNNING;
     skippedObjects = new ArrayList<String>();
     skippedEvents = new ArrayList<String>();
@@ -117,6 +120,14 @@ public class ReplicationReport implements Serializable {
   public void setRegistryUrl(String registryUrl) {
     this.registryUrl = registryUrl;
   }
+  
+  public String getPackageGuid() {
+  	return packageGuid;
+  }
+  
+  public void setPackageGuid(String packageGuid) {
+  	this.packageGuid = packageGuid;
+  }
 
   public List<String> getSkippedObjects() {
     return skippedObjects;
@@ -153,6 +164,8 @@ public class ReplicationReport implements Serializable {
     result = prime * result
         + ((registryUrl == null) ? 0 : registryUrl.hashCode());
     result = prime * result
+        + ((packageGuid == null) ? 0 : packageGuid.hashCode());
+    result = prime * result
         + ((skippedObjects == null) ? 0 : skippedObjects.hashCode());
     result = prime * result
         + ((skippedEvents == null) ? 0 : skippedEvents.hashCode());
@@ -182,6 +195,11 @@ public class ReplicationReport implements Serializable {
       if (other.registryUrl != null)
         return false;
     } else if (!registryUrl.equals(other.registryUrl))
+      return false;
+    if (packageGuid == null) {
+      if (other.packageGuid != null)
+        return false;
+    } else if (!packageGuid.equals(other.packageGuid))
       return false;
     if (skippedObjects == null) {
       if (other.skippedObjects != null)

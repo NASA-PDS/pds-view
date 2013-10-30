@@ -1080,14 +1080,25 @@ public class RegistryServiceImpl implements RegistryService {
 	 * 
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#performReplication(java.lang
-	 * .String, java.lang.String, java.util.Date)
+	 * .String, java.lang.String, java.util.Date, java.lang.String)
 	 */
 	@Override
 	public void performReplication(String user, String registryUrl,
-	    Date lastModified, String objectType) throws RegistryServiceException {
+	    Date lastModified, String objectType, RegistryPackage replicationPackage) 
+	    		throws RegistryServiceException {
 		// Setup the replication report
 		initializeReplicationReport();
 
+		// Register the package that items in this replication event will be associated
+		String packageGuid = null;
+		try {
+			packageGuid = this.publishObject(user, replicationPackage);
+		} catch (RegistryServiceException e) {
+			throw e;
+		}
+		// Set the packageGuid in the report
+		replicationReport.setPackageGuid(packageGuid);
+		
 		// Create a client to talk to the remote registry
 		try {
 			RegistryClient remoteRegistry = new RegistryClient(registryUrl);
@@ -1103,7 +1114,7 @@ public class RegistryServiceImpl implements RegistryService {
 				    .eventEnd(replicationReport.getStarted()).build();
 				replicationReport.setLastModified(lastModified);
 			}
-
+			
 			// Set up some counting variables to use for paging
 			int count = 0;
 			// How many we will grab on each query to the database (process in chunks)
@@ -1184,7 +1195,7 @@ public class RegistryServiceImpl implements RegistryService {
 												}
 												remoteObject.setSlots(newSlots);
 												// Replicate it
-												metadataStore.saveRegistryObject(remoteObject);
+												publishObject(user, remoteObject, packageGuid);
 											}
 										}
 									} catch (RegistryServiceException ex) {

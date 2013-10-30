@@ -501,11 +501,14 @@ public interface RegistryService {
    *          pulled.
    * @param objectType
    * 					to filter out registry objects that should be replicated.
+   * @param replicationPackage
+   *         to which replicated items will be associated
    * @throws RegistryServiceException
    *           if another replication is already taking place
    */
   public void performReplication(String user, String registryUrl,
-      Date lastModified, String objectType) throws RegistryServiceException;
+      Date lastModified, String objectType, RegistryPackage replicationPackage) 
+      		throws RegistryServiceException;
 
   /**
    * Get the inform about the current replication event.
