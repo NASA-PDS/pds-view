@@ -461,6 +461,18 @@ public class SearchCoreLauncher {
 	public final void setDefaultServiceUrl() {
 		this.serviceUrl = Constants.DEFAULT_SERVICE_URL;
 	}
+	
+	/**
+	 * Closes the handlers for the logger.
+	 * 
+	 */
+	private void closeHandlers() {
+		Logger logger = Logger.getLogger("");
+		Handler[] handlers = logger.getHandlers();
+		for (int i = 0; i < logger.getHandlers().length; i++) {
+			handlers[i].close();
+		}
+	}
 
 	/**
 	 * Execute Search Core components depending on the flags specified.
@@ -532,7 +544,7 @@ public class SearchCoreLauncher {
 			final CommandLine commandline = launcher.parse(args);
 			launcher.query(commandline);
 			launcher.execute();
-			// launcher.closeHandlers();
+			launcher.closeHandlers();
 		} catch (final ParseException e) {
 			throw new Exception("Command-line parse failure: " 
 					+ e.getMessage());

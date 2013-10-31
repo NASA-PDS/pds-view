@@ -35,20 +35,6 @@ public class ToolsLogFilter implements Filter {
      */
     @Override
     public boolean isLoggable(LogRecord record) {
-        String casCrawlerName = "gov.nasa.jpl.oodt.cas.crawl";
-        String jerseyName = "com.sun.jersey.core";
-        String fileMgrVersionerName = "org.apache.oodt.cas.filemgr.versioning";
-        String inPlacedataTransferName =
-          "org.apache.oodt.cas.filemgr.datatransfer.InPlaceDataTransferer";
-        if ((record.getLoggerName() != null)
-                && (record.getLoggerName().contains(casCrawlerName)
-                    || record.getLoggerName().contains(jerseyName)
-                    || record.getLoggerName().contains(fileMgrVersionerName)
-                    || record.getLoggerName().contains(inPlacedataTransferName)
-                    )) {
-            return false;
-        } else {
-            return true;
-        }
+    	return true;
     }
 }
