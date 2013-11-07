@@ -24,7 +24,6 @@
 
   <formats>
     <format>tar.gz</format>
-    <format>zip</format>
   </formats>
 
   <fileSets>
@@ -39,10 +38,13 @@
       <directory>src/main/bin</directory>
       <outputDirectory>bin</outputDirectory>
       <fileMode>755</fileMode>
+      <lineEnding>keep</lineEnding>
     </fileSet>
     <fileSet>
       <directory>target/site</directory>
       <outputDirectory>doc</outputDirectory>
+      <fileMode>644</fileMode>
+      <lineEnding>keep</lineEnding>
     </fileSet>
   </fileSets>
 
@@ -51,12 +53,14 @@
       <source>LICENSE.txt</source>
       <outputDirectory>/</outputDirectory>
       <fileMode>644</fileMode>
+      <lineEnding>unix</lineEnding>
     </file>
     <file>
       <source>README-PACKAGE.txt</source>
       <outputDirectory>/</outputDirectory>
       <destName>README.txt</destName>
       <fileMode>644</fileMode>
+      <lineEnding>unix</lineEnding>
       <filtered>true</filtered>
     </file>
   </files>
