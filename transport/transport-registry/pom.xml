@@ -132,7 +132,7 @@
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>web-grid</artifactId>
-      <version>${oodt-version}</version>
+      <version>0.7-SNAPSHOT</version>
       <type>war</type>
       <scope>runtime</scope>
     </dependency>
