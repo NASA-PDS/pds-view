@@ -28,11 +28,14 @@
   <groupId>gov.nasa.pds.2010.transport</groupId>
   <artifactId>transport-ofsn</artifactId>
   <version>0.3.0-dev</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <name>Transport Service (OFSN)</name>
   <description>
-    The Transport Service provides functionality for transporting and transforming PDS products. The core functionality for this service is satisfied by the Apache OODT Web Grid Product Server and includes the Online File Specification Name (OFSN) handlers for interfacing with an archive directory structure. It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
+    The Transport Service provides functionality for transporting and transforming PDS products. 
+    The core functionality for this service is satisfied by the Apache OODT Web Grid Product Server 
+    and includes the Online File Specification Name (OFSN) handlers for interfacing with an archive directory structure. 
+    It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
   </description>
   <url>http://pds-cm.jpl.nasa.gov/pds4/transport/transport-ofsn</url>
 
@@ -70,8 +73,9 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
+        <artifactId>maven-war-plugin</artifactId>
         <configuration>
+          <warName>transport-service</warName>
           <archive>
             <manifest>
               <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
@@ -157,35 +161,35 @@
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>web-grid</artifactId>
-      <version>0.6-SNAPSHOT</version>
+      <version>0.7-SNAPSHOT</version>
       <type>war</type>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>oodt-product</artifactId>
-      <version>0.5</version>
+      <version>0.6</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>oodt-commons</artifactId>
-      <version>0.5</version>
+      <version>0.6</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>oodt-profile</artifactId>
-      <version>0.5</version>
+      <version>0.6</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>oodt-xmlquery</artifactId>
-      <version>0.5</version>
+      <version>0.6</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
@@ -199,7 +203,7 @@
     <dependency>
       <groupId>gov.nasa.pds.2010.preparation</groupId>
       <artifactId>transform</artifactId>
-      <version>${transform-version}</version>
+      <version>0.2.0</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>

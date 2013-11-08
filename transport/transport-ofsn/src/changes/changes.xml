@@ -24,6 +24,9 @@
   <body>
   
     <release version="0.3.0" date="TBD" description="TBD">
+        <action dev="cinquini" type="add" issue="PDS-212">
+        	Enabling easier URL syntax for product requests, maintain backward compatibility with DIS-style syntax. 
+      	</action>
     	<action dev="cinquini" type="add" issue="PDS-210">
     		Inserted aliases for FILE_LIST AND FILE_LIST_ZIP handlers (FILELIST AND FILELISTZIP respectively).
     	</action>
