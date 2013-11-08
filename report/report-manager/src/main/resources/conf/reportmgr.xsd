@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- Copyright 2013, by the California Institute of Technology. ALL 
+	RIGHTS RESERVED. United States Government Sponsorship acknowledged. Any commercial 
+	use must be negotiated with the Office of Technology Transfer at the California 
+	Institute of Technology. This software may be subject to U.S. export control 
+	laws. By accepting this software, the user agrees to comply with all applicable 
+	U.S. export laws and regulations. User has the responsibility to obtain export 
+	licenses, or other export authority as may be required before exporting such 
+	information to foreign countries or providing access to foreign persons. 
+	$Id$ -->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.0">
+
+	<xsd:element name="nodeId" type="xsd:string" />
+	<xsd:element name="profileName" type="xsd:string" />
+	<xsd:element name="activeFlag" type="xsd:boolean" />
+	<xsd:element name="collectionAlias" type="xsd:string" />
+	<xsd:element name="transferMethod" type="xsd:string" />
+	<xsd:element name="title" type="xsd:string" />
+	<xsd:element name="url" type="xsd:string" />
+
+	<xsd:attribute name="name" type="xsd:string" />
+	<xsd:attribute name="transferMethod" type="transferMethods" />
+	<xsd:simpleType name="transferMethods">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="push"/>
+	    	<xsd:enumeration value="pull"/>
+	  	</xsd:restriction>
+	</xsd:simpleType>
+	
+	<!-- xsd:attribute name="sourceType" type="sourceType" />
+	<xsd:attribute name="priority" type="sourcePriority" />
+	<xsd:attribute name="append" type="xsd:boolean" />
+	<xsd:simpleType name="sourcePriority">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="primary"/>
+	    	<xsd:enumeration value="secondary"/>
+	  	</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="sourceType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="registry"/>
+	  	</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:element name="dataSources" type="DataSources" />
+	<xsd:complexType name="DataSources">
+		<xsd:sequence>
+			<xsd:element ref="source" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="source" type="DataSource" />
+   	<xsd:complexType name="DataSource">
+		<xsd:sequence>
+			<xsd:element ref="url" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute ref="sourceType" use="required" />
+		<xsd:attribute ref="priority" use="required" />
+		<xsd:attribute ref="append" use="required" />
+	</xsd:complexType>
+
+	<xsd:element name="specification" type="Specification" />
+	<xsd:complexType name="Specification">
+		<xsd:sequence>
+			<xsd:element ref="title" />
+			<xsd:element ref="registryObjectType" />
+			<xsd:element ref="registryObjectName" minOccurs="0" />
+			<xsd:element ref="dataSources" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:attribute name="default" type="xsd:string" />
+	<xsd:element name="field" type="Field" />
+	<xsd:complexType name="Field">
+		<xsd:choice>
+			<xsd:element ref="outputString" />
+			<xsd:element ref="registryPath" />
+		</xsd:choice>
+		<xsd:attribute ref="name" use="required" />
+		<xsd:attribute ref="type" use="required" />
+		<xsd:attribute ref="default" />
+	</xsd:complexType-->
+
+	<xsd:element name="profile" type="Profile" />
+	<xsd:complexType name="Profile">
+		<xsd:sequence>
+			<xsd:element ref="nodeId" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="profiles" type="Profiles" />
+	<xsd:complexType name="Profiles">
+		<xsd:sequence>
+			<xsd:element ref="profile" />
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

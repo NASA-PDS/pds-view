@@ -1,0 +1,1 @@
+Error while downloading per property file /Users/jpadams/Documents/workspace/pds4-workspace/report/pushpull/cas-pushpull-0.6/etc/conf/DirStructXmlParserFiles/pdsimg.xml : Failed to get appropriate protocol for RemoteSite: alias = 'pdsimg3'  url = 'sftp://pdsimg-3.jpl.nasa.gov'  username = 'jpadams' cdTestDir = 'null' maxConnections = '-1'

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2010-2012, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id: index.xml.vm 10031 2012-01-30 06:54:52Z shardman $
+-->
+
+<document>
+  <properties>
+    <title>Operation</title>
+    <author email="Jordan.H.Padams@jpl.nasa.gov">Jordan Padams</author>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Operation">
+      <p>This document describes how to operate the Report Service Manager. The following topics can be found in this document:
+      </p>
+
+      <ul>
+        <li><a href="#Tool_Execution">Tool Execution</a></li>
+	<ul>
+	  <li><a href="#Command-Line_Options">Command-Line Options</a></li>
+	  <li><a href="#Pull_Logs">Pull Logs</a></li>
+	</ul>
+      </ul>
+
+      <p>Note: The command-line examples in this section have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution.
+      </p>
+    </section>
+
+    <section name="Tool Execution">
+      <p>Report Service Manager can be executed in various ways. This section describes how to run the tool, as well as its behaviors and caveats.
+      </p>
+
+      <subsection name="Command-Line Options">
+        <p>The following describes the command-line options available:
+        </p>
+	<source>
+usage: report-mgr [options]
+ -h,--help                              Display usage.
+ -l,--log-file &lt;file name&gt;              Specify a log file name. Default is
+                                        standard out.
+ -P,--cas_pp_port &lt;port&gt;                Port number to run CAS PushPull.
+                                        Default: 9999
+ -p,--pull-logs                         Pull logs from remote sources.
+ -r,--pushpull_properties &lt;file-path&gt;   File path to PushPull
+                                        push_pull_framework.properties file.
+                                        Default:
+                                        $REPORT_MGR_HOME/etc/push_pull_framework
+                                        .properties
+ -s,--pushpull_specs &lt;file-path&gt;        File path to CAS PushPull Remote Sites
+                                        specification file. Default:
+                                        $REPORT_MGR_HOME/etc/conf/RemoteSpecs.xm
+                                        l
+ -v,--verbose &lt;level&gt;                   Specify the severity level and above to
+                                        include in the log: (0=Debug, 1=Info,
+                                        2=Warning, 3=Error). Default is Info and
+                                        above (level 1).
+ -V,--version                           Display application version.
+	</source>
+      </subsection>
+
+      <subsection name="Pull Logs">
+        <p>This section demonstrates how to configure and execute the tool to pull logs from remote sites. The examples below execute the tool via the batch/shell script.
+        </p>
+
+	<p>First, you will need to configure the Apache PushPull software according to the destinations you want to pull from. The initial installation should contain configurations that should not require much modification.  However, there are a couple environment variables that need to be exported or the configurations need to be modified.</p>
+
+	<p>The following environment variables need to be added to the environment.  These examples assume the software is installated at <i>/usr/local/report-manager</i>:</p>
+	<source>
+% export REPORT_MGR_HOME=/usr/local/report-manager
+% export LOGS_HOME=/my/log/home
+	</source>
+	<p>The REPORT_MGR_HOME variable represents the installation home directory for the Report Manager software.  The LOGS_HOME variable represents the base directory were logs will be downloaded.  These variables can also be replaced by hand in the following files:</p>
+	<ul>
+	  <li>$REPORT_MGR_HOME/etc/push_pull_framework.properties</li>
+	  <li>$REPORT_MGR_HOME/etc/conf/RemoteSpecs.xml</li>
+	</ul>
+
+	<p>Assuming REPORT_MGR_HOME was set in the environment, and you would like to run the software on the default port, the following command will pull the logs based on your configurations:</p>
+	<source>
+% report-mgr -p
+       </source>
+
+	<p>If REPORT_MGR_HOME and LOGS_HOME were replaced by hand in the configurations, and the environment variables were not set, you can run the software as follows to specify the properties, remote specs, and port:</p>
+	<source>
+% report-mgr -p -P 9999 -r /usr/local/report-manager/etc/push_pull_framework.properties -s /usr/local/report-manager/etc/conf/RemoteSpecs.xml
+	</source>
+	
+        <!--p>The following command demonstrates how to run the Update Tool to update all Sawmill profiles by downloading the remote logs and performing a Sawmill database update using all default settings.
+        </p>
+
+        <source>
+% update-tool
+        </source>
+
+        <p>The following command demonstrates how to run the Update Tool with the output going to a log file, <i>log.txt</i> instead of standard out:
+        </p>
+
+        <source>
+% update-tool -l log.txt
+        </source>
+        
+        <p>The following command demonstrates how to run the Update Tool for a specified profile only, i.e. <i>img-web</i>:
+        </p>
+
+        <source>
+% update-tool -n img-web
+        </source-->
+      </subsection>
+    </section>
+  </body>
+</document>
