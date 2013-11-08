@@ -85,6 +85,7 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
 
     // Get all of the identifiers passed in the query.
     List<String> identifiers = extractIdentifiersFromQuery(q);
+    if (identifiers.size()==0) throw new ProductException("Error: product identifier(s) not specified in request.");
 
     // Get the files for each product identified by the identifier and
     // add them to the list.
