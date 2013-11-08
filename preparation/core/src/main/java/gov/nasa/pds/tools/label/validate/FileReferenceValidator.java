@@ -71,6 +71,7 @@ public class FileReferenceValidator implements ExternalValidator {
                 labelUrl.toURI().resolve(".").toURL();
           String name = "";
           String checksum = "";
+          String directory = "";
           List<TinyElementImpl> children = new ArrayList<TinyElementImpl>();
           try {
             children = extractor.getNodesFromItem("*", fileObject);
@@ -91,7 +92,7 @@ public class FileReferenceValidator implements ExternalValidator {
             } else if ("md5_checksum".equals(child.getLocalPart())) {
               checksum = child.getStringValue();
             } else if ("directory_path_name".equals(child.getLocalPart())) {
-              parent = new URL(parent, child.getStringValue());
+              directory = child.getStringValue();
             }
           }
           if (name.isEmpty()) {
@@ -104,14 +105,20 @@ public class FileReferenceValidator implements ExternalValidator {
             );
             passFlag = false;
           } else {
-            URL urlRef = new URL(parent, name);
+            URL urlRef = null;
+            if (!directory.isEmpty()) {
+              urlRef = new URL(parent, directory + "/" + name);
+            } else {
+              urlRef = new URL(parent, name);
+            }
             try {
               urlRef.openStream().close();
               // Check that the casing of the file reference matches the
               // casing of the file located on the file system.
               try {
                 File fileRef = FileUtils.toFile(urlRef);
-                if (fileRef != null && !fileRef.getCanonicalPath().endsWith(fileRef.getName())) {
+                if (fileRef != null &&
+                    !fileRef.getCanonicalPath().endsWith(fileRef.getName())) {
                   container.addException(new LabelException(
                       ExceptionType.WARNING,
                       "File reference'" + fileRef.toString()
