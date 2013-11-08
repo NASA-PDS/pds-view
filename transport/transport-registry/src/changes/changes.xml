@@ -24,7 +24,7 @@
 
   <body>
     <release version="0.2.0" date="TBD" description="TBD">
-      <action dev="luca" type="add" issue="OODT-656">
+      <action dev="luca" type="add" issue="PDS-212">
         Enabling easier URL syntax for product requests, maintain backward compatibility with DIS-style syntax. 
       </action>
     </release>
