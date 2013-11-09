@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="atm">
+	<contact name="Lyle Huber" email="lhuber@nmsu.edu" />
+	<machines>
+		<machine alias="atm-http" method="pull" format="apache_ncsa-combined" timezone="unk">
+			<machineInfo name="atmos.pds.nasa.gov" alt="atmos.nmsu.edu" support="yes" software="apache_http">
+				<service>main_web_site</service>
+			</machineInfo>
+		</machine>
+		<machine alias="atm-tomcat" method="pull" format="apache_ncsa-combined" timezone="unk">
+			<machineInfo name="tropo.nmsu.edu:8080" support="yes" software="apache_tomcat">
+				<service>registry_service</service>
+				<service>registry_ui</service>
+			</machineInfo>
+		</machine>
+		<machine alias="atm-ftp" method="pull" format="ncftp" timezone="unk">
+			<machineInfo name="tropo.nmsu.edu:8080" support="yes" software="ncftp">
+				<service>ftp</service>
+			</machineInfo>
+		</machine>
+	</machines>
+</node>
