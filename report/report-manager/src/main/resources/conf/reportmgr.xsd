@@ -30,6 +30,30 @@
 	  	</xsd:restriction>
 	</xsd:simpleType>
 	
+	<!--  NODES
+						<option value="atm">ATM</option>
+						<option value="cdn">CDN</option>
+						<option value="eng">ENG</option>
+						<option value="geo">GEO</option>
+						<option value="gre">GRE</option>
+						<option value="hrd">HRD</option>
+						<option value="img">IMG</option>
+						<option value="jpl">JPL</option>
+						<option value="ldn">LDN</option>
+						<option value="lol">LOL</option>
+						<option value="lro">LRO</option>
+						<option value="nai">NAI</option>
+						<option value="ppi">PPI</option>
+						<option value="psi">PSI</option>
+						<option value="rng">RNG</option>
+						<option value="rsf">RSF</option>
+						<option value="sbn">SBN</option>
+						<option value="swr">SWR</option>
+						<option value="tes">TES</option>
+						<option value="the">THE</option>
+						<option value="uoi">UOI</option>
+	 -->
+	
 	<!-- xsd:attribute name="sourceType" type="sourceType" />
 	<xsd:attribute name="priority" type="sourcePriority" />
 	<xsd:attribute name="append" type="xsd:boolean" />

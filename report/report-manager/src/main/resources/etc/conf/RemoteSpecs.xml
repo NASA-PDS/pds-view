@@ -22,23 +22,46 @@
     </aliasSpecs>
 
     <daemons>
-        <daemon alias="pdsimg1" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="yes">
+    	<!-- IMG HTTP -->
+        <daemon alias="img-http-pdsimg1" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="yes">
             <propInfo dir="[REPORT_MGR_HOME]/etc/conf/DirStructXmlParserFiles">
                 <propFiles regExp="pdsimg\.xml" parser="org.apache.oodt.cas.pushpull.filerestrictions.parsers.DirStructXmlParser"/>
             </propInfo>
-            <dataInfo stagingArea="[LOGS_HOME]/pdsin/pdsimg-1" deleteFromServer="no"/>
+            <dataInfo stagingArea="[LOGS_HOME]/img/img-http-pdsimg1" deleteFromServer="no"/>
         </daemon>
-        <daemon alias="pdsimg2" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="yes">
+        <daemon alias="img-http-pdsimg2" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="yes">
             <propInfo dir="[REPORT_MGR_HOME]/etc/conf/DirStructXmlParserFiles">
-                <propFiles regExp="pdsimg\.xml" parser="org.apache.oodt.cas.pushpull.filerestrictions.parsers.DirStructXmlParser"/>
+                <propFiles regExp="img-http-pdsimg\.xml" parser="org.apache.oodt.cas.pushpull.filerestrictions.parsers.DirStructXmlParser"/>
             </propInfo>
-            <dataInfo stagingArea="[LOGS_HOME]/pdsin/pdsimg-2" deleteFromServer="no"/>
+            <dataInfo stagingArea="[LOGS_HOME]/img/img-http-pdsimg2" deleteFromServer="no"/>
         </daemon>
-        <daemon alias="pdsimg3" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="yes">
+        <daemon alias="img-http-pdsimg3" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="yes">
             <propInfo dir="[REPORT_MGR_HOME]/etc/conf/DirStructXmlParserFiles">
-                <propFiles regExp="pdsimg\.xml" parser="org.apache.oodt.cas.pushpull.filerestrictions.parsers.DirStructXmlParser"/>
+                <propFiles regExp="img-http-pdsimg\.xml" parser="org.apache.oodt.cas.pushpull.filerestrictions.parsers.DirStructXmlParser"/>
             </propInfo>
-            <dataInfo stagingArea="[LOGS_HOME]/pdsin/pdsimg-3" deleteFromServer="no"/>
+            <dataInfo stagingArea="[LOGS_HOME]/img/img-http-pdsimg3" deleteFromServer="no"/>
+        </daemon>
+        
+        <!-- EN HTTP -->
+        <daemon alias="en-tomcat-pdsdlb1" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="yes">
+            <propInfo dir="[REPORT_MGR_HOME]/etc/conf/DirStructXmlParserFiles">
+                <propFiles regExp="en-tomcat-pdsdlb\.xml" parser="org.apache.oodt.cas.pushpull.filerestrictions.parsers.DirStructXmlParser"/>
+            </propInfo>
+            <dataInfo stagingArea="[LOGS_HOME]/en/en-tomcat-pdsdlb1" deleteFromServer="no"/>
+        </daemon>
+        <daemon alias="en-tomcat-pdsdlb2" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="yes">
+            <propInfo dir="[REPORT_MGR_HOME]/etc/conf/DirStructXmlParserFiles">
+                <propFiles regExp="en-tomcat-pdsdlb\.xml" parser="org.apache.oodt.cas.pushpull.filerestrictions.parsers.DirStructXmlParser"/>
+            </propInfo>
+            <dataInfo stagingArea="[LOGS_HOME]/en/en-tomcat-pdsdlb2" deleteFromServer="no"/>
+        </daemon>
+        
+        <!-- Rings HTTP -->
+        <daemon alias="rings-http-pds-rings" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="yes">
+            <propInfo dir="[REPORT_MGR_HOME]/etc/conf/DirStructXmlParserFiles">
+                <propFiles regExp="rings-http-pds-rings\.xml" parser="org.apache.oodt.cas.pushpull.filerestrictions.parsers.DirStructXmlParser"/>
+            </propInfo>
+            <dataInfo stagingArea="[LOGS_HOME]/rings/rings-http-pds-rings" deleteFromServer="no"/>
         </daemon>
     </daemons>
     

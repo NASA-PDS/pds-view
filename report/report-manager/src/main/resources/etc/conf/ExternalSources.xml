@@ -16,22 +16,56 @@
   limitations under the License.
 -->
 <sources>
+	<!-- IMG HTTP -->
 	<source host="pdsimg-1.jpl.nasa.gov">
-        <login type="sftp" alias="pdsimg1">
+        <login type="sftp" alias="img-http-pdsimg1">
             <username>jpadams</username>
             <password>password</password>
         </login>
 	</source>   
 	<source host="pdsimg-2.jpl.nasa.gov">
-        <login type="sftp" alias="pdsimg2">
+        <login type="sftp" alias="img-http-pdsimg2">
             <username>jpadams</username>
             <password>password</password>
         </login>
 	</source>   
 	<source host="pdsimg-3.jpl.nasa.gov">
-        <login type="sftp" alias="pdsimg3">
+        <login type="sftp" alias="img-http-pdsimg3">
             <username>jpadams</username>
             <password>password</password>
         </login>
+	</source>
+	
+	<!-- EN HTTP -->
+	<source host="pdsweb1.jpl.nasa.gov">
+		<login type="sftp" alias="en-http-pdsweb1">
+			<username>jpadams</username>
+			<password>password</password>
+		</login>
+	</source>
+	<source host="pdsweb2.jpl.nasa.gov">
+		<login type="sftp" alias="en-http-pdsweb2">
+			<username>jpadams</username>
+			<password>password</password>
+		</login>
+	</source>
+	
+	<!-- EN Tomcat -->
+	<source host="pdsdlb1.jpl.nasa.gov">
+		<login type="sftp" alias="en-tomcat-pdsdlb1">
+			<username>jpadams</username>
+			<password>password</password>
+		</login>
+	</source>
+	<source host="pdsdlb1.jpl.nasa.gov">
+		<login type="sftp" alias="en-tomcat-pdsdlb2">
+			<username>jpadams</username>
+			<password>password</password>
+		</login>
+	</source>
+	
+	<!-- Rings HTTP -->
+	<source host="http://pds-rings.seti.org/met-mhNQwdRPkhJ2-rics">
+		<login type="http" alias="rings-http-pds-rings" />
 	</source>
 </sources>

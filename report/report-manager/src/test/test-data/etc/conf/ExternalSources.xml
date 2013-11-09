@@ -16,78 +16,56 @@
   limitations under the License.
 -->
 <sources>
+	<!-- IMG HTTP -->
 	<source host="pdsimg-1.jpl.nasa.gov">
-        <login type="sftp" alias="pdsimg1">
+        <login type="sftp" alias="img-http-pdsimg1">
             <username>jpadams</username>
-            <password>Ph1ll1es8008</password>
+            <password>password</password>
         </login>
 	</source>   
 	<source host="pdsimg-2.jpl.nasa.gov">
-        <login type="sftp" alias="pdsimg2">
+        <login type="sftp" alias="img-http-pdsimg2">
             <username>jpadams</username>
-            <password>Ph1ll1es8008</password>
+            <password>password</password>
         </login>
 	</source>   
 	<source host="pdsimg-3.jpl.nasa.gov">
-        <login type="sftp" alias="pdsimg3">
+        <login type="sftp" alias="img-http-pdsimg3">
             <username>jpadams</username>
-            <password>Ph1ll1es8008</password>
+            <password>password</password>
         </login>
-	</source>   
-    <!--  source host="polar.ncep.noaa.gov">
-        <login type="ftp" alias="PolarNcepNoaaFtp">
-            <username>anonymous</username>
-            <password>user@host.com</password>
-        </login>
-    </source>    
-    <source host="ftp1.cloudsat.cira.colostate.edu">
-        <login type="ftp" alias="CloudSATFtp">
-            <username></username>
-            <password></password>
-            <cdTestDir>2B-CWC-RO.R04/2007/304</cdTestDir>
-            <maxConn>5</maxConn>
-        </login>
-    </source>
-    <source host="ftp.class.noaa.gov">
-        <login type="ftp" alias="ClassFtp">
-            <username>anonymous</username>
-            <password>user@host.com</password>
-        </login>
-    </source>
-    <source host="localhost">
-        <login type="file" alias="localhost">
-            <username>none</username>
-            <password>none</password>
-        </login>
-    </source>
-    <source host="ftpprd.ncep.noaa.gov">
-        <login type="ftp" alias="GfsFtp">
-            <username>anonymous</username>
-            <password>user@host.com</password>
-        </login>
-    </source>
-    <source host="e4ftl01u.ecs.nasa.gov">
-        <login type="ftp" alias="ModisFtp">
-            <username>anonymous</username>
-            <password>user@host.com</password>
-        </login>
-    </source>
-    <source host="airscal2u.ecs.nasa.gov">
-        <login type="ftp" alias="GdaacFtp">
-            <username>anonymous</username>
-            <password>user@host.com</password>
-        </login>
-    </source>
-    <source host="acdisc.gsfc.nasa.gov">
-        <login type="ftp" alias="AcdiscGsfcFtp">
-            <username>anonymous</username>
-            <password>user@host.com</password>
-        </login>
-    </source>
-    <source host="www.signal42.com">
-        <login type="http" alias="Signal42ApacheMirrorHttp">
-            <username>none</username>
-            <password>none</password>
-        </login>
-    </source -->
+	</source>
+	
+	<!-- EN HTTP -->
+	<source host="pdsweb1.jpl.nasa.gov">
+		<login type="sftp" alias="en-http-pdsweb1">
+			<username>jpadams</username>
+			<password>password</password>
+		</login>
+	</source>
+	<source host="pdsweb2.jpl.nasa.gov">
+		<login type="sftp" alias="en-http-pdsweb2">
+			<username>jpadams</username>
+			<password>password</password>
+		</login>
+	</source>
+	
+	<!-- EN Tomcat -->
+	<source host="pdsdlb1.jpl.nasa.gov">
+		<login type="sftp" alias="en-tomcat-pdsdlb1">
+			<username>jpadams</username>
+			<password>password</password>
+		</login>
+	</source>
+	<source host="pdsdlb1.jpl.nasa.gov">
+		<login type="sftp" alias="en-tomcat-pdsdlb2">
+			<username>jpadams</username>
+			<password>password</password>
+		</login>
+	</source>
+	
+	<!-- Rings HTTP -->
+	<source host="http://pds-rings.seti.org/met-mhNQwdRPkhJ2-rics">
+		<login type="http" alias="rings-http-pds-rings" />
+	</source>
 </sources>
