@@ -76,6 +76,8 @@ usage: report-mgr [options]
         <p>This section demonstrates how to configure and execute the tool to pull logs from remote sites. The examples below execute the tool via the batch/shell script.
         </p>
 
+	<p><b>NOTE:</b>All machines using SFTP to retrieve logs requires a user to log in to the machine by hand to accept certificate prior to running the software. If this is not done beforehand, the software will fail.</p>
+
 	<p>First, you will need to configure the Apache PushPull software according to the destinations you want to pull from. The initial installation should contain configurations that should not require much modification.  However, there are a couple environment variables that need to be exported or the configurations need to be modified.</p>
 
 	<p>The following environment variables need to be added to the environment.  These examples assume the software is installated at <i>/usr/local/report-manager</i>:</p>
