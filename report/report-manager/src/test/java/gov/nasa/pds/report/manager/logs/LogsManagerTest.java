@@ -26,6 +26,7 @@ import gov.nasa.pds.report.manager.logs.pushpull.PushPullTest;
 import gov.nasa.pds.report.manager.rules.PDSTest.SingleTestRule;
 import gov.nasa.pds.report.manager.rules.ReportManagerTest;
 import gov.nasa.pds.report.manager.util.Utility;
+import gov.nasa.pds.report.update.util.TestUtility;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -58,6 +59,8 @@ public class LogsManagerTest extends ReportManagerTest {
 	public static void oneTimeSetUp() {
 		//logsMgr = new LogsManager(9999, TestConstants.CAS_PP_HOME + "etc/push_pull_framework.properties", TestConstants.CAS_PP_HOME + "etc/conf/RemoteSpecs.xml");
 		try {
+			TestUtility.reportMgrSetUp();
+			
 			logsMgr = new LogsManager(9999, 
 					new File(Utility.getAbsolutePath(TestConstants.PROPERTIES_TEST_FILE_PATH)), 
 					new File(Utility.getAbsolutePath(TestConstants.SITES_TEST_FILE_PATH)));
@@ -71,7 +74,7 @@ public class LogsManagerTest extends ReportManagerTest {
 	
 	@AfterClass
 	public static void oneTimeTearDown() throws IOException {
-		FileUtils.forceDelete(new File(Utility.getAbsolutePath(TestConstants.TEST_DUMP_RELATIVE)));
+		TestUtility.reportMgrTearDown();
 	}
 	
 	@Before

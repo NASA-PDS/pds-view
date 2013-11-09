@@ -56,10 +56,6 @@ public class PushPullTest extends PDSTest {
 	
 	@BeforeClass
 	public static void oneTimeSetUp() throws IOException, LogsManagerException {
-
-		
-		//Utility.replaceStringInFile("\\[CAS_PP_RESOURCES\\]", Utility.getAbsolutePath(TestConstants.CAS_PP_RESOURCES), propertiesOps, temp);
-		//Utility.replaceStringInFile("\\[CAS_PP_HOME\\]", Utility.getAbsolutePath(TestConstants.CAS_PP_HOME), temp, propertiesTest);
 		TestUtility.reportMgrSetUp();
 		
 		LogsManager mgr = new LogsManager();

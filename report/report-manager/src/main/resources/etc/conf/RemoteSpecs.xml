@@ -57,7 +57,7 @@
         </daemon>
         
         <!-- Rings HTTP -->
-        <daemon alias="rings-http-pds-rings" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="yes">
+        <daemon alias="rings-http-pds-rings" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="no">
             <propInfo dir="[REPORT_MGR_HOME]/etc/conf/DirStructXmlParserFiles">
                 <propFiles regExp="rings-http-pds-rings\.xml" parser="org.apache.oodt.cas.pushpull.filerestrictions.parsers.DirStructXmlParser"/>
             </propInfo>

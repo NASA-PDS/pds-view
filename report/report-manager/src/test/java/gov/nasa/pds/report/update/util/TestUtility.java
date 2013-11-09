@@ -49,6 +49,7 @@ public class TestUtility {
 	
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("\\[REPORT_MGR_HOME\\]", Utility.getAbsolutePath(TestConstants.TEST_DIR_RELATIVE));
+		map.put("\\[LOGS_HOME\\]", Utility.getAbsolutePath(TestConstants.TEST_DUMP_RELATIVE + "logs"));
 		
 		FileUtils.copyFile(sitesOps, tempFile1);
 		for (String key : map.keySet()) {

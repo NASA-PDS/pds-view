@@ -16,8 +16,7 @@
   limitations under the License.
 -->
 <root>
-    <dirstruct starting_path="/var/log/httpd">
-    <nofiles />
-    	<!-- file name="access_log\.2013-11-01.*"/-->
+    <dirstruct starting_path="/">
+    	<file name="WeekOf-2013-10-06\.tar\.gz"/>
     </dirstruct>
 </root>

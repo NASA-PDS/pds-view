@@ -65,7 +65,10 @@
 	</source>
 	
 	<!-- Rings HTTP -->
-	<source host="http://pds-rings.seti.org/met-mhNQwdRPkhJ2-rics">
-		<login type="http" alias="rings-http-pds-rings" />
+	<source host="pds-rings.seti.org">
+		<login type="http" alias="rings-http-pds-rings">
+			<username>none</username>
+			<password>none</password>
+		</login>
 	</source>
 </sources>

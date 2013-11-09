@@ -16,8 +16,7 @@
   limitations under the License.
 -->
 <root>
-    <dirstruct starting_path="/var/log/httpd">
-    <nofiles />
-    	<!-- file name="access_log\.2013-11-01.*"/-->
+    <dirstruct starting_path="/usr/local/httpd/apache2/logs">
+    	<file name="access_log\.2013-11-0[1-9].*"/>
     </dirstruct>
 </root>
