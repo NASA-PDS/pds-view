@@ -729,12 +729,19 @@ public class CatalogRegistryIngester {
 					}
 				}						
 			}
-			else {
-				//System.out.println("aValue = " + aValue + "    valueToMatch = " + valueToMatch);
-				if (aValue.contains(valueToMatch.toLowerCase())) {
+			else {				
+				boolean okToAdd = false;
+				if (associationType.equalsIgnoreCase("instrument_host_ref"))
+					okToAdd = aValue.endsWith(valueToMatch.toLowerCase());
+				else 
+					okToAdd = aValue.contains(valueToMatch.toLowerCase());
+				
+				//if (aValue.endsWith(valueToMatch.toLowerCase())) {
+				if (okToAdd) {
 					String tmpVer = "";
 					if (getExtrinsic(aValue)!=null) {
 						tmpVer = getExtrinsic(aValue).getVersionName();
+						
 						if (!Utility.valueExists(aValue+"::"+tmpVer, values)) {
 							values.add(aValue+"::" + tmpVer);
 						}
@@ -743,8 +750,9 @@ public class CatalogRegistryIngester {
 						//don't add all instrument_host_ref for instrument and data_set objects.
 						if (!(key.equalsIgnoreCase("instrument_host_id") && 
 								(catObj.getCatObjType().equalsIgnoreCase("instrument") ||
-										catObj.getCatObjType().equalsIgnoreCase("data_set")))) {
+								 catObj.getCatObjType().equalsIgnoreCase("data_set")))) {
 							if (!Utility.valueExists(aValue, values)) {
+								//System.out.println("adding to data set object aValue = " + aValue + "    valueToMatch = " + valueToMatch);
 								values.add(aValue); 
 							}
 						}
