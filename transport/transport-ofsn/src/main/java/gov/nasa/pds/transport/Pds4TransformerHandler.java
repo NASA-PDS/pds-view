@@ -2,6 +2,7 @@ package gov.nasa.pds.transport;
 
 import gov.nasa.pds.transform.TransformException;
 import gov.nasa.pds.transform.product.Pds4ImageTransformer;
+import gov.nasa.pds.transform.product.ProductTransformer;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -15,7 +16,7 @@ import org.apache.oodt.product.handlers.ofsn.OFSNGetHandler;
 
 public class Pds4TransformerHandler implements OFSNGetHandler {
 	
-	Pds4ImageTransformer transformer = new Pds4ImageTransformer();
+	ProductTransformer transformer = new Pds4ImageTransformer();
 	
 	private final static String CACHE_DIR = "cacheDir";
 	
