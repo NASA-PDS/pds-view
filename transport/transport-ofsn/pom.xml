@@ -203,9 +203,8 @@
     <dependency>
       <groupId>gov.nasa.pds.2010.preparation</groupId>
       <artifactId>transform</artifactId>
-      <version>0.2.0</version>
+      <version>0.3.0-dev</version>
       <type>jar</type>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
 
