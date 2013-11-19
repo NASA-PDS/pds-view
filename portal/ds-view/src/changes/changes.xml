@@ -23,6 +23,9 @@
   </properties>
   <body>
     <release version="2.3.0" date="TBD" description="TBD">
+      <action dev="hyunlee" type="fix" issue="PDS-226">
+         Fixed to replace " " char to "_" char of the targetLid in viewTargetProfile.jsp.    
+      </action>
       <action dev="hyunlee" type="update" issue="PDS-214">
          Moved the "Resources" field up the page so that it is just under the "Data Set Abstract" field and rename it to "Search/Access Data".        
       </action>
