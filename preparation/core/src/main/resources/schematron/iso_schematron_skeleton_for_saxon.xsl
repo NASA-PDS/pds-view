@@ -1,66 +1,66 @@
 <?xml version="1.0"?><?xar XSLT?>
 
-<!-- 
+<!--
    OVERVIEW
-   
+
    ASCC/Schematron.com Skeleton Module for ISO Schematron (for XSLT2 systems)
-   
+
    ISO Schematron is a language for making assertion about the presence or absense
    of patterns in XML documents. It is typically used for as a schema language, or
    to augment existing schema languages, and to check business rules. It is very
    powerful, yet quite simple: a developer only need know XPath and about five other
    elements.
-   
+
    This is an open source implementation of ISO Schematron in XSLT. Although ISO does
    not allow reference implementations which might compete with the text of the
    standard, this code has been compiled by Rick Jelliffe, inventor of Schematron
-   and editor of the ISO standard; so developers can certainly use it as an 
-   unofficial reference implementation for clarification. 
-   
-   This implementation is based on one by Oliver Becker. API documentation is 
+   and editor of the ISO standard; so developers can certainly use it as an
+   unofficial reference implementation for clarification.
+
+   This implementation is based on one by Oliver Becker. API documentation is
    available separately; try www.schematron.com for this. Funding for this
    stylesheet over the years has come from Topologi Pty. Ltd., Geotempo Ltd.,
    and ASCC, Tapei.
-   
+
    There are two versions of this skeleton: one is tailored for XSLT1 processors
    and the other is tailored for XSLT2 processors. Future versions of the
    XSLT2 skeleton may support more features than that the XSLT 1 skeleton.
 -->
 <!--
    TIPS
-      
+
    A tip for new users of Schematron: make your assertions contain positive messages
    about what is expected, rather than error messages. For example, use the form
-   "An X should have a Y, because Z". 
-   
+   "An X should have a Y, because Z".
+
    Another tip is that Schematron provides an
-   element <iso:ns> for declaring the namespaces and prefixes used in Xpaths in 
+   element <iso:ns> for declaring the namespaces and prefixes used in Xpaths in
    attribute values; it does not extend the XML Namespaces mechanism: if a name
    in an XPath has a prefix, there must be an <iso:ns> element for that prefix; if
    a name in an XPath does not have a prefix, it is always in no namespace.
-   
+
    A tip for implementers of Schematron, either using this API or re-implementing it:
    make the value of the diagnostics, flags and richer features available if possible;
    Schematron has many of the optional richer features which, if implemented, provide
    a compelling alternative approach to validation and business-rules checking compared
-   to other schema languages and programs. 
-   
+   to other schema languages and programs.
+
    If you create your own meta-stylesheet to override this one, it is a
    good idea to have both in the same directory and to run the stylesheet
    from that directory, as many XSLT implementations have ideosyncratic
    handling of URLs: keep it simple.
 -->
- 
+
 
 <!--
   INVOCATION INFORMATION
-  
+
   The following parameters are available
-  
+
     phase           NMTOKEN | "#ALL" (default) Select the phase for validation
-    allow-foreign   "true" | "false" (default)   Pass non-Schematron elements to the generated stylesheet 
-    sch.exslt.imports semi-colon delimited string of filenames for some EXSLT implementations  
-    message-newline "true" (default) | "false"   Generate an extra newline at the end of messages 
+    allow-foreign   "true" | "false" (default)   Pass non-Schematron elements to the generated stylesheet
+    sch.exslt.imports semi-colon delimited string of filenames for some EXSLT implementations
+    message-newline "true" (default) | "false"   Generate an extra newline at the end of messages
     debug	    "true" | "false" (default)  Debug mode lets compilation continue despite problems
     attributes "true" | "false"  (Autodetecting) Use only when the schema has no attributes as the context nodes
     only-child-elements "true" | "false" (Autodetecting) Use only when the schema has no comments
@@ -68,127 +68,127 @@
     langCode		ISO language code      language for skeleton errors, if available
     terminate= yes | no | true | false | assert  Terminate on the first failed assertion or successful report
                                          Note whether any output at all is generated depends on the XSLT implementation.
-                                         
+
   The following parameters can be specified as Schematron variables in diagnostics, assertions and so on.
-    fileNameParameter string	  
-    fileDirParameter string				
+    fileNameParameter string
+    fileDirParameter string
     archiveNameParameter string	  In case of ZIP files
-    archiveDirParameter string	  In case of ZIP files	 
-    
- Experimental: USE AT YOUR OWN RISK   
+    archiveDirParameter string	  In case of ZIP files
+
+ Experimental: USE AT YOUR OWN RISK
     visit-text "true" "false"   Also visist text nodes for context. WARNING: NON_STARDARD.
     select-contents '' | 'key' | '//'   Select different implementation strategies
- 
+
  Conventions: Meta-stylesheets that override this may use the following parameters
     generate-paths=true|false   generate the @location attribute with XPaths
     full-path-notation = 1|2|3  select the notation for the full paths: 1=computer, 2=human, 3=obsolescent
     diagnose= yes | no    Add the diagnostics to the assertion test in reports
- 
+
 -->
 
-<!-- 
+<!--
   XSLT VERSION SUPPORT
 
   XSLT 1:
-     A schema using the standard XSLT 1 query binding will have a /schema/@queryBinding='xslt' or 
+     A schema using the standard XSLT 1 query binding will have a /schema/@queryBinding='xslt' or
      nothing.
 
-       * Note: XT does not implement key() and will die if given it. 
+       * Note: XT does not implement key() and will die if given it.
        * Add all formal parameters to default templates
        * Fix missing apply-templates from process-ns and add params back
 
   EXSLT:  Experimental support
      A schema using the EXSLT query binding will have a /schema/@queryBinding='exslt'.
-     It is built on XSLT 1. After experience is gained, this binding is expected to be 
+     It is built on XSLT 1. After experience is gained, this binding is expected to be
      formalized as part of ISO Schematron, which currently reserves the "exslt" name for this purpose.
 
      Some EXSLT engines have the extra functions built-in. For these, there is no need to
      provide library locations. For engines that require the functions, either hard code
      them in this script or provide them on the command-line argument.
-      
+
   XSLT 2:   Experimental support
      A schema using the XSLT 2 query binding will have a /schema/@queryBinding='xslt2'.
      This binding is expected to be formalized as part of ISO
      Schematron, which currently reserves the "xslt2" name for this purpose.
-     The xsl:import-schema, xsl:key and xsl:function elements are allowed as top elements. 
-     
+     The xsl:import-schema, xsl:key and xsl:function elements are allowed as top elements.
+
   XPATH:    Experimental support
      A schema using the XPATH query binding will have a /schema/@queryBinding='xpath'.
      It can run with XSLT 1 and is a strict superset of default ISO Schematron. After
      experience is gained, this binding is expected to be formalized as part of ISO
      Schematron, which currently reserves the "xpath" name for this purpose.
 
-     The intent of this query binding is to support minimal non-XSLT implementations of 
+     The intent of this query binding is to support minimal non-XSLT implementations of
      Schematron that use simple XPath APIs. These not only have fewer functions available
-     than the XSLT version of XPath, but some of them do not support variables. 
+     than the XSLT version of XPath, but some of them do not support variables.
      Consequently, in this binding, the <let> element and command-line variables passed
-     to the schema should not be used? 
+     to the schema should not be used?
      The xsl:import-schema element is not allowed.
-     
+
 -->
 <!--
    PROCESS INFORMATION
-   
-   This stylesheet compiles a Schematron schema (*.sch) into XSLT code (*.xsl). 
+
+   This stylesheet compiles a Schematron schema (*.sch) into XSLT code (*.xsl).
    The generated XSLT code can then be run against an XML file (*.xml, etc) and
    will produce validation results.
-   
-   The output of validation results is performed using named templates (process-*). 
-   These can be overridden easily by making a new XSLT stylesheet that imports this 
+
+   The output of validation results is performed using named templates (process-*).
+   These can be overridden easily by making a new XSLT stylesheet that imports this
    stylesheet but has its own version of the relevant process-* templates. Several
    of these invoking stylesheets are available: "iso_svrl.xsl", for example generates
    ISO Schematron Validation Report Language format results.
-   
+
    In this version of the stylesheet, the ISO feature called "abstract patterns" is
    implemented using macro processing: a prior XSLT stage to which converts uses
    of abstract patterns into normal patterns. If you do not use abstract patterns,
    it is not necessary to preprocess the schema.
-   
+
    To summarize, a basic process flow for some commandline processor is like this:
      XSLT -input=xxx.sch  -output=xxx.xsl  -stylesheet=iso_schematron_skeleton.xsl
      XSLT -input=document.xml  -output=xxx-document.results  -stylesheet=xxx.xsl
-   
+
    iso_svrl.xslt is an implementation of Schematron that can use this skeleton and
    generate ISO SVRL reports. A process flow for some commandline processor would
    be like this:
      XSLT -input=xxx.sch  -output=xxx.xsl  -stylesheet=iso_svrl.xsl
      XSLT -input=document.xml  -output=xxx-document.results  -stylesheet=xxx.xsl
-     
+
    It is not impossible that ultimately a third stage, to handle macro-preprocessing
    and inclusion, might be necessary. (The trade-off is in making this XSLT more
    complex compared to making the outer process more complex.)
-             
-  This version has been developed to work with 
+
+  This version has been developed to work with
      Saxon 9
   For versions for XSLT 1 processors, see www.xml.com
 
- Please note that if you are using SAXON and JAXP, then you should use 
+ Please note that if you are using SAXON and JAXP, then you should use
   System.setProperty("javax.xml.transform.TransformerFactory",
                           "net.sf.saxon.TransformerFactoryImpl");
- rather than 
+ rather than
   System.setProperty("javax.xml.xpath.TransformerFactory",
                            "net.sf.saxon.TransformerFactoryImpl");
  which is does not work, at least for the versions of SAXON we tried.
 -->
 <!--
  LEGAL INFORMATION
- 
+
  Copyright (c) 2000-2010 Rick Jelliffe and Academia Sinica Computing Center, Taiwan
 
- This software is provided 'as-is', without any express or implied warranty. 
- In no event will the authors be held liable for any damages arising from 
+ This software is provided 'as-is', without any express or implied warranty.
+ In no event will the authors be held liable for any damages arising from
  the use of this software.
 
- Permission is granted to anyone to use this software for any purpose, 
+ Permission is granted to anyone to use this software for any purpose,
  including commercial applications, and to alter it and redistribute it freely,
  subject to the following restrictions:
 
  1. The origin of this software must not be misrepresented; you must not claim
- that you wrote the original software. If you use this software in a product, 
- an acknowledgment in the product documentation would be appreciated but is 
+ that you wrote the original software. If you use this software in a product,
+ an acknowledgment in the product documentation would be appreciated but is
  not required.
 
- 2. Altered source versions must be plainly marked as such, and must not be 
+ 2. Altered source versions must be plainly marked as such, and must not be
  misrepresented as being the original software.
 
  3. This notice may not be removed or altered from any source distribution.
@@ -197,61 +197,61 @@
   VERSION INFORMATION
      2010-04-14
      	* RJ Reorder call-template in exslt case only, report by BD
-        * Add command line parameter 'terminate' which will terminate on first failed 
-        assert and (optionally) successful report. 
+        * Add command line parameter 'terminate' which will terminate on first failed
+        assert and (optionally) successful report.
      2010-01-24
-     	* RJ Allow let elements to have direct content instead of @value 
-     2009-08020 
+     	* RJ Allow let elements to have direct content instead of @value
+     2009-08020
         * RJ Give better scoping to resolution of abstract rules
      2009-07-07
      	* RJ Fix up warning on looking for @* on root  TODO CHECK!!!!
-     2009-05-10 
+     2009-05-10
      	* RJ Fix up incorrect use of tunnel
-     2009-02-25 
+     2009-02-25
         * RJ Fix up variable names so none are used twice in same template
       2009-02-19
-        * RJ add experimental support for pattern/@documents 
-        This takes an XPath that returns a sequence of strings, treats them as 
+        * RJ add experimental support for pattern/@documents
+        This takes an XPath that returns a sequence of strings, treats them as
         relative URI references, and goes through these. It may need to be expanded
         to allow absolute paths.
     2008-09-19 RJ
-        * Add mode schematron-select-full-path and param full-path-notation 
-        
+        * Add mode schematron-select-full-path and param full-path-notation
+
    2008-08-19
    		* RJ Add experimental property element.
    		This acts like the diagnostics element. An attribute rule/@properties,
    		assert/@properties and report/@properties can contain a list of ids
    		which reference a /schema/proporties/property/@id. This is a property
    		which will be carried over to the output, eg SVRL. It can have @name,
-   		and the value is @value or the contents. Properties on rules are 
+   		and the value is @value or the contents. Properties on rules are
    		properties regardless of validation: they should apply to the subject
    		element. Properties on asserts and reports only make it through in the
    		negative case, at the moment, so they are really just a place to hold
    		structured info, eg. for diagnostics. The properties mechanism addresses
    		a bother with Schematron, that you have to post-process the document to
-    	get any kind of structured data that might be nice in the output report. 
-   		 
-   		
+    	get any kind of structured data that might be nice in the output report.
+
+
    2008-08-14
-   		* RJ move all messages into localization strings, add langCode parameter, 
+   		* RJ move all messages into localization strings, add langCode parameter,
    		named template to call external file in same directory as this xslt.
    		The file should be called sch-message-$langCode.xhtml ($langCode example "en")
-  
+
    2008-08-11
    		* TT report/@flag was missing
    2008-08-06
    		* TT Top-level lets need to be implemented using xsl:param not xsl:variable
    		* TT xsl:param/@select must have XPath or not be specified
-   		
-   2008-08-04 
+
+   2008-08-04
    		* RJ add saxon namespace to output to allow extension functions
    Version: 2008-07-28
    		* KH schematron-get-full-path-3 has [index] even on top step
    Version: 2008-07-24
-   		* RJ clean out commented out namespace handling code 
+   		* RJ clean out commented out namespace handling code
    		* RJ allow schema/@queryBinding='xpath2' and warn if variables are
    		used
-   		
+
    Version: 2008-07-14 update for XSLT2 and inclusion experiments
    		* RJ Clean up zero-length fragment test on include
    		* RJ Add experimental support for include containers
@@ -270,21 +270,21 @@
        * RJ fix FULL-PATH for attributes
 
    Version: 2007-07-19
-     Accept most changes in David Carlisle's fork, but continue as XSLT1 script: 
+     Accept most changes in David Carlisle's fork, but continue as XSLT1 script:
     	http://dpcarlisle.blogspot.com/search/label/schematron
     	* DPC Remove "optimize" parameter
     	* DPC Add autodetecting optimize parameter attribute to skip checking attribute
     	context
-    	* DPC Add autodetecting optimize parameter only-child-elements turn off checking for 
+    	* DPC Add autodetecting optimize parameter only-child-elements turn off checking for
     	comments and PIs
     	* DPC (Experimental: NON_STANDARD DANGER!) Add param visit-text to viist text
-    	nodes too for context 
+    	nodes too for context
     	* DPC Fix inclusion syntax to allow #
     	* DPC Priorities count up from 1000 not down from 4000 to allow more rules
-        * RJ Add new template for titles of schemas, with existing behaviour.  
+        * RJ Add new template for titles of schemas, with existing behaviour.
         Override process-schema-title for custom processing of title
-    		
-    
+
+
    Version: 2007-04-04
    	* RJ debug mode param
 	* RJ alter mixed test to only test mixed branches, so the same document
@@ -301,8 +301,8 @@
       	* DC add generate-path-2
       	* DC don't try to apply templates to attribute axis on attribute nodes, to
       	stop SAXON warning.
-      	* RJ improve reporting of typos 
-   
+      	* RJ improve reporting of typos
+
    Version: 2007-02-08
    		* KH Schematron fullpath implementation: @* handled twice and / missing
    		* KH Change stylesheetbody from named template to mode to allow implementers more flexibility.
@@ -316,19 +316,19 @@
  		* FG add ref and commented code from FG's page on namespaces
  		* Start adding normalize-space() to parameter code
  		* Add a space between diagnostics
-   		   		 
+
    Version: 2007-01-22
-   	* DP change = ($start) to = $start and =($phase) to =$phase 
+   	* DP change = ($start) to = $start and =($phase) to =$phase
    	to run under Saxon 8.8j
 	* FG better title section using ( @id | iso:title)[last()]
 	* Default query language binding is "xslt" not "xslt1"
-  
+
    Version: 2007-01-19
    		* Simplify message newline code
-   		* Remove termination and xpath appending to message options: 
+   		* Remove termination and xpath appending to message options:
    		   factor out as  iso_schematron_terminator.xsl
    		* Comment out XSLT2 namespace fix temporarily
-  
+
    Version: 2007-01-18 (First beta candidate for comment)
           * DC remove xml:space="preserve"
           * FG improve comment on import statement
@@ -337,11 +337,11 @@
              by allowing it and warning as lets are found
           * Be strict about queryBinding spelling errors
           * Extra comments on the different queryBindings
-          * KH Add option "message-paths" to generate XPath from output 
+          * KH Add option "message-paths" to generate XPath from output
           * KH Add option "terminate" to halt with an error after the first assertion
           * KH refactor paths in schematron-full-path
           * Improve (?) namespace handling: no dummy attributes for prefix "xsl" generated
-   
+
    Version: 2007-01-15
           * FG fix for calling templates
           * Add formal parameters to default templates: may help XSLT 2
@@ -359,15 +359,15 @@
            * Add command-line parameter allow-foreign (true|false) to suppress
             warnings one foreign elements and pass them through to the generated
             stylesheet
-           * remove legacy templates for the old ASCC namespace and no namespace, 
+           * remove legacy templates for the old ASCC namespace and no namespace,
               and use an import statement instead. Much cleaner now!
            * patterns use @id not @name
            * titles can contain sub-elements
-           * start change iso:rule to allow attributes, PIs and comments 
-           * the default process-* for inline elements add a leading and trailing 
+           * start change iso:rule to allow attributes, PIs and comments
+           * the default process-* for inline elements add a leading and trailing
              space, to reduce the chance of concatenation.
            * add comments to make the generated code clearer
-           
+
    Version:2006-11-07 (ISO: first release private to schematron-love-in maillist for review)
            * Duplicate pattern templates, for handling ISO namespace
            * Add priority onto default and paragraph templates
@@ -378,21 +378,21 @@
            * Preliminary XSLT2 and EXSLT support
 	       * Refactor iso:schema for clarity
 
-    Version: 2003-05-26 
-    	    * Fix bug with key 
+    Version: 2003-05-26
+    	    * Fix bug with key
     Version: 2003-04-16
     	   * handle 1.6 let expressions
     	   * make key use XSLT names, and allow anywhere
     Version: 2001-06-13
            * same skeleton now supports namespace or no namespace
-           * parameters to handlers updated for all 1.5 attributes 
+           * parameters to handlers updated for all 1.5 attributes
            * diagnostic hints supported: command-line option diagnose=yes|no
            * phases supported: command-line option phase=#ALL|...
            * abstract rules
-           * compile-time error messages  
+           * compile-time error messages
 	   * add utility routine generate-id-from-path
-          
-    Contributors: Rick Jelliffe (original), Oliver Becker (architecture, XSLT2), 
+
+    Contributors: Rick Jelliffe (original), Oliver Becker (architecture, XSLT2),
              Miloslav Nic (diagnostic, phase, options), Ludwig Svenonius (abstract)
              Uche Ogbuji (misc. bug fixes), Jim Ancona (SAXON workaround),
 	 	     Francis Norton (generate-id-from-path), Robert Leftwich, Bryan Rasmussen,
@@ -400,15 +400,15 @@
              context), Benoit Maisonny (attribute context), John Dumps (process-message newline),
              Cliff Stanford (diagnostics and other newlines)
 
-    
-      
-    
+
+
+
     KNOWN TYPICAL LIMITATIONS:
       * Don't use <iso:ns prefix="xsl" .../> with a namespace other than the standard
-      XSLT one. This would be a bizarre thing to do anyway. 
+      XSLT one. This would be a bizarre thing to do anyway.
       * Don't use other prefixes for the XSLT namespace either; some implementations will
       not handle it correctly.
-     
+
      EXTENSIONS:
       ISO Schematron is designed as a framework with some standard query language
       bindings. If you need to support other features, please do so safely by making
@@ -422,21 +422,21 @@
 
 
 
-<xsl:stylesheet  
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-	xmlns:axsl="http://www.w3.org/1999/XSL/TransformAlias" 
+<xsl:stylesheet
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:axsl="http://www.w3.org/1999/XSL/TransformAlias"
     xmlns:schold="http://www.ascc.net/xml/schematron"
-    xmlns:iso="http://purl.oclc.org/dsdl/schematron" 
-    xmlns:exsl="http://exslt.org/common" 
-    xmlns:xhtml="http://www.w3.org/1999/xhtml" 
+    xmlns:iso="http://purl.oclc.org/dsdl/schematron"
+    xmlns:exsl="http://exslt.org/common"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     extension-element-prefixes="exsl"
     version="2.0"
 	 >
-<!-- This program implements ISO Schematron, except for abstract patterns 
+<!-- This program implements ISO Schematron, except for abstract patterns
 which require a preprocess.
 -->
-  
+
 
 <xsl:namespace-alias stylesheet-prefix="axsl" result-prefix="xsl"/>
 
@@ -447,7 +447,7 @@ which require a preprocess.
 
 
 <xsl:param name="phase">
-   <xsl:choose>   
+   <xsl:choose>
     <xsl:when test="//iso:schema/@defaultPhase">
       <xsl:value-of select="//iso:schema/@defaultPhase"/>
     </xsl:when>
@@ -466,7 +466,7 @@ which require a preprocess.
 -->
 <xsl:param name="attributes">
   <xsl:choose>
-    <xsl:when test="//iso:rule[contains(@context,'@') or contains(@context,'attribute')]">true</xsl:when>
+    <xsl:when test="//iso:rule[contains(@context,'@') or contains(@context,'attribute')]">false</xsl:when>
     <xsl:otherwise>false</xsl:otherwise>
   </xsl:choose>
 </xsl:param>
@@ -501,11 +501,11 @@ which require a preprocess.
   If the params are set explictly the above may be used, and also either if
       @*
       @*|node()
-   in all cases the result may not be equivalent, for example if you specify no attributes and the schema 
+   in all cases the result may not be equivalent, for example if you specify no attributes and the schema
    does have attribute contexts they will be silently ignored.
 
   after testing it turns out that
-  node()[not(self::text())] is slower in saxon than *|comment()|processing-instruction() 
+  node()[not(self::text())] is slower in saxon than *|comment()|processing-instruction()
   which I find a bit surprising but anyway I'll use the longr faster version.
 -->
 <xsl:variable name="context-xpath">
@@ -517,7 +517,7 @@ which require a preprocess.
   </xsl:choose>
 </xsl:variable>
 
-<!-- DPC if this is set to 
+<!-- DPC if this is set to
     '' use recursive templates to iterate over document tree,
     'key' select  all contexts with a key rather than walking the tree explictly in each mode
     '//' select all contexts with // a key rather than walking the tree explictly in each mode (XSLT2 only)
@@ -541,9 +541,9 @@ which require a preprocess.
 <!-- Simple namespace check -->
 <xsl:template match="/">
     <xsl:if  test="//schold:*[ancestor::iso:* or descendant::iso:*]">
-    
+
 	<xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">1</xsl:with-param></xsl:call-template></xsl:message>
- 
+
     </xsl:if>
 
     <xsl:apply-templates />
@@ -557,7 +557,7 @@ which require a preprocess.
 
 <!-- SCHEMA -->
 <!-- Default uses XSLT 1 -->
-<xsl:template match="iso:schema[not(@queryBinding) or @queryBinding='xslt' 
+<xsl:template match="iso:schema[not(@queryBinding) or @queryBinding='xslt'
      or @queryBinding='xslt1' or @queryBinding='XSLT' or @queryBinding='XSLT1'
      or @queryBinding='xpath']">
      <xsl:if test="
@@ -565,12 +565,12 @@ which require a preprocess.
 	     <xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">2</xsl:with-param></xsl:call-template></xsl:message>
 	</xsl:if>
 	<axsl:stylesheet>
-	    <xsl:apply-templates 
+	    <xsl:apply-templates
 		select="iso:ns" />
 
 	    <!-- Handle the namespaces before the version attribute: reported to help SAXON -->
 	    <xsl:attribute name="version">1.0</xsl:attribute>
-	    
+
 		<xsl:apply-templates select="." mode="stylesheetbody"/>
 		<!-- was xsl:call-template name="stylesheetbody"/ -->
 	</axsl:stylesheet>
@@ -589,31 +589,31 @@ which require a preprocess.
    		xmlns:set="http://exslt.org/sets"
    		xmlns:str="http://exslt.org/strings"
    		extension-element-prefixes="date dyn exsl math random regexp set str" >
-	
+
         <xsl:apply-templates
 		select="iso:ns" />
 	    <!-- Handle the namespaces before the version attribute: reported to help SAXON -->
 	    <xsl:attribute name="version">1.0</xsl:attribute>
-	    
+
 	    <xsl:apply-templates select="." mode="stylesheetbody"/>
 		<!-- was xsl:call-template name="stylesheetbody"/ -->
 	</axsl:stylesheet>
 </xsl:template>
 
 <!-- Using XSLT 2 -->
-<xsl:template 
-	match="iso:schema[@queryBinding='xslt2' or @queryBinding ='xpath2']" 
+<xsl:template
+	match="iso:schema[@queryBinding='xslt2' or @queryBinding ='xpath2']"
 	priority="10">
 	<axsl:stylesheet
-	   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-	   xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-	   xmlns:saxon="http://saxon.sf.net/" 
+	   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	   xmlns:saxon="http://saxon.sf.net/"
 	   >
-        <xsl:apply-templates 
+        <xsl:apply-templates
 		select="iso:ns" />
 	    <!-- Handle the namespaces before the version attribute: reported to help SAXON -->
 	    <xsl:attribute name="version">2.0</xsl:attribute>
-	    
+
 		<xsl:apply-templates select="." mode="stylesheetbody"/>
 		<!-- was xsl:call-template name="stylesheetbody"/ -->
 	</axsl:stylesheet>
@@ -624,32 +624,32 @@ which require a preprocess.
 <xsl:template match="iso:schema" priority="-1">
 	<xsl:message terminate="yes" ><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">3a</xsl:with-param></xsl:call-template>
 	<xsl:value-of select="@queryBinding"/>
-	<xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">3b</xsl:with-param></xsl:call-template></xsl:message>        
+	<xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">3b</xsl:with-param></xsl:call-template></xsl:message>
 </xsl:template>
 
 <xsl:template match="*" mode="stylesheetbody">
 	<!--xsl:template name="stylesheetbody"-->
-    <xsl:comment>Implementers: please note that overriding process-prolog or process-root is 
+    <xsl:comment>Implementers: please note that overriding process-prolog or process-root is
     the preferred method for meta-stylesheets to use where possible. </xsl:comment><xsl:text>&#10;</xsl:text>
- 
+
     <!-- These parameters may contain strings with the name and directory of the file being
    validated. For convenience, if the caller only has the information in a single string,
    that string could be put in fileDirParameter. The archives parameters are available
    for ZIP archives.
 	-->
-    
+
     <xsl:call-template name="iso:exslt.add.imports" /> <!-- RJ moved report BH -->
 	<axsl:param name="archiveDirParameter" />
 	<axsl:param name="archiveNameParameter" />
 	<axsl:param name="fileNameParameter"  />
-	<axsl:param name="fileDirParameter" /> 
-	
-       
+	<axsl:param name="fileDirParameter" />
+
+
     <axsl:variable name="document-uri"><axsl:value-of select="document-uri(/)" /></axsl:variable>
     <xsl:text>&#10;&#10;</xsl:text><xsl:comment>PHASES</xsl:comment><xsl:text>&#10;</xsl:text>
-	<xsl:call-template name="handle-phase"/> 
+	<xsl:call-template name="handle-phase"/>
     <xsl:text>&#10;&#10;</xsl:text><xsl:comment>PROLOG</xsl:comment><xsl:text>&#10;</xsl:text>
-	<xsl:call-template name="process-prolog"/> 
+	<xsl:call-template name="process-prolog"/>
     <xsl:text>&#10;&#10;</xsl:text><xsl:comment>XSD TYPES FOR XSLT2</xsl:comment><xsl:text>&#10;</xsl:text>
 	<xsl:apply-templates mode="do-types"   select="xsl:import-schema"/>
     <xsl:text>&#10;&#10;</xsl:text><xsl:comment>KEYS AND FUNCTIONS</xsl:comment><xsl:text>&#10;</xsl:text>
@@ -659,10 +659,10 @@ which require a preprocess.
     <xsl:text>&#10;&#10;</xsl:text><xsl:comment>SCHEMA SETUP</xsl:comment><xsl:text>&#10;</xsl:text>
     <xsl:call-template name="handle-root"/>
     <xsl:text>&#10;&#10;</xsl:text><xsl:comment>SCHEMATRON PATTERNS</xsl:comment><xsl:text>&#10;</xsl:text>
- 
+
 	<xsl:apply-templates select="*[not(self::iso:ns)] " />
 </xsl:template>
- 
+
     <xsl:template name="iso:exslt.add.imports">
       <xsl:param name="imports" select="$sch.exslt.imports"/>
       <xsl:choose>
@@ -703,7 +703,7 @@ which require a preprocess.
    					<!-- Use for humans, but no good for paths unless namespaces are known out-of-band -->
 					<axsl:apply-templates select="." mode="schematron-get-full-path-2"/>
 				</xsl:when>
-   				<xsl:when test=" $full-path-notation = '3' "> 
+   				<xsl:when test=" $full-path-notation = '3' ">
    					<!-- Obsolescent. Use for humans, but no good for paths unless namespaces are known out-of-band -->
 					<axsl:apply-templates select="." mode="schematron-get-full-path-3"/>
 				</xsl:when>
@@ -714,7 +714,7 @@ which require a preprocess.
                 </xsl:otherwise>
 			</xsl:choose>
 		</axsl:template>
-	
+
 
 		<xsl:text>&#10;&#10;</xsl:text>
 		<xsl:comment>MODE: SCHEMATRON-FULL-PATH</xsl:comment><xsl:text>&#10;</xsl:text>
@@ -724,7 +724,7 @@ which require a preprocess.
 			<xsl:choose>
 				<xsl:when test="//iso:schema[@queryBinding='xslt2']">
 					<!-- XSLT2 syntax -->
-			<axsl:text>/</axsl:text>		
+			<axsl:text>/</axsl:text>
 			<axsl:choose>
       			<axsl:when test="namespace-uri()=''"><axsl:value-of select="name()"/></axsl:when>
       			<axsl:otherwise>
@@ -766,13 +766,13 @@ which require a preprocess.
 		  <xsl:text/>[<axsl:value-of select="$p_2"/>]<xsl:text/>
 		</axsl:if>
 		</axsl:otherwise>
-		</axsl:choose> 
+		</axsl:choose>
 		</xsl:otherwise>
 
 	</xsl:choose>
        	 	</axsl:template>
-       	 	
-       	 	
+
+
 		<axsl:template match="@*" mode="schematron-get-full-path">
 			<xsl:choose>
 				<xsl:when test="//iso:schema[@queryBinding='xslt2']">
@@ -804,14 +804,14 @@ which require a preprocess.
 		<axsl:value-of select="namespace-uri()"/>
 		<axsl:text>']</axsl:text>
 		</axsl:otherwise>
-		</axsl:choose> 
+		</axsl:choose>
 
 			</xsl:otherwise>
 			</xsl:choose>
 		</axsl:template>
-	
+
 	<xsl:text>&#10;&#10;</xsl:text>
-	
+
 	<xsl:comment>MODE: SCHEMATRON-FULL-PATH-2</xsl:comment>
 	<xsl:text>&#10;</xsl:text>
 	<xsl:comment>This mode can be used to generate prefixed XPath for humans</xsl:comment>
@@ -838,9 +838,9 @@ which require a preprocess.
 
 
 	<xsl:comment>MODE: SCHEMATRON-FULL-PATH-3</xsl:comment>
-	
+
 	<xsl:text>&#10;</xsl:text>
-	<xsl:comment>This mode can be used to generate prefixed XPath for humans 
+	<xsl:comment>This mode can be used to generate prefixed XPath for humans
 	(Top-level element has index)</xsl:comment>
 	<xsl:text>&#10;</xsl:text>
 	<!--simplify the error messages by using the namespace prefixes of the
@@ -880,7 +880,7 @@ which require a preprocess.
 		</axsl:template>
 		<axsl:template match="processing-instruction()" mode="generate-id-from-path">
 			<axsl:apply-templates select="parent::*" mode="generate-id-from-path"/>
-			<axsl:value-of 
+			<axsl:value-of
 			select="concat('.processing-instruction-', 1+count(preceding-sibling::processing-instruction()), '-')"/>
 		</axsl:template>
 		<axsl:template match="@*" mode="generate-id-from-path">
@@ -897,15 +897,15 @@ which require a preprocess.
 				</axsl:when>
 				<axsl:otherwise>
 -->
-				<axsl:value-of 
+				<axsl:value-of
 				select="concat('.',name(),'-',1+count(preceding-sibling::*[name()=name(current())]),'-')"/>
 <!--
 				</axsl:otherwise>
 			</axsl:choose>
 -->
 		</axsl:template>
-		
-		
+
+
 		<xsl:text>&#10;&#10;</xsl:text>
 		<xsl:comment>MODE: GENERATE-ID-2 </xsl:comment><xsl:text>&#10;</xsl:text>
 		<!-- repeatable-id maker from David Carlisle. -->
@@ -933,19 +933,19 @@ which require a preprocess.
 		<axsl:value-of select="string-length(local-name(.))"/>
 		<axsl:text>_</axsl:text>
 		<axsl:value-of select="translate(name(),':','.')"/>
-	</axsl:template> 
-		
+	</axsl:template>
+
 
 		<xsl:comment>Strip characters</xsl:comment>
 		<axsl:template match="text()" priority="-1" />
-			
+
   </xsl:template>
 
  <xsl:template name="handle-root">
 		<!-- Process the top-level element -->
 		<axsl:template match="/">
 			<xsl:call-template name="process-root">
-				<xsl:with-param 	
+				<xsl:with-param
 				name="title" select="(@id | iso:title)[last()]"/>
 				<xsl:with-param name="version" select="'iso'" />
 				<xsl:with-param name="schemaVersion" select="@schemaVersion" />
@@ -953,7 +953,7 @@ which require a preprocess.
 				<xsl:with-param name="contents">
 					<xsl:apply-templates mode="do-all-patterns"/>
 				</xsl:with-param>
-				
+
 				<!-- "Rich" properties -->
 				<xsl:with-param name="fpi" select="@fpi"/>
 				<xsl:with-param name="icon" select="@icon"/>
@@ -963,8 +963,8 @@ which require a preprocess.
 				<xsl:with-param name="space" select="@xml:space" />
 			</xsl:call-template>
 		</axsl:template>
- 
-      
+
+
 </xsl:template>
 
 <!-- ============================================================== -->
@@ -987,13 +987,23 @@ which require a preprocess.
 
 	<!-- ISO ASSERT and REPORT -->
 	<xsl:template match="iso:assert">
-  
+
                 <xsl:if test="not(@test)">
                     <xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">7</xsl:with-param></xsl:call-template></xsl:message>
                 </xsl:if>
         <xsl:text>&#10;&#10;		</xsl:text>
-		<xsl:comment>ASSERT <xsl:value-of select="@role" /> </xsl:comment><xsl:text>&#10;</xsl:text>      
-	
+        <xsl:variable name="assertRole">
+	        <xsl:choose>
+	            <xsl:when test="@role">
+	               <xsl:value-of select="@role"/>
+	            </xsl:when>
+	            <xsl:otherwise>
+	                <xsl:value-of select="../@role"/>
+	            </xsl:otherwise>
+	        </xsl:choose>
+        </xsl:variable>
+		<xsl:comment>ASSERT <xsl:value-of select="$assertRole" /> </xsl:comment><xsl:text>&#10;</xsl:text>
+
 		<axsl:choose>
 			<axsl:when test="{@test}"/>
 			<axsl:otherwise>
@@ -1001,9 +1011,9 @@ which require a preprocess.
 					<xsl:with-param name="test" select="normalize-space(@test)" />
 					<xsl:with-param name="diagnostics" select="@diagnostics"/>
 					<xsl:with-param name="flag" select="@flag"/>
-					
+
 					<xsl:with-param name="properties" select="@properties" />
-					
+
 					<!-- "Rich" properties -->
 					<xsl:with-param name="fpi" select="@fpi"/>
 					<xsl:with-param name="icon" select="@icon"/>
@@ -1011,33 +1021,43 @@ which require a preprocess.
 					<xsl:with-param name="lang" select="@xml:lang"/>
 					<xsl:with-param name="see" select="@see" />
 					<xsl:with-param name="space" select="@xml:space" />
-					
+
 					<!-- "Linking" properties -->
-					<xsl:with-param name="role" select="@role" />
+					<xsl:with-param name="role" select="$assertRole" />
 					<xsl:with-param name="subject" select="@subject" />
-					 
+
 				</xsl:call-template>
- 			 
- 			
+
+
 			</axsl:otherwise>
 		</axsl:choose>
 	</xsl:template>
 	<xsl:template match="iso:report">
-		 
+
                 <xsl:if test="not(@test)">
                     <xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">8</xsl:with-param></xsl:call-template></xsl:message>
                 </xsl:if>
-                
+
         <xsl:text>&#10;&#10;		</xsl:text>
-		<xsl:comment>REPORT <xsl:value-of select="@role" /> </xsl:comment><xsl:text>&#10;</xsl:text>      
-	
+        <xsl:variable name="assertRole">
+            <xsl:choose>
+                <xsl:when test="@role">
+                   <xsl:value-of select="@role"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="../@role"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+		<xsl:comment>REPORT <xsl:value-of select="$assertRole" /> </xsl:comment><xsl:text>&#10;</xsl:text>
+
 		<axsl:if test="{@test}">
-		
+
 			<xsl:call-template name="process-report">
 				<xsl:with-param name="test" select="normalize-space(@test)" />
 				<xsl:with-param name="diagnostics" select="@diagnostics"/>
 					<xsl:with-param name="flag" select="@flag"/>
-				
+
 					<xsl:with-param name="properties" select="@properties" />
 					<!-- "Rich" properties -->
 					<xsl:with-param name="fpi" select="@fpi"/>
@@ -1046,12 +1066,12 @@ which require a preprocess.
 					<xsl:with-param name="lang" select="@xml:lang"/>
 					<xsl:with-param name="see" select="@see" />
 					<xsl:with-param name="space" select="@xml:space" />
-					
+
 					<!-- "Linking" properties -->
-					<xsl:with-param name="role" select="@role" />
+					<xsl:with-param name="role" select="$assertRole" />
 					<xsl:with-param name="subject" select="@subject" />
 			</xsl:call-template>
-			 
+
 		</axsl:if>
 	</xsl:template>
 
@@ -1065,10 +1085,10 @@ which require a preprocess.
                     <xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">9</xsl:with-param></xsl:call-template></xsl:message>
                </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="iso:diagnostic"  >
                 <xsl:call-template name="process-diagnostic">
-                
+
 					<!-- "Rich" properties -->
 					<xsl:with-param name="fpi" select="@fpi"/>
 					<xsl:with-param name="icon" select="@icon"/>
@@ -1077,7 +1097,7 @@ which require a preprocess.
 					<xsl:with-param name="see" select="@see" />
 					<xsl:with-param name="space" select="@xml:space" />
                </xsl:call-template>
-                
+
         </xsl:template>
 
 	<!-- ISO DIAGNOSTICS -->
@@ -1094,8 +1114,8 @@ which require a preprocess.
 
 	<!-- ISO EMPH -->
 	<xsl:template match="iso:emph"  mode="text">
-	 
-		<xsl:call-template name="process-emph"/> 
+
+		<xsl:call-template name="process-emph"/>
 
 	</xsl:template>
 
@@ -1124,23 +1144,23 @@ which require a preprocess.
 				    mode="extends"/>
             </xsl:when>
         </xsl:choose>
- 
+
 
 	</xsl:template>
 
 	<!-- KEY: ISO has no KEY -->
-	<!-- NOTE: 
+	<!-- NOTE:
 	     Key has had a checkered history. Schematron 1.0 allowed it in certain places, but
-	     users came up with a different location, which has now been adopted. 
-	     
-	     XT, the early XSLT processor, did not implement key and died when it was present. 
+	     users came up with a different location, which has now been adopted.
+
+	     XT, the early XSLT processor, did not implement key and died when it was present.
 	     So there are some versions of the Schematron skeleton for XT that strip out all
 	     key elements.
-	     
-	     Xalan (e.g. Xalan4C 1.0 and a Xalan4J) also had a funny. A fix involved making 
+
+	     Xalan (e.g. Xalan4C 1.0 and a Xalan4J) also had a funny. A fix involved making
 	     a top-level parameter called $hiddenKey and then using that instead of matching
 	     "key". This has been removed.
-	     
+
 	     Keys and functions are the same mode, to allow their declaration to be mixed up.
 	-->
 	<xsl:template  match="xsl:key" mode="do-keys" >
@@ -1149,7 +1169,7 @@ which require a preprocess.
          </xsl:if>
                 <xsl:if test="not(@path) and not(@use)">
                     <xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">13</xsl:with-param></xsl:call-template></xsl:message>
-                </xsl:if>         
+                </xsl:if>
 	     <xsl:choose>
 	     	<xsl:when test="parent::iso:rule ">
 	        <xsl:call-template name="IamEmpty" />
@@ -1160,15 +1180,15 @@ which require a preprocess.
 			<xsl:otherwise>
 							<axsl:key match="{../@context}" name="{@name}" use="{@use}"/>
 			</xsl:otherwise>
-			</xsl:choose>	
+			</xsl:choose>
 		</xsl:when>
 		<xsl:otherwise>
                 <xsl:if test="not(@match) ">
                     <xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">14</xsl:with-param></xsl:call-template></xsl:message>
-                </xsl:if>   		
+                </xsl:if>
 			<axsl:key>
       			<xsl:copy-of select="@*"/>
-    		</axsl:key>	
+    		</axsl:key>
 		</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -1183,7 +1203,7 @@ which require a preprocess.
   <xsl:template  match="xsl:function" mode="do-keys" >
 	     <xsl:if test="not(@name)">
               <xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">16</xsl:with-param></xsl:call-template></xsl:message>
-         </xsl:if>      
+         </xsl:if>
 	     <xsl:copy-of select="."/>
   </xsl:template>
 
@@ -1211,13 +1231,13 @@ which require a preprocess.
    <xsl:template match="iso:include">
        <xsl:variable name="document-uri" select="substring-before(concat(@href,'#'), '#')"/>
        <xsl:variable name="fragment-id" select="substring-after(@href, '#')"/>
-       
-       <xsl:choose> 
-          
+
+       <xsl:choose>
+
           <xsl:when test="string-length( $document-uri ) = 0 and string-length( $fragment-id ) = 0" >
           	<xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">19</xsl:with-param></xsl:call-template></xsl:message>
-          </xsl:when> 
-          
+          </xsl:when>
+
           <xsl:when test="string-length( $fragment-id ) &gt; 0">
               <xsl:variable name="theDocument_1" select="document( $document-uri,/ )" />
               <xsl:variable name="theFragment_1" select="$theDocument_1//iso:*[@id= $fragment-id]" />
@@ -1233,7 +1253,7 @@ which require a preprocess.
               </xsl:if>
               <xsl:apply-templates select=" $theFragment_1"/>
 		   </xsl:when>
-		  
+
 		   <xsl:otherwise>
 		   	  <!-- Import the top-level element if it is in schematron namespace,
 		   	  or its children otherwise, to allow a simple containment mechanism. -->
@@ -1254,18 +1274,18 @@ which require a preprocess.
        	   </xsl:otherwise>
        </xsl:choose>
    </xsl:template>
-   
-   <!-- This is to handle the particular case of including patterns -->  
+
+   <!-- This is to handle the particular case of including patterns -->
    <xsl:template match="iso:include" mode="do-all-patterns">
        <xsl:variable name="document-uri" select="substring-before(concat(@href,'#'), '#')"/>
        <xsl:variable name="fragment-id" select="substring-after(@href, '#')"/>
- 
-       <xsl:choose> 
-          
+
+       <xsl:choose>
+
           <xsl:when test="string-length( $document-uri ) = 0 and string-length( $fragment-id ) = 0" >
           	<xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">19</xsl:with-param></xsl:call-template></xsl:message>
-          </xsl:when> 
-          
+          </xsl:when>
+
           <xsl:when test="string-length( $fragment-id ) &gt; 0">
               <xsl:variable name="theDocument_1" select="document( $document-uri,/ )" />
               <xsl:variable name="theFragment_1" select="$theDocument_1//iso:*[@id= $fragment-id ]" />
@@ -1274,7 +1294,7 @@ which require a preprocess.
               </xsl:if>
               <xsl:apply-templates select=" $theFragment_1" mode="do-all-patterns"/>
 		   </xsl:when>
-		  
+
 		   <xsl:otherwise>
 		   	  <!-- Import the top-level element if it is in schematron namespace,
 		   	  or its children otherwise, to allow a simple containment mechanism. -->
@@ -1289,11 +1309,11 @@ which require a preprocess.
        	   </xsl:otherwise>
        </xsl:choose>
    </xsl:template>
-   
-	
+
+
 	<!-- XSL IMPORT-SCHEMA -->
 	<!-- Importing an XSD schema allows the variour type operations to be available. -->
-	<xsl:template  match="xsl:import-schema" mode="do-types" >	 
+	<xsl:template  match="xsl:import-schema" mode="do-types" >
 		<xsl:choose>
 		  <xsl:when test="ancestor::iso:schema[@queryBinding='xslt2']">
 		  	<xsl:copy-of select="." />
@@ -1302,15 +1322,15 @@ which require a preprocess.
 			<xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">22</xsl:with-param></xsl:call-template></xsl:message>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>  
-		   
-	<!-- swallow -->	   
+	</xsl:template>
+
+	<!-- swallow -->
     <xsl:template match="xsl:import-schema" />
- 
+
 	<xsl:template match="iso:import-schema "  >
 		<xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">23</xsl:with-param></xsl:call-template></xsl:message>
     </xsl:template>
- 
+
 	<!-- ISO LET -->
 	<xsl:template match="iso:let" >
 	  <xsl:if test="ancestor::iso:schema[@queryBinding='xpath']">
@@ -1319,7 +1339,7 @@ which require a preprocess.
 	  <xsl:if test="ancestor::iso:schema[@queryBinding='xpath2']">
                     <xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">25</xsl:with-param></xsl:call-template></xsl:message>
        </xsl:if>
-       
+
        <!-- lets at the top-level are implemented as parameters unless they have contents -->
        	<xsl:choose>
        		<xsl:when test="parent::iso:schema">
@@ -1336,11 +1356,11 @@ which require a preprocess.
 						<axsl:variable name="{@name}"  >
 						  <xsl:copy-of select="child::node()" />
 						</axsl:variable>
-	      		 	</xsl:otherwise> 
+	      		 	</xsl:otherwise>
 	      		 </xsl:choose>
        		</xsl:when>
        		<xsl:otherwise>
-				
+
        		    <xsl:choose>
        		    	<xsl:when  test="@value">
 						<axsl:variable name="{@name}" select="{@value}"/>
@@ -1351,14 +1371,14 @@ which require a preprocess.
 						</axsl:variable>
 				   </xsl:otherwise>
 				 </xsl:choose>
-				  	
+
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>	
+	</xsl:template>
 
 	<!-- ISO NAME -->
 	<xsl:template match="iso:name" mode="text">
-	
+
 		<xsl:if test="@path">
 			<xsl:call-template name="process-name">
 				<xsl:with-param name="name" select="concat('name(',@path,')')"/>
@@ -1410,47 +1430,47 @@ which require a preprocess.
 			<xsl:with-param name="lang" select="@xml:lang"/>
 		</xsl:call-template>
 	</xsl:template>
-	
+
     <!-- Currently, iso:p in other position are not passed through to the API -->
 	<xsl:template match="iso:phase/iso:p" />
 	<xsl:template match="iso:p " priority="-1" />
- 
+
 	<!-- ISO PATTERN -->
 	<xsl:template match="iso:pattern" mode="do-all-patterns">
-	<xsl:if test="($phase = '#ALL') 
+	<xsl:if test="($phase = '#ALL')
 	or (../iso:phase[@id= $phase]/iso:active[@pattern= current()/@id])">
 
- 		<!-- Extension to allow validation in multiple documents -->  
+ 		<!-- Extension to allow validation in multiple documents -->
  		<xsl:choose>
 		      	<xsl:when test="string-length(normalize-space(@documents))=0" >
 				    <xsl:call-template name="handle-pattern" />
 	 	       	</xsl:when>
- 		    	<xsl:otherwise>  
+ 		    	<xsl:otherwise>
  		    	<axsl:variable name="thePath"
- 		    		select="{@documents}" 
- 		    		as="xs:string*"  /> 
- 		    	
-				<axsl:for-each  select="$thePath">  
+ 		    		select="{@documents}"
+ 		    		as="xs:string*"  />
+
+				<axsl:for-each  select="$thePath">
 					<axsl:choose>
 						<axsl:when test="starts-with( ., 'http:') or starts-with(., 'file:' )
 						   or starts-with(., '/')"><!-- try as absolute path -->
-		  					<axsl:for-each select="document(.)"> 
+		  					<axsl:for-each select="document(.)">
 		    					<xsl:call-template name="handle-pattern"  />
 							</axsl:for-each>
 						</axsl:when>
 						<axsl:otherwise><!-- is relative path -->
-		  					<axsl:for-each select="document(concat( $document-uri , '/../', .))"> 
+		  					<axsl:for-each select="document(concat( $document-uri , '/../', .))">
 		    					<xsl:call-template name="handle-pattern"  />
 							</axsl:for-each>
 						</axsl:otherwise>
-				  </axsl:choose>		
+				  </axsl:choose>
 				</axsl:for-each>
 			</xsl:otherwise>
-		</xsl:choose>	
+		</xsl:choose>
      </xsl:if>
 
    </xsl:template>
-   
+
    <xsl:template name="handle-pattern">
 		<xsl:call-template name="process-pattern">
 			<!-- the following select statement assumes that
@@ -1458,7 +1478,7 @@ which require a preprocess.
 			we want the title if it is there, otherwise the @id attribute -->
 			<xsl:with-param name="name" select="(@id | iso:title )[last()]"/>
 			<xsl:with-param name="is-a" select="''"/>
-			
+
 					<!-- "Rich" properties -->
 					<xsl:with-param name="fpi" select="@fpi"/>
 					<xsl:with-param name="icon" select="@icon"/>
@@ -1472,16 +1492,16 @@ which require a preprocess.
 		  <xsl:when test="$select-contexts='key'">
 		    <axsl:apply-templates select="key('M','M{count(preceding-sibling::*)}')" mode="M{count(preceding-sibling::*)}"/>
 		  </xsl:when>
-		  
+
 		  <!-- Use the // method -->
 		  <xsl:when test="$select-contexts='//'">
 		    <xsl:choose>
 			  	<xsl:when test="@document">
 			    	<!-- External document -->
 		    		<axsl:for-each select="{@document}">
-					<!-- same code as next block, but run from different context -->		    		
+					<!-- same code as next block, but run from different context -->
 		    		<axsl:apply-templates mode="M{count(preceding-sibling::*)}" >
-		      			<xsl:attribute name="select"> 
+		      			<xsl:attribute name="select">
 							<xsl:text>//(</xsl:text>
 							<xsl:for-each select="iso:rule/@context">
 			  					<xsl:text>(</xsl:text>
@@ -1498,7 +1518,7 @@ which require a preprocess.
 
 		  		<xsl:otherwise>
 		    		<axsl:apply-templates mode="M{count(preceding-sibling::*)}" >
-		      			<xsl:attribute name="select"> 
+		      			<xsl:attribute name="select">
 							<xsl:text>//(</xsl:text>
 							<xsl:for-each select="iso:rule/@context">
 			  					<xsl:text>(</xsl:text>
@@ -1513,7 +1533,7 @@ which require a preprocess.
 		    	</xsl:otherwise>
 		    </xsl:choose>
 		  </xsl:when>
-		  
+
 		  <!-- Use complete tree traversal -->
 		  <xsl:when test="@document">
 		    <!-- External document -->
@@ -1527,27 +1547,27 @@ which require a preprocess.
 		</xsl:choose>
         <!--/xsl:if-->
 	</xsl:template>
-	
+
 	<xsl:template match="iso:pattern[@abstract='true']">
-    
+
              <xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">28</xsl:with-param></xsl:call-template></xsl:message>
     </xsl:template>
 
     <!-- Here is the template for the normal case of patterns -->
 	<xsl:template match="iso:pattern[not(@abstract='true')]">
-    
-      <xsl:if test="($phase = '#ALL') 
+
+      <xsl:if test="($phase = '#ALL')
 	          or (../iso:phase[@id= $phase]/iso:active[@pattern= current()/@id])">
 		<xsl:text>&#10;&#10;</xsl:text>
-		<xsl:comment>PATTERN <xsl:value-of select="@id" /> <xsl:value-of select="iso:title" /> </xsl:comment><xsl:text>&#10;</xsl:text>      
+		<xsl:comment>PATTERN <xsl:value-of select="@id" /> <xsl:value-of select="iso:title" /> </xsl:comment><xsl:text>&#10;</xsl:text>
 		<xsl:apply-templates />
-		
+
 		<!-- DPC select-contexts test -->
 		<xsl:if test="not($select-contexts)">
 		  <axsl:template match="text()" priority="-1" mode="M{count(preceding-sibling::*)}">
 		    <!-- strip characters -->
 		  </axsl:template>
-		  
+
 		  <!-- DPC introduce context-xpath variable -->
 		  <axsl:template match="@*|node()"
 				 priority="-2"
@@ -1565,8 +1585,8 @@ which require a preprocess.
                 </xsl:if>
 		  <xsl:apply-templates/>
 	</xsl:template>
-	
-	
+
+
 	<!-- PROPERTY Experiemental -->
 	<!-- We use a mode here to maintain backwards compatability, instead of adding it
 	     to the other mode.
@@ -1576,55 +1596,55 @@ which require a preprocess.
                     <xsl:message>No property found with that ID</xsl:message>
                </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="iso:property"  >
                 <xsl:call-template name="process-property">
-                
+
 					<xsl:with-param name="id" select="@id"/>
-					
+
 					<xsl:with-param name="name"  select="@name"/>
 					<xsl:with-param name="value" select="@value" />
 					<xsl:with-param name="contents" select="*|text()" />
-				</xsl:call-template>   
-            
+				</xsl:call-template>
+
         </xsl:template>
 
 	<!-- PROPERTIES  experimental extension -->
 	<xsl:template match="iso:properties" >
-		 <xsl:apply-templates mode="check-properties" select="property" /> 
+		 <xsl:apply-templates mode="check-properties" select="property" />
 	</xsl:template>
-	
-	
+
+
 
 	<!-- ISO RULE -->
 	<xsl:template match="iso:rule[not(@abstract='true')] ">
                 <xsl:if test="not(@context)">
                     <xsl:message ><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">30</xsl:with-param></xsl:call-template></xsl:message>
-                  
+
                     <xsl:message terminate="yes" />
                 </xsl:if>
         <xsl:text>&#10;&#10;	</xsl:text>
-		<xsl:comment>RULE <xsl:value-of select="@id" /> </xsl:comment><xsl:text>&#10;</xsl:text>   
+		<xsl:comment>RULE <xsl:value-of select="@id" /> </xsl:comment><xsl:text>&#10;</xsl:text>
         <xsl:if test="iso:title">
 		    <xsl:comment><xsl:value-of select="iso:title" /></xsl:comment>
 		  </xsl:if>
 		<!-- DPC select-contexts -->
 		<xsl:if test="$select-contexts='key'">
 		    <axsl:key name="M"
-			      match="{@context}" 
+			      match="{@context}"
 			      use="'M{count(../preceding-sibling::*)}'"/>
 		</xsl:if>
-   
-	
+
+
 <!-- DPC priorities count up from 1000 not down from 4000 (templates in same priority order as before) -->
 		<axsl:template match="{@context}"
 		priority="{1000 + count(following-sibling::*)}" mode="M{count(../preceding-sibling::*)}">
-		 
+
 			<xsl:call-template name="process-rule">
 				<xsl:with-param name="context" select="@context"/>
-				
+
 					<xsl:with-param name="properties" select="@properties" />
-					
+
 					<!-- "Rich" properties -->
 					<xsl:with-param name="fpi" select="@fpi"/>
 					<xsl:with-param name="icon" select="@icon"/>
@@ -1632,13 +1652,13 @@ which require a preprocess.
 					<xsl:with-param name="lang" select="@xml:lang"/>
 					<xsl:with-param name="see" select="@see" />
 					<xsl:with-param name="space" select="@xml:space" />
-					
+
 					<!-- "Linking" properties -->
 					<xsl:with-param name="role" select="@role" />
 					<xsl:with-param name="subject" select="@subject" />
 			</xsl:call-template>
-			 
-				
+
+
 			<xsl:apply-templates/>
 			<!-- DPC introduce context-xpath and select-contexts variables -->
 			<xsl:if test="not($select-contexts)">
@@ -1674,16 +1694,16 @@ which require a preprocess.
 	</xsl:template>
 
 	<!-- ISO TITLE -->
-	
+
 	<xsl:template match="iso:schema/iso:title"  priority="1">
 	     <xsl:call-template name="process-schema-title" />
 	</xsl:template>
- 
-	
+
+
 	<xsl:template match="iso:title" >
 	     <xsl:call-template name="process-title" />
 	</xsl:template>
- 
+
 
 	<!-- ISO VALUE-OF -->
 	<xsl:template match="iso:value-of" mode="text" >
@@ -1691,11 +1711,11 @@ which require a preprocess.
             <xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">34</xsl:with-param></xsl:call-template></xsl:message>
         </xsl:if>
 	    <xsl:call-template name="IamEmpty" />
-	         
+
 		<xsl:choose>
 			<xsl:when test="@select">
 				<xsl:call-template name="process-value-of">
-					<xsl:with-param name="select" select="@select"/>  
+					<xsl:with-param name="select" select="@select"/>
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise >
@@ -1703,8 +1723,8 @@ which require a preprocess.
 					<xsl:with-param name="select" select="'.'"/>
 				</xsl:call-template>
 			</xsl:otherwise>
-        </xsl:choose> 
-        
+        </xsl:choose>
+
 	</xsl:template>
 
 
@@ -1723,11 +1743,11 @@ which require a preprocess.
         <xsl:template match="text()" priority="-1" mode="do-pattern-p">
 		<!-- strip characters -->
 	</xsl:template>
-	
+
 	<xsl:template match="text()" priority="-1">
 		<!-- Strip characters -->
 	</xsl:template>
-	
+
 	<xsl:template match="text()" mode="text">
 		<xsl:value-of select="."/>
 	</xsl:template>
@@ -1771,7 +1791,7 @@ which require a preprocess.
   <!-- This works with all namespaces -->
   <xsl:if test="not(string-length(normalize-space($start)) = 0)
   		and not(//iso:diagnostic[@id = $start])
-		and not(//schold:diagnostic[@id = $start]) 
+		and not(//schold:diagnostic[@id = $start])
 		and not(//diagnostic[@id = $start])">
 	<xsl:message><xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">36a</xsl:with-param></xsl:call-template>
 	<xsl:value-of select="string($start)"/>
@@ -1780,9 +1800,9 @@ which require a preprocess.
 
   <xsl:if test="string-length(normalize-space($start)) > 0">
      <xsl:text> </xsl:text>
-     <xsl:apply-templates 
+     <xsl:apply-templates
         select="//iso:diagnostic[@id = $start ]
-        	| //schold:diagnostic[@id = $start ] 
+        	| //schold:diagnostic[@id = $start ]
             | //diagnostic[@id= $start ]"/>
   </xsl:if>
 
@@ -1824,7 +1844,7 @@ which require a preprocess.
 
   <xsl:if test="string-length(normalize-space($start)) > 0">
      <xsl:text> </xsl:text>
-     <xsl:apply-templates 
+     <xsl:apply-templates
         select="//iso:property[@id = $start ] "/>
   </xsl:if>
 
@@ -1851,8 +1871,8 @@ which require a preprocess.
          <xsl:when test="element-available('xsl:namespace')">
              <xsl:namespace name="{@prefix}" select="@uri" />
 	 </xsl:when>
- 
-	 <xsl:when use-when="not(element-available('xsl:namespace'))" 
+
+	 <xsl:when use-when="not(element-available('xsl:namespace'))"
 		   test="function-available('exsl:node-set')">
            <xsl:variable name="ns-dummy-elements">
              <xsl:element name="{@prefix}:dummy" namespace="{@uri}"/>
@@ -1864,7 +1884,7 @@ which require a preprocess.
 
 	<!-- end XSLT2 code -->
 
-        
+
         <xsl:when test="@prefix = 'xsl' ">
            <!-- Do not generate dummy attributes with the xsl: prefix, as these
                 are errors against XSLT, because we presume that the output
@@ -1873,7 +1893,7 @@ which require a preprocess.
                 automatically, presumably using "xsl:".
            -->
         </xsl:when>
-        
+
         <xsl:when test="@uri = 'http://www.w3.org/1999/XSL/Transform'">
           <xsl:message terminate="yes">
             <xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">37a</xsl:with-param></xsl:call-template>
@@ -1884,7 +1904,7 @@ which require a preprocess.
 
         <xsl:otherwise>
           <xsl:attribute name="{concat(@prefix,':dummy-for-xmlns')}" namespace="{@uri}" />
-           
+
         </xsl:otherwise>
       </xsl:choose>
 
@@ -1902,11 +1922,11 @@ which require a preprocess.
 			<xsl:call-template name="outputLocalizedMessage" ><xsl:with-param name="number">38b</xsl:with-param></xsl:call-template>
 		</xsl:message>
 	</xsl:template>
-	
-	
+
+
 	<!-- Swallow old namespace elements: there is an upfront test for them elsewhere -->
 	<xsl:template match="schold:*"  priority="-2" />
-	 
+
 	<xsl:template match="*"  priority="-3">
 	    <xsl:choose>
 	       <xsl:when test=" $allow-foreign = 'false' ">
@@ -1921,10 +1941,10 @@ which require a preprocess.
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
+
 	<xsl:template match="iso:*" mode="text" priority="-2" />
 	<xsl:template match="*" mode="text" priority="-3">
-	    <xsl:if test=" not( $allow-foreign = 'false') "> 
+	    <xsl:if test=" not( $allow-foreign = 'false') ">
 				<xsl:copy-of select="." />
 		</xsl:if>
 	</xsl:template>
@@ -1933,7 +1953,7 @@ which require a preprocess.
 <!-- DEFAULT NAMED TEMPLATES -->
 <!-- These are the actions that are performed unless overridden -->
 <!-- ============================================================== -->
- 
+
 	<xsl:template name="process-prolog"/>
 	<!-- no params -->
 
@@ -1980,14 +2000,14 @@ which require a preprocess.
 			<xsl:with-param name="pattern" select="$test"/>
 			<xsl:with-param name="role" select="$role"/>
 		</xsl:call-template>
-		
+
 		<xsl:if test=" $terminate = 'yes' or $terminate = 'true' ">
 		   <axsl:message terminate="yes">TERMINATING</axsl:message>
 		</xsl:if>
 	    <xsl:if test=" $terminate = 'assert' ">
 		   <axsl:message terminate="yes">TERMINATING</axsl:message>
 		</xsl:if>
-		
+
 	</xsl:template>
 
 	<xsl:template name="process-report">
@@ -2003,7 +2023,7 @@ which require a preprocess.
 
 		<!-- "Rich" parameters -->
 		<xsl:param name="fpi" />
-		<xsl:param name="icon" /> 
+		<xsl:param name="icon" />
 		<xsl:param name="lang" />
 		<xsl:param name="see" />
 		<xsl:param name="space" />
@@ -2012,7 +2032,7 @@ which require a preprocess.
 			<xsl:with-param name="pattern" select="$test"/>
 			<xsl:with-param name="role" select="$role"/>
 		</xsl:call-template>
-				
+
 		<xsl:if test=" $terminate = 'yes' or $terminate = 'true'  ">
 		   <axsl:message terminate="yes">TERMINATING</axsl:message>
 		</xsl:if>
@@ -2027,7 +2047,7 @@ which require a preprocess.
 		<xsl:param name="lang" />
 		<xsl:param name="see" />
 		<xsl:param name="space" />
-		
+
 	    <!-- We generate too much whitespace rather than risking concatenation -->
 		<axsl:text> </axsl:text>
 		<xsl:apply-templates mode="text"/>
@@ -2043,25 +2063,25 @@ which require a preprocess.
 		<axsl:text> </axsl:text>
 	</xsl:template>
 
-	<xsl:template name="process-emph"> 
+	<xsl:template name="process-emph">
 	    <!-- We generate too much whitespace rather than risking concatenation -->
 		<axsl:text> </axsl:text>
 		<xsl:apply-templates mode="inline-text"/>
 		<axsl:text> </axsl:text>
 	</xsl:template>
-	
+
 	<xsl:template name="process-name">
 		<xsl:param name="name"/>
-		
+
 		<!-- We generate too much whitespace rather than risking concatenation -->
 		<axsl:text> </axsl:text>
 		<axsl:value-of select="{$name}"/>
 		<axsl:text> </axsl:text>
-		
+
     </xsl:template>
 
 	<xsl:template name="process-ns" >
-	<!-- Note that process-ns is for reporting. The iso:ns elements are 
+	<!-- Note that process-ns is for reporting. The iso:ns elements are
 	     independently used in the iso:schema template to provide namespace bindings -->
 		<xsl:param name="prefix"/>
 		<xsl:param name="uri" />
@@ -2086,7 +2106,7 @@ which require a preprocess.
 		<xsl:param name="see" />
 		<xsl:param name="space" />
       </xsl:template>
-      
+
 
 	<xsl:template name="process-rule">
 		<xsl:param name="context" />
@@ -2098,7 +2118,7 @@ which require a preprocess.
            	<!-- "Linkable" parameters -->
 		<xsl:param name="role"/>
 		<xsl:param name="subject"/>
-  
+
 		<!-- "Rich" parameters -->
 		<xsl:param name="fpi" />
 		<xsl:param name="icon" />
@@ -2113,7 +2133,7 @@ which require a preprocess.
 	    <!-- We generate too much whitespace rather than risking concatenation -->
 		<axsl:text> </axsl:text>
 		<xsl:apply-templates mode="inline-text"/>
-		<axsl:text> </axsl:text>		
+		<axsl:text> </axsl:text>
 	</xsl:template>
 
 	<xsl:template name="process-title" >
@@ -2122,7 +2142,7 @@ which require a preprocess.
 	      <xsl:with-param  name="class">title</xsl:with-param>
 	   </xsl:call-template>
 	</xsl:template>
-		
+
 	<xsl:template name="process-schema-title" >
 		<xsl:param name="class" />
 	   <xsl:call-template name="process-title">
@@ -2132,7 +2152,7 @@ which require a preprocess.
 
 	<xsl:template name="process-value-of">
 		<xsl:param name="select"/>
-		
+
 	    <!-- We generate too much whitespace rather than risking concatenation -->
 		<axsl:text> </axsl:text>
 		<axsl:value-of select="{$select}"/>
@@ -2144,32 +2164,32 @@ which require a preprocess.
 		<xsl:param name="pattern" />
             <xsl:param name="role" />
 
-		<xsl:apply-templates mode="text"/>	
+		<xsl:apply-templates mode="text"/>
 		 <xsl:if test=" $message-newline = 'true'" >
 			<axsl:value-of  select="string('&#10;')"/>
 		</xsl:if>
-		
+
 	</xsl:template>
-	
-	
+
+
 	<!-- ===================================================== -->
 	<!-- Extension API: default rules 			               -->
 	<!-- This allows the transmission of extra attributes on   -->
 	<!-- rules, asserts, reports, diagnostics.                 -->
 	<!-- ===================================================== -->
-	
- 
+
+
 
 	<xsl:template name="process-property">
 		<xsl:param name="id" />
-		
+
 		<xsl:param name="name"/>
 		<xsl:param name="value"/>
 		<xsl:param name="contents"/>
-		  
+
 	</xsl:template>
-	
-	
+
+
 	<!-- ===================================================== -->
 	<!-- Localization 						                  -->
 	<!-- ===================================================== -->
@@ -2177,40 +2197,40 @@ which require a preprocess.
 		All messages generated by the skeleton during processing are localized.
 		(This does not apply to the text that comes from Schematron schemas
 		themselves, of course. Nor does it apply to messages in metastylesheets.)
-		
+
 		Stylesheets have a parameter $langCode which can be used to select the
 		language code (e.g. from the command line)
-		
+
 		The default value of $langCode is "default". When this is used, the
 		message text is taken from the strings below. We use XHTML, to provide
-		the namespace. 
-		
+		the namespace.
+
 		If the $langCode is somethign else, then the XSLT engine will try to
 		find a file called  sch-messages-$langCode.xhtml in the same directory
 		as this stylesheet. Expect a fatal error if the file does not exist.
-		
+
 		The file should contain XHTML elements, with the text translated.
 		The strings are located by using ids on each xhtml:p element.
-		The ids are formed by sch-message-$number-$langCode such as  
+		The ids are formed by sch-message-$number-$langCode such as
 		sch-message-1-en
-		
+
 		If there is no match in a localization file for a message, then the
 		default will be used. This allows this XSLT to be developed with new
 		messages added without requiring that any localization files be updated.
-		
+
 		In many cases, there are actually two localization strings per message.
 		This happens whenever a message has an embedded value that is dynamically
 		generated (using <value-of>). Having two strings, preceding and following,
 		allows the translator to make idiomatic error messages. When there are
-		two message for a single message, they have numbers like 30a and 30b: 
+		two message for a single message, they have numbers like 30a and 30b:
 		translators should check the reference to them in the XSLT above to
-		see what the dynamically generated information is.  
+		see what the dynamically generated information is.
 	-->
 	<xsl:template name="outputLocalizedMessage">
-		<xsl:param name="number" />  
-		 
+		<xsl:param name="number" />
+
 		<xsl:choose>
-		   <xsl:when test="string-length( $langCode ) = 0 or $langCode = 'default'" > 	   	 
+		   <xsl:when test="string-length( $langCode ) = 0 or $langCode = 'default'" >
 				<xsl:value-of select='document("")//xhtml:p[@id=concat("sch-message-", $number)]/text()' />
 			</xsl:when>
 			<xsl:otherwise>
@@ -2221,24 +2241,24 @@ which require a preprocess.
 					<xsl:value-of select=
 				'document( $localizationDocumentFilename, /)//xhtml:p[@id=concat("sch-message-", $number, "-", $langCode)]/text()' />
 				</xsl:variable>
-				
+
 				<xsl:choose>
 					<!-- if we found any external message with that id, use it -->
 					<xsl:when test=" string-length($theLocalizedMessage) &gt; 0">
 						<xsl:value-of select="$theLocalizedMessage" />
 					</xsl:when>
 					<xsl:otherwise>
-						<!-- otherwise use the default strings -->		
+						<!-- otherwise use the default strings -->
 						<xsl:value-of select='document("")//xhtml:p[@id=concat("sch-message-", $number)]/text()' />
 					</xsl:otherwise>
-				</xsl:choose>	
-				
-				 
+				</xsl:choose>
+
+
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
-<xhtml:div class="ErrorMessages">	
+
+<xhtml:div class="ErrorMessages">
 	<!-- Where the error message contains dynamic information, the message has been split into an "a" and a "b" section.
 	     This has been done even when the English does not require it, in order to accomodate different language grammars
 	     that might position the dynamic information differently.
@@ -2255,9 +2275,9 @@ which require a preprocess.
 	<xhtml:p id="sch-message-7">Markup Error: no test attribute in &lt;assert</xhtml:p>
 	<xhtml:p id="sch-message-8">Markup Error: no test attribute in &lt;report></xhtml:p>
 	<xhtml:p id="sch-message-9">Markup Error: no id attribute in &lt;diagnostic></xhtml:p>
-	<xhtml:p id="sch-message-10">Markup Error: no rule attribute in &lt;extends></xhtml:p>				   
+	<xhtml:p id="sch-message-10">Markup Error: no rule attribute in &lt;extends></xhtml:p>
 	<xhtml:p id="sch-message-11a">Reference Error: the abstract rule  "</xhtml:p>
-	<xhtml:p id="sch-message-11b">" has been referenced but is not declared</xhtml:p>				
+	<xhtml:p id="sch-message-11b">" has been referenced but is not declared</xhtml:p>
 	<xhtml:p id="sch-message-12">Markup Error: no name attribute in &lt;key></xhtml:p>
 	<xhtml:p id="sch-message-13">Markup Error: no path or use attribute in &lt;key></xhtml:p>
 	<xhtml:p id="sch-message-14">Markup Error: no path or use attribute in &lt;key></xhtml:p>

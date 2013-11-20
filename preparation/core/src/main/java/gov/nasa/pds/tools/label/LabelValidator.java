@@ -277,11 +277,7 @@ public class LabelValidator {
         for (int i = 0; i < nodes.getLength(); i++) {
           Node node = nodes.item(i);
           // Add an error for each failed asssert
-          container.addException(new LabelException(ExceptionType.ERROR, node
-              .getTextContent().trim(), url.toString(), node
-              .getAttributes().getNamedItem("location").getTextContent(), node
-              .getAttributes().getNamedItem("test").getTextContent()));
-
+          container.addException(processFailedAssert(url, node));
         }
       }
     }
@@ -308,6 +304,36 @@ public class LabelValidator {
   public void validate(File labelFile) throws SAXException, IOException,
       ParserConfigurationException, TransformerException {
     validate(null, labelFile);
+  }
+
+  /**
+   * Process a failed assert message from the schematron report.
+   *
+   * @param url The url of the xml being validated.
+   * @param node The node object containing the failed assert message.
+   *
+   * @return A LabelException object.
+   */
+  private LabelException processFailedAssert(URL url, Node node) {
+    ExceptionType exceptionType = ExceptionType.ERROR;
+    if (node.getAttributes().getNamedItem("role") != null) {
+      String type = node.getAttributes().getNamedItem("role")
+      .getTextContent();
+      if ("warn".equalsIgnoreCase(type) ||
+          "warning".equalsIgnoreCase(type)) {
+        exceptionType = ExceptionType.WARNING;
+      } else if ("info".equalsIgnoreCase(type)) {
+        exceptionType = ExceptionType.INFO;
+      }
+    }
+    return new LabelException(
+        exceptionType,
+        node.getTextContent().trim(),
+        url.toString(),
+        node.getAttributes().getNamedItem("location").getTextContent(),
+        node.getAttributes().getNamedItem("test").getTextContent()
+        );
+
   }
 
   private DocumentInfo parse(StreamSource source) throws XPathException {
