@@ -1,4 +1,4 @@
-//	Copyright 2009-2010, by the California Institute of Technology.
+//	Copyright 2009-2013, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology
 //	Transfer at the California Institute of Technology.
@@ -26,7 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +34,6 @@ import java.util.Map;
 
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -70,7 +68,7 @@ public class LabelValidator {
   private String[] userSchemaFiles;
   private String[] userSchematronFiles;
   private String modelVersion;
-  private Validator cachedValidator;
+  private DocumentBuilder cachedValidator;
   private List<Transformer> cachedSchematron;
   private XMLCatalogResolver resolver;
   public static final String SCHEMA_CHECK = "gov.nasa.pds.tools.label.SchemaCheck";
@@ -192,22 +190,28 @@ public class LabelValidator {
           validatingSchema = schemaFactory.newSchema();
         }
         // Time to create a validator from our schema
-        Validator validator = validatingSchema.newValidator();
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setSchema(validatingSchema);
+        factory.setNamespaceAware(true);
+        factory.setXIncludeAware(true);
+        //TODO: Do we want to omit the xml:base attribute from the merged xml?
+        factory.setFeature(
+            "http://apache.org/xml/features/xinclude/fixup-base-uris",
+            false);
+        DocumentBuilder docBuilder = factory.newDocumentBuilder();
         // Allow access to the catalog from the parser
         if (resolver != null) {
-          validator.setProperty(
-              "http://apache.org/xml/properties/internal/entity-resolver",
-              resolver);
+          docBuilder.setEntityResolver(resolver);
         }
         // Capture messages in a container
         if (container != null) {
-          validator.setErrorHandler(new LabelErrorHandler(container));
+          docBuilder.setErrorHandler(new LabelErrorHandler(container));
         }
         // Cache once we have loaded so we don't have to do again
-        cachedValidator = validator;
+        cachedValidator = docBuilder;
       }
       // Finally validate the file
-      cachedValidator.validate(new StreamSource(url.openStream()));
+      cachedValidator.parse(url.openStream(), url.toString());
     }
     // Validate with any schematron files we have
     if (performsSchematronValidation()) {
