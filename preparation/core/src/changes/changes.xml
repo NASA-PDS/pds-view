@@ -23,15 +23,18 @@
   </properties>
 
   <body>
-    <release version="1.5.0" date="TBD" description="TBD">
+    <release version="1.4.1" date="2013-11-27" description="This release of the Core Library is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="mcayanan" type="add" issue="PDS-27">
-        Added support for Include pointers.
+        Added support for xinclude pointers.
+      </action>
+      <action dev="mcayanan" type="fix" issue="PDS-213">
+        Fixed to correctly find file references that use the directory_path_name element.
       </action>
       <action dev="mcayanan" type="update" issue="PDS-225">
         Updated to leverage the "role" attribute in a schematron rule in determining the severity level of a failed-assert message in the schematron report.
       </action>
-      <action dev="mcayanan" type="fix" issue="PDS-213">
-        Fixed to correctly find file references that use the directory_path_name element.
+      <action dev="shardman" type="add">
+        Added in 1101 version of the schema and schematron and set as default for this release.
       </action>
     </release>
 
