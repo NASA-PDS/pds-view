@@ -43,7 +43,7 @@
       </p>
 
       <center>
-        <img alt="Catalog Tool Interfaces" src="../images/catalog_interfaces.jpg"/>
+        <img alt="Catalog Tool Interfaces" src="images/catalog_interfaces.jpg"/>
       </center>
 
       <p>The Catalog Tool utilizes the Storage and Product Services for ingesting and retrieving catalog files. Once the tool has determined which catalog files have been updated, the resulting PDS4 products are registered with the Registry Service.
