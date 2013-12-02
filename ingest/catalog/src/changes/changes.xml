@@ -23,21 +23,21 @@
   </properties>
 
   <body>
-    <release version="1.7.0" date="TBD" description="TBD">
+    <release version="1.6.1" date="2013-12-02" description="This release of the Catalog Tool is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
         <action dev="hyunlee" type="fix" issue="PDS-201">
-          Corrected to capture intrument host reference only from data set catalog file.       
+          Corrected to capture instrument host reference only from data set catalog file.
         </action>
         <action dev="hyunlee" type="fix" issue="PDS-202">
-          Added support for map projection catalog pointer.   
+          Added support for map projection catalog pointer.
         </action>
         <action dev="hyunlee" type="fix" issue="PDS-203">
-          Corrected the tool to strip leading and trailing white space from keyword values.       
+          Corrected the tool to strip leading and trailing white space from keyword values.
         </action>
         <action dev="hyunlee" type="fix" issue="PDS-204">
-          Corrected to generate correct investigation reference when mission name spans multiple lines.     
+          Corrected to generate correct investigation reference when mission name spans multiple lines.
         </action>
         <action dev="hyunlee" type="fix" issue="PDS-205">
-          Corrected this issue by PDS-201.       
+          Corrected this issue by addressing PDS-201.
         </action>
     </release>
 
