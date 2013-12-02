@@ -33,6 +33,12 @@
       <action dev="jpadams" type="update" issue="PDS-182">
         Updated solrconfig.xml to include new /filtered endpoint, which will now handle the filtering of superseded data sets, instead of the search UI. Updated data-sets.xsl to remove all references to archive-status. Functionality has been moved to Solr config.
       </action>
+      <action dev="jpadams" type="fix" issue="PDS-217">
+        Updated schema to resolve an issue where 75% of the Solr schema file was missing without realizing it.
+      </action>
+      <action dev="jpadams" type="fix" issue="PDS-218">
+        Updated a couple typos in documentation.
+      </action>
       <action dev="jpadams" type="update">
         Updated documentation to include information updating the Search Service configuration.
       </action>
