@@ -23,18 +23,15 @@
   </properties>
   <body>
     <release version="2.3.0" date="TBD" description="TBD">
-      <action dev="hyunlee" type="fix" issue="PDS-226">
-         Fixed to replace " " char to "_" char of the targetLid in viewTargetProfile.jsp.    
-      </action>
-      <action dev="hyunlee" type="update" issue="PDS-214">
-         Moved the "Resources" field up the page so that it is just under the "Data Set Abstract" field and rename it to "Search/Access Data".        
-      </action>
-	  <action dev="hyunlee" type="fix">
-	  	 Fixed to check "file_name_url" is NULL or not.
-	  </action>
     </release>
 
     <release version="2.2.0" date="2013-09-30" description="This release of Data Set View is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="hyunlee" type="update" issue="PDS-214">
+         Moved the "Resources" field up the page so that it is just under the "Data Set Abstract" field and rename it to "Search/Access Data".        
+      </action>
+      <action dev="hyunlee" type="fix" issue="PDS-226">
+         Fixed to replace " " char to "_" char of the targetLid in viewTargetProfile.jsp.
+      </action>
       <action dev="hyunlee" type="add">
         Added viewProduct.jsp to display the Observational Product type.
       </action>
@@ -43,6 +40,9 @@
       </action>
       <action dev="shardman" type="update">
         Cleaned up the project by deleting all of the unused code. Also cleaned up the web.xml file to better represent the end points of the project. Also removed all of the parameter cleaning code since that is now handled by the filter project.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Fixed to check "file_name_url" is NULL or not.
       </action>
     </release>
 
@@ -428,7 +428,7 @@
       </action>
       <action dev="thuytran" type="update">
         2002-08-19 - /home/oodt/cvs/pds/src/java/jpl/pds/util/DisplayOptions.java:
-	Add a new argument to displayValList for the caller to specify &lt;option&gt; and &lt;value&gt; for a SELECT element object
+  Add a new argument to displayValList for the caller to specify &lt;option&gt; and &lt;value&gt; for a SELECT element object
       </action>
       <action dev="kelly" type="update">
         2002-08-16 - /home/oodt/cvs/pds/src/www/xml/ALLProdServProf.xml: Update with RMI based product server locations.
