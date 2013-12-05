@@ -1,35 +1,35 @@
-<?xml version = "1.0" encoding = "UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <registryObjectList xmlns="http://registry.pds.nasa.gov">
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.attribute_of"
-        code="Ingest_DD.attribute_of"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.attribute_of"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_LDD.attribute_of"
+        code="Ingest_LDD.attribute_of"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_LDD.attribute_of"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Ingest_DD.attribute_of"/>
+        name="Ingest_LDD.attribute_of"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.component_of"
-        code="Ingest_DD.component_of"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.component_of"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_LDD.component_of"
+        code="Ingest_LDD.component_of"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_LDD.component_of"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Ingest_DD.component_of"/>
+        name="Ingest_LDD.component_of"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.extension_of"
-        code="Ingest_DD.extension_of"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.extension_of"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_LDD.extension_of"
+        code="Ingest_LDD.extension_of"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_LDD.extension_of"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Ingest_DD.extension_of"/>
+        name="Ingest_LDD.extension_of"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.restriction_of"
-        code="Ingest_DD.restriction_of"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.restriction_of"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_LDD.restriction_of"
+        code="Ingest_LDD.restriction_of"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_LDD.restriction_of"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Ingest_DD.restriction_of"/>
+        name="Ingest_LDD.restriction_of"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.subclass_of"
-        code="Ingest_DD.subclass_of"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_DD.subclass_of"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_LDD.subclass_of"
+        code="Ingest_LDD.subclass_of"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Ingest_LDD.subclass_of"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Ingest_DD.subclass_of"/>
+        name="Ingest_LDD.subclass_of"/>
     <classificationNode
         lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Bundle.bundle_has_browse_collection"
         code="Product_Bundle.bundle_has_browse_collection"
@@ -85,39 +85,39 @@
         parent="urn:registry:classificationScheme:AssociationType"
         name="Product_Bundle.bundle_has_spice_kernel_collection"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.inventory_has_LIDVID_Primary"
-        code="Product_Collection.inventory_has_LIDVID_Primary"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.inventory_has_LIDVID_Primary"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Class_Definition.attribute_of"
+        code="Product_Class_Definition.attribute_of"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Class_Definition.attribute_of"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Collection.inventory_has_LIDVID_Primary"/>
+        name="Product_Class_Definition.attribute_of"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.inventory_has_LIDVID_Secondary"
-        code="Product_Collection.inventory_has_LIDVID_Secondary"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.inventory_has_LIDVID_Secondary"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Class_Definition.component_of"
+        code="Product_Class_Definition.component_of"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Class_Definition.component_of"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Collection.inventory_has_LIDVID_Secondary"/>
+        name="Product_Class_Definition.component_of"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.inventory_has_LID_Secondary"
-        code="Product_Collection.inventory_has_LID_Secondary"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.inventory_has_LID_Secondary"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Class_Definition.extension_of"
+        code="Product_Class_Definition.extension_of"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Class_Definition.extension_of"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Collection.inventory_has_LID_Secondary"/>
+        name="Product_Class_Definition.extension_of"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.package_has_bundle"
-        code="Product_Zipped.package_has_bundle"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.package_has_bundle"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Class_Definition.restriction_of"
+        code="Product_Class_Definition.restriction_of"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Class_Definition.restriction_of"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Zipped.package_has_bundle"/>
+        name="Product_Class_Definition.restriction_of"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.package_has_collection"
-        code="Product_Zipped.package_has_collection"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.package_has_collection"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Class_Definition.subclass_of"
+        code="Product_Class_Definition.subclass_of"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Class_Definition.subclass_of"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Zipped.package_has_collection"/>
+        name="Product_Class_Definition.subclass_of"/>
     <classificationNode
-        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.package_has_delivery_manifest"
-        code="Product_Zipped.package_has_delivery_manifest"
-        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Zipped.package_has_delivery_manifest"
+        lid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.inventory_has_member_product"
+        code="Product_Collection.inventory_has_member_product"
+        guid="urn:nasa:pds:profile:regrep:AssociationType:Product_Collection.inventory_has_member_product"
         parent="urn:registry:classificationScheme:AssociationType"
-        name="Product_Zipped.package_has_delivery_manifest"/>
+        name="Product_Collection.inventory_has_member_product"/>
 </registryObjectList>
