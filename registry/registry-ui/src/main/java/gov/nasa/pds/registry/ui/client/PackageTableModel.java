@@ -87,13 +87,13 @@ public class PackageTableModel extends MutableTableModel<ViewRegistryPackage> {
 		final PackageTableModel instance = this;
 
 		// Send RPC request for data
-		this.dataService.requestRows(request, 
+		this.dataService.requestRows(request, this.filters,
 				new AsyncCallback<SerializableResponse<ViewRegistryPackage>>() {
 					@SuppressWarnings("nls")
 					public void onFailure(Throwable caught) {
 						callback.onFailure(new Exception("Packages RPC Failure"));
 						Window.alert("Packages RPC Failure" + caught.getMessage());
-						System.out.println("RPC Failure");
+						System.out.println("Packages RPC Failure");
 					}
 
 					public void onSuccess(

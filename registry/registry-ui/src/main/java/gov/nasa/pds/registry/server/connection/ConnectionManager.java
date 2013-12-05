@@ -34,6 +34,7 @@ import gov.nasa.pds.registry.model.SpecificationLink;
 import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.EventFilter;
+import gov.nasa.pds.registry.query.PackageFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
 
 import gov.nasa.pds.registry.ui.shared.StatusInformation;
@@ -255,14 +256,19 @@ public class ConnectionManager {
 	 * @return given number of packages from the given start
 	 * 
 	 */
-	public static ViewRegistryPackages getPackages(Integer start,
-			Integer numResults) {
+	public static ViewRegistryPackages getPackages(RegistryQuery<PackageFilter> query,
+			Integer start, Integer numResults) {
 		RegistryClient client = getRegistry();
 
 		PagedResponse<RegistryPackage> pagedResp = null;
 		try {
-			pagedResp = client.getObjects(start, numResults,
-					RegistryPackage.class);
+			if (query!=null) {
+				pagedResp = client.getPackages(query, start, numResults);
+			}
+			else {
+				pagedResp = client.getObjects(start, numResults,
+						RegistryPackage.class);
+			}
 		} catch (RegistryServiceException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());

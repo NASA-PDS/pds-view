@@ -30,7 +30,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface PackageServiceAsync {
 
-	void requestRows(Request request, AsyncCallback<SerializableResponse<ViewRegistryPackage>> callback);
+    void requestRows(Request request, Map<String, String> filters,
+			AsyncCallback<SerializableResponse<ViewRegistryPackage>> callback);
 	
 	void updatePackage(final ViewRegistryPackage registryPackage, AsyncCallback<Boolean> callback);
 	

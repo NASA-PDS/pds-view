@@ -32,7 +32,8 @@ import javax.servlet.http.HttpServletRequest;
 @RemoteServiceRelativePath("packages")
 public interface PackageService extends RemoteService {
 
-	SerializableResponse<ViewRegistryPackage> requestRows(Request request);
+	SerializableResponse<ViewRegistryPackage> requestRows(Request request,
+			Map<String, String> filters);
 	
 	boolean updatePackage(final ViewRegistryPackage registryPackage);
 	

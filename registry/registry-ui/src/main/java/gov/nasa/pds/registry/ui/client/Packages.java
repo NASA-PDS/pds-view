@@ -132,7 +132,15 @@ public class Packages extends Tab {
 	 */
 	protected Button closeButton;
 	
+	/**
+	 * Components for filtering 
+	 */
+	private final TextBox guidInput = new TextBox();
+	private final TextBox lidInput = new TextBox();
+	private final TextBox nameInput = new TextBox();
+	private final ListBox statusInput = new ListBox(false);
 	private final Button updateButton = new Button("Update Status");
+	private final Button clearButton = new Button("Clear");
     private final Button refreshButton = new Button("Refresh");
     private final Button deleteButton = new Button("Delete");
 
@@ -276,8 +284,22 @@ public class Packages extends Tab {
 		inputTable.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		// add input table to layout
 		this.layout.setWidget(0, 0, inputTable);
-	
-		final ListBox statusInput = new ListBox(false);
+		
+		// create textual input for global unique identifier search
+		guidInput.setName("guid");
+		InputContainer guidInputWrap = new InputContainer("GUID", guidInput);
+		inputTable.add(guidInputWrap);
+
+		// create textual input for local id search
+		lidInput.setName("lid");
+		InputContainer lidInputWrap = new InputContainer("LID", lidInput);
+		inputTable.add(lidInputWrap);
+
+		// create textual input for name search
+		nameInput.setName("name");
+		InputContainer nameInputWrap = new InputContainer("Name", nameInput);
+		inputTable.add(nameInputWrap);
+
 		statusInput.setName("statusType");
 		statusInput.addItem("Any Status", "-1");
 		for (int i=0; i<Constants.status.length; i++) {
@@ -291,6 +313,11 @@ public class Packages extends Tab {
         refreshButton.setStyleName("buttonwrapper");
         InputContainer refreshButtonWrap = new InputContainer(null, refreshButton);
         inputTable.add(refreshButtonWrap);
+        
+        //clearButton.setWidth("50px");
+        clearButton.setStyleName("buttonwrapper");
+        InputContainer clearButtonWrap = new InputContainer(null, clearButton);
+        inputTable.add(clearButtonWrap);
 
         // create button for doing an update
         updateButton.setStyleName("buttonwrapper");
@@ -307,10 +334,21 @@ public class Packages extends Tab {
             @Override
             public void onClick(ClickEvent event) {
                 //get().getPagingScrollTable().getDataTable().deselectAllRows();
-                get().reloadData();
+                //get().reloadData();
                 get().refreshTable();
             }
         });
+        
+        clearButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				get().initializeInputs();				
+				get().getTableModel().clearFilters();
+				
+				// go back to first page and force update
+				get().getPagingScrollTable().gotoPage(0, true);
+			}
+		});
 		
 		updateButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -405,6 +443,13 @@ public class Packages extends Tab {
 		});	
 	}
 
+	protected void initializeInputs() {
+		guidInput.setText("");
+		lidInput.setText("");
+		nameInput.setText("");
+		statusInput.setSelectedIndex(0);
+	}
+	
 	protected void reloadData() {
         get().getCachedTableModel().clearCache();
         get().getTableModel().setRowCount(RegistryUI.PAGE_SIZE1);
@@ -415,8 +460,43 @@ public class Packages extends Tab {
     }
 
     private void refreshTable() {
-        // clear cache as data will be invalid after filter
-        get().getCachedTableModel().clearCache();
+    	// clear cache as data will be invalid after filter
+    	get().getCachedTableModel().clearCache();
+
+    	// get table model that holds filters
+    	PackageTableModel tablemodel = get().getTableModel();
+
+    	// clear old filters
+    	tablemodel.clearFilters();
+
+    	// get values from input
+    	// guid
+    	String guid = guidInput.getValue();
+    	if (!guid.equals("")) {
+    		tablemodel.addFilter("guid", guid);
+    	}
+
+    	// lid
+    	String lid = lidInput.getValue();
+    	if (!lid.equals("")) {
+    		tablemodel.addFilter("lid", lid);
+    	}
+
+    	// name
+    	String name = nameInput.getValue();
+    	if (!name.equals("")) {
+    		tablemodel.addFilter("name", name);
+    	}
+    	
+    	// status
+    	String status = statusInput.getValue(statusInput
+    			.getSelectedIndex());
+    	logger.log(Level.FINEST, "status = " + status);
+    	// set status if set to something specific
+    	if (!status.equals("-1")) {
+    		tablemodel.addFilter("status", status);
+    	} 
+
         get().reloadData();
     }
 	
@@ -737,6 +817,23 @@ public class Packages extends Tab {
 				@Override
 				public String getCellValue(ViewRegistryPackage rowValue) {
 					return rowValue.getStatus();
+				}
+			};
+
+			columnDef.setMinimumColumnWidth(50);
+			columnDef.setPreferredColumnWidth(50);
+			// columnDef.setMaximumColumnWidth(200);
+			columnDef.setColumnSortable(false);
+			this.tableDefinition.addColumnDefinition(columnDef);
+		}
+		
+		// DESCRIPTION
+		{
+			PackageColumnDefinition<String> columnDef = new PackageColumnDefinition<String>(
+					"Description") {
+				@Override
+				public String getCellValue(ViewRegistryPackage rowValue) {
+					return rowValue.getDescription();
 				}
 			};
 

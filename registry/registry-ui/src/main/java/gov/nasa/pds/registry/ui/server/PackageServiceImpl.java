@@ -13,11 +13,14 @@
 // $Id$
 package gov.nasa.pds.registry.ui.server;
 
+import gov.nasa.pds.registry.model.ObjectStatus;
 import gov.nasa.pds.registry.server.connection.ConnectionManager;
 import gov.nasa.pds.registry.ui.client.PackageService;
 import gov.nasa.pds.registry.ui.client.SerializableProductResponse;
 import gov.nasa.pds.registry.ui.shared.ViewRegistryPackages;
 import gov.nasa.pds.registry.ui.shared.ViewRegistryPackage;
+import gov.nasa.pds.registry.query.PackageFilter;
+import gov.nasa.pds.registry.query.RegistryQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,11 +59,80 @@ public class PackageServiceImpl extends RemoteServiceServlet implements
 	 */
 	@SuppressWarnings("nls")
 	@Override
-	public SerializableResponse<ViewRegistryPackage> requestRows(Request request) {
+	public SerializableResponse<ViewRegistryPackage> requestRows(Request request, Map<String, String> filters) {
+
+		// get the sort list from the request
+		ColumnSortList sort = request.getColumnSortList();
+
+		// only get the primary sort info as multiple column sort is not part of
+		// the UI at this time
+		ColumnSortInfo sortInfo = sort.getPrimaryColumnSortInfo();
+
+		// create a builder for assembling sort and filter info into a service
+		// specific query
+		RegistryQuery.Builder<PackageFilter> queryBuilder = new RegistryQuery.Builder<PackageFilter>();
+
+		// if there is sort info, assemble transform into query format
+		if (sortInfo != null) {
+
+			// get the column name from the index
+			String columnName = indexToColumnName(sortInfo.getColumn());
+
+			// get an ascending string from boolean property
+			String asc = sortInfo.isAscending() ? "ASC" : "DESC";
+
+			// assemble sort string
+			String sortString = columnName + " " + asc;
+
+			// create a sort list and add the sort
+			List<String> sortList = new ArrayList<String>();
+			sortList.add(sortString);
+
+			// add the sort to the query
+			queryBuilder = queryBuilder.sort(sortList);
+		}
+
+		
+		// if there are filters, add them
+		if (filters.size() > 0) {
+			System.out.println("filters = " + filters.toString());
+			// create a filter builder
+			PackageFilter.Builder filterBuilder = new PackageFilter.Builder();
+
+			// for each sortable column, if the filter exists, add it
+
+			if (filters.containsKey("lid")) {
+				filterBuilder.lid(filters.get("lid"));
+			}
+
+			if (filters.containsKey("guid")) {
+				filterBuilder.guid(filters.get("guid"));
+			}
+
+			if (filters.containsKey("name")) {
+				filterBuilder.name(filters.get("name"));
+			}
+			
+			if (filters.containsKey("status")) {
+				// TODO: make sure is a valid status
+				filterBuilder.status(ObjectStatus.valueOf(filters.get("status")));
+			}
+			
+			// build the filter
+			PackageFilter filter = filterBuilder.build();
+
+			// add the filter to the query
+			queryBuilder.filter(filter);
+		}
+
+		// build the assembled query
+		RegistryQuery<PackageFilter> query = queryBuilder.build();
+
 		// get the results, offsetting the start row by one to deal with index
 		// inconsistency
 
-		ViewRegistryPackages packages = ConnectionManager.getPackages(request.getStartRow() + 1, request.getNumRows());
+		ViewRegistryPackages packages = ConnectionManager.getPackages(query, 
+				request.getStartRow() + 1, request.getNumRows());
 		
 		// return the GWT appropriate wrapping of the returned results
 		return new SerializableProductResponse<ViewRegistryPackage>(packages);
@@ -98,6 +170,8 @@ public class PackageServiceImpl extends RemoteServiceServlet implements
 			return "objectType";
 		case 4:
 			return "status";
+		case 5:
+			return "description";
 		default:
 			return null;
 		}
