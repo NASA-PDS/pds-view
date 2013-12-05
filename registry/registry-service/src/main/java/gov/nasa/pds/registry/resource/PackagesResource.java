@@ -16,14 +16,17 @@
 package gov.nasa.pds.registry.resource;
 
 import java.net.URI;
+import java.util.List;
 
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Link;
 import gov.nasa.pds.registry.model.ObjectAction;
+import gov.nasa.pds.registry.model.ObjectStatus;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryPackage;
-import gov.nasa.pds.registry.query.ObjectFilter;
+import gov.nasa.pds.registry.query.PackageFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
+import gov.nasa.pds.registry.query.QueryOperator;
 import gov.nasa.pds.registry.service.RegistryService;
 
 import javax.ws.rs.Consumes;
@@ -126,7 +129,7 @@ public class PackagesResource {
           ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
     }
   }
-
+  
   /**
    * Deletes the package with the given global identifier.
    * 
@@ -223,12 +226,19 @@ public class PackagesResource {
   @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   public Response getPackages(
       @QueryParam("start") @DefaultValue("1") Integer start,
-      @QueryParam("rows") @DefaultValue("20") Integer rows) {
-    ObjectFilter filter = new ObjectFilter.Builder().build();
-    RegistryQuery.Builder<ObjectFilter> queryBuilder = new RegistryQuery.Builder<ObjectFilter>()
-        .filter(filter);
-    PagedResponse<RegistryPackage> rr = (PagedResponse<RegistryPackage>) registryService
-        .getObjects(queryBuilder.build(), start, rows, RegistryPackage.class);
+      @QueryParam("rows") @DefaultValue("20") Integer rows,
+      @QueryParam("guid") String guid, 
+      @QueryParam("name") String name,
+      @QueryParam("lid") String lid,
+      @QueryParam("status") ObjectStatus status,
+      @QueryParam("queryOp") @DefaultValue("AND") QueryOperator operator,
+      @QueryParam("sort") List<String> sort) {
+	PackageFilter filter = new PackageFilter.Builder().guid(guid).name(name).lid(lid)
+			.status(status).build();
+    RegistryQuery.Builder<PackageFilter> queryBuilder = new RegistryQuery.Builder<PackageFilter>()
+		        .filter(filter).operator(operator);  
+    PagedResponse<RegistryPackage> rr =  registryService.getPackages(queryBuilder.build(), start, rows);
+    
     Response.ResponseBuilder builder = Response.ok(rr);
     UriBuilder absolute = uriInfo.getAbsolutePathBuilder();
     absolute.queryParam("start", "{start}");

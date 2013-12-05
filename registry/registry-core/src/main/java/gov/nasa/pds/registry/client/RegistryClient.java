@@ -32,6 +32,7 @@ import gov.nasa.pds.registry.provider.JacksonObjectMapperProvider;
 import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.EventFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
+import gov.nasa.pds.registry.query.PackageFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
 
 import java.io.File;
@@ -452,6 +453,69 @@ public class RegistryClient {
     if (response.getClientResponseStatus() == Status.OK) {
       return response
           .getEntity(new GenericType<PagedResponse<ExtrinsicObject>>() {
+          });
+    } else {
+      throw new RegistryServiceException(response.getEntity(String.class),
+          Response.Status.fromStatusCode(response.getStatus()));
+    }
+  }
+  
+  /**
+   * Retrieves a set of package objects that match the query.
+   * 
+   * @param query
+   *          filters for the package
+   * @param start
+   *          indicates where in the set of objects to begin
+   * @param rows
+   *          indicates how many objects to return
+   * @return paged set of package objects
+   * @throws RegistryServiceException
+   */
+  public PagedResponse<RegistryPackage> getPackages(
+      RegistryQuery<PackageFilter> query, Integer start, Integer rows)
+      throws RegistryServiceException {
+    MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+    if (start != null) {
+      params.add("start", start.toString());
+    }
+    if (rows != null) {
+      params.add("rows", rows.toString());
+    }
+
+    PackageFilter filter = query.getFilter();
+    if (filter != null) {
+      if (filter.getGuid() != null) {
+        params.add("guid", filter.getGuid());
+      }
+      if (filter.getLid() != null) {
+        params.add("lid", filter.getLid());
+      }
+      if (filter.getName() != null) {
+        params.add("name", filter.getName());
+      }
+      if (filter.getStatus() != null) {
+          params.add("status", filter.getStatus().toString());
+      }
+    }
+
+    List<String> sort = query.getSort();
+    for (String s : sort) {
+      params.add("sort", s);
+    }
+
+    params.add("queryOp", query.getOperator().toString());
+
+    WebResource.Builder builder = service.path(
+        resourceMap.get(RegistryPackage.class)).queryParams(params)
+        .getRequestBuilder();
+
+    ClientResponse response = builder.accept(mediaType).get(
+        ClientResponse.class);
+
+    if (response.getClientResponseStatus() == Status.OK) {
+      return response
+          .getEntity(new GenericType<PagedResponse<RegistryPackage>>() {
           });
     } else {
       throw new RegistryServiceException(response.getEntity(String.class),

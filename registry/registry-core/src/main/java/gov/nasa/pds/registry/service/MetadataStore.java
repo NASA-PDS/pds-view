@@ -21,10 +21,12 @@ import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
+import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.EventFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.ObjectFilter;
+import gov.nasa.pds.registry.query.PackageFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
 
 import java.util.List;
@@ -54,6 +56,21 @@ public interface MetadataStore {
   public PagedResponse<ExtrinsicObject> getExtrinsics(RegistryQuery<ExtrinsicFilter> query,
       Integer start, Integer rows);
 
+  /**
+   * Retrieves packages from back end store that match the query and are within
+   * the requested result list range
+   * 
+   * @param query
+   *          to filter against packages
+   * @param start
+   *          index within the results to start at. This index is one based
+   * @param rows
+   *          number of results to get
+   * @return list of packages
+   */
+  public PagedResponse<RegistryPackage> getPackages(RegistryQuery<PackageFilter> query,
+      Integer start, Integer rows);
+  
   /**
    * Retrieves associations from the back end store that match the query and are
    * within the requested results list range

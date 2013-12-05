@@ -21,10 +21,12 @@ import gov.nasa.pds.registry.model.ClassificationNode;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryObject;
+import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.EventFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.ObjectFilter;
+import gov.nasa.pds.registry.query.PackageFilter;
 import gov.nasa.pds.registry.query.QueryOperator;
 import gov.nasa.pds.registry.query.RegistryQuery;
 
@@ -159,6 +161,71 @@ public class MetadataStoreJPA implements MetadataStore {
     cq.orderBy(orders);
     TypedQuery<ExtrinsicObject> dbQuery = entityManager.createQuery(cq);
     PagedResponse<ExtrinsicObject> response = new PagedResponse<ExtrinsicObject>(
+        start, (long) dbQuery.getResultList().size(), dbQuery.setFirstResult(
+            start - 1).setMaxResults(rows).getResultList());
+    return response;
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nasa.pds.registry.service.MetadataStore#getPackages(gov.nasa.pds.
+   * registry .query.ProductQuery, java.lang.Long, java.lang.Integer)
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public PagedResponse<RegistryPackage> getPackages(
+      RegistryQuery<PackageFilter> query, Integer start, Integer rows) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<RegistryPackage> cq = cb.createQuery(RegistryPackage.class);
+    Root<RegistryPackage> productEntity = cq.from(RegistryPackage.class);
+    PackageFilter filter = query.getFilter();
+    List<Predicate> predicates = new ArrayList<Predicate>();
+    if (filter != null) {
+      if (filter.getGuid() != null) {
+        predicates.add(generatePredicate(cb, productEntity.get("guid").as(
+            String.class), filter.getGuid()));
+      }
+      if (filter.getLid() != null) {
+        predicates.add(generatePredicate(cb, productEntity.get("lid").as(
+            String.class), filter.getLid()));
+      }
+      if (filter.getName() != null) {
+        predicates.add(generatePredicate(cb, productEntity.get("name").as(
+            String.class), filter.getName()));
+      }
+      if (filter.getStatus() != null) {
+          predicates.add(cb
+              .equal(productEntity.get("status"), filter.getStatus()));
+      }
+    }
+
+    if (predicates.size() != 0) {
+      Predicate[] p = new Predicate[predicates.size()];
+      if (query.getOperator() == QueryOperator.AND) {
+        cq.where(cb.and(predicates.toArray(p)));
+      } else {
+        cq.where(cb.or(predicates.toArray(p)));
+      }
+    }
+
+    List<Order> orders = new ArrayList<Order>();
+    if (query.getSort().size() > 0) {
+      for (String sort : query.getSort()) {
+        String[] s = sort.split(" ");
+        if (s.length == 1 || s[1].equalsIgnoreCase("ASC")) {
+          orders.add(cb.asc(productEntity.get(s[0])));
+        } else {
+          orders.add(cb.desc(productEntity.get(s[0])));
+        }
+      }
+    } else {
+      orders.add(cb.asc(productEntity.get("guid")));
+    }
+    cq.orderBy(orders);
+    TypedQuery<RegistryPackage> dbQuery = entityManager.createQuery(cq);
+    PagedResponse<RegistryPackage> response = new PagedResponse<RegistryPackage>(
         start, (long) dbQuery.getResultList().size(), dbQuery.setFirstResult(
             start - 1).setMaxResults(rows).getResultList());
     return response;

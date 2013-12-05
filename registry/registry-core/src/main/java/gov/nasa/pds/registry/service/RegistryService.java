@@ -33,6 +33,7 @@ import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.EventFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.ObjectFilter;
+import gov.nasa.pds.registry.query.PackageFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
 
 import java.util.Date;
@@ -321,7 +322,22 @@ public interface RegistryService {
   public PagedResponse<? extends RegistryObject> getObjects(
       RegistryQuery<ObjectFilter> query, Integer start, Integer rows,
       Class<? extends RegistryObject> objectClass);
-
+  
+  /**
+   * Generic query for a given class of registry packages. This query only
+   * contains attributes that are applicable across all registry packages.
+   * 
+   * @param query
+   *          based on a set of filters
+   * @param start
+   *          index within the results to start at. This index is one based
+   * @param rows
+   *          number of results to get
+   * @return list of RegistryPackage
+   */
+  public PagedResponse<RegistryPackage> getPackages(
+      RegistryQuery<PackageFilter> query, Integer start, Integer rows);
+ 
   /**
    * Retrieves the list of (@link AuditableEvent}'s for the affected object
    * 

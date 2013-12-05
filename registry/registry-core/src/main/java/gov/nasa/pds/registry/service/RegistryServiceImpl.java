@@ -45,6 +45,7 @@ import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.EventFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.ObjectFilter;
+import gov.nasa.pds.registry.query.PackageFilter;
 import gov.nasa.pds.registry.query.QueryOperator;
 import gov.nasa.pds.registry.query.RegistryQuery;
 
@@ -561,7 +562,23 @@ public class RegistryServiceImpl implements RegistryService {
 		return (PagedResponse<Association>) metadataStore.getRegistryObjects(query,
 		    start, rows, objectClass);
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gov.nasa.pds.registry.service.RegistryService#getPackages(gov.nasa.pds.registry
+	 * .query.RegistryQuery, java.lang.Integer, java.lang.Integer)
+	 */
+	@SuppressWarnings("unchecked")
+	public PagedResponse<RegistryPackage> getPackages(
+	    RegistryQuery<PackageFilter> query, Integer start, Integer rows) {
+		if (start <= 0) {
+			start = 1;
+		}
+		return metadataStore.getPackages(query, start, rows);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
