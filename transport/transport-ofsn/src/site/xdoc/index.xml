@@ -25,11 +25,11 @@
   <body>
     <section name="About Transport Service">
       <p>
-        The Transport Service provides functionality for transporting and transforming PDS products. The core functionality for this service is satisfied by the Apache OODT Web Grid Product Server and includes the Online File Specification Name (OFSN) handlers for interfacing with an archive directory structure. It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
+        The OFSN Transport Service provides functionality for transporting and transforming PDS products. The core functionality for this service is satisfied by the Apache OODT Web Grid Product Server and includes the Online File Specification Name (OFSN) handlers for interfacing with an archive directory structure. It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
       </p>
 
       <p>
-        The Transport Service is composed by the following components (top to bottom):
+        The OFSN Transport Service is composed by the following components (top to bottom):
         <ul>
           <li>The Apache OODT Web Grid servlet, which provides a general-purpose web container for answering transport requests formulated as HTTP/GET.</li>
           <li>The Apache OODT Product Server, which routes each transport request to a PDS-specific OFSN Handler. The PDS OFSN Handlers contain functionality for delivering data products to web clients by invoking the appropriate product transformation.</li>

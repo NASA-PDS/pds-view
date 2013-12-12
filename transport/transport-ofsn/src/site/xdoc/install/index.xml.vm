@@ -32,7 +32,7 @@
       <ul>
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
-        <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+        <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
         <li><a href="#Testing">Testing</a></li>
       </ul>
     </section>
@@ -45,7 +45,7 @@
         <p>The Transport Service was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically developed under Java version 1.6 and has only been tested with this version. The following commands test the local Java installation in a UNIX-based environment:
         </p>
 
-        <source>
+<source>
 % which java
 /usr/bin/java
 
@@ -53,7 +53,7 @@
 java version "1.6.0_26"
 Java(TM) SE Runtime Environment (build 1.6.0_26-b03-384-10M3425)
 Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
-        </source>
+</source>
 
         <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.6, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The software package of choice is the Java Standard Edition (SE) 6, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
         </p>
@@ -63,7 +63,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
         <p>The Transport Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/pds2010/development/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
         </p>
 
-        <p>The top-level directory where Apache Tomcat is installed (i.e. the directory containing the <i>webapps</i> and <i>conf</i> sub-directories) will be referenced in these instructions as $CATALINE_HOME.
+        <p>The top-level directory where Apache Tomcat is installed (i.e. the directory containing the <i>webapps</i> and <i>conf</i> sub-directories) will be referenced in these instructions as $CATALINA_HOME.
         </p>
       </subsection>
     </section>
@@ -73,7 +73,8 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       </p>
 
       <p>Unpack the distribution in that location and create a symbolic link to facilitate configuration and future upgrades (the following commands are for Unix-based systems, on Windows environments please modify accordingly):
-        <source>
+
+<source>
 % export PDS_HOME=/usr/local/pds
 % cd $PDS_HOME
 % unzip ${project.artifactId}-${project.version}-bin.zip
@@ -81,7 +82,8 @@ or
 % tar -xzvf ${project.artifactId}-${project.version}-bin.tar.gz
 % ln -s ./${project.artifactId}-${project.version} ./transport-service
 % cd transport-service
-        </source>
+</source>
+
       </p>
 
       <p>Note: Depending on the platform, the native version of <i>tar</i> may produce an error when attempting to unpack the distribution file because many of the file paths are greater than 100 characters. If available, the GNU version of tar will resolve this problem. If that is not available or cannot be installed, the zipped package will work just fine in a UNIX environment.
@@ -104,33 +106,14 @@ or
           <p>A README file directing the user to the available documentation for the project.
           </p>
         </li>
-        
-        <li><b>config/</b><br/>
-          <p>
-            Directory containing all configuration files, which will need to be customized for each deployment.
-          </p>
-        </li>
-        
-        <li><b>doc/</b><br/>
-          <p>
-            Directory containing the package documentation (for installation, configuration, operation). 
-            The full documentation can be accessed by pointing a browser to the top-level <i>index.html</i> file.
-          </p>
-        </li>
-        
-        <li><b>lib/</b><br/>
-          <p>
-            Directory containing the dependency jars, including the <i>${project.artifactId}</i> classes (i.e. this module) packaged as a jar.
-          </p>
-        </li>
         <li><b>testdata/</b><br/>
           <p>
             Directory containing some test files.
           </p>
         </li>
-        <li><b> web-grid.war</b><br/>
+        <li><b>transport-service.war</b><br/>
           <p>
-            The product servlet web application which will need to be deployed to Apache Tomcat.
+            The Web ARchive file (WAR) containing the OFSN transport service application, which will need to be deployed to Apache Tomcat.
           </p>
         </li>
       </ul>
@@ -138,76 +121,59 @@ or
     
     <section name="Deploying the Application">
       <p>
-        The Transport Service package includes the web-grid war file, the library jars to execute the product transformations, and a few configuration files that tie the whole application together. The package comes pre-configured for an installation location of <i>$PDS_HOME=/usr/local/pds</i>. If you have installed the package in this standard location, the changes to the configuration files will be minimal. If not, a few files must be edited to insert the custom system paths, as described below.
-      </p>
+        The OFSN transport service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. 
+        <br/>
+        For a Tomcat server deployment, the WAR file is normally copied directly to the webapps directory within the Tomcat installation:
 
-      <subsection name="Initial Installation">
-        <ol>
-          <li>
-            Deploy the web-grid.war file to your existing Tomcat installation through a context file.
-            <source>
+<source>
 % cd $PDS_HOME/transport-service
-% cp config/transport-service.xml $CATALINA_HOME/conf/Catalina/localhost/transport-service.xml
-            </source>
-          </li>
+% cp transport-service.war $CATALINA_HOME/webapps
+</source>
+	    After copying the war file in place, restart Tomcat, which will cause the war file to be expanded in that same directory.
+        Alternatively, the war file can be installed via the Tomcat Manager interface - see instructions on the Tomcat web site. 
+        Once the war file is copied and expanded, the application is ready for configuration.
+      </p>
+    </section>
 
-          <li>Insert your specific installation location for $PDS_HOME, if different than "/usr/local/pds". 
-            The following three files must be edited:
-            <br/>&nbsp;
-            <ul>
-              <li>
-                <i><b>$CATALINA_HOME/conf/Catalina/localhost/transport-service.xml</b></i>. 
-                <br/>The installation path must be changed in three places: 
-                <ul>
-                  <li>
-                    The location of the war file 
-                    (by default: <i>docBase="/usr/local/pds/transport-service/web-grid.war"</i>).
-                  </li>
-                  <li>
-                    The reference to the full path of config.xml 
-                    (by default: <i>value="/usr/local/pds/transport-service/config/config.xml"</i>).
-                  </li>
-                  <li>
-                    The location of the "lib/" directory for the Tomcat class loader 
-                    (by default: <i>virtualClasspath="/usr/local/pds/transport-service/lib/*.jar"</i>).
-                  </li>
-                </ul>
-                &nbsp;
-              </li>
-            
-              <li>
-                <i><b>$PDS_HOME/transport-service/config/config.xml</b></i>.
-                <br/>Change the location of the ofs-ps.xml file 
-                (by default: <i>/usr/local/pds/transport-service/config/ofsn-ps.xml</i>).
-                <br/>&nbsp;
-              </li>
-            
-              <li>  
-                <i><b>$PDS_HOME/transport-service/config/ofsn-ps.xml</b></i>.
-                <br/>Change the location of the productRoot directory. For now, insert the full path to the directory containing the test data
-                (by default: <i>productRoot="/usr/local/pds/transport-service/testdata"</i>).
-                <br/>&nbsp;
-              </li>
-            </ul>
-          </li>
-        
-          <li>
-            Restart Tomcat to load the web-grid application with the new configuration.
-          </li>
-        </ol>
-      </subsection>
-
-      <subsection name="Configure for Operations">
+	<section name="Configuring the Application">
+	  
+        The preferred method to configure the transport service is to manually edit the application configuration files. 
         <p>
-          To serve products from a real production directory, you must edit the configuration file <i>$PDS_HOME/config/ofsn-ps.xml</i> and change the value of the <i>productRoot</i> attribute to the top-level directory containing your products.
+        First, edit the file $CATALINA_HOME/webapps/transport-service/WEB-INF/config.xml 
+        and change the path of the Tomcat installation directory to properly reference the transport service configuration file ofsn-ps.xml 
+        which was included in the war ditribution:
+<source>
+&lt;property key=&quot;org.apache.oodt.product.handlers.ofsn.xmlConfigFilePath&quot;&gt; 
+/usr/local/pds/apache-tomcat/webapps/transport-service/WEB-INF/ofsn-ps.xml&lt;/property&gt;
+</source>
+        (enter the above instruction all in one line of the file).
+        If you have installed Tomcat under $CATALINA_HOME=/usr/local/pds/apache-tomcat, you may leave the config.xml file unchanged.
         </p>
-      </subsection>
+        <p>
+        Note that the step above can also be accomplished by using the web application user interface, available at:
+        <a href="http://localhost:8080/transport-service/">http://localhost:8080/transport-service/</a> 
+        (use the initial password <i>hanalei</i> to log in). See the documentation of the 
+        <a href="http://pds-cm.jpl.nasa.gov/pds4/transport/transport-registry/index.html">Registry Transport Service</a> for additional information on
+        using the web interface.
+        </p>
+        
+        <p>
+        Second, edit the file $CATALINA_HOME/webapps/transport-service/WEB-INF/ofsn-ps.xml and insert the proper path of the
+        root directory containing the products to be served. For testing purposes, you may want to use the <i>testdata</i> directory
+        that is included in the transport service distribution, in the location where the application package was iniially unpacked:
+<source>
+&lt;oodt:ofsn xmlns:oodt=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/oodt/1.0&quot;
+      id=&quot;urn:oodt:prod:ofsn&quot;
+      name=&quot;OODT OFSN Style Product Handler&quot;
+      productRoot=&quot;/usr/local/pds/transport-service/testdata&quot;&gt;
+</source>
+	    When the transport service is used in production, the <i>productRoot</i> directory will have to be changed to reflect
+	    the location of the real products.
+        </p>
+        <p>
+        Restart Tomcat to load the configuration changes.
+        </p>
 
-      <!--
-      <subsection name="Upgrade To A New Version">
-    &nbsp;
-      </subsection>
-      -->
     </section>
 
     <section name="Testing">
@@ -227,9 +193,9 @@ http://localhost:8080/transport-service/
           Out of the box, the PDS Transport Service is configured to serve products in the directory 
           <i>$PDS_HOME/transport-service/testdata</i> (referenced as "productRoot" in the file ofsn-ps.xml). 
           You can test your installation by accessing the following URL:
-          <source>
+<source>
 http://localhost:8080/transport-service/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_JPG
-          </source>
+</source>
           If you see a JPG image, your installation was successful! If not, please look into the Tomcat logs for any error messages.
           <br/>&nbsp;
         </li>
