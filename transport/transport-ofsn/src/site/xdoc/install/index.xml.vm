@@ -196,6 +196,10 @@ http://localhost:8080/transport-service/
 <source>
 http://localhost:8080/transport-service/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_JPG
 </source>
+          or equivalently, using the new product request syntax:
+<source>
+http://localhost:8080/transport-service/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_JPG
+</source>
           If you see a JPG image, your installation was successful! If not, please look into the Tomcat logs for any error messages.
           <br/>&nbsp;
         </li>
