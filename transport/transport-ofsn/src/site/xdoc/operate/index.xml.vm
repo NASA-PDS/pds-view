@@ -56,24 +56,33 @@
     </section>
 
     <section name="Product Query">
-      <p>The Transport Service provides functionality for transporting files from Discipline Node local data repositories. The following table details the parameter available:
+      <p>The Transport Service provides functionality for transporting files from Discipline Node local data repositories. 
+      The service can be queried using 3 possible methods for encoding the HTTP request parameters: DIS-Style syntax, XML query expressions, or
+      simple HTTP (name, value) pairs.
+      The following table summarizes the parameters available:
       </p>
 
       <table>
         <tr><th>HTTP Parameter</th><th>Description</th></tr>
         <tr><td>q</td><td>The DIS-Style query expression identifying the product (or set of files) to retrieve from the Transport Service. This is the preferred parameter for querying the Transport Service and is required if the <i>xmlq</i> parameter is not specified. Additional information regarding the DIS-Style query format can be found at the <a href="http://oodt.apache.org/components/maven/xmlquery/disquery/" target="_blank">Apache OODT DIS-Style Query</a> page.</td></tr>
         <tr><td>xmlq</td><td>The XML query expression identifying the product (or set of files) to retrieve from the Transport Service. The details for the format of this query expression will not be covered here. Although supported, the <i>q</i> parameter is preferred and is utilized by all existing client interfaces. This parameter is required if the <i>q</i> parameter is not specified.</td></tr>
+        <tr><td>OFSN, RT</td><td>The Online File Specification Name (OFSN) and Return Type (RT) parameter names, set equal to the requested values.</td></tr>
       </table>
 
       <p>The following is an example query request via <i>cURL</i> using the <i>q</i> parameter:
-      </p>
 
-      <source>
+<source>
 % curl -X GET -o results.out -v \
 http://localhost:8080/transport-service/prod?q=&lt;keyword-query&gt;
-      </source>
+</source>
+	and following is the general syntax for using <i>cURL</i> with the direct HTTP parameters encoding:
+<source>
+% curl -X GET -o results.out -v \
+http://localhost:8080/transport-service/prod?OFSN=&lt;ofsn value&gt;&amp;RT=&lt;rt value&gt;
+</source>	
+     </p>
 
-      <p>The Transport Service accepts the following parameters in DIS-Style format for the parameter above:
+      <p>When using DIS-Style format, the OFSN and RT parameters must be encoded as part of the "q" value parameter:
       </p>
 
       <table>
@@ -85,34 +94,37 @@ http://localhost:8080/transport-service/prod?q=&lt;keyword-query&gt;
       <p>The keyword query expression must be properly encoded by the rules of Uniform Resource Identifiers whether they're part of the URL in an HTTP GET request or transmitted separately in an HTTP POST request. In general, this means that characters spaces and equals signs in query expressions need to be properly escaped. Most browsers and HTTP libraries will happily relax these rules, though, especially in cases where there is no ambiguity. For Transport Service queries, this basically means changing your spaces to <i>+</i>'s. The following example of a keyword query expression details the difference between an unencoded and encoded query:
       </p>
 
-      <source>
+<source>
 OFSN EQ &lt;online-file-specification-name&gt; AND RT EQ &lt;return-type&gt;
 
   properly encoded request:
 
 OFSN+EQ+&lt;online-file-specification-name&gt;+AND+RT+EQ+&lt;return-type&gt;
-      </source>
+</source>
       
       <p>
       	For example, the following query requests a directory listing from the <i>test-data1</i> sub-directory found under the Transport Service's root directory 
       	(specified by the <i>productRoot</i> property during configuration):
       </p>
-      <source>
+<source>
 % curl -X GET -o results.out -v \
 http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIST1
-      </source>
+</source>
 
       <p>The following table lists all the valid values for the return type keyword. 
          The examples provided assume the existence of a transport-service application deployed within a local Tomcat container running on port 8080.
+         For each possible value of RT, the same example request is shown as encoded with DIS-Style syntax, or simple (name, value) pairs.
       </p>
 
       <table>
         <tr><th>Return Type</th><th>Description</th></tr>
         <tr><td>DIRFILELIST</td>
             <td>Returns an XML document containing all of the filenames (and only the files, not directories) and their sizes, recursing into subdirectories.
-                <br/>
-                Example request: 
+                <br/>Example request: 
                 <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST</a>
+            	<br/>Example request: 
+                <a href="http://localhost:8080/transport-service/prod?OFSN=/&amp;RT=DIRFILELIST">http://localhost:8080/transport-service/prod?OFSN=/&amp;RT=DIRFILELIST</a>
+            	
             	<br/>Example response:
             	<source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
@@ -139,8 +151,8 @@ http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIR
         </tr>
         <tr>
         	<td>DIRFILELIST1</td><td>Identical to <i>DIRFILELIST</i> except that it does not recurse into subdirectories.
-        	    <br/>
-        	    Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST1">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST1</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST1">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST1</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?OFSN=/&amp;RT=DIRFILELIST1">http://localhost:8080/transport-service/prod?OFSN=/&amp;RT=DIRFILELIST1</a>
         	    <br/>Example response:
             	<source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
@@ -159,9 +171,10 @@ http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIR
         <tr>
         	<td>DIRLIST</td>
         	<td>Returns an XML document with directory names (and only directory names) and total size of files in each directory starting in the requested directory and traversing into the subdirectories.
-        	    <br/>
-        	    Example request: 
+        	    <br/>Example request: 
         	    <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST</a>
+        	    <br/>Example request: 
+        	    <a href="http://localhost:8080/transport-service/prod?OFSN=/&amp;RT=DIRLIST">http://localhost:8080/transport-service/prod?OFSN=/&amp;RT=DIRLIST</a>
         		<br/>Example response:
         		<source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
@@ -184,7 +197,8 @@ http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIR
         <tr>
           <td>DIRLIST1</td>
           <td>Identical to <i>DIRLIST</i> but does not recursively descend into subdirectories. 
-          	  <br/>Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST1">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST</a>
+          	  <br/>Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST1">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST1</a>
+          	  <br/>Example request: <a href="http://localhost:8080/transport-service/prod?OFSN=/&amp;RT=DIRLIST1">http://localhost:8080/transport-service/prod?OFSN=/&amp;RT=DIRLIST1</a>
         	  <br/>Example response:
         		<source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
@@ -203,8 +217,8 @@ http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIR
         <tr>
           <td>FILELIST</td>
           <td>Returns an XML document naming the requested file and also giving its size.
-              <br/>
-              Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1/FF01.IMG+AND+RT+EQ+FILELIST">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1/FF01.IMG+AND+RT+EQ+FILELIST</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1/FF01.IMG+AND+RT+EQ+FILELIST">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1/FF01.IMG+AND+RT+EQ+FILELIST</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-service/prod?OFSN=/test-data1/FF01.IMG&amp;RT=FILELIST">http://localhost:8080/transport-service/prod?OFSN=/test-data1/FF01.IMG&amp;RT=FILELIST</a>
               <br/>
               Example response:
             <source>
@@ -220,8 +234,8 @@ http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIR
         <tr>
         	<td>FILE_LIST</td>
         	<td>An alias for FILELIST.
-        	    <br/>Example request: 
-        	    <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1/FF01.IMG+AND+RT+EQ+FILE_LIST">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1/FF01.IMG+AND+RT+EQ+FILE_LIST</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1/FF01.IMG+AND+RT+EQ+FILE_LIST">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1/FF01.IMG+AND+RT+EQ+FILE_LIST</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?OFSN=/test-data1/FF01.IMG&amp;RT=FILE_LIST">http://localhost:8080/transport-service/prod?OFSN=/test-data1/FF01.IMG&amp;RT=FILE_LIST</a>
         	    <br/>Example response:
             	<source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
@@ -237,8 +251,8 @@ http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIR
         <tr>
         	<td>FILELISTZIP</td>
         	<td>Similar to <i>FILELIST</i> except that it tells what the size of the requested file would be if compressed into a ZIP archive.
-        	    <br/>
-        	    Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILELISTZIP">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILELISTZIP</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILELISTZIP">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILELISTZIP</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?OFSN=/FF01.IMG&amp;RT=FILELISTZIP">http://localhost:8080/transport-service/prod?OFSN=/FF01.IMG&amp;RT=FILELISTZIP</a>
         		<br/>Example response:
         		<source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
@@ -254,6 +268,7 @@ http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIR
         	<td>FILE_LIST_ZIP</td>
         	<td>An alias for FILELISTZIP.
         	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILE_LIST_ZIP">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILE_LIST_ZIP</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?OFSN=/FF01.IMG&amp;RT=FILE_LIST_ZIP">http://localhost:8080/transport-service/prod?OFSN=/FF01.IMG&amp;RT=FILE_LIST_ZIP</a>
         	    <br/>Example response:
         		<source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
@@ -269,12 +284,14 @@ http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIR
         	<td>RAW</td>
         	<td>Returns the requested file without any modification (MIME type application/octet-stream).
         	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+RAW">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+RAW</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?OFSN=/i943630r.xml&amp;RT=RAW">http://localhost:8080/transport-service/prod?OFSN=/i943630r.xml&amp;RT=RAW</a>
         	</td>
         </tr>       
         <tr>
         	<td>RAW_SIZE</td>
         	<td>Generates an XML document containing the size of the raw file that would be returned by the corresponding RAW type.
         	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+RAW_SIZE">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+RAW_SIZE</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?OFSN=/FF01.IMG&amp;RT=RAW_SIZE">http://localhost:8080/transport-service/prod?OFSN=/FF01.IMG&amp;RT=RAW_SIZE</a>
         		<br/>Example response:
         		<source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
@@ -289,6 +306,7 @@ http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIR
         	<td>MD5</td>
         	<td>Returns a MD5 hash of the file bytes generated on the server side, as plain text.
         	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+MD5">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+MD5</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?OFSN=/i943630r.xml&amp;RT=MD5">http://localhost:8080/transport-service/prod?OFSN=/i943630r.xml&amp;RT=MD5</a>
         	    <br/>Example response: c3bc003bb99d7364bc7abbdb981f6e09
         	</td>
         </tr>
@@ -296,6 +314,7 @@ http://localhost:8080/transport-service/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIR
         	<td>PDS4_TO_JPG</td>
         	<td>Converts a PDS4 image to JPEG format.
         	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_JPG">http://localhost:8080/transport-service/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_JPG</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-service/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_JPG">http://localhost:8080/transport-service/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_JPG</a>
         	</td>
         </tr>
         <tr><td>PDS_LABEL</td><td>Returns a plain text (MIME type text/plain) representation of the PDS label specified in the <i>OFSN</i>.</td></tr>
