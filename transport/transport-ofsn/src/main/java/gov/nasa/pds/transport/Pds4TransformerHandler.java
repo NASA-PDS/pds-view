@@ -72,7 +72,6 @@ public class Pds4TransformerHandler implements OFSNGetHandler {
 		
 	}
 	
-	// FIXME: synchronized ?
 	/**
 	 * Method that returns the output file,
 	 * creating it if not existing already
@@ -81,9 +80,12 @@ public class Pds4TransformerHandler implements OFSNGetHandler {
 		
 		File inputFile = new File(inputFilePath);
 		File outputFile = getOutputFilePath(inputFile);
-		if (!outputFile.exists()) {
-			createOutputFile(inputFile, outputFile, this.extension);
-		}
+		if (outputFile.exists()) {
+			System.out.println("Output file: "+outputFile.getAbsolutePath()+" already exist, will not regenerate");
+		} else {
+			System.out.println("Generating output file: "+outputFile.getAbsolutePath());
+			createOutputFile(inputFile, this.cache, this.extension);
+		} 
 		return outputFile;
 	}
 	
@@ -98,10 +100,10 @@ public class Pds4TransformerHandler implements OFSNGetHandler {
 		
 	}
 	
-	private void createOutputFile(File inputFile, File outputFile, String extension) throws ProductException {
+	private void createOutputFile(File inputFile, File outputDir, String extension) throws ProductException {
 		
 		try {
-			transformer.transform(inputFile, outputFile, extension);
+			transformer.transform(inputFile, outputDir, extension);
 		} catch(TransformException e) {
 			e.printStackTrace();
 			throw new ProductException(e.getMessage());
