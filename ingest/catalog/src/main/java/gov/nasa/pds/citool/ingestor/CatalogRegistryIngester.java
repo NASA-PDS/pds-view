@@ -257,16 +257,12 @@ public class CatalogRegistryIngester {
 			}
 
 			if (productExists(fileExtrinsic.getLid())) {	
-				if (ingestedProduct) {
-					guid = client.versionObject(fileExtrinsic);	
-				}
-				else {
-					lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null,
-							"ingest.warning.skipFile", ProblemType.SUCCEED,
-							"File object already exists in the registry. Won't ingest this file object.");
-					catObj.getLabel().addProblem(lp);
-					return null;
-				}
+				lp = new LabelParserException(catObj.getLabel().getLabelURI(), null, null,
+						"ingest.warning.skipFile", ProblemType.SUCCEED,
+						"File object already exists in the registry. Won't ingest this file object.");
+				catObj.getLabel().addProblem(lp);
+				return null;
+
 			} else {
 				guid = client.publishObject(fileExtrinsic);
 			}
@@ -941,7 +937,7 @@ public class CatalogRegistryIngester {
 		Set<Slot> slots = new HashSet<Slot>();
 		String tmpLid = "";
 		// for PERSONNEL & REFERENCE object
-		if (this.product.getLid()==null) {
+		if (this.product==null || this.product.getLid()==null) {
 			// how to distinguish (personnel and reference????)
 			tmpLid = Constants.LID_PREFIX + storageProductName + ":" + fileObject.getName();
 		}
