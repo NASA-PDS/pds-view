@@ -74,7 +74,6 @@ _classifiers = [
 ]
 _ignoredModules = [
     'bootstrap',
-    'distribute_setup',
     'setup',
 ]
 
