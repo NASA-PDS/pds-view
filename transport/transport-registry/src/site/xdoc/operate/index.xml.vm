@@ -53,40 +53,66 @@
     </section>
 
     <section name="Product Retrieval">
-      <p>The Transport Service web application provides functionality for querying the Registry Service for a product or products and retrieving the associated files. The following table details the parameter available:
+      <p>
+       The Transport Service web application provides functionality for querying the Registry Service for a product or products and retrieving the associated files. 
+       The service can be queried using 3 possible methods for encoding the HTTP request parameters: DIS-Style syntax, XML query expressions, or simple HTTP (name, value) pairs. 
+       The following table summarizes the parameters available:
       </p>
 
       <table>
         <tr><th>HTTP Parameter</th><th>Description</th></tr>
-        <tr><td>q</td><td>The DIS-Style query expression identifying the product (or set of files) to retrieve from the Transport Service. This is the preferred parameter for querying the Transport Service and is required if the <i>xmlq</i> parameter is not specified. Additional information regarding the DIS-Style query format can be found at the <a href="http://oodt.apache.org/components/maven/xmlquery/disquery/" target="_blank">Apache OODT DIS-Style Query</a> page.</td></tr>
-        <tr><td>xmlq</td><td>The XML query expression identifying the product (or set of files) to retrieve from the Transport Service. The details for the format of this query expression will not be covered here. Although supported, the <i>q</i> parameter is preferred and is utilized by all existing client interfaces. This parameter is required if the <i>q</i> parameter is not specified.</td></tr>
+        <tr><td>q</td><td>The DIS-Style query expression identifying the product (or set of files) to retrieve from the Transport Service. 
+        The use of the <i>q</i> parameter is preferred over the use of the <i>xmlq</i> parameter, but it is still discouraged with respect to the use 
+        of straight HTTP (name, value) pairs (last option in this table). Additional information regarding the DIS-Style query format can be found at the <a href="http://oodt.apache.org/components/maven/xmlquery/disquery/" target="_blank">Apache OODT DIS-Style Query</a> page.</td></tr>
+        <tr><td>xmlq</td><td>The XML query expression identifying the product (or set of files) to retrieve from the Transport Service. 
+        The details for the format of this query expression will not be covered here. Although supported, the use of the <i>xmlq</i> parameter is discouraged.</td></tr>
+        <tr><td>identifier, package</td><td>The product identifier (specified one or more times), and the requested packaging format (ZIP or TGZ).
+        This is the preferred method to query the transport-registry service.</td></tr>
       </table>
 
-      <p>The Transport Service accepts the following parameters in DIS-Style format for the parameter above:
+      <p>When using DIS-Style format, the <i>identifier</i> and <i>package</i> parameters must be encoded as part of the "q" value parameter:
       </p>
 
       <table>
         <tr><th>DIS Query Parameter</th><th>Description</th></tr>
         <tr><td>identifier</td><td>The identifier for the product to be retrieved in the form of a PDS logical identifier (LID) or the LID and the version identifier (LIDVID). This parameter is required and may be specified more than once. Due to the 5000 character limit for HTTP POST commands, a safe maximum of specified identifiers is around 50.</td></tr>
-        <tr><td>package</td><td>The package type to be returned from the Transport Service. The valid values are <i>ZIP</i> and <i>TGZ</i>. The default value is <i>ZIP</i>. This parameter is optional.</td></tr>
+        <tr><td>package</td><td>The package type to be returned from the Transport Service. The valid values are <i>ZIP</i> and <i>TGZ</i>, and are NOT case sensitive. 
+        The default value is <i>ZIP</i>. This parameter is optional.</td></tr>
       </table>
 
-      <p>The following is an example query:
+      <p>The following is an example query using DIS-Style query syntax with the <i>q</i> parameter:
       </p>
 
-      <source>
+<source>
 % curl -X GET -o package.zip -v \
 http://localhost:8080/transport/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;
-      </source>
+</source>
 
-      <p>Assuming the LID or LIDVID was specified correctly, the above query should return a ZIP package containing the products associated with the specified product. The following is an example query that will return a TAR/GZIP package:
+      <p>Assuming the LID or LIDVID was specified correctly, the above query should return a ZIP package containing the products associated with the specified product. 
+      The following is an example query in DIS-Style syntax that will return a TAR/GZIP package:
       </p>
-
-      <source>
+<source>
 % curl -X GET -o package.tar.gz -v \
-http://localhost:8080/transport/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;\
+http://localhost:8080/transport/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;+AND+package+EQ+TGZ
+</source>
+
+	<p>Alternatively, the product identifier and desired packaging can be specified using standard HTTP parameter encoding. The general URL form is:</p>
+<source>
+http://localhost:8080/transport/prod?identifier=&lt;LID|LIDVID&gt;&amp;package=&lt;TGZ|ZIP&gt;
+</source>
+
+    <p>For example, the following URLs specify the same logical request for retrieving a PDS product:
+<source>
+http://localhost:8080/transport/prod?q=identifier+EQ+urn:nasa:pds:phx_lidar:reduced:LS075RLS_00902835894_1885M1 \
 +AND+package+EQ+TGZ
-      </source>
+</source>
+or:
+<source>
+http://localhost:8080/transport/prod?identifier=urn:nasa:pds:phx_lidar:reduced:LS075RLS_00902835894_1885M1&amp;package=TGZ
+</source>
+(again assuming the product exists).
+</p>
+      
     </section>
   </body>
 </document>
