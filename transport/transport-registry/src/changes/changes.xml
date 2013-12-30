@@ -30,6 +30,10 @@
       <action dev="luca" type="fix" issue="PDS-219">
         Fixed bug related to unspecified identifier(s) in product request. 
       </action>
+      <action dev="luca" type="add" issue="PDS-238">
+        Enabled "identifier" and "package" parameter names to be case insensitive.
+        Enabled "package" parameter value to be case insensitive.
+      </action>
     </release>
 
     <release version="0.1.0" date="2013-09-30" description="This release of the Transport Service is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
