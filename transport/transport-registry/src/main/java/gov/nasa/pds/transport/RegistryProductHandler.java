@@ -79,9 +79,10 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
     String archivePackage = extractFieldFromQuery(q, "package");
     if (archivePackage == null) {
       archivePackage = "ZIP";
-    } else if ((!archivePackage.equals("ZIP")) && (!archivePackage.equals("TGZ"))) {
+    } else if ((!archivePackage.equalsIgnoreCase("ZIP")) && (!archivePackage.equalsIgnoreCase("TGZ"))) {
       throw new ProductException("Invalid package type specified.");
     }
+    archivePackage = archivePackage.toUpperCase();
 
     // Get all of the identifiers passed in the query.
     List<String> identifiers = extractIdentifiersFromQuery(q);
@@ -194,7 +195,7 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
   private static String extractFieldFromQuery(XMLQuery query, String name) {
     for (Iterator<QueryElement> i = query.getWhereElementSet().iterator(); i.hasNext();) {
       QueryElement element = i.next();
-      if (element.getRole().equals("elemName") && element.getValue().equals(name)) {
+      if (element.getRole().equals("elemName") && element.getValue().equalsIgnoreCase(name)) {
         // Get the next element and ensure that it is a LITERAL,
         // and return that.
         QueryElement litElement = i.next();
@@ -208,7 +209,7 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
     List<String> identifiers = new ArrayList<String>();
     for (Iterator<QueryElement> i = query.getWhereElementSet().iterator(); i.hasNext();) {
       QueryElement element = i.next();
-      if (element.getRole().equals("elemName") && element.getValue().equals("identifier")) {
+      if (element.getRole().equals("elemName") && element.getValue().equalsIgnoreCase("identifier")) {
         // Get the next element and ensure that it is a LITERAL,
         // and return that.
         QueryElement litElement = i.next();
