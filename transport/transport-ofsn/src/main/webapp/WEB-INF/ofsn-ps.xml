@@ -180,6 +180,10 @@ FIXME: Change XML namespace URI for oodt prefix?
         <!-- <property name="cacheDir" value="/tmp"/> -->
   </handler>
   
+  <handler name="PDS_LABEL" type="get" class="gov.nasa.pds.transport.PdsLabelHandler">
+  	<property name="mimeType" value="text/plain"/>
+  </handler>
+  
   <!--  
     The MD5 type returns an MD5 hash of the file bytes generated on the server side.
    -->
