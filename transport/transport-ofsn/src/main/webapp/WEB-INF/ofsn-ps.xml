@@ -174,14 +174,20 @@ FIXME: Change XML namespace URI for oodt prefix?
   <handler name="RAW" type="get"
        class="org.apache.oodt.product.handlers.ofsn.StdOFSNGetHandler"/>       
        
-       
+  <!-- 
+  	The PDS4_TO_JPEG type transforms a PDS4 image to JPEG.
+   -->   
   <handler name="PDS4_TO_JPG" type="get" class="gov.nasa.pds.transport.Pds4TransformerHandler">
-        <property name="mimeType" value="image/jpeg"/>
+    	<property name="mimeType" value="image/jpeg"/>
         <!-- <property name="cacheDir" value="/tmp"/> -->
   </handler>
   
+  <!-- 
+  	The PDS_LABEL type expands and returns a PDS label as plain text.
+   -->
   <handler name="PDS_LABEL" type="get" class="gov.nasa.pds.transport.PdsLabelHandler">
-  	<property name="mimeType" value="text/plain"/>
+  		<property name="mimeType" value="text/plain"/>
+  		<!-- <property name="cacheDir" value="/tmp"/> -->
   </handler>
   
   <!--  
