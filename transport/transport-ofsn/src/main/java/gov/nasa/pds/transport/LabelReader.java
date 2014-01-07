@@ -14,10 +14,12 @@ import gov.nasa.pds.tools.label.StructurePointer;
 import gov.nasa.pds.tools.label.parser.DefaultLabelParser;
 import gov.nasa.pds.tools.label.parser.LabelParser;
 
+import java.io.File;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -39,7 +41,7 @@ public class LabelReader {
 	private static String POINTER_STATEMENT_CLASSNAME   = PointerStatement.class.getSimpleName();
 	private static String STRUCTURE_STATEMENT_CLASSNAME = StructurePointer.class.getSimpleName();
 	private static String COMMENT_STATEMENT_CLASSNAME   = CommentStatement.class.getSimpleName();
-	private static String NL = System.getProperty("line.separator");
+	private static String NL = "\r\n";   // use DOS <CR><LF> line terminator as it is a PDS standard
 	private static String INDENT = "  "; // indentation amount for nested objects
 	
 	// instance fields
@@ -70,7 +72,10 @@ public class LabelReader {
 				
 		// read label into object
 	    ManualPathResolver resolver = new ManualPathResolver();
-	    LabelParser parser = new DefaultLabelParser(false, true, resolver);
+	    //LabelParser parser = new DefaultLabelParser(false, true, resolver);
+	    //Label label = parser.parseLabel(uri.toURL(), true); // force==true
+	    resolver.setBaseURI(ManualPathResolver.getBaseURI(uri));
+	    LabelParser parser = new DefaultLabelParser(true, true, true, resolver);
 	    Label label = parser.parseLabel(uri.toURL(), true); // force==true
 	    
 	    // do NOT stop if problems are encountered (force==true)
@@ -85,7 +90,7 @@ public class LabelReader {
 		
 		// insert "END" statement for top-level label
 		if (this.indent.length()==0) {
-			this.sb.append("END");
+			this.sb.append("END").append(NL);
 		}
 				
 	}
@@ -135,7 +140,8 @@ public class LabelReader {
 				
 			} else if (className.equals(STRUCTURE_STATEMENT_CLASSNAME)) {
 				StructurePointer _statement = (StructurePointer)statement;
-				out.append( printStatement(_statement, "^"+_statement.getIdentifier()+" = "+_statement.getValue().toString()) );
+				// do NOT print out "^STRUCTURE" statement - instead replace with expanded reference
+				//out.append( printStatement(_statement, "^"+_statement.getIdentifier()+" = "+_statement.getValue().toString()) );
 				out.append( printStatements(_statement.getStatements()) ); 
 				
 				// expand STRUCTURE pointer
@@ -185,7 +191,7 @@ public class LabelReader {
 		//this.lineNumber++;
 		
 		// insert another new line but do NOT increment the line number
-		sb.append(NL);
+		//sb.append(NL);
 		
 		return sb;
 
@@ -200,11 +206,12 @@ public class LabelReader {
 	public static void main(String[] args) throws Exception {
 		
 		// parse label object
-		//String uri = "file:///usr/local/pds/transport-service/testdata/CHAN_DATA_20020617.LBL";
-		String uri = "http://starbase.jpl.nasa.gov/ody-m-grs-2-edr-v1/odge1_xxxx/2002/20020617/CHAN_DATA_20020617.LBL";
+		String uri = "file:///usr/local/pds/transport-service/testdata/CHAN_DATA_20020617.LBL";
+		//String uri = "http://starbase.jpl.nasa.gov/ody-m-grs-2-edr-v1/odge1_xxxx/2002/20020617/CHAN_DATA_20020617.LBL";
 		
 		StringBuffer sb = (new LabelReader(new URI(uri), "")).read();
-		System.out.println(sb.toString());
+		//System.out.println(sb.toString());
+		FileUtils.writeStringToFile(new File("/tmp/CHAN_DATA_20020617.LBL"), sb.toString());
 		
 	}
 
