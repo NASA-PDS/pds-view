@@ -1,0 +1,1034 @@
+PDS_VERSION_ID                 = PDS3
+
+/* IDENTIFICATION DATA ELEMENTS for all referenced files */
+DATA_SET_NAME                  = "ODY MARS GAMMA RAY SPECTROMETER 2 EDR V1.0"
+DATA_SET_ID                    = "ODY_M_GRS_2_EDR_V1.0"
+
+/* DESCRIPTIVE DATA ELEMENTS for all referenced files */
+INSTRUMENT_HOST_NAME           = "2001 MARS ODYSSEY"
+INSTRUMENT_NAME                = "GAMMA RAY SPECTROMETER"
+SPACECRAFT_ID                  = ODY
+TARGET_NAME                    = MARS
+MISSION_PHASE_NAME             = MAPPING
+START_TIME                     = 2002-06-17T00:00:00.000Z
+STOP_TIME                      = 2002-06-17T00:00:00.000Z
+SPACECRAFT_CLOCK_START_COUNT   = 181437253589
+SPACECRAFT_CLOCK_STOP_COUNT    = 181459372028
+PRODUCT_CREATION_TIME          = 2002-07-01T17:01:12.137Z
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 56
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_AD_EN_ST.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_AD_EN_ST_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS AD EN ST"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Status of the Anneal Door Enable state.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 56
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 56
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_ANDR_ST.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_ANDR_ST_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS ANDR ST"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  GRS Anneal Door Status
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 56
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 56
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_ANNEAL.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_ANNEAL_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS ANNEAL"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Instructs the enabling or disabling of the GRS anneal process.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 56
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 56
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_BOOT_ST.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_BOOT_ST_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS BOOT ST"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Boot select discrete status.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 56
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 1059
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_CEB_TMP.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_CEB_TMP_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS CEB TMP"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Temperature of the GRS Central Electronics Box.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 1059
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 1059
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_GPA_TMP.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_GPA_TMP_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS GPA TMP"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Temperature of the GRS Gamma Pulse Amplifier.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 1059
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 1059
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_GSH_TMP.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_GSH_TMP_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS GSH TMP"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Temperature of the GRS Gamma Sensor Head.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 1059
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 56
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_HB_CTR.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_HB_CTR_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS HB CTR"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Number of total heartbeats received from the GRS.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 56
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 56
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_HB_LT_C.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_HB_LT_C_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS HB LT C"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Spacecraft time of last heartbeat (coarse reading in seconds).
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 56
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 1059
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_HEND_TMP.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_HEND_TMP_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS HEND TMP"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Temperature of the RKI High Energy Neutron Detector.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 1059
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 56
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_HFTLP_EN.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_HFTLP_EN_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS HFTLP EN"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Enable status for GRS_HFTL_P_EXEC command to be processed.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 56
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 56
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_HFTLP_EX.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_HFTLP_EX_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS HFTLP EX"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  HFTL primary execute duration.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 56
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 56
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_HFTLS_EN.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_HFTLS_EN_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS HFTLS EN"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Enable status for GRS_HFTL_S_EXEC command to be processed.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 56
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 56
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_HFTLS_EX.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_HFTLS_EX_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS HFTLS EX"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  HFTL secondary execute duration.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 56
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 56
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_HT_CRR.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_HT_CRR_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS HT CRR"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Number of heartbeats from last power-on or last boot 
+  or last system init or last recovery.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 56
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 1059
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_NS_TMP.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_NS_TMP_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS NS TMP"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Temperature of the LANL Neutron Sensor.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 1059
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 56
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_PWR_NCTR.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_PWR_NCTR_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS PWR NCTR"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Number of times the GRS power notification command is sent.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 56
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 56
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_RST_CTR.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_RST_CTR_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS RST CTR"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Number of times GRS has been reset.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 56
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 128
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_SYN_CTR.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_SYN_CTR_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS SYN CTR"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Number of times GRS has been synched.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 128
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 128
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "GRS_SYNC_T_C.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_GRS_SYNC_T_C_20020617"
+  PRODUCT_TYPE                 = "CHAN GRS SYNC T C"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  GRS_SYNC_TIME_COARSE
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 128
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 56
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "HND_PWR_NCTR.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_HND_PWR_NCTR_20020617"
+  PRODUCT_TYPE                 = "CHAN HND PWR NCTR"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  Number of times the Hend power notification command is sent.
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 56
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 1059
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "RPC_1_CUR.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_RPC_1_CUR_20020617"
+  PRODUCT_TYPE                 = "CHAN RPC 1 CUR"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  RPC_SWITCH_1_CURRENT
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 1059
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 1059
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "RPC_3_CUR.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_RPC_3_CUR_20020617"
+  PRODUCT_TYPE                 = "CHAN RPC 3 CUR"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  RPC_SWITCH_3_CURRENT
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 1059
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 1059
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "RPC_8_CUR.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_RPC_8_CUR_20020617"
+  PRODUCT_TYPE                 = "CHAN RPC 8 CUR"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  RPC_SWITCH_8_CURRENT
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 1059
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 529
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "RPC_8_VLT.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_RPC_8_VLT_20020617"
+  PRODUCT_TYPE                 = "CHAN RPC 8 VLT"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  RPC_SWITCH_8_VOLTAGE
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 529
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+OBJECT                         = FILE
+  /* FILE CHARACTERISTICS */
+  RECORD_TYPE                  = FIXED_LENGTH
+  RECORD_BYTES                 = 35
+  FILE_RECORDS                 = 1059
+
+  /* POINTERS TO DATA OBJECTS */
+  ^TIME_SERIES                 = "RPC_9_CUR.DAT"
+
+  /* IDENTIFICATION DATA ELEMENTS */
+  PRODUCT_ID                   = "CHAN_RPC_9_CUR_20020617"
+  PRODUCT_TYPE                 = "CHAN RPC 9 CUR"
+
+  /* DESCRIPTIVE data elements */
+  DESCRIPTION                  = "
+  RPC_SWITCH_9_CURRENT
+  "
+
+  /* DATA OBJECT DEFINITION */
+  OBJECT                       = TIME_SERIES
+
+    INTERCHANGE_FORMAT         = BINARY
+    ROWS                       = 1059
+    ROW_BYTES                  = 35 
+
+    SAMPLING_PARAMETER_NAME    = TIME
+    SAMPLING_PARAMETER_UNIT    = TICKS
+    SAMPLING_PARAMETER_INTERVAL = "N/A"
+
+
+    /* The complete column definitions are contained in an external file */
+    /* found in the LABEL directory of the archive disk.                 */
+  
+    ^STRUCTURE                 = "CHAN_DATA_COLS.FMT"
+
+  END_OBJECT                   = TIME_SERIES
+
+END_OBJECT                     = FILE
+
+
+END
