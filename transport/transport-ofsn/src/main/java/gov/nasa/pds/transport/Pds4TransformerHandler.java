@@ -37,35 +37,20 @@ public class Pds4TransformerHandler extends AbstractPdsGetHandler {
 	}
 	
 	/**
-	 * The output file is located in the cache directory, 
-	 * and has the same name as the input file but with the specific image extension.
-	 */
-	@Override
-	protected File getOutputFilePath(File inputFile) {
-		
-		String filename = inputFile.getName();
-		String extension= inputFile.getAbsolutePath().substring(
-				          inputFile.getAbsolutePath().lastIndexOf(".")+1);
-		File outputFile = new File(this.getCache(), filename.replace(extension, this.extension));
-		return outputFile;
-		
-	}
-	
-	/**
 	 * Method that generates the output image by delegating processing to the PDS image transformer.
 	 */
 	@Override
-	protected void createOutputFile(File inputFile, File outputFile) throws ProductException {	
+	protected File getOutputFile(String inputFilePath) throws ProductException {	
 		
-		LOG.fine("Generating product: inputFile="+inputFile.getAbsolutePath()+" outputFile="+outputFile.getAbsolutePath());
+		LOG.fine("Generating product for inputFile="+inputFilePath+" in cache directory="+this.getCache().getAbsolutePath());
 		
 		try {
-			// FIXME: simply invoke transformer with parameter 'outputFile' when API supports it
-			//transformer.transform(inputFile, outputFile);
-			transformer.transform(inputFile, this.getCache(), this.extension);
+			return transformer.transform(new File(inputFilePath), this.getCache(), this.extension);
+
 		} catch(TransformException e) {
 			e.printStackTrace();
 			throw new ProductException(e.getMessage());
+		
 		}
 		
 	}

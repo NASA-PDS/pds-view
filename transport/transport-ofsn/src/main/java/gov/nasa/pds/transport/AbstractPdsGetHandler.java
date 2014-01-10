@@ -53,7 +53,7 @@ public abstract class AbstractPdsGetHandler implements OFSNGetHandler {
 		
 		LOG.fine("Retrieving product chunk: filepath="+inputFilePath+" offset="+offset+" length="+length);
 
-		File outputFile = this.getOrCreateOutputFile(inputFilePath);
+		File outputFile = this.getOutputFile(inputFilePath);
 		
 	    try {
 	        byte[] bytes = FileUtils.readFileToByteArray(outputFile);
@@ -77,7 +77,7 @@ public abstract class AbstractPdsGetHandler implements OFSNGetHandler {
 	public long sizeOf(String inputFilePath) {
 		
 		try {
-			File outputFile = this.getOrCreateOutputFile(inputFilePath);
+			File outputFile = this.getOutputFile(inputFilePath);
 			return outputFile.length();
 		} catch(ProductException e) {
 			return -1;
@@ -86,41 +86,21 @@ public abstract class AbstractPdsGetHandler implements OFSNGetHandler {
 	}
 	
 	/**
-	 * Method that returns the output file, creating it if not existing already.
+	 * Returns the directory where products are created.
+	 * @return
 	 */
-	private File getOrCreateOutputFile(String inputFilePath) throws ProductException {
-		
-		File inputFile = new File(inputFilePath);
-		File outputFile = getOutputFilePath(inputFile);
-		if (outputFile.exists()) {
-			LOG.fine("Output file: "+outputFile.getAbsolutePath()+" already exists, will not regenerate");
-		} else {
-			LOG.fine("Generating output file: "+outputFile.getAbsolutePath());
-			createOutputFile(inputFile, outputFile);
-		} 
-		return outputFile;
-	}
-	
 	protected File getCache() {
 		return this.cache;
 	}
- 	
-	/**
-	 * Method to build the full path of the requested product.
-	 * Must be implemented by subclasses.
-	 * 
-	 * @param inputFile
-	 * @return
-	 */
-	protected abstract File getOutputFilePath(File inputFile);
+
 
 	/**
-	 * Method to generate the requested product.
+	 * Method to generate the requested product from the given target.
 	 * Must be implemented by subclasses.
 	 * 
 	 * @param inputFile
-	 * @param outputFile
+	 * @return outputFile
 	 */
-	protected abstract void createOutputFile(File inputFile, File outputFile) throws ProductException;
+	protected abstract File getOutputFile(String inputFilePath) throws ProductException;
 	
 }
