@@ -6,11 +6,6 @@
 			<registryPath>objectType</registryPath>
 			<value>Product_Context</value>
 		</query>
-		<dataSources>
-			<source sourceType="registry" priority="primary" append="false">
-				<url>http://localhost:8080/registry-pds4</url>
-			</source>
-		</dataSources>
 	</specification>
 	
 	<!-- Fields displayed in default Search Service results -->
