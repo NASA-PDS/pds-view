@@ -27,6 +27,9 @@
       <action dev="jpadams" type="update">
 	Update documentation to take change from initial-index-pdsen to search-core-pdsen.
       </action>
+      <action dev="jpadams" type="update">
+	Updated PSA data set config to use localhost. Updated PDS4 config to only refer to registry-pds4 and no longer refer to registry-atm.
+      </action>
     </release>
 
     <release version="1.3.0" date="2013-09-30" description="This release of the Search Core is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
