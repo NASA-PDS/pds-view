@@ -83,36 +83,39 @@
       <p>The following is an example query using DIS-Style query syntax with the <i>q</i> parameter:
       </p>
 
-<source>
+      <source>
 % curl -X GET -o package.zip -v \
 http://localhost:8080/transport/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;
-</source>
+      </source>
 
       <p>Assuming the LID or LIDVID was specified correctly, the above query should return a ZIP package containing the products associated with the specified product. 
       The following is an example query in DIS-Style syntax that will return a TAR/GZIP package:
       </p>
-<source>
+
+      <source>
 % curl -X GET -o package.tar.gz -v \
 http://localhost:8080/transport/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;+AND+package+EQ+TGZ
-</source>
+      </source>
 
-	<p>Alternatively, the product identifier and desired packaging can be specified using standard HTTP parameter encoding. The general URL form is:</p>
-<source>
+      <p>Alternatively, the product identifier and desired packaging can be specified using standard HTTP parameter encoding. The general URL form is:</p>
+
+      <source>
 http://localhost:8080/transport/prod?identifier=&lt;LID|LIDVID&gt;&amp;package=&lt;TGZ|ZIP&gt;
-</source>
+      </source>
 
     <p>For example, the following URLs specify the same logical request for retrieving a PDS product:
-<source>
-http://localhost:8080/transport/prod?q=identifier+EQ+urn:nasa:pds:phx_lidar:reduced:LS075RLS_00902835894_1885M1 \
-+AND+package+EQ+TGZ
-</source>
-or:
-<source>
-http://localhost:8080/transport/prod?identifier=urn:nasa:pds:phx_lidar:reduced:LS075RLS_00902835894_1885M1&amp;package=TGZ
-</source>
-(again assuming the product exists).
-</p>
-      
+
+    <source>
+http://localhost:8080/transport/prod?q=identifier+EQ+\
+urn:nasa:pds:phx_lidar:reduced:LS075RLS_00902835894_1885M1+AND+package+EQ+TGZ
+    </source>
+    or:
+    <source>
+http://localhost:8080/transport/prod?identifier=\
+urn:nasa:pds:phx_lidar:reduced:LS075RLS_00902835894_1885M1&amp;package=TGZ
+    </source>
+    (again assuming the product exists).
+    </p>
     </section>
   </body>
 </document>
