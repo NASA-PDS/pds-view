@@ -27,6 +27,9 @@
       <action dev="hyunlee" issue="PDS-234" type="update">
         Added filters in the RegistryPackage object for guid, name, lid and status.
       </action>
+      <action dev="mcayanan" type="update">
+        Updated to capture more response error codes and to print out the error code in the exception message.
+      </action>
     </release>
 
     <release version="1.5.0" date="2013-09-30" description="This release of the Registry Core is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
@@ -55,7 +58,7 @@
 
     <release version="1.2.0" date="2012-06-11" description="This release of the Registry Core is a component of the integrated release 2.2.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="pramirez" type="add" issue="PDS-59">
-        Provided a RegistryClient method for deleting registry objects. 
+        Provided a RegistryClient method for deleting registry objects.
       </action>
       <action dev="pramirez" type="add" issue="PDS-67">
         Add registry client support for deleting package members.
@@ -145,7 +148,7 @@
         Added ExternalIdentifier support for registered objects.
       </action>
       <action dev="pramirez" type="add" issue="PDS-22">
-        Include delete operation for Classifications delete. 
+        Include delete operation for Classifications delete.
       </action>
       <action dev="pramirez" type="update" issue="PDS-7">
         Mapped Product to ExtrinsicObject to align better with information model for registry. Moved all interfaces that ended in product(s) to extrinsic(s).

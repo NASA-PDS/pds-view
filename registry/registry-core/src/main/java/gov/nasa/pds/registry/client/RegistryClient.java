@@ -75,9 +75,9 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  * This class is a Java client to be used to exchange information with a
  * registry service. In the background it simply uses HTTP calls but returns
  * Java objects to ease integration.
- * 
+ *
  * @author pramirez
- * 
+ *
  */
 public class RegistryClient {
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat(
@@ -134,7 +134,7 @@ public class RegistryClient {
    * the regsitry supports application/xml and application/json but defaults to
    * json. The end client will not see these calls so to cut down on data
    * transferred the more compact json should be used.
-   * 
+   *
    * @param mediaType
    *          to use for exchanging messages
    */
@@ -144,7 +144,7 @@ public class RegistryClient {
 
   /**
    * Retrieves an object from the registry of the given type
-   * 
+   *
    * @param guid
    *          identifier for the object
    * @param objectClass
@@ -162,13 +162,13 @@ public class RegistryClient {
       return response.getEntity(objectClass);
     } else {
       throw new RegistryServiceException(response.getEntity(String.class),
-          Response.Status.fromStatusCode(response.getStatus()));
+          response.getClientResponseStatus());
     }
   }
 
   /**
    * Removes an object from the registry of the given type
-   * 
+   *
    * @param <T>
    * @param guid
    *          identifier for the object
@@ -184,13 +184,13 @@ public class RegistryClient {
         ClientResponse.class);
     if (response.getClientResponseStatus() != Status.OK) {
       throw new RegistryServiceException(response.getEntity(String.class),
-          Response.Status.fromStatusCode(response.getStatus()));
+          response.getClientResponseStatus());
     }
   }
 
   /**
    * Deletes all members that are associated with the given package guid.
-   * 
+   *
    * @param packageGuid
    *          to delete from
    * @throws RegistryServiceException
@@ -204,13 +204,13 @@ public class RegistryClient {
         ClientResponse.class);
     if (response.getClientResponseStatus() != Status.OK) {
       throw new RegistryServiceException(response.getEntity(String.class),
-          Response.Status.fromStatusCode(response.getStatus()));
+          response.getClientResponseStatus());
     }
   }
 
   /**
    * Approve, deprecate, or undeprecate all members of a package
-   * 
+   *
    * @param packageGuid
    *          to update members from
    * @param action
@@ -226,13 +226,13 @@ public class RegistryClient {
         ClientResponse.class);
     if (response.getClientResponseStatus() != Status.OK) {
       throw new RegistryServiceException(response.getEntity(String.class),
-          Response.Status.fromStatusCode(response.getStatus()));
+          response.getClientResponseStatus());
     }
   }
 
   /**
    * Publish a registry object to the service
-   * 
+   *
    * @param object
    *          to publish
    * @return the globally unique identifier
@@ -257,14 +257,14 @@ public class RegistryClient {
       return guid;
     } else {
       throw new RegistryServiceException(response.getEntity(String.class),
-          Response.Status.fromStatusCode(response.getStatus()));
+          response.getClientResponseStatus());
     }
   }
 
   /**
    * Publishes a version of the given object that is considered a major version
    * update.
-   * 
+   *
    * @param object
    *          to publish
    * @return globally unique identifier of versioned object
@@ -277,7 +277,7 @@ public class RegistryClient {
 
   /**
    * Publishes a version of the given object
-   * 
+   *
    * @param object
    *          to publish
    * @param major
@@ -301,14 +301,14 @@ public class RegistryClient {
       return response.getEntity(String.class);
     } else {
       throw new RegistryServiceException(response.getEntity(String.class),
-          Response.Status.fromStatusCode(response.getStatus()));
+          response.getClientResponseStatus());
     }
   }
 
   /**
    * Updates the given registry object by using its guid to indicate the object
    * to update.
-   * 
+   *
    * @param object
    *          to update to
    * @throws RegistryServiceException
@@ -324,13 +324,13 @@ public class RegistryClient {
       return;
     } else {
       throw new RegistryServiceException(response.getEntity(String.class),
-          Response.Status.fromStatusCode(response.getStatus()));
+          response.getClientResponseStatus());
     }
   }
 
   /**
    * Retrieve the latest version of a registry object
-   * 
+   *
    * @param lid
    *          logical identifier which is associated with a collection of
    *          objects
@@ -349,14 +349,14 @@ public class RegistryClient {
       return response.getEntity(objectClass);
     } else {
       throw new RegistryServiceException(response.getEntity(String.class),
-          Response.Status.fromStatusCode(response.getStatus()));
+          response.getClientResponseStatus());
     }
   }
 
   /**
    * Retrieves a paged set of registry objects from the collection of objects of
    * the specified type.
-   * 
+   *
    * @param start
    *          indicates where in the set of objects to begin
    * @param rows
@@ -384,13 +384,13 @@ public class RegistryClient {
       });
     } else {
       throw new RegistryServiceException(response.getEntity(String.class),
-          Response.Status.fromStatusCode(response.getStatus()));
+          response.getClientResponseStatus());
     }
   }
 
   /**
    * Retrieves a set of extrinsic objects that match the query.
-   * 
+   *
    * @param query
    *          filters for the extrinsic
    * @param start
@@ -456,13 +456,13 @@ public class RegistryClient {
           });
     } else {
       throw new RegistryServiceException(response.getEntity(String.class),
-          Response.Status.fromStatusCode(response.getStatus()));
+          response.getClientResponseStatus());
     }
   }
-  
+
   /**
    * Retrieves a set of package objects that match the query.
-   * 
+   *
    * @param query
    *          filters for the package
    * @param start
@@ -519,13 +519,13 @@ public class RegistryClient {
           });
     } else {
       throw new RegistryServiceException(response.getEntity(String.class),
-          Response.Status.fromStatusCode(response.getStatus()));
+          response.getClientResponseStatus());
     }
   }
 
   /**
    * Retrieves a set of association objects that match the query.
-   * 
+   *
    * @param query
    *          filters for the association
    * @param start
@@ -578,7 +578,7 @@ public class RegistryClient {
       });
     } else {
       throw new RegistryServiceException(response.getEntity(String.class),
-          Response.Status.fromStatusCode(response.getStatus()));
+          response.getClientResponseStatus());
     }
 
   }
@@ -586,7 +586,7 @@ public class RegistryClient {
   /**
    * Retrieves a paged set of registry objects from the collection of objects of
    * the specified type.
-   * 
+   *
    * @param start
    *          indicates where in the set of objects to begin
    * @param rows
@@ -638,7 +638,7 @@ public class RegistryClient {
           });
     } else {
       throw new RegistryServiceException(response.getEntity(String.class),
-          Response.Status.fromStatusCode(response.getStatus()));
+          response.getClientResponseStatus());
     }
   }
 
@@ -652,7 +652,7 @@ public class RegistryClient {
 
   /**
    * Mehthod for SSL connection.
-   * 
+   *
    * @return HostnameVerifier object
    */
   private HostnameVerifier getHostnameVerifier() {
@@ -695,7 +695,7 @@ public class RegistryClient {
    * Taken from
    * http://java.sun.com/javase/6/docs/technotes/guides/security/jsse/
    * JSSERefGuide.html
-   * 
+   *
    */
   static class MyX509TrustManager implements X509TrustManager {
 
@@ -778,7 +778,7 @@ public class RegistryClient {
    * Inspired from
    * http://java.sun.com/javase/6/docs/technotes/guides/security/jsse
    * /JSSERefGuide.html
-   * 
+   *
    */
   static class MyX509KeyManager implements X509KeyManager {
 
