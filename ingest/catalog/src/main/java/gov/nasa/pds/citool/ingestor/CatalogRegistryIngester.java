@@ -684,8 +684,10 @@ public class CatalogRegistryIngester {
 		Metadata md = catObj.getMetadata();
 		
 		if (md.isMultiValued(key)) {
-			List<String> tmpValues = md.getAllMetadata(key);	
-			
+			List<String> tmpValues = md.getAllMetadata(key);			
+			// remove duplicate value from the tmpValues list
+			tmpValues = new ArrayList<String>(new HashSet<String>(tmpValues));
+				
 			for (String valueToMatch: tmpValues) {
 				valueToMatch = Utility.collapse(valueToMatch);
 				valueToMatch = Utility.replaceChars(valueToMatch);
@@ -886,6 +888,7 @@ public class CatalogRegistryIngester {
 			
 			if (md.isMultiValued(key)) {
 				List<String> tmpValues = md.getAllMetadata(key);
+				tmpValues = new ArrayList<String>(new HashSet<String>(tmpValues));
 				for (String aVal : tmpValues) {
 					if (key.equals("REFERENCE_KEY_ID")) {
 						aVal = CIToolIngester.refInfo.get(aVal);

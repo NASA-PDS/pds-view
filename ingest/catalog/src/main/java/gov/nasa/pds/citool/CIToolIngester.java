@@ -495,6 +495,8 @@ public class CIToolIngester {
     			if (md.containsKey(key)) {
     				if (md.isMultiValued(key)) {
     					List<String> tmpValues = md.getAllMetadata(key);
+    					// remove duplicate value from the tmpValues list
+    					tmpValues = new ArrayList<String>(new HashSet<String>(tmpValues));
     					for (String aVal: tmpValues) {
     						lidValue = aVal;
     						lidValue = Utility.collapse(lidValue);
@@ -510,8 +512,8 @@ public class CIToolIngester {
     					if (!Utility.valueExists(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue, values))
     						values.add(Constants.LID_PREFIX+"instrument_host:instrument_host."+lidValue);              
     				}
-    				refs.put(Constants.HAS_INSTHOST, values);
-    			}
+    				refs.put(Constants.HAS_INSTHOST, values);  				
+    			}   			
     		}
     		else if (catObjType.equalsIgnoreCase(Constants.INST_OBJ)) {
     			lidValue = pdsLbl.get("INSTRUMENT_ID").getValue().toString();
