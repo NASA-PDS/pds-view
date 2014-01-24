@@ -58,7 +58,7 @@ import java.net.URI;
 import java.net.URL;
 
 import java.text.SimpleDateFormat;
-import javax.ws.rs.core.Response;
+import com.sun.jersey.api.client.ClientResponse;
 
 public class CatalogRegistryIngester {
 	
@@ -1254,12 +1254,12 @@ public class CatalogRegistryIngester {
 			this.registryPackageGuid = client.publishObject(registryPackage);
 		} 
 		catch (RegistryServiceException rse) {
-			if (!((rse.getStatus()==Response.Status.ACCEPTED) ||
-				  (rse.getStatus()==Response.Status.OK))) {
+			if (!((rse.getStatus()==ClientResponse.Status.ACCEPTED) ||
+		         (rse.getStatus()==ClientResponse.Status.OK))) {
 				System.err.println("FAILURE: Error occurred to create a registry package. Error Status = " + rse.getStatus());
 				
 				// PDS-89 jira issue
-				if (rse.getStatus()==Response.Status.UNAUTHORIZED ||
+				if (rse.getStatus()==ClientResponse.Status.UNAUTHORIZED ||
 					rse.getStatus()==null) {
 					System.err.println("         Please provide correct username/password for the registry service.\n");
 				}
