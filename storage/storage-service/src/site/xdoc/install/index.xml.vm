@@ -129,7 +129,7 @@ FILEMGR_URL=http://localhost:9000
       </subsection>
 
       <subsection name="Product Policy">
-        <p>By default, the service comes configured to use the <i>example</i> product policy. Other sets of product policy may be defined in the future, but as of this release the only other product policy set is the <i>pds</i> policy that supports the Harvest and Catalog Ingest Tools. In order to change to the <i>pds</i> policy, modify the <i>filemgr.properties</i> file in the <i>etc</i> directory as follows:
+        <p>By default, the service comes configured to use the <i>example</i> product policy. Other sets of product policy may be defined in the future, but as of this release the only other product policy set is the <i>pds</i> policy that supports the Harvest Tool and Catalog Tool. If this installation is intended to support the Harvest Tool and Catalog Tool, modify the <i>filemgr.properties</i> file in the <i>etc</i> directory as follows:
         </p>
 
         <source>

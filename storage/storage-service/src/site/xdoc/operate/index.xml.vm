@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011-2012, by the California Institute of Technology.
+  Copyright 2011-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -29,6 +29,7 @@
 
       <ul>
         <li><a href="#Manage_the_Service">Manage the Service</a></li>
+        <li><a href="#Initialize_for_the_Catalog_Tool">Initialize for the Catalog Tool</a></li>
         <li><a href="#Interact_with_the_Service">Interact with the Service</a></li>
       </ul>
 
@@ -65,8 +66,28 @@ INFO: File Manager started by user
       </p>
     </section>
 
+    <section name="Initialize for the Catalog Tool">
+      <p>This section describes how to initialize the service for supporting the Catalog Tool. Due to a quirk with the Storage Service, at least one product needs to be ingested for a given product type in order to query for products from that product type. The Catalog Tool utilizes the <i>CatalogFile</i> product type defined in the <i>pds</i> policy. The following command ingests the test file included in the package distribution for that product type:
+      </p>
+
+      <source>
+% storage-client --operation --ingestProduct --productName CatalogTest \
+  --productStructure Flat --productTypeName CatalogFile \
+  --metadataFile "file:///usr/local/${project.artifactId}-${project.version}/test/test.txt.met" \
+  --refs "file:///usr/local/${project.artifactId}-${project.version}/test/test.txt"
+      </source>
+
+      <p>Once a successful ingestion has been completed with the Catalog Tool, the test file above may be deleted from the Storage Service. Execute the following command to query for and delete the test product:
+      </p>
+
+      <source>
+% storage-query --sql -query "SELECT * FROM CatalogFile WHERE CAS.ProductName == 'CatalogTest'" \
+-outputFormat '$CAS.ProductId' | storage-delete --read
+      </source>
+    </section>
+
     <section name="Interact with the Service">
-      <p>This section describes how to ingest products into, query for products from and delete products from the Storage Service. The examples below interact with the service via batch/shell scripts.
+      <p>This section describes how to ingest products into, query for products from and delete products from the Storage Service. The examples below interact with the service via batch/shell scripts and assume that the Storage Service is configured with the <i>example</i> policy.
       </p>
 
       <subsection name="Ingest Products">
@@ -129,7 +150,7 @@ ingestProduct: Result: 168442dc-fb8a-11e0-b6e9-4bb4c5e6fa85
       </subsection>
 
       <subsection name="Query for Products">
-        <p>This section describes how to query the Storage Service for products via the <i>storage-query</i> script. The following command queries the service for all ingested products:
+        <p>This section describes how to query the Storage Service for products via the <i>storage-query</i> script. Due to a quirk with the Storage Service, at least one product needs to be ingested for a given product type in order to query for products from that product type. If no products are ingested, the <i>storage-query</i> script will generate an error. The following command queries the service for all ingested products:
         </p>
 
         <source>
@@ -145,7 +166,7 @@ InPlaceTest,2011-10-20T19:12:12.295-07:00,test.txt,text/plain,text,plain,\
 168442dc-fb8a-11e0-b6e9-4bb4c5e6fa85,InPlaceProduct
         </source>
 
-        <p>The results from the above command are little cryptic but serviceable. The following command details specification of the metadata elements to return from the query:
+        <p>The results from the above command are a little cryptic but serviceable. The following command details specification of the metadata elements to return from the query:
         </p>
 
         <source>
