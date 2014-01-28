@@ -37,10 +37,12 @@ export FILEMGR_HOME
 mkdir -p ${FILEMGR_HOME}/logs
 
 # Execute the application.
+# Added a slash to the Spring properties to resolve a striping of the first 
+# character. Need to check with future versions of OODT to see if fixed.
 ${JAVA_HOME}/bin/java \
   -Djava.ext.dirs=${FILEMGR_HOME}/lib \
   -Dorg.apache.oodt.cas.filemgr.properties=${FILEMGR_HOME}/etc/filemgr.properties \
   -Djava.util.logging.config.file=${FILEMGR_HOME}/etc/logging.properties \
-  -Dorg.apache.oodt.cas.cli.action.spring.config=${FILEMGR_HOME}/policy/cmd-line-actions.xml \
-  -Dorg.apache.oodt.cas.cli.option.spring.config=${FILEMGR_HOME}/policy/cmd-line-options.xml \
+  -Dorg.apache.oodt.cas.cli.action.spring.config=/${FILEMGR_HOME}/policy/cmd-line-actions.xml \
+  -Dorg.apache.oodt.cas.cli.option.spring.config=/${FILEMGR_HOME}/policy/cmd-line-options.xml \
   org.apache.oodt.cas.filemgr.system.XmlRpcFileManagerClient --url ${FILEMGR_URL} $*
