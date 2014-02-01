@@ -88,7 +88,7 @@ or
           <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
           </p>
         </li>
-        <li><b>${project.artifactId}.war</b><br/>
+        <li><b>product.war</b><br/>
           <p>This is the Web ARchive (WAR) file containing the Product Service software including all dependent JAR files.
           </p>
         </li>
@@ -109,7 +109,7 @@ or
     </section>
 
     <section name="Configuring the Application">
-      <p>By default, the Product Service comes configured to access the Storage Service on the <i>localhost</i> node at port <i>9000</i>. This should be modified to represent the node and port of the Storage Service target installation if it was changed from the default configuration. To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/${project.artifactId}/WEB-INF</i> directory. Modify the following to specify the node and port of the target installation:
+      <p>By default, the Product Service comes configured to access the Storage Service on the <i>localhost</i> node at port <i>9000</i>. This should be modified to represent the node and port of the Storage Service target installation if it was changed from the default configuration. To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/product/WEB-INF</i> directory. Modify the following to specify the node and port of the target installation:
       </p>
 
       <source>
