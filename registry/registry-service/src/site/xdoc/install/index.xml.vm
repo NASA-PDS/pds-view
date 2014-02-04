@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2013, by the California Institute of Technology.
+  Copyright 2010-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -406,11 +406,61 @@ p:home="http://node.nasa.gov/registry"/&gt;
       </p>
 
       <subsection name="Object Type Configuration">
-        <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of object types corresponds with the types of products that a given instance of the Registry Service will support. The <i>registry-config</i> and <i>registry-config.bat</i> scripts default to a Registry Service URL location of <i>http://localhost:8080/registry</i>. If necessary, modify the appropriate script for the local environment so that it corresponds with the URL location of the target installation. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface. Execute the script from the <i>bin</i> directory in order to register the full set of object types:
+        <p>Once the Registry Service is installed and running, the list of supported object types must be registered with the service. The list of object types corresponds with the types of products that a given instance of the Registry Service will support. If this installation involves an existing database (where this configuration was previously performed), then the previous configuration must be deleted prior to performing the current version's configuration. If this installation involves a new database, skip down to the execution of the <i>registry-config</i> script.
+        </p>
+
+        <p>The easiest method for deleting the existing configuration, is to use the Registry User Interface component. If this component is installed in your environment, access the component from your favorite web browser and perform the following steps:
+        </p>
+
+        <ul>
+          <li>Navigate to the <i>Packages</i> tab.</li>
+          <li>Select the <i>Refresh</i> button.</li>
+          <li>Among the list of packages, you will see four packages with the following <i>Names</i>:</li>
+          <ul>
+            <li>Core Objects</li>
+            <li>Core Associations</li>
+            <li>PDS Associations</li>
+            <li>PDS Objects</li>
+          </ul>
+          <li>Select the check boxes next to each of these packages and then select the <i>Delete</i> button.</li>
+          <li>A series of pop-up messages will appear, one asking if you really want to delete the packages, one stating the deletion is commencing and then one each verifying the deletion of each package. Select the <i>OK</i> button for each of these.</li>
+        </ul>
+
+        <p>The alternative method for deleting the packages, is to determine the Global Unique Identifier (guid) for each package and then delete each one with a set of <i>cURL</i> commands. Access the Registry Service at the end point <i>http://localhost:8080/registry/packages</i> from your favorite web browser. You should see a listing similar to the following (your listing may contain many packages):
+        </p>
+
+        <source>
+&lt;ns2:response xmlns:ns2="http://registry.pds.nasa.gov" numFound="5" start="1"&gt;
+  &lt;ns2:results&gt;
+    &lt;ns2:registryPackage
+      versionName="1.0"
+      description="This configures the core set of registry objects"
+      status="Submitted" objectType="RegistryPackage" 
+      name="Core Objects"
+      lid="urn:uuid:83745882-7e8c-450b-ad20-dc5ba6b73fa6" 
+      home="http://localhost:8080/registry" 
+      guid="urn:uuid:149f202c-3832-4848-b27b-e21b83bed9b4"/&gt;
+    ...
+  &lt;/ns2:results&gt;
+&lt;/ns2:response&gt;
+        </source>
+
+        <p>Identify the four packages where the <i>name</i> attribute matches the list provided for the previous method. Execute the following two <i>cURL</i> commands for each package (the first deletes the member products and the second deletes the package product):
+        </p>
+
+        <source>
+% curl -X DELETE -v \
+http://localhost:8080/registry/packages/&lt;guid&gt;/members
+% curl -X DELETE -v \
+http://localhost:8080/registry/packages/&lt;guid&gt;
+        </source>
+
+        <p>At this point, you either have deleted the previous configuration or you have a new installation. The <i>registry-config</i> and <i>registry-config.bat</i> scripts default to a Registry Service end point of <i>http://localhost:8080/registry</i>. If necessary, set the <i>REGISTRY_SERVICE</i> environment variable to the end point of the target installation. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface. Execute the script from the <i>bin</i> directory in order to register the full set of object types:
         </p>
 
         <source>
 % cd ${project.artifactId}-${project.version}/bin
+% export REGISTRY_SERVICE=http://localhost:8080/&lt;registry-end-point&gt;
 % ./registry-config
         </source>
 
