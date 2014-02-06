@@ -64,6 +64,9 @@ if ((targetId == null) || (targetId == "")) {
 else {
    //out.println("targetId = " + targetId + "<br>");
    targetId = targetId.replaceAll(" ", "_");
+   targetId = targetId.replaceAll("/", "-");
+   targetId = targetId.replaceAll("\\(", "");
+   targetId = targetId.replaceAll("\\)", "");
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
    String targetLid = "urn:nasa:pds:context_pds3:target:*." + targetId.toLowerCase();
    List<ExtrinsicObject> targetObjs = searchRegistry.getObjects(targetLid, "Product_Target_PDS3");
