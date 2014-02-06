@@ -23,6 +23,9 @@
   </properties>
   <body>
     <release version="2.3.0" date="TBD" description="TBD">
+      <action dev="hyunlee" type="fix" issue="PDS-245">
+         Fixed to replace "/" to "-" and removed "(" and ")" chars.       
+      </action>
     </release>
 
     <release version="2.2.0" date="2013-09-30" description="This release of Data Set View is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
