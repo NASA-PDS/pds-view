@@ -40,7 +40,7 @@ FIXME: Change XML namespace URI for oodt prefix?
 <oodt:ofsn xmlns:oodt="http://oodt.jpl.nasa.gov/xml/namespaces/oodt/1.0"
       id="urn:oodt:prod:ofsn"
       name="OODT OFSN Style Product Handler"
-      productRoot="/usr/local/pds/transport-service/testdata"
+      productRoot="/usr/local/transport-ofsn/testdata"
       >
       
   <!--  defines a new OFSN handler. There are 2 valid types:

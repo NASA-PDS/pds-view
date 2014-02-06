@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2013, by the California Institute of Technology.
+  Copyright 2013-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -62,6 +62,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       <subsection name="Java Application Server">
         <p>The Transport Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/pds2010/development/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
         </p>
+
+        <p>The top-level directory where Apache Tomcat is installed (i.e. the directory containing the <i>webapps</i> and <i>conf</i> sub-directories) will be referenced in these instructions as $TOMCAT_HOME.
+        </p>
       </subsection>
     </section>
     
@@ -90,7 +93,7 @@ or
           <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
           </p>
         </li>
-        <li><b>transport.war</b><br/>
+        <li><b>transport-registry.war</b><br/>
           <p>This is the Web ARchive (WAR) file containing the Transport Service software including all dependent JAR files.
           </p>
         </li>
@@ -104,9 +107,6 @@ or
     <section name="Deploying the Application">
       <p>The Transport Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory within the Tomcat installation or installed via the Manager interface. Once this step is complete, the application is ready for configuration.
       </p>
-
-      <p>Note: Due to the size of the Transport Service WAR file, copying the file into the <i>webapps</i> directory is the preferred method of installation. This is because the WAR file size exceeds the limit set in the Manager interface. This can be adjusted in the source code but won't be discussed here.
-      </p>
     </section>
 
     <section name="Configuring the Application">
@@ -114,7 +114,7 @@ or
       </p>
 
       <subsection name="Web-Based Configuration">
-        <p>The Transport Service is a web application and can be accessed with any standard web browser (e.g., Firefox, Safari, Internet Explorer, etc.). Assuming the user is attempting access to the application from the local machine where the application server is running, the application is accessible from the following end point: <i>http://localhost:8080/transport</i>. The following screen should appear in your web browser:
+        <p>The Transport Service is a web application and can be accessed with any standard web browser (e.g., Firefox, Safari, Internet Explorer, etc.). Assuming the user is attempting access to the application from the local machine where the application server is running, the application is accessible from the following end point: <i>http://localhost:8080/transport-registry</i>. The following screen should appear in your web browser:
         </p>
 
         <center>
@@ -191,7 +191,7 @@ or
       </subsection>
 
       <subsection name="File-Based Configuration">
-        <p>Although not the suggested method for configuring the Transport Service, this method can be useful if the desire is to transfer the configuration from one Transport Service to another (i.e., upgrading versions). The configuration file resides at <i>$TOMCAT_HOME/webapps/transport/WEB-INF/config.xml</i> and should look something like the following:
+        <p>Although not the suggested method for configuring the Transport Service, this method can be useful if the desire is to transfer the configuration from one Transport Service to another (i.e., upgrading versions). The configuration file resides at <i>$TOMCAT_HOME/webapps/transport-registry/WEB-INF/config.xml</i> and should look something like the following:
         </p>
 
         <source>

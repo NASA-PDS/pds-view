@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2013, by the California Institute of Technology.
+  Copyright 2013-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -63,28 +63,20 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
         <p>The Transport Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/pds2010/development/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
         </p>
 
-        <p>The top-level directory where Apache Tomcat is installed (i.e. the directory containing the <i>webapps</i> and <i>conf</i> sub-directories) will be referenced in these instructions as $CATALINA_HOME.
+        <p>The top-level directory where Apache Tomcat is installed (i.e. the directory containing the <i>webapps</i> and <i>conf</i> sub-directories) will be referenced in these instructions as $TOMCAT_HOME.
         </p>
       </subsection>
     </section>
     
     <section name="Unpacking the Package">
-      <p>Download the latest <i>${project.artifactId}</i> package distribution from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/transport/" target="_blank">FTP</a> site to a location on your server referenced here as $PDS_HOME. A typical location on Unix systems is <i>PDS_HOME=/usr/local/pds</i>, but the package can be installed anywhere. Note though that choosing <i>/usr/local/pds</i> as the top-level installation directory will minimize the work required to configure the service later on.
+      <p>Download the <i>${project.artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/transport/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. The installation directory may vary from environment to environment but in UNIX-based environments it is typical to install software packages in the <i>/usr/local</i> directory and in Windows-based environments it is typical to install software packages in the <i>C:\Program Files</i> directory. Unpack the selected binary distribution file with one of the following commands:
       </p>
 
-      <p>Unpack the distribution in that location and create a symbolic link to facilitate configuration and future upgrades (the following commands are for Unix-based systems, on Windows environments please modify accordingly):
-
-<source>
-% export PDS_HOME=/usr/local/pds
-% cd $PDS_HOME
+      <source>
 % unzip ${project.artifactId}-${project.version}-bin.zip
 or
 % tar -xzvf ${project.artifactId}-${project.version}-bin.tar.gz
-% ln -s ./${project.artifactId}-${project.version} ./transport-service
-% cd transport-service
-</source>
-
-      </p>
+      </source>
 
       <p>Note: Depending on the platform, the native version of <i>tar</i> may produce an error when attempting to unpack the distribution file because many of the file paths are greater than 100 characters. If available, the GNU version of tar will resolve this problem. If that is not available or cannot be installed, the zipped package will work just fine in a UNIX environment.
       </p>
@@ -93,17 +85,17 @@ or
       </p>
 
       <ul>
-        <li><b>LICENSE.txt</b><br/>
-          <p>
-            The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> 
-            detailing the restrictions regarding the use and distribution of this software. 
-            Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) 
-            and is available for <i>anyone</i> to download and use.
-          </p>
-        </li>
-        
         <li><b>README.txt</b><br/>
           <p>A README file directing the user to the available documentation for the project.
+          </p>
+        </li>
+        <li><b>LICENSE.txt</b><br/>
+          <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
+          </p>
+        </li>
+        <li><b>transport-ofsn.war</b><br/>
+          <p>
+            The Web ARchive file (WAR) containing the OFSN Transport Service application, which will need to be deployed to Apache Tomcat.
           </p>
         </li>
         <li><b>testdata/</b><br/>
@@ -111,69 +103,53 @@ or
             Directory containing some test files.
           </p>
         </li>
-        <li><b>transport-service.war</b><br/>
-          <p>
-            The Web ARchive file (WAR) containing the OFSN transport service application, which will need to be deployed to Apache Tomcat.
-          </p>
-        </li>
       </ul>
     </section>
     
     <section name="Deploying the Application">
-      <p>
-        The OFSN transport service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. 
-        <br/>
-        For a Tomcat server deployment, the WAR file is normally copied directly to the webapps directory within the Tomcat installation:
-
-<source>
-% cd $PDS_HOME/transport-service
-% cp transport-service.war $CATALINA_HOME/webapps
-</source>
-	    After copying the war file in place, restart Tomcat, which will cause the war file to be expanded in that same directory.
-        Alternatively, the war file can be installed via the Tomcat Manager interface - see instructions on the Tomcat web site. 
-        Once the war file is copied and expanded, the application is ready for configuration.
+      <p>The Transport Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory within the Tomcat installation or installed via the Manager interface. Once this step is complete, the application is ready for configuration.
       </p>
     </section>
 
-	<section name="Configuring the Application">
-	  
-        The preferred method to configure the transport service is to manually edit the application configuration files. 
+    <section name="Configuring the Application">
+        <p>The preferred method to configure the transport service is to manually edit the application configuration files.
+        </p>
+
         <p>
-        First, edit the file $CATALINA_HOME/webapps/transport-service/WEB-INF/config.xml 
-        and change the path of the Tomcat installation directory to properly reference the transport service configuration file ofsn-ps.xml 
-        which was included in the war ditribution:
+        First, edit the file $TOMCAT_HOME/webapps/transport-ofsn/WEB-INF/config.xml 
+        and change the path of the Tomcat installation directory to properly reference the Transport Service configuration file <i>ofsn-ps.xml</i> 
+        which was included in the war distribution:
 <source>
 &lt;property key=&quot;org.apache.oodt.product.handlers.ofsn.xmlConfigFilePath&quot;&gt; 
-/usr/local/pds/apache-tomcat/webapps/transport-service/WEB-INF/ofsn-ps.xml&lt;/property&gt;
+/usr/local/tomcat/webapps/transport-ofsn/WEB-INF/ofsn-ps.xml&lt;/property&gt;
 </source>
         (enter the above instruction all in one line of the file).
-        If you have installed Tomcat under $CATALINA_HOME=/usr/local/pds/apache-tomcat, you may leave the config.xml file unchanged.
+        If you have installed Tomcat under $TOMCAT_HOME=/usr/local/tomcat, you may leave the <i>config.xml</i> file unchanged.
         </p>
         <p>
         Note that the step above can also be accomplished by using the web application user interface, available at:
-        <a href="http://localhost:8080/transport-service/">http://localhost:8080/transport-service/</a> 
+        <a href="http://localhost:8080/transport-ofsn/">http://localhost:8080/transport-ofsn/</a> 
         (use the initial password <i>hanalei</i> to log in). See the documentation of the 
-        <a href="http://pds-cm.jpl.nasa.gov/pds4/transport/transport-registry/index.html">Registry Transport Service</a> for additional information on
+        Registry Transport Service for additional information on
         using the web interface.
         </p>
         
         <p>
-        Second, edit the file $CATALINA_HOME/webapps/transport-service/WEB-INF/ofsn-ps.xml and insert the proper path of the
+        Second, edit the file $TOMCAT_HOME/webapps/transport-ofsn/WEB-INF/ofsn-ps.xml and insert the proper path of the
         root directory containing the products to be served. For testing purposes, you may want to use the <i>testdata</i> directory
-        that is included in the transport service distribution, in the location where the application package was iniially unpacked:
+        that is included in the Transport Service distribution, in the location where the application package was iniially unpacked:
 <source>
 &lt;oodt:ofsn xmlns:oodt=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/oodt/1.0&quot;
       id=&quot;urn:oodt:prod:ofsn&quot;
       name=&quot;OODT OFSN Style Product Handler&quot;
-      productRoot=&quot;/usr/local/pds/transport-service/testdata&quot;&gt;
+      productRoot=&quot;/usr/local/transport-ofsn/testdata&quot;&gt;
 </source>
-	    When the transport service is used in production, the <i>productRoot</i> directory will have to be changed to reflect
-	    the location of the real products.
+      When the transport service is used in production, the <i>productRoot</i> directory will have to be changed to reflect
+      the location of the real products.
         </p>
         <p>
         Restart Tomcat to load the configuration changes.
         </p>
-
     </section>
 
     <section name="Testing">
@@ -182,7 +158,7 @@ or
           First of all, you should test that the Transport Service web application is up and running. 
           To do so, type the following URL in your browser:
           <source>
-http://localhost:8080/transport-service/
+http://localhost:8080/transport-ofsn/
           </source>
           The above URL assumes that your Tomcat is running on the default port 8080 on localhost - if not, please adjust the URL accordingly.
           You should see a simple introductory page with a few links.
@@ -191,14 +167,14 @@ http://localhost:8080/transport-service/
         
         <li>
           Out of the box, the PDS Transport Service is configured to serve products in the directory 
-          <i>$PDS_HOME/transport-service/testdata</i> (referenced as "productRoot" in the file ofsn-ps.xml). 
+          <i>$PDS_HOME/transport-ofsn/testdata</i> (referenced as "productRoot" in the file ofsn-ps.xml). 
           You can test your installation by accessing the following URL:
 <source>
-http://localhost:8080/transport-service/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_JPG
+http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_JPG
 </source>
           or equivalently, using the new product request syntax:
 <source>
-http://localhost:8080/transport-service/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_JPG
+http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_JPG
 </source>
           If you see a JPG image, your installation was successful! If not, please look into the Tomcat logs for any error messages.
           <br/>&nbsp;

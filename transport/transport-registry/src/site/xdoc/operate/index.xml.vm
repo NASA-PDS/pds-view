@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2013, by the California Institute of Technology.
+  Copyright 2013-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -85,7 +85,7 @@
 
       <source>
 % curl -X GET -o package.zip -v \
-http://localhost:8080/transport/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;
+http://localhost:8080/transport-registry/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;
       </source>
 
       <p>Assuming the LID or LIDVID was specified correctly, the above query should return a ZIP package containing the products associated with the specified product. 
@@ -94,24 +94,24 @@ http://localhost:8080/transport/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;
 
       <source>
 % curl -X GET -o package.tar.gz -v \
-http://localhost:8080/transport/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;+AND+package+EQ+TGZ
+http://localhost:8080/transport-registry/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;+AND+package+EQ+TGZ
       </source>
 
       <p>Alternatively, the product identifier and desired packaging can be specified using standard HTTP parameter encoding. The general URL form is:</p>
 
       <source>
-http://localhost:8080/transport/prod?identifier=&lt;LID|LIDVID&gt;&amp;package=&lt;TGZ|ZIP&gt;
+http://localhost:8080/transport-registry/prod?identifier=&lt;LID|LIDVID&gt;&amp;package=&lt;TGZ|ZIP&gt;
       </source>
 
     <p>For example, the following URLs specify the same logical request for retrieving a PDS product:
 
     <source>
-http://localhost:8080/transport/prod?q=identifier+EQ+\
+http://localhost:8080/transport-registry/prod?q=identifier+EQ+\
 urn:nasa:pds:phx_lidar:reduced:LS075RLS_00902835894_1885M1+AND+package+EQ+TGZ
     </source>
     or:
     <source>
-http://localhost:8080/transport/prod?identifier=\
+http://localhost:8080/transport-registry/prod?identifier=\
 urn:nasa:pds:phx_lidar:reduced:LS075RLS_00902835894_1885M1&amp;package=TGZ
     </source>
     (again assuming the product exists).

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2013, by the California Institute of Technology.
+  Copyright 2013-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -32,7 +32,7 @@
 
       <source>
 % curl -X GET -o results.out -v \
-http://localhost:8080/transport-service/prod?q=OFSN+EQ+data/+AND+RT+EQ+DIRLIST1
+http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+data/+AND+RT+EQ+DIRLIST1
       </source>
 
       <p>The same action can be achieved using <i>Wget</i> with the following command:
@@ -40,7 +40,7 @@ http://localhost:8080/transport-service/prod?q=OFSN+EQ+data/+AND+RT+EQ+DIRLIST1
 
       <source>
 % wget -v -O results.out \
-http://localhost:8080/transport-service/prod?q=OFSN+EQ+data/+AND+RT+EQ+DIRLIST1
+http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+data/+AND+RT+EQ+DIRLIST1
       </source>
     </section>
   </body>

@@ -21,12 +21,9 @@ the License.
     <small-icon>images/webapp-small.png</small-icon>
     <large-icon>images/webapp-large.png</large-icon>
   </icon>
-  <display-name>Web Grid</display-name>
+  <display-name>Transport Service (OFSN)</display-name>
   <description>
-    Web Grid is an OODT web application that provides HTTP based
-    access to OODT profile and product query handlers.  It also
-    includes web accessible configuration and updates with a simple
-    administrative security policy.
+    The Transport Service provides functionality for transporting and transforming PDS products. The core functionality for this service is satisfied by the Apache OODT Web Grid Product Server and includes the Online File Specification Name (OFSN) handlers for interfacing with an archive directory structure. It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
   </description>
   <distributable/>
   <servlet>

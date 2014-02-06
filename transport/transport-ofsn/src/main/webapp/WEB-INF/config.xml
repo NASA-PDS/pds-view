@@ -7,7 +7,7 @@
 
         <property key="org.apache.oodt.product.handlers.ofsn.computeFileSize">true</property>
         <property key="org.apache.oodt.product.handlers.ofsn.computeDirSize">true</property>
-        <property key="org.apache.oodt.product.handlers.ofsn.xmlConfigFilePath">/usr/local/pds/apache-tomcat/webapps/transport-service/WEB-INF/ofsn-ps.xml</property>
+        <property key="org.apache.oodt.product.handlers.ofsn.xmlConfigFilePath">/usr/local/tomcat/webapps/transport-ofsn/WEB-INF/ofsn-ps.xml</property>
         <property key="org.apache.oodt.xmlquery.blockSize">100000</property>
 
     </properties>
