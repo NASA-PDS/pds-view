@@ -24,6 +24,9 @@
 
   <body>
     <release version="1.7.0" date="TBD" description="TBD">
+      <action dev="hyunlee" type="fix">
+        Modified the Catalog Tool to use the Product_Volume_PDS3 product's LID as the base LID for product repository products of Housekeeping, Person, Reference, and Target.    
+      </action>
       <action dev="hyunlee" type="update" issue="PDS-227">
         Corrected an issue where catalog files that are not registered as context products were having their file objects versioned and re-registered.
       </action>

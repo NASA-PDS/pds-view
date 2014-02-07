@@ -77,6 +77,7 @@ public class CatalogRegistryIngester {
 	private String registryPackageGuid;
 	private String archiveStatus = null;
 	private boolean ingestedProduct = false;
+	private String volumeLid; 
 		
 	/**
 	 * Constructor
@@ -156,6 +157,10 @@ public class CatalogRegistryIngester {
 		this.archiveStatus = status;
 	}
 	
+	public void setVolumeLid(String lid) {
+		this.volumeLid = lid;
+	}
+	
 	/**
 	 * Method to ingest given catalog object to the registry service
 	 * It calls ingestExtrinsicObject() for the product registry.
@@ -191,10 +196,9 @@ public class CatalogRegistryIngester {
 		LabelParserException lp = null;
 		ExtrinsicObject fileExtrinsic = null;
 		try {		
-			fileExtrinsic = createProduct(catObj.getFileObject());	
+			fileExtrinsic = createProduct(catObj.getFileObject(), catObj.getCatObjType());	
 			// retrieve the version info from the registry service so that it can use for the storage service version 
 			if (catObj.getCatObjType().equalsIgnoreCase("PERSONNEL")
-					//|| catObj.getCatObjType().equalsIgnoreCase("DATA_SET_MAP_PROJECTION")
 					|| catObj.getCatObjType().equalsIgnoreCase("REFERENCE")) {
 				if (productExists(fileExtrinsic.getLid())) {
 					catObj.setVersion(Float.valueOf(latestProduct.getVersionName()).floatValue()+1.0f);
@@ -235,7 +239,6 @@ public class CatalogRegistryIngester {
 								Arrays.asList(new String[] { transportURL + productId })));
 					}	 
 					else {
-						// TODO: need to create a problem type with warning...
 						lp = new LabelParserException(catObj.getLabel().getLabelURI(),
 								null, null, "ingest.warning.failIngestion",
 								ProblemType.SUCCEED,
@@ -331,7 +334,6 @@ public class CatalogRegistryIngester {
 			  			    "Extrinsic object already exists in the registry. Won't ingest this extrinsic object.");
 			  		catObj.getLabel().addProblem(lp);
 			  		this.ingestedProduct = false;
-			  		//isIngestRequired = false;
 			  		return null;
 				}
 				else {
@@ -662,7 +664,6 @@ public class CatalogRegistryIngester {
 		List<String> values = new ArrayList<String>();
 		for (String aValue: allRefs.get(associationType)) {
 			String tmpLid = aValue;
-			//System.out.println("tmpLid = " + tmpLid);
 			String tmpVer = "";
 			if (getExtrinsic(tmpLid)!=null) {
 				tmpVer = getExtrinsic(tmpLid).getVersionName();
@@ -711,7 +712,6 @@ public class CatalogRegistryIngester {
 			if (key.equalsIgnoreCase("TARGET_NAME")) {
 				valueToCompare = aValue.substring(aValue.lastIndexOf(".")+1);
 				
-				//if (aValue.endsWith(valueToMatch.toLowerCase())) {
 				if (valueToCompare.equalsIgnoreCase(valueToMatch.toLowerCase())) {
 					String tmpVer = "";
 					if (getExtrinsic(aValue)!=null) {
@@ -734,7 +734,6 @@ public class CatalogRegistryIngester {
 				else 
 					okToAdd = aValue.contains(valueToMatch.toLowerCase());
 				
-				//if (aValue.endsWith(valueToMatch.toLowerCase())) {
 				if (okToAdd) {
 					String tmpVer = "";
 					if (getExtrinsic(aValue)!=null) {
@@ -750,7 +749,6 @@ public class CatalogRegistryIngester {
 								(catObj.getCatObjType().equalsIgnoreCase("instrument") ||
 								 catObj.getCatObjType().equalsIgnoreCase("data_set")))) {
 							if (!Utility.valueExists(aValue, values)) {
-								//System.out.println("adding to data set object aValue = " + aValue + "    valueToMatch = " + valueToMatch);
 								values.add(aValue); 
 							}
 						}
@@ -865,6 +863,7 @@ public class CatalogRegistryIngester {
 				productLid = Constants.LID_PREFIX+"volume:volume."+value+"__" + volumeSetId;
 				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
+				//volumeLid = productLid;
 				product.setObjectType(Constants.VOLUME_PROD);
 				product.setName(value);
 				slots.add(new Slot(getKey("product_class"), Arrays.asList(new String[] { Constants.VOLUME_PROD })));
@@ -934,19 +933,25 @@ public class CatalogRegistryIngester {
 	 * @return an extrinsic object
 	 * 
 	 */
-	private ExtrinsicObject createProduct(FileObject fileObject)
+	private ExtrinsicObject createProduct(FileObject fileObject, String objType)
 		throws  RegistryServiceException {
 		ExtrinsicObject product = new ExtrinsicObject();
 		Set<Slot> slots = new HashSet<Slot>();
 		String tmpLid = "";
-		// for PERSONNEL & REFERENCE object
-		if (this.product==null || this.product.getLid()==null) {
-			// how to distinguish (personnel and reference????)
-			tmpLid = Constants.LID_PREFIX + storageProductName + ":" + fileObject.getName();
+		
+		if (objType.equalsIgnoreCase("PERSONNEL")
+				|| objType.equalsIgnoreCase("REFERENCE")
+				|| objType.equalsIgnoreCase("TARGET")
+				|| objType.equalsIgnoreCase("SOFTWARE")
+				|| objType.equalsIgnoreCase("DATA_SET_HOUSEKEEPING")
+				|| objType.equalsIgnoreCase("DATA_SET_MAP_PROJECTION")
+				|| objType.equalsIgnoreCase("DATA_SET_RELEASE")) {
+			tmpLid = volumeLid + ":" + fileObject.getName();
 		}
 		else {
 			tmpLid = this.product.getLid() + ":" + fileObject.getName();
 		}
+
 		product.setLid(tmpLid.toLowerCase());
 		product.setObjectType(Constants.FILE_PROD);
 		product.setName(FilenameUtils.getBaseName(fileObject.getName()));

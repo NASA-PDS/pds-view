@@ -180,15 +180,20 @@ public class CIToolIngester {
 		
 		// TODO: need to add to handle multiple catalog objects (sets of catalog references???)
 		for (Label lbl : catLabels) {		
-			//System.out.println("lbl.getLabelURI() = " + lbl.getLabelURI());
 			CatalogObject catObj = new CatalogObject(this.report);
 			boolean validFile = catObj.processLabel(lbl);
-			//System.out.println("catObj.getCatObjType() = " + catObj.getCatObjType() +  "    validFile = " + validFile);
 			if (validFile) {
 				if (catObj.getCatObjType().equalsIgnoreCase("VOLUME")) {
 					pointerFiles = catObj.getPointerFiles();
 					storageProductName = catObj.getPdsLabelMap().get("VOLUME_ID")
 							.getValue().toString();
+					
+					String volumeSetId = catObj.getPdsLabelMap().get("VOLUME_SET_ID").getValue().toString();
+					volumeSetId = Utility.collapse(volumeSetId);
+					String volumeLid = Constants.LID_PREFIX+"volume:volume."+storageProductName+"__" + volumeSetId;
+					volumeLid = volumeLid.toLowerCase();
+					catIngester.setVolumeLid(volumeLid);
+					
 					basePath = catObj.getFilename().substring(0, catObj.getFilename().lastIndexOf(File.separator));
 					isVolumeCatalog = true;
 				}
