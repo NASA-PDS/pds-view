@@ -1,6 +1,6 @@
 <%
    String pdshome = application.getInitParameter("pdshome.url");
-   String registryUrl = application.getInitParameter("registry.url");
+   String registryUrl = application.getInitParameter("proxy.registry.url");
 %>
 <html>
 <head>
@@ -64,8 +64,12 @@ String getValue(HttpServletRequest req, String param, int len ) {
             </tr>               
 <%
 // need to query from Product_Proxy_PDS3
-String lid = request.getParameter("identifier");
-if ((lid == null) || (lid == "")) {
+String name = request.getParameter("identifier");
+String tmpLid = name.replaceAll("/", "-");
+String lid = "urn:nasa:pds:" + tmpLid.toLowerCase();
+//System.out.println("lid = " + lid);
+
+if ((name == null) || (name == "")) {
 %>
             <tr valign="TOP">
                <td bgcolor="#F0EFEF" width=200 valign=top>
@@ -76,70 +80,83 @@ if ((lid == null) || (lid == "")) {
 <%  
 }
 else {
-   String tmpLid = lid.replaceAll("/", "-");
-   lid = "urn:nasa:pds:" + tmpLid.toLowerCase();
-   System.out.println("lid = " + lid);
-
    // TODO: if the Identifier contains invalid chars...need to replace or throws exceptions - need to look the harvest tool
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);  
-   // it will change to Product_Context for next build
-   
-   List<ExtrinsicObject> masterDSObjs = searchRegistry.getObjects(lid, "Product_Proxy_PDS3");
-   //List<ExtrinsicObject> masterDSObjs = searchRegistry.getObjects(lid, "Product_Context");
-   //System.out.println("masterDSObjs = " + masterDSObjs.size());
-%>
-            <!-- Display profile attributes -->
-            <!-- Display resource attributes -->      
-            <TR>
+   List<ExtrinsicObject> proxyObjs = searchRegistry.getAllObjects(name, "Product_Proxy_PDS3");
+    
+   if (proxyObjs!=null && proxyObjs.size()>0) {
+      int count=1;
+      for (ExtrinsicObject obj: proxyObjs) { 
+       %>
+       <table>
+          <!--tr>
+             <td><b>Product <%=count%></b></td>
+          </tr-->
+          <TR>
                <td bgcolor="#F0EFEF" width=200 valign=top>IDENTIFIER</td>
-               <td bgcolor="#F0EFEF">test identifier</td>
+               <td bgcolor="#F0EFEF"><%=lid%></td>
             </TR>
       
             <TR>
                <td bgcolor="#F0EFEF" width=200 valign=top>TITLE</td>
-               <td bgcolor="#F0EFEF">test title</td>
+               <td bgcolor="#F0EFEF"><%=name%></td>
             </TR>
-      
-            <TR>
-               <td bgcolor="#F0EFEF" width=200 valign=top>FORMAT</td>
-               <td bgcolor="#F0EFEF">test format</td>
-            </TR>
-      
-            <TR>
-               <td bgcolor="#F0EFEF" width=200 valign=top>RESOURCE CONTEXT</td>
-               <td bgcolor="#F0EFEF">test resource context</td>
-            </TR>
-      
+     
             <TR>
                <td bgcolor="#F0EFEF" width=200 valign=top>RESOURCE LOCATION</td>
-               <td bgcolor="#F0EFEF">test resource location</td>
+               <td bgcolor="#F0EFEF">
+               <%
+               List<String> resLocations = searchRegistry.getSlotValues(obj, "access_url");
+               for (String resLocation: resLocations) {
+               %>
+                  <a href="<%=resLocation%>" target="_new"><%=resLocation%></a>
+               <%
+               } 
+               %>
+               </td>
             </TR>
-      
-   <!-- need to display all slot values here -->
-<% 
-   if (masterDSObjs!=null) {
-      System.out.println("masterDSObjs.size = " + masterDSObjs.size());
-      
-      for (ExtrinsicObject obj: masterDSObjs) { 
+          
+       <%
          // need to display all slot values      
          for (Slot slot: obj.getSlots()) {
             String slotName = slot.getName();
-            //List<String> slotValues = slot.getValues();
-            String slotValues = slot.getValues().toString();
-            if (slot.getValues().size()>0) {
-%>        
+            
+            if (!(slotName.equalsIgnoreCase("product_class") ||
+                  slotName.equalsIgnoreCase("version_id") ||
+                  slotName.equalsIgnoreCase("information_model_version") ||
+                  slotName.equalsIgnoreCase("access_url"))) {
+                        
+               List<String> slotValues = slot.getValues();
+               if (slotValues.size()>0) {
+               %>
+
             <TR>
                <td bgcolor="#F0EFEF" width=200 valign=top><%=slotName%></td> 
                <td bgcolor="#F0EFEF">
-                  <%=slotValues%>
+               <%
+                  for (String slotValue: slotValues) {    
+                     out.println(slotValue + "<br>");
+                  }
+               %>
+                  
                </td>
-            </TR>
-         
+            </TR>       
 <%   
-            } // end inner if 
+               } // end inner if 
+            }
          }
+         %>
+         </table>
+         <%
+         
+         if (proxyObjs.size()>1 && count!=proxyObjs.size()) {
+         %>
+            <br><br>
+         <%   
+         }     
+         count++;
       } // end outer for loop
-   } // end if (masterObjs!=null)
+   } // end if (proxyObjs!=null)
 %>
          </table>
 <%

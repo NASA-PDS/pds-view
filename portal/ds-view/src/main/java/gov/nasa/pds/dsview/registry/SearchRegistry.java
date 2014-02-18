@@ -101,6 +101,7 @@ public class SearchRegistry {
 		return null;
 	}
 	
+	// returns only latest products
 	public List<ExtrinsicObject> getObjects(String lid, String objectType) {
 		ExtrinsicFilter.Builder filterBuilder = new ExtrinsicFilter.Builder();
 		if (lid!=null)
@@ -126,6 +127,37 @@ public class SearchRegistry {
 					if (extObj.getLid().equalsIgnoreCase(tmpObj.getLid()) &&
 					    extObj.getVersionName().equalsIgnoreCase(tmpObj.getVersionName()))
 					   objs.add(extObj);
+				}
+				return objs;		
+			}
+		} catch (RegistryServiceException rse) {
+		    rse.printStackTrace();
+		    return null;
+		}
+	}
+	
+	// returns all products
+	public List<ExtrinsicObject> getAllObjects(String name, String objectType) {
+		ExtrinsicFilter.Builder filterBuilder = new ExtrinsicFilter.Builder();
+		if (name!=null)
+			filterBuilder.name(name);
+		
+		if (objectType !=null) 
+		    filterBuilder.objectType(objectType);
+		    
+		ExtrinsicFilter filter = filterBuilder.build();
+		
+		RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>().filter(filter).build();
+		
+		try {
+			List<ExtrinsicObject> objs = new ArrayList<ExtrinsicObject>();
+			PagedResponse<ExtrinsicObject> pr = client.getExtrinsics(query, 1, 10);
+			if (pr.getNumFound()==0) {
+				return null;
+			}
+			else {
+				for (ExtrinsicObject extObj: pr.getResults()) {
+					objs.add(extObj);
 				}
 				return objs;		
 			}
