@@ -12,8 +12,14 @@
   <!-- Registry Service base URL -->
   <context-param>
       <param-name>registry.url</param-name>
-      <param-value>http://pdsops.jpl.nasa.gov/registry</param-value>
-      <!--param-value>http://pdsdev.jpl.nasa.gov:8080/registry-phx</param-value-->
+      <!--param-value>http://pdsops.jpl.nasa.gov/registry</param-value-->
+      <param-value>http://pdsdev.jpl.nasa.gov:8080/registry-pds3</param-value>
+  </context-param>
+  
+  <context-param>
+      <param-name>proxy.registry.url</param-name>
+      <!--param-value>http://pdsops.jpl.nasa.gov/registry</param-value-->
+      <param-value>http://pdsdev.jpl.nasa.gov:8080/registry-ex</param-value>
   </context-param>
 
   <!-- Search Service base URL -->
