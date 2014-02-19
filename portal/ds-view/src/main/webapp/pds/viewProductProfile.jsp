@@ -65,9 +65,6 @@ String getValue(HttpServletRequest req, String param, int len ) {
 <%
 // need to query from Product_Proxy_PDS3
 String name = request.getParameter("identifier");
-String tmpLid = name.replaceAll("/", "-");
-String lid = "urn:nasa:pds:" + tmpLid.toLowerCase();
-//System.out.println("lid = " + lid);
 
 if ((name == null) || (name == "")) {
 %>
@@ -75,14 +72,18 @@ if ((name == null) || (name == "")) {
                <td bgcolor="#F0EFEF" width=200 valign=top>
                   Please specify an <b>identifier</b>
                </td>
-            </tr>
+            </tr> 
          </table>
 <%  
 }
 else {
+   String tmpLid = name.replaceAll("/", "-");
+   String lid = "urn:nasa:pds:" + tmpLid.toLowerCase();
+   System.out.println("name = " +  name + "    lid = " + lid);
+   
    // TODO: if the Identifier contains invalid chars...need to replace or throws exceptions - need to look the harvest tool
    gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);  
-   List<ExtrinsicObject> proxyObjs = searchRegistry.getAllObjects(name, "Product_Proxy_PDS3");
+   List<ExtrinsicObject> proxyObjs = searchRegistry.getAllObjects(lid, "Product_Proxy_PDS3");
     
    if (proxyObjs!=null && proxyObjs.size()>0) {
       int count=1;
@@ -157,6 +158,15 @@ else {
          count++;
       } // end outer for loop
    } // end if (proxyObjs!=null)
+   else {
+   %>
+            <tr valign="TOP">
+               <td bgcolor="#F0EFEF" width=200 valign=top>
+                  Information not found for the identifier <b><%=name%></b>. Please verify the value.
+               </td>
+            </tr>
+  <% 
+   }
 %>
          </table>
 <%

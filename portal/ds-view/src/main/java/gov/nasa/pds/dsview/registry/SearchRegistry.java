@@ -137,10 +137,10 @@ public class SearchRegistry {
 	}
 	
 	// returns all products
-	public List<ExtrinsicObject> getAllObjects(String name, String objectType) {
+	public List<ExtrinsicObject> getAllObjects(String lid, String objectType) {
 		ExtrinsicFilter.Builder filterBuilder = new ExtrinsicFilter.Builder();
-		if (name!=null)
-			filterBuilder.name(name);
+		if (lid!=null) 
+			filterBuilder.lid(lid);
 		
 		if (objectType !=null) 
 		    filterBuilder.objectType(objectType);
