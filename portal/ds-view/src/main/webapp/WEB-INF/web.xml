@@ -12,21 +12,18 @@
   <!-- Registry Service base URL -->
   <context-param>
       <param-name>registry.url</param-name>
-      <!--param-value>http://pdsops.jpl.nasa.gov/registry</param-value-->
-      <param-value>http://pdsdev.jpl.nasa.gov:8080/registry-pds3</param-value>
+      <param-value>http://localhost:8080/registry-pds3</param-value>
   </context-param>
   
   <context-param>
       <param-name>proxy.registry.url</param-name>
-      <!--param-value>http://pdsops.jpl.nasa.gov/registry</param-value-->
-      <param-value>http://pdsdev.jpl.nasa.gov:8080/registry-ex</param-value>
+      <param-value>http://localhost:8080/registry-ads</param-value>
   </context-param>
 
   <!-- Search Service base URL -->
   <context-param>
       <param-name>search.url</param-name>
-      <!--param-value>http://pdsops.jpl.nasa.gov/search-service/pds</param-value-->
-      <param-value>http://pdsdev.jpl.nasa.gov:8080/search-service/pds</param-value>
+      <param-value>http://localhost:8080/search-service</param-value>
   </context-param>
 
   <!--
@@ -66,7 +63,6 @@
   <!-- Mapping to RegistryQueryServlet. -->
   <servlet-mapping>
     <servlet-name>query</servlet-name>
-    <!-- <url-pattern>/servlet/gov.nasa.pds.dsview.servlets.RegistryQueryServlet</url-pattern> -->
     <url-pattern>/RegistryQueryServlet</url-pattern>
   </servlet-mapping>
 </web-app>

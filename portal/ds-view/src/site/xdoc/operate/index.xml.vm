@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2012, by the California Institute of Technology.
+  Copyright 2012-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -24,8 +24,52 @@
 
   <body>
     <section name="Operation">
-      <p>This document describes how to operate the Data Set View software contained in the <i>${project.artifactId}</i> package. The Data Set View software is a web application that serves as the browse interface for context products. Links to the interfaces that make up this web application are returned from the Search Service in response to search requests. More detail regarding the these interface will be provided at a later date.
+      <p>This document describes how to operate the Data Set View software contained in the <i>${project.artifactId}</i> package. This package contains a couple of web-based interfaces for discovering and displaying information from the Search and Registry Services. The following topics can be found in this document:
       </p>
+
+      <ul>
+        <li><a href="#Data_Set_View">Data Set View</a></li>
+        <li><a href="#ADS_Query">ADS Query</a></li>
+      </ul>
+    </section>
+
+    <section name="Data Set View">
+      <p>The Data Set View software is a web application that serves as the browse interface for context products. Links to the interfaces that make up this web application are returned from the Search Service in response to search requests. More detail regarding the this interface will be provided at a later date.
+      </p>
+    </section>
+
+    <section name="ADS Query">
+      <p>Although this interface is not specific to the Astrophysics Data System (ADS), that system is the only known user of this software containing links to this interface for displaying information regarding a given data set or product. The examples below use <i>http://localhost:8080/ds-view/query</i> as the default end point for the service but the operational end point of the service is <i>http://pdsquery.jpl.nasa.gov/query</i>. The following table details the parameters available:
+      </p>
+
+      <table>
+        <tr><th>Parameter</th><th>Description</th></tr>
+        <tr><td>identifier</td><td>The identifier of the data set (i.e., GO-J/JSA-SSI-2-REDR-V1.0) or product (i.e., GO-J/JSA-SSI-2-REDR-V1.0:G1G0030) to be queried. This parameter is required.</td></tr>
+        <tr><td>resclass</td><td>The resource class for the target of the query. Valid values are <i>data.dataset</i> or <i>data.product</i>. This parameter is required.</td></tr>
+      </table>
+
+      <p>The following is an example query:
+      </p>
+
+      <source>
+http://localhost:8080/ds-view/query?identifier=&lt;identifier&gt;&amp;resclass=&lt;resource-class&gt;
+      </source>
+
+      <p>The following is an example query for data set information:
+      </p>
+
+      <source>
+http://localhost:8080/ds-view/query?identifier=GO-J/JSA-SSI-2-REDR-V1.0 \
+&amp;resclass=data.dataset
+      </source>
+
+      <p>The following is an example query for product information:
+      </p>
+
+      <source>
+http://localhost:8080/ds-view/query?identifier=GO-J/JSA-SSI-2-REDR-V1.0:G1G0030 \
+&amp;resclass=data.product
+      </source>
     </section>
   </body>
 </document>

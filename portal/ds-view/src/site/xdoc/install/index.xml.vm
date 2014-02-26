@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2012-2013, by the California Institute of Technology.
+  Copyright 2012-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -128,13 +128,18 @@ or
   &lt;!-- Registry Service base URL --&gt;
   &lt;context-param&gt;
       &lt;param-name&gt;registry.url&lt;/param-name&gt;
-      &lt;param-value&gt;http://pdsops.jpl.nasa.gov/registry&lt;/param-value&gt;
+      &lt;param-value&gt;http://localhost:8080/registry-pds3&lt;/param-value&gt;
+  &lt;/context-param&gt;
+
+  &lt;context-param&gt;
+      &lt;param-name&gt;proxy.registry.url&lt;/param-name&gt;
+      &lt;param-value&gt;http://localhost:8080/registry-ads&lt;/param-value&gt;
   &lt;/context-param&gt;
 
   &lt;!-- Search Service base URL --&gt;
   &lt;context-param&gt;
       &lt;param-name&gt;search.url&lt;/param-name&gt;
-      &lt;param-value&gt;http://pdsops.jpl.nasa.gov/search-service/pds&lt;/param-value&gt;
+      &lt;param-value&gt;http://localhost:8080/search-service&lt;/param-value&gt;
   &lt;/context-param&gt;
       </source>
 
