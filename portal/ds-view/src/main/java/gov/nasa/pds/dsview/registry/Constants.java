@@ -164,7 +164,7 @@ public class Constants {
 	  new LinkedHashMap<String, String>();
 	  static {
 		  bundleContextPds4ToRegistry.put("START DATE TIME", "observation_start_date_time");
-    	  bundleContextPds4ToRegistry.put("STOP DATE_TIME", "observation_stop_date_time");
+    	  bundleContextPds4ToRegistry.put("STOP DATE TIME", "observation_stop_date_time");
     	  bundleContextPds4ToRegistry.put("LOCAL MEAN SOLAR TIME", "observation_local_mean_solar_time");
     	  bundleContextPds4ToRegistry.put("LOCAL TRUE SOLAR TIME", "observation_local_true_solar_time");
     	  bundleContextPds4ToRegistry.put("SOLAR LONGITUDE", "observation_solar_longitude");
@@ -173,10 +173,10 @@ public class Constants {
     	  bundleContextPds4ToRegistry.put("PRIMARY RESULT DATA REGIME", "primary_result_data_regime");
     	  bundleContextPds4ToRegistry.put("PRIMARY RESULT DESCRIPTION", "primary_result_description");
     	  bundleContextPds4ToRegistry.put("PRIMARY RESULT PROCESSING LEVEL", "primary_result_processing_level_id");
-*/    	  bundleContextPds4ToRegistry.put("INVESTIGATION NAME", "investigation_name");
-    	  bundleContextPds4ToRegistry.put("OBSERVING SYSTEM NAME", "observing_system_name");
-    	  bundleContextPds4ToRegistry.put("OBSERVING SYSTEM COMPONENT NAME", "observing_system_component_name");
-    	  bundleContextPds4ToRegistry.put("TARGET NAME", "target_name");
+*/    	  bundleContextPds4ToRegistry.put("INVESTIGATION", "investigation_name");
+    	  bundleContextPds4ToRegistry.put("OBSERVING SYSTEM", "observing_system_name");
+    	  bundleContextPds4ToRegistry.put("OBSERVING SYSTEM COMPONENT", "observing_system_component_name");
+    	  bundleContextPds4ToRegistry.put("TARGET", "target_name");
 	  }
      
     public static final Map<String, String> collectionPds4ToRegistry = 
@@ -246,6 +246,6 @@ public class Constants {
         observationalPds4ToSearch.put("IDENTIFIER", "identifier");
         observationalPds4ToSearch.put("NAME", "title");
         observationalPds4ToSearch.put("TYPE", "data_class");
-        observationalPds4ToSearch.put("FILE NAME", "file_name");
+        observationalPds4ToSearch.put("FILE(S)", "file_name");
     }
 }

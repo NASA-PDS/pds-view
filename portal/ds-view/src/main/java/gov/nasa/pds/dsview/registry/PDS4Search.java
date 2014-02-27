@@ -293,7 +293,7 @@ public class PDS4Search {
 		for (Object obj: values) {
 			//System.out.println("obj = " + (String)obj);
 			if (obj instanceof java.util.Date) {
-				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
 				df.setTimeZone(TimeZone.getTimeZone("GMT"));
 				String dateValue = df.format(obj);
 				results.add(dateValue);

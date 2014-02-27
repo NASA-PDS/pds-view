@@ -124,7 +124,7 @@
             out.println(pds4Search.getValues(doc, "identifier").get(0));
          else if (key.equals("NAME"))
             out.println(pds4Search.getValues(doc, "title").get(0));
-         else if (key.equals("FILE NAME")) {
+         else if (key.equals("FILE(S)")) {
             String filelink = "";
             String filename = "";
             List<String> filenames = pds4Search.getValues(doc, "file_ref_name");
@@ -297,40 +297,37 @@
                        else
                           out.println(val);
                     }
-                    else if (tmpValue.equals("observing_system_name")) {
-                       if (pds4Search.getValues(doc, "instrument_host_ref")!=null) {
-                          for (String instHostRef: pds4Search.getValues(doc, "instrument_host_ref")) {
-                             if (instHostRef.contains("::"))
-                                instHostRef = instHostRef.substring(0, instHostRef.indexOf("::"));
-                             SolrDocument instHostDoc = pds4Search.getContext(instHostRef);
-
-                             if (instHostDoc!=null && pds4Search.getValues(instHostDoc, "instrument_host_name")!=null) {
-                                val = pds4Search.getValues(instHostDoc, "instrument_host_name").get(0);
+                    else if (tmpValue.equals("observing_system_component_name")) {
+                       List<String> componentTypes = pds4Search.getValues(doc, "observing_system_component_type");
+					   String componentType = componentTypes.get(j);                    
+                       if (componentType.equalsIgnoreCase("spacecraft")) {
+                          if (pds4Search.getValues(doc, "instrument_host_ref")!=null) {
+                             for (String instHostRef: pds4Search.getValues(doc, "instrument_host_ref")) {
+                                if (instHostRef.contains("::"))
+                                   instHostRef = instHostRef.substring(0, instHostRef.indexOf("::"));
                     %>
                    <a href="/ds-view/pds/viewContext.jsp?identifier=<%=instHostRef%>" target="_blank"><%=val%></a><br>
                          <%
                              }
-                             else
-                                out.println(val);
                           }
+                          else
+                             out.println(val);
                        }
-                       else
-                          out.println(val);
-                    }
-                    else if (tmpValue.equals("observing_system_component_name")) {
-                       if (pds4Search.getValues(doc, "instrument_ref")!=null) {
-                          for (String instRef: pds4Search.getValues(doc, "instrument_ref")) {
-                             if (instRef.contains("::"))
-                                instRef = instRef.substring(0, instRef.indexOf("::"));
-                             SolrDocument instDoc = pds4Search.getContext(instRef);
+                       else if (componentType.equalsIgnoreCase("instrument")) {                   
+                          if (pds4Search.getValues(doc, "instrument_ref")!=null) {
+                             for (String instRef: pds4Search.getValues(doc, "instrument_ref")) {
+                                if (instRef.contains("::"))
+                                   instRef = instRef.substring(0, instRef.indexOf("::"));
                     %>
                    <a href="/ds-view/pds/viewContext.jsp?identifier=<%=instRef%>" target="_blank"><%=val%></a><br>
                          <%
+                             }
                           }
+                          else
+                             out.println(val);
                        }
-                       else
+                       else 
                           out.println(val);
-
                     } // end else if (observing_system_component_name)
                     else
                         out.println(val + "<br>");
