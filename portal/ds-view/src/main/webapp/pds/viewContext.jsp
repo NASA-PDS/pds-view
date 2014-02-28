@@ -196,7 +196,7 @@ else {
                   //out.println("tmpValue = " + tmpValue + "<br>");
                   List<String> values = pds4Search.getValues(doc, tmpValue);
                   if (values!=null) {
-                     if (tmpValue.equals("instrument_host_desc")){                          
+                     if (tmpValue.equals("instrument_host_description")){
                         String val = values.get(0);
                         //val = val.replaceFirst("            ", "  ");
                   %>
@@ -241,7 +241,7 @@ else {
              //out.println("tmpValue = " + tmpValue + "<br>");
              List<String> values = pds4Search.getValues(doc, tmpValue);
              if (values!=null) {
-                if (tmpValue.equals("instrument_desc")){                          
+                if (tmpValue.equals("instrument_description")){                          
                    String val = values.get(0);
                    //val = val.replaceFirst("            ", "  ");                         
                    %>

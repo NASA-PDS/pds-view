@@ -1,4 +1,4 @@
-// Copyright 2012-2013, by the California Institute of Technology.
+// Copyright 2012-2014, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -200,7 +200,7 @@ public class Constants {
 			new LinkedHashMap<String, String>();	
 	static {
 		targetPds4ToRegistry.put("IDENTIFIER", "identifier");
-		targetPds4ToRegistry.put("NAME", "title");
+		targetPds4ToRegistry.put("NAME", "target_name");
 		targetPds4ToRegistry.put("TYPE" , "target_type");
 		targetPds4ToRegistry.put("DESCRIPTION", "target_description");
 		targetPds4ToRegistry.put("REFERENCES", "external_reference_description");
@@ -222,7 +222,7 @@ public class Constants {
 		instCtxPds4ToSearch.put("IDENTIFIER", "identifier");
 		instCtxPds4ToSearch.put("NAME", "instrument_name");
 		instCtxPds4ToSearch.put("TYPE", "instrument_type");
-		instCtxPds4ToSearch.put("DESCRIPTION", "instrument_desc");
+		instCtxPds4ToSearch.put("DESCRIPTION", "instrument_description");
 		instCtxPds4ToSearch.put("MODEL IDENTIFIER", "instrument_model_id");
 		instCtxPds4ToSearch.put("NAIF INSTRUMENT IDENTIFIER", "instrument_naif_id");
 		instCtxPds4ToSearch.put("SERIAL NUMBER", "instrument_serial_number");
@@ -235,7 +235,7 @@ public class Constants {
 		instHostCtxPds4ToSearch.put("NAME", "instrument_host_name");
 		instHostCtxPds4ToSearch.put("VERSION IDENTIFIER", "instrument_host_version_id");
 		instHostCtxPds4ToSearch.put("TYPE", "instrument_host_type");
-		instHostCtxPds4ToSearch.put("DESCRIPTION", "instrument_host_desc");
+		instHostCtxPds4ToSearch.put("DESCRIPTION", "instrument_host_description");
 		instHostCtxPds4ToSearch.put("NAIF INSTRUMENT IDENTIFIER", "instrument_host_naif_id");
 		instHostCtxPds4ToSearch.put("SERIAL NUMBER", "instrument_host_serial_number");
 		instHostCtxPds4ToSearch.put("REFERENCES", "external_reference_description");
