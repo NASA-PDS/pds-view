@@ -78,6 +78,7 @@ public class XMLExtractor {
       xpath = new XPathEvaluator();
       Configuration configuration = xpath.getConfiguration();
       configuration.setLineNumbering(true);
+      configuration.setXIncludeAware(true);
       ParseOptions options = new ParseOptions();
       options.setErrorListener(new XMLErrorListener());
       xml = configuration.buildDocument(new SAXSource(new InputSource(url.toString())),
