@@ -86,12 +86,6 @@
 		<field name="investigation_ref" type="string">
 			<registryPath>investigation_ref</registryPath>
 		</field>
-		<field name="target_ref" type="string">
-			<registryPath>target_ref</registryPath>
-		</field>
-		<field name="target_description" type="string">
-			<registryPath>target_description</registryPath>
-		</field>
 		<field name="investigation_name" type="string">
 			<registryPath>investigation_name</registryPath>
 		</field>
@@ -106,6 +100,18 @@
 		</field>
 		<field name="investigation_stop_date" type="date">
 			<registryPath>investigation_stop_date</registryPath>
+		</field>
+		<field name="target_ref" type="string">
+			<registryPath>target_ref</registryPath>
+		</field>
+		<field name="target_name" type="string">
+			<registryPath>target_name</registryPath>
+		</field>
+		<field name="target_type" type="string">
+			<registryPath>target_type</registryPath>
+		</field>
+		<field name="target_description" type="string">
+			<registryPath>target_description</registryPath>
 		</field>
 		<field name="modification_date" type="date">
 			<registryPath>modification_date</registryPath>
