@@ -47,11 +47,14 @@
 		<field name="investigation_name" type="string">
 			<registryPath>investigation_ref.mission_name</registryPath>
 		</field>
-		<field name="investigation_start_date" type="string">
-			<registryPath>investigation_ref.mission_start_date</registryPath>
+		<field name="instrument_host_name" type="string">
+			<registryPath>instrument_host_ref.instrument_host_name</registryPath>
 		</field>
-		<field name="investigation_stop_date" type="string">
-			<registryPath>investigation_ref.mission_stop_date</registryPath>
+		<field name="instrument_name" type="string">
+			<registryPath>instrument_ref.instrument_name</registryPath>
+		</field>
+		<field name="target_name" type="string">
+			<registryPath>target_ref.target_name</registryPath>
 		</field>
 	</indexFields>
 	
