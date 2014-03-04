@@ -967,6 +967,8 @@ public class CatalogRegistryIngester {
         if (fileObject.getAccessUrl()!=null)
         	slots.add(new Slot("access_url", 
         			Arrays.asList(new String[] {fileObject.getAccessUrl()})));
+        slots.add(new Slot("file_type", Arrays.asList(new String[] {"Label"})));
+        slots.add(new Slot("mime_type", Arrays.asList(new String[] {"application/xml"})));
         
         product.setSlots(slots);
         
