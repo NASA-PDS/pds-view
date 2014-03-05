@@ -60,6 +60,11 @@
     <url-pattern>/query</url-pattern>
   </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>switcher</servlet-name>
+    <url-pattern>/query/</url-pattern>
+  </servlet-mapping>
+
   <!-- Mapping to RegistryQueryServlet. -->
   <servlet-mapping>
     <servlet-name>query</servlet-name>
