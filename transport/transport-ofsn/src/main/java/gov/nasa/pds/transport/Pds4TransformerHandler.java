@@ -12,7 +12,7 @@ import org.apache.oodt.product.ProductException;
 
 public class Pds4TransformerHandler extends AbstractPdsGetHandler {
 	
-	ProductTransformer transformer = new Pds4ImageTransformer();
+	ProductTransformer transformer = new Pds4ImageTransformer(false); // overwrite=false
 	
 	protected final static Logger LOG = Logger.getLogger(Pds4TransformerHandler.class.getName());
 	
