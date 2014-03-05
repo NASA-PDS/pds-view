@@ -75,7 +75,8 @@ public class LabelReader {
 	    //LabelParser parser = new DefaultLabelParser(false, true, resolver);
 	    //Label label = parser.parseLabel(uri.toURL(), true); // force==true
 	    resolver.setBaseURI(ManualPathResolver.getBaseURI(uri));
-	    LabelParser parser = new DefaultLabelParser(true, true, true, resolver);
+	    
+	    LabelParser parser = new DefaultLabelParser(false, true, true, resolver); // loadIncludes=false
 	    Label label = parser.parseLabel(uri.toURL(), true); // force==true
 	    
 	    // do NOT stop if problems are encountered (force==true)
@@ -130,8 +131,7 @@ public class LabelReader {
 				
 			} else if (className.equals(ATTRIBUTE_STATEMENT_CLASSNAME)) {
 				AttributeStatement _statement = (AttributeStatement)statement;
-				// NOTE: remove new line characters from attribute values, and leading/trailing white spaces
-				String value = _statement.getValue().toString().replaceAll("\\r|\\n", "").trim();
+				String value =  _statement.getValue().toString().trim();
 				out.append( printStatement(_statement, _statement.getElementIdentifier()+ " = "+value) );
 				
 			} else if (className.equals(POINTER_STATEMENT_CLASSNAME)) {
@@ -206,12 +206,13 @@ public class LabelReader {
 	public static void main(String[] args) throws Exception {
 		
 		// parse label object
-		String uri = "file:///usr/local/pds/transport-service/testdata/CHAN_DATA_20020617.LBL";
+		//String uri = "file:///usr/local/pds/transport-service/testdata/CHAN_DATA_20020617.LBL";
 		//String uri = "http://starbase.jpl.nasa.gov/ody-m-grs-2-edr-v1/odge1_xxxx/2002/20020617/CHAN_DATA_20020617.LBL";
+		String uri = "file:///usr/local/transport-ofsn/testdata/data/vg1-j-mag-4-summ-hgcoords-48.0sec-v1.0/vg_1501/data/crs/bs2edat.lbl";
 		
 		StringBuffer sb = (new LabelReader(new URI(uri), "")).read();
 		//System.out.println(sb.toString());
-		FileUtils.writeStringToFile(new File("/tmp/CHAN_DATA_20020617.LBL"), sb.toString());
+		FileUtils.writeStringToFile(new File("/tmp/bs2edat.lbl"), sb.toString());
 		
 	}
 
