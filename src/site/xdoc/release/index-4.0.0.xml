@@ -235,7 +235,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
             </p>
           </li>
           <li><b>Registry Service</b><br/>
-            <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. Two instances of the service have been deployed, one containing context products migrated fromthe PDS3 central catalog database and one containing the initial set of PDS4 context products. The end points for these services are:
+            <p>The Registry Service provides functionality for tracking, auditing, locating and maintaining artifacts within the system. Two instances of the service have been deployed, one containing context products migrated from the PDS3 central catalog database and one containing the initial set of PDS4 context products. The end points for these services are:
               <ul>
                 <li><a href="http://pds.nasa.gov/services/registry-pds3/" target="_blank">http://pds.nasa.gov/services/registry-pds3/</a></li>
                 <li><a href="http://pds.nasa.gov/services/registry-pds4/" target="_blank">http://pds.nasa.gov/services/registry-pds4/</a></li>
@@ -345,6 +345,8 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
           <li><b>Verify System Requirements</b><br/>
             <p>As specified in the <a href="#System_Requirements">System Requirements</a> section above, the software requires Java, a Java Application Server (Apache Tomcat), a Web Server (Apache HTTP) and an optional database server to be installed and accessible. These installations should be verified before proceeding to the next step.
             </p>
+            <p>With respect to the Web Server installation, this server may reside on another machine and in most cases that would be preferable. The preferred configuration is to install the PDS4 software components on a machine that resides behind a firewall at your institution. This offers an initial level of security for the components. Configuring the Web Server for reverse proxies to the query interfaces of the components provides an additional level of security by restricting access to the interfaces that allow updates to the data.
+            </p>
           </li>
           <li><b>Install Registry Components</b><br/>
             <p>The Registry components consist of the Registry Service and Registry User Interface. The Registry Client and Registry Core, which are also Registry components, are not required to be installed at the Discipline Node.
@@ -366,8 +368,8 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
               <source>
 ProxyPass /services/registry-pds3/ http://localhost:8080/registry-pds3/
 ProxyPassReverse /services/registry-pds3/ http://localhost:8080/registry-pds3/
-ProxyPass /services/registry-pds3 http://localhost:8080/registry-pds3/
-ProxyPassReverse /services/registry-pds3 http://localhost:8080/registry-pds3/
+ProxyPass /services/registry-pds3 http://localhost:8080/registry-pds3
+ProxyPassReverse /services/registry-pds3 http://localhost:8080/registry-pds3
 &lt;Location /services/registry-pds3&gt;
   &lt;Limit PUT POST DELETE&gt;
     Order Deny,Allow
@@ -378,8 +380,8 @@ ProxyPassReverse /services/registry-pds3 http://localhost:8080/registry-pds3/
  
 ProxyPass /services/registry-pds4/ http://localhost:8080/registry-pds4/
 ProxyPassReverse /services/registry-pds4/ http://localhost:8080/registry-pds4/
-ProxyPass /services/registry-pds4 http://localhost:8080/registry-pds4/
-ProxyPassReverse /services/registry-pds4 http://localhost:8080/registry-pds4/
+ProxyPass /services/registry-pds4 http://localhost:8080/registry-pds4
+ProxyPassReverse /services/registry-pds4 http://localhost:8080/registry-pds4
 &lt;Location /services/registry-pds4&gt;
   &lt;Limit PUT POST DELETE&gt;
     Order Deny,Allow
@@ -497,8 +499,13 @@ serverStarted="2014-02-25T10:52:46.513-08:00" status="OK"/&gt;
         <p>The above steps exercise the core components of the system but are not exhaustive by any measure with respect to testing the software, but they will verify that the software can be installed and executed in the various Node environments. Some Nodes are actively working on generating PDS4 bundles and collections. If a Node would like to attempt to register those products with their local registry the EN would be glad to assist in this effort. In addition, the Harvest Tool supports registering a PDS3 Data Set with the Registry Service. An example configuration file (<i>harvest-policy-pds3.xml</i>) for registering PDS3 Data Sets can be found in the <i>examples</i> directory of the Harvest Tool distribution package. When registering a PDS3 Data Set, the Harvest Tool creates an in-memory proxy label for each product and registers it with the Registry Service. Although not sufficient for PDS4 migration, it does provide a tracking mechanism for PDS3 Data Sets until they can be migrated to PDS4.
         </p>
 
-        <p>In addition to the exercises above, the Nodes are encouraged to exercise the Generate Tool, Transform Tool and PDS4 Tools components. See the corresponding Installation and Operation documents for details. For advanced installations, the Search and Transport components may also be installed.
+        <p>In addition to the exercises above, the Nodes are encouraged to exercise the Generate Tool, Transform Tool and PDS4 Tools components. See the corresponding Installation and Operation documents for details. For advanced installations, the Search and Transport components may also be installed (details to come later).
         </p>
+
+        <p>The final step of this exercise is to delete the example bundle from the Registry Service. This can be accomplished via the Registry User Interface at the following URL: <i>http://localhost:8080/registry-ui-pds4/</i>. In the <i>Packages</i> tab just select the entry for the Example package and then select the <i>Delete</i> button. This action may take a few seconds to complete. Now the Registry Service is ready for your Bundles.
+        </p>
+
+        <!--
         <ol>
           <li><b>Install Search Components</b><br/>
             <p>The Search components consist of the Search Service, Search Core and Product Search User Interface. The Search User Interface, which is a Search component, is not required to be installed at the Discipline Node.
@@ -533,6 +540,7 @@ serverStarted="2014-02-25T10:52:46.513-08:00" status="OK"/&gt;
             </li>
           </ul>
         </ol>
+        -->
       </subsection>
     </section>
   </body>
