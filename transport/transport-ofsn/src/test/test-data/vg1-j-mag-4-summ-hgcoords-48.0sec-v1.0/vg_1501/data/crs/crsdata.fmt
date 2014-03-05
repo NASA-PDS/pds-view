@@ -1,0 +1,68 @@
+OBJECT                     = COLUMN
+  NAME                     = "TIME"
+  COLUMN_NUMBER            = 1
+  UNIT                     = "N/A"
+  DATA_TYPE                = TIME
+  START_BYTE               = 1
+  BYTES                    = 24
+  DESCRIPTION              = "
+    Time column. This field contains time in PDS format
+    yyyy-mm-ddThh:mm:ss.sssZ. The individual elements of the time
+    field can be read using the format (i4,4(1x,i2),1x,f6.3) yr, mon,
+    day, hr, min, sec."
+END_OBJECT                 = COLUMN
+
+OBJECT                     = CONTAINER
+  NAME                     = FLUX_STRUCTURE
+  START_BYTE               = 26
+  BYTES                    = 26
+  REPETITIONS              = 6
+  DESCRIPTION              = "
+    The FLUX_STRUCTURE consists of two values (data pairs): a data value
+    (DVAL), and standard deviation (STDVAL). Although the actual number of
+    data pairs provided varies from file to file, 6 pairs are provided for
+    all files, with any extra values being filled with a flag value of
+    -9.99999e+10. The table provided below indicates the number of data pairs
+    provided, the particle measured, and the units given for each data file.
+
+              data
+    file      pairs  measures
+    --------  -----  ------------------------------
+    FILE1       3    electron flux
+    FILE2       4    electron flux in LET-II
+    FILE3       5    proton/ion flux in DI of LET-I
+    FILE4       3    proton/hvy. ion flux
+    FILE5       3    proton/hvy. ion flux
+
+    For more information regarding the meaning of the individual columns of
+    each of these files, please refer to the descriptions contained in the
+    file DATASET.TXT."
+
+  OBJECT                   = COLUMN
+    NAME                   = DVAL
+    COLUMN_NUMBER          = 2
+    UNIT                   = "varies"
+    DATA_TYPE              = ASCII_REAL
+    START_BYTE             = 26
+    BYTES                  = 12
+    MISSING_CONSTANT       = -9.99999e+10
+    DESCRIPTION            = "
+      Column contains average particle flux. The particle measured and units
+      are indicated in the DESCRIPTION for the FLUX_STRUCTURE. A value of
+      -9.99999e+10 is a missing data value."
+  END_OBJECT               = COLUMN
+  OBJECT                   = COLUMN
+    NAME                   = STDVAL
+    COLUMN_NUMBER          = 3
+    UNIT                   = "varies"
+    DATA_TYPE              = ASCII_REAL
+    START_BYTE             = 39
+    BYTES                  = 12
+    MISSING_CONSTANT       = -9.99999e+10
+    DESCRIPTION            = "
+      Column contains the statistical error in the associated DVAL. The
+      particle measured and units are indicated in the DESCRIPTION for the
+      FLUX_STRUCTURE. A value of -9.99999e+10 is a missing data value."
+  END_OBJECT               = COLUMN
+END_OBJECT                 = CONTAINER
+
