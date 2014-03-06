@@ -15,8 +15,7 @@ import org.apache.oodt.product.handlers.ofsn.OFSNGetHandler;
  * Abstract superclass of OFSN handlers that generate PDS products.
  * Each subclass should:
  * 1) define the mime type of the output file it generates, specified in the handler XML configuration
- * 2) define the rule to create the output file name for the requested input file name
- * 3) implement the specific process to generate teh output file
+ * 2) implement the specific process to generate the output file from the input file in the method getOutputFile()
  * 
  * @author Luca Cinquini
  *

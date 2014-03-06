@@ -7,7 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.oodt.product.ProductException;
 
 /**
- * PDS Handler that expands and returns a PDS label, as plain text.
+ * PDS Handler that expands and returns a PDS3 label, as plain text.
  * 
  * @author Luca Cinquini
  *

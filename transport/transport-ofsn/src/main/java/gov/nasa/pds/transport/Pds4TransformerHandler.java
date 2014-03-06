@@ -10,6 +10,11 @@ import java.util.logging.Logger;
 
 import org.apache.oodt.product.ProductException;
 
+/**
+ * PDS Handler that transforms PDS4 images to common image formats.
+ * 
+ * @author Luca Cinquini
+ */
 public class Pds4TransformerHandler extends AbstractPdsGetHandler {
 	
 	ProductTransformer transformer = new Pds4ImageTransformer(false); // overwrite=false
