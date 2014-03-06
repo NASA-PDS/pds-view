@@ -41,8 +41,7 @@
       <directory>src/test/test-data</directory>
       <outputDirectory>/testdata</outputDirectory>
       <includes>
-        <include>*</include>
-        <include>*/*</include>
+        <include>**/*</include>
       </includes>
     </fileSet>
     <fileSet>
