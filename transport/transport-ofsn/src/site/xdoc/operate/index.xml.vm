@@ -315,13 +315,31 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
         	<td>Converts a PDS4 image to JPEG format.
         	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_JPG">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_JPG</a>
         	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_JPG">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_JPG</a>
+        		<br/><i>NOTE: this return type is specific to PDS4 images.</i>
         	</td>
         </tr>
         <tr>
         	<td>PDS_LABEL</td>
-        	<td>Returns a plain text (MIME type text/plain) representation of the PDS label specified in the <i>OFSN</i>, including and expanding the <i>STRUCTURE</i> pointers.
+        	<td>Returns a plain text (MIME type text/plain) representation of the PDS3 label specified in the <i>OFSN</i>, including and expanding the <i>STRUCTURE</i> pointers.
         		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/CHAN_DATA_20020617.LBL+AND+RT+EQ+PDS_LABEL">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/CHAN_DATA_20020617.LBL+AND+RT+EQ+PDS_LABEL</a>
         		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/CHAN_DATA_20020617.LBL&amp;rt=PDS_LABEL">http://localhost:8080/transport-ofsn/prod?ofsn=/CHAN_DATA_20020617.LBL&amp;rt=PDS_LABEL</a>
+        		<br/><i>NOTE: this return type is specific to PDS3 label.</i>
+        	</td>
+        </tr>
+        <tr>
+        	<td>PDS_ZIP</td>
+        	<td>Returns the PDS3 label and its references in a ZIP file.
+        		<br/>Example request:
+        		<br/>Example request:
+        		<br/><i>NOTE: this return type is specific to PDS3 label.</i>
+        	</td>
+        </tr>
+        <tr>
+        	<td>PDS_ZIP_SIZE</td>
+        	<td>Returns the total size of the PDS3 label file and its references in XML format if you were to download the product with <i>PDS_ZIP</i> and unzip the archive.
+        		<br/>Example request:
+        		<br/>Example request:
+        		<br/><i>NOTE: this return type is specific to PDS3 label.</i>
         	</td>
         </tr>
         
