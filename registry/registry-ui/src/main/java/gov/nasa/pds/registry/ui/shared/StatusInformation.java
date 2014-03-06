@@ -34,36 +34,30 @@ public class StatusInformation implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	// number of objects stored in the registry
-	private int storedDataObjects = 0;
-
-	// number of artifacts registered
-	private int registeredArtifacts = 0;
-
 	// status string
 	private String status;
 
 	// server started date tring
 	private String serverStarted;
 
-	public int getStoredDataObjects() {
-		return this.storedDataObjects;
-	}
+	private long associations;
 
-	public int getRegisteredArtifacts() {
-		return this.registeredArtifacts;
-	}
+	private long extrinsics;
 
-	public void setStoredDataObjects(int storedDataObjects) {
-		this.storedDataObjects = storedDataObjects;
-	}
+	private long services;
 
-	public void setRegisteredArtifacts(int registeredArtifacts) {
-		this.registeredArtifacts = registeredArtifacts;
-	}
+	private long classificationSchemes;
 
-	public void setServerStarted(String serverStarted) {
-		this.serverStarted = serverStarted;
+	private long classificationNodes;
+
+	private long packages;
+
+	//private String home;
+
+	private String registryVersion = "1.6.0";
+
+	public String getStatus() {
+		return this.status;
 	}
 
 	public void setStatus(String status) {
@@ -73,13 +67,76 @@ public class StatusInformation implements Serializable {
 	public String getServerStarted() {
 		return this.serverStarted;
 	}
-
-	public String getStatus() {
-		return this.status;
+	
+	public void setServerStarted(String serverStarted) {
+		this.serverStarted = serverStarted;
 	}
 
+	public long getAssociations() {
+		return associations;
+	}
+
+	public void setAssociations(long associations) {
+		this.associations = associations;
+	}
+
+	public long getExtrinsics() {
+		return extrinsics;
+	}
+
+	public void setExtrinsics(long extrinsics) {
+		this.extrinsics = extrinsics;
+	}
+
+	public long getServices() {
+		return services;
+	}
+
+	public void setServices(long services) {
+		this.services = services;
+	}
+
+	public long getClassificationSchemes() {
+		return classificationSchemes;
+	}
+
+	public void setClassificationSchemes(long classificationSchemes) {
+		this.classificationSchemes = classificationSchemes;
+	}
+
+	public long getClassificationNodes() {
+		return classificationNodes;
+	}
+
+	public void setClassificationNodes(long classificationNodes) {
+		this.classificationNodes = classificationNodes;
+	}
+
+	public long getPackages() {
+		return packages;
+	}
+
+	public void setPackages(long packages) {
+		this.packages = packages;
+	}
+
+	public String getRegistryVersion() {
+		return registryVersion;
+	}
+
+	public void setRegistryVersion(String registryVersion) {
+		this.registryVersion = registryVersion;
+	}
+/*
+	public String getHome() {
+		return home;
+	}
+
+	public void setHome(String home) {
+		this.home = home;
+	}
+*/
 	public StatusInformation() {
 		// instantiated externally due to dependencies in client side of GWT
 	}
-
 }

@@ -27,6 +27,7 @@ import gov.nasa.pds.registry.model.ObjectStatus;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.RegistryPackage;
+import gov.nasa.pds.registry.model.Report;
 import gov.nasa.pds.registry.model.Slot;
 import gov.nasa.pds.registry.model.Service;
 import gov.nasa.pds.registry.model.ServiceBinding;
@@ -57,6 +58,8 @@ import gov.nasa.pds.registry.ui.shared.ViewServiceBinding;
 import gov.nasa.pds.registry.ui.shared.ViewSpecificationLink;
 
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -104,9 +107,28 @@ public class ConnectionManager {
 
 	// Retrieve the status of the registry service. This can be used to monitor
 	// the health of the registry.
-	public static StatusInformation getStatus() {
-		// stub
-		return null;
+	public static StatusInformation getStatusInfo() {
+		RegistryClient client = getRegistry();
+		StatusInformation si = new StatusInformation();
+		try {			
+			Report rpt = client.getReport();
+			
+			si.setStatus(rpt.getStatus().toString());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS");
+			si.setServerStarted(sdf.format(rpt.getServerStarted()));
+			si.setAssociations(rpt.getAssociations());
+			si.setExtrinsics(rpt.getExtrinsics());
+			si.setServices(rpt.getServices());
+			si.setClassificationSchemes(rpt.getClassificationSchemes());
+			si.setClassificationNodes(rpt.getClassificationNodes());
+			si.setPackages(rpt.getPackages());
+			si.setRegistryVersion(rpt.getRegistryVersion());
+			
+		} catch (RegistryServiceException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return si; 
 	}
 
 	/**
@@ -563,6 +585,11 @@ public class ConnectionManager {
 			if (props != null) {
 				serviceEndpoint = props.getProperty(
 						"service.endpoint", DEFAULT_SERVICE_ENDPOINT); //$NON-NLS-1$
+				
+				//System.out.println("serviceEndpoint = " + serviceEndpoint);
+				String[] endpoints = serviceEndpoint.split(",");
+				serviceEndpoint = endpoints[0];
+				//System.out.println("serviceEndpoint = " + serviceEndpoint);
 			} else {
 				serviceEndpoint = DEFAULT_SERVICE_ENDPOINT;
 			}
@@ -606,6 +633,26 @@ public class ConnectionManager {
 		}
 
 		return props;
+	}
+	
+	public static List<String> getRegistryServices() {
+		Properties props = getProperties();
+		List<String> registryServices = new ArrayList<String>();
+		String serviceEndpoint = null;
+		if (props != null) {
+			serviceEndpoint = props.getProperty("service.endpoint"); 
+		} else {
+			serviceEndpoint = DEFAULT_SERVICE_ENDPOINT;
+		}
+		
+		System.out.println("serviceEndpoint = " + serviceEndpoint);
+		String[] endpoints = serviceEndpoint.split(",");
+		for (int i=0; i<endpoints.length; i++) {
+			registryServices.add(endpoints[i]);
+			System.out.println("endpoints[i]" + endpoints[i]);
+		}
+		
+		return registryServices;
 	}
 
 	private static ViewProducts respToViewProducts(

@@ -18,6 +18,8 @@ import gov.nasa.pds.registry.ui.shared.StatusInformation;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+import java.util.List;
+
 /**
  * Interface to the not-implemented status service
  * 
@@ -26,4 +28,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("status")
 public interface StatusService extends RemoteService {
 	public StatusInformation getStatus();
+	
+	public List<String> getRegistryServices();
 }

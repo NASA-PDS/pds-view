@@ -14,17 +14,38 @@
 package gov.nasa.pds.registry.ui.client;
 
 import gov.nasa.pds.registry.ui.shared.StatusInformation;
+
+//import java.util.HashMap;
+//import java.util.Map;
+
+import com.google.gwt.core.client.GWT;
+/*
+import com.google.gwt.user.client.Window;
+import com.google.gwt.gen2.table.client.MutableTableModel;
+import com.google.gwt.gen2.table.client.TableModelHelper.Request;
+import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
+*/
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import java.util.List;
 
 /**
- * Asynchronous interface to the not-implemented status service
- * 
- * @author jagander
+ * @author hyunlee
  */
-public interface StatusServiceAsync {
-	void getStatus(AsyncCallback<StatusInformation> callback);
-			//throws IllegalArgumentException;
+public class StatusInfo {
+
+	/**
+	 * The RPC service used to generate data.
+	 */
+	private StatusServiceAsync dataService = (StatusServiceAsync)GWT.create(StatusService.class);
+
+	public StatusInfo() {		
+	}
 	
-	void getRegistryServices(AsyncCallback<List<String>> callback);
+	public void getStatus(AsyncCallback callback) {
+		this.dataService.getStatus(callback);
+	}
+	
+	public void getRegistryServices(AsyncCallback callback) {
+		this.dataService.getRegistryServices(callback);
+	}
 }

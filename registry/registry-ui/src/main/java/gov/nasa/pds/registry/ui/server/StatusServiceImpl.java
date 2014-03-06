@@ -18,6 +18,7 @@ import gov.nasa.pds.registry.ui.client.StatusService;
 import gov.nasa.pds.registry.ui.shared.StatusInformation;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import java.util.List;
 
 /**
  * Implementation of the status service that retrieves registry status
@@ -32,8 +33,18 @@ public class StatusServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public StatusInformation getStatus() {
-		StatusInformation status = ConnectionManager.getStatus();
+		StatusInformation status = ConnectionManager.getStatusInfo();
+		System.out.println("status info = " + status.getServerStarted() + 
+				"   getStoredDataObjects() = " + status.getExtrinsics() + 
+				"   status = " + status.getStatus());
 		return status;
 	}
-
+	
+	@Override
+	public List<String> getRegistryServices() {
+		List<String> registryServices = ConnectionManager.getRegistryServices();
+		
+		System.out.println("service.endpoint = " + registryServices.toString());
+		return registryServices;
+	}
 }

@@ -24,14 +24,20 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+
+import gov.nasa.pds.registry.ui.shared.StatusInformation;
 import gov.nasa.pds.registry.ui.client.Tab.TabInfo;
 import gov.nasa.pds.registry.ui.client.TabList;
+import gov.nasa.pds.registry.ui.shared.InputContainer;
 
-/*
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-*/
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -56,8 +62,6 @@ public class RegistryUI implements EntryPoint, HistoryListener {
 	
 	public static Label lbl = new Label();
 	
-	//public final static String TABLE_HEIGHT = "848px";  // with page size 30
-	//public final static String TABLE_HEIGHT = "617px";    // with page size 20???
 	public final static String TABLE_HEIGHT = "608px";	    // with page size 20 with CHECKBOX
 	public final static String TABLE_HEIGHT_B = "588px";      // with ONE_ROW selection
 	
@@ -76,6 +80,8 @@ public class RegistryUI implements EntryPoint, HistoryListener {
 	public static final int FETCH_ROW_SIZE = 100;
 	
 	public static Logger logger = Logger.getLogger("registry-ui");
+	private final ListBox serversList = new ListBox(false);
+	private static List<String> servers = null;
 	
 	public void onHistoryChanged(String token) {
 		TabInfo info = list.find(token);
@@ -86,12 +92,15 @@ public class RegistryUI implements EntryPoint, HistoryListener {
 		show(info, false);
 	}
 	
+	public void setServers(List<String> servers) {
+		this.servers = servers;
+	}
+	
+	public static StatusInfo statusInfo = new StatusInfo();
+    
 	public void onModuleLoad() {
-		// with java logging
-		//logger.log(Level.FINE, "About to load tabs for the registry ui ...");
 		loadTabs();
 		
-		panel.add(lbl);
 		panel.add(list);
 		panel.add(description);
 		panel.setWidth("100%");

@@ -19,6 +19,7 @@ import gov.nasa.pds.registry.ui.shared.ViewAssociation;
 import gov.nasa.pds.registry.ui.shared.ViewProduct;
 import gov.nasa.pds.registry.ui.shared.ViewSlot;
 import gov.nasa.pds.registry.ui.shared.Constants;
+import gov.nasa.pds.registry.ui.shared.StatusInformation;
 
 import com.google.gwt.gen2.table.client.AbstractScrollTable;
 import com.google.gwt.gen2.table.client.CachedTableModel;
@@ -166,9 +167,7 @@ public class Products extends Tab {
 	protected Button associationCloseButton;
 
 	protected HTML recordCountContainer = new HTML("");
-	
-	//private int recordCount;
-	
+		
 	/**
 	 * Components for filtering 
 	 */
@@ -180,6 +179,7 @@ public class Products extends Tab {
 	private final Button updateButton = new Button("Update");
 	private final Button clearButton = new Button("Clear");
 	private final Button refreshButton = new Button("Refresh");
+	private int pageSize = RegistryUI.PAGE_SIZE1;
 		
 	Logger logger = RegistryUI.logger;
 	
@@ -276,6 +276,14 @@ public class Products extends Tab {
 	protected void setTempAssociations(List<ViewAssociation> tempAssociations) {
 		this.tempAssociations = tempAssociations;
 	}
+	
+	private void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+	
+	private int getPageSize() {
+		return this.pageSize;
+	}
 
 	public Products() {
 		// assign instance for exterior retrieval
@@ -311,7 +319,7 @@ public class Products extends Tab {
 		this.tableModel.addRowCountChangeHandler(new RowCountChangeHandler() {
 			@Override
 			public void onRowCountChange(RowCountChangeEvent event) {
-				get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
+				get().getPagingScrollTable().setPageSize(get().getPageSize());
 			}
 		});
 		onModuleLoaded();
@@ -653,6 +661,7 @@ public class Products extends Tab {
 									logger.log(Level.FINEST, "result of deleteProduct() = " + result);
 									logger.log(Level.FINEST, "refreshing the display.....");
 									get().reloadData();
+									get().refreshTable();
 								}
 							});					
 							get().getDataTable().removeRow(rowIndex);
@@ -665,12 +674,35 @@ public class Products extends Tab {
 		logger.log(Level.FINEST, "initFilterOptions..");
 	}
 
-	protected void reloadData() {
+	protected void reloadData() {			
 		get().getCachedTableModel().clearCache();
-		get().getTableModel().setRowCount(RegistryUI.PAGE_SIZE1);
-		get().getPagingScrollTable().redraw();
+		get().getPagingScrollTable().gotoPage(0, true);
+		int totalCount = get().getDataTable().getRowCount();
+		/*
+        if (totalCount==0 || totalCount>=get().getPageSize()) {
+            //get().getTableModel().setRowCount(get().getPageSize());
+            logger.log(Level.FINEST, "setting rowcount as " + this.pageSize);
+        }
+        else {
+            get().getTableModel().setRowCount(totalCount);
+            logger.log(Level.FINEST, "setting rowcount as " + totalCount);
+        }
+        */
 		
-		logger.log(Level.FINEST, "reloadData...");
+		RegistryUI.statusInfo.getStatus(new AsyncCallback<StatusInformation>() {
+        	@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Status.getStatus() RPC Failure" + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(StatusInformation result) {
+				//logger.log(Level.FINEST, "result of getStatus() = " + result.getExtrinsics());
+				long count = result.getExtrinsics();
+				logger.log(Level.FINEST, "reloadData   num of extrinsics " + count);		
+				get().recordCountContainer.setHTML("<div class=\"recordCount\">Total Records: " + count + "</div>");
+			}
+		});
 	}
 	
 	protected void initializeInputs() {
@@ -681,11 +713,9 @@ public class Products extends Tab {
 		statusInput.setSelectedIndex(0);
 	}
 	
-	private void refreshTable() {
+	protected void refreshTable() {
 		// clear cache as data will be invalid after filter
 		get().getCachedTableModel().clearCache();
-
-		//get().initializeInputs();
 		
 		// get table model that holds filters
 		ProductTableModel tablemodel = get().getTableModel();
@@ -711,10 +741,9 @@ public class Products extends Tab {
 		if (!name.equals("")) {
 			tablemodel.addFilter("name", name);
 		}
-
+		
 		// object type
-		String objectType = objectsInput.getValue(objectsInput
-				.getSelectedIndex());
+		String objectType = objectsInput.getValue(objectsInput.getSelectedIndex());
 		logger.log(Level.FINEST, "objectType = " + objectType);
 		// set object type filter if set to something specific
 		if (!objectType.equals("-1")) {
@@ -722,16 +751,18 @@ public class Products extends Tab {
 		} 
 
 		// status
-		String status = statusInput.getValue(statusInput
-				.getSelectedIndex());
+		String status = statusInput.getValue(statusInput.getSelectedIndex());
 		logger.log(Level.FINEST, "status = " + status);
 		// set status if set to something specific
 		if (!status.equals("-1")) {
 			tablemodel.addFilter("status", status);
 		} 
 		
+		logger.log(Level.FINEST, "refreshTable..... tableModel.getRowCount() = " + tableModel.getRowCount());
+		int count = tableModel.getRowCount();						
+		// display count in page
+		//get().recordCountContainer.setHTML("<div class=\"recordCount\">Total Records: " + count + "</div>");
 		get().reloadData();		
-		logger.log(Level.FINEST, "refreshTable.....");
 	}
 
 	/**
@@ -747,10 +778,10 @@ public class Products extends Tab {
 				this.tableModel);
 
 		// set cache for rows before start row
-		this.cachedTableModel.setPreCachedRowCount(RegistryUI.PAGE_SIZE1);
+		this.cachedTableModel.setPreCachedRowCount(get().getPageSize());
 
 		// set cache for rows after end row
-		this.cachedTableModel.setPostCachedRowCount(RegistryUI.PAGE_SIZE1);
+		this.cachedTableModel.setPostCachedRowCount(get().getPageSize());
 
 		// create a table definition, this defines columns, layout, row colors
 		TableDefinition<ViewProduct> tableDef = createTableDefinition();
@@ -760,7 +791,7 @@ public class Products extends Tab {
 				this.cachedTableModel, tableDef);
 
 		// set the num rows to display per page
-		this.pagingScrollTable.setPageSize(RegistryUI.PAGE_SIZE1);
+		this.pagingScrollTable.setPageSize(get().getPageSize());
 
 		// set content to display when there is no data
 		this.pagingScrollTable.setEmptyTableWidget(new HTML(
@@ -1052,8 +1083,7 @@ public class Products extends Tab {
 								// TODO: make a loading element
 								// TODO: deal with situation where more
 								// than the requested amount are found
-								FixedWidthGrid grid = get().associationScrollTable
-										.getDataTable();
+								FixedWidthGrid grid = get().associationScrollTable.getDataTable();
 								grid.resize(associations.size(), 3);
 
 								// add elements to the table
@@ -1099,14 +1129,17 @@ public class Products extends Tab {
 					case 1: 
 						get().getPagingScrollTable().setHeight(RegistryUI.TBL_HGT_50);
 						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE2);
+						setPageSize(RegistryUI.PAGE_SIZE2);
 						break;
 					case 2:
 						get().getPagingScrollTable().setHeight(RegistryUI.TBL_HGT_100);
 						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE3);
+						setPageSize(RegistryUI.PAGE_SIZE3);
 						break;
 					default:
 						get().getPagingScrollTable().setHeight(RegistryUI.TABLE_HEIGHT);
 						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
+						setPageSize(RegistryUI.PAGE_SIZE1);
 						break;
 				}
 				get().getPagingScrollTable().redraw();
@@ -1122,7 +1155,6 @@ public class Products extends Tab {
 		
 		this.layout.setWidget(2, 0, this.pagingPanel);
 		
-		//logger.log(Level.FINEST, "Current page box value = " + pagingOptions.getPageCount());
 		logger.log(Level.FINEST, "initPaging...");
 	}
 
@@ -1131,9 +1163,7 @@ public class Products extends Tab {
 	 */
 	protected void onModuleLoaded() {
 		// set page to first page, triggering call for data
-		//this.cachedTableModel.clearCache();
 		get().getPagingScrollTable().gotoFirstPage();
-		
 		logger.log(Level.FINEST, "onModuleLoaded...");
 	}
 
@@ -1304,6 +1334,5 @@ public class Products extends Tab {
 	}
 	
 	public void onShow() {	
-		onModuleLoaded();
 	}
 }
