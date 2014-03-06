@@ -436,9 +436,6 @@ public class RegistryClient {
       if (filter.getContentVersion() != null) {
         params.add("contentVersion", filter.getContentVersion());
       }
-      if (filter.getHome() != null) {
-          params.add("home", filter.getHome());
-        }
     }
 
     List<String> sort = query.getSort();
