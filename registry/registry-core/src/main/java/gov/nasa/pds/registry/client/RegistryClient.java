@@ -27,6 +27,7 @@ import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.model.Service;
+import gov.nasa.pds.registry.model.Report;
 import gov.nasa.pds.registry.provider.JAXBContextResolver;
 import gov.nasa.pds.registry.provider.JacksonObjectMapperProvider;
 import gov.nasa.pds.registry.query.AssociationFilter;
@@ -96,6 +97,7 @@ public class RegistryClient {
     resourceMap.put(AuditableEvent.class, "events");
     resourceMap.put(ClassificationScheme.class, "schemes");
     resourceMap.put(ClassificationNode.class, "nodes");
+    //resourceMap.put(Report.class, "report");
   }
 
   public RegistryClient(String baseUrl) throws RegistryClientException {
@@ -434,6 +436,9 @@ public class RegistryClient {
       if (filter.getContentVersion() != null) {
         params.add("contentVersion", filter.getContentVersion());
       }
+      if (filter.getHome() != null) {
+          params.add("home", filter.getHome());
+        }
     }
 
     List<String> sort = query.getSort();
@@ -640,6 +645,21 @@ public class RegistryClient {
       throw new RegistryServiceException(response.getEntity(String.class),
           response.getClientResponseStatus());
     }
+  }
+  
+  public Report getReport() 
+		  throws RegistryServiceException {
+	  WebResource.Builder builder = service.path("report").getRequestBuilder();
+	  ClientResponse response = builder.accept(mediaType).get(
+			  ClientResponse.class);
+
+	  if (response.getClientResponseStatus() == Status.OK) {
+		  return response.getEntity(new GenericType<Report>() {
+		  });
+	  } else {
+		  throw new RegistryServiceException(response.getEntity(String.class),
+				  response.getClientResponseStatus());
+	  }
   }
 
   public String getRegistrationPackageGuid() {
