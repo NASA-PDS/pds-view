@@ -183,12 +183,21 @@ FIXME: Change XML namespace URI for oodt prefix?
   </handler>
   
   <!-- 
-  	The PDS_LABEL type expands and returns a PDS label as plain text.
+  	The PDS_LABEL type expands and returns a PDS3 label as plain text.
    -->
   <handler name="PDS_LABEL" type="get" class="gov.nasa.pds.transport.PdsLabelHandler">
   		<property name="mimeType" value="text/plain"/>
   		<!-- <property name="cacheDir" value="/tmp"/> -->
   </handler>
+  
+   <!-- 
+  	The PDS_ZIP type returns a ZIP file containing the requested PDS3 label and all its referenced files.
+   -->
+  <handler name="PDS_ZIP" type="get" class="gov.nasa.pds.transport.ZipFileHandler">
+  		<property name="mimeType" value="application/zip"/>
+  		<!-- <property name="cacheDir" value="/tmp"/> -->
+  </handler>
+  
   
   <!--  
     The MD5 type returns an MD5 hash of the file bytes generated on the server side.

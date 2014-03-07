@@ -2,6 +2,7 @@ package gov.nasa.pds.transport;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -9,7 +10,10 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.oodt.product.ProductException;
+import org.apache.oodt.product.handlers.ofsn.OFSNFileHandlerConfiguration;
+import org.apache.oodt.product.handlers.ofsn.OFSNFileHandlerConfigurationReader;
 import org.apache.oodt.product.handlers.ofsn.OFSNGetHandler;
+import org.apache.oodt.product.handlers.ofsn.metadata.OFSNMetKeys;
 
 /**
  * Abstract superclass of OFSN handlers that generate PDS products.
@@ -20,9 +24,11 @@ import org.apache.oodt.product.handlers.ofsn.OFSNGetHandler;
  * @author Luca Cinquini
  *
  */
-public abstract class AbstractPdsGetHandler implements OFSNGetHandler {
+public abstract class AbstractPdsGetHandler implements OFSNGetHandler, OFSNMetKeys {
 	
 	private final static String CACHE_DIR = "cacheDir";
+	
+	private OFSNFileHandlerConfiguration conf = null;
 	
 	protected final static Logger LOG = Logger.getLogger(AbstractPdsGetHandler.class.getName());
 	
@@ -40,6 +46,21 @@ public abstract class AbstractPdsGetHandler implements OFSNGetHandler {
 		if (StringUtils.isEmpty(cacheDir)) cacheDir = "/tmp";
 		LOG.info("Cache dir="+cacheDir);
 		this.cache = new File(cacheDir);
+		
+		// read ofsn-ps.xml configuration file, if available
+		String xmlConfigFilePath = System.getProperty(OFSN_XML_CONF_FILE_KEY);
+		if (xmlConfigFilePath!=null) {
+			
+		    try {
+		    	
+		    	conf = OFSNFileHandlerConfigurationReader.getConfig(xmlConfigFilePath);
+		        LOG.info("Read configuration file="+xmlConfigFilePath);
+		        
+		      } catch (FileNotFoundException e) {
+		        LOG.warning("Configuration file 'OFSN_XML_CONF_FILE_KEY' not found.");
+		      }
+		      
+		}
 				
 	}
 
@@ -50,7 +71,7 @@ public abstract class AbstractPdsGetHandler implements OFSNGetHandler {
 	@Override
 	public byte[] retrieveChunk(String inputFilePath, long offset, int length) throws ProductException {
 		
-		LOG.fine("Retrieving product chunk: filepath="+inputFilePath+" offset="+offset+" length="+length);
+		LOG.info("Retrieving product chunk: filepath="+inputFilePath+" offset="+offset+" length="+length);
 
 		File outputFile = this.getOutputFile(inputFilePath);
 		
@@ -90,6 +111,15 @@ public abstract class AbstractPdsGetHandler implements OFSNGetHandler {
 	 */
 	protected File getCache() {
 		return this.cache;
+	}
+	
+	/**
+	 * Returns the overall configuration read from file 'ofsn-ps.xml'.
+	 * 
+	 * @return
+	 */
+	protected OFSNFileHandlerConfiguration getConfiguration() {
+		return this.conf;
 	}
 
 
