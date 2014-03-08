@@ -198,6 +198,14 @@ FIXME: Change XML namespace URI for oodt prefix?
   		<!-- <property name="cacheDir" value="/tmp"/> -->
   </handler>
   
+  <!-- 
+  	The PDS_ZIP_SIZE type returns the total size of the files 
+  	contained in the ZIP package returned by the same request to the PDS_ZIP handler.
+   -->
+  <handler name="PDS_ZIP_SIZE" type="get" class="gov.nasa.pds.transport.ZipSizeFileHandler">
+  		<property name="mimeType" value="text/xml"/>
+  </handler>
+  
   
   <!--  
     The MD5 type returns an MD5 hash of the file bytes generated on the server side.
