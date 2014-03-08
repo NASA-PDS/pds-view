@@ -1,0 +1,625 @@
+OBJECT = LINE_PREFIX_TABLE
+INTERCHANGE_FORMAT = BINARY
+ROWS               = 800
+COLUMNS            = 45
+ROW_BYTES          = 200
+ROW_SUFFIX_BYTES   = 800
+
+OBJECT = COLUMN
+NAME = RECORD_ID
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 1
+BYTES = 1
+DESCRIPTION = "Record id for line records. Always = 2."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FILLER
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 2
+BYTES = 1
+DESCRIPTION = "Used during phase 1.  Tape file number.  Always 0 if on disk."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FILLER
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 3
+BYTES = 2
+DESCRIPTION = "Used during phase 1.  Tape physical sequence counter.  
+Not valid for CD-ROMS."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = LOGICAL_SEQUENCE
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 5
+BYTES = 2
+DESCRIPTION = "Logical sequence counter.  The telemetry header is zero and
+    each line record is incremented by one.  This also corresponds to the 
+    image line number (1...800)."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = EARTH_RECEIVED_TIME_YEAR
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 7
+BYTES = 2
+DESCRIPTION = "Earth received time year of the first bit of the telemetry 
+    frame which contained the first pixel of this line as interpolated from
+    the ERT in the GCF block containing this bit.  (The first bit of the 
+    frame is the first bit of the sync code.)"
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = EARTH_RECEIVED_TIME_DAY
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 9
+BYTES = 2
+DESCRIPTION = "Earth received time day of the first bit of the telemetry 
+    frame which contained the first pixel of this line as interpolated from
+    the ERT in the GCF block containing this bit.  (The first bit of the 
+    frame is the first bit of the sync code.)"
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = EARTH_RECEIVED_TIME_HOUR
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 11
+BYTES = 1
+DESCRIPTION = "Earth received time hour of the first bit of the telemetry 
+    frame which contained the first pixel of this line as interpolated from
+    the ERT in the GCF block containing this bit.  (The first bit of the 
+    frame is the first bit of the sync code.)"
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = EARTH_RECEIVED_TIME_MIN
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 12
+BYTES = 1
+DESCRIPTION = "Earth received time minute of the first bit of the telemetry 
+    frame which contained the first pixel of this line as interpolated from
+    the ERT in the GCF block containing this bit.  (The first bit of the 
+    frame is the first bit of the sync code.)"
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = EARTH_RECEIVED_TIME_SEC
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 13
+BYTES = 1
+DESCRIPTION = "Earth received time second of the first bit of the telemetry 
+    frame which contained the first pixel of this line as interpolated from
+    the ERT in the GCF block containing this bit.  (The first bit of the 
+    frame is the first bit of the sync code.)"
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = EARTH_RECEIVED_TIME_MSEC
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 14
+BYTES = 2
+DESCRIPTION = "Earth received time millisecond of the first bit of the 
+    telemetry frame which contained the first pixel of this line as 
+    interpolated from the ERT in the GCF block containing this bit.  
+    (The first bit of the frame is the first bit of the sync code.)"
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SPACECRAFT_CLK_CNT_RIM
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 16
+BYTES = 4
+DESCRIPTION = "Spacecraft clock RIM readout of the first minor frame of 
+    this line."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SPACECRAFT_CLK_CNT_MOD91
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 20
+BYTES = 1
+DESCRIPTION = "Spacecraft clock MOD91 readout of the first minor frame of 
+    this line."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SPACECRAFT_CLK_CNT_MOD10
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 21
+BYTES = 1
+DESCRIPTION = "Spacecraft clock MOD10 readout of the first minor frame of 
+    this line."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SPACECRAFT_CLK_CNT_MOD8
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 22
+BYTES = 1
+DESCRIPTION = "Spacecraft clock MOD8 readout of the first minor frame of 
+    this line."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FILLER
+DATA_TYPE = CHARACTER
+START_BYTE = 23
+BYTES = 59
+DESCRIPTION = "Filler"
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FORMAT_ID
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 82
+BYTES = 2
+DESCRIPTION = "Telemetry format id from the minor frame of this line.
+    Valid is 5-HIS, 6-HMA, 7-HCA, 17-HIM, 22-IM8, 23-AI8, and 25-IM4"
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = INPUT_TYPE
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 84
+BYTES = 1
+DESCRIPTION = "Input type. 0:Spacecraft flight data MOS; 1:PTM data;
+    2:Ext. Simulation; 3:Spacecraft flight data test; 4:Internal
+    simulation; 5-255: Not used."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = INPUT_SOURCE
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 85
+BYTES = 1
+
+ OBJECT = BIT_COLUMN
+ NAME = SFDU_DATA
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 1
+ BITS = 1
+ DESCRIPTION = "Standard formatted data units. 0:not present; 1:present."
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = WBDL_DATA
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 2
+ BITS = 1
+ DESCRIPTION = "Wide band data link. 0:not present; 1:present."
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = SDR_TAPE
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 3
+ BITS = 1
+ DESCRIPTION = "System data record tape. 0:not present; 1:present."
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = IDR_TAPE
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 4
+ BITS = 1
+ DESCRIPTION = "Intermediate data record tape. 0:not present; 1:present."
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = EXPERIMENT_DATA_RECORD
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 5
+ BITS = 1
+ DESCRIPTION = "Experiment data record - reprocessed data.  0:not present; 
+     1:present."
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = REALTIME
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 6
+ BITS = 1
+ DESCRIPTION = "Real time subsystem.  0:not present; 1:present."
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = ASYNCHRONOUS_PLAYBACK
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 7
+ BITS = 1
+ DESCRIPTION = "Asynchronous playback. 0:not present; 1:present."
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = FILLER
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 8
+ BITS = 1
+ DESCRIPTION = "Unused bit - filler"
+ END_OBJECT
+
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FILLER
+DATA_TYPE = CHARACTER
+START_BYTE = 86
+BYTES = 18 
+DESCRIPTION = "Used during phase 1.  "
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = BARC_TRUNCATED_BIT_PER_BLOCK
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 104
+BYTES = 4
+
+ OBJECT = BIT_COLUMN
+ NAME = TRUNCATION_BLOCK_ZERO
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 1
+ BITS = 2
+ DESCRIPTION = "Number of truncated bits in block 0 due to BARC data 
+    compression"
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = TRUNCATION_BLOCK_ONE
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 3
+ BITS = 2
+ DESCRIPTION = "Number of truncated bits in block 1 due to BARC data 
+    compression"
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = TRUNCATION_BLOCK_TWO
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 5
+ BITS = 2
+ DESCRIPTION = "Number of truncated bits in block 2 due to BARC data 
+    compression"
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = TRUNCATION_BLOCK_THREE
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 7
+ BITS = 2
+ DESCRIPTION = "Number of truncated bits in block 3 due to BARC data 
+    compression"
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = TRUNCATION_BLOCK_FOUR
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 9
+ BITS = 2
+ DESCRIPTION = "Number of truncated bits in block 4 due to BARC data 
+    compression"
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = TRUNCATION_BLOCK_FIVE
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 11
+ BITS = 2
+ DESCRIPTION = "Number of truncated bits in block 5 due to BARC data 
+    compression"
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = TRUNCATION_BLOCK_SIX
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 13
+ BITS = 2
+ DESCRIPTION = "Number of truncated bits in block 6 due to BARC data 
+    compression"
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = TRUNCATION_BLOCK_SEVEN
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 15
+ BITS = 2
+ DESCRIPTION = "Number of truncated bits in block 7 due to BARC data 
+    compression"
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = TRUNCATION_BLOCK_EIGHT
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 17
+ BITS = 2
+ DESCRIPTION = "Number of truncated bits in block 8 due to BARC data 
+    compression"
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = TRUNCATION_BLOCK_NINE
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 19
+ BITS = 2
+ DESCRIPTION = "Number of truncated bits in block 9 due to BARC data 
+    compression"
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = TRUNCATION_BLOCK_TEN
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 21
+ BITS = 2
+ DESCRIPTION = "Number of truncated bits in block 10 due to BARC data 
+    compression" 
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = TRUNCATION_BLOCK_ELEVEN
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 23
+ BITS = 2
+ DESCRIPTION = "Number of truncated bits in block 11 due to BARC data 
+    compression"
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = TRUNCATION_BLOCK_TWELVE
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 25
+ BITS = 2
+ DESCRIPTION = "Number of truncated bits in block 12 due to BARC data 
+    compression"
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = FILLER
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 27
+ BITS = 2
+ ITEMS = 3
+ DESCRIPTION = "Six bits to fill out the VAX unsigned integer"
+ END_OBJECT
+
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = BARC_TRUNCATED_PIXELS
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 108
+BYTES = 2
+DESCRIPTION = "Total number of pixels truncated at end of line due to
+    BARC data compression."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = CATALOG_VERSION
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 110
+BYTES = 2
+DESCRIPTION = "Catalog version for identical images.  Reserved for MIPS."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FILLER
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 112
+BYTES = 2
+DESCRIPTION = "Used during Phase 1 to store the GCF symbol signal to noise 
+    ratio."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = DEEP_SPACE_NETWORK_ID
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 114
+BYTES = 1
+DESCRIPTION = "Deep space network station id."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = IMAGE_LINE_NUMBER
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 115
+BYTES = 2
+DESCRIPTION = "Image line number (1-800)."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = FILLER
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 117
+BYTES = 1
+DESCRIPTION = "Used during phase 1 to store the Reed/Solomon overflow 
+    error flag. 1 = Overflow occurred."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SEGMENT_STARTING_SAMP1 
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 118
+BYTES = 2
+DESCRIPTION = "The starting sample for the first of up to two segments of an
+    image line identifying where the data is present.  For OPNAV images with 3
+    segments on a line, the first two segments are joined." 
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SEGMENT_ENDING_SAMP1
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 120 
+BYTES = 2
+DESCRIPTION = "The ending sample for the first of up to two segments of an
+    image line identifying where data is present.  For OPNAV images with 3
+    segments on a line, the first two segments are joined."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SEGMENT_STARTING_SAMP2
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 122
+BYTES = 2 
+DESCRIPTION = "The starting sample for the second of up to two segments of an
+    image line identifying where data is present." 
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = SEGMENT_ENDING_SAMP2 
+DATA_TYPE =  LSB_UNSIGNED_INTEGER
+START_BYTE = 124
+BYTES = 2
+DESCRIPTION = "The ending sample for the second of up to two segments of an 
+    image line identifying where data is present."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = PACKET_COUNT
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 126
+BYTES = 1
+ 
+ OBJECT = BIT_COLUMN
+ NAME = FULL_PACKETS
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 1
+ BITS = 4
+ DESCRIPTION = "Number of full Telmetry packets needed to create this
+     image line."
+ END_OBJECT
+
+ OBJECT = BIT_COLUMN
+ NAME = PARTIAL_PACKETS
+ BIT_DATA_TYPE = UNSIGNED_INTEGER
+ START_BIT = 4
+ BITS = 4
+ DESCRIPTION = "Number of partial Telmetry packets needed to create this
+    image line."
+ END_OBJECT
+
+END_OBJECT
+
+
+OBJECT = COLUMN
+NAME = APPLICATION_PACKET_ID 
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 127
+BYTES = 1
+DESCRIPTION = "Application Packet ID. 30 for SSI1 (ICT) and 31 for SSI2 (BARC)."
+END_OBJECT
+
+OBJECT = COLUMN
+NAME = PACKET_SEQUENCE_ID
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 128
+BYTES = 4
+DESCRIPTION = "TIS assigned packet sequence id.  The packet sequence id is 
+    for the purpose of maintaining proper order of packets.  If more than
+    one telemetry packet is used to reconstruct a line, only the packet 
+    sequence of the first packet is retained."
+END_OBJECT
+
+OBJECT = COLUMN 
+NAME = PACKET_STARTING_SAMP
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 132
+BYTES = 2
+DESCRIPTION = "Starting sample location for the pixel data from the
+    the packet identified by the PACKET_SEQUENCE_ID."
+END_OBJECT
+
+OBJECT = COLUMN 
+NAME = TRUTH_WINDOW_START_SAMP
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 134
+BYTES = 2
+DESCRIPTION = "The starting sample location of the truth window located on 
+    this line.  0 indicates no truth window on this line." 
+END_OBJECT
+
+OBJECT = COLUMN 
+NAME = TRUTH_WINDOW_END_SAMP
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 136
+BYTES = 2
+DESCRIPTION = "The ending sample location of the truth window located on
+    this line.  0 indicates no truth window on this line." 
+END_OBJECT
+
+OBJECT = COLUMN 
+NAME = RECORD_CREATION_TIME_YEAR
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 138
+BYTES = 2
+DESCRIPTION = "The TIS assigned Record Creation Time of the packet.  Year."
+END_OBJECT
+
+OBJECT = COLUMN 
+NAME = RECORD_CREATION_TIME_DAY
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 140
+BYTES = 2
+DESCRIPTION = "The TIS assigned Record Creation Time of the packet.  Day."
+END_OBJECT
+
+OBJECT = COLUMN 
+NAME = RECORD_CREATION_TIME_HOUR
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 142
+BYTES = 1
+DESCRIPTION = "The TIS assigned Record Creation Time of the packet.  Hour."
+END_OBJECT
+
+OBJECT = COLUMN 
+NAME = RECORD_CREATION_TIME_MIN
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 143
+BYTES = 1
+DESCRIPTION = "The TIS assigned Record Creation Time of the packet.  Minute."
+END_OBJECT
+
+OBJECT = COLUMN 
+NAME = RECORD_CREATION_TIME_SEC
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 144
+BYTES = 1
+DESCRIPTION = "The TIS assigned Record Creation Time of the packet.  Second."
+END_OBJECT
+
+OBJECT = COLUMN 
+NAME = RECORD_CREATION_TIME_MSEC
+DATA_TYPE = LSB_UNSIGNED_INTEGER
+START_BYTE = 145
+BYTES = 2
+DESCRIPTION = "The TIS assigned Record Creation Time of the packet.  
+    Millisecond."
+END_OBJECT
+
+OBJECT = COLUMN 
+NAME = DECOMPRESSION_ERROR_FLAG
+DATA_TYPE = UNSIGNED_INTEGER
+START_BYTE = 147
+BYTES = 1
+DESCRIPTION = "Decompression status/errors.  0: No errors detected.  
+               1: Incomplete data for compression."
+END_OBJECT
+
+OBJECT = COLUMN 
+NAME = COMPRESSION_RATIO
+DATA_TYPE = ASCII
+START_BYTE = 148
+BYTES = 6
+DESCRIPTION = "Compression ratio for the line.  Real number
+               represented as an ascii string in the form 123.12" 
+END_OBJECT
+
+OBJECT = COLUMN 
+NAME = FILLER
+DATA_TYPE = CHARACTER
+START_BYTE = 154
+BYTES = 47
+DESCRIPTION = "Reserved"
+END_OBJECT
+
+
+END_OBJECT
