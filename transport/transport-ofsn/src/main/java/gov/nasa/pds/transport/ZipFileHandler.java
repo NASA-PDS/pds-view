@@ -18,7 +18,7 @@ import org.apache.oodt.product.ProductException;
 
 /**
  * PDS Handler to return a zipped package of a PDS3 label and its referenced files.
- * Adapted from jpl.pds.server.ZipFileHandler to conform to the new OFSNGetHandler API.
+ * Adapted from jpl.pds.server.ZipFileHandler to conform to the OFSNGetHandler API.
  *
  * @author Crichton and Hughes
  * @author Luca Cinquini
@@ -49,7 +49,7 @@ public class ZipFileHandler extends AbstractPdsGetHandler {
 		File file = new File(inputFilePath);
 		LOG.info("Input file path="+inputFilePath);
 		if (!file.exists()) {
-			throw new ProductException("File: "+file.getName()+" not found in product archive");
+			throw new ProductException("File: "+file.getName()+" not found in the archive");
 		}
 		
 		File tempFile = new File(this.getCache(), "products_"+file.getName().replaceAll("\\..+",".zip"));
@@ -130,11 +130,12 @@ public class ZipFileHandler extends AbstractPdsGetHandler {
 	 */
 	public static void main(String[] args) throws ProductException  {
 		
-		String inputFilePath = args[0];		
+		//String inputFilePath = args[0];	
+		String inputFilePath = "/usr/local/transport-ofsn/testdata//data/ear-a-i0028-4-sbn0001_smassii-v1.0/sbn_0001/DATA/DATA14/354_00.LBL";
 		ZipFileHandler self = new ZipFileHandler();
 		self.configure(new Properties());
 		File outputFile = self.getOutputFile(inputFilePath);
-		System.out.println("Output file path="+outputFile.getAbsolutePath());
+		LOG.info("Output file path="+outputFile.getAbsolutePath());
 		
 	}
 
