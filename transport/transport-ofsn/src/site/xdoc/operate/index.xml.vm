@@ -329,17 +329,31 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
         <tr>
         	<td>PDS_ZIP</td>
         	<td>Returns the PDS3 label and its references in a ZIP file.
-        		<br/>Example request:
-        		<br/>Example request:
+        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP">
+        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP</a>
+        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;rt=PDS_ZIP">
+        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;=PDS_ZIP</a>
         		<br/><i>NOTE: this return type is specific to PDS3 label.</i>
         	</td>
         </tr>
         <tr>
         	<td>PDS_ZIP_SIZE</td>
         	<td>Returns the total size of the PDS3 label file and its references in XML format if you were to download the product with <i>PDS_ZIP</i> and unzip the archive.
-        		<br/>Example request:
-        		<br/>Example request:
-        		<br/><i>NOTE: this return type is specific to PDS3 label.</i>
+        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP_SIZE">
+        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP_SIZE</a>
+        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;rt=PDS_ZIP_SIZE">
+        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;=PDS_ZIP_SIZE</a>
+        		<br/>Example response:
+<source>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!DOCTYPE dirresult PUBLIC &quot;-//JPL/DTD OODT dirresult 1.0//EN&quot; &quot;http://starbrite.jpl.nasa.gov:80/dtd/dirresult.dtd&quot;&gt;
+&lt;dirResult&gt;
+  &lt;dirEntry&gt;
+    &lt;fileSize&gt;10390&lt;/fileSize&gt;
+  &lt;/dirEntry&gt;
+&lt;/dirResult&gt;
+</source>
+				<br/><i>NOTE: this return type is specific to PDS3 label.</i>
         	</td>
         </tr>
         

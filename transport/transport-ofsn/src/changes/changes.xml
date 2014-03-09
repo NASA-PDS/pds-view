@@ -36,6 +36,10 @@
     	<action dev="cinquini" type="add" issue="PDS-211">
         	Using the new Pds4ImageTransformer, and ProductTransformer API, from the transformer package. 
       	</action>
+      	<action dev="cinquini" type="add" issue="PDS-250">
+        	Inserted handlers PDS_ZIP and PDS_ZIP_SIZE to return a compressed package of a PDS3 label and all its references
+        	(and the total size of the package when uncompressed). 
+      	</action>
     </release>
 
     <release version="0.2.0" date="2013-09-30" description="This release of the Transport Service is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
