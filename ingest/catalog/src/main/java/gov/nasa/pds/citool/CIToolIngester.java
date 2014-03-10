@@ -221,7 +221,7 @@ public class CIToolIngester {
 			}
 		
 			// need to find the file on the local system before trying to get from the file manager
-			String completeFilename = basePath + File.separator + "catalog" + File.separator + ptrFile.toLowerCase();
+			String completeFilename = basePath + File.separator + "catalog" + File.separator + ptrFile;
 			File aFile = new File(completeFilename);
 			try {
 				// check whether this reference file is already in the label list
@@ -254,7 +254,7 @@ public class CIToolIngester {
 					}			
 					else {
 						// also, check this reference file is in the same directory as VOLDESC.CAT
-						File tmpFile = new File(basePath + File.separator + ptrFile.toLowerCase());
+						File tmpFile = new File(basePath + File.separator + ptrFile);
 						if (tmpFile.exists()) {
 							CatalogObject catObj = new CatalogObject(this.report);
 							Label tmpLbl = parse(tmpFile.toURL());
@@ -386,7 +386,7 @@ public class CIToolIngester {
     }
     
     public Product getProductFromStorageService(String fileName) {
-    	return catIngester.getStorageIngester().getProductByName(this.storageProductName+":"+fileName.toLowerCase());
+    	return catIngester.getStorageIngester().getProductByName(this.storageProductName+":"+fileName);
     }
     
     /**

@@ -113,8 +113,8 @@ public class StorageIngester {
 		Metadata prodMet = new Metadata();
 		prodMet.addMetadata("ProductClass", Constants.FILE_PROD);
 		prodMet.addMetadata("ProductType", this.productTypeName);
-		prodMet.addMetadata("ProductName", this.productName + ":" + fileObject.getName().toLowerCase());
-		prodMet.addMetadata("OriginalFilename", fileObject.getName().toLowerCase());
+		prodMet.addMetadata("ProductName", this.productName + ":" + fileObject.getName());
+		prodMet.addMetadata("OriginalFilename", fileObject.getName());
 		prodMet.addMetadata("VolumeId", this.productName);
 		prodMet.addMetadata("Version", String.valueOf(catObj.getVersion()));
 		
