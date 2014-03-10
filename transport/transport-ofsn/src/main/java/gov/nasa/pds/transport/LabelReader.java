@@ -181,7 +181,7 @@ public class LabelReader {
 	private String stringValue(Value value) {
 		
         String strValue = "";
-        
+        /*       
         if ( value instanceof Set ) {
           Set s = (Set) value;
           strValue = s.toString(true);
@@ -196,6 +196,8 @@ public class LabelReader {
           strValue =  value.toString();
           
         }
+        */
+        strValue =  value.toString();
         
         return strValue.trim();
 
