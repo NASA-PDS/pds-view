@@ -58,7 +58,7 @@
     <storage-version>0.6.0-dev</storage-version>
     <!-- External Dependency Versions -->
     <oodt-version>0.6</oodt-version>
-    <product-tools-version>3.3.0</product-tools-version>
+    <product-tools-version>3.4.0-dev</product-tools-version>
   </properties>
 
   <developers>
