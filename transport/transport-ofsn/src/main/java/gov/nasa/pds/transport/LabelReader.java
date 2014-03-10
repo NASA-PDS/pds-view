@@ -9,8 +9,12 @@ import gov.nasa.pds.tools.label.Label;
 import gov.nasa.pds.tools.label.ManualPathResolver;
 import gov.nasa.pds.tools.label.ObjectStatement;
 import gov.nasa.pds.tools.label.PointerStatement;
+import gov.nasa.pds.tools.label.Scalar;
+import gov.nasa.pds.tools.label.Sequence;
+import gov.nasa.pds.tools.label.Set;
 import gov.nasa.pds.tools.label.Statement;
 import gov.nasa.pds.tools.label.StructurePointer;
+import gov.nasa.pds.tools.label.Value;
 import gov.nasa.pds.tools.label.parser.DefaultLabelParser;
 import gov.nasa.pds.tools.label.parser.LabelParser;
 
@@ -131,12 +135,13 @@ public class LabelReader {
 				
 			} else if (className.equals(ATTRIBUTE_STATEMENT_CLASSNAME)) {
 				AttributeStatement _statement = (AttributeStatement)statement;
-				String value =  _statement.getValue().toString().trim();
+				String value =  stringValue(_statement.getValue());
 				out.append( printStatement(_statement, _statement.getElementIdentifier()+ " = "+value) );
 				
 			} else if (className.equals(POINTER_STATEMENT_CLASSNAME)) {
 				PointerStatement _statement = (PointerStatement)statement;
-				out.append( printStatement(_statement, "^"+_statement.getIdentifier()+" = "+_statement.getValue().toString()) );
+				String value =  stringValue(_statement.getValue());
+				out.append( printStatement(_statement, "^"+_statement.getIdentifier()+" = "+value) );
 				
 			} else if (className.equals(STRUCTURE_STATEMENT_CLASSNAME)) {
 				StructurePointer _statement = (StructurePointer)statement;
@@ -167,6 +172,36 @@ public class LabelReader {
 	}
 	
 	/**
+	 * Method to convert the value of an AttributeStatement or PointerStatement to a simple String,
+	 * preserving its original quotes.
+	 * 
+	 * @param statement
+	 * @return
+	 */
+	private String stringValue(Value value) {
+		
+        String strValue = "";
+        
+        if ( value instanceof Set ) {
+          Set s = (Set) value;
+          strValue = s.toString(true);
+          
+        } else if (value instanceof Sequence) {
+          strValue = ((Sequence) value).toString(true);
+          
+        } else if (value instanceof Scalar) {
+          strValue = ((Scalar) value).toString(true);
+          
+        } else {
+          strValue =  value.toString();
+          
+        }
+        
+        return strValue.trim();
+
+	}
+	
+	/**
 	 * Prints out a single statement.
 	 * 
 	 * @param statement
@@ -176,13 +211,7 @@ public class LabelReader {
 	private StringBuffer printStatement(Statement statement, String tostring) {
 		
 		StringBuffer sb = new StringBuffer();
-		
-		// insert blank lines, if necessary
-		//while (this.lineNumber < statement.getLineNumber()-1) {
-		//	sb.append(NL);
-		//	this.lineNumber++;
-		//}
-		
+				
 		// print this statement
 		//int lineNumber = statement.getLineNumber();
 		//String className = statement.getClass().getSimpleName();
@@ -206,13 +235,13 @@ public class LabelReader {
 	public static void main(String[] args) throws Exception {
 		
 		// parse label object
-		//String uri = "file:///usr/local/pds/transport-service/testdata/CHAN_DATA_20020617.LBL";
+		String uri = "file:///usr/local/pds/transport-service/testdata/CHAN_DATA_20020617.LBL";
 		//String uri = "http://starbase.jpl.nasa.gov/ody-m-grs-2-edr-v1/odge1_xxxx/2002/20020617/CHAN_DATA_20020617.LBL";
-		String uri = "file:///usr/local/transport-ofsn/testdata/data/vg1-j-mag-4-summ-hgcoords-48.0sec-v1.0/vg_1501/data/crs/bs2edat.lbl";
+		//String uri = "file:///usr/local/transport-ofsn/testdata/data/vg1-j-mag-4-summ-hgcoords-48.0sec-v1.0/vg_1501/data/crs/bs2edat.lbl";
 		
 		StringBuffer sb = (new LabelReader(new URI(uri), "")).read();
-		//System.out.println(sb.toString());
-		FileUtils.writeStringToFile(new File("/tmp/bs2edat.lbl"), sb.toString());
+		System.out.println(sb.toString());
+		//FileUtils.writeStringToFile(new File("/tmp/bs2edat.lbl"), sb.toString());
 		
 	}
 
