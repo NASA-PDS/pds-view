@@ -1,4 +1,4 @@
-:: Copyright 2010-2011, by the California Institute of Technology.
+:: Copyright 2010-2014, by the California Institute of Technology.
 :: ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 :: Any commercial use must be negotiated with the Office of Technology Transfer
 :: at the California Institute of Technology.
@@ -17,6 +17,12 @@
 :: command (java gov.nasa.pds.report.update.RSUpdateLauncher ...)
 
 @echo off
+
+:: Check if the JAVA_HOME environment variable is set.
+if not defined JAVA_HOME (
+echo The JAVA_HOME environment variable is not set.
+goto END
+)
 
 :: Expects RS Update jar file to be located in the ../lib directory.
 
@@ -40,6 +46,6 @@ for %%i in ("%LIB_DIR%"\rs-update-*.jar) do set RS_UPDATE_JAR=%%i
 :: The special variable '%*' allows the arguments
 :: to be passed into the executable.
 
-java -jar "%RS_UPDATE_JAR%" %*
+"%JAVA_HOME%"\bin\java -jar "%RS_UPDATE_JAR%" %*
 
 :END

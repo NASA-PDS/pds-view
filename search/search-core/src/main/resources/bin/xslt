@@ -11,6 +11,12 @@
 #
 ####################################################################
 
+# Check if the JAVA_HOME environment variable is set.
+if [ -z "${JAVA_HOME}" ]; then
+   echo "The JAVA_HOME environment variable is not set." 1>&2
+   exit 1
+fi
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source ${DIR}/env-vars
@@ -21,10 +27,10 @@ if [ $# -eq 4 ]; then
     OUTPUT=${3}
     SEARCH_HOME=${4}
 elif [ "${SEARCH_HOME}" == "" ]; then
-    echo
-    echo "Usage: `basename $0` <input-xml> <stylesheet> <output> <search-home>"
-    echo "    or specify variables in ${DIR}/env-vars"
-    echo
+    echo 1>&2
+    echo "Usage: `basename $0` <input-xml> <stylesheet> <output> <search-home>" 1>&2
+    echo "    or specify variables in ${DIR}/env-vars" 1>&2
+    echo 1>&2
     exit 1
 fi
 
@@ -42,6 +48,6 @@ STYLESHEET="-xsl:${STYLESHEET}"
 OUTPUT="-o:${OUTPUT}"
 
 echo "java -Xmx256m -jar ${SAXON_LIB}/saxon-9.jar \"${INPUT}\" \"${STYLESHEET}\" \"${OUTPUT}\""
-java -Xmx256m -jar ${SAXON_LIB}/saxon-9.jar "${INPUT}" "${STYLESHEET}" "${OUTPUT}"
+"${JAVA_HOME}"/bin/java -Xmx256m -jar ${SAXON_LIB}/saxon-9.jar "${INPUT}" "${STYLESHEET}" "${OUTPUT}"
 
 exit 0

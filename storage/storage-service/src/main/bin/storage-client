@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright 2011-2013, by the California Institute of Technology.
+# Copyright 2011-2014, by the California Institute of Technology.
 # ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 # Any commercial use must be negotiated with the Office of Technology Transfer
 # at the California Institute of Technology.
@@ -20,10 +20,10 @@
 
 # Expects the File Manager Client jar file to be in the ../lib directory.
 
-# Set the JAVA_HOME environment variable here in the script if it will 
-# not be defined in the environment.
-if [ -z ${JAVA_HOME} ] ; then
-  export JAVA_HOME=/path/to/java/home
+# Check if the JAVA_HOME environment variable is set.
+if [ -z "${JAVA_HOME}" ]; then
+   echo "The JAVA_HOME environment variable is not set." 1>&2
+   exit 1
 fi
 
 # Setup environment variables.
@@ -37,9 +37,9 @@ export FILEMGR_HOME
 mkdir -p ${FILEMGR_HOME}/logs
 
 # Execute the application.
-# Added a slash to the Spring properties to resolve a striping of the first 
+# Added a slash to the Spring properties to resolve a striping of the first
 # character. Need to check with future versions of OODT to see if fixed.
-${JAVA_HOME}/bin/java \
+"${JAVA_HOME}"/bin/java \
   -Djava.ext.dirs=${FILEMGR_HOME}/lib \
   -Dorg.apache.oodt.cas.filemgr.properties=${FILEMGR_HOME}/etc/filemgr.properties \
   -Djava.util.logging.config.file=${FILEMGR_HOME}/etc/logging.properties \

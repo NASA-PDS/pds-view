@@ -1,15 +1,15 @@
 //	Copyright 2013, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
-//	Any commercial use must be negotiated with the Office of Technology 
+//	Any commercial use must be negotiated with the Office of Technology
 //	Transfer at the California Institute of Technology.
-//	
-//	This software is subject to U. S. export control laws and regulations 
-//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
-//	is subject to U.S. export control laws and regulations, the recipient has 
-//	the responsibility to obtain export licenses or other export authority as 
-//	may be required before exporting such information to foreign countries or 
+//
+//	This software is subject to U. S. export control laws and regulations
+//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+//	is subject to U.S. export control laws and regulations, the recipient has
+//	the responsibility to obtain export licenses or other export authority as
+//	may be required before exporting such information to foreign countries or
 //	providing access to foreign nationals.
-//	
+//
 //	$Id: RSUpdateLauncher.java 11670 2013-06-20 17:14:33Z jpadams $
 //
 
@@ -55,19 +55,19 @@ public class ReportManagerLauncher {
 
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#LOG **/
 	private String logFile;
-	
+
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#PULL **/
 	private boolean pullFlag;
-	
+
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#PP_PORT **/
 	private int ppPort;
-	
+
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#PP_PROPERTIES **/
 	private String ppResources;
-	
+
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#PP_SPECS **/
 	private String ppSpec;
-	
+
 	/** The severity level to set for the tool. */
 	private Level severityLevel;
 
@@ -78,7 +78,7 @@ public class ReportManagerLauncher {
 		this.ppSpec = "";
 		this.severityLevel = ToolsLevel.INFO;
 	}
-	
+
 	  /**
 	   * Set the verbosity level and above to include in the reporting.
 	   * @param v '1' for info, '2' for warnings, and '3' for errors
@@ -113,11 +113,11 @@ public class ReportManagerLauncher {
 	        "Time                        " + Utility.getDateTime()));
 	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
 	        "Severity Level              " + severityLevel.getName()));
-	    
+
 	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
 	    		"\n\n"));
 	  }
-	  
+
 	  /**
 	   * Sets the appropriate handlers for the logging.
 	   *
@@ -138,13 +138,13 @@ public class ReportManagerLauncher {
 	      logger.addHandler(new PDSStreamHandler(System.out,
 	    		  this.severityLevel, new ReportManagerFormatter()));
 	    }
-	    
+
 	    logHeader();
 	  }
-	
+
 	/**
 	 * Displays tool usage.
-	 * 
+	 *
 	 */
 	public final void displayHelp() {
 		final int maxWidth = 80;
@@ -156,7 +156,7 @@ public class ReportManagerLauncher {
 
 	/**
 	 * Displays the current version and disclaimer notice.
-	 * 
+	 *
 	 */
 	public final void displayVersion() {
 		System.err.println("\n" + ToolInfo.getName());
@@ -167,11 +167,11 @@ public class ReportManagerLauncher {
 
 	/**
 	 * A method to parse the command-line arguments.
-	 * 
+	 *
 	 * @param args
 	 *            The command-line arguments
 	 * @return A class representation of the command-line arguments
-	 * 
+	 *
 	 * @throws ParseException
 	 *             If there was an error during parsing.
 	 */
@@ -183,10 +183,10 @@ public class ReportManagerLauncher {
 	/**
 	 * Examines the command-line arguments passed into the RSUpdate Tool and
 	 * takes the appropriate action based on what flags were set.
-	 * 
+	 *
 	 * @param line
 	 *            A class representation of the command-line arguments.
-	 * 
+	 *
 	 * @throws Exception
 	 *             If there was an error while querying the options that were
 	 *             set on the command-line.
@@ -228,7 +228,7 @@ public class ReportManagerLauncher {
 
 	/**
 	 * Closes the handlers for the logger.
-	 * 
+	 *
 	 */
 	private void closeHandlers() {
 		Logger logger = Logger.getLogger("");
@@ -241,35 +241,35 @@ public class ReportManagerLauncher {
 	/**
 	 * Executes the necessary functions in order to copy the log files and
 	 * update the database.
-	 * @throws LogsManagerException 
-	 * 
+	 * @throws LogsManagerException
+	 *
 	 * @throws ReportManagerException
 	 * @throws SQLException
 	 */
 	public void execute() throws LogsManagerException {
 		ReportServiceManager rsMgr = new ReportServiceManager(this.ppPort, this.ppResources, this.ppSpec);
-		
+
 		if (this.pullFlag) {
 			rsMgr.pullLogs();
 		}
 	}
 /*	private void execute() throws RSUpdateException, SQLException {
 		try {
-			 Use propsHome to create DBUtil object 
+			 Use propsHome to create DBUtil object
 			DBUtil util = new DBUtil(this.propsHome);
 			List<Profile> pList = new ArrayList<Profile>();
 
-			
+
 			 * If profileName is given, query for profile, otherwise get all
 			 * active Profiles from DB
-			 
+
 			if (this.profileName != null) {
 				pList.add(util.findByProfileName(profileName));
 			} else {
 				pList = util.findAllProfiles();
 			}
 
-			 Use propsHome to get Environment Properties 
+			 Use propsHome to get Environment Properties
 			EnvProperties env = new EnvProperties(this.propsHome);
 
 			ReportServiceUpdate rsUpdate = null;
@@ -293,12 +293,12 @@ public class ReportManagerLauncher {
 				} catch (NullPointerException e) {
 					throw new RSUpdateException("Error transferring logs: " + e.getMessage());
 				}
-				
-				
-				
+
+
+
 				 * Depending on whether sawmillFlag was specified, update
 				 * Sawmill DB
-				 
+
 				try {
 					if (this.sawmillFlag) {
 						rsUpdate.updateSawmill(env.getSawmillHome());
@@ -318,7 +318,7 @@ public class ReportManagerLauncher {
 	 */
 	public static void main(String[] args) {
 		if (args.length == 0) {
-			System.out.println("\nType 'RSUpdate -h' for usage");
+			System.out.println("\nType 'report-mgr -h' for usage");
 			System.exit(0);
 		}
 		try {

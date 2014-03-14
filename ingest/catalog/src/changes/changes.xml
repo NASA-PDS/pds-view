@@ -25,7 +25,7 @@
   <body>
     <release version="1.7.0" date="TBD" description="TBD">
       <action dev="hyunlee" type="fix">
-        Modified the Catalog Tool to use the Product_Volume_PDS3 product's LID as the base LID for product repository products of Housekeeping, Person, Reference, and Target.    
+        Modified the Catalog Tool to use the Product_Volume_PDS3 product's LID as the base LID for product repository products of Housekeeping, Person, Reference, and Target.
       </action>
       <action dev="hyunlee" type="update" issue="PDS-227">
         Corrected an issue where catalog files that are not registered as context products were having their file objects versioned and re-registered.
@@ -34,10 +34,13 @@
         Corrected an issue reading data set map projection catalog files.
       </action>
       <action dev="hyunlee" type="fix" issue="PDS-231">
-        Corrected an issue where the same instrument host reference is replicated for each instrument reference.    
+        Corrected an issue where the same instrument host reference is replicated for each instrument reference.
       </action>
       <action dev="hyunlee" type="update" issue="PDS-248">
-        Added file type and mime type slots to file repository products.  
+        Added file type and mime type slots to file repository products.
+      </action>
+      <action dev="mcayanan" type="update" issue="PDS-253">
+        Updated Unix shell script and Windows batch file to provide a more user friendly message when JAVA_HOME is not set in the environment.
       </action>
     </release>
 

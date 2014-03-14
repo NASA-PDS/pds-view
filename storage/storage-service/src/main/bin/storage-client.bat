@@ -1,4 +1,4 @@
-:: Copyright 2011-2013, by the California Institute of Technology.
+:: Copyright 2011-2014, by the California Institute of Technology.
 :: ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 :: Any commercial use must be negotiated with the Office of Technology Transfer
 :: at the California Institute of Technology.
@@ -16,14 +16,14 @@
 :: without the need to set the CLASSPATH or having to type in that long java
 :: command (java org.apache.oodt.cas.filemgr.system.XmlRpcFileManagerClient ...)
 
-# Expects the File Manager Client jar file to be in the ../lib directory.
+:: Expects the File Manager Client jar file to be in the ../lib directory.
 
 @echo off
 
-:: Set the JAVA_HOME environment variable here in the script if it will
-:: not be defined in the environment.
+:: Check if the JAVA_HOME environment variable is set.
 if not defined JAVA_HOME (
-  set JAVA_HOME=\path\to\java\home
+echo The JAVA_HOME environment variable is not set.
+goto END
 )
 
 :: Setup environment variables.
@@ -38,3 +38,5 @@ if not exist "%FILEMGR_HOME%"\logs (
 
 :: Execute the application.
 "%JAVA_HOME%"\bin\java -Djava.ext.dirs="%FILEMGR_HOME%"\lib -Dorg.apache.oodt.cas.filemgr.properties="%FILEMGR_HOME%"\etc\filemgr.properties -Djava.util.logging.config.file="%FILEMGR_HOME%"\etc\logging.properties -Dorg.apache.oodt.cas.cli.action.spring.config="%FILEMGR_HOME%"\policy\cmd-line-actions.xml -Dorg.apache.oodt.cas.cli.option.spring.config="%FILEMGR_HOME%"\policy\cmd-line-options.xml org.apache.oodt.cas.filemgr.system.XmlRpcFileManagerClient --url %FILEMGR_URL% %*
+
+:END

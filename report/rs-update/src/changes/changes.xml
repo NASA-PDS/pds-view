@@ -24,6 +24,9 @@
 
   <body>
     <release version="1.5.0" date="TBD" description="TBD">
+      <action dev="mcayanan" type="update" issue="PDS-253">
+        Updated Unix shell script and Windows batch file to provide a more user friendly message when JAVA_HOME is not set in the environment.
+      </action>
     </release>
 
     <release version="1.4.0" date="2013-09-30" description="This release of the Update Tool is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">

@@ -1,4 +1,4 @@
-:: Copyright 2010-2011, by the California Institute of Technology.
+:: Copyright 2010-2014, by the California Institute of Technology.
 :: ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 :: Any commercial use must be negotiated with the Office of Technology Transfer
 :: at the California Institute of Technology.
@@ -18,6 +18,13 @@
 
 @echo off
 
+:: Check if the JAVA_HOME environment variable is set.
+if not defined JAVA_HOME (
+echo The JAVA_HOME environment variable is not set.
+goto END
+)
+
+
 :: Expects Report Manager jar file to be located in the ../lib directory.
 
 set SCRIPT_DIR=%~dps0
@@ -34,12 +41,12 @@ goto END
 
 :: Finds the jar file in LIB_DIR and sets it to REPORT_MGR_JAR
 
-for %%i in ("%LIB_DIR%"\rs-update-*.jar) do set REPORT_MGR_JAR=%%i
+for %%i in ("%LIB_DIR%"\report-manager-*.jar) do set REPORT_MGR_JAR=%%i
 
 :: Executes REPORT MANAGER via the executable jar file
 :: The special variable '%*' allows the arguments
 :: to be passed into the executable.
 
-java -jar "%REPORT_MGR_JAR%" %*
+"%JAVA_HOME%"\bin\java -jar "%REPORT_MGR_JAR%" %*
 
 :END

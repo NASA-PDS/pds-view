@@ -12,7 +12,7 @@
   the responsibility to obtain export licenses or other export authority as
   may be required before exporting such information to foreign countries or
   providing access to foreign nationals.
-    
+
   $Id$
 -->
 
@@ -21,14 +21,17 @@
     <title>Release Changes</title>
     <author email="Jordan.H.Padams@jpl.nasa.gov">Jordan Padams</author>
   </properties>
-  
+
   <body>
     <release version="1.4.0" date="TBD" description="TBD">
-      <action dev="jpadams" type="update">
-	Update documentation to take change from initial-index-pdsen to search-core-pdsen.
+      <action dev="mcayanan" type="update" issue="PDS-253">
+        Updated Unix shell script and Windows batch files to provide a more user friendly message when JAVA_HOME is not set in the environment.
       </action>
       <action dev="jpadams" type="update">
-	Updated PSA data set config to use localhost. Updated PDS4 config to only refer to registry-pds4 and no longer refer to registry-atm.
+	    Update documentation to take change from initial-index-pdsen to search-core-pdsen.
+      </action>
+      <action dev="jpadams" type="update">
+	    Updated PSA data set config to use localhost. Updated PDS4 config to only refer to registry-pds4 and no longer refer to registry-atm.
       </action>
     </release>
 
@@ -46,7 +49,7 @@
         Updated PDS config files to point to relative instead of absolute URL to resolve issue with domain specificity.
       </action>
       <action dev="jpadams" type="update" issue="PDS-189">
-        Updated command-line options and property keys to allow for specification of primary and secondary registries; also update XSD to allow for inclusion of 'DataSources' which can then be set with primary/secondary 'priority' and DataSource type (i.e. registry) as well as the option to 'append' the new sources to the current list specified via command-line/property file, or to overwrite. 
+        Updated command-line options and property keys to allow for specification of primary and secondary registries; also update XSD to allow for inclusion of 'DataSources' which can then be set with primary/secondary 'priority' and DataSource type (i.e. registry) as well as the option to 'append' the new sources to the current list specified via command-line/property file, or to overwrite.
       </action>
       <action dev="jpadams" type="add">
         Created new logging and stats classes to maintain the missing slot/associations/etc.
