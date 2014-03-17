@@ -44,12 +44,12 @@
    PDS4Search pds4Search = new PDS4Search(searchUrl);
    
    if (request.getParameter("identifier")==null) {
-      SolrDocumentList collectionObjs = pds4Search.getCollections();
+      try {
+         SolrDocumentList collectionObjs = pds4Search.getCollections();
+         //out.println("collectionObj = " + collectionObjs);
+         //out.println("size of collectionObj = " + collectionObjs.size());
    
-   //out.println("collectionObj = " + collectionObjs);
-   //out.println("size of collectionObj = " + collectionObjs.size());
-   
-      if (collectionObjs==null || collectionObjs.size()==0) {  
+         if (collectionObjs==null || collectionObjs.size()==0) {  
    %>
                <tr valign="TOP">
                   <td bgcolor="#F0EFEF" width=200 valign=top>
@@ -57,20 +57,14 @@
                   </td>
                </tr>    
    <%
-      }
-      else{ 
-         for (SolrDocument doc: collectionObjs) {
-/*
-            for (Map.Entry<String, Object> entry : doc.entrySet()) {
-                    out.println("Key = " + entry.getKey()
-                            + "    Value = " + entry.getValue());
-                }
-*/
-            Collection<Object> values = doc.getFieldValues("identifier");
-            //out.println("vales.size() = " + values.size());
-            for (Object value: values) {
-               String val = (String) value;
-               //out.println("val = " + val);
+         }
+         else{ 
+            for (SolrDocument doc: collectionObjs) {
+               Collection<Object> values = doc.getFieldValues("identifier");
+               //out.println("vales.size() = " + values.size());
+               for (Object value: values) {
+                  String val = (String) value;
+                  //out.println("val = " + val);
             %>
             <TR>
                <td bgcolor="#F0EFEF" width=215 valign=top>IDENTIFIER</td> 
@@ -78,8 +72,19 @@
                   <a href="/ds-view/pds/viewCollection.jsp?identifier=<%=val%>" target="_blank"><%=val%></a><br>
             </TR>
             <%
+               }
             }
-         }
+         } // end else
+      } catch (Exception e) {
+  
+      %>
+        <TR>
+         <td bgcolor="#F0EFEF" width=200 valign=top> 
+            <b>No Search Service found: <%=searchUrl%></b> to retrieve the Collection Information.
+         </td>
+        </TR>
+        <%
+  
       }
    } // end if (request.getParameter("identifier")==null)
    else {
@@ -87,6 +92,7 @@
       String collectionLid = request.getParameter("identifier");
       //out.println("collectionLid = " + collectionLid);
       
+      try {
       SolrDocument doc = pds4Search.getContext(collectionLid);
       if (doc==null) {
        %>
@@ -326,7 +332,18 @@
           }   // end for
       } // end if (anyContextValue)
                  
-      } // end else      
+      } // end else  
+      } catch (Exception e) {
+  
+      %>
+        <TR>
+         <td bgcolor="#F0EFEF" width=200 valign=top> 
+            <b>No Search Service found: <%=searchUrl%></b> to retrieve the Collection Information.
+         </td>
+        </TR>
+        <%
+  
+      }    
    } 
 %>        
          </table>

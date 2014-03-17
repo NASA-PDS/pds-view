@@ -52,6 +52,8 @@ if ((lid == null) || (lid == "")) {
 }
 else {
    PDS4Search pds4Search = new PDS4Search(searchUrl);
+   
+   try {
    SolrDocument doc = pds4Search.getContext(lid);
 
    if (doc==null) { 
@@ -288,6 +290,17 @@ else {
       }// end if (instrument)
      
    } // if extObj !=null
+   } catch (Exception e) {
+  
+      %>
+        <TR>
+         <td bgcolor="#F0EFEF" width=200 valign=top> 
+            <b>No Search Service found: <%=searchUrl%></b> to retrieve the Context Information.
+         </td>
+        </TR>
+        <%
+  
+      }
 }// if mission name is specified
          %>
          </table>

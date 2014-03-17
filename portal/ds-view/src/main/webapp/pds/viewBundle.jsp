@@ -43,25 +43,26 @@
 <%
    PDS4Search pds4Search = new PDS4Search(searchUrl);
 
-   if (request.getParameter("identifier")==null) {
-      SolrDocumentList bundleObjs = pds4Search.getBundles();
+   if (request.getParameter("identifier")==null) { 
+      try {
+         SolrDocumentList bundleObjs = pds4Search.getBundles();
    
-      if (bundleObjs==null || bundleObjs.size()==0) {  
-   %>
+         if (bundleObjs==null || bundleObjs.size()==0) {  
+   %> 
                <tr valign="TOP">
                   <td bgcolor="#F0EFEF" width=200 valign=top>
                      No Bundle(s) Information found in the registry. 
                   </td>
                </tr>    
    <%
-      }
-      else{ 
-         for (SolrDocument doc: bundleObjs) {			
-		    Collection<Object> values = doc.getFieldValues("identifier");
-		    //out.println("vales.size() = " + values.size());
-		    for (Object value: values) {
-               String val = (String) value;
-               //out.println("val = " + val);
+         }
+         else{ 
+            for (SolrDocument doc: bundleObjs) {			
+		       Collection<Object> values = doc.getFieldValues("identifier");
+		       //out.println("vales.size() = " + values.size());
+		       for (Object value: values) {
+                  String val = (String) value;
+                  //out.println("val = " + val);
             %>
             <TR>
                <td bgcolor="#F0EFEF" width=215 valign=top>IDENTIFIER</td> 
@@ -69,15 +70,27 @@
                   <a href="/ds-view/pds/viewBundle.jsp?identifier=<%=val%>" target="_blank"><%=val%></a><br>
             </TR>
             <%
+               } // end for
             } // end for
-         } // end for
-      } // end else
+         } // end else
+      } catch (Exception e) {
+  
+      %>
+        <TR>
+         <td bgcolor="#F0EFEF" width=200 valign=top> 
+            <b>No Search Service found: <%=searchUrl%></b> to retrieve the Bundle Information.
+         </td>
+        </TR>
+        <%
+  
+      }
    } // end if (request.getParameter("identifier")==null)
    else {
    
       String bundleLid = request.getParameter("identifier");
       //out.println("bundleLid = " + bundleLid);
 
+	  try {
       SolrDocument doc = pds4Search.getContext(bundleLid);
       
       if (doc==null) {
@@ -622,6 +635,17 @@
              } // end if (collVals!=null)
          } // end if (anyCollectionValue)            
       } // end else 
+      } catch (Exception e) {
+  
+      %>
+        <TR>
+         <td bgcolor="#F0EFEF" width=200 valign=top> 
+            <b>No Search Service found: <%=searchUrl%></b> to retrieve the Bundle Information.
+         </td>
+        </TR>
+        <%
+  
+      }
    }
 %>        
          </table>

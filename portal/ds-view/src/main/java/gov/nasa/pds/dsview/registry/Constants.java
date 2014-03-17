@@ -168,17 +168,22 @@ public class Constants {
     	  bundleContextPds4ToRegistry.put("LOCAL MEAN SOLAR TIME", "observation_local_mean_solar_time");
     	  bundleContextPds4ToRegistry.put("LOCAL TRUE SOLAR TIME", "observation_local_true_solar_time");
     	  bundleContextPds4ToRegistry.put("SOLAR LONGITUDE", "observation_solar_longitude");
- /*   	  bundleContextPds4ToRegistry.put("PRIMARY RESULT TYPE", "primary_result_type");
     	  bundleContextPds4ToRegistry.put("PRIMARY RESULT PURPOSE", "primary_result_purpose");
-    	  bundleContextPds4ToRegistry.put("PRIMARY RESULT DATA REGIME", "primary_result_data_regime");
+    	  bundleContextPds4ToRegistry.put("PRIMARY RESULT PROCESSING LEVEL", "primary_result_processing_level");
     	  bundleContextPds4ToRegistry.put("PRIMARY RESULT DESCRIPTION", "primary_result_description");
-    	  bundleContextPds4ToRegistry.put("PRIMARY RESULT PROCESSING LEVEL", "primary_result_processing_level_id");
-*/    	  bundleContextPds4ToRegistry.put("INVESTIGATION", "investigation_name");
+          bundleContextPds4ToRegistry.put("PRIMARY RESULT WAVELENGTH RANGE",  "primary_result_wavelength_range");
+    	  bundleContextPds4ToRegistry.put("PRIMARY RESULT DOMAIN", "primary_result_domain");
+    	  bundleContextPds4ToRegistry.put("PRIMARY RESULT DISCIPLINE NAME", "primary_result_discipline_name");
+    	  //bundleContextPds4ToRegistry.put("PRIMARY RESULT FACET1", "primary_result_facet1");
+    	  //bundleContextPds4ToRegistry.put("PRIMARY RESULT SUBFACET1", "primary_result_subfacet1");
+    	  //bundleContextPds4ToRegistry.put("PRIMARY RESULT FACET2", "primary_result_facet2");
+    	  //bundleContextPds4ToRegistry.put("PRIMARY RESULT SUBFACET2", "primary_result_subfacet2");
+    	  bundleContextPds4ToRegistry.put("INVESTIGATION", "investigation_name");
     	  bundleContextPds4ToRegistry.put("OBSERVING SYSTEM", "observing_system_name");
     	  bundleContextPds4ToRegistry.put("OBSERVING SYSTEM COMPONENT", "observing_system_component_name");
     	  bundleContextPds4ToRegistry.put("TARGET", "target_name");
 	  }
-     
+	   
     public static final Map<String, String> collectionPds4ToRegistry = 
       new LinkedHashMap<String, String>();
       static {

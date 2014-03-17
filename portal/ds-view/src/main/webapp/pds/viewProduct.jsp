@@ -57,15 +57,16 @@
    //out.println("curPage = " + curPage + "<br>startRow = " + startRow + "<br>");
    
    if (request.getParameter("identifier")==null) {
-      //SolrDocumentList obsObjs = pds4Search.getObservationals();
-      SolrDocumentList obsObjs = pds4Search.getObservationals(startRow);
-      listsize = obsObjs.getNumFound();
-      totalPage = (int) Math.ceil((double)listsize/(double)rowsFetch);
+      try {
+         //SolrDocumentList obsObjs = pds4Search.getObservationals();
+         SolrDocumentList obsObjs = pds4Search.getObservationals(startRow);
+         listsize = obsObjs.getNumFound();
+         totalPage = (int) Math.ceil((double)listsize/(double)rowsFetch);
       
-   //out.println("obsObjs = " + obsObjs);
-   //out.println("size of obsObjs = " + obsObjs.size() + "   numFound = " + obsObjs.getNumFound());
+         //out.println("obsObjs = " + obsObjs);
+         //out.println("size of obsObjs = " + obsObjs.size() + "   numFound = " + obsObjs.getNumFound());
    
-      if (obsObjs==null || obsObjs.size()==0) {  
+         if (obsObjs==null || obsObjs.size()==0) {  
    %>
                <tr valign="TOP">
                   <td bgcolor="#F0EFEF" width=200 valign=top>
@@ -73,14 +74,14 @@
                   </td>
                </tr>    
    <%
-      }
-      else{ 
-         for (SolrDocument doc: obsObjs) {
-            Collection<Object> values = doc.getFieldValues("identifier");
-            //out.println("values.size() = " + values.size());
-            for (Object value: values) {
-               String val = (String) value;
-               //out.println("val = " + val);
+         }
+         else{ 
+            for (SolrDocument doc: obsObjs) {
+               Collection<Object> values = doc.getFieldValues("identifier");
+               //out.println("values.size() = " + values.size());
+               for (Object value: values) {
+                  String val = (String) value;
+                  //out.println("val = " + val);
             %>
             <TR>
                <td bgcolor="#F0EFEF" width=215 valign=top>IDENTIFIER</td> 
@@ -88,15 +89,26 @@
                   <a href="/ds-view/pds/viewProduct.jsp?identifier=<%=val%>" target="_blank"><%=val%></a><br>
             </TR>
             <%
+               }
             }
          }
+      } catch (Exception e) {
+  
+      %>
+        <TR>
+         <td bgcolor="#F0EFEF" width=200 valign=top> 
+            <b>No Search Service found: <%=searchUrl%></b> to retrieve the Observational Product Information.
+         </td>
+        </TR>
+        <%
+  
       }
    } // end if (request.getParameter("identifier")==null)
    else {
    
       String objLid = request.getParameter("identifier");
       //out.println("objLid = " + objLid);
-      
+      try {
       SolrDocument doc = pds4Search.getContext(objLid);
       if (doc==null) {
        %>
@@ -299,35 +311,37 @@
                     }
                     else if (tmpValue.equals("observing_system_component_name")) {
                        List<String> componentTypes = pds4Search.getValues(doc, "observing_system_component_type");
-					   String componentType = componentTypes.get(j);                    
-                       if (componentType.equalsIgnoreCase("spacecraft")) {
-                          if (pds4Search.getValues(doc, "instrument_host_ref")!=null) {
-                             for (String instHostRef: pds4Search.getValues(doc, "instrument_host_ref")) {
-                                if (instHostRef.contains("::"))
-                                   instHostRef = instHostRef.substring(0, instHostRef.indexOf("::"));
+                       if (componentTypes!=null) {
+					      String componentType = componentTypes.get(j);                    
+                          if (componentType.equalsIgnoreCase("spacecraft")) {
+                             if (pds4Search.getValues(doc, "instrument_host_ref")!=null) {
+                                for (String instHostRef: pds4Search.getValues(doc, "instrument_host_ref")) {
+                                   if (instHostRef.contains("::"))
+                                      instHostRef = instHostRef.substring(0, instHostRef.indexOf("::"));
                     %>
                    <a href="/ds-view/pds/viewContext.jsp?identifier=<%=instHostRef%>" target="_blank"><%=val%></a><br>
                          <%
-                             }
-                          }
-                          else
-                             out.println(val);
-                       }
-                       else if (componentType.equalsIgnoreCase("instrument")) {                   
-                          if (pds4Search.getValues(doc, "instrument_ref")!=null) {
-                             for (String instRef: pds4Search.getValues(doc, "instrument_ref")) {
-                                if (instRef.contains("::"))
-                                   instRef = instRef.substring(0, instRef.indexOf("::"));
+                                } // end for
+                             } // pds4Search.getValues(doc, "instrument_host_ref")!=null
+                             else
+                                out.println(val);
+                          } // pds4Search.getValues(doc, "instrument_host_ref")!=null
+                          else if (componentType.equalsIgnoreCase("instrument")) {                   
+                             if (pds4Search.getValues(doc, "instrument_ref")!=null) {
+                                for (String instRef: pds4Search.getValues(doc, "instrument_ref")) {
+                                   if (instRef.contains("::"))
+                                      instRef = instRef.substring(0, instRef.indexOf("::"));
                     %>
                    <a href="/ds-view/pds/viewContext.jsp?identifier=<%=instRef%>" target="_blank"><%=val%></a><br>
                          <%
-                             }
-                          }
-                          else
+                                } // end for
+                             }  // pds4Search.getValues(doc, "instrument_ref")!=null
+                             else
+                                out.println(val);
+                          } // componentType.equalsIgnoreCase("instrument")
+                          else 
                              out.println(val);
-                       }
-                       else 
-                          out.println(val);
+                       } // componentTypes.get(j)!=null
                     } // end else if (observing_system_component_name)
                     else
                         out.println(val + "<br>");
@@ -340,7 +354,18 @@
           }   // end for
       } // end if (anyContextValue)
                  
-      } // end else      
+      } // end else   
+      } catch (Exception e) {
+  
+      %>
+        <TR>
+         <td bgcolor="#F0EFEF" width=200 valign=top> 
+            <b>No Search Service found: <%=searchUrl%></b> to retrieve <%=objLid%>
+         </td>
+        </TR>
+        <%
+  
+      }   
    }
 %>
 	<%-- Result Page Navigation --%>
