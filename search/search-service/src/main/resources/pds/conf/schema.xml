@@ -573,6 +573,7 @@
    <field name="person_name" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_description" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="instrument_host_description" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <field name="instrument_host_id" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_host_name" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_host_serial_number" type="string_lc" indexed="false" stored="true" multiValued="true" />
    <field name="instrument_host_type" type="text_lc" indexed="true" stored="true" multiValued="true" />

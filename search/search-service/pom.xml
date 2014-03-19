@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2011-2013, by the California Institute of Technology.
+  Copyright 2011-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -30,7 +30,7 @@
 
   <name>Search Service</name>
   <description>
-    The Search Service provides the default configuration for search. It requires installation of the Solr WAR distribution with a reference to the home directory this package creates. 
+    The Search Service provides the search capability for the PDS search index generated through the Search Core software. The core functionality for this service is satisfied by Apache Solr.
   </description>
   <url>http://pds-cm.jpl.nasa.gov/pds4/search/search-service</url>
 
@@ -192,6 +192,24 @@
       <groupId>org.apache.solr</groupId>
       <artifactId>solr-velocity</artifactId>
       <version>4.3.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>1.7</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity-tools</artifactId>
+      <version>2.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2.1</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>

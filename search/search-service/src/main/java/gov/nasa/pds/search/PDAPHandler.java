@@ -1,4 +1,4 @@
-//	Copyright 2009-2010, by the California Institute of Technology.
+//	Copyright 2012-2014, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -29,13 +29,16 @@ import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.response.SolrQueryResponse;
 
 /**
+ * This class handles query requests conforming to IPDA's 
+ * Planetary Data Access Protocol (PDAP) and maps that query into
+ * a Solr conformant query for the Search Service to process.
+ *
  * @author pramirez
- * 
  */
 public class PDAPHandler extends StandardRequestHandler {
 
   public enum RESOURCE_CLASS {
-    DATA_SET(), PRODUCT, MAP_PROJECTED;
+    DATA_SET, PRODUCT, MAP_PROJECTED, METADATA;
   }
 
   private Logger LOG = Logger.getLogger(this.getClass().getName());
@@ -49,13 +52,13 @@ public class PDAPHandler extends StandardRequestHandler {
   private final static String PAGE_SIZE = "PAGE_SIZE";
   private final static String PAGE_NUMBER = "PAGE_NUMBER";
   private final static String VOTABLE = "VOTABLE";
-  private final static String RESOURCE_FIELD = "resClass";
+  private final static String RESOURCE_FIELD = "objectType";
 
   static {
     resourceMap = new HashMap<String, String>();
-    resourceMap.put("DATA_SET", "DataSet");
-    resourceMap.put("PRODUCT", "Product");
-    resourceMap.put("MAP_PROJECTED", "Product");
+    resourceMap.put("DATA_SET", "Product_Data_Set_PDS3");
+    resourceMap.put("PRODUCT", "Product_Observational");
+    resourceMap.put("MAP_PROJECTED", "Product_Observational");
     
     generalParams = new HashMap<String, String>();
     generalParams.put("INSTRUMENT_TYPE", "instrument_type");
@@ -181,7 +184,7 @@ public class PDAPHandler extends StandardRequestHandler {
         queryString.append(" AND ");
       }
     }
-      
+
     // Inject the resource class into the query
     queryString.append(RESOURCE_FIELD);
     queryString.append(":");
@@ -196,14 +199,13 @@ public class PDAPHandler extends StandardRequestHandler {
     // Handle return type maps to Solrs wt param
     if (request.getOriginalParams().getParams(RETURN_TYPE) != null) {
       String returnType = request.getOriginalParams().getParams(RETURN_TYPE)[0];
-      pdapParams.remove("wt");
       if (!VOTABLE.equals(returnType)) {
         // Just use Solr's default response writers
-        pdapParams.add("wt",
-            request.getOriginalParams().getParams(RETURN_TYPE)[0]);
+        pdapParams.remove("wt");
+        pdapParams.add("wt", request.getOriginalParams().getParams(RETURN_TYPE)[0]);
       }
     }
-    
+
     // Handle paging parameters
     if (request.getOriginalParams().getParams(PAGE_NUMBER) != null) {
       int pageNum = Integer.parseInt(request.getOriginalParams().getParams(PAGE_NUMBER)[0]);
@@ -217,6 +219,7 @@ public class PDAPHandler extends StandardRequestHandler {
     }
 
     this.LOG.info("Solr Query String: " + queryString);
+    super.handleRequestBody(request, response);
   }
   
 }

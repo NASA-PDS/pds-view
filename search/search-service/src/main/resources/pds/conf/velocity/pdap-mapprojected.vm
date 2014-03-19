@@ -9,7 +9,7 @@
       <FIELD ID="DATA_SET.INSTRUMENT_NAME" ucd="INSTRUMENT_NAME" utype="pdap:DATA_SET.INSTRUMENT_NAME" datatype="char" arraysize="*" />
       <FIELD ID="DATA_SET.PRODUCER.INSTITUTION_NAME" ucd="INSTITUTION_NAME" utype="pdap:DATA_SET.INSTITUTION_NAME" datatype="char" arraysize="*" />
       <FIELD ID="DATA_SET.PRODUCER.NODE_NAME" ucd="NODE_NAME" utype="pdap:DATA_SET.NODE_NAME" datatype="char" arraysize="*" />
-      <FIELD ID="DATA_SET.PRODUCER.FULL_NAME" ucd="FULL_NAME utype="pdap:DATA_SET.PRODUCER.FULL_NAME" datatype="char" arraysize="*" />
+      <FIELD ID="DATA_SET.PRODUCER.FULL_NAME" ucd="FULL_NAME" utype="pdap:DATA_SET.PRODUCER.FULL_NAME" datatype="char" arraysize="*" />
       <FIELD ID="DATA_SET.MISSION_NAME" ucd="MISSION_NAME" utype="pdap:DATA_SET.MISSION_NAME" datatype="char" arraysize="*" />
       <FIELD ID="PRODUCT.START_TIME" ucd="START_TIME" utype="pdap:PRODUCT.START_TIME" datatype="char" arraysize="*" />
       <FIELD ID="PRODUCT.STOP_TIME" ucd="STOP_TIME" utype=" pdap:PRODUCT.STOP_TIME" datatype="char" arraysize="*" />
@@ -41,9 +41,9 @@
             #wrapped_value('instrument_type')
             #wrapped_value('instrument_name')
             #wrapped_value('agency_name')
-            #wrapped_value('node_name')
+            #wrapped_value('node_id')
             #wrapped_value('full_name')
-            #wrapped_value('mission_name')
+            #wrapped_value('investigation_name')
             #wrapped_value('start_time')
             #wrapped_value('stop_time')
             #wrapped_value('target_type')

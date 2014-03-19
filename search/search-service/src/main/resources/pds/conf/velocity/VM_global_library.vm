@@ -140,12 +140,19 @@
 
 #macro(wrapped_value $f)
 #if ($doc.containsKey($f))
-#foreach($v in $doc.getFieldValues($f))
-<TD>$v</TD>
-#end
+#set ($output = "<TD>")
+#foreach ($value in $doc.getFieldValues($f))
+#if ($foreach.hasNext)
+#set ($output = $output + $value + ", ")
 #else
-<TD></TD>
+#set ($output = $output + $value)
 #end
+#end
+#set ($output = $output + "</TD>")
+#else
+#set ($output = "<TD></TD>")
+#end
+$output
 #end
 
 #macro(utc_date $theDate)
