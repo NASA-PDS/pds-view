@@ -14,8 +14,8 @@
 
 package gov.nasa.pds.transport;
 
-import gov.nasa.pds.registry.util.ExtendedExtrinsicObject;
-import gov.nasa.pds.registry.util.RegistryHandler;
+import gov.nasa.pds.registry.model.wrapper.ExtendedExtrinsicObject;
+import gov.nasa.pds.registry.client.results.RegistryHandler;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
