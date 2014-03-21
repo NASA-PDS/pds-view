@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product>
+	<specification>
+		<title>Instrument</title>
+		<query>
+			<registryPath>objectType</registryPath>
+			<value>Product_Context</value>
+		</query>
+		<query operator="AND">
+			<registryPath>data_class</registryPath>
+			<value>Instrument</value>
+		</query>
+	</specification>
+	
+	<!-- Fields displayed in default Search Service results -->
+	<indexFields>
+		<!-- Test required fields -->
+		<field name="identifier" type="required">
+			<registryPath>lid</registryPath>
+		</field>
+		<field name="title" type="required">
+			<registryPath>name</registryPath>
+		</field>
+		<field name="description" type="required">
+			<registryPath>citation_description</registryPath>
+		</field>
+		<field name="resLocation" type="required">
+			<outputString>/ds-view/pds/viewContext.jsp?identifier={lid}&amp;version={version_id}</outputString>
+		</field>
+		<field name="objectType" type="string">
+			<registryPath>objectType</registryPath>
+		</field>
+		<field name="agency_name" type="string">
+			<registryPath>node_ref.agency_ref.alternate_id</registryPath>
+		</field>
+		<field name="pds_model_version" type="string">
+			<outputString>pds4</outputString>
+		</field>
+		<field name="version_id" type="string">
+			<registryPath>version_id</registryPath>
+		</field>
+		<field name="citation_keyword" type="string">
+			<registryPath>citation_keyword</registryPath>
+		</field>
+		<field name="alternate_id" type="string">
+			<registryPath>alternate_id</registryPath>
+		</field>
+		<field name="data_class" type="string">
+			<registryPath>data_class</registryPath>
+		</field>
+		<field name="instrument_name" type="string">
+			<registryPath>instrument_name</registryPath>
+		</field>
+		<field name="instrument_type" type="string">
+			<registryPath>instrument_type</registryPath>
+		</field>
+		<field name="instrument_description" type="string">
+			<registryPath>instrument_description</registryPath>
+		</field>
+		<field name="instrument_model_id" type="string">
+			<registryPath>instrument_model_id</registryPath>
+		</field>
+		<field name="instrument_naif_id" type="string">
+			<registryPath>instrument_naif_id</registryPath>
+		</field>
+		<field name="instrument_serial_number" type="string">
+			<registryPath>instrument_serial_number</registryPath>
+		</field>
+		<field name="instrument_host_ref" type="string">
+			<registryPath>instrument_host_ref</registryPath>
+		</field>
+		<field name="instrument_host_name" type="string">
+			<registryPath>instrument_host_name</registryPath>
+		</field>
+		<field name="instrument_host_version_id" type="string">
+			<registryPath>instrument_host_version_id</registryPath>
+		</field>
+		<field name="instrument_host_type" type="string">
+			<registryPath>instrument_host_type</registryPath>
+		</field>
+		<field name="instrument_host_description" type="string">
+			<registryPath>instrument_host_description</registryPath>
+		</field>
+		<field name="instrument_host_naif_id" type="string">
+			<registryPath>instrument_host_naif_id</registryPath>
+		</field>
+		<field name="instrument_host_serial_number" type="string">
+			<registryPath>instrument_host_serial_number</registryPath>
+		</field>
+		<field name="investigation_ref" type="string">
+			<registryPath>investigation_ref</registryPath>
+		</field>
+		<field name="target_ref" type="string">
+			<registryPath>target_ref</registryPath>
+		</field>
+		<field name="investigation_name" type="string">
+			<registryPath>investigation_name</registryPath>
+		</field>
+		<field name="investigation_type" type="string">
+			<registryPath>investigation_type</registryPath>
+		</field>
+		<field name="investigation_description" type="string">
+			<registryPath>investigation_description</registryPath>
+		</field>
+		<field name="investigation_start_date" type="date">
+			<registryPath>investigation_start_date</registryPath>
+		</field>
+		<field name="investigation_stop_date" type="date">
+			<registryPath>investigation_stop_date</registryPath>
+		</field>
+		<field name="modification_date" type="date">
+			<registryPath>modification_date</registryPath>
+		</field>
+		<field name="modification_description" type="string">
+			<registryPath>modification_description</registryPath>
+		</field>
+	</indexFields>
+	
+	<!-- Included from old search, leave in for now -->
+	<!-- field>
+		<name>format</name>
+		<type>out</type>
+		<value>XML</value>
+	</field>
+	<field>
+		<name>publisher</name>
+		<type>out</type>
+		<value>NASA.PDS</value>
+	</field>
+	<field>
+		<name>language</name>
+		<type>out</type>
+		<value>en</value>
+	</field>
+	<field>
+		<name>resContext</name>
+		<type>out</type>
+		<value>NASA.PDS</value>
+	</field>
+	<field>
+		<name>resClass</name>
+		<type>out</type>
+		<value>metadata.instrument</value>
+	</field>
+	<field>
+		<name>resource_class</name>
+		<type>out</type>
+		<value>Instrument_Description</value>
+	</field -->
+</product>
