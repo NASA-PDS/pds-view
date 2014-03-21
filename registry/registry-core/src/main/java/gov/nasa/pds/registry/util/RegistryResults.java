@@ -52,7 +52,7 @@ public class RegistryResults {
 	
 	private int start;
 	
-	private String version;
+	//private String version;
 	
 	private String currentRegistryUrl;
 	
@@ -64,6 +64,8 @@ public class RegistryResults {
 	
 	private RegistryQuery<?> query;
 	
+	private List<ResultsFilter> resultsFilterList;
+
 	/**
 	 * Constructor for a single registryUrl.  Creates list with registryUrl and calls main constructor.
 	 * 
@@ -73,8 +75,33 @@ public class RegistryResults {
 	 * @param queryMax
 	 * @throws RegistryClientException
 	 */
-	public RegistryResults(String registryUrl, RegistryQuery<?> query, String version, int queryMax) throws RegistryClientException {
-		this(Arrays.asList(registryUrl), query, version, queryMax);
+	public RegistryResults(String registryUrl, RegistryQuery<?> query, int queryMax) throws RegistryClientException {
+		this(Arrays.asList(registryUrl), query, queryMax, null);
+	}
+	
+	/**
+	 * Constructor for a single registryUrl.  Creates list with registryUrl and calls main constructor.
+	 * 
+	 * @param registryUrl
+	 * @param query
+	 * @param version
+	 * @param queryMax
+	 * @throws RegistryClientException
+	 */
+	public RegistryResults(String registryUrl, RegistryQuery<?> query, int queryMax, List<ResultsFilter> resultsFilterList) throws RegistryClientException {
+		this(Arrays.asList(registryUrl), query, queryMax, resultsFilterList);
+	}
+	
+	/**
+	 * Constructor for list of registry urls. Call main constructor with null for filter list
+	 * @param registryUrlList
+	 * @param query
+	 * @param version
+	 * @param queryMax
+	 * @throws RegistryClientException
+	 */
+	public RegistryResults(List<String> registryUrlList, RegistryQuery<?> query, int queryMax) throws RegistryClientException {
+		this(registryUrlList, query, queryMax, null);
 	}
 	
 	/**
@@ -86,13 +113,19 @@ public class RegistryResults {
 	 * @param queryMax
 	 * @throws RegistryClientException
 	 */
-	public RegistryResults(List<String> registryUrlList, RegistryQuery<?> query, String version, int queryMax) throws RegistryClientException {
+	public RegistryResults(List<String> registryUrlList, RegistryQuery<?> query, int queryMax, List<ResultsFilter> resultsFilterList) throws RegistryClientException {
 		this.registryIndex = -1;
 		this.start = 1;
 		this.registryUrlList = registryUrlList;
 		this.query = query;
-		this.version = version;
+		//this.version = version;
 		this.queryMax = queryMax;
+		
+		if (resultsFilterList != null) {
+			this.resultsFilterList = resultsFilterList;
+		} else {
+			this.resultsFilterList = new ArrayList<ResultsFilter>();
+		}
 		
 		setPageLength(-1);
 		
@@ -144,7 +177,7 @@ public class RegistryResults {
 		try {
 		this.client = new RegistryClient(this.currentRegistryUrl);	// Initialize the client
 		if (this.query.getFilter() instanceof ExtrinsicFilter) {
-			System.out.println(start + " - " + pageLength);
+			Debugger.debug(start + " - " + pageLength);
 			pr = this.client.getExtrinsics((RegistryQuery<ExtrinsicFilter>)this.query, start, pageLength);	// Get PagedResponse with pageLength
 		} else if (this.query.getFilter() instanceof AssociationFilter) {
 			pr = this.client.getAssociations((RegistryQuery<AssociationFilter>)this.query, start, pageLength);	// Get PagedResponse with pageLength
@@ -163,10 +196,10 @@ public class RegistryResults {
 			for (Object object : pr.getResults()) {		// Loop through PagedResponse
 				
 				if (object instanceof ExtrinsicObject) {
-					queryExtrinsic((ExtrinsicObject)object);
+					filterExtrinsic((ExtrinsicObject)object);
 				} else if (object instanceof Association) {
 					this.resultObjects.add((Association)object);
-					//Debugger.debug(((Association)object).getTargetObject());
+					Debugger.debug(((Association)object).getTargetObject());
 				}
 				
 			}
@@ -180,34 +213,74 @@ public class RegistryResults {
 		}
 	}
 	
-	private void queryExtrinsic(ExtrinsicObject extrinsic) throws RegistryServiceException {
+	/**
+	 * Apply the ResultsFilters to each resulting object
+	 * 
+	 * @param extrinsic
+	 * @throws RegistryServiceException
+	 */
+	private void filterExtrinsic(ExtrinsicObject extrinsic) throws RegistryServiceException {
 		ExtendedExtrinsicObject searchExtrinsic = new ExtendedExtrinsicObject(extrinsic);
 		
 		String lid = searchExtrinsic.getLid();
 		String lidvid = searchExtrinsic.getLidvid();
 		
 		List<String> lidList = new ArrayList<String>();		// List to hold list of lids
-		
-		//Debugger.debug("\n\n----- " + lid + " -----");
 
+		List<ResultsFilter> newFilterList = new ArrayList<ResultsFilter>();
 		// Make sure we only have 1 of this lid in the list
 		// We only want 1 version of it anyways
 		if (!lidList.contains(lid) && lid != null) {
-			if (this.version == null || lidvid == null) {
-				this.resultObjects.add(this.client.getLatestObject(lid,
-					ExtrinsicObject.class));
-				lidList.add(lid);
+			//Debugger.debug("--- lid : " + lid + " ---");
+			// Check for other filters
+			if (lidvid == null) {	// TODO need to refactor the version into a SlotFilter
+				applyResultsFilters(this.resultObjects, this.client.getLatestObject(lid,
+						ExtrinsicObject.class), true);
 			} else {	// If we have a version specified and a lidvid known, see if they match
 				//Debugger.debug("lidvid: " + lidvid);
-				if (lidvid.equals(lid + "::" + this.version)) {
-					//Debugger.debug("Adding associated extrinsic - "
-					//		+ extrinsic.getLid());
-					this.resultObjects.add(extrinsic);
-					lidList.add(lid);
-				}
+				//if (lidvid.equals(lid + "::" + this.version)) {
+				//	Debugger.debug("Adding associated extrinsic - "
+				//			+ extrinsic.getLid());
+				//	this.resultObjects.add(extrinsic);
+				//	lidList.add(lid);
+				//}
+				applyResultsFilters(this.resultObjects, extrinsic, false);				
 			}
+			lidList.add(lid); // TODO need to do something to handle this lidList idea, its fine to just keep the LID, but it is overkill
 		}
 	}
+	
+	/**
+	 * Apply the ResultsFilters to the ExtrinsicObject when applicable
+	 * 
+	 * @param resultObjects
+	 * @param extObj
+	 * @param ignoreLidvid		flag to ignore lidvid filter if it exists. applicable to some registry volumes where 
+	 * 							we will just ignore the lidvid filter because we know it does not exist
+	 */
+	private void applyResultsFilters(List<Object> resultObjects, ExtrinsicObject extObj, boolean ignoreVersion) {
+		Object resultObj;
+		boolean accept = true;
+		//Debugger.debug(extObj.getLid());
+		if (this.resultsFilterList.size() > 0) {
+			for (ResultsFilter filter : this.resultsFilterList) {
+				if (filter instanceof SlotFilter) {
+					if (!ignoreVersion || !((SlotFilter)filter).getName().equals("version_id")) {
+						//Debugger.debug(filter.toString());
+						if ((resultObj = filter.applyFilter(extObj)) == null) {
+							accept = false;
+						}
+					}
+				}
+			}
+			if (accept) {
+				Debugger.debug("+++ product accepted: " + extObj.getLid());
+				resultObjects.add(extObj);
+			}
+		} else {
+			resultObjects.add(extObj);
+		}
+	} 
 	
 	/**
 	 * Method to iterate to next registry

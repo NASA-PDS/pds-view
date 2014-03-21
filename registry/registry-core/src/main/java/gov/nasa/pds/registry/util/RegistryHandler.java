@@ -76,17 +76,20 @@ public class RegistryHandler {
 	}
 	
 	/**
-	 * Get the ExtrinsicObjects from the given object type.
+	 * Get the ExtrinsicObjects from the given query params
 	 * 
-	 * @param objectType	@see gov.nasa.pds.registry.model.ExtrinsicObject
-	 * @return				list of ExtrinsicObject for given objectType
+	 * @deprecated			Use getExtrinsicsWithFilter method
+	 * 
+	 * @param queryMap		query map for attribute name->value pairs
+	 * @return				RegistryResults object containing filtered results
 	 * @throws Exception	thrown if there are issues with the RegistryClient
 	 */
+	@Deprecated
 	public RegistryResults getExtrinsicsByQuery(Map<String, String> queryMap) throws RegistryHandlerException {
-		Map<ExtrinsicRegistryAttribute, String> map = new HashMap<ExtrinsicRegistryAttribute, String>();
+		Map<RegistryAttributeWrapper, String> map = new HashMap<RegistryAttributeWrapper, String>();
 		for (String path : queryMap.keySet()) {
-			if (ExtrinsicRegistryAttribute.get(path) != null) {
-				map.put(ExtrinsicRegistryAttribute.get(path), queryMap.get(path));
+			if (RegistryAttributeWrapper.get(path) != null) {
+				map.put(RegistryAttributeWrapper.get(path), queryMap.get(path));
 			} else {
 				log.log(Level.WARNING, "Couldn't find query: " +  path + " - " + queryMap.get(path));
 			}
@@ -94,7 +97,17 @@ public class RegistryHandler {
 	    return getExtrinsics(this.primaryRegistries, map, null, this.queryMax);
 	}
 	
-
+	/**
+	 * Get the ExtrinsicObjects after results have been filtered
+	 * 
+	 * @param queryMap		query map for attribute name->value pairs
+	 * @return				RegistryResults object containing filtered results
+	 * @throws Exception	thrown if there are issues with the RegistryClient
+	 */
+	public RegistryResults getExtrinsicsWithFilter(List<ResultsFilter> resultsFilterList) throws RegistryHandlerException {
+	    return getExtrinsicsWithFilter(this.allRegistries, resultsFilterList, this.queryMax);
+	}
+	
 	/**
 	 * Get the ExtrinsicObjects associated with the current object
 	 * being queried.
@@ -105,31 +118,45 @@ public class RegistryHandler {
 	 */
 	public ExtendedExtrinsicObject getExtrinsicByLidvid(String lidvid)
 			throws Exception {
+		List<ResultsFilter> filterList = new ArrayList<ResultsFilter>();
+		//ResultsFilter filter = new AttributeFilter("version_id", lidvid);
+		//ResultsFilter filter = new SlotFilter("version_id", lidvid);
+		
 		// Build the filter
 		String lid = null;
 		String version = null;
 
-		List<String> lidList = Arrays.asList(lidvid.split("::"));
-		lid = lidList.get(0);
+		List<String> splitLidvid = Arrays.asList(lidvid.split("::"));
+		//lid = splitLidvid.get(0);
+		filterList.add(new AttributeFilter(RegistryAttributeWrapper.LOGICAL_IDENTIFIER, splitLidvid.get(0)));
 
 		//Debugger.debug("LID from lidvid: " + lid);
 
-		if (lidList.size() > 1) {
-			version = lidList.get(1);
-		} else if (lidList.size() == 0) { // Handles lidvids with bad format (:
+		if (splitLidvid.size() > 1) {
+			//version = splitLidvid.get(1);
+			filterList.add(new SlotFilter("version_id", splitLidvid.get(1)));
+		} else if (splitLidvid.size() == 0) { // Handles lidvids with bad format (:
 											// instead of ::)
-			lidList = Arrays.asList(lidvid.split(":"));
-			lid = lidvid.substring(0, lidvid.lastIndexOf(":"));
-			version = lidList.get(lidList.size() - 1);
+			splitLidvid = Arrays.asList(lidvid.split(":"));
+			//lid = lidvid.substring(0, lidvid.lastIndexOf(":"));
+			filterList.add(new AttributeFilter(RegistryAttributeWrapper.LOGICAL_IDENTIFIER, lidvid.substring(0, lidvid.lastIndexOf(":"))));
+			//version = splitLidvid.get(splitLidvid.size() - 1);
+			filterList.add(new SlotFilter("version_id", splitLidvid.get(1)));
 
-			log.log(Level.WARNING, "***** BAD LIDVID - " + lid + " -- " + version);
+			log.log(Level.SEVERE, "BAD LIDVID - " + lid + " -- " + version);
 		}
 		
-	    Map<ExtrinsicRegistryAttribute, String> map = new HashMap<ExtrinsicRegistryAttribute, String>();
-	    map.put(ExtrinsicRegistryAttribute.LOGICAL_IDENTIFIER, lid);
+		RegistryResults results = getExtrinsicsWithFilter(this.allRegistries, filterList, DFLT_QUERY_MAX);
+		
+	    /*Map<RegistryAttributeWrapper, String> map = new HashMap<RegistryAttributeWrapper, String>();
+	    map.put(RegistryAttributeWrapper.LOGICAL_IDENTIFIER, lid);
 
 	    List<Object> extList = new ArrayList<Object>();
 	    RegistryResults results = getExtrinsics(this.allRegistries, map, version, DFLT_QUERY_MAX);
+		*/
+		
+		
+		List<Object> extList = new ArrayList<Object>();
 		if (results.nextPage()) {
 			extList = results.getResultObjects();
     		return new ExtendedExtrinsicObject((ExtrinsicObject) extList.get(0));		// We know it will only return one object because
@@ -138,6 +165,7 @@ public class RegistryHandler {
     	} else {
     		return null;
     	}
+    	
 	}
 	
 	/**
@@ -150,11 +178,16 @@ public class RegistryHandler {
 	 */
 	public ExtendedExtrinsicObject getExtrinsicByGuid(String guid)
 			throws Exception {
-	    Map<ExtrinsicRegistryAttribute, String> map = new HashMap<ExtrinsicRegistryAttribute, String>();
-	    map.put(ExtrinsicRegistryAttribute.GUID, guid);
+	    /*Map<RegistryAttributeWrapper, String> map = new HashMap<RegistryAttributeWrapper, String>();
+	    map.put(RegistryAttributeWrapper.GUID, guid);
 	    
-	    List<Object> extList = new ArrayList<Object>();
+	    
 	    RegistryResults results = getExtrinsics(this.allRegistries, map, null, DFLT_QUERY_MAX);
+	    */
+		ResultsFilter filter = new AttributeFilter(RegistryAttributeWrapper.GUID, guid);
+		RegistryResults results = getExtrinsicsWithFilter(this.allRegistries, Arrays.asList(filter), this.queryMax);
+		
+		List<Object> extList = new ArrayList<Object>();
 		if (results.nextPage()) {
 			extList = results.getResultObjects();
     		return new ExtendedExtrinsicObject((ExtrinsicObject)extList.get(0));		// We know it will only return one object because
@@ -259,49 +292,79 @@ public class RegistryHandler {
     	}
 	    
 	    return searchExtList;
-	    
-	    
-	    /*
-	    List<ExtrinsicObject> extList = new ArrayList<ExtrinsicObject>();
-	    for (String registryUrl : this.allRegistries) {
-	    	extList = getAssociations(registryUrl, map, version, Constants.QUERY_MAX);
-	    	if (extList != null && !extList.isEmpty()) {
-	    		return new SearchCoreExtrinsic(extList.get(0));		// We know it will only return one object because
-	    															// it either queries for latest object or the specific
-	    															// version we specify
-	    	}
-	    }
-	    */
 	}
 	
-	private RegistryResults getExtrinsics(List<String> registryUrlList, Map<ExtrinsicRegistryAttribute, String> regAttrValMap, String version, int queryMax) throws RegistryHandlerException
+	/**
+	 * Get all extrinsics based on the RegistryQuery, applying the applicable ResultsFilters
+	 * 
+	 * @param registryUrlList
+	 * @param resultsFilterList
+	 * @param version
+	 * @param queryMax
+	 * @return
+	 * @throws RegistryHandlerException
+	 */
+	private RegistryResults getExtrinsicsWithFilter(List<String> registryUrlList, List<ResultsFilter> resultsFilterList, int queryMax) throws RegistryHandlerException {
+	
+	ExtrinsicFilter.Builder builder = new ExtrinsicFilter.Builder();
+	List<ResultsFilter> slotFilters = new ArrayList<ResultsFilter>();
+	slotFilters.addAll(resultsFilterList);
+	for (ResultsFilter resultsFilter : resultsFilterList) {
+		if (resultsFilter instanceof AttributeFilter) {
+			// Apply the filter for the attribute
+			resultsFilter.applyFilter(builder);
+			slotFilters.remove(resultsFilter);
+			
+			Debugger.debug(resultsFilter.toString());
+		}
+	}
+	
+	ExtrinsicFilter filter = builder.build();
+	
+	// Create the query
+	RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
+			.filter(filter).build();
+	
+		try {	
+			return new RegistryResults(registryUrlList, query, queryMax, slotFilters);
+		} catch (RegistryClientException e) {
+			throw new RegistryHandlerException(e.getClass().getName() + ": " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * @deprecated							No longer applicable. Use getExtrinsicsWithFilter instead.
+	 * @param registryUrlList
+	 * @param regAttrValMap
+	 * @param version
+	 * @param queryMax
+	 * @return
+	 * @throws RegistryHandlerException
+	 */
+	@Deprecated
+	private RegistryResults getExtrinsics(List<String> registryUrlList, Map<RegistryAttributeWrapper, String> regAttrValMap, String version, int queryMax) throws RegistryHandlerException
 			 {
 		
+		// Create the builder that we will start to populate with filters
 		ExtrinsicFilter.Builder builder = new ExtrinsicFilter.Builder();
 	    
-	    for (ExtrinsicRegistryAttribute attribute : regAttrValMap.keySet()) {
-	    	attribute.appendToFilterBuilder(builder, regAttrValMap.get(attribute));
+		// Loop thought the attribute filters and build onto the extrinsic filter
+	    for (RegistryAttributeWrapper attribute : regAttrValMap.keySet()) {
+	    	attribute.buildOntoFilter(builder, regAttrValMap.get(attribute));
 	    }
 	    
+	    // Lock in the extrinsic filter
 		ExtrinsicFilter filter = builder.build();
 
-		// Create the query
+		// Lock in the query with the extrinsic filter
 		RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
 				.filter(filter).build();
 		
 		//List<ExtrinsicObject> results = null;
 		//RegistryResults results;
 		try {
-			//if (registryExists(registryUrl)) {
-				
-				//results = new RegistryResults(registryUrls, query, version, queryMax);
-				
-				return new RegistryResults(registryUrlList, query, version, queryMax);
-			//}
-		} /*catch (RegistryServiceException rse) {
-			// Ignore. Nothing found.
-		} */ 
-		catch (RegistryClientException e) {
+			return new RegistryResults(registryUrlList, query, queryMax);
+		} catch (RegistryClientException e) {
 			throw new RegistryHandlerException(e.getClass().getName() + ": " + e.getMessage());
 		}
 		//return null;
@@ -322,7 +385,7 @@ public class RegistryHandler {
 				.filter(filter).build();
 
 		try {
-			return new RegistryResults(registryUrlList, query, null, queryMax);
+			return new RegistryResults(registryUrlList, query, queryMax);
 		} catch (RegistryClientException rce) {
 			throw new Exception(rce.getMessage());
 		}

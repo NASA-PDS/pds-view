@@ -41,7 +41,7 @@ public class ExtendedExtrinsicObject extends ExtrinsicObjectDecorator {
 	 */
 	public List<String> getSlotValues(String slotName) {		
 		Slot slot = super.getSlot(slotName.trim());
-		ExtrinsicRegistryAttribute ra;
+		RegistryAttributeWrapper ra;
 		
 		// This if-else handles whether the slotName is a slot,
 		// attribute, or missing altogether.
@@ -58,7 +58,7 @@ public class ExtendedExtrinsicObject extends ExtrinsicObjectDecorator {
 				}
 			}
 			return slot.getValues();
-		} else if ((ra = ExtrinsicRegistryAttribute.get(slotName)) != null) {
+		} else if ((ra = RegistryAttributeWrapper.get(slotName)) != null) {
 			return Arrays.asList(ra.getValueFromExtrinsic(super.decoratedExtrinsic));
 		} else {
 			//SearchCoreStats.addMissingSlot(super.getLid(), slotName);
