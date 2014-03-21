@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +31,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -121,21 +125,6 @@ public class Utility {
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
             String responseBody = httpclient.execute(request, responseHandler);
 			responseStream = new ByteArrayInputStream(responseBody.getBytes());
-			
-	        //HttpResponse response = httpclient.execute(httppost);
-            // Create a response handler
-            
-            //HttpEntity resEntity = response.getEntity();
-	
-	        //System.out.println("----------------------------------------");
-	        //System.out.println(response.getStatusLine());
-	        //if (resEntity != null) {
-	        //    System.out.println("Response content length: " + resEntity.getContentLength());
-	        //    System.out.println("Chunked?: " + resEntity.isChunked());
-	            //System.out.println(IOUtils.toString(resEntity.getContent(), "UTF-8"));
-	        //   System.out.println("Status: " + verify(resEntity.getContent()));
-	        //}
-	        //EntityUtils.consume(resEntity);
 
 			return responseStream;
 		} finally {
@@ -146,12 +135,19 @@ public class Utility {
 		}
 	}
 	
-	public static Map<String, String> getQueryMap (List<Query> queryList) {
-		Map<String, String> queryMap = new HashMap<String, String>();
-		for (Query query : queryList) {
-			queryMap.put(query.getRegistryPath(), query.getValue());
+	/**
+	 * Utility method to get a list of files from the input directory, based on the
+	 * list of file prefixes.
+	 * 
+	 * @param dir
+	 * @param filePrefixList
+	 * @return
+	 */
+	public static List<File> getFileList (String dir, List<String> filePrefixList) {
+		List<File> fileList = new ArrayList<File>();
+		for (String prefix : filePrefixList) {
+			fileList.addAll(FileUtils.listFiles(new File(dir), FileFilterUtils.prefixFileFilter(prefix), TrueFileFilter.INSTANCE));
 		}
-		
-		return queryMap;
+		return fileList;
 	}
 }

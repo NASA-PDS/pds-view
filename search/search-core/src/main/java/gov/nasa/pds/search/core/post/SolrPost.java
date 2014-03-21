@@ -142,7 +142,7 @@ public class SolrPost {
 		FileInputStream stream = null;
 		try {
 			
-			for (File file : getFileList(dir, filePrefixList)) {
+			for (File file : Utility.getFileList(dir, filePrefixList)) {
 		        log.log(new ToolsLogRecord(ToolsLevel.DEBUG,
 		        		"Posting: " + file.getAbsolutePath()));
 				stream = new FileInputStream(file);
@@ -249,22 +249,6 @@ public class SolrPost {
 				// Ignore exception
 			}
         }
-	}
-	
-	/**
-	 * Utility method to get a list of files from the input directory, based on the
-	 * list of file prefixes.
-	 * 
-	 * @param dir
-	 * @param filePrefixList
-	 * @return
-	 */
-	private List<File> getFileList (String dir, List<String> filePrefixList) {
-		List<File> fileList = new ArrayList<File>();
-		for (String prefix : filePrefixList) {
-			fileList.addAll(FileUtils.listFiles(new File(dir), FileFilterUtils.prefixFileFilter(prefix), TrueFileFilter.INSTANCE));
-		}
-		return fileList;
 	}
 	
 	private boolean verifyStatus(InputStream responseStream) throws SolrPostException {

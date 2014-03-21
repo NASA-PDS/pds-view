@@ -16,9 +16,13 @@ package gov.nasa.pds.search.core.registry;
 
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.util.ExtendedExtrinsicObject;
+import gov.nasa.pds.registry.util.AttributeFilter;
+import gov.nasa.pds.registry.util.RegistryAttributeWrapper;
 import gov.nasa.pds.registry.util.RegistryHandler;
 import gov.nasa.pds.registry.util.RegistryHandlerException;
 import gov.nasa.pds.registry.util.RegistryResults;
+import gov.nasa.pds.registry.util.ResultsFilter;
+import gov.nasa.pds.registry.util.SlotFilter;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.ToolsLogRecord;
@@ -26,11 +30,11 @@ import gov.nasa.pds.search.core.schema.CoreConfigReader;
 import gov.nasa.pds.search.core.schema.DataSource;
 import gov.nasa.pds.search.core.schema.Field;
 import gov.nasa.pds.search.core.schema.Product;
+import gov.nasa.pds.search.core.schema.Query;
 import gov.nasa.pds.search.core.schema.SourcePriority;
 import gov.nasa.pds.search.core.schema.SourceType;
 import gov.nasa.pds.search.core.stats.SearchCoreStats;
 import gov.nasa.pds.search.core.util.Debugger;
-import gov.nasa.pds.search.core.util.Utility;
 import gov.nasa.pds.search.core.util.XMLWriter;
 
 import java.io.File;
@@ -129,9 +133,10 @@ public class ProductClass {
 				
 				List<Object> extList;
 				
-				// Get the RegistryResults object, which handles looping through results
-				RegistryResults results = this.registryHandler.getExtrinsicsByQuery(
-								Utility.getQueryMap(this.product.getSpecification().getQuery()));
+				// Get the RegistryResults object, which handles looping through results	
+				RegistryResults results = this.registryHandler
+						.getExtrinsicsWithFilter(
+								createResultsFilters(this.product.getSpecification().getQuery()));
 				
 				ExtendedExtrinsicObject searchExtrinsic;
 				
@@ -165,6 +170,25 @@ public class ProductClass {
 			throw new ProductClassException(e.getClass().getName() + ": " + e.getMessage());
 		}
 		return instkeys;
+	}
+	
+	public static List<ResultsFilter> createResultsFilters (List<Query> queryList) {
+		Map<String, String> queryMap = new HashMap<String, String>();
+		List<ResultsFilter> resultsFilterList = new ArrayList<ResultsFilter>();
+		for (Query query : queryList) {
+			Debugger.debug(query.getRegistryPath() + " : " + RegistryAttributeWrapper.get(query.getRegistryPath()));
+			if (RegistryAttributeWrapper.get(query.getRegistryPath()) != null) {
+				resultsFilterList.add(new AttributeFilter(query.getRegistryPath(), query.getValue()));
+				//Debugger.debug("Adding new AttributeFilter: " + query.getRegistryPath() + " : " +query.getValue());
+				log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "Adding new AttributeFilter: " + query.getRegistryPath() + " : " +query.getValue()));
+			} else {
+				resultsFilterList.add(new SlotFilter(query.getRegistryPath(), query.getValue()));
+				//Debugger.debug("Adding new SlotFilter: " + query.getRegistryPath() + " : " +query.getValue());
+				log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "Adding new SlotFilter: " + query.getRegistryPath() + " : " +query.getValue()));
+			}
+		}
+		
+		return resultsFilterList;
 	}
 
 	/**
@@ -230,7 +254,7 @@ public class ProductClass {
 				
 				// Handle registry path
 				if ((value = field.getRegistryPath()) != null) {
-					valueList = registryPathHandler(value, searchExtrinsic);
+					valueList = getSlotValuesFromPath(value, searchExtrinsic);
 				} else if ((value = field.getOutputString()) != null) {	// Handle outputString
 					valueList = new ArrayList<String>();
 					valueList.add(checkForSubstring(value, searchExtrinsic));
@@ -250,6 +274,38 @@ public class ProductClass {
 					+ ex.getClass().getName() + ex.getMessage());
 		}
 	}
+
+	/**
+	 * Extract the attribute/slot/association from the String
+	 * specified and query the Registry for the value to replace
+	 * it wit.
+	 * 
+	 * @param str			input string from config
+	 * @param extObject
+	 * @return				the string with the embedded attribute/slot/association
+	 * 						to be queried, replaced with the value from the Registry
+	 * @throws Exception
+	 */
+	private String checkForSubstring(String str, ExtendedExtrinsicObject extObject)
+			throws Exception {
+		int start, end; 
+		String key;
+
+		List<String> valueList = new ArrayList<String>();
+		while (str.contains("{")) {
+			start = str.indexOf("{");
+			end = str.indexOf("}", start);
+			key = str.substring(start + 1, end);
+
+			valueList = getSlotValuesFromPath(key, extObject);			
+			if (valueList != null && !valueList.isEmpty()) {
+				str = str.replace("{" + key + "}",URLEncoder.encode(valueList.get(0), "UTF-8"));
+			} else {
+				str = str.replace("{" + key + "}", "Unknown");
+			}
+		}
+		return str;
+	}
 	
 	/**
 	 * Figures out if the registry path is an association (dot-connected string) or
@@ -261,7 +317,7 @@ public class ProductClass {
 	 * @return
 	 * @throws Exception
 	 */
-	private List<String> registryPathHandler(String registryPath, ExtendedExtrinsicObject searchExtrinsic) throws Exception {
+	private List<String> getSlotValuesFromPath(String registryPath, ExtendedExtrinsicObject searchExtrinsic) throws Exception {
 		String[] pathArray;
 		
 		if ((pathArray = registryPath.split("\\.")).length > 1) {
@@ -344,38 +400,6 @@ public class ProductClass {
 		}
 		
 		return slotValues;
-	}
-
-	/**
-	 * Extract the attribute/slot/association from the String
-	 * specified and query the Registry for the value to replace
-	 * it wit.
-	 * 
-	 * @param str			input string from config
-	 * @param extObject
-	 * @return				the string with the embedded attribute/slot/association
-	 * 						to be queried, replaced with the value from the Registry
-	 * @throws Exception
-	 */
-	private String checkForSubstring(String str, ExtendedExtrinsicObject extObject)
-			throws Exception {
-		int start, end; 
-		String key;
-
-		List<String> valueList = new ArrayList<String>();
-		while (str.contains("{")) {
-			start = str.indexOf("{");
-			end = str.indexOf("}", start);
-			key = str.substring(start + 1, end);
-
-			valueList = registryPathHandler(key, extObject);			
-			if (valueList != null && !valueList.isEmpty()) {
-				str = str.replace("{" + key + "}",URLEncoder.encode(valueList.get(0), "UTF-8"));
-			} else {
-				str = str.replace("{" + key + "}", "Unknown");
-			}
-		}
-		return str;
 	}
 	
 	/**
