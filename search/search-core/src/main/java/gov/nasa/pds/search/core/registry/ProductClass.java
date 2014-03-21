@@ -14,15 +14,15 @@
 
 package gov.nasa.pds.search.core.registry;
 
+import gov.nasa.pds.registry.client.results.AttributeFilter;
+import gov.nasa.pds.registry.client.results.RegistryHandler;
+import gov.nasa.pds.registry.client.results.RegistryHandlerException;
+import gov.nasa.pds.registry.client.results.RegistryResults;
+import gov.nasa.pds.registry.client.results.ResultsFilter;
+import gov.nasa.pds.registry.client.results.SlotFilter;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
-import gov.nasa.pds.registry.util.ExtendedExtrinsicObject;
-import gov.nasa.pds.registry.util.AttributeFilter;
-import gov.nasa.pds.registry.util.RegistryAttributeWrapper;
-import gov.nasa.pds.registry.util.RegistryHandler;
-import gov.nasa.pds.registry.util.RegistryHandlerException;
-import gov.nasa.pds.registry.util.RegistryResults;
-import gov.nasa.pds.registry.util.ResultsFilter;
-import gov.nasa.pds.registry.util.SlotFilter;
+import gov.nasa.pds.registry.model.wrapper.ExtendedExtrinsicObject;
+import gov.nasa.pds.registry.model.wrapper.RegistryAttributeWrapper;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
 import gov.nasa.pds.search.core.logging.ToolsLogRecord;

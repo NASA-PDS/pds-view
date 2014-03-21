@@ -6,6 +6,7 @@ import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.constants.TestConstants;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.test.SearchCoreTest;
+import gov.nasa.pds.search.core.util.Debugger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,11 +33,13 @@ public class RegistryExtractorTest extends SearchCoreTest {
 	private RegistryExtractor re;
 
 	@Rule
-	public SingleTestRule test = new SingleTestRule("");
+	public SingleTestRule test = new SingleTestRule("testRunPDS4Context");
 
 	@Before
 	public void setUp() {
 		try {
+			Debugger.debugFlag = true;
+			gov.nasa.pds.registry.util.Debugger.debugFlag = true;
 			this.re = new RegistryExtractor(new File(
 					System.getProperty("user.dir") + "/"
 							+ TestConstants.TEST_DIR_RELATIVE + "config"),
@@ -132,6 +135,25 @@ public class RegistryExtractorTest extends SearchCoreTest {
 			this.re.setPrimaryRegistries(Arrays
 					.asList(TestConstants.PSA_REGISTRY_URL));
 			// this.re.setBackupRegistries(Arrays.asList(TestConstants.PDS3_REGISTRY_URL));
+			this.re.run();
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("RegistryExtractor.run Test Failed.  See stack trace for error.");
+		}
+	}
+
+	@Test
+	public void testRunPDS4Context() {
+		System.out.println("----------------------------------------------------------");
+		System.out.println("--- Test run method with PDS - PDS4 Instrument Context ---");
+		System.out.println("----------------------------------------------------------");
+		try {
+			this.re.setConfDir(new File(System.getProperty("user.dir") + "/"
+					+ TestConstants.TEST_DIR_RELATIVE
+					+ "config/pds4-context.xml"));
+			this.re.setPrimaryRegistries(Arrays
+					.asList("http://pdsbeta.jpl.nasa.gov:8080/registry-pds4"));
+			this.re.setQueryMax(100);
 			this.re.run();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -42,9 +42,6 @@ public class SearchCorePDS3Test extends SearchCoreTest {
 		FileUtils.deleteDirectory(testDir);
 	}
 
-	@Rule
-	public SingleTestRule test = new SingleTestRule("");
-
 	/**
 	 * Test End-To-End with PDS Data. Includes Solr Post. Test is ignored by
 	 * default since SolrPost requires a localhost search service

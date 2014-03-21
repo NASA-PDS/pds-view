@@ -15,7 +15,7 @@
 
 package gov.nasa.pds.search.core.extractor;
 
-import gov.nasa.pds.registry.util.AssociationCache;
+import gov.nasa.pds.registry.cache.AssociationCache;
 import gov.nasa.pds.search.core.exception.SearchCoreException;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
