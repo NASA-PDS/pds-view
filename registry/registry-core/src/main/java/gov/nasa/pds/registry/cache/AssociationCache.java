@@ -12,9 +12,11 @@
 //	
 //	$Id: SearchCoreLauncher.java 12098 2013-09-18 15:53:49Z jpadams $
 //
-package gov.nasa.pds.registry.util;
+package gov.nasa.pds.registry.cache;
 
 //import gov.nasa.pds.search.core.util.Debugger;
+
+import gov.nasa.pds.registry.model.wrapper.ExtendedExtrinsicObject;
 
 import java.util.LinkedHashMap;
 

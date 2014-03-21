@@ -12,7 +12,7 @@
 //	
 //	$Id: SearchCoreLauncher.java 12098 2013-09-18 15:53:49Z jpadams $
 //
-package gov.nasa.pds.registry.util;
+package gov.nasa.pds.registry.client.results;
 
 import gov.nasa.pds.registry.client.RegistryClient;
 import gov.nasa.pds.registry.exception.RegistryClientException;
@@ -20,9 +20,11 @@ import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.PagedResponse;
+import gov.nasa.pds.registry.model.wrapper.ExtendedExtrinsicObject;
 import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
+import gov.nasa.pds.registry.util.Debugger;
 
 import java.util.ArrayList;
 import java.util.Arrays;

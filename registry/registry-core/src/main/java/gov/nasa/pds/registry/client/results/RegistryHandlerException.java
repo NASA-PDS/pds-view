@@ -4,7 +4,7 @@
 //  $Id: ProductClassException.java 10826 2012-07-31 18:53:24Z jpadams $
 //
 
-package gov.nasa.pds.registry.util;
+package gov.nasa.pds.registry.client.results;
 
 /**
  * @author jpadams

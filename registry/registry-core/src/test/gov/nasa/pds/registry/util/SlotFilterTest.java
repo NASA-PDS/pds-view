@@ -2,6 +2,7 @@ package gov.nasa.pds.registry.util;
 
 import static org.junit.Assert.*;
 import gov.nasa.pds.registry.client.RegistryClient;
+import gov.nasa.pds.registry.client.results.SlotFilter;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.PagedResponse;

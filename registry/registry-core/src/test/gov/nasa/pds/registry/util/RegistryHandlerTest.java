@@ -4,7 +4,14 @@
 package gov.nasa.pds.registry.util;
 
 import static org.junit.Assert.*;
+import gov.nasa.pds.registry.client.results.AttributeFilter;
+import gov.nasa.pds.registry.client.results.RegistryHandler;
+import gov.nasa.pds.registry.client.results.RegistryHandlerException;
+import gov.nasa.pds.registry.client.results.RegistryResults;
+import gov.nasa.pds.registry.client.results.ResultsFilter;
+import gov.nasa.pds.registry.client.results.SlotFilter;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
+import gov.nasa.pds.registry.model.wrapper.ExtendedExtrinsicObject;
 import gov.nasa.pds.registry.test.RegistryCoreTest;
 
 import java.util.ArrayList;

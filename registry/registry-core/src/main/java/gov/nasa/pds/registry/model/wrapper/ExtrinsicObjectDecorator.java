@@ -1,4 +1,4 @@
-package gov.nasa.pds.registry.util;
+package gov.nasa.pds.registry.model.wrapper;
 
 import gov.nasa.pds.registry.model.Classification;
 import gov.nasa.pds.registry.model.ExternalIdentifier;

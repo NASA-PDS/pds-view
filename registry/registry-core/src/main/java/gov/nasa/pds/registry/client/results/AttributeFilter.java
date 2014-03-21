@@ -1,6 +1,9 @@
-package gov.nasa.pds.registry.util;
+package gov.nasa.pds.registry.client.results;
 
+import gov.nasa.pds.registry.model.wrapper.RegistryAttributeWrapper;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
+import gov.nasa.pds.registry.query.ExtrinsicFilter.Builder;
+import gov.nasa.pds.registry.util.Debugger;
 
 public class AttributeFilter implements ResultsFilter {
 

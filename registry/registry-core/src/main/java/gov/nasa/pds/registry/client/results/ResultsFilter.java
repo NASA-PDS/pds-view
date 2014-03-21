@@ -1,4 +1,4 @@
-package gov.nasa.pds.registry.util;
+package gov.nasa.pds.registry.client.results;
 
 public interface ResultsFilter {
 	

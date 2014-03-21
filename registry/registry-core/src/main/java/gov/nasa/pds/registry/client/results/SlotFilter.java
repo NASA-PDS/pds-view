@@ -1,10 +1,10 @@
-package gov.nasa.pds.registry.util;
+package gov.nasa.pds.registry.client.results;
 
 import java.util.List;
 
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.Slot;
-import gov.nasa.pds.registry.query.ExtrinsicFilter.Builder;
+import gov.nasa.pds.registry.model.wrapper.ExtendedExtrinsicObject;
 
 public class SlotFilter implements ResultsFilter {
 	
