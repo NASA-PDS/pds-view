@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011-2013, by the California Institute of Technology.
+  Copyright 2011-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -24,6 +24,9 @@
 
   <body>
     <release version="1.4.0" date="TBD" description="TBD">
+      <action dev="shardman" type="update">
+        Modified to enable and improve support for the PDAP search protocol.
+      </action>
     </release>
 
     <release version="1.3.0" date="2013-09-30" description="This release of the Search Core is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
