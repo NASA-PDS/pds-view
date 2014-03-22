@@ -46,7 +46,8 @@ public class PDAPHandler extends StandardRequestHandler {
   private final static Map<String, String> resourceMap;
   private final static Map<String, String> generalParams;
   private final static List<String> rangedParams = new ArrayList<String>(Arrays
-      .asList("LATITUDE", "LONGITUDE"));
+      .asList("INSTRUMENT_NAME","INSTRUMENT_TYPE", "LATITUDE", "LONGITUDE", 
+              "START_TIME", "STOP_TIME", "TARGET_NAME", "TARGET_TYPE"));
   private final static String RESOURCE = "RESOURCE_CLASS";
   private final static String RETURN_TYPE = "RETURN_TYPE";
   private final static String PAGE_SIZE = "PAGE_SIZE";
@@ -59,14 +60,15 @@ public class PDAPHandler extends StandardRequestHandler {
     resourceMap.put("DATA_SET", "Product_Data_Set_PDS3");
     resourceMap.put("PRODUCT", "Product_Observational");
     resourceMap.put("MAP_PROJECTED", "Product_Observational");
+    resourceMap.put("METADATA", "Product_Null");
     
     generalParams = new HashMap<String, String>();
-    generalParams.put("INSTRUMENT_TYPE", "instrument_type");
     generalParams.put("INSTRUMENT_NAME", "instrument_name");
+    generalParams.put("INSTRUMENT_TYPE", "instrument_type");
     generalParams.put("START_TIME", "start_time");
     generalParams.put("STOP_TIME", "stop_time");
-    generalParams.put("TARGET_TYPE", "target_type");
     generalParams.put("TARGET_NAME", "target_name");
+    generalParams.put("TARGET_TYPE", "target_type");
     Collections.unmodifiableMap(generalParams);
 
     resourceParams = new HashMap<RESOURCE_CLASS, Map<String, String>>();
@@ -85,6 +87,12 @@ public class PDAPHandler extends StandardRequestHandler {
     Map<String, String> projectedParams = new HashMap<String, String>();
     projectedParams.put("LONGITUDE", "longitude");
     projectedParams.put("LATITUDE", "latitude");
+    Collections.unmodifiableMap(projectedParams);
+    resourceParams.put(RESOURCE_CLASS.MAP_PROJECTED, projectedParams);
+
+    Map<String, String> metadataParams = new HashMap<String, String>();
+    Collections.unmodifiableMap(metadataParams);
+    resourceParams.put(RESOURCE_CLASS.METADATA, metadataParams);
   }
 
   private static void appendRanged(StringBuilder query, String parameter, String value) {
@@ -120,8 +128,7 @@ public class PDAPHandler extends StandardRequestHandler {
   @Override
   public void handleRequestBody(SolrQueryRequest request,
       SolrQueryResponse response) throws Exception {
-    ModifiableSolrParams pdapParams = new ModifiableSolrParams(request
-        .getParams());
+    ModifiableSolrParams pdapParams = new ModifiableSolrParams(request.getParams());
     request.setParams(pdapParams);
     StringBuilder queryString = new StringBuilder();
 
@@ -155,10 +162,27 @@ public class PDAPHandler extends StandardRequestHandler {
       queryString.delete(queryString.length() - 5, queryString.length());
     }
 
-    RESOURCE_CLASS resource = RESOURCE_CLASS.valueOf(request
-        .getOriginalParams().getParams("RESOURCE_CLASS")[0]);
+    // Grab the resource class, default to METADATA if not specified.
+    String resourceClass = null;
+    RESOURCE_CLASS resource = null;
+    if (request.getOriginalParams().getParams(RESOURCE) != null) {
+      resourceClass = request.getOriginalParams().getParams(RESOURCE)[0];
+      try {
+        resource = RESOURCE_CLASS.valueOf(resourceClass);
+      } catch (Exception e) {
+        resourceClass = "METADATA";
+        resource = RESOURCE_CLASS.valueOf(resourceClass);
+        pdapParams.remove(RESOURCE);
+        pdapParams.add(RESOURCE, "METADATA");
+      }
+    } else {
+      resourceClass = "METADATA";
+      resource = RESOURCE_CLASS.valueOf(resourceClass);
+      pdapParams.add(RESOURCE, "METADATA");
+    }
     Map<String, String> resourceParam = resourceParams.get(resource);
-    // if there is already a portion of the query string group with AND
+
+    // If there is already a portion of the query string group with AND
     if (queryString.length() != 0) {
       queryString.append(" AND ");
     }
@@ -188,7 +212,7 @@ public class PDAPHandler extends StandardRequestHandler {
     // Inject the resource class into the query
     queryString.append(RESOURCE_FIELD);
     queryString.append(":");
-    queryString.append(resourceMap.get(request.getOriginalParams().getParams(RESOURCE)[0]));
+    queryString.append(resourceMap.get(resourceClass));
 
     // If there is a query pass it on to Solr as the q param
     if (queryString.length() > 0) {
@@ -206,16 +230,23 @@ public class PDAPHandler extends StandardRequestHandler {
       }
     }
 
-    // Handle paging parameters
-    if (request.getOriginalParams().getParams(PAGE_NUMBER) != null) {
-      int pageNum = Integer.parseInt(request.getOriginalParams().getParams(PAGE_NUMBER)[0]);
-      pdapParams.remove("start");
-      pdapParams.add("start","" + (pageNum-1));
-    }
+    // Handle the page size if specified. If not, get the default page size.
+    int pageSize = 0;
     if (request.getOriginalParams().getParams(PAGE_SIZE) != null) {
-      int pageSize = Integer.parseInt(request.getOriginalParams().getParams(PAGE_SIZE)[0]);
+      pageSize = Integer.parseInt(request.getOriginalParams().getParams(PAGE_SIZE)[0]);
       pdapParams.remove("rows");
       pdapParams.add("rows","" + pageSize);
+    } else {
+      pageSize = Integer.parseInt(request.getParams().getParams("rows")[0]);
+    }
+    
+    // Handle the page number and convert it for Solr's start parameter.
+    if (request.getOriginalParams().getParams(PAGE_NUMBER) != null) {
+      int pageNum = Integer.parseInt(request.getOriginalParams().getParams(PAGE_NUMBER)[0]);
+      if (pageNum > 1) {
+        pdapParams.remove("start");
+        pdapParams.add("start","" + (pageNum*pageSize-pageSize));
+      }
     }
 
     this.LOG.info("Solr Query String: " + queryString);
