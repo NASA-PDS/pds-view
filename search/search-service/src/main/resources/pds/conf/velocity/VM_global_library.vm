@@ -155,6 +155,15 @@
 $output
 #end
 
+#macro(wrapped_date_value $f)
+#if ($doc.containsKey($f))
+#set ($value = $date.format("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", $date.toDate("EEE MMM dd HH:mm:ss zzz yyyy", $doc.getFirstValue($f)), $date.getLocale(), $date.getTimeZone().getTimeZone("UTC")))
+<TD>$value</TD>
+#else
+<TD></TD>
+#end
+#end
+
 #macro(utc_date $theDate)
 $date.format("yyyy-MM-dd'T'HH:mm:ss'Z'",$theDate,$date.getLocale(),$date.getTimeZone().getTimeZone("UTC"))##
 #end

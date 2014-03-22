@@ -1,4 +1,4 @@
-    <TABLE>
+  <TABLE>
       <FIELD ID="PRODUCT.PRODUCT_ID" ucd="PRODUCT_ID" utype="pdap:PRODUCT.PRODUCT_ID" datatype="char" arraysize="*" />
       <FIELD ID="DATA_ACCESS_REFERENCE" ucd="DATA_ACCESS_REFERENCE" utype="pdap:DATA_ACCESS_REFERENCE" datatype="char" arraysize="*" />
       <FIELD ID="DATA_SET.DATA_SET_ID" ucd="DATA_SET_ID" utype="pdap:DATA_SET.DATA_SET_ID" datatype="char" arraysize="*" />
@@ -39,8 +39,8 @@
             #wrapped_value('node_id')
             #wrapped_value('full_name')
             #wrapped_value('investigation_name')
-            #wrapped_value('start_time')
-            #wrapped_value('stop_time')
+            #wrapped_date_value('start_time')
+            #wrapped_date_value('stop_time')
             #wrapped_value('target_type')
             #wrapped_value('target_name')
             <TD>PRODUCT</TD>
