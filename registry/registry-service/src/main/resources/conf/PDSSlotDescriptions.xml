@@ -233,6 +233,21 @@
        <!--       a way to specify an association, this is currently the approach harvest employs       -->
     </extrinsicObject>
 
+    <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Native:Definition"
+        objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
+        <slot name="start_date_time" slotType="string"/>
+        <slot name="stop_date_time" slotType="string"/>
+        <slot name="title" slotType="string"/>
+        <slot name="logical_identifier" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="product_class" slotType="string"/>
+        <slot name="version_id" slotType="string"/>
+        <slot name="alternate_title" slotType="string"/>
+        <slot name="alternate_id" slotType="string"/>
+
+       <!--       a way to specify an association, this is currently the approach harvest employs       -->
+    </extrinsicObject>
+
     <extrinsicObject id="urn:nasa:pds:profile:regrep:ObjectType:Product_Observational:Definition"
         objectType="urn:registry:ObjectType:RegistryObject:ExtrinsicObject:SlotDescription">
         <slot name="start_date_time" slotType="string"/>

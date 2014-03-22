@@ -1,4 +1,4 @@
-// Copyright 2009-2012, by the California Institute of Technology.
+// Copyright 2009-2014, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -33,7 +33,7 @@ public abstract class Constants {
 	};
 	
 	public static final String[] objectTypes = {
-		"Ingest_DD",
+		"Ingest_LDD", // modified build4a
 		"Product", 
 		"Product_AIP", // added build3a
 		"Product_Attribute_Definition",
@@ -51,6 +51,7 @@ public abstract class Constants {
 		"Product_Instrument_Host_PDS3",
 		"Product_Instrument_PDS3",
 		"Product_Mission_PDS3",
+		"Product_Native", // added build4b
 		"Product_Observational",
 		"Product_Proxy_PDS3",
 		"Product_SIP", // added build3a

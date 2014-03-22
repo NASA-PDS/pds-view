@@ -107,6 +107,12 @@
         name="Product_Mission_PDS3"
         lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Mission_PDS3"
         guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Mission_PDS3"/>
+    <classificationNode code="Product_Native"
+        parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
+        description="Product_Native is used to describe digital objects in the original format returned by the spacecraft or experimental system when that format cannot be described using one of the PDS4 formats specified for observational data (tables or arrays, excluding Array_1D)."
+        name="Product_Native"
+        lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Native"
+        guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Native"/>
     <classificationNode code="Product_Observational"
         parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
         description="A Product_Observational is a set of one or more information objects produced by an observing system."
