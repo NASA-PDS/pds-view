@@ -52,13 +52,13 @@ public class RegistryResource {
   RegistryService registryService;
 
   /**
-   * Returns a welcome message from the registry service. Can be used 
-   * to ping the registry.
+   * Returns home page of the registry service and the list of available
+   * resources in the header of the response. Can be used to ping the registry.
    */
   @GET
   public Response getRegistryResources() {
     Response.ResponseBuilder builder = Response
-        .ok("Welcome to the Registry Service.");
+        .ok("<html><head><title>Registry Service</title></head><body><table><tr><td><img src=\"images/pds4_logo.png\" alt=\"PDS Logo\" /></td><td><img src=\"images/spacer.gif\" alt=\"Spacer\" width=\"50\"/></td><td><h1>Registry Service</h1></td></tr></table><hr/><p>The Registry Service provides functionality for tracking, auditing, locating, and maintaining artifacts within the system. The service provides a REST-based interface for interacting with the service.</p><ul><li><a href=\"docs\">Service Interface</a></li></ul></body></html>");
     String associationsUri = uriInfo.getBaseUriBuilder().clone().path(
         RegistryResource.class).path(RegistryResource.class,
         "getAssociationsResource").build().toString();

@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <applicationDocs targetNamespace="http://research.sun.com/wadl/2006/10">
-    
-    <doc xml:lang="en" title="Registry Service API">
-        <p>This document describes the details of the REST-based interface for the Registry Service. The following is a list of endpoints for the API:
-        </p>
-    </doc>
+  <doc xml:lang="en" title=" ">
+    <table>
+      <tr>
+        <td><img src="../images/pds4_logo.png" alt="PDS Logo" /></td>
+        <td><img src="../images/spacer.gif" alt="Spacer" width="50"/></td>
+        <td><h1>Registry Service</h1></td>
+      </tr>
+    </table>
+    <hr/>
+    <p>This page describes the details of the REST-based application programming interface for the Registry Service. The following is a list of end points for the API:
+    </p>
+  </doc>
 </applicationDocs>
