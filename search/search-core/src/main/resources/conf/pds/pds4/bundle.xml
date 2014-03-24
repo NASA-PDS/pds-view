@@ -8,12 +8,15 @@
 		</query>
 	</specification>
 	
-	<!-- Fields displayed in default Search Service results -->
 	<indexFields>
-		<!-- Test required fields -->
+		<field name="search_id" type="required">
+			<outputString>pds4%3A{lid}</outputString>
+		</field>
 		<field name="identifier" type="required">
 			<registryPath>lid</registryPath>
 		</field>
+		
+		<!-- Search UI Fields -->
 		<field name="title" type="required">
 			<registryPath>name</registryPath>
 		</field>
@@ -23,10 +26,15 @@
 		<field name="resLocation" type="required">
 			<outputString>/ds-view/pds/viewBundle.jsp?identifier={lid}&amp;version={version_id}</outputString>
 		</field>
+		<!--  -->
+		
 		<field name="objectType" type="string">
 			<registryPath>objectType</registryPath>
-		</field>		
-		<field name="agency_name" type="string" default="Unknown">
+		</field>
+		<field name="product_class" type="string">
+			<registryPath>product_class</registryPath>
+		</field>
+		<field name="agency_name" type="string" default="nasa">
 			<registryPath>node_ref.agency_ref.alternate_id</registryPath>
 		</field>
 		<field name="pds_model_version" type="string">
@@ -74,23 +82,24 @@
 		<field name="observation_solar_longitude" type="string">
 			<registryPath>observation_solar_longitude</registryPath>
 		</field>
-<!--
-		<field name="primary_result_type" type="string">
-			<registryPath>primary_result_type</registryPath>
-		</field>
 		<field name="primary_result_purpose" type="string">
 			<registryPath>primary_result_purpose</registryPath>
 		</field>
-		<field name="primary_result_data_regime" type="string">
-			<registryPath>primary_result_data_regime</registryPath>
+		<field name="primary_result_processing_level" type="string">
+			<registryPath>primary_result_processing_level</registryPath>
 		</field>
 		<field name="primary_result_description" type="string">
 			<registryPath>primary_result_description</registryPath>
 		</field>
-		<field name="primary_result_processing_level_id" type="string">
-			<registryPath>primary_result_reduction_level</registryPath>
+		<field name="primary_result_wavelength_range" type="string">
+			<registryPath>primary_result_wavelength_range</registryPath>
 		</field>
--->
+		<field name="primary_result_domain" type="string">
+			<registryPath>primary_result_domain</registryPath>
+		</field>
+		<field name="primary_result_discipline_name" type="string">
+			<registryPath>primary_result_discipline_name</registryPath>
+		</field>
 		<field name="investigation_name" type="string">
 			<registryPath>investigation_name</registryPath>
 		</field>
@@ -140,35 +149,4 @@
 			<registryPath>resource_ref.resource_name</registryPath>
 		</field>
 	</indexFields>
-	<!-- Included from old search, leave in for now -->
-	<!-- field>
-		<name>format</name>
-		<type>out</type>
-		<value>XML</value>
-	</field>
-	<field>
-		<name>publisher</name>
-		<type>out</type>
-		<value>NASA.PDS</value>
-	</field>
-	<field>
-		<name>language</name>
-		<type>out</type>
-		<value>en</value>
-	</field>
-	<field>
-		<name>resContext</name>
-		<type>out</type>
-		<value>NASA.PDS</value>
-	</field>
-	<field>
-		<name>resClass</name>
-		<type>out</type>
-		<value>metadata.bundle</value>
-	</field>
-	<field>
-		<name>resource_class</name>
-		<type>out</type>
-		<value>Bundle_Description</value>
-	</field-->
 </product>
