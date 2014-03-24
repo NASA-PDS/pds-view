@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -67,11 +68,15 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
 
     // Get handler properties.
     String registryUrl = System.getProperty("gov.nasa.pds.transport.RegistryProductHandler.registryUrl", "http://localhost:8080/registry");
+    String[] registryUrls = registryUrl.split("\\s*,\\s*");
+    for (String _registryUrl : registryUrls) {
+    	System.out.println("Using PDS Registry URL: "+_registryUrl);
+    }
     String tmpDir = System.getProperty("gov.nasa.pds.transport.RegistryProductHandler.tmpDir", "/tmp");
 
     // Setup the registry list and initialize the registry handler.
     ArrayList<String> primaryRegistries = new ArrayList<String>();
-    primaryRegistries.add(registryUrl);
+    primaryRegistries.addAll(Arrays.asList(registryUrls));
     ArrayList<String> secondaryRegistries = new ArrayList<String>();
     RegistryHandler registryHandler = new RegistryHandler(primaryRegistries, secondaryRegistries, RegistryHandler.DFLT_QUERY_MAX, false);
 

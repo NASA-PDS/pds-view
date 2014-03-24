@@ -169,7 +169,13 @@ or
 
         <ul>
           <li>gov.nasa.pds.transport.RegistryProductHandler.registryUrl<br/>
-            <p>This property must contain the end point for the Registry Service to be queried by the Transport Service. The default value for this property is <i>http://localhost:8080/registry</i>.
+            <p>This property must contain the end point for the Registry Service to be queried by the Transport Service. 
+            The default value for this property is <i>http://localhost:8080/registry</i>. 
+            Optionally, the value can be set to a comma-separated list of Registry URLs, 
+            which will be queried in sequence by the Transport Service until a match is found, and the corresponding product
+            is returned. For example:
+            <br/>
+            <i>gov.nasa.pds.transport.RegistryProductHandler.registryUrl=http://localhost:8080/registry, http://pdsdev.jpl.nasa.gov:8080/registry-atm</i>.
             </p>
           </li>
           <li>gov.nasa.pds.transport.RegistryProductHandler.tmpDir<br/>
