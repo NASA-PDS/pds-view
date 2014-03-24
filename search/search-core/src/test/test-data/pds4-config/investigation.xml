@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <product>
 	<specification>
-		<title>Investigation</title>
+		<title>PDS4Investigation</title>
 		<query>
 			<registryPath>objectType</registryPath>
 			<value>Product_Context</value>
