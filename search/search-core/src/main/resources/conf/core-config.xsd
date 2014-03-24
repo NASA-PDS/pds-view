@@ -17,7 +17,6 @@
 	<xsd:element name="registryObjectType" type="xsd:string" />
 	<xsd:element name="registryObjectName" type="xsd:string" />
 	<xsd:element name="registryPath" type="xsd:string" />
-	<xsd:element name="outputString" type="xsd:string" />
 	<xsd:element name="title" type="xsd:string" />
 	<xsd:element name="url" type="xsd:string" />
 	<xsd:element name="value" type="xsd:string" />
@@ -92,8 +91,6 @@
 	<xsd:complexType name="Specification">
 		<xsd:sequence>
 			<xsd:element ref="title" />
-			<!-- xsd:element ref="registryObjectType" />
-			<xsd:element ref="registryObjectName" minOccurs="0" /-->
 			<xsd:element ref="query" maxOccurs="unbounded" />
 			<xsd:element ref="dataSources" minOccurs="0" />
 			<xsd:element ref="checkAssociations" minOccurs="0" />
@@ -101,6 +98,7 @@
 	</xsd:complexType>
 	
 	<xsd:attribute name="default" type="xsd:string" />
+	<xsd:element name="outputString" type="OutputString" />
 	<xsd:element name="field" type="Field" />
 	<xsd:complexType name="Field">
 		<xsd:choice>
@@ -111,19 +109,22 @@
 		<xsd:attribute ref="type" use="required" />
 		<xsd:attribute ref="default" />
 	</xsd:complexType>
-
-<!-- 
-	<xsd:element name="identifier" type="RequiredField" />
-	<xsd:element name="title" type="RequiredField" />
-	<xsd:element name="description" type="RequiredField" />
-	<xsd:element name="resourceLocation" type="RequiredField" />
-	<xsd:complexType name="RequiredField">
-		<xsd:choice>
-			<xsd:element ref="registryPath" />
-			<xsd:element ref="outputString" />
-		</xsd:choice>
+	
+	<xsd:attribute name="format" type="OutputStringFormat" />
+	<xsd:complexType name="OutputString">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute ref="format" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
 	</xsd:complexType>
- -->
+	
+	<xsd:simpleType name="OutputStringFormat">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="text"/>
+			<xsd:enumeration value="url"/>
+	  	</xsd:restriction>
+	</xsd:simpleType>
 
 	<xsd:element name="indexFields" type="IndexField" />
 	<xsd:complexType name="IndexField">

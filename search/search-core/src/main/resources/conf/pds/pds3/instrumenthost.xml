@@ -10,7 +10,7 @@
 
 	<indexFields>
 		<field name="search_id" type="required">
-			<outputString>pds3:{lid}</outputString>
+			<outputString format="text">pds3:{lid}</outputString>
 		</field>
 		<field name="identifier" type="required">
 			<registryPath>lid</registryPath>
@@ -24,7 +24,7 @@
 			<registryPath>instrument_host_description</registryPath>
 		</field>
 		<field name="resLocation" type="required">
-			<outputString>/ds-view/pds/viewHostProfile.jsp?INSTRUMENT_HOST_ID={instrument_host_id}</outputString>
+			<outputString format="url">/ds-view/pds/viewHostProfile.jsp?INSTRUMENT_HOST_ID={instrument_host_id}</outputString>
 		</field>
 		<!--  -->
 		
@@ -38,7 +38,7 @@
 			<registryPath>instrument_ref.data_set_ref.node_ref.agency_ref.alternate_id</registryPath>
 		</field>
 		<field name="pds_model_version" type="string">
-			<outputString>pds3</outputString>
+			<outputString format="text">pds3</outputString>
 		</field>
 		<field name="instrument_host_id" type="string">
 			<registryPath>instrument_host_id</registryPath>

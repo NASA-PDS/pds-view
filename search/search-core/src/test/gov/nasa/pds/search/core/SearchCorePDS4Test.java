@@ -67,7 +67,7 @@ public class SearchCorePDS4Test extends SearchCoreTest {
 			String[] args = {
 					"-i",
 					"-e", // Only run Extractor and Indexer components
-					"-r", TestConstants.PDS4_ATM_REGISTRY_URL, "-H",
+					"-r", TestConstants.PDS4_REGISTRY_URL, "-H",
 					TestConstants.SEARCH_HOME_RELATIVE, "-m", "5", "-c",
 					TestConstants.TEST_DIR_RELATIVE + "pds4-config", "-v", "0" };
 			SearchCoreLauncher.main(args);
@@ -87,7 +87,7 @@ public class SearchCorePDS4Test extends SearchCoreTest {
 	@Ignore
 	public void testLauncherPDS4WithSolrPost() {
 		try {
-			String[] args = { "-r", TestConstants.PDS4_ATM_REGISTRY_URL, "-H",
+			String[] args = { "-r", TestConstants.PDS4_REGISTRY_URL, "-H",
 					TestConstants.SEARCH_HOME_RELATIVE, "-m", "5", "-c",
 					TestConstants.TEST_DIR_RELATIVE + "pds4-config", "-v", "0" };
 			SearchCoreLauncher.main(args);

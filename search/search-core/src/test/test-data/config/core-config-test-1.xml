@@ -10,7 +10,7 @@
 
 	<indexFields>
 		<field name="search-id" type="required">
-			<outputString>pds3:{lid}</outputString>
+			<outputString format="text">pds3:{lid}</outputString>
 		</field>
 		<field name="identifier" type="required">
 			<registryPath>lid</registryPath>
@@ -22,7 +22,7 @@
 			<registryPath>data_set_terse_description</registryPath>
 		</field>
 		<field name="resLocation" type="required">
-			<outputString>http://pds.nasa.gov/ds-view/pds/viewDataset.jsp?dsid={data_set_id}</outputString>
+			<outputString format="url">/ds-view/pds/viewDataset.jsp?dsid={data_set_id}</outputString>
 		</field>
 		<field name="objectType" type="string">
 			<registryPath>objectType</registryPath>
@@ -31,7 +31,7 @@
 			<registryPath>node_ref.agency_ref.alternate_id</registryPath>
 		</field>
 		<field name="pds_model_version" type="string">
-			<outputString>pds3</outputString>
+			<outputString format="text">pds3</outputString>
 		</field>
 		<field name="investigation_name" type="string">
 			<registryPath>investigation_ref.mission_name</registryPath>

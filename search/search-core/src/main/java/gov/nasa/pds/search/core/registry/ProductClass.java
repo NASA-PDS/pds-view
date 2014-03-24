@@ -29,6 +29,8 @@ import gov.nasa.pds.search.core.logging.ToolsLogRecord;
 import gov.nasa.pds.search.core.schema.CoreConfigReader;
 import gov.nasa.pds.search.core.schema.DataSource;
 import gov.nasa.pds.search.core.schema.Field;
+import gov.nasa.pds.search.core.schema.OutputString;
+import gov.nasa.pds.search.core.schema.OutputStringFormat;
 import gov.nasa.pds.search.core.schema.Product;
 import gov.nasa.pds.search.core.schema.Query;
 import gov.nasa.pds.search.core.schema.SourcePriority;
@@ -244,7 +246,7 @@ public class ProductClass {
 			/* Initialize local variables */
 			List<String> valueList = new ArrayList<String>();
 			
-			String value;
+			Object value;
 			
 			// Loop through class results beginning from top
 			for (Field field : this.product.getIndexFields().getField()) {
@@ -253,10 +255,10 @@ public class ProductClass {
 				
 				// Handle registry path
 				if ((value = field.getRegistryPath()) != null) {
-					valueList = getSlotValuesFromPath(value, searchExtrinsic);
+					valueList = getSlotValuesFromPath((String)value, searchExtrinsic);
 				} else if ((value = field.getOutputString()) != null) {	// Handle outputString
 					valueList = new ArrayList<String>();
-					valueList.add(checkForSubstring(value, searchExtrinsic));
+					valueList.add(checkForSubstring((OutputString)value, searchExtrinsic));
 				}
 				
 				if (valueList.isEmpty() && field.getDefault() != null) {
@@ -285,10 +287,13 @@ public class ProductClass {
 	 * 						to be queried, replaced with the value from the Registry
 	 * @throws Exception
 	 */
-	private String checkForSubstring(String str, ExtendedExtrinsicObject extObject)
+	protected String checkForSubstring(OutputString outputString, ExtendedExtrinsicObject extObject)
 			throws Exception {
+		
+		String str = outputString.getValue();
+		
 		int start, end; 
-		String key;
+		String key = "", value = "";
 
 		List<String> valueList = new ArrayList<String>();
 		while (str.contains("{")) {
@@ -298,9 +303,15 @@ public class ProductClass {
 
 			valueList = getSlotValuesFromPath(key, extObject);			
 			if (valueList != null && !valueList.isEmpty()) {
-				str = str.replace("{" + key + "}",URLEncoder.encode(valueList.get(0), "UTF-8"));
+				if (outputString.getFormat().equals(OutputStringFormat.URL)) {
+					value = URLEncoder.encode(valueList.get(0), "UTF-8");
+				} else if (outputString.getFormat().equals(OutputStringFormat.TEXT)) {
+					value = valueList.get(0);
+				}
+				str = str.replace("{" + key + "}", value);
+					
 			} else {
-				str = str.replace("{" + key + "}", "Unknown");
+				str = str.replace("{" + key + "}", "");
 			}
 		}
 		return str;

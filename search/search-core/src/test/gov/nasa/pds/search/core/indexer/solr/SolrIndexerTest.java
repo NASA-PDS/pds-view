@@ -23,9 +23,6 @@ public class SolrIndexerTest extends SearchCoreTest {
 				indexDir.mkdirs();
 			}
 
-			// String[] args = { this.searchServiceHome.getAbsolutePath() +
-			// "/index",
-			// this.searchServiceHome.getAbsolutePath() + "/tse/extract" };
 			String[] args = {
 					System.getProperty("user.dir") + "/"
 							+ TestConstants.SEARCH_HOME_RELATIVE + "/index",

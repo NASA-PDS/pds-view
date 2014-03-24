@@ -14,7 +14,7 @@
 	
 	<indexFields>
 		<field name="search-id" type="required">
-			<outputString>pds4:{lid}</outputString>
+			<outputString format="text">pds4:{lid}</outputString>
 		</field>
 		<field name="identifier" type="required">
 			<registryPath>lid</registryPath>
@@ -26,7 +26,7 @@
 			<registryPath>citation_description</registryPath>
 		</field>
 		<field name="resLocation" type="required">
-			<outputString>/ds-view/pds/viewContext.jsp?identifier={lid}&amp;version={version_id}</outputString>
+			<outputString format="url">/ds-view/pds/viewContext.jsp?identifier={lid}&amp;version={version_id}</outputString>
 		</field>
 		<field name="objectType" type="string">
 			<registryPath>objectType</registryPath>
@@ -35,7 +35,7 @@
 			<registryPath>node_ref.agency_ref.alternate_id</registryPath>
 		</field>
 		<field name="pds_model_version" type="string">
-			<outputString>pds4</outputString>
+			<outputString format="text">pds4</outputString>
 		</field>
 		<field name="version_id" type="string">
 			<registryPath>version_id</registryPath>
@@ -77,36 +77,4 @@
 			<registryPath>modification_description</registryPath>
 		</field>
 	</indexFields>
-	
-	<!-- Included from old search, leave in for now -->
-	<!-- field>
-		<name>format</name>
-		<type>out</type>
-		<value>XML</value>
-	</field>
-	<field>
-		<name>publisher</name>
-		<type>out</type>
-		<value>NASA.PDS</value>
-	</field>
-	<field>
-		<name>language</name>
-		<type>out</type>
-		<value>en</value>
-	</field>
-	<field>
-		<name>resContext</name>
-		<type>out</type>
-		<value>NASA.PDS</value>
-	</field>
-	<field>
-		<name>resClass</name>
-		<type>out</type>
-		<value>metadata.instrument</value>
-	</field>
-	<field>
-		<name>resource_class</name>
-		<type>out</type>
-		<value>Instrument_Description</value>
-	</field -->
 </product>

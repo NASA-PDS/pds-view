@@ -65,9 +65,9 @@ public class RegistryExtractorTest extends SearchCoreTest {
 		correctList.add(new File(System.getProperty("user.dir") + "/"
 				+ TestConstants.TEST_DIR_RELATIVE
 				+ "config/pds4-context.xml"));
-		correctList.add(new File(System.getProperty("user.dir") + "/"
-				+ TestConstants.TEST_DIR_RELATIVE
-				+ "config/psa-dataset.xml"));
+		//correctList.add(new File(System.getProperty("user.dir") + "/"
+		//		+ TestConstants.TEST_DIR_RELATIVE
+		//		+ "config/psa-dataset.xml"));
 
 		try {
 			List<File> configList = this.re.getCoreConfigs(new File(System
@@ -122,7 +122,7 @@ public class RegistryExtractorTest extends SearchCoreTest {
 	public void testRunPSA() throws SearchCoreFatalException {
 		try {
 			this.re.setConfDir(new File(System.getProperty("user.dir") + "/"
-					+ TestConstants.TEST_DIR_RELATIVE + "/config/psa-dataset.xml"));
+					+ TestConstants.TEST_DIR_RELATIVE + "/config/psa/psa-dataset.xml"));
 			this.re.setPrimaryRegistries(Arrays
 					.asList(TestConstants.PSA_REGISTRY_URL));
 			// this.re.setBackupRegistries(Arrays.asList(TestConstants.PDS3_REGISTRY_URL));

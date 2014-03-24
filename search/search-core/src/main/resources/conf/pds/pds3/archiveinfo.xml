@@ -14,7 +14,7 @@
 	
 	<indexFields>
 		<field name="search_id" type="required">
-			<outputString>pds3:{lid}</outputString>
+			<outputString format="text">pds3:{lid}</outputString>
 		</field>
 		<field name="identifier" type="required">
 			<registryPath>lid</registryPath>
@@ -33,16 +33,16 @@
 		<!--  -->
 		
 		<field name="objectType" type="string">
-			<outputString>objectType</outputString>
+			<registryPath>objectType</registryPath>
 		</field>
 		<field name="data_class" type="required">
-			<outputString>data_class</outputString>
+			<registryPath>data_class</registryPath>
 		</field>
 		<field name="agency_name" type="string">
 			<registryPath>instrument_ref.data_set_ref.node_ref.agency_ref.alternate_id</registryPath>
 		</field>
 		<field name="pds_model_version" type="string">
-			<outputString>pds3</outputString>
+			<outputString format="text">pds3</outputString>
 		</field>
 		<field name="resource_name" type="string">
 			<registryPath>resource_name</registryPath>

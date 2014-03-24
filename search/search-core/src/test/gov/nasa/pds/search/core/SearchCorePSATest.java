@@ -45,7 +45,7 @@ public class SearchCorePSATest {
 					"-e", // Only run Extractor and Indexer components
 					"-r", TestConstants.PSA_REGISTRY_URL, "-H",
 					TestConstants.SEARCH_HOME_RELATIVE, "-m", "5", "-c",
-					TestConstants.CONFIG_DIR_RELATIVE + "psa/pds3", "-v", "0" };
+					TestConstants.TEST_DIR_RELATIVE + "config/psa", "-v", "0" };
 			SearchCoreLauncher.main(args);
 		} catch (Exception e) {
 			e.printStackTrace();

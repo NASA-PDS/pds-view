@@ -10,7 +10,7 @@
 	
 	<indexFields>
 		<field name="search_id" type="required">
-			<outputString>pds4%3A{lid}</outputString>
+			<outputString format="text">pds4:{lid}</outputString>
 		</field>
 		<field name="identifier" type="required">
 			<registryPath>lid</registryPath>
@@ -24,7 +24,7 @@
 			<registryPath>citation_description</registryPath>
 		</field>
 		<field name="resLocation" type="required">
-			<outputString>/ds-view/pds/viewBundle.jsp?identifier={lid}&amp;version={version_id}</outputString>
+			<outputString format="url">/ds-view/pds/viewBundle.jsp?identifier={lid}&amp;version={version_id}</outputString>
 		</field>
 		<!--  -->
 		
@@ -38,7 +38,7 @@
 			<registryPath>node_ref.agency_ref.alternate_id</registryPath>
 		</field>
 		<field name="pds_model_version" type="string">
-			<outputString>pds4</outputString>
+			<outputString format="text">pds4</outputString>
 		</field>
 		<field name="version_id" type="string">
 			<registryPath>version_id</registryPath>

@@ -6,9 +6,14 @@ package gov.nasa.pds.search.core.registry;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import gov.nasa.pds.registry.client.results.RegistryHandler;
+import gov.nasa.pds.registry.model.ExtrinsicObject;
+import gov.nasa.pds.registry.model.wrapper.ExtendedExtrinsicObject;
 import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.constants.TestConstants;
 import gov.nasa.pds.search.core.exception.SearchCoreFatalException;
+import gov.nasa.pds.search.core.schema.OutputString;
+import gov.nasa.pds.search.core.schema.OutputStringFormat;
 import gov.nasa.pds.search.core.test.SearchCoreTest;
 import gov.nasa.pds.search.core.util.Debugger;
 
@@ -104,9 +109,9 @@ public class ProductClassTest extends SearchCoreTest {
 		try {
 			String[] extensions = { "xml" };
 			this.pc = new ProductClass(TEST_DIR,
-					Arrays.asList(TestConstants.PDS4_ATM_REGISTRY_URL), // primary
+					Arrays.asList(TestConstants.PDS4_REGISTRY_URL), // primary
 																		// registry
-					Arrays.asList(TestConstants.PDS4_REGISTRY_URL)); // secondary
+					new ArrayList<String>()); // secondary
 																		// registry
 			this.pc.setQueryMax(1);
 			for (File file : FileUtils
@@ -136,15 +141,12 @@ public class ProductClassTest extends SearchCoreTest {
 																		// registry
 			this.pc.setQueryMax(1);
 
-			for (File file : FileUtils
-					.listFiles(
-							new File(System.getProperty("user.dir") + "/"
-									+ TestConstants.CONFIG_DIR_RELATIVE
-									+ "/psa/pds3/"), extensions, false)) {
-				if (this.pc.query(file).isEmpty()) {
-					fail("Test failed - Config returned empty list of Extrinsics: "
-							+ file.getAbsolutePath());
-				}
+			File file = new File(System.getProperty("user.dir") + "/"
+					+ TestConstants.TEST_DIR_RELATIVE
+					+ "config/psa/psa-dataset.xml");
+			if (this.pc.query(file).isEmpty()) {
+			fail("Test failed - Config returned empty list of Extrinsics: "
+					+ file.getAbsolutePath());
 			}
 		} catch (ProductClassException e) {
 			fail("PDS3 Query Test failed. See stack trace.");
@@ -162,15 +164,12 @@ public class ProductClassTest extends SearchCoreTest {
 					new ArrayList<String>()); // secondary registry
 			this.pc.setQueryMax(1);
 
-			for (File file : FileUtils
-					.listFiles(
-							new File(System.getProperty("user.dir") + "/"
-									+ TestConstants.CONFIG_DIR_RELATIVE
-									+ "/psa/pds3/"), extensions, false)) {
-				if (this.pc.query(file).isEmpty()) {
-					fail("Test failed - Config returned empty list of Extrinsics: "
-							+ file.getAbsolutePath());
-				}
+			File file = new File(System.getProperty("user.dir") + "/"
+									+ TestConstants.TEST_DIR_RELATIVE
+									+ "config/psa/psa-dataset.xml");
+			if (this.pc.query(file).isEmpty()) {
+				fail("Test failed - Config returned empty list of Extrinsics: "
+						+ file.getAbsolutePath());
 			}
 		} catch (ProductClassException e) {
 			fail("PDS3 Query Test failed. See stack trace.");
@@ -193,6 +192,24 @@ public class ProductClassTest extends SearchCoreTest {
 		} catch (ProductClassException e) {
 			e.printStackTrace();
 			fail("Query Test failed. See stack trace.");
+		}
+	}
+	
+	@Test
+	public void testCheckForSubstring() {
+		try {
+			String lidvid = "urn:nasa:pds:context_pds3:instrument:instrument.mri__dif::8.0";
+			RegistryHandler handler = new RegistryHandler(
+					Arrays.asList(TestConstants.PDS3_REGISTRY_URL),
+					new ArrayList<String>(), 5);
+			handler.setQueryMax(10);
+			ExtendedExtrinsicObject extObject = new ExtendedExtrinsicObject(handler.getExtrinsicByLidvid(lidvid));
+			OutputString outputString = new OutputString();
+			outputString.setValue("pds4:{lid}");
+			outputString.setFormat(OutputStringFormat.TEXT);
+			assertTrue(this.pc.checkForSubstring(outputString, extObject).equals("pds4:urn:nasa:pds:context_pds3:instrument:instrument.mri__dif"));
+		} catch (Exception e) {
+			fail("Check substring unit test failed.");
 		}
 	}
 

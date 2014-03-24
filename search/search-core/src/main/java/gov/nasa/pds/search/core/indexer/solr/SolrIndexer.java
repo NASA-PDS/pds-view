@@ -41,7 +41,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 public class SolrIndexer {
 
 	/** Standard output logger. **/
-	private static Logger log = Logger.getLogger(RegistryExtractor.class.getName());
+	private static Logger log = Logger.getLogger(SolrIndexer.class.getName());
 	
 	private static final int INDEX_DOC_THRESHOLD = 1000;
 
@@ -63,8 +63,6 @@ public class SolrIndexer {
 			System.err.println("Usage: " + usage);
 			System.exit(1);
 		}
-
-		//Date start = new Date();
 		totalIndexDocCount = 0;
 
 		searchServiceIndexHome = args[0];
@@ -86,10 +84,6 @@ public class SolrIndexer {
 		} catch (Exception e) {
 			throw new IndexerException("Error generating Solr Index documents in " + args[1]);
 		}
-		//Date end = new Date();
-
-		//System.out.print(end.getTime() - start.getTime());
-		//System.out.println(" total milliseconds");
 	}
 
 	/**
@@ -175,10 +169,5 @@ public class SolrIndexer {
 		for (File file : files) {
 			FileUtils.forceDelete(file);
 		}
-		/*File pastIndex = new File(searchServiceIndexHome, "solr_index.xml.2");
-		System.out.println(pastIndex.getAbsolutePath());
-		try {
-			FileUtils.forceDelete(pastIndex);
-		} catch (IOException e) { /* Thrown if backUpDir DNE. */ //}
 	}
 }

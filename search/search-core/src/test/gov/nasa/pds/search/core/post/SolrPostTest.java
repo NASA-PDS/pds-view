@@ -1,6 +1,7 @@
 package gov.nasa.pds.search.core.post;
 
 import static org.junit.Assert.fail;
+import gov.nasa.pds.search.core.SearchCoreLauncher;
 import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.constants.TestConstants;
 import gov.nasa.pds.search.core.logging.ToolsLevel;
@@ -36,8 +37,16 @@ public class SolrPostTest extends SearchCoreTest {
 	public SingleTestRule test = new SingleTestRule("");
 
 	@BeforeClass
-	public static void oneTimeSetUp() throws SolrPostException {
+	public static void oneTimeSetUp() throws Exception {
 		solrPost = new SolrPost(Constants.DEFAULT_SERVICE_URL);
+		
+		String[] args = {
+				"-i",
+				"-e", // Only run Extractor and Indexer components
+				"-r", TestConstants.PDS3_REGISTRY_URL, "-H",
+				TestConstants.SEARCH_HOME_RELATIVE, "-m", "1", "-c",
+				TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3", "-v", "0" };
+		SearchCoreLauncher.main(args);
 	}
 
 	/**
