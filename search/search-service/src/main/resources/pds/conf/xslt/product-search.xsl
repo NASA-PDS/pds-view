@@ -12,7 +12,7 @@
   <xsl:param name="SOLR_HOME" select="." />
   <xsl:variable name="numTools" as="xs:integer">5</xsl:variable>
 
-  <xsl:variable name="title">PDS: Search Results test1</xsl:variable>
+  <xsl:variable name="title">PDS: Search Results</xsl:variable>
   <xsl:variable name="ds_result_range">
     <xsl:choose>
       <xsl:when test="//result/@numFound = 1">
@@ -187,20 +187,20 @@
         (<xsl:value-of select="$ds_result_time" /> seconds)
     </p>
 
-    <xsl:if test="response/result/doc[str[@name='objectType']='Product_Collection' or str[@name='objectType']='Product_Bundle']">
+    <xsl:if test="response/result/doc[(arr|str)[@name='product_class']='Product_Collection' or (arr|str)[@name='product_class']='Product_Bundle']">
       <div style="margin-top: 1em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Bundles and Collections</div>
       <ul class="results">
-        <xsl:apply-templates select="response/result/doc[str[@name='objectType']='Product_Collection' or str[@name='objectType']='Product_Bundle']"/>
+        <xsl:apply-templates select="response/result/doc[(arr|str)[@name='product_class']='Product_Collection' or (arr|str)[@name='product_class']='Product_Bundle']"/>
       </ul>
       
-      <xsl:if test="count(response/result/doc[str[@name='objectType']='Product_Collection' or str[@name='objectType']='Product_Bundle']) > 2">
+      <xsl:if test="count(response/result/doc[(arr|str)[@name='product_class']='Product_Collection' or (arr|str)[@name='product_class']='Product_Bundle']) > 2">
         <div class="more-tools"><a class="tools-button">More...</a></div>
       </xsl:if>
     </xsl:if>
 
       <ul class="results" style="padding-top: 1em;">
       <div style="margin-top: 1em; margin-bottom: .5em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Products</div>
-        <xsl:apply-templates select="response/result/doc[str[@name='objectType']!='Product_Collection' and str[@name='objectType']!='Product_Bundle']"/>
+        <xsl:apply-templates select="response/result/doc[(arr|str)[@name='product_class']!='Product_Collection' and (arr|str)[@name='product_class']!='Product_Bundle']"/>
       </ul>
 
       <xsl:if test="response/result/@numFound &gt; count(response/result/doc)">
@@ -259,11 +259,11 @@
 			<xsl:value-of select="str[@name='title']" />
 		</xsl:variable>
 		<xsl:choose>
-			<xsl:when test="str[@name='objectType'] = 'Product_Collection' or str[@name='objectType']='Product_Bundle'">
+			<xsl:when test="(arr|str)[@name='product_class'] = 'Product_Collection' or (arr|str)[@name='product_class']='Product_Bundle'">
 				<xsl:choose>
 					<xsl:when test="position() > 2">
 						<li class="result hidden tool">
-							<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='objectType']))" />:</strong>
+							<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case((arr|str)[@name='product_class']))" />:</strong>
 							<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
 							<br />
 							<xsl:value-of select="pds:description((arr|str)[@name='description'],str[@name='title'])" />
@@ -271,7 +271,7 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<li class="result">
-							<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='objectType']))" />:</strong>
+							<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case((arr|str)[@name='product_class']))" />:</strong>
 							<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
 							<br />
 							<xsl:value-of select="pds:description((arr|str)[@name='description'],str[@name='title'])" />
@@ -282,7 +282,7 @@
 			<xsl:otherwise>
 
 				<li class="result">
-					<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='objectType']))" />:</strong>
+					<strong><xsl:value-of select="pds:caption-string('category',fn:lower-case(str[@name='product_class']))" />:</strong>
 					<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
 					<br />
 							<xsl:value-of select="(arr|str)[@name='data_class']" />
