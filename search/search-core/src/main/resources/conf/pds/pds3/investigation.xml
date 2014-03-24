@@ -8,12 +8,15 @@
 		</query>
 	</specification>
 	
-	<!-- Fields displayed in default Search Service results -->
 	<indexFields>
-		<!-- Test required fields -->
+		<field name="search_id" type="required">
+			<outputString>pds3:{lid}</outputString>
+		</field>
 		<field name="identifier" type="required">
 			<registryPath>lid</registryPath>
 		</field>
+		
+		<!-- Search UI Fields -->
 		<field name="title" type="required">
 			<registryPath>name</registryPath>
 		</field>
@@ -23,8 +26,13 @@
 		<field name="resLocation" type="required">
 			<outputString>/ds-view/pds/viewMissionProfile.jsp?MISSION_NAME={mission_name}</outputString>
 		</field>
+		<!--  -->
+		
 		<field name="objectType" type="string">
 			<registryPath>objectType</registryPath>
+		</field>
+		<field name="product_class" type="string">
+			<registryPath>product_class</registryPath>
 		</field>
 		<field name="agency_name" type="string">
 			<registryPath>instrument_ref.data_set_ref.node_ref.agency_ref.alternate_id</registryPath>
@@ -51,37 +59,4 @@
 			<registryPath>mission_objectives_summary</registryPath>
 		</field>
 	</indexFields>
-	
-	<!-- Included from old search, leave in for now -->
-	<!-- field>
-		<name>format</name>
-		<type>out</type>
-		<value>XML</value>
-	</field>
-	<field>
-		<name>language</name>
-		<type>out</type>
-		<value>en</value>
-	</field>
-	<field>
-		<name>publisher</name>
-		<type>out</type>
-		<value>NASA.PDS</value>
-	</field>
-	<field>
-		<name>resContext</name>
-		<type>out</type>
-		<value>NASA.PDS</value>
-	</field>
-	<field>
-		<name>resClass</name>
-		<type>out</type>
-		<value>metadata.investigation</value>
-	</field>
-
-	<field>
-		<name>resource_class</name>
-		<type>out</type>
-		<value>Investigation_Description</value>
-	</field-->
 </product>
