@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <product>
 	<specification>
-		<title>Target</title>
+		<title>PDS4Target</title>
 		<query>
 			<registryPath>objectType</registryPath>
 			<value>Product_Context</value>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <product>
 	<specification>
-		<title>InstrumentHost</title>
+		<title>PDS4InstrumentHost</title>
 		<query>
 			<registryPath>objectType</registryPath>
 			<value>Product_Context</value>
