@@ -29,6 +29,7 @@ import org.junit.runners.JUnit4;
  * 
  */
 @RunWith(JUnit4.class)
+@Ignore
 public class SolrPostTest extends SearchCoreTest {
 
 	private static SolrPost solrPost;
