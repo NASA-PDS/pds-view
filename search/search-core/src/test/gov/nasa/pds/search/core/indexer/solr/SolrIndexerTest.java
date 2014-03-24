@@ -1,6 +1,7 @@
 package gov.nasa.pds.search.core.indexer.solr;
 
 import static org.junit.Assert.fail;
+import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.constants.TestConstants;
 import gov.nasa.pds.search.core.test.SearchCoreTest;
 
@@ -30,7 +31,7 @@ public class SolrIndexerTest extends SearchCoreTest {
 							+ TestConstants.SEARCH_HOME_RELATIVE + "/index",
 					System.getProperty("user.dir") + "/"
 							+ TestConstants.SEARCH_HOME_RELATIVE
-							+ "/registry-data" };
+							+ "/" + Constants.SOLR_DOC_DIR };
 			SolrIndexer.main(args);
 		} catch (Exception e) {
 			e.printStackTrace();

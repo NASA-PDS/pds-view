@@ -40,20 +40,20 @@ public final class TestConstants {
 	/** Registry URL for PDS3 Context Products used for testing purposes **/
 	// public static final String
 	// PDS3_REGISTRY_URL="http://pdsdev.jpl.nasa.gov:8080/registry";
-	public static final String PDS3_REGISTRY_URL = "http://pdsbeta.jpl.nasa.gov:8080/registry";
+	public static final String PDS3_REGISTRY_URL = "http://pdsbeta.jpl.nasa.gov:8080/registry-pds3";
 
 	/** Registry URL for PDS4 Products used for testing purposes **/
-	public static final String PDS4_ATM_REGISTRY_URL = "http://pdsdev.jpl.nasa.gov:8080/registry-atm";
+	public static final String PDS4_ATM_REGISTRY_URL = "http://pdsbeta.jpl.nasa.gov:8080/registry-atm";
 
 	/** Registry URL for PDS4 Products used for testing purposes **/
-	public static final String PDS4_REGISTRY_URL = "http://pdsdev.jpl.nasa.gov:8080/registry-pds4";
+	public static final String PDS4_REGISTRY_URL = "http://pdsbeta.jpl.nasa.gov:8080/registry-pds4";
 
 	/** PSA Registry URL used for testing purposes **/
-	public static final String PSA_REGISTRY_URL = "http://planetarydata.org/registry";
+	public static final String PSA_REGISTRY_URL = "http://planetarydata.org/registry/";
 	// public static final String
 	// PSA_REGISTRY_URL="http:/pdsdev.jpl.nasa.gov:8080/registry-psa";
 
 	/** Search Service Solr URL **/
-	public static final String SOLR_SERVER_URL = "http://pdsdev.jpl.nasa.gov:8080/search-service/pds";
+	public static final String SOLR_SERVER_URL = "http://pdsbeta:8080/search-service/pds";
 
 }

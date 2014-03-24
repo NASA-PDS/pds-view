@@ -5,6 +5,7 @@
       <field name="instrument_type">CAMERA</field>
       <field name="search_engine_type">MARS</field>
       <field name="title">2001 Mars Odyssey Image Search</field>
+	  <field name="search_id">SearchTool_2001 Mars Odyssey Image Search</field>
       <field name="identifier">SearchTool_2001 Mars Odyssey Image Search</field>
       <field name="investigation_name">2001_mars_odyssey</field>
       <field name="target_name">mars</field>
@@ -39,6 +40,7 @@
       <field name="search_engine_type">SATURN</field>
       <field name="search_engine_type">RINGS</field>
       <field name="title">Cassini Image Search</field>
+      <field name="search_id">SearchTool_Cassini Image Search</field>
       <field name="identifier">SearchTool_Cassini Image Search</field>
       <field name="investigation_name">cassini-huygens</field>
       <field name="target_name">adrastea</field>
@@ -127,6 +129,7 @@
       <field name="instrument_type">IMAGING CAMERA</field>
       <field name="search_engine_type">MOON</field>
       <field name="title">Clementine Image Search</field>
+      <field name="search_id">SearchTool_Clementine Image Search</field>
       <field name="identifier">SearchTool_Clementine Image Search</field>
       <field name="investigation_name">deep_space_program_science_experiment</field>
       <field name="target_name">earth</field>
@@ -170,6 +173,7 @@
       <field name="search_engine_type">JUPITER</field>
       <field name="search_engine_type">RINGS</field>
       <field name="title">Galileo Image Search</field>
+      <field name="search_id">SearchTool_Galileo Image Search</field>
       <field name="identifier">SearchTool_Galileo Image Search</field>
       <field name="investigation_name">galileo</field>
       <field name="target_name">amalthea</field>
@@ -240,6 +244,7 @@
       <field name="instrument_type">RADAR</field>
       <field name="search_engine_type">VENUS</field>
       <field name="title">Magellan Image Search</field>
+      <field name="search_id">SearchTool_Magellan Image Search</field>
       <field name="identifier">SearchTool_Magellan Image Search</field>
       <field name="investigation_name">magellan</field>
       <field name="target_name">venus</field>
@@ -282,6 +287,7 @@
       <field name="instrument_type">SPECTROMETER</field>
       <field name="search_engine_type">MARS</field>
       <field name="title">Mars Exploration Rover Image Search</field>
+      <field name="search_id">SearchTool_Mars Exploration Rover Image Search</field>
       <field name="identifier">SearchTool_Mars Exploration Rover Image Search</field>
       <field name="investigation_name">mars_exploration_rover</field>
       <field name="target_name">mars</field>
@@ -372,6 +378,7 @@
       <field name="instrument_type">CAMERA</field>
       <field name="search_engine_type">MARS</field>
       <field name="title">Mars Express Image Search</field>
+      <field name="search_id">SearchTool_Mars Express Image Search</field>
       <field name="identifier">SearchTool_Mars Express Image Search</field>
       <field name="investigation_name">mars_express</field>
       <field name="target_name">mars</field>
@@ -395,6 +402,7 @@
       <field name="instrument_type">LINEAR ARRAY CAMERA</field>
       <field name="search_engine_type">MARS</field>
       <field name="title">Mars Global Surveyor Image Search</field>
+      <field name="search_id">SearchTool_Mars Global Surveyor Image Search</field>
       <field name="identifier">SearchTool_Mars Global Surveyor Image Search</field>
       <field name="investigation_name">mars_global_surveyor</field>
       <field name="target_name">mars</field>
@@ -419,6 +427,7 @@
       <field name="instrument_type">CAMERA</field>
       <field name="search_engine_type">MARS</field>
       <field name="title">Viking Lander Image Search</field>
+      <field name="search_id">SearchTool_Viking Lander Image Search</field>
       <field name="identifier">SearchTool_Viking Lander Image Search</field>
       <field name="investigation_name">viking</field>
       <field name="target_name">mars</field>
@@ -448,6 +457,7 @@
       <field name="instrument_type">VIDICON CAMERA</field>
       <field name="search_engine_type">MARS</field>
       <field name="title">Viking Orbiter Image Search</field>
+      <field name="search_id">SearchTool_Viking Orbiter Image Search</field>
       <field name="identifier">SearchTool_Viking Orbiter Image Search</field>
       <field name="investigation_name">viking</field>
       <field name="target_name">mars</field>
@@ -493,6 +503,7 @@
       <field name="search_engine_type">NEPTUNE</field>
       <field name="search_engine_type">RINGS</field>
       <field name="title">Outer Planets Unified Search (OPUS)</field>
+      <field name="search_id">SearchTool_Outer Planets Unified Search (OPUS)</field>
       <field name="identifier">SearchTool_Outer Planets Unified Search (OPUS)</field>
       <field name="investigation_name">voyager</field>
       <field name="investigation_name">cassini-huygens</field>
@@ -611,6 +622,7 @@
       <field name="search_engine_type">NEPTUNE</field>
       <field name="search_engine_type">RINGS</field>
       <field name="title">Voyager Image Catalog Search</field>
+      <field name="search_id">SearchTool_Voyager Image Catalog Search</field>
       <field name="identifier">SearchTool_Voyager Image Catalog Search</field>
       <field name="investigation_name">voyager</field>
       <field name="target_name">1989n1</field>
@@ -697,6 +709,7 @@
    <doc>
       <field name="search_engine_type">MARS</field>
       <field name="title">Mars Orbital Data Explorer</field>
+      <field name="search_id">SearchTool_Mars Orbital Data Explorer</field>
       <field name="identifier">SearchTool_Mars Orbital Data Explorer</field>
       <field name="resource_link">http://ode.rsl.wustl.edu/mars/</field>
       <field name="description">The Mars Orbital Data Explorer supports search, browse, and download of PDS data products from the Mars Reconnaissance Orbiter, Mars Express, and Mars Global Surveyor missions</field>
@@ -838,6 +851,7 @@
    <doc>
       <field name="search_engine_type">MERCURY</field>
       <field name="title">Mercury Orbital Data Explorer</field>
+      <field name="search_id">SearchTool_Mercury Orbital Data Explorer</field>
       <field name="identifier">SearchTool_Mercury Orbital Data Explorer</field>
       <field name="resource_link">http://ode.rsl.wustl.edu/mercury/</field>
       <field name="description">The Mercury Orbital Data Explorer supports search, browse, and download of PDS data products from the Messenger mission</field>
@@ -907,6 +921,7 @@
       <field name="instrument_type">SPECTROMETER</field>
       <field name="search_engine_type">MARS</field>
       <field name="title">MER Analyst's Notebook</field>
+      <field name="search_id">SearchTool_MER Analyst's Notebook</field>
       <field name="identifier">SearchTool_MER Analyst's Notebook</field>
       <field name="investigation_name">mars_exploration_rover</field>
       <field name="target_name">mars</field>
@@ -1089,6 +1104,7 @@
       <field name="instrument_type">SPECTROMETER</field>
       <field name="search_engine_type">MARS</field>
       <field name="title">GRS Data Search</field>
+      <field name="search_id">SearchTool_GRS Data Search</field>
       <field name="identifier">SearchTool_GRS Data Search</field>
       <field name="investigation_name">2001_mars_odyssey</field>
       <field name="target_name">mars</field>
@@ -1153,6 +1169,7 @@
       <field name="instrument_type">VISUAL COUNT</field>
       <field name="search_engine_type">ASTEROIDS / COMETS</field>
       <field name="title">Comet Data Searcher</field>
+      <field name="search_id">SearchTool_Comet Data Searcher</field>
       <field name="identifier">SearchTool_Comet Data Searcher</field>
       <field name="investigation_name">comet_sl9/jupiter_collision</field>
       <field name="investigation_name">deep_impact</field>
@@ -1542,6 +1559,7 @@
       <field name="instrument_type">SPECTROMETER</field>
       <field name="search_engine_type">ASTEROIDS / COMETS</field>
       <field name="title">Small Bodies Data Ferret</field>
+      <field name="search_id">SearchTool_Small Bodies Data Ferret</field>
       <field name="identifier">SearchTool_Small Bodies Data Ferret</field>
       <field name="target_name">1 ceres</field>
       <field name="target_name">10 hygiea</field>
@@ -3539,6 +3557,7 @@
       <field name="search_engine_type">JUPITER</field>
       <field name="search_engine_type">RINGS</field>
       <field name="title">Galileo Solid State Imager Search</field>
+      <field name="search_id">SearchTool_Galileo Solid State Imager Search</field>
       <field name="identifier">SearchTool_Galileo Solid State Imager Search</field>
       <field name="investigation_name">galileo</field>
       <field name="target_name">amalthea</field>
@@ -3587,6 +3606,7 @@
       <field name="instrument_type">OPTICAL TELESCOPE</field>
       <field name="search_engine_type">RINGS</field>
       <field name="title">Hubble Space Telescope Rings Image Catalog</field>
+      <field name="search_id">SearchTool_Hubble Space Telescope Rings Image Catalog</field>
       <field name="identifier">SearchTool_Hubble Space Telescope Rings Image Catalog</field>
       <field name="investigation_name">support archives</field>
       <field name="target_name">j rings</field>
@@ -3614,6 +3634,7 @@
    <doc>
       <field name="search_engine_type">MOON</field>
       <field name="title">Lunar Orbital Data Explorer</field>
+      <field name="search_id">SearchTool_Lunar Orbital Data Explorer</field>
       <field name="identifier">SearchTool_Lunar Orbital Data Explorer</field>
       <field name="resource_link">http://ode.rsl.wustl.edu/moon</field>
       <field name="description">Provides search, display, and download tools for the PDS science data archives of the Lunar Reconnaissance Orbiter (LRO), Clementine, and Lunar Prospector missions to Earth's moon.</field>
@@ -3765,6 +3786,7 @@
       <field name="instrument_type">LIDAR</field>
       <field name="search_engine_type">MARS</field>
       <field name="title">Phoenix Analyst's Notebook</field>
+      <field name="search_id">SearchTool_Phoenix Analyst's Notebook</field>
       <field name="identifier">SearchTool_Phoenix Analyst's Notebook</field>
       <field name="investigation_name">phoenix</field>
       <field name="target_name">mars</field>
@@ -3835,6 +3857,7 @@
       <field name="instrument_type">CAMERA</field>
       <field name="search_engine_type">MARS</field>
       <field name="title">Mars Express Image Search</field>
+      <field name="search_id">SearchTool_Mars Express Image Search</field>
       <field name="identifier">SearchTool_Mars Express Image Search</field>
       <field name="investigation_name">mars_express</field>
       <field name="target_name">mars</field>
@@ -3865,6 +3888,7 @@
       <field name="instrument_type">IMAGING CAMERA</field>
       <field name="search_engine_type">MARS</field>
       <field name="title">Mars Reconnaissance Orbiter Image Search</field>
+      <field name="search_id">SearchTool_Mars Reconnaissance Orbiter Image Search</field>
       <field name="identifier">SearchTool_Mars Reconnaissance Orbiter Image Search</field>
       <field name="investigation_name">mars_reconnaissance_orbiter</field>
       <field name="target_name">mars</field>
@@ -3896,6 +3920,7 @@
       <field name="instrument_type">SPECTROMETER</field>
       <field name="search_engine_type">MARS</field>
       <field name="title">Mars Pathfinder Image Search</field>
+      <field name="search_id">SearchTool_Mars Pathfinder Image Search</field>
       <field name="identifier">SearchTool_Mars Pathfinder Image Search</field>
       <field name="investigation_name">mars_pathfinder</field>
       <field name="target_name">altair</field>
@@ -3944,6 +3969,7 @@
       <field name="instrument_type">IMAGING CAMERA</field>
       <field name="search_engine_type">MARS</field>
       <field name="title">Phoenix Image Search</field>
+      <field name="search_id">SearchTool_Phoenix Image Search</field>
       <field name="identifier">SearchTool_Phoenix Image Search</field>
       <field name="investigation_name">phoenix</field>
       <field name="target_name">mars</field>
@@ -3998,6 +4024,7 @@
       <field name="instrument_type">FRAMING CAMERA</field>
       <field name="search_engine_type">MERCURY</field>
       <field name="title">Messenger Image Search</field>
+      <field name="search_id">SearchTool_Messenger Image Search</field>
       <field name="identifier">SearchTool_Messenger Image Search</field>
       <field name="investigation_name">messenger</field>
       <field name="target_name">mercury</field>
@@ -4031,6 +4058,7 @@
       <field name="instrument_type">PHOTOMETER</field>
       <field name="search_engine_type">MOON</field>
       <field name="title">LCROSS Analyst's Notebook</field>
+      <field name="search_id">SearchTool_LCROSS Analyst's Notebook</field>
       <field name="identifier">SearchTool_LCROSS Analyst's Notebook</field>
       <field name="investigation_name">lunar_crater_observation_and_sensing_satellite</field>
       <field name="target_name">earth</field>
@@ -4139,6 +4167,7 @@
       <field name="instrument_type">VISIBLE_SPECTROMETER</field>
       <field name="search_engine_type">MOON</field>
       <field name="title">LCROSS Image Search</field>
+      <field name="search_id">SearchTool_LCROSS Image Search</field>
       <field name="identifier">SearchTool_LCROSS Image Search</field>
       <field name="investigation_name">lunar_crater_observation_and_sensing_satellite</field>
       <field name="target_name">earth</field>
@@ -4203,6 +4232,7 @@
    <doc>
       <field name="search_engine_type">VENUS</field>
       <field name="title">Venus Orbital Data Explorer</field>
+      <field name="search_id">SearchTool_Venus Orbital Data Explorer</field>
       <field name="identifier">SearchTool_Venus Orbital Data Explorer</field>
       <field name="resource_link">http://ode.rsl.wustl.edu/venus/</field>
       <field name="description">The Venus Orbital Data Explorer supports search, browse, and download of PDS data products from the Magellan and MESSENGER missions</field>
@@ -4299,6 +4329,7 @@
       <field name="instrument_type">CAMERA</field>
       <field name="search_engine_type">MARS</field>
       <field name="title">Mars Science Laboratory Image Search</field>
+      <field name="search_id">SearchTool_Mars Science Laboratory Image Search</field>
       <field name="identifier">SearchTool_Mars Science Laboratory Image Search</field>
       <field name="investigation_name">mars_science_laboratory</field>
       <field name="target_name">mars</field>
@@ -4329,6 +4360,7 @@
       <field name="instrument_type">SPECTROMETER</field>
       <field name="search_engine_type">MARS</field>
       <field name="title">MSL Analyst's Notebook</field>
+      <field name="search_id">SearchTool_MSL Analyst's Notebook</field>
       <field name="identifier">SearchTool_MSL Analyst's Notebook</field>
       <field name="investigation_name">mars_science_laboratory</field>
       <field name="target_name">mars</field>

@@ -20,6 +20,7 @@ import java.util.Arrays;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -98,6 +99,7 @@ public class ProductClassTest extends SearchCoreTest {
 	}
 
 	@Test
+	@Ignore
 	public void testQueryPDS4() throws SearchCoreFatalException {
 		try {
 			String[] extensions = { "xml" };

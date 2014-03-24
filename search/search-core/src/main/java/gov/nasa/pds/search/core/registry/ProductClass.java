@@ -176,7 +176,6 @@ public class ProductClass {
 		Map<String, String> queryMap = new HashMap<String, String>();
 		List<ResultsFilter> resultsFilterList = new ArrayList<ResultsFilter>();
 		for (Query query : queryList) {
-			Debugger.debug(query.getRegistryPath() + " : " + RegistryAttributeWrapper.get(query.getRegistryPath()));
 			if (RegistryAttributeWrapper.get(query.getRegistryPath()) != null) {
 				resultsFilterList.add(new AttributeFilter(query.getRegistryPath(), query.getValue()));
 				//Debugger.debug("Adding new AttributeFilter: " + query.getRegistryPath() + " : " +query.getValue());

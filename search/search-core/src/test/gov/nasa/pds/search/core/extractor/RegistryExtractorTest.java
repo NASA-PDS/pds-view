@@ -33,7 +33,7 @@ public class RegistryExtractorTest extends SearchCoreTest {
 	private RegistryExtractor re;
 
 	@Rule
-	public SingleTestRule test = new SingleTestRule("testRunPDS4Context");
+	public SingleTestRule test = new SingleTestRule("testRunPDS4");
 
 	@Before
 	public void setUp() {
@@ -54,9 +54,6 @@ public class RegistryExtractorTest extends SearchCoreTest {
 
 	@Test
 	public void testCoreConfigList() {
-		System.out.println("---------------------------------------------");
-		System.out.println("--- Test RegistryExtractor.coreConfigList ---");
-		System.out.println("---------------------------------------------");
 		// Create list to compare to output from test run
 		List<File> correctList = new ArrayList<File>();
 		correctList.add(new File(System.getProperty("user.dir") + "/"
@@ -65,6 +62,12 @@ public class RegistryExtractorTest extends SearchCoreTest {
 		correctList.add(new File(System.getProperty("user.dir") + "/"
 				+ TestConstants.TEST_DIR_RELATIVE
 				+ "config/core-config-test-2.xml"));
+		correctList.add(new File(System.getProperty("user.dir") + "/"
+				+ TestConstants.TEST_DIR_RELATIVE
+				+ "config/pds4-context.xml"));
+		correctList.add(new File(System.getProperty("user.dir") + "/"
+				+ TestConstants.TEST_DIR_RELATIVE
+				+ "config/psa-dataset.xml"));
 
 		try {
 			List<File> configList = this.re.getCoreConfigs(new File(System
@@ -80,9 +83,6 @@ public class RegistryExtractorTest extends SearchCoreTest {
 
 	@Test
 	public void testRun() {
-		System.out.println("-----------------------------------------");
-		System.out.println("--- Test run method with Test Configs ---");
-		System.out.println("-----------------------------------------");
 		try {
 			this.re.run();
 		} catch (Exception e) {
@@ -93,9 +93,6 @@ public class RegistryExtractorTest extends SearchCoreTest {
 
 	@Test
 	public void testRunPDS3() {
-		System.out.println("-----------------------------------------------");
-		System.out.println("--- Test run method with PDS - PDS3 Configs ---");
-		System.out.println("-----------------------------------------------");
 		try {
 			this.re.setConfDir(new File(System.getProperty("user.dir") + "/"
 					+ TestConstants.CONFIG_DIR_RELATIVE + "/pds/pds3"));
@@ -107,16 +104,13 @@ public class RegistryExtractorTest extends SearchCoreTest {
 	}
 
 	@Test
-	@Ignore
 	public void testRunPDS4() {
-		System.out.println("-----------------------------------------------");
-		System.out.println("--- Test run method with PDS - PDS4 Configs ---");
-		System.out.println("-----------------------------------------------");
 		try {
 			this.re.setConfDir(new File(System.getProperty("user.dir") + "/"
 					+ TestConstants.CONFIG_DIR_RELATIVE + "/pds/pds4"));
 			this.re.setPrimaryRegistries(Arrays
-					.asList(TestConstants.PDS4_ATM_REGISTRY_URL));
+					.asList(TestConstants.PDS4_REGISTRY_URL));
+			this.re.setQueryMax(100);
 			this.re.run();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -126,12 +120,9 @@ public class RegistryExtractorTest extends SearchCoreTest {
 
 	@Test
 	public void testRunPSA() throws SearchCoreFatalException {
-		System.out.println("-----------------------------------------------");
-		System.out.println("--- Test run method with PSA - PDS3 Configs ---");
-		System.out.println("-----------------------------------------------");
 		try {
 			this.re.setConfDir(new File(System.getProperty("user.dir") + "/"
-					+ TestConstants.CONFIG_DIR_RELATIVE + "/psa/pds3"));
+					+ TestConstants.TEST_DIR_RELATIVE + "/config/psa-dataset.xml"));
 			this.re.setPrimaryRegistries(Arrays
 					.asList(TestConstants.PSA_REGISTRY_URL));
 			// this.re.setBackupRegistries(Arrays.asList(TestConstants.PDS3_REGISTRY_URL));
@@ -144,15 +135,12 @@ public class RegistryExtractorTest extends SearchCoreTest {
 
 	@Test
 	public void testRunPDS4Context() {
-		System.out.println("----------------------------------------------------------");
-		System.out.println("--- Test run method with PDS - PDS4 Instrument Context ---");
-		System.out.println("----------------------------------------------------------");
 		try {
 			this.re.setConfDir(new File(System.getProperty("user.dir") + "/"
 					+ TestConstants.TEST_DIR_RELATIVE
 					+ "config/pds4-context.xml"));
 			this.re.setPrimaryRegistries(Arrays
-					.asList("http://pdsbeta.jpl.nasa.gov:8080/registry-pds4"));
+					.asList(TestConstants.PDS4_REGISTRY_URL));
 			this.re.setQueryMax(100);
 			this.re.run();
 		} catch (Exception e) {
