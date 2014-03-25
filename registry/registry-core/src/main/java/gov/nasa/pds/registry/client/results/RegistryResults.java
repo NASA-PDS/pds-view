@@ -210,7 +210,7 @@ public class RegistryResults {
 			this.start = 1;
 			nextPage();
 		} else {
-			System.out.println("\n\n No More Results Found On This Page\n\n");
+			//System.out.println("\n\n No More Results Found On This Page\n\n");	
 			this.resultObjects.addAll(pr.getResults());
 		}
 	}

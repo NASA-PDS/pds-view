@@ -46,7 +46,7 @@ public class RegistryHandlerTest extends RegistryCoreTest {
 	private Map<String, String> queryMap;
 
 	@Rule
-	public SingleTestRule test = new SingleTestRule("testGetExtrinsicsByGuid");
+	public SingleTestRule test = new SingleTestRule("");
 
 	@BeforeClass
 	public static void oneTimeSetUp() {
