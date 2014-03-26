@@ -740,7 +740,7 @@
 
     <lst name="appends">
       <str name="tr">data-search.xsl</str>
-      <str name="bq">objectType:Product_Context_Search_Tool^10</str>
+      <str name="bq">data_class:Product_Context_Search_Tool^10</str>
     </lst>
 
     <arr name="last-components">
@@ -764,7 +764,7 @@
       <str name="tr">data-search.xsl</str>
       <str name="fq">-archive_status:SUPERSEDED</str>
       <str name="fq">-objectType:Product_Observational</str>
-      <str name="bq">objectType:Product_Context_Search_Tool^10</str>
+      <str name="bq">data_class:Product_Context_Search_Tool^10</str>
     </lst>
 
     <arr name="last-components">
@@ -788,7 +788,7 @@
       <str name="tr">product-search.xsl</str>
       <str name="fq">-archive_status:SUPERSEDED</str>
       <str name="fq">pds_model_version:PDS4</str>
-      <str name="fq">-objectType:Product_Context</str>
+      <str name="fq">data_class:Resource OR objectType:Product_Observational OR objectType:Product_Collection OR objectType:Product_Bundle</str>
       <str name="bq">objectType:Product_Collection^10</str>
       <str name="bq">objectType:Product_Bundle^10</str>
     </lst>

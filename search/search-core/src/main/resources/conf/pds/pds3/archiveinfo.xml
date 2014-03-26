@@ -30,15 +30,15 @@
 		<field name="resLocation" type="required">
 			<registryPath>resource_url</registryPath>
 		</field>
+		<field name="data_class" type="required">
+			<registryPath>data_class</registryPath>
+		</field>
 		<!--  -->
 		
 		<field name="objectType" type="string">
 			<registryPath>objectType</registryPath>
 		</field>
-		<field name="data_class" type="required">
-			<registryPath>data_class</registryPath>
-		</field>
-		<field name="agency_name" type="string">
+		<field name="agency_name" type="string" default="nasa">
 			<registryPath>instrument_ref.data_set_ref.node_ref.agency_ref.alternate_id</registryPath>
 		</field>
 		<field name="pds_model_version" type="string">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <facets>
-  <facet name="facet object type" caption="Type" />
+  <facet name="facet data class" caption="Type" />
   <facet name="facet agency" caption="Agency" />
   <facet name="facet target" caption="Target" />
   <facet name="facet investigation" caption="Investigation" />
@@ -10,26 +10,21 @@
   
   <!-- For Product search faceting -->
   <facet name="facet primary result purpose" caption="Purpose" />
-  <facet name="facet primary result processing level id" caption="Processing Level" />
+  <facet name="facet primary result processing level" caption="Processing Level" />
 
-  <category name="agency" caption="Agency" />
-  <category name="product context-archive information" caption="Resource" />
+  <!-- category name="agency" caption="Agency" /-->
   <category name="product bundle" caption="Bundle" />
   <category name="product collection" caption="Collection" />
-  <category name="product context" caption="Context" />
   <category name="product observational" caption="Observational" />
-  <category name="product data set pds3" caption="Data Set" />
-  <category name="product instrument host pds3" caption="Instrument Host" />
-  <category name="product instrument pds3" caption="Instrument" />
-  <category name="product mission pds3" caption="Investigation" />
-  <category name="product target pds3" caption="Target" />
   <category name="product context search tool" caption="Search Tool" />
-  
+
+  <category name="data set" caption="Data Set" />
   <category name="facility" caption="Facility" />
-  <category name="instrument" caption="Instrument" />
-  <category name="instrument host" caption="Instrument Host" />
+  <category name="instrument" caption="Instrument Host" />
+  <category name="instrument host" caption="Instrument" />
   <category name="investigation" caption="Investigation" />
-<category name="resource" caption="Resource" />
+  <category name="resource" caption="Resource" />
   <category name="target" caption="Target" />
   <category name="telescope" caption="Telescope" />
+
 </facets>

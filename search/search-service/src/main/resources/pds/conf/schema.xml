@@ -598,13 +598,13 @@
    
    <!-- And the faceting fields -->
    <field name="facet_agency" type="lowercase" indexed="true" stored="false" multiValued="false" />
-   <field name="facet_object_type" type="lowercase" indexed="true" stored="false" multiValued="false" />
+   <field name="facet_data_class" type="lowercase" indexed="true" stored="false" multiValued="false" />
    <field name="facet_instrument" type="lowercase" indexed="true" stored="false" multiValued="true" />
    <field name="facet_investigation" type="lowercase" indexed="true" stored="false" multiValued="true" />
    <field name="facet_target" type="lowercase" indexed="true" stored="false" multiValued="true" />
    <field name="facet_pds_model_version" type="lowercase" indexed="true" stored="false" multiValued="true" />
    <field name="facet_primary_result_purpose" type="lowercase" indexed="true" stored="false" multiValued="true" />
-   <field name="facet_primary_result_processing_level_id" type="lowercase" indexed="true" stored="false" multiValued="true" />
+   <field name="facet_primary_result_processing_level" type="lowercase" indexed="true" stored="false" multiValued="true" />
    
    <!-- Also create a field for facet terms used by the spell checker -->
    <field name="spell" type="text_en_splitting_tight" indexed="true" stored="false" multiValued="true" />

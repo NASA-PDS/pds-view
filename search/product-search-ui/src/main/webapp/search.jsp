@@ -76,6 +76,17 @@ $(function() {
 			});
 
 		});
+
+		$('div').on('click', 'a.info-button', function() {
+			$('.info').slideToggle('fast', function() {
+				if ($('.info').is(":visible")) {
+					$('a.info-button').text("Hide");
+				} else {
+					$('a.info-button').text("More...");
+				}
+			});
+
+		});
 	});
 </script>
 

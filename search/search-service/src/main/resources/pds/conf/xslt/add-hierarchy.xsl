@@ -28,19 +28,9 @@
     </add>
   </xsl:template>
 
-  <!-- xsl:template match="field[@name = 'objectType']">
-    <xsl:copy-of select="." />
-    <field name="facet_object_type"><xsl:value-of select="concat('1,',.)" /></field>
-  </xsl:template -->
-  
-  <xsl:template match="field[@name = 'product_class']">
-    <xsl:copy-of select="." />
-    <field name="facet_object_type"><xsl:value-of select="concat('1,',.)" /></field>
-  </xsl:template>
-  
   <xsl:template match="field[@name = 'data_class']">
     <xsl:copy-of select="." />
-    <field name="facet_object_type"><xsl:value-of select="concat('1,',.)" /></field>
+    <field name="facet_data_class"><xsl:value-of select="concat('1,',.)" /></field>
   </xsl:template>
   
   <xsl:template match="field[@name = 'pds_model_version']">
@@ -122,7 +112,6 @@
   </xsl:template>
 
   <xsl:template match="field[@name = 'target_name']">
-    <!--xsl:copy-of select="." /-->		<!--  PDS-128 UNCOMMENT -->
     <field name="target_name"><xsl:value-of select="pds:clean(.)" /></field>
 
     <!-- Now add our target type hierarchy. -->

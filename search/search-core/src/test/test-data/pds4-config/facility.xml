@@ -30,9 +30,6 @@
 		<field name="resLocation" type="required">
 			<outputString format="url">/ds-view/pds/viewContext.jsp?identifier={lid}&amp;version={version_id}</outputString>
 		</field>
-		<field name="data_class" type="string">
-			<registryPath>data_class</registryPath>
-		</field>
 		<!--  -->
 		
 		<field name="objectType" type="string">
@@ -53,23 +50,23 @@
 		<field name="alternate_id" type="string">
 			<registryPath>alternate_id</registryPath>
 		</field>
-		<field name="telescope_aperture" type="float">
-			<registryPath>telescope_aperture</registryPath>
+		<field name="data_class" type="string">
+			<registryPath>data_class</registryPath>
 		</field>
-		<field name="telescope_longitude" type="float">
-			<registryPath>telescope_logitude</registryPath>
+		<field name="facility_name" type="float">
+			<registryPath>facility_name</registryPath>
 		</field>
-		<field name="telescope_latitude" type="string">
-			<registryPath>telescope_latitude</registryPath>
+		<field name="facility_type" type="float">
+			<registryPath>facility_type</registryPath>
 		</field>
-		<field name="telescope_altitude" type="string">
-			<registryPath>telescope_altitude</registryPath>
+		<field name="facility_address" type="float">
+			<registryPath>facility_address</registryPath>
 		</field>
-		<field name="telescope_coordinate_source" type="string">
-			<registryPath>telescope_coordinate_source</registryPath>
+		<field name="facility_country" type="float">
+			<registryPath>facility_country</registryPath>
 		</field>
-		<field name="telescope_description" type="string">
-			<registryPath>telescope_description</registryPath>
+		<field name="facility_description" type="float">
+			<registryPath>facility_description</registryPath>
 		</field>
 		<field name="modification_date" type="date">
 			<registryPath>modification_date</registryPath>

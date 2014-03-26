@@ -14,7 +14,7 @@
 	</specification>
 	
 	<indexFields>
-		<field name="search-id" type="required">
+		<field name="search_id" type="required">
 			<outputString format="text">psa:{lid}</outputString>
 		</field>
 		<field name="identifier" type="required">
@@ -29,6 +29,11 @@
 		<field name="resLocation" type="required">
 			<registryPath>resource_ref.resource_url</registryPath>
 		</field>
+		<field name="data_class" type="string" default="Data_Set">
+			<registryPath>data_class</registryPath>
+		</field>
+		<!--  -->
+		
 		<field name="objectType" type="string">
 			<registryPath>objectType</registryPath>
 		</field>

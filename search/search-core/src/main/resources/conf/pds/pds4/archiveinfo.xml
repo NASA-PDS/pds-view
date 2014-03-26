@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <product>
 	<specification>
-		<title>Telescope</title>
+		<title>PDS4ArchiveInfo</title>
 		<query>
 			<registryPath>objectType</registryPath>
 			<value>Product_Context</value>
 		</query>
 		<query>
-			<registryPath>data_class</registryPath>
-			<value>Telescope</value>
+			<registryPath>name</registryPath>
+			<value>*Archive Information</value>
 		</query>
 	</specification>
 	
@@ -28,7 +28,7 @@
 			<registryPath>citation_description</registryPath>
 		</field>
 		<field name="resLocation" type="required">
-			<outputString format="url">/ds-view/pds/viewContext.jsp?identifier={lid}&amp;version={version_id}</outputString>
+			<registryPath>resource_url</registryPath>
 		</field>
 		<field name="data_class" type="string">
 			<registryPath>data_class</registryPath>
@@ -53,23 +53,23 @@
 		<field name="alternate_id" type="string">
 			<registryPath>alternate_id</registryPath>
 		</field>
-		<field name="telescope_aperture" type="float">
-			<registryPath>telescope_aperture</registryPath>
+		<field name="resource_name" type="string">
+			<registryPath>resource_name</registryPath>
 		</field>
-		<field name="telescope_longitude" type="float">
-			<registryPath>telescope_logitude</registryPath>
+		<field name="resource_description" type="string">
+			<registryPath>resource_description</registryPath>
 		</field>
-		<field name="telescope_latitude" type="string">
-			<registryPath>telescope_latitude</registryPath>
+		<field name="investigation_name" type="string">
+			<registryPath>investigation_ref.mission_name</registryPath>
 		</field>
-		<field name="telescope_altitude" type="string">
-			<registryPath>telescope_altitude</registryPath>
+		<field name="instrument_host_name" type="string">
+			<registryPath>instrument_host_ref.instrument_host_name</registryPath>
 		</field>
-		<field name="telescope_coordinate_source" type="string">
-			<registryPath>telescope_coordinate_source</registryPath>
+		<field name="instrument_name" type="string">
+			<registryPath>instrument_ref.instrument_name</registryPath>
 		</field>
-		<field name="telescope_description" type="string">
-			<registryPath>telescope_description</registryPath>
+		<field name="target_name" type="string">
+			<registryPath>target_ref.target_name</registryPath>
 		</field>
 		<field name="modification_date" type="date">
 			<registryPath>modification_date</registryPath>

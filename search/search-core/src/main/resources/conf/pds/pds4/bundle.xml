@@ -26,13 +26,13 @@
 		<field name="resLocation" type="required">
 			<outputString format="url">/ds-view/pds/viewBundle.jsp?identifier={lid}&amp;version={version_id}</outputString>
 		</field>
+		<field name="data_class" type="required">
+			<registryPath>product_class</registryPath>
+		</field>
 		<!--  -->
 		
 		<field name="objectType" type="string">
 			<registryPath>objectType</registryPath>
-		</field>
-		<field name="product_class" type="string">
-			<registryPath>product_class</registryPath>
 		</field>
 		<field name="agency_name" type="string" default="nasa">
 			<registryPath>node_ref.agency_ref.alternate_id</registryPath>

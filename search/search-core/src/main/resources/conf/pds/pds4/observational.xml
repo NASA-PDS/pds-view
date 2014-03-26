@@ -27,6 +27,9 @@
 		<field name="resLocation" type="required">
 			<outputString format="url">/ds-view/pds/viewProduct.jsp?identifier={lid}&amp;version={version_id}</outputString>
 		</field>
+		<field name="data_class" type="required">
+			<registryPath>product_class</registryPath>
+		</field>
 		<!--  -->
 		
 		<field name="objectType" type="string">
@@ -136,9 +139,6 @@
 		</field>
 		<field name="file_name" type="string">
 			<registryPath>file_name</registryPath>
-		</field>
-		<field name="data_class" type="string">
-			<registryPath>data_class</registryPath>
 		</field>
 		<field name="file_ref_name" type="string">
 			<registryPath>file_ref.file_name</registryPath>

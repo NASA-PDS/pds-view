@@ -26,14 +26,14 @@
 		<field name="resLocation" type="required">
 			<outputString format="url">/ds-view/pds/viewHostProfile.jsp?INSTRUMENT_HOST_ID={instrument_host_id}</outputString>
 		</field>
+		<field name="data_class" type="string" default="Instrument_Host">
+			<registryPath>data_class</registryPath>
+		</field>		
 		<!--  -->
 		
 		<field name="objectType" type="string">
 			<registryPath>objectType</registryPath>
 		</field>
-		<field name="product_class" type="string">
-			<registryPath>product_class</registryPath>
-		</field>		
 		<field name="agency_name" type="string">
 			<registryPath>instrument_ref.data_set_ref.node_ref.agency_ref.alternate_id</registryPath>
 		</field>
