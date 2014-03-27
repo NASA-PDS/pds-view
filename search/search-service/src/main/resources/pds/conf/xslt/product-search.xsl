@@ -313,7 +313,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<li class="result">
-					<strong><xsl:value-of select="(arr|str)[@name='data_class']" />:</strong>
+					<strong><xsl:value-of select="pds:caption-string('category',lower-case((arr|str)[@name='data_class']))" />:</strong>
 					<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
 					<br />
 							<xsl:value-of select="(arr|str)[@name='primary_result_domain']" />

@@ -569,6 +569,7 @@
    <field name="start_time" type="date" indexed="true" stored="true" multiValued="true" />
    <field name="stop_time" type="date" indexed="true" stored="true" multiValued="true" />
    <field name="target_name" type="text_general" indexed="true" stored="true" multiValued="true" />
+   <field name="target_ref_target_type" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
    <field name="target_type" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
    <field name="telephone_number" type="string" indexed="false" stored="true" multiValued="true" />
    <field name="telescope_aperture" type="float" indexed="true" stored="true" multiValued="true" />
@@ -791,6 +792,7 @@
   <copyField source="target_name" dest="target" />
   
   <!-- Target Type -->
+  <copyField source="target_ref_target_type" dest="target-type" />
   <copyField source="target_type" dest="target-type" />
   
   <!-- Term -->
