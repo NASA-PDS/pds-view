@@ -97,7 +97,7 @@ public class RegistryHandler {
 			if (RegistryAttributeWrapper.get(path) != null) {
 				map.put(RegistryAttributeWrapper.get(path), queryMap.get(path));
 			} else {
-				log.log(Level.WARNING, "Couldn't find query: " +  path + " - " + queryMap.get(path));
+				// TODO Add to stats
 			}
 		}
 	    return getExtrinsics(this.primaryRegistries, map, null, this.queryMax);
@@ -129,8 +129,7 @@ public class RegistryHandler {
 	 * @throws RegistryHandlerException
 	 */
 	public RegistryResults getExtrinsicsWithAllRegistries(List<ResultsFilter> resultsFilterList) throws RegistryHandlerException {
-		// Get Extrinsics With only primary registry because we don't want
-		// to search against ALL registries. Only use secondary when looking
+		// Get Extrinsics querying against all registries. Only use secondary when looking
 		// for associated values
 	    return getExtrinsicsWithFilter(this.allRegistries, resultsFilterList, this.queryMax);
 	}
@@ -255,9 +254,7 @@ public class RegistryHandler {
 			}
 		} else {	// We still have a shot, let's check for Association objects
 			if (this.checkAssociations) {
-				log.log(Level.WARNING, "Couldn't find reference. Checking Association objects.");
 				assocSearchExtList = getAssociationsBySourceObject(searchExtrinsic, referenceType);
-			
 			// TODO Could also check Target Objects, but not needed right now
 			}
 			
