@@ -83,30 +83,4 @@ public class AssociationCache {
 		searchExtMap.clear();
 	}
 	
-	/**
-	 * Main method used for testing
-	 * @param args
-	 */
-	public static void main(String args[]) {
-		LinkedHashMap<String, String> test = new LinkedHashMap<String, String>();
-		test.put("1", "a");
-		test.put("2", "b");
-		test.put("3", "c");
-		test.put("4", "d");
-		
-		for (String str : test.keySet()) {
-			System.out.println(str + " - " + test.get(str));
-		}
-		
-		String key = test.keySet().iterator().next();
-		System.out.println("Removing " + key);
-		
-		test.remove(key);
-		
-		for (String str : test.keySet()) {
-			System.out.println(str + " - " + test.get(str));
-		}
-		
-	}
-	
 }

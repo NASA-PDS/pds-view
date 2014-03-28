@@ -36,8 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//import gov.nasa.pds.search.core.logging.ToolsLevel;
-//import gov.nasa.pds.search.core.logging.ToolsLogRecord;
+
 
 /**
  * Class to handle the communication with the Registry Service
@@ -56,8 +55,10 @@ public class RegistryHandler {
 	
 	private boolean checkAssociations;
 	
+	/** List of registry URLs that will be queried against for Extrinsics **/
 	private List<String> primaryRegistries;
 	
+	/** List of registry URLs used only for searching for association values **/
 	private List<String> secondaryRegistries;
 	
 	private List<String> allRegistries;
@@ -110,7 +111,10 @@ public class RegistryHandler {
 	 * @throws Exception	thrown if there are issues with the RegistryClient
 	 */
 	public RegistryResults getExtrinsicsWithFilter(List<ResultsFilter> resultsFilterList) throws RegistryHandlerException {
-	    return getExtrinsicsWithFilter(this.allRegistries, resultsFilterList, this.queryMax);
+		// Get Extrinsics With only primary registry because we don't want
+		// to search against ALL registries. Only use secondary when looking
+		// for associated values
+	    return getExtrinsicsWithFilter(this.primaryRegistries, resultsFilterList, this.queryMax);
 	}
 	
 	/**
@@ -138,28 +142,19 @@ public class RegistryHandler {
 		//Debugger.debug("LID from lidvid: " + lid);
 
 		if (splitLidvid.size() > 1) {
-			//version = splitLidvid.get(1);
 			filterList.add(new SlotFilter("version_id", splitLidvid.get(1)));
 		} else if (splitLidvid.size() == 0) { // Handles lidvids with bad format (:
 											// instead of ::)
 			splitLidvid = Arrays.asList(lidvid.split(":"));
-			//lid = lidvid.substring(0, lidvid.lastIndexOf(":"));
 			filterList.add(new AttributeFilter(RegistryAttributeWrapper.LOGICAL_IDENTIFIER, lidvid.substring(0, lidvid.lastIndexOf(":"))));
-			//version = splitLidvid.get(splitLidvid.size() - 1);
 			filterList.add(new SlotFilter("version_id", splitLidvid.get(1)));
 
 			log.log(Level.SEVERE, "BAD LIDVID - " + lid + " -- " + version);
 		}
 		
+		// Get Extrinsics with ALL registries because we are searching for a specific
+		// object, which means we will want to search in all available registries for it
 		RegistryResults results = getExtrinsicsWithFilter(this.allRegistries, filterList, DFLT_QUERY_MAX);
-		
-	    /*Map<RegistryAttributeWrapper, String> map = new HashMap<RegistryAttributeWrapper, String>();
-	    map.put(RegistryAttributeWrapper.LOGICAL_IDENTIFIER, lid);
-
-	    List<Object> extList = new ArrayList<Object>();
-	    RegistryResults results = getExtrinsics(this.allRegistries, map, version, DFLT_QUERY_MAX);
-		*/
-		
 		
 		List<Object> extList = new ArrayList<Object>();
 		if (results.nextPage()) {
@@ -183,12 +178,6 @@ public class RegistryHandler {
 	 */
 	public ExtendedExtrinsicObject getExtrinsicByGuid(String guid)
 			throws Exception {
-	    /*Map<RegistryAttributeWrapper, String> map = new HashMap<RegistryAttributeWrapper, String>();
-	    map.put(RegistryAttributeWrapper.GUID, guid);
-	    
-	    
-	    RegistryResults results = getExtrinsics(this.allRegistries, map, null, DFLT_QUERY_MAX);
-	    */
 		ResultsFilter filter = new AttributeFilter(RegistryAttributeWrapper.GUID, guid);
 		RegistryResults results = getExtrinsicsWithFilter(this.allRegistries, Arrays.asList(filter), this.queryMax);
 		
@@ -365,14 +354,11 @@ public class RegistryHandler {
 		RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
 				.filter(filter).build();
 		
-		//List<ExtrinsicObject> results = null;
-		//RegistryResults results;
 		try {
 			return new RegistryResults(registryUrlList, query, queryMax);
 		} catch (RegistryClientException e) {
 			throw new RegistryHandlerException(e.getClass().getName() + ": " + e.getMessage());
 		}
-		//return null;
 	}
 	
 	private RegistryResults getAssociations(List<String> registryUrlList, Map<AssociationRegistryAttribute, String> regAttrValMap) throws Exception {
@@ -484,7 +470,7 @@ public class RegistryHandler {
 	}
 	
 	/**
-	 * @param secondaryRegistry the primaryRegistryUrl to append
+	 * @param secondaryRegistry the secondaryRegistry Url to append
 	 */
 	public void addSecondaryRegistry(String secondaryRegistry) {
 		if (!this.secondaryRegistries.contains(secondaryRegistry)) {
@@ -494,7 +480,7 @@ public class RegistryHandler {
 	}
 	
 	/**
-	 * @param secondaryRegistries the secondaryRegistries to set
+	 * 
 	 */
 	public void resetAllRegistries() {
 		this.allRegistries.clear();
