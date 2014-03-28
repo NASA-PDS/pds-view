@@ -212,16 +212,21 @@ public class LabelReader {
 		
 		StringBuffer sb = new StringBuffer();
 				
-		// print this statement
+		// print line number for debugging
 		//int lineNumber = statement.getLineNumber();
 		//String className = statement.getClass().getSimpleName();
 		// sb.append( lineNumber+": "+className+": "+tostring + NL );
-		sb.append( this.indent + tostring + NL );
+		
+		// remove white spaces at the beginning of new lines 
+		// since they will be replaced by the new indentation
+		tostring = tostring.replaceAll("\\\r\\\n\\s+", "\\\r\\\n");
+		// insert new indentation at the beginning of each new line
+		String[] parts = tostring.split("\\\r\\\n");
+		for (String part : parts) {
+			sb.append( this.indent + part + NL );
+		}
 		//this.lineNumber++;
-		
-		// insert another new line but do NOT increment the line number
-		//sb.append(NL);
-		
+				
 		return sb;
 
 	}
@@ -235,7 +240,9 @@ public class LabelReader {
 	public static void main(String[] args) throws Exception {
 		
 		// parse label object
-		String uri = "file:///usr/local/pds/transport-service/testdata/CHAN_DATA_20020617.LBL";
+		String uri = "file:///usr/local/transport-ofsn/testdata/CHAN_DATA_20020617.LBL";
+		//String uri = "file:///usr/local/transport-ofsn/testdata/data/vg1-j-mag-4-summ-hgcoords-48.0sec-v1.0/vg_1501/data/crs/bs2edat.lbl";
+		//String uri = "file:///usr/local/transport-ofsn/testdata/data/vg1-j-mag-4-summ-hgcoords-48.0sec-v1.0/vg_1501/data/crs/bs3ehdr.lbl";
 		//String uri = "http://starbase.jpl.nasa.gov/ody-m-grs-2-edr-v1/odge1_xxxx/2002/20020617/CHAN_DATA_20020617.LBL";
 		//String uri = "file:///usr/local/transport-ofsn/testdata/data/vg1-j-mag-4-summ-hgcoords-48.0sec-v1.0/vg_1501/data/crs/bs2edat.lbl";
 		
