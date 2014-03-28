@@ -104,17 +104,35 @@ public class RegistryHandler {
 	}
 	
 	/**
-	 * Get the ExtrinsicObjects after results have been filtered
+	 * Get the ExtrinsicObjects after results have been filtered. Queries against
+	 * only the primary registries for extrinsics.
 	 * 
-	 * @param queryMap		query map for attribute name->value pairs
-	 * @return				RegistryResults object containing filtered results
-	 * @throws Exception	thrown if there are issues with the RegistryClient
+	 * @param resultsFilterList
+	 * @return
+	 * @throws RegistryHandlerException
 	 */
 	public RegistryResults getExtrinsicsWithFilter(List<ResultsFilter> resultsFilterList) throws RegistryHandlerException {
 		// Get Extrinsics With only primary registry because we don't want
 		// to search against ALL registries. Only use secondary when looking
 		// for associated values
 	    return getExtrinsicsWithFilter(this.primaryRegistries, resultsFilterList, this.queryMax);
+	}
+	
+
+	/**
+	 * Get the ExtrinsicObjects after results have been filtered. Queries against
+	 * all registries specified in the initializer, including primary
+	 * and secondary registries.
+	 * 
+	 * @param resultsFilterList
+	 * @return
+	 * @throws RegistryHandlerException
+	 */
+	public RegistryResults getExtrinsicsWithAllRegistries(List<ResultsFilter> resultsFilterList) throws RegistryHandlerException {
+		// Get Extrinsics With only primary registry because we don't want
+		// to search against ALL registries. Only use secondary when looking
+		// for associated values
+	    return getExtrinsicsWithFilter(this.allRegistries, resultsFilterList, this.queryMax);
 	}
 	
 	/**
