@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011-2014, by the California Institute of Technology.
+  Copyright 2011-2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -24,6 +24,21 @@
 
   <body>
     <release version="1.4.0" date="TBD" description="TBD">
+      <action dev="jpadams" type"update" issue="PDS-229">
+	Updated solrconfig to facet on data_class instead of objectType. Updated schema.xml to handle some of the new fields that came out of the new PDS4 context product configurations. Updated XSLT to transition from using objectType to the new data_class facet. 
+      </action>
+      <action dev="jpadams" type"update" issue="PDS-254">
+	Updated schema.xml to include new Primary Result Summary fields.
+      </action>
+      <action dev="jpadams" type"update" issue="PDS-255">
+	Updated schema.xml to include new search_id as the Solr document UniqueKey.
+      </action>
+      <action dev="jpadams" type"update" issue="PDS-256">
+	Updated solrconfig.xml to boost archive information products in search results.
+      </action>
+      <action dev="jpadams" type="update">
+	Updated the CSS to allow for easier capitalizing across the search UIs. Tweaks to the schema and stylesheets for some of the corner cases when generating a full index, including changes to facets.xml, solrconfig.xml, schema.xml, and the search and product search UI XSLTs.
+      </action>
       <action dev="shardman" type="update">
         Modified to enable and improve support for the PDAP search protocol.
       </action>
