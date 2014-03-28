@@ -24,6 +24,12 @@
 
   <body>
     <release version="1.6.0" date="TBD" description="TBD">
+      <action dev="jpadams" type="add" issue="PDS-229">
+	Created new ResultsFilter interface and Attribute and Slot Filters to filter RegistryResults based on some attribute or slot value.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-229">
+	Renamed ExtrinsicRegistryAttribute to RegistryAttributeWrapper for clarity. Updated RegistryResults to handle ResultsFilters. Updated RegistryHandler API to use ResultsFilters instead of previous inputs.
+      </action>
       <action dev="hyunlee" issue="PDS-234" type="update">
         Added filters in the RegistryPackage object for guid, name, lid and status.
       </action>
