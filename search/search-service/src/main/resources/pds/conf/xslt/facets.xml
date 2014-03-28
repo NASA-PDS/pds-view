@@ -12,19 +12,9 @@
   <facet name="facet primary result purpose" caption="Purpose" />
   <facet name="facet primary result processing level" caption="Processing Level" />
 
-  <!-- category name="agency" caption="Agency" /-->
-  <category name="product bundle" caption="Bundle" />
-  <category name="product collection" caption="Collection" />
-  <category name="product observational" caption="Observational" />
-  <category name="product context search tool" caption="Search Tool" />
-
-  <category name="data set" caption="Data Set" />
-  <category name="facility" caption="Facility" />
-  <category name="instrument" caption="Instrument Host" />
-  <category name="instrument host" caption="Instrument" />
-  <category name="investigation" caption="Investigation" />
-  <category name="resource" caption="Resource" />
-  <category name="target" caption="Target" />
-  <category name="telescope" caption="Telescope" />
+  <category name="product bundle" caption="bundle" />
+  <category name="product collection" caption="collection" />
+  <category name="product observational" caption="observational" />
+  <category name="product context search tool" caption="search tool" />
 
 </facets>

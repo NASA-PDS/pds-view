@@ -599,7 +599,7 @@
    
    <!-- And the faceting fields -->
    <field name="facet_agency" type="lowercase" indexed="true" stored="false" multiValued="false" />
-   <field name="facet_data_class" type="lowercase" indexed="true" stored="false" multiValued="false" />
+   <field name="facet_data_class" type="lowercase" indexed="true" stored="false" multiValued="true" />
    <field name="facet_instrument" type="lowercase" indexed="true" stored="false" multiValued="true" />
    <field name="facet_investigation" type="lowercase" indexed="true" stored="false" multiValued="true" />
    <field name="facet_target" type="lowercase" indexed="true" stored="false" multiValued="true" />

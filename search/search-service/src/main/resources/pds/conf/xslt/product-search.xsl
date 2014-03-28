@@ -275,7 +275,7 @@
 				<xsl:choose>
 					<xsl:when test="position() > 2">
 						<li class="result hidden tool">
-							<strong><xsl:value-of select="pds:caption-string('category', lower-case((arr|str)[@name='data_class']))" />:</strong>
+							<strong><span class="pds_value"><xsl:value-of select="pds:caption-string('category', lower-case((arr|str)[@name='data_class']))" />:</span></strong>
 							<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
 							<br />
 							<xsl:value-of select="pds:description((arr|str)[@name='description'],str[@name='title'])" />
@@ -283,7 +283,7 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<li class="result">
-							<strong><xsl:value-of select="pds:caption-string('category', lower-case((arr|str)[@name='data_class']))" />:</strong>
+							<strong><span class="pds_value"><xsl:value-of select="pds:caption-string('category', lower-case((arr|str)[@name='data_class']))" />:</span></strong>
 							<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
 							<br />
 							<xsl:value-of select="pds:description((arr|str)[@name='description'],str[@name='title'])" />
@@ -295,7 +295,7 @@
 				<xsl:choose>
 					<xsl:when test="position() > 2">
 						<li class="result hidden info">
-							<strong><xsl:value-of select="pds:caption-string('category',lower-case((arr|str)[@name='data_class']))" />:</strong>
+							<strong><span class="pds_value"><xsl:value-of select="pds:caption-string('category',lower-case((arr|str)[@name='data_class']))" />:</span></strong>
 							<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
 							<br />
 							<xsl:value-of select="pds:description((arr|str)[@name='description'],str[@name='title'])" />
@@ -303,7 +303,7 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<li class="result">
-							<strong><xsl:value-of select="pds:caption-string('category',lower-case((arr|str)[@name='data_class']))" />:</strong>
+							<strong><span class="pds_value"><xsl:value-of select="pds:caption-string('category',lower-case((arr|str)[@name='data_class']))" />:</span></strong>
 							<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
 							<br />
 							<xsl:value-of select="pds:description((arr|str)[@name='description'],str[@name='title'])" />
@@ -313,10 +313,10 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<li class="result">
-					<strong><xsl:value-of select="pds:caption-string('category',lower-case((arr|str)[@name='data_class']))" />:</strong>
+					<strong><span class="pds_value"><xsl:value-of select="pds:caption-string('category',lower-case((arr|str)[@name='data_class']))" />:</span></strong>
 					<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
 					<br />
-							<xsl:value-of select="(arr|str)[@name='primary_result_domain']" />
+							<xsl:value-of select="(arr|str)[@name='product_class']" />
 							-
 							<xsl:value-of select="(arr|str)[@name='file_name']" /><br />
 				</li>
@@ -368,7 +368,7 @@
   <xsl:template match="lst" mode="facet">
     <xsl:variable name="facet" select="@name" />
     <xsl:variable name="baseQuery" select="pds:make-query(($searchParam,pds:facet-params(/response,$facet),$nonQueryParams))" />
-    <h3><xsl:value-of select="pds:caption-string('facet',@name)" /></h3>
+    <h3><span class="pds_value"><xsl:value-of select="pds:caption-string('facet',@name)" /></span></h3>
     <ul>
       <xsl:apply-templates select="int" mode="facet">
         <xsl:with-param name="facet" select="@name" />
