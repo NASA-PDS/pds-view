@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2012-2013, by the California Institute of Technology. 
+# Copyright 2012-2014, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -34,7 +34,7 @@ cp ../../portal/filter/target/filter*bin* .
 echo "Copying the Preparation packages to the package directory."
 cp ../../preparation/core/target/core*bin* .
 cp ../../preparation/generate/target/generate*bin* .
-cp ../../preparation/pds4-tools/package/target/pds4-tools* .
+# cp ../../preparation/pds4-tools/package/target/pds4-tools* .
 cp ../../preparation/transform/target/transform*bin* .
 cp ../../preparation/validate/target/validate*bin* .
 

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2010-2013, by the California Institute of Technology. 
+# Copyright 2010-2014, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -24,11 +24,12 @@ cd preparation
 mvn --non-recursive install clean
 cd core
 mvn install clean
-cd ../pds4-tools/superpom
-mvn clean install clean
-cd ../packages
-mvn clean install clean
-cd ../../transform
+# cd ../pds4-tools/superpom
+# mvn clean install clean
+# cd ../packages
+# mvn clean install clean
+# cd ../../transform
+cd ../transform
 mvn install clean
 cd ../..
 
