@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011-2013, by the California Institute of Technology.
+  Copyright 2011-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -23,27 +23,24 @@
   </properties>
 
   <body>
-    <release version="1.4.0" date="TBD" description="TBD">
+    <release version="1.4.0" date="2014-03-31" description="This release of the Search Core is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="update" issue="PDS-229">
-	Created new core configs for all of the specific PDS4 context products, which include the new SlotFilters.
-      </action>
-      <action dev="jpadams" type="update" issue="PDS-229">
-	Updated ProductClass to respond to updates to RegistryResults API, including the generation of Association and Slot Filters.
-      </action>
-      <action dev="jpadams" type="update" issue="PDS-255">
-	Updated all core configs with new search_id field. Also generated OutputString and OutputStringFormat classes from the core-config.xsd to allow for specification of the format required for the output String. Previous implementation automatically URL encoded the string.
-      </action>
-      <action dev="jpadams" type="update" issue="PDS-256">
-	Created new archiveinfo.xml config for PDS4 resources.
+        Created new core configs for all of the specific PDS4 context products, which include the new SlotFilters. Also updated ProductClass to respond to updates to RegistryResults API, including the generation of Association and Slot Filters.
       </action>
       <action dev="mcayanan" type="update" issue="PDS-253">
         Updated Unix shell script and Windows batch files to provide a more user friendly message when JAVA_HOME is not set in the environment.
       </action>
-      <action dev="jpadams" type="update">
-	    Update documentation to take change from initial-index-pdsen to search-core-pdsen.
+      <action dev="jpadams" type="update" issue="PDS-255">
+        Updated all core configs with new search_id field. Also generated OutputString and OutputStringFormat classes from the core-config.xsd to allow for specification of the format required for the output String. Previous implementation automatically URL encoded the string.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-256">
+        Created new archiveinfo.xml config for PDS4 resources.
       </action>
       <action dev="jpadams" type="update">
-	    Updated PSA data set config to use localhost. Updated PDS4 config to only refer to registry-pds4 and no longer refer to registry-atm.
+        Update documentation to take change from initial-index-pdsen to search-core-pdsen.
+      </action>
+      <action dev="jpadams" type="update">
+        Updated PSA data set config to use localhost. Updated PDS4 config to only refer to registry-pds4 and no longer refer to registry-atm.
       </action>
     </release>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2013, by the California Institute of Technology.
+  Copyright 2013-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -23,19 +23,21 @@
   </properties>
 
   <body>
-    <release version="0.2.0" date="TBD" description="TBD">
-      <action dev="luca" type="add" issue="PDS-251">
-        Enabling application to query multiple PDS registries.
+    <release version="1.0.0" date="2014-03-31" description="This release of the Transport Service is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="cinquini" type="update" issue="PDS-199">
+        Modified to utilize the RegistryHandler methods from the registry-core component.
       </action>
-      <action dev="luca" type="add" issue="PDS-212">
+      <action dev="cinquini" type="add" issue="PDS-212">
         Enabling easier URL syntax for product requests, maintain backward compatibility with DIS-style syntax. 
       </action>
-      <action dev="luca" type="fix" issue="PDS-219">
+      <action dev="cinquini" type="fix" issue="PDS-219">
         Fixed bug related to unspecified identifier(s) in product request. 
       </action>
-      <action dev="luca" type="add" issue="PDS-238">
-        Enabled "identifier" and "package" parameter names to be case insensitive.
-        Enabled "package" parameter value to be case insensitive.
+      <action dev="cinquini" type="add" issue="PDS-238">
+        Enabled "identifier" and "package" parameter names to be case insensitive. Enabled "package" parameter value to be case insensitive.
+      </action>
+      <action dev="cinquini" type="add" issue="PDS-251">
+        Enabling application to query multiple PDS registries.
       </action>
     </release>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2013, by the California Institute of Technology.
+  Copyright 2013-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -22,24 +22,25 @@
   </properties>
 
   <body>
-  
-    <release version="0.3.0" date="TBD" description="TBD">
-        <action dev="cinquini" type="add" issue="PDS-212">
-        	Enabling easier URL syntax for product requests, maintain backward compatibility with DIS-style syntax. 
-      	</action>
-    	<action dev="cinquini" type="add" issue="PDS-210">
-    		Inserted aliases for FILE_LIST AND FILE_LIST_ZIP handlers (FILELIST AND FILELISTZIP respectively).
-    	</action>
-    	<action dev="cinquini" type="add" issue="PDS-210">
-    		Updated the operation document to reflect the supported handlers.
-    	</action>
-    	<action dev="cinquini" type="add" issue="PDS-211">
-        	Using the new Pds4ImageTransformer, and ProductTransformer API, from the transformer package. 
-      	</action>
-      	<action dev="cinquini" type="add" issue="PDS-250">
-        	Inserted handlers PDS_ZIP and PDS_ZIP_SIZE to return a compressed package of a PDS3 label and all its references
-        	(and the total size of the package when uncompressed). 
-      	</action>
+    <release version="1.0.0" date="2014-03-31" description="This release of the Transport Service is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="cinquini" type="add" issue="PDS-210">
+        Inserted aliases for FILE_LIST AND FILE_LIST_ZIP handlers (FILELIST AND FILELISTZIP respectively). Added the PDS_LABEL handler for retrieving PDS4 product labels. Updated the operation document to reflect the supported handlers.
+      </action>
+      <action dev="cinquini" type="add" issue="PDS-211">
+        Using the new Pds4ImageTransformer, and ProductTransformer API, from the transformer package.
+      </action>
+      <action dev="cinquini" type="add" issue="PDS-212">
+        Enabling easier URL syntax for product requests, maintain backward compatibility with DIS-style syntax.
+      </action>
+      <action dev="cinquini" type="add" issue="PDS-232">
+        Updated the documentation to reflect the updated installation procedure and the alternative method for querying the service.
+      </action>
+      <action dev="cinquini" type="add" issue="PDS-238">
+        Modified to accept query parameters in lowercase.
+      </action>
+      <action dev="cinquini" type="add" issue="PDS-250">
+        Inserted handlers PDS_ZIP and PDS_ZIP_SIZE to return a compressed package of a PDS3 label and all its references (and the total size of the package when uncompressed).
+      </action>
     </release>
 
     <release version="0.2.0" date="2013-09-30" description="This release of the Transport Service is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">

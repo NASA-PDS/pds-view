@@ -27,7 +27,7 @@
 
   <groupId>gov.nasa.pds.2010.transport</groupId>
   <artifactId>transport-registry</artifactId>
-  <version>0.2.0-dev</version>
+  <version>1.0.0</version>
   <packaging>war</packaging>
 
   <name>Transport Service (Registry)</name>
@@ -139,14 +139,14 @@
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>oodt-product</artifactId>
-      <version>${oodt-version}</version>
+      <version>0.7-SNAPSHOT</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>oodt-xmlquery</artifactId>
-      <version>${oodt-version}</version>
+      <version>0.7-SNAPSHOT</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
@@ -160,7 +160,7 @@
     <dependency>
       <groupId>gov.nasa.pds.2010.registry</groupId>
       <artifactId>registry-core</artifactId>
-      <version>1.6.0-dev</version>
+      <version>${registry-version}</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>

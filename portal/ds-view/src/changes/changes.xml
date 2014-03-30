@@ -22,7 +22,10 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
-    <release version="2.3.0" date="TBD" description="TBD">
+    <release version="2.3.0" date="2014-03-31" description="This release of Data Set View is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="hyunlee" type="add" issue="PDS-254">
+        Added initial support for displaying Primary Result Summary fields when available from the Search Service.
+      </action>
     </release>
 
     <release version="2.2.1" date="2014-02-28" description="This release of Data Set View is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
@@ -33,7 +36,7 @@
          Added support for ADS products from a separate registry instance.
       </action>
       <action dev="hyunlee" type="fix" issue="PDS-247">
-         Fixed to use the value of OBSERVING SYSTEM NAME and START/STOP DATE TIME directly from the solr field. Fixed to use instrument_host_ref if the type is "Spacecraft", use instrument_ref if the type is instrument for OBSERVING SYSTEM COMPONENET NAME.
+         Fixed to use the value of OBSERVING SYSTEM NAME and START/STOP DATE TIME directly from the solr field. Fixed to use instrument_host_ref if the type is "Spacecraft", use instrument_ref if the type is Instrument for OBSERVING SYSTEM COMPONENET NAME.
       </action>
     </release>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2011-2013, by the California Institute of Technology.
+  Copyright 2011-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>search</artifactId>
-  <version>1.4.0-dev</version>
+  <version>1.4.0</version>
   <packaging>pom</packaging>
 
   <name>Search</name>
@@ -35,6 +35,13 @@
   </description>
   <url>http://pds-cm.jpl.nasa.gov/pds4/search/</url>
 
+  <modules>
+    <module>search-core</module>
+    <module>search-service</module>
+    <module>search-ui</module>
+    <module>product-search-ui</module>
+  </modules>
+
   <licenses>
     <license>
       <name>California Institute of Technology</name>
@@ -42,13 +49,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
-  <modules>
-    <module>search-core</module>
-    <module>search-service</module>
-    <module>search-ui</module>
-    <module>product-search-ui</module>
-  </modules>
 
   <developers>
     <developer>

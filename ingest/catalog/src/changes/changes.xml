@@ -23,10 +23,7 @@
   </properties>
 
   <body>
-    <release version="1.7.0" date="TBD" description="TBD">
-      <action dev="hyunlee" type="fix">
-        Modified the Catalog Tool to use the Product_Volume_PDS3 product's LID as the base LID for product repository products of Housekeeping, Person, Reference, and Target.
-      </action>
+    <release version="1.7.0" date="2014-03-31" description="This release of the Catalog Tool is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" type="update" issue="PDS-227">
         Corrected an issue where catalog files that are not registered as context products were having their file objects versioned and re-registered.
       </action>
@@ -41,6 +38,9 @@
       </action>
       <action dev="mcayanan" type="update" issue="PDS-253">
         Updated Unix shell script and Windows batch file to provide a more user friendly message when JAVA_HOME is not set in the environment.
+      </action>
+      <action dev="hyunlee" type="fix">
+        Modified the Catalog Tool to use the Product_Volume_PDS3 product's LID as the base LID for product repository products of Housekeeping, Person, Reference, and Target.
       </action>
     </release>
 
