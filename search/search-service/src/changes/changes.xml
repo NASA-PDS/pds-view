@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="1.5.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.4.0" date="2014-03-31" description="This release of the Search Core is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="update" issue="PDS-229">
         Updated solrconfig to facet on data_class instead of objectType. Updated schema.xml to handle some of the new fields that came out of the new PDS4 context product configurations. Updated XSLT to transition from using objectType to the new data_class facet. 

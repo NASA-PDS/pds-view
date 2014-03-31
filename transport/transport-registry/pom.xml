@@ -27,7 +27,7 @@
 
   <groupId>gov.nasa.pds.2010.transport</groupId>
   <artifactId>transport-registry</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0-dev</version>
   <packaging>war</packaging>
 
   <name>Transport Service (Registry)</name>

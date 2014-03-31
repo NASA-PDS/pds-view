@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="1.8.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.7.0" date="2014-03-31" description="This release of the Catalog Tool is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" type="update" issue="PDS-227">
         Corrected an issue where catalog files that are not registered as context products were having their file objects versioned and re-registered.

@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="1.6.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.5.0" date="2014-03-31" description="This release of the Update Tool is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="add" issue="PDS-207">
         Basically rewrote the software to include an interface to Apache PushPull and streamlined the architecture for the report service. Includes updates to PushPull configurations for the nodes we have information on, an updated Launcher for the CLI, and accompanying units tests for most of the PushPull functionality.

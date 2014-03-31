@@ -22,6 +22,9 @@
   </properties>
 
   <body>
+    <release version="1.1.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.0.0" date="2014-03-31" description="This release of the Transport Service is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="cinquini" type="add" issue="PDS-210">
         Inserted aliases for FILE_LIST AND FILE_LIST_ZIP handlers (FILELIST AND FILELISTZIP respectively). Added the PDS_LABEL handler for retrieving PDS4 product labels. Updated the operation document to reflect the supported handlers.

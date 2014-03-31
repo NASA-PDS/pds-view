@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="1.7.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.6.0" date="2014-03-31" description="This release of the Registry Core is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="add" issue="PDS-199">
         Moved the RegistryHandler and associated classes from search-core to registry-core.
