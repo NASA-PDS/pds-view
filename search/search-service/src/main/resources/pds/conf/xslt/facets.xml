@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <facets>
-  <facet name="facet data class" caption="Type" />
+  <facet name="facet type" caption="Type" />
   <facet name="facet agency" caption="Agency" />
   <facet name="facet target" caption="Target" />
   <facet name="facet investigation" caption="Investigation" />

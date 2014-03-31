@@ -30,6 +30,9 @@
 		<field name="resLocation" type="required">
 			<outputString format="url">/ds-view/pds/viewContext.jsp?identifier={lid}&amp;version={version_id}</outputString>
 		</field>
+		<field name="data_product_type" type="string">
+			<registryPath>data_class</registryPath>
+		</field>
 		<field name="data_class" type="string">
 			<registryPath>data_class</registryPath>
 		</field>

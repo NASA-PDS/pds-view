@@ -112,7 +112,7 @@ public class SolrPost {
 	 * @throws SolrPostException
 	 */
 	public void clean() throws SolrPostException {
-        log.log(new ToolsLogRecord(ToolsLevel.DEBUG,
+        log.log(new ToolsLogRecord(ToolsLevel.INFO,
         		"Cleaning Search Service Index"));
 		InputStream deleteXml = new ByteArrayInputStream("<delete><query>*:*</query></delete>".getBytes());
 		
@@ -143,7 +143,7 @@ public class SolrPost {
 		try {
 			
 			for (File file : Utility.getFileList(dir, filePrefixList)) {
-		        log.log(new ToolsLogRecord(ToolsLevel.DEBUG,
+		        log.log(new ToolsLogRecord(ToolsLevel.INFO,
 		        		"Posting: " + file.getAbsolutePath()));
 				stream = new FileInputStream(file);
 				if (!httpPost(stream, this.searchServiceUrl + UPDATE_XSLT_URL)) {
@@ -167,7 +167,7 @@ public class SolrPost {
 	 * @throws SolrPostException
 	 */
 	public void optimize() throws SolrPostException {
-        log.log(new ToolsLogRecord(ToolsLevel.DEBUG,
+        log.log(new ToolsLogRecord(ToolsLevel.INFO,
         		"Optimizing Search Service index."));
         
 		if (!httpGet(this.searchServiceUrl + OPTIMIZE_URL)) {

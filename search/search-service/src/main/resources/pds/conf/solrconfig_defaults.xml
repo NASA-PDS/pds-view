@@ -12,7 +12,7 @@
 	<str name="facet.mincount">1</str>
 	<str name="facet.field">facet_pds_model_version</str>
 	<str name="facet.field">facet_agency</str>
-	<str name="facet.field">facet_data_class</str>
+	<str name="facet.field">facet_type</str>
 	<str name="facet.field">facet_target</str>
 	<str name="facet.field">facet_investigation</str>
 	<str name="facet.field">facet_instrument</str>
@@ -20,7 +20,7 @@
 	<str name="facet.field">facet_primary_result_processing_level</str>
 	<str name="f.facet_pds_model_version.facet.prefix">1,</str>
 	<str name="f.facet_agency.facet.prefix">1,</str>
-	<str name="f.facet_data_class.facet.prefix">1,</str>
+	<str name="f.facet_type.facet.prefix">1,</str>
 	<str name="f.facet_target.facet.prefix">1,</str>
 	<str name="f.facet_investigation.facet.prefix">1,</str>
 	<str name="f.facet_instrument.facet.prefix">1,</str>

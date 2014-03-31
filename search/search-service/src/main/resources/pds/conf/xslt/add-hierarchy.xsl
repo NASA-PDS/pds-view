@@ -28,9 +28,9 @@
     </add>
   </xsl:template>
 
-  <xsl:template match="field[@name = 'data_class']">
+  <xsl:template match="field[@name = 'data_product_type']">
     <xsl:copy-of select="." />
-    <field name="facet_data_class"><xsl:value-of select="concat('1,',.)" /></field>
+    <field name="facet_type"><xsl:value-of select="concat('1,',.)" /></field>
   </xsl:template>
   
   <xsl:template match="field[@name = 'pds_model_version']">

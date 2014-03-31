@@ -25,16 +25,19 @@
 			<registryPath>name</registryPath>
 		</field>
 		<field name="description" type="required">
-			<registryPath>citation_description</registryPath>
+			<registryPath>resource_description</registryPath>
 		</field>
 		<field name="resLocation" type="required">
 			<registryPath>resource_url</registryPath>
 		</field>
-		<field name="data_class" type="string">
+		<field name="data_product_type" type="string">
 			<registryPath>data_class</registryPath>
 		</field>
 		<!--  -->
-		
+
+		<field name="data_class" type="string">
+			<registryPath>data_class</registryPath>
+		</field>		
 		<field name="objectType" type="string">
 			<registryPath>objectType</registryPath>
 		</field>

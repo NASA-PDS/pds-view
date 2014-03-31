@@ -55,9 +55,7 @@
         <ol>
           <li><p>Add the following to /usr/local/search-service/pds/conf/xslt/facets.xml:</p>
             <source>
-&lt;facet name="facet node" caption="Node" /&gt;
-
-&lt;facet name="node id" caption="Node" /&gt;
+&lt;facet name="facet node id" caption="Node" /&gt;
             </source>
           </li>
           <li><p>Update /usr/local/search-service/pds/conf/xslt/add-hierarchy.xsl:</p>

@@ -513,6 +513,7 @@
    <field name="confidence_level_note" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="data_class" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="data_object_type" type="lowercase" indexed="true" stored="true" multiValued="true"/>
+   <field name="data_product_type" type="lowercase" indexed="true" stored="true" multiValued="true"/>
    <field name="data_set_name" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="data_set_release_date" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="description" type="text_general" indexed="false" stored="true" multiValued="true" />
@@ -599,10 +600,10 @@
    
    <!-- And the faceting fields -->
    <field name="facet_agency" type="lowercase" indexed="true" stored="false" multiValued="false" />
-   <field name="facet_data_class" type="lowercase" indexed="true" stored="false" multiValued="true" />
    <field name="facet_instrument" type="lowercase" indexed="true" stored="false" multiValued="true" />
    <field name="facet_investigation" type="lowercase" indexed="true" stored="false" multiValued="true" />
    <field name="facet_target" type="lowercase" indexed="true" stored="false" multiValued="true" />
+   <field name="facet_type" type="lowercase" indexed="true" stored="false" multiValued="true" />
    <field name="facet_pds_model_version" type="lowercase" indexed="true" stored="false" multiValued="true" />
    <field name="facet_primary_result_purpose" type="lowercase" indexed="true" stored="false" multiValued="true" />
    <field name="facet_primary_result_processing_level" type="lowercase" indexed="true" stored="false" multiValued="true" />
