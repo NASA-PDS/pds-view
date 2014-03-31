@@ -492,7 +492,7 @@ serverStarted="2014-02-25T10:52:46.513-08:00" status="OK"/&gt;
             <p>Assuming the registration above was performed against the PDS4 instance of the service, the Registry User Interface should be accessible via the following URL: <i>http://localhost:8080/registry-ui-pds4/</i>. Accessing this URL from the desired web browser, should produce the following display:
             </p>
             <center>
-              <a href="../images/registry-ui-main-1.5.0.jpg" target="_blank"><img alt="Registry User Interface" src="../images/registry-ui-main-1.5.0-scale.jpg" border="1" /></a><br/>
+              <a href="../images/registry-ui-main-1.6.0.jpg" target="_blank"><img alt="Registry User Interface" src="../images/registry-ui-main-1.6.0-scale.jpg" border="1" /></a><br/>
               Click the image for a larger version.
             </center>
             <p>If an "RPC Failure" message appears near the bottom of the screen, this is most likely the result of the Registry Service URL not being configured correctly. The <a href="../registry/registry-ui/install/index.html">Installation</a> document for the Registry User Interface specifies how to modify the appropriate configuration file to correct this situation.
