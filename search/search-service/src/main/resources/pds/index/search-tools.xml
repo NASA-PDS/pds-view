@@ -614,7 +614,7 @@
       <field name="data_product_type">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
-   <doc boost="0.5">
+   <doc>
       <field name="instrument_type">VIDICON CAMERA</field>
       <field name="search_engine_type">JUPITER</field>
       <field name="search_engine_type">SATURN</field>
@@ -3552,7 +3552,7 @@
       <field name="data_product_type">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
-   <doc boost="0.5">
+   <doc>
       <field name="instrument_type">FRAMING CAMERA</field>
       <field name="search_engine_type">JUPITER</field>
       <field name="search_engine_type">RINGS</field>
@@ -3602,7 +3602,7 @@
       <field name="data_product_type">Product_Context_Search_Tool</field>
       <field name="resource_class">data_set_description</field>
    </doc>
-   <doc boost="0.5">
+   <doc>
       <field name="instrument_type">OPTICAL TELESCOPE</field>
       <field name="search_engine_type">RINGS</field>
       <field name="title">Hubble Space Telescope Rings Image Catalog</field>

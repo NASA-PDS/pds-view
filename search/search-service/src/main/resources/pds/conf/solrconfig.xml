@@ -740,8 +740,8 @@
 
     <lst name="appends">
       <str name="tr">data-search.xsl</str>
-      <str name="bq">data_product_type:Product_Context_Search_Tool^10</str>
-      <str name="bq">data_product_type:Resource^5</str>
+      <str name="bq">data_product_type:Product_Context_Search_Tool^100</str>
+      <str name="bq">data_product_type:Resource^10</str>
     </lst>
 
     <arr name="last-components">
@@ -765,8 +765,8 @@
       <str name="tr">data-search.xsl</str>
       <str name="fq">-archive_status:SUPERSEDED</str>
       <str name="fq">-data_product_type:Product_Observational</str>
-      <str name="bq">data_product_type:Product_Context_Search_Tool^10</str>
-      <str name="bq">data_product_type:Resource^5</str>
+      <str name="bq">data_product_type:Product_Context_Search_Tool^100</str>
+      <str name="bq">data_product_type:Resource^10</str>
     </lst>
 
     <arr name="last-components">
@@ -793,7 +793,7 @@
       <str name="fq">data_product_type:Resource OR data_product_type:Product_Observational OR data_product_type:Product_Collection OR data_product_type:Product_Bundle</str>
       <str name="bq">data_product_type:Product_Collection^10</str>
       <str name="bq">data_product_type:Product_Bundle^10</str>
-      <str name="bq">data_product_type:Resource^5</str>
+      <str name="bq">data_product_type:Resource^100</str>
     </lst>
 
     <arr name="last-components">
