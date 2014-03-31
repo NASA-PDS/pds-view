@@ -316,8 +316,9 @@
 					<strong><span class="pds_value"><xsl:value-of select="pds:caption-string('category',lower-case((arr|str)[@name='data_product_type']))" />:</span></strong>
 					<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
 					<br />
-							<xsl:value-of select="(arr|str)[@name='data_class']" />
-							-
+                                        <xsl:for-each select="arr[@name='data_class']/str">
+                                          <xsl:value-of select="." /> -
+                                        </xsl:for-each>
 							<xsl:value-of select="(arr|str)[@name='file_name']" /><br />
 				</li>
 			</xsl:otherwise>

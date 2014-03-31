@@ -27,10 +27,10 @@
 			<outputString format="url">/ds-view/pds/viewCollection.jsp?identifier={lid}&amp;version={version_id}</outputString>
 		</field>
 		<field name="data_product_type" type="string">
-			<registryPath>data_class</registryPath>
+			<registryPath>product_class</registryPath>
 		</field>
 		<field name="data_class" type="required">
-			<registryPath>product_class</registryPath>
+			<registryPath>data_class</registryPath>
 		</field>
 		<!--  -->
 		

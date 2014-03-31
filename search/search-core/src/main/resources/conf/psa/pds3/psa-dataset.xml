@@ -30,7 +30,7 @@
 			<registryPath>resource_ref.resource_url</registryPath>
 		</field>
 		<field name="data_product_type" type="string">
-			<registryPath>Data_Set</registryPath>
+			<outputString format="text">Data_Set</outputString>
 		</field>
 		<!--  -->
 		

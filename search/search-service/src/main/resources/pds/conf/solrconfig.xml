@@ -740,8 +740,8 @@
 
     <lst name="appends">
       <str name="tr">data-search.xsl</str>
-      <str name="bq">data_class:Product_Context_Search_Tool^10</str>
-      <str name="bq">data_class:Resource^5</str>
+      <str name="bq">data_product_type:Product_Context_Search_Tool^10</str>
+      <str name="bq">data_product_type:Resource^5</str>
     </lst>
 
     <arr name="last-components">
@@ -764,9 +764,9 @@
     <lst name="appends">
       <str name="tr">data-search.xsl</str>
       <str name="fq">-archive_status:SUPERSEDED</str>
-      <str name="fq">-objectType:Product_Observational</str>
-      <str name="bq">data_class:Product_Context_Search_Tool^10</str>
-      <str name="bq">data_class:Resource^5</str>
+      <str name="fq">-data_product_type:Product_Observational</str>
+      <str name="bq">data_product_type:Product_Context_Search_Tool^10</str>
+      <str name="bq">data_product_type:Resource^5</str>
     </lst>
 
     <arr name="last-components">
@@ -790,10 +790,10 @@
       <str name="tr">product-search.xsl</str>
       <str name="fq">-archive_status:SUPERSEDED</str>
       <str name="fq">pds_model_version:PDS4</str>
-      <str name="fq">data_class:Resource OR objectType:Product_Observational OR objectType:Product_Collection OR objectType:Product_Bundle</str>
-      <str name="bq">objectType:Product_Collection^10</str>
-      <str name="bq">objectType:Product_Bundle^10</str>
-      <str name="bq">data_class:Resource^5</str>
+      <str name="fq">data_product_type:Resource OR data_product_type:Product_Observational OR data_product_type:Product_Collection OR data_product_type:Product_Bundle</str>
+      <str name="bq">data_product_type:Product_Collection^10</str>
+      <str name="bq">data_product_type:Product_Bundle^10</str>
+      <str name="bq">data_product_type:Resource^5</str>
     </lst>
 
     <arr name="last-components">
