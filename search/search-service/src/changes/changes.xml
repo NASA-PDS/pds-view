@@ -24,16 +24,16 @@
 
   <body>
     <release version="1.4.0" date="2014-03-31" description="This release of the Search Core is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">
-      <action dev="jpadams" type"update" issue="PDS-229">
+      <action dev="jpadams" type="update" issue="PDS-229">
         Updated solrconfig to facet on data_class instead of objectType. Updated schema.xml to handle some of the new fields that came out of the new PDS4 context product configurations. Updated XSLT to transition from using objectType to the new data_class facet. 
       </action>
-      <action dev="jpadams" type"update" issue="PDS-254">
+      <action dev="jpadams" type="update" issue="PDS-254">
         Updated schema.xml to include new Primary Result Summary fields.
       </action>
-      <action dev="jpadams" type"update" issue="PDS-255">
+      <action dev="jpadams" type="update" issue="PDS-255">
         Updated schema.xml to include new search_id as the Solr document UniqueKey.
       </action>
-      <action dev="jpadams" type"update" issue="PDS-256">
+      <action dev="jpadams" type="update" issue="PDS-256">
         Updated solrconfig.xml to boost archive information products in search results.
       </action>
       <action dev="jpadams" type="update">
