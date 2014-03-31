@@ -99,8 +99,8 @@ mkdir -p $1/preparation/design
 cp -r preparation/design/target/site/* $1/preparation/design
 mkdir -p $1/preparation/generate
 cp -r preparation/generate/target/site/* $1/preparation/generate
-# mkdir -p $1/preparation/pds4-tools
-# cp -r preparation/pds4-tools/target/site/* $1/preparation/pds4-tools
+mkdir -p $1/preparation/pds4-tools
+cp -r preparation/pds4-tools/target/site/* $1/preparation/pds4-tools
 mkdir -p $1/preparation/transform
 cp -r preparation/transform/target/site/* $1/preparation/transform
 mkdir -p $1/preparation/validate
