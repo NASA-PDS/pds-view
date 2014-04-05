@@ -109,7 +109,7 @@
         guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Mission_PDS3"/>
     <classificationNode code="Product_Native"
         parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
-        description="Product_Native is used to describe digital objects in the original format returned by the spacecraft or experimental system when that format cannot be described using one of the PDS4 formats specified for observational data (tables or arrays, excluding Array_1D)."
+        description="Product_Native is used to describe digital objects in the original format returned by the spacecraft or experimental system."
         name="Product_Native"
         lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Native"
         guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Native"/>
