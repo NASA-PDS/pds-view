@@ -200,7 +200,7 @@ public class CatalogObject {
 				for (ObjectStatement objSmt2: objList2) {	
 					// how to handle multiple CATALOG objects???? or DATA_PRODUCER
 					if (objSmt2.getIdentifier().toString().equalsIgnoreCase("CATALOG")) {
-						List<PointerStatement> ptList = ((ObjectStatement) objList2.get(0)).getPointers();
+						List<PointerStatement> ptList = objSmt2.getPointers();
 						_pointerFiles = new ArrayList<String>();
 						for (PointerStatement ptSmt : ptList) {
 							if (ptSmt.hasMultipleReferences()) {
