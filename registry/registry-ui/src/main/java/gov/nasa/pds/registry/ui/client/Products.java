@@ -661,7 +661,7 @@ public class Products extends Tab {
 									logger.log(Level.FINEST, "result of deleteProduct() = " + result);
 									logger.log(Level.FINEST, "refreshing the display.....");
 									get().reloadData();
-									get().refreshTable();
+									//get().refreshTable();
 								}
 							});					
 							get().getDataTable().removeRow(rowIndex);
@@ -675,19 +675,10 @@ public class Products extends Tab {
 	}
 
 	protected void reloadData() {			
-		get().getCachedTableModel().clearCache();
-		get().getPagingScrollTable().gotoPage(0, true);
-		int totalCount = get().getDataTable().getRowCount();
-		/*
-        if (totalCount==0 || totalCount>=get().getPageSize()) {
-            //get().getTableModel().setRowCount(get().getPageSize());
-            logger.log(Level.FINEST, "setting rowcount as " + this.pageSize);
-        }
-        else {
-            get().getTableModel().setRowCount(totalCount);
-            logger.log(Level.FINEST, "setting rowcount as " + totalCount);
-        }
-        */
+		get().getCachedTableModel().clearCache();	
+		// to reload a page after returning zero results from a previous search call (PDS-133)
+		get().getTableModel().setRowCount(getPageSize());
+		get().getPagingScrollTable().redraw();
 		
 		RegistryUI.statusInfo.getStatus(new AsyncCallback<StatusInformation>() {
         	@Override
