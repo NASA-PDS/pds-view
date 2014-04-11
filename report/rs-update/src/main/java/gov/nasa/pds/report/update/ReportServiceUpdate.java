@@ -28,6 +28,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * @deprecated		This software has been deprecated for the report-manager
+ * 					module. But who knows, if we can get PushPull to work
+ * 					we may reinstate. 
+ * @author			jpadams
+ *
+ */
+@Deprecated
 public class ReportServiceUpdate {
 
 	private LogPath logPath;
@@ -36,6 +44,12 @@ public class ReportServiceUpdate {
 
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	
+	/**
+	 *  
+	 * @param logPath
+	 * @param profileName
+	 * @param isNewProfile
+	 */
 	public ReportServiceUpdate(LogPath logPath, String profileName,
 			boolean isNewProfile) {
 		this.logPath = logPath;
