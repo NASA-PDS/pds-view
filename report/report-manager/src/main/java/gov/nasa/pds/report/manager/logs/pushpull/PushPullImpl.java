@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.logging.Logger;
 
+import org.apache.oodt.cas.pushpull.daemon.DaemonLauncher;
+
 public class PushPullImpl implements PushPull {
     /* our log stream */
     private static final Logger LOG = Logger.getLogger(PushPullImpl.class
@@ -18,7 +20,7 @@ public class PushPullImpl implements PushPull {
 	protected LinkedList<File> sitesFiles;
 	
 	// TODO Known issue with this. Severe error thrown when trying to register as MBean
-	protected ReportDaemonLauncher daemonLauncher;
+	protected DaemonLauncher daemonLauncher;
 	
 	/**
 	 * --rmiRegistryPort ${DAEMONLAUNCHER_PORT} \
@@ -47,7 +49,7 @@ public class PushPullImpl implements PushPull {
 
 	@Override
 	public void pull() throws Exception {
-        daemonLauncher = new ReportDaemonLauncher(port,
+        daemonLauncher = new DaemonLauncher(port,
                 propertiesFile, sitesFiles);
 		
         //Thread myThread = new Thread(new Runnable() {
@@ -60,12 +62,12 @@ public class PushPullImpl implements PushPull {
         
         synchronized (daemonLauncher) {
             try {
-            	//daemonLauncher.wait();
+            	daemonLauncher.wait();
             	//while (daemonLauncher.checkStatus()) {
             	// TODO This still doesn't work when running via CLI, but it works in testing
-            	while (daemonLauncher.hasRunningDaemons()) {
+            	//while (daemonLauncher.hasRunningDaemons() ) {
             		//LOG.log(ToolsLevel.WARNING, "Waiting for " + daemonLauncher.viewDaemonWaitingList().length + " daemons to complete...");
-            	}
+            	//}
             	daemonLauncher.quit();
             } catch (Exception e) {
             	e.printStackTrace();

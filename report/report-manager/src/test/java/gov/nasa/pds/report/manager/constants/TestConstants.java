@@ -39,8 +39,8 @@ public final class TestConstants {
 	
 	public static final String STAGING_AREA_TESTS_FILE = "stagingAreaTests.xml";
 	
-	public static final String SITES_TEST_FILE_PATH = TEST_DUMP_RELATIVE + "etc/conf/RemoteSpecs.xml";
+	public static final String SITES_TEST_FILE_PATH = TEST_DIR_RELATIVE + "etc/conf/RemoteSpecs.xml";
 	
-	public static final String PROPERTIES_TEST_FILE_PATH = TEST_DUMP_RELATIVE + "etc/push_pull_framework.properties";
+	public static final String PROPERTIES_TEST_FILE_PATH = TEST_DIR_RELATIVE + "etc/push_pull_framework.properties";
 
 }

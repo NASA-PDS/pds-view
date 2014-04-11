@@ -35,17 +35,23 @@
             <password>password</password>
         </login>
 	</source>
+	<source host="ftpext.usgs.gov">
+        <login type="ftp" alias="img-http-ida">
+            <username>anonymous</username>
+            <password>anonymous</password>
+        </login>
+	</source>
 	
 	<!-- EN HTTP -->
 	<source host="pdsweb1.jpl.nasa.gov">
 		<login type="sftp" alias="en-http-pdsweb1">
-			<username>jpadams</username>
+			<username>pds</username>
 			<password>password</password>
 		</login>
 	</source>
 	<source host="pdsweb2.jpl.nasa.gov">
 		<login type="sftp" alias="en-http-pdsweb2">
-			<username>jpadams</username>
+			<username>pds</username>
 			<password>password</password>
 		</login>
 	</source>
@@ -53,13 +59,13 @@
 	<!-- EN Tomcat -->
 	<source host="pdsdlb1.jpl.nasa.gov">
 		<login type="sftp" alias="en-tomcat-pdsdlb1">
-			<username>jpadams</username>
+			<username>pds</username>
 			<password>password</password>
 		</login>
 	</source>
-	<source host="pdsdlb1.jpl.nasa.gov">
+	<source host="pdsdlb2.jpl.nasa.gov">
 		<login type="sftp" alias="en-tomcat-pdsdlb2">
-			<username>jpadams</username>
+			<username>pds</username>
 			<password>password</password>
 		</login>
 	</source>

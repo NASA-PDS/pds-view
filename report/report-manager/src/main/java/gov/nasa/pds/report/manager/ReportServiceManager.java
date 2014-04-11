@@ -12,8 +12,9 @@ public class ReportServiceManager {
 	private int port;
 	private String propertiesFilePath;
 	private String sitesFilePath;
+	private String stagingPath;
 	
-	public ReportServiceManager(int port, String propertiesFilePath, String sitesFilePath) {
+	public ReportServiceManager(int port, String propertiesFilePath, String sitesFilePath, String stagingPath) {
 		this.port = port;
 		
 		this.propertiesFilePath = checkNull(propertiesFilePath,
@@ -25,7 +26,8 @@ public class ReportServiceManager {
 	public void pullLogs() throws LogsManagerException {
 		LogsManager logsMgr = new LogsManager(this.port, 
 				getFile(this.propertiesFilePath), 
-				getFile(this.sitesFilePath));
+				getFile(this.sitesFilePath),
+				this.stagingPath);
 		logsMgr.pullLogFiles();
 	}
 	

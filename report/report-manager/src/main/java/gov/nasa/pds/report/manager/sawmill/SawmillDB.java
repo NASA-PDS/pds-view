@@ -19,17 +19,42 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.logging.Logger;
 
+/**
+ * Class that interacts with Sawmill CLI and rebuilds/updates
+ * Sawmill databases.
+ * 
+ * @author jpadams
+ *
+ */
 public class SawmillDB {
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
-	private String getDbOption(boolean isNew) {
-		if (isNew) {
+	/**
+	 * Based on the boolean entered, determines the Sawmill CLI
+	 * db option.
+	 * 
+	 * @param rebuild	Boolean to determine whether or not to rebuild the
+	 * 					Sawmill DB
+	 * @return			The Sawmill CLI option flag to append to the CLI
+	 * 					command
+	 */
+	private String getDbOption(boolean rebuild) {
+		if (rebuild) {
 			return "bd";
 		} else {
 			return "ud";
 		}
 	}
 
+	/**
+	 * Executes the Sawmill CLI with the various flags and specifications
+	 * required to build a specific profile's database
+	 * 
+	 * @param sawmillHome
+	 * @param profileName
+	 * @param isNewProfile
+	 * @throws Exception
+	 */
 	public void execute(String sawmillHome, String profileName,
 			boolean isNewProfile) throws Exception {
 		String dbOption = getDbOption(isNewProfile);
@@ -53,18 +78,10 @@ public class SawmillDB {
 				}
 				this.LOG.info(line);
 			}
-
-			/*
-			 * if (pr.exitValue() == 0) { this.LOG.info("Sawmill profile: " +
-			 * this.profileName + " build complete."); } else {
-			 * this.LOG.info("Error trying to build " + this.profileName +
-			 * " database"); }
-			 */
 		} finally {
 			input.close();
 			pr.destroy();
 			this.LOG.info("Sawmill Update Complete.");
-			// this.LOG.info(String.valueOf(pr.exitValue()));
 		}
 	}
 }

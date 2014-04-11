@@ -29,17 +29,21 @@ public enum Flag {
 	/** Flag to run Logs Manager component only */
 	PULL("p", "pull-logs", "Pull logs from remote sources."),
 	
-	/** Flag to specify file path to PushPull propertiesf ile*/
+	/** Flag to specify file path to PushPull properties file*/
 	PP_PROPERTIES("r", "pushpull_properties", "file-path", 
 			String.class, "File path to PushPull push_pull_framework.properties file. Default: $REPORT_MGR_HOME/etc/push_pull_framework.properties"),
 	
-	/** Flag to run Push Pull Resources Home only */
+	/** Flag to specify Push Pull Port Home  */
 	PP_PORT("P", "cas_pp_port", "port", 
 			String.class, "Port number to run CAS PushPull. Default: " + PushPull.DEFAULT_PORT),
 			
-	/** Flag to run Push Pull Resources Home only */
+	/** Flag to specify Push Pull Resources Home */
 	PP_SPECS("s", "pushpull_specs", "file-path", 
 			String.class, "File path to CAS PushPull Remote Sites specification file. Default: $REPORT_MGR_HOME/etc/conf/RemoteSpecs.xml"),
+	
+	/** Flag to specify staging area for logs only */
+	PP_STAGING("s", "logs_staging", "path", 
+			String.class, "Base directory path to pull logs. Default: $LOGS_HOME environment variable."),
 			
 			
 	/** PDS Default Flags for CLI - TODO should be refactored into commons enum **/

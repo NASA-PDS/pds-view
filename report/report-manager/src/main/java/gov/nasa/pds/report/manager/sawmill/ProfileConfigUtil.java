@@ -25,7 +25,16 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 
 /**
+ * This class creates a Sawmill profile on the fly for a new profile.
+ * 
+ * FIXME 	This needs to be updated to use the new profile config and also
+ * 			the built in command-line function create_profile_from_template
+ * 			for Sawmill:
+ * http://www.sawmill.net/cgi-bin/sawmill8/docs/sawmill.cgi?dp=docs.option&option_name=command_line.action
+ * 
  * @author jpadams
+ * 
+ * 
  * 
  */
 public class ProfileConfigUtil {
@@ -59,29 +68,10 @@ public class ProfileConfigUtil {
 			throw new FileNotFoundException(localPath + "/" + DEFAULT_CFG
 					+ " not found.");
 
+		// Sawmill requires all dashes(-) be replaced with underscores (_)
 		this.outputCfg = new File(profileHome + '/'
-				+ this.profileName.replace('-', '_') + ".cfg"); // Must replace
-																// all dashes
-																// from profile
-																// name,
-																// otherwise
-																// Sawmill will
-																// fail
+				+ this.profileName.replace('-', '_') + ".cfg");
 	}
-
-	/*public void buildCfg(final List<LogSource> lsList, final boolean isNewProfile)
-			throws IOException {
-		for (LogSource ls : lsList) {
-			this.logPath.setLogSetLabel(ls.getLogSrcName());
-			addSource(ls.getSetNumber());
-		}
-
-		try {
-			createProfile(isNewProfile);
-		} catch (IOException e) {
-			throw new IOException("Error with profile");
-		}
-	}*/
 
 	/**
 	 * Builds the configuration for Sawmill profile

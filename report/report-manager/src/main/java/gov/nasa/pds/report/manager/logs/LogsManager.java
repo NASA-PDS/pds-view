@@ -15,15 +15,19 @@
 
 package gov.nasa.pds.report.manager.logs;
 
+import gov.nasa.pds.report.manager.constants.Constants;
 import gov.nasa.pds.report.manager.logging.ToolsLevel;
 import gov.nasa.pds.report.manager.logging.ToolsLogRecord;
 import gov.nasa.pds.report.manager.logs.pushpull.PushPull;
 import gov.nasa.pds.report.manager.logs.pushpull.PushPullImpl;
+import gov.nasa.pds.report.manager.util.Debugger;
 import gov.nasa.pds.report.manager.util.Utility;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
@@ -45,15 +49,21 @@ public class LogsManager {
 	protected int port;
 	protected File propertiesFilePath;
 	protected File sitesFilePath;
+	protected String stagingPath;
 	
 	public LogsManager() {
-		this(PushPull.DEFAULT_PORT, null, null);
+		this(PushPull.DEFAULT_PORT, null, null, "");
 	}
 	
 	public LogsManager(int port, File propertiesFilePath, File sitesFilePath) {
+		this(port, propertiesFilePath, sitesFilePath, "");
+	}
+	
+	public LogsManager(int port, File propertiesFilePath, File sitesFilePath, String stagingPath) {
 		this.port = port;
 		this.propertiesFilePath = propertiesFilePath;
 		this.sitesFilePath = sitesFilePath;
+		this.stagingPath = stagingPath;
 	}
 	
 	/**
@@ -65,8 +75,8 @@ public class LogsManager {
 		LOG.log(new ToolsLogRecord(ToolsLevel.INFO, "Pulling Log Files: " + this.port + " - " + this.propertiesFilePath.getAbsolutePath() + " - " + this.sitesFilePath.getAbsolutePath()));
 		PushPullImpl pullObject;
 		try {
-			createStagingAreas(this.sitesFilePath);
-			
+			//createStagingAreas(this.sitesFilePath);
+
 			pullObject = new PushPullImpl(this.port, this.propertiesFilePath, this.sitesFilePath);
 			pullObject.pull();
 		} catch (Exception e) {
@@ -78,15 +88,21 @@ public class LogsManager {
 	 * Creates the staging areas designated in the RemoteSpecs.xml
 	 * @param sitesFilePath
 	 * @throws LogsManagerException
+	 * 
+	 * FIXME Not sure what is going on but I think 
 	 */
 	public void createStagingAreas(File sitesFilePath) throws LogsManagerException {
+		
+		Debugger.debug("Creating staging area from " + sitesFilePath.getAbsolutePath());
 		
 		// Check if all staging areas already exists
 		// If yes, exit
 		// If no, create directory
 		List<String> dirList = null;
 		try {
-			dirList = Utility.getValuesFromXML(sitesFilePath, PushPull.STAGING_TAG_NAME, PushPull.STAGING_ATTRIBUTE_NAME);
+			dirList = Utility.getValuesFromXML(getStagingPaths(this.stagingPath, sitesFilePath), 
+					PushPull.STAGING_TAG_NAME,
+					PushPull.STAGING_ATTRIBUTE_NAME);
 			
 			for (String dir : dirList) {
 				LOG.log(new ToolsLogRecord(ToolsLevel.INFO, "Creating directory: " + dir));
@@ -98,6 +114,30 @@ public class LogsManager {
 		} catch (Exception e) {
 			throw new LogsManagerException("Error reading " + sitesFilePath.getAbsolutePath());
 		}
+	}
+	
+	/**
+	 * Replaces the environment variables in the staging areas of site file
+	 * 
+	 * @param stagingPath
+	 * @param sitesFilePath
+	 * @return
+	 * @throws IOException
+	 */
+	private File getStagingPaths(String stagingPath, File sitesFilePath) throws IOException {
+		File temp = File.createTempFile("temp", "xml");
+		
+		if (!stagingPath.equals("")) {
+			//stagingPath = System.getenv(Constants.LOGS_HOME_ENV_VAR);
+			stagingPath = Utility.getHomeDirectory() + "/logs";
+		}
+		
+		Utility.replaceStringInFile(Constants.LOGS_HOME_ENV_VAR, stagingPath, sitesFilePath, temp);
+		
+		//Debugger.debug("Output temp XML file containing the replaced LOGS_HOME_ENV_VAR");
+		//Debugger.debug(new Scanner(temp).useDelimiter("\\Z").next());
+		
+		return temp;
 	}
 
 	/**

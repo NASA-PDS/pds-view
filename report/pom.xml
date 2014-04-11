@@ -37,6 +37,7 @@
 
   <modules>
     <module>rs-update</module>
+    <module>report-manager</module>
     <module>profile-manager</module>
     <module>sawmill</module>
   </modules>

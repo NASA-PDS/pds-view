@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 
 /**
  * @deprecated		This software has been deprecated for the report-manager
- * 					module. But who knows, if we can get PushPull to work
+ * 					module. But who knows, if we can't get PushPull to work
  * 					we may reinstate. 
  * @author			jpadams
  *

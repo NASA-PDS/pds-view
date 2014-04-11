@@ -68,6 +68,9 @@ public class ReportManagerLauncher {
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#PP_SPECS **/
 	private String ppSpec;
 
+	/** @see gov.nasa.pds.search.core.cli.options.Flag#PP_STAGING **/
+	private String ppStaging;
+	
 	/** The severity level to set for the tool. */
 	private Level severityLevel;
 
@@ -76,6 +79,7 @@ public class ReportManagerLauncher {
 		this.ppPort = -1;
 		this.ppResources = "";
 		this.ppSpec = "";
+		this.ppStaging = "";
 		this.severityLevel = ToolsLevel.INFO;
 	}
 
@@ -220,6 +224,8 @@ public class ReportManagerLauncher {
 					this.ppResources = o.getValue();
 			} else if (o.getOpt().equals(Flag.PP_SPECS.getShortName())) {
 				this.ppSpec = o.getValue();
+			} else if (o.getOpt().equals(Flag.PP_STAGING.getShortName())) {
+				this.ppStaging = o.getValue();
 			}
 		}
 
@@ -247,7 +253,7 @@ public class ReportManagerLauncher {
 	 * @throws SQLException
 	 */
 	public void execute() throws LogsManagerException {
-		ReportServiceManager rsMgr = new ReportServiceManager(this.ppPort, this.ppResources, this.ppSpec);
+		ReportServiceManager rsMgr = new ReportServiceManager(this.ppPort, this.ppResources, this.ppSpec, this.ppStaging);
 
 		if (this.pullFlag) {
 			rsMgr.pullLogs();
