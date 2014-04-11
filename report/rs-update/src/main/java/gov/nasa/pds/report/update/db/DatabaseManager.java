@@ -21,6 +21,8 @@ import java.util.logging.Logger;
 /**
  * @author jpadams
  * 
+ * TODO This is insane that I created a database. This should absolutely be stored in an XML of some sort.
+ * 
  */
 public class DatabaseManager {
 
