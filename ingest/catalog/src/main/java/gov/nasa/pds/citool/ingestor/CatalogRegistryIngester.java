@@ -829,6 +829,7 @@ public class CatalogRegistryIngester {
 				String instHostId = md.getMetadata("INSTRUMENT_HOST_ID");
 				instHostId = Utility.collapse(instHostId);
 				productLid = Constants.LID_PREFIX+"instrument:instrument."+value+"__" + instHostId;
+				productLid = Utility.replaceChars(productLid);
 				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
 				product.setObjectType(Constants.INST_PROD);
@@ -838,6 +839,7 @@ public class CatalogRegistryIngester {
 			else if (objType.equalsIgnoreCase(Constants.INSTHOST_OBJ) && key.equals("INSTRUMENT_HOST_ID")) {
 				value = Utility.collapse(value);
 				productLid = Constants.LID_PREFIX+"instrument_host:instrument_host."+value;
+				productLid = Utility.replaceChars(productLid);
 				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
 				product.setObjectType(Constants.INSTHOST_PROD);
@@ -861,6 +863,7 @@ public class CatalogRegistryIngester {
 				String volumeSetId = md.getMetadata("VOLUME_SET_ID");
 				volumeSetId = Utility.collapse(volumeSetId);
 				productLid = Constants.LID_PREFIX+"volume:volume."+value+"__" + volumeSetId;
+				productLid = Utility.replaceChars(productLid);
 				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
 				//volumeLid = productLid;
