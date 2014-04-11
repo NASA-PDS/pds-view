@@ -29,6 +29,8 @@ import java.util.logging.Logger;
  * Current implementation to create profiles and copy logs. Updates are only
  * made if new log sources are added
  * 
+ * FIXME This software only works with the old rs-update API, not report-manager
+ * 
  * @author jpadams
  * 
  */

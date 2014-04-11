@@ -39,6 +39,9 @@ import com.google.gson.JsonPrimitive;
 
 /**
  * Servlet implementation class SaveServlet
+ * 
+ * FIXME This software only works with the old rs-update API, not report-manager
+ * 
  */
 public class SaveServlet extends HttpServlet {
 	/** Generated versionID **/

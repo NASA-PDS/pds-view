@@ -33,6 +33,9 @@ import com.google.gson.JsonPrimitive;
 
 /**
  * Servlet implementation class SetupServlet
+ * 
+ * FIXME This software only works with the old rs-update API, not report-manager
+ * 
  */
 public class SetupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

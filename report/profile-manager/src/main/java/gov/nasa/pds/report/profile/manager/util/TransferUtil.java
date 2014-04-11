@@ -28,6 +28,8 @@ import com.google.gson.JsonObject;
 /**
  * Utility that provides all SFTP connection functionality
  * 
+ * FIXME This software only works with the old rs-update API, not report-manager
+ * 
  * @author jpadams
  * 
  */
