@@ -424,7 +424,7 @@ ProxyPassReverse /services/registry-pds4 http://localhost:8080/registry-pds4
 
         <ol>
           <li><b>Download Example Bundle</b><br/>
-            <p>The bundle can be downloaded from the <a href="http://pds.nasa.gov/repository/pds4/examples/dph_examples_1101/dph_example_archive_VG2PLS.zip">PDS4 Repository</a>. Unzipping the package results in a directory named <i>dph_example_archive_VG2PLS</i>.
+            <p>The bundle can be downloaded from the <a href="http://pds.nasa.gov/repository/pds4/examples/dph_examples_1200/dph_example_archive_VG2PLS.zip">PDS4 Repository</a>. Unzipping the package results in a directory named <i>dph_example_archive_VG2PLS</i>.
             </p>
           </li>
           <li><b>Validate Example Bundle</b><br/>
@@ -432,16 +432,12 @@ ProxyPassReverse /services/registry-pds4 http://localhost:8080/registry-pds4
             </p>
             <source>
 % cd $HOME/validate-1.5.0/bin
-% ./validate -t $HOME/dph_example_archive_VG2PLS -e "*.xml"
-            </source>
-            <p>The above run results in one validation failure due to not specifying the local data dictionary schema for the example bundle. The schemas can be specified on the command-line as follows:
-            </p>
-            <source>
 % ./validate -t $HOME/dph_example_archive_VG2PLS -e "*.xml" \
-  -x $HOME/dph_example_archive_VG2PLS/xml_schema/PDS4_PDS_1201.xsd \
-     $HOME/dph_example_archive_VG2PLS/xml_schema/dph_example_dict_1101.xsd
+  -x $HOME/dph_example_archive_VG2PLS/xml_schema/PDS4_PDS_1200.xsd \
+     $HOME/dph_example_archive_VG2PLS/xml_schema/dph_example_dict_1200.xsd \
+  -S $HOME/dph_example_archive_VG2PLS/xml_schema/PDS4_PDS_1200.sch
             </source>
-            <p>The above run results in a successful validation. Note that the core schema (PDS4_PDS_1201.xsd) was also passed on the command-line because passing any schema on the command-line overrides the schemas provided with the tool.
+            <p>The above run results in a successful validation. Note that the core schema (PDS4_PDS_1200.xsd) was also passed on the command-line because passing any schema on the command-line overrides the schemas provided with the tool. In addition, the core Schematron (PDS4_PDS_1200.sch) was also passed on the command-line because the Example Bundle conforms to version 1.2.0.0 and the default version for the Validate Tool is 1.2.0.1.
             </p>
           </li>
           <li><b>Register Example Bundle</b><br/>
@@ -451,26 +447,25 @@ ProxyPassReverse /services/registry-pds4 http://localhost:8080/registry-pds4
 % cd $HOME/harvest-1.6.0/bin
 % ./harvest-pds4 -c ../examples/harvest-policy-example.xml
             </source>
-            <p>The above run will result in one error due to a duplicate logical identifier and a few warnings pertaining to references for products that were not found in the local registry. The rest of the products should get registered successfully. The summary should look something like the following:
+            <p>The above run will result in no errors and a few warnings pertaining to references for products that were not found in the local registry. The rest of the products should get registered successfully. The summary should look something like the following:
             </p>
             <source>
 ...
 Summary:
 
-14 of 14 file(s) processed, 4 other file(s) skipped
-1 error(s), 5 warning(s)
+13 of 13 file(s) processed, 6 other file(s) skipped
+0 error(s), 6 warning(s)
 
-13 of 14 products registered.
-82 of 82 ancillary products registered.
+13 of 13 products registered.
+81 of 81 ancillary products registered.
 
 Product Types Registered:
 2 Product_Document
 1 Product_Browse
 1 Product_Observational
-1 Product_XML_Schema
-2 Product_File_Text
+3 Product_File_Text
 1 Product_Bundle
-82 Product_File_Repository
+81 Product_File_Repository
 5 Product_Collection
 
 93 of 93 associations registered.
