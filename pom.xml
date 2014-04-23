@@ -83,6 +83,15 @@
       </roles>
     </developer>
     <developer>
+      <name>Luca Cinquini</name>
+      <id>cinquini</id>
+      <email>Luca.Cinquini@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
       <name>Sean Kelly</name>
       <id>kelly</id>
       <email>Sean.Kelly@jpl.nasa.gov</email>
@@ -111,13 +120,31 @@
       </roles>
     </developer>
     <developer>
+      <name>Gabe Resneck</name>
+      <id>resneck</id>
+      <email>Gabriel.M.Resneck@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Joshua Ganderson</name>
+      <id>jagander</id>
+      <email>Joshua.Ganderson@nasa.gov</email>
+      <organization>NASA Ames Research Center</organization>
+      <roles>
+        <role>Former Developer</role>
+      </roles>
+    </developer>
+    <developer>
       <name>Paul Ramirez</name>
       <id>pramirez</id>
       <email>Paul.Ramirez@jpl.nasa.gov</email>
       <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
-        <role>Developer</role>
-        <role>System Design Working Group Member</role>
+        <role>Former Developer</role>
+        <role>Former System Design Working Group Member</role>
       </roles>
     </developer>
   </developers>
