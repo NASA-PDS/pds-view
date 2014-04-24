@@ -454,7 +454,7 @@ ProxyPassReverse /services/registry-pds4 http://localhost:8080/registry-pds4
 Summary:
 
 13 of 13 file(s) processed, 6 other file(s) skipped
-0 error(s), 6 warning(s)
+0 error(s), 16 warning(s)
 
 13 of 13 products registered.
 81 of 81 ancillary products registered.
@@ -468,7 +468,9 @@ Product Types Registered:
 81 Product_File_Repository
 5 Product_Collection
 
-93 of 93 associations registered.
+67 of 67 generated checksums matched the supplied value in their product label, 14 value(s) not checked.
+
+103 of 103 associations registered.
 
 End of Log
             </source>
