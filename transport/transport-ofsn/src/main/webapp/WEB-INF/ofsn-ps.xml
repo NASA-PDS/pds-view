@@ -175,11 +175,85 @@ FIXME: Change XML namespace URI for oodt prefix?
        class="org.apache.oodt.product.handlers.ofsn.StdOFSNGetHandler"/>       
        
   <!-- 
-  	The PDS4_TO_JPEG type transforms a PDS4 image to JPEG.
+  	Handlers that convert a PDS3 or PDS4 label to another format.
    -->   
-  <handler name="PDS4_TO_JPG" type="get" class="gov.nasa.pds.transport.Pds4TransformerHandler">
+  <handler name="PDS_TO_JPG" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="image/jpeg"/>
-        <!-- <property name="cacheDir" value="/tmp"/> -->
+    	<property name="extension" value="jpg"/>
+    	<!-- <property name="cacheDir" value="/tmp"/> -->
+  </handler>
+  <handler name="PDS_TO_JPEG" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="image/jpeg"/>
+    	<property name="extension" value="jpeg"/> 
+  </handler>
+  <handler name="PDS_TO_JP2" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="image/jp2"/>
+    	<property name="extension" value="jp2"/>
+  </handler>
+  <handler name="PDS_TO_BMP" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="image/bmp"/>
+    	<property name="extension" value="bmp"/>
+  </handler>
+  <handler name="PDS_TO_WBMP" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="image/vnd.wap.wbmp"/>
+    	<property name="extension" value="wbmp"/>
+  </handler>
+  <handler name="PDS_TO_GIF" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="image/gif"/>
+    	<property name="extension" value="gif"/>
+  </handler>
+  <handler name="PDS_TO_PNG" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="image/png"/>
+    	<property name="extension" value="png"/>
+  </handler>
+  <handler name="PDS_TO_RAW" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="application/x-binary"/>
+    	<property name="extension" value="raw"/>
+  </handler>
+  <handler name="PDS_TO_TIFF" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="image/tiff"/>
+    	<property name="extension" value="tiff"/>
+  </handler>
+  <handler name="PDS_TO_TIF" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="image/tif"/>
+    	<property name="extension" value="tif"/>
+  </handler>
+  <handler name="PDS_TO_PNM" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="image/x-portable-anymap"/>
+    	<property name="extension" value="pnm"/>
+  </handler>
+  
+  <!-- 
+  	Handlers that apply only to PDS4 labels.
+   --> 
+  <handler name="PDS4_TO_PVL" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="text/plain"/>
+    	<property name="extension" value="pvl"/>
+  </handler>
+  <handler name="PDS4_TO_HTML" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="text/html"/>
+    	<property name="extension" value="html"/>
+  </handler>
+  <handler name="PDS4_TO_HTML_STRUCTURE_ONLY" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="text/html"/>
+    	<property name="extension" value="html-structure-only"/>
+  </handler>
+  <handler name="PDS4_TO_CSV" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="text/plain"/>
+    	<property name="extension" value="csv"/>
+  </handler>
+  
+  <!-- 
+  	Handlers that apply only to PDS3 labels.
+   --> 
+  <handler name="PDS3_TO_PDS4" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="text/plain"/>
+    	<property name="extension" value="pds4"/>
+  </handler>
+  
+  <handler name="PDS3_TO_PDS4_LABEL" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="text/plain"/>
+    	<property name="extension" value="pds4-label"/>
   </handler>
   
   <!-- 
