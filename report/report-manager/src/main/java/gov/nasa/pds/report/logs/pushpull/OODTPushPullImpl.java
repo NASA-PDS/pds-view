@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 
 import org.apache.oodt.cas.pushpull.daemon.DaemonLauncher;
 
-public class PushPullImpl implements PushPull {
+public class OODTPushPullImpl implements OODTPushPull {
     /* our log stream */
-    private static final Logger LOG = Logger.getLogger(PushPullImpl.class
+    private static final Logger LOG = Logger.getLogger(OODTPushPullImpl.class
             .getName());
     
 	protected int port;
@@ -31,15 +31,15 @@ public class PushPullImpl implements PushPull {
 	 * @throws FileNotFoundException 
 	 *
 	 */
-	public PushPullImpl() throws FileNotFoundException {
+	public OODTPushPullImpl() throws FileNotFoundException {
 		this(-1, null, new LinkedList<File>());
 	}
 
-	public PushPullImpl(int port, File propertiesFile, File sitesFile) throws FileNotFoundException {
+	public OODTPushPullImpl(int port, File propertiesFile, File sitesFile) throws FileNotFoundException {
 		this(port, propertiesFile, new LinkedList<File>(Arrays.asList(sitesFile)));
 	}
 
-	public PushPullImpl(int port, File propertiesFile, LinkedList<File> sitesFiles) throws FileNotFoundException {
+	public OODTPushPullImpl(int port, File propertiesFile, LinkedList<File> sitesFiles) throws FileNotFoundException {
 		
 		this.propertiesFile = propertiesFile;
 		this.sitesFiles = sitesFiles;

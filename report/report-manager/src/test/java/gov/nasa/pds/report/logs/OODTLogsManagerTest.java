@@ -22,9 +22,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import gov.nasa.pds.report.constants.TestConstants;
-import gov.nasa.pds.report.logs.LogsManager;
+import gov.nasa.pds.report.logs.OODTLogsManager;
 import gov.nasa.pds.report.logs.LogsManagerException;
-import gov.nasa.pds.report.logs.pushpull.PushPullTest;
+import gov.nasa.pds.report.logs.pushpull.OODTPushPull;
+import gov.nasa.pds.report.logs.pushpull.OODTPushPullTest;
 import gov.nasa.pds.report.rules.ReportManagerTest;
 import gov.nasa.pds.report.rules.PDSTest.SingleTestRule;
 import gov.nasa.pds.report.util.Debugger;
@@ -48,10 +49,9 @@ import org.junit.runners.JUnit4;
  *
  */
 @RunWith(JUnit4.class)
-//@Ignore		// Ignoring Broken Tests
-public class LogsManagerTest extends ReportManagerTest {
+public class OODTLogsManagerTest extends ReportManagerTest {
 
-	private static LogsManager logsMgr;
+	private static OODTLogsManager logsMgr;
 	private File tempFile1;
 	private File tempFile2;
 	private static final String TEST_STAGING_DIR = TestConstants.TEST_DUMP_RELATIVE + "/test/create/staging/areas/";
@@ -65,7 +65,7 @@ public class LogsManagerTest extends ReportManagerTest {
 		try {
 			TestUtility.reportMgrSetUp();
 			
-			logsMgr = new LogsManager(9999, 
+			logsMgr = new OODTLogsManager(9999, 
 					new File(Utility.getAbsolutePath(TestConstants.PROPERTIES_TEST_FILE_PATH)), 
 					new File(Utility.getAbsolutePath(TestConstants.SITES_TEST_FILE_PATH)),
 					Utility.getAbsolutePath(TestConstants.TEST_DUMP_RELATIVE));
@@ -79,12 +79,12 @@ public class LogsManagerTest extends ReportManagerTest {
 	
 	@AfterClass
 	public static void oneTimeTearDown() throws IOException {
-		TestUtility.reportMgrTearDown();
+		//TestUtility.reportMgrTearDown();
 	}
 	
 	@Before
-	public void setUp() throws IOException, LogsManagerException {
-		PushPullTest.oneTimeSetUp();
+	public void setUp() throws Exception {
+		OODTPushPullTest.oneTimeSetUp();
 		this.tempFile1 = new File(Utility.getAbsolutePath(TestConstants.TEST_DUMP_RELATIVE + "/temp1.txt"));
 		this.tempFile2 = new File(Utility.getAbsolutePath(TestConstants.TEST_DUMP_RELATIVE + "/temp2.txt"));
 	}
@@ -114,8 +114,7 @@ public class LogsManagerTest extends ReportManagerTest {
 	}
 	
 	@Test
-	public void testCreateStagingAreas() {
-		
+	public void testCreateStagingAreas() {	
 		try {
 			File sitesTest = new File(Utility.getAbsolutePath(TestConstants.TEST_DIR_RELATIVE + TestConstants.STAGING_AREA_TESTS_FILE));
 
@@ -132,7 +131,11 @@ public class LogsManagerTest extends ReportManagerTest {
 				FileUtils.copyFile(this.tempFile2, this.tempFile1);
 			}
 			
-			logsMgr.createStagingAreas(this.tempFile2);
+			// FIXME Not sure what these paths should be
+			List<String> pathList = Utility.getValuesFromXML(logsMgr.getStagingPaths(Utility.getAbsolutePath(TestConstants.SITES_TEST_FILE_PATH), this.tempFile2), 
+					OODTPushPull.STAGING_TAG_NAME,
+					OODTPushPull.STAGING_ATTRIBUTE_NAME);
+			logsMgr.createStagingAreas(pathList);
 			
 			for (String path : stagingDirPathsList) {
 				File stagingDir = new File(path);

@@ -3,7 +3,7 @@ package gov.nasa.pds.report.logs.pushpull;
 import java.io.File;
 import java.util.LinkedList;
 
-public interface PushPull {
+public interface OODTPushPull {
     
     public static final int DEFAULT_PORT = 9999;
     

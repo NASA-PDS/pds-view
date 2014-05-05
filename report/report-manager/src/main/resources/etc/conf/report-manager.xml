@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- INCOMPLETE
+	This file was created as a start to replicating what we have in the
+	report-service spreadsheet containing all of the node log information.
+	Left it hanging because of other priorities, but could eventually be
+	used as one, large config file.
+ -->
 <node name="atm">
 	<contact name="Lyle Huber" email="lhuber@nmsu.edu" />
 	<machines>

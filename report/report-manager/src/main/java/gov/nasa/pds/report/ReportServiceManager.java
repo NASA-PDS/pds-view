@@ -3,7 +3,7 @@ package gov.nasa.pds.report;
 import java.io.File;
 
 import gov.nasa.pds.report.constants.Constants;
-import gov.nasa.pds.report.logs.LogsManager;
+import gov.nasa.pds.report.logs.OODTLogsManager;
 import gov.nasa.pds.report.logs.LogsManagerException;
 import gov.nasa.pds.report.util.Utility;
 
@@ -24,7 +24,7 @@ public class ReportServiceManager {
 	}
 	
 	public void pullLogs() throws LogsManagerException {
-		LogsManager logsMgr = new LogsManager(this.port, 
+		OODTLogsManager logsMgr = new OODTLogsManager(this.port, 
 				getFile(this.propertiesFilePath), 
 				getFile(this.sitesFilePath),
 				this.stagingPath);

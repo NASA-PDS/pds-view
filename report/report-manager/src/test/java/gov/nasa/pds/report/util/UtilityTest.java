@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import gov.nasa.pds.report.constants.TestConstants;
-import gov.nasa.pds.report.logs.pushpull.PushPull;
+import gov.nasa.pds.report.logs.pushpull.OODTPushPull;
 import gov.nasa.pds.report.rules.ReportManagerTest;
 import gov.nasa.pds.report.util.Utility;
 
@@ -74,7 +74,7 @@ public class UtilityTest extends ReportManagerTest {
 			List<String> correctValueList = Arrays.asList("STAGING_AREA_0", "STAGING_AREA_1", "STAGING_AREA_2");
 			
 			File inputFile = new File(Utility.getAbsolutePath(TestConstants.TEST_DIR_RELATIVE + TestConstants.STAGING_AREA_TESTS_FILE));
-			List<String> values = Utility.getValuesFromXML(inputFile, PushPull.STAGING_TAG_NAME, PushPull.STAGING_ATTRIBUTE_NAME);
+			List<String> values = Utility.getValuesFromXML(inputFile, OODTPushPull.STAGING_TAG_NAME, OODTPushPull.STAGING_ATTRIBUTE_NAME);
 			
 			/**for (String value : values) {
 				System.out.println(value);

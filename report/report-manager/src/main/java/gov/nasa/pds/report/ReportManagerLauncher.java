@@ -221,7 +221,7 @@ public class ReportManagerLauncher {
 					throw new ReportManagerFatalException("Invalid Port Number. Must be Integer value.");
 				}
 			} else if (o.getOpt().equals(Flag.PP_PROPERTIES.getShortName())) {
-					this.ppResources = o.getValue();
+				this.ppResources = o.getValue();
 			} else if (o.getOpt().equals(Flag.PP_SPECS.getShortName())) {
 				this.ppSpec = o.getValue();
 			} else if (o.getOpt().equals(Flag.PP_STAGING.getShortName())) {

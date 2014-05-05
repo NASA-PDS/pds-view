@@ -15,7 +15,7 @@
 
 package gov.nasa.pds.report.cli.options;
 
-import gov.nasa.pds.report.logs.pushpull.PushPull;
+import gov.nasa.pds.report.logs.pushpull.OODTPushPull;
 
 import org.apache.commons.cli.Options;
 
@@ -35,7 +35,7 @@ public enum Flag {
 	
 	/** Flag to specify Push Pull Port Home  */
 	PP_PORT("P", "cas_pp_port", "port", 
-			String.class, "Port number to run CAS PushPull. Default: " + PushPull.DEFAULT_PORT),
+			String.class, "Port number to run CAS PushPull. Default: " + OODTPushPull.DEFAULT_PORT),
 			
 	/** Flag to specify Push Pull Resources Home */
 	PP_SPECS("s", "pushpull_specs", "file-path", 

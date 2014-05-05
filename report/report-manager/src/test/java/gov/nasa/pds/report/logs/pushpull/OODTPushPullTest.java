@@ -17,10 +17,10 @@ package gov.nasa.pds.report.logs.pushpull;
 
 import static org.junit.Assert.*;
 import gov.nasa.pds.report.constants.TestConstants;
-import gov.nasa.pds.report.logs.LogsManager;
+import gov.nasa.pds.report.logs.OODTLogsManager;
 import gov.nasa.pds.report.logs.LogsManagerException;
-import gov.nasa.pds.report.logs.pushpull.PushPull;
-import gov.nasa.pds.report.logs.pushpull.PushPullImpl;
+import gov.nasa.pds.report.logs.pushpull.OODTPushPull;
+import gov.nasa.pds.report.logs.pushpull.OODTPushPullImpl;
 import gov.nasa.pds.report.rules.PDSTest;
 import gov.nasa.pds.report.util.TestUtility;
 import gov.nasa.pds.report.util.Utility;
@@ -44,25 +44,35 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-@Ignore		// Ignoring Broken Tests
-public class PushPullTest extends PDSTest {
+@Ignore		// FIXME Untested changes to tests
+public class OODTPushPullTest extends PDSTest {
 
 	/**
 	 * ${CAS_PP_RESOURCES}/push_pull_framework.properties \
      * --remoteSpecsFile ${CAS_PP_RESOURCES}/conf/RemoteSpecs.xml 
 	 */
 	
-	private PushPull pp;
+	private OODTPushPull pp;
 	
 	@Rule
 	public SingleTestRule test = new SingleTestRule("");
 	
+	/**
+	 * FIXME 	This BeforeClass does not work. Need to set the paths so this knows where to create
+	 * 			directories. Otherwise it is using null as default.
+	 * @throws IOException
+	 * @throws LogsManagerException
+	 */
 	@BeforeClass
-	public static void oneTimeSetUp() throws IOException, LogsManagerException {
+	public static void oneTimeSetUp() throws Exception {
 		TestUtility.reportMgrSetUp();
 		
-		LogsManager mgr = new LogsManager();
-		mgr.createStagingAreas(new File(Utility.getAbsolutePath(TestConstants.SITES_TEST_FILE_PATH)));
+		OODTLogsManager mgr = new OODTLogsManager();
+		// FIXME Not sure what these paths should be
+		List<String> pathList = Utility.getValuesFromXML(mgr.getStagingPaths(TestConstants.STAGING_AREA_TESTS_FILE, new File(Utility.getAbsolutePath(TestConstants.SITES_TEST_FILE_PATH))), 
+				OODTPushPull.STAGING_TAG_NAME,
+				OODTPushPull.STAGING_ATTRIBUTE_NAME);
+		mgr.createStagingAreas(pathList);
 	}
 	
 	@AfterClass
@@ -81,7 +91,7 @@ public class PushPullTest extends PDSTest {
 	@Test
 	public void testPull() {
 		try {
-			this.pp = new PushPullImpl(9999, 
+			this.pp = new OODTPushPullImpl(9999, 
 					new File(Utility.getAbsolutePath(TestConstants.PROPERTIES_TEST_FILE_PATH)), 
 					new File(Utility.getAbsolutePath(TestConstants.SITES_TEST_FILE_PATH)));
 			this.pp.pull();
