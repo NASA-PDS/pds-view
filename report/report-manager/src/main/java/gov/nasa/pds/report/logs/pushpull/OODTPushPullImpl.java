@@ -1,7 +1,5 @@
 package gov.nasa.pds.report.logs.pushpull;
 
-import gov.nasa.pds.report.logs.pushpull.daemon.ReportDaemonLauncher;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
@@ -10,6 +8,17 @@ import java.util.logging.Logger;
 
 import org.apache.oodt.cas.pushpull.daemon.DaemonLauncher;
 
+/**
+ * An attempt at testing and implementing OODT Push Pull in our code 
+ * to test out potential bug fixes. Should use OODT Push Pull API
+ * to communicate, but this was an attempt at a workaround.
+ * 
+ * TODO Probably want to ignore this altogether and work within the 
+ * OODT Push Pull software.
+ * 
+ * @author jpadams
+ *
+ */
 public class OODTPushPullImpl implements OODTPushPull {
     /* our log stream */
     private static final Logger LOG = Logger.getLogger(OODTPushPullImpl.class

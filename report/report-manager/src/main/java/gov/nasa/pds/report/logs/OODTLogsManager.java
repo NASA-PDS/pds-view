@@ -40,7 +40,7 @@ import org.apache.commons.io.FileUtils;
  * @version $Revision$
  *
  */
-public class OODTLogsManager {
+public class OODTLogsManager implements LogsManager {
 	
     /* our log stream */
     private static final Logger LOG = Logger.getLogger(OODTLogsManager.class

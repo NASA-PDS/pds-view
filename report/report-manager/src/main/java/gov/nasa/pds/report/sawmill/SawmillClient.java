@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  * @author jpadams
  *
  */
-public class SawmillDB {
+public class SawmillClient {
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
 	/**
