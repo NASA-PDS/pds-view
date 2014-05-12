@@ -15,10 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-
 /**
  * Profile object
  * 
@@ -162,23 +158,4 @@ public class Profile {
 	public void setLogSetList(List<LogSet> logSetList) {
 		this.lsList = logSetList;
 	}
-
-	public JsonObject toJson() {
-		JsonObject root = new JsonObject();
-		JsonArray jArray = new JsonArray();
-
-		root.add("identifier", new JsonPrimitive(this.identifier));
-		root.add("method", new JsonPrimitive(this.method));
-		root.add("name", new JsonPrimitive(this.name));
-		root.add("node", new JsonPrimitive(this.node));
-		root.add("profileId", new JsonPrimitive(this.profileId));
-
-		for (Iterator<LogSet> it = this.lsList.iterator(); it.hasNext();) {
-			jArray.add(it.next().toJson());
-		}
-		root.add("logSets", jArray);
-
-		return root;
-	}
-
 }

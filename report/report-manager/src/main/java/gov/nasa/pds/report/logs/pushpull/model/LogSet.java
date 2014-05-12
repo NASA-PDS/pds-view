@@ -6,10 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
+import org.jasypt.util.text.StrongTextEncryptor;
 
 public class LogSet {
 
@@ -23,7 +20,7 @@ public class LogSet {
 	private String password;
 	private String pathname;
 
-	private StandardPBEStringEncryptor encryptor;
+	private StrongTextEncryptor encryptor;
 
 	public LogSet() {
 		setEncryptor();
@@ -67,7 +64,7 @@ public class LogSet {
 	}
 
 	private void setEncryptor() {
-		this.encryptor = new StandardPBEStringEncryptor();
+		this.encryptor = new StrongTextEncryptor();
 		this.encryptor.setPassword(Constants.CRYPT_PASSWORD);
 	}
 
@@ -162,19 +159,5 @@ public class LogSet {
 			return true;
 		}
 		return false;
-	}
-
-	public JsonObject toJson() {
-		JsonObject jObj = new JsonObject();
-		jObj.add("hostname", new JsonPrimitive(this.hostname));
-		jObj.add("label", new JsonPrimitive(this.label));
-		jObj.add("password", new JsonPrimitive(this.password));
-		jObj.add("pathname", new JsonPrimitive(this.pathname));
-		jObj.add("setNumber", new JsonPrimitive(this.setNumber));
-		jObj.add("username", new JsonPrimitive(this.username));
-		jObj.add("logSetId", new JsonPrimitive(this.logSetId));
-		jObj.add("profileId", new JsonPrimitive(this.profileId));
-		// jObj.add("activeFlag", new JsonPrimitive(this._activeFlag));
-		return jObj;
 	}
 }
