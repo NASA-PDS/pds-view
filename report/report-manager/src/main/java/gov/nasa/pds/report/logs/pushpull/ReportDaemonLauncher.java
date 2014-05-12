@@ -11,7 +11,7 @@
 // providing access to foreign nationals.
 //
 // $Id$
-package gov.nasa.pds.report.logs.pushpull.daemon;
+package gov.nasa.pds.report.logs.pushpull;
 
 import java.io.File;
 import java.lang.management.ManagementFactory;
