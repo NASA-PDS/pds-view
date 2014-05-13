@@ -230,6 +230,10 @@ public class RegistryServiceImpl implements RegistryService {
 		    .getNumRegistryObjects(ClassificationScheme.class));
 		report.setPackages(metadataStore
 		    .getNumRegistryObjects(RegistryPackage.class));
+		report.setEvents(metadataStore
+			    .getNumRegistryObjects(AuditableEvent.class));
+		//report.setHome(metadataStore.getHome());
+		
 		return report;
 	}
 

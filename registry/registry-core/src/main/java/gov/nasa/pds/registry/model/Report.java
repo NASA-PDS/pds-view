@@ -53,6 +53,12 @@ public class Report {
   private long packages;
   
   @XmlAttribute
+  private long events;
+  
+  @XmlAttribute
+  private String home;
+  
+  @XmlAttribute
   private String registryVersion = "1.6.0";
 
   public Report() {
@@ -66,6 +72,8 @@ public class Report {
     this.extrinsics = statusInfo.extrinsics;
     this.services = statusInfo.services;
     this.packages = statusInfo.packages;
+    this.events = statusInfo.events;
+    this.home = statusInfo.home;
   }
 
   public Report(RegistryStatus status) {
@@ -150,6 +158,14 @@ public class Report {
   public void setPackages(long packages) {
     this.packages = packages;
   }
+  
+  public long getEvents() {
+	  return events;
+  }
+
+  public void setEvents(long events) {
+	  this.events = events;
+  }
 
   public String getRegistryVersion() {
     return registryVersion;
@@ -158,5 +174,12 @@ public class Report {
   public void setRegistryVersion(String registryVersion) {
     this.registryVersion = registryVersion;
   }
-
+  
+  public String getHome() {
+	  return home;
+  }
+  
+  public void setHome(String home) {
+	  this.home = home;
+  }
 }
