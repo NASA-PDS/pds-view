@@ -306,13 +306,22 @@ javax.servlet.ServletException: java.lang.OutOfMemoryError: PermGen space
         </p>
 
         <subsection name="Derby">
-          <p>By default, the Registry Service comes packaged with and configured to utilize Derby as the backend database. The Derby database home directory will default to the current working directory where the Tomcat server was launched. To permanently set the home directory of the database, add the following property to the <i>CATALINA_OPTS</i> environment variable:
+          <p>By default, the Registry Service comes packaged with and configured to utilize Derby as the backend database. The default Derby configuration assumes that you have a database named <i>registry</i> and will use a default user name and password as specified below. If you want to change the URL, database name, user name, and/or password you will need to edit the <i>derby.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry/WEB-INF/classes</i> directory. The following lines pertain to the default configuration:
+          </p>
+
+          <source>
+javax.persistence.jdbc.url=jdbc:derby:registry
+javax.persistence.jdbc.user=registry
+javax.persistence.jdbc.password=p@ssw0rd
+          </source>
+
+          <p>The Derby database home directory will default to the current working directory where the Tomcat server was launched. To permanently set the home directory of the database, add the following property to the <i>CATALINA_OPTS</i> environment variable:
           </p>
 
           <source>
 CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
           </source>
-        
+
           <p>Note: The "derby.system.home" should point to the parent directory which contains the registry database (i.e. the parent directory of the "registry" directory). See the <a href="../../../release/index-tomcat.html#Environment_Configuration">Tomcat Deployment</a> document for details on specifying the <i>CATALINA_OPTS</i> environment variable. The <i>CATALINA_OPTS</i> environment variable is loaded from the Tomcat startup scripts. The Tomcat server will need to be restarted for this configuration to take effect.
           </p>
         </subsection>
@@ -376,11 +385,6 @@ hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
 javax.persistence.jdbc.url=jdbc:postgresql://localhost:5432/registry
 javax.persistence.jdbc.user=registry
 javax.persistence.jdbc.password=p@ssw0rd
-javax.persistence.jdbc.driver=org.postgresql.Driver
-hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-hibernate.hbm2ddl.auto=validate
-jpa.database=POSTGRESQL
-jpa.showSql=false
           </source>
         </subsection>
       </subsection>
