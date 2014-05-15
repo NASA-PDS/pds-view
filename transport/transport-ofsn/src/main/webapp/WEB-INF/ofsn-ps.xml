@@ -194,10 +194,11 @@ FIXME: Change XML namespace URI for oodt prefix?
     	<property name="mimeType" value="image/bmp"/>
     	<property name="extension" value="bmp"/>
   </handler>
+<!-- NOT WORKING    
   <handler name="PDS_TO_WBMP" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="image/vnd.wap.wbmp"/>
     	<property name="extension" value="wbmp"/>
-  </handler>
+  </handler> -->
   <handler name="PDS_TO_GIF" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="image/gif"/>
     	<property name="extension" value="gif"/>
@@ -246,10 +247,11 @@ FIXME: Change XML namespace URI for oodt prefix?
   <!-- 
   	Handlers that apply only to PDS3 labels.
    --> 
+<!-- REQUIRES REFERENCE TO 'external-programs'   
   <handler name="PDS3_TO_PDS" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="text/plain"/>
     	<property name="extension" value="pds"/>
-  </handler>
+  </handler> -->
   
   <handler name="PDS3_TO_PDS4_LABEL" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="text/plain"/>

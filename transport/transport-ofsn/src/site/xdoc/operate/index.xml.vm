@@ -352,7 +352,7 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
         		<br/>NOTE: currently, a library bug prevents this handler to work for PDS3 images.
         	</td>
         </tr>
-        <!--        
+        <!-- NOT WORKING       
         <tr>
         	<td>PDS_TO_WBMP</td>
         	<td>Converts a PDS image to Wireless Bitmap image format.
@@ -448,6 +448,7 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
 
       <table>
         <tr><th>Return Type</th><th>Description</th></tr>
+        <!-- REQUIRES REFERENCE TO 'external-programs'
         <tr>
         	<td>PDS3_TO_PDS</td>
         	<td>Converts a PDS3 image to a PDS4 Array 2D image.
@@ -456,7 +457,7 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
         	    <br/>NOTE: to function properly, this handler requires Tomcat to be started with a reference to the external programs used to execute the conversion:
         	    <br/>CATALINA_OPTS="-Dexternal.programs.home=/usr/local/transform/external-programs"
         	</td>
-        </tr>
+        </tr> -->
         <tr>
         	<td>PDS3_TO_PDS4_LABEL</td>
         	<td>Converts a PDS3 label into a PDS4 Product Observational product label.
@@ -464,7 +465,7 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
         		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/ELE_MOM.LBL&amp;rt=PDS3_TO_PDS4_LABEL">http://localhost:8080/transport-ofsn/prod?ofsn=/ELE_MOM.LBL&amp;rt=PDS3_TO_PDS4_LABEL</a>
         	    <br/>NOTE: currently not working because cannot loaf file context-classes.xml
         	</td>
-        </tr>
+        </tr>        
         <tr>
         	<td>PDS_LABEL</td>
         	<td>Returns a plain text (MIME type text/plain) representation of the PDS3 label specified in the <i>OFSN</i>, including and expanding the <i>STRUCTURE</i> pointers.
