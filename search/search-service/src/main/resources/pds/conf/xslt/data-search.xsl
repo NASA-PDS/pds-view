@@ -347,7 +347,7 @@
 								<xsl:value-of select="fn:upper-case((arr|str)[@name='investigation_name'])" />
 								-
 								<xsl:value-of select="fn:upper-case((arr|str)[@name='data_set_id'])" />
-								<xsl:value-of select="if (date[@name='start_time']) then concat(' - starting ',date[@name='start_time']) else if ((arr|date)[@name='investigation_start_date']) then concat(' - starting ',(arr|date)[@name='investigation_start_date']) else ''" />
+								<xsl:value-of select="if ((arr|date)[@name='start_time']) then concat(' - starting ',(arr|date)[@name='start_time']) else if ((arr|date)[@name='investigation_start_date']) then concat(' - starting ',(arr|date)[@name='investigation_start_date']) else ''" />
 							</span>
 						</xsl:when>
 						<xsl:otherwise>
