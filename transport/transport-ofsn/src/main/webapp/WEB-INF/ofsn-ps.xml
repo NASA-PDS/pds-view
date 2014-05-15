@@ -246,9 +246,9 @@ FIXME: Change XML namespace URI for oodt prefix?
   <!-- 
   	Handlers that apply only to PDS3 labels.
    --> 
-  <handler name="PDS3_TO_PDS4" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+  <handler name="PDS3_TO_PDS" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="text/plain"/>
-    	<property name="extension" value="pds4"/>
+    	<property name="extension" value="pds"/>
   </handler>
   
   <handler name="PDS3_TO_PDS4_LABEL" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
