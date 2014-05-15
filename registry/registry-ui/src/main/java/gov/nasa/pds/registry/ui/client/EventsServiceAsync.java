@@ -28,7 +28,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface EventsServiceAsync {
 
-	void requestRows(Request request, Map<String, String> filters,
+	void requestRows(String serverUrl, Request request, Map<String, String> filters,
 			AsyncCallback<SerializableResponse<ViewAuditableEvent>> callback);
 
 }

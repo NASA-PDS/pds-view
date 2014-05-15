@@ -59,7 +59,7 @@ public class PackageServiceImpl extends RemoteServiceServlet implements
 	 */
 	@SuppressWarnings("nls")
 	@Override
-	public SerializableResponse<ViewRegistryPackage> requestRows(Request request, Map<String, String> filters) {
+	public SerializableResponse<ViewRegistryPackage> requestRows(String serverUrl, Request request, Map<String, String> filters) {
 
 		// get the sort list from the request
 		ColumnSortList sort = request.getColumnSortList();
@@ -131,19 +131,19 @@ public class PackageServiceImpl extends RemoteServiceServlet implements
 		// get the results, offsetting the start row by one to deal with index
 		// inconsistency
 
-		ViewRegistryPackages packages = ConnectionManager.getPackages(query, 
+		ViewRegistryPackages packages = ConnectionManager.getPackages(serverUrl, query, 
 				request.getStartRow() + 1, request.getNumRows());
 		
 		// return the GWT appropriate wrapping of the returned results
 		return new SerializableProductResponse<ViewRegistryPackage>(packages);
 	}
 
-	public boolean updatePackage(final ViewRegistryPackage registryPackage) {
-		return ConnectionManager.updatePackage(registryPackage);
+	public boolean updatePackage(String serverUrl, final ViewRegistryPackage registryPackage) {
+		return ConnectionManager.updatePackage(serverUrl, registryPackage);
 	}
 	
-	public boolean deletePackage(ViewRegistryPackage registryPackage) {
-		return ConnectionManager.deletePackage(registryPackage);
+	public boolean deletePackage(String serverUrl, ViewRegistryPackage registryPackage) {
+		return ConnectionManager.deletePackage(serverUrl, registryPackage);
 	}
 
 	/**

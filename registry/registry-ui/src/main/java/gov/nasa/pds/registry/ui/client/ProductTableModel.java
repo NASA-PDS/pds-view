@@ -50,6 +50,12 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 	 * A store of filter params as they are not supported in the request object
 	 */
 	private Map<String, String> filters = new HashMap<String, String>();
+	
+	private String serverUrl = "";
+	
+	public void setServerUrl(String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
 
 	/**
 	 * Add a filter condition
@@ -69,7 +75,7 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 	public void clearFilters() {
 		this.filters.clear();
 	}
-
+		
 	/**
 	 * Get rows from table as necessary. Call only supports the request, filters
 	 * are added separately, prior to calling the row request.
@@ -93,8 +99,9 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 		// AsyncCallback
 		final ProductTableModel instance = this;
 
+		System.out.println("******* ProductTableModel .....serverUrl = " + this.serverUrl);
 		// Send RPC request for data, including previously set filters
-		this.dataService.requestRows(request, this.filters,
+		this.dataService.requestRows(this.serverUrl, request, this.filters,
 				new AsyncCallback<SerializableResponse<ViewProduct>>() {
 					@SuppressWarnings("nls")
 					public void onFailure(Throwable caught) {
@@ -131,7 +138,7 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 		}
 
 		// Send RPC request for data, including previously set filters
-		this.associationService.getAssociations(guid, asyncCallback);
+		this.associationService.getAssociations(this.serverUrl, guid, asyncCallback);
 	}
 
 	public void updateProduct(final ViewProduct product,
@@ -142,7 +149,7 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 			this.dataService = GWT.create(ProductsService.class);
 		}
 		
-		this.dataService.updateProduct(product, asyncCallback);
+		this.dataService.updateProduct(this.serverUrl, product, asyncCallback);
 	}
 	
 	public void deleteProduct(ViewProduct product,
@@ -151,7 +158,7 @@ public class ProductTableModel extends MutableTableModel<ViewProduct> {
 			this.dataService = GWT.create(ProductsService.class);
 		}
 		
-		this.dataService.deleteProduct(product, asyncCallback);
+		this.dataService.deleteProduct(this.serverUrl, product, asyncCallback);
 	}
 	
 	// Default behaviors for common table access, add functionality as necessary

@@ -30,9 +30,9 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("nodes")
 public interface ClassificationNodeService extends RemoteService {
 	
-	SerializableResponse<ViewClassificationNode> requestRows(Request request,
+	SerializableResponse<ViewClassificationNode> requestRows(String serverUrl, Request request,
 			Map<String, String> filters);
 	
-	SerializableResponse<ViewClassificationNode> getClassificationNodes(final String guid);
+	SerializableResponse<ViewClassificationNode> getClassificationNodes(String serverUrl, final String guid);
 	
 }

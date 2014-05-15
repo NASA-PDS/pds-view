@@ -30,6 +30,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("schemes")
 public interface SchemeService extends RemoteService {
 	
-	SerializableResponse<ViewScheme> requestRows(Request request);
+	SerializableResponse<ViewScheme> requestRows(String serverUrl, Request request);
 	
 }

@@ -30,12 +30,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface PackageServiceAsync {
 
-    void requestRows(Request request, Map<String, String> filters,
+    void requestRows(String serverUrl, Request request, Map<String, String> filters,
 			AsyncCallback<SerializableResponse<ViewRegistryPackage>> callback);
 	
-	void updatePackage(final ViewRegistryPackage registryPackage, AsyncCallback<Boolean> callback);
+	void updatePackage(String serverUrl, final ViewRegistryPackage registryPackage, AsyncCallback<Boolean> callback);
 	
-	void deletePackage(ViewRegistryPackage registryPackage, AsyncCallback<Boolean> callback);
+	void deletePackage(String serverUrl, ViewRegistryPackage registryPackage, AsyncCallback<Boolean> callback);
 	
 	void getRemoteUser(AsyncCallback<String> callback);
 	

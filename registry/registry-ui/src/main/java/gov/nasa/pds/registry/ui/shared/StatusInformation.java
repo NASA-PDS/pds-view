@@ -51,6 +51,8 @@ public class StatusInformation implements Serializable {
 	private long classificationNodes;
 
 	private long packages;
+	
+	private long events;
 
 	//private String home;
 
@@ -118,6 +120,14 @@ public class StatusInformation implements Serializable {
 
 	public void setPackages(long packages) {
 		this.packages = packages;
+	}
+	
+	public long getEvents() {
+		return events;
+	}
+
+	public void setEvents(long events) {
+		this.events = events;
 	}
 
 	public String getRegistryVersion() {

@@ -19,6 +19,7 @@ import gov.nasa.pds.registry.ui.shared.ViewRegistryPackages;
 import gov.nasa.pds.registry.ui.shared.ViewSlot;
 import gov.nasa.pds.registry.ui.shared.InputContainer;
 import gov.nasa.pds.registry.ui.shared.Constants;
+import gov.nasa.pds.registry.ui.shared.StatusInformation;
 
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -144,7 +145,7 @@ public class Packages extends Tab {
     private final Button refreshButton = new Button("Refresh");
     private final Button deleteButton = new Button("Delete");
 
-    private int totalCount = 0;
+    //private int totalCount = 0;
 	
 	/**
      * The {@link PackageTableModel}.
@@ -199,6 +200,7 @@ public class Packages extends Tab {
 	 * @return the table model
 	 */
 	public PackageTableModel getTableModel() {
+		this.tableModel.setServerUrl(RegistryUI.serverUrl);
 		return this.tableModel;
 	}
 	
@@ -232,7 +234,7 @@ public class Packages extends Tab {
         // update when new data from an RPC call comes in. This forces the
         // paging options to update with the correct num pages by triggering a
         // recount of the pages based on the row count.
-        this.tableModel.addRowCountChangeHandler(new RowCountChangeHandler() {
+        get().getTableModel().addRowCountChangeHandler(new RowCountChangeHandler() {
             @Override
             public void onRowCountChange(RowCountChangeEvent event) {
                 get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
@@ -430,6 +432,7 @@ public class Packages extends Tab {
 									get().reloadData();
 									// need to refresh product tabs???
 									Products.get().reloadData();
+									//Products.get().refreshTable();
 									Window.alert("The delete request is completed for lid = " + tmpLid);
 								}
 							});
@@ -451,12 +454,24 @@ public class Packages extends Tab {
 	}
 	
 	protected void reloadData() {
-        get().getCachedTableModel().clearCache();
-        get().getTableModel().setRowCount(RegistryUI.PAGE_SIZE1);
-        get().getPagingScrollTable().redraw();
-        totalCount = get().getDataTable().getRowCount();
+        get().getCachedTableModel().clearCache();	
+		// to reload a page after returning zero results from a previous search call (PDS-133)
+		get().getTableModel().setRowCount(RegistryUI.PAGE_SIZE1);
+		get().getPagingScrollTable().redraw();
+		
+		RegistryUI.statusInfo.getStatus(RegistryUI.serverUrl, new AsyncCallback<StatusInformation>() {
+        	@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Status.getStatus() RPC Failure" + caught.getMessage());
+			}
 
-        get().recordCountContainer.setHTML("<div class=\"recordCount\">Total Records: " + totalCount + "</div>");
+			@Override
+			public void onSuccess(StatusInformation result) {
+				long count = result.getPackages();
+				logger.log(Level.FINEST, "reloadData   num of packages " + count);		
+				get().recordCountContainer.setHTML("<div class=\"recordCount\">Total Records: " + count + "</div>");
+			}
+		});
     }
 
     private void refreshTable() {
@@ -560,19 +575,17 @@ public class Packages extends Tab {
 				get().getPackageDetail(row);
 			}
 		});
-	
+				
 		// add handler to update found element count
 		this.pagingScrollTable
 				.addPageCountChangeHandler(new PageCountChangeHandler() {
 					@Override
 					public void onPageCountChange(PageCountChangeEvent event) {
-						int count = get().pagingScrollTable.getTableModel()
-								.getRowCount();
+						int count = get().getPagingScrollTable().getTableModel().getRowCount();
 
 						// display count in page
 						get().recordCountContainer
-								.setHTML("<div class=\"recordCount\">Total Records: "
-										+ count + "</div>");
+								.setHTML("<div class=\"recordCount\">Total Records: " + count + "</div>");
 					}
 				});
 
@@ -853,8 +866,12 @@ public class Packages extends Tab {
 	protected void onModuleLoaded() {
 		// set page to first page, triggering call for data
 		this.pagingScrollTable.gotoFirstPage();
+		get().refreshTable();
 	}
 
 	public void onShow() {
+		logger.log(Level.FINEST, "Packages..onShow method... serverUrl = " + RegistryUI.serverUrl);
+		//logger.log(Level.FINEST, "Products..onShow method... serverUrl = " + RegistryUI.serverUrl);
+		onModuleLoaded();
 	}
 }

@@ -18,6 +18,7 @@ import gov.nasa.pds.registry.ui.shared.InputContainer;
 import gov.nasa.pds.registry.ui.shared.ViewAuditableEvent;
 import gov.nasa.pds.registry.ui.shared.ViewSlot;
 import gov.nasa.pds.registry.ui.shared.Constants;
+import gov.nasa.pds.registry.ui.shared.StatusInformation;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -225,6 +226,7 @@ public class Events extends Tab {
 	 * @return the table model
 	 */
 	public EventTableModel getTableModel() {
+		this.tableModel.setServerUrl(RegistryUI.serverUrl);
 		return this.tableModel;
 	}
 
@@ -265,7 +267,7 @@ public class Events extends Tab {
 		// update when new data from an RPC call comes in. This forces the
 		// paging options to update with the correct num pages by triggering a
 		// recount of the pages based on the row count.
-		this.tableModel.addRowCountChangeHandler(new RowCountChangeHandler() {
+		get().getTableModel().addRowCountChangeHandler(new RowCountChangeHandler() {
 
 			@Override
 			public void onRowCountChange(RowCountChangeEvent event) {
@@ -739,9 +741,27 @@ public class Events extends Tab {
 	 * Action to take once the module has loaded.
 	 */
 	protected void onModuleLoaded() {
+
 		// set page to first page, triggering call for data
 		this.pagingScrollTable.gotoFirstPage();
-		setRecordCount(get().pagingScrollTable.getTableModel().getRowCount());
+
+		// to refresh with serverUrl change
+		get().getTableModel();
+		get().getPagingScrollTable().redraw();	
+
+		RegistryUI.statusInfo.getStatus(RegistryUI.serverUrl, new AsyncCallback<StatusInformation>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Status.getStatus() RPC Failure" + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(StatusInformation result) {
+				long count = result.getEvents();
+				get().recordCountContainer.setHTML("<div class=\"recordCount\">Total Records: " + count + "</div>");
+			}
+		});
+
 	}
 
 	/**
@@ -864,5 +884,6 @@ public class Events extends Tab {
 	}
 
 	public void onShow() {
+		onModuleLoaded();
 	}
 }

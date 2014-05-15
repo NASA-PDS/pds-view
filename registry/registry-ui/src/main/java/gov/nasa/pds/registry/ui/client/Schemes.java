@@ -19,6 +19,7 @@ import gov.nasa.pds.registry.ui.shared.ViewClassificationNodes;
 import gov.nasa.pds.registry.ui.shared.ViewScheme;
 import gov.nasa.pds.registry.ui.shared.ViewSlot;
 import gov.nasa.pds.registry.ui.shared.InputContainer;
+import gov.nasa.pds.registry.ui.shared.StatusInformation;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -68,6 +69,7 @@ import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
 
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 /**
  * A tab to browse the registered schemes. 
@@ -167,6 +169,7 @@ public class Schemes extends Tab {
 	 * @return the table model
 	 */
 	public SchemeTableModel getTableModel() {
+		this.tableModel.setServerUrl(RegistryUI.serverUrl);
 		return this.tableModel;
 	}
 	
@@ -199,7 +202,7 @@ public class Schemes extends Tab {
         // update when new data from an RPC call comes in. This forces the
         // paging options to update with the correct num pages by triggering a
         // recount of the pages based on the row count.
-        this.tableModel.addRowCountChangeHandler(new RowCountChangeHandler() {
+        get().getTableModel().addRowCountChangeHandler(new RowCountChangeHandler() {
             @Override
             public void onRowCountChange(RowCountChangeEvent event) {
                 get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
@@ -756,8 +759,26 @@ public class Schemes extends Tab {
 	protected void onModuleLoaded() {
 		// set page to first page, triggering call for data
 		this.pagingScrollTable.gotoFirstPage();
+
+		// to refresh with serverUrl change
+		get().getTableModel();
+		get().getPagingScrollTable().redraw();	
+
+		RegistryUI.statusInfo.getStatus(RegistryUI.serverUrl, new AsyncCallback<StatusInformation>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Status.getStatus() RPC Failure" + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(StatusInformation result) {
+				long count = result.getClassificationSchemes();
+				get().recordCountContainer.setHTML("<div class=\"recordCount\">Total Records: " + count + "</div>");
+			}
+		});
 	}
 
 	public void onShow() {
+		onModuleLoaded();
 	}
 }

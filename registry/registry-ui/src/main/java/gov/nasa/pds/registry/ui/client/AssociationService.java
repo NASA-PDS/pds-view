@@ -30,8 +30,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("associations")
 public interface AssociationService extends RemoteService {
 	
-	SerializableResponse<ViewAssociation> getAssociations(final String guid);
+	SerializableResponse<ViewAssociation> getAssociations(String serverUrl, final String guid);
 	
-	SerializableResponse<ViewAssociation> requestRows(Request request,
+	SerializableResponse<ViewAssociation> requestRows(String serverUrl, Request request,
 			Map<String, String> filters);
 }

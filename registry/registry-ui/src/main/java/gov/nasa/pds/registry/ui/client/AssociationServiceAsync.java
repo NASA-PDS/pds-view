@@ -28,9 +28,9 @@ import java.util.Map;
  */
 public interface AssociationServiceAsync {
 
-	void getAssociations(final String guid,
+	void getAssociations(String serverUrl, final String guid,
 			AsyncCallback<SerializableResponse<ViewAssociation>> callback);
 	
-	void requestRows(Request request, Map<String, String> filters,
+	void requestRows(String serverUrl, Request request, Map<String, String> filters,
 			AsyncCallback<SerializableResponse<ViewAssociation>> callback);
 }

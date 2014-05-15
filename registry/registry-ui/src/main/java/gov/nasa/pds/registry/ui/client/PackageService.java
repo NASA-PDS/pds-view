@@ -32,12 +32,12 @@ import javax.servlet.http.HttpServletRequest;
 @RemoteServiceRelativePath("packages")
 public interface PackageService extends RemoteService {
 
-	SerializableResponse<ViewRegistryPackage> requestRows(Request request,
+	SerializableResponse<ViewRegistryPackage> requestRows(String serverUrl, Request request,
 			Map<String, String> filters);
 	
-	boolean updatePackage(final ViewRegistryPackage registryPackage);
+	boolean updatePackage(String serverUrl, final ViewRegistryPackage registryPackage);
 	
-	boolean deletePackage(ViewRegistryPackage registryPackage);
+	boolean deletePackage(String serverUrl, ViewRegistryPackage registryPackage);
 	
 	String getRemoteUser();
 	

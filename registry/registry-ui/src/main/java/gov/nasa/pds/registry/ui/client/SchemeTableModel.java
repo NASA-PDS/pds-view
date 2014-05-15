@@ -51,6 +51,12 @@ public class SchemeTableModel extends MutableTableModel<ViewScheme> {
 	 * A store of filter params as they are not supported in the request object
 	 */
 	private Map<String, String> filters = new HashMap<String, String>();
+	
+	private String serverUrl = "";
+	
+	public void setServerUrl(String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
 
 	/**
 	 * Add a filter condition
@@ -95,7 +101,7 @@ public class SchemeTableModel extends MutableTableModel<ViewScheme> {
 		final SchemeTableModel instance = this;
 
 		// Send RPC request for data
-		this.dataService.requestRows(request, 
+		this.dataService.requestRows(this.serverUrl, request, 
 				new AsyncCallback<SerializableResponse<ViewScheme>>() {
 					@SuppressWarnings("nls")
 					public void onFailure(Throwable caught) {
@@ -132,7 +138,7 @@ public class SchemeTableModel extends MutableTableModel<ViewScheme> {
 		}
 
 		// Send RPC request for data, including previously set filters
-		this.nodeService.getClassificationNodes(guid, asyncCallback);
+		this.nodeService.getClassificationNodes(this.serverUrl, guid, asyncCallback);
 		/*
 		this.nodeService.getClassificationNodes(guid) {
 				//new AsyncCallback<SerializableResponse<ViewClassificationNode>>() {

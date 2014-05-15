@@ -43,6 +43,12 @@ public class ServiceTableModel extends MutableTableModel<ViewService> {
 	 * A store of filter params as they are not supported in the request object
 	 */
 	private Map<String, String> filters = new HashMap<String, String>();
+	
+    private String serverUrl = "";
+	
+	public void setServerUrl(String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
 
 	/**
 	 * Add a filter condition
@@ -87,7 +93,7 @@ public class ServiceTableModel extends MutableTableModel<ViewService> {
 		final ServiceTableModel instance = this;
 
 		// Send RPC request for data
-		this.dataService.requestRows(request, 
+		this.dataService.requestRows(this.serverUrl, request, 
 				new AsyncCallback<SerializableResponse<ViewService>>() {
 					@SuppressWarnings("nls")
 					public void onFailure(Throwable caught) {

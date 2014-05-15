@@ -29,7 +29,7 @@ import com.google.gwt.http.client.RequestBuilder;
  */
 public interface ProductsServiceAsync {
 
-	void getProduct(final String guid,
+	void getProduct(String serverUrl, final String guid,
 			AsyncCallback<SerializableResponse<ViewProduct>> callback);
 	
 	//Request getProduct(final String guid, 
@@ -41,10 +41,10 @@ public interface ProductsServiceAsync {
 	//RequestBuilder getProduct(final String guid,
 	 //      AsyncCallback<SerializableResponse<ViewProduct>> callback);
 	
-	void requestRows(Request request, Map<String, String> filters,
+	void requestRows(String serverUrl, Request request, Map<String, String> filters,
 			AsyncCallback<SerializableResponse<ViewProduct>> callback);
 	
-	void updateProduct(final ViewProduct product, AsyncCallback<Boolean> callback);
+	void updateProduct(String serverUrl, final ViewProduct product, AsyncCallback<Boolean> callback);
 
-	void deleteProduct(ViewProduct product, AsyncCallback<Boolean> callback);
+	void deleteProduct(String serverUrl, ViewProduct product, AsyncCallback<Boolean> callback);
 }

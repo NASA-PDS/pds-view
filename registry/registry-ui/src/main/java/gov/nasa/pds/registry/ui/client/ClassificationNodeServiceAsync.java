@@ -28,10 +28,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface ClassificationNodeServiceAsync {
 
-	void requestRows(Request request, Map<String, String> filters,
+	void requestRows(String serverUrl, Request request, Map<String, String> filters,
 			AsyncCallback<SerializableResponse<ViewClassificationNode>> callback);
 
-	void getClassificationNodes(final String guid,
-			AsyncCallback<SerializableResponse<ViewClassificationNode>> callback);
-	
+	void getClassificationNodes(String serverUrl, final String guid,
+			AsyncCallback<SerializableResponse<ViewClassificationNode>> callback);	
 }

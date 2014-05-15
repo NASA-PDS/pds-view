@@ -44,6 +44,12 @@ public class EventTableModel extends MutableTableModel<ViewAuditableEvent> {
 	 */
 	private Map<String, String> filters = new HashMap<String, String>();
 
+	private String serverUrl = "";
+	
+	public void setServerUrl(String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
+	
 	/**
 	 * Add a filter condition
 	 * 
@@ -87,7 +93,7 @@ public class EventTableModel extends MutableTableModel<ViewAuditableEvent> {
 		final EventTableModel instance = this;
 
 		// Send RPC request for data, including previously set filters
-		this.dataService.requestRows(request, this.filters,
+		this.dataService.requestRows(this.serverUrl, request, this.filters,
 				new AsyncCallback<SerializableResponse<ViewAuditableEvent>>() {
 					@SuppressWarnings("nls")
 					public void onFailure(Throwable caught) {

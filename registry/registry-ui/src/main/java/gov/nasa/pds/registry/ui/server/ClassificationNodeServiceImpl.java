@@ -58,11 +58,11 @@ public class ClassificationNodeServiceImpl extends RemoteServiceServlet
 	 */
 	@SuppressWarnings("nls")
 	@Override
-	public SerializableResponse<ViewClassificationNode> requestRows(Request request,
+	public SerializableResponse<ViewClassificationNode> requestRows(String serverUrl, Request request,
 			Map<String, String> filters) {
 		// get the results, offsetting the start row by one to deal with index
 		// inconsistency
-		ViewClassificationNodes nodes = ConnectionManager.getClassificationNodes(null, 
+		ViewClassificationNodes nodes = ConnectionManager.getClassificationNodes(serverUrl, null, 
 					request.getStartRow() + 1, request.getNumRows());
 
 		// return the GWT appropriate wrapping of the returned results
@@ -70,14 +70,14 @@ public class ClassificationNodeServiceImpl extends RemoteServiceServlet
 	}
 
 	public SerializableResponse<ViewClassificationNode> getClassificationNodes(
-			final String guid) {
+			String serverUrl, final String guid) {
 		//ExtrinsicFilter filter = new ExtrinsicFilter.Builder().guid(guid)
 		//		.build();
 		
 		//RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
 		//		.filter(filter).build();
 
-		ViewClassificationNodes nodes = ConnectionManager.getClassificationNodes(null, 0, 10);
+		ViewClassificationNodes nodes = ConnectionManager.getClassificationNodes(serverUrl, null, 0, 10);
 
 		// return the GWT appropriate wrapping of the returned results
 		return new SerializableProductResponse<ViewClassificationNode>(nodes);

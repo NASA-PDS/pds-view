@@ -46,13 +46,13 @@ public class AssociationServiceImpl extends RemoteServiceServlet implements
 
   private static final long serialVersionUID = 1L;
 
-  public SerializableResponse<ViewAssociation> getAssociations(final String guid) {
+  public SerializableResponse<ViewAssociation> getAssociations(String serverUrl, final String guid) {
     AssociationFilter filter = new AssociationFilter.Builder().sourceObject(
         guid).targetObject(guid).build();
     RegistryQuery<AssociationFilter> query = new RegistryQuery.Builder<AssociationFilter>()
         .filter(filter).operator(QueryOperator.OR).build();
 
-    List<ViewAssociation> products = ConnectionManager.getAssociations(query,
+    List<ViewAssociation> products = ConnectionManager.getAssociations(serverUrl, query,
         null, null);
 
     // return the GWT appropriate wrapping of the returned results
@@ -72,7 +72,7 @@ public class AssociationServiceImpl extends RemoteServiceServlet implements
 	 */
 	@SuppressWarnings("nls")
 	@Override
-	public SerializableResponse<ViewAssociation> requestRows(Request request,
+	public SerializableResponse<ViewAssociation> requestRows(String serverUrl, Request request,
 			Map<String, String> filters) {
 		// get the sort list from the request
 		ColumnSortList sort = request.getColumnSortList();
@@ -136,7 +136,7 @@ public class AssociationServiceImpl extends RemoteServiceServlet implements
 
 		// get the results, offsetting the start row by one to deal with index
 		// inconsistency
-		ViewAssociations associations = ConnectionManager.getAssociations(query, request
+		ViewAssociations associations = ConnectionManager.getAssociations(serverUrl, query, request
 				.getStartRow() + 1, request.getNumRows());
 
 		
@@ -163,13 +163,13 @@ public class AssociationServiceImpl extends RemoteServiceServlet implements
 			// get source lid from the product
 			// need to skip when the source or target object is empty
 			if (vAssoc.getSourceGuid()==null) continue;			
-			ViewProduct aProduct = ConnectionManager.getProduct(vAssoc.getSourceGuid());
+			ViewProduct aProduct = ConnectionManager.getProduct(serverUrl, vAssoc.getSourceGuid());
 			if (aProduct!=null)
 				vAssoc.setSourceLid(aProduct.getLid());
 			
 			if (vAssoc.getTargetGuid()==null) continue;
 			// get target lid from the product
-		    aProduct = ConnectionManager.getProduct(vAssoc.getTargetGuid());
+		    aProduct = ConnectionManager.getProduct(serverUrl, vAssoc.getTargetGuid());
 		    if (aProduct!=null) 
 		    	vAssoc.setTargetLid(aProduct.getLid());
 		}

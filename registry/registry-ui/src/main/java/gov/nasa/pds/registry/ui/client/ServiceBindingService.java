@@ -30,6 +30,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("services")
 public interface ServiceBindingService extends RemoteService {
 
-	SerializableResponse<ViewService> requestRows(Request request);
+	SerializableResponse<ViewService> requestRows(String serverUrl, Request request);
 
 }

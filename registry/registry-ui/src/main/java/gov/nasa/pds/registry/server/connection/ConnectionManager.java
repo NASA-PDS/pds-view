@@ -89,14 +89,13 @@ public class ConnectionManager {
 	/**
 	 * Name of properties file that contains override for service endpoint
 	 */
-	public static final String PROPS_NAME = "application.properties"; //$NON-NLS-1$
+	public static final String PROPS_NAME = "Application.properties"; //$NON-NLS-1$
 
 	/**
 	 * Instance of applicaiton properties
 	 */
 	public static Properties props;
-	
-	
+
 	public static Logger logger = Logger.getLogger("registry-ui");
 
 	// Synchronizes the incoming registry artifacts with those already present
@@ -107,8 +106,8 @@ public class ConnectionManager {
 
 	// Retrieve the status of the registry service. This can be used to monitor
 	// the health of the registry.
-	public static StatusInformation getStatusInfo() {
-		RegistryClient client = getRegistry();
+	public static StatusInformation getStatusInfo(String serverUrl) {
+		RegistryClient client = getRegistry(serverUrl);
 		StatusInformation si = new StatusInformation();
 		try {			
 			Report rpt = client.getReport();
@@ -123,6 +122,7 @@ public class ConnectionManager {
 			si.setClassificationNodes(rpt.getClassificationNodes());
 			si.setPackages(rpt.getPackages());
 			si.setRegistryVersion(rpt.getRegistryVersion());
+			si.setEvents(rpt.getEvents());
 			
 		} catch (RegistryServiceException e) {
 			System.out.println(e.getMessage());
@@ -139,8 +139,8 @@ public class ConnectionManager {
 	 * 
 	 * @see #getProducts(RegistryQuery, Integer, Integer)
 	 */
-	public static ViewProducts getProducts() {
-		return getProducts(null, null, null);
+	public static ViewProducts getProducts(String serverUrl) {
+		return getProducts(serverUrl, null, null, null);
 	}
 
 	/**
@@ -151,8 +151,8 @@ public class ConnectionManager {
 	 * 
 	 * @see #getProducts(RegistryQuery, Integer, Integer)
 	 */
-	public static ViewProducts getProducts(Integer start) {
-		return getProducts(null, start, null);
+	public static ViewProducts getProducts(String serverUrl, Integer start) {
+		return getProducts(serverUrl, null, start, null);
 	}
 
 	/**
@@ -162,8 +162,8 @@ public class ConnectionManager {
 	 * 
 	 * @see #getProducts(RegistryQuery, Integer, Integer)
 	 */
-	public static ViewProducts getProducts(Integer start, Integer numResults) {
-		return getProducts(null, start, numResults);
+	public static ViewProducts getProducts(String serverUrl, Integer start, Integer numResults) {
+		return getProducts(serverUrl, null, start, numResults);
 	}
 
 	/**
@@ -183,10 +183,10 @@ public class ConnectionManager {
 	 *         filter conditions
 	 * 
 	 */
-	public static ViewProducts getProducts(
+	public static ViewProducts getProducts(String serverUrl,
 			RegistryQuery<ExtrinsicFilter> query, Integer start,
 			Integer numResults) {
-		RegistryClient client = getRegistry();
+		RegistryClient client = getRegistry(serverUrl);
 		PagedResponse<ExtrinsicObject> pagedResp = null;
 		try {			
 			if (query != null) {
@@ -218,8 +218,8 @@ public class ConnectionManager {
 	 * @return given number of services from the given start
 	 * 
 	 */
-	public static ViewServices getServices(Integer start, Integer numResults) {
-		RegistryClient client = getRegistry();
+	public static ViewServices getServices(String serverUrl, Integer start, Integer numResults) {
+		RegistryClient client = getRegistry(serverUrl);
 
 		PagedResponse<Service> pagedResp = null;
 		try {
@@ -247,8 +247,8 @@ public class ConnectionManager {
 	 * @return given number of schemes from the given start
 	 * 
 	 */
-	public static ViewSchemes getSchemes(Integer start, Integer numResults) {
-		RegistryClient client = getRegistry();
+	public static ViewSchemes getSchemes(String serverUrl, Integer start, Integer numResults) {
+		RegistryClient client = getRegistry(serverUrl);
 
 		PagedResponse<ClassificationScheme> pagedResp = null;
 		try {
@@ -278,9 +278,9 @@ public class ConnectionManager {
 	 * @return given number of packages from the given start
 	 * 
 	 */
-	public static ViewRegistryPackages getPackages(RegistryQuery<PackageFilter> query,
+	public static ViewRegistryPackages getPackages(String serverUrl, RegistryQuery<PackageFilter> query,
 			Integer start, Integer numResults) {
-		RegistryClient client = getRegistry();
+		RegistryClient client = getRegistry(serverUrl);
 
 		PagedResponse<RegistryPackage> pagedResp = null;
 		try {
@@ -306,8 +306,8 @@ public class ConnectionManager {
 	 * 
 	 * @param viewRegistryPackage a RegistryPackage to update
 	 */
-	public static boolean updatePackage(ViewRegistryPackage registryPackage) {
-		RegistryClient client = getRegistry();
+	public static boolean updatePackage(String serverUrl, ViewRegistryPackage registryPackage) {
+		RegistryClient client = getRegistry(serverUrl);
 		boolean returnStatus = false;
 		try {
 			RegistryPackage rp = client.getObject(registryPackage.getGuid(), RegistryPackage.class);
@@ -346,8 +346,8 @@ public class ConnectionManager {
 	 * 
 	 * @param product an ExtrinsicObject to update
 	 */
-	public static boolean updateProduct(ViewProduct product) {
-		RegistryClient client = getRegistry();
+	public static boolean updateProduct(String serverUrl, ViewProduct product) {
+		RegistryClient client = getRegistry(serverUrl);
 		boolean returnStatus = false;
 		try {
 			ExtrinsicObject extObj = client.getObject(product.getGuid(), ExtrinsicObject.class);						
@@ -376,8 +376,8 @@ public class ConnectionManager {
 	 * 
 	 * @param product an extrinsic object to remove
 	 */
-	public static boolean deleteProduct(ViewProduct product) {
-		RegistryClient client = getRegistry();
+	public static boolean deleteProduct(String serverUrl, ViewProduct product) {
+		RegistryClient client = getRegistry(serverUrl);
 		boolean status = false;
 		try {
 			if (product!=null) {
@@ -395,8 +395,8 @@ public class ConnectionManager {
 	 * 
 	 * @param registryPackage a RegistryPackage object to remove
 	 */
-	public static boolean deletePackage(ViewRegistryPackage registryPackage) {
-		RegistryClient client = getRegistry();
+	public static boolean deletePackage(String serverUrl, ViewRegistryPackage registryPackage) {
+		RegistryClient client = getRegistry(serverUrl);
 		boolean status = false;
 		try {
 			if (registryPackage!=null) {
@@ -427,10 +427,10 @@ public class ConnectionManager {
 	 *         filter conditions
 	 *         
 	 */
-	public static ViewAuditableEvents getEvents(
+	public static ViewAuditableEvents getEvents(String serverUrl,
 			RegistryQuery<EventFilter> query, Integer start, Integer numResults) {
 
-		RegistryClient client = getRegistry();
+		RegistryClient client = getRegistry(serverUrl);
 
 		PagedResponse<AuditableEvent> pagedResp = null;
 		try {
@@ -461,8 +461,8 @@ public class ConnectionManager {
 	 * @return a product with the given guid
 	 * 
 	 */
-	public static ViewProduct getProduct(String guid) {
-		RegistryClient client = getRegistry();
+	public static ViewProduct getProduct(String serverUrl, String guid) {
+		RegistryClient client = getRegistry(serverUrl);
 
 		ExtrinsicObject extrinsicObj = null;
 		try {
@@ -487,10 +487,10 @@ public class ConnectionManager {
 	 * 
 	 */
 	// TODO: no classification node filter, how todo?
-	public static ViewClassificationNodes getClassificationNodes(
+	public static ViewClassificationNodes getClassificationNodes(String serverUrl,
 			RegistryQuery<ExtrinsicFilter> query, Integer start,
 			Integer numResults) {
-		RegistryClient client = getRegistry();
+		RegistryClient client = getRegistry(serverUrl);
 
 		PagedResponse<ClassificationNode> pagedResp = null;
 		try {		
@@ -504,9 +504,9 @@ public class ConnectionManager {
 		return nodes;
 	}
 	
-	public static List<ViewAssociation> getAssociations(
+	public static List<ViewAssociation> getAssociations(String serverUrl,
 			final RegistryQuery<AssociationFilter> query) {
-		return getAssociations(query, null, null);
+		return getAssociations(serverUrl, query, null, null);
 
 	}
 
@@ -527,10 +527,10 @@ public class ConnectionManager {
 	 *         filter conditions
 	 * 
 	 */
-	public static ViewAssociations getAssociations(
+	public static ViewAssociations getAssociations(String serverUrl,
 			RegistryQuery<AssociationFilter> query, Integer start,
 			Integer numResults) {
-		RegistryClient client = getRegistry();
+		RegistryClient client = getRegistry(serverUrl);
 
 		PagedResponse<Association> pagedResp = null;
 		try {
@@ -562,12 +562,12 @@ public class ConnectionManager {
 	 * Get instance of RegistryClient to work with REST interface of registry.
 	 * Instantiates if necessary.
 	 */
+	/*
 	public static RegistryClient getRegistry() {
 		String serviceEndpoint = null;
 		// TODO: determine why the below does not work
 		if (false) {
 			try {
-
 				// Get a handle to the JNDI environment naming context
 				Context env = (Context) new InitialContext().lookup("java:comp/env"); //$NON-NLS-1$
 
@@ -586,10 +586,8 @@ public class ConnectionManager {
 				serviceEndpoint = props.getProperty(
 						"service.endpoint", DEFAULT_SERVICE_ENDPOINT); //$NON-NLS-1$
 				
-				//System.out.println("serviceEndpoint = " + serviceEndpoint);
 				String[] endpoints = serviceEndpoint.split(",");
 				serviceEndpoint = endpoints[0];
-				//System.out.println("serviceEndpoint = " + serviceEndpoint);
 			} else {
 				serviceEndpoint = DEFAULT_SERVICE_ENDPOINT;
 			}
@@ -613,7 +611,30 @@ public class ConnectionManager {
 			return null;
 		}
 	}
-
+*/
+	/**
+	 * Get instance of RegistryClient to work with REST interface of registry.
+	 * Instantiates if necessary.
+	 */
+	public static RegistryClient getRegistry(String serverUrl) {
+		String serviceEndpoint = null;
+		// if unable to get endpoint from user, use the default
+		if (serverUrl == null) 
+			serviceEndpoint = DEFAULT_SERVICE_ENDPOINT;
+		else 
+			serviceEndpoint = serverUrl;
+		
+		// create an instance of the registry client
+		try {
+			RegistryClient client = new RegistryClient(serviceEndpoint);
+			client.setMediaType(MediaType.APPLICATION_XML);
+			return client;
+		} catch (RegistryClientException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+	
 	/**
 	 * Get an instance of the application properties.
 	 */
@@ -621,7 +642,7 @@ public class ConnectionManager {
 	public static Properties getProperties() {
 		if (props == null) {
 			final InputStream is = ConnectionManager.class
-					.getResourceAsStream("/" + PROPS_NAME);
+					.getResourceAsStream("/gov/nasa/pds/registry/ui/client/" + PROPS_NAME);
 
 			try {
 				props = new Properties();
@@ -633,26 +654,6 @@ public class ConnectionManager {
 		}
 
 		return props;
-	}
-	
-	public static List<String> getRegistryServices() {
-		Properties props = getProperties();
-		List<String> registryServices = new ArrayList<String>();
-		String serviceEndpoint = null;
-		if (props != null) {
-			serviceEndpoint = props.getProperty("service.endpoint"); 
-		} else {
-			serviceEndpoint = DEFAULT_SERVICE_ENDPOINT;
-		}
-		
-		System.out.println("serviceEndpoint = " + serviceEndpoint);
-		String[] endpoints = serviceEndpoint.split(",");
-		for (int i=0; i<endpoints.length; i++) {
-			registryServices.add(endpoints[i]);
-			System.out.println("endpoints[i]" + endpoints[i]);
-		}
-		
-		return registryServices;
 	}
 
 	private static ViewProducts respToViewProducts(

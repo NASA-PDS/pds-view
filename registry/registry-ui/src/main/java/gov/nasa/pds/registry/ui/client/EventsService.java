@@ -30,6 +30,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("events")
 public interface EventsService extends RemoteService {
 
-	SerializableResponse<ViewAuditableEvent> requestRows(Request request,
+	SerializableResponse<ViewAuditableEvent> requestRows(String serverUrl, Request request,
 			Map<String, String> filters);
 }

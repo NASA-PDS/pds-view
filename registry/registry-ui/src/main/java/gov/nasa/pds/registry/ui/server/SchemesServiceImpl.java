@@ -54,10 +54,10 @@ public class SchemesServiceImpl extends RemoteServiceServlet implements
 	 */
 	@SuppressWarnings("nls")
 	@Override
-	public SerializableResponse<ViewScheme> requestRows(Request request) {
+	public SerializableResponse<ViewScheme> requestRows(String serverUrl, Request request) {
 		// get the results, offsetting the start row by one to deal with index
 		// inconsistency
-		ViewSchemes services = ConnectionManager.getSchemes(request.getStartRow() + 1, request.getNumRows());
+		ViewSchemes services = ConnectionManager.getSchemes(serverUrl, request.getStartRow() + 1, request.getNumRows());
 
 		// return the GWT appropriate wrapping of the returned results
 		return new SerializableProductResponse<ViewScheme>(services);

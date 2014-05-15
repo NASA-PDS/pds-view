@@ -41,11 +41,7 @@ public class StatusInfo {
 	public StatusInfo() {		
 	}
 	
-	public void getStatus(AsyncCallback callback) {
-		this.dataService.getStatus(callback);
-	}
-	
-	public void getRegistryServices(AsyncCallback callback) {
-		this.dataService.getRegistryServices(callback);
+	public void getStatus(String serverUrl, AsyncCallback callback) {
+		this.dataService.getStatus(serverUrl, callback);
 	}
 }

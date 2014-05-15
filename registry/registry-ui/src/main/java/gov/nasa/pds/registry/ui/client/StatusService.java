@@ -21,13 +21,13 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import java.util.List;
 
 /**
- * Interface to the not-implemented status service
+ * Interface to the status service
  * 
- * @author jagander
+ * @author hyunlee
  */
 @RemoteServiceRelativePath("status")
 public interface StatusService extends RemoteService {
-	public StatusInformation getStatus();
 	
-	public List<String> getRegistryServices();
+	public StatusInformation getStatus(String serverUrl);
+
 }

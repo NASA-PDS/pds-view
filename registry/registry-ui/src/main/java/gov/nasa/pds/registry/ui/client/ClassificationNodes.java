@@ -18,6 +18,10 @@ import gov.nasa.pds.registry.ui.shared.InputContainer;
 import gov.nasa.pds.registry.ui.shared.ViewClassificationNode;
 import gov.nasa.pds.registry.ui.shared.ViewClassificationNodes;
 import gov.nasa.pds.registry.ui.shared.ViewSlot;
+import gov.nasa.pds.registry.ui.shared.StatusInformation;
+
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -50,7 +54,6 @@ import com.google.gwt.gen2.table.event.client.TableEvent.Row;
 import com.google.gwt.gen2.table.override.client.FlexTable;
 import com.google.gwt.gen2.table.override.client.FlexTable.FlexCellFormatter;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Grid;
@@ -220,6 +223,7 @@ public class ClassificationNodes extends Tab {
 	 * @return the table model
 	 */
 	public ClassificationNodeTableModel getTableModel() {
+		this.tableModel.setServerUrl(RegistryUI.serverUrl);
 		return this.tableModel;
 	}
 
@@ -249,7 +253,7 @@ public class ClassificationNodes extends Tab {
 		// update when new data from an RPC call comes in. This forces the
 		// paging options to update with the correct num pages by triggering a
 		// recount of the pages based on the row count.
-		this.tableModel.addRowCountChangeHandler(new RowCountChangeHandler() {
+		get().getTableModel().addRowCountChangeHandler(new RowCountChangeHandler() {
 
 			@Override
 			public void onRowCountChange(RowCountChangeEvent event) {
@@ -587,6 +591,24 @@ public class ClassificationNodes extends Tab {
 	protected void onModuleLoaded() {
 		// set page to first page, triggering call for data
 		this.pagingScrollTable.gotoFirstPage();
+
+		// to refresh with serverUrl change
+		get().getTableModel();
+		get().getPagingScrollTable().redraw();	
+
+		RegistryUI.statusInfo.getStatus(RegistryUI.serverUrl, new AsyncCallback<StatusInformation>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Status.getStatus() RPC Failure" + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(StatusInformation result) {
+				long count = result.getClassificationNodes();
+				logger.log(Level.FINEST, "reloadData   num of classificationNodes " + count);		
+				get().recordCountContainer.setHTML("<div class=\"recordCount\">Total Records: " + count + "</div>");
+			}
+		});
 	}
 
 	/**
@@ -692,5 +714,6 @@ public class ClassificationNodes extends Tab {
 	}
 
 	public void onShow() {
+		onModuleLoaded();
 	}
 }

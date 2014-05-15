@@ -28,6 +28,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface SchemeServiceAsync {
 
-	void requestRows(Request request, AsyncCallback<SerializableResponse<ViewScheme>> callback);
+	void requestRows(String serverUrl, Request request, AsyncCallback<SerializableResponse<ViewScheme>> callback);
 	
 }

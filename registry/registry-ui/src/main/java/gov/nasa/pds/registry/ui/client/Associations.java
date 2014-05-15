@@ -20,6 +20,7 @@ import gov.nasa.pds.registry.ui.shared.ViewProduct;
 import gov.nasa.pds.registry.ui.shared.ViewProducts;
 import gov.nasa.pds.registry.ui.shared.ViewSlot;
 import gov.nasa.pds.registry.ui.shared.Constants;
+import gov.nasa.pds.registry.ui.shared.StatusInformation;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -131,6 +132,7 @@ public class Associations extends Tab {
 	protected final DialogBox productDetailsBox = new DialogBox();
 	protected Button associationCloseButton;
 	protected Button productCloseButton;
+	private int pageSize = RegistryUI.PAGE_SIZE1;
 	
 	/**
 	 * The {@link CachedTableModel} around the main table model.
@@ -166,6 +168,7 @@ public class Associations extends Tab {
 	 * @return the table model
 	 */
 	public AssociationTableModel getTableModel() {
+		this.tableModel.setServerUrl(RegistryUI.serverUrl);
 		return this.tableModel;
 	}
 	
@@ -190,6 +193,14 @@ public class Associations extends Tab {
 	
 	private int getRecordCount() {
 		return this.recordCount;
+	}
+	
+	private void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+	
+	private int getPageSize() {
+		return this.pageSize;
 	}
 	
 	public Associations() {
@@ -221,10 +232,10 @@ public class Associations extends Tab {
 		// update when new data from an RPC call comes in. This forces the
 		// paging options to update with the correct num pages by triggering a
 		// recount of the pages based on the row count.
-		this.tableModel.addRowCountChangeHandler(new RowCountChangeHandler() {
+		get().getTableModel().addRowCountChangeHandler(new RowCountChangeHandler() {
 			@Override
 			public void onRowCountChange(RowCountChangeEvent event) {
-				get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
+				get().getPagingScrollTable().setPageSize(get().getPageSize());
 			}
 		});
 		
@@ -448,10 +459,10 @@ public class Associations extends Tab {
 				this.tableModel);
 
 		// set cache for rows before start row
-		this.cachedTableModel.setPreCachedRowCount(RegistryUI.PAGE_SIZE1);
+		this.cachedTableModel.setPreCachedRowCount(get().getPageSize());
 
 		// set cache for rows after end row
-		this.cachedTableModel.setPostCachedRowCount(RegistryUI.PAGE_SIZE1);
+		this.cachedTableModel.setPostCachedRowCount(get().getPageSize());
 
 		// create a table definition, this defines columns, layout, row colors
 		TableDefinition<ViewAssociation> tableDef = createTableDefinition();
@@ -461,7 +472,7 @@ public class Associations extends Tab {
 				this.cachedTableModel, tableDef);
 
 		// set the num rows to display per page
-		this.pagingScrollTable.setPageSize(RegistryUI.PAGE_SIZE1);
+		this.pagingScrollTable.setPageSize(get().getPageSize());
 
 		// set content to display when there is no data
 		this.pagingScrollTable.setEmptyTableWidget(new HTML(
@@ -832,7 +843,7 @@ public class Associations extends Tab {
 				get().cachedTableModel.clearCache();
 
 				// get table model that holds filters
-				AssociationTableModel tablemodel = get().tableModel;
+				AssociationTableModel tablemodel = get().getTableModel();
 
 				// clear old filters
 				tablemodel.clearFilters();
@@ -860,7 +871,7 @@ public class Associations extends Tab {
 
 				// HACK: row count of zero causes cache check to fail and table
 				// not be updated
-				get().tableModel.setRowCount(RegistryUI.FETCH_ROW_SIZE);
+				get().getTableModel().setRowCount(RegistryUI.FETCH_ROW_SIZE);
 
 				// go back to first page and force update
 				get().getPagingScrollTable().gotoPage(0, true);
@@ -1043,14 +1054,17 @@ public class Associations extends Tab {
 					case 1: 
 						get().getPagingScrollTable().setHeight(RegistryUI.TBL_HGT_50_B);
 						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE2);
+						setPageSize(RegistryUI.PAGE_SIZE2);
 						break;
 					case 2:
 						get().getPagingScrollTable().setHeight(RegistryUI.TBL_HGT_100_B);
 						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE3);
+						setPageSize(RegistryUI.PAGE_SIZE3);
 						break;
 					default:
 						get().getPagingScrollTable().setHeight(RegistryUI.TABLE_HEIGHT_B);
 						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
+						setPageSize(RegistryUI.PAGE_SIZE1);
 						break;
 				}
 				get().getPagingScrollTable().redraw();
@@ -1075,11 +1089,29 @@ public class Associations extends Tab {
 	protected void onModuleLoaded() {
 		// set page to first page, triggering call for data
 		this.pagingScrollTable.gotoFirstPage();
-		setRecordCount(get().pagingScrollTable.getTableModel().getRowCount());
+		
+		// to refresh with serverUrl change
+		get().getTableModel();
+		get().getPagingScrollTable().redraw();	
+		
+		RegistryUI.statusInfo.getStatus(RegistryUI.serverUrl, new AsyncCallback<StatusInformation>() {
+        	@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Status.getStatus() RPC Failure" + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(StatusInformation result) {
+				long count = result.getAssociations();
+				logger.log(Level.FINEST, "reloadData   num of associations " + count);		
+				get().recordCountContainer.setHTML("<div class=\"recordCount\">Total Records: " + count + "</div>");
+			}
+		});
 	}
 	
 	protected void getProducts(final String guid, final boolean srcFlag) {
-		get().tableModel.getProduct(guid, 
+		//get().getTableModel().setServerUrl(RegistryUI.serverUrl);
+		get().getTableModel().getProduct(guid, 
 				new AsyncCallback<SerializableResponse<ViewProduct>>() {
 					public void onFailure(Throwable caught) {
 						Window.alert("Associations.getProducts() RPC Failure" + caught.getMessage());
@@ -1133,6 +1165,8 @@ public class Associations extends Tab {
 				});
 	}
 	
-	public void onShow() {	
+	public void onShow() {
+		logger.log(Level.FINEST, "Associations..onShow method... serverUrl = " + RegistryUI.serverUrl);
+		onModuleLoaded();
 	}
 }

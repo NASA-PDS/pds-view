@@ -18,13 +18,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.List;
 
 /**
- * Asynchronous interface to the not-implemented status service
+ * Asynchronous interface to the status service
  * 
- * @author jagander
+ * @author hyunlee
  */
 public interface StatusServiceAsync {
-	void getStatus(AsyncCallback<StatusInformation> callback);
-			//throws IllegalArgumentException;
-	
-	void getRegistryServices(AsyncCallback<List<String>> callback);
+	void getStatus(String serverUrl, AsyncCallback<StatusInformation> callback);
 }

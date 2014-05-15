@@ -59,7 +59,7 @@ public class EventsServiceImpl extends RemoteServiceServlet implements
 	 */
 	@SuppressWarnings("nls")
 	@Override
-	public SerializableResponse<ViewAuditableEvent> requestRows(Request request,
+	public SerializableResponse<ViewAuditableEvent> requestRows(String serverUrl, Request request,
 			Map<String, String> filters) {
 
 		// get the sort list from the request
@@ -168,7 +168,7 @@ public class EventsServiceImpl extends RemoteServiceServlet implements
 
 		// get the results, offsetting the start row by one to deal with index
 		// inconsistency
-		ViewAuditableEvents events = ConnectionManager.getEvents(query, request
+		ViewAuditableEvents events = ConnectionManager.getEvents(serverUrl, query, request
 				.getStartRow() + 1, request.getNumRows());
 
 		// return the GWT appropriate wrapping of the returned results

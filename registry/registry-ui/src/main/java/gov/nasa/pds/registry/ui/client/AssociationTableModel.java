@@ -51,6 +51,12 @@ public class AssociationTableModel extends MutableTableModel<ViewAssociation> {
 	 * A store of filter params as they are not supported in the request object
 	 */
 	private Map<String, String> filters = new HashMap<String, String>();
+	
+	private String serverUrl = "";
+	
+	public void setServerUrl(String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
 
 	/**
 	 * Add a filter condition
@@ -96,7 +102,7 @@ public class AssociationTableModel extends MutableTableModel<ViewAssociation> {
 		final AssociationTableModel instance = this;
 
 		// Send RPC request for data, including previously set filters
-		this.dataService.requestRows(request, this.filters,
+		this.dataService.requestRows(this.serverUrl, request, this.filters,
 				new AsyncCallback<SerializableResponse<ViewAssociation>>() {
 					@SuppressWarnings("nls")
 					public void onFailure(Throwable caught) {
@@ -134,7 +140,7 @@ public class AssociationTableModel extends MutableTableModel<ViewAssociation> {
 
 		// Send RPC request for data, including previously set filters
 		//return this.productService.getProduct(guid, asyncCallback);
-		this.productService.getProduct(guid, asyncCallback);
+		this.productService.getProduct(this.serverUrl, guid, asyncCallback);
 	}
 	
 	// Default behaviors for common table access, add functionality as necessary

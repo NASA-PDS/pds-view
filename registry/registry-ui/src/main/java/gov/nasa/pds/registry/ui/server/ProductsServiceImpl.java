@@ -48,29 +48,31 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 	 * retrieve the default number of products with a default filter. Primarily
 	 * used for verifying connectivity.
 	 */
+	/*
 	public ViewProducts getProducts() {
 		ViewProducts products = ConnectionManager.getProducts();
 		return products;
 	}
-        
-	public SerializableResponse<ViewProduct> getProduct(final String guid) {
+    */
+	
+	public SerializableResponse<ViewProduct> getProduct(String serverUrl, final String guid) {
 		ExtrinsicFilter filter = new ExtrinsicFilter.Builder().guid(guid)
 				.build();
 		RegistryQuery<ExtrinsicFilter> query = new RegistryQuery.Builder<ExtrinsicFilter>()
 				.filter(filter).build();
 
-		ViewProducts products = ConnectionManager.getProducts(query, null, null);
+		ViewProducts products = ConnectionManager.getProducts(serverUrl, query, null, null);
 
 		// return the GWT appropriate wrapping of the returned results
 		return new SerializableProductResponse<ViewProduct>(products);
 	}
 
-	public boolean updateProduct(final ViewProduct product) {
-		return ConnectionManager.updateProduct(product);
+	public boolean updateProduct(String serverUrl, final ViewProduct product) {
+		return ConnectionManager.updateProduct(serverUrl, product);
 	}
 	
-	public boolean deleteProduct(ViewProduct product) {
-	    return ConnectionManager.deleteProduct(product);
+	public boolean deleteProduct(String serverUrl, ViewProduct product) {
+	    return ConnectionManager.deleteProduct(serverUrl, product);
 	}
 	
 	/**
@@ -86,8 +88,10 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 	 */
 	@SuppressWarnings("nls")
 	@Override
-	public SerializableResponse<ViewProduct> requestRows(Request request,
+	public SerializableResponse<ViewProduct> requestRows(String serverUrl, Request request,
 			Map<String, String> filters) {
+		
+		System.out.println("ProductServiceImpl....serverUrl = " + serverUrl);
 
 		// get the sort list from the request
 		ColumnSortList sort = request.getColumnSortList();
@@ -154,6 +158,10 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 			if (filters.containsKey("versionName")) {
 				filterBuilder.versionName(filters.get("versionName"));
 			}
+			
+			if (filters.containsKey("home")) {
+				filterBuilder.home(filters.get("home"));
+			}
 
 			// build the filter
 			ExtrinsicFilter filter = filterBuilder.build();
@@ -167,7 +175,7 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 
 		// get the results, offsetting the start row by one to deal with index
 		// inconsistency
-		ViewProducts products = ConnectionManager.getProducts(query, request
+		ViewProducts products = ConnectionManager.getProducts(serverUrl, query, request
 				.getStartRow() + 1, request.getNumRows());
 
 		// return the GWT appropriate wrapping of the returned results

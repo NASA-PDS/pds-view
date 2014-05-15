@@ -29,12 +29,12 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("products")
 public interface ProductsService extends RemoteService {
 	
-	SerializableResponse<ViewProduct> getProduct(final String guid);
+	SerializableResponse<ViewProduct> getProduct(String serverUrl, final String guid);
 
-	SerializableResponse<ViewProduct> requestRows(Request request,
+	SerializableResponse<ViewProduct> requestRows(String serverUrl, Request request,
 			Map<String, String> filters);
 
-	boolean updateProduct(final ViewProduct product);
+	boolean updateProduct(String serverUrl, final ViewProduct product);
 	
-	boolean deleteProduct(ViewProduct product);
+	boolean deleteProduct(String serverUrl, ViewProduct product);
 }

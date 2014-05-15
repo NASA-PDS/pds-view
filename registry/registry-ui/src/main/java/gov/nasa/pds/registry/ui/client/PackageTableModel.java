@@ -43,6 +43,12 @@ public class PackageTableModel extends MutableTableModel<ViewRegistryPackage> {
 	 * A store of filter params as they are not supported in the request object
 	 */
 	private Map<String, String> filters = new HashMap<String, String>();
+	
+    private String serverUrl = "";
+	
+	public void setServerUrl(String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
 
 	/**
 	 * Add a filter condition
@@ -87,7 +93,7 @@ public class PackageTableModel extends MutableTableModel<ViewRegistryPackage> {
 		final PackageTableModel instance = this;
 
 		// Send RPC request for data
-		this.dataService.requestRows(request, this.filters,
+		this.dataService.requestRows(this.serverUrl, request, this.filters,
 				new AsyncCallback<SerializableResponse<ViewRegistryPackage>>() {
 					@SuppressWarnings("nls")
 					public void onFailure(Throwable caught) {
@@ -121,7 +127,7 @@ public class PackageTableModel extends MutableTableModel<ViewRegistryPackage> {
 			this.dataService = GWT.create(PackageService.class);
 		}
 		
-		this.dataService.updatePackage(viewRegistryPackage, asyncCallback);
+		this.dataService.updatePackage(this.serverUrl, viewRegistryPackage, asyncCallback);
 	}
 	
 	public void deletePackage(ViewRegistryPackage registryPackage,
@@ -132,7 +138,7 @@ public class PackageTableModel extends MutableTableModel<ViewRegistryPackage> {
 			this.dataService = GWT.create(PackageService.class);
 		}
 		
-		this.dataService.deletePackage(registryPackage, asyncCallback);
+		this.dataService.deletePackage(this.serverUrl, registryPackage, asyncCallback);
 	}
 	
 	public void getRemoteUser(AsyncCallback<String> asyncCallback) {

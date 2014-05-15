@@ -23,9 +23,9 @@ import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -81,7 +81,9 @@ public class RegistryUI implements EntryPoint, HistoryListener {
 	
 	public static Logger logger = Logger.getLogger("registry-ui");
 	private final ListBox serversList = new ListBox(false);
-	private static List<String> servers = null;
+	
+	public static String serverUrl = "http://localhost:8080/registry/";
+	//private static List<String> servers = null;
 	
 	public void onHistoryChanged(String token) {
 		TabInfo info = list.find(token);
@@ -92,13 +94,43 @@ public class RegistryUI implements EntryPoint, HistoryListener {
 		show(info, false);
 	}
 	
-	public void setServers(List<String> servers) {
-		this.servers = servers;
-	}
-	
 	public static StatusInfo statusInfo = new StatusInfo();
+	
+	private void setServerUrl(String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
     
 	public void onModuleLoad() {
+		Application apps = (Application) GWT.create(Application.class);
+		String[] appServers = apps.serviceEndpoint();
+
+		serversList.setName("registryServices");		
+		for (int i=0; i<appServers.length; i++) {
+			String serverUrl = appServers[i];
+			serversList.addItem(serverUrl);
+			logger.log(Level.FINEST, "server list  = " + serverUrl);
+		}	
+		HorizontalPanel serverPanel = new HorizontalPanel();
+		Label serverLabel = new Label("Registry Service(s):");
+		serverLabel.setStyleName("inputLabel");
+		serverLabel.setWidth("130px");
+		
+		serverPanel.add(serverLabel);
+		serverPanel.add(serversList);
+		
+		panel.add(serverPanel);
+
+		// add handler to leverage the refresh button
+		serversList.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				logger.log(Level.FINEST, "a server is choosed.." +
+						serversList.getValue(serversList.getSelectedIndex()));
+				setServerUrl(serversList.getValue(serversList.getSelectedIndex()));
+				showInfo();
+			}
+		});
+			
 		loadTabs();
 		
 		panel.add(list);
@@ -123,9 +155,9 @@ public class RegistryUI implements EntryPoint, HistoryListener {
         // Don't bother re-displaying the existing tab. This can be an issue
         // in practice, because when the history context is set, our
         // onHistoryChanged() handler will attempt to show the currently-visible tab.
-        if (info == curInfo) {
-            return;
-        }
+        //if (info == curInfo) {
+        //    return;
+        //}
         curInfo = info;
 
         // Remove the old tab from the display area.

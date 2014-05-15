@@ -56,10 +56,10 @@ public class ServiceBindingServiceImpl extends RemoteServiceServlet implements
 	 */
 	@SuppressWarnings("nls")
 	@Override
-	public SerializableResponse<ViewService> requestRows(Request request) {
+	public SerializableResponse<ViewService> requestRows(String serverUrl, Request request) {
 		// get the results, offsetting the start row by one to deal with index
 		// inconsistency
-		ViewServices services = ConnectionManager.getServices(request.getStartRow() + 1, request.getNumRows());
+		ViewServices services = ConnectionManager.getServices(serverUrl, request.getStartRow() + 1, request.getNumRows());
 
 		// return the GWT appropriate wrapping of the returned results
 		return new SerializableProductResponse<ViewService>(services);

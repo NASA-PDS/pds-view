@@ -262,6 +262,7 @@ public class Products extends Tab {
 	 * @return the table model
 	 */
 	public ProductTableModel getTableModel() {
+		this.tableModel.setServerUrl(RegistryUI.serverUrl);
 		return this.tableModel;
 	}
 
@@ -316,7 +317,7 @@ public class Products extends Tab {
 		// update when new data from an RPC call comes in. This forces the
 		// paging options to update with the correct num pages by triggering a
 		// recount of the pages based on the row count.
-		this.tableModel.addRowCountChangeHandler(new RowCountChangeHandler() {
+		get().getTableModel().addRowCountChangeHandler(new RowCountChangeHandler() {
 			@Override
 			public void onRowCountChange(RowCountChangeEvent event) {
 				get().getPagingScrollTable().setPageSize(get().getPageSize());
@@ -353,7 +354,7 @@ public class Products extends Tab {
 		// add title to scroll table
 		this.scrollPanel.add(new HTML(
 				"<div class=\"title\">Product Registry</div>"));
-		logger.log(Level.FINEST, "initLayout method...");
+		logger.log(Level.FINEST, "initLayout method... serverUrl = " + RegistryUI.serverUrl);
 	}
 
 	/**
@@ -680,7 +681,7 @@ public class Products extends Tab {
 		get().getTableModel().setRowCount(getPageSize());
 		get().getPagingScrollTable().redraw();
 		
-		RegistryUI.statusInfo.getStatus(new AsyncCallback<StatusInformation>() {
+		RegistryUI.statusInfo.getStatus(RegistryUI.serverUrl, new AsyncCallback<StatusInformation>() {
         	@Override
 			public void onFailure(Throwable caught) {
 				Window.alert("Status.getStatus() RPC Failure" + caught.getMessage());
@@ -735,7 +736,7 @@ public class Products extends Tab {
 		
 		// object type
 		String objectType = objectsInput.getValue(objectsInput.getSelectedIndex());
-		logger.log(Level.FINEST, "objectType = " + objectType);
+		//logger.log(Level.FINEST, "objectType = " + objectType);
 		// set object type filter if set to something specific
 		if (!objectType.equals("-1")) {
 			tablemodel.addFilter("objectType", objectType);
@@ -743,7 +744,7 @@ public class Products extends Tab {
 
 		// status
 		String status = statusInput.getValue(statusInput.getSelectedIndex());
-		logger.log(Level.FINEST, "status = " + status);
+		//logger.log(Level.FINEST, "status = " + status);
 		// set status if set to something specific
 		if (!status.equals("-1")) {
 			tablemodel.addFilter("status", status);
@@ -754,6 +755,8 @@ public class Products extends Tab {
 		// display count in page
 		//get().recordCountContainer.setHTML("<div class=\"recordCount\">Total Records: " + count + "</div>");
 		get().reloadData();		
+		
+		logger.log(Level.FINEST, "initLayout method... serverUrl = " + RegistryUI.serverUrl);
 	}
 
 	/**
@@ -763,6 +766,8 @@ public class Products extends Tab {
 		// create table model that knows to make rest call for rows and caches
 		// filter settings for calls
 		this.tableModel = new ProductTableModel();
+		
+		this.tableModel.setServerUrl(RegistryUI.serverUrl);
 
 		// create model to contain the cached data
 		this.cachedTableModel = new CachedTableModel<ViewProduct>(
@@ -1156,6 +1161,7 @@ public class Products extends Tab {
 		// set page to first page, triggering call for data
 		get().getPagingScrollTable().gotoFirstPage();
 		logger.log(Level.FINEST, "onModuleLoaded...");
+		get().refreshTable();
 	}
 
 	/**
@@ -1325,5 +1331,8 @@ public class Products extends Tab {
 	}
 	
 	public void onShow() {	
+		logger.log(Level.FINEST, "Products..onShow method... serverUrl = " + RegistryUI.serverUrl);
+		//get().getTableModel().setServerUrl(RegistryUI.serverUrl);
+		onModuleLoaded();
 	}
 }

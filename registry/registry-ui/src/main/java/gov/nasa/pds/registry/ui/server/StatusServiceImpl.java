@@ -32,19 +32,11 @@ public class StatusServiceImpl extends RemoteServiceServlet implements
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public StatusInformation getStatus() {
-		StatusInformation status = ConnectionManager.getStatusInfo();
+	public StatusInformation getStatus(String serverUrl) {
+		StatusInformation status = ConnectionManager.getStatusInfo(serverUrl);
 		System.out.println("status info = " + status.getServerStarted() + 
 				"   getStoredDataObjects() = " + status.getExtrinsics() + 
 				"   status = " + status.getStatus());
 		return status;
-	}
-	
-	@Override
-	public List<String> getRegistryServices() {
-		List<String> registryServices = ConnectionManager.getRegistryServices();
-		
-		System.out.println("service.endpoint = " + registryServices.toString());
-		return registryServices;
 	}
 }
