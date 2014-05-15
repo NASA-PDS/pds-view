@@ -111,10 +111,14 @@ OFSN+EQ+&lt;online-file-specification-name&gt;+AND+RT+EQ+&lt;return-type&gt;
 http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIST1
 </source>
 
-      <p>The following table lists all the valid values for the return type keyword. 
+      <p>The following tables list all the valid values for the return type keyword. 
          The examples provided assume the existence of a transport-ofsn application deployed within a local Tomcat container running on port 8080.
          For each possible value of RT, the same example request is shown as encoded with DIS-Style syntax, or simple (name, value) pairs.
       </p>
+      
+      <p>
+      <b>"Listing" Return Types</b>
+	  </p>
 
       <table>
         <tr><th>Return Type</th><th>Description</th></tr>
@@ -279,7 +283,15 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
 &lt;/dirResult&gt;
         		</source>
         	</td>
-        </tr>
+        </tr>        
+      </table>
+      
+      <p>
+      	<b>"Get" Return Types that apply both to PDS3 and PDS4 labels</b>
+	  </p>
+
+      <table>
+        <tr><th>Return Type</th><th>Description</th></tr>
         <tr>
         	<td>RAW</td>
         	<td>Returns the requested file without any modification (MIME type application/octet-stream).
@@ -311,11 +323,146 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
         	</td>
         </tr>
         <tr>
-        	<td>PDS4_TO_JPG</td>
-        	<td>Converts a PDS4 image to JPEG format.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_JPG">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_JPG</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_JPG">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_JPG</a>
-        		<br/><i>NOTE: this return type is specific to PDS4 images.</i>
+        	<td>PDS_TO_JPEG</td>
+        	<td>Converts a PDS image to JPEG format.
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JPEG">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JPEG</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JPEG">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JPEG</a>
+        	</td>
+        </tr>     
+        <tr>
+        	<td>PDS_TO_JPG</td>
+        	<td>Converts a PDS image to JPG format (same as JPEG handler above).
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JPG">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JPG</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JPG">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JPG</a>
+        	</td>
+        </tr>    
+        <tr>
+        	<td>PDS_TO_JP2</td>
+        	<td>Converts a PDS image to JPG 2000 format.
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JP2">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JP2</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JP2">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JP2</a>
+        		<br/>NOTE: currently, a library bug prevents this handler to work for PDS3 images.
+        	</td>
+        </tr>      
+        <tr>
+        	<td>PDS_TO_BMP</td>
+        	<td>Converts a PDS image to Windows BMP format.
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_BMP">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_BMP</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_BMP">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_BMP</a>
+        		<br/>NOTE: currently, a library bug prevents this handler to work for PDS3 images.
+        	</td>
+        </tr>
+        <!--        
+        <tr>
+        	<td>PDS_TO_WBMP</td>
+        	<td>Converts a PDS image to Wireless Bitmap image format.
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_WBMP">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_WBMP</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_WBMP">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_WBMP</a>
+        	</td>
+        </tr>    
+        -->
+        <tr>
+        	<td>PDS_TO_GIF</td>
+        	<td>Converts a PDS image to Graphics Interchange Format.
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_GIF">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_GIF</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_GIF">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_GIF</a>
+        	</td>
+        </tr>    
+        <tr>
+        	<td>PDS_TO_PNG</td>
+        	<td>Converts a PDS image to Portable Network Graphics Format.
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_PNG">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_PNG</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_PNG">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_PNG</a>
+        	</td>
+        </tr> 
+        <tr>
+        	<td>PDS_TO_RAW</td>
+        	<td>Converts a PDS image to Raw image Format.
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_RAW">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_RAW</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_RAW">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_RAW</a>
+        	</td>
+        </tr>   
+        <tr>
+        	<td>PDS_TO_TIF</td>
+        	<td>Converts a PDS image to Tagged Image File Format.
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_TIF">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_TIF</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_TIF">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_TIF</a>
+        	</td>
+        </tr> 
+        <tr>
+        	<td>PDS_TO_TIFF</td>
+        	<td>Converts a PDS image to Tagged Image File Format (same as TIF handler above).
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_TIFF">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_TIFF</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_TIFF">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_TIFF</a>
+        	</td>
+        </tr>  
+        <tr>
+        	<td>PDS_TO_PNM</td>
+        	<td>Converts a PDS image to Portable Any Map format.
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_PNM">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_PNM</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_PNM">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_PNM</a>
+        	</td>
+        </tr>  
+      </table>
+      
+      <p>
+      	<b>"Get" Return Types that apply only to PDS4 labels</b>
+	  </p>
+
+      <table>
+        <tr><th>Return Type</th><th>Description</th></tr>
+        <tr>
+        	<td>PDS4_TO_PVL</td>
+        	<td>Converts a PDS4 label into a Parameter Value Language file.
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_PVL">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_PVL</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_PVL">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_PVL</a>
+        	</td>
+        </tr>
+        <tr>
+        	<td>PDS4_TO_HTML</td>
+        	<td>Converts a PDS4 label into an HTML representation of the label.
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_HTML">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_HTML</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_HTML">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_HTML</a>
+        	</td>
+        </tr>
+        <tr>
+        	<td>PDS4_TO_HTML_STRUCTURE_ONLY</td>
+        	<td>Converts a PDS4 label into an HTML representation of the label structure. As a result, the element contents are stripped out in the resulting file.
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_HTML_STRUCTURE_ONLY">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_HTML_STRUCTURE_ONLY</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_HTML_STRUCTURE_ONLY">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_HTML_STRUCTURE_ONLY</a>
+        	</td>
+        </tr>
+        <tr>
+        	<td>PDS4_TO_CSV</td>
+        	<td>Specify to transform a given table into a comma-separated value file.
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/Product_Table_Character.xml+AND+RT+EQ+PDS4_TO_CSV">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/Product_Table_Character.xml+AND+RT+EQ+PDS4_TO_CSV</a>
+        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/Product_Table_Character.xml&amp;RT=PDS4_TO_CSV">http://localhost:8080/transport-ofsn/prod?OFSN=/Product_Table_Character.xml&amp;RT=PDS4_TO_CSV</a>
+        	</td>
+        </tr>
+        
+      </table>
+      
+      <p>
+      	<b>"Get" Return Types that apply only to PDS3 labels</b>
+	  </p>
+
+      <table>
+        <tr><th>Return Type</th><th>Description</th></tr>
+        <tr>
+        	<td>PDS3_TO_PDS</td>
+        	<td>Converts a PDS3 image to a PDS4 Array 2D image.
+        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/N1727539187_1.LBL+AND+RT+EQ+PDS3_TO_PDS">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/N1727539187_1.LBL+AND+RT+EQ+PDS3_TO_PDS</a>
+        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/N1727539187_1.LBL&amp;rt=PDS3_TO_PDS">http://localhost:8080/transport-ofsn/prod?ofsn=/N1727539187_1.LBL&amp;rt=PDS3_TO_PDS</a>
+        	    <br/>NOTE: to function properly, this handler requires Tomcat to be started with a reference to the external programs used to execute the conversion:
+        	    <br/>CATALINA_OPTS="-Dexternal.programs.home=/usr/local/transform/external-programs"
+        	</td>
+        </tr>
+        <tr>
+        	<td>PDS3_TO_PDS4_LABEL</td>
+        	<td>Converts a PDS3 label into a PDS4 Product Observational product label.
+        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/ELE_MOM.LBL+AND+RT+EQ+PDS3_TO_PDS4_LABEL">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/ELE_MOM.LBL+AND+RT+EQ+PDS3_TO_PDS4_LABEL</a>
+        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/ELE_MOM.LBL&amp;rt=PDS3_TO_PDS4_LABEL">http://localhost:8080/transport-ofsn/prod?ofsn=/ELE_MOM.LBL&amp;rt=PDS3_TO_PDS4_LABEL</a>
+        	    <br/>NOTE: currently not working because cannot loaf file context-classes.xml
         	</td>
         </tr>
         <tr>
@@ -323,7 +470,6 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
         	<td>Returns a plain text (MIME type text/plain) representation of the PDS3 label specified in the <i>OFSN</i>, including and expanding the <i>STRUCTURE</i> pointers.
         		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/CHAN_DATA_20020617.LBL+AND+RT+EQ+PDS_LABEL">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/CHAN_DATA_20020617.LBL+AND+RT+EQ+PDS_LABEL</a>
         		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/CHAN_DATA_20020617.LBL&amp;rt=PDS_LABEL">http://localhost:8080/transport-ofsn/prod?ofsn=/CHAN_DATA_20020617.LBL&amp;rt=PDS_LABEL</a>
-        		<br/><i>NOTE: this return type is specific to PDS3 label.</i>
         	</td>
         </tr>
         <tr>
@@ -332,8 +478,7 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
         		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP">
         		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP</a>
         		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;rt=PDS_ZIP">
-        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;=PDS_ZIP</a>
-        		<br/><i>NOTE: this return type is specific to PDS3 label.</i>
+        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;rt=PDS_ZIP</a>
         	</td>
         </tr>
         <tr>
@@ -342,7 +487,7 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
         		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP_SIZE">
         		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP_SIZE</a>
         		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;rt=PDS_ZIP_SIZE">
-        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;=PDS_ZIP_SIZE</a>
+        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;rt=PDS_ZIP_SIZE</a>
         		<br/>Example response:
 <source>
 &lt;?xml version=&quot;1.0&quot;?&gt;
@@ -353,27 +498,9 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
   &lt;/dirEntry&gt;
 &lt;/dirResult&gt;
 </source>
-				<br/><i>NOTE: this return type is specific to PDS3 label.</i>
         	</td>
         </tr>
         
-        <!--
-        <tr><td>PDS_FILELIST</td><td>Returns a file listing of the requested PDS label file and its references in XML format. This is similar to <i>FILELIST</i> but instead of giving the size of the requested file, it parses the requested file as a PDS label and gives the sizes of all referenced files.</td></tr>
-        <tr><td>PDS_FILELISTZIP</td><td>Returns an XML document with the size of the ZIP archive that would be downloaded with <i>PDS_ZIP</i> but not if you expanded the archive.</td></tr>
-        <tr><td>PDS_JPEG</td><td>Returns the PDS-format image at the given <i>OFSN</i>, converted into the JPEG/JFIF image format.</td></tr>
-        <tr><td>PDS_JPEG_SIZE</td><td>Returns an XML document with the size of the JPEG file that would be generated by the corresponding <i>PDS_JPEG</i> query.</td></tr>
-        <tr><td>PDS_LABEL</td><td>Returns a plain text (MIME type text/plain) representation of the PDS label specified in the <i>OFSN</i>.</td></tr>
-        <tr><td>PDS_ZIP</td><td>Returns the PDS label and its references in a ZIP file.</td></tr>
-        <tr><td>PDS_ZIPD</td><td>Returns a ZIP archive of all of the files and directories under the given <i>OFSN</i>, which should be a directory.</td></tr>
-        <tr><td>PDS_ZIPD_SIZE</td><td>Returns an XML document with the size of the ZIP archive that would be generated by the corresponding <i>PDS_ZIPD</i> query.</td></tr>
-        <tr><td>PDS_ZIPN</td><td>Returns a ZIP archive containing the requested file and all of the files that it references.</td></tr>
-        <tr><td>PDS_ZIPN_SIZE</td><td>Returns an XML document with the size of the ZIP archive that would be generated by the corresponding <i>PDS_ZIPN</i> query.</td></tr>
-        <tr><td>PDS_ZIPN_TES</td><td>Returns a ZIP archive that contains all files matching the AAAnnnnn format in the same directory as the requested <i>OFSN</i>, and all of their referenced files.</td></tr>
-        <tr><td>PDS_ZIPN_TES_SIZE</td><td>Returns an XML document with the size of the ZIP archive that would be generated by the corresponding <i>PDS_ZIPN_TES</i> query.</td></tr>
-        <tr><td>PDS_ZIP_SIZE</td><td>Returns the total size of the PDS label file and its references in XML format if you were to download the product with <i>PDS_ZIP</i> and unzip the archive.</td></tr>
-        <tr><td>RAW</td><td>Returns the requested file without any modification (MIME type application/octet-stream).</td></tr>
-        <tr><td>RAW_SIZE</td><td>Returns an XML document with the size of the raw file that would be returned by the corresponding <i>RAW</i> query.</td></tr>
-        -->
       </table>
 
     </section>
