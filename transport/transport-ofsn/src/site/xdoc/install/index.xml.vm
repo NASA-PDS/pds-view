@@ -170,11 +170,11 @@ http://localhost:8080/transport-ofsn/
           <i>$PDS_HOME/transport-ofsn/testdata</i> (referenced as "productRoot" in the file ofsn-ps.xml). 
           You can test your installation by accessing the following URL:
 <source>
-http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_JPG
+http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JPG
 </source>
           or equivalently, using the new product request syntax:
 <source>
-http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_JPG
+http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JPG
 </source>
           If you see a JPG image, your installation was successful! If not, please look into the Tomcat logs for any error messages.
           <br/>&nbsp;
