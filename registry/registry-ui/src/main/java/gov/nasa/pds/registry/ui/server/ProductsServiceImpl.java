@@ -159,9 +159,9 @@ public class ProductsServiceImpl extends RemoteServiceServlet implements
 				filterBuilder.versionName(filters.get("versionName"));
 			}
 			
-			if (filters.containsKey("home")) {
-				filterBuilder.home(filters.get("home"));
-			}
+			//if (filters.containsKey("home")) {
+			//	filterBuilder.home(filters.get("home"));
+			//}
 
 			// build the filter
 			ExtrinsicFilter filter = filterBuilder.build();
