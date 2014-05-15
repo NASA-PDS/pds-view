@@ -273,7 +273,7 @@ public class RegistryServiceImpl implements RegistryService {
 		Set<Slot> newSlots = new HashSet<Slot>();
 		for (Slot slot : registryObject.getSlots()) {
 			Slot newSlot = new Slot(slot.getName(), slot.getValues());
-			slot.setSlotType(slot.getSlotType());
+			newSlot.setSlotType(slot.getSlotType());
 			newSlots.add(newSlot);
 		}
 		registryObject.setSlots(newSlots);
@@ -281,12 +281,28 @@ public class RegistryServiceImpl implements RegistryService {
 		// Constraints can throw a persistence exception
 		try {
 			metadataStore.saveRegistryObject(registryObject);
-		} catch (javax.persistence.PersistenceException pe) {
+		} catch (javax.persistence.EntityExistsException ee) {
+			//ee.printStackTrace();
 			throw new RegistryServiceException("Registry object with logical id "
-			    + referencedObject.getLid() + " and version name "
-			    + referencedObject.getVersionName() + " already exists.",
+			    + registryObject.getLid() + " and version name "
+			    + registryObject.getVersionName() + " already exists.\n",
 			    ExceptionType.EXISTING_OBJECT);
+		} catch (javax.persistence.PersistenceException pe) {
+		    String errorMsg = "";
+		    if (pe.getCause().getCause()!=null)
+		    	errorMsg = pe.getCause().getCause().getMessage();
+		    else { 
+		    	if (pe.getCause()!=null)
+		    		errorMsg = pe.getCause().getMessage();
+		    	else 
+		    		errorMsg = pe.getMessage();
+		    }
+			throw new RegistryServiceException("Error with the registry object with logical id "
+				    + registryObject.getLid() + " and version name "
+				    + registryObject.getVersionName() + ". " + errorMsg + "\n",
+				    ExceptionType.INVALID_REQUEST);	
 		}
+		
 		this.createAuditableEvent("versionObject " + referencedObject.getGuid()
 		    + " " + registryObject.getGuid(), user, EventType.Versioned,
 		    registryObject.getGuid(), registryObject.getClass());
@@ -622,11 +638,26 @@ public class RegistryServiceImpl implements RegistryService {
 		// Constraints can throw a persistence exception
 		try {
 			metadataStore.saveRegistryObject(registryObject);
-		} catch (javax.persistence.PersistenceException pe) {
+		} catch (javax.persistence.EntityExistsException ee) {
+			//ee.printStackTrace();
 			throw new RegistryServiceException("Registry object with logical id "
 			    + registryObject.getLid() + " and version name "
-			    + registryObject.getVersionName() + " already exists.",
+			    + registryObject.getVersionName() + " already exists.\n",
 			    ExceptionType.EXISTING_OBJECT);
+		} catch (javax.persistence.PersistenceException pe) {
+		    String errorMsg = "";
+		    if (pe.getCause().getCause()!=null)
+		    	errorMsg = pe.getCause().getCause().getMessage();
+		    else { 
+		    	if (pe.getCause()!=null)
+		    		errorMsg = pe.getCause().getMessage();
+		    	else 
+		    		errorMsg = pe.getMessage();
+		    }
+			throw new RegistryServiceException("Error with the registry object with logical id "
+				    + registryObject.getLid() + " and version name "
+				    + registryObject.getVersionName() + ". " + errorMsg + "\n",
+				    ExceptionType.INVALID_REQUEST);	
 		}
 
 		// If this is a classification node that belongs to the object type
