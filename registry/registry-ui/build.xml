@@ -6,11 +6,13 @@
   <property name="war.dir" value="${basedir}/war" />
   <property name="target.dir" value="${basedir}/target" />
   <property name="war.path" value="${dist.dir}/registry-ui.war" />
+  <!-- To access multiple Registry Service Instances -->
+  <!--property name="service.endpoint" value="http://localhost:8080/registry/,http://localhost:8080/registry-test/" /-->
   <property name="service.endpoint" value="http://localhost:8080/registry/" />
-
+ 
   <target name="update-endpoint">
     <echo>Writing endpoint location as ${service.endpoint}, use -Dservice.endpoint=... to overwrite.</echo>
-    <propertyfile file="${target.dir}/classes/application.properties">
+    <propertyfile file="${target.dir}/classes/gov/nasa/pds/registry/ui/client/Application.properties">
       <entry key="service.endpoint" operation="=" value="${service.endpoint}" />
     </propertyfile>
   </target>

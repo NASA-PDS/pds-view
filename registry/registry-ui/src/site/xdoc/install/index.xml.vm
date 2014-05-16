@@ -107,7 +107,7 @@ or
     </section>
 
     <section name="General Configuration">
-      <p>By default, the Registry User Interface comes configured to access the Registry Service at the specific endpoint <i>http://localhost:8080/registry</i>. This should be modified to represent the endpoint of the Registry Service target installation. To modify the configuration, edit the <i>application.properties</i> file located in the <i>$TOMCAT_HOME/webapps/${project.artifactId}/WEB-INF/classes</i> directory. Modify the following line with the new endpoint:
+      <p>By default, the Registry User Interface comes configured to access the Registry Service at the specific endpoint <i>http://localhost:8080/registry</i>. This should be modified to represent the endpoint of the Registry Service target installation. To modify the configuration, edit the <i>Application.properties</i> file located in the <i>$TOMCAT_HOME/webapps/${project.artifactId}/WEB-INF/classes/gov/nasa/pds/registry/ui/client/</i> directory. Modify the following line with the new endpoint:
       </p>
 
       <source>
@@ -116,6 +116,11 @@ service.endpoint=http\://localhost\:8080/registry/
   should be changed to (if hosted at node.nasa.gov on port 80):
 
 service.endpoint=http\://node.nasa.gov/registry/
+      </source>
+      
+      <p>To access multiple Registry Service instances, modify the service.endpoint as shown below.</p>
+      <source>
+service.endpoint=http\://localhost\:8080/registry/,http\://pdsdev.jpl.nasa.gov\:8080/registry/
       </source>
 
       <p>If the configuration was changed above, the Registry User Interface application must be stopped and started for these changes to take effect. This can be accomplished by restarting the Tomcat Server. Alternatively, if the Tomcat Manager interface was utilized for the deployment, find the Registry Service entry in the Manager interface, select the associated <i>Stop</i> button followed by a selection of the associated <i>Start</i> button to stop and then start the application, respectively.
