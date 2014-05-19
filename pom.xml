@@ -52,8 +52,8 @@
     <!-- Internal Dependency Version -->
     <core-version>1.5.0</core-version>
     <pds4-tools-version>0.3.0</pds4-tools-version>
-    <generate-version>0.7.0</generate-version>
-    <transform-version>0.2.2</transform-version>
+    <generate-version>0.8.0-dev</generate-version>
+    <transform-version>0.3.0-dev</transform-version>
     <registry-version>1.6.0</registry-version>
     <search-version>1.4.0</search-version>
     <storage-version>1.0.0</storage-version>
