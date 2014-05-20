@@ -81,6 +81,9 @@
               <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
             </manifest>
           </archive>
+          <packagingExcludes>
+            WEB-INF/lib/commons-collections-2.1.jar
+          </packagingExcludes>
         </configuration>
       </plugin>
       <plugin>
@@ -206,6 +209,11 @@
       <version>${transform-version}</version>
       <type>jar</type>
     </dependency>
+    <dependency>
+		<groupId>commons-collections</groupId>
+		<artifactId>commons-collections</artifactId>
+		<version>3.2.1</version>
+	</dependency>
   </dependencies>
 
   <!-- Project Information and Reports inherited from parent. -->
