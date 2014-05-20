@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2013, by the California Institute of Technology.
+  Copyright 2010-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -19,7 +19,7 @@
 <document>
   <properties>
     <title>Installation</title>
-    <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
+    <author email="Hyun.H.Lee@jpl.nasa.gov">Hyun Lee</author>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
@@ -32,7 +32,6 @@
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
-        <li><a href="#General_Configuration">General Configuration</a></li>
         <li><a href="#Secure_Configuration">Secure Configuration</a></li>
       </ul>
     </section>
@@ -102,32 +101,17 @@ or
     </section>
 
     <section name="Deploying the Application">
-      <p>The Registry User Interface web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation.
-      </p>
-    </section>
-
-    <section name="General Configuration">
-      <p>By default, the Registry User Interface comes configured to access the Registry Service at the specific endpoint <i>http://localhost:8080/registry</i>. This should be modified to represent the endpoint of the Registry Service target installation. To modify the configuration, edit the <i>Application.properties</i> file located in the <i>$TOMCAT_HOME/webapps/${project.artifactId}/WEB-INF/classes/gov/nasa/pds/registry/ui/client/</i> directory. Modify the following line with the new endpoint:
+      <p>The Registry User Interface web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat Server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation.
       </p>
 
-      <source>
-service.endpoint=http\://localhost\:8080/registry/
-
-  should be changed to (if hosted at node.nasa.gov on port 80):
-
-service.endpoint=http\://node.nasa.gov/registry/
-      </source>
-      
-      <p>To access multiple Registry Service instances, modify the service.endpoint as shown below.</p>
-      <source>
-service.endpoint=http\://localhost\:8080/registry/,http\://pdsdev.jpl.nasa.gov\:8080/registry/
-      </source>
-
-      <p>If the configuration was changed above, the Registry User Interface application must be stopped and started for these changes to take effect. This can be accomplished by restarting the Tomcat Server. Alternatively, if the Tomcat Manager interface was utilized for the deployment, find the Registry Service entry in the Manager interface, select the associated <i>Stop</i> button followed by a selection of the associated <i>Start</i> button to stop and then start the application, respectively.
+      <p>By default, the Registry User Interface comes configured to access two Registry Service instances. The PDS3 instance at the end point <i>http://localhost:8080/registry-pds3/</i> and the PDS4 instance at the end point <i>http://localhost:8080/registry-pds4/</i>. If the local environment requires a different configuration, please contact the Engineering Node so that a customized configuration can be built for the local environment.
       </p>
     </section>
 
     <section name="Secure Configuration">
+      <p>The preferred configuration for securing applications on the Tomcat Server is to limit access via firewall configuration so that external access is blocked but internal access is allowed. Internal access could be limited to users on the local server or could allow servers on the same subnet access. If these kinds of limitations are not possible in the local environment, then the secure configuration described in this section should be implemented.
+      </p>
+
       <p>The following steps configure the Registry User Interface for secure access within the Tomcat Server. See the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for details on securing the Tomcat Server to support the application configuration that follows. To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-ui/WEB-INF</i> directory. Add the following blocks of XML to the end of the file:
       </p>
 
