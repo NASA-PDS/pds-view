@@ -24,6 +24,9 @@
 
   <body>
     <release version="1.5.0" date="TBD" description="TBD">
+      <action dev="jpadams" type="update" issue="PDS-261">
+	Updated schema to add external_reference_description.
+      </action>
       <action dev="jpadams" type="update" issue="PDS-262">
 	Update schema to add resource_type. Update solrconfig to exclude specific resource_types and context products.
       </action>

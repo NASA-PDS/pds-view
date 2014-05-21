@@ -517,6 +517,7 @@
    <field name="data_set_name" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="data_set_release_date" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="description" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <field name="external_reference_description" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="format" type="lowercase" indexed="false" stored="true" multiValued="true" />
    <field name="full_name" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="file_name" type="lowercase" indexed="true" stored="true" multiValued="true" />
