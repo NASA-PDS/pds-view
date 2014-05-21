@@ -151,6 +151,9 @@
 		</field>
 		<field name="file_ref_url" type="string">
 			<registryPath>file_ref.access_url</registryPath>
-		</field>		
+		</field>
+		<field name="external_reference_description" type="string">
+			<registryPath>external_reference_description</registryPath>
+		</field>
 	</indexFields>
 </product>

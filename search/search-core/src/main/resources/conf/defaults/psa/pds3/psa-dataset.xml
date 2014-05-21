@@ -118,5 +118,8 @@
 		<field name="confidence_level_note" type="string">
 			<registryPath>data_set_confidence_level_note</registryPath>
 		</field>
+		<field name="external_reference_description" type="string">
+			<registryPath>external_reference_description</registryPath>
+		</field>
 	</indexFields>
 </product>

@@ -65,5 +65,8 @@
 		<field name="target_name" type="string">
 			<registryPath>target_ref.target_name</registryPath>
 		</field>
+		<field name="external_reference_description" type="string">
+			<registryPath>external_reference_description</registryPath>
+		</field>
 	</indexFields>
 </product>
