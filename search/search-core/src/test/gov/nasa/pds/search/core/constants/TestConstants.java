@@ -29,7 +29,7 @@ public final class TestConstants {
 	public static final String TEST_DIR_RELATIVE = "./src/test/test-data/";
 
 	/** Relative Config Directory Path for testing locally **/
-	public static final String CONFIG_DIR_RELATIVE = "./src/main/resources/conf/";
+	public static final String CONFIG_DIR_RELATIVE = "./src/main/resources/conf/defaults";
 
 	/** Relative Facet Directory Path for testing locally **/
 	public static final String FACET_DIR_RELATIVE = "./src/main/resources/facets/";
