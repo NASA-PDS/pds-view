@@ -101,18 +101,37 @@ or
     </section>
 
     <section name="Deploying the Application">
-      <p>The Registry User Interface web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat Server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory or installed via the Manager interface. Once this step is complete, the application is ready for operation.
+      <p>The Registry User Interface web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. If there was a previous installation of the Registry User Interface, the application should be un-deployed from the Tomcat server. This can be accomplished by deleting the application directly (assuming the user has appropriate permission) from the <i>$TOMCAT_HOME/webapps</i> directory (the variable $TOMCAT_HOME may not be set in your environment, if not, replace with the absolute path to the Tomcat installation):
       </p>
 
+      <source>
+% cd $TOMCAT_HOME/webapps
+% rm -rf registry-ui registry-ui.war
+      </source>
+
+      <p>Alternatively, if the Tomcat Manager interface was utilized for the deployment, find the Registry User Interface entry in the Manager interface and select the <i>Undeploy</i> button to remove the application from the server.
+      </p>
+
+      <p>In order to deploy the software for either a new or upgrade installation, the WAR file is normally copied directly to the <i>$TOMCAT_HOME/webapps</i> directory (assuming the user has appropriate permission) or installed via the Manager interface. To copy the WAR file directly, perform the following commands:
+      </p>
+
+      <source>
+% cd ${project.artifactId}-${project.version}
+% cp registry-ui.war $TOMCAT_HOME/webapps
+      </source>
+
       <p>By default, the Registry User Interface comes configured to access two Registry Service instances. The PDS3 instance at the end point <i>http://localhost:8080/registry-pds3/</i> and the PDS4 instance at the end point <i>http://localhost:8080/registry-pds4/</i>. If the local environment requires a different configuration, please contact the Engineering Node so that a customized configuration can be built for the local environment.
+      </p>
+
+      <p>Once this step is complete, the application is ready for operation. Verify a successful installation by accessing the component from your favorite web browser at the end point <i>http://localhost:8080/registry-ui</i>. Assuming the Registry Service instances are up-and-running, the home page of the application should display in the web browser with a list of products from the PDS3 Registry Service instance, assuming it is populated.
       </p>
     </section>
 
     <section name="Secure Configuration">
-      <p>The preferred configuration for securing applications on the Tomcat Server is to limit access via firewall configuration so that external access is blocked but internal access is allowed. Internal access could be limited to users on the local server or could allow servers on the same subnet access. If these kinds of limitations are not possible in the local environment, then the secure configuration described in this section should be implemented.
+      <p>The preferred configuration for securing applications on the Tomcat server is to limit access via firewall configuration so that external access is blocked but internal access is allowed. Internal access could be limited to users on the local server or could allow servers on the same subnet access. If these kinds of limitations are not possible in the local environment, then the secure configuration described in this section should be implemented.
       </p>
 
-      <p>The following steps configure the Registry User Interface for secure access within the Tomcat Server. See the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for details on securing the Tomcat Server to support the application configuration that follows. To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-ui/WEB-INF</i> directory. Add the following blocks of XML to the end of the file:
+      <p>The following steps configure the Registry User Interface for secure access within the Tomcat server. See the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for details on securing the Tomcat server to support the application configuration that follows. To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-ui/WEB-INF</i> directory. Add the following blocks of XML to the end of the file:
       </p>
 
       <source>
@@ -142,7 +161,7 @@ or
 &lt;/web-app&gt;
       </source>
 
-      <p>The configuration above restricts access to the entire application. In addition, it sets up the security role that was configured during the Tomcat Server installation. If the configuration was changed above, the Tomcat Server must be restarted.
+      <p>The configuration above restricts access to the entire application. In addition, it sets up the security role that was configured during the Tomcat server installation. If the configuration was changed above, the Tomcat server must be restarted.
       </p>
     </section>
   </body>
