@@ -566,6 +566,7 @@
    <field name="resource_class" type="text_general" indexed="true" stored="true" multiValued="false" />
    <field name="resource_link" type="string" indexed="false" stored="true" multiValued="true"/>
    <field name="resource_name" type="text_general" indexed="true" stored="true" multiValued="true" />
+   <field name="resource_type" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="search_engine_type" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="start_time" type="date" indexed="true" stored="true" multiValued="true" />
    <field name="stop_time" type="date" indexed="true" stored="true" multiValued="true" />

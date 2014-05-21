@@ -254,8 +254,8 @@ public class ProductClass {
 				String fieldName = field.getName(); //+ SolrSchemaField.getSuffix(field.getType());
 				
 				// Handle registry path
-				if ((value = field.getRegistryPath()) != null) {
-					valueList = getSlotValuesFromPath((String)value, searchExtrinsic);
+				if (!field.getRegistryPath().isEmpty()) {
+					valueList = getSlotValuesFromPathList(field.getRegistryPath(), searchExtrinsic);
 				} else if ((value = field.getOutputString()) != null) {	// Handle outputString
 					valueList = new ArrayList<String>();
 					valueList.add(checkForSubstring((OutputString)value, searchExtrinsic));
@@ -301,7 +301,7 @@ public class ProductClass {
 			end = str.indexOf("}", start);
 			key = str.substring(start + 1, end);
 
-			valueList = getSlotValuesFromPath(key, extObject);			
+			valueList = getSlotValuesFromPathList(Arrays.asList(key), extObject);			
 			if (valueList != null && !valueList.isEmpty()) {
 				if (outputString.getFormat().equals(OutputStringFormat.URL)) {
 					value = URLEncoder.encode(valueList.get(0), "UTF-8");
@@ -327,6 +327,7 @@ public class ProductClass {
 	 * @return
 	 * @throws Exception
 	 */
+	@Deprecated
 	private List<String> getSlotValuesFromPath(String registryPath, ExtendedExtrinsicObject searchExtrinsic) throws Exception {
 		String[] pathArray;
 		
@@ -339,6 +340,35 @@ public class ProductClass {
 					+ " - " + registryPath);
 			return getValidSlotValues(searchExtrinsic, registryPath);
 		}
+	}
+	
+	/**
+	 * Figures out if the registry paths are an association (dot-connected string) or
+	 * just a slot. If its an association, it starts traversing the path to get the values.
+	 * If its a slot, it returns the value list. The list of paths allow for multiple different
+	 * paths and are thought of as an OR.
+	 * 
+	 * @param registryPath
+	 * @param searchExtrinsic
+	 * @return
+	 * @throws Exception
+	 */
+	private List<String> getSlotValuesFromPathList(List<String> registryPathList, ExtendedExtrinsicObject searchExtrinsic) throws Exception {
+		String[] pathArray;
+		List<String> valueList = new ArrayList<String>();
+		
+		for (String registryPath : registryPathList) {
+			if ((pathArray = registryPath.split("\\.")).length > 1) {
+				Debugger.debug("Traversing registry path - " + searchExtrinsic.getLid()
+						+ " - " + registryPath);
+				valueList.addAll(traverseRegistryPath(Arrays.asList(pathArray), Arrays.asList(searchExtrinsic)));
+			} else {	// Field is a slot
+				Debugger.debug("Getting slot values - " + searchExtrinsic.getLid()
+						+ " - " + registryPath);
+				valueList.addAll(getValidSlotValues(searchExtrinsic, registryPath));
+			}
+		}
+		return valueList;
 	}
 	
 	/**

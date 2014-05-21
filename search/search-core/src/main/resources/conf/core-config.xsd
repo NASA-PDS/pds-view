@@ -103,7 +103,7 @@
 	<xsd:complexType name="Field">
 		<xsd:choice>
 			<xsd:element ref="outputString" />
-			<xsd:element ref="registryPath" />
+			<xsd:element ref="registryPath" maxOccurs="unbounded" />
 		</xsd:choice>
 		<xsd:attribute ref="name" use="required" />
 		<xsd:attribute ref="type" use="required" />

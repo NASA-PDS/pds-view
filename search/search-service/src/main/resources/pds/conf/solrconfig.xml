@@ -764,7 +764,10 @@
     <lst name="appends">
       <str name="tr">data-search.xsl</str>
       <str name="fq">-archive_status:SUPERSEDED</str>
+      <!-- Filter out Observational products and all of the various  -->
       <str name="fq">-data_product_type:Product_Observational</str>
+      <str name="fq">-data_product_type:Agency AND -data_product_type:Facility AND -data_product_type:Node AND -data_product_type:Other AND -data_product_type:PDS_Affiliate AND -data_product_type:PDS_Guest AND -data_product_type:Telescope</str>
+      <str name="fq">-resource_type:Information.Science_Portal</str>
       <str name="bq">data_product_type:Product_Context_Search_Tool^100</str>
       <str name="bq">data_product_type:Resource^10</str>
     </lst>
@@ -789,8 +792,10 @@
     <lst name="appends">
       <str name="tr">product-search.xsl</str>
       <str name="fq">-archive_status:SUPERSEDED</str>
+      <!-- Filter query so we only see PDS4 Archive Information, Observational, Collection, and Bundle products. -->
       <str name="fq">pds_model_version:PDS4</str>
-      <str name="fq">data_product_type:Resource OR data_product_type:Product_Observational OR data_product_type:Product_Collection OR data_product_type:Product_Bundle</str>
+      <str name="fq">-data_product_type:Agency AND -data_product_type:Facility AND -data_product_type:Node AND -data_product_type:Other AND -data_product_type:PDS_Affiliate AND -data_product_type:PDS_Guest AND -data_product_type:Telescope</str>
+      <str name="fq">-resource_type:Information.Science_Portal</str>
       <str name="bq">data_product_type:Product_Collection^10</str>
       <str name="bq">data_product_type:Product_Bundle^10</str>
       <str name="bq">data_product_type:Resource^100</str>

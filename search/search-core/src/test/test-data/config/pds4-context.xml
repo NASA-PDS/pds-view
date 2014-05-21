@@ -6,10 +6,6 @@
 			<registryPath>objectType</registryPath>
 			<value>Product_Context</value>
 		</query>
-		<query>
-			<registryPath>data_class</registryPath>
-			<value>Instrument</value>
-		</query>
 	</specification>
 	
 	<indexFields>
