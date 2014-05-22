@@ -44,8 +44,10 @@
 
   <properties>
     <junit-version>4.8.1</junit-version>
-    <gwt-archetype-version>2.4.0</gwt-archetype-version>
-    <gwt-version>2.4.0</gwt-version>
+    <!--gwt-archetype-version>2.4.0</gwt-archetype-version>
+    <gwt-version>2.4.0</gwt-version-->
+    <gwt-archetype-version>2.5.0</gwt-archetype-version>
+    <gwt-version>2.5.0</gwt-version>
     <jersey-version>1.4</jersey-version>
   </properties>
 
@@ -99,11 +101,6 @@
         <executions>
           <execution>
             <phase>prepare-package</phase>
-            <configuration>
-              <tasks>
-                <ant antfile="build.xml" target="update-endpoint" />
-              </tasks>
-            </configuration>
             <goals>
               <goal>run</goal>
             </goals>

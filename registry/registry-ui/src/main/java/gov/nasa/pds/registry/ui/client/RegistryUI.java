@@ -19,7 +19,12 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.HistoryListener;
+//import com.google.gwt.user.client.HistoryListener;
+
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+
+
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -32,11 +37,14 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 
+import com.google.gwt.i18n.client.Dictionary;
+
 import gov.nasa.pds.registry.ui.shared.StatusInformation;
 import gov.nasa.pds.registry.ui.client.Tab.TabInfo;
 import gov.nasa.pds.registry.ui.client.TabList;
 import gov.nasa.pds.registry.ui.shared.InputContainer;
 
+//import java.util.Dictionary;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -48,12 +56,10 @@ import java.util.logging.Level;
  * @author hyunlee
  * 
  */
-public class RegistryUI implements EntryPoint, HistoryListener {
+public class RegistryUI implements EntryPoint, ValueChangeHandler<String> {
 	
 	protected TabList list = new TabList();
-	
 	private TabInfo curInfo;
-	
 	private Tab curTab;
 	
 	private HTML description = new HTML();
@@ -63,14 +69,14 @@ public class RegistryUI implements EntryPoint, HistoryListener {
 	public static Label lbl = new Label();
 	
 	public final static String TABLE_HEIGHT = "608px";	    // with page size 20 with CHECKBOX
-	public final static String TABLE_HEIGHT_B = "588px";      // with ONE_ROW selection
+	public final static String TABLE_HEIGHT_B = "588px";    // with ONE_ROW selection
 	
-	public final static String TBL_HGT_50 = "1420px";  // 50 records with CHECKBOX
-	public final static String TBL_HGT_50_B = "1370px";    // 50 records with ONE_ROW
+	public final static String TBL_HGT_50 = "1420px";       // 50 records with CHECKBOX
+	public final static String TBL_HGT_50_B = "1370px";     // 50 records with ONE_ROW
 	
-	public final static String TBL_HGT_100 = "2770px";  // 100 records with CHECKBOX
+	public final static String TBL_HGT_100 = "2770px";      // 100 records with CHECKBOX
 	public final static String TBL_HGT_100_B = "2670px";
-	
+		
 	/**
 	 * Default number of records for each page
 	 */
@@ -82,12 +88,15 @@ public class RegistryUI implements EntryPoint, HistoryListener {
 	public static Logger logger = Logger.getLogger("registry-ui");
 	private final ListBox serversList = new ListBox(false);
 	
-	public static String serverUrl = "http://localhost:8080/registry/";
-	//private static List<String> servers = null;
-	
-	public void onHistoryChanged(String token) {
-		TabInfo info = list.find(token);
+	public static String serverUrl = "http://localhost:8080/registry/";	
+
+	public void onValueChange(ValueChangeEvent<String> event) {
+		String historyToken = event.getValue();
+
+		logger.log(Level.FINE, "*****current token = " + historyToken);
+		TabInfo info = list.find(historyToken);
 		if (info == null) {
+			//logger.log(Level.FINE, "info == null....call showInfo()...");
 			showInfo();
 			return;
 		}
@@ -100,20 +109,33 @@ public class RegistryUI implements EntryPoint, HistoryListener {
 		this.serverUrl = serverUrl;
 	}
     
-	public void onModuleLoad() {
-		Application apps = (Application) GWT.create(Application.class);
-		String[] appServers = apps.serviceEndpoint();
-
+	public void onModuleLoad() {		
+		String[] appServers = null;		
+		Dictionary services = Dictionary.getDictionary("services");
+		if (services==null) {
+			logger.log(Level.FINE, "services... is null");
+		}
+		else {
+			String endpoint = services.get("endpoint");
+			logger.log(Level.FINEST, "endpoint  = " + endpoint);
+			
+			appServers = endpoint.split(",");			
+			for (int i=0; i<appServers.length; i++) {
+				logger.log(Level.FINE, "appServer[" + i + " = " + appServers[i]);
+			}
+		}		
+		
 		serversList.setName("registryServices");		
 		for (int i=0; i<appServers.length; i++) {
 			String serverUrl = appServers[i];
 			serversList.addItem(serverUrl);
 			logger.log(Level.FINEST, "server list  = " + serverUrl);
-		}	
+		}
+
 		HorizontalPanel serverPanel = new HorizontalPanel();
 		Label serverLabel = new Label("Registry Service(s):");
 		serverLabel.setStyleName("inputLabel");
-		serverLabel.setWidth("130px");
+		serverLabel.setWidth("150px");
 		
 		serverPanel.add(serverLabel);
 		serverPanel.add(serversList);
@@ -128,6 +150,7 @@ public class RegistryUI implements EntryPoint, HistoryListener {
 						serversList.getValue(serversList.getSelectedIndex()));
 				setServerUrl(serversList.getValue(serversList.getSelectedIndex()));
 				showInfo();
+				History.fireCurrentHistoryState();
 			}
 		});
 			
@@ -139,19 +162,23 @@ public class RegistryUI implements EntryPoint, HistoryListener {
 		
 		description.setStyleName("ks-Info");
 		
-		History.addHistoryListener(this);
 		RootPanel.get("productsContainer").add(panel);
 			
 		// Show the initial screen.
         String initToken = History.getToken();
-        if (initToken.length() > 0) {
-            onHistoryChanged(initToken);
-        } else {
-            showInfo();
+        logger.log(Level.FINE, "initToken = *" + initToken + "*");   
+        
+        
+        if (initToken.isEmpty())
+        	showInfo();
+        else {
+        	show(list.find(initToken), false);
         }
+ 
+        History.addValueChangeHandler(this);
     }
 
-    public void show(TabInfo info, boolean affectHistory) {
+    public void show(TabInfo info, boolean affectHistory) { 	
         // Don't bother re-displaying the existing tab. This can be an issue
         // in practice, because when the history context is set, our
         // onHistoryChanged() handler will attempt to show the currently-visible tab.
@@ -159,11 +186,12 @@ public class RegistryUI implements EntryPoint, HistoryListener {
         //    return;
         //}
         curInfo = info;
-
+    	
         // Remove the old tab from the display area.
         if (curTab != null) {
             curTab.onHide();
             panel.remove(curTab);
+            //logger.log(Level.FINE, "curTab is not null....removing curTab..");
         }
 
         // Get the new tab instance, and display its description in the
@@ -172,6 +200,9 @@ public class RegistryUI implements EntryPoint, HistoryListener {
         list.setTabSelection(info.getName());
         description.setHTML(info.getDescription());
 
+    	//logger.log(Level.FINE, "****info = "  + info.getName() + "    History.getToken() = " + History.getToken());
+
+    	
         // If affectHistory is set, create a new item on the history stack. This
         // will ultimately result in onHistoryChanged() being called. It will call
         // show() again, but nothing will happen because it will request the exact
