@@ -162,10 +162,20 @@
 		<field name="resource_type" type="string">
 			<registryPath>resource_type</registryPath>
 		</field>
+		<field name="resource_url" type="string">
+			<registryPath>resource_url</registryPath>
+		</field>
 		<field name="resource_description" type="string">
 			<registryPath>resource_description</registryPath>
 		</field>
 		
+		
+		<field name="associate_ref" type="date">
+			<registryPath>associate_ref</registryPath>
+		</field>
+		<field name="access_url" type="date">
+			<registryPath>access_url</registryPath>
+		</field>
 		<field name="modification_date" type="date">
 			<registryPath>modification_date</registryPath>
 		</field>
