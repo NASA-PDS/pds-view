@@ -52,6 +52,9 @@
 		<field name="target_type" type="string">
 			<registryPath>target_type</registryPath>
 		</field>
+		<field name="resource_ref" type="string">
+			<registryPath>resource_ref</registryPath>
+		</field>
 		<field name="external_reference_description" type="string">
 			<registryPath>external_reference_description</registryPath>
 		</field>
