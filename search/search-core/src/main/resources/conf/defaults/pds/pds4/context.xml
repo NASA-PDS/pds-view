@@ -35,6 +35,10 @@
 		</field>
 		<!--  -->
 		
+
+		<field name="product_class" type="string">
+			<registryPath>product_class</registryPath>
+		</field>
 		<field name="objectType" type="string">
 			<registryPath>objectType</registryPath>
 		</field>
