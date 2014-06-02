@@ -318,7 +318,7 @@
 					<strong><span class="pds_value">
 					  <xsl:value-of select="pds:caption-string('category', lower-case((arr|str)[@name='data_product_type']))" />:
 					</span></strong>
-					<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
+					<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a> <xsl:if test="(arr|str)[@name='node_id'] = 'psa'"> (from ESA) </xsl:if>
 					<br />
 
 					<xsl:choose>

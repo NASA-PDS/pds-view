@@ -251,13 +251,13 @@
   <ul>
     <li>Use quotation marks to specify that words much occur in a phrase, like <strong>&quot;mars express&quot;</strong></li>
     <li>Match against search fields like this: <strong>target:mars</strong></li>
-    <li>Fields you can match against: target, instrument, investigation, instrument_type</li>
+    <li>Fields you can match against: target, instrument, investigation, instrument-type</li>
 
  </ul>
 
   </xsl:when>
   <xsl:otherwise>
-    <p>There are not results matching your query.</p>
+    <p>There are no results matching your query.</p>
   </xsl:otherwise>
 </xsl:choose>
 

@@ -66,7 +66,7 @@ String contextPath = request.getContextPath() + "/";
     <li>Use quotation marks to bind words that occur together, e.g. <strong>&quot;mars express&quot;</strong></li>
     <li>Specifying a search field before the word to search, e.g. <strong>target:mars</strong></li>
       <ul>
-	<li>The legal search fields are <strong>target:</strong>, <strong>instrument:</strong>, <strong>investigation:</strong>, <strong>instrument_type:</strong></li>
+	<li>The legal search fields are <strong>target:</strong>, <strong>instrument:</strong>, <strong>investigation:</strong>, <strong>instrument-type:</strong></li>
       </ul>
     <li>Inserting logical operator <strong>OR</strong> or <strong>AND</strong>, e.g. <strong>target:uranus OR target:neptune</strong></li>
  </ul>

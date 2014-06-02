@@ -35,65 +35,58 @@ String contextPath = request.getContextPath() + "/";
 <c:import url="/main_menu.html" context="/include" />
 
 <div id="submenu">
-
-
-
 <c:import url="/data_menu.html" context="/include" />
-
-
 <!-- <ul id="submenu_standards"><li>&nbsp;</li></ul> -->
-
 <div class="clear"></div>
 </div>
 
 <!-- Sidebar -->
-
 <div id="sidebar">
-
 <c:import url="/standard_sidebar.html" context="/include" />
-
-
   <!-- InstanceBeginEditable name="leftSidebar" -->
   <!-- InstanceEndEditable -->
 </div>
 
 <!-- Main content -->
 <div id="content">
-<h1><a name="mainContent"></a><!-- InstanceBeginEditable name="pageTitle" -->Data Search<!-- InstanceEndEditable --></h1>
-<div>
-<!-- InstanceBeginEditable name="content" -->
-<form action="search.jsp" method="get">
-  <input type="text" name="q" size="60" /><input type="submit" value="Search" />
-</form>
-<p style="margin-top: 2em; margin-bottom: .5em;">Begin your search with one of the quick searches on the left, or try any of the following:</p>
-<div id="IEBug">
-  <ul>
-    <li>A target name like <strong>mars</strong> or <strong>eros</strong></li>
-    <li>An instrument name or type like <strong>spectrometer</strong> or <strong>laser altimeter</strong> or <strong>MOLA</strong></li>
-    <li>A target body type like <strong>asteroid</strong></li>
-    <li>A word or phrase to find in the description of a data set or search tool</li>
-  </ul>
+  <h1><a name="mainContent"></a><!-- InstanceBeginEditable name="pageTitle" -->Data Search<!-- InstanceEndEditable --></h1>
+  <div>
+    <!-- InstanceBeginEditable name="content" -->
+    <p>This interface allows the user to search the holdings of the PDS archive. Results from a search include links to related archive information, search tools and data sets available from the PDS archive. In addition to PDS data, the results also include links to data sets curated by the European Space Agency.
 
-<p style="margin-top: 1em; margin-bottom: .5em;">You can further refine your query by:</p>
-  <ul>
-    <li>Use quotation marks to bind words that occur together, e.g. <strong>&quot;mars express&quot;</strong></li>
-    <li>Specifying a search field before the word to search, e.g. <strong>target:mars</strong></li>
+    <form action="search.jsp" method="get">
+      <input type="text" name="q" size="60" /><input type="submit" value="Search" />
+    </form>
+
+    <p style="margin-top: 2em; margin-bottom: .5em;">Begin your search with one of the quick searches on the left, or try any of the following:</p>
+
+    <div id="IEBug">
       <ul>
-	<li>The legal search fields are <strong>target:</strong>, <strong>instrument:</strong>, <strong>investigation:</strong>, <strong>instrument_type:</strong></li>
+        <li>A target name like <strong>mars</strong> or <strong>eros</strong></li>
+        <li>An instrument name or type like <strong>spectrometer</strong> or <strong>laser altimeter</strong> or <strong>MOLA</strong></li>
+        <li>A target body type like <strong>asteroid</strong></li>
+        <li>A word or phrase to find in the description of a data set or search tool</li>
       </ul>
-    <li>Inserting logical operator <strong>OR</strong> or <strong>AND</strong>, e.g. <strong>target:uranus OR target:neptune</strong></li>
- </ul>
-</div>
-<!-- InstanceEndEditable -->
-</div>
-</div>
 
-
+      <p style="margin-top: 1em; margin-bottom: .5em;">You can further refine your query by:</p>
+      <ul>
+        <li>Use quotation marks to bind words that occur together, e.g. <strong>&quot;mars express&quot;</strong></li>
+        <li>Specifying a search field before the word to search, e.g. <strong>target:mars</strong></li>
+        <ul>
+          <li>The legal search fields are <strong>target:</strong>, <strong>instrument:</strong>, <strong>investigation:</strong>, <strong>instrument-type:</strong></li>
+        </ul>
+        <li>Inserting logical operator <strong>OR</strong> or <strong>AND</strong>, e.g. <strong>target:uranus OR target:neptune</strong></li>
+      </ul>
+    </div>
+    <!-- InstanceEndEditable -->
+  </div>
+</div>
 
 <c:import url="/footer.html" context="/include" />
 
     <!--[if IE]>
     </div>
     <![endif]--> 
-  </body>
-<!-- InstanceEnd --></html>
+</body>
+<!-- InstanceEnd -->
+</html>
