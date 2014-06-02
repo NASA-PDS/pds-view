@@ -19,11 +19,11 @@
 <document>
   <properties>
     <title>Release Changes</title>
-    <author email="Hyun.H.Lee@jpl.nasa.gov">Hyun H. Lee</author>
+    <author email="Hyun.H.Lee@jpl.nasa.gov">Hyun Lee</author>
   </properties>
 
   <body>
-    <release version="1.7.0" date="TBD" description="TBD">
+    <release version="1.6.1" date="2014-06-02" description="This release of the Registry User Interface is a component of the integrated release 4.1.1 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" issue="PDS-265" type="update">
        Added support to the registry-ui for accessing multiple registry-service instances.
       </action>

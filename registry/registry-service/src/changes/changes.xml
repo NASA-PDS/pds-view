@@ -19,11 +19,20 @@
 <document>
   <properties>
     <title>Release Changes</title>
-    <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
+    <author email="Hyun.H.Lee@jpl.nasa.gov">Hyun Lee</author>
   </properties>
 
   <body>
-    <release version="1.7.0" date="TBD" description="TBD">
+    <release version="1.6.1" date="2014-06-02" description="This release of the Registry Service is a component of the integrated release 4.1.1 of the PDS4 System. This is an operational release of the system components to date.">
+       <action dev="hyunlee" type="fix" issue="PDS-69">
+         Modified to throw a cleaner error message when attempting to register a product with a LID greater than 256 characters. Inherited from registry-core.
+       </action>
+       <action dev="shardman" type="update" issue="PDS-269">
+         Modified the Installation document to address installation of two Registry Service instances, one for PDS3 content and one for PDS4 content.
+       </action>
+       <action dev="hyunlee" type="fix" issue="PDS-273">
+         Modified to retain slot type for slots in a versioned product. Inherited from registry-core.
+       </action>
     </release>
 
     <release version="1.6.0" date="2014-03-31" description="This release of the Registry Service is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">

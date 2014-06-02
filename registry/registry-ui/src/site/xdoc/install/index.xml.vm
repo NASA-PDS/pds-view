@@ -32,6 +32,7 @@
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+        <li><a href="#General_Configuration">General Configuration</a></li>
         <li><a href="#Secure_Configuration">Secure Configuration</a></li>
       </ul>
     </section>
@@ -124,6 +125,20 @@ or
       </p>
 
       <p>Once this step is complete, the application is ready for operation. Verify a successful installation by accessing the component from your favorite web browser at the end point <i>http://localhost:8080/registry-ui</i>. Assuming the Registry Service instances are up-and-running, the home page of the application should display in the web browser with a list of products from the PDS3 Registry Service instance, assuming it is populated.
+      </p>
+    </section>
+
+    <section name="Secure Configuration">
+      <p>By default, the Registry User Interface comes configured to access the Registry Service instances at the end points <i>http://localhost:8080/registry-pds3</i> and <i>http://localhost:8080/registry-pds4</i>. If the local configuration is different, this should be modified to represent the end point(s) of the Registry Service(s) target installation. To modify the configuration, edit the <i>services.js</i> file located in the <i>$TOMCAT_HOME/webapps/registry-ui</i> directory. Modify the following with the new end point(s):
+      </p>
+
+      <source>
+var services = {
+   endpoint: "http://localhost:8080/registry-pds3/,http://localhost:8080/registry-pds4/"
+};
+      </source>
+
+      <p>As in the default configuration above, multiple Registry Service end points should be separated by a comma.
       </p>
     </section>
 

@@ -19,17 +19,16 @@
 <document>
   <properties>
     <title>Release Changes</title>
-    <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
-    <author email="Hyun.H.Lee@jpl.nasa.gov">Hyun H Lee</author>
+    <author email="Hyun.H.Lee@jpl.nasa.gov">Hyun Lee</author>
   </properties>
 
   <body>
-    <release version="1.7.0" date="TBD" description="TBD">
+    <release version="1.6.1" date="2014-06-02" description="This release of the Registry Core is a component of the integrated release 4.1.1 of the PDS4 System. This is an operational release of the system components to date.">
        <action dev="hyunlee" type="fix" issue="PDS-69">
-         Modified to throw a Cleaner Error Message When Attempting To Register A Product With A LID Greater Than 256 Characters.     
+         Modified to throw a cleaner error message when attempting to register a product with a LID greater than 256 characters.
        </action>
        <action dev="hyunlee" type="fix" issue="PDS-273">
-         Fixed for missing slot type from slots for a Versioned Product.     
+         Modified to retain slot type for slots in a versioned product.
        </action>
     </release>
 

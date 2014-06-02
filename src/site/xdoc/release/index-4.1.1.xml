@@ -13,18 +13,18 @@
   may be required before exporting such information to foreign countries or
   providing access to foreign nationals.
 
-  $Id: index-4.0.0.xml 12824 2014-03-10 17:45:08Z shardman $
+  $Id$
 -->
 
 <document>
   <properties>
-    <title>Release Description 4.1.0</title>
+    <title>Release Description 4.1.1</title>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
-    <section name="Release Description 4.1.0">
-      <p>This release of the PDS4 System represents Build 4b and is intended as an operational release of the system components to date. The following sections can be found in this document:
+    <section name="Release Description 4.1.1">
+      <p>This release of the PDS4 System represents a point build of Build 4b and is intended as an operational release of the system components to date. The following sections can be found in this document:
       </p>
 
       <ul>
@@ -58,13 +58,6 @@
         </ul>
         <li>PDS Security Service Software Requirements and Design Document (SRD/SDD), Version 1.1, September 1, 2013.</li>
       </ul>
-
-      <p>The applicable documents are as follows:
-      </p>
-
-      <ul>
-        <li>PDS4 System Build 4b Test Document</li>
-      </ul>
     </section>
 
     <section name="Capabilities">
@@ -81,28 +74,23 @@
         </p>
 
         <ul>
-          <li>Validate Tool was modified to include the latest XML Schema and Schematron files (1.2.0.1) generated from the PDS4 data model.
+          <li>Harvest Tool and Registry Service were modified to provide support for capturing unit designations.
           </li>
-          <li>Harvest Tool and Catalog Tool were modified to keep pace with changes occurring in the PDS4 data model for this release.
+          <li>Registry User Interface was modified to provide support for accessing multiple Registry Service instances.
           </li>
-          <li>Harvest Tool and Validate Tool were modified to provide support for xinclude statements within product labels.
-          </li>
-          <li>Transform Tool was modified to to streamline the application program interface, enable PDS3 images transformations for images greater than 8-bits and added an initial generic transformation for PDS3 labels to PDS4 labels.
-          </li>
-          <li>Registry components were modified to provide support for filtering Package objects and Registry Core was modified to streamline the application program interface.
-          </li>
-          <li>Search components were modified to provide support for PDS4 Context products and improved support for the PDAP search protocol.
-          </li>
-          <li>Transport components were modified to streamline the REST-based interface and to include PDS3-based handlers for backward compatibility.
-          </li>
-          <li>All Unix shell scripts and Windows batch files were updated to provide a more user friendly message regarding the JAVA_HOME environment variable.
+          <li>Registry Service and Registry User Interface Installation documents were modified to address installation of two Registry Service instances, one for PDS3 content and one for PDS4 content.
           </li>
         </ul>
       </subsection>
 
       <subsection name="Corrected Capabilities">
-        <p>There are no corrected capabilities for this release.
+        <p>The following capabilities have been corrected for this release:
         </p>
+
+        <ul>
+          <li>Harvest Tool was modified to not register a file product more than once if it is referenced multiple times in a label and to resolve environment variables specified within the Harvest policy file.
+          </li>
+        </ul>
       </subsection>
     </section>
 
@@ -146,12 +134,12 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       </subsection>
 
       <subsection name="Web Server">
-        <p>Although not previously listed in the RDD as a system requirement, the installation of a web server to act as a front-end interface to the Java application server is desired. The suggested web server for this release is the Apache HTTP Server. Consult the local system administrator for installation of this software.
+        <p>The installation of a web server to act as a front-end interface to the Java application server is desired. The suggested web server for this release is the Apache HTTP Server. Consult the local system administrator for installation of this software.
         </p>
       </subsection>
 
       <subsection name="Database Server">
-        <p>Although not previously listed in the RDD as a system requirement, the installation of a database server is suggested to support the deployment of the Registry Service. The Registry Service comes prepackaged with the Apache Derby database but isn't necessarily the preferred choice for an operational deployment. Other options supported by the Registry Service include MySQL and PostgreSQL. If another database server is preferred, contact the EN so we can help prepare a database-specific configuration for your environment.
+        <p>The installation of a database server is suggested to support the deployment of the Registry Service. The Registry Service comes prepackaged with the Apache Derby database but isn't necessarily the preferred choice for an operational deployment. Other options supported by the Registry Service include MySQL and PostgreSQL. If another database server is preferred, contact the EN so we can help prepare a database-specific configuration for your environment.
         </p>
       </subsection>
     </section>
@@ -164,7 +152,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
         <li><a href="../ingest/index.html">Ingest</a></li>
         <ul>
           <li><a href="../ingest/catalog/index.html">Catalog Tool</a> - 1.7.0 (EN Only)</li>
-          <li><a href="../ingest/harvest/index.html">Harvest Tool</a> - 1.6.0</li>
+          <li><a href="../ingest/harvest/index.html">Harvest Tool</a> - 1.6.1</li>
           <li><a href="../ingest/harvest-pdap/index.html">Harvest-PDAP Tool</a> - 1.0.0 (EN Only)</li>
         </ul>
         <li><a href="../portal/index.html">Portal</a></li>
@@ -183,10 +171,10 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
         </ul>
         <li><a href="../registry/index.html">Registry</a></li>
         <ul>
-          <li><a href="../registry/registry-core/index.html">Registry Core</a> - 1.6.0</li>
-          <li><a href="../registry/registry-client/index.html">Registry Client</a> - 1.6.0</li>
-          <li><a href="../registry/registry-service/index.html">Registry Service</a> - 1.6.0</li>
-          <li><a href="../registry/registry-ui/index.html">Registry User Interface</a> - 1.6.0</li>
+          <li><a href="../registry/registry-core/index.html">Registry Core</a> - 1.6.1</li>
+          <li><a href="../registry/registry-client/index.html">Registry Client</a> - 1.6.1</li>
+          <li><a href="../registry/registry-service/index.html">Registry Service</a> - 1.6.1</li>
+          <li><a href="../registry/registry-ui/index.html">Registry User Interface</a> - 1.6.1</li>
         </ul>
         <li><a href="../report/index.html">Report</a></li>
         <ul>
@@ -272,7 +260,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
           Click the image for a larger version.
         </center>
 
-        <p>The components depicted above represent a typical deployment of the PDS4 software on a single machine.  The following diagram depicts a normalized system flow, starting with schema design, continuing onto data product label generation and validation and finishing up with data product registration and search index generation:
+        <p>The components depicted above represent a typical deployment of the PDS4 software on a single server.  The following diagram depicts a normalized system flow, starting with schema design, continuing onto data product label generation and validation and finishing up with data product registration and search index generation:
         </p>
 
         <center>
@@ -350,7 +338,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
           <li><b>Verify System Requirements</b><br/>
             <p>As specified in the <a href="#System_Requirements">System Requirements</a> section above, the software requires Java, a Java Application Server (Apache Tomcat), a Web Server (Apache HTTP) and an optional database server to be installed and accessible. These installations should be verified before proceeding to the next step.
             </p>
-            <p>With respect to the Web Server installation, this server may reside on another machine and in most cases that would be preferable. The preferred configuration is to install the PDS4 software components on a machine that resides behind a firewall at your institution. This offers an initial level of security for the components. Configuring the Web Server for reverse proxies to the query interfaces of the components provides an additional level of security by restricting access to the interfaces that allow updates to the data.
+            <p>With respect to the Web Server installation, this server may reside on another server and in most cases that would be preferable. The preferred configuration is to install the PDS4 software components on a server that resides behind a firewall at your institution. This offers an initial level of security for the components. Configuring the Web Server for reverse proxies to the query interfaces of the components provides an additional level of security by restricting access to the interfaces that allow updates to the data.
             </p>
           </li>
           <li><b>Install Registry Components</b><br/>
@@ -359,16 +347,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
           </li>
           <ul>
             <li><b>Registry Service</b><br/>
-              <p>The <a href="../registry/registry-service/install/index.html">Installation</a> document for the Registry Service provides the details for downloading, installing and configuring the software. By default, the Registry Service comes packaged with and configured to utilize Apache Derby as the backend database for storing registered content. This database is expected to be located in the directory where the Tomcat server is launched, by default. The Installation document describes how to change this location as well as how to use MySQL or PostgreSQL as the backend database instead of Derby. The installation at a DN calls for two instances of the Registry Service, one named <i>registry-pds3</i> and one named <i>registry-pds4</i>. Regardless of the backend database server, the corresponding databases should be named <i>registrypds3</i> and <i>registrypds4</i>, respectively.
-              </p>
-              <p>If there was a previous installation of the Registry Service, the application should be un-deployed from the Tomcat server followed by removal of the Derby database directory named <i>registry</i>, and the <i>derby.log</i> file prior to installing the new version. Before deploying each instance of the Registry Service, be sure to rename the WAR file to <i>registry-pds3.war</i> and then to <i>registry-pds4.war</i>, so that the end point of the service in the Tomcat server is as expected for each instance. For each instance of the service, follow the instructions in the <a href="../registry/registry-service/install/index.html">Installation</a> document for configuring access to the local database, making sure to update the database name accordingly. The same goes for the home configuration, and updating the end point for the specific instance of the service. For each instance of the service, the object type configuration needs to be performed. Perform the following commands (the service must be up and running and pdsX should be pds3 and pds4, respectively):
-              </p>
-              <source>
-% cd $HOME/registry-service-1.6.0/bin
-% export REGISTRY_SERVICE=http://localhost:8080/registry-pdsX
-% ./registry-config
-              </source>
-              <p>The Secure Configuration is skipped for the DN deployment. The reverse proxy configuration that follows provides security for the Registry Service instances. The PDS3 and PDS4 instances of the service are accessed at <i>/services/registry-pds3</i> and <i>/services/registry-pds4</i>, respectively, on the web server which is facilitated by the following reverse proxy configuration in the Apache HTTP Server <i>httpd.conf</i> file:
+              <p>The <a href="../registry/registry-service/install/index.html">Installation</a> document for the Registry Service provides the details for downloading, installing and configuring the software. The Secure Configuration is skipped for the DN deployment. The reverse proxy configuration that follows provides security for the Registry Service instances. The PDS3 and PDS4 instances of the service are accessed at <i>/services/registry-pds3</i> and <i>/services/registry-pds4</i>, respectively, on the web server which is facilitated by the following reverse proxy configuration in the Apache HTTP Server <i>httpd.conf</i> file:
               </p>
               <source>
 ProxyPass /services/registry-pds3/ http://localhost:8080/registry-pds3/
@@ -395,11 +374,11 @@ ProxyPassReverse /services/registry-pds4 http://localhost:8080/registry-pds4
   &lt;/Limit&gt;
 &lt;/Location&gt;
               </source>
-              <p>The above configuration will likely need to be performed by the System Administrator. This configuration assumes the Apache HTTP Server is on the same machine as the Apache Tomcat Server. If that is not the case, the <i>localhost</i> designation above should be replaced with the DNS name of the machine where the Apache Tomcat Server is installed. This configuration allows GET requests through the public interface but restricts PUT, POST and DELETE requests to processes running on the local machine.
+              <p>The above configuration will likely need to be performed by the System Administrator. This configuration assumes the Apache HTTP Server is on the same server as the Apache Tomcat Server. If that is not the case, the <i>localhost</i> designation above should be replaced with the DNS name of the server where the Apache Tomcat Server is installed. This configuration allows GET requests through the public interface but restricts PUT, POST and DELETE requests to processes running on the local server.
               </p>
             </li>
             <li><b>Registry User Interface</b><br/>
-              <p>The <a href="../registry/registry-ui/install/index.html">Installation</a> document for the Registry User Interface provides the details for downloading, installing and configuring the software. If there was a previous installation of the Registry User Interface, the application should first be un-deployed from the application server before deploying the updated application. In a future release of the application, support will be added for accessing multiple Registry Services. For now, a separate instance of the application must be installed for each Registry Service instance. Before deploying each instance of the Registry User Interface, be sure to rename the WAR file to <i>registry-ui-pds3.war</i> and then to <i>registry-ui-pds4.war</i>, so that the end point of the service in the Tomcat server is as expected for each instance. In addition, be sure to follow the instructions in the General Configuration section of the Installation document for specifying the correct end point for the target Registry Service for each Registry UI instance. The Secure Configuration may be skipped for the DN deployment.
+              <p>The <a href="../registry/registry-ui/install/index.html">Installation</a> document for the Registry User Interface provides the details for downloading, installing and configuring the software. The Secure Configuration may be skipped for the DN deployment.
               </p>
             </li>
           </ul>
@@ -407,7 +386,7 @@ ProxyPassReverse /services/registry-pds4 http://localhost:8080/registry-pds4
             <p>The <a href="../ingest/harvest/install/index.html">Installation</a> document for the Harvest Tool provides the details for downloading and installing the software. In order to support multiple instances of the Registry Service, it is suggested that the user make a copy of the <i>harvest</i> script provided with the software for each Registry Service instance.
             </p>
             <source>
-% cd $HOME/harvest-1.6.0/bin
+% cd $HOME/harvest-1.6.1/bin
 % cp harvest harvest-pds3
 % cp harvest harvest-pds4
             </source>
@@ -445,7 +424,7 @@ ProxyPassReverse /services/registry-pds4 http://localhost:8080/registry-pds4
             <p>The next step exercises the Harvest Tool and Registry Service by registering the contents of the example bundle. The <a href="../ingest/harvest/operate/index.html">Operation</a> document for the Harvest Tool provides the details for executing the software. A configuration file (<i>harvest-policy-example.xml</i>) for registering the example bundle can be found in the <i>examples</i> directory of the Harvest Tool distribution package. Depending on the location of the example bundle in the local environment, the file and path specifications in the configuration file will likely need to be updated for the example bundle location in the local environment. Execute the Harvest Tool against the example bundle with the following commands:
             </p>
             <source>
-% cd $HOME/harvest-1.6.0/bin
+% cd $HOME/harvest-1.6.1/bin
 % ./harvest-pds4 -c ../examples/harvest-policy-example.xml
             </source>
             <p>The above run will result in no errors and a few warnings pertaining to references for products that were not found in the local registry. The rest of the products should get registered successfully. The summary should look something like the following:
@@ -480,20 +459,14 @@ End of Log
             <p>The next step verifies that the registered content from the previous step can be viewed via the Registry Service REST-based API and the Registry User Interface. The <a href="../registry/registry-service/operate/index.html">Operation</a> document for the Registry Service provides the details for interfacing with the service via the REST-based API. Assuming the registration above was performed against the PDS4 instance of the service, the Registry Service should be accessible via the following URL: <i>http://localhost:8080/registry-pds4/</i>. Accessing the <i>report</i> end point (append report to the URL) from the desired web browser (some browsers display XML better than others), should produce the following output:
             </p>
             <source>
-&lt;ns2:report xmlns:ns2="http://registry.pds.nasa.gov" registryVersion="1.6.0" 
-packages="5" classificationNodes="66" classificationSchemes="2" services="0" 
+&lt;ns2:report xmlns:ns2="http://registry.pds.nasa.gov" registryVersion="1.6.1" 
+packages="5" classificationNodes="67" classificationSchemes="2" services="0" 
 extrinsics="95" associations="349" 
 serverStarted="2014-02-25T10:52:46.513-08:00" status="OK"/&gt;
             </source>
             <p>The above report shows 95 extrinsics (PDS products) registered which corresponds with the Harvest Tool summary. The number of associations registered is a little harder to verify because there were already some associations in the registry from the configuration step. Feel free to try out some of the other end points (e.g. extrinsics) detailed in the <a href="../registry/registry-service/operate/index.html#Query_Artifacts">Query Artifacts</a> section of the Operations document.
             </p>
-            <p>Assuming the registration above was performed against the PDS4 instance of the service, the Registry User Interface should be accessible via the following URL: <i>http://localhost:8080/registry-ui-pds4/</i>. Accessing this URL from the desired web browser, should produce the following display:
-            </p>
-            <center>
-              <a href="../images/registry-ui-main-1.6.0.jpg" target="_blank"><img alt="Registry User Interface" src="../images/registry-ui-main-1.6.0-scale.jpg" border="1" /></a><br/>
-              Click the image for a larger version.
-            </center>
-            <p>If an "RPC Failure" message appears near the bottom of the screen, this is most likely the result of the Registry Service URL not being configured correctly. The <a href="../registry/registry-ui/install/index.html">Installation</a> document for the Registry User Interface specifies how to modify the appropriate configuration file to correct this situation.
+            <p>Assuming the registration above was performed against the PDS4 instance of the service, the Registry User Interface should be accessible via the following end point: <i>http://localhost:8080/registry-ui/</i>. Select the PDS4 Registry Service instance (http://localhost:8080/registry-pds4/) from the Registry Service pull-down menu and review the resulting product listing. If an "RPC Failure" message appears near the bottom of the screen, this is most likely the result of the Registry Service end point not being configured correctly. The <a href="../registry/registry-ui/install/index.html">Installation</a> document for the Registry User Interface specifies how to modify the appropriate configuration file to correct this situation.
             </p>
           </li>
         </ol>
@@ -504,7 +477,7 @@ serverStarted="2014-02-25T10:52:46.513-08:00" status="OK"/&gt;
         <p>In addition to the exercises above, the Nodes are encouraged to exercise the Generate Tool, Transform Tool and PDS4 Tools components. See the corresponding Installation and Operation documents for details. For advanced installations, the Search and Transport components may also be installed (details to come later).
         </p>
 
-        <p>The final step of this exercise is to delete the example bundle from the Registry Service. This can be accomplished via the Registry User Interface at the following URL: <i>http://localhost:8080/registry-ui-pds4/</i>. In the <i>Packages</i> tab just select the entry for the Example package and then select the <i>Delete</i> button. This action may take a few seconds to complete. Now the Registry Service is ready for your Bundles.
+        <p>The final step of this exercise is to delete the example bundle from the Registry Service. This can be accomplished via the Registry User Interface at the following end point: <i>http://localhost:8080/registry-ui/</i>. In the <i>Packages</i> tab just select the entry for the Example package and then select the <i>Delete</i> button. This action may take a few seconds to complete. Now the Registry Service is ready for your Bundles.
         </p>
 
         <!--
