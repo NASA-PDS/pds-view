@@ -99,7 +99,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>gov.nasa.pds.report.manager.ReportManagerLauncher
+              <mainClass>gov.nasa.pds.report.ReportManagerLauncher
               </mainClass>
               <addClasspath>true</addClasspath>
               <addDefaultSpecificationEntries>true
