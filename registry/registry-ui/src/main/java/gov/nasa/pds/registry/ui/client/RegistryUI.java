@@ -88,7 +88,7 @@ public class RegistryUI implements EntryPoint, ValueChangeHandler<String> {
 	public static Logger logger = Logger.getLogger("registry-ui");
 	private final ListBox serversList = new ListBox(false);
 	
-	public static String serverUrl = "http://localhost:8080/registry/";	
+	public static String serverUrl = "http://localhost:8080/registry-pds3/";	
 
 	public void onValueChange(ValueChangeEvent<String> event) {
 		String historyToken = event.getValue();
@@ -117,12 +117,8 @@ public class RegistryUI implements EntryPoint, ValueChangeHandler<String> {
 		}
 		else {
 			String endpoint = services.get("endpoint");
-			logger.log(Level.FINEST, "endpoint  = " + endpoint);
-			
-			appServers = endpoint.split(",");			
-			for (int i=0; i<appServers.length; i++) {
-				logger.log(Level.FINE, "appServer[" + i + " = " + appServers[i]);
-			}
+			logger.log(Level.FINEST, "endpoint  = " + endpoint);			
+			appServers = endpoint.split(",");
 		}		
 		
 		serversList.setName("registryServices");		
@@ -130,6 +126,7 @@ public class RegistryUI implements EntryPoint, ValueChangeHandler<String> {
 			String serverUrl = appServers[i];
 			serversList.addItem(serverUrl);
 			logger.log(Level.FINEST, "server list  = " + serverUrl);
+			setServerUrl(appServers[0]);
 		}
 
 		HorizontalPanel serverPanel = new HorizontalPanel();
