@@ -30,17 +30,17 @@ echo "-----Running search-core------"
 arguments="${arguments} -p"
 if [ "${PDS3_FLAG}" == "1" ]; then
     echo " With PDS3 Products "
-    arguments="${arguments} ${DIR}/../conf/pds/pds3/core.properties"
+    arguments="${arguments} ${DIR}/../conf/defaults/pds/pds3/core.properties"
 fi
 
 if [ "${PSA_FLAG}" == "1" ]; then
     echo " With PSA Products"
-    arguments="${arguments} ${DIR}/../conf/psa/pds3/core.properties"
+    arguments="${arguments} ${DIR}/../conf/defaults/psa/pds3/core.properties"
 fi
 
 if [ "${PDS4_FLAG}" == "1" ]; then
     echo " With PDS4 Products"
-    arguments="${arguments} ${DIR}/../conf/pds/pds4/core.properties"
+    arguments="${arguments} ${DIR}/../conf/defaults/pds/pds4/core.properties"
 fi
 
 search-core $arguments

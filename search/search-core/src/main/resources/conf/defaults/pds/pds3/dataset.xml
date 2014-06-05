@@ -109,8 +109,8 @@
 		<field name="instrument_name" type="string">
 			<registryPath>instrument_ref.instrument_name</registryPath>
 		</field>
-		<field name="resource_id" type="string">
-			<registryPath>resource_ref.lid</registryPath>
+		<field name="resource_ref" type="string">
+			<registryPath>resource_ref</registryPath>
 		</field>
 		<field name="data_set_description" type="string">
 			<registryPath>data_set_description</registryPath>
