@@ -72,7 +72,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       </subsection>
 
       <subsection name="Database Server">
-        <p>The Registry Service comes prepackaged with the <a href="http://db.apache.org/derby/" target="_blank">Apache Derby</a> database. If another database solution is desired (i.e., MySQL), it should be installed and accessible by the Registry Service. See the <a href="#Deploying_the_Database">Deploying the Database</a> section if this is the first time you are installing the registry service and <a href="#Database_Configuration">Configuration</a> section for more information on configuring the service for a different database solution.
+        <p>The Registry Service comes prepackaged with the <a href="http://db.apache.org/derby/" target="_blank">Apache Derby</a> database. If another database solution is desired (i.e., MySQL), it should be installed and accessible by the Registry Service. See the <a href="#Deploying_the_Databases">Deploying the Database</a> section if this is the first time you are installing the registry service and <a href="#Database_Configuration">Configuration</a> section for more information on configuring the service for a different database solution.
         </p>
       </subsection>
     </section>
