@@ -59,10 +59,7 @@ public class ReportManagerLauncherTest extends ReportManagerTest {
 	
 	@Test
 	public void testLauncherPullWithParams() {
-		String[] args = { "-" + Flag.PULL.getShortName(), 
-				"-" + Flag.PP_PORT.getShortName(), "9999", 
-				"-" + Flag.PP_PROPERTIES.getShortName(), Utility.getAbsolutePath(TestConstants.PROPERTIES_TEST_FILE_PATH),
-				"-" + Flag.PP_SPECS.getShortName(), Utility.getAbsolutePath(TestConstants.SITES_TEST_FILE_PATH)
+		String[] args = { "-" + Flag.PULL.getShortName()
 		};
 		
 		ReportManagerLauncher.main(args);

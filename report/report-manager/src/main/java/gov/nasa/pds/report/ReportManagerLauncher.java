@@ -58,28 +58,12 @@ public class ReportManagerLauncher {
 
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#PULL **/
 	private boolean pullFlag;
-
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#PP_PORT **/
-	private int ppPort;
-
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#PP_PROPERTIES **/
-	private String ppResources;
-
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#PP_SPECS **/
-	private String ppSpec;
-
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#PP_STAGING **/
-	private String ppStaging;
 	
 	/** The severity level to set for the tool. */
 	private Level severityLevel;
 
 	public ReportManagerLauncher() {
 		this.pullFlag = false;
-		this.ppPort = -1;
-		this.ppResources = "";
-		this.ppSpec = "";
-		this.ppStaging = "";
 		this.severityLevel = ToolsLevel.INFO;
 	}
 
@@ -214,18 +198,6 @@ public class ReportManagerLauncher {
 				System.exit(0);
 			} else if (o.getOpt().equals(Flag.PULL.getShortName())) {
 				this.pullFlag = true;
-			} else if (o.getOpt().equals(Flag.PP_PORT.getShortName())) {
-				try {
-					this.ppPort = Integer.parseInt(o.getValue());
-				} catch (NumberFormatException e) {
-					throw new ReportManagerFatalException("Invalid Port Number. Must be Integer value.");
-				}
-			} else if (o.getOpt().equals(Flag.PP_PROPERTIES.getShortName())) {
-				this.ppResources = o.getValue();
-			} else if (o.getOpt().equals(Flag.PP_SPECS.getShortName())) {
-				this.ppSpec = o.getValue();
-			} else if (o.getOpt().equals(Flag.PP_STAGING.getShortName())) {
-				this.ppStaging = o.getValue();
 			}
 		}
 
@@ -253,7 +225,7 @@ public class ReportManagerLauncher {
 	 * @throws SQLException
 	 */
 	public void execute() throws LogsManagerException {
-		ReportServiceManager rsMgr = new ReportServiceManager(this.ppPort, this.ppResources, this.ppSpec, this.ppStaging);
+		ReportServiceManager rsMgr = new ReportServiceManager();
 
 		if (this.pullFlag) {
 			rsMgr.pullLogs();

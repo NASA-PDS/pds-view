@@ -7,12 +7,9 @@
  */
 package gov.nasa.pds.report.logs.pushpull.model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -22,7 +19,6 @@ import java.util.logging.Logger;
  * 
  */
 public class Profile {
-	// private String activeFlag;
 	private String node;
 	private String identifier;
 	private String name;
@@ -36,64 +32,12 @@ public class Profile {
 	 * Base constructor class with no parameters
 	 */
 	public Profile() {
-		// this._activeFlag = "";
 		this.profileId = 0;
 		this.node = "";
 		this.identifier = "";
 		this.name = "";
 		this.method = "";
 		this.lsList = new ArrayList<LogSet>();
-	}
-
-	/**
-	 * Constructor class that gets values from a ResultSet
-	 * 
-	 * @param rs
-	 * @throws SQLException
-	 */
-	public Profile(ResultSet rs) throws SQLException {
-		this.profileId = rs.getInt("profile_id");
-		this.node = rs.getString("node");
-		this.identifier = rs.getString("identifier");
-		this.name = rs.getString("name");
-		this.method = rs.getString("method");
-	}
-
-	/**
-	 * Constructor class that gets values from a paramater map
-	 * 
-	 * @param paramMap
-	 */
-	public void setProfile(Map<String, String[]> paramMap) {
-		this.profileId = Integer.parseInt((paramMap.get("profile-id")[0]));
-		this.identifier = paramMap.get("identifier")[0];
-		this.method = paramMap.get("method")[0];
-		this.name = paramMap.get("name")[0];
-		this.node = paramMap.get("node")[0];
-
-		log.fine("profileId: " + this.profileId);
-		log.fine("identifier: " + this.identifier);
-		log.fine("method: " + this.method);
-		log.fine("name: " + this.name);
-		log.fine("node: " + this.node);
-
-		ArrayList<LogSet> lsList = new ArrayList<LogSet>();
-		// int logCount = Integer.parseInt(paramMap.get("log-set-count")[0]);
-		LogSet ls;
-		for (int i = 1; i <= Integer.parseInt(paramMap.get("log-set-count")[0]); i++) {
-			ls = new LogSet(paramMap, i);
-			ls.setProfileId(getProfileId());
-
-			log.fine("profile-" + i + ": " + ls.getProfileId());
-			log.fine("log-set-id-" + i + ": " + ls.getLogSetId());
-			log.fine("label-" + i + ": " + ls.getLabel());
-			log.fine("hostname-" + i + ": " + ls.getHostname());
-			log.fine("username-" + i + ": " + ls.getUsername());
-			log.fine("pathname-" + i + ": " + ls.getPathname());
-
-			lsList.add(ls);
-		}
-		setLogSetList(lsList);
 	}
 
 	/*

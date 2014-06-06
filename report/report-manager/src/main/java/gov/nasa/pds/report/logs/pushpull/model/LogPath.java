@@ -7,27 +7,6 @@ public class LogPath {
 	private String logSetLabel;
 	private String logHome;
 
-	public LogPath() {
-		this.profileName = null;
-		this.profileNode = null;
-		this.logSetLabel = null;
-		this.logHome = null;
-	}
-
-	public LogPath(String logHome) {
-		this.profileName = null;
-		this.profileNode = null;
-		this.logSetLabel = null;
-		this.logHome = logHome;
-	}
-
-	public LogPath(String node, String name) {
-		this.profileName = name;
-		this.profileNode = node;
-		this.logSetLabel = null;
-		this.logHome = null;
-	}
-
 	public LogPath(String logHome, String node, String name, String label) {
 		this.profileName = name;
 		this.profileNode = node;
