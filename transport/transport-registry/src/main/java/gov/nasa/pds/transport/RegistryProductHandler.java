@@ -14,13 +14,15 @@
 
 package gov.nasa.pds.transport;
 
-import gov.nasa.pds.registry.model.wrapper.ExtendedExtrinsicObject;
 import gov.nasa.pds.registry.client.results.RegistryHandler;
+import gov.nasa.pds.registry.model.wrapper.ExtendedExtrinsicObject;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -51,6 +53,7 @@ import org.apache.tika.Tika;
  * to the calling application.
  *
  * @author shardman
+ * @author luca
  * @version $Revision$
  */
 public class RegistryProductHandler implements LargeProductQueryHandler {
@@ -64,7 +67,9 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
    */
   @Override
   public XMLQuery query(XMLQuery q) throws ProductException {
+	  
     List<File> files = new ArrayList<File>();
+    List<String> checksums = new ArrayList<String>();
 
     // Get handler properties.
     String registryUrl = System.getProperty("gov.nasa.pds.transport.RegistryProductHandler.registryUrl", "http://localhost:8080/registry");
@@ -107,7 +112,15 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
         for (ExtendedExtrinsicObject fileRef : fileRefList) {
           List<String> fileLocation = fileRef.getSlotValues("file_location");
           List<String> fileName = fileRef.getSlotValues("file_name");
-          files.add(new File(fileLocation.get(0), fileName.get(0)));
+          File file = new File(fileLocation.get(0), fileName.get(0));
+          files.add(file);
+          // use existing file checksum, or compute anew
+          if (fileRef.getSlot("md5_checksum")!=null) {
+        	  checksums.add( fileRef.getSlotValues("md5_checksum").get(0) );
+          } else {
+          	  String checksum = MD5Checksum.getMD5Checksum(file.getAbsolutePath()) ;
+        	  checksums.add( checksum );
+          }
         }
       } catch (Exception e) {
         String message = e.getMessage();
@@ -118,6 +131,9 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
         }
       }
     }
+    
+    // Create checksum manifest
+    this.addChecksumManifest(files, checksums);
 
     // Build the archive package file.
     try {
@@ -298,4 +314,32 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
     }
     return new File(tgzFilePath);
   }
+  
+  // Method to add a checksum manifest to the files collection
+  private void addChecksumManifest(List<File> files, List<String> checksums) throws ProductException {
+	  
+  	try	{
+  		 
+	    // create manifest file in temporary directory
+  		String tmpDir = System.getProperty("java.io.tmpdir");
+  		File tmpFile = new File(tmpDir, "md5_checksums.txt");
+
+	    // loop over files
+	    BufferedWriter bw = new BufferedWriter(new FileWriter(tmpFile));
+	    for (int i=0; i<files.size(); i++) {
+	    	bw.write(checksums.get(i) + " " + files.get(i).getName());
+	    	bw.newLine();
+	    }
+	    bw.close();
+	    
+	    // add manifest to the list of files to pack
+	    files.add(tmpFile);
+	    
+  	} catch(IOException e) {
+  		e.printStackTrace();
+  		throw new ProductException(e.getMessage());
+  	}
+  		  
+  }
+  
 }
