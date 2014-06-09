@@ -196,6 +196,7 @@ public class ProductClassTest extends SearchCoreTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testCheckForSubstring() {
 		try {
 			String lidvid = "urn:nasa:pds:context_pds3:instrument:instrument.mri__dif::8.0";
