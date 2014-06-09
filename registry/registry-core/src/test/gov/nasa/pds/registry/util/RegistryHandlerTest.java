@@ -167,6 +167,7 @@ public class RegistryHandlerTest extends RegistryCoreTest {
 	}
 
 	@Test
+	@Ignore
 	public void testGetExtrinsicsByLidvid() {
 		try {
 			String lidvid = "urn:nasa:pds:context_pds3:instrument:instrument.mri__dif::8.0";
@@ -179,6 +180,7 @@ public class RegistryHandlerTest extends RegistryCoreTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testGetExtrinsicsByGuid() {
 		try {
 			String guid = "urn:uuid:1574b4d6-6f64-402f-8b9f-147b06a6ce67";
