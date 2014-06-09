@@ -13,6 +13,7 @@ import gov.nasa.pds.registry.client.results.SlotFilter;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.wrapper.ExtendedExtrinsicObject;
 import gov.nasa.pds.registry.test.RegistryCoreTest;
+import gov.nasa.pds.registry.test.constants.TestConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,11 +37,8 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class RegistryHandlerTest extends RegistryCoreTest {
-
+	
 	private static final int NUM_ARCHIVE_INFO = 5;
-	private static final String PDS3_REGISTRY_URL = "http://pdsbeta.jpl.nasa.gov:8080/registry-pds3";
-	private static final String PDS4_REGISTRY_URL = "http://pdsbeta.jpl.nasa.gov:8080/registry-pds4";
-	private static final String PSA_REGISTRY_URL = "http://planetarydata.org/registry";
 	
 	private RegistryHandler handler;
 	private Map<String, String> queryMap;
@@ -56,7 +54,7 @@ public class RegistryHandlerTest extends RegistryCoreTest {
 	@Before
 	public void setUp() throws RegistryHandlerException {
 		this.handler = new RegistryHandler(
-				Arrays.asList(PDS3_REGISTRY_URL),
+				Arrays.asList(TestConstants.PDS3_REGISTRY_URL),
 				new ArrayList<String>(), 5);
 		
 		this.queryMap = new HashMap<String, String>();
@@ -96,7 +94,7 @@ public class RegistryHandlerTest extends RegistryCoreTest {
 	public void testGetExtrinsicsWithAttributeFilter() {
 		try {
 			this.handler = new RegistryHandler(
-					Arrays.asList(PDS3_REGISTRY_URL),
+					Arrays.asList(TestConstants.PDS3_REGISTRY_URL),
 					new ArrayList<String>(), 999999999);
 			
 			List<ResultsFilter> filterList = new ArrayList<ResultsFilter>();
@@ -116,7 +114,7 @@ public class RegistryHandlerTest extends RegistryCoreTest {
 	public void testGetExtrinsicsWithSlotFilter() {
 		try {
 			this.handler = new RegistryHandler(
-					Arrays.asList(PDS4_REGISTRY_URL),
+					Arrays.asList(TestConstants.PDS4_REGISTRY_URL),
 					new ArrayList<String>(), 999999999);
 			
 			List<ResultsFilter> filterList = new ArrayList<ResultsFilter>();
@@ -143,7 +141,7 @@ public class RegistryHandlerTest extends RegistryCoreTest {
 	public void testGetExtrinsicsWithMultipleSlotFilters() {
 		try {
 			this.handler = new RegistryHandler(
-					Arrays.asList(PDS4_REGISTRY_URL),
+					Arrays.asList(TestConstants.PDS4_REGISTRY_URL),
 					new ArrayList<String>(), 999999999);
 			
 			List<ResultsFilter> filterList = new ArrayList<ResultsFilter>();
@@ -196,9 +194,9 @@ public class RegistryHandlerTest extends RegistryCoreTest {
 	public void testGetExtrinsicsByLidvidWithSecondaryRegistries() {
 		try {
 			this.handler.setPrimaryRegistries(Arrays
-					.asList(PSA_REGISTRY_URL));
+					.asList(TestConstants.PSA_REGISTRY_URL));
 			this.handler.setSecondaryRegistries(Arrays
-					.asList(PDS3_REGISTRY_URL));
+					.asList(TestConstants.PDS3_REGISTRY_URL));
 
 			String lidvid = "urn:nasa:pds:context_pds3:node:node.psa";
 			assertFalse(this.handler.getExtrinsicByLidvid(lidvid) == null);
@@ -215,7 +213,7 @@ public class RegistryHandlerTest extends RegistryCoreTest {
 			String lidvid = "urn:nasa:pds:phx_met:reduced:MS107RMH_00905704961_1C6EM1::1.0";
 
 			this.handler
-					.addPrimaryRegistry(PDS4_REGISTRY_URL);
+					.addPrimaryRegistry(TestConstants.PDS4_REGISTRY_URL);
 			this.handler.setCheckAssociations(true);
 			ExtendedExtrinsicObject ext = this.handler
 					.getExtrinsicByLidvid(lidvid);

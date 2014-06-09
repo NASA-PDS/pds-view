@@ -9,6 +9,7 @@ import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.RegistryQuery;
 import gov.nasa.pds.registry.test.RegistryCoreTest;
+import gov.nasa.pds.registry.test.constants.TestConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,9 +24,6 @@ import org.junit.Test;
 public class SlotFilterTest  extends RegistryCoreTest {
 
 	private static final int NUM_ARCHIVE_INFO = 5;
-	private static final String PDS3_REGISTRY_URL = "http://pdsbeta.jpl.nasa.gov:8080/registry-pds3";
-	private static final String PDS4_REGISTRY_URL = "http://pdsbeta.jpl.nasa.gov:8080/registry-pds4";
-	private static final String PSA_REGISTRY_URL = "http://planetarydata.org/registry";
 	
 	private static ExtrinsicObject extObj;
 	
@@ -39,7 +37,7 @@ public class SlotFilterTest  extends RegistryCoreTest {
 			
 			PagedResponse<ExtrinsicObject> pr = null;
 	
-			RegistryClient client = new RegistryClient(PDS3_REGISTRY_URL);	// Initialize the client
+			RegistryClient client = new RegistryClient(TestConstants.PDS3_REGISTRY_URL);	// Initialize the client
 			//if (this.query.getFilter() instanceof ExtrinsicFilter) {
 				//System.out.println(start + " - " + pageLength);
 			pr = client.getExtrinsics((RegistryQuery<ExtrinsicFilter>)query, 0, 100);	// Get PagedResponse with pageLength
