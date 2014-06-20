@@ -23,7 +23,10 @@
   </properties>
 
   <body>
-    <release version="1.5.0" date="TBD" description="TBD">
+    <release version="1.4.1" date="2014-06-20" description="This release of the Search Core is a component of the integrated release 4.1.1 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="shardman" type="update">
+        Added a blurb to the main search page regarding search results coming from multiple agencies.
+      </action>
     </release>
 
     <release version="1.4.0" date="2014-03-31" description="This release of the Search Core is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">
