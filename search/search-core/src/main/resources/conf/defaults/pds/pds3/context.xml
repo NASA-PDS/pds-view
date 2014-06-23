@@ -44,7 +44,7 @@
 			<registryPath>node_ref.agency_ref.alternate_id</registryPath>
 		</field>
 		<field name="pds_model_version" type="string">
-			<outputString format="text">pds4</outputString>
+			<outputString format="text">pds3</outputString>
 		</field>
 		<field name="version_id" type="string">
 			<registryPath>version_id</registryPath>
