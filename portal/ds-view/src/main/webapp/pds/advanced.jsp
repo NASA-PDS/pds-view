@@ -3,6 +3,7 @@
    String searchUrl = application.getInitParameter("search.url");
 %>
 <HTML>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <HEAD>
    <TITLE>PDS: Data Set Advanced Search</TITLE>
    <META content="Planetary Data System" name=keywords>
@@ -102,10 +103,10 @@ function changeSearchSpec()
 
 <body class="home menu_home menu_item_ ">
 
-   <%@ include file="/pds/header.html" %>
-   <%@ include file="/pds/main_menu.html" %>
-   <%@ include file="/pds/data_menu.html" %>
-
+<c:import url="/header.html" context="/include" />
+<c:import url="/main_menu.html" context="/include" />
+<c:import url="/data_menu.html" context="/include" />
+   
 <!-- Main content -->
 <div id="content">
    <div style="border-top: 1px solid_white;">
@@ -315,7 +316,7 @@ q=/<%=q%>/
 </form>
 </div>
 </div>
-<%@ include file="/pds/footer.html" %>
+<c:import url="/footer.html" context="/include" />
 <%@ include file="/pds/ds_map.html" %>
 
 </BODY>

@@ -1,18 +1,19 @@
 <%
    String pdshome = application.getInitParameter("pdshome.url");
-   String registryUrl = application.getInitParameter("registry.url");
+   String searchUrl = application.getInitParameter("search.url");   
 %>
 <html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
    <title>PDS: Instrument Information</title>
    <META  NAME="keywords"  CONTENT="Planetary Data System">
-
    <META  NAME="description" CONTENT="This website serves as a mechanism for displaying the instrument information in PDS planetary archives.">
    <link href="/ds-view/pds/css/pds_style.css" rel="stylesheet" type="text/css">
    <%@ page language="java" session="true" isThreadSafe="true" 
             info="PDS Search" isErrorPage="false" errorPage="error.jsp" 
             contentType="text/html; charset=ISO-8859-1" 
-            import="gov.nasa.pds.registry.model.ExtrinsicObject, gov.nasa.pds.dsview.registry.Constants, 
+            import="gov.nasa.pds.dsview.registry.PDS3Search, gov.nasa.pds.dsview.registry.Constants, 
+                    org.apache.solr.common.SolrDocument, gov.nasa.pds.registry.model.ExtrinsicObject,
                     java.util.*, java.net.*, java.io.*, java.lang.*"
    %>
 
@@ -23,9 +24,9 @@
 
 <body class="menu_data menu_item_data_data_search ">
 
-   <%@ include file="/pds/header.html" %>
-   <%@ include file="/pds/main_menu.html" %>
-   <%@ include file="/pds/data_menu.html" %>
+<c:import url="/header.html" context="/include" />
+<c:import url="/main_menu.html" context="/include" />
+<c:import url="/data_menu.html" context="/include" />
 
 <!-- Main content -->
 <div id="content">
@@ -56,12 +57,12 @@ else {
    String instrumentHostId = null;
    instrumentId = instrumentId.toUpperCase();
    boolean instFlag = false;
-    
-   gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);   
-   //out.println("instrumentId = " + instrumentId +  "instrument_host_id = " + request.getParameter("INSTRUMENT_HOST_ID"));
-
+   //instrumentId = instrumentId.toLowerCase();
+   
    String instLid = "urn:nasa:pds:context_pds3:instrument:instrument." + instrumentId;
    instLid = instLid.toLowerCase();
+    
+   PDS3Search pds3Search = new PDS3Search(searchUrl);
    
    // INSTRUMENT_HOST_ID is optional
    instrumentHostId = request.getParameter("INSTRUMENT_HOST_ID");
@@ -73,7 +74,7 @@ else {
    // can use wildcard for the instrument_host_id...
    // it will change to Product_Context for next build
   
-   List<ExtrinsicObject> instObjs = searchRegistry.getObjects(instLid+"__*", "Product_Instrument_PDS3"); 
+   List<SolrDocument> instObjs = pds3Search.getInst(instrumentId); 
    if (instObjs != null)  { 
   	  instFlag = true;
   	  //out.println("instObjs.size = " + instObjs.size());
@@ -81,14 +82,10 @@ else {
   
    if (instrumentHostId == null) {
       if (instObjs!=null && instObjs.size()>0) {
-         for (ExtrinsicObject obj: instObjs) {
-            //out.println("obj = " + obj.toString() + "<br>");
-         	List<String> slotValues = searchRegistry.getSlotValues(obj, "instrument_host_ref");
-         	String val = slotValues.get(0);
-         	String lid = val.substring(0, val.indexOf("::"));
-    	 	ExtrinsicObject insthostObj = searchRegistry.getExtrinsic(lid);
-    	 	val = searchRegistry.getSlotValues(insthostObj, "instrument_host_id").get(0).toUpperCase(); 
-    	 	//out.println(val + "<br>");
+         for (SolrDocument obj: instObjs) {
+         	List<String> slotValues = pds3Search.getValues(obj, "instrument_host_id");
+         	String val = slotValues.get(0).toUpperCase();
+      
     	 	%>
             <TR>
                <td bgcolor="#F0EFEF" width=215 valign=top>INSTRUMENT_HOST_ID</td> 
@@ -115,10 +112,8 @@ else {
 	  } // end else
    } // end instrumentHostId = null
    else { // instrumentHostId!=null
-      instLid += "__" + instrumentHostId;
-      instLid = instLid.toLowerCase();
-      //out.println("instLid = " + instLid);
-      ExtrinsicObject instObj = searchRegistry.getExtrinsic(instLid);
+      try {
+      SolrDocument instObj = pds3Search.getInst(instrumentId, instrumentHostId);
    
       if (instObj==null || !instFlag)  { 
       %>
@@ -146,7 +141,7 @@ else {
                <td bgcolor="#F0EFEF" valign=top>
 			 <%
              //out.println("tmpValue = " + tmpValue + "<br>");
-             List<String> slotValues = searchRegistry.getSlotValues(instObj, tmpValue);
+             List<String> slotValues = pds3Search.getValues(instObj, tmpValue);
              if (slotValues!=null) {
                 if (tmpValue.equals("instrument_description")){                          
                    String val = slotValues.get(0);
@@ -157,7 +152,7 @@ else {
                 }
                 else {
                    for (int j=0; j<slotValues.size(); j++) {
-                      if (tmpValue.equals("external_reference_description")) 
+                      if (tmpValue.equals("external_reference_text")) 
                          out.println(slotValues.get(j) + "<br>");
                       else 
                          out.println(slotValues.get(j).toUpperCase() + "<br>");
@@ -178,6 +173,9 @@ else {
          <%  
          } // for loop
       } // end else
+      } catch (Exception e) {
+      }
+   
    } // end else instrumentHostId!=null
 } // end else instrumentId!=null
 %>
@@ -188,7 +186,7 @@ else {
 </div>
 </div>
 
-<%@ include file="/pds/footer.html" %>
+<c:import url="/footer.html" context="/include" />
 
 </BODY>
 </HTML>

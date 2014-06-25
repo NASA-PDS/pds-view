@@ -31,6 +31,7 @@
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+        <li><a href="#Deploying_the_Extras">Deploying the Extras</a></li>
         <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
       </ul>
     </section>
@@ -100,8 +101,76 @@ or
     </section>
 
     <section name="Deploying the Application">
-      <p>The Data Set View web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory within the Tomcat installation or installed via the Manager interface. Once this step is complete, the application is ready for operation.
+      <p>The Data Set View web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. There are two options for deploying the WAR file:
       </p>
+
+	<subsection name="Copy WAR To webapps directory">
+	  <ol>
+	    <li>Locate the WAR file (${project.artifactId}.war) in the Data Set View package.</li>
+	    <li>Copy this file to the <i>$TOMCAT_HOME/webapps</i> directory.</li>
+	    <li>Create an XML context file, <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> containing the following:
+	      <source>
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;Context crossContext="true"&gt;
+&lt;/Context&gt;
+	      </source>
+	    </li>
+	    <li>Restart Tomcat.</li>
+	  </ol>
+	</subsection>
+	<subsection name="Create Context File To Point To WAR">
+	  <p>
+	    Assuming Data Set View WAR and accompanying directories are located at <i>/usr/local/${project.artifactId}</i> (if not, substitute the directory location as needed), we need to set the application to allow for cross-context so it can use the various server-side includes.  We can do this by creating <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> containing the following text:
+	  </p>
+	  <source>
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;Context docBase="/usr/local/${project.artifactId}/${project.artifactId}.war" crossContext="true"&gt;
+&lt;/Context&gt;
+	  </source>
+	</subsection>
+    </section>
+    
+    <section name="Deploying the Extras">
+      <p>The Data Set View web application also depends on several other directories from the PDS Website that include images and server-side include files that are in the <i>extras</i> directory in Search UI package (i.e. /usr/local/search-ui/extras).  This contains the following directories:
+      </p>
+      
+      <ul>
+	<li>images</li>
+	<li>include</li>
+      </ul>
+
+      <subsection name="PDS Engineering Deployment">
+	<p>The current Data Set View is intended for deployment on both the PDS Engineering website, as well as external users.  The remaining installation procedures can be ignored for PDS EN deployment because these directories are already included in the PDS EN website.</p>
+      </subsection>
+      
+      <subsection name="All Other Deployments">
+	<p>If the directories above are not in the <i>$TOMCAT_HOME/webapps</i> directory already, create the following Tomcat context files in <i>$TOMCAT_HOME/conf/Catalina/localhost</i> to include these directories:</p>
+
+      <ul>
+	<li>images.xml
+	  <source>
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;Context docBase="/usr/local/search-ui/extras/images" &gt;&lt;/Context&gt;
+	  </source>
+	</li>
+	<li>include.xml
+	  <source>
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;Context docBase="/usr/local/search-ui/extras/include" &gt;&lt;/Context&gt;
+	  </source>
+	</li>
+      </ul>
+
+      <p>An alternative solution is to move all of the directories into the $TOMCAT_HOME/webapps directory: (assumes Search UI software and directories are at /usr/local/search-ui)</p>
+      <p><b>Unix Environment</b></p>
+      <source>
+$ mv extras/include $TOMCAT_HOME/webapps
+$ mv extras/images $TOMCAT_HOME/webapps
+      </source>
+
+      
+      <p>Restart Tomcat to ensure the changes take effect.</p>
+      </subsection>
     </section>
 
     <section name="Configuring the Application">

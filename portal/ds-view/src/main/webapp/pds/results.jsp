@@ -4,6 +4,7 @@
    String searchUrl = application.getInitParameter("search.url");
 %>
 <html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
    <title>PDS: Data Set Search Results</title>
    <META  NAME="keywords"  CONTENT="Planetary Data System">
@@ -25,22 +26,9 @@
 
 <body class="menu_data menu_item_data_data_search ">
 
-   <%@ include file="/pds/header.html" %>
-   <%@ include file="/pds/main_menu.html" %>
-
-   <div id="submenu">
-   <div id="submenu_data">
-   <h2 class="nonvisual">Menu: PDS Data</h2>
-   <ul>
-      <li id="data_data_search"><a href="http://pds.jpl.nasa.gov/tools/data-search/">Data Search</a></li>
-      <li><a href="/ds-view/pds/index.jsp">Form Search</a></li>
-      <li id="data_how_to_search"><a href="http://pds.jpl.nasa.gov/data/how-to-search.shtml">How to Search</a></li>
-      <li id="data_data_set_status"><a href="http://pds.jpl.nasa.gov/tools/dsstatus/">Data Set Status</a></li>
-      <li id="data_release_summary"><a href="http://pds.jpl.nasa.gov/tools/subscription_service/SS-Release.shtml">Data Release Summary</a></li>
-   </ul>
-   </div>
-   <div class="clear"></div>
-   </div>
+<c:import url="/header.html" context="/include" />
+<c:import url="/main_menu.html" context="/include" />
+<c:import url="/data_menu.html" context="/include" />
 
 <!-- Main content -->
 <div id="content">
@@ -339,7 +327,7 @@ if (curPage+1 < totalPage) { %>
 </table>
 </div>
 </div>
-<%@ include file="/pds/footer.html" %>
+<c:import url="/footer.html" context="/include" />
 
 <%@ include file="/pds/ds_map.html" %>
 </body>

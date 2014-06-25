@@ -1,19 +1,21 @@
 <%
    String pdshome = application.getInitParameter("pdshome.url");
-   String registryUrl = application.getInitParameter("registry.url");
+   String searchUrl = application.getInitParameter("search.url");     
 %>
 <HTML>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
    <title>PDS: Data Set Information</title>
    <META  NAME="keywords"  CONTENT="Planetary Data System">
    <META  NAME="description" CONTENT="This website serves as a mechanism for searching the PDS planetary archives.">
-   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-   
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />   
    <link href="/ds-view/pds/css/pds_style.css" rel="stylesheet" type="text/css">
 
    <%@page language="java" session="true" isThreadSafe="true" info="PDS Search" isErrorPage="false" 
            contentType="text/html; charset=ISO-8859-1"
-           import="gov.nasa.pds.registry.model.ExtrinsicObject,java.util.*,java.net.*,java.io.*,java.lang.*" %>
+           import="gov.nasa.pds.dsview.registry.PDS3Search, gov.nasa.pds.dsview.registry.Constants, 
+                   org.apache.solr.common.SolrDocument, org.apache.solr.common.SolrDocumentList,
+                   java.util.*,java.net.*,java.io.*,java.lang.*" %>
 
    <SCRIPT LANGUAGE="JavaScript">
       <%@ include file="/pds/utils.js"%>
@@ -21,10 +23,10 @@
 </head>
 
 <body class="menu_data menu_item_data_data_search ">
-
-   <%@ include file="/pds/header.html" %>
-   <%@ include file="/pds/main_menu.html" %>
-   <%@ include file="/pds/data_menu.html" %>
+   
+<c:import url="/header.html" context="/include" />
+<c:import url="/main_menu.html" context="/include" />
+<c:import url="/data_menu.html" context="/include" />
 
 <!-- Main content -->
 <div id="content">
@@ -95,13 +97,6 @@ if (dsid.length() == 0) {
 }
 else {
 
-   // need to call the registry service with dsid... to get Product_Data_Set_PDS3 & Product_Resource
-   // 1. get Product_Data_Set_PDS3 extrinsic object with dsid (to get investigation_ref, instrument_ref, instrument_host_ref, target_ref &  resource_ref 
-   // 2. get Product_Resource extrinsic object for the resource info
-
-   // TODO: should get registryUrl from the properties file or env variable.
-   gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
-  
    dsid = dsid.toUpperCase();
    dsid = dsid.replaceAll("%2F", "/");
 
@@ -109,9 +104,13 @@ else {
    tmpDsid = tmpDsid.replaceAll("/", "-");
    tmpDsid = tmpDsid.toLowerCase();
    //out.println("dsid = " + dsid + "    dsid_lower = " + tmpDsid);
-   ExtrinsicObject product = searchRegistry.getExtrinsic("urn:nasa:pds:context_pds3:data_set:data_set."+tmpDsid);
-
-   if (product==null) {
+  
+   PDS3Search pds3Search = new PDS3Search(searchUrl);
+   try {
+     SolrDocument doc = pds3Search.getDataSet("urn:nasa:pds:context_pds3:data_set:data_set."+tmpDsid);
+   	//SolrDocument doc = pds3Search.getDataSet(tmpDsid);
+   
+   if (doc==null) {
 %>
    <table align="center" width="760" border="0" cellspacing="3" cellpadding="10">
       <tr valign="TOP">
@@ -126,12 +125,8 @@ else {
       </tr>
    </table>
 <%
-   } // end if (product==null)
+   } // end if (doc==null)
    else { 
-   
-      // for debugging, should comment out this if block  
-      //out.println("<br>guid = " + product.getGuid());
-      
       //adding target type value so that we know where to link the user 
       //for target information  ArrayList targetType = new ArrayList(); ?????
 %>
@@ -148,8 +143,8 @@ else {
 	                 <tr>
 	                    <td class="pageTitle">	                    
 	                       <%
-	                       if (searchRegistry.getSlotValues(product, "data_set_terse_description")!=null) {
-	                          out.println(searchRegistry.getSlotValues(product, "data_set_terse_description").get(0));
+	                       if (pds3Search.getValues(doc, "data_set_terse_description")!=null) {
+	                          out.println(pds3Search.getValues(doc, "data_set_terse_description").get(0));
 	                       }%>
 	                    </td>
 	                 </tr>
@@ -166,19 +161,20 @@ else {
                      
                      <tr bgcolor="#E7EEF9">
                         <td>Citation</td>
-                        <td><%=searchRegistry.getSlotValues(product, "data_set_citation_text").get(0)%></td>
+                        <td><%=pds3Search.getValues(doc,"citation_description").get(0)%></td>
                      </tr>
 
                      <tr bgcolor="#E7EEF9">
                         <td>Data Set Abstract</td>
-                        <td><%=searchRegistry.getSlotValues(product, "data_set_abstract_description").get(0)%></td>
+                        <td><%=pds3Search.getValues(doc, "abstract_text").get(0)%></td>
                      </tr>
                      
                      <tr bgcolor="#E7EEF9">
                         <td>Search/Access Data</td>
                         <td>
                            <% 
-                           List<String> rvalues = searchRegistry.getResourceRefs(product);
+                           List<String> rvalues = pds3Search.getValues(doc, "resource_ref");
+                           //List<String> rvalues = pds3Search.getValues(doc, "resource_id");
                            String resname="", reslink="";
                            String refLid = "";
                            if (rvalues !=null) {
@@ -187,19 +183,24 @@ else {
                                  refLid = rvalues.get(i);
                                  if (refLid!=null) {
                                     if (refLid.indexOf("::")!=-1) {
-                                       refLid = refLid.substring(0, refLid.indexOf("::"));
+                                       refLid = refLid.substring(0, refLid.indexOf("::"));   
                                     }
-                                    ExtrinsicObject resource = searchRegistry.getExtrinsic(refLid);
-                                    //out.println("resource_name = " + searchRegistry.getSlotValues(resource, "resource_name").get(0) + "<br>");
-                                    //out.println("resource_url = " + searchRegistry.getSlotValues(resource, "resource_url").get(0) + "<br>");
-                                    if (resource!=null) {
-                                       resname = searchRegistry.getSlotValues(resource, "resource_name").get(0);
-                                       reslink = searchRegistry.getSlotValues(resource, "resource_url").get(0);
-                              %>
+                                    //refLid = refLid.replace("context_pds3", "context");
+                                    SolrDocument refDoc = pds3Search.getResource(refLid);
+                                    if (refDoc!=null) {
+                                       resname = pds3Search.getValues(refDoc, "resource_name").get(0);
+                                       reslink = pds3Search.getValues(refDoc, "resource_url").get(0);
+                                       
+                          %>
                               <li><a href="<%=reslink%>" target="_new"><%=resname%></a><br>
-                         <%         }
-                                 }
-                              } 
+                         <%   
+                                    }
+                                    else {
+                                       resname = refLid;
+                                       reslink = refLid;
+                                    }                                                             
+                                 } // end if (refLid!=null)
+                              }  // end for
                            }%>
                         </td>
                      </tr>
@@ -217,17 +218,15 @@ else {
                         <td>Mission Information</td>
                         <td>
                            <%
-                           List<String> mvalues = searchRegistry.getMissionName(product);
+                           List<String> mvalues = pds3Search.getValues(doc, "investigation_name");
                            String val = "";
                            if (mvalues!=null) {
     	                      for (int i=0; i<mvalues.size(); i++) {
     	   		                 String lid = (String) mvalues.get(i);
     	   		                 if (lid.indexOf("::")!=-1) 
     	       	                    lid = lid.substring(0, lid.indexOf("::"));
-    	       	                 ExtrinsicObject msnObj = searchRegistry.getExtrinsic(lid);
-    	       	                 //out.println(searchRegistry.getSlotValues(msnObj, "mission_name").get(0).toUpperCase() + "<br>");
-    	       	                 if (msnObj!=null) 
-    	       	              	   val = searchRegistry.getSlotValues(msnObj, "mission_name").get(0).toUpperCase(); 
+    	       	                    
+    	       	                 val = lid;
     	       	           %>
     	       	           <a href="/ds-view/pds/viewMissionProfile.jsp?MISSION_NAME=<%=val%>" target="_blank"><%=val%></a><br>  	       	
                          <%   } // end for
@@ -247,18 +246,17 @@ else {
                         <td>Instrument Host Information</td>
                         <td>
                            <%
-    	                   List<String> svalues = searchRegistry.getSlotValues(product, "instrument_host_ref");
+    	                   List<String> svalues = pds3Search.getValues(doc, "instrument_host_id");
+    	                   val = "";
                            //need to test this later after solving problem on pdsdev with INSTRUMENT_HOST_NAME
     	                   if (svalues!=null) {
     	                   // should be alternate_id??? can't find this (ask Sean) 
     	                   for (int i=0; i<svalues.size(); i++) {
     	 	                  String lid = (String) svalues.get(i);
     	   	                  if (lid.indexOf("::")!=-1) 
-    	       	                    lid = lid.substring(0, lid.indexOf("::"));
-    	                      ExtrinsicObject insthostObj = searchRegistry.getExtrinsic(lid);
-    	                      //out.println(searchRegistry.getSlotValues(insthostObj, "instrument_host_name").get(0).toUpperCase() + "<br>"); 
- 							  if (insthostObj!=null) 
-    	                         val = searchRegistry.getSlotValues(insthostObj, "instrument_host_id").get(0).toUpperCase();
+    	       	                 lid = lid.substring(0, lid.indexOf("::"));
+    	                      
+    	                      val = lid;
     	                   %>
     	                   <a href="/ds-view/pds/viewHostProfile.jsp?INSTRUMENT_HOST_ID=<%=val%>" target="_blank"><%=val%></a><br>  	       	
                          <%} // end for 
@@ -273,20 +271,27 @@ else {
                         <td>Instrument Information</td>
                         <td>
     	                   <%
-       		               svalues =searchRegistry.getSlotValues(product, "instrument_ref");
+    	                   // need to pass instrument_host_id to instProfile.jsp
+       		               svalues = pds3Search.getValues(doc, "instrument_id");
+       		               val = "";
        		               if (svalues!=null && svalues.size()>0) {
     	 	               for (int i=0; i<svalues.size(); i++) {
     	 		              String lid = (String) svalues.get(i);
     	   		              if (lid.indexOf("::")!=-1) 
-    	       	                    lid = lid.substring(0, lid.indexOf("::"));
+    	       	                 lid = lid.substring(0, lid.indexOf("::"));
     	   		              //out.println("lid = " + lid);
-    	    	              ExtrinsicObject instObj = searchRegistry.getExtrinsic(lid);
-    	    	              //out.println(searchRegistry.getSlotValues(instObj, "instrument_id").get(0).toUpperCase() + "<br>");
-    	    	              if (instObj!=null) 
-    	                         val = searchRegistry.getSlotValues(instObj, "instrument_id").get(0).toUpperCase(); 
+    	   		              val = lid;
+    	   		              
+    	   		              String instHostId = pds3Search.getValues(doc, "instrument_host_id").get(0);
+    	   		              if (instHostId!=null) {
+    	   		              %>
+    	                   <a href="/ds-view/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID=<%=val%>&INSTRUMENT_HOST_ID=<%=instHostId%>" target="_blank"><%=val%></a><br>  	       	
+                         <%   }
+    	   		              else {              
     	                   %>
     	                   <a href="/ds-view/pds/viewInstrumentProfile.jsp?INSTRUMENT_ID=<%=val%>" target="_blank"><%=val%></a><br>  	       	
-                         <%}  // end for 
+                         <% }
+                           }  // end for 
                            } // end if
                            else 
                               out.println(val);
@@ -299,17 +304,18 @@ else {
                         <td>Target Information</td>
                         <td>
                            <%
-    		               svalues =searchRegistry.getSlotValues(product, "target_ref");
+                           // need to get target_type info to pass to target
+    		               svalues = pds3Search.getValues(doc, "target_name");
+    		               val = "";
     		               if (svalues!=null && svalues.size()>0) {
     	 	               for (int i=0; i<svalues.size(); i++) {
     	 		              String lid = (String) svalues.get(i);
     	 		              if (lid.indexOf("::")!=-1) 
-    	       	                    lid = lid.substring(0, lid.indexOf("::"));
+    	       	                 lid = lid.substring(0, lid.indexOf("::"));
     	   		              //out.println("lid = " + lid);
-    	    	              ExtrinsicObject targetObj = searchRegistry.getExtrinsic(lid);
-    	    	              if (targetObj!=null) 
-    	    	                 val = searchRegistry.getSlotValues(targetObj, "target_name").get(0).toUpperCase();
-    	    	              //out.println(searchRegistry.getSlotValues(targetObj, "target_name").get(0).toUpperCase() + "<br>");
+    	    	              val = lid;
+    	    	              
+    	    	              // need to pass target_type, how to make sure the order with the target_name and target_type????
     	    	           %>
     	    	           <a href="/ds-view/pds/viewTargetProfile.jsp?TARGET_NAME=<%=val%>" target="_blank"><%=val%></a><br>
     	                 <%} // end for
@@ -324,7 +330,11 @@ else {
             </tr>
 <%
 	} // if matching product is found in the registry
-} // if dsid is specified   
+	
+	} catch (Exception e) {
+    }
+   
+} // if dsid is specified  
 %>             
             </table>
          </td>         
@@ -333,7 +343,7 @@ else {
    </div>
 </div>
 
-<%@ include file="/pds/footer.html" %>
+<c:import url="/footer.html" context="/include" />
 
 </BODY>
 </HTML>

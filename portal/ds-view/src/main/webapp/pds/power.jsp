@@ -2,7 +2,9 @@
    String pdshome = application.getInitParameter("pdshome.url");
    String searchUrl = application.getInitParameter("search.url");
 %>
-<HTML><HEAD><TITLE>PDS: Data Set Power Search</TITLE>
+<HTML>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<HEAD><TITLE>PDS: Data Set Power Search</TITLE>
 <META content="Planetary Data System" name=keywords>
 <META content="This website serves as a mechanism for searching the PDS planetary archives." name=description>
 <link href="/ds-view/pds/css/pds_style.css" rel="stylesheet" type="text/css">
@@ -97,9 +99,9 @@ function changeSearchSpec()
 
 <body class="home menu_home menu_item_ ">
 
-   <%@ include file="/pds/header.html" %>
-   <%@ include file="/pds/main_menu.html" %>
-   <%@ include file="/pds/data_menu.html" %>
+<c:import url="/header.html" context="/include" />
+<c:import url="/main_menu.html" context="/include" />
+<c:import url="/data_menu.html" context="/include" />
 
 <!-- Main content -->
 <div id="content">
@@ -304,8 +306,7 @@ function changeSearchSpec()
 </form>
 </div>
 </div>
-<%@ include file="/pds/footer.html" %>
-
+<c:import url="/footer.html" context="/include" />
 <%@ include file="/pds/ds_map.html" %>
 </BODY>
 </HTML>

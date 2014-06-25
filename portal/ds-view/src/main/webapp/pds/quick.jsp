@@ -4,6 +4,7 @@
    //String registryUrl = application.getInitParameter("registry.url");
 %>
 <html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
    <title>PDS: Data Set Quick Search</title>
    <META  NAME="keywords"  CONTENT="Planetary Data System">
@@ -97,9 +98,9 @@ function changeSearchSpec()
 
 <body class="menu_data menu_item_data_data_search ">
 
-   <%@ include file="/pds/header.html" %>
-   <%@ include file="/pds/main_menu.html" %>
-   <%@ include file="/pds/data_menu.html" %>
+<c:import url="/header.html" context="/include" />
+<c:import url="/main_menu.html" context="/include" />
+<c:import url="/data_menu.html" context="/include" />
    
 <!-- Main content -->
 <div id="content">
@@ -317,7 +318,7 @@ END DEBUG CODE
 </form>
 </div>
 </div>
-<%@ include file="/pds/footer.html" %>
+<c:import url="/footer.html" context="/include" />
 
 <%@ include file="/pds/ds_map.html" %>
 </body>

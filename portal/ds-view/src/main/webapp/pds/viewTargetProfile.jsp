@@ -1,8 +1,10 @@
 <%
    String pdshome = application.getInitParameter("pdshome.url");
-   String registryUrl = application.getInitParameter("registry.url");
+   String searchUrl = application.getInitParameter("search.url");  
+   //String registryUrl = application.getInitParameter("registry.url"); 
 %>
 <html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
    <title>PDS: Target Information</title>
    <META  NAME="keywords"  CONTENT="Planetary Data System">
@@ -10,7 +12,9 @@
    <link href="/ds-view/pds/css/pds_style.css" rel="stylesheet" type="text/css">
    <%@ page language="java" session="true" isThreadSafe="true" info="PDS Search" 
             isErrorPage="false" contentType="text/html; charset=ISO-8859-1" 
-            import="gov.nasa.pds.registry.model.ExtrinsicObject, gov.nasa.pds.dsview.registry.Constants, 
+            import="gov.nasa.pds.dsview.registry.PDS3Search, gov.nasa.pds.dsview.registry.Constants, 
+            gov.nasa.pds.dsview.registry.SearchRegistry, gov.nasa.pds.registry.model.ExtrinsicObject,
+                    org.apache.solr.common.SolrDocument,  
                     java.util.*, java.net.*, java.io.*, java.lang.*"
    %>
    <SCRIPT LANGUAGE="JavaScript">
@@ -20,22 +24,9 @@
 
 <body class="menu_data menu_item_data_data_search ">
 
-   <%@ include file="/pds/header.html" %>
-   <%@ include file="/pds/main_menu.html" %>
-
-   <div id="submenu">
-   <div id="submenu_data">
-   <h2 class="nonvisual">Menu: PDS Data</h2>
-   <ul>
-      <li id="data_data_search"><a href="http://pds.jpl.nasa.gov/tools/data-search/">Data Search</a></li>
-      <li><a href="/ds-view/pds/index.jsp">Form Search</a></li>
-      <li id="data_how_to_search"><a href="http://pds.jpl.nasa.gov/data/how-to-search.shtml">How to Search</a></li>
-      <li id="data_data_set_status"><a href="http://pds.jpl.nasa.gov/tools/dsstatus/">Data Set Status</a></li>
-      <li id="data_release_summary"><a href="http://pds.jpl.nasa.gov/tools/subscription_service/SS-Release.shtml">Data Release Summary</a></li>
-   </ul>
-   </div>
-   <div class="clear"></div>
-   </div>
+<c:import url="/header.html" context="/include" />
+<c:import url="/main_menu.html" context="/include" />
+<c:import url="/data_menu.html" context="/include" />
 
 <!-- Main content -->
 <div id="content">
@@ -67,17 +58,15 @@ else {
    targetId = targetId.replaceAll("/", "-");
    targetId = targetId.replaceAll("\\(", "");
    targetId = targetId.replaceAll("\\)", "");
-   gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
-   String targetLid = "urn:nasa:pds:context_pds3:target:*." + targetId.toLowerCase();
-   List<ExtrinsicObject> targetObjs = searchRegistry.getObjects(targetLid, "Product_Target_PDS3");
    
-   //out.println("targetLid = " + targetLid);
-   //out.println("targetLid = " + targetLid + "    targetObjs.size() = " + targetObjs.size());
-   ExtrinsicObject targetObj = null;
-   if (targetObjs!=null && targetObjs.size()>0) 
-      targetObj = targetObjs.get(0);
+   PDS3Search pds3Search = new PDS3Search(searchUrl);
+   targetId = targetId.toLowerCase();
+   //out.println("targetId = " + targetId);
+      
+   try {
+      SolrDocument targetDoc = pds3Search.getTarget(targetId);
 
-   if (targetObj==null) { 
+   if (targetDoc==null) { 
    %>
             <tr valign="TOP">
                <td bgcolor="#F0EFEF" width=200 valign=top>
@@ -87,17 +76,17 @@ else {
    <% 
    }
    else {
-      //out.println("targetObj guid = " + targetObj.getGuid());
-      for (java.util.Map.Entry<String, String> entry: Constants.targetPds3ToRegistry.entrySet()) {
+      for (java.util.Map.Entry<String, String> entry: Constants.targetPds3ToSearch.entrySet()) {
 	     String key = entry.getKey();
 		 String tmpValue = entry.getValue();
+		 //out.println("key = " + key + "   value = " + tmpValue);
          %>
             <TR>
                <td bgcolor="#F0EFEF" width=200 valign=top><%=key%></td> 
                <td bgcolor="#F0EFEF" valign=top>
          <%
          String val = "";
-         List<String> slotValues = searchRegistry.getSlotValues(targetObj, tmpValue);
+         List<String> slotValues = pds3Search.getValues(targetDoc, tmpValue);
          if (slotValues!=null) {
             if (tmpValue.equals("target_description")){                          
                val = slotValues.get(0);
@@ -114,30 +103,49 @@ else {
          }  // end if (slotValues!=null)
          else {
             if (tmpValue.equals("resource_link")) {
-               List<String> rvalues = searchRegistry.getResourceRefs(targetObj);
+               List<String> rvalues = pds3Search.getValues(targetDoc, "resource_ref");
+               //out.println("rvalues.size() = " + rvalues.size());
+               
+               String resname="", reslink="";
+               String refLid = "";
                if (rvalues != null) {
-     	          String refLid = rvalues.get(0);
-         	      refLid = refLid.substring(0, refLid.indexOf("::"));
-         	      //out.println("refLid = " + refLid + "<br>");
-         	      
-         	      ExtrinsicObject resource1 = searchRegistry.getExtrinsic(refLid);
-         	      if (resource1!=null) {
-         	      	String resname, reslink;
-                  	if (tmpValue.equals("resource_link")) {
-         	        	 //resname = searchRegistry.getSlotValues(resource1, "resource_name").get(0);
-         	         	reslink = searchRegistry.getSlotValues(resource1, "resource_url").get(0);
-         	         	out.println(reslink);
-         	      	}     
-         	      }  
-         	   }     	                
-            }
-         }
+     	          for (int i=0; i<rvalues.size(); i++) {
+                     //out.println(rvalues.get(i) + "<br>");
+                     refLid = rvalues.get(i);
+                     if (refLid!=null) {
+                        if (refLid.indexOf("::")!=-1) {
+                           refLid = refLid.substring(0, refLid.indexOf("::"));   
+                        }
+                        //refLid = refLid.replace("context_pds3", "context");
+                        //out.println("reflid = " + refLid);
+                        SolrDocument refDoc = pds3Search.getResource(refLid);
+                        if (refDoc!=null) {
+                           resname = pds3Search.getValues(refDoc, "resource_name").get(0);
+                           reslink = pds3Search.getValues(refDoc, "resource_url").get(0);
+                  %>
+                        <li><a href="<%=reslink%>"><%=resname%></a><br>
+                 <% 
+                        }
+                        else {
+                           resname = refLid;
+                           reslink = refLid;
+                        }                                         
+                      
+                     } // end if (refLid!=null)
+                  } // end for
+         	   }  // end if (rvalues!=null)  	                
+            }  // end if (tmpValue.equals("resource_link")
+         }   // end else
          %>
                </td>
             </TR>
          <%  
          } // for loop
+         
+        
       } // end targetObj!=null
+      } catch (Exception e) {
+      }
    } // if target name is specified 
    %>           
          </table>
@@ -147,7 +155,7 @@ else {
 </div>
 </div>
 
-<%@ include file="/pds/footer.html" %>
+<c:import url="/footer.html" context="/include" />
 
 </BODY>
 </HTML>

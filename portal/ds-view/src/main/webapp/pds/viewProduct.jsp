@@ -3,6 +3,7 @@
    String searchUrl = application.getInitParameter("search.url");
 %>
 <html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
    <title>PDS: Observational Product Information</title>
       <META  NAME="keywords"  CONTENT="Planetary Data System">
@@ -23,9 +24,9 @@
 
 <body class="menu_data menu_item_data_data_search ">
 
-   <%@ include file="/pds/header.html" %>
-   <%@ include file="/pds/main_menu.html" %>
-   <%@ include file="/pds/data_menu.html" %>
+<c:import url="/header.html" context="/include" />
+<c:import url="/main_menu.html" context="/include" />
+<c:import url="/data_menu.html" context="/include" />
    
 <!-- Main content -->
 <div id="content">
@@ -132,8 +133,13 @@
                   <td bgcolor="#F0EFEF" valign=top>
 
 		 <%         
-		 if (key.equals("IDENTIFIER"))
-            out.println(pds4Search.getValues(doc, "identifier").get(0));
+		 if (key.equals("IDENTIFIER")) {
+		    String lidvid = pds4Search.getValues(doc, "identifier").get(0);
+		 	String version = pds4Search.getValues(doc, "version_id").get(0);
+            if (version!=null)
+               lidvid += "::" + version;         
+            out.println(lidvid);
+         }
          else if (key.equals("NAME"))
             out.println(pds4Search.getValues(doc, "title").get(0));
          else if (key.equals("FILE(S)")) {
@@ -172,7 +178,7 @@
             List<String> values = pds4Search.getValues(doc, tmpValue);
             if (values!=null) {
                for (int j=0; j<values.size(); j++) {
-                    out.println(values.get(j) + "<br>");
+                  out.println(values.get(j) + "<br>");
 
                   if (values.size()>1)
                     out.println("<br>");
@@ -343,6 +349,11 @@
                              out.println(val);
                        } // componentTypes.get(j)!=null
                     } // end else if (observing_system_component_name)
+                    else if (tmpValue.equals("external_reference_text")) {
+    	               out.println(val + "<br>");
+					    if (values.size()>1)
+                	       out.println("<br>");
+                	}
                     else
                         out.println(val + "<br>");
          	   } // end for
@@ -399,7 +410,7 @@ if (curPage+1 < totalPage) { %>
 </div>
 </div>
 
-<%@ include file="/pds/footer.html" %>
+<c:import url="/footer.html" context="/include" />
 
 </BODY>
 </HTML>

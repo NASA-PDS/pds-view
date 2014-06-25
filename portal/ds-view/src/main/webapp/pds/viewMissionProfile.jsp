@@ -1,8 +1,9 @@
 <%
    String pdshome = application.getInitParameter("pdshome.url");
-   String registryUrl = application.getInitParameter("registry.url");
+   String searchUrl = application.getInitParameter("search.url");  
 %>
 <html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
    <title>PDS: Mission Information</title>
    <META  NAME="keywords"  CONTENT="Planetary Data System">
@@ -10,7 +11,8 @@
    <link href="/ds-view/pds/css/pds_style.css" rel="stylesheet" type="text/css">
    <%@ page language="java" session="true" isThreadSafe="true" info="PDS Search" 
             isErrorPage="false" contentType="text/html; charset=ISO-8859-1" 
-            import="gov.nasa.pds.registry.model.ExtrinsicObject, gov.nasa.pds.dsview.registry.Constants, 
+            import="gov.nasa.pds.dsview.registry.PDS3Search, gov.nasa.pds.dsview.registry.Constants, 
+                    org.apache.solr.common.SolrDocument,
                     java.util.*, java.net.*, java.io.*, java.lang.*"
    %>
 
@@ -21,22 +23,9 @@
 
 <body class="menu_data menu_item_data_data_search ">
 
-   <%@ include file="/pds/header.html" %>
-   <%@ include file="/pds/main_menu.html" %>
-
-   <div id="submenu">
-   <div id="submenu_data">
-   <h2 class="nonvisual">Menu: PDS Data</h2>
-   <ul>
-      <li id="data_data_search"><a href="http://pds.jpl.nasa.gov/tools/data-search/">Data Search</a></li>
-      <li><a href="/ds-view/pds/index.jsp">Form Search</a></li>
-      <li id="data_how_to_search"><a href="http://pds.jpl.nasa.gov/data/how-to-search.shtml">How to Search</a></li>
-      <li id="data_data_set_status"><a href="http://pds.jpl.nasa.gov/tools/dsstatus/">Data Set Status</a></li>
-      <li id="data_release_summary"><a href="http://pds.jpl.nasa.gov/tools/subscription_service/SS-Release.shtml">Data Release Summary</a></li>
-   </ul>
-   </div>
-   <div class="clear"></div>
-   </div>
+<c:import url="/header.html" context="/include" />
+<c:import url="/main_menu.html" context="/include" />
+<c:import url="/data_menu.html" context="/include" />
 
 <!-- Main content -->
 <div id="content">
@@ -63,13 +52,16 @@ if ((missionName == null) || (missionName == "")) {
 <%
 }
 else {
-   missionName = missionName.replace('/', '-');
    
+   //String missionLid = missionName.toLowerCase();   
+
    String missionLid = "urn:nasa:pds:context_pds3:investigation:mission." + missionName.toLowerCase();
    missionLid = missionLid.replace(' ', '_');
+   PDS3Search pds3Search = new PDS3Search(searchUrl);
    
-   gov.nasa.pds.dsview.registry.SearchRegistry searchRegistry = new gov.nasa.pds.dsview.registry.SearchRegistry(registryUrl);
-   ExtrinsicObject msnObj = searchRegistry.getExtrinsic(missionLid);
+   try {
+     
+      SolrDocument msnObj = pds3Search.getMission(missionLid);
    
    if (msnObj==null) {  
    %>
@@ -82,10 +74,8 @@ else {
    <%   
    }
    else {
-      //out.println("msnObj guid = " + msnObj.getGuid());
-      //out.println("mission_start_date = " + searchRegistry.getSlotValues(msnObj, "mission_start_date").get(0));
-   
-      for (java.util.Map.Entry<String, String> entry: Constants.msnPds3ToRegistry.entrySet()) {
+      
+      for (java.util.Map.Entry<String, String> entry: Constants.msnPds3ToSearch.entrySet()) {
          String key = entry.getKey();
 		 String tmpValue = entry.getValue();
          %>
@@ -94,10 +84,10 @@ else {
                <td bgcolor="#F0EFEF">
          <% 
          //out.println("tmpValue = " + tmpValue + "<br>");
-         List<String> slotValues = searchRegistry.getSlotValues(msnObj, tmpValue);
+         List<String> slotValues = pds3Search.getValues(msnObj, tmpValue);
          if (slotValues!=null) {
-            if (tmpValue.equals("mission_description") || 
-                tmpValue.equals("mission_objectives_summary")) {
+            if (tmpValue.equals("investigation_description") || 
+                tmpValue.equals("investigation_objectives_summary")) {
                           
                 String val = slotValues.get(0);
                 //val = val.replaceAll("\n","<br>");
@@ -108,7 +98,7 @@ else {
              }
              else {
                 for (int j=0; j<slotValues.size(); j++) {
-                   if (tmpValue.equals("external_reference_description")) 
+                   if (tmpValue.equals("external_reference_text")) 
                       out.println(slotValues.get(j) + "<br>");
                    else 
                       out.println(slotValues.get(j).toUpperCase() + "<br>");
@@ -124,6 +114,9 @@ else {
          <% 
       } // for loop
    } // if msnObj !=null
+   } catch (Exception e) {
+   }
+   
 }// if mission name is specified
          %>
          </table>
@@ -133,7 +126,7 @@ else {
 </div>
 </div>
 
-<%@ include file="/pds/footer.html" %>
+<c:import url="/footer.html" context="/include" />
 
 </BODY>
 </HTML>
