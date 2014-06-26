@@ -188,11 +188,14 @@ li {
 
 body.menu_home #home,
 body.menu_about #about,
+body.menu_pds4 #pds4,
 body.menu_data #data,
 body.menu_tools #tools,
 body.menu_related #related,
 body.menu_contact #contact,
-/* body.menu_pds4 #pds4, */
+body.menu_citation #citation,
+body.menu_policy #policy,
+/* body.menu_services #services, */
 #menu li.selected {
     padding-bottom: 2px;
     margin-bottom: -2px;
@@ -206,19 +209,20 @@ body.menu_home #home {
 }
 
 body.menu_home #home,
-body.menu_about #about,
-/* body.menu_pds4 #pds4, */
 #menu li.first {
     border-left: none;
 }
 
 body.menu_home #home, body.menu_home #home a,
 body.menu_about #about, body.menu_about #about a,
+body.menu_pds4 #pds4, body.menu_pds4 #pds4 a,
 body.menu_data #data, body.menu_data #data a,
 body.menu_tools #tools, body.menu_tools #tools a,
 body.menu_related #related, body.menu_related #related a,
 body.menu_contact #contact, body.menu_contact #contact a,
-/* body.menu_pds4 #pds4, body.menu_pds4 #pds4 a, */
+body.menu_citation #citation, body.menu_citation #citation a,
+body.menu_policy #policy, body.menu_policy #policy a,
+/* body.menu_services #services, body.menu_services #services a, */
 #menu li.selected, #menu li.selected a {
     color: white;
     background: #d96c00;
@@ -251,26 +255,31 @@ body.home #submenu {
 }
 
 body.menu_item_about_about #about_about,
-body.menu_item_about_faq #about_faq,
 body.menu_item_about_organization #about_organization,
+body.menu_item_about_faq #about_faq,
 body.menu_item_about_phone_book #about_phone_book,
+body.menu_item_citation_index #citation_index,
 body.menu_item_contact_contact #contact_contact,
 body.menu_item_contact_feedback #contact_feedback,
 body.menu_item_data_asteroids #data_asteroids,
 body.menu_item_data_data_search #data_data_search,
-body.menu_item_data_text_search #data_text_search,
-body.menu_item_data_data_set_status #data_data_set_status,
-body.menu_item_data_data_structure #data_data_structure,
+/* body.menu_item_data_form_search #data_form_search, */
 body.menu_item_data_how_to_search #data_how_to_search,
+body.menu_item_data_data_set_status #data_data_set_status,
+body.menu_item_data_data_release_summary #data_data_release_summary,
+body.menu_item_data_data_structure #data_data_structure,
 body.menu_item_data_index #data_index,
 body.menu_item_data_missions #data_missions,
 body.menu_item_data_search_results #data_search_results,
 body.menu_item_data_targets #data_targets,
 body.menu_item_pds4_about #pds4_about,
+body.menu_item_pds4_propose #pds4_propose,
 body.menu_item_pds4_doc #pds4_doc,
 body.menu_item_pds4_software #pds4_software,
 body.menu_item_pds4_schema #pds4_schema,
+body.menu_item_policy_index #policy_index,
 body.menu_item_related_related_sites #related_related_sites,
+/* body.menu_item_services_home #services_home, */
 body.menu_item_tools_archive_lifecycle #tools_archive_lifecycle,
 body.menu_item_tools_archiving_process #tools_archiving_process,
 body.menu_item_tools_archiving #tools_archiving,
@@ -373,6 +382,46 @@ body.sidebar #sidebar {
 
 .sidebar a:hover {
     text-decoration: underline;
+}
+
+#banholder {
+   margin: 0px 0 0 50px;
+   padding: 0;
+   position: relative;
+   top: 0px;
+   z-index: -1;
+   width: 600px;
+}
+
+#banner{
+  font-family: Impact, Charcoal, Tahoma, Geneva, "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+  line-height: 2.5em;
+  margin: 0px 0 0 0;
+  background: #006699;
+}
+
+#banner2{
+  font-family: Impact, Charcoal, Tahoma, Geneva, "Gill Sans", "Gill Sans MT", Cal
+ibri, sans-serif;  
+  line-height: 1.0em;
+  margin: 0px 0 0 0;
+  background: #d96c00;
+}
+
+#bannertext{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  margin: 0 0 0 260px;
+  padding: 10px;
+  color: white;
+}
+
+#bannertext2{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  margin: 0 0 0 260px;
+  padding: 10px;
+  color: black;
 }
 
 #content {
@@ -663,7 +712,7 @@ a.navLnkGreen {color: #408040; line-height: 18px;}
 /* Capitalize search refinement facet values.
  * (They are <a> tags with the given class.)
  */
-#sidebar .pds_value {
+.pds_value {
     text-transform: capitalize;
 }
 
@@ -671,4 +720,12 @@ a.navLnkGreen {color: #408040; line-height: 18px;}
 div.description-block {
  font-style: italic;
  margin-left: 1em;
+}
+
+div.more-tools, div.more-info {
+ padding-top: 5px;
+}
+
+div.more-tools a:hover, div.more-info a:hover {
+ cursor:pointer;
 }

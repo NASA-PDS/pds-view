@@ -47,7 +47,7 @@ public class Constants {
 		  targetPds3ToSearch.put("TARGET_TYPE" , "target_type");
 		  targetPds3ToSearch.put("TARGET_DESCRIPTION", "target_description");
 		  targetPds3ToSearch.put("REFERENCE_DESCRIPTION", "external_reference_text");
-		  targetPds3ToSearch.put("Search/Access Data", "resource_link");
+		  targetPds3ToSearch.put("SEARCH/ACCESS DATA", "resource_link");
     }
 
 	public static final Map<String, String> msnPds3ToRegistry =
@@ -130,7 +130,7 @@ public class Constants {
           dsPds3ToSearch.put("CITATION_DESCRIPTION", "citation_description");
           dsPds3ToSearch.put("ABSTRACT_TEXT", "abstract_text");
           dsPds3ToSearch.put("PRODUCER_FULL_NAME", "full_name"); // node_to_data_archivist reference????? person_name
-          dsPds3ToSearch.put("Search/Access Data", "resource_ref");
+          dsPds3ToSearch.put("SEARCH/ACCESS DATA", "resource_ref");
     }
       
     public static final Map<String, String> instPds3ToRegistry = 
@@ -201,7 +201,7 @@ public class Constants {
 		bundlePds4ToSearch.put("NAME", "title");
 		bundlePds4ToSearch.put("TYPE", "bundle_type");
 		bundlePds4ToSearch.put("DESCRIPTION", "description");
-		bundlePds4ToSearch.put("Search/Access Data", "resource_ref");
+		bundlePds4ToSearch.put("SEARCH/ACCESS DATA", "resource_ref");
 	}
     	      
     public static final Map<String, String> bundleCitationPds4ToRegistry =
@@ -252,7 +252,7 @@ public class Constants {
 		collectionPds4ToSearch.put("NAME", "title");
 		collectionPds4ToSearch.put("TYPE", "collection_type");
 		collectionPds4ToSearch.put("DESCRIPTION", "description");
-		collectionPds4ToSearch.put("Search/Access Data",  "resource_ref");
+		collectionPds4ToSearch.put("SEARCH/ACCESS DATA",  "resource_ref");
 	}
 	
 	public static final Map<String, String> targetPds4ToRegistry =
@@ -306,7 +306,7 @@ public class Constants {
 		resrcCtxPds4ToSearch.put("NAME", "resource_name");
 		resrcCtxPds4ToSearch.put("TYPE", "resource_type");
 		resrcCtxPds4ToSearch.put("DESCRIPTION", "resource_description");
-		resrcCtxPds4ToSearch.put("Search/Access Data", "resources");
+		resrcCtxPds4ToSearch.put("SEARCH/ACCESS DATA", "resources");
 		//resrcCtxPds4ToSearch.put("NAIF INSTRUMENT IDENTIFIER", "instrument_host_naif_id");
 		//resrcCtxPds4ToSearch.put("SERIAL NUMBER", "instrument_host_serial_number");
 		//resrcCtxPds4ToSearch.put("REFERENCES", "external_reference_text");

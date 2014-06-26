@@ -408,7 +408,7 @@
            	   if (dataCollection.size()>0) {
            		  %>
                <TR>
-                  <td bgcolor="#F0EFEF" width=215 valign=top>Data Collection</td> 
+                  <td bgcolor="#F0EFEF" width=215 valign=top>DATA COLLECTION</td> 
                   <td bgcolor="#F0EFEF" valign=top>
 
 		 <%
@@ -436,7 +436,7 @@
            		if (docCollection.size()>0) {
            		%>
                <TR>
-                  <td bgcolor="#F0EFEF" width=215 valign=top>Document Collection</td> 
+                  <td bgcolor="#F0EFEF" width=215 valign=top>DOCUMENT COLLECTION</td> 
                   <td bgcolor="#F0EFEF" valign=top>
 
 		          <%
@@ -463,7 +463,7 @@
            		if (ctxCollection.size()>0) {
            		%>
            		<TR>
-                  <td bgcolor="#F0EFEF" width=215 valign=top>Context Collection</td> 
+                  <td bgcolor="#F0EFEF" width=215 valign=top>CONTEXT COLLECTION</td> 
                   <td bgcolor="#F0EFEF" valign=top>
 
 		          <%
@@ -490,7 +490,7 @@
            		if (browseCollection.size()>0) {
            		%>
            		<TR>
-                  <td bgcolor="#F0EFEF" width=215 valign=top>Browse Collection</td> 
+                  <td bgcolor="#F0EFEF" width=215 valign=top>BROWSE COLLECTION</td> 
                   <td bgcolor="#F0EFEF" valign=top>
 
 		          <%
@@ -516,7 +516,7 @@
            		if (calibCollection.size()>0) {
            		%>
            		<TR>
-                  <td bgcolor="#F0EFEF" width=215 valign=top>Calibration Collection</td> 
+                  <td bgcolor="#F0EFEF" width=215 valign=top>CALIBRATION COLLECTION</td> 
                   <td bgcolor="#F0EFEF" valign=top>
 
 		          <%
@@ -542,7 +542,7 @@
            		if (geomCollection.size()>0) {
            		%>
            		<TR>
-                  <td bgcolor="#F0EFEF" width=215 valign=top>Geometry Collection</td> 
+                  <td bgcolor="#F0EFEF" width=215 valign=top>GEOMETRY COLLECTION</td> 
                   <td bgcolor="#F0EFEF" valign=top>
 
 		          <%
@@ -568,7 +568,7 @@
            		if (spiceCollection.size()>0) {
            		%>
            		<TR>
-                  <td bgcolor="#F0EFEF" width=215 valign=top>SPICE Kernel Collection</td> 
+                  <td bgcolor="#F0EFEF" width=215 valign=top>SPICE KERNAL COLLECTION</td> 
                   <td bgcolor="#F0EFEF" valign=top>
 
 		          <%
@@ -594,7 +594,7 @@
            		if (xmlCollection.size()>0) {
            		%>
            		<TR>
-                  <td bgcolor="#F0EFEF" width=215 valign=top>XML Schema Collection</td> 
+                  <td bgcolor="#F0EFEF" width=215 valign=top>XML SCHEMA COLLECTION</td> 
                   <td bgcolor="#F0EFEF" valign=top>
 
 		          <%
@@ -620,7 +620,7 @@
            		if (miscCollection.size()>0) {
            		%>
            		<TR>
-                  <td bgcolor="#F0EFEF" width=215 valign=top>Miscellaneous Collection</td> 
+                  <td bgcolor="#F0EFEF" width=215 valign=top>MISCELLANEOUS COLLECTION</td> 
                   <td bgcolor="#F0EFEF" valign=top>
 
 		          <%

@@ -179,9 +179,6 @@
             if (values!=null) {
                for (int j=0; j<values.size(); j++) {
                   out.println(values.get(j) + "<br>");
-
-                  if (values.size()>1)
-                    out.println("<br>");
                } // end for
              } // end if (values!=null)
           } // end else
