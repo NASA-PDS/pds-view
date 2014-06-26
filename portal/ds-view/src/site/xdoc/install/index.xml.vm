@@ -20,6 +20,7 @@
   <properties>
     <title>Installation</title>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+    <author email="Hyun.Lee@jpl.nasa.gov">Hyun Lee</author>
   </properties>
 
   <body>
@@ -104,30 +105,30 @@ or
       <p>The Data Set View web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. There are two options for deploying the WAR file:
       </p>
 
-	<subsection name="Copy WAR To webapps directory">
-	  <ol>
-	    <li>Locate the WAR file (${project.artifactId}.war) in the Data Set View package.</li>
-	    <li>Copy this file to the <i>$TOMCAT_HOME/webapps</i> directory.</li>
-	    <li>Create an XML context file, <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> containing the following:
-	      <source>
+      <subsection name="Copy WAR To webapps directory">
+        <ol>
+          <li>Locate the WAR file (${project.artifactId}.war) in the Data Set View package.</li>
+          <li>Copy this file to the <i>$TOMCAT_HOME/webapps</i> directory.</li>
+          <li>Create an XML context file, <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> containing the following:
+            <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context crossContext="true"&gt;
 &lt;/Context&gt;
-	      </source>
-	    </li>
-	    <li>Restart Tomcat.</li>
-	  </ol>
-	</subsection>
-	<subsection name="Create Context File To Point To WAR">
-	  <p>
-	    Assuming Data Set View WAR and accompanying directories are located at <i>/usr/local/${project.artifactId}</i> (if not, substitute the directory location as needed), we need to set the application to allow for cross-context so it can use the various server-side includes.  We can do this by creating <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> containing the following text:
-	  </p>
-	  <source>
+            </source>
+          </li>
+          <li>Restart Tomcat.</li>
+        </ol>
+      </subsection>
+
+      <subsection name="Create Context File To Point To WAR">
+        <p>Assuming Data Set View WAR and accompanying directories are located at <i>/usr/local/${project.artifactId}</i> (if not, substitute the directory location as needed), we need to set the application to allow for cross-context so it can use the various server-side includes.  We can do this by creating <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> containing the following text:
+        </p>
+        <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context docBase="/usr/local/${project.artifactId}/${project.artifactId}.war" crossContext="true"&gt;
 &lt;/Context&gt;
-	  </source>
-	</subsection>
+        </source>
+      </subsection>
     </section>
     
     <section name="Deploying the Extras">
@@ -135,30 +136,30 @@ or
       </p>
       
       <ul>
-	<li>images</li>
-	<li>include</li>
+        <li>images</li>
+        <li>include</li>
       </ul>
 
       <subsection name="PDS Engineering Deployment">
-	<p>The current Data Set View is intended for deployment on both the PDS Engineering website, as well as external users.  The remaining installation procedures can be ignored for PDS EN deployment because these directories are already included in the PDS EN website.</p>
+  <p>The current Data Set View is intended for deployment on both the PDS Engineering website, as well as external users.  The remaining installation procedures can be ignored for PDS EN deployment because these directories are already included in the PDS EN website.</p>
       </subsection>
       
       <subsection name="All Other Deployments">
-	<p>If the directories above are not in the <i>$TOMCAT_HOME/webapps</i> directory already, create the following Tomcat context files in <i>$TOMCAT_HOME/conf/Catalina/localhost</i> to include these directories:</p>
+  <p>If the directories above are not in the <i>$TOMCAT_HOME/webapps</i> directory already, create the following Tomcat context files in <i>$TOMCAT_HOME/conf/Catalina/localhost</i> to include these directories:</p>
 
       <ul>
-	<li>images.xml
-	  <source>
+  <li>images.xml
+    <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context docBase="/usr/local/search-ui/extras/images" &gt;&lt;/Context&gt;
-	  </source>
-	</li>
-	<li>include.xml
-	  <source>
+    </source>
+  </li>
+  <li>include.xml
+    <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context docBase="/usr/local/search-ui/extras/include" &gt;&lt;/Context&gt;
-	  </source>
-	</li>
+    </source>
+  </li>
       </ul>
 
       <p>An alternative solution is to move all of the directories into the $TOMCAT_HOME/webapps directory: (assumes Search UI software and directories are at /usr/local/search-ui)</p>
@@ -179,9 +180,10 @@ $ mv extras/images $TOMCAT_HOME/webapps
 
       <table>
         <tr><th>Parameter</th><th>Description</th></tr>
-        <tr><td>pdshome.url</td><td>The URL for the PDS web site. The value defaults to "http://pds.jpl.nasa.gov/".</td></tr>
-        <tr><td>registry.url</td><td>The base URL for the Registry Service. The value defaults to "http://pdsops.jpl.nasa.gov/registry".</td></tr>
-        <tr><td>search.url</td><td>The base URL for the Search Service. The value defaults to "http://pdsops.jpl.nasa.gov/search-service/pds".</td></tr>
+        <tr><td>pdshome.url</td><td>The URL for the PDS web site.</td></tr>
+        <tr><td>registry.url</td><td>The base URL for the PDS3 Registry Service.</td></tr>
+        <tr><td>proxy.registry.url</td><td>The base URL for the ADS Registry Service.</td></tr>
+        <tr><td>search.url</td><td>The base URL for the Search Service.</td></tr>
       </table>
 
       <p>To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/ds-view/WEB-INF</i> directory. The following block contains the parameters:
