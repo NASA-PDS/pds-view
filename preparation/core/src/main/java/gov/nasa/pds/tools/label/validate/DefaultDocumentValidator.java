@@ -65,7 +65,7 @@ public class DefaultDocumentValidator implements DocumentValidator {
                   new LabelException(ExceptionType.WARNING, 
                     "Value of the 'schematypens' attribute, '"
                       + matcher.group(3).trim() 
-                      + "', is not equal to the recommended value of '"
+                      + "', in the schematron specification is not equal to the recommended value of '"
                       + VersionInfo.getSchematronNamespace() + "'.", 
                     xml.getSystemId(), 
                     xml.getSystemId(), 
@@ -74,7 +74,7 @@ public class DefaultDocumentValidator implements DocumentValidator {
               }
           } else {
             container.addException(new LabelException(ExceptionType.WARNING, 
-                "Missing 'schematypens' attribute.", 
+                "Missing 'schematypens' attribute from the schematron specification.", 
                 xml.getSystemId(), 
                 xml.getSystemId(), 
                 new Integer(xmlModel.getLineNumber()), 

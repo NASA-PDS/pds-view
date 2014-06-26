@@ -264,7 +264,7 @@ public class LabelValidator {
       if (useLabelSchema) {
         Element root = xml.getDocumentElement();
         if (!root.hasAttribute("xsi:schemaLocation")) {
-          throw new MissingLabelSchemaException("No schema specified in the label.");
+          throw new MissingLabelSchemaException("No schema(s) specified in the label.");
         }
       }
     } else {
