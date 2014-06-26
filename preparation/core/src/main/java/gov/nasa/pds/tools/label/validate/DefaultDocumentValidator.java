@@ -51,7 +51,7 @@ public class DefaultDocumentValidator implements DocumentValidator {
     }
     if (xmlModels.isEmpty()) {
       container.addException(new LabelException(ExceptionType.WARNING, 
-          "No schematrons specified in the label.", xml.getSystemId()));
+          "No schematron specification found in the label.", xml.getSystemId()));
     } else {
       Pattern pattern = Pattern.compile("href=\\\"([^=]*)\\\"( schematypens=\\\"([^=]*)\\\")?");
       for (TinyNodeImpl xmlModel : xmlModels) {
