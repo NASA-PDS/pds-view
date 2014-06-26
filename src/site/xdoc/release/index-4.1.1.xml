@@ -157,14 +157,14 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
         </ul>
         <li><a href="../portal/index.html">Portal</a></li>
         <ul>
-          <li><a href="../portal/ds-view/index.html">Data Set View</a> - 2.3.0 (EN Only)</li>
+          <li><a href="../portal/ds-view/index.html">Data Set View</a> - 2.3.1 (EN Only)</li>
           <li><a href="../portal/filter/index.html">Filter</a> - 0.1.0 (DN Optional)</li>
         </ul>
         <li><a href="../preparation/index.html">Preparation Tools</a></li>
         <ul>
           <li><a href="../preparation/core/index.html">Core Library</a> - 1.5.0</li>
           <li><a href="../preparation/design/index.html">Design Tool</a> - 0.4.0</li>
-          <li><a href="../preparation/generate/index.html">Generate Tool</a> - 0.7.1</li>
+          <li><a href="../preparation/generate/index.html">Generate Tool</a> - 0.7.2</li>
           <li><a href="../preparation/pds4-tools/index.html">PDS4 Tools</a> - 0.3.0</li>
           <li><a href="../preparation/transform/index.html">Transform Tool</a> - 0.2.2</li>
           <li><a href="../preparation/validate/index.html">Validate Tool</a> - 1.5.0</li>
@@ -184,10 +184,10 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
         </ul>
         <li><a href="../search/index.html">Search</a></li>
         <ul>
-          <li><a href="../search/search-core/index.html">Search Core</a> - 1.4.0</li>
-          <li><a href="../search/search-service/index.html">Search Service</a> - 1.4.0</li>
-          <li><a href="../search/search-ui/index.html">Search User Interface</a> - 1.4.0 (EN Only)</li>
-          <li><a href="../search/product-search-ui/index.html">Product Search User Interface</a> - 1.4.0 (DN Optional)</li>
+          <li><a href="../search/search-core/index.html">Search Core</a> - 1.4.1</li>
+          <li><a href="../search/search-service/index.html">Search Service</a> - 1.4.1</li>
+          <li><a href="../search/search-ui/index.html">Search User Interface</a> - 1.4.1 (EN Only)</li>
+          <li><a href="../search/product-search-ui/index.html">Product Search User Interface</a> - 1.4.1 (DN Optional)</li>
         </ul>
         <li><a href="../security/index.html">Security Service</a> - 1.2.0 (EN Only)</li>
         <li><a href="../storage/index.html">Storage</a></li>
