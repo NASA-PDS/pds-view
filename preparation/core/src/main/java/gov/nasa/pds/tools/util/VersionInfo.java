@@ -56,6 +56,8 @@ public class VersionInfo {
   public final static String SCHEMA_DIR_PROP = "core.schema.dir";
 
   public final static String PDS_DEFAULT_NAMESPACE = "pds.default.namespace";
+  
+  public final static String SCHEMATRON_NAMESPACE = "core.schematron.namespace";
 
   private final static Properties props = new Properties();
   private final static File schemaDir;
@@ -114,6 +116,10 @@ public class VersionInfo {
     return props.getProperty(MODEL_VERSION);
   }
 
+  public static String getSchematronNamespace() {
+    return props.getProperty(SCHEMATRON_NAMESPACE);
+  }
+  
   public static List<String> getSchemasFromDirectory() {
       List<String> filenames = getDirectoryFileNames(schemaDir);
       List<String> results = new ArrayList<String>();

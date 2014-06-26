@@ -1,4 +1,4 @@
-//  Copyright 2009-2013, by the California Institute of Technology.
+//  Copyright 2009-2014, by the California Institute of Technology.
 //  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //  Any commercial use must be negotiated with the Office of Technology
 //  Transfer at the California Institute of Technology.
@@ -22,7 +22,6 @@ import gov.nasa.pds.tools.util.XMLExtractor;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,8 @@ import javax.xml.xpath.XPathExpressionException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
-import net.sf.saxon.tinytree.TinyElementImpl;
+import net.sf.saxon.om.DocumentInfo;
+import net.sf.saxon.tinytree.TinyNodeImpl;
 
 /**
  * Validator class that looks for file references in the PDS4 product label
@@ -47,7 +47,7 @@ import net.sf.saxon.tinytree.TinyElementImpl;
  * @author mcayanan
  *
  */
-public class FileReferenceValidator implements ExternalValidator {
+public class FileReferenceValidator implements DocumentValidator {
 
   /**
    * XPath to the file references within a PDS4 data product label.
@@ -57,36 +57,37 @@ public class FileReferenceValidator implements ExternalValidator {
     + "//Document_Format_Set/Document_File";
 
   @Override
-  public boolean validate(ExceptionContainer container, URL labelUrl) {
+  public boolean validate(ExceptionContainer container, DocumentInfo xml) {
     boolean passFlag = true;
     List<LabelException> problems = new ArrayList<LabelException>();
     try {
-      XMLExtractor extractor = new XMLExtractor(labelUrl);
+      XMLExtractor extractor = new XMLExtractor(xml);
       try {
-        List<TinyElementImpl> fileObjects = extractor.getNodesFromDoc(
+        List<TinyNodeImpl> fileObjects = extractor.getNodesFromDoc(
             FILE_OBJECTS_XPATH);
-        for (TinyElementImpl fileObject : fileObjects) {
+        for (TinyNodeImpl fileObject : fileObjects) {
+          URL labelUrl = new URL(xml.getSystemId());
           URL parent = labelUrl.toURI().getPath().endsWith("/") ?
               labelUrl.toURI().resolve("..").toURL() :
                 labelUrl.toURI().resolve(".").toURL();
           String name = "";
           String checksum = "";
           String directory = "";
-          List<TinyElementImpl> children = new ArrayList<TinyElementImpl>();
+          List<TinyNodeImpl> children = new ArrayList<TinyNodeImpl>();
           try {
             children = extractor.getNodesFromItem("*", fileObject);
           } catch (XPathExpressionException xpe) {
             problems.add(new LabelException(ExceptionType.FATAL,
                 "Problem occurred while trying to get all the children "
                 + "of the file object node: " + xpe.getMessage(),
-                labelUrl.toString(),
-                labelUrl.toString(),
+                xml.getSystemId(),
+                xml.getSystemId(),
                 new Integer(fileObject.getLineNumber()),
                 null));
             passFlag = false;
             continue;
           }
-          for (TinyElementImpl child : children) {
+          for (TinyNodeImpl child : children) {
             if ("file_name".equals(child.getLocalPart())) {
               name = child.getStringValue();
             } else if ("md5_checksum".equals(child.getLocalPart())) {
@@ -98,8 +99,8 @@ public class FileReferenceValidator implements ExternalValidator {
           if (name.isEmpty()) {
             problems.add(new LabelException(ExceptionType.ERROR,
               "Missing 'file_name' element tag",
-              labelUrl.toString(),
-              labelUrl.toString(),
+              xml.getSystemId(),
+              xml.getSystemId(),
               new Integer(fileObject.getLineNumber()),
               null)
             );
@@ -123,8 +124,8 @@ public class FileReferenceValidator implements ExternalValidator {
                       ExceptionType.WARNING,
                       "File reference'" + fileRef.toString()
                       + "' exists but the case doesn't match.",
-                      labelUrl.toString(),
-                      labelUrl.toString(),
+                      xml.getSystemId(),
+                      xml.getSystemId(),
                       new Integer(fileObject.getLineNumber()),
                       null));
                 }
@@ -133,8 +134,8 @@ public class FileReferenceValidator implements ExternalValidator {
                     "Error occurred while checking for the existence of the "
                     + "uri reference '" + urlRef.toString() + "': "
                     + io.getMessage(),
-                    labelUrl.toString(),
-                    labelUrl.toString(),
+                    xml.getSystemId(),
+                    xml.getSystemId(),
                     new Integer(fileObject.getLineNumber()),
                     null));
                 passFlag = false;
@@ -149,8 +150,8 @@ public class FileReferenceValidator implements ExternalValidator {
                         + "' does not match supplied checksum '" + checksum
                         + "' in the product label for the following uri reference: "
                         + urlRef.toString(),
-                        labelUrl.toString(),
-                        labelUrl.toString(),
+                        xml.getSystemId(),
+                        xml.getSystemId(),
                         new Integer(fileObject.getLineNumber()),
                         null));
                     passFlag = false;
@@ -160,8 +161,8 @@ public class FileReferenceValidator implements ExternalValidator {
                       "Error occurred while calculating checksum for "
                       + FilenameUtils.getName(urlRef.toString()) + ": "
                       + e.getMessage(),
-                      labelUrl.toString(),
-                      labelUrl.toString(),
+                      xml.getSystemId(),
+                      xml.getSystemId(),
                       new Integer(fileObject.getLineNumber()),
                       null));
                   passFlag = false;
@@ -172,8 +173,8 @@ public class FileReferenceValidator implements ExternalValidator {
             } catch (IOException io) {
               problems.add(new LabelException(ExceptionType.ERROR,
                   "URI reference does not exist: " + urlRef.toString(),
-                  labelUrl.toString(),
-                  labelUrl.toString(),
+                  xml.getSystemId(),
+                  xml.getSystemId(),
                   new Integer(fileObject.getLineNumber()),
                   null));
               passFlag = false;
@@ -184,8 +185,8 @@ public class FileReferenceValidator implements ExternalValidator {
         problems.add(new LabelException(ExceptionType.FATAL,
             "Error occurred while evaluating the following xpath expression '"
             + FILE_OBJECTS_XPATH + "': " + xpe.getMessage(),
-            labelUrl.toString(),
-            labelUrl.toString(),
+            xml.getSystemId(),
+            xml.getSystemId(),
             null,
             null));
         passFlag = false;
@@ -193,8 +194,8 @@ public class FileReferenceValidator implements ExternalValidator {
     } catch (Exception e) {
       problems.add(new LabelException(ExceptionType.FATAL,
           "Error occurred while reading the uri: " + e.getMessage(),
-          labelUrl.toString(),
-          labelUrl.toString(),
+          xml.getSystemId(),
+          xml.getSystemId(),
           null,
           null)
       );
@@ -205,16 +206,5 @@ public class FileReferenceValidator implements ExternalValidator {
       container.addException(problem);
     }
     return passFlag;
-  }
-
-  @Override
-  public boolean validate(ExceptionContainer container, File labelFile) {
-    URL url = null;
-    try {
-      url = labelFile.toURI().toURL();
-    } catch (MalformedURLException mu) {
-      //Ignore
-    }
-    return validate(container, url);
   }
 }

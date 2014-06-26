@@ -15,8 +15,6 @@ package gov.nasa.pds.tools.util;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,7 @@ import javax.xml.xpath.XPathExpressionException;
 import net.sf.saxon.Configuration;
 import net.sf.saxon.event.ParseOptions;
 import net.sf.saxon.om.DocumentInfo;
-import net.sf.saxon.tinytree.TinyElementImpl;
+import net.sf.saxon.tinytree.TinyNodeImpl;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.xpath.XPathEvaluator;
 
@@ -59,6 +57,9 @@ public class XMLExtractor {
     XPathException {
       this.xml = xml;
       this.xpath = new XPathEvaluator(this.xml.getConfiguration());
+      Configuration configuration = xpath.getConfiguration();
+      configuration.setLineNumbering(true);
+      configuration.setXIncludeAware(true);
       String definedNamespace = getValueFromDoc("namespace-uri(/*)");
       xpath.getStaticContext().setDefaultElementNamespace(definedNamespace);
     }
@@ -148,7 +149,7 @@ public class XMLExtractor {
      *
      * @throws XPathExpressionException If the given expression was malformed.
      */
-    public TinyElementImpl getNodeFromDoc(String expression)
+    public TinyNodeImpl getNodeFromDoc(String expression)
     throws XPathExpressionException {
         return getNodeFromItem(expression, xml);
     }
@@ -164,9 +165,9 @@ public class XMLExtractor {
      *
      * @throws XPathExpressionException If the given expression was malformed.
      */
-    public TinyElementImpl getNodeFromItem(String expression, Object item)
+    public TinyNodeImpl getNodeFromItem(String expression, Object item)
     throws XPathExpressionException {
-        return (TinyElementImpl) xpath.evaluate(expression, item,
+        return (TinyNodeImpl) xpath.evaluate(expression, item,
             XPathConstants.NODE);
     }
 
@@ -198,11 +199,11 @@ public class XMLExtractor {
     public List<String> getValuesFromItem(String expression, Object item)
     throws XPathExpressionException {
         List<String> vals = new ArrayList<String>();
-        List<TinyElementImpl> nList = (List<TinyElementImpl>) xpath.evaluate(
+        List<TinyNodeImpl> nList = (List<TinyNodeImpl>) xpath.evaluate(
             expression, item, XPathConstants.NODESET);
         if (nList != null) {
             for (int i = 0, sz = nList.size(); i < sz; i++) {
-                TinyElementImpl aNode = nList.get(i);
+                TinyNodeImpl aNode = nList.get(i);
                 vals.add(aNode.getStringValue());
             }
         }
@@ -228,7 +229,7 @@ public class XMLExtractor {
      *
      * @throws XPathExpressionException If the given expression was malformed.
      */
-    public List<TinyElementImpl> getNodesFromDoc(String expression)
+    public List<TinyNodeImpl> getNodesFromDoc(String expression)
     throws XPathExpressionException {
         return getNodesFromItem(expression, xml);
     }
@@ -244,9 +245,9 @@ public class XMLExtractor {
      *
      * @throws XPathExpressionException If the given expression was malformed.
      */
-    public List<TinyElementImpl> getNodesFromItem(String expression, Object item)
+    public List<TinyNodeImpl> getNodesFromItem(String expression, Object item)
     throws XPathExpressionException {
-        return (List<TinyElementImpl>) xpath.evaluate(
+        return (List<TinyNodeImpl>) xpath.evaluate(
                 expression, item, XPathConstants.NODESET);
     }
 }

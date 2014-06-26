@@ -1,4 +1,4 @@
-//	Copyright 2009-2010, by the California Institute of Technology.
+//	Copyright 2009-2014, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -58,6 +58,10 @@ public class LabelException extends Exception {
         + test + "\"]", "", filepath, -1, -1);
   }
 
+  public LabelException(ExceptionType exceptionType, String message, String filepath) {
+    this(exceptionType, message, "", filepath, -1, -1);
+  }
+  
   public ExceptionType getExceptionType() {
     return this.exceptionType;
   }
