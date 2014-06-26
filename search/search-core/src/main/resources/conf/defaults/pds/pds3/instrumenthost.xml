@@ -52,7 +52,8 @@
 		<field name="instrument_host_description" type="string">
 			<registryPath>instrument_host_description</registryPath>
 		</field>
-		<field name="external_reference_description" type="string">
+		<field name="external_reference_text" type="string">
+			<registryPath>external_reference_text</registryPath>
 			<registryPath>external_reference_description</registryPath>
 		</field>
 	</indexFields>
