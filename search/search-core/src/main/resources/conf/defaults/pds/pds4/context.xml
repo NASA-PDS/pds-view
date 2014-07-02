@@ -126,7 +126,7 @@
 		</field>
 		<field name="investigation_name" type="string">
 			<registryPath>investigation_name</registryPath>
-			<registryPath>investigation_ref.mission_name</registryPath>
+			<registryPath>investigation_ref.investigation_name</registryPath>
 		</field>
 		<field name="investigation_type" type="string">
 			<registryPath>investigation_type</registryPath>
