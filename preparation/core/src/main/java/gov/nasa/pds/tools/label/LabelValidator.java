@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -286,7 +287,8 @@ public class LabelValidator {
     if (performsSchematronValidation()) {
       // Look for schematron files specified in a label 
       if (useLabelSchematron) {
-        labelSchematronRefs = getSchematrons(xml.getChildNodes());
+        labelSchematronRefs = getSchematrons(xml.getChildNodes(), url,
+            container);
       }
       if (cachedSchematron.isEmpty()) {
         // Use saxon for schematron (i.e. the XSLT generation).
@@ -300,12 +302,14 @@ public class LabelValidator {
         Source isoSchematron = new StreamSource(LabelValidator.class
             .getResourceAsStream("/schematron/iso_svrl_for_xslt2.xsl"));
         isoTransformer = isoFactory.newTransformer(isoSchematron);
+        isoTransformer.setErrorListener(new TransformerErrorListener());
         // Setup a different factory for user schematron files as it will not
         // use
         // the same URIResolver
         transformerFactory = TransformerFactory.newInstance();
         if (useLabelSchematron) {
-          cachedSchematron = loadLabelSchematrons(labelSchematronRefs, url, container);
+          cachedSchematron = loadLabelSchematrons(labelSchematronRefs, url,
+              container);
         } else if (userSchematronFiles == null) {
           // If user does not provide schematron then use ones in jar if available
           for (String schematronFile : VersionInfo
@@ -339,7 +343,8 @@ public class LabelValidator {
         }
       } else {
         if (useLabelSchematron) {
-          cachedSchematron = loadLabelSchematrons(labelSchematronRefs, url, container);
+          cachedSchematron = loadLabelSchematrons(labelSchematronRefs, url, 
+              container);
         }
       }
       // Boiler plate to handle parsing report outputs from schematron
@@ -383,21 +388,43 @@ public class LabelValidator {
   }
 
   public void validate(File labelFile) throws SAXException, IOException,
-      ParserConfigurationException, TransformerException, MissingLabelSchemaException {
+      ParserConfigurationException, TransformerException, 
+      MissingLabelSchemaException {
     validate(null, labelFile);
   }
 
-  public List<String> getSchematrons(NodeList nodeList) {
+  public List<String> getSchematrons(NodeList nodeList, URL url, 
+      ExceptionContainer container) {
     List<String> results = new ArrayList<String>();
+
     for (int i = 0; i < nodeList.getLength(); i++) {
       if (nodeList.item(i).getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
         ProcessingInstruction pi = (ProcessingInstruction) nodeList.item(i);
         if ("xml-model".equalsIgnoreCase(pi.getTarget())) {        
-          Pattern pattern = Pattern.compile("href=\\\"([^=]*)\\\"( schematypens=\\\"([^=]*)\\\")?");
+          Pattern pattern = Pattern.compile(
+              "href=\\\"([^=]*)\\\"( schematypens=\\\"([^=]*)\\\")?");
           String filteredData = pi.getData().replaceAll("\\s+", " ");
           Matcher matcher = pattern.matcher(filteredData);
           if (matcher.matches()) {
-            results.add(matcher.group(1).trim());
+            String value = matcher.group(1).trim();
+            URL schematronRef = null;
+            try {
+              schematronRef = new URL(value);
+            } catch (MalformedURLException ue) {
+              // The schematron specification value does not appear to be 
+              // a URL. Assume a local reference to the schematron and
+              // attempt to resolve it.
+              try {
+                schematronRef = new URL(new URL(pi.getBaseURI()), value);
+              } catch (MalformedURLException mue) {
+                container.addException(new LabelException(ExceptionType.ERROR, 
+                    "Cannot resolve schematron specification '"
+                        + value + "': " + mue.getMessage(), 
+                        url.toString()));
+                continue;
+              }
+            }
+            results.add(schematronRef.toString());
           }
         }
       }
