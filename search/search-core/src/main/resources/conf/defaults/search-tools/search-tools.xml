@@ -26,7 +26,6 @@
       <field name="data_object_type">IMAGE</field>
       <field name="data_object_type">SPECTRAL_QUBE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -117,7 +116,6 @@
       <field name="data_object_type">TABLE</field>
       <field name="data_object_type">QUBE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -161,7 +159,6 @@
       <field name="target_type">PLANET</field>
       <field name="data_object_type">IMAGE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -234,7 +231,6 @@
       <field name="data_object_type">QUBE</field>
       <field name="data_object_type">TABLE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -275,7 +271,6 @@
       <field name="data_object_type">IMAGE</field>
       <field name="data_object_type">{IMAGE, TABLE, ARRAY}</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -368,7 +363,6 @@
       <field name="data_object_type">SPREADSHEET</field>
       <field name="data_object_type">TABLE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -392,7 +386,6 @@
       <field name="target_type">PLANET</field>
       <field name="data_object_type">IMAGE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -417,7 +410,6 @@
       <field name="target_type">PLANET</field>
       <field name="data_object_type">IMAGE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -447,7 +439,6 @@
       <field name="data_object_type">IMAGE</field>
       <field name="data_object_type">TABLE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -484,7 +475,6 @@
       <field name="data_object_type">IMAGE</field>
       <field name="data_object_type">TABLE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -608,7 +598,6 @@
       <field name="target_type">RING</field>
       <field name="target_type">SATELLITE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -700,7 +689,6 @@
       <field name="target_type">STAR</field>
       <field name="data_object_type">IMAGE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -842,7 +830,6 @@
       <field name="data_object_type">SPREADSHEET</field>
       <field name="data_object_type">TABLE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -907,7 +894,6 @@
       <field name="data_object_type">SPREADSHEET</field>
       <field name="data_object_type">TABLE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -1094,7 +1080,6 @@
       <field name="data_object_type">SPREADSHEET</field>
       <field name="data_object_type">TABLE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -1125,7 +1110,6 @@
       <field name="data_object_type">TABLE</field>
       <field name="data_object_type">TIME_SERIES</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -1548,7 +1532,6 @@
       <field name="data_object_type">TIME SERIES</field>
       <field name="data_object_type">UNKNOWN</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -3546,7 +3529,6 @@
       <field name="data_object_type">TABLE</field>
       <field name="data_object_type">TEXT</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -3596,7 +3578,6 @@
       <field name="target_type">SATELLITE</field>
       <field name="data_object_type">IMAGE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -3625,7 +3606,6 @@
       <field name="target_type">PLANET</field>
       <field name="data_object_type">IMAGE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -3771,7 +3751,6 @@
       <field name="data_object_type">ARRAY</field>
       <field name="data_object_type">TIME_SERIES</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -3847,7 +3826,6 @@
       <field name="data_object_type">TIME_SERIES</field>
       <field name="data_object_type">TABLE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -3876,7 +3854,6 @@
       <field name="node_id">imaging</field>
       <field name="data_object_type">IMAGE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -3909,7 +3886,6 @@
       <field name="node_id">imaging</field>
       <field name="data_object_type">IMAGE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -3959,7 +3935,6 @@
       <field name="data_object_type">TABLE</field>
       <field name="data_object_type">IMAGE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -4014,7 +3989,6 @@
       <field name="node_id">imaging</field>
       <field name="data_object_type">IMAGE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -4042,7 +4016,6 @@
       <field name="node_id">imaging</field>
       <field name="data_object_type">TABLE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -4153,7 +4126,6 @@
       <field name="data_object_type">TABLE</field>
       <field name="data_object_type">SPECTRUM</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -4223,7 +4195,6 @@
       <field name="data_object_type">TABLE</field>
       <field name="data_object_type">SPECTRUM</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -4319,7 +4290,6 @@
       <field name="data_object_type">SPREADSHEET</field>
       <field name="data_object_type">TABLE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -4346,7 +4316,6 @@
       <field name="node_id">imaging</field>
       <field name="data_object_type">IMAGE</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
@@ -4398,7 +4367,6 @@
       <field name="data_object_type">TABLE</field>
       <field name="data_object_type">TIME SERIES</field>
       <field name="publisher">NASA.PDS</field>
-      <field name="resContext">NASA.PDS</field>
       <field name="format">XML/RDF</field>
       <field name="language">en</field>
       <field name="data_class">Product_Context_Search_Tool</field>
