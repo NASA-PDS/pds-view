@@ -560,8 +560,6 @@
    <field name="product_class" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
    <field name="publisher" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
    <field name="reference_description" type="text_general" indexed="false" stored="true" multiValued="true" />
-   <field name="resClass" type="lowercase" indexed="true" stored="true" multiValued="false" />
-   <field name="resContext" type="string" indexed="false" stored="true" multiValued="false" />
    <field name="resLocation" type="string" indexed="false" stored="true" multiValued="false" />
    <field name="resource" type="string" indexed="false" stored="true" multiValued="true" />
    <field name="resource_class" type="text_general" indexed="true" stored="true" multiValued="false" />
@@ -781,7 +779,7 @@
   <copyField source="alternate_title" dest="person" />
   
   <!-- Product Class -->
-  <copyField source="resClass" dest="product-class" />
+  <copyField source="product_class" dest="product-class" />
   
   <!-- Start Time -->
   <copyField source="investigation_start_date" dest="start-time" />

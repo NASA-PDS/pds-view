@@ -6,6 +6,10 @@
 			<registryPath>objectType</registryPath>
 			<value>Product_Data_Set_PDS3</value>
 		</query>
+		<!-- 	
+			Adding PDS3 Registry as secondary to grab the context references
+			i.e. node_ref, instrument_ref, etc. 
+		 -->
 		<dataSources>
 			<source sourceType="registry" priority="secondary" append="true">
 				<url>http://localhost:8080/registry-pds3</url>
@@ -34,6 +38,12 @@
 		</field>
 		<!--  -->
 		
+		<field name="data_class" type="string">
+			<registryPath>data_class</registryPath>
+		</field>
+		<field name="product_class" type="string">
+			<registryPath>product_class</registryPath>
+		</field>
 		<field name="objectType" type="string">
 			<registryPath>objectType</registryPath>
 		</field>
