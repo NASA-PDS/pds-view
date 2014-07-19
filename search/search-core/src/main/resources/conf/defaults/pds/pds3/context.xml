@@ -29,7 +29,7 @@
 		<field name="data_product_type" type="string">
 			<registryPath>data_class</registryPath>
 		</field>
-		<!--  -->
+		<!--   -->
 		
 		<field name="data_class" type="string">
 			<registryPath>data_class</registryPath>
