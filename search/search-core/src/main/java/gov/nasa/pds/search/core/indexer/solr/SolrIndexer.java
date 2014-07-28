@@ -32,7 +32,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 /**
- * This class creates Lucene index for ingestion into Solr
+ * This class creates Lucene index for ingestion into Solr. This is a remnant of the old
+ * Solr index generation from "ages" ago. Eventually this should probably be refactored
+ * and the index should be posted dynamically using SolrInputDocuments
  * 
  * @author pramirez
  * @author jpadams

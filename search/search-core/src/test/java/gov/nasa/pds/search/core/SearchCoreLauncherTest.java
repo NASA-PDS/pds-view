@@ -73,10 +73,8 @@ public class SearchCoreLauncherTest extends SearchCoreTest {
 					System.getProperty("user.dir") + "/"
 							+ TestConstants.SEARCH_HOME_RELATIVE,
 					"-e",
-					"-m",
-					"1",
-					"-c",
-					System.getProperty("user.dir") + "/"
+					"-m", "1",
+					"-c", System.getProperty("user.dir") + "/"
 							+ TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3", };
 			SearchCoreLauncher.main(args);
 		} catch (Exception e) {
@@ -96,9 +94,11 @@ public class SearchCoreLauncherTest extends SearchCoreTest {
 			String[] args = {
 					"-i",
 					"-e", // Only run Extractor and Indexer components
-					"-r", TestConstants.PDS3_REGISTRY_URL, "-H",
-					TestConstants.SEARCH_HOME_RELATIVE, "-e", "-m", "1", "-c",
-					TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3", };
+					"-r", TestConstants.PDS3_REGISTRY_URL, 
+					"-H", TestConstants.SEARCH_HOME_RELATIVE,
+					"-e",
+					"-m", "1", 
+					"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3", };
 			SearchCoreLauncher.main(args);
 		} catch (Exception e) {
 			fail("Registry Extractor with Relative Paths failed: "

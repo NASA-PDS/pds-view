@@ -57,8 +57,7 @@ public class SearchCorePDS3Test extends SearchCoreTest {
 					TestConstants.PDS3_REGISTRY_URL,
 					"-H",
 					TestConstants.SEARCH_HOME_RELATIVE,
-					"-m",
-					"1",
+					"-m", "1",
 					"-p",
 					TestConstants.TEST_DIR_RELATIVE
 							+ "/properties/pds3-core.properties",
@@ -87,8 +86,10 @@ public class SearchCorePDS3Test extends SearchCoreTest {
 					"-i",
 					"-e", // Only run Extractor and Indexer components
 					"-r", TestConstants.PDS3_REGISTRY_URL, "-H",
-					TestConstants.SEARCH_HOME_RELATIVE, "-m", "1", "-c",
-					TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3", "-v", "0" };
+					TestConstants.SEARCH_HOME_RELATIVE,
+					"-m", "1", 
+					"-c", TestConstants.CONFIG_DIR_RELATIVE + "pds/pds3", 
+					"-v", "0" };
 			SearchCoreLauncher.main(args);
 		} catch (Exception e) {
 			e.printStackTrace();

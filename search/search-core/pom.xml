@@ -43,7 +43,7 @@
   </licenses>
 
   <build>
-    <testSourceDirectory>src/test</testSourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
     <resources>
       <resource>
         <filtering>true</filtering>
@@ -129,18 +129,6 @@
           </execution>
         </executions>
       </plugin>
-      <!-- Clean up generated content. -->
-      <!-- plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-clean-plugin</artifactId>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>${basedir}/../tse</directory>
-            </fileset>
-          </filesets>
-        </configuration>
-      </plugin-->
     </plugins>
   </build>
 
