@@ -70,11 +70,17 @@ public class SimpleProfileManager implements ProfileManager{
 	// files and recursing into child directories
 	private void processDirectory(File dir){
 		
+		// Maybe a little heavy-handed but we have to ignore the directories
+		// created by subversion
+		if(dir.getName().equals(".svn")){
+			return;
+		}
+		
 		Debugger.debug("Processing dir " + dir.getAbsolutePath());
 		
 		String[] children = dir.list();
 		for(int i = 0; i < children.length; i++){
-			File childFile = new File(dir.getAbsoluteFile(), children[i]);
+			File childFile = new File(dir.getAbsolutePath(), children[i]);
 			if(childFile.isDirectory()){
 				processDirectory(childFile);
 			}else{

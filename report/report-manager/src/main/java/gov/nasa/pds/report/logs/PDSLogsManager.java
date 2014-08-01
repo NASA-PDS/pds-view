@@ -74,12 +74,16 @@ public class PDSLogsManager implements LogsManager {
 		String name, host, user, password;
 		boolean encrypt = false;
 		
-		name = Utility.getNodePropsString(nodeProps, Constants.NODE_NAME_KEY, true);
-		host = Utility.getNodePropsString(nodeProps, Constants.NODE_HOST_KEY, true);
-		user = Utility.getNodePropsString(nodeProps, Constants.NODE_USER_KEY, true);
+		name = Utility.getNodePropsString(nodeProps,
+				Constants.NODE_NAME_KEY, true);
+		host = Utility.getNodePropsString(nodeProps,
+				Constants.NODE_HOST_KEY, true);
+		user = Utility.getNodePropsString(nodeProps,
+				Constants.NODE_USER_KEY, false);
 		password = Utility.getNodePropsString(nodeProps,
 				Constants.NODE_PASSWORD_KEY, false);
-		encrypt = Utility.getNodePropsBool(nodeProps, Constants.NODE_ENCRYPT_KEY);
+		encrypt = Utility.getNodePropsBool(nodeProps,
+				Constants.NODE_ENCRYPT_KEY);
 		
 		try{
 			if(!logPuller.connect(host, user, password, encrypt)){
