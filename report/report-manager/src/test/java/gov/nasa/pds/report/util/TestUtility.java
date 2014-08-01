@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.*;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.Ignore;
 
@@ -78,4 +80,5 @@ public class TestUtility {
 	public static void reportMgrTearDown() throws IOException {
 		FileUtils.forceDelete(new File(Utility.getAbsolutePath(TestConstants.TEST_DUMP_RELATIVE)));
 	}
+
 }

@@ -15,6 +15,8 @@
 
 package gov.nasa.pds.report.constants;
 
+import gov.nasa.pds.report.util.Utility;
+
 import org.junit.Ignore;
 
 /**
@@ -42,5 +44,17 @@ public final class TestConstants {
 	public static final String SITES_TEST_FILE_PATH = TEST_DIR_RELATIVE + "etc/conf/RemoteSpecs.xml";
 	
 	public static final String PROPERTIES_TEST_FILE_PATH = TEST_DIR_RELATIVE + "etc/push_pull_framework.properties";
+	
+	// Test constants to help test the pulling of logs
+	public static final String TEST_NODE = "test_img_1";
+	public static final String TEST_HOST = "pdsimg-1.jpl.nasa.gov";
+	public static final String TEST_USER = "pdsrpt";
+	public static final String TEST_PASSWORD =
+			"QRo5tViYmZgJYNObaALN5wTX911Jagn2";
+	public static final boolean TEST_ENCRYPTED = true;
+	public static final String TEST_PATH =
+			"/var/log/httpd/access_log.2014-03-01.txt";
+	public static final String TEST_STAGING_DIR = 
+			Utility.getAbsolutePath(TestConstants.TEST_DUMP_RELATIVE);
 
 }

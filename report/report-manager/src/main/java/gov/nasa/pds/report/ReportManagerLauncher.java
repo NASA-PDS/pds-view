@@ -17,28 +17,22 @@ package gov.nasa.pds.report;
 
 import gov.nasa.pds.report.cli.options.Flag;
 import gov.nasa.pds.report.cli.options.InvalidOptionException;
-import gov.nasa.pds.report.exception.ReportManagerFatalException;
+import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.logging.ToolsLevel;
 import gov.nasa.pds.report.logging.ToolsLogRecord;
 import gov.nasa.pds.report.logging.formatter.ReportManagerFormatter;
 import gov.nasa.pds.report.logging.handler.PDSFileHandler;
 import gov.nasa.pds.report.logging.handler.PDSStreamHandler;
-import gov.nasa.pds.report.logs.LogsManagerException;
 import gov.nasa.pds.report.util.ToolInfo;
 import gov.nasa.pds.report.util.Utility;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.StreamHandler;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
@@ -95,8 +89,9 @@ public class ReportManagerLauncher {
 	  private void logHeader() {
 	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
 	        "PDS Report Service Manager Run Log\n"));
-	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
-	        "Version                     " + ToolInfo.getVersion()));
+	    // TODO: Fix this
+	    /*log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+	        "Version                     " + ToolInfo.getVersion()));*/
 	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
 	        "Time                        " + Utility.getDateTime()));
 	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
@@ -219,18 +214,41 @@ public class ReportManagerLauncher {
 	/**
 	 * Executes the necessary functions in order to copy the log files and
 	 * update the database.
-	 * @throws LogsManagerException
-	 *
-	 * @throws ReportManagerException
-	 * @throws SQLException
 	 */
-	public void execute() throws LogsManagerException {
+	public void execute(){
 		ReportServiceManager rsMgr = new ReportServiceManager();
 
+		// Read the profiles from disk if needed
+		if(this.pullFlag){
+			try{
+				// TODO: Allow the use to override the profile location using
+				// rsMgr.setProfileDir()
+				rsMgr.readProfiles();
+			}catch(IOException e){
+				// TODO: Log an error
+			}
+		}
+		
+		// Pull the logs if specified
 		if (this.pullFlag) {
 			rsMgr.pullLogs();
 		}
+		
 	}
+	
+	private boolean loadConfiguration(){
+		
+		try{
+			System.getProperties().load(new FileInputStream(
+					Constants.DEFAULT_CONFIG_PATH));
+		}catch(IOException e){
+			// TODO: Log an error
+			return false;
+		}
+		return true;
+		
+	}
+	
 /*	private void execute() throws RSUpdateException, SQLException {
 		try {
 			 Use propsHome to create DBUtil object
@@ -301,10 +319,13 @@ public class ReportManagerLauncher {
 		}
 		try {
 			ReportManagerLauncher launcher = new ReportManagerLauncher();
+			if(!launcher.loadConfiguration()){
+				System.out.println("\n Failed to load the default configuration");
+				System.exit(1);
+			}
 			CommandLine commandline = launcher.parse(args);
 			launcher.query(commandline);
 			launcher.execute();
-
 			launcher.closeHandlers();
 		} catch (Exception e) {
 			e.printStackTrace();

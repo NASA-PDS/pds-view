@@ -4,6 +4,8 @@ import gov.nasa.pds.report.constants.Constants;
 
 import org.jasypt.util.text.StrongTextEncryptor;
 
+// TODO: Currently, this class' name and members are structured more for the
+// old database-driven implementation.  Change these to something more suitable.
 public class LogSet {
 
 	private int logSetId;
@@ -15,6 +17,8 @@ public class LogSet {
 	private String username;
 	private String password;
 	private String pathname;
+	private String xferType;
+	private boolean encrypted;
 
 	private StrongTextEncryptor encryptor;
 
@@ -30,6 +34,7 @@ public class LogSet {
 		this.pathname = "";
 		this.activeFlag = "";
 		this.setNumber = 0;
+		this.encrypted = false;
 	}
 
 	private void setEncryptor() {
@@ -129,4 +134,31 @@ public class LogSet {
 		}
 		return false;
 	}
+	
+	public String getXferType(){
+		return xferType;
+	}
+	
+	public void setXferType(String xferType){
+		this.xferType = xferType;
+	}
+	
+	public boolean getEncrypted(){
+		return encrypted;
+	}
+	
+	public void setEncrypted(boolean encrypted){
+		this.encrypted = encrypted;
+	}
+	
+	public String toString(){
+		String str = "name:" + this.label;
+		str += "\nhost:" + this.hostname;
+		str += "\nuser:" + this.username;
+		str += "\npassword:" + this.password;
+		str += "\ntransfer type:" + this.xferType;
+		str += "\nencrypted:" + this.encrypted;
+		return str;
+	}
+	
 }

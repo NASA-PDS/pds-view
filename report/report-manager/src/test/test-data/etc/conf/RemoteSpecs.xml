@@ -18,50 +18,50 @@
 <remoteSpecs>
     
     <aliasSpecs>
-        <aliasSpec file="/Users/jpadams/Documents/workspace/pds4-workspace/report/report-manager/./src/test/test-data//etc/conf/ExternalSources.xml"/>
+        <aliasSpec file="/Users/resneck/development/pds-report-trunk/report-manager/./src/test/test-data//etc/conf/ExternalSources.xml"/>
     </aliasSpecs>
 
     <daemons>
     	<!-- IMG HTTP -->
         <daemon alias="img-http-pdsimg1" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="yes">
-            <propInfo dir="/Users/jpadams/Documents/workspace/pds4-workspace/report/report-manager/./src/test/test-data//etc/conf/DirStructXmlParserFiles">
+            <propInfo dir="/Users/resneck/development/pds-report-trunk/report-manager/./src/test/test-data//etc/conf/DirStructXmlParserFiles">
                 <propFiles regExp="pdsimg\.xml" parser="org.apache.oodt.cas.pushpull.filerestrictions.parsers.DirStructXmlParser"/>
             </propInfo>
-            <dataInfo stagingArea="/Users/jpadams/Documents/workspace/pds4-workspace/report/report-manager/./target/test/logs/img/img-http-pdsimg1" deleteFromServer="no"/>
+            <dataInfo stagingArea="/Users/resneck/development/pds-report-trunk/report-manager/./target/test/logs/img/img-http-pdsimg1" deleteFromServer="no"/>
         </daemon>
         <daemon alias="img-http-pdsimg2" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="yes">
-            <propInfo dir="/Users/jpadams/Documents/workspace/pds4-workspace/report/report-manager/./src/test/test-data//etc/conf/DirStructXmlParserFiles">
+            <propInfo dir="/Users/resneck/development/pds-report-trunk/report-manager/./src/test/test-data//etc/conf/DirStructXmlParserFiles">
                 <propFiles regExp="img-http-pdsimg\.xml" parser="org.apache.oodt.cas.pushpull.filerestrictions.parsers.DirStructXmlParser"/>
             </propInfo>
-            <dataInfo stagingArea="/Users/jpadams/Documents/workspace/pds4-workspace/report/report-manager/./target/test/logs/img/img-http-pdsimg2" deleteFromServer="no"/>
+            <dataInfo stagingArea="/Users/resneck/development/pds-report-trunk/report-manager/./target/test/logs/img/img-http-pdsimg2" deleteFromServer="no"/>
         </daemon>
         <daemon alias="img-http-pdsimg3" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="yes">
-            <propInfo dir="/Users/jpadams/Documents/workspace/pds4-workspace/report/report-manager/./src/test/test-data//etc/conf/DirStructXmlParserFiles">
+            <propInfo dir="/Users/resneck/development/pds-report-trunk/report-manager/./src/test/test-data//etc/conf/DirStructXmlParserFiles">
                 <propFiles regExp="img-http-pdsimg\.xml" parser="org.apache.oodt.cas.pushpull.filerestrictions.parsers.DirStructXmlParser"/>
             </propInfo>
-            <dataInfo stagingArea="/Users/jpadams/Documents/workspace/pds4-workspace/report/report-manager/./target/test/logs/img/img-http-pdsimg3" deleteFromServer="no"/>
+            <dataInfo stagingArea="/Users/resneck/development/pds-report-trunk/report-manager/./target/test/logs/img/img-http-pdsimg3" deleteFromServer="no"/>
         </daemon>
         
         <!-- EN HTTP -->
         <daemon alias="en-tomcat-pdsdlb1" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="yes">
-            <propInfo dir="/Users/jpadams/Documents/workspace/pds4-workspace/report/report-manager/./src/test/test-data//etc/conf/DirStructXmlParserFiles">
+            <propInfo dir="/Users/resneck/development/pds-report-trunk/report-manager/./src/test/test-data//etc/conf/DirStructXmlParserFiles">
                 <propFiles regExp="en-tomcat-pdsdlb\.xml" parser="org.apache.oodt.cas.pushpull.filerestrictions.parsers.DirStructXmlParser"/>
             </propInfo>
-            <dataInfo stagingArea="/Users/jpadams/Documents/workspace/pds4-workspace/report/report-manager/./target/test/logs/en/en-tomcat-pdsdlb1" deleteFromServer="no"/>
+            <dataInfo stagingArea="/Users/resneck/development/pds-report-trunk/report-manager/./target/test/logs/en/en-tomcat-pdsdlb1" deleteFromServer="no"/>
         </daemon>
         <daemon alias="en-tomcat-pdsdlb2" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="yes">
-            <propInfo dir="/Users/jpadams/Documents/workspace/pds4-workspace/report/report-manager/./src/test/test-data//etc/conf/DirStructXmlParserFiles">
+            <propInfo dir="/Users/resneck/development/pds-report-trunk/report-manager/./src/test/test-data//etc/conf/DirStructXmlParserFiles">
                 <propFiles regExp="en-tomcat-pdsdlb\.xml" parser="org.apache.oodt.cas.pushpull.filerestrictions.parsers.DirStructXmlParser"/>
             </propInfo>
-            <dataInfo stagingArea="/Users/jpadams/Documents/workspace/pds4-workspace/report/report-manager/./target/test/logs/en/en-tomcat-pdsdlb2" deleteFromServer="no"/>
+            <dataInfo stagingArea="/Users/resneck/development/pds-report-trunk/report-manager/./target/test/logs/en/en-tomcat-pdsdlb2" deleteFromServer="no"/>
         </daemon>
         
         <!-- Rings HTTP -->
         <daemon alias="rings-http-pds-rings" rtvlMethod="gov.nasa.jpl.oodt.cas.crawl.retrievalmethod.RemoteCrawler" active="no">
-            <propInfo dir="/Users/jpadams/Documents/workspace/pds4-workspace/report/report-manager/./src/test/test-data//etc/conf/DirStructXmlParserFiles">
+            <propInfo dir="/Users/resneck/development/pds-report-trunk/report-manager/./src/test/test-data//etc/conf/DirStructXmlParserFiles">
                 <propFiles regExp="rings-http-pds-rings\.xml" parser="org.apache.oodt.cas.pushpull.filerestrictions.parsers.DirStructXmlParser"/>
             </propInfo>
-            <dataInfo stagingArea="/Users/jpadams/Documents/workspace/pds4-workspace/report/report-manager/./target/test/logs/rings/rings-http-pds-rings" deleteFromServer="no"/>
+            <dataInfo stagingArea="/Users/resneck/development/pds-report-trunk/report-manager/./target/test/logs/rings/rings-http-pds-rings" deleteFromServer="no"/>
         </daemon>
     </daemons>
     

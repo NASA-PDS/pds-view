@@ -6,10 +6,8 @@ package gov.nasa.pds.report.logs.pushpull;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,7 +21,6 @@ import gov.nasa.pds.report.util.Utility;
 import org.apache.commons.io.FileUtils;
 import org.jasypt.util.text.StrongTextEncryptor;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -77,13 +74,13 @@ public class PDSPullTest extends PDSTest {
 	
 	@Test
 	public void testConnect() throws PushPullException {
-		assertTrue(pullImpl.connect("pdsimg-1.jpl.nasa.gov", "pdsrpt", "QRo5tViYmZgJYNObaALN5wTX911Jagn2", true));
+		assertTrue(pullImpl.connect(TestConstants.TEST_HOST, TestConstants.TEST_USER, TestConstants.TEST_PASSWORD, true));
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testPrivateGetFileFileList() throws Exception {
-		pullImpl.connect("pdsimg-1.jpl.nasa.gov", "pdsrpt", "QRo5tViYmZgJYNObaALN5wTX911Jagn2", true);
+		pullImpl.connect(TestConstants.TEST_HOST, TestConstants.TEST_USER, TestConstants.TEST_PASSWORD, true);
 		
 		String path="/var/log/httpd/access_log*2014-03-*";
 		
@@ -96,7 +93,8 @@ public class PDSPullTest extends PDSTest {
         }*/
 		Collections.sort(fileList);
 		assertTrue(fileList.size() == 31);
-		assertTrue(fileList.get(0).equals("access_log.2014-03-01.txt"));
+		assertTrue(fileList.get(0).equals(new File(
+				TestConstants.TEST_PATH).getName()));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -114,10 +112,10 @@ public class PDSPullTest extends PDSTest {
 		// Set some log sets to test
 		
 		// pdsimg
-		logSet.setHostname("pdsimg-1.jpl.nasa.gov");
-		logSet.setUsername("pdsrpt");
+		logSet.setHostname(TestConstants.TEST_HOST);
+		logSet.setUsername(TestConstants.TEST_USER);
 		logSet.setPassword("Jplmipl!");
-		logSet.setPathname("/var/log/httpd/access_log.2014-03-01.txt");
+		logSet.setPathname(TestConstants.TEST_PATH);
 		logSetList.add(logSet);
 		
 		// pdsen http

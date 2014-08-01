@@ -24,8 +24,11 @@ import org.apache.commons.cli.Options;
  * 
  */
 public enum Flag {
-	/** Flag to run Logs Manager component only */
+	/** Flag to instruct Logs Manager component to pull logs from nodes */
 	PULL("p", "pull-logs", "Pull logs from remote sources."),
+	
+	/** Flag to specify from where profiles should be read */
+	// TODO: Create flag to override default location of profiles
 			
 	/** PDS Default Flags for CLI - TODO should be refactored into commons enum **/
 			

@@ -15,10 +15,10 @@
 package gov.nasa.pds.report.util;
 
 import gov.nasa.pds.report.constants.Constants;
+import gov.nasa.pds.report.logs.LogsManagerException;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -27,8 +27,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Formatter;
-
+import java.util.Properties;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,7 +35,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -149,4 +147,83 @@ public class Utility {
 		
 		return valueList;
 	}
+	
+	// TODO: Create javadoc headers for the node Properties utility methods
+	
+	public static String getNodePropsString(Properties nodeProps, String key,
+			boolean needed) throws LogsManagerException{
+		
+		String nodeName = null;
+		if(key == null || key.equals("")){
+			throw new LogsManagerException("Cannot fetch String value of " +
+					"null key from node properties.");
+		}
+		if(!key.equals(Constants.NODE_NAME_KEY)){
+			nodeName = getNodePropsString(nodeProps,
+					Constants.NODE_NAME_KEY, false);
+		}
+		if(!nodeProps.containsKey(key)){
+			if(needed){
+				if(nodeName != null){
+					throw new LogsManagerException(key +
+							" value does not exist for node " + nodeName);
+				}else{
+					throw new LogsManagerException(key +
+							" value does not exist for unnamed node:\n" +
+							nodeProps.toString());
+				}
+			}else{
+				return null;
+			}
+		}
+		String info = nodeProps.getProperty(key);
+		if(needed && (info == null || info.equals(""))){
+			if(nodeName != null){
+				throw new LogsManagerException(key +
+						" value is empty for node " + nodeName);
+			}else{
+				throw new LogsManagerException(key +
+						" value is empty for unnamed node:\n" +
+						nodeProps.toString());
+			}
+		}
+		return info;
+		
+	}
+	
+	public static boolean getNodePropsBool(Properties nodeProps, String key)
+			throws LogsManagerException{
+		
+		if(key == null || key.equals("")){
+			throw new LogsManagerException("Cannot fetch boolean value of " +
+					"null key from node properties.");
+		}
+		String nodeName = getNodePropsString(nodeProps,
+				Constants.NODE_NAME_KEY, false);
+		if(!nodeProps.containsKey(key)){
+			if(nodeName != null){
+				throw new LogsManagerException(key +
+						" value does not exist for node " + nodeName);
+			}else{
+				throw new LogsManagerException(key +
+						" value does not exist for unnamed node:\n" +
+						nodeProps.toString());
+			}
+		}
+		String infoStr = nodeProps.getProperty(key);
+		if(infoStr == null || infoStr.equals("")){
+			if(nodeName != null){
+				throw new LogsManagerException(key +
+						" value is empty for node " + nodeName);
+			}else{
+				throw new LogsManagerException(key +
+						" value is empty for unnamed node:\n" +
+						nodeProps.toString());
+			}
+		}
+		return Boolean.valueOf(infoStr);
+		
+	}
+	
+	
 }
