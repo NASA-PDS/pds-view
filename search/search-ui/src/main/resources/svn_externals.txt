@@ -1,5 +1,5 @@
-css				http://starcell.jpl.nasa.gov/repo/websites/pds-beta/css
-include				http://starcell.jpl.nasa.gov/repo/websites/pds-beta/include
-js				http://starcell.jpl.nasa.gov/repo/websites/pds-beta/js
-images				http://starcell.jpl.nasa.gov/repo/websites/pds-beta/images
-scripts				http://starcell.jpl.nasa.gov/repo/websites/pds-beta/scripts
+css      https://starcell.jpl.nasa.gov/repo/websites/pds-beta/css
+include  https://starcell.jpl.nasa.gov/repo/websites/pds-beta/include
+js       https://starcell.jpl.nasa.gov/repo/websites/pds-beta/js
+images   https://starcell.jpl.nasa.gov/repo/websites/pds-beta/images
+scripts  https://starcell.jpl.nasa.gov/repo/websites/pds-beta/scripts
