@@ -649,6 +649,28 @@ public class CIToolIngester {
     			else
     				values = new ArrayList<String>();
     			
+    			// PDS-278 issue
+    			String dsCollKey = "DATA_SET_COLL_OR_DATA_SET_ID";
+    			if (md.containsKey(key)) {
+    				if (md.containsKey(dsCollKey)) {
+    					System.err.println("\nBoth DATA_SET_ID and DATA_SET_COLL_OR_DATA_SET_ID are present in a volume descriptor catalog file. " +
+        						"Remove one of them and rerun the Catalog Tool.\n");
+        				System.exit(1);
+    				}	
+    			}
+    			else {
+    				if (md.containsKey(dsCollKey)) {
+    					key = dsCollKey;
+    				}
+    				else {
+    					System.err.println("\nNeither DATA_SET_ID nor DATA_SET_COLL_OR_DATA_SET_ID are present in a volume descriptor catalog file. " +
+        						"Make sure to include one of them in a volume descriptor catalog file.\n");
+        				System.exit(1);
+    				}
+    			}
+    			
+    			// DATA_SET_ID or DATA_SET_COLL_OR_DATA_SET_ID, if both appears, throw an exception, don't ingest...
+    			// if one of them appear, use it.
     			if (md.isMultiValued(key)) {
     				List<String> tmpValues = md.getAllMetadata(key);
     				for (String aVal: tmpValues) {
@@ -670,7 +692,7 @@ public class CIToolIngester {
     				if (!Utility.valueExists(Constants.LID_PREFIX+"data_set:data_set."+lidValue, values)) {
     					values.add(Constants.LID_PREFIX+"data_set:data_set."+lidValue);         
     				}
-    			}
+    			} 
     			refs.put(Constants.HAS_DATASET, values);
     		}
     	}
