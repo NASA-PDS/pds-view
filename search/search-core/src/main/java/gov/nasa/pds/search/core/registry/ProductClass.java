@@ -161,6 +161,7 @@ public class ProductClass {
 						instkeys.add(searchExtrinsic.getLid());
 					    log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "Completed: " + searchExtrinsic.getLid()));
 					    SearchCoreStats.numProducts++;
+					    writer = null;	// This may solve random anomalous issue with too many open files ?
 					}
 				}
 			}
