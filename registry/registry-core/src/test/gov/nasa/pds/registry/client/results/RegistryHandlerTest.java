@@ -1,7 +1,18 @@
-/**
- * 
- */
-package gov.nasa.pds.registry.util;
+//	Copyright 2013-2014, by the California Institute of Technology.
+//	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+//	Any commercial use must be negotiated with the Office of Technology 
+//	Transfer at the California Institute of Technology.
+//	
+//	This software is subject to U. S. export control laws and regulations 
+//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+//	is subject to U.S. export control laws and regulations, the recipient has 
+//	the responsibility to obtain export licenses or other export authority as 
+//	may be required before exporting such information to foreign countries or 
+//	providing access to foreign nationals.
+//	
+//	$Id$
+//
+package gov.nasa.pds.registry.client.results;
 
 import static org.junit.Assert.*;
 import gov.nasa.pds.registry.client.results.AttributeFilter;
@@ -14,6 +25,7 @@ import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.wrapper.ExtendedExtrinsicObject;
 import gov.nasa.pds.registry.test.RegistryCoreTest;
 import gov.nasa.pds.registry.test.constants.TestConstants;
+import gov.nasa.pds.registry.util.Debugger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -168,10 +180,11 @@ public class RegistryHandlerTest extends RegistryCoreTest {
 
 	@Test
 	@Ignore
-	public void testGetExtrinsicsByLidvid() {
+	public void testGetExtrinsicsByLidvidShouldReturnCorrectExtrinsic() {
 		try {
+			// Check a lidvid with a version specified
 			String lidvid = "urn:nasa:pds:context_pds3:instrument:instrument.mri__dif::8.0";
-			this.handler.setQueryMax(10);
+			this.handler.setQueryMax(10);	// Need to reset this in order to get version 8
 			assertFalse(this.handler.getExtrinsicByLidvid(lidvid) == null);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,7 +1,7 @@
-//  Copyright 2012, California Institute of Technology.
+//  Copyright 2014, California Institute of Technology.
 //  ALL RIGHTS RESERVED. U.S. Government sponsorship acknowledged.
 //
-//  $Id: ProductClassException.java 10826 2012-07-31 18:53:24Z jpadams $
+//  $Id$
 //
 
 package gov.nasa.pds.registry.client.results;

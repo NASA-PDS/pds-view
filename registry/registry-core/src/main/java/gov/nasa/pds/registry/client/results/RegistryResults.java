@@ -229,7 +229,6 @@ public class RegistryResults {
 		
 		List<String> lidList = new ArrayList<String>();		// List to hold list of lids
 
-		List<ResultsFilter> newFilterList = new ArrayList<ResultsFilter>();
 		// Make sure we only have 1 of this lid in the list
 		// We only want 1 version of it anyways
 		if (!lidList.contains(lid) && lid != null) {
@@ -261,7 +260,6 @@ public class RegistryResults {
 	 * 							we will just ignore the lidvid filter because we know it does not exist
 	 */
 	private void applyResultsFilters(List<Object> resultObjects, ExtrinsicObject extObj, boolean ignoreVersion) {
-		Object resultObj;
 		boolean accept = true;
 		//Debugger.debug(extObj.getLid());
 		if (this.resultsFilterList.size() > 0) {
@@ -269,7 +267,7 @@ public class RegistryResults {
 				if (filter instanceof SlotFilter) {
 					if (!ignoreVersion || !((SlotFilter)filter).getName().equals("version_id")) {
 						//Debugger.debug(filter.toString());
-						if ((resultObj = filter.applyFilter(extObj)) == null) {
+						if (filter.applyFilter(extObj) == null) {
 							accept = false;
 						}
 					}

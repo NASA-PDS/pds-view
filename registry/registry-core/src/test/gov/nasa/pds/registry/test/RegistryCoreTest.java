@@ -24,11 +24,6 @@ public class RegistryCoreTest {
 	protected static Logger log = Logger.getLogger(RegistryCoreTest.class
 			.getName());
 
-	/*static {
-		log.addHandler(new RegistryStreamHandler(System.out,
-				ToolsLevel.DEBUG, new SearchCoreFormatter()));
-	}*/
-
 	/**
 	 * JUnit Test Rules to print headers for each test
 	 */

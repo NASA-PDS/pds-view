@@ -1,3 +1,17 @@
+//	Copyright 2013-2014, by the California Institute of Technology.
+//	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+//	Any commercial use must be negotiated with the Office of Technology 
+//	Transfer at the California Institute of Technology.
+//	
+//	This software is subject to U. S. export control laws and regulations 
+//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+//	is subject to U.S. export control laws and regulations, the recipient has 
+//	the responsibility to obtain export licenses or other export authority as 
+//	may be required before exporting such information to foreign countries or 
+//	providing access to foreign nationals.
+//	
+//	$Id$
+//
 package gov.nasa.pds.registry.model.wrapper;
 
 import gov.nasa.pds.registry.model.ExtrinsicObject;
@@ -46,17 +60,24 @@ public class ExtendedExtrinsicObject extends ExtrinsicObjectDecorator {
 		// This if-else handles whether the slotName is a slot,
 		// attribute, or missing altogether.
 		if (slot != null) {	// Slot exists
+			
+			// Check slot is an association ref (contains _ref)
 			if (slotIsAssociationReference(slotName)) {
+				// If it is an association ref, loop through the values
 				for (String slotValue : slot.getValues()) {
+					// If ref is not a lidvid, this is invalid
 					if (!slotValueIsLidvid(slotValue)) {
 						this.validAssociationValues = false;
 					}
 				}
 				
+				// If any association refs are invalid, note for later
 				if (!this.validAssociationValues) {
 					addInvalidAssociation(slotName);
 				}
 			}
+			
+			// Regardless of what the slot name is, return all its values
 			return slot.getValues();
 		} else if ((ra = RegistryAttributeWrapper.get(slotName)) != null) {
 			return Arrays.asList(ra.getValueFromExtrinsic(super.decoratedExtrinsic));
@@ -75,6 +96,13 @@ public class ExtendedExtrinsicObject extends ExtrinsicObjectDecorator {
 		}
 	}
 	
+	/**
+	 * Check if slot is an association reference by checking if
+	 * the slot name ends with a "_ref"
+	 * 
+	 * @param slotName
+	 * @return
+	 */
 	public boolean slotIsAssociationReference(String slotName) {
 		if (slotName.endsWith("_ref")) {
 			return true;
@@ -83,6 +111,13 @@ public class ExtendedExtrinsicObject extends ExtrinsicObjectDecorator {
 		}
 	}
 	
+	/** 
+	 * Check is slot is a lidvid. By PDS4 model definition,
+	 * lidvids are the only slot values that will contain ::
+	 * 
+	 * @param slotValue
+	 * @return
+	 */
 	public boolean slotValueIsLidvid(String slotValue) {
 		if (slotValue.contains("::")) {
 			return true;

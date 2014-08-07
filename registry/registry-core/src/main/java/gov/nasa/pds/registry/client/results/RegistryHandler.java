@@ -1,4 +1,4 @@
-//	Copyright 2013, by the California Institute of Technology.
+//	Copyright 2013-2014, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -10,7 +10,7 @@
 //	may be required before exporting such information to foreign countries or 
 //	providing access to foreign nationals.
 //	
-//	$Id: SearchCoreLauncher.java 12098 2013-09-18 15:53:49Z jpadams $
+//	$Id$
 //
 
 package gov.nasa.pds.registry.client.results;
@@ -49,6 +49,7 @@ public class RegistryHandler {
 	/** Output logger **/
 	private static Logger log = Logger.getLogger(RegistryHandler.class.getName());
 	
+	/** Set default query maximum to maximum integer **/
 	public static final int DFLT_QUERY_MAX = 999999999;
 	
 	private int queryMax = DFLT_QUERY_MAX;
