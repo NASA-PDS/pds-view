@@ -83,6 +83,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 /**
@@ -689,7 +691,6 @@ public class Products extends Tab {
 
 			@Override
 			public void onSuccess(StatusInformation result) {
-				//logger.log(Level.FINEST, "result of getStatus() = " + result.getExtrinsics());
 				long count = result.getExtrinsics();
 				logger.log(Level.FINEST, "reloadData   num of extrinsics " + count);		
 				get().recordCountContainer.setHTML("<div class=\"recordCount\">Total Records: " + count + "</div>");
@@ -750,7 +751,7 @@ public class Products extends Tab {
 			tablemodel.addFilter("status", status);
 		} 
 		
-		logger.log(Level.FINEST, "refreshTable..... tableModel.getRowCount() = " + tableModel.getRowCount());
+		//logger.log(Level.FINEST, "refreshTable..... tableModel.getRowCount() = " + tableModel.getRowCount());
 		int count = tableModel.getRowCount();						
 		// display count in page
 		//get().recordCountContainer.setHTML("<div class=\"recordCount\">Total Records: " + count + "</div>");
@@ -1011,7 +1012,19 @@ public class Products extends Tab {
 		detailTable.setText(6, 1, product.getHome());
 
 		// slots
+		// alphetize the slot keys
 		List<ViewSlot> slots = product.getSlots();
+
+		// Alphabetize the slot listing in the product details view (PDS-279)
+		if (slots.size() > 0) {
+			Collections.sort(slots, new Comparator<ViewSlot>() {
+				@Override
+				public int compare(final ViewSlot object1, final ViewSlot object2) {
+					return object1.getName().compareTo(object2.getName());
+				}
+			} );
+		}
+
 		for (int i = 0; i < slots.size(); i++) {
 			ViewSlot slot = slots.get(i);
 			int curRow = i + 7;
