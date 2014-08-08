@@ -107,7 +107,7 @@ public class ProductClass {
 	 */
 	public List<String> query(File coreConfig) throws ProductClassException, SearchCoreFatalException {
 		List<String> instkeys = new ArrayList<String>();
-		int outSeqNum = 0;
+		int outSeqNum;
 		try {
 			this.product = CoreConfigReader.unmarshall(coreConfig);
 		} catch (Exception e) {
@@ -154,6 +154,8 @@ public class ProductClass {
 						// Get class properties
 						fieldMap.putAll(setFieldValues(searchExtrinsic));
 		
+						// Output the registry doc info to an XML file
+						// TODO This should be refactored to write directly to Solr
 						writer = new XMLWriter(fieldMap, registryOutputDir,
 								outSeqNum, this.product.getSpecification().getTitle());
 						writer.write();
@@ -175,17 +177,21 @@ public class ProductClass {
 		return instkeys;
 	}
 	
-	public static List<ResultsFilter> createResultsFilters (List<Query> queryList) {
-		Map<String, String> queryMap = new HashMap<String, String>();
+	/**
+	 * Creates all results filters to be used when querying the registry, including
+	 * AttributeFilter and SlotFilter
+	 * 
+	 * @param queryList
+	 * @return
+	 */
+	private List<ResultsFilter> createResultsFilters (List<Query> queryList) {
 		List<ResultsFilter> resultsFilterList = new ArrayList<ResultsFilter>();
 		for (Query query : queryList) {
 			if (RegistryAttributeWrapper.get(query.getRegistryPath()) != null) {
 				resultsFilterList.add(new AttributeFilter(query.getRegistryPath(), query.getValue()));
-				//Debugger.debug("Adding new AttributeFilter: " + query.getRegistryPath() + " : " +query.getValue());
 				log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "Adding new AttributeFilter: " + query.getRegistryPath() + " : " +query.getValue()));
-			} else {
+			} else {	// If the registry path is not a Registry attribute, then it must be a slot
 				resultsFilterList.add(new SlotFilter(query.getRegistryPath(), query.getValue()));
-				//Debugger.debug("Adding new SlotFilter: " + query.getRegistryPath() + " : " +query.getValue());
 				log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "Adding new SlotFilter: " + query.getRegistryPath() + " : " +query.getValue()));
 			}
 		}
@@ -251,7 +257,7 @@ public class ProductClass {
 			
 			// Loop through class results beginning from top
 			for (Field field : this.product.getIndexFields().getField()) {
-				//TODO uncomment to use suffixes for field names
+				//TODO Functionality to use suffixes for field names commented out below
 				String fieldName = field.getName(); //+ SolrSchemaField.getSuffix(field.getType());
 				
 				// Handle registry path
@@ -294,9 +300,9 @@ public class ProductClass {
 		String str = outputString.getValue();
 		
 		int start, end; 
-		String key = "", value = "";
+		String key, value = "";
 
-		List<String> valueList = new ArrayList<String>();
+		List<String> valueList;
 		while (str.contains("{")) {
 			start = str.indexOf("{");
 			end = str.indexOf("}", start);
@@ -319,31 +325,6 @@ public class ProductClass {
 	}
 	
 	/**
-	 * Figures out if the registry path is an association (dot-connected string) or
-	 * just a slot. If its an association, it starts traversing the path to get the values.
-	 * If its a slot, it returns the value list.
-	 * 
-	 * @param registryPath
-	 * @param searchExtrinsic
-	 * @return
-	 * @throws Exception
-	 */
-	@Deprecated
-	private List<String> getSlotValuesFromPath(String registryPath, ExtendedExtrinsicObject searchExtrinsic) throws Exception {
-		String[] pathArray;
-		
-		if ((pathArray = registryPath.split("\\.")).length > 1) {
-			Debugger.debug("Traversing registry path - " + searchExtrinsic.getLid()
-					+ " - " + registryPath);
-			return traverseRegistryPath(Arrays.asList(pathArray), Arrays.asList(searchExtrinsic));
-		} else {	// Field is a slot
-			Debugger.debug("Getting slot values - " + searchExtrinsic.getLid()
-					+ " - " + registryPath);
-			return getValidSlotValues(searchExtrinsic, registryPath);
-		}
-	}
-	
-	/**
 	 * Figures out if the registry paths are an association (dot-connected string) or
 	 * just a slot. If its an association, it starts traversing the path to get the values.
 	 * If its a slot, it returns the value list. The list of paths allow for multiple different
@@ -359,7 +340,8 @@ public class ProductClass {
 		List<String> valueList = new ArrayList<String>();
 		
 		for (String registryPath : registryPathList) {
-			if ((pathArray = registryPath.split("\\.")).length > 1) {
+			pathArray = registryPath.split("\\.");
+			if (pathArray.length > 1) {
 				Debugger.debug("Traversing registry path - " + searchExtrinsic.getLid()
 						+ " - " + registryPath);
 				valueList.addAll(traverseRegistryPath(Arrays.asList(pathArray), Arrays.asList(searchExtrinsic)));
