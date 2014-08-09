@@ -183,17 +183,31 @@ public class ProductClass {
 	 * 
 	 * @param queryList
 	 * @return
+	 * @throws RegistryHandlerException 
 	 */
-	private List<ResultsFilter> createResultsFilters (List<Query> queryList) {
+	private List<ResultsFilter> createResultsFilters (List<Query> queryList) throws RegistryHandlerException {
 		List<ResultsFilter> resultsFilterList = new ArrayList<ResultsFilter>();
+		// version filter flag
+		boolean versionFilterFlag = false;
 		for (Query query : queryList) {
 			if (RegistryAttributeWrapper.get(query.getRegistryPath()) != null) {
 				resultsFilterList.add(new AttributeFilter(query.getRegistryPath(), query.getValue()));
 				log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "Adding new AttributeFilter: " + query.getRegistryPath() + " : " +query.getValue()));
 			} else {	// If the registry path is not a Registry attribute, then it must be a slot
+				// Set our flag if the path is the version_id slot
+				if (query.getRegistryPath().equals(ResultsFilter.VERSION_ID)) {
+					versionFilterFlag = true;
+				}
+				
 				resultsFilterList.add(new SlotFilter(query.getRegistryPath(), query.getValue()));
 				log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "Adding new SlotFilter: " + query.getRegistryPath() + " : " +query.getValue()));
 			}
+		}
+		
+		// We only want the latest version of all products (PDS-286)
+		// so let's add in another AttributeFilter on version_id if we haven't added on
+		if (!versionFilterFlag) {
+			resultsFilterList.add(new SlotFilter(ResultsFilter.VERSION_ID, ResultsFilter.LATEST_VERSION));
 		}
 		
 		return resultsFilterList;

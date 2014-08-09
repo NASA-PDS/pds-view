@@ -6,17 +6,22 @@
 			<registryPath>objectType</registryPath>
 			<value>Product_Data_Set_PDS3</value>
 		</query>
+		<query>
+			<registryPath>lid</registryPath>
+			<value>urn:nasa:pds:context_pds3:data_set:data_set.ear-a-compil-5-tnocenalb-v1.0</value>
+		</query>
 	</specification>
 
 	<indexFields>
-		<field name="search_id" type="required">
+		<field name="version_id" type="string">
+			<registryPath>version_id</registryPath>
+		</field>
+		<field name="search-id" type="required">
 			<outputString format="text">pds3:{lid}</outputString>
 		</field>
 		<field name="identifier" type="required">
 			<registryPath>lid</registryPath>
 		</field>
-		
-		<!-- Search UI Fields -->
 		<field name="title" type="required">
 			<registryPath>name</registryPath>
 		</field>
@@ -25,20 +30,6 @@
 		</field>
 		<field name="resLocation" type="required">
 			<outputString format="url">/ds-view/pds/viewDataset.jsp?dsid={data_set_id}</outputString>
-		</field>
-		<field name="data_product_type" type="required">
-			<outputString format="text">Data_Set</outputString>
-		</field>
-		<!--  -->
-		
-		<field name="version_id" type="string">
-			<registryPath>version_id</registryPath>
-		</field>
-		<field name="data_class" type="string">
-			<registryPath>data_class</registryPath>
-		</field>
-		<field name="product_class" type="string">
-			<registryPath>product_class</registryPath>
 		</field>
 		<field name="objectType" type="string">
 			<registryPath>objectType</registryPath>
@@ -118,18 +109,14 @@
 		<field name="instrument_name" type="string">
 			<registryPath>instrument_ref.instrument_name</registryPath>
 		</field>
-		<field name="resource_ref" type="string">
-			<registryPath>resource_ref</registryPath>
+		<field name="resource_id" type="string">
+			<registryPath>resource_ref.lid</registryPath>
 		</field>
 		<field name="data_set_description" type="string">
 			<registryPath>data_set_description</registryPath>
 		</field>
 		<field name="confidence_level_note" type="string">
 			<registryPath>data_set_confidence_level_note</registryPath>
-		</field>
-		<field name="external_reference_text" type="string">
-			<registryPath>external_reference_text</registryPath>
-			<registryPath>external_reference_description</registryPath>
 		</field>
 	</indexFields>
 </product>

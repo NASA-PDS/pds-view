@@ -3,11 +3,8 @@
  */
 package gov.nasa.pds.search.core.registry;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import gov.nasa.pds.registry.client.results.RegistryHandler;
-import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.wrapper.ExtendedExtrinsicObject;
 import gov.nasa.pds.search.core.constants.Constants;
 import gov.nasa.pds.search.core.constants.TestConstants;
@@ -21,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -54,6 +52,7 @@ public class ProductClassTest extends SearchCoreTest {
 	public static void oneTimeSetUp() throws IOException {
 		FileUtils.forceMkdir(TEST_DIR);
 		Debugger.debugFlag = true;
+		gov.nasa.pds.registry.util.Debugger.debugFlag = true;
 	}
 
 	/*
@@ -211,6 +210,25 @@ public class ProductClassTest extends SearchCoreTest {
 			assertTrue(this.pc.checkForSubstring(outputString, extObject).equals("pds4:urn:nasa:pds:context_pds3:instrument:instrument.mri__dif"));
 		} catch (Exception e) {
 			fail("Check substring unit test failed.");
+		}
+	}
+	
+	@Test
+	public void testLastVersionOnlyQueried() throws SearchCoreFatalException {
+		try {
+			this.pc = new ProductClass(TEST_DIR,
+					Arrays.asList(TestConstants.PDS3_REGISTRY_URL),
+					new ArrayList<String>());
+			this.pc.setQueryMax(1000);
+			List<String> keys = this.pc.query(
+					new File(System.getProperty("user.dir") + "/"
+							+ TestConstants.TEST_DIR_RELATIVE
+							+ "config/coreConfigTestLatestVersion.xml"));
+
+			assertEquals("Returned more than one version", keys.size(), 1);
+		} catch (ProductClassException e) {
+			e.printStackTrace();
+			fail("PDS3 Query Test failed. See stack trace.");
 		}
 	}
 
