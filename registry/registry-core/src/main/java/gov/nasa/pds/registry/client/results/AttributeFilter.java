@@ -14,6 +14,8 @@
 //
 package gov.nasa.pds.registry.client.results;
 
+import gov.nasa.pds.registry.client.RegistryClient;
+import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.wrapper.RegistryAttributeWrapper;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter.Builder;
@@ -26,14 +28,14 @@ public class AttributeFilter implements ResultsFilter {
 	
 	private RegistryAttributeWrapper raw;
 
-	public AttributeFilter(RegistryAttributeWrapper raw, String value) {
+	public AttributeFilter(RegistryAttributeWrapper raw, String value) throws RegistryHandlerException {
 		this.raw = raw;
 		this.value = value;
 		
-		this.name = raw.getName();
+		setName(raw.getName());
 	}
 	
-	public AttributeFilter(String name, String value) {
+	public AttributeFilter(String name, String value) throws RegistryHandlerException {
 		this.name = name;
 		this.value = value;
 		
@@ -63,12 +65,17 @@ public class AttributeFilter implements ResultsFilter {
 			return filter;
 		}
 	}
+	
+	@Override
+	public Object applyFilter(RegistryClient client, Object filterObject) throws RegistryServiceException {
+		return applyFilter(filterObject);
+	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) throws RegistryHandlerException {
 		this.name = name;
 	}
 
@@ -84,8 +91,9 @@ public class AttributeFilter implements ResultsFilter {
 		return raw;
 	}
 
-	public void setRaw(RegistryAttributeWrapper raw) {
+	public void setRaw(RegistryAttributeWrapper raw) throws RegistryHandlerException {
 		this.raw = raw;
+		setName(raw.getName());
 	}
 	
 	@Override

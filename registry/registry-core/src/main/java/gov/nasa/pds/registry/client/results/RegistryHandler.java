@@ -159,13 +159,18 @@ public class RegistryHandler {
 
 		//Debugger.debug("LID from lidvid: " + lid);
 
-		if (splitLidvid.size() > 1) {
-			filterList.add(new SlotFilter("version_id", splitLidvid.get(1)));
-		} else if (splitLidvid.size() == 0) { // Handles lidvids with bad format (:
-											// instead of ::)
+		// Check the varying "types" of lidvids
+		if (splitLidvid.size() == 2) {
+			// First we handle those "real" lidvids with format lid::version_id
+			filterList.add(new SlotFilter(SlotFilter.VERSION_ID, splitLidvid.get(1)));
+		} else if ((splitLidvid.size() == 1)) {
+			// Next we handle those without a version_id by just looking for the latest
+			filterList.add(new SlotFilter(SlotFilter.VERSION_ID, SlotFilter.LATEST_VERSION));
+		} else {
+			// Finally we handle those lidvids with only 1 colon
 			splitLidvid = Arrays.asList(lidvid.split(":"));
 			filterList.add(new AttributeFilter(RegistryAttributeWrapper.LOGICAL_IDENTIFIER, lidvid.substring(0, lidvid.lastIndexOf(":"))));
-			filterList.add(new SlotFilter("version_id", splitLidvid.get(1)));
+			filterList.add(new SlotFilter(SlotFilter.VERSION_ID, splitLidvid.get(1)));
 
 			log.log(Level.SEVERE, "BAD LIDVID - " + lid + " -- " + version);
 		}
@@ -174,7 +179,7 @@ public class RegistryHandler {
 		// object, which means we will want to search in all available registries for it
 		RegistryResults results = getExtrinsicsWithFilter(this.allRegistries, filterList, DFLT_QUERY_MAX);
 		
-		List<Object> extList = new ArrayList<Object>();
+		List<Object> extList;
 		if (results.nextPage()) {
 			extList = results.getResultObjects();
     		return new ExtendedExtrinsicObject((ExtrinsicObject) extList.get(0));		// We know it will only return one object because
@@ -199,7 +204,7 @@ public class RegistryHandler {
 		ResultsFilter filter = new AttributeFilter(RegistryAttributeWrapper.GUID, guid);
 		RegistryResults results = getExtrinsicsWithFilter(this.allRegistries, Arrays.asList(filter), this.queryMax);
 		
-		List<Object> extList = new ArrayList<Object>();
+		List<Object> extList;
 		if (results.nextPage()) {
 			extList = results.getResultObjects();
     		return new ExtendedExtrinsicObject((ExtrinsicObject)extList.get(0));		// We know it will only return one object because
@@ -315,20 +320,29 @@ public class RegistryHandler {
 	 * @throws RegistryHandlerException
 	 */
 	private RegistryResults getExtrinsicsWithFilter(List<String> registryUrlList, List<ResultsFilter> resultsFilterList, int queryMax) throws RegistryHandlerException {
-	
+	// Let's get our builder ready
 	ExtrinsicFilter.Builder builder = new ExtrinsicFilter.Builder();
+	
+	// At start, assume all filters are slotFilters
 	List<ResultsFilter> slotFilters = new ArrayList<ResultsFilter>();
 	slotFilters.addAll(resultsFilterList);
+	
+	// Loop through results filters
 	for (ResultsFilter resultsFilter : resultsFilterList) {
+		// We only care about the attribute filters right now, because they can be applied
+		// at our initial query of the registry
 		if (resultsFilter instanceof AttributeFilter) {
 			// Apply the filter for the attribute
 			resultsFilter.applyFilter(builder);
+			
+			// This filter isn't a slot filter, so lets remove it from our list
 			slotFilters.remove(resultsFilter);
 			
 			Debugger.debug(resultsFilter.toString());
 		}
 	}
 	
+	// We are done adding to our builder, let's compile them up into one big filter
 	ExtrinsicFilter filter = builder.build();
 	
 	// Create the query
@@ -336,6 +350,7 @@ public class RegistryHandler {
 			.filter(filter).build();
 	
 		try {	
+			// return the results from the query
 			return new RegistryResults(registryUrlList, query, queryMax, slotFilters);
 		} catch (RegistryClientException e) {
 			throw new RegistryHandlerException(e.getClass().getName() + ": " + e.getMessage());

@@ -15,6 +15,7 @@
 package gov.nasa.pds.registry.client.results;
 
 import static org.junit.Assert.*;
+import gov.nasa.pds.registry.client.RegistryClient;
 import gov.nasa.pds.registry.client.results.AttributeFilter;
 import gov.nasa.pds.registry.client.results.RegistryHandler;
 import gov.nasa.pds.registry.client.results.RegistryHandlerException;
@@ -56,7 +57,7 @@ public class RegistryHandlerTest extends RegistryCoreTest {
 	private Map<String, String> queryMap;
 
 	@Rule
-	public SingleTestRule test = new SingleTestRule("");
+	public SingleTestRule test = new SingleTestRule("testGetExtrinsicsByLidvidShouldReturnCorrectExtrinsic");
 
 	@BeforeClass
 	public static void oneTimeSetUp() {
@@ -179,13 +180,31 @@ public class RegistryHandlerTest extends RegistryCoreTest {
 	}
 
 	@Test
-	@Ignore
 	public void testGetExtrinsicsByLidvidShouldReturnCorrectExtrinsic() {
 		try {
-			// Check a lidvid with a version specified
-			String lidvid = "urn:nasa:pds:context_pds3:instrument:instrument.mri__dif::8.0";
+			log.info("Check a lidvid with a version specified");
+			String lid = "urn:nasa:pds:context_pds3:data_set:data_set.ear-a-compil-5-tnocenalb-v1.0";
+			String version = "1.0";
 			this.handler.setQueryMax(10);	// Need to reset this in order to get version 8
-			assertFalse(this.handler.getExtrinsicByLidvid(lidvid) == null);
+			ExtendedExtrinsicObject extObj = this.handler.getExtrinsicByLidvid(lid+"::"+version);
+			
+			assertNotNull("returned null extrinsic object - " + lid+"::"+version, extObj);
+			assertEquals("lid of object returned does not match " + lid, extObj.getLid(), lid);
+			assertEquals("version of object returned does not match " + version, extObj.getSlotValues("version_id").get(0), version);
+			
+			log.info("Check a lidvid without version specified");
+			extObj = this.handler.getExtrinsicByLidvid(lid);
+			//log.info(extObj.getGuid() + " " + extObj.getVersionName());
+			
+			RegistryClient client = new RegistryClient(TestConstants.PDS3_REGISTRY_URL);
+			ExtrinsicObject expectedExtObj = client.getLatestObject(lid, ExtrinsicObject.class);
+			//log.info(expectedExtObj.getGuid() + " " + expectedExtObj.getVersionName());
+			
+			assertNotNull("returned null extrinsic object", extObj);
+			assertEquals("extrinsic returned does not match latest", extObj.getGuid(), expectedExtObj.getGuid());
+			assertEquals("lid of object returned does not match " + lid, extObj.getLid(), lid);
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("getExtrinsicsByLidvid Test failed. See stack trace.");

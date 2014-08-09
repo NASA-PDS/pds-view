@@ -16,16 +16,19 @@ package gov.nasa.pds.registry.client.results;
 
 import java.util.List;
 
+import gov.nasa.pds.registry.client.RegistryClient;
+import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.Slot;
 import gov.nasa.pds.registry.model.wrapper.ExtendedExtrinsicObject;
+import gov.nasa.pds.registry.util.Debugger;
 
 public class SlotFilter implements ResultsFilter {
 	
-	private String name;
-	private String value;	
+	protected String name;
+	protected String value;
 	
-	public SlotFilter(String name, String value) {
+	public SlotFilter(String name, String value) throws RegistryHandlerException {
 		this.name = name;
 		this.value = value;
 	}
@@ -37,15 +40,29 @@ public class SlotFilter implements ResultsFilter {
 	 */
 	@Override
 	public Object applyFilter(Object filterObject) {
-		if (filterObject instanceof ExtrinsicObject) {
-			//List<Object> results = (List<Object>) filterObject;
-			ExtendedExtrinsicObject extObj = new ExtendedExtrinsicObject((ExtrinsicObject)filterObject);
-			List<String> values = extObj.getSlotValues(this.name);
-			if (values != null && values.contains(this.value)) {
-				return extObj;
-			}
+		//List<Object> results = (List<Object>) filterObject;
+		ExtendedExtrinsicObject extObj = new ExtendedExtrinsicObject((ExtrinsicObject)filterObject);
+		List<String> values = extObj.getSlotValues(this.name);
+		if (values != null && values.contains(this.value)) {
+			return extObj;
 		}
 			// TODO add logger to registry core
+		return null;
+	}
+	
+	@Override
+	public Object applyFilter(RegistryClient client, Object filterObject) throws RegistryServiceException {
+		if (filterObject instanceof ExtrinsicObject) {
+			if (name.equals(SlotFilter.VERSION_ID)
+					&& value.equals(SlotFilter.LATEST_VERSION)) {
+				filterObject = client.getLatestObject(((ExtrinsicObject) filterObject).getLid(), 
+						ExtrinsicObject.class);
+				return filterObject;
+			} else {
+				return applyFilter(filterObject);
+			}
+		}
+		
 		return null;
 	}
 
@@ -53,7 +70,7 @@ public class SlotFilter implements ResultsFilter {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) throws RegistryHandlerException {
 		this.name = name;
 	}
 
