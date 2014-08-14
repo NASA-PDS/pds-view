@@ -961,7 +961,10 @@ public class CatalogRegistryIngester {
 		
 		slots.add(new Slot("file_name", Arrays.asList(new String[] {fileObject.getName()})));
 		slots.add(new Slot("file_location", Arrays.asList(new String[] {fileObject.getLocation()})));
-		slots.add(new Slot("file_size", Arrays.asList(new String[] {Long.toString(fileObject.getSize())})));
+		// add the unit using slotType (PDS-291)
+		Slot fsSlot = new Slot("file_size", Arrays.asList(new String[] {Long.toString(fileObject.getSize())}));
+		fsSlot.setSlotType("byte");
+		slots.add(fsSlot);		
         slots.add(new Slot("md5_checksum", Arrays.asList(new String[] {fileObject.getChecksum()})));
         slots.add(new Slot("creation_date_time", Arrays.asList(new String[] {fileObject.getCreationDateTime()})));
         if (fileObject.getStorageServiceProductId()!=null)
