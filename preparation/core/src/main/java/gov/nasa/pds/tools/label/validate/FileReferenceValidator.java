@@ -86,14 +86,73 @@ public class FileReferenceValidator implements DocumentValidator {
     }
     try {
       XMLExtractor extractor = new XMLExtractor(xml);
+      URL labelUrl = new URL(xml.getSystemId());
+      URL parent = labelUrl.toURI().getPath().endsWith("/") ?
+          labelUrl.toURI().resolve("..").toURL() :
+            labelUrl.toURI().resolve(".").toURL();
       try {
+        // Search for "xml:base" attributes within the merged XML. This will
+        // tell us if there are any xincludes.
+        List<String> xincludes = extractor.getValuesFromDoc("//@xml:base");
+        for (String xinclude : xincludes) {
+          URL xincludeUrl = new URL(parent, xinclude);
+          try {
+            xincludeUrl.openStream().close();
+            // Check that the casing of the file reference matches the
+            // casing of the file located on the file system.
+            try {
+              File fileRef = FileUtils.toFile(xincludeUrl);
+              if (fileRef != null &&
+                  !fileRef.getCanonicalPath().endsWith(fileRef.getName())) {
+                container.addException(new LabelException(
+                    ExceptionType.WARNING,
+                    "File reference'" + fileRef.toString()
+                    + "' exists but the case doesn't match.",
+                    xml.getSystemId(),
+                    xml.getSystemId(),
+                    null,
+                    null));
+              }
+            } catch (IOException io) {
+              problems.add(new LabelException(ExceptionType.FATAL,
+                  "Error occurred while checking for the existence of the "
+                  + "uri reference '" + xincludeUrl.toString() + "': "
+                  + io.getMessage(),
+                  xml.getSystemId(),
+                  xml.getSystemId(),
+                  null,
+                  null));
+              passFlag = false;
+            }
+            try {
+              // Perform checksum validation on the xincludes.
+              problems.addAll(
+                  handleChecksum(xml.getSystemId(), xincludeUrl)
+                  );
+            } catch (Exception e) {
+              problems.add(new LabelException(ExceptionType.ERROR,
+                  "Error occurred while calculating checksum for "
+                  + FilenameUtils.getName(xincludeUrl.toString()) + ": "
+                  + e.getMessage(),
+                  xml.getSystemId(),
+                  xml.getSystemId(),
+                  null,
+                  null));
+              passFlag = false;
+            }
+          } catch (IOException io) {
+            problems.add(new LabelException(ExceptionType.ERROR,
+                "URI reference does not exist: " + xincludeUrl.toString(),
+                xml.getSystemId(),
+                xml.getSystemId(),
+                null,
+                null));
+            passFlag = false;
+          }
+        }
         List<TinyNodeImpl> fileObjects = extractor.getNodesFromDoc(
             FILE_OBJECTS_XPATH);
         for (TinyNodeImpl fileObject : fileObjects) {
-          URL labelUrl = new URL(xml.getSystemId());
-          URL parent = labelUrl.toURI().getPath().endsWith("/") ?
-              labelUrl.toURI().resolve("..").toURL() :
-                labelUrl.toURI().resolve(".").toURL();
           String name = "";
           String checksum = "";
           String directory = "";
