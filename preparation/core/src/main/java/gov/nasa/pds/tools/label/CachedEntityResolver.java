@@ -28,7 +28,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Class that caches entities into memory.
- * 
+ *
  * @author mcayanan
  *
  */
@@ -36,14 +36,14 @@ public class CachedEntityResolver implements EntityResolver {
 
   /** Hashmap to hold the entities. */
   private Map<String, byte[]> cachedEntities = new HashMap<String, byte[]>();
-  
+
   /**
    * Constructor.
    */
   public CachedEntityResolver() {
     cachedEntities = new HashMap<String, byte[]>();
   }
-  
+
   @Override
   public InputSource resolveEntity(String publicId, String systemId)
       throws SAXException, IOException {
@@ -61,6 +61,8 @@ public class CachedEntityResolver implements EntityResolver {
         IOUtils.closeQuietly(in);
       }
     }
-    return new InputSource(new ByteArrayInputStream(entity));
+    InputSource inputSource = new InputSource(new ByteArrayInputStream(entity));
+    inputSource.setSystemId(systemId);
+    return inputSource;
   }
 }
