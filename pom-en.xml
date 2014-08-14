@@ -231,7 +231,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>
