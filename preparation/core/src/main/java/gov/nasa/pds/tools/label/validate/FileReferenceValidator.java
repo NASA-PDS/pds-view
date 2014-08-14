@@ -24,7 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.xpath.XPathExpressionException;
 
@@ -56,10 +58,32 @@ public class FileReferenceValidator implements DocumentValidator {
     "//*[starts-with(name(), 'File_Area')]/File | "
     + "//Document_Format_Set/Document_File";
 
+  private Map<URL, String> checksumManifest;
+
+  public FileReferenceValidator() {
+    checksumManifest = new HashMap<URL, String>();
+  }
+
   @Override
   public boolean validate(ExceptionContainer container, DocumentInfo xml) {
     boolean passFlag = true;
     List<LabelException> problems = new ArrayList<LabelException>();
+    try {
+      // Perform checksum validation on the label itself.
+      problems.addAll(
+          handleChecksum(xml.getSystemId(), new URL(xml.getSystemId()))
+          );
+    } catch (Exception e) {
+      problems.add(new LabelException(ExceptionType.ERROR,
+          "Error occurred while calculating checksum for "
+          + FilenameUtils.getName(xml.getSystemId()) + ": "
+          + e.getMessage(),
+          xml.getSystemId(),
+          xml.getSystemId(),
+          null,
+          null));
+      passFlag = false;
+    }
     try {
       XMLExtractor extractor = new XMLExtractor(xml);
       try {
@@ -140,36 +164,20 @@ public class FileReferenceValidator implements DocumentValidator {
                     null));
                 passFlag = false;
               }
-              if (!checksum.isEmpty()) {
-                try {
-                  String generatedChecksum = MD5Checksum.getMD5Checksum(
-                    urlRef);
-                  if (!checksum.equals(generatedChecksum)) {
-                    problems.add(new LabelException(ExceptionType.ERROR,
-                        "Generated checksum '" + generatedChecksum
-                        + "' does not match supplied checksum '" + checksum
-                        + "' in the product label for the following uri reference: "
-                        + urlRef.toString(),
-                        xml.getSystemId(),
-                        xml.getSystemId(),
-                        new Integer(fileObject.getLineNumber()),
-                        null));
-                    passFlag = false;
-                  }
-                } catch (Exception e) {
-                  problems.add(new LabelException(ExceptionType.ERROR,
-                      "Error occurred while calculating checksum for "
-                      + FilenameUtils.getName(urlRef.toString()) + ": "
-                      + e.getMessage(),
-                      xml.getSystemId(),
-                      xml.getSystemId(),
-                      new Integer(fileObject.getLineNumber()),
-                      null));
-                  passFlag = false;
-                }
+              try {
+                problems.addAll(handleChecksum(xml.getSystemId(), urlRef,
+                    fileObject, checksum));
+              } catch (Exception e) {
+                problems.add(new LabelException(ExceptionType.ERROR,
+                    "Error occurred while calculating checksum for "
+                    + FilenameUtils.getName(urlRef.toString()) + ": "
+                    + e.getMessage(),
+                    xml.getSystemId(),
+                    xml.getSystemId(),
+                    new Integer(fileObject.getLineNumber()),
+                    null));
+                passFlag = false;
               }
-
-
             } catch (IOException io) {
               problems.add(new LabelException(ExceptionType.ERROR,
                   "URI reference does not exist: " + urlRef.toString(),
@@ -206,5 +214,118 @@ public class FileReferenceValidator implements DocumentValidator {
       container.addException(problem);
     }
     return passFlag;
+  }
+
+  private List<LabelException> handleChecksum(String systemId, URL fileRef)
+  throws Exception {
+    return handleChecksum(systemId, fileRef, null, null);
+  }
+
+  /**
+   * Method to handle checksum processing.
+   *
+   * @param systemId The source (product label).
+   * @param urlRef The uri of the file being processed.
+   * @param fileObject The Node representation of the file object.
+   * @param checksumInLabel Supplied checksum in the label. Can pass in
+   * an empty value. If a null value is passed instead, it tells the
+   * method to not do a check to see if the generated value matches
+   * a supplied value. This would be in cases where a label's own
+   * checksum is being validated.
+   *
+   * @return The resulting checksum. This will either be the generated value,
+   * the value from the manifest file (if supplied), or the value from the
+   * supplied value in the product label (if provided).
+   *
+   * @throws Exception If there was an error generating the checksum
+   *  (if the flag was on)
+   */
+  private List<LabelException> handleChecksum(String systemId, URL urlRef,
+      TinyNodeImpl fileObject, String checksumInLabel)
+  throws Exception {
+    List<LabelException> messages = new ArrayList<LabelException>();
+    String generatedChecksum = MD5Checksum.getMD5Checksum(urlRef);
+    int lineNumber = -1;
+    if (fileObject != null) {
+      lineNumber = fileObject.getLineNumber();
+    }
+    if (!checksumManifest.isEmpty()) {
+      if (checksumManifest.containsKey(urlRef)) {
+        String suppliedChecksum = checksumManifest.get(urlRef);
+        if (!suppliedChecksum.equals(generatedChecksum)) {
+          messages.add(new LabelException(ExceptionType.ERROR,
+            "Generated checksum '" + generatedChecksum
+            + "' does not match supplied checksum '"
+            + suppliedChecksum + "' in the manifest for '"
+            + urlRef + "'.",
+            systemId,
+            systemId,
+            new Integer(lineNumber),
+            null)
+          );
+        } else {
+          messages.add(new LabelException(ExceptionType.INFO,
+            "Generated checksum '" + generatedChecksum
+            + "' matches the supplied checksum '" + suppliedChecksum
+            + "' in the manifest for '" + urlRef
+            + "'.",
+            systemId,
+            systemId,
+            new Integer(lineNumber),
+            null)
+          );
+        }
+      } else {
+        messages.add(new LabelException(ExceptionType.ERROR,
+            "No checksum found in the manifest for '"
+                + urlRef + "'.",
+            systemId,
+            systemId,
+            new Integer(lineNumber),
+            null)
+        );
+      }
+    }
+    if (checksumInLabel != null) {
+      if (!checksumInLabel.isEmpty()) {
+        if (!generatedChecksum.equals(checksumInLabel)) {
+          messages.add(new LabelException(ExceptionType.ERROR,
+              "Generated checksum '" + generatedChecksum
+              + "' does not match supplied checksum '"
+              + checksumInLabel + "' in the product label for '"
+              + urlRef + "'.",
+              systemId,
+              systemId,
+              new Integer(lineNumber),
+              null)
+          );
+        } else {
+          messages.add(new LabelException(ExceptionType.INFO,
+              "Generated checksum '" + generatedChecksum
+              + "' matches the supplied checksum '" + checksumInLabel
+              + "' in the produt label for '"
+              + urlRef + "'.",
+              systemId,
+              systemId,
+              new Integer(lineNumber),
+              null)
+          );
+        }
+      } else {
+        messages.add(new LabelException(ExceptionType.INFO,
+            "No checksum to compare against in the product label "
+            + "for '" + urlRef + "'.",
+            systemId,
+            systemId,
+            new Integer(lineNumber),
+            null)
+        );
+      }
+    }
+    return messages;
+  }
+
+  public void setChecksumManifest(Map<URL, String> checksumManifest) {
+    this.checksumManifest = checksumManifest;
   }
 }
