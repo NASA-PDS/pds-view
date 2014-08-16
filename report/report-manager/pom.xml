@@ -32,7 +32,7 @@
   <description>
     The Report Service Manager provides a command-line application for transferring node logs from remote locations and for updating the Sawmill database for the associated profiles. This software also provides the core functionality for the Profile Setup web application.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/report/report-manager</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/report/report-manager</url>
 
   <licenses>
     <license>
@@ -155,7 +155,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2013, by the California Institute of Technology.
+  Copyright 2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -33,7 +33,7 @@
   <description>
     TBD
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/project-id/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/project-id/</url>
 
   <licenses>
     <license>
@@ -78,7 +78,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

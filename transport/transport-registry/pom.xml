@@ -34,7 +34,7 @@
   <description>
     The Transport Service provides functionality for transporting and transforming PDS products. The core functionality for this service is satisfied by the Apache OODT Web Grid Product Server and includes a handler for interfacing with the Registry Service. It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/transport/transport-registry</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/transport/transport-registry</url>
 
   <licenses>
     <license>
@@ -116,7 +116,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

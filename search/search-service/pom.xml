@@ -32,7 +32,7 @@
   <description>
     The Search Service provides the search capability for the PDS search index generated through the Search Core software. The core functionality for this service is satisfied by Apache Solr.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/search/search-service</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/search/search-service</url>
 
   <licenses>
     <license>
@@ -142,7 +142,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

@@ -33,7 +33,7 @@
   <description>
     The Data Set View component is a web application that serves as the browse interface for context products.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/portal/ds-view/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/portal/ds-view/</url>
 
   <licenses>
     <license>
@@ -169,7 +169,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

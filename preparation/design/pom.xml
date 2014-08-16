@@ -33,7 +33,7 @@
   <description>
     The Design Tool provides functionality for designing product label schemas using the XML Schema standard.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/preparation/design/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/preparation/design/</url>
 
   <licenses>
     <license>
@@ -90,7 +90,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

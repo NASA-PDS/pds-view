@@ -32,7 +32,7 @@
   <description>
     The Preparation component provides functionality for preparing data for ingestion into PDS. This includes product label design, generation, transformation and validation as well as package formation. This project consists of a suite of tools and a core library allowing existing Node processes and procedures to be utilized in the ingestion process.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/preparation/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/preparation/</url>
 
   <modules>
     <module>core</module>
@@ -116,7 +116,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

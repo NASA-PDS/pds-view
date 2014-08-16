@@ -33,7 +33,7 @@
   <description>
     The Storage component provides functionality for managing the data repository. This includes movement of data files in and out of the repository. The functionality for this service is satisfied by the Apache OODT File Manager.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/storage/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/storage/</url>
 
   <modules>
     <module>product-service</module>
@@ -84,7 +84,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

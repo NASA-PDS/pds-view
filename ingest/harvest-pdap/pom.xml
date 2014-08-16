@@ -33,7 +33,7 @@
   <description>
     The Harvest-PDAP Tool provides functionality for capturing and registering product metadata from remote sources. The tool will run locally and remotely access a PDAP-compliant service in order to discover products and register associated metadata with the Registry Service.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/ingest/harvest-pdap/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/ingest/harvest-pdap/</url>
 
   <licenses>
     <license>
@@ -161,7 +161,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

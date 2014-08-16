@@ -33,7 +33,7 @@
   <description>
     The Filter component is a library for filtering parameter values passed into web applications. The library can be installed in the Java Application Server or within a given web application depending on the scope of coverage desired. The filter targets strings and characters known to facilitate Cross-Site Scripting (XSS) and Blind SQL Injection.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/portal/filter/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/portal/filter/</url>
 
   <licenses>
     <license>
@@ -112,7 +112,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

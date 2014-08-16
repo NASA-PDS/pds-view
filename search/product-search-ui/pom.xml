@@ -32,7 +32,7 @@
   <description>
     The Product Search User Interface software serves as the user interface for searching for PDS4 products through the product-search end point of the Search Service.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/search/product-search-ui/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/search/product-search-ui/</url>
 
   <licenses>
     <license>
@@ -126,7 +126,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

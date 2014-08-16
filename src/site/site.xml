@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2010-2013, by the California Institute of Technology.
+  Copyright 2010-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -29,7 +29,7 @@
 
   <body>
     <links>
-      <item name="PDS4" href="http://pds-cm.jpl.nasa.gov/pds4/index.html" />
+      <item name="PDS4" href="https://pds-cm.jpl.nasa.gov/pds4/index.html" />
     </links>
 
     <menu name="Documentation">

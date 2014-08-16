@@ -31,7 +31,7 @@
   <description>
     The Registry Client is a Python-based API for accessing the Registry Service.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/registry/registry-client/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/registry/registry-client/</url>
 
   <licenses>
     <license>
@@ -67,7 +67,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

@@ -32,7 +32,7 @@
   <description>
     The Product Service provides functionality for transporting files from a Storage Service data repository. The functionality for this service is satisfied by the Apache OODT CAS Product Server.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/storage/product-service/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/storage/product-service/</url>
 
   <licenses>
     <license>
@@ -103,7 +103,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

@@ -33,7 +33,7 @@
   <description>
     The Registry component provides functionality for tracking, auditing, locating, and maintaining artifacts within the system. These artifacts can range from data files and label files, schemas, dictionary definitions for objects and elements, services, etc.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/registry/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/registry/</url>
 
   <modules>
     <module>registry-client</module>
@@ -122,7 +122,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

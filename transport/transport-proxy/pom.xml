@@ -33,7 +33,7 @@
   <description>
     The Transport Proxy component is a web application that serves as the name resolver for the Transport Services that are located at the various Discipline Nodes. Although the web application can be installed anywhere, its legacy end point is at http://starbrite.jpl.nasa.gov/prod/.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/transport/transport-proxy/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/transport/transport-proxy/</url>
 
   <licenses>
     <license>
@@ -155,7 +155,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

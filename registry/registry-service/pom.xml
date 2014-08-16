@@ -32,7 +32,7 @@
   <description>
     The Registry Service provides functionality for tracking, auditing, locating, and maintaining artifacts within the system. The service provides a REST-based interface for interacting with the service.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/registry/registry-service/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/registry/registry-service/</url>
 
   <licenses>
     <license>
@@ -367,7 +367,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

@@ -33,7 +33,7 @@
   <description>
     The Transport component provides functionality for moving data across the network. This project consists of a suite of services that return search results (products) to data consumers in the form of files or packages of files.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/transport/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/transport/</url>
 
   <modules>
     <module>transport-proxy</module>
@@ -85,7 +85,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

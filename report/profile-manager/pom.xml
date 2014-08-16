@@ -32,7 +32,7 @@
   <description>
     The Profile Manager software provides a web interface to manage Sawmill profiles.  This includes the management of logs files from nodes in an effort to maintain a working copy of all node logs at the Engineering Node.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/report/profile-manager</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/report/profile-manager</url>
 
   <licenses>
     <license>
@@ -112,7 +112,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>

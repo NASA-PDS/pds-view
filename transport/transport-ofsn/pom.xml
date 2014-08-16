@@ -37,7 +37,7 @@
     and includes the Online File Specification Name (OFSN) handlers for interfacing with an archive directory structure. 
     It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/transport/transport-ofsn</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/transport/transport-ofsn</url>
 
   <licenses>
     <license>
@@ -122,7 +122,7 @@
     <repository>
       <id>pds-repo</id>
       <name>PDS Maven Repository</name>
-      <url>http://pds-cm.jpl.nasa.gov/maven2</url>
+      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>
