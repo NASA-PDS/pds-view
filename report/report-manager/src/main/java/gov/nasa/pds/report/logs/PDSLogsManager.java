@@ -8,8 +8,11 @@ import gov.nasa.pds.report.util.Utility;
 
 import java.io.File;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class PDSLogsManager implements LogsManager {
+	
+	private Logger log = Logger.getLogger(this.getClass().getName());
 	
 	public PDSLogsManager(){}
 	
@@ -18,6 +21,9 @@ public class PDSLogsManager implements LogsManager {
 		if(nodeProps == null){
 			throw new LogsManagerException("Null node information given.");
 		}
+		
+		String nodeName = Utility.getNodePropsString(nodeProps,
+				Constants.NODE_NAME_KEY, false);
 		
 		// Create the proper PDSPull object to grab logs from the given node
 		PDSPull logPuller = this.getPdsPull(Utility.getNodePropsString(
@@ -28,7 +34,11 @@ public class PDSLogsManager implements LogsManager {
 				nodeProps, Constants.NODE_STAGING_DIR_KEY, true).trim();
 		File stagingDir = new File(stagingDirStr);
 		if(!stagingDir.exists()){
-			stagingDir.mkdirs();
+			if(!stagingDir.mkdirs()){
+				log.warning("Failed to create the staging directory " +
+						stagingDir.getAbsolutePath() + " for node " + nodeName);
+				return;
+			}
 		}
 		
 		// Connect to the node machines
@@ -39,13 +49,14 @@ public class PDSLogsManager implements LogsManager {
 			logPuller.pull(Utility.getNodePropsString(
 					nodeProps, Constants.NODE_PATH_KEY, true), stagingDirStr);
 		}catch(PushPullException e){
-			String nodeName = Utility.getNodePropsString(nodeProps, Constants.NODE_NAME_KEY, false);
 			throw new LogsManagerException("An error occurred while pulling " +
 					"logs from node " + nodeName +
 					": " + e.getMessage());
 		}
 		
 		// TODO: Reformat the logs into something Sawmill can parse
+		
+		// TODO: Disconnect
 		
 	}
 	

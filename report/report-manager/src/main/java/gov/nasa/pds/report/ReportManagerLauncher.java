@@ -53,11 +53,14 @@ public class ReportManagerLauncher {
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#PULL **/
 	private boolean pullFlag;
 	
+	private String nodePattern;
+	
 	/** The severity level to set for the tool. */
 	private Level severityLevel;
 
 	public ReportManagerLauncher() {
 		this.pullFlag = false;
+		this.nodePattern = null;
 		this.severityLevel = ToolsLevel.INFO;
 	}
 
@@ -193,6 +196,9 @@ public class ReportManagerLauncher {
 				System.exit(0);
 			} else if (o.getOpt().equals(Flag.PULL.getShortName())) {
 				this.pullFlag = true;
+			} else if (o.getOpt().equals(Flag.NODE_PATTERN.getShortName())) {
+				this.nodePattern =
+						line.getOptionValue(Flag.NODE_PATTERN.getShortName());
 			}
 		}
 
@@ -218,10 +224,16 @@ public class ReportManagerLauncher {
 	public void execute(){
 		ReportServiceManager rsMgr = new ReportServiceManager();
 
+		// Set the filter for which nodes are processed if such a filter was
+		// specified
+		if(this.nodePattern != null){
+			rsMgr.setNodePattern(this.nodePattern);
+		}
+		
 		// Read the profiles from disk if needed
 		if(this.pullFlag){
 			try{
-				// TODO: Allow the use to override the profile location using
+				// TODO: Allow the user to override the profile location using
 				// rsMgr.setProfileDir()
 				rsMgr.readProfiles();
 			}catch(IOException e){

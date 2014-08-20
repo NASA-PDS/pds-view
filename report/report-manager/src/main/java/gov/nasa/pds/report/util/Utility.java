@@ -225,5 +225,23 @@ public class Utility {
 		
 	}
 	
+	/**
+	 * Remove the filename/expression from the pathname and return base path
+	 * TODO There is a FileUtil or File method that can do this for me
+	 * @param pathname
+	 * @return
+	 */
+	public static String getDirPath(String pathname) {
+		
+		Debugger.debug(pathname);
+		String[] pathArray = pathname.split("/");
+		String basePath = "";
+		for (int i = 0; i < pathArray.length - 1; i++) {
+			if (!pathArray[i].equals(""))
+				basePath += "/" + pathArray[i];
+		}
+		return basePath;
+	
+	}
 	
 }

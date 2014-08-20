@@ -24,8 +24,13 @@ import org.apache.commons.cli.Options;
  * 
  */
 public enum Flag {
+	
 	/** Flag to instruct Logs Manager component to pull logs from nodes */
 	PULL("p", "pull-logs", "Pull logs from remote sources."),
+	
+	/** Flag to specify which nodes to operate upon */
+	NODE_PATTERN("n", "node-pattern", "pattern", String.class,
+			"Only operate on nodes whose name match the given RE pattern"),
 	
 	/** Flag to specify from where profiles should be read */
 	// TODO: Create flag to override default location of profiles
@@ -198,4 +203,5 @@ public enum Flag {
 	public String getShortName() {
 		return shortName;
 	}
+	
 }

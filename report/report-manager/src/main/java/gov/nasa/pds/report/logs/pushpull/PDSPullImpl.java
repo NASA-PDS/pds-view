@@ -52,9 +52,11 @@ public class PDSPullImpl implements PDSPull {
 	 * @throws JSchException
 	 */
 	public boolean connect(final String hostname, final String username,
-			final String password, final boolean encrypted) throws PushPullException {
+			final String password, final boolean encrypted)
+			throws PushPullException {
 
 		try {
+			this.log.info("Connecting to " + username + "@" + hostname + " using " + this.getClass().getName());
 			Debugger.debug(hostname + " - " + username);
 			JSch jsch = new JSch();
 			this.session = jsch.getSession(username, hostname, 22);
@@ -89,7 +91,7 @@ public class PDSPullImpl implements PDSPull {
 	/**
 	 * Disconnect SFTP and the session
 	 */
-	private void disconnect() {
+	public void disconnect() {
 		if (this.sftpChannel.isConnected()) { // Exits the channel
 			this.sftpChannel.exit();
 		}
@@ -137,13 +139,21 @@ public class PDSPullImpl implements PDSPull {
 	 */
 	public final void pull(String path, String destination) throws PushPullException {
 		try {
+			
 			// If connection has not been made, make one
 			if (!this.session.isConnected()) {
 				return;
 			}
 			
-			// TODO: We should check to see if the given path is a directory or file before clipping off the final portion of the path
-			String basePath = getBasePath(path);
+			// The path to the directory containing the file specified in the
+			// node path (this will just be the node path if the path is to a
+			// directory)
+			String dirPath = path;
+			if(path.contains("*") || !this.sftpChannel.lstat(path).isDir()){
+				Debugger.debug("Path " + path + " is a file path.");
+				dirPath = Utility.getDirPath(path);
+			}
+			Debugger.debug("Directory path: " + dirPath);
 			
 			List<String> array = getFileList(path);
 
@@ -153,48 +163,25 @@ public class PDSPullImpl implements PDSPull {
 			for (String filename : array) {
 				if (!localFileList.contains(filename)) {
 					this.log.info("Transferring: "
-							+ basePath + "/" + filename + " to " + destination
+							+ dirPath + "/" + filename + " to " + destination
 							+ "\n");
 					// TODO: Consider using an implementation of this method
 					// that leverages a progress monitor, perhaps when the
 					// given file is over a certain threshold in size
 					this.sftpChannel
-							.get(basePath + "/" + filename, destination);
+							.get(dirPath + "/" + filename, destination);
 				} else {
-					this.log.info(basePath + "/" + filename
+					this.log.info(dirPath + "/" + filename
 							+ " already exists in " + destination + "\n");
 				}
 			}
 		} catch (SftpException e) {
-			throw new PushPullException("SftpException: " + e.getMessage());
+			throw new PushPullException("An error occurred while pulling " +
+					"files from " + this.session.getHost() + ":" + path +
+					": " + e.getMessage());
 		} finally {
 			disconnect();
 		}
 	}
-
-	/**
-	 * Remove the filename/expression from the pathname and return base path
-	 * TODO There is a FileUtil or File method that can do this for me
-	 * @param pathname
-	 * @return
-	 */
-	private final String getBasePath(String pathname) {
-		this.log.info(pathname);
-		try{
-			if(this.sftpChannel.lstat(pathname).isDir()){
-				return pathname;
-			}
-		}catch(SftpException e){
-			// TODO: This error should be handled better, but an error should be logged at least
-			System.out.println("Unable to determine if " + pathname +
-					" is a directory on node host: " + e.getMessage());
-		}
-		String[] pathArray = pathname.split("/");
-		String basePath = "";
-		for (int i = 0; i < pathArray.length - 1; i++) {
-			if (!pathArray[i].equals(""))
-				basePath += "/" + pathArray[i];
-		}
-		return basePath;
-	}
+	
 }

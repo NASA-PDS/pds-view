@@ -37,11 +37,7 @@ public class SimpleProfileManager implements ProfileManager{
 		}
 		
 		// Process file or directory at path
-		if(file.isDirectory()){
-			processDirectory(file);
-		}else{
-			processFile(file);
-		}
+		processPath(file);
 		
 		Debugger.debug("Returning " + nodePropsList.size() + " node properties");
 		
@@ -81,11 +77,19 @@ public class SimpleProfileManager implements ProfileManager{
 		String[] children = dir.list();
 		for(int i = 0; i < children.length; i++){
 			File childFile = new File(dir.getAbsolutePath(), children[i]);
-			if(childFile.isDirectory()){
-				processDirectory(childFile);
-			}else{
-				processFile(childFile);
-			}
+			processPath(childFile);
+		}
+		
+	}
+	
+	// When we are unsure if the File at the given path is a file or a
+	// directory, this method will process it accordingly
+	private void processPath(File file){
+		
+		if(file.isDirectory()){
+			processDirectory(file);
+		}else{
+			processFile(file);
 		}
 		
 	}
