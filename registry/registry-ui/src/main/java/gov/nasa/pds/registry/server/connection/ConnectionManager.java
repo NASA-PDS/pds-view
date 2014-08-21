@@ -687,6 +687,8 @@ public class ConnectionManager {
 					vslot.setId(String.valueOf(slot.getId()));
 					vslot.setName(slot.getName());
 					vslot.setValues(slot.getValues());
+					//if (slot.getSlotType()!=null)
+					vslot.setSlotType(slot.getSlotType());
 				}
 			}
 		}
@@ -720,6 +722,7 @@ public class ConnectionManager {
 				vslot.setId(String.valueOf(slot.getId()));
 				vslot.setName(slot.getName());
 				vslot.setValues(slot.getValues());
+				vslot.setSlotType(slot.getSlotType());
 			}
 		}
 		return vProduct;
@@ -761,6 +764,7 @@ public class ConnectionManager {
 					vslot.setId(String.valueOf(slot.getId()));
 					vslot.setName(slot.getName());
 					vslot.setValues(slot.getValues());
+					vslot.setSlotType(slot.getSlotType());
 				}
 			}
 
@@ -800,6 +804,7 @@ public class ConnectionManager {
 					vslot.setId(String.valueOf(slot.getId()));
 					vslot.setName(slot.getName());
 					vslot.setValues(slot.getValues());
+					vslot.setSlotType(slot.getSlotType());
 				}
 			}
 
@@ -871,6 +876,7 @@ public class ConnectionManager {
 					vslot.setId(String.valueOf(slot.getId()));
 					vslot.setName(slot.getName());
 					vslot.setValues(slot.getValues());
+					vslot.setSlotType(slot.getSlotType());
 				}
 			}
 		}
@@ -908,6 +914,7 @@ public class ConnectionManager {
 					vslot.setId(String.valueOf(slot.getId()));
 					vslot.setName(slot.getName());
 					vslot.setValues(slot.getValues());
+					vslot.setSlotType(slot.getSlotType());
 				}
 			}
 
@@ -953,6 +960,7 @@ public class ConnectionManager {
 					vslot.setId(String.valueOf(slot.getId()));
 					vslot.setName(slot.getName());
 					vslot.setValues(slot.getValues());
+					vslot.setSlotType(slot.getSlotType());
 				}
 			}
 		}
@@ -995,6 +1003,7 @@ public class ConnectionManager {
 					vslot.setId(String.valueOf(slot.getId()));
 					vslot.setName(slot.getName());
 					vslot.setValues(slot.getValues());
+					vslot.setSlotType(slot.getSlotType());
 				}
 			}
 		}

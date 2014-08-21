@@ -78,6 +78,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * A tab to browse the registered associations. 
@@ -288,7 +290,7 @@ public class Associations extends Tab {
 		headerTable2.setHTML(0, 2, "Version ID");
 		headerTable2.setHTML(0, 3, "Object Type");
 		headerTable2.setHTML(0, 4, "Status");
-				
+		
 		FixedWidthGrid srcDataTable = new FixedWidthGrid();
 		FixedWidthGrid targDataTable = new FixedWidthGrid();
 
@@ -323,21 +325,15 @@ public class Associations extends Tab {
 					public void onRowSelection(RowSelectionEvent event) {
 						// get selected rows
 						Set<Row> selected = event.getSelectedRows();
-						if (selected.size() == 0) {
-							// TODO: out is for debugging purposes, fix for
-							// erroneously fired events is pending
-							System.out
-									.println("Row selection event fired but no selected rows found.");
-							return;
+						logger.log(Level.FINEST, "source row is selected.... selected.size() = " + selected.size());
+						if (selected.size() > 0) {
+							// since only one row can be selected, just get the first one
+							int rowIndex = selected.iterator().next().getRowIndex();
+
+							// get the association instance associated with that row
+							ViewProduct aProduct = srcProducts.get(rowIndex);
+							get().displayProductDetail(aProduct);	
 						}
-
-						// since only one row can be selected, just get the
-						// first one
-						int rowIndex = selected.iterator().next().getRowIndex();
-
-						// get the association instance associated with that row
-						ViewProduct aProduct = srcProducts.get(rowIndex);
-						get().displayProductDetail(aProduct);					
 					}
 				});
 		
@@ -349,20 +345,16 @@ public class Associations extends Tab {
 					public void onRowSelection(RowSelectionEvent event) {
 						// get selected rows
 						Set<Row> selected = event.getSelectedRows();
-						if (selected.size() == 0) {
-							// TODO: out is for debugging purposes, fix for
-							// erroneously fired events is pending
-							System.out.println("Row selection event fired but no selected rows found.");
-							return;
+						logger.log(Level.FINEST, "target row is selected.... selected.size() = " + selected.size());
+
+						if (selected.size() > 0) {
+							// since only one row can be selected, just get the first one
+							int rowIndex = selected.iterator().next().getRowIndex();
+
+							// get the association instance associated with that row
+							ViewProduct aProduct = targetProducts.get(rowIndex);
+							get().displayProductDetail(aProduct);
 						}
-
-						// since only one row can be selected, just get the
-						// first one
-						int rowIndex = selected.iterator().next().getRowIndex();
-
-						// get the association instance associated with that row
-						ViewProduct aProduct = targetProducts.get(rowIndex);
-						get().displayProductDetail(aProduct);
 					}
 				});
 	}
@@ -403,6 +395,16 @@ public class Associations extends Tab {
 
         // slots
         List<ViewSlot> slots = aProduct.getSlots();
+        // Alphabetize the slot listing in the product details view (PDS-279)
+        if (slots.size() > 0) {
+        	Collections.sort(slots, new Comparator<ViewSlot>() {
+        		@Override
+        		public int compare(final ViewSlot object1, final ViewSlot object2) {
+        			return object1.getName().compareTo(object2.getName());
+        		}
+        	} );
+        }
+        
         for (int i = 0; i < slots.size(); i++) {
             ViewSlot slot = slots.get(i);
             int curRow = i + 7;
@@ -423,8 +425,13 @@ public class Associations extends Tab {
 					detailTable.setWidget(curRow, 1, dp);
 					//detailTable.setText(curRow, 1, valuesString.substring(0, MAX_STR_SIZE) + "  .....");
 				}
-				else
-					detailTable.setText(curRow, 1, valuesString);	
+				else {
+					// add unit if there is one 
+					if (slot.getSlotType()!=null) 
+						valuesString += " <" + slot.getSlotType() + ">";
+				
+					detailTable.setText(curRow, 1, valuesString);
+				}
 			}
         }
 
@@ -579,8 +586,13 @@ public class Associations extends Tab {
                     String valuesString = Products.toSeparatedString(slot.getValues());
                     if (valuesString.length()>200)
                         detailTable.setText(curRow, 1, valuesString.substring(0, 200) + "  ...");
-                    else
+                    else {
+                    	// add unit if there is one 
+    					if (slot.getSlotType()!=null) 
+    						valuesString += " <" + slot.getSlotType() + ">";
+                    
                         detailTable.setText(curRow, 1, valuesString);
+                    }
                 }
 
 				// add styles to cells
@@ -657,6 +669,7 @@ public class Associations extends Tab {
 
 			@Override
 			public void onClick(ClickEvent event) {
+				logger.log(Level.FINEST, "onClick method for closeButtonHandler...");
 				// hide the detail box
 				get().productDetailsBox.hide();
 			}
@@ -672,7 +685,8 @@ public class Associations extends Tab {
 			public void onClose(CloseEvent<PopupPanel> event) {
 				// clear selection and allow row to be clicked again
 				get().srcScrollTable.getDataTable().deselectAllRows();
-				
+				get().targScrollTable.getDataTable().deselectAllRows();
+				logger.log(Level.FINEST, "in dialogCloseHandler...close()");
 				// remove data from popup
 				get().productVPanel.remove(0);
 			}
@@ -762,6 +776,7 @@ public class Associations extends Tab {
 				
 				get().associationVPanel.remove(0);
 				get().srcScrollTable.getDataTable().clear();
+				get().targScrollTable.getDataTable().clear();
 			}
 
 		};
@@ -1110,7 +1125,6 @@ public class Associations extends Tab {
 	}
 	
 	protected void getProducts(final String guid, final boolean srcFlag) {
-		//get().getTableModel().setServerUrl(RegistryUI.serverUrl);
 		get().getTableModel().getProduct(guid, 
 				new AsyncCallback<SerializableResponse<ViewProduct>>() {
 					public void onFailure(Throwable caught) {
@@ -1118,13 +1132,12 @@ public class Associations extends Tab {
 					}
 				
 					public void onSuccess(SerializableResponse<ViewProduct> result) {
-						SerializableProductResponse<ViewProduct> spr = (SerializableProductResponse<ViewProduct>) result;
-					
+						SerializableProductResponse<ViewProduct> spr = (SerializableProductResponse<ViewProduct>) result;					
 						ViewProducts products = (ViewProducts) spr.getValues();
 
 						int prodNums = 0;
 						if (guid!=null) prodNums = products.size();
-							
+						
 						if (srcFlag) {		
 							get().srcProducts = products;
 								

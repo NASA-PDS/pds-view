@@ -1044,8 +1044,13 @@ public class Products extends Tab {
 					dp.setWidth("96%");
 					detailTable.setWidget(curRow, 1, dp);
 				}
-				else
+				else {
+					// add unit if there is one 
+					if (slot.getSlotType()!=null) 
+						valuesString += " <" + slot.getSlotType() + ">";
+					
 					detailTable.setText(curRow, 1, valuesString);	
+				}
 			}
 		}
 	

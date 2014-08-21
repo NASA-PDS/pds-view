@@ -19,6 +19,7 @@ import gov.nasa.pds.registry.ui.shared.ViewClassificationNode;
 import gov.nasa.pds.registry.ui.shared.ViewClassificationNodes;
 import gov.nasa.pds.registry.ui.shared.ViewSlot;
 import gov.nasa.pds.registry.ui.shared.StatusInformation;
+import gov.nasa.pds.registry.ui.shared.Constants;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -66,6 +67,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
@@ -74,7 +76,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * A tab to browse the registered ClassificationNodes. 
@@ -462,6 +465,15 @@ public class ClassificationNodes extends Tab {
 				int row = 7;
 				// slots
 				List<ViewSlot> slots = product.getSlots();
+				// Alphabetize the slot listing in the product details view (PDS-279)
+				if (slots.size() > 0) {
+					Collections.sort(slots, new Comparator<ViewSlot>() {
+						@Override
+						public int compare(final ViewSlot object1, final ViewSlot object2) {
+							return object1.getName().compareTo(object2.getName());
+						}
+					} );
+				}
 				for (int i = 0; i < slots.size(); i++) {
 					ViewSlot slot = slots.get(i);
 					int curRow = i + row;
@@ -469,12 +481,25 @@ public class ClassificationNodes extends Tab {
 					detailTable.setText(curRow, 0, Products.getNice(slot.getName(),
 							true, true));
 					
-					// check for long string....need to display differently (another popup???)
-					String valuesString = Products.toSeparatedString(slot.getValues());
-					if (valuesString.length()>200) 
-						detailTable.setText(curRow, 1, valuesString.substring(0, 200) + "  ...");
-					else
-						detailTable.setText(curRow, 1, valuesString);		
+					if (slot.getValues()==null) {
+						detailTable.setText(curRow, 1, "");
+					} 
+					else {
+						String valuesString = Products.toSeparatedString(slot.getValues());
+						if (valuesString.length()>Constants.MAX_STR_SIZE) {
+							DisclosurePanel dp = new DisclosurePanel("Click to see the value.");
+							dp.setContent(new Label(valuesString));
+							dp.setWidth("96%");
+							detailTable.setWidget(curRow, 1, dp);
+						}
+						else {
+							// add unit if there is one 
+							if (slot.getSlotType()!=null) 
+								valuesString += " <" + slot.getSlotType() + ">";
+							
+							detailTable.setText(curRow, 1, valuesString);	
+						}
+					}
 					row = curRow;
 				}
 				

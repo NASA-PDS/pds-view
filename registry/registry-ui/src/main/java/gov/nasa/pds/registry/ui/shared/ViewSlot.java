@@ -30,6 +30,11 @@ public class ViewSlot implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private List<String> values;
+	
+	/**
+	 * The type of the slot (used as unit)
+	 */
+	private String slotType;
 
 	/**
 	 * The name of the product property
@@ -84,5 +89,13 @@ public class ViewSlot implements Serializable {
 	 */
 	public void setValues(List<String> values) {
 		this.values = values;
+	}
+	
+	public String getSlotType() {
+		return this.slotType;
+	}
+	
+	public void setSlotType(String type) {
+		this.slotType = type;
 	}
 }
