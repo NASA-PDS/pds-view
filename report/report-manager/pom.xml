@@ -190,12 +190,6 @@
       <version>4.8.1</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-	    <groupId>org.apache.oodt</groupId>
-	    <artifactId>cas-pushpull</artifactId>
-	    <version>0.6</version>
-	    <scope>compile</scope>
-    </dependency>
     <!-- The following were added per PDSPull software -->
     <dependency>
       <groupId>org.jasypt</groupId>
