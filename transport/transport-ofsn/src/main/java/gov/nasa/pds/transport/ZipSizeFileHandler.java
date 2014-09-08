@@ -1,6 +1,7 @@
 package gov.nasa.pds.transport;
 
 import gov.nasa.pds.transport.utils.PDS2FName;
+import gov.nasa.pds.transport.utils.XmlWriter;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,10 +24,7 @@ import org.apache.oodt.product.ProductException;
 public class ZipSizeFileHandler extends AbstractPdsGetHandler {
 	
 	protected final static Logger LOG = Logger.getLogger(ZipSizeFileHandler.class.getName());
-	
-	/** PDS newline */
-	private static final String NL = "\r\n";
-			
+				
 	@Override
 	public void configure(Properties properties) {}
 	
@@ -51,23 +49,14 @@ public class ZipSizeFileHandler extends AbstractPdsGetHandler {
 			File fileToAdd = new File(tokens.nextToken());
 			totalSize += fileToAdd.length();
 		}
-
-		// create XML file
-		StringBuffer b = new StringBuffer("");
-		b.append("<?xml version=\"1.0\"?>").append(NL);
-		b.append("<!DOCTYPE dirresult PUBLIC \"-//JPL/DTD OODT dirresult 1.0//EN\" \"http://starbrite.jpl.nasa.gov:80/dtd/dirresult.dtd\">").append(NL);
-		b.append("<dirResult>").append(NL);
-		b.append("<dirEntry>").append(NL);
-		b.append("<fileSize>");
-		b.append(totalSize);
-		b.append("</fileSize>").append(NL);
-		b.append("</dirEntry>").append(NL);
-		b.append("</dirResult>").append(NL);
+		
+		// create XML document
+		String xml = XmlWriter.writeSizeDocument(totalSize);
 		
 		// write XML file to temporary cache
 		try {
 			File tempFile = File.createTempFile("oodt", ".zip");
-			FileUtils.writeStringToFile(tempFile, b.toString());
+			FileUtils.writeStringToFile(tempFile, xml);
 			tempFile.deleteOnExit();
 			return tempFile;
 			

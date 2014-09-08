@@ -282,6 +282,17 @@ FIXME: Change XML namespace URI for oodt prefix?
   		<property name="mimeType" value="text/xml"/>
   </handler>
   
+  <!-- The PDS_ZIPD handler generates and returns a ZIP archive of all of the files and directories under the given OFSN, 
+       which should be a directory.   -->
+  <handler name="PDS_ZIPD" type="get" class="gov.nasa.pds.transport.ZipDirHandler">
+  		<property name="mimeType" value="application/zip"/>
+  </handler>
+  
+  <!-- The PDS_ZIPD_SIZE generates an XML document detailing the size of the generated ZIP archive 
+       from the corresponding PDS_ZIPD handler request.   -->
+  <handler name="PDS_ZIPD_SIZE" type="get" class="gov.nasa.pds.transport.ZipSizeDirHandler">
+  		<property name="mimeType" value="text/xml"/>
+  </handler>
   
   <!--  
     The MD5 type returns an MD5 hash of the file bytes generated on the server side.
