@@ -503,6 +503,42 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
         </tr>
         
       </table>
+      
+      <p>
+      	<b>"Get" Return Types that apply to PDS3 and PDS4 directories</b>
+	  </p>
+
+      <table>
+        <tr><th>Return Type</th><th>Description</th></tr>
+        <tr>
+        	<td>PDS_ZIPD</td>
+        	<td>Returns a directory content packaged as a ZIP file.
+        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1416/fo42s186&amp;rt=PDS_ZIPD">
+        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1416/fo42s186&amp;rt=PDS_ZIPD</a>
+        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114&amp;rt=PDS_ZIPD">
+        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114&amp;rt=PDS_ZIPD</a>
+        	</td>
+        </tr>
+        <tr>
+        	<td>PDS_ZIPD_SIZE</td>
+        	<td>Returns the total size of a directory content in XML format if you were to download the product with <i>PDS_ZIPD</i> and unzip the archive.
+        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1416/fo42s186&amp;rt=PDS_ZIPD_SIZE">
+        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1416/fo42s186&amp;rt=PDS_ZIPD_SIZE</a>
+        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114&amp;rt=PDS_ZIPD_SIZE">
+        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114&amp;rt=PDS_ZIPD_SIZE</a>
+        		<br/>Example response:
+<source>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!DOCTYPE dirresult PUBLIC &quot;-//JPL/DTD OODT dirresult 1.0//EN&quot; &quot;http://starbrite.jpl.nasa.gov:80/dtd/dirresult.dtd&quot;&gt;
+&lt;dirResult&gt;
+  &lt;dirEntry&gt;
+    &lt;fileSize&gt;26563938&lt;/fileSize&gt;
+  &lt;/dirEntry&gt;
+&lt;/dirResult&gt;
+</source>
+        	</td>
+        </tr>
+      </table>
 
     </section>
   </body>
