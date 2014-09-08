@@ -1,0 +1,143 @@
+CCSD3ZF0000100000001NJPL3IF0PDSX00000001                                      
+PDS_VERSION_ID                    = PDS3                                      
+RECORD_TYPE                       = FIXED_LENGTH                              
+RECORD_BYTES                      = 80                                        
+SPACECRAFT_NAME                   = MAGELLAN                                  
+TARGET_NAME                       = VENUS                                     
+                                                                              
+OBJECT                            = DATA_SET_MAP_PROJECTION                   
+  DATA_SET_ID                     = "MGN-V-RDRS-5-DIM-V1.0"                   
+                                                                              
+  OBJECT                          = DATA_SET_MAP_PROJECTION_INFO              
+    MAP_PROJECTION_TYPE           = "SINUSOIDAL"                              
+    MAP_PROJECTION_DESC           = "The FMAP (Magellan Full                  
+      Resolution Radar Mosaic) is presented in a Sinusoidal Equal-            
+      Area map projection. In this projection, parallels of latitude          
+      are straight lines, with constant distances between equal               
+      latitude intervals. Lines of constant longitude on either side          
+      of the projection meridian are curved since longitude                   
+      intervals decrease with the cosine of latitude to account for           
+      their convergence toward the poles. This projection offers a            
+      number of advantages for storing and managing global digital            
+      data; in particular, it is computationally simple, and data             
+      are stored in a compact form.                                           
+                                                                              
+      The Sinusoidal Equal-Area projection is characterized by a              
+      projection longitude, which is the center meridian of the               
+      projection, and a scale, which is given in units of pixels/             
+      degree. A projection longitude is defined for each FMAP; all            
+      tiles within the FMAP use the same projection longitude.  The           
+      center latitude for all FMAPs is the equator.                           
+                                                                              
+      The transformation from latitude and longitude to line and              
+      sample is given by the following equations:                             
+                                                                              
+      line = INT(LINE_PROJECTION_OFFSET - lat*MAP_RESOLUTION + 1.0)           
+                                                                              
+      sample = INT(SAMPLE_PROJECTION_OFFSET - (lon -                          
+               CENTER_LONGITUDE)*MAP_RESOLUTION*cos(lat) + 1.0)               
+                                                                              
+      Note that integral values of line and sample correspond to the          
+      center of a pixel. Lat and lon are the latitude and longitude           
+      of a given spot on the surface.                                         
+                                                                              
+      LINE_PROJECTION_OFFSET is the line number minus one on which            
+      the map projection origin occurs. The map projection origin             
+      is the intersection of the equator and the projection longitude.        
+      The value of LINE_PROJECTION_OFFSET is positive for images              
+      starting north of the equator and is negative for images                
+      starting south of the equator.                                          
+                                                                              
+      SAMPLE_PROJECTION_OFFSET is the nearest sample number to the            
+      left of the projection longitude. The value of SAMPLE_                  
+      PROJECTION_OFFSET is positive for images starting to the west           
+      of the projection longitude and is negative for images starting         
+      to the east of the projection longitude.                                
+                                                                              
+      CENTER_LONGITUDE is the value of the projection longitude,              
+      which is the longitude that passes through the center of the            
+      projection.                                                             
+                                                                              
+      MAP_RESOLUTION is measured in pixels/degree.  FMAP products can         
+      have possible resolutions of 1408, 235, and 35.                         
+                                                                              
+      There are four PDS parameters that specify the latitude and             
+      longitude boundaries of an image.  MAXIMUM_LATITUDE and                 
+      MINIMUM_LATITUDE specify the latitude boundaries of the image,          
+      and EASTERNMOST_LONGITUDE and WESTERNMOST_LONGITUDE specify the         
+      longitudinal boundaries of the map.                                     
+                                                                              
+      Definitions of other mapping parameters can be found in the             
+      PDS Data dictionary.                                                    
+                                                                              
+      **NOTE**:  The FMAP CD-ROM volume set does not fully comply with        
+      PDS map projection standards.  The line_projection_offset and           
+      sample_projection_offset keywords in the Image_Map_Projection           
+      Object of the FMAP products are set opposite to the way they are        
+      defined in the Planetary Science Data Dictionary (PSDD).  The           
+      above equations for converting from lat/lon to line/sample are          
+      also in error.  The correct equations are as follows:                   
+                                                                              
+      line = INT(LINE_PROJECTION_OFFSET - lat*MAP_RESOLUTION)                 
+                                                                              
+      sample = INT(SAMPLE_PROJECTION_OFFSET + (lon -                          
+               CENTER_LONGITUDE)*MAP_RESOLUTION*cos(lat))                     
+                                                                              
+      The value of 1.0 does not need to be added to either equation           
+      because the line_projection_offset and sample_projection_offset         
+      have already been translated to a (1,1) origin as defined in the        
+      PSDD.  The equations were originally taken from the MDIM CD-ROM         
+      volume set which were not translated to a (1,1) origin.  The            
+      equation for calculating the sample had a sign change because           
+      the direction of positive longitude is East instead of West             
+      as it was in the MDIM products.                                         
+                                                                              
+      A software patch has been included on this disk to correct the          
+      line_projection_offset and sample_projection_offset keywords on         
+      FMAP products.  The name of the program is PATCH and it is              
+      stored in the SOFTWARE directory.  There is a version included          
+      for each of the platforms supported by this disk.  PATCH is a           
+      command line driven program and can be run in either of                 
+      the two following ways:                                                 
+                                                                              
+      patch from to                                                           
+                                                                              
+      patch from                                                              
+                                                                              
+      The from parameter is the name of an input FMAP image.  The to          
+      parameter is the name of the output FMAP image with corrected           
+      label information.  If you do not specify an output image file          
+      name, then the program will correct the labels in the input             
+      image file.  You would probably only want to use both from and          
+      to parameters if you are correcting labels of images directly off       
+      of the CD-ROM.                                                          
+                                                                              
+      Please refer to the SOFTINFO.TXT file in the SOFTWARE directory for     
+      information on compiling and linking this program for different         
+      operating systems.  The same commands used to compile and link          
+      the software described in that text file were used to create the        
+      executeable versions of the PATCH program on this disk."                
+                                                                              
+    ROTATIONAL_ELEMENT_DESC       = "See DAVIESETAL1989."                     
+                                                                              
+    OBJECT                        = DS_MAP_PROJECTION_REF_INFO                
+      REFERENCE_KEY_ID            = "DAVIESETAL1989"                          
+    END_OBJECT                    = DS_MAP_PROJECTION_REF_INFO                
+                                                                              
+    OBJECT                        = DS_MAP_PROJECTION_REF_INFO                
+      REFERENCE_KEY_ID            = "BATSON1987"                              
+    END_OBJECT                    = DS_MAP_PROJECTION_REF_INFO                
+                                                                              
+    OBJECT                        = DS_MAP_PROJECTION_REF_INFO                
+      REFERENCE_KEY_ID            = "EDWARDS1987"                             
+    END_OBJECT                    = DS_MAP_PROJECTION_REF_INFO                
+                                                                              
+    OBJECT                        = DS_MAP_PROJECTION_REF_INFO                
+      REFERENCE_KEY_ID            = "SNYDER1987"                              
+    END_OBJECT                    = DS_MAP_PROJECTION_REF_INFO                
+                                                                              
+  END_OBJECT                      = DATA_SET_MAP_PROJECTION_INFO              
+END_OBJECT                        = DATA_SET_MAP_PROJECTION                   
+                                                                              
+END                                                                           
+                                                                              
