@@ -30,17 +30,30 @@ fi
 SCRIPT_DIR=`dirname $0`
 PARENT_DIR=`cd ${SCRIPT_DIR}/.. && pwd`
 LIB_DIR=${PARENT_DIR}/lib
+CONF_DIR=${PARENT_DIR}/conf
 
 # Check for dependencies.
 if [ ! -f ${LIB_DIR}/report-manager-*.jar ]; then
     echo "Cannot find Report Manager jar file in ${LIB_DIR}" 1>&2
     exit 1
 fi
+if [ ! -f ${CONF_DIR}/logging.properties ]; then
+	echo "Cannot find logging properties file in ${CONF_DIR}" 1>&2
+	exit 1
+fi
+
+# Create log directory
+mkdir ${PARENT_DIR}/logs
 
 # Finds the jar file in LIB_DIR and sets it to REPORT_MGR_JAR.
 REPORT_MGR_JAR=`ls ${LIB_DIR}/report-manager-*.jar`
 
+# Find the logging properties file in CONF_DIR and sets it to LOG_PROPS
+LOG_PROPS=`ls ${CONF_DIR}/logging.properties`
+
 # Executes Search Core Indexer via the executable jar file
 # Arguments are passed in to the tool via '$@'
-"${JAVA_HOME}"/bin/java -jar ${REPORT_MGR_JAR} "$@"
+"${JAVA_HOME}"/bin/java \
+	-Djava.util.logging.config.file=${LOG_PROPS} \
+	-jar ${REPORT_MGR_JAR} "$@"
 

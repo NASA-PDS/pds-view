@@ -202,7 +202,7 @@ public class ReportManagerLauncher {
 			}
 		}
 
-		setLogger();
+		//setLogger();
 	}
 
 	/**

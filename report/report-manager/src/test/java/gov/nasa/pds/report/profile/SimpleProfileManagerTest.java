@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.constants.TestConstants;
+import gov.nasa.pds.report.constants.SftpTestConstants;
 import gov.nasa.pds.report.rules.PDSTest;
 import gov.nasa.pds.report.util.Debugger;
 
@@ -33,12 +34,13 @@ public class SimpleProfileManagerTest extends PDSTest{
 		this.correctSet = new HashSet<Properties>();
 		
 		Properties p = new Properties();
-		p.setProperty(Constants.NODE_NAME_KEY, TestConstants.TEST_NODE);
-		p.setProperty(Constants.NODE_HOST_KEY, TestConstants.TEST_HOST);
-		p.setProperty(Constants.NODE_USER_KEY, TestConstants.TEST_USER);
-		p.setProperty(Constants.NODE_PASSWORD_KEY, TestConstants.TEST_PASSWORD);
+		p.setProperty(Constants.NODE_NAME_KEY, SftpTestConstants.TEST_NODE);
+		p.setProperty(Constants.NODE_HOST_KEY, SftpTestConstants.TEST_HOST);
+		p.setProperty(Constants.NODE_USER_KEY, SftpTestConstants.TEST_USER);
+		p.setProperty(Constants.NODE_PASSWORD_KEY,
+				SftpTestConstants.TEST_PASSWORD);
 		p.setProperty(Constants.NODE_ENCRYPT_KEY,
-				Boolean.toString(TestConstants.TEST_ENCRYPTED));
+				Boolean.toString(SftpTestConstants.TEST_ENCRYPTED));
 		p.setProperty(Constants.NODE_XFER_TYPE_KEY, "sftp");
 		this.correctSet.add(p);
 		

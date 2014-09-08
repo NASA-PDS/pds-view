@@ -1,6 +1,7 @@
 package gov.nasa.pds.report.logs;
 
 import gov.nasa.pds.report.constants.Constants;
+import gov.nasa.pds.report.logs.pushpull.FtpPull;
 import gov.nasa.pds.report.logs.pushpull.PDSPull;
 import gov.nasa.pds.report.logs.pushpull.PDSPullImpl;
 import gov.nasa.pds.report.logs.pushpull.PushPullException;
@@ -22,41 +23,76 @@ public class PDSLogsManager implements LogsManager {
 			throw new LogsManagerException("Null node information given.");
 		}
 		
-		String nodeName = Utility.getNodePropsString(nodeProps,
-				Constants.NODE_NAME_KEY, false);
+		// The object that will pull logs from the node using the specified
+		// protocol
+		PDSPull logPuller;
 		
-		// Create the proper PDSPull object to grab logs from the given node
-		PDSPull logPuller = this.getPdsPull(Utility.getNodePropsString(
-				nodeProps, Constants.NODE_XFER_TYPE_KEY, true));
-		
-		// Create staging directory
-		String stagingDirStr = Utility.getNodePropsString(
-				nodeProps, Constants.NODE_STAGING_DIR_KEY, true).trim();
-		File stagingDir = new File(stagingDirStr);
-		if(!stagingDir.exists()){
-			if(!stagingDir.mkdirs()){
-				log.warning("Failed to create the staging directory " +
-						stagingDir.getAbsolutePath() + " for node " + nodeName);
-				return;
-			}
+		try{
+			
+			// Create the proper PDSPull object to grab logs from the given
+			// node
+			logPuller = this.getPdsPull(Utility.getNodePropsString(nodeProps,
+					Constants.NODE_XFER_TYPE_KEY, true));
+			
+			// Create staging directory
+			this.createStagingDir(nodeProps);
+			
+		}catch(LogsManagerException e){
+			
+			throw new LogsManagerException("An error occurred while preparing to pull logs from node " + 
+					getNodeName(nodeProps) + ": " + e.getMessage());
+			
 		}
 		
-		// Connect to the node machines
-		this.connect(nodeProps, logPuller);
-		
-		// Download the node logs
 		try{
-			logPuller.pull(Utility.getNodePropsString(
-					nodeProps, Constants.NODE_PATH_KEY, true), stagingDirStr);
-		}catch(PushPullException e){
-			throw new LogsManagerException("An error occurred while pulling " +
-					"logs from node " + nodeName +
+			
+			// Connect to the node machines
+			this.connect(nodeProps, logPuller);
+			
+			// Download the node logs
+			logPuller.pull(Utility.getNodePropsString(nodeProps,
+					Constants.NODE_PATH_KEY, true),
+					this.getStagingDirPath(nodeProps));
+			
+		}catch(LogsManagerException e){
+			
+			// We have to log a message first, since it's possible to "lose"
+			// the thrown exception during execution of the finally block
+			log.severe("An error occurred while pulling" +
+					" logs from node " + getNodeName(nodeProps) +
 					": " + e.getMessage());
+			throw new LogsManagerException("An error occurred while pulling" +
+					" logs from node " + getNodeName(nodeProps) +
+					": " + e.getMessage());
+			
+		}catch(PushPullException e){
+			
+			// We have to log a message first, since it's possible to "lose"
+			// the thrown exception during execution of the finally block
+			log.severe("An error occurred while pulling" +
+					" logs from node " + getNodeName(nodeProps) +
+					": " + e.getMessage());
+			throw new LogsManagerException("An error occurred while pulling" +
+					" logs from node " + getNodeName(nodeProps) +
+					": " + e.getMessage());
+			
+		}finally{
+			
+			try{
+				
+				logPuller.disconnect();
+				
+			}catch(PushPullException e){
+				
+				throw new LogsManagerException("An error occurred while " +
+						"attempting to disconnect from the node " + 
+						getNodeName(nodeProps) + ": " + e.getMessage());
+				
+			}
+			
 		}
 		
 		// TODO: Reformat the logs into something Sawmill can parse
-		
-		// TODO: Disconnect
 		
 	}
 	
@@ -67,9 +103,11 @@ public class PDSLogsManager implements LogsManager {
 		
 		if(xferType.toLowerCase().equals("sftp")){
 			return new PDSPullImpl();
+		}else if(xferType.toLowerCase().equals("ftp")){
+			return new FtpPull();
 		}else{
-			throw new LogsManagerException("Log puller with trasnfer type " + 
-					xferType + "not supported");
+			throw new LogsManagerException("Log puller with transfer type " + 
+					xferType + " not supported");
 		}
 		
 	}
@@ -96,6 +134,9 @@ public class PDSLogsManager implements LogsManager {
 		encrypt = Utility.getNodePropsBool(nodeProps,
 				Constants.NODE_ENCRYPT_KEY);
 		
+		this.log.info("Connecting to " + user + "@" + host + " using " +
+				logPuller.getClass().getName());
+		
 		try{
 			if(!logPuller.connect(host, user, password, encrypt)){
 				throw new LogsManagerException("Failed to connect to node " + name);
@@ -105,6 +146,42 @@ public class PDSLogsManager implements LogsManager {
 					"An error occurred while connecting to node " + name + 
 					": " + e.getMessage());
 		}
+		
+	}
+	
+	private void createStagingDir(Properties nodeProps)
+			throws LogsManagerException{
+		
+		
+		File stagingDir = new File(this.getStagingDirPath(nodeProps));
+		if(!stagingDir.exists()){
+			if(!stagingDir.mkdirs()){
+				throw new LogsManagerException("Failed to create the staging" +
+						" directory " + stagingDir.getAbsolutePath() +
+						" for node " + getNodeName(nodeProps));
+			}
+		}
+		
+	}
+	
+	private String getNodeName(Properties nodeProps){
+		
+		try{
+			return Utility.getNodePropsString(nodeProps,
+					Constants.NODE_NAME_KEY, false);
+		}catch(LogsManagerException e){
+			return null;	// We don't absolutely need the node name (hence
+							// the false parameter above) so it's OK to return
+							// null
+		}
+		
+	}
+	
+	private String getStagingDirPath(Properties nodeProps)
+			throws LogsManagerException{
+		
+		return Utility.getNodePropsString(nodeProps,
+				Constants.NODE_STAGING_DIR_KEY, true).trim();
 		
 	}
 	

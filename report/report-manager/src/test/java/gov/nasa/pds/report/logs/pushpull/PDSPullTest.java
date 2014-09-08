@@ -13,6 +13,7 @@ import java.util.List;
 
 import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.constants.TestConstants;
+import gov.nasa.pds.report.constants.SftpTestConstants;
 import gov.nasa.pds.report.logs.pushpull.model.LogSet;
 import gov.nasa.pds.report.rules.PDSTest;
 import gov.nasa.pds.report.util.Debugger;
@@ -48,12 +49,14 @@ public class PDSPullTest extends PDSTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		FileUtils.forceMkdir(new File(Utility.getAbsolutePath(TestConstants.TEST_DUMP_RELATIVE)));
+		FileUtils.forceMkdir(new File(Utility.getAbsolutePath(
+				TestConstants.TEST_DUMP_RELATIVE)));
 	}
 	
 	@After
 	public void tearDown() throws Exception {
-		FileUtils.forceDelete(new File(Utility.getAbsolutePath(TestConstants.TEST_DUMP_RELATIVE)));
+		FileUtils.forceDelete(new File(Utility.getAbsolutePath(
+				TestConstants.TEST_DUMP_RELATIVE)));
 	}
 	
 	@Test
@@ -65,7 +68,8 @@ public class PDSPullTest extends PDSTest {
 		String encryptedPassword = encryptor.encrypt(password);
 		//System.out.println(encryptedPassword);
 		
-        Method method = PDSPullImpl.class.getDeclaredMethod("decrypt", String.class);
+        Method method = PDSPullImpl.class.getDeclaredMethod("decrypt",
+        		String.class);
         method.setAccessible(true);
         String output = (String) method.invoke(pullImpl, encryptedPassword);
 		
@@ -74,13 +78,17 @@ public class PDSPullTest extends PDSTest {
 	
 	@Test
 	public void testConnect() throws PushPullException {
-		assertTrue(pullImpl.connect(TestConstants.TEST_HOST, TestConstants.TEST_USER, TestConstants.TEST_PASSWORD, true));
+		assertTrue(pullImpl.connect(SftpTestConstants.TEST_HOST,
+				SftpTestConstants.TEST_USER, SftpTestConstants.TEST_PASSWORD,
+				true));
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testPrivateGetFileFileList() throws Exception {
-		pullImpl.connect(TestConstants.TEST_HOST, TestConstants.TEST_USER, TestConstants.TEST_PASSWORD, true);
+		pullImpl.connect(SftpTestConstants.TEST_HOST,
+				SftpTestConstants.TEST_USER, SftpTestConstants.TEST_PASSWORD,
+				true);
 		
 		String path="/var/log/httpd/access_log*2014-03-*";
 		
@@ -94,7 +102,7 @@ public class PDSPullTest extends PDSTest {
 		Collections.sort(fileList);
 		assertTrue(fileList.size() == 31);
 		assertTrue(fileList.get(0).equals(new File(
-				TestConstants.TEST_PATH).getName()));
+				SftpTestConstants.TEST_PATH).getName()));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -112,10 +120,10 @@ public class PDSPullTest extends PDSTest {
 		// Set some log sets to test
 		
 		// pdsimg
-		logSet.setHostname(TestConstants.TEST_HOST);
-		logSet.setUsername(TestConstants.TEST_USER);
+		logSet.setHostname(SftpTestConstants.TEST_HOST);
+		logSet.setUsername(SftpTestConstants.TEST_USER);
 		logSet.setPassword("Jplmipl!");
-		logSet.setPathname(TestConstants.TEST_PATH);
+		logSet.setPathname(SftpTestConstants.TEST_PATH);
 		logSetList.add(logSet);
 		
 		// pdsen http

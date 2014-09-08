@@ -40,8 +40,8 @@ public class PDSPullImpl implements PDSPull {
 	}
 	
 	/**
-	 * Connects to external machine using SFTP. If encrypted, same encryption as PBEEncryptor
-	 * expected. 
+	 * Connects to external machine using SFTP. If encrypted, same encryption
+	 * as PBEEncryptor expected. 
 	 * 
 	 * @param hostname
 	 * @param username
@@ -56,8 +56,6 @@ public class PDSPullImpl implements PDSPull {
 			throws PushPullException {
 
 		try {
-			this.log.info("Connecting to " + username + "@" + hostname + " using " + this.getClass().getName());
-			Debugger.debug(hostname + " - " + username);
 			JSch jsch = new JSch();
 			this.session = jsch.getSession(username, hostname, 22);
 			this.session.setConfig("StrictHostKeyChecking", "no"); // Ignore HostKeyChecking
@@ -109,7 +107,8 @@ public class PDSPullImpl implements PDSPull {
 	 * @throws SftpException
 	 */
 	@SuppressWarnings("rawtypes")
-	private final List<String> getFileList(String path) throws PushPullException {
+	private final List<String> getFileList(String path)
+			throws PushPullException {
 		try {
 			String[] dirList;
 			String filename;
@@ -137,11 +136,14 @@ public class PDSPullImpl implements PDSPull {
 	 * Retrieve the logs using the specified login information and host
 	 * @throws PushPullException 
 	 */
-	public final void pull(String path, String destination) throws PushPullException {
+	public final void pull(String path, String destination)
+			throws PushPullException {
+		
 		try {
 			
-			// If connection has not been made, make one
+			// If connection has not been made, alert the user
 			if (!this.session.isConnected()) {
+				// TODO: Throw an exception or log an error
 				return;
 			}
 			
@@ -179,8 +181,6 @@ public class PDSPullImpl implements PDSPull {
 			throw new PushPullException("An error occurred while pulling " +
 					"files from " + this.session.getHost() + ":" + path +
 					": " + e.getMessage());
-		} finally {
-			disconnect();
 		}
 	}
 	

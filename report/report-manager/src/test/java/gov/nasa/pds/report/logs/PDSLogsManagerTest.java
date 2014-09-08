@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.constants.TestConstants;
+import gov.nasa.pds.report.constants.SftpTestConstants;
 import gov.nasa.pds.report.rules.PDSTest;
 
 public class PDSLogsManagerTest extends PDSTest{
@@ -29,18 +30,18 @@ public class PDSLogsManagerTest extends PDSTest{
 		props = new Properties();
 		props.setProperty(Constants.NODE_XFER_TYPE_KEY, "sftp");
 		props.setProperty(Constants.NODE_NAME_KEY,
-				TestConstants.TEST_NODE);
+				SftpTestConstants.TEST_NODE);
 		props.setProperty(Constants.NODE_HOST_KEY,
-				TestConstants.TEST_HOST);
+				SftpTestConstants.TEST_HOST);
 		props.setProperty(Constants.NODE_USER_KEY,
-				TestConstants.TEST_USER);
+				SftpTestConstants.TEST_USER);
 		props.setProperty(Constants.NODE_PASSWORD_KEY,
-				TestConstants.TEST_PASSWORD);
+				SftpTestConstants.TEST_PASSWORD);
 		props.setProperty(Constants.NODE_ENCRYPT_KEY,
-				Boolean.toString(TestConstants.TEST_ENCRYPTED));
-		props.setProperty(Constants.NODE_PATH_KEY, TestConstants.TEST_PATH);
+				Boolean.toString(SftpTestConstants.TEST_ENCRYPTED));
+		props.setProperty(Constants.NODE_PATH_KEY, SftpTestConstants.TEST_PATH);
 		props.setProperty(Constants.NODE_STAGING_DIR_KEY,
-				TestConstants.TEST_STAGING_DIR + TestConstants.TEST_HOST);
+				TestConstants.TEST_STAGING_DIR + SftpTestConstants.TEST_HOST);
 	}
 	
 	@After
