@@ -111,18 +111,6 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
-    <!--
-      Hosts the Xerces artifacts.
-      They should eventually show up in the Maven central repository.
-    -->
-    <repository>
-      <id>shibboleth-repo</id>
-      <name>Shibboleth</name>
-      <url>http://shibboleth.internet2.edu/downloads/maven2</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
   </repositories>
 
   <dependencies>
