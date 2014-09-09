@@ -14,10 +14,13 @@
 //
 package gov.nasa.pds.tools.label;
 
+import gov.nasa.pds.tools.util.Utility;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,14 +54,17 @@ public class CachedEntityResolver implements EntityResolver {
     if (entity == null) {
       URL url = new URL(systemId);
       InputStream in = null;
+      URLConnection conn = null;
       try {
-        in = url.openStream();
+        conn = url.openConnection();
+        in = Utility.openConnection(conn);
         entity = IOUtils.toByteArray(in);
         cachedEntities.put(systemId, entity);
       } catch (IOException io) {
         throw io;
       } finally {
         IOUtils.closeQuietly(in);
+        IOUtils.close(conn);
       }
     }
     InputSource inputSource = new InputSource(new ByteArrayInputStream(entity));

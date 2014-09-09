@@ -18,16 +18,19 @@ package gov.nasa.pds.tools.label;
 import gov.nasa.pds.tools.label.validate.DefaultDocumentValidator;
 import gov.nasa.pds.tools.label.validate.DocumentValidator;
 import gov.nasa.pds.tools.label.validate.ExternalValidator;
+import gov.nasa.pds.tools.util.Utility;
 import gov.nasa.pds.tools.util.VersionInfo;
 import gov.nasa.pds.tools.util.XMLErrorListener;
 import gov.nasa.pds.tools.util.XslURIResolver;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +56,7 @@ import net.sf.saxon.event.ParseOptions;
 import net.sf.saxon.om.DocumentInfo;
 import net.sf.saxon.xpath.XPathEvaluator;
 
+import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -433,12 +437,23 @@ public class LabelValidator {
         if (transformer != null) {
           transformers.add(transformer);
         } else {
-          isoTransformer.transform(new StreamSource(source),
-          new StreamResult(schematronStyleSheet));
-          transformer = transformerFactory.newTransformer(new StreamSource(
-            new StringReader(schematronStyleSheet.toString())));
-          transformers.add(transformer);
-          cachedLabelSchematrons.put(source, transformer);
+          InputStream in = null;
+          URL sourceUrl = new URL(source);
+          URLConnection conn = sourceUrl.openConnection();
+          try {
+            in = Utility.openConnection(conn);
+            isoTransformer.transform(new StreamSource(in),
+            new StreamResult(schematronStyleSheet));
+            transformer = transformerFactory.newTransformer(new StreamSource(
+              new StringReader(schematronStyleSheet.toString())));
+            transformers.add(transformer);
+            cachedLabelSchematrons.put(source, transformer);
+          } catch (MalformedURLException mu) {
+            throw new Exception("Source '" + source + "' is not a valid url.");
+          } finally {
+            IOUtils.closeQuietly(in);
+            IOUtils.close(conn);
+          }
         }
       } catch (Exception e) {
         String message = "Error occurred while loading schematron: " + e.getMessage();
