@@ -4,6 +4,7 @@ import gov.nasa.pds.transport.utils.XmlWriter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -31,10 +32,13 @@ public class ZipSizeDirHandler extends AbstractPdsGetHandler {
 		if (!inputDir.exists() || !inputDir.isDirectory()) {
 			throw new ProductException("Invalid input directory: "+inputDirPath);
 		}
+		
+		// recursively list all files in directory tree
+		String[] extensions = null; // to list all files
+		boolean recursive = true;
+		Collection<File> fileNames = (Collection<File>)FileUtils.listFiles(inputDir, extensions, recursive); 
 
-		// list of all files in directory
 		long totalSize = 0;
-		File[] fileNames = inputDir.listFiles();
 		for (File fileToAdd : fileNames) {
 			totalSize += fileToAdd.length();
 		}

@@ -6,11 +6,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.oodt.product.ProductException;
 
 /**
@@ -27,6 +30,7 @@ public class ZipDirHandler extends AbstractPdsGetHandler {
 	protected final static Logger LOG = Logger.getLogger(ZipDirHandler.class.getName());
 	
 	private String productRoot = "/"; // default product root
+	int lenProductRootName = 0; // number of characters to remove from zip filenames
 	
 	@Override
 	public void configure(Properties properties) {
@@ -39,6 +43,8 @@ public class ZipDirHandler extends AbstractPdsGetHandler {
 			productRoot = this.getConfiguration().getProductRoot();
 			LOG.info("Using productRoot="+productRoot);
 		}
+		
+		lenProductRootName = productRoot.length() + (productRoot.endsWith(File.separator) ? 0:1);
 		
 	}
 
@@ -69,38 +75,38 @@ public class ZipDirHandler extends AbstractPdsGetHandler {
 				LOG.info("Generating zip file path="+tempFile.getAbsolutePath());
 				out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(tempFile)));
 				
-				int lenProductRootName = productRoot.length() + (productRoot.endsWith(File.separator) ? 0:1);
-				File[] fileNames = inputDir.listFiles();
+				// recursively list all files in directory tree
+				String[] extensions = null; // to list all files
+				boolean recursive = true;
+				Collection<File> fileNames = (Collection<File>)FileUtils.listFiles(inputDir, extensions, recursive); 
 				
 				// create zip file
 				byte[] buf = new byte[512];
 				int numRead;
 				for (File fileToAdd : fileNames) {		
-					if (fileToAdd.isFile()) { // do not include sub-directories
 						
-						String filenameToAdd = fileToAdd.getAbsolutePath();
-						LOG.info("Adding fileName="+filenameToAdd);
-						if (filenameToAdd.startsWith(productRoot)) 	// strip productRoot
-							filenameToAdd = filenameToAdd.substring(lenProductRootName);
-						if (filenameToAdd.matches("[a-zA-Z]:.*"))           // strip windows drive
-							filenameToAdd = filenameToAdd.substring(2);
-						if (filenameToAdd.charAt(0) == File.separatorChar) // strip root separatorChar
-							filenameToAdd = filenameToAdd.substring(1);
-						
-						ZipEntry entry = new ZipEntry(filenameToAdd.replace(File.separatorChar, '/'));
-						entry.setMethod(ZipEntry.DEFLATED);
-						out.putNextEntry(entry);	
-						source = new BufferedInputStream(new FileInputStream(fileToAdd));
-						int sizeOfFile = 0;
-						while ((numRead = source.read(buf)) != -1) {
-							out.write(buf, 0, numRead);
-							sizeOfFile += numRead;
-						}
-						source.close();	
-						out.closeEntry();
-						LOG.info("Added " + fileToAdd.getName() + " of size " + sizeOfFile);
-						
+					String filenameToAdd = fileToAdd.getAbsolutePath();
+					LOG.info("Adding fileName="+filenameToAdd);
+					if (filenameToAdd.startsWith(productRoot)) 	// strip productRoot
+						filenameToAdd = filenameToAdd.substring(lenProductRootName);
+					if (filenameToAdd.matches("[a-zA-Z]:.*"))           // strip windows drive
+						filenameToAdd = filenameToAdd.substring(2);
+					if (filenameToAdd.charAt(0) == File.separatorChar) // strip root separatorChar
+						filenameToAdd = filenameToAdd.substring(1);
+					
+					ZipEntry entry = new ZipEntry(filenameToAdd.replace(File.separatorChar, '/'));
+					entry.setMethod(ZipEntry.DEFLATED);
+					out.putNextEntry(entry);	
+					source = new BufferedInputStream(new FileInputStream(fileToAdd));
+					int sizeOfFile = 0;
+					while ((numRead = source.read(buf)) != -1) {
+						out.write(buf, 0, numRead);
+						sizeOfFile += numRead;
 					}
+					source.close();	
+					out.closeEntry();
+					LOG.info("Added " + fileToAdd.getName() + " of size " + sizeOfFile);
+						
 				}
 				
 			} catch (IOException ex) {
@@ -133,7 +139,6 @@ public class ZipDirHandler extends AbstractPdsGetHandler {
 		self.configure(new Properties());
 		File outputFile = self.getOutputFile(inputFilePath);
 		LOG.info("Output file path="+outputFile.getAbsolutePath());
-
 
 	}
 
