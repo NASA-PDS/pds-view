@@ -70,6 +70,7 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
 	  
     List<File> files = new ArrayList<File>();
     List<String> checksums = new ArrayList<String>();
+    long totalSize = 0;
 
     // Get handler properties.
     String registryUrl = System.getProperty("gov.nasa.pds.transport.RegistryProductHandler.registryUrl", "http://localhost:8080/registry");
@@ -89,7 +90,8 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
     String archivePackage = extractFieldFromQuery(q, "package");
     if (archivePackage == null) {
       archivePackage = "ZIP";
-    } else if ((!archivePackage.equalsIgnoreCase("ZIP")) && (!archivePackage.equalsIgnoreCase("TGZ"))) {
+    } else if ( (!archivePackage.equalsIgnoreCase("ZIP")) && (!archivePackage.equalsIgnoreCase("TGZ"))
+    		    && (!archivePackage.equalsIgnoreCase("ZIP_SIZE")) && (!archivePackage.equalsIgnoreCase("TGZ_SIZE")) ) {
       throw new ProductException("Invalid package type specified.");
     }
     archivePackage = archivePackage.toUpperCase();
@@ -112,6 +114,13 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
         for (ExtendedExtrinsicObject fileRef : fileRefList) {
           List<String> fileLocation = fileRef.getSlotValues("file_location");
           List<String> fileName = fileRef.getSlotValues("file_name");
+          try {
+        	  long size = Long.parseLong( fileRef.getSlotValues("file_size").get(0) );
+        	  System.out.println("File: "+fileName+" size="+size);
+        	  totalSize += size;
+          } catch(NullPointerException e) {
+        	  // do nothing, just in case the registry did not contain the file size
+          }
           File file = new File(fileLocation.get(0), fileName.get(0));
           files.add(file);
           // use existing file checksum, or compute anew
@@ -133,28 +142,53 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
     }
     
     // Create checksum manifest
-    this.addChecksumManifest(files, checksums);
+    totalSize += this.addChecksumManifest(files, checksums);
 
-    // Build the archive package file.
-    try {
-      String archiveFilePath = null;
-      File archiveFile = null;
-      DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-      Date date = new Date();
-      if (archivePackage.equals("ZIP")) {
-        archiveFilePath = tmpDir + "/pds-package-" + dateFormat.format(date) + ".zip";
-        archiveFile = buildZIPFile(archiveFilePath, files);
-      } else if (archivePackage.equals("TGZ")) {
-        archiveFilePath = tmpDir + "/pds-package-" + dateFormat.format(date) + ".tar.gz";
-        archiveFile = buildTGZFile(archiveFilePath, files);
-      } else {
-        // Not sure how we got here, but bail.
-        throw new ProductException("Invalid package type specified.");
-      }
-      String mimeType = new Tika().detect(archiveFile.getName());
-      q.getResults().add(new LargeResult(archiveFilePath, mimeType, null, archiveFile.getName(), Collections.EMPTY_LIST, archiveFile.length()));
-    } catch (Exception e) {
-      throw new ProductException("Error creating the archive file. Message: " + e.getMessage());
+    // Build the archive package file
+    if (archivePackage.equals("ZIP") || archivePackage.equals("TGZ")) {
+ 
+	    try {
+	      String archiveFilePath = null;
+	      File archiveFile = null;
+	      DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+	      Date date = new Date();
+	      if (archivePackage.equals("ZIP")) {
+	        archiveFilePath = tmpDir + "/pds-package-" + dateFormat.format(date) + ".zip";
+	        archiveFile = buildZIPFile(archiveFilePath, files);
+	      } else if (archivePackage.equals("TGZ")) {
+	        archiveFilePath = tmpDir + "/pds-package-" + dateFormat.format(date) + ".tar.gz";
+	        archiveFile = buildTGZFile(archiveFilePath, files);
+	      } else {
+	        // Not sure how we got here, but bail.
+	        throw new ProductException("Invalid package type specified.");
+	      }
+	      String mimeType = new Tika().detect(archiveFile.getName());
+	      q.getResults().add(new LargeResult(archiveFilePath, mimeType, null, archiveFile.getName(), Collections.EMPTY_LIST, archiveFile.length()));
+	    } catch (Exception e) {
+	      throw new ProductException("Error creating the archive file. Message: " + e.getMessage());
+	    }
+	    
+	// Build the XML file with size information
+    } else if (archivePackage.equals("ZIP_SIZE") || archivePackage.equals("TGZ_SIZE")) {
+    	
+		try {
+			
+			// create XML document
+			String xml = XmlWriter.writeSizeDocument(totalSize);
+			
+			// write out XML document
+			File tempFile = File.createTempFile(archivePackage.toLowerCase(), ".xml", new File(tmpDir));
+			FileUtils.writeStringToFile(tempFile, xml);
+			tempFile.deleteOnExit();
+			
+			// return XML file
+			String mimeType = new Tika().detect(tempFile.getName());
+		    q.getResults().add(new LargeResult(tempFile.getAbsolutePath(), "text/xml", null, tempFile.getName(), Collections.EMPTY_LIST, tempFile.length()));
+			
+		} catch (IOException e) {
+			throw new ProductException(e.getMessage());
+		}
+    	
     }
 
     // Return the original query object, with or without results.
@@ -277,7 +311,7 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
   }
 
   private static File buildTGZFile(String tgzFilePath, List<File> files) throws IOException {
-    System.out.println("Entered buildTGZFile()");
+
     byte[] buf = new byte[1024];
     TarArchiveOutputStream out = null;
 
@@ -316,7 +350,7 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
   }
   
   // Method to add a checksum manifest to the files collection
-  private void addChecksumManifest(List<File> files, List<String> checksums) throws ProductException {
+  private long addChecksumManifest(List<File> files, List<String> checksums) throws ProductException {
 	  
   	try	{
   		 
@@ -334,6 +368,9 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
 	    
 	    // add manifest to the list of files to pack
 	    files.add(tmpFile);
+	    
+	    System.out.println("File: "+tmpFile.getName()+" size="+tmpFile.length());
+	    return tmpFile.length();
 	    
   	} catch(IOException e) {
   		e.printStackTrace();

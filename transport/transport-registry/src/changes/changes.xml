@@ -23,9 +23,13 @@
   </properties>
 
   <body>
+  
     <release version="1.1.0" date="TBD" description="TBD">
       <action dev="cinquini" type="add" issue="PDS-266">
         Added checksums manifest file to the products package delivered by the transport-registry service.
+      </action>
+      <action dev="cinquini" type="add" issue="PDS-298">
+        Added support for returning the size of the expanded ZIP/TGZ packages by specifying package = ZIP_SIZE/TGZ_SIZE.
       </action>
     </release>
 

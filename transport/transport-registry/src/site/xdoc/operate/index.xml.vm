@@ -39,7 +39,7 @@
 
       <ul>
         <li>Web Browser<br/>
-          <p>Any standard web browser (e.g., Firefox, Safari, Internet Explorer, etc.) will allow interaction with the service.
+          <p>Any standard web browser (e.g., Firefox, Safari, Chrome, Internet Explorer, etc.) will allow interaction with the service.
           </p>
         </li>
         <li>cURL<br/>
@@ -66,7 +66,7 @@
         of straight HTTP (name, value) pairs (last option in this table). Additional information regarding the DIS-Style query format can be found at the <a href="http://oodt.apache.org/components/maven/xmlquery/disquery/" target="_blank">Apache OODT DIS-Style Query</a> page.</td></tr>
         <tr><td>xmlq</td><td>The XML query expression identifying the product (or set of files) to retrieve from the Transport Service. 
         The details for the format of this query expression will not be covered here. Although supported, the use of the <i>xmlq</i> parameter is discouraged.</td></tr>
-        <tr><td>identifier, package</td><td>The product identifier (specified one or more times), and the requested packaging format (ZIP or TGZ).
+        <tr><td>identifier, package</td><td>The product identifier (specified one or more times), and the requested packaging format (ZIP, TGZ, ZIP_SIZE, TGZ_SIZE).
         This is the preferred method to query the transport-registry service.</td></tr>
       </table>
 
@@ -76,7 +76,8 @@
       <table>
         <tr><th>DIS Query Parameter</th><th>Description</th></tr>
         <tr><td>identifier</td><td>The identifier for the product to be retrieved in the form of a PDS logical identifier (LID) or the LID and the version identifier (LIDVID). This parameter is required and may be specified more than once. Due to the 5000 character limit for HTTP POST commands, a safe maximum of specified identifiers is around 50.</td></tr>
-        <tr><td>package</td><td>The package type to be returned from the Transport Service. The valid values are <i>ZIP</i> and <i>TGZ</i>, and are NOT case sensitive. 
+        <tr><td>package</td><td>The package type to be returned from the Transport Service. The valid values are <i>ZIP</i>, <i>TGZ</i> to return the compressed packages,
+        and <i>ZIP_SIZE</i>, <i>TGZ_SIZE</i> to return the total size of all contained files once the compressed packages are expanded. The values are <i>not</i> case sensitie.
         The default value is <i>ZIP</i>. This parameter is optional.</td></tr>
       </table>
 
@@ -100,7 +101,7 @@ http://localhost:8080/transport-registry/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;
       <p>Alternatively, the product identifier and desired packaging can be specified using standard HTTP parameter encoding. The general URL form is:</p>
 
       <source>
-http://localhost:8080/transport-registry/prod?identifier=&lt;LID|LIDVID&gt;&amp;package=&lt;TGZ|ZIP&gt;
+http://localhost:8080/transport-registry/prod?identifier=&lt;LID|LIDVID&gt;&amp;package=&lt;TGZ|ZIP|TGZ_SIZE|ZIP_SIZE&gt;
       </source>
 
     <p>For example, the following URLs specify the same logical request for retrieving a PDS product:
@@ -114,7 +115,17 @@ urn:nasa:pds:phx_lidar:reduced:LS075RLS_00902835894_1885M1+AND+package+EQ+TGZ
 http://localhost:8080/transport-registry/prod?identifier=\
 urn:nasa:pds:phx_lidar:reduced:LS075RLS_00902835894_1885M1&amp;package=TGZ
     </source>
-    (again assuming the product exists).
+    (again assuming the product exists). 
+    </p>
+    <p>The following queries return an XML document containing the size of the uncompressed TGZ/ZIP packages respectively
+    (which, once expanded, have obviously the same size):
+        <source>
+http://localhost:8080/transport-registry/prod?identifier=\
+urn:nasa:pds:phx_lidar:reduced:LS147RLA_00909259320_204CM1&amp;package=TGZ_SIZE
+	
+http://localhost:8080/transport-registry/prod?identifier=\
+urn:nasa:pds:phx_lidar:reduced:LS147RLA_00909259320_204CM1&amp;package=ZIP_SIZE
+    </source>
     </p>
     </section>
   </body>
