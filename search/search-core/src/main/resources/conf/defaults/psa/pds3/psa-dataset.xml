@@ -130,7 +130,6 @@
 		</field>
 		<field name="external_reference_text" type="string">
 			<registryPath>external_reference_text</registryPath>
-			<registryPath>external_reference_description</registryPath>
 		</field>
 	</indexFields>
 </product>
