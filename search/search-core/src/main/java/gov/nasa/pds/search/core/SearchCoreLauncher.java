@@ -56,7 +56,7 @@ import org.omg.CORBA.portable.ApplicationException;
 public class SearchCoreLauncher {
 
 	/** Default PDS Config File Path, if not is specified. **/
-	private static final String PDS3_CONFIG_PATH = "/conf/pds/pds3";
+	private static final String PDS3_CONFIG_PATH = "/conf/defaults/pds/pds3";
 
 	/** 
 	 * Search Environment Variable to use if not specified via CLI.

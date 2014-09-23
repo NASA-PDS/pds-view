@@ -49,7 +49,7 @@ public class UtilityTest extends SearchCoreTest {
 	
 	@Test
 	public void testUrlExists() {
-		String url = "http://pdsbeta.jpl.nasa.gov:8080/registry-pds3";
+		String url = "http://pds-gamma.jpl.nasa.gov:8080/registry-pds3";
 		assertTrue(Utility.urlExists(url));
 	}
 	
