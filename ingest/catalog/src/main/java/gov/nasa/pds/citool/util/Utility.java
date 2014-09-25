@@ -208,16 +208,19 @@ public class Utility {
     
     public static String replaceChars(String strToReplace) {		
 		if (strToReplace.contains(" "))
-			strToReplace = strToReplace.replace(' ',  '_');
+			strToReplace = strToReplace.replaceAll(" ", "_");
 		
 		if (strToReplace.contains("/")) 
-			strToReplace = strToReplace.replace('/', '-');
+			strToReplace = strToReplace.replaceAll("/", "-");
 		
 		if (strToReplace.contains("("))
 			strToReplace = strToReplace.replaceAll("\\(", "");
 		
 		if (strToReplace.contains(")"))
 			strToReplace = strToReplace.replaceAll("\\)", "");
+		
+		if (strToReplace.contains("&"))
+			strToReplace = strToReplace.replaceAll("&", "-");
 		
 		return strToReplace;
 	}

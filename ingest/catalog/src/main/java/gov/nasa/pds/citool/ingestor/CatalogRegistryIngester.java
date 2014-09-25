@@ -836,9 +836,16 @@ public class CatalogRegistryIngester {
 				product.setName(md.getMetadata("INSTRUMENT_NAME") + " for " + instHostId);
 				slots.add(new Slot(getKey("product_class"), Arrays.asList(new String[] { Constants.INST_PROD })));
 			}
-			else if (objType.equalsIgnoreCase(Constants.INSTHOST_OBJ) && key.equals("INSTRUMENT_HOST_ID")) {
+			else if (objType.equalsIgnoreCase(Constants.INSTHOST_OBJ) && key.equals("INSTRUMENT_HOST_ID")) {	
 				value = Utility.collapse(value);
-				productLid = Constants.LID_PREFIX+"instrument_host:instrument_host."+value;
+				String instHostType = md.getMetadata("INSTRUMENT_HOST_TYPE");
+				String tmpValue = value;
+    			if (instHostType!=null)
+    				tmpValue = instHostType + "." + tmpValue; 
+    			else 
+    				tmpValue = "instrument_host." + tmpValue; 
+    			tmpValue = Utility.collapse(tmpValue);
+				productLid = Constants.LID_PREFIX+"instrument_host:"+tmpValue;
 				productLid = Utility.replaceChars(productLid);
 				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
