@@ -84,7 +84,7 @@ aService = {
             "guid":"urn:uuid:76c53cf8-7df2-4a5b-baf1-d6c5e74bdf72",
             "specificationLink":[
                 {
-                    "specificationObject":"urn:microsfot:fuck-your-standards:wmpsp",
+                    "specificationObject":"urn:microsfot:fsck-your-filesystem:wmpsp",
                     "serviceBinding":"urn:uuid:76c53cf8-7df2-4a5b-baf1-d6c5e74bdf72",
                     "description":"Windows Media Player Streaming Protocol",
                     "objectType":"SpecificationLink",
