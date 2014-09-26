@@ -24,6 +24,9 @@
 
   <body>
     <release version="1.5.0" date="TBD" description="TBD">
+      <action dev="jpadams" type="update" issue="PDS-301">
+	Updated core config schema to allow for specification of both output string or registry path in the configurations. The registry path will be used by default, unless it is not found. Updated pds4 context config to use this functionality to look for resource_url for hte resLocation, otherwise default to the ds-view/viewContext page.
+      </action>
       <action dev="jpadams" type="update" issue="PDS-286">
       	Updated ProductClass to include new SlotFilter for version_id = latest. Updated dataset.xml to include version_id. Add new test to ProductClassTest.
       </action>
