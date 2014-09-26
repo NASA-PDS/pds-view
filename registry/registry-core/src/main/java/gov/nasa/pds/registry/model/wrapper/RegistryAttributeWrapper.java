@@ -15,6 +15,7 @@
 package gov.nasa.pds.registry.model.wrapper;
 
 import gov.nasa.pds.registry.model.ExtrinsicObject;
+import gov.nasa.pds.registry.model.ObjectStatus;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
 
 import java.util.Arrays;
@@ -191,6 +192,24 @@ public enum RegistryAttributeWrapper  {
 		@Override
 		public ExtrinsicFilter.Builder buildOntoFilter(ExtrinsicFilter.Builder builder, String value) {
 			return builder.contentVersion(value);
+		}
+	},
+		
+	/** Attribute for Product status. **/
+	STATUS ("status") {
+		@Override
+		public String getValueFromExtrinsic(ExtrinsicObject extObj) {
+			return extObj.getStatus().name();
+		}
+		
+		@Override
+		public List<String> getValuesFromExtrinsic(ExtrinsicObject extObj) {
+			return Arrays.asList(extObj.getStatus().name());
+		}
+		
+		@Override
+		public ExtrinsicFilter.Builder buildOntoFilter(ExtrinsicFilter.Builder builder, String value) {
+			return builder.status(ObjectStatus.valueOf(value));
 		}
 	};
 
