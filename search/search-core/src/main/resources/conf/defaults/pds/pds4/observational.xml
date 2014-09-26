@@ -6,6 +6,10 @@
 			<registryPath>objectType</registryPath>
 			<value>Product_Observational</value>
 		</query>
+		<query>
+			<registryPath>status</registryPath>
+			<value>Approved</value>
+		</query>
 		<checkAssociations>true</checkAssociations>
 	</specification>
 	

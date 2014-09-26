@@ -33,7 +33,7 @@ public class RegistryExtractorTest extends SearchCoreTest {
 	private RegistryExtractor re;
 
 	@Rule
-	public SingleTestRule test = new SingleTestRule("testRunPDS4");
+	public SingleTestRule test = new SingleTestRule("testRunApprovedPDS3");
 
 	@Before
 	public void setUp() {
@@ -142,6 +142,18 @@ public class RegistryExtractorTest extends SearchCoreTest {
 			this.re.setPrimaryRegistries(Arrays
 					.asList(TestConstants.PDS4_REGISTRY_URL));
 			this.re.setQueryMax(100);
+			this.re.run();
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("RegistryExtractor.run Test Failed.  See stack trace for error.");
+		}
+	}
+	
+	@Test
+	public void testRunApprovedPDS3() {
+		try {
+			this.re.setConfDir(new File(System.getProperty("user.dir") + "/"
+					+ TestConstants.CONFIG_DIR_RELATIVE + "/pds/pds3"));
 			this.re.run();
 		} catch (Exception e) {
 			e.printStackTrace();

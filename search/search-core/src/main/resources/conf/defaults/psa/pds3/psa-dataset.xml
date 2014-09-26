@@ -6,6 +6,10 @@
 			<registryPath>objectType</registryPath>
 			<value>Product_Data_Set_PDS3</value>
 		</query>
+		<query>
+			<registryPath>status</registryPath>
+			<value>Approved</value>
+		</query>
 		<!-- 	
 			Adding PDS3 Registry as secondary to grab the context references
 			i.e. node_ref, instrument_ref, etc. 

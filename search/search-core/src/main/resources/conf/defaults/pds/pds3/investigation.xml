@@ -6,6 +6,10 @@
 			<registryPath>objectType</registryPath>
 			<value>Product_Mission_PDS3</value>
 		</query>
+		<query>
+			<registryPath>status</registryPath>
+			<value>Approved</value>
+		</query>
 	</specification>
 	
 	<indexFields>
