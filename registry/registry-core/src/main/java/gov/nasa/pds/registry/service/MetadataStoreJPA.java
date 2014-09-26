@@ -1,15 +1,15 @@
 //	Copyright 2009-2010, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
-//	Any commercial use must be negotiated with the Office of Technology 
+//	Any commercial use must be negotiated with the Office of Technology
 //	Transfer at the California Institute of Technology.
-//	
-//	This software is subject to U. S. export control laws and regulations 
-//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
-//	is subject to U.S. export control laws and regulations, the recipient has 
-//	the responsibility to obtain export licenses or other export authority as 
-//	may be required before exporting such information to foreign countries or 
+//
+//	This software is subject to U. S. export control laws and regulations
+//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+//	is subject to U.S. export control laws and regulations, the recipient has
+//	the responsibility to obtain export licenses or other export authority as
+//	may be required before exporting such information to foreign countries or
 //	providing access to foreign nationals.
-//	
+//
 //	$Id$
 //
 
@@ -56,9 +56,9 @@ import org.springframework.transaction.annotation.Transactional;
  * implementation of a {@link MetadataStore}. To use a different type of
  * database one would need to update the persistence unit provided via
  * configuration and injected with Spring.
- * 
+ *
  * @author pramirez
- * 
+ *
  */
 @Repository(value = "metadataStore")
 public class MetadataStoreJPA implements MetadataStore {
@@ -95,7 +95,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#getExtrinsics(gov.nasa.pds.
    * registry .query.ProductQuery, java.lang.Long, java.lang.Integer)
@@ -165,10 +165,10 @@ public class MetadataStoreJPA implements MetadataStore {
             start - 1).setMaxResults(rows).getResultList());
     return response;
   }
-  
+
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#getPackages(gov.nasa.pds.
    * registry .query.ProductQuery, java.lang.Long, java.lang.Integer)
@@ -233,7 +233,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#getAuditableEvents(java.lang
    * .String)
@@ -255,7 +255,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#getClassificationNodes(java
    * .lang.String)
@@ -278,7 +278,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#getAssociations(gov.nasa.pds
    * .registry.query.AssociationQuery, java.lang.Integer, java.lang.Integer)
@@ -344,7 +344,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#getRegistyObject(java.lang.
    * String, java.lang.Class)
@@ -364,7 +364,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#saveRegistryObject(gov.nasa
    * .pds.registry.model.RegistryObject)
@@ -374,11 +374,14 @@ public class MetadataStoreJPA implements MetadataStore {
   public void saveRegistryObject(RegistryObject registryObject) {
     entityManager.persist(registryObject);
     entityManager.flush();
+    // Needed to detach the object from the EntityManager to free up
+    // resources.
+    entityManager.clear();
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#deleteRegistryObject(java.lang
    * .String, java.lang.Class)
@@ -398,7 +401,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#getNumRegistryObjects(java.
    * lang.Class)
@@ -415,7 +418,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#getRegistryObject(java.lang
    * .String, java.lang.String, java.lang.Class)
@@ -436,7 +439,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#getRegistryObjectVersions(java
    * .lang.String, java.lang.Class)
@@ -460,7 +463,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#getRegistryObjects(java.lang
    * .Integer, java.lang.Integer)
@@ -481,7 +484,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#getRegistryObjects(gov.nasa
    * .pds.registry.query.ObjectQuery, java.lang.Integer, java.lang.Integer,
@@ -556,7 +559,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#hasRegistryObject(java.lang
    * .String, java.lang.String, java.lang.Class)
@@ -578,7 +581,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#hasRegistryObjectVersions(java
    * .lang.String, java.lang.Class)
@@ -598,7 +601,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#hasRegistryObject(java.lang
    * .String, java.lang.Class)
@@ -618,7 +621,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#updateRegistryObject(gov.nasa
    * .pds.registry.model.RegistryObject)
@@ -632,7 +635,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#hasClassificationNode(java.
    * lang.String, java.lang.String)
@@ -652,7 +655,7 @@ public class MetadataStoreJPA implements MetadataStore {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * gov.nasa.pds.registry.service.MetadataStore#getAuditableEvents(gov.nasa
    * .pds.registry.query.RegistryQuery, java.lang.Integer, java.lang.Integer)
