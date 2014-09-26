@@ -273,12 +273,15 @@ public class ProductClass {
 			for (Field field : this.product.getIndexFields().getField()) {
 				//TODO Functionality to use suffixes for field names commented out below
 				String fieldName = field.getName(); //+ SolrSchemaField.getSuffix(field.getType());
+				valueList = new ArrayList<String>();
 				
 				// Handle registry path
 				if (!field.getRegistryPath().isEmpty()) {
 					valueList = getSlotValuesFromPathList(field.getRegistryPath(), searchExtrinsic);
-				} else if ((value = field.getOutputString()) != null) {	// Handle outputString
-					valueList = new ArrayList<String>();
+				} 
+				
+				if (valueList.isEmpty() && field.getOutputString() != null) {	// Handle outputString
+					value = field.getOutputString();
 					valueList.add(checkForSubstring((OutputString)value, searchExtrinsic));
 				}
 				

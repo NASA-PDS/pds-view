@@ -101,10 +101,10 @@
 	<xsd:element name="outputString" type="OutputString" />
 	<xsd:element name="field" type="Field" />
 	<xsd:complexType name="Field">
-		<xsd:choice>
-			<xsd:element ref="outputString" />
-			<xsd:element ref="registryPath" maxOccurs="unbounded" />
-		</xsd:choice>
+		<xsd:sequence>
+			<xsd:element ref="registryPath" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element ref="outputString" minOccurs="0"/>
+		</xsd:sequence>
 		<xsd:attribute ref="name" use="required" />
 		<xsd:attribute ref="type" use="required" />
 		<xsd:attribute ref="default" />
