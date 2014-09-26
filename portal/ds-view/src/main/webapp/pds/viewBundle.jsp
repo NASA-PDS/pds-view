@@ -124,7 +124,9 @@
 		 }
 		 else if (key.equals("NAME"))
 		    out.println(pds4Search.getValues(doc, "title").get(0));		 
-         else if (key.equals("RESOURCES")) {
+         //else if (key.equals("RESOURCES")) {
+         //else if (key.equals("SEARCH/ACCESS DATA")) {
+         else if (tmpValue.equals("resource_ref")) {
             String resname = "";
             String reslink = "";
             List<String> resnames = pds4Search.getValues(doc, "resource_name");
@@ -263,18 +265,22 @@
     	   		                targetRef = targetRef.substring(0, targetRef.indexOf("::"));
                              SolrDocument targetDoc = pds4Search.getContext(targetRef);
                            
-    	   		             if (targetDoc!=null && pds4Search.getValues(targetDoc, "title")!=null) {
-    	                        val = pds4Search.getValues(targetDoc, "title").get(0);     		    
+    	   		             String targetName = null;
+                             if (targetDoc!=null && pds4Search.getValues(targetDoc, "title")!=null) {
+                                targetName = pds4Search.getValues(targetDoc, "title").get(0);
+                                
+                                if (targetName.equalsIgnoreCase(val)) {    		    
            		    %>
     	    	   <a href="/ds-view/pds/viewContext.jsp?identifier=<%=targetRef%>" target="_blank"><%=val%></a><br>
     	                 <%
-    	                     } // end if
+    	                        }
+    	                     } // end if (targetDoc!=null ....
     	                     else 
-    	                        out.println(val);
+    	                        out.println(val + "<br>");
     	                  } // end for
     	               }
     	               else
-    	                  out.println(val);
+    	                  out.println(val + "<br>");
     	            } 
     	            else if (tmpValue.equals("investigation_name")) {
     	               String missionRef = "";
@@ -301,41 +307,75 @@
     	               out.println(val);         
     	            }
     	            else if (tmpValue.equals("observing_system_component_name")) {
-    	                List<String> compTypes = pds4Search.getValues(doc, "observing_system_component_type");
-                       //List<String> compNames = pds4Search.getValues(doc, "observing_system_component_name");
-                       //for (String compType: compTypes) {
+    	               List<String> compTypes = pds4Search.getValues(doc, "observing_system_component_type");
+                       List<String> refInfos = null;
                        String compType = compTypes.get(j);
-                       //out.println("compType = " + compType + "    name = " + val);
-                       
+                       String refLink = null;
+                       if (compType!=null) {
+                       //out.println("compType = " + compType + "    name = " + val);                      
                        if (compType.equalsIgnoreCase("instrument")) {                      
-                          if (pds4Search.getValues(doc, "instrument_ref")!=null) {
-                             for (String instRef: pds4Search.getValues(doc, "instrument_ref")) {
+                          if (pds4Search.getValues(doc, "instrument_ref")!=null) {                            
+                             refInfos = pds4Search.getValues(doc, "instrument_ref");                            
+                             for (String instRef: refInfos) {
                                 if (instRef.contains("::"))
-                                   instRef = instRef.substring(0, instRef.indexOf("::"));
-								//out.println("instRef = " + instRef);
+                             		instRef = instRef.substring(0, instRef.indexOf("::"));
+                                SolrDocument instDoc = pds4Search.getContext(instRef);
+                                if (instDoc!=null) {
+                                   String instName = "";
+                                   if (pds4Search.getValues(instDoc, "instrument_name")!=null) {
+                                      instName = pds4Search.getValues(instDoc, "instrument_name").get(0);
+                                      //out.println("refLink = " + refLink + "     instName = " + instName + "    val = " + val);
+                                      if (instName.equalsIgnoreCase(val))
+                                         refLink = instRef;
+                                   }
+                                }
+                             } // end for
+                             if (refLink!=null) {
+                                if (refLink.contains("::"))
+                                   refLink = refLink.substring(0, refLink.indexOf("::"));
                     %>
-                   <a href="/ds-view/pds/viewContext.jsp?identifier=<%=instRef%>" target="_blank"><%=val%></a><br>
+                   <a href="/ds-view/pds/viewContext.jsp?identifier=<%=refLink%>" target="_blank"><%=val%></a><br>
                          <%
-                             }  // end for
+                             }
+                             else 
+                                out.println(val + "<br>");
                           } // end if (instrument_ref !=null)
                           else
-                             out.println(val);
+                             out.println(val + "<br>");
                        } // end if (compType == "instrument")
                        else if (compType.equalsIgnoreCase("spacecraft")) {
                           if (pds4Search.getValues(doc, "instrument_host_ref")!=null) {
-                             for (String instHostRef: pds4Search.getValues(doc, "instrument_host_ref")) {
+                             refInfos = pds4Search.getValues(doc, "instrument_host_ref");                           
+                             for (String instHostRef: refInfos) {
                                 if (instHostRef.contains("::"))
                                    instHostRef = instHostRef.substring(0, instHostRef.indexOf("::"));
+                                SolrDocument instHostDoc = pds4Search.getContext(instHostRef);
+                                if (instHostDoc!=null) {
+                                   String instHostName = "";
+                                   if (pds4Search.getValues(instHostDoc, "instrument_host_name")!=null) {
+                                      instHostName = pds4Search.getValues(instHostDoc, "instrument_host_name").get(0);
+                                      if (instHostName.equalsIgnoreCase(val))
+                                         refLink = instHostRef;
+                                   }
+                                }
+                             } // end for                           
+                             if (refLink!=null) {
+                                if (refLink.contains("::"))
+                                   refLink = refLink.substring(0, refLink.indexOf("::"));
+                              //out.println("refLink = " + refLink);
                     %>
-                   <a href="/ds-view/pds/viewContext.jsp?identifier=<%=instHostRef%>" target="_blank"><%=val%></a><br>
+                   <a href="/ds-view/pds/viewContext.jsp?identifier=<%=refLink%>" target="_blank"><%=val%></a><br>
                          <%
-                             } // end for
+                             }
+                             else 
+                                out.println(val + "<br>");
                           } // end if (instrument_host_ref!=null)
                           else
-                             out.println(val);
+                             out.println(val + "<br>");
                        } // end if (compType=="spacecraft")
                        else 
-                          out.println(val);
+                          out.println(val + "<br>");
+                       } // end if (compType!=null)
     	            } // end else if (observing_system_component_name)
     	            else if (tmpValue.equals("external_reference_text")) {
     	               out.println(val + "<br>");
