@@ -455,8 +455,8 @@ https://localhost:8080/registry/extrinsics/&lt;guid&gt; \
           </p>
 
           <source>
-% mysqldump -u registry -p drop registrypds3 &gt; registrypds3-&lt;YYYYMMDD&gt;.sql
-% mysqldump -u registry -p drop registrypds4 &gt; registrypds4-&lt;YYYYMMDD&gt;.sql
+% mysqldump -u registry -p  registrypds3 &gt; registrypds3-&lt;YYYYMMDD&gt;.sql
+% mysqldump -u registry -p  registrypds4 &gt; registrypds4-&lt;YYYYMMDD&gt;.sql
           </source>
         </subsection>
 
