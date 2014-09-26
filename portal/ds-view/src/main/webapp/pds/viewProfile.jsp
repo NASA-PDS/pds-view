@@ -51,12 +51,21 @@ if ((dsid == null) || (dsid == "")) {
 else {
    PDS3Search pds3Search = new PDS3Search(searchUrl);
    
-   String tmpDsid = dsid.replaceAll("/", "-");
+   String tmpDsid = dsid.toLowerCase();
+   /*
+   //dsid = tmpDsid.replaceAll("%2F", "/");
+   tmpDsid = tmpDsid.replaceAll("%2F", "-");
+   tmpDsid = tmpDsid.replaceAll("/", "-");
+   tmpDsid = tmpDsid.replaceAll(" ", "_");
+   tmpDsid = tmpDsid.replaceAll("\\(", "");
+   tmpDsid = tmpDsid.replaceAll("\\)", "");
+   */
+   
    //out.println("dsid = " + dsid + "    dsid_lower = " + dsid_lower);
    
    try {
-   	//SolrDocument doc = pds3Search.getDataSet(tmpDsid.toLowerCase());
-   	SolrDocument doc = pds3Search.getDataSet("urn:nasa:pds:context_pds3:data_set:data_set."+tmpDsid.toLowerCase());
+   	SolrDocument doc = pds3Search.getDataSet(tmpDsid.toLowerCase());
+   	//SolrDocument doc = pds3Search.getDataSet("urn:nasa:pds:context_pds3:data_set:data_set."+tmpDsid.toLowerCase());
    	
    if (doc==null) { 
    %>
@@ -78,8 +87,7 @@ else {
                <td bgcolor="#F0EFEF" valign=top>
           <% 
           String val = "";
-          List<String> slotValues = pds3Search.getValues(doc, tmpValue);
-          
+          List<String> slotValues = pds3Search.getValues(doc, tmpValue);         
           if (slotValues!=null) {
              if (tmpValue.equals("data_set_description") ||
                  tmpValue.equals("confidence_level_note")) {                      
@@ -89,16 +97,19 @@ else {
              <%
              }
              else if (tmpValue.equals("investigation_name")) {
-                if (pds3Search.getValues(doc, "investigation_name")!=null) {
-                	String msnValue = pds3Search.getValues(doc, "investigation_name").get(0);
-                	//String lid = msnValue.substring(0, msnValue.indexOf("::"));
-                	val = msnValue;
-    	       	%>
-    	       	   <a href="/ds-view/pds/viewMissionProfile.jsp?MISSION_NAME=<%=val%>" target="_blank"><%=val%></a><br> 
-    	       	<%
-    	       	}
-    	       	else
-    	       	   out.println(val+"<br>");
+                List<String> mvalues = pds3Search.getValues(doc, "investigation_name");
+                if (mvalues!=null) {
+    	           for (int i=0; i<mvalues.size(); i++) {
+                      String lid = (String) mvalues.get(i);
+                      if (lid.indexOf("::")!=-1) 
+                         lid = lid.substring(0, lid.indexOf("::"));
+    	      	      val = lid;
+    	      %>
+    	           <a href="/ds-view/pds/viewMissionProfile.jsp?MISSION_NAME=<%=val%>" target="_blank"><%=val%></a><br>  	       	
+              <%   } // end for
+                } // end if
+                else 
+                   out.println(val);
              } 
              else if (tmpValue.equals("instrument_host_id")) {
                 List<String> svalues = pds3Search.getValues(doc, tmpValue);     	 
@@ -129,13 +140,20 @@ else {
     	        }
              }
              else if (tmpValue.equals("target_name")) {
-                if (pds3Search.getValues(doc, tmpValue)!=null) {
-                   String targetValue = pds3Search.getValues(doc, tmpValue).get(0);
-                   val = targetValue;
-    	           //out.println(val + "<br>");	
-    	            %>
-    	    	   <a href="/ds-view/pds/viewTargetProfile.jsp?TARGET_NAME=<%=val%>" target="_blank"><%=val%></a><br>
-    	    	   <%
+                if (pds3Search.getValues(doc, tmpValue)!=null) {                   
+                   List<String> targetValues = pds3Search.getValues(doc, tmpValue);
+    		       val = "";
+    		       if (targetValues!=null && targetValues.size()>0) {
+    	 	          for (int i=0; i<targetValues.size(); i++) {
+    	 		         val = (String) targetValues.get(i);
+    	 		               	    	              
+    	    	         // need to pass target_type, how to make sure the order with the target_name and target_type????
+    	    	     %>
+    	    	         <a href="/ds-view/pds/viewTargetProfile.jsp?TARGET_NAME=<%=val%>" target="_blank"><%=val%></a><br>
+    	            <%} // end for
+    	           } // end if
+    	           else 
+    	              out.println(val);
     	        }
              }
              else if (tmpValue.equals("resource_ref")) {

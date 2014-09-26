@@ -53,9 +53,9 @@ if ((hostId == null) || (hostId == "")) {
 <%
 }
 else {
-   //String hostLid = hostId.toLowerCase();   
+   String hostLid = hostId.toLowerCase();   
    PDS3Search pds3Search = new PDS3Search(searchUrl);
-   String hostLid = "urn:nasa:pds:context_pds3:instrument_host:instrument_host." + hostId.toLowerCase();
+   //String hostLid = "urn:nasa:pds:context_pds3:instrument_host:instrument_host." + hostId.toLowerCase();
    
    try {
       SolrDocument hostObj = pds3Search.getInstHost(hostLid);

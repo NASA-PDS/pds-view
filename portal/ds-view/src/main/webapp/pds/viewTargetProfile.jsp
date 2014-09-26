@@ -54,10 +54,13 @@ if ((targetId == null) || (targetId == "")) {
 }
 else {
    //out.println("targetId = " + targetId + "<br>");
+   /*
    targetId = targetId.replaceAll(" ", "_");
    targetId = targetId.replaceAll("/", "-");
    targetId = targetId.replaceAll("\\(", "");
    targetId = targetId.replaceAll("\\)", "");
+   targetId = targetId.replaceAll("&", "-");
+   */
    
    PDS3Search pds3Search = new PDS3Search(searchUrl);
    targetId = targetId.toLowerCase();

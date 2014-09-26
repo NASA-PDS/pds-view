@@ -26,6 +26,9 @@
       <action dev="hyunlee" type="fix" issue="PDS-293">
         Fixed the Bundle and Collection views have issues with observing component links.     
       </action>
+      <action dev="hyunlee" type="update" issue="PDS-300">
+        Added support for using host type in instrument host LIDs.     
+      </action>
     </release>
 
     <release version="2.3.1" date="2014-06-26" description="This release of Data Set View is a component of the integrated release 4.1.1 of the PDS4 System. This is an operational release of the system components to date.">

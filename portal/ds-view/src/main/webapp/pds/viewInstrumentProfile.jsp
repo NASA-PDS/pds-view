@@ -57,9 +57,9 @@ else {
    String instrumentHostId = null;
    instrumentId = instrumentId.toUpperCase();
    boolean instFlag = false;
-   //instrumentId = instrumentId.toLowerCase();
    
-   String instLid = "urn:nasa:pds:context_pds3:instrument:instrument." + instrumentId;
+   //String instLid = "urn:nasa:pds:context_pds3:instrument:instrument." + instrumentId;
+   String instLid = instrumentId;
    instLid = instLid.toLowerCase();
     
    PDS3Search pds3Search = new PDS3Search(searchUrl);

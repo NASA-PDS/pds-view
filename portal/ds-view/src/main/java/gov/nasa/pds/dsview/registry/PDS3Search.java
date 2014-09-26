@@ -96,8 +96,9 @@ public class PDS3Search {
 
 		ModifiableSolrParams params = new ModifiableSolrParams();
 
-		//params.add("q", "pds_model_version:pds3 AND data_set_id:\""+identifier+"\"");
-		params.add("q", "identifier:"+identifier);
+		params.add("q", "pds_model_version:pds3 AND data_set_id:\""+identifier+"\"");
+		// use this with lid construction from *.jsp page
+		//params.add("q", "identifier:"+identifier);
 		params.set("indent", "on");
 		params.set("wt", "xml");
 		params.set("fq", "facet_type:\"1,data_set\"");
@@ -112,6 +113,7 @@ public class PDS3Search {
 		Iterator<SolrDocument> itr = solrResults.iterator();
 		SolrDocument doc = null;
 		int idx = 0;
+		List<SolrDocument> instDocs = new ArrayList<SolrDocument>();
 		while (itr.hasNext()) {
 			doc = itr.next();
 			System.out.println("*****************  idx = " + (idx++));
@@ -121,7 +123,11 @@ public class PDS3Search {
 				System.out.println("Key = " + entry.getKey()
 						+ "       Value = " + entry.getValue());
 			}
+			instDocs.add(doc);
 		}
+		
+		if (idx>1)
+			doc = instDocs.get(0);
 		return doc;
 	}
 	
@@ -130,8 +136,8 @@ public class PDS3Search {
 
 		ModifiableSolrParams params = new ModifiableSolrParams();
 
-		//params.add("q", "pds_model_version:pds3 AND investigation_name:\""+identifier+"\"");
-		params.add("q", "pds_model_version:pds3 AND identifier:"+identifier);
+		params.add("q", "pds_model_version:pds3 AND investigation_name:\""+identifier+"\"");
+		//params.add("q", "pds_model_version:pds3 AND identifier:"+identifier);
 		params.set("indent", "on");
 		params.set("wt", "xml");
 		params.set("fq", "facet_type:\"1,investigation\"");
@@ -146,6 +152,7 @@ public class PDS3Search {
 		Iterator<SolrDocument> itr = solrResults.iterator();
 		SolrDocument doc = null;
 		int idx = 0;
+		List<SolrDocument> instDocs = new ArrayList<SolrDocument>();
 		while (itr.hasNext()) {
 			doc = itr.next();
 			System.out.println("*****************  idx = " + (idx++));
@@ -155,7 +162,10 @@ public class PDS3Search {
 				System.out.println("Key = " + entry.getKey()
 						+ "       Value = " + entry.getValue());
 			}
-		}
+			instDocs.add(doc);
+		}		
+		//if (idx>1)
+		//	doc = instDocs.get(0);
 		return doc;
 	}
 
@@ -164,8 +174,9 @@ public class PDS3Search {
 
 		ModifiableSolrParams params = new ModifiableSolrParams();
 
+		params.add("q", "pds_model_version:pds3 AND instrument_host_id:\""+identifier+"\"");
 		//params.add("q", "data_product_type:instrument_host AND pds_model_version:pds3 AND instrument_host_id:\""+identifier+"\"");
-		params.add("q", "identifier:"+identifier);
+		//params.add("q", "identifier:"+identifier);
 		params.set("indent", "on");
 		params.set("wt", "xml");
 		params.set("fq", "facet_type:\"1,instrument_host\"");
@@ -180,6 +191,7 @@ public class PDS3Search {
 		Iterator<SolrDocument> itr = solrResults.iterator();
 		SolrDocument doc = null;
 		int idx = 0;
+		List<SolrDocument> instDocs = new ArrayList<SolrDocument>();
 		while (itr.hasNext()) {
 			doc = itr.next();
 			System.out.println("*****************  idx = " + (idx++));
@@ -189,7 +201,10 @@ public class PDS3Search {
 				System.out.println("Key = " + entry.getKey()
 						+ "       Value = " + entry.getValue());
 			}
+			instDocs.add(doc);
 		}
+		//if (idx>1)
+		//	doc = instDocs.get(0);
 		return doc;
 	}
 	
@@ -198,8 +213,8 @@ public class PDS3Search {
 
 		ModifiableSolrParams params = new ModifiableSolrParams();
 
-		//params.add("q", "pds_model_version:pds3 AND instrument_id:\""+identifier+"\"");
-		params.add("q", "identifier:"+identifier);
+		params.add("q", "pds_model_version:pds3 AND instrument_id:\""+identifier+"\"");
+		//params.add("q", "identifier:"+identifier);
 		params.set("indent", "on");
 		params.set("wt", "xml");
 		params.set("fq", "facet_type:\"1,instrument\"");
@@ -234,7 +249,7 @@ public class PDS3Search {
 
 		ModifiableSolrParams params = new ModifiableSolrParams();
 
-		params.add("q", "instrument_id:\""+instId+
+		params.add("q", "pds_model_version:pds3 AND instrument_id:\""+instId+
 				"\" AND instrument_host_id:\""+instHostId+"\"");
 		params.set("indent", "on");
 		params.set("wt", "xml");
@@ -283,6 +298,7 @@ public class PDS3Search {
 		Iterator<SolrDocument> itr = solrResults.iterator();
 		SolrDocument doc = null;
 		int idx = 0;
+		List<SolrDocument> instDocs = new ArrayList<SolrDocument>();
 		while (itr.hasNext()) {
 			doc = itr.next();
 			System.out.println("*****************  idx = " + (idx++));
@@ -292,7 +308,10 @@ public class PDS3Search {
 				System.out.println("Key = " + entry.getKey()
 						+ "       Value = " + entry.getValue());
 			}
+			instDocs.add(doc);
 		}
+		if (idx>1)
+			doc = instDocs.get(0);
 		return doc;
 	}
 	
@@ -316,6 +335,7 @@ public class PDS3Search {
 		Iterator<SolrDocument> itr = solrResults.iterator();
 		SolrDocument doc = null;
 		int idx = 0;
+		//List<SolrDocument> instDocs = new ArrayList<SolrDocument>();
 		while (itr.hasNext()) {
 			doc = itr.next();
 			System.out.println("*****************  idx = " + (idx++));

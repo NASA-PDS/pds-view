@@ -53,10 +53,10 @@ if ((missionName == null) || (missionName == "")) {
 }
 else {
    
-   //String missionLid = missionName.toLowerCase();   
-
-   String missionLid = "urn:nasa:pds:context_pds3:investigation:mission." + missionName.toLowerCase();
-   missionLid = missionLid.replace(' ', '_');
+   String missionLid = missionName.toLowerCase();   
+   //String missionLid = "urn:nasa:pds:context_pds3:investigation:mission." + missionName.toLowerCase();
+   //missionLid = missionLid.replace(' ', '_');
+   
    PDS3Search pds3Search = new PDS3Search(searchUrl);
    
    try {

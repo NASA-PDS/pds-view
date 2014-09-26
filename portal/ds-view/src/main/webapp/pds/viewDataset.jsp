@@ -98,17 +98,22 @@ if (dsid.length() == 0) {
 else {
 
    dsid = dsid.toUpperCase();
-   dsid = dsid.replaceAll("%2F", "/");
-
-   String tmpDsid = dsid.replaceAll("%2F", "-");
+   String tmpDsid = dsid.toLowerCase();
+   /*
+   //tmpDsid = tmpDsid.replaceAll("%2F", "-"); // '/'
+   tmpDsid = tmpDsid.replaceAll(" ", "_");
    tmpDsid = tmpDsid.replaceAll("/", "-");
-   tmpDsid = tmpDsid.toLowerCase();
+   tmpDsid = tmpDsid.replaceAll("\\(", "");
+   tmpDsid = tmpDsid.replaceAll("\\)", "");
+   tmpDsid = tmpDsid.replaceAll("&", "-");
+   */
+   
    //out.println("dsid = " + dsid + "    dsid_lower = " + tmpDsid);
   
    PDS3Search pds3Search = new PDS3Search(searchUrl);
    try {
-     SolrDocument doc = pds3Search.getDataSet("urn:nasa:pds:context_pds3:data_set:data_set."+tmpDsid);
-   	//SolrDocument doc = pds3Search.getDataSet(tmpDsid);
+     //SolrDocument doc = pds3Search.getDataSet("urn:nasa:pds:context_pds3:data_set:data_set."+tmpDsid);
+   	 SolrDocument doc = pds3Search.getDataSet(tmpDsid);
    
    if (doc==null) {
 %>
