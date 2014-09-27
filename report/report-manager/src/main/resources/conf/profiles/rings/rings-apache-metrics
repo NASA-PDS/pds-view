@@ -1,0 +1,8 @@
+name=rings-apache-metrics
+xfertype=http
+host=http://pds-rings.seti.org/
+user=anonymous
+password=anonymous
+encrypt=false
+path=met-mhNQwdRPkhJ2-rics
+stagingDir=/report_service/logs/rings/atm-apache-http

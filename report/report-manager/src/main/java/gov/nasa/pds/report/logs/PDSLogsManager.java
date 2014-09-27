@@ -2,6 +2,7 @@ package gov.nasa.pds.report.logs;
 
 import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.logs.pushpull.FtpPull;
+import gov.nasa.pds.report.logs.pushpull.HttpPull;
 import gov.nasa.pds.report.logs.pushpull.PDSPull;
 import gov.nasa.pds.report.logs.pushpull.PDSPullImpl;
 import gov.nasa.pds.report.logs.pushpull.PushPullException;
@@ -105,6 +106,8 @@ public class PDSLogsManager implements LogsManager {
 			return new PDSPullImpl();
 		}else if(xferType.toLowerCase().equals("ftp")){
 			return new FtpPull();
+		}else if(xferType.toLowerCase().equals("http")){
+			return new HttpPull();
 		}else{
 			throw new LogsManagerException("Log puller with transfer type " + 
 					xferType + " not supported");

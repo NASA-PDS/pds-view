@@ -1,0 +1,8 @@
+name=sbn-apache-http
+xfertype=http
+host=http://pdssbn.astro.umd.edu
+user=anonymous
+password=anonymous
+encrypt=false
+path=weblogs
+stagingDir=/report_service/logs/sbn/sbn-apache-http

@@ -16,7 +16,6 @@ import org.junit.Test;
 
 import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.constants.FtpTestConstants;
-import gov.nasa.pds.report.constants.SftpTestConstants;
 import gov.nasa.pds.report.constants.TestConstants;
 import gov.nasa.pds.report.logs.pushpull.model.LogSet;
 import gov.nasa.pds.report.rules.PDSTest;
