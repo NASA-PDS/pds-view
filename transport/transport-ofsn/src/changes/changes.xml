@@ -22,11 +22,9 @@
   </properties>
 
   <body>
-  
-    <release version="1.1.0" date="TBD" description="TBD">
+    <release version="1.1.0" date="2014-09-30" description="This release of the Transport Service is a component of the integrated release 5.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="cinquini" type="add" issue="PDS-252">
-        Inserted several handlers for invoking the PDS transform tool functionality on PDS3 and PDS4 labels.
-        All named handlers map to the single class PdsLabelTransformerHandler.java, which invokes the underlying transform library.
+        Inserted several handlers for invoking the PDS transform tool functionality on PDS3 and PDS4 labels. All named handlers map to the single class PdsLabelTransformerHandler.java, which invokes the underlying transform library.
       </action>
       <action dev="cinquini" type="add" issue="PDS-297">
         Inserted PDS_ZIPD and PDS_ZIPD_SIZE handlers, for returning a zipped directory content, and its total size.

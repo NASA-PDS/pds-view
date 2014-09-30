@@ -23,7 +23,7 @@
   </properties>
 
   <body>
-    <release version="1.6.0" date="TBD" description="TBD">
+    <release version="1.6.0" date="2014-09-30" description="This release of the Core Library is a component of the integrated release 5.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="mcayanan" type="add" issue="PDS-84">
         Added the capability to allow the schema and schematron files specified in the labels to be used for validation.
       </action>
@@ -34,7 +34,7 @@
         Added a check to validate the schematron specification in a given PDS4 label.
       </action>
       <action dev="shardman" type="add">
-        Added in the 1300 version of the schema and schematron and set as default for this release.
+        Added in the 1300 and 1301 versions of the schema and schematron and set as default for this release.
       </action>
     </release>
 

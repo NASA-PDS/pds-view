@@ -27,15 +27,12 @@
 
   <groupId>gov.nasa.pds.2010.transport</groupId>
   <artifactId>transport-ofsn</artifactId>
-  <version>1.1.0-dev</version>
+  <version>1.1.0</version>
   <packaging>war</packaging>
 
   <name>Transport Service (OFSN)</name>
   <description>
-    The Transport Service provides functionality for transporting and transforming PDS products. 
-    The core functionality for this service is satisfied by the Apache OODT Web Grid Product Server 
-    and includes the Online File Specification Name (OFSN) handlers for interfacing with an archive directory structure. 
-    It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
+    The Transport Service provides functionality for transporting and transforming PDS products. The core functionality for this service is satisfied by the Apache OODT Web Grid Product Server and includes the Online File Specification Name (OFSN) handlers for interfacing with an archive directory structure. It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
   </description>
   <url>https://pds-cm.jpl.nasa.gov/pds4/transport/transport-ofsn</url>
 
@@ -164,35 +161,35 @@
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>web-grid</artifactId>
-      <version>0.7-SNAPSHOT</version>
+      <version>0.7</version>
       <type>war</type>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>oodt-product</artifactId>
-      <version>0.7-SNAPSHOT</version>
+      <version>0.7</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>oodt-commons</artifactId>
-      <version>0.7-SNAPSHOT</version>
+      <version>0.7</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>oodt-profile</artifactId>
-      <version>0.7-SNAPSHOT</version>
+      <version>0.7</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>oodt-xmlquery</artifactId>
-      <version>0.7-SNAPSHOT</version>
+      <version>0.7</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
@@ -210,10 +207,10 @@
       <type>jar</type>
     </dependency>
     <dependency>
-		<groupId>commons-collections</groupId>
-		<artifactId>commons-collections</artifactId>
-		<version>3.2.1</version>
-	</dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2.1</version>
+    </dependency>
   </dependencies>
 
   <!-- Project Information and Reports inherited from parent. -->

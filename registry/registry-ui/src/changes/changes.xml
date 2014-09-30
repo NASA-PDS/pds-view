@@ -23,15 +23,15 @@
   </properties>
 
   <body>
-    <release version="1.7.0-dev" date="TBD" description="TBD">
+    <release version="1.7.0" date="2014-09-30" description="This release of the Registry User Interface is a component of the integrated release 5.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" issue="PDS-279" type="update">
-       Modified the Products tab to alphabetize the slot listing in the product details view.    
+        Modified the Products tab to alphabetize the slot listing in the product details view.
       </action>
       <action dev="hyunlee" issue="PDS-290" type="update">
-       Added support to the Registry UI for displaying units.    
+        Added support to the Registry UI for displaying units.
       </action>
       <action dev="hyunlee" issue="PDS-292" type="fix">
-       Corrected an issue where a popup doesn't get cleared upon closing.    
+        Corrected an issue where a popup doesn't get cleared upon closing.
       </action>
     </release>
 

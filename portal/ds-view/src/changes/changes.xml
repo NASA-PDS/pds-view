@@ -22,12 +22,12 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
-    <release version="2.4.0" date="TBD" description="TBD">
+    <release version="2.4.0" date="2014-09-30" description="This release of Data Set View is a component of the integrated release 5.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" type="fix" issue="PDS-293">
-        Fixed the Bundle and Collection views have issues with observing component links.     
+        Fixed the Bundle and Collection views which had issues with observing component links.
       </action>
       <action dev="hyunlee" type="update" issue="PDS-300">
-        Added support for using host type in instrument host LIDs.     
+        Added support for using host type in instrument host LIDs.
       </action>
     </release>
 

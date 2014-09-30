@@ -23,21 +23,21 @@
   </properties>
 
   <body>
-    <release version="1.8.0" date="TBD" description="TBD">
-      <action dev="hyunlee" type="fix">
-        Corrected an issue where certain subset of cassini archive volume didn't get ingested.    
-      </action>
-      <action dev="hyunlee" type="fix">
-        Corrected to populate instrument LID and instrument host LID by replacing ' ' to '_', '/' to '-', and removing '(' and ')'.        
-      </action>
+    <release version="1.8.0" date="2014-09-30" description="This release of the Catalog Tool is a component of the integrated release 5.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" type="fix" issue="PDS-278">
         Corrected to allow for the DATA_SET_COLL_OR_DATA_SET_ID keyword in the volume descriptor.
       </action>
       <action dev="hyunlee" type="update" issue="PDS-291">
-        Added support for specifying the unit for file size.    
+        Added support for specifying the unit for file size.
       </action>
       <action dev="hyunlee" type="update" issue="PDS-300">
-        Added support for using host type in instrument host LIDs.     
+        Added support for using host type in instrument host LIDs.
+      </action>
+      <action dev="hyunlee" type="update">
+        Corrected to populate instrument LID and instrument host LID by replacing ' ' to '_', '/' to '-', and removing '(' and ')'. 
+      </action>
+      <action dev="hyunlee" type="fix">
+        Corrected an issue where certain subset of the Cassini archive volume didn't get ingested.
       </action>
     </release>
 

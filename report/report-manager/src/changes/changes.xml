@@ -23,11 +23,10 @@
   </properties>
 
   <body>
-    <release version="1.6.0" date="TBD" description="TBD">
+    <release version="1.6.0" date="2014-09-30" description="This release of the Update Tool is a component of the integrated release 5.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="update" issue="PDS-207">
-	Created new staging command-line variable to allow specification of a staging dir to be fed into the PushPull API. Removed database.properties because it was leftover from rs-update and is no longer needed. Updated environment.properties with updated paths. Had to update the oodt-version maven variable to an actual value because it was not picking it up from parent.
+        Created new staging command-line variable to allow specification of a staging directory to be fed into the PushPull API. Removed database.properties because it was leftover from rs-update and is no longer needed. Updated environment.properties with updated paths. Had to update the oodt-version Maven variable to an actual value because it was not picking it up from parent.
       </action>
-
     </release>
 
     <release version="1.5.0" date="2014-03-31" description="This release of the Update Tool is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">
