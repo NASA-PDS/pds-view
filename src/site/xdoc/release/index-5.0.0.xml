@@ -176,8 +176,6 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
         </ul>
         <li><a href="../report/index.html">Report</a></li>
         <ul>
-          <li><a href="../report/rs-update/index.html">Update Tool</a> - 1.6.0 (EN Only)</li>
-          <li><a href="../report/profile-manager/index.html">Profile Manager</a> - 1.6.0 (EN Only)</li>
           <li><a href="../report/report-manager/index.html">Report Manager</a> - 1.6.0 (EN Only)</li>
           <li><a href="../report/sawmill/index.html">Sawmill</a> - 1.6.0 (EN Only)</li>
         </ul>

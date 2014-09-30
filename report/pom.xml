@@ -36,9 +36,7 @@
   <url>https://pds-cm.jpl.nasa.gov/pds4/report/</url>
 
   <modules>
-    <module>rs-update</module>
     <module>report-manager</module>
-    <module>profile-manager</module>
     <module>sawmill</module>
   </modules>
 
