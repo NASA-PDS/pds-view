@@ -132,21 +132,21 @@
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>web-grid</artifactId>
-      <version>0.7-SNAPSHOT</version>
+      <version>0.7</version>
       <type>war</type>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>oodt-product</artifactId>
-      <version>0.7-SNAPSHOT</version>
+      <version>0.7</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.oodt</groupId>
       <artifactId>oodt-xmlquery</artifactId>
-      <version>0.7-SNAPSHOT</version>
+      <version>0.7</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
