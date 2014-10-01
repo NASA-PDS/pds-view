@@ -125,7 +125,8 @@ public class HttpPull implements PDSPull{
 	}
 	
 	private List<URL> getURLFileList(URL url) throws IOException{
-		Document doc = Jsoup.connect(url.toString()).get();
+		Document doc =
+				Jsoup.connect(url.toString()).timeout(connectionTimeout).get();
 		Set<URL> results = new LinkedHashSet<URL>();
 		for (Element file : doc.select("a")) {
 			String value = file.attr("abs:href");
