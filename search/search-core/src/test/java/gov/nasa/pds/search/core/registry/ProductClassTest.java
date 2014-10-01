@@ -239,7 +239,7 @@ public class ProductClassTest extends SearchCoreTest {
 			this.pc = new ProductClass(TEST_DIR,
 					Arrays.asList(TestConstants.PDS3_REGISTRY_URL),
 					new ArrayList<String>());
-			this.pc.setQueryMax(1000);
+			this.pc.setQueryMax(10);
 			List<String> keys = this.pc.query(
 					new File(System.getProperty("user.dir") + "/"
 							+ TestConstants.TEST_DIR_RELATIVE
