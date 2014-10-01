@@ -90,10 +90,7 @@ cd ../..
 
 cd report
 mvn deploy --non-recursive
-cd rs-update
-mvn site
-mvn deploy
-cd ../profile-manager
+cd ../report-manager
 mvn site
 mvn deploy
 cd ../..

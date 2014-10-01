@@ -44,8 +44,7 @@ cp ../../registry/registry-service/target/registry-service*bin* .
 cp ../../registry/registry-ui/target/registry-ui*bin* .
 
 echo "Copying the Report packages to the package directory."
-cp ../../report/profile-manager/target/profile-manager*bin* .
-cp ../../report/rs-update/target/rs-update*bin* .
+cp ../../report/report-manager/target/report-manager*bin* .
 
 echo "Copying the Search packages to the package directory."
 cp ../../search/product-search-ui/target/product-search-ui*bin* .

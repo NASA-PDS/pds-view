@@ -41,12 +41,6 @@ cd registry-core
 mvn install clean
 cd ../..
 
-cd report
-mvn --non-recursive install clean
-cd rs-update
-mvn install clean
-cd ../..
-
 cd search
 mvn --non-recursive install clean
 cd search-core

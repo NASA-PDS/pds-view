@@ -46,12 +46,6 @@ cd registry-core
 mvn install clean
 cd ../..
 
-cd report
-mvn --non-recursive install clean
-cd rs-update
-mvn install clean
-cd ../..
-
 cd search
 mvn --non-recursive install clean
 cd search-core
@@ -123,10 +117,8 @@ cp -r registry/registry-ui/target/site/* $1/registry/registry-ui
 echo "Deploying Report component site to the deployment directory."
 mkdir -p $1/report
 cp -r report/target/site/* $1/report
-mkdir -p $1/report/profile-manager
-cp -r report/profile-manager/target/site/* $1/report/profile-manager
-mkdir -p $1/report/rs-update
-cp -r report/rs-update/target/site/* $1/report/rs-update
+mkdir -p $1/report/report-manager
+cp -r report/report-manager/target/site/* $1/report/report-manager
 mkdir -p $1/report/sawmill
 cp -r report/sawmill/target/site/* $1/report/sawmill
 
