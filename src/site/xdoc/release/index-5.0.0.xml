@@ -65,8 +65,25 @@
       </p>
 
       <subsection name="New Capabilities">
-        <p>There are no new capabilities for this release.
+        <p>The following are new capabilities for this release:
         </p>
+
+        <ul>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-85'>PDS-85</a>] - Validate: Tool should allow the schema and schematron files specified in the labels to be used for validation
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-252'>PDS-252</a>] - Transport: Add support for additional transformations
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-276'>PDS-276</a>] - Report: Remove dead code from Report Service
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-287'>PDS-287</a>] - Validate: Add support for reading a checksum file for use in checksum validation
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-289'>PDS-289</a>] - Harvest: Add support for reading a checksum file for performing checksum validation during a PDS3 harvest run
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-294'>PDS-294</a>] - Search: Update search filtering to only include &quot;Approved&quot; products
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-297'>PDS-297</a>] - Transport: Add PDS_ZIPD and PDS_ZIPD_SIZE to transport-ofsn
+          </li>
+        </ul>
       </subsection>
 
       <subsection name="Modified Capabilities">
@@ -74,11 +91,29 @@
         </p>
 
         <ul>
-          <li>Harvest Tool and Registry Service were modified to provide support for capturing unit designations.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-261'>PDS-261</a>] - Search: Add an external_reference_description field
           </li>
-          <li>Registry User Interface was modified to provide support for accessing multiple Registry Service instances.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-262'>PDS-262</a>] - Search: Add Product_Context resource class products to the index
           </li>
-          <li>Registry Service and Registry User Interface Installation documents were modified to address installation of two Registry Service instances, one for PDS3 content and one for PDS4 content.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-266'>PDS-266</a>] - Transport: Add support for including checksum information in the package
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-277'>PDS-277</a>] - Search: Consistently use the product_class and data_class slots
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-279'>PDS-279</a>] - Registry: Alphabetize the slot listing in the product details view
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-280'>PDS-280</a>] - Validate: Add support for bundle and collection integrity checking
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-286'>PDS-286</a>] - Search: Add support for grabbing the latest version of a context product
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-290'>PDS-290</a>] - Registry: Add support to the Registry UI for displaying units
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-291'>PDS-291</a>] - Catalog: Add support for specifying the unit for file size
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-298'>PDS-298</a>] - Transport: Add support for returning package size in transport-registry
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-299'>PDS-299</a>] - Harvest: Delete harvest package if run results in no registrations
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-300'>PDS-300</a>] - Catalog/Data Set View: Add support for using host type in instrument host LIDs
           </li>
         </ul>
       </subsection>
@@ -88,7 +123,15 @@
         </p>
 
         <ul>
-          <li>Harvest Tool was modified to not register a file product more than once if it is referenced multiple times in a label and to resolve environment variables specified within the Harvest policy file.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-278'>PDS-278</a>] - Catalog: Allow for the DATA_SET_COLL_OR_DATA_SET_ID keyword in the volume descriptor
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-292'>PDS-292</a>] - Registry: Correct an issue where a popup doesn&#39;t get cleared upon closing
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-293'>PDS-293</a>] - Data Set View: Bundle and Collection views have issues with observing component links
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-301'>PDS-301</a>] - Search: Archive Info should link to resource_url
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-302'>PDS-302</a>] - Registry: Correct an issue where registration hangs or otherwise fails with a collection containing a million members
           </li>
         </ul>
       </subsection>
