@@ -232,24 +232,5 @@ public class ProductClassTest extends SearchCoreTest {
 			fail("PDS3 Query Test failed. See stack trace.");
 		}
 	}
-	
-	@Test
-	public void testApprovedOnlyQueried() throws SearchCoreFatalException {
-		try {
-			this.pc = new ProductClass(TEST_DIR,
-					Arrays.asList(TestConstants.PDS3_REGISTRY_URL),
-					new ArrayList<String>());
-			this.pc.setQueryMax(10);
-			List<String> keys = this.pc.query(
-					new File(System.getProperty("user.dir") + "/"
-							+ TestConstants.TEST_DIR_RELATIVE
-							+ "config/coreConfigTestApproved.xml"));
-
-			assertTrue("Approved product was not grabbed", keys.contains("urn:nasa:pds:context_pds3:data_set:data_set.msl-m-mahli-4-rdr-z-v1.0"));
-		} catch (ProductClassException e) {
-			e.printStackTrace();
-			fail("Approved Status Query Test failed. See stack trace.");
-		}
-	}
 
 }
