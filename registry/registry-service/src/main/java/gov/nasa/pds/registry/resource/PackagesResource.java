@@ -177,7 +177,25 @@ public class PackagesResource {
       RegistryPackage registryPackage) {
     return this.updatePackage(guid, registryPackage);
   }
-
+  
+  
+  /**
+   * Updates the status of the package with the given 
+   * global identifier.
+   * 
+   * @param packageGuid
+   *          unique identifier of package to look up 
+   * @param action
+   *          to take on package which will result in an update of status
+   *          {@link ObjectAction}
+   */
+  @POST
+  @Path("{packageGuid}/{action}")
+  public Response changeStatusOfPackage(@PathParam("packageGuid") String packageGuid, @PathParam("action") ObjectAction action) {
+      registryService.changeObjectStatus("Unknown", packageGuid, action, RegistryPackage.class);
+      return Response.ok().build();
+  }
+  
   /**
    * Deletes all the members of a package with the given global identifier.
    * 
