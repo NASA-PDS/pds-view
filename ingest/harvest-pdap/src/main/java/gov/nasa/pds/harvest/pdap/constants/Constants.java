@@ -18,10 +18,10 @@ public class Constants {
   public static final String PRODUCT_VERSION = "version_id";
 
   /** The LID prefix for a data set. */
-  public static final String LID_PREFIX = "urn:nasa:pds:context_pds3:data_set:data_set";
+  public static final String LID_PREFIX = "urn:esa:psa:context_pds3:data_set:data_set";
 
   /** The LID prefix for a resource. */
-  public static final String RESOURCE_PREFIX = "urn:nasa:pds:context_pds3:resource:resource";
+  public static final String RESOURCE_PREFIX = "urn:esa:psa:context_pds3:resource:resource";
 
   /** The data set product class. */
   public static final String DATA_SET_PRODUCT_CLASS = "Product_Data_Set_PDS3";
