@@ -115,6 +115,8 @@
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-300'>PDS-300</a>] - Catalog/Data Set View: Add support for using host type in instrument host LIDs
           </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-300'>PDS-303</a>] - Registry: Add REST-based interface for updating package product status
+          </li>
         </ul>
       </subsection>
 
