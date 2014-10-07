@@ -1,8 +1,5 @@
 package gov.nasa.pds.report.logs.pushpull;
 
-import gov.nasa.pds.report.util.Debugger;
-import gov.nasa.pds.report.util.Utility;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,6 +14,8 @@ import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
+import gov.nasa.pds.report.util.Utility;
+
 /*
  * We could track progress while downloading files with this class by passing
  * org.apache.commons.io.output.CountingOutputStream to FTPClient.retrieveFile()
@@ -26,6 +25,8 @@ import org.apache.commons.net.ftp.FTPReply;
 public class FtpPull implements PDSPull {
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());
+	
+	private String host;
 	
 	protected FTPClient client;
 	
@@ -66,9 +67,8 @@ public class FtpPull implements PDSPull {
 		FTPClientConfig config = new FTPClientConfig();
         config.setLenientFutureDates(true);
         this.client.configure(config);
-		
-        // TODO: Consider holding on to the host name so long as we're
-        // connected, especially if client.getPassiveHost() doesn't work
+        
+        this.host = hostname;
         
 		return true;
 		
@@ -79,8 +79,8 @@ public class FtpPull implements PDSPull {
 		
 		// If connection has not been made, alert the user
 		if(!client.isConnected()){
-			// TODO: Throw an exception or log an error
-			return;
+			throw new PushPullException("Cannot pull files from " + this.host +
+					" since we are not currently connected to the host");
 		}
 		
 		// The path to the directory containing the file specified in the
@@ -118,8 +118,7 @@ public class FtpPull implements PDSPull {
 					this.client.retrieveFile(remoteFilePath, output);
 				}catch(IOException e){
 					log.severe("An error occurred while pulling file " + 
-							remoteFilePath + " from " + 
-							this.client.getPassiveHost() + ": " + 
+							remoteFilePath + " from " + this.host + ": " + 
 							e.getMessage());
 				}
 				
@@ -154,7 +153,7 @@ public class FtpPull implements PDSPull {
 		
 		if(!client.isConnected()){
 			log.warning("Could not provide a list of files at " + 
-					this.client.getPassiveHost() + ":" + path + 
+					this.host + ":" + path + 
 					" because the FTP client is not connected");
 			return fileList;
 		}
@@ -168,7 +167,7 @@ public class FtpPull implements PDSPull {
 					"the file list at " + path + ": " + e.getMessage());
 		}
 		
-		Debugger.debug("Found " + fileList.size() + " files at " + path);
+		log.fine("Found " + fileList.size() + " files at " + path);
 		
 		return fileList;
 		
@@ -184,14 +183,14 @@ public class FtpPull implements PDSPull {
 			files = this.client.listFiles(path);
 		}catch(IOException e){
 			String errorMsg = "An error occurred while gathering file " +
-					"details for " + this.client.getPassiveHost() + ":" + 
-					path + ": " + e.getMessage();
+					"details for " + this.host + ":" + path + ": " + 
+					e.getMessage();
 			log.severe(errorMsg);
 			throw new PushPullException(errorMsg);
 		}
 		if(files.length == 0){
 			String errorMsg = "Nothing exists at path " + path + " on host " + 
-					this.client.getPassiveHost();
+					this.host;
 			log.severe(errorMsg);
 			throw new PushPullException(errorMsg);
 		}else if(files.length == 1){

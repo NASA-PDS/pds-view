@@ -7,8 +7,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
-
-import gov.nasa.pds.report.util.Debugger;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -19,6 +18,8 @@ import gov.nasa.pds.report.util.Debugger;
  *
  */
 public class SimpleProfileManager implements ProfileManager{
+	
+	private Logger log = Logger.getLogger(this.getClass().getName());
 	
 	private List<Properties> nodePropsList;
 	
@@ -39,8 +40,6 @@ public class SimpleProfileManager implements ProfileManager{
 		// Process file or directory at path
 		processPath(file);
 		
-		Debugger.debug("Returning " + nodePropsList.size() + " node properties");
-		
 		return nodePropsList;
 		
 	}
@@ -48,16 +47,15 @@ public class SimpleProfileManager implements ProfileManager{
 	// Create Properties from the given file
 	private void processFile(File file){
 		
-		Debugger.debug("Processing file " + file.getAbsolutePath());
+		log.finer("Processing property file at " + file.getAbsolutePath());
 		
 		Properties props = new Properties();
 		try{
 			props.load(new FileInputStream(file));
 			this.nodePropsList.add(props);
 		}catch(IOException e){
-			// TODO: Log an actual error here
-			Debugger.debug("Something went wrong while processing node " +
-					"props file: " + e.getMessage());
+			log.severe("An error occurred while processing property file at " +
+					file.getAbsolutePath() + ": " + e.getMessage());
 		}
 		
 	}
@@ -72,7 +70,7 @@ public class SimpleProfileManager implements ProfileManager{
 			return;
 		}
 		
-		Debugger.debug("Processing dir " + dir.getAbsolutePath());
+		log.finer("Processing property directory at " + dir.getAbsolutePath());
 		
 		String[] children = dir.list();
 		for(int i = 0; i < children.length; i++){

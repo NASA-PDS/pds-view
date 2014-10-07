@@ -43,7 +43,9 @@ if [ ! -f ${CONF_DIR}/logging.properties ]; then
 fi
 
 # Create log directory
-mkdir ${PARENT_DIR}/logs
+if [ ! -d ${PARENT_DIR}/logs ]; then
+	mkdir ${PARENT_DIR}/logs
+fi
 
 # Finds the jar file in LIB_DIR and sets it to REPORT_MGR_JAR.
 REPORT_MGR_JAR=`ls ${LIB_DIR}/report-manager-*.jar`

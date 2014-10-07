@@ -148,8 +148,15 @@ public class Utility {
 		return valueList;
 	}
 	
-	// TODO: Create javadoc headers for the node Properties utility methods
-	
+	/**
+	 * Utility method to get a String from a {@link Properties}.
+	 * 
+	 * @param nodeProps				The Properties containing the desired value
+	 * @param key					The key of the desired value
+	 * @param needed				Whether the value must be present
+	 * @return						The desired value in the form of a String
+	 * @throws LogsManagerException	If needed is true and the given key is not present or if the value is null or empty
+	 */
 	public static String getNodePropsString(Properties nodeProps, String key,
 			boolean needed) throws LogsManagerException{
 		
@@ -191,6 +198,14 @@ public class Utility {
 		
 	}
 	
+	/**
+	 * Utility method to get a boolean from a {@link Properties}.
+	 * 
+	 * @param nodeProps				The Properties containing the desired value
+	 * @param key					The key of the desired value
+	 * @return						The desired value in the form of a boolean
+	 * @throws LogsManagerException	If the given key is not present or if the value is null or empty
+	 */
 	public static boolean getNodePropsBool(Properties nodeProps, String key)
 			throws LogsManagerException{
 		
@@ -227,20 +242,13 @@ public class Utility {
 	
 	/**
 	 * Remove the filename/expression from the pathname and return base path
-	 * TODO There is a FileUtil or File method that can do this for me
-	 * @param pathname
-	 * @return
+	 * 
+	 * @param	pathname
+	 * @return	A String of the path of the directory containing the file
 	 */
 	public static String getDirPath(String pathname) {
 		
-		Debugger.debug(pathname);
-		String[] pathArray = pathname.split("/");
-		String basePath = "";
-		for (int i = 0; i < pathArray.length - 1; i++) {
-			if (!pathArray[i].equals(""))
-				basePath += "/" + pathArray[i];
-		}
-		return basePath;
+		return pathname.substring(0, pathname.lastIndexOf("/"));
 	
 	}
 	

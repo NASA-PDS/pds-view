@@ -15,7 +15,6 @@ import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.constants.TestConstants;
 import gov.nasa.pds.report.constants.SftpTestConstants;
 import gov.nasa.pds.report.rules.PDSTest;
-import gov.nasa.pds.report.util.Debugger;
 
 public class SimpleProfileManagerTest extends PDSTest{
 	
@@ -51,12 +50,8 @@ public class SimpleProfileManagerTest extends PDSTest{
 		
 		String testPath = new File(TestConstants.TEST_DIR_RELATIVE,
 				TEST_DIR_NAME).getAbsolutePath();
-		Debugger.debug("Test Path: " + testPath);
 		Set<Properties> propsSet = new HashSet<Properties>(
 				manager.readProfiles(testPath));
-		
-		Debugger.debug("Correct props set: " + this.correctSet.toString());
-		Debugger.debug("Read props set: " + propsSet.toString());
 		
 		assertFalse("No properties were read", propsSet.isEmpty());
 		assertTrue("The read properties do not contain the correct values", 

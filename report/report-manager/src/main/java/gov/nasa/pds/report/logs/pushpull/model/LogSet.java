@@ -4,8 +4,8 @@ import gov.nasa.pds.report.constants.Constants;
 
 import org.jasypt.util.text.StrongTextEncryptor;
 
-// TODO: Currently, this class' name and members are structured more for the
-// old database-driven implementation.  Change these to something more suitable.
+// TODO: This class (and perhaps others in this package) are out-dated since we
+// no longer use a database to store profiles.
 public class LogSet {
 
 	private int logSetId;

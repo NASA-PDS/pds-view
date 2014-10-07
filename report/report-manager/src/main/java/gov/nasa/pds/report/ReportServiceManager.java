@@ -12,7 +12,6 @@ import gov.nasa.pds.report.logs.LogsManagerException;
 import gov.nasa.pds.report.logs.PDSLogsManager;
 import gov.nasa.pds.report.profile.ProfileManager;
 import gov.nasa.pds.report.profile.SimpleProfileManager;
-import gov.nasa.pds.report.util.Debugger;
 import gov.nasa.pds.report.util.Utility;
 
 public class ReportServiceManager {
@@ -49,13 +48,13 @@ public class ReportServiceManager {
 	public void setNodePattern(String pattern){
 		
 		if(pattern == null || pattern.equals("")){
-			// TODO: Log a warning
+			log.warning("The provided node filter is empty");
 			this.nodePattern = null;
 		}
 		
 		this.nodePattern = pattern;
-		Debugger.debug("Only nodes matching the pattern " + this.nodePattern + " will be processed");
-		//this.log.fine("Only nodes matching the pattern " + this.nodePattern + " will be processed");
+		log.fine("Only nodes matching the pattern " + this.nodePattern +
+				" will be processed");
 		
 	}
 	
@@ -63,22 +62,28 @@ public class ReportServiceManager {
 		
 		String path = System.getProperty("gov.nasa.pds.report.profile.dir");
 		List<Properties> props = this.profileManager.readProfiles(path);
+		log.info("Found " + props.size() + " profiles");
 		this.propsList = new Vector<Properties>();
+		String nodeName = null;
 		for(Properties p: props){
 			try{
-				String nodeName = Utility.getNodePropsString(p,
-						Constants.NODE_NAME_KEY, true);
-				if(this.nodePattern == null){
+				nodeName = Utility.getNodePropsString(p,
+						Constants.NODE_NAME_KEY, false);
+				if(nodeName == null){
+					log.warning("Found a set of properties without a name: " +
+							p.toString());
+				}else if(this.nodePattern == null){
 					this.propsList.add(p);
-					Debugger.debug("Profile recongized for " + nodeName);
-					//this.log.fine("Profile recongized for " + nodeName);
+					log.fine("Profile recongized for " + nodeName);
 				}else if(nodeName.matches(this.nodePattern)){
 					this.propsList.add(p);
-					Debugger.debug("Profile recongized for " + nodeName + " since it matched the node pattern " + this.nodePattern);
-					//this.log.fine("Profile recongized for " + nodeName + " since it matched the node pattern " + this.nodePattern);
+					log.fine("Profile recongized for " + nodeName +
+							" since it matched the node pattern " +
+							this.nodePattern);
 				}
 			}catch(LogsManagerException e){
-				// TODO: Log a warning
+				log.warning("An error occurred while reading the profile " + 
+						nodeName + ": " + e.getMessage());
 			}
 		}
 		
@@ -96,9 +101,7 @@ public class ReportServiceManager {
 			try{
 				logsManager.pullLogFiles(props);
 			}catch(LogsManagerException e){
-				// TODO: Log an error
-				System.out.println("An error occurred while pulling log files: " + e.getMessage());
-				e.printStackTrace();
+				log.severe("An error occurred while pulling log files: " + e.getMessage());
 			}
 		}
 	

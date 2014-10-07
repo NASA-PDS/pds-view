@@ -20,7 +20,6 @@ import gov.nasa.pds.report.constants.TestConstants;
 import gov.nasa.pds.report.logs.pushpull.model.LogSet;
 import gov.nasa.pds.report.rules.PDSTest;
 import gov.nasa.pds.report.rules.PDSTest.SingleTestRule;
-import gov.nasa.pds.report.util.Debugger;
 import gov.nasa.pds.report.util.Utility;
 
 public class HttpPullTest extends PDSTest{
@@ -32,7 +31,6 @@ public class HttpPullTest extends PDSTest{
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		Debugger.debugFlag = true;
 		httpPull = new HttpPull();
 	}
 	

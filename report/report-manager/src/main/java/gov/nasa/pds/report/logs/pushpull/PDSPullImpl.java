@@ -1,9 +1,5 @@
 package gov.nasa.pds.report.logs.pushpull;
 
-import gov.nasa.pds.report.constants.Constants;
-import gov.nasa.pds.report.util.Debugger;
-import gov.nasa.pds.report.util.Utility;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -18,7 +14,8 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
-// TODO: Make a the class take a regex filter for what to download
+import gov.nasa.pds.report.constants.Constants;
+import gov.nasa.pds.report.util.Utility;
 
 /**
  * Utility that provides all SFTP connection functionality
@@ -73,7 +70,8 @@ public class PDSPullImpl implements PDSPull {
 			channel.connect();
 			this.sftpChannel = (ChannelSftp) channel;
 	
-			Debugger.debug("Connection: " + channel.isConnected());
+			log.info("Connection to " + hostname + ": " +
+					channel.isConnected());
 			return channel.isConnected();
 		} catch (JSchException e) {
 			 throw new PushPullException("JschException: " + e.getMessage());
@@ -118,8 +116,6 @@ public class PDSPullImpl implements PDSPull {
 			List<String> matches = new ArrayList<String>();
 			for (Object obj : lsOut) {
 				dirList = obj.toString().split(" ");
-	
-				// TODO May need to change this
 				filename = dirList[dirList.length - 1];
 				if (!filename.equals(".") && !filename.equals("..")) {
 					matches.add(filename);
@@ -143,8 +139,9 @@ public class PDSPullImpl implements PDSPull {
 			
 			// If connection has not been made, alert the user
 			if (!this.session.isConnected()) {
-				// TODO: Throw an exception or log an error
-				return;
+				throw new PushPullException("Cannot pull files from " + 
+						this.session.getHost() + " since we are not " +
+						"currently connected to the host");
 			}
 			
 			// The path to the directory containing the file specified in the
@@ -152,10 +149,8 @@ public class PDSPullImpl implements PDSPull {
 			// directory)
 			String dirPath = path;
 			if(path.contains("*") || !this.sftpChannel.lstat(path).isDir()){
-				Debugger.debug("Path " + path + " is a file path.");
 				dirPath = Utility.getDirPath(path);
 			}
-			Debugger.debug("Directory path: " + dirPath);
 			
 			List<String> array = getFileList(path);
 
@@ -170,6 +165,7 @@ public class PDSPullImpl implements PDSPull {
 					// TODO: Consider using an implementation of this method
 					// that leverages a progress monitor, perhaps when the
 					// given file is over a certain threshold in size
+					// (see PDS-305)
 					this.sftpChannel
 							.get(dirPath + "/" + filename, destination);
 				} else {

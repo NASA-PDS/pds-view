@@ -28,12 +28,15 @@ public enum Flag {
 	/** Flag to instruct Logs Manager component to pull logs from nodes */
 	PULL("p", "pull-logs", "Pull logs from remote sources."),
 	
-	/** Flag to specify which nodes to operate upon */
+	/** Flag to filter which nodes to operate upon */
 	NODE_PATTERN("n", "node-pattern", "pattern", String.class,
 			"Only operate on nodes whose name match the given RE pattern"),
 	
-	/** Flag to specify from where profiles should be read */
 	// TODO: Create flag to override default location of profiles
+			
+	// TODO: Create filename filter flag (using dates) -- see JIRA ticket PDS-304
+			
+	// TODO: Create flag to filter which profiles to operate upon
 			
 	/** PDS Default Flags for CLI - TODO should be refactored into commons enum **/
 			

@@ -85,49 +85,6 @@ public class ReportManagerLauncher {
 	    }
 	  }
 
-	  /**
-	   * Logs header information for the log output.
-	   *
-	   */
-	  private void logHeader() {
-	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
-	        "PDS Report Service Manager Run Log\n"));
-	    // TODO: Fix this
-	    /*log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
-	        "Version                     " + ToolInfo.getVersion()));*/
-	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
-	        "Time                        " + Utility.getDateTime()));
-	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
-	        "Severity Level              " + severityLevel.getName()));
-
-	    log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
-	    		"\n\n"));
-	  }
-
-	  /**
-	   * Sets the appropriate handlers for the logging.
-	   *
-	   * @throws IOException If a log file was specified and could not
-	   * be read.
-	   */
-	  private void setLogger() throws IOException {
-	    Logger logger = Logger.getLogger("");
-	    logger.setLevel(Level.ALL);
-	    Handler []handler = logger.getHandlers();
-	    for (int i = 0; i < logger.getHandlers().length; i++) {
-	      logger.removeHandler(handler[i]);
-	    }
-	    if (this.logFile != null) {
-	      logger.addHandler(new PDSFileHandler(this.logFile, this.severityLevel,
-	          new ReportManagerFormatter()));
-	    } else {
-	      logger.addHandler(new PDSStreamHandler(System.out,
-	    		  this.severityLevel, new ReportManagerFormatter()));
-	    }
-
-	    logHeader();
-	  }
-
 	/**
 	 * Displays tool usage.
 	 *
@@ -224,6 +181,8 @@ public class ReportManagerLauncher {
 	public void execute(){
 		ReportServiceManager rsMgr = new ReportServiceManager();
 
+		log.info("Report Manager started");
+		
 		// Set the filter for which nodes are processed if such a filter was
 		// specified
 		if(this.nodePattern != null){
@@ -237,7 +196,8 @@ public class ReportManagerLauncher {
 				// rsMgr.setProfileDir()
 				rsMgr.readProfiles();
 			}catch(IOException e){
-				// TODO: Log an error
+				log.severe("An error occurred while reading the profile " +
+						"properties: " + e.getMessage());
 			}
 		}
 		
@@ -246,18 +206,21 @@ public class ReportManagerLauncher {
 			rsMgr.pullLogs();
 		}
 		
+		log.info("Report Manager finished");
+		
 	}
 	
-	private boolean loadConfiguration(){
+	private void loadConfiguration(){
 		
 		try{
 			System.getProperties().load(new FileInputStream(
 					Constants.DEFAULT_CONFIG_PATH));
 		}catch(IOException e){
-			// TODO: Log an error
-			return false;
+			log.severe("An error occurred while reading in the default " +
+					"configuration from " + Constants.DEFAULT_CONFIG_PATH + 
+					": " + e.getMessage());
+			System.exit(1);
 		}
-		return true;
 		
 	}
 	
@@ -331,10 +294,7 @@ public class ReportManagerLauncher {
 		}
 		try {
 			ReportManagerLauncher launcher = new ReportManagerLauncher();
-			if(!launcher.loadConfiguration()){
-				System.out.println("\n Failed to load the default configuration");
-				System.exit(1);
-			}
+			launcher.loadConfiguration();
 			CommandLine commandline = launcher.parse(args);
 			launcher.query(commandline);
 			launcher.execute();
