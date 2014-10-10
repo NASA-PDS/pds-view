@@ -1,4 +1,5 @@
-name=sbn-apache-http
+id=sbn-apache-http
+node=sbn
 xfertype=http
 host=http://pdssbn.astro.umd.edu
 user=anonymous

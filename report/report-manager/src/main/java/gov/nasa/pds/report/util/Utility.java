@@ -165,9 +165,9 @@ public class Utility {
 			throw new LogsManagerException("Cannot fetch String value of " +
 					"null key from node properties.");
 		}
-		if(!key.equals(Constants.NODE_NAME_KEY)){
+		if(!key.equals(Constants.NODE_ID_KEY)){
 			nodeName = getNodePropsString(nodeProps,
-					Constants.NODE_NAME_KEY, false);
+					Constants.NODE_ID_KEY, false);
 		}
 		if(!nodeProps.containsKey(key)){
 			if(needed){
@@ -214,7 +214,7 @@ public class Utility {
 					"null key from node properties.");
 		}
 		String nodeName = getNodePropsString(nodeProps,
-				Constants.NODE_NAME_KEY, false);
+				Constants.NODE_ID_KEY, false);
 		if(!nodeProps.containsKey(key)){
 			if(nodeName != null){
 				throw new LogsManagerException(key +

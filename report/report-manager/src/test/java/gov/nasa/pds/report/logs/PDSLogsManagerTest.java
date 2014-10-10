@@ -29,7 +29,7 @@ public class PDSLogsManagerTest extends PDSTest{
 		manager = new PDSLogsManager();
 		props = new Properties();
 		props.setProperty(Constants.NODE_XFER_TYPE_KEY, "sftp");
-		props.setProperty(Constants.NODE_NAME_KEY,
+		props.setProperty(Constants.NODE_ID_KEY,
 				SftpTestConstants.TEST_NODE);
 		props.setProperty(Constants.NODE_HOST_KEY,
 				SftpTestConstants.TEST_HOST);

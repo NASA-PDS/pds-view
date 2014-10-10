@@ -1,4 +1,5 @@
-name=rings-apache-metrics
+id=rings-apache-metrics
+node=rings
 xfertype=http
 host=http://pds-rings.seti.org/
 user=anonymous

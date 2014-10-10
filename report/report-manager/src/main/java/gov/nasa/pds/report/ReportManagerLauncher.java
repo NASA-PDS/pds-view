@@ -53,14 +53,14 @@ public class ReportManagerLauncher {
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#PULL **/
 	private boolean pullFlag;
 	
-	private String nodePattern;
+	private ReportServiceManager rsMgr;
 	
 	/** The severity level to set for the tool. */
 	private Level severityLevel;
 
 	public ReportManagerLauncher() {
 		this.pullFlag = false;
-		this.nodePattern = null;
+		this.rsMgr = new ReportServiceManager();
 		this.severityLevel = ToolsLevel.INFO;
 	}
 
@@ -154,12 +154,13 @@ public class ReportManagerLauncher {
 			} else if (o.getOpt().equals(Flag.PULL.getShortName())) {
 				this.pullFlag = true;
 			} else if (o.getOpt().equals(Flag.NODE_PATTERN.getShortName())) {
-				this.nodePattern =
-						line.getOptionValue(Flag.NODE_PATTERN.getShortName());
+				this.rsMgr.addProfileFilter(Constants.NODE_NODE_KEY,
+						line.getOptionValue(Flag.NODE_PATTERN.getShortName()));
+			} else if (o.getOpt().equals(Flag.ID_PATTERN.getShortName())) {
+				this.rsMgr.addProfileFilter(Constants.NODE_ID_KEY,
+						line.getOptionValue(Flag.ID_PATTERN.getShortName()));
 			}
 		}
-
-		//setLogger();
 	}
 
 	/**
@@ -179,34 +180,21 @@ public class ReportManagerLauncher {
 	 * update the database.
 	 */
 	public void execute(){
-		ReportServiceManager rsMgr = new ReportServiceManager();
-
-		log.info("Report Manager started");
 		
-		// Set the filter for which nodes are processed if such a filter was
-		// specified
-		if(this.nodePattern != null){
-			rsMgr.setNodePattern(this.nodePattern);
-		}
-		
-		// Read the profiles from disk if needed
-		if(this.pullFlag){
-			try{
-				// TODO: Allow the user to override the profile location using
-				// rsMgr.setProfileDir()
-				rsMgr.readProfiles();
-			}catch(IOException e){
-				log.severe("An error occurred while reading the profile " +
-						"properties: " + e.getMessage());
-			}
+		// Read the profiles from disk
+		try{
+			// TODO: Allow the user to override the profile location using
+			// rsMgr.setProfileDir()
+			this.rsMgr.readProfiles();
+		}catch(IOException e){
+			log.severe("An error occurred while reading the profile " +
+					"properties: " + e.getMessage());
 		}
 		
 		// Pull the logs if specified
 		if (this.pullFlag) {
-			rsMgr.pullLogs();
+			this.rsMgr.pullLogs();
 		}
-		
-		log.info("Report Manager finished");
 		
 	}
 	

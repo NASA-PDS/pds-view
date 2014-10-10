@@ -22,7 +22,8 @@ public abstract class Constants {
 	
 	// Variables used to define the keys that specify attributes of a node in
 	// a map
-	public static final String NODE_NAME_KEY = "name";
+	public static final String NODE_ID_KEY = "id";
+	public static final String NODE_NODE_KEY = "node";
 	public static final String NODE_HOST_KEY = "host";
 	public static final String NODE_USER_KEY = "user";
 	public static final String NODE_PATH_KEY = "path";

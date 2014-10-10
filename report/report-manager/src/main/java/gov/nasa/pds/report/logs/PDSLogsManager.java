@@ -127,7 +127,7 @@ public class PDSLogsManager implements LogsManager {
 		boolean encrypt = false;
 		
 		name = Utility.getNodePropsString(nodeProps,
-				Constants.NODE_NAME_KEY, true);
+				Constants.NODE_ID_KEY, true);
 		host = Utility.getNodePropsString(nodeProps,
 				Constants.NODE_HOST_KEY, true);
 		user = Utility.getNodePropsString(nodeProps,
@@ -171,7 +171,7 @@ public class PDSLogsManager implements LogsManager {
 		
 		try{
 			return Utility.getNodePropsString(nodeProps,
-					Constants.NODE_NAME_KEY, false);
+					Constants.NODE_ID_KEY, false);
 		}catch(LogsManagerException e){
 			return null;	// We don't absolutely need the node name (hence
 							// the false parameter above) so it's OK to return

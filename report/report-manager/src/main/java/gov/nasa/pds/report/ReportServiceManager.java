@@ -1,7 +1,10 @@
 package gov.nasa.pds.report;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -22,7 +25,10 @@ public class ReportServiceManager {
 	private ProfileManager profileManager;
 	
 	private List<Properties> propsList = null;
-	private String nodePattern;
+	
+	// If at some point we need multiple filters on the same key, then this
+	// will change to a Map<String, List>
+	private Map<String, String> profileFilters;
 	
 	public ReportServiceManager() {
 		
@@ -30,7 +36,7 @@ public class ReportServiceManager {
 		// these objects should be created by a factory, similar to OODT
 		this.logsManager = new PDSLogsManager();
 		this.profileManager = new SimpleProfileManager();
-		this.nodePattern = null;
+		this.profileFilters = new HashMap<String, String>();
 		
 	}
 	
@@ -45,45 +51,74 @@ public class ReportServiceManager {
 		
 	}
 	
-	public void setNodePattern(String pattern){
+	public void addProfileFilter(String key, String pattern)
+			throws ReportManagerException{
 		
+		// Validate input
+		if(key == null || key.equals("")){
+			throw new ReportManagerException("The provided profile filter " +
+					"key is empty");
+		}
 		if(pattern == null || pattern.equals("")){
-			log.warning("The provided node filter is empty");
-			this.nodePattern = null;
+			throw new ReportManagerException("The provided profile filter " +
+					"pattern with key " + key + " is empty");
 		}
 		
-		this.nodePattern = pattern;
-		log.fine("Only nodes matching the pattern " + this.nodePattern +
-				" will be processed");
+		log.fine("Adding filter: " + key + "=" + pattern);
+		this.profileFilters.put(key, pattern);
 		
 	}
 	
 	public void readProfiles() throws IOException{
 		
+		// Use the ProfileManager to read in the profiles from disk
 		String path = System.getProperty("gov.nasa.pds.report.profile.dir");
 		List<Properties> props = this.profileManager.readProfiles(path);
 		log.info("Found " + props.size() + " profiles");
+		
+		// Determine which profiles match the profile filters
 		this.propsList = new Vector<Properties>();
-		String nodeName = null;
+		String nodeID = null;
 		for(Properties p: props){
 			try{
-				nodeName = Utility.getNodePropsString(p,
-						Constants.NODE_NAME_KEY, false);
-				if(nodeName == null){
-					log.warning("Found a set of properties without a name: " +
+				nodeID = Utility.getNodePropsString(p,
+						Constants.NODE_ID_KEY, false);
+				if(nodeID == null || nodeID.equals("")){
+					log.warning("Found a profile without an ID: " +
 							p.toString());
-				}else if(this.nodePattern == null){
+				}else if(this.profileFilters.isEmpty()){
 					this.propsList.add(p);
-					log.fine("Profile recongized for " + nodeName);
-				}else if(nodeName.matches(this.nodePattern)){
-					this.propsList.add(p);
-					log.fine("Profile recongized for " + nodeName +
-							" since it matched the node pattern " +
-							this.nodePattern);
+					log.fine("Profile recongized for " + nodeID);
+				}else{
+					
+					//Iterate through the filters to check matching
+					boolean match = true;
+					for(Iterator<String> i = 
+							this.profileFilters.keySet().iterator();
+							i.hasNext() && match;){
+						String key = i.next();
+						String pattern = this.profileFilters.get(key);
+						if(((String)p.get(key)).matches(pattern)){
+							log.finer("Profile recongized for " + nodeID +
+									" since it matches " + key + "=" + pattern);
+						}else{
+							log.finer("Profile not recongized for " + nodeID +
+									" since it does not match " + key + "=" +
+									pattern);
+							match = false;
+						}
+					}
+					
+					if(match){
+						this.propsList.add(p);
+						log.fine("Profile " + nodeID + " matches all given " +
+								"filters");
+					}
+					
 				}
 			}catch(LogsManagerException e){
 				log.warning("An error occurred while reading the profile " + 
-						nodeName + ": " + e.getMessage());
+						nodeID + ": " + e.getMessage());
 			}
 		}
 		

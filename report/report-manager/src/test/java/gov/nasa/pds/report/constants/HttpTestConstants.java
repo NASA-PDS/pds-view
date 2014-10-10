@@ -32,6 +32,6 @@ public final class HttpTestConstants{
 	public static final String TEST_PASSWORD = "anonymous";
 	public static final boolean TEST_ENCRYPTED = false;
 	public static final String TEST_PATH =
-			"met-mhNQwdRPkhJ2-rics/WeekOf-2013-09-29.tar.gz";
+			"met-mhNQwdRPkhJ2-rics/rings-pds-rings-apache2.2014-10-01.tar.gz";
 	
 }
