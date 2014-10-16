@@ -89,15 +89,6 @@
       </roles>
     </developer>
     <developer>
-      <name>Luca Cinquini</name>
-      <id>cinquini</id>
-      <email>Luca.Cinquini@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
       <name>Sean Kelly</name>
       <id>kelly</id>
       <email>Sean.Kelly@jpl.nasa.gov</email>
@@ -132,6 +123,15 @@
       <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
         <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Luca Cinquini</name>
+      <id>cinquini</id>
+      <email>Luca.Cinquini@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Former Developer</role>
       </roles>
     </developer>
     <developer>

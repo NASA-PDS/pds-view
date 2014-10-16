@@ -59,6 +59,15 @@
         <role>Development Lead</role>
       </roles>
     </developer>
+    <developer>
+      <name>Luca Cinquini</name>
+      <id>cinquini</id>
+      <email>luca.cinquini@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Former Developer</role>
+      </roles>
+    </developer>
   </developers>
 
   <contributors>
