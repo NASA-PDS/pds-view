@@ -74,11 +74,21 @@
         </p>
 
         <ul>
-          <li>Harvest Tool and Registry Service were modified to provide support for capturing unit designations.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-261'>PDS-261</a>] - Search: Add an external_reference_description field
           </li>
-          <li>Registry User Interface was modified to provide support for accessing multiple Registry Service instances.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-262'>PDS-262</a>] - Search: Add Product_Context resource class products to the index
           </li>
-          <li>Registry Service and Registry User Interface Installation documents were modified to address installation of two Registry Service instances, one for PDS3 content and one for PDS4 content.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-263'>PDS-263</a>] - Data Set View: Utilize site headers and footers from search-ui extras
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-264'>PDS-264</a>] - Data Set View: Modify pages to query Search Service instead of Registry Service
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-265'>PDS-265</a>] - Registry: Add support to the Registry UI for accessing multiple Registry Service instances
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-269'>PDS-269</a>] - Registry: Improve the Registry Service Installation document
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-271'>PDS-271</a>] - Generate: Incorporate updates made by Steve Levoe
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-272'>PDS-272</a>] - Harvest: Add support for capturing units designations
           </li>
         </ul>
       </subsection>
@@ -88,7 +98,15 @@
         </p>
 
         <ul>
-          <li>Harvest Tool was modified to not register a file product more than once if it is referenced multiple times in a label and to resolve environment variables specified within the Harvest policy file.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-61'>PDS-61</a>] - Generate: Version Flag Bug
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-268'>PDS-268</a>] - Search: Start time in Search UI results not always determined correctly
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-270'>PDS-270</a>] - Harvest: Environment variables not resolved within configuration files
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-273'>PDS-273</a>] - Registry: Slot Type is Missing From Slots For A Versioned Product
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-274'>PDS-274</a>] - Harvest: The tool attempts to register a file product more than once
           </li>
         </ul>
       </subsection>

@@ -71,8 +71,17 @@
       </p>
 
       <subsection name="New Capabilities">
-        <p>There are no new capabilities for this release.
+        <p>The following new capabilities have been added for this release:
         </p>
+
+        <ul>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-27'>PDS-27</a>] - Validate: Provide Support for Include Pointers
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-189'>PDS-189</a>] - Search: Allow for Secondary Registries to be specified in config
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-190'>PDS-190</a>] - Search: Updates Service and UI to allow for PDS4 Product Search
+          </li>
+        </ul>
       </subsection>
 
       <subsection name="Modified Capabilities">
@@ -80,11 +89,59 @@
         </p>
 
         <ul>
-          <li>Validate Tool was modified to include the latest XML Schema and Schematron files (1.1.0.1) generated from the PDS4 data model.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-84'>PDS-84</a>] - Search: Refactor a number of capabilities in the Search Service 
           </li>
-          <li>Harvest Tool and Catalog Tool were modified to keep pace with changes occurring in the PDS4 data model for this release.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-103'>PDS-103</a>] - Search: Replace Solr default Request Handler
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-122'>PDS-122</a>] - Search: Update UI Deployment Documentation
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-142'>PDS-142</a>] - Search: Create new resource domain name flag
           </li>
-          <li>Search Service was modified to provide an Engineering Node specific installation document as well as being built against the upgraded version of the registry-core component.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-144'>PDS-144</a>] - Search: Update product-classes.txt to be list of files
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-154'>PDS-154</a>] - Search: Update search-core to retrieve Agency from Registry
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-157'>PDS-157</a>] - Search: Update search-service documentation per Todd King&#39;s comments
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-158'>PDS-158</a>] - Search: Update UI documentation per Todd King&#39;s comments
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-163'>PDS-163</a>] - Catalog: The -mingest option re-registers files if listed in multiple voldescs
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-168'>PDS-168</a>] - Search: Minor errors in search documentation
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-169'>PDS-169</a>] - Search: The initial-index script relies on env-vars
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-172'>PDS-172</a>] - Search: Improve documentation to be clear regarding cannot index documents if search service is not running
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-173'>PDS-173</a>] - Search: Run PDS search with Solr4 back-end
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-177'>PDS-177</a>] - Search: Create New Configuration For pdsbeta installation
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-178'>PDS-178</a>] - Search: Better Handle Null Pointer Exception
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-182'>PDS-182</a>] - Search: Update Search UI and Search Service to better handle archive_status
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-183'>PDS-183</a>] - Refactor Updating Solr Index
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-184'>PDS-184</a>] - Create An Association Cache for Common Queries
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-185'>PDS-185</a>] - Search: Update PSA Registry URL
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-191'>PDS-191</a>] - Search: Update Search UI to support PDS4 product search
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-192'>PDS-192</a>] - Search: Create Search Core configuration for PDS4 Observational Products
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-193'>PDS-193</a>] - Search: Update Search Service schema to support PDS4 Observational products
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-194'>PDS-194</a>] - Search: Default values for missing registry slots
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-197'>PDS-197</a>] - Search: Create documentation for product-search-ui
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-198'>PDS-198</a>] - Search: Remove References to Primary Result Summary class
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-214'>PDS-214</a>] - Data Set View: Needs better visibility for resource links
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-225'>PDS-225</a>] - Validate: For schematron messages treat role=&quot;warning&quot; differently than default (role=&quot;error&quot;)
           </li>
         </ul>
       </subsection>
@@ -94,7 +151,27 @@
         </p>
 
         <ul>
-          <li>Registry Service was modified to address the issue with the replication capability.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-159'>PDS-159</a>] - Search: Alternate_title causing error during index generation
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-174'>PDS-174</a>] - Registry: Random Database Connection Drops
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-175'>PDS-175</a>] - Registry: Replication Halts
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-179'>PDS-179</a>] - Search: Search for a phrase is not working properly
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-181'>PDS-181</a>] - Search: Default Solr SearchHandler needs to be changed to protocol
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-186'>PDS-186</a>] - Search: Search UI Data Set Start Time Bug
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-196'>PDS-196</a>] - Search: OutOfMemory Error When Running Search Core
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-213'>PDS-213</a>] - Validate: The tool is not finding document files correctly
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-217'>PDS-217</a>] - Search: Testing Bug In Search Service schema
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-218'>PDS-218</a>] - Search: Documentation typos
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-226'>PDS-226</a>] - Data Set View: Viewing target Asteroid 7822 results in an error
           </li>
         </ul>
       </subsection>

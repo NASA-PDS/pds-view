@@ -72,8 +72,29 @@
       </p>
 
       <subsection name="New Capabilities">
-        <p>There are no new capabilities for this release.
+        <p>The following capabilities are new for this release:
         </p>
+
+        <ul>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-187'>PDS-187</a>] - Registry: Package Associated with Replication
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-200'>PDS-200</a>] - Transform: Add support for executing Python scripts to do transformations.
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-233'>PDS-233</a>] - Harvest: Add support for labels utilizing xinclude statements
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-234'>PDS-234</a>] - Registry: Add support for field filtering for Package objects
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-236'>PDS-236</a>] - Transform: Add capability to transform a PDS3 label to a PDS4 label
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-248'>PDS-248</a>] - Catalog: Add file type and mime type slots to file repository products
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-251'>PDS-251</a>] - Transport: Add support for interfacing with multiple registry service instances
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-254'>PDS-254</a>] - Search/Portal: Add initial support for Primary Result Summary
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-256'>PDS-256</a>] - Search: Add support for PDS4 Archive Information products
+          </li>
+        </ul>
       </subsection>
 
       <subsection name="Modified Capabilities">
@@ -81,28 +102,73 @@
         </p>
 
         <ul>
-          <li>Validate Tool was modified to include the latest XML Schema and Schematron files (1.2.0.1) generated from the PDS4 data model.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-153'>PDS-153</a>] - Search: Add search-core config attribute for appended slots to enable lidvid
           </li>
-          <li>Harvest Tool and Catalog Tool were modified to keep pace with changes occurring in the PDS4 data model for this release.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-199'>PDS-199</a>] - Transport: Reduce the size of the WAR package
           </li>
-          <li>Harvest Tool and Validate Tool were modified to provide support for xinclude statements within product labels.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-202'>PDS-202</a>] - Catalog: Add support for map projection catalog pointer
           </li>
-          <li>Transform Tool was modified to to streamline the application program interface, enable PDS3 images transformations for images greater than 8-bits and added an initial generic transformation for PDS3 labels to PDS4 labels.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-212'>PDS-212</a>] - Transport: Enable Easier URL syntax
           </li>
-          <li>Registry components were modified to provide support for filtering Package objects and Registry Core was modified to streamline the application program interface.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-227'>PDS-227</a>] - Catalog: Re-ingesting a file skipped during ingest (e.g. ref.cat) re-registers it
           </li>
-          <li>Search components were modified to provide support for PDS4 Context products and improved support for the PDAP search protocol.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-229'>PDS-229</a>] - Search: Hide the Resource context products in the search-ui interface
           </li>
-          <li>Transport components were modified to streamline the REST-based interface and to include PDS3-based handlers for backward compatibility.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-238'>PDS-238</a>] - Transport: make query parameters case insensitive
           </li>
-          <li>All Unix shell scripts and Windows batch files were updated to provide a more user friendly message regarding the JAVA_HOME environment variable.
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-239'>PDS-239</a>] - Transport: update transport-registry documentation
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-242'>PDS-242</a>] - Transport: implement caching of generated products
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-250'>PDS-250</a>] - Transport: Add PDS_ZIP and PDS_ZIP_SIZE to transport-ofsn
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-253'>PDS-253</a>] - Need to update all UNIX scripts and Windows batch files for Java location
           </li>
         </ul>
       </subsection>
 
       <subsection name="Corrected Capabilities">
-        <p>There are no corrected capabilities for this release.
+        <p>The following capabilities have been corrected for this release:
         </p>
+
+        <ul>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-201'>PDS-201</a>] - Catalog: Tool captures relationship with instrument host even when not referenced from data set catalog file.
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-203'>PDS-203</a>] - Catalog: The tool should strip leading and trailing white space from keyword values
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-204'>PDS-204</a>] - Catalog: Not determining investigation reference when mission name spans multiple lines
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-205'>PDS-205</a>] - Catalog: Is determining instrument host values from mission catalog instead of data set catalog
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-210'>PDS-210</a>] - Transport: Verify functionality of all OFSN handlers deployed within current transport-ofsn service
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-211'>PDS-211</a>] - Transform: Propose API for transformation library
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-219'>PDS-219</a>] - Transport: Missing or incomplete identifier argument results in an empty download package
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-228'>PDS-228</a>] - Catalog: Throws NULL pointer exception when reading data set map projection catalog files
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-230'>PDS-230</a>] - Registry: The UI displays an incorrect product count when less than 20
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-231'>PDS-231</a>] - Catalog: The same instrument host reference is replicated for each instrument reference
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-232'>PDS-232</a>] - Transport: Update transport-ofsn documentation
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-240'>PDS-240</a>] - Generate: Current software cannot handle multiple object groups
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-245'>PDS-245</a>] - Data Set View: A target is not found if the target name contains a slash character
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-246'>PDS-246</a>] - Data Set View: Add support for ADS products from a separate registry
+</li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-247'>PDS-247</a>] - Data Set View: Need better handling of observing system component values
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-255'>PDS-255</a>] - Search: Update Schema with new UniqueKey
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-257'>PDS-257</a>] - Transform: tool does nothing with TABLEs and COLUMNs
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-259'>PDS-259</a>] - Generate: The getRecords() call fails on example file
+          </li>
+        </ul>
       </subsection>
     </section>
 

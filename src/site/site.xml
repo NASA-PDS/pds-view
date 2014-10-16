@@ -28,10 +28,6 @@
   <version position="none"/>
 
   <body>
-    <links>
-      <item name="PDS4" href="https://pds-cm.jpl.nasa.gov/pds4/index.html" />
-    </links>
-
     <menu name="Documentation">
       <item name="About PDS4" href="index.html"/>
       <item name="System Architecture (pdf)" href="docs/pds4_system_arch_spec.pdf"/>
