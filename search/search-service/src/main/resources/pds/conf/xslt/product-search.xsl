@@ -76,7 +76,7 @@
   <xsl:key name="facet" match="facet" use="@name" />
   <xsl:key name="category" match="category" use="@name" />
 
-  <xsl:variable name="modifications" select="document(concat($SOLR_HOME,'/conf/xslt/modify.xml'))" />
+  <xsl:variable name="modifications" select="document(concat($SOLR_HOME,'/conf/xslt/capitalize.xml'))" />
   <xsl:key name="modify" match="category" use="@name" />
 
   <xsl:function name="pds:make-param" as="xs:string">

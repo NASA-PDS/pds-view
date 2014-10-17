@@ -53,4 +53,8 @@
   <category name="ase" modified="ASE"/>
   <category name="ssi" modified="SSI"/>
   <category name="telltale" modified="TELLTALE"/>
+  <category name="ladee" modified="LADEE"/>
+  <category name="nms" modified="NMS"/>
+  <category name="uvs" modified="UVS"/>
+  <category name="ldex" modified="LDEX"/>
 </categories>
