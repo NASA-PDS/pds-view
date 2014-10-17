@@ -23,6 +23,12 @@
   </properties>
 
   <body>
+    <release version="1.5.0" date="2014-09-30" description="TBD">
+      <action dev="jpadams" type="update" issue="PDS-311">
+        Renamed modify.xml to capitalize.xml since that is what it is used for. Updated the file references in the XSLTs. Added the new LADEE info.
+      </action>
+    </release>
+
     <release version="1.5.0" date="2014-09-30" description="This release of the Search Core is a component of the integrated release 5.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="shardman" type="update" issue="PDS-261">
         Updated the schema to map to external_reference_text instead.
