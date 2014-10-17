@@ -32,7 +32,7 @@
   <description>
     The Storage Service provides functionality for managing the data repository. This includes movement of data files in and out of the repository. The functionality for this service is satisfied by the Apache OODT File Manager.
   </description>
-  <url>http://pds-cm.jpl.nasa.gov/pds4/storage/storage-service/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/storage/storage-service/</url>
 
   <licenses>
     <license>
