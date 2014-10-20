@@ -236,21 +236,17 @@ public class LabelValidator {
         } else if (useLabelSchema) {
           cachedValidator.setEntityResolver(externalEntityResolver);
         }
-        // Capture messages in a container
-        if (container != null) {
-          cachedValidator.setErrorHandler(new LabelErrorHandler(container));
-        }
       } else {
         // Create a new instance of the DocumentBuilder if validating
         // against a label's schema.
         if (useLabelSchema) {
           cachedValidator = docBuilderFactory.newDocumentBuilder();
-          // Capture messages in a container
-          if (container != null) {
-            cachedValidator.setErrorHandler(new LabelErrorHandler(container));
-          }
           cachedValidator.setEntityResolver(externalEntityResolver);
         }
+      }
+      // Capture messages in a container
+      if (container != null) {
+        cachedValidator.setErrorHandler(new LabelErrorHandler(container));
       }
       // Finally validate the file
       xml = cachedValidator.parse(url.openStream(), url.toString());
