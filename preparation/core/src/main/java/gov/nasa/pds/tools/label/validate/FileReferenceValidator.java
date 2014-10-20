@@ -55,8 +55,7 @@ public class FileReferenceValidator implements DocumentValidator {
    * XPath to the file references within a PDS4 data product label.
    */
   private final String FILE_OBJECTS_XPATH =
-    "//*[starts-with(name(), 'File_Area')]/File | "
-    + "//Document_Edition/Document_File";
+    "//*[starts-with(name(), 'File_Area')]/File | //Document_File";
 
   private Map<URL, String> checksumManifest;
 
