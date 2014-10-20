@@ -56,7 +56,7 @@ public class FileReferenceValidator implements DocumentValidator {
    */
   private final String FILE_OBJECTS_XPATH =
     "//*[starts-with(name(), 'File_Area')]/File | "
-    + "//Document_Format_Set/Document_File";
+    + "//Document_Edition/Document_File";
 
   private Map<URL, String> checksumManifest;
 
