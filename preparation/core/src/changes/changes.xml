@@ -19,24 +19,22 @@
 <document>
   <properties>
     <title>Release Changes</title>
-    <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
-    <release version="1.7.0" date="TBD" description="TBD">
-      <action dev="mcayanan" type="fix" issue="PDS-314">
-        Fixed to properly report errors when validating a directory.
-      </action>
-      <action dev="mcayanan" type="fix" issue="PDS-315">
-        Fixed to correctly find file references specified in Product_Document products.
-      </action>
-    </release>
     <release version="1.6.0" date="2014-09-30" description="This release of the Core Library is a component of the integrated release 5.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="mcayanan" type="add" issue="PDS-84">
         Added the capability to allow the schema and schematron files specified in the labels to be used for validation.
       </action>
       <action dev="mcayanan" type="add" issue="PDS-287">
         Added the capability to pass in a hashmap of file references to checksums for use in checksum validation.
+      </action>
+      <action dev="mcayanan" type="fix" issue="PDS-314">
+        Fixed to properly report errors when validating a directory.
+      </action>
+      <action dev="mcayanan" type="fix" issue="PDS-315">
+        Fixed to correctly find file references specified in Product_Document products.
       </action>
       <action dev="mcayanan" type="add">
         Added a check to validate the schematron specification in a given PDS4 label.
