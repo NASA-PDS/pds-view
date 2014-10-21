@@ -115,7 +115,9 @@
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-300'>PDS-300</a>] - Catalog/Data Set View: Add support for using host type in instrument host LIDs
           </li>
-          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-300'>PDS-303</a>] - Registry: Add REST-based interface for updating package product status
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-303'>PDS-303</a>] - Registry: Add REST-based interface for updating package product status
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-316'>PDS-316</a>] - Validate: Clarify and check for proper usage of referential integrity feature
           </li>
         </ul>
       </subsection>
@@ -134,6 +136,10 @@
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-301'>PDS-301</a>] - Search: Archive Info should link to resource_url
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-302'>PDS-302</a>] - Registry: Correct an issue where registration hangs or otherwise fails with a collection containing a million members
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-314'>PDS-314</a>] - Validate: dirX passes, but validate 1fileInDirX fails
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-315'>PDS-315</a>] - Validate: misses invalid directory_path_name
           </li>
         </ul>
       </subsection>
