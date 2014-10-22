@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -14,6 +15,8 @@ import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
+import gov.nasa.pds.report.ReportManagerException;
+import gov.nasa.pds.report.util.DateLogFilter;
 import gov.nasa.pds.report.util.Utility;
 
 /*
@@ -158,16 +161,33 @@ public class FtpPull implements PDSPull {
 			return fileList;
 		}
 		
+		FTPFile[] lsOut = new FTPFile[1];
 		try{
-			for(FTPFile file: this.client.listFiles(path)){
-				fileList.add(file.getName());
-			}
+			lsOut = this.client.listFiles(path);
 		}catch(IOException e){
 			throw new PushPullException("An error occurred while obtaining " +
 					"the file list at " + path + ": " + e.getMessage());
 		}
+		try{
+			for(FTPFile file: lsOut){
+				String filename = file.getName();
+				try{
+					if(DateLogFilter.match(filename)){
+						fileList.add(filename);
+					}
+				}catch(ParseException e){
+					log.warning("An error occurred while parsing a " +
+								"filename for date filtering: " + 
+								e.getMessage());
+				}
+			}
+		}catch(ReportManagerException e){
+			throw new PushPullException("The Date Log Filter was improperly " +
+					"initialized before pulling files: " + e.getMessage());
+		}
 		
-		log.fine("Found " + fileList.size() + " files at " + path);
+		log.info("Found " + fileList.size() + " out of " + lsOut.length + 
+		" logs that match filters");
 		
 		return fileList;
 		

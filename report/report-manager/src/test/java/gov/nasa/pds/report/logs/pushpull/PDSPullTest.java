@@ -16,6 +16,7 @@ import gov.nasa.pds.report.constants.TestConstants;
 import gov.nasa.pds.report.constants.SftpTestConstants;
 import gov.nasa.pds.report.logs.pushpull.model.LogSet;
 import gov.nasa.pds.report.rules.PDSTest;
+import gov.nasa.pds.report.util.DateLogFilter;
 import gov.nasa.pds.report.util.Utility;
 
 import org.apache.commons.io.FileUtils;
@@ -84,6 +85,10 @@ public class PDSPullTest extends PDSTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testPrivateGetFileFileList() throws Exception {
+		
+		// Remove any Date Logs Filters from previous tests
+		DateLogFilter.unsetAll();
+		
 		pullImpl.connect(SftpTestConstants.TEST_HOST,
 				SftpTestConstants.TEST_USER, SftpTestConstants.TEST_PASSWORD,
 				true);
@@ -114,6 +119,9 @@ public class PDSPullTest extends PDSTest {
 		
 		// Initializing encryptor
 		encryptor.setPassword(Constants.CRYPT_PASSWORD);
+		
+		// Remove any Date Logs Filters from previous tests
+		DateLogFilter.unsetAll();
 		
 		// Set some log sets to test
 		

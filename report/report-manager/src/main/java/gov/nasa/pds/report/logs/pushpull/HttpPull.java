@@ -1,11 +1,14 @@
 package gov.nasa.pds.report.logs.pushpull;
 
+import gov.nasa.pds.report.ReportManagerException;
+import gov.nasa.pds.report.util.DateLogFilter;
 import gov.nasa.pds.report.util.Utility;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import java.util.ArrayList;
@@ -91,7 +94,7 @@ public class HttpPull implements PDSPull{
 	}
 	
 	private void downloadFileAtURL(URL url, String destination,
-			List<String> localFileList){
+			List<String> localFileList) throws PushPullException{
 		
 		// Determine the file name
 		String urlStr = url.toString();
@@ -102,6 +105,21 @@ public class HttpPull implements PDSPull{
 			this.log.info(filename + " already exists in " + 
 					destination + "\n");
 			return;
+		}
+		
+		// Check if filename matches date filter
+		try{
+			if(!DateLogFilter.match(filename)){
+				log.fine(filename + " does not match the date filter");
+				return;
+			}
+		}catch(ParseException e){
+			log.warning("An error occurred while parsing log " + filename + 
+					" for date filtering: " + e.getMessage());
+			return;
+		}catch(ReportManagerException e){
+			throw new PushPullException("The Date Log Filter was improperly " +
+					"initialized before pulling files: " + e.getMessage());
 		}
 		
 		// Download the file

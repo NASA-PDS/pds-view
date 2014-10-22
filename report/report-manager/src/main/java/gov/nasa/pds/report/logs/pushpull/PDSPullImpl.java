@@ -1,5 +1,6 @@
 package gov.nasa.pds.report.logs.pushpull;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -14,7 +15,9 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
+import gov.nasa.pds.report.ReportManagerException;
 import gov.nasa.pds.report.constants.Constants;
+import gov.nasa.pds.report.util.DateLogFilter;
 import gov.nasa.pds.report.util.Utility;
 
 /**
@@ -107,7 +110,9 @@ public class PDSPullImpl implements PDSPull {
 	@SuppressWarnings("rawtypes")
 	private final List<String> getFileList(String path)
 			throws PushPullException {
+		
 		try {
+			
 			String[] dirList;
 			String filename;
 			
@@ -117,14 +122,27 @@ public class PDSPullImpl implements PDSPull {
 			for (Object obj : lsOut) {
 				dirList = obj.toString().split(" ");
 				filename = dirList[dirList.length - 1];
-				if (!filename.equals(".") && !filename.equals("..")) {
-					matches.add(filename);
+				try{
+					if (!filename.equals(".") && !filename.equals("..") &&
+							DateLogFilter.match(filename)) {
+						matches.add(filename);
+					}
+				}catch(ParseException e){
+					log.warning("An error occurred while parsing a " +
+							"filename for date filtering: " + e.getMessage());
 				}
 			}
+			
+			log.info("Found " + matches.size() + " out of " + lsOut.size() + 
+					" logs that match filters");
 
 			return matches;
+			
 		} catch (SftpException e) {
 			throw new PushPullException("SftpException: " + e.getMessage());
+		} catch (ReportManagerException e) {
+			throw new PushPullException("The Date Log Filter was improperly " +
+					"initialized before pulling files: " + e.getMessage());
 		}
 	}
 	

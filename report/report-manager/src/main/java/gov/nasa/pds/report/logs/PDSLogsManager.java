@@ -6,6 +6,7 @@ import gov.nasa.pds.report.logs.pushpull.HttpPull;
 import gov.nasa.pds.report.logs.pushpull.PDSPull;
 import gov.nasa.pds.report.logs.pushpull.PDSPullImpl;
 import gov.nasa.pds.report.logs.pushpull.PushPullException;
+import gov.nasa.pds.report.util.DateLogFilter;
 import gov.nasa.pds.report.util.Utility;
 
 import java.io.File;
@@ -24,6 +25,9 @@ public class PDSLogsManager implements LogsManager {
 			throw new LogsManagerException("Null node information given.");
 		}
 		
+		log.info("Now pulling logs using the profile " + 
+				getNodeName(nodeProps));
+		
 		// The object that will pull logs from the node using the specified
 		// protocol
 		PDSPull logPuller;
@@ -40,7 +44,8 @@ public class PDSLogsManager implements LogsManager {
 			
 		}catch(LogsManagerException e){
 			
-			throw new LogsManagerException("An error occurred while preparing to pull logs from node " + 
+			throw new LogsManagerException("An error occurred while " +
+					"preparing to pull logs from node " + 
 					getNodeName(nodeProps) + ": " + e.getMessage());
 			
 		}
@@ -50,6 +55,11 @@ public class PDSLogsManager implements LogsManager {
 			// Connect to the node machines
 			this.connect(nodeProps, logPuller);
 			
+			// Set the filename pattern to that used by the node in order to
+			// filter logs by date
+			DateLogFilter.setPattern(Utility.getNodePropsString(nodeProps,
+					Constants.NODE_FILENAME_PATTERN_KEY, false));
+			
 			// Download the node logs
 			logPuller.pull(Utility.getNodePropsString(nodeProps,
 					Constants.NODE_PATH_KEY, true),
@@ -57,19 +67,23 @@ public class PDSLogsManager implements LogsManager {
 			
 		}catch(LogsManagerException e){
 			
-			// We have to log a message first, since it's possible to "lose"
-			// the thrown exception during execution of the finally block
-			log.severe("An error occurred while pulling" +
-					" logs from node " + getNodeName(nodeProps) +
-					": " + e.getMessage());
-			throw new LogsManagerException("An error occurred while pulling" +
-					" logs from node " + getNodeName(nodeProps) +
+			log.severe("An error occurred while connecting to node " +
+					 getNodeName(nodeProps) + ": " + e.getMessage());
+			throw new LogsManagerException("An error occurred while " +
+					"connecting to node " + getNodeName(nodeProps) + ": " +
+					e.getMessage());
+			
+		}catch(IllegalArgumentException e){
+		
+			log.severe("An error occurred while setting the filename " +
+					"pattern for node " + getNodeName(nodeProps) + ": " + 
+					e.getMessage());
+			throw new LogsManagerException("An error occurred while setting " +
+					"the filename pattern for node " + getNodeName(nodeProps) + 
 					": " + e.getMessage());
 			
 		}catch(PushPullException e){
 			
-			// We have to log a message first, since it's possible to "lose"
-			// the thrown exception during execution of the finally block
 			log.severe("An error occurred while pulling" +
 					" logs from node " + getNodeName(nodeProps) +
 					": " + e.getMessage());

@@ -35,7 +35,7 @@ import org.junit.Ignore;
 public class TestUtility {
 
 	/**
-	 * This is a utility method for all the test classses used to create
+	 * This is a utility method for all the test classes used to create
 	 * some temporary files as well as copy over some of the 
 	 * @throws IOException
 	 */

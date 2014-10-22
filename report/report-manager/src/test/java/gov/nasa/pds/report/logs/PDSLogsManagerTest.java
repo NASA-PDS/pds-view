@@ -15,6 +15,7 @@ import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.constants.TestConstants;
 import gov.nasa.pds.report.constants.SftpTestConstants;
 import gov.nasa.pds.report.rules.PDSTest;
+import gov.nasa.pds.report.util.DateLogFilter;
 
 public class PDSLogsManagerTest extends PDSTest{
 	
@@ -42,6 +43,8 @@ public class PDSLogsManagerTest extends PDSTest{
 		props.setProperty(Constants.NODE_PATH_KEY, SftpTestConstants.TEST_PATH);
 		props.setProperty(Constants.NODE_STAGING_DIR_KEY,
 				TestConstants.TEST_STAGING_DIR + SftpTestConstants.TEST_HOST);
+		props.setProperty(Constants.NODE_FILENAME_PATTERN_KEY,
+				"log-|yyyy-mm-dd|.txt");
 	}
 	
 	@After
@@ -57,6 +60,9 @@ public class PDSLogsManagerTest extends PDSTest{
 		// to help keep code clean
 		String stagingDir = props.getProperty(Constants.NODE_STAGING_DIR_KEY);
 		String hostname = props.getProperty(Constants.NODE_HOST_KEY);
+		
+		// Remove any Date Logs Filters from previous tests
+		DateLogFilter.unsetAll();
 		
 		// Pull the logs files
 		manager.pullLogFiles(props);

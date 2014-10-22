@@ -20,6 +20,7 @@ import gov.nasa.pds.report.constants.TestConstants;
 import gov.nasa.pds.report.logs.pushpull.model.LogSet;
 import gov.nasa.pds.report.rules.PDSTest;
 import gov.nasa.pds.report.rules.PDSTest.SingleTestRule;
+import gov.nasa.pds.report.util.DateLogFilter;
 import gov.nasa.pds.report.util.Utility;
 
 public class HttpPullTest extends PDSTest{
@@ -57,6 +58,9 @@ public class HttpPullTest extends PDSTest{
 				HttpTestConstants.TEST_NODE;
 		FileUtils.forceMkdir(new File(destination));
 		
+		// Remove any Date Logs Filters from previous tests
+		DateLogFilter.unsetAll();
+		
 		// Connect to the node
 		boolean connected = httpPull.connect(hostname,
 				HttpTestConstants.TEST_USER, HttpTestConstants.TEST_PASSWORD,
@@ -91,6 +95,9 @@ public class HttpPullTest extends PDSTest{
 		String destination = TestConstants.TEST_STAGING_DIR +
 				HttpTestConstants.TEST_NODE;
 		FileUtils.forceMkdir(new File(destination));
+		
+		// Remove any Date Logs Filters from previous tests
+		DateLogFilter.unsetAll();
 		
 		// Connect to the node
 		boolean connected = httpPull.connect(hostname,

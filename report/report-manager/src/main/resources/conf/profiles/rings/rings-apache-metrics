@@ -7,3 +7,4 @@ password=anonymous
 encrypt=false
 path=met-mhNQwdRPkhJ2-rics
 stagingDir=/report_service/logs/rings/atm-apache-http
+filename_pattern=rings-pds-rings-apache2.|yyyy-MM-dd|.tar.gz

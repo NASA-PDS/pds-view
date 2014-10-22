@@ -23,6 +23,7 @@ import gov.nasa.pds.report.logging.ToolsLogRecord;
 import gov.nasa.pds.report.logging.formatter.ReportManagerFormatter;
 import gov.nasa.pds.report.logging.handler.PDSFileHandler;
 import gov.nasa.pds.report.logging.handler.PDSStreamHandler;
+import gov.nasa.pds.report.util.DateLogFilter;
 import gov.nasa.pds.report.util.ToolInfo;
 import gov.nasa.pds.report.util.Utility;
 
@@ -159,6 +160,12 @@ public class ReportManagerLauncher {
 			} else if (o.getOpt().equals(Flag.ID_PATTERN.getShortName())) {
 				this.rsMgr.addProfileFilter(Constants.NODE_ID_KEY,
 						line.getOptionValue(Flag.ID_PATTERN.getShortName()));
+			} else if (o.getOpt().equals(Flag.FROM_DATE.getShortName())) {
+				DateLogFilter.setStartDate(
+						line.getOptionValue(Flag.FROM_DATE.getShortName()));
+			} else if (o.getOpt().equals(Flag.TO_DATE.getShortName())) {
+				DateLogFilter.setEndDate(
+						line.getOptionValue(Flag.TO_DATE.getShortName()));
 			}
 		}
 	}

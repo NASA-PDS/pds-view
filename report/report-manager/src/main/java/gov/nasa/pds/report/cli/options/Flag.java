@@ -38,9 +38,15 @@ public enum Flag {
 			"Only operate on profiles with an ID that matches the given RE " +
 			"pattern"),
 			
-	// TODO: Create flag to override default location of profiles
+	/** Flags to filter log files by date specified in log filename */
+	FROM_DATE("f", "from", "from_date", String.class,
+			"Only pull log files on or after the date specified with the " +
+			"format mm/dd/yyyy"),
+	TO_DATE("t", "to", "to_date", String.class,
+			"Only pull log files on or before the date specified with the " +
+			"format mm/dd/yyyy"),
 			
-	// TODO: Create filename filter flag (using dates) -- see JIRA ticket PDS-304
+	// TODO: Create flag to override default location of profiles
 			
 	/** PDS Default Flags for CLI - TODO should be refactored into commons enum **/
 			
