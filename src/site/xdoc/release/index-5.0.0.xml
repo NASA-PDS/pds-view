@@ -496,9 +496,11 @@ Product Types Registered:
 81 Product_File_Repository
 5 Product_Collection
 
-79 of 79 generated checksums matched their supplied value in the manifest, 2 value(s) not checked.
+79 of 79 generated checksums matched their supplied value 
+in the manifest, 2 value(s) not checked.
 
-67 of 67 generated checksums matched the supplied value in their product label, 14 value(s) not checked.
+67 of 67 generated checksums matched the supplied value in 
+their product label, 14 value(s) not checked.
 
 81 of 81 associations registered.
 
@@ -511,8 +513,9 @@ End of Log
             <source>
 &lt;ns2:report xmlns:ns2="http://registry.pds.nasa.gov" status="OK" 
 serverStarted="2014-10-26T11:26:32.121-07:00" associations="325" 
-extrinsics="94" services="0" classificationSchemes="2" classificationNodes="67" 
-packages="5" events="249" registryVersion="1.7.0"/&gt;
+extrinsics="94" services="0" classificationSchemes="2" 
+classificationNodes="67" packages="5" events="249" 
+registryVersion="1.7.0"/&gt;
             </source>
             <p>The above report shows 94 extrinsics (PDS products) registered which corresponds with the Harvest Tool summary. The number of associations registered is a little harder to verify because there were already some associations in the registry from the configuration step. Feel free to try out some of the other end points (e.g. extrinsics) detailed in the <a href="../registry/registry-service/operate/index.html#Query_Artifacts">Query Artifacts</a> section of the Operations document.
             </p>
