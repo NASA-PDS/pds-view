@@ -23,7 +23,7 @@
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
     <artifactId>registry</artifactId>
-    <version>1.7.0</version>
+    <version>1.8.0-dev</version>
   </parent>
 
   <groupId>gov.nasa.pds.2010.registry</groupId>
