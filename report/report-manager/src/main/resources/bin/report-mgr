@@ -53,6 +53,10 @@ REPORT_MGR_JAR=`ls ${LIB_DIR}/report-manager-*.jar`
 # Find the logging properties file in CONF_DIR and sets it to LOG_PROPS
 LOG_PROPS=`ls ${CONF_DIR}/logging.properties`
 
+if [ -n "$RPT_MGR_FLAGS"]; then
+	echo "Running Report Manager with flags: ${RPT_MGR_FLAGS}"
+fi
+
 # Executes Search Core Indexer via the executable jar file
 # Arguments are passed in to the tool via '$@'
 "${JAVA_HOME}"/bin/java \
