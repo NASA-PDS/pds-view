@@ -14,6 +14,7 @@
 //
 package gov.nasa.pds.report.util;
 
+import gov.nasa.pds.report.ReportManagerException;
 import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.logs.LogsManagerException;
 
@@ -158,11 +159,11 @@ public class Utility {
 	 * @throws LogsManagerException	If needed is true and the given key is not present or if the value is null or empty
 	 */
 	public static String getNodePropsString(Properties nodeProps, String key,
-			boolean needed) throws LogsManagerException{
+			boolean needed) throws ReportManagerException{
 		
 		String nodeName = null;
 		if(key == null || key.equals("")){
-			throw new LogsManagerException("Cannot fetch String value of " +
+			throw new ReportManagerException("Cannot fetch String value of " +
 					"null key from node properties.");
 		}
 		if(!key.equals(Constants.NODE_ID_KEY)){
@@ -172,10 +173,10 @@ public class Utility {
 		if(!nodeProps.containsKey(key)){
 			if(needed){
 				if(nodeName != null){
-					throw new LogsManagerException(key +
+					throw new ReportManagerException(key +
 							" value does not exist for node " + nodeName);
 				}else{
-					throw new LogsManagerException(key +
+					throw new ReportManagerException(key +
 							" value does not exist for unnamed node:\n" +
 							nodeProps.toString());
 				}
@@ -186,15 +187,15 @@ public class Utility {
 		String info = nodeProps.getProperty(key);
 		if(needed && (info == null || info.equals(""))){
 			if(nodeName != null){
-				throw new LogsManagerException(key +
+				throw new ReportManagerException(key +
 						" value is empty for node " + nodeName);
 			}else{
-				throw new LogsManagerException(key +
+				throw new ReportManagerException(key +
 						" value is empty for unnamed node:\n" +
 						nodeProps.toString());
 			}
 		}
-		return info;
+		return info.trim();
 		
 	}
 	
@@ -207,20 +208,20 @@ public class Utility {
 	 * @throws LogsManagerException	If the given key is not present or if the value is null or empty
 	 */
 	public static boolean getNodePropsBool(Properties nodeProps, String key)
-			throws LogsManagerException{
+			throws ReportManagerException{
 		
 		if(key == null || key.equals("")){
-			throw new LogsManagerException("Cannot fetch boolean value of " +
+			throw new ReportManagerException("Cannot fetch boolean value of " +
 					"null key from node properties.");
 		}
 		String nodeName = getNodePropsString(nodeProps,
 				Constants.NODE_ID_KEY, false);
 		if(!nodeProps.containsKey(key)){
 			if(nodeName != null){
-				throw new LogsManagerException(key +
+				throw new ReportManagerException(key +
 						" value does not exist for node " + nodeName);
 			}else{
-				throw new LogsManagerException(key +
+				throw new ReportManagerException(key +
 						" value does not exist for unnamed node:\n" +
 						nodeProps.toString());
 			}
@@ -228,10 +229,10 @@ public class Utility {
 		String infoStr = nodeProps.getProperty(key);
 		if(infoStr == null || infoStr.equals("")){
 			if(nodeName != null){
-				throw new LogsManagerException(key +
+				throw new ReportManagerException(key +
 						" value is empty for node " + nodeName);
 			}else{
-				throw new LogsManagerException(key +
+				throw new ReportManagerException(key +
 						" value is empty for unnamed node:\n" +
 						nodeProps.toString());
 			}
@@ -250,6 +251,44 @@ public class Utility {
 		
 		return pathname.substring(0, pathname.lastIndexOf("/"));
 	
+	}
+	
+	/**
+	 * Get a {@link File} object pointing to the staging directory under the 
+	 * staging home and create all directories and sub-directories as needed.
+	 * The path to the directory will be 
+	 * STAGING_HOME/<node name>/<profile ID>/<dir name> 
+	 * 
+	 * @param nodeName	The name of the node from which the logs come
+	 * @param profileID	The ID of the profile specifying where/how to obtain the logs
+	 * @param dirName	The name of the directory
+	 * @return			A {@link File} object pointing to the new directory
+	 * @throws			If any of the parameters are missing
+	 */
+	public static File getStagingDir(String nodeName, String profileID,
+			String dirName) throws ReportManagerException{
+		
+		String stagingHome = System.getProperty(
+				"gov.nasa.pds.report.staging.home");
+		
+		if (nodeName == null || profileID == null || dirName == null){
+			throw new ReportManagerException(
+					"The specified staging directory path " + stagingHome + 
+					File.separator + nodeName + 
+					File.separator + profileID + 
+					File.separator + dirName + 
+					" is missing components");
+		}
+		
+		File file = new File(stagingHome + File.separator + 
+				nodeName + File.separator +
+				profileID + File.separator +
+				dirName);
+		if(!file.exists()){
+			file.mkdirs();
+		}
+		return file;
+		
 	}
 	
 }

@@ -33,7 +33,7 @@ public class SimpleProfileManagerTest extends PDSTest{
 		this.correctSet = new HashSet<Properties>();
 		
 		Properties p = new Properties();
-		p.setProperty(Constants.NODE_ID_KEY, SftpTestConstants.TEST_NODE);
+		p.setProperty(Constants.NODE_ID_KEY, SftpTestConstants.TEST_ID);
 		p.setProperty(Constants.NODE_HOST_KEY, SftpTestConstants.TEST_HOST);
 		p.setProperty(Constants.NODE_USER_KEY, SftpTestConstants.TEST_USER);
 		p.setProperty(Constants.NODE_PASSWORD_KEY,

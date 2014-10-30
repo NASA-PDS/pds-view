@@ -116,7 +116,7 @@ public class ReportServiceManager {
 					}
 					
 				}
-			}catch(LogsManagerException e){
+			}catch(ReportManagerException e){
 				log.warning("An error occurred while reading the profile " + 
 						nodeID + ": " + e.getMessage());
 			}
@@ -136,7 +136,16 @@ public class ReportServiceManager {
 			try{
 				logsManager.pullLogFiles(props);
 			}catch(LogsManagerException e){
-				log.severe("An error occurred while pulling log files: " + e.getMessage());
+				String profileID = null;
+				try{
+					profileID = Utility.getNodePropsString(props,
+							Constants.NODE_ID_KEY, false);
+				}catch(ReportManagerException ex){
+					// This should never happen, since the parameter
+					// designating if the variable is needed is set to false 
+				}
+				log.severe("An error occurred while pulling log files using " +
+						"profile " + profileID + ": " + e.getMessage());
 			}
 		}
 	

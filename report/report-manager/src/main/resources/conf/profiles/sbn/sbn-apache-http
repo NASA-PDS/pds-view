@@ -6,5 +6,4 @@ user=anonymous
 password=anonymous
 encrypt=false
 path=weblogs
-stagingDir=/report_service/logs/sbn/sbn-apache-http
 filename_pattern=sbnumd|yyyyMMdd|.log

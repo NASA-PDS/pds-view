@@ -30,7 +30,6 @@ public abstract class Constants {
 	public static final String NODE_PASSWORD_KEY = "password";
 	public static final String NODE_ENCRYPT_KEY = "encrypt";
 	public static final String NODE_XFER_TYPE_KEY = "xfertype";
-	public static final String NODE_STAGING_DIR_KEY = "stagingDir";
 	public static final String NODE_FILENAME_PATTERN_KEY = "filename_pattern";
 	
 }

@@ -30,7 +30,9 @@ import gov.nasa.pds.report.util.Utility;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -207,14 +209,32 @@ public class ReportManagerLauncher {
 	
 	private void loadConfiguration(){
 		
+		// TODO: Test that this new method implementation works
+		
+		// Read in the default properties from disk
+		Properties defaults = new Properties();
 		try{
-			System.getProperties().load(new FileInputStream(
+			defaults.load(new FileInputStream(
 					Constants.DEFAULT_CONFIG_PATH));
 		}catch(IOException e){
 			log.severe("An error occurred while reading in the default " +
 					"configuration from " + Constants.DEFAULT_CONFIG_PATH + 
 					": " + e.getMessage());
 			System.exit(1);
+		}
+		
+		// Set the System properties to those specified in the defaults if they
+		// weren't set already
+		for(Iterator i = defaults.keySet().iterator(); i.hasNext();){
+			String key = (String)i.next();
+			if(System.getProperty(key) == null){
+				System.setProperty(key, defaults.getProperty(key));
+				log.fine("Property set " + key + " = " + 
+						defaults.getProperty(key));
+			}else{
+				log.fine("Property already set " + key + " = " +
+						System.getProperty(key));
+			}
 		}
 		
 	}

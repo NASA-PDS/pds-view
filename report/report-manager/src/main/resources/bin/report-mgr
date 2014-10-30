@@ -56,6 +56,7 @@ LOG_PROPS=`ls ${CONF_DIR}/logging.properties`
 # Executes Search Core Indexer via the executable jar file
 # Arguments are passed in to the tool via '$@'
 "${JAVA_HOME}"/bin/java \
+	${RPT_MGR_FLAGS} \
 	-Djava.util.logging.config.file=${LOG_PROPS} \
 	-jar ${REPORT_MGR_JAR} "$@"
 

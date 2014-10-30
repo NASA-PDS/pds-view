@@ -22,6 +22,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+// If at some point a node decides to require authentication to download their 
+// logs, see:
+// http://stackoverflow.com/questions/955624/download-a-file-from-the-internet-using-java-how-to-authenticate
 public class HttpPull implements PDSPull{
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());

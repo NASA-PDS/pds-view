@@ -26,7 +26,8 @@ import org.junit.Ignore;
 @Ignore
 public final class SftpTestConstants{
 	
-	public static final String TEST_NODE = "test_img_1";
+	public static final String TEST_ID = "test_img_1";
+	public static final String TEST_NODE = "img";
 	public static final String TEST_HOST = "pdsimg-1.jpl.nasa.gov";
 	public static final String TEST_USER = "pdsrpt";
 	public static final String TEST_PASSWORD =
