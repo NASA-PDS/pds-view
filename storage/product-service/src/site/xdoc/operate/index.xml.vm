@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2012, by the California Institute of Technology.
+  Copyright 2012-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -66,7 +66,7 @@
 
       <source>
 % curl -X GET -o product.out -v \
-http://localhost:8080/cas-product/data?productID=&lt;product-identifier&gt;
+http://localhost:8080/product/data?productID=&lt;product-identifier&gt;
       </source>
     </section>
 
@@ -81,7 +81,7 @@ http://localhost:8080/cas-product/data?productID=&lt;product-identifier&gt;
 
       <source>
 % curl -X GET -o dataset.zip -v \
-http://localhost:8080/cas-product/dataset?typeID=urn:pds:TransferProduct
+http://localhost:8080/product/dataset?typeID=urn:pds:TransferProduct
       </source>
     </section>
   </body>
