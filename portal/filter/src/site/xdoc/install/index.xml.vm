@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2013, by the California Institute of Technology.
+  Copyright 2013-2014, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -131,20 +131,7 @@ or
 ...
       </source>
 
-      <p>The configuration above assumes that the filter will be applied to every web application installed on the Tomcat server. To be more specific, the filter could be applied to just the <i>ds-view</i> application with the following entry (multiple &lt;filter-mapping&gt; entries may be specified):
-      </p>
-
-      <source>
-...
-&lt;!-- Apply the filter to all end points. --&gt;
-&lt;filter-mapping&gt;
-  &lt;filter-name&gt;XSSFilter&lt;/filter-name&gt;
-  &lt;url-pattern&gt;/ds-view/*&lt;/url-pattern&gt;
-&lt;/filter-mapping&gt;
-...
-      </source>
-
-      <p>Once the configuration is complete, save the file and restart the Tomcat server for the change to take effect.
+      <p>The configuration above assumes that the filter will be applied to every web application installed on the Tomcat server. Once the configuration is complete, save the file and restart the Tomcat server for the change to take effect.
       </p>
     </section>
   </body>
