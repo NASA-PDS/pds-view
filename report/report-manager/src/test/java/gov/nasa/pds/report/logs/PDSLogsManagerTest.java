@@ -56,7 +56,7 @@ public class PDSLogsManagerTest extends PDSTest{
 		FileUtils.forceDelete(Utility.getStagingDir(
 				props.getProperty(Constants.NODE_NODE_KEY),
 				props.getProperty(Constants.NODE_ID_KEY),
-				"pull"));
+				LogsManager.OUTPUT_DIR_NAME));
 	}
 	
 	@Test
@@ -67,7 +67,7 @@ public class PDSLogsManagerTest extends PDSTest{
 		File stagingFile = new File(TestConstants.TEST_STAGING_DIR + File.separator + 
 				props.getProperty(Constants.NODE_NODE_KEY) + File.separator +
 				props.getProperty(Constants.NODE_ID_KEY) + File.separator +
-				"pull");
+				LogsManager.OUTPUT_DIR_NAME);
 		String hostname = props.getProperty(Constants.NODE_HOST_KEY);
 		
 		// Remove any Date Logs Filters from previous tests

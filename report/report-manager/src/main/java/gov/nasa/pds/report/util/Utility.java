@@ -259,11 +259,14 @@ public class Utility {
 	 * The path to the directory will be 
 	 * STAGING_HOME/<node name>/<profile ID>/<dir name> 
 	 * 
-	 * @param nodeName	The name of the node from which the logs come
-	 * @param profileID	The ID of the profile specifying where/how to obtain the logs
-	 * @param dirName	The name of the directory
-	 * @return			A {@link File} object pointing to the new directory
-	 * @throws			If any of the parameters are missing
+	 * @param nodeName					The name of the node from which the
+	 * 									logs come
+	 * @param profileID					The ID of the profile specifying
+	 * 									where/how to obtain the logs
+	 * @param dirName					The name of the directory
+	 * @return							A {@link File} object pointing to the
+	 * 									new directory
+	 * @throws ReportManagerException	If any of the parameters are missing
 	 */
 	public static File getStagingDir(String nodeName, String profileID,
 			String dirName) throws ReportManagerException{
@@ -284,6 +287,39 @@ public class Utility {
 				nodeName + File.separator +
 				profileID + File.separator +
 				dirName);
+		if(!file.exists()){
+			file.mkdirs();
+		}
+		return file;
+		
+	}
+	
+	/**
+	 * Get a {@link File} object that is the sibling of an existing staging 
+	 * directory.  This is useful for {@link Processor}s, which don't always
+	 * know the node name and profile ID for the logs being processed.
+	 * 
+	 * @param sibling					A sibling directory of the staging 
+	 * 									directory that will be created
+	 * @param dirName					The name of the directory
+	 * @return							A {@link File} object pointing to the
+	 * 									new directory
+	 * @throws ReportManagerException	If any of the parameters are missing
+	 */
+	public static File getStagingDir(File sibling, String dirName)
+			throws ReportManagerException{
+		
+		if(sibling == null){
+			throw new ReportManagerException("No sibling directory provided");
+		}else if(sibling.getParentFile() == null){
+			throw new ReportManagerException("Improper staging file " +
+					"directory structure");
+		}else if(dirName == null){
+			throw new ReportManagerException("No staging directory name " +
+					"provided");
+		}
+		
+		File file = new File(sibling.getParentFile(), dirName);
 		if(!file.exists()){
 			file.mkdirs();
 		}

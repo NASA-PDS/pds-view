@@ -50,11 +50,11 @@ public class ReportManagerLauncher {
 	private static Logger log = Logger.getLogger(ReportManagerLauncher.class
 			.getName());
 
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#LOG **/
-	private String logFile;
-
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#PULL **/
 	private boolean pullFlag;
+	
+	/** @see gov.nasa.pds.search.core.cli.options.Flag#PROCESS_LOGS **/
+	private boolean processFlag;
 	
 	private ReportServiceManager rsMgr;
 	
@@ -63,6 +63,7 @@ public class ReportManagerLauncher {
 
 	public ReportManagerLauncher() {
 		this.pullFlag = false;
+		this.processFlag = false;
 		this.rsMgr = new ReportServiceManager();
 		this.severityLevel = ToolsLevel.INFO;
 	}
@@ -156,6 +157,8 @@ public class ReportManagerLauncher {
 				System.exit(0);
 			} else if (o.getOpt().equals(Flag.PULL.getShortName())) {
 				this.pullFlag = true;
+			} else if (o.getOpt().equals(Flag.PROCESS_LOGS.getShortName())) {
+				this.processFlag = true;
 			} else if (o.getOpt().equals(Flag.NODE_PATTERN.getShortName())) {
 				this.rsMgr.addProfileFilter(Constants.NODE_NODE_KEY,
 						line.getOptionValue(Flag.NODE_PATTERN.getShortName()));
@@ -192,8 +195,6 @@ public class ReportManagerLauncher {
 		
 		// Read the profiles from disk
 		try{
-			// TODO: Allow the user to override the profile location using
-			// rsMgr.setProfileDir()
 			this.rsMgr.readProfiles();
 		}catch(IOException e){
 			log.severe("An error occurred while reading the profile " +
@@ -205,11 +206,16 @@ public class ReportManagerLauncher {
 			this.rsMgr.pullLogs();
 		}
 		
+		// Process the logs if specified
+		if (this.processFlag) {
+			this.rsMgr.processLogs();
+		}
+		
 	}
 	
 	private void loadConfiguration(){
 		
-		// TODO: Test that this new method implementation works
+		// TODO: Write a unit test for this
 		
 		// Read in the default properties from disk
 		Properties defaults = new Properties();

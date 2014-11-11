@@ -16,8 +16,6 @@ import java.util.logging.Logger;
 
 public class PDSLogsManager implements LogsManager {
 	
-	private static final String PULL_DIR_NAME = "pull";
-	
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	
 	public PDSLogsManager(){}
@@ -51,7 +49,7 @@ public class PDSLogsManager implements LogsManager {
 			String nodeName = Utility.getNodePropsString(nodeProps,
 					Constants.NODE_NODE_KEY, true);
 			File stagingDir = Utility.getStagingDir(nodeName, profileID, 
-					PULL_DIR_NAME);
+					OUTPUT_DIR_NAME);
 			
 			// Connect to the node machines
 			this.connect(nodeProps, logPuller);

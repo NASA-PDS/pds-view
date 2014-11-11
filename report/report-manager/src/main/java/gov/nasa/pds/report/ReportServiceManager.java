@@ -1,5 +1,6 @@
 package gov.nasa.pds.report;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,6 +14,8 @@ import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.logs.LogsManager;
 import gov.nasa.pds.report.logs.LogsManagerException;
 import gov.nasa.pds.report.logs.PDSLogsManager;
+import gov.nasa.pds.report.processing.ProcessingException;
+import gov.nasa.pds.report.processing.RingsDecryptionProcessor;
 import gov.nasa.pds.report.profile.ProfileManager;
 import gov.nasa.pds.report.profile.SimpleProfileManager;
 import gov.nasa.pds.report.util.Utility;
@@ -37,17 +40,6 @@ public class ReportServiceManager {
 		this.logsManager = new PDSLogsManager();
 		this.profileManager = new SimpleProfileManager();
 		this.profileFilters = new HashMap<String, String>();
-		
-	}
-	
-	public void setProfileDir(String path) throws ReportManagerException{
-		
-		if(path == null || path.equals("")){
-			throw new ReportManagerException("Cannot provide an empty path " +
-					"as the profile directory");
-		}
-		
-		System.setProperty("gov.nasa.pds.report.profile.dir", path);
 		
 	}
 	
@@ -149,6 +141,34 @@ public class ReportServiceManager {
 			}
 		}
 	
+	}
+	
+	public void processLogs(){
+		
+		for(Properties props: propsList){
+			
+			// TODO: Actually implement this
+			
+			String nodeName = null;
+			String profileID = null;
+			try{
+				nodeName = Utility.getNodePropsString(props, 
+						Constants.NODE_NODE_KEY, true);
+				profileID = Utility.getNodePropsString(props,
+						Constants.NODE_ID_KEY, true);
+				if(nodeName.equals("rings")){
+					File in = Utility.getStagingDir(nodeName, profileID, 
+							LogsManager.OUTPUT_DIR_NAME);
+					RingsDecryptionProcessor p = new RingsDecryptionProcessor();
+					p.process(in);
+				}
+			}catch(Exception e){
+				log.warning("Error: " + e.getMessage());
+				continue;
+			}
+			
+		}
+		
 	}
 	
 }

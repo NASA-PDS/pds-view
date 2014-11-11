@@ -28,6 +28,9 @@ public enum Flag {
 	/** Flag to instruct Logs Manager component to pull logs from nodes */
 	PULL("p", "pull-logs", "Pull logs from remote sources."),
 	
+	/** Flag to instruct the Report Manager to process logs */
+	PROCESS_LOGS("l", "process-logs", "Process already downloaded logs"),
+	
 	/** Flag to filter by node name specified in profile  */
 	NODE_PATTERN("n", "node-pattern", "pattern", String.class,
 			"Only operate on profiles with a node whose name matches the " +
@@ -46,16 +49,10 @@ public enum Flag {
 			"Only pull log files on or before the date specified with the " +
 			"format mm/dd/yyyy"),
 			
-	// TODO: Create flag to override default location of profiles
-			
 	/** PDS Default Flags for CLI - TODO should be refactored into commons enum **/
 			
 	/** Flag to display the help. */
 	HELP("h", "help", "Display usage."),
-
-	/** Flag to output the logging to a file. */
-	LOG("l", "log-file", "file name", String.class,
-			"Specify a log file name. Default is standard out."),
 
 	/** Flag to change the severity level of the messaging in the report. */
 	VERBOSE("v", "verbose", "level", int.class, "Specify the severity level "
