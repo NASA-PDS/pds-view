@@ -5,6 +5,7 @@ import gov.nasa.pds.report.util.Utility;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 public class RingsDecryptionProcessor implements Processor{
@@ -18,6 +19,11 @@ public class RingsDecryptionProcessor implements Processor{
 	
 	@Override
 	public void process(File in) throws ProcessingException {
+		
+		if(in == null){
+			throw new ProcessingException("No input directory provided to " +
+					"find encrypted Rings logs");
+		}
 		
 		log.info("Decrypting Rings logs");
 		
@@ -54,11 +60,22 @@ public class RingsDecryptionProcessor implements Processor{
 			ProcessingWorker worker = new ProcessingWorker(cmd);
 			int exitValue = worker.execute();
 			if(exitValue != 0){
-				log.warning("The command '" + cmd + "' failed with exit code " + exitValue);
+				log.warning("The command '" + cmd + "' failed with exit code " +
+						exitValue);
 			}
 			
 		}
 	
+	}
+	
+	public String getDirName(){
+		return OUTPUT_DIR_NAME;
+	}
+	
+	// This particular Processor doesn't require any configuration since its
+	// purpose is so specific
+	public void configure(Properties props){
+		return;
 	}
 	
 }

@@ -257,7 +257,7 @@ public class Utility {
 	 * Get a {@link File} object pointing to the staging directory under the 
 	 * staging home and create all directories and sub-directories as needed.
 	 * The path to the directory will be 
-	 * STAGING_HOME/<node name>/<profile ID>/<dir name> 
+	 * STAGING_HOME/[node name]/[profile ID]/[dir name] 
 	 * 
 	 * @param nodeName					The name of the node from which the
 	 * 									logs come

@@ -7,3 +7,4 @@ password=anonymous
 encrypt=false
 path=met-mhNQwdRPkhJ2-rics
 filename_pattern=rings-pds-rings-apache2.|yyyy-MM-dd|.tar.gz
+processes=gov.nasa.pds.report.processing.RingsDecryptionProcessor

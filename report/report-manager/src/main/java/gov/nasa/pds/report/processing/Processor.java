@@ -1,6 +1,7 @@
 package gov.nasa.pds.report.processing;
 
 import java.io.File;
+import java.util.Properties;
 
 public interface Processor{
 	
@@ -14,5 +15,22 @@ public interface Processor{
 	 * @throws ProcessingException	If an error occurs.	
 	 */
 	public void process(File in) throws ProcessingException;
+	
+	/**
+	 * Get the name of the directory created by the Processor.
+	 * 
+	 * @return	The name of the directory created by the Processor.
+	 */
+	public String getDirName();
+	
+	/**
+	 * Configure the Processor, providing the details needed to process logs. 
+	 * 
+	 * @param props					A {@link Properties} containing the needed
+	 * 								configuration values.
+	 * @throws ProcessingException	If the provided Properties do not contain
+	 * 								the needed configuration values.
+	 */
+	public void configure(Properties props) throws ProcessingException;
 	
 }

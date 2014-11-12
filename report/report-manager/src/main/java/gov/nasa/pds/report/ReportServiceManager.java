@@ -15,9 +15,11 @@ import gov.nasa.pds.report.logs.LogsManager;
 import gov.nasa.pds.report.logs.LogsManagerException;
 import gov.nasa.pds.report.logs.PDSLogsManager;
 import gov.nasa.pds.report.processing.ProcessingException;
+import gov.nasa.pds.report.processing.Processor;
 import gov.nasa.pds.report.processing.RingsDecryptionProcessor;
 import gov.nasa.pds.report.profile.ProfileManager;
 import gov.nasa.pds.report.profile.SimpleProfileManager;
+import gov.nasa.pds.report.util.GenericReportServiceObjectFactory;
 import gov.nasa.pds.report.util.Utility;
 
 public class ReportServiceManager {
@@ -143,27 +145,88 @@ public class ReportServiceManager {
 	
 	}
 	
+	// TODO: At some point, we should create a class to handle this, similar
+	// to using a LogsManager to pull logs 
 	public void processLogs(){
+		
+		log.info("Processing logs");
 		
 		for(Properties props: propsList){
 			
-			// TODO: Actually implement this
-			
+			String processesStr = null;
 			String nodeName = null;
 			String profileID = null;
+				
+			// Get profile details needed for processing
 			try{
+				processesStr = Utility.getNodePropsString(props, 
+						Constants.NODE_PROCESSES_KEY, true);
 				nodeName = Utility.getNodePropsString(props, 
 						Constants.NODE_NODE_KEY, true);
 				profileID = Utility.getNodePropsString(props,
 						Constants.NODE_ID_KEY, true);
-				if(nodeName.equals("rings")){
-					File in = Utility.getStagingDir(nodeName, profileID, 
-							LogsManager.OUTPUT_DIR_NAME);
-					RingsDecryptionProcessor p = new RingsDecryptionProcessor();
-					p.process(in);
+				log.info("Processing logs from profile " + profileID);
+			}catch(ReportManagerException e){
+				log.warning("An error occurred while collecting profile " +
+						"details to process profile " + profileID + ": " + 
+						e.getMessage());
+				continue;
+			}
+				
+			// Create a list of Processors to run
+			String[] processes = processesStr.split(",");
+			List<Processor> processors = new Vector<Processor>();
+			for(int i = 0; i < processes.length; i++){
+				Processor p =
+						GenericReportServiceObjectFactory.getProcessor(
+						processes[i].trim());
+				processors.add(p);
+				if(p == null){
+					log.warning("An error occurred while creating " +
+							"Processors using profile " + profileID);
+					i = processes.length;
+					processors = null;
 				}
-			}catch(Exception e){
-				log.warning("Error: " + e.getMessage());
+			}
+			if(processors == null){
+				continue;
+			}
+			log.finer("Found " + processors.size() + " processes to run on " +
+					"logs from profile " + profileID);
+			
+			// The directory where Processor input comes from.  This will be
+			// set after each Processor is run to be used by the next one.
+			File in = null;
+				
+			try{
+			
+				for(Iterator<Processor> i = processors.iterator(); i.hasNext();){
+					
+					// If the input directory location has been set, use the 
+					// directory where the logs were placed when downloaded
+					if(in == null){
+						in = Utility.getStagingDir(nodeName, profileID, 
+								LogsManager.OUTPUT_DIR_NAME);
+					}
+					
+					// Run the Processor
+					Processor p = i.next();
+					p.process(in);
+					
+					// Determine where output was placed so that it can be used by
+					// the next Processor
+					in = Utility.getStagingDir(in, p.getDirName());
+					
+				}
+				
+			}catch(ReportManagerException e){
+				log.warning("An error occurred while handling staging " +
+						"directories while processing " + profileID + ": " +
+						e.getMessage());
+				continue;
+			}catch(ProcessingException e){
+				log.warning("An error occurred while processing " + profileID +
+						": " + e.getMessage());
 				continue;
 			}
 			

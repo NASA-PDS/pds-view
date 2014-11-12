@@ -44,13 +44,10 @@ public class ProcessingWorker{
 			ProcessBuilder pb = new ProcessBuilder("/bin/sh", "-c", command);
 			pb.redirectErrorStream(true);
 			p = pb.start();
-			log.finest("Process started");
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(p.getInputStream()));
-			log.finest("Reader in place");
 			watcher = new ProcessWatcher(p);
 			watcher.start();
-			log.finest("Watcher started");
 			watcher.join(timeout);
 			Integer exitValue = watcher.getExitValue();
 			if(exitValue != null){
