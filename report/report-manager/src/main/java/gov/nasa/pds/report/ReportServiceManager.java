@@ -66,7 +66,7 @@ public class ReportServiceManager {
 	public void readProfiles() throws IOException{
 		
 		// Use the ProfileManager to read in the profiles from disk
-		String path = System.getProperty("gov.nasa.pds.report.profile.dir");
+		String path = System.getProperty(Constants.PROFILE_HOME_PROP);
 		List<Properties> props = this.profileManager.readProfiles(path);
 		log.info("Found " + props.size() + " profiles");
 		

@@ -271,8 +271,7 @@ public class Utility {
 	public static File getStagingDir(String nodeName, String profileID,
 			String dirName) throws ReportManagerException{
 		
-		String stagingHome = System.getProperty(
-				"gov.nasa.pds.report.staging.home");
+		String stagingHome = System.getProperty(Constants.STAGING_HOME_PROP);
 		
 		if (nodeName == null || profileID == null || dirName == null){
 			throw new ReportManagerException(

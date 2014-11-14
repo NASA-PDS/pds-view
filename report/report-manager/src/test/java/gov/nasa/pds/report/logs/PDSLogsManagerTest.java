@@ -18,6 +18,9 @@ import gov.nasa.pds.report.rules.PDSTest;
 import gov.nasa.pds.report.util.DateLogFilter;
 import gov.nasa.pds.report.util.Utility;
 
+// TODO: This test can become much more modular if we switch to using 
+// GenericReportServiceObjectFactory to obtain instances of PDSPull in 
+// PDSLogsManager and the create a mostly empty test version of PDSPull
 public class PDSLogsManagerTest extends PDSTest{
 	
 	private static PDSLogsManager manager;
@@ -43,8 +46,6 @@ public class PDSLogsManagerTest extends PDSTest{
 		props.setProperty(Constants.NODE_ENCRYPT_KEY,
 				Boolean.toString(SftpTestConstants.TEST_ENCRYPTED));
 		props.setProperty(Constants.NODE_PATH_KEY, SftpTestConstants.TEST_PATH);
-		//props.setProperty(Constants.NODE_STAGING_DIR_KEY,
-		//		TestConstants.TEST_STAGING_DIR + SftpTestConstants.TEST_HOST);
 		props.setProperty(Constants.NODE_FILENAME_PATTERN_KEY,
 				"log-|yyyy-mm-dd|.txt");
 		System.setProperty("gov.nasa.pds.report.staging.home",
@@ -60,6 +61,9 @@ public class PDSLogsManagerTest extends PDSTest{
 	}
 	
 	@Test
+	// TODO: We should create a mostly empty test implementation of PDSPull
+	// that we can instantiate with GenericReportServiceObjectFactory and use
+	// here
 	public void testPullLogFiles() throws Exception{
 		
 		// Grab some frequently used variables from the node properties

@@ -102,8 +102,8 @@ public class PDSLogsManager implements LogsManager {
 		
 	}
 	
-	// TODO: It would be cool to use code similar to OODT, where the config
-	// contains the class name of the object to be created
+	// TODO: This functionality should really be handled by the
+	// GenericReportServiceObjectFactory
 	private PDSPull getPdsPull(String xferType) throws LogsManagerException{
 		
 		

@@ -213,20 +213,32 @@ public class ReportManagerLauncher {
 		
 	}
 	
-	private void loadConfiguration(){
+	/**
+	 * Load the system configuration for the Report Service, using the file at
+	 * the given path to provide default values.  If no path is provided, then
+	 * the default path is used which expects the standard deployment directory
+	 * structure.
+	 * 
+	 * @param defaultPath				The path where the default file is
+	 * 									located
+	 * @throws ReportManagerException	If an error occurs while reading the
+	 * 									default file
+	 */
+	private void loadConfiguration(String defaultPath)
+			throws ReportManagerException{
 		
-		// TODO: Write a unit test for this
+		if(defaultPath == null || defaultPath.equals("")){
+			defaultPath = Constants.DEFAULT_CONFIG_PATH;
+		}
 		
 		// Read in the default properties from disk
 		Properties defaults = new Properties();
 		try{
-			defaults.load(new FileInputStream(
-					Constants.DEFAULT_CONFIG_PATH));
+			defaults.load(new FileInputStream(defaultPath));
 		}catch(IOException e){
-			log.severe("An error occurred while reading in the default " +
-					"configuration from " + Constants.DEFAULT_CONFIG_PATH + 
-					": " + e.getMessage());
-			System.exit(1);
+			throw new ReportManagerException("An error occurred while " +
+					"reading in the default configuration from " + 
+					defaultPath + ": " + e.getMessage());
 		}
 		
 		// Set the System properties to those specified in the defaults if they
@@ -315,7 +327,7 @@ public class ReportManagerLauncher {
 		}
 		try {
 			ReportManagerLauncher launcher = new ReportManagerLauncher();
-			launcher.loadConfiguration();
+			launcher.loadConfiguration(null);
 			CommandLine commandline = launcher.parse(args);
 			launcher.query(commandline);
 			launcher.execute();

@@ -33,4 +33,12 @@ public abstract class Constants {
 	public static final String NODE_FILENAME_PATTERN_KEY = "filename_pattern";
 	public static final String NODE_PROCESSES_KEY = "processes";
 	
+	// The key for the system property that specifies the root of the
+	// directory tree where logs are stored
+	public static final String STAGING_HOME_PROP = "gov.nasa.pds.report.staging.home";
+	
+	// The key for the system property that specifies the root of the
+	// directory tree where profiles are stored
+	public static final String PROFILE_HOME_PROP = "gov.nasa.pds.report.profile.dir";
+	
 }
