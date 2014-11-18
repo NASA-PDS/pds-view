@@ -20,7 +20,7 @@ public class ProcessingWorker{
 	private boolean debugMode = false;
 	
 	// TODO: Allow the user to specify the timeout period
-	private static final int timeout = 10000;
+	public static final int timeout = 10000;
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	
