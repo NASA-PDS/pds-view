@@ -1,4 +1,4 @@
-// Copyright 2006-2013, by the California Institute of Technology.
+// Copyright 2006-2014, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -30,6 +30,7 @@ import net.sf.saxon.tinytree.TinyNodeImpl;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.xpath.XPathEvaluator;
 
+
 import org.xml.sax.InputSource;
 
 /**
@@ -41,6 +42,10 @@ public class XMLExtractor {
 
     /** The XPath evaluator object. */
     private XPathEvaluator xpath = null;
+
+    public static final String SCHEMA_LOCATION_XPATH = "//*/@xsi:schemaLocation";
+
+    public static final String XML_MODEL_XPATH = "/processing-instruction('xml-model')";
 
     /**
      * Constructor.
@@ -249,5 +254,26 @@ public class XMLExtractor {
     throws XPathExpressionException {
         return (List<TinyNodeImpl>) xpath.evaluate(
                 expression, item, XPathConstants.NODESET);
+    }
+
+    /**
+     *
+     * @return Returns the schemalocation attribute value from the label.
+     * If it was not found, a null value will be returned.
+     *
+     * @throws XPathExpressionException
+     * @throws XPathException
+     */
+    public String getSchemaLocation() throws XPathExpressionException,
+    XPathException {
+      return getValueFromDoc(SCHEMA_LOCATION_XPATH);
+    }
+
+    /**
+     * @return Returns the schematron specifications in the label.
+     * @throws XPathExpressionException
+     */
+    public List<String> getXmlModels() throws XPathExpressionException {
+      return getValuesFromDoc(XML_MODEL_XPATH);
     }
 }

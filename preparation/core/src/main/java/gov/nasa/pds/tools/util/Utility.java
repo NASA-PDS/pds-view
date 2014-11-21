@@ -13,11 +13,15 @@
 // $Id$
 package gov.nasa.pds.tools.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility class.
@@ -75,5 +79,25 @@ public class Utility {
       }
     } while (redir);
     return in;
+  }
+
+  public static List<URL> toURL(List<String> targets)
+      throws MalformedURLException {
+    List<URL> results = new ArrayList<URL>();
+    for (String t : targets) {
+      results.add(toURL(t));
+    }
+    return results;
+  }
+
+  public static URL toURL (String target) throws MalformedURLException {
+    URL url = null;
+    try {
+      url = new URL(target);
+    } catch (MalformedURLException u) {
+      File file = new File(target);
+      url = file.toURI().normalize().toURL();
+    }
+    return url;
   }
 }
