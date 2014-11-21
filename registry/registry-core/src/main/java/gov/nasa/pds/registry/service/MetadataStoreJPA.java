@@ -15,6 +15,7 @@
 
 package gov.nasa.pds.registry.service;
 
+import gov.nasa.pds.registry.model.AffectedInfo;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.ClassificationNode;
@@ -22,6 +23,7 @@ import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryObject;
 import gov.nasa.pds.registry.model.RegistryPackage;
+import gov.nasa.pds.registry.model.Slot;
 import gov.nasa.pds.registry.query.AssociationFilter;
 import gov.nasa.pds.registry.query.EventFilter;
 import gov.nasa.pds.registry.query.ExtrinsicFilter;
@@ -33,8 +35,12 @@ import gov.nasa.pds.registry.query.RegistryQuery;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Arrays;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
+//import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -398,6 +404,92 @@ public class MetadataStoreJPA implements MetadataStore {
       // Suppress as the object was not found
     }
   }
+  
+  /*
+   * (non-Javadoc)
+   *
+   * @see
+   * gov.nasa.pds.registry.service.MetadataStore#deleteRegistryObjects(java.lang
+   * .String, java.lang.String)
+   */
+  @Override
+  @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+  public AffectedInfo deleteRegistryObjects(String packageId, String associationType) {
+	  int deletedCount = 0;
+	  try {   
+		  String selectQuery = "select targetObject from Association where associationType='" + associationType +
+				  "' and sourceObject='" + packageId + "'";
+		  System.out.println("selectQuery = " + selectQuery);		  
+		  Query query = entityManager.createQuery(selectQuery);
+		  List<String> targetObjects = query.getResultList();
+		  int extObjCount = 0, assocCount = 0;
+		  int i=0;
+		  List<String> deletedIds = new ArrayList<String>();
+		  List<String> deletedTypes = new ArrayList<String>();
+		
+		  // need to delete ExtrinsicObject and Association tables. 
+		  for (String targetObject: targetObjects) {
+			  //System.out.println("========targetObject guid = " + targetObject);
+			  int tmpCount = 0;
+			  List<Association> objectToRemove = entityManager.createQuery("select a from Association a where a.guid = :guid").setParameter("guid", targetObject).getResultList();
+			  if (objectToRemove!=null) {				  
+				  for (Association assoc: objectToRemove) {  
+					  Set<Slot> slotsToRemove = assoc.getSlots();
+					  for (Slot o: slotsToRemove) {
+						  entityManager.remove(o);
+						  tmpCount++;
+					  }
+					  entityManager.remove(assoc);
+					  assocCount++;
+				  }
+			  }			  
+			  //System.out.println("deletedCount for Slot tables of Association = " + tmpCount);		
+			  //System.out.println("deletedCount for Association tables = " + assocCount);
+
+			  if (tmpCount>0) {
+				  AffectedInfo affectedInfo = new AffectedInfo(Arrays.asList(targetObject), Arrays.asList("Association"));
+				  deletedIds.addAll(affectedInfo.getAffectedIds());
+				  deletedTypes.addAll(affectedInfo.getAffectedTypes());	
+			  }
+
+			  List<ExtrinsicObject> eoToRemove = entityManager.createQuery("select eo from ExtrinsicObject eo where eo.guid = :guid").setParameter("guid", targetObject).getResultList();
+			  tmpCount = 0;
+			  if (eoToRemove!=null) {				  
+				  for (ExtrinsicObject extObj: eoToRemove) {  
+					  Set<Slot> slotsToRemove = extObj.getSlots();
+					  for (Slot o: slotsToRemove) {
+						  entityManager.remove(o);
+						  tmpCount++;
+					  }
+					  entityManager.remove(extObj);
+					  extObjCount++;
+				  }
+			  }		
+			  //System.out.println("deletedCount for Slot tables of ExtrinsicObject = " + tmpCount);	
+			  //System.out.println("deletedCount for ExtrinsicObject = " + extObjCount);	
+			  
+			  if (tmpCount>0) {
+				  AffectedInfo affectedInfo = new AffectedInfo(Arrays.asList(targetObject), Arrays.asList("ExtrinsicObject"));
+				  deletedIds.addAll(affectedInfo.getAffectedIds());
+				  deletedTypes.addAll(affectedInfo.getAffectedTypes());	
+			  }
+			  //System.out.println((i++) + "     extObjCount = " + extObjCount + "     assocCount = " + assocCount);
+		  }
+
+		  deletedCount = extObjCount + assocCount;
+		  System.out.println("Deleted package memebers...extObjCount = " + extObjCount + "     assocCount = " + assocCount + 
+				  "   total deletedCount = " + deletedCount + "  deletedIds.size() = " + deletedIds.size() + 
+				  "   deletedTypes.size() = " + deletedTypes.size());
+		  
+		  return new AffectedInfo(deletedIds, deletedTypes);
+	  } catch (NoResultException nre) {
+		  // Suppress as the object was not found
+		  return null;
+	  } catch (Exception ex) {
+		  ex.printStackTrace();
+		  return null;
+	  }
+  }
 
   /*
    * (non-Javadoc)
@@ -631,6 +723,64 @@ public class MetadataStoreJPA implements MetadataStore {
   public void updateRegistryObject(RegistryObject registryObject) {
     entityManager.merge(registryObject);
     entityManager.flush();
+  }
+  
+  /*
+   * (non-Javadoc)
+   *
+   * @see
+   * gov.nasa.pds.registry.service.MetadataStore#updateRegistryObjects(java.lang.String, java.lang.Integer, java.lang.String)
+   */
+  @Override
+  @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+  public AffectedInfo updateRegistryObjects(String packageId, Integer status, String associationType) {
+	  int updatedCount = 0;
+	  try {
+		  String selectQuery = "select targetObject from Association where associationType='" + associationType +
+				  "' and sourceObject='" + packageId + "'";
+		  System.out.println("selectQuery = " + selectQuery);		  
+		  Query query = entityManager.createQuery(selectQuery);
+		  List<String> targetObjects = query.getResultList();
+		  int extObjCount = 0, assocCount = 0;
+		  int i=0;
+		  List<String> changedIds = new ArrayList<String>();
+		  List<String> changedTypes = new ArrayList<String>();
+		
+		  // need to update ExtrinsicObject and Association tables. 
+		  for (String targetObject: targetObjects) {
+			  String updateQuery = "UPDATE ExtrinsicObject set status = " + status.intValue() + " WHERE guid ='" + targetObject + "'";
+			  Query updateQry = entityManager.createQuery(updateQuery);
+			  int tmpCount = updateQry.executeUpdate();			  
+			  if (tmpCount>0) {
+				  AffectedInfo affectedInfo = new AffectedInfo(Arrays.asList(targetObject), Arrays.asList("ExtrinsicObject"));
+				  changedIds.addAll(affectedInfo.getAffectedIds());
+				  changedTypes.addAll(affectedInfo.getAffectedTypes());	
+			  }
+			  extObjCount += tmpCount;
+			  
+			  String updateAssociationQuery = "UPDATE Association set status = " + status.intValue() + " WHERE guid ='" + targetObject + "'";
+			  Query updateAssocQry = entityManager.createQuery(updateAssociationQuery);
+			  
+			  tmpCount = updateAssocQry.executeUpdate();			  
+			  if (tmpCount>0) {
+				  AffectedInfo affectedInfo = new AffectedInfo(Arrays.asList(targetObject), Arrays.asList("Association"));
+				  changedIds.addAll(affectedInfo.getAffectedIds());
+				  changedTypes.addAll(affectedInfo.getAffectedTypes());	
+			  }
+			  assocCount += tmpCount;
+			  //System.out.println((i++) + "     extObjCount = " + extObjCount + "     assocCount = " + assocCount);
+		  }
+
+		  updatedCount = extObjCount + assocCount;
+		  System.out.println("updateRegistryObjects....extObjCount = " + extObjCount + "     assocCount = " + assocCount + 
+				  "   total updatedCount = " + updatedCount + "  changedIds.size() = " + changedIds.size() + 
+				  "   changedTypes.size() = " + changedTypes.size());
+		  
+		  return new AffectedInfo(changedIds, changedTypes);
+	  } catch (NoResultException nre) {
+		  // Suppress as the object was not found
+		  return null;
+	  }
   }
 
   /*

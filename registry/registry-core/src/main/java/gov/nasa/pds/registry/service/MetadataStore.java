@@ -15,6 +15,7 @@
 
 package gov.nasa.pds.registry.service;
 
+import gov.nasa.pds.registry.model.AffectedInfo;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.ClassificationNode;
@@ -188,6 +189,16 @@ public interface MetadataStore {
    */
   public void deleteRegistryObject(String guid,
       Class<? extends RegistryObject> objectClass);
+  
+  /**
+   * Removes registry object(s) from the back end store.
+   * 
+   * @param guid
+   *          of object to remove
+   * @param associationType
+   *          type of association to remove
+   */
+  public AffectedInfo deleteRegistryObjects(String guid, String associationType);
 
   /**
    * Updates a registry object that shares the guid of the given object
@@ -196,6 +207,16 @@ public interface MetadataStore {
    *          to update too
    */
   public void updateRegistryObject(RegistryObject registryObject);
+  
+  /**
+   * @param guid
+   * 	       of package member objects to update
+   * @param status 
+   * 		   value of status (0=submitted, 1=approved, 2=deprecated)
+   * @param associationType
+   * 		   type of association 
+   */
+  public AffectedInfo updateRegistryObjects(String guid, Integer status, String associationType);
 
   /**
    * Returns all versions of a registry object that share a logical identifier

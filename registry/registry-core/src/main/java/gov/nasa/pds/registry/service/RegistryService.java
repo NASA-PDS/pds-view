@@ -484,6 +484,10 @@ public interface RegistryService {
    */
   public void deletePackageMembers(String user, String packageId)
       throws RegistryServiceException;
+  
+  
+  public void deletePackageMembersWithQuery(String user, String packageId)
+	      throws RegistryServiceException;
 
   /**
    * Changes the status of all registry objects that are members of the package.
@@ -500,6 +504,10 @@ public interface RegistryService {
    */
   public void changeStatusOfPackageMembers(String user, String packageId,
       ObjectAction action) throws RegistryServiceException;
+  
+  
+  public void changeStatusOfPackageMembersWithQuery(String user, String packageId,
+	      ObjectAction action) throws RegistryServiceException;
 
   /**
    * Replicates contents from a remote registry connected to using the provided

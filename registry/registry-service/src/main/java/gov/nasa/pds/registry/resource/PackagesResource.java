@@ -206,7 +206,7 @@ public class PackagesResource {
   @Path("{packageGuid}/members")
   public Response deletePackageMembers(@PathParam("packageGuid") String packageGuid) {
     try {
-      registryService.deletePackageMembers("Unknown", packageGuid);
+      registryService.deletePackageMembersWithQuery("Unknown", packageGuid);
       return Response.ok().build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(
@@ -228,7 +228,7 @@ public class PackagesResource {
   @Path("{packageGuid}/members/{action}")
   public Response changeStatusOfPackageMembers(@PathParam("packageGuid") String packageGuid, @PathParam("action") ObjectAction action) {
     try {
-      registryService.changeStatusOfPackageMembers("Unknown", packageGuid, action);
+      registryService.changeStatusOfPackageMembersWithQuery("Unknown", packageGuid, action);
       return Response.ok().build();
     } catch (RegistryServiceException ex) {
       throw new WebApplicationException(Response.status(

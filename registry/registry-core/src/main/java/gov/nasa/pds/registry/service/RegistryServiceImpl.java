@@ -1056,6 +1056,23 @@ public class RegistryServiceImpl implements RegistryService {
 		this.createAuditableEvent("changeStatusOfPackageMembers " + packageId,
 		    user, action.getEventType(), new AffectedInfo(changedIds, changedTypes));
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gov.nasa.pds.registry.service.RegistryService#changeStatusOfPackageMembersWithQuery
+	 * (java.lang.String, java.lang.String,
+	 * gov.nasa.pds.registry.model.ObjectAction)
+	 */
+	@Override
+	public void changeStatusOfPackageMembersWithQuery(String user, String packageId,
+	    ObjectAction action) {
+		AffectedInfo affectedInfo = metadataStore.updateRegistryObjects(packageId, new Integer(action.getObjectStatus().ordinal()),
+				"urn:registry:AssociationType:HasMember");
+		this.createAuditableEvent("changeStatusOfPackageMembers " + packageId,
+					    user, action.getEventType(), affectedInfo);
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -1102,6 +1119,23 @@ public class RegistryServiceImpl implements RegistryService {
 		}
 		this.createAuditableEvent("deletePackageMembers " + packageId, user,
 		    EventType.Deleted, new AffectedInfo(deletedIds, deletedTypes));
+	}
+	
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gov.nasa.pds.registry.service.RegistryService#deletePackageMembersWithQuery(java
+	 * .lang.String, java.lang.String)
+	 */
+	@Override
+	public void deletePackageMembersWithQuery(String user, String packageId)
+	    throws RegistryServiceException {
+		
+		AffectedInfo affectedInfo = metadataStore.deleteRegistryObjects(packageId, "urn:registry:AssociationType:HasMember");		
+		this.createAuditableEvent("deletePackageMembers " + packageId, user,
+			    EventType.Deleted, affectedInfo);
 	}
 
 	/*

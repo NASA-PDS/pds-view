@@ -322,16 +322,18 @@ public class ConnectionManager {
 			if (rp.getStatus()==null)  {
 				if (!rp.getStatus().equals("Unknown")) {
 					client.changeStatusOfPackageMembers(registryPackage.getGuid(), oa);
-					rp.setStatus(ObjectStatus.valueOf(registryPackage.getStatus()));
-					client.updateObject(rp);
+					//rp.setStatus(ObjectStatus.valueOf(registryPackage.getStatus()));
+					//client.updateObject(rp);
+					client.changeStatusOfPackage(registryPackage.getGuid(), oa);
 					returnStatus = true;
 				}
 			}
 			else {
 				if (!rp.getStatus().toString().equals(registryPackage.getStatus())) {
 					client.changeStatusOfPackageMembers(registryPackage.getGuid(), oa);
-					rp.setStatus(ObjectStatus.valueOf(registryPackage.getStatus()));				
-					client.updateObject(rp);
+					//rp.setStatus(ObjectStatus.valueOf(registryPackage.getStatus()));				
+					//client.updateObject(rp);
+					client.changeStatusOfPackage(registryPackage.getGuid(), oa);
 					returnStatus = true;
 				}
 			}

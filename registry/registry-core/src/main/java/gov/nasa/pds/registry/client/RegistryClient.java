@@ -231,6 +231,27 @@ public class RegistryClient {
           response.getClientResponseStatus());
     }
   }
+  
+  /**
+   * Approve, deprecate, or undeprecate of a package
+   *
+   * @param packageGuid
+   *          to update
+   * @param action
+   *          to take which will end up affecting package statuses
+   * @throws RegistryServiceException
+   */
+  public void changeStatusOfPackage(String packageGuid, ObjectAction action)
+      throws RegistryServiceException {
+    WebResource.Builder builder = service.path(
+        resourceMap.get(RegistryPackage.class)).path(packageGuid).path(action.toString()).getRequestBuilder();
+    ClientResponse response = builder.accept(mediaType).post(
+        ClientResponse.class);
+    if (response.getClientResponseStatus() != Status.OK) {
+      throw new RegistryServiceException(response.getEntity(String.class),
+          response.getClientResponseStatus());
+    }
+  }
 
   /**
    * Publish a registry object to the service
