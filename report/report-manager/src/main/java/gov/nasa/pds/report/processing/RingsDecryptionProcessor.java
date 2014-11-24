@@ -2,6 +2,7 @@ package gov.nasa.pds.report.processing;
 
 import gov.nasa.pds.report.ReportManagerException;
 import gov.nasa.pds.report.util.Utility;
+import gov.nasa.pds.report.util.CommandLineWorker;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +58,7 @@ public class RingsDecryptionProcessor implements Processor{
 			cmd = cmd.replace("<output>", out.getAbsolutePath());
 			
 			// Execute the decryption command
-			ProcessingWorker worker = new ProcessingWorker(cmd);
+			CommandLineWorker worker = new CommandLineWorker(cmd);
 			int exitValue = worker.execute();
 			if(exitValue != 0){
 				log.warning("The command '" + cmd + "' failed with exit code " +

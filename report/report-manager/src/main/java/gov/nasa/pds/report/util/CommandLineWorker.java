@@ -1,4 +1,4 @@
-package gov.nasa.pds.report.processing;
+package gov.nasa.pds.report.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * @author resneck
  *
  */
-public class ProcessingWorker{
+public class CommandLineWorker{
 	
 	private String command = null;
 	private boolean debugMode = false;
@@ -24,7 +24,7 @@ public class ProcessingWorker{
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	
-	public ProcessingWorker(String command){
+	public CommandLineWorker(String command){
 		this.command = command;
 	}
 	

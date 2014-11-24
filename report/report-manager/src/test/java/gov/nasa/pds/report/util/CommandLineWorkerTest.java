@@ -1,4 +1,4 @@
-package gov.nasa.pds.report.processing;
+package gov.nasa.pds.report.util;
 
 import static org.junit.Assert.*;
 
@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import gov.nasa.pds.report.rules.ReportManagerTest;
 
-public class ProcessingWorkerTest extends ReportManagerTest{
+public class CommandLineWorkerTest extends ReportManagerTest{
 	
 	@Rule
 	public SingleTestRule test = new SingleTestRule("");
@@ -15,7 +15,7 @@ public class ProcessingWorkerTest extends ReportManagerTest{
 	@Test
 	public void testNominal(){
 		
-		ProcessingWorker worker = new ProcessingWorker("echo test");
+		CommandLineWorker worker = new CommandLineWorker("echo test");
 		if(worker.execute() != 0){
 			fail("The nominal test command failed");
 		}
@@ -25,7 +25,7 @@ public class ProcessingWorkerTest extends ReportManagerTest{
 	@Test
 	public void testFailedCommand(){
 		
-		ProcessingWorker worker = new ProcessingWorker("false");
+		CommandLineWorker worker = new CommandLineWorker("false");
 		int exitCode = worker.execute();
 		if(exitCode != 1){
 			fail("Command exited with code other than 1: " + exitCode);
@@ -36,8 +36,8 @@ public class ProcessingWorkerTest extends ReportManagerTest{
 	@Test
 	public void testTimeoutCommand(){
 		
-		int timeoutSeconds = ProcessingWorker.timeout + 5;
-		ProcessingWorker worker = new ProcessingWorker("sleep " + timeoutSeconds);
+		int timeoutSeconds = CommandLineWorker.timeout + 5;
+		CommandLineWorker worker = new CommandLineWorker("sleep " + timeoutSeconds);
 		int exitCode = worker.execute();
 		if(exitCode != -1){
 			fail("Long command exited with code other than -1: " + exitCode);
