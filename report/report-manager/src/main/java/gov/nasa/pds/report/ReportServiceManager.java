@@ -160,7 +160,7 @@ public class ReportServiceManager {
 			// Get profile details needed for processing
 			try{
 				processesStr = Utility.getNodePropsString(props, 
-						Constants.NODE_PROCESSES_KEY, true);
+						Constants.NODE_PROCESSES_KEY, false);
 				nodeName = Utility.getNodePropsString(props, 
 						Constants.NODE_NODE_KEY, true);
 				profileID = Utility.getNodePropsString(props,
@@ -170,6 +170,11 @@ public class ReportServiceManager {
 				log.warning("An error occurred while collecting profile " +
 						"details to process profile " + profileID + ": " + 
 						e.getMessage());
+				continue;
+			}
+			
+			// Skip over profiles that don't require any processing
+			if(processesStr == null || processesStr.equals("")){
 				continue;
 			}
 				
@@ -209,8 +214,9 @@ public class ReportServiceManager {
 								LogsManager.OUTPUT_DIR_NAME);
 					}
 					
-					// Run the Processor
+					// Configure and run the Processor
 					Processor p = i.next();
+					p.configure(props);
 					p.process(in);
 					
 					// Determine where output was placed so that it can be used by
