@@ -30,14 +30,14 @@ import net.sf.saxon.tinytree.TinyNodeImpl;
 /**
  * The intent of this class is to perform some default semantic validation
  * on the parsed PDS4 label.
- * 
+ *
  * @author mcayanan
  *
  */
 public class DefaultDocumentValidator implements DocumentValidator {
 
   private final String XML_MODEL_XPATH = "/processing-instruction('xml-model')";
-  
+
   @Override
   public boolean validate(ExceptionContainer container, DocumentInfo xml) {
     boolean passFlag = true;
@@ -50,34 +50,35 @@ public class DefaultDocumentValidator implements DocumentValidator {
       //Ignore
     }
     if (xmlModels.isEmpty()) {
-      container.addException(new LabelException(ExceptionType.WARNING, 
+      container.addException(new LabelException(ExceptionType.WARNING,
           "No schematron specification found in the label.", xml.getSystemId()));
     } else {
       Pattern pattern = Pattern.compile("href=\\\"([^=]*)\\\"( schematypens=\\\"([^=]*)\\\")?");
       for (TinyNodeImpl xmlModel : xmlModels) {
         String filteredValue = xmlModel.getStringValue().replaceAll("\\s+", " ");
+        filteredValue = filteredValue.trim();
         Matcher matcher = pattern.matcher(filteredValue);
         if (matcher.matches()) {
           if (matcher.group(3) != null) {
             if (!VersionInfo.getSchematronNamespace().equals(
                 matcher.group(3).trim())) {
               container.addException(
-                  new LabelException(ExceptionType.WARNING, 
+                  new LabelException(ExceptionType.WARNING,
                     "Value of the 'schematypens' attribute, '"
-                      + matcher.group(3).trim() 
+                      + matcher.group(3).trim()
                       + "', in the schematron specification is not equal to the recommended value of '"
-                      + VersionInfo.getSchematronNamespace() + "'.", 
-                    xml.getSystemId(), 
-                    xml.getSystemId(), 
-                    new Integer(xmlModel.getLineNumber()), 
+                      + VersionInfo.getSchematronNamespace() + "'.",
+                    xml.getSystemId(),
+                    xml.getSystemId(),
+                    new Integer(xmlModel.getLineNumber()),
                     null));
               }
           } else {
-            container.addException(new LabelException(ExceptionType.WARNING, 
-                "Missing 'schematypens' attribute from the schematron specification.", 
-                xml.getSystemId(), 
-                xml.getSystemId(), 
-                new Integer(xmlModel.getLineNumber()), 
+            container.addException(new LabelException(ExceptionType.WARNING,
+                "Missing 'schematypens' attribute from the schematron specification.",
+                xml.getSystemId(),
+                xml.getSystemId(),
+                new Integer(xmlModel.getLineNumber()),
                 null));
           }
         }
