@@ -38,6 +38,7 @@ public class SearchCorePSATest {
 	 * @throws Exception
 	 */
 	@Test
+	@Ignore
 	public void testLauncherPSA() {
 		try {
 			String[] args = { "-d",
