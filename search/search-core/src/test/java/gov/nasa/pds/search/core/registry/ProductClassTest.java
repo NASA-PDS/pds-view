@@ -131,6 +131,7 @@ public class ProductClassTest extends SearchCoreTest {
 	}
 
 	@Test
+	@Ignore
 	public void testQueryPSA() throws SearchCoreFatalException {
 		try {
 			String[] extensions = { "xml" };
@@ -154,6 +155,7 @@ public class ProductClassTest extends SearchCoreTest {
 	}
 
 	@Test
+	@Ignore
 	public void testQueryPSAUsingConfigSpecifiedRegistry()
 			throws SearchCoreFatalException {
 		try {
