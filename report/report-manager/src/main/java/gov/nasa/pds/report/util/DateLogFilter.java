@@ -48,7 +48,8 @@ public class DateLogFilter{
 	
 	private static Logger log = Logger.getLogger(DateLogFilter.class.getName());
 	
-	private static Date startDate, endDate = null;
+	private static Date startDate = null;
+	private static Date endDate = null;
 	private static DateFormat dateFormat = null;
 	private static String preDateSubstring, postDateSubstring = null;
 	
@@ -100,6 +101,20 @@ public class DateLogFilter{
 			"specified for the date log filter are reversed");
 		}
 		
+	}
+	
+	public static String getStartDateString(String format){
+		if(startDate == null){
+			return null;
+		}
+		return new SimpleDateFormat(format).format(startDate);
+	}
+	
+	public static String getEndDateString(String format){
+		if(endDate == null){
+			return null;
+		}
+		return new SimpleDateFormat(format).format(endDate);
 	}
 	
 	public static void setPattern(String pattern)

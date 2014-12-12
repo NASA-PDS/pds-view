@@ -5,8 +5,6 @@ import gov.nasa.pds.report.util.Utility;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Logger;

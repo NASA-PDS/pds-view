@@ -5,7 +5,6 @@ import gov.nasa.pds.report.util.Utility;
 import gov.nasa.pds.report.util.CommandLineWorker;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Logger;
 

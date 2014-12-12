@@ -1,4 +1,4 @@
-//	Copyright 2013, by the California Institute of Technology.
+//	Copyright 2014, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -15,8 +15,11 @@
 
 package gov.nasa.pds.report.sawmill;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import gov.nasa.pds.report.constants.Constants;
+import gov.nasa.pds.report.util.CommandLineWorker;
+import gov.nasa.pds.report.util.DateLogFilter;
+
+import java.io.File;
 import java.util.logging.Logger;
 
 /**
@@ -24,64 +27,167 @@ import java.util.logging.Logger;
  * Sawmill databases.
  * 
  * @author jpadams
+ * @author resneck
  *
  */
 public class SawmillClient {
-	private Logger LOG = Logger.getLogger(this.getClass().getName());
-
+	
+	private static final String SAWMILL_DATE_FORMAT = "dd/MMM/yyyy";
+	
+	private Logger log = Logger.getLogger(this.getClass().getName());
+	
+	private static String sawmillHome;
+	
 	/**
-	 * Based on the boolean entered, determines the Sawmill CLI
-	 * db option.
+	 * Runs a Sawmill command to update the database for a given Sawmill
+	 * profile.
 	 * 
-	 * @param rebuild	Boolean to determine whether or not to rebuild the
-	 * 					Sawmill DB
-	 * @return			The Sawmill CLI option flag to append to the CLI
-	 * 					command
+	 * @param profileName		The name of the profile that will be updated
+	 * @throws SawmillException	If a null or empty profile name is given
 	 */
-	private String getDbOption(boolean rebuild) {
-		if (rebuild) {
-			return "bd";
-		} else {
-			return "ud";
+	public void updateDatabase(String profileName) throws SawmillException{
+		
+		if(profileName == null || profileName.equals("")){
+			throw new SawmillException("Cannot update a Sawmill profile " +
+					"with no name");
 		}
+		
+		log.info("Updating the " + profileName + " Sawmill profile");
+		String cmd = "-p " + profileName + " -a ud";
+		this.runSawmillCommand(cmd);
+		
 	}
-
+	
 	/**
-	 * Executes the Sawmill CLI with the various flags and specifications
-	 * required to build a specific profile's database
+	 * Runs a Sawmill command to rebuild the database for a given Sawmill
+	 * profile.  This will delete all historical data.
 	 * 
-	 * @param sawmillHome
-	 * @param profileName
-	 * @param isNewProfile
-	 * @throws Exception
+	 * @param profileName		The name of the profile that will be built
+	 * @throws SawmillException	If a null or empty profile name is given
 	 */
-	public void execute(String sawmillHome, String profileName,
-			boolean isNewProfile) throws Exception {
-		String dbOption = getDbOption(isNewProfile);
-
-		BufferedReader input = null;
-		Runtime rt = Runtime.getRuntime();
-		Process pr = null;
-		try {
-			this.LOG.info("Executing: " + sawmillHome + "/sawmill -p "
-					+ profileName + " -a " + dbOption);
-			pr = rt.exec(sawmillHome + "/sawmill -p " + profileName
-					+ " -a " + dbOption);
-
-			input = new BufferedReader(new InputStreamReader(pr
-					.getInputStream()));
-			String line = null;
-			while ((line = input.readLine()) != null) {
-				if (line.contains("Error")) {
-					throw new Exception(
-							"Error while running sawmill software.");
-				}
-				this.LOG.info(line);
+	public void buildDatabase(String profileName) throws SawmillException{
+		
+		if(profileName == null || profileName.equals("")){
+			throw new SawmillException("Cannot build a Sawmill profile " +
+					"with no name");
+		}
+		
+		log.info("Building the " + profileName + " Sawmill profile");
+		String cmd = "-p " + profileName + " -a bd";
+		this.runSawmillCommand(cmd);
+		
+	}
+	
+	/**
+	 * Run a Sawmill command to generate a report specified using the given
+	 * Sawmill profile and report at the given location.
+	 * 
+	 * @param profileName		The name of the profile that specifies the
+	 * 							report
+	 * @param reportName		The name of the report
+	 * @param outputPath		The path to the directory where the report will
+	 * 							be placed
+	 * @throws SawmillException	If any of the parameters are null or empty
+	 */
+	public void generateReport(String profileName, String reportName, 
+			String outputPath) throws SawmillException{
+		
+		if(profileName == null || profileName.equals("")){
+			throw new SawmillException("Cannot build a Sawmill profile " +
+					"with no name");
+		}else if(reportName == null || reportName.equals("")){
+			throw new SawmillException("Cannot build a Sawmill report " +
+					"with no name");
+		}else if(outputPath == null || outputPath.equals("")){
+			throw new SawmillException("Cannot build a Sawmill report " +
+			"with no output path");
+		}
+		
+		String cmd = "-p " + profileName + " -a ect -rn " + reportName +
+				" -er -1 -od " + outputPath;
+		this.runSawmillCommand(cmd);
+		
+	}
+	
+	private void runSawmillCommand(String command) throws SawmillException{
+		
+		if(command == null || command.equals("")){
+			throw new SawmillException("The given Sawmill command is empty");
+		}
+		
+		String cmd = getSawmillHome() + File.separator + "sawmill " + command;
+		String sawmillDateOption = getSawmillDateOption();
+		if(sawmillDateOption != null){
+			cmd = cmd + sawmillDateOption;
+		}
+		
+		CommandLineWorker worker = new CommandLineWorker(cmd);
+		int exitValue = worker.execute();
+		if(exitValue == -1){
+			log.warning("The Sawmill command '" + cmd + "' timed out");
+		}else if(exitValue != 0){
+			log.warning("The Sawmill command '" + cmd + "' failed with exit " +
+					"code " + exitValue);
+		}
+		
+	}
+	
+	private static String getSawmillDateOption(){
+		
+		String startDateString =
+				DateLogFilter.getStartDateString(SAWMILL_DATE_FORMAT);
+		String endDateString =
+				DateLogFilter.getEndDateString(SAWMILL_DATE_FORMAT);
+		String sawmillDateOption = null;
+		if(startDateString != null || endDateString != null){
+			sawmillDateOption = " -df \"start - end\"";
+			if(startDateString != null){
+				sawmillDateOption = sawmillDateOption.replace("start",
+						startDateString);
 			}
-		} finally {
-			input.close();
-			pr.destroy();
-			this.LOG.info("Sawmill Update Complete.");
+			if(endDateString != null){
+				sawmillDateOption = sawmillDateOption.replace("end",
+						endDateString);
+			}
 		}
+		return sawmillDateOption;
+		
 	}
+	
+	/**
+	 * Get the value of the Sawmill home property (the directory where the
+	 * Sawmill executable resides) and validate the property if we have not yet
+	 * done so
+	 * 
+	 * @return					The location of the Sawmill executable as a
+	 * 							String
+	 * @throws SawmillException	If the location is invalid
+	 */
+	private static String getSawmillHome() throws SawmillException{
+		
+		if(sawmillHome != null){
+			return sawmillHome;
+		}
+		
+		// Validate the location of the Sawmill executable
+		String sawmillHomeProp = System.getProperty(Constants.SAWMILL_HOME_PROP);
+		if(sawmillHomeProp == null || sawmillHomeProp.equals("")){
+			throw new SawmillException("The location of the Sawmill " +
+					"executable must be specified");
+		}
+		File sawmillDir = new File(sawmillHomeProp);
+		if(!sawmillDir.exists() || !sawmillDir.isDirectory()){
+			throw new SawmillException("The given Sawmill home directory " +
+					"does not exist");
+		}
+		File sawmillExe = new File(sawmillDir, "sawmill");
+		if(!sawmillExe.exists()){
+			throw new SawmillException("The Sawmill executable does not " +
+					"exist is the given Sawmill home");
+		}
+		sawmillHome = sawmillHomeProp;
+		return sawmillHome;
+		
+	}
+	
 }

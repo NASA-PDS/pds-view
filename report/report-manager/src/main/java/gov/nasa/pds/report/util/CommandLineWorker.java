@@ -1,5 +1,7 @@
 package gov.nasa.pds.report.util;
 
+import gov.nasa.pds.report.constants.Constants;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,14 +20,14 @@ public class CommandLineWorker{
 	
 	private String command = null;
 	private boolean debugMode = false;
-	
-	// TODO: Allow the user to specify the timeout period
-	public static final int timeout = 10000;
+	private int timeout = 0;
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	
 	public CommandLineWorker(String command){
 		this.command = command;
+		this.timeout = Integer.parseInt(System.getProperty(
+				Constants.COMMANDLINE_TIMEOUT_PROP, "0"));
 	}
 	
 	public void setDebugMode(boolean debug){
@@ -48,7 +50,11 @@ public class CommandLineWorker{
 					new InputStreamReader(p.getInputStream()));
 			watcher = new ProcessWatcher(p);
 			watcher.start();
-			watcher.join(timeout);
+			if(this.timeout != 0){
+				watcher.join(this.timeout);
+			}else{
+				watcher.join();
+			}
 			Integer exitValue = watcher.getExitValue();
 			if(exitValue != null){
 				if(this.debugMode || exitValue.intValue() != 0){
@@ -60,6 +66,7 @@ public class CommandLineWorker{
 				return exitValue.intValue();
 			}else{
 				log.warning("The command '" + command + "' timed out");
+				watcher.interrupt();
 				return -1;
 			}
 			

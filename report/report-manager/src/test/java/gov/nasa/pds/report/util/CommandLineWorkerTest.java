@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Rule;
 import org.junit.Test;
 
+import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.rules.ReportManagerTest;
 
 public class CommandLineWorkerTest extends ReportManagerTest{
@@ -36,8 +37,9 @@ public class CommandLineWorkerTest extends ReportManagerTest{
 	@Test
 	public void testTimeoutCommand(){
 		
-		int timeoutSeconds = CommandLineWorker.timeout + 5;
-		CommandLineWorker worker = new CommandLineWorker("sleep " + timeoutSeconds);
+		System.setProperty(Constants.COMMANDLINE_TIMEOUT_PROP, "10");
+		CommandLineWorker worker = new CommandLineWorker("sleep 15");
+		// TODO: Make sure that this test doesn't run forever
 		int exitCode = worker.execute();
 		if(exitCode != -1){
 			fail("Long command exited with code other than -1: " + exitCode);

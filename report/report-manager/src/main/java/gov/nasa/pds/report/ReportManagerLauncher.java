@@ -19,14 +19,8 @@ import gov.nasa.pds.report.cli.options.Flag;
 import gov.nasa.pds.report.cli.options.InvalidOptionException;
 import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.logging.ToolsLevel;
-import gov.nasa.pds.report.logging.ToolsLogRecord;
-import gov.nasa.pds.report.logging.formatter.ReportManagerFormatter;
-import gov.nasa.pds.report.logging.handler.PDSFileHandler;
-import gov.nasa.pds.report.logging.handler.PDSStreamHandler;
 import gov.nasa.pds.report.util.DateLogFilter;
 import gov.nasa.pds.report.util.ToolInfo;
-import gov.nasa.pds.report.util.Utility;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -56,6 +50,18 @@ public class ReportManagerLauncher {
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#PROCESS_LOGS **/
 	private boolean processFlag;
 	
+	/** @see gov.nasa.pds.search.core.cli.options.Flag#UPDATE_SAWMILL **/
+	private boolean updateFlag;
+	
+	/** @see gov.nasa.pds.search.core.cli.options.Flag#REBUILD_SAWMILL **/
+	private boolean rebuildFlag;
+	
+	/** @see gov.nasa.pds.search.core.cli.options.Flag#SAWMILL_REPORTS **/
+	private boolean reportFlag;
+	
+	/** @see gov.nasa.pds.search.core.cli.options.Flag#HQ_REPORTS **/
+	private boolean hqFlag;
+	
 	private ReportServiceManager rsMgr;
 	
 	/** The severity level to set for the tool. */
@@ -64,6 +70,10 @@ public class ReportManagerLauncher {
 	public ReportManagerLauncher() {
 		this.pullFlag = false;
 		this.processFlag = false;
+		this.updateFlag = false;
+		this.rebuildFlag = false;
+		this.reportFlag = false;
+		this.hqFlag = false;
 		this.rsMgr = new ReportServiceManager();
 		this.severityLevel = ToolsLevel.INFO;
 	}
@@ -171,6 +181,12 @@ public class ReportManagerLauncher {
 			} else if (o.getOpt().equals(Flag.TO_DATE.getShortName())) {
 				DateLogFilter.setEndDate(
 						line.getOptionValue(Flag.TO_DATE.getShortName()));
+			} else if (o.getOpt().equals(Flag.UPDATE_SAWMILL.getShortName())) {
+				this.updateFlag = true;
+			} else if (o.getOpt().equals(Flag.REBUILD_SAWMILL.getShortName())) {
+				this.rebuildFlag = true;
+			} else if (o.getOpt().equals(Flag.SAWMILL_REPORTS.getShortName())) {
+				this.reportFlag = true;
 			}
 		}
 	}
@@ -209,6 +225,24 @@ public class ReportManagerLauncher {
 		// Process the logs if specified
 		if (this.processFlag) {
 			this.rsMgr.processLogs();
+		}
+		
+		// Update or Rebuild Sawmill databases
+		if(this.rebuildFlag){
+			if(this.updateFlag){
+				log.warning("Found flags for both update DB and rebuild DB " +
+						"Sawmill operations.  Make sure that you are " +
+						"specifying the correct operations, since rebuilding " +
+						"takes much longer.");
+			}
+			this.rsMgr.buildSawmillDB(true);
+		}else if(this.updateFlag){
+			this.rsMgr.buildSawmillDB(false);
+		}
+		
+		// Generate Sawmill reports
+		if(this.reportFlag){
+			this.rsMgr.generateReports();
 		}
 		
 	}

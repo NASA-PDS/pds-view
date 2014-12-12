@@ -16,18 +16,23 @@ import gov.nasa.pds.report.logs.LogsManagerException;
 import gov.nasa.pds.report.logs.PDSLogsManager;
 import gov.nasa.pds.report.processing.ProcessingException;
 import gov.nasa.pds.report.processing.Processor;
-import gov.nasa.pds.report.processing.RingsDecryptionProcessor;
 import gov.nasa.pds.report.profile.ProfileManager;
 import gov.nasa.pds.report.profile.SimpleProfileManager;
+import gov.nasa.pds.report.sawmill.SawmillClient;
+import gov.nasa.pds.report.sawmill.SawmillException;
+import gov.nasa.pds.report.util.DateLogFilter;
 import gov.nasa.pds.report.util.GenericReportServiceObjectFactory;
 import gov.nasa.pds.report.util.Utility;
 
 public class ReportServiceManager {
 	
+	private static final String HQ_REPORT_NAME = "hq_domain_report";
+	
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	
 	private LogsManager logsManager;
 	private ProfileManager profileManager;
+	private SawmillClient sawmillClient;
 	
 	private List<Properties> propsList = null;
 	
@@ -38,10 +43,12 @@ public class ReportServiceManager {
 	public ReportServiceManager() {
 		
 		// TODO: When there is more than one implementation of these interfaces
-		// these objects should be created by a factory, similar to OODT
+		// these objects should be created by the
+		// GenericReportServiceObjectFactory
 		this.logsManager = new PDSLogsManager();
 		this.profileManager = new SimpleProfileManager();
 		this.profileFilters = new HashMap<String, String>();
+		this.sawmillClient = new SawmillClient();
 		
 	}
 	
@@ -236,6 +243,112 @@ public class ReportServiceManager {
 				continue;
 			}
 			
+		}
+		
+	}
+	
+	/**
+	 * Update or rebuild the Sawmill database for each profile
+	 * 
+	 * @param rebuild	Whether to rebuild the Sawmill database for each
+	 * 					profile
+	 */
+	public void buildSawmillDB(boolean rebuild){
+		
+		if(rebuild){
+			log.info("Rebuilding Sawmill databases");
+		}else{
+			log.info("Updating Sawmill databases");
+		}
+		
+		
+		for(Properties props: propsList){
+			
+			String sawmillProfile = null;
+			try {
+				sawmillProfile = Utility.getNodePropsString(props,
+						Constants.NODE_SAWMILL_PROFILE, true);
+				if(rebuild){
+					sawmillClient.buildDatabase(sawmillProfile);
+				}else{
+					sawmillClient.updateDatabase(sawmillProfile);
+				}
+			} catch (ReportManagerException e) {
+				try{
+					String profileName = Utility.getNodePropsString(props,
+							Constants.NODE_ID_KEY, false);
+					log.warning("Unable to obtain Samill profile name from " +
+							"profile " + profileName);
+				}catch(ReportManagerException ignore){
+					// This should not happen since we specified that the
+					// property is not needed with the false parameter above.
+				}
+			} catch (SawmillException e) {
+				log.warning("An error occurred while building the Sawmill " +
+						"database for Sawmill profile " + sawmillProfile +
+						": " + e.getMessage());
+			}
+			
+		}
+		
+	}
+	
+	/**
+	 * Generate Sawmill reports.
+	 */
+	public void generateReports(){
+		
+		log.info("Generating Sawmill reports");
+		
+		for(Properties props: propsList){
+			
+			String sawmillProfile = null;
+			String[] reports = null;
+			String outputPath = null;
+			String profileName = null;
+			
+			// Get Sawmill details needed to create report
+			try{
+				profileName = Utility.getNodePropsString(props,
+						Constants.NODE_ID_KEY, false);
+				sawmillProfile = Utility.getNodePropsString(props,
+						Constants.NODE_SAWMILL_PROFILE, true);
+			}catch (ReportManagerException e){
+				log.warning("Unable to obtain Samill profile name " +
+						"from profile " + profileName);
+				continue;
+			}
+			try{
+				reports = Utility.getNodePropsString(props,
+						Constants.NODE_REPORT_LIST, true).split(",");
+			}catch (ReportManagerException e){
+				log.warning("Unable to obtain Samill report list " +
+						"from profile " + profileName);
+				continue;
+			}
+			try{
+				// TODO: This output directory tree should be automatically created
+				outputPath = Utility.getNodePropsString(props,
+						Constants.NODE_SAWMILL_OUTPUT, true);
+			} catch (ReportManagerException e) {
+				log.warning("Unable to obtain Samill output path " +
+						"from profile " + profileName);
+				continue;
+			}
+			
+			// Generate the reports
+			for(String report: reports){
+				// TODO: Make sure that we don't generate the same report more
+				// than once
+				try{
+					sawmillClient.generateReport(sawmillProfile, report.trim(),
+							outputPath);
+				}catch(SawmillException e){
+					log.warning("An error occurred while generating the " +
+							"Sawmill report " + report + ": " + e.getMessage());
+				}
+			}
+				
 		}
 		
 	}

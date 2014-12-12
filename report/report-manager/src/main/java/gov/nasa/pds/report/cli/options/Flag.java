@@ -29,7 +29,16 @@ public enum Flag {
 	PULL("p", "pull-logs", "Pull logs from remote sources."),
 	
 	/** Flag to instruct the Report Manager to process logs */
-	PROCESS_LOGS("l", "process-logs", "Process already downloaded logs"),
+	PROCESS_LOGS("P", "process-logs", "Process already downloaded logs"),
+	
+	/** Flag to run a Sawmill command to update the Sawmill DB */
+	UPDATE_SAWMILL("u", "update-sawmill", "Update the Sawmill DB"),
+	
+	/** Flag to run a Sawmill command to rebuild the Sawmill DB */
+	REBUILD_SAWMILL("r", "rebuild-sawmill", "Rebuild the Sawmill DB"),
+	
+	/** Flag to run a Sawmill command to generate Sawmill reports */
+	SAWMILL_REPORTS("R", "sawmill-reports", "Generate Sawmill reports"),
 	
 	/** Flag to filter by node name specified in profile  */
 	NODE_PATTERN("n", "node-pattern", "pattern", String.class,
