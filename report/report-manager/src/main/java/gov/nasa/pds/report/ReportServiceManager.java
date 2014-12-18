@@ -10,6 +10,8 @@ import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
+
 import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.logs.LogsManager;
 import gov.nasa.pds.report.logs.LogsManagerException;
@@ -20,13 +22,11 @@ import gov.nasa.pds.report.profile.ProfileManager;
 import gov.nasa.pds.report.profile.SimpleProfileManager;
 import gov.nasa.pds.report.sawmill.SawmillClient;
 import gov.nasa.pds.report.sawmill.SawmillException;
-import gov.nasa.pds.report.util.DateLogFilter;
+import gov.nasa.pds.report.util.FileUtil;
 import gov.nasa.pds.report.util.GenericReportServiceObjectFactory;
 import gov.nasa.pds.report.util.Utility;
 
 public class ReportServiceManager {
-	
-	private static final String HQ_REPORT_NAME = "hq_domain_report";
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	
@@ -67,6 +67,12 @@ public class ReportServiceManager {
 		
 		log.fine("Adding filter: " + key + "=" + pattern);
 		this.profileFilters.put(key, pattern);
+		
+	}
+	
+	public void createStagingDirTree() throws ReportManagerException{
+		
+		FileUtil.createDirTree(this.propsList, LogsManager.DIR_NAME);
 		
 	}
 	
@@ -179,68 +185,83 @@ public class ReportServiceManager {
 						e.getMessage());
 				continue;
 			}
-			
-			// Skip over profiles that don't require any processing
-			if(processesStr == null || processesStr.equals("")){
-				continue;
-			}
 				
 			// Create a list of Processors to run
-			String[] processes = processesStr.split(",");
 			List<Processor> processors = new Vector<Processor>();
-			for(int i = 0; i < processes.length; i++){
-				Processor p =
-						GenericReportServiceObjectFactory.getProcessor(
-						processes[i].trim());
-				processors.add(p);
-				if(p == null){
-					log.warning("An error occurred while creating " +
-							"Processors using profile " + profileID);
-					i = processes.length;
-					processors = null;
+			if(processesStr != null){
+				String[] processes = processesStr.split(",");
+				for(int i = 0; i < processes.length; i++){
+					Processor p =
+							GenericReportServiceObjectFactory.getProcessor(
+							processes[i].trim());
+					processors.add(p);
+					if(p == null){
+						log.warning("An error occurred while creating " +
+								"Processors using profile " + profileID);
+						i = processes.length;
+						processors = null;
+					}
 				}
-			}
-			if(processors == null){
-				continue;
+				if(processors == null){
+					continue;
+				}
 			}
 			log.finer("Found " + processors.size() + " processes to run on " +
 					"logs from profile " + profileID);
-			
-			// The directory where Processor input comes from.  This will be
-			// set after each Processor is run to be used by the next one.
-			File in = null;
 				
 			try{
+				
+				// The directory that contains the most processed version of
+				// logs downloaded using the current profile.  When a Processor
+				// finishes, this File is set to the directory containing its
+				// output.
+				File mostProcessed = FileUtil.getDir(LogsManager.DIR_NAME,
+						nodeName, profileID);
 			
+				// Iterate through each of the Processors specified in the
+				// current profile
 				for(Iterator<Processor> i = processors.iterator(); i.hasNext();){
 					
-					// If the input directory location has been set, use the 
-					// directory where the logs were placed when downloaded
-					if(in == null){
-						in = Utility.getStagingDir(nodeName, profileID, 
-								LogsManager.OUTPUT_DIR_NAME);
-					}
+					Processor p = i.next();
+					
+					// Get the directory where the output of the current
+					// Processor will be placed
+					File out = FileUtil.getProcessingDir(nodeName, profileID,
+							p.getDirName());
 					
 					// Configure and run the Processor
-					Processor p = i.next();
 					p.configure(props);
-					p.process(in);
+					p.process(mostProcessed, out);
 					
-					// Determine where output was placed so that it can be used by
-					// the next Processor
-					in = Utility.getStagingDir(in, p.getDirName());
+					mostProcessed = out;
 					
 				}
 				
+				// Copy the most processed version of the logs into the final
+				// directory tree where Sawmill will access them
+				// TODO: Compare checksums to see if files have been changed
+				// and see if the source file has a newer date than the copy
+				// at the destination before copying
+				File sawmillDir = FileUtil.getDir(SawmillClient.DIR_NAME,
+						nodeName, profileID);
+				log.fine("Copying processed logs from " +
+						mostProcessed.getAbsolutePath() + " to " +
+						sawmillDir.getAbsolutePath());
+				for(File file: mostProcessed.listFiles()){
+					FileUtils.copyFileToDirectory(file, sawmillDir);
+				}
+				
 			}catch(ReportManagerException e){
-				log.warning("An error occurred while handling staging " +
-						"directories while processing " + profileID + ": " +
+				log.warning("An error occurred while handling processing " +
+						"directories for profile " + profileID + ": " +
 						e.getMessage());
-				continue;
 			}catch(ProcessingException e){
 				log.warning("An error occurred while processing " + profileID +
 						": " + e.getMessage());
-				continue;
+			}catch(IOException e){
+				log.warning("An error occurred while copying logs into " +
+						SawmillClient.DIR_NAME + " directory tree: " +
+						e.getMessage());
 			}
 			
 		}

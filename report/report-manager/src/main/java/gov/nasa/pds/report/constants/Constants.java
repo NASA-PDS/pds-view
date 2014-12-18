@@ -38,7 +38,7 @@ public abstract class Constants {
 	
 	// The key for the system property that specifies the root of the
 	// directory tree where logs are stored
-	public static final String STAGING_HOME_PROP = "gov.nasa.pds.report.staging.home";
+	public static final String DIR_ROOT_PROP = "gov.nasa.pds.report.dir.root";
 	
 	// The key for the system property that specifies the root of the
 	// directory tree where profiles are stored

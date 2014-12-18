@@ -59,9 +59,6 @@ public class ReportManagerLauncher {
 	/** @see gov.nasa.pds.search.core.cli.options.Flag#SAWMILL_REPORTS **/
 	private boolean reportFlag;
 	
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#HQ_REPORTS **/
-	private boolean hqFlag;
-	
 	private ReportServiceManager rsMgr;
 	
 	/** The severity level to set for the tool. */
@@ -73,7 +70,6 @@ public class ReportManagerLauncher {
 		this.updateFlag = false;
 		this.rebuildFlag = false;
 		this.reportFlag = false;
-		this.hqFlag = false;
 		this.rsMgr = new ReportServiceManager();
 		this.severityLevel = ToolsLevel.INFO;
 	}
@@ -215,6 +211,16 @@ public class ReportManagerLauncher {
 		}catch(IOException e){
 			log.severe("An error occurred while reading the profile " +
 					"properties: " + e.getMessage());
+			return;
+		}
+		
+		// Create the staging dir tree
+		try{
+			this.rsMgr.createStagingDirTree();
+		}catch(ReportManagerException e){
+			log.severe("An error occurred while creating the staging " +
+					"directory tree: " + e.getMessage());
+			return;
 		}
 		
 		// Pull the logs if specified

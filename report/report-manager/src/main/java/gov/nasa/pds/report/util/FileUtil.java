@@ -1,22 +1,136 @@
 package gov.nasa.pds.report.util;
 
+import gov.nasa.pds.report.ReportManagerException;
+import gov.nasa.pds.report.constants.Constants;
+import gov.nasa.pds.report.processing.Processor;
+
 import java.io.File;
+import java.util.List;
+import java.util.Properties;
 
 public class FileUtil {
-
+	
 	/**
-	 * Creates directory structure to place copied logs
+	 * Create a directory tree with the given name directly under the root of
+	 * the Report Service directory tree.
 	 * 
-	 * @param path
-	 * @return
+	 * @param props						A {@link List} of Properties of created
+	 * 									from profiles
+	 * @param dirName					The name of the directory that will be
+	 * 									placed at the root of the tree being
+	 * 									created (i.e. staging, final, backup,
+	 * 									or processing)
+	 * @throws ReportManagerException	If any error occurs during the creation
+	 * 									of the tree
 	 */
-	public static boolean createDirStruct(String destPath) {
-		File dirStruct = new File(destPath);
-		if (!dirStruct.exists()) {
-			return dirStruct.mkdirs();
-		} else {
-			return true;
+	public static void createDirTree(List<Properties> props, String dirName)
+			throws ReportManagerException{
+		
+		for(Properties p: props){
+			
+			String profileID = null;
+			try{
+				profileID = Utility.getNodePropsString(p,
+						Constants.NODE_ID_KEY, true);
+				String nodeName = Utility.getNodePropsString(p,
+						Constants.NODE_NODE_KEY, true);
+				getDir(dirName, nodeName, profileID);
+			}catch(ReportManagerException e){
+				throw new ReportManagerException("An error occurred while " +
+						"creating the " + dirName + " directory tree: " +
+						e.getMessage());
+			}
+			
 		}
+
+	}
+	
+	/**
+	 * Get a {@link File} object pointing to the directory under the 
+	 * staging home and create all directories and sub-directories as needed.
+	 * The path to the directory will be 
+	 * DIR_ROOT/[dirname]/[node name]/[profile ID] 
+	 * 
+	 * @param dirName					The name of the directory (i.e. staging,
+	 * 									final, backup, or processing)
+	 * @param nodeName					The name of the node from which the
+	 * 									logs come
+	 * @param profileID					The ID of the profile specifying
+	 * 									where/how to obtain the logs
+	 * @return							A {@link File} object pointing to the
+	 * 									new directory
+	 * @throws ReportManagerException	If any of the parameters are missing
+	 */
+	public static File getDir(String dirName, String nodeName,
+			String profileID) throws ReportManagerException{
+		
+		String dirRoot = System.getProperty(Constants.DIR_ROOT_PROP);
+		
+		if (nodeName == null || nodeName.equals("") ||
+				profileID == null || profileID.equals("") ||
+				dirName == null || dirName.equals("")){
+			throw new ReportManagerException(
+					"The specified staging directory path " + dirRoot +
+					File.separator + dirName + 
+					File.separator + nodeName + 
+					File.separator + profileID + 
+					" is missing components");
+		}
+		
+		File file = new File(dirRoot + File.separator +
+				dirName + File.separator +
+				nodeName + File.separator +
+				profileID);
+		if(!file.exists()){
+			if(!file.mkdirs()){
+				throw new ReportManagerException("Failed to create the " +
+						"directory at " + file.getAbsolutePath());
+			}
+		}
+		return file;
+		
+	}
+	
+	/**
+	 * Get a {@link File} object pointing to the directory in the tree where
+	 * output for the process with the given name will be placed
+	 * 
+	 * @param nodeName					The name of the node from which the
+	 * 									logs come
+	 * @param profileID					The ID of the profile specifying
+	 * 									where/how to obtain the logs
+	 * @param processName				The name of the process
+	 * @return							A {@link File} object pointing to the
+	 * 									new directory
+	 * @throws ReportManagerException	If any of the parameters are missing
+	 */
+	public static File getProcessingDir(String nodeName, String profileID,
+			String processName) throws ReportManagerException{
+		
+		File superDir = null;
+		try{
+			superDir = getDir(Processor.DIR_NAME, nodeName, profileID);
+		}catch(ReportManagerException e){
+			throw new ReportManagerException("An error occurred while " +
+					"creating the super directory for processing directory " + 
+					processName + ": " + e.getMessage());
+		}
+		
+		if(processName == null || processName.equals("")){
+			throw new ReportManagerException("Cannot create a processing " +
+					"output directory with a null process name");
+		}
+		
+		File file = new File(superDir, processName);
+		if(!file.exists()){
+			if(!file.mkdir()){
+				throw new ReportManagerException("Failed to create the " +
+						"processing directory at " + file.getAbsolutePath());
+			}
+		}
+		
+		return file;
+		
 	}
 
 }

@@ -16,6 +16,7 @@ import gov.nasa.pds.report.constants.TestConstants;
 import gov.nasa.pds.report.constants.SftpTestConstants;
 import gov.nasa.pds.report.rules.PDSTest;
 import gov.nasa.pds.report.util.DateLogFilter;
+import gov.nasa.pds.report.util.FileUtil;
 import gov.nasa.pds.report.util.Utility;
 
 // TODO: This test can become much more modular if we switch to using 
@@ -48,16 +49,16 @@ public class PDSLogsManagerTest extends PDSTest{
 		props.setProperty(Constants.NODE_PATH_KEY, SftpTestConstants.TEST_PATH);
 		props.setProperty(Constants.NODE_FILENAME_PATTERN_KEY,
 				"log-|yyyy-mm-dd|.txt");
-		System.setProperty("gov.nasa.pds.report.staging.home",
+		System.setProperty(Constants.DIR_ROOT_PROP,
 				TestConstants.TEST_STAGING_DIR);
 	}
 	
 	@After
 	public void tearDown() throws Exception {
-		FileUtils.forceDelete(Utility.getStagingDir(
+		FileUtils.forceDelete(FileUtil.getDir(
+				LogsManager.DIR_NAME,
 				props.getProperty(Constants.NODE_NODE_KEY),
-				props.getProperty(Constants.NODE_ID_KEY),
-				LogsManager.OUTPUT_DIR_NAME));
+				props.getProperty(Constants.NODE_ID_KEY)));
 	}
 	
 	@Test
@@ -68,10 +69,10 @@ public class PDSLogsManagerTest extends PDSTest{
 		
 		// Grab some frequently used variables from the node properties
 		// to help keep code clean
-		File stagingFile = new File(TestConstants.TEST_STAGING_DIR + File.separator + 
+		File stagingFile = new File(TestConstants.TEST_STAGING_DIR + File.separator +
+				LogsManager.DIR_NAME + File.separator + 
 				props.getProperty(Constants.NODE_NODE_KEY) + File.separator +
-				props.getProperty(Constants.NODE_ID_KEY) + File.separator +
-				LogsManager.OUTPUT_DIR_NAME);
+				props.getProperty(Constants.NODE_ID_KEY));
 		String hostname = props.getProperty(Constants.NODE_HOST_KEY);
 		
 		// Remove any Date Logs Filters from previous tests

@@ -1,4 +1,4 @@
-// Copyright 2013, by the California Institute of Technology.
+// Copyright 2014, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -13,13 +13,14 @@
 // $Id$
 package gov.nasa.pds.report.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,18 +30,19 @@ import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.constants.SftpTestConstants;
 import gov.nasa.pds.report.constants.TestConstants;
 import gov.nasa.pds.report.logs.LogsManager;
-import gov.nasa.pds.report.logs.pushpull.PDSPullImpl;
+import gov.nasa.pds.report.processing.Processor;
 import gov.nasa.pds.report.rules.ReportManagerTest;
-//import gov.nasa.pds.report.rules.PDSTest.SingleTestRule;
 
-public class UtilityTest extends ReportManagerTest{
+public class FileUtilTest extends ReportManagerTest{
+	
+	private static final String TEST_PROCESS_NAME = "test_process_name";
 	
 	@Rule
 	public SingleTestRule test = new SingleTestRule("");
 	
 	@BeforeClass
 	public static void setUpBeforeClass(){
-		System.setProperty(Constants.STAGING_HOME_PROP,
+		System.setProperty(Constants.DIR_ROOT_PROP,
 				TestConstants.TEST_STAGING_DIR);
 	}
 	
@@ -51,12 +53,12 @@ public class UtilityTest extends ReportManagerTest{
 	}
 	
 	@Test
-	public void testGetStagingDir(){
+	public void testGetDir(){
 		
 		File testFile = null;
 		try{
-			testFile = Utility.getStagingDir(SftpTestConstants.TEST_NODE,
-					SftpTestConstants.TEST_ID, LogsManager.OUTPUT_DIR_NAME);
+			testFile = FileUtil.getDir(LogsManager.DIR_NAME,
+					SftpTestConstants.TEST_NODE, SftpTestConstants.TEST_ID);
 		}catch(ReportManagerException e){
 			fail("An error occurred while creating the test staging " +
 					"directory: " + e.getMessage());
@@ -64,9 +66,9 @@ public class UtilityTest extends ReportManagerTest{
 		
 		File file = new File(
 				Utility.getAbsolutePath(TestConstants.TEST_STAGING_DIR) + 
+				File.separator + LogsManager.DIR_NAME +
 				File.separator + SftpTestConstants.TEST_NODE + 
-				File.separator + SftpTestConstants.TEST_ID + 
-				File.separator + LogsManager.OUTPUT_DIR_NAME);
+				File.separator + SftpTestConstants.TEST_ID);
 		
 		assertTrue("The test directory was not created", file.exists());
 		assertEquals("The test directory was not created at the correct location",
@@ -75,13 +77,12 @@ public class UtilityTest extends ReportManagerTest{
 	}
 	
 	@Test
-	public void getSiblingStagingDir(){
+	public void testGetProcessingDir(){
 		
 		File testFile = null;
 		try{
-			testFile = Utility.getStagingDir(
-					new File(TestConstants.TEST_STAGING_DIR, "sibling"),
-					LogsManager.OUTPUT_DIR_NAME);
+			testFile = FileUtil.getProcessingDir(SftpTestConstants.TEST_NODE,
+					SftpTestConstants.TEST_ID, TEST_PROCESS_NAME);
 		}catch(ReportManagerException e){
 			fail("An error occurred while creating the test staging " +
 					"directory: " + e.getMessage());
@@ -89,7 +90,10 @@ public class UtilityTest extends ReportManagerTest{
 		
 		File file = new File(
 				Utility.getAbsolutePath(TestConstants.TEST_STAGING_DIR) + 
-				File.separator + LogsManager.OUTPUT_DIR_NAME);
+				File.separator + Processor.DIR_NAME +
+				File.separator + SftpTestConstants.TEST_NODE + 
+				File.separator + SftpTestConstants.TEST_ID +
+				File.separator + TEST_PROCESS_NAME);
 		
 		assertTrue("The test directory was not created", file.exists());
 		assertEquals("The test directory was not created at the correct location",

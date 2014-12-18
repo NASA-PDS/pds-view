@@ -53,7 +53,7 @@ public class LogReformatProcessor implements Processor{
 	private Vector<HashMap<String, String>> outputMetaPattern = null;
 
 	@Override
-	public void process(File in) throws ProcessingException{
+	public void process(File in, File out) throws ProcessingException{
 		// TODO Auto-generated method stub
 		
 	}

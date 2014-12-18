@@ -19,6 +19,7 @@ import gov.nasa.pds.report.util.Utility;
 public class RingsDecryptionProcessorTest extends ReportManagerTest{
 	
 	private File testDir = null;
+	private File outputDir = null;
 	RingsDecryptionProcessor processor = null;
 	
 	@Rule
@@ -29,41 +30,38 @@ public class RingsDecryptionProcessorTest extends ReportManagerTest{
 		this.processor = new RingsDecryptionProcessor();
 		this.testDir = new File(TestConstants.TEST_STAGING_DIR,
 				"rings-decrypt-test");
+		this.outputDir = new File(TestConstants.TEST_STAGING_DIR,
+				"rings-decrypt-test-output");
 		FileUtils.forceMkdir(this.testDir);
 		FileUtils.copyFileToDirectory(
 				new File(TestConstants.TEST_DIR_RELATIVE, 
 				"rings-pds-rings-apache2.2014-10-01.tar.gz"),
 				this.testDir);
+		this.outputDir.mkdirs();
 	}
 	
 	@After
 	public void tearDown() throws Exception {
 		FileUtils.forceDelete(this.testDir);
+		FileUtils.forceDelete(this.outputDir);
 	}
 	
 	@Test
 	public void testNominal(){
 		
-		File outputDir = null;
-		
 		// Run the processor and get the output directory
 		try{
-			this.processor.process(this.testDir);
-			outputDir = Utility.getStagingDir(this.testDir,
-					this.processor.getDirName());
+			this.processor.process(this.testDir, this.outputDir);
 		}catch(ProcessingException e){
 			fail("An error occurred during the nominal rings log decryption " +
 					"test: " + e.getMessage());
-		}catch(ReportManagerException e){
-			fail("An error occurred while fetching the output directory: " + 
-					e.getMessage());
 		}
 		
 		// Verify that the output directory was created and the test file was
 		// properly processed
 		assertTrue("The output directory was not created by the rings " +
-				"decryption processor", outputDir.exists());
-		File outputFile = new File(outputDir,
+				"decryption processor", this.outputDir.exists());
+		File outputFile = new File(this.outputDir,
 				"rings-pds-rings-apache2.2014-10-01.txt");
 		assertTrue("The test rings tarball was not properly decrypted",
 				outputFile.exists());

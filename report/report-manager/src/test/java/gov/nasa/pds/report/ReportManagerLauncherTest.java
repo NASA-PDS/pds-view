@@ -65,7 +65,7 @@ public class ReportManagerLauncherTest extends ReportManagerTest {
 	@Test
 	public void testLoadConfiguration(){
 		
-		System.setProperty(Constants.STAGING_HOME_PROP,
+		System.setProperty(Constants.DIR_ROOT_PROP,
 				TestConstants.TEST_STAGING_DIR);
 		
 		Properties defaults = new Properties();
@@ -103,7 +103,7 @@ public class ReportManagerLauncherTest extends ReportManagerTest {
 		
 		assertEquals("The log staging home was overwritten while loading " +
 				"the Report Service configuration",
-				System.getProperty(Constants.STAGING_HOME_PROP),
+				System.getProperty(Constants.DIR_ROOT_PROP),
 				TestConstants.TEST_STAGING_DIR);
 		assertEquals("The profile home was changed during the Report " +
 				"Service configuration",

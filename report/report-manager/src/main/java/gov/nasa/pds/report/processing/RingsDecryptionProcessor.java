@@ -1,48 +1,43 @@
 package gov.nasa.pds.report.processing;
 
-import gov.nasa.pds.report.ReportManagerException;
-import gov.nasa.pds.report.util.Utility;
-import gov.nasa.pds.report.util.CommandLineWorker;
-
 import java.io.File;
 import java.util.Properties;
 import java.util.logging.Logger;
+import gov.nasa.pds.report.util.CommandLineWorker;
 
 public class RingsDecryptionProcessor implements Processor{
 
 	public static final String OUTPUT_DIR_NAME = "rings_decrypt";
 	
 	private static final String COMMAND = 
-			"dd if=<input> | openssl des3 -d -k FeeFieFoeRings | tar xzvf - -C <output>";
+			"dd if=<input> | openssl des3 -d -k FeeFieFoeRings | " +
+			"tar xzvf - -C <output>";
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	
 	@Override
-	public void process(File in) throws ProcessingException {
+	public void process(File in, File out) throws ProcessingException {
 		
 		if(in == null){
 			throw new ProcessingException("No input directory provided to " +
 					"find encrypted Rings logs");
+		}
+		if(out == null){
+			throw new ProcessingException("No output directory provided to " +
+					"store unencrypted Rings logs");
+		}else if(!out.exists()){
+			throw new ProcessingException("The output directory for Rings " +
+					"unencyption does not exist: " + out.getAbsolutePath());
 		}
 		
 		log.info("Decrypting Rings logs");
 		
 		// Get a list of files in the input directory
 		String[] filenames = in.list();
-		if(filenames == null){
+		if(filenames == null || filenames.length == 0){
 			log.warning("No Rings logs found in input directory " + 
 					in.getAbsolutePath());
 			return;
-		}
-		
-		// Get the output directory
-		File out = null;
-		try{
-			out = Utility.getStagingDir(in, OUTPUT_DIR_NAME);
-		}catch(ReportManagerException e){
-			throw new ProcessingException("An error occurred while creating " +
-					"the staging directory for Rings log files: " + 
-					e.getMessage());
 		}
 		
 		// Run the decryption command for each of the files

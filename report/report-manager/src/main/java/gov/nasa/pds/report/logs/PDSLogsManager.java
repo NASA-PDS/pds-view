@@ -8,6 +8,7 @@ import gov.nasa.pds.report.logs.pushpull.PDSPull;
 import gov.nasa.pds.report.logs.pushpull.PDSPullImpl;
 import gov.nasa.pds.report.logs.pushpull.PushPullException;
 import gov.nasa.pds.report.util.DateLogFilter;
+import gov.nasa.pds.report.util.FileUtil;
 import gov.nasa.pds.report.util.Utility;
 
 import java.io.File;
@@ -45,11 +46,11 @@ public class PDSLogsManager implements LogsManager {
 			logPuller = this.getPdsPull(Utility.getNodePropsString(nodeProps,
 					Constants.NODE_XFER_TYPE_KEY, true));
 			
-			// Create staging directory
+			// Get staging directory
 			String nodeName = Utility.getNodePropsString(nodeProps,
 					Constants.NODE_NODE_KEY, true);
-			File stagingDir = Utility.getStagingDir(nodeName, profileID, 
-					OUTPUT_DIR_NAME);
+			File stagingDir = FileUtil.getDir(LogsManager.DIR_NAME, nodeName,
+					profileID);
 			
 			// Connect to the node machines
 			this.connect(nodeProps, logPuller);
