@@ -62,6 +62,9 @@ public class ReportManagerLauncher {
 	/** @see gov.nasa.pds.report.cli.options.Flag#FORCE_BACKUP **/
 	private boolean backupFlag;
 	
+	/** @see gov.nasa.pds.report.cli.options.Flag#CLEANUP **/
+	private boolean cleanupFlag;
+	
 	private ReportServiceManager rsMgr;
 	
 	/** The severity level to set for the tool. */
@@ -74,6 +77,7 @@ public class ReportManagerLauncher {
 		this.rebuildFlag = false;
 		this.reportFlag = false;
 		this.backupFlag = false;
+		this.cleanupFlag = false;
 		this.rsMgr = new ReportServiceManager();
 		this.severityLevel = ToolsLevel.INFO;
 	}
@@ -189,6 +193,8 @@ public class ReportManagerLauncher {
 				this.reportFlag = true;
 			} else if (o.getOpt().equals(Flag.FORCE_BACKUP.getShortName())) {
 				this.backupFlag = true;
+			} else if (o.getOpt().equals(Flag.CLEANUP.getShortName())) {
+				this.cleanupFlag = true;
 			}
 		}
 	}
@@ -265,7 +271,9 @@ public class ReportManagerLauncher {
 		}
 		
 		// Clean-up logs
-		
+		if(this.cleanupFlag){
+			this.rsMgr.cleanup();
+		}
 		
 	}
 	

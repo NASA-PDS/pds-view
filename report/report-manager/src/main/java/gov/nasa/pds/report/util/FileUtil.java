@@ -5,6 +5,7 @@ import gov.nasa.pds.report.constants.Constants;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -186,6 +187,57 @@ public class FileUtil {
 			throw new ReportManagerException("An error occurred while " +
 					"backing up logs from profile " + profileID + ": " +
 					e.getMessage());
+		}
+		
+	}
+	
+	/**
+	 * Delete all files under the given directory
+	 * 
+	 * @param dir	The directory under which all files will be deleted
+	 */
+	public static void cleanupLogs(File dir){
+		
+		for(File f: dir.listFiles()){
+			if(f.isDirectory()){
+				cleanupLogs(f);
+			}else{
+				try{
+					log.finest("Cleaning out log " + f.getName());
+					FileUtils.forceDelete(f);
+				}catch(IOException e){
+					log.warning("An error occurred while cleaning up log " + 
+							f.getName() + ": " + e.getMessage());
+				}
+			}
+		}
+		
+	}
+	
+	/**
+	 * Delete all files under the given directory that are past a given age
+	 * 
+	 * @param dir	The directory under which all old files will be deleted
+	 * @param age	The maximum age (number of milliseconds passed the Epoch)
+	 * 				of files that will be deleted
+	 */
+	public static void cleanupOldLogs(File dir, long age){
+		
+		for(File f: dir.listFiles()){
+			if(f.isDirectory()){
+				cleanupOldLogs(f, age);
+			}else{
+				if(f.lastModified() < age){
+					try{
+						log.fine("Cleaning out old log " + f.getName());
+						FileUtils.forceDelete(f);
+					}catch(IOException e){
+						log.warning("An error occurred while cleaning up " +
+								"old log " + f.getName() + ": " +
+								e.getMessage());
+					}
+				}
+			}
 		}
 		
 	}

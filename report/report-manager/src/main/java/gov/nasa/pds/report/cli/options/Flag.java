@@ -49,9 +49,14 @@ public enum Flag {
 	ID_PATTERN("i", "id-pattern", "pattern", String.class,
 			"Only operate on profiles with an ID that matches the given RE " +
 			"pattern"),
-			
+	
+	/** Flag to force a backup of logs in staging */
 	FORCE_BACKUP("b", "backup",
 			"Force a backup of all logs in the staging directory"), 
+	
+	/** Flag to cleanup logs in staging and old logs in final and backup */
+	CLEANUP("c", "cleanup",
+			"Cleanup logs in staging and old logs in final and backup"),
 			
 	/** Flags to filter log files by date specified in log filename */
 	FROM_DATE("f", "from", "from_date", String.class,

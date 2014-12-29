@@ -48,15 +48,23 @@ public abstract class Constants {
 	
 	// The key for the system property that specifies the root of the
 	// directory tree where profiles are stored
-	public static final String PROFILE_HOME_PROP = "gov.nasa.pds.report.profile.dir";
+	public static final String PROFILE_HOME_PROP =
+			"gov.nasa.pds.report.profile.dir";
 	
 	// The key for the system property that specifies the directory where the
 	// Sawmill executable resides
-	public static final String SAWMILL_HOME_PROP = "gov.nasa.pds.report.sawmill.home";
+	public static final String SAWMILL_HOME_PROP =
+			"gov.nasa.pds.report.sawmill.home";
 	
 	// The key for the system property that specifies how many milliseconds to
 	// wait before timing out a job run on the command line
-	public static final String COMMANDLINE_TIMEOUT_PROP = "gov.nasa.pds.report.commandline.timeout";
+	public static final String COMMANDLINE_TIMEOUT_PROP =
+			"gov.nasa.pds.report.commandline.timeout";
+	
+	// The key for the system property that specifies how old a file should be
+	// (in milliseconds) before we no longer hold on to it
+	public static final String LOG_AGE_PROP = "gov.nasa.pds.report.log.age";
+	
 
 	// ------------------------------------------------------------------------
 	// Major directories in the directory tree

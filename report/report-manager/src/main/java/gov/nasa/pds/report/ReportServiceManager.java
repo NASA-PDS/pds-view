@@ -266,6 +266,20 @@ public class ReportServiceManager {
 			
 		}
 		
+		// Remove the processing directory--nobody must find the evidence!
+		File processingDir = new File(
+				System.getProperty(Constants.DIR_ROOT_PROP),
+				Constants.PROCESSING_DIR);
+		if(processingDir.exists()){
+			log.fine("Removing processing directory");
+			try{
+				FileUtils.forceDelete(processingDir);
+			}catch(IOException e){
+				log.warning("An error occurred while removing the processing " +
+						"directory: " + e.getMessage());
+			}
+		}
+		
 	}
 	
 	/**
@@ -396,6 +410,28 @@ public class ReportServiceManager {
 			
 		}
 		
+	}
+	
+	/**
+	 * Remove all logs from the staging directory and any old logs from final
+	 * and backup
+	 */
+	public void cleanup(){
+		
+		log.info("Cleaning out logs under staging");
+		FileUtil.cleanupLogs(new File(
+				System.getProperty(Constants.DIR_ROOT_PROP),
+				Constants.STAGING_DIR));
+		
+		log.info("Cleaning out old logs under final and backup");
+		long age = System.currentTimeMillis() -
+				Long.parseLong(System.getProperty(Constants.LOG_AGE_PROP));
+		FileUtil.cleanupOldLogs(new File(
+				System.getProperty(Constants.DIR_ROOT_PROP),
+				Constants.SAWMILL_DIR), age);
+		FileUtil.cleanupOldLogs(new File(
+				System.getProperty(Constants.DIR_ROOT_PROP),
+				Constants.BACKUP_DIR), age);
 		
 	}
 	
