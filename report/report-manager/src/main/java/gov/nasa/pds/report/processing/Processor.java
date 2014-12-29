@@ -6,12 +6,6 @@ import java.util.Properties;
 public interface Processor{
 	
 	/**
-	 * The name of the directory under the root directory that contains
-	 * processing output.
-	 */
-	public static final String DIR_NAME = "processing";
-	
-	/**
 	 * Process the files in the input directory and place them in the output
 	 * directory.  The process performed will vary based on the implementation
 	 * and the output will be placed in a sibling directory.  The name of that

@@ -72,7 +72,7 @@ public class ReportServiceManager {
 	
 	public void createStagingDirTree() throws ReportManagerException{
 		
-		FileUtil.createDirTree(this.propsList, LogsManager.DIR_NAME);
+		FileUtil.createDirTree(this.propsList, Constants.STAGING_DIR);
 		
 	}
 	
@@ -215,7 +215,7 @@ public class ReportServiceManager {
 				// logs downloaded using the current profile.  When a Processor
 				// finishes, this File is set to the directory containing its
 				// output.
-				File mostProcessed = FileUtil.getDir(LogsManager.DIR_NAME,
+				File mostProcessed = FileUtil.getDir(Constants.STAGING_DIR,
 						nodeName, profileID);
 			
 				// Iterate through each of the Processors specified in the
@@ -242,7 +242,7 @@ public class ReportServiceManager {
 				// TODO: Compare checksums to see if files have been changed
 				// and see if the source file has a newer date than the copy
 				// at the destination before copying
-				File sawmillDir = FileUtil.getDir(SawmillClient.DIR_NAME,
+				File sawmillDir = FileUtil.getDir(Constants.SAWMILL_DIR,
 						nodeName, profileID);
 				log.fine("Copying processed logs from " +
 						mostProcessed.getAbsolutePath() + " to " +
@@ -260,7 +260,7 @@ public class ReportServiceManager {
 						": " + e.getMessage());
 			}catch(IOException e){
 				log.warning("An error occurred while copying logs into " +
-						SawmillClient.DIR_NAME + " directory tree: " +
+						Constants.SAWMILL_DIR + " directory tree: " +
 						e.getMessage());
 			}
 			
@@ -371,6 +371,31 @@ public class ReportServiceManager {
 			}
 				
 		}
+		
+	}
+	
+	/**
+	 * Backup the contents of the staging directory
+	 */
+	public void backupStaging(){
+		
+		log.info("Backing up logs in the staging directory");
+		
+		for(Properties props: this.propsList){
+			
+			String profileID = null;
+			try{
+				Utility.getNodePropsString(props, Constants.NODE_ID_KEY,
+						true);
+				FileUtil.backupDir(props, Constants.STAGING_DIR, 
+						Constants.BACKUP_DIR);
+			}catch(ReportManagerException e){
+				this.log.warning("An error occurred while backing up logs " +
+						"from " + profileID + ": " + e.getMessage());
+			}
+			
+		}
+		
 		
 	}
 	

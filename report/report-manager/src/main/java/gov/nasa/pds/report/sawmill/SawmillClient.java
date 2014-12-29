@@ -32,8 +32,6 @@ import java.util.logging.Logger;
  */
 public class SawmillClient {
 	
-	public static final String DIR_NAME = "final";
-	
 	private static final String SAWMILL_DATE_FORMAT = "dd/MMM/yyyy";
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());

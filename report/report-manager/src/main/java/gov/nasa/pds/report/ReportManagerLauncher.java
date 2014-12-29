@@ -44,20 +44,23 @@ public class ReportManagerLauncher {
 	private static Logger log = Logger.getLogger(ReportManagerLauncher.class
 			.getName());
 
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#PULL **/
+	/** @see gov.nasa.pds.report.cli.options.Flag#PULL **/
 	private boolean pullFlag;
 	
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#PROCESS_LOGS **/
+	/** @see gov.nasa.pds.report.cli.options.Flag#PROCESS_LOGS **/
 	private boolean processFlag;
 	
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#UPDATE_SAWMILL **/
+	/** @see gov.nasa.pds.report.cli.options.Flag#UPDATE_SAWMILL **/
 	private boolean updateFlag;
 	
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#REBUILD_SAWMILL **/
+	/** @see gov.nasa.pds.report.cli.options.Flag#REBUILD_SAWMILL **/
 	private boolean rebuildFlag;
 	
-	/** @see gov.nasa.pds.search.core.cli.options.Flag#SAWMILL_REPORTS **/
+	/** @see gov.nasa.pds.report.cli.options.Flag#SAWMILL_REPORTS **/
 	private boolean reportFlag;
+	
+	/** @see gov.nasa.pds.report.cli.options.Flag#FORCE_BACKUP **/
+	private boolean backupFlag;
 	
 	private ReportServiceManager rsMgr;
 	
@@ -70,6 +73,7 @@ public class ReportManagerLauncher {
 		this.updateFlag = false;
 		this.rebuildFlag = false;
 		this.reportFlag = false;
+		this.backupFlag = false;
 		this.rsMgr = new ReportServiceManager();
 		this.severityLevel = ToolsLevel.INFO;
 	}
@@ -183,6 +187,8 @@ public class ReportManagerLauncher {
 				this.rebuildFlag = true;
 			} else if (o.getOpt().equals(Flag.SAWMILL_REPORTS.getShortName())) {
 				this.reportFlag = true;
+			} else if (o.getOpt().equals(Flag.FORCE_BACKUP.getShortName())) {
+				this.backupFlag = true;
 			}
 		}
 	}
@@ -226,6 +232,13 @@ public class ReportManagerLauncher {
 		// Pull the logs if specified
 		if (this.pullFlag) {
 			this.rsMgr.pullLogs();
+			this.rsMgr.backupStaging();
+		}
+		
+		// Backup logs if we didn't already and if it was forced from the
+		// command-line
+		if( !this.pullFlag && this.backupFlag){
+			this.rsMgr.backupStaging();
 		}
 		
 		// Process the logs if specified
@@ -250,6 +263,9 @@ public class ReportManagerLauncher {
 		if(this.reportFlag){
 			this.rsMgr.generateReports();
 		}
+		
+		// Clean-up logs
+		
 		
 	}
 	

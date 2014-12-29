@@ -50,6 +50,9 @@ public enum Flag {
 			"Only operate on profiles with an ID that matches the given RE " +
 			"pattern"),
 			
+	FORCE_BACKUP("b", "backup",
+			"Force a backup of all logs in the staging directory"), 
+			
 	/** Flags to filter log files by date specified in log filename */
 	FROM_DATE("f", "from", "from_date", String.class,
 			"Only pull log files on or after the date specified with the " +

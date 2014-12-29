@@ -2,13 +2,18 @@ package gov.nasa.pds.report.util;
 
 import gov.nasa.pds.report.ReportManagerException;
 import gov.nasa.pds.report.constants.Constants;
-import gov.nasa.pds.report.processing.Processor;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
+
+import org.apache.commons.io.FileUtils;
 
 public class FileUtil {
+	
+	private static Logger log = Logger.getLogger(FileUtil.class.getName());
 	
 	/**
 	 * Create a directory tree with the given name directly under the root of
@@ -47,7 +52,7 @@ public class FileUtil {
 	
 	/**
 	 * Get a {@link File} object pointing to the directory under the 
-	 * staging home and create all directories and sub-directories as needed.
+	 * root directory and create all directories and sub-directories as needed.
 	 * The path to the directory will be 
 	 * DIR_ROOT/[dirname]/[node name]/[profile ID] 
 	 * 
@@ -109,7 +114,7 @@ public class FileUtil {
 		
 		File superDir = null;
 		try{
-			superDir = getDir(Processor.DIR_NAME, nodeName, profileID);
+			superDir = getDir(Constants.PROCESSING_DIR, nodeName, profileID);
 		}catch(ReportManagerException e){
 			throw new ReportManagerException("An error occurred while " +
 					"creating the super directory for processing directory " + 
@@ -130,6 +135,58 @@ public class FileUtil {
 		}
 		
 		return file;
+		
+	}
+	
+	/**
+	 * Backup a directory in the given source directory structure to a
+	 * location under the given destination directory structure.
+	 * 
+	 * @param p							The profile specifying the source
+	 * 									location
+	 * @param from						The source directory name
+	 * @param to						The destination directory name
+	 * @throws ReportManagerException	If the profile is incomplete or
+	 * 									parameters are missing
+	 */
+	public static void backupDir(Properties p, String from, String to)
+			throws ReportManagerException{
+		
+		String profileID = null;
+		try{
+			
+			profileID = Utility.getNodePropsString(p,
+					Constants.NODE_ID_KEY, true);
+			String nodeName = Utility.getNodePropsString(p,
+					Constants.NODE_NODE_KEY, true);
+			
+			File srcDir = getDir(from, nodeName, profileID);
+			File destDir = getDir(to, nodeName, profileID);
+			List<String> destFileList = Utility.getLocalFileList(
+					destDir.getAbsolutePath());
+			
+			for(File srcFile: srcDir.listFiles()){
+				String filename = srcFile.getName();
+				if(!destFileList.contains(filename)){
+					try{
+						FileUtils.copyFileToDirectory(srcFile, destDir);
+					}catch(IOException ex){
+						log.warning("An error occurred while backing up " + 
+								srcFile.getAbsolutePath() + " to " + 
+								destDir.getAbsolutePath() + ": " +
+								ex.getMessage());
+					}
+				}else{
+					log.finer(filename + " will not be copied to the backup " +
+							"directory since a copy is already there");
+				}
+			}
+			
+		}catch(ReportManagerException e){
+			throw new ReportManagerException("An error occurred while " +
+					"backing up logs from profile " + profileID + ": " +
+					e.getMessage());
+		}
 		
 	}
 

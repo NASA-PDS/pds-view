@@ -20,8 +20,10 @@ public abstract class Constants {
 	
 	public static final String CRYPT_PASSWORD = "report_service";
 	
-	// Variables used to define the keys that specify attributes of a node in
-	// a map
+	// ------------------------------------------------------------------------
+	// Node attribute keys
+	// ------------------------------------------------------------------------
+	
 	public static final String NODE_ID_KEY = "id";
 	public static final String NODE_NODE_KEY = "node";
 	public static final String NODE_HOST_KEY = "host";
@@ -35,6 +37,10 @@ public abstract class Constants {
 	public static final String NODE_SAWMILL_PROFILE = "sawmill_profile";
 	public static final String NODE_REPORT_LIST = "sawmill_report";
 	public static final String NODE_SAWMILL_OUTPUT = "sawmill_output";
+	
+	// ------------------------------------------------------------------------
+	// System properties defined in defaults file
+	// ------------------------------------------------------------------------
 	
 	// The key for the system property that specifies the root of the
 	// directory tree where logs are stored
@@ -51,5 +57,14 @@ public abstract class Constants {
 	// The key for the system property that specifies how many milliseconds to
 	// wait before timing out a job run on the command line
 	public static final String COMMANDLINE_TIMEOUT_PROP = "gov.nasa.pds.report.commandline.timeout";
+
+	// ------------------------------------------------------------------------
+	// Major directories in the directory tree
+	// ------------------------------------------------------------------------
+	
+	public static final String STAGING_DIR = "staging";
+	public static final String PROCESSING_DIR = "processing";
+	public static final String SAWMILL_DIR = "final";
+	public static final String BACKUP_DIR = "backup";
 	
 }

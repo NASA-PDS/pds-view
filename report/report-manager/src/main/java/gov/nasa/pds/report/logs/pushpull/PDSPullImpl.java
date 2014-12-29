@@ -169,12 +169,10 @@ public class PDSPullImpl implements PDSPull {
 			if(path.contains("*") || !this.sftpChannel.lstat(path).isDir()){
 				dirPath = Utility.getDirPath(path);
 			}
-			
+
+			List<String> localFileList = Utility.getLocalFileList(destination);
+
 			List<String> array = getFileList(path);
-
-			List<String> localFileList = new ArrayList<String>();
-			localFileList.addAll(Utility.getLocalFileList(destination));
-
 			for (String filename : array) {
 				if (!localFileList.contains(filename)) {
 					this.log.info("Transferring: "
@@ -187,7 +185,7 @@ public class PDSPullImpl implements PDSPull {
 					this.sftpChannel
 							.get(dirPath + "/" + filename, destination);
 				} else {
-					this.log.info(dirPath + "/" + filename
+					this.log.fine(dirPath + "/" + filename
 							+ " already exists in " + destination + "\n");
 				}
 			}

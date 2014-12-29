@@ -56,7 +56,7 @@ public class PDSLogsManagerTest extends PDSTest{
 	@After
 	public void tearDown() throws Exception {
 		FileUtils.forceDelete(FileUtil.getDir(
-				LogsManager.DIR_NAME,
+				Constants.STAGING_DIR,
 				props.getProperty(Constants.NODE_NODE_KEY),
 				props.getProperty(Constants.NODE_ID_KEY)));
 	}
@@ -70,7 +70,7 @@ public class PDSLogsManagerTest extends PDSTest{
 		// Grab some frequently used variables from the node properties
 		// to help keep code clean
 		File stagingFile = new File(TestConstants.TEST_STAGING_DIR + File.separator +
-				LogsManager.DIR_NAME + File.separator + 
+				Constants.STAGING_DIR + File.separator + 
 				props.getProperty(Constants.NODE_NODE_KEY) + File.separator +
 				props.getProperty(Constants.NODE_ID_KEY));
 		String hostname = props.getProperty(Constants.NODE_HOST_KEY);

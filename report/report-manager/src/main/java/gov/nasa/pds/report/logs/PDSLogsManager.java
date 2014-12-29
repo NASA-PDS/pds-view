@@ -49,7 +49,7 @@ public class PDSLogsManager implements LogsManager {
 			// Get staging directory
 			String nodeName = Utility.getNodePropsString(nodeProps,
 					Constants.NODE_NODE_KEY, true);
-			File stagingDir = FileUtil.getDir(LogsManager.DIR_NAME, nodeName,
+			File stagingDir = FileUtil.getDir(Constants.STAGING_DIR, nodeName,
 					profileID);
 			
 			// Connect to the node machines
