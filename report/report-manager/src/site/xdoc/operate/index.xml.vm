@@ -32,7 +32,7 @@
         <li><a href="#Tool_Execution">Tool Execution</a></li>
 	<ul>
 	  <li><a href="#Command-Line_Options">Command-Line Options</a></li>
-	  <li><a href="#Generate_Monthly_Metrics">Generate Monthly Metrics</a></li>
+	  <li><a href="#Usage">Usage</a></li>
 	</ul>
       </ul>
 
@@ -89,7 +89,7 @@ $ report-mgr -p -n img
 	<source>
 $ report-mgr -p -P -b -n rings
 	</source>
-	<p>To generate montly metrics for all nodes for a specific month, including pulling the logs as needed, processing, update the sawmill database, and generate the monthly reports, execute the following from the command-line:
+	<p>To generate montly metrics for all nodes for a specific month (-f and -t), including pulling the logs (-p)  as needed, processing the logs (-P), backup the original downloaded logs (-b), update the sawmill database (-u), and generate the monthly reports (-R), execute the following from the command-line:
         </p>
 	<source>
 $ report-mgr -b -p -P -R -u -f 12/01/2014 -t 12/31/2014
