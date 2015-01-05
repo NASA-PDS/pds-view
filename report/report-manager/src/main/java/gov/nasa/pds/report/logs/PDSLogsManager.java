@@ -43,8 +43,14 @@ public class PDSLogsManager implements LogsManager {
 			
 			// Create the proper PDSPull object that will pull logs from the
 			// node using the specified protocol
-			logPuller = this.getPdsPull(Utility.getNodePropsString(nodeProps,
-					Constants.NODE_XFER_TYPE_KEY, true));
+			String xferType = Utility.getNodePropsString(nodeProps,
+					Constants.NODE_XFER_TYPE_KEY, false);
+			if(xferType == null || xferType.trim().equals("")){
+				log.info("No logs will be pulled using profile " + profileID +
+						" since no transfer type is specified");
+				return;
+			}
+			logPuller = this.getPdsPull(xferType);
 			
 			// Get staging directory
 			String nodeName = Utility.getNodePropsString(nodeProps,
