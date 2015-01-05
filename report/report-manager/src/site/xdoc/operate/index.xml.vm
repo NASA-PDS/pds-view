@@ -32,7 +32,7 @@
         <li><a href="#Tool_Execution">Tool Execution</a></li>
 	<ul>
 	  <li><a href="#Command-Line_Options">Command-Line Options</a></li>
-	  <li><a href="#Pull_Logs">Pull Logs</a></li>
+	  <li><a href="#Generate_Monthly_Metrics">Generate Monthly Metrics</a></li>
 	</ul>
       </ul>
 
@@ -49,79 +49,53 @@
         </p>
 	<source>
 usage: report-mgr [options]
- -h,--help                              Display usage.
- -l,--log-file &lt;file name&gt;              Specify a log file name. Default is
-                                        standard out.
- -P,--cas_pp_port &lt;port&gt;                Port number to run CAS PushPull.
-                                        Default: 9999
- -p,--pull-logs                         Pull logs from remote sources.
- -r,--pushpull_properties &lt;file-path&gt;   File path to PushPull
-                                        push_pull_framework.properties file.
-                                        Default:
-                                        $REPORT_MGR_HOME/etc/push_pull_framework
-                                        .properties
- -s,--pushpull_specs &lt;file-path&gt;        File path to CAS PushPull Remote Sites
-                                        specification file. Default:
-                                        $REPORT_MGR_HOME/etc/conf/RemoteSpecs.xm
-                                        l
- -v,--verbose &lt;level&gt;                   Specify the severity level and above to
-                                        include in the log: (0=Debug, 1=Info,
-                                        2=Warning, 3=Error). Default is Info and
-                                        above (level 1).
- -V,--version                           Display application version.
+ -b,--backup                   Force a backup of all logs in the staging
+                               directory
+ -c,--cleanup                  Cleanup logs in staging and old logs in final and
+                               backup
+ -f,--from &lt;from_date&gt;         Only pull log files on or after the date
+                               specified with the format mm/dd/yyyy
+ -h,--help                     Display usage.
+ -i,--id-pattern &lt;pattern&gt;     Only operate on profiles with an ID that matches
+                               the given RE pattern
+ -n,--node-pattern &lt;pattern&gt;   Only operate on profiles with a node whose name
+                               matches the given RE pattern
+ -P,--process-logs             Process already downloaded logs
+ -p,--pull-logs                Pull logs from remote sources.
+ -r,--rebuild-sawmill          Rebuild the Sawmill DB
+ -R,--sawmill-reports          Generate Sawmill reports
+ -t,--to &lt;to_date&gt;             Only pull log files on or before the date
+                               specified with the format mm/dd/yyyy
+ -u,--update-sawmill           Update the Sawmill DB
+ -v,--verbose &lt;level&gt;          Specify the severity level and above to include
+                               in the log: (0=Debug, 1=Info, 2=Warning,
+                               3=Error). Default is Info and above (level 1).
+ -V,--version                  Display application version.
 	</source>
       </subsection>
 
-      <subsection name="Pull Logs">
-        <p>This section demonstrates how to configure and execute the tool to pull logs from remote sites. The examples below execute the tool via the batch/shell script.
-        </p>
-
-	<p><b>NOTE:</b>All machines using SFTP to retrieve logs requires a user to log in to the machine by hand to accept certificate prior to running the software. If this is not done beforehand, the software will fail.</p>
-
-	<p>First, you will need to configure the Apache PushPull software according to the destinations you want to pull from. The initial installation should contain configurations that should not require much modification.  However, there are a couple environment variables that need to be exported or the configurations need to be modified.</p>
-
-	<p>The following environment variables need to be added to the environment.  These examples assume the software is installated at <i>/usr/local/report-manager</i>:</p>
+      <subsection name="Usage">
+	<p>To pull logs from all nodes, execute the following from the command-line:</p>
 	<source>
-% export REPORT_MGR_HOME=/usr/local/report-manager
-% export LOGS_HOME=/my/log/home
+$ report-mgr -p
 	</source>
-	<p>The REPORT_MGR_HOME variable represents the installation home directory for the Report Manager software.  The LOGS_HOME variable represents the base directory were logs will be downloaded.  These variables can also be replaced by hand in the following files:</p>
-	<ul>
-	  <li>$REPORT_MGR_HOME/etc/push_pull_framework.properties</li>
-	  <li>$REPORT_MGR_HOME/etc/conf/RemoteSpecs.xml</li>
-	</ul>
 
-	<p>Assuming REPORT_MGR_HOME was set in the environment, and you would like to run the software on the default port, the following command will pull the logs based on your configurations:</p>
+	<p>To pull logs for a specific node (i.e. img), execute the following:</p>
 	<source>
-% report-mgr -p
-       </source>
-
-	<p>If REPORT_MGR_HOME and LOGS_HOME were replaced by hand in the configurations, and the environment variables were not set, you can run the software as follows to specify the properties, remote specs, and port:</p>
-	<source>
-% report-mgr -p -P 9999 -r /usr/local/report-manager/etc/push_pull_framework.properties -s /usr/local/report-manager/etc/conf/RemoteSpecs.xml
+$ report-mgr -p -n img
 	</source>
-	
-        <!--p>The following command demonstrates how to run the Update Tool to update all Sawmill profiles by downloading the remote logs and performing a Sawmill database update using all default settings.
+
+	<p>To pull and process logs, while also backing up the staging area (i.e. rings), run the following:</p>
+	<source>
+$ report-mgr -p -P -b -n rings
+	</source>
+	<p>To generate montly metrics for all nodes for a specific month, including pulling the logs as needed, processing, update the sawmill database, and generate the monthly reports, execute the following from the command-line:
         </p>
+	<source>
+$ report-mgr -b -p -P -R -u -f 12/01/2014 -t 12/31/2014
+	</source>
 
-        <source>
-% update-tool
-        </source>
-
-        <p>The following command demonstrates how to run the Update Tool with the output going to a log file, <i>log.txt</i> instead of standard out:
-        </p>
-
-        <source>
-% update-tool -l log.txt
-        </source>
-        
-        <p>The following command demonstrates how to run the Update Tool for a specified profile only, i.e. <i>img-web</i>:
-        </p>
-
-        <source>
-% update-tool -n img-web
-        </source-->
-      </subsection>
+	</subsection>
     </section>
   </body>
 </document>
