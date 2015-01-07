@@ -104,7 +104,7 @@ public class SawmillClient {
 		}
 		
 		String cmd = "-p " + profileName + " -a ect -rn " + reportName +
-				" -er -1 -od " + outputPath;
+				" -et true -er -1 -od " + outputPath;
 		this.runSawmillCommand(cmd);
 		
 	}
