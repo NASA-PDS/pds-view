@@ -35,10 +35,10 @@ _authorEmail = _valueFor('email', 'developer', pomDoc)
 # Maven-subservient, we should look it up by the parent pom description.  But screw that.
 parentPOM = os.path.join(os.path.dirname(__file__), '..', 'pom.xml')
 if os.path.isfile(parentPOM):
-    pomDoc = xml.dom.minidom.parse(os.path.join(os.path.dirname(__file__), '..', 'pom.xml'))
+    pomDoc = xml.dom.minidom.parse(parentPOM)
     _version = _valueFor('version', 'project', pomDoc)
 else:
-    _version = '1.5.0'
+    _version = '1.8.0'
 
 
 # Package data
