@@ -41,6 +41,8 @@ _testData = {
     'extrinsics/logicals/bacon':            '{"start":null,"numFound":null,"results":[%s]}' % _exts['bacon'],
     'extrinsics/logicals/bacon/earliest':   _exts['bacon'],
     'extrinsics/logicals/bacon/latest':     _exts['bacon'],
+    'extrinsics?lid=bacon&versionName=1.0': '{"start":1,"numFound":1,"results":[%s]}' % _exts['bacon'],
+    'extrinsics?versionName=1.0&lid=bacon': '{"start":1,"numFound":1,"results":[%s]}' % _exts['bacon'],
     'services':                  '{"start":1,"numFound":3,"results":[%s,%s,%s]}' % (_svcs['lush'], _svcs['insult'], _svcs['pds']),
     'services?start=1&rows=1':   '{"start":1,"numFound":3,"results":[%s]}' % _svcs['lush'],
     'services?start=1&rows=2':   '{"start":1,"numFound":3,"results":[%s,%s]}' % (_svcs['lush'], _svcs['insult']),
