@@ -200,6 +200,20 @@ class PDSRegistryClient(object):
         '''
         answer = self._callServer('/extrinsics', dict(start=start+1, rows=rows)) # Why is it one-based indexing? Lame.
         return [self._createExtrinsic(i) for i in answer.get('results', [])]
+    def getExtrinsicByLidvid(self, lidvid):
+        '''Retrieve an extrinsic given a ``lidvid``, which is a string of the form ``LOGICAL-ID::VERSION-NAME``.
+
+        >>> import pds.registry.net.tests.base
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> extrinsic = rs.getExtrinsicByLidvid('bacon::1.0')
+        >>> extrinsic.lid, extrinsic.versionName
+        (u'bacon', u'1.0')
+        '''
+        lid, vid = lidvid.split('::')
+        answer = self._callServer('/extrinsics', dict(lid=lid, versionName=vid))
+        if answer.get('numFound', 0) == 0:
+            return None
+        return self._createExtrinsic(answer['results'][0])
     def getService(self, guid):
         '''Retrieve a service with a known ``guid``, or None if ``guid`` is not found.
         
