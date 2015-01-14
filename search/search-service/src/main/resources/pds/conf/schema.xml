@@ -502,12 +502,71 @@
    <field name="agency_name" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="alternate_title" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="archive_status" type="lowercase" indexed="true" stored="true" multiValued="false" />
+   
+	<field name="attribute_name" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_version_id" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_class_name" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_local_identifier" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_steward_id" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_type" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_namespace_id" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_nillable_flag" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_submitter_name" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_definition" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_comment" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_registered_by" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_registration_authority_id" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_concept" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_term_entry_name" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_term_entry_definition" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_term_entry_language" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_term_entry_preferred_flag" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_enumeration_flag" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_value_data_type" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_formation_rule" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_minimum_characters" type="int" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_maximum_characters" type="int" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_minimum_value" type="float" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_maximum_value" type="float" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_pattern" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_unit_of_measure_type" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_conceptual_domain" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_specified_unit_id" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_value" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_value_meaning" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_value_begin_date" type="date" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_value_end_date" type="date" indexed="true" stored="true" multiValued="true" />
+	
    <field name="bundle_type" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="bundle_description" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="citation_author_list" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="citation_editor_list" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="citation_keyword" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
    <field name="citation_publication_year" type="text_en_splitting_tight" indexed="false" stored="true" multiValued="true" />
+  
+	<field name="class_name" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="class_version_id" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="class_local_identifier" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="class_steward_id" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="class_type" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="class_namespace_id" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="class_submitter_name" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="class_definition" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="class_comment" type="text_general" indexed="true" stored="true" multiValued="false" />
+    <field name="class_registered_by" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="class_registration_authority_id" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="class_abstract_flag" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="class_element_flag" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="class_association_local_identifier" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="class_association_reference_type" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="class_association_minimum_occurrences" type="int" indexed="true" stored="true" multiValued="true" />
+	<field name="class_association_maximum_occurrences" type="int" indexed="true" stored="true" multiValued="true" />
+	<field name="class_association_constant_value" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="class_term_entry_name" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="class_term_entry_definition" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="class_term_entry_language" type="text_general" indexed="true" stored="true" multiValued="true" />
+	<field name="class_term_entry_preferred_flag" type="text_general" indexed="true" stored="true" multiValued="true" />
+
    <field name="collection_name" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
    <field name="collection_type" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
    <field name="confidence_level_note" type="text_general" indexed="false" stored="true" multiValued="true" />
