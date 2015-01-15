@@ -768,6 +768,7 @@
       <str name="fq">-data_product_type:Product_Observational</str>
       <str name="fq">-data_product_type:Agency AND -data_product_type:Facility AND -data_product_type:Node AND -data_product_type:Other AND -data_product_type:PDS_Affiliate AND -data_product_type:PDS_Guest AND -data_product_type:Telescope</str>
       <str name="fq">-resource_type:Information.Science_Portal</str>
+      <str name="fq">-objectType:Product_Attribute_Definition AND -objectType:Product_Class_Definition</str>
       <str name="bq">data_product_type:Product_Context_Search_Tool^100</str>
       <str name="bq">data_product_type:Resource^10</str>
     </lst>
@@ -796,6 +797,7 @@
       <str name="fq">pds_model_version:PDS4</str>
       <str name="fq">-data_product_type:Agency AND -data_product_type:Facility AND -data_product_type:Node AND -data_product_type:Other AND -data_product_type:PDS_Affiliate AND -data_product_type:PDS_Guest AND -data_product_type:Telescope</str>
       <str name="fq">-resource_type:Information.Science_Portal</str>
+      <str name="fq">-objectType:Product_Attribute_Definition AND -objectType:Product_Class_Definition</str>
       <str name="bq">data_product_type:Product_Collection^10</str>
       <str name="bq">data_product_type:Product_Bundle^10</str>
       <str name="bq">data_product_type:Resource^100</str>

@@ -502,7 +502,8 @@
    <field name="agency_name" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="alternate_title" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="archive_status" type="lowercase" indexed="true" stored="true" multiValued="false" />
-   
+	   
+    <!-- Product_Attribute_Definition fields -->
 	<field name="attribute_name" type="text_general" indexed="true" stored="true" multiValued="false" />
 	<field name="attribute_version_id" type="text_general" indexed="true" stored="true" multiValued="false" />
 	<field name="attribute_class_name" type="text_general" indexed="true" stored="true" multiValued="false" />
@@ -536,7 +537,8 @@
 	<field name="attribute_value_domain_value_meaning" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="attribute_value_domain_value_begin_date" type="date" indexed="true" stored="true" multiValued="true" />
 	<field name="attribute_value_domain_value_end_date" type="date" indexed="true" stored="true" multiValued="true" />
-	
+	<!-- End Product_Attribute_Definition fields -->
+    
    <field name="bundle_type" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="bundle_description" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="citation_author_list" type="text_general" indexed="false" stored="true" multiValued="true" />
@@ -544,6 +546,7 @@
    <field name="citation_keyword" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
    <field name="citation_publication_year" type="text_en_splitting_tight" indexed="false" stored="true" multiValued="true" />
   
+    <!-- Product_Class_Definition fields -->
 	<field name="class_name" type="text_general" indexed="true" stored="true" multiValued="false" />
 	<field name="class_version_id" type="text_general" indexed="true" stored="true" multiValued="false" />
 	<field name="class_local_identifier" type="text_general" indexed="true" stored="true" multiValued="false" />
@@ -566,7 +569,8 @@
 	<field name="class_term_entry_definition" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="class_term_entry_language" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="class_term_entry_preferred_flag" type="text_general" indexed="true" stored="true" multiValued="true" />
-
+    <!-- End Product_Class_Definition fields -->
+    
    <field name="collection_name" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
    <field name="collection_type" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
    <field name="confidence_level_note" type="text_general" indexed="false" stored="true" multiValued="true" />
