@@ -504,14 +504,10 @@
    <field name="archive_status" type="lowercase" indexed="true" stored="true" multiValued="false" />
 	   
     <!-- Product_Attribute_Definition fields -->
-	<field name="attribute_name" type="text_general" indexed="true" stored="true" multiValued="false" />
-	<field name="attribute_version_id" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_name" type="string" indexed="true" stored="true" multiValued="false" />
 	<field name="attribute_class_name" type="text_general" indexed="true" stored="true" multiValued="false" />
-	<field name="attribute_local_identifier" type="text_general" indexed="true" stored="true" multiValued="false" />
-	<field name="attribute_steward_id" type="text_general" indexed="true" stored="true" multiValued="false" />
-	<field name="attribute_type" type="text_general" indexed="true" stored="true" multiValued="false" />
-	<field name="attribute_namespace_id" type="text_general" indexed="true" stored="true" multiValued="false" />
-	<field name="attribute_nillable_flag" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_local_identifier" type="string" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_type" type="string" indexed="true" stored="true" multiValued="false" />
 	<field name="attribute_submitter_name" type="text_general" indexed="true" stored="true" multiValued="false" />
 	<field name="attribute_definition" type="text_general" indexed="true" stored="true" multiValued="false" />
 	<field name="attribute_comment" type="text_general" indexed="true" stored="true" multiValued="false" />
@@ -521,14 +517,12 @@
 	<field name="attribute_term_entry_name" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="attribute_term_entry_definition" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="attribute_term_entry_language" type="text_general" indexed="true" stored="true" multiValued="true" />
-	<field name="attribute_term_entry_preferred_flag" type="text_general" indexed="true" stored="true" multiValued="true" />
-	<field name="attribute_value_domain_enumeration_flag" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="attribute_value_domain_value_data_type" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="attribute_value_domain_formation_rule" type="text_general" indexed="true" stored="true" multiValued="true" />
-	<field name="attribute_value_domain_minimum_characters" type="int" indexed="true" stored="true" multiValued="true" />
-	<field name="attribute_value_domain_maximum_characters" type="int" indexed="true" stored="true" multiValued="true" />
-	<field name="attribute_value_domain_minimum_value" type="float" indexed="true" stored="true" multiValued="true" />
-	<field name="attribute_value_domain_maximum_value" type="float" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_minimum_characters" type="string" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_maximum_characters" type="string" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_minimum_value" type="string" indexed="true" stored="true" multiValued="true" />
+	<field name="attribute_value_domain_maximum_value" type="string" indexed="true" stored="true" multiValued="true" />
 	<field name="attribute_value_domain_pattern" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="attribute_value_domain_unit_of_measure_type" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="attribute_value_domain_conceptual_domain" type="text_general" indexed="true" stored="true" multiValued="true" />
@@ -543,23 +537,18 @@
    <field name="bundle_description" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="citation_author_list" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="citation_editor_list" type="text_general" indexed="false" stored="true" multiValued="true" />
-   <field name="citation_keyword" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
-   <field name="citation_publication_year" type="text_en_splitting_tight" indexed="false" stored="true" multiValued="true" />
+   <field name="citation_keyword" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
+   <field name="citation_publication_year" type="string" indexed="false" stored="true" multiValued="true" />
   
     <!-- Product_Class_Definition fields -->
 	<field name="class_name" type="text_general" indexed="true" stored="true" multiValued="false" />
-	<field name="class_version_id" type="text_general" indexed="true" stored="true" multiValued="false" />
-	<field name="class_local_identifier" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="class_local_identifier" type="string" indexed="true" stored="true" multiValued="false" />
 	<field name="class_steward_id" type="text_general" indexed="true" stored="true" multiValued="false" />
 	<field name="class_type" type="text_general" indexed="true" stored="true" multiValued="false" />
-	<field name="class_namespace_id" type="text_general" indexed="true" stored="true" multiValued="false" />
 	<field name="class_submitter_name" type="text_general" indexed="true" stored="true" multiValued="false" />
 	<field name="class_definition" type="text_general" indexed="true" stored="true" multiValued="false" />
 	<field name="class_comment" type="text_general" indexed="true" stored="true" multiValued="false" />
     <field name="class_registered_by" type="text_general" indexed="true" stored="true" multiValued="false" />
-	<field name="class_registration_authority_id" type="text_general" indexed="true" stored="true" multiValued="false" />
-	<field name="class_abstract_flag" type="text_general" indexed="true" stored="true" multiValued="false" />
-	<field name="class_element_flag" type="text_general" indexed="true" stored="true" multiValued="false" />
 	<field name="class_association_local_identifier" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="class_association_reference_type" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="class_association_minimum_occurrences" type="int" indexed="true" stored="true" multiValued="true" />
@@ -568,11 +557,10 @@
 	<field name="class_term_entry_name" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="class_term_entry_definition" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="class_term_entry_language" type="text_general" indexed="true" stored="true" multiValued="true" />
-	<field name="class_term_entry_preferred_flag" type="text_general" indexed="true" stored="true" multiValued="true" />
     <!-- End Product_Class_Definition fields -->
     
-   <field name="collection_name" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
-   <field name="collection_type" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
+   <field name="collection_name" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
+   <field name="collection_type" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
    <field name="confidence_level_note" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="data_class" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="data_object_type" type="lowercase" indexed="true" stored="true" multiValued="true"/>
@@ -592,15 +580,14 @@
    <field name="file_ref_name" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="person_name" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_description" type="text_general" indexed="false" stored="true" multiValued="true" />
-   <field name="instrument_host_id" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_host_name" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_host_serial_number" type="lowercase" indexed="false" stored="true" multiValued="true" />
-   <field name="instrument_host_type" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_host_type" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_name" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_serial_number" type="lowercase" indexed="false" stored="true" multiValued="true" />
-   <field name="instrument_type" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
-   <field name="investigation_name" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
-   <field name="investigation_name_or_alias" type="text_en_splitting_tight" indexed="false" stored="true" multiValued="true" />
+   <field name="instrument_type" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
+   <field name="investigation_name" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
+   <field name="investigation_name_or_alias" type="text_en_splitting" indexed="false" stored="true" multiValued="true" />
    <field name="investigation_objectives_summary" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="investigation_start_date" type="date" indexed="true" stored="true" multiValued="true" />
    <field name="investigation_stop_date" type="date" indexed="true" stored="true" multiValued="true" />
@@ -608,25 +595,24 @@
    <field name="language" type="text_en_splitting_tight" indexed="false" stored="true" multiValued="true" />
    <field name="modification_date" type="date" indexed="false" stored="true" multiValued="true" />
    <field name="modification_description" type="text_general" indexed="false" stored="true" multiValued="true" />
-   <field name="nssdc_data_set_id" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="objectType" type="lowercase" indexed="true" stored="true" multiValued="false" />
    <field name="observation_local_mean_solar_time" type="string" indexed="false" stored="true" multiValued="true" />
    <field name="observation_local_true_solar_time" type="string" indexed="false" stored="true" multiValued="true" />
    <field name="observation_solar_longitude" type="float" indexed="false" stored="true" multiValued="true" />
    <field name="observation_start_date_time" type="date" indexed="true" stored="true" multiValued="true" />
    <field name="observation_stop_date_time" type="date" indexed="true" stored="true" multiValued="true" />
-   <field name="observing_system_name" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
-   <field name="observing_system_component_name" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
-   <field name="observing_system_component_type" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
+   <field name="observing_system_name" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
+   <field name="observing_system_component_name" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
+   <field name="observing_system_component_type" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
    <field name="pds_model_version" type="lowercase" indexed="true" stored="true" multiValued="false" />
-   <field name="primary_result_purpose" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
-   <field name="primary_result_processing_level" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
-   <field name="primary_result_wavelength_range" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
-   <field name="primary_result_domain" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
-   <field name="primary_result_discipline_name" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
-   <field name="primary_body_name" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
-   <field name="product_class" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
-   <field name="publisher" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="true" />
+   <field name="primary_result_purpose" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
+   <field name="primary_result_processing_level" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
+   <field name="primary_result_wavelength_range" type="text_general" indexed="true" stored="true" multiValued="true" />
+   <field name="primary_result_domain" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
+   <field name="primary_result_discipline_name" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
+   <field name="primary_body_name" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
+   <field name="product_class" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="publisher" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="reference_description" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="resLocation" type="string" indexed="false" stored="true" multiValued="false" />
    <field name="resource" type="string" indexed="false" stored="true" multiValued="true" />
@@ -716,6 +702,7 @@
    <!--  Custom dynamic fields -->
    <dynamicField name="*_description" type="text_general" indexed="true" stored="true" multiValued="true" />
    <dynamicField name="*_id" type="lowercase" indexed="true" stored="true" multiValued="true" />
+   <dynamicField name="*_flag" type="boolean" indexed="true" stored="true" multiValued="false" />
    <dynamicField name="*_ref" type="string" indexed="true" stored="true" multiValued="true" />
    <dynamicField name="*_url" type="string" indexed="false" stored="true" multiValued="true" />
 
