@@ -27,6 +27,9 @@
       <action dev="jpadams" type="update" issue="PDS-311">
         Renamed modify.xml to capitalize.xml since that is what it is used for. Updated the file references in the XSLTs. Added the new LADEE info.
       </action>
+      <action dev="jpadams" type="update" issue="PDS-335">
+	Update schema.xml to allow for new Attribute Definition and Class Definition fields. Updated solrconfig.xml to block these values from displaying the search ui.
+      </action>
     </release>
 
     <release version="1.5.0" date="2014-09-30" description="This release of the Search Core is a component of the integrated release 5.0.0 of the PDS4 System. This is an operational release of the system components to date.">
