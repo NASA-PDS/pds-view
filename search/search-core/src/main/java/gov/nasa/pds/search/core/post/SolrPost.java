@@ -241,7 +241,11 @@ public class SolrPost {
         	responseStream = Utility.execHttpRequest(httppost);
         	return verifyStatus(responseStream);
         } catch (IOException e) {
-        	throw new SolrPostException("Error with " + url + ": " + e.getMessage());
+            if (e.getMessage().trim().equals("Bad Request")) {
+                throw new SolrPostException("Bad Request Detected. Most likely a Solr schema.xml bug. Check $TOMCAT_HOME/logs/catalina.out for more info.");                
+            } else {
+                throw new SolrPostException("Error with " + url + ": " + e.getMessage());
+            }
         } finally {
         	try {
 				responseStream.close();

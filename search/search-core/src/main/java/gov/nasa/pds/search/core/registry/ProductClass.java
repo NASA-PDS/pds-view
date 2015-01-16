@@ -120,16 +120,17 @@ public class ProductClass {
 			
 			
 		// Create output directory
-		File registryOutputDir = createOutputDirectory();
+		File registryOutputDir = createOutputDirectory(this.product.getSpecification().getTitle());
 		
 		// Append registries from core config
 		this.registryHandler = getRegistryHandler(this.product);
 		
 		outSeqNum = getOutputSeqNumber(registryOutputDir);
 		
+		List<String> titleList = new ArrayList<String>();
 		XMLWriter writer;
 		try {
-			if (this.registryHandler.doPrimaryRegistriesExist()) {
+			if (this.registryHandler.doPrimaryRegistriesExist()) {    
 				// Map of field -> value
 				Map<String, List<String>> fieldMap = new HashMap<String, List<String>>();
 				
@@ -161,7 +162,7 @@ public class ProductClass {
 						writer.write();
 						
 						instkeys.add(searchExtrinsic.getLid());
-					    log.log(new ToolsLogRecord(ToolsLevel.DEBUG, "Completed: " + searchExtrinsic.getLid()));
+					    log.log(new ToolsLogRecord(ToolsLevel.INFO, "Completed: " + searchExtrinsic.getLid()));
 					    SearchCoreStats.numProducts++;
 					    writer = null;	// This may solve random anomalous issue with too many open files ?
 					}
@@ -234,11 +235,15 @@ public class ProductClass {
 	 * @return
 	 * @throws SearchCoreFatalException
 	 */
-	private File createOutputDirectory() throws SearchCoreFatalException {
+	private File createOutputDirectory(String dir) throws SearchCoreFatalException {
 		try {
-			File registryOutputDir = new File(this.outputDir, this.product.getSpecification().getTitle());
-			FileUtils.forceMkdir(registryOutputDir);
-			return registryOutputDir;
+		    if ((new File(this.outputDir + "/" + dir)).isDirectory()) {
+		        createOutputDirectory(dir + "x");
+		    }
+		    
+            File registryOutputDir = new File(this.outputDir, dir); 
+            FileUtils.forceMkdir(registryOutputDir);
+            return registryOutputDir;
 		} catch (IOException e) {
 		    log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage(),
 		    		this.outputDir + "/" + this.product.getSpecification().getTitle()));
@@ -421,7 +426,7 @@ public class ProductClass {
 			if (searchExt.slotIsAssociationReference(slotName)) {		// If slot is an association reference
 				if (!searchExt.hasValidAssociationValues()) {		// If associations have values not are not lidvids
 																	// We will have to make the lidvids for them
-					//Debugger.debug("-- INVALID ASSOCIATION VALUE FOUND for " + searchExt.getLid() + " - " + slotName);
+					Debugger.debug("-- INVALID ASSOCIATION VALUE FOUND for " + searchExt.getLid() + " - " + slotName);
 					List<String> newSlotValues = new ArrayList<String>();
 					ExtendedExtrinsicObject assocSearchExt;
 					for(String lid : slotValues) {

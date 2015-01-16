@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <product>
 	<specification>
-		<title>Attribute Definition</title>
+		<title>PDS3AttributeDefn</title>
 		<query>
 			<registryPath>objectType</registryPath>
 			<value>Product_Attribute_Definition</value>
@@ -19,7 +19,7 @@
 
         <!-- Default Fields - all products include these -->
         <field name="search_id" type="required">
-            <outputString format="text">pds4:{lid}</outputString>
+            <outputString format="text">pds3:{lid}</outputString>
         </field>
         <field name="identifier" type="required">
             <registryPath>lid</registryPath>

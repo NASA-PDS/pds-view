@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <product>
 	<specification>
-		<title>Attribute Definition</title>
+		<title>PDS4AttributeDefn</title>
 		<query>
 			<registryPath>objectType</registryPath>
 			<value>Product_Attribute_Definition</value>

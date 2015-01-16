@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <product>
 	<specification>
-		<title>Class Definition</title>
+		<title>PDS4ClassDefn</title>
 		<query>
 			<registryPath>objectType</registryPath>
 			<value>Product_Class_Definition</value>

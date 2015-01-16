@@ -46,7 +46,7 @@ public class ProductClassTest extends SearchCoreTest {
 	private ProductClass pc;
 
 	@Rule
-	public SingleTestRule test = new SingleTestRule("");
+	public SingleTestRule test = new SingleTestRule("testQueryPDS4Again");
 
 	@BeforeClass
 	public static void oneTimeSetUp() throws IOException {
@@ -234,5 +234,4 @@ public class ProductClassTest extends SearchCoreTest {
 			fail("PDS3 Query Test failed. See stack trace.");
 		}
 	}
-
 }

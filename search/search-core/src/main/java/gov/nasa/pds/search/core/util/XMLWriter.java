@@ -54,9 +54,9 @@ public class XMLWriter {
 	private static final ArrayList<String> BAD_VALUES_LIST = new ArrayList<String>();
 	
 	static {
-		BAD_VALUES_LIST.add("NULL");
-		BAD_VALUES_LIST.add("");
-		BAD_VALUES_LIST.add("UNK");
+		//BAD_VALUES_LIST.add("NULL");
+		//BAD_VALUES_LIST.add("");
+		//BAD_VALUES_LIST.add("UNK");
 	}
 
 	public XMLWriter(Map map, File basedir, int seq, String productTitle) {
@@ -91,13 +91,13 @@ public class XMLWriter {
 				valArray = (List) this.map.get(String.valueOf(name));
 				if (valArray != null) {
 					for (Object value : valArray) {
-						// log.info("name: "+name);
-						// log.info("value: "+value);
+						//Debugger.debug("name: "+name);
+						//Debugger.debug("value: "+value);
 						addElement(String.valueOf(name), String.valueOf(value));
 					}
-				} else {
-					addElement(String.valueOf(name), "");
-				}
+				} //else {
+					//addElement(String.valueOf(name), "");
+				//}
 			}
 
 			// set up transformer
@@ -138,36 +138,20 @@ public class XMLWriter {
 
 		tName = name.trim();
 		
-		if (BAD_VALUES_LIST.contains(value.toUpperCase())) {
-			tValue = MISSING_VALUE_REPLACEMENT;
-		} else {
-			tValue = value.trim();
-		}
+		//if (!BAD_VALUES_LIST.contains(value.toUpperCase())) {
+		    tValue = value.trim();
+	        Element element = doc.createElement(tName);
+	        this.classElement.appendChild(element);
+
+	        Text text = doc.createTextNode(tValue);
+	        element.appendChild(text);
+		//}
 
 		// Previous method used to encode only select HTML entities
 		//tName = repAllCharWStr(tName);
 		//tValue = repAllCharWStr(tValue);
 
-		Element element = doc.createElement(tName);
-		classElement.appendChild(element);
-
-		Text text = doc.createTextNode(tValue);
-		element.appendChild(text);
 	}
-
-	/**
-	 * Replace HTML entities & with &amp;, < with &lt;, > with &gt;, and " with
-	 * &quot;
-	 */
-	/*public String repAllCharWStr(String s1) {
-		String s2;
-
-		s2 = repCharWStr(remNull(s1), '&', "&amp;");
-		s2 = repCharWStr(s2, '<', "&lt;");
-		s2 = repCharWStr(s2, '>', "&gt;");
-		s2 = repCharWStr(s2, '\"', "&quot;");
-		return s2;
-	}*/
 
 	/**
 	 * Remove String Nulls

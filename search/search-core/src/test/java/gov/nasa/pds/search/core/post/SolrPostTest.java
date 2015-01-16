@@ -29,13 +29,13 @@ import org.junit.runners.JUnit4;
  * 
  */
 @RunWith(JUnit4.class)
-@Ignore
+@Ignore // Requires a localhost search service to be installed
 public class SolrPostTest extends SearchCoreTest {
 
 	private static SolrPost solrPost;
 
 	@Rule
-	public SingleTestRule test = new SingleTestRule("");
+	public SingleTestRule test = new SingleTestRule("testSolrIndex");
 
 	@BeforeClass
 	public static void oneTimeSetUp() throws Exception {
