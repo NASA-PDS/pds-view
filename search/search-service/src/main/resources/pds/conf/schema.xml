@@ -551,8 +551,8 @@
     <field name="class_registered_by" type="text_general" indexed="true" stored="true" multiValued="false" />
 	<field name="class_association_local_identifier" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="class_association_reference_type" type="text_general" indexed="true" stored="true" multiValued="true" />
-	<field name="class_association_minimum_occurrences" type="int" indexed="true" stored="true" multiValued="true" />
-	<field name="class_association_maximum_occurrences" type="int" indexed="true" stored="true" multiValued="true" />
+	<field name="class_association_minimum_occurrences" type="string" indexed="true" stored="true" multiValued="true" />
+	<field name="class_association_maximum_occurrences" type="string" indexed="true" stored="true" multiValued="true" />
 	<field name="class_association_constant_value" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="class_term_entry_name" type="text_general" indexed="true" stored="true" multiValued="true" />
 	<field name="class_term_entry_definition" type="text_general" indexed="true" stored="true" multiValued="true" />
