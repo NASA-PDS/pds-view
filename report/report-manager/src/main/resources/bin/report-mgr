@@ -64,3 +64,12 @@ fi
 	-Djava.util.logging.config.file=${LOG_PROPS} \
 	-jar ${REPORT_MGR_JAR} "$@"
 
+if [ -f report-mgr-sawmill ]; then
+
+	chmod +x report-mgr-sawmill
+	echo "Running Sawmill script:"
+	cat report-mgr-sawmill
+	./report-mgr-sawmill
+	rm report-mgr-sawmill
+
+fi

@@ -57,7 +57,7 @@ public class CommandLineWorker{
 			}
 			Integer exitValue = watcher.getExitValue();
 			if(exitValue != null){
-				if(this.debugMode || exitValue.intValue() != 0){
+				if(this.debugMode && exitValue.intValue() != 0){
 					for(String line = reader.readLine(); line != null; 
 							line = reader.readLine()){
 						System.out.println("Output from command: " + line);

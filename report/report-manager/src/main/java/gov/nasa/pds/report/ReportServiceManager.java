@@ -20,8 +20,9 @@ import gov.nasa.pds.report.processing.ProcessingException;
 import gov.nasa.pds.report.processing.Processor;
 import gov.nasa.pds.report.profile.ProfileManager;
 import gov.nasa.pds.report.profile.SimpleProfileManager;
-import gov.nasa.pds.report.sawmill.SawmillClient;
+import gov.nasa.pds.report.sawmill.PDSSawmillManager;
 import gov.nasa.pds.report.sawmill.SawmillException;
+import gov.nasa.pds.report.sawmill.SawmillManager;
 import gov.nasa.pds.report.util.FileUtil;
 import gov.nasa.pds.report.util.GenericReportServiceObjectFactory;
 import gov.nasa.pds.report.util.Utility;
@@ -32,7 +33,7 @@ public class ReportServiceManager {
 	
 	private LogsManager logsManager;
 	private ProfileManager profileManager;
-	private SawmillClient sawmillClient;
+	private SawmillManager sawmillManager;
 	
 	private List<Properties> propsList = null;
 	
@@ -48,7 +49,7 @@ public class ReportServiceManager {
 		this.logsManager = new PDSLogsManager();
 		this.profileManager = new SimpleProfileManager();
 		this.profileFilters = new HashMap<String, String>();
-		this.sawmillClient = new SawmillClient();
+		this.sawmillManager = new PDSSawmillManager();
 		
 	}
 	
@@ -304,15 +305,15 @@ public class ReportServiceManager {
 				sawmillProfile = Utility.getNodePropsString(props,
 						Constants.NODE_SAWMILL_PROFILE, true);
 				if(rebuild){
-					sawmillClient.buildDatabase(sawmillProfile);
+					this.sawmillManager.buildDatabase(sawmillProfile);
 				}else{
-					sawmillClient.updateDatabase(sawmillProfile);
+					this.sawmillManager.updateDatabase(sawmillProfile);
 				}
 			} catch (ReportManagerException e) {
 				try{
 					String profileName = Utility.getNodePropsString(props,
 							Constants.NODE_ID_KEY, false);
-					log.warning("Unable to obtain Samill profile name from " +
+					log.warning("Unable to obtain Sawmill profile name from " +
 							"profile " + profileName);
 				}catch(ReportManagerException ignore){
 					// This should not happen since we specified that the
@@ -376,14 +377,29 @@ public class ReportServiceManager {
 				// TODO: Make sure that we don't generate the same report more
 				// than once
 				try{
-					sawmillClient.generateReport(sawmillProfile, report.trim(),
-							outputPath);
+					this.sawmillManager.generateReport(sawmillProfile,
+							report.trim(), outputPath);
 				}catch(SawmillException e){
 					log.warning("An error occurred while generating the " +
 							"Sawmill report " + report + ": " + e.getMessage());
 				}
 			}
 				
+		}
+		
+	}
+	
+	/**
+	 * Output all Sawmill operation previously specified in a manner
+	 * determined by the implementation of SawmillInterface being used
+	 */
+	public void outputSawmillOps(){
+		
+		try{
+			this.sawmillManager.outputCommands();
+		}catch(SawmillException e){
+			log.warning("An error occurred while outputing Sawmill " +
+					"operations: " + e.getMessage());
 		}
 		
 	}

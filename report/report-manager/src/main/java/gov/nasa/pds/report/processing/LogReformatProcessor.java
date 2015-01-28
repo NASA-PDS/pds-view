@@ -72,7 +72,7 @@ public class LogReformatProcessor implements Processor{
 			String rawInputPattern =
 					Utility.getNodePropsString(props, INPUT_KEY, true);
 			String rawOutputPattern =
-				Utility.getNodePropsString(props, OUTPUT_KEY, true);
+					Utility.getNodePropsString(props, OUTPUT_KEY, true);
 			this.inputMetaPattern = processPattern(rawInputPattern);
 			this.outputMetaPattern = processPattern(rawOutputPattern);
 		}catch(ReportManagerException e){

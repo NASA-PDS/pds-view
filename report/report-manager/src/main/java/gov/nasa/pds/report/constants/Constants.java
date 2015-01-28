@@ -42,29 +42,35 @@ public abstract class Constants {
 	// System properties defined in defaults file
 	// ------------------------------------------------------------------------
 	
-	// The key for the system property that specifies the root of the
-	// directory tree where logs are stored
+	// The root of the directory tree where logs are stored
 	public static final String DIR_ROOT_PROP = "gov.nasa.pds.report.dir.root";
 	
-	// The key for the system property that specifies the root of the
-	// directory tree where profiles are stored
+	// The root of the directory tree where profiles are stored
 	public static final String PROFILE_HOME_PROP =
 			"gov.nasa.pds.report.profile.dir";
 	
-	// The key for the system property that specifies the directory where the
-	// Sawmill executable resides
+	// The directory where the Sawmill executable resides
 	public static final String SAWMILL_HOME_PROP =
 			"gov.nasa.pds.report.sawmill.home";
 	
-	// The key for the system property that specifies how many milliseconds to
-	// wait before timing out a job run on the command line
+	// How many milliseconds to wait before timing out a job run on the command
+	// line
 	public static final String COMMANDLINE_TIMEOUT_PROP =
 			"gov.nasa.pds.report.commandline.timeout";
 	
-	// The key for the system property that specifies how old a file should be
-	// (in milliseconds) before we no longer hold on to it
+	// How old a file should be (in milliseconds) before we no longer hold on
+	// to it
 	public static final String LOG_AGE_PROP = "gov.nasa.pds.report.log.age";
 	
+	// What SawmillInterface implementation to use to execute Sawmill
+	// operations
+	public static final String SAWMILL_INTERFACE_PROP =
+			"gov.nasa.pds.report.sawmill.interface";
+	
+	// Where the Sawmill script is written if SawmillScriptWriter is the
+	// SawmillInterface being used
+	public static final String SAWMILL_SCRIPT_PROP =
+			"gov.nasa.pds.report.sawmill.SawmillScriptWriter.output.location";
 
 	// ------------------------------------------------------------------------
 	// Major directories in the directory tree

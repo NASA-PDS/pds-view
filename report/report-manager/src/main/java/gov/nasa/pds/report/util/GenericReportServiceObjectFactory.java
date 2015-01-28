@@ -15,6 +15,7 @@
 package gov.nasa.pds.report.util;
 
 import gov.nasa.pds.report.processing.Processor;
+import gov.nasa.pds.report.sawmill.SawmillInterface;
 
 import java.util.logging.Logger;
 
@@ -39,6 +40,24 @@ public class GenericReportServiceObjectFactory{
 		}
 		
 		return p;
+		
+	}
+	
+	public static SawmillInterface getSawmillInterface(
+			String qualifiedClassName){
+		
+		SawmillInterface si = null;
+		
+		try{
+			si = (SawmillInterface)Class.forName(
+					qualifiedClassName).newInstance();
+		}catch(Exception e){
+			log.warning("An error occurred while creating an instance of " +
+					"Sawmill Interface " + qualifiedClassName + ": " +
+					e.getMessage());
+		}
+		
+		return si;
 		
 	}
 	

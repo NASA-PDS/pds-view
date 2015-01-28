@@ -270,6 +270,11 @@ public class ReportManagerLauncher {
 			this.rsMgr.generateReports();
 		}
 		
+		// Output all Sawmill operations
+		if(this.updateFlag || this.rebuildFlag || this.reportFlag){
+			this.rsMgr.outputSawmillOps();
+		}
+		
 		// Clean-up logs
 		if(this.cleanupFlag){
 			this.rsMgr.cleanup();
@@ -288,7 +293,7 @@ public class ReportManagerLauncher {
 	 * @throws ReportManagerException	If an error occurs while reading the
 	 * 									default file
 	 */
-	private void loadConfiguration(String defaultPath)
+	private static void loadConfiguration(String defaultPath)
 			throws ReportManagerException{
 		
 		if(defaultPath == null || defaultPath.equals("")){
@@ -390,8 +395,8 @@ public class ReportManagerLauncher {
 			System.exit(0);
 		}
 		try {
+			loadConfiguration(null);
 			ReportManagerLauncher launcher = new ReportManagerLauncher();
-			launcher.loadConfiguration(null);
 			CommandLine commandline = launcher.parse(args);
 			launcher.query(commandline);
 			launcher.execute();
