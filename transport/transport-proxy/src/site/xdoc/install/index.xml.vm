@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2012-2013, by the California Institute of Technology.
+  Copyright 2012-2015, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -105,20 +105,24 @@ or
     </section>
 
     <section name="Configuring the Application">
-      <p>The Transport Proxy web application provides the following parameters for configuration:
+      <p>The Transport Proxy web application can be configured via a set of servlet parameters as well as specifying the list of aliases for supported Transport Services.
       </p>
 
-      <table>
-        <tr><th>Parameter</th><th>Description</th></tr>
-        <tr><td>aliasFileSpec</td><td>The file specification for the <i>aliases.properties</i> file. This file maps the URNs of the Product Servers to their associated URLs. The default value specifies the version of this file that is included in the WAR.</td></tr>
-        <tr><td>chunkSize</td><td>The buffer size to be used when transferring product files from the Product Server. The value is represented in bytes and defaults to "8192".</td></tr>
-        <tr><td>preferredNamespace</td><td>The URN prefix that is added to Product Server identifiers in the case where it is not already present. The value defaults to "urn:eda:rmi:".</td></tr>
-      </table>
+      <subsection name="Servlet Parameters">
+        <p>The application provides the following parameters for configuration:
+        </p>
 
-      <p>To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/prod/WEB-INF</i> directory. The following block contains the parameters:
-      </p>
+        <table>
+          <tr><th>Parameter</th><th>Description</th></tr>
+          <tr><td>aliasFileSpec</td><td>The file specification for the <i>aliases.properties</i> file. This file maps the URNs of the Product Servers to their associated URLs. The default value specifies the version of this file that is included in the WAR.</td></tr>
+          <tr><td>chunkSize</td><td>The buffer size to be used when transferring product files from the Product Server. The value is represented in bytes and defaults to "8192".</td></tr>
+          <tr><td>preferredNamespace</td><td>The URN prefix that is added to Product Server identifiers in the case where it is not already present. The value defaults to "urn:eda:rmi:".</td></tr>
+        </table>
 
-      <source>
+        <p>To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/prod/WEB-INF</i> directory. The following block contains the parameters:
+        </p>
+
+        <source>
 &lt;servlet&gt;
   &lt;servlet-name&gt;product&lt;/servlet-name&gt;
   &lt;servlet-class&gt;gov.nasa.pds.portal.product.ProductServlet&lt;/servlet-class&gt;
@@ -137,7 +141,23 @@ or
   &lt;/init-param&gt;
   --&gt;
 &lt;/servlet&gt;
-      </source>
+        </source>
+      </subsection>
+
+      <subsection name="Aliases">
+        <p>The file containing the list of Transport Service aliases (specified by the <i>aliasFileSpec</i> parameter above) can be modified. To modify the list, edit the <i>aliases.properties</i> file located in the <i>$TOMCAT_HOME/webapps/prod/WEB-INF/classes</i> directory. Entries in the file follow this format:
+        </p>
+
+        <source>
+urn\:eda\:rmi\:PDS.ASU.Product=http\://bastion.mars.asu.edu\:7576/pds/prod
+urn\:eda\:rmi\:PDS.Atmos.Product=http\://atmos.nmsu.edu\:7576/pds/prod
+urn\:eda\:rmi\:PDS.CN.Product=http\://starbrite.jpl.nasa.gov/pdsd/prod
+...
+        </source>
+
+        <p>Once a modification has been made, the Transport Proxy application must be stopped and started for these changes to take effect. This can be accomplished by restarting the Tomcat Server. Alternatively, if the Tomcat Manager interface was utilized for the deployment, find the Transport Proxy entry in the Manager interface, select the associated Stop button followed by a selection of the associated Start button to stop and then start the applications, respectively.
+        </p>
+      </subsection>
     </section>
   </body>
 </document>

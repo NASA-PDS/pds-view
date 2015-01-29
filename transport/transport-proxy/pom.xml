@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2012-2014, by the California Institute of Technology.
+  Copyright 2012-2015, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010.transport</groupId>
   <artifactId>transport-proxy</artifactId>
-  <version>1.1.0</version>
+  <version>1.2.0-dev</version>
   <packaging>war</packaging>
 
   <name>Transport Proxy</name>
@@ -165,12 +165,6 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
-    <!-- Hosts the JPL OODT artifacts. -->
-    <repository>
-      <id>oodt-repo</id>
-      <name>OODT Private Maven Repository</name>
-      <url>http://oodt.jpl.nasa.gov/download/private</url>
-    </repository>
   </repositories>
 
   <dependencies>
@@ -182,30 +176,24 @@
     </dependency>
     <dependency>
       <groupId>oodt</groupId>
+      <artifactId>edm-commons</artifactId>
+      <version>2.2.9</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/edm-commons-2.2.9.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>oodt</groupId>
       <artifactId>edm-query</artifactId>
       <version>2.0.6</version>
-      <scope>compile</scope>
-      <!-- Exclude packages picked up by the edm-commons dependency. -->
-      <exclusions>
-        <exclusion>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>mysql</groupId>
-          <artifactId>mysql-connector-java</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>xmlrpc</groupId>
-          <artifactId>xmlrpc</artifactId>
-        </exclusion>
-      </exclusions>
+      <scope>system</scope>
+      <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/edm-query-2.0.6.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>oodt</groupId>
       <artifactId>grid-product</artifactId>
       <version>3.0.11</version>
-      <scope>compile</scope>
+      <scope>system</scope>
+      <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/grid-product-3.0.11.jar</systemPath>
     </dependency>
   </dependencies>
 
