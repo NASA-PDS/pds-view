@@ -88,6 +88,9 @@ public class SawmillScriptWriterTest extends ReportManagerTest {
 					reader.readLine(), "#!/bin/sh");
 			for(String cmd: commandList){
 				String foundCommand = reader.readLine();
+				assertEquals("No echo command preceding Sawmill command " + cmd,
+						"echo Running Sawmill command: " + cmd, foundCommand);
+				foundCommand = reader.readLine();
 				assertEquals("The command was formatted improperly: " + 
 						cmd + " != " + foundCommand,
 						cmd, foundCommand);

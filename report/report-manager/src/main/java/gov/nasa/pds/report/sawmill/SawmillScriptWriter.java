@@ -79,6 +79,7 @@ public class SawmillScriptWriter implements SawmillInterface{
 		
 		writer.println("#!/bin/sh");
 		for(String cmd: commandList){
+			writer.println("echo Running Sawmill command: " + cmd);
 			writer.println(cmd);
 		}
 		writer.close();
