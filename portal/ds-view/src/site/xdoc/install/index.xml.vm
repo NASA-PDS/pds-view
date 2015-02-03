@@ -38,7 +38,7 @@
     </section>
 
     <section name="System Requirements">
-      <p>This section details the system requirements for installing and operating the Product Query software.
+      <p>This section details the system requirements for installing and operating the Data Set View software.
       </p>
 
       <subsection name="Java Runtime Environment">
@@ -121,11 +121,11 @@ or
       </subsection>
 
       <subsection name="Create Context File To Point To WAR">
-        <p>Assuming Data Set View WAR and accompanying directories are located at <i>/usr/local/${project.artifactId}</i> (if not, substitute the directory location as needed), we need to set the application to allow for cross-context so it can use the various server-side includes.  We can do this by creating <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> containing the following text:
+        <p>Assuming Data Set View WAR and accompanying directories are located at <i>/usr/local/${project.artifactId}-${project.version}</i> (if not, substitute the directory location as needed), we need to set the application to allow for cross-context so it can use the various server-side includes.  We can do this by creating <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> containing the following text:
         </p>
         <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;Context docBase="/usr/local/${project.artifactId}/${project.artifactId}.war" crossContext="true"&gt;
+&lt;Context docBase="/usr/local/${project.artifactId}-${project.version}/${project.artifactId}.war" crossContext="true"&gt;
 &lt;/Context&gt;
         </source>
       </subsection>
@@ -141,7 +141,7 @@ or
       </ul>
 
       <subsection name="PDS Engineering Deployment">
-  <p>The current Data Set View is intended for deployment on both the PDS Engineering website, as well as external users.  The remaining installation procedures can be ignored for PDS EN deployment because these directories are already included in the PDS EN website.</p>
+        <p>The current Data Set View is intended for deployment on both the PDS Engineering website, as well as external users.  The remaining installation procedures can be ignored for PDS EN deployment because these directories are already included in the PDS EN website.</p>
       </subsection>
       
       <subsection name="All Other Deployments">
