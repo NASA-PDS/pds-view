@@ -44,11 +44,9 @@
 
   <properties>
     <junit-version>4.8.1</junit-version>
-    <!--gwt-archetype-version>2.4.0</gwt-archetype-version>
-    <gwt-version>2.4.0</gwt-version-->
     <gwt-archetype-version>2.5.0</gwt-archetype-version>
     <gwt-version>2.5.0</gwt-version>
-    <jersey-version>1.4</jersey-version>
+    <jersey-version>1.18.3</jersey-version>
   </properties>
 
   <developers>
@@ -132,6 +130,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
+        <version>2.6</version>
         <configuration>
           <warName>${artifactId}</warName>
           <archive>

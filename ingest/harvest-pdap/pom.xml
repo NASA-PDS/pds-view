@@ -267,18 +267,18 @@
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-client</artifactId>
-      <version>1.4</version>
+      <version>1.18.3</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey.contribs</groupId>
       <artifactId>jersey-apache-client</artifactId>
-      <version>1.4</version>
+      <version>1.18.3</version>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-core</artifactId>
-      <version>1.4</version>
+      <version>1.18.3</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

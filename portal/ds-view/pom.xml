@@ -45,7 +45,7 @@
   
   <properties>
     <!-- These properties support the application. -->
-    <jersey-version>1.4</jersey-version>
+    <jersey-version>1.18.3</jersey-version>
   </properties>
 
   <developers>

@@ -46,7 +46,7 @@
 
   <properties>
     <!-- These properties support the application. -->
-    <jersey-version>1.4</jersey-version>
+    <jersey-version>1.18.3</jersey-version>
     <junit-version>4.8.1</junit-version>
     <xerces-version>2.10.0</xerces-version>
     <jaxb-version>2.2</jaxb-version>
@@ -133,52 +133,33 @@
           </dependency>
         </dependencies>
       </plugin>
-      <plugin>
-        <groupId>com.sun.tools.jxc.maven2</groupId>
-        <artifactId>maven-jaxb-schemagen-plugin</artifactId>
-        <version>1.2</version>
-        <executions>
-          <execution>
-            <!--<phase>generate-sources</phase>-->
-            <phase>compile</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <schemas>
-            <schema>
-              <namespace>http://registry.pds.nasa.gov</namespace>
-              <file>registry-service.xsd</file>
-            </schema>
-          </schemas>
-          <includes>
-            <include>**.java</include>
-          </includes>
-          <srcdir>${project.build.sourceDirectory}/gov/nasa/pds/registry/model</srcdir>
-          <destdir>${project.build.directory}/classes</destdir>
-          <verbose>true</verbose>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>${jaxb-version}</version>
-          </dependency>
-          <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-xjc</artifactId>
-            <version>${jaxb-version}</version>
-          </dependency>
-          <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>${jaxb-version}</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-      <plugin>
+	<plugin>
+		<groupId>org.codehaus.mojo</groupId>
+		<artifactId>jaxb2-maven-plugin</artifactId>
+		<version>1.6</version>
+		<executions>
+			<execution>
+				<id>schemagen</id>
+				<goals>
+					<goal>schemagen</goal>
+				</goals>
+			</execution>
+		</executions>
+		<configuration>
+			<transformSchemas>
+				<transformSchema>
+					<uri>http://registry.pds.nasa.gov</uri>
+					<toPrefix>registry-service</toPrefix>
+					<toFile>registry-service.xsd</toFile>
+				</transformSchema>
+			</transformSchemas>
+			<includes>
+				<include>gov/nasa/pds/registry/model/*.java</include>
+			</includes>
+			<outputDirectory>${project.build.directory}/classes</outputDirectory>
+		</configuration>
+	</plugin>
+	<plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
