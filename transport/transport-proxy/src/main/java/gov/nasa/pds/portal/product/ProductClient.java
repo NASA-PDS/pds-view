@@ -1,4 +1,4 @@
-// Copyright 2002-2012, by the California Institute of Technology.
+// Copyright 2002-2015, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -54,7 +54,11 @@ public class ProductClient implements Retriever {
    */
   public ProductClient(String serviceID) throws ProductException {
     try {
-       productService = new HTTPAdaptor(new URL(serviceID));
+      if (serviceID.startsWith("https")) {
+        productService = new HTTPSAdaptor(new URL(serviceID));
+      } else {
+        productService = new HTTPAdaptor(new URL(serviceID));
+      }
     } catch (MalformedURLException ex) {
       throw new ProductException(ex);
     }
