@@ -267,9 +267,14 @@ public class LabelValidator {
     if (performsSchemaValidation()) {
       // Do we have a schema we have loaded previously?
       if (cachedValidator == null) {
-        // If catalog is used allow resources to be loaded for schemas
+        // If catalog is used, allow resources to be loaded for schemas
+        // and the document parser
         if (resolver != null) {
           schemaFactory.setProperty(
+              "http://apache.org/xml/properties/internal/entity-resolver",
+              resolver);
+
+          docBuilderFactory.setAttribute(
               "http://apache.org/xml/properties/internal/entity-resolver",
               resolver);
         }
@@ -306,10 +311,7 @@ public class LabelValidator {
         docBuilderFactory.setSchema(validatingSchema);
 
         cachedValidator = docBuilderFactory.newDocumentBuilder();
-        // Allow access to the catalog from the parser
-        if (resolver != null) {
-          cachedValidator.setEntityResolver(resolver);
-        } else if (useLabelSchema) {
+        if (useLabelSchema) {
           cachedValidator.setEntityResolver(cachedEntityResolver);
         }
       } else {
