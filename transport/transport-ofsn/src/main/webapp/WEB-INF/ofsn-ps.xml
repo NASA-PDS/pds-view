@@ -186,6 +186,10 @@ FIXME: Change XML namespace URI for oodt prefix?
     	<property name="mimeType" value="image/jpeg"/>
     	<property name="extension" value="jpeg"/> 
   </handler>
+  <handler name="PDS_JPEG" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
+    	<property name="mimeType" value="image/jpeg"/>
+    	<property name="extension" value="jpeg"/> 
+  </handler>
   <handler name="PDS_TO_JP2" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="image/jp2"/>
     	<property name="extension" value="jp2"/>

@@ -23,6 +23,9 @@
 
   <body>
     <release version="1.2.0" date="TBD" description="TBD">
+      <action dev="hyunlee" type="fix" issue="PDS-338">
+        Modified to improve the response speed with the return type DIRLIST1, to support PDS_JPEG return type, and to allow values to include without slash when appending to the productRoot value.
+      </action>
     </release>
 
     <release version="1.1.0" date="2014-09-30" description="This release of the Transport Service is a component of the integrated release 5.0.0 of the PDS4 System. This is an operational release of the system components to date.">

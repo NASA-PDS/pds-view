@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration xmlns="http://oodt.jpl.nasa.gov/web-grid/ns/" https="false" localhost="false" password="aGFuYWxlaQ==">
 
-    <server className="org.apache.oodt.product.handlers.ofsn.OFSNFileHandler" type="product"/>
+    <server className="gov.nasa.pds.transport.OFSNFileHandler" type="product"/>
 
     <properties xml:space="preserve">
 
