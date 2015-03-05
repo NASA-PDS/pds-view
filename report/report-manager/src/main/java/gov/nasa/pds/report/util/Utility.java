@@ -202,10 +202,13 @@ public class Utility {
 	/**
 	 * Utility method to get a boolean from a {@link Properties}.
 	 * 
-	 * @param nodeProps				The Properties containing the desired value
-	 * @param key					The key of the desired value
-	 * @return						The desired value in the form of a boolean
-	 * @throws LogsManagerException	If the given key is not present or if the value is null or empty
+	 * @param nodeProps					The Properties containing the desired
+	 * 									value
+	 * @param key						The key of the desired value
+	 * @return							The desired value in the form of a
+	 * 									boolean
+	 * @throws ReportManagerException	If the given key is not present or if
+	 * 									the value is null or empty
 	 */
 	public static boolean getNodePropsBool(Properties nodeProps, String key)
 			throws ReportManagerException{
@@ -251,6 +254,20 @@ public class Utility {
 		
 		return pathname.substring(0, pathname.lastIndexOf("/"));
 	
+	}
+	
+	/**
+	 * Get the number of times that a substring occurs in a String
+	 * 
+	 * @param haystack	The string to search through
+	 * @param needle	The substring to for which we search
+	 * @return			The number of times that the substring occurs within
+	 * 					the String
+	 */
+	public static int countSubstringInstances(String haystack, String needle){
+		
+		return haystack.length() - haystack.replace(needle, "").length();
+		
 	}
 	
 }

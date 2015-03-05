@@ -37,6 +37,8 @@ public abstract class Constants {
 	public static final String NODE_SAWMILL_PROFILE = "sawmill_profile";
 	public static final String NODE_REPORT_LIST = "sawmill_report";
 	public static final String NODE_SAWMILL_OUTPUT = "sawmill_output";
+	public static final String NODE_REFORMAT_INPUT_KEY = "input_log_pattern";
+	public static final String NODE_REFORMAT_OUTPUT_KEY = "output_log_pattern";
 	
 	// ------------------------------------------------------------------------
 	// System properties defined in defaults file
@@ -61,6 +63,10 @@ public abstract class Constants {
 	// How old a file should be (in milliseconds) before we no longer hold on
 	// to it
 	public static final String LOG_AGE_PROP = "gov.nasa.pds.report.log.age";
+	
+	// The root of the directory tree where Sawmill reports are placed
+	public static final String SAWMILL_REPORT_PROP =
+			"gov.nasa.pds.report.sawmill.report.root";
 	
 	// What SawmillInterface implementation to use to execute Sawmill
 	// operations

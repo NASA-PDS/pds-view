@@ -26,14 +26,12 @@ import org.junit.Ignore;
 @Ignore
 public final class FtpTestConstants{
 	
-	// TODO: Fix these to point to the USGS node
-	
 	public static final String TEST_NODE = "ida_ftp";
 	public static final String TEST_HOST = "ftpext.usgs.gov";
 	public static final String TEST_USER = "anonymous";
 	public static final String TEST_PASSWORD = "anonymous";
 	public static final boolean TEST_ENCRYPTED = false;
 	public static final String TEST_PATH =
-			"/pub/wr/az/flagstaff/bsucharski/ida_ftp_stats/xferlog_2014-11-01.log";
+			"/pub/wr/az/flagstaff/bsucharski/ida_ftp_stats/xferlog_2015-01-01.log";
 	
 }

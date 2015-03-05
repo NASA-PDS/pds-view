@@ -336,6 +336,14 @@ public class ReportServiceManager {
 		
 		log.info("Generating Sawmill reports");
 		
+		String sawmillReportHome = System.getProperty(
+				Constants.SAWMILL_REPORT_PROP);
+		if(sawmillReportHome == null){
+			log.severe("Sawmill report directory root not defined in " +
+					"default properties");
+			return;
+		}
+		
 		for(Properties props: propsList){
 			
 			String sawmillProfile = null;
@@ -374,8 +382,6 @@ public class ReportServiceManager {
 			
 			// Generate the reports
 			for(String report: reports){
-				// TODO: Make sure that we don't generate the same report more
-				// than once
 				try{
 					this.sawmillManager.generateReport(sawmillProfile,
 							report.trim(), outputPath);

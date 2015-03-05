@@ -57,11 +57,12 @@ if [ -n "$RPT_MGR_FLAGS"]; then
 	echo "Running Report Manager with flags: ${RPT_MGR_FLAGS}"
 fi
 
-# Executes Search Core Indexer via the executable jar file
+# Executes Report Service via the executable jar file
 # Arguments are passed in to the tool via '$@'
 "${JAVA_HOME}"/bin/java \
 	${RPT_MGR_FLAGS} \
 	-Djava.util.logging.config.file=${LOG_PROPS} \
+	-Xmx512m \
 	-jar ${REPORT_MGR_JAR} "$@"
 
 if [ -f report-mgr-sawmill ]; then
