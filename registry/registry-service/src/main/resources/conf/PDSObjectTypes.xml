@@ -131,6 +131,12 @@
         name="Product_SIP"
         lid="urn:nasa:pds:profile:regrep:ObjectType:Product_SIP"
         guid="urn:nasa:pds:profile:regrep:ObjectType:Product_SIP"/>
+    <classificationNode code="Product_SIP_Deep_Archive"
+        parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
+        description="The Product SIP Deep Archive class defines a Submission Information Package (SIP) for the NASA planetary science deep archive."
+        name="Product_SIP_Deep_Archive"
+        lid="urn:nasa:pds:profile:regrep:ObjectType:Product_SIP_Deep_Archive"
+        guid="urn:nasa:pds:profile:regrep:ObjectType:Product_SIP_Deep_Archive"/>
     <classificationNode code="Product_SPICE_Kernel"
         parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
         description="The Product SPICE Kernel class defines a SPICE kernel product."
