@@ -504,7 +504,7 @@
    <field name="archive_status" type="lowercase" indexed="true" stored="true" multiValued="false" />
 	   
     <!-- Product_Attribute_Definition fields -->
-	<field name="attribute_name" type="string" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_name" type="text_general" indexed="true" stored="true" multiValued="false" />
 	<field name="attribute_class_name" type="text_general" indexed="true" stored="true" multiValued="false" />
 	<field name="attribute_local_identifier" type="string" indexed="true" stored="true" multiValued="false" />
 	<field name="attribute_type" type="string" indexed="true" stored="true" multiValued="false" />
