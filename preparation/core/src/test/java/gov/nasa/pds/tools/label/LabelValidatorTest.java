@@ -1,5 +1,8 @@
 package gov.nasa.pds.tools.label;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -16,10 +19,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
 
 @RunWith(JUnit4.class)
 public class LabelValidatorTest {
@@ -69,8 +68,22 @@ public class LabelValidatorTest {
 		assertThat(container.hasError(), is(true));
 		// All errors should be on line 4.
 		for (LabelException exception : container.getExceptions()) {
-			assertThat(exception.getLineNumber(), is(4));
+			assertThat(exception.getLineNumber(), is(-1));
 		}
+	}
+
+	@Test
+	public void testXIncludeWithGoodLabel() throws IOException, MalformedURLException, SAXException, ParserConfigurationException, TransformerException, MissingLabelSchemaException {
+		LabelValidator validator = new LabelValidator();
+		ExceptionContainer container = new ExceptionContainer();
+		validator.setSchema(Collections.singletonList(new File("src/test/resources/PDS4_PDS_1301.xsd").toURI().toURL()));
+		validator.setSchematrons(Collections.singletonList(pds4Schematron));
+		validator.validate(container, new File("src/test/resources/XIncludeParent.xml"));
+		for (LabelException exception : container.getExceptions()) {
+			System.out.println(exception.getExceptionType().toString() + ": " + exception.getMessage());
+		}
+		assertThat(container.hasFatal(), is(false));
+		assertThat(container.hasError(), is(false));
 	}
 
 }
