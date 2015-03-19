@@ -26,30 +26,35 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import net.sf.saxon.Configuration;
 import net.sf.saxon.event.ParseOptions;
@@ -57,13 +62,18 @@ import net.sf.saxon.om.DocumentInfo;
 import net.sf.saxon.xpath.XPathEvaluator;
 
 import org.apache.commons.io.IOUtils;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
+import org.xml.sax.XMLReader;
 
 /**
  * This class is responsible for providing utility functions for validating PDS
@@ -78,7 +88,8 @@ public class LabelValidator {
   private List<URL> userSchematronFiles;
   private List<Transformer> userSchematronTransformers;
   private String modelVersion;
-  private DocumentBuilder cachedValidator;
+  private XMLReader cachedParser;
+  private Validator cachedValidator;
   private List<Transformer> cachedSchematron;
   private XMLCatalogResolver resolver;
   private Boolean useLabelSchema;
@@ -91,10 +102,12 @@ public class LabelValidator {
   private List<ExternalValidator> externalValidators;
   private List<DocumentValidator> documentValidators;
   private CachedEntityResolver cachedEntityResolver;
-  private DocumentBuilderFactory docBuilderFactory;
+  private SAXParserFactory saxParserFactory;
+  private DocumentBuilder docBuilder;
   private SchemaFactory schemaFactory;
   private Schema validatingSchema;
   private SchematronTransformer schematronTransformer;
+  private XPathFactory xPathFactory;
 
   /**
    * Default constructor.
@@ -112,6 +125,7 @@ public class LabelValidator {
     this.configurations.put(SCHEMA_CHECK, true);
     this.configurations.put(SCHEMATRON_CHECK, true);
     modelVersion = VersionInfo.getDefaultModelVersion();
+    cachedParser = null;
     cachedValidator = null;
     cachedSchematron = new ArrayList<Transformer>();
     userSchemaFiles = null;
@@ -126,18 +140,34 @@ public class LabelValidator {
     cachedEntityResolver = new CachedEntityResolver();
     validatingSchema = null;
     // Support for XSD 1.1
-    schemaFactory = SchemaFactory
-        .newInstance("http://www.w3.org/XML/XMLSchema/v1.1");
-    docBuilderFactory = DocumentBuilderFactory.newInstance();
-    docBuilderFactory.setNamespaceAware(true);
-    docBuilderFactory.setXIncludeAware(true);
-    //TODO: Do we want to omit the xml:base attribute from the merged xml?
-    docBuilderFactory.setFeature(
-        "http://apache.org/xml/features/xinclude/fixup-base-uris",
-        false);
+    schemaFactory = SchemaFactory.newInstance("http://www.w3.org/XML/XMLSchema/v1.1");
+
+    // We need a SAX parser factory to do the validating parse
+    // to create the DOM tree, so we can insert line numbers
+    // as user data properties of the DOM nodes.
+    saxParserFactory = SAXParserFactory.newInstance();
+    saxParserFactory.setNamespaceAware(true);
+    saxParserFactory.setXIncludeAware(true);
+    saxParserFactory.setValidating(false); // The parser doesn't validate - we use a Validator instead.
+
+    // Don't add xml:base attributes to xi:include content, or it messes up
+    // PDS4 validation.
+    try {
+      saxParserFactory.setFeature("http://apache.org/xml/features/xinclude/fixup-base-uris", false);
+    } catch (SAXNotRecognizedException e) {
+      // should never happen, and can't recover
+    } catch (SAXNotSupportedException e) {
+      // should never happen, and can't recover
+    }
+
+    // We need a document builder to create new documents to insert
+    // parsed XML nodes.
+    docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
     documentValidators.add(new DefaultDocumentValidator());
     schematronTransformer = new SchematronTransformer();
+
+    xPathFactory = new net.sf.saxon.xpath.XPathFactoryImpl();
   }
 
   /**
@@ -263,18 +293,15 @@ public class LabelValidator {
       TransformerException, MissingLabelSchemaException {
     List<String> labelSchematronRefs = new ArrayList<String>();
     Document xml = null;
+
     // Are we perfoming schema validation?
     if (performsSchemaValidation()) {
       // Do we have a schema we have loaded previously?
-      if (cachedValidator == null) {
+      if (cachedParser == null) {
         // If catalog is used, allow resources to be loaded for schemas
         // and the document parser
         if (resolver != null) {
           schemaFactory.setProperty(
-              "http://apache.org/xml/properties/internal/entity-resolver",
-              resolver);
-
-          docBuilderFactory.setAttribute(
               "http://apache.org/xml/properties/internal/entity-resolver",
               resolver);
         }
@@ -307,27 +334,38 @@ public class LabelValidator {
           // We're only going to use the catalog to validate against.
           validatingSchema = schemaFactory.newSchema();
         }
-        // Time to create a validator from our schema
-        docBuilderFactory.setSchema(validatingSchema);
 
-        cachedValidator = docBuilderFactory.newDocumentBuilder();
+        cachedParser = saxParserFactory.newSAXParser().getXMLReader();
+        cachedValidator = validatingSchema.newValidator();
         if (useLabelSchema) {
-          cachedValidator.setEntityResolver(cachedEntityResolver);
+          cachedParser.setEntityResolver(cachedEntityResolver);
         }
       } else {
         // Create a new instance of the DocumentBuilder if validating
         // against a label's schema.
         if (useLabelSchema) {
-          cachedValidator = docBuilderFactory.newDocumentBuilder();
-          cachedValidator.setEntityResolver(cachedEntityResolver);
+        	cachedParser = saxParserFactory.newSAXParser().getXMLReader();
+        	cachedValidator = schemaFactory.newSchema().newValidator();
+        	cachedParser.setEntityResolver(cachedEntityResolver);
         }
       }
       // Capture messages in a container
       if (container != null) {
-        cachedValidator.setErrorHandler(new LabelErrorHandler(container));
+        ErrorHandler handler = new LabelErrorHandler(container);
+        cachedParser.setErrorHandler(handler);
+        cachedValidator.setErrorHandler(handler);
       }
-      // Finally validate the file
-      xml = cachedValidator.parse(url.openStream(), url.toString());
+
+      // Finally parse and validate the file
+      xml = docBuilder.newDocument();
+      cachedParser.setContentHandler(new DocumentCreator(xml));
+      try {
+        cachedParser.parse(url.toURI().toString());
+      } catch (URISyntaxException e) {
+        // should never get here, since the URL generated was from
+        // File.toURI().toURL().
+      }
+      cachedValidator.validate(new DOMSource(xml));
 
       // If validating against the label supplied schema, check
       // if the xsi:schemalocation attribute was defined in the label.
@@ -341,18 +379,24 @@ public class LabelValidator {
       }
     } else {
       // No Schema validation will be performed. Just parse the label
-      DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+      XMLReader reader = saxParserFactory.newSAXParser().getXMLReader();
+      xml = docBuilder.newDocument();
+      reader.setContentHandler(new DocumentCreator(xml));
       // Capture messages in a container
       if (container != null) {
-        docBuilder.setErrorHandler(new LabelErrorHandler(container));
+        reader.setErrorHandler(new LabelErrorHandler(container));
       }
       if (resolver != null) {
-        docBuilder.setEntityResolver(resolver);
+        reader.setEntityResolver(resolver);
       } else if (useLabelSchema) {
-        docBuilder.setEntityResolver(cachedEntityResolver);
+        reader.setEntityResolver(cachedEntityResolver);
       }
-      xml = docBuilder.parse(url.openStream(), url.toString());
+      reader.parse(new InputSource(url.openStream()));
     }
+
+    // If we get here, then there are no XML parsing errors, so we
+    // can parse the XML again, below, and assume the parse will
+    // succeed.
 
     // Validate with any schematron files we have
     if (performsSchematronValidation()) {
@@ -402,25 +446,20 @@ public class LabelValidator {
           }
         }
       }
-      // Boiler plate to handle parsing report outputs from schematron
-      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-      dbf.setNamespaceAware(true);
-      DocumentBuilder parser = dbf.newDocumentBuilder();
+
       for (Transformer schematron : cachedSchematron) {
-        StringWriter report = new StringWriter();
+        DOMResult result = new DOMResult();
         // Apply the rules specified in the schematron file
-        schematron.transform(new StreamSource(url.openStream()),
-            new StreamResult(report));
+        schematron.transform(new DOMSource(xml), result);
         // Output is svrl:schematron-output document
         // Select out svrl:failed-assert nodes and put into exception container
-        Document reportDoc = parser.parse(new InputSource(new StringReader(
-            report.toString())));
+        Document reportDoc = (Document) result.getNode();
         NodeList nodes = reportDoc.getElementsByTagNameNS(
             "http://purl.oclc.org/dsdl/svrl", "failed-assert");
         for (int i = 0; i < nodes.getLength(); i++) {
           Node node = nodes.item(i);
           // Add an error for each failed asssert
-          container.addException(processFailedAssert(url, node));
+          container.addException(processFailedAssert(url, node, xml));
         }
       }
     }
@@ -520,10 +559,15 @@ public class LabelValidator {
    *
    * @param url The url of the xml being validated.
    * @param node The node object containing the failed assert message.
+   * @param doc the original document that was being validated, used to obtain line numbers, or null for no document
    *
    * @return A LabelException object.
    */
-  private LabelException processFailedAssert(URL url, Node node) {
+  private LabelException processFailedAssert(URL url, Node node, Document doc) {
+    Integer lineNumber = -1;
+    Integer columnNumber = -1;
+    String message = node.getTextContent().trim();
+
     ExceptionType exceptionType = ExceptionType.ERROR;
     if (node.getAttributes().getNamedItem("role") != null) {
       String type = node.getAttributes().getNamedItem("role")
@@ -535,13 +579,32 @@ public class LabelValidator {
         exceptionType = ExceptionType.INFO;
       }
     }
+
+    String location = ((Attr) node.getAttributes().getNamedItem("location")).getValue();
+    SourceLocation sourceLoc = null;
+    try {
+      XPath documentPath = xPathFactory.newXPath();
+      Node failureNode = (Node) documentPath.evaluate(location, doc, XPathConstants.NODE);
+      sourceLoc = (SourceLocation) failureNode.getUserData(SourceLocation.class.getName());
+    } catch (XPathExpressionException e) {
+      // ignore - will use default line and column number
+    }
+    if (sourceLoc != null) {
+      lineNumber = sourceLoc.getLineNumber();
+      columnNumber = sourceLoc.getColumnNumber();
+    } else {
+      String test = node.getAttributes().getNamedItem("test").getTextContent();
+      message = String.format("%s [Context: \"%s\"; Test: \"%s\"]", message, location, test);
+    }
+
     return new LabelException(
         exceptionType,
-        node.getTextContent().trim(),
+        message,
+        "",
         url.toString(),
-        node.getAttributes().getNamedItem("location").getTextContent(),
-        node.getAttributes().getNamedItem("test").getTextContent()
-        );
+        lineNumber,
+        columnNumber
+    );
 
   }
 

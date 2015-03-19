@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://starbase.jpl.nasa.gov/pds4/1300/dph_example_archive_VG2PLS/xml_schema/PDS4_PDS_1300.sch"
+  schematypens="http://purl.oclc.org/dsdl/schematron"?>
+
+<Product_Collection xmlns="http://pds.nasa.gov/pds4/pds/v1"
+    xmlns:pds="http://pds.nasa.gov/pds4/pds/v1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 http://starbase.jpl.nasa.gov/pds4/1300/dph_example_archive_VG2PLS/xml_schema/PDS4_PDS_1300.xsd">
+
+    
+    <Identification_Area>
+        <logical_identifier>urn:nasa:pds:example.dph.sample_archive_bundle:data</logical_identifier>
+        <version_id>1.0</version_id>
+        <title>Collection of data products: PDS4 PPI VG2PLS</title>
+        <information_model_version>1.3.0.1</information_model_version>
+        <product_class>Product_Collection</product_class>
+        <Citation_Information>
+            <author_list>R. Joyner</author_list>
+            <editor_list>R. Joyner</editor_list>
+            <publication_year>2014</publication_year>
+            <keyword>Astrometry</keyword>
+            <keyword>Gamma Ray</keyword>
+            <keyword>Magnetosphere</keyword>
+            <keyword>Voyager</keyword>
+            <keyword>Jupiter</keyword>
+            <keyword>ppi-ucla</keyword>
+            <description>Collection of DATA schemas / schematron files used in this archive.</description>
+         </Citation_Information>        
+        <Modification_History>
+            <Modification_Detail>
+                <modification_date>2014-09-09</modification_date>
+                <version_id>1.0</version_id>
+                <description>conversion of PDS3 PPI archive to comply with PDS4 Information Model.</description>
+            </Modification_Detail>
+        </Modification_History>
+    </Identification_Area>
+    
+    <Context_Area>
+        <comment>Observational Intent</comment>
+        <Time_Coordinates>
+            <start_date_time>1979-07-06T00:00:42.687Z</start_date_time>
+            <stop_date_time>1979-07-09T23:59:06.436Z</stop_date_time>
+        </Time_Coordinates>
+        <Primary_Result_Summary>
+            <purpose>Science</purpose>
+            <processing_level>Raw</processing_level>
+            <description>
+                This is where a generic description of the product goes.
+            </description>
+            <Science_Facets>
+                <wavelength_range>Gamma Ray</wavelength_range>
+                <domain>Magnetosphere</domain>
+                <discipline_name>Particles</discipline_name>
+            </Science_Facets>
+        </Primary_Result_Summary>
+        <Investigation_Area>
+            <name>VOYAGER</name>
+            <type>Mission</type>
+            <Internal_Reference>
+                <lidvid_reference>urn:nasa:pds:context:investigation:mission.voyager::1.0</lidvid_reference>
+                <reference_type>collection_to_investigation</reference_type>
+            </Internal_Reference>
+        </Investigation_Area>
+        <Observing_System>
+            <name>Observing System for VG+PLS</name>
+            <Observing_System_Component>
+                <name>VG2</name>
+                <type>Spacecraft</type>
+                <description>instrument_host VG2</description>
+                <Internal_Reference>
+                    <lid_reference>urn:nasa:pds:context:instrument_host:instrument_host.vg2</lid_reference>
+                    <reference_type>is_instrument_host</reference_type>
+                </Internal_Reference>
+            </Observing_System_Component>
+            <Observing_System_Component>
+                <name>PLS</name>
+                <type>Instrument</type>
+                <description>instrument PLS</description>
+                <Internal_Reference>
+                    <lid_reference>urn:nasa:pds:context:instrument:instrument.pls__vg2</lid_reference>
+                    <reference_type>is_instrument</reference_type>
+                </Internal_Reference>
+            </Observing_System_Component>
+        </Observing_System>
+        <Target_Identification>
+            <name>JUPITER</name>
+            <type>Planet</type>
+            <description>description of JUPITER goes here</description>
+            <Internal_Reference>
+                <lidvid_reference>urn:nasa:pds:context:target:planet.jupiter::1.0</lidvid_reference>
+                <reference_type>collection_to_target</reference_type>
+            </Internal_Reference>
+        </Target_Identification>
+    </Context_Area>
+    
+    <Reference_List>
+        <Internal_Reference>
+            <lid_reference>urn:nasa:pds:context:node:node.ppi-ucla</lid_reference>
+            <reference_type>collection_curated_by_node</reference_type>
+        </Internal_Reference>
+    <Internal_Reference><lid_reference>urn:nasa:pds:context:instrument_host:instrument_host.vg2</lid_reference><reference_type>collection_to_context</reference_type></Internal_Reference><Internal_Reference><lid_reference>urn:nasa:pds:context:instrument:instrument.pls__vg2</lid_reference><reference_type>collection_to_context</reference_type></Internal_Reference><Internal_Reference><lid_reference>urn:nasa:pds:context:investigation:mission.voyager</lid_reference><reference_type>collection_to_context</reference_type></Internal_Reference><Internal_Reference><lid_reference>urn:nasa:pds:context:target:planet.jupiter</lid_reference><reference_type>collection_to_context</reference_type></Internal_Reference></Reference_List>
+       
+    <Collection>
+        <collection_type>Data</collection_type>
+    </Collection>
+    
+<!-- 
+    The indicates how a LIDVID_Primary area is populated with metadata that 
+    describes a two column character table where each row is a max of 259 bytes; 
+    1st column is 1 byte, 2nd column is max 255 characters, columns are separated
+    by comma, and each row is terminated with <CR><LF> - for a total of 259 bytes
+         
+             1         2              250       260
+    12345678901234567890 . . . 12345678901234567890
+    P,urn:nasa:pds:DPH:root::1.0CL     
+-->        
+    <File_Area_Inventory>
+        <File>
+            <file_name>Collection_data_inventory.tab</file_name>
+            <local_identifier>inventory_collection.data</local_identifier>
+            <creation_date_time>2014-09-09T09:46:46.2470Z</creation_date_time>
+            <file_size unit="byte">109</file_size>
+            <records>1</records>
+            <md5_checksum>2cef640ecac021083ef1fe3f03f4c6f6</md5_checksum>
+        </File>
+        <Inventory>
+            <local_identifier>collection_inventory.data</local_identifier>
+            <offset unit="byte">0</offset>
+            <parsing_standard_id>PDS DSV 1</parsing_standard_id>
+            <records>1</records>
+            <record_delimiter>Carriage-Return Line-Feed</record_delimiter>
+            <field_delimiter>comma</field_delimiter>
+            
+            <Record_Delimited>
+                <fields>2</fields>
+                <groups>0</groups>
+                <maximum_record_length unit="byte">259</maximum_record_length>
+                
+                <Field_Delimited>
+                    <name>Member_Status</name>
+                    <field_number>1</field_number>
+                    <data_type>ASCII_String</data_type>
+                    <maximum_field_length unit="byte">1</maximum_field_length>
+                    <description>
+                        This columns specifies the Member Status of the files that 
+                        comprise the collection.  
+                    </description>
+                </Field_Delimited>                
+                <Field_Delimited>
+                    <name>LIDVID_LID</name>
+                    <field_number>2</field_number>
+                    <data_type>ASCII_LIDVID_LID</data_type>
+                    <maximum_field_length unit="byte">255</maximum_field_length>
+                    <description>
+                        This columns specifies the LIDVID of the files that 
+                        comprise the collection.  
+                    </description>
+                </Field_Delimited>
+            </Record_Delimited>
+            
+            <reference_type>inventory_has_member_product</reference_type>
+            
+        </Inventory>
+    </File_Area_Inventory>
+</Product_Collection>
