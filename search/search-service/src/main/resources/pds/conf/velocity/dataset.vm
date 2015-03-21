@@ -10,7 +10,7 @@
       <FIELD ID="DATA_SET.INSTRUMENT_NAME" ucd="INSTRUMENT_NAME" utype="pds:DATA_SET.INSTRUMENT_NAME" datatype="char" arraysize="*" />
       <FIELD ID="DATA_SET.PRODUCER.AGENCY_NAME" ucd="AGENCY_NAME" utype="pds:DATA_SET.AGENCY_NAME" datatype="char" arraysize="*" />
       <FIELD ID="DATA_SET.PRODUCER.NODE_NAME" ucd="NODE_NAME" utype="pds:DATA_SET.NODE_NAME" datatype="char" arraysize="*" />
-      <FIELD ID="DATA_SET.PRODUCER.FULL_NAME" ucd="FULL_NAME utype="pds:DATA_SET.PRODUCER.FULL_NAME" datatype="char" arraysize="*" />
+      <FIELD ID="DATA_SET.PRODUCER.FULL_NAME" ucd="FULL_NAME" utype="pds:DATA_SET.PRODUCER.FULL_NAME" datatype="char" arraysize="*" />
       <FIELD ID="DATA_SET.MISSION_NAME" ucd="MISSION_NAME" utype="pds:DATA_SET.PRODUCER.NODE_NAME" datatype="char" arraysize="*" />
       <FIELD ID="DATA_SET.START_TIME" ucd="START_TIME" utype="pds:DATA_SET.START_TIME" datatype="char" arraysize="*" />
       <FIELD ID="DATA_SET.STOP_TIME" ucd="STOP_TIME" utype=" pds:DATA_SET.STOP_TIME" datatype="char" arraysize="*" />
