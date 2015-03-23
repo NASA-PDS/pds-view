@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2014, by the California Institute of Technology.
+  Copyright 2010-2015, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -26,6 +26,12 @@
     <release version="1.7.0" date="TBD" description="TBD">
       <action dev="mcayanan" type="update" issue="PDS-320">
         Refactored to support the validation of user specified schemas and schematrons.
+      </action>
+      <action dev="mrose" type="update" issue="PDS-345">
+        Enable reporting of line numbers for Schematron errors.
+      </action>
+      <action dev="shardman" type="add">
+        Added in the 1400 version of the schema and schematron and set as default for this release.
       </action>
       <action dev="mcayanan" type="update">
         Added support for schema and schematron URLs.
