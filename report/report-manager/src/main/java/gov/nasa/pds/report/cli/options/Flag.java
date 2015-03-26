@@ -49,6 +49,10 @@ public enum Flag {
 	ID_PATTERN("i", "id-pattern", "pattern", String.class,
 			"Only operate on profiles with an ID that matches the given RE " +
 			"pattern"),
+			
+	/** Flag to specify a run name for generated reports */
+	RUN_NAME("N", "run-name", "name", String.class,
+			"Specify a run name for generated reports"),
 	
 	/** Flag to force a backup of logs in staging */
 	FORCE_BACKUP("b", "backup",

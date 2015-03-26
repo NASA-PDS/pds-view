@@ -93,7 +93,7 @@ public class PDSSawmillManager implements SawmillManager {
 					"with no name");
 		}else if(outputPath == null || outputPath.equals("")){
 			throw new SawmillException("Cannot build a Sawmill report " +
-			"with no output path");
+					"with no output path");
 		}
 		
 		String cmd = "-p " + profileName + " -a ect -rn " + reportName +

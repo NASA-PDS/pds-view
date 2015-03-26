@@ -109,7 +109,8 @@ public class SawmillScriptWriter implements SawmillInterface{
 		}else{
 			
 			// Create the directory if it does not exist already
-			log.fine("Creating directory " + scriptDir.getAbsolutePath());
+			log.fine("Creating Sawmill script directory " +
+					scriptDir.getAbsolutePath());
 			if(!scriptDir.mkdirs()){
 				throw new SawmillException("An error occured while creating " +
 						"the directory where the Sawmill script will be written");

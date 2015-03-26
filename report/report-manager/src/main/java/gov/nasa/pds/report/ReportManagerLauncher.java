@@ -65,6 +65,9 @@ public class ReportManagerLauncher {
 	/** @see gov.nasa.pds.report.cli.options.Flag#CLEANUP **/
 	private boolean cleanupFlag;
 	
+	/** @see gov.nasa.pds.report.cli.options.Flag#RUN_NAME */
+	private String runName;
+	
 	private ReportServiceManager rsMgr;
 	
 	/** The severity level to set for the tool. */
@@ -78,6 +81,7 @@ public class ReportManagerLauncher {
 		this.reportFlag = false;
 		this.backupFlag = false;
 		this.cleanupFlag = false;
+		this.runName = null;
 		this.rsMgr = new ReportServiceManager();
 		this.severityLevel = ToolsLevel.INFO;
 	}
@@ -195,6 +199,8 @@ public class ReportManagerLauncher {
 				this.backupFlag = true;
 			} else if (o.getOpt().equals(Flag.CLEANUP.getShortName())) {
 				this.cleanupFlag = true;
+			} else if (o.getOpt().equals(Flag.RUN_NAME.getShortName())) {
+				this.runName = line.getOptionValue(Flag.RUN_NAME.getShortName());
 			}
 		}
 	}
@@ -267,7 +273,7 @@ public class ReportManagerLauncher {
 		
 		// Generate Sawmill reports
 		if(this.reportFlag){
-			this.rsMgr.generateReports();
+			this.rsMgr.generateReports(this.runName);
 		}
 		
 		// Output all Sawmill operations

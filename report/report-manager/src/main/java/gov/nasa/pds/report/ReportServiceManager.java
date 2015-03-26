@@ -2,6 +2,8 @@ package gov.nasa.pds.report;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -332,7 +334,7 @@ public class ReportServiceManager {
 	/**
 	 * Generate Sawmill reports.
 	 */
-	public void generateReports(){
+	public void generateReports(String runName){
 		
 		log.info("Generating Sawmill reports");
 		
@@ -374,6 +376,11 @@ public class ReportServiceManager {
 				// TODO: This output directory tree should be automatically created
 				outputPath = Utility.getNodePropsString(props,
 						Constants.NODE_SAWMILL_OUTPUT, true);
+				outputPath = outputPath + File.separator +
+						new SimpleDateFormat("yyyy-MM").format(new Date());
+				if(runName != null){
+					outputPath = outputPath + File.separator + runName;
+				}
 			} catch (ReportManagerException e) {
 				log.warning("Unable to obtain Samill output path " +
 						"from profile " + profileName);
