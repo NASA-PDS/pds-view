@@ -51,7 +51,7 @@
   <properties>
     <!-- Internal Dependency Version -->
     <core-version>1.7.0-dev</core-version>
-    <pds4-tools-version>0.3.0</pds4-tools-version>
+    <pds4-tools-version>0.4.0</pds4-tools-version>
     <generate-version>0.8.0-dev</generate-version>
     <transform-version>1.1.0-dev</transform-version>
     <registry-version>1.8.0-dev</registry-version>
@@ -60,6 +60,7 @@
     <!-- External Dependency Versions -->
     <oodt-version>0.7</oodt-version>
     <product-tools-version>3.4.1</product-tools-version>
+    <vicario-version>4.1</vicario-version>
   </properties>
 
   <developers>
