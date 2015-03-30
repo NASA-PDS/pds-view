@@ -53,7 +53,7 @@
     <core-version>1.7.0</core-version>
     <pds4-tools-version>0.5.0</pds4-tools-version>
     <generate-version>0.8.0</generate-version>
-    <transform-version>1.1.0-dev</transform-version>
+    <transform-version>1.1.0</transform-version>
     <registry-version>1.8.0</registry-version>
     <search-version>1.6.0</search-version>
     <storage-version>1.1.0</storage-version>
