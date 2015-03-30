@@ -24,11 +24,23 @@
 
   <body>
     <release version="1.7.0" date="2015-03-31" description="This release of the Update Tool is a component of the integrated release 5.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="resneck" type="update" issue="PDS-304">
+        Added CLI option to specify a date range to download.
+      </action>
+      <action dev="resneck" type="add" issue="PDS-308">
+        Added a feature to remove logs that are over 1 year old.
+      </action>
+      <action dev="resneck" type="add" issue="PDS-309">
+        Added a wrapper for the Sawmill CLI.
+      </action>
       <action dev="resneck" type="fix" issue="PDS-330">
         Resolved issue where the report-manager hangs when generating multiple reports.
       </action>
       <action dev="resneck" type="add" issue="PDS-331">
         Added the report generation flag for domain reports.
+      </action>
+      <action dev="resneck" type="update" issue="PDS-333">
+        Modified the report output path for consistency and to eliminate naming collisions.
       </action>
       <action dev="resneck" type="add" issue="PDS-337">
         Added an echo command to the auto-generated script for Sawmill to enable debugging.
