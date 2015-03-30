@@ -31,10 +31,9 @@ mvn deploy
 cd ../generate
 mvn site
 mvn deploy
-cd ../pds4-tools
-mvn site
+cd ../pds4-tools/objectAccess
 mvn deploy
-cd ../transform
+cd ../../transform
 mvn site
 mvn deploy
 cd ../validate

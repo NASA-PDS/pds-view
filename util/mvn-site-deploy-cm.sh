@@ -26,9 +26,9 @@ cd core
 mvn install clean
 cd ../generate
 mvn install clean
-cd ../pds4-tools
+cd ../pds4-tools/objectAccess
 mvn install clean
-cd ../transform
+cd ../../transform
 mvn install clean
 cd ../..
 

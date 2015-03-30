@@ -31,9 +31,9 @@ cd core
 mvn install clean
 cd ../generate
 mvn install clean
-cd ../pds4-tools
+cd ../pds4-tools/objectAccess
 mvn install clean
-cd ../transform
+cd ../../transform
 mvn install clean
 cd ../..
 
@@ -94,8 +94,8 @@ mkdir -p $1/preparation/generate
 cp -r preparation/generate/target/site/* $1/preparation/generate
 mkdir -p $1/preparation/pds4-tools
 cp -r preparation/pds4-tools/target/site/* $1/preparation/pds4-tools
-mkdir -p $1/preparation/pds4-tools/objectAccess
-cp -r preparation/pds4-tools/objectAccess/target/site/* $1/preparation/pds4-tools/objectAccess
+# mkdir -p $1/preparation/pds4-tools/objectAccess
+# cp -r preparation/pds4-tools/objectAccess/target/site/* $1/preparation/pds4-tools/objectAccess
 mkdir -p $1/preparation/transform
 cp -r preparation/transform/target/site/* $1/preparation/transform
 mkdir -p $1/preparation/validate
