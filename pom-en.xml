@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2011-2014, by the California Institute of Technology.
+  Copyright 2011-2015, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -56,13 +56,13 @@
 
   <properties>
     <!-- Internal Dependency Version -->
-    <core-version>1.7.0-dev</core-version>
-    <pds4-tools-version>0.3.0</pds4-tools-version>
-    <generate-version>0.8.0-dev</generate-version>
-    <transform-version>1.1.0-dev</transform-version>
-    <registry-version>1.8.0-dev</registry-version>
-    <search-version>1.6.0-dev</search-version>
-    <storage-version>1.1.0-dev</storage-version>
+    <core-version>1.7.0</core-version>
+    <pds4-tools-version>0.5.0</pds4-tools-version>
+    <generate-version>0.8.0</generate-version>
+    <transform-version>1.1.0</transform-version>
+    <registry-version>1.8.0</registry-version>
+    <search-version>1.6.0</search-version>
+    <storage-version>1.1.0</storage-version>
     <!-- External Dependency Versions -->
     <oodt-version>0.7</oodt-version>
     <product-tools-version>3.4.1</product-tools-version>

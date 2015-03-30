@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2012-2014, by the California Institute of Technology. 
+# Copyright 2012-2015, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -25,12 +25,8 @@ cd core
 mvn install clean
 cd ../generate
 mvn install clean
-# cd ../pds4-tools/superpom
-# mvn clean install clean
-# cd ../package
-# mvn clean install clean
-# mvn package
-# cd ../../transform
+cd ../pds4-tools
+mvn -Dmaven.test.skip=true install clean
 cd ../transform
 mvn install clean
 cd ../..

@@ -1,4 +1,4 @@
-// Copyright 2009-2014, by the California Institute of Technology.
+// Copyright 2009-2015, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -930,7 +930,7 @@ public class CatalogRegistryIngester {
 		tmpVals.add(catObj.getFileObject().getCreationDateTime());
 		slots.add(new Slot("modification_date", tmpVals));
 		slots.add(new Slot("modification_version_id", Arrays.asList(new String[] {"1.0"})));
-		slots.add(new Slot("information_model_version", Arrays.asList(new String[] {"1.3.0.1"})));
+		slots.add(new Slot("information_model_version", Arrays.asList(new String[] {"1.4.0.0"})));
 		product.setSlots(slots);	
 
 		return product;

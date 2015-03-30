@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2010-2014, by the California Institute of Technology. 
+# Copyright 2010-2015, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -31,11 +31,8 @@ cd core
 mvn install clean
 cd ../generate
 mvn install clean
-# cd ../pds4-tools/superpom
-# mvn clean install clean
-# cd ../packages
-# mvn clean install clean
-# cd ../../transform
+cd ../pds4-tools
+mvn install clean
 cd ../transform
 mvn install clean
 cd ../..
@@ -97,6 +94,8 @@ mkdir -p $1/preparation/generate
 cp -r preparation/generate/target/site/* $1/preparation/generate
 mkdir -p $1/preparation/pds4-tools
 cp -r preparation/pds4-tools/target/site/* $1/preparation/pds4-tools
+mkdir -p $1/preparation/pds4-tools/objectAccess
+cp -r preparation/pds4-tools/objectAccess/target/site/* $1/preparation/pds4-tools/objectAccess
 mkdir -p $1/preparation/transform
 cp -r preparation/transform/target/site/* $1/preparation/transform
 mkdir -p $1/preparation/validate

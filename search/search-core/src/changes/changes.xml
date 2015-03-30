@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011-2014, by the California Institute of Technology.
+  Copyright 2011-2015, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -23,12 +23,12 @@
   </properties>
 
   <body>
-    <release version="1.6.0" date="TBD" description="TBD">
+    <release version="1.6.0" date="2015-03-31" description="This release of the Search Core is a component of the integrated release 5.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="add" issue="PDS-335">
-	Create new configs for Product_Attribute_Definition and Product_Class_Definition products.
+        Create new configs for Product_Attribute_Definition and Product_Class_Definition products.
       </action>
       <action dev="jpadams" type="update">
-	Updated error handling to be more descriptive when a search core run fails.
+        Updated error handling to be more descriptive when a search core run fails.
       </action>
     </release>
 
