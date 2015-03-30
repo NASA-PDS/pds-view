@@ -25,9 +25,9 @@ cd core
 mvn install clean
 cd ../generate
 mvn install clean
-cd ../pds4-tools
-mvn -Dmaven.test.skip=true install clean
-cd ../transform
+cd ../pds4-tools/objectAccess
+mvn install clean
+cd ../../transform
 mvn install clean
 cd ../..
 
