@@ -32,7 +32,7 @@ cd ../generate
 mvn site
 mvn deploy
 cd ../pds4-tools/objectAccess
-mvn deploy
+mvn clean deploy
 cd ../../transform
 mvn site
 mvn deploy

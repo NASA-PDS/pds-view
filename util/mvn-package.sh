@@ -26,7 +26,7 @@ mvn install clean
 cd ../generate
 mvn install clean
 cd ../pds4-tools/objectAccess
-mvn install clean
+mvn clean install clean
 mvn package
 cd ../../transform
 mvn install clean
