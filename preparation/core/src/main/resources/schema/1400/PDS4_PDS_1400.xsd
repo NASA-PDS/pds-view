@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!-- PDS4 XML/Schema for Name Space Id:pds  Version:1.4.0.0 - Sat Mar 14 18:31:12 PDT 2015 -->
+  <!-- PDS4 XML/Schema for Name Space Id:pds  Version:1.4.0.0 - Tue Mar 31 10:42:45 PDT 2015 -->
   <!-- Generated from the PDS4 Information Model Version 1.4.0.0 - System Build 5b -->
   <!-- *** This PDS4 product schema is an operational deliverable. *** -->
   <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -650,8 +650,8 @@
       <xs:element name="local_identifier" type="pds:local_identifier" minOccurs="1" maxOccurs="1"> </xs:element>
       <xs:element name="rule_context" type="pds:rule_context" minOccurs="1" maxOccurs="1"> </xs:element>
       <xs:element name="rule_assign" type="pds:rule_assign" minOccurs="0" maxOccurs="unbounded"> </xs:element>
-      <xs:element name="DD_Attribute_Reference" type="pds:DD_Attribute_Reference" minOccurs="1" maxOccurs="1"> </xs:element>
-      <xs:element name="DD_Class_Reference" type="pds:DD_Class_Reference" minOccurs="1" maxOccurs="1"> </xs:element>
+      <xs:element name="DD_Attribute_Reference" type="pds:DD_Attribute_Reference" minOccurs="0" maxOccurs="1"> </xs:element>
+      <xs:element name="DD_Class_Reference" type="pds:DD_Class_Reference" minOccurs="0" maxOccurs="1"> </xs:element>
       <xs:element name="DD_Rule_Statement" type="pds:DD_Rule_Statement" minOccurs="1" maxOccurs="unbounded"> </xs:element>
     </xs:sequence>
   </xs:complexType>
@@ -1605,13 +1605,13 @@
       <xs:element name="full_name" type="pds:full_name" minOccurs="1" maxOccurs="1"> </xs:element>
       <xs:element name="steward_id" type="pds:steward_id" minOccurs="1" maxOccurs="1"> </xs:element>
       <xs:element name="namespace_id" type="pds:namespace_id" minOccurs="1" maxOccurs="1"> </xs:element>
+      <xs:element name="external_property_maps_id" type="pds:external_property_maps_id" minOccurs="0" maxOccurs="unbounded"> </xs:element>
       <xs:element name="comment" type="pds:comment" minOccurs="0" maxOccurs="1"> </xs:element>
       <xs:element name="last_modification_date_time" type="pds:last_modification_date_time" minOccurs="1" maxOccurs="1"> </xs:element>
       <xs:element name="DD_Attribute" type="pds:DD_Attribute" minOccurs="0" maxOccurs="unbounded"> </xs:element>
       <xs:element name="DD_Class" type="pds:DD_Class" minOccurs="0" maxOccurs="unbounded"> </xs:element>
       <xs:element name="DD_Rule" type="pds:DD_Rule" minOccurs="0" maxOccurs="unbounded"> </xs:element>
-      <xs:element name="Property_Map" type="pds:Property_Map" minOccurs="0" maxOccurs="unbounded"> </xs:element>
-      <xs:element name="Property_Map_External" type="pds:Property_Map_External" minOccurs="0" maxOccurs="unbounded"> </xs:element>
+      <xs:element name="Property_Maps" type="pds:Property_Maps" minOccurs="0" maxOccurs="unbounded"> </xs:element>
     </xs:sequence>
   </xs:complexType>
 
@@ -2581,12 +2581,12 @@
         rules.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="identifier" type="pds:identifier" minOccurs="1" maxOccurs="1"> </xs:element>
-      <xs:element name="steward_id" type="pds:steward_id" minOccurs="1" maxOccurs="1"> </xs:element>
-      <xs:element name="namespace_id" type="pds:namespace_id" minOccurs="1" maxOccurs="1"> </xs:element>
+      <xs:element name="identifier" type="pds:identifier" minOccurs="0" maxOccurs="1"> </xs:element>
+      <xs:element name="title" type="pds:title" minOccurs="0" maxOccurs="1"> </xs:element>
       <xs:element name="model_object_id" type="pds:model_object_id" minOccurs="1" maxOccurs="1"> </xs:element>
       <xs:element name="model_object_type" type="pds:model_object_type" minOccurs="1" maxOccurs="1"> </xs:element>
-      <xs:element name="instance_id" type="pds:instance_id" minOccurs="0" maxOccurs="1"> </xs:element>
+      <xs:element name="instance_id" type="pds:instance_id" minOccurs="0" maxOccurs="unbounded"> </xs:element>
+      <xs:element name="external_namespace_id" type="pds:external_namespace_id" minOccurs="0" maxOccurs="unbounded"> </xs:element>
       <xs:element name="description" type="pds:description" minOccurs="0" maxOccurs="1"> </xs:element>
       <xs:element name="Property_Map_Entry" type="pds:Property_Map_Entry" minOccurs="1" maxOccurs="unbounded"> </xs:element>
     </xs:sequence>
@@ -2603,15 +2603,18 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="Property_Map_External">
+  <xs:complexType name="Property_Maps">
     <xs:annotation>
-      <xs:documentation>The Property Map External class references one
-        or more Property Maps not defined within this
-        namespace.</xs:documentation>
+      <xs:documentation>The Property Maps class defines a collection of
+        one or more related Property Maps.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="property_map_id" type="pds:property_map_id" minOccurs="1" maxOccurs="unbounded"> </xs:element>
+      <xs:element name="identifier" type="pds:identifier" minOccurs="1" maxOccurs="1"> </xs:element>
+      <xs:element name="title" type="pds:title" minOccurs="0" maxOccurs="1"> </xs:element>
+      <xs:element name="namespace_id" type="pds:namespace_id" minOccurs="1" maxOccurs="1"> </xs:element>
       <xs:element name="description" type="pds:description" minOccurs="0" maxOccurs="1"> </xs:element>
+      <xs:element name="external_property_map_id" type="pds:external_property_map_id" minOccurs="0" maxOccurs="unbounded"> </xs:element>
+      <xs:element name="Property_Map" type="pds:Property_Map" minOccurs="1" maxOccurs="unbounded"> </xs:element>
     </xs:sequence>
   </xs:complexType>
 
@@ -3087,8 +3090,6 @@
       <xs:element name="definition" type="pds:definition" minOccurs="1" maxOccurs="1"> </xs:element>
       <xs:element name="language" type="pds:language" minOccurs="1" maxOccurs="1"> </xs:element>
       <xs:element name="preferred_flag" type="pds:preferred_flag" minOccurs="1" maxOccurs="1"> </xs:element>
-      <xs:element name="role_id" type="pds:role_id" minOccurs="0" maxOccurs="1"> </xs:element>
-      <xs:element name="standard_id" type="pds:standard_id" minOccurs="0" maxOccurs="1"> </xs:element>
       <xs:element name="instance_id" type="pds:instance_id" minOccurs="0" maxOccurs="1"> </xs:element>
       <xs:element name="External_Reference_Extended" type="pds:External_Reference_Extended" minOccurs="0" maxOccurs="unbounded"> </xs:element>
     </xs:sequence>
@@ -4175,6 +4176,41 @@
       <xs:documentation>The error_constant attribute provides a value
         that indicates the original value was in
         error.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="pds:ASCII_Short_String_Collapsed">
+     <xs:minLength value="1"/>
+     <xs:maxLength value="255"/>
+	   </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="external_namespace_id">
+    <xs:annotation>
+      <xs:documentation>The external_namespace_id attribute provides a
+        namespace_id external to this context.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="pds:ASCII_Short_String_Collapsed">
+     <xs:minLength value="1"/>
+     <xs:maxLength value="255"/>
+	   </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="external_property_map_id">
+    <xs:annotation>
+      <xs:documentation>The external_property_map_id attribute provides
+        the identifier of a property_map instance external to this
+        context.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="pds:ASCII_Short_String_Collapsed">
+     <xs:minLength value="1"/>
+     <xs:maxLength value="255"/>
+	   </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="external_property_maps_id">
+    <xs:annotation>
+      <xs:documentation>The external_property_maps_id attribute provides
+        the identifier of a property_maps instance external to this
+        context.</xs:documentation>
     </xs:annotation>
     <xs:restriction base="pds:ASCII_Short_String_Collapsed">
      <xs:minLength value="1"/>
@@ -5548,17 +5584,6 @@
 	   </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="property_map_id">
-    <xs:annotation>
-      <xs:documentation>The identifier attribute provides the formal
-        name used to refer to a property map.</xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="pds:ASCII_Short_String_Collapsed">
-     <xs:minLength value="1"/>
-     <xs:maxLength value="255"/>
-	   </xs:restriction>
-  </xs:simpleType>
-
   <xs:simpleType name="property_name">
     <xs:annotation>
       <xs:documentation>The property name attribute provides a word or a
@@ -5576,9 +5601,8 @@
       <xs:documentation>The property value attribute provides the value
         assigned to a property.</xs:documentation>
     </xs:annotation>
-    <xs:restriction base="pds:ASCII_Short_String_Collapsed">
+    <xs:restriction base="pds:ASCII_Text_Preserved">
      <xs:minLength value="1"/>
-     <xs:maxLength value="255"/>
 	   </xs:restriction>
   </xs:simpleType>
 
@@ -5745,17 +5769,6 @@
       <xs:documentation>The revision_id attribute provides the revision
         level of a document, which may be set outside PDS and may be
         different from its version_id.</xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="pds:ASCII_Short_String_Collapsed">
-     <xs:minLength value="1"/>
-     <xs:maxLength value="255"/>
-	   </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="role_id">
-    <xs:annotation>
-      <xs:documentation>The role_id attribute provides the role
-        performed by this object.</xs:documentation>
     </xs:annotation>
     <xs:restriction base="pds:ASCII_Short_String_Collapsed">
      <xs:minLength value="1"/>
@@ -6099,17 +6112,6 @@
 	   </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="standard_id">
-    <xs:annotation>
-      <xs:documentation>The standard_id attribute provides the formal
-        name of an established norm or requirement.</xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="pds:ASCII_Short_String_Collapsed">
-     <xs:minLength value="1"/>
-     <xs:maxLength value="255"/>
-	   </xs:restriction>
-  </xs:simpleType>
-
   <xs:simpleType name="start_bit">
     <xs:annotation>
       <xs:documentation>The start_bit attribute provides the position of
@@ -6133,7 +6135,7 @@
 
   <xs:complexType name="start_date_time">
     <xs:simpleContent>
-      <xs:extension base="pds:ASCII_Date_Time_UTC">
+      <xs:extension base="pds:ASCII_Date_Time_YMD_UTC">
         <xs:attribute name="nilReason" type="pds:nil_reason" use="optional" />
       </xs:extension>
     </xs:simpleContent>
@@ -6194,7 +6196,7 @@
 
   <xs:complexType name="stop_date_time">
     <xs:simpleContent>
-      <xs:extension base="pds:ASCII_Date_Time_UTC">
+      <xs:extension base="pds:ASCII_Date_Time_YMD_UTC">
         <xs:attribute name="nilReason" type="pds:nil_reason" use="optional" />
       </xs:extension>
     </xs:simpleContent>
@@ -6807,8 +6809,7 @@
       <xs:restriction base="xs:string">
         <xs:pattern value='(-)?[0-9]{4}(Z?)'/>
         <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9](Z?)'/>
-        <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(60)(\.([0]{1,4}))?(Z?)'/>
-        <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:([0-5][0-9])(\.([0-9]{1,4}))?(Z?)'/>
+        <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(([0-5][0-9])|60)(\.([0-9]{1,4}))?(Z?)'/>
         <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-4]))(Z?)'/>
         <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)24((:00)|(:00:00))?(Z?)'/>
         <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)24:00:00(\.([0]{1,4}))(Z?)'/>
@@ -6821,8 +6822,7 @@
       <xs:restriction base="xs:string">
         <xs:pattern value='(-)?[0-9]{4}(Z)'/>
         <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9](Z)'/>
-        <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(60)(\.([0]{1,4}))?(Z)'/>
-        <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:([0-5][0-9])(\.([0-9]{1,4}))?(Z)'/>
+        <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(([0-5][0-9])|60)(\.([0-9]{1,4}))?(Z)'/>
         <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-4]))(Z)'/>
         <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)24((:00)|(:00:00))?(Z)'/>
         <xs:pattern value='(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)24:00:00(\.([0]{1,4}))(Z)'/>
@@ -6855,8 +6855,7 @@
         <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))(Z?)'/>
         <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3]))(Z?)'/>
         <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9](Z?)'/>
-        <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(60)(\.([0]{1,4}))?(Z?)'/>
-        <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:([0-5][0-9])(\.([0-9]{1,4}))?(Z?)'/>
+        <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(([0-5][0-9])|60)(\.([0-9]{1,4}))?(Z?)'/>
         <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)24((:00)|(:00:00))?(Z?)'/>
         <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)24:00:00(\.([0]{1,4}))(Z?)'/>
         <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(Z?)'/>
@@ -6869,8 +6868,7 @@
         <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))(Z)'/>
         <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3]))(Z)'/>
         <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9](Z)'/>
-        <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(60)(\.([0]{1,4}))?(Z)'/>
-        <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:([0-5][0-9])(\.([0-9]{1,4}))?(Z)'/>
+        <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(([0-5][0-9])|60)(\.([0-9]{1,4}))?(Z)'/>
         <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)24((:00)|(:00:00))?(Z)'/>
         <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)24:00:00(\.([0]{1,4}))(Z)'/>
         <xs:pattern value='(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(Z)'/>
@@ -7019,8 +7017,7 @@
     <xs:simpleType name="ASCII_Time">
       <xs:restriction base="xs:string">
         <xs:pattern value='(([0-1][0-9])|(2[0-3])):[0-5][0-9](Z?)'/>
-        <xs:pattern value='(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(60)((\.[0]+)|)(Z?)'/>
-        <xs:pattern value='(([0-1][0-9])|(2[0-3])):[0-5][0-9]:([0-5][0-9])((\.[0-9]+)|)(Z?)'/>
+        <xs:pattern value='(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(([0-5][0-9])|60)((\.[0-9]+)|)(Z?)'/>
         <xs:pattern value='(([0-1][0-9])|(2[0-4]))(Z?)'/>
         <xs:pattern value='24:00((:00((\.0+)|))|)(Z?)'/>
       </xs:restriction>

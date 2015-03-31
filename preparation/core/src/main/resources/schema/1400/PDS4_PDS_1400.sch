@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!-- PDS4 Schematron for Name Space Id:pds  Version:1.4.0.0 - Sat Mar 14 18:31:12 PDT 2015 -->
+  <!-- PDS4 Schematron for Name Space Id:pds  Version:1.4.0.0 - Tue Mar 31 10:42:45 PDT 2015 -->
   <!-- Generated from the PDS4 Information Model Version 1.4.0.0 - System Build 5b -->
   <!-- *** This PDS4 schematron file is an operational deliverable. *** -->
 <sch:schema xmlns:sch="http://purl.oclc.org/dsdl/schematron" queryBinding="xslt2">
@@ -674,8 +674,8 @@
   </sch:pattern>
   <sch:pattern>
     <sch:rule context="pds:Identification_Area/pds:information_model_version">
-      <sch:assert test=". = ('1.0.0.0', '1.1.0.0', '1.2.0.0', '1.2.0.1', '1.3.0.0', '1.3.0.1', '1.4.0.0')">
-        The attribute pds:information_model_version must be equal to one of the following values '1.0.0.0', '1.1.0.0', '1.2.0.0', '1.2.0.1', '1.3.0.0', '1.3.0.1', '1.4.0.0'.</sch:assert>
+      <sch:assert test=". = ('1.4.0.0')">
+        The attribute pds:information_model_version must be equal to the value '1.4.0.0'.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
@@ -1322,14 +1322,14 @@
   </sch:pattern>
   <sch:pattern>
     <sch:rule context="pds:Target/pds:type">
-      <sch:assert test=". = ('Asteroid', 'Comet', 'Dust', 'Dwarf Planet', 'Galaxy', 'Globular Cluster', 'Meteorite', 'Meteoroid', 'Meteoroid Stream', 'Nebula', 'Open Cluster', 'Planet', 'Planetary Nebula', 'Planetary System', 'Plasma Cloud', 'Ring', 'Satellite', 'Star', 'Star Cluster', 'Sun', 'Terrestrial Sample', 'Trans-Neptunian Object')">
-        The attribute pds:type must be equal to one of the following values 'Asteroid', 'Comet', 'Dust', 'Dwarf Planet', 'Galaxy', 'Globular Cluster', 'Meteorite', 'Meteoroid', 'Meteoroid Stream', 'Nebula', 'Open Cluster', 'Planet', 'Planetary Nebula', 'Planetary System', 'Plasma Cloud', 'Ring', 'Satellite', 'Star', 'Star Cluster', 'Sun', 'Terrestrial Sample', 'Trans-Neptunian Object'.</sch:assert>
+      <sch:assert test=". = ('Asteroid', 'Comet', 'Dust', 'Dwarf Planet', 'Galaxy', 'Globular Cluster', 'Meteorite', 'Meteoroid', 'Meteoroid Stream', 'Nebula', 'Open Cluster', 'Planet', 'Planetary Nebula', 'Planetary System', 'Plasma Cloud', 'Plasma Stream', 'Ring', 'Satellite', 'Star', 'Star Cluster', 'Sun', 'Terrestrial Sample', 'Trans-Neptunian Object')">
+        The attribute pds:type must be equal to one of the following values 'Asteroid', 'Comet', 'Dust', 'Dwarf Planet', 'Galaxy', 'Globular Cluster', 'Meteorite', 'Meteoroid', 'Meteoroid Stream', 'Nebula', 'Open Cluster', 'Planet', 'Planetary Nebula', 'Planetary System', 'Plasma Cloud', 'Plasma Stream', 'Ring', 'Satellite', 'Star', 'Star Cluster', 'Sun', 'Terrestrial Sample', 'Trans-Neptunian Object'.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
     <sch:rule context="pds:Target_Identification/pds:type">
-      <sch:assert test=". = ('Asteroid', 'Calibration', 'Comet', 'Dust', 'Dwarf Planet', 'Galaxy', 'Globular Cluster', 'Meteorite', 'Meteoroid', 'Meteoroid Stream', 'Nebula', 'Open Cluster', 'Planet', 'Planetary Nebula', 'Planetary System', 'Plasma Cloud', 'Ring', 'Satellite', 'Star', 'Star Cluster', 'Sun', 'Terrestrial Sample', 'Trans-Neptunian Object')">
-        The attribute pds:type must be equal to one of the following values 'Asteroid', 'Calibration', 'Comet', 'Dust', 'Dwarf Planet', 'Galaxy', 'Globular Cluster', 'Meteorite', 'Meteoroid', 'Meteoroid Stream', 'Nebula', 'Open Cluster', 'Planet', 'Planetary Nebula', 'Planetary System', 'Plasma Cloud', 'Ring', 'Satellite', 'Star', 'Star Cluster', 'Sun', 'Terrestrial Sample', 'Trans-Neptunian Object'.</sch:assert>
+      <sch:assert test=". = ('Asteroid', 'Calibration', 'Comet', 'Dust', 'Dwarf Planet', 'Galaxy', 'Globular Cluster', 'Meteorite', 'Meteoroid', 'Meteoroid Stream', 'Nebula', 'Open Cluster', 'Planet', 'Planetary Nebula', 'Planetary System', 'Plasma Cloud', 'Plasma Stream', 'Ring', 'Satellite', 'Star', 'Star Cluster', 'Sun', 'Terrestrial Sample', 'Trans-Neptunian Object')">
+        The attribute pds:type must be equal to one of the following values 'Asteroid', 'Calibration', 'Comet', 'Dust', 'Dwarf Planet', 'Galaxy', 'Globular Cluster', 'Meteorite', 'Meteoroid', 'Meteoroid Stream', 'Nebula', 'Open Cluster', 'Planet', 'Planetary Nebula', 'Planetary System', 'Plasma Cloud', 'Plasma Stream', 'Ring', 'Satellite', 'Star', 'Star Cluster', 'Sun', 'Terrestrial Sample', 'Trans-Neptunian Object'.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
