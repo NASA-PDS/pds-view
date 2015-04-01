@@ -89,7 +89,7 @@ cd ../..
 
 cd report
 mvn deploy --non-recursive
-cd ../report-manager
+cd report-manager
 mvn site
 mvn deploy
 cd ../..
