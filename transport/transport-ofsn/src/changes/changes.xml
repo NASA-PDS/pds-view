@@ -22,6 +22,9 @@
   </properties>
 
   <body>
+    <release version="1.3.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.2.0" date="2015-03-31" description="This release of the Transport Service is a component of the integrated release 5.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" type="fix" issue="PDS-338">
         Modified to improve the response speed with the return type DIRLIST1, to support PDS_JPEG return type, and to allow values to include without slash when appending to the productRoot value.
