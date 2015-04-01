@@ -66,6 +66,7 @@
     <!-- External Dependency Versions -->
     <oodt-version>0.7</oodt-version>
     <product-tools-version>3.4.1</product-tools-version>
+    <vicario-version>4.0</vicario-version>
   </properties>
 
   <developers>
