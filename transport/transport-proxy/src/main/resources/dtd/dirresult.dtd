@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT dirResult
+  (dirEntry*)>
+
+    <!ELEMENT dirEntry
+      (OFSN, fileSize)>
+
+    <!ELEMENT OFSN (#PCDATA)>
+    <!ELEMENT fileSize (#PCDATA)>
+
