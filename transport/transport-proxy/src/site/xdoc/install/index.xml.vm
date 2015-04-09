@@ -32,6 +32,7 @@
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
         <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
+        <li><a href="#Deploying_the_DTD_Files">Deploying the DTD Files</a></li>
       </ul>
     </section>
 
@@ -158,6 +159,27 @@ urn\:eda\:rmi\:PDS.CN.Product=http\://starbrite.jpl.nasa.gov/pdsd/prod
         <p>Once a modification has been made, the Transport Proxy application must be stopped and started for these changes to take effect. This can be accomplished by restarting the Tomcat Server. Alternatively, if the Tomcat Manager interface was utilized for the deployment, find the Transport Proxy entry in the Manager interface, select the associated Stop button followed by a selection of the associated Start button to stop and then start the applications, respectively.
         </p>
       </subsection>
+    </section>
+
+    <section name="Deploying the DTD Files">
+      <p>The Transport Proxy web application includes a set of Document Type Definition (DTD) files that are utilized by the applications that the proxy interfaces with (e.g., Transport Service (OFSN), Product Server, Profile Server, etc.). These files are meant to be deployed to the PDS web site at http://starbrite.jpl.nasa.gov/dtd. This can be accomplished with a Subversion externals configuration. Create a file named <i>svn_externals.txt</i> with the following content:
+      </p>
+
+      <source>
+dtd  https://starcell.jpl.nasa.gov/repo/2010/trunk/transport/transport-proxy/src/main/resources/dtd
+      </source>
+
+      <p>Perform the Subversion externals configuration in the top-level directory of the PDS web site with the following commands:
+      </p>
+
+      <source>
+% svn propset svn:externals -F svn_externals.txt .
+% svn commit
+% svn update
+      </source>
+
+      <p>The last command above will retrieve the <i>dtd</i> directory.
+      </p>
     </section>
   </body>
 </document>
