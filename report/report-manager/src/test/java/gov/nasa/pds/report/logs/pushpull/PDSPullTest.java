@@ -93,7 +93,7 @@ public class PDSPullTest extends PDSTest {
 				SftpTestConstants.TEST_USER, SftpTestConstants.TEST_PASSWORD,
 				true);
 		
-		String path="/var/log/httpd/access_log*2014-03-*";
+		String path="/var/log/httpd/access_log*2015-03-*";
 		
         Method method = PDSPullImpl.class.getDeclaredMethod("getFileList", String.class);
         method.setAccessible(true);
@@ -102,6 +102,7 @@ public class PDSPullTest extends PDSTest {
         /*for (String file : fileList) {
         	System.out.println(file);
         }*/
+        System.out.println(fileList.size());
 		Collections.sort(fileList);
 		assertTrue(fileList.size() == 31);
 		assertTrue(fileList.get(0).equals(new File(
