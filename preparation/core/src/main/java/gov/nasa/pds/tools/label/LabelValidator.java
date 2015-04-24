@@ -108,6 +108,7 @@ public class LabelValidator {
   private List<ExternalValidator> externalValidators;
   private List<DocumentValidator> documentValidators;
   private CachedEntityResolver cachedEntityResolver;
+  private CachedLSResourceResolver cachedLSResolver;
   private SAXParserFactory saxParserFactory;
   private DocumentBuilder docBuilder;
   private SchemaFactory schemaFactory;
@@ -314,6 +315,11 @@ public class LabelValidator {
         // Allow errors that happen in the schema to be logged there
         if (container != null) {
           schemaFactory.setErrorHandler(new LabelErrorHandler(container));
+          cachedLSResolver = new CachedLSResourceResolver(container);
+          schemaFactory.setResourceResolver(cachedLSResolver);
+        } else {
+          cachedLSResolver = new CachedLSResourceResolver();
+          schemaFactory.setResourceResolver(cachedLSResolver);
         }
         // Time to load schema that will be used for validation
         if (userSchemaFiles != null) {
@@ -360,6 +366,7 @@ public class LabelValidator {
         ErrorHandler handler = new LabelErrorHandler(container);
         cachedParser.setErrorHandler(handler);
         cachedValidatorHandler.setErrorHandler(handler);
+
       }
 
       // Finally parse and validate the file
@@ -374,6 +381,7 @@ public class LabelValidator {
 
       DOMLocator locator = new DOMLocator(url);
       cachedValidatorHandler.setDocumentLocator(locator);
+      cachedValidatorHandler.setResourceResolver(cachedLSResolver);
       walkNode(xml, cachedValidatorHandler, locator);
 
       // If validating against the label supplied schema, check

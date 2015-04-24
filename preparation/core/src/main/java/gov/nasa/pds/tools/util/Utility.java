@@ -31,6 +31,23 @@ import java.util.List;
  */
 public class Utility {
 
+  // Implementation is needed since pds.nasa.gov currently uses SNI
+  // which is not supported in Java 6, but is supported in Java 7.
+  static {
+    javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
+    new javax.net.ssl.HostnameVerifier(){
+        public boolean verify(String hostname,
+                javax.net.ssl.SSLSession sslSession) {
+          if (hostname.equals("pds.nasa.gov")
+              && hostname.equals(sslSession.getPeerHost())) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+    });
+   }
+
   /**
    * Method that opens a connection. Supports redirects.
    *
