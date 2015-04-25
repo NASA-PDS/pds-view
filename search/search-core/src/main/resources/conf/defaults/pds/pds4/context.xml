@@ -36,7 +36,8 @@
 			<registryPath>data_class</registryPath>
 		</field>
 		<!--  -->
-		
+
+		<!-- Universal fields -->
 		<field name="data_class" type="string">
 			<registryPath>data_class</registryPath>
 		</field>
@@ -61,6 +62,22 @@
 		<field name="alternate_id" type="string">
 			<registryPath>alternate_id</registryPath>
 		</field>
+		<field name="associate_ref" type="date">
+			<registryPath>associate_ref</registryPath>
+		</field>
+		<field name="access_url" type="date">
+			<registryPath>access_url</registryPath>
+		</field>
+		<field name="modification_date" type="date">
+			<registryPath>modification_date</registryPath>
+		</field>
+		<field name="modification_description" type="string">
+			<registryPath>modification_description</registryPath>
+		</field>
+		<field name="external_reference_text" type="string">
+			<registryPath>external_reference_text</registryPath>
+		</field>
+		<!-- -->
 		
 		<!-- Facility -->
 		<field name="facility_name" type="float">
@@ -177,21 +194,42 @@
 			<registryPath>resource_description</registryPath>
 		</field>
 		
-		
-		<field name="associate_ref" type="date">
-			<registryPath>associate_ref</registryPath>
+		<!-- PDS Affiliate-->
+		<field name="person_name" type="string">
+			<registryPath>person_name</registryPath>
 		</field>
-		<field name="access_url" type="date">
-			<registryPath>access_url</registryPath>
+		<field name="person_registration_date" type="string">
+			<registryPath>person_registration_date</registryPath>
 		</field>
-		<field name="modification_date" type="date">
-			<registryPath>modification_date</registryPath>
+		<field name="person_electronic_mail_address" type="string">
+			<registryPath>person_electronic_mail_address</registryPath>
 		</field>
-		<field name="modification_description" type="string">
-			<registryPath>modification_description</registryPath>
+		<field name="person_sort_name" type="string">
+			<registryPath>person_sort_name</registryPath>
 		</field>
-		<field name="external_reference_text" type="string">
-			<registryPath>external_reference_text</registryPath>
+		<field name="person_affiliation_type" type="string">
+			<registryPath>person_affiliation_type</registryPath>
+		</field>
+		<field name="person_alternate_telephone_number" type="string">
+			<registryPath>person_alternate_telephone_number</registryPath>
+		</field>
+		<field name="person_institution_name" type="string">
+			<registryPath>person_institution_name</registryPath>
+		</field>
+		<field name="person_phone_book_flag" type="string">
+			<registryPath>person_phone_book_flag</registryPath>
+		</field>
+		<field name="person_phone_book_flag" type="string">
+			<registryPath>person_postal_address_text</registryPath>
+		</field>
+		<field name="person_team_name" type="string">
+			<registryPath>person_team_name</registryPath>
+		</field>
+		<field name="person_telephone_number" type="string">
+			<registryPath>person_telephone_number</registryPath>
+		</field>
+		<field name="person_description" type="string">
+			<registryPath>person_description</registryPath>
 		</field>
 	</indexFields>
 </product>
