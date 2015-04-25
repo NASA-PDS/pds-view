@@ -75,9 +75,13 @@
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-324'>PDS-324</a>] - Transform: Add support for FITS transformation
           </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-335'>PDS-335</a>] - Search: Add support for indexing attribute and class products
+          </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-336'>PDS-336</a>] - Transform: Support labels that point to multiple tables/images
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-339'>PDS-339</a>] - PDS4 Tools: Need to add support for repeating fields
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-354'>PDS-354</a>] - Portal: Add a new Data Dictionary Search interface
           </li>
         </ul>
       </subsection>
@@ -95,13 +99,13 @@
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-317'>PDS-317</a>] - Registry: registry-ui takes FOREVER to approve a large package
           </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-320'>PDS-320</a>] - Validate: Report if a given XML Schema or Schematron file is invalid
+          </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-331'>PDS-331</a>] - Report: Missing total row for domain report
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-333'>PDS-333</a>] - Report: Modify generated reports output path
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-334'>PDS-334</a>] - Report: Upgrade Sawmill to latest version
-          </li>
-          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-335'>PDS-335</a>] - Search: Add support for indexing attribute and class products
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-337'>PDS-337</a>] - Report: Add echo of sawmill command
           </li>
@@ -130,6 +134,10 @@
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-330'>PDS-330</a>] - Report: report-mgr hangs when generating multiple reports
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-340'>PDS-340</a>] - PDS4 Tools: The file_size keyword in File class is required to recognize objects
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-351'>PDS-351</a>] - Schema validation fails with certificate issue in Java 6
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-356'>PDS-356</a>] - Generate: Xml declaration removed when transformation completed
           </li>
         </ul>
       </subsection>
@@ -230,8 +238,8 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
         <li><a href="../security/index.html">Security Service</a> - 1.2.0 (EN Only)</li>
         <li><a href="../storage/index.html">Storage</a></li>
         <ul>
-          <li><a href="../storage/storage-service/index.html">Storage Service</a> - 1.1.0 (EN Only)</li>
-          <li><a href="../storage/product-service/index.html">Product Service</a> - 1.1.0 (EN Only)</li>
+          <li><a href="../storage/storage-service/index.html">Storage Service</a> - 1.0.0 (EN Only)</li>
+          <li><a href="../storage/product-service/index.html">Product Service</a> - 1.0.0 (EN Only)</li>
         </ul>
         <li><a href="../transport/index.html">Transport</a></li>
         <ul>
@@ -472,7 +480,7 @@ ProxyPassReverse /services/registry-pds4 http://localhost:8080/registry-pds4
 Summary:
 
 13 of 13 file(s) processed, 5 other file(s) skipped
-0 error(s), 2 warning(s)
+0 error(s), 9 warning(s)
 
 13 of 13 products registered.
 81 of 81 ancillary products registered.
@@ -502,9 +510,9 @@ End of Log
             </p>
             <source>
 &lt;ns2:report xmlns:ns2="http://registry.pds.nasa.gov" status="OK" 
-serverStarted="2014-10-26T11:26:32.121-07:00" associations="325" 
+serverStarted="2015-04-24T18:16:51.167-07:00" associations="326" 
 extrinsics="94" services="0" classificationSchemes="2" 
-classificationNodes="67" packages="5" events="249" 
+classificationNodes="68" packages="5" events="250" 
 registryVersion="1.8.0"/&gt;
             </source>
             <p>The above report shows 94 extrinsics (PDS products) registered which corresponds with the Harvest Tool summary. The number of associations registered is a little harder to verify because there were already some associations in the registry from the configuration step. Feel free to try out some of the other end points (e.g. extrinsics) detailed in the <a href="../registry/registry-service/operate/index.html#Query_Artifacts">Query Artifacts</a> section of the Operations document.
