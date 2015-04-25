@@ -370,6 +370,32 @@
     </fieldType>
     -->
 
+    <fieldType name="text_sortable" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <!-- KeywordTokenizer does no actual tokenizing, so the entire
+             input string is preserved as a single token
+          -->
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+        <!-- The LowerCase TokenFilter does what you expect, which can be
+             when you want your sorting to be case insensitive
+          -->
+        <filter class="solr.LowerCaseFilterFactory" />
+        <!-- The TrimFilter removes any leading or trailing whitespace -->
+        <filter class="solr.TrimFilterFactory" />
+        <!-- The PatternReplaceFilter gives you the flexibility to use
+             Java Regular expression to replace any sequence of characters
+             matching a pattern with an arbitrary replacement string, 
+             which may include back references to portions of the original
+             string matched by the pattern.
+             
+             See the Java Regular Expression documentation for more
+             information on pattern and replacement string syntax.
+             
+             http://java.sun.com/j2se/1.5.0/docs/api/java/util/regex/package-summary.html
+          -->
+      </analyzer>
+    </fieldType>
+
     <!-- This is an example of using the KeywordTokenizer along
          With various TokenFilterFactories to produce a sortable field
          that does not include some properties of the source text
@@ -504,7 +530,7 @@
    <field name="archive_status" type="lowercase" indexed="true" stored="true" multiValued="false" />
 	   
     <!-- Product_Attribute_Definition fields -->
-	<field name="attribute_name" type="text_general" indexed="true" stored="true" multiValued="false" />
+	<field name="attribute_name" type="text_sortable" indexed="true" stored="true" multiValued="false" />
 	<field name="attribute_class_name" type="text_general" indexed="true" stored="true" multiValued="false" />
 	<field name="attribute_local_identifier" type="string" indexed="true" stored="true" multiValued="false" />
 	<field name="attribute_type" type="string" indexed="true" stored="true" multiValued="false" />
@@ -578,7 +604,7 @@
    <field name="full_name" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="file_name" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="file_ref_name" type="lowercase" indexed="true" stored="true" multiValued="true" />
-   <field name="person_name" type="text_general" indexed="true" stored="true" multiValued="true" />
+
    <field name="instrument_description" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="instrument_host_name" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_host_serial_number" type="lowercase" indexed="false" stored="true" multiValued="true" />
@@ -604,6 +630,22 @@
    <field name="observing_system_name" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
    <field name="observing_system_component_name" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
    <field name="observing_system_component_type" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
+
+   <!-- PDS Affiliate -->
+   <field name="person_name" type="text_sortable" indexed="true" stored="true" multiValued="false" />
+   <field name="person_registration_date" type="date" indexed="true" stored="true" multiValued="false" />
+   <field name="person_electronic_mail_address" type="text_sortable" indexed="true" stored="true" multiValued="true" />
+   <field name="person_sort_name" type="text_sortable" indexed="true" stored="true" multiValued="false" />
+   <field name="person_affiliation_type" type="text_sortable" indexed="true" stored="true" multiValued="true" />
+   <field name="person_alternate_telephone_number" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="person_institution_name" type="text_sortable" indexed="true" stored="true" multiValued="true" />
+   <field name="person_phone_book_flag" type="boolean" indexed="true" stored="true" multiValued="false" />
+   <field name="person_postal_address_text" type="text_sortable" indexed="true" stored="true" multiValued="true" />
+   <field name="person_team_name" type="text_sortable" indexed="true" stored="true" multiValued="true" />
+   <field name="person_telephone_number" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="person_description" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <!-- -->
+
    <field name="pds_model_version" type="lowercase" indexed="true" stored="true" multiValued="false" />
    <field name="primary_result_purpose" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
    <field name="primary_result_processing_level" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
