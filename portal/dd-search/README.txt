@@ -10,8 +10,7 @@ be configured as follows:
 % svn checkout https://starcell.jpl.nasa.gov/repo/websites/pds-beta htdocs
 % cd htdocs/tools
 % svn propset svn:externals \
-'dd-search https://starcell.jpl.nasa.gov/repo/2010/trunk/portal/dd-search/src/main/webapp' \
-. property 'svn:externals' set on '.'
+'dd-search https://starcell.jpl.nasa.gov/repo/2010/trunk/portal/dd-search/src/main/webapp' .
 
 The documentation including release notes, installation and operation of the 
 software should be online at 

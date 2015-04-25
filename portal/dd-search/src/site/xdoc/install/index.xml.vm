@@ -40,29 +40,26 @@
     </section>
 
     <section name="Deploying the Application">
-      <p>The software is not compiled but can instead be deployed with a Subversion "external" directory configuration within the PDS Home site directory structure. The desired end point is tools/dd-search within the site
+      <p>The software is not compiled but can instead be deployed with a Subversion "external" directory configuration within the PDS Home site directory structure. The desired end point is <i>tools/dd-search</i> within the site. From within the top directory of the PDS site deployment (e.g., /data/www/pds/htdocs), change directories to the <i>tools</i> directory and perform the following commands to configure and retrieve the "external" directory:
       </p>
 
       <source>
+% svn propset svn:externals \
+'dd-search https://starcell.jpl.nasa.gov/repo/2010/trunk/portal/dd-search/src/main/webapp' .
+% svn update
       </source>
-
-      <p>TBD
-      </p>
     </section>
 
     <section name="Configuring the Application">
-      <p>TBD <i>js/DataDictionary.js</i>
+      <p>The application defaults to accessing the Search Service at <i>http://localhost:8080/search-service</i>. If this needs to be modified for a given deployment, edit the <i>dd-search/js/DataDictionary.js</i> file and modify the following block accordingly:
       </p>
 
       <source>
-  $(function () {
-    Manager = new AjaxSolr.Manager({
-      solrUrl: 'http://localhost:8080/search-service/'
-    });
+$(function () {
+  Manager = new AjaxSolr.Manager({
+    solrUrl: 'http://localhost:8080/search-service/'
+  });
       </source>
-
-      <p>TBD
-      </p>
     </section>
   </body>
 </document>
