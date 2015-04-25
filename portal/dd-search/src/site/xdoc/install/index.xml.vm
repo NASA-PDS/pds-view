@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2015, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Installation</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Installation">
+      <p>This section describes how to install the Data Dictionary Search software contained in the <i>${project.artifactId}</i> package. The following topics can be found in this section:
+      </p>
+
+      <ul>
+        <li><a href="#System_Requirements">System Requirements</a></li>
+        <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+        <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
+      </ul>
+    </section>
+
+    <section name="System Requirements">
+      <p>The Data Dictionary Search software was developed using Ajax Solr and jQuery. The application must reside within a PDS web site deployment because it depends on the CSS configuration and server side includes provided by the site.
+      </p>
+    </section>
+
+    <section name="Deploying the Application">
+      <p>The software is not compiled but can instead be deployed with a Subversion "external" directory configuration within the PDS Home site directory structure. The desired end point is tools/dd-search within the site
+      </p>
+
+      <source>
+      </source>
+
+      <p>TBD
+      </p>
+    </section>
+
+    <section name="Configuring the Application">
+      <p>TBD <i>js/DataDictionary.js</i>
+      </p>
+
+      <source>
+  $(function () {
+    Manager = new AjaxSolr.Manager({
+      solrUrl: 'http://localhost:8080/search-service/'
+    });
+      </source>
+
+      <p>TBD
+      </p>
+    </section>
+  </body>
+</document>
