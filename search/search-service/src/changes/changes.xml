@@ -24,12 +24,6 @@
 
   <body>
     <release version="1.7.0" date="TBD" description="TBD">
-      <action dev="jpadams" type="update" issue="PDS-355">
-	Created new text_sortable field type in schema.xml in order to correctly sort strings without tokenizing. Added this new field type to attribute_name to resolve this issue.
-      </action>
-      <action dev="jpadams" type="update" issue="PDS-363">
-	Added PDS_Affiliate fields to schema.xml
-      </action>
     </release>
 
     <release version="1.6.0" date="2015-03-31" description="This release of the Search Core is a component of the integrated release 5.1.0 of the PDS4 System. This is an operational release of the system components to date.">
@@ -38,6 +32,12 @@
       </action>
       <action dev="jpadams" type="update" issue="PDS-335">
         Update schema.xml to allow for new Attribute Definition and Class Definition fields. Updated solrconfig.xml to block these values from displaying the search ui.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-355">
+        Created new text_sortable field type in schema.xml in order to correctly sort strings without tokenizing. Added this new field type to attribute_name to resolve this issue.
+      </action>
+      <action dev="jpadams" type="update" issue="PDS-363">
+        Added PDS_Affiliate fields to schema.xml
       </action>
     </release>
 
