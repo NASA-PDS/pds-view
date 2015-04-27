@@ -1,3 +1,17 @@
+//	Copyright 2015, by the California Institute of Technology.
+//	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+//	Any commercial use must be negotiated with the Office of Technology 
+//	Transfer at the California Institute of Technology.
+//	
+//	This software is subject to U. S. export control laws and regulations 
+//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+//	is subject to U.S. export control laws and regulations, the recipient has 
+//	the responsibility to obtain export licenses or other export authority as 
+//	may be required before exporting such information to foreign countries or 
+//	providing access to foreign nationals.
+//	
+//	$Id$
+//
 package gov.nasa.pds.report.processing;
 
 import java.io.BufferedReader;
@@ -126,17 +140,29 @@ public class LogReformatProcessor implements Processor{
 	private List<String> segmentedOutput;
 	
 	// The Maps that we use to store the log details as objects
-	private Map<String, LogDetail> inputDetailMap;
-	private Map<String, LogDetail> outputDetailMap;
+	protected Map<String, LogDetail> inputDetailMap;
+	protected Map<String, LogDetail> outputDetailMap;
 
-	@Override
+	/**
+	 * @see gov.nasa.pds.report.processing.Processor.getDirName()
+	 */
 	public String getDirName(){
 		
 		return OUTPUT_DIR_NAME;
 		
 	}
 	
-	@Override
+	/**
+	 * Read in a log file, reformat it as per configured, and place the output
+	 * in the given directory.
+	 * 
+	 * @param in					The {@link File} that will be reformatted.
+	 * @param out					The directory where output will be placed,
+	 * 								represented as a {@link File}.
+	 * @throws ProcessingException	If any parameters are null or invalid, if
+	 * 								the processor hasn't been configured, or if
+	 * 								an error occurs during processing.
+	 */
 	public void process(File in, File out) throws ProcessingException{
 		
 		if(in == null){
@@ -158,7 +184,7 @@ public class LogReformatProcessor implements Processor{
 					"not been configured previously");
 		}
 		
-		log.info("Now reformatting logs");
+		log.info("Now reformatting logs in " + in.getAbsolutePath());
 		
 		// Get a list of files in the input directory
 		String[] filenames = in.list();
@@ -187,7 +213,9 @@ public class LogReformatProcessor implements Processor{
 		
 	}
 
-	@Override
+	/**
+	 * TODO: Write some proper documentation here
+	 */
 	public void configure(Properties props) throws ProcessingException{
 		
 		log.info("Configuring log reformatting processor");
@@ -206,14 +234,14 @@ public class LogReformatProcessor implements Processor{
 		}
 		
 		// Parse the input pattern
-		log.finer("Parsing input pattern: " + inputPattern);
+		//log.finer("Parsing input pattern: " + inputPattern);
 		this.inputDetailMap = new HashMap<String, LogDetail>();
 		this.segmentedInput = new Vector<String>();
 		this.parsePattern(inputPattern, this.segmentedInput,
 				this.inputDetailMap, 2, 3);
 		
 		// Parse the output pattern
-		log.finer("Parsing output pattern: " + outputPattern);
+		//log.finer("Parsing output pattern: " + outputPattern);
 		this.outputDetailMap = new HashMap<String, LogDetail>();
 		this.segmentedOutput = new Vector<String>();
 		this.parsePattern(outputPattern, this.segmentedOutput,
@@ -230,8 +258,8 @@ public class LogReformatProcessor implements Processor{
 			if(this.inputDetailMap.containsKey(outputKey)){
 				String inputType = this.inputDetailMap.get(outputKey).getType();
 				String outputType = this.outputDetailMap.get(outputKey).getType();
-				log.finest("Detail: " + outputKey + " input type: " +
-						inputType + " output type: " + outputType);
+				//log.finest("Detail: " + outputKey + " input type: " +
+				//		inputType + " output type: " + outputType);
 				if(!inputType.equals(outputType)){
 					throw new ProcessingException("The log reformat " +
 							"patterns contain the detail " + outputKey +
@@ -242,18 +270,32 @@ public class LogReformatProcessor implements Processor{
 		}
 		
 		// Print debug info
-		log.finer("Input pattern: " + this.segmentedInput.toString());
-		log.finer("Output pattern: " + this.segmentedOutput.toString());
+		//log.finer("Input pattern: " + this.segmentedInput.toString());
+		//log.finer("Output pattern: " + this.segmentedOutput.toString());
 		
 	}
 	
-	// Create a new log file in the new format
-	private void processFile(File in, File outputDir) throws ProcessingException{
+	/**
+	 * TODO: Change the algorithm of this method to read in each line,
+	 * reformat it, and output it before moving on to the next.  This should
+	 * reduce our memory usage.
+	 * 
+	 * Process a given {@link File}, placing the reformatted version inside a
+	 * given directory.
+	 * 
+	 * @param in					The File that will be processed.
+	 * @param outputDir				The directory where the output will be
+	 * 								placed, represented as a {@link File}.
+	 * @throws ProcessingException	If an error occurs while parsing the input
+	 * 								file or while writing output.
+	 */
+	protected void processFile(File in, File outputDir)
+			throws ProcessingException{
 		
 		log.info("Reformatting log file " + in.getName());
 		
 		// Read input from file into a list of lines
-		List<String> fileContent = this.getFileLines(in);
+		List<String> fileContent = ReformatUtil.getFileLines(in);
 		
 		// Iterate over lines from input file, reformatting each line
 		List<String> outputContent = new Vector<String>();
@@ -274,10 +316,9 @@ public class LogReformatProcessor implements Processor{
 			// Add the reformatted output line to the content to output
 			outputContent.add(this.formatOutputLine());
 			
-			// Reset the detail values so that they don't carry over to the next line
-			for(String key: this.inputDetailMap.keySet()){
-				this.inputDetailMap.get(key).reset();
-			}
+			// Reset the detail values so that they don't carry over to the
+			// next line
+			this.resetDetailMaps();
 			
 		}
 		
@@ -302,15 +343,24 @@ public class LogReformatProcessor implements Processor{
 		
 	}
 	
-	// Iterate over the substrings in the input pattern, capturing the
-	// value of those substrings
-	private boolean parseInputLine(String line) throws ProcessingException{
+	/**
+	 * Parse a line from an input file and extract the values for presented
+	 * details (e.g. date-time).
+	 * 
+	 * @param line					The input line, presented as a String.
+	 * @return						True if the line was properly parsed,
+	 * 								otherwise false.
+	 * @throws ProcessingException	If a required detail is not defined, or if
+	 * 								the line cannot be properly parsed using
+	 * 								the pattern provided during configuration.
+	 */
+	protected boolean parseInputLine(String line) throws ProcessingException{
 		
-		log.fine("Parsing log line: " + line);
+		//log.fine("Parsing log line: " + line);
 		
 		// Check if line is part of the header
 		if(line.startsWith("#")){
-			log.finest("Log reformatter will ignore header line: " + line);
+			//log.finest("Log reformatter will ignore header line: " + line);
 			return false;
 		}
 		
@@ -430,12 +480,13 @@ public class LogReformatProcessor implements Processor{
 	
 	// Iterate over the substrings in the output pattern, creating the
 	// output version using currently stored input values
-	private String formatOutputLine() throws ProcessingException{
+	// TODO: Replace this with a proper javadoc
+	protected String formatOutputLine() throws ProcessingException{
 		
 		String outputLine = null;
 		for(String segment: this.segmentedOutput){
 			
-			log.finest("Now formatting output for segment: " + segment);
+			//log.finest("Now formatting output for segment: " + segment);
 			
 			String value = null;
 			
@@ -451,7 +502,7 @@ public class LogReformatProcessor implements Processor{
 						this.inputDetailMap.get(detailName);
 				value = detail.getDate(inputDetail);
 				
-				log.finest("Adding date-time log detail value: " + value);
+				//log.finest("Adding date-time log detail value: " + value);
 				
 				// Validate segment requirement
 				if(value == null){
@@ -477,7 +528,7 @@ public class LogReformatProcessor implements Processor{
 						this.inputDetailMap.get(detailName);
 				value = detail.getValue(inputDetail);
 				
-				log.finest("Adding string log detail value: " + value);
+				//log.finest("Adding string log detail value: " + value);
 				
 				// Validate segment requirement
 				if(value == null){
@@ -505,7 +556,7 @@ public class LogReformatProcessor implements Processor{
 				outputLine = outputLine + value;
 			}
 			
-			log.finest("Output line is now: " + outputLine);
+			//log.finest("Output line is now: " + outputLine);
 			
 		}
 		
@@ -513,33 +564,15 @@ public class LogReformatProcessor implements Processor{
 		
 	}
 	
-	// Read input from file into a list of lines
-	private List<String> getFileLines(File file) throws ProcessingException{
+	/**
+	 * Set the maps that store value of details back to null so that values for
+	 * previous lines aren't carried forward.
+	 */
+	protected void resetDetailMaps() {
 		
-		List<String> fileContent = new Vector<String>();
-		BufferedReader reader = null;
-		try{
-			reader = new BufferedReader(new FileReader(file));
-			String line = reader.readLine();
-			while(line != null){
-				fileContent.add(line);
-				line = reader.readLine();
-			}
-			reader.close();
-		}catch(FileNotFoundException e){
-			throw new ProcessingException("The input log could not be found " +
-					"for reformatting: " + e.getMessage());
-		}catch(IOException e){
-			try{
-				reader.close();
-			}catch(IOException ex){
-				log.warning("An error occurred while closing the reader to " +
-						"the input log for reformatting: " + ex.getMessage());
-			}
-			throw new ProcessingException("An error occurred while reading " +
-					"the input log for reformatting: " + e.getMessage());
+		for(String key: this.inputDetailMap.keySet()){
+			this.inputDetailMap.get(key).reset();
 		}
-		return fileContent;
 		
 	}
 	
@@ -596,12 +629,12 @@ public class LogReformatProcessor implements Processor{
 			if(i > 0){
 				String literalString = unparsedPattern.substring(0, i);
 				segmentList.add(literalString);
-				log.finest("Encountered literal string " + literalString);
+				//log.finest("Encountered literal string " + literalString);
 			}
 			
 			// Grab the substring specifying the log detail
 			String substring = unparsedPattern.substring(i + 1, j);
-			log.finest("Encountered substring " + substring);
+			//log.finest("Encountered substring " + substring);
 			
 			// Remove the substring from the remaining pattern
 			if(j + 1 == unparsedPattern.length()){
@@ -626,7 +659,7 @@ public class LogReformatProcessor implements Processor{
 						substring);
 			}
 			for(String section: substringComponents){
-				log.finest("Substring section " + section);
+				//log.finest("Substring section " + section);
 				if(section.trim().isEmpty()){
 					throw new ProcessingException("The log reformat pattern " +
 							"contains an empty section specifying a log " +
@@ -650,7 +683,7 @@ public class LogReformatProcessor implements Processor{
 				}
 			}
 			LogDetail detail = getLogDetail(name, detailPattern, flags);
-			log.finest("Found log detail: " + detail.toString());
+			//log.finest("Found log detail: " + detail.toString());
 			detailMap.put(detail.getName(), detail);
 			
 			// Add the name of the detail to the segment list
