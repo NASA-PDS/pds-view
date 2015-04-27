@@ -26,6 +26,9 @@
       <action dev="earevalo" type="add" issue="PDS-354">
         Initial release of the Data Dictionary Search interface that queries the Search Service for Product_Attribute_Definition and Product_Class_Definition products and displays the results to the user.
       </action>
+      <action dev="jpadams" type="fix" issue="PDS-355">
+        Corrected an issue sorting attributes that contained a colon in the name. Inherited from search-service.
+      </action>
     </release>
   </body>
 </document>
