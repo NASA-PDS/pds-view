@@ -17,6 +17,7 @@ import java.nio.channels.Channels;
 import java.text.ParseException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -153,20 +154,6 @@ public class HttpPull implements PDSPull{
 					"initialized before pulling files: " + e.getMessage());
 		}
 		
-		// TODO: Delete me!
-		// Download the file
-		/*
-		File localFile = new File(destination, filename);
-		try{
-			this.log.info("Transferring: " + url + " to " + destination);
-			FileUtils.copyURLToFile(url, localFile, connectionTimeout,
-					readTimeout);
-		}catch(IOException e){
-			log.severe("An error occurred while downloading the file from " + 
-					url + ": " + e.getMessage());
-		}
-		*/
-		
 		try{
 		
 			// Connect to the file URL
@@ -236,40 +223,43 @@ public class HttpPull implements PDSPull{
 		Document doc = null;
 		try{
 			doc = conn.get();
-			//doc = res.parse();
 		}catch(IOException e){
 			log.warning("An error occurred while fetching the document from " +
 					url + ": " + e.getMessage());
 		}
 		
-		Set<URL> results = new LinkedHashSet<URL>();
-		for (Element file : doc.select("a[href]")) {
-			log.finest("Found file element: " + file.toString());
-			String value = file.attr("abs:href");
-			// Check if the given url is a subset of the href value. If it is,
-			// assume it is a file or a directory we will need to process.
-			if (value.contains(url.toString())) {
-				/*
-				// Check if the value has a 3-character extension. If so, it
-				// is most likely a file
-				String extension = FilenameUtils.getExtension(value);
-				if (extension != null && extension.length() > 0) {
-					try{
-						results.add(new URL(value));
-					}catch(MalformedURLException e){
-						log.warning("Found file at illegal URL " + value);
-					}
-					
-				}
-				*/
-				try{
-					results.add(new URL(value));
-				}catch(MalformedURLException e){
-					log.warning("Found file at illegal URL " + value);
-				}
+		ArrayList<URL> results = new ArrayList<URL>();
+		for(Element link : doc.select("a[href]")){
+			
+			String value = link.attr("abs:href");
+			log.finest("Found file element: " + value);
+			
+			// Check if the resource at the found URL resides within the remote
+			// path containing the logs we want
+			if(!value.contains(url.toString())){
+				log.finest("Found link pointing outside of diectory " +
+						"containing logs " + value);
+				continue;
 			}
+				
+			// Check if the link contains any strange characters,
+			// indicating that it is not a log
+			Pattern p = Pattern.compile("[=;]");
+			if(p.matcher(value).find()){
+				log.finest("Found non-file link " + value);
+				continue;
+			}
+			
+			try{
+				URL logUrl = new URL(value);
+				results.add(logUrl);
+			}catch(MalformedURLException e){
+				log.warning("Found illegal URL " + value);
+			}
+				
 		}
-		return new ArrayList<URL>(results);
+		
+		return results;
 	}
 	
 }
