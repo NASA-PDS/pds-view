@@ -83,6 +83,8 @@
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-354'>PDS-354</a>] - Portal: Add a new Data Dictionary Search interface
           </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-363'>PDS-363</a>] - Search: Add support for indexing affiliate products
+          </li>
         </ul>
       </subsection>
 
@@ -136,6 +138,8 @@
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-340'>PDS-340</a>] - PDS4 Tools: The file_size keyword in File class is required to recognize objects
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-351'>PDS-351</a>] - Schema validation fails with certificate issue in Java 6
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-355'>PDS-355</a>] - Portal: dd-search incorrectly orders PDS3 attributes
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-356'>PDS-356</a>] - Generate: Xml declaration removed when transformation completed
           </li>
