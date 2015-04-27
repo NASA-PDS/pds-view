@@ -62,7 +62,7 @@ fi
 "${JAVA_HOME}"/bin/java \
 	${RPT_MGR_FLAGS} \
 	-Djava.util.logging.config.file=${LOG_PROPS} \
-	-Xmx512m \
+	-Xmx1024m \
 	-jar ${REPORT_MGR_JAR} "$@"
 
 if [ -f report-mgr-sawmill ]; then
