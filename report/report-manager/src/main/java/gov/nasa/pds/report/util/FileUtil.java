@@ -167,6 +167,9 @@ public class FileUtil {
 					destDir.getAbsolutePath());
 			
 			for(File srcFile: srcDir.listFiles()){
+				if(srcFile.isDirectory()){
+					continue;	// We don't recurse
+				}
 				String filename = srcFile.getName();
 				if(!destFileList.contains(filename)){
 					try{
