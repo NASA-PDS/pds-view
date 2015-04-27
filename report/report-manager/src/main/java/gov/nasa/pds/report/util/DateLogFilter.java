@@ -167,6 +167,16 @@ public class DateLogFilter{
 					"log filename pattern");
 		}
 		
+		// Check that the file name matches the pattern(s) specified
+		if(!filename.startsWith(preDateSubstring)){
+			throw new ReportManagerException("The filename " + filename +
+					"does not match the pattern provided for date filtering");
+		}
+		if(postDateSubstring != null && !filename.endsWith(postDateSubstring)){
+			throw new ReportManagerException("The filename " + filename +
+					"does not match the pattern provided for date filtering");
+		}
+		
 		// Extract the portion of the filename that specifies the log date and
 		// use it to create a Date to compare with startDate and endDate
 		String dateString = filename.replace(preDateSubstring, "");
