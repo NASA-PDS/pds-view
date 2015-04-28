@@ -135,7 +135,7 @@ public class HttpPull implements PDSPull{
 		// Check if the file already exists at the destination
 		if(localFileList.contains(filename)){
 			this.log.info(filename + " already exists in " + 
-					destination + "\n");
+					destination);
 			return;
 		}
 		
@@ -173,6 +173,8 @@ public class HttpPull implements PDSPull{
 			// Read from the connection and stream it into the file
 			FileOutputStream fos = new FileOutputStream(destination +
 					File.separator + filename);
+			this.log.info("Transferring: " + url.toString() + " to " + 
+					destination);
 			fos.getChannel().transferFrom(Channels.newChannel(
 					conn.getInputStream()), 0, Long.MAX_VALUE);
 			

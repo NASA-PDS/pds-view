@@ -107,7 +107,7 @@ public class FtpPull implements PDSPull {
 			if (!localFileList.contains(filename)) {
 				
 				this.log.info("Transferring: " + remoteFilePath + " to " + 
-						destination + "\n");
+						destination);
 				OutputStream output;
 				try{
 					output = new FileOutputStream(localFilePath);
@@ -127,7 +127,7 @@ public class FtpPull implements PDSPull {
 				
 			} else {
 				this.log.info(dirPath + "/" + filename
-						+ " already exists in " + destination + "\n");
+						+ " already exists in " + destination);
 			}
 			
 		}

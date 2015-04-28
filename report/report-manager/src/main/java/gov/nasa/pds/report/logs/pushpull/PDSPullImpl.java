@@ -176,8 +176,7 @@ public class PDSPullImpl implements PDSPull {
 			for (String filename : array) {
 				if (!localFileList.contains(filename)) {
 					this.log.info("Transferring: "
-							+ dirPath + "/" + filename + " to " + destination
-							+ "\n");
+							+ dirPath + "/" + filename + " to " + destination);
 					// TODO: Consider using an implementation of this method
 					// that leverages a progress monitor, perhaps when the
 					// given file is over a certain threshold in size
@@ -185,8 +184,8 @@ public class PDSPullImpl implements PDSPull {
 					this.sftpChannel
 							.get(dirPath + "/" + filename, destination);
 				} else {
-					this.log.fine(dirPath + "/" + filename
-							+ " already exists in " + destination + "\n");
+					this.log.info(dirPath + "/" + filename
+							+ " already exists in " + destination);
 				}
 			}
 		} catch (SftpException e) {

@@ -169,12 +169,14 @@ public class DateLogFilter{
 		
 		// Check that the file name matches the pattern(s) specified
 		if(!filename.startsWith(preDateSubstring)){
-			throw new ReportManagerException("The filename " + filename +
-					"does not match the pattern provided for date filtering");
+			throw new ParseException("The filename " + filename +
+					"does not match the pattern provided for date filtering",
+					0);
 		}
 		if(postDateSubstring != null && !filename.endsWith(postDateSubstring)){
-			throw new ReportManagerException("The filename " + filename +
-					"does not match the pattern provided for date filtering");
+			throw new ParseException("The filename " + filename +
+					"does not match the pattern provided for date filtering",
+					filename.length() - postDateSubstring.length());
 		}
 		
 		// Extract the portion of the filename that specifies the log date and

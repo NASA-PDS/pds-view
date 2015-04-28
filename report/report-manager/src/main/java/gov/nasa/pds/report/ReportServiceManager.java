@@ -75,6 +75,7 @@ public class ReportServiceManager {
 	
 	public void createStagingDirTree() throws ReportManagerException{
 		
+		log.info("Creating staging directory tree");
 		FileUtil.createDirTree(this.propsList, Constants.STAGING_DIR);
 		
 	}
