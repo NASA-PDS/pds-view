@@ -109,7 +109,7 @@ p {
 }
 
 li {
-    max-width: 15em;
+    #max-width: 15em;
     #width:5px;
     #height:12pt;
     #list-style-image: url(foo.gif); 
