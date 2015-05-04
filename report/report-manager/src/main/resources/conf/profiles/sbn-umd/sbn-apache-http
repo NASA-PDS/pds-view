@@ -7,6 +7,6 @@ password=anonymous
 encrypt=false
 path=weblogs
 filename_pattern=sbnumd|yyyyMMdd|.log
-sawmill_profile=sbn_web
+sawmill_profile=sbn_umd_web
 sawmill_report=sbn_umd_hq_domain_report
 sawmill_output=/report_service/reports/sbn
