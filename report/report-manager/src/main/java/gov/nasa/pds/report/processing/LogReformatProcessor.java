@@ -206,7 +206,7 @@ public class LogReformatProcessor implements Processor{
 				this.processFile(file, out);
 			}catch(ProcessingException e){
 				log.warning("An error occurred while reformatting log file " +
-						fileName + ": " + e.getMessage());
+						file.getAbsolutePath() + ": " + e.getMessage());
 			}
 			
 		}
@@ -292,7 +292,7 @@ public class LogReformatProcessor implements Processor{
 	protected void processFile(File in, File outputDir)
 			throws ProcessingException{
 		
-		log.info("Reformatting log file " + in.getName());
+		log.info("Reformatting log file " + in.getAbsolutePath());
 		
 		// Read input from file into a list of lines
 		List<String> fileContent = ReformatUtil.getFileLines(in);
@@ -380,7 +380,10 @@ public class LogReformatProcessor implements Processor{
 						this.inputDetailMap.get(detailName);
 				
 				// Skip this log detail if no value is given
-				if(lineRemaining.startsWith("-")){
+				if((segmentIndex + 1 < this.segmentedInput.size() &&
+						lineRemaining.startsWith("- ")) ||
+						(segmentIndex + 1 == this.segmentedInput.size() &&
+						lineRemaining.startsWith("-"))){
 					lineRemaining = lineRemaining.substring(1);
 					if(detail.isRequired()){
 						throw new ProcessingException("The required log " +
@@ -392,10 +395,10 @@ public class LogReformatProcessor implements Processor{
 				
 				// Get the value of the log detail
 				Pattern pattern = Pattern.compile("(" +
-						detail.getPattern() + ").*");
+						detail.getPattern() + ")[^\n]*");
 				Matcher matcher = pattern.matcher(lineRemaining);
 				if(!matcher.matches()){
-					throw new ProcessingException("The log detail " + 
+					throw new ProcessingException("The date-time log detail " + 
 							detailName + " with pattern " +
 							detail.getPattern() + " was not found in " +
 							"input log line: " + line);
@@ -438,7 +441,7 @@ public class LogReformatProcessor implements Processor{
 				
 				// Get the value of the log detail
 				Pattern pattern = Pattern.compile("(" +
-						detail.getPattern() + ").*");
+						detail.getPattern() + ")[^\n]*");
 				Matcher matcher = pattern.matcher(lineRemaining);
 				if(!matcher.matches()){
 					throw new ProcessingException("The log detail " + 
@@ -458,17 +461,33 @@ public class LogReformatProcessor implements Processor{
 			// line, which we can safely discard)
 			else if(segmentIndex < this.segmentedInput.size() - 1){	
 				
-				// Verify that this literal string can be found where
-				// expected
-				if(!lineRemaining.startsWith(segment)){
-					throw new ProcessingException("The expected line " +
-							"segment \"" + segment + "\" was not found " +
-							"where expected in input log line: " + line);
+				// Check if the literal string contains only whitespace
+				if(!segment.trim().isEmpty()){
+					
+					if(!lineRemaining.startsWith(segment)){
+						throw new ProcessingException("The expected line " +
+								"segment \"" + segment + "\" was not found " +
+								"where expected in input log line: " + line);
+					}
+					
+					// Remove the literal string from the line being parsed,
+					// since it doesn't contain any log details
+					lineRemaining = lineRemaining.substring(segment.length());
+					
+				}else{
+					
+					// Remove whitespace at the start of the remaining line
+					Pattern pattern = Pattern.compile("([ \t\r]+)\\S+[^\n]*");
+					Matcher matcher = pattern.matcher(lineRemaining);
+					if(!matcher.matches()){
+						throw new ProcessingException("The expected " +
+								"whitespace was not found where expected in " +
+								"input log line: " + line);
+					}
+					String value = matcher.group(1);
+					lineRemaining = lineRemaining.substring(value.length());
+					
 				}
-				
-				// Remove the literal string from the line being parsed,
-				// since it doesn't contain any log details
-				lineRemaining = lineRemaining.substring(segment.length());
 				
 			}
 			
