@@ -140,14 +140,24 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 		if (isListingCmd(cmd)) {
 			ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 			OFSNListHandler handler = getListHandler(cmd, cfg.getClassName());
-			File[] fileList = new File[1];
-			fileList[0] = new File(realPath);
-			generateOFSNXml(fileList, cfg, outStream);
+			
+			if (cfg.getName().equals("DIRLIST1")) {
+				//modified this for PDS-338
+				File[] fileList = new File[1];
+				fileList[0] = new File(realPath);
+				generateOFSNXmlForDirlist1(fileList, cfg, outStream);
+			}
+			else {
+				File[] fileList = handler.getListing(realPath);
+			     generateOFSNXml(fileList, cfg, outStream);
+			}
 			xmlQuery.getResults().add(
 					new Result(cmdId, XML_MIME_TYPE, null, cmdId, Collections.EMPTY_LIST,
 							outStream.toString()));
 		} else if (isGetCmd(cmd)) {
 			OFSNGetHandler handler = getGetHandler(cmd, cfg.getClassName());
+			
+			LOG.log(Level.INFO, "handler name = " + cfg.getClassName());
 			String rtAndPath = cmd + CMD_SEPARATOR + realPath;
 			String mimeType;
 
@@ -166,7 +176,7 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 			} else { // use default mimetype of product on disk
 				mimeType = MimeTypesFactory.create().getMimeType(new File(realPath)).getName();
 			}
-
+			
 			xmlQuery.getResults().add(
 					new LargeResult(/* id */rtAndPath,/* mimeType */ mimeType, /* profileID */null, 
 							/* resourceID */new File(realPath).getName(), Collections.EMPTY_LIST, 
@@ -207,9 +217,17 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 
 		return handler.retrieveChunk(filepath, offset, length);
 	}
-
+	
 	private void generateOFSNXml(File[] mlsFileList, OFSNHandlerConfig cfg,
 			OutputStream outStream) {
+		XMLUtils.writeXmlToStream(OFSNUtils.getOFSNDoc(Arrays.asList(mlsFileList),
+				cfg, this.conf.getProductRoot(), this.computeDirSize, this.computeFileSize),
+				outStream);
+	}
+
+	private void generateOFSNXmlForDirlist1(File[] mlsFileList, OFSNHandlerConfig cfg,
+			OutputStream outStream) {
+		//modified for PDS-338
 		writeToFile(mlsFileList, cfg.getName(), outStream);
 	}
 
