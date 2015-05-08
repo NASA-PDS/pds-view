@@ -139,6 +139,14 @@ public class LogReformatProcessor implements Processor{
 	private List<String> segmentedInput;
 	private List<String> segmentedOutput;
 	
+	// The number of error-causing lines that we allow before giving up on the
+	// file.  A value of 0 allows no errors.  A value of -1 allows any number
+	// of errors, so the input file will be processed completely, though the
+	// output file will only contain the output from lines that did not cause
+	// errors.
+	private int errorLinesAllowed;
+	private static String DEFAULT_ERRORS_ALLOWED = "0";
+	
 	// The Maps that we use to store the log details as objects
 	protected Map<String, LogDetail> inputDetailMap;
 	protected Map<String, LogDetail> outputDetailMap;
@@ -269,6 +277,18 @@ public class LogReformatProcessor implements Processor{
 			}
 		}
 		
+		// Determine how many errors we will tolerate per file
+		try{
+			this.errorLinesAllowed = Integer.parseInt(System.getProperty(
+					Constants.REFORMAT_ERRORS_PROP, DEFAULT_ERRORS_ALLOWED));
+		}catch(NumberFormatException e){
+			log.warning("Using the default number of errors allowed during " +
+					"reformatting (" + DEFAULT_ERRORS_ALLOWED + "), as the " +
+					"value specified in default.properties is invalid: " +
+					System.getProperty(Constants.REFORMAT_ERRORS_PROP));
+			this.errorLinesAllowed = Integer.parseInt(DEFAULT_ERRORS_ALLOWED);
+		}
+		
 		// Print debug info
 		//log.finer("Input pattern: " + this.segmentedInput.toString());
 		//log.finer("Output pattern: " + this.segmentedOutput.toString());
@@ -294,52 +314,62 @@ public class LogReformatProcessor implements Processor{
 		
 		log.info("Reformatting log file " + in.getAbsolutePath());
 		
-		// Read input from file into a list of lines
-		List<String> fileContent = ReformatUtil.getFileLines(in);
+		BufferedReader reader = null;
+		PrintWriter writer = null;
 		
-		// Iterate over lines from input file, reformatting each line
-		List<String> outputContent = new Vector<String>();
-		for(int lineNum = 0; lineNum < fileContent.size(); lineNum++){
-			
-			// Parse the input line, extracting log detail values
-			String line = fileContent.get(lineNum);
-			try{
-				if(!this.parseInputLine(line)){
-					continue;
-				}
-			}catch(ProcessingException e){
-				throw new ProcessingException("An error occurred while " +
-						"parsing input line " + lineNum + ": " +
-						e.getMessage());
-			}
-			
-			// Add the reformatted output line to the content to output
-			outputContent.add(this.formatOutputLine());
-			
-			// Reset the detail values so that they don't carry over to the
-			// next line
-			this.resetDetailMaps();
-			
+		// Open reader for input file
+		try{
+			reader = new BufferedReader(new FileReader(in));
+		}catch(FileNotFoundException e){
+			throw new ProcessingException("The input log could not be found " +
+					"for reformatting at " + in.getAbsolutePath() + ": " +
+					e.getMessage());
 		}
 		
 		// Open the output writer
-		PrintWriter writer = null;
 		File out = new File(outputDir, in.getName());
 		try{
 			writer = new PrintWriter(out);
 		}catch(FileNotFoundException e){
+			this.closeReaderWriter(reader, writer);
 			throw new ProcessingException("The output log could not be found " +
 					"for reformatting at " + out.getAbsolutePath() + ": " +
 					e.getMessage());
 		}
-		
-		// Write the output content
-		for(String line: outputContent){
-			writer.println(line);
+			
+		// Iterate over each line in the input file, processing it.  This
+		// happens until we reach the EOF or a number of errors deemed too high.
+		boolean keepProcessing = true;
+		int lineNum = 0;
+		int errors = 0;
+		while(keepProcessing){
+			try{
+				if(!this.processLine(reader, writer)){
+					keepProcessing = false;
+				}
+			}catch(ProcessingException e){
+				log.warning("An error occurred while processing line " +
+						lineNum + " in file " + in.getAbsolutePath() + ": " +
+						e.getMessage());
+				errors++;
+				if(this.errorLinesAllowed != -1 && errors >
+						this.errorLinesAllowed){
+					log.warning("Too many errors occurred while processing " +
+							"the file " + in.getAbsolutePath() + ". Please " +
+							"see the preceeding warnings in the log.");
+					keepProcessing = false;
+				}
+			}catch(IOException e){
+				log.warning("An error occurred while reading from line " +
+						lineNum + " in file " + in.getAbsolutePath() + ": " +
+						e.getMessage());
+				keepProcessing = false;
+			}
+			lineNum++;
 		}
 		
-		// Close the output writer
-		writer.close();
+		// Close the reader and writer
+		this.closeReaderWriter(reader, writer);
 		
 	}
 	
@@ -354,15 +384,9 @@ public class LogReformatProcessor implements Processor{
 	 * 								the line cannot be properly parsed using
 	 * 								the pattern provided during configuration.
 	 */
-	protected boolean parseInputLine(String line) throws ProcessingException{
+	protected void parseInputLine(String line) throws ProcessingException{
 		
 		//log.fine("Parsing log line: " + line);
-		
-		// Check if line is part of the header
-		if(line.startsWith("#")){
-			//log.finest("Log reformatter will ignore header line: " + line);
-			return false;
-		}
 		
 		String lineRemaining = line;
 		for(int segmentIndex = 0; segmentIndex < this.segmentedInput.size();
@@ -384,12 +408,12 @@ public class LogReformatProcessor implements Processor{
 						lineRemaining.startsWith("- ")) ||
 						(segmentIndex + 1 == this.segmentedInput.size() &&
 						lineRemaining.startsWith("-"))){
-					lineRemaining = lineRemaining.substring(1);
 					if(detail.isRequired()){
 						throw new ProcessingException("The required log " +
 								"detail " + detailName + " was not found " +
 								"in input log line: " + line);
 					}
+					lineRemaining = lineRemaining.substring(1);
 					continue;
 				}
 				
@@ -429,13 +453,16 @@ public class LogReformatProcessor implements Processor{
 						this.inputDetailMap.get(detailName);
 				
 				// Skip this log detail if no value is given
-				if(lineRemaining.startsWith("-")){
-					lineRemaining = lineRemaining.substring(1);
+				if((segmentIndex + 1 < this.segmentedInput.size() &&
+						lineRemaining.startsWith("- ")) ||
+						(segmentIndex + 1 == this.segmentedInput.size() &&
+						lineRemaining.startsWith("-"))){
 					if(detail.isRequired()){
 						throw new ProcessingException("The required log " +
 								"detail " + detailName + " was not found " +
 								"in input log line: " + line);
 					}
+					lineRemaining = lineRemaining.substring(1);
 					continue;
 				}
 				
@@ -480,6 +507,7 @@ public class LogReformatProcessor implements Processor{
 					Pattern pattern = Pattern.compile("([ \t\r]+)\\S+[^\n]*");
 					Matcher matcher = pattern.matcher(lineRemaining);
 					if(!matcher.matches()){
+						log.warning("Error with line remaining: " + lineRemaining);
 						throw new ProcessingException("The expected " +
 								"whitespace was not found where expected in " +
 								"input log line: " + line);
@@ -492,8 +520,6 @@ public class LogReformatProcessor implements Processor{
 			}
 			
 		}
-		
-		return true;
 		
 	}
 	
@@ -592,6 +618,52 @@ public class LogReformatProcessor implements Processor{
 		for(String key: this.inputDetailMap.keySet()){
 			this.inputDetailMap.get(key).reset();
 		}
+		
+	}
+	
+	/**
+	 * Use the provided reader to read in a line, reformat it, then write the
+	 * new version of the line using the provided writer.
+	 * 
+	 * @param reader				The reader already initialized to read from
+	 * 								the input file.
+	 * @param writer				A writer already initialized to write to
+	 * 								the output file.
+	 * @return						True if a line was read from the input
+	 * 								file, otherwise false (indicating EOF).
+	 * @throws ProcessingException	If an error occurs.
+	 */
+	protected boolean processLine(BufferedReader reader, PrintWriter writer)
+			throws ProcessingException, IOException{
+		
+		// Read the line from the file using the reader
+		String line = reader.readLine();
+		
+		// Signal if we have reached the end of the file
+		if(line == null){
+			return false;
+		}
+		
+		// Check if line is part of the header, which we can ignore
+		if(line.startsWith("#")){
+			//log.finest("Log reformatter will ignore header line: " + line);
+			return true;
+		}
+		
+		// Parse the input line, extracting log detail values
+		this.parseInputLine(line);		
+		
+		// Reformat the line using extracted values from input
+		String reformattedLine = this.formatOutputLine();
+		
+		// Write the reformatted line to the output file
+		writer.println(reformattedLine);
+		
+		// Reset the detail values so that they don't carry over to the
+		// next line
+		this.resetDetailMaps();
+		
+		return true;
 		
 	}
 	
@@ -798,6 +870,23 @@ public class LogReformatProcessor implements Processor{
 			}
 		}
 		
+	}
+	
+	private void closeReaderWriter(BufferedReader reader, PrintWriter writer){
+		
+		if(reader != null){
+			try{
+				reader.close();
+			}catch(IOException e){
+				log.warning("An error occurred while closing the reader to " +
+						"the input file: " + e.getMessage());
+			}
+		}
+		
+		if(writer != null){
+			writer.close();
+		}
+			
 	}
 	
 	private abstract class LogDetail{

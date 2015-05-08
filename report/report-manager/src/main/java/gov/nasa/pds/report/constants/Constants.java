@@ -77,7 +77,12 @@ public abstract class Constants {
 	// SawmillInterface being used
 	public static final String SAWMILL_SCRIPT_PROP =
 			"gov.nasa.pds.report.sawmill.SawmillScriptWriter.output.location";
-
+	
+	// The number of error-causing lines tolerated in log beings reformatted
+	// before we give up on the file
+	public static final String REFORMAT_ERRORS_PROP =
+			"gov.nasa.pds.report.processing.errors.allowed";
+	
 	// ------------------------------------------------------------------------
 	// Major directories in the directory tree
 	// ------------------------------------------------------------------------

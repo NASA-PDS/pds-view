@@ -88,13 +88,9 @@ public class NcftpToCombinedProcessor extends LogReformatProcessor{
 	
 	// Iterate over the substrings in the input pattern, capturing the
 	// value of those substrings
-	protected boolean parseInputLine(String line) throws ProcessingException{
+	protected void parseInputLine(String line) throws ProcessingException{
 		
 		//TODO: Implement me!
-		
-		
-		
-		return true;
 		
 	}
 	

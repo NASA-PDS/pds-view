@@ -53,7 +53,7 @@ REPORT_MGR_JAR=`ls ${LIB_DIR}/report-manager-*.jar`
 # Find the logging properties file in CONF_DIR and sets it to LOG_PROPS
 LOG_PROPS=`ls ${CONF_DIR}/logging.properties`
 
-if [ -n "$RPT_MGR_FLAGS"]; then
+if [ ! -z ${RPT_MGR_FLAGS} ]; then
 	echo "Running Report Manager with flags: ${RPT_MGR_FLAGS}"
 fi
 

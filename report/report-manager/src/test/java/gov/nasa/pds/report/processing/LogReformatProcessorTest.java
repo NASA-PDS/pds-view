@@ -329,8 +329,8 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 					"reformatted test log: " + e.getMessage());
 		}
 		String desiredOutput = "10.10.1.37 - - [31/Jan/2015:06:03:21 -0800] \"GET /apollo/inst.aspx HTTP/1.1\" 200 4145 \"-\" \"Mozilla/4.0+(compatible;+MSIE+7.0;+PA+Server+Monitor+Service;+)\"";
-		assertEquals("The test log line was not reformatted correctly", line,
-				desiredOutput);	
+		assertEquals("The test log line was not reformatted correctly",
+				desiredOutput, line);	
 		
 	}
 	
