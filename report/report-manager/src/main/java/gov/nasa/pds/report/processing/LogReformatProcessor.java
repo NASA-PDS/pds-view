@@ -507,7 +507,7 @@ public class LogReformatProcessor implements Processor{
 					Pattern pattern = Pattern.compile("([ \t\r]+)\\S+[^\n]*");
 					Matcher matcher = pattern.matcher(lineRemaining);
 					if(!matcher.matches()){
-						log.warning("Error with line remaining: " + lineRemaining);
+						//log.warning("Error with line remaining: " + lineRemaining);
 						throw new ProcessingException("The expected " +
 								"whitespace was not found where expected in " +
 								"input log line: " + line);
