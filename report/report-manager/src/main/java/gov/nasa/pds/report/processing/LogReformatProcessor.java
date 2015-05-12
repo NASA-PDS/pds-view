@@ -32,6 +32,8 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
+
 import gov.nasa.pds.report.ReportManagerException;
 import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.util.Utility;
@@ -205,12 +207,11 @@ public class LogReformatProcessor implements Processor{
 		// Reformat each of the files
 		for(int i = 0; i < filenames.length; i++){
 			
-			// Get file absolute path
-			String fileName = filenames[i];
 			File file = new File(in, filenames[i]);
-			
-			// Reformat the file
 			try{
+				log.info("Reformatting log file " + file.getAbsolutePath() +
+						" (" + Integer.toString(i + 1) + "/" +
+						filenames.length + ")");
 				this.processFile(file, out);
 			}catch(ProcessingException e){
 				log.warning("An error occurred while reformatting log file " +
@@ -312,8 +313,6 @@ public class LogReformatProcessor implements Processor{
 	protected void processFile(File in, File outputDir)
 			throws ProcessingException{
 		
-		log.info("Reformatting log file " + in.getAbsolutePath());
-		
 		BufferedReader reader = null;
 		PrintWriter writer = null;
 		
@@ -338,8 +337,10 @@ public class LogReformatProcessor implements Processor{
 		}
 			
 		// Iterate over each line in the input file, processing it.  This
-		// happens until we reach the EOF or a number of errors deemed too high.
+		// happens until we reach the EOF or the number of errors exceeds the
+		// specified threshold.
 		boolean keepProcessing = true;
+		boolean keepFile = true;
 		int lineNum = 0;
 		int errors = 0;
 		while(keepProcessing){
@@ -358,18 +359,32 @@ public class LogReformatProcessor implements Processor{
 							"the file " + in.getAbsolutePath() + ". Please " +
 							"see the preceeding warnings in the log.");
 					keepProcessing = false;
+					keepFile = false;
 				}
 			}catch(IOException e){
-				log.warning("An error occurred while reading from line " +
+				log.warning("An I/O error occurred while reading from line " +
 						lineNum + " in file " + in.getAbsolutePath() + ": " +
 						e.getMessage());
 				keepProcessing = false;
+				keepFile = false;
 			}
 			lineNum++;
 		}
 		
 		// Close the reader and writer
 		this.closeReaderWriter(reader, writer);
+		
+		// Delete the created file if too many errors (or an I/O error)
+		// occurred
+		if(!keepFile){
+			try{
+				FileUtils.forceDelete(out);
+			}catch(IOException e){
+				log.warning("An error occurred while cleaning up a " +
+						"potentially erroneous output file " +
+						out.getAbsolutePath() + ": " + e.getMessage());
+			}
+		}
 		
 	}
 	
@@ -422,6 +437,8 @@ public class LogReformatProcessor implements Processor{
 						detail.getPattern() + ")[^\n]*");
 				Matcher matcher = pattern.matcher(lineRemaining);
 				if(!matcher.matches()){
+					//log.warning("Line remaining: " + lineRemaining);
+					//log.warning(debugValueDump());
 					throw new ProcessingException("The date-time log detail " + 
 							detailName + " with pattern " +
 							detail.getPattern() + " was not found in " +
@@ -471,6 +488,8 @@ public class LogReformatProcessor implements Processor{
 						detail.getPattern() + ")[^\n]*");
 				Matcher matcher = pattern.matcher(lineRemaining);
 				if(!matcher.matches()){
+					//log.warning("Line remaining: " + lineRemaining);
+					//log.warning(debugValueDump());
 					throw new ProcessingException("The log detail " + 
 							detailName + " with pattern " +
 							detail.getPattern() + " was not found in " +
@@ -887,6 +906,22 @@ public class LogReformatProcessor implements Processor{
 			writer.close();
 		}
 			
+	}
+	
+	private String debugValueDump(){
+		
+		String output = "";
+		for(LogDetail d: inputDetailMap.values()){
+			output = output + d.getName() + ":";
+			if(d.getType().equals("string")){
+				output = output + ((StringLogDetail)d).getValue() + " ";
+			}else{
+				output = output + ((DateTimeLogDetail)d).getDate(
+						"yyyy-MM-dd HH:mm:ss") + " ";
+			}
+		}
+		return output;
+		
 	}
 	
 	private abstract class LogDetail{
