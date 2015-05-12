@@ -46,4 +46,5 @@ print "Updating $newlai from the contents of $oldlai\n";
 #runcmd("cp ${oldlai}rewrite_rules/* ${newlai}rewrite_rules");
 #runcmd("cp -r ${oldlai}users_cache ${newlai}users_cache");
 runcmd("rm -fr ${newlai}Databases");
-runcmd("cp ${oldlai}Databases ${newlai}Databases");
+#runcmd("cp ${oldlai}Databases ${newlai}Databases");
+runcmd("rsync -av ${oldlai}Databases/* ${newlai}Databases");
