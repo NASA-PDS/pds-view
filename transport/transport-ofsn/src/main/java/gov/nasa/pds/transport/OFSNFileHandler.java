@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 //APACHE imports
 import org.apache.tika.mime.MediaType;
 import org.apache.tika.mime.MimeTypesFactory;
@@ -54,14 +55,15 @@ import org.apache.oodt.xmlquery.XMLQuery;
 
 //APACHE imports
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 /**
- * 
+ *
  * An extensible implementation of the PDS-inspired Online File Specification
  * Name (OFSN) style product server. See the ofsn-ps.xml file for a detailed
  * specification of the configuration and motivation behind this product
  * handler.
- * 
+ *
  * @author mattmann
  * @version $Revision$
  */
@@ -88,7 +90,7 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 	int lenProductDirName = 0;
 
 	/** Next product ID to generate. */
-	private int productID = 0;      
+	private int productID = 0;
 
 	public OFSNFileHandler() throws InstantiationException {
 		// init conf here
@@ -122,7 +124,7 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.apache.oodt.product.QueryHandler#query(org.apache.oodt.xmlquery.XMLQuery)
 	 */
 	public XMLQuery query(XMLQuery xmlQuery) throws ProductException {
@@ -140,7 +142,7 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 		if (isListingCmd(cmd)) {
 			ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 			OFSNListHandler handler = getListHandler(cmd, cfg.getClassName());
-			
+
 			if (cfg.getName().equals("DIRLIST1")) {
 				//modified this for PDS-338
 				File[] fileList = new File[1];
@@ -156,7 +158,7 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 							outStream.toString()));
 		} else if (isGetCmd(cmd)) {
 			OFSNGetHandler handler = getGetHandler(cmd, cfg.getClassName());
-			
+
 			LOG.log(Level.INFO, "handler name = " + cfg.getClassName());
 			String rtAndPath = cmd + CMD_SEPARATOR + realPath;
 			String mimeType;
@@ -176,10 +178,14 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 			} else { // use default mimetype of product on disk
 				mimeType = MimeTypesFactory.create().getMimeType(new File(realPath)).getName();
 			}
-			
+			String resourceId = new File(realPath).getName();
+			if (cfg.getHandlerConf().containsKey("extension")) {
+			  String extension = cfg.getHandlerConf().getProperty("extension");
+			  resourceId = FilenameUtils.removeExtension(resourceId) + "." + extension;
+			}
 			xmlQuery.getResults().add(
-					new LargeResult(/* id */rtAndPath,/* mimeType */ mimeType, /* profileID */null, 
-							/* resourceID */new File(realPath).getName(), Collections.EMPTY_LIST, 
+					new LargeResult(/* id */rtAndPath,/* mimeType */ mimeType, /* profileID */null,
+							/* resourceID */resourceId, Collections.EMPTY_LIST,
 							handler.sizeOf(realPath)));
 		} else {
 			throw new ProductException("return type: [" + cmd + "] is unsupported!");
@@ -191,7 +197,7 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.apache.oodt.product.LargeProductQueryHandler#close(java.lang.String)
 	 */
 	public void close(String id) throws ProductException {
@@ -200,7 +206,7 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.apache.oodt.product.LargeProductQueryHandler#retrieveChunk(java.lang.String,
 	 * long, int)
@@ -217,7 +223,7 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 
 		return handler.retrieveChunk(filepath, offset, length);
 	}
-	
+
 	private void generateOFSNXml(File[] mlsFileList, OFSNHandlerConfig cfg,
 			OutputStream outStream) {
 		XMLUtils.writeXmlToStream(OFSNUtils.getOFSNDoc(Arrays.asList(mlsFileList),

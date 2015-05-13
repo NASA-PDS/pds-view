@@ -80,4 +80,8 @@ the License.
     <exception-type>org.apache.oodt.grid.AuthenticationRequiredException</exception-type>
     <location>/error.jsp</location>
   </error-page>
+  <listener>
+     <display-name>ImageIO service provider loader/unloader</display-name>
+     <listener-class>com.twelvemonkeys.servlet.image.IIOProviderContextListener</listener-class>
+  </listener>
 </web-app>

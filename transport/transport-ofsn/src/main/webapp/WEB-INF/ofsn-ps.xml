@@ -15,7 +15,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<!--  
+<!--
 Configures a new OODT OFSN style product server. This is a product server
 of the form:
 
@@ -28,11 +28,11 @@ at the given OFSN path.
 More more information on the OFSN style product servers, see the PDS original here:
 
 http://oodt/pds-client/guide/product
-   
+
 Required attributes:
    id: defines a unique URN/id for this product server instance
    name: defines a human readable name for this product server instance
-   productRoot: defines the root path in which the OFSN product server should start looking for 
+   productRoot: defines the root path in which the OFSN product server should start looking for
    paths based on a given OFSN
 
 FIXME: Change XML namespace URI for oodt prefix?
@@ -42,86 +42,86 @@ FIXME: Change XML namespace URI for oodt prefix?
       name="OODT OFSN Style Product Handler"
       productRoot="/usr/local/transport-ofsn/testdata"
       >
-      
+
   <!--  defines a new OFSN handler. There are 2 valid types:
-     
-     listing: this type generates a list of files given an OFSN. The list will 
+
+     listing: this type generates a list of files given an OFSN. The list will
      be returned and formatted in XML for easy parsing.
-     
+
      get: this type returns the bits of the requested ofsn, after performing some
      type of transformation on them.
-     
+
      Required attributes:
-     
+
      name: gives the handler type a identifiable name. This should be a valid RT name for use in the OODT
-     product server query, e.g., if you want the dir list non-recursive listing handler to be called on 
+     product server query, e.g., if you want the dir list non-recursive listing handler to be called on
      RT=DIRLIST1, then set name to "DIRLIST1", as below.
-     
+
      type: either listing, or get, depending on the desired handler type.
-     
+
      class: defines a class that implements either the org.apache.oodt.product.handlers.ofsn.OFSNListHandler
      interface (for "listing" handlers), or the org.apache.oodt.product.handlers.ofsn.OFSNGetHandler (for
      "get" handlers). Note that this class must be on the classpath in order for it to be referenced in
      this configuration.
-  
+
    -->
-   
-   <!-- 
+
+   <!--
      Optionally, each handler can have its own configuration, specified on the form of
        &lt;property name=&quot;some name&quot; value=&quot;some value&quot;/&gt;
-       
+
        where some name is the name of the configuration property and some value is the
        value of the configuration property.
-       
+
        Optional properties (for GET handlers):
-       
+
        property name: mimeType
        property value: the desired MIME type (also referred to as content-type) a handler should return
-       content as (eg. "text/plain"). More formally, any value of the form 
+       content as (eg. "text/plain"). More formally, any value of the form
        "type/subtype(; parameter=...)*" as defined in RFC 2045.
     -->
-    
-        
-   <!-- 
+
+
+   <!--
    The DIRLIST1 type is identical to DIRLIST but does not recursively
    descend into subdirectories.
    -->
-  <handler name="DIRLIST1" type="listing" 
+  <handler name="DIRLIST1" type="listing"
        class="org.apache.oodt.product.handlers.ofsn.DirListNonRecursiveHandler"/>
-       
-       
-  <!-- 
+
+
+  <!--
     The DIRLIST type returns an XML file with directory names (and only
     directory names) and total size of files in each directory starting in
-    the requested directory and traversing into the subdirectories. 
+    the requested directory and traversing into the subdirectories.
    -->
   <handler name="DIRLIST" type="listing"
        class="org.apache.oodt.product.handlers.ofsn.DirListRecursiveHandler"/>
-    
 
-  <!-- 
+
+  <!--
     The DIRFILELIST1 is identical to DIRFILELIST except that it does not
     recurse into subdirectories.
    -->
   <handler name="DIRFILELIST1" type="listing"
        class="org.apache.oodt.product.handlers.ofsn.FileListNonRecursiveHandler"/>
 
-  <!-- 
+  <!--
     The DIRFILELIST returns an XML document containing all of the filenames
     (and only the files, not directories) and their sizes, recursing into
-    subdirectories.  
-   -->          
+    subdirectories.
+   -->
   <handler name="DIRFILELIST" type="listing"
        class="org.apache.oodt.product.handlers.ofsn.FileListRecursiveHandler"/>
 
-  <!-- 
-    The  RAW_SIZE  generates an XML document telling the size of the raw file that 
-    would be returned by the corresponding RAW type.  
-   -->     
+  <!--
+    The  RAW_SIZE  generates an XML document telling the size of the raw file that
+    would be returned by the corresponding RAW type.
+   -->
   <handler name="RAW_SIZE" type="listing"
        class="org.apache.oodt.product.handlers.ofsn.RawSizeListHandler">
-     
-     <!-- 
+
+     <!--
        Required attributes:
           isSizeCmd: this value should be set to true in this handler to ensure that
           only the size is printed in the OFSN doc.
@@ -129,54 +129,54 @@ FIXME: Change XML namespace URI for oodt prefix?
      <property name="isSizeCmd" value="true"/>
   </handler>
 
-   <!-- 
+   <!--
     The FILELIST type returns an XML file naming the requested file and also
-    giving its size.   
+    giving its size.
    -->
   <handler name="FILELIST" type="listing"
        class="org.apache.oodt.product.handlers.ofsn.SingleFileListHandler"/>
 
-   <!-- 
+   <!--
     The FILE_LIST type is an alias for FILELIST (processed by the same handler).
    -->
   <handler name="FILE_LIST" type="listing"
            class="org.apache.oodt.product.handlers.ofsn.SingleFileListHandler"/>
-    
- 
-  <!-- 
+
+
+  <!--
     The FILELISTZIP is similar to FILELIST except that it tells what the size
-    of the requested file would be if compressed into a ZIP archive.  
-  -->   
+    of the requested file would be if compressed into a ZIP archive.
+  -->
   <handler name="FILELISTZIP" type="listing"
            class="org.apache.oodt.product.handlers.ofsn.SingleZipFileListHandler">
-       
-       <!-- 
+
+       <!--
         Optional attributes:
           cacheDirRoot: defines the cache dir that the product server should use when asked to create temporary
           files, e.g., by a listing or get handler. By default, if not specified, it defaults to /tmp
-       
+
         -->
-       <property name="cacheDirRoot" value="/tmp"/>       
-  </handler>
-  
-  <!-- 
-    The FILE_LIST_ZIP is an alias for FILELISTZIP (processed by the same handler, accepts the same optional attributes). 
-  -->   
-  <handler name="FILE_LIST_ZIP" type="listing"
-           class="org.apache.oodt.product.handlers.ofsn.SingleZipFileListHandler">
-       <property name="cacheDirRoot" value="/tmp"/>       
+       <property name="cacheDirRoot" value="/tmp"/>
   </handler>
 
-  <!-- 
-    The RAW type merely returns the requested file without any modification 
-    (MIME type application/octet-stream ). 
-  -->  
+  <!--
+    The FILE_LIST_ZIP is an alias for FILELISTZIP (processed by the same handler, accepts the same optional attributes).
+  -->
+  <handler name="FILE_LIST_ZIP" type="listing"
+           class="org.apache.oodt.product.handlers.ofsn.SingleZipFileListHandler">
+       <property name="cacheDirRoot" value="/tmp"/>
+  </handler>
+
+  <!--
+    The RAW type merely returns the requested file without any modification
+    (MIME type application/octet-stream ).
+  -->
   <handler name="RAW" type="get"
-       class="org.apache.oodt.product.handlers.ofsn.StdOFSNGetHandler"/>       
-       
-  <!-- 
+       class="org.apache.oodt.product.handlers.ofsn.StdOFSNGetHandler"/>
+
+  <!--
   	Handlers that convert a PDS3 or PDS4 label to another format.
-   -->   
+   -->
   <handler name="PDS_TO_JPG" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="image/jpeg"/>
     	<property name="extension" value="jpg"/>
@@ -184,11 +184,11 @@ FIXME: Change XML namespace URI for oodt prefix?
   </handler>
   <handler name="PDS_TO_JPEG" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="image/jpeg"/>
-    	<property name="extension" value="jpeg"/> 
+    	<property name="extension" value="jpeg"/>
   </handler>
   <handler name="PDS_JPEG" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="image/jpeg"/>
-    	<property name="extension" value="jpeg"/> 
+    	<property name="extension" value="jpeg"/>
   </handler>
   <handler name="PDS_TO_JP2" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="image/jp2"/>
@@ -198,7 +198,7 @@ FIXME: Change XML namespace URI for oodt prefix?
     	<property name="mimeType" value="image/bmp"/>
     	<property name="extension" value="bmp"/>
   </handler>
-<!-- NOT WORKING    
+<!-- NOT WORKING
   <handler name="PDS_TO_WBMP" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="image/vnd.wap.wbmp"/>
     	<property name="extension" value="wbmp"/>
@@ -220,17 +220,17 @@ FIXME: Change XML namespace URI for oodt prefix?
     	<property name="extension" value="tiff"/>
   </handler>
   <handler name="PDS_TO_TIF" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
-    	<property name="mimeType" value="image/tif"/>
+    	<property name="mimeType" value="image/tiff"/>
     	<property name="extension" value="tif"/>
   </handler>
   <handler name="PDS_TO_PNM" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="image/x-portable-anymap"/>
     	<property name="extension" value="pnm"/>
   </handler>
-  
-  <!-- 
+
+  <!--
   	Handlers that apply only to PDS4 labels.
-   --> 
+   -->
   <handler name="PDS4_TO_PVL" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="text/plain"/>
     	<property name="extension" value="pvl"/>
@@ -247,72 +247,72 @@ FIXME: Change XML namespace URI for oodt prefix?
     	<property name="mimeType" value="text/plain"/>
     	<property name="extension" value="csv"/>
   </handler>
-  
-  <!-- 
+
+  <!--
   	Handlers that apply only to PDS3 labels.
-   --> 
-<!-- REQUIRES REFERENCE TO 'external-programs'   
+   -->
+<!-- REQUIRES REFERENCE TO 'external-programs'
   <handler name="PDS3_TO_PDS" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="text/plain"/>
     	<property name="extension" value="pds"/>
   </handler> -->
-  
+
   <handler name="PDS3_TO_PDS4_LABEL" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="text/plain"/>
     	<property name="extension" value="pds4-label"/>
   </handler>
-  
-  <!-- 
+
+  <!--
   	The PDS_LABEL type expands and returns a PDS3 label as plain text.
    -->
   <handler name="PDS_LABEL" type="get" class="gov.nasa.pds.transport.PdsLabelHandler">
   		<property name="mimeType" value="text/plain"/>
   		<!-- <property name="cacheDir" value="/tmp"/> -->
   </handler>
-  
-   <!-- 
+
+   <!--
   	The PDS_ZIP type returns a ZIP file containing the requested PDS3 label and all its referenced files.
    -->
   <handler name="PDS_ZIP" type="get" class="gov.nasa.pds.transport.ZipFileHandler">
   		<property name="mimeType" value="application/zip"/>
   		<!-- <property name="cacheDir" value="/tmp"/> -->
   </handler>
-  
-  <!-- 
-  	The PDS_ZIP_SIZE type returns the total size of the files 
+
+  <!--
+  	The PDS_ZIP_SIZE type returns the total size of the files
   	contained in the ZIP package returned by the same request to the PDS_ZIP handler.
    -->
   <handler name="PDS_ZIP_SIZE" type="get" class="gov.nasa.pds.transport.ZipSizeFileHandler">
   		<property name="mimeType" value="text/xml"/>
   </handler>
-  
-  <!-- The PDS_ZIPD handler generates and returns a ZIP archive of all of the files and directories under the given OFSN, 
+
+  <!-- The PDS_ZIPD handler generates and returns a ZIP archive of all of the files and directories under the given OFSN,
        which should be a directory.   -->
   <handler name="PDS_ZIPD" type="get" class="gov.nasa.pds.transport.ZipDirHandler">
   		<property name="mimeType" value="application/zip"/>
   </handler>
-  
-  <!-- The PDS_ZIPD_SIZE generates an XML document detailing the size of the generated ZIP archive 
+
+  <!-- The PDS_ZIPD_SIZE generates an XML document detailing the size of the generated ZIP archive
        from the corresponding PDS_ZIPD handler request.   -->
   <handler name="PDS_ZIPD_SIZE" type="get" class="gov.nasa.pds.transport.ZipSizeDirHandler">
   		<property name="mimeType" value="text/xml"/>
   </handler>
-  
-  <!--  
+
+  <!--
     The MD5 type returns an MD5 hash of the file bytes generated on the server side.
    -->
-   
+
    <handler name="MD5" type="get"
        class="org.apache.oodt.product.handlers.ofsn.MD5GetHandler">
-       
+
        <property name="mimeType" value="text/plain"/>
-       
+
    </handler>
 
 
-  <!--  
+  <!--
     The URL type returns a URL listing pointing to files within an OFSN
-    
+
     (Optional) Use the below properties to customize the constructed URL returned:
         1. prodServerHostname: the product server hostname
         2. prodServerPort: the product server's port
@@ -323,7 +323,7 @@ FIXME: Change XML namespace URI for oodt prefix?
    -->
   <handler name="URL" type="get"
        class="org.apache.oodt.product.handlers.ofsn.URLGetHandler">
-       
+
        <!-- the below values are the default if nothing specified
        <property name="prodServerHostname" value="localhost"/>
        <property name="prodServerPort" value="8080"/>
@@ -331,8 +331,8 @@ FIXME: Change XML namespace URI for oodt prefix?
        <property name="productRoot" value="/some/path"/>
        <property name="returnType" value="RAW"/>
        -->
-  	   
+
        <property name="mimeType" value="text/plain"/>
-  	   
+
   </handler>
 </oodt:ofsn>
