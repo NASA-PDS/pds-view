@@ -22,6 +22,9 @@
   </properties>
 
   <body>
+    <release version="1.3.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.2.1" date="2015-05-13" description="This release of the Transport Service is a component of the integrated release 5.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" type="fix" issue="PDS-353">
         Modified to correct an issue where several of the directory and file-based handlers were not functioning correctly. Also corrected an issue where some of the image formats (TIF, PNM and JP2) were not working.
