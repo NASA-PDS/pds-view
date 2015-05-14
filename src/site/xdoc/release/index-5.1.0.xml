@@ -139,6 +139,8 @@
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-351'>PDS-351</a>] - Schema validation fails with certificate issue in Java 6
           </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-353'>PDS-353</a>] - Transport: Several handlers are not functioning correctly
+          </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-355'>PDS-355</a>] - Portal: dd-search incorrectly orders PDS3 attributes
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-356'>PDS-356</a>] - Generate: Xml declaration removed when transformation completed
@@ -217,7 +219,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
           <li><a href="../preparation/design/index.html">Design Tool</a> - 0.4.0</li>
           <li><a href="../preparation/generate/index.html">Generate Tool</a> - 0.8.0</li>
           <li><a href="../preparation/pds4-tools/index.html">PDS4 Tools</a> - 0.5.0</li>
-          <li><a href="../preparation/transform/index.html">Transform Tool</a> - 1.1.0</li>
+          <li><a href="../preparation/transform/index.html">Transform Tool</a> - 1.1.1</li>
           <li><a href="../preparation/validate/index.html">Validate Tool</a> - 1.7.0</li>
         </ul>
         <li><a href="../registry/index.html">Registry</a></li>
@@ -248,7 +250,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
         <li><a href="../transport/index.html">Transport</a></li>
         <ul>
           <li><a href="../transport/transport-proxy/index.html">Transport Proxy</a> - 1.1.1 (EN Only)</li>
-          <li><a href="../transport/transport-ofsn/index.html">Transport Service (OFSN)</a> - 1.2.0</li>
+          <li><a href="../transport/transport-ofsn/index.html">Transport Service (OFSN)</a> - 1.2.1</li>
           <li><a href="../transport/transport-registry/index.html">Transport Service (Registry)</a> - 1.1.0</li>
         </ul>
       </ul>
