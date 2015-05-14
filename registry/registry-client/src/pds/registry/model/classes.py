@@ -106,6 +106,7 @@ class RegistryObject(Identifiable):
     SERVICE_BINDING = 'ServiceBinding'
     SPECIFICATION_LINK = 'SpecificationLink'
     EXTRINSIC_OBJECT = 'ExtrinsicObject'
+    ASSOCIATION = 'Association'
     def __init__(
         self, guid, lid,
         home=None, slots=None, name=None, objectType=None, status=None, description=None, versionName=None
@@ -139,7 +140,21 @@ class ExtrinsicObject(RegistryObject):
             description, versionName
         )
         self.contentVersion, self.mimeType = contentVersion, mimeType
-    
+
+
+class Association(RegistryObject):
+    '''An Association associates two RegistryObjects'''
+    def __init__(
+        self, guid, lid,
+        home=None, slots=None, name=None, status=None, description=None, versionName=None,
+        source=None, target=None, associationType=None, objectType=None
+    ):
+        super(Association, self).__init__(
+            guid, lid, home, slots, name, objectType if objectType is not None else RegistryObject.ASSOCIATION,
+            description, versionName
+        )
+        self.source, self.target, self.associationType = source, target, associationType
+
 
 class Service(RegistryObject):
     '''Service instances describe services, such as web services.'''

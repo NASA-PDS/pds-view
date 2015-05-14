@@ -6,6 +6,7 @@
 
 import unittest
 from pds.registry.model.classes import (
+    Association,
     ExtrinsicObject,
     Identifiable,
     RegistryObject,
@@ -157,6 +158,25 @@ class ExtrinsicObjectTest(_RegistryObjectTestCase):
         self.assertEquals('Product', b.objectType)
 
 
+class AssociationTest(_RegistryObjectTestCase):
+    '''Test case for the Association class.'''
+    def _createInstance(self):
+        return Association(
+            guid='678', lid='urn:pds:assoc1', home=u'http://home.com/', slots=set(), name=u'Esquire',
+            status='Submitted', description='Saul Goodman and Associates', versionName='1.0',
+            source='urn:id:123', target='urn:id:234', associationType='urn:id:567'
+        )
+    def _getObjectType(self):
+        return 'Association'
+    def testAttributes(self):
+        '''Check that additional attributes get set to what we want'''
+        a = self._createInstance()
+        self.assertEquals('urn:id:123', a.source)
+        self.assertEquals('urn:id:234', a.target)
+        self.assertEquals('urn:id:567', a.associationType)
+        self.assertEquals('Association', a.objectType)
+
+
 class ServiceTest(_RegistryObjectTestCase):
     '''Test case for the Service class.'''
     def _createInstance(self):
@@ -239,6 +259,7 @@ def test_suite():
         unittest.makeSuite(ServiceBindingTest),
         unittest.makeSuite(SpecificationLinkTest),
         unittest.makeSuite(ExtrinsicObjectTest),
+        unittest.makeSuite(AssociationTest),
     ])
 
 
