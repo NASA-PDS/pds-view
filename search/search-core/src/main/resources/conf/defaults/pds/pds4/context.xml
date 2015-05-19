@@ -219,7 +219,7 @@
 		<field name="person_phone_book_flag" type="string">
 			<registryPath>person_phone_book_flag</registryPath>
 		</field>
-		<field name="person_phone_book_flag" type="string">
+		<field name="person_postal_address_text" type="string">
 			<registryPath>person_postal_address_text</registryPath>
 		</field>
 		<field name="person_team_name" type="string">
