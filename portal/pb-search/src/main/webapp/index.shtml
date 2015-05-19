@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"><!-- InstanceBegin template="/Templates/main.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" --><title>PDS: About the PDS</title><!-- InstanceEndEditable -->
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+
+<!--#include virtual="phone_book_imports.html" -->
+
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+<!-- InstanceParam name="menu_section" type="text" value="about" -->
+<!-- InstanceParam name="menu_item" type="text" value="about_phone_book" -->
+<!-- InstanceParam name="left_sidebar" type="boolean" value="true" -->
+<!-- InstanceParam name="standard_sidebar" type="boolean" value="true" -->
+</head>
+
+
+<body class="sidebar  menu_about menu_item_about_phone_book">
+<!--[if IE]>
+<div id="IE">
+<![endif]--> 
+
+<!-- Header -->
+<!--#include virtual="/include/header.html" -->
+
+
+<!-- Main menu -->
+<!--#include virtual="phone_book_menu.html" -->
+
+<!-- Sidebar -->
+  <div id="sidebar">
+    <!--#include virtual="/include/standard_sidebar.html" -->
+    <!-- InstanceBeginEditable name="leftSidebar" -->
+    <!-- InstanceEndEditable -->
+  </div>
+
+
+<!-- Main content -->
+<div id="content">
+<h1><a name="mainContent"></a><!-- InstanceBeginEditable name="pageTitle" -->PDS Phone Book<!-- InstanceEndEditable --></h1>
+<div>
+<!-- InstanceBeginEditable name="content" -->
+    <div class="tw-bs">
+
+      <div id="searchDiv">
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <div id="pbSearch"><!--Ajax solr form begin-->
+              <p class="formp">
+                <strong>Welcome to the PDS Phone Book. The default view is everyone in the phone book. You can sort by node. You can view the details of the entry by clicking on a name.
+                </strong>
+              </p>
+
+              <div class="form-inline">
+
+                <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-btn">
+                    <button id="pbSearchToggleButton" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Search <span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li role="presentation" class="dropdown-header">Searching Method:</li>
+                      <li id="pbToggleSearchingMethodSearch"><a>Search</a></li>
+                      <li id="pbToggleSearchingMethodMatch"><a>Match</a></li>
+                    </ul>
+                  </div><!-- /btn-group -->
+                  <input type="text" id="pbSearchInput" class="form-control" aria-label="...">
+                </div><!-- /input-group -->
+              </div>
+
+                <div class="form-group">
+                  <label for="pbNodeControl">Node: </label>
+                  <select class="form-control" id="pbNodeSelect">
+                    <option>-All-</option>
+                    <option>ATMOS</option>
+                    <option>EN</option>
+                    <option>GEOSCIENCE</option>
+                    <option>HQ</option>
+                    <option>IMAGING</option>
+                    <option>NAIF</option>
+                    <option>NSSDC</option>
+                    <option>PDS-MGT</option>
+                    <option>PPI-UCLA</option>
+                    <option>RINGS</option>
+                    <option>RS</option>
+                    <option>SBN</option>
+                  </select>
+                </div>
+
+              </div>
+
+            </div><!--End of ajax solr search form "search"-->
+
+          </div><!-- End panel content-->
+        </div><!-- End panel body-->
+
+        <!--Search Results Section-->
+        <div id="pbResult">
+          <div id="pbNavigation">
+            <div id="pbPager-header">
+            </div>
+            <table id="pbDocs" class="table table-condensed table-striped">
+            </table>
+
+            <ul class="pagination" id="pbPager">
+            </ul>
+          </div>
+        </div>
+
+      </div><!--End Search Div-->
+
+
+      <!--Details Section-->
+      <div id="pbDetailDiv">
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div id="pbDetailTitle">
+            </div> 
+          </div>
+        </div>
+
+        <!--Details-->
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div id="pbDetailContainer">
+            </div>
+          </div>
+        </div>
+
+        <!--Back Button Section-->
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <button id="returnToSearchButtonBottom" type="button" class="btn btn-info btn-lg btn-block"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return To Search</button>
+          </div>
+        </div>
+
+      </div><!-- End Details Section -->
+
+    </div><!--End tw-bs -->
+
+
+
+<!-- InstanceEndEditable -->
+</div>
+</div>
+
+<!--#include virtual="/include/footer.html" -->
+
+    <!--[if IE]>
+    </div>
+    <![endif]--> 
+  </body>
+<!-- InstanceEnd --></html>
