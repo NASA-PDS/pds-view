@@ -373,6 +373,9 @@ public interface RegistryService {
    */
   public String publishObject(String user, RegistryObject registryObject)
       throws RegistryServiceException;
+  
+  public void publishObjects(String user, List<? extends RegistryObject> registryObjects)
+				  throws RegistryServiceException;
 
   /**
    * Publishes a registry object to the registry.
@@ -388,6 +391,9 @@ public interface RegistryService {
    */
   public String publishObject(String user, RegistryObject registryObject,
       String packageId) throws RegistryServiceException;
+  
+  public void publishObjects(String user, List<? extends RegistryObject> registryObjects,
+		    String packageId) throws RegistryServiceException;
 
   /**
    * Deletes a {@link RegistryObject} from the registry which share the logical

@@ -697,6 +697,79 @@ public class RegistryServiceImpl implements RegistryService {
 		}
 		return registryObject.getGuid();
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gov.nasa.pds.registry.service.RegistryService#publishObjects(java.lang.String
+	 * , gov.nasa.pds.registry.model.RegistryObjectList, java.lang.String)
+	 */
+	@Override
+	public void publishObjects(String user, List<? extends RegistryObject> registryObjects, String packageId) 
+			throws RegistryServiceException {		
+		List<String> addedObjs = new ArrayList<String>();
+		List<RegistryObject> needToStoreObjs = new ArrayList<RegistryObject>();
+		for (RegistryObject registryObject: registryObjects) {
+			if (registryObject instanceof ExtrinsicObject) {
+
+				if (registryObject.getGuid() == null) {
+					registryObject.setGuid(idGenerator.getGuid());
+				}
+				if (registryObject.getHome() == null) {
+					registryObject.setHome(idGenerator.getHome());
+				}
+				registryObject.setVersionName(versioner.getInitialVersion());
+				if (registryObject.getLid() == null) {
+					registryObject.setLid(idGenerator.getGuid());
+				}
+				registryObject.setStatus(ObjectStatus.Submitted);
+				this.validateObject(registryObject);
+
+				needToStoreObjs.add(registryObject);
+
+				// If this is a classification node that belongs to the object type
+				// classification scheme add it to the cache
+				if (registryObject instanceof ClassificationNode) {
+					ClassificationNode node = (ClassificationNode) registryObject;
+					node.getPath().contains(OBJECT_TYPE_SCHEME);
+					objectTypeCache.put(node.getCode(), node);
+				}
+
+				if (packageId == null) {
+					needToStoreObjs.add(createAuditableEventObj("publishObject " + registryObject.getGuid(),
+							user, EventType.Created, registryObject.getGuid(),
+							registryObject.getClass()));
+				} else {
+					Association hasMember = new Association();
+					hasMember.setGuid(idGenerator.getGuid());
+					hasMember.setHome(idGenerator.getHome());
+					hasMember.setSourceObject(packageId);
+					hasMember.setTargetObject(registryObject.getGuid());
+					hasMember.setStatus(ObjectStatus.Submitted);
+					hasMember.setAssociationType("urn:registry:AssociationType:HasMember");
+					Set<Slot> slots = new HashSet<Slot>();
+					Slot targetObjectType = new Slot("targetObjectType",
+							Arrays.asList(registryObject.getClass().getSimpleName()));
+					slots.add(targetObjectType);
+					hasMember.setSlots(slots);
+					needToStoreObjs.add(hasMember);
+					needToStoreObjs.add(createAuditableEventObj(
+							"publishObjectWithPackage " + packageId + " "
+									+ registryObject.getGuid(),
+									user,
+									EventType.Created,
+									new AffectedInfo(Arrays.asList(registryObject.getGuid(),
+											hasMember.getGuid()), Arrays.asList(registryObject.getClass()
+													.getSimpleName(), hasMember.getClass().getSimpleName()))));
+				}
+
+				addedObjs.add(registryObject.getGuid());
+			}
+		}
+		metadataStore.saveRegistryObjects(needToStoreObjs);		
+		System.out.println("needToStoreObjs = " + needToStoreObjs + "      addedObjs = " + addedObjs);		//return addedObjs;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -708,6 +781,11 @@ public class RegistryServiceImpl implements RegistryService {
 	    throws RegistryServiceException {
 		return this.publishObject(user, registryObject, null);
 	}
+	
+	public void publishObjects(String user, List<? extends RegistryObject> registryObjects)
+		    throws RegistryServiceException {
+			this.publishObjects(user, registryObjects, null);
+		}
 
 	private void createAuditableEvent(String requestId, String user,
 	    EventType eventType, String guid,
@@ -726,6 +804,26 @@ public class RegistryServiceImpl implements RegistryService {
 		event.addSlot(new Slot("affectedObjectTypes", affectedInfo
 		    .getAffectedTypes()));
 		metadataStore.saveRegistryObject(event);
+	}
+	
+	private AuditableEvent createAuditableEventObj(String requestId, String user,
+			EventType eventType, String guid,
+			Class<? extends RegistryObject> objectClass) {
+		return this.createAuditableEventObj(requestId, user, eventType, new AffectedInfo(
+				Arrays.asList(guid), Arrays.asList(objectClass.getSimpleName())));
+	}
+
+	private AuditableEvent createAuditableEventObj(String requestId, String user,
+			EventType eventType, AffectedInfo affectedInfo) {
+		AuditableEvent event = new AuditableEvent(eventType,
+				affectedInfo.getAffectedIds(), user);
+		event.setGuid(idGenerator.getGuid());
+		event.setHome(idGenerator.getHome());
+		event.setRequestId(requestId);
+		event.addSlot(new Slot("affectedObjectTypes", affectedInfo
+				.getAffectedTypes()));
+		//metadataStore.saveRegistryObject(event);
+		return event;
 	}
 
 	private void validateObject(RegistryObject registryObject)

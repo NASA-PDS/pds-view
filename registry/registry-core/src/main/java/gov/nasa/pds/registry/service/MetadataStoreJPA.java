@@ -53,6 +53,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -384,6 +385,28 @@ public class MetadataStoreJPA implements MetadataStore {
     // resources.
     entityManager.clear();
   }
+  
+  /*
+   * (non-Javadoc)
+   *
+   * @see
+   * gov.nasa.pds.registry.service.MetadataStore#saveRegistryObject(gov.nasa
+   * .pds.registry.model.RegistryObject)
+   */
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
+  //@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+  public void saveRegistryObjects(List<RegistryObject> registryObjects) {
+	  for (RegistryObject registryObject: registryObjects) {
+		  entityManager.persist(registryObject);
+		  // may store guid into the hashmap and return?
+	  }  
+	  entityManager.flush();
+	  // Needed to detach the object from the EntityManager to free up
+	  // resources.
+	  entityManager.clear();
+	  // how to rollback?????
+  }
 
   /*
    * (non-Javadoc)
@@ -415,6 +438,8 @@ public class MetadataStoreJPA implements MetadataStore {
   @Override
   @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
   public AffectedInfo deleteRegistryObjects(String packageId, String associationType) {
+	  // TODO TODO TODO: need to be able to delete scheme and classificationNode entries
+	  
 	  int deletedCount = 0;
 	  try {   
 		  String selectQuery = "select targetObject from Association where associationType='" + associationType +
@@ -474,6 +499,36 @@ public class MetadataStoreJPA implements MetadataStore {
 				  deletedTypes.addAll(affectedInfo.getAffectedTypes());	
 			  }
 			  //System.out.println((i++) + "     extObjCount = " + extObjCount + "     assocCount = " + assocCount);
+			  
+			  // classification node object 
+			  /*
+			   * List<ClassificationNode> cnToRemove = entityManager.createQuery("select cn from ClassificationNode cn where cn.guid = :guid").setParameter("guid", targetObject).getResultList();
+			  tmpCount = 0;
+			  if (cnToRemove!=null) {				  
+				  for (ClassificationNode cnObj: cnToRemove) {  
+					  Set<Slot> slotsToRemove = cnObj.getSlots();
+					  for (Slot o: slotsToRemove) {
+						  entityManager.remove(o);
+						  tmpCount++;
+					  }
+					  entityManager.remove(extObj);
+					  cnObjCount++;
+				  }
+			  }		
+			  //System.out.println("deletedCount for Slot tables of ClassificationNode = " + tmpCount);	
+			  //System.out.println("deletedCount for ClassificationNode = " + cnObjCount);	
+			  
+			  if (tmpCount>0) {
+				  AffectedInfo affectedInfo = new AffectedInfo(Arrays.asList(targetObject), Arrays.asList("ExtrinsicObject"));
+				  deletedIds.addAll(affectedInfo.getAffectedIds());
+				  deletedTypes.addAll(affectedInfo.getAffectedTypes());	
+			  }
+			  //System.out.println((i++) + "     extObjCount = " + extObjCount + "     assocCount = " + assocCount);
+			   */
+			  
+			  
+			  
+			  
 		  }
 
 		  deletedCount = extObjCount + assocCount;

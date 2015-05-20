@@ -25,6 +25,7 @@ import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.ObjectAction;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.RegistryObject;
+import gov.nasa.pds.registry.model.RegistryObjectList;
 import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.model.Service;
 import gov.nasa.pds.registry.model.Report;
@@ -282,6 +283,34 @@ public class RegistryClient {
       throw new RegistryServiceException(response.getEntity(String.class),
           response.getClientResponseStatus());
     }
+  }
+  
+  /**
+   * Publishes list of registry objects to the service
+   *
+   * @param object
+   *          to publish
+   * @throws RegistryServiceException
+   */
+  public void publishObjects(RegistryObjectList objects)
+		  throws RegistryServiceException {
+	  MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+	  if (registrationPackageGuid != null) {
+		  params.add("packageGuid", registrationPackageGuid);
+	  }
+	  WebResource.Builder builder = service.path(
+			  resourceMap.get(objects.getObjects().get(0).getClass())).path("batch")
+			  .queryParams(params).getRequestBuilder();
+	  ClientResponse response = builder.accept(mediaType).post(
+			  ClientResponse.class, objects);
+
+	  //System.out.println("response status = " + response.getClientResponseStatus());
+	  if (response.getClientResponseStatus() == Status.OK) {
+		  return;
+	  } else {
+		  throw new RegistryServiceException(response.getEntity(String.class),
+				  response.getClientResponseStatus());
+	  }
   }
 
   /**

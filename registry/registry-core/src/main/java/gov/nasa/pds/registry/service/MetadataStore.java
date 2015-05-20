@@ -169,6 +169,8 @@ public interface MetadataStore {
    *          to store
    */
   public void saveRegistryObject(RegistryObject registryObject);
+  
+  public void saveRegistryObjects(List<RegistryObject> registryObject);
 
   /**
    * Gets the count of registry objects managed in the backed of a given type.
