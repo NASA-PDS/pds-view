@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en"><!-- InstanceBegin template="/Templates/main.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
-<!-- InstanceBeginEditable name="doctitle" --><title>PDS: About the PDS</title><!-- InstanceEndEditable -->
+<!-- InstanceBeginEditable name="doctitle" --><title>PDS: Phone Book</title><!-- InstanceEndEditable -->
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 
 <!--#include virtual="phone_book_imports.html" -->
@@ -36,7 +36,7 @@
 
 <!-- Main content -->
 <div id="content">
-<h1><a name="mainContent"></a><!-- InstanceBeginEditable name="pageTitle" -->PDS Phone Book<!-- InstanceEndEditable --></h1>
+<h1><a name="mainContent"></a><!-- InstanceBeginEditable name="pageTitle" -->Phone Book<!-- InstanceEndEditable --></h1>
 <div>
 <!-- InstanceBeginEditable name="content" -->
     <div class="tw-bs">
@@ -47,7 +47,7 @@
 
             <div id="pbSearch"><!--Ajax solr form begin-->
               <p class="formp">
-                <strong>Welcome to the PDS Phone Book. The default view is everyone in the phone book. You can sort by node. You can view the details of the entry by clicking on a name.
+                <strong>Browse or search the PDS phone book. The results can be sorted by Node. Select an item to view the details.
                 </strong>
               </p>
 

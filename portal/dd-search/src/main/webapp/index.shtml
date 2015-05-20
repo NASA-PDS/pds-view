@@ -52,7 +52,7 @@
             <div id="ddSearch"><!--Ajax solr form begin-->
 
               <div class="form-horizontal">
-                <p class="formp"><strong>Browse or search the PDS data dictionary. You can find Attributes or Classes. Click on any item to view the details.</strong></p>
+                <p class="formp"><strong>Browse or search the PDS data dictionary. Discover attributes or classes from both the PDS3 and PDS4 dictionaries. Select an item to view the details.</strong></p>
                 <div class="input-group">
                   <div class="input-group-btn">
                     <button id="ddSearchToggleButton" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Search <span class="caret"></span></button>
@@ -114,7 +114,7 @@
                       <div class="radio">
                         <label>
                           <input type="radio" name="pdsVersionRadios" id="pdsOrderRadio2" value="pds3">
-                          PDS 3
+                          PDS3
                         </label>
                       </div>
                     </td>
@@ -129,7 +129,7 @@
                       <div class="radio">
                         <label>
                           <input type="radio" name="pdsVersionRadios" id="pdsOrderRadio3" value="pds4">
-                          PDS 4
+                          PDS4
                         </label>
                       </div>
                     </td>
