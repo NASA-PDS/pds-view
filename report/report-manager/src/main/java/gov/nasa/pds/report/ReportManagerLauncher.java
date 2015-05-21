@@ -400,6 +400,13 @@ public class ReportManagerLauncher {
 			System.out.println("\nType 'report-mgr -h' for usage");
 			System.exit(0);
 		}
+		try{
+			log.info("Now running Report Manager");
+		}catch(Exception e){
+			System.out.println("An error occurred while intializing logger: " +
+					e.getMessage());
+			return;
+		}
 		try {
 			loadConfiguration(null);
 			ReportManagerLauncher launcher = new ReportManagerLauncher();
