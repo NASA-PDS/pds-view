@@ -297,10 +297,6 @@ public class LogReformatProcessor implements Processor{
 	}
 	
 	/**
-	 * TODO: Change the algorithm of this method to read in each line,
-	 * reformat it, and output it before moving on to the next.  This should
-	 * reduce our memory usage.
-	 * 
 	 * Process a given {@link File}, placing the reformatted version inside a
 	 * given directory.
 	 * 
