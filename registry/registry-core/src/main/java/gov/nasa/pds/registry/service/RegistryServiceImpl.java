@@ -686,14 +686,16 @@ public class RegistryServiceImpl implements RegistryService {
 			slots.add(targetObjectType);
 			hasMember.setSlots(slots);
 			metadataStore.saveRegistryObject(hasMember);
-			this.createAuditableEvent(
-			    "publishObjectWithPackage " + packageId + " "
-			        + registryObject.getGuid(),
-			    user,
-			    EventType.Created,
-			    new AffectedInfo(Arrays.asList(registryObject.getGuid(),
-			        hasMember.getGuid()), Arrays.asList(registryObject.getClass()
-			        .getSimpleName(), hasMember.getClass().getSimpleName())));
+			if (!(registryObject instanceof Association)) {
+				this.createAuditableEvent(
+						"publishObjectWithPackage " + packageId + " "
+								+ registryObject.getGuid(),
+								user,
+								EventType.Created,
+								new AffectedInfo(Arrays.asList(registryObject.getGuid(),
+										hasMember.getGuid()), Arrays.asList(registryObject.getClass()
+												.getSimpleName(), hasMember.getClass().getSimpleName())));
+			}
 		}
 		return registryObject.getGuid();
 	}
@@ -751,14 +753,17 @@ public class RegistryServiceImpl implements RegistryService {
 				slots.add(targetObjectType);
 				hasMember.setSlots(slots);
 				needToStoreObjs.add(hasMember);
-				needToStoreObjs.add(createAuditableEventObj(
-						"publishObjectWithPackage " + packageId + " "
-								+ registryObject.getGuid(),
-								user,
-								EventType.Created,
-								new AffectedInfo(Arrays.asList(registryObject.getGuid(),
-										hasMember.getGuid()), Arrays.asList(registryObject.getClass()
-												.getSimpleName(), hasMember.getClass().getSimpleName()))));
+				
+				if (!(registryObject instanceof Association)) {
+					needToStoreObjs.add(createAuditableEventObj(
+							"publishObjectWithPackage " + packageId + " "
+									+ registryObject.getGuid(),
+									user,
+									EventType.Created,
+									new AffectedInfo(Arrays.asList(registryObject.getGuid(),
+											hasMember.getGuid()), Arrays.asList(registryObject.getClass()
+													.getSimpleName(), hasMember.getClass().getSimpleName()))));
+				}
 			}
 
 			addedObjs.add(registryObject.getGuid());
