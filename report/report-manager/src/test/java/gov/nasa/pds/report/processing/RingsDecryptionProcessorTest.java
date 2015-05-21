@@ -20,7 +20,7 @@ public class RingsDecryptionProcessorTest extends ReportManagerTest{
 	
 	private File testDir = null;
 	private File outputDir = null;
-	RingsDecryptionProcessor processor = null;
+	private RingsDecryptionProcessor processor = null;
 	
 	@Rule
 	public SingleTestRule test = new SingleTestRule("");
