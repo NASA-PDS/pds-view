@@ -195,48 +195,7 @@ public class ExtrinsicsResource {
           ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
     }
   }
-  
-  /**
-   * Publishes list of extrinsic objects to the registry. Publishing includes
-   * validation, assigning an internal version, validating the submission, and
-   * notification. The submitted extrinsic object should not contain the same
-   * logical identifier as previously submitted extrinsic (412 Precondition
-   * Failed), in that scenario the version interface should be used.
-   * 
-   * @request.representation.qname {http://registry.pds.nasa.gov}extrinsicObject
-   * @request.representation.mediaType application/xml
-   * @request.representation.example {@link gov.nasa.pds.registry.util.Examples#REQUEST_EXTRINSIC}
-   * @response.param {@name Location} {@style header} {@type
-   *                 {http://www.w3.org/2001/XMLSchema}anyURI} {@doc The URI
-   *                 where the created item is accessible.}
-   * 
-   * @param list of extrinsic objects
-   *          to publish to registry
-   * @param packageGuid
-   *          optional package guid which this registry object will be a member of
-   * @return returns an HTTP response that indicates an error or the location of
-   *         the created product and its guid
-   */
-  @POST
-  @Path("batch")
-  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-  public Response publishExtrinsics(RegistryObjectList objList, 
-		  @QueryParam("packageGuid") String packageGuid) {
-	  try {
-		  if (packageGuid==null) {
-			  registryService.publishObjects("Unknown", objList.getObjects());
-		  }
-		  else {
-			  registryService.publishObjects("Unknown", objList.getObjects(), packageGuid);
-		  }
-	  } catch (RegistryServiceException ex) {
-		  ex.printStackTrace();
-		  throw new WebApplicationException(Response.status(
-				  ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
-	  }
-	  return Response.ok().build();
-  }
-
+ 
   /**
    * Creates a new version of an extrinsic in the registry. Follows the same
    * procedures as publishing with the caveat that the logical identifier this

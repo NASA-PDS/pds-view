@@ -92,7 +92,12 @@ public class RegistryResource {
     String packagesUri = uriInfo.getBaseUriBuilder().clone().path(
         RegistryResource.class).path(RegistryResource.class,
         "getPackagesResource").build().toString();
-    builder.header("Link", new Link(packagesUri, "packages", null));
+    builder.header("Link", new Link(packagesUri, "packages", null)); 
+    String batchUri = uriInfo.getBaseUriBuilder().clone().path(
+            RegistryResource.class).path(RegistryResource.class,
+            "getBatchResource").build().toString();
+        builder.header("Link", new Link(packagesUri, "batch", null));
+    
     return builder.build();
   }
 
@@ -217,6 +222,17 @@ public class RegistryResource {
   @Path("packages")
   public PackagesResource getPackagesResource() {
     return new PackagesResource(this.uriInfo, this.request,
+        this.registryService);
+  }
+  
+  /**
+   * Provides access to batch registration
+   * 
+   * @return resource to deal with configuration
+   */
+  @Path("batch")
+  public BatchResource getBatchResource() {
+    return new BatchResource(this.uriInfo, this.request,
         this.registryService);
   }
   

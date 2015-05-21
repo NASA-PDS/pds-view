@@ -298,13 +298,12 @@ public class RegistryClient {
 	  if (registrationPackageGuid != null) {
 		  params.add("packageGuid", registrationPackageGuid);
 	  }
-	  WebResource.Builder builder = service.path(
-			  resourceMap.get(objects.getObjects().get(0).getClass())).path("batch")
+	  WebResource.Builder builder = service.path("batch")
 			  .queryParams(params).getRequestBuilder();
 	  ClientResponse response = builder.accept(mediaType).post(
 			  ClientResponse.class, objects);
 
-	  //System.out.println("response status = " + response.getClientResponseStatus());
+	  System.out.println("response status = " + response.getClientResponseStatus());
 	  if (response.getClientResponseStatus() == Status.OK) {
 		  return;
 	  } else {

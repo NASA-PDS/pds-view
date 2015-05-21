@@ -19,6 +19,7 @@ import gov.nasa.pds.registry.model.AffectedInfo;
 import gov.nasa.pds.registry.model.Association;
 import gov.nasa.pds.registry.model.AuditableEvent;
 import gov.nasa.pds.registry.model.ClassificationNode;
+import gov.nasa.pds.registry.model.ClassificationScheme;
 import gov.nasa.pds.registry.model.PagedResponse;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.RegistryObject;
@@ -447,7 +448,7 @@ public class MetadataStoreJPA implements MetadataStore {
 		  System.out.println("selectQuery = " + selectQuery);		  
 		  Query query = entityManager.createQuery(selectQuery);
 		  List<String> targetObjects = query.getResultList();
-		  int extObjCount = 0, assocCount = 0;
+		  int extObjCount = 0, assocCount = 0, cnObjCount = 0, csObjCount = 0;
 		  int i=0;
 		  List<String> deletedIds = new ArrayList<String>();
 		  List<String> deletedTypes = new ArrayList<String>();
@@ -501,8 +502,7 @@ public class MetadataStoreJPA implements MetadataStore {
 			  //System.out.println((i++) + "     extObjCount = " + extObjCount + "     assocCount = " + assocCount);
 			  
 			  // classification node object 
-			  /*
-			   * List<ClassificationNode> cnToRemove = entityManager.createQuery("select cn from ClassificationNode cn where cn.guid = :guid").setParameter("guid", targetObject).getResultList();
+			  List<ClassificationNode> cnToRemove = entityManager.createQuery("select cn from ClassificationNode cn where cn.guid = :guid").setParameter("guid", targetObject).getResultList();
 			  tmpCount = 0;
 			  if (cnToRemove!=null) {				  
 				  for (ClassificationNode cnObj: cnToRemove) {  
@@ -511,7 +511,7 @@ public class MetadataStoreJPA implements MetadataStore {
 						  entityManager.remove(o);
 						  tmpCount++;
 					  }
-					  entityManager.remove(extObj);
+					  entityManager.remove(cnObj);
 					  cnObjCount++;
 				  }
 			  }		
@@ -519,20 +519,39 @@ public class MetadataStoreJPA implements MetadataStore {
 			  //System.out.println("deletedCount for ClassificationNode = " + cnObjCount);	
 			  
 			  if (tmpCount>0) {
-				  AffectedInfo affectedInfo = new AffectedInfo(Arrays.asList(targetObject), Arrays.asList("ExtrinsicObject"));
+				  AffectedInfo affectedInfo = new AffectedInfo(Arrays.asList(targetObject), Arrays.asList("ClassificationNode"));
 				  deletedIds.addAll(affectedInfo.getAffectedIds());
 				  deletedTypes.addAll(affectedInfo.getAffectedTypes());	
 			  }
-			  //System.out.println((i++) + "     extObjCount = " + extObjCount + "     assocCount = " + assocCount);
-			   */
 			  
+			// ClassificationScheme object 
+			  List<ClassificationScheme> csToRemove = entityManager.createQuery("select cn from ClassificationScheme cn where cn.guid = :guid").setParameter("guid", targetObject).getResultList();
+			  tmpCount = 0;
+			  if (cnToRemove!=null) {				  
+				  for (ClassificationScheme csObj: csToRemove) {  
+					  Set<Slot> slotsToRemove = csObj.getSlots();
+					  for (Slot o: slotsToRemove) {
+						  entityManager.remove(o);
+						  tmpCount++;
+					  }
+					  entityManager.remove(csObj);
+					  csObjCount++;
+				  }
+			  }		
+			  //System.out.println("deletedCount for Slot tables of ClassificationScheme = " + tmpCount);	
+			  //System.out.println("deletedCount for ClassificationScheme = " + csObjCount);	
 			  
-			  
+			  if (tmpCount>0) {
+				  AffectedInfo affectedInfo = new AffectedInfo(Arrays.asList(targetObject), Arrays.asList("ClassificationScheme"));
+				  deletedIds.addAll(affectedInfo.getAffectedIds());
+				  deletedTypes.addAll(affectedInfo.getAffectedTypes());	
+			  }
 			  
 		  }
 
-		  deletedCount = extObjCount + assocCount;
+		  deletedCount = extObjCount + assocCount + cnObjCount +  csObjCount;
 		  System.out.println("Deleted package memebers...extObjCount = " + extObjCount + "     assocCount = " + assocCount + 
+				  "   classificationNode count = " + cnObjCount + "   scheme count = " + csObjCount + 
 				  "   total deletedCount = " + deletedCount + "  deletedIds.size() = " + deletedIds.size() + 
 				  "   deletedTypes.size() = " + deletedTypes.size());
 		  

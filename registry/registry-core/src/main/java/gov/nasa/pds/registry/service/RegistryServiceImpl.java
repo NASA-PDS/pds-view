@@ -711,64 +711,61 @@ public class RegistryServiceImpl implements RegistryService {
 		List<String> addedObjs = new ArrayList<String>();
 		List<RegistryObject> needToStoreObjs = new ArrayList<RegistryObject>();
 		for (RegistryObject registryObject: registryObjects) {
-			if (registryObject instanceof ExtrinsicObject) {
-
-				if (registryObject.getGuid() == null) {
-					registryObject.setGuid(idGenerator.getGuid());
-				}
-				if (registryObject.getHome() == null) {
-					registryObject.setHome(idGenerator.getHome());
-				}
-				registryObject.setVersionName(versioner.getInitialVersion());
-				if (registryObject.getLid() == null) {
-					registryObject.setLid(idGenerator.getGuid());
-				}
-				registryObject.setStatus(ObjectStatus.Submitted);
-				this.validateObject(registryObject);
-
-				needToStoreObjs.add(registryObject);
-
-				// If this is a classification node that belongs to the object type
-				// classification scheme add it to the cache
-				if (registryObject instanceof ClassificationNode) {
-					ClassificationNode node = (ClassificationNode) registryObject;
-					node.getPath().contains(OBJECT_TYPE_SCHEME);
-					objectTypeCache.put(node.getCode(), node);
-				}
-
-				if (packageId == null) {
-					needToStoreObjs.add(createAuditableEventObj("publishObject " + registryObject.getGuid(),
-							user, EventType.Created, registryObject.getGuid(),
-							registryObject.getClass()));
-				} else {
-					Association hasMember = new Association();
-					hasMember.setGuid(idGenerator.getGuid());
-					hasMember.setHome(idGenerator.getHome());
-					hasMember.setSourceObject(packageId);
-					hasMember.setTargetObject(registryObject.getGuid());
-					hasMember.setStatus(ObjectStatus.Submitted);
-					hasMember.setAssociationType("urn:registry:AssociationType:HasMember");
-					Set<Slot> slots = new HashSet<Slot>();
-					Slot targetObjectType = new Slot("targetObjectType",
-							Arrays.asList(registryObject.getClass().getSimpleName()));
-					slots.add(targetObjectType);
-					hasMember.setSlots(slots);
-					needToStoreObjs.add(hasMember);
-					needToStoreObjs.add(createAuditableEventObj(
-							"publishObjectWithPackage " + packageId + " "
-									+ registryObject.getGuid(),
-									user,
-									EventType.Created,
-									new AffectedInfo(Arrays.asList(registryObject.getGuid(),
-											hasMember.getGuid()), Arrays.asList(registryObject.getClass()
-													.getSimpleName(), hasMember.getClass().getSimpleName()))));
-				}
-
-				addedObjs.add(registryObject.getGuid());
+			if (registryObject.getGuid() == null) {
+				registryObject.setGuid(idGenerator.getGuid());
 			}
+			if (registryObject.getHome() == null) {
+				registryObject.setHome(idGenerator.getHome());
+			}
+			registryObject.setVersionName(versioner.getInitialVersion());
+			if (registryObject.getLid() == null) {
+				registryObject.setLid(idGenerator.getGuid());
+			}
+			registryObject.setStatus(ObjectStatus.Submitted);
+			this.validateObject(registryObject);
+			needToStoreObjs.add(registryObject);
+
+			// If this is a classification node that belongs to the object type
+			// classification scheme add it to the cache
+			if (registryObject instanceof ClassificationNode) {
+				ClassificationNode node = (ClassificationNode) registryObject;
+				node.getPath().contains(OBJECT_TYPE_SCHEME);
+				objectTypeCache.put(node.getCode(), node);
+			}
+
+			if (packageId == null) {
+				needToStoreObjs.add(createAuditableEventObj("publishObject " + registryObject.getGuid(),
+						user, EventType.Created, registryObject.getGuid(),
+						registryObject.getClass()));
+			} else {
+				Association hasMember = new Association();
+				hasMember.setGuid(idGenerator.getGuid());
+				hasMember.setHome(idGenerator.getHome());
+				hasMember.setSourceObject(packageId);
+				hasMember.setTargetObject(registryObject.getGuid());
+				hasMember.setStatus(ObjectStatus.Submitted);
+				hasMember.setAssociationType("urn:registry:AssociationType:HasMember");
+				Set<Slot> slots = new HashSet<Slot>();
+				Slot targetObjectType = new Slot("targetObjectType",
+						Arrays.asList(registryObject.getClass().getSimpleName()));
+				slots.add(targetObjectType);
+				hasMember.setSlots(slots);
+				needToStoreObjs.add(hasMember);
+				needToStoreObjs.add(createAuditableEventObj(
+						"publishObjectWithPackage " + packageId + " "
+								+ registryObject.getGuid(),
+								user,
+								EventType.Created,
+								new AffectedInfo(Arrays.asList(registryObject.getGuid(),
+										hasMember.getGuid()), Arrays.asList(registryObject.getClass()
+												.getSimpleName(), hasMember.getClass().getSimpleName()))));
+			}
+
+			addedObjs.add(registryObject.getGuid());
 		}
 		metadataStore.saveRegistryObjects(needToStoreObjs);		
-		System.out.println("needToStoreObjs = " + needToStoreObjs + "      addedObjs = " + addedObjs);		//return addedObjs;
+		System.out.println("needToStoreObjs.size() = " + needToStoreObjs.size() + "   needToStoreObjs + "
+				+ "\naddedObjs.size() = " + addedObjs.size() + "    addedObjs = " + addedObjs);		//return addedObjs;
 	}
 
 	/*
