@@ -5,6 +5,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 import gov.nasa.pds.report.util.CommandLineWorker;
 
+// TODO: Refactor this class to extend the SimpleCommandProcessor
 public class RingsDecryptionProcessor implements Processor{
 
 	public static final String OUTPUT_DIR_NAME = "rings_decrypt";
