@@ -107,13 +107,13 @@ public class ClassificationNodes extends Tab {
 	 * A mapping to <code>this</code> so that anonymous subclasses, handlers,
 	 * may get access to the containing class.
 	 */
-	private ClassificationNodes instance = null;
+	private static ClassificationNodes instance = null;
 
 	/**
 	 * 
 	 * @return <code>this</code> instance
 	 */
-	public ClassificationNodes get() {
+	public static ClassificationNodes get() {
 		return instance;
 	}
 
@@ -125,6 +125,7 @@ public class ClassificationNodes extends Tab {
 	private VerticalPanel scrollPanel = new VerticalPanel();
 	private FlexTable layout = new FlexTable();
 	private HorizontalPanel pagingPanel = new HorizontalPanel();
+	private int pageSize = RegistryUI.PAGE_SIZE1;
 
 	/**
 	 * The dialog box that displays product details.
@@ -234,7 +235,16 @@ public class ClassificationNodes extends Tab {
 		return this.layout;
 	}
 	
+	private int getPageSize() {
+		return this.pageSize;
+	}
+	
+	private void setPageSize(int size) {
+		this.pageSize = size;
+	}
+	
 	public ClassificationNodes() {
+		//panel.clear();
 		// assign instance for exterior retrieval
 		instance = this;	
 		panel.setSpacing(8);
@@ -260,7 +270,7 @@ public class ClassificationNodes extends Tab {
 
 			@Override
 			public void onRowCountChange(RowCountChangeEvent event) {
-				get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
+				get().getPagingScrollTable().setPageSize(get().getPageSize());
 			}
 		});
 		
@@ -365,16 +375,18 @@ public class ClassificationNodes extends Tab {
 		// create table model that knows to make rest call for rows and caches
 		// filter settings for calls
 		this.tableModel = new ClassificationNodeTableModel();
+		
+		this.tableModel.setServerUrl(RegistryUI.serverUrl);
 
 		// create model to contain the cached data
 		this.cachedTableModel = new CachedTableModel<ViewClassificationNode>(
 				this.tableModel);
 
 		// set cache for rows before start row
-		this.cachedTableModel.setPreCachedRowCount(RegistryUI.PAGE_SIZE1);
+		this.cachedTableModel.setPreCachedRowCount(get().getPageSize());
 
 		// set cache for rows after end row
-		this.cachedTableModel.setPostCachedRowCount(RegistryUI.PAGE_SIZE1);
+		this.cachedTableModel.setPostCachedRowCount(get().getPageSize());
 
 		// create a table definition, this defines columns, layout, row colors
 		TableDefinition<ViewClassificationNode> tableDef = createTableDefinition();
@@ -384,7 +396,7 @@ public class ClassificationNodes extends Tab {
 				this.cachedTableModel, tableDef);
 
 		// set the num rows to display per page
-		this.pagingScrollTable.setPageSize(RegistryUI.PAGE_SIZE1);
+		this.pagingScrollTable.setPageSize(get().getPageSize());
 
 		// set content to display when there is no data
 		this.pagingScrollTable.setEmptyTableWidget(new HTML(
@@ -586,14 +598,17 @@ public class ClassificationNodes extends Tab {
 					case 1: 
 						get().getPagingScrollTable().setHeight(RegistryUI.TBL_HGT_50_B);
 						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE2);
+						setPageSize(RegistryUI.PAGE_SIZE2);
 						break;
 					case 2:
 						get().getPagingScrollTable().setHeight(RegistryUI.TBL_HGT_100_B);
 						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE3);
+						setPageSize(RegistryUI.PAGE_SIZE3);
 						break;
 					default:
 						get().getPagingScrollTable().setHeight(RegistryUI.TABLE_HEIGHT_B);
 						get().getPagingScrollTable().setPageSize(RegistryUI.PAGE_SIZE1);
+						setPageSize(RegistryUI.PAGE_SIZE1);
 						break;
 				}
 				get().getPagingScrollTable().redraw();
@@ -609,18 +624,17 @@ public class ClassificationNodes extends Tab {
 		
 		this.layout.setWidget(2, 0, this.pagingPanel);
 	}
+	
 
 	/**
 	 * Action to take once the module has loaded.
 	 */
-	protected void onModuleLoaded() {
+	protected void onModuleLoaded() {		
 		// set page to first page, triggering call for data
 		this.pagingScrollTable.gotoFirstPage();
-
-		// to refresh with serverUrl change
-		get().getTableModel();
-		get().getPagingScrollTable().redraw();	
-
+		get().getCachedTableModel().clearCache();
+		
+		long count=0;
 		RegistryUI.statusInfo.getStatus(RegistryUI.serverUrl, new AsyncCallback<StatusInformation>() {
 			@Override
 			public void onFailure(Throwable caught) {
@@ -630,10 +644,16 @@ public class ClassificationNodes extends Tab {
 			@Override
 			public void onSuccess(StatusInformation result) {
 				long count = result.getClassificationNodes();
-				logger.log(Level.FINEST, "reloadData   num of classificationNodes " + count);		
+				logger.log(Level.FINEST, "onModuleLoaded   num of classificationNodes " + count);		
 				get().recordCountContainer.setHTML("<div class=\"recordCount\">Total Records: " + count + "</div>");
 			}
 		});
+		
+		get().getTableModel().setRowCount((int)count);
+		get().getPagingScrollTable().redraw();	
+		//logger.log(Level.FINEST, "after redraw onModuleLoaded   num of classificationNodes " + count);
+		get().getTableModel().setRowCount(getPageSize());
+		get().getPagingScrollTable().redraw();	
 	}
 
 	/**

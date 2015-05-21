@@ -72,6 +72,7 @@ import com.google.gwt.gen2.table.client.TableModelHelper.SerializableResponse;
 
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.Collections;
 import java.util.Comparator;
@@ -104,6 +105,7 @@ public class Schemes extends Tab {
 	private VerticalPanel scrollPanel = new VerticalPanel();	
 	private FlexTable layout = new FlexTable();
 	private HorizontalPanel pagingPanel = new HorizontalPanel();
+	Logger logger = RegistryUI.logger;
 	
 	/**
 	 * The dialog box that displays product details.
@@ -145,13 +147,13 @@ public class Schemes extends Tab {
 	 */
 	private CachedTableModel<ViewScheme> cachedTableModel = null;
 	
-	private Schemes instance = null;
+	private static Schemes instance = null;
 	
 	/**
 	 * 
 	 * @return <code>this</code> instance
 	 */
-	public Schemes get() {
+	public static Schemes get() {
 		return instance;
 	}
 	
@@ -168,6 +170,13 @@ public class Schemes extends Tab {
 	 */
 	public PagingScrollTable<ViewScheme> getPagingScrollTable() {
 		return this.pagingScrollTable;
+	}
+	
+	/**
+	 * @return the cached table model
+	 */
+	public CachedTableModel<ViewScheme> getCachedTableModel() {
+		return this.cachedTableModel;
 	}
 	
 	/**
@@ -636,6 +645,8 @@ public class Schemes extends Tab {
 		this.pagingPanel.add(pagingOptions);
 		this.pagingPanel.add(this.recordCountContainer);
 		this.layout.setWidget(2, 0, this.pagingPanel);
+		
+		//get().getPagingScrollTable().redraw();
 	}
 	
 	/**
@@ -781,8 +792,8 @@ public class Schemes extends Tab {
 		// set page to first page, triggering call for data
 		this.pagingScrollTable.gotoFirstPage();
 
-		// to refresh with serverUrl change
-		get().getTableModel();
+		get().getCachedTableModel().clearCache();
+		get().getTableModel().setRowCount(RegistryUI.PAGE_SIZE1);
 		get().getPagingScrollTable().redraw();	
 
 		RegistryUI.statusInfo.getStatus(RegistryUI.serverUrl, new AsyncCallback<StatusInformation>() {
@@ -794,11 +805,12 @@ public class Schemes extends Tab {
 			@Override
 			public void onSuccess(StatusInformation result) {
 				long count = result.getClassificationSchemes();
+				logger.log(Level.FINEST, "onModuleLoaded   num of classificationScheme " + count);
 				get().recordCountContainer.setHTML("<div class=\"recordCount\">Total Records: " + count + "</div>");
 			}
 		});
 	}
-
+	
 	public void onShow() {
 		onModuleLoaded();
 	}

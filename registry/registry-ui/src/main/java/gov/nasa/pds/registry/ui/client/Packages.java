@@ -434,7 +434,8 @@ public class Packages extends Tab {
 									get().reloadData();
 									// need to refresh product tabs???
 									Products.get().reloadData();
-									//Products.get().refreshTable();
+									ClassificationNodes.get().onModuleLoaded();
+									Schemes.get().onModuleLoaded();
 									Window.alert("The delete request is completed for lid = " + tmpLid);
 								}
 							});
