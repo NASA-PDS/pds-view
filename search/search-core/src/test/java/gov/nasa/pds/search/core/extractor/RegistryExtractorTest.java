@@ -26,6 +26,7 @@ import org.junit.runners.JUnit4;
  * @author jpadams
  */
 @RunWith(JUnit4.class)
+@Ignore
 public class RegistryExtractorTest extends SearchCoreTest {
 
 	private static final String TEST_DIR = System.getProperty("user.dir") + "/"
@@ -96,7 +97,6 @@ public class RegistryExtractorTest extends SearchCoreTest {
 	}
 
 	@Test
-	@Ignore
 	public void testRunPDS4() {
 		try {
 			this.re.setConfDir(new File(System.getProperty("user.dir") + "/"
