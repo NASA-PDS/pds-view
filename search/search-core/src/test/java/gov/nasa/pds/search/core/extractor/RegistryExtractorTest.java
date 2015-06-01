@@ -96,6 +96,7 @@ public class RegistryExtractorTest extends SearchCoreTest {
 	}
 
 	@Test
+	@Ignore
 	public void testRunPDS4() {
 		try {
 			this.re.setConfDir(new File(System.getProperty("user.dir") + "/"

@@ -17,6 +17,7 @@ import gov.nasa.pds.search.core.test.SearchCoreTest;
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -48,6 +49,7 @@ public class UtilityTest extends SearchCoreTest {
 	
 	
 	@Test
+	@Ignore
 	public void testUrlExists() {
 		String url = "http://pds-gamma.jpl.nasa.gov:8080/registry-pds3";
 		assertTrue(Utility.urlExists(url));
