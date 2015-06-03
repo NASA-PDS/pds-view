@@ -110,6 +110,9 @@ import gov.nasa.pds.report.util.Utility;
  * default: A substring with this flag will default to the value following an
  * equals sign, as shown in the example above.
  * 
+ * emptyvalue: A substring with this flag will treat the value following an
+ * equals sign as a null value (e.g. <username;\\S+;emptyvalue=*>).
+ * 
  * @author resneck
  * 
  */
@@ -831,8 +834,11 @@ public class LogReformatProcessor implements Processor{
 			return new StringLogDetail(name, pattern, false);
 		}else{
 			boolean required = false;
-			String inputFormat = null;
+			String dateTimeFormat = null;
 			String defaultValue = null;
+			String emptyValue = null;
+			
+			// Iterate over each flag specified for the log detail
 			for(String flag: flags.split(",")){
 				if(flag.equals("required")){
 					required = true;
@@ -841,9 +847,9 @@ public class LogReformatProcessor implements Processor{
 						throw new ProcessingException("The date-time log " +
 								"detail is not properly formatted: " + flag);
 					}
-					inputFormat =
+					dateTimeFormat =
 							flag.substring(flag.indexOf("=") + 1).trim();
-					if(inputFormat.isEmpty()){
+					if(dateTimeFormat.isEmpty()){
 						throw new ProcessingException("The date-time format " +
 								"was not given: " + flag);
 					}
@@ -858,31 +864,52 @@ public class LogReformatProcessor implements Processor{
 						throw new ProcessingException("The log detail " +
 								"default was not given: " + flag);
 					}
+				}else if(flag.startsWith("emptyvalue")){
+					if(flag.indexOf("=") == -1){
+						throw new ProcessingException("The log detail " +
+								"empty value is not properly formatted: " +
+								flag);
+					}
+					emptyValue = flag.substring(flag.indexOf("=") + 1).trim();
+					if(emptyValue.isEmpty()){
+						throw new ProcessingException("The log detail " +
+								"empty value is not properly formatted: " +
+								flag);
+					}
 				}else{
 					log.warning("Unknown flag " + flag + " in log " +
 							"reformat pattern");
 				}
 			}
-			if(inputFormat == null){
+			
+			// Create the proper LogDetail using the specified flags
+			if(dateTimeFormat == null){
+				StringLogDetail sdt = null; 
 				if(defaultValue == null){
-					return new StringLogDetail(name, pattern, required);
+					sdt = new StringLogDetail(name, pattern, required);
+				}else{
+					sdt = new StringLogDetail(name, pattern, required,
+							defaultValue);
 				}
-				return new StringLogDetail(name, pattern, required,
-						defaultValue);
+				if(emptyValue != null){
+					sdt.setEmptyValue(emptyValue);
+				}
+				return sdt;
 			}else{
 				if(defaultValue == null){
 					return new DateTimeLogDetail(name, pattern, required,
-							inputFormat);
+							dateTimeFormat);
 				}
 				try{
 					return new DateTimeLogDetail(name, pattern, required,
-							inputFormat, defaultValue);
+							dateTimeFormat, defaultValue);
 				}catch(ParseException e){
 					throw new ProcessingException("An error occurred while " +
 							"creating a date-time log detail: " +
 							e.getMessage());
 				}
 			}
+			
 		}
 		
 	}
@@ -960,6 +987,7 @@ public class LogReformatProcessor implements Processor{
 
 		protected String value;
 		protected String defaultValue;
+		protected String emptyValue;
 		
 		public StringLogDetail(String name, String pattern, boolean required,
 				String defaultValue){
@@ -997,7 +1025,15 @@ public class LogReformatProcessor implements Processor{
 		}
 		
 		public void setValue(String value){
-			this.value = value;
+			if(value.equals(this.emptyValue)){
+				this.value = null;
+			}else{
+				this.value = value;
+			}
+		}
+		
+		public void setEmptyValue(String ev){
+			this.emptyValue = ev;
 		}
 		
 		public void reset(){
@@ -1073,7 +1109,13 @@ public class LogReformatProcessor implements Processor{
 		}
 		
 		public void setDate(String value) throws ParseException{
+			
+			// Massage any odd double spaces (present in some xferlogs) out of
+			// the string
+			value.replaceAll("  ", " ");
+			
 			this.date = this.dateFormat.parse(value);
+			
 		}
 		
 		public void reset(){

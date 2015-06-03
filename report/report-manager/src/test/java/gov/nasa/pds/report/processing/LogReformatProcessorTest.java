@@ -234,6 +234,19 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		
 		try{
 			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+					"<improperly;formatted;emptyvalue>");
+			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+					"<improperly>");
+			this.processor.configure(this.props);
+			fail("No failure occurred while configuring the log reformat " +
+					"processor containing a log detail with an empty value " +
+					"with no equals sign");
+		}catch(ProcessingException e){
+			// Desired outcome
+		}
+		
+		try{
+			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
 					"<missing;formatted;default=>");
 			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
 					"<missing>");
@@ -241,6 +254,19 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 			fail("No failure occurred while configuring the log reformat " +
 					"processor containing a log detail with a missing " +
 					"default value");
+		}catch(ProcessingException e){
+			// Desired outcome
+		}
+		
+		try{
+			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+					"<missing;formatted;emptyvalue=>");
+			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+					"<missing>");
+			this.processor.configure(this.props);
+			fail("No failure occurred while configuring the log reformat " +
+					"processor containing a log detail with a missing " +
+					"empty value");
 		}catch(ProcessingException e){
 			// Desired outcome
 		}
