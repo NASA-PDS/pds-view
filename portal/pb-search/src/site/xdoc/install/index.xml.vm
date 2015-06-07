@@ -51,13 +51,13 @@
     </section>
 
     <section name="Configuring the Application">
-      <p>The application defaults to accessing the Search Service at <i>http://localhost:8080/search-service</i>. If this needs to be modified for a given deployment, edit the <i>pb-search/js/PhoneBook.js</i> file and modify the following block accordingly:
+      <p>The application defaults to accessing the Search Service at <i>https://pds.jpl.nasa.gov/services/search/</i>. If this needs to be modified for a given deployment, edit the <i>pb-search/js/PhoneBook.js</i> file and modify the following block accordingly:
       </p>
 
       <source>
 $(function () {
   Manager = new AjaxSolr.Manager({
-    solrUrl: 'http://localhost:8080/search-service/'
+    solrUrl: 'https://pds.jpl.nasa.gov/services/search/'
   });
       </source>
     </section>

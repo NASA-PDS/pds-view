@@ -9,7 +9,7 @@ var Manager;
 
   $(function () {
     Manager = new AjaxSolr.Manager({
-      solrUrl: 'http://localhost:8080/search-service/'
+      solrUrl: 'https://pds.jpl.nasa.gov/services/search/'
     });
 
     Manager.addWidget(new AjaxSolr.ResultWidget({
