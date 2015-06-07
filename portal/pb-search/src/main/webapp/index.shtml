@@ -4,6 +4,7 @@
 <!-- InstanceBeginEditable name="doctitle" --><title>PDS: Phone Book</title><!-- InstanceEndEditable -->
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 
+<!--#include virtual="/include/includes.html" -->
 <!--#include virtual="phone_book_imports.html" -->
 
 <!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
@@ -21,17 +22,20 @@
 
 <!-- Header -->
 <!--#include virtual="/include/header.html" -->
+<!--#include virtual="/include/main_menu.html" -->
 
-
-<!-- Main menu -->
-<!--#include virtual="phone_book_menu.html" -->
+<div id="submenu">
+  <!--#include virtual="/include/about_menu.html" -->
+  <div class="clear">
+  </div>
+</div>
 
 <!-- Sidebar -->
-  <div id="sidebar">
-    <!--#include virtual="/include/standard_sidebar.html" -->
-    <!-- InstanceBeginEditable name="leftSidebar" -->
-    <!-- InstanceEndEditable -->
-  </div>
+<div id="sidebar">
+  <!--#include virtual="/include/standard_sidebar.html" -->
+  <!-- InstanceBeginEditable name="leftSidebar" -->
+  <!-- InstanceEndEditable -->
+</div>
 
 
 <!-- Main content -->
