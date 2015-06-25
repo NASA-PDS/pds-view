@@ -336,7 +336,124 @@ public class RegistryServiceImpl implements RegistryService {
 		}
 		return registryObject.getGuid();
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.nasa.pds.registry.service.RegistryService#versionObjects(java
+	 * .lang.String, gov.nasa.pds.registry.model.RegistryObjectList, boolean)
+	 */
+	public void versionObjects(String user, List<? extends RegistryObject> registryObjects,
+	    boolean major) throws RegistryServiceException {
+		this.versionObjects(user, registryObjects, major, null);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gov.nasa.pds.registry.service.RegistryService#versionObjects(java.lang.String
+	 * , gov.nasa.pds.registry.model.RegistryObjectList, boolean, java.lang.String)
+	 */
+	@Override
+	public void versionObjects(String user, List<? extends RegistryObject> registryObjects, 
+			boolean major, String packageId) throws RegistryServiceException {
+		List<String> addedObjs = new ArrayList<String>();
+        List<RegistryObject> needToStoreObjs = new ArrayList<RegistryObject>();
+        
+        List<RegistryObject> extObjs = new ArrayList<RegistryObject>();
+        List<RegistryObject> assocObjs = new ArrayList<RegistryObject>();        
+		
+        for (RegistryObject registryObject: registryObjects) {
+        	RegistryObject referencedObject = this.getLatestObjectWithoutException(
+        			registryObject.getLid(), registryObject.getClass());
+        	if (registryObject.getGuid() == null) {
+        		registryObject.setGuid(idGenerator.getGuid());
+        	}
+        	if (registryObject.getHome() == null) {
+        		registryObject.setHome(idGenerator.getHome());
+        	}
+        	if (referencedObject!=null) {
+        		registryObject.setVersionName(versioner.getNextVersion(
+        				referencedObject.getVersionName(), major));
+        		registryObject.setStatus(referencedObject.getStatus());
+        	}
+        	else {
+        		registryObject.setVersionName(versioner.getInitialVersion());
+        		if (registryObject.getLid() == null) {
+        			registryObject.setLid(idGenerator.getGuid());
+        		}
+        		registryObject.setStatus(ObjectStatus.Submitted);
+        	}
+        
+        	// Make sure slots have no id associated with them.
+        	Set<Slot> newSlots = new HashSet<Slot>();
+        	for (Slot slot : registryObject.getSlots()) {
+        		Slot newSlot = new Slot(slot.getName(), slot.getValues());
+        		newSlot.setSlotType(slot.getSlotType());
+        		newSlots.add(newSlot);
+        	}
+        	registryObject.setSlots(newSlots);
+        	this.validateObject(registryObject);
+        	needToStoreObjs.add(registryObject);
 
+        	if (registryObject instanceof ExtrinsicObject) 
+        		extObjs.add(registryObject);
+        	else if (registryObject instanceof Association) 
+        		assocObjs.add(registryObject);
+
+        	// If this is a classification node that belongs to the object type
+        	// classification scheme add it to the cache
+        	if (registryObject instanceof ClassificationNode) {
+        		ClassificationNode node = (ClassificationNode) registryObject;
+        		node.getPath().contains(OBJECT_TYPE_SCHEME);
+        		objectTypeCache.put(node.getCode(), node);
+        	}
+
+        	if (referencedObject!=null)
+        		needToStoreObjs.add(createAuditableEventObj("versionObject " + referencedObject.getGuid()
+        				+ " " + registryObject.getGuid(), user, EventType.Versioned,
+        				registryObject.getGuid(), registryObject.getClass()));
+
+        	if (packageId == null) {
+        		needToStoreObjs.add(createAuditableEventObj("versionObject " + registryObject.getGuid(),
+        				user, EventType.Created, registryObject.getGuid(),
+        				registryObject.getClass()));
+        	} else {
+        		Association hasMember = new Association();
+        		hasMember.setGuid(idGenerator.getGuid());
+        		hasMember.setHome(idGenerator.getHome());
+        		hasMember.setSourceObject(packageId);
+        		hasMember.setTargetObject(registryObject.getGuid());
+        		hasMember.setStatus(ObjectStatus.Submitted);
+        		hasMember.setAssociationType("urn:registry:AssociationType:HasMember");
+        		Set<Slot> slots = new HashSet<Slot>();
+        		Slot targetObjectType = new Slot("targetObjectType",
+        				Arrays.asList(registryObject.getClass().getSimpleName()));
+        		slots.add(targetObjectType);
+        		hasMember.setSlots(slots);
+        		needToStoreObjs.add(hasMember);
+                assocObjs.add(hasMember);
+        		
+                if (!(registryObject instanceof Association)) {
+                	needToStoreObjs.add(createAuditableEventObj(
+                			"versionObjectWithPackage " + packageId + " "
+                					+ registryObject.getGuid(),
+                					user,
+                					EventType.Created,
+                					new AffectedInfo(Arrays.asList(registryObject.getGuid(),
+                							hasMember.getGuid()), Arrays.asList(registryObject.getClass()
+                									.getSimpleName(), hasMember.getClass().getSimpleName()))));
+                }
+        	}
+        	addedObjs.add(registryObject.getGuid());
+        }
+
+        metadataStore.saveRegistryObjects(needToStoreObjs);     
+        System.out.println("needToStoreObjs.size() = " + needToStoreObjs.size() + "   needToStoreObjs = " + needToStoreObjs
+                        + "\naddedObjs.size() = " + addedObjs.size() + "    addedObjs = " + addedObjs);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -355,6 +472,26 @@ public class RegistryServiceImpl implements RegistryService {
 		} catch (NoResultException nre) {
 			throw new RegistryServiceException("No object found for lid: " + lid,
 			    ExceptionType.OBJECT_NOT_FOUND);
+		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gov.nasa.pds.registry.service.RegistryService#getLatestObject(java.lang
+	 * .String, java.lang.Class)
+	 */
+	public RegistryObject getLatestObjectWithoutException(String lid,
+	    Class<? extends RegistryObject> objectClass)
+	    throws RegistryServiceException {
+		try {
+			List<? extends RegistryObject> objects = metadataStore
+			    .getRegistryObjectVersions(lid, objectClass);
+			Collections.sort(objects, versioner.getComparator());
+			return objects.get(objects.size() - 1);
+		} catch (NoResultException nre) {
+			return null;
 		}
 	}
 
@@ -712,6 +849,8 @@ public class RegistryServiceImpl implements RegistryService {
 			throws RegistryServiceException {		
 		List<String> addedObjs = new ArrayList<String>();
 		List<RegistryObject> needToStoreObjs = new ArrayList<RegistryObject>();
+		List<RegistryObject> extObjs = new ArrayList<RegistryObject>();
+		List<RegistryObject> assocObjs = new ArrayList<RegistryObject>();		
 		for (RegistryObject registryObject: registryObjects) {
 			if (registryObject.getGuid() == null) {
 				registryObject.setGuid(idGenerator.getGuid());
@@ -726,6 +865,10 @@ public class RegistryServiceImpl implements RegistryService {
 			registryObject.setStatus(ObjectStatus.Submitted);
 			this.validateObject(registryObject);
 			needToStoreObjs.add(registryObject);
+			if (registryObject instanceof ExtrinsicObject) 
+				extObjs.add(registryObject);
+			else if (registryObject instanceof Association) 
+				assocObjs.add(registryObject);
 
 			// If this is a classification node that belongs to the object type
 			// classification scheme add it to the cache
@@ -753,7 +896,7 @@ public class RegistryServiceImpl implements RegistryService {
 				slots.add(targetObjectType);
 				hasMember.setSlots(slots);
 				needToStoreObjs.add(hasMember);
-				
+				assocObjs.add(hasMember);
 				if (!(registryObject instanceof Association)) {
 					needToStoreObjs.add(createAuditableEventObj(
 							"publishObjectWithPackage " + packageId + " "
@@ -768,9 +911,9 @@ public class RegistryServiceImpl implements RegistryService {
 
 			addedObjs.add(registryObject.getGuid());
 		}
-		metadataStore.saveRegistryObjects(needToStoreObjs);		
-		System.out.println("needToStoreObjs.size() = " + needToStoreObjs.size() + "   needToStoreObjs + "
-				+ "\naddedObjs.size() = " + addedObjs.size() + "    addedObjs = " + addedObjs);		//return addedObjs;
+		metadataStore.saveRegistryObjects(needToStoreObjs);	
+		System.out.println("needToStoreObjs.size() = " + needToStoreObjs.size() + "   needToStoreObjs = " + needToStoreObjs
+				+ "\naddedObjs.size() = " + addedObjs.size() + "    addedObjs = " + addedObjs);
 	}
 
 	/*

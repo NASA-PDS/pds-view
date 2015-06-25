@@ -40,7 +40,6 @@ import java.util.Arrays;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
-//import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -168,9 +167,9 @@ public class MetadataStoreJPA implements MetadataStore {
     }
     cq.orderBy(orders);
     TypedQuery<ExtrinsicObject> dbQuery = entityManager.createQuery(cq);
-    PagedResponse<ExtrinsicObject> response = new PagedResponse<ExtrinsicObject>(
-        start, (long) dbQuery.getResultList().size(), dbQuery.setFirstResult(
-            start - 1).setMaxResults(rows).getResultList());
+    long totalCount = getNumRegistryObjects(ExtrinsicObject.class);
+    PagedResponse<ExtrinsicObject> response = new PagedResponse<ExtrinsicObject>(start, 
+    	totalCount, dbQuery.setFirstResult(start - 1).setMaxResults(rows).getResultList());
     return response;
   }
 
@@ -396,11 +395,9 @@ public class MetadataStoreJPA implements MetadataStore {
    */
   @Override
   @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
-  //@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
   public void saveRegistryObjects(List<RegistryObject> registryObjects) {
 	  for (RegistryObject registryObject: registryObjects) {
 		  entityManager.persist(registryObject);
-		  // may store guid into the hashmap and return?
 	  }  
 	  entityManager.flush();
 	  // Needed to detach the object from the EntityManager to free up
@@ -524,7 +521,7 @@ public class MetadataStoreJPA implements MetadataStore {
 				  deletedTypes.addAll(affectedInfo.getAffectedTypes());	
 			  }
 			  
-			// ClassificationScheme object 
+			  // ClassificationScheme object 
 			  List<ClassificationScheme> csToRemove = entityManager.createQuery("select cn from ClassificationScheme cn where cn.guid = :guid").setParameter("guid", targetObject).getResultList();
 			  tmpCount = 0;
 			  if (cnToRemove!=null) {				  

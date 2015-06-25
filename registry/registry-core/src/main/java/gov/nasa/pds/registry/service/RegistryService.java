@@ -155,6 +155,9 @@ public interface RegistryService {
    */
   public String versionObject(String user, RegistryObject object, boolean major)
       throws RegistryServiceException;
+  
+  public void versionObjects(String user, List<? extends RegistryObject> registryObjects,
+		    boolean major) throws RegistryServiceException;
 
   /**
    * Versions a {@link RegistryObject} in the registry and publishes the
@@ -176,6 +179,9 @@ public interface RegistryService {
    */
   public String versionObject(String user, RegistryObject registryObject,
       boolean major, String packageId) throws RegistryServiceException;
+  
+  public void versionObjects(String user, List<? extends RegistryObject> registryObjects,
+		    boolean major, String packageId) throws RegistryServiceException;
 
   /**
    * Retrieves the latest version of the {@link RegistryObject} with the given

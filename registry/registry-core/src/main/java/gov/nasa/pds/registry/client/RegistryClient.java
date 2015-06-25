@@ -355,6 +355,50 @@ public class RegistryClient {
           response.getClientResponseStatus());
     }
   }
+  
+  /**
+   * Publishes list of versined objects to the service
+   *
+   * @param object
+   *          to publish
+   * @param major
+   *          flag to indicate major or minor version
+   * @return globally unique identifier of versioned object
+   * @throws RegistryServiceException
+   */
+  public void versionObjects(RegistryObjectList objects, Boolean major)
+		  throws RegistryServiceException {
+	  MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+	  if (registrationPackageGuid != null) {
+		  params.add("packageGuid", registrationPackageGuid);
+	  }
+	  WebResource.Builder builder = service.path("batch").path("versions")
+			  .queryParams(params).getRequestBuilder();
+	  ClientResponse response = builder.accept(mediaType).post(
+			  ClientResponse.class, objects);
+
+	  //System.out.println("response status = " + response.getClientResponseStatus());
+	  if (response.getClientResponseStatus() == Status.OK) {
+		  return;
+	  } else {
+		  throw new RegistryServiceException(response.getEntity(String.class),
+				  response.getClientResponseStatus());
+	  }
+  }
+
+  /**
+   * Publishes list of versioned given object that is considered a major version
+   * update.
+   *
+   * @param object
+   *          to publish
+   * @return globally unique identifier of versioned object
+   * @throws RegistryServiceException
+   */
+  public void versionObject(RegistryObjectList objects)
+      throws RegistryServiceException {
+    this.versionObjects(objects, true);
+  }
 
   /**
    * Updates the given registry object by using its guid to indicate the object

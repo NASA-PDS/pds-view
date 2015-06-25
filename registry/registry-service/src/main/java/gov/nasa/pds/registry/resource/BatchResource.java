@@ -21,6 +21,8 @@ import gov.nasa.pds.registry.model.RegistryPackage;
 import gov.nasa.pds.registry.service.RegistryService;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.Path;
 import javax.ws.rs.POST;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
@@ -54,9 +56,6 @@ public class BatchResource {
   }
 
   /**
-   * Configures the registry with a set of classification schemes and 
-   * nodes.
-   * 
    * @param packageId
    * @param name
    * @param description
@@ -80,4 +79,50 @@ public class BatchResource {
 	  }
 	  return Response.ok().build();
   }
+  
+  
+  //public void versionObjects(String user, List<? extends RegistryObject> registryObjects,
+ // boolean major, String packageId) throws RegistryServiceException;
+  
+  
+  @POST
+  @Path("versions")
+  @Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+//  public Response versionExtrinsic(ExtrinsicObject extrinsic,
+//      @PathParam("lid") String lid,
+//      @QueryParam("major") @DefaultValue("true") boolean major,
+//      @QueryParam("packageGuid") String packageGuid) {
+  public Response versionObjects(RegistryObjectList objList,
+		  @QueryParam("major") @DefaultValue("true") boolean major,
+		  @QueryParam("packageGuid") String packageGuid) {
+	  
+	  try {
+		  if (packageGuid==null) {
+			  registryService.versionObjects("Unknown", objList.getObjects(), major);
+		  }
+		  else {
+			  registryService.versionObjects("Unknown", objList.getObjects(), major, packageGuid);
+		  }
+	  } catch (RegistryServiceException ex) {
+		  ex.printStackTrace();
+		  throw new WebApplicationException(Response.status(
+				  ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+	  }
+	  return Response.ok().build();
+	  /*
+    // TODO Change to set user
+    try {
+      String guid = (packageGuid == null) ? registryService.versionObjects(
+          "Unknown", objList, major) : registryService.versionObject("Unknown",
+           objList, major, packageGuid);
+      return Response.created(
+          getExtrinsicUri(registryService.getExtrinsic(guid), uriInfo)).entity(
+          guid).build();
+    } catch (RegistryServiceException ex) {
+      throw new WebApplicationException(Response.status(
+          ex.getExceptionType().getStatus()).entity(ex.getMessage()).build());
+    }
+    */
+  }
+
 }
