@@ -21,17 +21,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.io.FileUtils;
 
 import gov.nasa.pds.report.ReportManagerException;
@@ -43,15 +38,17 @@ import gov.nasa.pds.report.util.Utility;
  * parsed with a common Sawmill profile.  This reformatting uses regular
  * expression patterns to determine how to break down input and restructure
  * it for output.  Therefore, the class must be configured before
- * the processing can begin.
+ * the processing can begin.  This is done using Strings--called line
+ * specifications--for the reformatter input and output.
  * 
- * The patterns use the less-than and greater-than symbols to label the
+ * The specifications use the less-than and greater-than symbols to label the
  * substrings that are captured and rearranged.  Each such substring is split
  * into sections by one or more semicolons.  The first section is the name of
  * the substring.  In substrings in the input pattern, the second section is
  * the RE pattern used to capture that substring.  There can also be an
  * additional optional section to supply extra information, by setting flags
- * to label the substrings as a date-time or requiring a valid value to be present.
+ * to label the substrings as a date-time or requiring a valid value to be
+ * present.
  * 
  * 
  * 
@@ -64,7 +61,7 @@ import gov.nasa.pds.report.util.Utility;
  * 
  * 66.249.69.46 - - [01/Dec/2014:06:00:47 -0800] "GET /merb/merxbrowser/help/Content/About+the+mission/MSL/Instruments/MSL+Navcam.htm HTTP/1.1" 200 10757 "-" "Mozilla/5.0+(compatible;+Googlebot/2.1;++http://www.google.com/bot.html)"
  * 
- * To make this happen, we specify the input pattern like this:
+ * To make this happen, we specify the input line specification like this:
  * 
  * <date-time;\d{4}-\d\d-\d\d \d\d:\d\d:\d\d;required,datetime=yyyy-MM-dd HH:mm:ss> <server-ip;[0-9.]+> <http-method;GET|PUT|POST|DELETE> <requested-resource;\S+> <uri-query;\S+> <server-port;\d+> <username;\S+> <client-ip;[0-9.]+;required> <client-browser;\S+> <referrer;\S+> <status-code;\d{3}> <substatus;\d+> <win32-status;\d+> <bytes-transfered;\d+> <bytes-received;\d+> <time-taken;\d+>
  * 
@@ -87,7 +84,7 @@ import gov.nasa.pds.report.util.Utility;
  * bytes-received: 314
  * time-taken: 312
  * 
- * Finally, we specify the output pattern like this:
+ * Finally, we specify the output line specification like this:
  * 
  * <client-ip;required> <user-id> <username> [<date-time;required,datetime=dd/MMM/yyyy:HH:mm:ss Z>] "<http-method> <requested-resource> <http-version;default=HTTP/1.1>" <status-code> <bytes-transfered> "<referrer>" "<client-browser>"
  * 
@@ -96,8 +93,8 @@ import gov.nasa.pds.report.util.Utility;
  * 
  * 
  * 
- * The substrings in the input and output patterns can optional be given
- * flags, separated by commas.
+ * The substrings in the input and output line specifications can optionally
+ * be given flags, separated by commas.
  * 
  * required: A substring with this flag must have a valid value, otherwise the
  * input line is discarded.  This will happen for an input substring if the
@@ -116,10 +113,7 @@ import gov.nasa.pds.report.util.Utility;
  * @author resneck
  * 
  */
-public class LogReformatProcessor implements Processor{
-	
-	// The name of the directory where output is placed
-	public static final String OUTPUT_DIR_NAME = "text_reformat";
+public abstract class LogReformatProcessor implements Processor{
 	
 	private static Logger log = Logger.getLogger(
 			LogReformatProcessor.class.getName());
@@ -133,7 +127,7 @@ public class LogReformatProcessor implements Processor{
 	 * detail (with "-dt" appended for date-time log details) inside of
 	 * brackets.
 	 * 
-	 * For example, the input pattern
+	 * For example, the input line specification
 	 * 
 	 * "Employee Name:<name;\w+;required> Age:<age;\d> Date of Hire:<doh;\d{4}-\d\d-\d\d;datetime>"
 	 * 
@@ -141,8 +135,12 @@ public class LogReformatProcessor implements Processor{
 	 * 
 	 * "Employee Name:", "<name>", " Age:", "<age>", " Date of Hire:", "<doh-dt>"
 	 */
-	private List<String> segmentedInput;
-	private List<String> segmentedOutput;
+	protected List<String> segmentedInput;
+	protected List<String> segmentedOutput;
+	
+	// The Maps that we use to store the log details as objects
+	protected Map<String, LogDetail> inputDetailMap;
+	protected Map<String, LogDetail> outputDetailMap;
 	
 	// The number of error-causing lines that we allow before giving up on the
 	// file.  A value of 0 allows no errors.  A value of -1 allows any number
@@ -151,19 +149,6 @@ public class LogReformatProcessor implements Processor{
 	// errors.
 	private int errorLinesAllowed;
 	private static String DEFAULT_ERRORS_ALLOWED = "0";
-	
-	// The Maps that we use to store the log details as objects
-	protected Map<String, LogDetail> inputDetailMap;
-	protected Map<String, LogDetail> outputDetailMap;
-
-	/**
-	 * @see gov.nasa.pds.report.processing.Processor.getDirName()
-	 */
-	public String getDirName(){
-		
-		return OUTPUT_DIR_NAME;
-		
-	}
 	
 	/**
 	 * Read in a log file, reformat it as per configured, and place the output
@@ -228,45 +213,60 @@ public class LogReformatProcessor implements Processor{
 	/**
 	 * TODO: Write some proper documentation here
 	 */
-	public void configure(Properties props) throws ProcessingException{
+	protected void configure(Properties props, String inputSpecKey,
+			String outputSpecKey, boolean allowFlags)
+			throws ProcessingException{
 		
 		log.info("Configuring log reformatting processor");
 		
-		// Extract the raw input and output patterns from the given Properties
-		String inputPattern = null;
-		String outputPattern = null;
+		// Extract the raw input and output line specifications from the given
+		// Properties
+		String inputLineSpec = null;
+		String outputLineSpec = null;
 		try{
-			inputPattern = Utility.getNodePropsString(props,
-					Constants.NODE_REFORMAT_INPUT_KEY, true);
-			outputPattern = Utility.getNodePropsString(props,
-					Constants.NODE_REFORMAT_OUTPUT_KEY, true);
+			inputLineSpec = Utility.getNodePropsString(props, inputSpecKey,
+					true);
+			outputLineSpec = Utility.getNodePropsString(props, outputSpecKey,
+					true);
 		}catch(ReportManagerException e){
-			throw new ProcessingException("Input and output patterns were " +
-					"not provided for log reformatting");
+			throw new ProcessingException("Input and output line " +
+					"specifications were not provided for log reformatting");
 		}
 		
-		// Parse the input pattern
-		//log.finer("Parsing input pattern: " + inputPattern);
+		// Parse the input specification
 		this.inputDetailMap = new HashMap<String, LogDetail>();
 		this.segmentedInput = new Vector<String>();
-		this.parsePattern(inputPattern, this.segmentedInput,
-				this.inputDetailMap, 2, 3);
+		int maxSubstringSections = 2;
+		if(allowFlags){
+			maxSubstringSections = 3;
+		}
+		this.parsePattern(inputLineSpec, this.segmentedInput,
+				this.inputDetailMap, 2, maxSubstringSections);
 		
-		// Parse the output pattern
-		//log.finer("Parsing output pattern: " + outputPattern);
+		// Parse the output specification
 		this.outputDetailMap = new HashMap<String, LogDetail>();
 		this.segmentedOutput = new Vector<String>();
-		this.parsePattern(outputPattern, this.segmentedOutput,
-				this.outputDetailMap, 1, 2);	
+		maxSubstringSections = 1;
+		if(allowFlags){
+			maxSubstringSections = 2;
+		}
+		this.parsePattern(outputLineSpec, this.segmentedOutput,
+				this.outputDetailMap, 1, maxSubstringSections);	
 		
-		// Validate output pattern
+		// Validate the line specifications
 		for(String outputKey: this.outputDetailMap.keySet()){
-			if(this.outputDetailMap.get(outputKey).isRequired() && 
+			
+			// Verify that required output details are included in the input
+			// specification
+			if(allowFlags && this.outputDetailMap.get(outputKey).isRequired() &&
 					!this.inputDetailMap.containsKey(outputKey)){
-				throw new ProcessingException("The input log reformat " +
-						"pattern does not specify a log detail required " +
-						"by the output pattern: " + outputKey);
+				throw new ProcessingException("The log reformat input line" +
+						"specification does not specify a log detail" +
+						"required by the output specification: " + outputKey);
 			}
+			
+			// Verify that input and output line specifications treat log
+			// details as the same type
 			if(this.inputDetailMap.containsKey(outputKey)){
 				String inputType = this.inputDetailMap.get(outputKey).getType();
 				String outputType = this.outputDetailMap.get(outputKey).getType();
@@ -279,6 +279,7 @@ public class LogReformatProcessor implements Processor{
 							"the input and output patterns");
 				}
 			}
+			
 		}
 		
 		// Determine how many errors we will tolerate per file
@@ -292,10 +293,6 @@ public class LogReformatProcessor implements Processor{
 					System.getProperty(Constants.REFORMAT_ERRORS_PROP));
 			this.errorLinesAllowed = Integer.parseInt(DEFAULT_ERRORS_ALLOWED);
 		}
-		
-		// Print debug info
-		//log.finer("Input pattern: " + this.segmentedInput.toString());
-		//log.finer("Output pattern: " + this.segmentedOutput.toString());
 		
 	}
 	
@@ -383,160 +380,6 @@ public class LogReformatProcessor implements Processor{
 						"potentially erroneous output file " +
 						out.getAbsolutePath() + ": " + e.getMessage());
 			}
-		}
-		
-	}
-	
-	/**
-	 * Parse a line from an input file and extract the values for presented
-	 * details (e.g. date-time).
-	 * 
-	 * @param line					The input line, presented as a String.
-	 * @return						True if the line was properly parsed,
-	 * 								otherwise false.
-	 * @throws ProcessingException	If a required detail is not defined, or if
-	 * 								the line cannot be properly parsed using
-	 * 								the pattern provided during configuration.
-	 */
-	protected void parseInputLine(String line) throws ProcessingException{
-		
-		//log.fine("Parsing log line: " + line);
-		
-		String lineRemaining = line;
-		for(int segmentIndex = 0; segmentIndex < this.segmentedInput.size();
-				segmentIndex++){
-			
-			String segment = this.segmentedInput.get(segmentIndex);
-			
-			// Date-time log detail
-			if(segment.matches("<\\w+-dt>")){	
-				
-				// Get the log detail
-				String detailName =
-						segment.substring(1, segment.length() - 4);
-				DateTimeLogDetail detail = (DateTimeLogDetail)
-						this.inputDetailMap.get(detailName);
-				
-				// Skip this log detail if no value is given
-				if((segmentIndex + 1 < this.segmentedInput.size() &&
-						lineRemaining.startsWith("- ")) ||
-						(segmentIndex + 1 == this.segmentedInput.size() &&
-						lineRemaining.startsWith("-"))){
-					if(detail.isRequired()){
-						throw new ProcessingException("The required log " +
-								"detail " + detailName + " was not found " +
-								"in input log line: " + line);
-					}
-					lineRemaining = lineRemaining.substring(1);
-					continue;
-				}
-				
-				// Get the value of the log detail
-				Pattern pattern = Pattern.compile("(" +
-						detail.getPattern() + ")[^\n]*");
-				Matcher matcher = pattern.matcher(lineRemaining);
-				if(!matcher.matches()){
-					//log.warning("Line remaining: " + lineRemaining);
-					//log.warning(debugValueDump());
-					throw new ProcessingException("The date-time log detail " + 
-							detailName + " with pattern " +
-							detail.getPattern() + " was not found in " +
-							"input log line: " + line);
-				}
-				String value = matcher.group(1);
-				try{
-					detail.setDate(value);
-				}catch(ParseException e){
-					throw new ProcessingException("An error occurred " +
-							"while parsing date " + value + 
-							" using format " + detail.getFormat() +
-							" for log detail " + detail.getName() +
-							" in input log line: " + e.getMessage());
-				}
-				
-				// Remove the value from the line, since it has been parsed
-				lineRemaining = lineRemaining.substring(value.length());
-				
-			}
-			
-			// String log detail
-			else if(segment.matches("<\\w+>")){	
-				
-				// Get the log detail
-				String detailName =
-						segment.substring(1, segment.length() - 1);
-				StringLogDetail detail = (StringLogDetail)
-						this.inputDetailMap.get(detailName);
-				
-				// Skip this log detail if no value is given
-				if((segmentIndex + 1 < this.segmentedInput.size() &&
-						lineRemaining.startsWith("- ")) ||
-						(segmentIndex + 1 == this.segmentedInput.size() &&
-						lineRemaining.startsWith("-"))){
-					if(detail.isRequired()){
-						throw new ProcessingException("The required log " +
-								"detail " + detailName + " was not found " +
-								"in input log line: " + line);
-					}
-					lineRemaining = lineRemaining.substring(1);
-					continue;
-				}
-				
-				// Get the value of the log detail
-				Pattern pattern = Pattern.compile("(" +
-						detail.getPattern() + ")[^\n]*");
-				Matcher matcher = pattern.matcher(lineRemaining);
-				if(!matcher.matches()){
-					//log.warning("Line remaining: " + lineRemaining);
-					//log.warning(debugValueDump());
-					throw new ProcessingException("The log detail " + 
-							detailName + " with pattern " +
-							detail.getPattern() + " was not found in " +
-							"input log line: " + line);
-				}
-				String value = matcher.group(1);
-				detail.setValue(value);
-				
-				// Remove the value from the line, since it has been parsed
-				lineRemaining = lineRemaining.substring(value.length());
-				
-			}
-			
-			// Literal string (other than those expected at the end of the
-			// line, which we can safely discard)
-			else if(segmentIndex < this.segmentedInput.size() - 1){	
-				
-				// Check if the literal string contains only whitespace
-				if(!segment.trim().isEmpty()){
-					
-					if(!lineRemaining.startsWith(segment)){
-						throw new ProcessingException("The expected line " +
-								"segment \"" + segment + "\" was not found " +
-								"where expected in input log line: " + line);
-					}
-					
-					// Remove the literal string from the line being parsed,
-					// since it doesn't contain any log details
-					lineRemaining = lineRemaining.substring(segment.length());
-					
-				}else{
-					
-					// Remove whitespace at the start of the remaining line
-					Pattern pattern = Pattern.compile("([ \t\r]+)\\S+[^\n]*");
-					Matcher matcher = pattern.matcher(lineRemaining);
-					if(!matcher.matches()){
-						//log.warning("Error with line remaining: " + lineRemaining);
-						throw new ProcessingException("The expected " +
-								"whitespace was not found where expected in " +
-								"input log line: " + line);
-					}
-					String value = matcher.group(1);
-					lineRemaining = lineRemaining.substring(value.length());
-					
-				}
-				
-			}
-			
 		}
 		
 	}
@@ -684,6 +527,19 @@ public class LogReformatProcessor implements Processor{
 		return true;
 		
 	}
+	
+	/**
+	 * Parse a line from an input file and extract the values for presented
+	 * details (e.g. date-time).
+	 * 
+	 * @param line					The input line, presented as a String.
+	 * @return						True if the line was properly parsed,
+	 * 								otherwise false.
+	 * @throws ProcessingException	If a required detail is not defined, or if
+	 * 								the line cannot be properly parsed using
+	 * 								the pattern provided during configuration.
+	 */
+	protected abstract void parseInputLine(String line) throws ProcessingException;
 	
 	/**
 	 * Parse the given pattern, adding the proper elements to the provided
@@ -944,198 +800,6 @@ public class LogReformatProcessor implements Processor{
 			}
 		}
 		return output;
-		
-	}
-	
-	private abstract class LogDetail{
-		
-		protected String name;
-		protected String pattern;
-		protected boolean required = false;
-		
-		public LogDetail(String name, String pattern, boolean required){
-			
-			this.pattern = pattern;
-			this.required = required;
-			this.name = name;
-			
-		}
-		
-		public String getName(){
-			return this.name;
-		}
-		
-		public String getPattern(){
-			return this.pattern;
-		}
-		
-		abstract public String getType();
-		
-		public boolean isRequired(){
-			return this.required;
-		}
-		
-		public String toString(){
-			return null;
-		}
-		
-		abstract public void reset();
-		
-	}
-	
-	private class StringLogDetail extends LogDetail{
-
-		protected String value;
-		protected String defaultValue;
-		protected String emptyValue;
-		
-		public StringLogDetail(String name, String pattern, boolean required,
-				String defaultValue){
-			
-			super(name, pattern, required);
-			this.value = null;
-			this.defaultValue = defaultValue;
-			
-		}
-		
-		public StringLogDetail(String name, String pattern, boolean required){
-			
-			super(name, pattern, required);
-			this.value = null;
-			this.defaultValue = null;
-			
-		}
-		
-		public String getValue(){
-			if(this.value == null){
-				return this.defaultValue;
-			}
-			return this.value;
-		}
-		
-		public String getValue(StringLogDetail inputDetail){
-			if(inputDetail == null || inputDetail.getValue() == null){
-				return this.defaultValue;
-			}
-			return inputDetail.getValue();
-		}
-		
-		public String getType(){
-			return "string";
-		}
-		
-		public void setValue(String value){
-			if(value.equals(this.emptyValue)){
-				this.value = null;
-			}else{
-				this.value = value;
-			}
-		}
-		
-		public void setEmptyValue(String ev){
-			this.emptyValue = ev;
-		}
-		
-		public void reset(){
-			this.value = null;
-		}
-		
-		public String toString(){
-			return "String log detail: name: " + this.name + " value: " +
-					this.value + " pattern: " + this.pattern + " required: " +
-					this.required + " default: " + this.defaultValue;
-		}
-		
-	}
-	
-	private class DateTimeLogDetail extends LogDetail{
-		
-		protected Date date;
-		protected Date defaultDate;
-		protected SimpleDateFormat dateFormat;
-		
-		public DateTimeLogDetail(String name, String pattern, boolean required,
-				String inputFormat, String defaultDate) throws ParseException{
-			
-			super(name, pattern, required);
-			this.date = null;
-			this.dateFormat = new SimpleDateFormat(inputFormat);
-			this.defaultDate = this.dateFormat.parse(defaultDate);
-			
-		}
-		
-		public DateTimeLogDetail(String name, String pattern, boolean required,
-				String inputFormat){
-			
-			super(name, pattern, required);
-			this.date = null;
-			this.dateFormat = new SimpleDateFormat(inputFormat);
-			this.defaultDate = null;
-			
-		}
-		
-		public String getFormat(){
-			return this.dateFormat.toPattern();
-		}
-		
-		public String getDate(String outputFormat){
-			if(this.date == null){
-				if(this.defaultDate != null){
-					return new SimpleDateFormat(outputFormat).format(
-							this.defaultDate);
-				}
-				return null;
-			}
-			return new SimpleDateFormat(outputFormat).format(this.date);
-		}
-		
-		public String getDate(DateTimeLogDetail inputDetail){
-			if(inputDetail == null){
-				if(this.defaultDate != null){
-					return this.dateFormat.format(this.defaultDate);
-				}
-			}
-			String inputValue = inputDetail.getDate(this.dateFormat.toPattern());
-			if(inputValue == null){
-				if(this.defaultDate != null){
-					return this.dateFormat.format(this.defaultDate);
-				}
-			}
-			return inputValue;
-		}
-		
-		public String getType(){
-			return "datetime";
-		}
-		
-		public void setDate(String value) throws ParseException{
-			
-			// Massage any odd double spaces (present in some xferlogs) out of
-			// the string
-			value.replaceAll("  ", " ");
-			
-			this.date = this.dateFormat.parse(value);
-			
-		}
-		
-		public void reset(){
-			this.date = null;
-		}
-		
-		public String toString(){
-			return "Date-time log detail: name: " + this.name + " date: " +
-					this.getDate(this.getFormat()) + " format: " +
-					this.getFormat() + " pattern: " + this.pattern + 
-					" required: " + this.required + " default: " +
-					this.printDefault();
-		}
-		
-		private String printDefault(){
-			if(this.defaultDate == null){
-				return null;
-			}
-			return this.dateFormat.format(this.defaultDate);
-		}
 		
 	}
 	

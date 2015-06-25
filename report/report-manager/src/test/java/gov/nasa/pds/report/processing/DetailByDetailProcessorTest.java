@@ -17,9 +17,9 @@ import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.constants.TestConstants;
 import gov.nasa.pds.report.rules.ReportManagerTest;
 
-public class LogReformatProcessorTest extends ReportManagerTest{
+public class DetailByDetailProcessorTest extends ReportManagerTest{
 	
-	LogReformatProcessor processor = null;
+	DetailByDetailProcessor processor = null;
 	Properties props = null;
 	File testDir = null;
 	File outputDir = null;
@@ -27,7 +27,7 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 	@Before
 	public void setUp() throws Exception{
 		
-		this.processor = new LogReformatProcessor();
+		this.processor = new DetailByDetailProcessor();
 		this.props = new Properties();
 		
 		// Set-up test dir and file
@@ -55,7 +55,8 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 	public void testConfigure(){
 		
 		this.props = new Properties();
-		this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY, "<test;\\w+>");
+		this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
+				"<test;\\w+>");
 		
 		// Verify failure when input pattern is not provided
 		try{
@@ -67,9 +68,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT,
 					"hey look no brackets");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<test;datetime=yyyy-MM-dd>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -79,9 +80,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"mismatched <brackets");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<test;datetime=yyyy-MM-dd>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -92,9 +93,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"mismatched >brackets");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<test;datetime=yyyy-MM-dd>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -105,9 +106,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<very;mismatched>> brackets");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<very;datetime=yyyy-MM-dd>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -118,9 +119,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<rather;mismatched> <brackets");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<rather;datetime=yyyy-MM-dd>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -131,9 +132,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<uh oh <nested> brackets>");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<test;datetime=yyyy-MM-dd>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -143,9 +144,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<too few sections>");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<test;datetime=yyyy-MM-dd>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -156,9 +157,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<much;too;many;sections>");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<much;datetime=yyyy-MM-dd>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -169,9 +170,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<empty;section;>");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<empty;datetime=yyyy-MM-dd>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -182,9 +183,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<blank;section; >");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<blank;datetime=yyyy-MM-dd>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -195,9 +196,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<improperly;formatted;datetime>");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<improperly;datetime=yyyy-MM-dd>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -207,9 +208,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<missing;formatted;datetime=>");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<missing;datetime=yyyy-MM-dd>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -220,9 +221,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<improperly;formatted;default>");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<improperly>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -233,9 +234,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<improperly;formatted;emptyvalue>");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<improperly>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -246,9 +247,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<missing;formatted;default=>");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<missing>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -259,9 +260,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<missing;formatted;emptyvalue=>");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<missing>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -272,9 +273,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<test;\\w+>");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<othertest;required>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -285,9 +286,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<test;\\w+>");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<test;datetime=yyyy-MM-dd>");
 			this.processor.configure(this.props);
 			fail("No failure occurred while configuring the log reformat " +
@@ -298,9 +299,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		}
 		
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<date_time;\\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d;required,datetime=yyyy-MM-dd HH:mm:ss> <server_ip;[0-9.]+> <http_method;GET|PUT|POST|DELETE> <requested_resource;\\S+> <uri_query;\\S+> <server_port;\\d+> <username;\\S+> <client_ip;[0-9.]+;required> <client_browser;\\S+> <referrer;\\S+> <status_code;\\d{3}> <substatus;\\d+> <win32_status;\\d+> <bytes_transfered;\\d+> <bytes_received;\\d+> <time_taken;\\d+>");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<test;datetime=yyyy-MM-dd>");
 			this.processor.configure(this.props);
 		}catch(ProcessingException e){
@@ -315,9 +316,9 @@ public class LogReformatProcessorTest extends ReportManagerTest{
 		
 		// Configure the processor
 		try{
-			this.props.setProperty(Constants.NODE_REFORMAT_INPUT_KEY, 
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_INPUT, 
 					"<date_time;\\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d;required,datetime=yyyy-MM-dd HH:mm:ss> <server_ip;[0-9.]+> <http_method;GET|PUT|POST|DELETE> <requested_resource;\\S+> <uri_query;\\S+> <server_port;\\d+> <username;\\S+> <client_ip;[0-9.]+;required> <client_browser;\\S+> <referrer;\\S+> <status_code;\\d{3}> <substatus;\\d+> <win32_status;\\d+> <bytes_transfered;\\d+> <bytes_received;\\d+> <time_taken;\\d+>");
-			this.props.setProperty(Constants.NODE_REFORMAT_OUTPUT_KEY,
+			this.props.setProperty(Constants.NODE_DETAIL_REFORMAT_OUTPUT,
 					"<client_ip;required> <user_id> <username> [<date_time;required,datetime=dd/MMM/yyyy:HH:mm:ss Z>] \"<http_method> <requested_resource> <http_version;default=HTTP/1.1>\" <status_code> <bytes_transfered> \"<referrer>\" \"<client_browser>\"");
 			this.processor.configure(this.props);
 		}catch(ProcessingException e){

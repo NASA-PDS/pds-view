@@ -37,8 +37,10 @@ public abstract class Constants {
 	public static final String NODE_SAWMILL_PROFILE = "sawmill_profile";
 	public static final String NODE_REPORT_LIST = "sawmill_report";
 	public static final String NODE_SAWMILL_OUTPUT = "sawmill_output";
-	public static final String NODE_REFORMAT_INPUT_KEY = "input_log_pattern";
-	public static final String NODE_REFORMAT_OUTPUT_KEY = "output_log_pattern";
+	public static final String NODE_DETAIL_REFORMAT_INPUT = "input_log_pattern";
+	public static final String NODE_DETAIL_REFORMAT_OUTPUT = "output_log_pattern";
+	public static final String NODE_LINE_REFORMAT_INPUT = "input_line_pattern";
+	public static final String NODE_LINE_REFORMAT_OUTPUT = "output_line_pattern";
 	public static final String NODE_SIMPLE_COMMAND_KEY = "simple_command";
 	
 	// ------------------------------------------------------------------------
