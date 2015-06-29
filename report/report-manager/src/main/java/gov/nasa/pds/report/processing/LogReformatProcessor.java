@@ -34,67 +34,60 @@ import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.util.Utility;
 
 /**
- * This class is used to reformat text-based log files so that they can be
- * parsed with a common Sawmill profile.  This reformatting uses regular
- * expression patterns to determine how to break down input and restructure
- * it for output.  Therefore, the class must be configured before
- * the processing can begin.  This is done using Strings--called line
- * specifications--for the reformatter input and output.
+ * Sub-classes of this class are used to reformat text-based log files so that
+ * they can be parsed by Sawmill, using a profile created from our template
+ * profile.  This reformatting uses regular expression patterns to determine
+ * how to break down input and restructure it for output.  Therefore, the class
+ * must be configured before the processing can begin.  This is done using
+ * Strings called line specifications.  Depending upon the function of the
+ * sub-class, the user may have to provide a line specification for the input
+ * and/or output.
  * 
  * The specifications use the less-than and greater-than symbols to label the
- * substrings that are captured and rearranged.  Each such substring is split
- * into sections by one or more semicolons.  The first section is the name of
- * the substring.  In substrings in the input pattern, the second section is
- * the RE pattern used to capture that substring.  There can also be an
- * additional optional section to supply extra information, by setting flags
- * to label the substrings as a date-time or requiring a valid value to be
- * present.
+ * log details that are captured and rearranged.  The specification for each
+ * detail is split into sections by one or more semicolons.  The first section
+ * is the name of the log detail.  In log details in the input pattern, the
+ * second section specifies the RE pattern used to capture that detail.  Some
+ * sub-classes also allow an additional optional section to supply extra
+ * information by setting flags to label the log detail.  For example, these
+ * flags might label the log detail as a date-time or require a valid value to
+ * be present.
+ * 
+ * Each sub-class will interpret these line specifications differently, so
+ * please examine the javadocs for those classes.
+ * 
+ *
+ *
+ * Example 1: <client-ip;[0-9.]+;required>
+ * 
+ * This log detail specification would be part of an input line specification,
+ * as it specifies the RE pattern [0-9.]+ to capture the log detail.  That
+ * detail will be given the name "client-ip" and will have the captured value
+ * assigned to it.  There is also a flag specifying that the log detail is
+ * required; if the sub-class fails to find a valid value while attempting to
+ * capture the log detail an exception will be thrown.
+ * 
+ * Example 2: <date-time;\d{4}-\d\d-\d\d \d\d:\d\d:\d\d;required,datetime=yyyy-MM-dd HH:mm:ss>
+ * 
+ * This log detail specification would also be part of an input line
+ * specification.  You can see that it has the name "date-time" and uses a long
+ * RE pattern to capture the log detail.  Like the previous example, the
+ * sub-class is required to capture a valid value for this log detail or an
+ * exception will be thrown.  This log detail also uses the datetime flag.  The
+ * characters following the equals sign specify format used to interpret the
+ * log detail as a date-time.  You can read more about the datetime flag and
+ * other flags below.
+ * 
+ * Example 3: <user-id>
+ * 
+ * This log detail specification would be part of an output line specification,
+ * as it does not contain an RE pattern.  The log detail would be given the
+ * name "user-id" and no flags are given for this log detail.
  * 
  * 
  * 
- * For example, when switching from IIS7 to the Apache/Combined format, we
- * start with a log that looks like this:
- * 
- * 2014-12-01 06:00:47 10.10.1.46 GET /merb/merxbrowser/help/Content/About+the+mission/MSL/Instruments/MSL+Navcam.htm - 443 - 66.249.69.46 Mozilla/5.0+(compatible;+Googlebot/2.1;++http://www.google.com/bot.html) - 200 0 0 10757 314 312
- * 
- * We want to reformat this log into something that looks like this:
- * 
- * 66.249.69.46 - - [01/Dec/2014:06:00:47 -0800] "GET /merb/merxbrowser/help/Content/About+the+mission/MSL/Instruments/MSL+Navcam.htm HTTP/1.1" 200 10757 "-" "Mozilla/5.0+(compatible;+Googlebot/2.1;++http://www.google.com/bot.html)"
- * 
- * To make this happen, we specify the input line specification like this:
- * 
- * <date-time;\d{4}-\d\d-\d\d \d\d:\d\d:\d\d;required,datetime=yyyy-MM-dd HH:mm:ss> <server-ip;[0-9.]+> <http-method;GET|PUT|POST|DELETE> <requested-resource;\S+> <uri-query;\S+> <server-port;\d+> <username;\S+> <client-ip;[0-9.]+;required> <client-browser;\S+> <referrer;\S+> <status-code;\d{3}> <substatus;\d+> <win32-status;\d+> <bytes-transfered;\d+> <bytes-received;\d+> <time-taken;\d+>
- * 
- * This processor then parses the lines in the input log and stores the log
- * details in a map.  Log details that are not specified (such as the URI query
- * in the example above), do not have their keys added to the map.  Using the
- * example input line above, the map would look like this:
- * 
- * date-time: 2014-12-01 06:00:47 (stored as a Date object)
- * server-ip: 10.10.1.46
- * http-method: GET
- * requested-resource: /merb/merxbrowser/help/Content/About+the+mission/MSL/Instruments/MSL+Navcam.htm
- * server-port: 443
- * client-ip: 66.249.69.46
- * client-browser: Mozilla/5.0+(compatible;+Googlebot/2.1;++http://www.google.com/bot.html)
- * status-code: 200
- * substatus: 0
- * win32-status: 0
- * bytes-transfered: 10757
- * bytes-received: 314
- * time-taken: 312
- * 
- * Finally, we specify the output line specification like this:
- * 
- * <client-ip;required> <user-id> <username> [<date-time;required,datetime=dd/MMM/yyyy:HH:mm:ss Z>] "<http-method> <requested-resource> <http-version;default=HTTP/1.1>" <status-code> <bytes-transfered> "<referrer>" "<client-browser>"
- * 
- * This causes the data from the original log line to be output in the desired
- * format at the beginning of this example!
- * 
- * 
- * 
- * The substrings in the input and output line specifications can optionally
- * be given flags, separated by commas.
+ * Log detail specifications in both the input and output line specifications
+ * can optionally be given flags, separated by commas.
  * 
  * required: A substring with this flag must have a valid value, otherwise the
  * input line is discarded.  This will happen for an input substring if the
@@ -102,7 +95,8 @@ import gov.nasa.pds.report.util.Utility;
  * a key in the map created from input.
  * 
  * datetime: A substring with this flag designates a date-time using the format
- * following an equals sign, as shown in the examples above.
+ * following an equals sign (e.g. "datetime=yyyy-MM-dd HH:mm:ss").  The format
+ * is used to interpret the log detail by a {@link SimpleDateFormat}.
  * 
  * default: A substring with this flag will default to the value following an
  * equals sign, as shown in the example above.
