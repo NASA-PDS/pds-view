@@ -6,7 +6,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
+import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -40,6 +42,9 @@ public class DetailByDetailProcessorTest extends ReportManagerTest{
 				new File(TestConstants.TEST_DIR_RELATIVE, 
 				"u_ex150131.log"), testDir);
 		outputDir.mkdirs();
+		
+		// Allow no errors during processing
+		System.setProperty(Constants.REFORMAT_ERRORS_PROP, "0");
 		
 	}
 	
@@ -334,17 +339,19 @@ public class DetailByDetailProcessorTest extends ReportManagerTest{
 					"test: " + e.getMessage());
 		}
 		
-		// Verify that the output directory was created and that the test file
-		// was properly processed
+		// Verify that the output directory and log were created
 		assertTrue("The output directory was not created by the rings " +
 				"decryption processor", outputDir.exists());
 		File outputFile = new File(outputDir, "u_ex150131.log");
 		assertTrue("The reformatted log does not exist", outputFile.exists());
-		String line = null;
+		
+		// Verify that the test file was properly processed
+		List<String> lines = new Vector<String>();
 		BufferedReader reader = null;
 		try{
 			reader = new BufferedReader(new FileReader(outputFile));
-			line = reader.readLine();
+			lines.add(reader.readLine());
+			lines.add(reader.readLine());
 			reader.close();
 		}catch(Exception e){
 			try{
@@ -355,9 +362,13 @@ public class DetailByDetailProcessorTest extends ReportManagerTest{
 			fail("An error occurred while checking the content of the " +
 					"reformatted test log: " + e.getMessage());
 		}
+		assertEquals("Not all lines were read from the output log",
+				lines.size(), 2);
 		String desiredOutput = "10.10.1.37 - - [31/Jan/2015:06:03:21 -0800] \"GET /apollo/inst.aspx HTTP/1.1\" 200 4145 \"-\" \"Mozilla/4.0+(compatible;+MSIE+7.0;+PA+Server+Monitor+Service;+)\"";
 		assertEquals("The test log line was not reformatted correctly",
-				desiredOutput, line);	
+				desiredOutput, lines.get(0));	
+		assertEquals("The test log line was not reformatted correctly",
+				desiredOutput, lines.get(1));
 		
 	}
 	

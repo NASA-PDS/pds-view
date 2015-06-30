@@ -25,6 +25,7 @@ public abstract class LogDetail{
 	protected String name;
 	protected String pattern;
 	protected boolean required = false;
+	protected String emptyValue = "-";
 	
 	/**
 	 * Create a LogDetail object, specifying it's name, the RE pattern used to
@@ -78,6 +79,25 @@ public abstract class LogDetail{
 	 */
 	public boolean isRequired(){
 		return this.required;
+	}
+	
+	/**
+	 * Specify a log detail value that is recognized as empty.  For example,
+	 * the dash (-) is usually treated as an empty value for most log details.
+	 * 
+	 * @param ev
+	 */
+	public void setEmptyValue(String ev){
+		this.emptyValue = ev;
+	}
+	
+	/**
+	 * Get the String that is recognized in the input line as an empty value.
+	 * 
+	 * @return	The empty value String.
+	 */
+	public String getEmptyValue(){
+		return this.emptyValue;
 	}
 	
 	/**

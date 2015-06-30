@@ -539,19 +539,19 @@ public abstract class LogReformatProcessor implements Processor{
 	 * Parse the given pattern, adding the proper elements to the provided
 	 * segment list and detail Map.
 	 * 
-	 * @param pattern				The pattern to parse
+	 * @param pattern				The pattern to parse.
 	 * @param segmentList			A {@link List} of Strings created from the
 	 * 								pattern that will hold the detail names and
-	 * 								literal Strings that go between them
+	 * 								literal Strings that go between them.
 	 * @param detailMap				A {@link Map} that will be populated with
-	 * 								{@link LogDetails} created from the pattern
-	 * @param minSections			The maximum number of sections expected in
-	 * 								a substring in the pattern
-	 * @param maxSections			The minimum number of sections expected in
-	 * 								a substring in the pattern
+	 * 								{@link LogDetails} created from the pattern.
+	 * @param minSections			The minimum number of sections expected in
+	 * 								a log detail specification in the pattern.
+	 * @param maxSections			The maximum number of sections expected in
+	 * 								a log detail specification in the pattern.
 	 * @throws ProcessingException	If the pattern contains any mismatched
-	 * 								brackets or a substring specifying a log
-	 * 								detail is invalid
+	 * 								brackets or an invalid log detail
+	 * 								specification.
 	 */
 	private void parsePattern(String pattern, List<String> segmentList,
 			Map<String, LogDetail> detailMap, int minSections,
@@ -588,12 +588,10 @@ public abstract class LogReformatProcessor implements Processor{
 			if(i > 0){
 				String literalString = unparsedPattern.substring(0, i);
 				segmentList.add(literalString);
-				//log.finest("Encountered literal string " + literalString);
 			}
 			
 			// Grab the substring specifying the log detail
 			String substring = unparsedPattern.substring(i + 1, j);
-			//log.finest("Encountered substring " + substring);
 			
 			// Remove the substring from the remaining pattern
 			if(j + 1 == unparsedPattern.length()){
@@ -618,7 +616,6 @@ public abstract class LogReformatProcessor implements Processor{
 						substring);
 			}
 			for(String section: substringComponents){
-				//log.finest("Substring section " + section);
 				if(section.trim().isEmpty()){
 					throw new ProcessingException("The log reformat pattern " +
 							"contains an empty section specifying a log " +
@@ -667,15 +664,15 @@ public abstract class LogReformatProcessor implements Processor{
 	}
 	
 	/**
-	 * Create {@link LogDetail} object from the String array.  The array should
-	 * contain the various sections of the substring specified in the pattern.
+	 * Create {@link LogDetail} object using the pieces of the log detail
+	 * specification provided in the input or output line specification.
 	 * 
-	 * @param detail				The sections of the substring as a String
-	 * 								array
-	 * @return						The {@link LogDetail} object as specified
-	 * 								by the String array
-	 * @throws ProcessingException	If any specified date-time log details are
-	 * 								not specified properly
+	 * @param name					The name of the log detail.
+	 * @param pattern				The RE pattern used to acquire the log
+	 * 								detail value from the input log line.
+	 * @param flags					Any flags specifying the log detail.
+	 * @return						The {@link LogDetail} object.
+	 * @throws ProcessingException	If any invalid flags are specified.
 	 */
 	private LogDetail getLogDetail(String name, String pattern, String flags)
 			throws ProcessingException{

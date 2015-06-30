@@ -25,7 +25,6 @@ public class StringLogDetail extends LogDetail{
 
 	protected String value;
 	protected String defaultValue;
-	protected String emptyValue;
 	
 	/**
 	 * Create a StringLogDetail object with the given name, pattern,
@@ -116,16 +115,6 @@ public class StringLogDetail extends LogDetail{
 		}else{
 			this.value = value;
 		}
-	}
-	
-	/**
-	 * Specify a log detail value that is recognized as empty.  For example,
-	 * the dash (-) is usually treated as an empty value for most log details.
-	 * 
-	 * @param ev
-	 */
-	public void setEmptyValue(String ev){
-		this.emptyValue = ev;
 	}
 	
 	/**

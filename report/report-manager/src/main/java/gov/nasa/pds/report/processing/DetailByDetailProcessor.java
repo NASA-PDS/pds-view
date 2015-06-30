@@ -121,31 +121,14 @@ public class DetailByDetailProcessor extends LogReformatProcessor{
 				DateTimeLogDetail detail = (DateTimeLogDetail)
 						this.inputDetailMap.get(detailName);
 				
-				// Skip this log detail if no value is given
-				if((segmentIndex + 1 < this.segmentedInput.size() &&
-						lineRemaining.startsWith("- ")) ||
-						(segmentIndex + 1 == this.segmentedInput.size() &&
-						lineRemaining.startsWith("-"))){
-					if(detail.isRequired()){
-						throw new ProcessingException("The required log " +
-								"detail " + detailName + " was not found " +
-								"in input log line: " + line);
-					}
-					lineRemaining = lineRemaining.substring(1);
+				// Get the value of the log detail
+				String value = this.getNextDetail(lineRemaining, segmentIndex,
+						detail, lineRemaining);
+				if(value == null){
+					lineRemaining = lineRemaining.substring(
+							detail.getEmptyValue().length());
 					continue;
 				}
-				
-				// Get the value of the log detail
-				Pattern pattern = Pattern.compile("(" +
-						detail.getPattern() + ")[^\n]*");
-				Matcher matcher = pattern.matcher(lineRemaining);
-				if(!matcher.matches()){
-					throw new ProcessingException("The date-time log detail " + 
-							detailName + " with pattern " +
-							detail.getPattern() + " was not found in " +
-							"input log line: " + line);
-				}
-				String value = matcher.group(1);
 				try{
 					detail.setDate(value);
 				}catch(ParseException e){
@@ -170,31 +153,14 @@ public class DetailByDetailProcessor extends LogReformatProcessor{
 				StringLogDetail detail = (StringLogDetail)
 						this.inputDetailMap.get(detailName);
 				
-				// Skip this log detail if no value is given
-				if((segmentIndex + 1 < this.segmentedInput.size() &&
-						lineRemaining.startsWith("- ")) ||
-						(segmentIndex + 1 == this.segmentedInput.size() &&
-						lineRemaining.startsWith("-"))){
-					if(detail.isRequired()){
-						throw new ProcessingException("The required log " +
-								"detail " + detailName + " was not found " +
-								"in input log line: " + line);
-					}
-					lineRemaining = lineRemaining.substring(1);
+				// Get the value of the log detail
+				String value = this.getNextDetail(lineRemaining, segmentIndex,
+						detail, lineRemaining);
+				if(value == null){
+					lineRemaining = lineRemaining.substring(
+							detail.getEmptyValue().length());
 					continue;
 				}
-				
-				// Get the value of the log detail
-				Pattern pattern = Pattern.compile("(" +
-						detail.getPattern() + ")[^\n]*");
-				Matcher matcher = pattern.matcher(lineRemaining);
-				if(!matcher.matches()){
-					throw new ProcessingException("The log detail " + 
-							detailName + " with pattern " +
-							detail.getPattern() + " was not found in " +
-							"input log line: " + line);
-				}
-				String value = matcher.group(1);
 				detail.setValue(value);
 				
 				// Remove the value from the line, since it has been parsed
@@ -237,6 +203,57 @@ public class DetailByDetailProcessor extends LogReformatProcessor{
 			}
 			
 		}
+		
+	}
+	
+	/**
+	 * Get the value of the next detail in the remaining input log line.
+	 * 
+	 * @param lineRemaining			The portion of the input log line that has
+	 * 								not yet been processed.
+	 * @param segmentIndex			The segment index used to determine if the
+	 * 								log detail sought is at the end of the input
+	 * 								log line. 
+	 * @param detail				The {@link LogDetail} sought at the start of
+	 * 								the remaining input log line.
+	 * @param line					The input log line.
+	 * @return						A substring from the remaining input log
+	 * 								line representing the log detail value.
+	 * @throws ProcessingException	If the value for a required log detail is
+	 * 								not provided or the start of the remaining
+	 * 								log input line does not match the pattern
+	 * 								provided for the log detail being sought.
+	 */
+	protected String getNextDetail(String lineRemaining, int segmentIndex,
+			LogDetail detail, String line) throws ProcessingException{
+
+		String detailName = detail.getName();
+		
+		// Skip this log detail if no value is given
+		if((segmentIndex + 1 < this.segmentedInput.size() &&
+				lineRemaining.startsWith(detail.getEmptyValue() + " ")) ||
+				(segmentIndex + 1 == this.segmentedInput.size() &&
+				lineRemaining.startsWith(detail.getEmptyValue()))){
+			if(detail.isRequired()){
+				throw new ProcessingException("The required log detail " +
+						detailName + " was not found in input log line: " +
+						line);
+			}
+			return null;
+		}
+		
+		// Get the value of the log detail
+		Pattern pattern = Pattern.compile("(" +
+				detail.getPattern() + ")[^\n]*");
+		Matcher matcher = pattern.matcher(lineRemaining);
+		if(!matcher.matches()){
+			throw new ProcessingException("The log detail " + detailName +
+					" could not be found with pattern " + detail.getPattern() +
+					" in the input log line: " + line);
+		}
+		String value = matcher.group(1);
+		
+		return value;
 		
 	}
 	
