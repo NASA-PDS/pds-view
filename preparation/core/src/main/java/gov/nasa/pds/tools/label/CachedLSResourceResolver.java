@@ -188,9 +188,10 @@ import org.w3c.dom.ls.LSResourceResolver;
       input.setPublicId(publicId);
       input.setSystemId(systemId);
       input.setBaseURI(baseURI);
-      input.setCharacterStream(
+      if (entity != null) {
+        input.setCharacterStream(
           new InputStreamReader(new ByteArrayInputStream(entity)));
-
+      }
       return input;
     }
   }
