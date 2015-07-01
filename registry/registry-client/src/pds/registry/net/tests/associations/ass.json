@@ -1,0 +1,25 @@
+{
+   "associationType" : "urn:registry:AssociationType:HasRear",
+   "classifications" : [],
+   "description" : "This is the rear association",
+   "externalIdentifiers" : [],
+   "guid" : "urn:anatomyid:ass",
+   "home" : "http://anatomy.org:80/registry",
+   "lid" : "ass1",
+   "name" : "ass",
+   "objectType" : "Association",
+   "sourceObject" : "urn:uuid:8007636f-adcd-416e-a75b-e954814bd953",
+   "status" : "Probed",
+   "targetObject" : "urn:uuid:2cdad332-f667-4e8b-814a-4b67624c4e2a",
+   "versionName" : "1.0",
+   "slots" : [
+      {
+         "id" : 3043688,
+         "values" : [
+            "ExtrinsicObject"
+         ],
+         "name" : "targetObjectType",
+         "slotType" : null
+      }
+   ]
+}

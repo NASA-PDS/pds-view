@@ -13,6 +13,9 @@ for name in ('insult', 'lush', 'pds'):
 _exts = {}
 for name in ('egg', 'spam', 'bacon'):
     _exts[name] = pkg_resources.resource_string(__name__, 'extrinsics/%s.json' % name)
+_ass = {}
+for name in ('ass', 'but', 'boo'):
+    _ass[name] = pkg_resources.resource_string(__name__, 'associations/%s.json' % name)
 
 _testData = {
     'extrinsics':                '{"start":1,"numFound":3,"results":[%s,%s,%s]}' % (_exts['egg'], _exts['spam'], _exts['bacon']),
@@ -60,6 +63,23 @@ _testData = {
     'services/urn:sk:radio:lush': _svcs['lush'],
     'services/urn:sk:services:insults:0': _svcs['insult'],
     'services/urn:uuid:0f142be7-e4ab-4495-8a03-aa926ffcc5d3': _svcs['pds'],
+    'associations': '{"start":1,"numFound":3,"results":[%s,%s,%s]}' % (_ass['ass'],_ass['but'],_ass['boo']),
+    'associations?start=1&rows=1': '{"start":1,"numFound":3,"results":[%s]}' % _ass['ass'],
+    'associations?start=1&rows=2': '{"start":1,"numFound":3,"results":[%s,%s]}' % (_ass['ass'],_ass['but']),
+    'associations?start=1&rows=3': '{"start":1,"numFound":3,"results":[%s,%s,%s]}' % (_ass['ass'],_ass['but'],_ass['boo']),
+    'associations?start=1&rows=20':'{"start":1,"numFound":3,"results":[%s,%s,%s]}' % (_ass['ass'],_ass['but'],_ass['boo']),
+    'associations?start=2&rows=1': '{"start":2,"numFound":3,"results":[%s]}' % _ass['but'],
+    'associations?start=2&rows=2': '{"start":2,"numFound":3,"results":[%s,%s]}' % (_ass['but'],_ass['boo']),
+    'associations?start=2&rows=3': '{"start":2,"numFound":3,"results":[%s,%s]}' % (_ass['but'],_ass['boo']),
+    'associations?start=2&rows=20':'{"start":2,"numFound":3,"results":[%s,%s]}' % (_ass['but'],_ass['boo']),
+    'associations?start=3&rows=1': '{"start":3,"numFound":3,"results":[%s]}' % _ass['boo'],
+    'associations?start=3&rows=2': '{"start":3,"numFound":3,"results":[%s]}' % _ass['boo'],
+    'associations?start=3&rows=3': '{"start":3,"numFound":3,"results":[%s]}' % _ass['boo'],
+    'associations?start=3&rows=20':'{"start":3,"numFound":3,"results":[%s]}' % _ass['boo'],
+    'associations?start=4&rows=1': '{"start":4,"numFound":3,"results":[]}',
+    'associations/urn:anatomyid:ass': _ass['ass'],
+    'associations/urn:anatomyid:but': _ass['but'],
+    'associations/urn:anatomyid:boo': _ass['boo']
 }
 
 class _TestHandlerError(urllib2.HTTPError):

@@ -5,7 +5,7 @@
 '''PDS Registry network communication classes'''
 
 from contextlib import closing
-from pds.registry.model.classes import Service, ServiceBinding, SpecificationLink, Slot, ExtrinsicObject
+from pds.registry.model.classes import Service, ServiceBinding, SpecificationLink, Slot, ExtrinsicObject, Association
 from urllib import urlencode
 from urllib2 import Request, urlopen, HTTPError
 import anyjson, httplib
@@ -100,6 +100,24 @@ class PDSRegistryClient(object):
             versionName=d.get('versionName', None),
             serviceBindings=self._createServiceBindings(serviceGUID, d.get('serviceBindings', []))
         )
+    def _createAssociation(self, d):
+        '''Create an Association from a post-JSON-quantized dictionary ``d``.'''
+        if 'objectType' not in d: raise ValueError('No "objectType"')
+        if d['objectType'] != 'Association': raise ValueError('Expected an "Assocation" but got "%s"' % d['objectType'])
+        associationGUID = d['guid']
+        return Association(
+            guid=associationGUID,
+            lid=d['lid'],
+            home=d['home'],
+            slots=self._createSlots(d.get('slots', [])),
+            name=d['name'],
+            status=d.get('status', None),
+            description=d.get('description', None),
+            versionName=d.get('versionName', None),
+            source=d.get('sourceObject', None),
+            target=d.get('targetObject', None),
+            associationType=d.get('associationType', None)
+        )
     def _mapSlots(self, slots):
         '''Map a set of Slots into a structure acceptable to JSON.
         '''
@@ -162,6 +180,21 @@ class PDSRegistryClient(object):
             'slots':            self._mapSlots(service.slots),
             'versionName':      service.versionName,
         })
+    def _serializeAssociation(self, association):
+        '''Serialize an Association into JSON.'''
+        return anyjson.serialize({
+            'associationType':  association.associationType,
+            'description':      association.description,
+            'guid':             association.guid,
+            'home':             association.home,
+            'lid':              association.lid,
+            'name':             association.name,
+            'objectType':       association.objectType,
+            'slots':            self._mapSlots(association.slots),
+            'sourceObject':     association.source,
+            'targetObject':     association.target,
+            'versionName':      association.versionName,
+        })
     def getServices(self, start=0, rows=20):
         '''Retrieve services registered with the registry service, starting at index ``start`` in the
         services list and retrieving no more than ``rows`` worth.
@@ -200,10 +233,28 @@ class PDSRegistryClient(object):
         '''
         answer = self._callServer('/extrinsics', dict(start=start+1, rows=rows)) # Why is it one-based indexing? Lame.
         return [self._createExtrinsic(i) for i in answer.get('results', [])]
+    def getAssociations(self, start=0, rows=20):
+        '''Retrieve associations registered with the registry service, starting at index ``start`` in
+        the associations list and retrieving no more than ``rows`` worth.
+
+        >>> import pds.registry.net.tests.base
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> associations = rs.getAssociations()
+        >>> len(associations)
+        3
+        >>> associations[0].guid, associations[1].guid, associations[2].guid
+        (u'urn:anatomyid:ass', u'urn:anatomyid:but', u'urn:anatomyid:boo')
+        >>> associations = rs.getAssociations(1, 1)
+        >>> len(associations)
+        1
+        >>> associations[0].guid
+        u'urn:anatomyid:but'
+        '''
+        answer = self._callServer('/associations', dict(start=start+1, rows=rows)) # Why is it one-based indexing? Lame.
+        return [self._createAssociation(i) for i in answer.get('results', [])]
     def getExtrinsicByLidvid(self, lidvid):
         '''Retrieve an extrinsic given a ``lidvid``, which is a string of the form ``LOGICAL-ID::VERSION-NAME``.
 
-        >>> import pds.registry.net.tests.base
         >>> rs = PDSRegistryClient('testscheme:/rs')
         >>> extrinsic = rs.getExtrinsicByLidvid('bacon::1.0')
         >>> extrinsic.lid, extrinsic.versionName
@@ -257,6 +308,35 @@ class PDSRegistryClient(object):
             answer = self._callServer('/services/%s' % guid)
             if 'Service' != answer.get('objectType', None): return None
             return self._createService(answer)
+        except HTTPError, ex:
+            if ex.code == httplib.NOT_FOUND:
+                return None
+            else:
+                raise ex
+    def getAssociation(self, guid):
+        '''Retrieve an association with a known ``guid``, or None if ``guid`` is not found.
+        
+        >>> import pds.registry.net.tests.base
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> ass = rs.getAssociation('urn:anatomyid:ass')
+        >>> ass.guid, ass.lid, ass.name
+        (u'urn:anatomyid:ass', u'ass1', u'ass')
+        >>> ass.status, ass.description, ass.versionName
+        (u'Probed', u'This is the rear association', u'1.0')
+        >>> ass.source, ass.target
+        (u'urn:uuid:8007636f-adcd-416e-a75b-e954814bd953', u'urn:uuid:2cdad332-f667-4e8b-814a-4b67624c4e2a')
+        >>> ass.associationType, ass.objectType
+        (u'urn:registry:AssociationType:HasRear', 'Association')
+        >>> len(ass.slots)
+        1
+        >>> slot = ass.slots.pop()
+        >>> slot.name, slot.values
+        (u'targetObjectType', [u'ExtrinsicObject'])
+        '''
+        try:
+            answer = self._callServer('/associations/%s' % guid)
+            if 'Association' != answer.get('objectType', None): return None
+            return self._createAssociation(answer)
         except HTTPError, ex:
             if ex.code == httplib.NOT_FOUND:
                 return None
@@ -373,6 +453,25 @@ class PDSRegistryClient(object):
             self._callServer(u'/extrinsics/logicals/{}'.format(extrinsic.lid), params=None, json=json, method='POST')
         else:
             self._callServer(u'/extrinsics', params=None, json=json, method='POST')
+    def putAssociation(self, association):
+        '''Send the Association object ``association`` into the Registry.
+
+        >>> import pds.registry.net.tests.base
+        >>> from pds.registry.model.classes import Association
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> ass = Association(u'ass-1', u'ass', u'testscheme:/rs', set(), u'ass', u'Probed', u'Assoc', u'1.0', u'rec', u'anu', 'urn:con')
+        >>> rs.putAssociation(ass)
+        >>> ass = Association(u'urn:anatomyid:ass', 'ass')
+        >>> rs.putAssociation(ass)
+        '''
+        # If the association doesn't exist, POST it to /associations; but if it does exist, PUT
+        # it to the existing /associations/guid path. FIXME: Yes, there is a race here.
+        json = self._serializeAssociation(association)
+        existing = self.getAssociation(association.guid)
+        if existing:
+            self._callServer('/associations/%s' % association.guid, params=None, json=json, method='PUT')
+        else:
+            self._callServer('/associations', params=None, json=json, method='POST')
     def deleteService(self, serviceGUID):
         '''Delete the service with UUID ``serviceGUID`` from the Registry.
         
@@ -389,9 +488,14 @@ class PDSRegistryClient(object):
         >>> rs.deleteExtrinsic('egg-1.0')
         '''
         self._callServer('/extrinsics/%s' % extrinsicGUID, params=None, json=None, method='DELETE')
+    def deleteAssocation(self, associationGUID):
+        '''Delete the association with the UUID ``associationGUID`` from the Registry.
 
-        
-
+        >>> import pds.registry.net.tests.base
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> rs.deleteAssocation('urn:anatomyid:ass')
+        '''
+        self._callServer('/associations/%s' % associationGUID, params=None, json=None, method='DELETE')
 
 
 # Demonstration with actual PDS Registry Service:

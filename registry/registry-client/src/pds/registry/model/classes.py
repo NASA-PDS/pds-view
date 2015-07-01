@@ -151,7 +151,7 @@ class Association(RegistryObject):
     ):
         super(Association, self).__init__(
             guid, lid, home, slots, name, objectType if objectType is not None else RegistryObject.ASSOCIATION,
-            description, versionName
+            status, description, versionName
         )
         self.source, self.target, self.associationType = source, target, associationType
 
