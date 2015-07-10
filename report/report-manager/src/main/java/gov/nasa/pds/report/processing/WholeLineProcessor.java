@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 /**
  * This class is used to perform basic reformatting on log files.  Unlike the
- * {@link LogReformatProcessor} which looks for individual values while
+ * {@link DetailByDetailProcessor} which looks for individual values while
  * progressively parsing lines in the input log, this processor will parse an
  * entire log line at a time.  Such an approach is better for simple
  * modifications (such inserting quotes around particular log details), while
@@ -129,11 +129,12 @@ public class WholeLineProcessor extends LogReformatProcessor{
 		}
 		this.inputRegexPattern = Pattern.compile(inputRegexPatternStr);
 		
-		log.info("Whole line reformatter RE pattern: " + inputRegexPatternStr);	// TODO: Delete me!
-		
 	}
 
 	@Override
+	/**
+	 * @see gov.nasa.pds.report.processing.LogReformatProcessor.parseInputLine()
+	 */
 	protected void parseInputLine(String line) throws ProcessingException {
 		
 		// Match RE pattern

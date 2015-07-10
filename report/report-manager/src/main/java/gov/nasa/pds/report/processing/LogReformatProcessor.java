@@ -205,7 +205,20 @@ public abstract class LogReformatProcessor implements Processor{
 	}
 
 	/**
-	 * TODO: Write some proper documentation here
+	 * This is a convenience method to assist sub-classes in configuring
+	 * their log detail maps and means of parsing input and structuring output.
+	 * As such, this method will most frequently be invoked from within the
+	 * configure() methods of sub-classes.
+	 * 
+	 * @param props			The {@link Properties} containing the configuration
+	 * 						for the log source.
+	 * @param inputSpecKey	The key in the properties storing the input line
+	 * 						specification.
+	 * @param outputSpecKey	The key in the properties storing the output line
+	 * 						specification.
+	 * @param allowFlags	A boolean specifying whether flags are allowed in
+	 * 						the input and output line specifications.
+	 * @see gov.nasa.pds.report.processing.Processor.configure()
 	 */
 	protected void configure(Properties props, String inputSpecKey,
 			String outputSpecKey, boolean allowFlags)
@@ -228,65 +241,16 @@ public abstract class LogReformatProcessor implements Processor{
 		}
 		
 		// Parse the input specification
-		this.inputDetailMap = new HashMap<String, LogDetail>();
-		this.segmentedInput = new Vector<String>();
-		int maxSubstringSections = 2;
-		if(allowFlags){
-			maxSubstringSections = 3;
-		}
-		this.parsePattern(inputLineSpec, this.segmentedInput,
-				this.inputDetailMap, 2, maxSubstringSections);
+		this.parseInputSpec(inputLineSpec, allowFlags);
 		
 		// Parse the output specification
-		this.outputDetailMap = new HashMap<String, LogDetail>();
-		this.segmentedOutput = new Vector<String>();
-		maxSubstringSections = 1;
-		if(allowFlags){
-			maxSubstringSections = 2;
-		}
-		this.parsePattern(outputLineSpec, this.segmentedOutput,
-				this.outputDetailMap, 1, maxSubstringSections);	
+		this.parseOutputSpec(outputLineSpec, allowFlags);
 		
 		// Validate the line specifications
-		for(String outputKey: this.outputDetailMap.keySet()){
-			
-			// Verify that required output details are included in the input
-			// specification
-			if(allowFlags && this.outputDetailMap.get(outputKey).isRequired() &&
-					!this.inputDetailMap.containsKey(outputKey)){
-				throw new ProcessingException("The log reformat input line" +
-						"specification does not specify a log detail" +
-						"required by the output specification: " + outputKey);
-			}
-			
-			// Verify that input and output line specifications treat log
-			// details as the same type
-			if(this.inputDetailMap.containsKey(outputKey)){
-				String inputType = this.inputDetailMap.get(outputKey).getType();
-				String outputType = this.outputDetailMap.get(outputKey).getType();
-				//log.finest("Detail: " + outputKey + " input type: " +
-				//		inputType + " output type: " + outputType);
-				if(!inputType.equals(outputType)){
-					throw new ProcessingException("The log reformat " +
-							"patterns contain the detail " + outputKey +
-							" which is specified as different types in " +
-							"the input and output patterns");
-				}
-			}
-			
-		}
+		this.validateLineSpecs(allowFlags);
 		
 		// Determine how many errors we will tolerate per file
-		try{
-			this.errorLinesAllowed = Integer.parseInt(System.getProperty(
-					Constants.REFORMAT_ERRORS_PROP, DEFAULT_ERRORS_ALLOWED));
-		}catch(NumberFormatException e){
-			log.warning("Using the default number of errors allowed during " +
-					"reformatting (" + DEFAULT_ERRORS_ALLOWED + "), as the " +
-					"value specified in default.properties is invalid: " +
-					System.getProperty(Constants.REFORMAT_ERRORS_PROP));
-			this.errorLinesAllowed = Integer.parseInt(DEFAULT_ERRORS_ALLOWED);
-		}
+		this.determineErrorTolerance();
 		
 	}
 	
@@ -378,15 +342,14 @@ public abstract class LogReformatProcessor implements Processor{
 		
 	}
 	
-	// Iterate over the substrings in the output pattern, creating the
-	// output version using currently stored input values
-	// TODO: Replace this with a proper javadoc
+	/**
+	 * Following the output pattern, create the reformatted version of the log
+	 * line, using the log detail values from the input log line.
+	 */
 	protected String formatOutputLine() throws ProcessingException{
 		
 		String outputLine = null;
 		for(String segment: this.segmentedOutput){
-			
-			//log.finest("Now formatting output for segment: " + segment);
 			
 			String value = null;
 			
@@ -401,8 +364,6 @@ public abstract class LogReformatProcessor implements Processor{
 				DateTimeLogDetail inputDetail = (DateTimeLogDetail)
 						this.inputDetailMap.get(detailName);
 				value = detail.getDate(inputDetail);
-				
-				//log.finest("Adding date-time log detail value: " + value);
 				
 				// Validate segment requirement
 				if(value == null){
@@ -427,8 +388,6 @@ public abstract class LogReformatProcessor implements Processor{
 				StringLogDetail inputDetail = (StringLogDetail)
 						this.inputDetailMap.get(detailName);
 				value = detail.getValue(inputDetail);
-				
-				//log.finest("Adding string log detail value: " + value);
 				
 				// Validate segment requirement
 				if(value == null){
@@ -455,8 +414,6 @@ public abstract class LogReformatProcessor implements Processor{
 			}else{
 				outputLine = outputLine + value;
 			}
-			
-			//log.finest("Output line is now: " + outputLine);
 			
 		}
 		
@@ -501,7 +458,6 @@ public abstract class LogReformatProcessor implements Processor{
 		
 		// Check if line is part of the header, which we can ignore
 		if(line.startsWith("#")){
-			//log.finest("Log reformatter will ignore header line: " + line);
 			return true;
 		}
 		
@@ -519,6 +475,116 @@ public abstract class LogReformatProcessor implements Processor{
 		this.resetDetailMaps();
 		
 		return true;
+		
+	}
+	
+	/**
+	 * Parse the line specification used for input.  This creates a map of
+	 * log details to store log detail input values and divides the input log
+	 * line into discrete segments containing log details and literal Strings.
+	 * 
+	 * @param inputLineSpec	The input line specification as a String.
+	 * @param allowFlags	A boolean indicating whether flags are allowed in
+	 * 						the input line specification.
+	 */
+	protected void parseInputSpec(String inputLineSpec, boolean allowFlags)
+			throws ProcessingException{
+		
+		this.inputDetailMap = new HashMap<String, LogDetail>();
+		this.segmentedInput = new Vector<String>();
+		int maxSubstringSections = 2;
+		if(allowFlags){
+			maxSubstringSections = 3;
+		}
+		this.parsePattern(inputLineSpec, this.segmentedInput,
+				this.inputDetailMap, 2, maxSubstringSections);
+		
+	}
+	
+	/**
+	 * Parse the line specification used for output.  This creates a map of
+	 * log details to store output log details and divides the output log
+	 * line into discrete segments containing log details and literal Strings.
+	 * 
+	 * @param outputLineSpec	The output line specification as a String.
+	 * @param allowFlags		A boolean indicating whether flags are allowed
+	 * 							in the output line specification.
+	 */
+	protected void parseOutputSpec(String outputLineSpec, boolean allowFlags)
+			throws ProcessingException{
+		
+		this.outputDetailMap = new HashMap<String, LogDetail>();
+		this.segmentedOutput = new Vector<String>();
+		int maxSubstringSections = 1;
+		if(allowFlags){
+			maxSubstringSections = 2;
+		}
+		this.parsePattern(outputLineSpec, this.segmentedOutput,
+				this.outputDetailMap, 1, maxSubstringSections);	
+		
+	}
+	
+	/**
+	 * Validate the line specifications.  This should be called from the
+	 * sub-class' implementation of the configure() method.
+	 * 
+	 * @param allowFlags			A boolean indicating whether flags are
+	 * 								allowed in the line specifications for the
+	 * 								sub-class.
+	 * @throws ProcessingException	If the line specifications are invalid.
+	 * @see gov.nasa.pds.report.processing.Processor.configure()
+	 */
+	protected void validateLineSpecs(boolean allowFlags)
+			throws ProcessingException{
+		
+		if(!allowFlags){
+			return;
+		}
+		
+		for(String outputKey: this.outputDetailMap.keySet()){
+			
+			// Verify that required output details are included in the input
+			// specification
+			if( this.outputDetailMap.get(outputKey).isRequired() &&
+					!this.inputDetailMap.containsKey(outputKey)){
+				throw new ProcessingException("The log reformat input line" +
+						"specification does not specify a log detail" +
+						"required by the output specification: " + outputKey);
+			}
+			
+			// Verify that input and output line specifications treat log
+			// details as the same type
+			if(this.inputDetailMap.containsKey(outputKey)){
+				String inputType = this.inputDetailMap.get(outputKey).getType();
+				String outputType = this.outputDetailMap.get(outputKey).getType();
+				if(!inputType.equals(outputType)){
+					throw new ProcessingException("The log reformat " +
+							"patterns contain the detail " + outputKey +
+							" which is specified as different types in " +
+							"the input and output patterns");
+				}
+			}
+			
+		}
+		
+	}
+	
+	/**
+	 * Using the system properties during execution, determine how many lines
+	 * in an input log can cause errors before the logs is discarded.
+	 */
+	protected void determineErrorTolerance(){
+		
+		try{
+			this.errorLinesAllowed = Integer.parseInt(System.getProperty(
+					Constants.REFORMAT_ERRORS_PROP, DEFAULT_ERRORS_ALLOWED));
+		}catch(NumberFormatException e){
+			log.warning("Using the default number of errors allowed during " +
+					"reformatting (" + DEFAULT_ERRORS_ALLOWED + "), as the " +
+					"value specified in default.properties is invalid: " +
+					System.getProperty(Constants.REFORMAT_ERRORS_PROP));
+			this.errorLinesAllowed = Integer.parseInt(DEFAULT_ERRORS_ALLOWED);
+		}
 		
 	}
 	

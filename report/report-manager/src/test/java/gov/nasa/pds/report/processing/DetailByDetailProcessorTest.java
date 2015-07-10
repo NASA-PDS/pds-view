@@ -340,8 +340,8 @@ public class DetailByDetailProcessorTest extends ReportManagerTest{
 		}
 		
 		// Verify that the output directory and log were created
-		assertTrue("The output directory was not created by the rings " +
-				"decryption processor", outputDir.exists());
+		assertTrue("The output directory was not created by the " +
+				"detail-by-detail reformatting processor", outputDir.exists());
 		File outputFile = new File(outputDir, "u_ex150131.log");
 		assertTrue("The reformatted log does not exist", outputFile.exists());
 		

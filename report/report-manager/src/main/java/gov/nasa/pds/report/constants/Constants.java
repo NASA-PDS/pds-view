@@ -42,6 +42,8 @@ public abstract class Constants {
 	public static final String NODE_LINE_REFORMAT_INPUT = "input_line_pattern";
 	public static final String NODE_LINE_REFORMAT_OUTPUT = "output_line_pattern";
 	public static final String NODE_SIMPLE_COMMAND_KEY = "simple_command";
+	public static final String NODE_NCFTP_VERSION = "ncftp_version";
+	public static final String NODE_NCFTP_REFORMAT_OUTPUT = "output_ncftp_pattern";
 	
 	// ------------------------------------------------------------------------
 	// System properties defined in defaults file

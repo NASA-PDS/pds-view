@@ -76,8 +76,8 @@ public class WholeLineProcessorTest extends ReportManagerTest{
 		
 		// Verify that the output directory was created and that the test file
 		// was properly processed
-		assertTrue("The output directory was not created by the rings " +
-				"decryption processor", outputDir.exists());
+		assertTrue("The output directory was not created by the whole line " +
+				"reformatting processor", outputDir.exists());
 		File outputFile = new File(outputDir, "u_ex150331.log");
 		assertTrue("The reformatted log does not exist", outputFile.exists());
 		String line = null;
