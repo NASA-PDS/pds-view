@@ -17,6 +17,12 @@
         name="Product_AIP"
         lid="urn:nasa:pds:profile:regrep:ObjectType:Product_AIP"
         guid="urn:nasa:pds:profile:regrep:ObjectType:Product_AIP"/>
+    <classificationNode code="Product_Ancillary"
+        parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
+        description="The Product_Ancillary class defines a product that contains data that are supplementary to observational data and cannot reasonably be associated with any other non-observational data class."
+        name="Product_Ancillary"
+        lid="urn:nasa:pds:profile:regrep:ObjectType:Product_Ancillary"
+        guid="urn:nasa:pds:profile:regrep:ObjectType:Product_Ancillary"/>
     <classificationNode code="Product_Attribute_Definition"
         parent="urn:nasa:pds:profile:regrep:ObjectType:Product"
         description="The Product Attribute Definition provides an attribute definition in XML encoding."

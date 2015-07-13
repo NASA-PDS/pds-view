@@ -54,7 +54,7 @@
     <pds4-tools-version>0.5.0</pds4-tools-version>
     <generate-version>0.8.0</generate-version>
     <transform-version>1.1.1</transform-version>
-    <registry-version>1.9.0-dev</registry-version>
+    <registry-version>1.8.1</registry-version>
     <search-version>1.6.0</search-version>
     <storage-version>1.1.0</storage-version>
     <!-- External Dependency Versions -->

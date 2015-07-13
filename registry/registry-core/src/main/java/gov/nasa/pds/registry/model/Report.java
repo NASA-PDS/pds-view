@@ -59,7 +59,7 @@ public class Report {
   private String home;
   
   @XmlAttribute
-  private String registryVersion = "1.8.0";
+  private String registryVersion = "1.8.1";
 
   public Report() {
     serverStarted = new Date();
