@@ -22,4 +22,7 @@ for node in $NODES; do
     fi
 done
 
+basedir=$(dirname $0)
+python $basedir/rename_reports.py $date
+
 exit 0
