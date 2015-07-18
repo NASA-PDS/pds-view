@@ -36,6 +36,7 @@ public abstract class Constants {
 		"Ingest_LDD", // modified build4a
 		"Product", 
 		"Product_AIP", // added build3a
+		"Product_Ancillary", // added build5b+
 		"Product_Attribute_Definition",
 		"Product_Browse",
 		"Product_Bundle",
