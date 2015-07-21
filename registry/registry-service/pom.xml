@@ -352,7 +352,7 @@
                 <!--<phase>package</phase>-->
                 <configuration>
                   <executable>xsltproc</executable>
-                  <commandlineArgs>-o target/index.html src/main/doc/wadl_documentation-2008-12.xsl target/classes/application.wadl</commandlineArgs>
+                  <commandlineArgs>-o target/index.html src/main/doc/wadl_documentation-2009-02.xsl target/classes/application.wadl</commandlineArgs>
                 </configuration>
               </execution>
             </executions>
