@@ -50,7 +50,7 @@
 
   <properties>
     <!-- Internal Dependency Version -->
-    <core-version>1.7.0</core-version>
+    <core-version>1.8.0-dev</core-version>
     <pds4-tools-version>0.5.0</pds4-tools-version>
     <generate-version>0.8.0</generate-version>
     <transform-version>1.1.1</transform-version>

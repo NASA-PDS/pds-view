@@ -18,18 +18,16 @@ package gov.nasa.pds.tools.label;
 import gov.nasa.pds.tools.label.validate.DefaultDocumentValidator;
 import gov.nasa.pds.tools.label.validate.DocumentValidator;
 import gov.nasa.pds.tools.label.validate.ExternalValidator;
-import gov.nasa.pds.tools.util.Utility;
 import gov.nasa.pds.tools.util.VersionInfo;
 import gov.nasa.pds.tools.util.XMLErrorListener;
+import gov.nasa.pds.tools.util.XMLExtractor;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,9 +57,9 @@ import javax.xml.xpath.XPathFactory;
 import net.sf.saxon.Configuration;
 import net.sf.saxon.event.ParseOptions;
 import net.sf.saxon.om.DocumentInfo;
+import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.xpath.XPathEvaluator;
 
-import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.Comment;
@@ -71,6 +69,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
+import org.w3c.dom.ls.LSInput;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
@@ -145,6 +144,7 @@ public class LabelValidator {
     useLabelSchematron = false;
     cachedLabelSchematrons = new HashMap<String, Transformer>();
     cachedEntityResolver = new CachedEntityResolver();
+    cachedLSResolver = new CachedLSResourceResolver();
     validatingSchema = null;
     // Support for XSD 1.1
     schemaFactory = SchemaFactory.newInstance("http://www.w3.org/XML/XMLSchema/v1.1");
@@ -184,7 +184,7 @@ public class LabelValidator {
    *
    */
   public void setSchema(List<URL> schemaFiles) {
-    userSchemaFiles = schemaFiles;
+    this.userSchemaFiles = schemaFiles;
   }
 
   /**
@@ -231,28 +231,36 @@ public class LabelValidator {
   }
 
   private List<StreamSource> loadSchemaSources(List<URL> schemas)
-      throws IOException {
+      throws IOException, SAXException {
     List<StreamSource> sources = new ArrayList<StreamSource>();
+    String externalLocations = "";
     for (URL schema : schemas) {
-      InputStream in = null;
-      URLConnection conn = null;
+      LSInput input = cachedLSResolver.resolveResource("", "", "",
+          schema.toString(), schema.toString());
+      StreamSource streamSource = new StreamSource(
+          input.getByteStream());
+      streamSource.setSystemId(schema.toString());
+      sources.add(streamSource);
+      InputSource inputSource = new InputSource(
+          input.getByteStream());
+      inputSource.setSystemId(input.getSystemId());
       try {
-        conn = schema.openConnection();
-        in = Utility.openConnection(conn);
-        InputSource inputSource = new InputSource(
-            new ByteArrayInputStream(IOUtils.toByteArray(in)));
-        inputSource.setSystemId(schema.toString());
-        StreamSource streamSource = new StreamSource(
-            inputSource.getByteStream());
-        streamSource.setSystemId(schema.toString());
-        sources.add(streamSource);
-      } finally {
-        IOUtils.closeQuietly(in);
-        IOUtils.close(conn);
+      XMLExtractor extractor = new XMLExtractor(inputSource);
+      String namespace = extractor.getTargetNamespace();
+      if (!namespace.isEmpty()) {
+        externalLocations += namespace + " " + schema.toString() + "\n";
+      }
+      inputSource.getByteStream().reset();
+      } catch (Exception e) {
+        throw new IOException("Error occurred while getting the "
+            + "targetNamespace for schema '" + schema.toString() + "': "
+            + e.getMessage());
       }
     }
+    schemaFactory.setProperty(
+        "http://apache.org/xml/properties/schema/external-schemaLocation",
+        externalLocations);
     return sources;
-
   }
 
   private List<StreamSource> loadSchemaSources(String[] schemaFiles) {
@@ -315,12 +323,10 @@ public class LabelValidator {
         // Allow errors that happen in the schema to be logged there
         if (container != null) {
           schemaFactory.setErrorHandler(new LabelErrorHandler(container));
-          cachedLSResolver = new CachedLSResourceResolver(container);
-          schemaFactory.setResourceResolver(cachedLSResolver);
-        } else {
-          cachedLSResolver = new CachedLSResourceResolver();
-          schemaFactory.setResourceResolver(cachedLSResolver);
+          cachedLSResolver.setExceptionContainer(container);
         }
+        schemaFactory.setResourceResolver(cachedLSResolver);
+
         // Time to load schema that will be used for validation
         if (userSchemaFiles != null) {
           // User has specified schema files to use
@@ -759,6 +765,10 @@ public class LabelValidator {
 
   public void setCachedEntityResolver(CachedEntityResolver resolver) {
     this.cachedEntityResolver = resolver;
+  }
+
+  public void setCachedLSResourceResolver(CachedLSResourceResolver resolver) {
+    this.cachedLSResolver = resolver;
   }
 
   public static void main(String[] args) throws Exception {

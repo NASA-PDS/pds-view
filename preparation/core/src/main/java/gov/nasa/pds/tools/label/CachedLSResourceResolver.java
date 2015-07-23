@@ -157,7 +157,9 @@ import org.w3c.dom.ls.LSResourceResolver;
     @Override
     public LSInput resolveResource(String type, String namespaceURI,
         String publicId, String systemId, String baseURI) {
-
+      if (systemId == null) {
+        return null;
+      }
       byte[] entity = cachedEntities.get(systemId);
       LSInputImpl input = new LSInputImpl();
       if (entity == null) {
@@ -189,9 +191,24 @@ import org.w3c.dom.ls.LSResourceResolver;
       input.setSystemId(systemId);
       input.setBaseURI(baseURI);
       if (entity != null) {
+        input.setByteStream(new ByteArrayInputStream(entity));
         input.setCharacterStream(
           new InputStreamReader(new ByteArrayInputStream(entity)));
+        return input;
+      } else {
+        return null;
       }
-      return input;
+    }
+
+    public Map<String, byte[]> getCachedEntities() {
+      return cachedEntities;
+    }
+
+    public void addCachedEntities(Map<String, byte[]> entities) {
+      this.cachedEntities.putAll(entities);
+    }
+
+    public void setExceptionContainer(ExceptionContainer container) {
+      this.container = container;
     }
   }

@@ -71,4 +71,8 @@ public class CachedEntityResolver implements EntityResolver {
     inputSource.setSystemId(systemId);
     return inputSource;
   }
+
+  public void addCachedEntities(Map<String, byte[]> entities) {
+    this.cachedEntities.putAll(entities);
+  }
 }

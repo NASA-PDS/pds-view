@@ -31,6 +31,7 @@ import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.xpath.XPathEvaluator;
 
 
+
 import org.xml.sax.InputSource;
 
 /**
@@ -46,6 +47,10 @@ public class XMLExtractor {
     public static final String SCHEMA_LOCATION_XPATH = "//*/@xsi:schemaLocation";
 
     public static final String XML_MODEL_XPATH = "/processing-instruction('xml-model')";
+
+    public static final String DEFAULT_NAMESPACE = "//*/namespace::*[name()='']";
+
+    public static final String TARGET_NAMESPACE = "//*/@targetNamespace";
 
     /**
      * Constructor.
@@ -88,6 +93,20 @@ public class XMLExtractor {
       ParseOptions options = new ParseOptions();
       options.setErrorListener(new XMLErrorListener());
       xml = configuration.buildDocument(new SAXSource(new InputSource(url.toString())),
+          options);
+      String definedNamespace = getValueFromDoc("namespace-uri(/*)");
+      xpath.getStaticContext().setDefaultElementNamespace(definedNamespace);
+    }
+
+    public XMLExtractor(InputSource source) throws XPathException,
+    XPathExpressionException {
+      xpath = new XPathEvaluator();
+      Configuration configuration = xpath.getConfiguration();
+      configuration.setLineNumbering(true);
+      configuration.setXIncludeAware(true);
+      ParseOptions options = new ParseOptions();
+      options.setErrorListener(new XMLErrorListener());
+      xml = configuration.buildDocument(new SAXSource(source),
           options);
       String definedNamespace = getValueFromDoc("namespace-uri(/*)");
       xpath.getStaticContext().setDefaultElementNamespace(definedNamespace);
@@ -275,5 +294,26 @@ public class XMLExtractor {
      */
     public List<String> getXmlModels() throws XPathExpressionException {
       return getValuesFromDoc(XML_MODEL_XPATH);
+    }
+
+    /**
+     *
+     * @return Returns the 'xmlns' attribute of the document (default namespace)
+     * @throws XPathExpressionException
+     * @throws XPathException
+     */
+    public String getDefaultNamespace() throws XPathExpressionException, XPathException {
+      return getValueFromDoc(DEFAULT_NAMESPACE);
+    }
+
+    /**
+    *
+    * @return Returns the 'targetNamespace' attribute of the document
+    * (default namespace)
+    * @throws XPathExpressionException
+    * @throws XPathException
+    */
+    public String getTargetNamespace() throws XPathExpressionException, XPathException {
+      return getValueFromDoc(TARGET_NAMESPACE);
     }
 }
