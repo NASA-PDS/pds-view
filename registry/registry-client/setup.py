@@ -45,7 +45,7 @@ else:
 # ------------
 
 _name            = 'pds.registry'
-_downloadURL     = 'http://oodt.jpl.nasa.gov/dist/pds'
+_downloadURL     = 'ftp://pds.nasa.gov/pub/toplevel/2010/registry/pds.registry-' + _version + '.tar.gz'
 _maintainer      = 'Sean Kelly'
 _maintainerEmail = 'sean.kelly@jpl.nasa.gov'
 _license         = 'Proprietary'
