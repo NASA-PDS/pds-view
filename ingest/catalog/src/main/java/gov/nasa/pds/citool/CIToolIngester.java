@@ -554,7 +554,7 @@ public class CIToolIngester {
     			else {
     				values = new ArrayList<String>();
     			}
-    			lidValue += "__" + hostId;
+    			lidValue += "." + hostId;
     			lidValue = Utility.collapse(lidValue);
     			lidValue = Utility.replaceChars(lidValue);
     			lidValue = lidValue.toLowerCase();

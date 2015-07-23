@@ -828,7 +828,7 @@ public class CatalogRegistryIngester {
 				value = Utility.collapse(value);
 				String instHostId = md.getMetadata("INSTRUMENT_HOST_ID");
 				instHostId = Utility.collapse(instHostId);
-				productLid = Constants.LID_PREFIX+"instrument:instrument."+value+"__" + instHostId;
+				productLid = Constants.LID_PREFIX+"instrument:instrument."+value+"." + instHostId;
 				productLid = Utility.replaceChars(productLid);
 				productLid = productLid.toLowerCase();
 				product.setLid(productLid);
