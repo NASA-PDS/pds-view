@@ -4,7 +4,7 @@ Changelog
 What follows is a history of changes from release to release, along with
 issues addressed and new features in each release.
 
-1.8.0 - Associations
+1.8.1 - Associations
 --------------------
 
 * Added API to retrieve associations (PDS-342).
