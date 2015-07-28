@@ -19,8 +19,6 @@ public class PDSLogsManager implements LogsManager {
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	
-	public PDSLogsManager(){}
-	
 	public void pullLogFiles(Properties nodeProps) throws LogsManagerException{
 		
 		if(nodeProps == null){

@@ -29,6 +29,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Vector;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -267,6 +269,38 @@ public class Utility {
 	public static int countSubstringInstances(String haystack, String needle){
 		
 		return haystack.length() - haystack.replace(needle, "").length();
+		
+	}
+	
+	/**
+	 * Get a {@link List} of {@link File}s in the given directory.
+	 * 
+	 * @param dir	A {@link File} object indicating the directory in question.
+	 * @return		A List of Files in the provided directory.
+	 */
+	public static List<File> getFileList(File dir) throws ReportManagerException{
+		
+		if(dir == null){
+			throw new ReportManagerException("Can't request a file list " +
+					"from a null directory.");
+		}else if(!dir.exists()){
+			throw new ReportManagerException("Can't request a file list " +
+					"from a non-existant directory.");
+		}else if(!dir.isDirectory()){
+			throw new ReportManagerException("Can't request a file list " +
+					"from a non-directory.");
+		}
+		
+		String[] filenames = dir.list();
+		if(filenames == null || filenames.length == 0){
+			throw new ReportManagerException("No files found in directory " +
+					dir.getAbsolutePath());
+		}
+		List<File> files = new Vector<File>();
+		for(String filename: filenames){
+			files.add(new File(dir, filename));
+		}
+		return files;
 		
 	}
 	

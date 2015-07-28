@@ -79,13 +79,30 @@ public class WholeLineProcessor extends LogReformatProcessor{
 	private List<String> regexGroupList = null;
 	
 	@Override
+	/**
+	 * @see gov.nasa.pds.report.processing.Processor.process()
+	 */
 	public void process(File in, File out) throws ProcessingException {
 		
 		// Check that the processor has been configured
-		if(this.inputRegexPattern == null || this.regexGroupList == null ||
-				this.regexGroupList.isEmpty()){
+		if(!this.verifyConfiguration()){
 			throw new ProcessingException("The whole line log reformat " +
-					"processor has not been configured previously");
+			"processor has not been configured previously");
+		}
+		
+		super.process(in, out);
+		
+	}
+	
+	/**
+	 * @see gov.nasa.pds.report.processing.Processor.process()
+	 */
+	public void process(List<File> in, File out) throws ProcessingException{
+		
+		// Check that the processor has been configured
+		if(!this.verifyConfiguration()){
+			throw new ProcessingException("The whole line log reformat " +
+			"processor has not been configured previously");
 		}
 		
 		super.process(in, out);
@@ -93,6 +110,9 @@ public class WholeLineProcessor extends LogReformatProcessor{
 	}
 
 	@Override
+	/**
+	 * @see gov.nasa.pds.report.processing.Processor.getDirName()
+	 */
 	public String getDirName() {
 		
 		return OUTPUT_DIR_NAME;
@@ -100,6 +120,9 @@ public class WholeLineProcessor extends LogReformatProcessor{
 	}
 
 	@Override
+	/**
+	 * @see gov.nasa.pds.report.processing.Processor.configure()
+	 */
 	public void configure(Properties props) throws ProcessingException {
 		
 		log.info("Configuring whole line log reformatting processor");
@@ -131,6 +154,24 @@ public class WholeLineProcessor extends LogReformatProcessor{
 		
 	}
 
+	/**
+	 * @see gov.nasa.pds.report.processing.Processor.verifyConfiguration()
+	 */
+	public boolean verifyConfiguration(){
+		
+		return (this.inputRegexPattern != null && this.regexGroupList != null &&
+				!this.regexGroupList.isEmpty());
+		
+	}
+	
+	@Override
+	/**
+	 * @see gov.nasa.pds.report.processing.LogReformatProcessor.getOutputFileName()
+	 */
+	public String getOutputFileName(String inputFileName) {
+		return inputFileName;
+	}
+	
 	@Override
 	/**
 	 * @see gov.nasa.pds.report.processing.LogReformatProcessor.parseInputLine()

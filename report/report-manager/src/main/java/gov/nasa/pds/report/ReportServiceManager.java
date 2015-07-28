@@ -19,6 +19,7 @@ import gov.nasa.pds.report.logs.LogsManager;
 import gov.nasa.pds.report.logs.LogsManagerException;
 import gov.nasa.pds.report.logs.PDSLogsManager;
 import gov.nasa.pds.report.processing.ProcessingException;
+import gov.nasa.pds.report.processing.ProcessingManager;
 import gov.nasa.pds.report.processing.Processor;
 import gov.nasa.pds.report.profile.ProfileManager;
 import gov.nasa.pds.report.profile.SimpleProfileManager;
@@ -161,128 +162,27 @@ public class ReportServiceManager {
 		}
 	
 	}
-	
-	// TODO: At some point, we should create a class to handle this, similar
-	// to using a LogsManager to pull logs 
+
 	public void processLogs(){
 		
 		log.info("Processing logs");
 		
+		ProcessingManager pm = new ProcessingManager();
+		
 		for(Properties props: propsList){
 			
-			String processesStr = null;
-			String nodeName = null;
-			String profileID = null;
-				
-			// Get profile details needed for processing
-			try{
-				processesStr = Utility.getNodePropsString(props, 
-						Constants.NODE_PROCESSES_KEY, false);
-				nodeName = Utility.getNodePropsString(props, 
-						Constants.NODE_NODE_KEY, true);
-				profileID = Utility.getNodePropsString(props,
-						Constants.NODE_ID_KEY, true);
-				log.info("Processing logs from profile " + profileID);
-			}catch(ReportManagerException e){
-				log.warning("An error occurred while collecting profile " +
-						"details to process profile " + profileID + ": " + 
-						e.getMessage());
-				continue;
-			}
-				
-			// Create a list of Processors to run
-			List<Processor> processors = new Vector<Processor>();
-			if(processesStr != null){
-				String[] processes = processesStr.split(",");
-				for(int i = 0; i < processes.length; i++){
-					Processor p =
-							GenericReportServiceObjectFactory.getProcessor(
-							processes[i].trim());
-					processors.add(p);
-					if(p == null){
-						log.warning("An error occurred while creating " +
-								"Processors using profile " + profileID);
-						i = processes.length;
-						processors = null;
-					}
-				}
-				if(processors == null){
-					continue;
-				}
-			}
-			log.finer("Found " + processors.size() + " processes to run on " +
-					"logs from profile " + profileID);
-				
 			try{
 				
-				// The directory that contains the most processed version of
-				// logs downloaded using the current profile.  When a Processor
-				// finishes, this File is set to the directory containing its
-				// output.
-				File mostProcessed = FileUtil.getDir(Constants.STAGING_DIR,
-						nodeName, profileID);
-			
-				// Iterate through each of the Processors specified in the
-				// current profile
-				for(Iterator<Processor> i = processors.iterator(); i.hasNext();){
-					
-					Processor p = i.next();
-					
-					// Get the directory where the output of the current
-					// Processor will be placed
-					File out = FileUtil.getProcessingDir(nodeName, profileID,
-							p.getDirName());
-					
-					// Configure and run the Processor
-					p.configure(props);
-					p.process(mostProcessed, out);
-					
-					mostProcessed = out;
-					
-				}
+				pm.processLogs(props);
 				
-				// Copy the most processed version of the logs into the final
-				// directory tree where Sawmill will access them
-				// TODO: Compare checksums to see if files have been changed
-				// and see if the source file has a newer date than the copy
-				// at the destination before copying
-				File sawmillDir = FileUtil.getDir(Constants.SAWMILL_DIR,
-						nodeName, profileID);
-				log.fine("Copying processed logs from " +
-						mostProcessed.getAbsolutePath() + " to " +
-						sawmillDir.getAbsolutePath());
-				for(File file: mostProcessed.listFiles()){
-					FileUtils.copyFileToDirectory(file, sawmillDir);
-				}
-				
-			}catch(ReportManagerException e){
-				log.warning("An error occurred while handling processing " +
-						"directories for profile " + profileID + ": " +
-						e.getMessage());
 			}catch(ProcessingException e){
-				log.warning("An error occurred while processing " + profileID +
-						": " + e.getMessage());
-			}catch(IOException e){
-				log.warning("An error occurred while copying logs into " +
-						Constants.SAWMILL_DIR + " directory tree: " +
-						e.getMessage());
+				log.warning("An error occurred during processing: " + e.getMessage());
 			}
 			
 		}
 		
 		// Remove the processing directory--nobody must find the evidence!
-		File processingDir = new File(
-				System.getProperty(Constants.DIR_ROOT_PROP),
-				Constants.PROCESSING_DIR);
-		if(processingDir.exists()){
-			log.fine("Removing processing directory");
-			try{
-				FileUtils.forceDelete(processingDir);
-			}catch(IOException e){
-				log.warning("An error occurred while removing the processing " +
-						"directory: " + e.getMessage());
-			}
-		}
+		pm.cleanupProcessingDir();
 		
 	}
 	

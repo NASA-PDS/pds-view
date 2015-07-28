@@ -153,10 +153,22 @@ public class NcftpReformatProcessor extends LogReformatProcessor{
 	}
 	
 	@Override
+	/**
+	 * Reformat all of the NcFTP logs in the given directory and place them in
+	 * the given output directory.
+	 * 
+	 * @param in					The directory containing the logs to be
+	 * 								reformatted, given as a {@link File}.
+	 * @param out					The directory where output is placed, given
+	 * 								as a {@link File}.
+	 * @throws ProcessingException	If the Processor has not been properly
+	 * 								configured or if an error occurs during
+	 * 								processing.
+	 */
 	public void process(File in, File out) throws ProcessingException {
 		
 		// Check that the processor has been configured
-		if(this.layoutMap.isEmpty()){
+		if(!this.verifyConfiguration()){
 			throw new ProcessingException("The NcFTP log reformatter has not " +
 					"been previously configured");
 		}
@@ -165,7 +177,34 @@ public class NcftpReformatProcessor extends LogReformatProcessor{
 		
 	}
 
+	/**
+	 * Reformat all of the NcFTP logs in the given list and place them in
+	 * the given output directory.
+	 * 
+	 * @param in					A {@link List} of {@link File}s,
+	 * 								representing the logs to be reformatted.
+	 * @param out					The directory where output is placed, given
+	 * 								as a {@link File}.
+	 * @throws ProcessingException	If the Processor has not been properly
+	 * 								configured or if an error occurs during
+	 * 								processing.
+	 */
+	public void process(List<File> in, File out) throws ProcessingException{
+		
+		// Check that the processor has been configured
+		if(!this.verifyConfiguration()){
+			throw new ProcessingException("The NcFTP log reformatter has not " +
+					"been previously configured");
+		}
+		
+		super.process(in, out);
+		
+	}
+	
 	@Override
+	/**
+	 * @see gov.nasa.pds.report.processing.Processor.getDirName()
+	 */
 	public String getDirName(){
 		
 		return OUTPUT_DIR_NAME;
@@ -173,6 +212,9 @@ public class NcftpReformatProcessor extends LogReformatProcessor{
 	}
 
 	@Override
+	/**
+	 * @see gov.nasa.pds.report.processing.Processor.configure()
+	 */
 	public void configure(Properties props) throws ProcessingException {
 		
 		log.info("Configuring NcFTP log reformatter");
@@ -247,6 +289,24 @@ public class NcftpReformatProcessor extends LogReformatProcessor{
 			throw new ProcessingException("The NcFTP log reformatter does " +
 					"not recognize the given NcFTP version: " + version);
 		}
+		
+	}
+	
+	/**
+	 * @see gov.nasa.pds.report.processing.LogReformatProcessor.getOutputFileName()
+	 */
+	public String getOutputFileName(String inputFileName){
+		
+		return inputFileName;
+		
+	}
+	
+	/**
+	 * @see gov.nasa.pds.report.processing.Processor.verifyConfiguration()
+	 */
+	public boolean verifyConfiguration(){
+		
+		return !this.layoutMap.isEmpty();
 		
 	}
 	

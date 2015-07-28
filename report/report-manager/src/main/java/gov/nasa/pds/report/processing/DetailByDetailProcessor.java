@@ -102,6 +102,13 @@ public class DetailByDetailProcessor extends LogReformatProcessor{
 	}
 	
 	/**
+	 * @see gov.nasa.pds.report.processing.LogReformatProcessor.getOutputFileName()
+	 */
+	public String getOutputFileName(String inputFileName){
+		return inputFileName;
+	}
+	
+	/**
 	 * @see gov.nasa.pds.report.processing.LogReformatProcessor.parseInputLine()
 	 */
 	protected void parseInputLine(String line) throws ProcessingException{

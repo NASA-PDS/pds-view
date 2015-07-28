@@ -170,40 +170,75 @@ public abstract class LogReformatProcessor implements Processor{
 		}
 		
 		// Check that the processor has been configured
-		if(this.inputDetailMap == null || this.inputDetailMap.isEmpty() || 
-				this.outputDetailMap == null || this.outputDetailMap.isEmpty()){
+		if(!this.verifyConfiguration()){
 			throw new ProcessingException("The log reformat processor has " +
-					"not been configured previously");
+			"not been configured previously");
 		}
 		
 		log.info("Now reformatting logs in " + in.getAbsolutePath());
 		
 		// Get a list of files in the input directory
-		String[] filenames = in.list();
-		if(filenames == null || filenames.length == 0){
-			log.warning("No logs found for reformatting in input directory " + 
-					in.getAbsolutePath());
-			return;
+		List<File> files = null;
+		try{
+			files = Utility.getFileList(in);
+		}catch(ReportManagerException e){
+			throw new ProcessingException("An error occurred while finding " +
+					"the logs at " + in.getAbsolutePath());
 		}
 		
 		// Reformat each of the files
-		for(int i = 0; i < filenames.length; i++){
-			
-			File file = new File(in, filenames[i]);
-			try{
-				log.info("Reformatting log file " + file.getAbsolutePath() +
-						" (" + Integer.toString(i + 1) + "/" +
-						filenames.length + ")");
-				this.processFile(file, out);
-			}catch(ProcessingException e){
-				log.warning("An error occurred while reformatting log file " +
-						file.getAbsolutePath() + ": " + e.getMessage());
-			}
-			
-		}
+		this.processFileList(files, out);
 		
 	}
 
+	/**
+	 * Read in the log files in the given directory, reformat them as per 
+	 * configured, and place the output in the given directory.
+	 * 
+	 * @param in					A {@link List} of {@link File}s that will
+	 * 								be reformatted.
+	 * @param out					The directory where output will be placed,
+	 * 								represented as a {@link File}.
+	 * @throws ProcessingException	If any parameters are null or invalid, if
+	 * 								the processor hasn't been configured, or if
+	 * 								an error occurs during processing.
+	 */
+	public void process(List<File> in, File out) throws ProcessingException{
+		
+		if(in == null || in.isEmpty()){
+			throw new ProcessingException("No input file list provided to " +
+					"log reformat processor");
+		}
+		if(out == null){
+			throw new ProcessingException("No output directory provided to " +
+					"log reformat processor");
+		}else if(!out.exists()){
+			throw new ProcessingException("The output directory for log " +
+					"reformatting does not exist: " + out.getAbsolutePath());
+		}
+		
+		// Check that the processor has been configured
+		if(!this.verifyConfiguration()){
+			throw new ProcessingException("The log reformat processor has " +
+			"not been configured previously");
+		}
+		
+		this.processFileList(in, out);
+		
+	}
+	
+	/**
+	 * @see gov.nasa.pds.report.processing.Processor.verifyConfiguration()
+	 */
+	public boolean verifyConfiguration(){
+		
+		return (this.inputDetailMap != null &&
+				!this.inputDetailMap.isEmpty() &&
+				this.outputDetailMap != null &&
+				!this.outputDetailMap.isEmpty());
+		
+	}
+	
 	/**
 	 * This is a convenience method to assist sub-classes in configuring
 	 * their log detail maps and means of parsing input and structuring output.
@@ -251,6 +286,33 @@ public abstract class LogReformatProcessor implements Processor{
 		
 		// Determine how many errors we will tolerate per file
 		this.determineErrorTolerance();
+		
+	}
+	
+	/**
+	 * Process the provided {@link List} of {@link File}s.
+	 * 
+	 * @param files					A list of File objects pointing to log
+	 * 								files to be processed.
+	 * @param out					A {@link File} object pointing to the
+	 * 								directory where output will be placed.
+	 * @throws ProcessingException	If an error occurs.
+	 */
+	protected void processFileList(List<File> files, File out)
+			throws ProcessingException{
+		
+		for(int i = 0; i < files.size(); i++){
+			File file = files.get(i);
+			try{
+				log.info("Reformatting log file " + file.getAbsolutePath() +
+						" (" + Integer.toString(i + 1) + "/" +
+						files.size() + ")");
+				this.processFile(file, out);
+			}catch(ProcessingException e){
+				log.warning("An error occurred while reformatting log file " +
+						file.getAbsolutePath() + ": " + e.getMessage());
+			}
+		}
 		
 	}
 	

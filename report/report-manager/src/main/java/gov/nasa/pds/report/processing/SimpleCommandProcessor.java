@@ -1,6 +1,7 @@
 package gov.nasa.pds.report.processing;
 
 import java.io.File;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -9,21 +10,24 @@ import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.util.CommandLineWorker;
 import gov.nasa.pds.report.util.Utility;
 
+/**
+ * This Processor implementation runs a specified command.
+ * 
+ * @author resneck
+ */
 public class SimpleCommandProcessor implements Processor{
 
 	public static final String OUTPUT_DIR_NAME = "simple_command";
 	
-	private String command;
+	protected String command;
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	
 	@Override
+	/**
+	 * @see gov.nasa.pds.report.processing.Processor.process()
+	 */
 	public void process(File in, File out) throws ProcessingException {
-		
-		if(this.command == null){
-			throw new ProcessingException("The simple command processor has " +
-					"not yet been properly configured.");
-		}
 		
 		if(in == null){
 			throw new ProcessingException("No input directory provided to " +
@@ -38,50 +42,63 @@ public class SimpleCommandProcessor implements Processor{
 					out.getAbsolutePath());
 		}
 		
-		log.info("Performing simple command: " + this.command);
+		if(!this.verifyConfiguration()){
+			throw new ProcessingException("The simple command processor has " +
+			"not yet been properly configured.");
+		}
+		
+		log.info("Performing simple command processing");
 		
 		// Get a list of files in the input directory
-		String[] filenames = in.list();
-		if(filenames == null || filenames.length == 0){
-			throw new ProcessingException("No logs found in basic command " +
-					"input directory " + in.getAbsolutePath());
+		List<File> files = null;
+		try{
+			files = Utility.getFileList(in);
+		}catch(ReportManagerException e){
+			throw new ProcessingException("An error occurred while finding " +
+					"the logs at " + in.getAbsolutePath());
 		}
 		
 		// Run the command for each of the files
-		for(int i = 0; i < filenames.length; i++){
-			
-			// Get file absolute path
-			File file = new File(in, filenames[i]);
-			String path = file.getAbsolutePath();
-			String fileName = file.getName();
-			
-			// Trim the output file name as needed
-			// TODO: Find a better way to do this
-			if(fileName.endsWith(".gz")){
-				fileName = fileName.replace(".gz", "");
-			}
-			
-			// Format the command string for each file
-			String cmd = this.command.replace("<input>", path);
-			cmd = cmd.replace("<output>",
-					new File(out, fileName).getAbsolutePath());
-			
-			// Execute the command
-			CommandLineWorker worker = new CommandLineWorker(cmd);
-			int exitValue = worker.execute();
-			if(exitValue != 0){
-				log.warning("The command '" + cmd + "' failed with exit code " +
-						exitValue);
-			}
-			
-		}
+		this.processFileList(files, out);
 	
 	}
 	
+	/**
+	 * @see gov.nasa.pds.report.processing.Processor.process()
+	 */
+	public void process(List<File> in, File out) throws ProcessingException{
+		
+		if(in == null){
+			throw new ProcessingException("No input file list provided to " +
+					"log reformat processor");
+		}
+		if(out == null){
+			throw new ProcessingException("No output directory provided to " +
+					"log reformat processor");
+		}else if(!out.exists()){
+			throw new ProcessingException("The output directory for log " +
+					"reformatting does not exist: " + out.getAbsolutePath());
+		}
+		
+		if(!this.verifyConfiguration()){
+			throw new ProcessingException("The simple command processor has " +
+			"not yet been properly configured.");
+		}
+		
+		this.processFileList(in, out);
+		
+	}
+	
+	/**
+	 * @see gov.nasa.pds.report.processing.Processor.getDirName()
+	 */
 	public String getDirName(){
 		return OUTPUT_DIR_NAME;
 	}
 	
+	/**
+	 * @see gov.nasa.pds.report.processing.Processor.configure()
+	 */
 	public void configure(Properties props) throws ProcessingException{
 		
 		log.info("Configuring simple command processor");
@@ -96,11 +113,88 @@ public class SimpleCommandProcessor implements Processor{
 		}
 		
 		// Validate the command to run
-		if(!this.command.contains("<input>") ||
-				!this.command.contains("<output>")){
+		if(!this.validateCommand()){
 			throw new ProcessingException("The <input> and <output> tags " +
 					"were not included in the given processing command");
 		}
+		
+	}
+	
+	/**
+	 * @see gov.nasa.pds.report.processing.LogReformatProcessor.getOutputFileName()
+	 * 
+	 * TODO: Make this more robust or figure out a better way to determine how
+	 * files will be renamed.  Perhaps include something to specify this in
+	 * configuration.  For example, we could specify the gunzip renaming with a
+	 * config value of <inputname>-<.gz>+<>.  The value to untar a text file might
+	 * look like <inputname>-<tar.gz>+<txt>.
+	 */
+	public String getOutputFileName(String inputFileName){
+		
+		if(this.command.startsWith("gunzip")){
+			return inputFileName.replace(".gz", "");
+		}else if(this.command.startsWith("zcat")){
+			return inputFileName.replace(".gz", "");
+		}else{
+			return inputFileName;
+		}
+		
+	}
+	
+	/**
+	 * @see gov.nasa.pds.report.processing.Processor.verifyConfiguration()
+	 */
+	public boolean verifyConfiguration(){
+		
+		return (this.command != null && !this.command.equals(""));
+		
+	}
+	
+	/**
+	 * Run the given command on the list of provided files.
+	 * 
+	 * @param files					A {@link List} of {@link File}s to process
+	 * @param out					A File object pointing to the directory
+	 * 								where output is placed
+	 * @throws ProcessingException	If an error occurs
+	 */
+	protected void processFileList(List<File> files, File out)
+			throws ProcessingException{
+		
+		for(int i = 0; i < files.size(); i++){
+			
+			File file = files.get(i);
+			
+			// Create the command to run
+			String cmd = this.command.replace("<input>",
+					file.getAbsolutePath());
+			cmd = cmd.replace("<output>",
+					new File(out, this.getOutputFileName(file.getName())).
+					getAbsolutePath());
+			log.info("Running simple command: " + cmd + " (" +
+					Integer.toString(i + 1) + "/" + files.size() + ")");
+			
+			// Execute the command
+			CommandLineWorker worker = new CommandLineWorker(cmd);
+			int exitValue = worker.execute();
+			if(exitValue != 0){
+				log.warning("The command '" + cmd + "' failed with exit code " +
+						exitValue);
+			}
+			
+		}
+		
+	}
+	
+	/**
+	 * Validate the currently specified command to run.
+	 * 
+	 * @return	True if the command is valid, otherwise false
+	 */
+	protected boolean validateCommand(){
+		
+		return (this.command != null && this.command.contains("<input>") &&
+				this.command.contains("<output>"));
 		
 	}
 	
