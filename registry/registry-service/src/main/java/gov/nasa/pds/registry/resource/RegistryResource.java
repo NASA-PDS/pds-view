@@ -32,6 +32,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.Properties;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * This is the top-level resource for the registry service.
  * 
@@ -95,8 +99,8 @@ public class RegistryResource {
     builder.header("Link", new Link(packagesUri, "packages", null)); 
     String batchUri = uriInfo.getBaseUriBuilder().clone().path(
             RegistryResource.class).path(RegistryResource.class,
-            "getBatchResource").build().toString();
-        builder.header("Link", new Link(packagesUri, "batch", null));
+        "getBatchResource").build().toString();
+    builder.header("Link", new Link(packagesUri, "batch", null));
     
     return builder.build();
   }
@@ -114,9 +118,12 @@ public class RegistryResource {
   @GET
   @Path("report")
   @Produces( { MediaType.APPLICATION_XML, MediaType.TEXT_XML,
-      MediaType.APPLICATION_JSON })
+	  MediaType.APPLICATION_JSON })
   public Report getReport() {
-    return registryService.getReport();
+	  Report aReport = registryService.getReport();
+	  String registryVersion = readProperties().getProperty("registryVersion");
+	  aReport.setRegistryVersion(registryVersion);
+	  return aReport;
   }
 
   /**
@@ -266,5 +273,19 @@ public class RegistryResource {
   @Path("replication")
   public ReplicationResource getReplicationResource() {
     return new ReplicationResource(this.uriInfo, this.request, this.registryService);
+  }
+  
+  private Properties readProperties() {
+	  Properties properties = new Properties();
+	  InputStream inputStream = getClass().getClassLoader().getResourceAsStream("registryConfig.properties");
+	  if (inputStream != null) {
+		  try {
+			  properties.load(inputStream);
+		  } catch (IOException e) {
+			  // TODO Add your custom fail-over code here
+			  e.printStackTrace();
+		  }
+	  }
+	  return properties;
   }
 }
