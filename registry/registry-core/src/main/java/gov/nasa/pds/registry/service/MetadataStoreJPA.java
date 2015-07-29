@@ -114,6 +114,9 @@ public class MetadataStoreJPA implements MetadataStore {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<ExtrinsicObject> cq = cb.createQuery(ExtrinsicObject.class);
     Root<ExtrinsicObject> productEntity = cq.from(ExtrinsicObject.class);
+    // to get count
+    CriteriaQuery<Long> countCq = cb.createQuery(Long.class);
+
     ExtrinsicFilter filter = query.getFilter();
     List<Predicate> predicates = new ArrayList<Predicate>();
     if (filter != null) {
@@ -147,8 +150,10 @@ public class MetadataStoreJPA implements MetadataStore {
       Predicate[] p = new Predicate[predicates.size()];
       if (query.getOperator() == QueryOperator.AND) {
         cq.where(cb.and(predicates.toArray(p)));
+        countCq.where(cb.and(predicates.toArray(p)));
       } else {
         cq.where(cb.or(predicates.toArray(p)));
+        countCq.where(cb.or(predicates.toArray(p)));
       }
     }
 
@@ -166,8 +171,15 @@ public class MetadataStoreJPA implements MetadataStore {
       orders.add(cb.asc(productEntity.get("guid")));
     }
     cq.orderBy(orders);
+    countCq.orderBy(orders);
     TypedQuery<ExtrinsicObject> dbQuery = entityManager.createQuery(cq);
-    long totalCount = getNumRegistryObjects(ExtrinsicObject.class);
+    
+    // to get a row count of the results    
+    countCq.select(cb.count(countCq.from(ExtrinsicObject.class)));
+    entityManager.createQuery(countCq);
+    long totalCount = entityManager.createQuery(countCq).getSingleResult();
+    System.out.println("totalCount = " + totalCount);
+    
     PagedResponse<ExtrinsicObject> response = new PagedResponse<ExtrinsicObject>(start, 
     	totalCount, dbQuery.setFirstResult(start - 1).setMaxResults(rows).getResultList());
     return response;
@@ -187,6 +199,8 @@ public class MetadataStoreJPA implements MetadataStore {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<RegistryPackage> cq = cb.createQuery(RegistryPackage.class);
     Root<RegistryPackage> productEntity = cq.from(RegistryPackage.class);
+    // to get count
+    CriteriaQuery<Long> countCq = cb.createQuery(Long.class);
     PackageFilter filter = query.getFilter();
     List<Predicate> predicates = new ArrayList<Predicate>();
     if (filter != null) {
@@ -212,8 +226,10 @@ public class MetadataStoreJPA implements MetadataStore {
       Predicate[] p = new Predicate[predicates.size()];
       if (query.getOperator() == QueryOperator.AND) {
         cq.where(cb.and(predicates.toArray(p)));
+        countCq.where(cb.and(predicates.toArray(p)));
       } else {
         cq.where(cb.or(predicates.toArray(p)));
+        countCq.where(cb.or(predicates.toArray(p)));
       }
     }
 
@@ -231,10 +247,18 @@ public class MetadataStoreJPA implements MetadataStore {
       orders.add(cb.asc(productEntity.get("guid")));
     }
     cq.orderBy(orders);
+    countCq.orderBy(orders);
     TypedQuery<RegistryPackage> dbQuery = entityManager.createQuery(cq);
-    PagedResponse<RegistryPackage> response = new PagedResponse<RegistryPackage>(
-        start, (long) dbQuery.getResultList().size(), dbQuery.setFirstResult(
-            start - 1).setMaxResults(rows).getResultList());
+    
+    // to get a row count of the results    
+    countCq.select(cb.count(countCq.from(RegistryPackage.class)));
+    entityManager.createQuery(countCq);
+    long totalCount = entityManager.createQuery(countCq).getSingleResult();
+    //System.out.println("totalCount = " + totalCount);
+    
+    PagedResponse<RegistryPackage> response = new PagedResponse<RegistryPackage>(start, 
+    	totalCount, dbQuery.setFirstResult(start - 1).setMaxResults(rows).getResultList());
+    
     return response;
   }
 
@@ -297,6 +321,9 @@ public class MetadataStoreJPA implements MetadataStore {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<Association> cq = cb.createQuery(Association.class);
     Root<Association> associationEntity = cq.from(Association.class);
+    // to get count
+    CriteriaQuery<Long> countCq = cb.createQuery(Long.class);
+    
     AssociationFilter filter = query.getFilter();
     List<Predicate> predicates = new ArrayList<Predicate>();
     if (filter != null) {
@@ -317,8 +344,10 @@ public class MetadataStoreJPA implements MetadataStore {
       Predicate[] p = new Predicate[predicates.size()];
       if (query.getOperator() == QueryOperator.AND) {
         cq.where(cb.and(predicates.toArray(p)));
+        countCq.where(cb.and(predicates.toArray(p)));
       } else {
         cq.where(cb.or(predicates.toArray(p)));
+        countCq.where(cb.or(predicates.toArray(p)));
       }
     }
 
@@ -336,17 +365,22 @@ public class MetadataStoreJPA implements MetadataStore {
       orders.add(cb.asc(associationEntity.get("guid")));
     }
     cq.orderBy(orders);
+    countCq.orderBy(orders);
     TypedQuery<Association> dbQuery = entityManager.createQuery(cq);
-
+    
+    // to get a row count of the results    
+    countCq.select(cb.count(countCq.from(Association.class)));
+    entityManager.createQuery(countCq);
+    long totalCount = entityManager.createQuery(countCq).getSingleResult();
+    //System.out.println("totalCount = " + totalCount);
+    
     if (rows == -1) {
-      return new PagedResponse<Association>(start, (long) dbQuery
-          .getResultList().size(), dbQuery.setFirstResult(start - 1)
-          .getResultList());
+      return new PagedResponse<Association>(start, totalCount, 
+    		  dbQuery.setFirstResult(start - 1).getResultList());
     }
 
-    return new PagedResponse<Association>(start, (long) dbQuery.getResultList()
-        .size(), dbQuery.setFirstResult(start - 1).setMaxResults(rows)
-        .getResultList());
+    return new PagedResponse<Association>(start, totalCount, 
+    		dbQuery.setFirstResult(start - 1).setMaxResults(rows).getResultList());
   }
 
   /*
@@ -661,6 +695,9 @@ public class MetadataStoreJPA implements MetadataStore {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<?> cq = cb.createQuery(objectClass);
     Root<?> objectEntity = cq.from(objectClass);
+    // to get count
+    CriteriaQuery<Long> countCq = cb.createQuery(Long.class);
+    
     ObjectFilter filter = query.getFilter();
     List<Predicate> predicates = new ArrayList<Predicate>();
     if (filter != null) {
@@ -694,8 +731,10 @@ public class MetadataStoreJPA implements MetadataStore {
       Predicate[] p = new Predicate[predicates.size()];
       if (query.getOperator() == QueryOperator.AND) {
         cq.where(cb.and(predicates.toArray(p)));
+        countCq.where(cb.and(predicates.toArray(p)));
       } else {
         cq.where(cb.or(predicates.toArray(p)));
+        countCq.where(cb.or(predicates.toArray(p)));
       }
     }
 
@@ -713,10 +752,21 @@ public class MetadataStoreJPA implements MetadataStore {
       orders.add(cb.asc(objectEntity.get("guid")));
     }
     cq.orderBy(orders);
+    countCq.orderBy(orders);
     TypedQuery<?> dbQuery = entityManager.createQuery(cq);
-    PagedResponse response = new PagedResponse(start, (long) dbQuery
-        .getResultList().size(), (List<RegistryObject>) dbQuery.setFirstResult(
-        start - 1).setMaxResults(rows).getResultList());
+    
+    // to get a row count of the results    
+    countCq.select(cb.count(countCq.from(objectClass)));
+    entityManager.createQuery(countCq);
+    long totalCount = entityManager.createQuery(countCq).getSingleResult();
+    System.out.println("totalCount = " + totalCount);
+    
+    PagedResponse response = new PagedResponse(start, totalCount, 
+    		(List<RegistryObject>) dbQuery.setFirstResult(start - 1).setMaxResults(rows).getResultList());
+  
+    //PagedResponse response = new PagedResponse(start, (long) dbQuery
+    //    .getResultList().size(), (List<RegistryObject>) dbQuery.setFirstResult(
+    //    start - 1).setMaxResults(rows).getResultList());
     return response;
   }
 
@@ -887,6 +937,9 @@ public class MetadataStoreJPA implements MetadataStore {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<AuditableEvent> cq = cb.createQuery(AuditableEvent.class);
     Root<AuditableEvent> eventEntity = cq.from(AuditableEvent.class);
+    // to get count
+    CriteriaQuery<Long> countCq = cb.createQuery(Long.class);
+    
     EventFilter filter = query.getFilter();
     List<Predicate> predicates = new ArrayList<Predicate>();
     if (filter != null) {
@@ -915,8 +968,10 @@ public class MetadataStoreJPA implements MetadataStore {
       Predicate[] p = new Predicate[predicates.size()];
       if (query.getOperator() == QueryOperator.AND) {
         cq.where(cb.and(predicates.toArray(p)));
+        countCq.where(cb.and(predicates.toArray(p)));
       } else {
         cq.where(cb.or(predicates.toArray(p)));
+        countCq.where(cb.or(predicates.toArray(p)));
       }
     }
 
@@ -934,17 +989,22 @@ public class MetadataStoreJPA implements MetadataStore {
       orders.add(cb.asc(eventEntity.get("guid")));
     }
     cq.orderBy(orders);
+    countCq.orderBy(orders);
     TypedQuery<AuditableEvent> dbQuery = entityManager.createQuery(cq);
-
+    
+    // to get a row count of the results    
+    countCq.select(cb.count(countCq.from(AuditableEvent.class)));
+    entityManager.createQuery(countCq);
+    long totalCount = entityManager.createQuery(countCq).getSingleResult();
+    System.out.println("totalCount = " + totalCount);
+    
     if (rows == -1) {
-      return new PagedResponse<AuditableEvent>(start, (long) dbQuery
-          .getResultList().size(), dbQuery.setFirstResult(start - 1)
-          .getResultList());
+      return new PagedResponse<AuditableEvent>(start, totalCount, 
+    		  dbQuery.setFirstResult(start - 1).getResultList());
     }
 
-    return new PagedResponse<AuditableEvent>(start, (long) dbQuery
-        .getResultList().size(), dbQuery.setFirstResult(start - 1)
-        .setMaxResults(rows).getResultList());
+    return new PagedResponse<AuditableEvent>(start, totalCount, 
+    		dbQuery.setFirstResult(start - 1).setMaxResults(rows).getResultList());
   }
 
 }
