@@ -55,7 +55,7 @@ for (String name : params.keySet()) {
 <!-- InstanceParam name="custom_page_class" type="text" value="sidebar" -->
 
 <script type="text/javascript"
-	src="http://code.jquery.com/jquery.min.js"></script>
+	src="https://code.jquery.com/jquery.min.js"></script>
 
 <script type="text/javascript">
 $(function() {
