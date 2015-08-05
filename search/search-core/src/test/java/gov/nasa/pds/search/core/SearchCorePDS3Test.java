@@ -26,6 +26,7 @@ import org.junit.runners.JUnit4;
  * @author jpadams
  */
 @RunWith(JUnit4.class)
+@Ignore
 public class SearchCorePDS3Test extends SearchCoreTest {
 
 	@BeforeClass
@@ -49,7 +50,6 @@ public class SearchCorePDS3Test extends SearchCoreTest {
 	 * @throws Exception
 	 */
 	@Test
-	@Ignore
 	public void testSearchCoreEndToEnd() {
 		try {
 			String[] args = {

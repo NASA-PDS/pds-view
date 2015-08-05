@@ -32,6 +32,7 @@ import org.junit.runners.JUnit4;
  * @author jpadams
  */
 @RunWith(JUnit4.class)
+@Ignore
 public class SearchCorePDS4Test extends SearchCoreTest {
 
 	/** Search Service Solr URL **/
@@ -62,6 +63,7 @@ public class SearchCorePDS4Test extends SearchCoreTest {
 	 * @throws Exception
 	 */
 	@Test
+	@Ignore
 	public void testLauncherPDS4() {
 		try {
 			String[] args = {

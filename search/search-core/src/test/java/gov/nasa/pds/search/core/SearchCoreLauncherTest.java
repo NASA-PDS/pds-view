@@ -10,6 +10,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,7 @@ import org.junit.runners.JUnit4;
  * 
  */
 @RunWith(JUnit4.class)
+@Ignore
 public class SearchCoreLauncherTest extends SearchCoreTest {
 
 	@BeforeClass

@@ -17,6 +17,7 @@ import org.junit.Ignore;
  * @author jpadams
  */
 @RunWith(JUnit4.class)
+@Ignore
 public class SearchCorePSATest {
 
 	@BeforeClass

@@ -36,6 +36,7 @@ import org.junit.runners.JUnit4;
  * 
  */
 @RunWith(JUnit4.class)
+@Ignore
 public class ProductClassTest extends SearchCoreTest {
 
 	private static final File TEST_DIR = new File(

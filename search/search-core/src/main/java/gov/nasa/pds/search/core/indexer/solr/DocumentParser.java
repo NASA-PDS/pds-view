@@ -147,7 +147,9 @@ public class DocumentParser {
 							&& Arrays.asList(Constants.VALID_UNK_VALUES)
 									.contains(value)) {
 						invalidDoc = true;
-					} else if (name.endsWith("date") || name.endsWith("time")) {
+					} 
+					// TODO - THIS NEEDS TO CHANGE - NEED TO USE CONFIG TYPE
+					else if (name.endsWith("date") || name.endsWith("time")) {
 						try {
 							value = PDSDateConvert.convert(name, value);
 						} catch (InvalidDatetimeException e) {
