@@ -23,18 +23,15 @@
   </properties>
 
   <body>
-    <release version="1.9.0" date="TBD" description="TBD">
-      <action dev="hyunlee" type="fix" issue="PDS-386">
-        Fixed an issue that the numFound attribute returns an incorrect value.
-      </action>
-    </release>
-
-    <release version="1.8.1" date="2015-07-13" description="This release of the Registry Core is a component of the integrated release 5.1.1 of the PDS4 System. This is an operational release of the system components to date.">
+    <release version="1.8.1" date="2015-08-05" description="This release of the Registry Core is a component of the integrated release 5.1.1 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" type="update" issue="PDS-361">
         Added batch insert capability to improve registration performance.
       </action>
       <action dev="hyunlee" type="fix" issue="PDS-362">
         Fixed out of memory errors when querying from a registry containing millions of products.
+      </action>
+      <action dev="hyunlee" type="fix" issue="PDS-386">
+        Fixed an issue that the numFound attribute returns an incorrect value.
       </action>
     </release>
 
