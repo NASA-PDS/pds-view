@@ -32,6 +32,6 @@ public final class FtpTestConstants{
 	public static final String TEST_PASSWORD = "anonymous";
 	public static final boolean TEST_ENCRYPTED = false;
 	public static final String TEST_PATH =
-			"/pub/wr/az/flagstaff/bsucharski/ida_ftp_stats/xferlog_2015-04-01.log";
+			"/pub/wr/az/flagstaff/bsucharski/ida_ftp_stats/xferlog_2015-06-01.log";
 	
 }
