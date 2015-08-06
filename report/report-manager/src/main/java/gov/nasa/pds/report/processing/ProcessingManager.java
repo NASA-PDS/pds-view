@@ -53,9 +53,12 @@ public class ProcessingManager{
 			return;
 		}
 			
-		// Create a list of Processors to run
+		// Create and configure the list of Processors to run
 		List<Processor> processors = this.getProcessList(processesStr,
 				profileID);
+		for(Processor p: processors){
+			p.configure(props);
+		}
 		log.finer("Found " + processors.size() + " processes to run on " +
 				"logs from profile " + profileID);
 		
@@ -81,8 +84,7 @@ public class ProcessingManager{
 				File out = FileUtil.getProcessingDir(nodeName, profileID,
 						p.getDirName());
 				
-				// Configure and run the Processor
-				p.configure(props);
+				// Run the Processor
 				if(previousOutput == null){
 					p.process(filesToProcess, out);
 				}else{
@@ -96,6 +98,10 @@ public class ProcessingManager{
 			}
 			
 			// Copy processed logs to Sawmill input location
+			if(processors.isEmpty()){
+				previousOutput = FileUtil.getDir(Constants.STAGING_DIR,
+						nodeName, profileID);
+			}
 			this.copyLogsInDir(previousOutput, sawmillDir);
 			
 		}catch(ReportManagerException e){
@@ -150,23 +156,23 @@ public class ProcessingManager{
 	private List<Processor> getProcessList(String processesStr,
 			String profileID) throws ProcessingException{
 		
+		List<Processor> processors = new Vector<Processor>();
+		
 		if(processesStr == null || processesStr.isEmpty()){
-			throw new ProcessingException("The processing list provided for " +
-					"profile " + profileID + " is empty");
+			return processors;
 		}
 		
-		List<Processor> processors = new Vector<Processor>();
 		String[] processes = processesStr.split(",");
 		for(int i = 0; i < processes.length; i++){
 			Processor p =
 					GenericReportServiceObjectFactory.getProcessor(
 					processes[i].trim());
-			processors.add(p);
 			if(p == null){
 				throw new ProcessingException("An error occurred while " +
 						"creating the " + processes[i] + " processor for " +
 						"profile " + profileID);
 			}
+			processors.add(p);
 		}
 		return processors;
 		
@@ -218,13 +224,15 @@ public class ProcessingManager{
 			}
 			File processedFile = new File(sawmillDir, fileName);
 			if(processedFile.exists()){
-				if(f.lastModified() >= processedFile.lastModified()){
+				if(f.lastModified() > processedFile.lastModified()){
 					filesToProcess.add(f);
 				}
 			}else{
 				filesToProcess.add(f);
 			}
 		}
+		log.fine("Found " + filesToProcess.size() + " files to process for " +
+				"profile " + profileID);
 		
 		return filesToProcess;
 		

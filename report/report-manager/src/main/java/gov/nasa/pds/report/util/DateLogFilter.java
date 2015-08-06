@@ -170,7 +170,7 @@ public class DateLogFilter{
 		// Check that the file name matches the pattern(s) specified
 		if(!filename.startsWith(preDateSubstring)){
 			throw new ParseException("The filename " + filename +
-					"does not match the pattern provided for date filtering",
+					" does not match the pattern provided for date filtering",
 					0);
 		}
 		if(postDateSubstring != null && !filename.endsWith(postDateSubstring)){
