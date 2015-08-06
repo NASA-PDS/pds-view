@@ -42,7 +42,7 @@ FIXME: Change XML namespace URI for oodt prefix?
       name="OODT OFSN Style Product Handler"
       productRoot="/usr/local/transport-ofsn/testdata"
       >
-      
+
   <!--  defines a new OFSN handler. There are 2 valid types:
 
      listing: this type generates a list of files given an OFSN. The list will
