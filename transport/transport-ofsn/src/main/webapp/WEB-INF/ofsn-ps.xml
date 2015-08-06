@@ -42,7 +42,7 @@ FIXME: Change XML namespace URI for oodt prefix?
       name="OODT OFSN Style Product Handler"
       productRoot="/usr/local/transport-ofsn/testdata"
       >
-
+      
   <!--  defines a new OFSN handler. There are 2 valid types:
 
      listing: this type generates a list of files given an OFSN. The list will
@@ -86,33 +86,39 @@ FIXME: Change XML namespace URI for oodt prefix?
    The DIRLIST1 type is identical to DIRLIST but does not recursively
    descend into subdirectories.
    -->
+  <!--handler name="DIRLIST1" type="listing"
+       class="org.apache.oodt.product.handlers.ofsn.DirListNonRecursiveHandler"/-->
   <handler name="DIRLIST1" type="listing"
-       class="org.apache.oodt.product.handlers.ofsn.DirListNonRecursiveHandler"/>
-
+       class="gov.nasa.pds.transport.DirListNonRecursiveHandler"/>
 
   <!--
     The DIRLIST type returns an XML file with directory names (and only
     directory names) and total size of files in each directory starting in
     the requested directory and traversing into the subdirectories.
    -->
+  <!--handler name="DIRLIST" type="listing"
+       class="org.apache.oodt.product.handlers.ofsn.DirListRecursiveHandler"/-->
   <handler name="DIRLIST" type="listing"
-       class="org.apache.oodt.product.handlers.ofsn.DirListRecursiveHandler"/>
-
+       class="gov.nasa.pds.transport.DirListRecursiveHandler"/>
 
   <!--
     The DIRFILELIST1 is identical to DIRFILELIST except that it does not
     recurse into subdirectories.
    -->
+  <!--handler name="DIRFILELIST1" type="listing"
+       class="org.apache.oodt.product.handlers.ofsn.FileListNonRecursiveHandler"/-->
   <handler name="DIRFILELIST1" type="listing"
-       class="org.apache.oodt.product.handlers.ofsn.FileListNonRecursiveHandler"/>
+       class="gov.nasa.pds.transport.FileListNonRecursiveHandler"/>
 
   <!--
     The DIRFILELIST returns an XML document containing all of the filenames
     (and only the files, not directories) and their sizes, recursing into
     subdirectories.
    -->
+  <!--handler name="DIRFILELIST" type="listing"
+       class="org.apache.oodt.product.handlers.ofsn.FileListRecursiveHandler"/-->
   <handler name="DIRFILELIST" type="listing"
-       class="org.apache.oodt.product.handlers.ofsn.FileListRecursiveHandler"/>
+       class="gov.nasa.pds.transport.FileListRecursiveHandler"/>
 
   <!--
     The  RAW_SIZE  generates an XML document telling the size of the raw file that

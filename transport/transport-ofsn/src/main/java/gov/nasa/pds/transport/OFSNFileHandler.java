@@ -139,6 +139,8 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 			ofsn = File.separator + ofsn;
 
 		String realPath = this.conf.getProductRoot() + ofsn;
+		//LOG.log(Level.INFO, "realPath = " + realPath);
+		
 		if (isListingCmd(cmd)) {
 			ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 			OFSNListHandler handler = getListHandler(cmd, cfg.getClassName());
@@ -151,7 +153,7 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 			}
 			else {
 				File[] fileList = handler.getListing(realPath);
-			     generateOFSNXml(fileList, cfg, outStream);
+			    generateOFSNXml(fileList, cfg, outStream);
 			}
 			xmlQuery.getResults().add(
 					new Result(cmdId, XML_MIME_TYPE, null, cmdId, Collections.EMPTY_LIST,
@@ -275,18 +277,23 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 		for(int i=0; i<fileList.length; i++) {
 			String filename = null;
 			if (!fileList[i].isDirectory()) continue;
-			filename = fileList[i].getAbsolutePath();
-			if (filename.startsWith(productDirName))  // Strip productDirName
-				filename = filename.substring(lenProductDirName);
-			if (filename.contains("/.")) continue;  // Kludge to exclude '.' dirs
-			b.append("  <dirEntry>").append(NL);
-			b.append("    <OFSN>");
-			b.append(filename);
-			b.append("</OFSN>").append(NL);
-			b.append("    <fileSize>");
-			b.append(getDirSize(fileList[i]));
-			b.append("</fileSize>").append(NL);
-			b.append("  </dirEntry>").append(NL);
+			if (fileList[i].canRead()) {
+				filename = fileList[i].getAbsolutePath();
+				if (filename.startsWith(productDirName))  // Strip productDirName
+					filename = filename.substring(lenProductDirName);
+				if (filename.contains("/.")) continue;  // Kludge to exclude '.' dirs
+				b.append("  <dirEntry>").append(NL);
+				b.append("    <OFSN>");
+				b.append(filename);
+				b.append("</OFSN>").append(NL);
+				b.append("    <fileSize>");
+				b.append(getDirSize(fileList[i]));
+				b.append("</fileSize>").append(NL);
+				b.append("  </dirEntry>").append(NL);
+			}
+			else {
+				System.out.println("Can't access to this directory...dir = " + fileList[i]);
+			}
 		}
 		if (oneLevel) return b;		// don't traverse sub directories
 		for(int i=0; i<fileList.length; i++) {
@@ -298,10 +305,11 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 
 	// Total length of all files in this directory
 	private long getDirSize(File dirFile) {
-		File[] fileList = dirFile.listFiles();
 		long totalLength = 0;
+		File[] fileList = dirFile.listFiles();
 		for (int i=0; i<fileList.length; i++) {
-			if (fileList[i].isDirectory()) continue;	// don't add size of dir
+			if (fileList[i].isDirectory()) continue;    // don't add size of dir
+			if (fileList[i].isHidden()) continue;       // don't add size of hidden file
 			totalLength += fileList[i].length();
 		}
 		return totalLength;

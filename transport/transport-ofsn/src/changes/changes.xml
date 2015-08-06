@@ -23,6 +23,9 @@
 
   <body>
     <release version="1.3.0" date="TBD" description="TBD">
+      <action dev="hyunlee" type="fix" issue="PDS-373">
+        Modified an issue that the transport-ofsn component errors on directories with limited permissions and returns ".*" files. 
+      </action>
     </release>
 
     <release version="1.2.1" date="2015-05-13" description="This release of the Transport Service is a component of the integrated release 5.1.0 of the PDS4 System. This is an operational release of the system components to date.">
