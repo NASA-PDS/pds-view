@@ -56,6 +56,7 @@ public abstract class Constants {
 		"Product_Observational",
 		"Product_Proxy_PDS3",
 		"Product_SIP", // added build3a
+		"Product_SIP_Deep_Archive", // added build5b+
 		"Product_SPICE_Kernel",
 		"Product_Service",
 		"Product_Software",
