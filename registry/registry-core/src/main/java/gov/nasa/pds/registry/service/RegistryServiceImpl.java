@@ -1,15 +1,15 @@
 //	Copyright 2009-2010, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
-//	Any commercial use must be negotiated with the Office of Technology 
+//	Any commercial use must be negotiated with the Office of Technology
 //	Transfer at the California Institute of Technology.
-//	
-//	This software is subject to U. S. export control laws and regulations 
-//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
-//	is subject to U.S. export control laws and regulations, the recipient has 
-//	the responsibility to obtain export licenses or other export authority as 
-//	may be required before exporting such information to foreign countries or 
+//
+//	This software is subject to U. S. export control laws and regulations
+//	(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+//	is subject to U.S. export control laws and regulations, the recipient has
+//	the responsibility to obtain export licenses or other export authority as
+//	may be required before exporting such information to foreign countries or
 //	providing access to foreign nationals.
-//	
+//
 //	$Id$
 //
 
@@ -72,9 +72,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
  * deleting registry objects. The registry aims to support the registry portion
  * of the CCSDS regrep specification at the same time it leverages the much of
  * the ebXML information model.
- * 
+ *
  * @author pramirez
- * 
+ *
  */
 @org.springframework.stereotype.Service("registryService")
 public class RegistryServiceImpl implements RegistryService {
@@ -110,7 +110,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#setMetadataStore(gov.nasa
 	 * .pds.registry.service.MetadataStore)
@@ -121,7 +121,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.nasa.pds.registry.service.RegistryService#getMetadataStore()
 	 */
 	public MetadataStore getMetadataStore() {
@@ -130,7 +130,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#setVersioner(gov.nasa.pds
 	 * .registry.model.naming.Versioner)
@@ -141,7 +141,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.nasa.pds.registry.service.RegistryService#getVersioner()
 	 */
 	public Versioner getVersioner() {
@@ -150,7 +150,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#setIdentifierGenerator(gov
 	 * .nasa.pds.registry.model.naming.IdentifierGenerator)
@@ -161,7 +161,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.nasa.pds.registry.service.RegistryService#getIdentifierGenerator()
 	 */
 	public IdentifierGenerator getIdentifierGenerator() {
@@ -170,7 +170,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getExtrinsics(java.lang.Integer
 	 * , java.lang.Integer)
@@ -187,7 +187,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getExtrinsics(gov.nasa.pds
 	 * .registry.query.RegistryQuery)
@@ -199,7 +199,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getExtrinsics(gov.nasa.pds
 	 * .registry.query.RegistryQuery, java.lang.Integer, java.lang.Integer)
@@ -214,7 +214,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.nasa.pds.registry.service.RegistryService#getReport()
 	 */
 	public Report getReport() {
@@ -233,13 +233,13 @@ public class RegistryServiceImpl implements RegistryService {
 		report.setEvents(metadataStore
 			    .getNumRegistryObjects(AuditableEvent.class));
 		//report.setHome(metadataStore.getHome());
-		
+
 		return report;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.nasa.pds.registry.service.RegistryService#versionObject(java
 	 * .lang.String, gov.nasa.pds.registry.model.RegistryObject, boolean)
 	 */
@@ -250,7 +250,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#versionObject(java.lang.String
 	 * , gov.nasa.pds.registry.model.RegistryObject, boolean, java.lang.String)
@@ -268,7 +268,7 @@ public class RegistryServiceImpl implements RegistryService {
 		}
 		registryObject.setVersionName(versioner.getNextVersion(
 		    referencedObject.getVersionName(), major));
-		registryObject.setStatus(referencedObject.getStatus());
+		registryObject.setStatus(ObjectStatus.Submitted);
 		// Make sure slots have no id associated with them.
 		Set<Slot> newSlots = new HashSet<Slot>();
 		for (Slot slot : registryObject.getSlots()) {
@@ -291,18 +291,18 @@ public class RegistryServiceImpl implements RegistryService {
 		    String errorMsg = "";
 		    if (pe.getCause().getCause()!=null)
 		    	errorMsg = pe.getCause().getCause().getMessage();
-		    else { 
+		    else {
 		    	if (pe.getCause()!=null)
 		    		errorMsg = pe.getCause().getMessage();
-		    	else 
+		    	else
 		    		errorMsg = pe.getMessage();
 		    }
 			throw new RegistryServiceException("Error with the registry object with logical id "
 				    + registryObject.getLid() + " and version name "
 				    + registryObject.getVersionName() + ". " + errorMsg + "\n",
-				    ExceptionType.INVALID_REQUEST);	
+				    ExceptionType.INVALID_REQUEST);
 		}
-		
+
 		this.createAuditableEvent("versionObject " + referencedObject.getGuid()
 		    + " " + registryObject.getGuid(), user, EventType.Versioned,
 		    registryObject.getGuid(), registryObject.getClass());
@@ -336,10 +336,10 @@ public class RegistryServiceImpl implements RegistryService {
 		}
 		return registryObject.getGuid();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.nasa.pds.registry.service.RegistryService#versionObjects(java
 	 * .lang.String, gov.nasa.pds.registry.model.RegistryObjectList, boolean)
 	 */
@@ -347,23 +347,23 @@ public class RegistryServiceImpl implements RegistryService {
 	    boolean major) throws RegistryServiceException {
 		this.versionObjects(user, registryObjects, major, null);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#versionObjects(java.lang.String
 	 * , gov.nasa.pds.registry.model.RegistryObjectList, boolean, java.lang.String)
 	 */
 	@Override
-	public void versionObjects(String user, List<? extends RegistryObject> registryObjects, 
+	public void versionObjects(String user, List<? extends RegistryObject> registryObjects,
 			boolean major, String packageId) throws RegistryServiceException {
 		List<String> addedObjs = new ArrayList<String>();
         List<RegistryObject> needToStoreObjs = new ArrayList<RegistryObject>();
-        
+
         List<RegistryObject> extObjs = new ArrayList<RegistryObject>();
-        List<RegistryObject> assocObjs = new ArrayList<RegistryObject>();        
-		
+        List<RegistryObject> assocObjs = new ArrayList<RegistryObject>();
+
         for (RegistryObject registryObject: registryObjects) {
         	RegistryObject referencedObject = this.getLatestObjectWithoutException(
         			registryObject.getLid(), registryObject.getClass());
@@ -376,16 +376,15 @@ public class RegistryServiceImpl implements RegistryService {
         	if (referencedObject!=null) {
         		registryObject.setVersionName(versioner.getNextVersion(
         				referencedObject.getVersionName(), major));
-        		registryObject.setStatus(referencedObject.getStatus());
         	}
         	else {
         		registryObject.setVersionName(versioner.getInitialVersion());
         		if (registryObject.getLid() == null) {
         			registryObject.setLid(idGenerator.getGuid());
         		}
-        		registryObject.setStatus(ObjectStatus.Submitted);
         	}
-        
+          registryObject.setStatus(ObjectStatus.Submitted);
+
         	// Make sure slots have no id associated with them.
         	Set<Slot> newSlots = new HashSet<Slot>();
         	for (Slot slot : registryObject.getSlots()) {
@@ -397,9 +396,9 @@ public class RegistryServiceImpl implements RegistryService {
         	this.validateObject(registryObject);
         	needToStoreObjs.add(registryObject);
 
-        	if (registryObject instanceof ExtrinsicObject) 
+        	if (registryObject instanceof ExtrinsicObject)
         		extObjs.add(registryObject);
-        	else if (registryObject instanceof Association) 
+        	else if (registryObject instanceof Association)
         		assocObjs.add(registryObject);
 
         	// If this is a classification node that belongs to the object type
@@ -434,7 +433,7 @@ public class RegistryServiceImpl implements RegistryService {
         		hasMember.setSlots(slots);
         		needToStoreObjs.add(hasMember);
                 assocObjs.add(hasMember);
-        		
+
                 if (!(registryObject instanceof Association)) {
                 	needToStoreObjs.add(createAuditableEventObj(
                 			"versionObjectWithPackage " + packageId + " "
@@ -449,14 +448,14 @@ public class RegistryServiceImpl implements RegistryService {
         	addedObjs.add(registryObject.getGuid());
         }
 
-        metadataStore.saveRegistryObjects(needToStoreObjs);     
+        metadataStore.saveRegistryObjects(needToStoreObjs);
         System.out.println("needToStoreObjs.size() = " + needToStoreObjs.size() + "   needToStoreObjs = " + needToStoreObjs
                         + "\naddedObjs.size() = " + addedObjs.size() + "    addedObjs = " + addedObjs);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getLatestObject(java.lang
 	 * .String, java.lang.Class)
@@ -474,10 +473,10 @@ public class RegistryServiceImpl implements RegistryService {
 			    ExceptionType.OBJECT_NOT_FOUND);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getLatestObject(java.lang
 	 * .String, java.lang.Class)
@@ -497,7 +496,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getEarliestObject(java.lang
 	 * .String, java.lang.Class)
@@ -518,7 +517,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getNextObject(java.lang.String
 	 * , java.lang.String, java.lang.Class)
@@ -552,7 +551,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getPreviousObject(java.lang
 	 * .String, java.lang.String, java.lang.Class)
@@ -584,7 +583,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getObjectVersions(java.lang
 	 * .String, java.lang.Class)
@@ -603,7 +602,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getObject(java.lang.String,
 	 * java.lang.String, java.lang.Class)
@@ -615,7 +614,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getClassificationNodes(java
 	 * .lang.String)
@@ -628,7 +627,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.nasa.pds.registry.service.RegistryService#changeObjectStatus
 	 * (java.lang.String, java.lang.String,
 	 * gov.nasa.pds.registry.model.ObjectAction, java.lang.Class)
@@ -653,7 +652,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.nasa.pds.registry.service.RegistryService#updateObject(java
 	 * .lang.String, gov.nasa.pds.registry.model.RegistryObject)
 	 */
@@ -688,7 +687,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getAssociations(gov.nasa.
 	 * pds.registry.query.RegistryQuery, java.lang.Integer, java.lang.Integer)
@@ -703,7 +702,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getObjects(gov.nasa.pds.registry
 	 * .query.RegistryQuery, java.lang.Integer, java.lang.Integer,
@@ -719,10 +718,10 @@ public class RegistryServiceImpl implements RegistryService {
 		return (PagedResponse<Association>) metadataStore.getRegistryObjects(query,
 		    start, rows, objectClass);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getPackages(gov.nasa.pds.registry
 	 * .query.RegistryQuery, java.lang.Integer, java.lang.Integer)
@@ -735,10 +734,10 @@ public class RegistryServiceImpl implements RegistryService {
 		}
 		return metadataStore.getPackages(query, start, rows);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getAuditableEvents(java.lang
 	 * .String)
@@ -751,7 +750,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#publishObject(java.lang.String
 	 * , gov.nasa.pds.registry.model.RegistryObject, java.lang.String)
@@ -785,16 +784,16 @@ public class RegistryServiceImpl implements RegistryService {
 		    String errorMsg = "";
 		    if (pe.getCause().getCause()!=null)
 		    	errorMsg = pe.getCause().getCause().getMessage();
-		    else { 
+		    else {
 		    	if (pe.getCause()!=null)
 		    		errorMsg = pe.getCause().getMessage();
-		    	else 
+		    	else
 		    		errorMsg = pe.getMessage();
 		    }
 			throw new RegistryServiceException("Error with the registry object with logical id "
 				    + registryObject.getLid() + " and version name "
 				    + registryObject.getVersionName() + ". " + errorMsg + "\n",
-				    ExceptionType.INVALID_REQUEST);	
+				    ExceptionType.INVALID_REQUEST);
 		}
 
 		// If this is a classification node that belongs to the object type
@@ -836,21 +835,21 @@ public class RegistryServiceImpl implements RegistryService {
 		}
 		return registryObject.getGuid();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#publishObjects(java.lang.String
 	 * , gov.nasa.pds.registry.model.RegistryObjectList, java.lang.String)
 	 */
 	@Override
-	public void publishObjects(String user, List<? extends RegistryObject> registryObjects, String packageId) 
-			throws RegistryServiceException {		
+	public void publishObjects(String user, List<? extends RegistryObject> registryObjects, String packageId)
+			throws RegistryServiceException {
 		List<String> addedObjs = new ArrayList<String>();
 		List<RegistryObject> needToStoreObjs = new ArrayList<RegistryObject>();
 		List<RegistryObject> extObjs = new ArrayList<RegistryObject>();
-		List<RegistryObject> assocObjs = new ArrayList<RegistryObject>();		
+		List<RegistryObject> assocObjs = new ArrayList<RegistryObject>();
 		for (RegistryObject registryObject: registryObjects) {
 			if (registryObject.getGuid() == null) {
 				registryObject.setGuid(idGenerator.getGuid());
@@ -865,9 +864,9 @@ public class RegistryServiceImpl implements RegistryService {
 			registryObject.setStatus(ObjectStatus.Submitted);
 			this.validateObject(registryObject);
 			needToStoreObjs.add(registryObject);
-			if (registryObject instanceof ExtrinsicObject) 
+			if (registryObject instanceof ExtrinsicObject)
 				extObjs.add(registryObject);
-			else if (registryObject instanceof Association) 
+			else if (registryObject instanceof Association)
 				assocObjs.add(registryObject);
 
 			// If this is a classification node that belongs to the object type
@@ -911,14 +910,14 @@ public class RegistryServiceImpl implements RegistryService {
 
 			addedObjs.add(registryObject.getGuid());
 		}
-		metadataStore.saveRegistryObjects(needToStoreObjs);	
+		metadataStore.saveRegistryObjects(needToStoreObjs);
 		System.out.println("needToStoreObjs.size() = " + needToStoreObjs.size() + "   needToStoreObjs = " + needToStoreObjs
 				+ "\naddedObjs.size() = " + addedObjs.size() + "    addedObjs = " + addedObjs);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.nasa.pds.registry.service.RegistryService#publishObject(java
 	 * .lang.String, gov.nasa.pds.registry.model.RegistryObject)
 	 */
@@ -926,7 +925,7 @@ public class RegistryServiceImpl implements RegistryService {
 	    throws RegistryServiceException {
 		return this.publishObject(user, registryObject, null);
 	}
-	
+
 	public void publishObjects(String user, List<? extends RegistryObject> registryObjects)
 		    throws RegistryServiceException {
 			this.publishObjects(user, registryObjects, null);
@@ -950,7 +949,7 @@ public class RegistryServiceImpl implements RegistryService {
 		    .getAffectedTypes()));
 		metadataStore.saveRegistryObject(event);
 	}
-	
+
 	private AuditableEvent createAuditableEventObj(String requestId, String user,
 			EventType eventType, String guid,
 			Class<? extends RegistryObject> objectClass) {
@@ -1075,7 +1074,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.nasa.pds.registry.service.RegistryService#deleteObject(java
 	 * .lang.String, java.lang.String, java.lang.String, java.lang.Class)
 	 */
@@ -1091,7 +1090,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.nasa.pds.registry.service.RegistryService#deleteObject(java
 	 * .lang.String, java.lang.String, java.lang.Class)
 	 */
@@ -1125,7 +1124,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getAssocation(java.lang.String
 	 * )
@@ -1136,7 +1135,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getExtrinsic(java.lang.String
 	 * )
@@ -1148,7 +1147,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getObject(java.lang.String,
 	 * java.lang.Class)
@@ -1166,7 +1165,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#configure(java.lang.String,
 	 * gov.nasa.pds.registry.model.RegistryPackage, java.util.List)
@@ -1213,7 +1212,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getNextObject(java.lang.String
 	 * , java.lang.Class)
@@ -1228,7 +1227,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getPreviousObject(java.lang
 	 * .String, java.lang.Class)
@@ -1244,7 +1243,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#changeStatusOfPackageMembers
 	 * (java.lang.String, java.lang.String,
@@ -1299,10 +1298,10 @@ public class RegistryServiceImpl implements RegistryService {
 		this.createAuditableEvent("changeStatusOfPackageMembers " + packageId,
 		    user, action.getEventType(), new AffectedInfo(changedIds, changedTypes));
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#changeStatusOfPackageMembersWithQuery
 	 * (java.lang.String, java.lang.String,
@@ -1319,7 +1318,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#deletePackageMembers(java
 	 * .lang.String, java.lang.String)
@@ -1363,11 +1362,11 @@ public class RegistryServiceImpl implements RegistryService {
 		this.createAuditableEvent("deletePackageMembers " + packageId, user,
 		    EventType.Deleted, new AffectedInfo(deletedIds, deletedTypes));
 	}
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#deletePackageMembersWithQuery(java
 	 * .lang.String, java.lang.String)
@@ -1375,15 +1374,15 @@ public class RegistryServiceImpl implements RegistryService {
 	@Override
 	public void deletePackageMembersWithQuery(String user, String packageId)
 	    throws RegistryServiceException {
-		
-		AffectedInfo affectedInfo = metadataStore.deleteRegistryObjects(packageId, "urn:registry:AssociationType:HasMember");		
+
+		AffectedInfo affectedInfo = metadataStore.deleteRegistryObjects(packageId, "urn:registry:AssociationType:HasMember");
 		this.createAuditableEvent("deletePackageMembers " + packageId, user,
 			    EventType.Deleted, affectedInfo);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.nasa.pds.registry.service.RegistryService#getReplicationReport()
 	 */
 	@Override
@@ -1393,7 +1392,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#hasReplicationInProgress()
 	 */
@@ -1406,14 +1405,14 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#performReplication(java.lang
 	 * .String, java.lang.String, java.util.Date, java.lang.String)
 	 */
 	@Override
 	public void performReplication(String user, String registryUrl,
-	    Date lastModified, String objectType, RegistryPackage replicationPackage) 
+	    Date lastModified, String objectType, RegistryPackage replicationPackage)
 	    		throws RegistryServiceException {
 		// Setup the replication report
 		initializeReplicationReport();
@@ -1427,7 +1426,7 @@ public class RegistryServiceImpl implements RegistryService {
 		}
 		// Set the packageGuid in the report
 		replicationReport.setPackageGuid(packageGuid);
-		
+
 		// Create a client to talk to the remote registry
 		try {
 			RegistryClient remoteRegistry = new RegistryClient(registryUrl);
@@ -1443,7 +1442,7 @@ public class RegistryServiceImpl implements RegistryService {
 				    .eventEnd(replicationReport.getStarted()).build();
 				replicationReport.setLastModified(lastModified);
 			}
-			
+
 			// Set up some counting variables to use for paging
 			int count = 0;
 			// How many we will grab on each query to the database (process in chunks)
@@ -1585,7 +1584,7 @@ public class RegistryServiceImpl implements RegistryService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * gov.nasa.pds.registry.service.RegistryService#getAuditableEvents(gov.nasa
 	 * .pds.registry.query.RegistryQuery, java.lang.Integer, java.lang.Integer)
