@@ -171,7 +171,6 @@ public class MetadataStoreJPA implements MetadataStore {
       orders.add(cb.asc(productEntity.get("guid")));
     }
     cq.orderBy(orders);
-    countCq.orderBy(orders);
     TypedQuery<ExtrinsicObject> dbQuery = entityManager.createQuery(cq);
     
     // to get a row count of the results    
@@ -247,7 +246,6 @@ public class MetadataStoreJPA implements MetadataStore {
       orders.add(cb.asc(productEntity.get("guid")));
     }
     cq.orderBy(orders);
-    countCq.orderBy(orders);
     TypedQuery<RegistryPackage> dbQuery = entityManager.createQuery(cq);
     
     // to get a row count of the results    
@@ -365,7 +363,6 @@ public class MetadataStoreJPA implements MetadataStore {
       orders.add(cb.asc(associationEntity.get("guid")));
     }
     cq.orderBy(orders);
-    countCq.orderBy(orders);
     TypedQuery<Association> dbQuery = entityManager.createQuery(cq);
     
     // to get a row count of the results    
@@ -752,7 +749,6 @@ public class MetadataStoreJPA implements MetadataStore {
       orders.add(cb.asc(objectEntity.get("guid")));
     }
     cq.orderBy(orders);
-    countCq.orderBy(orders);
     TypedQuery<?> dbQuery = entityManager.createQuery(cq);
     
     // to get a row count of the results    
@@ -989,7 +985,6 @@ public class MetadataStoreJPA implements MetadataStore {
       orders.add(cb.asc(eventEntity.get("guid")));
     }
     cq.orderBy(orders);
-    countCq.orderBy(orders);
     TypedQuery<AuditableEvent> dbQuery = entityManager.createQuery(cq);
     
     // to get a row count of the results    
