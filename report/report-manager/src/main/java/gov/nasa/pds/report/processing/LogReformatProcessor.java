@@ -185,6 +185,10 @@ public abstract class LogReformatProcessor implements Processor{
 			throw new ProcessingException("An error occurred while finding " +
 					"the logs at " + in.getAbsolutePath());
 		}
+		if(files.isEmpty()){
+			throw new ProcessingException("No logs to reformat in " +
+					in.getAbsolutePath());
+		}
 		
 		// Reformat each of the files
 		this.processFileList(files, out);
@@ -220,7 +224,7 @@ public abstract class LogReformatProcessor implements Processor{
 		// Check that the processor has been configured
 		if(!this.verifyConfiguration()){
 			throw new ProcessingException("The log reformat processor has " +
-			"not been configured previously");
+					"not been configured previously");
 		}
 		
 		this.processFileList(in, out);
@@ -300,6 +304,10 @@ public abstract class LogReformatProcessor implements Processor{
 	 */
 	protected void processFileList(List<File> files, File out)
 			throws ProcessingException{
+		
+		if(files.isEmpty()){
+			throw new ProcessingException("No files found in input directory");
+		}
 		
 		for(int i = 0; i < files.size(); i++){
 			File file = files.get(i);
@@ -390,8 +398,13 @@ public abstract class LogReformatProcessor implements Processor{
 		// Close the reader and writer
 		this.closeReaderWriter(reader, writer);
 		
-		// Delete the created file if too many errors (or an I/O error)
-		// occurred
+		// Delete the created file if too many errors occurred, or if there was
+		// an I/O error, or if the output file is empty
+		if(keepFile && out.length() == 0){
+			log.warning("Output log " + out.getAbsolutePath() + " will be " +
+					"deleted since it's empty");
+			keepFile = false;
+		}
 		if(!keepFile){
 			try{
 				FileUtils.forceDelete(out);
@@ -530,7 +543,9 @@ public abstract class LogReformatProcessor implements Processor{
 		String reformattedLine = this.formatOutputLine();
 		
 		// Write the reformatted line to the output file
-		writer.println(reformattedLine);
+		if(reformattedLine != null && !reformattedLine.isEmpty()){
+			writer.println(reformattedLine);
+		}
 		
 		// Reset the detail values so that they don't carry over to the
 		// next line

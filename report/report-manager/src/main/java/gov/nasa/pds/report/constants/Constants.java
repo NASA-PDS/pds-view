@@ -37,6 +37,7 @@ public abstract class Constants {
 	public static final String NODE_SAWMILL_PROFILE = "sawmill_profile";
 	public static final String NODE_REPORT_LIST = "sawmill_report";
 	public static final String NODE_SAWMILL_OUTPUT = "sawmill_output";
+	public static final String NODE_STAGING_PATH = "staging_path";
 	public static final String NODE_DETAIL_REFORMAT_INPUT = "input_log_pattern";
 	public static final String NODE_DETAIL_REFORMAT_OUTPUT = "output_log_pattern";
 	public static final String NODE_LINE_REFORMAT_INPUT = "input_line_pattern";
@@ -44,6 +45,7 @@ public abstract class Constants {
 	public static final String NODE_SIMPLE_COMMAND_KEY = "simple_command";
 	public static final String NODE_NCFTP_VERSION = "ncftp_version";
 	public static final String NODE_NCFTP_REFORMAT_OUTPUT = "output_ncftp_pattern";
+	public static final String NODE_COPY_INPUT = "copy_input";
 	
 	// ------------------------------------------------------------------------
 	// System properties defined in defaults file

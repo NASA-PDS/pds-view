@@ -161,6 +161,11 @@ public class SimpleCommandProcessor implements Processor{
 	protected void processFileList(List<File> files, File out)
 			throws ProcessingException{
 		
+		if(files.isEmpty()){
+			throw new ProcessingException(
+					"No files to process in input directory");
+		}
+		
 		for(int i = 0; i < files.size(); i++){
 			
 			File file = files.get(i);

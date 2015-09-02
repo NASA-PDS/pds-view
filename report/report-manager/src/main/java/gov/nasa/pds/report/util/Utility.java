@@ -292,10 +292,11 @@ public class Utility {
 		}
 		
 		String[] filenames = dir.list();
-		if(filenames == null || filenames.length == 0){
-			throw new ReportManagerException("No files found in directory " +
-					dir.getAbsolutePath());
-		}
+		// TODO: Remove this code if it turns out that we don't need it
+//		if(filenames == null || filenames.length == 0){
+//			throw new ReportManagerException("No files found in directory " +
+//					dir.getAbsolutePath());
+//		}
 		List<File> files = new Vector<File>();
 		for(String filename: filenames){
 			files.add(new File(dir, filename));

@@ -33,6 +33,7 @@ public class ProcessingManager{
 		String processesStr = null;
 		String nodeName = null;
 		String profileID = null;
+		File stagingDir = null;
 		File sawmillDir = null;
 			
 		// Get profile details and File handles needed for processing
@@ -43,6 +44,11 @@ public class ProcessingManager{
 					Constants.NODE_NODE_KEY, true);
 			profileID = Utility.getNodePropsString(props,
 					Constants.NODE_ID_KEY, true);
+			String stagingPath = Utility.getNodePropsString(props, 
+					Constants.NODE_STAGING_PATH, false);
+			if(stagingPath != null){
+				stagingDir = new File(stagingPath);
+			}
 			sawmillDir = FileUtil.getDir(Constants.SAWMILL_DIR,
 					nodeName, profileID);
 			log.info("Processing logs from profile " + profileID);
@@ -64,9 +70,9 @@ public class ProcessingManager{
 		
 		// Get the list of files that haven't already been processed
 		List<File> filesToProcess = this.getFilesToProcess(processors, 
-				nodeName, profileID);
+				nodeName, profileID, stagingDir);
 		if(filesToProcess.isEmpty()){
-			log.fine("Found no unprocessed logs from profile " + profileID);
+			log.info("Found no unprocessed logs from profile " + profileID);
 			return;
 		}
 		
@@ -194,19 +200,34 @@ public class ProcessingManager{
 	 * 								in processing.
 	 */
 	private List<File> getFilesToProcess(List<Processor> processors,
-			String nodeName, String profileID) throws ProcessingException{
+			String nodeName, String profileID, File stagingDir)
+			throws ProcessingException{
 		
+		File staging = null;
 		File sawmillDir = null;
 		List<File> stagedFiles = null;
 		List<File> filesToProcess = new Vector<File>();
+		
+		// Determine whether to use a provided staging directory or the default
+		if(stagingDir == null){
+			try{
+				staging = FileUtil.getDir(
+						Constants.STAGING_DIR, nodeName, profileID);
+			}catch(ReportManagerException e){
+				throw new ProcessingException("En error occurred while " +
+						"fetching the default staging directory: " +
+						e.getMessage());
+			}
+		}else{
+			staging = stagingDir;
+		}
 		
 		// Get a list of the staged log files and a File object pointing to the
 		// directory from which Sawmill will parse the logs.
 		try{
 			sawmillDir = FileUtil.getDir(Constants.SAWMILL_DIR,
 					nodeName, profileID);
-			stagedFiles = Utility.getFileList(FileUtil.getDir(
-					Constants.STAGING_DIR, nodeName, profileID));
+			stagedFiles = Utility.getFileList(staging);
 		}catch(ReportManagerException e){
 			throw new ProcessingException("An error occurred while preparing " +
 					"the list of staged log files for profile " + profileID + 
@@ -242,6 +263,8 @@ public class ProcessingManager{
 	 * Copy all files in the source directory to the destination directory.
 	 * This is used to copy logs output by the final processor to the directory
 	 * where Sawmill will parse them.
+	 * 
+	 * TODO: Use the CopyProcessor to perform this.
 	 * 
 	 * @param source		The source directory represented as a {@link File}.
 	 * @param dest			The destination directory represented as a
