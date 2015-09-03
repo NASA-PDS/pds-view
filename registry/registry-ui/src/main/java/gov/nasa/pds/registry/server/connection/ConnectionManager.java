@@ -867,6 +867,7 @@ public class ConnectionManager {
 			}
 			vProduct.setName(product.getName());
 			vProduct.setVersionName(product.getVersionName());
+			vProduct.setDescription(product.getDescription());
 
 			List<ViewSlot> vslots = new ArrayList<ViewSlot>();
 			vProduct.setSlots(vslots);

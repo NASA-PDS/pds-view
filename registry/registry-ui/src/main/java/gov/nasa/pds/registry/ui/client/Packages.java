@@ -643,9 +643,13 @@ public class Packages extends Tab {
 		// home
 		detailTable.setText(6, 0, "Home");
 		detailTable.setText(6, 1, product.getHome());
+		
+		// description
+		detailTable.setText(7, 0, "Description");
+		detailTable.setText(7, 1, product.getDescription());
 
 		// slots
-		int row = 7;
+		int row = 8;
 		
 		List<ViewSlot> slots = product.getSlots();
 		// Alphabetize the slot listing in the product details view (PDS-279)
@@ -792,7 +796,7 @@ public class Packages extends Tab {
 			};
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(50);
-			columnDef.setColumnSortable(false);
+			columnDef.setColumnSortable(true);
 			columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -809,7 +813,7 @@ public class Packages extends Tab {
 			};
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(150);
-			columnDef.setColumnSortable(false);
+			columnDef.setColumnSortable(true);
 			//columnDef.setColumnTruncatable(false);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
@@ -861,7 +865,7 @@ public class Packages extends Tab {
 			columnDef.setMinimumColumnWidth(50);
 			columnDef.setPreferredColumnWidth(50);
 			// columnDef.setMaximumColumnWidth(200);
-			columnDef.setColumnSortable(false);
+			columnDef.setColumnSortable(true);
 			this.tableDefinition.addColumnDefinition(columnDef);
 		}
 		
@@ -891,6 +895,7 @@ public class Packages extends Tab {
 	protected void onModuleLoaded() {
 		// set page to first page, triggering call for data
 		this.pagingScrollTable.gotoFirstPage();
+		//get().getTableModel();
 		get().refreshTable();
 	}
 

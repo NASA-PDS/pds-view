@@ -255,8 +255,10 @@ public class PackagesResource {
 			.status(status).build();
     RegistryQuery.Builder<PackageFilter> queryBuilder = new RegistryQuery.Builder<PackageFilter>()
 		        .filter(filter).operator(operator);  
+    if (sort != null) {
+    	queryBuilder.sort(sort);
+    }
     PagedResponse<RegistryPackage> rr =  registryService.getPackages(queryBuilder.build(), start, rows);
-    
     Response.ResponseBuilder builder = Response.ok(rr);
     UriBuilder absolute = uriInfo.getAbsolutePathBuilder();
     absolute.queryParam("start", "{start}");
