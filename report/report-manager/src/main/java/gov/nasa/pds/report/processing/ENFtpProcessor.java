@@ -108,7 +108,7 @@ public class ENFtpProcessor extends DetailByDetailProcessor{
 		if(path.contains("/")){
 			path = path.substring(path.lastIndexOf("/") + 1);
 		}
-		Matcher match = Pattern.compile("([A-Za-z0-9]+)[_-].+").matcher(path);
+		Matcher match = Pattern.compile("([A-Za-z0-9\\.]+)[_-].+").matcher(path);
 		if(!match.matches()){
 			throw new ProcessingException("The file name " + path +
 					" did not match the truncating pattern");
