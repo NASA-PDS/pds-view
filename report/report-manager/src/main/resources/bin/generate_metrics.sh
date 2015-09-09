@@ -8,7 +8,7 @@ fi
 date=$1
 url=pds-rpt
 REP_HOME=/report_service/reports
-NODES="en img rings ppi rings sbn_umd sbn_psi naif geo"
+NODES="atm en img rings ppi rings sbn_umd sbn_psi naif geo"
 
 mkdir -p $date
 rsync -av pds-rpt:${REP_HOME}/*/${date}/*_hq_domain_report_*.csv ${date}/
