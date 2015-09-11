@@ -19,13 +19,38 @@
 <document>
   <properties>
     <title>Release Changes</title>
+    <author email="Gabriel.M.Resneck@jpl.nasa.gov">Gabe Resneck</author>
     <author email="Jordan.Padams@jpl.nasa.gov">Jordan Padams</author>
   </properties>
 
   <body>
     <release version="1.8.0" date="TBD" description="TBD">
+      <action dev="resneck" type="add" issue="PDS-223">
+        Developed Processing component for non-Apache combined logs.
+      </action>
+      <action dev="resneck" type="update" issue="PDS-284">
+        Defined configurations for all nodes log sources.
+      </action>
+      <action dev="resneck" type="add" issue="PDS-307">
+        Developed Processor to handle xferlog and NcFTP formats.
+      </action>
+      <action dev="resneck" type="add" issue="PDS-377">
+        Added a script to rename monthly reports.
+      </action>
+      <action dev="resneck" type="add" issue="PDS-378">
+        Logs are now not processed if their processed version already exists in the final directory.
+      </action>
+      <action dev="resneck" type="fix">
+		HTTP log puller will ignore links to non-files.
+      </action>
+      <action dev="resneck" type="update">
+		Sawmill copy scripts can no longer copy over contents of front-end Sawmill DB.
+      </action>
+      <action dev="resneck" type="update">
+		Report Service will now exit if it cannot obtain the lock on log files.
+      </action>
       <action dev="jpadams" type="update">
-	updated test constants for imaging node due to machine upgrade.
+		Updated test constants for imaging node due to machine upgrade.
       </action>
     </release>
 
