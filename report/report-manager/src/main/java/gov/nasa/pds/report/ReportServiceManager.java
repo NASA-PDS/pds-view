@@ -269,7 +269,7 @@ public class ReportServiceManager {
 				reports = Utility.getNodePropsString(props,
 						Constants.NODE_REPORT_LIST, true).split(",");
 			}catch (ReportManagerException e){
-				log.warning("Unable to obtain Samill report list " +
+				log.warning("Unable to obtain Sawmill report list " +
 						"from profile " + profileName);
 				continue;
 			}
