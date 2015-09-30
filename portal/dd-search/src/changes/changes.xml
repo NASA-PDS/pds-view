@@ -22,6 +22,12 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
+    <release version="1.1.0" date="2015-09-30" description="This release of Data Dictionary Search is a component of the integrated release 6.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="shardman" type="update">
+        Modified to default to the publicly available Search Service instead of localhost.
+      </action>
+    </release>
+
     <release version="1.0.0" date="2015-03-31" description="This release of Data Dictionary Search is a component of the integrated release 5.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="earevalo" type="add" issue="PDS-354">
         Initial release of the Data Dictionary Search interface that queries the Search Service for Product_Attribute_Definition and Product_Class_Definition products and displays the results to the user.

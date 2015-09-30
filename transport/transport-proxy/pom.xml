@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010.transport</groupId>
   <artifactId>transport-proxy</artifactId>
-  <version>1.2.0-dev</version>
+  <version>1.2.0</version>
   <packaging>war</packaging>
 
   <name>Transport Proxy</name>

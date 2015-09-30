@@ -27,7 +27,7 @@
 
   <groupId>gov.nasa.pds.2010.transport</groupId>
   <artifactId>transport-ofsn</artifactId>
-  <version>1.3.0-dev</version>
+  <version>1.3.0</version>
   <packaging>war</packaging>
 
   <name>Transport Service (OFSN)</name>
@@ -52,6 +52,15 @@
       <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
         <role>Development Lead</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Hyun Lee</name>
+      <id>hyunlee</id>
+      <email>Hyun.Lee@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
       </roles>
     </developer>
     <developer>

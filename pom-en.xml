@@ -56,16 +56,16 @@
 
   <properties>
     <!-- Internal Dependency Version -->
-    <core-version>1.7.0</core-version>
+    <core-version>1.8.0</core-version>
     <pds4-tools-version>0.5.0</pds4-tools-version>
-    <generate-version>0.8.0</generate-version>
-    <transform-version>1.1.1</transform-version>
-    <registry-version>1.8.1</registry-version>
-    <search-version>1.6.0</search-version>
+    <generate-version>0.9.0</generate-version>
+    <transform-version>1.2.0</transform-version>
+    <registry-version>1.9.0</registry-version>
+    <search-version>1.7.0</search-version>
     <storage-version>1.1.0</storage-version>
     <!-- External Dependency Versions -->
     <oodt-version>0.7</oodt-version>
-    <product-tools-version>3.4.1</product-tools-version>
+    <product-tools-version>3.5.0</product-tools-version>
     <vicario-version>4.0</vicario-version>
   </properties>
 
@@ -108,6 +108,15 @@
       </roles>
     </developer>
     <developer>
+      <name>Eric Lee</name>
+      <id>elee</id>
+      <email>Eric.C.Lee@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
       <name>Hyun Lee</name>
       <id>hyunlee</id>
       <email>Hyun.Lee@jpl.nasa.gov</email>
@@ -131,6 +140,15 @@
       <id>resneck</id>
       <email>Gabriel.M.Resneck@jpl.nasa.gov</email>
       <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Mark Rose</name>
+      <id>mrose</id>
+      <email>Mark.Rose@nasa.gov</email>
+      <organization>NASA Ames Research Center</organization>
       <roles>
         <role>Developer</role>
       </roles>

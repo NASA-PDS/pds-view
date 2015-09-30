@@ -23,7 +23,10 @@
   </properties>
 
   <body>
-    <release version="1.3.0" date="TBD" description="TBD">
+    <release version="1.3.0" date="2015-09-30" description="This release of the Harvest-PDAP Tool is a component of the integrated release 6.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="shardman" type="update">
+        Updated for the v1.5 data model.
+      </action>
     </release>
 
     <release version="1.2.0" date="2015-03-31" description="This release of the Harvest-PDAP Tool is a component of the integrated release 5.1.0 of the PDS4 System. This is an operational release of the system components to date.">

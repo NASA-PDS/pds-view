@@ -22,7 +22,10 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
-    <release version="2.6.0" date="TBD" description="TBD">
+    <release version="2.6.0" date="2015-09-30" description="This release of Data Set View is a component of the integrated release 6.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="shardman" type="fix">
+        Tweaked the viewContext.jsp page to identify instruments by 'instrument:' instead of 'instrument.'.
+      </action>
     </release>
 
     <release version="2.5.0" date="2015-03-31" description="This release of Data Set View is a component of the integrated release 5.1.0 of the PDS4 System. This is an operational release of the system components to date.">
