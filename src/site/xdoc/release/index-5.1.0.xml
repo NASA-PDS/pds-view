@@ -3,7 +3,7 @@
 <!--
   Copyright 2015, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
-  Any commercial use must be negotiated with the Office of Technology 
+  Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
 
   This software is subject to U. S. export control laws and regulations
@@ -189,12 +189,15 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       </subsection>
 
       <subsection name="Web Server">
-        <p>The installation of a web server to act as a front-end interface to the Java application server is desired. The suggested web server for this release is the Apache HTTP Server. Consult the local system administrator for installation of this software.
+        <p>The installation of a web server to act as a front-end interface to the Java application server is desired. The suggested web server for this release is the Apache HTTP Server. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Apache HTTP Server software can be downloaded from the <a href="http://httpd.apache.org/" target="_blank">Apache HTTP Server</a> page.
         </p>
       </subsection>
 
       <subsection name="Database Server">
-        <p>The installation of a database server is suggested to support the deployment of the Registry Service. The Registry Service comes prepackaged with the Apache Derby database but isn't necessarily the preferred choice for an operational deployment. Other options supported by the Registry Service include MySQL and PostgreSQL. If another database server is preferred, contact the EN so we can help prepare a database-specific configuration for your environment.
+        <p>The installation of a database server is suggested to support the deployment of the Registry Service. The Registry Service comes prepackaged with the Apache Derby database but isn't necessarily the preferred choice for an operational deployment. Other options supported by the Registry Service include MySQL and PostgreSQL. Consult the local system administrator for installation of these database servers. For the do-it-yourself crowd, the MySQL software can be downloaded from the <a href="https://www.mysql.com/" target="_blank">MySQL</a> page while the PostgreSQL software can be downloaded from the <a href="http://www.postgresql.org/" target="_blank">PostgresSQL</a> page.
+        </p>
+
+        <p>If another database server is preferred, contact the EN so we can help prepare a database-specific configuration for your environment.
         </p>
       </subsection>
     </section>
@@ -385,6 +388,8 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
           </ul>
         </ul>
 
+        <p><b><i>Installation Procedures</i></b></p>
+
         <p>Although the Design, Generate and Transform Tools are included with this release, we have not included them in the installation procedure because they may not pertain to every Discipline Node. This procedure will focus on installing the Registry components, Harvest Tool and Validate Tool. The example commands below assume the software is installed in the user's home directory, indicated by the <i>$HOME</i> environment variable. If this is not the case or if this variable is not defined, the absolute path should be used instead of the variable. Some of the commands below have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution. Perform the following steps to download, install, configure and test the software in the Node's local environment:
         </p>
 
@@ -415,7 +420,7 @@ ProxyPassReverse /services/registry-pds3 http://localhost:8080/registry-pds3
     Allow from 127.0.0.1
   &lt;/Limit&gt;
 &lt;/Location&gt;
- 
+
 ProxyPass /services/registry-pds4/ http://localhost:8080/registry-pds4/
 ProxyPassReverse /services/registry-pds4/ http://localhost:8080/registry-pds4/
 ProxyPass /services/registry-pds4 http://localhost:8080/registry-pds4
@@ -437,21 +442,29 @@ ProxyPassReverse /services/registry-pds4 http://localhost:8080/registry-pds4
             </li>
           </ul>
           <li><b>Install Harvest Tool</b><br/>
-            <p>The <a href="../ingest/harvest/install/index.html">Installation</a> document for the Harvest Tool provides the details for downloading and installing the software. In order to support multiple instances of the Registry Service, it is suggested that the user make a copy of the <i>harvest</i> script provided with the software for each Registry Service instance.
+            <p>The <a href="../ingest/harvest/install/index.html">Installation</a> document for the Harvest Tool provides the details for downloading and installing the software. In order to support multiple instances of the Registry Service, it is suggested to do the following:
             </p>
-            <source>
+            <ul>
+              <li>Make a copy of the <i>harvest</i> script provided with the software for each Registry Service instance<br/>
+              <source>
 % cd $HOME/harvest-1.8.0/bin
 % cp harvest harvest-pds3
 % cp harvest harvest-pds4
-            </source>
-            <p>Edit the newly created <i>harvest-pds3</i> and <i>harvest-pds4</i> scripts and change the <i>http://localhost:8080/registry</i> specification to <i>http://localhost:8080/registry-pds3</i> and <i>http://localhost:8080/registry-pds4</i>, respectively.
-            </p>
+              </source>
+              </li>
+              <li>Edit the newly created <i>harvest-pds3</i> script and change the <i>http://localhost:8080/registry</i> specification to <i>http://localhost:8080/registry-pds3<br/></i>
+              </li>
+              <li>Edit the newly created <i>harvest-pds4</i> script and change the <i>http://localhost:8080/registry</i> specification to <i>http://localhost:8080/registry-pds4<br/></i>
+              </li>
+            </ul>
           </li>
           <li><b>Install Validate Tool</b><br/>
             <p>The <a href="../preparation/validate/install/index.html">Installation</a> document for the Validate Tool provides the details for downloading and installing the software.
             </p>
           </li>
         </ol>
+
+        <p><b><i>Installation Verification</i></b></p>
 
         <p>Now that the core software is installed, it can be exercised with a local bundle prepared by the Node or with the Example Bundle available from the EN. The following steps detail exercising of the software with the example bundle:
         </p>
@@ -471,7 +484,20 @@ ProxyPassReverse /services/registry-pds4 http://localhost:8080/registry-pds4
      $HOME/dph_example_archive_VG2PLS/xml_schema/dph_example_dict_1400.xsd \
   -S $HOME/dph_example_archive_VG2PLS/xml_schema/PDS4_PDS_1400.sch
             </source>
-            <p>The above run results in a successful validation. Note that the core schema (PDS4_PDS_1400.xsd) was also passed on the command-line because passing any schema on the command-line overrides the schemas provided with the tool. Also note that the <i>-e "*.xml"</i> was not included in the command above. The tool now defaults using <i>*.xml</i> and <i>*.XML</i> as the regular expression for file selection.
+            <p>The above run results in a successful validation:
+            </p>
+
+            <source>
+...
+Summary:
+
+  18 of 18 file(s) processed, 0 skipped
+  18 of 18 file(s) passed validation
+
+End of Report
+            </source>
+
+            <p>Note that the core schema (PDS4_PDS_1400.xsd) was also passed on the command-line because passing any schema on the command-line overrides the schemas provided with the tool. Also note that the <i>-e "*.xml"</i> was not included in the command above. The tool now defaults using <i>*.xml</i> and <i>*.XML</i> as the regular expression for file selection.
             </p>
           </li>
           <li><b>Register Example Bundle</b><br/>
@@ -502,10 +528,10 @@ Product Types Registered:
 81 Product_File_Repository
 5 Product_Collection
 
-72 of 79 generated checksums matched their supplied value 
+72 of 79 generated checksums matched their supplied value
 in the manifest, 2 value(s) not checked.
 
-67 of 67 generated checksums matched the supplied value in 
+67 of 67 generated checksums matched the supplied value in
 their product label, 14 value(s) not checked.
 
 81 of 81 associations registered.
@@ -517,10 +543,10 @@ End of Log
             <p>The next step verifies that the registered content from the previous step can be viewed via the Registry Service REST-based API and the Registry User Interface. The <a href="../registry/registry-service/operate/index.html">Operation</a> document for the Registry Service provides the details for interfacing with the service via the REST-based API. Assuming the registration above was performed against the PDS4 instance of the service, the Registry Service should be accessible via the following URL: <i>http://localhost:8080/registry-pds4/</i>. Accessing the <i>report</i> end point (append report to the URL) from the desired web browser (some browsers display XML better than others), should produce the following output:
             </p>
             <source>
-&lt;ns2:report xmlns:ns2="http://registry.pds.nasa.gov" status="OK" 
-serverStarted="2015-04-24T18:16:51.167-07:00" associations="326" 
-extrinsics="94" services="0" classificationSchemes="2" 
-classificationNodes="68" packages="5" events="250" 
+&lt;ns2:report xmlns:ns2="http://registry.pds.nasa.gov" status="OK"
+serverStarted="2015-04-24T18:16:51.167-07:00" associations="326"
+extrinsics="94" services="0" classificationSchemes="2"
+classificationNodes="68" packages="5" events="250"
 registryVersion="1.8.0"/&gt;
             </source>
             <p>The above report shows 94 extrinsics (PDS products) registered which corresponds with the Harvest Tool summary. The number of associations registered is a little harder to verify because there were already some associations in the registry from the configuration step. Feel free to try out some of the other end points (e.g. extrinsics) detailed in the <a href="../registry/registry-service/operate/index.html#Query_Artifacts">Query Artifacts</a> section of the Operations document.

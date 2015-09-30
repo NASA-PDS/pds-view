@@ -44,7 +44,7 @@
       </p>
 
       <subsection name="Java Runtime Environment">
-        <p>The Registry Service was developed using Java and <a href="http://jersey.dev.java.net/" target="_blank">Jersey</a> and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically developed under Java version 1.6 and has only been tested with this version. The following commands test the local Java installation in a UNIX-based environment:
+        <p>The Registry Service was developed using Java and <a href="https://jersey.java.net/" target="_blank">Jersey</a> and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically developed under Java version 1.6 and has only been tested with this version. The following commands test the local Java installation in a UNIX-based environment:
         </p>
 
         <source>
@@ -62,7 +62,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-384, mixed mode)
       </subsection>
 
       <subsection name="Java Application Server">
-        <p>The Registry Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Avoid version 7.0.29, there is a bug in this version causing an error when loading the Registry Service. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="https://pds-engineering.jpl.nasa.gov/development/pds4/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
+        <p>The Registry Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 7.0.X. Avoid version 7.0.29, there is a bug in this version causing an error when loading the Registry Service. Version 8.0.X is also available from Apache and may be used with this release. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Apache Tomcat software can be downloaded from the <a href="http://tomcat.apache.org/" target="_blank">Apache Tomcat</a> page. Choose the version to download (7.0.X or 8.0.X) from the menu on the left. Details on installing and configuring an Apache Tomcat server can be found in the <a href="https://pds-engineering.jpl.nasa.gov/development/pds4/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
         </p>
       </subsection>
 
@@ -134,12 +134,18 @@ or
       </p>
 
       <subsection name="Derby">
-        <p>The Derby database comes packaged with the Registry Service. If choosing to utilize Derby as the database server, perform the following commands to create the databases and install the registry schema: 
+        <p>The Derby database comes packaged with the Registry Service. If choosing to utilize Derby as the database server, launch the Derby <i>ij</i> Tool as follows:
         </p>
 
         <source>
 % cd ${project.artifactId}-${project.version}
 % java -Djava.ext.dirs=lib/ org.apache.derby.tools.ij
+        </source>
+
+        <p>Then run each of the <i>ij</i> commands below to create the databases and install the registry schema:
+        </p>
+
+        <source>
 ij> connect 'jdbc:derby:registrypds3;create=true;user=registry';
 ij> run 'conf/derby-registry-schema.ddl';
 ij> disconnect;
@@ -202,7 +208,7 @@ postgres=# \q
 
       <p>Alternatively, if the Tomcat Manager interface was utilized for the deployment, find the Registry Service entries in the Manager interface and select the <i>Undeploy</i> button for each instance to remove the applications from the server.
       </p>
-      
+
       <p>In order to deploy the software for either a new or upgrade installation, the WAR file is normally copied directly to the <i>$TOMCAT_HOME/webapps</i> directory (assuming the user has appropriate permission) or installed via the Manager interface. To copy the WAR file directly, perform the following commands:
       </p>
 
@@ -213,7 +219,7 @@ postgres=# \q
 % mv registry-pds3.war registry-pds4.war
 % cp registry-pds4.war $TOMCAT_HOME/webapps
       </source>
-      
+
       <p>Once this step is complete, the application instances are ready for operation. Verify a successful installation by executing the following commands:
       </p>
 
@@ -224,14 +230,45 @@ http://localhost:8080/registry-pds3/
 http://localhost:8080/registry-pds4/
       </source>
 
-      <p>The above commands will return the list of links to the service's end points and an HTTP status of 200. From a web browser, the command returns a welcome page. Make sure to include the trailing slash on the above command.
+      <p>The above commands will return the list of links to the service's end points and an HTTP status of 200. The output should look like the following:
+      </p>
+
+      <source>
+* About to connect() to localhost port 8080 (#0)
+*   Trying ::1...
+* connected
+* Connected to localhost (::1) port 8080 (#0)
+&gt; GET /registry-pds3/ HTTP/1.1
+&gt; User-Agent: curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8| zlib/1.2.5
+&gt; Host: localhost:8080
+&gt; Accept:application/xml
+&gt;
+&lt; HTTP/1.1 200 OK
+&lt; Server: Apache-Coyote/1.1
+&lt; Link: &lt;http://localhost:8080/registry-pds3/associations&gt;; rel=associations
+&lt; Link: &lt;http://localhost:8080/registry-pds3/classifications&gt;; rel=classifications
+&lt; Link: &lt;http://localhost:8080/registry-pds3/extrinsics&gt;; rel=extrinsics
+&lt; Link: &lt;http://localhost:8080/registry-pds3/identifiers&gt;; rel=identifiers
+&lt; Link: &lt;http://localhost:8080/registry-pds3/events&gt;; rel=events
+&lt; Link: &lt;http://localhost:8080/registry-pds3/schemes&gt;; rel=schemes
+&lt; Link: &lt;http://localhost:8080/registry-pds3/services&gt;; rel=services
+&lt; Link: &lt;http://localhost:8080/registry-pds3/packages&gt;; rel=packages
+&lt; Link: &lt;http://localhost:8080/registry-pds3/packages&gt;; rel=batch
+&lt; Content-Type: application/xml
+&lt; Transfer-Encoding: chunked
+&lt; Date: Tue, 29 Sep 2015 16:02:26 GMT
+&lt;
+...
+      </source>
+
+      <p>From a web browser, the command returns a welcome page. Make sure to include the trailing slash on the above command.
       </p>
     </section>
 
     <section name="General Configuration">
       <p>The following steps configure the Registry Service instances for the current environment and ready the services for operation.
       </p>
-      
+
       <subsection name="Database Configuration">
         <p>The following is a set of instructions for configuring the Registry Service instances to access newly created or existing databases.  The instructions are dependent on the database server to be used in the current environment.
         </p>
@@ -386,13 +423,13 @@ javax.persistence.jdbc.url=jdbc:postgresql://localhost:5432/registrypds4
         </p>
 
         <source>
-&lt;bean id="idGenerator" 
+&lt;bean id="idGenerator"
 class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
 p:home="http://localhost:8080/registry"/&gt;
 
   should be changed to (if hosted at node.nasa.gov on port 80):
 
-&lt;bean id="idGenerator" 
+&lt;bean id="idGenerator"
 class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
 p:home="http://node.nasa.gov/registry-pds3"/&gt;
         </source>
@@ -401,13 +438,13 @@ p:home="http://node.nasa.gov/registry-pds3"/&gt;
         </p>
 
         <source>
-&lt;bean id="idGenerator" 
+&lt;bean id="idGenerator"
 class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
 p:home="http://localhost:8080/registry"/&gt;
 
   should be changed to (if hosted at node.nasa.gov on port 80):
 
-&lt;bean id="idGenerator" 
+&lt;bean id="idGenerator"
 class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
 p:home="http://node.nasa.gov/registry-pds4"/&gt;
         </source>
@@ -452,7 +489,7 @@ description=This+configures+the+core+set+of+registry+objects HTTP/1.1
 &gt; Content-type:application/xml
 &gt; Content-Length: 5295
 &gt; Expect: 100-continue
-&gt; 
+&gt;
 &lt; HTTP/1.1 100 Continue
 &lt; HTTP/1.1 201 Created
 &lt; Server: Apache-Coyote/1.1
@@ -461,7 +498,7 @@ urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
 &lt; Content-Type: text/plain
 &lt; Transfer-Encoding: chunked
 &lt; Date: Mon, 21 Mar 2011 19:55:52 GMT
-&lt; 
+&lt;
 * Connection #0 to host localhost left intact
 * Closing connection #0
 urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
@@ -477,7 +514,7 @@ description=This+configures+PDS+object+types HTTP/1.1
 &gt; Content-type:application/xml
 &gt; Content-Length: 18320
 &gt; Expect: 100-continue
-&gt; 
+&gt;
 &lt; HTTP/1.1 100 Continue
 &lt; HTTP/1.1 201 Created
 &lt; Server: Apache-Coyote/1.1
@@ -486,7 +523,7 @@ urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
 &lt; Content-Type: text/plain
 &lt; Transfer-Encoding: chunked
 &lt; Date: Mon, 21 Mar 2011 19:55:53 GMT
-&lt; 
+&lt;
 * Connection #0 to host localhost left intact
 * Closing connection #0
 urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
@@ -504,9 +541,9 @@ http://localhost:8080/registry-pdsX/report
         </p>
 
         <source>
-&lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='${project.version}' 
-packages='4' classificationNodes='67' classificationSchemes='2' services='0' 
-extrinsics='0' associations='69' serverStarted='2013-08-28T12:45:43.514-07:00' 
+&lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='${project.version}'
+packages='4' classificationNodes='67' classificationSchemes='2' services='0'
+extrinsics='0' associations='69' serverStarted='2013-08-28T12:45:43.514-07:00'
 status='OK'/&gt;
         </source>
       </subsection>
@@ -604,14 +641,14 @@ description=This+configures+the+core+set+of+registry+objects HTTP/1.1
 &gt; Content-type:application/xml
 &gt; Content-Length: 6201
 &gt; Expect: 100-continue
-&gt; 
+&gt;
 &lt; HTTP/1.1 100 Continue
 &lt; HTTP/1.1 409 Conflict
 &lt; Server: Apache-Coyote/1.1
 &lt; Content-Type: text/plain
 &lt; Transfer-Encoding: chunked
 &lt; Date: Thu, 24 Apr 2014 20:27:48 GMT
-&lt; 
+&lt;
 * Connection #0 to host localhost left intact
 * Closing connection #0
 [409 CONFLICT]   Registry object with logical id \
