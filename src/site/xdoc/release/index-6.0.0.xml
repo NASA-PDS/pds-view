@@ -483,8 +483,8 @@ ProxyPassReverse /services/registry-pds4 http://localhost:8080/registry-pds4
 ...
 Summary:
 
-  19 of 19 file(s) processed, 0 skipped
-  18 of 19 file(s) passed validation
+  18 of 18 file(s) processed, 0 skipped
+  18 of 18 file(s) passed validation
 
 End of Report
             </source>
@@ -505,27 +505,26 @@ End of Report
 ...
 Summary:
 
-14 of 14 file(s) processed, 5 other file(s) skipped
-0 error(s), 4 warning(s)
+13 of 13 file(s) processed, 5 other file(s) skipped
+0 error(s), 2 warning(s)
 
-14 of 14 products registered.
-84 of 84 ancillary products registered.
+13 of 13 products registered.
+81 of 81 ancillary products registered.
 
 Product Types Registered:
 2 Product_Document
 1 Product_Browse
 1 Product_Observational
-1 Product_XML_Schema
 3 Product_File_Text
 1 Product_Bundle
-84 Product_File_Repository
+81 Product_File_Repository
 5 Product_Collection
 
-80 of 82 generated checksums matched their supplied value in the manifest, 2 value(s) not checked.
+79 of 79 generated checksums matched their supplied value in the manifest, 2 value(s) not checked.
 
-67 of 67 generated checksums matched the supplied value in their product label, 17 value(s) not checked.
+67 of 67 generated checksums matched the supplied value in their product label, 14 value(s) not checked.
 
-84 of 84 associations registered.
+81 of 81 associations registered.
 
 End of Log
             </source>
@@ -536,8 +535,8 @@ End of Log
             <source>
 &lt;ns2:report xmlns:ns2="http://registry.pds.nasa.gov" status="OK"
 serverStarted="2015-10-01T11:15:31.291-07:00" associations="337"
-extrinsics="98" services="0" classificationSchemes="2"
-classificationNodes="69" packages="5" events="174"
+extrinsics="94" services="0" classificationSchemes="2"
+classificationNodes="69" packages="5" events="170"
 registryVersion="1.9.0"/&gt;
             </source>
             <p>The above report shows 98 extrinsics (PDS products) registered which corresponds with the Harvest Tool summary. The number of associations registered is a little harder to verify because there were already some associations in the registry from the configuration step. Feel free to try out some of the other end points (e.g. extrinsics) detailed in the <a href="../registry/registry-service/operate/index.html#Query_Artifacts">Query Artifacts</a> section of the Operations document.
