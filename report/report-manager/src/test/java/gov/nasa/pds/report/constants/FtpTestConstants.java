@@ -26,12 +26,12 @@ import org.junit.Ignore;
 @Ignore
 public final class FtpTestConstants{
 	
-	public static final String TEST_NODE = "ida_ftp";
-	public static final String TEST_HOST = "ftpext.usgs.gov";
+	public static final String TEST_NODE = "atm";
+	public static final String TEST_HOST = "atmos.nmsu.edu";
 	public static final String TEST_USER = "anonymous";
-	public static final String TEST_PASSWORD = "anonymous";
+	public static final String TEST_PASSWORD = "pds-dev@jpl.nasa.gov";
 	public static final boolean TEST_ENCRYPTED = false;
 	public static final String TEST_PATH =
-			"/pub/wr/az/flagstaff/bsucharski/ida_ftp_stats/xferlog_2015-08-01.log";
+			"/pub/Report/atm-atmos-apache.txt-20150801";
 	
 }
