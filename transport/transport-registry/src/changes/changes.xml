@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="1.2.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.1.0" date="2014-09-30" description="This release of the Transport Service is a component of the integrated releasea 5.0.0, 5.1.0 and 6.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="cinquini" type="add" issue="PDS-266">
         Added checksums manifest file to the products package delivered by the transport-registry service.

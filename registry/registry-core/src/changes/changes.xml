@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="1.10.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.9.0" date="2015-09-30" description="This release of the Registry Core is a component of the integrated release 6.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="mcayanan" type="fix" issue="PDS-391">
         New versions of a product should default to a status of submitted instead of inheriting the status of the previous product.
