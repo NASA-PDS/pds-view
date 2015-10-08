@@ -78,10 +78,14 @@ cp -r ingest/harvest-pdap/target/site/* $1/ingest/harvest-pdap
 echo "Deploying Portal component sites to the deployment directory."
 mkdir -p $1/portal
 cp -r portal/target/site/* $1/portal
+mkdir -p $1/portal/dd-search
+cp -r portal/dd-search/target/site/* $1/portal/dd-search
 mkdir -p $1/portal/ds-view
 cp -r portal/ds-view/target/site/* $1/portal/ds-view
 mkdir -p $1/portal/filter
 cp -r portal/filter/target/site/* $1/portal/filter
+mkdir -p $1/portal/pb-search
+cp -r portal/pb-search/target/site/* $1/portal/pb-search
 
 echo "Deploying Preparation component sites to the deployment directory."
 mkdir -p $1/preparation
