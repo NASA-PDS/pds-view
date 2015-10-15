@@ -22,6 +22,9 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
+    <release version="0.3.0" date="TBD" description="TBD">
+    </release>
+
     <release version="0.2.0" date="2015-10-15" description="This release of Filter is a component of the integrated release 6.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="shardman" type="fix" issue="PDS-400">
          Added an override for the getParameterMap() method to catch XSS attempts. Also added a filter for the Javascript alert() method.
