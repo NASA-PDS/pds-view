@@ -1,4 +1,4 @@
-// Copyright 2013, by the California Institute of Technology.
+// Copyright 2013-2015, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -17,6 +17,9 @@
 package gov.nasa.pds.portal.filter;
 
 import java.net.URLDecoder;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -32,7 +35,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 public class XSSRequestWrapper extends HttpServletRequestWrapper {
 
   private static Pattern[] patterns = new Pattern[]{
-    // Script fragments
+    // script fragments
     Pattern.compile("<script>(.*?)</script>", Pattern.CASE_INSENSITIVE),
     // src='...'
     Pattern.compile("src[\r\n]*=[\r\n]*\\\'(.*?)\\\'", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL),
@@ -49,11 +52,44 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
     // vbscript:...
     Pattern.compile("vbscript:", Pattern.CASE_INSENSITIVE),
     // onload(...)=...
-    Pattern.compile("onload(.*?)=", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL)
+    Pattern.compile("onload(.*?)=", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL),
+    // alert(...)
+    Pattern.compile("alert\\((.*?)\\)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL)
   };
 
   public XSSRequestWrapper(HttpServletRequest servletRequest) {
     super(servletRequest);
+  }
+
+  @Override
+  public String getHeader(String name) {
+    String value = super.getHeader(name);
+    return stripXSS(value);
+  }
+
+  @Override
+  public String getParameter(String parameter) {
+    String value = super.getParameter(parameter);
+    return stripXSS(value);
+  }
+
+  @Override
+  public Map<String, String[]> getParameterMap() {
+    Map<String, String[]> origParamMap = super.getParameterMap();
+    Map<String, String[]> newParamMap = new HashMap<String, String[]>(origParamMap);
+    for (String name : origParamMap.keySet()) {
+      if (stripXSS(name).isEmpty()) {
+        newParamMap.remove(name);
+      } else {
+        int count = 0;
+        String[] values = new String[Arrays.asList(origParamMap.get(name)).size()];
+        for (String value : Arrays.asList(origParamMap.get(name))) {
+          values[count] = stripXSS(value);
+        }
+        newParamMap.put(name, values);
+      }
+    }
+    return newParamMap;
   }
 
   @Override
@@ -73,23 +109,11 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
     return encodedValues;
   }
 
-  @Override
-  public String getParameter(String parameter) {
-    String value = super.getParameter(parameter);
-    return stripXSS(value);
-  }
-
-  @Override
-  public String getHeader(String name) {
-    String value = super.getHeader(name);
-    return stripXSS(value);
-  }
-
   private String stripXSS(String value) {
     if (value != null) {
       
-      // NOTE: It's highly recommended to use the ESAPI library and uncomment the following line to
-      // avoid encoded attacks.
+      // NOTE: It's highly recommended to use the ESAPI library and uncomment 
+      // the following line toavoid encoded attacks.
       // value = ESAPI.encoder().canonicalize(value);
 
       // Avoid null characters
@@ -100,7 +124,7 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
         value = scriptPattern.matcher(value).replaceAll("");
       }
 
-      // After all of the above has been removed just blank out the value
+      // After all of the above has been removed just blank out the value 
       // if any of the offending characters are present that facilitate 
       // Cross-Site Scripting and Blind SQL Injection.
       char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
