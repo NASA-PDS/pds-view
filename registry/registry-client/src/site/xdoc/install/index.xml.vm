@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011-2014, by the California Institute of Technology.
+  Copyright 2011-2015, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -39,7 +39,7 @@
     </section>
 
     <section name="Deploying the Application">
-      <p>By far, the easiest way to install the Registry Client (pds.registry) is to use the Python utilities <a href="http://pip.openplans.org/" target="_blank">pip</a> or <a href="http://peak.telecommunity.com/DevCenter/EasyInstall" target="_blank">easy_install</a>.  As a privileged user, install the package with one of the following commands:
+      <p>By far, the easiest way to install the Registry Client (pds.registry) is to use the Python utilities <a href="http://pip.openplans.org/" target="_blank">pip</a> or <a href="http://peak.telecommunity.com/DevCenter/EasyInstall" target="_blank">easy_install</a>. As a privileged user, install the package with one of the following commands:
       </p>
 
       <source>
@@ -48,11 +48,11 @@ or
 % easy_install pds.registry
     </source>
 
-    <p>The software as well as its dependencies will be downloaded and installed automatically. Of course, you can use it in <a href="http://pypi.python.org/pypi/virtualenv/" target="_blank">virtualenvs</a> and <a href="http://www.buildout.org/" target="_blank">buildouts</a> too. If neither <i>pip</i> nor <i>easy_install</i> are available on your system, just install the package from source. Download the package from the PDS <a href="http://oodt.jpl.nasa.gov/dist/pds" target="_blank">repository</a>. Unpack the selected distribution file with the following command:
+    <p>The software as well as its dependencies will be downloaded and installed automatically. Of course, you can use it in <a href="http://pypi.python.org/pypi/virtualenv/" target="_blank">virtualenvs</a> and <a href="http://www.buildout.org/" target="_blank">buildouts</a> too. If neither <i>pip</i> nor <i>easy_install</i> are available on your system, just install the package from source. Download the package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/registry/" target="_blank">FTP</a> site. Unpack the selected distribution file with the following command:
     </p>
 
       <source>
-% tar -xzvf pds.registry-1.5.0.tar.gz
+% tar -xzvf pds.registry-1.8.1.tar.gz
       </source>
 
       <p>In the extracted directory, perform the following command as a privileged user to install the package:
