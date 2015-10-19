@@ -18,7 +18,7 @@ package gov.nasa.pds.portal.filter;
 
 import java.net.URLDecoder;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
@@ -76,7 +76,7 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
   @Override
   public Map<String, String[]> getParameterMap() {
     Map<String, String[]> origParamMap = super.getParameterMap();
-    Map<String, String[]> newParamMap = new HashMap<String, String[]>(origParamMap);
+    Map<String, String[]> newParamMap = new LinkedHashMap<String, String[]>(origParamMap);
     for (String name : origParamMap.keySet()) {
       if (stripXSS(name).isEmpty()) {
         newParamMap.remove(name);
@@ -85,6 +85,7 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
         String[] values = new String[Arrays.asList(origParamMap.get(name)).size()];
         for (String value : Arrays.asList(origParamMap.get(name))) {
           values[count] = stripXSS(value);
+          count++;
         }
         newParamMap.put(name, values);
       }
@@ -127,7 +128,7 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
       // After all of the above has been removed just blank out the value 
       // if any of the offending characters are present that facilitate 
       // Cross-Site Scripting and Blind SQL Injection.
-      char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
+      char badChars [] = {'|', ';', '$', '@', '\'', '<', '>', '(', ')', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
       try {
         String decodedStr = URLDecoder.decode(value);
         for (int i=0; i<badChars.length; i++) {
