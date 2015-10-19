@@ -1,2 +1,3 @@
 recursive-include src *.cfg *.xml *.json
+recursive-include docs *
 include pom.xml
