@@ -33,7 +33,9 @@ Map<String, String[]> params = request.getParameterMap();
 for (String name : params.keySet()) {
   if (!ignoredParams.contains(name)) {
     for (String value : Arrays.asList(params.get(name))) {
-      query += name + "=" + URLEncoder.encode(value, "UTF-8")+ "&";
+      if (value != null) {
+        query += name + "=" + URLEncoder.encode(value, "UTF-8")+ "&";
+      }
     }
   }
 }
