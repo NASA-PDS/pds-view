@@ -137,6 +137,10 @@
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-393'>PDS-393</a>] - Harvest: Strip extra whitespaces from the title value in the label prior to ingestion
           </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-397'>PDS-397</a>] - Harvest: Failing to detect files in persistent mode
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-401'>PDS-401</a>] - Validate: Referential integrity checking not recognizing missing products
+          </li>
         </ul>
       </subsection>
     </section>
