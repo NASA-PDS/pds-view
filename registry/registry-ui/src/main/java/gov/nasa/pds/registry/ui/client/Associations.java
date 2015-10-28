@@ -156,14 +156,21 @@ public class Associations extends Tab {
 	 */
 	private AssociationTableModel tableModel = null;
 	
-	private Associations instance = null;
+	private static Associations instance = null;
 	
 	/**
 	 * 
 	 * @return <code>this</code> instance
 	 */
-	public Associations get() {
+	public static Associations get() {
 		return instance;
+	}
+	
+	/**
+	 * @return the cached table model
+	 */
+	public CachedTableModel<ViewAssociation> getCachedTableModel() {
+		return this.cachedTableModel;
 	}
 	
 	/**
@@ -1106,7 +1113,9 @@ public class Associations extends Tab {
 		this.pagingScrollTable.gotoFirstPage();
 		
 		// to refresh with serverUrl change
-		get().getTableModel();
+		//get().getTableModel();
+		get().getCachedTableModel().clearCache();
+		get().getTableModel().setRowCount(RegistryUI.PAGE_SIZE1);
 		get().getPagingScrollTable().redraw();	
 		
 		RegistryUI.statusInfo.getStatus(RegistryUI.serverUrl, new AsyncCallback<StatusInformation>() {

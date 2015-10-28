@@ -436,6 +436,7 @@ public class Packages extends Tab {
 									Products.get().reloadData();
 									ClassificationNodes.get().onModuleLoaded();
 									Schemes.get().onModuleLoaded();
+									Associations.get().onModuleLoaded();
 									Window.alert("The delete request is completed for lid = " + tmpLid);
 								}
 							});
