@@ -29,7 +29,9 @@
 <xsd:attribute name="name" type="xsd:string"/>
 <xsd:attribute name="url" type="xsd:string"/>
 <xsd:attribute name="host" type="xsd:string"/>
-   
+<xsd:attribute name="startDateTime" type="xsd:dateTime"/>
+<xsd:attribute name="stopDateTime" type="xsd:dateTime"/>
+
 <xsd:attribute name="agency" type="Agency"/>
 <xsd:simpleType name="Agency">
    <xsd:restriction base="xsd:string">
@@ -50,6 +52,8 @@
 <xsd:complexType name="PdapService">
   <xsd:attribute ref="agency" use="required"/>
   <xsd:attribute ref="url" use="required"/>
+  <xsd:attribute ref="startDateTime" use="optional"/>
+  <xsd:attribute ref="stopDateTime" use="optional"/>
 </xsd:complexType>
 
 <xsd:element name="pdapServices" type="PdapServices"/>

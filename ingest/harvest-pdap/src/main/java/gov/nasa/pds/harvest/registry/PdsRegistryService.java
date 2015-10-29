@@ -1,4 +1,4 @@
-// Copyright 2006-2012, by the California Institute of Technology.
+// Copyright 2006-2015, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -32,6 +32,10 @@ public class PdsRegistryService {
 
   private RegistryClient client;
 
+  private int batchMode;
+
+  private BatchManager batchManager;
+
   public PdsRegistryService(String url)
   throws RegistryClientException {
     this (url, null, null, null);
@@ -41,6 +45,8 @@ public class PdsRegistryService {
       String user, String password)
   throws RegistryClientException {
     client = new RegistryClient(url, securityContext, user, password);
+    this.batchManager = new BatchManager(client);
+    this.batchMode = 0;
   }
 
   public boolean hasProduct(String lid) {
@@ -76,15 +82,15 @@ public class PdsRegistryService {
     return false;
   }
 
-  public String ingest(ExtrinsicObject extrinsic)
-  throws RegistryServiceException {
-    String guid = "";
+  public void ingest(ExtrinsicObject extrinsic, String datasetId) {
+    boolean versionObject = false;
     if (hasProduct(extrinsic.getLid())) {
-      guid = client.versionObject(extrinsic);
-    } else {
-      guid = client.publishObject(extrinsic);
+      versionObject = true;
     }
-    return guid;
+    batchManager.cache(extrinsic, datasetId, versionObject);
+    if (batchManager.getCacheSize() >= batchMode) {
+      batchManager.ingest();
+    }
   }
 
   public String createPackage(RegistryPackage registryPackage)
@@ -92,5 +98,22 @@ public class PdsRegistryService {
     String guid = client.publishObject(registryPackage);
     client.setRegistrationPackageId(guid);
     return guid;
+  }
+
+  /**
+   * Sets the number of concurrent registrations to make
+   * during batch mode.
+   *
+   * @param value An integer value.
+   */
+  public void setBatchMode(int value) {
+    this.batchMode = value;
+  }
+
+  /**
+   * @return The Batch Manager object.
+   */
+  public BatchManager getBatchManager() {
+    return this.batchManager;
   }
 }

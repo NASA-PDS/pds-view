@@ -53,6 +53,7 @@
           <tr><td>-p, --password</td><td>Specify a password associated with the username.</td></tr>
           <tr><td>-k, --keystore-pass</td><td>Specify a keystore password associated with the keystore file being passed into the tool.</td></tr>
           <tr><td>-l, --log-file</td><td>Specify a log file name. Default is standard out.</td></tr>
+          <tr><td>-b, --batch-mode</td><td>Tells the tool to perform batch registration. Optionally specify an integer value that represents how many products to ingest at one time. The default is to register 50 products at a time if no value is specified.</td></tr>
           <tr><td>-v, --verbose</td><td>Specify the message severity level and above to include in the log (0=Debug, 1=Info, 2=Warning, 3=Error). Default is Info and above (level 1).</td></tr>
           <tr><td>-V, --version</td><td>Display the release number and copyright information.</td></tr>
           <tr><td>-h, --help</td><td>Display <i>harvest</i> usage.</td></tr>
@@ -106,12 +107,13 @@
    &lt;/pdsRegistry&gt;
    &lt;pdapServices&gt;
      &lt;!-- Currently, the only valid value for 'agency' is 'esa'. --&gt;
+     &lt;!-- Can optionally specify a 'startDateTime' and 'stopDateTime' to prevent getting back all data sets. --&gt;
      &lt;pdapService agency="esa" url="http://psa.esac.esa.int:8000"/&gt;
    &lt;/pdapServices&gt;
    &lt;productMetadata&gt;
      &lt;!--
-       All context product metadata definitions are captured in the 
-       global policy. 
+       All context product metadata definitions are captured in the
+       global policy.
      --&gt;
    &lt;/productMetadata&gt;
    &lt;resourceMetadata&gt;
@@ -150,6 +152,13 @@
         <tr><th>Element Name</th><th>Description</th></tr>
         <tr><td>pdapService</td><td>Specify the PDAP service endpoint by populating the two required attributes. The attributes are named <i>agency</i> and <i>url</i>. The only valid value for <i>agency</i> at this time is "esa" with the corresponding <i>url</i> value of "http://psa.esac.esa.int:8000".</td></tr>
       </table>
+
+      <p>Two optional atrributes can be specified within the <i>pdapService</i> element to fine tune the query: <i>startDateTime</i> and <i>stopDateTime</i>. These attributes represent the start and stop datetimes of the observation/event of the data set. The format of the datetimes should be <i>YYYY-MM-DDThh:mm:ss</i> As an example, the following specification will return the ESA data sets between 2015-01-01T00:00:00 and 2015-06-01T00:00:00:
+      </p>
+
+      <source>
+&lt;pdapService agency="esa" url="http://psa.esac.esa.int:8000" startDateTime="2015-01-01T00:00:00.00" stopDateTime="2015-06-01T00:00:00"/&gt;
+      </source>
 
       <p><b><i>productMetadata</i></b></p>
 

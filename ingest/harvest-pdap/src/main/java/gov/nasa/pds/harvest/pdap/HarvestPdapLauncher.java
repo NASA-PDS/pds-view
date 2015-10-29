@@ -1,4 +1,4 @@
-// Copyright 2006-2012, by the California Institute of Technology.
+// Copyright 2006-2015, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -13,6 +13,7 @@
 // $Id$
 package gov.nasa.pds.harvest.pdap;
 
+import gov.nasa.pds.harvest.pdap.constants.Constants;
 import gov.nasa.pds.harvest.pdap.commandline.options.InvalidOptionException;
 import gov.nasa.pds.harvest.pdap.commandline.options.Flag;
 import gov.nasa.pds.harvest.pdap.logging.ToolsLevel;
@@ -23,9 +24,11 @@ import gov.nasa.pds.harvest.pdap.logging.handler.HarvestPdapStreamHandler;
 import gov.nasa.pds.harvest.pdap.policy.PdapService;
 import gov.nasa.pds.harvest.pdap.policy.Policy;
 import gov.nasa.pds.harvest.pdap.policy.PolicyReader;
+import gov.nasa.pds.harvest.pdap.stats.HarvestPdapStats;
 import gov.nasa.pds.harvest.pdap.util.ToolInfo;
 import gov.nasa.pds.harvest.pdap.util.Utility;
 import gov.nasa.pds.harvest.registry.PdsRegistryService;
+import gov.nasa.pds.registry.client.RegistryClient;
 import gov.nasa.pds.registry.client.SecurityContext;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.RegistryPackage;
@@ -101,6 +104,11 @@ public class HarvestPdapLauncher {
   /** The severity level to set for the tool. */
   private Level severityLevel;
 
+  /** Indicates the number of products to register concurrently during
+   *  batch mode.
+   */
+  private int batchMode;
+
   /**
    * Default constructor.
    *
@@ -117,6 +125,7 @@ public class HarvestPdapLauncher {
     registryPackageName = null;
     keystorePassword = null;
     severityLevel = ToolsLevel.INFO;
+    batchMode = 0;
 
     globalPolicy = this.getClass().getResourceAsStream("global-policy.xml");
   }
@@ -192,6 +201,21 @@ public class HarvestPdapLauncher {
         logFile = o.getValue();
       } else if (o.getOpt().equals(Flag.VERBOSE.getShortName())) {
         setVerbose(Integer.parseInt(o.getValue()));
+      } else if (o.getOpt().equals(Flag.BATCHMODE.getShortName())) {
+        try {
+          if (o.getValue() != null) {
+            batchMode = Integer.parseInt(o.getValue());
+            if (batchMode <= 0) {
+              throw new Exception("Must enter a value greater than 0 for "
+                  + "the '-b' flag option.");
+            }
+          } else {
+            batchMode = Constants.DEFAULT_BATCH_MODE;
+          }
+        } catch (NumberFormatException n) {
+          throw new Exception("Invalid value entered for '-b' flag option: "
+              + n.getMessage());
+        }
       }
     }
     if (policy == null) {
@@ -286,6 +310,10 @@ public class HarvestPdapLauncher {
         "Severity Level              " + severityLevel.getName()));
     log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
         "PDAP Target(s)              " + pdaps));
+    if (batchMode != 0) {
+      log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
+        "Batch Mode                  " + batchMode));
+    }
     log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
         "Registry Location           " + registryUrl));
     log.log(new ToolsLogRecord(ToolsLevel.CONFIGURATION,
@@ -340,6 +368,25 @@ public class HarvestPdapLauncher {
     registryPackageGuid = registryService.createPackage(registryPackage);
   }
 
+  private void deleteRegistryPackage(String guid, String registryURL)
+      throws Exception {
+    RegistryClient client = null;
+    if ( (username != null) && (password != null) ) {
+      client = new RegistryClient(registryURL, securityContext, username,
+          password);
+    } else {
+      client = new RegistryClient(registryURL);
+    }
+    try {
+      client.deleteObject(guid, RegistryPackage.class);
+      log.log(new ToolsLogRecord(ToolsLevel.INFO, "Deleted package with the "
+          + "following guid: " + guid));
+    } catch (RegistryServiceException rse) {
+      throw new Exception("Registry Service error occurred while "
+          + "attempting to create a Registry Package: " + rse.getMessage());
+    }
+  }
+
   /**
    * Perform the harvesting of the products.
    *
@@ -348,6 +395,7 @@ public class HarvestPdapLauncher {
   private void doHarvesting(Policy policy) {
     HarvesterPdap harvester = new HarvesterPdap(registryService,
         policy.getProductMetadata(), policy.getResourceMetadata());
+    harvester.setBatchMode(batchMode);
     harvester.harvest(policy.getPdapServices());
   }
 
@@ -361,13 +409,14 @@ public class HarvestPdapLauncher {
       System.out.println("\nType 'harvest-pdap -h' for usage");
       System.exit(0);
     }
+    String registryUrl = null;
     try {
       CommandLine commandline = parse(args);
       query(commandline);
       PolicyReader reader = new PolicyReader();
       Policy policy = reader.unmarshall(this.policy, true);
       Policy globalPolicy = reader.unmarshall(this.globalPolicy, false);
-
+      registryUrl = policy.getPdsRegistry().getUrl();
       // Combine productMetadata sections from user-specified policy and
       // global policy
       if (globalPolicy.getProductMetadata().getStaticMetadata() != null) {
@@ -389,16 +438,30 @@ public class HarvestPdapLauncher {
       createRegistryPackage(policy);
       logHeader(policy);
       doHarvesting(policy);
-      closeHandlers();
     } catch (ParseException pe) {
       System.err.println("Command-line parse failure: " + pe.getMessage());
-      System.exit(1);
     } catch (JAXBException je) {
       //Don't do anything
     } catch (Exception e) {
       System.err.println(e.getMessage());
-      System.exit(1);
+    } finally {
+      if ( (registryPackageGuid != null) &&
+          ((HarvestPdapStats.numDatasetsRegistered == 0) &&
+          (HarvestPdapStats.numResourcesRegistered == 0)) ) {
+        if (registryUrl != null) {
+          log.log(new ToolsLogRecord(ToolsLevel.INFO, "Nothing registered. "
+            + "Deleting package '" + registryPackageGuid + "'."));
+          try {
+            deleteRegistryPackage(registryPackageGuid, registryUrl);
+          } catch (Exception e) {
+            System.out.println("Error occurred while trying to delete empty "
+              + "package '" + registryPackageGuid + "': " + e.getMessage());
+          }
+        }
+      }
+      closeHandlers();
     }
+
   }
 
   public static void main(final String []args) {

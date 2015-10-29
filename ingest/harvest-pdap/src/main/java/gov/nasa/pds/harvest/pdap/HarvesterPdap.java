@@ -1,4 +1,4 @@
-// Copyright 2006-2012, by the California Institute of Technology.
+// Copyright 2006-2015, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -26,10 +26,10 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
 
 import org.apache.oodt.cas.metadata.Metadata;
+import org.joda.time.DateTime;
 
 import uk.ac.starlink.table.RowSequence;
 import uk.ac.starlink.table.StarTable;
-
 import gov.nasa.pds.harvest.pdap.catalog.StatementFinder;
 import gov.nasa.pds.harvest.pdap.constants.Constants;
 import gov.nasa.pds.harvest.pdap.logging.ToolsLevel;
@@ -50,6 +50,7 @@ import gov.nasa.pds.harvest.registry.PdsRegistryService;
 import gov.nasa.pds.registry.exception.RegistryServiceException;
 import gov.nasa.pds.registry.model.ExtrinsicObject;
 import gov.nasa.pds.registry.model.Slot;
+import gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator;
 import gov.nasa.pds.tools.dict.parser.DictIDFactory;
 import gov.nasa.pds.tools.label.AttributeStatement;
 import gov.nasa.pds.tools.label.Label;
@@ -88,6 +89,9 @@ public class HarvesterPdap {
   /** PDAP Client interface. */
   private PdapRegistryClient pdapClient;
 
+  /** UUID generator. */
+  private DefaultIdentifierGenerator idGenerator;
+
   /**
    * Constructor.
    *
@@ -106,6 +110,7 @@ public class HarvesterPdap {
     for (Element element : dynamicMetadata.getElement()) {
       this.elementsToGet.add(element.getName());
     }
+    idGenerator = new DefaultIdentifierGenerator();
   }
 
   /**
@@ -131,7 +136,22 @@ public class HarvesterPdap {
       pdapClient = new PsaRegistryClient(pdapService.getUrl());
     }
     try {
-      List<StarTable> tables = pdapClient.getAllDataSets();
+      DateTime startDateTime = null;
+      DateTime stopDateTime = null;
+      if (pdapService.getStartDateTime() != null) {
+        startDateTime = new DateTime(pdapService.getStartDateTime().toString());
+        startDateTime = startDateTime.minusSeconds(1);
+        log.log(new ToolsLogRecord(ToolsLevel.INFO,
+            "Querying by start datetime = " + startDateTime.toString()));
+      }
+      if (pdapService.getStopDateTime() != null) {
+        stopDateTime = new DateTime(pdapService.getStopDateTime().toString());
+        stopDateTime = stopDateTime.plusSeconds(1);
+        log.log(new ToolsLogRecord(ToolsLevel.INFO,
+            "Querying by stop datetime = " + stopDateTime.toString()));
+      }
+      List<StarTable> tables = pdapClient.getDataSets(startDateTime,
+          stopDateTime);
       for (StarTable table : tables) {
         RowSequence rseq = table.getRowSequence();
         while (rseq.next()) {
@@ -170,20 +190,7 @@ public class HarvesterPdap {
                 "Product already exists: " + lidvid, datasetId));
             ++HarvestPdapStats.numDatasetsNotRegistered;
           } else {
-            try {
-              String guid = registerDataset(lid, datasetMet);
-              log.log(new ToolsLogRecord(ToolsLevel.SUCCESS,
-                  "Successfully ingested product: " + lidvid, datasetId));
-              log.log(new ToolsLogRecord(ToolsLevel.INFO, "Product guid is "
-                  + guid, datasetId));
-              ++HarvestPdapStats.numDatasetsRegistered;
-            } catch (RegistryServiceException rse) {
-              log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
-                  "Exception occurred while attempting to register product '"
-                  + lidvid + "'", datasetId));
-              ++HarvestPdapStats.numDatasetsNotRegistered;
-              continue;
-            }
+            registerDataset(lid, datasetMet, datasetId);
             try {
               String resourceLid = createLid(Constants.RESOURCE_PREFIX, datasetId);
               String resourceLidvid = resourceLid + "::1.0";
@@ -192,13 +199,7 @@ public class HarvesterPdap {
                     "Product already exists: " + resourceLidvid, datasetId));
                 ++HarvestPdapStats.numResourcesNotRegistered;
               } else {
-                String guid = registerResource(resourceLid, datasetMet);
-                log.log(new ToolsLogRecord(ToolsLevel.SUCCESS,
-                    "Successfully ingested product: " + resourceLidvid,
-                    datasetId));
-                log.log(new ToolsLogRecord(ToolsLevel.INFO, "Product guid is "
-                    + guid, datasetId));
-                ++HarvestPdapStats.numResourcesRegistered;
+                registerResource(resourceLid, datasetMet, datasetId);
               }
             } catch (PdapRegistryClientException pe) {
               log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
@@ -231,6 +232,9 @@ public class HarvesterPdap {
       ++HarvestPdapStats.numDatasetsNotRegistered;
     } catch (Exception e) {
       log.log(new ToolsLogRecord(ToolsLevel.SEVERE, e.getMessage()));
+    }
+    if (registryService.getBatchManager() != null) {
+      registryService.getBatchManager().ingest();
     }
   }
 
@@ -267,8 +271,8 @@ public class HarvesterPdap {
    * @throws RegistryServiceException If an error occurred while ingesting
    * the product to the PDS Registry.
    */
-  private String registerDataset(String lid, Metadata datasetMet)
-  throws RegistryServiceException {
+  private void registerDataset(String lid, Metadata datasetMet,
+      String datasetId) {
     ExtrinsicObject extrinsic = createExtrinsic(lid, datasetMet);
     if (log.getParent().getHandlers()[0].getLevel().intValue()
         <= ToolsLevel.DEBUG.intValue()) {
@@ -279,7 +283,7 @@ public class HarvesterPdap {
         log.log(new ToolsLogRecord(ToolsLevel.SEVERE, je.getMessage()));
       }
     }
-    return registryService.ingest(extrinsic);
+    registryService.ingest(extrinsic, datasetId);
   }
 
   /**
@@ -310,16 +314,35 @@ public class HarvesterPdap {
       log.log(new ToolsLogRecord(ToolsLevel.INFO, "Additional metadata "
           + "needed. Getting dataset catalog file.", datasetId));
       Label catalog = null;
-      String catalogFilename = "";
       try {
-        log.log(new ToolsLogRecord(ToolsLevel.INFO, "Retrieving VOLDESC.CAT to "
-            + "look up the data set catalog file name.", datasetId));
-        Label voldesc = pdapClient.getVoldescFile(datasetId);
-        catalogFilename = getCatalogFile(voldesc, datasetId);
-        if (catalogFilename != null) {
-          log.log(new ToolsLogRecord(ToolsLevel.INFO, "Retrieving catalog "
-              + "file: " + catalogFilename, datasetId));
+        //Assume catalog file name is always DATASET.CAT
+        //If we fail to get the catalog file off this filename, then
+        //the alternative is to retrieve the VOLDESC.CAT to get the catalog
+        //file name
+        String catalogFilename = "DATASET.CAT";
+        log.log(new ToolsLogRecord(ToolsLevel.INFO, "Attempting to retrieve "
+            +"the catalog file using the file name: " + catalogFilename,
+            datasetId));
+        try {
           catalog = pdapClient.getCatalogFile(datasetId, catalogFilename);
+        } catch (PdapRegistryClientException e) {
+          //If an exception was thrown, let's get the catalog file name from
+          //the VOLDESC.CAT
+          log.log(new ToolsLogRecord(ToolsLevel.INFO, "Could not retrieve "
+              + "catalog file using the file name DATASET.CAT", datasetId));
+          log.log(new ToolsLogRecord(ToolsLevel.INFO, "Retrieving VOLDESC.CAT "
+              + "to look up the data set catalog file name.", datasetId));
+          Label voldesc = pdapClient.getVoldescFile(datasetId);
+          catalogFilename = getCatalogFile(voldesc, datasetId);
+          log.log(new ToolsLogRecord(ToolsLevel.INFO, "Retrieved the catalog "
+              + "file name from the VOLDESC.CAT: " + catalogFilename,
+              datasetId));
+          log.log(new ToolsLogRecord(ToolsLevel.INFO,
+              "Retrieving the catalog file '" + catalogFilename + "'",
+              datasetId));
+          catalog = pdapClient.getCatalogFile(datasetId, catalogFilename);
+        }
+        if (catalog != null) {
           for (String leftoverElement : elementsToGetCopy) {
             List<AttributeStatement> attributes =
               StatementFinder.getStatementsRecursively(catalog, leftoverElement);
@@ -350,8 +373,11 @@ public class HarvesterPdap {
     ExtrinsicObject extrinsic = new ExtrinsicObject();
     extrinsic.setObjectType(Constants.DATA_SET_PRODUCT_CLASS);
     extrinsic.setLid(lid);
+    extrinsic.setGuid(idGenerator.getGuid());
     if (extrinsicMet.containsKey("DATA_SET_NAME")) {
-      extrinsic.setName(extrinsicMet.getMetadata("DATA_SET_NAME"));
+      String trimmedTitle = extrinsicMet.getMetadata("DATA_SET_NAME")
+          .replaceAll("\\s+", " ").trim();
+      extrinsic.setName(trimmedTitle);
     }
     Set<Slot> slots = new HashSet<Slot>();
     slots.add(new Slot(Constants.PRODUCT_VERSION, Arrays.asList(
@@ -439,8 +465,8 @@ public class HarvesterPdap {
    * the PDS Registry.
    *
    */
-  private String registerResource(String lid, Metadata datasetMet)
-  throws PdapRegistryClientException, RegistryServiceException {
+  private void registerResource(String lid, Metadata datasetMet, String datasetId)
+  throws PdapRegistryClientException {
     ExtrinsicObject extrinsic = createResourceExtrinsic(lid, datasetMet);
     if (log.getParent().getHandlers()[0].getLevel().intValue()
         <= ToolsLevel.DEBUG.intValue()) {
@@ -451,7 +477,7 @@ public class HarvesterPdap {
         log.log(new ToolsLogRecord(ToolsLevel.SEVERE, je.getMessage()));
       }
     }
-    return registryService.ingest(extrinsic);
+    registryService.ingest(extrinsic, datasetId);
   }
 
   /**
@@ -470,7 +496,10 @@ public class HarvesterPdap {
     ExtrinsicObject extrinsic = new ExtrinsicObject();
     extrinsic.setObjectType(Constants.RESOURCE_PRODUCT_CLASS);
     extrinsic.setLid(lid);
-    extrinsic.setName(resourceMetadata.getTitle());
+    extrinsic.setGuid(idGenerator.getGuid());
+    String trimmedTitle = resourceMetadata.getTitle().replaceAll("\\s+", " ")
+        .trim();
+    extrinsic.setName(trimmedTitle);
     Set<Slot> slots = new HashSet<Slot>();
     slots.add(new Slot(Constants.PRODUCT_VERSION, Arrays.asList(
         new String[]{"1.0"})));
@@ -486,5 +515,15 @@ public class HarvesterPdap {
     }
     extrinsic.setSlots(slots);
     return extrinsic;
+  }
+
+  /**
+   * Sets the number of concurrent registrations to make
+   * during batch mode.
+   *
+   * @param value integer value.
+   */
+  public void setBatchMode(int value) {
+    this.registryService.setBatchMode(value);
   }
 }

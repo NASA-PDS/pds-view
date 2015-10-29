@@ -1,4 +1,4 @@
-// Copyright 2006-2013, by the California Institute of Technology.
+// Copyright 2006-2015, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -30,4 +30,6 @@ public class Constants {
   public static final String RESOURCE_PRODUCT_CLASS = "Product_Context";
 
   public static final String URN_ILLEGAL_CHARACTERS = "[%/\\\\?#\"&<>\\[\\]^`\\{\\|\\}~]";
+
+  public static final int DEFAULT_BATCH_MODE = 50;
 }

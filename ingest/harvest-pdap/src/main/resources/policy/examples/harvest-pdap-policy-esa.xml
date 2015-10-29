@@ -21,6 +21,7 @@
    </pdsRegistry>
    <pdapServices>
      <!-- Currently, the only valid value for 'agency' is 'esa'. -->
+     <!-- Can optionally specify a 'startDateTime' and 'stopDateTime' to prevent getting back all data sets. -->
      <pdapService agency="esa" url="http://psa.esac.esa.int:8000"/>
    </pdapServices>
    <productMetadata>
