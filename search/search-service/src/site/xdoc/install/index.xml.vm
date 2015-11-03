@@ -33,9 +33,6 @@
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
-	<ul>
-          <li><a href="./en-deploy.html">Engineering Node Deployment</a></li>
-	</ul>
         <li><a href="#Security">Security</a></li>
         <li><a href="#Common_Errors">Common Errors</a></li>
       </ul>
@@ -64,7 +61,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.72-b04, mixed mode)
       </subsection>
 
       <subsection name="Java Application Server">
-        <p>The Search Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/pds2010/development/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
+        <p>The Search Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/development/pds4/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
         </p>
       </subsection>
     </section>
@@ -121,8 +118,6 @@ or
       <p>The Search Service includes the configuration for Solr as well as the Java extensions written to support the PDS Search Protocol and PDAP Handler. In order to deploy Solr with the Search Service configuration, please complete the following procedure:
       </p>
 
-      <p><i>See <a href="./en-deploy.html">Engineering Node Deployment documentation</a> for EN-specific deployment instructions.</i></p>
-
       <subsection name="Initial Installation">
         <ol>
           <li>Create a symbolic link to the Search Service installation directory to provide an easier method of upgrade in the future.  The following demonstrates how to create this symbolic link:
@@ -155,7 +150,7 @@ JAVA_OPTS="${JAVA_OPTS} -Dlog4j.configuration=\
           file:///usr/local/${project.artifactId}/log4j.properties"
 JAVA_OPTS="${JAVA_OPTS} -Dlog4j.debug=true"
             </source>
-	    <p>For more information on the <i>$TOMCAT_HOME/bin/setenv.sh</i> script, see the General Configuration section of the <a href="../../../release/index-tomcat.html#General_Configuration">Tomcat Deployment</a> document.</p>
+      <p>For more information on the <i>$TOMCAT_HOME/bin/setenv.sh</i> script, see the General Configuration section of the <a href="../../../release/index-tomcat.html#General_Configuration">Tomcat Deployment</a> document.</p>
           </li>
           <li>Restart Tomcat server</li>
           <li>Test installation by going to http://localhost:8080/${project.artifactId}/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
