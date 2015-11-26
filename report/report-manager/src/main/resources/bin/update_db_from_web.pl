@@ -38,6 +38,7 @@ runcmd("cp ${oldlai}users.cfg ${newlai}users.cfg");
 #runcmd("cp ${oldlai}licenses.cfg ${newlai}licenses.cfg");
 runcmd("cp ${oldlai}schedule.cfg ${newlai}schedule.cfg");
 runcmd("cp ${oldlai}system.cfg ${newlai}system.cfg");
+runcmd("cp ${oldlai}spiders.cfg ${newlai}spiders.cfg");
 runcmd("cp ${oldlai}preferences.cfg ${newlai}preferences.cfg");
 runcmd("cp ${oldlai}roles_enterprise.cfg ${newlai}roles_enterprise.cfg");
 runcmd("cp ${oldlai}roles_standard.cfg ${newlai}roles_standard.cfg");
