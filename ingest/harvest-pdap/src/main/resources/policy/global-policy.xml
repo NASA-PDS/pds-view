@@ -48,16 +48,17 @@
         <slotName>modification_description</slotName>
       </element>
       <element name="START_TIME">
-        <slotName>data_set_start_time</slotName>
+        <slotName>data_set_start_date_time</slotName>
       </element>
       <element name="STOP_TIME">
-        <slotName>data_set_stop_time</slotName>
+        <slotName>data_set_stop_date_time</slotName>
       </element>
       <element name="ABSTRACT_DESC">
-        <slotName>data_set_abstract_desc</slotName>
+        <slotName>data_set_abstract_description</slotName>
       </element>
       <element name="DATA_SET_TERSE_DESC">
-        <slotName>data_set_desc</slotName>
+        <slotName>data_set_terse_description</slotName>
+        <slotName>data_set_description</slotName>
       </element>
       <element name="CONFIDENCE_LEVEL_NOTE">
         <slotName>data_set_confidence_level_note</slotName>
