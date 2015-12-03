@@ -16,9 +16,15 @@
 -->
 
 <configuration https='false' localhost='false' password='aGFuYWxlaQ==' xmlns='http://oodt.jpl.nasa.gov/web-grid/ns/'>
-    <server className='gov.nasa.pds.transport.RegistryProductHandler' type='product'/>
+    <!--server className='gov.nasa.pds.transport.RegistryProductHandler' type='product'/-->
+    <server className='gov.nasa.pds.transport.SearchProductHandler' type='product'/>
     <properties>
         <property key='gov.nasa.pds.transport.RegistryProductHandler.registryUrl'>http://localhost:8080/registry</property>
         <property key='gov.nasa.pds.transport.RegistryProductHandler.tmpDir'>/tmp</property>
+        
+        <!-- Used with the search service -->
+        <property key='gov.nasa.pds.transport.SearchProductHandler.searchUrl'>http://pds-dev.jpl.nasa.gov:8080/search-service</property>
+        <property key='gov.nasa.pds.transport.SearchProductHandler.tmpDir'>/tmp</property>
+        <property key='gov.nasa.pds.transport.SearchProductHandler.useFileRefUrl'>false</property>
     </properties>
 </configuration>
