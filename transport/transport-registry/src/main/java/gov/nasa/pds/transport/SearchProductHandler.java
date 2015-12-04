@@ -178,9 +178,9 @@ public class SearchProductHandler implements LargeProductQueryHandler {
     	  e.printStackTrace();
         String message = e.getMessage();
         if (message == null) {
-          throw new ProductException("Error querying the registry service or no products found.");
+          throw new ProductException("Error querying the search service or no products found.");
         } else {
-          throw new ProductException("Error querying the registry service or no products found. Message: " + message);
+          throw new ProductException("Error querying the search service or no products found. Message: " + message);
         }
       }
       i++;
