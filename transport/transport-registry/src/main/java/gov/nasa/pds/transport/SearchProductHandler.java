@@ -10,12 +10,9 @@
 // may be required before exporting such information to foreign countries or
 // providing access to foreign nationals.
 //
-// $Id: RegistryProductHandler.java 13469 2014-09-12 13:47:47Z cinquini $
+// $Id: SearchProductHandler.java 13469 2014-09-12 13:47:47Z hyunlee $
 
 package gov.nasa.pds.transport;
-
-import gov.nasa.pds.registry.client.results.RegistryHandler;
-import gov.nasa.pds.registry.model.wrapper.ExtendedExtrinsicObject;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
@@ -59,7 +56,7 @@ import org.apache.solr.common.SolrDocument;
 
 /**
  * This Apache OODT Product Server handler accepts a query containing one
- * or more Registry Service identifiers, queries the Registry Service for 
+ * or more Registry Service identifiers, queries the Search Service for 
  * the associated files and returns a package containing those files back 
  * to the calling application.
  *
@@ -93,11 +90,7 @@ public class SearchProductHandler implements LargeProductQueryHandler {
     String fileRefUrlFlag = System.getProperty("gov.nasa.pds.transport.SearchProductHandler.useFileRefUrl", "true");
     boolean useFileRefUrl = Boolean.parseBoolean(fileRefUrlFlag);
 
-    // Setup the search list and initialize the search handler.
-    ArrayList<String> primaryRegistries = new ArrayList<String>();
-    primaryRegistries.addAll(Arrays.asList(searchUrls));
-    ArrayList<String> secondaryRegistries = new ArrayList<String>();
-    
+    // Setup the search server url and initialize the search handler.
     SearchHandler searchHandler = new SearchHandler(searchUrl);
 
     // Get the package format if specified in the query.

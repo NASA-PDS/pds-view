@@ -86,6 +86,16 @@ public class SearchHandler {
 		SolrServer solr = new HttpSolrServer(solrServerUrl);
 		
 		ModifiableSolrParams params = new ModifiableSolrParams();
+		
+		String versionId = null;
+		if (identifier.contains("::")) {
+			identifier = identifier.substring(0, identifier.lastIndexOf("::"));
+			versionId = identifier.substring(identifier.lastIndexOf("::")+1);
+		}
+
+		if (versionId!=null) 
+			params.set("version_id", versionId);
+		
 		params.set("q", "identifier:"+identifier);
 		params.set("indent", "on");
 		params.set("wt", "xml");
@@ -93,7 +103,6 @@ public class SearchHandler {
 		//System.out.println("params = " + params.toString());
 		QueryResponse response = solr.query(params,
 				org.apache.solr.client.solrj.SolrRequest.METHOD.GET);
-		//QueryResponse response = solr.query(params);
 		
 		SolrDocumentList solrResults = response.getResults();
 		//System.out.println("numFound = " + solrResults.getNumFound());
@@ -105,7 +114,6 @@ public class SearchHandler {
 		while (itr.hasNext()) {
 			doc = itr.next();
 			//System.out.println("*****************  idx = " + (idx++));
-
 			/*
 			for (Map.Entry<String, Object> entry : doc.entrySet()) {
 				System.out.println("Key = " + entry.getKey() + "       Value = " + entry.getValue());
