@@ -14,6 +14,7 @@
 package gov.nasa.pds.harvest.pdap;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -303,9 +304,34 @@ public class HarvesterPdap {
     for (String element : elementsToGet) {
       if (datasetMet.containsKey(element)) {
         if (datasetMet.isMultiValued(element)) {
-          extrinsicMet.addMetadata(element, datasetMet.getAllMetadata(element));
+          if (element.endsWith("TIME")) {
+            for (String value : datasetMet.getAllMetadata(element)) {
+              try {
+                value = processTime(value, element, datasetId);
+              } catch (ParseException p) {
+                log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+                    "Could not reformat datetime value, '" + value + "', "
+                        + "to ISO 8601 for '" + element + "': " + p.getMessage(),
+                        datasetId));
+              }
+              extrinsicMet.addMetadata(element, value);
+            }
+          } else {
+            extrinsicMet.addMetadata(element, datasetMet.getAllMetadata(element));
+          }
         } else {
-          extrinsicMet.addMetadata(element, datasetMet.getMetadata(element));
+          String value = datasetMet.getMetadata(element);
+          if (element.endsWith("TIME")) {
+            try {
+              value = processTime(value, element, datasetId);
+            } catch (ParseException p) {
+              log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+                  "Could not reformat datetime value, '" + value + "', "
+                      + "to ISO 8601 for '" + element + "': " + p.getMessage(),
+                      datasetId));
+            }
+          }
+          extrinsicMet.addMetadata(element, value);
         }
         elementsToGetCopy.remove(element);
       }
@@ -352,15 +378,48 @@ public class HarvesterPdap {
                 gov.nasa.pds.tools.label.Set set =
                   (gov.nasa.pds.tools.label.Set) value;
                 for (Iterator<Scalar> i = set.iterator(); i.hasNext();) {
-                  extrinsicMet.addMetadata(leftoverElement, i.next().toString());
+                  String stringValue = i.next().toString();
+                  if (leftoverElement.endsWith("TIME")) {
+                    try {
+                      stringValue = processTime(stringValue, leftoverElement, datasetId);
+                    } catch (ParseException p) {
+                      log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+                          "Could not reformat datetime value, '" + value + "', "
+                              + "to ISO 8601 for '" + leftoverElement + "': " + p.getMessage(),
+                              datasetId));
+                    }
+                  }
+                  extrinsicMet.addMetadata(leftoverElement, stringValue);
                 }
               } else if (value instanceof Sequence) {
                 Sequence sequence = (Sequence) value;
                 for (Iterator<Value> i = sequence.iterator(); i.hasNext();) {
-                  extrinsicMet.addMetadata(leftoverElement, i.next().toString());
+                  String stringValue = i.next().toString();
+                  if (leftoverElement.endsWith("TIME")) {
+                    try {
+                      stringValue = processTime(stringValue, leftoverElement, datasetId);
+                    } catch (ParseException p) {
+                      log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+                          "Could not reformat datetime value, '" + value + "', "
+                              + "to ISO 8601 for '" + leftoverElement + "': " + p.getMessage(),
+                              datasetId));
+                    }
+                  }
+                  extrinsicMet.addMetadata(leftoverElement, stringValue);
                 }
               } else {
-                extrinsicMet.addMetadata(leftoverElement, value.toString());
+                String stringValue = value.toString();
+                if (leftoverElement.endsWith("TIME")) {
+                  try {
+                    stringValue = processTime(stringValue, leftoverElement, datasetId);
+                  } catch (ParseException p) {
+                    log.log(new ToolsLogRecord(ToolsLevel.SEVERE,
+                        "Could not reformat datetime value, '" + value + "', "
+                            + "to ISO 8601 for '" + leftoverElement + "': " + p.getMessage(),
+                            datasetId));
+                  }
+                }
+                extrinsicMet.addMetadata(leftoverElement, stringValue);
               }
             }
           }
@@ -411,6 +470,38 @@ public class HarvesterPdap {
     }
     extrinsic.setSlots(slots);
     return extrinsic;
+  }
+
+  /**
+   * Method to reformat the given datetime value into ISO 8601. Also sets
+   * a STOP_TIME value to blank if it is determined to be a placeholder
+   * value (starts with 1970).
+   *
+   * @param value datetime value.
+   * @param element The associated element name.
+   * @param datasetId The associated data set id.
+   * @return The reformatted datetime value or a blank value if it is
+   *  determined to be a placeholder value.
+   * @throws ParseException
+   */
+  private String processTime(String value, String element, String datasetId)
+      throws ParseException {
+    String result = "";
+    result = Utility.toISO8601(value);
+    log.log(new ToolsLogRecord(ToolsLevel.DEBUG,
+        "Reformatted datetime '" + value
+          + "' to '" + result + "' for element '" + element + "'",
+          datasetId));
+    if (element.equalsIgnoreCase("STOP_TIME")) {
+      if (result.startsWith("1970")) {
+        log.log(new ToolsLogRecord(ToolsLevel.INFO,
+            "Datetime value for STOP_TIME element appears to contain "
+            + "a placeholder value '" +  result + "'. "
+            + "Setting slot to a blank value.", datasetId));
+        result = "";
+      }
+    }
+    return result;
   }
 
   /**

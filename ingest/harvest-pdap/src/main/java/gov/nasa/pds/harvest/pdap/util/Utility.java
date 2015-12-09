@@ -19,13 +19,21 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Utility class.
@@ -97,5 +105,19 @@ public class Utility {
       //Marshal object into file.
       m.marshal(extrinsic, output);
       return output.toString();
+    }
+
+    /**
+     * Converts a datetime string into an ISO 8601 format.
+     *
+     * @param timestamp A timestamp string value.
+     * @return The timestamp in ISO 8601 format.
+     * @throws ParseException
+     */
+    public static String toISO8601(String timestamp) throws ParseException {
+      DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+      Timestamp ts = Timestamp.valueOf(timestamp);
+      DateTime dateTime = new DateTime(ts.getTime());
+      return dtf.print(dateTime);
     }
 }
