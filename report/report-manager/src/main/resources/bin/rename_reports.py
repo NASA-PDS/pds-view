@@ -1,4 +1,5 @@
 import os
+import os.path
 import re
 import sys
 
@@ -37,10 +38,14 @@ def main():
     
     # Change report names to use previous month
     files = [f for f in os.listdir('.') if os.path.isfile(f)]
+    print("Found " + str(len(files)) + " files to possibly rename in " + os.path.abspath('.'))
     for f in files:
         oldFileName = f
-        newFileName = oldFileName.replace(dateStr, year + "-" + month)
-        os.rename(oldFileName, newFileName)
+        if dateStr in oldFileName:
+            newFileName = oldFileName.replace(dateStr, year + "-" + month)
+            os.rename(oldFileName, newFileName)
+        else:
+            print(dateStr + " not found in " + oldFileName)
 
 if __name__ == "__main__":
     sys.exit(main())
