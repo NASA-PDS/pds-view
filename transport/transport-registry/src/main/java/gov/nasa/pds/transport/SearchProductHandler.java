@@ -1,4 +1,4 @@
-// Copyright 2013, by the California Institute of Technology.
+// Copyright 2015, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -61,7 +61,6 @@ import org.apache.solr.common.SolrDocument;
  * to the calling application.
  *
  * @author hyunlee
- * @author luca
  * @version $Revision: 13469 $
  */
 public class SearchProductHandler implements LargeProductQueryHandler {
@@ -81,7 +80,7 @@ public class SearchProductHandler implements LargeProductQueryHandler {
     long totalSize = 0;
 
     // Get handler properties.
-    String searchUrl = System.getProperty("gov.nasa.pds.transport.SearchProductHandler.searchUrl", "http://pds-gamma.jpl.nasa.gov/services/search");
+    String searchUrl = System.getProperty("gov.nasa.pds.transport.SearchProductHandler.searchUrl", "http://localhost:8080/search-service");
     String[] searchUrls = searchUrl.split("\\s*,\\s*");
     for (String _searchUrl : searchUrls) {
     	System.out.println("Using PDS Search URL: "+_searchUrl);

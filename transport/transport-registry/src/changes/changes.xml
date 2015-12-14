@@ -25,7 +25,7 @@
   <body>
     <release version="1.2.0" date="TBD" description="TBD">
       <action dev="hyunlee" type="add" issue="PDS-406">
-        Added support for accessing the Search Service for product discovery. Doesn't have a capability for bulk transport yet. 
+        Added support for accessing the Search Service for product discovery.
       </action>
     </release>
 
