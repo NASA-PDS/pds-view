@@ -80,7 +80,7 @@ public class ProductClass {
 	private RegistryHandler registryHandler;
 	
 	private int queryMax = 9999999;
-
+	
 	/**
 	 * 
 	 * @param outputDir
@@ -118,7 +118,9 @@ public class ProductClass {
 					+ "\nCause: " + e.getCause().getMessage());
 		}
 			
-			
+		Map<String, String> typeMap = new HashMap<String, String>();
+		typeMap = setFieldTypes();
+					
 		// Create output directory
 		File registryOutputDir = createOutputDirectory(this.product.getSpecification().getTitle());
 		
@@ -133,7 +135,7 @@ public class ProductClass {
 			if (this.registryHandler.doPrimaryRegistriesExist()) {    
 				// Map of field -> value
 				Map<String, List<String>> fieldMap = new HashMap<String, List<String>>();
-				
+								
 				List<Object> extList;
 				
 				// Get the RegistryResults object, which handles looping through results	
@@ -147,8 +149,8 @@ public class ProductClass {
 					extList = results.getResultObjects();
 					for (Object obj : extList) {
 						searchExtrinsic = new ExtendedExtrinsicObject((ExtrinsicObject) obj);
-						
 						fieldMap.clear();
+						registryHandler.initializeAssocSearchHashMap();
 						
 						outSeqNum++;
 		
@@ -158,7 +160,7 @@ public class ProductClass {
 						// Output the registry doc info to an XML file
 						// TODO This should be refactored to write directly to Solr
 						writer = new XMLWriter(fieldMap, registryOutputDir,
-								outSeqNum, this.product.getSpecification().getTitle());
+								outSeqNum, this.product.getSpecification().getTitle(), typeMap);
 						writer.write();
 						
 						instkeys.add(searchExtrinsic.getLid());
@@ -305,6 +307,33 @@ public class ProductClass {
 		}
 	}
 
+
+	private Map<String, String> setFieldTypes() throws ProductClassException {
+		try {
+			Map<String, String> typeMap = new HashMap<String, String>();
+
+			/* Initialize local variables */
+			List<String> valueList = new ArrayList<String>();
+
+			Object value;
+
+			// Loop through class results beginning from top
+			for (Field field : this.product.getIndexFields().getField()) {
+				//TODO Functionality to use suffixes for field names commented out below
+				String fieldName = field.getName(); //+ SolrSchemaField.getSuffix(field.getType());
+				String fieldType = field.getType().value();
+
+				typeMap.put(fieldName, fieldType);
+			}
+
+			return typeMap;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new ProductClassException("Exception "
+					+ ex.getClass().getName() + ex.getMessage());
+		}
+	}
+
 	/**
 	 * Extract the attribute/slot/association from the String
 	 * specified and query the Registry for the value to replace
@@ -365,7 +394,7 @@ public class ProductClass {
 			pathArray = registryPath.split("\\.");
 			if (pathArray.length > 1) {
 				Debugger.debug("Traversing registry path - " + searchExtrinsic.getLid()
-						+ " - " + registryPath);
+						+ " - " + registryPath);				
 				valueList.addAll(traverseRegistryPath(Arrays.asList(pathArray), Arrays.asList(searchExtrinsic)));
 			} else {	// Field is a slot
 				Debugger.debug("Getting slot values - " + searchExtrinsic.getLid()
@@ -390,11 +419,10 @@ public class ProductClass {
 		if (pathList.size() > 1 && !searchExtrinsicList.isEmpty()) {
 			newPathList = new ArrayList<String>();
 			newPathList.addAll(pathList.subList(1, pathList.size()));
-			
 			for (ExtendedExtrinsicObject searchExtrinsic : searchExtrinsicList) {
-					return traverseRegistryPath(newPathList, 
-							this.registryHandler.getAssociatedExtrinsicsByReferenceType(
-									searchExtrinsic, pathList.get(0)));
+				return traverseRegistryPath(newPathList, 
+						this.registryHandler.getAssociatedExtrinsicsByReferenceType(
+								searchExtrinsic, pathList.get(0)));
 			}
 		} else if (pathList.size() == 1 && !searchExtrinsicList.isEmpty()) {	// Let's get some slot values
 			List<String> slotValueList = new ArrayList<String>();

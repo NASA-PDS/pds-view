@@ -40,6 +40,7 @@ import org.w3c.dom.Text;
 public class XMLWriter {
 
 	private Map map;
+	private Map typeMap;
 	private File basedir;
 	private String filename;
 	private String fnameprefix = "core";
@@ -59,9 +60,10 @@ public class XMLWriter {
 		//BAD_VALUES_LIST.add("UNK");
 	}
 
-	public XMLWriter(Map map, File basedir, int seq, String productTitle) {
+	public XMLWriter(Map map, File basedir, int seq, String productTitle, Map typeMap) {
 		try {
 			this.map = map;
+			this.typeMap = typeMap;
 			this.basedir = basedir;
 
 			this.filename = getFilename(seq, productTitle);
@@ -88,12 +90,13 @@ public class XMLWriter {
 		try {
 			Set set = this.map.keySet();
 			for (Object name : set) {
-				valArray = (List) this.map.get(String.valueOf(name));
+				String fieldName = String.valueOf(name);
+				valArray = (List) this.map.get(fieldName);
 				if (valArray != null) {
 					for (Object value : valArray) {
 						//Debugger.debug("name: "+name);
 						//Debugger.debug("value: "+value);
-						addElement(String.valueOf(name), String.valueOf(value));
+						addElement(fieldName, String.valueOf(value), (String)this.typeMap.get(fieldName));
 					}
 				} //else {
 					//addElement(String.valueOf(name), "");
@@ -132,7 +135,7 @@ public class XMLWriter {
 		return fname;
 	}
 
-	public void addElement(String name, String value) {
+	public void addElement(String name, String value, String type) {
 		// Temporary variables to hold name and value
 		String tName, tValue;
 
@@ -144,6 +147,7 @@ public class XMLWriter {
 	        this.classElement.appendChild(element);
 
 	        Text text = doc.createTextNode(tValue);
+	        element.setAttribute("type", type.trim());
 	        element.appendChild(text);
 		//}
 

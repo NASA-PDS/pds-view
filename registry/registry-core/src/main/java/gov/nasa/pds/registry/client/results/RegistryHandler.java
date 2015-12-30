@@ -64,6 +64,8 @@ public class RegistryHandler {
 	
 	private List<String> allRegistries;
 	
+	private Map<String, List<ExtendedExtrinsicObject>> assocSearchMap = new HashMap<String, List<ExtendedExtrinsicObject>>();;
+	
 	public RegistryHandler(List<String> primaryRegistries, List<String> secondaryRegistries,
 			int queryMax) {
 		this(primaryRegistries, secondaryRegistries, queryMax, false);
@@ -80,6 +82,10 @@ public class RegistryHandler {
 		this.checkAssociations = checkAssociations;
 
 		resetAllRegistries();
+	}
+	
+	public void initializeAssocSearchHashMap() {
+		assocSearchMap.clear();
 	}
 	
 	/**
@@ -232,21 +238,35 @@ public class RegistryHandler {
 		List<ExtendedExtrinsicObject> assocSearchExtList = new ArrayList<ExtendedExtrinsicObject>();
 		ExtendedExtrinsicObject assocSearchExt = null;
 		
+		/*
+		System.out.println("&&&&&& size of assocSearchMap = " + assocSearchMap.size());
+        for (Map.Entry<String, List<ExtendedExtrinsicObject>> entry : assocSearchMap.entrySet()) {
+            String key = entry.getKey();
+            List<ExtendedExtrinsicObject> values = entry.getValue();
+            System.out.println("Key = " + key);
+            System.out.println("Values = " + values.toString() + "\n");
+        }
+		*/
+		
 		// Get list of associations for specific association type
 		if (assocLidvids != null && !assocLidvids.isEmpty()) {
 			for (String assocLidvid : assocLidvids) {
 				//Debugger.debug("Associated lidvid - " + assocLidvid);
 
+				//System.out.println("+++++in assocLidVids != null.......assocLidVid = " + assocLidvid);
+				 
 				// First, check the cache
 				assocSearchExt = AssociationCache.get(assocLidvid);
 				
 				// Second, query for the Extrinsic by the lidvid
 				if (assocSearchExt == null) {
 					//Debugger.debug(assocLidvid + " -  Not in AssociationCache.");
+					//System.out.println(assocLidvid + " -  Not in AssociationCache.");
 					assocSearchExt = getExtrinsicByLidvid(assocLidvid);
 				} else {
 					//Debugger.debug(assocLidvid + " - ASSOCIATION CACHE WORKED");
 					//SearchCoreStats.assocCacheHits++;
+					//System.out.println(assocLidvid + " - ASSOCIATION CACHE WORKED");
 				}
 				
 				// Finally, either add it to the list, or throw it in the garbage log
@@ -259,9 +279,24 @@ public class RegistryHandler {
 				}
 			}
 		} else {	// We still have a shot, let's check for Association objects
-			if (this.checkAssociations) {
-				assocSearchExtList = getAssociationsBySourceObject(searchExtrinsic, referenceType);
-			// TODO Could also check Target Objects, but not needed right now
+			if (this.checkAssociations) {	
+				// for now, it will work. TODO TODO TODO: need to rework on this if there are multiple associations object????
+				if (!assocSearchMap.containsKey(referenceType)) { 				
+					//System.out.println("getAssociatedExtrinsicsByReferenceType..... assocSearchMap doesn't contains " + referenceType);
+					assocSearchExtList = getAssociationsBySourceObject(searchExtrinsic, referenceType);
+					
+					if (assocSearchExtList!=null && !assocSearchExtList.isEmpty()) {
+						assocSearchMap.put(referenceType, assocSearchExtList);
+					}
+					//System.out.println("++++++in if assocSearchMap...." + searchExtrinsic.getLidvid() + 
+					//		"      assocSearchExtList = " + assocSearchExtList.toString());
+				}
+				else {
+					assocSearchExtList = assocSearchMap.get(referenceType);
+					//System.out.println("++++++in else....assocSearchExtList = " + assocSearchExtList.toString());
+				}	 
+				
+				// TODO Could also check Target Objects, but not needed right now
 			}
 			
 			// The association didn't want to be found

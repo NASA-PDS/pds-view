@@ -122,7 +122,7 @@ public class DocumentParser {
 		String resClass = "";
 		boolean invalidDoc = false;
 		indexDoc.append("<doc>\n");
-
+		
 		// The name of the cataloged item should be the child at position
 		if (children.getLength() > 1) {
 			Node catalogItem = children.item(1);
@@ -132,13 +132,22 @@ public class DocumentParser {
 			children = catalogItem.getChildNodes();
 			for (int i = 1; i < children.getLength(); i++) {
 				Node child = children.item(i);
+				
+				//System.out.println("***************");				
 				String appendStr = "";
 				if (child.getNodeType() != Node.TEXT_NODE) {
 					String name = child.getLocalName();
 					String value = child.getTextContent();
-
+					
 					log.fine("name: " + name);
 					log.fine("value: " + value);
+										
+					Element attrElem = (Element)child;
+					String fieldType = attrElem.getAttribute("type");  
+					//System.out.println("name: " + name);
+					//System.out.println("value: " + value);
+					//System.out.println("type: " + fieldType);
+					
 
 					// Slightly changed functionality from original document
 					// parser
@@ -149,7 +158,8 @@ public class DocumentParser {
 						invalidDoc = true;
 					} 
 					// TODO - THIS NEEDS TO CHANGE - NEED TO USE CONFIG TYPE
-					else if (name.endsWith("date") || name.endsWith("time")) {
+					// this should be type='date', PDS-370 
+					else if (fieldType.equalsIgnoreCase("date")) {
 						try {
 							value = PDSDateConvert.convert(name, value);
 						} catch (InvalidDatetimeException e) {
@@ -157,6 +167,8 @@ public class DocumentParser {
 					        		e.getMessage() + " - " + name));
 							value = PDSDateConvert.getDefaultTime(name);
 						}
+						
+						//System.out.println("in DocumentParser....time = " + value);
 
 						appendStr = "<field name=\"" + name + "\">" + value
 								+ "</field>\n";

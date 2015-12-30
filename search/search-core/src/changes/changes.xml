@@ -24,6 +24,9 @@
 
   <body>
     <release version="1.8.0" date="TBD" description="TBD">
+      <action dev="hyunlee" type="update" issue="PDS-370">
+        Updated to improve handling of date/time fields.
+      </action>
     </release>
 
     <release version="1.7.0" date="2015-09-30" description="This release of the Search Core is a component of the integrated release 6.0.0 of the PDS4 System. This is an operational release of the system components to date.">
