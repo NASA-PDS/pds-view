@@ -24,14 +24,14 @@
   
   <body>
     <section name="About Transport Service">
-      <p>The Transport Service provides functionality for transporting and transforming PDS products. The core functionality for this service is satisfied by the Apache OODT Web Grid Product Server and includes a handler for interfacing with the Registry Service. It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
+      <p>The Transport Service provides functionality for transporting and transforming PDS products. The core functionality for this service is satisfied by the Apache OODT Web Grid Product Server and includes a handler for interfacing with the Registry Service and a handler for interfacing with the Search Service. It is typically invoked from hyperlinks embedded in the results returned by the Search Service.
       </p>
 
       <p>The Transport Service is composed by the following components:
       </p>
       <ul>
         <li>The Apache OODT Web Grid servlet, which provides a general-purpose web container for answering transport requests formulated as HTTP GET or POST requests.</li>
-        <li>The Apache OODT Product Server, which routes each transport request to a handler that interfaces with the Registry Service.
+        <li>The Apache OODT Product Server, which routes each transport request to a handler that interfaces with the Registry Service or Search Service.
         </li>
       </ul>
 

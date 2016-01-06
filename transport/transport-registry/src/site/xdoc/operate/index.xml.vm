@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2013-2014, by the California Institute of Technology.
+  Copyright 2013-2015, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -24,7 +24,7 @@
 
   <body>
     <section name="Operation">
-      <p>This document describes how to operate the Transport Service software contained in the <i>${project.artifactId}</i> package. The Transport Service software is a web application for retrieving product files from the the Product Servers that are located at the various Discipline Nodes. The following topics can be found in this section:
+      <p>This document describes how to operate the Transport Service software contained in the <i>${project.artifactId}</i> package. The Transport Service software is a web application for retrieving product files from a local repository either by querying a Registry Service or a Search Service for discovering a product or products. The following topics can be found in this section:
       </p>
 
       <ul>
@@ -53,80 +53,84 @@
     </section>
 
     <section name="Product Retrieval">
-      <p>
-       The Transport Service web application provides functionality for querying the Registry Service for a product or products and retrieving the associated files. 
-       The service can be queried using 3 possible methods for encoding the HTTP request parameters: DIS-Style syntax, XML query expressions, or simple HTTP (name, value) pairs. 
-       The following table summarizes the parameters available:
+      <p>The Transport Service web application provides functionality for querying the Registry Service or Search Service for a product or products and retrieving the associated files. The service can be queried using 3 possible methods for encoding the HTTP request parameters: Simple HTTP syntax (name, value) pairs, DIS-Style syntax, or XML query expressions. The following table summarizes the parameters available:
       </p>
 
       <table>
         <tr><th>HTTP Parameter</th><th>Description</th></tr>
-        <tr><td>q</td><td>The DIS-Style query expression identifying the product (or set of files) to retrieve from the Transport Service. 
-        The use of the <i>q</i> parameter is preferred over the use of the <i>xmlq</i> parameter, but it is still discouraged with respect to the use 
-        of straight HTTP (name, value) pairs (last option in this table). Additional information regarding the DIS-Style query format can be found at the <a href="http://oodt.apache.org/components/maven/xmlquery/disquery/" target="_blank">Apache OODT DIS-Style Query</a> page.</td></tr>
-        <tr><td>xmlq</td><td>The XML query expression identifying the product (or set of files) to retrieve from the Transport Service. 
-        The details for the format of this query expression will not be covered here. Although supported, the use of the <i>xmlq</i> parameter is discouraged.</td></tr>
-        <tr><td>identifier, package</td><td>The product identifier (specified one or more times), and the requested packaging format (ZIP, TGZ, ZIP_SIZE, TGZ_SIZE).
-        This is the preferred method to query the transport-registry service.</td></tr>
+        <tr><td colspan="2">Simple HTTP Syntax - This is the preferred method to query the ${project.artifactId} service.</td></tr>
+        <tr><td>identifier</td><td>The identifier for the product to be retrieved in the form of a PDS logical identifier (LID) or the LID and the version identifier (LIDVID). This parameter is required, unless the <i>identifier-list</i> parameter is specified, and may be specified more than once. Due to the 5000 character limit for HTTP POST commands, a safe maximum of specified identifiers is around 50.</td></tr>
+        <tr><td>identifier-list</td><td>Because of the 5000 character limitation, the service also supports passing in a URL reference to a text file containing a list of LID/LIDVIDs (one per line in the file). This reference can either be local to the service (e.g., file://) or remote to the service (e.g., http://). This parameter is required, unless the <i>identifier</i> parameter is specified.</td></tr>
+        <tr><td>package</td><td>The package type to be returned from the Transport Service. The valid values are <i>ZIP</i>, <i>TGZ</i> to return the compressed packages, and <i>SIZE</i> to return the total size of all files (in bytes) contained in the package once the compressed package is expanded. The values are <i>not</i> case sensitive. The default value is <i>ZIP</i>. This parameter is optional.</td></tr>
+        <tr><td colspan="2">DIS-Style Syntax</td></tr>
+        <tr><td>q</td><td>The DIS-Style query expression identifying the product (or set of products) to retrieve from the Transport Service. The use of the <i>q</i> parameter is preferred over the use of the <i>xmlq</i> parameter, but it is still discouraged with respect to the use of Simple HTTP Syntax. Additional information regarding the DIS-Style query format can be found at the <a href="http://oodt.apache.org/components/maven/xmlquery/disquery/" target="_blank">Apache OODT DIS-Style Query</a> page.</td></tr>
+        <tr><td colspan="2">XML Query Expression</td></tr>
+        <tr><td>xmlq</td><td>The XML query expression identifying the product (or set of products) to retrieve from the Transport Service. The details for the format of this query expression will not be covered here. Although supported, the use of the <i>xmlq</i> parameter is discouraged.</td></tr>
       </table>
 
-      <p>When using DIS-Style format, the <i>identifier</i> and <i>package</i> parameters must be encoded as part of the "q" value parameter:
-      </p>
+      <subsection name="Simple HTTP Syntax">
+        <p>This section details the Simple HTTP syntax for querying the Transport Service. The following is an example syntax for querying a single product:
+        </p>
 
-      <table>
-        <tr><th>DIS Query Parameter</th><th>Description</th></tr>
-        <tr><td>identifier</td><td>The identifier for the product to be retrieved in the form of a PDS logical identifier (LID) or the LID and the version identifier (LIDVID). This parameter is required and may be specified more than once. Due to the 5000 character limit for HTTP POST commands, a safe maximum of specified identifiers is around 50.</td></tr>
-        <tr><td>package</td><td>The package type to be returned from the Transport Service. The valid values are <i>ZIP</i>, <i>TGZ</i> to return the compressed packages,
-        and <i>ZIP_SIZE</i>, <i>TGZ_SIZE</i> to return the total size of all contained files once the compressed packages are expanded. The values are <i>not</i> case sensitie.
-        The default value is <i>ZIP</i>. This parameter is optional.</td></tr>
-      </table>
-
-      <p>The following is an example query using DIS-Style query syntax with the <i>q</i> parameter:
-      </p>
-
-      <source>
-% curl -X GET -o package.zip -v \
-http://localhost:8080/transport-registry/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;
-      </source>
-
-      <p>Assuming the LID or LIDVID was specified correctly, the above query should return a ZIP package containing the products associated with the specified product. 
-      The following is an example query in DIS-Style syntax that will return a TAR/GZIP package:
-      </p>
-
-      <source>
-% curl -X GET -o package.tar.gz -v \
-http://localhost:8080/transport-registry/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;+AND+package+EQ+TGZ
-      </source>
-
-      <p>Alternatively, the product identifier and desired packaging can be specified using standard HTTP parameter encoding. The general URL form is:</p>
-
-      <source>
-http://localhost:8080/transport-registry/prod?identifier=&lt;LID|LIDVID&gt;&amp;package=&lt;TGZ|ZIP|TGZ_SIZE|ZIP_SIZE&gt;
-      </source>
-
-    <p>For example, the following URLs specify the same logical request for retrieving a PDS product:
-
-    <source>
-http://localhost:8080/transport-registry/prod?q=identifier+EQ+\
-urn:nasa:pds:phx_lidar:reduced:LS075RLS_00902835894_1885M1+AND+package+EQ+TGZ
-    </source>
-    or:
-    <source>
-http://localhost:8080/transport-registry/prod?identifier=\
-urn:nasa:pds:phx_lidar:reduced:LS075RLS_00902835894_1885M1&amp;package=TGZ
-    </source>
-    (again assuming the product exists). 
-    </p>
-    <p>The following queries return an XML document containing the size of the uncompressed TGZ/ZIP packages respectively
-    (which, once expanded, have obviously the same size):
         <source>
-http://localhost:8080/transport-registry/prod?identifier=\
-urn:nasa:pds:phx_lidar:reduced:LS147RLA_00909259320_204CM1&amp;package=TGZ_SIZE
-	
-http://localhost:8080/transport-registry/prod?identifier=\
-urn:nasa:pds:phx_lidar:reduced:LS147RLA_00909259320_204CM1&amp;package=ZIP_SIZE
-    </source>
-    </p>
+% curl -X GET -o package.zip -v \
+http://localhost:8080/${project.artifactId}/prod?identifier=&lt;LID|LIDVID&gt;
+        </source>
+
+        <p>Assuming the LID or LIDVID was specified correctly, the above query should return a ZIP package (the default) containing the files associated with the specified product along with a text file (md5_checksums.txt) containing an MD5 checksum for each file. The following is an example of querying for two products:
+        </p>
+
+        <source>
+% curl -X GET -o package.zip -v \
+http://localhost:8080/${project.artifactId}/prod?identifier=&lt;LID|LIDVID&gt;&amp;identifier=&lt;LID|LIDVID&gt;
+        </source>
+
+        <p>The above query should return a ZIP package containing the files associated with both products. The following is an example of querying for a list of products by specifying a local file containing that list:
+        </p>
+
+        <source>
+% curl -X GET -o package.zip -v \
+http://localhost:8080/${project.artifactId}/prod?identifier-list="file:///tmp/product-list.txt"
+        </source>
+
+        <p>The above query should return a ZIP package containing the files associated the products in the list. To specify a remote product list, place the file on an accessible web server and provide a fully qualified URL to the file (e.g., http://...). The following is an example query that will return a TAR/GZIP package:
+        </p>
+
+        <source>
+% curl -X GET -o package.zip -v \
+http://localhost:8080/${project.artifactId}/prod?identifier=&lt;LID|LIDVID&gt;&amp;package=TGZ
+        </source>
+
+        <p>The above query should return a TAR/GZIP package containing the files associated with the specified product. The following is an example of a request for the size of the products returned:
+        </p>
+
+        <source>
+% curl -X GET -o package.zip -v \
+http://localhost:8080/${project.artifactId}/prod?identifier=&lt;LID|LIDVID&gt;&amp;package=SIZE
+        </source>
+
+        <p>The above query will return an XML document containing the total size of all files (in bytes) contained in the package once the compressed package is expanded. The following is an example of the XML document:
+        </p>
+
+        <source>
+&lt;dirResult&gt;
+  &lt;dirEntry&gt;
+    &lt;fileSize&gt;132&lt;/fileSize&gt;
+  &lt;/dirEntry&gt;
+&lt;/dirResult&gt;
+        </source>
+
+      </subsection>
+
+      <subsection name="DIS-Style Syntax">
+        <p>When using DIS-Style format, the <i>identifier</i>, <i>identifier-list</i> and <i>package</i> parameters must be encoded as part of the <i>q</i> value parameter. The following is an example query using DIS-Style query syntax:
+        </p>
+
+        <source>
+% curl -X GET -o package.zip -v \
+http://localhost:8080/${project.artifactId}/prod?q=identifier+EQ+&lt;LID|LIDVID&gt;+AND+package+EQ+TGZ
+        </source>
+      </subsection>
     </section>
   </body>
 </document>
