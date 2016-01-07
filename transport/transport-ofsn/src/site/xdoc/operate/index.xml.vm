@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2013-2014, by the California Institute of Technology.
+  Copyright 2013-2015, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -25,9 +25,7 @@
 
   <body>
     <section name="Operation">
-      <p>This document describes how to operate the Transport Service software contained in the <i>${project.artifactId}</i> package. 
-      The Transport Service software is a web application for transporting files from Discipline Node local data repositories. 
-      The following topics can be found in this section:
+      <p>This document describes how to operate the Transport Service software contained in the <i>${project.artifactId}</i> package. The Transport Service software is a web application for transporting files from Discipline Node local data repositories. The following topics can be found in this section:
       </p>
 
       <ul>
@@ -56,69 +54,57 @@
     </section>
 
     <section name="Product Query">
-      <p>The Transport Service provides functionality for transporting files from Discipline Node local data repositories. 
-      The service can be queried using 3 possible methods for encoding the HTTP request parameters: DIS-Style syntax, XML query expressions, or
-      simple HTTP (name, value) pairs.
-      The following table summarizes the parameters available:
+      <p>The Transport Service provides functionality for transporting files from Discipline Node local data repositories. The service can be queried using 3 possible methods for encoding the HTTP request parameters: DIS-Style syntax, XML query expressions, or Simple HTTP syntax (name, value) pairs. The following table summarizes the parameters available:
       </p>
 
       <table>
         <tr><th>HTTP Parameter</th><th>Description</th></tr>
+        <tr><td colspan="2">DIS-Style Syntax</td></tr>
         <tr><td>q</td><td>The DIS-Style query expression identifying the product (or set of files) to retrieve from the Transport Service. This is the preferred parameter for querying the Transport Service and is required if the <i>xmlq</i> parameter is not specified. Additional information regarding the DIS-Style query format can be found at the <a href="http://oodt.apache.org/components/maven/xmlquery/disquery/" target="_blank">Apache OODT DIS-Style Query</a> page.</td></tr>
+        <tr><td colspan="2">XML Query Expression</td></tr>
         <tr><td>xmlq</td><td>The XML query expression identifying the product (or set of files) to retrieve from the Transport Service. The details for the format of this query expression will not be covered here. Although supported, the <i>q</i> parameter is preferred and is utilized by all existing client interfaces. This parameter is required if the <i>q</i> parameter is not specified.</td></tr>
-        <tr><td>OFSN, RT</td><td>The Online File Specification Name (OFSN) and Return Type (RT) parameter names, set equal to the requested values.</td></tr>
-      </table>
-
-      <p>The following is an example query request via <i>cURL</i> using the <i>q</i> parameter:
-
-<source>
-% curl -X GET -o results.out -v \
-http://localhost:8080/transport-ofsn/prod?q=&lt;keyword-query&gt;
-</source>
-	and following is the general syntax for using <i>cURL</i> with the direct HTTP parameters encoding:
-<source>
-% curl -X GET -o results.out -v \
-http://localhost:8080/transport-ofsn/prod?OFSN=&lt;ofsn value&gt;&amp;RT=&lt;rt value&gt;
-</source>	
-     </p>
-
-      <p>When using DIS-Style format, the OFSN and RT parameters must be encoded as part of the "q" value parameter:
-      </p>
-
-      <table>
-        <tr><th>DIS Query Parameter</th><th>Description</th></tr>
+        <tr><td colspan="2">Simple HTTP Syntax</td></tr>
         <tr><td>OFSN</td><td>The online file specification name for a file or directory accessible by the Transport Service. The keyword can be specified in long form as <i>ONLINE_FILE_SPECIFICATION_NAME</i>. This keyword is required.</td></tr>
         <tr><td>RT</td><td>The return type specifies how the file or directory will be returned to the client from the Transport Service. The keyword can be specified in long form as <i>RETURN_TYPE</i>. The table below details the valid value list for this keyword. This keyword is required.</td></tr>
       </table>
 
-      <p>The keyword query expression must be properly encoded by the rules of Uniform Resource Identifiers whether they're part of the URL in an HTTP GET request or transmitted separately in an HTTP POST request. In general, this means that characters spaces and equals signs in query expressions need to be properly escaped. Most browsers and HTTP libraries will happily relax these rules, though, especially in cases where there is no ambiguity. For Transport Service queries, this basically means changing your spaces to <i>+</i>'s. The following example of a keyword query expression details the difference between an unencoded and encoded query:
+      <p>When using DIS-Style syntax, the OFSN and RT parameters must be encoded as part of the "q" value parameter. The following is an example query request via <i>cURL</i> using the <i>q</i> parameter:
+
+      <source>
+% curl -X GET -o results.out -v \
+http://localhost:8080/${project.artifactId}/prod?q=&lt;keyword-query&gt;
+      </source>
+      and the following is the general syntax for using <i>cURL</i> with the Simple HTTP syntax:
+      <source>
+% curl -X GET -o results.out -v \
+http://localhost:8080/${project.artifactId}/prod?OFSN=&lt;ofsn value&gt;&amp;RT=&lt;rt value&gt;
+      </source> 
       </p>
 
-<source>
+      <p>The keyword query expression must be properly encoded by the rules of Uniform Resource Identifiers whether they're part of the URL in an HTTP GET request or transmitted separately in an HTTP POST request. In general, this means that characters spaces and equal signs in query expressions need to be properly escaped. Most browsers and HTTP libraries will happily relax these rules, though, especially in cases where there is no ambiguity. For Transport Service queries, this basically means changing your spaces to <i>+</i>'s. The following example of a keyword query expression details the difference between an unencoded and encoded query:
+      </p>
+
+      <source>
 OFSN EQ &lt;online-file-specification-name&gt; AND RT EQ &lt;return-type&gt;
 
   properly encoded request:
 
 OFSN+EQ+&lt;online-file-specification-name&gt;+AND+RT+EQ+&lt;return-type&gt;
-</source>
-      
-      <p>
-      	For example, the following query requests a directory listing from the <i>test-data1</i> sub-directory found under the Transport Service's root directory 
-      	(specified by the <i>productRoot</i> property during configuration):
-      </p>
-<source>
-% curl -X GET -o results.out -v \
-http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIST1
-</source>
+      </source>
 
-      <p>The following tables list all the valid values for the return type keyword. 
-         The examples provided assume the existence of a transport-ofsn application deployed within a local Tomcat container running on port 8080.
-         For each possible value of RT, the same example request is shown as encoded with DIS-Style syntax, or simple (name, value) pairs.
+      <p>For example, the following query requests a directory listing from the <i>test-data1</i> sub-directory found under the Transport Service's root directory (specified by the <i>productRoot</i> property during configuration):
+      </p>
+
+      <source>
+% curl -X GET -o results.out -v \
+http://localhost:8080/${project.artifactId}/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIST1
+      </source>
+
+      <p>The following tables list all the valid values for the return type keyword. The examples provided assume the existence of a ${project.artifactId} application deployed within a local Tomcat container running on port 8080. For each possible value of RT, the same example request is shown as encoded with DIS-Style syntax, or simple (name, value) pairs.
       </p>
       
-      <p>
-      <b>"Listing" Return Types</b>
-	  </p>
+      <p><b>"Listing" Return Types</b>
+      </p>
 
       <table>
         <tr><th>Return Type</th><th>Description</th></tr>
@@ -126,65 +112,65 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
             <td>Returns an XML document containing all of the filenames (and only the files, not directories) and their sizes, recursing into subdirectories.
                 <br/>Example request: 
                 <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST</a>
-            	<br/>Example request: 
+              <br/>Example request: 
                 <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/&amp;RT=DIRFILELIST">http://localhost:8080/transport-ofsn/prod?OFSN=/&amp;RT=DIRFILELIST</a>
-            	
-            	<br/>Example response:
-            	<source>
+
+              <br/>Example response:
+              <source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
   &lt;dirEntry&gt;
-	&lt;OFSN&gt;/FF01.IMG&lt;/OFSN&gt;
-	&lt;fileSize&gt;1050624&lt;/fileSize&gt;
+    &lt;OFSN&gt;/FF01.IMG&lt;/OFSN&gt;
+    &lt;fileSize&gt;1050624&lt;/fileSize&gt;
   &lt;/dirEntry&gt;
   &lt;dirEntry&gt;
-	&lt;OFSN&gt;/FF01.LBL&lt;/OFSN&gt;
-	&lt;fileSize&gt;5143&lt;/fileSize&gt;
+    &lt;OFSN&gt;/FF01.LBL&lt;/OFSN&gt;
+    &lt;fileSize&gt;5143&lt;/fileSize&gt;
   &lt;/dirEntry&gt;
   &lt;dirEntry&gt;
-	&lt;OFSN&gt;/test-data2/i943630r.raw&lt;/OFSN&gt;
-	&lt;fileSize&gt;126976&lt;/fileSize&gt;
+    &lt;OFSN&gt;/test-data2/i943630r.raw&lt;/OFSN&gt;
+    &lt;fileSize&gt;126976&lt;/fileSize&gt;
   &lt;/dirEntry&gt;
   &lt;dirEntry&gt;
-	&lt;OFSN&gt;/test-data2/i943630r.xml&lt;/OFSN&gt;
-	&lt;fileSize&gt;7862&lt;/fileSize&gt;
+    &lt;OFSN&gt;/test-data2/i943630r.xml&lt;/OFSN&gt;
+    &lt;fileSize&gt;7862&lt;/fileSize&gt;
   &lt;/dirEntry&gt;
   .........
 &lt;/dirResult&gt;
-            	</source>
+              </source>
             </td>
         </tr>
         <tr>
-        	<td>DIRFILELIST1</td><td>Identical to <i>DIRFILELIST</i> except that it does not recurse into subdirectories.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST1">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST1</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/&amp;RT=DIRFILELIST1">http://localhost:8080/transport-ofsn/prod?OFSN=/&amp;RT=DIRFILELIST1</a>
-        	    <br/>Example response:
-            	<source>
+          <td>DIRFILELIST1</td><td>Identical to <i>DIRFILELIST</i> except that it does not recurse into subdirectories.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST1">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRFILELIST1</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/&amp;RT=DIRFILELIST1">http://localhost:8080/transport-ofsn/prod?OFSN=/&amp;RT=DIRFILELIST1</a>
+              <br/>Example response:
+              <source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
   &lt;dirEntry&gt;
-	&lt;OFSN&gt;/FF01.IMG&lt;/OFSN&gt;
-	&lt;fileSize&gt;1050624&lt;/fileSize&gt;
+    &lt;OFSN&gt;/FF01.IMG&lt;/OFSN&gt;
+    &lt;fileSize&gt;1050624&lt;/fileSize&gt;
   &lt;/dirEntry&gt;
   &lt;dirEntry&gt;
-	&lt;OFSN&gt;/FF01.LBL&lt;/OFSN&gt;
-	&lt;fileSize&gt;5143&lt;/fileSize&gt;
+    &lt;OFSN&gt;/FF01.LBL&lt;/OFSN&gt;
+    &lt;fileSize&gt;5143&lt;/fileSize&gt;
   &lt;/dirEntry&gt;
 &lt;/dirResult&gt;
-            	</source>
-        	</td>      	
+              </source>
+          </td>
         </tr>
         <tr>
-        	<td>DIRLIST</td>
-        	<td>Returns an XML document with directory names (and only directory names) and total size of files in each directory starting in the requested directory and traversing into the subdirectories.
-        	    <br/>Example request: 
-        	    <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST</a>
-        	    <br/>Example request: 
-        	    <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/&amp;RT=DIRLIST">http://localhost:8080/transport-ofsn/prod?OFSN=/&amp;RT=DIRLIST</a>
-        		<br/>Example response:
-        		<source>
+          <td>DIRLIST</td>
+          <td>Returns an XML document with directory names (and only directory names) and total size of files in each directory starting in the requested directory and traversing into the subdirectories.
+              <br/>Example request: 
+              <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST</a>
+              <br/>Example request: 
+              <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/&amp;RT=DIRLIST">http://localhost:8080/transport-ofsn/prod?OFSN=/&amp;RT=DIRLIST</a>
+            <br/>Example response:
+            <source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
   &lt;dirEntry&gt;
     &lt;OFSN&gt;/test-data1&lt;/OFSN&gt;
-  &lt;fileSize&gt;8669232&lt;/fileSize&gt;
+    &lt;fileSize&gt;8669232&lt;/fileSize&gt;
   &lt;/dirEntry&gt;
   &lt;dirEntry&gt;
     &lt;OFSN&gt;/test-data2&lt;/OFSN&gt;
@@ -195,16 +181,16 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
     &lt;fileSize&gt;4334616&lt;/fileSize&gt;
   &lt;/dirEntry&gt;
 &lt;/dirResult&gt;
-        		</source>
-        	</td>
+            </source>
+          </td>
         </tr>
         <tr>
           <td>DIRLIST1</td>
           <td>Identical to <i>DIRLIST</i> but does not recursively descend into subdirectories. 
-          	  <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST1">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST1</a>
-          	  <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/&amp;RT=DIRLIST1">http://localhost:8080/transport-ofsn/prod?OFSN=/&amp;RT=DIRLIST1</a>
-        	  <br/>Example response:
-        		<source>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST1">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/+AND+RT+EQ+DIRLIST1</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/&amp;RT=DIRLIST1">http://localhost:8080/transport-ofsn/prod?OFSN=/&amp;RT=DIRLIST1</a>
+            <br/>Example response:
+            <source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
   &lt;dirEntry&gt;
     &lt;OFSN&gt;/test-data1&lt;/OFSN&gt;
@@ -215,7 +201,7 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
     &lt;fileSize&gt;134838&lt;/fileSize&gt;
   &lt;/dirEntry&gt;
 &lt;/dirResult&gt;
-        		</source>
+            </source>
           </td>
         </tr>
         <tr>
@@ -236,12 +222,12 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
           </td>
         </tr>
         <tr>
-        	<td>FILE_LIST</td>
-        	<td>An alias for FILELIST.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1/FF01.IMG+AND+RT+EQ+FILE_LIST">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1/FF01.IMG+AND+RT+EQ+FILE_LIST</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/test-data1/FF01.IMG&amp;RT=FILE_LIST">http://localhost:8080/transport-ofsn/prod?OFSN=/test-data1/FF01.IMG&amp;RT=FILE_LIST</a>
-        	    <br/>Example response:
-            	<source>
+          <td>FILE_LIST</td>
+          <td>An alias for FILELIST.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1/FF01.IMG+AND+RT+EQ+FILE_LIST">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1/FF01.IMG+AND+RT+EQ+FILE_LIST</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/test-data1/FF01.IMG&amp;RT=FILE_LIST">http://localhost:8080/transport-ofsn/prod?OFSN=/test-data1/FF01.IMG&amp;RT=FILE_LIST</a>
+              <br/>Example response:
+              <source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
   &lt;dirEntry&gt;
     &lt;OFSN&gt;/test-data1/FF01.IMG&lt;/OFSN&gt;
@@ -249,248 +235,243 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
   &lt;/dirEntry&gt;
 &lt;/dirResult&gt;
             </source>
-        	
-        	</td>
+          </td>
         </tr>
         <tr>
-        	<td>FILELISTZIP</td>
-        	<td>Similar to <i>FILELIST</i> except that it tells what the size of the requested file would be if compressed into a ZIP archive.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILELISTZIP">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILELISTZIP</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/FF01.IMG&amp;RT=FILELISTZIP">http://localhost:8080/transport-ofsn/prod?OFSN=/FF01.IMG&amp;RT=FILELISTZIP</a>
-        		<br/>Example response:
-        		<source>
+          <td>FILELISTZIP</td>
+          <td>Similar to <i>FILELIST</i> except that it tells what the size of the requested file would be if compressed into a ZIP archive.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILELISTZIP">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILELISTZIP</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/FF01.IMG&amp;RT=FILELISTZIP">http://localhost:8080/transport-ofsn/prod?OFSN=/FF01.IMG&amp;RT=FILELISTZIP</a>
+            <br/>Example response:
+            <source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
   &lt;dirEntry&gt;
     &lt;OFSN&gt;FF01.IMG.zip&lt;/OFSN&gt;
     &lt;fileSize&gt;816445&lt;/fileSize&gt;
   &lt;/dirEntry&gt;
 &lt;/dirResult&gt;
-        		</source>
-        	</td>        	
+            </source>
+          </td>
         </tr>
         <tr>
-        	<td>FILE_LIST_ZIP</td>
-        	<td>An alias for FILELISTZIP.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILE_LIST_ZIP">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILE_LIST_ZIP</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/FF01.IMG&amp;RT=FILE_LIST_ZIP">http://localhost:8080/transport-ofsn/prod?OFSN=/FF01.IMG&amp;RT=FILE_LIST_ZIP</a>
-        	    <br/>Example response:
-        		<source>
+          <td>FILE_LIST_ZIP</td>
+          <td>An alias for FILELISTZIP.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILE_LIST_ZIP">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+FILE_LIST_ZIP</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/FF01.IMG&amp;RT=FILE_LIST_ZIP">http://localhost:8080/transport-ofsn/prod?OFSN=/FF01.IMG&amp;RT=FILE_LIST_ZIP</a>
+              <br/>Example response:
+            <source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
   &lt;dirEntry&gt;
     &lt;OFSN&gt;FF01.IMG.zip&lt;/OFSN&gt;
     &lt;fileSize&gt;816445&lt;/fileSize&gt;
   &lt;/dirEntry&gt;
 &lt;/dirResult&gt;
-        		</source>
-        	</td>
-        </tr>        
+            </source>
+          </td>
+        </tr>
       </table>
-      
-      <p>
-      	<b>"Get" Return Types that apply both to PDS3 and PDS4 labels</b>
-	  </p>
+
+      <p><b>"Get" Return Types that apply both to PDS3 and PDS4 labels</b>
+      </p>
 
       <table>
         <tr><th>Return Type</th><th>Description</th></tr>
         <tr>
-        	<td>RAW</td>
-        	<td>Returns the requested file without any modification (MIME type application/octet-stream).
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+RAW">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+RAW</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=RAW">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=RAW</a>
-        	</td>
-        </tr>       
+          <td>RAW</td>
+          <td>Returns the requested file without any modification (MIME type application/octet-stream).
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+RAW">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+RAW</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=RAW">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=RAW</a>
+          </td>
+        </tr>
         <tr>
-        	<td>RAW_SIZE</td>
-        	<td>Generates an XML document containing the size of the raw file that would be returned by the corresponding RAW type.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+RAW_SIZE">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+RAW_SIZE</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/FF01.IMG&amp;RT=RAW_SIZE">http://localhost:8080/transport-ofsn/prod?OFSN=/FF01.IMG&amp;RT=RAW_SIZE</a>
-        		<br/>Example response:
-        		<source>
+          <td>RAW_SIZE</td>
+          <td>Generates an XML document containing the size of the raw file that would be returned by the corresponding RAW type.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+RAW_SIZE">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/FF01.IMG+AND+RT+EQ+RAW_SIZE</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/FF01.IMG&amp;RT=RAW_SIZE">http://localhost:8080/transport-ofsn/prod?OFSN=/FF01.IMG&amp;RT=RAW_SIZE</a>
+            <br/>Example response:
+            <source>
 &lt;dirResult xmlns=&quot;http://oodt.jpl.nasa.gov/xml/namespaces/dirlist/1.0&quot;&gt;
   &lt;dirEntry&gt;
     &lt;fileSize&gt;1050624&lt;/fileSize&gt;
   &lt;/dirEntry&gt;
 &lt;/dirResult&gt;
-        		</source>
-        	</td>
+            </source>
+          </td>
         </tr>
         <tr>
-        	<td>MD5</td>
-        	<td>Returns a MD5 hash of the file bytes generated on the server side, as plain text.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+MD5">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+MD5</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=MD5">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=MD5</a>
-        	    <br/>Example response: c3bc003bb99d7364bc7abbdb981f6e09
-        	</td>
+          <td>MD5</td>
+          <td>Returns a MD5 hash of the file bytes generated on the server side, as plain text.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+MD5">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+MD5</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=MD5">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=MD5</a>
+              <br/>Example response: c3bc003bb99d7364bc7abbdb981f6e09
+          </td>
         </tr>
         <tr>
-        	<td>PDS_TO_JPEG</td>
-        	<td>Converts a PDS image to JPEG format.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JPEG">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JPEG</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JPEG">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JPEG</a>
-        	</td>
-        </tr>     
-        <tr>
-        	<td>PDS_TO_JPG</td>
-        	<td>Converts a PDS image to JPG format (same as JPEG handler above).
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JPG">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JPG</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JPG">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JPG</a>
-        	</td>
-        </tr>    
-        <tr>
-        	<td>PDS_TO_JP2</td>
-        	<td>Converts a PDS image to JPG 2000 format.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JP2">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JP2</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JP2">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JP2</a>
-        		<br/>NOTE: currently, a library bug prevents this handler to work for PDS3 images.
-        	</td>
-        </tr>      
-        <tr>
-        	<td>PDS_TO_BMP</td>
-        	<td>Converts a PDS image to Windows BMP format.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_BMP">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_BMP</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_BMP">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_BMP</a>
-        		<br/>NOTE: currently, a library bug prevents this handler to work for PDS3 images.
-        	</td>
+          <td>PDS_TO_JPEG</td>
+          <td>Converts a PDS image to JPEG format.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JPEG">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JPEG</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JPEG">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JPEG</a>
+          </td>
         </tr>
-        <!-- NOT WORKING       
         <tr>
-        	<td>PDS_TO_WBMP</td>
-        	<td>Converts a PDS image to Wireless Bitmap image format.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_WBMP">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_WBMP</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_WBMP">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_WBMP</a>
-        	</td>
-        </tr>    
+          <td>PDS_TO_JPG</td>
+          <td>Converts a PDS image to JPG format (same as JPEG handler above).
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JPG">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JPG</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JPG">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JPG</a>
+          </td>
+        </tr>
+        <tr>
+          <td>PDS_TO_JP2</td>
+          <td>Converts a PDS image to JPG 2000 format.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JP2">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JP2</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JP2">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JP2</a>
+            <br/>NOTE: currently, a library bug prevents this handler to work for PDS3 images.
+          </td>
+        </tr>
+        <tr>
+          <td>PDS_TO_BMP</td>
+          <td>Converts a PDS image to Windows BMP format.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_BMP">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_BMP</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_BMP">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_BMP</a>
+            <br/>NOTE: currently, a library bug prevents this handler to work for PDS3 images.
+          </td>
+        </tr>
+        <!-- NOT WORKING
+        <tr>
+          <td>PDS_TO_WBMP</td>
+          <td>Converts a PDS image to Wireless Bitmap image format.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_WBMP">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_WBMP</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_WBMP">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_WBMP</a>
+          </td>
+        </tr>
         -->
         <tr>
-        	<td>PDS_TO_GIF</td>
-        	<td>Converts a PDS image to Graphics Interchange Format.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_GIF">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_GIF</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_GIF">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_GIF</a>
-        	</td>
-        </tr>    
+          <td>PDS_TO_GIF</td>
+          <td>Converts a PDS image to Graphics Interchange Format.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_GIF">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_GIF</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_GIF">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_GIF</a>
+          </td>
+        </tr>
         <tr>
-        	<td>PDS_TO_PNG</td>
-        	<td>Converts a PDS image to Portable Network Graphics Format.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_PNG">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_PNG</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_PNG">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_PNG</a>
-        	</td>
+          <td>PDS_TO_PNG</td>
+          <td>Converts a PDS image to Portable Network Graphics Format.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_PNG">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_PNG</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_PNG">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_PNG</a>
+          </td>
+        </tr>
+        <tr>
+          <td>PDS_TO_RAW</td>
+          <td>Converts a PDS image to Raw image Format.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_RAW">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_RAW</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_RAW">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_RAW</a>
+          </td>
+        </tr>
+        <tr>
+          <td>PDS_TO_TIF</td>
+          <td>Converts a PDS image to Tagged Image File Format.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_TIF">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_TIF</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_TIF">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_TIF</a>
+          </td>
         </tr> 
         <tr>
-        	<td>PDS_TO_RAW</td>
-        	<td>Converts a PDS image to Raw image Format.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_RAW">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_RAW</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_RAW">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_RAW</a>
-        	</td>
-        </tr>   
+          <td>PDS_TO_TIFF</td>
+          <td>Converts a PDS image to Tagged Image File Format (same as TIF handler above).
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_TIFF">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_TIFF</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_TIFF">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_TIFF</a>
+          </td>
+        </tr>
         <tr>
-        	<td>PDS_TO_TIF</td>
-        	<td>Converts a PDS image to Tagged Image File Format.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_TIF">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_TIF</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_TIF">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_TIF</a>
-        	</td>
-        </tr> 
-        <tr>
-        	<td>PDS_TO_TIFF</td>
-        	<td>Converts a PDS image to Tagged Image File Format (same as TIF handler above).
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_TIFF">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_TIFF</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_TIFF">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_TIFF</a>
-        	</td>
-        </tr>  
-        <tr>
-        	<td>PDS_TO_PNM</td>
-        	<td>Converts a PDS image to Portable Any Map format.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_PNM">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_PNM</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_PNM">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_PNM</a>
-        	</td>
-        </tr>  
+          <td>PDS_TO_PNM</td>
+          <td>Converts a PDS image to Portable Any Map format.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_PNM">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_PNM</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_PNM">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_PNM</a>
+          </td>
+        </tr>
       </table>
       
-      <p>
-      	<b>"Get" Return Types that apply only to PDS4 labels</b>
-	  </p>
+      <p><b>"Get" Return Types that apply only to PDS4 labels</b>
+      </p>
 
       <table>
         <tr><th>Return Type</th><th>Description</th></tr>
         <tr>
-        	<td>PDS4_TO_PVL</td>
-        	<td>Converts a PDS4 label into a Parameter Value Language file.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_PVL">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_PVL</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_PVL">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_PVL</a>
-        	</td>
+          <td>PDS4_TO_PVL</td>
+          <td>Converts a PDS4 label into a Parameter Value Language file.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_PVL">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_PVL</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_PVL">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_PVL</a>
+          </td>
         </tr>
         <tr>
-        	<td>PDS4_TO_HTML</td>
-        	<td>Converts a PDS4 label into an HTML representation of the label.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_HTML">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_HTML</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_HTML">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_HTML</a>
-        	</td>
+          <td>PDS4_TO_HTML</td>
+          <td>Converts a PDS4 label into an HTML representation of the label.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_HTML">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_HTML</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_HTML">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_HTML</a>
+          </td>
         </tr>
         <tr>
-        	<td>PDS4_TO_HTML_STRUCTURE_ONLY</td>
-        	<td>Converts a PDS4 label into an HTML representation of the label structure. As a result, the element contents are stripped out in the resulting file.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_HTML_STRUCTURE_ONLY">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_HTML_STRUCTURE_ONLY</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_HTML_STRUCTURE_ONLY">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_HTML_STRUCTURE_ONLY</a>
-        	</td>
+          <td>PDS4_TO_HTML_STRUCTURE_ONLY</td>
+          <td>Converts a PDS4 label into an HTML representation of the label structure. As a result, the element contents are stripped out in the resulting file.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_HTML_STRUCTURE_ONLY">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS4_TO_HTML_STRUCTURE_ONLY</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_HTML_STRUCTURE_ONLY">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS4_TO_HTML_STRUCTURE_ONLY</a>
+          </td>
         </tr>
         <tr>
-        	<td>PDS4_TO_CSV</td>
-        	<td>Specify to transform a given table into a comma-separated value file.
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/Product_Table_Character.xml+AND+RT+EQ+PDS4_TO_CSV">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/Product_Table_Character.xml+AND+RT+EQ+PDS4_TO_CSV</a>
-        	    <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/Product_Table_Character.xml&amp;RT=PDS4_TO_CSV">http://localhost:8080/transport-ofsn/prod?OFSN=/Product_Table_Character.xml&amp;RT=PDS4_TO_CSV</a>
-        	</td>
+          <td>PDS4_TO_CSV</td>
+          <td>Specify to transform a given table into a comma-separated value file.
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/Product_Table_Character.xml+AND+RT+EQ+PDS4_TO_CSV">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/Product_Table_Character.xml+AND+RT+EQ+PDS4_TO_CSV</a>
+              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/Product_Table_Character.xml&amp;RT=PDS4_TO_CSV">http://localhost:8080/transport-ofsn/prod?OFSN=/Product_Table_Character.xml&amp;RT=PDS4_TO_CSV</a>
+          </td>
         </tr>
-        
       </table>
-      
-      <p>
-      	<b>"Get" Return Types that apply only to PDS3 labels</b>
-	  </p>
+
+      <p><b>"Get" Return Types that apply only to PDS3 labels</b>
+      </p>
 
       <table>
         <tr><th>Return Type</th><th>Description</th></tr>
         <!-- REQUIRES REFERENCE TO 'external-programs'
         <tr>
-        	<td>PDS3_TO_PDS</td>
-        	<td>Converts a PDS3 image to a PDS4 Array 2D image.
-        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/N1727539187_1.LBL+AND+RT+EQ+PDS3_TO_PDS">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/N1727539187_1.LBL+AND+RT+EQ+PDS3_TO_PDS</a>
-        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/N1727539187_1.LBL&amp;rt=PDS3_TO_PDS">http://localhost:8080/transport-ofsn/prod?ofsn=/N1727539187_1.LBL&amp;rt=PDS3_TO_PDS</a>
-        	    <br/>NOTE: to function properly, this handler requires Tomcat to be started with a reference to the external programs used to execute the conversion:
-        	    <br/>CATALINA_OPTS="-Dexternal.programs.home=/usr/local/transform/external-programs"
-        	</td>
+          <td>PDS3_TO_PDS</td>
+          <td>Converts a PDS3 image to a PDS4 Array 2D image.
+            <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/N1727539187_1.LBL+AND+RT+EQ+PDS3_TO_PDS">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/N1727539187_1.LBL+AND+RT+EQ+PDS3_TO_PDS</a>
+            <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/N1727539187_1.LBL&amp;rt=PDS3_TO_PDS">http://localhost:8080/transport-ofsn/prod?ofsn=/N1727539187_1.LBL&amp;rt=PDS3_TO_PDS</a>
+              <br/>NOTE: to function properly, this handler requires Tomcat to be started with a reference to the external programs used to execute the conversion:
+              <br/>CATALINA_OPTS="-Dexternal.programs.home=/usr/local/transform/external-programs"
+          </td>
         </tr> -->
         <tr>
-        	<td>PDS3_TO_PDS4_LABEL</td>
-        	<td>Converts a PDS3 label into a PDS4 Product Observational product label.
-        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/ELE_MOM.LBL+AND+RT+EQ+PDS3_TO_PDS4_LABEL">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/ELE_MOM.LBL+AND+RT+EQ+PDS3_TO_PDS4_LABEL</a>
-        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/ELE_MOM.LBL&amp;rt=PDS3_TO_PDS4_LABEL">http://localhost:8080/transport-ofsn/prod?ofsn=/ELE_MOM.LBL&amp;rt=PDS3_TO_PDS4_LABEL</a>
-        	    <br/>NOTE: currently not working because cannot loaf file context-classes.xml
-        	</td>
-        </tr>        
-        <tr>
-        	<td>PDS_LABEL</td>
-        	<td>Returns a plain text (MIME type text/plain) representation of the PDS3 label specified in the <i>OFSN</i>, including and expanding the <i>STRUCTURE</i> pointers.
-        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/CHAN_DATA_20020617.LBL+AND+RT+EQ+PDS_LABEL">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/CHAN_DATA_20020617.LBL+AND+RT+EQ+PDS_LABEL</a>
-        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/CHAN_DATA_20020617.LBL&amp;rt=PDS_LABEL">http://localhost:8080/transport-ofsn/prod?ofsn=/CHAN_DATA_20020617.LBL&amp;rt=PDS_LABEL</a>
-        	</td>
+          <td>PDS3_TO_PDS4_LABEL</td>
+          <td>Converts a PDS3 label into a PDS4 Product Observational product label.
+            <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/ELE_MOM.LBL+AND+RT+EQ+PDS3_TO_PDS4_LABEL">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/ELE_MOM.LBL+AND+RT+EQ+PDS3_TO_PDS4_LABEL</a>
+            <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/ELE_MOM.LBL&amp;rt=PDS3_TO_PDS4_LABEL">http://localhost:8080/transport-ofsn/prod?ofsn=/ELE_MOM.LBL&amp;rt=PDS3_TO_PDS4_LABEL</a>
+              <br/>NOTE: currently not working because cannot loaf file context-classes.xml
+          </td>
         </tr>
         <tr>
-        	<td>PDS_ZIP</td>
-        	<td>Returns the PDS3 label and its references in a ZIP file.
-        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP">
-        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP</a>
-        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;rt=PDS_ZIP">
-        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;rt=PDS_ZIP</a>
-        	</td>
+          <td>PDS_LABEL</td>
+          <td>Returns a plain text (MIME type text/plain) representation of the PDS3 label specified in the <i>OFSN</i>, including and expanding the <i>STRUCTURE</i> pointers.
+            <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/CHAN_DATA_20020617.LBL+AND+RT+EQ+PDS_LABEL">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/CHAN_DATA_20020617.LBL+AND+RT+EQ+PDS_LABEL</a>
+            <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/CHAN_DATA_20020617.LBL&amp;rt=PDS_LABEL">http://localhost:8080/transport-ofsn/prod?ofsn=/CHAN_DATA_20020617.LBL&amp;rt=PDS_LABEL</a>
+          </td>
         </tr>
         <tr>
-        	<td>PDS_ZIP_SIZE</td>
-        	<td>Returns the total size of the PDS3 label file and its references in XML format if you were to download the product with <i>PDS_ZIP</i> and unzip the archive.
-        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP_SIZE">
-        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP_SIZE</a>
-        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;rt=PDS_ZIP_SIZE">
-        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;rt=PDS_ZIP_SIZE</a>
-        		<br/>Example response:
-<source>
+          <td>PDS_ZIP</td>
+          <td>Returns the PDS3 label and its references in a ZIP file.
+            <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP">
+                 http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP</a>
+            <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;rt=PDS_ZIP">
+                 http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;rt=PDS_ZIP</a>
+          </td>
+        </tr>
+        <tr>
+          <td>PDS_ZIP_SIZE</td>
+          <td>Returns the total size of the PDS3 label file and its references in XML format if you were to download the product with <i>PDS_ZIP</i> and unzip the archive.
+            <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP_SIZE">
+                 http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114/fl33s117.img&amp;rt=PDS_ZIP_SIZE</a>
+            <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;rt=PDS_ZIP_SIZE">
+                 http://localhost:8080/transport-ofsn/prod?ofsn=/data/go-j_jsa-ssi-2-redr-v1.0/go_0017/g1/ganymede/c034976/0100r.lbl&amp;rt=PDS_ZIP_SIZE</a>
+            <br/>Example response:
+            <source>
 &lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE dirresult PUBLIC &quot;-//JPL/DTD OODT dirresult 1.0//EN&quot; &quot;http://starbrite.jpl.nasa.gov:80/dtd/dirresult.dtd&quot;&gt;
 &lt;dirResult&gt;
@@ -498,35 +479,33 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
     &lt;fileSize&gt;10390&lt;/fileSize&gt;
   &lt;/dirEntry&gt;
 &lt;/dirResult&gt;
-</source>
-        	</td>
+            </source>
+          </td>
         </tr>
-        
       </table>
-      
-      <p>
-      	<b>"Get" Return Types that apply to PDS3 and PDS4 directories</b>
-	  </p>
+
+      <p><b>"Get" Return Types that apply to PDS3 and PDS4 directories</b>
+      </p>
 
       <table>
         <tr><th>Return Type</th><th>Description</th></tr>
         <tr>
-        	<td>PDS_ZIPD</td>
-        	<td>Returns a directory content packaged as a ZIP file.
-        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1416/fo42s186&amp;rt=PDS_ZIPD">
-        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1416/fo42s186&amp;rt=PDS_ZIPD</a>
-        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114&amp;rt=PDS_ZIPD">
-        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114&amp;rt=PDS_ZIPD</a>
-        	</td>
+          <td>PDS_ZIPD</td>
+          <td>Returns a directory content packaged as a ZIP file.
+            <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1416/fo42s186&amp;rt=PDS_ZIPD">
+                 http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1416/fo42s186&amp;rt=PDS_ZIPD</a>
+            <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114&amp;rt=PDS_ZIPD">
+                 http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114&amp;rt=PDS_ZIPD</a>
+          </td>
         </tr>
         <tr>
-        	<td>PDS_ZIPD_SIZE</td>
-        	<td>Returns the total size of a directory content in XML format if you were to download the product with <i>PDS_ZIPD</i> and unzip the archive.
-        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1416/fo42s186&amp;rt=PDS_ZIPD_SIZE">
-        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1416/fo42s186&amp;rt=PDS_ZIPD_SIZE</a>
-        		<br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114&amp;rt=PDS_ZIPD_SIZE">
-        		     http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114&amp;rt=PDS_ZIPD_SIZE</a>
-        		<br/>Example response:
+          <td>PDS_ZIPD_SIZE</td>
+          <td>Returns the total size of a directory content in XML format if you were to download the product with <i>PDS_ZIPD</i> and unzip the archive.
+            <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1416/fo42s186&amp;rt=PDS_ZIPD_SIZE">
+                 http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1416/fo42s186&amp;rt=PDS_ZIPD_SIZE</a>
+            <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114&amp;rt=PDS_ZIPD_SIZE">
+                 http://localhost:8080/transport-ofsn/prod?ofsn=/data/mgn-v-rdrs-5-dim-v1.0/mg_1220/fl30s114&amp;rt=PDS_ZIPD_SIZE</a>
+            <br/>Example response:
 <source>
 &lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE dirresult PUBLIC &quot;-//JPL/DTD OODT dirresult 1.0//EN&quot; &quot;http://starbrite.jpl.nasa.gov:80/dtd/dirresult.dtd&quot;&gt;
@@ -536,7 +515,7 @@ http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ+DIRLIS
   &lt;/dirEntry&gt;
 &lt;/dirResult&gt;
 </source>
-        	</td>
+          </td>
         </tr>
       </table>
 
