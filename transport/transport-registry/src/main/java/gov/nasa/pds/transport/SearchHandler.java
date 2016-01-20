@@ -74,7 +74,10 @@ public class SearchHandler {
 				//System.out.println("key = " + key + "   date = " + obj.toString() + "  string date = " + dateValue);
 			}
 			else {
-				results.add((String)obj);
+				if (obj instanceof java.lang.Integer) 
+					results.add(String.valueOf(obj));
+				else 
+					results.add((String)obj);
 				//System.out.println("key = " + key +  "   obj = " + (String)obj);
 			}
 		}

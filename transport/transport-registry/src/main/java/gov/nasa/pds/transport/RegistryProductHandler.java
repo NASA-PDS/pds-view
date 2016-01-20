@@ -91,7 +91,7 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
     if (archivePackage == null) {
       archivePackage = "ZIP";
     } else if ( (!archivePackage.equalsIgnoreCase("ZIP")) && (!archivePackage.equalsIgnoreCase("TGZ"))
-    		    && (!archivePackage.equalsIgnoreCase("ZIP_SIZE")) && (!archivePackage.equalsIgnoreCase("TGZ_SIZE")) ) {
+    		&& (!archivePackage.equalsIgnoreCase("SIZE")) ) {
       throw new ProductException("Invalid package type specified.");
     }
     archivePackage = archivePackage.toUpperCase();
@@ -116,7 +116,7 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
           List<String> fileName = fileRef.getSlotValues("file_name");
           try {
         	  long size = Long.parseLong( fileRef.getSlotValues("file_size").get(0) );
-        	  System.out.println("File: "+fileName+" size="+size);
+        	  //System.out.println("File: "+fileName+" size="+size);
         	  totalSize += size;
           } catch(NullPointerException e) {
         	  // do nothing, just in case the registry did not contain the file size
@@ -169,7 +169,8 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
 	    }
 	    
 	// Build the XML file with size information
-    } else if (archivePackage.equals("ZIP_SIZE") || archivePackage.equals("TGZ_SIZE")) {
+    } else if (archivePackage.equals("SIZE")) {
+    //else if (archivePackage.equals("ZIP_SIZE") || archivePackage.equals("TGZ_SIZE")) {
     	
 		try {
 			
@@ -369,7 +370,7 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
 	    // add manifest to the list of files to pack
 	    files.add(tmpFile);
 	    
-	    System.out.println("File: "+tmpFile.getName()+" size="+tmpFile.length());
+	    //System.out.println("File: "+tmpFile.getName()+" size="+tmpFile.length());
 	    return tmpFile.length();
 	    
   	} catch(IOException e) {

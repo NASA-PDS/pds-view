@@ -77,7 +77,6 @@ public class SearchProductHandler implements LargeProductQueryHandler {
 	  
     List<File> files = new ArrayList<File>();
     List<String> checksums = new ArrayList<String>();
-    long totalSize = 0;
 
     // Get handler properties.
     String searchUrl = System.getProperty("gov.nasa.pds.transport.SearchProductHandler.searchUrl", "http://localhost:8080/search-service");
@@ -97,59 +96,66 @@ public class SearchProductHandler implements LargeProductQueryHandler {
     if (archivePackage == null) {
       archivePackage = "ZIP";
     } else if ( (!archivePackage.equalsIgnoreCase("ZIP")) && (!archivePackage.equalsIgnoreCase("TGZ"))
-    		    && (!archivePackage.equalsIgnoreCase("ZIP_SIZE")) && (!archivePackage.equalsIgnoreCase("TGZ_SIZE")) ) {
+    		&& (!archivePackage.equalsIgnoreCase("SIZE"))) {
       throw new ProductException("Invalid package type specified.");
     }
     archivePackage = archivePackage.toUpperCase();
     
+    List<String> identifiers = new ArrayList<String>();    
+    System.out.println("SearchProductHandler....q.getKwdQueryString() = " + q.getKwdQueryString());
+    
+    // get a filename containing identifier list (bulk transport)
+    if (q.getKwdQueryString().contains("identifier-list")) {
+    	List<String> listFilenames = extractListFileFromQuery(q); 
+    	File listFile = getFileURLContent(tmpDir, listFilenames.get(0));
+    	//System.out.println("file = " + listFile.getAbsolutePath());
 
-    // TODO TODO: should get a list filename containing identifiers (bulk transport)
-    /*
-    List<String> listFilenames = extractListFileFromQuery(q); 
-    File listFile = getFileURLContent(tmpDir, listFilenames.get(0));
-    
-    System.out.println("file = " + listFile.getAbsolutePath());
-    List<String> identifiers = new ArrayList<String>();
-    try {
-    	// Open the file
-    	FileInputStream fstream = new FileInputStream(listFile);
-    	BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-    	String strLine;
-    	//Read File Line By Line
-    	while ((strLine = br.readLine()) != null)   {
-    		// Print the content on the console
-    		System.out.println ("line = " + strLine);
-    		identifiers.add(strLine);
-    		
+    	try {
+    		// Open the file
+    		FileInputStream fstream = new FileInputStream(listFile);
+    		BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+    		String strLine;
+    		//Read File Line By Line
+    		while ((strLine = br.readLine()) != null)   {
+    			// Print the content on the console
+    			System.out.println ("SearchProductHandler...line = " + strLine);
+    			identifiers.add(strLine);
+    		}
+    		//Close the input stream
+    		br.close();
+    	} catch (Exception e) {
+    		e.printStackTrace();
     	}
-    	//Close the input stream
-    	br.close();
-    } catch (Exception e) {
-    	e.printStackTrace();
     }
-    */
-    
-    // Get all of the identifiers passed in the query.
-    List<String> identifiers = extractIdentifiersFromQuery(q);
+    else {
+        // Get all of the identifiers passed in the query.
+    	identifiers = extractIdentifiersFromQuery(q);
+    }   
     if (identifiers.size()==0) throw new ProductException("Error: product identifier(s) not specified in request.");
 
     // Get the files for each product identified by the identifier and
     // add them to the list.
     int i=0; 
+    long totalFileRefSize = 0;
     for (String identifier : identifiers) {
       try {
     	  List<SolrDocument> objDocs = searchHandler.getSolrDocument(identifier);
     	  SolrDocument aObj = objDocs.get(0);  
-
+    	  List<String> sizeValues = searchHandler.getValues(aObj, "file_ref_size");
+    	  for (String sizeValue: sizeValues) {
+			  totalFileRefSize += Long.parseLong(sizeValue);
+			  //System.out.println("Size = " + sizeValue);
+		  }
     	  if (!useFileRefUrl) {
     		  // file_ref_location & file_ref_name
     		  List<String> refLocValues = searchHandler.getValues(aObj, "file_ref_location");
     		  List<String> nameValues = searchHandler.getValues(aObj, "file_ref_name");
+    		  
     		  for (String nameValue: nameValues) {
-    			  System.out.println("file_ref_location & file_ref_name values = " + refLocValues.get(0) + "    " + nameValue);	  
+    			  //System.out.println("file_ref_location & file_ref_name values = " + refLocValues.get(0) + "    " + nameValue);	  
     			  File file = new File(refLocValues.get(0), nameValue);
     			  files.add(file);
-
+    			  
     			  String checksum = MD5Checksum.getMD5Checksum(file.getAbsolutePath()) ;
     			  checksums.add( checksum );
     		  }
@@ -158,7 +164,7 @@ public class SearchProductHandler implements LargeProductQueryHandler {
     		  // file_ref_url 
     		  List<String> urlValues = searchHandler.getValues(aObj, "file_ref_url");
     		  for (String urlValue: urlValues) {
-    			  System.out.println("file_ref_url value = " + urlValue);
+    			  //System.out.println("file_ref_url value = " + urlValue);
     			  File file = getURLContent(tmpDir, urlValue);
     			  files.add(file);
 
@@ -179,7 +185,8 @@ public class SearchProductHandler implements LargeProductQueryHandler {
     }
     
     // Create checksum manifest
-    totalSize += this.addChecksumManifest(files, checksums);
+    totalFileRefSize += this.addChecksumManifest(files, checksums);    
+    //System.out.println("SearchProductHandler.... totalFileRefSize  = " + totalFileRefSize);
 
     // Build the archive package file
     if (archivePackage.equals("ZIP") || archivePackage.equals("TGZ")) {
@@ -206,11 +213,11 @@ public class SearchProductHandler implements LargeProductQueryHandler {
 	    }
 	    
 	// Build the XML file with size information
-    } else if (archivePackage.equals("ZIP_SIZE") || archivePackage.equals("TGZ_SIZE")) {    	
+    } else if (archivePackage.equals("SIZE")) {
 		try {
 
 			// create XML document
-			String xml = XmlWriter.writeSizeDocument(totalSize);
+			String xml = XmlWriter.writeSizeDocument(totalFileRefSize);
 			
 			// write out XML document
 			File tempFile = File.createTempFile(archivePackage.toLowerCase(), ".xml", new File(tmpDir));
@@ -224,7 +231,6 @@ public class SearchProductHandler implements LargeProductQueryHandler {
 		} catch (IOException e) {
 			throw new ProductException(e.getMessage());
 		}
-    	
     }
 
     // Return the original query object, with or without results.
@@ -314,7 +320,7 @@ public class SearchProductHandler implements LargeProductQueryHandler {
 	    List<String> listFiles = new ArrayList<String>();
 	    for (Iterator<QueryElement> i = query.getWhereElementSet().iterator(); i.hasNext();) {
 	      QueryElement element = i.next();
-	      if (element.getRole().equals("elemName") && element.getValue().equalsIgnoreCase("listFile")) {
+	      if (element.getRole().equals("elemName") && element.getValue().equalsIgnoreCase("identifier-list")) {
 	        // Get the next element and ensure that it is a LITERAL,
 	        // and return that.
 	        QueryElement litElement = i.next();
@@ -506,7 +512,7 @@ public class SearchProductHandler implements LargeProductQueryHandler {
 		  String inputLine;
 		  //save to this filename
 		  String filename = tmpDir + File.separator + urlString.substring(urlString.lastIndexOf(File.separator)+1); 
-		  System.out.println("local path = " + filename);
+		  //System.out.println("local path = " + filename);
 		  file = new File(filename);
 
 		  if (!file.exists()) {
