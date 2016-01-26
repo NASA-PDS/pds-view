@@ -61,4 +61,21 @@ public class GenericReportServiceObjectFactory{
 		
 	}
 	
+	public static DateFilter getDateFilter(String qualifiedClassName){
+		
+		DateFilter filter = null;
+		
+		try{
+			filter = (DateFilter)Class.forName(
+					qualifiedClassName).newInstance();
+		}catch(Exception e){
+			log.warning("An error occurred while creating an instance of " +
+					"DateLogFilter " + qualifiedClassName + ": " +
+					e.getMessage());
+		}
+		
+		return filter;
+		
+	}
+	
 }

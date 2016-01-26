@@ -90,6 +90,10 @@ public abstract class Constants {
 	public static final String REFORMAT_ERRORS_PROP =
 			"gov.nasa.pds.report.processing.errors.allowed";
 	
+	// The type of DateLogFilter to use
+	public static final String DATE_FILTER_PROP =
+			"gov.nasa.pds.report.date.filter";
+	
 	// ------------------------------------------------------------------------
 	// Major directories in the directory tree
 	// ------------------------------------------------------------------------

@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 import gov.nasa.pds.report.ReportManagerException;
+import gov.nasa.pds.report.constants.Constants;
 
 /**
  * 
@@ -38,209 +39,74 @@ import gov.nasa.pds.report.ReportManagerException;
  * setPattern() method.
  *
  */
-public class DateLogFilter{
+abstract public class DateLogFilter{
 	
-	// The delimiter used to separate the parts of the filename pattern String
-	// that contains the date of the log file.
-	// An example using the vertical bar (|) as delimiter:
-	// "apacheLog-|yyyy-MM-dd|.txt"
-	private static final String patternDelimiter = "|";
+	private static DateFilter filter = null;
 	
 	private static Logger log = Logger.getLogger(DateLogFilter.class.getName());
 	
-	private static Date startDate = null;
-	private static Date endDate = null;
-	private static DateFormat dateFormat = null;
-	private static String preDateSubstring, postDateSubstring = null;
-	
 	public static void setStartDate(String dateStr)
-			throws IllegalArgumentException{
-		
-		if(dateStr == null || dateStr.equals("")){
-			startDate = null;
-			return;
-		}
-		
-		DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT);
-		try{
-			startDate = format.parse(dateStr);
-			log.fine("Date Log Filter start date now set to: " + startDate);
-		}catch(ParseException e){
-			log.severe("An error occurred while parsing the start date: " + 
-					e.getMessage());
-			return;
-		}
-		
-		if(endDate != null && startDate.after(endDate)){
-			throw new IllegalArgumentException("The start and end dates " +
-					"specified for the date log filter are reversed");
-		}
-		
+			throws IllegalArgumentException, ReportManagerException{
+		getFilter().setStartDate(dateStr);
 	}
 	
 	public static void setEndDate(String dateStr)
-			throws IllegalArgumentException{
-		
-		if(dateStr == null || dateStr.equals("")){
-			endDate = null;
-			return;
-		}
-		
-		DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT);
-		try{
-			endDate = format.parse(dateStr);
-			log.fine("Date Log Filter end date now set to: " + endDate);
-		}catch(ParseException e){
-			log.severe("An error occurred while parsing the end date: " + 
-					e.getMessage());
-			return;
-		}
-		
-		if(startDate != null && endDate.before(startDate)){
-			throw new IllegalArgumentException("The start and end dates " +
-			"specified for the date log filter are reversed");
-		}
-		
+			throws IllegalArgumentException, ReportManagerException{
+		getFilter().setEndDate(dateStr);
 	}
 	
 	public static String getStartDateString(String format){
-		if(startDate == null){
+		
+		try{
+			return getFilter().getStartDateString(format);
+		}catch(ReportManagerException e){
+			log.fine("An error occurred while obtaining the date filter " +
+					"start date: " + e.getMessage());
 			return null;
 		}
-		return new SimpleDateFormat(format).format(startDate);
+		
 	}
 	
 	public static String getEndDateString(String format){
-		if(endDate == null){
+		
+		try{
+			return getFilter().getEndDateString(format);
+		}catch(ReportManagerException e){
+			log.fine("An error occurred while obtaining the date filter " +
+					"end date: " + e.getMessage());
 			return null;
 		}
-		return new SimpleDateFormat(format).format(endDate);
+	
 	}
 	
 	public static void setPattern(String pattern)
-			throws IllegalArgumentException{
-		
-		preDateSubstring = null;
-		postDateSubstring = null;
-		
-		if(pattern == null || pattern.equals("")){
-			dateFormat = null;
-			return;
-		}
-		
-		validatePattern(pattern);
-		
-		// Extract the DateFormat style from the pattern and determine the
-		// portions of the log filenames that we discard
-		preDateSubstring = pattern.substring(0,
-				pattern.indexOf(patternDelimiter));
-		if(!pattern.endsWith(patternDelimiter)){
-			postDateSubstring = pattern.substring(
-					pattern.lastIndexOf(patternDelimiter) + 1);
-		}
-		String dateFormatStyle = pattern.replace(
-				preDateSubstring + patternDelimiter, "");
-		if(postDateSubstring != null){
-			dateFormatStyle = dateFormatStyle.replace(
-					patternDelimiter + postDateSubstring, "");
-		}else{
-			dateFormatStyle = dateFormatStyle.replace(patternDelimiter, "");
-		}
-		dateFormat = new SimpleDateFormat(dateFormatStyle);
-		log.fine("Date Log Filter pattern set to: " + preDateSubstring +
-				"<date>" + postDateSubstring);
-		log.fine("Date Log Filter date format style set to: " +
-				dateFormatStyle);
-		
+			throws IllegalArgumentException, ReportManagerException{
+		getFilter().setPattern(pattern);
 	}
 	
 	public static boolean match(String filename) throws ParseException, 
 			ReportManagerException{
-		
-		if(startDate == null && endDate == null){
-			return true;
-		}
-		
-		if(dateFormat == null){
-			throw new ReportManagerException("Cannot use the DateLogFilter " +
-					"until it has been properly initialized by setting the " +
-					"log filename pattern");
-		}
-		
-		// Check that the file name matches the pattern(s) specified
-		if(!filename.startsWith(preDateSubstring)){
-			throw new ParseException("The filename " + filename +
-					" does not match the pattern provided for date filtering",
-					0);
-		}
-		if(postDateSubstring != null && !filename.endsWith(postDateSubstring)){
-			throw new ParseException("The filename " + filename +
-					"does not match the pattern provided for date filtering",
-					filename.length() - postDateSubstring.length());
-		}
-		
-		// Extract the portion of the filename that specifies the log date and
-		// use it to create a Date to compare with startDate and endDate
-		String dateString = filename.replace(preDateSubstring, "");
-		if(postDateSubstring != null){
-			dateString = dateString.replace(postDateSubstring, "");
-		}
-		Date logDate = dateFormat.parse(dateString);
-		
-		// Check if the Date from the filename matches the start and end Dates
-		if(startDate != null && logDate.before(startDate)){
-			log.finer("File " + filename + " does not match date log filter " +
-					"because it is from before the specified start date");
-			return false;
-		}
-		if(endDate != null && logDate.after(endDate)){
-			log.finer("File " + filename + " does not match date log filter " +
-					"because it is from after the specified end date");
-			return false;
-		}
-		
-		return true;
-		
+		return getFilter().match(filename);
 	}
 	
-	public static void unsetAll(){
-		
-		startDate = null;
-		endDate = null;
-		dateFormat = null;
-		preDateSubstring = null;
-		postDateSubstring = null;
-		
+	public static void unsetAll() throws ReportManagerException{
+		getFilter().unsetAll();
 	}
 	
-	// Verify that pattern contains two instances of the delimiter and that the
-	// first instance is not the first character.
-	private static void validatePattern(String pattern)
-			throws IllegalArgumentException{
+	private static DateFilter getFilter() throws ReportManagerException{
 		
-		// TODO: Though nobody currently has log filenames that start the with
-		// log date, we should handle it at some point by making
-		// preDateSubstring optional, similar to postDateSubstring
-		if(pattern.startsWith(patternDelimiter)){
-			throw new IllegalArgumentException("The Date Log Filter " +
-					"pattern cannot start with the delimiter");
+		if(filter != null){
+			return filter;
 		}
 		
-		int lastIndex = 0;
-		int count = 0;
-		while(lastIndex != -1){
-		       lastIndex = pattern.indexOf(patternDelimiter, lastIndex);
-		       if(lastIndex != -1){
-		             count++;
-		             lastIndex += patternDelimiter.length();
-		      }
+		DateFilter f = GenericReportServiceObjectFactory.getDateFilter(
+				System.getProperty(Constants.DATE_FILTER_PROP));
+		if(f == null){
+			throw new ReportManagerException("The date log filter could not " +
+					"be instantiated");
 		}
-		if(count != 2){
-			throw new IllegalArgumentException("The Date Log Filter pattern " +
-					"must contain exactly two instances of the pattern " +
-					"delimiter '" + patternDelimiter + "', even one at the " +
-					"end if the log date is at the end of the filename.");
-		}
+		filter = f;
+		return f;
 		
 	}
 	

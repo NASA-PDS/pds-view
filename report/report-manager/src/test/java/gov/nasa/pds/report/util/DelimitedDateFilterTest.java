@@ -17,13 +17,15 @@ import static org.junit.Assert.*;
 
 import java.text.ParseException;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import gov.nasa.pds.report.ReportManagerException;
+import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.rules.PDSTest;
 
-public class DateLogFilterTest extends PDSTest{
+public class DelimitedDateFilterTest extends PDSTest{
 	
 	private static final String pattern = "log-|yyyy-MM-dd|.txt";
 	private static final String[] logNames = {"log-2014-08-31.txt",
@@ -35,13 +37,19 @@ public class DateLogFilterTest extends PDSTest{
 	@Rule
 	public SingleTestRule test = new SingleTestRule("");
 	
+	@Before
+	public void setUp(){
+		System.setProperty(Constants.DATE_FILTER_PROP,
+				"gov.nasa.pds.report.util.DelimitedDateFilter");
+	}
+	
 	@Test
 	public void testNoDatesSet(){
 		
-		DateLogFilter.setPattern(pattern);
-		DateLogFilter.setStartDate(null);
-		DateLogFilter.setEndDate(null);
 		try{
+			DateLogFilter.setPattern(pattern);
+			DateLogFilter.setStartDate(null);
+			DateLogFilter.setEndDate(null);
 			assertTrue("Filename did not match with no start or end date set",
 					DateLogFilter.match(logNames[0]));
 		}catch(Exception e){
@@ -53,10 +61,10 @@ public class DateLogFilterTest extends PDSTest{
 	@Test
 	public void testStartDateOnly(){
 		
-		DateLogFilter.setPattern(pattern);
-		DateLogFilter.setStartDate(earlyDateString);
-		DateLogFilter.setEndDate(null);
 		try{
+			DateLogFilter.setPattern(pattern);
+			DateLogFilter.setStartDate(earlyDateString);
+			DateLogFilter.setEndDate(null);
 			assertFalse("Log from before start date matched",
 					DateLogFilter.match(logNames[0]));
 			assertTrue("Log on start date did not match",
@@ -72,10 +80,10 @@ public class DateLogFilterTest extends PDSTest{
 	@Test
 	public void testEndDateOnly(){
 		
-		DateLogFilter.setPattern(pattern);
-		DateLogFilter.setEndDate(lateDateString);
-		DateLogFilter.setStartDate(null);
 		try{
+			DateLogFilter.setPattern(pattern);
+			DateLogFilter.setEndDate(lateDateString);
+			DateLogFilter.setStartDate(null);
 			assertTrue("Log from before end date did not match",
 					DateLogFilter.match(logNames[2]));
 			assertTrue("Log on end date did not match",
@@ -91,10 +99,10 @@ public class DateLogFilterTest extends PDSTest{
 	@Test
 	public void testBothDatesSet(){
 		
-		DateLogFilter.setPattern(pattern);
-		DateLogFilter.setStartDate(earlyDateString);
-		DateLogFilter.setEndDate(lateDateString);
 		try{
+			DateLogFilter.setPattern(pattern);
+			DateLogFilter.setStartDate(earlyDateString);
+			DateLogFilter.setEndDate(lateDateString);
 			assertFalse("Log from before start date matched",
 					DateLogFilter.match(logNames[0]));
 			assertTrue("Log on start date did not match",
@@ -114,10 +122,10 @@ public class DateLogFilterTest extends PDSTest{
 	@Test
 	public void testBothDatesEqual(){
 		
-		DateLogFilter.setPattern(pattern);
-		DateLogFilter.setStartDate(earlyDateString);
-		DateLogFilter.setEndDate(earlyDateString);
 		try{
+			DateLogFilter.setPattern(pattern);
+			DateLogFilter.setStartDate(earlyDateString);
+			DateLogFilter.setEndDate(earlyDateString);
 			assertFalse("Log from before dates matched",
 					DateLogFilter.match(logNames[0]));
 			assertTrue("Log on both dates did not match",
@@ -135,7 +143,12 @@ public class DateLogFilterTest extends PDSTest{
 	@Test
 	public void testMatchWithoutPatternSet(){
 		
-		DateLogFilter.setPattern(null);
+		try{
+			DateLogFilter.setPattern(null);
+		}catch(ReportManagerException e){
+			fail(e.getMessage());
+		}
+			
 		try{
 			DateLogFilter.match(logNames[0]);
 			fail("No exception was thrown when attempting to match a " +
@@ -154,14 +167,16 @@ public class DateLogFilterTest extends PDSTest{
 	@Test
 	public void testDatesReversed(){
 		
-		DateLogFilter.setEndDate(null);
-		DateLogFilter.setStartDate(lateDateString);
 		try{
+			DateLogFilter.setEndDate(null);
+			DateLogFilter.setStartDate(lateDateString);
 			DateLogFilter.setEndDate(earlyDateString);
 			fail("No exception was thrown when start and end dates were " +
 					"reversed");
 		}catch(IllegalArgumentException e){
 			// Desired outcome! =)
+		}catch(ReportManagerException e){
+			fail(e.getMessage());
 		}
 		
 	}
@@ -170,10 +185,10 @@ public class DateLogFilterTest extends PDSTest{
 	@Test
 	public void testNoPostDateSubstring(){
 		
-		DateLogFilter.setStartDate(earlyDateString);
-		DateLogFilter.setEndDate(lateDateString);
-		DateLogFilter.setPattern("log-|yyyy-MM-dd|");
 		try{
+			DateLogFilter.setStartDate(earlyDateString);
+			DateLogFilter.setEndDate(lateDateString);
+			DateLogFilter.setPattern("log-|yyyy-MM-dd|");
 			assertTrue("Log with no post-date substring did not match",
 					DateLogFilter.match("log-2014-09-15"));
 		}catch(Exception e){

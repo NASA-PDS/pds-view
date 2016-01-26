@@ -37,8 +37,12 @@ public class FtpPullTest extends PDSTest{
 	
 	@Before
 	public void setUp() throws Exception {
+		
 		FileUtils.forceMkdir(new File(Utility.getAbsolutePath(
 				TestConstants.TEST_DUMP_RELATIVE)));
+		System.setProperty(Constants.DATE_FILTER_PROP,
+		"gov.nasa.pds.report.util.DelimitedDateFilter");
+		
 	}
 	
 	@After
