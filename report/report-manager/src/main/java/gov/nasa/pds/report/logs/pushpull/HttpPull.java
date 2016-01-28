@@ -162,7 +162,7 @@ public class HttpPull implements PDSPull{
 			// Check that the connection is viable
 			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK){
 				throw new PushPullException("The connection to log " + url +
-						"failed (" +  conn.getResponseCode() + "): " +
+						" failed (" +  conn.getResponseCode() + "): " +
 						conn.getResponseMessage()); 
 			}
 			

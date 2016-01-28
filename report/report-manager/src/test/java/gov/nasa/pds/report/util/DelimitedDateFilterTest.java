@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 
 import java.text.ParseException;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -37,8 +37,9 @@ public class DelimitedDateFilterTest extends PDSTest{
 	@Rule
 	public SingleTestRule test = new SingleTestRule("");
 	
-	@Before
-	public void setUp(){
+	@BeforeClass
+	public static void setUpClass(){
+		DateLogFilter.forceUnsetFilter();
 		System.setProperty(Constants.DATE_FILTER_PROP,
 				"gov.nasa.pds.report.util.DelimitedDateFilter");
 	}

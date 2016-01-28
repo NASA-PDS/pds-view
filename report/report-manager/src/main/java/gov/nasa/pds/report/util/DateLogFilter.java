@@ -93,6 +93,10 @@ abstract public class DateLogFilter{
 		getFilter().unsetAll();
 	}
 	
+	public static void forceUnsetFilter(){
+		filter = null;
+	}
+	
 	private static DateFilter getFilter() throws ReportManagerException{
 		
 		if(filter != null){

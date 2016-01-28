@@ -19,6 +19,7 @@ import gov.nasa.pds.report.ReportManagerException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -97,10 +98,15 @@ public class DynamicDateFilter extends DateFilter{
 	}
 	
 	private Date getLogDate(String filename, String filenamePattern,
-			String dateFormat) throws ParseException{
+			String dateFormat) throws ParseException, ReportManagerException{
 		
-		String dateStr =
-				Pattern.compile(filenamePattern).matcher(filename).group(1);
+		Matcher m = Pattern.compile(filenamePattern).matcher(filename);
+		if(!m.matches()){
+			throw new ReportManagerException("The filename " + filename +
+					" date could not be interepretted with the provided RE " +
+					"pattern: " + filenamePattern);
+		}
+		String dateStr = m.group(1);
 		return new SimpleDateFormat(dateFormat).parse(dateStr);
 	
 	}
