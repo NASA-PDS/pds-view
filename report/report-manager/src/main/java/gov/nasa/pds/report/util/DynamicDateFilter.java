@@ -82,9 +82,9 @@ public class DynamicDateFilter extends DateFilter{
 			// easily be otherwise.
 			logDate = this.getLogDate(filename, ".*(\\d{6}).*", "yyMMdd");
 		}else{
-			throw new ReportManagerException(
+			throw new ParseException(
 					"The date of log file " + filename + " is not in a " +
-					"recognized format");
+					"recognized format", 0);
 		}
 		
 		return compareLogDate(logDate, filename);
