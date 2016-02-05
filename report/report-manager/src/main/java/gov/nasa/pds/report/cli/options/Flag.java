@@ -43,12 +43,12 @@ public enum Flag {
 	/** Flag to filter by node name specified in profile  */
 	NODE_PATTERN("n", "node-pattern", "pattern", String.class,
 			"Only operate on profiles with a node whose name matches the " +
-			"given RE pattern"),
+			"given RE pattern or patterns in a comma-separated list"),
 	
 	/** Flag to filter by profile ID */
 	ID_PATTERN("i", "id-pattern", "pattern", String.class,
 			"Only operate on profiles with an ID that matches the given RE " +
-			"pattern"),
+			"pattern or patterns in a comma-separated list"),
 			
 	/** Flag to specify a run name for generated reports */
 	RUN_NAME("N", "run-name", "name", String.class,

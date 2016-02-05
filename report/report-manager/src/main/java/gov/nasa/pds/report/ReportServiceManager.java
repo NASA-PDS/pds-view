@@ -3,6 +3,7 @@ package gov.nasa.pds.report;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,22 +13,18 @@ import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.apache.commons.io.FileUtils;
-
 import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.logs.LogsManager;
 import gov.nasa.pds.report.logs.LogsManagerException;
 import gov.nasa.pds.report.logs.PDSLogsManager;
 import gov.nasa.pds.report.processing.ProcessingException;
 import gov.nasa.pds.report.processing.ProcessingManager;
-import gov.nasa.pds.report.processing.Processor;
 import gov.nasa.pds.report.profile.ProfileManager;
 import gov.nasa.pds.report.profile.SimpleProfileManager;
 import gov.nasa.pds.report.sawmill.PDSSawmillManager;
 import gov.nasa.pds.report.sawmill.SawmillException;
 import gov.nasa.pds.report.sawmill.SawmillManager;
 import gov.nasa.pds.report.util.FileUtil;
-import gov.nasa.pds.report.util.GenericReportServiceObjectFactory;
 import gov.nasa.pds.report.util.Utility;
 
 public class ReportServiceManager {
@@ -42,7 +39,7 @@ public class ReportServiceManager {
 	
 	// If at some point we need multiple filters on the same key, then this
 	// will change to a Map<String, List>
-	private Map<String, String> profileFilters;
+	private List<String[]> profileFilters;
 	
 	public ReportServiceManager() {
 		
@@ -51,7 +48,7 @@ public class ReportServiceManager {
 		// GenericReportServiceObjectFactory
 		this.logsManager = new PDSLogsManager();
 		this.profileManager = new SimpleProfileManager();
-		this.profileFilters = new HashMap<String, String>();
+		this.profileFilters = new Vector<String[]>();
 		this.sawmillManager = new PDSSawmillManager();
 		
 	}
@@ -69,8 +66,14 @@ public class ReportServiceManager {
 					"pattern with key " + key + " is empty");
 		}
 		
-		log.fine("Adding filter: " + key + "=" + pattern);
-		this.profileFilters.put(key, pattern);
+		// Split patterns by commas into a List
+		List<String> patterns = Arrays.asList(pattern.split(","));
+		
+		for(String p: patterns){
+			log.fine("Adding filter: " + key + "=" + p);
+			String filter[] = {key, p};
+			this.profileFilters.add(filter);
+		}
 		
 	}
 	
@@ -90,49 +93,53 @@ public class ReportServiceManager {
 		
 		// Determine which profiles match the profile filters
 		this.propsList = new Vector<Properties>();
-		String nodeID = null;
+		String profileID = null;
 		for(Properties p: props){
 			try{
-				nodeID = Utility.getNodePropsString(p,
+				profileID = Utility.getNodePropsString(p,
 						Constants.NODE_ID_KEY, false);
-				if(nodeID == null || nodeID.equals("")){
+				if(profileID == null || profileID.equals("")){
 					log.warning("Found a profile without an ID: " +
 							p.toString());
 				}else if(this.profileFilters.isEmpty()){
+					
+					// With no filters, we use all read profiles
 					this.propsList.add(p);
-					log.fine("Profile recongized for " + nodeID);
+					log.fine("Profile recongized for " + profileID);
+					
 				}else{
 					
-					//Iterate through the filters to check matching
-					boolean match = true;
-					for(Iterator<String> i = 
-							this.profileFilters.keySet().iterator();
-							i.hasNext() && match;){
-						String key = i.next();
-						String pattern = this.profileFilters.get(key);
+					// Iterate through the filters and use profiles that match
+					// any filter
+					boolean match = false;
+					for(Iterator<String[]> i = 
+							this.profileFilters.iterator();
+							i.hasNext() && !match;){
+						String[] filter = i.next();
+						String key = filter[0];
+						String pattern = filter[1];
 						if(((String)p.get(key)).matches(pattern)){
-							log.finer("Profile recongized for " + nodeID +
+							log.finer("Profile recongized for " + profileID +
 									" since it matches " + key + "=" + pattern);
+							this.propsList.add(p);
+							log.fine("Profile recongized for " + profileID);
+							match = true;
 						}else{
-							log.finer("Profile not recongized for " + nodeID +
+							log.finer("Profile not recongized for " + profileID +
 									" since it does not match " + key + "=" +
 									pattern);
-							match = false;
 						}
-					}
-					
-					if(match){
-						this.propsList.add(p);
-						log.fine("Profile " + nodeID + " matches all given " +
-								"filters");
 					}
 					
 				}
 			}catch(ReportManagerException e){
 				log.warning("An error occurred while reading the profile " + 
-						nodeID + ": " + e.getMessage());
+						profileID + ": " + e.getMessage());
 			}
 		}
+		
+		log.info("Found " + this.propsList.size() + " profiles that match " +
+				"filters");
 		
 	}
 	
