@@ -69,11 +69,16 @@ public enum Flag {
 	TO_DATE("t", "to", "to_date", String.class,
 			"Only pull log files on or before the date specified with the " +
 			"format mm/dd/yyyy"),
+	
+	/** Flag to display nodes and profile IDs */
+	LIST_PROFILES("l", "list-profiles", "node_name", String.class, false,
+			"Get a list of node IDs or profile ID with the node ID given " +
+			"as an argument", true),
 			
 	/** PDS Default Flags for CLI - TODO should be refactored into commons enum **/
 			
 	/** Flag to display the help. */
-	HELP("h", "help", "Display usage."),
+	HELP("h", "help", "Display usage"),
 
 	/** Flag to change the severity level of the messaging in the report. */
 	VERBOSE("v", "verbose", "level", int.class, "Specify the severity level "
@@ -101,6 +106,8 @@ public enum Flag {
 
 	/** The flag description. */
 	private final String description;
+	
+	private final boolean optionalArg;
 
 	/** A list of Option objects for command-line processing. */
 	private static Options options;
@@ -109,7 +116,11 @@ public enum Flag {
 		options = new Options();
 
 		for (Flag flag : values()) {
-			options.addOption(new ToolsOption(flag));
+			ToolsOption o = new ToolsOption(flag);
+			if(flag.optionalArg){
+				o.setOptionalArg(true);
+			}
+			options.addOption(o);
 		}
 	}
 
@@ -153,13 +164,15 @@ public enum Flag {
 	 */
 	private Flag(final String shortName, final String longName,
 			final String argName, final Object argType,
-			final boolean allowsMultipleArgs, final String description) {
+			final boolean allowsMultipleArgs, final String description,
+			final boolean optionalArg) {
 		this.shortName = shortName;
 		this.longName = longName;
 		this.argName = argName;
 		this.argType = argType;
 		this.allowsMultipleArgs = allowsMultipleArgs;
 		this.description = description;
+		this.optionalArg = optionalArg;
 	}
 
 	/**
@@ -177,8 +190,9 @@ public enum Flag {
 	 *            A description of the flag.
 	 */
 	private Flag(final String shortName, final String longName,
-			final String argName, final Object argType, final String description) {
-		this(shortName, longName, argName, argType, false, description);
+			final String argName, final Object argType,
+			final String description) {
+		this(shortName, longName, argName, argType, false, description, false);
 	}
 
 	/**

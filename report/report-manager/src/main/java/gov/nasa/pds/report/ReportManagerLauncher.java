@@ -162,6 +162,11 @@ public class ReportManagerLauncher {
 			if (o.getOpt().equals(Flag.HELP.getShortName())) {
 				displayHelp();
 				System.exit(0);
+			} else if (o.getOpt().equals(Flag.LIST_PROFILES.getShortName())) {
+				this.rsMgr.readProfiles();
+				this.rsMgr.listProfiles(
+						line.getOptionValue(Flag.LIST_PROFILES.getShortName()));
+				System.exit(0);
 			} else if (o.getOpt().equals(Flag.VERBOSE.getShortName())) {
 				try {
 					setVerbose(Integer.parseInt(o.getValue().trim()));

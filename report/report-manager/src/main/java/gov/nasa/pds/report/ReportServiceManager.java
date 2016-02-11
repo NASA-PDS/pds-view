@@ -6,10 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -370,6 +372,34 @@ public class ReportServiceManager {
 				System.getProperty(Constants.DIR_ROOT_PROP),
 				Constants.BACKUP_DIR), age);
 		
+	}
+	
+	public void listProfiles(String node){
+		Set<String> set = new HashSet<String>();
+		for(Properties props: propsList){
+			try{
+				String nodeValue = Utility.getNodePropsString(props,
+						Constants.NODE_NODE_KEY, true);
+				if(node == null){
+					set.add(nodeValue);
+				}
+				else if(nodeValue.equals(node)){
+					set.add(Utility.getNodePropsString(props,
+						Constants.NODE_ID_KEY, true));
+				}
+			}catch(ReportManagerException e){
+				log.warning("An error occured while fetching the " +
+						"profile info to list: " + e.getMessage());
+			}
+		}
+		if(node == null){
+			System.out.println("Node values:");
+		}else{
+			System.out.println("Profile IDs in node " + node + ":");
+		}
+		for(Iterator<String> i = set.iterator(); i.hasNext();){
+			System.out.println(i.next());
+		}
 	}
 	
 }
