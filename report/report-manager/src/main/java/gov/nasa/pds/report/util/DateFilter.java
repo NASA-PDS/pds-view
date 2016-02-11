@@ -41,6 +41,7 @@ public abstract class DateFilter{
 		Date start = null;
 		
 		if(dateStr == null || dateStr.equals("")){
+			this.startDate = null;
 			return;
 		}
 		
@@ -73,6 +74,7 @@ public abstract class DateFilter{
 		Date end = null;
 		
 		if(dateStr == null || dateStr.equals("")){
+			this.endDate = null;
 			return;
 		}
 		

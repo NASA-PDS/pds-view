@@ -15,6 +15,8 @@ package gov.nasa.pds.report.util;
 
 import static org.junit.Assert.*;
 
+import java.text.ParseException;
+
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -194,6 +196,27 @@ public class DynamicDateFilterTest extends PDSTest{
 		}catch(IllegalArgumentException e){
 			// Desired outcome! =)
 		}catch(ReportManagerException e){
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		
+	}
+	
+	// Verify that an exception is thrown when inspecting a file with an
+	// unrecognized date format
+	// https://www.youtube.com/watch?v=0qIMTA4_YdU
+	@Test
+	public void testBadDate() throws Exception{
+		
+		try{
+			DateLogFilter.setStartDate(earlyDateString);
+			DateLogFilter.setEndDate(lateDateString);
+			DateLogFilter.match("log2141001.txt");
+			fail("The expected exception was not thrown when tryign to " +
+					"match a log with a bad date in the filename");
+		}catch(ParseException e){
+			// Desired behavior
+		}catch(Exception e){
 			e.printStackTrace();
 			fail(e.getMessage());
 		}

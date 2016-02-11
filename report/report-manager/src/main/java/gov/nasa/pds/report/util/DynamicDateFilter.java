@@ -61,26 +61,26 @@ public class DynamicDateFilter extends DateFilter{
 		
 		Date logDate = null;
 		
-		if(filename.matches(".*\\d{8}.*")){
-			if(filename.matches(".*\\d{4}20\\d{2}.*")){
+		if(filename.matches("\\D*\\d{8}\\D*")){
+			if(filename.matches("\\D*\\d{4}20\\d{2}\\D*")){
 				// We assume that the month is before the day, but it could 
 				// just as easily be visa versa.
-				logDate = this.getLogDate(filename, ".*(\\d{8}).*", "MMddyyyy");
+				logDate = this.getLogDate(filename, "\\D*(\\d{8})\\D*", "MMddyyyy");
 			}else{
-				logDate = this.getLogDate(filename, ".*(\\d{8}).*", "yyyyMMdd");
+				logDate = this.getLogDate(filename, "\\D*(\\d{8})\\D*", "yyyyMMdd");
 			}
-		}else if(filename.matches(".*\\d{4}-\\d{2}-\\d{2}.*")){
-			logDate = this.getLogDate(filename, ".*(\\d{4}-\\d{2}-\\d{2}).*",
+		}else if(filename.matches("\\D*\\d{4}-\\d{2}-\\d{2}\\D*")){
+			logDate = this.getLogDate(filename, "\\D*(\\d{4}-\\d{2}-\\d{2})\\D*",
 					"yyyy-MM-dd");
-		}else if(filename.matches(".*\\d{2}-\\d{2}-\\d{4}.*")){
+		}else if(filename.matches("\\D*\\d{2}-\\d{2}-\\d{4}\\D*")){
 			// We assume that the month is before the day, but it could just as
 			// easily be visa versa.
-			logDate = this.getLogDate(filename, ".*(\\d{2}-\\d{2}-\\d{4}).*",
+			logDate = this.getLogDate(filename, "\\D*(\\d{2}-\\d{2}-\\d{4})\\D*",
 					"MM-dd-yyyy");
-		}else if(filename.matches(".*\\d{6}.*")){
+		}else if(filename.matches("\\D*\\d{6}\\D*")){
 			// We assume that the date format is yyMMdd, but it could just as
 			// easily be otherwise.
-			logDate = this.getLogDate(filename, ".*(\\d{6}).*", "yyMMdd");
+			logDate = this.getLogDate(filename, "\\D*(\\d{6})\\D*", "yyMMdd");
 		}else{
 			throw new ParseException(
 					"The date of log file " + filename + " is not in a " +
