@@ -51,7 +51,7 @@
   <properties>
     <!-- Internal Dependency Version -->
     <core-version>1.8.0</core-version>
-    <pds4-tools-version>0.5.0</pds4-tools-version>
+    <pds4-tools-version>0.6.0-dev</pds4-tools-version>
     <generate-version>0.9.1</generate-version>
     <transform-version>1.2.0</transform-version>
     <registry-version>1.9.0</registry-version>
