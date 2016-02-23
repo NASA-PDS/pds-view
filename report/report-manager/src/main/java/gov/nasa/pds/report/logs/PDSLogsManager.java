@@ -44,7 +44,7 @@ public class PDSLogsManager implements LogsManager {
 			String xferType = Utility.getNodePropsString(nodeProps,
 					Constants.NODE_XFER_TYPE_KEY, false);
 			if(xferType == null || xferType.trim().equals("")){
-				log.info("No logs will be pulled using profile " + profileID +
+				log.fine("No logs will be pulled using profile " + profileID +
 						" since no transfer type is specified");
 				return;
 			}
