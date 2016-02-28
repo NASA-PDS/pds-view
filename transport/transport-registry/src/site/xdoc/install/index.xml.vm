@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2013-2015, by the California Institute of Technology.
+  Copyright 2013-2016, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -42,7 +42,7 @@
       </p>
 
       <subsection name="Java Runtime Environment">
-        <p>The Transport Service was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically compiled for Java version 1.6 and has been tested with this version and version 1.7 and 1.8. Since support for Java 1.6 ended over two years ago, we suggest an environment of at least Java 1.7. The following commands test the local Java installation in a UNIX-based environment:
+        <p>The Transport Service was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically compiled for Java version 1.7 and has been tested with this version and version 1.8. The following commands test the local Java installation in a UNIX-based environment:
         </p>
 
         <source>
@@ -55,12 +55,12 @@ Java(TM) SE Runtime Environment (build 1.7.0_72-b14)
 Java HotSpot(TM) 64-Bit Server VM (build 24.72-b04, mixed mode)
         </source>
 
-        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.6, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The suggested software package is the Java Standard Edition (SE) 7, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
+        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.7, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The suggested software package is the Java Standard Edition (SE) 7, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
         </p>
       </subsection>
 
       <subsection name="Java Application Server">
-        <p>The Transport Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/pds2010/development/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
+        <p>The Transport Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/pds2010/development/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
         </p>
 
         <p>The top-level directory where Apache Tomcat is installed (i.e. the directory containing the <i>webapps</i> and <i>conf</i> sub-directories) will be referenced in these instructions as $TOMCAT_HOME.
@@ -110,7 +110,7 @@ or
     </section>
 
     <section name="Configuring the Application">
-      <p>The preferred method for configuring the Transport Service is to use the web-based interface. There is also a method for file-based configuration, which is especially useful when performing an upgrade of the service.
+      <p>The preferred method for configuring the Transport Service is to use the web-based interface. There is also a method for file-based configuration, which is especially useful when performing an upgrade of the service. The service comes configured for accessing a local Registry Service and a local Search Service. It is suggested that the final configuration only access one type of service, either registry or search.
       </p>
 
       <subsection name="Web-Based Configuration">
@@ -164,21 +164,35 @@ or
           Click on the image for a larger version.
         </center>
 
-        <p>The values for the following two properties must be specified:
+        <p>The <i>System Properties</i> section lists the properties for both the Registry and Search product handlers. Depending the desired handler, the properties for the other handler should be deleted. This can be accomplished by selecting the <i>Delete</i> check box next to the property to be deleted and then selecting the <i>Save Changes</i> button at the bottom of the page. If configuring the Registry product handler, the following two properties must be specified:
         </p>
 
         <ul>
           <li>gov.nasa.pds.transport.RegistryProductHandler.registryUrl<br/>
-            <p>This property must contain the end point for the Registry Service to be queried by the Transport Service. 
-            The default value for this property is <i>http://localhost:8080/registry</i>. 
-            Optionally, the value can be set to a comma-separated list of Registry URLs, 
-            which will be queried in sequence by the Transport Service until a match is found, and the corresponding product
-            is returned. For example:
+            <p>This property must contain the end point for the Registry Service to be queried by the Transport Service. The default value for this property is <i>http://localhost:8080/registry</i>. Optionally, the value can be set to a comma-separated list of Registry URLs, which will be queried in sequence by the Transport Service until a match is found, and the corresponding product is returned. For example:
             <br/>
-            <i>gov.nasa.pds.transport.RegistryProductHandler.registryUrl=http://localhost:8080/registry, http://pdsdev.jpl.nasa.gov:8080/registry-atm</i>.
+            <i>http://localhost:8080/registry-pds3, http://localhost:8080/registry-pds4</i>.
             </p>
           </li>
           <li>gov.nasa.pds.transport.RegistryProductHandler.tmpDir<br/>
+            <p>This property must contain the full path to a local directory that will be used as scratch space for the Transport Service. The default value for this property is <i>/tmp</i>.
+            </p>
+          </li>
+        </ul>
+
+        <p>If configuring the Search product handler, the following three properties must be specified:
+        </p>
+
+        <ul>
+          <li>gov.nasa.pds.transport.SearchProductHandler.searchUrl<br/>
+            <p>This property must contain the end point for the Registry Service to be queried by the Transport Service. The default value for this property is <i>http://localhost:8080/search-service</i>.
+            </p>
+          </li>
+          <li>gov.nasa.pds.transport.SearchProductHandler.useFileRefUrl<br/>
+            <p>This property must contain either <i>true</i> or <i>false</i> indicating whether the Transport Service uses the <i>file_ref_url</i> field or the <i>file_ref_path</i> and <i>file_ref_name</i> fields from the Search Service for accessing a target file. The default value for this property is <i>false</i>.
+            </p>
+          </li>
+          <li>gov.nasa.pds.transport.SearchProductHandler.tmpDir<br/>
             <p>This property must contain the full path to a local directory that will be used as scratch space for the Transport Service. The default value for this property is <i>/tmp</i>.
             </p>
           </li>
@@ -192,12 +206,12 @@ or
           Click on the image for a larger version.
         </center>
 
-        <p>Select the <i>Save Changes</i> button to save any changes made to the configuration settings. The Transport Service is now ready for operations.
+        <p>In the <i>Product Query Handlers</i> section, delete the handler that is not being configured for this instance of the Transport Service. This can be accomplished by selecting the <i>Delete</i> check box next to the handler to be deleted and then selecting the <i>Save Changes</i> button at the bottom of the page. The Transport Service is now ready for operations.
         </p>
       </subsection>
 
       <subsection name="File-Based Configuration">
-        <p>Although not the suggested method for configuring the Transport Service, this method can be useful if the desire is to transfer the configuration from one Transport Service to another (i.e., upgrading versions). The configuration file resides at <i>$TOMCAT_HOME/webapps/transport-registry/WEB-INF/config.xml</i> and should look something like the following:
+        <p>Although not the suggested method for configuring the Transport Service, this method can be useful if the desire is to transfer the configuration from one Transport Service to another (i.e., upgrading versions). The configuration file resides at <i>$TOMCAT_HOME/webapps/transport-registry/WEB-INF/config.xml</i> and should look something like the following for a Registry product handler configuration:
         </p>
 
         <source>
@@ -209,6 +223,27 @@ or
       http://localhost:8080/registry
     &lt;/property&gt;
     &lt;property key='gov.nasa.pds.transport.RegistryProductHandler.tmpDir'&gt;
+      /tmp
+    &lt;/property&gt;
+  &lt;/properties&gt;
+&lt;/configuration&gt;
+        </source>
+
+        <p>It should look something like the following for a Search product handler configuration:
+        </p>
+
+        <source>
+&lt;configuration xmlns="http://oodt.jpl.nasa.gov/web-grid/ns/"
+  https="false" localhost="false" password="aGFuYWxlaQ=="&gt;
+  &lt;server className="gov.nasa.pds.transport.SearchProductHandler" type="product"/&gt;
+  &lt;properties&gt;
+    &lt;property key="gov.nasa.pds.transport.SearchProductHandler.searchUrl"&gt;
+      http://localhost:8080/search-service
+    &lt;/property&gt;
+    &lt;property key="gov.nasa.pds.transport.SearchProductHandler.useFileRefUrl"&gt;
+      false
+    &lt;/property&gt;
+    &lt;property key="gov.nasa.pds.transport.SearchProductHandler.tmpDir"&gt;
       /tmp
     &lt;/property&gt;
   &lt;/properties&gt;
