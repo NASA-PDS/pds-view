@@ -601,8 +601,9 @@
    <field name="format" type="lowercase" indexed="false" stored="true" multiValued="true" />
    <field name="full_name" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="file_name" type="lowercase" indexed="true" stored="true" multiValued="true" />
-   <field name="file_ref_name" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="file_ref_location" type="lowercase" indexed="true" stored="true" multiValued="true" />
+   <field name="file_ref_name" type="lowercase" indexed="true" stored="true" multiValued="true" />
+   <field name="file_ref_size" type="int" indexed="true" stored="true" multiValued="true" />
    <field name="file_ref_url" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_description" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="instrument_host_name" type="text_general" indexed="true" stored="true" multiValued="true" />
@@ -632,7 +633,7 @@
 
    <!-- PDS Affiliate -->
    <field name="person_name" type="text_sortable" indexed="true" stored="true" multiValued="false" />
-   <field name="person_registration_date" type="date" indexed="true" stored="true" multiValued="false" />
+   <field name="person_registration_date" type="string" indexed="true" stored="true" multiValued="false" />
    <field name="person_electronic_mail_address" type="text_sortable" indexed="true" stored="true" multiValued="true" />
    <field name="person_sort_name" type="text_sortable" indexed="true" stored="true" multiValued="false" />
    <field name="person_affiliation_type" type="text_sortable" indexed="true" stored="true" multiValued="true" />
