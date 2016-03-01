@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <product>
   <specification>
-    <title>PDS3-Data-Set</title>
+    <title>PDS3-PSA-Data-Set</title>
     <query>
       <registryPath>objectType</registryPath>
       <value>Product_Data_Set_PDS3</value>
@@ -10,13 +10,19 @@
       <registryPath>status</registryPath>
       <value>Approved</value>
     </query>
+    <!-- Adding PDS3 Registry as secondary to grab the context references. -->
+    <dataSources>
+      <source sourceType="registry" priority="secondary" append="true">
+        <url>http://localhost:8080/registry-pds3</url>
+      </source>
+    </dataSources>
     <checkAssociations>true</checkAssociations>
   </specification>
-
+  
   <indexFields>
     <!-- Identifier Fields -->
     <field name="search_id" type="required">
-      <outputString format="text">pds3:{lid}</outputString>
+      <outputString format="text">psa:{lid}</outputString>
     </field>
     <field name="identifier" type="required">
       <registryPath>lid</registryPath>
@@ -32,7 +38,7 @@
       <registryPath>data_set_terse_description</registryPath>
     </field>
     <field name="resLocation" type="required">
-      <outputString format="url">/ds-view/pds/viewDataset.jsp?dsid={data_set_id}</outputString>
+      <registryPath>resource_ref.resource_url</registryPath>
     </field>
     <field name="data_product_type" type="required">
       <outputString format="text">Data_Set</outputString>
@@ -56,57 +62,36 @@
     <field name="product_class" type="string">
       <registryPath>product_class</registryPath>
     </field>
-    <field name="alternate_id" type="string">
-      <registryPath>alternate_id</registryPath>
-    </field>
-    <field name="citation_keyword" type="string">
-      <registryPath>citation_keyword</registryPath>
-    </field>
     <field name="modification_date" type="date">
       <registryPath>modification_date</registryPath>
     </field>
     <field name="modification_description" type="string">
       <registryPath>modification_description</registryPath>
     </field>
-    <!-- Reference_List Fields -->
+    <!-- Reference_List Fields (some fields derived from PSA keywords)-->
     <field name="investigation_name" type="string">
-      <registryPath>investigation_ref.mission_name</registryPath>
+      <registryPath>psa_mission_name</registryPath>
     </field>
     <field name="investigation_start_date" type="date">
-      <registryPath>investigation_ref.mission_start_date</registryPath>
+      <registryPath>data_set_start_date_time</registryPath>
     </field>
     <field name="investigation_stop_date" type="date">
-      <registryPath>investigation_ref.mission_stop_date</registryPath>
-    </field>
-    <field name="instrument_host_id" type="string">
-      <registryPath>instrument_host_ref.instrument_host_id</registryPath>
-    </field>
-    <field name="instrument_host_name" type="string">
-      <registryPath>instrument_host_ref.instrument_host_name</registryPath>
-    </field>
-    <field name="instrument_id" type="string">
-      <registryPath>instrument_ref.instrument_id</registryPath>
+      <registryPath>data_set_stop_date_time</registryPath>
     </field>
     <field name="instrument_name" type="string">
-      <registryPath>instrument_ref.instrument_name</registryPath>
+      <registryPath>psa_instrument_name</registryPath>
     </field>
-    <field name="instrument_type" type="string">
-      <registryPath>instrument_ref.instrument_type</registryPath>
+    <field name="instrument_id" type="string">
+      <registryPath>psa_instrument_id</registryPath>
     </field>
     <field name="target_name" type="string">
-      <registryPath>target_ref.target_name</registryPath>
-    </field>
-    <field name="target_type" type="string">
-      <registryPath>target_ref.target_type</registryPath>
+      <registryPath>psa_target_name</registryPath>
     </field>
     <field name="resource_ref" type="string">
       <registryPath>resource_ref</registryPath>
     </field>
     <field name="node_id" type="string">
-      <registryPath>node_ref.node_name</registryPath>
-    </field>
-    <field name="external_reference_text" type="string">
-      <registryPath>external_reference_text</registryPath>
+      <registryPath>node_ref.alternate_id</registryPath>
     </field>
     <!-- Data_Set_PDS3 Fields -->
     <field name="data_set_id" type="string">
@@ -144,9 +129,6 @@
     </field>
     <field name="archive_status" type="string">
       <registryPath>data_set_archive_status</registryPath>
-    </field>
-    <field name="nssdc_data_set_id" type="string">
-      <registryPath>data_set_nssdc_collection_id</registryPath>
     </field>
   </indexFields>
 </product>

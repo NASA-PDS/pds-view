@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2013, by the California Institute of Technology.
+  Copyright 2010-2015, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -149,7 +149,7 @@ Command-line Options--------------Description-----------------------------------
 
         <ol>
           <li>
-            <p>The following command will run the Registry Extractor component of the Search Core to generate temporary XML metadata files for each Registry context product type specified in the configurations.  By default, the output appears in the directory /usr/local/search-service/pds/registry-data/&lt;object-type&gt;/:</p>
+            <p>The following command will run the Registry Extractor component of the Search Core to generate temporary XML metadata files for each Registry context product type specified in the configurations.  By default, the output appears in the directory /usr/local/search-service/pds/solr-docs/&lt;config-title&gt;/:</p>
             <source>
 % search-core -e -H /usr/local/search-service/pds -r http://localhost:8080/registry
             </source>
@@ -162,7 +162,7 @@ Command-line Options--------------Description-----------------------------------
           </li>
 
           <li>
-            <p>The following command will run the Solr Post component of the Search Core to use HTTP Post and HTTP Get to submit the Lucene Solr Documents to the Search Service Solr Index.  The default Search Service URL is http://localhost:8080/search-service/ and assumes the Solr Documents are in /usr/local/search-service/pds/index :</p>
+            <p>The following command will run the Solr Post component of the Search Core to use HTTP Post and HTTP Get to submit the Lucene Solr Documents to the Search Service Solr Index. The default Search Service end point is http://localhost:8080/search-service/ and assumes the Solr Documents are in /usr/local/search-service/pds/index :</p>
             <source>
 % search-core -P
             </source>
