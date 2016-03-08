@@ -1,13 +1,14 @@
 package gov.nasa.arc.pds.lace.shared;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Implements a model object that holds information used
  * by the <code>InsertionPoint</code> object.
  */
-public class InsertOption implements Serializable {
+public class InsertOption implements Cloneable, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -94,7 +95,7 @@ public class InsertOption implements Serializable {
 	 */
 	public void setUsedOccurrences(int usedOccurrences) {
 		if (usedOccurrences < 0) {
-			String msg = "The value of usedOccurrences cannot be negative.";
+			String msg = "The value of used occurrences cannot be negative.";
 			throw new IllegalArgumentException(msg);
 		}
 		this.usedOccurrences = usedOccurrences;
@@ -134,5 +135,15 @@ public class InsertOption implements Serializable {
 			+ " max="   + maxOccurrences
 			+ " used="  + usedOccurrences
 			+ "]";
+	}
+	
+	public InsertOption copy() {
+		InsertOption copy = new InsertOption();
+		copy.maxOccurrences = maxOccurrences;
+		copy.minOccurrences = minOccurrences;
+		copy.usedOccurrences = usedOccurrences;
+		copy.types = new ArrayList<LabelItemType>();
+		copy.types.addAll(types);
+		return copy;
 	}
 }

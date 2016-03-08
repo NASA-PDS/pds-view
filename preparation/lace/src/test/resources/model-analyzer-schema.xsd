@@ -112,7 +112,7 @@
   <xs:element name="InsPoint1">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="Value" minOccurs="0" maxOccurs="1" type="xs:string" />
+        <xs:element name="Container" minOccurs="0" maxOccurs="1" type="CommonContainer" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -120,7 +120,7 @@
   <xs:element name="InsPoint2">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="Value" minOccurs="1" maxOccurs="unbounded" type="xs:string" />
+        <xs:element name="Container" minOccurs="0" maxOccurs="unbounded" type="CommonContainer" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -128,14 +128,39 @@
   <xs:element name="InsPoint3">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="Value" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+        <xs:element name="Container" minOccurs="1" maxOccurs="unbounded" type="CommonContainer" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   
   <xs:element name="InsPoint4">
     <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Value" minOccurs="1" maxOccurs="unbounded" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="InsPoint5">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Value" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="InsPoint6">
+    <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Value1" type="xs:string" />
+        <xs:element name="Value2" type="xs:string" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="InsPoint7">
+    <xs:complexType>
+      <xs:choice minOccurs="1" maxOccurs="1">
         <xs:element name="Value1" type="xs:string" />
         <xs:element name="Value2" type="xs:string" />
       </xs:choice>
@@ -179,28 +204,6 @@
     </xs:complexType>
   </xs:element>
   
-  <xs:element name="Common3">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="Container1" type="CommonContainer" minOccurs="1" maxOccurs="1" />
-        <xs:element name="Container2" type="CommonContainer" minOccurs="0" maxOccurs="1" />
-        <xs:element name="Container3" type="CommonContainer" minOccurs="1" maxOccurs="unbounded" />
-        <xs:element name="Container4" type="CommonContainer" minOccurs="0" maxOccurs="unbounded" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  
-  <xs:element name="Common4">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="Container1" type="CommonContainer" minOccurs="0" maxOccurs="unbounded" />
-        <xs:element name="Container2" type="CommonContainer" minOccurs="1" maxOccurs="unbounded" />
-        <xs:element name="Container3" type="CommonContainer" minOccurs="0" maxOccurs="1" />
-        <xs:element name="Container4" type="CommonContainer" minOccurs="1" maxOccurs="1" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  
   <!-- 
   	Tests of a complex schema where the contents of the top-level
   	element is a complex container that has a complex container of
@@ -221,21 +224,5 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  
-  <xs:complexType name="RepeatingContainer2">
-  	<xs:sequence>
-  		<xs:element name="SimpleValue" type="xs:string" />
-  		<xs:element name="Container" type="RepeatingContainer2" />		
-  	</xs:sequence>
-  </xs:complexType>  
-  
-  <xs:element name="Repeating2">
-    <xs:complexType>      
-      <xs:sequence>        
-        <xs:element name="Container" type="RepeatingContainer2" />        
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  
   
 </xs:schema>

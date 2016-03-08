@@ -68,6 +68,19 @@ public class SimpleItem extends LabelElement {
 
 	@Override
 	public boolean isDeletable() {		
-		return false;
+		// Cannot delete an item if it's not linked to an InsertOption.	
+		InsertOption source = getInsertOption();
+		if (source == null) {
+			return false;
+		}
+		
+		// Cannot delete an item if it's the last occurrence.
+		int used = source.getUsedOccurrences();
+		if ((used == 1 || used == getType().getMinOccurrences())
+				&& source.getTypes().size() == 1) {
+			return false;
+		}
+		
+		return true;
 	}
 }

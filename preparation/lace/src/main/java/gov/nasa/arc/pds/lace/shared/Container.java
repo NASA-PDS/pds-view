@@ -106,7 +106,20 @@ public class Container extends LabelElement {
 
 	@Override
 	public boolean isDeletable() {		
-		return false;
+		// Cannot delete a container if it's not linked to an
+		// InsertOption (which covers min==max==1).
+		InsertOption source = getInsertOption();
+		if (source == null) {
+			return false;
+		}
+		
+		// Cannot delete a container if it's the last
+		// occurrences (used == min).	
+		if (source.getUsedOccurrences() == getType().getMinOccurrences() 				
+				&& source.getTypes().size() == 1) {
+			return false;
+		}
+		
+		return true;
 	}
-
 }

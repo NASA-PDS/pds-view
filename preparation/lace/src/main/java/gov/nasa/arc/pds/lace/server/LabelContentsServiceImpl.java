@@ -129,7 +129,7 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 		assert to != -1;
 		
 		ResultType type = new ResultType();
-		type.setContents(newItems);
+		type.setNewItems(newItems);
 		type.setFromIndex(from);
 		type.setToIndex(to);
 		return type;

@@ -173,49 +173,51 @@ public class ContainerView extends Composite implements ContainerPresenter.Displ
 	}
 
 	@Override
-	public void addEventListeners() {
-		titlePanel.addMouseMoveHandler(new MouseMoveHandler() {
-			
-			@Override
-			public void onMouseMove(MouseMoveEvent event) {
-				event.preventDefault();
-				event.stopPropagation();
-				presenter.handleMouseEvent(true);
-			}
-			
-		});
-		
-		titlePanel.addMouseOverHandler(new MouseOverHandler() {
-			
-			@Override
-			public void onMouseOver(MouseOverEvent event) {
-				event.preventDefault();
-				event.stopPropagation();
-				presenter.handleMouseEvent(true);
-			}
-			
-		});
-		
-		titlePanel.addMouseOutHandler(new MouseOutHandler() {
-			
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				event.preventDefault();
-				event.stopPropagation();
-				presenter.handleMouseEvent(false);				
-			}
-			
-		});
+	public void addEventListeners(boolean isDeletable) {
+		if (isDeletable) {
+			titlePanel.addMouseMoveHandler(new MouseMoveHandler() {
 				
-		modificationButton.addEventHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {	
-				event.stopPropagation();
-				presenter.modifyElement();
-			}
+				@Override
+				public void onMouseMove(MouseMoveEvent event) {
+					event.preventDefault();
+					event.stopPropagation();
+					presenter.handleMouseEvent(true);
+				}
+				
+			});
 			
-		});
+			titlePanel.addMouseOverHandler(new MouseOverHandler() {
+				
+				@Override
+				public void onMouseOver(MouseOverEvent event) {
+					event.preventDefault();
+					event.stopPropagation();
+					presenter.handleMouseEvent(true);
+				}
+				
+			});
+			
+			titlePanel.addMouseOutHandler(new MouseOutHandler() {
+				
+				@Override
+				public void onMouseOut(MouseOutEvent event) {
+					event.preventDefault();
+					event.stopPropagation();
+					presenter.handleMouseEvent(false);
+				}
+				
+			});		
+				
+			modificationButton.addEventHandler(new ClickHandler() {
+	
+				@Override
+				public void onClick(ClickEvent event) {
+					event.stopPropagation();
+					presenter.modifyElement();
+				}
+				
+			});
+		}
 		
 		titlePanel.addClickHandler(new ClickHandler() {
 			

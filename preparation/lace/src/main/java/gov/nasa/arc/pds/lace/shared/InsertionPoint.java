@@ -131,9 +131,32 @@ public class InsertionPoint extends LabelItem {
 		if (destination instanceof InsertionPoint) {
 			InsertionPoint copy = (InsertionPoint) destination;
 			copy.displayType = displayType;			
+			copy.alternatives = new ArrayList<InsertOption>();			
+			for (InsertOption alternative : alternatives) {
+				copy.alternatives.add(alternative.copy());
+			}		
+		}
+	}
+	
+	/**
+	 * Returns a copy of this insertion point. An alternative to clone(),
+	 * since that is not supported in GWT.
+	 * 
+	 * @param insertOptions flag to indicate whether or not to copy a new instance of each
+	 * insert option in the alternatives list from this instance to the copy instance. 
+	 * @return a copy of this label item
+	 */
+	public LabelItem copy(boolean insertOptions) {
+		if (!insertOptions) {
+			InsertionPoint copy = new InsertionPoint();
+			super.copyData(copy);
+			copy.displayType = displayType;			
 			copy.alternatives = new ArrayList<InsertOption>();
 			copy.alternatives.addAll(alternatives);
-		}
+			return copy;
+		} else {
+			return copy();
+		}		
 	}
 
 	@Override

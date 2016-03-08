@@ -61,7 +61,7 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		 * an alert icon will be also displayed.
 		 *
 		 * @param className the CSS class name that represents an icon for this container type
-		 * @param isComplete flag to indicate whether the container is complete  
+		 * @param isComplete flag to indicate whether or not the container is complete  
 		 */
 		void setIcon(String className, boolean isComplete);
 		
@@ -109,8 +109,10 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		/** 
 		 * Adds event listeners that that used for handling
 		 * events related to modifying an item (e.g. delete).
+		 * 
+		 * @param isDeletable flag to indicate whether or not the container is deletable
 		 */
-		void addEventListeners();
+		void addEventListeners(boolean isDeletable);
 		
 		/**
 		 * Enables/disables the modification UI.
@@ -189,11 +191,7 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 			LabelItemType type = container.getType();
 			view.setContainerTitle(type.getElementName());
 			view.setIcon(lookup.getIconClassName(type), container.isComplete());
-
-			// Add event listeners if the item is deletable.
-			if (container.isDeletable()) {
-				view.addEventListeners();
-			}
+			view.addEventListeners(container.isDeletable());
 		}
 	}
 
@@ -317,14 +315,14 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 
 			@Override			
 			public void onSuccess(ResultType result) {
-				Container newContainer = updateContents(result.getContents(),
+				Container newContainer = updateContents(result.getNewItems(),
 						result.getFromIndex(), result.getToIndex());
 				
 				// Fire an event for containers to update their complete state.
 				bus.fireEvent(new CompleteStateChangedEvent(container, false));
 				
 				// Fire an event for the tree view to update itself.				
-				bus.fireEvent(new ContainerChangedEvent(container, newContainer));	
+				bus.fireEvent(new ContainerChangedEvent(container, newContainer));
 			}
 		});
 	}

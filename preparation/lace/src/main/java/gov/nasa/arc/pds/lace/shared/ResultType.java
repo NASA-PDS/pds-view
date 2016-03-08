@@ -13,7 +13,7 @@ public class ResultType implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private List<LabelItem> contents = new ArrayList<LabelItem>();	
+	private List<LabelItem> newItems = new ArrayList<LabelItem>();	
 	private int fromIndex;
 	private int toIndex;	
 	
@@ -26,9 +26,11 @@ public class ResultType implements Serializable {
 	
 	/**
 	 * Returns a list of new items to add to the container's contents list.
+	 * 
+	 * @return
 	 */
-	public List<LabelItem> getContents() {
-		return contents;
+	public List<LabelItem> getNewItems() {
+		return newItems;
 	}
 
 	/**
@@ -36,8 +38,8 @@ public class ResultType implements Serializable {
 	 * 
 	 * @param contents a list of new items to add 
 	 */
-	public void setContents(List<LabelItem> contents) {
-		this.contents = contents;
+	public void setNewItems(List<LabelItem> newItems) {
+		this.newItems = newItems;
 	}
 
 	/**
@@ -46,6 +48,8 @@ public class ResultType implements Serializable {
 	 * <br />
 	 * This index is also used as a starting position to
 	 * insert new items to the container's contents list.
+	 * 
+	 * @return
 	 */
 	public int getFromIndex() {
 		return fromIndex;
@@ -64,6 +68,8 @@ public class ResultType implements Serializable {
 	/**
 	 * Gets the index within the container's contents list
 	 * used as an ending position for removing items.
+	 * 
+	 * @return
 	 */
 	public int getToIndex() {
 		return toIndex;

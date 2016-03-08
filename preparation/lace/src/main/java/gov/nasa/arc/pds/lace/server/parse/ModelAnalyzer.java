@@ -4,6 +4,7 @@ import gov.nasa.arc.pds.lace.shared.Container;
 import gov.nasa.arc.pds.lace.shared.InsertOption;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint.DisplayType;
+import gov.nasa.arc.pds.lace.shared.LabelElement;
 import gov.nasa.arc.pds.lace.shared.LabelItem;
 import gov.nasa.arc.pds.lace.shared.LabelItemType;
 import gov.nasa.arc.pds.lace.shared.SimpleItem;
@@ -89,7 +90,7 @@ public class ModelAnalyzer {
 		List<LabelItem> initialContents = getTypeInitialContents((XSComplexTypeDefinition) typeDefinition);
 		LabelItemType type = createLabelItemType(element, 1, 1, true, initialContents, typeDefinition);
 
-		return createContainer(type, initialContents);
+		return createContainer(type);
 	}
 
 	private void storeKnownType(XSElementDeclaration element, XSTypeDefinition typeDef,
@@ -208,23 +209,22 @@ public class ModelAnalyzer {
 			insPoint.setDisplayType(PLUS_DISPLAY_TYPE);
 		}
 	
-		// Increase the "used" counter.
+		// Increase the "used" counter by 1 and make a new copy of the
+		// insertion point (while keeping the insert option instances intact).
 		alternative.setUsedOccurrences(alternative.getUsedOccurrences() + 1);
-		List<InsertOption> newAlternatives = new ArrayList<InsertOption>();
-		newAlternatives.add(alternative);
-		InsertionPoint newInsPoint = (InsertionPoint) insPoint.copy();
-		newInsPoint.setAlternatives(newAlternatives);
+		InsertionPoint newInsPoint = (InsertionPoint) insPoint.copy(false);
 		
-		// Create the new item.
-		LabelItem newItem = createNewItem(type);
+		// Create the new element and link it to the insert option.
+		LabelElement newElement = createLabelElement(type);
+		newElement.setInsertOption(alternative);
 				
-		// Now insert the new item and insertion point, and update the list cursor.
-		it.add(newItem);
+		// Now insert the new element and insertion point, and update the list cursor.
+		it.add(newElement);
 		it.add(newInsPoint);
 		it.previous();
 
-		// And, expand any insertion points in the newly inserted item.
-		expandInsertionPoints(newItem);
+		// And, expand any insertion points in the newly inserted element.
+		expandInsertionPoints(newElement);
 	}
 
 	/**
@@ -242,17 +242,18 @@ public class ModelAnalyzer {
 		List<InsertOption> alternatives = insPoint.getAlternatives();
 		assert alternatives.size() > 0 && alternatives.size() <= 2;
 
-		// Increase the "used" counter.
+		// Increase the "used" counter by 1.
 		InsertOption alternative = alternatives.get(alternativeIndex);
 		alternative.setUsedOccurrences(alternative.getUsedOccurrences() + 1);
 		
-		// Create the new item.
-		LabelItem newItem = createNewItem(alternative.getTypes().get(typeIndex));
+		// Create the new element and link it to the insert option.
+		LabelElement newElement = createLabelElement(alternative.getTypes().get(typeIndex));
+		newElement.setInsertOption(alternative);
 		
 		if (insPoint.getDisplayType().equals(PLUS_DISPLAY_TYPE) && alternatives.size() > 1) {
 			// Need to merge after splitting and inserting.
-			InsertionPoint insPoint1 = (InsertionPoint) insPoint.copy();		
-			InsertionPoint insPoint2 = (InsertionPoint) insPoint.copy();
+			InsertionPoint insPoint1 = (InsertionPoint) insPoint.copy(false);		
+			InsertionPoint insPoint2 = (InsertionPoint) insPoint.copy(false);
 			insPoint1.getAlternatives().remove(1);
 			insPoint2.getAlternatives().remove(0);
 			
@@ -277,34 +278,26 @@ public class ModelAnalyzer {
 		}
 
 		// Split the existing insertion point.
-		InsertionPoint first = (InsertionPoint) insPointToSplit.copy();		
-		InsertionPoint second = (InsertionPoint) insPointToSplit.copy();
+		InsertionPoint first = (InsertionPoint) insPointToSplit.copy(false);		
+		InsertionPoint second = (InsertionPoint) insPointToSplit.copy(false);
 		
-		// Insert the new item and insertion points.			
+		// Insert the new element and insertion points.			
 		items.add(index++, first);
-		items.add(index++, newItem);
+		items.add(index++, newElement);
 		items.add(index, second);
 					
-		// And, expand any insertion points in the newly inserted item.
-		expandInsertionPoints(newItem);
+		// And, expand any insertion points in the newly inserted element.
+		expandInsertionPoints(newElement);
 
 		return items;
 	}
 	
-	private LabelItem createNewItem(LabelItemType type) {
-		LabelItem newItem;
+	private LabelElement createLabelElement(LabelItemType type) {
 		if (!type.isComplex()) {
-			newItem = createSimpleItem(type);
-		} else {			
-			List<LabelItem> contents = new ArrayList<LabelItem>();
-			List<LabelItem> initialContents = type.getInitialContents();
-			for (LabelItem item : initialContents) {
-				contents.add(item.copy());
-			}
-			newItem = createContainer(type, contents);
+			return createSimpleItem(type);
+		} else {
+			return createContainer(type);
 		}
-		
-		return newItem;
 	}
 	
 	/*
@@ -426,22 +419,36 @@ public class ModelAnalyzer {
 				labelItems.add(createSimpleItem(type));
 			}
 		} else if (particle.getMinOccurs() == 1 && particle.getMaxOccurs() == 1) {
-			labelItems.add(createContainer(type, type.getInitialContents()));
+			labelItems.add(createContainer(type));
 		} else {
 			labelItems.add(createInsertionPoint(Collections.singletonList(type), particle));
 		}
 	}
 
-	private Container createContainer(LabelItemType type, List<LabelItem> contents) {
+	private Container createContainer(LabelItemType type) {
 		Container container = new Container();
 		container.setType(type);
-		container.setContents(contents);
+		setInitialContents(container);
 		return container;
 	}
 
+	private void setInitialContents(Container container) {
+		container.setContents(new ArrayList<LabelItem>());
+
+		for (LabelItem item : container.getType().getInitialContents()) {
+			LabelItem newItem = item.copy();
+
+			if (newItem instanceof Container) {
+				setInitialContents((Container) newItem);
+			}
+			container.getContents().add(newItem);
+		}
+	}
+	
 	private SimpleItem createSimpleItem(LabelItemType type) {
 		SimpleItem item = new SimpleItem();
 		item.setType(type);
+		// TODO: should we set the value to "" here?
 		return item;
 	}
 	
@@ -545,8 +552,7 @@ public class ModelAnalyzer {
 			// Assume the term for the particle inside the choice model group
 			// is an element declaration.
 			XSElementDeclaration element = (XSElementDeclaration) itemParticle.getTerm();
-			LabelItemType type = parseChoiceElementDefinition(element, particle);
-			types.add(type);
+			types.add(parseChoiceElementDefinition(element, particle));
 		}
 
 		labelItems.add(createInsertionPoint(types, particle));
@@ -616,7 +622,6 @@ public class ModelAnalyzer {
 
 					// OK, found an adjacent insertion point.
 					InsertionPoint first = (InsertionPoint) curItem;
-					InsertionPoint second = (InsertionPoint) nextItem;
 					
 					// For some reason we can't do simply:
 					//   first.getAlternatives().addAll(second.getAlternatives());
@@ -624,17 +629,16 @@ public class ModelAnalyzer {
 					// to add them to a new list.
 					List<InsertOption> newAlternatives = new ArrayList<InsertOption>();
 					newAlternatives.addAll(first.getAlternatives());
-					for (InsertOption insertOption : second.getAlternatives()) {
+					for (InsertOption insertOption : ((InsertionPoint) nextItem).getAlternatives()) {
 						if (!newAlternatives.contains(insertOption)) {
 							newAlternatives.add(insertOption);
 						}
 					}
-
 					first.setAlternatives(newAlternatives);
 										
-					// Replace the nextItem (second) with the merged insertion point (first)
+					// Replace the nextItem with the merged insertion point (first)
 					// and go back in the list and remove curItem
-					it.set(curItem.copy());
+					it.set(((InsertionPoint) curItem).copy(false));
 					it.previous();
 					it.previous();
 					it.remove();

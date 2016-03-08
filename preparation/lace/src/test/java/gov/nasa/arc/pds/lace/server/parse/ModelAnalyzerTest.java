@@ -1,20 +1,18 @@
 package gov.nasa.arc.pds.lace.server.parse;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 import gov.nasa.arc.pds.lace.server.LabelContentsServiceImpl;
 import gov.nasa.arc.pds.lace.shared.Container;
+import gov.nasa.arc.pds.lace.shared.InsertOption;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
 import gov.nasa.arc.pds.lace.shared.LabelItem;
 import gov.nasa.arc.pds.lace.shared.LabelItemType;
 import gov.nasa.arc.pds.lace.shared.SimpleItem;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -102,28 +100,36 @@ public class ModelAnalyzerTest {
 			String rootElementName,
 			int minOccurrences,
 			int maxOccurrences,
+			int usedOccurrences,
 			String[] expectedAlternatives
 	) {
 		Container root = analyzer.getContainerForElement(rootElementName, SCHEMA_NAMESPACE);
 		assertEquals(root.getContents().size(), 1);
 
 		LabelItem item = root.getContents().get(0);
-		if (expectedAlternatives.length > 1) {
-			assertTrue(item instanceof InsertionPoint);
-		} else {
-			assertTrue(item instanceof SimpleItem);
-		}
+		assertTrue(item instanceof InsertionPoint);
+		
+		List<InsertOption> alternatives = ((InsertionPoint) item).getAlternatives();
+		assertEquals(alternatives.size(), 1);
+		
+		assertEquals(alternatives.get(0).getMaxOccurrences(), maxOccurrences);
+		assertEquals(alternatives.get(0).getMinOccurrences(), minOccurrences);
+		assertEquals(alternatives.get(0).getUsedOccurrences(), usedOccurrences);
+		assertEquals(alternatives.get(0).getTypes().size(), expectedAlternatives.length);
 	}
 
 	@SuppressWarnings("unused")
 	@DataProvider(name="InsPointTests")
 	private Object[][] getInsPointTests() {
 		return new Object[][] {
-				//root element, min, max, expected alternatives
-				{ "InsPoint1", 0, 1, new String[] {"Value"} },
-				{ "InsPoint2", 1, -1, new String[] {"Value"} },
-				{ "InsPoint3", 0, -1, new String[] {"Value"} },
-				{ "InsPoint4", 0, -1, new String[] {"Value1", "Value2"} },
+				//root element, min, max, used, expected insert options
+				{ "InsPoint1", 0,  1, 0, new String[] {"Container"} },
+				{ "InsPoint2", 0, -1, 0, new String[] {"Container"} },
+				{ "InsPoint3", 1, -1, 0, new String[] {"Container"} },
+				{ "InsPoint4", 1, -1, 0, new String[] {"Value"} },
+				{ "InsPoint5", 0, -1, 0, new String[] {"Value"} },
+				{ "InsPoint6", 0, -1, 0, new String[] {"Value1", "Value2"} },
+				{ "InsPoint7", 1,  1, 0, new String[] {"Value1", "Value2"} },
 		};
 	}
 
@@ -132,97 +138,46 @@ public class ModelAnalyzerTest {
 		Container root = analyzer.getContainerForElement("Common1", SCHEMA_NAMESPACE);
 		assertEquals(root.getContents().size(), 3);
 
-		SimpleItem item1 = (SimpleItem) root.getContents().get(0);
-		SimpleItem item2 = (SimpleItem) root.getContents().get(1);
-		SimpleItem item3 = (SimpleItem) root.getContents().get(2);
+		LabelItemType rootItem1Type = ((SimpleItem) root.getContents().get(0)).getType();
+		LabelItemType rootItem2Type = ((SimpleItem) root.getContents().get(1)).getType();
+		LabelItemType rootItem3Type = ((InsertionPoint) root.getContents().get(2)).getAlternatives().get(0).getTypes().get(0);
 
-		assertEquals(item1.getType().getElementName(), "Value1");
-		assertEquals(item2.getType().getElementName(), "Value2");
-		assertEquals(item3.getType().getElementName(), "Value3");
+		assertEquals(rootItem1Type.getElementName(), "Value1");
+		assertEquals(rootItem2Type.getElementName(), "Value2");
+		assertEquals(rootItem3Type.getElementName(), "Value3");
 		
-		assertEquals(item1.getType().getMinOccurrences(), 1);
-		assertEquals(item1.getType().getMaxOccurrences(), 1);
-		assertEquals(item2.getType().getMinOccurrences(), 0);
-		assertEquals(item2.getType().getMaxOccurrences(), 1);
-		assertEquals(item3.getType().getMinOccurrences(), 1);
-		assertEquals(item3.getType().getMaxOccurrences(), -1);
-		
+		assertEquals(rootItem1Type.getMinOccurrences(), 1);
+		assertEquals(rootItem1Type.getMaxOccurrences(), 1);
+		assertEquals(rootItem2Type.getMinOccurrences(), 0);
+		assertEquals(rootItem2Type.getMaxOccurrences(), 1);
+		assertEquals(rootItem3Type.getMinOccurrences(), 1);
+		assertEquals(rootItem3Type.getMaxOccurrences(), -1);
 	}
 
 	@Test
 	public void testReusingContainerTypes() {
-		Container root1 = analyzer.getContainerForElement("Common2", SCHEMA_NAMESPACE);
-		List<LabelItem> contents1 = root1.getContents();
+		Container root = analyzer.getContainerForElement("Common2", SCHEMA_NAMESPACE);
+		List<LabelItem> contents1 = root.getContents();
 		assertEquals(contents1.size(), 4);
 
-		LabelItemType root1Item1Type = ((Container) contents1.get(0)).getType();
-		LabelItemType root1Item2Type = ((InsertionPoint) contents1.get(1)).getAlternatives().get(0);
-		LabelItemType root1Item3Type = ((InsertionPoint) contents1.get(2)).getAlternatives().get(0);
-		LabelItemType root1Item4Type = ((InsertionPoint) contents1.get(3)).getAlternatives().get(0);
+		LabelItemType rootItem1Type = ((Container) contents1.get(0)).getType();
+		LabelItemType rootItem2Type = (((InsertionPoint) contents1.get(1)).getAlternatives().get(0)).getTypes().get(0);
+		LabelItemType rootItem3Type = (((InsertionPoint) contents1.get(2)).getAlternatives().get(0)).getTypes().get(0);
+		LabelItemType rootItem4Type = (((InsertionPoint) contents1.get(3)).getAlternatives().get(0)).getTypes().get(0);
 		
-		assertEquals(root1Item1Type.getElementName(), "Container1");
-		assertEquals(root1Item2Type.getElementName(), "Container2");
-		assertEquals(root1Item3Type.getElementName(), "Container3");
-		assertEquals(root1Item4Type.getElementName(), "Container4");
+		assertEquals(rootItem1Type.getElementName(), "Container1");
+		assertEquals(rootItem2Type.getElementName(), "Container2");
+		assertEquals(rootItem3Type.getElementName(), "Container3");
+		assertEquals(rootItem4Type.getElementName(), "Container4");
 		
-		assertEquals(root1Item1Type.getMinOccurrences(), 1);
-		assertEquals(root1Item1Type.getMaxOccurrences(), 1);		
-		assertEquals(root1Item2Type.getMinOccurrences(), 0);
-		assertEquals(root1Item2Type.getMaxOccurrences(), 1);		
-		assertEquals(root1Item3Type.getMinOccurrences(), 1);
-		assertEquals(root1Item3Type.getMaxOccurrences(), -1);
-		assertEquals(root1Item4Type.getMinOccurrences(), 0);
-		assertEquals(root1Item4Type.getMaxOccurrences(), -1);
-		
-		Container root2 = analyzer.getContainerForElement("Common3", SCHEMA_NAMESPACE);
-		List<LabelItem> contents2 = root2.getContents();
-		assertEquals(contents2.size(), 4);
-		
-		LabelItemType root2Item1Type = ((Container) contents2.get(0)).getType();
-		LabelItemType root2Item2Type = ((InsertionPoint) contents2.get(1)).getAlternatives().get(0);
-		LabelItemType root2Item3Type = ((InsertionPoint) contents2.get(2)).getAlternatives().get(0);		
-		LabelItemType root2Item4Type = ((InsertionPoint) contents2.get(3)).getAlternatives().get(0);
-		
-		assertEquals(root2Item1Type.getElementName(), "Container1");
-		assertEquals(root2Item2Type.getElementName(), "Container2");
-		assertEquals(root2Item3Type.getElementName(), "Container3");
-		assertEquals(root2Item4Type.getElementName(), "Container4");
-		
-		assertEquals(root2Item1Type.getMinOccurrences(), 1);
-		assertEquals(root2Item1Type.getMaxOccurrences(), 1);		
-		assertEquals(root2Item2Type.getMinOccurrences(), 0);
-		assertEquals(root2Item2Type.getMaxOccurrences(), 1);		
-		assertEquals(root2Item3Type.getMinOccurrences(), 1);
-		assertEquals(root2Item3Type.getMaxOccurrences(), -1);
-		assertEquals(root2Item4Type.getMinOccurrences(), 0);
-		assertEquals(root2Item4Type.getMaxOccurrences(), -1);
-										
-		Container root3 = analyzer.getContainerForElement("Common4", SCHEMA_NAMESPACE);
-		List<LabelItem> contents3 = root3.getContents();
-		assertEquals(contents3.size(), 4);
-		
-		LabelItemType root3Item1Type = ((InsertionPoint) contents3.get(0)).getAlternatives().get(0);
-		LabelItemType root3Item2Type = ((InsertionPoint) contents3.get(1)).getAlternatives().get(0);
-		LabelItemType root3Item3Type = ((InsertionPoint) contents3.get(2)).getAlternatives().get(0);		
-		LabelItemType root3Item4Type = ((Container) contents3.get(3)).getType();
-		
-		assertEquals(root3Item1Type.getMinOccurrences(), 0);
-		assertEquals(root3Item1Type.getMaxOccurrences(), -1);		
-		assertEquals(root3Item2Type.getMinOccurrences(), 1);
-		assertEquals(root3Item2Type.getMaxOccurrences(), -1);		
-		assertEquals(root3Item3Type.getMinOccurrences(), 0);
-		assertEquals(root3Item3Type.getMaxOccurrences(), 1);
-		assertEquals(root3Item4Type.getMinOccurrences(), 1);
-		assertEquals(root3Item4Type.getMaxOccurrences(), 1);
-		
-		assertEquals(root1Item1Type, root2Item1Type);
-		assertEquals(root1Item2Type, root2Item2Type);
-		assertEquals(root1Item3Type, root2Item3Type);
-		assertEquals(root1Item4Type, root2Item4Type);		
-		assertNotEquals(root3Item1Type, root1Item1Type);
-		assertNotEquals(root3Item2Type, root1Item2Type);
-		assertNotEquals(root3Item3Type, root1Item3Type);
-		assertNotEquals(root3Item4Type, root1Item4Type);		
+		assertEquals(rootItem1Type.getMinOccurrences(), 1);
+		assertEquals(rootItem1Type.getMaxOccurrences(), 1);		
+		assertEquals(rootItem2Type.getMinOccurrences(), 0);
+		assertEquals(rootItem2Type.getMaxOccurrences(), 1);		
+		assertEquals(rootItem3Type.getMinOccurrences(), 1);
+		assertEquals(rootItem3Type.getMaxOccurrences(), -1);
+		assertEquals(rootItem4Type.getMinOccurrences(), 0);
+		assertEquals(rootItem4Type.getMaxOccurrences(), -1);
 	}
 
 	@Test
@@ -234,22 +189,13 @@ public class ModelAnalyzerTest {
 		assertEquals(item1.getType().getElementName(), "Container");
 		
 		InsertionPoint insPoint1 = (InsertionPoint) item1.getContents().get(0);
-		assertEquals(insPoint1.getAlternatives().size(), 2);
+		List<InsertOption> alternatives = insPoint1.getAlternatives();
+		assertEquals(alternatives.size(), 1);
 		
-		assertEquals(insPoint1.getAlternatives().get(0).getElementName(), "SimpleValue");
-		assertEquals(insPoint1.getAlternatives().get(1).getElementName(), "Container");
-		
-		/*root = analyzer.getContainerForElement("Repeating2", SCHEMA_NAMESPACE);
-		assertEquals(root.getContents().size(), 1);
-		
-		item1 = (Container) root.getContents().get(0);
-		assertEquals(item1.getType().getElementName(), "Container");
-		
-		SimpleItem child1 = (SimpleItem) item1.getContents().get(0);
-		Container  child2 = (Container)  item1.getContents().get(1);
-		
-		assertEquals(child1.getType().getElementName(), "SimpleValue");
-		assertEquals(child2.getType().getElementName(), "Container");*/
+		List<LabelItemType> types = alternatives.get(0).getTypes();		
+		assertEquals(types.size(), 2);
+		assertEquals(types.get(0).getElementName(), "SimpleValue");
+		assertEquals(types.get(1).getElementName(), "Container");
 	}
 	
 	private boolean oldAndNewModelMatch;
@@ -326,7 +272,7 @@ public class ModelAnalyzerTest {
 	}
 
 	private void compareInsertionPoints(InsertionPoint item1, InsertionPoint item2, String path) {
-		List<LabelItemType> alt1 = item1.getAlternatives();
+		/*List<LabelItemType> alt1 = item1.getAlternatives();
 		List<LabelItemType> alt2 = item2.getAlternatives();
 		compareFacet(path, "number of alternatives", alt1.size(), alt2.size());
 
@@ -355,7 +301,7 @@ public class ModelAnalyzerTest {
 			System.out.print(path + ": missing alternatives from old: " + onlyInNew.toString());
 			System.out.println();
 			oldAndNewModelMatch = false;
-		}
+		}*/
 	}
 
 	private void compareFacet(String path, String facetName, String a, String b) {

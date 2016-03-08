@@ -210,6 +210,7 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 		return -1;
 	}
 	
+	// TODO: clean up the code inside this method
 	private void togglePanels(int top, int right) {
 		Display view = getView();
 		String displayType = insPoint.getDisplayType();
@@ -244,7 +245,7 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 			}			
 		}
 	}
-	
+	// TODO: name correct?
 	private boolean isMaxExhaused() {
 		List<InsertOption> alternatives = insPoint.getAlternatives();
 		for (InsertOption alternative : alternatives) {
