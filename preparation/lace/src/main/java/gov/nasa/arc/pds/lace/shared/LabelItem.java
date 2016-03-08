@@ -30,6 +30,13 @@ public abstract class LabelItem implements Cloneable, Serializable {
 	public abstract boolean isComplete();
 	
 	/**
+	 * Tests whether this item is deletable.
+	 * 
+	 * @return true, if this item is deletable, false otherwise
+	 */
+	public abstract boolean isDeletable();
+	
+	/**
 	 * Returns a copy of this label item. An alternative to clone(),
 	 * since that is not supported in GWT.
 	 *

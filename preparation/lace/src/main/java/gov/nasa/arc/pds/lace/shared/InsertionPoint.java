@@ -230,4 +230,9 @@ public class InsertionPoint extends LabelItem {
 		return true;
 	}
 
+	@Override
+	public boolean isDeletable() {	
+		return false;
+	}
+
 }

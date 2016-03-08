@@ -65,4 +65,9 @@ public class SimpleItem extends LabelElement {
 		}
 		return true;
 	}
+
+	@Override
+	public boolean isDeletable() {		
+		return false;
+	}
 }

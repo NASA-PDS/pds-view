@@ -104,4 +104,9 @@ public class Container extends LabelElement {
 		return true;
 	}
 
+	@Override
+	public boolean isDeletable() {		
+		return false;
+	}
+
 }
