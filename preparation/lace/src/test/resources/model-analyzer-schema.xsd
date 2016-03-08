@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://arc.nasa.gov/pds4/model-analyzer"
+  elementFormDefault="qualified"
+  targetNamespace="http://arc.nasa.gov/pds4/model-analyzer">
+  
+  <xs:annotation>
+    <xs:documentation>
+      This schema is for testimg the ModelAnalyzer class.
+    </xs:documentation>
+  </xs:annotation>
+  
+  <!--
+    Tests of a very simple schema, where the content model is the
+    same for all variations, but different levels of indirection
+    are used. The resulting model should be the same for all
+    cases.
+  -->
+  
+  <xs:element name="Simple1">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SimpleValue" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:simpleType name="SimpleString">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  
+  <xs:element name="Simple2">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SimpleValue" type="SimpleString" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="Simple3">
+    <xs:sequence>
+      <xs:element name="SimpleValue" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="Simple3" type="Simple3" />
+  
+  <xs:complexType name="Simple4">
+    <xs:sequence>
+      <xs:element name="SimpleValue" type="SimpleString" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="Simple4" type="Simple4" />
+  
+  <!--
+    Tests of a slightly more complex schema where the contents of the
+    top-level element is a single complex item that has a single
+    simple item inside. All variations should give the same model,
+    from different levels of indirection in the schema.
+  -->
+  
+  <xs:element name="Middling1">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Container">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SimpleValue" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="Container2">
+    <xs:sequence>
+      <xs:element name="SimpleValue" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="Middling2">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Container" type="Container2" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="Container3">
+    <xs:sequence>
+      <xs:element name="SimpleValue" type="SimpleString" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="Middling3">
+    <xs:sequence>
+      <xs:element name="Container" type="Container3" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="Middling3" type="Middling3" />
+  
+  <!--
+    Tests of various schema items that should become insertion
+    points. All top-level elements should have a model of at
+    single insertion point, some repeating, some just optional.
+  -->
+  
+  <xs:element name="InsPoint1">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Value" minOccurs="0" maxOccurs="1" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="InsPoint2">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Value" minOccurs="1" maxOccurs="unbounded" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="InsPoint3">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Value" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="InsPoint4">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Value1" type="xs:string" />
+        <xs:element name="Value2" type="xs:string" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  
+  <!--
+    Tests of using the same type at multiple locations in a schema, but
+    with differing element names. Each should be a separate instance of
+    LabelItemType.
+  -->
+  
+  <xs:simpleType name="CommonValue">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  
+  <xs:element name="Common1">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Value1" type="CommonValue" />
+        <xs:element name="Value2" type="CommonValue" />
+        <xs:element name="Value3" type="CommonValue" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="CommonContainer">
+    <xs:sequence>
+      <xs:element name="String" type="xs:string" />
+    </xs:sequence>  
+  </xs:complexType>
+  
+  <xs:element name="Common2">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Container1" type="CommonContainer" />
+        <xs:element name="Container2" type="CommonContainer" />
+        <xs:element name="Container3" type="CommonContainer" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+</xs:schema>

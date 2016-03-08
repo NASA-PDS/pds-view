@@ -1,0 +1,22 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+			 xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+		<g:FormPanel ui:field="form" styleName="uploadFormPanel">
+			<g:FlowPanel>
+				<g:HorizontalPanel styleName="popupFieldContainer">
+					<g:InlineLabel text="Template name:"></g:InlineLabel>
+					<g:TextBox ui:field="templateName" name="templateName"></g:TextBox>
+				</g:HorizontalPanel>
+				<g:HorizontalPanel styleName="popupFieldContainer">
+					<g:InlineLabel text="Label file:"></g:InlineLabel>
+					<g:FileUpload ui:field="upload" name="upload"></g:FileUpload>
+				</g:HorizontalPanel>	
+				<g:FlowPanel styleName="popupButtonCotnainer">
+					<g:Button ui:field="uploadButton" text="Import"></g:Button>
+					<g:Button ui:field="cancelButton" text="Cancel"></g:Button>
+				</g:FlowPanel>
+			</g:FlowPanel>
+		</g:FormPanel>		
+	
+</ui:UiBinder> 

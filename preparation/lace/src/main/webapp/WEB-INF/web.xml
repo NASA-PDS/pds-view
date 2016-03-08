@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+    
+<web-app>
+	
+	<!-- Servlets -->		
+	<servlet>
+	  <servlet-name>labelContentsServiceImpl</servlet-name>
+	  <servlet-class>gov.nasa.arc.pds.lace.server.LabelContentsServiceImpl</servlet-class>
+	</servlet>
+	
+	<servlet>
+	  <servlet-name>fileUploadServlet</servlet-name>
+	  <servlet-class>gov.nasa.arc.pds.lace.server.FileUploadServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+	  <servlet-name>fileDownloadServlet</servlet-name>
+	  <servlet-class>gov.nasa.arc.pds.lace.server.DownloadFileServlet</servlet-class>
+	</servlet>
+	
+	<!-- Constructs the label contents model by parsing the PDS XML schema -->
+	<servlet-mapping>
+	  <servlet-name>labelContentsServiceImpl</servlet-name>
+	  <url-pattern>/designer/labelContentsService</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	  <servlet-name>fileUploadServlet</servlet-name>
+	  <url-pattern>/designer/fileUpload</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	  <servlet-name>fileDownloadServlet</servlet-name>
+	  <url-pattern>/designer/fileDownload</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Default page to serve -->
+	<welcome-file-list>
+	  <welcome-file>LabelTemplate.html</welcome-file>
+	</welcome-file-list>
+  
+</web-app>

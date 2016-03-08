@@ -1,0 +1,13 @@
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+				
+	<g:HTMLPanel ui:field="container">
+		<div class="container">
+			<g:Image ui:field="expandIcon" />			
+			<img ui:field="typeIcon" class="middle" />
+			<span ui:field="title" class="title font large"></span>	
+			<g:FlowPanel ui:field="contentPanel" styleName="editorContentPanel hide content"></g:FlowPanel>																
+		</div>		
+	</g:HTMLPanel>	
+	
+</ui:UiBinder> 

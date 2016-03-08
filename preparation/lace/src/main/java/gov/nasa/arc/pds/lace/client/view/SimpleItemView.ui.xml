@@ -1,0 +1,13 @@
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<g:FlowPanel ui:field="form" styleName="simpleItem">
+		<g:HorizontalPanel ui:field="horizontalPanel" verticalAlignment="middle" width="100%">
+			<g:InlineLabel ui:field="label" styleName="label"></g:InlineLabel>
+			<g:HTMLPanel ui:field="value" styleName="input-wrapper">
+				<g:SuggestBox ui:field="textBox" />
+			</g:HTMLPanel>
+		</g:HorizontalPanel>
+	</g:FlowPanel>
+
+</ui:UiBinder>
