@@ -148,14 +148,14 @@ public class ModelAnalyzer {
 					&& ((InsertionPoint) item).getDisplayType().equals(DisplayType.PLUS_BUTTON.getDisplayType())) {
 				InsertionPoint insPoint = (InsertionPoint) item;
 
-				// Check for required elements within the insertable range
+				// Check for required elements or optional simple elements within the insertable range
 				// that have not already been inserted.
 				for (int i=insPoint.getInsertFirst(); i <= insPoint.getInsertLast(); ++i) {
-					if (insPoint.getAlternatives().get(i).getMinOccurrences() > 0
-							&& i > insPoint.getUsedBefore()
-							&& i < insPoint.getUsedAfter()) {
-						// A required element. Do an insertion.
-						doInsert(it, insPoint, i);
+					if (i > insPoint.getUsedBefore() && i < insPoint.getUsedAfter()) {
+						if (!insPoint.getAlternatives().get(0).isComplex() || insPoint.getAlternatives().get(i).getMinOccurrences() > 0) {
+							// A required complex element or a required/optional simple element. Do an insertion.
+							doInsert(it, insPoint, i);
+						}
 					}
 				}
 			}
@@ -182,12 +182,12 @@ public class ModelAnalyzer {
 
 		// Create the new item.
 		LabelItemType type = insPoint.getAlternatives().get(alternativeIndex);
-		List<LabelItem> initialContents = type.getInitialContents();
 		LabelItem newItem;
 		if (!type.isComplex()) {
 			newItem = createSimpleItem(type);
 		} else {
 			List<LabelItem> contents = new ArrayList<LabelItem>();
+			List<LabelItem> initialContents = type.getInitialContents();
 			for (LabelItem item : initialContents) {
 				contents.add(item.copy());
 			}
@@ -238,12 +238,12 @@ public class ModelAnalyzer {
 				
 		// Create the new item.
 		LabelItemType type = insPoint.getAlternatives().get(alternativeIndex);
-		List<LabelItem> initialContents = type.getInitialContents();
 		LabelItem newItem;
 		if (!type.isComplex()) {
 			newItem = createSimpleItem(type);
 		} else {			
 			List<LabelItem> contents = new ArrayList<LabelItem>();
+			List<LabelItem> initialContents = type.getInitialContents();
 			for (LabelItem item : initialContents) {
 				contents.add(item.copy());
 			}
@@ -253,7 +253,7 @@ public class ModelAnalyzer {
 		// And, expand any insertion points in the newly inserted item.
 		expandInsertionPoints(newItem);
 		
-		// If this is not a repeating element, just add the new item to the list.
+		// If this is a non-repeating element, add the new item to the list.
 		if (type.getMaxOccurrences() == 1) {
 			items.add(newItem);
 			return items;
@@ -350,7 +350,12 @@ public class ModelAnalyzer {
 			XSParticle particle, List<LabelItem> labelItems) {
 
 		LabelItemType type = createSimpleItemType(element, typeDefinition, particle);
-		labelItems.add(createSimpleItem(type));
+		
+		if (particle.getMaxOccursUnbounded() || particle.getMaxOccurs() > 1) {
+			labelItems.add(createInsertionPoint(Collections.singletonList(type), DisplayType.PLUS_BUTTON));
+		} else {	
+			labelItems.add(createSimpleItem(type));
+		}	
 	}
 
 	private void parseComplexType(XSElementDeclaration element, XSComplexTypeDefinition typeDefinition, XSParticle particle, List<LabelItem> labelItems) {
@@ -385,7 +390,11 @@ public class ModelAnalyzer {
 		}
 
 		if (!type.isComplex()) {
-			labelItems.add(createSimpleItem(type));
+			if (particle.getMaxOccursUnbounded() || particle.getMaxOccurs() > 1) {
+				labelItems.add(createInsertionPoint(Collections.singletonList(type), DisplayType.PLUS_BUTTON));
+			} else {	
+				labelItems.add(createSimpleItem(type));
+			}
 		} else if (particle.getMinOccurs() < 1 || particle.getMaxOccursUnbounded() || particle.getMaxOccurs() > 1) {
 			labelItems.add(createInsertionPoint(Collections.singletonList(type), particle));
 		} else {
@@ -413,6 +422,11 @@ public class ModelAnalyzer {
 		} else if (particle.getMinOccurs()==0) {
 			displayType = DisplayType.OPTIONAL;
 		}
+		
+		return createInsertionPoint(alternatives, displayType);
+	}
+	
+	private InsertionPoint createInsertionPoint(List<LabelItemType> alternatives, DisplayType displayType) {		
 		InsertionPoint insPoint = new InsertionPoint();
 		insPoint.setAlternatives(alternatives);
 		insPoint.setInsertFirst(0);
