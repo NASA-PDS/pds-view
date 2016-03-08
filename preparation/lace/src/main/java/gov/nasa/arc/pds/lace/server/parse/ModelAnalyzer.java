@@ -253,14 +253,11 @@ public class ModelAnalyzer {
 		// And, expand any insertion points in the newly inserted item.
 		expandInsertionPoints(newItem);
 		
-		// If this is not a repeating optional element,
-		// just add the new item to the list.		
-		if (insPoint.getDisplayType().equals(InsertionPoint.DisplayType.OPTIONAL.getDisplayType())) {
-			if (type.getMaxOccurrences() == 1) {
-				items.add(newItem);
-				return items;
-			}
-		}	
+		// If this is not a repeating element, just add the new item to the list.
+		if (type.getMaxOccurrences() == 1) {
+			items.add(newItem);
+			return items;
+		}
 		
 		// Change the display type of the insertion point to "plus" button.
 		insPoint.setDisplayType(InsertionPoint.DisplayType.PLUS_BUTTON.getDisplayType());

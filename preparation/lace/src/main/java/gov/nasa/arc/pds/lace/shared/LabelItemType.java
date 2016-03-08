@@ -11,7 +11,7 @@ public class LabelItemType implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private boolean isComplex;	    			// True, if this type is a container for subelements.
+	private boolean isComplex;	    			// True, if this type is a container for sub-elements
 	private int minOccurrences;					// Holds the minOccurrences value from the type particle
 	private int maxOccurrences;	    			// Holds the maxOccurrences value from the type particle
 	private int minLength;						// For simple types, the minimum value length
@@ -20,7 +20,7 @@ public class LabelItemType implements Serializable {
 	private String elementNamespace; 			// The namespace of the element that will hold the type
 	private String typeName;		 			// The name for this type, or null if this is an anonymous type
 	private String typeNamespace;
-	private List<LabelItem> initialContents;	// For complex types, a list of template items that should be the initial contents when this type is added
+	private List<LabelItem> initialContents;	// For complex types, a list of items that should be the initial contents when this type is added
 	//private enum valueType {};				// Either NUMERIC, DATE, or REGEX (needs to be an enumeration), depending on the value type constraints
 	//patterns									// A list of regular expressions, for REGEX types
 
