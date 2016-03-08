@@ -42,6 +42,7 @@ public class ContainerView extends Composite implements ContainerPresenter.Displ
 	private static ContainerViewUiBinder uiBinder = GWT.create(ContainerViewUiBinder.class);	
 		 	
 	private ContainerPresenter presenter;
+	private boolean deleteEventsAttached = false;
 	
 	@UiField
 	InlineLabel title;
@@ -173,8 +174,8 @@ public class ContainerView extends Composite implements ContainerPresenter.Displ
 	}
 
 	@Override
-	public void addEventListeners(boolean isDeletable) {
-		if (isDeletable) {
+	public void addDeleteEventListeners() {
+		if (!deleteEventsAttached) {
 			titlePanel.addMouseMoveHandler(new MouseMoveHandler() {
 				
 				@Override
@@ -217,8 +218,13 @@ public class ContainerView extends Composite implements ContainerPresenter.Displ
 				}
 				
 			});
+			
+			deleteEventsAttached = true;
 		}
-		
+	}
+	
+	@Override
+	public void addEventListeners() {
 		titlePanel.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -268,5 +274,10 @@ public class ContainerView extends Composite implements ContainerPresenter.Displ
 		popup.setContent(msg);
 		popup.setConfirmation(yesBtnHandler, noBtnHandler);
 		popup.display();	
+	}
+
+	@Override
+	public boolean isDeleteEventsAttached() {
+		return deleteEventsAttached;		
 	}
 }

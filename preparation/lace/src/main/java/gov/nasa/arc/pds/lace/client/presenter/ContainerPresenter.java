@@ -3,6 +3,7 @@ package gov.nasa.arc.pds.lace.client.presenter;
 import gov.nasa.arc.pds.lace.client.AppInjector;
 import gov.nasa.arc.pds.lace.client.event.CompleteStateChangedEvent;
 import gov.nasa.arc.pds.lace.client.event.ContainerChangedEvent;
+import gov.nasa.arc.pds.lace.client.event.ElementInsertedEvent;
 import gov.nasa.arc.pds.lace.client.event.ElementSelectionEvent;
 import gov.nasa.arc.pds.lace.client.event.ElementSelectionEvent.EventDetails;
 import gov.nasa.arc.pds.lace.client.event.ElementSelectionEventHandler;
@@ -111,10 +112,8 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		/** 
 		 * Adds event listeners that that used for handling
 		 * events related to modifying an item (e.g. delete).
-		 * 
-		 * @param isDeletable flag to indicate whether or not the container is deletable
 		 */
-		void addEventListeners(boolean isDeletable);
+		void addDeleteEventListeners();
 		
 		/**
 		 * Enables/disables the modification UI.
@@ -130,16 +129,31 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		 * @param popup the popup presenter
 		 */
 		void handleDeleteAction(String name, PopupPresenter popup);		
+		
+		/**
+		 * Tests whether the delete events are already attached.
+		 * 
+		 * @return true, if delete events are attached
+		 */
+		boolean isDeleteEventsAttached();
+		
+		/**
+		 * Adds event listeners.
+		 */
+		void addEventListeners();
 	}
 	
 	// Flag to indicate whether the content is shown or not.
-	private boolean isContentShown = false; 
+	private boolean isContentShown = false;
+	// Flag to indicate whether to show only the content or not.
+	private boolean contentOnly = false;
 	private Container container;
 	private AppInjector injector;
 	private EventBus bus;
 	private LabelContentsServiceAsync service;
 	private HandlerRegistration handler1;
 	private HandlerRegistration handler2;
+	private HandlerRegistration handler3;
 	private ContainerPresenter presenter;
 	private IconLookup lookup;
 	private PopupPresenter popup;
@@ -187,6 +201,8 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 	 */
 	public void display(Container container, boolean contentOnly) {
 		this.container = container;
+		this.contentOnly = contentOnly;
+		
 		InsertOption alternative = container.getInsertOption();
 		if (alternative != null) {
 			int id = alternative.getId();
@@ -204,7 +220,10 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 			LabelItemType type = container.getType();
 			view.setContainerTitle(type.getElementName());
 			view.setIcon(lookup.getIconClassName(type), container.isComplete());
-			view.addEventListeners(container.isDeletable());
+			view.addEventListeners();
+			if (container.isDeletable()) {
+				view.addDeleteEventListeners();
+			}
 		}
 	}
 
@@ -214,6 +233,7 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 	public void removeHandlers() {
 		handler1.removeHandler();
 		handler2.removeHandler();
+		handler3.removeHandler();
 	}
 	
 	private void attachHandlers() {
@@ -245,6 +265,17 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 				}
 			}
 		});
+		
+		handler3 = bus.addHandler(ElementInsertedEvent.TYPE, new ElementInsertedEvent.Handler() {
+
+			@Override
+			public void onEvent(gov.nasa.arc.pds.lace.client.event.ElementInsertedEvent.EventDetails data) {
+				if (!data.isSimpleItem()) {
+					attachMouseEvents();
+				}	
+			}
+			
+		});
 	}
 	
 	private void searchContents(Container targetContainer, Container container) {		
@@ -256,6 +287,16 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 			if (item instanceof Container) {
 				searchContents(targetContainer, (Container) item);
 			}	
+		}
+	}
+	
+	private void attachMouseEvents() {
+		if (!contentOnly) {
+			Display view = getView();
+			boolean deletable = container.isDeletable();
+			if (deletable && !view.isDeleteEventsAttached()) {
+				view.addDeleteEventListeners();
+			}
 		}
 	}
 	
@@ -329,8 +370,13 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 			@Override			
 			public void onSuccess(ResultType result) {
 				Container newContainer = updateContents(result);
+				
 				// Fire an event for containers to update their complete state.
 				bus.fireEvent(new CompleteStateChangedEvent(container, false));
+				
+				// Notify the containers/simple items that an element was inserted. 
+				bus.fireEvent(new ElementInsertedEvent(newContainer == null));
+				
 				// Fire an event for the tree view to update itself.				
 				bus.fireEvent(new ContainerChangedEvent(container, newContainer));
 			}

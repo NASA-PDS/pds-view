@@ -52,9 +52,10 @@ public class SimpleItemView extends Composite implements SimpleItemPresenter.Dis
 	private static SimpleItemViewUiBinder uiBinder = GWT.create(SimpleItemViewUiBinder.class);
 
 	interface SimpleItemViewUiBinder extends UiBinder<Widget, SimpleItemView> { }
-
+	
 	private SimpleItemPresenter presenter;
 	private SubstringSuggestOracle oracle;
+	private boolean deleteEventsAttached = false;
 
 	@UiField
 	HTMLPanel alertIcon;
@@ -226,44 +227,49 @@ public class SimpleItemView extends Composite implements SimpleItemPresenter.Dis
     }
 
 	@Override
-	public void addEventListeners() {
-		simpleItem.addMouseMoveHandler(new MouseMoveHandler() {
-			
-			@Override
-			public void onMouseMove(MouseMoveEvent event) {
-				event.preventDefault();
-				presenter.handleMouseEvent(true);
-			}
-		});
-		
-		simpleItem.addMouseOverHandler(new MouseOverHandler() {
-			
-			@Override
-			public void onMouseOver(MouseOverEvent event) {
-				event.preventDefault();
-				presenter.handleMouseEvent(true);
+	public void addDeleteEventListeners() {
+		if (!deleteEventsAttached) {
+			simpleItem.addMouseMoveHandler(new MouseMoveHandler() {
 				
-			}
-		});
-		
-		simpleItem.addMouseOutHandler(new MouseOutHandler() {
+				@Override
+				public void onMouseMove(MouseMoveEvent event) {
+					event.preventDefault();
+					presenter.handleMouseEvent(true);
+				}
+			});
 			
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				event.preventDefault();
-				presenter.handleMouseEvent(false);				
-			}
-		});	
+			simpleItem.addMouseOverHandler(new MouseOverHandler() {
+				
+				@Override
+				public void onMouseOver(MouseOverEvent event) {
+					event.preventDefault();
+					presenter.handleMouseEvent(true);
+					
+				}
+			});
+			
+			simpleItem.addMouseOutHandler(new MouseOutHandler() {
+				
+				@Override
+				public void onMouseOut(MouseOutEvent event) {
+					event.preventDefault();
+					presenter.handleMouseEvent(false);				
+				}
+			});
 		
-		modificationButton.addEventHandler(new ClickHandler() {
+			modificationButton.addEventHandler(new ClickHandler() {
+	
+				@Override
+				public void onClick(ClickEvent event) {	
+					event.stopPropagation();
+					presenter.modifyElement();
+				}
+				
+			});
+		
+			deleteEventsAttached = true;
+		}	
 
-			@Override
-			public void onClick(ClickEvent event) {	
-				event.stopPropagation();
-				presenter.modifyElement();
-			}
-			
-		});
 	}
 
 	@Override
@@ -300,5 +306,10 @@ public class SimpleItemView extends Composite implements SimpleItemPresenter.Dis
 		popup.setContent(msg);
 		popup.setConfirmation(yesBtnHandler, noBtnHandler);
 		popup.display();	
+	}
+	
+	@Override
+	public boolean isDeleteEventsAttached() {
+		return deleteEventsAttached;		
 	}
 }

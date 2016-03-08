@@ -1,6 +1,7 @@
 package gov.nasa.arc.pds.lace.client.presenter;
 
 import gov.nasa.arc.pds.lace.client.event.CompleteStateChangedEvent;
+import gov.nasa.arc.pds.lace.client.event.ElementInsertedEvent;
 import gov.nasa.arc.pds.lace.client.service.LabelContentsServiceAsync;
 import gov.nasa.arc.pds.lace.client.util.InsertOptionMap;
 import gov.nasa.arc.pds.lace.shared.Container;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 
@@ -58,7 +60,7 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 		 * Adds event listeners that are used for handling
 		 * events related to modifying an item (e.g. delete).
 		 */
-		void addEventListeners();
+		void addDeleteEventListeners();
 		
 		/**
 		 * Enables/disables the modification UI.
@@ -74,6 +76,13 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 		 * @param popup the popup presenter
 		 */
 		void handleDeleteAction(String name, PopupPresenter popup);
+		
+		/**
+		 * Tests whether the delete events are already attached.
+		 * 
+		 * @return true, if delete events are attached
+		 */
+		boolean isDeleteEventsAttached();
 	}
 
 	private String curValue;
@@ -83,7 +92,7 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 	private EventBus bus;
 	private LabelContentsServiceAsync service;
 	private PopupPresenter popup;
-	private InsertOptionMap insertOptionMap;
+	private InsertOptionMap insertOptionMap;	
 
 	/**
 	 * Creates an instance of the simple item presenter.
@@ -107,8 +116,27 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 		this.service = service;
 		this.popup = popup;
 		this.insertOptionMap = insertOptionMap;
+		
+		attachHandlers();
 	}
 
+	private void attachHandlers() {
+		bus.addHandler(ElementInsertedEvent.TYPE, new ElementInsertedEvent.Handler() {
+
+			@Override
+			public void onEvent(gov.nasa.arc.pds.lace.client.event.ElementInsertedEvent.EventDetails data) {
+				if (data.isSimpleItem()) {
+					Display view = getView();
+					boolean deletable = item.isDeletable();
+					if (deletable && !view.isDeleteEventsAttached()) {
+						view.addDeleteEventListeners();
+					}
+				}	
+			}
+			
+		});
+	}
+	
 	/**
 	 * Displays a simple item.
 	 *
@@ -141,7 +169,7 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 		
 		// Add event listeners if the item is deletable.
 		if (item.isDeletable()) {
-			view.addEventListeners();
+			view.addDeleteEventListeners();
 		}
 	}
 
