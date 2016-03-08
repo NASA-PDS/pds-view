@@ -14,11 +14,14 @@ import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
 import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class LabelFileUploadView extends Composite implements LabelFileUploadPresenter.Display {
 
+	private static final String LABEL_CELL_WIDTH = "105em";
 	private static LabelFileUploadViewUiBinder uiBinder = GWT.create(LabelFileUploadViewUiBinder.class);
 
 	interface LabelFileUploadViewUiBinder extends UiBinder<Widget, LabelFileUploadView> {
@@ -41,8 +44,23 @@ public class LabelFileUploadView extends Composite implements LabelFileUploadPre
 	@UiField
 	FileUpload upload;
 
+	@UiField
+	HorizontalPanel namePanel;
+	
+	@UiField
+	HorizontalPanel filePanel;
+	
+	@UiField
+	InlineLabel name;
+	
+	@UiField
+	InlineLabel file;
+	
+	
 	public LabelFileUploadView() {
-		initWidget(uiBinder.createAndBindUi(this));
+		initWidget(uiBinder.createAndBindUi(this));				
+		namePanel.setCellWidth(name, LABEL_CELL_WIDTH);
+		filePanel.setCellWidth(file, LABEL_CELL_WIDTH);
 		setupForm();
 	}
 
