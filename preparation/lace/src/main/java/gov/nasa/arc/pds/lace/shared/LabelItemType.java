@@ -82,7 +82,7 @@ public class LabelItemType implements Serializable {
 
 	/**
 	 *
-	 * @return the minLength
+	 * @return the simple element minimum value length
 	 */
 	public int getMinLength() {
 		return minLength;
@@ -90,7 +90,7 @@ public class LabelItemType implements Serializable {
 
 	/**
 	 *
-	 * @param minLength the minLength to set
+	 * @param minLength the simple element minimum value length to set
 	 */
 	public void setMinLength(int minLength) {
 		this.minLength = minLength;
@@ -98,7 +98,7 @@ public class LabelItemType implements Serializable {
 
 	/**
 	 *
-	 * @return the maxLength
+	 * @return the simple element maximum value length
 	 */
 	public int getMaxLength() {
 		return maxLength;
@@ -106,15 +106,15 @@ public class LabelItemType implements Serializable {
 
 	/**
 	 *
-	 * @param maxLength the maxLength to set
+	 * @param maxLength the simple element maximum value length to set
 	 */
 	public void setMaxLength(int maxLength) {
 		this.maxLength = maxLength;
 	}
 
 	/**
-	 *  Gets an unmodifiable view of the initial contents for this type.
-	 *
+	 * Gets an unmodifiable view of the initial contents for this type. 
+	 * TODO: the view is modifiable
 	 * @return list of label items
 	 */
 	public List<LabelItem> getInitialContents() {
@@ -149,7 +149,7 @@ public class LabelItemType implements Serializable {
 
 	/**
 	 *
-	 * @return the elementNamespace
+	 * @return the element namespace
 	 */
 	public String getElementNamespace() {
 		return elementNamespace;
@@ -157,7 +157,7 @@ public class LabelItemType implements Serializable {
 
 	/**
 	 *
-	 * @param elementNamespace the elementNamespace to set
+	 * @param elementNamespace the element namespace to set
 	 */
 	public void setElementNamespace(String elementNamespace) {
 		this.elementNamespace = elementNamespace;
@@ -165,7 +165,7 @@ public class LabelItemType implements Serializable {
 
 	/**
 	 *
-	 * @return the typeName
+	 * @return the type name
 	 */
 	public String getTypeName() {
 		return typeName;
@@ -173,7 +173,7 @@ public class LabelItemType implements Serializable {
 
 	/**
 	 *
-	 * @param typeName the typeName to set
+	 * @param typeName the type name to set
 	 */
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
@@ -181,7 +181,7 @@ public class LabelItemType implements Serializable {
 
 	/**
 	 *
-	 * @return the typeNamespace
+	 * @return the type namespace
 	 */
 	public String getTypeNamespace() {
 		return typeNamespace;
@@ -189,7 +189,7 @@ public class LabelItemType implements Serializable {
 
 	/**
 	 *
-	 * @param typeNamespace the typeNamespace to set
+	 * @param typeNamespace the type namespace to set
 	 */
 	public void setTypeNamespace(String typeNamespace) {
 		this.typeNamespace = typeNamespace;

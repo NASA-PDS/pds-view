@@ -88,17 +88,18 @@ public class ModelAnalyzer {
 		return createContainer(type, initialContents);
 	}
 
-	private void storeKnownType(XSElementDeclaration element, XSTypeDefinition typeDef, LabelItemType type) {
+	private void storeKnownType(XSElementDeclaration element, XSTypeDefinition typeDef,
+			int minOccurs, int maxOccurs, LabelItemType type) {
 		if (shouldStoreType(typeDef)) {
-			knownTypes.put(makeTypeKey(element, typeDef), type);
+			knownTypes.put(makeTypeKey(element, typeDef, minOccurs, maxOccurs), type);
 		}
 	}
 
-	private LabelItemType findKnownType(XSElementDeclaration element, XSTypeDefinition typeDef) {
+	private LabelItemType findKnownType(XSElementDeclaration element, XSTypeDefinition typeDef, int minOccurs, int maxOccurs) {
 		if (!shouldStoreType(typeDef)) {
 			return null;
 		} else {
-			return knownTypes.get(makeTypeKey(element, typeDef));
+			return knownTypes.get(makeTypeKey(element, typeDef, minOccurs, maxOccurs));
 		}
 	}
 
@@ -106,11 +107,13 @@ public class ModelAnalyzer {
 		return (typeDef.getName()!=null && typeDef.getNamespace()!=null);
 	}
 
-	private String makeTypeKey(XSElementDeclaration element, XSTypeDefinition typeDef) {
+	private String makeTypeKey(XSElementDeclaration element, XSTypeDefinition typeDef, int minOccurs, int maxOccurs) {
 		return element.getNamespace()
 			+ ":" + element.getName()
 			+ ":" + typeDef.getNamespace()
-			+ ":" + typeDef.getName();
+			+ ":" + typeDef.getName()
+			+ ":" + minOccurs
+			+ ":" + maxOccurs;
 	}
 
 	/**
@@ -292,7 +295,7 @@ public class ModelAnalyzer {
 		type.setComplex(isComplex);
 		type.setInitialContents(initialContents);
 
-		storeKnownType(element, typeDefinition, type);
+		storeKnownType(element, typeDefinition, minOccurs, maxOccurs, type);
 
 		return type;
 	}
@@ -356,7 +359,7 @@ public class ModelAnalyzer {
 
 	private void parseComplexType(XSElementDeclaration element, XSComplexTypeDefinition typeDefinition, XSParticle particle, List<LabelItem> labelItems) {
 
-		LabelItemType type = findKnownType(element, typeDefinition);
+		LabelItemType type = findKnownType(element, typeDefinition, particle.getMinOccurs(), particle.getMaxOccurs());
 
 		if (type == null) {
 			// As of the 0300a schemas, the only element of the PDS4 schemas that
@@ -489,11 +492,11 @@ public class ModelAnalyzer {
 	}
 
 	private LabelItemType parseChoiceElementDefinition(XSElementDeclaration element, XSParticle particle) {
-		LabelItemType type = null;
 		XSTypeDefinition typeDefinition = element.getTypeDefinition();
 		
-		if (findKnownType(element, typeDefinition) != null) {
-			return findKnownType(element, typeDefinition);
+		LabelItemType type = findKnownType(element, typeDefinition, particle.getMinOccurs(), particle.getMaxOccurs());
+		if (type != null) {
+			return type;
 		}
 
 		if (typeDefinition instanceof XSSimpleTypeDefinition) {

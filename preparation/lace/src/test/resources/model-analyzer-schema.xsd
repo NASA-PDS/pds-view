@@ -155,9 +155,9 @@
   <xs:element name="Common1">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="Value1" type="CommonValue" />
-        <xs:element name="Value2" type="CommonValue" />
-        <xs:element name="Value3" type="CommonValue" />
+        <xs:element name="Value1" type="CommonValue" minOccurs="1" maxOccurs="1" />
+        <xs:element name="Value2" type="CommonValue" minOccurs="0" maxOccurs="1" />
+        <xs:element name="Value3" type="CommonValue" minOccurs="1" maxOccurs="unbounded" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -171,9 +171,32 @@
   <xs:element name="Common2">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="Container1" type="CommonContainer" />
-        <xs:element name="Container2" type="CommonContainer" />
-        <xs:element name="Container3" type="CommonContainer" />
+        <xs:element name="Container1" type="CommonContainer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="Container2" type="CommonContainer" minOccurs="0" maxOccurs="1" />
+        <xs:element name="Container3" type="CommonContainer" minOccurs="1" maxOccurs="unbounded" />
+        <xs:element name="Container4" type="CommonContainer" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Common3">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Container1" type="CommonContainer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="Container2" type="CommonContainer" minOccurs="0" maxOccurs="1" />
+        <xs:element name="Container3" type="CommonContainer" minOccurs="1" maxOccurs="unbounded" />
+        <xs:element name="Container4" type="CommonContainer" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Common4">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Container1" type="CommonContainer" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element name="Container2" type="CommonContainer" minOccurs="1" maxOccurs="unbounded" />
+        <xs:element name="Container3" type="CommonContainer" minOccurs="0" maxOccurs="1" />
+        <xs:element name="Container4" type="CommonContainer" minOccurs="1" maxOccurs="1" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

@@ -20,6 +20,7 @@ public class EditorView extends Composite implements EditorPresenter.Display {
 	
 	private static EditorViewUiBinder uiBinder = GWT.create(EditorViewUiBinder.class);
 	
+	@SuppressWarnings("unused")
 	private EditorPresenter presenter;
 
 	@UiField

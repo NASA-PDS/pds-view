@@ -1,6 +1,7 @@
 package gov.nasa.arc.pds.lace.server.parse;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 import gov.nasa.arc.pds.lace.server.LabelContentsServiceImpl;
 import gov.nasa.arc.pds.lace.shared.Container;
@@ -138,20 +139,90 @@ public class ModelAnalyzerTest {
 		assertEquals(item1.getType().getElementName(), "Value1");
 		assertEquals(item2.getType().getElementName(), "Value2");
 		assertEquals(item3.getType().getElementName(), "Value3");
+		
+		assertEquals(item1.getType().getMinOccurrences(), 1);
+		assertEquals(item1.getType().getMaxOccurrences(), 1);
+		assertEquals(item2.getType().getMinOccurrences(), 0);
+		assertEquals(item2.getType().getMaxOccurrences(), 1);
+		assertEquals(item3.getType().getMinOccurrences(), 1);
+		assertEquals(item3.getType().getMaxOccurrences(), -1);
+		
 	}
 
 	@Test
 	public void testReusingContainerTypes() {
-		Container root = analyzer.getContainerForElement("Common2", SCHEMA_NAMESPACE);
-		assertEquals(root.getContents().size(), 3);
+		Container root1 = analyzer.getContainerForElement("Common2", SCHEMA_NAMESPACE);
+		List<LabelItem> contents1 = root1.getContents();
+		assertEquals(contents1.size(), 4);
 
-		Container item1 = (Container) root.getContents().get(0);
-		Container item2 = (Container) root.getContents().get(1);
-		Container item3 = (Container) root.getContents().get(2);
-
-		assertEquals(item1.getType().getElementName(), "Container1");
-		assertEquals(item2.getType().getElementName(), "Container2");
-		assertEquals(item3.getType().getElementName(), "Container3");
+		LabelItemType root1Item1Type = ((Container) contents1.get(0)).getType();
+		LabelItemType root1Item2Type = ((InsertionPoint) contents1.get(1)).getAlternatives().get(0);
+		LabelItemType root1Item3Type = ((InsertionPoint) contents1.get(2)).getAlternatives().get(0);
+		LabelItemType root1Item4Type = ((InsertionPoint) contents1.get(3)).getAlternatives().get(0);
+		
+		assertEquals(root1Item1Type.getElementName(), "Container1");
+		assertEquals(root1Item2Type.getElementName(), "Container2");
+		assertEquals(root1Item3Type.getElementName(), "Container3");
+		assertEquals(root1Item4Type.getElementName(), "Container4");
+		
+		assertEquals(root1Item1Type.getMinOccurrences(), 1);
+		assertEquals(root1Item1Type.getMaxOccurrences(), 1);		
+		assertEquals(root1Item2Type.getMinOccurrences(), 0);
+		assertEquals(root1Item2Type.getMaxOccurrences(), 1);		
+		assertEquals(root1Item3Type.getMinOccurrences(), 1);
+		assertEquals(root1Item3Type.getMaxOccurrences(), -1);
+		assertEquals(root1Item4Type.getMinOccurrences(), 0);
+		assertEquals(root1Item4Type.getMaxOccurrences(), -1);
+		
+		Container root2 = analyzer.getContainerForElement("Common3", SCHEMA_NAMESPACE);
+		List<LabelItem> contents2 = root2.getContents();
+		assertEquals(contents2.size(), 4);
+		
+		LabelItemType root2Item1Type = ((Container) contents2.get(0)).getType();
+		LabelItemType root2Item2Type = ((InsertionPoint) contents2.get(1)).getAlternatives().get(0);
+		LabelItemType root2Item3Type = ((InsertionPoint) contents2.get(2)).getAlternatives().get(0);		
+		LabelItemType root2Item4Type = ((InsertionPoint) contents2.get(3)).getAlternatives().get(0);
+		
+		assertEquals(root2Item1Type.getElementName(), "Container1");
+		assertEquals(root2Item2Type.getElementName(), "Container2");
+		assertEquals(root2Item3Type.getElementName(), "Container3");
+		assertEquals(root2Item4Type.getElementName(), "Container4");
+		
+		assertEquals(root2Item1Type.getMinOccurrences(), 1);
+		assertEquals(root2Item1Type.getMaxOccurrences(), 1);		
+		assertEquals(root2Item2Type.getMinOccurrences(), 0);
+		assertEquals(root2Item2Type.getMaxOccurrences(), 1);		
+		assertEquals(root2Item3Type.getMinOccurrences(), 1);
+		assertEquals(root2Item3Type.getMaxOccurrences(), -1);
+		assertEquals(root2Item4Type.getMinOccurrences(), 0);
+		assertEquals(root2Item4Type.getMaxOccurrences(), -1);
+										
+		Container root3 = analyzer.getContainerForElement("Common4", SCHEMA_NAMESPACE);
+		List<LabelItem> contents3 = root3.getContents();
+		assertEquals(contents3.size(), 4);
+		
+		LabelItemType root3Item1Type = ((InsertionPoint) contents3.get(0)).getAlternatives().get(0);
+		LabelItemType root3Item2Type = ((InsertionPoint) contents3.get(1)).getAlternatives().get(0);
+		LabelItemType root3Item3Type = ((InsertionPoint) contents3.get(2)).getAlternatives().get(0);		
+		LabelItemType root3Item4Type = ((Container) contents3.get(3)).getType();
+		
+		assertEquals(root3Item1Type.getMinOccurrences(), 0);
+		assertEquals(root3Item1Type.getMaxOccurrences(), -1);		
+		assertEquals(root3Item2Type.getMinOccurrences(), 1);
+		assertEquals(root3Item2Type.getMaxOccurrences(), -1);		
+		assertEquals(root3Item3Type.getMinOccurrences(), 0);
+		assertEquals(root3Item3Type.getMaxOccurrences(), 1);
+		assertEquals(root3Item4Type.getMinOccurrences(), 1);
+		assertEquals(root3Item4Type.getMaxOccurrences(), 1);
+		
+		assertEquals(root1Item1Type, root2Item1Type);
+		assertEquals(root1Item2Type, root2Item2Type);
+		assertEquals(root1Item3Type, root2Item3Type);
+		assertEquals(root1Item4Type, root2Item4Type);		
+		assertNotEquals(root3Item1Type, root1Item1Type);
+		assertNotEquals(root3Item2Type, root1Item2Type);
+		assertNotEquals(root3Item3Type, root1Item3Type);
+		assertNotEquals(root3Item4Type, root1Item4Type);		
 	}
 
 	@Test
