@@ -265,20 +265,19 @@ public class ModelAnalyzer {
 		// Change the display type of the insertion point to "plus" button.
 		insPoint.setDisplayType(InsertionPoint.DisplayType.PLUS_BUTTON.getDisplayType());
 
-		// Clone the insertion point.
-		InsertionPoint newInsPoint1 = (InsertionPoint) insPoint.copy();
-		newInsPoint1.setInsertLast(alternativeIndex);
-		newInsPoint1.setUsedAfter(alternativeIndex);
+		// Split the existing insertion point into 2 insertion points at position alternativeIndex.		
+		InsertionPoint insPoint1 = (InsertionPoint) insPoint.copy();
+		InsertionPoint insPoint2 = (InsertionPoint) insPoint.copy();
 		
-		InsertionPoint newInsPoint2 = (InsertionPoint) insPoint.copy();
-		newInsPoint2.setInsertFirst(0);
-		newInsPoint2.setInsertLast(newInsPoint2.getInsertLast());
-		newInsPoint2.setUsedBefore(alternativeIndex);
-		newInsPoint2.setUsedAfter(newInsPoint2.getUsedAfter());
+		insPoint1.setInsertLast(alternativeIndex);
+		insPoint1.setUsedAfter(alternativeIndex);
+				
+		insPoint2.setInsertFirst(alternativeIndex);
+		insPoint2.setUsedBefore(alternativeIndex);
 		
-		items.add(newInsPoint1);
+		items.add(insPoint1);
 		items.add(newItem);
-		items.add(newInsPoint2);
+		items.add(insPoint2);
 
 		return items;
 	}
@@ -538,7 +537,7 @@ public class ModelAnalyzer {
 	 */
 	public void mergeInsertionPoints(List<LabelItem> labelItems) {
 
-	ListIterator<LabelItem> it = labelItems.listIterator();
+		ListIterator<LabelItem> it = labelItems.listIterator();
 
 		while (it.hasNext()) {
 			LabelItem curItem = it.next();
