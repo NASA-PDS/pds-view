@@ -216,6 +216,16 @@ public class ContainerView extends Composite implements ContainerPresenter.Displ
 			}
 			
 		});
+		
+		titlePanel.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent e) {
+				e.stopPropagation();
+				presenter.handleContainerClickEvent();
+			}
+			
+		});
 	}
 
 	@Override
