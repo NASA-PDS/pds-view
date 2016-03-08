@@ -1,6 +1,7 @@
 package gov.nasa.arc.pds.lace.server.parse;
 
 import gov.nasa.arc.pds.lace.shared.Container;
+import gov.nasa.arc.pds.lace.shared.InsertOption;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint.DisplayType;
 import gov.nasa.arc.pds.lace.shared.LabelItem;
@@ -28,6 +29,7 @@ import org.apache.xerces.xs.XSParticle;
 import org.apache.xerces.xs.XSSimpleTypeDefinition;
 import org.apache.xerces.xs.XSTerm;
 import org.apache.xerces.xs.XSTypeDefinition;
+import org.apache.xerces.xs.XSWildcard;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
 /**
@@ -36,6 +38,8 @@ import org.w3c.dom.bootstrap.DOMImplementationRegistry;
  */
 public class ModelAnalyzer {
 
+	private final static String PLUS_DISPLAY_TYPE = DisplayType.PLUS_BUTTON.getDisplayType();
+	
 	private Map<String, LabelItemType> knownTypes = new HashMap<String, LabelItemType>();
 	private XSModel model;
 
@@ -117,21 +121,22 @@ public class ModelAnalyzer {
 	}
 
 	/**
-	 * Expands non-choice insertion points that indicate required elements.
+	 * Expands required insertion points.
 	 *
 	 * @param item the label item in which to expand the insertion points
 	 */
 	public void expandInsertionPoints(LabelItem item) {
 		if (item instanceof Container) {
-			expandInsertionPoints(((Container) item).getContents());
+			List<LabelItem> contents = ((Container) item).getContents();
+			expandInsertionPoints(contents);
+			mergeInsertionPoints(contents);
 		}
 	}
 
 	/**
-	 * Expands any insertion points in a list of label items. If an
-	 * insertion point is found, insert any required elements that
-	 * have not already been inserted. And recursively expand
-	 * insertion points in any child items of a container.
+	 * Expands any insertion points in a list of label items. If a
+	 * required insertion point is found, insert its only alternative.
+	 * And recursively expand insertion points in any child items of a container.
 	 *
 	 * @param contents a list of label items
 	 */
@@ -141,23 +146,43 @@ public class ModelAnalyzer {
 		while (it.hasNext()) {
 			LabelItem item = it.next();
 
-			// Check for a "plus" insert point or a container.
+			// Check for a "required" insertion point or a container.
 			if (item instanceof Container) {
 				expandInsertionPoints(item);
-			} else if ((item instanceof InsertionPoint)
-					&& ((InsertionPoint) item).getDisplayType().equals(DisplayType.PLUS_BUTTON.getDisplayType())) {
+			} else if (item instanceof InsertionPoint) {
 				InsertionPoint insPoint = (InsertionPoint) item;
-
-				// Check for required elements or optional simple elements within the insertable range
+				String display = insPoint.getDisplayType();
+				
+				// Insert the required element or an optional simple element
 				// that have not already been inserted.
-				for (int i=insPoint.getInsertFirst(); i <= insPoint.getInsertLast(); ++i) {
-					if (i > insPoint.getUsedBefore() && i < insPoint.getUsedAfter()) {
-						if (!insPoint.getAlternatives().get(0).isComplex() || insPoint.getAlternatives().get(i).getMinOccurrences() > 0) {
-							// A required complex element or a required/optional simple element. Do an insertion.
-							doInsert(it, insPoint, i);
+				if (display.equals(DisplayType.REQUIRED.getDisplayType()) ||
+						display.equals(DisplayType.OPTIONAL.getDisplayType())) {
+					
+					List<InsertOption> alternatives = insPoint.getAlternatives();				
+					assert alternatives.size() == 1;
+					
+					InsertOption alternative = alternatives.get(0);
+					assert alternative.getUsedOccurrences() == 0;
+					
+					List<LabelItemType> types = alternative.getTypes();
+					assert types.size() == 1;
+					
+					LabelItemType type = types.get(0);
+					
+					if (display.equals(DisplayType.OPTIONAL.getDisplayType())) {
+						if (!type.isComplex()) {
+							// This insertion point represents an optional
+							// repeating simple element. Do an insertion.
+							doInsert(it, insPoint, alternative, type);
+						}	
+					} else {
+						// This insertion point represents a required 
+						// repeating element. Do an insertion.
+						for (int i = 0; i < alternative.getMinOccurrences(); i++) {
+							doInsert(it, insPoint, alternative, type);
 						}
 					}
-				}
+				}	
 			}
 		}
 	}
@@ -170,18 +195,15 @@ public class ModelAnalyzer {
 	 * next element from the iterator will be the new insertion point,
 	 * just after the new, required element.
 	 *
-	 * <p>The insertion and used indices of the old and new insertion
-	 * point are updated to reflect the insertion.
-	 *
 	 * @param it a list iterator whose cursor is positioned just past the insertion point
-	 * @param insPoint the insertion point at which to insert the required element
-	 * @param alternativeIndex the alternative index to insert
+	 * @param insPoint the insertion point at which to insert a required element
+	 * @param insertOption the InsertOption instance that holds the item which is to be inserted
+	 * @param type the label item type to insert
 	 */
 	private void doInsert(ListIterator<LabelItem> it, InsertionPoint insPoint,
-			int alternativeIndex) {
+			InsertOption insertOption, LabelItemType type) {
 
 		// Create the new item.
-		LabelItemType type = insPoint.getAlternatives().get(alternativeIndex);
 		LabelItem newItem;
 		if (!type.isComplex()) {
 			newItem = createSimpleItem(type);
@@ -194,37 +216,18 @@ public class ModelAnalyzer {
 			newItem = createContainer(type, contents);
 		}
 
-		// Clone the insertion point.
+		// Increase the "used" counter and change the display type to "plus" button.
+		insertOption.setUsedOccurrences(insertOption.getUsedOccurrences() + 1);
+		if (!insPoint.getDisplayType().equals(PLUS_DISPLAY_TYPE)) {
+			insPoint.setDisplayType(PLUS_DISPLAY_TYPE);
+		}
+				
+		List<InsertOption> newAlternatives = new ArrayList<InsertOption>();
+		newAlternatives.add(insertOption);
 		InsertionPoint newInsPoint = (InsertionPoint) insPoint.copy();
-
-		//TODO: Decide whether removing unavailable alternatives is correct.
-
-		// Remove unavailable alternatives.
-		int removeBefore = insPoint.getAlternatives().size() - alternativeIndex - 1;
-		int removeAfter = alternativeIndex;
-		int origSize = insPoint.getAlternatives().size();
-
-		for (int i=0; i < removeBefore; ++i) {
-			insPoint.getAlternatives().remove(insPoint.getAlternatives().size() - 1);
-		}
-		for (int i=0; i < removeAfter; ++i) {
-			newInsPoint.getAlternatives().remove(0);
-		}
-
-		assert insPoint.getAlternatives().size() == alternativeIndex + 1;
-		assert newInsPoint.getAlternatives().size() == origSize - alternativeIndex;
-
-		// Adjust indices.
-		insPoint.setInsertLast(alternativeIndex);
-		insPoint.setUsedAfter(alternativeIndex);
-
-		newInsPoint.setInsertFirst(0);
-		newInsPoint.setInsertLast(newInsPoint.getInsertLast() - removeAfter);
-		newInsPoint.setUsedBefore(0);
-		newInsPoint.setUsedAfter(newInsPoint.getUsedAfter() - removeAfter);
-
-		// Now insert the new item and insertion point, and update the
-		// list cursor.
+		newInsPoint.setAlternatives(newAlternatives);
+		
+		// Now insert the new item and insertion point, and update the list cursor.
 		it.add(newItem);
 		it.add(newInsPoint);
 		it.previous();
@@ -233,11 +236,20 @@ public class ModelAnalyzer {
 		expandInsertionPoints(newItem);
 	}
 
-	public List<LabelItem> doInsert(InsertionPoint insPoint, int alternativeIndex) {
-		List<LabelItem> items = new ArrayList<LabelItem>();
-				
+	/**
+	 * Performs an insertion of a label element from an insertion point.
+	 * 
+	 * @param insPoint the insertion point at which to insert a required element
+	 * @param insertOption the InsertOption instance that holds the item which is to be inserted
+	 * @param type the label item type to insert
+	 * @return
+	 */
+	public List<LabelItem> doInsert(InsertionPoint insPoint, int alternativeIndex, int typeIndex) {
+		List<InsertOption> alternatives = insPoint.getAlternatives();
+		InsertOption insertOption = alternatives.get(alternativeIndex);
+		
 		// Create the new item.
-		LabelItemType type = insPoint.getAlternatives().get(alternativeIndex);
+		LabelItemType type = insertOption.getTypes().get(typeIndex);
 		LabelItem newItem;
 		if (!type.isComplex()) {
 			newItem = createSimpleItem(type);
@@ -249,35 +261,70 @@ public class ModelAnalyzer {
 			}
 			newItem = createContainer(type, contents);
 		}
+		
+		assert alternatives.size() > 0 && alternatives.size() <= 2;
+
+		List<LabelItem> items = new ArrayList<LabelItem>();
+		boolean isDoMerge = false;
+
+		// Increase the "used" counter.
+		insertOption.setUsedOccurrences(insertOption.getUsedOccurrences() + 1);
+				
+		if (insPoint.getDisplayType().equals(PLUS_DISPLAY_TYPE)
+				&& insPoint.getAlternatives().size() > 1) {
+			// Need to merge after splitting and inserting.
+			isDoMerge = true;
+		}
+					
+		if (isDoMerge) {
+			InsertionPoint insPoint1 = (InsertionPoint) insPoint.copy();		
+			InsertionPoint insPoint2 = (InsertionPoint) insPoint.copy();
+			
+			insPoint1.getAlternatives().remove(1);
+			insPoint2.getAlternatives().remove(0);
+			
+			items.add(insPoint1);
+			items.add(insPoint2);
+			
+			InsertionPoint insPointToSplit;
+			if (insPoint1.getAlternatives().contains(insertOption)) {
+				insPointToSplit = insPoint1;
+			} else {
+				insPointToSplit = insPoint2;
+			}
+			
+			InsertionPoint first = (InsertionPoint) insPointToSplit.copy();		
+			InsertionPoint second = (InsertionPoint) insPointToSplit.copy();
+						
+			int idx = items.indexOf(insPointToSplit);
+			items.remove(idx);
+			items.add(idx++, first);
+			items.add(idx++, newItem);
+			items.add(idx, second);			
+		} else {
+			// Change the display type to "plus" button if it's not already.
+			if (!insPoint.getDisplayType().equals(PLUS_DISPLAY_TYPE)) {
+				insPoint.setDisplayType(PLUS_DISPLAY_TYPE);
+			}	
+			
+			// Split the existing insertion point. Keep the alternatives of the first
+			// insPoint intact, but set the alternatives of the second insPoint to the
+			// insertOption instance that contains the type being inserted.						
+			InsertionPoint first = (InsertionPoint) insPoint.copy();		
+			InsertionPoint second = (InsertionPoint) insPoint.copy();
+			
+			// Insert the new item and insertion points.			
+			items.add(first);
+			items.add(newItem);
+			items.add(second);
+		}
 
 		// And, expand any insertion points in the newly inserted item.
 		expandInsertionPoints(newItem);
-		
-		// If this is a non-repeating element, add the new item to the list.
-		if (type.getMaxOccurrences() == 1) {
-			items.add(newItem);
-			return items;
-		}
-		
-		// Change the display type of the insertion point to "plus" button.
-		insPoint.setDisplayType(InsertionPoint.DisplayType.PLUS_BUTTON.getDisplayType());
-
-		// Split the existing insertion point into 2 insertion points at position alternativeIndex.		
-		InsertionPoint insPoint1 = (InsertionPoint) insPoint.copy();
-		InsertionPoint insPoint2 = (InsertionPoint) insPoint.copy();
-		
-		insPoint1.setInsertLast(alternativeIndex);
-		insPoint1.setUsedAfter(alternativeIndex);
 				
-		insPoint2.setInsertFirst(alternativeIndex);
-		insPoint2.setUsedBefore(alternativeIndex);
-		
-		items.add(insPoint1);
-		items.add(newItem);
-		items.add(insPoint2);
-
 		return items;
 	}
+	
 	/*
 	 * Creates a LabelItemType object for the given element.
 	 */
@@ -317,7 +364,6 @@ public class ModelAnalyzer {
 	 */
 	private void parseParticle(XSParticle particle, List<LabelItem> labelItems) {
 		if (particle == null) {
-			// TODO: throw new NullPointerException("Particle is null");
 			System.out.println("Particle is null.");
 			return;
 		}
@@ -328,11 +374,12 @@ public class ModelAnalyzer {
 		} else if (term instanceof XSModelGroup) {
 			parseModelGroup((XSModelGroup) term, particle, labelItems);
 		} else {
-			// TODO: term is an instance of XSWildcard.
+			// term is an instance of XSWildcard.
+			parseWildcard((XSWildcard) term, particle, labelItems);
 		}
 	}
 
-	/*
+	/**
 	 * If the element declaration is of type XSSimpleTypeDefinition, it's
 	 * a simple named element type. Otherwise, it's a complex named type.
 	 */
@@ -352,13 +399,14 @@ public class ModelAnalyzer {
 		LabelItemType type = createSimpleItemType(element, typeDefinition, particle);
 		
 		if (particle.getMaxOccursUnbounded() || particle.getMaxOccurs() > 1) {
-			labelItems.add(createInsertionPoint(Collections.singletonList(type), DisplayType.PLUS_BUTTON));
+			labelItems.add(createInsertionPoint(Collections.singletonList(type), particle));
 		} else {	
 			labelItems.add(createSimpleItem(type));
 		}	
 	}
 
-	private void parseComplexType(XSElementDeclaration element, XSComplexTypeDefinition typeDefinition, XSParticle particle, List<LabelItem> labelItems) {
+	private void parseComplexType(XSElementDeclaration element, XSComplexTypeDefinition typeDefinition,
+			XSParticle particle, List<LabelItem> labelItems) {
 
 		LabelItemType type = findKnownType(element, typeDefinition, particle.getMinOccurs(), particle.getMaxOccurs());
 
@@ -391,14 +439,14 @@ public class ModelAnalyzer {
 
 		if (!type.isComplex()) {
 			if (particle.getMaxOccursUnbounded() || particle.getMaxOccurs() > 1) {
-				labelItems.add(createInsertionPoint(Collections.singletonList(type), DisplayType.PLUS_BUTTON));
+				labelItems.add(createInsertionPoint(Collections.singletonList(type), particle));
 			} else {	
 				labelItems.add(createSimpleItem(type));
 			}
-		} else if (particle.getMinOccurs() < 1 || particle.getMaxOccursUnbounded() || particle.getMaxOccurs() > 1) {
-			labelItems.add(createInsertionPoint(Collections.singletonList(type), particle));
-		} else {
+		} else if (particle.getMinOccurs() == 1 && particle.getMaxOccurs() == 1) {
 			labelItems.add(createContainer(type, type.getInitialContents()));
+		} else {
+			labelItems.add(createInsertionPoint(Collections.singletonList(type), particle));
 		}
 	}
 
@@ -414,29 +462,40 @@ public class ModelAnalyzer {
 		item.setType(type);
 		return item;
 	}
-
-	private InsertionPoint createInsertionPoint(List<LabelItemType> alternatives, XSParticle particle) {
-		DisplayType displayType = DisplayType.PLUS_BUTTON;
-		if (alternatives.size() > 1) {
-			displayType = DisplayType.CHOICE;
-		} else if (particle.getMinOccurs()==0) {
-			displayType = DisplayType.OPTIONAL;
-		}
+	
+	private InsertionPoint createInsertionPoint(List<LabelItemType> types, XSParticle particle) {
+		int minOccurs = particle.getMinOccurs();
+		DisplayType	displayType = DisplayType.PLUS_BUTTON;
 		
+		if (types.size() > 1) {
+			displayType = DisplayType.CHOICE;
+		} else if (minOccurs == 0) {
+			displayType = DisplayType.OPTIONAL;
+		} else if (minOccurs > 0) {
+			displayType = DisplayType.REQUIRED;
+		}
+				
+		List<InsertOption> alternatives = new ArrayList<InsertOption>();
+		alternatives.add(createInsertOption(types, minOccurs, particle.getMaxOccurs()));
 		return createInsertionPoint(alternatives, displayType);
 	}
-	
-	private InsertionPoint createInsertionPoint(List<LabelItemType> alternatives, DisplayType displayType) {		
+
+	private InsertionPoint createInsertionPoint(List<InsertOption> alternatives, DisplayType displayType) {		
 		InsertionPoint insPoint = new InsertionPoint();
 		insPoint.setAlternatives(alternatives);
-		insPoint.setInsertFirst(0);
-		insPoint.setInsertLast(alternatives.size() - 1);
-		insPoint.setUsedBefore(-1);
-		insPoint.setUsedAfter(alternatives.size());
 		insPoint.setDisplayType(displayType.getDisplayType());
 		return insPoint;
 	}
 
+	private InsertOption createInsertOption(List<LabelItemType> types, int minOccurs, int maxOccurs) {
+		InsertOption insertOption = new InsertOption();
+		insertOption.setUsedOccurrences(0);
+		insertOption.setMinOccurrences(minOccurs);
+		insertOption.setMaxOccurrences(maxOccurs);		
+		insertOption.setTypes(types);		
+		return insertOption;
+	}
+	
 	private LabelItemType createSimpleItemType(XSElementDeclaration element, XSSimpleTypeDefinition type, XSParticle particle) {
 		return createLabelItemType(
 				element,
@@ -455,7 +514,7 @@ public class ModelAnalyzer {
 			break;
 		case XSModelGroup.COMPOSITOR_CHOICE:
 			// Always an insertion point, no matter the multiplicity.
-			addInsertionPointForChoice(group, labelItems, particle);
+			addInsertionPointForChoice(group, particle, labelItems);
 			break;
 		case XSModelGroup.COMPOSITOR_SEQUENCE:
 			// Add the sequence contents to type being constructed.
@@ -467,9 +526,13 @@ public class ModelAnalyzer {
 		}
 	}
 
-	/*
+	/**
 	 * Adds an InsertionPoint if sequence is optional. Otherwise, parses the contents of
 	 * sequence and adds to the initialContents of the type currently being constructed.
+	 * 
+	 * @param group the model group
+	 * @param particle
+	 * @param labelItems the list of label items
 	 */
 	private void parseSequence(XSModelGroup group, XSParticle particle, List<LabelItem> labelItems) {
 		if (particle.getMinOccurs() == 0) {
@@ -482,23 +545,29 @@ public class ModelAnalyzer {
 		}
 	}
 
-	/*
-	 * Parses the choice model group to create LabelItemType objects to form the alternatives list for the new insertion point.
-	 * May not need to support 1..1 or 0..1 in version 1.
+	/**
+	 * Parses the choice model group to create LabelItemType objects
+	 * to form the alternatives list for the new insertion point.
+	 * 
+	 * @param group the model group 
+	 * @param particle 
+	 * @param labelItems the list of label items
 	 */
-	private void addInsertionPointForChoice(XSModelGroup group, List<LabelItem> labelItems, XSParticle particle) {		
-		List<LabelItemType> alternatives = new ArrayList<LabelItemType>();
+	private void addInsertionPointForChoice(XSModelGroup group, XSParticle particle, List<LabelItem> labelItems) {
+		List<LabelItemType> types = new ArrayList<LabelItemType>();
 		XSObjectList particles = group.getParticles();
 		
 		for (int i = 0; i < particles.getLength(); i++) {
 			XSParticle itemParticle = (XSParticle) particles.item(i);
-			// Assume the term for the particle inside the choice model group is an element declaration.
+			
+			// Assume the term for the particle inside the choice model group
+			// is an element declaration.
 			XSElementDeclaration element = (XSElementDeclaration) itemParticle.getTerm();
 			LabelItemType type = parseChoiceElementDefinition(element, particle);
-			alternatives.add(type);
+			types.add(type);
 		}
 
-		labelItems.add(createInsertionPoint(alternatives, particle));
+		labelItems.add(createInsertionPoint(types, particle));
 	}
 
 	private LabelItemType parseChoiceElementDefinition(XSElementDeclaration element, XSParticle particle) {
@@ -533,11 +602,11 @@ public class ModelAnalyzer {
 		return type;
 	}
 
-	/*
-	 * Parses the sequence model group to create a LabelItemType
-	 * object to form the single element in the alternatives list.
-	 */
 	private void addInsertionPointForSequence(XSModelGroup group, List<LabelItem> labelItems) {
+		// Not supported in version 1.
+	}
+	
+	private void parseWildcard(XSWildcard group, XSParticle particle, List<LabelItem> labelItems) {
 		// Not supported in version 1.
 	}
 
@@ -571,17 +640,15 @@ public class ModelAnalyzer {
 					//   first.getAlternatives().addAll(second.getAlternatives());
 					// It gives an UnsupportedOperationException. So we have
 					// to add them to a new list.
-					List<LabelItemType> newAlternatives = new ArrayList<LabelItemType>();
+					List<InsertOption> newAlternatives = new ArrayList<InsertOption>();
 					newAlternatives.addAll(first.getAlternatives());
-					for (LabelItemType type : second.getAlternatives()) {
-						if (!newAlternatives.contains(type)) {
-							newAlternatives.add(type);
+					for (InsertOption insertOption : second.getAlternatives()) {
+						if (!newAlternatives.contains(insertOption)) {
+							newAlternatives.add(insertOption);
 						}
 					}
 
 					first.setAlternatives(newAlternatives);
-					first.setInsertLast(first.getAlternatives().size() - 1);
-					first.setUsedAfter(first.getAlternatives().size());
 										
 					// Replace the nextItem (second) with the merged insertion point (first)
 					// and go back in the list and remove curItem
@@ -597,7 +664,7 @@ public class ModelAnalyzer {
 
 	private boolean isMergableInsertionPoint(LabelItem item) {
 		return (item instanceof InsertionPoint)
-			&& ((InsertionPoint) item).getDisplayType().equals(DisplayType.PLUS_BUTTON.getDisplayType());
+			&& ((InsertionPoint) item).getDisplayType().equals(PLUS_DISPLAY_TYPE);
 	}
 
 	@SuppressWarnings("rawtypes")

@@ -77,7 +77,12 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 	}
 
 	@Override
-	public ResultType updateContainer(Container container, InsertionPoint insPoint, int index) {
+	public ResultType updateContainer(
+			Container container,
+			InsertionPoint insPoint,
+			int alternativeIndex,
+			int typeIndex
+	) {	
 		List<LabelItem> contents = container.getContents();
 		List<LabelItem> oldContents = new ArrayList<LabelItem>();
 		for (LabelItem item : contents) {
@@ -89,7 +94,7 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 		contents.remove(pos);
 		
 		// Insert a new container.
-		List<LabelItem> list = analyzer.doInsert(insPoint, index);
+		List<LabelItem> list = analyzer.doInsert(insPoint, alternativeIndex, typeIndex);
 		for (LabelItem item : list) {
 			contents.add(pos, item);
 			++pos;
@@ -151,9 +156,9 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 		} else {
 			throw new NoSuchElementException("Could not find the simple item in the parent container.");
 		}
-
-		// TODO: change the return type to SimpleItem?
-		return container;
+				
+		// TODO: Should it return SimpleItem instead?
+		return container; 
 	}
 
 	/**
@@ -170,11 +175,9 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 			URI schemaURI = getClass().getResource(SCHEMA_0300A).toURI();
 			reader = new LabelReader(schemaURI);
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return new Container();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return new Container();
 		}
@@ -184,19 +187,15 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 			validation.addValidValues(container);
 			return container;
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return new Container();
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return new Container();
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return new Container();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return new Container();
 		}

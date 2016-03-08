@@ -11,7 +11,7 @@ public class SimpleItem extends LabelElement {
 	private String value;
 
 	/**
-	 * Creates an instance of <code>SimpleItem</code>.
+	 * Creates a new <code>SimpleItem</code> instance.
 	 */
 	public SimpleItem() {
 		// nothing to do

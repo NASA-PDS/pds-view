@@ -18,7 +18,7 @@ public class ResultType implements Serializable {
 	private int toIndex;	
 	
 	/**
-	 * Creates a new result type instance.
+	 * Creates a new <code>ResultType</code> instance.
 	 */
 	public ResultType() {
 		// nothing to do
@@ -42,9 +42,10 @@ public class ResultType implements Serializable {
 
 	/**
 	 * Gets the index within the container's contents list
-	 * used as a starting position to remove items. This index
-	 * is also used as a starting position to insert new items
-	 * to the container's contents list.
+	 * used as a starting position to remove items.
+	 * <br />
+	 * This index is also used as a starting position to
+	 * insert new items to the container's contents list.
 	 */
 	public int getFromIndex() {
 		return fromIndex;

@@ -1,10 +1,11 @@
 package gov.nasa.arc.pds.lace.client.presenter;
 
 import gov.nasa.arc.pds.lace.client.event.ElementSelectionEvent;
+import gov.nasa.arc.pds.lace.shared.InsertOption;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
 import gov.nasa.arc.pds.lace.shared.LabelItemType;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -16,8 +17,8 @@ import com.google.inject.Inject;
 
 /**
  * Implements the presenter for a widget that displays an insertion point as
- * a plus button, or an optional panel for inserting an optional complex 
- * element or a required panel for inserting an element from a list of choices. 
+ * a plus button, an optional panel for inserting optional complex elements 
+ * or a required panel for inserting an element from a list of choices. 
  */
 public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.Display> {
 	
@@ -58,7 +59,7 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 		void showOptionalPanel(boolean show);				
 		
 		/**
-		 * Sets the title of the optional element insertion point.
+		 * Sets the title for an optional element.
 		 * 
 		 * @param title the optional element name
 		 */
@@ -93,7 +94,12 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 	 * @param top
 	 * @param right
 	 */
-	public void display(InsertionPoint insPoint, ContainerPresenter parentPresenter, int top, int right) {
+	public void display(
+			InsertionPoint insPoint,
+			ContainerPresenter parentPresenter,
+			int top,
+			int right
+	) {
 		assert insPoint != null;
 
 		this.insPoint = insPoint;		
@@ -103,10 +109,11 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 	
 	/**
 	 * Handles a click on the link inside the optional  panel.
+	 * 
 	 * @param event
 	 */
 	public void handleOptionalPanelClickEvent(ClickEvent event) {			
-		bus.fireEvent(new ElementSelectionEvent(0, insPoint, parentPresenter, null));				
+		bus.fireEvent(new ElementSelectionEvent(0, 0, insPoint, parentPresenter, null));				
 	}
 	
 	/**
@@ -128,33 +135,79 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 	}
 	
 	private void showPopup(String text) {
+		popup.setText(text);
+		popup.setContent(setupListbox());
+		popup.display();
+	}
+	
+	private ListBox setupListbox() {
 		int count = 0;
 		final ListBox listbox = new ListBox();
-		List<LabelItemType> alternatives = insPoint.getAlternatives();
+		final List<LabelItemType> listboxTypes = new ArrayList<LabelItemType>();
+		final List<InsertOption> alternatives = insPoint.getAlternatives();
 		
-		// Add items within the insertable range to the list box
-		for (int i = insPoint.getInsertFirst(); i <= insPoint.getInsertLast(); ++i) {
-			listbox.addItem(alternatives.get(i).getElementName());
-			count++;
+		// Add items to the list box
+		for (InsertOption alternative : alternatives) {
+			if (alternative.getMaxOccurrences() != alternative.getUsedOccurrences()) {						
+				for (LabelItemType type : alternative.getTypes()) {
+					listbox.addItem(type.getElementName());
+					listboxTypes.add(type);
+					count++;
+				}
+			}
 		}
 		
 		listbox.setVisibleItemCount(count + 1);
-		listbox.setSelectedIndex(-1);		
+		listbox.setSelectedIndex(-1);
+		
 		listbox.addChangeHandler(new ChangeHandler() {
 			
 			@Override
 			public void onChange(ChangeEvent event) {
 				event.stopPropagation();
-				// Notify the registered handlers that an element is selected. 			
-				bus.fireEvent(new ElementSelectionEvent(
-						listbox.getSelectedIndex(), insPoint, parentPresenter, popup));
+				handleElementSelection(listboxTypes.get(listbox.getSelectedIndex()), alternatives);
 			}
 			
 		});
 		
-		popup.setText(text);
-		popup.setContent(listbox);
-		popup.display();				
+		return listbox;
+	}
+	
+	/**
+	 * Notifies the registered handlers that an element is selected.
+	 * 
+	 * @param type the selected item's type
+	 * @param alternatives the list of alternatives for this insertion point
+	 */
+	private void handleElementSelection(LabelItemType type, List<InsertOption> alternatives) {
+		int alternativeIndex = findInsertOption(type, alternatives);
+		
+		bus.fireEvent(new ElementSelectionEvent(
+				alternativeIndex,
+				alternatives.get(alternativeIndex).getTypes().indexOf(type),
+				insPoint,
+				parentPresenter,
+				popup
+		));
+	}
+	
+	/**
+	 * Finds the position of the insert option instance that
+	 * holds the specified label item type.
+	 * 
+	 * @param type the selected element's label item type
+	 * @param alternatives the list of alternatives for this insertion point
+	 * @return the index of an insert option that contains the type
+	 */
+	private int findInsertOption(LabelItemType type, List<InsertOption> alternatives) {
+		for (InsertOption alternative : alternatives) {
+			if (alternative.getMaxOccurrences() != alternative.getUsedOccurrences()) {						
+				if (alternative.getTypes().contains(type)) {
+					return alternatives.indexOf(alternative);
+				}
+			}
+		}
+		return -1;
 	}
 	
 	private void togglePanels(int top, int right) {
@@ -168,16 +221,37 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 		} else {
 			view.showRequiredPanel(false);			
 			if (displayType.equals(InsertionPoint.DisplayType.OPTIONAL.getDisplayType())) {
-				// Assuming the alternatives list has only one element.
-				// TODO: need to do error checking
-				view.setOptionalTitle(insPoint.getAlternatives().get(0).getElementName());				
-				view.showOptionalPanel(true);
+				// The alternatives list should only have one insert option 
+				// with one type.
+				List<InsertOption> alternatives = insPoint.getAlternatives();
+				assert alternatives.size() == 1;
+				
+				List<LabelItemType> types = alternatives.get(0).getTypes();
+				assert types.size() == 1;
+				
+				view.setOptionalTitle(types.get(0).getElementName());
 				view.showPlusButton(false);
+				view.showOptionalPanel(true);
 			} else {
-				view.showPlusButton(true);
-				view.setPlusButtonPosition(top, right);
 				view.showOptionalPanel(false);
+				
+				if (isMaxExhaused()) {
+					view.showPlusButton(false);
+				} else {
+					view.showPlusButton(true);
+					view.setPlusButtonPosition(top, right);
+				}				
 			}			
 		}
+	}
+	
+	private boolean isMaxExhaused() {
+		List<InsertOption> alternatives = insPoint.getAlternatives();
+		for (InsertOption alternative : alternatives) {
+			if (alternative.getMaxOccurrences() != alternative.getUsedOccurrences()) {
+				return false;
+			}	
+		}
+		return true;
 	}
 }

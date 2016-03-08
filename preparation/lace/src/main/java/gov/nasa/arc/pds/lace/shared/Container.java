@@ -14,7 +14,7 @@ public class Container extends LabelElement {
 	private List<LabelItem> contents = new ArrayList<LabelItem>();
 
 	/**
-	 * Creates an instance of <code>Container</code>.
+	 * Creates a new <code>Container</code> instance.
 	 */
 	public Container() {
 		// nothing to do

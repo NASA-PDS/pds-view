@@ -1,6 +1,7 @@
 package gov.nasa.arc.pds.lace.server.parse;
 
 import gov.nasa.arc.pds.lace.shared.Container;
+import gov.nasa.arc.pds.lace.shared.InsertOption;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
 import gov.nasa.arc.pds.lace.shared.LabelElement;
 import gov.nasa.arc.pds.lace.shared.LabelItem;
@@ -1052,9 +1053,11 @@ public class ValidationAnalyzer {
 	}
 
 	private void addValidValues(InsertionPoint item, String parentName, Set<String> seenTypes) {
-		for (LabelItemType type : item.getAlternatives()) {
-			addValidValues(type, parentName, seenTypes);
-		}
+		for (InsertOption alternative : item.getAlternatives()) {
+			for (LabelItemType type : alternative.getTypes()) {
+				addValidValues(type, parentName, seenTypes);
+			}
+		}	
 	}
 
 	private void addValidValues(LabelItemType type, String parentName, Set<String> seenTypes) {

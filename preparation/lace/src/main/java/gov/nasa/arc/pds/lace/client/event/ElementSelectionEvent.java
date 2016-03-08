@@ -19,7 +19,8 @@ public class ElementSelectionEvent extends GenericEvent<ElementSelectionEvent.Ev
 	 */
 	public static class EventDetails {
 				
-		private int index;
+		private int typeIndex;
+		private int alternativeIndex;
 		private InsertionPoint insPoint;		
 		private PopupPresenter popup;
 		private ContainerPresenter parentPresenter;
@@ -28,24 +29,38 @@ public class ElementSelectionEvent extends GenericEvent<ElementSelectionEvent.Ev
 		 * Creates a new instance of <code>EventDetails</code>
 		 */
 		public EventDetails(
-				int index,
+				int alternativeIndex,
+				int typeIndex,
 				InsertionPoint insPoint,
 				ContainerPresenter parentPresenter,
 				PopupPresenter popup
 		) {			
-			this.index = index;
+			this.alternativeIndex = alternativeIndex;
+			this.typeIndex = typeIndex;
 			this.insPoint = insPoint;			
 			this.popup = popup;
 			this.parentPresenter = parentPresenter;
 		}	
 		
 		/**
-		 * Gets the position of the selected element in the list of alternatives. 
+		 * Gets the position of the label item type that matches
+		 * the selected element in the related insert option. 
 		 * 
-		 * @return the index of the selected element 
+		 * @return the index of the selected type
 		 */
-		public int getIndex() {
-			return index;
+		public int getTypeIndex() {
+			return typeIndex;
+		}
+		
+		/**
+		 * Gets the position of the insert option within the
+		 * list of alternatives that holds the type info for the 
+		 * selected element. 
+		 * 
+		 * @return the index of an insert option within the list of alternatives
+		 */
+		public int getAlternativeIndex() {
+			return alternativeIndex;
 		}
 		
 		/**
@@ -59,7 +74,8 @@ public class ElementSelectionEvent extends GenericEvent<ElementSelectionEvent.Ev
 		}
 		
 		/**
-		 * Returns the container presenter that the insertion point object is a child of.
+		 * Returns the container presenter that the
+		 * insertion point object is a child of.
 		 *  
 		 * @return the parent container presenter
 		 */
@@ -81,15 +97,21 @@ public class ElementSelectionEvent extends GenericEvent<ElementSelectionEvent.Ev
 	 * Creates a new event that indicates the user has selected
 	 * an item from the list of alternatives at position index.
 	 * 
-	 * @param index index of the selected item
+	 * @param alternativeIndex the index of the selected insert option
+	 * @param typeIndex index of the selected item type 
 	 * @param insPoint the insertion point object
 	 * @param parentPresenter the parent container presenter that
 	 * the insertion point object is a child of
 	 * @param popup
 	 */
-	public ElementSelectionEvent(int index, InsertionPoint insPoint,
-			ContainerPresenter parentPresenter, PopupPresenter popup) {
-		super(new EventDetails(index, insPoint, parentPresenter, popup), TYPE);
+	public ElementSelectionEvent(
+			int alternativeIndex,
+			int typeIndex,
+			InsertionPoint insPoint,
+			ContainerPresenter parentPresenter,
+			PopupPresenter popup
+	) {
+		super(new EventDetails(alternativeIndex, typeIndex, insPoint, parentPresenter, popup), TYPE);
 	}
 }
 

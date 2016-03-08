@@ -12,23 +12,27 @@ public abstract class LabelElement extends LabelItem {
 	private LabelItemType type;
 
 	/**
-	 * Creates a new label element instance.
+	 * Creates a new <code>LabelElement</code> instance.
 	 */
 	public LabelElement() {
 		// nothing to do
 	}
 
 	/**
-	 *
-	 * @return the type
+	 * Gets the label element's type.
+	 * 
+	 * @return a <code>LabelItemType</code> object that
+	 * holds the typing information for this element
 	 */
 	public LabelItemType getType() {
 		return type;
 	}
 
 	/**
-	 *
-	 * @param type the type to set
+	 * Sets the label element's type.
+	 * 
+	 * @param type a <code>LabelItemType</code> object that
+	 * holds the typing information for this element
 	 */
 	public void setType(LabelItemType type) {
 		this.type = type;

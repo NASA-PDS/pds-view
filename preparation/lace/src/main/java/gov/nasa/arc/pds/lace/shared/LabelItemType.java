@@ -19,52 +19,60 @@ public class LabelItemType implements Serializable {
 	private String elementName;		 			// The name of the element that will hold the type
 	private String elementNamespace; 			// The namespace of the element that will hold the type
 	private String typeName;		 			// The name for this type, or null if this is an anonymous type
-	private String typeNamespace;
+	private String typeNamespace;				// The namespace for this type
 	private List<LabelItem> initialContents;	// For complex types, a list of items that should be the initial contents when this type is added
-	//private enum valueType {};				// Either NUMERIC, DATE, or REGEX (needs to be an enumeration), depending on the value type constraints
-	//patterns									// A list of regular expressions, for REGEX types
-
 	private List<String> validValues;			// A list of valid values, or null if there is no validation.
+	//private enum valueType {};				// Either NUMERIC, DATE, or REGEX (needs to be an enumeration), depending on the value type constraints
+	//patterns									// A list of regular expressions, for REGEX types	
 
-	/** Creates a new label item type instance. */
+	/** 
+	 * Creates a new <code>LabelItemType</code> instance.
+	 */
 	public LabelItemType() {
 		// nothing to do
 	}
 
 	/**
-	 *
-	 * @return the minOccurrences
+	 * Gets the minimum occurrences value for the label element
+	 * associated with this type.
+	 * 
+	 * @return the minimum occurrences value
 	 */
 	public int getMinOccurrences() {
 		return minOccurrences;
 	}
 
 	/**
-	 *
-	 * @param minOccurrences the minOccurrences to set
+	 * Sets the minimum occurrences value from the type particle.
+	 * 
+	 * @param minOccurrences the minimum occurrences value
 	 */
 	public void setMinOccurrences(int minOccurrences) {
 		this.minOccurrences = minOccurrences;
 	}
 
 	/**
-	 *
-	 * @return the maxOccurrences
+	 * Gets the maximum occurrences value for the label element
+	 * associated with this type.
+	 * 
+	 * @return the maximum occurrences value
 	 */
 	public int getMaxOccurrences() {
 		return maxOccurrences;
 	}
 
 	/**
-	 *
-	 * @param maxOccurrences the maxOccurrences to set
+	 * Sets the maximum occurrences value from the type particle.
+	 * 
+	 * @param maxOccurrences the maximum occurrences value
 	 */
 	public void setMaxOccurrences(int maxOccurrences) {
 		this.maxOccurrences = maxOccurrences;
 	}
 
 	/**
-	 *
+	 * Tests whether this type is a container for sub-elements.
+	 * 
 	 * @return true, if this type is a container for sub-elements, false, otherwise
 	 */
 	public boolean isComplex() {
@@ -74,48 +82,54 @@ public class LabelItemType implements Serializable {
 	/**
 	 * Sets a flag to indicate whether this type is a container for sub-elements or not.
 	 *
-	 * @param flag true, if the item is a container for sub-elements
+	 * @param flag true, if the item is a container for sub-elements, false, otherwise
 	 */
 	public void setComplex(boolean flag) {
 		this.isComplex = flag;
 	}
 
 	/**
-	 *
-	 * @return the simple element minimum value length
+	 * Gets the minimum value length for simple elements.
+	 * 
+	 * @return the minimum value length
 	 */
 	public int getMinLength() {
 		return minLength;
 	}
 
 	/**
-	 *
-	 * @param minLength the simple element minimum value length to set
+	 * Sets the minimum value length for simple elements.
+	 * 
+	 * @param minLength the minimum value length
 	 */
 	public void setMinLength(int minLength) {
 		this.minLength = minLength;
 	}
 
 	/**
-	 *
-	 * @return the simple element maximum value length
+	 * Gets the maximum value length for simple elements.
+	 * 
+	 * @return the maximum value length
 	 */
 	public int getMaxLength() {
 		return maxLength;
 	}
 
 	/**
-	 *
-	 * @param maxLength the simple element maximum value length to set
+	 * Sets the maximum value length for simple elements.
+	 * 
+	 * @param maxLength the maximum value length
 	 */
 	public void setMaxLength(int maxLength) {
 		this.maxLength = maxLength;
 	}
 
 	/**
-	 * Gets an unmodifiable view of the initial contents for this type. 
-	 * TODO: the view is modifiable
-	 * @return list of label items
+	 * Gets the initial contents for this type.
+	 * TODO: The view is modifiable--Change the method to 
+	 * return an unmodifiable view of the initial contents.
+	 * 
+	 * @return a list of label items
 	 */
 	public List<LabelItem> getInitialContents() {
 		//return Collections.unmodifiableList(initialContents);
@@ -125,14 +139,15 @@ public class LabelItemType implements Serializable {
 	/**
 	 * Sets the initial contents for this type.
 	 *
-	 * @param initialContents list of label items
+	 * @param initialContents a list of label items
 	 */
 	public void setInitialContents(List<LabelItem> initialContents) {
 		this.initialContents = initialContents;
 	}
 
 	/**
-	 *
+	 * Gets the name of the element that will hold the type.
+	 * 
 	 * @return the element name
 	 */
 	public String getElementName() {
@@ -140,56 +155,63 @@ public class LabelItemType implements Serializable {
 	}
 
 	/**
-	 *
-	 * @param elementName the element name to set
+	 * Sets the name of the element that will hold the type.
+	 * 
+	 * @param elementName the element name
 	 */
 	public void setElementName(String elementName) {
 		this.elementName = elementName;
 	}
 
 	/**
-	 *
-	 * @return the element namespace
+	 * Gets the namespace of the element that will hold the type.
+	 * 
+	 * @return a string value
 	 */
 	public String getElementNamespace() {
 		return elementNamespace;
 	}
 
 	/**
-	 *
-	 * @param elementNamespace the element namespace to set
+	 * Sets the namespace of the element that will hold the type.
+	 * 
+	 * @param elementNamespace a string value of the element namespace
 	 */
 	public void setElementNamespace(String elementNamespace) {
 		this.elementNamespace = elementNamespace;
 	}
 
 	/**
-	 *
-	 * @return the type name
+	 * Gets the name for this type.
+	 * 
+	 * @return a string value
 	 */
 	public String getTypeName() {
 		return typeName;
 	}
 
 	/**
-	 *
-	 * @param typeName the type name to set
+	 * Sets a name for this type.
+	 * 
+	 * @param typeName the name for this type
 	 */
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
 	}
 
 	/**
-	 *
-	 * @return the type namespace
+	 * Gets the namespace for this type.
+	 * 
+	 * @return a string value
 	 */
 	public String getTypeNamespace() {
 		return typeNamespace;
 	}
 
 	/**
-	 *
-	 * @param typeNamespace the type namespace to set
+	 * Sets the namespace for this type.
+	 * 
+	 * @param typeNamespace the type namespace
 	 */
 	public void setTypeNamespace(String typeNamespace) {
 		this.typeNamespace = typeNamespace;

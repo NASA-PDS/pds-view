@@ -30,11 +30,13 @@ public interface LabelContentsService extends RemoteService {
 	 * specified insertion point and updates the contents of the container.
 	 * 
 	 * @param container the container to update
-	 * @param insPoint the insertion point an insertion should take place
-	 * @param index the index within the alternatives of the type to insert
+	 * @param insPoint the insertion point where the insertion should occur
+	 * @param alternativeIndex the index of the insert option within the list of alternatives
+	 * @param typeIndex the index of the type within the list of insert option types to insert
 	 * @return the result type object
 	 */
-	ResultType updateContainer(Container container, InsertionPoint insPoint, int index);
+	ResultType updateContainer(Container container, InsertionPoint insPoint,
+			int alternativeIndex, int typeIndex);
 
 	/**
 	 * Parses a file that has been uploaded to the server and returns

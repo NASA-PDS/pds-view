@@ -196,21 +196,24 @@ public class LabelReaderTest {
 
 		assertTrue(root.getContents().get(0) instanceof InsertionPoint);
 		InsertionPoint insPoint = (InsertionPoint) root.getContents().get(0);
-		assertEquals(insPoint.getAlternatives().size(), 2);
-		assertEquals(insPoint.getAlternatives().get(0).getElementName(), "String");
-		assertEquals(insPoint.getAlternatives().get(1).getElementName(), "Integer");
+		assertEquals(insPoint.getAlternatives().size(), 1);
+		assertEquals(insPoint.getAlternatives().get(0).getTypes().size(), 2);
+		assertEquals(insPoint.getAlternatives().get(0).getTypes().get(0).getElementName(), "String");
+		assertEquals(insPoint.getAlternatives().get(0).getTypes().get(1).getElementName(), "Integer");
 
 		assertTrue(root.getContents().get(2) instanceof InsertionPoint);
 		insPoint = (InsertionPoint) root.getContents().get(2);
-		assertEquals(insPoint.getAlternatives().size(), 2);
-		assertEquals(insPoint.getAlternatives().get(0).getElementName(), "String");
-		assertEquals(insPoint.getAlternatives().get(1).getElementName(), "Integer");
+		assertEquals(insPoint.getAlternatives().size(), 1);
+		assertEquals(insPoint.getAlternatives().get(0).getTypes().size(), 2);
+		assertEquals(insPoint.getAlternatives().get(0).getTypes().get(0).getElementName(), "String");
+		assertEquals(insPoint.getAlternatives().get(1).getTypes().get(0).getElementName(), "Integer");
 
 		assertTrue(root.getContents().get(4) instanceof InsertionPoint);
 		insPoint = (InsertionPoint) root.getContents().get(4);
-		assertEquals(insPoint.getAlternatives().size(), 2);
-		assertEquals(insPoint.getAlternatives().get(0).getElementName(), "String");
-		assertEquals(insPoint.getAlternatives().get(1).getElementName(), "Integer");
+		assertEquals(insPoint.getAlternatives().size(), 1);
+		assertEquals(insPoint.getAlternatives().get(0).getTypes().size(), 2);
+		assertEquals(insPoint.getAlternatives().get(0).getTypes().get(0).getElementName(), "String");
+		assertEquals(insPoint.getAlternatives().get(1).getTypes().get(0).getElementName(), "Integer");
 
 		SimpleItem item = (SimpleItem) root.getContents().get(1);
 		assertEquals(item.getType().getElementName(), "Integer");

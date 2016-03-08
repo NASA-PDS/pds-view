@@ -11,12 +11,8 @@ public class InsertionPoint extends LabelItem {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<LabelItemType> alternatives = new ArrayList<LabelItemType>();
+	private List<InsertOption> alternatives = new ArrayList<InsertOption>();
 	private String displayType;
-	private int insertFirst;
-	private int insertLast;
-	private int usedBefore;
-	private int usedAfter;
 
 	/**
 	 * Defines the ways in which an insertion point can be
@@ -31,7 +27,10 @@ public class InsertionPoint extends LabelItem {
 		OPTIONAL("optional"),
 
 		/** Display as a button to push to insert new content. */
-		PLUS_BUTTON("plus_button");
+		PLUS_BUTTON("plus_button"),
+		
+		/** Display as a required item. */
+		REQUIRED("required");
 
 		private String displayType;
 
@@ -50,105 +49,30 @@ public class InsertionPoint extends LabelItem {
 	}
 
 	/**
-	 * Creates an instance of <code>InsertionPoint</code>.
+	 * Creates a new <code>InsertionPoint</code> instance.
 	 */
 	public InsertionPoint() {
 		// nothing to do
 	}
 
 	/**
-	 * Gets a list of <code>LabelItemType</code> that indicates the types that can be inserted.
-	 * Note that whether the type is required is indicated within LabelItemType. Length is N.
+	 * Gets a list of <code>InsertOption</code> that indicates the types and the
+	 * minimum and maximum number of elements that can be inserted for each type.
 	 *
-	 * @return the list of label item types
+	 * @return a list of insert options
 	 */
-	public List<LabelItemType> getAlternatives() {
+	public List<InsertOption> getAlternatives() {
 		return alternatives;
 	}
 
 	/**
-	 * Sets a list of <code>LabelItemType</code> that indicates the types that can be inserted.
+	 * Sets a list of <code>InsertOption</code> that indicates the types and the
+	 * minimum and maximum number of elements that can be inserted for each type.
 	 *
-	 * @param alternatives the list of label item types
+	 * @param alternatives a list of insert options
 	 */
-	public void setAlternatives(List<LabelItemType> alternatives) {
+	public void setAlternatives(List<InsertOption> alternatives) {
 		this.alternatives = alternatives;
-	}
-
-	/**
-	 * Gets an index within alternatives of first type that can be inserted (0..N-1).
-	 *
-	 * @return the index of first type within alternatives that can be inserted
-	 */
-	public int getInsertFirst() {
-		return insertFirst;
-	}
-
-	/**
-	 * Sets an index within alternatives of first type that can be inserted (0..N-1).
-	 *
-	 * @param insertFirst the index of first type within alternatives that can be inserted
-	 */
-	public void setInsertFirst(int insertFirst) {
-		this.insertFirst = insertFirst;
-	}
-
-	/**
-	 * Gets an index within alternatives of last type that can be inserted (0..N-1).
-	 *
-	 * @return the insertLast the index of last type within alternatives that can be inserted
-	 */
-	public int getInsertLast() {
-		return insertLast;
-	}
-
-	/**
-	 * Sets an index within alternatives of last type that can be inserted (0..N-1).
-	 *
-	 * @param insertLast the index of last type within alternatives that can be inserted
-	 */
-	public void setInsertLast(int insertLast) {
-		this.insertLast = insertLast;
-	}
-
-	/**
-	 * Gets an index within alternatives of first type that has been inserted before,
-	 * or Ð1 (as a sentinel value) if no items have been inserted before this insertion point.
-	 *
-	 * @return the usedBefore
-	 */
-	public int getUsedBefore() {
-		return usedBefore;
-	}
-
-	/**
-	 * Sets an index within alternatives of first type that has been inserted before,
-	 * or Ð1 (as a sentinel value) if no items have been inserted before this insertion point.
-	 *
-	 * @param usedBefore the usedBefore to set
-	 */
-	public void setUsedBefore(int usedBefore) {
-		this.usedBefore = usedBefore;
-	}
-
-	/**
-	 * Gets an index within alternatives of last type that has been inserted after,
-	 * or N (as a sentinel value) if no items have been inserted after.
-	 *
-	 * @return the usedAfter
-	 */
-	public int getUsedAfter() {
-		return usedAfter;
-	}
-
-	/**
-	 * Sets an index within alternatives of last type that has been inserted after,
-	 * or N (as a sentinel value) if no items have been inserted after.
-	 *
-	 * @param usedAfter the usedAfter to set
-	 */
-	public void setUsedAfter(int usedAfter) {
-		this.usedAfter = usedAfter;
 	}
 
 	/**
@@ -171,31 +95,26 @@ public class InsertionPoint extends LabelItem {
 
 	@Override
 	public boolean isRequired() {
-		for (int i=insertFirst; i <= insertLast; ++i) {
-			if (0 <= i && i < alternatives.size()) {
-				LabelItemType type = alternatives.get(i);
-				if (type.getMinOccurrences() > 0) {
+		for (InsertOption alternative : getAlternatives()) {
+			if (alternative.getUsedOccurrences() == 0
+				&& alternative.getMinOccurrences() > 0) {
 					return true;
-				}
-			}
+			}		
 		}
-
 		return false;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		for (LabelItemType type : getAlternatives()) {
+		for (InsertOption alternative : getAlternatives()) {
 			if (builder.length() > 0) {
 				builder.append(',');
 			}
-			builder.append(type.getElementName());
+			builder.append(alternative.toString());
 		}
 		return "[InsertionPoint: " + builder.toString()
 			+ " - type=" + displayType
-			+ " insert=" + insertFirst + ".." + insertLast
-			+ " used=" + usedBefore + ".." + usedAfter
 			+ "]";
 	}
 
@@ -211,12 +130,8 @@ public class InsertionPoint extends LabelItem {
 		super.copyData(destination);
 		if (destination instanceof InsertionPoint) {
 			InsertionPoint copy = (InsertionPoint) destination;
-			copy.displayType = displayType;
-			copy.insertFirst = insertFirst;
-			copy.insertLast = insertLast;
-			copy.usedBefore = usedBefore;
-			copy.usedAfter = usedAfter;
-			copy.alternatives = new ArrayList<LabelItemType>();
+			copy.displayType = displayType;			
+			copy.alternatives = new ArrayList<InsertOption>();
 			copy.alternatives.addAll(alternatives);
 		}
 	}

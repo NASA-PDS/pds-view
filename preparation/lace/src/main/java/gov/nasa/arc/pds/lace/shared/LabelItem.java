@@ -3,14 +3,16 @@ package gov.nasa.arc.pds.lace.shared;
 import java.io.Serializable;
 
 /**
- * Represents items within a label template which are either insertion points or elements.
- * The insertion points and elements have underlying types.
+ * Represents items within a label template which are either insertion points
+ * or elements. The insertion points and elements have underlying types.
  */
 public abstract class LabelItem implements Cloneable, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	/** Creates a new label item instance. */
+	/** 
+	 * Creates a new <code>LabelItem</code> instance.
+	 */
 	public LabelItem() {
 		// nothing to do
 	}

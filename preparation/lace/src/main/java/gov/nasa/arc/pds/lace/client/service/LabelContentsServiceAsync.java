@@ -12,7 +12,7 @@ public interface LabelContentsServiceAsync {
 	void getRootContainer(String elementName, AsyncCallback<Container> callback);
 
 	void updateContainer(Container container, InsertionPoint insPoint,
-			int index, AsyncCallback<ResultType> callback);
+			int alternativeIndex, int typeIndex, AsyncCallback<ResultType> callback);
 
 	void getContainerForFile(String filePath, AsyncCallback<Container> callback);
 
