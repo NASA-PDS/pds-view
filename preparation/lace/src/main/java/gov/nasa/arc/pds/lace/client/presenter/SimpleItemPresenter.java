@@ -51,6 +51,27 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 		 * @param complete true, if the simple item is complete
 		 */
 		void setState(boolean complete);
+		
+		/** 
+		 * Adds event listeners that are used for handling
+		 * events related to modifying an item (e.g. delete).
+		 */
+		void addEventListeners();
+		
+		/**
+		 * Enables/disables the modification UI.
+		 * 
+		 * @param enable true to enable the modification UI, false to disable it
+		 */
+		void enableModification(boolean enable);
+		
+		/**
+		 * Handles the delete action.
+		 * 
+		 * @param name the name of the element to be deleted
+		 * @param popup the popup presenter
+		 */
+		void handleDeleteAction(String name, PopupPresenter popup);
 	}
 
 	private String curValue;
@@ -59,19 +80,28 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 	private LabelItemType type;
 	private EventBus bus;
 	private LabelContentsServiceAsync service;
+	private PopupPresenter popup;
 
 	/**
 	 * Creates an instance of the simple item presenter.
 	 *
 	 * @param view the view to use for user interaction and display
+	 * @param bus the event bus to use for firing and receiving events
 	 * @param service the label RPC service
+	 * @param popup the popup presenter
 	 */
 	@Inject
-	public SimpleItemPresenter(Display view, EventBus bus, LabelContentsServiceAsync service) {
+	public SimpleItemPresenter(
+			Display view,
+			EventBus bus,
+			LabelContentsServiceAsync service,
+			PopupPresenter popup
+	) {
 		super(view);
 		view.setPresenter(this);
 		this.bus = bus;
 		this.service = service;
+		this.popup = popup;
 	}
 
 	/**
@@ -94,6 +124,11 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 		if (values != null) {
 			view.setValidValues(values.toArray(new String[values.size()]));
 		}
+		
+		// Add event listeners if the item is deletable.
+		if (item.isDeletable()) {
+			view.addEventListeners();
+		}
 	}
 
 	/**
@@ -106,6 +141,37 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 			updateModel(value);
 		}
 	}
+	
+	/**
+	 * Handles the mouseOver, mouseMove and mouseOut events.
+	 * 
+	 * @param over true, for mouseOver or mouseMove event, false for mouseOut event
+	 */
+	public void handleMouseEvent(boolean over) {
+		getView().enableModification(over);
+	}
+	
+	/**
+	 * Handles element modification.
+	 */
+	public void modifyElement() {		
+		getView().handleDeleteAction(item.getType().getElementName(), popup);
+	}
+	
+	/**
+	 * Deletes the item.
+	 */
+	public void deleteElement() {
+		GWT.log("Deleting the item.");
+		popup.hide();
+	}
+
+	/**
+	 * Cancels the delete action.
+	 */
+	public void cancelDelete() {
+		popup.hide();		
+	}	
 	
 	/**
 	 * Updates the model.

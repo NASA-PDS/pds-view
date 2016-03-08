@@ -4,6 +4,7 @@ import gov.nasa.arc.pds.lace.client.presenter.ContainerPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.EditorPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.InsertionPointPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.LabelFileUploadPresenter;
+import gov.nasa.arc.pds.lace.client.presenter.ModificationButtonPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.PageHeaderPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.PopupPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.SimpleItemPresenter;
@@ -12,6 +13,7 @@ import gov.nasa.arc.pds.lace.client.view.ContainerView;
 import gov.nasa.arc.pds.lace.client.view.EditorView;
 import gov.nasa.arc.pds.lace.client.view.InsertionPointView;
 import gov.nasa.arc.pds.lace.client.view.LabelFileUploadView;
+import gov.nasa.arc.pds.lace.client.view.ModificationButtonView;
 import gov.nasa.arc.pds.lace.client.view.PageHeaderView;
 import gov.nasa.arc.pds.lace.client.view.PopupView;
 import gov.nasa.arc.pds.lace.client.view.SimpleItemView;
@@ -47,6 +49,7 @@ public class AppModule extends AbstractGinModule {
 		bind(PopupPresenter.Display.class).to(PopupView.class);
 		bind(LabelFileUploadPresenter.Display.class).to(LabelFileUploadView.class);
 		bind(PageHeaderPresenter.Display.class).to(PageHeaderView.class);
+		bind(ModificationButtonPresenter.Display.class).to(ModificationButtonView.class);
 	}
 }
 

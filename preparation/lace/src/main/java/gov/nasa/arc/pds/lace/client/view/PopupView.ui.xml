@@ -5,6 +5,10 @@
 	<g:FlowPanel>
 		<g:Label ui:field="closeButton" title="Close" styleName="closeButton"></g:Label>
 		<g:FlowPanel ui:field="contentPanel"></g:FlowPanel>
+		<g:FlowPanel ui:field="buttonsPanel" styleName="popupButtonCotnainer" visible="false">
+			<g:Button ui:field="okButton"></g:Button>
+			<g:Button ui:field="cancelButton"></g:Button>
+		</g:FlowPanel>
 	</g:FlowPanel>
 	
 </ui:UiBinder> 

@@ -3,6 +3,7 @@ package gov.nasa.arc.pds.lace.client;
 import gov.nasa.arc.pds.lace.client.presenter.ContainerPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.EditorPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.InsertionPointPresenter;
+import gov.nasa.arc.pds.lace.client.presenter.ModificationButtonPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.PageHeaderPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.SimpleItemPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.TreePresenter;
@@ -65,5 +66,12 @@ public interface AppInjector extends Ginjector {
 	 * @return an instance of the page header presenter
 	 */
 	PageHeaderPresenter getPageHeaderPresenter();
+	
+	/**
+	 * Gets an instance of the modification button presenter.
+	 * 
+	 * @return an instance of the modification button presenter
+	 */
+	ModificationButtonPresenter getModificationButtonPresenter();
 
 }

@@ -105,6 +105,27 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		 * @param index
 		 */
 		void remove(int index);
+		
+		/** 
+		 * Adds event listeners that that used for handling
+		 * events related to modifying an item (e.g. delete).
+		 */
+		void addEventListeners();
+		
+		/**
+		 * Enables/disables the modification UI.
+		 * 
+		 * @param enable true to enable the modification UI, false to disable it
+		 */
+		void enableModification(boolean enable);
+		
+		/**
+		 * Handles the delete action.
+		 * 
+		 * @param name the name of the element to be deleted
+		 * @param popup the popup presenter
+		 */
+		void handleDeleteAction(String name, PopupPresenter popup);		
 	}
 	
 	// Flag to indicate whether the content is shown or not.
@@ -117,6 +138,7 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 	private HandlerRegistration handler2;
 	private ContainerPresenter presenter;
 	private IconLookup lookup;
+	private PopupPresenter popup;
 	
 	// TODO: Use the provider interface instead of the injector to get the objects.
 	/**
@@ -126,6 +148,7 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 	 * @param bus the event bus to use for firing and receiving events
 	 * @param injector
 	 * @param service the RPC service
+	 * @param popup the popup presenter
 	 */
 	@Inject
 	public ContainerPresenter(
@@ -133,7 +156,8 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 			EventBus bus,
 			IconLookup lookup,
 			AppInjector injector,
-			LabelContentsServiceAsync service
+			LabelContentsServiceAsync service,
+			PopupPresenter popup
 	) {
 		super(view);
 		this.injector = injector;
@@ -141,6 +165,7 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		this.service = service;
 		this.presenter = this;
 		this.lookup = lookup;
+		this.popup = popup;
 		view.setPresenter(this);
 				
 		attachHandlers();
@@ -164,6 +189,11 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 			LabelItemType type = container.getType();
 			view.setContainerTitle(type.getElementName());
 			view.setIcon(lookup.getIconClassName(type), container.isComplete());
+
+			// Add event listeners if the item is deletable.
+			if (container.isDeletable()) {
+				view.addEventListeners();
+			}
 		}
 	}
 
@@ -235,7 +265,38 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		}	
 		getView().toggleContainer();
 	}	
+	
+	/**
+	 * Handles the mouseOver, mouseMove and mouseOut events.
+	 * 
+	 * @param over true, for mouseOver or mouseMove event, false for mouseOut event
+	 */
+	public void handleMouseEvent(boolean over) {
+		getView().enableModification(over);
+	}
 
+	/**
+	 * Handles element modification.
+	 */
+	public void modifyElement() {		
+		getView().handleDeleteAction(container.getType().getElementName(), popup);
+	}
+	
+	/**
+	 * Deletes the container.
+	 */
+	public void deleteElement() {
+		GWT.log("Deleting the container.");
+		popup.hide();
+	}
+
+	/**
+	 * Cancels the delete action.
+	 */
+	public void cancelDelete() {
+		popup.hide();		
+	}	
+	
 	/**
 	 * Handles the ElementSelectionEvent event which is fired when an element
 	 * is selected from an insertion point within this container. Inserts the
@@ -298,10 +359,11 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		return newContainer; 
 	}
 	
-	private void showContent(List<LabelItem> contents) {									
-		Iterator<LabelItem> iterator = contents.iterator();			
+	private void showContent(List<LabelItem> contents) {
+		Display view = getView();		
+		Iterator<LabelItem> iterator = contents.iterator();		
 		while (iterator.hasNext()) {				
-			getView().add(getWidget(iterator.next()));			
+			view.add(getWidget(iterator.next()));			
 		}
 	}
 	
@@ -351,5 +413,5 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		ContainerPresenter presenter = injector.getContainerPresenter();
 		presenter.display(container, false);
 		return presenter;
-	}	
+	}
 }

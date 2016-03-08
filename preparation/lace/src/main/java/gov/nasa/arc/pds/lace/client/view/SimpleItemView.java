@@ -1,5 +1,7 @@
 package gov.nasa.arc.pds.lace.client.view;
 
+import gov.nasa.arc.pds.lace.client.presenter.ModificationButtonPresenter;
+import gov.nasa.arc.pds.lace.client.presenter.PopupPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.SimpleItemPresenter;
 import gov.nasa.arc.pds.lace.client.util.SubstringSuggestOracle;
 
@@ -12,12 +14,18 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
@@ -25,6 +33,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
 /**
  * Implements the view for the display of a simple element, with
@@ -48,9 +57,6 @@ public class SimpleItemView extends Composite implements SimpleItemPresenter.Dis
 	private SubstringSuggestOracle oracle;
 
 	@UiField
-	FlowPanel form;
-
-	@UiField
 	HTMLPanel alertIcon;
 	
 	@UiField
@@ -64,15 +70,26 @@ public class SimpleItemView extends Composite implements SimpleItemPresenter.Dis
 
 	@UiField
 	HorizontalPanel horizontalPanel;
+	
+	@UiField
+	FocusPanel simpleItem;
+	
+	@UiField(provided=true)
+	ModificationButtonPresenter modificationButton;
 
 	/**
 	 * Creates a new instance of the view.
+	 * 
+	 * @param an instance of the modification button presenter
 	 */
-	public SimpleItemView() {
+	@Inject
+	public SimpleItemView(ModificationButtonPresenter modButton) {
+		modificationButton = modButton;
 		oracle = new SubstringSuggestOracle();
 		textBox = new SuggestBox(oracle, new TextBox(), new ScrollingSuggestionDisplay());
 		textBox.setLimit(1000);
 		textBox.setAutoSelectEnabled(false);
+		
 		initWidget(uiBinder.createAndBindUi(this));
 
 		horizontalPanel.setCellWidth(label, "20%");
@@ -207,4 +224,81 @@ public class SimpleItemView extends Composite implements SimpleItemPresenter.Dis
 		}
 
     }
+
+	@Override
+	public void addEventListeners() {
+		simpleItem.addMouseMoveHandler(new MouseMoveHandler() {
+			
+			@Override
+			public void onMouseMove(MouseMoveEvent event) {
+				event.preventDefault();
+				presenter.handleMouseEvent(true);
+			}
+		});
+		
+		simpleItem.addMouseOverHandler(new MouseOverHandler() {
+			
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				event.preventDefault();
+				presenter.handleMouseEvent(true);
+				
+			}
+		});
+		
+		simpleItem.addMouseOutHandler(new MouseOutHandler() {
+			
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				event.preventDefault();
+				presenter.handleMouseEvent(false);				
+			}
+		});	
+		
+		modificationButton.addEventHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {	
+				event.stopPropagation();
+				presenter.modifyElement();
+			}
+			
+		});
+	}
+
+	@Override
+	public void enableModification(boolean show) {
+		modificationButton.setVisible(show);
+	}
+	
+	@Override
+	public void handleDeleteAction(String name, PopupPresenter popup) {
+		String msg = "This action will permanently delete the '" + name 
+				+ "' element. Do you want to continue?";
+		enableModification(false);
+		showConfirmationPopup("Delete", msg, popup);
+	}
+	
+	private void showConfirmationPopup(String title, String msg, final PopupPresenter popup) {		
+		ClickHandler yesBtnHandler = new ClickHandler() {			
+			@Override
+			public void onClick(ClickEvent event) {
+				event.stopPropagation();
+				presenter.deleteElement();
+			}
+		};
+		
+		ClickHandler noBtnHandler = new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				event.stopPropagation();
+				presenter.cancelDelete();
+			}
+		};
+		
+		popup.setText(title);
+		popup.setContent(msg);
+		popup.setConfirmation(yesBtnHandler, noBtnHandler);
+		popup.display();	
+	}
 }
