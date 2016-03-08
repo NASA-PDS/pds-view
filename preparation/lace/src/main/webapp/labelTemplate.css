@@ -127,23 +127,25 @@ body#editorPage a:hover {
 	background-color: #E8E8E8;
 	font-family: 'lucida grande';
 	width: 30em;
-	border: none;
-}
-
-.simpleItem input[type="text"]:focus {
-	border: 2px groove #E0E0E0;
+	border: 2px solid transparent;
 }
 
 .simpleItem input[type="text"].hasSuggestions:focus {
-	background: #E8E8E8 url("assets/dropdown-arrow.png") no-repeat right center;
+	background: #FFF url("assets/dropdown-arrow.png") no-repeat right center;
 }
 
 .simpleItem:hover {
 	background-color: #FFF;
 }
 
-.simpleItem:hover .simpleItem input[type="text"] {	
-	background-color: #E8E8E8;
+/*.simpleItem:hover .simpleItem input[type="text"] {*/
+.simpleItem input[type="text"]:hover {	
+	background-color: #E8E8E8;	
+}
+
+.simpleItem input[type="text"]:focus {
+	border: 2px groove #E0E0E0;
+	background-color: #FFF;
 }
 
 /*----------------------------------*
@@ -156,14 +158,6 @@ body#editorPage a:hover {
     background-color:  #E8E8E8; /*#F1F1F1*/
     position: relative;
 }
-
-/*.container:hover {
-	background-color: #FFF;
-}*/
-
-/*.container.expanded {
-	background-color: #E8E8E8;
-} */
   	
  /*----------------------------------*
 		INSERTION POINT WIDGET
