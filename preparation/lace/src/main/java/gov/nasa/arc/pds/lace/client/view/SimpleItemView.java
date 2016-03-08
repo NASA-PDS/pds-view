@@ -12,6 +12,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -104,7 +106,14 @@ public class SimpleItemView extends Composite implements SimpleItemPresenter.Dis
 			@Override
 			public void onBlur(BlurEvent event) {
 				value.removeStyleName(FOCUS_STYLE);
-				presenter.saveValue(textBox.getValue());
+			}
+		});
+		
+		textBox.getValueBox().addValueChangeHandler(new ValueChangeHandler<String>() {
+			
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+				presenter.saveValue(event.getValue());
 			}
 		});
 	}

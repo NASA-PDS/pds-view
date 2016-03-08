@@ -138,13 +138,12 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 	}
 
 	private boolean isInputValid(String value) {
-		boolean valid = true;
-		if (value == null || value.trim().length() == 0) {
-			valid = false;
+		if (curValue == null && (value == null || value.trim().isEmpty())) {
+			return false;
 		}
 		if (value.equals(curValue)) {
-			valid = false;
+			return false;
 		}
-		return valid;
+		return true;
 	}
 }

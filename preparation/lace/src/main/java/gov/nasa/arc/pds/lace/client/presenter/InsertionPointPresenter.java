@@ -16,8 +16,8 @@ import com.google.inject.Inject;
 
 /**
  * Implements the presenter for a widget that displays an insertion point as
- * a plus button, or an optional panel for inserting an optional element or a
- * required panel for inserting an element from a list of choices. 
+ * a plus button, or an optional panel for inserting an optional complex 
+ * element or a required panel for inserting an element from a list of choices. 
  */
 public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.Display> {
 	
@@ -66,7 +66,6 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 	}
 	
 	private EventBus bus;
-	private List<LabelItemType> alternatives;
 	private PopupPresenter popup;
 	private InsertionPoint insPoint;
 	private ContainerPresenter parentPresenter;
@@ -97,8 +96,7 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 	public void display(InsertionPoint insPoint, ContainerPresenter parentPresenter, int top, int right) {
 		assert insPoint != null;
 
-		this.insPoint = insPoint;
-		this.alternatives = insPoint.getAlternatives();	
+		this.insPoint = insPoint;		
 		this.parentPresenter = parentPresenter;
 		togglePanels(top, right);
 	}
@@ -117,7 +115,7 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 	 * @param event
 	 */
 	public void handlePlusButtonClickEvent(ClickEvent event) {
-		showPopup(this.alternatives, "Add an element");		
+		showPopup("Add an element");		
 	}
 	
 	/**
@@ -126,17 +124,13 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 	 * @param event
 	 */
 	public void handleRequiredPanelClickEvent(ClickEvent event) {
-		showPopup(this.alternatives, "Choose an element");		
+		showPopup("Choose an element");		
 	}
 	
-	/**
-	 * 
-	 * @param alternatives
-	 * @param text
-	 */
-	private void showPopup(List<LabelItemType> alternatives, String text) {
+	private void showPopup(String text) {
 		int count = 0;
 		final ListBox listbox = new ListBox();
+		List<LabelItemType> alternatives = insPoint.getAlternatives();
 		
 		// Add items within the insertable range to the list box
 		for (int i = insPoint.getInsertFirst(); i <= insPoint.getInsertLast(); ++i) {
