@@ -209,11 +209,6 @@ public class LabelReader {
 
 		LabelItemType type = insPoint.getAlternatives().get(alternativeIndex);
 
-		InsertionPoint newInsertionPoint = (InsertionPoint) insPoint.copy();
-
-		insPoint.setInsertLast(alternativeIndex);
-		insPoint.setUsedAfter(alternativeIndex);
-
 		LabelElement newElement = createLabelElement(type);
 		if (newElement instanceof Container) {
 			matchContainer(e, (Container) newElement);
@@ -223,28 +218,29 @@ public class LabelReader {
 			throw new IllegalArgumentException("Unexpected label item type: " + newElement.getClass().getName());
 		}
 
-		// If this is an optional element insertion point with max occurrences of 1,
-		// just add the container to the list. Otherwise, change the display type of
-		// the insertion point to "plus_button" and split it.
-		String newDisplayType = insPoint.getDisplayType();
-		if (insPoint.getDisplayType().equals(InsertionPoint.DisplayType.OPTIONAL.getDisplayType())) {
+		// If this is an optional element or a choice insertion point with max occurrences of 1,
+		// just add the container or the choice item to the list. Otherwise, change the display
+		// type of the insertion point to "plus_button" and split it.
+		String displayType = insPoint.getDisplayType();
+		if (displayType.equals(InsertionPoint.DisplayType.OPTIONAL.getDisplayType())
+				|| displayType.equals(InsertionPoint.DisplayType.CHOICE.getDisplayType())) {
 			if (type.getMaxOccurrences() == 1) {
 				it.set(newElement);
 				return nextItem(it);
 			}
+			
+			insPoint.setDisplayType(InsertionPoint.DisplayType.PLUS_BUTTON.getDisplayType());
+		} 
+		
+		InsertionPoint newInsertionPoint = (InsertionPoint) insPoint.copy();
 
-			newDisplayType = InsertionPoint.DisplayType.PLUS_BUTTON.getDisplayType();
-		} else if (insPoint.getDisplayType().equals(InsertionPoint.DisplayType.CHOICE.getDisplayType())) {
-			newDisplayType = InsertionPoint.DisplayType.PLUS_BUTTON.getDisplayType();
-		}
-
-		insPoint.setDisplayType(newDisplayType);
-		newInsertionPoint.setDisplayType(newDisplayType);
-
-		it.add(newElement);
+		insPoint.setInsertLast(alternativeIndex);
+		insPoint.setUsedAfter(alternativeIndex);
 
 		newInsertionPoint.setInsertFirst(alternativeIndex);
 		newInsertionPoint.setUsedBefore(alternativeIndex);
+
+		it.add(newElement);
 		it.add(newInsertionPoint);
 
 		// If the type is unbounded, stay on the insertion point, else skip ahead.
