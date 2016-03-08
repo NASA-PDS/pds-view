@@ -45,12 +45,6 @@ public class InsertionPointView extends Composite implements InsertionPointPrese
 	Image plusButton;
 
 	@UiField
-	Image optionalIcon;
-
-	@UiField
-	Image choiceIcon;
-
-	@UiField
 	InlineLabel optionalTitle;
 
 	@UiField
@@ -70,9 +64,6 @@ public class InsertionPointView extends Composite implements InsertionPointPrese
 
 		plusButton.setResource(Resources.INSTANCE.getPlusButton());
 		plusButton.addStyleName("plusButton");
-		choiceIcon.setResource(Resources.INSTANCE.getLargeCubeAlertIcon());
-		optionalIcon.setResource(Resources.INSTANCE.getDimmedCubeIcon());
-		optionalIcon.addStyleName("middle");
 	}
 
 	@Override

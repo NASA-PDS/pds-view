@@ -221,4 +221,9 @@ public class InsertionPoint extends LabelItem {
 		}
 	}
 
+	@Override
+	public boolean isComplete() {		
+		return false;
+	}
+
 }

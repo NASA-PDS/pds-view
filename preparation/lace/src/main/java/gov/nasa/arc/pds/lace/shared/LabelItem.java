@@ -5,8 +5,6 @@ import java.io.Serializable;
 /**
  * Represents items within a label template which are either insertion points or elements.
  * The insertion points and elements have underlying types.
- *
- * @author psarram
  */
 public abstract class LabelItem implements Cloneable, Serializable {
 
@@ -24,6 +22,13 @@ public abstract class LabelItem implements Cloneable, Serializable {
 	 */
 	public abstract boolean isRequired();
 
+	/**
+	 * Tests whether this item is complete. 
+	 * 
+	 * @return true, if this item is complete, false otherwise
+	 */
+	public abstract boolean isComplete();
+	
 	/**
 	 * Returns a copy of this label item. An alternative to clone(),
 	 * since that is not supported in GWT.

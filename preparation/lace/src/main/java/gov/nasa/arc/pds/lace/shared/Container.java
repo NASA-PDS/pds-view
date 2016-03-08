@@ -92,4 +92,9 @@ public class Container extends LabelElement {
 		}
 	}
 
+	@Override
+	public boolean isComplete() {
+		return false;
+	}
+
 }

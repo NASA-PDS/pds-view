@@ -1,16 +1,13 @@
 package gov.nasa.arc.pds.lace.client.view;
 
 import gov.nasa.arc.pds.lace.client.presenter.TreePresenter;
-import gov.nasa.arc.pds.lace.client.resources.Resources;
 import gov.nasa.arc.pds.lace.client.resources.TreeResources;
 
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -21,7 +18,11 @@ import com.google.gwt.user.client.ui.TreeItem;
 public class TreeView extends Composite implements TreePresenter.Display {
 
 	private static final String TREE_WIDGET_ID = "treeWidget";
-
+	private static final String SMALL_ICON_CLASSNAME = "small icon";
+	private static final String ALERT_ICON_CLASSNAME= "alertIcon";
+	private static final String ALERT_CLASSNAME= "alert";
+	private static final String MIDDLE_CLASSNAME= "middle";
+	
 	private Tree tree;
 	private TreePresenter presenter;
 
@@ -55,19 +56,19 @@ public class TreeView extends Composite implements TreePresenter.Display {
 	}
 
 	@Override
-	public void addRootItem(TreeItem root, String name) {
-		root.setHTML(createTreeNodeHtml(Resources.INSTANCE.getObjectIcon(), name));
+	public void addRootItem(TreeItem root, String name, String icon, boolean isComplete) {
+		root.setHTML(createTreeNodeHtml(name, icon, isComplete));
 		tree.addItem(root);
 	}
 
 	@Override
-	public TreeItem addChildItem(TreeItem parent, String name) {
-		return parent.addItem(createTreeNodeHtml(Resources.INSTANCE.getObjectIcon(), name));
+	public TreeItem addChildItem(TreeItem parent, String name, String icon, boolean isComplete) {
+		return parent.addItem(createTreeNodeHtml(name, icon, isComplete));
 	}
 
 	@Override
-	public TreeItem insertItem(TreeItem parent, String name, int index) {
-		return parent.insertItem(index, createTreeNodeHtml(Resources.INSTANCE.getObjectIcon(), name));
+	public TreeItem insertItem(TreeItem parent, String name, String icon, boolean isComplete, int index) {
+		return parent.insertItem(index, createTreeNodeHtml(name, icon, isComplete));
 	}
 	
 	@Override
@@ -85,12 +86,20 @@ public class TreeView extends Composite implements TreePresenter.Display {
 		return tree.getSelectedItem();
 	}
 	
-	private SafeHtml createTreeNodeHtml(ImageResource image, String label) {
+	private SafeHtml createTreeNodeHtml(String label, String icon, boolean isComplete) {
+		String className = SMALL_ICON_CLASSNAME + " " + MIDDLE_CLASSNAME + " " + icon;
+		if (!isComplete) {
+			className = className + " " + ALERT_CLASSNAME;
+		}
+		
 		SafeHtmlBuilder sb = new SafeHtmlBuilder();
-		sb.append(SafeHtmlUtils.fromTrustedString(AbstractImagePrototype.create(image).getHTML()));
-		sb.append(SafeHtmlUtils.fromTrustedString("<span>"));
+		sb.append(SafeHtmlUtils.fromTrustedString("<div class='" + className + "'>"));		
+		sb.append(SafeHtmlUtils.fromTrustedString("<div class='" + ALERT_ICON_CLASSNAME + "'></div>"));
+		sb.append(SafeHtmlUtils.fromTrustedString("</div>"));
+		sb.append(SafeHtmlUtils.fromTrustedString("<span class='" + MIDDLE_CLASSNAME + "'>"));
 		sb.appendEscaped(label);
 		sb.append(SafeHtmlUtils.fromTrustedString("</span>"));
+		
 		return sb.toSafeHtml();
 	}
 }

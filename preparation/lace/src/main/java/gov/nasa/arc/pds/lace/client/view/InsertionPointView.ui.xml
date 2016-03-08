@@ -5,14 +5,16 @@
 		<g:HTMLPanel ui:field="buttonPanel" styleName="plusButtonPanel">	
 			<g:Image ui:field="plusButton"></g:Image>
 		</g:HTMLPanel>				
-		<g:FlowPanel ui:field="requiredPanel" styleName="requiredPanel">			
-			<g:Image ui:field="choiceIcon"></g:Image>
-			<g:InlineLabel ui:field="requiredLabel" styleName="font large" text="Choice: An element is required in this location" />
+		<g:FlowPanel ui:field="requiredPanel" styleName="requiredPanel">						
+			<g:HTMLPanel styleName="cube alert icon middle">
+    			<g:HTMLPanel styleName="alertIcon"></g:HTMLPanel>
+  			</g:HTMLPanel>
+			<g:InlineLabel ui:field="requiredLabel" styleName="font large middle" text="Choice: An element is required in this location" />
 			<g:InlineHyperlink ui:field="choiceLink" text="Click to choose" />
 		</g:FlowPanel>				
-		<g:FlowPanel ui:field="optionalPanel" styleName="optionalPanel">			
-			<g:Image ui:field="optionalIcon"></g:Image>
-			<g:InlineLabel ui:field="optionalTitle" styleName="font large"></g:InlineLabel>	
+		<g:FlowPanel ui:field="optionalPanel" styleName="optionalPanel">
+			<g:HTMLPanel styleName="dimmedCube icon middle"></g:HTMLPanel>
+			<g:InlineLabel ui:field="optionalTitle" styleName="font large middle"></g:InlineLabel>	
 			<g:InlineHyperlink ui:field="optionalLink" text="Optional, click to include" />
 		</g:FlowPanel>
 	</g:FlowPanel>		

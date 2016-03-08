@@ -56,4 +56,9 @@ public class SimpleItem extends LabelElement {
 		}
 	}
 
+	@Override
+	public boolean isComplete() {
+		return false;
+	}
+
 }

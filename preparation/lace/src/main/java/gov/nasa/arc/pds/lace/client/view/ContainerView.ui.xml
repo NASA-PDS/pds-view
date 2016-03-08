@@ -3,9 +3,11 @@
 				
 	<g:HTMLPanel ui:field="container">
 		<g:HTMLPanel ui:field="titlePanel" styleName="hide">
-			<g:Image ui:field="expandIcon" />			
-			<img ui:field="typeIcon" class="middle" />
-			<span ui:field="title" class="title font large"></span>
+			<g:Image ui:field="arrowIcon" />	
+			<div ui:field="typeIcon" class="icon middle">
+    			<div class="alertIcon"></div>
+  			</div>
+			<span ui:field="title" class="font large middle"></span>
 		</g:HTMLPanel>
 		<g:FlowPanel ui:field="contentPanel" styleName="editorContentPanel hide content containerContent"></g:FlowPanel>
 	</g:HTMLPanel>	

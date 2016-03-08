@@ -3,6 +3,7 @@ package gov.nasa.arc.pds.lace.client.presenter;
 import gov.nasa.arc.pds.lace.client.event.ContainerChangedEvent;
 import gov.nasa.arc.pds.lace.client.event.ContainerChangedEvent.EventDetails;
 import gov.nasa.arc.pds.lace.client.event.TreeItemSelectionEvent;
+import gov.nasa.arc.pds.lace.client.resources.IconLookup;
 import gov.nasa.arc.pds.lace.client.service.LabelContentsServiceAsync;
 import gov.nasa.arc.pds.lace.shared.Container;
 import gov.nasa.arc.pds.lace.shared.LabelItem;
@@ -43,27 +44,35 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 		 *
 		 * @param root the tree root item
 		 * @param name the root item label
+		 * @param icon the icon class name which corresponds to the container type
+		 * @param isComplete flag to indicate whether the container is complete
 		 */
-		void addRootItem(TreeItem root, String name);
+		void addRootItem(TreeItem root, String name, String icon, boolean isComplete);
 
 		/**
 		 * Adds a child tree item to the parent item.
 		 *
 		 * @param parent the parent tree item
 		 * @param name the child item name
+		 * @param icon the icon class name which corresponds to the container type
+		 * @param isComplete flag to indicate whether the container is complete
+		 * 
 		 * @return TreeItem the item that was added
 		 */
-		TreeItem addChildItem(TreeItem parent, String name);
+		TreeItem addChildItem(TreeItem parent, String name, String icon, boolean isComplete);
 		
 		/**
 		 * Inserts a child tree item to the parent item at the specified index.
 		 *
 		 * @param parent the parent tree item
 		 * @param name the child item name
+		 * @param icon the icon class name which corresponds to the container type
+		 * @param isComplete flag to indicate whether the container is complete
 		 * @param index the index where the item will be inserted
+		 * 
 		 * @return TreeItem the item that was added
 		 */
-		TreeItem insertItem(TreeItem parent, String name, int index);
+		TreeItem insertItem(TreeItem parent, String name, String icon, boolean isComplete, int index);
 
 		/**
 		 * Sets whether the children of a tree item should be displayed or not.
@@ -89,6 +98,7 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 	}
 
 	private EventBus bus;
+	private IconLookup lookup;
 	private Map<TreeItem, Container> map = new HashMap<TreeItem, Container>();
 
 	/**
@@ -102,11 +112,13 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 	public TreePresenter(
 			Display view,
 			EventBus bus,
+			IconLookup lookup,
 			LabelContentsServiceAsync labelContentsService
 	) {
 		super(view);
 		this.bus = bus;
 		this.labelContentsService = labelContentsService;
+		this.lookup = lookup;
 		view.setPresenter(this);
 		getRootContainer(ELEMENT_NAME);
 
@@ -164,13 +176,18 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 		TreeItem root = new TreeItem();
 		Display view = getView();
 		view.removeAllItems();
-		view.addRootItem(root, type.getElementName());
+		view.addRootItem(
+				root,
+				type.getElementName(),
+				lookup.getIconClassName(type),
+				container.isComplete()
+		);
 		
 		map.clear();
 		map.put(root, container);
 		
 		processTreeItemChildren(view, root, container.getContents());
-		view.setSelectedItem(root);  // Select the root item in the tree
+		view.setSelectedItem(root); // Select the root item in the tree
 	}
 
 	/**
@@ -197,7 +214,15 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 		
 		// Find the position where the new container should be inserted in the tree.
 		int pos = parseContents(container.getContents()).indexOf(newContainer);
-		TreeItem newItem = view.insertItem(changedItem, newContainer.getType().getElementName(), pos);
+		LabelItemType type = newContainer.getType();
+		TreeItem newItem = view.insertItem(
+				changedItem,
+				type.getElementName(),
+				lookup.getIconClassName(type),
+				newContainer.isComplete(),
+				pos
+		);
+		
 		processTreeItemChildren(view, newItem, newContainer.getContents());
 		map.put(newItem, newContainer);
 		
@@ -251,12 +276,19 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 	private void processTreeItemChildren(Display view, TreeItem parent, List<LabelItem> labelItems) {
 		assert (labelItems != null);
 
-		int size = labelItems.size();
+		int size = labelItems.size();		
 		for (int i = 0; i < size; i++) {
-			LabelItem labelItem = labelItems.get(i);
-			if (labelItem instanceof Container) {
+			LabelItem labelItem = labelItems.get(i);			
+			if (labelItem instanceof Container) {			
 				Container container = (Container) labelItem;
-				TreeItem childItem = view.addChildItem(parent, container.getType().getElementName());
+				LabelItemType type = container.getType();				
+				TreeItem childItem = view.addChildItem(
+						parent,
+						type.getElementName(),
+						lookup.getIconClassName(type),
+						container.isComplete()
+				);
+				
 				map.put(childItem, container);
 				processTreeItemChildren(view, childItem, container.getContents());
 			}

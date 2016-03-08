@@ -5,12 +5,13 @@ import gov.nasa.arc.pds.lace.client.event.ContainerChangedEvent;
 import gov.nasa.arc.pds.lace.client.event.ElementSelectionEvent;
 import gov.nasa.arc.pds.lace.client.event.ElementSelectionEvent.EventDetails;
 import gov.nasa.arc.pds.lace.client.event.ElementSelectionEventHandler;
-import gov.nasa.arc.pds.lace.client.resources.Resources;
+import gov.nasa.arc.pds.lace.client.resources.IconLookup;
 import gov.nasa.arc.pds.lace.client.service.LabelContentsServiceAsync;
 import gov.nasa.arc.pds.lace.shared.Container;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
 import gov.nasa.arc.pds.lace.shared.LabelElement;
 import gov.nasa.arc.pds.lace.shared.LabelItem;
+import gov.nasa.arc.pds.lace.shared.LabelItemType;
 import gov.nasa.arc.pds.lace.shared.ResultType;
 import gov.nasa.arc.pds.lace.shared.SimpleItem;
 
@@ -20,7 +21,6 @@ import java.util.List;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -56,11 +56,13 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		String getContainerTitle();
 
 		/**
-		 * Sets the container type icon.
+		 * Sets an icon representing the container type. For an incomplete container,
+		 * an alert icon will be also displayed.
 		 *
-		 * @param image
+		 * @param className the CSS class name that represents an icon for this container type
+		 * @param isComplete flag to indicate whether the container is complete  
 		 */
-		void setTypeIcon(ImageResource image);
+		void setIcon(String className, boolean isComplete);
 
 		/**
 		 * Adds the given widget to the container's content area.
@@ -96,15 +98,16 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		 */
 		void remove(int index);
 	}
-
-	// Flag indicating whether the content is shown or not.
-	private boolean isContentShown = false;
+	
+	// Flag to indicate whether the content is shown or not.
+	private boolean isContentShown = false; 
 	private Container container;
 	private AppInjector injector;
 	private EventBus bus;
 	private LabelContentsServiceAsync service;
 	private HandlerRegistration handler;
 	private ContainerPresenter presenter;
+	private IconLookup lookup;
 	
 	// TODO: Use the provider interface instead of the injector to get the objects.
 	/**
@@ -119,6 +122,7 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 	public ContainerPresenter(
 			Display view,
 			EventBus bus,
+			IconLookup lookup,
 			AppInjector injector,
 			LabelContentsServiceAsync service
 	) {
@@ -127,8 +131,9 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		this.bus = bus;
 		this.service = service;
 		this.presenter = this;
+		this.lookup = lookup;
 		view.setPresenter(this);
-		
+				
 		attachHandler();
 	}
 	
@@ -147,8 +152,9 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		if (contentOnly) {
 			showContent(container.getContents());
 		} else {
-			view.setContainerTitle(container.getType().getElementName());
-			view.setTypeIcon(Resources.INSTANCE.getLargeCubeIcon());
+			LabelItemType type = container.getType();
+			view.setContainerTitle(type.getElementName());
+			view.setIcon(lookup.getIconClassName(type), container.isComplete());
 		}
 	}
 

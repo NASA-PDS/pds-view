@@ -89,6 +89,7 @@ body#editorPage a:hover {
 
 #editorPage .gwt-Tree .gwt-TreeItem-selected {
 	color: #2576BD;	
+	padding: 7px 3px 11px 0px;
 }
 
 #editorPage .gwt-Tree .gwt-TreeItem img {
@@ -233,7 +234,7 @@ body#editorPage a:hover {
 	display: block;
 }
 
-img.middle {
+.middle {
 	vertical-align: middle;	
 }
 
@@ -258,7 +259,7 @@ img.middle {
 }
 
 /*----------------------------------*
-		File Upload Widget
+		FILE UPLOAD WIDGET
  *----------------------------------*/
 .popupButtonCotnainer {
 	text-align: right;
@@ -274,7 +275,7 @@ img.middle {
 }
 
 /*----------------------------------*
-		Box Shadow Styles
+		BOX SHADOW
  *----------------------------------*/
 .one-edge-shadow {
 	-webkit-box-shadow: 0 7px 6px -6px #4B4B4B;
@@ -286,7 +287,7 @@ img.middle {
  * Styles for customizing the autocomplete dropdowns.
  */
  
-.suggestScrollContent{
+.suggestScrollContent {
     height: auto;
     width: auto !important;
     max-width: 400px;
@@ -294,3 +295,101 @@ img.middle {
     overflow: auto;
     padding-right: 18px;
 }
+
+/*----------------------------------*
+		ICONS
+ *----------------------------------*/
+.icon,
+.alertIcon {
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.icon {  
+	display: inline-block;
+	position: relative;
+	width: 50px;
+	height: 50px;
+}
+
+.icon .alertIcon {
+	background-image: url("images/icon-alert-med.png");
+	display: none;
+	position: absolute;
+	width: 17px;
+	height: 17px;
+	top: 2px;
+	right: 3px;
+	z-index: 1;
+}
+
+.icon.alert .alertIcon {
+	display: block;
+}
+
+.icon.cube {
+	background-image: url("images/icon-cube.png");	
+}
+
+.icon.dimmedCube {
+	background-image: url("images/icon-cube-dimmed.png");
+}
+
+.icon.image2D {
+	background-image: url("images/icon-image-2d.png");
+}
+
+.icon.imageND {
+	background-image: url("images/icon-image-nd.png");
+}
+
+.icon.array2D {
+	background-image: url("images/icon-array-2d.png");
+}
+
+.icon.arrayND {
+	background-image: url("images/icon-array-nd.png");
+}
+
+.icon.spectrum2D {
+	background-image: url("images/icon-spectrum-2d.png");
+}
+
+.icon.spectrumND {
+	background-image: url("images/icon-spectrum-nd.png");
+}
+
+.icon.map {
+	background-image: url("images/icon-map.png");
+}
+
+.icon.file {
+	background-image: url("images/icon-file.png");
+}
+
+.icon.field {
+	background-image: url("images/icon-field.png");
+}
+
+.icon.text {
+	background-image: url("images/icon-text.png");
+}
+
+.icon.table {
+	background-image: url("images/icon-table.png");
+}	
+
+.icon.data {
+	background-image: url("images/icon-data-generic.png");	
+}
+
+.icon.small {
+	width: 36px;
+	height: 36px;	
+}
+
+.icon.small .alertIcon {
+	width: 13px;
+	height: 13px;
+}
+

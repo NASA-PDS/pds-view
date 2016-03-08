@@ -5,7 +5,6 @@ import gov.nasa.arc.pds.lace.client.resources.Resources;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ImageResource;
@@ -27,6 +26,8 @@ public class ContainerView extends Composite implements ContainerPresenter.Displ
 	
 	private static final ImageResource EDIT_ARROW_COLLAPSED = Resources.INSTANCE.editArrowCollapsed();
 	private static final ImageResource EDIT_ARROW_EXPANDED = Resources.INSTANCE.editArrowExpanded();
+	private static final String ALERT_CLASSNAME = "alert";
+	private static final String MIDDLE_CLASSNAME = "middle";
 	
 	private static ContainerViewUiBinder uiBinder = GWT.create(ContainerViewUiBinder.class);	
 		 	
@@ -36,10 +37,10 @@ public class ContainerView extends Composite implements ContainerPresenter.Displ
 	Element title;
 	
 	@UiField
-	Image expandIcon;
+	Image arrowIcon;
 	
 	@UiField
-	ImageElement typeIcon;
+	Element typeIcon;
 	
 	@UiField
 	FlowPanel contentPanel;
@@ -55,8 +56,9 @@ public class ContainerView extends Composite implements ContainerPresenter.Displ
 	 */
 	public ContainerView() {
 		initWidget(uiBinder.createAndBindUi(this));		
-		expandIcon.setResource(EDIT_ARROW_COLLAPSED);
-		expandIcon.setTitle("Open");
+		arrowIcon.setResource(EDIT_ARROW_COLLAPSED);
+		arrowIcon.setTitle("Open");
+		arrowIcon.setStyleName(MIDDLE_CLASSNAME);		
 	}
 
 	@Override
@@ -75,8 +77,11 @@ public class ContainerView extends Composite implements ContainerPresenter.Displ
 	}
 	
 	@Override
-	public void setTypeIcon(ImageResource image) {
-		typeIcon.setSrc(image.getSafeUri().asString());
+	public void setIcon(String className, boolean isComplete) {
+		typeIcon.addClassName(className);
+		if (!isComplete) {
+			typeIcon.addClassName(ALERT_CLASSNAME);
+		}		
 	}
 	
 	@Override
@@ -99,13 +104,13 @@ public class ContainerView extends Composite implements ContainerPresenter.Displ
 		if (contentPanel.getStyleName().contains("hide")) {			
 			contentPanel.removeStyleName("hide");
 			contentPanel.addStyleName("display");
-			expandIcon.setResource(EDIT_ARROW_EXPANDED);	
-			expandIcon.setTitle("Close");			
+			arrowIcon.setResource(EDIT_ARROW_EXPANDED);	
+			arrowIcon.setTitle("Close");			
 		} else {
 			contentPanel.removeStyleName("display");
 			contentPanel.addStyleName("hide");
-			expandIcon.setResource(EDIT_ARROW_COLLAPSED);
-			expandIcon.setTitle("Open");			
+			arrowIcon.setResource(EDIT_ARROW_COLLAPSED);
+			arrowIcon.setTitle("Open");			
 		}
 	}	
 	
@@ -118,7 +123,7 @@ public class ContainerView extends Composite implements ContainerPresenter.Displ
 		} else {
 			titlePanel.removeStyleName("hide");
 			container.addStyleName("container");			 			 
-			expandIcon.addClickHandler(new ClickHandler() {
+			arrowIcon.addClickHandler(new ClickHandler() {
 				
 				@Override
 				public void onClick(ClickEvent e) {		
