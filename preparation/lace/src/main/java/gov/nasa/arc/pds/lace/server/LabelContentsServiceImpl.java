@@ -8,6 +8,7 @@ import gov.nasa.arc.pds.lace.server.parse.ValidationAnalyzer;
 import gov.nasa.arc.pds.lace.shared.Container;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
 import gov.nasa.arc.pds.lace.shared.LabelItem;
+import gov.nasa.arc.pds.lace.shared.LabelItemType;
 import gov.nasa.arc.pds.lace.shared.ResultType;
 import gov.nasa.arc.pds.lace.shared.SimpleItem;
 import gov.nasa.arc.pds.lace.shared.exception.SchemaInitializationException;
@@ -81,7 +82,7 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 			Container container,
 			InsertionPoint insPoint,
 			int alternativeIndex,
-			int typeIndex
+			LabelItemType type
 	) {	
 		List<LabelItem> contents = container.getContents();
 		List<LabelItem> oldContents = new ArrayList<LabelItem>();
@@ -94,7 +95,7 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 		contents.remove(pos);
 		
 		// Insert a new container.
-		List<LabelItem> list = analyzer.doInsert(insPoint, alternativeIndex, typeIndex);
+		List<LabelItem> list = analyzer.doInsert(insPoint, alternativeIndex, type);
 		for (LabelItem item : list) {
 			contents.add(pos, item);
 			++pos;
@@ -128,11 +129,11 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 		assert from != -1;
 		assert to != -1;
 		
-		ResultType type = new ResultType();
-		type.setNewItems(newItems);
-		type.setFromIndex(from);
-		type.setToIndex(to);
-		return type;
+		ResultType result = new ResultType();
+		result.setNewItems(newItems);
+		result.setFromIndex(from);
+		result.setToIndex(to);
+		return result;
 	}
 
 	@Override

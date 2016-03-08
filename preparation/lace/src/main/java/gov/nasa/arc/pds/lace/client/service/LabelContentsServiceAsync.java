@@ -2,6 +2,7 @@ package gov.nasa.arc.pds.lace.client.service;
 
 import gov.nasa.arc.pds.lace.shared.Container;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
+import gov.nasa.arc.pds.lace.shared.LabelItemType;
 import gov.nasa.arc.pds.lace.shared.ResultType;
 import gov.nasa.arc.pds.lace.shared.SimpleItem;
 
@@ -12,7 +13,7 @@ public interface LabelContentsServiceAsync {
 	void getRootContainer(String elementName, AsyncCallback<Container> callback);
 
 	void updateContainer(Container container, InsertionPoint insPoint,
-			int alternativeIndex, int typeIndex, AsyncCallback<ResultType> callback);
+			int alternativeIndex, LabelItemType type, AsyncCallback<ResultType> callback);
 
 	void getContainerForFile(String filePath, AsyncCallback<Container> callback);
 

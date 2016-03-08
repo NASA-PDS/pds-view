@@ -231,53 +231,56 @@ public class ModelAnalyzer {
 	 * Performs an insertion of a label element from an insertion point.
 	 * 
 	 * @param insPoint the insertion point at which to insert a required element
-	 * @param insertOption the InsertOption instance that holds the item which is to be inserted
+	 * @param alternativeIndex the index of the InsertOption instance that holds
+	 * the item which is to be inserted
 	 * @param type the label item type to insert
 	 * @return
 	 */
-	public List<LabelItem> doInsert(InsertionPoint insPoint, int alternativeIndex, int typeIndex) {
-		int index;
-		InsertionPoint insPointToSplit;		
-		List<LabelItem> items = new ArrayList<LabelItem>();
+	public List<LabelItem> doInsert(InsertionPoint insPoint, int alternativeIndex, LabelItemType type) {
 		List<InsertOption> alternatives = insPoint.getAlternatives();
 		assert alternatives.size() > 0 && alternatives.size() <= 2;
+		
+		int index = 0;
+		boolean merge = false;
+		InsertionPoint insPointToSplit = insPoint;		
+		List<LabelItem> items = new ArrayList<LabelItem>();		
 
 		// Increase the "used" counter by 1.
 		InsertOption alternative = alternatives.get(alternativeIndex);
 		alternative.setUsedOccurrences(alternative.getUsedOccurrences() + 1);
 		
 		// Create the new element and link it to the insert option.
-		LabelElement newElement = createLabelElement(alternative.getTypes().get(typeIndex));
+		LabelElement newElement = createLabelElement(type);
 		newElement.setInsertOption(alternative);
 		
 		if (insPoint.getDisplayType().equals(PLUS_DISPLAY_TYPE) && alternatives.size() > 1) {
-			// Need to merge after splitting and inserting.
+			// Since there is more than one alternative (technically there are
+			// only two), split the existing insertion point to two, with the 
+			// first one pointing to the first alternative and the second to
+			// the second alternative.
 			InsertionPoint insPoint1 = (InsertionPoint) insPoint.copy(false);		
 			InsertionPoint insPoint2 = (InsertionPoint) insPoint.copy(false);
 			insPoint1.getAlternatives().remove(1);
 			insPoint2.getAlternatives().remove(0);
-			
-			items.add(insPoint1);
-			items.add(insPoint2);
 
+			// Find the insertion point that contains the alternative
+			// that we want to insert for further splitting.
 			if (insPoint1.getAlternatives().contains(alternative)) {
 				insPointToSplit = insPoint1;
+				items.add(insPoint2);
 			} else {
 				insPointToSplit = insPoint2;
+				items.add(insPoint1);
+				index = 1;
 			}
-						
-			index = items.indexOf(insPointToSplit);
-			items.remove(index);
+			
+			merge = true;
 		} else {
-			// Change the display type to "plus" button if it's not already of that type.
-			if (!insPoint.getDisplayType().equals(PLUS_DISPLAY_TYPE)) {
-				insPoint.setDisplayType(PLUS_DISPLAY_TYPE);
-			}
-			insPointToSplit = insPoint;
-			index = 0;
+			// Change the display type to "plus" button if it's not already of that type.			
+			insPoint.setDisplayType(PLUS_DISPLAY_TYPE);
 		}
 
-		// Split the existing insertion point.
+		// Split the insertion point.
 		InsertionPoint first = (InsertionPoint) insPointToSplit.copy(false);		
 		InsertionPoint second = (InsertionPoint) insPointToSplit.copy(false);
 		
@@ -285,7 +288,11 @@ public class ModelAnalyzer {
 		items.add(index++, first);
 		items.add(index++, newElement);
 		items.add(index, second);
-					
+		
+		if (merge) {			 
+			mergeInsertionPoints(items);
+		}	
+		
 		// And, expand any insertion points in the newly inserted element.
 		expandInsertionPoints(newElement);
 
@@ -621,12 +628,12 @@ public class ModelAnalyzer {
 					}
 
 					// OK, found an adjacent insertion point.
-					InsertionPoint first = (InsertionPoint) curItem;
-					
+					//
 					// For some reason we can't do simply:
 					//   first.getAlternatives().addAll(second.getAlternatives());
 					// It gives an UnsupportedOperationException. So we have
 					// to add them to a new list.
+					InsertionPoint first = (InsertionPoint) curItem;
 					List<InsertOption> newAlternatives = new ArrayList<InsertOption>();
 					newAlternatives.addAll(first.getAlternatives());
 					for (InsertOption insertOption : ((InsertionPoint) nextItem).getAlternatives()) {
@@ -638,7 +645,7 @@ public class ModelAnalyzer {
 										
 					// Replace the nextItem with the merged insertion point (first)
 					// and go back in the list and remove curItem
-					it.set(((InsertionPoint) curItem).copy(false));
+					it.set(first.copy(false));
 					it.previous();
 					it.previous();
 					it.remove();

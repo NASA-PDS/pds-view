@@ -108,12 +108,18 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 	}
 	
 	/**
-	 * Handles a click on the link inside the optional  panel.
+	 * Handles a click on the link inside the optional panel.
 	 * 
 	 * @param event
 	 */
 	public void handleOptionalPanelClickEvent(ClickEvent event) {			
-		bus.fireEvent(new ElementSelectionEvent(0, 0, insPoint, parentPresenter, null));				
+		bus.fireEvent(new ElementSelectionEvent(
+				0,
+				insPoint.getAlternatives().get(0).getTypes().get(0),
+				insPoint,
+				parentPresenter,
+				null
+		));				
 	}
 	
 	/**
@@ -184,7 +190,7 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 		
 		bus.fireEvent(new ElementSelectionEvent(
 				alternativeIndex,
-				alternatives.get(alternativeIndex).getTypes().indexOf(type),
+				type,
 				insPoint,
 				parentPresenter,
 				popup
@@ -236,7 +242,7 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 			} else {
 				view.showOptionalPanel(false);
 				
-				if (isMaxExhaused()) {
+				if (isMaxExhausted()) {
 					view.showPlusButton(false);
 				} else {
 					view.showPlusButton(true);
@@ -245,8 +251,8 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 			}			
 		}
 	}
-	// TODO: name correct?
-	private boolean isMaxExhaused() {
+
+	private boolean isMaxExhausted() {
 		List<InsertOption> alternatives = insPoint.getAlternatives();
 		for (InsertOption alternative : alternatives) {
 			if (alternative.getMaxOccurrences() != alternative.getUsedOccurrences()) {

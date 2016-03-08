@@ -305,7 +305,7 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 	private void insertElement(EventDetails data) {
 		
 		service.updateContainer(container, data.getInsertionPoint(), data.getAlternativeIndex(),
-				data.getTypeIndex(), new AsyncCallback<ResultType>() {
+				data.getType(), new AsyncCallback<ResultType>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

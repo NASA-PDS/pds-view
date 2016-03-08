@@ -3,6 +3,7 @@ package gov.nasa.arc.pds.lace.client.event;
 import gov.nasa.arc.pds.lace.client.presenter.ContainerPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.PopupPresenter;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
+import gov.nasa.arc.pds.lace.shared.LabelItemType;
 
 /**
  * Implements an event that is fired when an element is selected
@@ -19,7 +20,7 @@ public class ElementSelectionEvent extends GenericEvent<ElementSelectionEvent.Ev
 	 */
 	public static class EventDetails {
 				
-		private int typeIndex;
+		private LabelItemType type;
 		private int alternativeIndex;
 		private InsertionPoint insPoint;		
 		private PopupPresenter popup;
@@ -30,26 +31,26 @@ public class ElementSelectionEvent extends GenericEvent<ElementSelectionEvent.Ev
 		 */
 		public EventDetails(
 				int alternativeIndex,
-				int typeIndex,
+				LabelItemType type,
 				InsertionPoint insPoint,
 				ContainerPresenter parentPresenter,
 				PopupPresenter popup
 		) {			
 			this.alternativeIndex = alternativeIndex;
-			this.typeIndex = typeIndex;
+			this.type = type;
 			this.insPoint = insPoint;			
 			this.popup = popup;
 			this.parentPresenter = parentPresenter;
 		}	
 		
 		/**
-		 * Gets the position of the label item type that matches
+		 * Gets the label item type that matches
 		 * the selected element in the related insert option. 
 		 * 
-		 * @return the index of the selected type
+		 * @return the selected label item type
 		 */
-		public int getTypeIndex() {
-			return typeIndex;
+		public LabelItemType getType() {
+			return type;
 		}
 		
 		/**
@@ -98,7 +99,7 @@ public class ElementSelectionEvent extends GenericEvent<ElementSelectionEvent.Ev
 	 * an item from the list of alternatives at position index.
 	 * 
 	 * @param alternativeIndex the index of the selected insert option
-	 * @param typeIndex index of the selected item type 
+	 * @param type the selected item type 
 	 * @param insPoint the insertion point object
 	 * @param parentPresenter the parent container presenter that
 	 * the insertion point object is a child of
@@ -106,12 +107,12 @@ public class ElementSelectionEvent extends GenericEvent<ElementSelectionEvent.Ev
 	 */
 	public ElementSelectionEvent(
 			int alternativeIndex,
-			int typeIndex,
+			LabelItemType type,
 			InsertionPoint insPoint,
 			ContainerPresenter parentPresenter,
 			PopupPresenter popup
 	) {
-		super(new EventDetails(alternativeIndex, typeIndex, insPoint, parentPresenter, popup), TYPE);
+		super(new EventDetails(alternativeIndex, type, insPoint, parentPresenter, popup), TYPE);
 	}
 }
 
