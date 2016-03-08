@@ -14,6 +14,11 @@ public class ContainerChangedEventTest {
 		ContainerChangedEvent event = new ContainerChangedEvent(container, true);
 		assertSame(event.getData().getContainer(), container);
 		assertTrue(event.getData().isRootContainer());
+		
+		Container newContainer = new Container();		
+		event = new ContainerChangedEvent(container, newContainer);		
+		assertSame(event.getData().getContainer(), container);
+		assertSame(event.getData().getNewContainer(), newContainer);
+		assertTrue(!event.getData().isRootContainer());
 	}
-
 }

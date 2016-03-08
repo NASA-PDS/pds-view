@@ -1,7 +1,7 @@
 package gov.nasa.arc.pds.lace.client.event;
 
+import gov.nasa.arc.pds.lace.client.presenter.ContainerPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.PopupPresenter;
-import gov.nasa.arc.pds.lace.shared.Container;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
 
 /**
@@ -22,16 +22,21 @@ public class ElementSelectionEvent extends GenericEvent<ElementSelectionEvent.Ev
 		private int index;
 		private InsertionPoint insPoint;		
 		private PopupPresenter popup;
-		private Container parentContainer;
+		private ContainerPresenter parentPresenter;
 
 		/**
 		 * Creates a new instance of <code>EventDetails</code>
 		 */
-		public EventDetails(int index, InsertionPoint insPoint, Container container, PopupPresenter popup) {			
+		public EventDetails(
+				int index,
+				InsertionPoint insPoint,
+				ContainerPresenter parentPresenter,
+				PopupPresenter popup
+		) {			
 			this.index = index;
 			this.insPoint = insPoint;			
 			this.popup = popup;
-			this.parentContainer = container;
+			this.parentPresenter = parentPresenter;
 		}	
 		
 		/**
@@ -54,12 +59,12 @@ public class ElementSelectionEvent extends GenericEvent<ElementSelectionEvent.Ev
 		}
 		
 		/**
-		 * Returns the container in which the insertion point object is a child of.
+		 * Returns the container presenter that the insertion point object is a child of.
 		 *  
-		 * @return a container object
+		 * @return the parent container presenter
 		 */
-		public Container getParentContainer() {
-			return parentContainer;
+		public ContainerPresenter getParentPresenter() {
+			return parentPresenter;
 		}
 		
 		/**
@@ -78,11 +83,13 @@ public class ElementSelectionEvent extends GenericEvent<ElementSelectionEvent.Ev
 	 * 
 	 * @param index index of the selected item
 	 * @param insPoint the insertion point object
-	 * @param container the parent container object that holds the insertion point.
+	 * @param parentPresenter the parent container presenter that
+	 * the insertion point object is a child of
 	 * @param popup
 	 */
-	public ElementSelectionEvent(int index, InsertionPoint insPoint, Container container, PopupPresenter popup) {
-		super(new EventDetails(index, insPoint, container, popup), TYPE);
+	public ElementSelectionEvent(int index, InsertionPoint insPoint,
+			ContainerPresenter parentPresenter, PopupPresenter popup) {
+		super(new EventDetails(index, insPoint, parentPresenter, popup), TYPE);
 	}
 }
 

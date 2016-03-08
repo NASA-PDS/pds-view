@@ -24,18 +24,32 @@ public class ContainerChangedEvent extends GenericEvent<ContainerChangedEvent.Ev
 	 */
 	public static class EventDetails {
 	
-		private Container container; 
+		private Container container;
 		private boolean rootContainer;
+		private Container newContainer;
 		
 		/**
 		 * Creates an instance of the <code>EventDetails</code> object.
 		 * 
-		 * @param container the changed container
+		 * @param container the new root container or a changed container
 		 * @param rootContainer flag to indicate whether the changed container is root or not
 		 */
 		public EventDetails(Container container, boolean rootContainer) {
 			this.container = container;
 			this.rootContainer = rootContainer; 
+		}
+		
+		/**
+		 * Creates an instance of the <code>EventDetails</code> object.
+		 * 
+		 * @param container the changed container
+		 * @param newContainer the newly inserted container
+		 * 
+		 */
+		public EventDetails(Container container, Container newContainer) {
+			this.container = container;	
+			this.newContainer = newContainer;
+			this.rootContainer = false;
 		}
 		
 		public Container getContainer() {
@@ -44,7 +58,11 @@ public class ContainerChangedEvent extends GenericEvent<ContainerChangedEvent.Ev
 		
 		public boolean isRootContainer() {
 			return rootContainer;
-		}		
+		}
+		
+		public Container getNewContainer() {
+			return newContainer;
+		}
 	}
 
 	/**
@@ -55,5 +73,15 @@ public class ContainerChangedEvent extends GenericEvent<ContainerChangedEvent.Ev
 	 */
 	public ContainerChangedEvent(Container container, boolean rootContainer) {
 		super(new EventDetails(container, rootContainer), TYPE);
+	}
+	
+	/**
+	 * Creates a new instance with the given data.
+	 *	
+	 * @param container the changed container 
+	 * @param newContainer the newly inserted container
+	 */
+	public ContainerChangedEvent(Container container, Container newContainer) {
+		super(new EventDetails(container, newContainer), TYPE);
 	}
 }

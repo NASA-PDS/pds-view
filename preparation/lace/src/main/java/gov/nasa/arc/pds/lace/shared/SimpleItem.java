@@ -3,8 +3,6 @@ package gov.nasa.arc.pds.lace.shared;
 /**
  * Represents a simple element within a label template
  * with a textual value.
- *
- * @author psarram
  */
 public class SimpleItem extends LabelElement {
 
@@ -16,7 +14,7 @@ public class SimpleItem extends LabelElement {
 	 * Creates an instance of <code>SimpleItem</code>.
 	 */
 	public SimpleItem() {
-
+		// nothing to do
 	}
 
 	/**

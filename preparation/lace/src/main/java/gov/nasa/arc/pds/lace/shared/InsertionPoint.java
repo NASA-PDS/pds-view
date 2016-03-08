@@ -53,7 +53,7 @@ public class InsertionPoint extends LabelItem {
 	 * Creates an instance of <code>InsertionPoint</code>.
 	 */
 	public InsertionPoint() {
-
+		// nothing to do
 	}
 
 	/**

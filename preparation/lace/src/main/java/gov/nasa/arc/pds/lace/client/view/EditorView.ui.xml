@@ -11,7 +11,7 @@
 				</g:HTML>								
 			</g:north>
 			<g:center>
-				<g:FlowPanel ui:field="contentPanel" styleName="editorContentPanel"></g:FlowPanel>	
+				<g:FlowPanel ui:field="content" styleName="editorContentPanel"></g:FlowPanel>	
 			</g:center>
 		</g:DockLayoutPanel>
 </ui:UiBinder>

@@ -8,7 +8,7 @@ import gov.nasa.arc.pds.lace.server.parse.ValidationAnalyzer;
 import gov.nasa.arc.pds.lace.shared.Container;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
 import gov.nasa.arc.pds.lace.shared.LabelItem;
-import gov.nasa.arc.pds.lace.shared.LabelItemType;
+import gov.nasa.arc.pds.lace.shared.ResultType;
 import gov.nasa.arc.pds.lace.shared.SimpleItem;
 import gov.nasa.arc.pds.lace.shared.exception.SchemaInitializationException;
 
@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -78,25 +77,57 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 	}
 
 	@Override
-	public Container updateContainer(Container container, InsertionPoint insPoint, int index) {
-		LabelItemType selectedType = insPoint.getAlternatives().get(index);
-		List<LabelItem> list = new ArrayList<LabelItem>();
-		insertContainer(insPoint, selectedType, selectedType.getInitialContents(), list);
-
+	public ResultType updateContainer(Container container, InsertionPoint insPoint, int index) {
 		List<LabelItem> contents = container.getContents();
-		int pos = contents.indexOf(insPoint);
-		contents.remove(pos);
-
-		for (LabelItem item : list) {
-			LabelItem copy = item.copy();
-			analyzer.expandInsertionPoints(copy);
-			contents.add(pos, copy);
-			++pos;
+		List<LabelItem> oldContents = new ArrayList<LabelItem>();
+		for (LabelItem item : contents) {
+			oldContents.add(item);
 		}
 		
+		// Remove the selected insertion point from the contents.
+		int pos = contents.indexOf(insPoint);
+		contents.remove(pos);
+		
+		// Insert a new container.
+		List<LabelItem> list = analyzer.doInsert(insPoint, index);
+		for (LabelItem item : list) {
+			contents.add(pos, item);
+			++pos;
+		}								
+		
+		// Merge the insertion points, if any, in the updated contents list. 
 		analyzer.mergeInsertionPoints(contents);
-		container.setContents(contents);
-		return container;
+		
+		// Create a list of new items by comparing the old and updated contents list.
+		List<LabelItem> newItems = new ArrayList<LabelItem>();		
+		for (LabelItem item : contents) {
+			if (!oldContents.contains(item)) {
+				newItems.add(item);
+			}
+		}
+		
+		// Find the start and end indices to determine the range of
+		// objects that should be removed from the old contents list.
+		int from = -1;
+		int to = -1;
+		for (int i = 0; i < oldContents.size(); i++) {
+			LabelItem item = oldContents.get(i);
+			if (!contents.contains(item)) {
+				if (from == -1) {
+					from = i;
+				}
+				to = i;
+			}
+		}	
+		
+		assert from != -1;
+		assert to != -1;
+		
+		ResultType type = new ResultType();
+		type.setContents(newItems);
+		type.setFromIndex(from);
+		type.setToIndex(to);
+		return type;
 	}
 
 	@Override
@@ -111,13 +142,12 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 	@Override
 	public Container saveSimplelItem(Container container, SimpleItem item, String value) {
 		List<LabelItem> content = container.getContents();
-		SimpleItem changedItem  = new SimpleItem();
 		int index;
 
 		if ((index = content.indexOf(item)) != -1) {
 			container.removeItem(index);
-			item.setValue(value);
-			changedItem = item;
+			SimpleItem changedItem = (SimpleItem) item.copy();
+			changedItem.setValue(value);
 			container.addItem(index, changedItem);
 		} else {
 			throw new NoSuchElementException("Could not find the simple item in the parent container.");
@@ -185,76 +215,7 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 		writer = new LabelWriter(schemaURI);
 		analyzer = new ModelAnalyzer(schemaURI);
 	}
-
-	/**
-	 * Creates a Container object for the given type and contents.
-	 */
-	private Container createContainer(LabelItemType type, List<LabelItem> contents) {
-		Container container = new Container();
-		container.setType(type);
-		List<LabelItem> newContents = new ArrayList<LabelItem>();
-		for (LabelItem item : contents) {
-			newContents.add(item.copy());
-		}
-		container.setContents(newContents);
-		return container;
-	}
-
-	private void insertContainer(InsertionPoint insPoint, LabelItemType type, List<LabelItem> contents, List<LabelItem> labelItems) {
-		Container container = createContainer(type, contents);
-
-		// If this is an optional element insertion point with max occurrences of 1,
-		// just add the container to the list. Otherwise, change the display type of
-		// the insertion point to "plus_button" and split it.
-		if (insPoint.getDisplayType().equals(InsertionPoint.DisplayType.OPTIONAL.getDisplayType())) {
-			if (type.getMaxOccurrences() == 1) {
-				labelItems.add(container);
-				return;
-			}
-
-			insPoint.setDisplayType(InsertionPoint.DisplayType.PLUS_BUTTON.getDisplayType());
-		} else if (insPoint.getDisplayType().equals(InsertionPoint.DisplayType.CHOICE.getDisplayType())) {
-			insPoint.setDisplayType(InsertionPoint.DisplayType.PLUS_BUTTON.getDisplayType());
-		}
-
-		List<LabelItemType> alternatives = insPoint.getAlternatives();
-		int start = insPoint.getUsedBefore() + 1;
-
-		// Split the insertion point
-		InsertionPoint insPoint1 = createInsertionPoint(
-				alternatives,
-				insPoint.getInsertFirst(),
-				start,
-				insPoint.getUsedBefore(),
-				start,
-				insPoint.getDisplayType()
-		);
-		InsertionPoint insPoint2 = createInsertionPoint(
-				alternatives,
-				start,
-				insPoint.getInsertLast(),
-				start,
-				insPoint.getUsedAfter(),
-				insPoint.getDisplayType()
-		);
-
-		labelItems.add(insPoint1);
-		labelItems.add(container);
-		labelItems.add(insPoint2);
-	}
-
-	private InsertionPoint createInsertionPoint(List<LabelItemType> alternatives,
-			int insertFirst, int insertLast, int usedBefore, int usedAfter, String displayType) {
-		InsertionPoint insPoint = new InsertionPoint();
-		insPoint.setAlternatives(alternatives);
-		insPoint.setInsertFirst(insertFirst);
-		insPoint.setInsertLast(insertLast);
-		insPoint.setUsedBefore(usedBefore);
-		insPoint.setUsedAfter(usedAfter);
-		insPoint.setDisplayType(displayType);
-		return insPoint;
-	}
-
+	
 	@Override
 	public String writeModel(Container container) throws IOException, SchemaInitializationException {
 		@SuppressWarnings("deprecation")
@@ -272,5 +233,4 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 		out.close();
 		return tempFile.getName();
 	}
-
 }

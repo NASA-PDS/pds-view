@@ -7,7 +7,7 @@
   
   <xs:annotation>
     <xs:documentation>
-      This schema is for testimg the ModelAnalyzer class.
+      This schema is for testing the ModelAnalyzer class.
     </xs:documentation>
   </xs:annotation>
   
@@ -177,5 +177,42 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  
+  <!-- 
+  	Tests of a complex schema where the contents of the top-level
+  	element is a complex container that has a complex container of
+  	the same type inside.   
+   -->  
+   
+  <xs:complexType name="RepeatingContainer">
+  	<xs:choice minOccurs="1" maxOccurs="unbounded">
+  		<xs:element name="SimpleValue" type="xs:string" />
+  		<xs:element name="Container" type="RepeatingContainer" />		
+  	</xs:choice>
+  </xs:complexType>  
+  
+  <xs:element name="Repeating1">
+    <xs:complexType>      
+      <xs:sequence>        
+        <xs:element name="Container" type="RepeatingContainer" />        
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="RepeatingContainer2">
+  	<xs:sequence>
+  		<xs:element name="SimpleValue" type="xs:string" />
+  		<xs:element name="Container" type="RepeatingContainer2" />		
+  	</xs:sequence>
+  </xs:complexType>  
+  
+  <xs:element name="Repeating2">
+    <xs:complexType>      
+      <xs:sequence>        
+        <xs:element name="Container" type="RepeatingContainer2" />        
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
   
 </xs:schema>

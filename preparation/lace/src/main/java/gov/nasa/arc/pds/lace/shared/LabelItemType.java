@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implements an object that holds typing information for model
- * objects.
- *
- * @author psarram
+ * Implements an object that holds typing information for model objects.
  */
 public class LabelItemType implements Serializable {
 
@@ -29,11 +26,9 @@ public class LabelItemType implements Serializable {
 
 	private List<String> validValues;			// A list of valid values, or null if there is no validation.
 
-	/**
-	 *
-	 */
+	/** Creates a new label item type instance. */
 	public LabelItemType() {
-
+		// nothing to do
 	}
 
 	/**
@@ -76,9 +71,8 @@ public class LabelItemType implements Serializable {
 		return isComplex;
 	}
 
-
 	/**
-	 * Sets flag indicating this type is a container for sub-elements or not.
+	 * Sets a flag to indicate whether this type is a container for sub-elements or not.
 	 *
 	 * @param flag true, if the item is a container for sub-elements
 	 */
@@ -265,5 +259,4 @@ public class LabelItemType implements Serializable {
 			+ minLength) * 17
 			+ minOccurrences;
 	}
-
 }

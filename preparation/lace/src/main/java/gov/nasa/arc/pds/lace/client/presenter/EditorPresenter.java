@@ -10,7 +10,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 /**
- * Implements the presenter for a widget that displays the editor.
+ * Implements the presenter for a widget that displays the
+ * editor (edit view) which consists of a title and a content.
  */
 public class EditorPresenter extends Presenter<EditorPresenter.Display> {
 
@@ -22,7 +23,7 @@ public class EditorPresenter extends Presenter<EditorPresenter.Display> {
 		/**
 		 * Sets the editor's title.
 		 *
-		 * @param title the name of the container being selected in the tree.
+		 * @param title the name of the container being loaded in the editor.
 		 */
 		void setTitle(String title);
 
@@ -32,14 +33,15 @@ public class EditorPresenter extends Presenter<EditorPresenter.Display> {
 		void clearContent();
 		
 		/**
-		 * Shows the specified widget as the editor's content. 
+		 * Shows the specified widget in the editor.
 		 * 
-		 * @param widget the widget that represents the editor's content
+		 * @param widget the container widget 
 		 */
-		void showContent(Widget widget);
+		void show(Widget widget);
 	}
 	
-	private AppInjector injector;	
+	private AppInjector injector;
+	private ContainerPresenter containerPresenter;
 
 	/**
 	 * Creates an instance of the editor presenter.
@@ -59,25 +61,29 @@ public class EditorPresenter extends Presenter<EditorPresenter.Display> {
 		this.injector = injector;
 
 		bus.addHandler(TreeItemSelectionEvent.TYPE, new TreeItemSelectionEventHandler() {
+			
 			@Override
 			public void onEvent(Container container) {
 				load(container);
 			}
+			
 		});		
 	}
 
 	/**
 	 * Loads the specified container in the editor.
 	 *
-	 * @param container the container to show in the editor
+	 * @param container the container to load in the editor
 	 */
-	public void load(Container container) {		
-		getView().setTitle(container.getType().getElementName());
-		updateContent(container);							
+	private void load(Container container) {
+		if (containerPresenter != null) {
+			containerPresenter.removeHandler();										
+		}
+		containerPresenter = injector.getContainerPresenter();
+		containerPresenter.display(container, true);
+		
+		Display view = getView();
+		view.setTitle(container.getType().getElementName());
+		view.show(containerPresenter.asWidget());
 	}
-
-	private void updateContent(Container container) {		
-		getView().clearContent();
-		getView().showContent(injector.getContainerPresenter().getContent(container));
-	}	
 }

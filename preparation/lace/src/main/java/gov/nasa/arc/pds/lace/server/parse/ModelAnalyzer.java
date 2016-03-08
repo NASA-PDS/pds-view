@@ -2,10 +2,10 @@ package gov.nasa.arc.pds.lace.server.parse;
 
 import gov.nasa.arc.pds.lace.shared.Container;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
+import gov.nasa.arc.pds.lace.shared.InsertionPoint.DisplayType;
 import gov.nasa.arc.pds.lace.shared.LabelItem;
 import gov.nasa.arc.pds.lace.shared.LabelItemType;
 import gov.nasa.arc.pds.lace.shared.SimpleItem;
-import gov.nasa.arc.pds.lace.shared.InsertionPoint.DisplayType;
 
 import java.net.URI;
 import java.util.AbstractList;
@@ -125,7 +125,7 @@ public class ModelAnalyzer {
 	}
 
 	/**
-	 * Expand any insertion points in a list of label items. If an
+	 * Expands any insertion points in a list of label items. If an
 	 * insertion point is found, insert any required elements that
 	 * have not already been inserted. And recursively expand
 	 * insertion points in any child items of a container.
@@ -179,11 +179,16 @@ public class ModelAnalyzer {
 
 		// Create the new item.
 		LabelItemType type = insPoint.getAlternatives().get(alternativeIndex);
+		List<LabelItem> initialContents = type.getInitialContents();
 		LabelItem newItem;
 		if (!type.isComplex()) {
 			newItem = createSimpleItem(type);
 		} else {
-			newItem = createContainer(type, type.getInitialContents());
+			List<LabelItem> contents = new ArrayList<LabelItem>();
+			for (LabelItem item : initialContents) {
+				contents.add(item.copy());
+			}
+			newItem = createContainer(type, contents);
 		}
 
 		// Clone the insertion point.
@@ -225,6 +230,55 @@ public class ModelAnalyzer {
 		expandInsertionPoints(newItem);
 	}
 
+	public List<LabelItem> doInsert(InsertionPoint insPoint, int alternativeIndex) {
+		List<LabelItem> items = new ArrayList<LabelItem>();
+				
+		// Create the new item.
+		LabelItemType type = insPoint.getAlternatives().get(alternativeIndex);
+		List<LabelItem> initialContents = type.getInitialContents();
+		LabelItem newItem;
+		if (!type.isComplex()) {
+			newItem = createSimpleItem(type);
+		} else {			
+			List<LabelItem> contents = new ArrayList<LabelItem>();
+			for (LabelItem item : initialContents) {
+				contents.add(item.copy());
+			}
+			newItem = createContainer(type, contents);
+		}
+
+		// And, expand any insertion points in the newly inserted item.
+		expandInsertionPoints(newItem);
+		
+		// If this is not a repeating optional element,
+		// just add the new item to the list.		
+		if (insPoint.getDisplayType().equals(InsertionPoint.DisplayType.OPTIONAL.getDisplayType())) {
+			if (type.getMaxOccurrences() == 1) {
+				items.add(newItem);
+				return items;
+			}
+		}	
+		
+		// Change the display type of the insertion point to "plus" button.
+		insPoint.setDisplayType(InsertionPoint.DisplayType.PLUS_BUTTON.getDisplayType());
+
+		// Clone the insertion point.
+		InsertionPoint newInsPoint1 = (InsertionPoint) insPoint.copy();
+		newInsPoint1.setInsertLast(alternativeIndex);
+		newInsPoint1.setUsedAfter(alternativeIndex);
+		
+		InsertionPoint newInsPoint2 = (InsertionPoint) insPoint.copy();
+		newInsPoint2.setInsertFirst(0);
+		newInsPoint2.setInsertLast(newInsPoint2.getInsertLast());
+		newInsPoint2.setUsedBefore(alternativeIndex);
+		newInsPoint2.setUsedAfter(newInsPoint2.getUsedAfter());
+		
+		items.add(newInsPoint1);
+		items.add(newItem);
+		items.add(newInsPoint2);
+
+		return items;
+	}
 	/*
 	 * Creates a LabelItemType object for the given element.
 	 */
@@ -256,12 +310,15 @@ public class ModelAnalyzer {
 		return labelItems;
 	}
 
-	/*
+	/**
 	 * Parses the term for the particle which can be an element declaration or a model group.
+	 * 
+	 * @param particle
+	 * @param labelItems	
 	 */
 	private void parseParticle(XSParticle particle, List<LabelItem> labelItems) {
 		if (particle == null) {
-			// TODO: use logger to log errors.
+			// TODO: throw new NullPointerException("Particle is null");
 			System.out.println("Particle is null.");
 			return;
 		}
@@ -337,9 +394,6 @@ public class ModelAnalyzer {
 		}
 	}
 
-	/*
-	 * Creates a Container object for the given type and contents.
-	 */
 	private Container createContainer(LabelItemType type, List<LabelItem> contents) {
 		Container container = new Container();
 		container.setType(type);
@@ -370,10 +424,6 @@ public class ModelAnalyzer {
 		return insPoint;
 	}
 
-	/*
-	 * Creates a SimpleItem object for the given simple type element to
-	 * the initialContents of the type currently being constructed.
-	 */
 	private LabelItemType createSimpleItemType(XSElementDeclaration element, XSSimpleTypeDefinition type, XSParticle particle) {
 		return createLabelItemType(
 				element,
@@ -385,9 +435,6 @@ public class ModelAnalyzer {
 		);
 	}
 
-	/*
-	 * Parses the choice or sequence model group.
-	 */
 	private void parseModelGroup(XSModelGroup group, XSParticle particle, List<LabelItem> labelItems) {
 		switch (group.getCompositor()) {
 		case XSModelGroup.COMPOSITOR_ALL:
@@ -408,8 +455,8 @@ public class ModelAnalyzer {
 	}
 
 	/*
-	 * Adds an InsertionPoint if the sequence is optional. Otherwise, parses the contents of
-	 * the sequence and adds to the initialContents of the type currently being constructed.
+	 * Adds an InsertionPoint if sequence is optional. Otherwise, parses the contents of
+	 * sequence and adds to the initialContents of the type currently being constructed.
 	 */
 	private void parseSequence(XSModelGroup group, XSParticle particle, List<LabelItem> labelItems) {
 		if (particle.getMinOccurs() == 0) {
@@ -423,25 +470,17 @@ public class ModelAnalyzer {
 	}
 
 	/*
-	 * Adds an InsertionPoint. Parses the choice model group to create LabelItemType objects
-	 * to form the alternatives list for the insertion point. May not need to support 1..1
-	 * or 0..1 in version 1.
+	 * Parses the choice model group to create LabelItemType objects to form the alternatives list for the new insertion point.
+	 * May not need to support 1..1 or 0..1 in version 1.
 	 */
-	private void addInsertionPointForChoice(XSModelGroup group, List<LabelItem> labelItems, XSParticle particle) {
-		XSObjectList particles = group.getParticles();
+	private void addInsertionPointForChoice(XSModelGroup group, List<LabelItem> labelItems, XSParticle particle) {		
 		List<LabelItemType> alternatives = new ArrayList<LabelItemType>();
-
+		XSObjectList particles = group.getParticles();
+		
 		for (int i = 0; i < particles.getLength(); i++) {
 			XSParticle itemParticle = (XSParticle) particles.item(i);
-			// Assume the term for each particle inside the choice
-			// model group is an element declaration.
+			// Assume the term for the particle inside the choice model group is an element declaration.
 			XSElementDeclaration element = (XSElementDeclaration) itemParticle.getTerm();
-
-			// TODO: remove this check?
-			if (findKnownType(element, element.getTypeDefinition()) != null) {
-				break;
-			}
-
 			LabelItemType type = parseChoiceElementDefinition(element, particle);
 			alternatives.add(type);
 		}
@@ -452,8 +491,7 @@ public class ModelAnalyzer {
 	private LabelItemType parseChoiceElementDefinition(XSElementDeclaration element, XSParticle particle) {
 		LabelItemType type = null;
 		XSTypeDefinition typeDefinition = element.getTypeDefinition();
-
-		// TODO: remove this check?
+		
 		if (findKnownType(element, typeDefinition) != null) {
 			return findKnownType(element, typeDefinition);
 		}
@@ -473,9 +511,10 @@ public class ModelAnalyzer {
 					particle.getMinOccurs(),
 					particle.getMaxOccurs(),
 					true,
-					getTypeInitialContents((XSComplexTypeDefinition) typeDefinition),
+					null,
 					typeDefinition
-			);
+			);			
+			type.setInitialContents(getTypeInitialContents((XSComplexTypeDefinition) typeDefinition));
 		}
 
 		return type;
@@ -496,11 +535,11 @@ public class ModelAnalyzer {
 	 */
 	public void mergeInsertionPoints(List<LabelItem> labelItems) {
 
-		ListIterator<LabelItem> it = labelItems.listIterator();
+	ListIterator<LabelItem> it = labelItems.listIterator();
 
 		while (it.hasNext()) {
 			LabelItem curItem = it.next();
-
+			
 			if (isMergableInsertionPoint(curItem)) {
 				// Found an insertion point. Merge any adjacent insertion
 				// points.
@@ -514,7 +553,7 @@ public class ModelAnalyzer {
 					// OK, found an adjacent insertion point.
 					InsertionPoint first = (InsertionPoint) curItem;
 					InsertionPoint second = (InsertionPoint) nextItem;
-
+					
 					// For some reason we can't do simply:
 					//   first.getAlternatives().addAll(second.getAlternatives());
 					// It gives an UnsupportedOperationException. So we have
@@ -530,9 +569,15 @@ public class ModelAnalyzer {
 					first.setAlternatives(newAlternatives);
 					first.setInsertLast(first.getAlternatives().size() - 1);
 					first.setUsedAfter(first.getAlternatives().size());
-
+										
+					// Replace the nextItem (second) with the merged insertion point (first)
+					// and go back in the list and remove curItem
+					it.set((InsertionPoint) curItem.copy());
+					it.previous();
+					it.previous();
 					it.remove();
-				}
+					curItem = it.next();
+				}			
 			}
 		}
 	}

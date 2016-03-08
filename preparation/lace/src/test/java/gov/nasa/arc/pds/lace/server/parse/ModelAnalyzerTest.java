@@ -154,6 +154,33 @@ public class ModelAnalyzerTest {
 		assertEquals(item3.getType().getElementName(), "Container3");
 	}
 
+	@Test
+	public void testRepeatingContainers() {
+		Container root = analyzer.getContainerForElement("Repeating1", SCHEMA_NAMESPACE);
+		assertEquals(root.getContents().size(), 1);
+		
+		Container item1 = (Container) root.getContents().get(0);
+		assertEquals(item1.getType().getElementName(), "Container");
+		
+		InsertionPoint insPoint1 = (InsertionPoint) item1.getContents().get(0);
+		assertEquals(insPoint1.getAlternatives().size(), 2);
+		
+		assertEquals(insPoint1.getAlternatives().get(0).getElementName(), "SimpleValue");
+		assertEquals(insPoint1.getAlternatives().get(1).getElementName(), "Container");
+		
+		/*root = analyzer.getContainerForElement("Repeating2", SCHEMA_NAMESPACE);
+		assertEquals(root.getContents().size(), 1);
+		
+		item1 = (Container) root.getContents().get(0);
+		assertEquals(item1.getType().getElementName(), "Container");
+		
+		SimpleItem child1 = (SimpleItem) item1.getContents().get(0);
+		Container  child2 = (Container)  item1.getContents().get(1);
+		
+		assertEquals(child1.getType().getElementName(), "SimpleValue");
+		assertEquals(child2.getType().getElementName(), "Container");*/
+	}
+	
 	private boolean oldAndNewModelMatch;
 
 	@Test(enabled=false)

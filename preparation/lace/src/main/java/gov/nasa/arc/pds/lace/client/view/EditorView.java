@@ -12,8 +12,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * 
- * 
+ * A view class responsible for displaying the edit view (editor).
  */
 public class EditorView extends Composite implements EditorPresenter.Display {
 
@@ -30,7 +29,7 @@ public class EditorView extends Composite implements EditorPresenter.Display {
 	Element title;
 	
 	@UiField
-	FlowPanel contentPanel;
+	FlowPanel content;
 	
 	/**
 	 * Creates an instance of <code>EditorView</code>.
@@ -52,11 +51,12 @@ public class EditorView extends Composite implements EditorPresenter.Display {
 	
 	@Override
 	public void clearContent() {
-		contentPanel.clear();		
+		content.clear();		
 	}
 	
 	@Override
-	public void showContent(Widget widget) {		
-		contentPanel.add(widget);		
+	public void show(Widget widget) {
+		content.clear();
+		content.add(widget);		
 	}
 }

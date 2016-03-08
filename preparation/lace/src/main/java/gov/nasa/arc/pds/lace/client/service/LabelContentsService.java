@@ -2,6 +2,7 @@ package gov.nasa.arc.pds.lace.client.service;
 
 import gov.nasa.arc.pds.lace.shared.Container;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
+import gov.nasa.arc.pds.lace.shared.ResultType;
 import gov.nasa.arc.pds.lace.shared.SimpleItem;
 import gov.nasa.arc.pds.lace.shared.exception.SchemaInitializationException;
 
@@ -25,14 +26,15 @@ public interface LabelContentsService extends RemoteService {
 	Container getRootContainer(String elementName);
 
 	/**
-	 * Updates the container contents to reflect an insertion at an insertion point.
-	 *
-	 * @param container the container
+	 * Inserts the type at position index within the alternatives of the
+	 * specified insertion point and updates the contents of the container.
+	 * 
+	 * @param container the container to update
 	 * @param insPoint the insertion point an insertion should take place
-	 * @param index the index of the alternative to insert
-	 * @return the new container contents after the insertion occurs
+	 * @param index the index within the alternatives of the type to insert
+	 * @return the result type object
 	 */
-	Container updateContainer(Container container, InsertionPoint insPoint, int index);
+	ResultType updateContainer(Container container, InsertionPoint insPoint, int index);
 
 	/**
 	 * Parses a file that has been uploaded to the server and returns

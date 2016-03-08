@@ -121,7 +121,7 @@ public class InsertionPointView extends Composite implements InsertionPointPrese
 
 	@UiHandler("optionalLink")
 	public void onOptionalPanelClick(ClickEvent event) {
-		//event.stopPropagation();
+		event.stopPropagation();
 		presenter.handleOptionalPanelClickEvent(event);
 	}
 }

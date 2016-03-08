@@ -6,8 +6,6 @@ import java.util.List;
 /**
  * Represents a complex element within a label template
  * which can contain one or more <code>LabelItem</code>.
- *
- * @author psarram
  */
 public class Container extends LabelElement {
 
@@ -19,7 +17,7 @@ public class Container extends LabelElement {
 	 * Creates an instance of <code>Container</code>.
 	 */
 	public Container() {
-
+		// nothing to do
 	}
 
 	/**

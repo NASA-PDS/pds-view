@@ -3,21 +3,23 @@ package gov.nasa.arc.pds.lace.client.presenter;
 import gov.nasa.arc.pds.lace.client.AppInjector;
 import gov.nasa.arc.pds.lace.client.event.ContainerChangedEvent;
 import gov.nasa.arc.pds.lace.client.event.ElementSelectionEvent;
-import gov.nasa.arc.pds.lace.client.event.ElementSelectionEventHandler;
 import gov.nasa.arc.pds.lace.client.event.ElementSelectionEvent.EventDetails;
+import gov.nasa.arc.pds.lace.client.event.ElementSelectionEventHandler;
 import gov.nasa.arc.pds.lace.client.resources.Resources;
 import gov.nasa.arc.pds.lace.client.service.LabelContentsServiceAsync;
 import gov.nasa.arc.pds.lace.shared.Container;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
 import gov.nasa.arc.pds.lace.shared.LabelElement;
 import gov.nasa.arc.pds.lace.shared.LabelItem;
+import gov.nasa.arc.pds.lace.shared.ResultType;
 import gov.nasa.arc.pds.lace.shared.SimpleItem;
 
 import java.util.Iterator;
+import java.util.List;
 
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
@@ -61,18 +63,11 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		void setTypeIcon(ImageResource image);
 
 		/**
-		 * Gets the container type icon.
-		 *
-		 * @return
-		 */
-		ImageElement getTypeIcon();
-
-		/**
-		 * Adds the given widget to the content of the container.
+		 * Adds the given widget to the container's content area.
 		 *
 		 * @param widget the widget to add to the container's content
 		 */
-		void addContent(Widget widget);
+		void add(Widget widget);
 
 		/**
 		 * Clears the content of the container.
@@ -80,10 +75,26 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		void clearContent();
 		
 		/**
+		 * Inserts the specified widget at the given index.
 		 * 
-		 * @return
+		 * @param widget
+		 * @param index
 		 */
-		Widget getContent();
+		void insert(Widget widget, int index);
+
+		/**
+		 * Shows the widget.
+		 * 
+		 * @param contentOnly flag to indicate whether to show the content area or not
+		 */
+		void show(boolean contentOnly);
+
+		/**
+		 * Removes a widget at position index.
+		 * 
+		 * @param index
+		 */
+		void remove(int index);
 	}
 
 	// Flag indicating whether the content is shown or not.
@@ -92,6 +103,8 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 	private AppInjector injector;
 	private EventBus bus;
 	private LabelContentsServiceAsync service;
+	private HandlerRegistration handler;
+	private ContainerPresenter presenter;
 	
 	// TODO: Use the provider interface instead of the injector to get the objects.
 	/**
@@ -105,7 +118,7 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 	@Inject
 	public ContainerPresenter(
 			Display view,
-			final EventBus bus,
+			EventBus bus,
 			AppInjector injector,
 			LabelContentsServiceAsync service
 	) {
@@ -113,129 +126,182 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		this.injector = injector;
 		this.bus = bus;
 		this.service = service;
+		this.presenter = this;
 		view.setPresenter(this);
+		
+		attachHandler();
+	}
+	
+	/**
+	 * Displays the specified container.
+	 *
+	 * @param container the container object to display
+	 * @param contentOnly flag to indicate whether to display
+	 * the content or the whole widget
+	 */
+	public void display(Container container, boolean contentOnly) {
+		this.container = container;
+		Display view = getView();
+		view.show(contentOnly);
+		
+		if (contentOnly) {
+			showContent(container.getContents());
+		} else {
+			view.setContainerTitle(container.getType().getElementName());
+			view.setTypeIcon(Resources.INSTANCE.getLargeCubeIcon());
+		}
+	}
 
-		bus.addHandler(ElementSelectionEvent.TYPE, new ElementSelectionEventHandler() {
-			
+	public void removeHandler() {
+		handler.removeHandler();
+	}
+	
+	private void attachHandler() {
+		handler = bus.addHandler(ElementSelectionEvent.TYPE, new ElementSelectionEventHandler() {
+					
 			@Override
 			public void onEvent(EventDetails data) {
-				if (container.getContents().contains(data.getInsertionPoint())) {
-					GWT.log("insPoint matches contents");					
+				if (container.getContents().contains(data.getInsertionPoint()) &&
+						data.getParentPresenter().equals(presenter)) {
 					insertElement(data);
+						
 					if (data.getPopup() != null) {
 						data.getPopup().hide();
 					}
-				}
-				if (container.equals(data.getParentContainer())) {
-					GWT.log("container is the same as the parent container.");
 				}	
 			}
 			
 		});
 	}
-
-	/**
-	 * Displays the specified container.
-	 *
-	 * @param container the container object to display
-	 */
-	public void display(Container container) {
-		this.container = container;
-		Display view = getView();
-		view.setContainerTitle(container.getType().getElementName());
-		view.setTypeIcon(Resources.INSTANCE.getLargeCubeIcon());
-	}
-
+	
 	/**
 	 * Handles the click event which triggers when
 	 * the user clicks the expand/collapse icon.
 	 *
 	 * @param isExpanded
 	 */
-	public void handleContainerClickEvent(boolean isExpanded) {
-		// TODO: Use isExpanded flag
+	public void handleContainerClickEvent() {
 		if (!isContentShown) {
-			updateContent();
+			showContent(container.getContents());
 			isContentShown = true;
-		}
+		}	
 		getView().toggleContainer();
-	}
-	
-	/**
-	 * 
-	 * @param container
-	 * @return
-	 */
-	public Widget getContent(Container container) {
-		this.container = container;
-		updateContent();
-		return getView().getContent();			
-	}
-	
-	private void updateContent() {
-		Iterator<LabelItem> iterator = container.getContents().iterator();
-		while (iterator.hasNext()) {
-			Object item = iterator.next();
-			if (item instanceof LabelElement) {
-				// The label item is an element which can be
-				// either a container or a simple item.
-				LabelElement element = (LabelElement) item;
-				if (element.getType().isComplex()) {
-					showContainer((Container) element);
-				} else {
-					showSimpleItem((SimpleItem) element);
-				}
-			} else {
-				// The label item is an insertion point.
-				InsertionPoint insPoint = (InsertionPoint) item;
-				showInsertionPoint(insPoint);
-			}
-		}
-	}
-
-	private void showContainer(Container container) {
-		ContainerPresenter presenter = injector.getContainerPresenter();
-		presenter.display(container);
-		getView().addContent(presenter.asWidget());
-	}
-
-	private void showSimpleItem(SimpleItem element) {
-		SimpleItemPresenter presenter = injector.getSimpleItemPresenter();
-		presenter.display(element, container);
-		getView().addContent(presenter.asWidget());
-	}
-
-	private void showInsertionPoint(InsertionPoint insPoint) {
-		InsertionPointPresenter presenter = injector.getInsertionPointPresenter();
-		presenter.display(insPoint, container, -13, -13);
-		getView().addContent(presenter.asWidget());
-	}
+	}	
 
 	/**
-	 * Handles the ElementSelectionEvent event which is fired when an
-	 * element is selected from an insertion point. Inserts the selected
-	 * element to this container and updates the model object.
+	 * Handles the ElementSelectionEvent event which is fired when an element
+	 * is selected from an insertion point within this container. Inserts the
+	 * selected element to this container and updates the model object.
 	 *
 	 * @param data the event details
 	 */
-	private void insertElement(EventDetails data) {		
+	private void insertElement(EventDetails data) {
+		
 		service.updateContainer(container, data.getInsertionPoint(),
-				data.getIndex(), new AsyncCallback<Container>() {
+				data.getIndex(), new AsyncCallback<ResultType>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("The RPC call failed to update the container.");
+				GWT.log("The RPC call failed to update '" +
+						container.getType().getElementName() + "' container.");
 			}
 
-			@Override
-			public void onSuccess(Container result) {
-				container.setContents(result.getContents());
-				getView().clearContent();
-				updateContent();				
-				// Fire an event for the tree view to update itself.
-				bus.fireEvent(new ContainerChangedEvent(container, false));
+			@Override			
+			public void onSuccess(ResultType result) {							
+				int from = result.getFromIndex();
+				int to = result.getToIndex();
+				Container newContainer = updateContents(result.getContents(), from, to);
+				
+				if (newContainer != null) {
+					// Fire an event for the tree view to update itself.				
+					bus.fireEvent(new ContainerChangedEvent(container, newContainer));
+				}	
 			}
-
 		});
+	}
+	
+	private Container updateContents(List<LabelItem> newItems, int from, int to) {	
+		List<LabelItem> contents = container.getContents();	
+		Container newContainer = null;
+		Display view = getView();
+		int pos = from;
+	
+		// Remove objects within 'from' and 'to' indices
+		for (int i = from; i <= to; i++) {			
+			contents.remove(pos);
+			view.remove(pos);			
+		}
+			
+		// Add new items to the contents list starting at position 'from'
+		for (LabelItem item : newItems) {
+			contents.add(pos, item);			
+			
+			if (item instanceof Container) {
+				newContainer = (Container) item;
+				ContainerPresenter presenter = getPresenter(newContainer);				
+				view.insert(presenter.asWidget(), pos);				
+				presenter.handleContainerClickEvent();
+			} else {				
+				view.insert(getWidget(item), pos);
+			}			
+			pos++;
+		}		
+		
+		return newContainer; 
+	}
+	
+	private void showContent(List<LabelItem> contents) {									
+		Iterator<LabelItem> iterator = contents.iterator();			
+		while (iterator.hasNext()) {				
+			getView().add(getWidget(iterator.next()));			
+		}
+	}
+	
+	/**
+	 * Gets the widget for the specified label item (which can be a container,
+	 * a simple item or an insertion point).
+	 * 
+	 * @param item the label item 
+	 * @return
+	 */
+	private Widget getWidget(LabelItem item) {
+		Widget widget;
+		
+		if (item instanceof LabelElement) {
+			LabelElement element = (LabelElement) item;
+			if (element.getType().isComplex()) {
+				widget = getContainer((Container) element);				
+			} else {
+				widget = getSimpleItem((SimpleItem) element);
+			}
+		} else {
+			widget = getInsertionPoint((InsertionPoint) item);
+		}
+		
+		return widget;
+	}
+	
+	private Widget getContainer(Container container) {
+		ContainerPresenter presenter = injector.getContainerPresenter();
+		presenter.display(container, false);
+		return presenter.asWidget();
+	}
+	
+	private ContainerPresenter getPresenter(Container container) {
+		ContainerPresenter presenter = injector.getContainerPresenter();
+		presenter.display(container, false);
+		return presenter;
+	}
+
+	private Widget getSimpleItem(SimpleItem element) {
+		SimpleItemPresenter presenter = injector.getSimpleItemPresenter();
+		presenter.display(element, container);
+		return presenter.asWidget();
+	}
+
+	private Widget getInsertionPoint(InsertionPoint insPoint) {
+		InsertionPointPresenter presenter = injector.getInsertionPointPresenter();
+		presenter.display(insPoint, this, -13, -13);
+		return presenter.asWidget();
 	}
 }

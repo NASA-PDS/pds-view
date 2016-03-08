@@ -138,7 +138,6 @@ body#editorPage a:hover {
 	background-color: #FFF;
 }
 
-/*.simpleItem:hover .simpleItem input[type="text"] {*/
 .simpleItem input[type="text"]:hover {	
 	background-color: #E8E8E8;	
 }

@@ -16,14 +16,14 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 
 /**
- * A view class responsible for displaying a tree.
+ * A view class responsible for displaying the tree view.
  */
 public class TreeView extends Composite implements TreePresenter.Display {
 
 	private static final String TREE_WIDGET_ID = "treeWidget";
 
 	private Tree tree;
-	private TreePresenter presenter = null;
+	private TreePresenter presenter;
 
 	/**
 	 * Creates a new tree view.
@@ -32,13 +32,15 @@ public class TreeView extends Composite implements TreePresenter.Display {
 		TreeResources resources = new TreeResources();
 		tree = new Tree(resources);
 		initWidget(tree);
-
+		
 		tree.getElement().setId(TREE_WIDGET_ID);
-		tree.addSelectionHandler(new SelectionHandler<TreeItem>() {			
+		tree.addSelectionHandler(new SelectionHandler<TreeItem>() {
+
 			@Override
 			public void onSelection(SelectionEvent<TreeItem> event) {
 				presenter.handleItemSelection(event.getSelectedItem());
 			}
+			
 		});
 	}
 
@@ -60,9 +62,14 @@ public class TreeView extends Composite implements TreePresenter.Display {
 
 	@Override
 	public TreeItem addChildItem(TreeItem parent, String name) {
-		return addItem(parent, Resources.INSTANCE.getObjectIcon(), name);
+		return parent.addItem(createTreeNodeHtml(Resources.INSTANCE.getObjectIcon(), name));
 	}
 
+	@Override
+	public TreeItem insertItem(TreeItem parent, String name, int index) {
+		return parent.insertItem(index, createTreeNodeHtml(Resources.INSTANCE.getObjectIcon(), name));
+	}
+	
 	@Override
 	public void setState(TreeItem item, boolean open) {
 		item.setState(open);
@@ -78,10 +85,6 @@ public class TreeView extends Composite implements TreePresenter.Display {
 		return tree.getSelectedItem();
 	}
 	
-	private TreeItem addItem(TreeItem parent, ImageResource image, String label) {
-		return parent.addItem(createTreeNodeHtml(image, label));
-	}
-
 	private SafeHtml createTreeNodeHtml(ImageResource image, String label) {
 		SafeHtmlBuilder sb = new SafeHtmlBuilder();
 		sb.append(SafeHtmlUtils.fromTrustedString(AbstractImagePrototype.create(image).getHTML()));

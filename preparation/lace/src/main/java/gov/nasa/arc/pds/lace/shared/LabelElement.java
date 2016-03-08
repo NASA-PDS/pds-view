@@ -4,8 +4,6 @@ package gov.nasa.arc.pds.lace.shared;
 /**
  * Represents an element item within a label template which can either
  * be a <code>Container</code> or a <code>SimpleItem</code>.
- *
- * @author psarram
  */
 public abstract class LabelElement extends LabelItem {
 
@@ -14,10 +12,10 @@ public abstract class LabelElement extends LabelItem {
 	private LabelItemType type;
 
 	/**
-	 * Creates an instance of <code>LabelElement</code>.
+	 * Creates a new label element instance.
 	 */
 	public LabelElement() {
-
+		// nothing to do
 	}
 
 	/**

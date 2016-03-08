@@ -1,13 +1,14 @@
 package gov.nasa.arc.pds.lace.client.presenter;
 
 import gov.nasa.arc.pds.lace.client.event.ContainerChangedEvent;
-import gov.nasa.arc.pds.lace.client.event.TreeItemSelectionEvent;
 import gov.nasa.arc.pds.lace.client.event.ContainerChangedEvent.EventDetails;
+import gov.nasa.arc.pds.lace.client.event.TreeItemSelectionEvent;
 import gov.nasa.arc.pds.lace.client.service.LabelContentsServiceAsync;
 import gov.nasa.arc.pds.lace.shared.Container;
 import gov.nasa.arc.pds.lace.shared.LabelItem;
 import gov.nasa.arc.pds.lace.shared.LabelItemType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 		void removeAllItems();
 
 		/**
-		 * Adds the tree root item.
+		 * Adds a tree item as root to the tree.
 		 *
 		 * @param root the tree root item
 		 * @param name the root item label
@@ -46,13 +47,23 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 		void addRootItem(TreeItem root, String name);
 
 		/**
-		 * Adds a child item to the parent tree item.
+		 * Adds a child tree item to the parent item.
 		 *
-		 * @param parent a parent tree item
+		 * @param parent the parent tree item
 		 * @param name the child item name
 		 * @return TreeItem the item that was added
 		 */
 		TreeItem addChildItem(TreeItem parent, String name);
+		
+		/**
+		 * Inserts a child tree item to the parent item at the specified index.
+		 *
+		 * @param parent the parent tree item
+		 * @param name the child item name
+		 * @param index the index where the item will be inserted
+		 * @return TreeItem the item that was added
+		 */
+		TreeItem insertItem(TreeItem parent, String name, int index);
 
 		/**
 		 * Sets whether the children of a tree item should be displayed or not.
@@ -100,12 +111,13 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 		getRootContainer(ELEMENT_NAME);
 
 		bus.addHandler(ContainerChangedEvent.TYPE, new ContainerChangedEvent.Handler() {
+			
 			@Override
 			public void onEvent(EventDetails details) {
 				if (details.isRootContainer()) {
 					populateTree(details.getContainer());
 				} else {
-					updateTree(details.getContainer());
+					updateTree(details.getContainer(), details.getNewContainer());
 				}
 			}
 		});
@@ -148,46 +160,89 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 
 		LabelItemType type = container.getType();
 		assert type != null;
-		
-		Display view = getView();
+				
 		TreeItem root = new TreeItem();
+		Display view = getView();
 		view.removeAllItems();
 		view.addRootItem(root, type.getElementName());
+		
 		map.clear();
 		map.put(root, container);
+		
 		processTreeItemChildren(view, root, container.getContents());
-		// Select the root item in the tree
-		view.setSelectedItem(root);
+		view.setSelectedItem(root);  // Select the root item in the tree
 	}
 
-	private void updateTree(Container changedContainer) {		
-		TreeItem selectedItem = getView().getSelectedItem();		
-		if (map.get(selectedItem).equals(changedContainer))	{
-			map.put(selectedItem, changedContainer);			
-			selectedItem.removeItems();
-			processTreeItemChildren(getView(), selectedItem, changedContainer.getContents());						
-		} else {						
-			TreeItem item = findChangedTreeItem(changedContainer, selectedItem);
-			
-			if (item == null) {
-				GWT.log("Couldn't find the tree item for the changed container.");
-				return;
-			}
-			
-			map.put(item, changedContainer);
-			item.removeItems();
-			processTreeItemChildren(getView(), item, changedContainer.getContents());
+	/**
+	 * Updates a sub-tree from the currently selected item.
+	 *  
+	 * @param container the changed container
+	 * @param newContainer the newly inserted container
+	 */
+	private void updateTree(Container container, Container newContainer) {		
+		Display view = getView();
+		TreeItem selectedItem = view.getSelectedItem();
+		
+		// Find the tree item that represents the changed container.
+		TreeItem changedItem = map.get(selectedItem).equals(container) ? 
+				selectedItem :
+				findChangedItem(container, selectedItem);
+		
+		if (changedItem == null) {
+			String msg = "Couldn't find the tree item for the changed container '" +
+					container.getType().getElementName() + "'.";
+			GWT.log(msg);
+			throw new NullPointerException(msg);
+		}
+		
+		// Find the position where the new container should be inserted in the tree.
+		int pos = parseContents(container.getContents()).indexOf(newContainer);
+		TreeItem newItem = view.insertItem(changedItem, newContainer.getType().getElementName(), pos);
+		processTreeItemChildren(view, newItem, newContainer.getContents());
+		map.put(newItem, newContainer);
+		
+		// Display the children of the changed item as well as the (new) inserted item.
+		view.setState(changedItem, true);
+		view.setState(newItem, true);
+		
+		TreeItem parent = changedItem.getParentItem();
+		while (parent != null && parent != selectedItem) {
+			view.setState(parent, true);
+			parent = parent.getParentItem();
 		}
 	}
 	
-	private TreeItem findChangedTreeItem(Container changedContainer, TreeItem item) {
+	/**
+	 * Parses the specified contents and constructs a list which
+	 * contains only Container objects.
+	 * 
+	 * @param contents a list of label items
+	 * @return a list of container objects
+	 */
+	private List<LabelItem> parseContents(List<LabelItem> contents) {
+		List<LabelItem> items = new ArrayList<LabelItem>();
+		for (LabelItem item : contents) {
+			if (item instanceof Container) {
+				items.add(item);
+			}
+		}
+		return items;
+	}
+	
+	private TreeItem findChangedItem(Container changedContainer, TreeItem item) {
 		TreeItem changedItem = null;
+		
 		for (int i = 0; i < item.getChildCount(); i++) {
 			TreeItem childItem = item.getChild(i);
 			if (map.get(childItem).equals(changedContainer)) {
-				return childItem;
+				changedItem = childItem;
+				break;
 			}
-			findChangedTreeItem(changedContainer, childItem);
+			
+			changedItem = findChangedItem(changedContainer, childItem);
+			if (changedItem != null) {
+				break;
+			}
 		}
 		
 		return changedItem;
@@ -207,5 +262,4 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 			}
 		}
 	}
-
 }

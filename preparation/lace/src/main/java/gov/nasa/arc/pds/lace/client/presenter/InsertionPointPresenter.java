@@ -1,7 +1,6 @@
 package gov.nasa.arc.pds.lace.client.presenter;
 
 import gov.nasa.arc.pds.lace.client.event.ElementSelectionEvent;
-import gov.nasa.arc.pds.lace.shared.Container;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
 import gov.nasa.arc.pds.lace.shared.LabelItemType;
 
@@ -70,7 +69,7 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 	private List<LabelItemType> alternatives;
 	private PopupPresenter popup;
 	private InsertionPoint insPoint;
-	private Container parentContainer;
+	private ContainerPresenter parentPresenter;
 	
 	/**
 	 * Creates a new instance of the insertion point presenter. 
@@ -95,12 +94,12 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 	 * @param top
 	 * @param right
 	 */
-	public void display(InsertionPoint insPoint, Container container, int top, int right) {
+	public void display(InsertionPoint insPoint, ContainerPresenter parentPresenter, int top, int right) {
 		assert insPoint != null;
 
 		this.insPoint = insPoint;
 		this.alternatives = insPoint.getAlternatives();	
-		this.parentContainer = container;
+		this.parentPresenter = parentPresenter;
 		togglePanels(top, right);
 	}
 	
@@ -108,8 +107,8 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 	 * Handles a click on the link inside the optional  panel.
 	 * @param event
 	 */
-	public void handleOptionalPanelClickEvent(ClickEvent event) {	
-		bus.fireEvent(new ElementSelectionEvent(0, insPoint, parentContainer, null));				
+	public void handleOptionalPanelClickEvent(ClickEvent event) {			
+		bus.fireEvent(new ElementSelectionEvent(0, insPoint, parentPresenter, null));				
 	}
 	
 	/**
@@ -126,7 +125,7 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 	 * 
 	 * @param event
 	 */
-	public void handleRequiredPanelClickEvent(ClickEvent event) {			
+	public void handleRequiredPanelClickEvent(ClickEvent event) {
 		showPopup(this.alternatives, "Choose an element");		
 	}
 	
@@ -147,10 +146,11 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 				
 		listbox.addChangeHandler(new ChangeHandler() {
 			@Override
-			public void onChange(ChangeEvent event) {				
+			public void onChange(ChangeEvent event) {
+				event.stopPropagation();
 				// Fire an event to registered handlers to notify them 
-				// that an element is selected from an insertion point.				
-				bus.fireEvent(new ElementSelectionEvent(listbox.getSelectedIndex(), insPoint, parentContainer, popup));
+				// that an element is selected from an 'Add/Choose' dialog. 			
+				bus.fireEvent(new ElementSelectionEvent(listbox.getSelectedIndex(), insPoint, parentPresenter, popup));
 			}
 		});
 		
