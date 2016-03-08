@@ -34,6 +34,9 @@ public class SimpleItemView extends Composite implements SimpleItemPresenter.Dis
 
 	/** A style name used to indicate that the simple item has the focus. */
 	private static final String FOCUS_STYLE = "focus";
+	
+	/** A style name used to hide the alert icon. */
+	private static final String HIDDEN_STYLE = "hidden";
 
 	private static SimpleItemViewUiBinder uiBinder = GWT.create(SimpleItemViewUiBinder.class);
 
@@ -46,8 +49,11 @@ public class SimpleItemView extends Composite implements SimpleItemPresenter.Dis
 	FlowPanel form;
 
 	@UiField
+	HTMLPanel alertIcon;
+	
+	@UiField
 	InlineLabel label;
-
+	
 	@UiField
 	HTMLPanel value;
 
@@ -132,6 +138,15 @@ public class SimpleItemView extends Composite implements SimpleItemPresenter.Dis
 			textBox.addStyleName("hasSuggestions");
 		}
 	}
+	
+	@Override
+	public void setState(boolean complete) {
+		if (complete) {
+			alertIcon.addStyleName(HIDDEN_STYLE);			
+		} else {
+			alertIcon.removeStyleName(HIDDEN_STYLE);
+		}
+	}
 
     /**
      * Implements a {@link SuggestBox.SuggestionDisplay} that supports
@@ -139,48 +154,48 @@ public class SimpleItemView extends Composite implements SimpleItemPresenter.Dis
      */
     private static class ScrollingSuggestionDisplay extends SuggestBox.DefaultSuggestionDisplay {
 
-            /** The class name used by the default suggestion display to
-             * indicate the currently selected suggestion.
-             */
-            private static final String ITEM_SELECTED = "item-selected";
-
-            private ScrollPanel scrollPanel;
-
-            @Override
-            protected Widget decorateSuggestionList(Widget suggestionList) {
-                    scrollPanel = new ScrollPanel(suggestionList);
-                    scrollPanel.setStyleName("suggestScrollContent");
-                    return scrollPanel;
-            }
-
-            @Override
-            protected void moveSelectionDown() {
-                    super.moveSelectionDown();
-                    scrollSelectedItemIntoView();
-            }
-
-            @Override
-            protected void moveSelectionUp() {
-                    super.moveSelectionUp();
-                    scrollSelectedItemIntoView();
-            }
-
-            /**
-             * Finds the currently selected suggestion, if any, and ensures
-             * that it is visible by scrolling it into view.
-             */
-            private void scrollSelectedItemIntoView() {
-                    NodeList<Element> items = scrollPanel.getElement().getElementsByTagName("td");
-
-                    for (int i=0; i < items.getLength(); ++i) {
-                            Element item = items.getItem(i);
-                            if (item.getClassName().contains(ITEM_SELECTED)) {
-                                    item.scrollIntoView();
-                                    break;
-                            }
-                    }
-            }
+		/** 
+		 * The class name used by the default suggestion display to
+		 * indicate the currently selected suggestion.
+		 */
+		private static final String ITEM_SELECTED = "item-selected";
+		
+		private ScrollPanel scrollPanel;
+		
+		@Override
+		protected Widget decorateSuggestionList(Widget suggestionList) {
+			scrollPanel = new ScrollPanel(suggestionList);
+			scrollPanel.setStyleName("suggestScrollContent");
+			return scrollPanel;
+		}
+		
+		@Override
+		protected void moveSelectionDown() {
+	        super.moveSelectionDown();
+	        scrollSelectedItemIntoView();
+		}
+		
+		@Override
+		protected void moveSelectionUp() {
+	        super.moveSelectionUp();
+	        scrollSelectedItemIntoView();
+		}
+		
+		/**
+		 * Finds the currently selected suggestion, if any, and ensures
+		 * that it is visible by scrolling it into view.
+		 */
+		private void scrollSelectedItemIntoView() {
+	        NodeList<Element> items = scrollPanel.getElement().getElementsByTagName("td");
+	
+	        for (int i=0; i < items.getLength(); ++i) {
+                Element item = items.getItem(i);
+                if (item.getClassName().contains(ITEM_SELECTED)) {
+                    item.scrollIntoView();
+                    break;
+                }
+	        }
+		}
 
     }
-
 }

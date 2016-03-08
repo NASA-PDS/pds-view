@@ -3,6 +3,7 @@
 
 	<g:FlowPanel ui:field="form" styleName="simpleItem">
 		<g:HorizontalPanel ui:field="horizontalPanel" verticalAlignment="middle" width="100%">
+			<g:HTMLPanel ui:field="alertIcon" styleName="smallAlertIcon middle hidden"></g:HTMLPanel>
 			<g:InlineLabel ui:field="label" styleName="label"></g:InlineLabel>
 			<g:HTMLPanel ui:field="value" styleName="input-wrapper">
 				<g:SuggestBox ui:field="textBox" />

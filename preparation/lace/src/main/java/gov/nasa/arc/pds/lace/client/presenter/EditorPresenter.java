@@ -67,9 +67,9 @@ public class EditorPresenter extends Presenter<EditorPresenter.Display> {
 				load(container);
 			}
 			
-		});		
+		});
 	}
-
+	
 	/**
 	 * Loads the specified container in the editor.
 	 *
@@ -77,7 +77,7 @@ public class EditorPresenter extends Presenter<EditorPresenter.Display> {
 	 */
 	private void load(Container container) {
 		if (containerPresenter != null) {
-			containerPresenter.removeHandler();										
+			containerPresenter.removeHandlers();										
 		}
 		containerPresenter = injector.getContainerPresenter();
 		containerPresenter.display(container, true);

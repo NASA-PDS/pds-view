@@ -1,5 +1,6 @@
 package gov.nasa.arc.pds.lace.client.presenter;
 
+import gov.nasa.arc.pds.lace.client.event.CompleteStateChangedEvent;
 import gov.nasa.arc.pds.lace.client.service.LabelContentsServiceAsync;
 import gov.nasa.arc.pds.lace.shared.Container;
 import gov.nasa.arc.pds.lace.shared.LabelItemType;
@@ -8,6 +9,7 @@ import gov.nasa.arc.pds.lace.shared.SimpleItem;
 import java.util.List;
 
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 
@@ -43,12 +45,19 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 		 */
 		void setValidValues(String[] values);
 
+		/**
+		 * Sets whether the simple item should be displayed as complete.
+		 *  
+		 * @param complete true, if the simple item is complete
+		 */
+		void setState(boolean complete);
 	}
 
 	private String curValue;
 	private Container container;
 	private SimpleItem item;
 	private LabelItemType type;
+	private EventBus bus;
 	private LabelContentsServiceAsync service;
 
 	/**
@@ -58,9 +67,10 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 	 * @param service the label RPC service
 	 */
 	@Inject
-	public SimpleItemPresenter(Display view, LabelContentsServiceAsync service) {
+	public SimpleItemPresenter(Display view, EventBus bus, LabelContentsServiceAsync service) {
 		super(view);
 		view.setPresenter(this);
+		this.bus = bus;
 		this.service = service;
 	}
 
@@ -74,10 +84,12 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 		this.container = theContainer;
 		this.item = theItem;
 		this.type = theItem.getType();
+		this.curValue = theItem.getValue();
 		Display view = getView();
-		view.setLabel(type.getElementName(), type.getMinOccurrences() == 1);
-		view.setValue(theItem.getValue());
-
+		view.setLabel(type.getElementName(), theItem.isRequired());
+		view.setValue(curValue);
+		view.setState(theItem.isComplete());
+		
 		List<String> values = this.type.getValidValues();
 		if (values != null) {
 			view.setValidValues(values.toArray(new String[values.size()]));
@@ -94,7 +106,7 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 			updateModel(value);
 		}
 	}
-
+	
 	/**
 	 * Updates the model.
 	 *
@@ -112,10 +124,15 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 			public void onSuccess(Container updatedContainer) {
 				GWT.log("Simple item '" + type.getElementName() + "' is saved successfully.");
 				curValue = value;
-				item.setValue(value);
-				container = updatedContainer;
-				// Fire an event for the tree view to update itself.
-				// bus.fireEvent(new ContainerChangedEvent(container));
+				int index = container.getContents().indexOf(item);
+				item = (SimpleItem) updatedContainer.getContents().get(index);
+				container.removeItem(index);
+				container.addItem(index, item);
+				getView().setState(item.isComplete());
+															
+				// Fire an event to registered handlers to update their complete state.
+				// TODO: fire the event only if state is changed?
+				bus.fireEvent(new CompleteStateChangedEvent(container));
 			}
 		});
 	}

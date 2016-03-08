@@ -85,6 +85,15 @@ public class ContainerView extends Composite implements ContainerPresenter.Displ
 	}
 	
 	@Override
+	public void setState(boolean complete) {
+		if (complete) {
+			typeIcon.removeClassName(ALERT_CLASSNAME);
+		} else {
+			typeIcon.addClassName(ALERT_CLASSNAME);
+		}
+	}
+	
+	@Override
 	public void add(Widget widget) {
 		contentPanel.add(widget);
 	}

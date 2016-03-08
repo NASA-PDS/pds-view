@@ -58,7 +58,11 @@ public class SimpleItem extends LabelElement {
 
 	@Override
 	public boolean isComplete() {
-		return false;
+		// A simple item is incomplete if it's required and has no value
+		// TODO: or has incomplete children
+		if (isRequired() && (value == null || value.trim().isEmpty())) {
+			return false;
+		}
+		return true;
 	}
-
 }

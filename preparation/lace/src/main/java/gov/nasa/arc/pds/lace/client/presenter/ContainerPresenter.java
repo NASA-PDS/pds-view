@@ -1,6 +1,7 @@
 package gov.nasa.arc.pds.lace.client.presenter;
 
 import gov.nasa.arc.pds.lace.client.AppInjector;
+import gov.nasa.arc.pds.lace.client.event.CompleteStateChangedEvent;
 import gov.nasa.arc.pds.lace.client.event.ContainerChangedEvent;
 import gov.nasa.arc.pds.lace.client.event.ElementSelectionEvent;
 import gov.nasa.arc.pds.lace.client.event.ElementSelectionEvent.EventDetails;
@@ -63,6 +64,13 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		 * @param isComplete flag to indicate whether the container is complete  
 		 */
 		void setIcon(String className, boolean isComplete);
+		
+		/**
+		 * Sets whether the container should be displayed as complete.
+		 * 
+		 * @param complete true, if the container is complete
+		 */
+		void setState(boolean complete);
 
 		/**
 		 * Adds the given widget to the container's content area.
@@ -105,7 +113,8 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 	private AppInjector injector;
 	private EventBus bus;
 	private LabelContentsServiceAsync service;
-	private HandlerRegistration handler;
+	private HandlerRegistration handler1;
+	private HandlerRegistration handler2;
 	private ContainerPresenter presenter;
 	private IconLookup lookup;
 	
@@ -134,7 +143,7 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		this.lookup = lookup;
 		view.setPresenter(this);
 				
-		attachHandler();
+		attachHandlers();
 	}
 	
 	/**
@@ -158,17 +167,21 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		}
 	}
 
-	public void removeHandler() {
-		handler.removeHandler();
+	/**
+	 * Deregisters the handlers.
+	 */
+	public void removeHandlers() {
+		handler1.removeHandler();
+		handler2.removeHandler();
 	}
 	
-	private void attachHandler() {
-		handler = bus.addHandler(ElementSelectionEvent.TYPE, new ElementSelectionEventHandler() {
+	private void attachHandlers() {
+		handler1 = bus.addHandler(ElementSelectionEvent.TYPE, new ElementSelectionEventHandler() {
 					
 			@Override
 			public void onEvent(EventDetails data) {
-				if (container.getContents().contains(data.getInsertionPoint()) &&
-						data.getParentPresenter().equals(presenter)) {
+				if (container.getContents().contains(data.getInsertionPoint())
+						&& data.getParentPresenter().equals(presenter)) {
 					insertElement(data);
 						
 					if (data.getPopup() != null) {
@@ -178,6 +191,35 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 			}
 			
 		});
+		
+		handler2 = bus.addHandler(CompleteStateChangedEvent.TYPE, new CompleteStateChangedEvent.Handler() {
+			
+			@Override
+			public void onEvent(gov.nasa.arc.pds.lace.client.event.CompleteStateChangedEvent.EventDetails details) {
+				Container targetContainer = details.getContainer();
+				if (targetContainer.equals(container)) {					
+					setState();
+				} else {
+					searchContents(targetContainer, container);
+				}
+			}
+		});
+	}
+	
+	private void searchContents(Container targetContainer, Container container) {		
+		for (LabelItem item : container.getContents()) {
+			if (item.equals(targetContainer)) {
+				setState();
+				break;
+			} 
+			if (item instanceof Container) {
+				searchContents(targetContainer, (Container) item);
+			}	
+		}
+	}
+	
+	private void setState() {
+		getView().setState(container.isComplete());		
 	}
 	
 	/**
@@ -216,7 +258,8 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 			public void onSuccess(ResultType result) {							
 				int from = result.getFromIndex();
 				int to = result.getToIndex();
-				Container newContainer = updateContents(result.getContents(), from, to);
+				Container newContainer = updateContents(result.getContents(), from, to);				
+				bus.fireEvent(new CompleteStateChangedEvent(container));
 				
 				if (newContainer != null) {
 					// Fire an event for the tree view to update itself.				

@@ -222,8 +222,12 @@ public class InsertionPoint extends LabelItem {
 	}
 
 	@Override
-	public boolean isComplete() {		
-		return false;
+	public boolean isComplete() {
+		// A required choice is always incomplete.
+		if (displayType.equals(DisplayType.CHOICE.getDisplayType()) && isRequired()) {
+			return false;
+		}
+		return true;
 	}
 
 }

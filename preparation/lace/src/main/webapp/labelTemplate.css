@@ -107,7 +107,7 @@ body#editorPage a:hover {
 
 .simpleItem {
 	border-top: 1px solid #B2B2B2;
-	padding: 6px 12px;
+	padding: 6px 12px 6px 6px;
 	background-color: #E8E8E8;
 	margin: 0 1px;
 }
@@ -120,7 +120,7 @@ body#editorPage a:hover {
 	color: #666;
 }
 
-.simpleItem .required {
+.simpleItem .label.required {
 	color: #000;
 }
 
@@ -236,6 +236,14 @@ body#editorPage a:hover {
 
 .middle {
 	vertical-align: middle;	
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+.visible {
+	visibility: visible;
 }
 
 /*----------------------------------*
@@ -393,3 +401,11 @@ body#editorPage a:hover {
 	height: 13px;
 }
 
+.smallAlertIcon {
+	width: 11px;
+	height: 11px;
+	background-image: url("images/icon-alert-sm.png");
+	background-repeat: no-repeat;	
+	margin-right: 6px;
+	display: inline-block;	
+}

@@ -94,7 +94,14 @@ public class Container extends LabelElement {
 
 	@Override
 	public boolean isComplete() {
-		return false;
+		// A container is incomplete if it has incomplete children
+		// TODO: or incomplete attributes
+		for (LabelItem item : contents) {
+			if (!item.isComplete()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }
