@@ -2,7 +2,9 @@ package gov.nasa.arc.pds.lace.client.presenter;
 
 import gov.nasa.arc.pds.lace.client.event.CompleteStateChangedEvent;
 import gov.nasa.arc.pds.lace.client.service.LabelContentsServiceAsync;
+import gov.nasa.arc.pds.lace.client.util.InsertOptionMap;
 import gov.nasa.arc.pds.lace.shared.Container;
+import gov.nasa.arc.pds.lace.shared.InsertOption;
 import gov.nasa.arc.pds.lace.shared.LabelItemType;
 import gov.nasa.arc.pds.lace.shared.SimpleItem;
 
@@ -81,6 +83,7 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 	private EventBus bus;
 	private LabelContentsServiceAsync service;
 	private PopupPresenter popup;
+	private InsertOptionMap insertOptionMap;
 
 	/**
 	 * Creates an instance of the simple item presenter.
@@ -95,13 +98,15 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 			Display view,
 			EventBus bus,
 			LabelContentsServiceAsync service,
-			PopupPresenter popup
+			PopupPresenter popup,
+			InsertOptionMap insertOptionMap
 	) {
 		super(view);
 		view.setPresenter(this);
 		this.bus = bus;
 		this.service = service;
 		this.popup = popup;
+		this.insertOptionMap = insertOptionMap;
 	}
 
 	/**
@@ -115,6 +120,15 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 		this.item = theItem;
 		this.type = theItem.getType();
 		this.curValue = theItem.getValue();
+		
+		InsertOption alternative = item.getInsertOption();		
+		if (alternative != null) {
+			int id = alternative.getId();
+			if (insertOptionMap.get(id) == null) {
+				insertOptionMap.put(id, alternative);
+			}
+		}	
+		
 		Display view = getView();
 		view.setLabel(type.getElementName(), theItem.isRequired());
 		view.setValue(curValue);
@@ -191,6 +205,7 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 				GWT.log("Simple item '" + type.getElementName() + "' is saved successfully.");
 				curValue = value;
 				int index = container.getContents().indexOf(item);
+				// TODO: probably need to only copy the value and complete state from the savedItem to the item object on the client. 
 				item = (SimpleItem) updatedContainer.getContents().get(index);
 				container.removeItem(index);
 				container.addItem(index, item);

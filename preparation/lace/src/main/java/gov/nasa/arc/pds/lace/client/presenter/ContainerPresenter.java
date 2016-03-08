@@ -8,7 +8,9 @@ import gov.nasa.arc.pds.lace.client.event.ElementSelectionEvent.EventDetails;
 import gov.nasa.arc.pds.lace.client.event.ElementSelectionEventHandler;
 import gov.nasa.arc.pds.lace.client.resources.IconLookup;
 import gov.nasa.arc.pds.lace.client.service.LabelContentsServiceAsync;
+import gov.nasa.arc.pds.lace.client.util.InsertOptionMap;
 import gov.nasa.arc.pds.lace.shared.Container;
+import gov.nasa.arc.pds.lace.shared.InsertOption;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
 import gov.nasa.arc.pds.lace.shared.LabelElement;
 import gov.nasa.arc.pds.lace.shared.LabelItem;
@@ -95,7 +97,7 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		/**
 		 * Shows the widget.
 		 * 
-		 * @param contentOnly flag to indicate whether to show the content area or not
+		 * @param contentOnly flag to indicate whether to show the content area or not		 
 		 */
 		void show(boolean contentOnly);
 
@@ -141,6 +143,7 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 	private ContainerPresenter presenter;
 	private IconLookup lookup;
 	private PopupPresenter popup;
+	private InsertOptionMap insertOptionMap;
 	
 	// TODO: Use the provider interface instead of the injector to get the objects.
 	/**
@@ -159,7 +162,8 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 			IconLookup lookup,
 			AppInjector injector,
 			LabelContentsServiceAsync service,
-			PopupPresenter popup
+			PopupPresenter popup,
+			InsertOptionMap insertOptionMap
 	) {
 		super(view);
 		this.injector = injector;
@@ -168,6 +172,7 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		this.presenter = this;
 		this.lookup = lookup;
 		this.popup = popup;
+		this.insertOptionMap = insertOptionMap;
 		view.setPresenter(this);
 				
 		attachHandlers();
@@ -182,6 +187,14 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 	 */
 	public void display(Container container, boolean contentOnly) {
 		this.container = container;
+		InsertOption alternative = container.getInsertOption();
+		if (alternative != null) {
+			int id = alternative.getId();
+			if (insertOptionMap.get(id) == null) {	
+				insertOptionMap.put(id, alternative);
+			}	
+		}	
+		
 		Display view = getView();
 		view.show(contentOnly);
 		
@@ -315,46 +328,70 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 
 			@Override			
 			public void onSuccess(ResultType result) {
-				Container newContainer = updateContents(result.getNewItems(),
-						result.getFromIndex(), result.getToIndex());
-				
+				Container newContainer = updateContents(result);
 				// Fire an event for containers to update their complete state.
 				bus.fireEvent(new CompleteStateChangedEvent(container, false));
-				
 				// Fire an event for the tree view to update itself.				
 				bus.fireEvent(new ContainerChangedEvent(container, newContainer));
 			}
 		});
 	}
 	
-	private Container updateContents(List<LabelItem> newItems, int from, int to) {	
-		List<LabelItem> contents = container.getContents();	
-		Container newContainer = null;
-		Display view = getView();
+	private Container updateContents(ResultType result) {
+		int from = result.getFromIndex();
+		int to = result.getToIndex();
 		int pos = from;
+		List<LabelItem> contents = container.getContents();			
+		Display view = getView();		
 	
 		// Remove objects within 'from' and 'to' indices
 		for (int i = from; i <= to; i++) {			
 			contents.remove(pos);
 			view.remove(pos);			
 		}
-			
-		// Add new items to the contents list starting at position 'from'
-		for (LabelItem item : newItems) {
-			contents.add(pos, item);			
-			
+		
+		for (LabelItem item : result.getNewItems()) {
+			if (item instanceof LabelElement) {
+				InsertOption alternative = ((LabelElement) item).getInsertOption();
+				InsertOption existingAlternative = insertOptionMap.get(alternative.getId());
+				if (existingAlternative != null) {					
+					existingAlternative.setUsedOccurrences(alternative.getUsedOccurrences());
+					((LabelElement) item).setInsertOption(existingAlternative);
+				}
+			} else {
+				List<InsertOption> alternatives = ((InsertionPoint) item).getAlternatives();
+				for (int i = 0; i < alternatives.size(); i++) {
+					InsertOption alternative = alternatives.get(i);
+					InsertOption existingAlternative = insertOptionMap.get(alternative.getId());
+					if (existingAlternative != null) {						
+						existingAlternative.setUsedOccurrences(alternative.getUsedOccurrences());
+						alternatives.remove(i);
+						alternatives.add(i, existingAlternative);
+					}
+				}
+			}
+		}
+				
+		// Get the new container by adding new items to the contents list starting at position 'from'
+		return getNewContainer(result.getNewItems(), contents, pos);
+	}
+	
+	private Container getNewContainer(List<LabelItem> items, List<LabelItem> contents, int pos) {		
+		Container newContainer = null;
+		for (LabelItem item : items) {
+			contents.add(pos, item);
 			if (item instanceof Container) {
 				newContainer = (Container) item;
 				ContainerPresenter presenter = getPresenter(newContainer);				
-				view.insert(presenter.asWidget(), pos);				
+				getView().insert(presenter.asWidget(), pos);				
 				presenter.handleContainerClickEvent();
 			} else {				
-				view.insert(getWidget(item), pos);
+				getView().insert(getWidget(item), pos);
 			}			
 			pos++;
-		}		
-		
-		return newContainer; 
+		}
+	
+		return newContainer;
 	}
 	
 	private void showContent(List<LabelItem> contents) {

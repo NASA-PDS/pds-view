@@ -12,6 +12,10 @@ public class InsertOption implements Cloneable, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	private static int counter = 1;
+	
+	/** The unique id for this object. */
+	private int id;	
 	/** Holds the minimum number of elements that can be inserted from this insert option. */
 	private int minOccurrences;
 	/** Holds the maximum number of elements that can be inserted from this insert option. */
@@ -25,7 +29,8 @@ public class InsertOption implements Cloneable, Serializable {
 	 * Creates a new <code>InsertOption</code> instance.
 	 */
 	public InsertOption() {
-		// nothing to do
+		// Generate a unique id.
+		id = counter++;		
 	}
 
 	/**
@@ -121,6 +126,15 @@ public class InsertOption implements Cloneable, Serializable {
 		this.types = types;
 	}
 	
+	/**
+	 * Gets the unique ID that this object is associated with.
+	 *  
+	 * @return the unique id.
+	 */
+	public int getId() {
+		return id;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -134,6 +148,7 @@ public class InsertOption implements Cloneable, Serializable {
 			+ " - min=" + minOccurrences
 			+ " max="   + maxOccurrences
 			+ " used="  + usedOccurrences
+			+ " id="    + id
 			+ "]";
 	}
 	

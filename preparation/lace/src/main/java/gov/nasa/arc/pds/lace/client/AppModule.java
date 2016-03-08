@@ -9,6 +9,7 @@ import gov.nasa.arc.pds.lace.client.presenter.PageHeaderPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.PopupPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.SimpleItemPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.TreePresenter;
+import gov.nasa.arc.pds.lace.client.util.InsertOptionMap;
 import gov.nasa.arc.pds.lace.client.view.ContainerView;
 import gov.nasa.arc.pds.lace.client.view.EditorView;
 import gov.nasa.arc.pds.lace.client.view.InsertionPointView;
@@ -38,8 +39,11 @@ public class AppModule extends AbstractGinModule {
 		 * The binding tells Gin that whenever it sees a dependency on an EventBus,
 		 * it should satisfy the dependency using a SimpleEventBus.
 		 */
-		bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
-
+		bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);		
+		
+		// The singleton insert option map. 		 
+		bind(InsertOptionMap.class).in(Singleton.class);
+		
 		// Bind views to their presenter displays.
 		bind(TreePresenter.Display.class).to(TreeView.class);
 		bind(ContainerPresenter.Display.class).to(ContainerView.class);

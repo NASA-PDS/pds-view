@@ -7,6 +7,7 @@ import gov.nasa.arc.pds.lace.client.presenter.ModificationButtonPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.PageHeaderPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.SimpleItemPresenter;
 import gov.nasa.arc.pds.lace.client.presenter.TreePresenter;
+import gov.nasa.arc.pds.lace.client.util.InsertOptionMap;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.inject.client.GinModules;
@@ -73,5 +74,12 @@ public interface AppInjector extends Ginjector {
 	 * @return an instance of the modification button presenter
 	 */
 	ModificationButtonPresenter getModificationButtonPresenter();
+	
+	/**
+	 * Gets an instance of the insert option map.
+	 * 
+	 * @return an instance of the insert option map.
+	 */
+	InsertOptionMap getInsertOptionMap();
 
 }

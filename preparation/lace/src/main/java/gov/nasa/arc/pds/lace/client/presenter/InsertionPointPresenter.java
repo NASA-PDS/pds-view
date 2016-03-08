@@ -1,6 +1,7 @@
 package gov.nasa.arc.pds.lace.client.presenter;
 
 import gov.nasa.arc.pds.lace.client.event.ElementSelectionEvent;
+import gov.nasa.arc.pds.lace.client.util.InsertOptionMap;
 import gov.nasa.arc.pds.lace.shared.InsertOption;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
 import gov.nasa.arc.pds.lace.shared.LabelItemType;
@@ -70,6 +71,7 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 	private PopupPresenter popup;
 	private InsertionPoint insPoint;
 	private ContainerPresenter parentPresenter;
+	private InsertOptionMap insertOptionMap;
 	
 	/**
 	 * Creates a new instance of the insertion point presenter. 
@@ -79,10 +81,11 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 	 * @param bus	 
 	 */	
 	@Inject
-	public InsertionPointPresenter(Display view, PopupPresenter popup, EventBus bus) {
+	public InsertionPointPresenter(Display view, PopupPresenter popup, EventBus bus, InsertOptionMap insertOptionMap) {
 		super(view);
 		this.bus = bus;
 		this.popup = popup;
+		this.insertOptionMap = insertOptionMap;
 		view.setPresenter(this);
 	}
 
@@ -104,6 +107,12 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 
 		this.insPoint = insPoint;		
 		this.parentPresenter = parentPresenter;
+		for (InsertOption alternative : insPoint.getAlternatives()) {
+			int id = alternative.getId();
+			if (insertOptionMap.get(id) == null) {
+				insertOptionMap.put(id, alternative);
+			}
+		}
 		togglePanels(top, right);
 	}
 	
