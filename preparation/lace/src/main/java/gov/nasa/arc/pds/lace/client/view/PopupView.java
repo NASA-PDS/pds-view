@@ -5,12 +5,15 @@ import gov.nasa.arc.pds.lace.client.resources.Resources;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class PopupView extends DialogBox implements PopupPresenter.Display {
@@ -31,8 +34,17 @@ public class PopupView extends DialogBox implements PopupPresenter.Display {
 	public PopupView() {
 		setWidget(uiBinder.createAndBindUi(this));		
 		setGlassEnabled(true);
-		//setAutoHideEnabled(true);		
+		setAutoHideEnabled(true);		
 		closeButton.setResource(Resources.INSTANCE.getCloseButtonIcon());
+		
+		addCloseHandler(new CloseHandler<PopupPanel>() {
+
+			@Override
+			public void onClose(CloseEvent<PopupPanel> event) {
+				close();				
+			}
+			
+		});
 	}
 	
 	@Override
@@ -56,7 +68,11 @@ public class PopupView extends DialogBox implements PopupPresenter.Display {
 	}
 	
 	@UiHandler("closeButton")
-	void onCancelClick(ClickEvent event) {
+	void onClose(ClickEvent event) {
+		close();
+	}
+	
+	private void close() {
 		if (presenter != null) {
 			presenter.onClose();
 		}

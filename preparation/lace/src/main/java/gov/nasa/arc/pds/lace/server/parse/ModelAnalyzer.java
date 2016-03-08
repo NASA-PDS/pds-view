@@ -575,7 +575,7 @@ public class ModelAnalyzer {
 										
 					// Replace the nextItem (second) with the merged insertion point (first)
 					// and go back in the list and remove curItem
-					it.set((InsertionPoint) curItem.copy());
+					it.set(curItem.copy());
 					it.previous();
 					it.previous();
 					it.remove();
