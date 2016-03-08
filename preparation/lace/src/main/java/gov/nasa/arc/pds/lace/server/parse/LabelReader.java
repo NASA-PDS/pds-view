@@ -1,6 +1,7 @@
 package gov.nasa.arc.pds.lace.server.parse;
 
 import gov.nasa.arc.pds.lace.shared.Container;
+import gov.nasa.arc.pds.lace.shared.InsertOption;
 import gov.nasa.arc.pds.lace.shared.InsertionPoint;
 import gov.nasa.arc.pds.lace.shared.LabelElement;
 import gov.nasa.arc.pds.lace.shared.LabelItem;
@@ -78,9 +79,9 @@ public class LabelReader {
 		Document doc = parser.parse(in);
 		Element root = doc.getDocumentElement();
 
-		Container content = analyzer.getContainerForElement(root.getTagName(), root.getNamespaceURI());
-		matchContainer(root, content);
-		return content;
+		Container container = analyzer.getContainerForElement(root.getTagName(), root.getNamespaceURI());
+		matchContainer(root, container);
+		return container;
 	}
 
 	private void matchContainer(Element e, Container container) {
@@ -113,6 +114,9 @@ public class LabelReader {
 			}
 		}
 
+		// Merge the insertion points, if any, in the updated contents list. 
+		analyzer.mergeInsertionPoints(container.getContents());
+		
 		// No more content items. If we have more document elements, then
 		// there is unmatched content.
 
@@ -206,8 +210,15 @@ public class LabelReader {
 	private LabelItem processInsertionPointMatch(Element e, ListIterator<LabelItem> it, InsertionPoint insPoint) {
 		int alternativeIndex = findAlternative(e.getTagName(), insPoint);
 		assert alternativeIndex >= 0;
-
-		LabelItemType type = insPoint.getAlternatives().get(alternativeIndex);
+		
+		InsertOption alternative = insPoint.getAlternatives().get(alternativeIndex);
+		
+		LabelItemType type = null;
+		for (LabelItemType itemType : alternative.getTypes()) {
+			if (itemType.getElementName().equals(e.getTagName())) {
+				type = itemType;
+			}
+		}
 
 		LabelElement newElement = createLabelElement(type);
 		if (newElement instanceof Container) {
@@ -217,28 +228,11 @@ public class LabelReader {
 		} else {
 			throw new IllegalArgumentException("Unexpected label item type: " + newElement.getClass().getName());
 		}
-
-		// If this is an optional element or a choice insertion point with max occurrences of 1,
-		// just add the container or the choice item to the list. Otherwise, change the display
-		// type of the insertion point to "plus_button" and split it.
-		String displayType = insPoint.getDisplayType();
-		if (displayType.equals(InsertionPoint.DisplayType.OPTIONAL.getDisplayType())
-				|| displayType.equals(InsertionPoint.DisplayType.CHOICE.getDisplayType())) {
-			if (type.getMaxOccurrences() == 1) {
-				it.set(newElement);
-				return nextItem(it);
-			}
-			
-			insPoint.setDisplayType(InsertionPoint.DisplayType.PLUS_BUTTON.getDisplayType());
-		} 
 		
+		// Change the display type of the insertion point to "plus_button" and split it.
+		insPoint.setDisplayType(InsertionPoint.DisplayType.PLUS_BUTTON.getDisplayType());
+		alternative.setUsedOccurrences(alternative.getUsedOccurrences() + 1);
 		InsertionPoint newInsertionPoint = (InsertionPoint) insPoint.copy();
-
-		insPoint.setInsertLast(alternativeIndex);
-		insPoint.setUsedAfter(alternativeIndex);
-
-		newInsertionPoint.setInsertFirst(alternativeIndex);
-		newInsertionPoint.setUsedBefore(alternativeIndex);
 
 		it.add(newElement);
 		it.add(newInsertionPoint);
@@ -253,11 +247,13 @@ public class LabelReader {
 
 	private void raiseInsertionPointMismatch(Element e, InsertionPoint item) {
 		StringBuilder builder = new StringBuilder();
-		for (LabelItemType alternative : item.getAlternatives()) {
-			if (builder.length() > 0) {
-				builder.append(' ');
-			}
-			builder.append(alternative.getElementName());
+		for (InsertOption alternative : item.getAlternatives()) {
+			for (LabelItemType type : alternative.getTypes()) {
+				if (builder.length() > 0) {
+					builder.append(' ');
+				}
+				builder.append(type.getElementName());
+			}	
 		}
 		builder.append("})");
 		throw new IllegalArgumentException(
@@ -298,9 +294,11 @@ public class LabelReader {
 	}
 
 	private int findAlternative(String tagName, InsertionPoint item) {
-		for (int i=0; i < item.getAlternatives().size(); ++i) {
-			if (item.getAlternatives().get(i).getElementName().equals(tagName)) {
-				return i;
+		for (int i=0; i < item.getAlternatives().size(); i++) {
+			for (LabelItemType type : item.getAlternatives().get(i).getTypes()) {
+				if (type.getElementName().equals(tagName)) {
+					return i;
+				}
 			}
 		}
 

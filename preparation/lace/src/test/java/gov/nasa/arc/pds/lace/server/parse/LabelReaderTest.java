@@ -206,14 +206,14 @@ public class LabelReaderTest {
 		assertEquals(insPoint.getAlternatives().size(), 1);
 		assertEquals(insPoint.getAlternatives().get(0).getTypes().size(), 2);
 		assertEquals(insPoint.getAlternatives().get(0).getTypes().get(0).getElementName(), "String");
-		assertEquals(insPoint.getAlternatives().get(1).getTypes().get(0).getElementName(), "Integer");
+		assertEquals(insPoint.getAlternatives().get(0).getTypes().get(1).getElementName(), "Integer");
 
 		assertTrue(root.getContents().get(4) instanceof InsertionPoint);
 		insPoint = (InsertionPoint) root.getContents().get(4);
 		assertEquals(insPoint.getAlternatives().size(), 1);
 		assertEquals(insPoint.getAlternatives().get(0).getTypes().size(), 2);
 		assertEquals(insPoint.getAlternatives().get(0).getTypes().get(0).getElementName(), "String");
-		assertEquals(insPoint.getAlternatives().get(1).getTypes().get(0).getElementName(), "Integer");
+		assertEquals(insPoint.getAlternatives().get(0).getTypes().get(1).getElementName(), "Integer");
 
 		SimpleItem item = (SimpleItem) root.getContents().get(1);
 		assertEquals(item.getType().getElementName(), "Integer");
