@@ -160,7 +160,7 @@ public class ModelAnalyzer {
 	}
 
 	/**
-	 * Perform an insertion of a required element from an insertion
+	 * Performs an insertion of a required element from an insertion
 	 * point by duplicating the insertion point, and inserting both
 	 * the required element and the new insertion point just before
 	 * the list iterator cursor. Then adjust the cursor so that the
@@ -357,7 +357,7 @@ public class ModelAnalyzer {
 		DisplayType displayType = DisplayType.PLUS_BUTTON;
 		if (alternatives.size() > 1) {
 			displayType = DisplayType.CHOICE;
-		} else if (particle.getMinOccurs()==0 && !particle.getMaxOccursUnbounded()) {
+		} else if (particle.getMinOccurs()==0) {
 			displayType = DisplayType.OPTIONAL;
 		}
 		InsertionPoint insPoint = new InsertionPoint();
@@ -490,11 +490,11 @@ public class ModelAnalyzer {
 	}
 
 	/**
-	 * Merge any adjacent "plus" insertion points.
+	 * Merges any adjacent "plus" insertion points.
 	 *
 	 * @param labelItems the list of label items in which to merge the insertion points
 	 */
-	private void mergeInsertionPoints(List<LabelItem> labelItems) {
+	public void mergeInsertionPoints(List<LabelItem> labelItems) {
 
 		ListIterator<LabelItem> it = labelItems.listIterator();
 

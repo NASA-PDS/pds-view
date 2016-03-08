@@ -83,17 +83,19 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 		List<LabelItem> list = new ArrayList<LabelItem>();
 		insertContainer(insPoint, selectedType, selectedType.getInitialContents(), list);
 
-		int pos = container.getContents().indexOf(insPoint);
-		container.getContents().remove(pos);
+		List<LabelItem> contents = container.getContents();
+		int pos = contents.indexOf(insPoint);
+		contents.remove(pos);
 
 		for (LabelItem item : list) {
 			LabelItem copy = item.copy();
 			analyzer.expandInsertionPoints(copy);
-			container.getContents().add(pos, copy);
+			contents.add(pos, copy);
 			++pos;
 		}
-
-		container.setContents(mergeInsertionPoints(container.getContents()));
+		
+		analyzer.mergeInsertionPoints(contents);
+		container.setContents(contents);
 		return container;
 	}
 
@@ -239,62 +241,6 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 		labelItems.add(insPoint1);
 		labelItems.add(container);
 		labelItems.add(insPoint2);
-	}
-
-	private List<LabelItem> mergeInsertionPoints(List<LabelItem> labelItems) {
-
-		// Go through the list of label items and merge adjacent
-		// insertion point items that have a display type of "plus_button".
-		for (int i = 0; i < labelItems.size(); i++) {
-			LabelItem item = labelItems.get(i);
-
-			if (item instanceof InsertionPoint) {
-				InsertionPoint insPoint = (InsertionPoint) item;
-
-				if (insPoint.getDisplayType().equals(InsertionPoint.DisplayType.PLUS_BUTTON.getDisplayType()) && (i + 1) < labelItems.size()) {
-					LabelItem nextItem = labelItems.get(i + 1);
-
-					if (nextItem instanceof InsertionPoint) {
-						InsertionPoint nextInsPoint = (InsertionPoint) nextItem;
-
-						if (nextInsPoint.getDisplayType().equals(InsertionPoint.DisplayType.PLUS_BUTTON.getDisplayType())) {
-
-							// join the two insertion points
-							List<LabelItemType> alternatives = insPoint.getAlternatives();
-							int size = alternatives.size();
-
-							List<LabelItemType> list = new ArrayList<LabelItemType>();
-							Iterator<LabelItemType> iterator = alternatives.iterator();
-
-							while(iterator.hasNext()) {
-								list.add(iterator.next());
-							}
-
-							iterator = nextInsPoint.getAlternatives().iterator();
-
-							while(iterator.hasNext()) {
-								list.add(iterator.next());
-							}
-
-							InsertionPoint mergedInsPoint = createInsertionPoint(
-									list,
-									insPoint.getInsertFirst(),
-									size + nextInsPoint.getInsertLast(),
-									insPoint.getUsedBefore(),
-									size + nextInsPoint.getUsedAfter(),
-									InsertionPoint.DisplayType.PLUS_BUTTON.getDisplayType()
-							);
-							labelItems.remove(i + 1);
-							labelItems.remove(i);
-							labelItems.add(i, mergedInsPoint);
-							--i;
-						}
-					}
-				}
-			}
-		}
-
-		return labelItems;
 	}
 
 	private InsertionPoint createInsertionPoint(List<LabelItemType> alternatives,
