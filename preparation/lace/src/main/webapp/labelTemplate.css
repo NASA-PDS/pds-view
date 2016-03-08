@@ -227,6 +227,7 @@ body#editorPage a:hover {
 	min-height: 100px;
 	min-width: 200px;
 	padding: 3px;
+	margin: -12px -10px -8px;
 }
 
 .gwt-DialogBox .dialogTopCenterInner .Caption {
@@ -234,11 +235,7 @@ body#editorPage a:hover {
 }
 
 .gwt-DialogBox .dialogMiddle .dialogMiddleCenter {
-	padding: 0;
-}
-
-.gwt-DialogBox .dialogContent {
-    padding: 12px 10px 8px;
+	padding: 12px 10px 8px;
 }
 
 .popupButtonCotnainer {
@@ -272,6 +269,10 @@ body#editorPage a:hover {
 
 .visible {
 	visibility: visible;
+}
+
+.noOutline {
+	outline: 0;	
 }
 
 /*----------------------------------*

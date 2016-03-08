@@ -2,7 +2,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:lace="urn:import:gov.nasa.arc.pds.lace.client.presenter">
 
-	<g:FocusPanel ui:field="simpleItem" styleName="simpleItem">
+	<g:FocusPanel ui:field="simpleItem" styleName="simpleItem noOutline">
 		<g:HTMLPanel>
 			<g:HorizontalPanel ui:field="horizontalPanel" verticalAlignment="middle" width="100%">
 				<g:HTMLPanel ui:field="alertIcon" styleName="smallAlertIcon middle hidden"></g:HTMLPanel>

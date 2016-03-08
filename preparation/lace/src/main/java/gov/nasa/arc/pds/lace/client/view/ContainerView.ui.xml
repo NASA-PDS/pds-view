@@ -3,7 +3,7 @@
              xmlns:lace="urn:import:gov.nasa.arc.pds.lace.client.presenter">
 				
 	<g:HTMLPanel ui:field="container">
-		<g:FocusPanel ui:field="titlePanel" styleName="hide">
+		<g:FocusPanel ui:field="titlePanel" styleName="hide noOutline">
 			<g:HTMLPanel>
 				<g:Image ui:field="arrowIcon" />	
 				<g:HTMLPanel ui:field="typeIcon" styleName="icon middle">
