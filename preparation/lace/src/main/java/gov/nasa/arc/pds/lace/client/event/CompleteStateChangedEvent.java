@@ -2,7 +2,10 @@ package gov.nasa.arc.pds.lace.client.event;
 
 import gov.nasa.arc.pds.lace.shared.Container;
 
-
+/**
+ * 
+ *
+ */
 public class CompleteStateChangedEvent extends GenericEvent<CompleteStateChangedEvent.EventDetails, CompleteStateChangedEvent.Handler> {
 
 	/** The GWT type for this event. */
@@ -20,17 +23,29 @@ public class CompleteStateChangedEvent extends GenericEvent<CompleteStateChanged
 	public static class EventDetails {
 
 		private Container container;
-		
-		public EventDetails(Container container) {
+		private boolean simpleItem;
+			
+		public EventDetails(Container container, boolean simpleItem) {
 			this.container = container;
+			this.simpleItem = simpleItem;
 		}
 		
 		public Container getContainer() {
 			return container;
 		}
+		
+		public boolean isSimpleItem() {
+			return simpleItem;
+		}
 	}
 	
-	public CompleteStateChangedEvent(Container container) {
-		super(new EventDetails(container), TYPE);
+	/**
+	 * 
+	 * @param container the changed container or the container that the
+	 * changed simple item is a child of.
+	 * @param simpleItem true, if the changed item is a simple item
+	 */
+	public CompleteStateChangedEvent(Container container, boolean simpleItem) {
+		super(new EventDetails(container, simpleItem), TYPE);
 	}
 }

@@ -132,7 +132,7 @@ public class SimpleItemPresenter extends Presenter<SimpleItemPresenter.Display> 
 															
 				// Fire an event to registered handlers to update their complete state.
 				// TODO: fire the event only if state is changed?
-				bus.fireEvent(new CompleteStateChangedEvent(container));
+				bus.fireEvent(new CompleteStateChangedEvent(container, true));
 			}
 		});
 	}

@@ -86,9 +86,32 @@ public class TreeView extends Composite implements TreePresenter.Display {
 		return tree.getSelectedItem();
 	}
 	
-	private SafeHtml createTreeNodeHtml(String label, String icon, boolean isComplete) {
+	@Override
+	public void updateCompleteState(TreeItem item, boolean complete) {		
+		
+		String html = item.getHTML();
+		int iconIdx = html.indexOf(SMALL_ICON_CLASSNAME);
+		int alertIdx = html.indexOf(ALERT_CLASSNAME);		
+		int alertIconIdx = html.indexOf(ALERT_ICON_CLASSNAME);
+		
+		// If the item is complete and has the 'alert' style, remove it.
+		if (complete && (alertIdx != alertIconIdx)) {					
+			html = html.replaceFirst(ALERT_CLASSNAME, "");
+			item.setHTML(SafeHtmlUtils.fromTrustedString(html));			
+		}
+		
+		// If the item is incomplete and doesn't have the 'alert' style, add it.
+		if (!complete && (alertIdx == alertIconIdx)) {
+			String sub1 = html.substring(0, iconIdx);
+			String sub2 = html.substring(iconIdx);
+			html = sub1 + " " + ALERT_CLASSNAME + " " + sub2;
+			item.setHTML(SafeHtmlUtils.fromTrustedString(html));
+		}
+	}
+	
+	private SafeHtml createTreeNodeHtml(String label, String icon, boolean complete) {
 		String className = SMALL_ICON_CLASSNAME + " " + MIDDLE_CLASSNAME + " " + icon;
-		if (!isComplete) {
+		if (!complete) {
 			className = className + " " + ALERT_CLASSNAME;
 		}
 		

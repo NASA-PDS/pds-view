@@ -195,7 +195,7 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		handler2 = bus.addHandler(CompleteStateChangedEvent.TYPE, new CompleteStateChangedEvent.Handler() {
 			
 			@Override
-			public void onEvent(gov.nasa.arc.pds.lace.client.event.CompleteStateChangedEvent.EventDetails details) {
+			public void onEvent(CompleteStateChangedEvent.EventDetails details) {
 				Container targetContainer = details.getContainer();
 				if (targetContainer.equals(container)) {					
 					setState();
@@ -258,13 +258,13 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 			public void onSuccess(ResultType result) {							
 				int from = result.getFromIndex();
 				int to = result.getToIndex();
-				Container newContainer = updateContents(result.getContents(), from, to);				
-				bus.fireEvent(new CompleteStateChangedEvent(container));
+				Container newContainer = updateContents(result.getContents(), from, to);
 				
-				if (newContainer != null) {
-					// Fire an event for the tree view to update itself.				
-					bus.fireEvent(new ContainerChangedEvent(container, newContainer));
-				}	
+				// Fire an event for containers to update their complete state.
+				bus.fireEvent(new CompleteStateChangedEvent(container, false));
+				
+				// Fire an event for the tree view to update itself.				
+				bus.fireEvent(new ContainerChangedEvent(container, newContainer));	
 			}
 		});
 	}
@@ -329,17 +329,11 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		
 		return widget;
 	}
-	
+		
 	private Widget getContainer(Container container) {
 		ContainerPresenter presenter = injector.getContainerPresenter();
 		presenter.display(container, false);
 		return presenter.asWidget();
-	}
-	
-	private ContainerPresenter getPresenter(Container container) {
-		ContainerPresenter presenter = injector.getContainerPresenter();
-		presenter.display(container, false);
-		return presenter;
 	}
 
 	private Widget getSimpleItem(SimpleItem element) {
@@ -353,4 +347,10 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 		presenter.display(insPoint, this, -13, -13);
 		return presenter.asWidget();
 	}
+	
+	private ContainerPresenter getPresenter(Container container) {
+		ContainerPresenter presenter = injector.getContainerPresenter();
+		presenter.display(container, false);
+		return presenter;
+	}	
 }

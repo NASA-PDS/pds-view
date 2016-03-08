@@ -1,5 +1,6 @@
 package gov.nasa.arc.pds.lace.client.presenter;
 
+import gov.nasa.arc.pds.lace.client.event.CompleteStateChangedEvent;
 import gov.nasa.arc.pds.lace.client.event.ContainerChangedEvent;
 import gov.nasa.arc.pds.lace.client.event.ContainerChangedEvent.EventDetails;
 import gov.nasa.arc.pds.lace.client.event.TreeItemSelectionEvent;
@@ -95,6 +96,14 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 		 * @return TreeItem the selected tree item
 		 */
 		TreeItem getSelectedItem();
+				
+		/**
+		 * Updates the complete state of the specified item and it's parents.
+		 *  
+		 * @param item
+		 * @param complete
+		 */
+		void updateCompleteState(TreeItem item, boolean complete);
 	}
 
 	private EventBus bus;
@@ -129,9 +138,24 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 				if (details.isRootContainer()) {
 					populateTree(details.getContainer());
 				} else {
-					updateTree(details.getContainer(), details.getNewContainer());
+					Container newContainer;
+					if ((newContainer = details.getNewContainer()) != null) {
+						updateTree(details.getContainer(), newContainer);
+					}	
 				}
 			}
+			
+		});		
+		
+		bus.addHandler(CompleteStateChangedEvent.TYPE, new CompleteStateChangedEvent.Handler() {
+			
+			@Override
+			public void onEvent(CompleteStateChangedEvent.EventDetails details) {
+				if (details.isSimpleItem()) {
+					updateState(findChangedItem(details.getContainer()));
+				}				
+			}	
+			
 		});
 	}
 
@@ -142,8 +166,8 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 	 * @param item the selected tree item
 	 */
 	public void handleItemSelection(TreeItem item) {
-			getView().setState(item, true);
-			bus.fireEvent(new TreeItemSelectionEvent(map.get(item)));
+		getView().setState(item, true);
+		bus.fireEvent(new TreeItemSelectionEvent(map.get(item)));
 	}
 
 	/**
@@ -201,9 +225,7 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 		TreeItem selectedItem = view.getSelectedItem();
 		
 		// Find the tree item that represents the changed container.
-		TreeItem changedItem = map.get(selectedItem).equals(container) ? 
-				selectedItem :
-				findChangedItem(container, selectedItem);
+		TreeItem changedItem = findChangedItem(container);
 		
 		if (changedItem == null) {
 			String msg = "Couldn't find the tree item for the changed container '" +
@@ -235,6 +257,21 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 			view.setState(parent, true);
 			parent = parent.getParentItem();
 		}
+				
+		updateState(changedItem);	
+	}
+	
+	/**
+	 * Updates the complete state of a tree item and it's parent items. 
+	 * 
+	 * @param item a tree item
+	 */
+	private void updateState(TreeItem item) {				
+		TreeItem parent = item;
+		while (parent != null) {				
+			getView().updateCompleteState(parent, map.get(parent).isComplete());
+			parent = parent.getParentItem();
+		}
 	}
 	
 	/**
@@ -252,6 +289,21 @@ public class TreePresenter extends Presenter<TreePresenter.Display> {
 			}
 		}
 		return items;
+	}
+	
+	/**
+	 * Find the tree item that represents the changed container.
+	 * 
+	 * @param changedContainer
+	 * @return
+	 */
+	private TreeItem findChangedItem(Container changedContainer) {		
+		TreeItem selectedItem = getView().getSelectedItem();
+		TreeItem changedItem = map.get(selectedItem).equals(changedContainer) ? 
+				selectedItem :
+				findChangedItem(changedContainer, selectedItem);
+		
+		return changedItem;
 	}
 	
 	private TreeItem findChangedItem(Container changedContainer, TreeItem item) {

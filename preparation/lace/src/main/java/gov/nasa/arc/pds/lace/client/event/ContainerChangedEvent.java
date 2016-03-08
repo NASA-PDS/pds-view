@@ -66,7 +66,7 @@ public class ContainerChangedEvent extends GenericEvent<ContainerChangedEvent.Ev
 	}
 
 	/**
-	 * Creates a new instance with the given data and type.
+	 * Creates a new instance with the given data.
 	 *
 	 * @param container the new root container or a changed container 
 	 * @param rootContainer whether the container is a new root or not.

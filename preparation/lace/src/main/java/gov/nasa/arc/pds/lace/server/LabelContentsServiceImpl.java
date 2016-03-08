@@ -140,11 +140,10 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 	}
 
 	@Override
-	public Container saveSimplelItem(Container container, SimpleItem item, String value) {
-		List<LabelItem> content = container.getContents();
+	public Container saveSimplelItem(Container container, SimpleItem item, String value) {				
 		int index;
-
-		if ((index = content.indexOf(item)) != -1) {
+		
+		if ((index = container.getContents().indexOf(item)) != -1) {
 			container.removeItem(index);
 			SimpleItem changedItem = (SimpleItem) item.copy();
 			changedItem.setValue(value);
@@ -153,6 +152,7 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 			throw new NoSuchElementException("Could not find the simple item in the parent container.");
 		}
 
+		// TODO: change the return type to SimpleItem?
 		return container;
 	}
 
@@ -201,12 +201,6 @@ public class LabelContentsServiceImpl extends RemoteServiceServlet implements La
 			return new Container();
 		}
 	}
-
-	/* ------------------------------------------------------------------------------------------------------ *
-	 * 													   													  *
-	 *  Private/helper methods						   													      *
-	 *  												   													  *
-	 * -------------------------------------------------------------------------------------------------------*/
 
 	/*
 	 * Instantiates the XSLoader implementation and loads the XML schema.
