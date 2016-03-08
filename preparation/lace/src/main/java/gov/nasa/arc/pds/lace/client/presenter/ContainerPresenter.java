@@ -255,10 +255,9 @@ public class ContainerPresenter extends Presenter<ContainerPresenter.Display> {
 			}
 
 			@Override			
-			public void onSuccess(ResultType result) {							
-				int from = result.getFromIndex();
-				int to = result.getToIndex();
-				Container newContainer = updateContents(result.getContents(), from, to);
+			public void onSuccess(ResultType result) {
+				Container newContainer = updateContents(result.getContents(),
+						result.getFromIndex(), result.getToIndex());
 				
 				// Fire an event for containers to update their complete state.
 				bus.fireEvent(new CompleteStateChangedEvent(container, false));

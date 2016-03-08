@@ -135,23 +135,27 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 	 * @param text
 	 */
 	private void showPopup(List<LabelItemType> alternatives, String text) {
+		int count = 0;
 		final ListBox listbox = new ListBox();
-		listbox.setVisibleItemCount(alternatives.size() + 1);
-		listbox.setSelectedIndex(-1);
 		
-		Iterator<LabelItemType> iterator = alternatives.iterator();
-		while (iterator.hasNext()) {
-			listbox.addItem(iterator.next().getElementName());
-		}	
-				
+		// Add items within the insertable range to the list box
+		for (int i = insPoint.getInsertFirst(); i <= insPoint.getInsertLast(); ++i) {
+			listbox.addItem(alternatives.get(i).getElementName());
+			count++;
+		}
+		
+		listbox.setVisibleItemCount(count + 1);
+		listbox.setSelectedIndex(-1);		
 		listbox.addChangeHandler(new ChangeHandler() {
+			
 			@Override
 			public void onChange(ChangeEvent event) {
 				event.stopPropagation();
-				// Fire an event to registered handlers to notify them 
-				// that an element is selected from an 'Add/Choose' dialog. 			
-				bus.fireEvent(new ElementSelectionEvent(listbox.getSelectedIndex(), insPoint, parentPresenter, popup));
+				// Notify the registered handlers that an element is selected. 			
+				bus.fireEvent(new ElementSelectionEvent(
+						listbox.getSelectedIndex(), insPoint, parentPresenter, popup));
 			}
+			
 		});
 		
 		popup.setText(text);
