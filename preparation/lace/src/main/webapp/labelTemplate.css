@@ -162,15 +162,22 @@ body#editorPage a:hover {
  /*----------------------------------*
 		INSERTION POINT WIDGET
  *----------------------------------*/ 	
-.plusButtonPanel {
+.insertionPointPanel {
 	position: relative;	
 }
 
 .plusButton {
 	position: absolute;
 	z-index: 1;
+	background: url("images/btn-plus.png") no-repeat center;
+	width: 25px;
+	height:25px;
 }
     
+.plusButton:hover {
+	background: url("images/btn-plus-hover.png") no-repeat center;
+}
+
 .optionalPanel, 
 .requiredPanel {	
 	margin: 3px 0;

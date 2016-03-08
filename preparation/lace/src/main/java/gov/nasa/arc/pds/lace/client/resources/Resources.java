@@ -26,13 +26,7 @@ public interface Resources extends ClientBundle {
 	ImageResource editArrowCollapsed();
 	
 	@Source({"edit-arrow-expanded.png"})
-	ImageResource editArrowExpanded();
-	
-	@Source({"btn-plus.png"})
-	ImageResource getPlusButton();
-
-	@Source({"icon-alert-sm.png"})
-	ImageResource getSmallAlertIcon();
+	ImageResource editArrowExpanded();	
 
 	@Source({"button-close.png"})
 	ImageResource getCloseButtonIcon();

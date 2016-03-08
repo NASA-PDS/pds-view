@@ -1,7 +1,6 @@
 package gov.nasa.arc.pds.lace.client.view;
 
 import gov.nasa.arc.pds.lace.client.presenter.InsertionPointPresenter;
-import gov.nasa.arc.pds.lace.client.resources.Resources;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,10 +11,9 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.InlineHyperlink;
 import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -33,16 +31,13 @@ public class InsertionPointView extends Composite implements InsertionPointPrese
 	private InsertionPointPresenter presenter;
 
 	@UiField
-	HTMLPanel buttonPanel;
-
-	@UiField
 	FlowPanel requiredPanel;
 
 	@UiField
 	FlowPanel optionalPanel;
 
 	@UiField
-	Image plusButton;
+	Label plusButton;
 
 	@UiField
 	InlineLabel optionalTitle;
@@ -61,9 +56,6 @@ public class InsertionPointView extends Composite implements InsertionPointPrese
 	 */
 	public InsertionPointView() {
 		initWidget(uiBinder.createAndBindUi(this));
-
-		plusButton.setResource(Resources.INSTANCE.getPlusButton());
-		plusButton.addStyleName("plusButton");
 	}
 
 	@Override
@@ -79,8 +71,8 @@ public class InsertionPointView extends Composite implements InsertionPointPrese
 	}
 
 	@Override
-	public void showButtonPanel(boolean show) {
-		buttonPanel.setVisible(show);
+	public void showPlusButton(boolean show) {
+		plusButton.setVisible(show);
 	}
 
 	@Override

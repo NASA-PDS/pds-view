@@ -39,7 +39,7 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 		 * 
 		 * @param show true, shows the panel, false, hides it.
 		 */
-		void showButtonPanel(boolean show);
+		void showPlusButton(boolean show);
 		
 		/**
 		 * Shows/hides the required panel which is
@@ -164,7 +164,7 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 		String displayType = insPoint.getDisplayType();
 		
 		if (displayType.equals(InsertionPoint.DisplayType.CHOICE.getDisplayType())) {
-			view.showButtonPanel(false);
+			view.showPlusButton(false);
 			view.showOptionalPanel(false);
 			view.showRequiredPanel(true);
 		} else {
@@ -174,9 +174,9 @@ public class InsertionPointPresenter extends Presenter<InsertionPointPresenter.D
 				// TODO: need to do error checking
 				view.setOptionalTitle(insPoint.getAlternatives().get(0).getElementName());				
 				view.showOptionalPanel(true);
-				view.showButtonPanel(false);
+				view.showPlusButton(false);
 			} else {
-				view.showButtonPanel(true);
+				view.showPlusButton(true);
 				view.setPlusButtonPosition(top, right);
 				view.showOptionalPanel(false);
 			}			
