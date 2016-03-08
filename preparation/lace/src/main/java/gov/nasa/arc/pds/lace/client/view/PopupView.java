@@ -12,10 +12,14 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * 
+ *
+ */
 public class PopupView extends DialogBox implements PopupPresenter.Display {
 
 	private static PopupViewUiBinder uiBinder = GWT.create(PopupViewUiBinder.class);
@@ -24,18 +28,20 @@ public class PopupView extends DialogBox implements PopupPresenter.Display {
 	}
 
 	@UiField
-	Image closeButton;
+	Label closeButton;
 	
 	@UiField
 	FlowPanel contentPanel;
 	
 	private PopupPresenter presenter;
 	
+	/**
+	 * 
+	 */
 	public PopupView() {
 		setWidget(uiBinder.createAndBindUi(this));		
 		setGlassEnabled(true);
 		setAutoHideEnabled(true);		
-		closeButton.setResource(Resources.INSTANCE.getCloseButtonIcon());
 		
 		addCloseHandler(new CloseHandler<PopupPanel>() {
 

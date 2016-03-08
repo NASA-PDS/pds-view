@@ -2,11 +2,9 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 			 xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	
-	<g:FlowPanel>		
-		<g:FlowPanel styleName="closeButtonPanel">
-			<g:Image ui:field="closeButton" title="Close"></g:Image>
-		</g:FlowPanel>
-		<g:FlowPanel ui:field="contentPanel" styleName="popupContentPanel"></g:FlowPanel>
+	<g:FlowPanel>
+		<g:Label ui:field="closeButton" title="Close" styleName="closeButton"></g:Label>
+		<g:FlowPanel ui:field="contentPanel"></g:FlowPanel>
 	</g:FlowPanel>
 	
 </ui:UiBinder> 

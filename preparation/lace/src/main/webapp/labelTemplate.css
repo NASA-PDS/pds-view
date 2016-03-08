@@ -166,16 +166,9 @@ body#editorPage a:hover {
 	position: relative;	
 }
 
-.plusButton {
+.insertionPointPanel .plusButton {
 	position: absolute;
 	z-index: 1;
-	background: url("images/btn-plus.png") no-repeat center;
-	width: 25px;
-	height:25px;
-}
-    
-.plusButton:hover {
-	background: url("images/btn-plus-hover.png") no-repeat center;
 }
 
 .optionalPanel, 
@@ -210,7 +203,7 @@ body#editorPage a:hover {
 /*----------------------------------*
 		POPUP WIDGET
  *----------------------------------*/
-.closeButtonPanel {
+.gwt-DialogBox .closeButton {
  	position: absolute;
     right: 10px;
     top: 5px;
@@ -218,15 +211,17 @@ body#editorPage a:hover {
 
 .gwt-ListBox {
 	border: none;
-	width: 100%;
+	min-height: 100px;
+	min-width: 200px;
+	padding: 3px;
 }
 
 .gwt-DialogBox .dialogTopCenterInner .Caption {
 	padding: 7px 8px 7px 4px;
 }
 
-.gwt-DialogBox .dialogContent {
-    min-width: 200px;
+.gwt-DialogBox .dialogMiddle .dialogMiddleCenter {
+	padding: 0;
 }
 
 /*----------------------------------*
@@ -415,4 +410,24 @@ body#editorPage a:hover {
 	background-repeat: no-repeat;	
 	margin-right: 6px;
 	display: inline-block;	
+}
+
+.plusButton {	
+	background: url("images/btn-plus.png") no-repeat center;
+	width: 25px;
+	height:25px;
+}
+
+.plusButton:hover {
+	background: url("images/btn-plus-hover.png") no-repeat center;
+}
+
+.closeButton {	
+	background: url("images/button-close.png") no-repeat center;
+	width: 24px;
+	height:24px;
+}
+
+.closeButton:hover {
+	background: url("images/button-close-hover.png") no-repeat center;
 }
