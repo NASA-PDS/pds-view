@@ -197,36 +197,27 @@ public class ModelAnalyzer {
 	 *
 	 * @param it a list iterator whose cursor is positioned just past the insertion point
 	 * @param insPoint the insertion point at which to insert a required element
-	 * @param insertOption the InsertOption instance that holds the item which is to be inserted
+	 * @param alternative the InsertOption instance that holds the item which is to be inserted
 	 * @param type the label item type to insert
 	 */
 	private void doInsert(ListIterator<LabelItem> it, InsertionPoint insPoint,
-			InsertOption insertOption, LabelItemType type) {
+			InsertOption alternative, LabelItemType type) {
 
-		// Create the new item.
-		LabelItem newItem;
-		if (!type.isComplex()) {
-			newItem = createSimpleItem(type);
-		} else {
-			List<LabelItem> contents = new ArrayList<LabelItem>();
-			List<LabelItem> initialContents = type.getInitialContents();
-			for (LabelItem item : initialContents) {
-				contents.add(item.copy());
-			}
-			newItem = createContainer(type, contents);
-		}
-
-		// Increase the "used" counter and change the display type to "plus" button.
-		insertOption.setUsedOccurrences(insertOption.getUsedOccurrences() + 1);
+		// Change the display type to "plus" button if it's not of that type.
 		if (!insPoint.getDisplayType().equals(PLUS_DISPLAY_TYPE)) {
 			insPoint.setDisplayType(PLUS_DISPLAY_TYPE);
 		}
-				
+	
+		// Increase the "used" counter.
+		alternative.setUsedOccurrences(alternative.getUsedOccurrences() + 1);
 		List<InsertOption> newAlternatives = new ArrayList<InsertOption>();
-		newAlternatives.add(insertOption);
+		newAlternatives.add(alternative);
 		InsertionPoint newInsPoint = (InsertionPoint) insPoint.copy();
 		newInsPoint.setAlternatives(newAlternatives);
 		
+		// Create the new item.
+		LabelItem newItem = createNewItem(type);
+				
 		// Now insert the new item and insertion point, and update the list cursor.
 		it.add(newItem);
 		it.add(newInsPoint);
@@ -245,11 +236,62 @@ public class ModelAnalyzer {
 	 * @return
 	 */
 	public List<LabelItem> doInsert(InsertionPoint insPoint, int alternativeIndex, int typeIndex) {
+		int index;
+		InsertionPoint insPointToSplit;		
+		List<LabelItem> items = new ArrayList<LabelItem>();
 		List<InsertOption> alternatives = insPoint.getAlternatives();
-		InsertOption insertOption = alternatives.get(alternativeIndex);
+		assert alternatives.size() > 0 && alternatives.size() <= 2;
+
+		// Increase the "used" counter.
+		InsertOption alternative = alternatives.get(alternativeIndex);
+		alternative.setUsedOccurrences(alternative.getUsedOccurrences() + 1);
 		
 		// Create the new item.
-		LabelItemType type = insertOption.getTypes().get(typeIndex);
+		LabelItem newItem = createNewItem(alternative.getTypes().get(typeIndex));
+		
+		if (insPoint.getDisplayType().equals(PLUS_DISPLAY_TYPE) && alternatives.size() > 1) {
+			// Need to merge after splitting and inserting.
+			InsertionPoint insPoint1 = (InsertionPoint) insPoint.copy();		
+			InsertionPoint insPoint2 = (InsertionPoint) insPoint.copy();
+			insPoint1.getAlternatives().remove(1);
+			insPoint2.getAlternatives().remove(0);
+			
+			items.add(insPoint1);
+			items.add(insPoint2);
+
+			if (insPoint1.getAlternatives().contains(alternative)) {
+				insPointToSplit = insPoint1;
+			} else {
+				insPointToSplit = insPoint2;
+			}
+						
+			index = items.indexOf(insPointToSplit);
+			items.remove(index);
+		} else {
+			// Change the display type to "plus" button if it's not already of that type.
+			if (!insPoint.getDisplayType().equals(PLUS_DISPLAY_TYPE)) {
+				insPoint.setDisplayType(PLUS_DISPLAY_TYPE);
+			}
+			insPointToSplit = insPoint;
+			index = 0;
+		}
+
+		// Split the existing insertion point.
+		InsertionPoint first = (InsertionPoint) insPointToSplit.copy();		
+		InsertionPoint second = (InsertionPoint) insPointToSplit.copy();
+		
+		// Insert the new item and insertion points.			
+		items.add(index++, first);
+		items.add(index++, newItem);
+		items.add(index, second);
+					
+		// And, expand any insertion points in the newly inserted item.
+		expandInsertionPoints(newItem);
+
+		return items;
+	}
+	
+	private LabelItem createNewItem(LabelItemType type) {
 		LabelItem newItem;
 		if (!type.isComplex()) {
 			newItem = createSimpleItem(type);
@@ -262,67 +304,7 @@ public class ModelAnalyzer {
 			newItem = createContainer(type, contents);
 		}
 		
-		assert alternatives.size() > 0 && alternatives.size() <= 2;
-
-		List<LabelItem> items = new ArrayList<LabelItem>();
-		boolean isDoMerge = false;
-
-		// Increase the "used" counter.
-		insertOption.setUsedOccurrences(insertOption.getUsedOccurrences() + 1);
-				
-		if (insPoint.getDisplayType().equals(PLUS_DISPLAY_TYPE)
-				&& insPoint.getAlternatives().size() > 1) {
-			// Need to merge after splitting and inserting.
-			isDoMerge = true;
-		}
-					
-		if (isDoMerge) {
-			InsertionPoint insPoint1 = (InsertionPoint) insPoint.copy();		
-			InsertionPoint insPoint2 = (InsertionPoint) insPoint.copy();
-			
-			insPoint1.getAlternatives().remove(1);
-			insPoint2.getAlternatives().remove(0);
-			
-			items.add(insPoint1);
-			items.add(insPoint2);
-			
-			InsertionPoint insPointToSplit;
-			if (insPoint1.getAlternatives().contains(insertOption)) {
-				insPointToSplit = insPoint1;
-			} else {
-				insPointToSplit = insPoint2;
-			}
-			
-			InsertionPoint first = (InsertionPoint) insPointToSplit.copy();		
-			InsertionPoint second = (InsertionPoint) insPointToSplit.copy();
-						
-			int idx = items.indexOf(insPointToSplit);
-			items.remove(idx);
-			items.add(idx++, first);
-			items.add(idx++, newItem);
-			items.add(idx, second);			
-		} else {
-			// Change the display type to "plus" button if it's not already.
-			if (!insPoint.getDisplayType().equals(PLUS_DISPLAY_TYPE)) {
-				insPoint.setDisplayType(PLUS_DISPLAY_TYPE);
-			}	
-			
-			// Split the existing insertion point. Keep the alternatives of the first
-			// insPoint intact, but set the alternatives of the second insPoint to the
-			// insertOption instance that contains the type being inserted.						
-			InsertionPoint first = (InsertionPoint) insPoint.copy();		
-			InsertionPoint second = (InsertionPoint) insPoint.copy();
-			
-			// Insert the new item and insertion points.			
-			items.add(first);
-			items.add(newItem);
-			items.add(second);
-		}
-
-		// And, expand any insertion points in the newly inserted item.
-		expandInsertionPoints(newItem);
-				
-		return items;
+		return newItem;
 	}
 	
 	/*
