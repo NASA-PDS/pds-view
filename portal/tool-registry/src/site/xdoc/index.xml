@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2015, by the California Institute of Technology.
+  Copyright 2016, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -17,13 +17,13 @@
 
 <document>
   <properties>
-    <title>About Data Dictionary Search</title>
+    <title>About Tool Registry</title>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
-    <section name="About Data Dictionary Search">
-      <p>The Data Dictionary Search component is a web application that serves as the search interface for PDS3 and PDS4 data dictionary products.
+    <section name="About Tool Registry">
+      <p>The Tool Registry component is a web application that supports entry and search of PDS-related tools and services.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
