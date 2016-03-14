@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2010-2015, by the California Institute of Technology. 
+# Copyright 2010-2016, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -119,6 +119,9 @@ cd ../transport-proxy
 mvn site
 mvn deploy
 cd ../transport-registry
+mvn site
+mvn deploy
+cd ../transport-upload
 mvn site
 mvn deploy
 cd ../..

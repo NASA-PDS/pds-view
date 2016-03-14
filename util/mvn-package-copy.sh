@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2012-2015, by the California Institute of Technology. 
+# Copyright 2012-2016, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -60,6 +60,7 @@ echo "Copying the Transport packages to the package directory."
 cp ../../transport/transport-ofsn/target/transport-ofsn*bin* .
 cp ../../transport/transport-proxy/target/transport-proxy*bin* .
 cp ../../transport/transport-registry/target/transport-registry*bin* .
+cp ../../transport/transport-upload/target/transport-upload*bin* .
 
 # Create the package of packages
 

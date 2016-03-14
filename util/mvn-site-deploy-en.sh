@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2010-2015, by the California Institute of Technology. 
+# Copyright 2010-2016, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -159,3 +159,5 @@ mkdir -p $1/transport/transport-proxy
 cp -r transport/transport-proxy/target/site/* $1/transport/transport-proxy
 mkdir -p $1/transport/transport-registry
 cp -r transport/transport-registry/target/site/* $1/transport/transport-registry
+mkdir -p $1/transport/transport-upload
+cp -r transport/transport-upload/target/site/* $1/transport/transport-upload
