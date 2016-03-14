@@ -39,6 +39,7 @@
     <module>transport-proxy</module>
     <module>transport-ofsn</module>
     <module>transport-registry</module>
+    <module>transport-upload</module>
   </modules>
 
   <licenses>
@@ -57,6 +58,15 @@
       <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
         <role>Development Lead</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Hyun Lee</name>
+      <id>hyunlee</id>
+      <email>Hyun.Lee@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
       </roles>
     </developer>
     <developer>

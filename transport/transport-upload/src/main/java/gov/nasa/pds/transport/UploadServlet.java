@@ -1,0 +1,158 @@
+// Copyright 2016, by the California Institute of Technology.
+// ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+// Any commercial use must be negotiated with the Office of Technology Transfer
+// at the California Institute of Technology.
+//
+// This software is subject to U. S. export control laws and regulations
+// (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+// is subject to U.S. export control laws and regulations, the recipient has
+// the responsibility to obtain export licenses or other export authority as
+// may be required before exporting such information to foreign countries or
+// providing access to foreign nationals.
+//
+// $Id$
+
+package gov.nasa.pds.transport;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+/**
+ * Servlet that supports uploading a file. Based on the Java 6 EE
+ * file upload servlet example.
+ *
+ * @author shardman
+ */
+@WebServlet(name = "UploadServlet", urlPatterns = {"/transport-upload"})
+@MultipartConfig
+public class UploadServlet extends HttpServlet {
+  /** Setup the logger. */
+  private final static Logger LOGGER = Logger.getLogger(UploadServlet.class.getCanonicalName());
+  /** The path for storing the uploaded files. */
+  private String repositoryPath;
+
+  /**
+   * Constructor for the upload servlet.
+   */
+  public UploadServlet() {}
+
+  /**
+   * Returns a short description of the servlet.
+   *
+   * @return a String containing servlet description
+   */
+  @Override
+  public String getServletInfo() {
+    return "Servlet that uploads files to a server-configured destination.";
+  }
+
+  /**
+   * Initialize the servlet.
+   *
+   * @param servletConfig The servlet configuration.
+   * @throws ServletException If an error occurs.
+  */
+  public void init(ServletConfig servletConfig) throws ServletException {
+    // Grab the repositoryPath parameter from the servlet config.
+    repositoryPath = servletConfig.getInitParameter("repositoryPath");
+    if (repositoryPath == null) {
+      repositoryPath = "/tmp";
+    }
+  }
+
+  /**
+   * Handles the HTTP <code>GET</code> method. This method returns an 
+   * exception since only <code>POST</code> requests are allowed.
+   *
+   * @param request servlet request
+   * @param response servlet response
+   * @throws ServletException if a servlet-specific error occurs
+   * @throws IOException if an I/O error occurs
+   */
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    throw new ServletException("The UploadServlet only supports POST requests.");
+  }
+
+  /**
+   * Handles the HTTP <code>POST</code> method.
+   *
+   * @param request servlet request
+   * @param response servlet response
+   * @throws ServletException if a servlet-specific error occurs
+   * @throws IOException if an I/O error occurs
+   */
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    response.setContentType("text/html;charset=UTF-8");
+
+    // Create file components to save the file.
+    final Part filePart = request.getPart("file");
+    if (filePart == null) {
+      throw new ServletException("The file name for the file to upload was not provided in the request.");
+    }
+    final String fileName = getFileName(filePart);
+
+    // Open the target file, read the bytes and write out the file.
+    OutputStream out = null;
+    InputStream filecontent = null;
+    final PrintWriter writer = response.getWriter();
+    try {
+      out = new FileOutputStream(new File(repositoryPath + File.separator + fileName));
+      filecontent = filePart.getInputStream();
+
+      int read = 0;
+      final byte[] bytes = new byte[1024];
+
+      while ((read = filecontent.read(bytes)) != -1) {
+        out.write(bytes, 0, read);
+      }
+      String message = "File " + fileName + " uploaded to " + repositoryPath + ".";
+      writer.println(message);
+      LOGGER.log(Level.INFO, message);
+
+    } catch (FileNotFoundException e) {
+      String message = "Problems during file upload. Error: " + e.getMessage();
+      LOGGER.log(Level.SEVERE, message);
+      response.sendError(response.SC_INTERNAL_SERVER_ERROR, message);
+    } finally {
+      if (out != null) {
+        out.close();
+      }
+      if (filecontent != null) {
+        filecontent.close();
+      }
+      if (writer != null) {
+        writer.close();
+      }
+    }
+  }
+
+  /**
+   * Extract the file name from the file part.
+   */
+  private String getFileName(final Part part) {
+    final String partHeader = part.getHeader("content-disposition");
+    for (String content : part.getHeader("content-disposition").split(";")) {
+      if (content.trim().startsWith("filename")) {
+        return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
+      }
+    }
+    return null;
+  }
+}
