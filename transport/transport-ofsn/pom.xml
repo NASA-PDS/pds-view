@@ -140,12 +140,12 @@
     </repository>
     <!-- Latest OODT artifacts -->
     <repository>
-       <id>apache.public</id>
-       <name>Apache Public</name>
-       <url>https://repository.apache.org/content/groups/public/</url>
+       <id>apache.releases</id>
+       <name>Apache Releases</name>
+       <url>https://repository.apache.org/content/repositories/releases/</url>
        <releases>
-         <enabled>false</enabled>
-       </releases>
+        <enabled>false</enabled>
+      </releases>
        <snapshots>
          <enabled>false</enabled>
        </snapshots>
