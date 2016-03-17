@@ -58,7 +58,7 @@
     <search-version>1.7.0</search-version>
     <storage-version>1.0.0</storage-version>
     <!-- External Dependency Versions -->
-    <oodt-version>0.7</oodt-version>
+    <oodt-version>0.12</oodt-version>
     <product-tools-version>3.5.0</product-tools-version>
     <vicario-version>4.1</vicario-version>
   </properties>

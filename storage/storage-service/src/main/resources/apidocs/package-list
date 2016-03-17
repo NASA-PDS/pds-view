@@ -1,5 +1,8 @@
 org.apache.oodt.cas.filemgr.catalog
+org.apache.oodt.cas.filemgr.catalog.solr
+org.apache.oodt.cas.filemgr.cli.action
 org.apache.oodt.cas.filemgr.datatransfer
+org.apache.oodt.cas.filemgr.exceptions
 org.apache.oodt.cas.filemgr.ingest
 org.apache.oodt.cas.filemgr.metadata
 org.apache.oodt.cas.filemgr.metadata.extractors

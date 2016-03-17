@@ -178,7 +178,11 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 				}
 				mimeType = mediaType.toString();
 			} else { // use default mimetype of product on disk
-				mimeType = MimeTypesFactory.create().getMimeType(new File(realPath)).getName();
+				try {
+                    mimeType = MimeTypesFactory.create().getMimeType(new File(realPath)).getName();
+                } catch (Exception ex) {
+                    throw new ProductException("failed to get a MIME type: " + ex.getMessage());
+                }
 			}
 			String resourceId = new File(realPath).getName();
 			if (cfg.getHandlerConf().containsKey("extension")) {
@@ -202,7 +206,7 @@ XMLQueryMetKeys, OFSNXMLMetKeys, OFSNMetKeys, OFSNXMLConfigMetKeys {
 	 *
 	 * @see org.apache.oodt.product.LargeProductQueryHandler#close(java.lang.String)
 	 */
-	public void close(String id) throws ProductException {
+	public void close(String id) {
 		// nothing to do
 	}
 

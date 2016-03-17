@@ -102,7 +102,7 @@ public class SearchProductHandler implements LargeProductQueryHandler {
     archivePackage = archivePackage.toUpperCase();
     
     List<String> identifiers = new ArrayList<String>();    
-    System.out.println("SearchProductHandler....q.getKwdQueryString() = " + q.getKwdQueryString());
+    //System.out.println("SearchProductHandler....q.getKwdQueryString() = " + q.getKwdQueryString());
     
     // get a filename containing identifier list (bulk transport)
     if (q.getKwdQueryString().contains("identifier-list")) {
@@ -118,8 +118,11 @@ public class SearchProductHandler implements LargeProductQueryHandler {
     		//Read File Line By Line
     		while ((strLine = br.readLine()) != null)   {
     			// Print the content on the console
-    			System.out.println ("SearchProductHandler...line = " + strLine);
-    			identifiers.add(strLine);
+    			System.out.println ("SearchProductHandler...line = " + strLine + "      strLine.length() = " + strLine.length());
+    			
+    			// ignore end of line
+    			if (strLine.length()>0)
+    				identifiers.add(strLine);
     		}
     		//Close the input stream
     		br.close();
@@ -280,7 +283,7 @@ public class SearchProductHandler implements LargeProductQueryHandler {
    * @throws ProductException if an error occurs.
    */
   @Override
-  public void close(String id) throws ProductException {
+  public void close(String id) {
     // Remove the staged archive file.
     try {
       File archiveFile = new File(id);

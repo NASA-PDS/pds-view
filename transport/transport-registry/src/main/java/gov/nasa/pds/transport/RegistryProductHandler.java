@@ -239,7 +239,7 @@ public class RegistryProductHandler implements LargeProductQueryHandler {
    * @throws ProductException if an error occurs.
    */
   @Override
-  public void close(String id) throws ProductException {
+  public void close(String id) {
     // Remove the staged archive file.
     try {
       File archiveFile = new File(id);
