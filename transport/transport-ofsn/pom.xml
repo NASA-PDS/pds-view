@@ -140,6 +140,17 @@
     </repository>
     <!-- Latest OODT artifacts -->
     <repository>
+       <id>apache.public</id>
+       <name>Apache Public</name>
+       <url>https://repository.apache.org/content/groups/public/</url>
+       <releases>
+         <enabled>false</enabled>
+       </releases>
+       <snapshots>
+         <enabled>false</enabled>
+       </snapshots>
+    </repository>
+    <!--repository>
        <id>apache.snapshots</id>
        <name>Apache Snapshots</name>
        <url>http://repository.apache.org/snapshots/</url>
@@ -149,7 +160,7 @@
        <snapshots>
          <enabled>true</enabled>
        </snapshots>
-    </repository>
+    </repository-->
     <!-- Older OODT artifacts -->
     <repository>
       <id>oodt</id>
