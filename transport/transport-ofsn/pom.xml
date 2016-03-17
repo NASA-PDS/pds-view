@@ -138,30 +138,7 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
-    <!-- Latest OODT artifacts
-    <repository>
-       <id>apache.releases</id>
-       <name>Apache Releases</name>
-       <url>https://repository.apache.org/content/repositories/releases/</url>
-       <releases>
-        <enabled>false</enabled>
-      </releases>
-       <snapshots>
-         <enabled>false</enabled>
-       </snapshots>
-    </repository> -->
-    <!--repository>
-       <id>apache.snapshots</id>
-       <name>Apache Snapshots</name>
-       <url>http://repository.apache.org/snapshots/</url>
-       <releases>
-         <enabled>false</enabled>
-       </releases>
-       <snapshots>
-         <enabled>true</enabled>
-       </snapshots>
-    </repository-->
-    <!-- Older OODT artifacts
+    <!-- Older OODT artifacts -->
     <repository>
       <id>oodt</id>
       <name>OODT Private Repository</name>
@@ -174,7 +151,7 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
-    </repository> -->
+    </repository>
   </repositories>
 
   <dependencies>
@@ -219,6 +196,12 @@
       <version>1.0.1</version>
       <type>jar</type>
       <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>gov.nasa.pds.2010.preparation</groupId>
