@@ -94,6 +94,7 @@
               <excludes>
                 <exclude>WEB-INF/lib/solr*1.3.0*.jar</exclude>
                 <exclude>WEB-INF/lib/commons-httpclient-3.0-alpha1.jar</exclude>
+                <exclude>WEB-INF/lib/jcl-over-slf4j-1.7.12.jar</exclude>
               </excludes>
             </overlay>
           </overlays>
@@ -161,6 +162,12 @@
       <version>${oodt-version}</version>
       <type>jar</type>
       <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>jcl-over-slf4j</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.oodt</groupId>
@@ -186,25 +193,7 @@
     <dependency>
       <groupId>org.apache.solr</groupId>
       <artifactId>solr-solrj</artifactId>
-      <version>4.3.0</version>
-      <exclusions>
-        <!--exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>jcl-over-slf4j</artifactId>
-        </exclusion-->
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-        <exclusion>
-           <groupId>org.apache.httpcomponents</groupId>
-           <artifactId>httpclient</artifactId>
-        </exclusion>
-        <exclusion>
-           <groupId>org.apache.httpcomponents</groupId>
-           <artifactId>httpcore</artifactId>
-        </exclusion>
-      </exclusions>
+      <version>4.10.0</version>
     </dependency>
   </dependencies>
 
