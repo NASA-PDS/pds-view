@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011-2015, by the California Institute of Technology.
+  Copyright 2011-2016, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -43,7 +43,7 @@
       </p>
 
       <subsection name="Java Runtime Environment">
-        <p>The Search Service was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically compiled for Java version 1.6 and has been tested with this version and version 1.7 and 1.8. Since support for Java 1.6 ended over two years ago, we suggest an environment of at least Java 1.7. The following commands test the local Java installation in a UNIX-based environment:
+        <p>The Search Service was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically compiled for Java version 1.7 and has been tested with this version and version 1.8. The following commands test the local Java installation in a UNIX-based environment:
         </p>
 
         <source>
@@ -56,12 +56,15 @@ Java(TM) SE Runtime Environment (build 1.7.0_72-b14)
 Java HotSpot(TM) 64-Bit Server VM (build 24.72-b04, mixed mode)
         </source>
 
-        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.6, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The suggested software package is the Java Standard Edition (SE) 7, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
+        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.7, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The suggested software package is the Java Standard Edition (SE) 7, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
         </p>
       </subsection>
 
       <subsection name="Java Application Server">
-        <p>The Search Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/development/pds4/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
+        <p>The Search Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/development/pds4/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
+        </p>
+
+        <p>The top-level directory where Apache Tomcat is installed (i.e. the directory containing the <i>webapps</i> and <i>conf</i> sub-directories) will be referenced in these instructions as $TOMCAT_HOME.
         </p>
       </subsection>
     </section>
@@ -120,12 +123,12 @@ or
 
       <subsection name="Initial Installation">
         <ol>
-          <li>Create a symbolic link to the Search Service installation directory to provide an easier method of upgrade in the future.  The following demonstrates how to create this symbolic link:
+          <li>Create a symbolic link to the Search Service installation directory to provide an easier method of upgrade in the future. The following demonstrates how to create this symbolic link:
             <source>
 ln -s /usr/local/${project.artifactId}-${project.version} /usr/local/${project.artifactId}
             </source>
           </li>
-          <li>Create a Tomcat context file <i>${project.artifactId}.xml</i> to refer to the Solr WAR file (found in the $SEARCH_SERVICE_HOME directory) and place it in the <i>$TOMCAT_HOME/conf/Catalina/{hostname}</i> directory.  The <i>${project.artifactId}.xml</i> file should look something like this, with the paths modifed as needed:
+          <li>Create a Tomcat context file <i>${project.artifactId}.xml</i> to refer to the Solr WAR file (found in the $SEARCH_SERVICE_HOME directory) and place it in the <i>$TOMCAT_HOME/conf/Catalina/{hostname}</i> ({hostname} is typically <i>localhost</i>) directory. For Tomcat version 7, the <i>${project.artifactId}.xml</i> file should look something like this, with the paths modified as needed:
             <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context docBase="/usr/local/${project.artifactId}/solr.war" debug="0" 
@@ -140,6 +143,25 @@ ln -s /usr/local/${project.artifactId}-${project.version} /usr/local/${project.a
         /usr/local/search-service/log4j.properties"/&gt;
 &lt;/Context&gt;
             </source>
+            <p>For Tomcat version 8, the <i>${project.artifactId}.xml</i> file should look something like this, with the paths modified as needed:
+            </p>
+            <source>
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;Context docBase="/usr/local/${project.artifactId}/solr.war" crossContext="true"&gt;
+  &lt;Environment name="solr/home" type="java.lang.String" 
+    value="/usr/local/${project.artifactId}/" override="true" /&gt;
+  &lt;Parameter name="javax.xml.transform.TransformerFactory" 
+    value="net.sf.saxon.TransformerFactoryImpl"  override="true"/&gt;
+  &lt;Resources className="org.apache.catalina.webresources.StandardRoot"&gt;
+    &lt;PreResources className="org.apache.catalina.webresources.FileResourceSet"
+      base="/usr/local/${project.artifactId}/log4j.properties"
+      webAppMount="/WEB-INF/log4j.properties"/&gt;
+    &lt;PostResources className="org.apache.catalina.webresources.DirResourceSet"
+      base="/usr/local/${project.artifactId}/lib/"
+      webAppMount="/WEB-INF/lib"/&gt;
+  &lt;/Resources&gt;
+&lt;/Context&gt;
+            </source>
           </li>
           <li><p>Append to the <i>CATALINA_OPTS</i> and <i>JAVA_OPTS</i> environment variables by adding the following line to the <i>$TOMCAT_HOME/bin/setenv.sh</i> script:</p>
             <source>
@@ -150,7 +172,8 @@ JAVA_OPTS="${JAVA_OPTS} -Dlog4j.configuration=\
           file:///usr/local/${project.artifactId}/log4j.properties"
 JAVA_OPTS="${JAVA_OPTS} -Dlog4j.debug=true"
             </source>
-      <p>For more information on the <i>$TOMCAT_HOME/bin/setenv.sh</i> script, see the General Configuration section of the <a href="../../../release/index-tomcat.html#General_Configuration">Tomcat Deployment</a> document.</p>
+            <p>For more information on the <i>$TOMCAT_HOME/bin/setenv.sh</i> script, see the General Configuration / Environment Configuration section of the <a href="../../../release/index-tomcat.html#General_Configuration">Tomcat Deployment</a> document. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/development/pds4/current/release/index-tomcat.html#General_Configuration" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
+            </p>
           </li>
           <li>Restart Tomcat server</li>
           <li>Test installation by going to http://localhost:8080/${project.artifactId}/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
@@ -174,7 +197,9 @@ ln -s /usr/local/${project.artifactId}-x.x.x /usr/local/${project.artifactId}
     </section>
 
     <section name="Security">
-      <p>The Solr software includes a URL endpoint to update the index.  This introduces a security vulnerability by allowing someone to modify the index without securing it.  The preferred method of security is to only allow updates to come from the local machine (localhost).  To do so, open the Apache Tomcat configuration file. <i>$TOMCAT_HOME/conf/server.xml</i>, for editing, and find the Host section in the document that looks similar to the following:</p>
+      <p>The Solr software includes an end point to update the index. This introduces a security vulnerability by allowing someone to modify the index without securing it. The preferred method of security is to only allow updates to come from the local machine (localhost). To do so, open the Apache Tomcat configuration file, <i>$TOMCAT_HOME/conf/server.xml</i>, for editing, and find the Host section in the document that looks similar to the following:
+      </p>
+
       <source>
 &lt;Host name="localhost"  appBase="webapps"
       unpackWARs="true" autoDeploy="true"&gt;
@@ -183,18 +208,24 @@ ln -s /usr/local/${project.artifactId}-x.x.x /usr/local/${project.artifactId}
   .
 &lt;/Host&gt;
       </source>
-      <p>Within this section, add the following code, which should be modified according to your specific installation.  The following assumes that the Search Service software is located at the Tomcat base level directory (i.e. http://localhost/search-service):</p>
+
+      <p>Within this section, add the following code, which should be modified according to your specific installation.  The following assumes that the Search Service software is located at the Tomcat base level directory (i.e. http://localhost/search-service):
+      </p>
+
       <source>
 &lt;Context path="/search-service/pds/update" docBase="" &gt;
     &lt;Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="127.0.0.1" /&gt;
 &lt;/Context&gt;
       </source>
-      <p>The IP address 127.0.0.1 represents the localhost IP address.  This can be modified to be any IP address of the machine you would like to have update access to the Search Service.</p>
+
+      <p>The IP address 127.0.0.1 represents the localhost IP address.  This can be modified to be any IP address of the machine you would like to have update access to the Search Service.
+      </p>
     </section>
 
     <section name="Common Errors">
       <subsection name="HTTP 404 - Requested Resource Not Available">
-        <p>This error means the application failed to install correctly.  The following are potential mitigation strategies:</p>
+        <p>This error means the application failed to install correctly. The following are potential mitigation strategies:
+        </p>
         <ul>
           <li>Verify domain and port are correct for the local Tomcat installation.</li>
           <li>Verify paths denoted for $TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml and CATALINA_OPTS are correct.</li>
