@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2015, by the California Institute of Technology.
+  Copyright 2010-2016, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -41,7 +41,7 @@
       </p>
 
       <subsection name="Java Runtime Environment">
-        <p>The Search User Interface was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically compiled for Java version 1.6 and has been tested with this version and version 1.7 and 1.8. Since support for Java 1.6 ended over two years ago, we suggest an environment of at least Java 1.7. The following commands test the local Java installation in a UNIX-based environment:
+        <p>The Search User Interface was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically compiled for Java version 1.7 and has been tested with this version and version 1.8. The following commands test the local Java installation in a UNIX-based environment:
         </p>
 
         <source>
@@ -54,12 +54,15 @@ Java(TM) SE Runtime Environment (build 1.7.0_72-b14)
 Java HotSpot(TM) 64-Bit Server VM (build 24.72-b04, mixed mode)
         </source>
 
-        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.6, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The suggested software package is the Java Standard Edition (SE) 7, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
+        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.7, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The suggested software package is the Java Standard Edition (SE) 7, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
         </p>
       </subsection>
 
       <subsection name="Java Application Server">
-        <p>The Search User Interface requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20 through version 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/pds2010/development/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
+        <p>The Search User Interface requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/development/pds4/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
+        </p>
+
+        <p>The top-level directory where Apache Tomcat is installed (i.e. the directory containing the <i>webapps</i> and <i>conf</i> sub-directories) will be referenced in these instructions as $TOMCAT_HOME.
         </p>
       </subsection>
     </section>
@@ -100,99 +103,104 @@ or
         <li><b>extras/</b><br/>
           <p>This directory contains the css, images, javascript, and server-side include files used to build the user interface to match that provided on the PDS Engineering website.
           </p>
-	</li>
+        </li>
       </ul>
     </section>
 
     <section name="Deploying the Application">
-      <p>The Search User Interface web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. There are two options for deploying the WAR file:</p>
-	<subsection name="Copy WAR To webapps directory">
-	  <ol>
-	    <li>Locate the WAR file (${project.artifactId}.war) in the Search UI package.</li>
-	    <li>Copy this file to the <i>$TOMCAT_HOME/webapps</i> directory.</li>
-	    <li>Create an XML context file, <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> containing the following:
-	      <source>
+      <p>The Search User Interface web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. There are two options for deploying the WAR file:
+      </p>
+
+      <subsection name="Copy WAR To webapps directory">
+        <ol>
+          <li>Locate the WAR file (${project.artifactId}.war) in the Search UI package.</li>
+          <li>Copy this file to the <i>$TOMCAT_HOME/webapps</i> directory.</li>
+          <li>Create an XML context file, <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> containing the following:
+            <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context crossContext="true"&gt;
 &lt;/Context&gt;
-	      </source>
-	    </li>
-	    <li>Restart Tomcat.</li>
-	  </ol>
-	</subsection>
-	<subsection name="Create Context File To Point To WAR">
-	  <p>
-	    Assuming Search UI WAR and accompanying directories are located at <i>/usr/local/${project.artifactId}</i> (if not, substitute the directory location as needed), we need to set the application to allow for cross-context so it can use the various server-side includes.  We can do this by creating <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> containing the following text:
-	  </p>
-	  <source>
+            </source>
+          </li>
+          <li>Restart Tomcat.</li>
+        </ol>
+      </subsection>
+
+      <subsection name="Create Context File To Point To WAR">
+        <p>Assuming Search UI WAR and accompanying directories are located at <i>/usr/local/${project.artifactId}</i> (if not, substitute the directory location as needed), we need to set the application to allow for cross-context so it can use the various server-side includes.  We can do this by creating <i>$TOMCAT_HOME/conf/Catalina/localhost/${project.artifactId}.xml</i> containing the following text:
+        </p>
+
+        <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context docBase="/usr/local/${project.artifactId}/${project.artifactId}.war" crossContext="true"&gt;
 &lt;/Context&gt;
-	  </source>
-	</subsection>
+        </source>
+      </subsection>
     </section>
+
     <section name="Deploying the Extras">
       <p>The Search User Interface also depends on several other directories from the PDS Website that include images, Javascript, CSS, and server-side include files that are in the <i>extras</i> directory in Search UI package (i.e. /usr/local/${project.artifactId}/extras).  This contains the following directories:
       </p>
-      
+
       <ul>
-	<li>css</li>
-	<li>images</li>
-	<li>include</li>
-	<li>js</li>
-	<li>scripts</li>
+        <li>css</li>
+        <li>images</li>
+        <li>include</li>
+        <li>js</li>
+        <li>scripts</li>
       </ul>
 
       <subsection name="PDS Engineering Deployment">
-	<p>The current Search UI is intended for deployment on both the PDS Engineering website, as well as external users.  The remaining installation procedures can be ignored for PDS EN deployment because these directories are already included in the PDS EN website.</p>
+  <p>The current Search UI is intended for deployment on both the PDS Engineering website, as well as external users.  The remaining installation procedures can be ignored for PDS EN deployment because these directories are already included in the PDS EN website.</p>
       </subsection>
-      
-      <subsection name="All Other Deployments">
-	<p>If the directories above are not in the <i>$TOMCAT_HOME/webapps</i> directory already, create the following Tomcat context files in <i>$TOMCAT_HOME/conf/Catalina/localhost</i> to include these directories:</p>
 
-      <ul>
-	<li>css.xml
-	  <source>
+      <subsection name="All Other Deployments">
+        <p>If the directories above are not in the <i>$TOMCAT_HOME/webapps</i> directory already, create the following Tomcat context files in <i>$TOMCAT_HOME/conf/Catalina/localhost</i> to include these directories:
+        </p>
+
+        <ul>
+          <li>css.xml
+            <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context docBase="/usr/local/${project.artifactId}/extras/css" &gt;&lt;/Context&gt;
-	  </source>
-	</li>
-	<li>images.xml
-	  <source>
+            </source>
+          </li>
+          <li>images.xml
+            <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context docBase="/usr/local/${project.artifactId}/extras/images" &gt;&lt;/Context&gt;
-	  </source>
-	</li>
-	<li>include.xml
-	  <source>
+            </source>
+          </li>
+          <li>include.xml
+            <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context docBase="/usr/local/${project.artifactId}/extras/include" &gt;&lt;/Context&gt;
-	  </source>
-	</li>
-	<li>js.xml
-	  <source>
+            </source>
+          </li>
+          <li>js.xml
+            <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context docBase="/usr/local/${project.artifactId}/extras/js" &gt;&lt;/Context&gt;
-	  </source>
-	</li>
-	<li>scripts.xml
-	  <source>
+            </source>
+          </li>
+          <li>scripts.xml
+            <source>
 &lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;Context docBase="/usr/local/${project.artifactId}/extras/scripts" &gt;&lt;/Context&gt;
-	  </source>
-	</li>
-      </ul>
+            </source>
+          </li>
+        </ul>
 
-      <p>An alternative solution is to move all of the directories into the $TOMCAT_HOME/webapps directory: (assumes Search UI software and directories are at /usr/local/${project.artifactId})</p>
-      <p><b>Unix Environment</b></p>
-      <source>
+        <p>An alternative solution is to move all of the directories into the $TOMCAT_HOME/webapps directory: (assumes Search UI software and directories are at /usr/local/${project.artifactId})
+        </p>
+        <p><b>Unix Environment</b></p>
+
+        <source>
 $ mv extras/* $TOMCAT_HOME/webapps
-      </source>
+        </source>
 
-      
-      <p>Restart Tomcat to ensure the changes take effect.</p>
+        <p>Restart Tomcat to ensure the changes take effect.</p>
       </subsection>
     </section>
-
   </body>
 </document>

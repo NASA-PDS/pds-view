@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2011-2015, by the California Institute of Technology.
+  Copyright 2011-2016, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -41,12 +41,12 @@
       </p>
 
       <subsection name="Registry Service">
-        <p>An instance of the <a href="../../../registry/registry-service/index.html">Registry Service</a> is required in order to query data and populate an index.  It can either be installed locally or remotely, as long as you have an accessible URL for the Service.  Future enhancements may include other methods of populating the index but do not exist at this time.
+        <p>An instance of the <a href="../../../registry/registry-service/index.html">Registry Service</a> is required in order to query data and populate an index. It can either be installed locally or remotely, as long as you have an accessible URL for the Service. Future enhancements may include other methods of populating the index but do not exist at this time.
         </p>
       </subsection>
 
       <subsection name="Search Service">
-        <p>The <a href="../../search-service/index.html">Search Service</a> must be installed and accessible, either locally or remotely, prior to running the Search Core.  This software maintains the Solr web application and provides the infrastructure for the search capability.
+        <p>The <a href="../../search-service/index.html">Search Service</a> must be installed and accessible, either locally or remotely, prior to running the Search Core. This software maintains the Solr web application and provides the infrastructure for the search capability.
         </p>
       </subsection>
     </section>
@@ -56,7 +56,7 @@
       </p>
 
       <subsection name="Java Runtime Environment">
-        <p>The Search Core software was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically compiled for Java version 1.6 and has been tested with this version and version 1.7 and 1.8. Since support for Java 1.6 ended over two years ago, we suggest an environment of at least Java 1.7. The following commands test the local Java installation in a UNIX-based environment:
+        <p>The Search Core software was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically compiled for Java version 1.7 and has been tested with this version and version 1.8. The following commands test the local Java installation in a UNIX-based environment:
         </p>
 
         <source>
@@ -69,7 +69,7 @@ Java(TM) SE Runtime Environment (build 1.7.0_72-b14)
 Java HotSpot(TM) 64-Bit Server VM (build 24.72-b04, mixed mode)
         </source>
 
-        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.6, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The suggested software package is the Java Standard Edition (SE) 7, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
+        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.7, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The suggested software package is the Java Standard Edition (SE) 7, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
         </p>
       </subsection>
     </section>
@@ -119,19 +119,19 @@ or
     </section>
 
     <section name="Configuring the Environment">
-      <p>In order to execute the Search Core, the local environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.</p>
-      <p>See the <a href="./en-install.html">Engineering Node installation</a> for EN-specific configuration instructions..
+      <p>In order to execute the Search Core, the local environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.
       </p>
 
       <subsection name="UNIX-Based Environment">
-        <p>This section details the environment setup for UNIX-based machines.  First, a symbolic link should be made to the Search Core installation directory.  This will provide a means to easily run the software, as well as upgrade software in the future.</p>
+        <p>This section details the environment setup for UNIX-based machines.  First, a symbolic link should be made to the Search Core installation directory.  This will provide a means to easily run the software, as well as upgrade software in the future.
+        </p>
 
-  <p>The following command demonstrates how to create a symbolic link:</p>
-  <source>
+        <p>The following command demonstrates how to create a symbolic link:</p>
+        <source>
 % ln -s /usr/local/${project.artifactId}-${project.version} /usr/local/${project.artifactId}
-  </source>
+        </source>
 
-  <p>The binary distribution includes shell scripts that must be executed from the command-line. Setting the <i>PATH</i> environment variable to the location of the scripts, enables the shell scripts to be executed from any location on the local machine.
+        <p>The binary distribution includes shell scripts that must be executed from the command-line. Setting the <i>PATH</i> environment variable to the location of the scripts, enables the shell scripts to be executed from any location on the local machine.
         </p>
 
         <p>The following command demonstrates how to set the <i>PATH</i> environment variable (in Bourne shell), by appending to its current setting:
@@ -200,17 +200,18 @@ set SEARCH_CORE_HOME=C:\Program Files\\${project.artifactId}-${project.version}
         </source>
       </subsection>
     </section>
+
     <section name="Testing Installation">
       <p>After installing both the Search Service and Search Core, it may be useful to test the installation against a small set of data, rather than the entire Registry (which can take several hours).  The following procedure outlines this process:</p>
       <ol>
-  <li>Run the Search Core using the <i>-m</i> flag:
-    <source>
-search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry -m 5
-    </source>
-  </li>
-  <li>Go to <a href="../operate/index.html#Basic_Index_Generation">Basic Index Generation</a> section of the <a href="../operate/index.html">Operation Guide</a> for the procedure to run the script and see the results in the Search Service.</li>
+        <li>Run the Search Core using the <i>-m</i> flag:
+          <source>
+% search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry -m 5
+          </source>
+        </li>
+        <li>Go to <a href="../operate/index.html#Basic_Index_Generation">Basic Index Generation</a> section of the <a href="../operate/index.html">Operation Guide</a> for the procedure to run the script and see the results in the Search Service.
+        </li>
       </ol>
     </section>
-
   </body>
 </document>
