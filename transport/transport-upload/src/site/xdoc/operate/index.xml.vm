@@ -34,7 +34,7 @@
     </section>
 
     <section name="Interface">
-      <p>The Transport Service provides a REST-based interface accessible via HTTP for interacting with the service. The service only supports "multipart/form-data" HTTP POST requests which must include a "file" part containing the name of the file to be uploaded. Because of this limitation, HTTP GET requests are not supported. The following options are available for interacting with the Transport Service:
+      <p>The Transport Service provides a REST-based interface accessible via HTTP for interacting with the service. The service only supports "multipart/form-data" HTTP POST requests which must include a "file" part containing the name of the file to be uploaded. Because of this limitation, HTTP GET requests are not supported. The service also accepts an optional "path" parameter for specifying a sub-directory. The following options are available for interacting with the Transport Service:
       </p>
 
       <ul>
