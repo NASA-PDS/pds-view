@@ -15,7 +15,8 @@
 package gov.nasa.pds.transport;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,8 +28,10 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
-import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
 import org.apache.tika.detect.DefaultDetector;
@@ -64,60 +67,70 @@ public class UploadClient {
   /**
    * Upload a file to the upload service.
    *
-   * @param fileSpec The file specification for the file to upload.
+   * @param fileName The name of the file to upload.
+   * @param inputStream The input stream for the file to upload.
    * @throws IOException if an I/O error occurs
-   * @throws FileNotFoundException if the specified file is not found
    */
-  public void upload(String fileSpec) throws IOException, FileNotFoundException {
-    // Initialize the HTTP client.
-    HttpClient httpclient = new DefaultHttpClient();
-    httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
-    HttpPost httppost = new HttpPost(serverUrl);
-    File file = new File(fileSpec);
-    MultipartEntity mpEntity = new MultipartEntity();
-
-    // Determine mime type.
-    TikaInputStream tikaIS = null;
-    String mimeType = "";
+  public void upload(String fileName, InputStream inputStream) throws IOException {
     try {
-      tikaIS = TikaInputStream.get(file);
+      // Need to determine how to pass the "path" parameter.
+      // The code below does not work. Tried setting the params for both the client and post.
+      //HttpParams params = new BasicHttpParams();
+      //params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+      //String path = "test";
+      //if (path != null || !path.isEmpty()) {
+      //  params.setParameter("path", path);
+      //}
+      //HttpClient httpclient = new DefaultHttpClient(params);
+      //httppost.setParams(params);
+
+      // Initialize the HTTP client.
+      HttpClient httpclient = new DefaultHttpClient();
+      httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+      HttpPost httppost = new HttpPost(serverUrl);
+
+      // Determine mime type.
+      TikaInputStream tikaIS = TikaInputStream.get(inputStream);
       final Metadata metadata = new Metadata();
-      metadata.set(Metadata.RESOURCE_NAME_KEY, file.getName());
-      mimeType = DETECTOR.detect(tikaIS, metadata).toString();
+      metadata.set(Metadata.RESOURCE_NAME_KEY, fileName);
+      String mimeType = DETECTOR.detect(tikaIS, metadata).toString();
+
+      // Setup the multi-part request and send the file.
+      MultipartEntity mpEntity = new MultipartEntity();
+      ContentBody cbBody = new InputStreamBody(inputStream, mimeType, fileName);
+      mpEntity.addPart("file", cbBody);
+      httppost.setEntity(mpEntity);
+      HttpResponse response = httpclient.execute(httppost);
+      HttpEntity resEntity = response.getEntity();
+
+      // Report the returned status.
+      StatusLine statusLine = response.getStatusLine();
+      String status = Integer.toString(statusLine.getStatusCode());
+      Level level = Level.INFO;
+      if (status.startsWith("1") || status.startsWith("2")) {
+        level = Level.INFO;
+      } else if (status.startsWith("3")) {
+        level = Level.WARNING;
+      } else if (status.startsWith("4") || status.startsWith("5")) {
+        level = Level.SEVERE;
+      }
+      LOGGER.log(level, statusLine.toString());
+      if (resEntity != null) {
+        LOGGER.log(level, EntityUtils.toString(resEntity));
+      }
+
+      // Close the connection.
+      if (resEntity != null) {
+        resEntity.consumeContent();
+      }
+      httpclient.getConnectionManager().shutdown();
+    } catch (IOException e) {
+      throw e;
     } finally {
-      if (tikaIS != null) {
-        tikaIS.close();
+      if (inputStream != null) {
+        inputStream.close();
       }
     }
-
-    // Setup the multi-part request and send the file.
-    ContentBody cbFile = new FileBody(file, mimeType);
-    mpEntity.addPart("file", cbFile);
-    httppost.setEntity(mpEntity);
-    HttpResponse response = httpclient.execute(httppost);
-    HttpEntity resEntity = response.getEntity();
-
-    // Report the returned status.
-    StatusLine statusLine = response.getStatusLine();
-    String status = Integer.toString(statusLine.getStatusCode());
-    Level level = Level.INFO;
-    if (status.startsWith("1") || status.startsWith("2")) {
-      level = Level.INFO;
-    } else if (status.startsWith("3")) {
-      level = Level.WARNING;
-    } else if (status.startsWith("4") || status.startsWith("5")) {
-      level = Level.SEVERE;
-    }
-    LOGGER.log(level, statusLine.toString());
-    if (resEntity != null) {
-      LOGGER.log(level, EntityUtils.toString(resEntity));
-    }
-
-    // Close the connection.
-    if (resEntity != null) {
-      resEntity.consumeContent();
-    }
-    httpclient.getConnectionManager().shutdown();
   }
 
   /**
@@ -144,7 +157,8 @@ public class UploadClient {
       // Upload the specified file.
       LOGGER.log(Level.INFO, "Uploading file " + fileSpec + " to server " + serverUrl + ".");
       UploadClient uploadClient = new UploadClient(serverUrl);
-      uploadClient.upload(fileSpec);
+      File file = new File(fileSpec);
+      uploadClient.upload(file.getName(), new FileInputStream(file));
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, "Exception " + e.getClass().getName() + ": " + e.getMessage());
       System.exit(1);

@@ -102,18 +102,39 @@ public class UploadServlet extends HttpServlet {
     response.setContentType("text/html;charset=UTF-8");
 
     // Create file components to save the file.
-    final Part filePart = request.getPart("file");
+    Part filePart = request.getPart("file");
     if (filePart == null) {
       throw new ServletException("The file name for the file to upload was not provided in the request.");
     }
-    final String fileName = getFileName(filePart);
+    String fileName = getFileName(filePart);
+
+    // Determine the output file specification.
+    File fileSpec = null;
+    File baseDir = new File(repositoryPath);
+    String path = request.getParameter("path");
+    if (path != null) {
+      if (path.contains("..")) {
+        throw new ServletException("The path specified contains an invalid directory.");
+      }
+      File subDir = new File(baseDir, path);
+      if (!subDir.exists()) {
+        subDir.mkdirs();
+      }
+      fileSpec = new File(subDir, fileName);
+    } else {
+      fileSpec = new File(baseDir, fileName);
+    }
+
+    if (fileSpec.exists()) {
+      throw new ServletException("The file and path specified already exist on the server.");
+    }
 
     // Open the target file, read the bytes and write out the file.
     OutputStream out = null;
     InputStream filecontent = null;
     final PrintWriter writer = response.getWriter();
     try {
-      out = new FileOutputStream(new File(repositoryPath + File.separator + fileName));
+      out = new FileOutputStream(fileSpec);
       filecontent = filePart.getInputStream();
 
       int read = 0;
@@ -122,7 +143,7 @@ public class UploadServlet extends HttpServlet {
       while ((read = filecontent.read(bytes)) != -1) {
         out.write(bytes, 0, read);
       }
-      String message = "File " + fileName + " uploaded to " + repositoryPath + ".";
+      String message = "File " + fileName + " uploaded to " + fileSpec.getPath() + ".";
       writer.println(message);
       LOGGER.log(Level.INFO, message);
 
