@@ -48,6 +48,23 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.18.1</version>
+        <configuration>
+          <excludedGroups>swing</excludedGroups>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <archive>
@@ -161,6 +178,21 @@
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
+  	<dependency>
+  		<groupId>commons-chain</groupId>
+  		<artifactId>commons-chain</artifactId>
+  		<version>1.2</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>commons-digester</groupId>
+  		<artifactId>commons-digester</artifactId>
+  		<version>2.1</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.slf4j</groupId>
+  		<artifactId>slf4j-api</artifactId>
+  		<version>${slf4j.version}</version>
+  	</dependency>
   </dependencies>
 
   <!-- Project Information and Reports inherited from parent. -->
@@ -173,4 +205,7 @@
       </plugin>
     </plugins>
   </reporting>
+  <properties>
+  	<slf4j.version>1.7.12</slf4j.version>
+  </properties>
 </project>

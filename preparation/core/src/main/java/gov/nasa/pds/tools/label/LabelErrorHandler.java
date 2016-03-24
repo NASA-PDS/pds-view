@@ -24,9 +24,9 @@ import org.xml.sax.SAXParseException;
  * 
  */
 public class LabelErrorHandler implements ErrorHandler {
-  private ExceptionContainer exceptions;
+  private ExceptionHandler exceptions;
 
-  public LabelErrorHandler(ExceptionContainer exceptions) {
+  public LabelErrorHandler(ExceptionHandler exceptions) {
     this.exceptions = exceptions;
   }
 

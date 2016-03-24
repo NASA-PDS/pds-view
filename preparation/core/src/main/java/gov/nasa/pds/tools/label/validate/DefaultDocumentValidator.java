@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import gov.nasa.pds.tools.label.ExceptionContainer;
+import gov.nasa.pds.tools.label.ExceptionHandler;
 import gov.nasa.pds.tools.label.ExceptionType;
 import gov.nasa.pds.tools.label.LabelException;
 import gov.nasa.pds.tools.util.VersionInfo;
@@ -39,7 +39,7 @@ public class DefaultDocumentValidator implements DocumentValidator {
   private final String XML_MODEL_XPATH = "/processing-instruction('xml-model')";
 
   @Override
-  public boolean validate(ExceptionContainer container, DocumentInfo xml) {
+  public boolean validate(ExceptionHandler container, DocumentInfo xml) {
     boolean passFlag = true;
     // Check the xml-model processing instructions specification
     List<TinyNodeImpl> xmlModels = new ArrayList<TinyNodeImpl>();

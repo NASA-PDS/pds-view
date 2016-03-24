@@ -27,7 +27,7 @@ import javax.xml.transform.TransformerException;
  *
  */
 public class TransformerErrorListener implements ErrorListener {
-  private ExceptionContainer exceptions;
+  private ExceptionHandler exceptions;
 
   /**
    * Constructor.
@@ -35,7 +35,7 @@ public class TransformerErrorListener implements ErrorListener {
    * @param exceptions A container to hold problems that occur during
    * the transform process.
    */
-  public TransformerErrorListener(ExceptionContainer exceptions) {
+  public TransformerErrorListener(ExceptionHandler exceptions) {
     this.exceptions = exceptions;
   }
 

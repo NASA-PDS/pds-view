@@ -14,7 +14,7 @@
 //
 package gov.nasa.pds.tools.label.validate;
 
-import gov.nasa.pds.tools.label.ExceptionContainer;
+import gov.nasa.pds.tools.label.ExceptionHandler;
 
 import net.sf.saxon.om.DocumentInfo;
 
@@ -28,5 +28,5 @@ public interface DocumentValidator {
    *
    * @return flag indicating whether or not the step in validation was passed.
    */
-  public boolean validate(ExceptionContainer container, DocumentInfo xml);
+  public boolean validate(ExceptionHandler container, DocumentInfo xml);
 }

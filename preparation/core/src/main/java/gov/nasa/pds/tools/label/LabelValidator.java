@@ -283,27 +283,48 @@ public class LabelValidator {
     return sources;
   }
 
-  public synchronized void validate(ExceptionContainer container, File labelFile)
+  public synchronized void validate(ExceptionHandler exceptionHandler, File labelFile)
   throws SAXException, IOException, ParserConfigurationException,
   TransformerException, MissingLabelSchemaException {
-    validate(container, labelFile.toURI().toURL());
+    validate(exceptionHandler, labelFile.toURI().toURL());
   }
 
   /**
    * Validates the label against schema and schematron constraints.
    *
-   * @param container
-   *          to store output messages in
+   * @param exceptionHandler
+   *          a handler to receive errors during the validation
    * @param url
    *          label to validate
    *
-   * @throws SAXException
-   * @throws IOException
-   * @throws ParserConfigurationException
-   * @throws TransformerException
-   * @throws MissingLabelSchemaException
+   * @throws SAXException if there are parsing exceptions
+   * @throws IOException if there are I/O errors during the parse
+   * @throws ParserConfigurationException if the parser configuration is invalid
+   * @throws TransformerException if there is an error during Schematron transformation
+   * @throws MissingLabelSchemaException if the label schema cannot be found
    */
-  public synchronized void validate(ExceptionContainer container, URL url)
+  public synchronized void validate(ExceptionHandler exceptionHandler, URL url)
+      throws SAXException, IOException, ParserConfigurationException,
+      TransformerException, MissingLabelSchemaException {
+
+    parseAndValidate(exceptionHandler, url);
+
+  }
+
+  /**
+   * Parses and validates a label against the schema and Schematron files,
+   * and returns the parsed XML.
+   *
+   * @param exceptionHandler an exception handler to receive errors during the validation
+   * @param url the URL of the label to validate
+   * @return the XML document represented by the label
+   * @throws SAXException if there are parsing exceptions
+   * @throws IOException if there are I/O errors during the parse
+   * @throws ParserConfigurationException if the parser configuration is invalid
+   * @throws TransformerException if there is an error during Schematron transformation
+   * @throws MissingLabelSchemaException if the label schema cannot be found
+   */
+  public synchronized Document parseAndValidate(ExceptionHandler exceptionHandler, URL url)
       throws SAXException, IOException, ParserConfigurationException,
       TransformerException, MissingLabelSchemaException {
     List<String> labelSchematronRefs = new ArrayList<String>();
@@ -311,65 +332,11 @@ public class LabelValidator {
 
     // Are we perfoming schema validation?
     if (performsSchemaValidation()) {
-      // Do we have a schema we have loaded previously?
-      if (cachedParser == null) {
-        // If catalog is used, allow resources to be loaded for schemas
-        // and the document parser
-        if (resolver != null) {
-          schemaFactory.setProperty(
-              "http://apache.org/xml/properties/internal/entity-resolver",
-              resolver);
-        }
-        // Allow errors that happen in the schema to be logged there
-        if (container != null) {
-          schemaFactory.setErrorHandler(new LabelErrorHandler(container));
-          cachedLSResolver.setExceptionContainer(container);
-        }
-        schemaFactory.setResourceResolver(cachedLSResolver);
+      createParserIfNeeded(exceptionHandler);
 
-        // Time to load schema that will be used for validation
-        if (userSchemaFiles != null) {
-          // User has specified schema files to use
-          validatingSchema = schemaFactory.newSchema(loadSchemaSources(
-              userSchemaFiles).toArray(new StreamSource[0]));
-        } else if (resolver == null) {
-          if (useLabelSchema) {
-            validatingSchema = schemaFactory.newSchema();
-          } else if (VersionInfo.isInternalMode()) {
-            // There is no catalog file
-
-            // No external schema directory was specified so load from jar
-            validatingSchema = schemaFactory
-                .newSchema(loadSchemaSourcesFromJar().toArray(
-                    new StreamSource[0]));
-          } else {
-            // Load from user specified external directory
-            validatingSchema = schemaFactory.newSchema(loadSchemaSources(
-                VersionInfo.getSchemasFromDirectory().toArray(new String[0]))
-                .toArray(new StreamSource[0]));
-          }
-        } else {
-          // We're only going to use the catalog to validate against.
-          validatingSchema = schemaFactory.newSchema();
-        }
-
-        cachedParser = saxParserFactory.newSAXParser().getXMLReader();
-        cachedValidatorHandler = validatingSchema.newValidatorHandler();
-        if (useLabelSchema) {
-          cachedParser.setEntityResolver(cachedEntityResolver);
-        }
-      } else {
-        // Create a new instance of the DocumentBuilder if validating
-        // against a label's schema.
-        if (useLabelSchema) {
-        	cachedParser = saxParserFactory.newSAXParser().getXMLReader();
-        	cachedValidatorHandler = schemaFactory.newSchema().newValidatorHandler();
-        	cachedParser.setEntityResolver(cachedEntityResolver);
-        }
-      }
       // Capture messages in a container
-      if (container != null) {
-        ErrorHandler handler = new LabelErrorHandler(container);
+      if (exceptionHandler != null) {
+        ErrorHandler handler = new LabelErrorHandler(exceptionHandler);
         cachedParser.setErrorHandler(handler);
         cachedValidatorHandler.setErrorHandler(handler);
 
@@ -406,8 +373,8 @@ public class LabelValidator {
       xml = docBuilder.newDocument();
       reader.setContentHandler(new DocumentCreator(xml));
       // Capture messages in a container
-      if (container != null) {
-        reader.setErrorHandler(new LabelErrorHandler(container));
+      if (exceptionHandler != null) {
+        reader.setErrorHandler(new LabelErrorHandler(exceptionHandler));
       }
       if (resolver != null) {
         reader.setEntityResolver(resolver);
@@ -426,12 +393,12 @@ public class LabelValidator {
       // Look for schematron files specified in a label
       if (useLabelSchematron) {
         labelSchematronRefs = getSchematrons(xml.getChildNodes(), url,
-            container);
+            exceptionHandler);
       }
       if (cachedSchematron.isEmpty()) {
         if (useLabelSchematron) {
           cachedSchematron = loadLabelSchematrons(labelSchematronRefs, url,
-              container);
+              exceptionHandler);
         } else if ( (userSchematronTransformers.isEmpty()) &&
             (userSchematronFiles == null) ) {
           // If user does not provide schematron then use ones in jar if available
@@ -452,7 +419,7 @@ public class LabelValidator {
               StreamSource source = new StreamSource(schematron.toString());
               source.setSystemId(schematron.toString());
               Transformer transformer = schematronTransformer.transform(
-                  source, container);
+                  source, exceptionHandler);
               transformers.add(transformer);
             }
             cachedSchematron = transformers;
@@ -465,7 +432,7 @@ public class LabelValidator {
             cachedSchematron = userSchematronTransformers;
           } else {
             cachedSchematron = loadLabelSchematrons(labelSchematronRefs, url,
-              container);
+              exceptionHandler);
           }
         }
       }
@@ -482,14 +449,14 @@ public class LabelValidator {
         for (int i = 0; i < nodes.getLength(); i++) {
           Node node = nodes.item(i);
           // Add an error for each failed asssert
-          container.addException(processFailedAssert(url, node, xml));
+          exceptionHandler.addException(processFailedAssert(url, node, xml));
         }
       }
     }
     if (!externalValidators.isEmpty()) {
       // Perform any other additional checks that were added
       for(ExternalValidator ev : externalValidators) {
-        ev.validate(container, url);
+        ev.validate(exceptionHandler, url);
       }
     }
 
@@ -499,7 +466,78 @@ public class LabelValidator {
       saxSource.setSystemId(url.toString());
       DocumentInfo docInfo = parse(saxSource);
       for (DocumentValidator dv : documentValidators) {
-        dv.validate(container, docInfo);
+        dv.validate(exceptionHandler, docInfo);
+      }
+    }
+
+    return xml;
+  }
+
+  private void createParserIfNeeded(ExceptionHandler exceptionHandler)
+      throws SAXNotRecognizedException, SAXNotSupportedException, SAXException,
+      IOException, ParserConfigurationException {
+    // Do we have a schema we have loaded previously?
+    if (cachedParser == null) {
+      // If catalog is used, allow resources to be loaded for schemas
+      // and the document parser
+      if (resolver != null) {
+        schemaFactory.setProperty(
+            "http://apache.org/xml/properties/internal/entity-resolver",
+            resolver);
+      }
+      // Allow errors that happen in the schema to be logged there
+      if (exceptionHandler != null) {
+        schemaFactory.setErrorHandler(new LabelErrorHandler(exceptionHandler));
+        cachedLSResolver = new CachedLSResourceResolver(exceptionHandler);
+        schemaFactory.setResourceResolver(cachedLSResolver);
+      } else {
+        cachedLSResolver = new CachedLSResourceResolver();
+        schemaFactory.setResourceResolver(cachedLSResolver);
+      }
+      // Time to load schema that will be used for validation
+      if (userSchemaFiles != null) {
+        // User has specified schema files to use
+        validatingSchema = schemaFactory.newSchema(loadSchemaSources(
+            userSchemaFiles).toArray(new StreamSource[0]));
+      } else if (resolver == null) {
+        if (useLabelSchema) {
+          validatingSchema = schemaFactory.newSchema();
+        } else if (VersionInfo.isInternalMode()) {
+          // There is no catalog file
+
+          // No external schema directory was specified so load from jar
+          validatingSchema = schemaFactory
+              .newSchema(loadSchemaSourcesFromJar().toArray(
+                  new StreamSource[0]));
+        } else {
+          // Load from user specified external directory
+          validatingSchema = schemaFactory.newSchema(loadSchemaSources(
+              VersionInfo.getSchemasFromDirectory().toArray(new String[0]))
+              .toArray(new StreamSource[0]));
+        }
+      } else {
+        // We're only going to use the catalog to validate against.
+        validatingSchema = schemaFactory.newSchema();
+      }
+
+      cachedParser = saxParserFactory.newSAXParser().getXMLReader();
+      cachedValidatorHandler = validatingSchema.newValidatorHandler();
+      if (useLabelSchema) {
+        cachedParser.setEntityResolver(cachedEntityResolver);
+      }
+    } else {
+      //TODO: This code doesn't look right. It says that if we have
+      //  a cached parser, but we are using the label schema, then
+      //  create a new parser. It seems like the creation is handled
+      //  properly at the end of the if-part, above, so we should
+      //  do nothing if we already have a cached parser.
+
+      // Create a new instance of the DocumentBuilder if validating
+      // against a label's schema.
+      if (useLabelSchema) {
+      	cachedParser = saxParserFactory.newSAXParser().getXMLReader();
+      	cachedValidatorHandler = schemaFactory.newSchema().newValidatorHandler();
+      	cachedParser.setEntityResolver(cachedEntityResolver);
       }
     }
   }
@@ -575,7 +613,7 @@ public class LabelValidator {
   }
 
   public List<String> getSchematrons(NodeList nodeList, URL url,
-      ExceptionContainer container) {
+      ExceptionHandler exceptionHandler) {
     List<String> results = new ArrayList<String>();
 
     for (int i = 0; i < nodeList.getLength(); i++) {
@@ -598,7 +636,7 @@ public class LabelValidator {
               try {
                 schematronRef = new URL(new URL(pi.getBaseURI()), value);
               } catch (MalformedURLException mue) {
-                container.addException(new LabelException(ExceptionType.ERROR,
+                exceptionHandler.addException(new LabelException(ExceptionType.ERROR,
                     "Cannot resolve schematron specification '"
                         + value + "': " + mue.getMessage(),
                         url.toString()));
@@ -614,7 +652,7 @@ public class LabelValidator {
   }
 
   private List<Transformer> loadLabelSchematrons(List<String> schematronSources,
-      URL url, ExceptionContainer container) {
+      URL url, ExceptionHandler exceptionHandler) {
     List<Transformer> transformers = new ArrayList<Transformer>();
     for (String source : schematronSources) {
       try {
@@ -634,7 +672,7 @@ public class LabelValidator {
       } catch (Exception e) {
         String message = "Error occurred while loading schematron: "
             + e.getMessage();
-        container.addException(new LabelException(ExceptionType.ERROR,
+        exceptionHandler.addException(new LabelException(ExceptionType.ERROR,
             message, url.toString()));
       }
     }

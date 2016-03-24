@@ -96,7 +96,7 @@ public class SchematronTransformer {
    * @throws TransformerException If an error occurred during the transform
    * process.
    */
-  public Transformer transform(Source source, ExceptionContainer container)
+  public Transformer transform(Source source, ExceptionHandler container)
       throws TransformerException {
     Transformer transformer = null;
     if (cachedTransformers.containsKey(source.getSystemId())) {
@@ -132,15 +132,15 @@ public class SchematronTransformer {
   /**
    * Transform the given schematron.
    *
-   * @param schematron The URL to the schematron.
-   * @param container An ExceptionContainer to capture problems.
+   * @param schematron the URL to the schematron.
+   * @param container an exception handler to capture problems.
    *
-   * @return A transformed schematron.
+   * @return a transformed schematron.
    *
-   * @throws TransformerException If an error occurred during the transform
+   * @throws TransformerException if an error occurred during the transform
    * process.
    */
-  public Transformer transform(URL schematron, ExceptionContainer container)
+  public Transformer transform(URL schematron, ExceptionHandler container)
       throws TransformerException {
     Transformer transformer = null;
 

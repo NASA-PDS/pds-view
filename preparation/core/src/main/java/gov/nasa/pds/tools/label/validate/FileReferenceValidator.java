@@ -14,7 +14,7 @@
 //
 package gov.nasa.pds.tools.label.validate;
 
-import gov.nasa.pds.tools.label.ExceptionContainer;
+import gov.nasa.pds.tools.label.ExceptionHandler;
 import gov.nasa.pds.tools.label.ExceptionType;
 import gov.nasa.pds.tools.label.LabelException;
 import gov.nasa.pds.tools.util.MD5Checksum;
@@ -64,7 +64,7 @@ public class FileReferenceValidator implements DocumentValidator {
   }
 
   @Override
-  public boolean validate(ExceptionContainer container, DocumentInfo xml) {
+  public boolean validate(ExceptionHandler container, DocumentInfo xml) {
     boolean passFlag = true;
     List<LabelException> problems = new ArrayList<LabelException>();
     try {

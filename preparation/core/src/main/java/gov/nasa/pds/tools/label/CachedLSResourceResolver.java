@@ -135,7 +135,7 @@ import org.w3c.dom.ls.LSResourceResolver;
     /** Hashmap to hold the entities. */
     private Map<String, byte[]> cachedEntities = new HashMap<String, byte[]>();
 
-    private ExceptionContainer container;
+    private ExceptionHandler container;
 
     /**
      * Constructor.
@@ -149,7 +149,7 @@ import org.w3c.dom.ls.LSResourceResolver;
      *
      * @param container A container to hold messages.
      */
-    public CachedLSResourceResolver(ExceptionContainer container) {
+    public CachedLSResourceResolver(ExceptionHandler container) {
       cachedEntities = new HashMap<String, byte[]>();
       this.container = container;
     }
@@ -208,7 +208,7 @@ import org.w3c.dom.ls.LSResourceResolver;
       this.cachedEntities.putAll(entities);
     }
 
-    public void setExceptionContainer(ExceptionContainer container) {
+    public void setExceptionHandler(ExceptionHandler container) {
       this.container = container;
     }
   }

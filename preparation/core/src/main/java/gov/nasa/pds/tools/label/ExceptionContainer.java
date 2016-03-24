@@ -19,10 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ *
+ * Implements an exception handler that retains the exceptions in memory.
+ *
  * @author pramirez
  *
  */
-public class ExceptionContainer {
+public class ExceptionContainer implements ExceptionHandler {
   private List<LabelException> exceptions;
   
   public ExceptionContainer() {

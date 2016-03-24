@@ -17,7 +17,7 @@ package gov.nasa.pds.tools.label.validate;
 import java.io.File;
 import java.net.URL;
 
-import gov.nasa.pds.tools.label.ExceptionContainer;
+import gov.nasa.pds.tools.label.ExceptionHandler;
 
 public interface ExternalValidator {
   /**
@@ -28,7 +28,7 @@ public interface ExternalValidator {
    *
    * @return flag indicating whether or not the step in validation was passed.
    */
-  public boolean validate(ExceptionContainer container, File labelFile);
+  public boolean validate(ExceptionHandler container, File labelFile);
 
   /**
    * Method signature for checking to see if a label is valid.
@@ -38,5 +38,5 @@ public interface ExternalValidator {
    *
    * @return flag indicating whether or not the step in validation was passed.
    */
-  public boolean validate(ExceptionContainer container, URL url);
+  public boolean validate(ExceptionHandler container, URL url);
 }
