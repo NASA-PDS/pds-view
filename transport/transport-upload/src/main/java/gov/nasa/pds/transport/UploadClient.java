@@ -150,7 +150,7 @@ public class UploadClient {
         fileSpec = argv[0];
         serverUrl = "http://localhost:8080/transport-upload/upload";
       } else {
-        LOGGER.log(Level.INFO, "Execute as follows: java gov.nasa.pds.transport.UpdateClient <fileSpec> [<path>[, <serverUrl>}]");
+        LOGGER.log(Level.INFO, "Execute as follows: java gov.nasa.pds.transport.UpdateClient <fileSpec> [<path>[ <serverUrl>}]");
         System.exit(1);
       }
 
