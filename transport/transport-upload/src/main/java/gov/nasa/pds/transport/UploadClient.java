@@ -29,6 +29,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.InputStreamBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
@@ -65,25 +66,15 @@ public class UploadClient {
   }
 
   /**
-   * Upload a file to the upload service.
+   * Upload a file represented as an InputStream to the upload service.
    *
    * @param fileName The name of the file to upload.
    * @param inputStream The input stream for the file to upload.
+   * @param path The sub-directory to write the file to on the server.
    * @throws IOException if an I/O error occurs
    */
-  public void upload(String fileName, InputStream inputStream) throws IOException {
+  public void upload(String fileName, InputStream inputStream, String path) throws IOException {
     try {
-      // Need to determine how to pass the "path" parameter.
-      // The code below does not work. Tried setting the params for both the client and post.
-      //HttpParams params = new BasicHttpParams();
-      //params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
-      //String path = "test";
-      //if (path != null || !path.isEmpty()) {
-      //  params.setParameter("path", path);
-      //}
-      //HttpClient httpclient = new DefaultHttpClient(params);
-      //httppost.setParams(params);
-
       // Initialize the HTTP client.
       HttpClient httpclient = new DefaultHttpClient();
       httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
@@ -97,6 +88,9 @@ public class UploadClient {
 
       // Setup the multi-part request and send the file.
       MultipartEntity mpEntity = new MultipartEntity();
+      if (path != null || !path.isEmpty()) {
+        mpEntity.addPart("path", new StringBody(path));
+      }
       ContentBody cbBody = new InputStreamBody(inputStream, mimeType, fileName);
       mpEntity.addPart("file", cbBody);
       httppost.setEntity(mpEntity);
@@ -142,15 +136,21 @@ public class UploadClient {
     try {
       // Handle the file specification and server URL arguments.
       String fileSpec = "";
+      String path = "";
       String serverUrl = "";
-      if (argv.length == 2) {
+      if (argv.length == 3) {
         fileSpec = argv[0];
-        serverUrl = argv[1];
+        path = argv[1];
+        serverUrl = argv[2];
+      } else if (argv.length == 2) {
+        fileSpec = argv[0];
+        path = argv[1];
+        serverUrl = "http://localhost:8080/transport-upload/upload";
       } else if (argv.length == 1) {
         fileSpec = argv[0];
         serverUrl = "http://localhost:8080/transport-upload/upload";
       } else {
-        LOGGER.log(Level.INFO, "Execute as follows: java gov.nasa.pds.transport.UpdateClient <fileSpec> [<serverUrl>]");
+        LOGGER.log(Level.INFO, "Execute as follows: java gov.nasa.pds.transport.UpdateClient <fileSpec> [<path>[, <serverUrl>}]");
         System.exit(1);
       }
 
@@ -158,7 +158,7 @@ public class UploadClient {
       LOGGER.log(Level.INFO, "Uploading file " + fileSpec + " to server " + serverUrl + ".");
       UploadClient uploadClient = new UploadClient(serverUrl);
       File file = new File(fileSpec);
-      uploadClient.upload(file.getName(), new FileInputStream(file));
+      uploadClient.upload(file.getName(), new FileInputStream(file), path);
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, "Exception " + e.getClass().getName() + ": " + e.getMessage());
       System.exit(1);
