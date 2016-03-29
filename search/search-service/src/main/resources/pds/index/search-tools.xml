@@ -141,7 +141,7 @@
       <field name="data_set_name">CLEM1-LUN/EAR/SKY-ASTAR/BSTAR/UVVIS/HRES/LWIR/NIR-2-EDR-V1.0</field>
       <field name="data_set_name">CLEMENTINE LWIR BRIGHTNESS TEMPERATURE V1.0</field>
       <field name="instrument_name">a_star_tracker_camera</field>
-      <field name="instrument_name">b _tar_tracker_camera</field>
+      <field name="instrument_name">b_star_tracker_camera</field>
       <field name="instrument_name">lidar_high-resolution_imager</field>
       <field name="instrument_name">long_wavelength_infrared_camera</field>
       <field name="instrument_name">near_infrared_camera</field>
