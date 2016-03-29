@@ -1,0 +1,22 @@
+Changelog
+=========
+
+What follows is a history of changes from release to release, along with
+issues addressed and new features in each release.
+
+1.0.0 — FCS
+-----------
+
+First customer ship.
+
+
+0.0.0 — Unreleased
+------------------
+
+There are no releases yet of this package.
+
+
+Issue Tracker
+-------------
+
+The issue tracker is located at https://oodt.jpl.nasa.gov/jira/browse/PDS.

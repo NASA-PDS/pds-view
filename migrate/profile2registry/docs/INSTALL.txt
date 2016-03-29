@@ -1,0 +1,52 @@
+Requirements
+============
+
+This package has no external requirements (aside from Python >=2.4 <3.0).
+
+
+Installation
+============
+
+By far, the easiest way to install this is to use pip_ or easy_install_.  As a
+privileged user, type::
+
+    pip install pds.profile2registry
+
+or::
+
+    easy_install pds.profile2registry
+
+The software as well as its dependencies will be downloaded and installed
+automatically.
+
+Are you an advanced user who takes advantage of virtualenv_ or buildout_?  You
+know what to do.
+
+
+Installing from Source
+----------------------
+
+If neither pip nor easy_install are available on your system, just install
+from source:
+
+1.  Download the source package archive.
+2.  Extract the gzip'd tar archive.
+3.  In the extracted directory, run ``python setup.py install`` as a
+    privileged user.
+
+
+
+.. References:
+.. _pip: http://www.pip-installer.org/en/latest/
+.. _easy_install: http://pythonhosted.org/setuptools/easy_install.html
+.. _virtualenv: http://pypi.python.org/pypi/virtualenv
+.. _buildout: http://www.buildout.org/
+
+.. Author:
+    Sean Kelly
+    Jet Propulsion Laboratory
+    California Institute of Technology
+
+.. Copyright:
+    Copyright 2013 California Institute of Technology. ALL RIGHTS RESERVED.
+    U.S. Government sponsorship acknowledged.

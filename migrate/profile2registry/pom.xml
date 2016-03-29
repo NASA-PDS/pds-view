@@ -1,48 +1,42 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
-  Copyright 2016, by the California Institute of Technology.
+  Copyright 2013, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
-  Any commercial use must be negotiated with the Office of Technology
+  Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
-
-  This software may be subject to U.S. export control laws. By accepting
-  this software, the user agrees to comply with all applicable U.S. export
-  laws and regulations. User has the responsibility to obtain export licenses,
-  or other export authority as may be required before exporting such
-  information to foreign countries or providing access to foreign persons.
-
-  $Id$
+  
+  This software is subject to U. S. export control laws and regulations 
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+  is subject to U.S. export control laws and regulations, the recipient has 
+  the responsibility to obtain export licenses or other export authority as 
+  may be required before exporting such information to foreign countries or 
+  providing access to foreign nationals.
 -->
-
-<project>
+<project
+  xmlns='http://maven.apache.org/POM/4.0.0'
+  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+  xsi:schemaLocation='http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd'>
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>gov.nasa.pds</groupId>
-    <artifactId>2010</artifactId>
+    <groupId>gov.nasa.pds.2010</groupId>
+    <artifactId>migrate</artifactId>
     <version>0.0.0</version>
   </parent>
 
-  <groupId>gov.nasa.pds.2010</groupId>
-  <artifactId>migrate</artifactId>
-  <version>0.0.0</version>
+  <groupId>gov.nasa.pds.2010.migrate</groupId>
+  <artifactId>profile2registry</artifactId>
   <packaging>pom</packaging>
 
-  <name>Migrate</name>
+  <name>Profile-2-Registry</name>
   <description>
-    The Migrate component provides functionality for migrating PDS3 content for the PDS4 system.
+    This is a converter of sorts. It takes PDS information in OODT profile servers, translates them as needed, and loads them into a PDS Registry Service. Nifty, huh?
   </description>
-  <url>https://pds-cm.jpl.nasa.gov/pds4/migrate/</url>
-
-  <modules>
-    <module>migrate-tools</module>
-    <module>profile2registry</module>
-  </modules>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/migrate/profile2registry/</url>
 
   <licenses>
     <license>
       <name>California Institute of Technology</name>
-      <url>file:///${basedir}/LICENSE.txt</url>
+      <url>file:///${basedir}/docs/LICENSE.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -61,18 +55,9 @@
       <name>Sean Kelly</name>
       <id>kelly</id>
       <email>Sean.Kelly@jpl.nasa.gov</email>
-      <organization>Independent Consultant</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Eric Lee</name>
-      <id>elee</id>
-      <email>Eric.C.Lee@jpl.nasa.gov</email>
       <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
-        <role>Developer</role>
+        <role>Python Wrangler</role>
       </roles>
     </developer>
   </developers>
