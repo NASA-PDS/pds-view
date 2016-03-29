@@ -35,7 +35,7 @@
     </section>
 
     <section name="System Requirements">
-      <p>The Migrate Tools software was developed using Python and will run on any platform with a supported Python environment. The software was specifically developed under Python version 2.7 and has only been tested with this version. The following commands test the local Python installation in a UNIX-based environment:
+      <p>The Migrate Tools software was developed using Python and will run on any platform with a supported Python environment. It is compatible with Python 2.6 or 2.7. It is not compatible with Python 2.5 or earlier versions, nor with Python 3 or later versions. The following commands test the local Python installation in a UNIX-based environment:
       </p>
 
       <source>
@@ -46,7 +46,7 @@
 Python 2.7.2
       </source>
 
-      <p>The first command above checks whether the <i>python</i> executable is in the environment's path and the second command reports the version. If Python is not installed or the version is not at least 2.7, Python will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software.
+      <p>The first command above checks whether the <i>python</i> executable is in the environment's path and the second command reports the version. If Python is not installed or the version is not 2.6 or 2.7, Python will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software.
       </p>
     </section>
 
