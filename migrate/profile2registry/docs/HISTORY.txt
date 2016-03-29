@@ -4,6 +4,14 @@ Changelog
 What follows is a history of changes from release to release, along with
 issues addressed and new features in each release.
 
+1.0.1 — Mutliple Extrinsics
+---------------------------
+
+• Change information_model_version from 1.0.0.0 to 1.1.0.1
+• Handle cases where mutliple profiles match an identifier
+• Don't specify a guid for an extrinsic; let the server assign it
+
+
 1.0.0 — FCS
 -----------
 

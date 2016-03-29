@@ -9,7 +9,7 @@ import os.path
 # ------------
 
 _name            = 'pds.profile2registry'
-_version         = '1.0.0'
+_version         = '1.0.1'
 _description     = 'Install PDS information stored in OODT Profile Servers into PDS 2010 Registry'
 _url             = 'http://pypi.python.org/python/pds.profile2registry'
 _downloadURL     = 'http://oodt.jpl.nasa.gov/dist/pds'

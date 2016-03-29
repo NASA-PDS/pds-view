@@ -11,6 +11,8 @@
   the responsibility to obtain export licenses or other export authority as 
   may be required before exporting such information to foreign countries or 
   providing access to foreign nationals.
+
+  $Id$
 -->
 <project
   xmlns='http://maven.apache.org/POM/4.0.0'
@@ -25,6 +27,7 @@
 
   <groupId>gov.nasa.pds.2010.migrate</groupId>
   <artifactId>profile2registry</artifactId>
+  <version>1.0.1</version>
   <packaging>pom</packaging>
 
   <name>Profile-2-Registry</name>

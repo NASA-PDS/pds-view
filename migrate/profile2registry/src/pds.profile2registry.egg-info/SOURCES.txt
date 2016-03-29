@@ -3,6 +3,7 @@ README.rst
 README.txt
 bootstrap.py
 buildout.cfg
+pds.profile2registry.sublime-project
 setup.cfg
 setup.py
 docs/HISTORY.txt

@@ -16,7 +16,7 @@ from lxml import etree
 from oodt.profile import Profile
 from pds.registry.model import ExtrinsicObject, Slot
 from pds.registry.net import PDSRegistryClient
-import sys, argparse, logging, oodt, urllib, urllib2, xml.dom.minidom
+import sys, argparse, logging, oodt, urllib, urllib2, xml.dom.minidom, os.path
 
 # Default profile server
 PROFILE_URL = u'http://starbrite.jpl.nasa.gov/q'
@@ -27,9 +27,8 @@ REGISTRY = u'{{{}}}'.format(REGISTRY_NS_URI)
 NSMAP = {None: REGISTRY_NS_URI}
 
 # Preset values for the ExtrinsicObject
-INFORMATION_MODEL_VERSION = u'1.0.0.0'
+INFORMATION_MODEL_VERSION = u'1.1.0.1'
 PRODUCT_CLASS             = u'Product_Proxy_PDS3'
-VERSION_ID                = u'1.0'
 
 # Log format
 LOG_FORMAT = u'%(levelname)-8s %(message)s'
@@ -41,7 +40,9 @@ def _parseArgs():
         description=u'Convert a profile with the given ID into a PDS Registry Service extrinsic. '
         u'Specify the ID as the sole command-line positional argument. With no other options, this will '
         u'write the extrinsic in XML to the standard output.  Use -o to specify an output file.  Or use '
-        u'-r to register the extrinsic with a given Registry Service.'
+        u'-r to register the extrinsic with a given Registry Service.  NOTE: if an ID matches more than '
+        u'one profile, it won\'t be written to stdout (no options), multiple XML files will be created '
+        u'(-o option), or multiple versions will be registered (-r option).'
     )
     parser.add_argument('-o', '--output', type=argparse.FileType('w'),
         help='Write converted profile ID as XML to OUTPUT file; specify "-" for standard output')
@@ -52,8 +53,9 @@ def _parseArgs():
     parser.add_argument('id', metavar='ID', help='Profile ID to convert')
     return parser.parse_args()
 
-def _getProfile(profileID, profileURL):
-    logging.info(u'Getting profile %s from %s', profileID, profileURL)
+
+def _getProfiles(profileID, profileURL):
+    logging.info(u'Getting profiles %s from %s', profileID, profileURL)
     params = {
         u'type': u'profile',
         u'object': u'JPL.PDS.MasterProd',
@@ -68,33 +70,35 @@ def _getProfile(profileID, profileURL):
         for i in d.documentElement.getElementsByTagName(u'profile'):
             profiles.append(Profile(node=i))
         logging.debug(u'# profiles created: %d', len(profiles))
-    if len(profiles) == 0: return None
-    assert len(profiles) == 1, u'Got %d profiles for ID %s, expected one or none' % (len(profiles), profileID)
-    return profiles[0]
+    return profiles
 
 
-def _toExtrinsicObject(profile):
-    logging.info(u'Converting profile %s to extrinsic', profile.resAttr.title)
-    lid = u'urn:nasa:pds:' + profile.resAttr.identifier.replace(u'/', u'-').lower()
-    name = profile.resAttr.title
-    logging.debug(u'Logical ID="%s", name="%s"', lid, name)
-    slots = set((
-        Slot(u'access_url', profile.resAttr.locations),
-        Slot(u'product_class', [PRODUCT_CLASS]),
-        Slot(u'information_model_version', [INFORMATION_MODEL_VERSION]),
-        Slot(u'version_id', [VERSION_ID]),
-    ))
-    logging.debug(u'Created basic slots, converting profile elements into slots')
-    for elem in profile.profElements.itervalues():
-        slots.add(Slot(elem.name, [i.strip() for i in elem.getValues()]))
-    logging.debug(u'Total slots: %d; creating ExtrinsicObject', len(slots))
-    return ExtrinsicObject(lid, lid, home=None, slots=slots, name=name, objectType=PRODUCT_CLASS)
+def _toExtrinsicObjects(profiles):
+    logging.info(u'Converting profiles "%s" to extrinsics', u', '.join([p.resAttr.title for p in profiles]))
+    extrinsics = []
+    for versionNum, profile in enumerate(profiles, start=1):
+        lid = u'urn:nasa:pds:' + profile.resAttr.identifier.replace(u'/', u'-').lower()
+        name = profile.resAttr.title
+        logging.debug(u'Logical ID="%s", name="%s"', lid, name)
+        slots = set((
+            Slot(u'access_url', profile.resAttr.locations),
+            Slot(u'product_class', [PRODUCT_CLASS]),
+            Slot(u'information_model_version', [INFORMATION_MODEL_VERSION]),
+            Slot(u'version_id', [u'{}.0'.format(versionNum)]),
+        ))
+        logging.debug(u'Created basic slots, converting profile elements into slots')
+        for elem in profile.profElements.itervalues():
+            slots.add(Slot(elem.name, [i.strip() for i in elem.getValues()]))
+        logging.debug(u'Total slots: %d; creating ExtrinsicObject', len(slots))
+        # Let registry service assign guid, that's why 1st arg is None
+        extrinsics.append(ExtrinsicObject(None, lid, home=None, slots=slots, name=name, objectType=PRODUCT_CLASS))
+    return extrinsics
 
 
 def _writeExtrinsicAsXML(extrinsic, output):
     logging.info(u'Writing extrinsic as XML')
     root = etree.Element(
-        REGISTRY + u'extrinsicObject', nsmap=NSMAP, guid=extrinsic.guid, lid=extrinsic.lid, name=extrinsic.name,
+        REGISTRY + u'extrinsicObject', nsmap=NSMAP, lid=extrinsic.lid, name=extrinsic.name,
         objectType=extrinsic.objectType
     )
     for attrName in ('contentVersion', 'description', 'home', 'mimeType', 'status', 'versionName'):
@@ -110,12 +114,14 @@ def _writeExtrinsicAsXML(extrinsic, output):
     logging.debug(u'Writing pretty XML to %r', output)
     doc.write(output, encoding='UTF-8', standalone=True, xml_declaration=True, pretty_print=True)
 
-def _registerExtrinsic(extrinsic, url):
+
+def _registerExtrinsics(extrinsics, url):
     logging.info(u'Connecting to registry client at %s', url)
     con = PDSRegistryClient(url)
-    logging.debug(u'Calling "putExtrinsic" on %s', extrinsic.guid)
-    con.putExtrinsic(extrinsic)
-    logging.debug(u'Registered!')
+    for extrinsic in extrinsics:
+        logging.debug(u'Calling "putExtrinsic" on %s', extrinsic.lid)
+        con.putExtrinsic(extrinsic)
+    logging.debug(u'All done.')
 
 
 def main(argv=sys.argv):
@@ -125,18 +131,34 @@ def main(argv=sys.argv):
         logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)
     else:
         logging.basicConfig(level=logging.WARN, format=LOG_FORMAT)
-    profile = _getProfile(args.id, args.profile)
-    if profile is None:
-        print >>sys.stderr, u'No profile found for ID %s' % args.id
+    profiles = _getProfiles(args.id, args.profile)
+    if len(profiles) == 0:
+        print >>sys.stderr, u'No profiles found for ID %s' % args.id
         sys.exit(1)
-    extrinsic = _toExtrinsicObject(profile)
+    extrinsics = _toExtrinsicObjects(profiles)
     # No other arguments?  Write XML to stdout
     if args.registry is None and args.output is None:
-        _writeExtrinsicAsXML(extrinsic, sys.stdout)
+        if len(extrinsics) > 1:
+            print >>sys.stderr, u'Got {} matches for "{}"; can\'t write to stdout'.format(len(extrinsics), args.id)
+            sys.exit(1)
+        _writeExtrinsicAsXML(extrinsics[0], sys.stdout)
     if args.output is not None:
-        _writeExtrinsicAsXML(extrinsic, args.output)
+        if len(extrinsics) == 1:
+            _writeExtrinsicAsXML(extrinsics[0], args.output)
+        else:
+            d, fn = os.path.dirname(args.output.name), os.path.basename(args.output.name)
+            args.output.close()
+            dot = fn.rfind('.')
+            if dot == -1:
+                prefix, suffix = os.path.join(d, fn), ''
+            else:
+                prefix, suffix = os.path.join(d, fn[0:dot]), fn[dot:]
+            for versionNum, extrinsic in enumerate(extrinsics, start=1):
+                target = u'{}-{}.0{}'.format(prefix, versionNum, suffix)
+                with open(target, 'wb') as out:
+                    _writeExtrinsicAsXML(extrinsics[0], out)
     if args.registry is not None:
-        _registerExtrinsic(extrinsic, args.registry)
+        _registerExtrinsics(extrinsics, args.registry)
     sys.exit(0)
 
 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- 
+  Copyright 2016, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology 
+  Transfer at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations 
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
+  is subject to U.S. export control laws and regulations, the recipient has 
+  the responsibility to obtain export licenses or other export authority as 
+  may be required before exporting such information to foreign countries or 
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<project name="Profile-2-Registry">
+  <bannerLeft>
+    <src>images/pds4_logo.png</src>
+    <href>https://pds-cm.jpl.nasa.gov/pds4/</href>
+  </bannerLeft>
+
+  <bannerRight>
+    <name>Profile-2-Registry</name>
+  </bannerRight>
+
+  <version/>
+
+  <body>
+    <links>
+      <item name="Profile-2-Registry" href="https://pds-cm.jpl.nasa.gov/pds4/migrate/profile2registry/index.html" />
+    </links>
+
+    <menu name="Software Documentation">
+      <item name="About Profile-2-Registry" href="index.html"/>
+      <item name="Installation" href="install/index.html"/>
+    </menu>
+
+    <menu name="Download">
+      <item name="Binary Package (tar.gz)" href="ftp://pds.nasa.gov/pub/toplevel/2010/migrate/pds.profile2registry-1.0.1.zip"/>
+    </menu>
+
+    <menu ref="reports"/>
+  </body>
+</project>
