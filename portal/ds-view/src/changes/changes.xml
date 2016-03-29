@@ -23,6 +23,9 @@
   </properties>
   <body>
     <release version="2.7.0" date="TBD" description="TBD">
+      <action dev="hyunlee" type="update" issue="PDS-438">
+        Added support for viewing data sets when there are duplicate identifiers.
+      </action>
     </release>
 
     <release version="2.6.0" date="2015-09-30" description="This release of Data Set View is a component of the integrated release 6.0.0 of the PDS4 System. This is an operational release of the system components to date.">

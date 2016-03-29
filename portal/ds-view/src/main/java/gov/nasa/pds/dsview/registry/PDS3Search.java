@@ -108,26 +108,35 @@ public class PDS3Search {
 				org.apache.solr.client.solrj.SolrRequest.METHOD.GET);
 
 		SolrDocumentList solrResults = response.getResults();
-		System.out.println("numFound = " + solrResults.getNumFound());
+		System.out.println("numFound = " + solrResults.getNumFound() + "     maxScores = " + solrResults.getMaxScore());
 		
 		Iterator<SolrDocument> itr = solrResults.iterator();
 		SolrDocument doc = null;
-		int idx = 0;
-		List<SolrDocument> instDocs = new ArrayList<SolrDocument>();
+		int idx = 0, returnIdx = 0;
+		List<SolrDocument> dsDocs = new ArrayList<SolrDocument>();
 		while (itr.hasNext()) {
 			doc = itr.next();
-			System.out.println("*****************  idx = " + (idx++));
-			// System.out.println(doc.toString());
+			System.out.println("*****************  idx = " + idx);
 
 			for (Map.Entry<String, Object> entry : doc.entrySet()) {
-				System.out.println("Key = " + entry.getKey()
+				String key = entry.getKey();
+				System.out.println("Key = " + key
 						+ "       Value = " + entry.getValue());
+				String value = entry.getValue().toString();
+
+				if (key.equalsIgnoreCase("identifier")) {
+					if (value.startsWith("urn:nasa:pds")) {
+						returnIdx = idx;
+					}
+				}
 			}
-			instDocs.add(doc);
+			dsDocs.add(doc);
+			idx++;
 		}
-		
-		if (idx>1)
-			doc = instDocs.get(0);
+		// if there are more than 1 data sets, return "urn:nasa:pds" product as default
+		if (idx>1) {
+			doc = dsDocs.get(returnIdx);
+		}
 		return doc;
 	}
 	
@@ -360,6 +369,7 @@ public class PDS3Search {
 		List<String> results = new ArrayList<String>();
 		for (Object obj: values) {
 			
+			//System.out.println("------------values = " + values.toString());
 			if (obj instanceof java.util.Date) {
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
 				df.setTimeZone(TimeZone.getTimeZone("GMT"));
