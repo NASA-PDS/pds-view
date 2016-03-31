@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2012-2015, by the California Institute of Technology.
+  Copyright 2012-2016, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -23,18 +23,18 @@
   </properties>
 
   <body>
-    <release version="1.4.0" date="TBD" description="TBD">
+    <release version="1.4.0" date="2016-03-30" description="This release of the Harvest-PDAP Tool is a component of the integrated release 6.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="mcayanan" type="update" issue="PDS-385">
         Improved registration performance by adding capability to perform batch registration on objects.
       </action>
       <action dev="mcayanan" type="update" issue="PDS-412">
-        Reformat extracted datetime values to ISO 8601 format.
+        Reformat extracted date/time values to ISO 8601 format.
       </action>
       <action dev="mcayanan" type="update" issue="PDS-413">
-        Set slot value to blank for 1970 stop datetime values.
+        Set slot value to blank for 1970 stop date/time values.
       </action>
       <action dev="mcayanan" type="add">
-        Added capability to the policy configuration file to be able to specify a datetime range of the datasets to retrieve.
+        Added capability to the policy configuration file to be able to specify a date/time range of the datasets to retrieve.
       </action>
       <action dev="mcayanan" type="update">
         Updated to delete the package if no products are registered during a run.
