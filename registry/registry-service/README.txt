@@ -25,6 +25,11 @@ registry service endpoint and the backend database. Execute as follows:
 
 Valid values are local-derby (default), local-mysql, dev and ops.
 
+Version Configuration
+=====================
+
+When performing a release, update the 
+src/main/resources/registryConfig.properties file for the current release.
 
 Installation
 ============

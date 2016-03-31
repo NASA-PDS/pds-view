@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2010-2015, by the California Institute of Technology.
+  Copyright 2010-2016, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -23,7 +23,7 @@
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
     <artifactId>registry</artifactId>
-    <version>1.10.0-dev</version>
+    <version>1.10.0</version>
   </parent>
 
   <groupId>gov.nasa.pds.2010.registry</groupId>
@@ -133,33 +133,33 @@
           </dependency>
         </dependencies>
       </plugin>
-	<plugin>
-		<groupId>org.codehaus.mojo</groupId>
-		<artifactId>jaxb2-maven-plugin</artifactId>
-		<version>1.6</version>
-		<executions>
-			<execution>
-				<id>schemagen</id>
-				<goals>
-					<goal>schemagen</goal>
-				</goals>
-			</execution>
-		</executions>
-		<configuration>
-			<transformSchemas>
-				<transformSchema>
-					<uri>http://registry.pds.nasa.gov</uri>
-					<toPrefix>registry-service</toPrefix>
-					<toFile>registry-service.xsd</toFile>
-				</transformSchema>
-			</transformSchemas>
-			<includes>
-				<include>gov/nasa/pds/registry/model/*.java</include>
-			</includes>
-			<outputDirectory>${project.build.directory}/classes</outputDirectory>
-		</configuration>
-	</plugin>
-	<plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jaxb2-maven-plugin</artifactId>
+        <version>1.6</version>
+        <executions>
+          <execution>
+            <id>schemagen</id>
+            <goals>
+              <goal>schemagen</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <transformSchemas>
+            <transformSchema>
+              <uri>http://registry.pds.nasa.gov</uri>
+              <toPrefix>registry-service</toPrefix>
+              <toFile>registry-service.xsd</toFile>
+            </transformSchema>
+          </transformSchemas>
+          <includes>
+            <include>gov/nasa/pds/registry/model/*.java</include>
+          </includes>
+          <outputDirectory>${project.build.directory}/classes</outputDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
@@ -209,7 +209,7 @@
       <url>http://download.java.net/maven/2</url>
     </repository>
   </repositories>
-  
+
   <dependencies>
     <!-- Start XML -->
     <dependency>
@@ -218,7 +218,7 @@
       <version>${xerces-version}</version>
     </dependency>
     <!-- End XML -->
-    
+
     <!-- JPA START -->
     <dependency>
       <groupId>org.hibernate.java-persistence</groupId>

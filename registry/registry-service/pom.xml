@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2010-2015, by the California Institute of Technology.
+  Copyright 2010-2016, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -21,7 +21,7 @@
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
     <artifactId>registry</artifactId>
-    <version>1.10.0-dev</version>
+    <version>1.10.0</version>
   </parent>
 
   <groupId>gov.nasa.pds.2010.registry</groupId>
@@ -497,8 +497,8 @@
       <version>3.3.1.GA</version>
     </dependency>
     <dependency>
-	  <groupId>c3p0</groupId>
-	  <artifactId>c3p0</artifactId>
+      <groupId>c3p0</groupId>
+      <artifactId>c3p0</artifactId>
       <version>0.9.1.2</version>
     </dependency>
     <!-- Derby -->
