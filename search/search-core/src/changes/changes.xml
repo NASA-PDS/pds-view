@@ -23,9 +23,15 @@
   </properties>
 
   <body>
-    <release version="1.8.0" date="TBD" description="TBD">
+    <release version="1.8.0" date="2016-03-31" description="This release of the Search Core is a component of the integrated release 6.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" type="update" issue="PDS-370">
         Updated to improve handling of date/time fields.
+      </action>
+      <action dev="shardman" type="update">
+        Cleaned up the configuration files and included extraction of file_ref_* fields and added support for indexing Product_Document products.
+      </action>
+      <action dev="shardman" type="update">
+        Updated the JRE requirement to 1.7 in the Installation document.
       </action>
     </release>
 
