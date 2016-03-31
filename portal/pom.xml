@@ -38,7 +38,9 @@
     <module>ds-view</module>
     <module>dd-search</module>
     <module>pb-search</module>
+    <!--
     <module>tool-registry</module>
+    -->
     <module>filter</module>
   </modules>
 

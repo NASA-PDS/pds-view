@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2013-2015, by the California Institute of Technology.
+  Copyright 2013-2016, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -22,10 +22,13 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
-    <release version="0.3.0" date="TBD" description="TBD">
+    <release version="0.3.0" date="2016-03-31" description="This release of Filter is a component of the integrated release 6.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="shardman" type="update">
+        Updated the JRE requirement to 1.7 in the Installation document.
+      </action>
     </release>
 
-    <release version="0.2.0" date="2015-10-15" description="This release of Filter is a component of the integrated release 6.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+    <release version="0.2.0" date="2015-10-15" description="This release of Filter is is an incremental release separate from the PDS4 integrated releases. This is an operational release of the system components to date.">
       <action dev="shardman" type="fix" issue="PDS-400">
          Added an override for the getParameterMap() method to catch XSS attempts. Also added a filter for the Javascript alert() method.
       </action>
