@@ -157,6 +157,7 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
            <argLine>-Xmx512m</argLine> 
@@ -164,6 +165,10 @@
              <property>
                <name>java.util.logging.config.file</name>
                <value>src/test/resources/logging.properties</value>
+             </property>
+             <property>
+               <name>gov.nasa.pds.report.date.filter</name>
+               <value>gov.nasa.pds.report.util.DynamicDateFilter</value>
              </property>
            </systemProperties>
         </configuration>
