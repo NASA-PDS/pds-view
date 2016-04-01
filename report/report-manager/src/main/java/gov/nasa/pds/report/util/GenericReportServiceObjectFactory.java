@@ -14,6 +14,7 @@
 //
 package gov.nasa.pds.report.util;
 
+import gov.nasa.pds.report.ReportManagerException;
 import gov.nasa.pds.report.processing.Processor;
 import gov.nasa.pds.report.sawmill.SawmillInterface;
 
@@ -61,7 +62,13 @@ public class GenericReportServiceObjectFactory{
 		
 	}
 	
-	public static DateFilter getDateFilter(String qualifiedClassName){
+	public static DateFilter getDateFilter(String qualifiedClassName)
+			throws ReportManagerException{
+		
+		if(qualifiedClassName == null){
+			throw new ReportManagerException("Cannot create a DateLogFilter "
+					+ "instance as no class was provided to instantiate");
+		}
 		
 		DateFilter filter = null;
 		
