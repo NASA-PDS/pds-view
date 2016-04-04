@@ -185,8 +185,7 @@
     <dependency>
       <groupId>gov.nasa.pds.2010.registry</groupId>
       <artifactId>registry-core</artifactId>
-      <!--version>${registry-version}</version-->
-      <version>1.10.0-dev</version>
+      <version>${registry-version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
