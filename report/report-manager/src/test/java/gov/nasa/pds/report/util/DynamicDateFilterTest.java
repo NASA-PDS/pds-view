@@ -37,7 +37,10 @@ public class DynamicDateFilterTest extends PDSTest{
 			"log-08-31-2014.txt", "log-09-01-2014.txt", "log-09-15-2014.txt",
 			"log-09-30-2014.txt", "log-10-01-2014.txt",
 			"log140831.txt", "log140901.txt", "log140915.txt",
-			"log140930.txt", "log141001.txt"};
+			"log140930.txt", "log141001.txt",
+			"log140831test2.txt", "log140901test2.txt", "log140915test2.txt",
+			"log140930test2.txt", "log141001test2.txt"
+			};
 	private static final String earlyDateString = "09/01/2014";
 	private static final String lateDateString = "09/30/2014";
 	
@@ -72,7 +75,7 @@ public class DynamicDateFilterTest extends PDSTest{
 		try{
 			DateLogFilter.setStartDate(earlyDateString);
 			DateLogFilter.setEndDate(null);
-			for(int i = 0; i < 25; i = i + 5){
+			for(int i = 0; i < logNames.length; i = i + 5){
 				String logName = logNames[i];
 				assertFalse("Log (" + logName + ") from before start date (" +
 						earlyDateString + ") matched",
@@ -99,7 +102,7 @@ public class DynamicDateFilterTest extends PDSTest{
 		try{
 			DateLogFilter.setEndDate(lateDateString);
 			DateLogFilter.setStartDate(null);
-			for(int i = 0; i < 25; i = i + 5){
+			for(int i = 0; i < logNames.length; i = i + 5){
 				String logName = logNames[i + 2];
 				assertTrue("Log (" + logName + ") from before end date (" +
 						lateDateString + ") did not match",
@@ -126,7 +129,7 @@ public class DynamicDateFilterTest extends PDSTest{
 		try{
 			DateLogFilter.setStartDate(earlyDateString);
 			DateLogFilter.setEndDate(lateDateString);
-			for(int i = 0; i < 25; i = i + 5){
+			for(int i = 0; i < logNames.length; i = i + 5){
 				String logName = logNames[i];
 				assertFalse("Log (" + logName + ") from before start date (" +
 						earlyDateString + ") matched",
@@ -161,7 +164,7 @@ public class DynamicDateFilterTest extends PDSTest{
 		try{
 			DateLogFilter.setStartDate(earlyDateString);
 			DateLogFilter.setEndDate(earlyDateString);
-			for(int i = 0; i < 25; i = i + 5){
+			for(int i = 0; i < logNames.length; i = i + 5){
 				String logName = logNames[i];
 				assertFalse("Log (" + logName + ") from before dates (" +
 						earlyDateString + ") matched",
@@ -212,7 +215,7 @@ public class DynamicDateFilterTest extends PDSTest{
 			DateLogFilter.setStartDate(earlyDateString);
 			DateLogFilter.setEndDate(lateDateString);
 			DateLogFilter.match("log2141001.txt");
-			fail("The expected exception was not thrown when tryign to " +
+			fail("The expected exception was not thrown when trying to " +
 					"match a log with a bad date in the filename");
 		}catch(ParseException e){
 			// Desired behavior

@@ -79,14 +79,16 @@ public class DynamicDateFilter extends DateFilter{
 			// easily be visa versa.
 			logDate = this.getLogDate(filename, "\\D*(\\d{2}-\\d{2}-\\d{4})\\D*",
 					"MM-dd-yyyy");
-		}else if(filename.matches("\\S*\\D?\\d{6}\\D?\\S*")){
-			// TODO: Add patterns to support filenames with this date format
-			// containing short substrings before/after the date and filenames
-			// ending with the date.
-			
+		}else if(filename.matches("\\S*\\D\\d{6}\\D\\S*")){
 			// We assume that the date format is yyMMdd, but it could just as
 			// easily be otherwise.
 			logDate = this.getLogDate(filename, "\\S*\\D?(\\d{6})\\D?\\S*",
+					"yyMMdd");
+		}else if(filename.matches("\\S*\\D\\d{6}")){
+			logDate = this.getLogDate(filename, "\\S*\\D(\\d{6})",
+					"yyMMdd");
+		}else if(filename.matches("d{6}\\D\\S*")){
+			logDate = this.getLogDate(filename, "(\\d{6})\\D\\S*",
 					"yyMMdd");
 		}else{
 			throw new ParseException(
