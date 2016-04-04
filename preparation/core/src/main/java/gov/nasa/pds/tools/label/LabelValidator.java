@@ -1,4 +1,4 @@
-//	Copyright 2009-2014, by the California Institute of Technology.
+//	Copyright 2009-2016, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology
 //	Transfer at the California Institute of Technology.
@@ -692,6 +692,7 @@ public class LabelValidator {
     Integer lineNumber = -1;
     Integer columnNumber = -1;
     String message = node.getTextContent().trim();
+    String sourceUrl = url.toString();
 
     ExceptionType exceptionType = ExceptionType.ERROR;
     if (node.getAttributes().getNamedItem("role") != null) {
@@ -717,16 +718,20 @@ public class LabelValidator {
     if (sourceLoc != null) {
       lineNumber = sourceLoc.getLineNumber();
       columnNumber = sourceLoc.getColumnNumber();
+      if (sourceLoc.getUrl() != null) {
+        sourceUrl = sourceLoc.getUrl();
+      }
     } else {
       String test = node.getAttributes().getNamedItem("test").getTextContent();
       message = String.format("%s [Context: \"%s\"; Test: \"%s\"]", message, location, test);
     }
+    
 
     return new LabelException(
         exceptionType,
         message,
         "",
-        url.toString(),
+        sourceUrl,
         lineNumber,
         columnNumber
     );
@@ -828,6 +833,7 @@ public class LabelValidator {
     private URL url;
     private int lineNumber;
     private int columnNumber;
+    private String systemId;
 
     /**
      * Creates a new instance of the locator.
@@ -836,6 +842,7 @@ public class LabelValidator {
      */
     public DOMLocator(URL url) {
       this.url = url;
+      this.systemId = url.toString();
     }
 
     /**
@@ -853,6 +860,9 @@ public class LabelValidator {
       } else {
         lineNumber = location.getLineNumber();
         columnNumber = location.getColumnNumber();
+        if (location.getUrl() != null) {
+          systemId = location.getUrl();
+        }
       }
     }
 
@@ -873,7 +883,7 @@ public class LabelValidator {
 
     @Override
     public String getSystemId() {
-      return url.toString();
+      return systemId;
     }
 
   }
