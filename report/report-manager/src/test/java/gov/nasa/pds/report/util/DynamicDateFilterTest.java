@@ -39,7 +39,9 @@ public class DynamicDateFilterTest extends PDSTest{
 			"log140831.txt", "log140901.txt", "log140915.txt",
 			"log140930.txt", "log141001.txt",
 			"log140831test2.txt", "log140901test2.txt", "log140915test2.txt",
-			"log140930test2.txt", "log141001test2.txt"
+			"log140930test2.txt", "log141001test2.txt",
+			"log2-2014-08-31.txt", "log2-2014-09-01.txt", "log2-2014-09-15.txt",
+			"log2-2014-09-30.txt", "log2-2014-10-01.txt"
 			};
 	private static final String earlyDateString = "09/01/2014";
 	private static final String lateDateString = "09/30/2014";

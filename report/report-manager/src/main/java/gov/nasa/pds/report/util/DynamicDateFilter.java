@@ -71,10 +71,10 @@ public class DynamicDateFilter extends DateFilter{
 				logDate = this.getLogDate(filename, "\\D*(\\d{8})\\D*",
 						"yyyyMMdd");
 			}
-		}else if(filename.matches("\\D*\\d{4}-\\d{2}-\\d{2}\\D*")){
-			logDate = this.getLogDate(filename, "\\D*(\\d{4}-\\d{2}-\\d{2})\\D*",
+		}else if(filename.matches("\\S*\\d{4}-\\d{2}-\\d{2}\\S*")){
+			logDate = this.getLogDate(filename, "\\S*(\\d{4}-\\d{2}-\\d{2})\\S*",
 					"yyyy-MM-dd");
-		}else if(filename.matches("\\D*\\d{2}-\\d{2}-\\d{4}\\D*")){
+		}else if(filename.matches("\\S*\\d{2}-\\d{2}-\\d{4}\\S*")){
 			// We assume that the month is before the day, but it could just as
 			// easily be visa versa.
 			logDate = this.getLogDate(filename, "\\D*(\\d{2}-\\d{2}-\\d{4})\\D*",
