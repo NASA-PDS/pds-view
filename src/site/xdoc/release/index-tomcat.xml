@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011-2013, by the California Institute of Technology.
+  Copyright 2011-2016, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -39,7 +39,7 @@
     </section>
 
     <section name="Download">
-      <p>As of the writing of this document the current version of Tomcat is <i>7.0.39</i>. New releases are made available periodically, with the latest version of <i>7.0.X</i> available from the <a herf="http://tomcat.apache.org/download-70.cgi" target="_blank">Apache Tomcat 7 Downloads</a> page. Avoid version <i>7.0.29</i>, there is a bug in this version causing an error when loading the Registry Service. The download page has several binary distributions to choose from:
+      <p>New releases of the Apache Tomcat server are made available periodically, with the latest version of <i>7.0.X</i> available from the <a href="http://tomcat.apache.org/download-70.cgi" target="_blank">Apache Tomcat 7 Downloads</a> page. Version <i>8.0.X</i> is available from the <a href="http://tomcat.apache.org/download-80.cgi" target="_blank">Apache Tomcat 8 Downloads</a> page. The download page has several binary distributions to choose from:
       </p>
 
       <center>
@@ -135,7 +135,7 @@
 
         <source>
 #!/bin/sh
-CATALINA_OPTS="-Xms256m -Xmx2048m -XX:MaxPermSize=256m"
+CATALINA_OPTS="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"
         </source>
 
         <p>Note: For Red Hat RPM installations, the environment variables can be specified in the <i>/etc/tomcatX/tomcatX.conf</i> file where <i>X</i> is the major version of Tomcat. Although the environment configuration is not limited to the following variables, these two are the most common:
@@ -155,7 +155,7 @@ CATALINA_OPTS="-Xms256m -Xmx2048m -XX:MaxPermSize=256m"
     </section>
 
     <section name="Secure Configuration">
-      <p>If the local installation requires secure access, then follow the instructions in this section to secure the installation.
+      <p>If the local installation requires secure access, then follow the instructions in this section to secure the installation. This is not common and would only be required is exposing the Tomcat Server to the public network. It is suggested that the port hosting the Tomcat Server only allow local server access or access to servers from the same subnet. This configuration coupled with a few reverse proxy configurations from a publicly available Apache HTTPD Server (as suggested in the Release Description document), for example, provide sufficient security for the Tomcat Server while allowing its hosted applications to function properly.
       </p>
 
       <subsection name="Certificate Generation">
