@@ -125,6 +125,8 @@
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-415'>PDS-415</a>] - Validate: Duplicate messages appearing in the report
           </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-419'>PDS-419</a>] - DD Search: Occasionally returns the wrong definition for the selected attribute
+          </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-433'>PDS-433</a>] - PDS4-Tools: Not handling scaling_factor, value_offset, and orientation values properly for Array_2D_Image transformations
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-436'>PDS-436</a>] - Transform: Throws exception when performing PDS3-to-PDS4 label transformations on PDS3 pointer statements containing a file reference and an offset
