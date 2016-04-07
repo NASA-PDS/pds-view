@@ -146,6 +146,8 @@ public class DelimitedDateFilterTest extends PDSTest{
 		
 		try{
 			DateLogFilter.setPattern(null);
+			DateLogFilter.setStartDate(earlyDateString);
+			DateLogFilter.setEndDate(lateDateString);
 		}catch(ReportManagerException e){
 			fail(e.getMessage());
 		}
