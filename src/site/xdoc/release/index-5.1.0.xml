@@ -95,7 +95,11 @@
         </p>
 
         <ul>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-69'>PDS-69</a>] - Registry: Throw A Cleaner Error Message When Attempting To Register A Product With A LID Greater Than 256 Characters
+          </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-267'>PDS-267</a>] - Registry: Add a convenience method to the Registry Client for retrieving an Extrinsic by LIDVID
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-284'>PDS-284</a>] - Report: Define configurations for all node log sources
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-304'>PDS-304</a>] - Report: Add CLI option to specify a date range to download
           </li>

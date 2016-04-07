@@ -89,6 +89,8 @@
         </p>
 
         <ul>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-346'>PDS-346</a>] - Report: Date filtering should support multiple RE patterns
+          </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-365'>PDS-365</a>] - Storage: Resolve issue with moving the service from v0.6 to v0.12 of OODT
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-366'>PDS-366</a>] - PDS4-Tools: The package fails to run or build in Java 1.8
