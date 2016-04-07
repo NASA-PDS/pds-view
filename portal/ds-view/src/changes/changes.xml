@@ -22,6 +22,9 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
+    <release version="2.8.0" date="TBD" description="TBD">
+    </release>
+
     <release version="2.7.0" date="2016-03-31" description="This release of Data Set View is a component of the integrated release 6.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" type="update" issue="PDS-438">
         Added support for viewing data sets when there are duplicate identifiers.

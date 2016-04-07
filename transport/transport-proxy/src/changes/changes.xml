@@ -22,6 +22,9 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
+    <release version="1.4.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.3.0" date="2016-03-31" description="This release of the Transport Proxy is a point build of the component for the integrated release 6.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="shardman" type="update">
         Updated the JRE requirement to 1.7 in the Installation document.

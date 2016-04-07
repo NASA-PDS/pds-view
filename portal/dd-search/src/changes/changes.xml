@@ -22,6 +22,9 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
+    <release version="1.3.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.2.0" date="2016-03-31" description="This release of Data Dictionary Search is a component of the integrated release 6.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="earevalo" type="fix" issue="PDS-419">
         Corrected the issue where the interface occasionally returns the wrong definition for the selected attribute.
