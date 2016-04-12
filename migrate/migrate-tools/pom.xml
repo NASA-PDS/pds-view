@@ -62,6 +62,15 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Gabe Resneck</name>
+      <id>resneck</id>
+      <email>Gabriel.M.Resneck@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
 
   <build>

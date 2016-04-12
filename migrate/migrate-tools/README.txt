@@ -1,6 +1,5 @@
 The Migrate Tools project contains software for migrating PDS3 content 
-for ingestion into the Registry Service. The software is packaged in a JAR 
-file.
+for ingestion into the Registry Service.
 
 The software can be packaged with the "mvn package" command. The 
 documentation including release notes, installation and operation of the 
