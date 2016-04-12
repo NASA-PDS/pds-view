@@ -39,6 +39,7 @@
     <module>registry-client</module>
     <module>registry-core</module>
     <module>registry-service</module>
+    <module>registry-tools</module>
     <module>registry-ui</module>
   </modules>
 
