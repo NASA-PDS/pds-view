@@ -1,0 +1,981 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<!-- InstanceBegin template="../Templates/main.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>PDS: Data Dictionary Search</title>
+
+<!-- JQuery -->
+<script src="jquery/jquery-2.1.3.min.js"></script>
+
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="bootstrap/css/bootstraptw-bs.min.css">
+<link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="jqueryui/jquery-ui.min.js"></script>
+
+<script src="js/DataDictionary.js"></script>
+
+<!-- Ajax Solr -->
+<script src="lib/core/Core.js"></script>
+<script src="lib/core/AbstractManager.js"></script>
+<script src="lib/managers/Manager.jquery.js"></script>
+<script src="lib/core/Parameter.js"></script>
+<script src="lib/core/ParameterStore.js"></script>
+<script src="lib/core/AbstractWidget.js"></script>
+<script src="lib/core/AbstractTextWidget.js"></script>
+<script src="widgets/ResultWidget.js"></script>
+<script src="widgets/SearchWidget.js"></script>
+<script src="widgets/PagerWidget.js"></script>
+<script src="widgets/detailWidgets/DetailLinkSearchWidget.js"></script>
+
+<!--Data Dictionary CSS -->
+<link rel="stylesheet" href="css/dataDictionary.css"/>
+
+<!--Calendar-->
+<link rel="stylesheet" href="lib/pikaday/pikaday.css"/>
+<script src="lib/pikaday/moment.js"></script>
+<script src="lib/pikaday/pikaday.js"></script>
+
+<style>
+  .registryServiceHeader{
+    padding: 30px 0px;
+    text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.1);
+    /*color: #FFFFFF;
+    background-color: #00598B;
+    background-image: linear-gradient(to bottom, #014C77 0px, #00598B 100%);*/
+    background-repeat: repeat-x;
+    margin-bottom: 40px;
+    font-size: 24px;
+    text-align: left;
+    position: relative;
+    font-size: 20px;
+    font-size: 24px;
+    text-align: left;
+    position: relative;
+  }
+  .addToolHeader{
+    text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.1);
+    padding-top:30px;
+    /*color: #FFFFFF;
+    padding: 30px 0px;
+    background-color: #00598B;
+    background-image: linear-gradient(to bottom, #014C77 0px, #00598B 100%);*/
+    background-repeat: repeat-x;
+    font-size: 24px;
+    text-align: left;
+    position: relative;
+    font-size: 20px;
+    font-size: 24px;
+    text-align: left;
+    position: relative;
+  }
+  .addToolFormContainer .panel-body{
+    margin-bottom: 45px;
+  }
+  #serviceInterfaceInformationDescription .panel-body {
+    margin-bottom: 0px;
+  }
+  .vresize{
+      resize: vertical;
+  }
+  .pageControl{
+    text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.1);
+    /*color: #FFFFFF;
+    background-color: #00598B;
+    background-image: linear-gradient(to bottom, #014C77 0px, #00598B 100%);*/
+    background-repeat: repeat-x;
+    font-size: 24px;
+    text-align: left;
+    position: relative;
+    font-size: 20px;
+    font-size: 24px;
+    text-align: left;
+    position: relative;
+  }
+  .container{
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .containerWhite{
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .introductionAddToolContainer{
+    box-sizing: border-box;
+  }
+  .introductionAddToolContainer{
+    position: absolute;
+    top: 0px;
+    right: 15px;
+    width: 330px !important;
+    padding: 15px !important;
+    margin: 0px !important;
+  }
+
+  .tw-bs .form-group.addLineButton{
+    margin-bottom: 40px;
+  }
+
+  .steps{
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid #DDD;
+    padding: 0px;
+    display: table;
+    margin: 30px auto 0px;
+    width: 100%;
+    list-style: outside none none;
+    font: 18px/1.4 Helvetica,arial,nimbussansl,liberationsans,freesans,clean,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  }
+  .steps li{
+    display: table-cell;
+    width: 33.3%;
+    padding: 10px 15px;
+    color: #CCC;
+    cursor: default;
+    border-left: 1px solid #DDD;
+    background-color: #FAFAFA;
+  }
+  .steps li.current{
+    background-color: #FFF;
+    color: #333;
+  }
+  .steps li .step{
+    /*display: block;*/
+  }
+
+  .step-two-btn{
+    float: right;
+  }
+
+  .wFileTitle{
+    font-size:x-large;
+    font-weight:bold;
+  }
+
+  .wFileTypeRadios{
+    padding-right: 10px;
+  }
+
+  #serviceInterfaceInformation{
+    margin-top: 60px;
+  }
+
+  .labelDescription{
+    font-weight: normal;
+  }
+
+  .serviceInterfaceInformationDescription{
+    font-weight: bold;
+  }
+
+</style>
+
+<script>
+  var wadlInstructions = "If the service interfaces for this software are described by a Web Application Description Language (WADL) file or a Web Service Definition Language (WSDL) file, then that file can be attached and described here.";
+  var formInstructions = "Use this form to submit a new tool or service to the PDS Tool/Service Registry.";
+
+  $( document ).ready(function() {
+    //Startup
+    $( "#addToolContainer" ).hide();
+    $( "#toolSoftwareInformation" ).hide();
+    $( "#submitterInformation" ).hide();
+    $( "#submissionCompleteContainer" ).hide();
+
+    //Setup date picker
+    var picker = new Pikaday({
+      field: document.getElementById('releaseDateInput'),
+      firstDay: 1,
+      format: 'YYYY-MM-DD',
+      minDate: new Date(2000, 0, 1),
+      maxDate: new Date(2020, 12, 31),
+      yearRange: [2000,2020]
+    });
+    //Setup WASDL/WADL file input
+    $(document).on('change', '#wFileInput', function() {
+      var x = document.getElementById("wFileInput");
+      var txt = "";
+      if ('files' in x) {
+          if (x.files.length == 0) {
+              txt = "Select one or more files.";
+          } else {
+              for (var i = 0; i < x.files.length; i++) {
+                  var title = "";
+                  var file = x.files[i];
+                  if ('name' in file) {
+                    var title = '<p class="wFileTitle">' + (i+1) + ' ' + file.name + '</p>'
+                  }
+
+                  txt += '<div class="panel panel-default">' +
+                    '<div class="panel-body">' +
+                    title +
+                      '<div class="form-group">' +
+                        '<label for="wFileName">Name:</br><span class="labelDescription">Provide a name for the service interface.</span></label>' +
+                        '<input type="text" class="form-control wFileName" placeholder="" maxlength="255">' +
+                      '</div>' +
+                      '<div class="form-group">' +
+                        '<label for="wFileType">Type:</br><span class="labelDescription">Identify whether the service description is in WADL or WSDL format.</span></label>' +
+                        '<div class="radio wFileType">' +
+                          '<label class="wFileTypeRadios">' +
+                            '<input type="radio" name="wFileTypeRadios' + i +'" value="wadl"> WADL' +
+                          '</label>' +
+                          '<label class="wFileTypeRadios">' +
+                            '<input type="radio" name="wFileTypeRadios' + i + '" value="wsdl"> WSDL' +
+                          '</label>' +
+                        '</div>' +
+                      '</div>' +
+                      '<div class="form-group">' +
+                        '<label for="wFileOffset">Offset:</br><span class="labelDescription">Provide the offset (in bytes) into the file for the location of this service description.</span></label>' +
+                        '<input type="number" class="form-control wFileOffset" placeholder="" maxlength="255">' +
+                      '</div>' +
+                      '<div class="form-group">' +
+                        '<label for="wFileDescription">Description:</br><span class="labelDescription">Provide a desciption of the service interface.</span></label>' +
+                        '<textarea class="form-control vresize wFileDescription" rows="3" placeholder=""></textarea>' +
+                      '</div>' +
+
+                    '</div>' +
+                  '</div>'
+              }
+          }
+      }
+      else {
+          if (x.value == "") {
+              txt += "Select one or more files.";
+          } else {
+              txt += "The files property is not supported by your browser!";
+              txt  += "<br>The path of the selected file: " + x.value; // If the browser does not support the files property, it will return the path of the selected file instead.
+          }
+      }
+      document.getElementById("serviceInterfaceInformationDescription").innerHTML = txt;
+    });
+
+    //Allow tab use
+    $('#pageControlTabs a').click(function (e) {
+      console.log("tabClick");
+      e.preventDefault();
+      $(this).tab('show');
+    });
+
+    //On tab press
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      // newly activated tab     e.target
+      // previous active tab     e.relatedTarget
+      var selected = $(e.target).attr("aria-controls");
+      if(selected === "add"){
+          $( "#searchContainer" ).fadeOut( "slow", function() {
+            $( "#addToolContainer" ).fadeIn( "slow", function() {
+            });
+          });
+      }
+      if(selected === "search"){
+        $( "#addToolContainer" ).fadeOut( "slow", function() {
+          $( "#searchContainer" ).fadeIn( "slow", function() {
+          });
+        });
+      }
+    });
+
+    $( "#addToolButton" ).click(function() {
+      $( "#searchContainer" ).fadeOut( "slow", function() {
+        $( "#addToolContainer" ).fadeIn( "slow", function() {
+        });
+      });
+      $('#pageControlTabs a[href="#add"]').tab('show')
+    });
+
+
+    $( ".toStepOneButton" ).click(function() {
+      $( "#toolSoftwareInformation" ).fadeOut( "slow", function() {
+        $( "#toolDescription" ).fadeIn( "slow", function() {
+        });
+      });
+      $( "#submitterInformation" ).fadeOut( "slow", function() {
+      });
+
+      $( "#steps" ).fadeOut( "slow", function() {
+        $('#steps li:nth-child(1)').removeClass('current');
+        $('#steps li:nth-child(2)').removeClass('current');
+        $('#steps li:nth-child(3)').removeClass('current');
+        $('#steps li:nth-child(1)').addClass('current');
+        $( "#steps" ).fadeIn( "slow", function() {
+        });
+      });
+
+      $( "#formHeaderInstructions" ).fadeOut( "slow", function() {
+        $( "#formHeaderInstructions" ).text(formInstructions);
+        $( "#formHeaderInstructions" ).fadeIn( "slow", function() {
+        });
+      });
+    });
+
+    $( ".toStepTwoButton" ).click(function() {
+      $( "#submitterInformation" ).fadeOut( "slow", function() {
+      });
+
+      $( "#toolDescription" ).fadeOut( "slow", function() {
+        $( "#toolSoftwareInformation" ).fadeIn( "slow", function() {
+        });
+      });
+
+
+      $( "#steps" ).fadeOut( "slow", function() {
+        $('#steps li:nth-child(1)').removeClass('current');
+        $('#steps li:nth-child(2)').removeClass('current');
+        $('#steps li:nth-child(3)').removeClass('current');
+        $('#steps li:nth-child(2)').addClass('current');
+        $( "#steps" ).fadeIn( "slow", function() {
+        });
+      });
+
+      $( "#formHeaderInstructions" ).fadeOut( "slow", function() {
+        $( "#formHeaderInstructions" ).text(wadlInstructions);
+        $( "#formHeaderInstructions" ).fadeIn( "slow", function() {
+        });
+      });
+    });
+
+    $( ".toStepThreeButton" ).click(function() {
+      $( "#toolSoftwareInformation" ).fadeOut( "slow", function() {
+        $( "#submitterInformation" ).fadeIn( "slow", function() {
+        });
+      });
+      $( "#toolDescription" ).fadeOut( "slow", function() {
+      });
+
+      $( "#steps" ).fadeOut( "slow", function() {
+        $('#steps li:nth-child(1)').removeClass('current');
+        $('#steps li:nth-child(2)').removeClass('current');
+        $('#steps li:nth-child(3)').removeClass('current');
+        $('#steps li:nth-child(3)').addClass('current');
+        $( "#steps" ).fadeIn( "slow", function() {
+        });
+      });
+
+      $( "#formHeaderInstructions" ).fadeOut( "slow", function() {
+        $( "#formHeaderInstructions" ).text(formInstructions);
+        $( "#formHeaderInstructions" ).fadeIn( "slow", function() {
+        });
+      });
+    });
+
+    $( "#addUrlButton" ).click(function() {
+      $( "#urlContainer" ).append( '<div class="form-group">' +
+        '<label for="urlInput">URL</label>' +
+        '<input type="text" class="form-control urlInput" placeholder="" maxlength="255">' +
+        '</div>'
+      );
+    });
+
+    $( "#addSoftwareLanguageButton" ).click(function() {
+      $( "#softwareLanguageContainer" ).append( '<div class="form-group">' +
+        '<label for="softwareLanguageInput">Software Language</label>' +
+        '<input type="text" class="form-control softwareLanguageInput" placeholder="" maxlength="255">' +
+        '</div>'
+      );
+    });
+
+    $( "#finishButton" ).click(function(){
+      var name = $('#toolNameInput').val();
+      var type = $('#toolTypeInput option:selected').text();
+      var abstract_desc = $("#abstractDescriptionInput").val();
+      var description = $("#descriptionInput").val();
+
+      var url = $("#urlContainer .urlInput").map(function() {
+        return this.value;
+      }).get().join(",");
+
+      var version_id = $("#versionInput").val();
+      var release_date = $("#releaseDateInput").val();
+      var support = $('#support input[name=supportRadios]:checked').val();
+      var category = $('#category input[name=categoryRadios]:checked').val();
+      var interface_type = $('#interfaceType input[name=interfaceTypeRadios]:checked').val();
+
+      var software_language = $("#softwareLanguageContainer .softwareLanguageInput").map(function() {
+        return this.value;
+      }).get().join(",");
+
+      var supported_operating_systems = $("#supportedOperatingSystemsInput").val();
+      var system_requirements = $("#systemRequirementsInput").val();
+      var citation = $("#citationInput").val();
+      var submitter_name = $("#submitterNameInput").val();
+      var submitter_institution = $("#submitterInstitutionInput").val();
+      var submitter_email = $("#submitterEmailInput").val();
+
+
+      var wFileNames = $("#serviceInterfaceInformationDescription .wFileName").map(function() {
+        return this.value;
+      }).get().join(",");
+      var wFileTypes = $('.wFileType input:checked').map(function() {
+        return this.value;
+      }).get().join(",");
+      var wFileOffsets = $("#serviceInterfaceInformationDescription .wFileOffset").map(function() {
+        return this.value;
+      }).get().join(",");
+      var wFileDescriptions = $("#serviceInterfaceInformationDescription .wFileDescription").map(function() {
+        return this.value;
+      }).get().join(",");
+
+      console.log("name: ", name);
+      console.log("type: ", type);
+      console.log("abstract_desc: ", abstract_desc);
+      console.log("description: ", description);
+      console.log("url: ", url);
+      console.log("version_id: ", version_id);
+      console.log("release_date: ", release_date);
+      console.log("support: ", support);
+      console.log("category: ", category);
+      console.log("interface_type: ", interface_type);
+      console.log("software_language: ", software_language);
+      console.log("supported_operating_systems: ", supported_operating_systems);
+      console.log("system_requirements: ", system_requirements);
+      console.log("citation: ", citation);
+      console.log("submitter_name: ", submitter_name);
+      console.log("submitter_institution: ", submitter_institution);
+      console.log("submitter_email: ", submitter_email);
+
+      console.log("wfileNames", wFileNames);
+      console.log("wFileTypes", wFileTypes);
+      console.log("wFileOffsets", wFileOffsets);
+      console.log("wFileDescriptions", wFileDescriptions);
+
+      //Create xml string
+      var xmlString = '<?xml version="1.0" encoding="UTF-8"?>';
+      xmlString += '<?xml-model href="http://pds.jpl.nasa.gov/pds4/pds/v1/PDS4_PDS_1500.sch" schematypens="http://purl.oclc.org/dsdl/schematron"?>';
+      xmlString += '<Product_Service xmlns="http://pds.nasa.gov/pds4/pds/v1" ';
+      xmlString += 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
+      xmlString += 'xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1500.xsd">';
+        xmlString += '<Identification_Area>';
+          if(support === "pds3"){
+            xmlString += '<logical_identifier>urn:nasa:pds:context_pds3:service:pds4_validate_tool</logical_identifier>';
+          }
+          else{//if support === "pds4"
+            xmlString += '<logical_identifier>urn:nasa:pds:context:service:pds4_validate_tool</logical_identifier>';
+          }
+          xmlString += '<version_id>1.0</version_id>';
+          xmlString += '<title>PDS4 Validate Tool</title>';
+          xmlString += '<information_model_version>1.5.0.0</information_model_version>';
+          xmlString += '<product_class>Product_Service</product_class>';
+          xmlString += '<Modification_History>';
+            xmlString += '<Modification_Detail>';
+              xmlString += '<modification_date>2016-01-12</modification_date>';
+              xmlString += '<version_id>1.0</version_id>';
+              xmlString += '<description>A new version.</description>';
+            xmlString += '</Modification_Detail>';
+          xmlString += '</Modification_History>';
+          xmlString += '<Citation_Information>';
+            xmlString += '<publication_year>2015-09-30</publication_year>';
+            xmlString += '<description>';
+              if(citation){
+                if(citation.trim().length > 0){
+                  xmlString += citation;
+                }
+                else{
+                  xmlString += 'Copyright 2010-2016, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology. This software is subject to U. S. export control laws and regulations (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software is subject to U.S. export control laws and regulations, the recipient has the responsibility to obtain export licenses or other export authority as may be required before exporting such information to foreign countries or providing access to foreign nationals.';
+                }
+              }
+              else{
+                xmlString += 'Copyright 2010-2016, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology. This software is subject to U. S. export control laws and regulations (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software is subject to U.S. export control laws and regulations, the recipient has the responsibility to obtain export licenses or other export authority as may be required before exporting such information to foreign countries or providing access to foreign nationals.';
+              }
+            xmlString += '</description>'
+          xmlString += '</Citation_Information>';
+        xmlString += '</Identification_Area>';
+        xmlString += '<Service>';
+          xmlString += '<name>' + name + '</name>';
+          xmlString += '<abstract_desc>' + abstract_desc + '</abstract_desc>';
+          xmlString += '<description>' + description + '</description>';
+          xmlString += '<version_id>' + version_id + '</version_id>';
+          //xmlString += '<url>https://pds.nasa.gov/pds4/software/validate/</url>';
+          for(var i = 0; i < url.split(",").length; i++){
+            var u = url.split(",")[i];
+            xmlString += '<url>' + u + '</url>';
+          }
+          xmlString += '<release_date>' + release_date + '</release_date>';
+          xmlString += '<service_type>' + type + '</service_type>';
+          xmlString += '<interface_type>' + interface_type + '</interface_type>';
+          xmlString += '<category>' + category + '</category>';
+          //xmlString += '<software_language>' + software_language + '</software_language>';
+          for(var i = 0; i < software_language.split(",").length; i++){
+            var softwareLanguage = software_language.split(",")[i];
+            xmlString += '<software_language>' + softwareLanguage + '</software_language>';
+          }
+          xmlString += '<supported_operating_systems>' + supported_operating_systems + '</supported_operating_systems>';
+          xmlString += '<system_requirements_note>' + system_requirements + '</system_requirements_note>';
+          xmlString += '<submitter_name>' + submitter_name + '</submitter_name>';
+          xmlString += '<submitter_institution>' + submitter_institution + '</submitter_institution>';
+          xmlString += '<submitter_email>' + submitter_email + '</submitter_email>';
+        xmlString += '</Service>';
+      xmlString += '</Product_Service>';
+
+      /*
+      var xmlString = '<?xml version="1.0" encoding="UTF-8"?>';
+      xmlString += '<Product_Service xmlns="http://pds.nasa.gov/pds4/pds/v1" ';
+      xmlString += 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
+      xmlString += 'xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1500.xsd">';
+        xmlString += '<Identification_Area>';
+          xmlString += '<logical_identifier>urn:nasa:pds:service:pds4_validate_tool</logical_identifier>';
+          xmlString += '<version_id>1.0</version_id>';
+          xmlString += '<title>PDS4 Validate Tool</title>';
+          xmlString += '<information_model_version>1.5.0.0</information_model_version>';
+          xmlString += '<product_class>Product_Service</product_class>';
+          xmlString += '<Modification_History>';
+            xmlString += '<Modification_Detail>';
+              xmlString += '<modification_date>2016-01-12</modification_date>';
+              xmlString += '<version_id>1.0</version_id>';
+              xmlString += '<description>A new version.</description>';
+            xmlString += '</Modification_Detail>';
+          xmlString += '</Modification_History>';
+        xmlString += '</Identification_Area>';
+        xmlString += '<Service>';
+          xmlString += '<name>PDS4 Validate Tool</name>';
+          xmlString += '<abstract_desc>Software for validating PDS4 product labels and product data. The associated specific schema for the product label specifies syntactic and semantic constraints. The product label itself specifies the constraints for the data. </abstract_desc>';
+          xmlString += '<version_id>1.8</version_id>';
+          xmlString += '<url>https://pds.nasa.gov/pds4/software/validate/</url>';
+          xmlString += '<release_date>2015-09-30</release_date>';
+          xmlString += '<service_type>Tool</service_type>';
+          xmlString += '<interface_type>Command-Line</interface_type>';
+          xmlString += '<category>Validation</category>';
+          xmlString += '<software_language>Java</software_language>';
+          xmlString += '<system_requirements_note>The software was specifically compiled for Java version 1.6 and has been tested with this version and version 1.7 and 1.8. Since support for Java 1.6 ended over two years ago, we suggest an environment of at least Java 1.7.</system_requirements_note>';
+        xmlString += '</Service>';
+      xmlString += '</Product_Service>';
+      */
+
+      var xmlDom = $.parseXML(xmlString);
+      //console.log("xmlDom", xmlDom);
+
+      var xmlReString = "";
+      if(window.ActiveXObject){
+        xmlReString = xmlDom.xml;
+      }
+      else{
+        var xmlReString = (new XMLSerializer()).serializeToString(xmlDom);
+      }
+      console.log("xmlReString", xmlReString);
+      //Upload values as file
+      var file = new File([new Blob([xmlReString])], "test.xml");
+      var formData = new FormData();
+      formData.append("file", file, file.name);
+      formData.append("path", new Date().getTime());
+      $.ajax({
+        url: "http://localhost:8080/transport-upload/upload",
+        type: "POST",
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false
+      });
+
+
+      //Upload wadl and wsdl files
+      for(var i = 0; i < $('#wFileInput')[0].files.length; i++){
+        file = $('#wFileInput')[0].files[i];
+
+        formData = new FormData();
+        formData.append("file", file, file.name);
+        formData.append("path", new Date().getTime());
+        $.ajax({
+          url: "http://localhost:8080/transport-upload/upload",
+          type: "POST",
+          data: formData,
+          cache: false,
+          contentType: false,
+          processData: false
+        });
+      }
+
+      $( "#addToolFormContainer" ).fadeOut( "slow", function() {
+        $( "#submissionCompleteContainer" ).fadeIn( "slow", function() {
+        });
+      });
+      $( "#steps" ).fadeOut( "slow", function() {
+      });
+      console.log("submitted");
+    });
+
+    $( "#backToSiteButton" ).click(function() {
+
+        $('#pageControlTabs a:first').tab('show');
+        $( "#addToolContainer" ).fadeOut( "slow", function() {
+          $( "#searchContainer" ).fadeIn( "slow", function() {
+
+            $( "#submissionCompleteContainer" ).hide( "fast", function() {
+            });
+            $( "#addToolFormContainer" ).show("fast");
+            $( "#steps" ).show("fast");
+
+            $( "#submitterInformation" ).hide("fast");
+
+            $( "#toolDescription" ).hide( "fast", function() {
+              $( "#toolSoftwareInformation" ).show( "fast", function() {
+              });
+            });
+
+            $( "#steps" ).hide( "fast", function() {
+              $('#steps li:nth-child(1)').removeClass('current');
+              $('#steps li:nth-child(2)').removeClass('current');
+              $('#steps li:nth-child(3)').removeClass('current');
+              $('#steps li:nth-child(2)').addClass('current');
+              $( "#steps" ).show( "fast", function() {
+              });
+            });
+
+            $( "#formHeaderInstructions" ).hide( "fast", function() {
+              $( "#formHeaderInstructions" ).text(wadlInstructions);
+              $( "#formHeaderInstructions" ).show( "fast", function() {
+              });
+            });
+
+            $( "#toolSoftwareInformation" ).hide( "fast", function() {
+              $( "#toolDescription" ).show( "fast", function() {
+              });
+            });
+            $( "#submitterInformation" ).hide( "fast", function() {
+            });
+
+            $( "#steps" ).hide( "fast", function() {
+              $('#steps li:nth-child(1)').removeClass('current');
+              $('#steps li:nth-child(2)').removeClass('current');
+              $('#steps li:nth-child(3)').removeClass('current');
+              $('#steps li:nth-child(1)').addClass('current');
+              $( "#steps" ).show( "fast", function() {
+              });
+            });
+
+            $( "#formHeaderInstructions" ).hide( "fast", function() {
+              $( "#formHeaderInstructions" ).text(formInstructions);
+              $( "#formHeaderInstructions" ).show( "fast", function() {
+              });
+            });
+
+          });
+        });
+
+    });
+
+  });
+</script>
+<!-- InstanceEndEditable -->
+
+<!--#include virtual="/include/includes.html" -->
+
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+<!-- InstanceParam name="menu_section" type="text" value="tools" -->
+<!-- InstanceParam name="menu_item" type="text" value="tools_data_dictionary_lookup" -->
+<!-- InstanceParam name="left_sidebar" type="boolean" value="true" -->
+<!-- InstanceParam name="standard_sidebar" type="boolean" value="true" -->
+<!-- InstanceParam name="standard_page_content" type="boolean" value="true" -->
+<!-- InstanceParam name="custom_page_class" type="text" value="" -->
+
+<!--#include virtual="dataDictionarySearchImports.html" -->
+</head>
+
+<body class="sidebar  menu_tools menu_item_tools_data_dictionary_lookup ">
+  <!--[if IE]>
+  <div id="IE">
+  <![endif]-->
+
+  <!--#include virtual="/include/header.html" -->
+  <!--#include virtual="/include/main_menu.html" -->
+
+  <div id="submenu">
+    <!--#include virtual="/include/tool_menu.html" -->
+    <div class="clear">
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <!--#include virtual="/include/standard_sidebar.html" -->
+    <!-- InstanceBeginEditable name="leftSidebar" -->
+    <!-- InstanceEndEditable -->
+  </div>
+
+  <!-- Main content -->
+  <div id="content">
+    <div class="tw-bs">
+      <div class="pageControl">
+        <!-- Nav tabs -->
+          <ul id="pageControlTabs" class="nav nav-tabs nav-justified" role="tablist">
+            <li role="presentation" class="active"><a href="#search" aria-controls="search" role="tab" data-toggle="tab">Search</a></li>
+            <li role="presentation"><a href="#add" aria-controls="add" role="tab" data-toggle="tab">Add</a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="searchTab"></div>
+            <div role="tabpanel" class="tab-pane" id="addTab"></div>
+          </div>
+      </div>
+
+      <div id="searchContainer">
+        <div class="container">
+        <div class="registryServiceHeader">
+          <h1>Registry</h1>
+          <p>
+            This is the IPDA Tools Registry. This member-maintained registry contains a catalog of existing software tools supporting scientific research and analysis, format conversions, validation, geometry maintenance, as well as data search and retrieval that you can download and run on your own computer platforms. Each of the tools are developed and maintained by agencies that are a part of IPDA, and the information in this registry is contributed by them. Listing here does not indicate endorsement of specific tools or technologies. If you need to update a tool, please email emily.s.law@jpl.nasa.gov.
+          </p>
+          <button id="addToolButton" type="button" class="btn btn-primary btn-lg">Submit a Tool</button>
+        </div>
+        </div>
+      </div>
+
+      <div id="addToolContainer">
+        <div class="container">
+            <div class="addToolHeader">
+              <h1>Submit a New Tool</h1>
+              <p id="formHeaderInstructions">
+                Use this form to submit a new tool or service to the PDS Tool/Service Registry.
+              </p>
+
+              <ol id="steps" class="steps">
+                <li class="current">
+                  <span aria-hidden="true" class="glyphicon glyphicon-pencil"></span>
+                  <strong class="step">Step 1:</strong>
+                  Tool/Service Information
+                </li>
+                <li>
+                  <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
+                  <strong class="step">Step 2:</strong>
+                  Software Information
+                </li>
+                <li>
+                  <span aria-hidden="true" class="glyphicon glyphicon-user"></span>
+                  <strong class="step">Step 3:</strong>
+                  Submitter Information
+                </li>
+              </ol>
+            </div>
+
+            <div class="addToolFormContainer" id="addToolFormContainer">
+
+              <div id="toolDescription">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+
+                    <div class="form-group">
+                      <label for="toolNameInput">Tool/Service Name:</br><span class="labelDescription">Provide a name for the software.</span></label>
+                      <input type="text" class="form-control" id="toolNameInput" placeholder="" maxlength="255">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="toolTypeInput">Type: </br><span class="labelDescription">Identify whether it is a tool or service.</span></label>
+                      <select class="form-control" id="toolTypeInput">
+                        <option>Tool</option>
+                        <option>Service</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="abstractDescriptionInput">Abstract Description:</br><span class="labelDescription">Provide a brief description of the software.</span></label>
+                      <input type="text" class="form-control" id="abstractDescriptionInput" placeholder="" maxlength="255">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="descriptionInput">Description:</br><span class="labelDescription">Provide a detailed description of the software.</span></label>
+                      <textarea class="form-control vresize" id="descriptionInput" rows="3" placeholder=""></textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="support">Support:</br><span class="labelDescription">Does this tool/service support PDS3 or PDS4 data.</span></label>
+                      <div class="radio" id="support">
+                        <label>
+                          <input type="radio" name="supportRadios" value="pds3"> PDS3
+                        </label>
+                        <label>
+                          <input type="radio" name="supportRadios" value="pds4"> PDS4
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="category">Category:</br><span class="labelDescription">Select one or more categories that describe the software.</span></label>
+                      <div class="radio" id="category">
+                        <label>
+                          <input type="radio" name="categoryRadios" value="analysis"> Analysis
+                        </label>
+                        <label>
+                          <input type="radio" name="categoryRadios" value="reader"> Reader
+                        </label>
+                        <label>
+                          <input type="radio" name="categoryRadios" value="design"> Design
+                        </label>
+                        <label>
+                          <input type="radio" name="categoryRadios" value="dissemination"> Dissemination
+                        </label>
+                        <label>
+                          <input type="radio" name="categoryRadios" value="generation"> Generation
+                        </label>
+                        <label>
+                          <input type="radio" name="categoryRadios" value="planning"> Planning
+                        </label>
+                        <label>
+                          <input type="radio" name="categoryRadios" value="search"> Search
+                        </label>
+                        <label>
+                          <input type="radio" name="categoryRadios" value="transformation"> Transformation
+                        </label>
+                        <label>
+                          <input type="radio" name="categoryRadios" value="validation"> Validation
+                        </label>
+                        <label>
+                          <input type="radio" name="categoryRadios" value="visualization"> Visualization
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="interfaceType">Interface Type:</br><span class="labelDescription">Select one or more interface types available with the software.</span></label>
+                      <div class="radio" id="interfaceType">
+                        <label>
+                          <input type="radio" name="interfaceTypeRadios" value="api"> API
+                        </label>
+                        <label>
+                          <input type="radio" name="interfaceTypeRadios" value="commandLine"> Command-Line
+                        </label>
+                        <label>
+                          <input type="radio" name="interfaceTypeRadios" value="gui"> GUI
+                        </label>
+                        <label>
+                          <input type="radio" name="interfaceTypeRadios" value="service"> Service
+                        </label>
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-lg pull-right toStepTwoButton">Next</button>
+
+                  </div>
+                </div>
+              </div>
+              <div id="toolSoftwareInformation">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+
+                    <div class="form-group">
+                      <label for="versionInput">Version:</br><span class="labelDescription">Provide the version of the software.</span></label>
+                      <input type="text" class="form-control" id="versionInput" placeholder="" maxlength="255">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="releaseDateInput">Release Date:</br><span class="labelDescription">Provide the date when this version was released.</span></label>
+                      <input type="text" class="form-control" id="releaseDateInput" placeholder="">
+                    </div>
+
+                    <div id="softwareLanguageContainer">
+                      <div class="form-group">
+                        <label for="softwareLanguage">Software Language:</br><span class="labelDescription">Provide the computer programming languages that the tool supports, if applicable. Please list each language separately, one per line.</span></label>
+                        <input type="text" class="form-control softwareLanguageInput" placeholder="" maxlength="255">
+                      </div>
+                    </div>
+                    <div class="form-group addLineButton">
+                      <button id="addSoftwareLanguageButton" type="submit" class="btn btn-default pull-right"><span aria-hidden="true" class="glyphicon glyphicon-plus"></span></button>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="supportedOperatingSystemsInput">Supported Operating Systems:</br><span class="labelDescription">Describe the supported hardware and operating system platforms the software supports, if applicable.</span></label>
+                      <textarea class="form-control vresize" id="supportedOperatingSystemsInput" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="systemRequirementsInput">System Requirements:</br><span class="labelDescription">Describe any system requirements necessary to run the software on designated operating systems, if applicable.</span></label>
+                      <textarea class="form-control vresize" id="systemRequirementsInput" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="citationInput">Citation:</br><span class="labelDescription">Provide a bibliographic citation for the tool, if applicable.</span></label>
+                      <textarea class="form-control vresize" id="citationInput" rows="3" maxlength="5000"></textarea>
+                    </div>
+
+                    <div id="urlContainer">
+                      <div class="form-group">
+                        <label for="urlInput">URL:</br><span class="labelDescription">Provide a URL where the software can be downloaded or accessed online. If more than one, enter one per line.</label>
+                        <input type="text" class="form-control urlInput" placeholder="" maxlength="255">
+                      </div>
+                    </div>
+                    <div class="form-group addLineButton">
+                      <button id="addUrlButton" type="submit" class="btn btn-default pull-right"><span aria-hidden="true" class="glyphicon glyphicon-plus"></span></button>
+                    </div>
+
+                    <div id="serviceInterfaceInformation">
+
+                      <div class="panel panel-default">
+                        <div class="panel-body">
+                            <p class="formp serviceInterfaceInformationDescription">
+                              If the service interfaces for this software are described by a Web Application Description Language (WADL) file or a Web Service Definition Language (WSDL) file, then that file can be attached and described here.";
+                            </p>
+                          <div class="form-group">
+                            <label for="fileInput">Input File:</br><span class="labelDescription">Upload a file containing one or more WADL or WSDL service descriptions.</span></label>
+                            <input type="file" id="wFileInput" multiple>
+                          </div>
+
+                          <div id="serviceInterfaceInformationDescription">
+                          </div>
+
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-default btn-lg pull-left toStepOneButton">Previous</button>
+                    <button type="submit" class="btn btn-success btn-lg pull-right toStepThreeButton">Next</button>
+
+                  </div>
+                </div>
+              </div>
+              <div id="submitterInformation">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+
+                    <div class="form-group">
+                      <label for="submitterNameInput">Submitter Name:</br><span class="labelDescription">Provide the name of the submitter.</span></label>
+                      <input type="text" class="form-control" id="submitterNameInput" placeholder="" maxlength="255">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="submitterInstitutionInput">Submitter Institution:</br><span class="labelDescription">Provide the name of the institution employing the submitter or better yet curates the software.</span></label>
+                      <input type="text" class="form-control" id="submitterInstitutionInput" placeholder="" maxlength="255">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="submitterEmailInput">Submitter Email:</br><span class="labelDescription">Provide the email address of the submitter so that we may contact you regarding the submission.</span></label>
+                      <input type="email" class="form-control" id="submitterEmailInput" placeholder="" maxlength="255">
+                    </div>
+
+                    <button type="submit" class="btn btn-default btn-lg pull-left toStepTwoButton">Previous</button>
+                    <button id="finishButton" type="submit" class="btn btn-success btn-lg pull-right">Submit</button>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div id="submissionCompleteContainer">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <h1>Thank You For Your Submission</h1>
+                  <p class="formp">Your submission is awaiting review. Once it is finished being reviewed it will be uploaded to the system.</p>
+                  <p class="formp"><a class="btn btn-primary btn-lg" id="backToSiteButton">Back To Site</a></p>
+                </div>
+              </div>
+            </div>
+      </div>
+    </div><!--End tw-bs -->
+  </div><!--End main content -->
+
+
+  <!--#include virtual="/include/footer.html" -->
+
+  <!--[if IE]>
+  </div>
+  <![endif]-->
+</body>
+<!-- InstanceEnd -->
+</html>
