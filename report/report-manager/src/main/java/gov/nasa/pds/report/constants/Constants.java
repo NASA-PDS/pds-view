@@ -94,6 +94,11 @@ public abstract class Constants {
 	public static final String DATE_FILTER_PROP =
 			"gov.nasa.pds.report.date.filter";
 	
+	// The length (in days) of the reporting window at the beginning of each
+	// month
+	public static final String REPORT_WINDOW_PROP =
+			"gov.nasa.pds.report.report.window";
+	
 	// ------------------------------------------------------------------------
 	// Major directories in the directory tree
 	// ------------------------------------------------------------------------
