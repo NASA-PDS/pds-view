@@ -1,0 +1,33 @@
+#!/bin/sh
+# Copyright 2014, by the California Institute of Technology.
+# ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+# Any commercial use must be negotiated with the Office of Technology Transfer
+# at the California Institute of Technology.
+#
+# This software is subject to U. S. export control laws and regulations
+# (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+# is subject to U.S. export control laws and regulations, the recipient has
+# the responsibility to obtain export licenses or other export authority as
+# may be required before exporting such information to foreign countries or
+# providing access to foreign nationals.
+#
+# $Id: harvest-ctrl 13848 2015-03-11 17:08:38Z mcayanan $
+
+# Script that allows easy execution of the Crawler Daemon Controller
+# without the need to set the CLASSPATH or having to type in that long java
+# command (java gov.nasa.jpl.oodt.cas.crawl.daemon.CrawlDaemonController ...)
+
+# Set the JAVA_HOME environment variable here in the script if it will
+# not be defined in the environment.
+if [ -z "${JAVA_HOME}" ]; then
+   echo "The JAVA_HOME environment variable is not set." 1>&2
+   exit 1
+fi
+
+# Setup environment variables.
+SCRIPT_DIR=`dirname $0`
+PARENT_DIR=`cd ${SCRIPT_DIR}/.. && pwd`
+LIB_DIR=${PARENT_DIR}/lib
+
+# Execute the application.
+"${JAVA_HOME}"/bin/java -Xms256m -Xmx1024m -Djava.ext.dirs=${LIB_DIR} gov.nasa.jpl.oodt.cas.crawl.daemon.CrawlDaemonController $*
