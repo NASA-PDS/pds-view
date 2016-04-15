@@ -18,6 +18,7 @@ import com.jcraft.jsch.SftpException;
 import gov.nasa.pds.report.ReportManagerException;
 import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.util.DateLogFilter;
+import gov.nasa.pds.report.util.FileUtil;
 import gov.nasa.pds.report.util.Utility;
 
 /**
@@ -170,7 +171,7 @@ public class PDSPullImpl implements PDSPull {
 				dirPath = Utility.getDirPath(path);
 			}
 
-			List<String> localFileList = Utility.getLocalFileList(destination);
+			List<String> localFileList = FileUtil.getFilenameList(destination);
 
 			List<String> array = getFileList(path);
 			for (String filename : array) {
@@ -188,10 +189,14 @@ public class PDSPullImpl implements PDSPull {
 							+ " already exists in " + destination);
 				}
 			}
-		} catch (SftpException e) {
+		}catch(SftpException e){
 			throw new PushPullException("An error occurred while pulling " +
 					"files from " + this.session.getHost() + ":" + path +
 					": " + e.getMessage());
+		}catch(ReportManagerException e){
+			throw new PushPullException("An error occured while determining "
+					+ "the already pulled files at " + destination + ": " +
+					e.getMessage());
 		}
 	}
 	

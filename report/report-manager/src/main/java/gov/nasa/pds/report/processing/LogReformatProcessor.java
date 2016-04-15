@@ -31,6 +31,7 @@ import org.apache.commons.io.FileUtils;
 
 import gov.nasa.pds.report.ReportManagerException;
 import gov.nasa.pds.report.constants.Constants;
+import gov.nasa.pds.report.util.FileUtil;
 import gov.nasa.pds.report.util.Utility;
 
 /**
@@ -180,7 +181,7 @@ public abstract class LogReformatProcessor implements Processor{
 		// Get a list of files in the input directory
 		List<File> files = null;
 		try{
-			files = Utility.getFileList(in);
+			files = FileUtil.getFileList(in);
 		}catch(ReportManagerException e){
 			throw new ProcessingException("An error occurred while finding " +
 					"the logs at " + in.getAbsolutePath());

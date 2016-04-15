@@ -24,12 +24,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -65,11 +63,6 @@ public class Utility {
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
 		Date date = Calendar.getInstance().getTime();
 		return df.format(date);
-	}
-
-	public static List<String> getLocalFileList(String path) {
-		File dir = new File(path);
-		return Arrays.asList(dir.list());
 	}
 
 	public static String getHomeDirectory() {
@@ -273,35 +266,16 @@ public class Utility {
 	}
 	
 	/**
-	 * Get a {@link List} of {@link File}s in the given directory.
+	 * Determine if the current day is during the portion of the month when
+	 * reports are generated.
 	 * 
-	 * @param dir	A {@link File} object indicating the directory in question.
-	 * @return		A List of Files in the provided directory.
+	 * @return	True if the current day is during the reporting window.
 	 */
-	public static List<File> getFileList(File dir) throws ReportManagerException{
+	public static boolean isReportTime(){
 		
-		if(dir == null){
-			throw new ReportManagerException("Can't request a file list " +
-					"from a null directory.");
-		}else if(!dir.exists()){
-			throw new ReportManagerException("Can't request a file list " +
-					"from a non-existant directory.");
-		}else if(!dir.isDirectory()){
-			throw new ReportManagerException("Can't request a file list " +
-					"from a non-directory.");
-		}
-		
-		String[] filenames = dir.list();
-		// TODO: Remove this code if it turns out that we don't need it
-//		if(filenames == null || filenames.length == 0){
-//			throw new ReportManagerException("No files found in directory " +
-//					dir.getAbsolutePath());
-//		}
-		List<File> files = new Vector<File>();
-		for(String filename: filenames){
-			files.add(new File(dir, filename));
-		}
-		return files;
+		return Calendar.getInstance().get(Calendar.DAY_OF_MONTH) <=
+				Integer.parseInt(System.getProperty(
+				Constants.REPORT_WINDOW_PROP));
 		
 	}
 	

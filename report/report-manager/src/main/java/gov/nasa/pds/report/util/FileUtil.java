@@ -5,9 +5,11 @@ import gov.nasa.pds.report.constants.Constants;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
+import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
@@ -163,7 +165,7 @@ public class FileUtil {
 			
 			File srcDir = getDir(from, nodeName, profileID);
 			File destDir = getDir(to, nodeName, profileID);
-			List<String> destFileList = Utility.getLocalFileList(
+			List<String> destFileList = FileUtil.getFilenameList(
 					destDir.getAbsolutePath());
 			
 			for(File srcFile: srcDir.listFiles()){
@@ -242,6 +244,61 @@ public class FileUtil {
 				}
 			}
 		}
+		
+	}
+
+	/**
+	 * Get a {@link List} of file names in the given directory.
+	 * 
+	 * @param path						A String of the path to the directory.
+	 * @return							A List of file names in the directory.
+	 * @throws ReportManagerException	If the path is null or if the directory
+	 * 									there is invalid.
+	 */
+	public static List<String> getFilenameList(String path)
+			throws ReportManagerException{
+		
+		if(path == null){
+			throw new ReportManagerException("Can't request a file list " +
+					"from a null directory.");
+		}
+		
+		File dir = new File(path);
+		
+		if(!dir.exists()){
+			throw new ReportManagerException("Can't request a file list " +
+					"from a non-existant directory.");
+		}else if(!dir.isDirectory()){
+			throw new ReportManagerException("Can't request a file list " +
+					"from a non-directory.");
+		}
+		
+		return Arrays.asList(dir.list());
+	}
+
+	/**
+	 * Get a {@link List} of {@link File}s in the given directory.
+	 * 
+	 * @param dir						A {@link File} object indicating the
+	 * 									directory.
+	 * @return							A List of Files in the provided directory.
+	 * @throws ReportManagerException	If the provided directory is null or
+	 * 									invalid.
+	 */
+	public static List<File> getFileList(File dir) throws ReportManagerException{
+		
+		if(dir == null){
+			throw new ReportManagerException("Can't request a file list " +
+					"from a null directory.");
+		}else if(!dir.exists()){
+			throw new ReportManagerException("Can't request a file list " +
+					"from a non-existant directory.");
+		}else if(!dir.isDirectory()){
+			throw new ReportManagerException("Can't request a file list " +
+					"from a non-directory.");
+		}
+		
+		return Arrays.asList(dir.listFiles());
 		
 	}
 

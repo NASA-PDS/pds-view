@@ -16,7 +16,7 @@ package gov.nasa.pds.report.processing;
 
 import gov.nasa.pds.report.ReportManagerException;
 import gov.nasa.pds.report.constants.Constants;
-import gov.nasa.pds.report.util.Utility;
+import gov.nasa.pds.report.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,7 +69,7 @@ public class CopyProcessor implements Processor{
 		// Get a list of files in the input directory
 		List<File> files = null;
 		try{
-			files = Utility.getFileList(this.inputDirectory);
+			files = FileUtil.getFileList(this.inputDirectory);
 		}catch(ReportManagerException e){
 			throw new ProcessingException("An error occurred while finding " +
 					"the logs in input directory " +

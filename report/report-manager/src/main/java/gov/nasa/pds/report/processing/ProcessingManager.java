@@ -227,7 +227,7 @@ public class ProcessingManager{
 		try{
 			sawmillDir = FileUtil.getDir(Constants.SAWMILL_DIR,
 					nodeName, profileID);
-			stagedFiles = Utility.getFileList(staging);
+			stagedFiles = FileUtil.getFileList(staging);
 		}catch(ReportManagerException e){
 			throw new ProcessingException("An error occurred while preparing " +
 					"the list of staged log files for profile " + profileID + 

@@ -2,7 +2,7 @@ package gov.nasa.pds.report.logs.pushpull;
 
 import gov.nasa.pds.report.ReportManagerException;
 import gov.nasa.pds.report.util.DateLogFilter;
-import gov.nasa.pds.report.util.Utility;
+import gov.nasa.pds.report.util.FileUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -89,7 +89,13 @@ public class HttpPull implements PDSPull{
 		
 		// Fetch the list of files at the destination
 		List<String> localFileList = new ArrayList<String>();
-		localFileList.addAll(Utility.getLocalFileList(destination));
+		try{
+			localFileList.addAll(FileUtil.getFilenameList(destination));
+		}catch(ReportManagerException e){
+			throw new PushPullException("An error occured while determining "
+					+ "the already pulled files at " + destination + ": " +
+					e.getMessage());
+		}
 		
 		// Pull the file or files at the path
 		if(!isPathToDirectory(path)){

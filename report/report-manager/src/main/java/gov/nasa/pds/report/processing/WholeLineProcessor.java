@@ -25,6 +25,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * TODO: Fix this documentation!
+ * 
  * This class is used to perform basic reformatting on log files.  Unlike the
  * {@link DetailByDetailProcessor} which looks for individual values while
  * progressively parsing lines in the input log, this processor will parse an

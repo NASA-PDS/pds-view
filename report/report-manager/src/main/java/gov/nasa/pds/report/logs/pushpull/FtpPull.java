@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPFile;
@@ -17,6 +18,7 @@ import org.apache.commons.net.ftp.FTPReply;
 
 import gov.nasa.pds.report.ReportManagerException;
 import gov.nasa.pds.report.util.DateLogFilter;
+import gov.nasa.pds.report.util.FileUtil;
 import gov.nasa.pds.report.util.Utility;
 
 /*
@@ -97,7 +99,13 @@ public class FtpPull implements PDSPull {
 		List<String> array = getFileList(path);
 		
 		List<String> localFileList = new ArrayList<String>();
-		localFileList.addAll(Utility.getLocalFileList(destination));
+		try{
+			localFileList.addAll(FileUtil.getFilenameList(destination));
+		}catch(ReportManagerException e){
+			throw new PushPullException("An error occured while determining "
+					+ "the already pulled files at " + destination + ": " +
+					e.getMessage());
+		}
 		
 		for (String filename : array) {
 
