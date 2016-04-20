@@ -142,34 +142,34 @@
                       <label for="category">Category <span class="asterisk">*</span></br><span class="labelDescription">Select one or more categories that describe the software.</span></label>
                       <div class="radio" id="category">
                         <label>
-                          <input type="radio" name="categoryRadios" value="analysis"> Analysis
+                          <input type="radio" name="categoryRadios" value="Analysis"> Analysis
                         </label>
                         <label>
-                          <input type="radio" name="categoryRadios" value="reader"> Reader
+                          <input type="radio" name="categoryRadios" value="Reader"> Reader
                         </label>
                         <label>
-                          <input type="radio" name="categoryRadios" value="design"> Design
+                          <input type="radio" name="categoryRadios" value="Design"> Design
                         </label>
                         <label>
-                          <input type="radio" name="categoryRadios" value="dissemination"> Dissemination
+                          <input type="radio" name="categoryRadios" value="Dissemination"> Dissemination
                         </label>
                         <label>
-                          <input type="radio" name="categoryRadios" value="generation"> Generation
+                          <input type="radio" name="categoryRadios" value="Generation"> Generation
                         </label>
                         <label>
-                          <input type="radio" name="categoryRadios" value="planning"> Planning
+                          <input type="radio" name="categoryRadios" value="Planning"> Planning
                         </label>
                         <label>
-                          <input type="radio" name="categoryRadios" value="search"> Search
+                          <input type="radio" name="categoryRadios" value="Search"> Search
                         </label>
                         <label>
-                          <input type="radio" name="categoryRadios" value="transformation"> Transformation
+                          <input type="radio" name="categoryRadios" value="Transformation"> Transformation
                         </label>
                         <label>
-                          <input type="radio" name="categoryRadios" value="validation"> Validation
+                          <input type="radio" name="categoryRadios" value="Validation"> Validation
                         </label>
                         <label>
-                          <input type="radio" name="categoryRadios" value="visualization"> Visualization
+                          <input type="radio" name="categoryRadios" value="Visualization"> Visualization
                         </label>
                       </div>
                     </div>
@@ -178,16 +178,16 @@
                       <label for="interfaceType">Interface Type</br><span class="labelDescription">Select one or more interface types available with the software.</span></label>
                       <div class="radio" id="interfaceType">
                         <label>
-                          <input type="radio" name="interfaceTypeRadios" value="api"> API
+                          <input type="radio" name="interfaceTypeRadios" value="API"> API
                         </label>
                         <label>
-                          <input type="radio" name="interfaceTypeRadios" value="commandLine"> Command-Line
+                          <input type="radio" name="interfaceTypeRadios" value="Command-Line"> Command-Line
                         </label>
                         <label>
-                          <input type="radio" name="interfaceTypeRadios" value="gui"> GUI
+                          <input type="radio" name="interfaceTypeRadios" value="GUI"> GUI
                         </label>
                         <label>
-                          <input type="radio" name="interfaceTypeRadios" value="service"> Service
+                          <input type="radio" name="interfaceTypeRadios" value="Service"> Service
                         </label>
                       </div>
                     </div>
@@ -218,7 +218,7 @@
                       </div>
                     </div>
                     <div class="form-group addLineButton">
-                      <button id="addSoftwareLanguageButton" type="submit" class="btn btn-default pull-right"><span aria-hidden="true" class="glyphicon glyphicon-plus"></span></button>
+                      <button id="addSoftwareLanguageButton" type="submit" class="btn btn-default pull-right"><span aria-hidden="true" class="glyphicon glyphicon-plus"></span></button><button id="removeSoftwareLanguageButton" type="submit" class="btn btn-default pull-right"><span aria-hidden="true" class="glyphicon glyphicon-minus"></span></button>
                     </div>
 
                     <div class="form-group">
@@ -243,7 +243,7 @@
                       </div>
                     </div>
                     <div class="form-group addLineButton">
-                      <button id="addUrlButton" type="submit" class="btn btn-default pull-right"><span aria-hidden="true" class="glyphicon glyphicon-plus"></span></button>
+                      <button id="addUrlButton" type="submit" class="btn btn-default pull-right"><span aria-hidden="true" class="glyphicon glyphicon-plus"></span></button><button id="removeUrlButton" type="submit" class="btn btn-default pull-right"><span aria-hidden="true" class="glyphicon glyphicon-minus"></span></button>
                     </div>
 
                     <div id="serviceInterfaceInformation">

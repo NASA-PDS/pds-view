@@ -78,6 +78,8 @@ function init(){
     $( "#toolSoftwareInformation" ).hide();
     $( "#submitterInformation" ).hide();
     $( "#submissionCompleteContainer" ).hide();
+    $( "#removeUrlButton" ).hide();
+    $( "#removeSoftwareLanguageButton" ).hide();
 
     //Setup date picker
     var picker = new Pikaday({
@@ -257,10 +259,23 @@ function init(){
 
     $( "#addUrlButton" ).click(function() {
       $( "#urlContainer" ).append( '<div class="form-group">' +
-        '<label for="urlInput">URL</label>' +
         '<input type="text" class="form-control urlInput" placeholder="" maxlength="255">' +
         '</div>'
       );
+
+      $( "#removeUrlButton" ).show();
+    });
+
+    $( "#removeUrlButton" ).click(function() {
+      var urlInputs = $("#urlContainer .form-group");
+
+      var length = urlInputs.length;
+
+      urlInputs[urlInputs.length - 1].remove();
+
+      if( (length - 1) < 2){
+        $( "#removeUrlButton" ).hide();
+      }
     });
 
     $( "#addSoftwareLanguageButton" ).click(function() {
@@ -269,6 +284,20 @@ function init(){
         '<input type="text" class="form-control softwareLanguageInput" placeholder="" maxlength="255">' +
         '</div>'
       );
+
+      $( "#removeSoftwareLanguageButton" ).show();
+    });
+
+    $( "#removeSoftwareLanguageButton" ).click(function() {
+      var softwareLanguageInputs = $("#softwareLanguageContainer .form-group");
+
+      var length = softwareLanguageInputs.length;
+
+      softwareLanguageInputs[softwareLanguageInputs.length - 1].remove();
+
+      if( (length - 1) < 2){
+        $( "#removeSoftwareLanguageButton" ).hide();
+      }
     });
 
     $( "#finishButton" ).click(function(){
@@ -335,7 +364,11 @@ function init(){
       console.log("wFileOffsets", wFileOffsets);
       console.log("wFileDescriptions", wFileDescriptions);
 
-      //Create xml string
+      var uploadDate = new Date();
+      var dateString = uploadDate.getFullYear() + "-" + (uploadDate.getMonth() + 1) + "-" + uploadDate.getDate() + "T" + uploadDate.getHours() + "-" + uploadDate.getMinutes() + "-" + uploadDate.getSeconds() + "-" + uploadDate.getMilliseconds();
+      var currentDateString = uploadDate.getFullYear() + "-" + uploadDate.getMonth() + "-" + uploadDate.getDate();
+
+      /*
       var xmlString = '<?xml version="1.0" encoding="UTF-8"?>';
       xmlString += '<?xml-model href="http://pds.jpl.nasa.gov/pds4/pds/v1/PDS4_PDS_1500.sch" schematypens="http://purl.oclc.org/dsdl/schematron"?>';
       xmlString += '<Product_Service xmlns="http://pds.nasa.gov/pds4/pds/v1" ';
@@ -343,24 +376,17 @@ function init(){
       xmlString += 'xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1500.xsd">';
         xmlString += '<Identification_Area>';
           if(support === "pds3"){
-            xmlString += '<logical_identifier>urn:nasa:pds:context_pds3:service:pds4_validate_tool</logical_identifier>';
+            xmlString += '<logical_identifier>urn:nasa:pds:context_pds3:service:' + name + '</logical_identifier>';
           }
           else{//if support === "pds4"
-            xmlString += '<logical_identifier>urn:nasa:pds:context:service:pds4_validate_tool</logical_identifier>';
+            xmlString += '<logical_identifier>urn:nasa:pds:context:service:' + name + '</logical_identifier>';
           }
-          xmlString += '<version_id>1.0</version_id>';
-          xmlString += '<title>PDS4 Validate Tool</title>';
+          xmlString += '<version_id>' + version_id + '</version_id>';
+          xmlString += '<title>' + name + '</title>';
           xmlString += '<information_model_version>1.5.0.0</information_model_version>';
           xmlString += '<product_class>Product_Service</product_class>';
-          xmlString += '<Modification_History>';
-            xmlString += '<Modification_Detail>';
-              xmlString += '<modification_date>2016-01-12</modification_date>';
-              xmlString += '<version_id>1.0</version_id>';
-              xmlString += '<description>A new version.</description>';
-            xmlString += '</Modification_Detail>';
-          xmlString += '</Modification_History>';
           xmlString += '<Citation_Information>';
-            xmlString += '<publication_year>2015-09-30</publication_year>';
+            xmlString += '<publication_year>' + release_date + '</publication_year>';
             xmlString += '<description>';
               if(citation){
                 if(citation.trim().length > 0){
@@ -375,13 +401,18 @@ function init(){
               }
             xmlString += '</description>'
           xmlString += '</Citation_Information>';
+          xmlString += '<Modification_History>';
+            xmlString += '<Modification_Detail>';
+              xmlString += '<modification_date>' + currentDateString + '</modification_date>';
+              xmlString += '<version_id>' + version_id + '</version_id>';
+              xmlString += '<description>A new version.</description>';
+            xmlString += '</Modification_Detail>';
+          xmlString += '</Modification_History>';
         xmlString += '</Identification_Area>';
         xmlString += '<Service>';
           xmlString += '<name>' + name + '</name>';
           xmlString += '<abstract_desc>' + abstract_desc + '</abstract_desc>';
-          xmlString += '<description>' + description + '</description>';
           xmlString += '<version_id>' + version_id + '</version_id>';
-          //xmlString += '<url>https://pds.nasa.gov/pds4/software/validate/</url>';
           for(var i = 0; i < url.split(",").length; i++){
             var u = url.split(",")[i];
             xmlString += '<url>' + u + '</url>';
@@ -390,53 +421,78 @@ function init(){
           xmlString += '<service_type>' + type + '</service_type>';
           xmlString += '<interface_type>' + interface_type + '</interface_type>';
           xmlString += '<category>' + category + '</category>';
-          //xmlString += '<software_language>' + software_language + '</software_language>';
           for(var i = 0; i < software_language.split(",").length; i++){
             var softwareLanguage = software_language.split(",")[i];
             xmlString += '<software_language>' + softwareLanguage + '</software_language>';
           }
-          xmlString += '<supported_operating_systems>' + supported_operating_systems + '</supported_operating_systems>';
+          xmlString += '<supported_operating_system_note>' + supported_operating_systems + '</supported_operating_system_note>';
           xmlString += '<system_requirements_note>' + system_requirements + '</system_requirements_note>';
-          xmlString += '<submitter_name>' + submitter_name + '</submitter_name>';
-          xmlString += '<submitter_institution>' + submitter_institution + '</submitter_institution>';
-          xmlString += '<submitter_email>' + submitter_email + '</submitter_email>';
+          xmlString += '<description>' + description + '</description>';
         xmlString += '</Service>';
       xmlString += '</Product_Service>';
+      */
 
-      /*
       var xmlString = '<?xml version="1.0" encoding="UTF-8"?>';
+      xmlString += '<?xml-model href="http://pds.jpl.nasa.gov/pds4/pds/v1/PDS4_PDS_1500.sch" schematypens="http://purl.oclc.org/dsdl/schematron"?>';
       xmlString += '<Product_Service xmlns="http://pds.nasa.gov/pds4/pds/v1" ';
       xmlString += 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
       xmlString += 'xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1500.xsd">';
         xmlString += '<Identification_Area>';
-          xmlString += '<logical_identifier>urn:nasa:pds:service:pds4_validate_tool</logical_identifier>';
-          xmlString += '<version_id>1.0</version_id>';
-          xmlString += '<title>PDS4 Validate Tool</title>';
+          if(support === "pds3"){
+            xmlString += '<logical_identifier>urn:nasa:pds:context_pds3:service:' + name + '</logical_identifier>';
+          }
+          else{//if support === "pds4"
+            xmlString += '<logical_identifier>urn:nasa:pds:context:service:' + name + '</logical_identifier>';
+          }
+          xmlString += '<version_id>' + version_id + '</version_id>';
+          xmlString += '<title>' + name + '</title>';
           xmlString += '<information_model_version>1.5.0.0</information_model_version>';
           xmlString += '<product_class>Product_Service</product_class>';
+          xmlString += '<Citation_Information>';
+            xmlString += '<publication_year>' + release_date + '</publication_year>';
+            xmlString += '<description>';
+              if(citation){
+                if(citation.trim().length > 0){
+                  xmlString += citation;
+                }
+                else{
+                  xmlString += 'Copyright 2010-2016, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology. This software is subject to U. S. export control laws and regulations (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software is subject to U.S. export control laws and regulations, the recipient has the responsibility to obtain export licenses or other export authority as may be required before exporting such information to foreign countries or providing access to foreign nationals.';
+                }
+              }
+              else{
+                xmlString += 'Copyright 2010-2016, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology. This software is subject to U. S. export control laws and regulations (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software is subject to U.S. export control laws and regulations, the recipient has the responsibility to obtain export licenses or other export authority as may be required before exporting such information to foreign countries or providing access to foreign nationals.';
+              }
+            xmlString += '</description>'
+          xmlString += '</Citation_Information>';
           xmlString += '<Modification_History>';
             xmlString += '<Modification_Detail>';
-              xmlString += '<modification_date>2016-01-12</modification_date>';
-              xmlString += '<version_id>1.0</version_id>';
+              xmlString += '<modification_date>' + currentDateString + '</modification_date>';
+              xmlString += '<version_id>' + version_id + '</version_id>';
               xmlString += '<description>A new version.</description>';
             xmlString += '</Modification_Detail>';
           xmlString += '</Modification_History>';
         xmlString += '</Identification_Area>';
         xmlString += '<Service>';
-          xmlString += '<name>PDS4 Validate Tool</name>';
-          xmlString += '<abstract_desc>Software for validating PDS4 product labels and product data. The associated specific schema for the product label specifies syntactic and semantic constraints. The product label itself specifies the constraints for the data. </abstract_desc>';
-          xmlString += '<version_id>1.8</version_id>';
-          xmlString += '<url>https://pds.nasa.gov/pds4/software/validate/</url>';
-          xmlString += '<release_date>2015-09-30</release_date>';
-          xmlString += '<service_type>Tool</service_type>';
-          xmlString += '<interface_type>Command-Line</interface_type>';
-          xmlString += '<category>Validation</category>';
-          xmlString += '<software_language>Java</software_language>';
-          xmlString += '<system_requirements_note>The software was specifically compiled for Java version 1.6 and has been tested with this version and version 1.7 and 1.8. Since support for Java 1.6 ended over two years ago, we suggest an environment of at least Java 1.7.</system_requirements_note>';
+          xmlString += '<name>' + name + '</name>';
+          xmlString += '<abstract_desc>' + abstract_desc + '</abstract_desc>';
+          xmlString += '<version_id>' + version_id + '</version_id>';
+          for(var i = 0; i < url.split(",").length; i++){
+            var u = url.split(",")[i];
+            xmlString += '<url>' + u + '</url>';
+          }
+          xmlString += '<release_date>' + release_date + '</release_date>';
+          xmlString += '<service_type>' + type + '</service_type>';
+          xmlString += '<interface_type>' + interface_type + '</interface_type>';
+          xmlString += '<category>' + category + '</category>';
+          for(var i = 0; i < software_language.split(",").length; i++){
+            var softwareLanguage = software_language.split(",")[i];
+            xmlString += '<software_language>' + softwareLanguage + '</software_language>';
+          }
+          xmlString += '<supported_operating_system_note>' + supported_operating_systems + '</supported_operating_system_note>';
+          xmlString += '<system_requirements_note>' + system_requirements + '</system_requirements_note>';
+          xmlString += '<description>' + description + '</description>';
         xmlString += '</Service>';
       xmlString += '</Product_Service>';
-      */
-
       var xmlDom = $.parseXML(xmlString);
       //console.log("xmlDom", xmlDom);
 
@@ -448,11 +504,12 @@ function init(){
         var xmlReString = (new XMLSerializer()).serializeToString(xmlDom);
       }
       console.log("xmlReString", xmlReString);
+
       //Upload values as file
       var file = new File([new Blob([xmlReString])], "test.xml");
       var formData = new FormData();
       formData.append("file", file, file.name);
-      formData.append("path", new Date().getTime());
+      formData.append("path", dateString);
       $.ajax({
         url: "http://localhost:8080/transport-upload/upload",
         type: "POST",
@@ -469,7 +526,7 @@ function init(){
 
         formData = new FormData();
         formData.append("file", file, file.name);
-        formData.append("path", new Date().getTime());
+        formData.append("path", dateString);
         $.ajax({
           url: "http://localhost:8080/transport-upload/upload",
           type: "POST",
