@@ -503,10 +503,12 @@ function init(){
       else{
         var xmlReString = (new XMLSerializer()).serializeToString(xmlDom);
       }
-      console.log("xmlReString", xmlReString);
+
+      var bxml = vkbeautify.xml(xmlReString);
+      console.log(bxml);
 
       //Upload values as file
-      var file = new File([new Blob([xmlReString])], "test.xml");
+      var file = new File([new Blob([bxml])], "test.xml");
       var formData = new FormData();
       formData.append("file", file, file.name);
       formData.append("path", dateString);
