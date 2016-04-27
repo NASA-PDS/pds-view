@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2013-2015, by the California Institute of Technology.
+  Copyright 2013-2016, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -60,7 +60,7 @@
         <tr><th>HTTP Parameter</th><th>Description</th></tr>
         <tr><td colspan="2">Simple HTTP Syntax - This is the preferred method to query the ${project.artifactId} service.</td></tr>
         <tr><td>identifier</td><td>The identifier for the product to be retrieved in the form of a PDS logical identifier (LID) or the LID and the version identifier (LIDVID). This parameter is required, unless the <i>identifier-list</i> parameter is specified, and may be specified more than once. Due to the 5000 character limit for HTTP POST commands, a safe maximum of specified identifiers is around 50.</td></tr>
-        <tr><td>identifier-list</td><td>Because of the 5000 character limitation, the service also supports passing in a URL reference to a text file containing a list of LID/LIDVIDs (one per line in the file). This reference can either be local to the service (e.g., file://) or remote to the service (e.g., http://). This parameter is required, unless the <i>identifier</i> parameter is specified.</td></tr>
+        <tr><td>identifier-list</td><td>Because of the 5000 character limitation, the service also supports passing in a URL reference to a text file containing a list of LID/LIDVIDs (one per line in the file). This reference can either be local to the service (e.g., file://) or remote to the service (e.g., http://). <b>This parameter is only available when the service is configured to access a Search Service.</b> This parameter is required, unless the <i>identifier</i> parameter is specified.</td></tr>
         <tr><td>package</td><td>The package type to be returned from the Transport Service. The valid values are <i>ZIP</i>, <i>TGZ</i> to return the compressed packages, and <i>SIZE</i> to return the total size of all files (in bytes) contained in the package once the compressed package is expanded. The values are <i>not</i> case sensitive. The default value is <i>ZIP</i>. This parameter is optional.</td></tr>
         <tr><td colspan="2">DIS-Style Syntax</td></tr>
         <tr><td>q</td><td>The DIS-Style query expression identifying the product (or set of products) to retrieve from the Transport Service. The use of the <i>q</i> parameter is preferred over the use of the <i>xmlq</i> parameter, but it is still discouraged with respect to the use of Simple HTTP Syntax. See the <a href="index-dis.html">DIS-Style Query</a> page for additional information regarding this syntax.</td></tr>
