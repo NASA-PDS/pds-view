@@ -51,14 +51,18 @@
     </section>
 
     <section name="Configuring the Application">
-      <p>The application defaults to accessing the Transport Service at <i>https://pds.jpl.nasa.gov/services/transport-upload/</i>. If this needs to be modified for a given deployment, edit the <i>tool-registry/js/DataDictionary.js</i> file and modify the following block accordingly:
+      <p>The application defaults to accessing the Transport Service at <i>https://pds.jpl.nasa.gov/services/transport-upload/</i>. If this needs to be modified for a given deployment, edit the <i>tool-registry/js/ToolRegistry.js</i> file and modify the following block accordingly:
       </p>
 
       <source>
-$(function () {
-  Manager = new AjaxSolr.Manager({
-    solrUrl: 'https://pds.jpl.nasa.gov/services/transport-upload/'
-  });
+$.ajax({
+  url: "http://pds.jpl.nasa.gov/services/transport-upload/upload",
+  type: "POST",
+  data: formData,
+  cache: false,
+  contentType: false,
+  processData: false
+});
       </source>
     </section>
   </body>
