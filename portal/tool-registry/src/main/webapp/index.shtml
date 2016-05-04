@@ -44,7 +44,7 @@
 
   <!-- Main content -->
   <div id="content">
-    <h1>Registry</h1>
+    <h1>Tool Registry</h1>
     <p class="formp">
       This interface allows the user to search for and discover tools and services relating to the access and use of planetary data. The interface also allows tool/service providers to submit their software for inclusion in the registry.
     </p>
@@ -128,67 +128,99 @@
 
                     <div class="form-group">
                       <label for="support">Support <span class="asterisk">*</span></br><span class="labelDescription">Does this tool/service support PDS3 or PDS4 data.</span></label>
-                      <div class="radio" id="support">
-                        <label>
-                          <input type="radio" name="supportRadios" value="pds3"> PDS3
-                        </label>
-                        <label>
-                          <input type="radio" name="supportRadios" value="pds4"> PDS4
-                        </label>
+                      <div id="support">
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="supportRadios" value="pds3"> PDS3
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="supportRadios" value="pds4"> PDS4
+                          </label>
+                        </div>
                       </div>
                     </div>
 
                     <div class="form-group">
                       <label for="category">Category <span class="asterisk">*</span></br><span class="labelDescription">Select one or more categories that describe the software.</span></label>
-                      <div class="radio" id="category">
-                        <label>
-                          <input type="radio" name="categoryRadios" value="Analysis"> Analysis
-                        </label>
-                        <label>
-                          <input type="radio" name="categoryRadios" value="Reader"> Reader
-                        </label>
-                        <label>
-                          <input type="radio" name="categoryRadios" value="Design"> Design
-                        </label>
-                        <label>
-                          <input type="radio" name="categoryRadios" value="Dissemination"> Dissemination
-                        </label>
-                        <label>
-                          <input type="radio" name="categoryRadios" value="Generation"> Generation
-                        </label>
-                        <label>
-                          <input type="radio" name="categoryRadios" value="Planning"> Planning
-                        </label>
-                        <label>
-                          <input type="radio" name="categoryRadios" value="Search"> Search
-                        </label>
-                        <label>
-                          <input type="radio" name="categoryRadios" value="Transformation"> Transformation
-                        </label>
-                        <label>
-                          <input type="radio" name="categoryRadios" value="Validation"> Validation
-                        </label>
-                        <label>
-                          <input type="radio" name="categoryRadios" value="Visualization"> Visualization
-                        </label>
+                      <div id="category">
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" value="Analysis"> Analysis
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" value="Reader"> Reader
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" value="Design"> Design
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" value="Dissemination"> Dissemination
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" value="Generation"> Generation
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" value="Planning"> Planning
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" value="Search"> Search
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" value="Transformation"> Transformation
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" value="Validation"> Validation
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" value="Visualization"> Visualization
+                          </label>
+                        </div>
                       </div>
                     </div>
 
                     <div class="form-group">
                       <label for="interfaceType">Interface Type</br><span class="labelDescription">Select one or more interface types available with the software.</span></label>
-                      <div class="radio" id="interfaceType">
-                        <label>
-                          <input type="radio" name="interfaceTypeRadios" value="API"> API
-                        </label>
-                        <label>
-                          <input type="radio" name="interfaceTypeRadios" value="Command-Line"> Command-Line
-                        </label>
-                        <label>
-                          <input type="radio" name="interfaceTypeRadios" value="GUI"> GUI
-                        </label>
-                        <label>
-                          <input type="radio" name="interfaceTypeRadios" value="Service"> Service
-                        </label>
+                      <div id="interfaceType">
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" value="API"> API
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" value="Command-Line"> Command-Line
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" value="GUI"> GUI
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" value="Service"> Service
+                          </label>
+                        </div>
                       </div>
                     </div>
 

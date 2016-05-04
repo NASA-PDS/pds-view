@@ -280,7 +280,6 @@ function init(){
 
     $( "#addSoftwareLanguageButton" ).click(function() {
       $( "#softwareLanguageContainer" ).append( '<div class="form-group">' +
-        '<label for="softwareLanguageInput">Software Language</label>' +
         '<input type="text" class="form-control softwareLanguageInput" placeholder="" maxlength="255">' +
         '</div>'
       );
@@ -312,9 +311,9 @@ function init(){
 
       var version_id = $("#versionInput").val();
       var release_date = $("#releaseDateInput").val();
-      var support = $('#support input[name=supportRadios]:checked').val();
-      var category = $('#category input[name=categoryRadios]:checked').val();
-      var interface_type = $('#interfaceType input[name=interfaceTypeRadios]:checked').val();
+      var support = $('#support .radio input[name=supportRadios]:checked').val();
+      var category = $('#category .radio input[name=categoryRadios]:checked').val();
+      var interface_type = $('#interfaceType .radio input[name=interfaceTypeRadios]:checked').val();
 
       var software_language = $("#softwareLanguageContainer .softwareLanguageInput").map(function() {
         return this.value;
@@ -365,72 +364,8 @@ function init(){
       console.log("wFileDescriptions", wFileDescriptions);
 
       var uploadDate = new Date();
-      var dateString = uploadDate.getFullYear() + "-" + (uploadDate.getMonth() + 1) + "-" + uploadDate.getDate() + "T" + uploadDate.getHours() + "-" + uploadDate.getMinutes() + "-" + uploadDate.getSeconds() + "-" + uploadDate.getMilliseconds();
-      var currentDateString = uploadDate.getFullYear() + "-" + uploadDate.getMonth() + "-" + uploadDate.getDate();
-
-      /*
-      var xmlString = '<?xml version="1.0" encoding="UTF-8"?>';
-      xmlString += '<?xml-model href="http://pds.jpl.nasa.gov/pds4/pds/v1/PDS4_PDS_1500.sch" schematypens="http://purl.oclc.org/dsdl/schematron"?>';
-      xmlString += '<Product_Service xmlns="http://pds.nasa.gov/pds4/pds/v1" ';
-      xmlString += 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
-      xmlString += 'xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1500.xsd">';
-        xmlString += '<Identification_Area>';
-          if(support === "pds3"){
-            xmlString += '<logical_identifier>urn:nasa:pds:context_pds3:service:' + name + '</logical_identifier>';
-          }
-          else{//if support === "pds4"
-            xmlString += '<logical_identifier>urn:nasa:pds:context:service:' + name + '</logical_identifier>';
-          }
-          xmlString += '<version_id>' + version_id + '</version_id>';
-          xmlString += '<title>' + name + '</title>';
-          xmlString += '<information_model_version>1.5.0.0</information_model_version>';
-          xmlString += '<product_class>Product_Service</product_class>';
-          xmlString += '<Citation_Information>';
-            xmlString += '<publication_year>' + release_date + '</publication_year>';
-            xmlString += '<description>';
-              if(citation){
-                if(citation.trim().length > 0){
-                  xmlString += citation;
-                }
-                else{
-                  xmlString += 'Copyright 2010-2016, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology. This software is subject to U. S. export control laws and regulations (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software is subject to U.S. export control laws and regulations, the recipient has the responsibility to obtain export licenses or other export authority as may be required before exporting such information to foreign countries or providing access to foreign nationals.';
-                }
-              }
-              else{
-                xmlString += 'Copyright 2010-2016, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology. This software is subject to U. S. export control laws and regulations (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software is subject to U.S. export control laws and regulations, the recipient has the responsibility to obtain export licenses or other export authority as may be required before exporting such information to foreign countries or providing access to foreign nationals.';
-              }
-            xmlString += '</description>'
-          xmlString += '</Citation_Information>';
-          xmlString += '<Modification_History>';
-            xmlString += '<Modification_Detail>';
-              xmlString += '<modification_date>' + currentDateString + '</modification_date>';
-              xmlString += '<version_id>' + version_id + '</version_id>';
-              xmlString += '<description>A new version.</description>';
-            xmlString += '</Modification_Detail>';
-          xmlString += '</Modification_History>';
-        xmlString += '</Identification_Area>';
-        xmlString += '<Service>';
-          xmlString += '<name>' + name + '</name>';
-          xmlString += '<abstract_desc>' + abstract_desc + '</abstract_desc>';
-          xmlString += '<version_id>' + version_id + '</version_id>';
-          for(var i = 0; i < url.split(",").length; i++){
-            var u = url.split(",")[i];
-            xmlString += '<url>' + u + '</url>';
-          }
-          xmlString += '<release_date>' + release_date + '</release_date>';
-          xmlString += '<service_type>' + type + '</service_type>';
-          xmlString += '<interface_type>' + interface_type + '</interface_type>';
-          xmlString += '<category>' + category + '</category>';
-          for(var i = 0; i < software_language.split(",").length; i++){
-            var softwareLanguage = software_language.split(",")[i];
-            xmlString += '<software_language>' + softwareLanguage + '</software_language>';
-          }
-          xmlString += '<supported_operating_system_note>' + supported_operating_systems + '</supported_operating_system_note>';
-          xmlString += '<system_requirements_note>' + system_requirements + '</system_requirements_note>';
-          xmlString += '<description>' + description + '</description>';
-        xmlString += '</Service>';
-      xmlString += '</Product_Service>';
-      */
+      var dateString = formatDateString(uploadDate);
+      var currentDateString = formatCurrentDateString(uploadDate);
 
       var xmlString = '<?xml version="1.0" encoding="UTF-8"?>';
       xmlString += '<?xml-model href="http://pds.jpl.nasa.gov/pds4/pds/v1/PDS4_PDS_1500.sch" schematypens="http://purl.oclc.org/dsdl/schematron"?>';
@@ -439,10 +374,10 @@ function init(){
       xmlString += 'xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1500.xsd">';
         xmlString += '<Identification_Area>';
           if(support === "pds3"){
-            xmlString += '<logical_identifier>urn:nasa:pds:context_pds3:service:' + name + '</logical_identifier>';
+            xmlString += '<logical_identifier>urn:nasa:pds:context_pds3:service:' + formatLogicalIdentifier(name) + '</logical_identifier>';
           }
           else{//if support === "pds4"
-            xmlString += '<logical_identifier>urn:nasa:pds:context:service:' + name + '</logical_identifier>';
+            xmlString += '<logical_identifier>urn:nasa:pds:context:service:' + formatLogicalIdentifier(name) + '</logical_identifier>';
           }
           xmlString += '<version_id>' + version_id + '</version_id>';
           xmlString += '<title>' + name + '</title>';
@@ -508,9 +443,11 @@ function init(){
       console.log(bxml);
 
       //Upload values as file
+      var fileName = formatFileName(name, version_id);
       var file = new File([new Blob([bxml])], "test.xml");
+
       var formData = new FormData();
-      formData.append("file", file, file.name);
+      formData.append("file", file, fileName);
       formData.append("path", dateString);
       $.ajax({
         url: "http://localhost:8080/transport-upload/upload",
@@ -609,4 +546,59 @@ function init(){
     });
 
   });
+}
+
+function formatFileName(fileName, version){
+  fileName = fileName.toLowerCase();
+  fileName = fileName.replace(/ /g,"-");
+  fileName = fileName + "_" + version + ".xml";
+
+  return fileName;
+}
+
+function formatLogicalIdentifier(name){
+  name = name.toLowerCase();
+  name = name.replace(/ /g,"_");
+
+  return name;
+}
+
+function formatDateString(uploadDate){
+  var year = uploadDate.getFullYear();
+  year = padDigit(year);
+  var month = uploadDate.getMonth() + 1;
+  month = padDigit(month);
+  var day = uploadDate.getDate();
+  day = padDigit(day);
+  var hours = uploadDate.getHours();
+  hours = padDigit(hours);
+  var minutes = uploadDate.getMinutes();
+  minutes = padDigit(minutes);
+  var seconds = uploadDate.getSeconds();
+  seconds = padDigit(seconds);
+
+  return year + "" + month + "" + day + "-" + hours + "" + minutes + "" + seconds;
+}
+
+function formatCurrentDateString(uploadDate){
+  var year = uploadDate.getFullYear();
+  year = padDigit(year);
+  var month = uploadDate.getMonth() + 1;
+  month = padDigit(month);
+  var day = uploadDate.getDate();
+  day = padDigit(day);
+
+  return year + "-" + month + "-" + day
+}
+
+
+function padDigit(digit){
+  if(digit.toString().length < 1){
+    return "00";
+  }
+  if(digit.toString().length < 2){
+    return "0" + digit;
+  }
+
+  return digit;
 }
