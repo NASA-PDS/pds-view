@@ -21,7 +21,6 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.oodt.cas.filemgr.datatransfer.RemoteDataTransferFactory;
 import org.apache.oodt.cas.filemgr.structs.Product;
 import org.apache.oodt.cas.filemgr.structs.exceptions.ConnectionException;
 import org.apache.oodt.cas.filemgr.structs.exceptions.RepositoryManagerException;
@@ -62,8 +61,14 @@ public class StorageIngester {
 	 */
 	public StorageIngester(URL storageServerUrl) throws ConnectionException {
 		fmClient = new XmlRpcFileManagerClient(storageServerUrl);
-		fmClient.setDataTransfer(GenericFileManagerObjectFactory
-				.getDataTransferServiceFromFactory(RemoteDataTransferFactory.class.getName()));
+		// PDS-444: With OODT 0.12, there is an error with RemoteDataTransferFactory,
+		// use LocalDataTransferFactory as default
+		// until OODT fixes the issue.
+		String transferFactory = System.getProperty("filemgr.datatransfer.factory",
+		        "org.apache.oodt.cas.filemgr.datatransfer.LocalDataTransferFactory");
+	    fmClient.setDataTransfer(GenericFileManagerObjectFactory
+		        .getDataTransferServiceFromFactory(transferFactory));
+		
 		productName = "default_product";
 	}
 	

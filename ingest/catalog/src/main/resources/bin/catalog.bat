@@ -51,6 +51,6 @@ for %%i in ("%LIB_DIR%"\catalog-*.jar) do set CATALOG_JAR=%%i
 :: Executes Catalog via the executable jar file
 :: The special variable '%*' allows the arguments
 :: to be passed into the executable.
-"%JAVA_HOME%"\bin\java -Dpds.registry="http://localhost:8080/registry" -Dpds.security.keystore="%KEYSTORE%" -jar "%CATALOG_JAR%" %*
+"%JAVA_HOME%"\bin\java -Dpds.registry="http://localhost:8080/registry" -Dfilemgr.datatransfer.factory="org.apache.oodt.cas.filemgr.datatransfer.LocalDataTransferFactory" -Dpds.security.keystore="%KEYSTORE%" -jar "%CATALOG_JAR%" %*
 
 :END

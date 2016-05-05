@@ -48,4 +48,6 @@ CATALOG_JAR=`ls ${LIB_DIR}/catalog-*.jar`
 
 # Executes Catalog via the executable jar file
 # Arguments are passed in to the tool via '$@'
-"${JAVA_HOME}"/bin/java -Dpds.registry="http://localhost:8080/registry" -Dpds.security.keystore="${KEYSTORE}" -jar ${CATALOG_JAR} "$@"
+"${JAVA_HOME}"/bin/java -Dpds.registry="http://localhost:8080/registry" \
+   -Dfilemgr.datatransfer.factory="org.apache.oodt.cas.filemgr.datatransfer.LocalDataTransferFactory" \
+   -Dpds.security.keystore="${KEYSTORE}" -jar ${CATALOG_JAR} "$@"
