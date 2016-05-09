@@ -30,6 +30,9 @@
       <action dev="hyunlee" type="update" issue="PDS-365">
         Updated to version 0.12 of the Apache OODT CAS Product Server.
       </action>
+      <action dev="hyunlee" type="update" issue="PDS-444">
+        Overwrote the cas-product web.xml with a version that includes File Manager information.
+      </action>
       <action dev="shardman" type="update">
         Updated the JRE requirement to 1.7 in the Installation document.
       </action>

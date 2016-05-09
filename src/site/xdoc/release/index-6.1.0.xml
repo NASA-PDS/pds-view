@@ -135,6 +135,12 @@
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-439'>PDS-439</a>] - Core: Does not properly set the correct location for errors found in the referenced file of an xinclude statement.
           </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-443'>PDS-443</a>] - Harvest/Validate: Does not recognize "Member Status" field name
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-444'>PDS-444</a>] - Ingest/Storage: Catalog Tool ingestion is not working properly
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-445'>PDS-445</a>] - Transport: transport-ofsn PDS_TO_* handlers for images fail
+          </li>
         </ul>
       </subsection>
     </section>
