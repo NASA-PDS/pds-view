@@ -312,8 +312,14 @@ function init(){
       var version_id = $("#versionInput").val();
       var release_date = $("#releaseDateInput").val();
       var support = $('#support .radio input[name=supportRadios]:checked').val();
-      var category = $('#category .radio input[name=categoryRadios]:checked').val();
-      var interface_type = $('#interfaceType .radio input[name=interfaceTypeRadios]:checked').val();
+
+      var category = $("#category .checkbox input[name=categoryCheckboxes]:checked").map(function() {
+        return this.value;
+      }).get().join(",");
+
+      var interface_type = $("#interfaceType .checkbox input[name=interfaceTypeCheckboxes]:checked").map(function() {
+        return this.value;
+      }).get().join(",");
 
       var software_language = $("#softwareLanguageContainer .softwareLanguageInput").map(function() {
         return this.value;
@@ -412,13 +418,23 @@ function init(){
           xmlString += '<abstract_desc>' + abstract_desc + '</abstract_desc>';
           xmlString += '<version_id>' + version_id + '</version_id>';
           for(var i = 0; i < url.split(",").length; i++){
-            var u = url.split(",")[i];
-            xmlString += '<url>' + u + '</url>';
+            var string = url.split(",")[i];
+            xmlString += '<url>' + string + '</url>';
           }
           xmlString += '<release_date>' + release_date + '</release_date>';
           xmlString += '<service_type>' + type + '</service_type>';
-          xmlString += '<interface_type>' + interface_type + '</interface_type>';
-          xmlString += '<category>' + category + '</category>';
+
+          for(var i = 0; i < interface_type.split(",").length; i++){
+            var string = interface_type.split(",")[i];
+            xmlString += '<interface_type>' + string + '</interface_type>';
+          }
+
+          for(var i = 0; i < category.split(",").length; i++){
+            var string = category.split(",")[i];
+            xmlString += '<category>' + string + '</category>';
+          }
+
+
           for(var i = 0; i < software_language.split(",").length; i++){
             var softwareLanguage = software_language.split(",")[i];
             xmlString += '<software_language>' + softwareLanguage + '</software_language>';
@@ -427,6 +443,34 @@ function init(){
           xmlString += '<system_requirements_note>' + system_requirements + '</system_requirements_note>';
           xmlString += '<description>' + description + '</description>';
         xmlString += '</Service>';
+
+
+        var wFiles = $('#wFileInput')[0].files;
+        if( wFiles.length > 0){
+          for(var i = 0; i < wFiles.length; i++){
+            xmlString += '<File_Area_Service_Description>';
+
+            xmlString += '<File_Area>';
+              xmlString += '<File>';
+                xmlString += '<file_name>' + wFiles[i].name + '</file_name>';
+                xmlString += '<file_size>' + wFiles[i].size + '</file_size>';
+                xmlString += '<md5_checksum></md5_checksum>';
+              xmlString += '</File>';
+            xmlString += '</File_Area>';
+
+            xmlString += '<Service_Description>';
+              xmlString += '<name>' + wFileNames.split(",")[i] + '</name>';
+              xmlString += '<local_identifier></local_identifier>';
+              xmlString += '<offset>' + wFileOffsets.split(",")[i] + '</offset>';
+              xmlString += '<object_length></object_length>';
+              xmlString += '<parsing_standard_id></parsing_standard_id>';
+              xmlString += '<description>' + wFileDescriptions.split(",")[i] + '</description>';
+            xmlString += '</Service_Description>';
+
+          xmlString += '</File_Area_Service_Description>';
+        }
+      }
+
       xmlString += '</Product_Service>';
       var xmlDom = $.parseXML(xmlString);
       //console.log("xmlDom", xmlDom);

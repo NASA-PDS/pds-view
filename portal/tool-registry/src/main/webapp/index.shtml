@@ -66,6 +66,36 @@
       <div id="searchContainer">
         <div class="registryServiceHeader">
           <button id="addToolButton" type="button" class="btn btn-primary btn-lg">Submit a Tool</button>
+          <br/>
+          <br/>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Services</h3>
+            </div>
+            <div class="panel-body">
+               <table id="ToolRegistryTable" class="table table-striped">
+                 <thead>
+                   <tr>
+                     <th>Name</th><th>Version&nbsp;ID</th>
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr><td>Chandrayaan-1 PDS Viewer<br/><span class="ToolRegistryTableDescription">A stanalone tool for Visulaisation of Chandrayaan-1 TMC & HYSI PDS data sets.</span></td><td>1.0.0</td></tr>
+                   <tr><td>Chandrayaan-1 Browse & Data Dissemination Portal<br/><span class="ToolRegistryTableDescription">An online tool used for browsing or searching the Chandrayaan-1 Data sets mainly TMC & HYSI and onlin ordering only for the registserd users</span></td><td>1.0.0</td></tr>
+                   <tr><td>endlines<br/><span class="ToolRegistryTableDescription">endlines formats lines in PDS text files.</span></td><td>1.0.0</td></tr>
+                   <tr><td>GDAL<br/><span class="ToolRegistryTableDescription">Geospatial Data Abstraction Library</span></td><td>1.0.0</td></tr>
+                   <tr><td>Geometry Library (Geolib)<br/><span class="ToolRegistryTableDescription">The Geolib helps programmers to generate PSA Geometry Indices</span></td><td>1.0.0</td></tr>
+                   <tr><td>IDL PDS package<br/><span class="ToolRegistryTableDescription">A package of tools written for the IDL/ENVI environment to read and browse PDS4 formatted data. </span></td><td>1.0.0</td></tr>
+                   <tr><td>IGPP Docgen<br/><span class="ToolRegistryTableDescription">The igpp-docgen tool is a document generator based on Apache Velocity. </span></td><td>1.0.0</td></tr>
+                   <tr><td>isascii<br/><span class="ToolRegistryTableDescription">Isascii finds non-ASCII characters in text files</span></td><td>1.0.0</td></tr>
+                   <tr><td>Marsviewer<br/><span class="ToolRegistryTableDescription">Image browser for Mars in-situ data in PDS. Includes visualization of all RDR (derived product) types as well as images.</span></td><td>1.0.0</td></tr>
+                   <tr><td>Orbital Data Explorer REST Interface<br/><span class="ToolRegistryTableDescription">This REST interface provides access to the NASA Planetary Data Systems Geosciences Node Orbital Data Explorer (ODE) tool. Through ODE, users can search, browse, and download a wide range of PDS Mars, Moon, Mercury, and Venus data.</span></td><td>1.0.0</td></tr>
+                   <tr><td>PDS CDF<br/><span class="ToolRegistryTableDescription">The pds-cdf is a Java class library for reading file stored in the Common Data Format (CDF) With the library you can access all the metadata and data in the CDF file. </span></td><td>1.0.0</td></tr>
+                   <tr><td>PDS3 Catalog Template Search Tool<br/><span class="ToolRegistryTableDescription">An online tool used for viewing and retrieving PDS online catalog templates</span></td><td>1.0.0</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -142,6 +172,89 @@
                       </div>
                     </div>
 
+                    <div class="form-group">
+                      <label for="category">Category <span class="asterisk">*</span></br><span class="labelDescription">Select one or more categories that describe the software.</span></label>
+                      <div id="category">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Analysis"> Analysis
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Reader"> Reader
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Design"> Design
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Dissemination"> Dissemination
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Generation"> Generation
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Planning"> Planning
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Search"> Search
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Transformation"> Transformation
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Validation"> Validation
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Visualization"> Visualization
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="interfaceType">Interface Type</br><span class="labelDescription">Select one or more interface types available with the software.</span></label>
+                      <div id="interfaceType">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="interfaceTypeCheckboxes" value="API"> API
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="interfaceTypeCheckboxes" value="Command-Line"> Command-Line
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="interfaceTypeCheckboxes" value="GUI"> GUI
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="interfaceTypeCheckboxes" value="Service"> Service
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!--
                     <div class="form-group">
                       <label for="category">Category <span class="asterisk">*</span></br><span class="labelDescription">Select one or more categories that describe the software.</span></label>
                       <div id="category">
@@ -224,6 +337,7 @@
                       </div>
                     </div>
 
+                    -->
                     <button type="submit" class="btn btn-success btn-lg pull-right toStepTwoButton">Next</button>
 
                   </div>
