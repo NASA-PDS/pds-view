@@ -331,7 +331,9 @@ public class SearchDocGenerator {
         } else if ("collection_ref".equalsIgnoreCase(pathList.get(0))) {
           List<String> refs = searchExtrinsic.getSlotValues("collection_ref");
           for (String ref : refs) {
-            extrinsics.add(Constants.collectionMap.get(ref));
+            if (Constants.collectionMap.containsKey(ref)) {
+              extrinsics.add(Constants.collectionMap.get(ref));
+            }
           }
         }
         for (ExtrinsicObject extrinsic : extrinsics) {
