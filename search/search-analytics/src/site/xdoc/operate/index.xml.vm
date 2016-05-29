@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2016, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Operation</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Operation">
+      <p>This document describes how to operate the Search Analytics software contained in the <i>${project.artifactId}</i> package. The software is a web application and can be accessed with any standard web browser (e.g., Firefox, Safari, Internet Explorer, etc.). The end point may vary depending on the deployment but the default end point is http://localhost:8080/search-analytics/. In general, the interface allows the user to explore and analyze the contents of the Search Service. Most of the panels can be reconfigured on-the-fly and tailored to the user's desire without changing the default configuration of the underlying software. The interface allows the user to save this customized configuration to an external file and then reload it. There are four icons at the top-right of the dashboard that allow this functionality:
+      </p>
+
+      <ul>
+        <li><b>Home Icon</b> - Goto saved default dashboard<br/>
+        This function does not appear to work correctly. To return to the default dashboard, just refresh the page (all changes to the current configuration will be lost).
+        </li>
+        <li><b>Document Icon</b> - Create a new dashboard<br/>
+        This function will allow the user to create a new dashboard. When prompted, the value for <i>Solr Server</i> should be <i>/search-service/</i> and  the value for <i>Collection</i> should be <i>pds</i>.
+        </li>
+        <li><b>Folder Icon</b> - Load a saved dashboard<br/>
+        This function will allow the user to load a saved dashboard configuration from a file on the local server (the user's desktop).
+        </li>
+        <li><b>Disk Icon</b> - Save a dashboard<br/>
+        This function will allow the user to save a dashboard configuration to a local file (in JSON format).
+        </li>
+      </ul>
+    </section>
+  </body>
+</document>
