@@ -165,24 +165,14 @@ urn\:eda\:rmi\:PDS.CN.Product=http\://starbrite.jpl.nasa.gov/pdsd/prod
     </section>
 
     <section name="Deploying the DTD Files">
-      <p>The Transport Proxy web application includes a set of Document Type Definition (DTD) files that are utilized by the applications that the proxy interfaces with (e.g., Transport Service (OFSN), Product Server, Profile Server, etc.). These files are meant to be deployed to the PDS web site at http://starbrite.jpl.nasa.gov/dtd. This can be accomplished with a Subversion externals configuration. Create a file named <i>svn_externals.txt</i> with the following content:
+      <p>The Transport Proxy web application includes a set of Document Type Definition (DTD) files that are utilized by the applications that the proxy interfaces with (e.g., Transport Service (OFSN), Product Server, Profile Server, etc.). These files can be deployed with a Subversion "external" directory configuration within the PDS Home site directory structure. The desired end point is <i>/dtd</i> within the site. The files will be accessed at http://starbrite.jpl.nasa.gov/dtd. From within the top directory of the PDS site deployment (e.g., /data/www/pds/htdocs), perform the following commands to configure and retrieve the "external" directory:
       </p>
 
       <source>
-dtd  https://starcell.jpl.nasa.gov/repo/2010/trunk/transport/transport-proxy/src/main/resources/dtd
-      </source>
-
-      <p>Perform the Subversion externals configuration in the top-level directory of the PDS web site with the following commands:
-      </p>
-
-      <source>
-% svn propset svn:externals -F svn_externals.txt .
-% svn commit
+% svn propset svn:externals \
+'dtd https://starcell.jpl.nasa.gov/repo/2010/trunk/transport/transport-proxy/src/main/resources/dtd' .
 % svn update
       </source>
-
-      <p>The last command above will retrieve the <i>dtd</i> directory.
-      </p>
     </section>
   </body>
 </document>
