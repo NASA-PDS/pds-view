@@ -1,7 +1,7 @@
 package gov.nasa.pds.tools.validate.rule;
 
+import gov.nasa.pds.tools.label.ExceptionType;
 import gov.nasa.pds.tools.validate.ProblemDefinition;
-import gov.nasa.pds.tools.validate.ProblemDefinition.Severity;
 import gov.nasa.pds.tools.validate.ProblemType;
 import gov.nasa.pds.tools.validate.Standard;
 
@@ -15,7 +15,7 @@ public final class GenericProblems {
 	 * bytes do not indicate a legal encoding of a character.
 	 */
 	public static final ProblemDefinition MALFORMED_UTF8_CHARACTER = new ProblemDefinition(
-			Severity.ERROR,
+			ExceptionType.ERROR,
 			ProblemType.INVALID_CHARACTER_STREAM,
 			"Malformed UTF-8 byte sequence",
 			Standard.RFC_3629,
@@ -23,7 +23,7 @@ public final class GenericProblems {
 	);
 
 	public static final ProblemDefinition UNCAUGHT_EXCEPTION = new ProblemDefinition(
-	        Severity.ERROR,
+			ExceptionType.ERROR,
 	        ProblemType.INTERNAL_ERROR,
 	        "Uncaught exception while validating",
 	        null,

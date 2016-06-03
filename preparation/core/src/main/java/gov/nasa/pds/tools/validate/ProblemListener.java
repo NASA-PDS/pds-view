@@ -1,7 +1,6 @@
 package gov.nasa.pds.tools.validate;
 
-import gov.nasa.pds.tools.validate.ProblemDefinition.Severity;
-import gov.nasa.pds.tools.validate.ValidationProblem;
+import gov.nasa.pds.tools.label.ExceptionType;
 
 import java.util.Collection;
 
@@ -54,7 +53,7 @@ public interface ProblemListener {
 	 * @param includeChildren true, if problems in children of the target should be included
 	 * @return the maximum problem severity
 	 */
-	Severity getSeverity(String location, boolean includeChildren);
+	ExceptionType getSeverity(String location, boolean includeChildren);
 
 	/**
 	 * Gets a collection of problems for a given location.

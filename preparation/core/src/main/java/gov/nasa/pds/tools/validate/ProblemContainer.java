@@ -1,7 +1,6 @@
 package gov.nasa.pds.tools.validate;
 
-import gov.nasa.pds.tools.validate.ProblemDefinition.Severity;
-import gov.nasa.pds.tools.validate.ValidationProblem;
+import gov.nasa.pds.tools.label.ExceptionType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -106,8 +105,8 @@ public class ProblemContainer implements ProblemListener {
     }
 
     @Override
-    public Severity getSeverity(String location, boolean includeChildren) {
-        Severity severity = Severity.NONE;
+    public ExceptionType getSeverity(String location, boolean includeChildren) {
+    	ExceptionType severity = ExceptionType.INFO;
 
         for (ValidationProblem problem : problems) {
             if ((includeChildren && problem.getTarget().getLocation().startsWith(location))

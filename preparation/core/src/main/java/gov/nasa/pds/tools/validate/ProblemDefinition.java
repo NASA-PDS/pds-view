@@ -1,8 +1,12 @@
 package gov.nasa.pds.tools.validate;
 
+import gov.nasa.pds.tools.label.ExceptionType;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.print.attribute.standard.Severity;
 
 
 
@@ -14,17 +18,8 @@ public class ProblemDefinition {
     private static final AtomicInteger keyGenerator = new AtomicInteger();
     private static final Map<Integer, ProblemDefinition> PROBLEMS = new ConcurrentHashMap<Integer, ProblemDefinition>();
 
-	/**
-	 * Defines the severities of validation rule violations. These
-	 * are defined in order of increasing severity, so that their
-	 * {@link Enum#ordinal()} values are increasing integers.
-	 */
-	public static enum Severity {
-		NONE, INFO, WARNING, ERROR
-	}
-
 	private final int id;
-	private final Severity severity;
+	private final ExceptionType severity;
 	private final ProblemType type;
 	private final String message;
 	private final String standardsDocument;
@@ -32,7 +27,7 @@ public class ProblemDefinition {
 	private int knownHashCode;
 
 	public ProblemDefinition(
-			Severity severity,
+			ExceptionType severity,
 			ProblemType type,
 			String message,
 			String standardsDocument,
@@ -52,7 +47,7 @@ public class ProblemDefinition {
 	    return id;
 	}
 
-	public Severity getSeverity() {
+	public ExceptionType getSeverity() {
 		return severity;
 	}
 

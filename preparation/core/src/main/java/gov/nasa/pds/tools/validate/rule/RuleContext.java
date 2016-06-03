@@ -1,9 +1,11 @@
 package gov.nasa.pds.tools.validate.rule;
 
+import gov.nasa.pds.tools.label.LocationValidator;
 import gov.nasa.pds.tools.validate.ProblemListener;
 import gov.nasa.pds.tools.validate.TargetRegistrar;
 
 import java.io.File;
+import java.util.List;
 
 import org.apache.commons.chain.impl.ContextBase;
 
@@ -14,6 +16,21 @@ import org.apache.commons.chain.impl.ContextBase;
 public class RuleContext extends ContextBase {
 
     private static final long serialVersionUID = 1L;
+    
+    /** The key used to retrieve the top-level validator for getting singleton utilities. */
+    public static final String LOCATION_VALIDATOR_KEY = "validation.location-validator";
+    
+    /** The key used to indicate that declared schema and Schematron files in a label
+     * should be validated before the label is validate.
+     */
+    public static final String FORCE_SCHEMA_VALIDATION = "validation.force";
+    
+    /** The key used to set whether to validate recursively. */
+    public static final String RECURSIVE_VALIDATION = "validation.recursive";
+    
+    /** The key used to set file name filters. */
+    public static final String FILE_FILTERS = "validation.file-filters";
+    
     /** The key used to retrieve the current validation target from the
      * execution context.
      */
@@ -134,5 +151,60 @@ public class RuleContext extends ContextBase {
     public void setRootTarget(boolean flag) {
         rootTarget = flag;
     }
+    
+    /**
+     * Gets the top-level validator for getting singleton utilities, such
+     * as the label validator.
+     * 
+     * @return the top-level validator
+     */
+    public LocationValidator getRootValidator() {
+    	return getContextValue(LOCATION_VALIDATOR_KEY, LocationValidator.class);
+    }
+    
+    /**
+     * Sets the top-level validator.
+     * 
+     * @param validator the top-level validator
+     */
+    public void setRootValidator(LocationValidator validator) {
+    	putContextValue(LOCATION_VALIDATOR_KEY, validator);
+    }
+    
+    public boolean isRecursive() {
+    	return getContextValue(RECURSIVE_VALIDATION, Boolean.class);
+    }
+    
+    public void setRecursive(boolean isRecursive) {
+    	putContextValue(RECURSIVE_VALIDATION, Boolean.valueOf(isRecursive));
+    }
+    
+    @SuppressWarnings("unchecked")
+	public List<String> getFileFilters() {
+    	return getContextValue(FILE_FILTERS, List.class);
+    }
+    
+    public void setFileFilters(List<String> filters) {
+    	putContextValue(FILE_FILTERS, filters);
+    }
+
+    /**
+     * Tests whether to force schema and Schematron validation on each
+     * label file.
+     * 
+     * @return true, if declared schema and Schematron files should be validated
+     */
+	public boolean isForceSchemaValidation() {
+		return getContextValue(FORCE_SCHEMA_VALIDATION, Boolean.class);
+	}
+	
+	/**
+	 * Sets whether to force schema and Schematron validation.
+	 * 
+	 * @param force true, if declared schema and Schematron files should be validated
+	 */
+	public void setForceSchemaValidation(boolean force) {
+		putContextValue(FORCE_SCHEMA_VALIDATION, force);
+	}
 
 }

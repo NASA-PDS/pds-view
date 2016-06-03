@@ -1,7 +1,7 @@
 package gov.nasa.pds.tools.validate.rule.pds4;
 
+import gov.nasa.pds.tools.label.ExceptionType;
 import gov.nasa.pds.tools.validate.ProblemDefinition;
-import gov.nasa.pds.tools.validate.ProblemDefinition.Severity;
 import gov.nasa.pds.tools.validate.ProblemType;
 import gov.nasa.pds.tools.validate.Standard;
 
@@ -12,7 +12,7 @@ public final class PDS4Problems {
 
     /** Indicates a label that has invalid structure. */
     public static final ProblemDefinition INVALID_LABEL = new ProblemDefinition(
-            Severity.ERROR,
+    		ExceptionType.ERROR,
             ProblemType.INVALID_LABEL,
             "Label does not comply with PDS4 standards",
             Standard.PDS4_STANDARDS_REFERENCE,
@@ -21,7 +21,7 @@ public final class PDS4Problems {
 
     /** Indicates a label that does not have the required extension. */
     public static final ProblemDefinition INVALID_LABEL_EXTENSION = new ProblemDefinition(
-            Severity.ERROR,
+    		ExceptionType.ERROR,
             ProblemType.FILE_NAMING_PROBLEM,
             "Label file names must end with the extension '.xml'",
             Standard.PDS4_STANDARDS_REFERENCE,
@@ -30,7 +30,7 @@ public final class PDS4Problems {
 
     /** Indicates a table definition where the fields are not defined in physical order. */
     public static final ProblemDefinition FIELDS_NOT_IN_ORDER = new ProblemDefinition(
-            Severity.ERROR,
+    		ExceptionType.ERROR,
             ProblemType.TABLE_DEFINITION_PROBLEM,
             "Table fields must be defined in physical order within the record",
             Standard.PDS4_STANDARDS_REFERENCE,
@@ -39,7 +39,7 @@ public final class PDS4Problems {
 
     /** Indicates a table definition where the fields are not defined in physical order. */
     public static final ProblemDefinition FIELDS_OVERLAP = new ProblemDefinition(
-            Severity.ERROR,
+    		ExceptionType.ERROR,
             ProblemType.TABLE_DEFINITION_PROBLEM,
             "Table fields must not overlap within the record",
             Standard.PDS4_STANDARDS_REFERENCE,
@@ -48,7 +48,7 @@ public final class PDS4Problems {
 
 	/** Indicates a file name that exceeds the maximum length. */
 	public static final ProblemDefinition FILE_NAME_TOO_LONG = new ProblemDefinition(
-			Severity.ERROR,
+			ExceptionType.ERROR,
 			ProblemType.FILE_NAMING_PROBLEM,
 			"File name must be no longer than 255 characters",
 			Standard.PDS4_STANDARDS_REFERENCE,
@@ -57,7 +57,7 @@ public final class PDS4Problems {
 
 	/** Indicates a file name that includes illegal characters. */
 	public static final ProblemDefinition FILE_NAME_USES_INVALID_CHARACTER = new ProblemDefinition(
-			Severity.ERROR,
+			ExceptionType.ERROR,
 			ProblemType.FILE_NAMING_PROBLEM,
 			"File name uses invalid character",
 			Standard.PDS4_STANDARDS_REFERENCE,
@@ -69,7 +69,7 @@ public final class PDS4Problems {
 	 * for case.
 	 */
 	public static final ProblemDefinition FILE_NAME_CONFLICTS_IN_CASE = new ProblemDefinition(
-			Severity.ERROR,
+			ExceptionType.ERROR,
 			ProblemType.FILE_NAMING_PROBLEM,
 			"File name conflicts in case with another file or directory",
 			Standard.PDS4_STANDARDS_REFERENCE,
@@ -78,7 +78,7 @@ public final class PDS4Problems {
 
 	/** Indicates a file name that is explicitly disallowed by the standard. */
 	public static final ProblemDefinition UNALLOWED_FILE_NAME = new ProblemDefinition(
-			Severity.ERROR,
+			ExceptionType.ERROR,
 			ProblemType.FILE_NAMING_PROBLEM,
 			"File name is not allowed",
 			Standard.PDS4_STANDARDS_REFERENCE,
@@ -87,7 +87,7 @@ public final class PDS4Problems {
 
 	/** Indicates a file name that includes a disallowed base name. */
 	public static final ProblemDefinition UNALLOWED_BASE_NAME = new ProblemDefinition(
-			Severity.ERROR,
+			ExceptionType.ERROR,
 			ProblemType.FILE_NAMING_PROBLEM,
 			"File base name is not allowed",
 			Standard.PDS4_STANDARDS_REFERENCE,
@@ -96,7 +96,7 @@ public final class PDS4Problems {
 
 	/** Indicates a directory name that exceeds the maximum length. */
 	public static final ProblemDefinition DIRECTORY_NAME_TOO_LONG = new ProblemDefinition(
-			Severity.ERROR,
+			ExceptionType.ERROR,
 			ProblemType.FILE_NAMING_PROBLEM,
 			"Directory name is longer than 255 characters",
 			Standard.PDS4_STANDARDS_REFERENCE,
@@ -105,7 +105,7 @@ public final class PDS4Problems {
 
 	/** Indicates a directory name that includes a disallowed character. */
 	public static final ProblemDefinition DIRECTORY_NAME_USES_INVALID_CHARACTER = new ProblemDefinition(
-			Severity.ERROR,
+			ExceptionType.ERROR,
 			ProblemType.FILE_NAMING_PROBLEM,
 			"Directory name uses invalid character",
 			Standard.PDS4_STANDARDS_REFERENCE,
@@ -117,7 +117,7 @@ public final class PDS4Problems {
 	 * for case.
 	 */
 	public static final ProblemDefinition DIRECTORY_NAME_CONFLICTS_IN_CASE = new ProblemDefinition(
-			Severity.ERROR,
+			ExceptionType.ERROR,
 			ProblemType.FILE_NAMING_PROBLEM,
 			"Directory name conflicts in case with the name of another file or directory",
 			Standard.PDS4_STANDARDS_REFERENCE,
@@ -126,7 +126,7 @@ public final class PDS4Problems {
 
     /** Indicates a directory name that is explicitly disallowed by the standard. */
     public static final ProblemDefinition UNALLOWED_BUNDLE_SUBDIRECTORY_NAME = new ProblemDefinition(
-            Severity.ERROR,
+    		ExceptionType.ERROR,
             ProblemType.FILE_NAMING_PROBLEM,
             "Directory name is not allowed except in the bundle root directory",
             Standard.PDS4_STANDARDS_REFERENCE,
@@ -135,7 +135,7 @@ public final class PDS4Problems {
 
     /** Indicates a logical identifier that was used more than once. */
     public static final ProblemDefinition DUPLICATE_LOGICAL_IDENTIFIER = new ProblemDefinition(
-            Severity.ERROR,
+    		ExceptionType.ERROR,
             ProblemType.DUPLICATE_IDENTIFIER,
             "Logical identifiers must be unique",
             Standard.PDS4_STANDARDS_REFERENCE,
@@ -144,7 +144,7 @@ public final class PDS4Problems {
 
     /** Indicates a directory name that is explicitly disallowed by the standard. */
     public static final ProblemDefinition UNALLOWED_DIRECTORY_NAME = new ProblemDefinition(
-            Severity.ERROR,
+    		ExceptionType.ERROR,
             ProblemType.FILE_NAMING_PROBLEM,
             "Directory name is not allowed",
             Standard.PDS4_STANDARDS_REFERENCE,
@@ -153,7 +153,7 @@ public final class PDS4Problems {
 
     /** Indicates a collection directory that has an invalid name. */
     public static final ProblemDefinition INVALID_COLLECTION_NAME = new ProblemDefinition(
-            Severity.ERROR,
+    		ExceptionType.ERROR,
             ProblemType.FILE_NAMING_PROBLEM,
             "Collection directory name is not valid",
             Standard.PDS4_STANDARDS_REFERENCE,
@@ -162,7 +162,7 @@ public final class PDS4Problems {
 
     /** Indicates an unexpected file in the root directory of a bundle. */
     public static final ProblemDefinition UNEXPECTED_FILE_IN_BUNDLE_ROOT = new ProblemDefinition(
-            Severity.ERROR,
+    		ExceptionType.ERROR,
             ProblemType.FILE_NAMING_PROBLEM,
             "File is not valid in bundle root directory",
             Standard.PDS4_STANDARDS_REFERENCE,
@@ -171,7 +171,7 @@ public final class PDS4Problems {
 
     /** Indicates a file that is not associated with any label. */
     public static final ProblemDefinition UNLABELED_FILE = new ProblemDefinition(
-            Severity.ERROR,
+    		ExceptionType.ERROR,
             ProblemType.UNLABELED_FILE,
             "File is not referenced by any label",
             Standard.PDS4_STANDARDS_REFERENCE,
