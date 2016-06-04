@@ -369,15 +369,18 @@ function init(){
       console.log("wFileOffsets", wFileOffsets);
       console.log("wFileDescriptions", wFileDescriptions);
 
+      if(isInputEmpty(version_id)){
+        version_id = "1.0";
+      }
       var uploadDate = new Date();
       var dateString = formatDateString(uploadDate);
       var currentDateString = formatCurrentDateString(uploadDate);
 
       var xmlString = '<?xml version="1.0" encoding="UTF-8"?>';
-      xmlString += '<?xml-model href="http://pds.jpl.nasa.gov/pds4/pds/v1/PDS4_PDS_1500.sch" schematypens="http://purl.oclc.org/dsdl/schematron"?>';
+      xmlString += '<?xml-model href="http://pds.jpl.nasa.gov/pds4/pds/v1/PDS4_PDS_1600.sch" schematypens="http://purl.oclc.org/dsdl/schematron"?>';
       xmlString += '<Product_Service xmlns="http://pds.nasa.gov/pds4/pds/v1" ';
       xmlString += 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
-      xmlString += 'xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1500.xsd">';
+      xmlString += 'xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1600.xsd">';
         xmlString += '<Identification_Area>';
           if(support === "pds3"){
             xmlString += '<logical_identifier>urn:nasa:pds:context_pds3:service:' + formatLogicalIdentifier(name) + '</logical_identifier>';
@@ -387,23 +390,13 @@ function init(){
           }
           xmlString += '<version_id>' + version_id + '</version_id>';
           xmlString += '<title>' + name + '</title>';
-          xmlString += '<information_model_version>1.5.0.0</information_model_version>';
+          xmlString += '<information_model_version>1.6.0.0</information_model_version>';
           xmlString += '<product_class>Product_Service</product_class>';
           xmlString += '<Citation_Information>';
             xmlString += '<publication_year>' + release_date + '</publication_year>';
-            xmlString += '<description>';
-              if(citation){
-                if(citation.trim().length > 0){
-                  xmlString += citation;
-                }
-                else{
-                  xmlString += 'Copyright 2010-2016, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology. This software is subject to U. S. export control laws and regulations (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software is subject to U.S. export control laws and regulations, the recipient has the responsibility to obtain export licenses or other export authority as may be required before exporting such information to foreign countries or providing access to foreign nationals.';
-                }
-              }
-              else{
-                xmlString += 'Copyright 2010-2016, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology. This software is subject to U. S. export control laws and regulations (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software is subject to U.S. export control laws and regulations, the recipient has the responsibility to obtain export licenses or other export authority as may be required before exporting such information to foreign countries or providing access to foreign nationals.';
-              }
-            xmlString += '</description>'
+            if(!isInputEmpty(citation)){
+              xmlString += '<description>' + citation + '</description>';
+            }
           xmlString += '</Citation_Information>';
           xmlString += '<Modification_History>';
             xmlString += '<Modification_Detail>';
@@ -424,9 +417,11 @@ function init(){
           xmlString += '<release_date>' + release_date + '</release_date>';
           xmlString += '<service_type>' + type + '</service_type>';
 
-          for(var i = 0; i < interface_type.split(",").length; i++){
-            var string = interface_type.split(",")[i];
-            xmlString += '<interface_type>' + string + '</interface_type>';
+          if(!isMultivalInputEmpty(interface_type)){
+            for(var i = 0; i < interface_type.split(",").length; i++){
+              var string = interface_type.split(",")[i];
+              xmlString += '<interface_type>' + string + '</interface_type>';
+            }
           }
 
           for(var i = 0; i < category.split(",").length; i++){
@@ -435,12 +430,19 @@ function init(){
           }
 
 
-          for(var i = 0; i < software_language.split(",").length; i++){
-            var softwareLanguage = software_language.split(",")[i];
-            xmlString += '<software_language>' + softwareLanguage + '</software_language>';
+          if(!isMultivalInputEmpty(software_language)){
+            for(var i = 0; i < software_language.split(",").length; i++){
+              var softwareLanguage = software_language.split(",")[i];
+              xmlString += '<software_language>' + softwareLanguage + '</software_language>';
+            }
           }
-          xmlString += '<supported_operating_system_note>' + supported_operating_systems + '</supported_operating_system_note>';
-          xmlString += '<system_requirements_note>' + system_requirements + '</system_requirements_note>';
+
+          if(!isInputEmpty(supported_operating_systems)){
+            xmlString += '<supported_operating_system_note>' + supported_operating_systems + '</supported_operating_system_note>';
+          }
+          if(!isInputEmpty(system_requirements)){
+            xmlString += '<system_requirements_note>' + system_requirements + '</system_requirements_note>';
+          }
           xmlString += '<description>' + description + '</description>';
         xmlString += '</Service>';
 
@@ -450,20 +452,15 @@ function init(){
           for(var i = 0; i < wFiles.length; i++){
             xmlString += '<File_Area_Service_Description>';
 
-            xmlString += '<File_Area>';
-              xmlString += '<File>';
-                xmlString += '<file_name>' + wFiles[i].name + '</file_name>';
-                xmlString += '<file_size>' + wFiles[i].size + '</file_size>';
-                xmlString += '<md5_checksum></md5_checksum>';
-              xmlString += '</File>';
-            xmlString += '</File_Area>';
+            xmlString += '<File>';
+              xmlString += '<file_name>' + wFiles[i].name + '</file_name>';
+              xmlString += '<file_size unit="bytes">' + wFiles[i].size + '</file_size>';
+            xmlString += '</File>';
 
             xmlString += '<Service_Description>';
               xmlString += '<name>' + wFileNames.split(",")[i] + '</name>';
-              xmlString += '<local_identifier></local_identifier>';
-              xmlString += '<offset>' + wFileOffsets.split(",")[i] + '</offset>';
-              xmlString += '<object_length></object_length>';
-              xmlString += '<parsing_standard_id></parsing_standard_id>';
+              xmlString += '<offset unit="bytes">' + wFileOffsets.split(",")[i] + '</offset>';
+              xmlString += '<parsing_standard_id>' + convertWFileType(wFileTypes.split(",")[i]) + '</parsing_standard_id>';
               xmlString += '<description>' + wFileDescriptions.split(",")[i] + '</description>';
             xmlString += '</Service_Description>';
 
@@ -645,4 +642,34 @@ function padDigit(digit){
   }
 
   return digit;
+}
+
+function isInputEmpty(string){
+  if(string.trim().length < 1){
+    return true;
+  }
+
+  return false;
+}
+
+function isMultivalInputEmpty(string){
+  if(string.trim().split(",").length < 1){
+    return true;
+  }
+  if(string.trim().split(",").length === 1){
+    if(string.trim().split(",")[0] === ""){
+      return true;
+    }
+  }
+  return false;
+}
+
+function convertWFileType(string){
+  if (string === "wadl"){
+    return "WADL";
+  }
+  if (string === "wsdl"){
+    return "WSDL  2.n";
+  }
+  return string;
 }
