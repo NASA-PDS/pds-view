@@ -9,7 +9,7 @@ var Manager;
 
   $(function () {
     Manager = new AjaxSolr.Manager({
-      solrUrl: 'http://pds-dev.jpl.nasa.gov:8080/search-service/'
+      solrUrl: 'http://pds-gamma.jpl.nasa.gov/services/search/'
     });
 
     Manager.addWidget(new AjaxSolr.ResultWidget({
@@ -128,7 +128,7 @@ function init(){
                         '<input type="number" class="form-control wFileOffset" placeholder="" maxlength="255">' +
                       '</div>' +
                       '<div class="form-group">' +
-                        '<label for="wFileDescription">Description</br><span class="labelDescription">Provide a desciption of the service interface.</span></label>' +
+                        '<label for="wFileDescription">Description</br><span class="labelDescription">Provide a description of the service interface.</span></label>' +
                         '<textarea class="form-control vresize wFileDescription" rows="3" placeholder=""></textarea>' +
                       '</div>' +
 
@@ -491,7 +491,7 @@ function init(){
       formData.append("file", file, fileName);
       formData.append("path", dateString);
       $.ajax({
-        url: "http://localhost:8080/transport-upload/upload",
+        url: "http://pds-gamma.jpl.nasa.gov/services/transport-upload/upload",
         type: "POST",
         data: formData,
         cache: false,
@@ -508,7 +508,7 @@ function init(){
         formData.append("file", file, file.name);
         formData.append("path", dateString);
         $.ajax({
-          url: "http://localhost:8080/transport-upload/upload",
+          url: "http://pds-gamma.jpl.nasa.gov/services/transport-upload/upload",
           type: "POST",
           data: formData,
           cache: false,
@@ -669,7 +669,7 @@ function convertWFileType(string){
     return "WADL";
   }
   if (string === "wsdl"){
-    return "WSDL  2.n";
+    return "WSDL 2.n";
   }
   return string;
 }
