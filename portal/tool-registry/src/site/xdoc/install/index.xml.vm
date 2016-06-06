@@ -51,7 +51,7 @@
     </section>
 
     <section name="Configuring the Application">
-      <p>The application defaults to accessing the Transport Service at <i>https://pds.jpl.nasa.gov/services/transport-upload/</i>. If this needs to be modified for a given deployment, edit the <i>tool-registry/js/ToolRegistry.js</i> file and modify the following block accordingly:
+      <p>The application defaults to accessing the Transport Service at <i>https://pds.jpl.nasa.gov/services/transport-upload/</i>. If this needs to be modified for a given deployment, edit the <i>tool-registry/js/ToolRegistry.js</i> file and modify the following block accordingly (there are two instances of this block that will need to be modified):
       </p>
 
       <source>
