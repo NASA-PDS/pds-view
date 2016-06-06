@@ -29,28 +29,40 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
         var product = self.manager.response.response.docs[id];
 
         this.setTitle(product);
-        $("#ddDetailContainer").empty();
-        $("#ddDetailContainer").append(this.template(product));
+        $("#trDetailContainer").empty();
+        $("#trDetailContainer").append(this.template(product));
     },
 
     setTitle:function(product){
-        var type = product.objectType 
+      $("#trDetailTitle").empty();
+      $("#trDetailTitle").append('<span style="font-size:175%;vertical-align: middle;">' + product.service_name + '</span><button id="returnToSearchButtonTop" type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return To Search</button>');
+        /*
+        var type = product.objectType
 
         if(type === "Product_Attribute_Definition"){
-            $("#ddDetailTitle").empty();
-            $("#ddDetailTitle").append('<span style="font-size:175%;vertical-align: middle;">Attribute Detail&nbsp;</span><button id="returnToSearchButtonTop" type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return To Search</button>');
+            $("#trDetailTitle").empty();
+            $("#trDetailTitle").append('<span style="font-size:175%;vertical-align: middle;">Attribute Detail&nbsp;</span><button id="returnToSearchButtonTop" type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return To Search</button>');
         }
         else if(type === "Product_Class_Definition"){
-            $("#ddDetailTitle").empty();
-            $("#ddDetailTitle").append('<span style="font-size:175%;vertical-align: middle;">Class Detail&nbsp;</span><button id="returnToSearchButtonTop" type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return To Search</button>');
+            $("#trDetailTitle").empty();
+            $("#trDetailTitle").append('<span style="font-size:175%;vertical-align: middle;">Class Detail&nbsp;</span><button id="returnToSearchButtonTop" type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return To Search</button>');
         }
-        
+        */
+
     },
 
     template: function (product){
-        var type = product.objectType 
+        var type = product.objectType
         var output = "";
+        output += '<div class="panel panel-default">'
+        output += '<table class="table table-striped table-condensed ToolRegistryTable"';
+        output += '<tr><td colspan="2" style="background-color:#CCCCCC">' + "<h4>" + product.title + "</h4>" + "</td></tr>";
+        //output += this.createListRow("Service Url", product.service_url);
+        output += this.createRow("Description", product.description);
+        output += this.createRow("Abstract", product.service_abstract_desc);
+        output += '</table></div>';
 
+        /*
         if(type === "Product_Attribute_Definition"){
             output += '<div class="panel panel-default">'
             output += '<table class="table table-striped table-condensed"';
@@ -73,6 +85,7 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
 
             return output;
         }
+        */
 
         return output;
     },
@@ -168,7 +181,7 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
             }
         }
         return output;
-    }, 
+    },
 
     classSetName: function(product){
         var output = "";
@@ -264,17 +277,17 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
     },
 
     showDetailDiv: function(){
-        $( "#searchDiv" ).fadeOut(400);
-        $( "#ddDetailDiv" ).fadeIn(800);
+        $( "#trResult" ).fadeOut(400);
+        $( "#trDetailDiv" ).fadeIn(800);
 
         $("html, body").animate({ scrollTop: 0 }, "slow");
     },
 
     showSearchDiv: function(){
         var self = this;
-        
-        $( "#ddDetailDiv" ).fadeOut(300);
-        $( "#searchDiv" ).fadeIn(800);
+
+        $( "#trDetailDiv" ).fadeOut(300);
+        $( "#trResult" ).fadeIn(800);
         setTimeout(function(){
             $("html, body").animate({'scrollTop':$("#detailLink" + self.detailLinkId).offset().top}, 400,
                 function(){

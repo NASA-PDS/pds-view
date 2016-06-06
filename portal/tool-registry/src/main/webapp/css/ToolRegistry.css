@@ -156,11 +156,15 @@ body{
 	font-weight: bold;
 }
 
-#ToolRegistryTable{
+.ToolRegistryTable{
 	font-size:initial;
 }
 
 .ToolRegistryTableDescription{
 	font-size: small;
 	font-style: italic;
+}
+
+.detailLink{
+	font-size:20px;
 }
