@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app>
+  <display-name>Search Servlet</display-name>
+  <description>
+    TBD
+  </description>
+
+  <!-- Search Service base URL -->
+  <context-param>
+      <param-name>solrServerUrl</param-name>
+      <param-value>http://localhost:8080/search-service</param-value>
+  </context-param>
+
+  <!-- The search servlet answers queries for products. -->
+  <servlet>
+    <servlet-name>search</servlet-name>
+    <servlet-class>gov.nasa.pds.search.servlet.SearchServlet</servlet-class>
+    <!--
+      It turns out that we don't need the solrServerUrl property for this
+      implementation, but I left the code in as an example.
+    -->
+    <init-param>
+      <param-name>solrServerUrl</param-name>
+      <param-value>http://localhost:8080/search-service</param-value>
+    </init-param>
+  </servlet>
+
+  <!-- Preferred way of addressing the search servlet. -->
+  <servlet-mapping>
+    <servlet-name>search</servlet-name>
+    <url-pattern>/search</url-pattern>
+  </servlet-mapping>
+</web-app>
