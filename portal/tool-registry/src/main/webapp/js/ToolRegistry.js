@@ -9,7 +9,9 @@ var Manager;
 
   $(function () {
     Manager = new AjaxSolr.Manager({
+      //solrUrl: 'http://pds-dev.jpl.nasa.gov:8080/search-service/'
       solrUrl: 'http://pds-gamma.jpl.nasa.gov/services/search/'
+      //search?product-class=Product_Service&return-type=xml
     });
 
     Manager.addWidget(new AjaxSolr.ResultWidget({
@@ -309,7 +311,7 @@ function init(){
         return this.value;
       }).get().join(",");
 
-      var version_id = $("#versionInput").val();
+      var user_input_version_id = $("#versionInput").val();
       var release_date = $("#releaseDateInput").val();
       var support = $('#support .radio input[name=supportRadios]:checked').val();
 
@@ -351,7 +353,7 @@ function init(){
       console.log("abstract_desc: ", abstract_desc);
       console.log("description: ", description);
       console.log("url: ", url);
-      console.log("version_id: ", version_id);
+      console.log("version_id: ", user_input_version_id);
       console.log("release_date: ", release_date);
       console.log("support: ", support);
       console.log("category: ", category);
@@ -369,9 +371,11 @@ function init(){
       console.log("wFileOffsets", wFileOffsets);
       console.log("wFileDescriptions", wFileDescriptions);
 
-      if(isInputEmpty(version_id)){
-        version_id = "1.0";
+      if(isInputEmpty(user_input_version_id)){
+        user_input_version_id = "1.0";
       }
+      var version_id = "1.0";
+
       var uploadDate = new Date();
       var dateString = formatDateString(uploadDate);
       var currentDateString = formatCurrentDateString(uploadDate);
@@ -392,12 +396,12 @@ function init(){
           xmlString += '<title>' + name + '</title>';
           xmlString += '<information_model_version>1.6.0.0</information_model_version>';
           xmlString += '<product_class>Product_Service</product_class>';
-          xmlString += '<Citation_Information>';
-            xmlString += '<publication_year>' + release_date + '</publication_year>';
-            if(!isInputEmpty(citation)){
-              xmlString += '<description>' + citation + '</description>';
-            }
-          xmlString += '</Citation_Information>';
+          if(!isInputEmpty(citation)){
+            xmlString += '<Citation_Information>';
+                xmlString += '<publication_year>' + release_date + '</publication_year>';
+                xmlString += '<description>' + citation + '</description>';
+            xmlString += '</Citation_Information>';
+          }
           xmlString += '<Modification_History>';
             xmlString += '<Modification_Detail>';
               xmlString += '<modification_date>' + currentDateString + '</modification_date>';
@@ -409,7 +413,7 @@ function init(){
         xmlString += '<Service>';
           xmlString += '<name>' + name + '</name>';
           xmlString += '<abstract_desc>' + abstract_desc + '</abstract_desc>';
-          xmlString += '<version_id>' + version_id + '</version_id>';
+          xmlString += '<version_id>' + user_input_version_id + '</version_id>';
           for(var i = 0; i < url.split(",").length; i++){
             var string = url.split(",")[i];
             xmlString += '<url>' + string + '</url>';
@@ -454,12 +458,12 @@ function init(){
 
             xmlString += '<File>';
               xmlString += '<file_name>' + wFiles[i].name + '</file_name>';
-              xmlString += '<file_size unit="bytes">' + wFiles[i].size + '</file_size>';
+              xmlString += '<file_size unit="byte">' + wFiles[i].size + '</file_size>';
             xmlString += '</File>';
 
             xmlString += '<Service_Description>';
               xmlString += '<name>' + wFileNames.split(",")[i] + '</name>';
-              xmlString += '<offset unit="bytes">' + wFileOffsets.split(",")[i] + '</offset>';
+              xmlString += '<offset unit="byte">' + wFileOffsets.split(",")[i] + '</offset>';
               xmlString += '<parsing_standard_id>' + convertWFileType(wFileTypes.split(",")[i]) + '</parsing_standard_id>';
               xmlString += '<description>' + wFileDescriptions.split(",")[i] + '</description>';
             xmlString += '</Service_Description>';
@@ -524,6 +528,56 @@ function init(){
       $( "#steps" ).fadeOut( "slow", function() {
       });
       console.log("submitted");
+
+      //Clear input fields
+      //$('#toolNameInput').val("");
+      //$('#toolTypeInput option:first-child').attr("selected", true);
+      /*
+      var type = $('#toolTypeInput option:selected').text();
+      var abstract_desc = $("#abstractDescriptionInput").val();
+      var description = $("#descriptionInput").val();
+
+      var url = $("#urlContainer .urlInput").map(function() {
+        return this.value;
+      }).get().join(",");
+
+      var user_input_version_id = $("#versionInput").val();
+      var release_date = $("#releaseDateInput").val();
+      var support = $('#support .radio input[name=supportRadios]:checked').val();
+
+      var category = $("#category .checkbox input[name=categoryCheckboxes]:checked").map(function() {
+        return this.value;
+      }).get().join(",");
+
+      var interface_type = $("#interfaceType .checkbox input[name=interfaceTypeCheckboxes]:checked").map(function() {
+        return this.value;
+      }).get().join(",");
+
+      var software_language = $("#softwareLanguageContainer .softwareLanguageInput").map(function() {
+        return this.value;
+      }).get().join(",");
+
+      var supported_operating_systems = $("#supportedOperatingSystemsInput").val();
+      var system_requirements = $("#systemRequirementsInput").val();
+      var citation = $("#citationInput").val();
+      var submitter_name = $("#submitterNameInput").val();
+      var submitter_institution = $("#submitterInstitutionInput").val();
+      var submitter_email = $("#submitterEmailInput").val();
+
+
+      var wFileNames = $("#serviceInterfaceInformationDescription .wFileName").map(function() {
+        return this.value;
+      }).get().join(",");
+      var wFileTypes = $('.wFileType input:checked').map(function() {
+        return this.value;
+      }).get().join(",");
+      var wFileOffsets = $("#serviceInterfaceInformationDescription .wFileOffset").map(function() {
+        return this.value;
+      }).get().join(",");
+      var wFileDescriptions = $("#serviceInterfaceInformationDescription .wFileDescription").map(function() {
+        return this.value;
+      }).get().join(",");
+      */
     });
 
     $( "#backToSiteButton" ).click(function() {
