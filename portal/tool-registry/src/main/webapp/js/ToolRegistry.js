@@ -14,22 +14,22 @@ var Manager;
 
     Manager.addWidget(new AjaxSolr.ResultWidget({
       id: 'result',
-      target: '#ddDocs'
+      target: '#trDocs'
     }));
 
     Manager.addWidget(new AjaxSolr.SearchWidget({
       id: 'text',
-      target: '#ddSearch'
+      target: '#trSearch'
     }));
 
     Manager.addWidget(new AjaxSolr.DetailLinkSearchWidget({
       id: 'detailLink',
-      target: '#ddResult'
+      target: '#trResult'
     }));
 
     Manager.addWidget(new AjaxSolr.PagerWidget({
       id: 'pager',
-      target: '#ddPager',
+      target: '#trPager',
       prevLabel: '<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>',
       nextLabel: '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>',
       innerWindow: 1,
@@ -39,8 +39,8 @@ var Manager;
     }));
 
     Manager.init();
-    Manager.store.addByValue('product-class', 'Product_Attribute_Definition');
-    Manager.store.addByValue('sort', 'attribute_name asc');
+    Manager.store.addByValue('product-class', 'Product_Service');
+    Manager.store.addByValue('sort', 'identifier asc');
     Manager.doRequest(false, "search");
   });
 
