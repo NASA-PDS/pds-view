@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2009-2012, by the California Institute of Technology.
+  Copyright 2009-2016, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -32,40 +32,22 @@ ov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
     </section>
 
     <section name="Main Components">
-      <p>
-  The following section describes the main functionality and components of the Search Core.  These components are combined to produce a searchable index through a web interface, such as the PDS Engineering search <a href="http://pds.jpl.nasa.gov/tools/data-search">Data Search page</a>.  
+      <p>The following section describes the main functionality and components of the Search Core.  These components are combined to produce a searchable index through a web interface, such as the PDS <a href="http://pds.jpl.nasa.gov/tools/data-search">Data Search</a> page.  
       </p>
-      <subsection name="Command-line Interface">
-	<p>
-	  Provides command-line interaction with the tool in order to run it according to customer needs.
-	</p>
-      </subsection>
+
       <subsection name="Registry Extractor">
-        <p>This component uses the Registry Core and XML configuration files to build XML documents on a per product basis.  The following Registry object types have been tested through this software:
+        <p>This component uses the Registry Core and XML configuration files to build XML documents on a per product basis. The generated XML files will be placed in a <i>$SEARCH_HOME/solr-docs</i> directory and used by the Solr Indexer component to form a Lucene index.  Future iterations of this software will allow this component to be extendable to other data sources (i.e. relational databases).
         </p>
-        <ul>
-          <li>Product_Data_Set_PDS3</li>
-          <li>Product_Target_PDS3</li>
-          <li>Product_Instrument_PDS3</li>
-          <li>Product_Instrument_Host_PDS3</li>
-          <li>Product_Mission_PDS3</li>
-          <li>Product_Context</li>
-          <li>Product_Bundle</li>
-          <li>Product_Collection</li>
-          <li>Product_Observational</li>
-        </ul>
-	<p>These generated XML files will be placed in a $SEARCH_HOME/solr-docs directory and used by the Solr Indexer component to form a Lucene index.  Future iterations of this software will allow this component to be extendable to other data sources (i.e. relational databases).
-	</p>
       </subsection>
+
       <subsection name="Solr Indexer">
-        <p>
-          The Solr Indexer leverages <a href="http://lucene.apache.org/java/docs/index.html">Apache Lucene</a> and the XML document(s) produced by the Registry Extractor to produce a searchable index file that can be ingested by the Solr web application to provided an indexed search capability.
+        <p>The Solr Indexer leverages <a href="http://lucene.apache.org/java/docs/index.html">Apache Lucene</a> and the XML document(s) produced by the Registry Extractor to produce a searchable index file that can be ingested by the Solr web application to provided an indexed search capability.
         </p>
       </subsection>
+
       <subsection name="Solr Post">
-	<p>
-	  This component leverages the index created from the Solr Indexer, XSLT Stylesheets, and XML hierarchy configurations to post data to the Search Service Solr instance.  Once this component completes execution, the newly indexed data is now searchable via the Search Service interface.
-	</p>
+        <p>This component leverages the index created from the Solr Indexer, XSLT Stylesheets, and XML hierarchy configurations to post data to the Search Service Solr instance. Once this component completes execution, the newly indexed data is now searchable via the Search Service interface.
+        </p>
       </subsection>
     </section>
   </body>

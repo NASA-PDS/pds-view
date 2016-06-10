@@ -1,4 +1,4 @@
-//	Copyright 2009-2013, by the California Institute of Technology.
+//	Copyright 2009-2016, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -37,8 +37,7 @@ public enum Flag {
 			String.class,
 			true,
 			"Specify the product class configuration home directory."
-					+ "Multiple directories can be specified to accompany"
-					+ " multiple registries. (Default: $SEARCH_CORE_HOME/conf)"),
+					+ "(Default: $SEARCH_CORE_HOME/conf)"),
 
 	/**
 	 * Flag to turn OFF removal of all directories from previous Search Core
@@ -56,7 +55,9 @@ public enum Flag {
 
 	/** Flag to run the Registry Extractor component. */
 	EXTRACTOR("e", "extractor",
-			"Execute component to extract data from registry"),
+			"Execute component to extract data from the registry. In order"
+					+ " for products to be extracted from a Registry Service,"
+					+ " they must have a status of Approved."),
 
 	/** Flag to display the help. */
 	HELP("h", "help", "Display usage."),

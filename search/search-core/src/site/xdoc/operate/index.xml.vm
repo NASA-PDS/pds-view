@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2015, by the California Institute of Technology.
+  Copyright 2010-2016, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -25,30 +25,28 @@
 
   <body>
     <section name="Operation">
-      <p>This document describes how to operate the Search Core software for a generic environment, 
-      see the <a href="./en-operate.html">Engineering Node Operation Procedures</a> for more detailed operation instruction for the 
-      <a href="../install/en-install.html">Engineering Node installation</a>. The following topics can be found in this document:
+      <p>This document describes how to operate the Search Core software for a generic environment. The following topics can be found in this document:
       </p>
 
       <ul>
         <li><a href="#Tool_Execution">Tool Execution</a></li>
-	<ul>
-	  <li><a href="#Command-Line_Options"></a>Command-Line Options</li>
-          <li><a href="#Execute Search Core Tool">Execute Search Core Tool</a></li>
-	</ul>
+          <ul>
+            <li><a href="#Command-Line_Options">Command-Line Options</a></li>
+            <li><a href="#Execute Search Core">Execute Search Core</a></li>
+          </ul>
         <li><a href="#Solr_Ingestion">Solr Ingestion</a></li>
         <li><a href="#Index_Generation_Examples">Index Generation Examples</a></li>
         <li><a href="#Search_Core_Configurations">Search Core Configurations</a></li>
-	<ul>
-	  <li><a href="#Defaults">Defaults</a></li>
-	  <li><a href="#Layout">Layout</a></li>
-	</ul>
-	<li><a href="#Post_To_Operations">Post To Operations</a></li>
+          <ul>
+            <li><a href="#Defaults">Defaults</a></li>
+            <li><a href="#Layout">Layout</a></li>
+          </ul>
+        <li><a href="#Post_To_Operations">Post To Operations</a></li>
+        <li><a href="#Did_It_Work">Did It Work?</a></li>
         <li><a href="#Common_Errors">Common Errors</a></li>
       </ul>
 
-      <p>Note: The command-line examples in this section have been broken into multiple lines for readability. 
-      The commands should be reassembled into a single line prior to execution.
+      <p>Note: The command-line examples in this section have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution.
       </p>
     </section>
 
@@ -59,19 +57,17 @@
       <subsection name="Command-Line Options">
         <p>The following table describes the command-line options available:
         </p>
-	<source>
 
+        <source>
 usage: search-core [options]
-
 
 ===========================================================
 Command-line Options--------------Description---------------------------------------
 ===========================================================
  -a,--all                         Run all components of the Search Core
                                   [default]
- -c,--config-home &lt;directories&gt;   Specify the product class configuration home
-                                  directory.Multiple directories can be
-                                  specified to accompany multiple registries.
+ -c,--config-home &lt;directory&gt;     Specify the product class configuration home
+                                  directory.
                                   (Default: $SEARCH_CORE_HOME/conf/pds/)
  -C,--clean-dirs                  Removal of all directories from previous
                                   Search Core execution output. These
@@ -79,15 +75,17 @@ Command-line Options--------------Description-----------------------------------
                                   Search Home directory. (Default: True)
  -d,--debug                       Turn on developer debugger.
  -e,--extractor                   Execute component to extract data from
-                                  registry
+                                  the registry. In order for products to be 
+                                  extracted from a Registry Service, they must 
+                                  have a status of Approved.
  -H,--search-home &lt;directory&gt;     Specify the Search Home directory. The tool
                                   will output the index files to this directory.
                                   When using the Search Service, this should be
-                                  the  $SEARCH_SERVICE_HOME/pds directory
+                                  the $SEARCH_SERVICE_HOME/pds directory
                                   (Default: $SEARCH_SERVICE_HOME/pds directory)
  -h,--help                        Display usage.
  -i,--solr-indexer                Execute component to generate a Solr Index
- -l,--log-file &lt;file name&gt;        Specify a log file name. Default is standard
+ -l,--log-file &lt;file-name&gt;        Specify a log file name. Default is standard
                                   out.
  -m,--query-max &lt;integer&gt;         Specify the maximum number of registry values
                                   to be returned from query.(Default: 999999999)
@@ -106,70 +104,67 @@ Command-line Options--------------Description-----------------------------------
                                   specified. These registries will only be used
                                   after a query fails against all primary
                                   registries.
- -s,--service-url &lt;url>           Specify the Search Service URL
+ -s,--service-url &lt;url&gt;           Specify the Search Service URL
                                   endpoint.Default:
                                   http://localhost:8080/search-service
- -v,--verbose &lt;level>             Specify the severity level and above to
+ -v,--verbose &lt;level&gt;             Specify the severity level and above to
                                   include in the log: (0=Debug, 1=Info,
                                   2=Warning, 3=Error). Default is Info and above
                                   (level 1).
  -V,--version                     Display application version.
-			  </source>
+        </source>
       </subsection>
 
-      <subsection name="Execute Search Core Tool">
-        <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script.
-        </p>
-
-        <p>The Search Core requires, at minimum, a Search Home directory be specified via command-line.  The following is the format for the command:
+      <subsection name="Execute Search Core">
+        <p>This section demonstrates execution of the tool using the command-line options. The examples below execute the tool via the batch/shell script. Search Core requires, at a minimum, a Search Home directory be specified via command-line. The following is the format for the command:
         </p>
 
         <source>
 % search-core -H &lt;search-home&gt; [options]
         </source>
 
-        <p>Search Home refers to the home directory of the Solr Core we want to generate an index for. With the common Search Service installation, Search Home will be /usr/local/search-service/pds (SEARCH_SERVICE_HOME/pds).  The following demonstrates how to run the Search Core with a SEARCH_SERVICE_HOME=/usr/local/search-service, Primary Registry URL of http://localhost:8080/registry, an output log file of run.log, and config home of /usr/local/search-core/conf/pds/pds3  :
+        <p>Search Home refers to the home directory of the Solr Core we want to generate an index for. With the common Search Service installation, Search Home will be <i>/usr/local/search-service/pds</i> (SEARCH_SERVICE_HOME/pds). The following demonstrates how to run the Search Core with a <i>SEARCH_SERVICE_HOME=/usr/local/search-service</i>, Primary Registry URL of <i>http://localhost:8080/registry</i>, an output log file of run.log, and config home of <i>/usr/local/search-core/conf/defaults/pds/pds3</i>:
         </p>
 
         <source>
 % search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry \
--c /usr/local/search-core/conf/pds/pds3 -l run.log
+-c /usr/local/search-core/conf/defaults/pds/pds3 -l run.log
         </source>
 
-        <p>By default, the command above runs all components of the Search Core software and produces Solr XML Documents from the Registry Service data.  The Solr XML Documents are files formatted for addition to the Search Service index and will appear in the SEARCH_SERVICE_HOME/pds/index directory.</p>
+        <p>By default, the command above runs all components of the Search Core software and produces Solr XML Documents from the Registry Service data. The Solr XML Documents are files formatted for addition to the Search Service index and will appear in the <i>SEARCH_SERVICE_HOME/pds/index</i> directory.</p>
 
-	<p>The following does not specify a configuration home directory so the default is set to SEARCH_CORE_HOME/conf/pds/pds3 and output the logs to standard out:
-	</p>
+        <p>The following does not specify a configuration home directory so the default is set to <i>SEARCH_CORE_HOME/conf/pds/pds3</i> and output the logs to standard out:
+        </p>
+
         <source>
 % search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry
         </source>
 
-	<p>The Search Core Tool also provides the capability to run each component separately, however, they must be completed in the following order:
+        <p>The Search Core Tool also provides the capability to run each component separately, however, they must be completed in the following order:
         </p>
 
         <ol>
           <li>
-            <p>The following command will run the Registry Extractor component of the Search Core to generate temporary XML metadata files for each Registry context product type specified in the configurations.  By default, the output appears in the directory /usr/local/search-service/pds/solr-docs/&lt;config-title&gt;/:</p>
+            <p>The following command will run the Registry Extractor component of the Search Core to generate temporary XML metadata files for each Registry context product type specified in the configurations. By default, the output appears in the directory <i>/usr/local/search-service/pds/solr-docs/&lt;config-title&gt;/</i>:</p>
             <source>
 % search-core -e -H /usr/local/search-service/pds -r http://localhost:8080/registry
             </source>
           </li>
           <li>
-            <p>The following command will run the Solr Indexer component of the Search Core to parse the XML metadata files produced by the Registry Extractor, and generate Lucene Solr Documents  located in /usr/local/search-service/pds/index :</p>
+            <p>The following command will run the Solr Indexer component of the Search Core to parse the XML metadata files produced by the Registry Extractor, and generate Lucene Solr Documents located in <i>/usr/local/search-service/pds/index</i>:</p>
             <source>
 % search-core -i -H /usr/local/search-service/pds -r http://localhost:8080/registry
             </source>
           </li>
-
           <li>
-            <p>The following command will run the Solr Post component of the Search Core to use HTTP Post and HTTP Get to submit the Lucene Solr Documents to the Search Service Solr Index. The default Search Service end point is http://localhost:8080/search-service/ and assumes the Solr Documents are in /usr/local/search-service/pds/index :</p>
+            <p>The following command will run the Solr Post component of the Search Core to use HTTP Post and HTTP Get to submit the Lucene Solr Documents to the Search Service Solr Index. The default Search Service end point is <i>http://localhost:8080/search-service/</i> and assumes the Solr Documents are in <i>/usr/local/search-service/pds/index</i>:</p>
             <source>
 % search-core -P
             </source>
           </li>
         </ol>
 
-        <p>The following command demonstrates how to test the Search Core with a SEARCH_SERVICE_HOME=/usr/local/search-service and only query 5 products for indexing (useful for testing purposes):
+        <p>The following command demonstrates how to test the Search Core with a <i>SEARCH_SERVICE_HOME=/usr/local/search-service</i> and only query 5 products for indexing (useful for testing purposes):
         </p>
 
         <source>
@@ -182,17 +177,17 @@ Command-line Options--------------Description-----------------------------------
 
         <source>
 % search-core -H /usr/local/search-service/pds \
--p /usr/local/search-core/conf/pds/pds3/core.properties
+-p /usr/local/search-core/conf/defaults/pds/pds3/core.properties
         </source>
 
-        <p>An example Search Core properties file looks like this:</p>
+        <p>The following is an example Search Core properties file (core.properties):</p>
 
         <source>
 search.core.primary-registry = http://localhost:8080/registry
-search.core.config-home = /usr/local/search-core/conf/pds/pds3
+search.core.config-home = /usr/local/search-core/conf/defaults/pds/pds3
         </source>
 
-        <p>The following command demonstrates how to specify multiple registries:
+        <p>If Search Core is deployed to a Windows environment, the path specification for the <i>search.core.config-home</i> property should be updated accordingly (including the drive letter) for each configuration. The following command demonstrates how to specify multiple registries:
         </p>
 
         <source>
@@ -204,167 +199,180 @@ http://localhost:8080/registry-psa
         </p>
 
         <source>
-% search-core -p /usr/local/search-core/conf/pds/pds3/core.properties \
-/usr/local/search-core/conf/psa/pds3/core.properties
+% search-core -p /usr/local/search-core/conf/defaults/pds/pds3/core.properties \
+/usr/local/search-core/conf/defaults/psa/pds3/core.properties
         </source>
       </subsection>
     </section>
 
     <section name="Index Generation Examples">
-        <p>Most users will only require 1 registry and 1 set of configuration files for product classes to include in the index.  Using the default Search Service and Search Core installations specified in the documentation, here is an example of generating an index for a basic installation to generate an index for PDS3 Context Products:</p>
-        <source>
+      <p>Most users will only require one Registry Service instance and one set of configuration files for product classes to include in the index. Using the default Search Service and Search Core installations specified in the documentation, here is an example of generating an index for a basic installation to generate an index for PDS3 Context Products:
+      </p>
+
+      <source>
 % search-core -H /usr/local/search-service/pds \
--p /usr/local/search-core/conf/pds/pds3/core.properties
-        </source>
+-p /usr/local/search-core/conf/defaults/pds/pds3/core.properties
+      </source>
 
-        <p>For PDS4 Product Search:</p>
+      <p>For PDS4 Context and Data Products:</p>
 
-        <source>
+      <source>
 % search-core -H /usr/local/search-service/pds \
--p /usr/local/search-core/conf/pds/pds4/core.properties
-        </source>
+-p /usr/local/search-core/conf/defaults/pds/pds4/core.properties
+      </source>
 
-        <p>For PSA Context Products:</p>
+      <p>For PSA Context Products:</p>
 
-        <source>
+      <source>
 % search-core -H /usr/local/search-service/pds \
--p /usr/local/search-core/conf/psa/pds3/core.properties
-        </source>
+-p /usr/local/search-core/conf/defaults/psa/pds3/core.properties
+      </source>
 
-        <p>For all available PDS3 and PDS4 data:</p>
+      <p>For all available PDS3 and PDS4 data:</p>
 
-        <source>
+      <source>
 % search-core -H /usr/local/search-service/pds \
--p /usr/local/search-core/conf/pds/pds3/core.properties \
-/usr/local/search-core/conf/psa/pds3/core.properties \
-/usr/local/search-core/conf/pds/pds4/core.properties
-        </source>
+-p /usr/local/search-core/conf/defaults/pds/pds3/core.properties \
+   /usr/local/search-core/conf/defaults/psa/pds3/core.properties \
+   /usr/local/search-core/conf/defaults/pds/pds4/core.properties
+      </source>
 
-	<p>After you run the indexes, <a href="#Did_It_Work?">see if it worked</a>.</p>
+      <p>After you run the indexes, <a href="#Did_It_Work?">see if it worked</a>.
+      </p>
     </section>
 
     <section name="Search Core Configurations">
-      <p>Running the Search Core is based around XML configuration files that must include query information, data source specifications, and the fields to be included in the index.  The following sections will outline the basic schema for creating a configuration file.  Once a configuration file has been created, you can specify its location using the -c command-line option or in the properties file.
+      <p>Running the Search Core is based around XML configuration files that must include query information, data source specifications, and the fields to be included in the index. The following sections will outline the basic schema for creating a configuration file. Once a configuration file has been created, you can specify its location using the <i>-c</i> command-line option or in the properties file.
       </p>
+
       <subsection name="Defaults">
-	<p>Default configurations are provided for the following data types <i>(assumes Search Core is installed at /usr/local/search-core, if not, update the file paths as needed)</i>:</p>
-	<table>
-	  <tr><th>Location</th><th>File Name</th><th>Object Type</th><th>Comments</th></tr>
-	  <tr><td>/usr/local/search-core/conf/pds/pds3</td><td></td><td></td><td>Queries PDS3 versioned PDS products</td></tr>
-	  <tr>
-	    <td></td>
-	    <td>archiveinfo.xml</td>
-	    <td>Product_Context</td>
-	    <td>Also filters where name="*Archive Information"</td>
-	  </tr>
-	  <tr>
-	    <td></td>
-	    <td>dataset.xml</td>
-	    <td>Product_Data_Set_PDS3</td>
-	    <td></td>
-	  </tr>
-	  <tr>
-	    <td></td>
-	    <td>instrument.xml</td>
-	    <td>Product_Instrument_PDS3</td>
-	    <td></td>
-	  </tr>
-	  <tr>
-	    <td></td>
-	    <td>instrumenthost.xml</td>
-	    <td>Product_Instrument_Host_PDS3</td>
-	    <td></td>
-	  </tr>
-	  <tr>
-	    <td></td>
-	    <td>investigation.xml</td>
-	    <td>Product_Mission_PDS3</td>
-	    <td></td>
-	  </tr>
-	  <tr>
-	    <td></td>
-	    <td>target.xml</td>
-	    <td>Product_Target_PDS3</td>
-	    <td></td>
-	  </tr>
-	  <tr><td>/usr/local/search-core/conf/pds/pds4</td><td></td><td></td><td>Queries PDS4 versioned PDS products</td></tr>
-	  <tr>
-	    <td></td>
-	    <td>bundle.xml</td>
-	    <td>Product_Bundle</td>
-	    <td></td>
-	  </tr>
-	  <tr>
-	    <td></td>
-	    <td>collection.xml</td>
-	    <td>Product_Collection</td>
-	    <td></td>
-	  </tr>
-	  <tr>
-	    <td></td>
-	    <td>context.xml</td>
-	    <td>Product_Context</td>
-	    <td></td>
-	  </tr>
-	  <tr>
-	    <td></td>
-	    <td>observational.xml</td>
-	    <td>Product_Observational</td>
-	    <td></td>
-	  </tr>
-	  <tr><td>/usr/local/search-core/conf/psa/pds3</td><td></td><td></td><td>Queries PDS3 versioned PSA Products</td></tr>
-	  <tr>
-	    <td></td>
-	    <td>psa-dataset.xml</td>
-	    <td>Product_Data_Set_PDS3</td>
-	    <td></td>
-	  </tr>
-	</table>
+        <p>Default configurations are provided for the following data types (assumes Search Core is installed at <i>/usr/local/search-core</i>, if not, update the file paths as needed):
+        </p>
+
+        <table>
+          <tr><th>File Name</th><th>Product Class</th></tr>
+          <tr><td colspan="2"><b>PDS3 Products (/usr/local/search-core/conf/defaults/pds/pds3)</b></td></tr>
+          <tr>
+            <td>archiveinfo.xml</td>
+            <td>Product_Context (filters on name="*Archive Information")</td>
+          </tr>
+          <tr>
+            <td>attribute.xml</td>
+            <td>Product_Attribute_Definition</td>
+          </tr>
+          <tr>
+            <td>class.xml</td>
+            <td>Product_Class_Definition</td>
+          </tr>
+          <tr>
+             <td>context.xml</td>
+            <td>Product_Context</td>
+          </tr>
+          <tr>
+            <td>dataset.xml</td>
+            <td>Product_Data_Set_PDS3</td>
+          </tr>
+          <tr>
+            <td>instrument.xml</td>
+            <td>Product_Instrument_PDS3</td>
+          </tr>
+          <tr>
+            <td>instrumenthost.xml</td>
+            <td>Product_Instrument_Host_PDS3</td>
+          </tr>
+          <tr>
+            <td>investigation.xml</td>
+            <td>Product_Mission_PDS3</td>
+          </tr>
+          <tr>
+            <td>service.xml</td>
+            <td>Product_Service</td>
+          </tr>
+          <tr>
+            <td>target.xml</td>
+            <td>Product_Target_PDS3</td>
+          </tr>
+          <tr><td colspan="2"><b>PDS4 Products (/usr/local/search-core/conf/defaults/pds/pds4)</b></td></tr>
+          <tr>
+            <td>attribute.xml</td>
+            <td>Product_Attribute_Definition</td>
+          </tr>
+          <tr>
+            <td>bundle.xml</td>
+            <td>Product_Bundle</td>
+          </tr>
+          <tr>
+            <td>class.xml</td>
+            <td>Product_Class_Definition</td>
+          </tr>
+          <tr>
+            <td>collection.xml</td>
+            <td>Product_Collection</td>
+          </tr>
+          <tr>
+            <td>context.xml</td>
+            <td>Product_Context</td>
+          </tr>
+          <tr>
+            <td>document.xml</td>
+            <td>Product_Document</td>
+          </tr>
+          <tr>
+            <td>observational.xml</td>
+            <td>Product_Observational</td>
+          </tr>
+          <tr>
+            <td>service.xml</td>
+            <td>Product_Service</td>
+          </tr>
+          <tr><td colspan="2"><b>PDS3 PSA Products (/usr/local/search-core/conf/defaults/psa/pds3)</b></td></tr>
+          <tr>
+            <td>dataset.xml</td>
+            <td>Product_Data_Set_PDS3</td>
+          </tr>
+        </table>
       </subsection>
-      <subsection name="Layout">
-	<source>
+
+      <subsection name="Format">
+        <p>The following is an example snippet of one of the Search Core configuration files:
+        </p>
+
+        <source>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;product&gt;
   &lt;specification&gt;
-    &lt;title&gt;DataSet&lt;/title&gt;
-    &lt;registryObjectType&gt;Product_Data_Set_PDS3&lt;/registryObjectType&gt;
-    &lt;/specification&gt;
-  
-  <!-- Fields displayed in default Search Service results -->
+    &lt;title&gt;PDS4-Observational&lt;/title&gt;
+    &lt;query&gt;
+      &lt;registryPath&gt;objectType&lt;/registryPath&gt;
+      &lt;value&gt;Product_Observational&lt;/value&gt;
+    &lt;/query&gt;
+    &lt;query&gt;
+      &lt;registryPath&gt;status&lt;/registryPath&gt;
+      &lt;value&gt;Approved&lt;/value&gt;
+    &lt;/query&gt;
+    &lt;checkAssociations&gt;true&lt;/checkAssociations&gt;
+  &lt;/specification&gt;
+
   &lt;indexFields&gt;
-    <!-- Test required fields -->
+    &lt;!-- Identifier Fields --&gt;
+    &lt;field name="search_id" type="required"&gt;
+      &lt;outputString format="text"&gt;pds4:{lid}&lt;/outputString&gt;
+    &lt;/field&gt;
     &lt;field name="identifier" type="required"&gt;
       &lt;registryPath&gt;lid&lt;/registryPath&gt;
-      &lt;/field&gt;
-    &lt;field name="title" type="required"&gt;
-      &lt;registryPath&gt;name&lt;/registryPath&gt;
-      &lt;/field&gt;
-    &lt;field name="description" type="required"&gt;
-      &lt;registryPath&gt;data_set_terse_description&lt;/registryPath&gt;
-      &lt;/field&gt;
-    &lt;field name="resLocation" type="required"&gt;
-      &lt;outputString&gt;/ds-view/pds/viewDataset.jsp?dsid={data_set_id}&lt;/outputString&gt;
-      &lt;/field&gt;
-    &lt;field name="objectType" type="string"&gt;
-      &lt;registryPath&gt;objectType&lt;/registryPath&gt;
-      &lt;/field&gt;
-    &lt;field name="agency_name" type="string" default="Unknown"&gt;
-      &lt;registryPath&gt;node_ref.agency_ref.alternate_id&lt;/registryPath&gt;
     &lt;/field&gt;
+    &lt;field name="version_id" type="string"&gt;
+      &lt;registryPath&gt;version_id&lt;/registryPath&gt;
+    &lt;/field&gt;
+    ...
   &lt;/indexFields&gt;
 &lt;/product&gt;
-	</source>
-	<p>Description of schema TBD.</p>
+        </source>
       </subsection>
     </section>
-	
-    <section name="Did It Work?">
-        <p>Once you run the Search Core with all components the data should be available through the Search Service interface. Go to <a href="http://localhost:8080/search-service/pds/search/?q=*:*">http://localhost:8080/search-service/pds/search/?q=*:*</a> to verify data is available (modify domain and port as needed).  See the <a href="../../search-service/operate">Search Service - Operate</a> page for more information on how to query data.
-        </p>
-    </section>
-
+  
     <section name="Post To Operations">
-      <p>Some installations require building an index to be replicated between multiple secured machines.  Secured machines, meaning POSTing data remotely is forbidden.  Instead of generating a new index on each machine, the <i>$SEARCH_CORE_HOME/bin/ops-index</i> script was developed to <a href="http://rsync.samba.org/">rsync</a> a previously generated index from a remote machine and POST the data to a local Search Service installation.  The following describes the how to use the script:</p>
+      <p>Some installations require building an index to be replicated between multiple secured machines. Secured machines, meaning POSTing data remotely is forbidden. Instead of generating a new index on each machine, the <i>$SEARCH_CORE_HOME/bin/ops-index</i> script was developed to <a href="http://rsync.samba.org/">rsync</a> a previously generated index from a remote machine and POST the data to a local Search Service installation. The following describes the how to use the script:</p>
 
       <subsection name="Using Environment Variables">
         <ul>
@@ -396,36 +404,51 @@ http://localhost:8080/registry-psa
 
         <source>
 % ./ops-index /usr/local/search-service/pds http://localhost:8080/search-service/pds \
-pdsbeta.jpl.nasa.gov root
+pds-gamma.jpl.nasa.gov root
         </source>
-      </subsection>
-
-      <subsection name="Test Search Service">
-        <p>Once this script completes, the data should be available through the Search Service interface. Go to <a href="http://localhost:8080/search-service/pds/search/?q=*:*">http://localhost:8080/search-service/pds/search/?q=*:*</a> to verify data is available (modify domain and port as needed).  See the <a href="../../search-service/operate">Search Service - Operate</a> page for more information on how to query data.
-        </p>
       </subsection>
     </section>
 
+    <section name="Did It Work?">
+        <p>Once you run the Search Core with all components the data should be available through the Search Service interface. Go to <a href="http://localhost:8080/search-service/search/?q=*:*">http://localhost:8080/search-service/search/?q=*:*</a> to verify data is available (modify domain and port as needed). See the <a href="../../search-service/operate">Search Service - Operate</a> page for more information on how to query data.
+        </p>
+    </section>
+
     <section name="Common Errors">
+      <p>The following sub-sections destail some of the common errors that might occur for a given installation.
+      </p>
+
+      <subsection name="search-core: command not found">
+        <p>This error occurs when the system cannot find the <i>search-core</i> script in the PATH. See the <a href="../install">Installation</a> document for more information on adding the <i>search-core</i> executable to the PATH.
+        </p>
+      </subsection>
+
       <subsection name="Error running Registry Extractor">
-        <p>This error arises when there is an error connecting with the Registry.  The following are potential mitigation strategies:</p>
+        <p>This error arises when there is an error connecting with the Registry.  The following are potential mitigation strategies:
+        </p>
+
         <ul>
-          <li>Verify the Registry URL specified is correct and accessible.</li>
-          <li>Verify the Registry is populated with data by going to $REGISTRY_URL/report.  See <a href="../../../registry">Registry Documentation</a> for more information.</li>
+          <li>Verify the Registry URL specified is correct and accessible.
+          </li>
+          <li>Verify the Registry is populated with data by going to <i>$REGISTRY_URL/report</i>.
+          </li>
         </ul>
       </subsection>
 
       <subsection name="501 Method Not Implemented">
-        <p>This error occurs when using <i>solr-post</i> script and the HTTP POST method to ingest data into Solr.  This usually means that the Search Service URL specified is either incorrect or attempting to access a port that is not open to the HTTP POST method.  The following are potential mitigation strategies:
+        <p>This error occurs when using <i>solr-post</i> script and the HTTP POST method to ingest data into Solr. This usually means that the Search Service URL specified is either incorrect or attempting to access a port that is not open to the HTTP POST method. The following are potential mitigation strategies:
         </p>
+
         <ul>
-          <li>Verify Search Service URL is correct by navigating to the page.  The Solr Welcome screen should appear.</li>
-          <li>Try changing the URL to access the localhost or an intranet-only accessible port (i.e. 8080).  Often servers do not allow the HTTP POST method through port 80 when accessing Tomcat.  For instance, if the Search Service URL used is http://my-host/search-service, try http://localhost:8080/search-service or http://my-host:8080/search-service (ports will differ according to Tomcat installation).</li>
+          <li>Verify Search Service URL is correct by navigating to the page.  The Solr Welcome screen should appear.
+          </li>
+          <li>Try changing the URL to access the localhost or an intranet-only accessible port (i.e. 8080). Often servers do not allow the HTTP POST method through port 80 when accessing Tomcat. For instance, if the Search Service URL used is <i>http://my-host/search-service</i>, try <i>http://localhost:8080/search-service</i> or <i>http://my-host:8080/search-service</i> (ports will differ according to the Tomcat installation).
+          </li>
         </ul>
       </subsection>
 
-      <subsection name="search-core: command not found">
-        <p>This error occurs when the system cannot find the <i>search-core</i> script in the PATH.  See <a href="../install">Installation Instructions</a> for more information on adding the <i>search-core</i> to the PATH.
+      <subsection name="No Products Indexed in the Search Service">
+        <p>Any of the above errors will create this situation but if Search Core appears to have completed successfully and there are still no results when testing the Search Service it is likely because the content in the target Registry Service(s) has a status of <i>Submitted</i> instead of <i>Approved</i>. See the Registry Service Operation document for instructions on how to approve products in the registry.
         </p>
       </subsection>
     </section>
