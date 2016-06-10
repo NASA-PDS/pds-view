@@ -25,7 +25,16 @@
       <registryPath>version_id</registryPath>
     </field>
     <!-- Search UI Fields -->
-    <!-- title, description and resLocation not required -->
+    <!-- The resLocation field is not populated since there is no jump page. -->
+    <field name="title" type="required">
+      <registryPath>name</registryPath>
+    </field>
+    <field name="description" type="required">
+      <registryPath>attribute_definition</registryPath>
+    </field>
+    <field name="data_product_type" type="required">
+      <outputString format="text">Attribute_Definition</outputString>
+    </field>
     <field name="data_class" type="string">
       <registryPath>data_class</registryPath>
     </field>

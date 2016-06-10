@@ -39,7 +39,7 @@
       <registryPath>resource_url</registryPath>
     </field>
     <field name="data_product_type" type="string">
-      <registryPath>Archive_Information</registryPath>
+      <outputString format="text">Archive_Information</outputString>
     </field>
     <field name="data_class" type="string">
       <registryPath>data_class</registryPath>

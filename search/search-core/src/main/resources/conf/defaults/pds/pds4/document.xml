@@ -25,7 +25,7 @@
       <registryPath>version_id</registryPath>
     </field>
     <!-- Search UI Fields -->
-    <!-- resLocation not required. -->
+    <!-- The resLocation field is not populated since there is no jump page. -->
     <field name="title" type="required">
       <registryPath>name</registryPath>
     </field>
@@ -33,7 +33,7 @@
       <registryPath>citation_description</registryPath>
     </field>
     <field name="data_product_type" type="string">
-      <registryPath>product_class</registryPath>
+      <outputString format="text">Document</outputString>
     </field>
     <field name="objectType" type="string">
       <registryPath>objectType</registryPath>
