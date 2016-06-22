@@ -55,7 +55,7 @@ String contextPath = request.getContextPath() + "/";
     <p>This interface allows the user to search the holdings of the PDS archive. Results from a search include links to related archive information, search tools and data sets available from the PDS archive. In addition to PDS data, the results also include links to data sets curated by the European Space Agency.
 
     <form action="search.jsp" method="get">
-      <input type="text" name="q" size="60" /><input type="submit" value="Search" />
+      <input type="text" name="q" size="60" />&nbsp;&nbsp;<input type="submit" value="Search" />
     </form>
 
     <p style="margin-top: 2em; margin-bottom: .5em;">Begin your search with one of the quick searches on the left, or try any of the following:</p>
