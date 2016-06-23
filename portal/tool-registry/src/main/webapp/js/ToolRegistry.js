@@ -530,8 +530,62 @@ function init(){
       console.log("submitted");
 
       //Clear input fields
-      //$('#toolNameInput').val("");
-      //$('#toolTypeInput option:first-child').attr("selected", true);
+      $('#toolNameInput').val("");
+
+      var optionValues = [];
+      $('#toolTypeInput option').each(function() {
+          optionValues.push($(this).val());
+      });
+      $("#toolTypeInput").val(optionValues[0]);
+
+      $("#abstractDescriptionInput").val("");
+      $("#descriptionInput").val("");
+      $('#support .radio input[name=supportRadios]').prop("checked", false);
+      $("#category .checkbox input[name=categoryCheckboxes]").prop("checked", false);
+      $("#interfaceType .checkbox input[name=interfaceTypeCheckboxes]").prop("checked", false);
+      $("#versionInput").val("");
+      $("#releaseDateInput").val("");
+
+      $("#softwareLanguageContainer .softwareLanguageInput").val("");
+      var softwareLanguageInputs = $("#softwareLanguageContainer .form-group");
+      console.log("remove softwareLanguageInputs", softwareLanguageInputs);
+      var softwareLanguageInputsLength = softwareLanguageInputs.length;
+      console.log("remove softwareLanguageInputsLength", softwareLanguageInputsLength);
+      for( var i = softwareLanguageInputsLength - 1; i > 0; i--){
+        console.log("i:" + i,softwareLanguageInputs[i]);
+        softwareLanguageInputs[i].remove();
+
+        if(i <= 1 ){
+          $( "#removeSoftwareLanguageButton" ).hide();
+        }
+      }
+
+      $("#supportedOperatingSystemsInput").val("");
+      $("#systemRequirementsInput").val("");
+      $("#citationInput").val("");
+
+      $("#urlContainer .urlInput").val("");
+      var urlInputs = $("#urlContainer .urlInput");
+      console.log("remove urlInputs", urlInputs);
+      var urlInputsLength = urlInputs.length;
+      console.log("remove urlInputsLength", urlInputsLength);
+      for( var i = urlInputsLength - 1; i > 0; i--){
+        console.log("i:" + i, urlInputs[i]);
+        urlInputs[i].remove();
+
+        if(i <= 1 ){
+          $( "#removeUrlButton" ).hide();
+        }
+      }
+
+      var wFileInputs = $("#wFileInput");
+      wFileInputs.replaceWith(wFileInputs.val('').clone(true));
+      serviceInterfaceInformationDescription.innerHTML = "";
+
+      $("#submitterNameInput").val("");
+      $("#submitterInstitutionInput").val("");
+      $("#submitterEmailInput").val("");
+
       /*
       var type = $('#toolTypeInput option:selected').text();
       var abstract_desc = $("#abstractDescriptionInput").val();
