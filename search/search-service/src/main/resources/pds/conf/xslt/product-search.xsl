@@ -212,7 +212,7 @@
 	
       <ul class="results" style="padding-top: 1em;">
       <div style="margin-top: 1em; margin-bottom: .5em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Products</div>
-        <xsl:apply-templates select="response/result/doc[(arr|str)[@name='data_product_type']!='Product_Collection' and (arr|str)[@name='data_product_type']!='Product_Bundle' and (arr|str)[@name='data_product_type']!='Resource']"/>
+        <xsl:apply-templates select="response/result/doc[(arr|str)[@name='data_product_type']!='Product_Collection' and (arr|str)[@name='data_product_type']!='Product_Bundle' and (arr|str)[@name='data_product_type']!='Resource' and (arr|str)[@name='data_product_type']!='Product_Document']"/>
       </ul>
 
       <xsl:if test="response/result/@numFound &gt; count(response/result/doc)">
@@ -316,9 +316,10 @@
 					<strong><span class="pds_value"><xsl:value-of select="pds:caption-string('category',lower-case((arr|str)[@name='data_product_type']))" />:</span></strong>
 					<a href="{(str|arr)[@name='resLocation']}"><xsl:value-of select="$ds_name" /></a>
 					<br />
-          <xsl:for-each select="arr[@name='data_class']/str">
+		  <!-- for PDS-451 issue -->
+          <!--xsl:for-each select="arr[@name='data_class']/str">
             <xsl:value-of select="." /> -
-          </xsl:for-each>
+          </xsl:for-each-->
           <xsl:value-of select="(arr|str)[@name='observation_start_date_time']" /><br />
 				</li>
 			</xsl:otherwise>
