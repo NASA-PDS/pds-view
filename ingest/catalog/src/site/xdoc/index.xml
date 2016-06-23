@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2009-2013, by the California Institute of Technology.
+  Copyright 2009-2016, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -24,7 +24,7 @@
 
   <body>
     <section name="About Catalog Tool">
-      <p>The Catalog Tool provides functionality for ingesting PDS3 catalog files into the the PDS4 infrastructure (Registry Service). Catalog Tool offers three functions:
+      <p>The Catalog Tool provides functionality for ingesting PDS3 catalog files into the PDS4 infrastructure (Registry Service). Catalog Tool offers three functions:
       </p>
 
       <ul>
