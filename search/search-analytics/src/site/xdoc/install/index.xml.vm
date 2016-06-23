@@ -90,7 +90,7 @@ or
     </section>
 
     <section name="Configuring the Application">
-      <p>By default, the Search Analytics web application comes with a dashboard configuration intended to be used with a Search Service populated with PDS Context products (<i>pds-context.json</i>). The application also includes a dashboard configuration intended to be used with PDS Data products (<i>pds-data.json</i>). To modify the configuration for PDS Data product content, copy the <i>pds-data.json</i> file located in the <i>$TOMCAT_HOME/webapps/app/dashboards</i> directory to <i>default.json</i> and then refresh the page in your browser.
+      <p>By default, the Search Analytics web application comes with a dashboard configuration intended to be used with a Search Service populated with PDS Context products (<i>pds-context.json</i>). The application also includes a dashboard configuration intended to be used with PDS Data products (<i>pds-data.json</i>). To modify the configuration for PDS Data product content, copy the <i>pds-data.json</i> file located in the <i>$TOMCAT_HOME/webapps/${project.artifactId}/app/dashboards</i> directory to <i>default.json</i> and then refresh the page in your browser.
       </p>
     </section>
   </body>
