@@ -35,7 +35,7 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
 
     setTitle:function(product){
       $("#trDetailTitle").empty();
-      $("#trDetailTitle").append('<span style="font-size:175%;vertical-align: middle;">' + product.service_name + '</span><button id="returnToSearchButtonTop" type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return To Search</button>');
+      $("#trDetailTitle").append('<span style="font-size:175%;vertical-align: middle;">Tool/Service Detail</span>&nbsp;<button id="returnToSearchButtonTop" type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return To Search</button>');
         /*
         var type = product.objectType
 
@@ -58,6 +58,7 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
         output += '<table class="table table-striped table-condensed ToolRegistryTable"';
         output += '<tr><td colspan="2" style="background-color:#CCCCCC">' + "<h4>" + product.title + "</h4>" + "</td></tr>";
         //output += this.createListRow("Service Url", product.service_url);
+        output += this.createRow("URL", "<a href='" + product.service_url + "' target='_blank'>" + product.service_url + "</a>");
         output += this.createRow("Type", product.service_type);
         output += this.createRow("Description", product.description);
         output += this.createRow("Support", product.pds_model_version);
