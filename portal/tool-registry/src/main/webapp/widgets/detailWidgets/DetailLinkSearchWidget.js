@@ -58,8 +58,13 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
         output += '<table class="table table-striped table-condensed ToolRegistryTable"';
         output += '<tr><td colspan="2" style="background-color:#CCCCCC">' + "<h4>" + product.title + "</h4>" + "</td></tr>";
         //output += this.createListRow("Service Url", product.service_url);
+        output += this.createRow("Type", product.service_type);
         output += this.createRow("Description", product.description);
-        output += this.createRow("Abstract", product.service_abstract_desc);
+        output += this.createRow("Support", product.pds_model_version);
+        output += this.createRow("Category", product.service_category);
+        output += this.createRow("Interface Type", product.service_interface_type);
+        output += this.createRow("Version", product.version_id);
+        output += this.createRow("Release Date", product.modification_date);
         output += '</table></div>';
 
         /*
@@ -279,6 +284,7 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
     showDetailDiv: function(){
         $( "#trResult" ).fadeOut(400);
         $( "#trDetailDiv" ).fadeIn(800);
+        $( "#trSearch" ).fadeOut(400);
 
         $("html, body").animate({ scrollTop: 0 }, "slow");
     },
@@ -288,6 +294,7 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
 
         $( "#trDetailDiv" ).fadeOut(300);
         $( "#trResult" ).fadeIn(800);
+        $( "#trSearch" ).fadeIn(400);
         setTimeout(function(){
             $("html, body").animate({'scrollTop':$("#detailLink" + self.detailLinkId).offset().top}, 400,
                 function(){

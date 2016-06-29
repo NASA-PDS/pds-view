@@ -72,7 +72,7 @@
 				output += "<td><a id='detailLink" + docId +"' href='#' class='detailLink' detailLinkId='" + docId + "' detailLinkType='attribute'>" + linkText + "</a><br/><span class='ToolRegistryTableDescription'>" + snippet + "</span></td>";
 				//<tr><td>Chandrayaan-1 PDS Viewer<br/><span class="ToolRegistryTableDescription">A stanalone tool for Visulaisation of Chandrayaan-1 TMC & HYSI PDS data sets.</span></td><td>1.0.0</td></tr>
 				//output += "<td>" + snippet + "</td>";
-				output += "<td>" + doc.version_id + "</td>";
+				output += "<td>" + doc.pds_model_version + "</td>";
 				output += "</tr>";
 				return output;
 			}
@@ -97,7 +97,7 @@
 		},
 
 		setResultHeaders: function(table){
-			table.append("<tr><th>Name</th><th>Version&nbsp;ID</th></tr>");
+			table.append("<tr><th>Name</th><th>PDS&nbsp;Version</th></tr>");
 			/*
 			var type = self.manager.store.get('product-class').value;
 			if(type === "Product_Attribute_Definition"){

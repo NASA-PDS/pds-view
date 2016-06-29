@@ -71,8 +71,9 @@ function init(){
   */
 
   var wadlInstructions = "If the service interfaces for this software are described by a Web Application Description Language (WADL) file or a Web Service Definition Language (WSDL) file, then that file can be attached and described here.";
-  //var formInstructions = "Use this form to submit a new tool or service to the PDS Tool/Service Registry.";
-  var formInstructions = "If the service interfaces for this software are described by a Web Application Description Language (WADL) file or a Web Service Definition Language (WSDL) file, then that file can be attached and described here.";
+  var wadlInstructions = "Use this form to submit a new tool or service to the PDS Tool/Service Registry.";
+  var formInstructions = "Use this form to submit a new tool or service to the PDS Tool/Service Registry.";
+  //var formInstructions = "If the service interfaces for this software are described by a Web Application Description Language (WADL) file or a Web Service Definition Language (WSDL) file, then that file can be attached and described here.";
 
   $( document ).ready(function() {
     //Startup
@@ -167,23 +168,20 @@ function init(){
             $( "#addToolContainer" ).fadeIn( "slow", function() {
             });
           });
+          /*
+          $( "#trSearch" ).fadeOut( "slow", function() {
+          });*/
       }
       if(selected === "searchForTools"){
         $( "#addToolContainer" ).fadeOut( "slow", function() {
           $( "#searchContainer" ).fadeIn( "slow", function() {
           });
         });
+        /*
+        $( "#trSearch" ).fadeIn( "slow", function() {
+        });*/
       }
     });
-
-    $( "#addToolButton" ).click(function() {
-      $( "#searchContainer" ).fadeOut( "slow", function() {
-        $( "#addToolContainer" ).fadeIn( "slow", function() {
-        });
-      });
-      $('#pageControlTabs a[href="#add"]').tab('show')
-    });
-
 
     $( ".toStepOneButton" ).click(function() {
       $( "#toolSoftwareInformation" ).fadeOut( "slow", function() {
@@ -494,6 +492,7 @@ function init(){
       var formData = new FormData();
       formData.append("file", file, fileName);
       formData.append("path", dateString);
+      /*
       $.ajax({
         url: "http://pds-gamma.jpl.nasa.gov/services/transport-upload/upload",
         type: "POST",
@@ -520,6 +519,7 @@ function init(){
           processData: false
         });
       }
+      */
 
       $( "#addToolFormContainer" ).fadeOut( "slow", function() {
         $( "#submissionCompleteContainer" ).fadeIn( "slow", function() {
@@ -548,13 +548,9 @@ function init(){
 
       $("#softwareLanguageContainer .softwareLanguageInput").val("");
       var softwareLanguageInputs = $("#softwareLanguageContainer .form-group");
-      console.log("remove softwareLanguageInputs", softwareLanguageInputs);
       var softwareLanguageInputsLength = softwareLanguageInputs.length;
-      console.log("remove softwareLanguageInputsLength", softwareLanguageInputsLength);
       for( var i = softwareLanguageInputsLength - 1; i > 0; i--){
-        console.log("i:" + i,softwareLanguageInputs[i]);
         softwareLanguageInputs[i].remove();
-
         if(i <= 1 ){
           $( "#removeSoftwareLanguageButton" ).hide();
         }
@@ -566,13 +562,9 @@ function init(){
 
       $("#urlContainer .urlInput").val("");
       var urlInputs = $("#urlContainer .urlInput");
-      console.log("remove urlInputs", urlInputs);
       var urlInputsLength = urlInputs.length;
-      console.log("remove urlInputsLength", urlInputsLength);
       for( var i = urlInputsLength - 1; i > 0; i--){
-        console.log("i:" + i, urlInputs[i]);
         urlInputs[i].remove();
-
         if(i <= 1 ){
           $( "#removeUrlButton" ).hide();
         }

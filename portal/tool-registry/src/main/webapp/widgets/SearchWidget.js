@@ -2,7 +2,8 @@
 
 AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
   lastInputKeyword : "",
-  lastType: "attribute",
+  lastInterfaceType: "All",
+  lastCategory: "All",
   lastSort: "ascAlpha",
   lastPdsVersion: "both",
   lastSearchToggle: "search",
@@ -11,28 +12,28 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
     var self = this;
 
     var oldVal = this.lastInputKeyword;
-    $(this.target).find('#ddSearchInput').on("propertychange change click keyup input paste", function(event){
+    $(this.target).find('#trSearchInput').on("propertychange change click keyup input paste", function(event){
       var keyword = $(this).val();
       if(keyword !== oldVal){
         oldVal = keyword;
-        self.processSearch(keyword, self.lastType, self.lastSort, self.lastPdsVersion, self.lastSearchToggle);
+        self.processSearch(keyword, self.lastInterfaceType, self.lastCategory, self.lastSort, self.lastPdsVersion, self.lastSearchToggle);
       }
     });
 
-    $(this.target).find( '#ddToggleSearchingMethodSearch' ).on( "click", function() {
-        $(self.target).find( '#ddSearchToggleButton' ).html("Search <span class='caret'></span>");
+    $(this.target).find( '#trToggleSearchingMethodSearch' ).on( "click", function() {
+        $(self.target).find( '#trSearchToggleButton' ).html("Search <span class='caret'></span>");
 
         //Enable all ordering radio buttons
         $(self.target).find( '#sortOrderRadio2Div' ).attr("class", "radio");
         $(self.target).find( '#sortOrderRadio2' ).attr('disabled', false);
 
-        if (!self.isSameAsLastSearch(self.lastInputKeyword, self.lastType, self.lastSort, self.lastPdsVersion, "search")) {
-          self.processSearch(self.lastInputKeyword, self.lastType, self.lastSort, self.lastPdsVersion, "search");
+        if (!self.isSameAsLastSearch(self.lastInputKeyword, self.lastInterfaceType, self.lastCategory, self.lastSort, self.lastPdsVersion, "search")) {
+          self.processSearch(self.lastInputKeyword, self.lastInterfaceType, self.lastCategory, self.lastSort, self.lastPdsVersion, "search");
         }
     });
 
-    $(this.target).find( '#ddToggleSearchingMethodMatch' ).on( "click", function() {
-        $(self.target).find( '#ddSearchToggleButton' ).html("Match <span class='caret'></span>");
+    $(this.target).find( '#trToggleSearchingMethodMatch' ).on( "click", function() {
+        $(self.target).find( '#trSearchToggleButton' ).html("Match <span class='caret'></span>");
 
         //Disable all ordering radio buttons
         $(self.target).find( '#sortOrderRadio2Div' ).attr("class", "radio disabled");
@@ -42,36 +43,48 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
         $(self.target).find( '#sortOrderRadio1' ).prop('checked', true);
         $(self.target).find( '#sortOrderRadio2' ).attr('checked', false);
 
-        if (!self.isSameAsLastSearch(self.lastInputKeyword, self.lastType, "ascAlpha", self.lastPdsVersion, "match")) {
-          self.processSearch(self.lastInputKeyword, self.lastType, "ascAlpha", self.lastPdsVersion, "match");
+        if (!self.isSameAsLastSearch(self.lastInputKeyword, self.lastInterfaceType, self.lastCategory, "ascAlpha", self.lastPdsVersion, "match")) {
+          self.processSearch(self.lastInputKeyword, self.lastInterfaceType, self.lastCategory, "ascAlpha", self.lastPdsVersion, "match");
         }
     });
-    
-    $("input[name=objectTypeRadios]:radio").change(function () {
-      var type = self.getObjectType();
-      if (!self.isSameAsLastSearch(self.lastInputKeyword, type, self.lastSort, self.lastPdsVersion, self.lastSearchToggle)) {
-        self.processSearch(self.lastInputKeyword, type, self.lastSort, self.lastPdsVersion, self.lastSearchToggle);
+
+    $("input[name=interfaceTypeRadios]:radio").change(function () {
+      var interfaceType = self.getInterfaceType();
+
+      if (!self.isSameAsLastSearch(self.lastInputKeyword, interfaceType, self.lastCategory, self.lastSort, self.lastPdsVersion, self.lastSearchToggle)) {
+        self.processSearch(self.lastInputKeyword, interfaceType, self.lastCategory, self.lastSort, self.lastPdsVersion, self.lastSearchToggle);
+      }
+    });
+
+    $("input[name=categoryRadios]:radio").change(function () {
+      var category = self.getCategory();
+
+      if (!self.isSameAsLastSearch(self.lastInputKeyword, self.lastInterfaceType, category, self.lastSort, self.lastPdsVersion, self.lastSearchToggle)) {
+        self.processSearch(self.lastInputKeyword, self.lastInterfaceType, category, self.lastSort, self.lastPdsVersion, self.lastSearchToggle);
       }
     });
 
     $("input[name=sortOrderRadios]:radio").change(function () {
       var sort = self.getSort();
-      if (!self.isSameAsLastSearch(self.lastInputKeyword, self.lastType, sort, self.lastPdsVersion, self.lastSearchToggle)) {
-        self.processSearch(self.lastInputKeyword, self.lastType, sort, self.lastPdsVersion, self.lastSearchToggle);
+
+      if (!self.isSameAsLastSearch(self.lastInputKeyword, self.lastInterfaceType, self.lastCategory, sort, self.lastPdsVersion, self.lastSearchToggle)) {
+        self.processSearch(self.lastInputKeyword, self.lastInterfaceType, self.lastCategory, sort, self.lastPdsVersion, self.lastSearchToggle);
       }
     });
 
     $("input[name=pdsVersionRadios]:radio").change(function () {
       var pdsVersion = self.getPdsVersion();
-      if (!self.isSameAsLastSearch(self.lastInputKeyword, self.lastType, self.lastSort, pdsVersion, self.lastSearchToggle)) {
-        self.processSearch(self.lastInputKeyword, self.lastType, self.lastSort, pdsVersion, self.lastSearchToggle);
+
+      if (!self.isSameAsLastSearch(self.lastInputKeyword, self.lastInterfaceType, self.lastCategory, self.lastSort, pdsVersion, self.lastSearchToggle)) {
+        self.processSearch(self.lastInputKeyword, self.lastInterfaceType, self.lastCategory, self.lastSort, pdsVersion, self.lastSearchToggle);
       }
     });
   },
 
-  setLastSearchArguments: function(keyword, type, sort, pdsVersion, searchToggle){
+  setLastSearchArguments: function(keyword, interfaceType, category, sort, pdsVersion, searchToggle){
     this.lastInputKeyword = keyword;
-    this.lastType = type;
+    this.lastInterfaceType = interfaceType;
+    this.lastCategor = category;
     this.lastSort = sort;
     this.lastPdsVersion  = pdsVersion;
     this.lastSearchToggle = searchToggle;
@@ -90,9 +103,18 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
     return selectedVal;
   },
 
-  getObjectType: function(){
+  getInterfaceType: function(){
     var selectedVal = "";
-    var selected = $("input[type='radio'][name='objectTypeRadios']:checked");
+    var selected = $("input[type='radio'][name='interfaceTypeRadios']:checked");
+    if (selected.length > 0) {
+      selectedVal = selected.val();
+    }
+    return selectedVal;
+  },
+
+  getCategory: function(){
+    var selectedVal = "";
+    var selected = $("input[type='radio'][name='categoryRadios']:checked");
     if (selected.length > 0) {
       selectedVal = selected.val();
     }
@@ -108,9 +130,10 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
     return selectedVal;
   },
 
-  isSameAsLastSearch: function(value, type, sort, pdsVersion, lastSearchToggle){
+  isSameAsLastSearch: function(value, interfaceType, category, sort, pdsVersion, lastSearchToggle){
     if (this.lastInputKeyword === value &&
-        this.lastType === type &&
+        this.lastInterfaceType === interfaceType &&
+        this.lastCategory === category &&
         this.lastSort === sort &&
         this.lastPdsVersion === pdsVersion &&
         this.lastSearchToggle === lastSearchToggle){
@@ -120,66 +143,62 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
       return false;
   },
 
-  processSearch: function(keyword, type, sort, pdsVersion, searchToggle){
-    this.setLastSearchArguments(keyword, type, sort, pdsVersion, searchToggle);
+  processSearch: function(keyword, interfaceType, category, sort, pdsVersion, searchToggle){
+    this.setLastSearchArguments(keyword, interfaceType, category, sort, pdsVersion, searchToggle);
     keyword = this.replaceSpecialCharacters(keyword);
     console.log("keyword", keyword);
+    console.log("interfaceType", interfaceType);
+    console.log("category", category);
 
     var objectName = "";
-    var objectType = "";
     var qString = "";
 
-    if(type === "attribute"){
-      self.manager.store.addByValue('product-class', 'Product_Attribute_Definition');
+    self.manager.store.addByValue('product-class', 'Product_Service');
 
-      //if keyword search:
-      qString = "attribute_name:" + "*" + keyword + "*";
-      if (searchToggle === "match"){
-        qString = "attribute_name:" + keyword + "*";
-      }
-
-      objectName = "attribute_name";
-      objectType = "attribute_type";
-    }
-    else if(type === "class"){
-      self.manager.store.addByValue('product-class', 'Product_Class_Definition');
-
-      //if keyword search:
-      qString = "class_name:" + "*" + keyword + "*";
-      if (searchToggle === "match"){
-        qString = "class_name:" + keyword + "*";
-      }
-
-      objectName = "class_name";
-      objectType = "class_type";
+    qString = "title:" + "*" + keyword + "*";
+    if (searchToggle === "match"){
+      qString = "title:" + keyword + "*";
     }
 
     if(sort === 'ascAlpha'){
-      self.manager.store.addByValue('sort', objectName + ' asc');
+      self.manager.store.addByValue('sort', 'identifier asc');
     }
     else if(sort === 'descAlpha'){
-      self.manager.store.addByValue('sort', objectName + ' desc');
+      self.manager.store.addByValue('sort', 'identifier desc');
     }
 
     if(pdsVersion === "both"){
     }
     else if(pdsVersion === "pds3"){
-      qString += " " + objectType + ":PDS3";
+      qString += " " + "pds_model_version:PDS3";
     }
     else if(pdsVersion === "pds4"){
-      qString += " " + objectType + ":PDS4";
+      qString += " " + "pds_model_version:PDS4";
     }
 
+    if(interfaceType !== "All"){
+      qString += " " + "service_interface_type:" + interfaceType;
+    }
+
+
+    if(category !== "All"){
+      qString += " " + "service_category:" + category;
+    }
+
+
+
     if(qString.length > 0){
+      console.log("qString", qString);
       self.manager.store.addByValue('q', qString);
     }
 
     //Reset pager widget to start on page 1
     self.manager.store.get('start').val(0);
     console.log("self", self);
-    
+
     self.doRequest();
   }
+
 
 });
 

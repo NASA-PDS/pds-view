@@ -65,8 +65,229 @@
 
       <div id="searchContainer">
         <div class="registryServiceHeader">
-          <button id="addToolButton" type="button" class="btn btn-primary btn-lg">Submit a Tool</button>
           <br/>
+          <div class="panel panel-default" id="trSearch">
+            <div class="panel-body">
+              <div ><!--Ajax solr form begin-->
+
+                <div class="form-horizontal">
+                  <p class="formp"><strong>Browse or search the PDS data dictionary. Discover attributes or classes from both the PDS3 and PDS4 dictionaries. Select an item to view the details.</strong></p>
+                  <div class="input-group">
+                    <div class="input-group-btn">
+                      <button id="trSearchToggleButton" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Search <span class="caret"></span></button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li role="presentation" class="dropdown-header">Searching Method:</li>
+                        <li id="trToggleSearchingMethodSearch"><a>Search</a></li>
+                        <li id="trToggleSearchingMethodMatch"><a>Match</a></li>
+                      </ul>
+                    </div><!-- /btn-group -->
+                    <input type="text" id="trSearchInput" class="form-control" aria-label="...">
+                  </div><!-- /input-group -->
+
+                  <table id="radioOptionsTable">
+                    <tbody>
+                    <tr>
+                      <th>Sort:</th><th>Interface Type:</th><th>Version:</th><th>Category:</th><th></th>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <div id="sortOrderRadio1Div" class="radio">
+                          <label>
+                            <input type="radio" name="sortOrderRadios" id="sortOrderRadio1" value="ascAlpha" checked="">
+                            Ascending Alphabetical Order
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio1" value="All" checked="">
+                            All
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="pdsVersionRadios" id="pdsOrderRadio1" value="both" checked="">
+                            Both
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio1" value="All" checked="">
+                            All
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio6" value="Generation">
+                            Generation
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadioLast" value="Visualization">
+                            Visualization
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <div id="sortOrderRadio2Div" class="radio">
+                          <label>
+                            <input type="radio" name="sortOrderRadios" id="sortOrderRadio2" value="descAlpha">
+                            Descending Alphabetical Order
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio2" value="API">
+                            API
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="pdsVersionRadios" id="pdsOrderRadio2" value="pds3">
+                            PDS3
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio2" value="Analysis">
+                            Analysis
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio7" value="Planning">
+                            Planning
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio3" value="Command-Line">
+                            Command-Line
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="pdsVersionRadios" id="pdsOrderRadio3" value="pds4">
+                            PDS4
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio3" value="Reader">
+                            Reader
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio8" value="Search">
+                            Search
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio4" value="GUI">
+                            GUI
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio4" value="Design">
+                            Design
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio9" value="Transformation">
+                            Transformation
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio5" value="Service">
+                            Service
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio5" value="Dissemination">
+                            Dissemination
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio10" value="Validation">
+                            Validation
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody></table>
+                </div><!--End form horizontal-->
+
+              </div><!--End of ajax solr search form "search"-->
+            </div>
+          </div>
           <br/>
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -104,7 +325,7 @@
                 <!--Back Button Section-->
                 <div class="panel panel-default">
                   <div class="panel-body">
-                    <button id="returnToSearchButtonBottom" type="button" class="btn btn-info btn-lg btn-block"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return To Search</button>
+                    <button id="returnToSearchButtonBottom" type="button" class="btn btn-info btn-lg btn-block"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nsbp;Return To Search</button>
                   </div>
                 </div>
               </div>
@@ -150,7 +371,7 @@
 
                     <div class="form-group">
                       <label for="toolNameInput">Tool/Service Name <span class="asterisk">*</span></br><span class="labelDescription">Provide a name for the software.</span></label>
-                      <input type="text" class="form-control" id="toolNameInput" placeholder="" maxlength="255">
+                      <input type="text" class="form-control" id="toolNameInput" placeholder="" maxlength="255" pattern="title" required>
                     </div>
 
                     <div class="form-group">
@@ -412,7 +633,7 @@
                       <div class="panel panel-default">
                         <div class="panel-body">
                             <p class="formp serviceInterfaceInformationDescription">
-                              If the service interfaces for this software are described by a Web Application Description Language (WADL) file or a Web Service Definition Language (WSDL) file, then that file can be attached and described here.";
+                              If the service interfaces for this software are described by a Web Application Description Language (WADL) file or a Web Service Definition Language (WSDL) file, then that file can be attached and described here.
                             </p>
                           <div class="form-group">
                             <label for="fileInput">Input File</br><span class="labelDescription">Upload a file containing one or more WADL or WSDL service descriptions.</span></label>
