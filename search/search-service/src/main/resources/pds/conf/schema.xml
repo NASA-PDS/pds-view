@@ -560,6 +560,7 @@
    <field name="bundle_type" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="bundle_description" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="citation_author_list" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <field name="citation_description" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="citation_editor_list" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="citation_keyword" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
    <field name="citation_publication_year" type="string" indexed="false" stored="true" multiValued="true" />
