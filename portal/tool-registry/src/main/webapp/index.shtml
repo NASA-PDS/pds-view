@@ -46,7 +46,7 @@
   <div id="content">
     <h1>Tool Registry</h1>
     <p class="formp">
-      This interface allows the user to search for and discover tools and services relating to the access and use of planetary data. The interface also allows tool/service providers to submit their software for inclusion in the registry.
+      This interface allows the user to search for and discover tools relating to the access and use of planetary data. The interface also allows tool providers to submit their software for inclusion in the registry.
     </p>
     <div class="tw-bs">
       <div class="pageControl">
@@ -71,7 +71,7 @@
               <div ><!--Ajax solr form begin-->
 
                 <div class="form-horizontal">
-                  <p class="formp"><strong>Browse or search the PDS data dictionary. Discover attributes or classes from both the PDS3 and PDS4 dictionaries. Select an item to view the details.</strong></p>
+                  <p class="formp"><strong>Browse or search the PDS tool registry. Select a tool below to view the details.</strong></p>
                   <div class="input-group">
                     <div class="input-group-btn">
                       <button id="trSearchToggleButton" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Search <span class="caret"></span></button>
@@ -87,10 +87,20 @@
                   <table id="radioOptionsTable">
                     <tbody>
                     <tr>
-                      <th>Sort:</th><th>Interface Type:</th><th>Version:</th><th>Category:</th><th></th>
+                      <!-- <th>Sort:</th> -->
+                      <th>Support:</th>
+                      <th></th>
+                      <th>Interface Type:</th>
+                      <th></th>
+                      <th></th>
+                      <th>Category:</th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
                     </tr>
 
                     <tr>
+                      <!-- Disable the sort option.
                       <td>
                         <div id="sortOrderRadio1Div" class="radio">
                           <label>
@@ -99,14 +109,7 @@
                           </label>
                         </div>
                       </td>
-                      <td>
-                        <div class="radio">
-                          <label>
-                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio1" value="All" checked="">
-                            All
-                          </label>
-                        </div>
-                      </td>
+                      -->
                       <td>
                         <div class="radio">
                           <label>
@@ -116,113 +119,14 @@
                         </div>
                       </td>
                       <td>
+                      </td>
+                      <td>
                         <div class="radio">
                           <label>
-                            <input type="radio" name="categoryRadios" id="categoryRadio1" value="All" checked="">
+                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio1" value="All" checked="">
                             All
                           </label>
                         </div>
-                      </td>
-                      <td>
-                        <div class="radio">
-                          <label>
-                            <input type="radio" name="categoryRadios" id="categoryRadio6" value="Generation">
-                            Generation
-                          </label>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="radio">
-                          <label>
-                            <input type="radio" name="categoryRadios" id="categoryRadioLast" value="Visualization">
-                            Visualization
-                          </label>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>
-                        <div id="sortOrderRadio2Div" class="radio">
-                          <label>
-                            <input type="radio" name="sortOrderRadios" id="sortOrderRadio2" value="descAlpha">
-                            Descending Alphabetical Order
-                          </label>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="radio">
-                          <label>
-                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio2" value="API">
-                            API
-                          </label>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="radio">
-                          <label>
-                            <input type="radio" name="pdsVersionRadios" id="pdsOrderRadio2" value="pds3">
-                            PDS3
-                          </label>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="radio">
-                          <label>
-                            <input type="radio" name="categoryRadios" id="categoryRadio2" value="Analysis">
-                            Analysis
-                          </label>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="radio">
-                          <label>
-                            <input type="radio" name="categoryRadios" id="categoryRadio7" value="Planning">
-                            Planning
-                          </label>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>
-                      </td>
-                      <td>
-                        <div class="radio">
-                          <label>
-                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio3" value="Command-Line">
-                            Command-Line
-                          </label>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="radio">
-                          <label>
-                            <input type="radio" name="pdsVersionRadios" id="pdsOrderRadio3" value="pds4">
-                            PDS4
-                          </label>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="radio">
-                          <label>
-                            <input type="radio" name="categoryRadios" id="categoryRadio3" value="Reader">
-                            Reader
-                          </label>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="radio">
-                          <label>
-                            <input type="radio" name="categoryRadios" id="categoryRadio8" value="Search">
-                            Search
-                          </label>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>
                       </td>
                       <td>
                         <div class="radio">
@@ -237,6 +141,14 @@
                       <td>
                         <div class="radio">
                           <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio1" value="All" checked="">
+                            All
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
                             <input type="radio" name="categoryRadios" id="categoryRadio4" value="Design">
                             Design
                           </label>
@@ -245,15 +157,49 @@
                       <td>
                         <div class="radio">
                           <label>
-                            <input type="radio" name="categoryRadios" id="categoryRadio9" value="Transformation">
-                            Transformation
+                            <input type="radio" name="categoryRadios" id="categoryRadio7" value="Planning">
+                            Planning
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio10" value="Validation">
+                            Validation
                           </label>
                         </div>
                       </td>
                     </tr>
 
                     <tr>
+                      <!-- Disable the sort option.
                       <td>
+                        <div id="sortOrderRadio2Div" class="radio">
+                          <label>
+                            <input type="radio" name="sortOrderRadios" id="sortOrderRadio2" value="descAlpha">
+                            Descending Alphabetical Order
+                          </label>
+                        </div>
+                      </td>
+                      -->
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="pdsVersionRadios" id="pdsOrderRadio2" value="pds3">
+                            PDS3
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio2" value="API">
+                            API
+                          </label>
+                        </div>
                       </td>
                       <td>
                         <div class="radio">
@@ -268,6 +214,14 @@
                       <td>
                         <div class="radio">
                           <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio2" value="Analysis">
+                            Analysis
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
                             <input type="radio" name="categoryRadios" id="categoryRadio5" value="Dissemination">
                             Dissemination
                           </label>
@@ -276,10 +230,73 @@
                       <td>
                         <div class="radio">
                           <label>
-                            <input type="radio" name="categoryRadios" id="categoryRadio10" value="Validation">
-                            Validation
+                            <input type="radio" name="categoryRadios" id="categoryRadio8" value="Search">
+                            Search
                           </label>
                         </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadioLast" value="Visualization">
+                            Visualization
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <!-- Disable the sort option.
+                      <td>
+                      </td>
+                      -->
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="pdsVersionRadios" id="pdsOrderRadio3" value="pds4">
+                            PDS4
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio3" value="Command-Line">
+                            Command-Line
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio3" value="Reader">
+                            Reader
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio6" value="Generation">
+                            Generation
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio9" value="Transformation">
+                            Transformation
+                          </label>
+                        </div>
+                      </td>
+                      <td>
                       </td>
                     </tr>
                   </tbody></table>
@@ -291,7 +308,7 @@
           <br/>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">Tools/Services</h3>
+              <h3 class="panel-title">Tools</h3>
             </div>
             <div class="panel-body">
 
@@ -338,7 +355,7 @@
       <div id="addToolContainer">
             <div class="addToolHeader">
               <p id="formHeaderInstructions" class="formp">
-                Use this form to submit a new tool or service to the PDS Tool/Service Registry.
+                Use this form to submit a new tool to the PDS Tool Registry.
                 </br>
                 </br>
                 All fields with an asterisk <span class="asterisk">*</span> are required.
@@ -348,7 +365,7 @@
                 <li class="current">
                   <span aria-hidden="true" class="glyphicon glyphicon-pencil"></span>
                   <strong class="step">Step 1:</strong>
-                  Tool/Service Information
+                  Tool Information
                 </li>
                 <li>
                   <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
@@ -370,12 +387,12 @@
                   <div class="panel-body">
 
                     <div class="form-group">
-                      <label for="toolNameInput">Tool/Service Name <span class="asterisk">*</span></br><span class="labelDescription">Provide a name for the software.</span></label>
+                      <label for="toolNameInput">Tool Name <span class="asterisk">*</span></br><span class="labelDescription">Provide a name for the tool.</span></label>
                       <input type="text" class="form-control" id="toolNameInput" placeholder="" maxlength="255" pattern="title" required>
                     </div>
 
                     <div class="form-group">
-                      <label for="toolTypeInput">Type <span class="asterisk">*</span> </br><span class="labelDescription">Identify whether it is a tool or service.</span></label>
+                      <label for="toolTypeInput">Type <span class="asterisk">*</span> </br><span class="labelDescription">Identify whether it is a downloadable tool or online service.</span></label>
                       <select class="form-control" id="toolTypeInput">
                         <option>Tool</option>
                         <option>Service</option>
@@ -383,17 +400,17 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="abstractDescriptionInput">Abstract Description <span class="asterisk">*</span></br><span class="labelDescription">Provide a brief description of the software.</span></label>
+                      <label for="abstractDescriptionInput">Abstract Description <span class="asterisk">*</span></br><span class="labelDescription">Provide a brief description of the tool.</span></label>
                       <input type="text" class="form-control" id="abstractDescriptionInput" placeholder="" maxlength="255">
                     </div>
 
                     <div class="form-group">
-                      <label for="descriptionInput">Description</br><span class="labelDescription">Provide a detailed description of the software.</span></label>
+                      <label for="descriptionInput">Description</br><span class="labelDescription">Provide a detailed description of the tool.</span></label>
                       <textarea class="form-control vresize" id="descriptionInput" rows="3" placeholder=""></textarea>
                     </div>
 
                     <div class="form-group">
-                      <label for="support">Support <span class="asterisk">*</span></br><span class="labelDescription">Does this tool/service support PDS3 or PDS4 data.</span></label>
+                      <label for="support">Support <span class="asterisk">*</span></br><span class="labelDescription">Does this tool support PDS3 or PDS4 data.</span></label>
                       <div id="support">
                         <div class="radio">
                           <label>
@@ -409,7 +426,7 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="category">Category <span class="asterisk">*</span></br><span class="labelDescription">Select one or more categories that describe the software.</span></label>
+                      <label for="category">Category <span class="asterisk">*</span></br><span class="labelDescription">Select one or more categories that describe the tool.</span></label>
                       <div id="category">
                         <div class="checkbox">
                           <label>
@@ -465,7 +482,7 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="interfaceType">Interface Type</br><span class="labelDescription">Select one or more interface types available with the software.</span></label>
+                      <label for="interfaceType">Interface Type</br><span class="labelDescription">Select one or more interface types available with the tool.</span></label>
                       <div id="interfaceType">
                         <div class="checkbox">
                           <label>
@@ -584,7 +601,7 @@
                   <div class="panel-body">
 
                     <div class="form-group">
-                      <label for="versionInput">Version</br><span class="labelDescription">Provide the version of the software.</span></label>
+                      <label for="versionInput">Version</br><span class="labelDescription">Provide the version of the tool.</span></label>
                       <input type="text" class="form-control" id="versionInput" placeholder="" maxlength="255">
                     </div>
 
@@ -604,12 +621,12 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="supportedOperatingSystemsInput">Supported Operating Systems</br><span class="labelDescription">Describe the supported hardware and operating system platforms the software supports, if applicable.</span></label>
+                      <label for="supportedOperatingSystemsInput">Supported Operating Systems</br><span class="labelDescription">Describe the supported hardware and operating system platforms the tool supports, if applicable.</span></label>
                       <textarea class="form-control vresize" id="supportedOperatingSystemsInput" rows="3"></textarea>
                     </div>
 
                     <div class="form-group">
-                      <label for="systemRequirementsInput">System Requirements</br><span class="labelDescription">Describe any system requirements necessary to run the software on designated operating systems, if applicable.</span></label>
+                      <label for="systemRequirementsInput">System Requirements</br><span class="labelDescription">Describe any system requirements necessary to run the tool on designated operating systems, if applicable.</span></label>
                       <textarea class="form-control vresize" id="systemRequirementsInput" rows="3"></textarea>
                     </div>
 
@@ -620,7 +637,7 @@
 
                     <div id="urlContainer">
                       <div class="form-group">
-                        <label for="urlInput">URL <span class="asterisk">*</span></br><span class="labelDescription">Provide a URL where the software can be downloaded or accessed online. If more than one, enter one per line.</label>
+                        <label for="urlInput">URL <span class="asterisk">*</span></br><span class="labelDescription">Provide a URL where the tool can be downloaded or accessed online. If more than one, enter one per line.</label>
                         <input type="text" class="form-control urlInput" placeholder="" maxlength="255">
                       </div>
                     </div>
@@ -633,10 +650,10 @@
                       <div class="panel panel-default">
                         <div class="panel-body">
                             <p class="formp serviceInterfaceInformationDescription">
-                              If the service interfaces for this software are described by a Web Application Description Language (WADL) file or a Web Service Definition Language (WSDL) file, then that file can be attached and described here.
+                              If the interfaces for this tool are described by a Web Application Description Language (WADL) file or a Web Service Definition Language (WSDL) file, then that file can be attached and described here.
                             </p>
                           <div class="form-group">
-                            <label for="fileInput">Input File</br><span class="labelDescription">Upload a file containing one or more WADL or WSDL service descriptions.</span></label>
+                            <label for="fileInput">Input File</br><span class="labelDescription">Upload a file containing one or more WADL or WSDL interface descriptions.</span></label>
                             <input type="file" id="wFileInput" multiple>
                           </div>
 
@@ -664,7 +681,7 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="submitterInstitutionInput">Submitter Institution</br><span class="labelDescription">Provide the name of the institution employing the submitter or better yet curates the software.</span></label>
+                      <label for="submitterInstitutionInput">Submitter Institution</br><span class="labelDescription">Provide the name of the institution employing the submitter or better yet curates the tool.</span></label>
                       <input type="text" class="form-control" id="submitterInstitutionInput" placeholder="" maxlength="255">
                     </div>
 
