@@ -35,7 +35,7 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
 
     setTitle:function(product){
       $("#trDetailTitle").empty();
-      $("#trDetailTitle").append('<span style="font-size:175%;vertical-align: middle;">Tool/Service Detail</span>&nbsp;<button id="returnToSearchButtonTop" type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return To Search</button>');
+      $("#trDetailTitle").append('<span style="font-size:175%;vertical-align: middle;">Tool Detail</span>&nbsp;<button id="returnToSearchButtonTop" type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return To Search</button>');
         /*
         var type = product.objectType
 
