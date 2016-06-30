@@ -1,0 +1,61 @@
+PDS_VERSION_ID                  = PDS3                                
+LABEL_REVISION_NOTE  = "                                              
+       Release 1, Rev. 0 - S. Jeffers, 2005-01-21 - initial release;  
+       D. Heather (PSA), 2006-10-10 - padded file to 70 characters    
+                                      plus DOS format <CR><LF>."      
+                                                                      
+RECORD_TYPE                     = STREAM                              
+RELEASE_ID                      = "0001"                                
+PRODUCT_VERSION_ID              = "0000"                                
+                                                                      
+OBJECT                           = SOFTWARE                           
+ SOFTWARE_ID                     = "ASPERA3PROCSW"                    
+ SOFTWARE_VERSION_ID             = "Version 1"                        
+                                                                      
+ OBJECT                          = SOFTWARE_INFORMATION               
+       DATA_FORMAT                    = "N/A"                         
+       NODE_ID                        = "N/A"                         
+       PDS_USER_ID                    = "N/A"                         
+       REQUIRED_STORAGE_BYTES         = "N/A"                         
+       SOFTWARE_LICENSE_TYPE          = PUBLIC_DOMAIN                 
+       SOFTWARE_NAME                  = "ASPERA-3 Software to Process 
+                                         IDFS to PDS"                 
+       TECHNICAL_SUPPORT_TYPE         = "N/A"                         
+       SOFTWARE_DESC                  = "                             
+            The software used to process the data from the IDFS form  
+            to the PDS-compliant form is included for archival.       
+            Also, the software to generate the Geometry and Position  
+            index table and label files from the data labels and      
+            SPICE kernels is included. The input files for this       
+            software are not for archival, so they are found in the   
+            EXTRAS directory. There are two programs:                 
+                                                                      
+            1. IDFStoPDS - Software tool to process IDFS data to the  
+               PDS-compliant spreadsheet form (CSV) and generate      
+               associated PDS labels (LBL), written by SwRI.          
+                                                                      
+            2. GeoTab - Software tool to read SPICE kernels and       
+               generate the geometry table and associated label,      
+               written by PSA team, customized by SwRI. GeoTab must   
+               parse the data labels for creating the geometry index  
+               table, so SwRI added functionality to GeoTab to also   
+               replace keyword values (start with '$' to indicate     
+               placeholder) in the data labels.                       
+           "                                                          
+ END_OBJECT                      = SOFTWARE_INFORMATION               
+                                                                      
+ OBJECT                          = SOFTWARE_ONLINE                    
+       NODE_ID                        = "N/A"                         
+       ON_LINE_IDENTIFICATION         = "N/A"                         
+       ON_LINE_NAME                   = "N/A"                         
+       PLATFORM                       = MULTIPLE                      
+       PROTOCOL_TYPE                  = "N/A"                         
+ END_OBJECT                      = SOFTWARE_ONLINE                    
+                                                                      
+ OBJECT                          = SOFTWARE_PURPOSE                   
+       SOFTWARE_PURPOSE               = PROCESSING                    
+ END_OBJECT                      = SOFTWARE_PURPOSE                   
+                                                                      
+END_OBJECT                      = SOFTWARE                            
+                                                                      
+END                                                                   

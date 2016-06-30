@@ -1,0 +1,246 @@
+OBJECT                   =  COLUMN                                            
+  NAME                     = "SAMPLE UTC"                                     
+  COLUMN_NUMBER            = 1                                                
+  DATA_TYPE                = TIME                                             
+  PPI_TIME_FORMAT          = "  %YEAR% %DOY% %HR% %MIN% %SEC% %MSEC%"         
+  START_BYTE               = 2                                                
+  BYTES                    = 21                                               
+  UNIT                     = "N/A"                                            
+  DESCRIPTION              = "Universal time of the sample at the             
+        spacecraft. The time appears as 6 integer columns (year, day of       
+        year, hour, minute, seconds, millisecond). Individual elements of     
+        the time column are separated by a single ASCII space character       
+        and have leading zeros omitted. The individual elements can be        
+        read by using the FORTRAN format '(1X,I4,1X,I3,3(1X,I2),1X,I3)'       
+        IYR IDOY IHR IMIN ISEC IMSEC"                                         
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_16127_eV"                                 
+  COLUMN_NUMBER            = 2                                                
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 24                                               
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    13-20 keV energy bin with a central energy of 16127 eV."                  
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_9868_eV"                                  
+  COLUMN_NUMBER            = 3                                                
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 35                                               
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    8.0-12 keV energy bin with a central energy of 9868 eV."                  
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_6035_eV"                                  
+  COLUMN_NUMBER            = 4                                                
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 46                                               
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    4.9-7.5 keV energy bin with a central energy of 6035 eV."                 
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_3689_eV"                                  
+  COLUMN_NUMBER            = 5                                                
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 57                                               
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    2.9-4.6 keV energy bin with a central energy of 3689 eV."                 
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_2255_eV"                                  
+  COLUMN_NUMBER            = 6                                                
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 68                                               
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    1.8-2.8 keV energy bin with a central energy of 2255 eV."                 
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_1380_eV"                                  
+  COLUMN_NUMBER            = 7                                                
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 79                                               
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    1.1-1.7 keV energy bin with a central energy of 1380 eV."                 
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_844_eV"                                   
+  COLUMN_NUMBER            = 8                                                
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 90                                               
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    680-1046 eV energy bin with a central energy of 844 eV."                  
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_515_eV"                                   
+  COLUMN_NUMBER            = 9                                                
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 101                                              
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    415-639 eV energy bin with a central energy of 515 eV."                   
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_314_eV"                                   
+  COLUMN_NUMBER            = 10                                               
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 112                                              
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    253-390 eV energy bin with a central energy of 314 eV."                   
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_191_eV"                                   
+  COLUMN_NUMBER            = 11                                               
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 123                                              
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    153-237 eV energy bin with a central energy of 191 eV."                   
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_116_eV"                                   
+  COLUMN_NUMBER            = 12                                               
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 134                                              
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    92-144 eV energy bin with a central energy of 116 eV."                    
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_79_eV"                                    
+  COLUMN_NUMBER            = 13                                               
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 145                                              
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    72-87 eV energy bin with a central energy of 79 eV."                      
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_61_eV"                                    
+  COLUMN_NUMBER            = 14                                               
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 156                                              
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    56-67 eV energy bin with a central energy of 61 eV."                      
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_47_eV"                                    
+  COLUMN_NUMBER            = 15                                               
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 167                                              
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    43-52 eV energy bin with a central energy of 47 eV."                      
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_36_eV"                                    
+  COLUMN_NUMBER            = 16                                               
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 178                                              
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    33-40 eV energy bin with a central energy of 36 eV."                      
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_27_eV"                                    
+  COLUMN_NUMBER            = 17                                               
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 189                                              
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    25-30 eV energy bin with a central energy of 27 eV."                      
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_21_eV"                                    
+  COLUMN_NUMBER            = 18                                               
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 200                                              
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    18-23 eV energy bin with a central energy of 21 eV."                      
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_15_eV"                                    
+  COLUMN_NUMBER            = 19                                               
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 211                                              
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    14-17 eV energy bin with a central energy of 15 eV."                      
+END_OBJECT               = COLUMN                                             
+OBJECT                   = COLUMN                                             
+  NAME                     = "EFLUX_11_eV"                                    
+  COLUMN_NUMBER            = 20                                               
+  UNIT                     = "CM**-2 * S**-1 * SR**-1 * eV**-1"               
+  DATA_TYPE                = "ASCII REAL"                                     
+  START_BYTE               = 222                                              
+  BYTES                    = 10                                               
+  FORMAT                   = "E10.3"                                          
+  MISSING_CONSTANT         = -9.999e-09                                       
+  DESCRIPTION              = "Omni-directional electron flux from the         
+    10-13 eV energy bin with a central energy of 11 eV."                      
+END_OBJECT               = COLUMN                                             
+                                                                              
+                                                                              

@@ -1,0 +1,18 @@
+PDS_VERSION_ID                     = PDS3                                     
+RECORD_TYPE                        = STREAM                                   
+                                                                              
+OBJECT                             = TEXT                                     
+   PUBLICATION_DATE                = 2008-07-23  /* Label Generated */        
+   NOTE                            = "Description of the contents of the index
+        directory."                                                           
+END_OBJECT                         = TEXT                                     
+END                                                                           
+                                                                              
+"index" Directory Contents                                                    
+                                                                              
+indxinfo.txt - The file you are reading.                                      
+                                                                              
+index.tab - The PDS required index table containing information about the data
+        products and sent to engineering node.                                
+                                                                              
+index.lbl - The label for index.tab.                                          

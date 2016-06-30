@@ -1,0 +1,40 @@
+PDS_VERSION_ID                     = PDS3                                     
+                                                                              
+RECORD_TYPE                        = "FIXED_LENGTH"                           
+RECORD_BYTES                       = 72                                       
+FILE_RECORDS                       = 239                                      
+                                                                              
+DESCRIPTION                        = "This table provides an MD5 checksum for 
+        each file included on this volume, with the exception of the checksum 
+        file itself and its label. The checksums were automatically generated 
+        by OLAF before this volume was peer reviewed.  This means the         
+        checksums can be used to detect data corruption that occurred after   
+        the data left OLAF, but they do cannot be used to detect corruption   
+        before that time."                                                    
+                                                                              
+^CHECKSUM_TABLE                    = "checksum.tab"                           
+                                                                              
+OBJECT                             = CHECKSUM_TABLE                           
+  INTERCHANGE_FORMAT               = "ASCII"                                  
+  ROW_BYTES                        = 72                                       
+  ROWS                             = 239                                      
+  COLUMNS                          = 2                                        
+                                                                              
+  OBJECT                           = COLUMN                                   
+    NAME                           = "CHECKSUM"                               
+    DESCRIPTION                    = "The MD5 checksum of the indicated file" 
+    DATA_TYPE                      = "CHARACTER"                              
+    START_BYTE                     = 1                                        
+    BYTES                          = 32                                       
+  END_OBJECT                       = COLUMN                                   
+                                                                              
+  OBJECT                           = COLUMN                                   
+    NAME                           = "FILE_SPECIFICATION_NAME"                
+    DESCRIPTION                    = "Identifies the file for which the       
+        checksum was calculated"                                              
+    DATA_TYPE                      = "CHARACTER"                              
+    START_BYTE                     = 34                                       
+    BYTES                          = 37                                       
+  END_OBJECT                       = COLUMN                                   
+END_OBJECT                         = CHECKSUM_TABLE                           
+END                                                                           

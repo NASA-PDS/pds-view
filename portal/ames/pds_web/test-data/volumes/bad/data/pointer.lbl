@@ -1,0 +1,4 @@
+PDS_VERSION_ID = PDS3
+^STRUCTURE = "sfduFrag.fmt"
+^STRUCTURE = "versionFrag.fmt"
+END

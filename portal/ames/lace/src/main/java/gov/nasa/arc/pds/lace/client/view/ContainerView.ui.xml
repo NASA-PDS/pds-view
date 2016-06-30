@@ -1,0 +1,23 @@
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:lace="urn:import:gov.nasa.arc.pds.lace.client.presenter">
+				
+	<g:HTMLPanel ui:field="container">
+		<g:FocusPanel ui:field="titlePanel" styleName="hide noOutline">
+			<g:HTMLPanel styleName="containerHeader">
+				<g:Image ui:field="arrowIcon" />	
+				<g:HTMLPanel ui:field="typeIcon" styleName="icon middle">
+	    			<g:HTMLPanel ui:field="alertIcon" styleName="alertIcon"></g:HTMLPanel>
+	  			</g:HTMLPanel>
+				<g:InlineLabel ui:field="title" styleName="font large middle"></g:InlineLabel>
+				<g:InlineLabel ui:field="infoIcon" styleName="infoIcon hidden" />
+				<lace:ModificationButtonPresenter ui:field="modificationButton" visible="false"></lace:ModificationButtonPresenter>
+				<g:HTMLPanel ui:field="itemErrors" styleName="itemErrors hidden" />
+				<g:HTML ui:field="itemDocumentation" styleName="itemDocumentation hidden" />		
+			</g:HTMLPanel>
+		</g:FocusPanel>
+		<g:FlowPanel ui:field="attributePanel" />
+		<g:FlowPanel ui:field="contentPanel" styleName="editorContentPanel hide content containerContent"></g:FlowPanel>
+	</g:HTMLPanel>	
+	
+</ui:UiBinder> 

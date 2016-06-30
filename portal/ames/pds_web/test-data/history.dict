@@ -1,0 +1,66 @@
+PDS_VERSION_ID = 3
+OBJECT = GENERIC_OBJECT_DEFINITION
+  NAME = HISTORY
+  STATUS_TYPE = APPROVED
+  DESCRIPTION = "
+     A HISTORY object is a dynamic description of the history of
+     one or more associated data objects in a file.  It
+     supplements the essentially static description contained in
+     the PDS label.
+     The HISTORY object contains text in a
+     format similar to that of the ODL statements used in the
+     label.  It identifies previous computer manipulation of 
+     the principal data object(s) in the file.  It includes an
+     identification of the source data, processes performed,
+     processing parameters, as well as dates and times of
+     processing.  It is intended that the history be available
+     for display, be dynamically extended by any process
+     operating on the data, and automatically propagated to the
+     resulting data file.  Eventually, it might be extracted for
+     loading in detailed level catalogs of data set contents.
+     The HISTORY object is structured as a series of History
+     Entries, one for each process which has operated on the
+     data.  Each entry contains a standard set of 
+  ODL element
+     assignment statements, delimited by GROUP = program_name
+     and END_GROUP = program_name statements.  A subgroup in
+     each entry, delimited by GROUP = PARAMETERS and END_GROUP =
+     PARAMETERS, contains statements specifying the values of
+     all parameters of the program.
+     HISTORY ENTRY ELEMENTS
+     Attribute       Description
+     VERSION_DATE    Program version date, ISO standard format.
+     DATE_TIME       Run date and time, ISO standard format.
+     NODE_NAME       Network name of computer
+     USER_NAME       Username.
+     SOFTWARE_DESC   Program-generated (brief) description.
+     USER_NOTE       User-supplied (brief) description.
+     Unlike the above
+     elements, the names of the parameters defined in the
+     PARAMETERS subgroup are uncontrolled, and must only conform
+     to the program.
+     The last entry in a HISTORY object is
+     followed by an END statement.  The HISTORY object, by
+     convention, follows the PDS label of the file, beginning on
+     a record boundary, and is located by a pointer statement in
+     the label. There are no required elements for the PDS label
+     description of the object; it is represented in the label
+     only by the pointer statement, and OBJECT = HISTORY and
+     END_OBJECT = HISTORY statements.
+     The HISTORY capability
+     has been implemented as part of the Integrated Software for
+     Imaging Spectrometers (ISIS) system (see QUBE object
+     definition).  ISIS Qube applications add their own entries
+     to the Qube file's cumulative History object.  ISIS
+     programs run under NASA's TAE (Transportable Applications
+     Executive) system, and are able to automatically insert all
+     parameters of their TAE procedure into the history entry
+     created by the program.  Consult the ISIS System Design
+     document for details and limitations imposed by that
+     system.  (See the QUBE object description for further
+     references.)"
+  OPTIONAL_ELEMENT_SET = {
+     PSDD}
+OBJECT_TYPE = GENERIC
+END_OBJECT = GENERIC_OBJECT_DEFINITION
+END 

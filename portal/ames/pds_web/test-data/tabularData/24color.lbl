@@ -1,0 +1,714 @@
+PDS_VERSION_ID                     = PDS3                                     
+                                                                              
+RECORD_TYPE                        = "FIXED_LENGTH"                           
+RECORD_BYTES                       = 319                                      
+FILE_RECORDS                       = 286                                      
+                                                                              
+^TABLE                             = "24color.tab"                            
+                                                                              
+DATA_SET_ID                        = "EAR-A-DBP-3-RDR-24COLOR-V2.1"           
+PRODUCT_NAME                       = "24-COLOR ASTEROID SPECTROPHOTOMETRY"    
+PRODUCT_ID                         = "DATA024COLOR_TAB"                       
+INSTRUMENT_HOST_ID                 = "VARGBTEL"                               
+INSTRUMENT_HOST_NAME               = "VARIOUS GROUND-BASED TELESCOPES"        
+INSTRUMENT_ID                      = "DBP"                                    
+INSTRUMENT_NAME                    = "DUAL BEAM PHOTOMETER"                   
+TARGET_NAME                        = "ASTEROID"                               
+TARGET_TYPE                        = "ASTEROID"                               
+START_TIME                         = 1972-03-01                               
+STOP_TIME                          = 1981-08-28                               
+PRODUCT_CREATION_TIME              = 2005-01-13  /* File uploaded to OLAF */  
+CITATION_DESC                      = "Chapman, C.R., Gaffey, M., and McFadden,
+        L., 24-color Asteroid Spectrophotometry.                              
+        EAR-A-DBP-3-RDR-24COLOR-V2.1:DATA024COLOR_TAB. NASA Planetary Data    
+        System, 1993."                                                        
+REFERENCE_KEY_ID                   = {"MCFADDENETAL1984",                     
+        "CHAPMAN&GAFFEY1979B", "MCFADDEN1983", "CHAPMAN1972",                 
+        "CHAPMAN&GAFFEY1979A"}                                                
+RECORD_FORMAT                      = "(I5, 1X, A10, 1X, F5.2, 1X, F4.2, 1X,   
+        F5.2, 1X, F4.2, 1X, F5.2, 1X, F4.2, 1X, F5.2, 1X, F4.2, 1X, F5.2, 1X, 
+        F4.2, 1X, F5.2, 1X, F4.2, 1X, F5.2, 1X, F4.2, 1X, F5.2, 1X, F4.2, 1X, 
+        F5.2, 1X, F4.2, 1X, F5.2, 1X, F4.2, 1X, F5.2, 1X, F4.2, 1X, F5.2, 1X, 
+        F4.2, 1X, F5.2, 1X, F4.2, 1X, F5.2, 1X, F4.2, 1X, F5.2, 1X, F4.2, 1X, 
+        F5.2, 1X, F4.2, 1X, F5.2, 1X, F4.2, 1X, F5.2, 1X, F4.2, 1X, F5.2, 1X, 
+        F4.2, 1X, F5.2, 1X, F4.2, 1X, F5.2, 1X, F4.2, 1X, F5.2, 1X, F4.2, 1X, 
+        F5.2, 1X, F4.2, 1X, F5.2, 1X, F4.2, 1X, F5.2, 1X, F4.2, 1X, F5.2, 1X, 
+        F4.2, 1X, A10, 1X, I1, 1X, I1)"                                       
+                                                                              
+OBJECT                             = TABLE                                    
+ ROWS                              = 286                                      
+ ROW_BYTES                         = 319                                      
+ INTERCHANGE_FORMAT                = "ASCII"                                  
+ COLUMNS                           = 57                                       
+ DESCRIPTION                       = "This is the original 24-color           
+        spectrophotometry data file.  The data were taken using a filter wheel
+        with 24 slots, but it was not the case that the same 24 filters were  
+        always used. As a result, there are 26 different reflectance fields in
+        this file, but any given asteroid has data in no more than 24 fields. 
+        In addition, the set of filters used in Chapman and Gaffey (1979)     
+        [CHAPMAN&GAFFEY1979B] differed from the set used in McFadden et al.   
+        (1984) [MCFADDENETAL1984], so the central wavelength of some data     
+        columns depends upon which reference is referred to by that entry. All
+        reflectances are relative to unity at 0.56 um.  The filter            
+        characteristics are given in the file 24filter.tab.                   
+        "                                                                     
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 1                                        
+  NAME                             = "AST_NUMBER"                             
+  DESCRIPTION                      = "Asteroid catalog number. The file is    
+        sorted on this field."                                                
+  DATA_TYPE                        = "ASCII_INTEGER"                          
+  START_BYTE                       = 1                                        
+  BYTES                            = 5                                        
+  FORMAT                           = "I5"                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 2                                        
+  NAME                             = "PROV_ID"                                
+  DESCRIPTION                      = "One asteroid (5797 Bivoj) was           
+        unnnumbered at the time this data set was first published. The number 
+        has been added, but the provisional ID has been retained for          
+        cross-referencing."                                                   
+  DATA_TYPE                        = "CHARACTER"                              
+  START_BYTE                       = 7                                        
+  BYTES                            = 10                                       
+  FORMAT                           = "A10"                                    
+  MISSING_CONSTANT                 = "---"                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 3                                        
+  NAME                             = "REFL_1"                                 
+  DESCRIPTION                      = "Reflectance at 0.330 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 18                                       
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 4                                        
+  NAME                             = "REFL_1_UNC"                             
+  DESCRIPTION                      = "Uncertainty in 0.330 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 24                                       
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 5                                        
+  NAME                             = "REFL_2"                                 
+  DESCRIPTION                      = "Reflectance at 0.340 um if ref          
+        reflectance at 0.360 um if ref = 2."                                  
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 29                                       
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 6                                        
+  NAME                             = "REFL_2_UNC"                             
+  DESCRIPTION                      = "Uncertainty in 0.340 um reflectance if  
+        ref = 1; uncertainty in 0.360 um reflectance if ref = 2."             
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 35                                       
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 7                                        
+  NAME                             = "REFL_3"                                 
+  DESCRIPTION                      = "Reflectance at 0.355 um if ref          
+        reflectance at 0.380 um if ref = 2."                                  
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 40                                       
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 8                                        
+  NAME                             = "REFL_3_UNC"                             
+  DESCRIPTION                      = "Uncertainty in 0.355 um reflectance if  
+        ref = 1; uncertainty in 0.380 um reflectance if ref = 2."             
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 46                                       
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 9                                        
+  NAME                             = "REFL_4"                                 
+  DESCRIPTION                      = "Reflectance at 0.400 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 51                                       
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 10                                       
+  NAME                             = "REFL_4_UNC"                             
+  DESCRIPTION                      = "Uncertainty in 0.400 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 57                                       
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 11                                       
+  NAME                             = "REFL_5"                                 
+  DESCRIPTION                      = "Reflectance at 0.430 um if ref          
+        reflectance at 0.435 um if ref = 2."                                  
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 62                                       
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 12                                       
+  NAME                             = "REFL_5_UNC"                             
+  DESCRIPTION                      = "Uncertainty in 0.430 um reflectance if  
+        ref = 1; uncertainty in 0.435 um reflectance if ref = 2."             
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 68                                       
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 13                                       
+  NAME                             = "REFL_6"                                 
+  DESCRIPTION                      = "Reflectance at 0.470 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 73                                       
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 14                                       
+  NAME                             = "REFL_6_UNC"                             
+  DESCRIPTION                      = "Uncertainty in 0.470 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 79                                       
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 15                                       
+  NAME                             = "REFL_7"                                 
+  DESCRIPTION                      = "Reflectance at 0.500 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 84                                       
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 16                                       
+  NAME                             = "REFL_7_UNC"                             
+  DESCRIPTION                      = "Uncertainty in 0.500 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 90                                       
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 17                                       
+  NAME                             = "REFL_8"                                 
+  DESCRIPTION                      = "Reflectance at 0.540 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 95                                       
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 18                                       
+  NAME                             = "REFL_8_UNC"                             
+  DESCRIPTION                      = "Uncertainty in 0.540 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 101                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 19                                       
+  NAME                             = "REFL_9"                                 
+  DESCRIPTION                      = "Reflectance at 0.570 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 106                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 20                                       
+  NAME                             = "REFL_9_UNC"                             
+  DESCRIPTION                      = "Uncertainty in 0.570 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 112                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 21                                       
+  NAME                             = "REFL_10"                                
+  DESCRIPTION                      = "Reflectance at 0.600 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 117                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 22                                       
+  NAME                             = "REFL_10_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 0.600 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 123                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 23                                       
+  NAME                             = "REFL_11"                                
+  DESCRIPTION                      = "Reflectance at 0.635 um if ref          
+        reflectance at 0.630 um if ref = 2."                                  
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 128                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 24                                       
+  NAME                             = "REFL_11_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 0.635 um reflectance if  
+        ref = 1; uncertainty in 0.630 um reflectance if ref = 2."             
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 134                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 25                                       
+  NAME                             = "REFL_12"                                
+  DESCRIPTION                      = "Reflectance at 0.670 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 139                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 26                                       
+  NAME                             = "REFL_12_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 0.670 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 145                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 27                                       
+  NAME                             = "REFL_13"                                
+  DESCRIPTION                      = "Reflectance at 0.700 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 150                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 28                                       
+  NAME                             = "REFL_13_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 0.700 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 156                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 29                                       
+  NAME                             = "REFL_14"                                
+  DESCRIPTION                      = "Reflectance at 0.730 um if ref          
+        reflectance at 0.735 um if ref = 2."                                  
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 161                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 30                                       
+  NAME                             = "REFL_14_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 0.730 um reflectance if  
+        ref = 1; uncertainty in 0.735 um reflectance if ref = 2."             
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 167                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 31                                       
+  NAME                             = "REFL_15"                                
+  DESCRIPTION                      = "Reflectance in 0.765 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 172                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 32                                       
+  NAME                             = "REFL_15_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 0.765 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 178                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 33                                       
+  NAME                             = "REFL_16"                                
+  DESCRIPTION                      = "Reflectance at 0.800 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 183                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 34                                       
+  NAME                             = "REFL_16_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 0.800 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 189                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 35                                       
+  NAME                             = "REFL_17"                                
+  DESCRIPTION                      = "Reflectance at 0.830 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 194                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 36                                       
+  NAME                             = "REFL_17_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 0.830 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 200                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 37                                       
+  NAME                             = "REFL_18"                                
+  DESCRIPTION                      = "Reflectance at 0.870 um if ref          
+        reflectance at 0.875 um if ref = 2."                                  
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 205                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 38                                       
+  NAME                             = "REFL_18_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 0.870 um reflectance if  
+        ref = 1; uncertainty in 0.875 um reflectance if ref = 2."             
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 211                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 39                                       
+  NAME                             = "REFL_19"                                
+  DESCRIPTION                      = "Reflectance at 0.900 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 216                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 40                                       
+  NAME                             = "REFL_19_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 0.900 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 222                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 41                                       
+  NAME                             = "REFL_20"                                
+  DESCRIPTION                      = "Reflectance at 0.930 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 227                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 42                                       
+  NAME                             = "REFL_20_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 0.930 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 233                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 43                                       
+  NAME                             = "REFL_21"                                
+  DESCRIPTION                      = "Reflectance at 0.950 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 238                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 44                                       
+  NAME                             = "REFL_21_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 0.950 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 244                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 45                                       
+  NAME                             = "REFL_22"                                
+  DESCRIPTION                      = "Reflectance at 0.970 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 249                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 46                                       
+  NAME                             = "REFL_22_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 0.970 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 255                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 47                                       
+  NAME                             = "REFL_23"                                
+  DESCRIPTION                      = "Reflectance at 1.000 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 260                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 48                                       
+  NAME                             = "REFL_23_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 1.000 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 266                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 49                                       
+  NAME                             = "REFL_24"                                
+  DESCRIPTION                      = "Reflectance at 1.030 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 271                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 50                                       
+  NAME                             = "REFL_24_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 1.030 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 277                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 51                                       
+  NAME                             = "REFL_25"                                
+  DESCRIPTION                      = "Reflectance at 1.060 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 282                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 52                                       
+  NAME                             = "REFL_25_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 1.060 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 288                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 53                                       
+  NAME                             = "REFL_26"                                
+  DESCRIPTION                      = "Reflectance at 1.100 um"                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 293                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 54                                       
+  NAME                             = "REFL_26_UNC"                            
+  DESCRIPTION                      = "Uncertainty in 1.100 um reflectance"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 299                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 55                                       
+  NAME                             = "REF_DATE"                               
+  DESCRIPTION                      = "Reference Date - the date the record was
+        added or updated"                                                     
+  DATA_TYPE                        = "DATE"                                   
+  START_BYTE                       = 304                                      
+  BYTES                            = 10                                       
+  FORMAT                           = "A10"                                    
+  MISSING_CONSTANT                 = "9999-99-99"                             
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 56                                       
+  NAME                             = "REF_ID"                                 
+  DESCRIPTION                      = "Single digit number identifying the     
+        source reference.  References:                                        
+           1 - Chapman C. R., and Gaffey M. J.,(1979) in 'Asteroids', T.      
+        Gehrels, ed. (Univ. of Ariz. Press:  Tucson) pp. 1064-1089.           
+        [CHAPMAN&GAFFEY1979B]                                                 
+           2 - McFadden, L. A., Gaffey, M. J., and McCord, T. B. (1984),      
+        Icarus 59, p 25, and personal communication (1986, 1992)."            
+  DATA_TYPE                        = "ASCII_INTEGER"                          
+  START_BYTE                       = 315                                      
+  BYTES                            = 1                                        
+  FORMAT                           = "I1"                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 57                                       
+  NAME                             = "NOTE"                                   
+  DESCRIPTION                      = "A single-digit code number indicating   
+        whether there is an additional notation regarding the observation:    
+           1 - 1627 - See McFadden (1983) [MCFADDEN1983] for problems with the
+        data on this asteroid.                                                
+           2 - 1865 - At the time this dataset was compiled, the data on this 
+        asteroid existed only in the form of plots, and McFadden did not feel 
+        that the quality of the data was sufficient to warrent its inclusion  
+        here.                                                                 
+           3 - 3102 - Data originally published under the provisional         
+        designation 1981 QA."                                                 
+  DATA_TYPE                        = "ASCII_INTEGER"                          
+  START_BYTE                       = 317                                      
+  BYTES                            = 1                                        
+  FORMAT                           = "I1"                                     
+  MISSING_CONSTANT                 = 0                                        
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+END_OBJECT                         = TABLE                                    
+END                                                                           

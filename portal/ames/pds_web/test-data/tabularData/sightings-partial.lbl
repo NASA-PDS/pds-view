@@ -1,0 +1,1996 @@
+PDS_VERSION_ID               = PDS3                                           
+                                                                              
+RECORD_TYPE                  = "FIXED_LENGTH"                                 
+RECORD_BYTES                 = 622                                            
+FILE_RECORDS                 = 10                                           
+                                                                              
+^TABLE                       = "SIGHTINGS.TAB"                                
+                                                                              
+DATA_SET_ID                  = "IRAS-A-FPA-3-RDR-IMPS-V6.0"                   
+PRODUCT_NAME                 = "SIMPS SIGHTINGS FILE"                         
+PRODUCT_ID                   = "SIMPS-SIGHTINGS-200405"                       
+INSTRUMENT_HOST_NAME         = "INFRARED ASTRONOMICAL SATELLITE"              
+INSTRUMENT_NAME              = "FOCAL PLANE ARRAY"                            
+TARGET_NAME                  = "ASTEROID"                                     
+START_TIME                   = 1983-02-09                                     
+STOP_TIME                    = 1983-11-18                                     
+PRODUCT_CREATION_TIME        = 2004-05-20                                     
+                                                                              
+OBJECT     = TABLE                                                            
+  ROWS               = 10                                                   
+  ROW_BYTES          = 622                                                    
+  INTERCHANGE_FORMAT = "ASCII"                                                
+  COLUMNS            = 128                                                    
+  DESCRIPTION        = "The SIGHTINGS.TAB file corresponds to the             
+    Supplemental IRAS Minor Planet Survey Final Product 208, the SIMPS        
+    Sightings file.  It contains a listing of 9244 sightings associated       
+    with asteroids. SIGHTINGS.TAB contains the observation index, the         
+    identification of asteroids sighted, information pertaining to            
+    observation times, positional  information on the observations            
+    of asteroids detected, geometric albedos, diameters, and their            
+    associated uncertainties, input values used in the calculations           
+    of the geometric albedos and diameters using the asteroid standard        
+    thermal model, the observed flux densities in each band, detector         
+    crossing information, correlation coefficients, and status flags          
+    for reduction steps."                                                     
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 1                                                         
+    NAME          = "AST_NUMBER"                                              
+    DESCRIPTION   = "The IAU asteroid number designation"                     
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 1                                                         
+    BYTES         = 6                                                         
+    FORMAT        = "I6"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 2                                                         
+    NAME          = "OBS_TIME"                                                
+    DESCRIPTION   = "UT time at which the observation was made"               
+    DATA_TYPE     = "TIME"                                                    
+    START_BYTE    = 8                                                         
+    BYTES         = 19                                                        
+    FORMAT        = "A19"                                                     
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 3                                                         
+    NAME          = "TIME_TAG"                                                
+    DESCRIPTION   = "The native time at which the first detector registered   
+      the source in a seconds-confirming detection or a non-seconds confirming
+      detection explained by a dead or noisy detector. A source was scanned   
+      across modules of band 4 (100 micron), band 1 (12 micron), band 2       
+      (25 micron), band 3 (60 micron), band 1, band 2, band 3, and band 4     
+      detector modules in that order. Decreasing detector number values       
+      were crossed as a source was scanned. To determine the specific         
+      detector associated with the SIGHTING_TIME_TAG, one must identify the   
+      first band (in order 4, 1, 2, 3) which has a FLUX_STATUS_WORD greater   
+      than or equal to 4. The detector number then is the highest in that     
+      band's detector ID array."                                              
+    UNIT          = "DECISECOND"                                              
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 28                                                        
+    BYTES         = 9                                                         
+    FORMAT        = "I9"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 4                                                         
+    NAME          = "SOP_NUMBER"                                              
+    DESCRIPTION   = "The satellite operations plan (SOP) is the basic time    
+      interval of operations and data acquisition during the IRAS mission,    
+      corresponding to the time between station passes, varying between       
+      seven and eight orbits (10 to 14 hours).  There were two SOP's per      
+      day or 600 SOP's in the entire mission.  Each SOP consisted of 76 or    
+      fewer commands (OBS) for survey observations, pointed observations,     
+      calibration measurements, and other measurements, each of which was     
+      designated by an OBS number. Julian date of observation can be          
+      estimated from the SOP number by the formula JD=2445360+SOP/2."         
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 38                                                        
+    BYTES         = 3                                                         
+    FORMAT        = "I3"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 5                                                         
+    NAME          = "OBS_NUMBER"                                              
+    DESCRIPTION   = "Observations or commands were numbered sequentially      
+      within each SOP.  Each SOP consisted of 76 or fewer commands for        
+      survey observations, pointed observations, calibration measurements,    
+      and other measurements, each of which was designated by an OBS number." 
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 42                                                        
+    BYTES         = 2                                                         
+    FORMAT        = "I2"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 6                                                         
+    NAME          = "RA_HOURS"                                                
+    DESCRIPTION   = "Observed right ascension hours (B1950) of the            
+      asteroid"                                                               
+    UNIT          = "HOURS"                                                   
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 45                                                        
+    BYTES         = 2                                                         
+    FORMAT        = "I2"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 7                                                         
+    NAME          = "RA_MINUTES"                                              
+    DESCRIPTION   = "Observed right ascension minutes (B1950)                 
+      of the asteroid"                                                        
+    UNIT          = "MINUTES"                                                 
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 48                                                        
+    BYTES         = 2                                                         
+    FORMAT        = "I2"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 8                                                         
+    NAME          = "RA_SECONDS"                                              
+    DESCRIPTION   = "Observed right ascension seconds (B1950)                 
+      of the asteroid"                                                        
+    UNIT          = "SECONDS"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 51                                                        
+    BYTES         = 4                                                         
+    FORMAT        = "F4.1"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 9                                                         
+    NAME          = "DEC_SIGN"                                                
+    DESCRIPTION   = "Sign of observed declination degrees (B1950) of the      
+      asteroid.  Sign applies to DEC_DEGREES, DEC_MINUTES, and DEC_SECONDS."  
+    DATA_TYPE     = "CHARACTER"                                               
+    START_BYTE    = 56                                                        
+    BYTES         = 1                                                         
+    FORMAT        = "A1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 10                                                        
+    NAME          = "DEC_DEGREES"                                             
+    DESCRIPTION   = "Observed declination degrees (B1950) of the              
+      asteroid"                                                               
+    UNIT          = "DEGREES"                                                 
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 57                                                        
+    BYTES         = 2                                                         
+    FORMAT        = "I2"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 11                                                        
+    NAME          = "DEC_MINUTES"                                             
+    DESCRIPTION   = "Observed declination minutes (B1950) of the              
+      asteroid"                                                               
+    UNIT          = "ARCMINUTES"                                              
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 60                                                        
+    BYTES         = 2                                                         
+    FORMAT        = "I2"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 12                                                        
+    NAME          = "DEC_SECONDS"                                             
+    DESCRIPTION   = "Observed declination seconds (B1950) of the              
+      asteroid"                                                               
+    UNIT          = "ARCSECONDS"                                              
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 63                                                        
+    BYTES         = 2                                                         
+    FORMAT        = "I2"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 13                                                        
+    NAME          = "TWIST_ANGLE"                                             
+    DESCRIPTION   = "Celestial Twist Angle, which is the angle about the      
+      optical axis from celestial (equatorial) north to the cross-scan        
+      direction, in degrees east of north."                                   
+    UNIT          = "DEGREES"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 66                                                        
+    BYTES         = 5                                                         
+    FORMAT        = "F5.1"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 14                                                        
+    NAME          = "ECL_LONGITUDE"                                           
+    DESCRIPTION   = "Geocentric ecliptic longitude (B1950) of                 
+      the asteroid"                                                           
+    UNIT          = "DEGREES"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 72                                                        
+    BYTES         = 8                                                         
+    FORMAT        = "F8.4"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 15                                                        
+    NAME          = "ECL_LATITUDE"                                            
+    DESCRIPTION   = "Geocentric ecliptic latitude (B1950) of                  
+      the asteroid"                                                           
+    UNIT          = "DEGREES"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 81                                                        
+    BYTES         = 8                                                         
+    FORMAT        = "F8.4"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 16                                                        
+    NAME          = "GAL_LONGITUDE"                                           
+    DESCRIPTION   = "Geocentric galactic longitude of the asteroid"           
+    UNIT          = "DEGREES"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 90                                                        
+    BYTES         = 8                                                         
+    FORMAT        = "F8.4"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 17                                                        
+    NAME          = "GAL_LATITUDE"                                            
+    DESCRIPTION   = "Geocentric galactic latitude of the asteroid"            
+    UNIT          = "DEGREES"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 99                                                        
+    BYTES         = 8                                                         
+    FORMAT        = "F8.4"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 18                                                        
+    NAME          = "PRED_HEL_DIST"                                           
+    DESCRIPTION   = "Predicted heliocentric distance of asteroid"             
+    UNIT          = "ASTRONOMICAL_UNITS"                                      
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 108                                                       
+    BYTES         = 6                                                         
+    FORMAT        = "F6.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 19                                                        
+    NAME          = "PRED_GEO_DIST"                                           
+    DESCRIPTION   = "Predicted geocentric distance of asteroid"               
+    UNIT          = "ASTRONOMICAL_UNITS"                                      
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 115                                                       
+    BYTES         = 6                                                         
+    FORMAT        = "F6.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 20                                                        
+    NAME          = "PRED_PHASE"                                              
+    DESCRIPTION   = "Predicted phase angle of asteroid (negative before       
+      opposition)"                                                            
+    UNIT          = "DEGREES"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 122                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.2"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 21                                                        
+    NAME          = "PRED_RA_HOURS"                                           
+    DESCRIPTION   = "Predicted right ascension hours (B1950) of the           
+      asteroid"                                                               
+    UNIT          = "HOURS"                                                   
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 130                                                       
+    BYTES         = 2                                                         
+    FORMAT        = "I2"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 22                                                        
+    NAME          = "PRED_RA_MINUTES"                                         
+    DESCRIPTION   = "Predicted right ascension minutes (B1950) of             
+      the asteroid"                                                           
+    UNIT          = "MINUTES"                                                 
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 133                                                       
+    BYTES         = 2                                                         
+    FORMAT        = "I2"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 23                                                        
+    NAME          = "PRED_RA_SECONDS"                                         
+    DESCRIPTION   = "Predicted right ascension seconds (B1950) of             
+      the asteroid"                                                           
+    UNIT          = "SECONDS"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 136                                                       
+    BYTES         = 4                                                         
+    FORMAT        = "F4.1"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 24                                                        
+    NAME          = "PRED_DEC_SIGN"                                           
+    DESCRIPTION   = "Predicted sign of declination (B1950) of the             
+      asteroid"                                                               
+    DATA_TYPE     = "CHARACTER"                                               
+    START_BYTE    = 141                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "A1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 25                                                        
+    NAME          = "PRED_DEC_DEGREES"                                        
+    DESCRIPTION   = "Predicted declination degrees (B1950) of the             
+      asteroid"                                                               
+    UNIT          = "DEGREES"                                                 
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 142                                                       
+    BYTES         = 2                                                         
+    FORMAT        = "I2"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 26                                                        
+    NAME          = "PRED_DEC_MINUTES"                                        
+    DESCRIPTION   = "Predicted declination minutes (B1950) of the             
+      asteroid"                                                               
+    UNIT          = "ARCMINUTES"                                              
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 145                                                       
+    BYTES         = 2                                                         
+    FORMAT        = "I2"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 27                                                        
+    NAME          = "PRED_DEC_SECONDS"                                        
+    DESCRIPTION   = "Predicted declination seconds (B1950) of the             
+      asteroid"                                                               
+    UNIT          = "ARCSECONDS"                                              
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 148                                                       
+    BYTES         = 2                                                         
+    FORMAT        = "I2"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 28                                                        
+    NAME          = "PRED_V_MAG"                                              
+    DESCRIPTION   = "Predicted apparent visual magnitude of                   
+      asteroid"                                                               
+    UNIT          = "MAGNITUDES"                                              
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 151                                                       
+    BYTES         = 5                                                         
+    FORMAT        = "F5.2"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 29                                                        
+    NAME          = "ALB_12"                                                  
+    DESCRIPTION   = "Geometric albedo derived from the 12 micron band"        
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 157                                                       
+    BYTES         = 6                                                         
+    FORMAT        = "F6.4"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 30                                                        
+    NAME          = "ALB_25"                                                  
+    DESCRIPTION   = "Geometric albedo derived from the 25 micron band,        
+      then multiplied by 1.12 to bring into statistical agreement with        
+      12 micron derived albedos (see Tedesco, et al. 1992 [TEDESCOETAL1992],  
+      p. 141 ff)"                                                             
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 164                                                       
+    BYTES         = 6                                                         
+    FORMAT        = "F6.4"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 31                                                        
+    NAME          = "ALB_60"                                                  
+    DESCRIPTION   = "Geometric albedo derived from the 60 micron band,        
+      then multiplied by 1.12 to bring into statistical agreement with        
+      12 micron derived albedos (see Tedesco, et al. 1992 [TEDESCOETAL1992],  
+      p. 141 ff)"                                                             
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 171                                                       
+    BYTES         = 6                                                         
+    FORMAT        = "F6.4"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 32                                                        
+    NAME          = "ALB_100"                                                 
+    DESCRIPTION   = "Geometric albedo derived from the 100 micron band,       
+      then multiplied by 1.12 to bring into statistical agreement with        
+      12 micron derived albedos (see Tedesco, et al. 1992 [TEDESCOETAL1992],  
+      p. 141 ff)"                                                             
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 178                                                       
+    BYTES         = 6                                                         
+    FORMAT        = "F6.4"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 33                                                        
+    NAME          = "ALB_12_UNC"                                              
+    DESCRIPTION   = "1-sigma uncertainty in ALB_12.  This is arrived at by    
+      adding the one-sigma flux uncertainty to the flux, rederiving the       
+      albedo and taking the absolute value of its difference with the         
+      unperturbed value (Tedesco, et al. 1992 [TEDESCOETAL1992], p. 39)."     
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 185                                                       
+    BYTES         = 6                                                         
+    FORMAT        = "F6.4"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 34                                                        
+    NAME          = "ALB_25_UNC"                                              
+    DESCRIPTION   = "1-sigma uncertainty in ALB_25.  This is arrived at by    
+      adding the one-sigma flux uncertainty to the flux, rederiving the       
+      albedo and taking the absolute value of its difference with the         
+      unperturbed value (Tedesco, et al. 1992 [TEDESCOETAL1992], p. 39)."     
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 192                                                       
+    BYTES         = 6                                                         
+    FORMAT        = "F6.4"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 35                                                        
+    NAME          = "ALB_60_UNC"                                              
+    DESCRIPTION   = "1-sigma uncertainty in ALB_60.  This is arrived at by    
+      adding the one-sigma flux uncertainty to the flux, rederiving the       
+      albedo and taking the absolute value of its difference with the         
+      unperturbed value (Tedesco, et al. 1992 [TEDESCOETAL1992], p. 39)."     
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 199                                                       
+    BYTES         = 6                                                         
+    FORMAT        = "F6.4"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 36                                                        
+    NAME          = "ALB_100_UNC"                                             
+    DESCRIPTION   = "1-sigma uncertainty in ALB_100.  This is arrived at by   
+      adding the one-sigma flux uncertainty to the flux, rederiving the       
+      albedo and taking the absolute value of its difference with the         
+      unperturbed value (Tedesco, et al. 1992 [TEDESCOETAL1992], p. 39)."     
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 206                                                       
+    BYTES         = 6                                                         
+    FORMAT        = "F6.4"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 37                                                        
+    NAME          = "DIAM_12"                                                 
+    DESCRIPTION   = "Derived diameter in the 12 micron band"                  
+    UNIT          = "KILOMETERS"                                              
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 213                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.2"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 38                                                        
+    NAME          = "DIAM_25"                                                 
+    DESCRIPTION   = "Derived diameter in the 25 micron band"                  
+    UNIT          = "KILOMETERS"                                              
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 221                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.2"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 39                                                        
+    NAME          = "DIAM_60"                                                 
+    DESCRIPTION   = "Derived diameter in the 60 micron band"                  
+    UNIT          = "KILOMETERS"                                              
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 229                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.2"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 40                                                        
+    NAME          = "DIAM_100"                                                
+    DESCRIPTION   = "Derived diameter in the 100 micron band"                 
+    UNIT          = "KILOMETERS"                                              
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 237                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.2"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 41                                                        
+    NAME          = "DIAM_12_UNC"                                             
+    DESCRIPTION   = "1-sigma uncertainty in derived diameter in the           
+      12 micron band.  This is arrived at by adding the one-sigma flux        
+      uncertainty to the flux, rederiving the diameter and taking the         
+      absolute value of its difference with the unperturbed value             
+      (Tedesco, et al. 1992 [TEDESCOETAL1992], p. 39)."                       
+    UNIT          = "KILOMETERS"                                              
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 245                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.2"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 42                                                        
+    NAME          = "DIAM_25_UNC"                                             
+    DESCRIPTION   = "1-sigma uncertainty in derived diameter                  
+      in the 25 micron band.  This is arrived at by adding the one-sigma flux 
+      uncertainty to the flux, rederiving the diameter and taking the         
+      absolute value of its difference with the unperturbed value             
+      (Tedesco, et al. 1992 [TEDESCOETAL1992], p. 39)."                       
+    UNIT          = "KILOMETERS"                                              
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 253                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.2"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 43                                                        
+    NAME          = "DIAM_60_UNC"                                             
+    DESCRIPTION   = "1-sigma uncertainty in derived diameter                  
+      in the 60 micron band.  This is arrived at by adding the one-sigma flux 
+      uncertainty to the flux, rederiving the diameter and taking the         
+      absolute value of its difference with the unperturbed value             
+      (Tedesco, et al. 1992 [TEDESCOETAL1992], p. 39)."                       
+    UNIT          = "KILOMETERS"                                              
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 261                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.2"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 44                                                        
+    NAME          = "DIAM_100_UNC"                                            
+    DESCRIPTION   = "1-sigma uncertainty in derived diameter                  
+      in the 100 micron band.  This is arrived at by adding the one-sigma flux
+      uncertainty to the flux, rederiving the diameter and taking the         
+      absolute value of its difference with the unperturbed value             
+      (Tedesco, et al. 1992 [TEDESCOETAL1992], p. 39)."                       
+    UNIT          = "KILOMETERS"                                              
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 269                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.2"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 45                                                        
+    NAME          = "INSCAN_UNC"                                              
+    DESCRIPTION   = "1-sigma positional uncertainty in the in-scan            
+      direction"                                                              
+    UNIT          = "ARCMINUTES"                                              
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 278                                                       
+    BYTES         = 5                                                         
+    FORMAT        = "F5.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 46                                                        
+    NAME          = "CROSS_SCAN_UNC"                                          
+    DESCRIPTION   = "1-sigma Gaussian positional uncertainty in               
+      the cross-scan direction"                                               
+    UNIT          = "ARCMINUTES"                                              
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 284                                                       
+    BYTES         = 5                                                         
+    FORMAT        = "F5.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 47                                                        
+    NAME          = "CROSS_SCAN_HALF_WIDTH"                                   
+    DESCRIPTION   = "Cross-scan uniform position uncertainty                  
+      (half-width)"                                                           
+    UNIT          = "ARCMINUTES"                                              
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 290                                                       
+    BYTES         = 6                                                         
+    FORMAT        = "F6.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 48                                                        
+    NAME          = "POSITION_SCORE"                                          
+    DESCRIPTION   = "The position match score is a parameter correlated       
+      with the difference between the predicted and observed positions        
+      of the asteroid. It is the cross-covariance of the two position         
+      probability density functions (for the observed and computed asteroid   
+      positions) evaluated at the observed separation and assuming a single   
+      one-sigma positional uncertainty of 10 arc-seconds for the computed     
+      positions (see Tedesco, et al. 1992 [TEDESCOETAL1992], p. 137).         
+      Acceptance required a result  to be above 1000 (the density functions   
+      had units of probability mass per steradian). The units employed in     
+      the position probability density functions resulted in the figure of    
+      merit having a large value (1000 up to as much as one billion). The     
+      corresponding figure of merit used subsequently was obtained by         
+      taking  the common logarithm of the cross-covariance figure of merit,   
+      subtracting three, and dividing by 6. This resulted in a number         
+      between zero and one  (Matson, 1986 [MATSON1986], p. 6-16).             
+      Associations with scores poorer  than 0.4 are rejected (Tedesco, et     
+      al. 1992 [TEDESCOETAL1992], p. 88)."                                    
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 297                                                       
+    BYTES         = 5                                                         
+    FORMAT        = "F5.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 49                                                        
+    NAME          = "POSITION_DIFF"                                           
+    DESCRIPTION   = "The difference between the predicted and                 
+      observed positions (predicted - observed) in arcseconds"                
+    UNIT          = "ARCSECONDS"                                              
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 305                                                       
+    BYTES         = 5                                                         
+    FORMAT        = "F5.1"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 50                                                        
+    NAME          = "CORR_12"                                                 
+    DESCRIPTION   = "Flux overestimation correction factor for the            
+      12 micron band. This is applied to all detected fluxes having           
+      signal to noise ratios between 3 and 10. The correction is linear       
+      in SNR and has a value of 0.725 at SNR=3 and a value of 1 at SNR=10.    
+      See Tedesco, et al. 1992 [TEDESCOETAL1992], pp. 137-142."               
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 311                                                       
+    BYTES         = 5                                                         
+    FORMAT        = "F5.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 51                                                        
+    NAME          = "CORR_25"                                                 
+    DESCRIPTION   = "Flux overestimation correction factor for the            
+      25 micron band. This is applied to all detected fluxes having signal    
+      to noise ratios between 3 and 10. The correction is linear in SNR and   
+      has a value of 0.725 at SNR=3 and a value of 1 at SNR=10. See Tedesco,  
+      et al. 1992 [TEDESCOETAL1992], pp. 137-142."                            
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 317                                                       
+    BYTES         = 5                                                         
+    FORMAT        = "F5.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 52                                                        
+    NAME          = "CORR_60"                                                 
+    DESCRIPTION   = "Flux overestimation correction factor for the            
+      60 micron band. This is applied to all detected fluxes having signal    
+      to noise ratios between 3 and 10. The correction is linear in SNR and   
+      has a value of 0.725 at SNR=3 and a value of 1 at SNR=10. See Tedesco,  
+      et al. 1992 [TEDESCOETAL1992], pp. 137-142."                            
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 323                                                       
+    BYTES         = 5                                                         
+    FORMAT        = "F5.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 53                                                        
+    NAME          = "CORR_100"                                                
+    DESCRIPTION   = "Flux overestimation correction factor for the            
+      100 micron band. This is applied to all detected fluxes having signal   
+      to noise ratios between 3 and 10. The correction is linear in SNR and   
+      has a value of 0.725 at SNR=3 and a value of 1 at SNR=10. See Tedesco,  
+      et al. 1992 [TEDESCOETAL1992], pp. 137-142."                            
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 329                                                       
+    BYTES         = 5                                                         
+    FORMAT        = "F5.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 54                                                        
+    NAME          = "PRED_FLUX_12"                                            
+    DESCRIPTION   = "Predicted flux density in the 12 micron                  
+      band"                                                                   
+    UNIT          = "JANSKYS"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 335                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 55                                                        
+    NAME          = "PRED_FLUX_25"                                            
+    DESCRIPTION   = "Predicted flux density in the 25 micron                  
+      band"                                                                   
+    UNIT          = "JANSKYS"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 343                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 56                                                        
+    NAME          = "PRED_FLUX_60"                                            
+    DESCRIPTION   = "Predicted flux density in the 60 micron                  
+      band"                                                                   
+    UNIT          = "JANSKYS"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 351                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 57                                                        
+    NAME          = "PRED_FLUX_100"                                           
+    DESCRIPTION   = "Predicted flux density in the 100 micron                 
+      band"                                                                   
+    UNIT          = "JANSKYS"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 359                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 58                                                        
+    NAME          = "OBS_FLUX_12"                                             
+    DESCRIPTION   = "Observed flux density in the 12 micron                   
+      band.  Corrected by CORR_12 if 3<SNR_12<10."                            
+    UNIT          = "JANSKYS"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 367                                                       
+    BYTES         = 8                                                         
+    FORMAT        = "F8.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 59                                                        
+    NAME          = "OBS_FLUX_25"                                             
+    DESCRIPTION   = "Observed flux density in the 25 micron band.  Corrected  
+      by CORR_25 if 3<SNR_25<10."                                             
+    UNIT          = "JANSKYS"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 376                                                       
+    BYTES         = 8                                                         
+    FORMAT        = "F8.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 60                                                        
+    NAME          = "OBS_FLUX_60"                                             
+    DESCRIPTION   = "Observed flux density in the 60 micron band.  Corrected  
+      by CORR_60 if 3<SNR_60<10.                                              
+                                                                              
+      Note: The presence of infrared cirrus at 60 microns raises the          
+            possibility of contamination of asteroid flux density. The        
+            presence of underlying cirrus should be determined from IRAS      
+            scan or image products."                                          
+    UNIT          = "JANSKYS"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 385                                                       
+    BYTES         = 8                                                         
+    FORMAT        = "F8.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 61                                                        
+    NAME          = "OBS_FLUX_100"                                            
+    DESCRIPTION   = "Observed flux density in the 100 micron band.            
+      Corrected by CORR_100 if 3<SNR_100<10.                                  
+                                                                              
+      Note: The presence of infrared cirrus at 100 microns was so frequently  
+            observed that the possibility of contamination of asteroid flux   
+            density is significant. The presence of underlying cirrus should  
+            be determined from IRAS scan or image products before utilizing   
+            this flux density."                                               
+    UNIT          = "JANSKYS"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 394                                                       
+    BYTES         = 8                                                         
+    FORMAT        = "F8.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 62                                                        
+    NAME          = "OBS_FLUX_12_UNC"                                         
+    DESCRIPTION   = "1-sigma uncertainty in observed flux density             
+      in the 12 micron band.  The flux uncertainty was increased by           
+      root-sum squaring it with the flux correction (Tedesco, et al.          
+      1992 [TEDESCOETAL1992], p. 140)."                                       
+    UNIT          = "JANSKYS"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 404                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 63                                                        
+    NAME          = "OBS_FLUX_25_UNC"                                         
+    DESCRIPTION   = "1-sigma uncertainty in observed flux density             
+      in the 25 micron band.  The flux uncertainty was increased by           
+      root-sum squaring it with the flux correction (Tedesco, et al.          
+      1992 [TEDESCOETAL1992], p. 140)."                                       
+    UNIT          = "JANSKYS"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 413                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 64                                                        
+    NAME          = "OBS_FLUX_60_UNC"                                         
+    DESCRIPTION   = "1-sigma uncertainty in observed flux density             
+      in the 60 micron band.  The flux uncertainty was increased by           
+      root-sum squaring it with the flux correction (Tedesco, et al.          
+      1992 [TEDESCOETAL1992], p. 140)."                                       
+    UNIT          = "JANSKYS"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 422                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 65                                                        
+    NAME          = "OBS_FLUX_100_UNC"                                        
+    DESCRIPTION   = "1-sigma uncertainty in observed flux density             
+      in the 100 micron band.  The flux uncertainty was increased by          
+      root-sum squaring it with the flux correction (Tedesco, et al.          
+      1992 [TEDESCOETAL1992], p. 140)."                                       
+    UNIT          = "JANSKYS"                                                 
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 431                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.3"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 66                                                        
+    NAME          = "SNR_12"                                                  
+    DESCRIPTION   = "Signal-to-noise ratio in the 12 micron band"             
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 439                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.2"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 67                                                        
+    NAME          = "SNR_25"                                                  
+    DESCRIPTION   = "Signal-to-noise ratio in the 25 micron band"             
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 447                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.2"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 68                                                        
+    NAME          = "SNR_60"                                                  
+    DESCRIPTION   = "Signal-to-noise ratio in the 60 micron band"             
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 455                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.2"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 69                                                        
+    NAME          = "SNR_100"                                                 
+    DESCRIPTION   = "Signal-to-noise ratio in the 100 micron band"            
+    DATA_TYPE     = "ASCII_REAL"                                              
+    START_BYTE    = 463                                                       
+    BYTES         = 7                                                         
+    FORMAT        = "F7.2"                                                    
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 70                                                        
+    NAME          = "ID_ARRAY_12"                                             
+    DESCRIPTION   = "This is an encoded version of which 12 micron            
+      detectors were crossed by the source. To decode these values, the       
+      decimal value is first converted to binary, then padded with leading    
+      zeroes until it is fifteen digits long. Next this binary number is      
+      parsed into three five-digit numbers, each of which are converted       
+      back into decimal, and all of which will have values between 1 and      
+      16. These are then converted to DETECTOR_ID values (see the PDS         
+      FPA dataset IRAS-FPA-6-RDR-INSTRUMENT-INFO-V1.1, available from the     
+      Small Bodies Node), using the table below from Beichman, et al. (1988)  
+      [BEICHMANETAL1988] (p. X-25).                                           
+                                                                              
+      In-band detector  DETECTOR_ID                                           
+          number                                                              
+            1              23                                                 
+            2              24                                                 
+            3              25                                                 
+            4              26                                                 
+            5              27                                                 
+            6              28                                                 
+            7              29                                                 
+            8              30                                                 
+            9              47                                                 
+            10             48                                                 
+            11             49                                                 
+            12             50                                                 
+            13             51                                                 
+            14             52                                                 
+            15             53                                                 
+            16             54                                                 
+                                                                              
+      Up to three detectors can have been crossed. If only one detector       
+      was crossed, the first two of the three parsed numbers will be zero.    
+      If two detectors were crossed, then the first of the three parsed       
+      numbers will be zero. If a dead detector was crossed, it is assigned    
+      a value of zero. Detectors are identified from left to right in the     
+      order in which they were crossed by the source. For further information 
+      about the detectors of the IRAS Focal Plane Array see the PDS FPA       
+      dataset IRAS-FPA-6-RDR-INSTRUMENT-INFO-V1.1, available from the Small   
+      Bodies Node."                                                           
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 471                                                       
+    BYTES         = 5                                                         
+    FORMAT        = "I5"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 71                                                        
+    NAME          = "ID_ARRAY_25"                                             
+    DESCRIPTION   = "This is an encoded version of which 25 micron            
+      detectors were crossed by the source. To decode these values, the       
+      decimal value is first converted to binary, then padded with leading    
+      zeroes until it is fifteen digits long. Next this binary number is      
+      parsed into three five-digit numbers, each of which are converted back  
+      into decimal, and all of which will have values between 1 and 16. These 
+      are then converted to DETECTOR_ID values (see fpa.tab) using the table  
+      below from Beichman, et al. (1988) [BEICHMANETAL1988] (p. X-25).        
+                                                                              
+      In-band detector  DETECTOR_ID                                           
+          number                                                              
+            1              16                                                 
+            2              17                                                 
+            3              18                                                 
+            4              19                                                 
+            5              20                                                 
+            6              21                                                 
+            7              22                                                 
+            8              39                                                 
+            9              40                                                 
+            10             41                                                 
+            11             42                                                 
+            12             43                                                 
+            13             44                                                 
+            14             45                                                 
+            15             46                                                 
+            16             00                                                 
+                                                                              
+      Up to three detectors can have been crossed. If only one detector       
+      was crossed, the first two of the three parsed numbers will be zero.    
+      If two detectors were crossed, then the first of the three parsed       
+      numbers will be zero. If a dead detector was crossed, it is assigned    
+      a value of zero. Detectors are identified from left to right in the     
+      order in which they were crossed by the source. For further             
+      information about the detectors of the IRAS Focal Plane Array see       
+      the PDS FPA dataset IRAS-FPA-6-RDR-INSTRUMENT-INFO-V1.1, available      
+      from the Small Bodies Node."                                            
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 477                                                       
+    BYTES         = 5                                                         
+    FORMAT        = "I5"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 72                                                        
+    NAME          = "ID_ARRAY_60"                                             
+    DESCRIPTION   = "This is an encoded version of which 60 micron            
+      detectors were crossed by the source. To decode these values, the       
+      decimal value is first converted to binary, then padded with leading    
+      zeroes until it is fifteen digits long. Next this binary number is      
+      parsed into three five-digit numbers, each of which are converted       
+      back into decimal, and all of which will have values between 1 and      
+      16. These are then converted to DETECTOR_ID values (see fpa.tab)        
+      using the table below from Beichman, et al. (1988) [BEICHMANETAL1988]   
+      (p. X-25).                                                              
+                                                                              
+      In-band detector  DETECTOR_ID                                           
+          number                                                              
+            1               8                                                 
+            2               9                                                 
+            3              10                                                 
+            4              11                                                 
+            5              12                                                 
+            6              13                                                 
+            7              14                                                 
+            8              15                                                 
+            9              31                                                 
+            10             32                                                 
+            11             33                                                 
+            12             34                                                 
+            13             35                                                 
+            14             36                                                 
+            15             37                                                 
+            16             38                                                 
+                                                                              
+      Up to three detectors can have been crossed. If only one detector       
+      was crossed, the first two of the three parsed numbers will be zero.    
+      If two detectors were crossed, then the first of the three parsed       
+      numbers will be zero. If a dead detector was crossed, it is assigned    
+      a value of zero. Detectors are identified from left to right in the     
+      order in which they were crossed by the source. For further             
+      information about the detectors of the IRAS Focal Plane Array see       
+      the PDS FPA dataset IRAS-FPA-6-RDR-INSTRUMENT-INFO-V1.1, available      
+      from the Small Bodies Node."                                            
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 483                                                       
+    BYTES         = 5                                                         
+    FORMAT        = "I5"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 73                                                        
+    NAME          = "ID_ARRAY_100"                                            
+    DESCRIPTION   = "This is an encoded version of which 100 micron           
+      detectors were crossed by the source. To decode these values, the       
+      decimal value is first converted to binary, then padded with leading    
+      zeroes until it is fifteen digits long. Next this binary number is      
+      parsed into three five-digit numbers, each of which are converted       
+      back into decimal, and all of which will have values between 1 and      
+      16. These are then converted to DETECTOR_ID values (see fpa.tab)        
+      using the table below from Beichman, et al. (1988) [BEICHMANETAL1988]   
+      (p. X-25).                                                              
+                                                                              
+      In-band detector  DETECTOR_ID                                           
+          number                                                              
+            1               1                                                 
+            2               2                                                 
+            3               3                                                 
+            4               4                                                 
+            5               5                                                 
+            6               6                                                 
+            7               7                                                 
+            8              55                                                 
+            9              56                                                 
+            10             57                                                 
+            11             58                                                 
+            12             59                                                 
+            13             60                                                 
+            14             61                                                 
+            15             62                                                 
+            16             00                                                 
+                                                                              
+      Up to three detectors can have been crossed. If only one detector       
+      was crossed, the first two of the three parsed numbers will be          
+      zero. If two detectors were crossed, then the first of the three        
+      parsed numbers will be zero. If a dead detector was crossed, it is      
+      assigned a value of zero. Detectors are identified from left to         
+      right in the order in which they were crossed by the source. For        
+      further information about the detectors of the IRAS Focal Plane         
+      Array see the PDS FPA dataset IRAS-FPA-6-RDR-INSTRUMENT-INFO-V1.1,      
+      available from the Small Bodies Node."                                  
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 489                                                       
+    BYTES         = 5                                                         
+    FORMAT        = "I5"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 74                                                        
+    NAME          = "CORR_COEFF_12"                                           
+    DESCRIPTION   = "For each candidate peak (exceeding 2.5 times the         
+      rms noise of a given detector) an 11-point template, corresponding      
+      to the point spread function, was fit to the data and the correlation   
+      coefficient was calculated. Peaks with an amplitude above 3.0 times     
+      the noise and a correlation coefficient greater than 0.87 were passed   
+      as valid detections. The CORR_COEFF_12 is the                           
+      maximum of that value over all detections in a given band in a given    
+      scan, multiplied by 100."                                               
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 495                                                       
+    BYTES         = 3                                                         
+    FORMAT        = "I3"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 75                                                        
+    NAME          = "CORR_COEFF_25"                                           
+    DESCRIPTION   = "For each candidate peak (exceeding 2.5 times the         
+      rms noise of a given detector) an 11-point template, corresponding      
+      to the point spread function, was fit to the data and the correlation   
+      coefficient was calculated. Peaks with an amplitude above 3.0 times     
+      the noise and a correlation coefficient greater than 0.87 were passed   
+      as valid detections. The CORR_COEFF_25 is the                           
+      maximum of that value over all detections in a given band in a given    
+      scan, multiplied by 100."                                               
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 499                                                       
+    BYTES         = 3                                                         
+    FORMAT        = "I3"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 76                                                        
+    NAME          = "CORR_COEFF_60"                                           
+    DESCRIPTION   = "For each candidate peak (exceeding 2.5 times the         
+      rms noise of a given detector) an 11-point template, corresponding      
+      to the point spread function, was fit to the data and the correlation   
+      coefficient was calculated. Peaks with an amplitude above 3.0 times     
+      the noise and a correlation coefficient greater than 0.87 were passed   
+      as valid detections. The CORR_COEFF_60 is the                           
+      maximum of that value over all detections in a given band in a given    
+      scan, multiplied by 100."                                               
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 503                                                       
+    BYTES         = 3                                                         
+    FORMAT        = "I3"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 77                                                        
+    NAME          = "CORR_COEFF_100"                                          
+    DESCRIPTION   = "For each candidate peak (exceeding 2.5 times the         
+      rms noise of a given detector) an 11-point template, corresponding      
+      to the point spread function, was fit to the data and the correlation   
+      coefficient was calculated. Peaks with an amplitude above 3.0 times     
+      the noise and a correlation coefficient greater than 0.87 were passed   
+      as valid detections. The CORR_COEFF_100 is the                          
+      maximum of that value over all detections in a given band in a given    
+      scan, multiplied by 100."                                               
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 507                                                       
+    BYTES         = 3                                                         
+    FORMAT        = "I3"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 78                                                        
+    NAME          = "DSW4_12"                                                 
+    DESCRIPTION   = "12 Micron Derived Status Word 4.                         
+      Set to 1 if a flux overestimation correction                            
+      was applied"                                                            
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 514                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 79                                                        
+    NAME          = "DSW7_12"                                                 
+    DESCRIPTION   = "12 Micron Derived Status Word 7.                         
+      Set to 1 if the albedo derived from this observation                    
+      was rejected from final average using Chauvenet's criterion"            
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 517                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 80                                                        
+    NAME          = "DSW8_12"                                                 
+    DESCRIPTION   = "12 Micron Derived Status Word 8.                         
+      Set to 1 if the albedo calculation did not                              
+      converge after 100 iterations"                                          
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 518                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 81                                                        
+    NAME          = "DSW4_25"                                                 
+    DESCRIPTION   = "25 Micron Derived Status Word 4.                         
+      Set to 1 if a flux overestimation correction                            
+      was applied"                                                            
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 523                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 82                                                        
+    NAME          = "DSW7_25"                                                 
+    DESCRIPTION   = "25 Micron Derived Status Word 7.                         
+      Set to 1 if the albedo derived from this observation                    
+      was rejected from final average using Chauvenet's criterion"            
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 526                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 83                                                        
+    NAME          = "DSW4_60"                                                 
+    DESCRIPTION   = "60 Micron Derived Status Word 4.                         
+      Set to 1 if a flux overestimation correction                            
+      was applied"                                                            
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 532                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 84                                                        
+    NAME          = "DSW7_60"                                                 
+    DESCRIPTION   = "60 Micron Derived Status Word 7.                         
+      Set to 1 if the albedo derived from this observation                    
+      was rejected from final average using Chauvenet's criterion"            
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 535                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 85                                                        
+    NAME          = "DSW8_60"                                                 
+    DESCRIPTION   = "60 Micron Derived Status Word 8.                         
+      Set to 1 if the albedo calculation did not                              
+      converge after 100 iterations"                                          
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 536                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 86                                                        
+    NAME          = "DSW4_100"                                                
+    DESCRIPTION   = "100 Micron Derived Status Word 4.                        
+      Set to 1 if a flux overestimation correction                            
+      was applied"                                                            
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 541                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 87                                                        
+    NAME          = "DSW8_100"                                                
+    DESCRIPTION   = "100 Micron Derived Status Word 8.                        
+      Set to 1 if the albedo calculation did not                              
+      converge after 100 iterations"                                          
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 545                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 88                                                        
+    NAME          = "CSW1_12"                                                 
+    DESCRIPTION   = "12 Micron Confusion Status Word 1.                       
+      Edge detection or possible confusion diagnosed.                         
+      Set to 1 when two or more detectors in the first band module            
+      crossing a celestial position register detections and is seconds        
+      confirmed. If set to zero, then 12_MICRON_CONFUSION_STATUS_WORD_2,      
+      12_MICRON_CONFUSION_STATUS_WORD_3, and                                  
+      12_MICRON_CONFUSION_STATUS_WORD_7 must also be zero. In the original    
+      released IMPS data product, this was the 1st bit from right to left     
+      of an 8 bit '12 micron confusion status word' of which bits 5, 6 and    
+      8 were not used and always zero.                                        
+      "                                                                       
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 547                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 89                                                        
+    NAME          = "CSW2_12"                                                 
+    DESCRIPTION   = "12 Mircon Confusion Status Word 2.                       
+      Edge detection (3 sources involved). Set to 1 when an                   
+      examination of the fluxes is consistent with a single source            
+      traversing two adjacent detectors in one band module and a              
+      single detector along the scan path in the second band module           
+      (See Beichman, et al., 1988 [BEICHMANETAL1988], p. V-19).               
+      In the original released IMPS data product, this was the 2nd            
+      bit from right to left of an 8 bit '12 micron confusion status          
+      word' of which bits 5,6 and 8 were not used and always zero."           
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 548                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 90                                                        
+    NAME          = "CSW3_12"                                                 
+    DESCRIPTION   = "12 Micron Confusion Status Word 3.                       
+      Believed to be confused at seconds confirmation                         
+      and confusion recovery steps were taken. Set to 1 if an examination     
+      of the fluxes is not consistent with a single source traversing         
+      three detectors in the two detector modules of the band, and a          
+      multiple source event can be successfully reconstructed (see            
+      Beichman, et al., 1988 [BEICHMANETAL1988], p. V-19). In the             
+      original released IMPS data product, this was the 3rd bit from          
+      right to left of an 8 bit '12 micron confusion status word' of          
+      which bits 5, 6 and 8 were not used and always zero."                   
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 549                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 91                                                        
+    NAME          = "CSW4_12"                                                 
+    DESCRIPTION   = "12 Micron Confusion Status Word 4.                       
+      Possible confusion at band merging; best position                       
+      agreement used. Set to 1 when seconds-confirming detections across      
+      more than one band yield source positions inconsistent with an          
+      inertially fixed source traversing the focal plane array, or when       
+      more than one source is detected in another band. In the original       
+      released IMPS data product, this was the 4th bit from right to left     
+      of an 8 bit '12 micron confusion status word' of which bits 5, 6        
+      and 8 were not used and always zero."                                   
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 550                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 92                                                        
+    NAME          = "CSW1_25"                                                 
+    DESCRIPTION   = "25 Micron Confusion Status Word 1.                       
+      Edge detection or possible confusion diagnosed.                         
+      Set to 1 when two or more detectors in the first band module crossing   
+      a celestial position register detections and is seconds confirmed.      
+      If set to zero, then 25_MICRON_CONFUSION_STATUS_WORD_2,                 
+      25_MICRON_CONFUSION_STATUS_WORD_3, and                                  
+      25_MICRON_CONFUSION_STATUS_WORD_7 must also be zero. In the original    
+      released IMPS data product, this was the 1st bit from right to left     
+      of an 8 bit '25 micron confusion status word' of which bits 5, 6 and    
+      8 were not used and always zero."                                       
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 556                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 93                                                        
+    NAME          = "CSW2_25"                                                 
+    DESCRIPTION   = "25 Micron Confusion Status Word 2.                       
+      Edge detection (3 sources involved). Set to 1                           
+      when an examination of the fluxes is consistent with a single           
+      source traversing two adjacent detectors in one band module and         
+      a single detector along the scan path in the second band module         
+      (See Beichman, et al., 1988 [BEICHMANETAL1988], p. V-19). In the        
+      original released IMPS data product, this was the 2nd bit from          
+      right to left of an 8 bit '25 micron confusion status word' of          
+      which bits 5, 6 and 8 were not used and always zero."                   
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 557                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 94                                                        
+    NAME          = "CSW3_25"                                                 
+    DESCRIPTION   = "25 Micron Confusion Status Word 3.                       
+      Believed to be confused at seconds confirmation                         
+      and confusion recovery steps were taken. Set to 1 if an examination     
+      of the fluxes is not consistent with a single source traversing         
+      three detectors in the two detector modules of the band, and a          
+      multiple source event can be successfully reconstructed (see            
+      Beichman et al., 1988 [BEICHMANETAL1988], p. V-19). In the original     
+      released IMPS data product, this was the 3rd bit from right to left     
+      of an 8 bit '25 micron confusion status word' of which bits 5, 6        
+      and 8 were not used and always zero."                                   
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 558                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 95                                                        
+    NAME          = "CSW4_25"                                                 
+    DESCRIPTION   = "25 Micron Confusions Status Word 4.                      
+      Possible confusion at band merging; best position                       
+      agreement used. Set to 1 when seconds-confirming detections across      
+      more than one band yield source positions inconsistent with an          
+      inertially fixed source traversing the focal plane array, or when       
+      more than one source is detected in another band. In the original       
+      released IMPS data product, this was the 4th bit from right to          
+      left of an 8 bit '25 micron confusion status word' of which bits 5,     
+      6 and 8 were not used and always zero."                                 
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 559                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 96                                                        
+    NAME          = "CSW1_60"                                                 
+    DESCRIPTION   = "60 Micron Confusion Status Word 1.                       
+      Edge detection or possible confusion diagnosed.                         
+      Set to 1 when two or more detectors in the first band module crossing   
+      a celestial position register detections and is seconds confirmed.      
+      If set to zero, then 60_MICRON_CONFUSION_STATUS_WORD_2,                 
+      60_MICRON_CONFUSION_STATUS_WORD_3, and                                  
+      60_MICRON_CONFUSION_STATUS_WORD_7 must also be zero. In the original    
+      released IMPS data product, this was the 1st bit from right to left     
+      of an 8 bit '60 micron confusion status word' of which bits 5, 6        
+      and 8 were not used and always zero."                                   
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 565                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 97                                                        
+    NAME          = "CSW2_60"                                                 
+    DESCRIPTION   = "60 Micron Confusion Status Word 2.                       
+      Edge detection (3 sources involved). Set to 1 when an                   
+      examination of the fluxes is consistent with a single source traversing 
+      two adjacent detectors in one band module and a single detector         
+      along the scan path in the second band module (See Beichman et al.,     
+      1988 [BEICHMANETAL1988], p. V-19). In the original released IMPS        
+      data product,  this was the 2nd bit from right to left of an 8 bit      
+      '60 micron confusion  status word' of which bits 5, 6 and 8 were not    
+      used and always zero."                                                  
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 566                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 98                                                        
+    NAME          = "CSW3_60"                                                 
+    DESCRIPTION   = "60 Micron Confusion Status Word 3.                       
+      Believed to be confused at seconds confirmation                         
+      and confusion recovery steps were taken. Set to 1 if an examination     
+      of the fluxes is not consistent with a single source traversing three   
+      detectors in the two detector modules of the band, and a multiple       
+      source event can be successfully reconstructed (see Beichman et al.,    
+      1988 [BEICHMANETAL1988], p. V-19). In the original released IMPS        
+      data product, this was the 3rd bit from right to left of an 8 bit       
+      '60 micron confusion status word' of which bits 5, 6 and 8 were not     
+      used and always zero."                                                  
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 567                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 99                                                        
+    NAME          = "CSW4_60"                                                 
+    DESCRIPTION   = "60 Micron Confusion Status Word 4.                       
+      Possible confusion at band merging; best position                       
+      agreement used. Set to 1 when seconds-confirming detections across      
+      more than one band yield source positions inconsistent with an          
+      inertially fixed source traversing the focal plane array, or when       
+      more than one source is detected in another band. In the original       
+      released IMPS data product, this was the 4th bit from right to left     
+      of an 8 bit '60 micron confusion status word' of which bits 5, 6 and    
+      8 were not used and always zero."                                       
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 568                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 100                                                       
+    NAME          = "CSW1_100"                                                
+    DESCRIPTION   = "100 Micron Confusion Status Word 1.                      
+      Edge detection or possible confusion diagnosed.                         
+      Set to 1 when two or more detectors in the first band module crossing   
+      a celestial position register detections and is seconds confirmed.      
+      If set to zero, then 100_MICRON_CONFUSION_STATUS_WORD_2,                
+      100_MICRON_CONFUSION_STATUS_WORD_3, and                                 
+      100_MICRON_CONFUSION_STATUS_WORD_7 must also be zero. In the original   
+      released IMPS data product, this was the 1st bit from right to left of  
+      an 8 bit '100 micron confusion status word' of which bits 5, 6 and 8    
+      were not used and always zero."                                         
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 574                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 101                                                       
+    NAME          = "CSW2_100"                                                
+    DESCRIPTION   = "100 Micron Confusion Status Word 2.                      
+      Edge detection (3 sources involved). Set to 1 when an                   
+      examination of the fluxes is consistent with a single source            
+      traversing two adjacent detectors in one band module and a              
+      single detector along the scan path in the second band module (See      
+      Beichman et al., 1988 [BEICHMANETAL1988], p. V-19). In the original     
+      released IMPS data product, this was the 2nd bit from right to left     
+      of an 8 bit '100 micron confusion status word' of which bits 5, 6       
+      and 8 were not used and always zero."                                   
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 575                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 102                                                       
+    NAME          = "CSW3_100"                                                
+    DESCRIPTION   = "100 Micron Confusion Status Word 3.                      
+      Believed to be confused at seconds confirmation                         
+      and confusion recovery steps were taken. Set to 1 if an examination     
+      of the fluxes is not consistent with a single source traversing         
+      three detectors in the two detector modules of the band, and a          
+      multiple source event can be successfully reconstructed (see            
+      Beichman et al., 1988 [BEICHMANETAL1988], p. V-19). In the original     
+      released IMPS data product, this was the 3rd bit from right to left     
+      of an 8 bit '100 micron confusion status word' of which bits 5, 6       
+      and 8 were not used and always zero."                                   
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 576                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 103                                                       
+    NAME          = "CSW4_100"                                                
+    DESCRIPTION   = "100 Micron Confusion Status Word 4.                      
+      Possible confusion at band merging; best position                       
+      agreement used. Set to 1 when seconds-confirming detections across      
+      more than one band yield source positions inconsistent with an          
+      inertially fixed source traversing the focal plane array, or when       
+      more than one source is detected in another band. In the original       
+      released IMPS data product, this was the 4th bit from right to          
+      left of an 8 bit '100 micron confusion status word' of which bits       
+      5, 6 and 8 were not used and always zero."                              
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 577                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 104                                                       
+    NAME          = "FLUX_SW_12"                                              
+    DESCRIPTION   = "12 Micron Flux Status Word.                              
+      The flux status word indicates a level of                               
+      reliability of detection of a source in a given band. The most          
+      reliable detection (FSTAT=5) is one in which a source is detected       
+      with high S/N in both 12-micron detector modules along the inscan       
+      path.                                                                   
+                                                                              
+       1  Detection assuming 3 sigma noise upper limit. Assigned if a more    
+          reliable detection is made in another band.                         
+                                                                              
+       2  Low signal to noise (2.9 < S/N < 5) detection in at least one       
+          in-band detector module                                             
+                                                                              
+       3  Non-seconds-confirmed detection (NSC). A source was detected by     
+          one or two (in the case of edge-detections) detectors within        
+          an in-band detector module, but was not detected by the             
+          corresponding detector along the inscan path in the other           
+          module of the same band. This assumes all compatible redundant      
+          detectors are operational.                                          
+                                                                              
+       4  A non-seconds-confirmed detection (NSCF) which may have been due    
+          to a dead or degraded detector in the redundant color-band module   
+                                                                              
+       5  Seconds-confirmed detection                                         
+      "                                                                       
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 583                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 105                                                       
+    NAME          = "FLUX_SW_25"                                              
+    DESCRIPTION   = "25 Micron Flux Status Word.                              
+      The flux status word indicates a level of                               
+      reliability of detection of a source in a given band. The most          
+      reliable detection (FSTAT=5) is one in which a source is detected       
+      with high S/N in both 25-micron detector modules along the inscan       
+      path.                                                                   
+                                                                              
+       1  Detection assuming 3 sigma noise upper limit. Assigned if a more    
+          reliable detection is made in another band.                         
+                                                                              
+       2  Low signal to noise (2.9 < S/N < 5) detection in at least one       
+          in-band detector module                                             
+                                                                              
+       3  Non-seconds-confirmed detection (NSC). A source was detected by one 
+          or two (in the case of edge-detections) detectors within an in-band 
+          detector module, but was not detected by the corresponding detector 
+          along the inscan path in the other module of the same band. This    
+          assumes all compatible redundant detectors are operational.         
+                                                                              
+       4  A non-seconds-confirmed detection (NSCF) which may have been due to 
+          a dead or degraded detector in the redundant color-band module      
+                                                                              
+       5  Seconds-confirmed detection                                         
+      "                                                                       
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 584                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 106                                                       
+    NAME          = "FLUX_SW_60"                                              
+    DESCRIPTION   = "60 Micron Flux Status Word.                              
+      The flux status word indicates a level of                               
+      reliability of detection of a source in a given band. The most          
+      reliable detection (FSTAT=5) is one in which a source is detected       
+      with high S/N in both 60-micron detector modules along the inscan       
+      path.                                                                   
+                                                                              
+       1  Detection assuming 3 sigma noise upper limit. Assigned if a more    
+          reliable detection is made in another band.                         
+                                                                              
+       2  Low signal to noise (2.9 < S/N < 5) detection in at least one       
+          in-band detector module                                             
+                                                                              
+       3  Non-seconds-confirmed detection (NSC). A source was detected by one 
+          or two (in the case of edge-detections) detectors within an in-band 
+          detector module, but was not detected by the corresponding detector 
+          along the inscan path in the other module of the same band. This    
+          assumes all compatible redundant detectors are operational.         
+                                                                              
+       4  A non-seconds-confirmed detection (NSCF) which may have been due to 
+          a dead or degraded detector in the redundant color-band module      
+                                                                              
+       5  Seconds-confirmed detection                                         
+      "                                                                       
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 585                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 107                                                       
+    NAME          = "FLUX_SW_100"                                             
+    DESCRIPTION   = "100 Micron Flux Status Word.                             
+      The flux status word indicates a level of                               
+      reliability of detection of a source in a given band. The most          
+      reliable detection (FSTAT=5) is one in which a source is detected       
+      with high S/N in both 100-micron detector modules along the inscan      
+      path.                                                                   
+                                                                              
+       1  Detection assuming 3 sigma noise upper limit. Assigned if a more    
+          reliable detection is made in another band.                         
+                                                                              
+       2  Low signal to noise (2.9 < S/N < 5) detection in at least one       
+          in-band detector module                                             
+                                                                              
+       3  Non-seconds-confirmed detection (NSC). A source was detected by one 
+          or two (in the case of edge-detections) detectors within an in-band 
+          detector module, but was not detected by the corresponding detector 
+          along the inscan path in the other module of the same band. This    
+          assumes all compatible redundant detectors are operational.         
+                                                                              
+       4  A non-seconds-confirmed detection (NSCF) which may have been due to 
+          a dead or degraded detector in the redundant color-band module      
+                                                                              
+       5  Seconds-confirmed detection                                         
+      "                                                                       
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 586                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 108                                                       
+    NAME          = "ASW_01"                                                  
+    DESCRIPTION   = "Asteroid Status Word 01.                                 
+      Low position score.  This flag is set to unity                          
+      when the difference between the predicted and the observed positions    
+      for an asteroid's association is deemed significant (POSITION_SCORE<0.5)
+      (Tedesco, et al. 1992 [TEDESCOETAL1992], p. 88)."                       
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 588                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 109                                                       
+    NAME          = "ASW_02"                                                  
+    DESCRIPTION   = "Asteroid Status Word 02.                                 
+      ADAS type 1 accept.  Set for all sightings of                           
+      an asteroid with ASTEROID_ID value less than 3318 which was accepted    
+      in the Asteroid Data Analysis Subsystem (see Matson, 1986               
+      [MATSON1986])."                                                         
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 589                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 110                                                       
+    NAME          = "ASW_03"                                                  
+    DESCRIPTION   = "Asteroid Status Word 03.                                 
+      ADAS type 1 reject.  Set for all sightings of                           
+      an asteroid with ASTEROID_ID value less than 3318 which was rejected    
+      in the Asteroid Data Analysis Subsystem (see Matsone, 1986              
+      [MATSON1986])."                                                         
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 590                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 111                                                       
+    NAME          = "ASW_04"                                                  
+    DESCRIPTION   = "Asteroid Status Word 04.                                 
+      WSDB HCON position match.  Set for an hours                             
+      confirmed asteroid sighting, which was not confirmed when the           
+      position was scanned weeks or months later (hence rejected from         
+      the IRAS Working Survey Data Base - see Matson, 1986 [MATSON1986])."    
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 591                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 112                                                       
+    NAME          = "ASW_06"                                                  
+    DESCRIPTION   = "Asteroid Status Word 06.                                 
+      Small scale Version 1 match.  Set to indicate                           
+      coincidence with resolved spatial structure. See Helou and Walker       
+      (1986) [HELOU&WALKER1985]."                                             
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 593                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 113                                                       
+    NAME          = "ASW_07"                                                  
+    DESCRIPTION   = "Asteroid Status Word 07.                                 
+      Relative flux out of bounds.  Set if the ratio                          
+      of observed to predicted flux density at 25 microns is either less      
+      than 0.3 or greater than 3.0."                                          
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 594                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 114                                                       
+    NAME          = "ASW_12"                                                  
+    DESCRIPTION   = "Asteroid Status Word 12.                                 
+      Low detection rate FOR.  Set for all sightings                          
+      of each asteroid if the rate of successful detections, i.e., the        
+      fraction observed ratio FOR [(number of sightings used)/(number         
+      used plus number missed)], is less than 0.3."                           
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 599                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 115                                                       
+    NAME          = "ASW_13"                                                  
+    DESCRIPTION   = "Asteroid Status Word 13.                                 
+      12 micron albedo used in the final average albedo"                      
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 600                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 116                                                       
+    NAME          = "ASW_14"                                                  
+    DESCRIPTION   = "Asteroid Status Word 14.                                 
+      25 micron albedo used in the final average albedo"                      
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 601                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 117                                                       
+    NAME          = "ASW_15"                                                  
+    DESCRIPTION   = "Asteroid Status Word 15.                                 
+      60 micron albedo used in the final average albedo"                      
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 602                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 118                                                       
+    NAME          = "ASW_18"                                                  
+    DESCRIPTION   = "Asteroid Status Word 18.                                 
+      Accepted observation having no 25 micron flux                           
+      density greater than 1 Jansky"                                          
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 605                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 119                                                       
+    NAME          = "ASW_19"                                                  
+    DESCRIPTION   = "Asteroid Status Word 19.                                 
+      Large albedo range.  Set for all sightings of                           
+      an accepted asteroid if the ratio {[max - min]/[min + max]/2} is        
+      greater  than 0.75 among all derived albedos used in the final          
+      average for each  asteroid. This parameter is an indicator of           
+      apparent infrared lightcurves."                                         
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 606                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 120                                                       
+    NAME          = "ASW_21"                                                  
+    DESCRIPTION   = "Asteroid Status Word 21.                                 
+      -10 degrees < GALACTIC_LATITUDE < 10 degrees.                           
+      Set if sighting is within the galactic plane, i.e. not covered by the   
+      IRAS Faint Source Survey.  See ASTEROID STATUS WORD 17."                
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 608                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 121                                                       
+    NAME          = "ASW_22"                                                  
+    DESCRIPTION   = "Asteroid Status Word 22.                                 
+      Galactic center match.  Asteroid 25 micron only sightings               
+      are rejected by IMPS if near the galactic center:  +/- 3 degrees        
+      latitude by +/- 10 degrees longitude.  Subset of ASTEROID STATUS        
+      WORD 21."                                                               
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 609                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 122                                                       
+    NAME          = "ASW_23"                                                  
+    DESCRIPTION   = "Asteroid Status Word 23.                                 
+      ADAS type 2 now type 1.  Set if provisional                             
+      asteroid elements updated and numbered since 1985."                     
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 610                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 123                                                       
+    NAME          = "ASW_24"                                                  
+    DESCRIPTION   = "Asteroid Status Word 24.                                 
+      Flux correction used.  Set if IMPS decreased                            
+      (low) flux densities to compensate for IRAS bias near its SNR cutoff."  
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 611                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 124                                                       
+    NAME          = "ASW_25"                                                  
+    DESCRIPTION   = "Asteroid Status Word 25.                                 
+      12 micron high density.  Set if sighting is                             
+      within an IRAS 12 micron High Source Density Region near the galactic   
+      center.  See ASTEROID STATUS WORD 26."                                  
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 612                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 125                                                       
+    NAME          = "ASW_26"                                                  
+    DESCRIPTION   = "Asteroid Status Word 26.                                 
+      25 micron high density.  Set if sighting is                             
+      within an IRAS 25 micron High Source Density Region near the galactic   
+      center.  See ASTEROID STATUS WORD 25."                                  
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 613                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 126                                                       
+    NAME          = "ASW_27"                                                  
+    DESCRIPTION   = "Asteroid Status Word 27.                                 
+      60 micron high density.  Set if sighting is                             
+      within an IRAS 60 micron High Source Density Region of low galactic     
+      latitude near the center and anti-center."                              
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 614                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 127                                                       
+    NAME          = "ASW_28"                                                  
+    DESCRIPTION   = "Asteroid Status Word 28.                                 
+      100 micron high density.  Set if sighting is                            
+      within an IRAS 100 micron High Source Density Region around the galactic
+      center and anti-center."                                                
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 615                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+  OBJECT     = COLUMN                                                         
+    COLUMN_NUMBER = 128                                                       
+    NAME          = "ASW_30"                                                  
+    DESCRIPTION   = "Asteroid Status Word 30.                                 
+      2+ known asteroid match.  Set if sighting is                            
+      associated with more than one asteroid prediction."                     
+    DATA_TYPE     = "ASCII_INTEGER"                                           
+    START_BYTE    = 617                                                       
+    BYTES         = 1                                                         
+    FORMAT        = "I1"                                                      
+  END_OBJECT = COLUMN                                                         
+                                                                              
+END_OBJECT = TABLE                                                            
+END                                                                           

@@ -1,0 +1,198 @@
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN" "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+    <definition name="defaultLayout" template="/WEB-INF/tiles/default.jsp">
+        <put-attribute name="section" value="" />
+        <put-attribute name="subSection" value="" />
+        <put-attribute name="autoRefresh" value="false" />
+    </definition>
+    
+    <definition name="minimalLayout" template="/WEB-INF/tiles/minimal.jsp">
+    </definition>
+    
+    <definition name="noLayout" template="/WEB-INF/tiles/none.jsp">
+    </definition>
+
+    <definition name="Error.page" extends="defaultLayout">
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/misc/error.jsp" />
+    </definition>
+    
+    <definition name="Test.page" extends="noLayout">
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/misc/test.jsp" />
+    </definition>
+    
+    <definition name="Home.page" extends="defaultLayout">
+    	<put-attribute name="section" value="home" />
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/misc/home.jsp" />
+    </definition>
+    
+    <definition name="Privacy.page" extends="defaultLayout">
+    	<put-attribute name="section" value="privacy" />
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/misc/privacy.jsp" />
+    </definition>
+    
+    <definition name="Contact.page" extends="defaultLayout">
+    	<put-attribute name="section" value="contact" />
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/misc/contact.jsp" />
+    </definition>
+    
+    <definition name="Resources.page" extends="defaultLayout">
+        <put-attribute name="section" value="resources" />
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/misc/resources.jsp" />
+    </definition>
+    
+    
+    <!--  DATA VALIDATION -->
+    
+    <definition name="manageDataSetsLayout" extends="defaultLayout">
+    	<put-attribute name="section" value="validation" />
+    </definition>
+    
+    <definition name="ManageDataSets.page" extends="manageDataSetsLayout">
+    	<put-attribute name="subSection" value="manageDataSets" />
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/dataManagement/manageDataSets.jsp" />
+    </definition>
+
+    <definition name="CreateDataSet.page" extends="manageDataSetsLayout">
+    	<put-attribute name="subSection" value="createDataSet" />
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/dataManagement/createDataSet.jsp" />
+    </definition>
+    
+    <definition name="ValidationProgress.page" extends="manageDataSetsLayout">
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/dataManagement/validationProgress.jsp" />
+    </definition>
+
+	<definition name="ValidationResults.page" extends="manageDataSetsLayout">
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/dataManagement/validationResults.jsp" />
+	</definition>
+	
+	<definition name="PreviewFile.page" extends="minimalLayout">
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/dataManagement/previewFile.jsp" />
+	</definition>
+	
+	<definition name="ValidationReleaseNotes.page" extends="manageDataSetsLayout">
+	   <put-attribute name="subSection" value="releaseNotes" />
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/dataManagement/releaseNotes.jsp" />
+    </definition>
+    
+    <definition name="ValidationTroubleshooting.page" extends="manageDataSetsLayout">
+	   <put-attribute name="subSection" value="troubleshooting" />
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/dataManagement/troubleshooting.jsp" />
+    </definition>
+    
+    <definition name="AboutValidation.page" extends="manageDataSetsLayout">
+	   <put-attribute name="subSection" value="aboutValidation" />
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/dataManagement/aboutValidation.jsp" />
+    </definition>
+    
+    <definition name="ViewStats.page" extends="manageDataSetsLayout">
+    	<put-attribute name="subSection" value="validationStats" />
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/stats/viewStats.jsp" />
+	</definition>
+	
+	<definition name="ViewVolumeDetails.page" extends="manageDataSetsLayout">
+		<put-attribute name="subSection" value="validationStats" />
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/stats/viewVolumeDetails.jsp" />
+	</definition>
+	
+	<!-- BEGIN Tabular Data Slicing Definitions -->	
+	
+	<definition name="sliceLayout" extends="defaultLayout">
+    	<put-attribute name="section" value="slice" />
+    </definition>
+	
+	<definition name="ImportTabularData.page" extends="sliceLayout">
+	    <put-attribute name="subSection" value="sliceData" />
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/manageTabularData/importTabularData.jsp" />
+	</definition>
+
+    <definition name="SelectObject.page" extends="sliceLayout">
+        <put-attribute name="subSection" value="sliceData" />
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/manageTabularData/selectObject.jsp" />
+    </definition>
+
+    <definition name="LoadProgress.page" extends="sliceLayout">
+        <put-attribute name="subSection" value="sliceData" />
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/manageTabularData/loadProgress.jsp" />
+    </definition>
+
+	<definition name="ManageTabularData.page" extends="sliceLayout">
+        <put-attribute name="subSection" value="sliceData" />
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/manageTabularData/manageTabularData.jsp" />
+	</definition>
+
+	<definition name="SelectColumns.page" extends="sliceLayout">
+        <put-attribute name="subSection" value="sliceData" />
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/manageTabularData/selectColumns.jsp" />
+	</definition>
+	
+	<definition name="OrderColumns.page" extends="sliceLayout">
+        <put-attribute name="subSection" value="sliceData" />
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/manageTabularData/orderColumns.jsp" />
+	</definition>
+
+	<definition name="SelectRows.page" extends="sliceLayout">
+        <put-attribute name="subSection" value="sliceData" />
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/manageTabularData/selectRows.jsp" />
+	</definition>
+
+	<definition name="OrderRows.page" extends="sliceLayout">
+        <put-attribute name="subSection" value="sliceData" />
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/manageTabularData/orderRows.jsp" />
+	</definition>
+	
+   <definition name="DownloadProgress.page" extends="sliceLayout">
+        <put-attribute name="subSection" value="sliceData" />
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/manageTabularData/downloadProgress.jsp" />
+    </definition>
+    
+	<definition name="Confirmation.page" extends="sliceLayout">
+        <put-attribute name="subSection" value="sliceData" />
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/manageTabularData/confirmation.jsp" />
+	</definition>
+
+	<definition name="DataSlicerReleaseNotes.page" extends="sliceLayout">
+	   <put-attribute name="subSection" value="releaseNotes" />
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/manageTabularData/releaseNotes.jsp" />
+    </definition>
+    
+    <definition name="TableExplorerAbout.page" extends="sliceLayout">
+       <put-attribute name="subSection" value="aboutTableExplorer" />
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/manageTabularData/aboutTableExplorer.jsp" />
+    </definition>
+    
+    <definition name="TableExplorerHelp.page" extends="sliceLayout">
+       <put-attribute name="subSection" value="helpContents" />
+        <put-attribute name="body" type="template" value="/WEB-INF/pages/manageTabularData/helpContents.jsp" />
+    </definition>
+    
+    <definition name="ViewTabularManagementStats.page" extends="sliceLayout">
+    	<put-attribute name="subSection" value="slicerStats" />
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/stats/viewTabularManagementStats.jsp" />
+	</definition>
+	
+	<definition name="ViewSliceDetails.page" extends="sliceLayout">
+		<put-attribute name="subSection" value="slicerStats" />
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/stats/viewSliceDetails.jsp" />
+	</definition>
+	
+	<!-- END Tabular Data Slicing Definitions -->
+
+	
+	<!-- Management -->
+	
+	<definition name="MCLogIn.page" extends="defaultLayout">
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/misc/mcLogIn.jsp" />
+	</definition>
+	
+	<!-- ADMIN -->
+	
+	<definition name="ViewExceptions.page" extends="defaultLayout">
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/stats/viewExceptions.jsp" />
+	</definition>
+	
+	<definition name="ViewException.page" extends="defaultLayout">
+		<put-attribute name="body" type="template" value="/WEB-INF/pages/stats/viewException.jsp" />
+	</definition>
+
+</tiles-definitions>

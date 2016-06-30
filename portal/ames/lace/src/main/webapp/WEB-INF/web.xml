@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+    
+<web-app>
+	
+	<filter>
+	  <filter-name>guiceFilter</filter-name>
+	  <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+	  <filter-name>guiceFilter</filter-name>
+	  <url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- Since we are using Guice, other servlets are configured in the listener class. -->		
+	<listener>
+	  <listener-class>gov.nasa.arc.pds.lace.server.ServerContextListener</listener-class>
+	</listener>
+
+  	<!-- Default page to serve -->
+	<welcome-file-list>
+	  <welcome-file>LabelTemplate.html</welcome-file>
+	</welcome-file-list>
+  
+</web-app>

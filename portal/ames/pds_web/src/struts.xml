@@ -1,0 +1,444 @@
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+	<constant name="struts.action.extension" value=",action,js"/>
+	
+    <package name="default" extends="struts-default">
+	
+        <!-- adding a result type "tiles" so that tiles can be used for presentation templating -->
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+
+        <!-- interceptor configurations -->
+        <interceptors>
+            <interceptor name="authentication" class="gov.nasa.pds.web.ui.interceptors.AuthenticationInterceptor" />
+
+            <interceptor name="initialization" class="gov.nasa.pds.web.ui.interceptors.InitializeInterceptor" />
+
+            <!--
+            defaultStack has unnecessary interceptors, attempting to use only necessary below
+            see: http://struts.apache.org/2.x/docs/interceptors.html#Interceptors-FrameworkInterceptors
+            -->
+            <interceptor-stack name="baseStack">
+                <!-- initialize headers, session, locale, etc  -->
+                <interceptor-ref name="initialization" />
+
+                <!-- provide access to session, request, response if implement aware -->
+                <interceptor-ref name="servletConfig"/>
+
+                <!-- map submitted values to action properties -->
+                <interceptor-ref name="params" />
+            </interceptor-stack>
+
+            <interceptor-stack name="applicationStack">
+                <!-- custom merlin authentication -->
+                <!--<interceptor-ref name="authentication" />-->
+
+                <interceptor-ref name="baseStack" />
+            </interceptor-stack>
+
+            <interceptor-stack name="noAuthRequiredStack">
+                <interceptor-ref name="baseStack" />
+            </interceptor-stack>
+        </interceptors>
+
+        <!-- override the default stack -->
+        <default-interceptor-ref name="noAuthRequiredStack" />
+
+        <!-- default action to call when unknown ".action" resource requested -->
+        <default-action-ref name="NotFound" />
+
+        <!-- global results, required so that each action does not have to define common results -->
+        <global-results>
+            <result name="error" type="tiles">Error.page</result>
+            <result name="illegalAccess" type="redirectAction">MCLogIn</result>
+            <result name="login" type="redirectAction">Auth</result>
+            <result name="setup" type="redirectAction">Setup</result>
+            <result name="json">/WEB-INF/pages/json.jsp</result>
+            <result name="file">/WEB-INF/pages/file.jsp</result>
+            <result name="jsonLogin" type="redirectAction">JsonLogin</result>
+        </global-results>
+        
+        <!-- Test page for hosting service to verify that the application is running -->
+        <action name="Test" class="gov.nasa.pds.web.ui.actions.misc.Test">
+            <result name="success" type="tiles">Test.page</result>
+        </action>
+		
+		<!-- misc pages -->
+		<action name="Home" class="gov.nasa.pds.web.ui.actions.misc.Home">
+            <result name="success" type="tiles">Home.page</result>
+        </action>
+        
+        <action name="Privacy" class="gov.nasa.pds.web.ui.actions.misc.Privacy">
+            <result name="success" type="tiles">Privacy.page</result>
+        </action>
+        
+        <action name="Contact" class="gov.nasa.pds.web.ui.actions.misc.Contact">
+            <result name="success" type="tiles">Contact.page</result>
+        </action>
+        
+        <action name="SendError" class="gov.nasa.pds.web.ui.actions.misc.SendError">
+            <result name="success" type="redirectAction">Home</result>
+            <result name="input" type="tiles">Error.page</result>
+        </action>
+        
+        <action name="Resources" class="gov.nasa.pds.web.ui.actions.misc.Resources">
+           <result name="success" type="tiles">Resources.page</result>
+        </action>
+        
+<!-- Removing all actions needing login, per PTOOL-228 -->
+<!--
+        <action name="ViewExceptions" class="gov.nasa.pds.web.ui.actions.stats.ViewExceptions">
+		   <result name="success" type="tiles">ViewExceptions.page</result>
+        </action>
+        
+        <action name="ViewException" class="gov.nasa.pds.web.ui.actions.stats.ViewException">
+		   <result name="success" type="tiles">ViewException.page</result>
+		   <result name="missingInformation" type="redirectAction">ViewExceptions</result>
+        </action>
+        
+         <action name="DeleteException" class="gov.nasa.pds.web.ui.actions.stats.DeleteException">
+		   <result name="success"  type="redirectAction">ViewExceptions</result>
+		   <result name="missingInformation" type="redirectAction">ViewExceptions</result>
+        </action>
+        
+        <action name="MCLogIn" class="gov.nasa.pds.web.ui.actions.misc.MCLogIn">
+            <result name="success" type="tiles">MCLogIn.page</result>
+            <result name="authenticated" type="redirectAction">ViewStats</result>
+        </action>
+        
+        <action name="MCAuthenticate" class="gov.nasa.pds.web.ui.actions.misc.MCAuthenticate">
+            <result name="success" type="redirect">${redirect}</result>
+            <result name="error" type="redirectAction">MCLogIn</result>
+        </action>
+-->
+       
+       <!-- Data Set Entry and Manipulation -->
+       <action name="Validator" class="gov.nasa.pds.web.ui.actions.dataManagement.ManageDataSets">
+            <result name="success" type="tiles">ManageDataSets.page</result>
+       </action>
+         
+        <action name="ValidateVolume" class="gov.nasa.pds.web.ui.actions.dataManagement.ValidateVolume">
+			<result name="success" type="redirectAction">
+				<param name="actionName">ValidationProgress</param>
+				<param name="procId">${procId}</param>
+			</result>
+			<result name="missingInformation" type="redirectAction">Validator</result>
+		</action>
+		
+		<action name="ValidationProgress" class="gov.nasa.pds.web.ui.actions.dataManagement.ValidationProgress">
+            <result name="success" type="tiles">ValidationProgress.page</result>
+        </action>
+        
+        <action name="ValidationStatus" class="gov.nasa.pds.web.ui.actions.dataManagement.ValidationStatus">
+        </action>
+		
+		<action name="ShowResults" class="gov.nasa.pds.web.ui.actions.dataManagement.ShowResults">
+			<result name="success" type="tiles">ValidationResults.page</result>
+			<result name="missingInformation" type="redirectAction">Validator</result>
+		</action>
+		
+		<action name="ValidationReport" class="gov.nasa.pds.web.ui.actions.dataManagement.ValidationReport">
+		</action>
+		
+		 <action name="ValidationReportStatus" class="gov.nasa.pds.web.ui.actions.dataManagement.ValidationReportStatus">
+        </action>
+		
+		<action name="DownloadReport" class="gov.nasa.pds.web.ui.actions.dataManagement.DownloadReport" >
+  			<result name="success" type="stream">
+  				<param name="procId">${procId}</param> 
+ 				<param name="inputName">inputStream</param>
+  				<param name="contentType">${contentType}</param>
+  		 		<param name="contentDisposition">attachment;filename="${fileName}"</param>
+  				<param name="bufferSize">2048</param>	
+  			</result>
+  		</action>	
+
+		<action name="PreviewFile" class="gov.nasa.pds.web.ui.actions.dataManagement.PreviewFile">
+			<result name="success" type="tiles">PreviewFile.page</result>
+			<result name="missingInformation" type="redirectAction">Validator</result>
+		</action>
+		
+		<action name="UpdateValidateView" class="gov.nasa.pds.web.ui.actions.dataManagement.UpdateValidateView">
+			<result name="success" type="redirectAction">
+				<param name="actionName">ShowResults</param>
+				<param name="procId">${procId}</param>
+			</result>
+			<result name="namedSuccess" type="redirect">
+				<param name="location">ShowResults.action?procId=${procId}#${namedAnchor}</param>
+			</result>
+		</action>
+		
+		<action name="PostValidation" class="gov.nasa.pds.web.ui.actions.dataManagement.PostValidation">
+		</action>
+		
+		<action name="PostValidationBucket" class="gov.nasa.pds.web.ui.actions.dataManagement.PostValidationBucket">
+        </action>
+		
+		<action name="PostFilePreview" class="gov.nasa.pds.web.ui.actions.dataManagement.PostFilePreview">
+		</action>
+		
+		<action name="ValidatorReleaseNotes" class="gov.nasa.pds.web.ui.actions.dataManagement.ReleaseNotes">
+		   <result name="success" type="tiles">ValidationReleaseNotes.page</result>
+        </action>
+        <action name="ValidatorTroubleshooting" class="gov.nasa.pds.web.ui.actions.dataManagement.Troubleshooting">
+		   <result name="success" type="tiles">ValidationTroubleshooting.page</result>
+        </action>
+        
+<!-- Removing statistics actions, per PTOOL-228 -->
+<!--
+        <action name="ViewStats" class="gov.nasa.pds.web.ui.actions.stats.ViewStats">
+        	<result name="success" type="tiles">ViewStats.page</result>
+        </action>
+        <action name="ViewVolumeDetails" class="gov.nasa.pds.web.ui.actions.stats.ViewVolumeDetails">
+        	<result name="success" type="tiles">ViewVolumeDetails.page</result>
+        	<result name="missingInformation" type="redirectAction">ViewStats</result>
+        </action>
+        <action name="GetStatsData" class="gov.nasa.pds.web.ui.actions.stats.GetStatsData">
+        </action>
+-->
+
+        <action name="ValidatorAbout" class="gov.nasa.pds.web.ui.actions.dataManagement.AboutValidation">
+		   <result name="success" type="tiles">AboutValidation.page</result>
+        </action>
+		
+
+		<!-- BEGIN Tabular Data Slicing Actions -->
+		
+		<action name="TableExplorer" class="gov.nasa.pds.web.ui.actions.tabularManagement.ImportTabularData">
+			<result name="input" type="tiles">ImportTabularData.page</result>		
+  		</action>
+
+		<action name="LoadLabel" class="gov.nasa.pds.web.ui.actions.tabularManagement.LoadLabel">
+			<result name="success" type="redirectAction">
+<!--				<param name="actionName">LoadData</param>-->
+				<param name="actionName">SelectObject</param>
+				<param name="procId">${procId}</param>
+			</result>					
+          <result name="input" type="redirectAction">
+				<param name="actionName">TableExplorer</param>
+				<param name="labelURLString">${labelURLString}</param>
+            </result>			
+		</action>
+		
+		<action name="SelectObject" class="gov.nasa.pds.web.ui.actions.tabularManagement.SelectObject">
+			<result name="input" type="tiles">SelectObject.page</result>		
+			<result name="pass" type="redirectAction">
+				<param name="actionName">LoadData</param>
+				<param name="procId">${procId}</param>
+			</result>		
+  		</action>
+		
+		<action name="LoadData" class="gov.nasa.pds.web.ui.actions.tabularManagement.LoadData">
+			<result name="success" type="redirectAction">
+				<param name="actionName">ManageTabularData</param>
+				<param name="procId">${procId}</param>
+			</result>					
+          <result name="input" type="redirectAction">
+				<param name="actionName">LoadData</param>
+				<param name="procId">${procId}</param>
+            </result>			
+		</action>
+
+		<action name="LoadProgress" class="gov.nasa.pds.web.ui.actions.tabularManagement.LoadProgress">
+            <result name="success" type="tiles">LoadProgress.page</result>
+        </action>
+
+        <action name="LoadStatus" class="gov.nasa.pds.web.ui.actions.tabularManagement.LoadStatus">
+        </action>
+
+		<action name="ManageTabularData" class="gov.nasa.pds.web.ui.actions.tabularManagement.ManageTabularData">
+			<result name="input" type="tiles">ManageTabularData.page</result>		
+  		</action>
+
+		<action name="SelectColumns" class="gov.nasa.pds.web.ui.actions.tabularManagement.SelectColumns">
+  			<result name="input" type="tiles">SelectColumns.page</result>
+  		</action>
+
+		<action name="SaveSelectedColumns" class="gov.nasa.pds.web.ui.actions.tabularManagement.SaveSelectedColumns">
+			<result name="sort" type="redirectAction">
+				<param name="actionName">SelectColumns</param>
+				<param name="procId">${procId}</param>
+				<param name="sort">${sort}</param>
+				<param name="checkedColumns">${checkedColumns}</param>
+				<param name="changedColumns">${changedColumns}</param>
+			</result>
+			<result name="input" type="redirectAction">
+				<param name="actionName">SelectColumns</param>
+				<param name="procId">${procId}</param>
+				<param name="checkedColumns">${checkedColumns}</param>
+				<param name="changedColumns">${changedColumns}</param>
+			</result>
+			<result name="success" type="redirectAction">
+ 				<param name="actionName">ManageTabularData</param>
+				<param name="procId">${procId}</param>
+			</result>
+		</action>
+
+		<action name="OrderColumns" class="gov.nasa.pds.web.ui.actions.tabularManagement.OrderColumns">
+ 			<result name="input" type="tiles">OrderColumns.page</result>
+    	</action>
+    	
+		<action name="MoveColumn" class="gov.nasa.pds.web.ui.actions.tabularManagement.MoveColumn">
+			<result name="success" type="redirectAction">
+				<param name="actionName">OrderColumns</param>
+				<param name="procId">${procId}</param>
+				<param name="reorderedColumns">${reorderedColumns}</param>
+			</result>					
+  		</action>
+
+		<action name="SaveColumnOrder" class="gov.nasa.pds.web.ui.actions.tabularManagement.SaveColumnOrder">	
+ 			<result name="success" type="redirectAction">
+ 				<param name="actionName">ManageTabularData</param>
+				<param name="procId">${procId}</param>
+			</result>
+			<result name="input" type="redirectAction">
+				<param name="actionName">OrderColumns</param>
+				<param name="procId">${procId}</param>		
+			</result>
+  		</action>
+		
+		<action name="SelectRows" class="gov.nasa.pds.web.ui.actions.tabularManagement.SelectRows">
+  			<result name="input" type="tiles">SelectRows.page</result>
+  		</action>
+
+		<action name="SaveSelectedRows" class="gov.nasa.pds.web.ui.actions.tabularManagement.SaveSelectedRows">
+			<result name="success" type="redirectAction">
+ 				<param name="actionName">SelectRows</param>
+				<param name="procId">${procId}</param>
+			</result>				
+			<result name="input" type="redirectAction">
+				<param name="actionName">SelectRows</param>
+				<param name="procId">${procId}</param>
+				<param name="selectedColumn">${selectedColumn}</param>				
+				<param name="condition">${condition}</param>				
+				<param name="value">${value}</param>
+			</result>
+			<result name="next" type="redirectAction">
+ 				<param name="actionName">ManageTabularData</param>
+				<param name="procId">${procId}</param>
+			</result>
+  		</action>				
+
+		<action name="OrderRows" class="gov.nasa.pds.web.ui.actions.tabularManagement.OrderRows">
+  			<result name="input" type="tiles">OrderRows.page</result>
+  		</action>
+
+		<action name="SaveRowOrder" class="gov.nasa.pds.web.ui.actions.tabularManagement.SaveRowOrder">
+			<result name="success" type="redirectAction">
+ 				<param name="actionName">OrderRows</param>
+				<param name="procId">${procId}</param>
+			</result>				
+			<result name="input" type="redirectAction">
+				<param name="actionName">OrderRows</param>
+				<param name="procId">${procId}</param>
+				<param name="orderColumn">${orderColumn}</param>
+			</result>
+			<result name="next" type="redirectAction">
+ 				<param name="actionName">ManageTabularData</param>
+				<param name="procId">${procId}</param>
+			</result>
+  		</action>				
+
+		<action name="SaveDownloadFormat" class="gov.nasa.pds.web.ui.actions.tabularManagement.SaveDownloadFormat">
+			<result name="selectColumns" type="redirectAction">
+				<param name="actionName">SelectColumns</param>
+				<param name="procId">${procId}</param>
+			</result>					
+			<result name="orderColumns" type="redirectAction">
+				<param name="actionName">OrderColumns</param>
+				<param name="procId">${procId}</param>
+			</result>					
+ 			<result name="selectRows" type="redirectAction">
+				<param name="actionName">SelectRows</param>
+				<param name="procId">${procId}</param>
+			</result>
+			<result name="orderRows" type="redirectAction">
+				<param name="actionName">OrderRows</param>
+				<param name="procId">${procId}</param>
+			</result>					
+			<result name="download" type="redirectAction">
+ 				<param name="actionName">Download</param>
+				<param name="procId">${procId}</param> 
+			</result>
+			<!-- LAB 08/04/09 check this is still used -->
+			<result name="updatePreview" type="redirectAction">
+ 				<param name="actionName">ManageTabularData</param>
+				<param name="procId">${procId}</param> 
+			</result>
+			<result name="success" type="redirectAction">
+ 				<param name="actionName">ManageTabularData</param>
+				<param name="procId">${procId}</param> 
+			</result>
+			<result name="input" type="redirectAction">
+				<param name="actionName">ManageTabularData</param>
+				<param name="procId">${procId}</param>
+ 			</result>
+
+   		</action>	
+   		
+   		<action name="Download" class="gov.nasa.pds.web.ui.actions.tabularManagement.Download">
+			<result name="success" type="redirectAction">
+				<param name="actionName">DownloadProgress</param>
+				<param name="procId">${procId}</param>
+			</result>					
+          <result name="input" type="redirectAction">
+				<param name="actionName">ManageTabularData</param>
+				<param name="labelFileUrl">${labelFileUrl}</param>
+            </result>			
+		</action>
+
+		<action name="DownloadProgress" class="gov.nasa.pds.web.ui.actions.tabularManagement.DownloadProgress">
+            <result name="success" type="tiles">DownloadProgress.page</result>
+        </action>
+		
+        <action name="DownloadStatus" class="gov.nasa.pds.web.ui.actions.tabularManagement.DownloadStatus">
+        </action>
+        
+  		<action name="ServeFile" class="gov.nasa.pds.web.ui.actions.tabularManagement.ServeFile" >
+  			<result name="success" type="stream">
+  				<param name="procId">${procId}</param> 
+ 				<param name="inputName">inputStream</param>
+  				<param name="contentType">${contentType}</param>
+  		 		<param name="contentDisposition">attachment;filename="${fileName}"</param>
+  				<param name="bufferSize">2048</param>	
+  			</result>
+  		</action>		
+		<action name="Confirmation" class="gov.nasa.pds.web.ui.actions.tabularManagement.Confirmation">
+  			<result name="input" type="tiles">Confirmation.page</result>
+  		</action>
+
+		<action name="TableExplorerReleaseNotes" class="gov.nasa.pds.web.ui.actions.tabularManagement.ReleaseNotes">
+		   <result name="success" type="tiles">DataSlicerReleaseNotes.page</result>
+        </action>
+
+		<action name="TableExplorerAbout" class="gov.nasa.pds.web.ui.actions.tabularManagement.AboutTableExplorer">
+           <result name="success" type="tiles">TableExplorerAbout.page</result>
+        </action>
+        
+        <action name="TableExplorerHelp" class="gov.nasa.pds.web.ui.actions.tabularManagement.Help">
+           <result name="success" type="tiles">TableExplorerHelp.page</result>
+        </action>
+        
+<!-- Removing statistics actions, per PTOOL-228. -->
+<!--
+       <action name="ViewSlicerStats" class="gov.nasa.pds.web.ui.actions.stats.ViewTabularManagementStats">
+        	<result name="success" type="tiles">ViewTabularManagementStats.page</result>
+        </action>
+ 
+        <action name="ViewSliceDetails" class="gov.nasa.pds.web.ui.actions.stats.ViewSliceDetails">
+        	<result name="success" type="tiles">ViewSliceDetails.page</result>
+        	<result name="missingInformation" type="redirectAction">ViewTabularManagementStats</result>
+        </action>
+-->
+
+ 
+		<!-- END Tabular Data Slicing Actions -->
+
+
+
+    </package>
+</struts>
