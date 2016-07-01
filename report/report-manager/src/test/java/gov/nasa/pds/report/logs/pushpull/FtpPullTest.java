@@ -3,6 +3,7 @@ package gov.nasa.pds.report.logs.pushpull;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,8 +48,10 @@ public class FtpPullTest extends PDSTest{
 	
 	@After
 	public void tearDown() throws Exception {
-		FileUtils.forceDelete(new File(Utility.getAbsolutePath(
+		try {
+			FileUtils.forceDelete(new File(Utility.getAbsolutePath(
 				TestConstants.TEST_DUMP_RELATIVE)));
+		} catch (IOException ex) {}
 	}
 	
 	@Test

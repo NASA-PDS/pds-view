@@ -42,8 +42,10 @@ public class RingsDecryptionProcessorTest extends ReportManagerTest{
 	
 	@After
 	public void tearDown() throws Exception {
-		FileUtils.forceDelete(this.testDir);
-		FileUtils.forceDelete(this.outputDir);
+		try {
+			FileUtils.forceDelete(this.testDir);
+			FileUtils.forceDelete(this.outputDir);
+		} catch (IOException ex) {}
 	}
 	
 	@Test

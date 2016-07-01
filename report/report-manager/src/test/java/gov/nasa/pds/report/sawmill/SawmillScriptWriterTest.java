@@ -59,8 +59,10 @@ public class SawmillScriptWriterTest extends ReportManagerTest {
 	
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.forceDelete(new File(Utility.getAbsolutePath(
+		try {
+			FileUtils.forceDelete(new File(Utility.getAbsolutePath(
 				TestConstants.TEST_DUMP_RELATIVE)));
+		} catch (IOException ex) {}
 	}
 	
 	@Test

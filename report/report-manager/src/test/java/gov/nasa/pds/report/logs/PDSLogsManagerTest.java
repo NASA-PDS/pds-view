@@ -3,6 +3,7 @@ package gov.nasa.pds.report.logs;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -55,10 +56,12 @@ public class PDSLogsManagerTest extends PDSTest{
 	
 	@After
 	public void tearDown() throws Exception {
-		FileUtils.forceDelete(FileUtil.getDir(
+		try {
+			FileUtils.forceDelete(FileUtil.getDir(
 				Constants.STAGING_DIR,
 				props.getProperty(Constants.NODE_NODE_KEY),
 				props.getProperty(Constants.NODE_ID_KEY)));
+		} catch (IOException ex) {}
 	}
 	
 	@Test

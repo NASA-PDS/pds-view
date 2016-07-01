@@ -3,6 +3,7 @@ package gov.nasa.pds.report.processing;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -45,8 +46,10 @@ public class SimpleCommandProcessorTest extends ReportManagerTest{
 	
 	@After
 	public void tearDown() throws Exception {
-		FileUtils.forceDelete(this.testDir);
-		FileUtils.forceDelete(this.outputDir);
+		try {
+			FileUtils.forceDelete(this.testDir);
+			FileUtils.forceDelete(this.outputDir);
+		} catch (IOException ex) {}
 	}
 	
 	@Test

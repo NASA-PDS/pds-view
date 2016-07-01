@@ -6,6 +6,7 @@ package gov.nasa.pds.report.logs.pushpull;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,8 +55,10 @@ public class PDSPullTest extends PDSTest {
 	
 	@After
 	public void tearDown() throws Exception {
-		FileUtils.forceDelete(new File(Utility.getAbsolutePath(
+		try {
+			FileUtils.forceDelete(new File(Utility.getAbsolutePath(
 				TestConstants.TEST_DUMP_RELATIVE)));
+		} catch (IOException ex) {}
 	}
 	
 	@Test
