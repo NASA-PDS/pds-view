@@ -233,9 +233,10 @@ class PDSRegistryClient(object):
         '''
         answer = self._callServer('/extrinsics', dict(start=start+1, rows=rows)) # Why is it one-based indexing? Lame.
         return [self._createExtrinsic(i) for i in answer.get('results', [])]
-    def getAssociations(self, start=0, rows=20):
+    def getAssociations(self, start=0, rows=20, source=None, target=None):
         '''Retrieve associations registered with the registry service, starting at index ``start`` in
-        the associations list and retrieving no more than ``rows`` worth.
+        the associations list and retrieving no more than ``rows`` worth.  Optionally, you can search
+        by a source UUID, target UUID, or both.
 
         >>> import pds.registry.net.tests.base
         >>> rs = PDSRegistryClient('testscheme:/rs')
@@ -249,8 +250,24 @@ class PDSRegistryClient(object):
         1
         >>> associations[0].guid
         u'urn:anatomyid:but'
+        >>> associations = rs.getAssociations(source=u'urn:uuid:8007636f-adcd-416e-a75b-e954814bd953')
+        >>> len(associations)
+        3
+        >>> associations[0].guid, associations[1].guid, associations[2].guid
+        (u'urn:anatomyid:ass', u'urn:anatomyid:but', u'urn:anatomyid:boo')
+        >>> associations = rs.getAssociations(target=u'urn:uuid:2cdad332-f667-4e8b-814a-4b67624c4e2a')
+        >>> len(associations)
+        1
+        >>> associations[0].guid
+        u'urn:anatomyid:ass'
         '''
-        answer = self._callServer('/associations', dict(start=start+1, rows=rows)) # Why is it one-based indexing? Lame.
+        params = {
+            'start': start + 1,  # Why is it one-based indexing?  Lame.
+            'rows': rows,
+        }
+        if source is not None: params['sourceObject'] = source
+        if target is not None: params['targetObject'] = target
+        answer = self._callServer('/associations', params)
         return [self._createAssociation(i) for i in answer.get('results', [])]
     def getExtrinsicByLidvid(self, lidvid):
         '''Retrieve an extrinsic given a ``lidvid``, which is a string of the form ``LOGICAL-ID::VERSION-NAME``.
@@ -267,7 +284,7 @@ class PDSRegistryClient(object):
         return self._createExtrinsic(answer['results'][0])
     def getService(self, guid):
         '''Retrieve a service with a known ``guid``, or None if ``guid`` is not found.
-        
+
         >>> import pds.registry.net.tests.base
         >>> rs = PDSRegistryClient('testscheme:/rs')
         >>> lush = rs.getService('urn:sk:radio:lush')

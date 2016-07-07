@@ -79,7 +79,11 @@ _testData = {
     'associations?start=4&rows=1': '{"start":4,"numFound":3,"results":[]}',
     'associations/urn:anatomyid:ass': _ass['ass'],
     'associations/urn:anatomyid:but': _ass['but'],
-    'associations/urn:anatomyid:boo': _ass['boo']
+    'associations/urn:anatomyid:boo': _ass['boo'],
+    'associations?start=1&sourceObject=urn%3Auuid%3A8007636f-adcd-416e-a75b-e954814bd953&rows=20':
+        '{"start":1,"numFound":3,"results":[%s,%s,%s]}' % (_ass['ass'], _ass['but'], _ass['boo']),
+    'associations?start=1&rows=20&targetObject=urn%3Auuid%3A2cdad332-f667-4e8b-814a-4b67624c4e2a':
+        '{"start":1,"numFound":1,"results":[%s]}' % _ass['ass']
 }
 
 class _TestHandlerError(urllib2.HTTPError):
@@ -101,7 +105,7 @@ class _TestHandler(urllib2.BaseHandler):
         if len(self.acceptableTypes & clientTypes) == 0:
             raise _TestHandlerError(fullURL, httplib.NOT_ACCEPTABLE, 'The testscheme can only return application/json')
         if kind not in _testData:
-            raise _TestHandlerError(fullURL, httplib.NOT_FOUND, 'Sorry, not found')
+            raise _TestHandlerError(fullURL, httplib.NOT_FOUND, 'Sorry, "%s" not found' % fullURL)
         return StringIO(_testData[kind])
 
 urllib2.install_opener(urllib2.build_opener(_TestHandler))
