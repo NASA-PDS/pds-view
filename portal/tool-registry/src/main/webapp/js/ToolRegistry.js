@@ -470,6 +470,13 @@ function init(){
         }
       }
 
+      xmlString += '<!--' + '\n'
+        xmlString += 'Submitter Information\n'
+        xmlString += 'Submitter Name:' + submitter_name + '\n';
+        xmlString += 'Submitter Institution:' + submitter_institution + '\n';
+        xmlString += 'Submitter Email:' + submitter_email + '\n';
+      xmlString += '-->' + '\n'
+
       xmlString += '</Product_Service>';
       var xmlDom = $.parseXML(xmlString);
       //console.log("xmlDom", xmlDom);
@@ -492,8 +499,9 @@ function init(){
       var formData = new FormData();
       formData.append("file", file, fileName);
       formData.append("path", dateString);
-      /*
+
       $.ajax({
+        //url: "http://localhost:8080/transport-upload/upload",
         url: "http://pds-gamma.jpl.nasa.gov/services/transport-upload/upload",
         type: "POST",
         data: formData,
@@ -511,6 +519,7 @@ function init(){
         formData.append("file", file, file.name);
         formData.append("path", dateString);
         $.ajax({
+          //url: "http://pds-gamma.jpl.nasa.gov/services/transport-upload/upload",
           url: "http://pds-gamma.jpl.nasa.gov/services/transport-upload/upload",
           type: "POST",
           data: formData,
@@ -519,7 +528,7 @@ function init(){
           processData: false
         });
       }
-      */
+
 
       $( "#addToolFormContainer" ).fadeOut( "slow", function() {
         $( "#submissionCompleteContainer" ).fadeIn( "slow", function() {
