@@ -52,8 +52,13 @@
     </section>
 
     <section name="Tool Registry">
-      <p>TBD
+      <p>This software migrates tool and service descriptions from multiple sources so that they can be ingested into the Registry Service and then served up to the Tool Registry application. This software does have a dependency on the <i>pds.registry</i> package which must be deployed to the local Python environment prior to operation of this software. The Tool Registry software consists of two Python scripts:
       </p>
+
+      <ul>
+        <li>ipda-tools-to-product.py<br/>This script queries the IPDA Registry Service for Service entries and outputs a Product_Service label in XML for each of those entries. Those labels can then be ingested in a Registry Service instance.
+        </li>
+        <li>search-tools-to-product.py<br/>This script reads the Search Service Search Tools XML file that describes the PDS search tools and outputs a Product_Service label in XML for each of those entries. Those labels can then be ingested in a Registry Service instance.
     </section>
   </body>
 </document>
