@@ -700,7 +700,7 @@ function init(){
 
 function formatFileName(fileName, version){
   fileName = fileName.toLowerCase();
-  fileName = fileName.replace(/ /g,"-");
+  fileName = fileName.replace(/ /g,"_");
   fileName = fileName + "_" + version + ".xml";
 
   return fileName;
