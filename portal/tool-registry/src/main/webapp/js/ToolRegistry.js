@@ -369,9 +369,6 @@ function init(){
       console.log("wFileOffsets", wFileOffsets);
       console.log("wFileDescriptions", wFileDescriptions);
 
-      if(isInputEmpty(user_input_version_id)){
-        user_input_version_id = "1.0";
-      }
       var version_id = "1.0";
 
       var uploadDate = new Date();
@@ -411,12 +408,16 @@ function init(){
         xmlString += '<Service>';
           xmlString += '<name>' + name + '</name>';
           xmlString += '<abstract_desc>' + abstract_desc + '</abstract_desc>';
-          xmlString += '<version_id>' + user_input_version_id + '</version_id>';
+          if(!isInputEmpty(user_input_version_id)){
+            xmlString += '<version_id>' + user_input_version_id + '</version_id>';
+          }
           for(var i = 0; i < url.split(",").length; i++){
             var string = url.split(",")[i];
             xmlString += '<url>' + string + '</url>';
           }
-          xmlString += '<release_date>' + release_date + '</release_date>';
+          if(!isInputEmpty(release_date)){
+            xmlString += '<release_date>' + release_date + '</release_date>';
+          }
           xmlString += '<service_type>' + type + '</service_type>';
 
           if(!isMultivalInputEmpty(interface_type)){
@@ -445,7 +446,9 @@ function init(){
           if(!isInputEmpty(system_requirements)){
             xmlString += '<system_requirements_note>' + system_requirements + '</system_requirements_note>';
           }
-          xmlString += '<description>' + description + '</description>';
+          if(!isInputEmpty(description)){
+            xmlString += '<description>' + description + '</description>';
+          }
         xmlString += '</Service>';
 
 
@@ -472,9 +475,9 @@ function init(){
 
       xmlString += '<!--' + '\n'
         xmlString += 'Submitter Information\n'
-        xmlString += 'Submitter Name:' + submitter_name + '\n';
-        xmlString += 'Submitter Institution:' + submitter_institution + '\n';
-        xmlString += 'Submitter Email:' + submitter_email + '\n';
+        xmlString += 'Submitter Name:        ' + submitter_name + '\n';
+        xmlString += 'Submitter Institution: ' + submitter_institution + '\n';
+        xmlString += 'Submitter Email:       ' + submitter_email + '\n';
       xmlString += '-->' + '\n'
 
       xmlString += '</Product_Service>';
