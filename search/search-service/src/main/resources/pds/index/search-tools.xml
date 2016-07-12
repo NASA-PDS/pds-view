@@ -371,13 +371,13 @@
    <doc>
       <field name="instrument_type">CAMERA</field>
       <field name="search_engine_type">MARS</field>
-      <field name="title">Mars Express Image Search</field>
-      <field name="search_id">SearchTool_Mars Express Image Search</field>
-      <field name="identifier">SearchTool_Mars Express Image Search</field>
+      <field name="title">Mars Express Data Search</field>
+      <field name="search_id">SearchTool_Mars Express Data Search</field>
+      <field name="identifier">SearchTool_Mars Express Data Search</field>
       <field name="investigation_name">mars_express</field>
       <field name="target_name">mars</field>
-      <field name="resource_link">http://www.rssd.esa.int/index.php?project=PSA&amp;page=MarsExpress</field>
-      <field name="description">Search for images from the Mars Express at the European Space Agency on-line archive.</field>
+      <field name="resource_link">http://www.rssd.esa.int/index.php?project=PSA&amp;page=mex</field>
+      <field name="description">Search for images from Mars Express at the European Space Agency online archive.</field>
       <field name="data_set_name">HRSC Experimental Data Records</field>
       <field name="instrument_name">high_resolution_stereo_camera</field>
       <field name="instrument_host_id">MEX</field>
@@ -3444,83 +3444,6 @@
       <field name="resource_class">data_set_description</field>
    </doc>
    <doc>
-      <field name="instrument_type">FRAMING CAMERA</field>
-      <field name="search_engine_type">JUPITER</field>
-      <field name="search_engine_type">RINGS</field>
-      <field name="title">Galileo Solid State Imager Search</field>
-      <field name="search_id">SearchTool_Galileo Solid State Imager Search</field>
-      <field name="identifier">SearchTool_Galileo Solid State Imager Search</field>
-      <field name="investigation_name">galileo</field>
-      <field name="target_name">amalthea</field>
-      <field name="target_name">asteroid</field>
-      <field name="target_name">black sky</field>
-      <field name="target_name">callisto</field>
-      <field name="target_name">dark sky</field>
-      <field name="target_name">earth</field>
-      <field name="target_name">europa</field>
-      <field name="target_name">ganymede</field>
-      <field name="target_name">gaspra</field>
-      <field name="target_name">ida</field>
-      <field name="target_name">io</field>
-      <field name="target_name">j rings</field>
-      <field name="target_name">jupiter</field>
-      <field name="target_name">metis</field>
-      <field name="target_name">moon</field>
-      <field name="target_name">non science</field>
-      <field name="target_name">thebe</field>
-      <field name="resource_link">http://pds-rings.seti.org/catalog/gllssi.html</field>
-      <field name="description">Search for images from the Solid State Imager instrument from the Galileo mission to Jupiter.</field>
-      <field name="data_set_name">GALILEO ORBITAL OPERATIONS SOLID STATE IMAGING RAW EDR V1.0</field>
-      <field name="data_set_name">GALILEO ORBITER ASTEROID AND COMET SL9 SOLID STATE IMAGING 2</field>
-      <field name="data_set_name">GALILEO ORBITER ASTEROID AND EARTH 2 SOLID STATE IMAGING 2 R</field>
-      <field name="data_set_name">GALILEO SOLID STATE IMAGING CALIBRATION FILES V1.0</field>
-      <field name="data_set_name">GALILEO SSI IDA/GASPRA IMAGES V1.0</field>
-      <field name="data_set_name">GALILEO VENUS AND EARTH SOLID STATE IMAGING 2 RAW EDR V1</field>
-      <field name="instrument_name">solid_state_imaging_system</field>
-      <field name="instrument_host_id">GO</field>
-      <field name="instrument_id">SSI</field>
-      <field name="node_id">planetary rings</field>
-      <field name="target_type">ASTEROID</field>
-      <field name="target_type">CALIBRATION</field>
-      <field name="target_type">PLANET</field>
-      <field name="target_type">RING</field>
-      <field name="target_type">SATELLITE</field>
-      <field name="data_object_type">IMAGE</field>
-      <field name="publisher">NASA.PDS</field>
-      <field name="format">XML/RDF</field>
-      <field name="language">en</field>
-      <field name="data_product_type">Product_Context_Search_Tool</field>
-      <field name="resource_class">data_set_description</field>
-   </doc>
-   <doc>
-      <field name="instrument_type">OPTICAL TELESCOPE</field>
-      <field name="search_engine_type">RINGS</field>
-      <field name="title">Hubble Space Telescope Rings Image Catalog</field>
-      <field name="search_id">SearchTool_Hubble Space Telescope Rings Image Catalog</field>
-      <field name="identifier">SearchTool_Hubble Space Telescope Rings Image Catalog</field>
-      <field name="investigation_name">support archives</field>
-      <field name="target_name">j rings</field>
-      <field name="target_name">s rings</field>
-      <field name="target_name">jupiter</field>
-      <field name="target_name">saturn</field>
-      <field name="target_name">uranus</field>
-      <field name="target_name">neptune</field>
-      <field name="resource_link">http://pds-rings.seti.org/catalog/hstwfpc2.html</field>
-      <field name="description">Search for images of the ringed planets from the Wide Field/Planetary Camera 2 aboard the Hubble Space Telescope.</field>
-      <field name="instrument_name">hubble_space_telescope</field>
-      <field name="instrument_host_id">HST</field>
-      <field name="instrument_id">HSTACS</field>
-      <field name="node_id">planetary rings</field>
-      <field name="target_type">RING</field>
-      <field name="target_type">PLANET</field>
-      <field name="data_object_type">IMAGE</field>
-      <field name="publisher">NASA.PDS</field>
-      <field name="format">XML/RDF</field>
-      <field name="language">en</field>
-      <field name="data_product_type">Product_Context_Search_Tool</field>
-      <field name="resource_class">data_set_description</field>
-   </doc>
-   <doc>
       <field name="search_engine_type">MOON</field>
       <field name="title">Lunar Orbital Data Explorer</field>
       <field name="search_id">SearchTool_Lunar Orbital Data Explorer</field>
@@ -3751,7 +3674,7 @@
       <field name="target_name">phobos</field>
       <field name="target_name">deimos</field>
       <field name="resource_link">http://pds-imaging.jpl.nasa.gov/search/mex</field>
-      <field name="description">Use the Planetary Atlas to search for  HRSC images from the ESA Mars Express mission</field>
+      <field name="description">Use the Planetary Atlas to search for HRSC images from the ESA Mars Express mission.</field>
       <field name="data_set_name">mars_express_hrsc_radiometric_rdr_v1.0</field>
       <field name="data_set_name">mars_express_hrsc_orthophoto_and_digital_terrain_model_v1.0</field>
       <field name="data_set_name">mars_express_hrsc_map_projected_refdr_v1.0</field>
