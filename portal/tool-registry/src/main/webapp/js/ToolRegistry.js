@@ -42,7 +42,7 @@ var Manager;
 
     Manager.init();
     Manager.store.addByValue('product-class', 'Product_Service');
-    Manager.store.addByValue('sort', 'identifier asc');
+    Manager.store.addByValue('sort', 'service_name asc');
     Manager.doRequest(false, "search");
   });
 

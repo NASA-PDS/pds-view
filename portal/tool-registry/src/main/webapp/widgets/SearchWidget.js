@@ -84,7 +84,7 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
   setLastSearchArguments: function(keyword, interfaceType, category, sort, pdsVersion, searchToggle){
     this.lastInputKeyword = keyword;
     this.lastInterfaceType = interfaceType;
-    this.lastCategor = category;
+    this.lastCategory = category;
     this.lastSort = sort;
     this.lastPdsVersion  = pdsVersion;
     this.lastSearchToggle = searchToggle;
@@ -161,10 +161,10 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
     }
 
     if(sort === 'ascAlpha'){
-      self.manager.store.addByValue('sort', 'identifier asc');
+      self.manager.store.addByValue('sort', 'service_name asc');
     }
     else if(sort === 'descAlpha'){
-      self.manager.store.addByValue('sort', 'identifier desc');
+      self.manager.store.addByValue('sort', 'service_name desc');
     }
 
     if(pdsVersion === "both"){
@@ -196,7 +196,7 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
     self.manager.store.get('start').val(0);
     console.log("self", self);
 
-    self.doRequest();
+    self.doRequest(false, "search");
   }
 
 
