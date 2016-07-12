@@ -102,6 +102,9 @@ mvn deploy
 cd ../product-search-ui
 mvn site
 mvn deploy
+cd ../search-analytics
+mvn site
+mvn deploy
 cd ../search-service
 mvn site
 mvn deploy
