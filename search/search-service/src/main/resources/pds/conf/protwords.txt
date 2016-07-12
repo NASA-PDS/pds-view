@@ -14,8 +14,35 @@
 # Use a protected word file to protect against the stemmer reducing two
 # unrelated words to the same base word.
 
-# Some non-words that normally won't be encountered,
-# just to test that they won't be stemmed.
-dontstems
-zwhacky
-
+# Typically, terms ending in "s" get stemmed.
+apxs
+archives
+bodies
+ceres
+cirs
+crs
+deimos
+enceladus
+epas
+epimetheus
+epps
+eros
+iss
+iris
+mars
+metis
+mimas
+nims
+pds
+pgs
+phobos
+pls
+pos
+prometheus
+pws
+rings
+rss
+themis
+tools
+uranus
+vims
