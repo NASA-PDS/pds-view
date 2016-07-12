@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>search</artifactId>
-  <version>1.9.0-dev</version>
+  <version>1.8.1</version>
   <packaging>pom</packaging>
 
   <name>Search</name>
@@ -36,6 +36,7 @@
   <url>https://pds-cm.jpl.nasa.gov/pds4/search/</url>
 
   <modules>
+    <module>search-analytics</module>
     <module>search-core</module>
     <module>search-service</module>
     <module>search-ui</module>
@@ -61,9 +62,9 @@
       </roles>
     </developer>
     <developer>
-      <name>Paul Ramirez</name>
-      <id>pramirez</id>
-      <email>Paul.Ramirez@jpl.nasa.gov</email>
+      <name>Hyun Lee</name>
+      <id>hyunlee</id>
+      <email>Hyun.Lee@jpl.nasa.gov</email>
       <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
         <role>Developer</role>
@@ -76,6 +77,15 @@
       <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
         <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Paul Ramirez</name>
+      <id>pramirez</id>
+      <email>Paul.Ramirez@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Former Developer</role>
       </roles>
     </developer>
   </developers>

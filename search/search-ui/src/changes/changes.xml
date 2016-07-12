@@ -23,7 +23,10 @@
   </properties>
 
   <body>
-    <release version="1.9.0" date="TBD" description="TBD">
+    <release version="1.8.1" date="2016-07-12" description="This release of the Search User Interface is a component of a point build for the Search components.">
+      <action dev="shardman" type="fix">
+        Modified the assemblies to keep line endings for the extras directory. Not keeping the line endings was corrupting the image files.
+      </action>
     </release>
 
     <release version="1.8.0" date="2016-03-31" description="This release of the Search User Interface is a component of the integrated release 6.1.0 of the PDS4 System. This is an operational release of the system components to date.">

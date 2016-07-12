@@ -23,7 +23,7 @@
   </properties>
 
   <body>
-    <release version="1.9.0" date="TBD" description="TBD">
+    <release version="1.8.1" date="2016-07-12" description="This release of Search Core is a component of a point build for the Search components.">
       <action dev="shardman" type="add" issue="PDS-429">
         Added configuration files to support indexing of Product_Service products in order to support the Tool Registry. Also updated all of the configuration files to consistently populate the data_product_type field.
       </action>
@@ -32,7 +32,7 @@
       </action>
     </release>
 
-    <release version="1.8.0" date="2016-03-31" description="This release of the Search Core is a component of the integrated release 6.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+    <release version="1.8.0" date="2016-03-31" description="This release of Search Core is a component of the integrated release 6.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" type="update" issue="PDS-370">
         Updated to improve handling of date/time fields.
       </action>
@@ -44,10 +44,10 @@
       </action>
     </release>
 
-    <release version="1.7.0" date="2015-09-30" description="This release of the Search Core is a component of the integrated release 6.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+    <release version="1.7.0" date="2015-09-30" description="This release of Search Core is a component of the integrated release 6.0.0 of the PDS4 System. This is an operational release of the system components to date.">
     </release>
 
-    <release version="1.6.0" date="2015-03-31" description="This release of the Search Core is a component of the integrated release 5.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+    <release version="1.6.0" date="2015-03-31" description="This release of Search Core is a component of the integrated release 5.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="add" issue="PDS-335">
         Create new configs for Product_Attribute_Definition and Product_Class_Definition products.
       </action>
@@ -59,7 +59,7 @@
       </action>
     </release>
 
-    <release version="1.5.0" date="2014-09-30" description="This release of the Search Core is a component of the integrated release 5.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+    <release version="1.5.0" date="2014-09-30" description="This release of Search Core is a component of the integrated release 5.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="update" issue="PDS-277">
         Updated configurations to consistently include data_class and product_class slots for all product types.
       </action>
@@ -74,7 +74,7 @@
       </action>
     </release>
 
-    <release version="1.4.1" date="2014-06-20" description="This release of the Search Core is a component of the integrated release 4.1.1 of the PDS4 System. This is an operational release of the system components to date.">
+    <release version="1.4.1" date="2014-06-20" description="This release of Search Core is a component of the integrated release 4.1.1 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="update" issue="PDS-261">
         Added external_reference_text to all configs.
       </action>
@@ -83,7 +83,7 @@
       </action>
     </release>
 
-    <release version="1.4.0" date="2014-03-31" description="This release of the Search Core is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+    <release version="1.4.0" date="2014-03-31" description="This release of Search Core is a component of the integrated release 4.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="update" issue="PDS-229">
         Created new core configs for all of the specific PDS4 context products, which include the new SlotFilters. Also updated ProductClass to respond to updates to RegistryResults API, including the generation of Association and Slot Filters.
       </action>
@@ -104,7 +104,7 @@
       </action>
     </release>
 
-    <release version="1.3.0" date="2013-09-30" description="This release of the Search Core is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+    <release version="1.3.0" date="2013-09-30" description="This release of Search Core is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="update" issue="PDS-144">
         Get all .xml files in the given config directory instead of requiring product-classes.txt to be specified.
       </action>
@@ -161,13 +161,13 @@
       </action>
     </release>
 
-    <release version="1.2.1" date="2013-06-21" description="This release of the Search Core is a component of the integrated release 3.1.1 of the PDS4 System. This is an operational release of the system components to date.">
+    <release version="1.2.1" date="2013-06-21" description="This release of Search Core is a component of the integrated release 3.1.1 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="update">
         Updated EN-specific documentation to be very explicit with exact steps for running index.
       </action>
     </release>
 
-    <release version="1.2.0" date="2013-03-31" description="This release of the Search Core is a component of the integrated release 3.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+    <release version="1.2.0" date="2013-03-31" description="This release of Search Core is a component of the integrated release 3.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="add" issue="PDS-138">
         Created Search Service config files for Bundle, Collection, and Context PDS4 products.
       </action>
@@ -185,7 +185,7 @@
       </action>
     </release>
 
-    <release version="1.1.1" date="2012-11-14" description="This release of the Search Core is a component of the PDS4 System. This is an operational release supporting the deployment of the system at the Engineering Node and includes updates for issues discovered during deployment.">
+    <release version="1.1.1" date="2012-11-14" description="This release of Search Core is a component of the PDS4 System. This is an operational release supporting the deployment of the system at the Engineering Node and includes updates for issues discovered during deployment.">
       <action dev="jpadams" type="add">
         Created ops-index script to rsync data from remote machine in order for operational use.
       </action>
@@ -200,7 +200,7 @@
       </action>
     </release>
 
-    <release version="1.1.0" date="2012-11-09" description="This release of the Search Core is a component of the PDS4 System. This is an operational release supporting the deployment of the system at the Engineering Node.">
+    <release version="1.1.0" date="2012-11-09" description="This release of Search Core is a component of the PDS4 System. This is an operational release supporting the deployment of the system at the Engineering Node.">
       <action dev="jpadams" type="add" issue="PDS-119">
         Created new Archive Information configuration file to include mission resources in search results.
       </action>
@@ -218,7 +218,7 @@
       </action>
     </release>
 
-    <release version="1.0.0" date="2012-09-30" description="This release of the Search Core is a component of the integrated release 3.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+    <release version="1.0.0" date="2012-09-30" description="This release of Search Core is a component of the integrated release 3.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="add" issue="PDS-102">
         Created PDSDateConvert class to handle conversions of PDS4-compliant date/time values into Solr-compliant date/time values.
       </action>
@@ -251,7 +251,7 @@
       </action>
     </release>
 
-    <release version="0.3.0" date="2012-06-11" description="This release of the Search Core is a component of the integrated release 2.2.0 of the PDS4 System. This is an operational release of the system components to date.">
+    <release version="0.3.0" date="2012-06-11" description="This release of Search Core is a component of the integrated release 2.2.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="jpadams" type="add">
         Added command-line option to specify number of queried records.
       </action>
@@ -266,13 +266,13 @@
       </action>
     </release>
 
-    <release version="0.2.0" date="2012-01-31" description="This release of the Search Core is a component of the integrated release 2.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+    <release version="0.2.0" date="2012-01-31" description="This release of Search Core is a component of the integrated release 2.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="shardman" type="update">
         Cleaned up the documentation and removed the PDF generation feature.
       </action>
     </release>
 
-    <release version="0.1.0" date="2011-11-09" description="This release of the Search Core is a component of the integrated release 2.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+    <release version="0.1.0" date="2011-11-09" description="This release of Search Core is a component of the integrated release 2.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="pramirez" type="add">
         Initial implementation of PDS search protocol request handler.
       </action>

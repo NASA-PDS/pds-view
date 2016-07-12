@@ -23,7 +23,16 @@
   </properties>
 
   <body>
-    <release version="1.9.0" date="TBD" description="TBD">
+    <release version="1.8.1" date="2016-07-12" description="This release of the Search Service is a component of a point build for the Search components.">
+      <action dev="shardman" type="add" issue="PDS-429">
+        Added fields for the Product_Service products in order to support the Tool Registry. Also added protected keywords (terms ending in s) to resolve the search quirk in the Tool Registry. 
+      </action>
+      <action dev="hyunlee" type="update" issue="PDS-451">
+        Updated to handle Document products in the Product Search User Interface and Search User Interface.
+      </action>
+      <action dev="shardman" type="update">
+        Removed outdated Rings Node tools from the Search Tools list.
+      </action>
      <action dev="hyunlee" type="update" issue="PDS-451">
        Updated to handle Document products in the Product Search UI. 
      </action>

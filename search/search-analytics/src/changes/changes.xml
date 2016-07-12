@@ -23,7 +23,7 @@
   </properties>
 
   <body>
-    <release version="1.9.0" date="TBD" description="TBD">
+    <release version="1.8.1" date="2016-07-12" description="This release of Search Analytics is a component of a point build for the Search components.">
       <action dev="shardman" type="add">
          Created the package based on the 1.5.1 release of the Lucidworks Banana software.
       </action>
