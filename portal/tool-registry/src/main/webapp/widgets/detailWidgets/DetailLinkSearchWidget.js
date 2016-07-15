@@ -54,20 +54,39 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
     template: function (product){
         var type = product.objectType
         var output = "";
+        var i;
         output += '<div class="panel panel-default">'
         output += '<table class="table table-striped table-condensed ToolRegistryTable"';
         output += '<tr><td colspan="2" style="background-color:#CCCCCC">' + "<h4>" + product.title + "</h4>" + "</td></tr>";
-        //output += this.createListRow("Service Url", product.service_url);
         output += this.createRow("Abstract", product.service_abstract_desc);
-        output += this.createRow("URL", "<a href='" + product.service_url + "' target='_blank'>" + product.service_url + "</a>");
-        //output += this.createRow("Type", product.service_type);
+        var urlOutput = "";
+        for (i in product.service_url) {
+            urlOutput += "<a href='" + product.service_url[i] + "' target='_blank'>" + product.service_url[i] + "</a>, "
+        }
+        output += this.createRow("URL", urlOutput.slice(0, urlOutput.length - 2));
         output += this.createRow("Support", product.pds_model_version);
-        output += this.createRow("Category", product.service_category);
-        output += this.createRow("Interface Type", product.service_interface_type);
+        var categoryOutput = "";
+        for (i in product.service_category) {
+            categoryOutput += product.service_category[i] + ", "
+        }
+        output += this.createRow("Category", categoryOutput.slice(0, categoryOutput.length - 2));
+        if (product.service_interface_type != undefined) {
+            var interfaceOutput = "";
+            for (i in product.service_interface_type) {
+                interfaceOutput += product.service_interface_type[i] + ", "
+            }
+            output += this.createRow("Interface Type", interfaceOutput.slice(0, interfaceOutput.length - 2));
+        }
         output += this.createRow("Description", product.service_description);
         output += this.createRow("Version", product.service_version_id);
         output += this.createRow("Release Date", product.service_release_date);
-        output += this.createRow("Software Language", product.service_software_language);
+        if (product.service_software_language != undefined) {
+            var languageOutput = "";
+            for (i in product.service_software_language) {
+                languageOutput += product.service_software_language[i] + ", "
+            }
+            output += this.createRow("Software Language", languageOutput.slice(0, languageOutput.length - 2));
+        }
         output += this.createRow("Supported Operating Systems", product.service_supported_operating_system_note);
         output += this.createRow("System Requirements", product.service_system_requirements_note);
         output += this.createRow("Citation", product.citation_description);
