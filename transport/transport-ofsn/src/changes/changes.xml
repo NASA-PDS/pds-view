@@ -24,6 +24,9 @@
 
   <body>
     <release version="1.5.0" date="TBD" description="TBD">
+      <action dev="mcayanan" type="update" issue="PDS-463">
+        Removed transform-tool related handlers of uncommonly used types (PDS_TO_BMP, PDS_TO_RAW).
+      </action>
     </release>
 
     <release version="1.4.0" date="2016-03-31" description="This release of the Transport Service is a component of the integrated release 6.1.0 of the PDS4 System. This is an operational release of the system components to date.">
