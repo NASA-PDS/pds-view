@@ -11,6 +11,7 @@
 # export licenses, or other export authority as may be required before 
 # exporting such information to foreign countries or providing access to 
 # foreign persons.
+from string import lowercase, lower
 
 '''
 This script reads an XML file specifying tools and outputs XML specifying those
@@ -22,6 +23,11 @@ import os.path
 import re
 import sys
 import time
+
+from pds.registry.net import PDSRegistryClient
+
+
+
 
 def getTitle(product):
     if not "title" in product:
@@ -52,8 +58,129 @@ def makeUrnSafe(str):
     '''
     safe = str.lower()
     safe = safe.replace(" ", "_")
-    safe = re.sub("[^a-zA-Z0-9_]", "-", safe)
+    safe = safe.replace("&amp;", "&")
+    safe = re.sub("[^a-zA-Z0-9_.]", "-", safe)
     return safe
+
+def printExtrinsic(e):
+    print e._objectType + ":"
+    d = vars(e)
+    for key, value in d.iteritems():
+        if key != "slots":
+            print key + ": " + str(value)
+    for slot in e.slots:
+        print str(vars(slot))
+    print ""
+
+def loadExtrinsics():
+    count = 1
+    start = 0
+    rows = 1000
+    total = 0
+    print "Now loading extrinsics.  This could take a while."
+    while count > 0:
+        extrinsicsPage = rc.getExtrinsics(start, rows)
+        count = len(extrinsicsPage)
+        start = start + rows
+        total = total + count
+        for e in extrinsicsPage:
+            objType = e._objectType
+            if objType not in extrinsics:
+                extrinsics[objType] = []
+            extrinsics[objType].append(e)
+        print "Extrinsics loaded: " + str(total)
+    print "All extrinsics loaded"
+
+def findExtrinsicsWithLidPostfixAndType(postfix, extrinsicType):
+    results = []
+    for e in extrinsics[extrinsicType]:
+        lid = e._lid
+        if lid.endswith(postfix) and lid not in results:
+            results.append(lid)
+    return results
+
+def findExtrinsicsWithLidPostfix(postfix, extrinsicType = None):
+    if len(extrinsics) == 0:
+        return []
+    if extrinsicType is not None:
+        return findExtrinsicsWithLidPostfixAndType(postfix, extrinsicType)
+    else:
+        results = []
+        for eType in extrinsics:
+            results.extend(findExtrinsicsWithLidPostfixAndType(postfix, eType))
+        return results
+
+def getExtrinsicsWithName(name, extrinsicType):
+    if len(extrinsics) == 0:
+        return None
+    results = []
+    safeName = makeUrnSafe(name)
+    for e in extrinsics[extrinsicType]:
+        lid = e._lid
+        if safeName == makeUrnSafe(e.name) and lid not in results:
+            results.append(lid)
+    if len(results) == 0:
+        print "Found no extrinsics of type " + extrinsicType + " with name " + name
+    return results
+
+def getExtrinsicsWithSlotValue(slotName, slotValue, extrinsicType):
+    if len(extrinsics) == 0:
+        return None
+    results = []
+    safeValue = makeUrnSafe(slotValue)
+    for e in extrinsics[extrinsicType]:
+        lid = e._lid
+        for slot in e.slots:
+            if slot.name == slotName and lid not in results:
+                for val in slot.values:
+                    if makeUrnSafe(val) == safeValue:
+                        results.append(lid)
+    if len(results) == 0:
+        print "Found no extrinsics of type " + extrinsicType + " with slot " + slotName + "=" + slotValue
+    return results
+
+def addReferencesWithLidPostfix(outputProduct, outKey, lidPostfix, extrinsicType):
+    lids = findExtrinsicsWithLidPostfix(lidPostfix, extrinsicType)
+    for lid in lids:
+        if lid not in outputProduct["reference_list"][outKey]:
+            outputProduct["reference_list"][outKey].append(lid)
+
+def addReferencesWithSlotValue(outputProduct, outKey, slot, value, extrinsicType):
+    lids = getExtrinsicsWithSlotValue("data_set_name", value, extrinsicType)
+    for lid in lids:
+        if lid not in outputProduct["reference_list"][outKey]:
+            outputProduct["reference_list"][outKey].append(lid)
+
+def addReferenceWithLidFromClient(outputProduct, outKey, lidPrefix, lidPostfix, extrinsicType, showNotFound = True):
+    lid = lidPrefix + makeUrnSafe(lidPostfix)
+    refExtrinsic = rc.getExtrinsicByLID(lid)
+    if refExtrinsic is not None and lid not in outputProduct["reference_list"][outKey]:
+        outputProduct["reference_list"][outKey].append(lid)
+        return True
+    elif showNotFound:
+        print "Could not find " + extrinsicType + " extrinsic " + lid + " for product " + outputProduct["logical_identifier"]
+    return False
+
+def translateNode(nodeID):
+    for node in nodes:
+        if nodeID in nodes[node]:
+            return node
+    return None
+
+def writeReference(lid, refType):
+    output.write(getTabs(2) + "<Internal_Reference>\n")
+    output.write(getTabs(3) +"<lid_reference>" + lid + "</lid_reference>\n")
+    output.write(getTabs(3) +"<reference_type>" + refType + "</reference_type>\n")
+    output.write(getTabs(2) + "</Internal_Reference>\n")
+
+def writeReferences(refKey, refType):
+    if refKey in product["reference_list"]:
+        for n in product["reference_list"][refKey]:
+            writeReference(n, refType)
+    
+    
+
+
 
 
 
@@ -79,6 +206,28 @@ if os.path.getsize(inputFileArg) == 0:
 if not os.path.exists(outputLocation):
     print "Output location does not exist: " + os.path.abspath(outputLocation)
     sys.exit(1)
+
+# Load the extrinsics using the Registry Client
+extrinsics = dict()
+rc = PDSRegistryClient("https://pds.nasa.gov/services/registry-pds3")
+loadExtrinsics()
+
+# Configure the mapping of expected IDs to nodes
+ATM_NODE_NAMES = ["planetary_atmospheres"]
+GEO_NODE_NAMES = ["geosciences", "geoscience"]
+IMG_NODE_NAMES = ["imaging"]
+PPI_NODE_NAMES = ["planetary_plasma_interactions"]
+RINGS_NODE_NAMES = ["rings", "planetary rings"]
+RS_NODE_NAMES = ["radio_science"]
+SBN_NODE_NAMES = ["small bodies"]
+nodes = dict()
+nodes["atm"] = ATM_NODE_NAMES
+nodes["geoscience"] = GEO_NODE_NAMES
+nodes["imaging"] = IMG_NODE_NAMES
+nodes["ppi-ucla"] = PPI_NODE_NAMES
+nodes["rings"] = RINGS_NODE_NAMES
+nodes["rs"] = RS_NODE_NAMES
+nodes["sbn"] = SBN_NODE_NAMES
 
 # Read in the input file
 productList = list()
@@ -132,13 +281,14 @@ if product != None and getTitle(product) != None:
     productList.append(product)
 
 # Reformat input contents to expected output format
+DEBUG_REPORT = False
 outputList = list()
 for product in productList:
     outputProduct = copy.deepcopy(product)
     
     # Populate details that simply always use defaults
     outputProduct["version_id"] = "1.0"
-    outputProduct["information_model_version"] = "1.5.0.0"
+    outputProduct["information_model_version"] = "1.6.0.0"
     outputProduct["product_class"] = "Product_Service"
     outputProduct["description"] = "Migration from Search Service Search Tools list."
     outputProduct["service_type"] = "Service"
@@ -161,12 +311,143 @@ for product in productList:
     outputProduct["abstract_desc"] = product["description"]
     outputProduct["url"] = product["resource_link"]
     
-    # Set output details that amp to other details but use defauls
+    # Set output details that map to other details but use defaults
     outputProduct["data_product_type"] = getFieldWithDefault(product, "data_product_type", "Product_Context_Search_Tool")
     outputProduct["format"] = getFieldWithDefault(product, "format", "XML/RDF")
     outputProduct["language"] = getFieldWithDefault(product, "language", "en")
     outputProduct["publisher"] = getFieldWithDefault(product, "publisher", "NASA.PDS")
     outputProduct["data_product_type"] = getFieldWithDefault(product, "resource_class", "data_set_description")
+    
+    # Prepare the reference list
+    outputProduct["reference_list"] = dict()
+    
+    # Add the node reference
+    if "node_id" in product:
+        outputProduct["reference_list"]["node"] = []
+        product_nodeID = product["node_id"]
+        if type(product_nodeID) is list:
+            for id in product_nodeID:
+                node = translateNode(id.lower())
+                if node != None:
+                    outputProduct["reference_list"]["node"].append("urn:nasa:pds:context_pds3:node:node." + node)
+                else:
+                    print "Unknown node label " + id + " found in product " + outputProduct["logical_identifier"]
+        else:
+            node = translateNode(product_nodeID.lower())
+            if node != None:
+                outputProduct["reference_list"]["node"].append("urn:nasa:pds:context_pds3:node:node." + node)
+            else:
+                print "Unknown node label " + product_nodeID + " found in product " + outputProduct["logical_identifier"]
+    else:
+        print "No node found for product " + outputProduct["logical_identifier"]
+            
+    # Add the investigation reference
+    if "investigation_name" in product:
+        outputProduct["reference_list"]["investigation"] = []
+        productInvestigation = product["investigation_name"]
+        if type(productInvestigation) is list:
+            for investigaton in productInvestigation:
+                addReferenceWithLidFromClient(outputProduct, "investigation", "urn:nasa:pds:context_pds3:investigation:mission.", investigaton, "investigation")
+        else:
+            addReferenceWithLidFromClient(outputProduct, "investigation", "urn:nasa:pds:context_pds3:investigation:mission.", productInvestigation, "investigation")
+    else:
+        print "No investigation found for product " + outputProduct["logical_identifier"]
+    
+    # Add the instrument host reference
+    if "instrument_host_id" in product:
+        outputProduct["reference_list"]["instrument_host"] = []
+        productInstrumentHost = product["instrument_host_id"]
+        if type(productInstrumentHost) is list:
+            for instrumentHost in productInstrumentHost:
+                addReferencesWithLidPostfix(outputProduct, "instrument_host", makeUrnSafe(instrumentHost), "Product_Instrument_Host_PDS3")
+        else:
+            addReferencesWithLidPostfix(outputProduct, "instrument_host", makeUrnSafe(productInstrumentHost), "Product_Instrument_Host_PDS3")
+    else:
+        print "No instrument host found for product " + outputProduct["logical_identifier"]
+
+    # Add the instrument reference
+    if "instrument_host_id" in product and "instrument_id" in product:
+        foundLids, missingLids = 0, 0
+        outputProduct["reference_list"]["instrument"] = []
+        productInstrumentHost = product["instrument_host_id"]
+        productInstrument = product["instrument_id"]
+        if type(productInstrument) is list:
+            for instrument in productInstrument:
+                if type(productInstrumentHost) is list:
+                    for intrumentHost in productInstrumentHost:
+                        if addReferenceWithLidFromClient(outputProduct, "instrument", "urn:nasa:pds:context_pds3:instrument:instrument.", instrument + "__" + intrumentHost, "instrument", showNotFound=False):
+                            foundLids = foundLids + 1
+                        else:
+                            missingLids = missingLids + 1
+                else:
+                    if addReferenceWithLidFromClient(outputProduct, "instrument", "urn:nasa:pds:context_pds3:instrument:instrument.", instrument + "__" + productInstrumentHost, "instrument", showNotFound=False):
+                        foundLids = foundLids + 1
+                    else:
+                        missingLids = missingLids + 1
+        else:
+            if type(productInstrumentHost) is list:
+                for intrumentHost in productInstrumentHost:
+                    if addReferenceWithLidFromClient(outputProduct, "instrument", "urn:nasa:pds:context_pds3:instrument:instrument.", productInstrument + "__" + intrumentHost, "instrument", showNotFound=False):
+                        foundLids = foundLids + 1
+                    else:
+                        missingLids = missingLids + 1
+            else:
+                if addReferenceWithLidFromClient(outputProduct, "instrument", "urn:nasa:pds:context_pds3:instrument:instrument.", productInstrument + "__" + productInstrumentHost, "instrument", showNotFound=False):
+                    foundLids = foundLids + 1
+                else:
+                    missingLids = missingLids + 1
+        if DEBUG_REPORT or foundLids == 0:
+            print "Found " + str(foundLids) + " LIDs and searched for " + str(missingLids) + " missing LIDs for instruments of product " + outputProduct["logical_identifier"]
+    else:
+        print "No instrument found for product " + outputProduct["logical_identifier"]
+        
+    # Add the target reference
+    if "target_type" in product and "target_name" in product:
+        foundLids, missingLids = 0, 0
+        outputProduct["reference_list"]["target"] = []
+        productTargetType = product["target_type"]
+        productTargetName = product["target_name"]
+        if type(productTargetType) is list:
+            for targetType in productTargetType:
+                if type(productTargetName) is list:
+                    for targetName in productTargetName:
+                        if addReferenceWithLidFromClient(outputProduct, "target", "urn:nasa:pds:context_pds3:target:", targetType + "." + targetName, "target", showNotFound=False):
+                            foundLids = foundLids + 1
+                        else:
+                            missingLids = missingLids + 1
+                else:
+                    if addReferenceWithLidFromClient(outputProduct, "target", "urn:nasa:pds:context_pds3:target:", targetType + "." + productTargetName, "target", showNotFound=False):
+                        foundLids = foundLids + 1
+                    else:
+                        missingLids = missingLids + 1
+        else:
+            if type(productTargetName) is list:
+                for targetName in productTargetName:
+                    if addReferenceWithLidFromClient(outputProduct, "target", "urn:nasa:pds:context_pds3:target:", productTargetType + "." + targetName, "target", showNotFound=False):
+                        foundLids = foundLids + 1
+                    else:
+                        missingLids = missingLids + 1
+            else:
+                if addReferenceWithLidFromClient(outputProduct, "target", "urn:nasa:pds:context_pds3:target:", productTargetType + "." + productTargetName, "target", showNotFound=False):
+                    foundLids = foundLids + 1
+                else:
+                    missingLids = missingLids + 1
+        if DEBUG_REPORT or foundLids == 0:
+            print "Found " + str(foundLids) + " LIDs and searched for " + str(missingLids) + " missing LIDs for targets of product " + outputProduct["logical_identifier"]
+    else:
+        print "No target found for product " + outputProduct["logical_identifier"]
+    
+    # Add the data set reference
+    if "data_set_name" in product:
+        outputProduct["reference_list"]["dataset"] = []
+        productDataSet = product["data_set_name"]
+        if type(productDataSet) is list:
+            for dataSet in productDataSet:
+                addReferencesWithSlotValue(outputProduct, "dataset", "data_set_name", dataSet, "Product_Data_Set_PDS3")
+        else:
+            addReferencesWithSlotValue(outputProduct, "dataset", "data_set_name", productDataSet, "Product_Data_Set_PDS3")
+    else:
+        print "No data set found for product " + outputProduct["logical_identifier"]
     
     # Add the product to the list of products to output
     outputList.append(outputProduct)
@@ -179,7 +460,8 @@ for product in outputList:
     if title == None:
         continue
     title = makeUrnSafe(title)
-    path = os.path.join(outputLocation, title + ".xml")
+    path = os.path.join(outputLocation, title + "_" + product["version_id"] + ".xml")
+    print "Writing product at " + path
     if os.path.exists(path):
         print "Existing file will be overwritten: " + path
     
@@ -189,8 +471,8 @@ for product in outputList:
     
     # Write the boilerplate
     output.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
-    output.write("<?xml-model href=\"http://pds.jpl.nasa.gov/pds4/pds/v1/PDS4_PDS_1500.sch\" schematypens=\"http://purl.oclc.org/dsdl/schematron\"?>\n")
-    output.write("<Product_Service xmlns=\"http://pds.nasa.gov/pds4/pds/v1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://pds.nasa.gov/pds4/pds/v1 https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1500.xsd\">\n")
+    output.write("<?xml-model href=\"http://pds.jpl.nasa.gov/pds4/pds/v1/PDS4_PDS_1600.sch\" schematypens=\"http://purl.oclc.org/dsdl/schematron\"?>\n")
+    output.write("<Product_Service xmlns=\"http://pds.nasa.gov/pds4/pds/v1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://pds.nasa.gov/pds4/pds/v1 https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1600.xsd\">\n")
     
     # Write everything else
     output.write(getTabs(1) + "<Identification_Area>\n")
@@ -215,11 +497,14 @@ for product in outputList:
     output.write(getTabs(2) + getXmlElement(product, "interface_type", "interface_type"))
     output.write(getTabs(2) + getXmlElement(product, "category", "category"))
     output.write(getTabs(1) + "</Service>\n")
-    
-    # Once we have the Internal_References, we'll write them out here
     output.write(getTabs(1) + "<Reference_List>\n")
+    writeReferences("node", "has_node")
+    writeReferences("investigation", "resource_to_investigation")
+    writeReferences("instrument_host", "resource_to_instrument_host")
+    writeReferences("instrument", "resource_to_instrument")
+    writeReferences("target", "resource_to_target")
+    writeReferences("dataset", "has_data_set")
     output.write(getTabs(1) + "</Reference_List>\n")
-    
     output.write("</Product_Service>\n")
     
     # Close the file
