@@ -325,26 +325,8 @@ http://localhost:8080/${project.artifactId}/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ
           <td>Converts a PDS image to JPG 2000 format.
               <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JP2">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_JP2</a>
               <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JP2">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_JP2</a>
-            <br/>NOTE: currently, a library bug prevents this handler to work for PDS3 images.
           </td>
         </tr>
-        <tr>
-          <td>PDS_TO_BMP</td>
-          <td>Converts a PDS image to Windows BMP format.
-              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_BMP">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_BMP</a>
-              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_BMP">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_BMP</a>
-            <br/>NOTE: currently, a library bug prevents this handler to work for PDS3 images.
-          </td>
-        </tr>
-        <!-- NOT WORKING
-        <tr>
-          <td>PDS_TO_WBMP</td>
-          <td>Converts a PDS image to Wireless Bitmap image format.
-              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_WBMP">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_WBMP</a>
-              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_WBMP">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_WBMP</a>
-          </td>
-        </tr>
-        -->
         <tr>
           <td>PDS_TO_GIF</td>
           <td>Converts a PDS image to Graphics Interchange Format.
@@ -357,13 +339,6 @@ http://localhost:8080/${project.artifactId}/prod?q=OFSN+EQ+/test-data1+AND+RT+EQ
           <td>Converts a PDS image to Portable Network Graphics Format.
               <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_PNG">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_PNG</a>
               <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_PNG">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_PNG</a>
-          </td>
-        </tr>
-        <tr>
-          <td>PDS_TO_RAW</td>
-          <td>Converts a PDS image to Raw image Format.
-              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_RAW">http://localhost:8080/transport-ofsn/prod?q=OFSN+EQ+/i943630r.xml+AND+RT+EQ+PDS_TO_RAW</a>
-              <br/>Example request: <a href="http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_RAW">http://localhost:8080/transport-ofsn/prod?OFSN=/i943630r.xml&amp;RT=PDS_TO_RAW</a>
           </td>
         </tr>
         <tr>

@@ -200,15 +200,6 @@ FIXME: Change XML namespace URI for oodt prefix?
     	<property name="mimeType" value="image/jp2"/>
     	<property name="extension" value="jp2"/>
   </handler>
-  <handler name="PDS_TO_BMP" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
-    	<property name="mimeType" value="image/bmp"/>
-    	<property name="extension" value="bmp"/>
-  </handler>
-<!-- NOT WORKING
-  <handler name="PDS_TO_WBMP" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
-    	<property name="mimeType" value="image/vnd.wap.wbmp"/>
-    	<property name="extension" value="wbmp"/>
-  </handler> -->
   <handler name="PDS_TO_GIF" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="image/gif"/>
     	<property name="extension" value="gif"/>
@@ -216,10 +207,6 @@ FIXME: Change XML namespace URI for oodt prefix?
   <handler name="PDS_TO_PNG" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="image/png"/>
     	<property name="extension" value="png"/>
-  </handler>
-  <handler name="PDS_TO_RAW" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
-    	<property name="mimeType" value="application/x-binary"/>
-    	<property name="extension" value="raw"/>
   </handler>
   <handler name="PDS_TO_TIFF" type="get" class="gov.nasa.pds.transport.PdsLabelTransformerHandler">
     	<property name="mimeType" value="image/tiff"/>
