@@ -182,3 +182,19 @@ input:invalid {
 input:valid {
   border: 1px solid green;
 }
+
+.displayNone{
+	display:none !important;
+}
+
+.invalidInputMessage{
+	padding-top:5px;
+}
+
+#urlFormGroupLabel{
+	margin-bottom:0;
+}
+
+.trPagerHeader{
+	padding-bottom:15px;
+}
