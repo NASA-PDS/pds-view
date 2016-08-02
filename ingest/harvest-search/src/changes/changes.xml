@@ -24,6 +24,9 @@
 
   <body>
     <release version="0.1.0" date="TBD" description="TBD">
+      <action dev="mcayanan" type="update" issue="PDS-464">
+        Updated Windows System Properties Install Guide.
+      </action>
       <action dev="mcayanan" type="add">
          Initial release of the Harvest-Search Tool.
       </action>      

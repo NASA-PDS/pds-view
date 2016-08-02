@@ -23,6 +23,9 @@
   </properties>
   <body>
     <release version="0.2.0" date="TBD" description="TBD">
+      <action dev="mcayanan" type="update" issue="PDS-464">
+        Updated Windows System Properties Install Guide.
+      </action>    
     </release>
 
     <release version="0.1.0" date="2016-03-31" description="This release of the Transport Service is a component of the integrated release 6.1.0 of the PDS4 System. This is an operational release of the system components to date.">

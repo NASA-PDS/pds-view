@@ -24,6 +24,9 @@
 
   <body>
     <release version="0.11.0" date="TBD" description="TBD">
+      <action dev="mcayanan" type="update" issue="PDS-464">
+        Updated Windows System Properties Install Guide.
+      </action>
       <action dev="shardman" type="add">
         Created the Registry Tools component with the List Extrinsics software as the first entry.
       </action>
