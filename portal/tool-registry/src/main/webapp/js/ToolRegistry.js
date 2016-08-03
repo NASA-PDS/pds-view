@@ -534,8 +534,7 @@ function init(){
       for(var i = 0; i < urls.length; i++){
         if(urls[i].trim().length < 1 ||
             urls[i].trim().length > 255 ||
-            isInvalid(urls[i]) ||
-            isInvalidEmail(urls[i])){
+            isInvalid(urls[i])){
               $("#urlContainer > div:nth-child(" + (i+2) + ")").addClass("has-error has-feedback");
               $("#urlContainer > div:nth-child(" + (i+2) + ")").removeClass("has-success has-feedback");
               isValid = false;
