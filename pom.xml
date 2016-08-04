@@ -46,6 +46,7 @@
     <module>security</module>
     <module>storage</module>
     <module>transport</module>
+    <module>model</module>
   </modules>
 
   <properties>
