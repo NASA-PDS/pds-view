@@ -479,12 +479,20 @@ function init(){
     };
     function validateReleaseDate(){
       var release_date = $("#releaseDateInput").val();
-      if(isInvalid(release_date) ||
-        !moment(release_date, 'YYYY-MM-DD',true).isValid()){
-        $('#releaseDateFormGroup').addClass("has-error has-feedback");
-        $('#releaseDateFormGroup').removeClass("has-success has-feedback");
-        $("#releaseDateErrorMessage").removeClass("displayNone");
-        return false;
+      if(release_date.trim().length > 0){
+        if(isInvalid(release_date) ||
+          !moment(release_date, 'YYYY-MM-DD',true).isValid()){
+          $('#releaseDateFormGroup').addClass("has-error has-feedback");
+          $('#releaseDateFormGroup').removeClass("has-success has-feedback");
+          $("#releaseDateErrorMessage").removeClass("displayNone");
+          return false;
+        }
+        else{
+          $('#releaseDateFormGroup').addClass("has-success has-feedback");
+          $('#releaseDateFormGroup').removeClass("has-error has-feedback");
+          $("#releaseDateErrorMessage").addClass("displayNone");
+          return true;
+        }
       }
       else{
         $('#releaseDateFormGroup').addClass("has-success has-feedback");
@@ -953,7 +961,7 @@ function init(){
           formData.append("file", file, file.name);
           formData.append("path", dateString);
           $.ajax({
-            //url: "http://pds-gamma.jpl.nasa.gov/services/transport-upload/upload",
+            //url: "http://localhost:8080/transport-upload/upload",
             url: "http://pds-gamma.jpl.nasa.gov/services/transport-upload/upload",
             type: "POST",
             data: formData,

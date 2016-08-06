@@ -522,7 +522,7 @@
 
                     <div id="softwareLanguageContainer">
                       <div class="form-group" id="softwareLanguageFormGroupLabel">
-                        <label class="control-label" for="softwareLanguage">Software Language</br><span class="labelDescription">Provide the computer programming languages that the tool supports, if applicable. Please list each language separately, one per line.</span></label>
+                        <label class="control-label" for="softwareLanguage">Software Language<span class="asterisk">*</span></br><span class="labelDescription">Provide the computer programming languages that the tool supports, if applicable. Please list each language separately, one per line.</span></label>
                       </div>
                       <div class="form-group">
                         <input type="text" class="form-control softwareLanguageInput" placeholder="" maxlength="255">
