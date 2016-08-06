@@ -473,7 +473,7 @@
                     </div>
 
                     <div class="form-group" id="interfaceTypeFormGroup">
-                      <label for="interfaceType" class="control-label">Interface Type</br><span class="labelDescription">Select one or more interface types available with the tool.</span></label>
+                      <label for="interfaceType" class="control-label">Interface Type <span class="asterisk">*</span></br><span class="labelDescription">Select one or more interface types available with the tool.</span></label>
                       <div id="interfaceType">
                         <div class="checkbox">
                           <label>
@@ -593,19 +593,19 @@
                   <div class="panel-body">
 
                     <div class="form-group" id="submitterNameFormGroup">
-                      <label class="control-label" for="submitterNameInput">Submitter Name</br><span class="labelDescription">Provide the name of the submitter.</span></label>
+                      <label class="control-label" for="submitterNameInput">Submitter Name<span class="asterisk">*</span></br><span class="labelDescription">Provide the name of the submitter.</span></label>
                       <input type="text" class="form-control" id="submitterNameInput" placeholder="" maxlength="255">
                       <label id="submitterNameErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">Value is required. Must not contain special characters.</label>
                     </div>
 
                     <div class="form-group" id="submitterInstitutionFormGroup">
-                      <label class="control-label" for="submitterInstitutionInput">Submitter Institution</br><span class="labelDescription">Provide the name of the institution employing the submitter or better yet curates the tool.</span></label>
+                      <label class="control-label" for="submitterInstitutionInput">Submitter Institution<span class="asterisk">*</span></br><span class="labelDescription">Provide the name of the institution employing the submitter or better yet curates the tool.</span></label>
                       <input type="text" class="form-control" id="submitterInstitutionInput" placeholder="" maxlength="255">
                       <label id="submitterInstitutionErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">Value is required. Must not contain special characters.</label>
                     </div>
 
                     <div class="form-group" id="submitterEmailFormGroup">
-                      <label class="control-label" for="submitterEmailInput">Submitter Email</br><span class="labelDescription">Provide the email address of the submitter so that we may contact you regarding the submission.</span></label>
+                      <label class="control-label" for="submitterEmailInput">Submitter Email<span class="asterisk">*</span></br><span class="labelDescription">Provide the email address of the submitter so that we may contact you regarding the submission.</span></label>
                       <input type="email" class="form-control" id="submitterEmailInput" placeholder="" maxlength="255">
                       <label id="submitterEmailErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">Not a valid email</label>
                     </div>
