@@ -296,13 +296,27 @@ function init(){
     });
     function validateStepOne(){
       var isValid = true;
-      isValid = validateName();
-      isValid = validateToolType();
-      isValid = validateAbstractDescription();
-      isValid = validateDescription();
-      isValid = validateSupport();
-      isValid = validateCategory();
-      isValid = validateInterfaceType();
+      if(!validateName()){
+        isValid = false;
+      }
+      if(!validateToolType()){
+        isValid = false;
+      }
+      if(!validateAbstractDescription()){
+        isValid = false;
+      }
+      if(!validateDescription()){
+        isValid = false;
+      }
+      if(!validateSupport()){
+        isValid = false;
+      }
+      if(!validateCategory()){
+        isValid = false;
+      }
+      if(!validateInterfaceType()){
+        isValid = false;
+      }
 
       return isValid;
     };
@@ -453,13 +467,28 @@ function init(){
 
     function validateStepTwo(){
       var isValid = true;
-      isValid = validateVersion();
-      isValid = validateReleaseDate();
-      isValid = validateUrls();
-      isValid = validateSupportedOperatingSystems();
-      isValid = validateSystemRequirements();
-      isValid = validateCitation();
-      isValid = validateSoftwareLanguages();
+      if(!validateVersion()){
+        isValid = false;
+      }
+      if(!validateReleaseDate()){
+        isValid = false;
+      }
+      if(!validateUrls()){
+        isValid = false;
+      }
+      if(!validateSupportedOperatingSystems()){
+        isValid = false;
+      }
+      if(!validateSystemRequirements()){
+        isValid = false;
+      }
+      if(!validateCitation()){
+        isValid = false;
+      }
+      if(!validateSoftwareLanguages()){
+        isValid = false;
+      }
+
       return isValid;
     };
     function validateVersion(){
@@ -509,16 +538,29 @@ function init(){
 
       var software_languages = software_language.split(",");
       for(var i = 0; i < software_languages.length; i++){
-        if(software_languages[i].trim().length < 1 ||
-            software_languages[i].trim().length > 255 ||
+        if(i === 0){
+          if(software_languages[i].trim().length > 255 ||
             isInvalid(software_languages[i])){
-            $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").addClass("has-error has-feedback");
-            $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").removeClass("has-success has-feedback");
-            isValid = false;
-        }
-        else{
-          $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").removeClass("has-error has-feedback");
-          $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").addClass("has-success has-feedback");
+              $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").addClass("has-error has-feedback");
+              $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").removeClass("has-success has-feedback");
+              isValid = false;
+          }
+          else{
+            $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").removeClass("has-error has-feedback");
+            $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").addClass("has-success has-feedback");
+          }
+        }else{
+          if(software_languages[i].trim().length < 1 ||
+              software_languages[i].trim().length > 255 ||
+              isInvalid(software_languages[i])){
+              $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").addClass("has-error has-feedback");
+              $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").removeClass("has-success has-feedback");
+              isValid = false;
+          }
+          else{
+            $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").removeClass("has-error has-feedback");
+            $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").addClass("has-success has-feedback");
+          }
         }
       }
       if(!isValid){
