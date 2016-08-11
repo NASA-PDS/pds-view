@@ -12,6 +12,7 @@ import org.jasypt.util.text.StrongTextEncryptor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -24,6 +25,10 @@ import gov.nasa.pds.report.rules.PDSTest.SingleTestRule;
 import gov.nasa.pds.report.util.DateLogFilter;
 import gov.nasa.pds.report.util.Utility;
 
+/*
+ * TODO: Just like with HttpPullTest, this class should create a local server
+ * with the test files as suggested by Sean Kelly.
+ */
 public class FtpPullTest extends PDSTest{
 	
 	private static FtpPull ftpPull;
@@ -55,6 +60,7 @@ public class FtpPullTest extends PDSTest{
 	}
 	
 	@Test
+	@Ignore
 	public void testConnect() throws PushPullException {
 		assertTrue(ftpPull.connect(FtpTestConstants.TEST_HOST,
 				FtpTestConstants.TEST_USER, FtpTestConstants.TEST_PASSWORD,
@@ -62,6 +68,7 @@ public class FtpPullTest extends PDSTest{
 	}
 	
 	@Test
+	@Ignore
 	public void testGetLogs() throws Exception {
 			
 		// Get the hostname because we will use it a few times
